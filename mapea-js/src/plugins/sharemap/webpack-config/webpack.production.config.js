@@ -1,33 +1,29 @@
 const path = require('path');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const GenerateVersionPlugin = require('./GenerateVersionPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopywebpackPlugin = require('copy-webpack-plugin');
 
 const PJSON_PATH = path.resolve(__dirname, '..', 'package.json');
 const pjson = require(PJSON_PATH);
 
-
 module.exports = {
   mode: 'production',
   entry: {
-    [`mapea-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
+    'sharemap.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
-    filename: 'js/[name].js',
+    filename: '[name].js',
   },
   resolve: {
     alias: {
-      handlebars: 'handlebars/dist/handlebars.min.js',
-      templates: path.resolve(__dirname, '..', 'src', 'templates'),
-      assets: path.resolve(__dirname, '..', 'src', 'facade', 'assets'),
-      M: path.resolve(__dirname, '../src/facade/js'),
-      impl: path.resolve(__dirname, '..', 'src', 'impl', 'ol', 'js'),
-      'impl-assets': path.resolve(__dirname, '..', 'src', 'impl', 'ol', 'assets'),
-      patches: path.resolve(__dirname, '../src/impl/ol/js/patches.js'),
+      templates: path.resolve(__dirname, '../src/templates'),
+      assets: path.resolve(__dirname, '../src/facade/assets'),
+      facade: path.resolve(__dirname, '../src/facade/js'),
     },
-    extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html', '.jpg'],
+    extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html', '.svg'],
   },
   module: {
     rules: [{
@@ -53,16 +49,12 @@ module.exports = {
       {
         test: /\.css$/,
         loader: MiniCssExtractPlugin.loader,
-        exclude: /node_modules/,
       }, {
         test: /\.css$/,
         loader: 'css-loader',
-        exclude: /node_modules/,
-
       },
       {
-        test: /\.(woff|woff2|eot|ttf|svg|jpg)$/,
-        exclude: /node_modules/,
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
         loader: 'url-loader?name=fonts/[name].[ext]',
       }
     ],
@@ -73,24 +65,27 @@ module.exports = {
       new OptimizeCssAssetsPlugin(),
       new TerserPlugin({
         sourceMap: true,
+        terserOptions: {
+          mangle: {
+            properties: {
+              regex: /.*_/,
+            },
+          },
+        },
       }),
     ],
   },
   plugins: [
+    // new GenerateVersionPlugin({
+    //   version: pjson.version,
+    //   regex: /([A-Za-z]+)(\..*)/,
+    // }),
     new MiniCssExtractPlugin({
-      filename: 'assets/css/[name].css',
+      filename: '[name].css',
     }),
     new CopywebpackPlugin([{
-      from: 'src/configuration.js',
-      to: 'filter/configuration.js',
-    }]),
-    new CopywebpackPlugin([{
-      from: 'src/configuration.js',
-      to: `filter/configuration-${pjson.version}.js`,
-    }]),
-    new CopywebpackPlugin([{
-      from: 'src/facade/assets/img',
-      to: 'assets/img',
+      from: 'src/api.json',
+      to: 'api.json',
     }]),
   ],
   devtool: 'source-map',

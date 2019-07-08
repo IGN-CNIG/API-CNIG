@@ -1,0 +1,32 @@
+.m-control.m-container.m-baselayerselector {
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.m-baselayerselector button {
+    background-color: #71a7d3 !important;
+    border: 1px solid white !important;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px !important;
+    height: 25px !important;
+    padding: 1px 6px 2px !important;
+    margin: 2px;
+    font-weight: bold !important;
+    width: 75px !important;
+}
+
+.m-baselayerselector button:active,
+.m-baselayerselector button:focus {
+    outline: none;
+}
+
+.m-areas>div.m-area>div.m-panel.opened.m-plugin-baselayer {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    order: -10;
+}
+
+.m-baselayerselector .activeBaseLayerButton {
+    background-color: #92c1e7 !important;
+}

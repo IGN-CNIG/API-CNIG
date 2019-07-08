@@ -1,0 +1,39 @@
+.srsselector-panel {
+    position: relative;
+}
+
+.srsselector-panel .m-panel-btn.g-cartografia-flecha-derecha {
+    background-color: #71a7d3 !important;
+    color: white !important;
+}
+
+.srsselector-panel.opened .m-panel-btn.g-cartografia-flecha-derecha {
+    position: absolute;
+    left: -40px;
+}
+
+.srsselector-panel.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+    background-color: #71a7d3 !important;
+    color: white !important;
+    position: absolute;
+    right: -40px;
+}
+
+.srsselector-panel .m-panel-btn.g-cartografia-flecha-izquierda.right {
+    position: absolute;
+    right: 0 !important;
+}
+
+.m-panel.srsselector-panel.collapsed {
+    height: 40px;
+    width: 40px;
+}
+
+#div-contenedor.m-srsselector span {
+    display: block;
+    padding: 5px;
+}
+
+#m-srsselector-srs.dropdown {
+    margin: 5px;
+}

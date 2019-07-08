@@ -1,0 +1,52 @@
+{
+  "url": {
+    "name": "baselayerselector",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.BaseLayerSelector",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "value": "TR",
+      "possibleValues": ["TL", "TR", "BL", "BR"]
+    }, {
+      "type": "object array",
+      "properties": [{
+        "type": "simple",
+        "name": "id"
+      }, {
+        "type": "simple",
+        "name": "title"
+      }, {
+        "type": "layer",
+        "name": "layer"
+      }],
+      "name": "layerOpts",
+      "position": 1
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": [
+        "baselayerselector.ol.min.js"
+      ],
+      "styles": [
+        "baselayerselector.ol.min.css"
+      ]
+    }
+  },
+  "metadata": {
+    "name": "BaseLayerSelector",
+    "description": "Allows base layer selection",
+    "text": "Shows buttons with different base layer options to change view",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "url": {
+    "name": "showcoordinates",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.ShowCoordinates",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["showcoordinates.ol.min.js"],
+      "styles": ["showcoordinates.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "ShowCoordinates",
+    "description": "Shows selected map coordinates",
+    "text": "Shows selected coordinates on map",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

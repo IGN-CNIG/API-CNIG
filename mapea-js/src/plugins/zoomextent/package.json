@@ -1,0 +1,49 @@
+{
+  "name": "ZoomExtent",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "map",
+    "mapping",
+    "tool",
+    "sigcorporativo-ja",
+    "mapea",
+    "plugin"
+  ],
+  "license": "ISC",
+  "scripts": {
+    "start": "webpack-dev-server --config=webpack-config/webpack.development.config.js",
+    "prebuild": "node task/create-entrypoint.js",
+    "build": "webpack --config=webpack-config/webpack.production.config.js",
+    "test-build": "npm run build && live-server --open=test/prod.html",
+    "check": "eslint ./src",
+    "fix": "eslint --fix ./src"
+  },
+  "author": "",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.0-beta.4",
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^2.1.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "file-loader": "^1.1.11",
+    "fs-extra": "^8.0.1",
+    "handlebars": "^4.0.11",
+    "html-loader": "^0.5.5",
+    "mini-css-extract-plugin": "^0.4.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "style-loader": "^0.21.0",
+    "terser-webpack-plugin": "^1.2.3",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.14"
+  }
+}
