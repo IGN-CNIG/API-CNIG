@@ -1,0 +1,223 @@
+html, body{
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+
+/* layout */
+
+.content-wrapper{
+	display: flex; 
+	flex-direction: column;
+	height: 100%;
+}
+
+header{
+	height: 80px;	
+	background-color: #364B5F;
+	display: flex;
+	align-items: center;
+	font-family: 'Fira Sans', sans-serif;	
+}
+
+header .logo img{
+	max-height: 60px;
+	margin-left: 1rem;
+}
+
+header .visor-title{
+	display: flex;
+	flex-flow: column wrap;
+	flex: 1;
+	justify-content: flex-end;
+	margin-right: 3rem;
+	opacity: 0;
+	position: relative;
+	-webkit-animation: fadeintitle.4s ease-in-out forwards;
+    animation: fadeintitle .4s ease-in-out forwards;
+    animation-delay: 1.65s;
+}
+
+header .visor-title .title, header .visor-title .subtitle{
+	display: flex;
+	justify-content: flex-end;
+	text-transform: uppercase;
+}
+
+header .visor-title .title{
+	color: #fff;
+	font-size: 1.8rem;
+	font-weight: 600;
+	font-family: 'Fira Sans', sans-serif;
+	letter-spacing: 4px;
+}
+
+header .visor-title .subtitle{
+	color: #B9B9B9;
+	margin-top: 5px;
+}	
+
+header.h-mobile{
+	display: none;
+}
+
+@-webkit-keyframes fadeintitle {
+  0% { opacity: 0; top: -100px; }
+  100% { opacity: 1; top: 0; }
+}
+
+@keyframes fadeintitle {
+  0% { opacity: 0; top: -100px; }
+  100% { opacity: 1; top: 0; }
+}
+
+.layout-wrapper{
+	display: flex; 
+	flex-direction: row; 
+	flex: 1;
+}
+
+/* nav */
+
+.toggle-menu{
+	display: flex;
+	justify-content: center;
+	text-decoration: none;
+	margin-left: 1.5rem;
+	color: #fff;
+}
+
+/* Icon 4 */
+
+#nav-icon4 {
+  width: 27px;
+  height: 27px;
+  position: relative;
+  /*margin: 50px auto;*/
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
+  cursor: pointer;
+}
+
+#nav-icon4 span {
+  display: block;
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: #fff;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .25s ease-in-out;
+  -moz-transition: .25s ease-in-out;
+  -o-transition: .25s ease-in-out;
+  transition: .25s ease-in-out;
+}
+
+#nav-icon4 {
+   margin-left: 2.5rem;	
+}
+
+#nav-icon4 span:nth-child(1) {
+  top: 0px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+}
+
+#nav-icon4 span:nth-child(2) {
+  top: 10px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+}
+
+#nav-icon4 span:nth-child(3) {
+  top: 20px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+}
+
+#nav-icon4.open span:nth-child(1) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  top: 0px;
+  left: 8px;
+}
+
+#nav-icon4.open span:nth-child(2) {
+  width: 0%;
+  opacity: 0;
+}
+
+#nav-icon4.open span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  top: 19px;
+  left: 8px;
+}
+
+.nav-wrapper{
+	display: flex; 
+	flex: 0 0 360px;
+	transition: all .3s ease-in-out;
+	text-align: center;
+	background-color: #ECEFF1;
+	-webkit-box-shadow: 2px 0px 2px 0px rgba(50, 50, 50, 0.32);
+	-moz-box-shadow:    2px 0px 2px 0px rgba(50, 50, 50, 0.32);
+	box-shadow:         2px 0px 2px 0px rgba(50, 50, 50, 0.32);
+}
+
+.nav-wrapper h1{
+	width: 100%;
+	color: #364b5f;
+}
+
+/* visor */
+
+.visor-wrapper{
+	flex: 1;
+	overflow: hidden;
+}
+
+.visor-wrapper .map{	
+	border: 0;
+	width: 100%;
+	transition: all .3s ease-in-out;
+	height: 100%;
+}
+
+/* icons sizes */
+
+.icon-w0{
+	flex: 0 0 0px;
+	transition: all .3s ease-in-out;
+	overflow: hidden;
+
+}
+
+.icon-w60{
+	flex: 0 0 60px;
+	transition: flex .3s;
+}

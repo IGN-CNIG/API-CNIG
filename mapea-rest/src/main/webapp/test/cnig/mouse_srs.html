@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="mapea" content="yes">
+    <title>Mouse Ctrl SRS Production TEST</title>
+    <link href="../../assets/css/mapea-5.1.0.ol.min.css" rel="stylesheet" />
+    <link href="../../plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
+    <style rel="stylesheet">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="mapjs" class="container"></div>
+    <script type="text/javascript" src="../../js/mapea-5.1.0.ol.min.js"></script>
+    <script type="text/javascript" src="../../js/configuration-5.1.0.js"></script>
+    <script type="text/javascript" src="../../plugins/ignsearch/ignsearch.ol.min.js"></script>
+    <script type="text/javascript">
+        let layerRasterMTN = new M.layer.WMTS("WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*true");
+
+        const map = M.map({
+            container: 'mapjs',
+            controls: ['overviewmap', 'scale', 'scaleline', 'rotate', 'panzoombar', 'panzoom', 'layerswitcher', 'mouse*true', 'location', 'getfeatureinfo'],
+            // zoom: 6,
+            layers: [layerRasterMTN],
+            projection: "EPSG:3857*m",
+            center: [-467062.8225, 4683459.6216],
+            // center: [-6.8906, 36.3281],
+            // bbox: [-27.752608442575177, 18.09388997061703, 17.247391557424823, 50.7461276815488]
+        });
+        GoogleMapsCompatible
+        map.calculateMaxExtent().then((maxExtent) => {
+            const size = map.getMapImpl().getSize();
+            const zoomLevels = 20;
+            const units = map.getProjection().units;
+            const resolutions = M.utils.generateResolutionsFromExtent(maxExtent, size, zoomLevels, units);
+            map.setResolutions(resolutions);
+        });
+
+        map.setZoom(3);
+
+    </script>
+</body>
+
+</html>

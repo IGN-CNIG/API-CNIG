@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="mapea" content="yes">
+    <title>BaseLayerSelector Production TEST</title>
+    <link href="../../assets/css/mapea-5.1.0.ol.min.css" rel="stylesheet" />
+    <link href="../../plugins/backgroundlayerselector/backgroundlayerselector.ol.min.css" rel="stylesheet" />
+    <style rel="stylesheet">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="mapjs" class="container"></div>
+    <script type="text/javascript" src="../../js/mapea-5.1.0.ol.min.js"></script>
+    <script type="text/javascript" src="../../js/configuration-5.1.0.js"></script>
+    <script type="text/javascript" src="../../plugins/backgroundlayerselector/backgroundlayerselector.ol.min.js"></script>
+    <script type="text/javascript">
+        let layerRasterMTN = new M.layer.WMTS("WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*EPSG:3857*false");
+
+        /*const layerinicial = new M.layer.WMTS({
+            url: 'http://www.ign.es/wmts/pnoa-ma?',
+            name: 'OI.OrthoimageCoverage',
+            legend: 'Imagen (PNOA)',
+        });*/
+
+        const layerinicial = new M.layer.WMS({
+        url: 'http://www.ideandalucia.es/wms/mta400v_2008?',
+        name: 'Redes_energeticas',
+        legend: 'Redes',
+        });
+
+        const map = M.map({
+            container: 'mapjs',
+            controls: ['overviewmap', 'scale', 'location', 'mouse','layerswitcher'],
+            layers: [layerinicial],
+            projection: 'EPSG:3857*d',
+            // center: [-4.5703, 39.4687],
+            center: [-467062.8225, 4683459.6216],
+            zoom: 3
+            // bbox: [-27.752608442575177, 18.09388997061703, 17.247391557424823, 50.7461276815488]
+        });
+
+        map.removeControls(["panzoombar"]);
+
+        
+        const mp = new M.plugin.BackgroundLayersSelector({
+        position: 'TR',
+        layerOpts: [{
+            id: 'mapa',
+            title: 'Mapa',
+            layers: [new M.layer.WMTS({
+                url: 'http://www.ign.es/wmts/ign-base?',
+                name: 'IGNBaseTodo',
+                legend: 'Callejero',
+                matrixSet: "GoogleMapsCompatible",
+            }, {
+                format: 'image/jpeg',
+            })]
+            },
+            {
+            id: 'imagen',
+            title: 'Imagen',
+            layers: [new M.layer.WMTS({
+                url: 'http://www.ign.es/wmts/pnoa-ma?',
+                name: 'OI.OrthoimageCoverage',
+                legend: 'Imagen',
+                matrixSet: "GoogleMapsCompatible",
+            }, {
+                format: 'image/jpeg',
+            })]
+            },
+            {
+            id: 'hibrido',
+            title: 'Híbrido',
+            layers: [ new M.layer.WMTS({
+                url: 'http://www.ign.es/wmts/pnoa-ma?',
+                name: 'OI.OrthoimageCoverage',
+                legend: 'Imagen',
+                matrixSet: "GoogleMapsCompatible",
+            }, {
+                format: 'image/jpeg',
+            }), new M.layer.WMTS({
+                url: 'http://www.ign.es/wmts/ign-base?',
+                name: 'IGNBaseOrto',
+                legend: 'Mapa IGN',
+                matrixSet: "GoogleMapsCompatible",
+            }, {
+                format: 'image/jpeg',
+            }), ],
+            },
+        ],
+        });
+
+        map.addPlugin(mp);
+
+        map.calculateMaxExtent().then((maxExtent) => {
+            const size = map.getMapImpl().getSize();
+            const zoomLevels = 20;
+            const units = map.getProjection().units;
+            const resolutions = M.utils.generateResolutionsFromExtent(maxExtent, size, zoomLevels, units);
+            map.setResolutions(resolutions);
+        });
+
+        map.setZoom(3);
+
+       // map.addControl("layerswitcher");
+    </script>
+</body>
+
+</html>

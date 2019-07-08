@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<kml xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+<name>14-281-Magenta</name>
+<visibility>1</visibility>
+<Schema name="KML" id="kml_schema_ft_KML">
+<SimpleField type="xsd:int" name="idRoute">
+<displayName>idRoute</displayName>
+</SimpleField>
+<SimpleField type="xsd:int" name="idPark">
+<displayName>idPark</displayName>
+</SimpleField>
+<SimpleField type="xsd:string" name="name">
+<displayName>name</displayName>
+</SimpleField>
+<SimpleField type="xsd:string" name="text">
+<displayName>text</displayName>
+</SimpleField>
+<SimpleField type="xsd:double" name="duration">
+<displayName>duration</displayName>
+</SimpleField>
+<SimpleField type="xsd:double" name="length">
+<displayName>length</displayName>
+</SimpleField>
+<SimpleField type="xsd:double" name="ramp">
+<displayName>ramp</displayName>
+</SimpleField>
+<SimpleField type="xsd:string" name="difficulty">
+<displayName>difficulty</displayName>
+</SimpleField>
+<SimpleField type="xsd:string" name="description">
+<displayName>description</displayName>
+</SimpleField>
+<SimpleField type="xsd:string" name="recomendations">
+<displayName>recomendations</displayName>
+</SimpleField>
+</Schema>
+<Folder id="kml_ft_KML">
+<name>KML</name>
+<Placemark id="kml_1">
+<name>kml_1</name>
+<snippet> </snippet>
+<description><![CDATA[<center><table><tr><th colspan='2' align='center'><em>Attributes</em></th></tr><tr bgcolor="#E3E3F3">
+<th>idRoute</th>
+<td>281</td>
+</tr><tr bgcolor="">
+<th>idPark</th>
+<td>14</td>
+</tr><tr bgcolor="#E3E3F3">
+<th>name</th>
+<td>Magenta</td>
+</tr><tr bgcolor="">
+<th>text</th>
+<td><p class="Estilo6"><span style="font-weight: bold;">Itinerario</span>: Desde el aparcamiento al molino de Molemocho</p>
+<p class="Estilo6"><span style="font-weight: bold;">Duraci&oacute;n</span>: 1-2 horas&nbsp;</p>
+<p class="Estilo6"><span style="font-weight: bold;">Distancia </span>: 450 m ida&nbsp;</p>
+<p class="Estilo6"><span style="font-weight: bold;">Dificultad</span>: Baja&nbsp;</p>
+<p class="Estilo6"><span style="font-weight: bold;">Ruta</span>: Recorrido sobre pasarela de madera para acceder al Molino de Molemocho.&nbsp;</p>
+<p class="Estilo6"><span style="font-weight: bold;">Descripci&oacute;n General</span>: Corto recorrido sobre pasarela de madera para acceder al Molino de Molemocho. El interior de este centro de visitantes se puede acceder de forma libre o guiada pero ser&aacute; necesario consulta previa de horarios de apertura en el Centro de Visitantes del Parque.<br /> La &uacute;ltima de las rutas en incorporarse al uso p&uacute;blico del parque conduce hasta el Centro de Visitantes del Molino de Molemocho. Desde el aparcamiento una pasarela de madera lleva directamente al molino ofreciendo antes de llegar una buena panor&aacute;mica de la Madre del Guadiana y la laguna Permanente. La ruta salva el curso del r&iacute;o por un gran puente de piedra de cuatro ojos. El puente forma parte de la excelente obra de rehabilitaci&oacute;n del conjunto de Molemocho junto al enorme molino llevada a cabo por el Ministerio de Medioambiente tras m&aacute;s de treinta a&ntilde;os de abandono. Se trata de uno de los m&aacute;s antiguos molinos hidr&aacute;ulicos harineros de Castilla-La Mancha. Se desconoce la fecha exacta de su construcci&oacute;n pero ya se tiene constancia de &eacute;l en 1575 cuando aparece en las Relaciones Topogr&aacute;ficas de Felipe II.<br /> El horario de apertura del Molino de Molemocho es variable en funci&oacute;n de la &eacute;poca del a&ntilde;o. Para visitarlo, tanto de forma libre como guiada, es preciso llamar al Centro de Visitantes del Parque. Dentro del molino existe una exposici&oacute;n sobre la vida en Las Tablas y los diferentes aspectos de la relaci&oacute;n hombre-agua.</p></td>
+</tr><tr bgcolor="#E3E3F3">
+<th>duration</th>
+<td>1.5</td>
+</tr><tr bgcolor="">
+<th>length</th>
+<td>0.455</td>
+</tr><tr bgcolor="#E3E3F3">
+<th>ramp</th>
+<td></td>
+</tr><tr bgcolor="">
+<th>difficulty</th>
+<td>Baja </td>
+</tr><tr bgcolor="#E3E3F3">
+<th>description</th>
+<td> Corto recorrido sobre pasarela de madera para acceder al Molino de Molemocho. El interior de este centro de visitantes se puede acceder de forma libre o guiada pero será necesario consulta previa de horarios de apertura en el Centro de Visitantes del Parque.
+La última de las rutas en incorporarse al uso público del parque conduce hasta el Centro de Visitantes del Molino de Molemocho. Desde el aparcamiento una pasarela de madera lleva directamente al molino ofreciendo antes de llegar una buena panorámica de la Madre del Guadiana y la laguna Permanente. La ruta salva el curso del río por un gran puente de piedra de cuatro ojos. El puente forma parte de la excelente obra de rehabilitación del conjunto de Molemocho junto al enorme molino llevada a cabo por el Ministerio de Medioambiente tras más de treinta años de abandono. Se trata de uno de los más antiguos molinos hidráulicos harineros de Castilla-La Mancha. Se desconoce la fecha exacta de su construcción pero ya se tiene constancia de él en 1575 cuando aparece en las Relaciones Topográficas de Felipe II.
+El horario de apertura del Molino de Molemocho es variable en función de la época del año. Para visitarlo, tanto de forma libre como guiada, es preciso llamar al Centro de Visitantes del Parque. Dentro del molino existe una exposición sobre la vida en Las Tablas y los diferentes aspectos de la relación hombre-agua.</td>
+</tr><tr bgcolor="">
+<th>recomendations</th>
+<td></td>
+</tr></table></center>]]></description>
+<Style>
+<LineStyle>
+<color>ff0000ff</color>
+</LineStyle>
+</Style>
+<ExtendedData>
+<SchemaData schemaUrl="#kml_schema_ft_KML">
+<SimpleData name="idRoute">281</SimpleData>
+<SimpleData name="idPark">14</SimpleData>
+<SimpleData name="name">Magenta</SimpleData>
+<SimpleData name="text">&lt;p class="Estilo6"&gt;&lt;span style="font-weight: bold;"&gt;Itinerario&lt;/span&gt;: Desde el aparcamiento al molino de Molemocho&lt;/p&gt;
+&lt;p class="Estilo6"&gt;&lt;span style="font-weight: bold;"&gt;Duraci&amp;oacute;n&lt;/span&gt;: 1-2 horas&amp;nbsp;&lt;/p&gt;
+&lt;p class="Estilo6"&gt;&lt;span style="font-weight: bold;"&gt;Distancia &lt;/span&gt;: 450 m ida&amp;nbsp;&lt;/p&gt;
+&lt;p class="Estilo6"&gt;&lt;span style="font-weight: bold;"&gt;Dificultad&lt;/span&gt;: Baja&amp;nbsp;&lt;/p&gt;
+&lt;p class="Estilo6"&gt;&lt;span style="font-weight: bold;"&gt;Ruta&lt;/span&gt;: Recorrido sobre pasarela de madera para acceder al Molino de Molemocho.&amp;nbsp;&lt;/p&gt;
+&lt;p class="Estilo6"&gt;&lt;span style="font-weight: bold;"&gt;Descripci&amp;oacute;n General&lt;/span&gt;: Corto recorrido sobre pasarela de madera para acceder al Molino de Molemocho. El interior de este centro de visitantes se puede acceder de forma libre o guiada pero ser&amp;aacute; necesario consulta previa de horarios de apertura en el Centro de Visitantes del Parque.&lt;br /&gt; La &amp;uacute;ltima de las rutas en incorporarse al uso p&amp;uacute;blico del parque conduce hasta el Centro de Visitantes del Molino de Molemocho. Desde el aparcamiento una pasarela de madera lleva directamente al molino ofreciendo antes de llegar una buena panor&amp;aacute;mica de la Madre del Guadiana y la laguna Permanente. La ruta salva el curso del r&amp;iacute;o por un gran puente de piedra de cuatro ojos. El puente forma parte de la excelente obra de rehabilitaci&amp;oacute;n del conjunto de Molemocho junto al enorme molino llevada a cabo por el Ministerio de Medioambiente tras m&amp;aacute;s de treinta a&amp;ntilde;os de abandono. Se trata de uno de los m&amp;aacute;s antiguos molinos hidr&amp;aacute;ulicos harineros de Castilla-La Mancha. Se desconoce la fecha exacta de su construcci&amp;oacute;n pero ya se tiene constancia de &amp;eacute;l en 1575 cuando aparece en las Relaciones Topogr&amp;aacute;ficas de Felipe II.&lt;br /&gt; El horario de apertura del Molino de Molemocho es variable en funci&amp;oacute;n de la &amp;eacute;poca del a&amp;ntilde;o. Para visitarlo, tanto de forma libre como guiada, es preciso llamar al Centro de Visitantes del Parque. Dentro del molino existe una exposici&amp;oacute;n sobre la vida en Las Tablas y los diferentes aspectos de la relaci&amp;oacute;n hombre-agua.&lt;/p&gt;</SimpleData>
+<SimpleData name="duration">1.5</SimpleData>
+<SimpleData name="length">0.455</SimpleData>
+<SimpleData name="difficulty">Baja </SimpleData>
+<SimpleData name="description"> Corto recorrido sobre pasarela de madera para acceder al Molino de Molemocho. El interior de este centro de visitantes se puede acceder de forma libre o guiada pero será necesario consulta previa de horarios de apertura en el Centro de Visitantes del Parque.
+La última de las rutas en incorporarse al uso público del parque conduce hasta el Centro de Visitantes del Molino de Molemocho. Desde el aparcamiento una pasarela de madera lleva directamente al molino ofreciendo antes de llegar una buena panorámica de la Madre del Guadiana y la laguna Permanente. La ruta salva el curso del río por un gran puente de piedra de cuatro ojos. El puente forma parte de la excelente obra de rehabilitación del conjunto de Molemocho junto al enorme molino llevada a cabo por el Ministerio de Medioambiente tras más de treinta años de abandono. Se trata de uno de los más antiguos molinos hidráulicos harineros de Castilla-La Mancha. Se desconoce la fecha exacta de su construcción pero ya se tiene constancia de él en 1575 cuando aparece en las Relaciones Topográficas de Felipe II.
+El horario de apertura del Molino de Molemocho es variable en función de la época del año. Para visitarlo, tanto de forma libre como guiada, es preciso llamar al Centro de Visitantes del Parque. Dentro del molino existe una exposición sobre la vida en Las Tablas y los diferentes aspectos de la relación hombre-agua.</SimpleData>
+</SchemaData>
+</ExtendedData>
+<LineString>
+<coordinates>-3.69206393861583,39.1321448380755,0.0 -3.69216437988813,39.1320045709028,0.0 -3.69226658640452,39.131926469178,0.0 -3.69235756770387,39.131883577009,0.0 -3.69255139913748,39.1318283593983,0.0 -3.69272798256929,39.1317840571945,0.0 -3.69289952312506,39.1316974329191,0.0 -3.69307422484338,39.1315792510331,0.0 -3.69323366537225,39.1314386321061,0.0 -3.6933318425382,39.1313037839969,0.0 -3.69341032554509,39.1311663496586,0.0 -3.69347607355261,39.1310280899308,0.0 -3.69350018195671,39.1308909790155,0.0 -3.69349035156125,39.1307144215369,0.0 -3.69342264145794,39.1305346039857,0.0 -3.69331954535419,39.1304036563788,0.0 -3.69319709177855,39.1303043623669,0.0 -3.69304216633925,39.1301971513793,0.0 -3.69290605167927,39.13012046583,0.0 -3.69274686149864,39.1300502249784,0.0 -3.69263664892461,39.1300193413701,0.0 -3.69248608684963,39.130003115011,0.0 -3.69232530701549,39.1300067733914,0.0 -3.69215321414498,39.1300366306877,0.0 -3.69197312877286,39.1300773484028,0.0 -3.69178362945622,39.1301019018748,0.0 -3.69155927372696,39.1301113431126,0.0 -3.69140171752922,39.1300897502363,0.0 -3.69126574576971,39.1300274795493,0.0 -3.69118084429476,39.1299820268191,0.0 -3.6910956699229,39.1299086414793,0.0 -3.69107654341843,39.1298456777319,0.0 -3.69109100159557,39.1297861192712,0.0 -3.6911698748694,39.129688332578,0.0 -3.6912493762909,39.1295364759767,0.0 -3.69128843977818,39.1293902657615,0.0 -3.69130613925916,39.1293072593906,0.0 -3.69136419691053,39.129210497114,0.0 -3.69145827583426,39.1291297409709,0.0 -3.69158568329743,39.1290262594565,0.0</coordinates>
+</LineString>
+</Placemark>
+</Folder>
+</Document></kml>

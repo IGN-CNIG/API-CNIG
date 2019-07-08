@@ -1,0 +1,64 @@
+
+@media (min-width: 300px) and (max-width: 1024px) { 
+
+	
+	header.h-desktop, header.h-mobile .logo{
+		display: none;
+	}
+
+	header.h-mobile{
+		display: flex;
+		height: 54px;
+	}
+
+	header .visor-title{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		margin-right: 1rem;
+	}
+
+	header .visor-title .title{
+		font-size: .8rem;
+		text-align: right;
+		letter-spacing: 2px;
+	}
+
+	header .visor-title .subtitle{
+		font-size: .7rem;
+    	margin-top: 2px;
+    	letter-spacing: 1px;
+	}
+
+	header .logo{
+		width: 100%;
+	    display: flex;
+	    height: auto;
+	    max-width: 200px;
+	}
+
+	.nav-wrapper{
+		transition: all .3s;
+	    background-color: #ECEFF1;
+	    position: absolute;
+	    top: 54px;
+	    left: 0;
+	    z-index: 100;
+	    width: 75vw;
+	    height: 100%;
+	}
+
+	.nav-wrapper.icon-w0{
+		left: -80vw;
+		transition: all .3s;
+	}
+
+
+	.visor-wrapper {
+	    flex: 1;
+	    overflow: auto;
+	    z-index: 10;
+	    position: relative;
+	}
+
+}

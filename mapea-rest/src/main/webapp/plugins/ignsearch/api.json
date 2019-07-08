@@ -1,0 +1,91 @@
+{
+  "url": {
+    "name": "ignsearch",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.IGNSearch",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+        "type": "simple",
+        "name": "servicesToSearch",
+        "position": 0
+      }, {
+        "type": "simple",
+        "name": "reverse",
+        "position": 1
+      }, {
+        "type": "simple",
+        "name": "maxResults",
+        "position": 2
+      },
+      {
+        "type": "simple",
+        "name": "noProcess",
+        "position": 3
+      }, {
+        "type": "simple",
+        "name": "countryCode",
+        "position": 4
+      }, {
+        "type": "simple",
+        "name": "urlFind",
+        "position": 5
+      }, {
+        "type": "simple",
+        "name": "urlReverse",
+        "position": 6
+      }, {
+        "type": "simple",
+        "name": "urlPrefix",
+        "position": 7
+      }, {
+        "type": "simple",
+        "name": "urlAssistant",
+        "position": 8
+      }, {
+        "type": "simple",
+        "name": "urlDispatcher",
+        "position": 9
+      }, {
+        "type": "simple",
+        "name": "urlCandidates",
+        "position": 10
+      }, {
+        "type": "simple",
+        "name": "resultVisibility",
+        "position": 11
+      }, {
+        "type": "simple",
+        "name": "isCollapsed",
+        "position": 12
+      }, {
+        "type": "simple",
+        "name": "position",
+        "position": 13
+      }, {
+        "type": "simple",
+        "name": "nomenclatorSearchType",
+        "position": 14
+      }
+
+    ]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["ignsearch.ol.min.js"],
+      "styles": ["ignsearch.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "IGNSearch",
+    "description": "Searches location on IGN geocoding services",
+    "text": "Searches location on IGN geocoding services",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

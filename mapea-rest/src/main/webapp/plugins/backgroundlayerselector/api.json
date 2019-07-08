@@ -1,0 +1,52 @@
+{
+  "url": {
+    "name": "backgroundlayersselector",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.BackgroundLayersSelector",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "value": "TR",
+      "possibleValues": ["TL", "TR", "BL", "BR"]
+    }, {
+      "type": "object array",
+      "properties": [{
+        "type": "simple",
+        "name": "id"
+      }, {
+        "type": "simple",
+        "name": "title"
+      }, {
+        "type": "layer",
+        "name": "layer"
+      }],
+      "name": "layerOpts",
+      "position": 1
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": [
+        "backgroundlayersselector.ol.min.js"
+      ],
+      "styles": [
+        "backgroundlayersselector.ol.min.css"
+      ]
+    }
+  },
+  "metadata": {
+    "name": "BackgroundLayersSelector",
+    "description": "Allows background map layers selection",
+    "text": "Shows buttons with different background layers options to change view",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

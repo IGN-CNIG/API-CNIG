@@ -1,0 +1,150 @@
+/* CNIG_CONFIG */
+/* INCLUSIÓN TEMA CNIG */
+
+/*** CUSTOM THEME COLORS ***/
+/*** LIGHT BLUE from Navbar: #71A7D3 ***/
+/*** DARK BLUE from Header: #364b5f ***/
+/*** ORANGE from Links & h2: #f1832e ***/
+
+/* buttons */
+
+.m-areas>div.m-area>div.m-panel.collapsed>button.m-panel-btn,
+.ol-zoom>button,
+.m-areas>div.m-area>div.m-panel,
+.ol-zoomslider>button.ol-zoomslider-thumb,
+.ol-overviewmap.ol-collapsed,
+.m-scale-container,
+.m-wmcselector-container,
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls .m-mouse-position,
+.m-areas>div.m-area>div.m-panel.m-geosearch>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-searchstreet>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-searchstreetgeosearch>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-tools>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-edition>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-printer>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-layerswitcher>button.m-panel-btn {
+    background-color: #71A7D3 !important;
+    opacity: 1;
+}
+
+/* white icons */
+
+.m-areas>div.m-area>div.m-panel.m-geosearch.collapsed>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-searchstreet.collapsed>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-searchstreetgeosearch.collapsed>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-attributetable.collapsed>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-tools.collapsed>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-edition.collapsed>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-printer.collapsed>button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-layerswitcher.collapsed>button.m-panel-btn,
+.ol-zoom>button,
+div.m-control button[class*=" g-cartografia-"],
+div.m-control button[class^=g-cartografia-],
+.ol-overviewmap.ol-collapsed>button,
+.ol-overviewmap>button,
+.m-wmcselector-select,
+.m-wmcselector-container:before,
+.m-mouse-position:before,
+.m-mouse-position,
+.m-scale-container>.m-unit:before,
+.m-scale-container {
+    color: #fff !important;
+}
+
+.m-left .m-panel.opened div.m-control button[class^=g-cartografia-] {
+    color: #364b5f !important;
+    background-color: white !important;
+    opacity: 1;
+}
+
+/* secondary color */
+
+.m-printer-container>div.button {
+    background-color: #364b5f !important;
+}
+
+/* aditional colors */
+
+.m-panel .title {
+    color: #f1832e !important;
+}
+
+.ol-zoomslider>button.ol-zoomslider-thumb {
+    border: 1px solid #587c9a;
+}
+
+.m-areas>div.m-area>div.m-panel.opened {
+    background-color: #fff !important;
+}
+
+.m-wmcselector-select,
+.m-areas>div.m-area>div.m-panel.m-scaleline {
+    background-color: transparent !important;
+}
+
+/* corrections */
+
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+    border-radius: 0;
+}
+
+.m-areas>div.m-area>div.m-panel.opened.m-location,
+.m-areas>div.m-area>div.m-panel.opened.m-rotate,
+.m-areas>div.m-area>div.m-panel.opened.m-geosearchbylocation {
+    background-color: #71A7D3 !important;
+}
+
+.layer .m-title {
+    color: #6c6c6c !important;
+}
+
+.m-popup table {
+    color: #6c6c6c !important;
+}
+
+.m-popup .m-content {
+    min-width: 250px;
+}
+
+div.m-control button[class^="g-cartografia-"] {
+    opacity: 1;
+}
+
+.ol-overviewmap:not(.ol-collapsed) button {
+    background-color: #71A7D3 !important;
+}
+
+.m-control.m-getfeatureinfo-container.activated>button#m-getfeatureinfo-button {
+    color: #71A7D3 !important;
+}
+
+.m-control.m-getfeatureinfo-container:not(.activated)>button#m-getfeatureinfo-button {
+    color: #888888 !important;
+}
+
+.m-areas>div.m-area>div.m-panel.m-tools {
+    order: -65;
+}
+
+.m-panel.m-layerswitcher.opened {
+    height: calc(100% - 70px);
+}
+
+.m-areas>div.m-area>div.m-panel.m-layerswitcher>div.m-panel-controls {
+    max-width: 33vw;
+}
+
+@media only screen and (max-width: 768px) {
+    .m-popup .m-content {
+        width: 100%;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-layerswitcher>div.m-panel-controls {
+        max-width: 100vw;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-layerswitcher button.m-panel-btn.g-cartografia-flecha-derecha {
+        color: #fff;
+    }
+
+}
