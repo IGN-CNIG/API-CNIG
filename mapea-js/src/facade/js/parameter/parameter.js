@@ -189,7 +189,7 @@ const getExtractKML = (parameter) => {
     // <KML>*<NAME>*<URL>(*<FILENAME>)?*<EXTRACT>
     if (/^KML\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?$/i.test(parameter)) {
       params = parameter.split(/\*/);
-      extract = params[params.length - 1].trim();
+      extract = params[params.length - 2].trim();
     } else if (/^[^*]+\*[^*]+\*(true|false)$/i.test(parameter)) {
       // <NAME>*<URL>*<EXTRACT>
       params = parameter.split(/\*/);
@@ -214,20 +214,23 @@ const getExtractKML = (parameter) => {
 };
 
 /**
- * Parses the parameter in order to get the options
+ * Parses the parameter in order to show or no the style label
  * @private
  * @function
  */
-const getOptionsKML = (parameter) => {
-  let options;
+const getLabelKML = (parameter) => {
+  let label;
+  let params;
   if (isString(parameter)) {
-    // TODO ver como se pone el parámetro
+    params = parameter.split(/\*/);
+    label = params[params.length - 1].trim();
+    label = label !== 'false';
   } else if (isObject(parameter)) {
-    options = parameter.options;
+    label = normalize(parameter.label);
   } else {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
-  return options;
+  return label;
 };
 
 /**
@@ -429,7 +432,7 @@ const getURLKML = (parameter) => {
       const params = parameter.split(/\*/);
       url = params[2].concat(params[3]);
     } else {
-      const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)(\*(true|false))?$/i);
+      const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)(\*(true|false))(\*(true|false))?$/i);
       if (urlMatches && (urlMatches.length > 2)) {
         url = urlMatches[2];
       }
@@ -569,8 +572,8 @@ export const kml = (userParamer) => {
     // gets the extract
     layerObj.extract = getExtractKML(userParam);
 
-    // gets the options
-    layerObj.options = getOptionsKML(userParam);
+    // get the show option label
+    layerObj.label = getLabelKML(userParam);
 
     return layerObj;
   });

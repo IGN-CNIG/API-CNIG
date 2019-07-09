@@ -3,7 +3,6 @@
  */
 import OLFormatWFS from 'ol/format/WFS';
 import { unByKey } from 'ol/Observable';
-import OLControl from 'ol/control/Control';
 import * as dialog from 'M/dialog';
 import getfeatureinfoPopupTemplate from 'templates/getfeatureinfo_popup';
 import getfeatureinfoLayers from 'templates/getfeatureinfo_layers';
@@ -51,6 +50,7 @@ class GetFeatureInfo extends Control {
      * @api stable
      */
     this.buffer = options.buffer;
+    this.element = document.createElement('div');
   }
 
   /**
@@ -68,34 +68,9 @@ class GetFeatureInfo extends Control {
     const hasControl = olControls.some(control => control instanceof GetFeatureInfo);
     if (hasControl === false) {
       this.facadeMap_ = map;
-      OLControl.call(this, {
-        element,
-        target: null,
-      });
       map.getMapImpl().addControl(this);
+      this.addOnClickEvent_();
     }
-  }
-
-  /**
-   * This function adds the event singleclick to the specified map
-   *
-   * @public
-   * @function
-   * @api stable
-   */
-  activate() {
-    this.addOnClickEvent_();
-  }
-
-  /**
-   * This function remove the event singleclick to the specified map
-   *
-   * @public
-   * @function
-   * @api stable
-   */
-  deactivate() {
-    this.deleteOnClickEvent_();
   }
 
   /**

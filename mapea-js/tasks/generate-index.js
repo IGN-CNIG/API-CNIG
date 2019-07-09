@@ -183,12 +183,12 @@ async function includeCustomNamespaces(customNamespaces, outputFilePath) {
 async function main() {
   const symbols = await getSymbols();
   const imports = await getImports(symbols);
-  // const olSymbols = await getOLSymbols();
+  const olSymbols = await getOLSymbols();
   imports.push('\n/* eslint-disable */\n');
-  // const olImports = await getOLImports(olSymbols);
-  // const totalSymbols = symbols.concat(olSymbols);
-  // const totalImports = imports.concat(olImports);
-  return generateExports(symbols, {}, imports);
+  const olImports = await getOLImports(olSymbols);
+  const totalSymbols = symbols.concat(olSymbols);
+  const totalImports = imports.concat(olImports);
+  return generateExports(totalSymbols, {}, totalImports);
 }
 
 /**

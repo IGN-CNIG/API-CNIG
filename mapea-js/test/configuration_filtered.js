@@ -24,7 +24,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('MAPEA_URL', 'http://mapea4-sigc.juntadeandalucia.es/mapea');
+  M_.config('MAPEA_URL', 'http://mapea-lite.desarrollo.guadaltel.es/api-core');
 
   /**
    * The path to the Mapea proxy to send
@@ -34,7 +34,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('PROXY_URL', location.protocol + '//mapea4-sigc.juntadeandalucia.es/mapea/api/proxy');
+  M_.config('PROXY_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-core/api/proxy');
 
   /**
    * The path to the Mapea proxy to send
@@ -44,7 +44,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('PROXY_POST_URL', location.protocol + '//mapea4-sigc.juntadeandalucia.es/mapea/proxyPost');
+  M_.config('PROXY_POST_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-core/proxyPost');
 
   /**
    * The path to the Mapea templates
@@ -62,7 +62,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('THEME_URL', location.protocol + '//mapea4-sigc.juntadeandalucia.es/mapea/assets/');
+  M_.config('THEME_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-core/assets/');
 
   /**
    * TODO
@@ -87,7 +87,7 @@ function fun(M_) {
      * @public
      * @api stable
      */
-    tiledUrls: 'http: //www.callejerodeandalucia.es/servicios/base/gwc/service/wms?,http://www.callejerodeandalucia.es/servicios/base/gwc/service/wms?,http://www.ideandalucia.es/geowebcache/service/wms?,http://www.juntadeandalucia.es/servicios/mapas/callejero/wms-tiled?,http://www.ideandalucia.es/geowebcache/service/wms?'.split(','),
+    tiledUrls: 'http://www.callejerodeandalucia.es/servicios/base/gwc/service/wms?,http://www.callejerodeandalucia.es/servicios/base/gwc/service/wms?,http://www.ideandalucia.es/geowebcache/service/wms?,http://www.juntadeandalucia.es/servicios/mapas/callejero/wms-tiled?,http://www.ideandalucia.es/geowebcache/service/wms?'.split(','),
 
     /**
      * WMC context names
@@ -237,7 +237,7 @@ function fun(M_) {
    * @type {object}
    */
   M_.config('wmts', {
-    base: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*false',
+    base: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Callejero*false',
   });
 
   /**

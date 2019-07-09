@@ -161,12 +161,10 @@ export default class Map extends MObject {
       return !isNullOrEmpty(layer.type);
     });
 
-    this.removeWMC(knowLayers);
     this.removeKML(knowLayers);
     this.removeWMS(knowLayers);
     this.removeWFS(knowLayers);
     this.removeWMTS(knowLayers);
-    this.removeMBtiles(knowLayers);
 
     // removes unknow layers
     unknowLayers.forEach((layer) => {

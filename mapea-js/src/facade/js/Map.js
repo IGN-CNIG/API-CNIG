@@ -246,11 +246,6 @@ class Map extends Base {
       this.setMaxExtent(params.maxExtent, zoomToMaxExtent);
     }
 
-    // wmc
-    if (!isNullOrEmpty(params.wmc)) {
-      this.addWMC(params.wmc);
-    }
-
     // layers
     if (!isNullOrEmpty(params.layers)) {
       this.addLayers(params.layers);
@@ -1216,39 +1211,6 @@ class Map extends Base {
           control = controlParam;
         } else {
           Exception('El control "'.concat(controlParam).concat('" no es un control válido.'));
-        }
-
-        // checks if it has to be added into a main panel
-        if (M.config.panels.TOOLS.indexOf(control.name) !== -1) {
-          if (isNullOrEmpty(this.panel.TOOLS)) {
-            this.panel.TOOLS = new Panel('tools', {
-              collapsible: true,
-              className: 'm-tools',
-              collapsedButtonClass: 'g-cartografia-herramienta',
-              position: Position.TL,
-              tooltip: 'Panel de herramientas',
-            });
-            //               this.addPanels([this.panel.TOOLS]);
-          }
-          //            if (!this.panel.TOOLS.hasControl(control)) {
-          //               this.panel.TOOLS.addControls(control);
-          //            }
-          panel = this.panel.TOOLS;
-        } else if (M.config.panels.EDITION.indexOf(control.name) !== -1) {
-          if (isNullOrEmpty(this.panel.EDITION)) {
-            this.panel.EDITION = new Panel('edit', {
-              collapsible: true,
-              className: 'm-edition',
-              collapsedButtonClass: 'g-cartografia-editar',
-              position: Position.TL,
-              tooltip: 'Herramientas de edición',
-            });
-            //               this.addPanels([this.panel.EDITION]);
-          }
-          //            if (!this.panel.EDITION.hasControl(control)) {
-          //               this.panel.EDITION.addControls(control);
-          //            }
-          panel = this.panel.EDITION;
         }
 
         if (!isNullOrEmpty(panel) && !panel.hasControl(control)) {

@@ -249,7 +249,6 @@ class Map extends MObject {
       this.removeWMS(knowLayers);
       this.removeWFS(knowLayers);
       this.removeWMTS(knowLayers);
-      this.removeMVT(knowLayers);
       this.removeMBtiles(knowLayers);
     }
 
@@ -1958,7 +1957,6 @@ Map.Z_INDEX[LayerType.Mapbox] = 2000;
 Map.Z_INDEX[LayerType.KML] = 3000;
 Map.Z_INDEX[LayerType.WFS] = 9999;
 Map.Z_INDEX[LayerType.Vector] = 9999;
-Map.Z_INDEX[LayerType.MVT] = 9999;
 Map.Z_INDEX[LayerType.GeoJSON] = 9999;
 
 export default Map;

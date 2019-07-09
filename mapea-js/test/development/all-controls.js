@@ -1,7 +1,17 @@
 import { map } from 'M/mapea';
-
+import WMS from 'M/layer/WMS';
 window.mapjs = map({
   container: 'map',
-  controls: ['overviewmap', 'scale', 'scaleline', 'rotate', 'panzoombar', 'panzoom', 'layerswitcher', 'mouse', 'location'],
+  controls: ['scale', 'scaleline', 'rotate', 'panzoombar', 'panzoom', 'layerswitcher', 'location'],
   getfeatureinfo: 'plain',
 });
+
+
+const layerUA = new WMS({
+  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeUnit',
+  legend: 'Unidad administrativa',
+  tiled: false
+}, {});
+
+mapjs.addLayers(layerUA)

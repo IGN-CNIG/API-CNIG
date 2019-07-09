@@ -144,7 +144,6 @@ class Vector extends LayerBase {
    * @api
    */
   clear() {
-    this.removeFilter();
     this.removeFeatures(this.getFeatures(true));
   }
 
@@ -169,19 +168,6 @@ class Vector extends LayerBase {
    */
   redraw() {
     this.getImpl().redraw();
-    // if (!isNullOrEmpty(this.getStyle())) {
-    //   let style = this.getStyle();
-    //   if (!(style instanceof M.style.Cluster)) {
-    //     style.refresh();
-    //   }
-    //   else {
-    //     let oldStyle = style.getOldStyle();
-    //     if (!isNullOrEmpty(oldStyle)) {
-    //       oldStyle.refresh(this);
-    //     }
-    //
-    //   }
-    // }
   }
 
   /**
@@ -194,17 +180,6 @@ class Vector extends LayerBase {
    */
   getFeaturesExtent(skipFilterParam) {
     return this.getImpl().getFeaturesExtent(true, this.filter_);
-  }
-
-  /**
-   * This function remove filter
-   *
-   * @function
-   * @public
-   * @api
-   */
-  removeFilter() {
-    this.setFilter(null);
   }
 
   /**

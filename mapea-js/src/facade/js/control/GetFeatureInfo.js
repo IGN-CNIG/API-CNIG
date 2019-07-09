@@ -3,11 +3,9 @@
  */
 import 'assets/css/controls/getfeatureinfo';
 import GetFeatureInfoImpl from 'impl/control/GetFeatureInfo';
-import getfeatureinfoTemplate from 'templates/getfeatureinfo';
 import ControlBase from './Control';
 import { isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
-import { compileSync as compileTemplate } from '../util/Template';
 import { getValue } from '../i18n/language';
 
 /**
@@ -43,11 +41,7 @@ class GetFeatureInfo extends ControlBase {
    * @api
    */
   createView(map) {
-    return compileTemplate(getfeatureinfoTemplate, {
-      vars: {
-        title: getValue('getfeatureinfo').title,
-      },
-    });
+    return '';
   }
 
   /**
@@ -61,7 +55,7 @@ class GetFeatureInfo extends ControlBase {
    * @export
    */
   getActivationButton(element) {
-    return element.querySelector('button#m-getfeatureinfo-button');
+    return null;
   }
 
   /**
