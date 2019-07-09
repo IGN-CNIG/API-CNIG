@@ -4,7 +4,7 @@
 import ExtendedMouse from './extendedMouse';
 
 export default class MouseSRSControl extends M.impl.Control {
-  constructor(srs) {
+  constructor(srs, label) {
     super();
 
     /**
@@ -14,6 +14,14 @@ export default class MouseSRSControl extends M.impl.Control {
      * @private
      */
     this.srs_ = srs;
+
+    /**
+     * Label to show
+     *
+     * @type {string}
+     * @private
+     */
+    this.label_ = label;
   }
 
   /**
@@ -31,6 +39,7 @@ export default class MouseSRSControl extends M.impl.Control {
     this.mousePositionControl = new ExtendedMouse({
       coordinateFormat: ol.coordinate.createStringXY(2),
       projection: this.srs_,
+      label: this.label_,
       undefinedHTML: '',
       className: 'm-mouse-srs',
       target: html,

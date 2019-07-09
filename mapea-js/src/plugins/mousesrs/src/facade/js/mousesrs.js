@@ -54,6 +54,12 @@ export default class MouseSRS extends M.Plugin {
      * @type {string}
      */
     this.srs_ = options.srs || 'EPSG:4326';
+
+    /**
+     * @private
+     * @type {string}
+     */
+    this.label_ = options.label || 'WGS84';
   }
 
   /**
@@ -65,7 +71,7 @@ export default class MouseSRS extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new MouseSRSControl(this.srs_));
+    this.controls_.push(new MouseSRSControl(this.srs_, this.label_));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelMouseSRS', {
       collapsible: false,

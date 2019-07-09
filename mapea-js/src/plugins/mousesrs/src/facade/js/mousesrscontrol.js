@@ -15,11 +15,11 @@ export default class MouseSRSControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(srs) {
+  constructor(srs, label) {
     if (M.utils.isUndefined(MouseSRSImplControl)) {
       M.exception('La implementación usada no puede crear controles MouseSRSControl');
     }
-    const impl = new MouseSRSImplControl(srs);
+    const impl = new MouseSRSImplControl(srs, label);
     super(impl, 'MouseSRS');
 
     /**
@@ -29,6 +29,14 @@ export default class MouseSRSControl extends M.Control {
      * @private
      */
     this.srs_ = srs;
+
+    /**
+     * Label to show
+     *
+     * @type {string}
+     * @private
+     */
+    this.label_ = label;
   }
 
   /**

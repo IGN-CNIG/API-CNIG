@@ -98,7 +98,7 @@ class Mouse extends ol.control.MousePosition {
           html = coordinate.toString();
         }
       }
-      html += ` | ${projection.getCode()}`;
+      html += ` | ${this.vendorOptions_.label}`;
     }
     if (!this.renderedHTML_ || html !== this.renderedHTML_) {
       this.element.innerHTML = html;
