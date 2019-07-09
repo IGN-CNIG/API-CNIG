@@ -65,20 +65,10 @@
       String queryString = request.getQueryString();
       if ((queryString != null) && (queryString.trim().length() > 0)) {
          params += "&";
-         params += request.getQueryString();
-
-         
+         params += request.getQueryString();  
       }
-
-      if ((queryString == null) || !(queryString.contains("layers="))) {
-          params += "&layers=WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*false";
-        }
       
    %>
-    <script type="text/javascript">
-        //  CNIG_CONFIG
-        M.config.DEFAULT_PROJ = 'EPSG:3857*m';
-    </script>
     <script type="text/javascript" src="api/js?<%out.print(params);%>"></script>
 </body>
 

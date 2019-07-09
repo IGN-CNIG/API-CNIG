@@ -1,6 +1,6 @@
 FROM docker.guadaltel.es/base/tomcat:7.0.59
-MAINTAINER Manuel Morillo <manueljmorillo@guadaltel.com>
+MAINTAINER Emilio Martinez <emiliomartinez@guadaltel.com>
 
-ADD mapea.war $CATALINA_HOME/webapps/mapea.war
+ADD mapea.war $CATALINA_HOME/webapps/api-core.war
 
 EXPOSE 8080

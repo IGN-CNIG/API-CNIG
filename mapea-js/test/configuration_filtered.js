@@ -229,6 +229,7 @@ function fun(M_) {
    * @type {String}
    */
   M_.config('MAPBOX_TOKEN_VALUE', 'pk.eyJ1Ijoic2lnY29ycG9yYXRpdm9qYSIsImEiOiJjaXczZ3hlc2YwMDBrMm9wYnRqd3gyMWQ0In0.wF12VawgDM31l5RcAGb6AA');
+
   /**
    * WMTS configuration
    *
