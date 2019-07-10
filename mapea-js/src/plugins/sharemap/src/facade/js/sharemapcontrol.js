@@ -221,10 +221,9 @@ export default class ShareMapControl extends M.Control {
   buildURL(html) {
     const input = html.querySelector('input');
     return this.getControls().then((controls) => {
-      const wmcfiles = this.getWMCFiles();
       const { x, y } = this.map_.getBbox();
       const { code, units } = this.map_.getProjection();
-      let shareURL = `${this.baseUrl_}?controls=${controls}&wmcfile=${wmcfiles}&bbox=${x.min},${y.min},${x.max},${y.max}`;
+      let shareURL = `${this.baseUrl_}?controls=${controls}&bbox=${x.min},${y.min},${x.max},${y.max}`;
       shareURL = shareURL.concat(`&projection=${code}*${units}`);
       shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) :
         shareURL.concat('');
@@ -263,30 +262,14 @@ export default class ShareMapControl extends M.Control {
   }
 
   /**
-   * This methods gets the controls url parameters
-   *
-   * @public
-   * @function
-   */
-  getWMCFiles() {
-    return this.map_.getWMC().map(wmc => wmc.url);
-  }
-
-  /**
    * This method gets the layers parameters
    *
    * @public
    * @function
    */
   getLayers() {
-    const wmsFromWMC = this.map_.getWMC()
-      .map(wmc => wmc.layers)
-      .reduce((before, current) => before.concat(current), [])
-      .map(layer => layer.name);
     const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__' && layer.isVisible());
-
-    return layers.filter(layer => !wmsFromWMC.includes(layer.name))
-      .map(layer => this.layerToParam(layer)).filter(param => param != null);
+    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
   }
 
   /**
@@ -322,7 +305,7 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getKML(layer) {
-    return `KML*${layer.name}*${layer.url}*${layer.extract}`;
+    return `KML*${layer.name}*${layer.url}*${layer.extract}*${layer.label}`;
   }
 
   /**

@@ -5,21 +5,23 @@ let layerRasterMTN = new M.layer.WMTS("WMTS*http://www.ign.es/wmts/ign-base?*IGN
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['layerswitcher', 'overviewmap', 'scale*true', 'location', 'mouse'],
+  controls: ['scale*true', 'location'],
   zoom: 3,
   layers: [layerRasterMTN],
-  projection: 'EPSG:4326*d',
-  center: [-3.8972, 38.4492],
 });
 
-
-map.removeControls(["panzoombar"]);
-
 const mp = new ShareMap({
-  baseUrl: 'https://cnigvisores_pub.desarrollo.guadaltel.es/mapea/',
+  baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
   position: 'BR',
 });
 
 map.addPlugin(mp);
 // map.addKML(new M.layer.KML("KML*Arboleda*http://mapea4-sigc.juntadeandalucia.es/files/kml/*arbda_sing_se.kml*true"))
 window.map = map;
+const kml2 = new M.layer.KML({
+  url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
+  name: 'Delegaciones',
+  extract: false,
+  label: false,
+});
+map.addLayers(kml2);
