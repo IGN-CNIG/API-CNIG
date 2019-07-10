@@ -20,9 +20,9 @@ class GetFeatureInfo extends ControlBase {
    * @extends {M.Control}
    * @api
    */
-  constructor(format, options = {}) {
+  constructor(activated, options = {}) {
     // implementation of this control
-    const impl = new GetFeatureInfoImpl(format, options);
+    const impl = new GetFeatureInfoImpl(activated, options);
     // calls the super constructor
     super(impl, GetFeatureInfo.NAME);
 

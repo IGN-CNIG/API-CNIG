@@ -273,12 +273,8 @@ class Map extends Base {
 
     // getfeatureinfo
     if (!isNullOrEmpty(params.getfeatureinfo)) {
-      if (params.getfeatureinfo !== 'plain' && params.getfeatureinfo !== 'html' && params.getfeatureinfo !== 'gml') {
-        Dialog.error(getValue('dialog').getfeatureinfo_type);
-      } else {
-        const getFeatureInfo = new GetFeatureInfo(params.getfeatureinfo);
-        this.addControls(getFeatureInfo);
-      }
+      const getFeatureInfo = new GetFeatureInfo(params.getfeatureinfo);
+      this.addControls(getFeatureInfo);
     }
 
     // default WMTS
@@ -513,69 +509,6 @@ class Map extends Base {
       this.getImpl().removeLayers(layers);
     }
 
-    return this;
-  }
-
-  /**
-   * TODO
-   *
-   * @function
-   * @returns {Array<M.layer.Group>}
-   * @api stable
-   */
-  getLayerGroup() {
-    // checks if the implementation can manage layers
-    if (isUndefined(MapImpl.prototype.getLayerGroups)) {
-      Exception('La implementación usada no posee el método getLayerGroups');
-    }
-    return this.getImpl().getLayerGroups().sort(Map.LAYER_SORT);
-  }
-  /**
-   * TODO
-   *
-   * @function
-   * @param {Array<M.layer.Group>} layerGroups
-   * @returns {M.Map}
-   * @api stable
-   */
-  addLayerGroup(layerGroups) {
-    let lGroups = layerGroups;
-    // checks if the parameter is null or empty
-    if (isNullOrEmpty(lGroups)) {
-      Exception('No ha especificado ningun grupo');
-    }
-    // checks if the implementation can manage groups
-    if (isUndefined(MapImpl.prototype.addLayerGroups)) {
-      Exception('La implementación usada no posee el método addLayerGroups');
-    }
-    // parses parameters to Array
-    if (!isArray(lGroups)) {
-      lGroups = [lGroups];
-    }
-    // adds the groups
-    this.getImpl().addLayerGroups(lGroups);
-    return this;
-  }
-  /**
-   * TODO
-   *
-   * @function
-   * @param {Array<M.layer.Group>} layerGroups
-   * specified by the user
-   * @returns {M.Map}
-   * @api stable
-   */
-  removeLayerGroup(layerGroups) {
-    // checks if the parameter is null or empty
-    if (isNullOrEmpty(layerGroups)) {
-      Exception('No ha especificado ningun grupo a eliminar');
-    }
-    // checks if the implementation can manage groups
-    if (isUndefined(this.getImpl().removeLayerGroups)) {
-      Exception('La implementación usada no posee el método removeGroups');
-    }
-    // removes the layers
-    this.getImpl().removeLayerGroups(layerGroups);
     return this;
   }
 

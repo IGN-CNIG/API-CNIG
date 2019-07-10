@@ -34,7 +34,7 @@
     "vector_filter": "El filtro indicado no es correcto",
     "unauthorized_user": "Ha ocurrido un error al cargar la capa: Usuario no autorizado.",
     "only_one_filter": "FeatureID y CQL son mutuamente excluyentes. Indicar sólo un tipo de filtrado.",
-    "getfeatureinfo_type": "El formato solicitado para la información no está disponible. Inténtelo utilizando gml, plain o html."
+    "any_format": "TXT, ni HTML ni GML están soportados"
   },
   "feature": {
     "incorrect_attributes": "No se han especificado correctamente los atributos."

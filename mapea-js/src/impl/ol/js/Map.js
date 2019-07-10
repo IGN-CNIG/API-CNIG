@@ -260,124 +260,6 @@ class Map extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @public
-   * @function
-   * @returns {Array<M.layer.Group>} layers from the map
-   * @api stable
-   */
-  getLayerGroups() {
-    return this.layerGroups_;
-  }
-
-  /**
-   * Retrieves all layers which are in some LayerGroup
-   *
-   * @public
-   * @function
-   * @returns {Array<M.Layer>} grouped layers from the map
-   * @api stable
-   */
-  getGroupedLayers() {
-    let groupedLayers = [];
-
-    const layerGroups = this.getLayerGroups();
-    if (layerGroups.length === 1) {
-      groupedLayers = layerGroups[0].getAllLayers();
-    } else if (layerGroups.length > 1) {
-      groupedLayers = layerGroups.reduce((a, v) => {
-        return Array.isArray(a) ? a.concat(v.getAllLayers()) :
-          a.getAllLayers().concat(v.getAllLayers());
-      });
-    }
-
-    return groupedLayers;
-  }
-
-  /**
-   * TODO
-   *
-   * @public
-   * @function
-   * @param {Array<M.layer.Group>} layers
-   * @returns {M.impl.Map}
-   */
-  addLayerGroups(groups) {
-    // cehcks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    let existsBaseLayer = (baseLayers.length > 0);
-    groups.forEach((group) => {
-      if (!includes(this.layerGroups_, group)) {
-        this.layerGroups_.push(group);
-        group.getAllLayers().forEach((layer) => {
-          layer.getImpl().addTo(this.facadeMap_);
-          /* if the layer is a base layer then
-          sets its visibility */
-          if (layer.transparent !== true) {
-            layer.setVisible(!existsBaseLayer);
-            existsBaseLayer = true;
-            if (layer.isVisible()) {
-              this.updateResolutionsFromBaseLayer();
-            }
-            layer.getImpl().setZIndex(0);
-          } else {
-            const allLayersGroups = groups.map(gr => gr.getAllLayers());
-            const zIndex = this.layers_.length + allLayersGroups[0].length;
-            layer.getImpl().setZIndex(zIndex);
-            // recalculates resolution if there are not
-            // any base layer
-            if (!existsBaseLayer) {
-              this.updateResolutionsFromBaseLayer();
-            }
-          }
-        }, this);
-        group.addTo(this.facadeMap_);
-      }
-    }, this);
-    return this;
-  }
-
-  /**
-   * TODO
-   *
-   * @function
-   * @param {Array<M.layer.Group>} layers to remove
-   * @returns {M.impl.Map}
-   * @api stable
-   */
-  removeLayerGroups(groups) {
-    if (Array.isArray(groups)) {
-      groups.forEach((group) => {
-        this.layerGroups_.remove(group);
-        group.getAllLayers().forEach((layer) => {
-          layer.getImpl().destroy();
-          if (layer.transparent !== true) {
-            // it was base layer so sets the visibility of the first one
-            const baseLayers = this.facadeMap_.getBaseLayers();
-            if (baseLayers.length > 0) {
-              baseLayers[0].setVisible(true);
-            }
-          }
-        }, this);
-      }, this);
-    } else {
-      this.layerGroups_.remove(groups);
-      groups.getAllLayers().forEach((layer) => {
-        layer.getImpl().destroy();
-        if (layer.transparent !== true) {
-          // it was base layer so sets the visibility of the first one
-          const baseLayers = this.facadeMap_.getBaseLayers();
-          if (baseLayers.length > 0) {
-            baseLayers[0].setVisible(true);
-          }
-        }
-      }, this);
-    }
-    return this;
-  }
-
-  /**
    * This function gets the KML layers added to the map
    *
    * @function
@@ -390,8 +272,7 @@ class Map extends MObject {
     let filters = filtersParam;
 
     // get all kmlLayers
-    const allLayers = this.layers_.concat(this.getGroupedLayers());
-    const kmlLayers = allLayers.filter((layer) => {
+    const kmlLayers = this.layers_.filter((layer) => {
       return (layer.type === LayerType.KML);
     });
 
@@ -500,8 +381,7 @@ class Map extends MObject {
     let filters = filtersParam;
 
     // get all wmsLayers
-    const allLayers = this.layers_.concat(this.getGroupedLayers());
-    const wmsLayers = allLayers.filter((layer) => {
+    const wmsLayers = this.layers_.filter((layer) => {
       return (layer.type === LayerType.WMS);
     });
 
@@ -645,8 +525,7 @@ class Map extends MObject {
     let filters = filtersParam;
 
     // get all geojsonLayers
-    const allLayers = this.layers_.concat(this.getGroupedLayers());
-    const geojsonLayers = allLayers.filter((layer) => {
+    const geojsonLayers = this.layers_.filter((layer) => {
       return (layer.type === LayerType.GeoJSON);
     });
 
@@ -706,8 +585,7 @@ class Map extends MObject {
     let filters = filtersParam;
 
     // get all wfsLayers
-    const allLayers = this.layers_.concat(this.getGroupedLayers());
-    const wfsLayers = allLayers.filter((layer) => {
+    const wfsLayers = this.layers_.filter((layer) => {
       return (layer.type === LayerType.WFS);
     });
 
@@ -839,8 +717,7 @@ class Map extends MObject {
     let filters = filtersParam;
 
     // get all wmtsLayers
-    const allLayers = this.layers_.concat(this.getGroupedLayers());
-    const wmtsLayers = allLayers.filter((layer) => {
+    const wmtsLayers = this.layers_.filter((layer) => {
       return (layer.type === LayerType.WMTS);
     });
 
@@ -1020,8 +897,7 @@ class Map extends MObject {
     let filtersVar = filters;
 
     // get all wmsLayers
-    const allLayers = this.layers_.concat(this.getGroupedLayers());
-    const unknowLayers = allLayers.filter((layer) => {
+    const unknowLayers = this.layers_.filter((layer) => {
       return !LayerType.know(layer.type);
     });
 

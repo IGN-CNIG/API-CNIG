@@ -9,7 +9,7 @@ import getfeatureinfoLayers from 'templates/getfeatureinfo_layers';
 import Popup from 'M/Popup';
 import { get as getRemote } from 'M/util/Remote';
 import { compileSync as compileTemplate } from 'M/util/Template';
-import { isNullOrEmpty, normalize, beautifyAttribute } from 'M/util/Utils';
+import { isNullOrEmpty, beautifyAttribute } from 'M/util/Utils';
 import { getValue } from 'M/i18n/language';
 import Control from './Control';
 
@@ -27,16 +27,16 @@ class GetFeatureInfo extends Control {
    * @extends {M.impl.Control}
    * @api stable
    */
-  constructor(format, options) {
+  constructor(activated, options) {
     super();
 
     /**
-     * Format response
+     * Formats response
      * @public
-     * @type {String}
-     * @api stable
+     * @type {array<string>}
+     * @api
      */
-    this.userFormat = format;
+    this.userFormats = ['text/html', 'text/plain', 'application/vnd.ogc.gml'];
 
     this.featureCount = options.featureCount;
     if (isNullOrEmpty(this.featureCount)) {
@@ -51,6 +51,8 @@ class GetFeatureInfo extends Control {
      */
     this.buffer = options.buffer;
     this.element = document.createElement('div');
+    this.activated = activated;
+    this.currentFormat = 0;
   }
 
   /**
@@ -74,6 +76,16 @@ class GetFeatureInfo extends Control {
   }
 
   /**
+   * This function remove the event singleclick to the specified map
+   *
+   * @private
+   * @function
+   */
+  deleteOnClickEvent_() {
+    unByKey(this.clickEventKey_);
+  }
+
+  /**
    * This function adds the event singleclick to the specified map
    *
    * @private
@@ -81,14 +93,9 @@ class GetFeatureInfo extends Control {
    */
   addOnClickEvent_() {
     const olMap = this.facadeMap_.getMapImpl();
-    if ((normalize(this.userFormat) === 'plain') || (normalize(this.userFormat) === 'text/plain')) {
-      this.userFormat = 'text/plain';
-    } else if ((normalize(this.userFormat) === 'gml') || (normalize(this.userFormat) === 'application/vnd.ogc.gml')) {
-      this.userFormat = 'application/vnd.ogc.gml';
-    } else {
-      this.userFormat = 'text/html';
+    if (this.activated === true) {
+      this.clickEventKey_ = olMap.on('singleclick', e => this.buildUrl_(dialog, e));
     }
-    this.clickEventKey_ = olMap.on('singleclick', this.buildUrl_(dialog).bind(this));
   }
 
   /**
@@ -98,50 +105,36 @@ class GetFeatureInfo extends Control {
    * @function
    * @param {ol.MapBrowserPointerEvent} evt - Browser point event
    */
-  buildUrl_(dialogParam) {
-    return (evt) => {
-      const olMap = this.facadeMap_.getMapImpl();
-      const viewResolution = olMap.getView().getResolution();
-      const srs = this.facadeMap_.getProjection().code;
-      const layerNamesUrls = [];
-      this.facadeMap_.getWMS().forEach((layer) => {
-        const olLayer = layer.getImpl().getOL3Layer();
-        if (layer.isVisible() && layer.isQueryable() && !isNullOrEmpty(olLayer)) {
-          const getFeatureInfoParams = {
-            INFO_FORMAT: this.userFormat,
-            FEATURE_COUNT: this.featureCount,
-          };
-          if (!/buffer/i.test(layer.url)) {
-            getFeatureInfoParams.Buffer = this.buffer;
-          }
-          const source = olLayer.getSource();
-          const coord = evt.coordinate;
-          const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, getFeatureInfoParams);
-          layerNamesUrls.push({
-            /** @type {String} */
-            layer: layer.legend || layer.name,
-            /** @type {String} */
-            url,
-          });
-        }
-      });
-      if (layerNamesUrls.length > 0) {
-        this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
-      } else {
-        dialogParam.info('No existen capas consultables');
-      }
-    };
-  }
+  buildUrl_(dialogParam, evt) {
+    this.evt = evt;
+    const olMap = this.facadeMap_.getMapImpl();
+    const viewResolution = olMap.getView().getResolution();
+    const srs = this.facadeMap_.getProjection().code;
+    const layerNamesUrls = [];
+    const layers = this.facadeMap_.getWMS(); // .concat(this.facadeMap_.getWMTS());
+    layers.forEach((layer) => {
+      const olLayer = layer.getImpl().getOL3Layer();
+      if (layer.isVisible() && layer.isQueryable() && !isNullOrEmpty(olLayer)) {
+        const getFeatureInfoParams = {
+          INFO_FORMAT: this.userFormats[this.currentFormat],
+          FEATURE_COUNT: this.featureCount,
+        };
+        const regexBuffer = /buffer/i;
+        const source = olLayer.getSource();
+        const coord = this.evt.coordinate;
+        const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, getFeatureInfoParams);
 
-  /**
-   * This function remove the event singleclick to the specified map
-   *
-   * @private
-   * @function
-   */
-  deleteOnClickEvent_() {
-    // const olMap = this.facadeMap_.getMapImpl();
-    unByKey(this.clickEventKey_);
+        if (!regexBuffer.test(layer.url)) {
+          getFeatureInfoParams.Buffer = this.buffer;
+        }
+        layerNamesUrls.push({ layer: layer.legend || layer.name, url });
+      }
+    });
+    if (layerNamesUrls.length > 0) {
+      this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
+    } else {
+      dialogParam.info('No existen capas consultables');
+    }
   }
 
   /**
@@ -432,7 +425,7 @@ class GetFeatureInfo extends Control {
     });
 
     const infos = [];
-    const formato = String(this.userFormat);
+    const formato = this.userFormats[this.currentFormat];
     let contFull = 0;
     const loadingInfoTab = {
       icon: 'g-cartografia-info',
@@ -469,10 +462,16 @@ class GetFeatureInfo extends Control {
             const formatedInfo = this.formatInfo(info, formato, layerName);
             infos.push({ formatedInfo, layerName });
           } else if (GetFeatureInfo.unsupportedFormat(info, formato)) {
-            infos.push({
-              formatedInfo: getValue('getfeatureinfo').unsupported_format,
-              layerName,
-            });
+            if (this.currentFormat > 2) {
+              infos.push({
+                formatedInfo: getValue('getfeatureinfo').any_format,
+                layerName,
+              });
+            } else {
+              this.currentFormat += 1;
+              this.buildUrl_(dialog, this.evt);
+              return;
+            }
           }
         }
         contFull += 1;
