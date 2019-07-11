@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
-    <title>MAPEA</title>
+    <title>API Core</title>
     <link type="text/css" rel="stylesheet" href="assets/css/mapea-5.1.0.ol.min.css">
     </link>
     <style type="text/css">

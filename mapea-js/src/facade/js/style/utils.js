@@ -1,72 +1,6 @@
-import chroma from 'chroma-js';
 import StylePoint from '../style/Point';
 import StyleLine from '../style/Line';
 import StylePolygon from '../style/Polygon';
-
-/**
- * This functions returns random simple style
- * @function
- * @private
- * @param {M.Feature} feature
- * @return {M.style.Simple}
- */
-export const generateRandomStyle = (opts) => {
-  const radius = opts.radius;
-  const fillColor = chroma.random().hex();
-  const strokeColor = opts.strokeColor;
-  const strokeWidth = opts.strokeWidth;
-  const geometry = opts.feature
-    .getGeometry()
-    .type;
-  let style;
-  let options;
-  switch (geometry) {
-    case 'Point':
-    case 'MultiPoint':
-      options = {
-        radius,
-        fill: {
-          color: fillColor,
-        },
-        stroke: {
-          color: strokeColor,
-          width: strokeWidth,
-        },
-      };
-      style = new StylePoint(options);
-      break;
-    case 'LineString':
-    case 'MultiLineString':
-      options = {
-        fill: {
-          color: fillColor,
-        },
-        stroke: {
-          color: strokeColor,
-          width: strokeWidth,
-        },
-      };
-      style = new StyleLine(options);
-      break;
-    case 'Polygon':
-    case 'MultiPolygon':
-      options = {
-        fill: {
-          color: fillColor,
-        },
-        stroke: {
-          color: strokeColor,
-          width: strokeWidth,
-        },
-      };
-      style = new StylePolygon(options);
-      break;
-    default:
-      style = null;
-  }
-  return style;
-};
-
 
 /**
  * This function returns the appropiate style to geomtry layer
@@ -77,7 +11,7 @@ export const generateRandomStyle = (opts) => {
  * @param {M.layer.Vector} layer -
  * @return {M.style.Simple}
  */
-export const generateStyleLayer = (options, layer) => {
+const generateStyleLayer = (options, layer) => {
   let style;
   switch (layer.getGeometryType()) {
     case 'Point':
@@ -97,3 +31,14 @@ export const generateStyleLayer = (options, layer) => {
   }
   return style;
 };
+
+/**
+ * @public
+ * @function
+ * @api
+ */
+const Utils = {
+  generateStyleLayer,
+};
+
+export default Utils;

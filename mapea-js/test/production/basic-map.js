@@ -1,9 +1,9 @@
 const map = M.map({
   container: 'map',
-  controls: ['panzoom', 'panzoombar', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
+  controls: ['panzoom', 'panzoombar', 'scale*true', 'scaleline', 'rotate', 'location'],
   zoom: 5,
   center: [-467062.8225, 4683459.6216],
-  getfeatureinfo: "html",
+  getfeatureinfo: true,
 });
 
 const layerinicial = new M.layer.WMS({
@@ -25,3 +25,11 @@ const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resourc
 
 
 map.addLayers([layerinicial, layerUA, kml]);
+
+const mp2 = new M.plugin.Attributions({
+  mode: 1,
+  scale: 10000,
+  defaultAttribution: 'Instituto Geográfico Nacional',
+  defaultURL: 'https://www.ign.es/',
+});
+map.addPlugin(mp2);

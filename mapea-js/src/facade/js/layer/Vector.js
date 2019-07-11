@@ -4,7 +4,7 @@
 import VectorImpl from 'impl/layer/Vector';
 import { geojsonTo4326 } from 'impl/util/Utils';
 import { isUndefined, isArray, isNullOrEmpty, isString } from '../util/Utils';
-import { generateStyleLayer } from '../style/utils';
+import Utils from '../style/utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
 import * as LayerType from './Type';
@@ -235,7 +235,7 @@ class Vector extends LayerBase {
     if (isString(style)) {
       style = Style.deserialize(style);
     } else if (!(style instanceof Style)) {
-      style = generateStyleLayer(style, this);
+      style = Utils.generateStyleLayer(style, this);
     }
     // const isCluster = style instanceof StyleCluster;
     // const isPoint = [POINT, MULTI_POINT].includes(this.getGeometryType());
