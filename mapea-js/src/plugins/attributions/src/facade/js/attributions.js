@@ -4,6 +4,7 @@
 import 'assets/css/attributions';
 import AttributionsImpl from 'impl/attributions';
 import AttributionsControl from './attributionscontrol';
+import { intersect } from './filter';
 
 const MODES = {
   mapAttributions: 1, // Map attributions from vector layer
@@ -322,8 +323,8 @@ export default class Attributions extends M.Plugin {
   getMapAttributions() {
     this.updateBBoxFeature();
     const featuresAttributions = this.layer_.getFeatures();
-    const intersect = new M.filter.spatial.INTERSECT(this.bboxFeature_);
-    const filteredFeatures = intersect.execute(featuresAttributions);
+    const interFilter = intersect(this.bboxFeature_);
+    const filteredFeatures = interFilter.execute(featuresAttributions);
     return filteredFeatures.map((feature) => {
       return {
         attribution: feature.getAttribute(this.attributionParam_),
