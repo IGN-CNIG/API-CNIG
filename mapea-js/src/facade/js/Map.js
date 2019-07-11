@@ -12,7 +12,6 @@ import {
   normalize,
   addParameters,
   concatUrlPaths,
-  enableTouchScroll,
   escapeJSCode,
   isString,
   isObject,
@@ -30,7 +29,6 @@ import Feature from './feature/Feature';
 import * as Dialog from './dialog';
 import Control from './control/Control';
 import GetFeatureInfo from './control/GetFeatureInfo';
-import LayerSwitcher from './control/Layerswitcher';
 import Location from './control/Location';
 import Scale from './control/Scale';
 import Rotate from './control/Rotate';
@@ -292,6 +290,16 @@ class Map extends Base {
       this.setZoom(params.zoom);
     } else if (isNullOrEmpty(params.bbox)) {
       this.setZoom(0);
+    }
+
+    // minZoom
+    if (!isNullOrEmpty(params.minZoom)) {
+      this.setMinZoom(params.minZoom);
+    }
+
+    // maxZoom
+    if (!isNullOrEmpty(params.maxZoom)) {
+      this.setMaxZoom(params.maxZoom);
     }
 
     // label
@@ -1090,33 +1098,6 @@ class Map extends Base {
                 position: Position.TL,
               });
               break;
-            case LayerSwitcher.NAME:
-              control = new LayerSwitcher();
-              /* closure a function in order to keep
-               * the control value in the scope */
-              ((layerswitcherCtrl) => {
-                panel = new Panel(LayerSwitcher.NAME, {
-                  collapsible: true,
-                  className: 'm-layerswitcher',
-                  collapsedButtonClass: 'g-cartografia-capas2',
-                  position: Position.TR,
-                  tooltip: getValue('layerswitcher').title,
-                });
-                // enables touch scroll
-                panel.on(EventType.ADDED_TO_MAP, (html) => {
-                  enableTouchScroll(html.querySelector('.m-panel-controls'));
-                });
-                // renders and registers events
-                panel.on(EventType.SHOW, (evt) => {
-                  layerswitcherCtrl.registerEvents();
-                  layerswitcherCtrl.render();
-                });
-                // unregisters events
-                panel.on(EventType.HIDE, (evt) => {
-                  layerswitcherCtrl.unregisterEvents();
-                });
-              })(control);
-              break;
             case Location.NAME:
               control = new Location();
               panel = new Panel(Location.NAME, {
@@ -1379,6 +1360,46 @@ class Map extends Base {
   }
 
   /**
+   * This function provides the current zoom of this
+   * map instance
+   *
+   * @public
+   * @function
+   * @returns {Number}
+   * @api
+   */
+  getMinZoom() {
+    // checks if the implementation can get the zoom
+    if (isUndefined(MapImpl.prototype.getMinZoom)) {
+      Exception(getValue('exception').getzoom_method);
+    }
+
+    const zoom = this.getImpl().getMinZoom();
+
+    return zoom;
+  }
+
+  /**
+   * This function provides the current zoom of this
+   * map instance
+   *
+   * @public
+   * @function
+   * @returns {Number}
+   * @api
+   */
+  getMaxZoom() {
+    // checks if the implementation can get the zoom
+    if (isUndefined(MapImpl.prototype.getMaxZoom)) {
+      Exception(getValue('exception').getzoom_method);
+    }
+
+    const zoom = this.getImpl().getMaxZoom();
+
+    return zoom;
+  }
+
+  /**
    * This function sets the zoom for this
    * map instance
    *
@@ -1412,7 +1433,56 @@ class Map extends Base {
     return this;
   }
 
-  //
+  /**
+   * This function sets the zoom for this
+   * map instance
+   *
+   * @public
+   * @function
+   * @param {String|Number} zoomParam the zoom
+   * @returns {Map}
+   * @api
+   */
+  setMinZoom(zoomParam) {
+    if (isNullOrEmpty(zoomParam)) {
+      Exception(getValue('exception').no_zoom);
+    }
+
+    if (isUndefined(MapImpl.prototype.setMinZoom)) {
+      Exception(getValue('exception').setzoom_method);
+    }
+
+    const minZoom = parameter.minZoom(zoomParam);
+    this.minZoom = minZoom;
+    this.getImpl().setMinZoom(minZoom);
+    return this;
+  }
+
+  /**
+   * This function sets the zoom for this
+   * map instance
+   *
+   * @public
+   * @function
+   * @param {String|Number} zoomParam the zoom
+   * @returns {Map}
+   * @api
+   */
+  setMaxZoom(zoomParam) {
+    if (isNullOrEmpty(zoomParam)) {
+      Exception(getValue('exception').no_zoom);
+    }
+
+    if (isUndefined(MapImpl.prototype.setMaxZoom)) {
+      Exception(getValue('exception').setzoom_method);
+    }
+
+    const maxZoom = parameter.maxZoom(zoomParam);
+    this.userMaxZoom_ = maxZoom;
+    this.getImpl().setMaxZoom(maxZoom);
+    return this;
+  }
+
   /**
    * This function provides the current center of this
    * map instance

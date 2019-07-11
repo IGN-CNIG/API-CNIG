@@ -533,6 +533,78 @@ export const zoom = (zoomParam) => {
 };
 
 /**
+ * Parses the specified user min zoom parameter into a number
+ *
+ * @param {String|Number} zoomParameter parameters
+ * provided by the user
+ * @returns {Number}
+ * @public
+ * @function
+ * @api
+ */
+export const minZoom = (minZoomParam) => {
+  const minZoomParameter = minZoomParam;
+  let minZoomVar;
+
+  // checks if the param is null or empty
+  if (isNullOrEmpty(minZoomParameter)) {
+    Exception(getValue('exception').no_zoom);
+  }
+
+  // string
+  if (isString(minZoomParameter)) {
+    minZoomVar = Number.parseInt(minZoomParameter, 10);
+  } else if (typeof minZoomParameter === 'number') {
+    // number
+    minZoomVar = minZoomParameter;
+  } else {
+    // unknown
+    Exception(`El parámetro no es de un tipo soportado: ${typeof minZoomParameter}`);
+  }
+
+  if (Number.isNaN(minZoomVar)) {
+    Exception(getValue('exception').invalid_zoom_param);
+  }
+  return minZoomVar;
+};
+
+/**
+ * Parses the specified user min zoom parameter into a number
+ *
+ * @param {String|Number} zoomParameter parameters
+ * provided by the user
+ * @returns {Number}
+ * @public
+ * @function
+ * @api
+ */
+export const maxZoom = (maxZoomParam) => {
+  const maxZoomParameter = maxZoomParam;
+  let maxZoomVar;
+
+  // checks if the param is null or empty
+  if (isNullOrEmpty(maxZoomParameter)) {
+    Exception(getValue('exception').no_zoom);
+  }
+
+  // string
+  if (isString(maxZoomParameter)) {
+    maxZoomVar = Number.parseInt(maxZoomParameter, 10);
+  } else if (typeof maxZoomParameter === 'number') {
+    // number
+    maxZoomVar = maxZoomParameter;
+  } else {
+    // unknown
+    Exception(`El parámetro no es de un tipo soportado: ${typeof maxZoomParameter}`);
+  }
+
+  if (Number.isNaN(maxZoomVar)) {
+    Exception(getValue('exception').invalid_zoom_param);
+  }
+  return maxZoomVar;
+};
+
+/**
  * Parses the specified user layer KML parameters to a object
  *
  * @param {string|Mx.parameters.Layer} userParameters parameters

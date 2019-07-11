@@ -1261,6 +1261,44 @@ class Map extends MObject {
   }
 
   /**
+   * This function sets current zoom for this
+   * map instance
+   *
+   * @public
+   * @function
+   * @param {Number} zoom the new zoom
+   * @returns {Map}
+   * @api stable
+   */
+  setMinZoom(zoom) {
+    if (isNullOrEmpty(zoom)) {
+      Exception(getValue('exception').no_zoom);
+    }
+
+    this.getMapImpl().getView().setMinZoom(zoom);
+    return this;
+  }
+
+  /**
+   * This function sets current zoom for this
+   * map instance
+   *
+   * @public
+   * @function
+   * @param {Number} zoom the new zoom
+   * @returns {Map}
+   * @api stable
+   */
+  setMaxZoom(zoom) {
+    if (isNullOrEmpty(zoom)) {
+      Exception(getValue('exception').no_zoom);
+    }
+
+    this.getMapImpl().getView().setMaxZoom(zoom);
+    return this;
+  }
+
+  /**
    * This function gets the current zoom of this
    * map instance
    *
@@ -1286,6 +1324,33 @@ class Map extends MObject {
     }
     return zoom;
   }
+
+  /**
+   * @public
+   * @function
+   * @api
+   */
+  getMinZoom() {
+    let minZoom;
+    if (this.getMapImpl() && this.getMapImpl().getView()) {
+      minZoom = this.getMapImpl().getView().getMinZoom();
+    }
+    return minZoom;
+  }
+
+  /**
+   * @public
+   * @function
+   * @api
+   */
+  getMaxZoom() {
+    let maxZoom;
+    if (this.getMapImpl() && this.getMapImpl().getView()) {
+      maxZoom = this.getMapImpl().getView().getMaxZoom();
+    }
+    return maxZoom;
+  }
+
 
   /**
    * This function sets current center for this
@@ -1378,13 +1443,16 @@ class Map extends MObject {
     const olMap = this.getMapImpl();
     const oldViewProperties = olMap.getView().getProperties();
     const oldZoom = olMap.getView().getUserZoom();
+    const minZoom = olMap.getView().getMinZoom();
+    const maxZoom = olMap.getView().getMaxZoom();
     const size = olMap.getSize();
 
     const newView = new View({ projection });
     newView.setProperties(oldViewProperties);
     newView.setResolutions(resolutions);
     newView.setUserZoom(oldZoom);
-
+    newView.setMinZoom(minZoom);
+    newView.setMaxZoom(maxZoom);
     // calculates the new resolution
     let newResolution;
     if (!isNullOrEmpty(oldZoom)) {
@@ -1499,6 +1567,8 @@ class Map extends MObject {
     const oldViewProperties = olMap.getView().getProperties();
     const resolution = olMap.getView().getResolution();
     const userZoom = olMap.getView().getUserZoom();
+    const minZoom = olMap.getView().getMinZoom();
+    const maxZoom = olMap.getView().getMaxZoom();
 
     // sets the new view
     const newView = new View({ projection: olProjection });
@@ -1510,6 +1580,8 @@ class Map extends MObject {
       newView.setResolution(resolution);
     }
     newView.setUserZoom(userZoom);
+    newView.setMinZoom(minZoom);
+    newView.setMaxZoom(maxZoom);
     olMap.setView(newView);
 
     // updates min, max resolutions of all WMS layers

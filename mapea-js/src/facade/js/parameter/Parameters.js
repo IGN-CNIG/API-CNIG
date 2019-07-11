@@ -299,6 +299,56 @@ const parseZoom = (parameter) => {
 };
 
 /**
+ * This function parses a zoom parameter in a legible
+ * parameter to Mapea and checks posible errors
+ *
+ * @private
+ * @function
+ * @param {string|Mx.parameters.Map} parameter parameters
+ * especified by the user
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} bbox
+ * established by the user
+ */
+const parseMaxZoom = (parameter) => {
+  let maxZoom;
+
+  if (isString(parameter)) {
+    maxZoom = getParameterValue('maxZoom', parameter);
+  } else if (isObject(parameter)) {
+    maxZoom = parameter.maxZoom;
+  } else {
+    Exception(`El tipo del parámetro maxZoom no es válido: ${typeof parameter}`);
+  }
+
+  return maxZoom;
+};
+
+/**
+ * This function parses a zoom parameter in a legible
+ * parameter to Mapea and checks posible errors
+ *
+ * @private
+ * @function
+ * @param {string|Mx.parameters.Map} parameter parameters
+ * especified by the user
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} bbox
+ * established by the user
+ */
+const parseMinZoom = (parameter) => {
+  let minZoom;
+
+  if (isString(parameter)) {
+    minZoom = getParameterValue('minZoom', parameter);
+  } else if (isObject(parameter)) {
+    minZoom = parameter.minZoom;
+  } else {
+    Exception(`El tipo del parámetro minZoom no es válido: ${typeof parameter}`);
+  }
+
+  return minZoom;
+};
+
+/**
  * This function parses a center parameter in a legible
  * parameter to Mapea and checks posible errors
  *
@@ -516,6 +566,20 @@ class Parameters {
      * @api
      */
     this.zoom = parseZoom(userParameters);
+
+    /**
+     * @public
+     * @type {Number}
+     * @api
+     */
+    this.minZoom = parseMinZoom(userParameters);
+
+    /**
+     * @public
+     * @type {Number}
+     * @api
+     */
+    this.maxZoom = parseMaxZoom(userParameters);
 
     /**
      * @public
