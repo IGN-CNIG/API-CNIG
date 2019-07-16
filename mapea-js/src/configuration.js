@@ -3,6 +3,18 @@
  * Version ${pom.version}
  * Date ${build.timestamp}
  */
+
+const backgroundlayersIds = '${backgroundlayers.ids}'.split(',');
+const backgroundlayersTitles = '${backgroundlayers.titles}'.split(',');
+const backgroundlayersLayers = '${backgroundlayers.layers}'.split(',');
+const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
+  return {
+    id,
+    title: backgroundlayersTitles[index],
+    layers: backgroundlayersLayers[index].split('+'),
+  };
+});
+
 (function(M) {
   /**
    * Pixels width for mobile devices
@@ -139,4 +151,12 @@
   M.config('controls', {
     default: '${controls.default}',
   });
+
+  /**
+   * BackgroundLayers Control
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('backgroundlayers', backgroundlayersOpts);
 })(window.M);
