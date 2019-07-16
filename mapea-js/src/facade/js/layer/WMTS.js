@@ -26,15 +26,22 @@ class WMTS extends LayerBase {
    * @api
    */
   constructor(userParameters, options = {}, vendorOptions) {
+    const parameters = parameter.layer(userParameters, LayerType.WMTS);
+    const optionsVar = {
+      ...options,
+      visibility: parameters.visibility,
+      queryable: parameters.queryable,
+      displayInLayerSwitcher: parameters.displayInLayerSwitcher,
+      format: parameters.format,
+    };
+
     /**
      * Implementation of this layer
      * @public
      * @type {M.layer.WMTS}
      */
-    const impl = new WMTSImpl(options, vendorOptions);
+    const impl = new WMTSImpl(optionsVar, vendorOptions);
 
-    // This Layer is of parameters.
-    const parameters = parameter.layer(userParameters, LayerType.WMTS);
 
     // calls the super constructor
     super(parameters, impl);
@@ -145,6 +152,24 @@ class WMTS extends LayerBase {
     }
 
     return equals;
+  }
+
+  /**
+   * @function
+   * @public
+   * @api
+   */
+  getGetFeatureInfoUrl(coordinate, zoom, formatInfo) {
+    return this.getImpl().getGetFeatureInfoUrl(coordinate, zoom, formatInfo);
+  }
+
+  /**
+   * @function
+   * @public
+   * @api
+   */
+  getTileColTileRow(coordinate, zoom) {
+    return this.getImpl().getTileColTileRow(coordinate, zoom);
   }
 }
 
