@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
-    <title>Visor base</title>
+    <title>Web Semantica</title>
     <link type="text/css" rel="stylesheet" href="assets/css/mapea-5.1.0.ol.min.css">
     <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
     <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
@@ -75,74 +75,28 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'backgroundlayers'],
+            controls: ['scale*true'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
             center: [-467062.8225, 4683459.6216],
-            getfeatureinfo: true,
-        });
-
-        const layerinicial = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
-
-        const layerUA = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeUnit',
-            legend: 'Unidad administrativa',
-            tiled: false
-        }, {});
-
-        const ocupacionSuelo = new M.layer.WMTS({
-            url: 'http://servicios.idee.es/wmts/ocupacion-suelo?',
-            name: 'LC.LandCoverSurfaces',
-            legend: 'Cubiera terrestre',
-            matrixSet: 'GoogleMapsCompatible',
         });
 
 
-        const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false');
-
-        map.addLayers([layerinicial, layerUA, kml, ocupacionSuelo]);
-
-        const mp = new M.plugin.IGNSearch({
-            servicesToSearch: 'gn',
-            maxResults: 10,
-            isCollapsed: false,
-            noProcess: 'municipio,poblacion',
-            countryCode: 'es',
-            reverse: true,
-        });
-        const mp2 = new M.plugin.Attributions({
+        const mp = new M.plugin.Attributions({
             mode: 1,
             scale: 10000,
             defaultAttribution: 'Instituto Geográfico Nacional',
             defaultURL: 'https://www.ign.es/',
-        });
-        const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
-            position: 'BR',
-        });
-        const mp4 = new M.plugin.XYLocator({
-            position: 'TL',
-        });
-        const mp6 = new M.plugin.ZoomExtent();
-        const mp7 = new M.plugin.MouseSRS({
+        })
+
+        const mp2 = new M.plugin.MouseSRS({
             projection: 'EPSG:4326',
+            label: 'WGS84',
         });
-        const mp8 = new M.plugin.TOC();
 
         map.addPlugin(mp);
         map.addPlugin(mp2);
-        map.addPlugin(mp3);
-        map.addPlugin(mp4);
-        map.addPlugin(mp6);
-        map.addPlugin(mp7);
-        map.addPlugin(mp8);
     </script>
 </body>
 
