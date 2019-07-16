@@ -838,41 +838,6 @@ export const getTextFromHtml = (html) => {
 };
 
 /**
- * This function gets an array scale color in hexadecimal format
- * @function
- * @public
- * @return {Array<string>} array scale color in hexadecimal format
- * @api
- */
-export const generateColorScale = (color1, color2, numberClasses) => {
-  return chroma.scale([color1, color2])
-    .colors(numberClasses);
-};
-
-/**
- * This function gets the inverse of a color. The inverse of a color
- * is the diff between the hexadecimal value of white (0xFFFFFF)
- * and the hexadecimal value of the color.
- * @function
- * @public
- * @param {string} color
- * @return {string} inverse color in hexadecimal format
- * @api
- */
-export const inverseColor = (color) => {
-  let inverseColorParam;
-  if (isString(color)) {
-    let hexColor = chroma(color)
-      .hex();
-    hexColor = hexColor.replace(/^#/, '0x');
-    inverseColorParam = chroma(0xFFFFFF - hexColor)
-      .hex();
-  }
-
-  return inverseColorParam;
-};
-
-/**
  * This function returns a color as string with opacity
  * @function
  * @public
@@ -885,23 +850,6 @@ export const getRgba = (color, opacity) => {
   return chroma(color)
     .alpha(opacity)
     .css();
-};
-
-/**
- * This function returns if two sets are equals
- * @function
- * @public
- * @param {array} array
- * @param {array} array2
- * @return {bool}
- * @api
- */
-export const setEquals = (array, array2) => {
-  let equals = false;
-  if (array.length === array2.length) {
-    equals = array.every(e => array2.some(e2 => e2.equals(e)));
-  }
-  return equals;
 };
 
 /**
@@ -930,39 +878,6 @@ export const extendsObj = (destParam = {}, src = {}) => {
     });
   }
   return dest;
-};
-
-/**
- * This function returns an array whith breaks between head and tail of an array
- * @function
- * @public
- * @param {array} array
- * @param {number} breaks
- * @return {array}
- * @api
- */
-export const generateIntervals = (array, breaks) => {
-  let intervals = [...array];
-  if (array.length < breaks) {
-    const step = (array[0] + array[1]) / (breaks - 1);
-    for (let i = 1; i < breaks - 1; i += 1) {
-      intervals[i] = step * i;
-    }
-    intervals = [...intervals, array[1]];
-  }
-  return intervals;
-};
-
-/**
- * This functions returns the order style
- * @function
- * @public
- * @param {M.Style}
- * @return {number}
- * @api
- */
-export const styleComparator = (style, style2) => {
-  return style.ORDER - style2.ORDER;
 };
 
 /**
@@ -1042,27 +957,6 @@ export const defineFunctionFromString = (objParam) => {
   return obj;
 };
 
-/**
- * TODO
- */
-export const classToggle = (htmlElement, className) => {
-  const classList = htmlElement.classList;
-  if (classList.contains(className)) {
-    classList.remove(className);
-  } else {
-    classList.add(className);
-  }
-};
-
-/**
- * TODO
- */
-export const replaceNode = (newNode, oldNode) => {
-  const parent = oldNode.parentNode;
-  if (parent) {
-    parent.replaceChild(newNode, oldNode);
-  }
-};
 
 /**
  * This function returns true if some object value is function or "{{*}}"
