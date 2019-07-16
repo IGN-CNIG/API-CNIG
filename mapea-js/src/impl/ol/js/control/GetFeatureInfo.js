@@ -108,12 +108,30 @@ class GetFeatureInfo extends Control {
   buildUrl_(dialogParam, evt) {
     this.evt = evt;
     const olMap = this.facadeMap_.getMapImpl();
+    const wmsInfoURLS = this.buildWMSInfoURL(this.facadeMap_.getWMS());
+    const wmtsInfoURLS = this.buildWMTSInfoURL(this.facadeMap_.getWMTS());
+    const layerNamesUrls = [...wmtsInfoURLS, ...wmsInfoURLS];
+
+    if (layerNamesUrls.length > 0) {
+      this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
+    } else {
+      dialogParam.info('No existen capas consultables');
+    }
+  }
+
+  /**
+   * @function
+   * @public
+   * @api
+   */
+  buildWMSInfoURL(wmsLayers) {
+    const olMap = this.facadeMap_.getMapImpl();
     const viewResolution = olMap.getView().getResolution();
     const srs = this.facadeMap_.getProjection().code;
-    const layerNamesUrls = [];
-    const layers = this.facadeMap_.getWMS(); // .concat(this.facadeMap_.getWMTS());
-    layers.forEach((layer) => {
+
+    return wmsLayers.map((layer) => {
       const olLayer = layer.getImpl().getOL3Layer();
+      let param = {};
       if (layer.isVisible() && layer.isQueryable() && !isNullOrEmpty(olLayer)) {
         const getFeatureInfoParams = {
           INFO_FORMAT: this.userFormats[this.currentFormat],
@@ -127,14 +145,28 @@ class GetFeatureInfo extends Control {
         if (!regexBuffer.test(layer.url)) {
           getFeatureInfoParams.Buffer = this.buffer;
         }
-        layerNamesUrls.push({ layer: layer.legend || layer.name, url });
+        param = { layer: layer.legend || layer.name, url };
       }
+      return param;
     });
-    if (layerNamesUrls.length > 0) {
-      this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
-    } else {
-      dialogParam.info('No existen capas consultables');
-    }
+  }
+
+  /**
+   * @function
+   * @public
+   * @api
+   */
+  buildWMTSInfoURL(wmtsLayers) {
+    return wmtsLayers.map((layer) => {
+      let param = {};
+      if (layer.isVisible() && layer.isQueryable()) {
+        const infoFormat = this.userFormats[this.currentFormat];
+        const coord = this.evt.coordinate;
+        const url = layer.getGetFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat);
+        param = { layer: layer.legend || layer.name, url };
+      }
+      return param;
+    });
   }
 
   /**
