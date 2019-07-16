@@ -59,5 +59,4 @@ const geographicNameType = ['Estado',
   'Entrante costero y estrecho marítimo',
   'Relieve submarino',
 ];
-
 export default geographicNameType;

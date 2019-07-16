@@ -11,7 +11,7 @@
       "name": "servicesToSearch",
       "position": 0
     }, {
-      "type": "simple",
+      "type": "number",
       "name": "maxResults",
       "position": 1
     }, {
@@ -19,11 +19,11 @@
       "name": "noProcess",
       "position": 2
     }, {
-      "type": "simple",
+      "type": "boolean",
       "name": "resultVisibility",
       "position": 3
     }, {
-      "type": "simple",
+      "type": "boolean",
       "name": "isCollapsed",
       "position": 4
     }, {

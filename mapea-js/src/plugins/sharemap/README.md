@@ -3,8 +3,6 @@
 Plugin que permite copiar la url del mapa actual visualizado.
 Exporta la información de todas las capas cargadas en el mapa.
 
-NOTA. La versión actual NO exporta los plugins externos incorporados sobre el mapa.
-
 # Dependencias
 
 - sharemap.ol.min.js
@@ -43,14 +41,15 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BL':bottom left 
   - 'BR':bottom right
 
-# Eventos
-
-```javascript
-mp.on('xylocator:locationCentered', (data) => {
-   window.alert(`zoom: ${data.zoom}
-   center: ${data.center[0].toFixed(2)}, ${data.center[1].toFixed(2)}`);
-});
+# Parámetros API REST
 ```
+URL_API?sharemap=baseUrl*position*title*tooltip*btn*copyBtn
+````
+Ejemplo:
+```
+http://cnig-api-core.desarrollo.guadaltel.es/api-core/?sharemap=http://cnig-api-core.desarrollo.guadaltel.es/api-core/*BL*Compartir URL*Copiado*Aceptar*Copiar
+```
+# Eventos
 
 # Otros métodos
 
@@ -63,8 +62,8 @@ mp.on('xylocator:locationCentered', (data) => {
    });
   
    const mp = new M.plugin.ShareMap({
-        postition: 'TL',
-      });
+      postition: 'TL',
+   });
 
    map.addPlugin(mp);
 ```

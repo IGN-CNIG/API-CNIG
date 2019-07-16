@@ -58,4 +58,26 @@ export default class ZoomExtent extends M.Plugin {
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
+
+  /**
+   * Name of the plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get name() {
+    return 'zoomextent';
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position}`;
+  }
 }

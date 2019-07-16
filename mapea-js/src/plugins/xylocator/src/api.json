@@ -1,6 +1,6 @@
 {
   "url": {
-    "name": "xyLocator",
+    "name": "xylocator",
     "separator": "*"
   },
   "constructor": "M.plugin.XYLocator",
@@ -10,10 +10,6 @@
       "type": "simple",
       "name": "position",
       "position": 0
-    }, {
-      "type": "object array",
-      "name": "projections",
-      "position": 1
     }]
   }],
   "files": {

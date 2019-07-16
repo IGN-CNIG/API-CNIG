@@ -1,19 +1,29 @@
 {
   "url": {
-    "name": "MouseSRS",
+    "name": "mousesrs",
     "separator": "*"
   },
   "constructor": "M.plugin.MouseSRS",
   "parameters": [{
-    "type": "simple",
-    "name": "position",
-    "possibleValues": ["TL", "TR", "BR", "BL"]
-  }, {
-    "type": "simple",
-    "name": "tooltip"
-  }, {
-    "type": "simple",
-    "name": "srs"
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BR", "BL"]
+    }, {
+      "type": "simple",
+      "name": "tooltip",
+      "position": 1
+    }, {
+      "type": "simple",
+      "name": "srs",
+      "position": 2
+    }, {
+      "type": "simple",
+      "name": "label",
+      "position": 3
+    }]
   }],
   "files": {
     "ol": {
@@ -30,9 +40,9 @@
     "description": "Shows mouse coordinates",
     "text": "On hover over map shows cursor coordinates on given SRS",
     "version": "1.0.0",
-    "date": "",
-    "author": "",
-    "org": "",
+    "date": "2019-07-01",
+    "author": "Guadaltel",
+    "org": "CNIG",
     "tags": "mapea,plugin",
     "icon": "./facade/assets/icons/icons.svg"
   }

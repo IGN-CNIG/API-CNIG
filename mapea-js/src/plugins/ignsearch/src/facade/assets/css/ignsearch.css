@@ -91,9 +91,23 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
     border: none;
 }
 
-#m-ignsearch-clear-button {
+#m-ignsearch-clear-button,
+#m-ignsearch-locate-button {
     background-color: white;
+    border: none;
     margin-right: 1em;
+}
+
+#m-ignsearch-locate-button {
+    font-family: g-plugin-ignsearch;
+}
+
+#m-ignsearch-clear-button {
+    padding-bottom: 4px;
+}
+
+#m-ignsearch-locate-button:focus {
+    outline: none;
 }
 
 .m-ignsearch .search-panel .m-button-limpiar {

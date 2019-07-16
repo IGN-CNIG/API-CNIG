@@ -207,6 +207,27 @@ export default class ShareMap extends M.Plugin {
   }
 
   /**
+   * Name of the plugin
+   *
+   * @getter
+   * @function
+   */
+  get name() {
+    return 'sharemap';
+  }
+
+  /**
+   * This function returns the base url option
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get baseUrl() {
+    return this.baseUrl_;
+  }
+
+  /**
    * This function returns the facade map.
    *
    * @public
@@ -226,5 +247,60 @@ export default class ShareMap extends M.Plugin {
    */
   get position() {
     return this.position_;
+  }
+
+  /**
+   * This function returns the position
+   *
+   * @public
+   * @return {string}
+   * @api
+   */
+  get tooltip() {
+    return this.tooltip_;
+  }
+
+  /**
+   * This function returns the title
+   *
+   * @public
+   * @return {string}
+   * @api
+   */
+  get title() {
+    return this.title_;
+  }
+
+  /**
+   * This function returns the accept button
+   *
+   * @public
+   * @return {string}
+   * @api
+   */
+  get btn() {
+    return this.btn_;
+  }
+
+  /**
+   * This function returns the copy button
+   *
+   * @public
+   * @return {string}
+   * @api
+   */
+  get copyBtn() {
+    return this.copyBtn_;
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.baseUrl}*${this.position}*${this.title}*${this.tooltip}*${this.btn}*${this.copyBtn}`;
   }
 }

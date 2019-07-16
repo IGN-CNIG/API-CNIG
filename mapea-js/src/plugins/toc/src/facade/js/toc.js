@@ -60,4 +60,36 @@ export default class TOC extends M.Plugin {
       this.control.render();
     });
   }
+
+  /**
+   * This function returns the position
+   *
+   * @public
+   * @return {string}
+   * @api
+   */
+  get position() {
+    return this.position_;
+  }
+
+  /**
+   * Name of the plugin
+   *
+   * @getter
+   * @function
+   */
+  get name() {
+    return 'toc';
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position}`;
+  }
 }

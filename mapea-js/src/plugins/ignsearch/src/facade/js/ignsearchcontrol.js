@@ -8,7 +8,6 @@ import registerHelpers from './helpers';
 import geographicNameType from './constants';
 
 let typingTimer;
-
 /**
  * @classdesc
  * This class creates an input for searching locations on a map.
@@ -33,6 +32,7 @@ export default class IGNSearchControl extends M.Control {
     urlAssistant,
     urlDispatcher,
     resultVisibility = true,
+    reverse,
     nomenclatorSearchType = geographicNameType,
   ) {
     if (M.utils.isUndefined(IGNSearchImplControl)) {
@@ -40,9 +40,7 @@ export default class IGNSearchControl extends M.Control {
     }
     const impl = new IGNSearchImplControl();
     super(impl, 'IGNSearch');
-
     // Class properties
-
     /**
      * This variable indicates which services should be searched
      * (geocoder, nomenclator or both)
@@ -50,7 +48,6 @@ export default class IGNSearchControl extends M.Control {
      * @type {string} - 'g' | 'n' | 'gn'
      */
     this.servicesToSearch = servicesToSearch;
-
     /**
      * This variable sets the maximun results returned by a service
      * (if both services are searched the maximum results will be twice this number)
@@ -58,80 +55,80 @@ export default class IGNSearchControl extends M.Control {
      * @type {number}
      */
     this.maxResults = maxResults;
-
     /**
      * This variables indicates which entities shouldn't be searched
      * @private
      * @type {string} - 'municipio' | 'poblacion' | 'toponimo' | 'municipio,poblacion' | etc
      */
     this.noProcess = noProcess;
-
     /**
      * This variable indicates the country code.
      * @private
      * @type {string} - 'es'
      */
     this.countryCode = countryCode;
-
     /**
      * This variable indicates Geocoder Candidates service url
      * @private
      * @type {string}
      */
     this.urlCandidates = urlCandidates;
-
     /**
      * This variable indicates Geocoder Find service url
      * @private
      * @type {string}
      */
     this.urlFind = urlFind;
-
     /**
      * This variable indicates Geocoder Reverse service url
      * @private
      * @type {string}
      */
     this.urlReverse = urlReverse;
-
     /**
      * This variable indicates Nomenclator url prefix
      * @private
      * @type {string}
      */
     this.urlPrefix = urlPrefix;
-
     /**
      * This variable indicates Nomenclator SearchAssistant service url
      * @private
      * @type {string}
      */
     this.urlAssistant = urlAssistant;
-
     /**
      * This variable indicates Nomenclator Dispatcher service url
      * @private
      * @type {string}
      */
     this.urlDispatcher = urlDispatcher;
-
     /**
      * This variable indicates whether result geometry should be drawn on map.
      * @private
      * @type {boolean}
      */
     this.resultVisibility_ = resultVisibility;
-
     /**
      * This variable indicates which entity types should be searched on Nomenclator service.
      * @private
      * @type {Array<string>}
      */
     this.nomenclatorSearchType = nomenclatorSearchType;
-
+    /**
+     * This variable indicates whether reverse geocoder button should be available.
+     * @private
+     * @type {Boolean}
+     */
+    this.reverse = reverse;
+    /**
+     * This variable indicates whether reverse geocoder button is activated.
+     * @private
+     * @type {Boolean}
+     */
+    this.reverseActivated = false;
     registerHelpers();
   }
-
   /**
    * This function creates the view
    *
@@ -142,7 +139,6 @@ export default class IGNSearchControl extends M.Control {
    */
   createView(map) {
     this.map = map;
-
     return new Promise((success) => {
       const html = M.template.compileSync(template);
       this.html = html;
@@ -153,14 +149,60 @@ export default class IGNSearchControl extends M.Control {
       html.querySelector('#m-ignsearch-search-input').addEventListener('keydown', () => {
         clearTimeout(typingTimer);
       });
+      html.querySelector('#m-ignsearch-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
       document.querySelector('.ign-search-panel>.m-panel-btn').addEventListener('click', this.clearResults.bind(this));
-
+      this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReverseTooltip(e));
       this.changePlaceholder();
-
+      if (!this.reverse) {
+        html.querySelector('#m-ignsearch-locate-button').style.display = 'none';
+      }
       success(html);
     });
   }
-
+  /**
+   * This function toggles reverse geocoder button activation.
+   *
+   * @public
+   * @function
+   * @api
+   *
+   */
+  activateDeactivateReverse() {
+    if (!this.reverseActivated) {
+      this.reverseActivated = true;
+      document.querySelector('#m-ignsearch-locate-button span').style.color = '#71a7d3';
+    } else {
+      this.reverseActivated = false;
+      document.querySelector('#m-ignsearch-locate-button span').style.color = '#7A7A73';
+    }
+  }
+  /**
+   * This function shows information tooltip on clicked point.
+   * @param {Event} e - Event
+   */
+  showReverseTooltip(e) {
+    if (this.reverseActivated) {
+      // Reproject coordinates to ETRS89 on decimal grades (+ North latitude and East longitude)
+      const origin = this.map.getProjection().code;
+      const destiny = 'EPSG:4258';
+      const etrs89pointCoordinates = this.getImpl()
+        .reproject([e.coord[0], e.coord[1]], origin, destiny);
+      // Params:
+      // lon, lat
+      // type (only if refcatastral) = 'refcatastral'
+      const params = `lon=${etrs89pointCoordinates[0]}&lat=${etrs89pointCoordinates[1]}`;
+      const urlToGet = `${this.urlReverse}?${params}`;
+      M.remote.get(urlToGet).then((res) => {
+        if (res.text !== null) {
+          const returnData = JSON.parse(res.text);
+          const fullAddress = this.createFullAddress(returnData);
+          const mapCoordinates = e.coord;
+          const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
+          this.showPopUp(fullAddress, mapCoordinates, dataCoordinates);
+        }
+      });
+    }
+  }
   /**
    * This function sets a timeout between keypress and search.
    * @public
@@ -172,7 +214,6 @@ export default class IGNSearchControl extends M.Control {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(() => this.searchInputValue(e), 500);
   }
-
   /**
    * This function gets activation button
    *
@@ -184,7 +225,6 @@ export default class IGNSearchControl extends M.Control {
   getActivationButton(html) {
     return html.querySelector('.m-ignsearch button');
   }
-
   /**
    * This function compares controls
    *
@@ -196,8 +236,6 @@ export default class IGNSearchControl extends M.Control {
   equals(control) {
     return control instanceof IGNSearchControl;
   }
-
-
   /**
    * This function
    * 1.- Takes user's input
@@ -231,13 +269,11 @@ export default class IGNSearchControl extends M.Control {
           this.getCandidatesData(value, this.allCandidates).then(() => {
             // Clears previous search
             this.resultsBox.innerHTML = '';
-
             const compiledResult = M.template.compileSync(results, {
               vars: {
                 places: this.allCandidates,
               },
             });
-
             compiledResult.querySelectorAll('li').forEach((listElement) => {
               listElement.addEventListener('click', () => {
                 this.goToLocation(listElement);
@@ -247,12 +283,16 @@ export default class IGNSearchControl extends M.Control {
             this.resultsBox.classList.remove('g-cartografia-spinner');
             this.resultsBox.style.fontSize = '1em';
             this.resultsBox.appendChild(compiledResult);
+            // Service doesn't find results
+            if (this.allCandidates.length === 0) {
+              const infoMsg = document.createTextNode('No se encuentran resultados para esta petición.');
+              this.resultsBox.appendChild(infoMsg);
+            }
           });
         });
       }
     }
   }
-
   /**
    * This function removes last search layer and adds new layer with current result (from geocoder)
    * features to map, zooms in result, edits popup information and shows a message saying
@@ -281,28 +321,39 @@ export default class IGNSearchControl extends M.Control {
     if (!this.resultVisibility_) {
       this.clickedElementLayer.setStyle(this.simple);
     }
-
     this.map.addLayers(this.clickedElementLayer);
-
     this.zoomInLocation('g', featureJSON.geometry.type);
-
     // show popup for streets
     if (featureJSON.properties.type === 'callejero' || featureJSON.properties.type === 'portal') {
-      const via = (featureJSON.properties.tip_via === null ||
-        featureJSON.properties.tip_via === undefined) ? '' : featureJSON.properties.tip_via;
-      const address = (featureJSON.properties.address === null ||
-        featureJSON.properties.address === undefined) ? '' : featureJSON.properties.address;
-      const portal = (featureJSON.properties.portalNumber === null ||
-        featureJSON.properties.portalNumber === undefined ||
-        featureJSON.properties.portalNumber === 0) ? '' : featureJSON.properties.portalNumber;
-      const fullAddress = `${via} ${address} ${portal}`;
+      // this line substitutes temporarily the following piece of code
+      const fullAddress = this.createFullAddress(featureJSON.properties);
+      // const via = (featureJSON.properties.tip_via === null ||
+      //   featureJSON.properties.tip_via === undefined) ? '' : featureJSON.properties.tip_via;
+      // const address = (featureJSON.properties.address === null ||
+      //   featureJSON.properties.address === undefined) ? '' : featureJSON.properties.address;
+      // const portal = (featureJSON.properties.portalNumber === null ||
+      //   featureJSON.properties.portalNumber === undefined ||
+      //   featureJSON.properties.portalNumber === 0) ? '' : featureJSON.properties.portalNumber;
+      // const fullAddress = `${via} ${address} ${portal}`;
       const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
       const perfectResult = featureJSON.properties.state;
-
-      this.showPopUp(fullAddress, coordinates, perfectResult);
+      this.showSearchPopUp(fullAddress, coordinates, perfectResult);
     }
   }
-
+  /**
+   * This function takes data from an entity and returns the complete address
+   * @param {string} jsonResult - json string with entity data
+   */
+  createFullAddress(jsonResult) {
+    const via = (jsonResult.tip_via === null ||
+      jsonResult.tip_via === undefined) ? '' : jsonResult.tip_via;
+    const address = (jsonResult.address === null ||
+      jsonResult.address === undefined) ? '' : jsonResult.address;
+    const portal = (jsonResult.portalNumber === null ||
+      jsonResult.portalNumber === undefined ||
+      jsonResult.portalNumber === 0) ? '' : jsonResult.portalNumber;
+    return `${via} ${address} ${portal}`;
+  }
   /**
    * This function removes last search layer and adds new layer
    * with current result (from nomenclator) features to map and zooms in result.
@@ -345,18 +396,14 @@ export default class IGNSearchControl extends M.Control {
       this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
       this.clickedElementLayer.displayInLayerSwitcher = false;
       this.clickedElementLayer.setStyle(this.point);
-
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);
       }
-
       this.map.addLayers(this.clickedElementLayer);
-
       this.zoomInLocation('n', 'Point');
     });
   }
-
   /**
    * This function gets user input, searches for coincidences and adds each one to the given array.
    * @public
@@ -384,7 +431,6 @@ export default class IGNSearchControl extends M.Control {
       }
     });
   }
-
   /**
    * This function adds search coincidences on Nomenclator to array
    * @public
@@ -422,7 +468,6 @@ export default class IGNSearchControl extends M.Control {
       }
     });
   }
-
   /**
    * This function gets address of selected item and returns geojson data (with coordinates)
    * Only for Geocoder service
@@ -462,7 +507,6 @@ export default class IGNSearchControl extends M.Control {
       M.proxy(true);
     });
   }
-
   /**
    * This function zooms in clicked location and draws geometry
    * @public
@@ -483,7 +527,6 @@ export default class IGNSearchControl extends M.Control {
       this.drawNomenclatorResult(selectedObject.id);
     }
   }
-
   /**
    * This function zooms in MaxExtent of clicked element
    * @public
@@ -503,12 +546,10 @@ export default class IGNSearchControl extends M.Control {
       this.searchInput.value = '';
       this.searchInput.value = this.currentElement.innerHTML;
       this.resultsList.appendChild(this.currentElement);
-
       // Fires ignsearch:EntityFound event after zoom-in result
       this.fire('ignsearch:entityFound', [extent]);
     });
   }
-
   /**
    * This function returns clicked location object
    * @public
@@ -520,7 +561,6 @@ export default class IGNSearchControl extends M.Control {
   findClickedItem(listElement, allCandidates) {
     return allCandidates.filter(element => element.id === listElement.getAttribute('id'))[0];
   }
-
   /**
    * This function fixes path to get to this feature's coordinates
    * @public
@@ -539,7 +579,6 @@ export default class IGNSearchControl extends M.Control {
     }
     return coordinates;
   }
-
   /* Given a set of coordinates (lat, long),
     searches for the corresponding place
   */
@@ -548,7 +587,6 @@ export default class IGNSearchControl extends M.Control {
     // setOfCoordinates.replace(latLongSeparationRegExp, ' ');
     // const latFromSet = setOfCoordinates.split(' ')[0];
     // const longFromSet = setOfCoordinates.split(' ')[1];
-
     return new Promise((resolve) => {
       // TODO
       // if lat,long separation character/s are not a space, it turns into a space
@@ -556,8 +594,6 @@ export default class IGNSearchControl extends M.Control {
       // setOfCoordinates.replace(latLongSeparationRegExp, ' ');
       // const latFromSet = setOfCoordinates.split(' ')[0];
       // const longFromSet = setOfCoordinates.split(' ')[1];
-
-
       // // geocoder service
       // const urlToGet = `${this.urlReverse}?lat=${latFromSet}&lon=${longFromSet}`;
       // M.remote.get(urlToGet).then((res) => {
@@ -568,7 +604,6 @@ export default class IGNSearchControl extends M.Control {
       resolve();
     });
   }
-
   /**
    * This function clears drawn geometry from map.
    * @public
@@ -579,7 +614,6 @@ export default class IGNSearchControl extends M.Control {
     this.searchInput.value = '';
     this.resultsBox.innerHTML = '';
   }
-
   /**
    * This function clears input content, results box, popup and shown geometry.
    * @public
@@ -596,7 +630,6 @@ export default class IGNSearchControl extends M.Control {
       this.lat,
     ]);
   }
-
   /**
    * This function sets geometry visibility on map (visible|invisible).
    * @public
@@ -607,7 +640,6 @@ export default class IGNSearchControl extends M.Control {
   setResultVisibility(flag) {
     this.resultVisibility_ = flag;
   }
-
   /**
    * This function changes input placeholder based on services choice
    * @public
@@ -621,7 +653,6 @@ export default class IGNSearchControl extends M.Control {
       this.searchInput.placeholder = 'Topónimo';
     }
   }
-
   /**
    * This function creates some geometry styles.
    * @public
@@ -643,7 +674,6 @@ export default class IGNSearchControl extends M.Control {
         opacity: 1,
       },
     });
-
     // Style for hiding geometry
     this.simple = new M.style.Polygon({
       fill: {
@@ -652,7 +682,6 @@ export default class IGNSearchControl extends M.Control {
       },
     });
   }
-
   /**
     * This
     function inserts a popUp with information about the searched location
@@ -662,37 +691,44 @@ export default class IGNSearchControl extends M.Control {
     * @param { boolean } exactResult indicating
     if the given result is a perfect match
     */
-  showPopUp(fullAddress, coordinates, exactResult) {
+  showSearchPopUp(fullAddress, coordinates, exactResult) {
     const destinyProj = this.map.getProjection().code;
     const destinySource = 'EPSG:4326';
-
     const newCoordinates = this.getImpl()
       .reproject([coordinates[1], coordinates[0]], destinySource, destinyProj);
     let exitState;
-
     if (exactResult !== 1) {
       exitState = 'Dirección aproximada';
     } else {
       exitState = 'Dirección exacta';
     }
-
-    const featureTabOpts = {
-      content: `<div><b>${exitState}</b></div>
-                <div>${fullAddress}</div>
-                <div class='ignsearch-popup'>Lat: ${coordinates[0]}</div>
-                <div class='ignsearch-popup'> Long: ${coordinates[1]} </div>`,
-    };
+    this.showPopUp(fullAddress, newCoordinates, coordinates, exitState);
+  }
+  /**
+   * This function inserts a popup on the map with information about its location.
+   * @param { string } fullAddress location address(street, portal, etc.)
+   * @param { Array } mapCoordinates latitude[0] and longitude[1] coordinates on map projection
+   * @param { Array } featureCoordinates latitude[0] and longitude[1] coordinates from feature
+   * @param { string } exitState indicating if the given result is a perfect match
+   */
+  showPopUp(fullAddress, mapCoordinates, featureCoordinates, exitState = null) {
+    const featureTabOpts = { content: '' };
+    if (exitState !== null) {
+      featureTabOpts.content += `<div><b>${exitState}</b></div>`;
+    }
+    featureTabOpts.content += `<div>${fullAddress}</div>
+                <div class='ignsearch-popup'>Lat: ${featureCoordinates[0]}</div>
+                <div class='ignsearch-popup'> Long: ${featureCoordinates[1]} </div>`;
     const myPopUp = new M.Popup();
     myPopUp.addTab(featureTabOpts);
     this.map.addPopup(myPopUp, [
-      newCoordinates[0],
-      newCoordinates[1],
+      mapCoordinates[0],
+      mapCoordinates[1],
     ]);
     this.popup = myPopUp;
-    this.lat = newCoordinates[1];
-    this.lng = newCoordinates[0];
+    this.lat = mapCoordinates[1];
+    this.lng = mapCoordinates[0];
   }
-
   /**
    * This function sets given scale to map
    * @public

@@ -2,6 +2,7 @@
  * @module M/plugin/IGNSearch
  */
 import 'assets/css/ignsearch';
+import 'assets/css/fonts';
 import IGNSearchControl from './ignsearchcontrol';
 
 export default class IGNSearch extends M.Plugin {
@@ -136,6 +137,12 @@ export default class IGNSearch extends M.Plugin {
      * @type {string} - tooltip on hover on plugin button
      */
     this.tooltip_ = options.tooltip || 'Búsqueda de lugares';
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    this.reverse_ = options.reverse || false;
   }
 
   /**
@@ -159,6 +166,7 @@ export default class IGNSearch extends M.Plugin {
       this.urlAssistant,
       this.urlDispatcher,
       this.resultVisibility,
+      this.reverse_,
     ));
     this.controls_[0].on('ignsearch:entityFound', (extent) => {
       this.fire('ignsearch:entityFound', [extent]);
@@ -184,5 +192,26 @@ export default class IGNSearch extends M.Plugin {
    */
   setResultVisibility(flag) {
     this.controls_[0].setResultVisibility(flag);
+  }
+
+  /**
+   * Name of the plugin
+   *
+   * @getter
+   * @function
+   */
+  get name() {
+    return 'ignsearch';
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.position}`;
   }
 }

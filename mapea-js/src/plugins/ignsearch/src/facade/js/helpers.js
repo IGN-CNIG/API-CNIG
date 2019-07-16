@@ -2,7 +2,6 @@ const registerHelpers = () => {
   Handlebars.registerHelper('toUpperCase', (str) => {
     return str.toUpperCase();
   });
-
   Handlebars.registerHelper('ifCond', (v1, operator, v2, options) => {
     switch (operator) {
       case '===':
@@ -25,17 +24,17 @@ const registerHelpers = () => {
         return options.inverse(this);
     }
   });
-
   Handlebars.registerHelper('printType', (type, address, id, municipality) => {
     let line = `<li id=${id}> ${address.toUpperCase()}`;
-    if (type !== 'callejero' && type !== 'portal' && type !== 'Codpost') {
-      line += ` (${type.toUpperCase()})`;
-    }
+    // add following lines if asked to show entity type again
+    // (but not if type's portal, callejero or Codpost)
+    // if (type !== 'callejero' && type !== 'portal' && type !== 'Codpost') {
+    //   line += ` (${type.toUpperCase()})`;
+    // }
     if (municipality !== undefined) {
       line += ` en ${municipality}`;
     }
     return line;
   });
 };
-
 export default registerHelpers;

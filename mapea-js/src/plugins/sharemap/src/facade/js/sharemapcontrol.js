@@ -227,6 +227,7 @@ export default class ShareMapControl extends M.Control {
       shareURL = shareURL.concat(`&projection=${code}*${units}`);
       shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) :
         shareURL.concat('');
+      shareURL = shareURL.concat(`&${this.getPlugins()}`);
       input.value = shareURL;
     });
   }
@@ -349,6 +350,19 @@ export default class ShareMapControl extends M.Control {
   getWMTS(layer) {
     const { code } = this.map_.getProjection();
     return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${layer.getLegend()}*${layer.transparent}`;
+  }
+
+  /**
+   * This method gets the plugins url parameter
+   */
+  getPlugins() {
+    return this.map_.getPlugins().map((plugin) => {
+      let newCurrent = '';
+      if (M.utils.isFunction(plugin.getAPIRest)) {
+        newCurrent = plugin.getAPIRest();
+      }
+      return newCurrent;
+    }).join('&');
   }
 
   /**

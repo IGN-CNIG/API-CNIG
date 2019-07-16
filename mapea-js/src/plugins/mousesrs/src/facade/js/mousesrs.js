@@ -81,4 +81,58 @@ export default class MouseSRS extends M.Plugin {
     });
     map.addControls(this.controls_);
   }
+
+  /**
+   * Name of the plugin
+   *
+   * @getter
+   * @function
+   */
+  get name() {
+    return 'mousesrs';
+  }
+
+  /**
+   * This function returns the position
+   *
+   * @public
+   * @return {string}
+   * @api
+   */
+  get position() {
+    return this.position_;
+  }
+
+  /**
+   * This function returns the label
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get label() {
+    return this.label_;
+  }
+
+  /**
+   * This function returns the srs (Spatial Reference System)
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get srs() {
+    return this.srs_;
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position}*${this.tooltip_}*${this.srs}*${this.label}`;
+  }
 }

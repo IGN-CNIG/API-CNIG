@@ -77,7 +77,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {number}
      */
-    this.mode_ = options.mode;
+    this.mode_ = Number.parseInt(options.mode, 10);
 
     /**
      * Vectorial service attributions
@@ -117,7 +117,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {number}
      */
-    this.scale_ = options.scale || 10000;
+    this.scale_ = Number.parseInt(options.scale, 10) || 10000;
 
     /**
      * Parameter of the features of the layer that contains the information of the attributions.
@@ -420,6 +420,61 @@ export default class Attributions extends M.Plugin {
    * @function
    */
   get name() {
-    return 'Attributions';
+    return 'attributions';
+  }
+
+  /**
+   * Mode of the plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get mode() {
+    return this.mode_;
+  }
+
+  /**
+   * Scale of the plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get scale() {
+    return this.scale_;
+  }
+
+  /**
+   * Attribution of the plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get defaultAttribution() {
+    return this.defaultAttribution_;
+  }
+
+  /**
+   * Default url of the plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get defaultURL() {
+    return this.defaultURL_;
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}`;
   }
 }

@@ -10,71 +10,31 @@
       "type": "number",
       "name": "mode",
       "position": 0,
-      "value": 1,
       "possibleValues": [1, 2]
     }, {
       "type": "number",
       "name": "scale",
-      "position": 0,
-      "value": 10000
+      "position": 1
     }, {
       "type": "simple",
       "name": "defaultAttribution",
-      "position": 0,
-      "value": ""
+      "position": 2
     }, {
       "type": "simple",
       "name": "defaultURL",
-      "position": 0,
-      "value": ""
-    }, {
-      "type": "simple",
-      "name": "tooltip",
-      "position": 0,
-      "value": "Reconocimientos"
-    }, {
-      "type": "simple",
-      "name": "url",
-      "position": 0,
-      "value": "https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml"
-    }, {
-      "type": "simple",
-      "name": "type",
-      "position": 0,
-      "value": "kml"
-    }, {
-      "type": "simple",
-      "name": "layerName",
-      "position": 0,
-      "value": "attributions"
-    }, {
-      "type": "simple",
-      "name": "attributionParam",
-      "position": 0,
-      "value": "atribucion"
-    }, {
-      "type": "simple",
-      "name": "attributionUrl",
-      "position": 0,
-      "value": "url"
-    }, {
-      "type": "simple",
-      "name": "minWidth",
-      "position": 0,
-      "value": "100px"
-    }, {
-      "type": "simple",
-      "name": "maxWidth",
-      "position": 0,
-      "value": "200px"
-    }, {
-      "type": "simple",
-      "name": "position",
-      "position": 0,
-      "value": "BL",
-      "possibleValues": ["TL", "TR", "BL", "BR"]
+      "position": 3
     }]
   }],
+  "files": {
+    "ol": {
+      "scripts": [
+        "attributions.ol.min.js"
+      ],
+      "styles": [
+        "attributions.ol.min.css"
+      ]
+    }
+  },
   "metadata": {
     "name": "attributions",
     "description": "Shows attributtions on layer",
@@ -85,15 +45,5 @@
     "org": "CNIG",
     "tags": "mapea,plugin",
     "icon": "./facade/assets/icons/icons.svg"
-  },
-  "files": {
-    "ol": {
-      "scripts": [
-        "attributions.ol.min.js"
-      ],
-      "styles": [
-        "attributions.ol.min.css"
-      ]
-    }
   }
 }

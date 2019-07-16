@@ -104,13 +104,37 @@ export default class XYLocator extends M.Plugin {
     this.facadeMap_.removeControls([this.control_]);
     [this.facadeMap_, this.control_, this.panel_] = [null, null, null];
   }
-}
 
-/**
- * Name to identify the plugin
- * @const
- * @type {string}
- * @public
- * @api stable
- */
-XYLocator.NAME = 'XYLocator';
+  /**
+   * Name of the plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get name() {
+    return 'xylocator';
+  }
+
+  /**
+   * This function returns the position
+   *
+   * @public
+   * @return {string}
+   * @api
+   */
+  get position() {
+    return this.position_;
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position}`;
+  }
+}

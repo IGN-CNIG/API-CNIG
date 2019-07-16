@@ -1,14 +1,21 @@
 {
   "url": {
-    "name": "ZoomExtent",
+    "name": "zoomextent",
     "separator": "*"
   },
   "constructor": "M.plugin.ZoomExtent",
-  "parameters": [],
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0
+    }]
+  }],
   "files": {
     "ol": {
-      "scripts": [],
-      "styles": []
+      "scripts": ["zoomextent.ol.min.js"],
+      "styles": ["zoomextent.ol.min.css"]
     }
   },
   "metadata": {

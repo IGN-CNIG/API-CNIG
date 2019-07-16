@@ -14,7 +14,6 @@
       "type": "simple",
       "name": "position",
       "position": 1,
-      "value": "BR",
       "possibleValues": ["TL", "TR", "BL", "BR"]
     }, {
       "type": "simple",
