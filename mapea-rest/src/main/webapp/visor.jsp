@@ -43,8 +43,6 @@
     </link>
     <%
          if (cssfile.toLowerCase().indexOf("streetview") != -1) { %>
-    <link href="plugins/streetview/streetview.min.css" rel="stylesheet" />
-    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <% }
       } %>
 </head>
@@ -75,7 +73,6 @@
       }
    %>
     <script type="text/javascript">
-        M.impl.Map.prototype.updateResolutionsFromBaseLayer = () => null;
         const map = M.map({
             container: 'mapjs',
             controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location'],
@@ -100,10 +97,17 @@
             tiled: false
         }, {});
 
+        const ocupacionSuelo = new M.layer.WMTS({
+            url: 'http://servicios.idee.es/wmts/ocupacion-suelo?',
+            name: 'LC.LandCoverSurfaces',
+            legend: 'Cubiera terrestre',
+            matrixSet: 'GoogleMapsCompatible',
+        });
+
 
         const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false');
 
-        map.addLayers([layerinicial, layerUA, kml]);
+        map.addLayers([layerinicial, layerUA, kml, ocupacionSuelo]);
 
         const mp = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
@@ -111,7 +115,7 @@
             isCollapsed: false,
             noProcess: 'municipio,poblacion',
             countryCode: 'es',
-            reverse: true, // reverse geocode button displayed
+            reverse: true,
         });
         const mp2 = new M.plugin.Attributions({
             mode: 1,
@@ -163,6 +167,7 @@
                         legend: 'Imagen',
                         matrixSet: "GoogleMapsCompatible",
                     }, {
+                        displayInLayerSwitcher: false,
                         format: 'image/jpeg',
                     }), new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/ign-base?',
@@ -170,6 +175,7 @@
                         legend: 'Mapa IGN',
                         matrixSet: "GoogleMapsCompatible",
                     }, {
+                        displayInLayerSwitcher: false,
                         format: 'image/png',
                     }), ],
                 },
@@ -189,10 +195,6 @@
         map.addPlugin(mp6);
         map.addPlugin(mp7);
         map.addPlugin(mp8);
-        map.getImpl().refresh()
-        // map.setZoom(5);
-        // map.getMapImpl().getView().setMaxZoom(20);
-        // map.getMapImpl().getView().setMinZoom(4);
     </script>
 </body>
 
