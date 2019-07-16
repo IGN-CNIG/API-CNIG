@@ -1990,6 +1990,7 @@ export const wms = (userParameters) => {
   return layers;
 };
 
+
 /**
  * Parses the parameter in order to get the layer name
  * @private
@@ -2133,7 +2134,7 @@ const getTransparentWMTS = (parameter) => {
     // <WMTS>*<URL>*<NAME>*<MATRIXSET>?*<TITLE>?*<TRANSPARENT>
     if (/^WMTS\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)/i.test(parameter)) {
       params = parameter.split(/\*/);
-      transparent = params[4].trim();
+      transparent = params[5].trim();
     } else if (/^WMS_FULL\*[^*]+(\*(true|false))?/i.test(parameter)) {
       // <WMS_FULL>*<URL>(*<TILED>)?
       params = parameter.split(/\*/);
@@ -2156,6 +2157,100 @@ const getTransparentWMTS = (parameter) => {
     transparent = /^1|(true)$/i.test(transparent);
   }
   return transparent;
+};
+
+/**
+ * Parses the parameter in order to get the format
+ * @private
+ * @function
+ */
+const getFormatWMTS = (parameter) => {
+  let format;
+  let params;
+  if (isString(parameter)) {
+    if (/^WMTS\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      format = params[6].trim();
+    }
+  } else if (isObject(parameter)) {
+    format = normalize(parameter.format);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return format;
+};
+
+/**
+ * Parses the parameter in order to get the displayInLayerSwitcher
+ * @private
+ * @function
+ */
+const getDisplayInLayerSwitcherWMTS = (parameter) => {
+  let displayInLayerSwitcher;
+  let params;
+  if (isString(parameter)) {
+    if (/^WMTS\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      displayInLayerSwitcher = params[7].trim();
+    }
+  } else if (isObject(parameter)) {
+    displayInLayerSwitcher = normalize(parameter.displayInLayerSwitcher);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(displayInLayerSwitcher)) {
+    displayInLayerSwitcher = /^1|(true)$/i.test(displayInLayerSwitcher);
+  }
+  return displayInLayerSwitcher;
+};
+
+/**
+ * Parses the parameter in order to get the queryable flag
+ * @private
+ * @function
+ */
+const getQueryableWMTS = (parameter) => {
+  let queryable;
+  let params;
+  if (isString(parameter)) {
+    if (/^WMTS\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)\*(true|false)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      queryable = params[8].trim();
+    }
+  } else if (isObject(parameter)) {
+    queryable = normalize(parameter.queryable);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(queryable)) {
+    queryable = /^1|(true)$/i.test(queryable);
+  }
+  return queryable;
+};
+
+/**
+ * Parses the parameter in order to get the queryable flag
+ * @private
+ * @function
+ */
+const getVisibilityWMTS = (parameter) => {
+  let visibility;
+  let params;
+  if (isString(parameter)) {
+    if (/^WMTS\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      visibility = params[9].trim();
+    }
+  } else if (isObject(parameter)) {
+    visibility = normalize(parameter.visibility);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(visibility)) {
+    visibility = /^1|(true)$/i.test(visibility);
+  }
+  return visibility;
 };
 
 
@@ -2206,6 +2301,18 @@ export const wmts = (userParameters) => {
 
     // gets transparent
     layerObj.transparent = getTransparentWMTS(userParam);
+
+    // get format
+    layerObj.format = getFormatWMTS(userParam);
+
+    // get displayInLayerSwitcher
+    layerObj.displayInLayerSwitcher = getDisplayInLayerSwitcherWMTS(userParam);
+
+    // get queryable
+    layerObj.queryable = getQueryableWMTS(userParam);
+
+    // get visibility
+    layerObj.visibility = getVisibilityWMTS(userParam);
 
     return layerObj;
   });
