@@ -33,9 +33,9 @@ class BackgroundLayers extends ControlBase {
    */
   constructor(map) {
     const impl = new ControlImpl();
-    super(impl, 'BackgroundLayers');
+    super(impl, BackgroundLayers.NAME);
     map.getBaseLayers().forEach((layer) => {
-      layer.on(LOAD, this.map.removeLayers(layer));
+      layer.on(LOAD, map.removeLayers(layer));
     });
     this.layers = M.config.backgroundlayers.slice(0, MAXIMUM_LAYERS).map((layer) => {
       return {
