@@ -35,6 +35,7 @@ import Rotate from './control/Rotate';
 import ScaleLine from './control/ScaleLine';
 import Panzoom from './control/Panzoom';
 import Panzoombar from './control/Panzoombar';
+import BackgroundLayers from './control/BackgroundLayers';
 import Layer from './layer/Layer';
 import * as LayerType from './layer/Type';
 import Vector from './layer/Vector';
@@ -269,14 +270,8 @@ class Map extends Base {
       this.addControls(params.controls);
     }
 
-    // getfeatureinfo
-    if (!isNullOrEmpty(params.getfeatureinfo)) {
-      const getFeatureInfo = new GetFeatureInfo(params.getfeatureinfo);
-      this.addControls(getFeatureInfo);
-    }
-
     // default WMTS
-    if (isNullOrEmpty(params.layers)) {
+    if (isNullOrEmpty(params.layers) && !isArray(params.layers)) {
       this.addWMTS(M.config.wmts.base);
     }
 
@@ -1107,7 +1102,7 @@ class Map extends Base {
               });
               break;
             case GetFeatureInfo.NAME:
-              control = new GetFeatureInfo();
+              control = new GetFeatureInfo(true);
               break;
             case Rotate.NAME:
               control = new Rotate();
@@ -1115,6 +1110,14 @@ class Map extends Base {
                 collapsible: false,
                 className: 'm-rotate',
                 position: Position.TR,
+              });
+              break;
+            case BackgroundLayers.NAME:
+              control = new BackgroundLayers(this);
+              panel = new Panel(BackgroundLayers.NAME, {
+                collapsible: false,
+                position: Position.TR,
+                className: 'm-plugin-baselayer',
               });
               break;
             default:
