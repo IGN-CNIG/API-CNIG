@@ -32,10 +32,6 @@ const entrypoint = {};
 entrypoint[testName] = testPath;
 entrypoint.config = config;
 
-if (coremin) {
-  entrypoint['mapea.ol.min'] = path.resolve(__dirname, '..', 'dist', 'js', 'mapea.ol.min.js');
-}
-
 module.exports = {
   mode: 'development',
   entry: entrypoint,
@@ -57,8 +53,7 @@ module.exports = {
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html', '.jpg'],
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         exclude: /(node_modules\/(?!ol)|bower_components)/,
         use: {
@@ -87,7 +82,8 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|svg|jpg)$/,
         exclude: /node_modules/,
         loader: 'url-loader?name=fonts/[name].[ext]',
-      }],
+      }
+    ],
   },
   plugins: [
     new AllowMutateEsmExports(),

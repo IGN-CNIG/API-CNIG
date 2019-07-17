@@ -1,22 +1,16 @@
 {
-  "name": "mapea",
+  "name": "api-ign",
   "version": "5.1.0",
   "description": "Herramienta para desarrollo de mapas interactivos de forma sencilla",
   "keywords": [
     "map",
     "mapping",
     "tool",
-    "sigcorporativo-ja"
+    "ign"
   ],
-  "homepage": "http://mapea-sigc.juntadeandalucia.es",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/sigcorporativo-ja/mapeaJS.git"
-  },
-  "license": "BSD",
-  "bugs": {
-    "url": "https://github.com/sigcorporativo-ja/mapeaJS/issues"
-  },
+  "homepage": "https://www.ign.es",
+  "repository": {},
+  "license": "EUPL",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.51",
     "@babel/plugin-proposal-export-default-from": "^7.0.0-beta.51",

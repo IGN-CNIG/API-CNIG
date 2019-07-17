@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
-   <groupId>es.juntadeandalucia.mapea</groupId>
-   <artifactId>mapea-parent</artifactId>
+   <groupId>es.ign.api</groupId>
+   <artifactId>api-ign-parent</artifactId>
    <version>5.1.0</version>
    <packaging>pom</packaging>
-   <name>Mapea PARENT</name>
+   <name>API IGN PARENT</name>
    <description>Herramienta para desarrollo de mapas interactivos de forma sencilla</description>
    <properties>
       <project.release.date>${maven.build.timestamp}</project.release.date>
@@ -14,9 +14,9 @@
       <maven.build.timestamp.format>dd-MM-yyyy</maven.build.timestamp.format>
    </properties>
    <modules>
-      <module>../mapea-js</module>
-      <module>../mapea-proxy</module>
-      <module>../mapea-rest</module>
+      <module>../api-ign-js</module>
+      <module>../api-ign-proxy</module>
+      <module>../api-ign-rest</module>
    </modules>
    <licenses>
       <license>
@@ -32,82 +32,43 @@
    </developers>
    <profiles>
      <profile>
-        <id>mapea-local</id>
+        <id>local</id>
         <activation>
            <activeByDefault>false</activeByDefault>
         </activation>
         <properties>
-           <environment>mapea-local</environment>
+           <environment>local</environment>
         </properties>
      </profile>
       <profile>
-         <id>mapea-desarrollo</id>
+         <id>desarrollo</id>
          <activation>
             <activeByDefault>false</activeByDefault>
          </activation>
          <properties>
-            <environment>mapea-desarrollo</environment>
-         </properties>
-      </profile>
-       <profile>
-         <id>mapea-desarrollo_pub</id>
-         <activation>
-            <activeByDefault>false</activeByDefault>
-         </activation>
-         <properties>
-            <environment>mapea-desarrollo_pub</environment>
+            <environment>desarrollo</environment>
          </properties>
       </profile>
       <profile>
-         <id>mapea-produccion</id>
+         <id>produccion</id>
          <activation>
             <activeByDefault>true</activeByDefault>
          </activation>
          <properties>
-            <environment>mapea-produccion</environment>
-         </properties>
-      </profile>
-      <profile>
-         <id>mapea-pruebas</id>
-         <activation>
-            <activeByDefault>false</activeByDefault>
-         </activation>
-         <properties>
-            <environment>mapea-pruebas</environment>
-         </properties>
-      </profile>
-      <profile>
-         <id>mapea-preproduccion</id>
-         <activation>
-            <activeByDefault>false</activeByDefault>
-         </activation>
-         <properties>
-            <environment>mapea-preproduccion</environment>
+            <environment>produccion</environment>
          </properties>
       </profile>
    </profiles>
-   <repositories>
+   <!-- <repositories>
       <repository>
          <id>ceic</id>
          <name>Repositorio CEIC</name>
          <url>http://www.juntadeandalucia.es/madeja/repositoriodelibrerias/ja-external</url>
       </repository>
-   </repositories>
-   <scm>
-      <developerConnection>scm:svn:https://www.guadaltel.es/subversion/sigc/trunk/mapea4/mapea-parent</developerConnection>
-   </scm>
+   </repositories> -->
    <build>
       <pluginManagement>
          <plugins>
-            <plugin>
-               <artifactId>maven-release-plugin</artifactId>
-               <version>2.5</version>
-               <configuration>
-                  <preparationGoals>clean package</preparationGoals>
-                  <autoVersionSubmodules>true</autoVersionSubmodules>
-                  <tagNameFormat>MAPEA_v@{project.version}_@{maven.build.timestamp}</tagNameFormat>
-               </configuration>
-            </plugin>
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-compiler-plugin</artifactId>

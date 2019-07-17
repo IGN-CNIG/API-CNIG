@@ -16,3 +16,4 @@ index.js
 index-*.js
 entry-points-plugins.json
 *~
+.vscode

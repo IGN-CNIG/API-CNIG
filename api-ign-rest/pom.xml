@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
-   <artifactId>mapea-rest</artifactId>
+   <artifactId>api-ign-rest</artifactId>
    <packaging>war</packaging>
-   <name>Mapea REST</name>
+   <name>API IGN REST</name>
    <properties>
       <jersey.version>1.19</jersey.version>
       <glassfish.version>3.1.1</glassfish.version>
@@ -12,10 +12,10 @@
       <maven.build.timestamp.format>dd-MM-yyyy</maven.build.timestamp.format>
    </properties>
    <parent>
-      <groupId>es.juntadeandalucia.mapea</groupId>
-      <artifactId>mapea-parent</artifactId>
+      <groupId>es.ign.api</groupId>
+      <artifactId>api-ign-parent</artifactId>
       <version>5.1.0</version>
-      <relativePath>../mapea-parent/pom.xml</relativePath>
+      <relativePath>../api-ign-parent/pom.xml</relativePath>
    </parent>
    <licenses>
       <license>
@@ -30,7 +30,7 @@
       </developer>
    </developers>
    <build>
-      <finalName>mapea</finalName>
+      <finalName>api-ign</finalName>
       <resources>
          <resource>
             <directory>src/main/resources/properties</directory>
@@ -41,7 +41,7 @@
          </resource>
       </resources>
       <filters>
-         <filter>${basedir}/../mapea-parent/src/main/filters/${environment}.properties</filter>
+         <filter>${basedir}/../api-ign-parent/src/main/filters/${environment}.properties</filter>
       </filters>
       <plugins>
          <plugin>
@@ -83,7 +83,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
-               <!-- mapea js resources -->
                <execution>
                   <id>unpack-js</id>
                   <goals>
@@ -93,12 +92,11 @@
                   <configuration>
                      <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
                      <includeGroupIds>${project.groupId}</includeGroupIds>
-                     <includeArtifacIds>mapea-js</includeArtifacIds>
-                     <excludeArtifactIds>mapea-proxy</excludeArtifactIds>
+                     <includeArtifacIds>api-ign-js</includeArtifacIds>
+                     <excludeArtifactIds>api-ign-proxy</excludeArtifactIds>
                      <excludeTransitive>true</excludeTransitive>
                   </configuration>
                </execution>
-               <!-- / mapea js resources -->
             </executions>
           </plugin>
           <plugin>
@@ -107,7 +105,7 @@
 		<artifactId>docker-maven-plugin</artifactId>
 		<version>0.2.11</version>
 		<configuration>
-			<dockerDirectory>${basedir}/../mapea-parent/src/main/docker/mapea</dockerDirectory>
+			<dockerDirectory>${basedir}/../api-ign-parent/src/main/docker/api-ign</dockerDirectory>
 			<resources>
 				<resource>
 					<targetPath>/</targetPath>
@@ -158,10 +156,10 @@
          <artifactId>json</artifactId>
          <version>20140107</version>
       </dependency>
-      <!-- MAPEA JS -->
+      <!-- API IGN JS -->
       <dependency>
          <groupId>${project.groupId}</groupId>
-         <artifactId>mapea-js</artifactId>
+         <artifactId>api-ign-js</artifactId>
          <version>${project.version}</version>
          <classifier>dist-resources</classifier>
          <type>zip</type>
@@ -169,7 +167,7 @@
       </dependency>
       <dependency>
          <groupId>${project.groupId}</groupId>
-         <artifactId>mapea-js</artifactId>
+         <artifactId>api-ign-js</artifactId>
          <version>${project.version}</version>
          <classifier>doc-resources</classifier>
          <type>zip</type>
@@ -177,20 +175,18 @@
       </dependency>
       <dependency>
          <groupId>${project.groupId}</groupId>
-         <artifactId>mapea-js</artifactId>
+         <artifactId>api-ign-js</artifactId>
          <version>${project.version}</version>
          <classifier>templates-resources</classifier>
          <type>zip</type>
          <scope>provided</scope>
       </dependency>
-      <!-- / MAPEA JS -->
 
-      <!-- MAPEA PROXY -->
+      <!-- API IGN PROXY -->
       <dependency>
          <groupId>${project.groupId}</groupId>
-         <artifactId>mapea-proxy</artifactId>
+         <artifactId>api-ign-proxy</artifactId>
          <version>${project.version}</version>
       </dependency>
-      <!-- / MAPEA PROXY -->
    </dependencies>
 </project>

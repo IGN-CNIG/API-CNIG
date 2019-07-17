@@ -82,21 +82,18 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
-import es.guadaltel.framework.ticket.Ticket;
-import es.guadaltel.framework.ticket.TicketFactory;
-
 // PATCH import org.apache.log4j.PropertyConfigurator;
 @SuppressWarnings("serial")
 // PATCH
 public class ProxyRedirect extends HttpServlet {
 
    private final static Logger log = Logger.getLogger(ProxyRedirect.class);
-   private static final Pattern GETINFO_PLAIN_REGEX = Pattern.compile(
-         ".*INFO_FORMAT=TEXT(\\/|\\%2F)PLAIN.*", Pattern.CASE_INSENSITIVE);
-   private static final Pattern GETINFO_GML_REGEX = Pattern.compile(
-         ".*INFO_FORMAT=APPLICATION(\\/|%2F)VND\\.OGC\\.GML.*", Pattern.CASE_INSENSITIVE);
-   private static final Pattern GETINFO_HTML_REGEX = Pattern.compile(
-         ".*INFO_FORMAT=TEXT(\\/|\\%2F)HTML.*", Pattern.CASE_INSENSITIVE);
+   private static final Pattern GETINFO_PLAIN_REGEX = Pattern.compile(".*INFO_FORMAT=TEXT(\\/|\\%2F)PLAIN.*",
+         Pattern.CASE_INSENSITIVE);
+   private static final Pattern GETINFO_GML_REGEX = Pattern
+         .compile(".*INFO_FORMAT=APPLICATION(\\/|%2F)VND\\.OGC\\.GML.*", Pattern.CASE_INSENSITIVE);
+   private static final Pattern GETINFO_HTML_REGEX = Pattern.compile(".*INFO_FORMAT=TEXT(\\/|\\%2F)HTML.*",
+         Pattern.CASE_INSENSITIVE);
    private static final String WWW_AUTHENTICATE = "WWW-Authenticate"; // PATH
    private static final String AUTHORIZATION = "Authorization"; // PATH
    public ServletContext context_ = null;
@@ -107,18 +104,16 @@ public class ProxyRedirect extends HttpServlet {
    /***************************************************************************
     * Initialize variables called when context is initialized
     ****************************************************************************/
-   public void init (ServletConfig config) throws ServletException {
+   public void init(ServletConfig config) throws ServletException {
       super.init(config);
       context_ = config.getServletContext();
-      log.info("proxysig.ProxyRedirect: context initialized to: "
-            + context_.getServletContextName());
+      log.info("proxysig.ProxyRedirect: context initialized to: " + context_.getServletContextName());
    }
 
    /***************************************************************************
     * Process the HTTP Get request
     ***************************************************************************/
-   public void doGet (HttpServletRequest request, HttpServletResponse response)
-         throws ServletException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
       String serverUrl = request.getParameter("url");
       // manages a get request if it's the geoprint or getcapabilities operation
       boolean isGeoprint = serverUrl.toLowerCase().contains("mapeaop=geoprint");
@@ -151,16 +146,14 @@ public class ProxyRedirect extends HttpServlet {
                   if (checkedContent) {
                      if (request.getProtocol().compareTo("HTTP/1.0") == 0) {
                         response.setHeader("Pragma", "no-cache");
-                     }
-                     else if (request.getProtocol().compareTo("HTTP/1.1") == 0) {
+                     } else if (request.getProtocol().compareTo("HTTP/1.1") == 0) {
                         response.setHeader("Cache-Control", "no-cache");
                      }
                      response.setDateHeader("Expires", -1);
                      // set content-type headers
                      if (isGeoprint) {
                         response.setContentType("application/json");
-                     }
-                     else if (isGetCapabilities) {
+                     } else if (isGetCapabilities) {
                         response.setContentType("text/xml");
                      }
                      /*
@@ -170,38 +163,31 @@ public class ProxyRedirect extends HttpServlet {
                      String requesteredUrl = request.getParameter("url");
                      if (GETINFO_PLAIN_REGEX.matcher(requesteredUrl).matches()) {
                         response.setContentType("text/plain");
-                     }
-                     else if (GETINFO_GML_REGEX.matcher(requesteredUrl).matches()) {
+                     } else if (GETINFO_GML_REGEX.matcher(requesteredUrl).matches()) {
                         response.setContentType("application/gml+xml");
-                     }
-                     else if (GETINFO_HTML_REGEX.matcher(requesteredUrl).matches()) {
+                     } else if (GETINFO_HTML_REGEX.matcher(requesteredUrl).matches()) {
                         response.setContentType("text/html");
                      }
                      InputStream st = httpget.getResponseBodyAsStream();
                      ServletOutputStream sos = response.getOutputStream();
                      IOUtils.copy(st, sos);
-                  }
-                  else {
+                  } else {
                      strErrorMessage += errorType;
                      log.error(strErrorMessage);
                   }
-               }
-               else {
+               } else {
                   strErrorMessage = "Unexpected failure: " + httpget.getStatusLine().toString();
                   log.error(strErrorMessage);
                }
                httpget.releaseConnection();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                log.error("Error al tratar el contenido de la peticion: " + e.getMessage(), e);
-            }
-            finally {
+            } finally {
                if (httpget != null) {
                   httpget.releaseConnection();
                }
             }
-         }
-         else {
+         } else {
             // String errorXML = strErrorMessage;
             String errorXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><error><descripcion>Error en el parametro url de entrada</descripcion></error>";
             response.setContentType("text/xml");
@@ -209,13 +195,11 @@ public class ProxyRedirect extends HttpServlet {
                PrintWriter out = response.getWriter();
                out.print(errorXML);
                response.flushBuffer();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                log.error(e);
             }
          }
-      }
-      else {
+      } else {
          doPost(request, response);
       }
    }
@@ -223,8 +207,7 @@ public class ProxyRedirect extends HttpServlet {
    /***************************************************************************
     * Process the HTTP Post request
     ***************************************************************************/
-   public void doPost (HttpServletRequest request, HttpServletResponse response)
-         throws ServletException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
       boolean checkedContent = false;
       boolean legend = false;
       String strErrorMessage = "";
@@ -272,38 +255,10 @@ public class ProxyRedirect extends HttpServlet {
                   if (user != null && pass != null) {
                      String userAndPass = user + ":" + pass;
                      String encodedLogin = new String(
-                           org.apache.commons.codec.binary.Base64.encodeBase64(userAndPass
-                                 .getBytes()));
+                           org.apache.commons.codec.binary.Base64.encodeBase64(userAndPass.getBytes()));
                      httppost.addRequestHeader(AUTHORIZATION, "Basic " + encodedLogin);
                   }
-                  else { // MJM - 20110520
-                     String ticketParameter = request.getParameter("ticket");
-                     if (ticketParameter != null) {
-                        ticketParameter = ticketParameter.trim();
-                        if (!ticketParameter.isEmpty()) {
-                           Ticket ticket = TicketFactory.createInstance();
-                           try {
-                              Map<String, String> props = ticket.getProperties(ticketParameter);
-                              user = props.get("user");
-                              pass = props.get("pass");
-                              String userAndPass = user + ":" + pass;
-                              String encodedLogin = new String(
-                                    org.apache.commons.codec.binary.Base64.encodeBase64(userAndPass
-                                          .getBytes()));
-                              httppost.addRequestHeader(AUTHORIZATION, "Basic " + encodedLogin);
-                           }
-                           catch (Exception e) {
-                              log.info("-------------------------------------------");
-                              log.info("EXCEPCTION THROWED BY PROXYREDIRECT CLASS");
-                              log.info("METHOD: doPost");
-                              log.info("TICKET VALUE: " + ticketParameter);
-                              log.info("-------------------------------------------");
-                           }
-                        }
-                     }
-                  }
-               }
-               else {
+               } else {
                   httppost.addRequestHeader(AUTHORIZATION, authorizationValue);
                }
                // FIN_PATH_TICKET_MJM-20112405-POST
@@ -381,39 +336,31 @@ public class ProxyRedirect extends HttpServlet {
                      String requesteredUrl = request.getParameter("url");
                      if (GETINFO_PLAIN_REGEX.matcher(requesteredUrl).matches()) {
                         response.setContentType("text/plain");
-                     }
-                     else if (GETINFO_GML_REGEX.matcher(requesteredUrl).matches()) {
+                     } else if (GETINFO_GML_REGEX.matcher(requesteredUrl).matches()) {
                         response.setContentType("application/gml+xml");
-                     }
-                     else if (GETINFO_HTML_REGEX.matcher(requesteredUrl).matches()) {
+                     } else if (GETINFO_HTML_REGEX.matcher(requesteredUrl).matches()) {
                         response.setContentType("text/html");
-                     }
-                     else if (requesteredUrl.toLowerCase().contains("mapeaop=geosearch")
+                     } else if (requesteredUrl.toLowerCase().contains("mapeaop=geosearch")
                            || requesteredUrl.toLowerCase().contains("mapeaop=geoprint")) {
                         response.setContentType("application/json");
-                     }
-                     else {
+                     } else {
                         response.setContentType("text/xml");
                      }
                      if (legend) {
                         String responseBody = httppost.getResponseBodyAsString();
-                        if (responseBody.contains("ServiceExceptionReport")
-                              && serverUrl.contains("LegendGraphic")) {
+                        if (responseBody.contains("ServiceExceptionReport") && serverUrl.contains("LegendGraphic")) {
                            response.sendRedirect("Componente/img/blank.gif");
-                        }
-                        else {
+                        } else {
                            response.setContentLength(responseBody.length());
                            PrintWriter out = response.getWriter();
                            out.print(responseBody);
                            response.flushBuffer();
                         }
-                     }
-                     else {
+                     } else {
                         // Patch_AGG 20112505 Prevents IE cache
                         if (request.getProtocol().compareTo("HTTP/1.0") == 0) {
                            response.setHeader("Pragma", "no-cache");
-                        }
-                        else if (request.getProtocol().compareTo("HTTP/1.1") == 0) {
+                        } else if (request.getProtocol().compareTo("HTTP/1.1") == 0) {
                            response.setHeader("Cache-Control", "no-cache");
                         }
                         response.setDateHeader("Expires", -1);
@@ -423,36 +370,28 @@ public class ProxyRedirect extends HttpServlet {
                         final ServletOutputStream sos = response.getOutputStream();
                         IOUtils.copy(st, sos);
                      }
-                  }
-                  else {
+                  } else {
                      strErrorMessage += errorType;
                      log.error(strErrorMessage);
                   }
-               }
-               else if (httppost.getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+               } else if (httppost.getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
                   response.setStatus(HttpStatus.SC_UNAUTHORIZED);
-                  response.addHeader(WWW_AUTHENTICATE, httppost.getResponseHeader(WWW_AUTHENTICATE)
-                        .getValue());
-               }
-               else {
-                  strErrorMessage = "Unexpected failure: "
-                        .concat(httppost.getStatusLine().toString()).concat(" ")
+                  response.addHeader(WWW_AUTHENTICATE, httppost.getResponseHeader(WWW_AUTHENTICATE).getValue());
+               } else {
+                  strErrorMessage = "Unexpected failure: ".concat(httppost.getStatusLine().toString()).concat(" ")
                         .concat(httppost.getResponseBodyAsString());
                   log.error("Unexpected failure: " + httppost.getStatusLine().toString());
                }
                httppost.releaseConnection();
                // AGG 20110927 Avoid Throwable (change it with exceptions)
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                log.error("Error al tratar el contenido de la peticion: " + e.getMessage(), e);
-            }
-            finally {
+            } finally {
                if (httppost != null) {
                   httppost.releaseConnection();
                }
             }
-         }
-         else {
+         } else {
             strErrorMessage += "Only HTTP(S) protocol supported";
             log.error("Only HTTP(S) protocol supported");
             // throw new
@@ -465,16 +404,14 @@ public class ProxyRedirect extends HttpServlet {
             strErrorMessage = "Error en el parametro url de entrada";
          }
          // String errorXML = strErrorMessage;
-         String errorXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><error><descripcion>"
-               + strErrorMessage
+         String errorXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><error><descripcion>" + strErrorMessage
                + "</descripcion></error>";
          response.setContentType("text/xml");
          try {
             PrintWriter out = response.getWriter();
             out.print(errorXML);
             response.flushBuffer();
-         }
-         catch (Exception e) {
+         } catch (Exception e) {
             log.error(e);
          }
       }
@@ -484,7 +421,7 @@ public class ProxyRedirect extends HttpServlet {
    /***************************************************************************
     * inputStreamAsString
     **************************************************************************/
-   public static String inputStreamAsString (InputStream stream) throws IOException {
+   public static String inputStreamAsString(InputStream stream) throws IOException {
       BufferedReader br = new BufferedReader(new InputStreamReader(stream));
       StringBuilder sb = new StringBuilder();
       String line = null;
@@ -496,23 +433,19 @@ public class ProxyRedirect extends HttpServlet {
    }
 
    /*************************************************************************************
-    * checkContentMethodPost - Check content's type and content's length for post request
+    * checkContentMethodPost - Check content's type and content's length for post
+    * request
     *************************************************************************************/
-   private boolean checkContent (String headersString, int compSize, String serverUrl) {
+   private boolean checkContent(String headersString, int compSize, String serverUrl) {
       boolean resp;
       serverUrl = serverUrl.toUpperCase();
       // Check content's type is xml
       headersString = headersString.toLowerCase();
-      if (headersString.contains("content-type")
-            && (headersString.contains("xml")
-                  || headersString.contains("image/png")
-                  || headersString.contains("gml")
-                  || headersString.contains("plain")
-                  || headersString.contains("html")
-                  || headersString.contains("json") || headersString.contains("wms_xml"))) {
+      if (headersString.contains("content-type") && (headersString.contains("xml")
+            || headersString.contains("image/png") || headersString.contains("gml") || headersString.contains("plain")
+            || headersString.contains("html") || headersString.contains("json") || headersString.contains("wms_xml"))) {
          resp = true;
-      }
-      else if (serverUrl.contains("KML")) {
+      } else if (serverUrl.contains("KML")) {
          // KML
          String[] tokens = serverUrl.split("\\&");
          int numTokens = tokens.length;
@@ -520,22 +453,18 @@ public class ProxyRedirect extends HttpServlet {
             // Check if the beginning is http
             String protocol = serverUrl.toUpperCase().substring(0, 4);
             // Check if the ending is kml
-            String extension = serverUrl.toUpperCase().substring(serverUrl.length() - 3,
-                  serverUrl.length());
+            String extension = serverUrl.toUpperCase().substring(serverUrl.length() - 3, serverUrl.length());
             if (!protocol.equals("HTTP") || !extension.equals("KML")) {
                errorType = "Error en el parametro url de entrada";
                resp = false;
-            }
-            else {
+            } else {
                resp = true;
             }
-         }
-         else {
+         } else {
             errorType = "Error en el parametro url de entrada";
             resp = false;
          }
-      }
-      else {
+      } else {
          errorType = "Error en el contentType de la respuesta";
          resp = false;
       }
@@ -545,7 +474,7 @@ public class ProxyRedirect extends HttpServlet {
    /***************************************************************************
     * checkTypeRequest - Check the serverurl format.
     **************************************************************************/
-   private String checkTypeRequest (String serverUrl) {
+   private String checkTypeRequest(String serverUrl) {
       String serverUrlChecked = "ERROR";
       if (serverUrl.contains("&mapeaop=wmc")) {
          serverUrlChecked = serverUrl.replaceAll("&mapeaop=wmc", "");
@@ -555,8 +484,7 @@ public class ProxyRedirect extends HttpServlet {
             log.debug("ProxyRedirect (mapeaop=wmc) - Protocol=" + protocol);
             serverUrlChecked = "ERROR";
          }
-      }
-      else if (serverUrl.contains("&mapeaop=kml")) {
+      } else if (serverUrl.contains("&mapeaop=kml")) {
          serverUrlChecked = serverUrl.replaceAll("&mapeaop=kml", "");
          // Check if the beginning is http
          String protocol = serverUrlChecked.toUpperCase().substring(0, 4);
@@ -564,8 +492,7 @@ public class ProxyRedirect extends HttpServlet {
             log.debug("ProxyRedirect (mapeaop=kml) - Protocol=" + protocol);
             serverUrlChecked = "ERROR";
          }
-      }
-      else if (serverUrl.contains("&mapeaop=wmsfull")) {
+      } else if (serverUrl.contains("&mapeaop=wmsfull")) {
          serverUrlChecked = serverUrl.replaceAll("&mapeaop=wmsfull", "");
          String[] tokens = serverUrlChecked.split("\\&");
          int numTokens = tokens.length;
@@ -578,21 +505,15 @@ public class ProxyRedirect extends HttpServlet {
             }
             if (!tokens[1].equals("service=WMS") || !tokens[2].equals("request=GetCapabilities")) {
                serverUrlChecked = "ERROR";
-               log.debug("ProxyRedirect (mapeaop=wmsfull) - service="
-                     + tokens[1]
-                     + " request="
-                     + tokens[2]);
-            }
-            else {
+               log.debug("ProxyRedirect (mapeaop=wmsfull) - service=" + tokens[1] + " request=" + tokens[2]);
+            } else {
                serverUrlChecked = tokens[0] + "&service=WMS&request=GetCapabilities";
             }
-         }
-         else {
+         } else {
             log.debug("ProxyRedirect (mapeaop=wmsfull) - Error en el número de parámetros");
             serverUrlChecked = "ERROR";
          }
-      }
-      else if (serverUrl.contains("mapeaop=wmsinfo")) { // GET
+      } else if (serverUrl.contains("mapeaop=wmsinfo")) { // GET
          serverUrlChecked = serverUrl.replaceAll("&mapeaop=wmsinfo", "");
          serverUrlChecked = serverUrlChecked.replaceAll("mapeaop=wmsinfo", "");
          String[] tokens = serverUrlChecked.split("\\&");
@@ -606,17 +527,12 @@ public class ProxyRedirect extends HttpServlet {
             }
             if (!tokens[1].equals("service=WMS") || !tokens[2].equals("request=GetCapabilities")) {
                serverUrlChecked = "ERROR";
-               log.debug("ProxyRedirect (mapeaop=wmsinfo) - service="
-                     + tokens[1]
-                     + " request="
-                     + tokens[2]);
-            }
-            else {
+               log.debug("ProxyRedirect (mapeaop=wmsinfo) - service=" + tokens[1] + " request=" + tokens[2]);
+            } else {
                serverUrlChecked = tokens[0] + "service=WMS&request=GetCapabilities";
             }
          }
-      }
-      else if (serverUrl.contains("mapeaop=geosearch")) {
+      } else if (serverUrl.contains("mapeaop=geosearch")) {
          serverUrlChecked = serverUrl.replaceAll("&mapeaop=geosearch", "");
          // Check if the beginning is http
          String protocol = serverUrlChecked.toUpperCase().substring(0, 4);
@@ -624,24 +540,18 @@ public class ProxyRedirect extends HttpServlet {
             log.debug("ProxyRedirect (mapeaop=geosearch) - Protocol=" + protocol);
             serverUrlChecked = "ERROR";
          }
-      }
-      else if (serverUrl.toLowerCase().contains("legendgraphic")) {
+      } else if (serverUrl.toLowerCase().contains("legendgraphic")) {
          serverUrlChecked = serverUrl;
-      }
-      else if ((serverUrl.toLowerCase().contains("wfst"))
-            || (serverUrl.toLowerCase().contains("wfs"))
+      } else if ((serverUrl.toLowerCase().contains("wfst")) || (serverUrl.toLowerCase().contains("wfs"))
             || (serverUrl.toLowerCase().contains("ows"))) {
          serverUrlChecked = serverUrl;
-      }
-      else if (serverUrl.toLowerCase().contains("getcapabilities")) {
+      } else if (serverUrl.toLowerCase().contains("getcapabilities")) {
          serverUrlChecked = serverUrl;
-      }
-      else if (serverUrl.toLowerCase().contains("wsdl")) {
+      } else if (serverUrl.toLowerCase().contains("wsdl")) {
          soap = true;
          serverUrl = serverUrl.replace("?wsdl", "");
          serverUrlChecked = serverUrl;
-      }
-      else if (serverUrl.toLowerCase().contains("mapeaop=geoprint")) {
+      } else if (serverUrl.toLowerCase().contains("mapeaop=geoprint")) {
          serverUrlChecked = serverUrl.replaceAll("\\&?\\??mapeaop=geoprint", "");
       }
       return serverUrlChecked;

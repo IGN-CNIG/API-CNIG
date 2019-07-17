@@ -1,5 +1,5 @@
 /**
- * Mapea API
+ * IGN API
  * Version ${pom.version}
  * Date ${build.timestamp}
  */
