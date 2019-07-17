@@ -20,8 +20,8 @@ import {
   isObject,
   includes,
   getScaleFromResolution,
-  fillResolutions,
-  generateResolutionsFromExtent,
+  // fillResolutions,
+  // generateResolutionsFromExtent,
 } from 'M/util/Utils';
 import 'patches';
 import ImplUtils from './util/Utils';
@@ -1706,65 +1706,67 @@ class Map extends MObject {
    * @api stable
    */
   updateResolutionsFromBaseLayer() {
-    let resolutions = [];
+    // FIXME:
+    // let resolutions = [];
 
-    // zoom levels
-    let zoomLevels = 16;
+    // // zoom levels
+    // let zoomLevels = 16;
 
-    // units
-    const units = this.getProjection().units;
+    // // units
+    // const units = this.getProjection().units;
 
-    // size
-    const size = this.getMapImpl().getSize();
+    // // size
+    // const size = this.getMapImpl().getSize();
 
-    const baseLayer = this.getBaseLayers().filter((bl) => {
-      return bl.isVisible();
-    })[0];
+    // const baseLayer = this.getBaseLayers().filter((bl) => {
+    //   return bl.isVisible();
+    // })[0];
 
-    // gets min/max resolutions from base layer
-    let maxResolution = null;
-    let minResolution = null;
-    if (!isNullOrEmpty(baseLayer)) {
-      minResolution = baseLayer.getImpl().getMinResolution();
-      maxResolution = baseLayer.getImpl().getMaxResolution();
-      zoomLevels = baseLayer.getImpl().getNumZoomLevels();
-    }
+    // // gets min/max resolutions from base layer
+    // let maxResolution = null;
+    // let minResolution = null;
+    // if (!isNullOrEmpty(baseLayer)) {
+    //   minResolution = baseLayer.getImpl().getMinResolution();
+    //   maxResolution = baseLayer.getImpl().getMaxResolution();
+    //   zoomLevels = baseLayer.getImpl().getNumZoomLevels();
+    // }
 
-    if (this.userResolutions_ === null) {
-      if (!isNullOrEmpty(minResolution) && !isNullOrEmpty(maxResolution)) {
-        resolutions = fillResolutions(minResolution, maxResolution, zoomLevels);
-        this.setResolutions(resolutions, true);
+    // if (this.userResolutions_ === null) {
+    //   if (!isNullOrEmpty(minResolution) && !isNullOrEmpty(maxResolution)) {
+    //     resolutions = fillResolutions(minResolution, maxResolution, zoomLevels);
+    //     this.setResolutions(resolutions, true);
 
-        this._resolutionsBaseLayer = true;
+    //     this._resolutionsBaseLayer = true;
 
-        // checks if it was the first time to
-        // calculate resolutions in that case
-        // fires the completed event
-        if (this._calculatedResolutions === false) {
-          this._calculatedResolutions = true;
-          this.fire(EventType.COMPLETED);
-        }
-      } else {
-        this.facadeMap_.calculateMaxExtent().then((extent) => {
-          if (!this._resolutionsBaseLayer && (this.userResolutions_ === null)) {
-            resolutions = generateResolutionsFromExtent(extent, size, zoomLevels, units);
-            this.setResolutions(resolutions, true);
+    //     // checks if it was the first time to
+    //     // calculate resolutions in that case
+    //     // fires the completed event
+    //     if (this._calculatedResolutions === false) {
+    //       this._calculatedResolutions = true;
+    //       this.fire(EventType.COMPLETED);
+    //     }
+    //   } else {
+    //     this.facadeMap_.calculateMaxExtent().then((extent) => {
+    //       if (!this._resolutionsBaseLayer && (this.userResolutions_ === null)) {
+    //         resolutions = generateResolutionsFromExtent(extent, size, zoomLevels, units);
+    //         this.setResolutions(resolutions, true);
 
-            this._resolutionsEnvolvedExtent = true;
+    //         this._resolutionsEnvolvedExtent = true;
 
-            // checks if it was the first time to
-            // calculate resolutions in that case
-            // fires the completed event
-            if (this._calculatedResolutions === false) {
-              this._calculatedResolutions = true;
-              this.fire(EventType.COMPLETED);
-            }
-          }
-        }).catch((error) => {
-          throw error;
-        });
-      }
-    }
+    //         // checks if it was the first time to
+    //         // calculate resolutions in that case
+    //         // fires the completed event
+    //         if (this._calculatedResolutions === false) {
+    //           this._calculatedResolutions = true;
+    //           this.fire(EventType.COMPLETED);
+    //         }
+    //       }
+    //     }).catch((error) => {
+    //       throw error;
+    //     });
+    //   }
+    // }
+    this.refresh();
   }
 
   /**
