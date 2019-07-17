@@ -30,6 +30,10 @@
       "type": "simple",
       "name": "position",
       "position": 5
+    }, {
+      "type": "boolean",
+      "name": "reverse",
+      "position": 6
     }]
   }],
   "files": {

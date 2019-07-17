@@ -205,6 +205,16 @@ export default class IGNSearch extends M.Plugin {
   }
 
   /**
+   * Reverse parameter
+   *
+   * @getter
+   * @function
+   */
+  get reverse() {
+    return this.reverse_;
+  }
+
+  /**
    * Get the API REST Parameters of the plugin
    *
    * @function
@@ -212,6 +222,6 @@ export default class IGNSearch extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.position}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.position}*${this.reverse}`;
   }
 }

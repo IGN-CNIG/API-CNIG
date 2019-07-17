@@ -50,7 +50,7 @@
 
 .m-areas>div.m-area>div.m-panel.opened.m-panel-attributions>.m-panel-controls>#m-attributions-container {
     /* width: 380px; */
-    max-width: 60vw;
+    max-width: 50vw;
 }
 
 .m-areas>div.m-area>div.m-panel.opened.m-panel-attributions>.m-panel-controls>#m-attributions-container>div {
