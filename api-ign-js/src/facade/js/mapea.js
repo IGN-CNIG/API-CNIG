@@ -2,12 +2,11 @@
  * @module M
  */
 import 'assets/css/fonts';
-import 'assets/css/mapea';
 import 'assets/css/animations';
 import 'impl/projections';
 import MapImpl from 'impl/Map';
 import Map from 'M/Map';
-import 'assets/css/ign'; // CNIG_CONFIG
+import 'assets/css/ign';
 import { isNullOrEmpty } from './util/Utils';
 import Exception from './exception/exception';
 import './util/Window';

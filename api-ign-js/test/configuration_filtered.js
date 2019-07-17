@@ -248,7 +248,7 @@ function fun(M_) {
    * @type {object}
    */
   M_.config('wmts', {
-    base: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Callejero*false',
+    base: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*EPSG:4326*Callejero*false',
   });
 
   /**

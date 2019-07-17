@@ -33,6 +33,7 @@ export default class IGNSearchControl extends M.Control {
     urlDispatcher,
     resultVisibility = true,
     reverse,
+    searchValue,
     nomenclatorSearchType = geographicNameType,
   ) {
     if (M.utils.isUndefined(IGNSearchImplControl)) {
@@ -127,6 +128,12 @@ export default class IGNSearchControl extends M.Control {
      * @type {Boolean}
      */
     this.reverseActivated = false;
+    /**
+     * Text to search
+     * @private
+     * @type {string}
+     */
+    this.searchValue = searchValue;
     registerHelpers();
   }
   /**
@@ -149,13 +156,22 @@ export default class IGNSearchControl extends M.Control {
       html.querySelector('#m-ignsearch-search-input').addEventListener('keydown', () => {
         clearTimeout(typingTimer);
       });
+      html.querySelector('#m-ignsearch-search-input').addEventListener('keydown', () => {
+        clearTimeout(typingTimer);
+      });
       html.querySelector('#m-ignsearch-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
       document.querySelector('.ign-search-panel>.m-panel-btn').addEventListener('click', this.clearResults.bind(this));
-      this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReverseTooltip(e));
+      this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReversePopUp(e));
       this.changePlaceholder();
       if (!this.reverse) {
         html.querySelector('#m-ignsearch-locate-button').style.display = 'none';
       }
+      this.on(M.evt.ADDED_TO_MAP, () => {
+        if (this.searchValue && this.searchValue.length > 3) {
+          html.querySelector('#m-ignsearch-search-input').value = this.searchValue;
+          this.searchInputValue({ target: { value: this.searchValue } }, true);
+        }
+      });
       success(html);
     });
   }
@@ -180,7 +196,7 @@ export default class IGNSearchControl extends M.Control {
    * This function shows information tooltip on clicked point.
    * @param {Event} e - Event
    */
-  showReverseTooltip(e) {
+  showReversePopUp(e) {
     if (this.reverseActivated) {
       // Reproject coordinates to ETRS89 on decimal grades (+ North latitude and East longitude)
       const origin = this.map.getProjection().code;
@@ -192,17 +208,31 @@ export default class IGNSearchControl extends M.Control {
       // type (only if refcatastral) = 'refcatastral'
       const params = `lon=${etrs89pointCoordinates[0]}&lat=${etrs89pointCoordinates[1]}`;
       const urlToGet = `${this.urlReverse}?${params}`;
+      const mapCoordinates = e.coord;
+      const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
+      let fullAddress = '';
+      // if device is mobile
+      // if (window.navigator.userAgent.match(/Android/i) ||
+      //   window.navigator.userAgent.match(/webOS/i) ||
+      //   window.navigator.userAgent.match(/iPhone/i) ||
+      //   window.navigator.userAgent.match(/iPad/i) ||
+      //   window.navigator.userAgent.match(/iPod/i) ||
+      //   window.navigator.userAgent.match(/BlackBerry/i) ||
+      //   window.navigator.userAgent.match(/Windows Phone/i)) {
+      //   this.showPopUp('Cargando...', mapCoordinates, dataCoordinates);
+      // }
       M.remote.get(urlToGet).then((res) => {
         if (res.text !== null) {
           const returnData = JSON.parse(res.text);
-          const fullAddress = this.createFullAddress(returnData);
-          const mapCoordinates = e.coord;
-          const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
-          this.showPopUp(fullAddress, mapCoordinates, dataCoordinates);
+          fullAddress = this.createFullAddress(returnData);
+        } else {
+          fullAddress = 'No existe información para esta ubicación.';
         }
+        this.showPopUp(fullAddress, mapCoordinates, dataCoordinates);
       });
     }
   }
+
   /**
    * This function sets a timeout between keypress and search.
    * @public
@@ -247,8 +277,10 @@ export default class IGNSearchControl extends M.Control {
    * @param {event} e - event that triggers this method
    * @api
    */
-  searchInputValue(e) {
-    const { value } = e.target;
+  searchInputValue(e, firstResult = false) {
+    // const { value } = e.target;
+    const value = e.target.value.replace(',', ' ');
+    this.searchValue = value;
     if (value.length <= 2) {
       this.resultsBox.innerHTML = '';
     } else {
@@ -274,11 +306,15 @@ export default class IGNSearchControl extends M.Control {
                 places: this.allCandidates,
               },
             });
-            compiledResult.querySelectorAll('li').forEach((listElement) => {
+            const elementList = compiledResult.querySelectorAll('li');
+            elementList.forEach((listElement) => {
               listElement.addEventListener('click', () => {
                 this.goToLocation(listElement);
               });
             });
+            if (firstResult === true && elementList.length > 0) {
+              elementList.item(0).click();
+            }
             // remove animation class and return to normal font size after loading
             this.resultsBox.classList.remove('g-cartografia-spinner');
             this.resultsBox.style.fontSize = '1em';
@@ -317,6 +353,11 @@ export default class IGNSearchControl extends M.Control {
       },
     });
     this.clickedElementLayer.displayInLayerSwitcher = false;
+
+    if (featureJSON.geometry.type === 'Point') {
+      this.clickedElementLayer.setStyle(this.point);
+    }
+
     // Stops showing polygon geometry
     if (!this.resultVisibility_) {
       this.clickedElementLayer.setStyle(this.simple);
@@ -325,16 +366,8 @@ export default class IGNSearchControl extends M.Control {
     this.zoomInLocation('g', featureJSON.geometry.type);
     // show popup for streets
     if (featureJSON.properties.type === 'callejero' || featureJSON.properties.type === 'portal') {
-      // this line substitutes temporarily the following piece of code
       const fullAddress = this.createFullAddress(featureJSON.properties);
-      // const via = (featureJSON.properties.tip_via === null ||
-      //   featureJSON.properties.tip_via === undefined) ? '' : featureJSON.properties.tip_via;
-      // const address = (featureJSON.properties.address === null ||
-      //   featureJSON.properties.address === undefined) ? '' : featureJSON.properties.address;
-      // const portal = (featureJSON.properties.portalNumber === null ||
-      //   featureJSON.properties.portalNumber === undefined ||
-      //   featureJSON.properties.portalNumber === 0) ? '' : featureJSON.properties.portalNumber;
-      // const fullAddress = `${via} ${address} ${portal}`;
+
       const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
       const perfectResult = featureJSON.properties.state;
       this.showSearchPopUp(fullAddress, coordinates, perfectResult);
@@ -539,12 +572,13 @@ export default class IGNSearchControl extends M.Control {
     this.resultsList = document.getElementById('m-ignsearch-results-list');
     this.clickedElementLayer.calculateMaxExtent().then((extent) => {
       this.map.setBbox(extent);
-      if (service === 'n' || type === 'Point') {
-        this.setScale(2000);
+      if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
+        this.setScale(17061); // last scale requested by our client: 2000
       }
       this.resultsList.innerHTML = '';
       this.searchInput.value = '';
       this.searchInput.value = this.currentElement.innerHTML;
+      this.searchValue = this.searchInput.value.trim();
       this.resultsList.appendChild(this.currentElement);
       // Fires ignsearch:EntityFound event after zoom-in result
       this.fire('ignsearch:entityFound', [extent]);
@@ -613,6 +647,7 @@ export default class IGNSearchControl extends M.Control {
   clearResults() {
     this.searchInput.value = '';
     this.resultsBox.innerHTML = '';
+    this.searchValue = '';
   }
   /**
    * This function clears input content, results box, popup and shown geometry.
@@ -719,13 +754,19 @@ export default class IGNSearchControl extends M.Control {
     featureTabOpts.content += `<div>${fullAddress}</div>
                 <div class='ignsearch-popup'>Lat: ${featureCoordinates[0]}</div>
                 <div class='ignsearch-popup'> Long: ${featureCoordinates[1]} </div>`;
-    const myPopUp = new M.Popup();
-    myPopUp.addTab(featureTabOpts);
-    this.map.addPopup(myPopUp, [
-      mapCoordinates[0],
-      mapCoordinates[1],
-    ]);
-    this.popup = myPopUp;
+    if (this.map.getPopup() instanceof M.Popup) {
+      this.popup = this.map.getPopup();
+      this.popup.addTab(featureTabOpts);
+    } else {
+      const myPopUp = new M.Popup();
+      myPopUp.addTab(featureTabOpts);
+
+      this.map.addPopup(myPopUp, [
+        mapCoordinates[0],
+        mapCoordinates[1],
+      ]);
+      this.popup = myPopUp;
+    }
     this.lat = mapCoordinates[1];
     this.lng = mapCoordinates[0];
   }

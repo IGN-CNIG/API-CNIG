@@ -14,6 +14,7 @@ const mp = new IGNSearch({
   isCollapsed: false,
   position: 'TL',
   reverse: true,
+  searchValue: 'CALLE RAIMUNDO MARTINEZ PUEBLA DE LOS INFANTES',
 });
 map.addPlugin(mp);
 

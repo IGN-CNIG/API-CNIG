@@ -1,4 +1,10 @@
 @font-face {
+    font-family: 'Muli';
+    src: url('../fonts/Muli-Regular-webfont.eot');
+    src: url('../fonts/Muli-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Muli-Regular-webfont.woff') format('woff'), url('../fonts/Muli-Regular-webfont.ttf') format('truetype'), url('../fonts/Muli-Regular-webfont.svg#Muli') format('svg');
+}
+
+@font-face {
     font-family: 'g-cartografia';
     src: url('../fonts/g-cartografia.eot?3cyd25');
     src: url('../fonts/g-cartografia.eot?3cyd25#iefix') format('embedded-opentype'),

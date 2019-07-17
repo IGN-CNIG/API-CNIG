@@ -23,6 +23,10 @@
       "type": "simple",
       "name": "label",
       "position": 3
+    }, {
+      "type": "number",
+      "name": "precision",
+      "position": 4
     }]
   }],
   "files": {

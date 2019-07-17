@@ -12,10 +12,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>Visor base</title>
-    <link type="text/css" rel="stylesheet" href="assets/css/mapea-5.1.0.ol.min.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/api-5.1.0.ol.min.css">
     <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
     <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
-    <link href="plugins/backgroundlayersselector/backgroundlayerselector.ol.min.css" rel="stylesheet" />
     <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
@@ -50,11 +49,10 @@
 <body>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
-    <script type="text/javascript" src="js/mapea-5.1.0.ol.min.js"></script>
+    <script type="text/javascript" src="js/api-5.1.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-5.1.0.js"></script>
     <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
     <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/backgroundlayersselector/backgroundlayerselector.ol.min.js"></script>
     <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
@@ -97,9 +95,9 @@
         }, {});
 
         const ocupacionSuelo = new M.layer.WMTS({
-            url: 'http://servicios.idee.es/wmts/ocupacion-suelo?',
-            name: 'LC.LandCoverSurfaces',
-            legend: 'Cubierta terrestre',
+            url: 'http://wmts-mapa-lidar.idee.es/lidar',
+            name: 'EL.GridCoverageDSM',
+            legend: 'Modelo Digital de Superficies LiDAR',
             matrixSet: 'GoogleMapsCompatible',
         });
 

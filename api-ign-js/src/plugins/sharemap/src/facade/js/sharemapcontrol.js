@@ -1,7 +1,6 @@
 /**
  * @module M/control/ShareMapControl
  */
-import '@fortawesome/fontawesome-free/css/all';
 import template from 'templates/sharemap';
 import modal from 'templates/modal';
 import createStyle from 'facade/styles';
@@ -221,9 +220,9 @@ export default class ShareMapControl extends M.Control {
   buildURL(html) {
     const input = html.querySelector('input');
     return this.getControls().then((controls) => {
-      const { x, y } = this.map_.getBbox();
+      const { x, y } = this.map_.getCenter();
       const { code, units } = this.map_.getProjection();
-      let shareURL = `${this.baseUrl_}?controls=${controls}&bbox=${x.min},${y.min},${x.max},${y.max}`;
+      let shareURL = `${this.baseUrl_}?controls=${controls}&center=${x},${y}&zoom=${this.map_.getZoom()}`;
       shareURL = shareURL.concat(`&projection=${code}*${units}`);
       shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) :
         shareURL.concat('');

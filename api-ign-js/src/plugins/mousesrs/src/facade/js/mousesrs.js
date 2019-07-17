@@ -60,6 +60,14 @@ export default class MouseSRS extends M.Plugin {
      * @type {string}
      */
     this.label_ = options.label || 'WGS84';
+
+    /**
+     * Precision of coodinates
+     *
+     * @private
+     * @type {number}
+     */
+    this.precision_ = M.utils.isNullOrEmpty(options.precision) ? 4 : options.precision;
   }
 
   /**
@@ -71,7 +79,7 @@ export default class MouseSRS extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new MouseSRSControl(this.srs_, this.label_));
+    this.controls_.push(new MouseSRSControl(this.srs_, this.label_, this.precision));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelMouseSRS', {
       collapsible: false,
@@ -126,6 +134,16 @@ export default class MouseSRS extends M.Plugin {
   }
 
   /**
+   * Precision of coordinates
+   * @public
+   * @function
+   * @api
+   */
+  get precision() {
+    return this.precision_;
+  }
+
+  /**
    * Get the API REST Parameters of the plugin
    *
    * @function
@@ -133,6 +151,6 @@ export default class MouseSRS extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.tooltip_}*${this.srs}*${this.label}`;
+    return `${this.name}=${this.position}*${this.tooltip_}*${this.srs}*${this.label}*${this.precision}`;
   }
 }

@@ -110,7 +110,8 @@ class GetFeatureInfo extends Control {
     const olMap = this.facadeMap_.getMapImpl();
     const wmsInfoURLS = this.buildWMSInfoURL(this.facadeMap_.getWMS());
     const wmtsInfoURLS = this.buildWMTSInfoURL(this.facadeMap_.getWMTS());
-    const layerNamesUrls = [...wmtsInfoURLS, ...wmsInfoURLS];
+    const layerNamesUrls = [...wmtsInfoURLS, ...wmsInfoURLS]
+      .filter(layer => !isNullOrEmpty(layer));
 
     if (layerNamesUrls.length > 0) {
       this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
@@ -158,8 +159,9 @@ class GetFeatureInfo extends Control {
    */
   buildWMTSInfoURL(wmtsLayers) {
     return wmtsLayers.map((layer) => {
-      let param = {};
+      let param;
       if (layer.isVisible() && layer.isQueryable()) {
+        param = {};
         const infoFormat = this.userFormats[this.currentFormat];
         const coord = this.evt.coordinate;
         const url = layer.getGetFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat);

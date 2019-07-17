@@ -71,6 +71,17 @@ export default class ZoomExtent extends M.Plugin {
   }
 
   /**
+   * Position of the plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get position() {
+    return this.position_;
+  }
+
+  /**
    * Get the API REST Parameters of the plugin
    *
    * @function

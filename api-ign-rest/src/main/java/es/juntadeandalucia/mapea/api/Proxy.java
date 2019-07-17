@@ -24,8 +24,6 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
 
-import es.guadaltel.framework.ticket.Ticket;
-import es.guadaltel.framework.ticket.TicketFactory;
 import es.juntadeandalucia.mapea.bean.ProxyResponse;
 import es.juntadeandalucia.mapea.builder.JSBuilder;
 import es.juntadeandalucia.mapea.exception.InvalidResponseException;
@@ -49,15 +47,12 @@ public class Proxy {
 	private static final int IMAGE_MAX_BYTE_SIZE = Integer.parseInt(configProperties.getString("max.image.size"));
 
 	/**
-	 * Proxy to execute a request to specified URL using JSONP protocol to avoid
-	 * the Cross-Domain restriction.
+	 * Proxy to execute a request to specified URL using JSONP protocol to avoid the
+	 * Cross-Domain restriction.
 	 * 
-	 * @param url
-	 *            URL of the request
-	 * @param op
-	 *            type of mapea operation
-	 * @param callbackFn
-	 *            function to execute as callback
+	 * @param url        URL of the request
+	 * @param op         type of mapea operation
+	 * @param callbackFn function to execute as callback
 	 * 
 	 * @return the javascript code
 	 */
@@ -89,15 +84,12 @@ public class Proxy {
 	}
 
 	/**
-	 * Proxy to execute a request to specified URL using JSONP protocol to avoid
-	 * the Cross-Domain restriction.
+	 * Proxy to execute a request to specified URL using JSONP protocol to avoid the
+	 * Cross-Domain restriction.
 	 * 
-	 * @param url
-	 *            URL of the request
-	 * @param op
-	 *            type of mapea operation
-	 * @param callbackFn
-	 *            function to execute as callback
+	 * @param url        URL of the request
+	 * @param op         type of mapea operation
+	 * @param callbackFn function to execute as callback
 	 * 
 	 * @return the javascript code
 	 */
@@ -137,12 +129,9 @@ public class Proxy {
 	/**
 	 * Sends a GET operation request to the URL and gets its response.
 	 * 
-	 * @param url
-	 *            URL of the request
-	 * @param op
-	 *            type of mapea operation
-	 * @param ticketParameter
-	 *            user ticket
+	 * @param url             URL of the request
+	 * @param op              type of mapea operation
+	 * @param ticketParameter user ticket
 	 *
 	 * @return the response of the request
 	 */
@@ -153,25 +142,6 @@ public class Proxy {
 
 		// sets ticket if the user specified one
 		if (ticketParameter != null) {
-			ticketParameter = ticketParameter.trim();
-			if (!ticketParameter.isEmpty()) {
-				Ticket ticket = TicketFactory.createInstance();
-				try {
-					Map<String, String> props = ticket.getProperties(ticketParameter);
-					String user = props.get("user");
-					String pass = props.get("pass");
-					String userAndPass = user + ":" + pass;
-					String encodedLogin = new String(
-							org.apache.commons.codec.binary.Base64.encodeBase64(userAndPass.getBytes()));
-					httpget.addRequestHeader(AUTHORIZATION, "Basic " + encodedLogin);
-				} catch (Exception e) {
-					System.out.println("-------------------------------------------");
-					System.out.println("EXCEPCTION THROWED BY PROXYREDIRECT CLASS");
-					System.out.println("METHOD: doPost");
-					System.out.println("TICKET VALUE: " + ticketParameter);
-					System.out.println("-------------------------------------------");
-				}
-			}
 		}
 
 		client.executeMethod(httpget);
@@ -196,10 +166,8 @@ public class Proxy {
 	/**
 	 * Sends a POST operation request to the URL and gets its response.
 	 * 
-	 * @param url
-	 *            URL of the request
-	 * @param op
-	 *            type of mapea operation
+	 * @param url URL of the request
+	 * @param op  type of mapea operation
 	 *
 	 * @return the response of the request
 	 */
@@ -211,10 +179,8 @@ public class Proxy {
 	/**
 	 * Checks if the request and the operation are valid.
 	 * 
-	 * @param url
-	 *            URL of the request
-	 * @param op
-	 *            type of mapea operation
+	 * @param url URL of the request
+	 * @param op  type of mapea operation
 	 */
 	private void checkRequest(String url) {
 		// TODO comprobar
@@ -223,12 +189,9 @@ public class Proxy {
 	/**
 	 * Checks if the response is valid for tthe operation and the URL.
 	 * 
-	 * @param proxyResponse
-	 *            response got from the request
-	 * @param url
-	 *            URL of the request
-	 * @param op
-	 *            type of mapea operation
+	 * @param proxyResponse response got from the request
+	 * @param url           URL of the request
+	 * @param op            type of mapea operation
 	 */
 	private void checkResponse(ProxyResponse proxyResponse, String url) {
 		// TODO Auto-generated method stub
@@ -237,8 +200,7 @@ public class Proxy {
 	/**
 	 * Checks if the response image is valid .
 	 * 
-	 * @param proxyResponse
-	 *            response got from the request
+	 * @param proxyResponse response got from the request
 	 * @throws InvalidResponseException
 	 */
 	private void checkResponseImage(ProxyResponse proxyResponse) throws InvalidResponseException {
@@ -276,10 +238,8 @@ public class Proxy {
 	/**
 	 * Creates a response error using the specified message.
 	 * 
-	 * @param url
-	 *            URL of the request
-	 * @param message
-	 *            message of the error
+	 * @param url     URL of the request
+	 * @param message message of the error
 	 */
 	private ProxyResponse error(String url, String message) {
 		ProxyResponse proxyResponse = new ProxyResponse();
@@ -291,10 +251,8 @@ public class Proxy {
 	/**
 	 * Creates a response error using the specified exception.
 	 * 
-	 * @param url
-	 *            URL of the request
-	 * @param exception
-	 *            Exception object
+	 * @param url       URL of the request
+	 * @param exception Exception object
 	 */
 	private ProxyResponse error(String url, Exception exception) {
 		return error(url, exception.getLocalizedMessage());
