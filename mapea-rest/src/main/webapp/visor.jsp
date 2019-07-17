@@ -75,12 +75,11 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'backgroundlayers'],
+            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'backgroundlayers', 'getfeatureinfo'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
             center: [-467062.8225, 4683459.6216],
-            getfeatureinfo: true,
         });
 
         const layerinicial = new M.layer.WMS({
@@ -100,7 +99,7 @@
         const ocupacionSuelo = new M.layer.WMTS({
             url: 'http://servicios.idee.es/wmts/ocupacion-suelo?',
             name: 'LC.LandCoverSurfaces',
-            legend: 'Cubiera terrestre',
+            legend: 'Cubierta terrestre',
             matrixSet: 'GoogleMapsCompatible',
         });
 
@@ -124,7 +123,7 @@
             defaultURL: 'https://www.ign.es/',
         });
         const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
+            baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
             position: 'BR',
         });
         const mp4 = new M.plugin.XYLocator({
