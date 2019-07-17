@@ -1,3 +1,14 @@
+const backgroundlayersIds = 'mapa,imagen,hibrido'.split(',');
+const backgroundlayersTitles = 'Mapa,Imagen,Hibrido'.split(',');
+const backgroundlayersLayers = 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true,WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true,WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true+WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true'.split(',');
+const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
+  return {
+    id,
+    title: backgroundlayersTitles[index],
+    layers: backgroundlayersLayers[index].split('+'),
+  };
+});
+
 const config = (configKey, configValue) => {
   config[configKey] = configValue;
 };
@@ -24,7 +35,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('MAPEA_URL', 'http://mapea-lite.desarrollo.guadaltel.es/api-core');
+  M_.config('MAPEA_URL', 'http://api-ign-lite.desarrollo.guadaltel.es/api-core/');
 
   /**
    * The path to the Mapea proxy to send
@@ -34,7 +45,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('PROXY_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-core/api/proxy');
+  M_.config('PROXY_URL', location.protocol + '//api-ign-lite.desarrollo.guadaltel.es/api-core/api/proxy');
 
   /**
    * The path to the Mapea proxy to send
@@ -44,7 +55,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('PROXY_POST_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-core/proxyPost');
+  M_.config('PROXY_POST_URL', location.protocol + '//api-ign-lite.desarrollo.guadaltel.es/api-core/proxyPost');
 
   /**
    * The path to the Mapea templates
@@ -62,7 +73,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('THEME_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-core/assets/');
+  M_.config('THEME_URL', location.protocol + '//api-ign-lite.desarrollo.guadaltel.es/api-core/assets/');
 
   /**
    * TODO
@@ -239,6 +250,14 @@ function fun(M_) {
   M_.config('wmts', {
     base: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Callejero*false',
   });
+
+  /**
+   * BackgroundLayers Control
+   *
+   * @private
+   * @type {object}
+   */
+  M_.config('backgroundlayers', backgroundlayersOpts);
 
   /**
    * Controls configuration
