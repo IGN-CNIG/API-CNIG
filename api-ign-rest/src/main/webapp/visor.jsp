@@ -99,6 +99,8 @@
             name: 'EL.GridCoverageDSM',
             legend: 'Modelo Digital de Superficies LiDAR',
             matrixSet: 'GoogleMapsCompatible',
+        }, {
+            visibility: false,
         });
 
 

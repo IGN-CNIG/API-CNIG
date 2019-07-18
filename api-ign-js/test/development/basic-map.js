@@ -4,9 +4,7 @@ import WMTS from 'M/layer/WMTS';
 
 const map = Mmap({
   container: 'map',
-  controls: ['scale*true'],
-  zoom: 5,
-  projection: 'EPSG:4326*d',
+  controls: ['backgroundlayers*2*false'],
   maxZoom: 20,
   minZoom: 4,
   // center: [-467062.8225, 4683459.6216],

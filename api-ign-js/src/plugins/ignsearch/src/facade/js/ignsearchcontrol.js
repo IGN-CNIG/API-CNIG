@@ -34,6 +34,7 @@ export default class IGNSearchControl extends M.Control {
     resultVisibility = true,
     reverse,
     searchValue,
+    geocoderCoords,
     nomenclatorSearchType = geographicNameType,
   ) {
     if (M.utils.isUndefined(IGNSearchImplControl)) {
@@ -134,6 +135,12 @@ export default class IGNSearchControl extends M.Control {
      * @type {string}
      */
     this.searchValue = searchValue;
+    /**
+     * Text to search
+     * @private
+     * @type {string}
+     */
+    this.geocoderCoords = geocoderCoords;
     registerHelpers();
   }
   /**
@@ -170,6 +177,14 @@ export default class IGNSearchControl extends M.Control {
         if (this.searchValue && this.searchValue.length > 3) {
           html.querySelector('#m-ignsearch-search-input').value = this.searchValue;
           this.searchInputValue({ target: { value: this.searchValue } }, true);
+        }
+        if (this.geocoderCoords && this.geocoderCoords.length === 2) {
+          this.activateDeactivateReverse();
+          const reprojCoords = this.getImpl().reproject(this.geocoderCoords, 'EPSG:4326', map.getProjection().code);
+          this.showReversePopUp({
+            coord: reprojCoords,
+            fake: true,
+          });
         }
       });
       success(html);
@@ -209,6 +224,7 @@ export default class IGNSearchControl extends M.Control {
       const params = `lon=${etrs89pointCoordinates[0]}&lat=${etrs89pointCoordinates[1]}`;
       const urlToGet = `${this.urlReverse}?${params}`;
       const mapCoordinates = e.coord;
+      this.geocoderCoords = etrs89pointCoordinates;
       const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
       let fullAddress = '';
       // if device is mobile
@@ -226,9 +242,9 @@ export default class IGNSearchControl extends M.Control {
           const returnData = JSON.parse(res.text);
           fullAddress = this.createFullAddress(returnData);
         } else {
-          fullAddress = 'No existe información para esta ubicación.';
+          fullAddress = 'No existe dirección asociada para esta ubicación.';
         }
-        this.showPopUp(fullAddress, mapCoordinates, dataCoordinates);
+        this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e);
       });
     }
   }
@@ -526,6 +542,7 @@ export default class IGNSearchControl extends M.Control {
           via = element.tip_via !== '' ? `&tip_via=${element.tip_via}` : '';
         }
       });
+      address = listElement.innerHTML;
       if (listElement.innerHTML.includes('(')) {
         const parenthesisIndex = listElement.innerHTML.indexOf('(');
         address = listElement.innerHTML.substring(0, parenthesisIndex);
@@ -570,19 +587,21 @@ export default class IGNSearchControl extends M.Control {
    */
   zoomInLocation(service, type) {
     this.resultsList = document.getElementById('m-ignsearch-results-list');
-    this.clickedElementLayer.calculateMaxExtent().then((extent) => {
-      this.map.setBbox(extent);
-      if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
-        this.setScale(17061); // last scale requested by our client: 2000
-      }
-      this.resultsList.innerHTML = '';
-      this.searchInput.value = '';
-      this.searchInput.value = this.currentElement.innerHTML;
-      this.searchValue = this.searchInput.value.trim();
-      this.resultsList.appendChild(this.currentElement);
-      // Fires ignsearch:EntityFound event after zoom-in result
-      this.fire('ignsearch:entityFound', [extent]);
-    });
+    if (this.clickedElementLayer instanceof M.layer.Vector) {
+      this.clickedElementLayer.calculateMaxExtent().then((extent) => {
+        this.map.setBbox(extent);
+        if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
+          this.setScale(17061); // last scale requested by our client: 2000
+        }
+        this.resultsList.innerHTML = '';
+        this.searchInput.value = '';
+        this.searchInput.value = this.currentElement.querySelector('#info').innerHTML;
+        this.searchValue = this.searchInput.value.trim();
+        this.resultsList.appendChild(this.currentElement);
+        // Fires ignsearch:EntityFound event after zoom-in result
+        this.fire('ignsearch:entityFound', [extent]);
+      });
+    }
   }
   /**
    * This function returns clicked location object
@@ -606,6 +625,8 @@ export default class IGNSearchControl extends M.Control {
     let coordinates;
     if (feature.geometry.type === 'Point') {
       coordinates = feature.geometry.coordinates[0][0];
+    } else if (feature.geometry.type === 'MultiPolygon') {
+      coordinates = [feature.geometry.coordinates];
     } else if (feature.geometry.type === 'LineString') {
       coordinates = feature.geometry.coordinates[0];
     } else {
@@ -726,7 +747,7 @@ export default class IGNSearchControl extends M.Control {
     * @param { boolean } exactResult indicating
     if the given result is a perfect match
     */
-  showSearchPopUp(fullAddress, coordinates, exactResult) {
+  showSearchPopUp(fullAddress, coordinates, exactResult, e = {}) {
     const destinyProj = this.map.getProjection().code;
     const destinySource = 'EPSG:4326';
     const newCoordinates = this.getImpl()
@@ -737,7 +758,7 @@ export default class IGNSearchControl extends M.Control {
     } else {
       exitState = 'Dirección exacta';
     }
-    this.showPopUp(fullAddress, newCoordinates, coordinates, exitState);
+    this.showPopUp(fullAddress, newCoordinates, coordinates, exitState, false, e);
   }
   /**
    * This function inserts a popup on the map with information about its location.
@@ -746,29 +767,29 @@ export default class IGNSearchControl extends M.Control {
    * @param { Array } featureCoordinates latitude[0] and longitude[1] coordinates from feature
    * @param { string } exitState indicating if the given result is a perfect match
    */
-  showPopUp(fullAddress, mapCoordinates, featureCoordinates, exitState = null) {
-    const featureTabOpts = { content: '' };
+  showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
+    const featureTabOpts = { content: '', icon: 'g-plugin-ignsearch-localizacion3' };
     if (exitState !== null) {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }
     featureTabOpts.content += `<div>${fullAddress}</div>
                 <div class='ignsearch-popup'>Lat: ${featureCoordinates[0]}</div>
                 <div class='ignsearch-popup'> Long: ${featureCoordinates[1]} </div>`;
-    if (this.map.getPopup() instanceof M.Popup) {
+    if (this.map.getPopup() instanceof M.Popup && addTab === true) {
       this.popup = this.map.getPopup();
       this.popup.addTab(featureTabOpts);
     } else {
-      const myPopUp = new M.Popup();
+      const myPopUp = new M.Popup({ panMapIfOutOfView: !e.fake });
       myPopUp.addTab(featureTabOpts);
 
       this.map.addPopup(myPopUp, [
-        mapCoordinates[0],
-        mapCoordinates[1],
+        mapcoords[0],
+        mapcoords[1],
       ]);
       this.popup = myPopUp;
     }
-    this.lat = mapCoordinates[1];
-    this.lng = mapCoordinates[0];
+    this.lat = mapcoords[1];
+    this.lng = mapcoords[0];
   }
   /**
    * This function sets given scale to map

@@ -3,7 +3,8 @@ import IGNSearch from 'facade/ignsearch';
 const map = M.map({
   container: 'mapjs',
   center: [-467062.8225, 4683459.6216],
-  getfeatureinfo: "html",
+  controls: ['getfeatureinfo'],
+  zoom: 13
 });
 
 const mp = new IGNSearch({
@@ -14,7 +15,9 @@ const mp = new IGNSearch({
   isCollapsed: false,
   position: 'TL',
   reverse: true,
-  searchValue: 'CALLE RAIMUNDO MARTINEZ PUEBLA DE LOS INFANTES',
+  // searchValue: 'CALLE RAIMUNDO MARTINEZ PUEBLA DE LOS INFANTES',
+  geocoderCoords: "-5.38855299997567,37.7788050002076"
+
 });
 map.addPlugin(mp);
 

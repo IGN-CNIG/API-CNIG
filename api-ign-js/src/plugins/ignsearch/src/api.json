@@ -38,6 +38,10 @@
       "type": "simple",
       "name": "searchValue",
       "position": 7
+    }, {
+      "type": "simple",
+      "name": "geocoderCoords",
+      "position": 8
     }]
   }],
   "files": {

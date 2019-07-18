@@ -25,7 +25,7 @@ const registerHelpers = () => {
     }
   });
   Handlebars.registerHelper('printType', (type, address, id, municipality) => {
-    let line = `<li id=${id}> ${address.toUpperCase()}`;
+    let line = `<li id=${id}><span id="info">${address.toUpperCase()}</span>`;
     // add following lines if asked to show entity type again
     // (but not if type's portal, callejero or Codpost)
     // if (type !== 'callejero' && type !== 'portal' && type !== 'Codpost') {

@@ -243,7 +243,8 @@ export default class ShareMapControl extends M.Control {
     return new Promise((resolve) => {
       M.remote.get(`${url}/api/actions/controls`).then((response) => {
         const allowedControls = JSON.parse(response.text);
-        const resolvedControls = controls.filter(control => allowedControls.includes(control));
+        const resolvedControls = controls.filter(control => allowedControls.includes(control))
+          .filter(c => c !== 'backgroundlayers');
         if (resolvedControls.includes('mouse')) {
           const mouseControl = this.map_.getControls().find(c => c.name === 'mouse');
           const { showProj } = mouseControl.getImpl();
@@ -256,6 +257,19 @@ export default class ShareMapControl extends M.Control {
           const index = resolvedControls.indexOf('scale');
           resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
         }
+        const backgroundlayers = this.map_.getControls().filter(c => c.name === 'backgroundlayers')[0];
+        let backgroundlayersAPI;
+        if (!M.utils.isNullOrEmpty(backgroundlayers)) {
+          const { visible, activeLayer } = backgroundlayers;
+          if (typeof visible === 'boolean' && typeof activeLayer === 'number') {
+            backgroundlayersAPI = `backgroundlayers*${activeLayer}*${visible}`;
+          } else {
+            backgroundlayersAPI = 'backgroundlayers';
+          }
+        } else {
+          backgroundlayersAPI = 'backgroundlayers';
+        }
+        resolvedControls.push(backgroundlayersAPI);
         resolve(resolvedControls);
       });
     });

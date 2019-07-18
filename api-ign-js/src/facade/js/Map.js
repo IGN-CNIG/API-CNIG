@@ -1121,8 +1121,20 @@ class Map extends Base {
               });
               break;
             default:
-              const getControlsAvailable = concatUrlPaths([M.config.MAPEA_URL, '/api/actions/controls']);
-              Dialog.error(`El control ${controlParam} no está definido. Consulte los controles disponibles <a href='${getControlsAvailable}' target="_blank">aquí</a>`);
+              if (/backgroundlayers\*([0-9])+\*(true|false)/.test(controlParam)) {
+                const idLayer = controlParam.match(/backgroundlayers\*([0-9])+\*(true|false)/)[1];
+                const visible = controlParam.match(/backgroundlayers\*([0-9])+\*(true|false)/)[2] === 'true';
+                control = new BackgroundLayers(this, Number.parseInt(idLayer, 10), visible);
+
+                panel = new Panel(BackgroundLayers.NAME, {
+                  collapsible: false,
+                  position: Position.TR,
+                  className: 'm-plugin-baselayer',
+                });
+              } else {
+                const getControlsAvailable = concatUrlPaths([M.config.MAPEA_URL, '/api/actions/controls']);
+                Dialog.error(`El control ${controlParam} no está definido. Consulte los controles disponibles <a href='${getControlsAvailable}' target="_blank">aquí</a>`);
+              }
           }
         } else if (controlParam instanceof Control) {
           control = controlParam;

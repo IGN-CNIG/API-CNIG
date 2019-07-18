@@ -73,8 +73,13 @@
 }
 
 @media (max-width: 768px) {
-    .m-areas>div.m-area>div.m-panel.no-collapsible.m-panel-attributions {
+    .m-areas>div.m-area>div.m-panel.no-collapsible.m-panel-attributions.collapsed {
         max-width: 400px;
+        margin-bottom: 6vh;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-panel-attributions.opened {
+        margin-bottom: 6vh;
     }
 
     .m-areas>div.m-area>div.m-panel.m-panel-attributions>.m-panel-controls>#m-attributions-container>button#close-button {

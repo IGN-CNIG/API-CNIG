@@ -8,7 +8,7 @@ import WMS from 'M/layer/WMS';
 import WMTS from 'M/layer/WMTS';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
-import { LOAD } from '../event/eventtype';
+import { LOAD, ADDED_TO_MAP } from '../event/eventtype';
 
 /**
  * This parameter indicates the maximum base layers of plugin
@@ -31,7 +31,7 @@ class BackgroundLayers extends ControlBase {
    * @extends {M.Control}
    * @api
    */
-  constructor(map) {
+  constructor(map, idLayer, visible) {
     const impl = new ControlImpl();
     super(impl, BackgroundLayers.NAME);
     map.getBaseLayers().forEach((layer) => {
@@ -48,6 +48,8 @@ class BackgroundLayers extends ControlBase {
     });
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
     this.activeLayer = -1;
+    this.idLayer = idLayer == null ? 0 : idLayer;
+    this.visible = visible == null ? true : visible;
   }
 
   /**
@@ -64,9 +66,23 @@ class BackgroundLayers extends ControlBase {
       const html = compileTemplate(template, { vars: { layers: this.layers } });
       this.html = html;
       this.listen(html);
-      html.querySelector('button').click();
+      // html.querySelector('button').click();
       this.uniqueButton = this.html.querySelector('#m-baselayerselector-unique-btn');
       this.uniqueButton.innerText = this.layers[0].title;
+      this.on(ADDED_TO_MAP, () => {
+        const visible = this.visible;
+        if (this.idLayer > -1) {
+          this.activeLayer = this.idLayer;
+          this.showBaseLayer({
+            target: {
+              parentElement: html,
+            },
+          }, this.layers[this.activeLayer], this.activeLayer);
+        }
+        if (visible === false) {
+          this.map_.removeLayers(this.map_.getBaseLayers());
+        }
+      });
       success(html);
     });
   }
@@ -105,11 +121,11 @@ class BackgroundLayers extends ControlBase {
    */
   handlerClickDesktop(e, layersInfo, i) {
     this.removeLayers();
+    this.visible = false;
     const { layers, title } = layersInfo;
     const isActived = e.target.parentElement
       .querySelector(`#m-baselayerselector-${layersInfo.id}`)
       .classList.contains('activeBaseLayerButton');
-
     layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
 
     e.target.parentElement.querySelectorAll('button[id^="m-baselayerselector-"]').forEach((button) => {
@@ -118,6 +134,7 @@ class BackgroundLayers extends ControlBase {
       }
     });
     if (!isActived) {
+      this.visible = true;
       this.activeLayer = i;
       e.target.parentElement.querySelector('#m-baselayerselector-unique-btn').innerText = title;
       e.target.parentElement

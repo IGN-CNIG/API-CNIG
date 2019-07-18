@@ -1,7 +1,7 @@
 {
   "custom": {
-    "titleApp": "Mapea",
-    "versionApp": "5.0.0"
+    "titleApp": "API IGN Core",
+    "versionApp": "5.1.0"
   },
   "opts": {
     "recurse": true,

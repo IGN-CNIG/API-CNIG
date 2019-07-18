@@ -56,7 +56,8 @@ export default class TOCControl extends M.Control {
     const layersOpts = layers.map((layer) => {
       return {
         outOfRange: !layer.inRange(),
-        visible: (layer.isVisible() === true),
+        visible: (layer instanceof M.layer.WMTS ? layer.options.visibility === true :
+          layer.isVisible()),
         id: layer.name,
         title: layer.legend || layer.name,
       };
@@ -88,7 +89,10 @@ export default class TOCControl extends M.Control {
     const { dataset } = target;
     const { layerName } = dataset;
     const layerFound = this.map_.getLayers({ name: layerName })[0];
-    layerFound.setVisible(!layerFound.isVisible());
+    const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :
+      layerFound.isVisible();
+    layerFound.setVisible(!visibility);
+    layerFound.options.visibility = !visibility;
     this.render();
   }
 
