@@ -2,9 +2,7 @@ import Attributions from 'facade/attributions';
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['layerswitcher', 'panzoombar', 'overviewmap',
-    'scale', 'location', 'mouse', 'getfeatureinfo',
-  ],
+  controls: ['scale'],
   zoom: 4,
 });
 
