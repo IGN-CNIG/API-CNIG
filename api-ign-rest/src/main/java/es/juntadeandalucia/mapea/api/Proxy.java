@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
@@ -139,7 +140,12 @@ public class Proxy {
 		ProxyResponse response = new ProxyResponse();
 		HttpClient client = new HttpClient();
 		GetMethod httpget = new GetMethod(url);
-
+		String proxyHost = configProperties.getString("proxy.host");
+		String proxPort = configProperties.getString("proxy.port");
+		if (proxyHost.length() > 0 && proxPort.length() > 0) {
+			HostConfiguration configuration = client.getHostConfiguration();
+			configuration.setProxy(proxyHost, Integer.parseInt(proxPort));
+		}
 		// sets ticket if the user specified one
 		if (ticketParameter != null) {
 		}
