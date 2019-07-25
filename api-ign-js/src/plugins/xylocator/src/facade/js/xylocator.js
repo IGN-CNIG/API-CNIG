@@ -55,13 +55,13 @@ export default class XYLocator extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || 'Buscar por coordenadas';
 
-    /**
-     * Zoom scale
-     *
-     * @private
-     * @type {number}
-     */
-    this.scale_ = Number.isFinite(options.scale) === true ? options.scale : 2000;
+    // /**
+    //  * Zoom scale
+    //  *
+    //  * @private
+    //  * @type {number}
+    //  */
+    // this.scale_ = Number.isFinite(options.scale) === true ? options.scale : 2000;
   }
 
   /**
@@ -76,7 +76,7 @@ export default class XYLocator extends M.Plugin {
     this.facadeMap_ = map;
     this.control_ = new XYLocatorControl({
       projections: this.projections_,
-      scale: this.scale_,
+      // scale: this.scale_,
     });
     this.panel_ = new M.ui.Panel('M.plugin.XYLocator.NAME', {
       collapsible: true,

@@ -32,13 +32,13 @@ export default class XYLocatorControl extends M.Control {
      */
     this.projections = options.projections;
 
-    /**
-     * Zoom scale
-     *
-     * @private
-     * @type {number}
-     */
-    this.scale_ = Number.isFinite(options.scale) === true ? options.scale : 2000;
+    //   /**
+    //    * Zoom scale
+    //    *
+    //    * @private
+    //    * @type {number}
+    //    */
+    //   this.scale_ = Number.isFinite(options.scale) === true ? options.scale : 2000;
   }
 
   /**
@@ -103,11 +103,12 @@ export default class XYLocatorControl extends M.Control {
     const yFloat = parseFloat(y);
     this.map.removeLayers(this.coordinatesLayer);
     if (!isNaN(xFloat) && !isNaN(yFloat)) {
-      this.map_.setCenter(`${x},${y}*false`);
-      this.getImpl().setScale(this.scale_);
+      this.map.setCenter(`${x},${y}*false`);
+      // this.getImpl().setScale(this.scale_);
+      this.map.setZoom(14);
       this.fire('xylocator:locationCentered', [{
-        zoom: 10,
-        scale: this.scale_,
+        zoom: 14,
+        // scale: this.scale_,
         center: [x, y],
       }]);
 
@@ -128,7 +129,7 @@ export default class XYLocatorControl extends M.Control {
 
       this.coordinatesLayer.addFeatures([feature]);
       this.coordinatesLayer.setStyle(this.point);
-      this.map_.addLayers(this.coordinatesLayer);
+      this.map.addLayers(this.coordinatesLayer);
     } else {
       M.dialog.error('Las coordenadas introducidas no son correctas.', 'Error');
     }
