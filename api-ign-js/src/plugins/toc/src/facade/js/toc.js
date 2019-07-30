@@ -52,6 +52,7 @@ export default class TOC extends M.Plugin {
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'g-plugin-toc-capas2',
       className: 'm-plugin-toc',
+      tooltip: 'Selector de capas',
     });
     this.panel_.addControls([this.control]);
     map.addPanels(this.panel_);
