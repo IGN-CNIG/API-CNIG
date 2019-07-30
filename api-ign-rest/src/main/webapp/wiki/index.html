@@ -48,7 +48,7 @@
                             </a><br>&nbsp;
                             &nbsp; <a href="#Capas-raster">
                                 <strong>&gt; Capas raster</strong>
-                            </a><br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#WMS">WMS</a>, <a href="#WMC">WMC</a>, <a href="#WMTS">WMTS</a>, <a href="#Mapbox">Mapbox</a>, <a href="#OSM">OSM</a><br>&nbsp; <a href="#Capas-vectoriales"><strong>&gt; Capas vectoriales</strong>
+                            </a><br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#WMS">WMS</a>, <a href="#WMC">WMC</a>, <a href="#WMTS">WMTS</a> <br>&nbsp; <a href="#Capas-vectoriales"><strong>&gt; Capas vectoriales</strong>
                             </a><br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#WFS">WFS</a>, <a href="#GeoJSON">GeoJSON</a>, <a href="#KML">KML</a><br><a href="#features">Features</a><br><a href="#filtros">Filtros</a><br><a href="#simbologia">Simbología</a><br>&nbsp;&nbsp;&nbsp;<a href="#M.style.Point">&#8226; Puntos</a>, <a href="#M.style.Line">Líneas</a>, <a href="#M.style.Polygon">Polígonos</a><br>&nbsp;&nbsp;&nbsp;<a href="#Coropletas">&#8226; Coropletas</a>, <a href="#Proporcional">Proporcional</a>, <a href="#Categorias">Categorías</a>,<a href="#Heatmap">Mapas de Calor</a><br>&nbsp;&nbsp;&nbsp;<a href="#Cluster">&#8226; Cluster</a>, <a href="#Composite">Composición</a><br>&nbsp;<a href="#Controles"><strong>&gt; Controles básicos</strong></a><br>&nbsp;<a href="#Opciones"><strong>&gt; Opciones</strong></a><br>&nbsp;<a href="#Paneles"><strong>&gt; Paneles</strong></a><br><a href="#Plugins"><strong>Plugins</strong></a><br><a href="#Proxys"><strong>Proxys</strong></a><br><a href="#Eventos"><strong>Eventos</strong></a><br><a href="#Utilidades"><strong>Utilidades</strong></a><br><a href="#Acceso-libreria-base"><strong>Acceso librerías base</strong></a><br><a href="#Mapea-iframe"><strong>Mapea iframe</strong></a><br><a href="#Solucion-de-problemas"><strong>Solución de problemas</strong></a> </p>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     <h1>Capas</h1>
                     <p>Las <strong>capas</strong> son para Mapea los proveedores de información espacial que mostrar en el mapa. Existen
                         diversos formatos bajo los que ofrecer esas capas, y estos son los que acepta Mapea:</p>
-                    <p><a href="#WMS">WMS</a>, <a href="#WFS">WFS</a> , <a href="#WMC">WMC</a>, <a href="#WMTS">WMTS</a>, <a href="#KML">KML</a>, <a href="#GeoJSON">GeoJSON</a>, <a href="#Mapbox">Mapbox</a> </p>
+                    <p><a href="#WMS">WMS</a>, <a href="#WFS">WFS</a> , <a href="#WMC">WMC</a>, <a href="#WMTS">WMTS</a>, <a href="#KML">KML</a>, <a href="#GeoJSON">GeoJSON</a> </p>
                     <p>Existen varios métodos que permiten gestionar las capas de un mapa. </p>
                     <pre class="hljs"><span class="hljs-comment">// Acceder y eliminar las capas del mapa</span>
                     <span class="hljs-keyword">var</span> capas = mapajs.getLayers();
@@ -139,7 +139,7 @@
                     <h1><strong>&gt; Capas raster</strong></h1>
                     <p>Las <strong>capas</strong> son para Mapea la información espacial que mostrar en el mapa. Son de tipo <strong>raster</strong> cuando consisten en imágenes, formadas a su vez por un conjunto de pixeles, creadas generalmente por servidores de mapas externos al cliente en función de los parámetros que indiquemos. El cliente, por tanto, recibe una <em>representación</em> de los datos geográficos, no los datos en sí. </p>
                     <p>Mapea soporta los siguientes tipos de capas raster:</p>
-                    <p><a href="#WMS">WMS</a>, <a href="#WMTS">WMTS</a>, <a href="#WMC">WMC</a>, <a href="#Mapbox">Mapbox</a>, <a href="#OSM">OSM</a> </p>
+                    <p><a href="#WMS">WMS</a>, <a href="#WMTS">WMTS</a>, <a href="#WMC">WMC</a> </p>
                     <p>Existen varios métodos que permiten gestionar las capas de un mapa. </p>
                     <pre class="hljs"><span class="hljs-comment">// Acceder y eliminar las capas del mapa</span>
 <span class="hljs-keyword">var</span> capas = mapajs.getLayers();
@@ -275,49 +275,7 @@ mapajs.on(M.evt.COMPLETED, <span class="hljs-function"><span class="hljs-keyword
                         <li><strong>legend</strong>: Nombre que mostrará la capa en el árbol de contenido, si existe.</li>
                         <li><strong>format</strong>: Opcionalmente, el formato en el que solicitar la imagen</li>
                     </ul>
-                    <p class="page" id="Mapbox"></p>
-                    <h1>Mapbox</h1>
-                    <p>Si el usuario dispone de un access token para visualizar capas <a href="https://www.mapbox.com/">Mapbox</a>, puede construirlas en Mapea de la siguiente manera: </p>
-                    <pre class="hljs"><span class="hljs-keyword">var</span> mapajs = M.map({
-  <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
-  <span class="hljs-attr">layers</span>: [<span class="hljs-keyword">new</span> M.layer.Mapbox({
-    <span class="hljs-attr">url</span>: <span class="hljs-string">"https://api.mapbox.com/v4/"</span>,
-    <span class="hljs-attr">name</span>: <span class="hljs-string">"mapbox.streets"</span>,
-    <span class="hljs-attr">accessToken</span>: <span class="hljs-string">"xxxxxx"</span>,
-    <span class="hljs-attr">legend</span>: <span class="hljs-string">"Calles"</span>
-  })],
-  <span class="hljs-attr">bbox</span>: [<span class="hljs-number">96388</span>, <span class="hljs-number">3959795</span>, <span class="hljs-number">621889</span>, <span class="hljs-number">4299792</span>],
-  <span class="hljs-attr">controls</span>: [<span class="hljs-string">"layerswitcher"</span>, <span class="hljs-string">"mouse"</span>],
-  <span class="hljs-attr">zoom</span>: <span class="hljs-number">3</span>
-});</pre>
-                    <p>Donde: </p>
-                    <ul>
-                        <li><strong>url</strong>: url de acceso.</li>
-                        <li><strong>name</strong>: nombre de la capa que se quiere visualizar.</li>
-                        <li><strong>accesToken</strong>: token de acceso mapbox.</li>
-                        <li><strong>legend</strong>: <em>Opcional</em> - Nombre a mostrar en el TOC.</li>
-                        <li><strong>transparent</strong>: <em>Opcional</em> - Si es capa base o no.</li>
-                    </ul>
-                    <p class="page" id="OSM"></p>
-                    <h1>OSM</h1>
-                    <p>Puede visualizarse la capa de <a href="https://www.openstreetmap.org">Open Street Map</a> creando el tipo de layer correspondiente. Al hacerlo, se añadirá automáticamente al mapa un mensaje de atribución, tal como <a href="https://www.openstreetmap.org/copyright">requiere legalmente su uso</a>: </p>
-                    <pre class="hljs"><span class="hljs-keyword">var</span> mapajs = M.map({
-  <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
-  <span class="hljs-attr">layers</span>: [<span class="hljs-keyword">new</span> M.layer.OSM()],
-  <span class="hljs-attr">bbox</span>: [<span class="hljs-number">96388</span>, <span class="hljs-number">3959795</span>, <span class="hljs-number">621889</span>, <span class="hljs-number">4299792</span>],
-  <span class="hljs-attr">controls</span>: [<span class="hljs-string">"layerswitcher"</span>, <span class="hljs-string">"mouse"</span>],
-  <span class="hljs-attr">zoom</span>: <span class="hljs-number">3</span>
-});</pre>
-                    <p>Aunque se reproyecta automáticamente a cualquier otro, se recomienda usar el sistema de referencia espacial <strong>EPSG:3857</strong>, <a href="http://openstreetmapdata.com/info/projections">usado por OSM</a>. </p>
-                    <pre class="hljs"><span class="hljs-keyword">var</span> mapajs = M.map({
-  <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
-  <span class="hljs-attr">layers</span>: [<span class="hljs-keyword">new</span> M.layer.OSM()],
- <span class="hljs-attr">center</span>: [<span class="hljs-number">-543431</span>,<span class="hljs-number">4503560</span>],
-  <span class="hljs-attr">controls</span>: [<span class="hljs-string">"layerswitcher"</span>, <span class="hljs-string">"mouse"</span>],
-  <span class="hljs-attr">zoom</span>: <span class="hljs-number">6</span>,
-  <span class="hljs-attr">projection</span>: <span class="hljs-string">"EPSG:3857*m"</span>
-});
-</pre>
+                    
                     <p class="page" id="Capas-vectoriales"></p>
                     <h1><strong>&gt; Capas vectoriales</strong></h1>
                     <p>A diferencia de las capas raster, donde el cliente recibe una imagen de la misma generada por el servidor de mapas, las capas vectoriales se descargan al cliente, y éste es el que las representa. Mapea soporta los siguientes tipos de capas vectoriales: </p>

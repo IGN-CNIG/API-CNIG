@@ -3,12 +3,10 @@ import { info } from 'M/dialog';
 import WMC from 'M/layer/WMC';
 import WMS from 'M/layer/WMS';
 import WMTS from 'M/layer/WMTS';
-import Mapbox from 'M/layer/Mapbox';
-import OSM from 'M/layer/OSM';
+
 
 const mapjs = Mmap({
   container: 'map',
-  layers: ["OSM"],
   controls: ["mouse", "layerswitcher"],
 });
 
@@ -31,8 +29,7 @@ const redesEnergeticas = new WMS("WMS*Redes*http://www.ideandalucia.es/wms/mta40
 const limites = new WMS("WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*true");
 const canarias = new WMS("WMS*canarias*http://idecan2.grafcan.es/ServicioWMS/MOS?*WMS_MOS*true*false");
 const toporaster = new WMTS("WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster");
-const mapbox = new Mapbox("MAPBOX*mapbox.streets*true");
-const osm = new OSM({ transparent: true });
+
 
 const removeLayers = () => mapjs.removeLayers(mapjs.getLayers());
 
@@ -65,7 +62,7 @@ window.prioridadMapa = (evt) => {
   `);
   removeLayers();
   mapjs.setMaxExtent(maxExtent);
-  mapjs.addLayers([wmc, permeabilidad, redesEnergeticas, limites, toporaster, mapbox, osm]);
+  mapjs.addLayers([wmc, permeabilidad, redesEnergeticas, limites, toporaster]);
 };
 window.prioridadGetCapabilities = (evt) => {
   info(`
@@ -81,5 +78,4 @@ window.prioridadProyeccion = (evt) => {
     6. Proyección: Se aplicará el maxExtent de la proyección que tenga establecida el mapa teniendo en cuenta que ésta puede estar establecida a su vez por el WMC.
   `);
   removeLayers();
-  mapjs.addLayers([mapbox, osm]);
 };

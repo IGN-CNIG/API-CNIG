@@ -4,13 +4,15 @@
 
 INTEGRACIÓN DE PARÁMETROS EN API REST
 
+*REV_GOOGLE_OSM* == Incluir documentación correcta
+
 OPCIONES:  
 1. Nuevo parámetro en la API REST normalmente porque requiera parámetros de configuración.
 Example: <url_mapea>?geosearch=[params]
 Example: <url_mapea>?printer=[params]
 
 2. Nuevo valor para el parámetro plugins, el plugin no requiere configuración
-Example: <url_mapea>?plugins=measurebar,streetview
+Example: <url_mapea>?plugins=toc
 
 
 ### Plugin sin parámetros

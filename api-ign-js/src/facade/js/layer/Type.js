@@ -58,24 +58,6 @@ export const WMTS = 'WMTS';
 export const MBtiles = 'MBtiles';
 
 /**
- * OSM type
- * @const
- * @type {string}
- * @public
- * @api
- */
-export const OSM = 'OSM';
-
-/**
- * Mapbox type
- * @const
- * @type {string}
- * @public
- * @api
- */
-export const Mapbox = 'Mapbox';
-
-/**
  * GeoJSON type
  * @const
  * @type {string}
@@ -115,8 +97,6 @@ const layertypes = {
   WFS,
   WMTS,
   MBtiles,
-  OSM,
-  Mapbox,
   GeoJSON,
   Vector,
   MVT,

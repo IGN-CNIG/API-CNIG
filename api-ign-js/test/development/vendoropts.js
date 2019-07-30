@@ -8,8 +8,6 @@ import ScaleLine from 'M/control/ScaleLine';
 import Feature from 'M/feature/Feature';
 import GeoJSON from 'M/layer/GeoJSON';
 import KML from 'M/layer/KML';
-import Mapbox from 'M/layer/Mapbox';
-import OSM from 'M/layer/OSM';
 import Vector from 'M/layer/Vector';
 import WFS from 'M/layer/WFS';
 import WMS from 'M/layer/WMS';
@@ -24,11 +22,9 @@ import OLSourceVector from 'ol/source/Vector';
 import OLSourceXYZ from 'ol/source/XYZ';
 import { get as getProj } from 'ol/proj';
 
-let osmLayer = new OSM();
-let mapboxLayer;
 const mapjs = Mmap({
   container: 'map',
-  layers: [osmLayer],
+  layers: [],
   controls: ["layerswitcher"],
   projection: 'EPSG:3857*m'
 });
@@ -114,55 +110,6 @@ window.vendorKML = (evt) => {
       })
     });
     mapjs.addLayers(kml);
-  }
-};
-
-window.vendorMapbox = (evt) => {
-  if (window.confirm(`
-    Se incluyen los siguientes parámetros vendor:
-      {
-        preload: 2,
-        source: new OLSourceXYZ({
-          attributions: 'prueba mapea mapbox',
-          url: 'https://api.mapbox.com/v4/mapbox.pirates/8/123/99.png?access_token=pk.eyJ1Ijoic2lnY29ycG9yYXRpdm9qYSIsImEiOiJjaXczZ3hlc2YwMDBrMm9wYnRqd3gyMWQ0In0.wF12VawgDM31l5RcAGb6AA',
-        }),
-      }
-  `)) {
-    mapboxLayer = new Mapbox({
-      name: 'mapbox.pirates',
-    }, undefined, {
-      preload: 2,
-      source: new OLSourceXYZ({
-        attributions: 'prueba mapea mapbox',
-        url: 'https://api.mapbox.com/v4/mapbox.pirates/8/123/99.png?access_token=pk.eyJ1Ijoic2lnY29ycG9yYXRpdm9qYSIsImEiOiJjaXczZ3hlc2YwMDBrMm9wYnRqd3gyMWQ0In0.wF12VawgDM31l5RcAGb6AA',
-      }),
-    });
-    mapjs.removeLayers([osmLayer]);
-    mapjs.addLayers(mapboxLayer);
-  }
-};
-
-window.vendorOSM = (evt) => {
-  if (window.confirm(`
-    Se incluyen los siguientes parámetros vendor:
-      {
-        preload: 2,
-        source: new OLSourceXYZ({
-          attributions: 'osm de mapea',
-          url: 'https://b.tile.openstreetmap.org/11/989/794.png',
-        })
-      }
-  `)) {
-    if (osmLayer) mapjs.removeLayers([osmLayer]);
-    osmLayer = new OSM('OSM', undefined, {
-      preload: 2,
-      source: new OLSourceXYZ({
-        attributions: 'osm de mapea',
-        url: 'https://b.tile.openstreetmap.org/11/989/794.png',
-      })
-    });
-    if (mapboxLayer) mapjs.removeLayers([mapboxLayer]);
-    mapjs.addLayers(osmLayer);
   }
 };
 
