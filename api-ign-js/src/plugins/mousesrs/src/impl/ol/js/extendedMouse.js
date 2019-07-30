@@ -17,7 +17,7 @@ class Mouse extends ol.control.MousePosition {
    * @param {Object} vendorOptions vendor options for the base library
    * @api
    */
-  constructor(vendorOptions, options) {
+  constructor(vendorOptions) {
     super(vendorOptions);
 
     /**
@@ -78,6 +78,7 @@ class Mouse extends ol.control.MousePosition {
    */
   updateHTML_(pixel) {
     let html = this.undefinedHTML_;
+    let decimalDigits = 2;
     const projection = this.getProjection();
     if (pixel && this.mapProjection_) {
       if (!this.transform_) {
@@ -98,6 +99,26 @@ class Mouse extends ol.control.MousePosition {
           html = coordinate.toString();
         }
       }
+
+      // eslint-disable-next-line no-underscore-dangle
+      if (this.getProjection().units_ === 'd') { // geographical coordinates
+        decimalDigits = this.vendorOptions_.geoDecimalDigits;
+      } else { // 'm'
+        decimalDigits = this.vendorOptions_.utmDecimalDigits;
+      }
+
+      // Truncates coordinates to wanted decimal digits
+      let digitsToTruncate = 0;
+      html = html.split(', ').map((x) => {
+        if (decimalDigits > 0 && decimalDigits <= 4) {
+          digitsToTruncate = 4 - decimalDigits;
+        } else if (decimalDigits === 0) {
+          digitsToTruncate = 5;
+        } else {
+          digitsToTruncate = 0;
+        }
+        return x.substring(0, x.length - digitsToTruncate);
+      });
       html += ` | ${this.vendorOptions_.label}`;
     }
     if (!this.renderedHTML_ || html !== this.renderedHTML_) {
