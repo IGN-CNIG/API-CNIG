@@ -576,6 +576,7 @@ export default class IGNSearchControl extends M.Control {
     } else { // if item comes from nomenclator
       this.drawNomenclatorResult(selectedObject.id);
     }
+    this.resultsBox.innerHTML = '';
   }
   /**
    * This function zooms in MaxExtent of clicked element
