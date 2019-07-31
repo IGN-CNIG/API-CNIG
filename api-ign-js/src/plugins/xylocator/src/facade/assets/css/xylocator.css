@@ -42,7 +42,7 @@
 *********************/
 div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
     width: 32%;
-    display: inline-block;
+    /* display: inline-block; */
 }
 
 div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
@@ -63,13 +63,6 @@ div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
     border-radius: 0px;
     margin: 0px;
     margin-bottom: 5px;
-}
-
-@media only screen and (max-width: 768px) {
-    div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
-        width: 97%;
-        margin-top: 3%;
-    }
 }
 
 div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas {
@@ -137,19 +130,6 @@ DROPDOWN ****************************/
 
     div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
         border: 1px solid rgb(167, 160, 160);
-    }
-}
-
-@media only screen and (max-width: 768px) {
-    div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
-        display: block;
-        width: 100%;
-    }
-
-    div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
-        display: block;
-        width: 100%;
-        margin-top: 3%;
     }
 }
 
@@ -221,7 +201,38 @@ div.m-xylocator-container>div.m-xylocator-panel>div.button {
     background-color: #fffbfb;
 }
 
+div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
+    margin-top: 3%;
+    width: 60%;
+}
+
+div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
+    margin-left: 5px;
+}
+
+div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
+    margin-left: 15px;
+}
+
+div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
+    display: inline;
+}
+
+div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
+    display: block;
+    width: 100%;
+    margin-top: 3%;
+}
+
+/* MEDIA QUERIES */
+
 @media only screen and (max-width: 768px) {
+
+    div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-coordinatesSystem>span {
+        display: block;
+        width: 100%;
+    }
+
     .m-areas>div.m-area>div.m-panel.m-xylocator>button.m-panel-btn {
         position: absolute;
         background-color: #71a7d3;
