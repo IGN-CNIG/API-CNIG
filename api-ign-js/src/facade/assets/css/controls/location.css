@@ -1,10 +1,28 @@
 .m-location-container {
-   top: 20px;
-   left: 600px;
+    top: 20px;
+    left: 600px;
 }
 
-.m-location-container.m-locating > button#m-location-button:before {
-   position: absolute;
-   top: 15px;
-   left: 10px;
+.m-location-container.m-locating>button#m-location-button:before {
+    animation: none;
+    position: absolute;
+    top: 11px;
+    left: 11px;
+}
+
+.m-location-container.m-locating>button#m-location-button {
+    padding: 8px;
+}
+
+/* Previous: top 15, left 10, padding 0 */
+
+.m-location-container.m-locating.activated>button#m-location-button {
+    padding: 8px;
+}
+
+.m-location-container.m-locating.activated>button#m-location-button:before {
+    animation: mloading 1s linear infinite;
+    position: absolute;
+    top: 11px;
+    left: 11px;
 }
