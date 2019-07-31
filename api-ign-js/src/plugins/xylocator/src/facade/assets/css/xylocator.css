@@ -31,7 +31,8 @@
 .m-xylocator-container>div.m-xylocator-panel div.title {
     color: #71a7d3 !important;
     line-height: 40px;
-    padding: 5px;
+    padding: 0;
+    padding-left: 10px;
     height: 39px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     font-size: 14px;
@@ -264,5 +265,26 @@ div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
 
     .m-xylocator-container .table-results span {
         font-size: 2em;
+    }
+
+    .m-panel.m-xylocator.left.opened>button {
+        display: none;
+    }
+}
+
+/* MICROSOFT EDGE FIX */
+
+@supports (-ms-ime-align:auto) {
+
+    @media only screen and (max-width: 768px) {
+        .m-panel.m-xylocator.left.opened {
+            box-shadow: none;
+            left: 30px !important;
+            margin: 10px !important;
+        }
+
+        div.m-panel-controls>div.m-control.m-xylocator-container {
+            box-shadow: 1px 3px 5px -1px rgb(190, 190, 190) !important;
+        }
     }
 }
