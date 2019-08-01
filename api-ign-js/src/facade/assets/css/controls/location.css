@@ -4,25 +4,28 @@
 }
 
 .m-location-container.m-locating>button#m-location-button:before {
-    animation: none;
+    animation: mloading 1s linear infinite;
     position: absolute;
-    top: 11px;
+    /* left: 10px;
+    top: 15px; */
     left: 11px;
+    top: 11px;
 }
 
 .m-location-container.m-locating>button#m-location-button {
+    /* padding: 0; */
     padding: 8px;
 }
 
-/* Previous: top 15, left 10, padding 0 */
+/* DELETE AFTER FIX */
 
-.m-location-container.m-locating.activated>button#m-location-button {
-    padding: 8px;
-}
+/* MICROSOFT EDGE HACK */
 
-.m-location-container.m-locating.activated>button#m-location-button:before {
-    animation: mloading 1s linear infinite;
-    position: absolute;
-    top: 11px;
-    left: 11px;
+@supports (-ms-ime-align:auto) {
+    .m-location-container.m-locating>button#m-location-button {
+        height: 36px;
+        /* This fixes height, breaks align. */
+    }
+
+    .m-location-container.m-locating>button#m-location-button:before {}
 }

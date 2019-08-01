@@ -1,5 +1,6 @@
 {
   "location": {
+    "error": "El control ubicación no acepta http. Debe usar https.",
     "title": "Obtener ubicación actual"
   },
   "layerswitcher": {

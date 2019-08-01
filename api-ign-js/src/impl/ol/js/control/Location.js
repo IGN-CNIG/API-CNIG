@@ -3,6 +3,8 @@
  */
 
 import { isNullOrEmpty, extend } from 'M/util/Utils';
+// import * as Dialog from 'M/dialog';
+// import { getValue } from 'M/i18n/language';
 import { get as getProj } from 'ol/proj';
 import OLFeature from 'ol/Feature';
 import OLGeolocation from 'ol/Geolocation';
@@ -102,6 +104,10 @@ class Location extends Control {
 
         this.geolocation_.setTracking(this.tracking_);
       });
+      // this.geolocation_.on('error', (evt) => {
+      //   this.element.classList.remove('m-locating');
+      //   Dialog.error(getValue('location').error);
+      // });
     }
 
     this.geolocation_.setTracking(true);
@@ -135,6 +141,7 @@ class Location extends Control {
   deactivate() {
     this.removePositions_();
     this.element.classList.remove('m-located');
+    this.element.classList.remove('m-locating');
   }
 
   /**
@@ -186,6 +193,6 @@ Location.POSITION_STYLE = new OLStyle({
  * @public
  * @api stable
  */
-Location.ZOOM = 12;
+Location.ZOOM = 16; // 12;
 
 export default Location;
