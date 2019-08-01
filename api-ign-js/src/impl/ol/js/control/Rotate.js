@@ -46,24 +46,26 @@ class Rotate extends Control {
       olMap.getView().setRotation(0);
     });
 
+    this.addRotationEvent(olMap);
+
     olMap.on('change:view', (e) => {
-      const olView = e.target.getView();
-      olView.on('change:rotation', (ev) => {
-        const newView = ev.target;
-        const rotation = newView.getRotation();
+      this.addRotationEvent(e.target);
+    });
+  }
 
-        // REV_OL
-        // Se suprime el comportamiento por defecto de OL
-        // Que oculta el control si la orientación es al Norte.
-        // if (rotation !== 0) {
-        //   this.panel.style.display = '';
-        // } else {
-        //   this.panel.style.display = 'none';
-        // }
-
-        const iconRotation = `rotate(${(rotation * 360) / (2 * Math.PI)}deg)`;
-        this.panel.querySelector('button').style.transform = iconRotation;
-      });
+  /**
+   * Rotates icon along with view.
+   * @public
+   * @function
+   * @api
+   * @param {OpenLayers Map} olMap - OpenLayers map instance
+   */
+  addRotationEvent(olMap) {
+    olMap.getView().on('change:rotation', (ev) => {
+      const newView = ev.target;
+      const rotation = newView.getRotation();
+      const iconRotation = `rotate(${(rotation * 360) / (2 * Math.PI)}deg)`;
+      this.panel.querySelector('button').style.transform = iconRotation;
     });
   }
 
