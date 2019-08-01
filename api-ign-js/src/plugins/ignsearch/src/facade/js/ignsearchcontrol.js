@@ -136,7 +136,7 @@ export default class IGNSearchControl extends M.Control {
      */
     this.searchValue = searchValue;
     /**
-     * Text to search
+     * Reverse geocoder coordinates
      * @private
      * @type {string}
      */
