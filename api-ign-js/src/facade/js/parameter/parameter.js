@@ -137,18 +137,18 @@ const getNameKML = (parameter) => {
 const getType = (parameter, forcedType) => {
   let type;
   if (isString(parameter)) {
-      const typeMatches = parameter.match(/^(\w+)\*.+$/);
-      if (typeMatches && (typeMatches.length > 1)) {
-        type = LayerType.parse(typeMatches[1]);
-        if (isUndefined(type)) {
-          Exception(`No se reconoce el tipo de capa ${typeMatches[1]}`);
-        }
+    const typeMatches = parameter.match(/^(\w+)\*.+$/);
+    if (typeMatches && (typeMatches.length > 1)) {
+      type = LayerType.parse(typeMatches[1]);
+      if (isUndefined(type)) {
+        Exception(`No se reconoce el tipo de capa ${typeMatches[1]}`);
       }
-      if (isUndefined(type) && !isNullOrEmpty(forcedType)) {
-        type = forcedType;
-      } else if (isUndefined(type)) {
-        Exception(`No se reconoce el tipo de capa ${type}`);
-      }
+    }
+    if (isUndefined(type) && !isNullOrEmpty(forcedType)) {
+      type = forcedType;
+    } else if (isUndefined(type)) {
+      Exception(`No se reconoce el tipo de capa ${type}`);
+    }
   } else if (isObject(parameter)) {
     if (!isNullOrEmpty(parameter.type)) {
       type = LayerType.parse(parameter.type);
@@ -650,8 +650,6 @@ export const kml = (userParamer) => {
 
   return layersVar;
 };
-
-
 
 /**
  * Parses the parameter in order to get the layer name

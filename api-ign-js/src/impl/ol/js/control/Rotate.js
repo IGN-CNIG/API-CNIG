@@ -58,7 +58,7 @@ class Rotate extends Control {
    * @public
    * @function
    * @api
-   * @param {OpenLayers Map} olMap - OpenLayers map instance
+   * @param {ol.Map} olMap - OpenLayers map instance
    */
   addRotationEvent(olMap) {
     olMap.getView().on('change:rotation', (ev) => {
