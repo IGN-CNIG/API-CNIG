@@ -186,12 +186,12 @@ class Style extends Base {
     if (!isNullOrEmpty(this.layer_)) {
       this.apply(this.layer_);
       this.updateCanvas();
-      if (!isNullOrEmpty(this.layer_.getImpl().getMap())) {
+      /** /if (!isNullOrEmpty(this.layer_.getImpl().getMap())) {
         const layerswitcher = this.layer_.getImpl().getMap().getControls('layerswitcher')[0];
         if (!isNullOrEmpty(layerswitcher)) {
           layerswitcher.render();
         }
-      }
+      } */
     }
   }
   /**

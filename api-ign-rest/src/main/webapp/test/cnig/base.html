@@ -16,7 +16,7 @@
             overflow: hidden;
         }
     </style>
-    <link href="../../assets/css/mapea-5.1.0.ol.min.css" rel="stylesheet" />
+    <link href="../../assets/css/api-5.1.0.ol.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -26,13 +26,13 @@
 
     </div>
 
-    <script type="text/javascript" src="../../js/mapea-5.1.0.ol.min.js"></script>
+    <script type="text/javascript" src="../../js/api-5.1.0.ol.min.js</script>
     <script type="text/javascript" src="../../js/configuration-5.1.0.js"></script>
 
     <script type="application/javascript">
         var mapajs = M.map({
             container: 'map',
-            controls: ["layerswitcher", "mouse*true", "scale", "overviewmap", "panzoombar"],
+            controls: ["scale", "panzoombar"],
             getfeatureinfo: "html",
             center: [-467062.8225, 4683459.6216],
         });

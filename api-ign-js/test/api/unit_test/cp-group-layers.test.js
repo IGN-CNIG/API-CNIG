@@ -12,7 +12,6 @@ describe('CP del Grupo de Capas por API', () => {
   before(async function mapCreation() {
     mapjs = await createMapAndWait({
       container: 'map',
-      'layers': ['OSM'],
       controls: ['layerswitcher'],
     });
     provincias = new M.layer.WFS({

@@ -41,8 +41,6 @@
     <link type="text/css" rel="stylesheet" href="plugins/<%=cssfile%>">
     </link>
     <%
-         if (cssfile.toLowerCase().indexOf("streetview") != -1) { %>
-    <% }
       } %>
 </head>
 
@@ -64,10 +62,8 @@
          String jsfile = jsfiles[i];
    %>
     <script type="text/javascript" src="plugins/<%=jsfile%>"></script>
+
     <%
-         if (jsfile.toLowerCase().indexOf("streetview") != -1) { %>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-    <% }
       }
    %>
     <script type="text/javascript">

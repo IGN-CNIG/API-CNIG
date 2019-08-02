@@ -210,38 +210,6 @@ function fun(M_) {
   });
 
   /**
-   * TODO
-   *
-   * @private
-   * @type {String}
-   */
-  M_.config('MAPBOX_URL', 'https://api.mapbox.com/v4/');
-
-  /**
-   * TODO
-   *
-   * @private
-   * @type {String}
-   */
-  M_.config('MAPBOX_EXTENSION', 'png');
-
-  /**
-   * TODO
-   *
-   * @private
-   * @type {String}
-   */
-  M_.config('MAPBOX_TOKEN_NAME', 'access_token');
-
-  /**
-   * TODO
-   *
-   * @private
-   * @type {String}
-   */
-  M_.config('MAPBOX_TOKEN_VALUE', 'pk.eyJ1Ijoic2lnY29ycG9yYXRpdm9qYSIsImEiOiJjaXczZ3hlc2YwMDBrMm9wYnRqd3gyMWQ0In0.wF12VawgDM31l5RcAGb6AA');
-
-  /**
    * WMTS configuration
    *
    * @private

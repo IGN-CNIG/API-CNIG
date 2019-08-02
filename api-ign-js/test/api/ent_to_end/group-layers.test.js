@@ -6,7 +6,7 @@ const PORT = 9999;
 
 server.listen(PORT);
 
-const URL = `http://localhost:${PORT}/test/production/generic-case.html?layers=OSM&controls=layerswitcher`;
+const URL = `http://localhost:${PORT}/test/production/generic-case.html?controls=layerswitcher`;
 
 module.exports = {
   before: function before(browser) {

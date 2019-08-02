@@ -9,8 +9,7 @@ window.stylePoint = stylePoint;
 const mapjs = Mmap({
   container: 'map',
   projection: 'EPSG:25830*m',
-  controls: ['mouse'],
-  layers: ['OSM']
+  controls: ['mouse']
 });
 
 // MVT*URL*NAME

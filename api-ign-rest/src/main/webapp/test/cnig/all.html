@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>IGNSearch Production TEST</title>
-    <link href="../../assets/css/mapea-5.1.0.ol.min.css" rel="stylesheet" />
+    <link href="../../assets/css/api-5.1.0.ol.min.css" rel="stylesheet" />
     <link href="../../plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
     <link href="../../plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
     <link href="../../plugins/baselayerselector/baselayerselector.ol.min.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
 
 <body>
     <div id="mapjs" class="container"></div>
-    <script type="text/javascript" src="../../js/mapea-5.1.0.ol.min.js"></script>
+    <script type="text/javascript" src="../../js/api-5.1.0.ol.min.js"></script>
     <script type="text/javascript" src="../../js/configuration-5.1.0.js"></script>
     <script type="text/javascript" src="../../plugins/ignsearch/ignsearch.ol.min.js"></script>
     <script type="text/javascript" src="../../plugins/attributions/attributions.ol.min.js"></script>
@@ -65,7 +65,7 @@
 
         const map = M.map({
             container: 'mapjs',
-            controls: ['overviewmap', 'scale*true', 'scaleline', 'rotate', 'layerswitcher', 'location', 'getfeatureinfo'],
+            controls: ['scale*true', 'scaleline', 'rotate', 'location'],
             // zoom: 6,
             layers: [layerinicial, layerUA],
             projection: "EPSG:3857*m",

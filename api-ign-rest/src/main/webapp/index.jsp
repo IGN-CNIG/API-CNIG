@@ -34,10 +34,6 @@
     <link type="text/css" rel="stylesheet" href="plugins/<%=cssfile%>">
     </link>
     <%
-         if (cssfile.toLowerCase().indexOf("streetview") != -1) { %>
-    <link href="plugins/streetview/streetview.min.css" rel="stylesheet" />
-    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
-    <% }
       } %>
 </head>
 
@@ -52,11 +48,8 @@
          String jsfile = jsfiles[i];
    %>
     <script type="text/javascript" src="plugins/<%=jsfile%>"></script>
-    <%
-         if (jsfile.toLowerCase().indexOf("streetview") != -1) { %>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-    <% }
-      }
+    
+    <%  }
    %>
     <!-- API JS -->
     <!-- CNIG_CONFIG -->
