@@ -56,7 +56,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
             mode: 1, 
             scale: 10000, 
             defaultAttribution: 'Instituto Geográfico Nacional'
-            defaultUrl: 'http://www.ign.es/' });
+            defaultUrl: 'https://www.ign.es/' });
 
    map.addPlugin(mp);
 ```

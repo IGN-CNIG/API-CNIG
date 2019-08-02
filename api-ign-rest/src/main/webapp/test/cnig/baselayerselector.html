@@ -27,7 +27,7 @@
     <script type="text/javascript" src="../../js/configuration-5.1.0.js"></script>
     <script type="text/javascript" src="../../plugins/baselayerselector/baselayerselector.ol.min.js"></script>
     <script type="text/javascript">
-        let layerRasterMTN = new M.layer.WMTS("WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*true");
+        let layerRasterMTN = new M.layer.WMTS("WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*true");
         
         const map = M.map({
             container: 'mapjs',
@@ -48,7 +48,7 @@
                     id: 'mapa',
                     title: 'Mapa',
                     layer: new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/ign-base?',
+                        url: 'https://www.ign.es/wmts/ign-base?',
                         name: 'IGNBaseTodo',
                         legend: 'IGN Base',
                         matrixSet: "GoogleMapsCompatible",
@@ -60,7 +60,7 @@
                     id: 'imagen',
                     title: 'Imagen',
                     layer: new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/pnoa-ma?',
+                        url: 'https://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
                         legend: 'Orto (PNOA)',
                         matrixSet: "GoogleMapsCompatible",
@@ -83,7 +83,6 @@
 
         map.setZoom(3);
 
-       // map.addControl("layerswitcher");
     </script>
 </body>
 

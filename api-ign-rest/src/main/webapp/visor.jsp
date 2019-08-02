@@ -77,14 +77,14 @@
         });
 
         const layerinicial = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',
             legend: 'Limite administrativo',
             tiled: false,
         }, {});
 
         const layerUA = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeUnit',
             legend: 'Unidad administrativa',
             tiled: false
@@ -117,7 +117,12 @@
             scale: 10000,
             defaultAttribution: 'Instituto Geográfico Nacional',
             defaultURL: 'https://www.ign.es/',
+            url: 'files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+            type: 'kml'
         });
+
+
+
         const mp3 = new M.plugin.ShareMap({
             baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
             position: 'BR',

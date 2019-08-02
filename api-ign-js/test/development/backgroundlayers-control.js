@@ -7,7 +7,7 @@ const mapjs = Mmap({
   layers: [],
 });
 const layerUA = new WMS({
-  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
   legend: 'Unidad administrativa',
   tiled: false

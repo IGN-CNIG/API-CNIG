@@ -11,7 +11,7 @@ window.map = map;
 const mp = new Attributions({
   mode: 1,
   scale: 10000,
-  defaultURL: 'http://www.ign.es/',
+  defaultURL: 'https://www.ign.es/',
   defaultAttribution: 'Instituto Geográfico Nacional',
   position: 'BL',
 });

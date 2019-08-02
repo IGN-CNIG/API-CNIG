@@ -4,7 +4,7 @@ const map = M.map({
   container: 'mapjs',
   projection: 'EPSG:3857*m',
   center: [-443729, 4860856],
-  controls: ['layerswitcher', 'mouse*true'],
+  //  controls: ['scale'],
   zoom: 4,
 });
 

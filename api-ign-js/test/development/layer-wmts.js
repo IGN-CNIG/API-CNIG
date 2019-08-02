@@ -3,7 +3,7 @@ import WMTS from 'M/layer/WMTS';
 
 const mapajs = map({
   container: 'map',
-  layers: ['WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*EPSG:25830*PNOA'],
+  layers: ['WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*EPSG:25830*PNOA'],
   center: [363063, 4150610],
   zoom: '4',
   controls: ['layerswitcher'],

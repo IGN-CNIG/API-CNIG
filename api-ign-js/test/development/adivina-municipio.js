@@ -7,7 +7,7 @@ import { LOAD as LoadEvt, SELECT_FEATURES as SelectFeaturesEvt } from 'M/event/e
 const mapajs = Mmap({
   container: 'map',
   controls: ['mouse', 'layerswitcher'],
-  layers: ['WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*false'],
+  layers: ['WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*false'],
   projection: 'EPSG:25830*m',
 });
 

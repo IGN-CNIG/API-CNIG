@@ -8,13 +8,13 @@ const mp = new TOC();
 
 map.addPlugin(mp);
 const layerUA = new M.layer.WMS({
-  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
   legend: 'Unidad administrativa',
   tiled: false
 }, {});
 const layerinicial = new M.layer.WMS({
-  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeBoundary',
   legend: 'Limite administrativogggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg',
   tiled: false,

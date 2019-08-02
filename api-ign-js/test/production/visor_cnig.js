@@ -25,14 +25,14 @@ const mapjs = Mmap({
 window.mapjs = mapjs;
 
 const layerinicial = new WMS({
-  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeBoundary',
   legend: 'Limite administrativo',
   tiled: false,
 }, {});
 
 const layerUA = new WMS({
-  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
   legend: 'Unidad administrativa',
   tiled: false

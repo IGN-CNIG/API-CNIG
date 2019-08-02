@@ -37,7 +37,7 @@
     <script type="text/javascript" src="../../plugins/xylocator/xylocator.ol.min.js"></script>
     <script type="text/javascript" src="../../plugins/sharemap/sharemap.ol.min.js"></script>
     <script type="text/javascript">
-        let layerRasterMTN = new M.layer.WMTS("WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*true");
+        let layerRasterMTN = new M.layer.WMTS("WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*true");
 
         /*
         const layerinicial = new M.layer.WMS({
@@ -47,13 +47,13 @@
         });
         */
         const layerinicial = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',
             legend: 'Limite administrativo',
          });
 
         const layerUA = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeUnit',
             legend: 'Unidad administrativa',
          });
@@ -76,7 +76,7 @@
             id: 'mapa',
             title: 'Mapa',
             layers: [new M.layer.WMTS({
-                url: 'http://www.ign.es/wmts/ign-base?',
+                url: 'https://www.ign.es/wmts/ign-base?',
                 name: 'IGNBaseTodo',
                 legend: 'Callejero',
                 matrixSet: "GoogleMapsCompatible",
@@ -88,7 +88,7 @@
             id: 'imagen',
             title: 'Imagen',
             layers: [new M.layer.WMTS({
-                url: 'http://www.ign.es/wmts/pnoa-ma?',
+                url: 'https://www.ign.es/wmts/pnoa-ma?',
                 name: 'OI.OrthoimageCoverage',
                 legend: 'Imagen',
                 matrixSet: "GoogleMapsCompatible",
@@ -100,14 +100,14 @@
             id: 'hibrido',
             title: 'Híbrido',
             layers: [ new M.layer.WMTS({
-                url: 'http://www.ign.es/wmts/pnoa-ma?',
+                url: 'https://www.ign.es/wmts/pnoa-ma?',
                 name: 'OI.OrthoimageCoverage',
                 legend: 'Imagen',
                 matrixSet: "GoogleMapsCompatible",
             }, {
                 format: 'image/jpeg',
             }), new M.layer.WMTS({
-                url: 'http://www.ign.es/wmts/ign-base?',
+                url: 'https://www.ign.es/wmts/ign-base?',
                 name: 'IGNBaseOrto',
                 legend: 'Mapa IGN',
                 matrixSet: "GoogleMapsCompatible",
