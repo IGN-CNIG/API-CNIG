@@ -7,7 +7,7 @@ import Style from 'M/style/Style';
 import { get as getProj } from 'ol/proj';
 import OLLayerVector from 'ol/layer/Vector';
 import OLSourceVector from 'ol/source/Vector';
-import OLSourceCluster from 'ol/source/Cluster';
+// import OLSourceCluster from 'ol/source/Cluster';
 import Layer from './Layer';
 import ImplUtils from '../util/Utils';
 import Feature from '../feature/Feature';
@@ -214,10 +214,10 @@ class Vector extends Layer {
   redraw() {
     const olLayer = this.getOL3Layer();
     if (!isNullOrEmpty(olLayer)) {
-      let olSource = olLayer.getSource();
-      if (olSource instanceof OLSourceCluster) {
+      const olSource = olLayer.getSource();
+      /**  if (olSource instanceof OLSourceCluster) {
         olSource = olSource.getSource();
-      }
+      } */
       // remove all features from ol vector
       const olFeatures = [...olSource.getFeatures()];
       olFeatures.forEach(olSource.removeFeature, olSource);

@@ -247,12 +247,13 @@ class Vector extends LayerBase {
       this.style_ = style;
       this.fire(EventType.CHANGE_STYLE, [style, this]);
     }
-    if (!isNullOrEmpty(this.getImpl().getMap())) {
+    /** if (!isNullOrEmpty(this.getImpl().getMap())) {
       const layerswitcher = this.getImpl().getMap().getControls('layerswitcher')[0];
       if (!isNullOrEmpty(layerswitcher)) {
         layerswitcher.render();
       }
     }
+    */
     this.fire(EventType.CHANGE_STYLE, [style, this]);
   }
 

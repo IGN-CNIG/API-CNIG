@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Documentation </title>
+    <title>API-IGN: Manual de usuario</title>
     <link rel="stylesheet" href="main.css">
     <script src="lib.js"></script>
 
@@ -22,7 +22,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand doc-title" href="#page-top">Documentation </a>
+                <a class="navbar-brand doc-title" href="#page-top">API IGN - Manual de usuario</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -49,7 +49,7 @@
                             &nbsp; <a href="#Capas-raster">
                                 <strong>&gt; Capas raster</strong>
                             </a><br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#WMS">WMS</a>, <a href="#WMC">WMC</a>, <a href="#WMTS">WMTS</a> <br>&nbsp; <a href="#Capas-vectoriales"><strong>&gt; Capas vectoriales</strong>
-                            </a><br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#WFS">WFS</a>, <a href="#GeoJSON">GeoJSON</a>, <a href="#KML">KML</a><br><a href="#features">Features</a><br><a href="#filtros">Filtros</a><br><a href="#simbologia">Simbología</a><br>&nbsp;&nbsp;&nbsp;<a href="#M.style.Point">&#8226; Puntos</a>, <a href="#M.style.Line">Líneas</a>, <a href="#M.style.Polygon">Polígonos</a><br>&nbsp;&nbsp;&nbsp;<a href="#Coropletas">&#8226; Coropletas</a>, <a href="#Proporcional">Proporcional</a>, <a href="#Categorias">Categorías</a>,<a href="#Heatmap">Mapas de Calor</a><br>&nbsp;&nbsp;&nbsp;<a href="#Cluster">&#8226; Cluster</a>, <a href="#Composite">Composición</a><br>&nbsp;<a href="#Controles"><strong>&gt; Controles básicos</strong></a><br>&nbsp;<a href="#Opciones"><strong>&gt; Opciones</strong></a><br>&nbsp;<a href="#Paneles"><strong>&gt; Paneles</strong></a><br><a href="#Plugins"><strong>Plugins</strong></a><br><a href="#Proxys"><strong>Proxys</strong></a><br><a href="#Eventos"><strong>Eventos</strong></a><br><a href="#Utilidades"><strong>Utilidades</strong></a><br><a href="#Acceso-libreria-base"><strong>Acceso librerías base</strong></a><br><a href="#Mapea-iframe"><strong>Mapea iframe</strong></a><br><a href="#Solucion-de-problemas"><strong>Solución de problemas</strong></a> </p>
+                            </a><br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#WFS">WFS</a>, <a href="#GeoJSON">GeoJSON</a>, <a href="#KML">KML</a><br><a href="#features">Features</a><br><a href="#simbologia">Simbología</a><br>&nbsp;&nbsp;&nbsp;<a href="#M.style.Point">&#8226; Puntos</a>, <a href="#M.style.Line">Líneas</a>, <a href="#M.style.Polygon">Polígonos</a><br>&nbsp;&nbsp;&nbsp;<br>&nbsp;<a href="#Controles"><strong>&gt; Controles básicos</strong></a><br>&nbsp;<a href="#Opciones"><strong>&gt; Opciones</strong></a><br>&nbsp;<a href="#Paneles"><strong>&gt; Paneles</strong></a><br><a href="#Plugins"><strong>Plugins</strong></a><br><a href="#Proxys"><strong>Proxys</strong></a><br><a href="#Eventos"><strong>Eventos</strong></a><br><a href="#Utilidades"><strong>Utilidades</strong></a><br><a href="#Acceso-libreria-base"><strong>Acceso librerías base</strong></a><br><a href="#Mapea-iframe"><strong>Mapea iframe</strong></a><br><a href="#Solucion-de-problemas"><strong>Solución de problemas</strong></a> </p>
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
 <span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mifuncion</span>(<span class="hljs-params">json</span>) </span>{
   <span class="hljs-keyword">var</span> mapajs = json;
-  mapajs.addControls([<span class="hljs-string">'scale'</span>, <span class="hljs-string">'location'</span>, <span class="hljs-string">'layerswitcher'</span>]);
+  mapajs.addControls([<span class="hljs-string">'scale'</span>, <span class="hljs-string">'location'</span>]);
 }</pre>
                     <p class="page" id="Personalizar-el-mapa"></p>
                     <h1><strong>Personalizar del mapa</strong></h1>
@@ -124,7 +124,7 @@
                     <span class="hljs-keyword">var</span> capas = mapajs.getLayers();
                     mapajs.removeLayers(layer1); <span class="hljs-comment">// eliminar una o varias capas</span>
                     
-                    <span class="hljs-comment">// Capas específicas por tipo/filtro: WMS, WFS, WMC, KML, WMTS</span>
+                    <span class="hljs-comment">// Capas específicas por tipo: WMS, WFS, WMC, KML, WMTS</span>
                     <span class="hljs-keyword">var</span> layersWMS = mapajs.getWMS({<span class="hljs-attr">name</span>:<span class="hljs-string">'batimetría'</span>}); <span class="hljs-comment">// capas WMS que cumplen el filtro</span>
                     <span class="hljs-keyword">var</span> layersWFS = mapajs.getWFS(); <span class="hljs-comment">// todas las capas WFS</span>
                     
@@ -204,7 +204,7 @@ mapajs.removeLayers(layer1); <span class="hljs-comment">// eliminar una o varias
                     <p>Para construir un mapa a partir de uno o varios wmc, basta con indicar al constructor su <em>url</em>, y un <em>nombre</em> o alias para cada uno. <strong>El único requisito es que dichas url sean públicas</strong>:</p>
                     <pre class="hljs">mapajs = M.map({
   <span class="hljs-attr">container</span>: <span class="hljs-string">'map'</span>,
-  <span class="hljs-attr">controls</span>: [<span class="hljs-string">'layerswitcher'</span>],
+  <span class="hljs-attr">controls</span>: [<span class="hljs-string">'panzoom, scale'</span>],
   <span class="hljs-attr">wmcfiles</span>: [<span class="hljs-string">'http://www.callejerodeandalucia.es/wmc/context_cdau_callejero.xml*Mapa'</span>]
 });</pre>
                     <p>También puede añadirse mediante el método <em>addWMC</em>:</p>
@@ -215,7 +215,7 @@ mapajs.removeLayers(layer1); <span class="hljs-comment">// eliminar una o varias
 mapajs.addWMC(miWmc);</pre>
                     <p>Como se ve también en el ejemplo anterior, si en un mapa se añade más de un contexto, aparece un <strong>selector de contextos</strong> con el que el usuario puede seleccionar el que desea activar en cada momento.</p>
                     <p><strong>Contextos predefinidos en Mapea</strong></p>
-                    <p>Mapea incluye como contextos predefinidos los tres contextos creados para el Callejero Digital de Andalucía Unificado. Para usarlos, basta con indicar su nombre, no es necesario conocer las urls de los mismos:</p>
+                    <p>Mapea incluye como contextos predefinidos tres contextos. Para usarlos, basta con indicar su nombre, no es necesario conocer las urls de los mismos:</p>
                     <ul>
                         <li>Callejero: "cnig_mapa" </li>
                         <li>Imagen: "cnig_imagen" </li>
@@ -230,7 +230,7 @@ mapajs.addWMC(miWmc);</pre>
                     <pre class="hljs"><span class="hljs-comment">// satelite contiene la definicion de capas WMS</span>
 mapajs = M.map({
   <span class="hljs-attr">container</span>: <span class="hljs-string">'map'</span>,
-  <span class="hljs-attr">controls</span>: [<span class="hljs-string">'layerswitcher'</span>],
+  <span class="hljs-attr">controls</span>: [<span class="hljs-string">'panzoom, scale'</span>],
   <span class="hljs-attr">wmcfiles</span>: [<span class="hljs-string">'cnig_imagen'</span>]
 });
 
@@ -253,17 +253,18 @@ mapajs.on(M.evt.COMPLETED, <span class="hljs-function"><span class="hljs-keyword
     <span class="hljs-attr">layers</span>: [<span class="hljs-string">"WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*EPSG:25830*PNOA"</span>],
     <span class="hljs-attr">center</span>: [<span class="hljs-number">363063</span>, <span class="hljs-number">4150610</span>],
     <span class="hljs-attr">zoom</span>: <span class="hljs-string">'4'</span>,
-    <span class="hljs-attr">controls</span>: [<span class="hljs-string">'layerswitcher'</span>]
+    <span class="hljs-attr">controls</span>: [<span class="hljs-string">'panzoom, scale'</span>]
   });</pre>
                     <p>2.- Con el método correspondiente: </p>
                     <pre class="hljs">  <span class="hljs-keyword">var</span> layer = <span class="hljs-keyword">new</span> M.layer.WMTS({
-    <span class="hljs-attr">url</span>: <span class="hljs-string">"http://www.ideandalucia.es/geowebcache/service/wmts"</span>,
-    <span class="hljs-attr">name</span>: <span class="hljs-string">"toporaster"</span>,
-    <span class="hljs-attr">matrixSet</span>: <span class="hljs-string">"EPSG:25830"</span>,
-    <span class="hljs-attr">legend</span>: <span class="hljs-string">"Toporaster"</span>
+    <span class="hljs-attr">url</span>: <span class="hljs-string">"http://wmts-mapa-lidar.idee.es/lidar"</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">"EL.GridCoverageDSM"</span>,
+    <span class="hljs-attr">matrixSet</span>: <span class="hljs-string">"GoogleMapsCompatible"</span>,
+    <span class="hljs-attr">legend</span>: <span class="hljs-string">"Modelo Digital de Superficies LiDAR"</span>
   },
   {
-    <span class="hljs-attr">format</span>: <span class="hljs-string">'image/png'</span>
+    <span class="hljs-attr">format</span>: <span class="hljs-string">'image/png',</span>
+    <span class="hljs-attr">visibility</span>: <span class="hljs-string">'false'</span>
   });
 
   mapajs.addWMTS(layer);</pre>
@@ -292,7 +293,7 @@ capaVectorial.removeFeatures([feat1,feat2]);
 <span class="hljs-comment">// O eliminarlos todos</span>
 capaVectorial.clear();
 </pre>
-                    <p>En las secciones de <a href="#features">features</a> y <a href="#filtros">filtros</a> puede obtener más información relativa a este tipo de capas. </p>
+        
                     <p class="page" id="WFS"></p>
                     <h1>WFS</h1>
                     <p><strong>WFS</strong> (<strong>W</strong>eb <strong>F</strong>eature <strong>S</strong>ervice) es un <a href="http://www.opengeospatial.org/standards/wfs">estándar OGC</a> para la transferencia de información geográfica, donde los elementos geográficos o <em>features</em> se transmiten en su totalidad al cliente.</p>
@@ -301,7 +302,7 @@ capaVectorial.clear();
                     <pre class="hljs"><span class="hljs-comment">// Ejemplo de caps WFS en modo cadena </span>
 <span class="hljs-keyword">var</span> mapajs = M.map({
   <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
-  <span class="hljs-attr">controls</span>: [<span class="hljs-string">"layerswitcher"</span>],
+  <span class="hljs-attr">controls</span>: [<span class="hljs-string">"panzoom, scale"</span>],
   <span class="hljs-attr">wmcfiles</span>: [<span class="hljs-string">"cdau"</span>],
   <span class="hljs-attr">layers</span>: [<span class="hljs-string">"WFST*Campamentos*http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?*sepim:campamentos*MPOINT"</span>]
 });</pre>
@@ -327,9 +328,7 @@ mapajs.addWFS(layer);</pre>
                         <li><strong>cql</strong>: <em>Opcional</em> - Sentencia CQL para filtrar los features. El método _setCQL(cadena_cql)_ refresca la capa aplicando el nuevo predicado CQL que reciba. </li>
                         <li><strong>version</strong>: <em>Opcional</em> - Versión del estandar a usar. Por defecto es 1.0.0. </li>
                     </ul>
-                    <blockquote>
-                        <p> <a> Una capa WFS puede ser editada si el servidor tiene habilitadas las operaciones transaccionales sobre la misma. Consulta el plugin de <strong>edición WFST</strong> de Mapea para saber más. </a> </p>
-                    </blockquote>
+                    
                     <p><strong>Formato de salida</strong><br>Mapea pide las capas WFS al servidor OGC en formato geojson usando por defecto como outputFormat &#39;<em>application/json</em>&#39;. Sin embargo, en función del tipo de servidor OGC que esté atendiendo las peticiones (Geoserver, Mapserver, etc.), puede que tenga asignando un nombre diferente. En ese caso, se puede establecer el nombre del outputFormat para las peticiones getFeature y describeFeature, se usan las opciones de usuario &#39;<strong>getFeatureOutputFormat</strong>&#39; y &#39;<strong>describeFeatureTypeOutputFormat</strong>&#39;: </p>
                     <pre class="hljs">lAguasSupRediam = <span class="hljs-keyword">new</span> M.layer.WFS({
   <span class="hljs-attr">url</span>: <span class="hljs-string">'http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_WFS_RN_Aguas?bbox=508887.12101065,4131323.42844933,509462.159552335,4131744.12235486'</span>,
@@ -551,188 +550,7 @@ layer.on(M.evt.LOAD, <span class="hljs-function"><span class="hljs-keyword">func
        <span class="hljs-comment">// Otra opción: añadir el feature a la capa</span>
        <span class="hljs-comment">//capaGeoJSON.addFeatures(miFeature);</span>
 </pre>
-                        <p class="page" id="filtros"></p>
-                        <h1>Filtros</h1>
-                        <p>Con Mapea4 se pueden establecer <strong>filtros en las capas vectoriales</strong> que permiten comprobar si los
-                            elementos (features) cumplen o no con determinadas condiciones. Estos filtros se aplican <strong>en
-                                memoria</strong>, es decir, estando la capa cargada ya con todos sus elementos en el cliente, aplicar un filtro
-                            <strong>no supone realizar ninguna nueva petición al servidor</strong>. </p>
-                        <p>Hay que tener en cuenta que una vez se aplica un filtro a una capa, este queda aplicado <strong>hasta que el mismo se
-                                elimine o se modifique</strong>, por lo que a todos los efectos, es como si la capa tuviese únicamente aquellos
-                            features que cumplen el filtro: dibujado en el mapa, recorrido por sus features, etc.</p>
-                        <p>Los filtros actualmente implementados son:</p>
-                        <h4 id="filtros-alfanum-ricos">Filtros alfanuméricos</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Filtro</th>
-                                    <th>Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><em>M.filter.AND</em></td>
-                                    <td>Condición Y </td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.OR</em></td>
-                                    <td>Condición O</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.NOT</em></td>
-                                    <td>Condición NO</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.EQUAL</em></td>
-                                    <td>Condición IGUAL</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.LIKE</em></td>
-                                    <td>Condición de PATRÓN</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.LT</em></td>
-                                    <td>Condición MENOR QUE</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.GT</em></td>
-                                    <td>Condición MAYOR QUE</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.LTE</em></td>
-                                    <td>Condición MENOR O IGUAL QUE</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.GTE</em></td>
-                                    <td>Condición MAYOR O IGUAL QUE</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p>Mediante los filtros <em>M.filter.AND</em> y <em>M.filter.OR</em> podemos encadenar tantos filtros como queramos</p>
-                        <pre class="hljs"><span class="hljs-keyword">let</span> mapajs = M.map({
-   <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
-   <span class="hljs-attr">wmcfile</span>: <span class="hljs-string">"callejero"</span>,
-   <span class="hljs-attr">controls</span>: [<span class="hljs-string">"layerswitcher"</span>]
- });
-
-<span class="hljs-keyword">let</span> lyProvincias = <span class="hljs-keyword">new</span> M.layer.WFS({
-   <span class="hljs-attr">url</span>: <span class="hljs-string">"http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?"</span>,
-   <span class="hljs-attr">namespace</span>: <span class="hljs-string">"tematicos"</span>,
-   <span class="hljs-attr">name</span>: <span class="hljs-string">"Provincias"</span>,
-   <span class="hljs-attr">legend</span>: <span class="hljs-string">"Provincias"</span>,
-   <span class="hljs-attr">geometry</span>: <span class="hljs-string">'MPOLYGON'</span>
- });
-
-<span class="hljs-comment">//Filtro por atributo nombre</span>
-<span class="hljs-keyword">let</span> filter = M.filter.OR(
-                     [M.filter.EQUAL(<span class="hljs-string">"nombre"</span>, <span class="hljs-string">"Sevilla"</span>),
-                      M.filter.EQUAL(<span class="hljs-string">"nombre"</span>, <span class="hljs-string">"Málaga"</span>)]);
-lyProvincias.setFilter(filter); 
-<span class="hljs-comment">//lyProvincias.removeFilter(); eliminar el filtro</span>
-
-mapajs.addLayers(lyProvincias);</pre>
-                        <h4 id="filtros-espaciales">Filtros espaciales</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Filtro</th>
-                                    <th>Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><em>M.filter.spatial.CONTAIN</em></td>
-                                    <td>Comprueba que el un elemento A esté dentro de otro B</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.spatial.DISJOINT</em></td>
-                                    <td>Comprueba que los elementos A y B no tengan ningún punto en común</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.spatial.WITHIN</em></td>
-                                    <td>Comprueba que el elemento B esté dentro de A</td>
-                                </tr>
-                                <tr>
-                                    <td><em>M.filter.spatial.INTERSECT</em></td>
-                                    <td>Comprueba si los elementos A y B tienen puntos en común</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <blockquote>
-                            <p> <a> Para los filtros espaciales, se ha implementado la librería <a href="http://bjornharrtell.github.io/jsts/">jsts</a>. Esto permite acceder a ella y realizar multitud de
-                                    operaciones espaciales adicionales.
-                        </blockquote>
-                        <pre class="hljs"><span class="hljs-keyword">let</span> mapajs = M.map({
-   <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
-   <span class="hljs-attr">wmcfile</span>: <span class="hljs-string">"callejero"</span>,
-   <span class="hljs-attr">controls</span>: [<span class="hljs-string">"layerswitcher"</span>]
-});
-
-<span class="hljs-keyword">var</span> lyProvincias = <span class="hljs-keyword">new</span> M.layer.WFS({
-  <span class="hljs-attr">url</span>: <span class="hljs-string">"http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?"</span>,
-  <span class="hljs-attr">namespace</span>: <span class="hljs-string">"tematicos"</span>,
-  <span class="hljs-attr">name</span>: <span class="hljs-string">"Provincias"</span>,
-  <span class="hljs-attr">legend</span>: <span class="hljs-string">"Provincias"</span>,
-  <span class="hljs-attr">geometry</span>: <span class="hljs-string">'MPOLYGON'</span>
- });
-
-<span class="hljs-keyword">var</span> miFeature = <span class="hljs-keyword">new</span> M.Feature(<span class="hljs-string">"featurePrueba002"</span>, {
-  <span class="hljs-string">"type"</span>: <span class="hljs-string">"Feature"</span>,
-  <span class="hljs-string">"id"</span>: <span class="hljs-string">"prueba_pol_wfst.1985"</span>,
-  <span class="hljs-string">"geometry"</span>: {
-    <span class="hljs-string">"type"</span>: <span class="hljs-string">"Polygon"</span>,
-    <span class="hljs-string">"coordinates"</span>: [
-      [
-        [<span class="hljs-number">263770.72265536943</span>, <span class="hljs-number">4085361.4590256726</span>],
-        [<span class="hljs-number">230910.00600234355</span>, <span class="hljs-number">4031901.3328427672</span>],
-        [<span class="hljs-number">288293.77947248437</span>, <span class="hljs-number">4017678.0840030923</span>],
-        [<span class="hljs-number">263770.72265536943</span>, <span class="hljs-number">4085361.4590256726</span>]
-      ]
-    ]
-  },
-  <span class="hljs-string">"properties"</span>: {
-    <span class="hljs-string">"nombre"</span>: <span class="hljs-string">"feature2"</span>
-  }
-});
-lyProvincias.addFeatures(miFeature);
-mapajs.addLayers(lyProvincias);
-
-<span class="hljs-comment">//Filtro los features de la capa que intersecten con miFeature</span>
-<span class="hljs-keyword">let</span> filter = M.filter.spatial.INTERSECT(miFeature);
-lyProvincias.setFilter(filter);
-</pre>
-
-                        <p>También se ofrece la posibilidad de transformar cualquier de estos filtros al estándar CQL, por si se quiere hacer
-                            uso de filtrado desde el servidor</p>
-                        <pre class="hljs"><span class="hljs-keyword">let</span> filtroCQL = filter.toCQL(); <span class="hljs-comment">//devuelve un string con el filtro en formato CQL</span>
-lyProvincias.setCQL(filtroCQL);</pre>
-                        <h4 id="filtros-personalizados">Filtros personalizados</h4>
-                        <p>Si ninguno de los filtros disponibles se adaptan a nuestras necesidades, Mapea también ofrece la posibilidad de
-                            definir cualquier filtro mediante una función, de forma que no quedamos limitados a la hora de poder realizar
-                            cualquier filtro:</p>
-                        <pre class="hljs"><span class="hljs-keyword">let</span> mapajs = M.map({
-   <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
-   <span class="hljs-attr">wmcfile</span>: <span class="hljs-string">"callejero"</span>,
-   <span class="hljs-attr">controls</span>: [<span class="hljs-string">"layerswitcher"</span>]
- });
-
- <span class="hljs-keyword">var</span> lyProvincias = <span class="hljs-keyword">new</span> M.layer.WFS({
-   <span class="hljs-attr">url</span>: <span class="hljs-string">"http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?"</span>,
-   <span class="hljs-attr">namespace</span>: <span class="hljs-string">"tematicos"</span>,
-   <span class="hljs-attr">name</span>: <span class="hljs-string">"Provincias"</span>,
-   <span class="hljs-attr">legend</span>: <span class="hljs-string">"Provincias"</span>,
-   <span class="hljs-attr">geometry</span>: <span class="hljs-string">'MPOLYGON'</span>
- });
-
- mapajs.addLayers(lyProvincias);
-
- <span class="hljs-comment">//se crea un filtro personalizado que sólo devuelve las features </span>
- <span class="hljs-comment">//que tengan la letra 'C' en el atributo nombre</span>
- <span class="hljs-keyword">let</span> filter = <span class="hljs-keyword">new</span> M.filter.Function(<span class="hljs-function"><span class="hljs-params">feature</span> =&gt;</span> {
-   <span class="hljs-keyword">return</span> feature.getAttribute(<span class="hljs-string">'nombre'</span>).indexOf(<span class="hljs-string">'C'</span>) &gt;= <span class="hljs-number">0</span>;
- });
-
- lyProvincias.setFilter(filter);</pre>
+                        
                         <p class="page" id="simbologia"></p>
                         <h1>Simbología</h1>
                         <p>Las capa vectoriales están formadas por elementos o features que poseen información geométrica con la que representarlos en el mapa. Mapea asigna un estilo de representación por defecto a estas capas, pero el usuario puede definir y asignar sus propios estilos.</p>
@@ -744,14 +562,6 @@ lyProvincias.setCQL(filtroCQL);</pre>
                             <li>
                                 <p><a href="#M.style.Polygon">Simbología para polígonos</a>.</p>
                             </li>
-                            <li>
-                                <p><strong>Temáticos</strong> - el usuario establece unos parámetros de configuración en base a los cuales Mapea genera la simbología automáticamente: </p>
-                            </li>
-                            <li><a href="#Proporcional">Símbolos proporcionales.</a></li>
-                            <li><a href="#Categor%C3%ADas">Simbología por categorías</a>.</li>
-                            <li><a href="#Coropletas">Símbología por coropletas</a>.</li>
-                            <li><a href="#Estad%C3%ADsticos">Simbología estadística</a>.</li>
-                            <li><a href="#Cluster">Clusters</a>.</li>
                         </ol>
                         <p>Puede obtenerse más información de cada uno de estos tipos en sus secciones correspondientes de esta wiki. </p>
                         <h2 id="trabajar-con-estilos-b-sicos">Trabajar con estilos básicos</h2>
@@ -1144,517 +954,7 @@ capa.setStyle(estiloSerializado);
                         <blockquote>
                             <p> Para las capas poligonales, Mapea aplica el estilo por defecto <em>M.style.Polygon.DEFAULT</em>. Para cambiarlo, basta con redefinir dicha constante. </p>
                         </blockquote>
-                        <p class="page" id="Coropletas"></p>
-                        <h1>&#8226; Coropletas</h1>
-                        <p>Un mapa de coropletas es un mapa en el que las regiones toman un estilo (color) en base al valor, dentro de una escala de rangos, del dato contenido en uno de sus atributos.</p>
-                        <p>Por tanto, para construir dicho mapa, es necesario especificar al menos los siguientes parámetros:</p>
-                        <ul>
-                            <li>Atributo que contiene el dato</li>
-                            <li>Rangos definidos</li>
-                            <li>Estilo para cada uno de los rangos</li>
-                        </ul>
-                        <p>Puesto que definir cada uno de los rangos, y establecer un estilo para cada uno de ellos es una tarea pesada, se facilita dicha labor pudiendo establecer un número de rangos y un algoritmo/función para calcular sus límites, así como estilos por defecto o simplemente establecer color inicial y color final.</p>
-                        <p>El uso más común sería:</p>
-                        <pre class="hljs"><span class="hljs-keyword">let</span> choropleth = <span class="hljs-keyword">new</span> M.style.Choropleth(valueField, 
-                                        [firstColor, lastColor], 
-                                        quantification); </pre>
-                        <p>Dónde:</p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Parámetro</th>
-                                    <th>Descripción </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>valueField</strong></td>
-                                    <td>{string} - atributo que contiene el dato </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>firsColor</strong></td>
-                                    <td>{string} - color del rango inferior (opcional)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>lastColor</strong></td>
-                                    <td>{string} - color del rango superior (opcional)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>quantification</strong></td>
-                                    <td>{M.style.quantification \</td>
-                                    <td>function()} - algoritmo de cuantificación y número de rangos. Puede ser una función personalizada o utilizar lo ya definidos <code>M.style.quantification.JENKS(rangos)</code> y <code>M.style.quantification.QUANTILE(rangos)</code> (opcional)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <blockquote>
-                        </blockquote>
-                        <p>Un ejemplo completo de un mapa de coropletas, construido con Mapea, sería tan sencillo como:</p>
-                        <pre class="hljs"><span class="hljs-comment">//creación del mapa</span>
-<span class="hljs-keyword">let</span> mapajs = M.map({
-  <span class="hljs-string">'container'</span>: <span class="hljs-string">'map'</span>,
-  <span class="hljs-string">"controls"</span>: [<span class="hljs-string">"layerswitcher"</span>]
-});
-
-<span class="hljs-comment">//creación de la capa</span>
-<span class="hljs-keyword">let</span> lyProv = <span class="hljs-keyword">new</span> M.layer.WFS({
-  <span class="hljs-attr">name</span>: <span class="hljs-string">"Provincias"</span>,
-  <span class="hljs-attr">url</span>: <span class="hljs-string">"http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wfs?"</span>,
-  <span class="hljs-attr">name</span>: <span class="hljs-string">"Provincias"</span>,
-  <span class="hljs-attr">legend</span>: <span class="hljs-string">"Provincias - COROPLETAS"</span>,
-  <span class="hljs-attr">geometry</span>: <span class="hljs-string">'POLYGON'</span>,
-});
-
-<span class="hljs-comment">//se crea el estilo y se aplica a la capa</span>
-<span class="hljs-keyword">let</span> choropleth = <span class="hljs-keyword">new</span> M.style.Choropleth(
-                     <span class="hljs-string">'u_cod_prov'</span>, 
-                     [<span class="hljs-string">'#000000'</span>, <span class="hljs-string">'#FFFFFF'</span>], 
-                     M.style.quantification.JENKS(<span class="hljs-number">4</span>));
-
-lyProv.setStyle(choropleth);
-
-<span class="hljs-comment">//se añade la capa al mapa</span>
-mapajs.addLayers(lyProv);</pre>
-                        <ul>
-                            <li>Mapea permite simplificar aún más la generación de la coropleta, obviando los parámetros opcionales. De esta forma, se establecerá un escala de 5 rangos, de rojo claro a rojo oscuro, calculados mediante JENKS:</li>
-                        </ul>
-                        <pre class="hljs"><span class="hljs-keyword">let</span> choropleth = <span class="hljs-keyword">new</span> M.style.Choropleth(valueField); </pre>
-                        <ul>
-                            <li>En caso de que queramos pasar directamente los rangos de clasificación, la función que tenemos que definir es tan simple como la siguiente:
-                                <pre class="hljs"><span class="hljs-keyword">var</span> rangos_usuario = [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>];
-<span class="hljs-keyword">let</span> choropleth = <span class="hljs-keyword">new</span> M.style.Choropleth(<span class="hljs-string">"u_cod_prov"</span>, [<span class="hljs-string">"red"</span>, <span class="hljs-string">"blue"</span>], () =&gt; rangos_usuario);
-                    </ul>
-                    <p class="page" id="Proporcional"></p>
-                    <h1>Proporcional</h1>
-                    <p>La simbología proporcional suele utilizarse para mostrar un atributo de los elementos de una capa con un símbolo de tamaño proporcional al valor del mismo en el contexto global del capa.</p>
-                    <p>Por tanto, para construir un mapa con simbología proporcional, necesitaremos lo siguiente:</p>
-                    <ul>
-                        <li>Atributo que contiene el dato</li>
-                        <li>Tamaño menor</li>
-                        <li>Tamaño mayor</li>
-                        <li>Estilo del símbolo</li>
-                    </ul>
-                    <p>Mapea ofrece una manera simple de establecer la simbología proporcional, haciendo uso de <a href="#M.style.Point">M.style.Point</a>:</p>
-                    <pre class="hljs"><span class="hljs-keyword">let</span> styleProp = <span class="hljs-keyword">new</span> M.style.Proportional(valueField, 
-                                         sizeMin, 
-                                         sizeMax, 
-                                         stylePoint);</pre>
-                                <p>Donde:</p>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Parámetro</th>
-                                            <th>Descripción </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>valueField</strong></td>
-                                            <td>{string} - atributo que contiene el dato </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>sizeMin</strong></td>
-                                            <td>{number} - tamaño mínimo del símbolo</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>sizeMax</strong></td>
-                                            <td>{number} - tamaño máximo del símbolo</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>stylePoint</strong></td>
-                                            <td>{M.style.Point} - objeto <em>M.style.Point</em> que define el estilo</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <blockquote>
-                                    <p> Puesto que se hace uso de <em><a href="#M.style.Point">M.style.Point</a></em> se podrá definir cualquier opción que acepte dicho estilo, como por ejemplo un icono o un símbolo vectorial. Para más información consultar la documentación asociada</p>
-                                </blockquote>
-                                <pre class="hljs"><span class="hljs-keyword">let</span> mapajs = M.map({
-  <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
-  <span class="hljs-attr">controls</span>: [<span class="hljs-string">'layerswitcher'</span>, <span class="hljs-string">'overviewmap'</span>],
-});
-
-<span class="hljs-keyword">let</span> layer = <span class="hljs-keyword">new</span> M.layer.WFS({
-  <span class="hljs-attr">name</span>: <span class="hljs-string">"Municipios Indicadores"</span>,
-  <span class="hljs-attr">url</span>: <span class="hljs-string">"http://geostematicos-sigc.juntadeandalucia.es/geoserver/wfs?"</span>,
-  <span class="hljs-attr">namespace</span>: <span class="hljs-string">"tematicos"</span>,
-  <span class="hljs-attr">name</span>: <span class="hljs-string">"ind_mun_simp"</span>,  
-  <span class="hljs-attr">geometry</span>: <span class="hljs-string">'POLYGON'</span>,
-});
-
-mapajs.addLayers(layer);
-
-<span class="hljs-comment">//definimos un estilo proporcional </span>
-<span class="hljs-keyword">let</span> styleProp = <span class="hljs-keyword">new</span> M.style.Proportional(<span class="hljs-string">'tot_ibi'</span>, <span class="hljs-number">5</span>, <span class="hljs-number">20</span>, 
-   <span class="hljs-keyword">new</span> M.style.Point({ <span class="hljs-comment">//estilo del punto</span>
-     fill: {
-       <span class="hljs-attr">color</span>: <span class="hljs-string">'#000000'</span>
-     },
-     <span class="hljs-attr">stroke</span>: {
-       <span class="hljs-attr">color</span>: <span class="hljs-string">'#FFFFFF'</span>,
-       <span class="hljs-attr">width</span>: <span class="hljs-number">2</span>
-     }
-   })
-);
-
-<span class="hljs-comment">//lo establecemos a la capa</span>
-layer.setStyle(styleProp);</pre>
-                                <blockquote>
-                                    <p> En el caso de utilizar un estilo en base a una imagen, hay que tener en cuenta que se aplicarán tamaños proporcionales en vez del real de la imagen, ya que es imposible a priori conocerlo. Dicha proporción está establecida por defecto a 20, pero puede ser modificada: _M.style.Proportional.SCALE_PROPORTION = 20_</p>
-                                </blockquote>
-                                <p>También es posible no definir un estilo, en cuyo caso se representará el símbolo proporcional con el estilo por defecto:</p>
-                                <pre class="hljs"><span class="hljs-keyword">let</span> styleProp = <span class="hljs-keyword">new</span> M.style.Proportional(<span class="hljs-string">'tot_ibi'</span>, <span class="hljs-number">5</span>, <span class="hljs-number">20</span>);</pre>
-                                <p>Igualmente, <strong>se puede definir una función personalizada</strong> para su uso como generadora de los niveles proporcionales, a través del método <em>.setProportionalFunction</em>, o añadiéndola como parámetro al constructor del estilo proporcional después del parámetro de estilo.</p>
-                                <p>La función a usar para el cálculo del radio proporcional asociado a un valor de entrada sigue la interfaz:</p>
-                                <ul>
-                                    <li>parámetros de entrada: value, minValue, maxValue, minRadius, maxRadius.</li>
-                                    <li>parámetro de salida: valor del radio proporcional calculado. </li>
-                                </ul>
-                                <pre class="hljs"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">miFuncionProporcional</span>(<span class="hljs-params">value, minValue, maxValue, minRadius, maxRadius</span>)</span>{
-  <span class="hljs-comment">// Hace el cálculo del radio asociado al value recibido...</span>
-  <span class="hljs-keyword">return</span>...;
-}
-
-<span class="hljs-keyword">let</span> sizeMin = <span class="hljs-number">5</span>;
-<span class="hljs-keyword">let</span> sizeMax = <span class="hljs-number">15</span>;
-
-<span class="hljs-keyword">let</span> estiloPunto = <span class="hljs-keyword">new</span> M.style.Point({
-  <span class="hljs-attr">fill</span>: {
-    <span class="hljs-attr">color</span>: <span class="hljs-string">'black'</span>
-  },
-  <span class="hljs-attr">stroke</span>: {
-    <span class="hljs-attr">color</span>: <span class="hljs-string">'white'</span>,
-    <span class="hljs-attr">width</span>: <span class="hljs-number">2</span>
-  }
-});
-<span class="hljs-keyword">let</span> proportionalStyle = <span class="hljs-keyword">new</span> M.style.Proportional(<span class="hljs-string">'tot_ibi'</span>, sizeMin, sizeMax, estiloPunto,miFuncionProporcional);</pre>
-
-                                <p class="page" id="Categorias"></p>
-                                <h1>Categorías</h1>
-                                <p>Un capa categorizada es una capa cuya simbología se establece asociando un estilo a cada elemento o feature en base
-                                    al valor de un atributo del mismo.</p>
-                                <p>Por tanto, para definir ese tipo de simbología, es necesario especificar al menos el <strong>Atributo</strong> del
-                                    feature por el cual se va a realizar la categorización. Y de manera opcional, la relación de
-                                    <strong>Valores/Estilos</strong> para la representación de los diferentes valores del atributo.</p>
-                                <p>Así, para categorizar por ejemplo una capa poligonal de municipios de Andalucía, de modo que a cada elemento se le
-                                    diera un color en función de la provincia a la que pertenece, que viene indicado en uno de sus atributos:</p>
-                                <pre class="hljs"><span class="hljs-comment">// Definimos los estilos de cada categoría. Como queremos diferenciar entre</span>
-<span class="hljs-comment">// provincias, crearemos un color para cada una</span>
-<span class="hljs-keyword">let</span> verde = <span class="hljs-keyword">new</span> M.style.Polygon({<span class="hljs-attr">fill</span>: {<span class="hljs-attr">color</span>: <span class="hljs-string">'green'</span>}});
-<span class="hljs-keyword">let</span> amarillo = <span class="hljs-keyword">new</span> M.style.Polygon({<span class="hljs-attr">fill</span>: {<span class="hljs-attr">color</span>: <span class="hljs-string">'pink'</span>}});
-<span class="hljs-keyword">let</span> rojo = <span class="hljs-keyword">new</span> M.style.Polygon({<span class="hljs-attr">fill</span>: {<span class="hljs-attr">color</span>: <span class="hljs-string">'red'</span>}});
-<span class="hljs-keyword">let</span> azul = <span class="hljs-keyword">new</span> M.style.Polygon({<span class="hljs-attr">fill</span>: {<span class="hljs-attr">color</span>: <span class="hljs-string">'grey'</span>}});
-<span class="hljs-keyword">let</span> naranja = <span class="hljs-keyword">new</span> M.style.Polygon({<span class="hljs-attr">fill</span>: {<span class="hljs-attr">color</span>: <span class="hljs-string">'orange'</span>}});
-<span class="hljs-keyword">let</span> marron = <span class="hljs-keyword">new</span> M.style.Polygon({<span class="hljs-attr">fill</span>: {<span class="hljs-attr">color</span>: <span class="hljs-string">'brown'</span>}});
-<span class="hljs-keyword">let</span> magenta = <span class="hljs-keyword">new</span> M.style.Polygon({<span class="hljs-attr">fill</span>: {<span class="hljs-attr">color</span>: <span class="hljs-string">'#e814d9'</span>}});
-<span class="hljs-keyword">let</span> morado = <span class="hljs-keyword">new</span> M.style.Polygon({<span class="hljs-attr">fill</span>: {<span class="hljs-attr">color</span>: <span class="hljs-string">'#b213dd'</span>}});
-
-<span class="hljs-comment">// Creamos la simbologia. El atributo "provincia" contiene el nombre</span>
-<span class="hljs-comment">// de la provincia a la que pertenece cada feature</span>
-<span class="hljs-keyword">let</span> categoryStyle = <span class="hljs-keyword">new</span> M.style.Category(<span class="hljs-string">"provincia"</span>, {
-  <span class="hljs-string">"Almería"</span>: marron,
-  <span class="hljs-string">"Cádiz"</span>: amarillo,
-  <span class="hljs-string">"Córdoba"</span>: magenta,
-  <span class="hljs-string">"Granada"</span>: verde,
-  <span class="hljs-string">"Jaén"</span>: naranja,
-  <span class="hljs-string">"Málaga"</span>: azul,
-  <span class="hljs-string">"Sevilla"</span>: rojo,
-  <span class="hljs-string">"Huelva"</span>: morado
-});
-
-layerMunicipios.setStyle(categoryStyle);</pre>
-                                <p>Donde M.style.Category recibe:</p>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Parámetro</th>
-                                            <th>Descripción </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>attributeName</strong></td>
-                                            <td>{string} - atributo que contiene el campo por el que categorizar </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>categoryStyles</strong></td>
-                                            <td>{object} - <em>opcional</em> - con las relaciones valor-estilo. Si no se especifica, se generarán
-                                                estilos aleatorios para cada valor del atributo. </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <blockquote>
-                                    <p> Los estilos deben corresponder al tipo de geometría de la capa </p>
-                                </blockquote>
-                                <p>No es necesario especificar estilo para todos los diferentes valores que pueda adoptar el atributo
-                                    &#39;attributeName&#39;: </p>
-                                <ul>
-                                    <li>Si el valor del atributo de un feature no aparece en la lista de categoryStyles, ese feature se pintará con la
-                                        simbología por defecto que tenga la capa. </li>
-                                    <li>El valor <strong>&quot;other&quot;</strong> en la lista de categoryStyles recogerá a todos los features cuyo
-                                        atributo &#39;attributeName&#39; tenga un valor que no se corresponda con ningún otro de la lista. </li>
-                                </ul>
-                                <p><strong>¿Y si quiero aplicar un estilo diferente y aleatorio a cada feature en función de un atributo, sin importarme
-                                        qué estilo?</strong> Especifica únicamente el &#39;attributeName&#39; en el constructor del estilo, sin indicar
-                                </p>
-                                <h3 id="acceso-y-modificaci-n-de-las-propiedades-del-estilo">Acceso y modificación de las propiedades del estilo</h3>
-                                <p>Se puede acceder a las propidades de un estilo Category ya existente, y modificar aquellos aspectos de la misma que
-                                    se desee: </p>
-                                <pre class="hljs"><span class="hljs-comment">// La capa ya tiene el estilo asignado</span>
-<span class="hljs-keyword">let</span> estiloCategory = capa.getStyle();
-
-<span class="hljs-comment">// Obtenemos las categorías existentes, y el atributo de categorización</span>
-<span class="hljs-comment">// Podrían modificarse con los métodos 'set' equivalentes</span>
-<span class="hljs-keyword">let</span> categorí<span class="hljs-keyword">as</span> = estiloCategory.getCategories();
-<span class="hljs-keyword">let</span> atributo = estiloCategory.getAttributeName();
-
-<span class="hljs-comment">// Cambiamos únicamente el estilo asociado a la categoría de "Sevilla"</span>
-estiloCategory.setStyleForCategory(<span class="hljs-string">"Sevilla"</span>,amarillo);</pre>
-                                <p class="page" id="Heatmap"></p>
-                                <h1>Mapas de Calor</h1>
-                                <p>Los <strong>mapas de calor</strong> o <strong>heatmaps</strong> son mapas que muestran <em>la intensidad relativa de los elementos de una capa de puntos</em>. El valor que dará <strong>peso</strong> a la intensidad viene definido por un atributo de dichos elementos, y el color o la representación de esa escala de intensidad vendrá dada por una rampa de colores o <strong>gradiente</strong> determinada. </p>
-                                <p><img src="https://raw.githubusercontent.com/wiki/sigcorporativo-ja/Mapea4/images/heatmap.png" /></p>
-                                <pre class="hljs"> <span class="hljs-keyword">let</span> style = <span class="hljs-keyword">new</span> M.style.Heatmap(peso, {options});</pre>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Parámetro</th>
-                                            <th>Descripción </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>peso</strong></td>
-                                            <td>{string} - atributo o función que establece el peso en la intensidad</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>options</strong></td>
-                                            <td>{object} - valores <strong>opcionales</strong> del mapa de calor :<br> <strong>gradient</strong>: Array\&lt;string> - los colores que definen el gradiente de intensidad <br> <strong>blur</strong>: {number} - tamaño de la borrosidad en pixeles <br> <strong>radius</strong>: {number} - radio de influencia del punto en pixeles </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <p>Ejemplo: </p>
-                                <pre class="hljs"> <span class="hljs-keyword">let</span> style = <span class="hljs-keyword">new</span> M.style.Heatmap(<span class="hljs-string">'temperatura'</span>, {
-      <span class="hljs-attr">blur</span>: <span class="hljs-number">15</span>,
-      <span class="hljs-attr">radius</span>: <span class="hljs-number">10</span>,
-      <span class="hljs-attr">gradient</span>: [<span class="hljs-string">'blue'</span>, <span class="hljs-string">'cyan'</span>, <span class="hljs-string">'green'</span>, <span class="hljs-string">'yellow'</span>, <span class="hljs-string">'orange'</span>, <span class="hljs-string">'red'</span>],
-    });</pre>
-                                <p>Los valores por defecto para los parámetros opcionales están establecidos en las siguientes constantes: </p>
-                                <ul>
-                                    <li>M.style.Heatmap.DEFAULT_OPTIONS.radius = 10</li>
-                                    <li>M.style.Heatmap.DEFAULT_OPTIONS.blur = 15</li>
-                                    <li>M.style.Heatmap.DEFAULT_OPTIONS.gradient = [&quot;#00f&quot;, &quot;#0ff&quot;, &quot;#0f0&quot;, &quot;#ff0&quot;, &quot;#f00&quot;]</li>
-                                </ul>
-                                <p class="page" id="Cluster"></p>
-                                <h1>&#8226; Cluster</h1>
-                                <p>Cuando tenemos muchos elementos en un mapa, si el zoom es demasiado alejado, no conseguiremos distinguir unos elementos de otros. Para solucionar esto, una de las técnicas más utilizadas es la generación de <em>clusters</em> que agrupan los elementos dependiendo del nivel de zoom, desplegándose a medida que vamos acercando el mismo. </p>
-                                <p><img src="https://raw.githubusercontent.com/wiki/sigcorporativo-ja/Mapea4/images/wiki_cluster1.png" /></p>
-                                <p>En Mapea, se ha hecho una implementación completa de los <em>clusters</em> a través del API de estilos y, siendo muy simple la generación de los <em>clusters</em> por defecto:</p>
-                                <pre class="hljs"><span class="hljs-keyword">var</span> mapajs = M.map({
-    <span class="hljs-string">'container'</span>: <span class="hljs-string">'map'</span>,
-    <span class="hljs-string">"controls"</span>: [<span class="hljs-string">"layerswitcher"</span>]
-});
-
-<span class="hljs-keyword">var</span> campamentos = <span class="hljs-keyword">new</span> M.layer.WFS({
-    <span class="hljs-attr">name</span>: <span class="hljs-string">"Campamentos"</span>,
-    <span class="hljs-attr">url</span>: <span class="hljs-string">"http://geostematicos-sigc.juntadeandalucia.es/geoserver/wfs"</span>,
-    <span class="hljs-attr">namespace</span>: <span class="hljs-string">"sepim"</span>,
-    <span class="hljs-attr">name</span>: <span class="hljs-string">"campamentos"</span>,
-    <span class="hljs-attr">geometry</span>: <span class="hljs-string">'POINT'</span>,
-    <span class="hljs-attr">extract</span>: <span class="hljs-literal">true</span>
-});
-
-mapajs.addLayers(campamentos);
-<span class="hljs-comment">//se aplica un cluster por defecto</span>
-campamentos.setStyle(<span class="hljs-keyword">new</span> M.style.Cluster());</pre>
-                                <blockquote>
-                                    <p>:warning: <a> Actualmente, solo las capas con geometría de tipo POINT pueden ser clusterizadas. </a> </p>
-                                </blockquote>
-                                <p>No obstante, también es posible su completa personalización, definiendo tanto los posibles rangos como su estilo concreto, así como parámetros generales de animación, muestra de número de elementos, etc.</p>
-                                <pre class="hljs"><span class="hljs-keyword">let</span> clusterOptions = {
-    <span class="hljs-attr">ranges</span>: [{
-            <span class="hljs-attr">min</span>: <span class="hljs-number">2</span>,
-            <span class="hljs-attr">max</span>: <span class="hljs-number">3</span>,
-            <span class="hljs-attr">style</span>: <span class="hljs-keyword">new</span> M.style.Point({}),
-        }, {
-            <span class="hljs-attr">min</span>: <span class="hljs-number">4</span>,
-            <span class="hljs-attr">max</span>: <span class="hljs-number">8</span>,
-            <span class="hljs-attr">style</span>: <span class="hljs-keyword">new</span> M.style.Point({}),
-
-        }
-        ...
-    ],
-    <span class="hljs-attr">animated</span>: <span class="hljs-literal">true</span>,
-    <span class="hljs-attr">hoverInteraction</span>: <span class="hljs-literal">true</span>,
-    <span class="hljs-attr">displayAmount</span>: <span class="hljs-literal">true</span>,
-    <span class="hljs-attr">selectedInteraction</span>: <span class="hljs-literal">true</span>,
-    <span class="hljs-attr">distance</span>: <span class="hljs-number">80</span>,
-    <span class="hljs-attr">label</span>: {          
-     <span class="hljs-attr">font</span>: <span class="hljs-string">'bold 19px Comic Sans MS'</span>, 
-     <span class="hljs-attr">color</span>: <span class="hljs-string">'#FFFFFF'</span>
-    }
-};
-<span class="hljs-comment">//generamos un cluster personalizado</span>
-<span class="hljs-keyword">let</span> styleCluster = M.style.Cluster(clusterOptions);      </pre>
-                                <p>Dónde:</p>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Parámetro</th>
-                                            <th>Descripción </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>ranges</strong></td>
-                                            <td>{Array\&lt;Object>} - array de objetos con el valor mínimo, el máximo y un <em>M.style.Point</em></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>animated</strong></td>
-                                            <td>{boolean} - booleano que indica si se quiere animación o no al desplegar el cluster</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>hoverInteraction</strong></td>
-                                            <td>{boolean} - booleano que indica si se quiere mostrar el polígono que engloba los elementos al situarse sobre el cluster</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>displayAmount</strong></td>
-                                            <td>{boolean} - booleano que indica si se muestra el número de elementos que componen el cluster</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>maxFeaturesToSelect</strong></td>
-                                            <td>{number} - Número máximo de elementos agrupados a partir de los cuales, al hacer click, se hará zoom en lugar de desplegar el cluster</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>distance</strong></td>
-                                            <td>{number} - distancia (en píxeles) de agrupación de elementos</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>label</strong></td>
-                                            <td>{&lt;Object>} - Estilo opcional de la etiqueta de número de elementos de todos los rangos, si se muestra</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <p>El estilo cluster, al no ser más que una forma de visualización, puede utilizarse en conjunción con otros estilos, por ejemplo con elementos categorizados, como puede verse en este
-                                    <h3 id="vendor-params">Vendor params</h3>
-                                    <p>Este conjunto de opciones está ligado a la implementación, por lo que se han separado de la configuración base. Actualmente solo existe la implementación de OpenLayers, por lo que los parámetros posibles serán:</p>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Parámetro</th>
-                                                <th>Descripción </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>distanceSelectFeatures</strong></td>
-                                                <td>{number} - distancia (en píxeles) entre los elementos desplegados de un cluster</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>convexHullStyle</strong></td>
-                                                <td>{Object} - estilo del polígono que engloba los elementos (si <em>hoverInteraction</em> es <em>true</em>)</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <pre class="hljs"><span class="hljs-keyword">let</span> vendorParameters = {
-    <span class="hljs-attr">distanceSelectFeatures</span>: <span class="hljs-number">25</span>,
-    <span class="hljs-attr">convexHullStyle</span>: {
-        <span class="hljs-attr">fill</span>: {
-            <span class="hljs-attr">color</span>: <span class="hljs-string">'#000000'</span>,
-            <span class="hljs-attr">opacity</span>: <span class="hljs-number">0.5</span>
-        },
-        <span class="hljs-attr">stroke</span>: {
-            <span class="hljs-attr">color</span>: <span class="hljs-string">'#000000'</span>,
-            <span class="hljs-attr">width</span>: <span class="hljs-number">1</span>
-        }
-    }
-}
-<span class="hljs-comment">//generamos un cluster personalizado al que, además, le indicamos </span>
-<span class="hljs-comment">//configuraciones de la implemetnación</span>
-<span class="hljs-keyword">let</span> clusterStyle = <span class="hljs-keyword">new</span> M.style.Cluster(clusterOptions, vendorParameters);</pre>
-                                    <h3 id="eventos">Eventos</h3>
-                                    <p>A la hora de interaccionar con elementos de una capa que ha sido <em>clusterizada</em>, nos encontramos con el problema de poder identificar si el elemento seleccionado es un cluster o no lo es; para ello, en Mapea se ha tipado el cluster como <em>M.ClusteredFeature</em> pudiendo distinguir en cualquier evento si es o no un cluster:</p>
-                                    <pre class="hljs">campamentos.on(M.evt.SELECT_FEATURES, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">features, evt</span>) </span>{
-      <span class="hljs-comment">//se puede comprobar si el elemento seleccionado es un cluster o no</span>
-      <span class="hljs-keyword">if</span> (features[<span class="hljs-number">0</span>] <span class="hljs-keyword">instanceof</span> M.ClusteredFeature) {
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Es un cluster'</span>);
-      }
-});</pre>
-                                    <p class="page" id="Composite"></p>
-                                    <h1>Composición</h1>
-                                    <p>Es posible que una misma capa acepte más de un tipo de simbología a la vez. En esos casos hablamos de <strong>composiciones simbológicas</strong>, y algunos ejemplos de dichas composiciones podrían ser: </p>
-                                    <ul>
-                                        <li>Una capa puntual con simbología básica definida para ella, que además está clusterizada. </li>
-                                        <li>Una capa categorizada por un atributo, con simbología proporcional en base a otro. </li>
-                                        <li>Una capa con simbología estadística de tartas, a la que se le aplica simbología proporcional para darle a cada tarta un tamaño diferente en base a un atributo del elemento.</li>
-                                    </ul>
-                                    <p>Sin embargo, no todas las combinaciones de estilos son posibles. Así por ejemplo, no tendría sentido aplicar en una misma capa una simbología por Coropleta y otra por Categorización, ya que ambas se pisarían. </p>
-                                    <p>Estas composiciones simbológicas están modeladas en Mapea bajo la clase <strong>M.style.Composite</strong>, de la que heredan todas las simbologías sobre las que pueden añadirse simbologías adicionales: </p>
-                                    <ul>
-                                        <li>M.style.Proportional</li>
-                                        <li>M.style.Choropleth</li>
-                                        <li>M.style.Category</li>
-                                        <li>M.style.Cluster</li>
-                                    </ul>
-                                    <p>Dicha clase posee métodos específicos, heredados por tanto para los estilos anteriores, para la gestión de estilos adicionales: </p>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Método</th>
-                                                <th>Descripción </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>add</strong>(M.Style \</td>
-                                                <td>Array&lt;M.Style&gt;): M.style.Composite</td>
-                                                <td>Agrega uno o varios estilos adicionales al estilo</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>remove</strong>(M.Style \</td>
-                                                <td>Array&lt;M.Style&gt;): M.style.Composite</td>
-                                                <td>Elimina uno o varios estilos que estén agregados</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>getStyles</strong>(): Array&lt;M.Style&gt;</td>
-                                                <td>Devuelve los estilos agregados a un estilo de tipo Composite</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <p>Veamos a continuación la implementación de uno de los ejemplos planteados inicialmente: </p>
-                                    <pre class="hljs"><span class="hljs-keyword">let</span> map = M.map({
-  <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>
-});
-
-<span class="hljs-comment">// Capa puntual de Campamentos</span>
-<span class="hljs-keyword">var</span> campamentos = <span class="hljs-keyword">new</span> M.layer.WFS({
-<span class="hljs-attr">url</span>: <span class="hljs-string">"http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?"</span>,
-<span class="hljs-attr">name</span>: <span class="hljs-string">"campamentos"</span>,
-<span class="hljs-attr">legend</span>: <span class="hljs-string">"Campamentos"</span>,
-<span class="hljs-attr">geometry</span>: <span class="hljs-string">'MPOINT'</span>
-});
-
-map.addLayers(campamentos);
-
-<span class="hljs-comment">// Estilo basico: puntos amarillos con borde rojo</span>
-<span class="hljs-keyword">let</span> estilo_base = <span class="hljs-keyword">new</span> M.style.Point({
-  <span class="hljs-attr">radius</span>: <span class="hljs-number">5</span>,
-  <span class="hljs-attr">fill</span>: {
-    <span class="hljs-attr">color</span>: <span class="hljs-string">'yellow'</span>,
-    <span class="hljs-attr">opacity</span>: <span class="hljs-number">0.5</span>
-  },
-  <span class="hljs-attr">stroke</span>: {
-    <span class="hljs-attr">color</span>: <span class="hljs-string">'#FF0000'</span>
-  }
-});
-
-<span class="hljs-comment">// Estilo cluster por defecto</span>
-<span class="hljs-keyword">let</span> estilo_cluster = <span class="hljs-keyword">new</span> M.style.Cluster();
-
-<span class="hljs-comment">// Cluster permite Composite, asi que se le puede agregar el estilo base</span>
-<span class="hljs-keyword">let</span> composite = estilo_cluster.add(estilo_base);
-
-<span class="hljs-comment">// Y asignamos a la capa la composicion creada</span>
-campamentos.setStyle(composite);</pre>
+                        
                                     <p class="page" id="Controles"></p>
                                     <h1>Controles básicos</h1>
                                     <p>Mapea dispone de una serie de <strong>controles básicos</strong>, que se especifican mediante el parámetro
@@ -1662,36 +962,22 @@ campamentos.setStyle(composite);</pre>
                                         ambos casos pueden especificarse como cadenas o como objetos: </p>
                                     <pre class="hljs">mapajs = M.map({
      <span class="hljs-attr">container</span>:<span class="hljs-string">"map"</span>,
-     <span class="hljs-attr">controls</span>:[<span class="hljs-string">'scale'</span>,<span class="hljs-string">'location'</span>,<span class="hljs-string">'layerswitcher'</span>,<span class="hljs-string">'mouse'</span>]
+     <span class="hljs-attr">controls</span>:[<span class="hljs-string">'scale'</span>,<span class="hljs-string">'location'</span>,<span class="hljs-string">'rotate'</span>,<span class="hljs-string">'mouse'</span>]
 });</pre>
                                     <pre class="hljs"><span class="hljs-comment">// Añadir controles</span>
-mapajs.addControls([<span class="hljs-string">'scale'</span>,<span class="hljs-string">'location'</span>,<span class="hljs-string">'layerswitcher'</span>]);
+mapajs.addControls([<span class="hljs-string">'scale'</span>,<span class="hljs-string">'location'</span>,<span class="hljs-string">'panzoom'</span>]);
 
 mapajs.addControls([
-    <span class="hljs-keyword">new</span> M.control.Mouse(),
-    <span class="hljs-keyword">new</span> M.control.OverviewMap()]);
-
+    <span class="hljs-keyword">new</span> M.control.Rotate(),
+    
 <span class="hljs-comment">// Obtener array de controles del mapa</span>
 <span class="hljs-keyword">var</span> controles = mapajs.getControls();
 <span class="hljs-comment">// Filtrar controles por nombre</span>
-<span class="hljs-keyword">var</span> controlTOC = mapajs.getControls({<span class="hljs-attr">name</span>:<span class="hljs-string">'layerswitcher'</span>})[<span class="hljs-number">0</span>];</pre>
+<span class="hljs-keyword">var</span> controlRotate = mapajs.getControls({<span class="hljs-attr">name</span>:<span class="hljs-string">'rotate'</span>})[<span class="hljs-number">0</span>];</pre>
                                     <p>Estos son los controles básicos que incluye Mapea:</p>
                                     <ul>
-                                        <li><strong>Panzoombar</strong>: Añade una barra de desplazamiento para acercarse/alejarse del mapa.</li>
-                                        <li><strong>LayerSwitcher</strong>: Incluye un árbol de contenidos (TOC) replegable al mapa. En ese árbol se
-                                            mostrarán las capas según el nombre público que se les haya dado en su construcción. Para las capas WMS,
-                                            mostrará además la leyenda que la operación <em>GetLegendGraphic</em>. </li>
-                                    </ul>
-                                    <blockquote>
-                                        <p> <a> En los <a href="#WMC">WMC</a>, la presencia o no de
-                                                una capa en el TOC viene establecida por el tag <em><strong>displayInLayerSwitcher</strong></em>, así como
-                                                su leyenda por <em><strong>LegendURL</strong></em>.</a></p>
-                                    </blockquote>
-                                    <ul>
-                                        <li><strong>OverviewMap</strong>: añade un mapa de ubicación, donde se representa la capa base a una escala menor.
-                                        </li>
+                                        <li><strong>Panzoom</strong>, <strong>Panzoombar</strong>: Añade una barra de desplazamiento para acercarse/alejarse del mapa.</li>
                                         <li><strong>Scale</strong>, <strong>ScaleLine</strong>: añade escalas numérica y gráfica respectivamente. </li>
-                                        <li><strong>Mouse</strong>: muestra las coordenadas de la posición donde se encuentre el puntero del ratón. </li>
                                     </ul>
                                     <blockquote>
                                         <p> <a> Las coordenadas no aparecen en dispositivo móviles, ya que se manejan con eventos táctiles, no con
@@ -1701,6 +987,7 @@ mapajs.addControls([
                                         <li><strong>Location</strong>: Añade un botón de centrado en la posición del usuario. Se le puede indicar si se
                                             desea posicionamiento continuo (<em>tracking</em>, por defecto a <em>true</em>) y alta precisión
                                             (<em>highAccuracy</em>, por defecto a false)</li>
+                                        <li><strong>Rotate</strong>: Muestra la orientación del mapa. Pulsando sobre el control se retorna a orientación hacia el Norte</li>
                                         <li><strong>GetFeatureInfo</strong>: Añade la herramienta de consulta de información sobre capas WMS a través de su
                                             servicio getFeatureInfo. Por defecto, espera Html como formato de respuesta. Otros formatos soportados son
                                             &#39;<em>gml</em>&#39; y &#39;<em>plain</em>&#39;. Admite también un buffer en pixeles opcional:</li>
@@ -1709,9 +996,9 @@ mapajs.addControls([
  <span class="hljs-string">'gml'</span>, 
  {<span class="hljs-attr">buffer</span>: <span class="hljs-number">1000</span>}));</pre>
                                     <p>Los controles también pueden activarse o desactivarse por código:</p>
-                                    <pre class="hljs"><span class="hljs-keyword">var</span> ctrlLocation = mapajs.getControls({<span class="hljs-attr">name</span>:<span class="hljs-string">'location'</span>})[<span class="hljs-number">0</span>];
-ctrlLocation.activate(); <span class="hljs-comment">//para activarlo</span>
-ctrlLocation.deactivate(); <span class="hljs-comment">//para desactivarlo</span></pre>
+                                    <pre class="hljs"><span class="hljs-keyword">var</span> ctrlRotate = mapajs.getControls({<span class="hljs-attr">name</span>:<span class="hljs-string">'rotate'</span>})[<span class="hljs-number">0</span>];
+ctrlRotate.activate(); <span class="hljs-comment">//para activarlo</span>
+ctrlRotate.deactivate(); <span class="hljs-comment">//para desactivarlo</span></pre>
                                     <p class="page" id="Opciones"></p>
                                     <h1><strong>&gt; Opciones</strong></h1>
                                     <p><strong>Opciones de personalización</strong></p>
@@ -1758,7 +1045,7 @@ ctrlLocation.deactivate(); <span class="hljs-comment">//para desactivarlo</span>
                                     <h3 id="en-tiempo-de-construcci-n">En tiempo de construcción</h3>
                                     <pre class="hljs"><span class="hljs-keyword">var</span> mapajs = M.map({
   <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
-  <span class="hljs-attr">controls</span>: [<span class="hljs-string">"mouse"</span>, <span class="hljs-string">"layerswitcher"</span>],
+  <span class="hljs-attr">controls</span>: [<span class="hljs-string">"mouse"</span>, <span class="hljs-string">"scale"</span>],
   <span class="hljs-attr">center</span>: {
     <span class="hljs-attr">x</span>: <span class="hljs-number">311000</span>,
     <span class="hljs-attr">y</span>: <span class="hljs-number">4040000</span>,
@@ -1859,7 +1146,7 @@ mapajs.addPanels([panelExtra]);</pre>
                                     <pre class="hljs">    <span class="hljs-keyword">var</span> controles = panel.getControls();</pre>
                                     <p class="page" id="Plugins"></p>
                                     <h1><strong>Plugins</strong></h1>
-                                    <p>Los <strong>plugins</strong> son organizaciones funcionales de uno o más controles que ofrecen utilidades específicas que, a diferencia de los <a href="#Controles">controles básicos</a>, suelen usarse sólo en escenarios concretos, por lo que se separan del <em>core</em> o núcleo principal de Mapea para no penalizar con su descarga a quien no los necesite. Algunos ejemplos son el plugin de impresión, búsquedas en lenguaje natural, o edición wfst.</p>
+                                    <p>Los <strong>plugins</strong> son organizaciones funcionales de uno o más controles que ofrecen utilidades específicas que, a diferencia de los <a href="#Controles">controles básicos</a>, suelen usarse sólo en escenarios concretos, por lo que se separan del <em>core</em> o núcleo principal de Mapea para no penalizar con su descarga a quien no los necesite. Algunos ejemplos son el plugin de búsquedas del IGN o el plugin de atribuciones.</p>
                                     <p>Por esa razón, cada plugin tiene sus propios ficheros de recursos, que deben importarse junto a los del core de Mapea, tal como se indica en la sección de <a href="#Primeros-pasos">primeros pasos de esta wiki</a>.</p>
                                     <p>El conjunto de plugins incluidos en el core de Mapea es el siguiente:</p>
                                     <table>
@@ -1871,30 +1158,38 @@ mapajs.addPanels([panelExtra]);</pre>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><a href="https://github.com/sigcorporativo-ja/Mapea4/tree/master/mapea-js/src/plugins/attributetable">attributetable</a></td>
-                                                <td>Muestra los elementos de las capas vectoriales en una tabla</td>
+                                                <td><a>attributions</a></td>
+                                                <td>Habilita la visualización de atribuciones de las capas del mapa</td>
                                             </tr>
                                             <tr>
-                                                <td><a href="https://github.com/sigcorporativo-ja/Mapea4/tree/master/mapea-js/src/plugins/autocomplete">autocomplete</a></td>
-                                                <td>Autocompletado en base a un servicio REST</td>
+                                                <td><a>ignsearch</a></td>
+                                                <td>Habilita las búsquedas de direcciones y topónimos sobre los servicios del IGN. Incluye utilidad de geocodificación inversa</td>
                                             </tr>
 
                                             <tr>
-                                                <td><a href="https://github.com/sigcorporativo-ja/Mapea4/tree/master/mapea-js/src/plugins/measurebar">measurebar</a></td>
-                                                <td>Herramienta de medición de áreas y distancias </td>
+                                                <td><a>mousesrs</a></td>
+                                                <td>Muestra las coordenadas del ratón sobre el mapa y sistema de referencia</td>
                                             </tr>
                                             <tr>
-                                                <td><a href="https://github.com/sigcorporativo-ja/Mapea4/tree/master/mapea-js/src/plugins/printer">printer</a></td>
-                                                <td>Impresión en alta resolución del mapa</td>
+                                                <td><a>sharemap</a></td>
+                                                <td>Habilita la compartición de la visión actual del mapa</td>
                                             </tr>
                                             <tr>
-                                                <td><a href="https://github.com/sigcorporativo-ja/Mapea4/tree/master/mapea-js/src/plugins/wfstcontrols">wfstcontrols</a></td>
-                                                <td>Herramientas de edición WFST</td>
+                                                <td><a>toc</a></td>
+                                                <td>Tabla de contenidos simple para la activación/desactivación de la visualización de capas</td>
+                                            </tr>
+                                            <tr>
+                                                <td><a>xylocator</a></td>
+                                                <td>Herramienta para localizar unas coordenadas sobre el mapa, dadas en un sisema de referencia determinado</td>
+                                            </tr>
+                                            <tr>
+                                                <td><a>zoomextent</a></td>
+                                                <td>Habilita la realización de zoom a la extensión del mapa</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <p>En la carpeta principal de cada uno existe un fichero README.md que lo documenta: <em>descripción</em>, <em>ficheros de recursos</em> y <em>ejemplos</em>. </p>
-                                    <p>Existen plugins adicionales externos al core de Mapea, desarrollados tanto por el propio proyecto SIGCorporativo como por terceros. La distribución y características de estos variará según el desarrollador</p>
+                                    <p>Existen plugins adicionales externos al core de Mapea, desarrollados tanto dezde el IGN como por terceros. La distribución y características de estos variará según el desarrollador</p>
                                     <p><strong>Estructura interna</strong></p>
                                     <p>Existen unas normas y pautas establecidas para el desarrollo de plugins, que garantizan homogeneidad en su estructura interna, y facilitan el desarrollo de nuevos componentes. Estas normas y pautas están recogidas con detalle en la <strong><a href="https://github.com/sigcorporativo-ja/Mapea4-dev-webpack/wiki"></a>guía de desarrollo de plugins</a></strong>. </p>
                                     <p>El mapa gestiona los plugins a través de los siguientes métodos: </p>
@@ -2163,7 +1458,7 @@ mapajs.getMapImpl().on(<span class="hljs-string">'click'</span>,<span class="hlj
                                     <pre class="hljs"><span class="hljs-comment">// Construimos un mapa de Mapea</span>
 mapajs = M.map({
      <span class="hljs-attr">container</span>:<span class="hljs-string">"map"</span>,
-     <span class="hljs-attr">controls</span>:[<span class="hljs-string">'scale'</span>,<span class="hljs-string">'location'</span>,<span class="hljs-string">'layerswitcher'</span>,<span class="hljs-string">'mouse'</span>]
+     <span class="hljs-attr">controls</span>:[<span class="hljs-string">'scale'</span>,<span class="hljs-string">'location'</span>,<span class="hljs-string">'rotate'</span>,<span class="hljs-string">'mouse'</span>]
 });
 
 <span class="hljs-comment">// Accedemos al OL</span>
@@ -2178,9 +1473,9 @@ mapajs = M.map({
                                     <h1><strong>Mapea iframe</strong></h1>
                                     <p>Al igual que se hacía con Mapea3, Mapea4 puede ser integrado en paǵinas web mediante el uso de iframes.
                                         A través del API REST se puede incluir un visualizador interactivo en cualquier página web sin necesidad de disponer de conocimientos específicos en programación ni en el ámbito de los SIG. Para ello únicamente es necesario que el usuario configure el mapa a visualizar a través de una URL:</p>
-                                    <p><a href="http://cnigvisores_pub.desarrollo.guadaltel.es/mapea/?controls=mouse,layerswitcher,overviewmap,scaleline,location&amp;layers=WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas*true&amp;getfeatureinfo=html">http://cnigvisores_pub.desarrollo.guadaltel.es/mapea/?controls=mouse,layerswitcher,overviewmap,scaleline,location&amp;layers=WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas*true&amp;getfeatureinfo=html</a></p>
+                                    <p><a href="http://cnigvisores_pub.desarrollo.guadaltel.es/mapea/?controls=scaleline,location,rotate&amp;layers=WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas*true&amp;getfeatureinfo=html">http://cnigvisores_pub.desarrollo.guadaltel.es/mapea/?controls=scaleline,location&amp;layers=WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas*true&amp;getfeatureinfo=html</a></p>
                                     <p>Esto puede integrarse directamente en un iframe, como se hacía anteriormente:</p>
-                                    <pre class="hljs"><span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> <span class="hljs-attr">height</span>=<span class="hljs-string">"350px"</span> <span class="hljs-attr">width</span>=<span class="hljs-string">"500px"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://cnigvisores_pub.desarrollo.guadaltel.es/mapea/?controls=mouse,layerswitcher,overviewmap,scaleline,location&amp;layers=WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas*true&amp;getfeatureinfo=html"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span></pre>
+                                    <pre class="hljs"><span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> <span class="hljs-attr">height</span>=<span class="hljs-string">"350px"</span> <span class="hljs-attr">width</span>=<span class="hljs-string">"500px"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://cnigvisores_pub.desarrollo.guadaltel.es/mapea/?controls=scaleline,location&amp;layers=WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas*true&amp;getfeatureinfo=html"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span></pre>
                                     <blockquote>
                                         <p> <a> En la mayoría de los mapas, puede utilizarse cualquier tamaño de iframe, pero para la correcta visualización y funcionamiento del mismo cuando hay bastantes controles, el tamaño mínimo de este iframe debe de ser width=&quot;600&quot; height=&quot;400&quot; </a></p>
                                     </blockquote>
@@ -2279,9 +1574,7 @@ mapajs = M.map({
                                                     - <u>scaleLine</u>: línea de escala<br>
                                                     - <u>panzoom</u>: control de zoom<br>
                                                     - <u>panzoombar</u>: control de zoom con barra de nivel<br>
-                                                    - <u>layerswitcher</u>: control de gestión de capas<br>
-                                                    - <u>mouse</u>: coordenadas del ratón<br>
-                                                    - <u>overviewmap</u>: mapa miniatura<br>
+                                                    - <u>rotate</u>: muestra orientación del mapa<br>
                                                     - <u>location</u>: representa la posición del usuario<br>
                                                     Más información en <a href='#Controles'>Controles básicos</a>
                                             </tr>

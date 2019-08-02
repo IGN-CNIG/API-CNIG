@@ -1,7 +1,7 @@
 import { map as Mmap } from 'M/mapea';
-import Location from 'M/control/Location';
+// import Location from 'M/control/Location';
 import Mouse from 'M/control/Mouse';
-import OverviewMap from 'M/control/OverviewMap';
+// import OverviewMap from 'M/control/OverviewMap';
 import Panzoom from 'M/control/Panzoom';
 import Panzoombar from 'M/control/Panzoombar';
 import ScaleLine from 'M/control/ScaleLine';
@@ -19,13 +19,13 @@ import Panel from 'M/ui/Panel';
 import * as Position from 'M/ui/position';
 
 import OLSourceVector from 'ol/source/Vector';
-import OLSourceXYZ from 'ol/source/XYZ';
+// import OLSourceXYZ from 'ol/source/XYZ';
 import { get as getProj } from 'ol/proj';
 
 const mapjs = Mmap({
   container: 'map',
   layers: [],
-  controls: ["layerswitcher"],
+  controls: ["panzoombar"],
   projection: 'EPSG:3857*m'
 });
 
