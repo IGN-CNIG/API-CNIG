@@ -54,9 +54,9 @@ module.exports = {
           },
           {
             loader: 'css-loader',
-            options: {
-              minimize: true,
-            },
+            // options: {
+            //   minimize: true,
+            // },
           },
         ],
         exclude: [/node_modules/],
