@@ -354,6 +354,7 @@ class WMTS extends LayerBase {
    */
   getGetFeatureInfoUrl(coordinate, zoom, formatInfo) {
     const tcr = this.getTileColTileRow(coordinate, zoom);
+    const coordPxl = this.getRelativeTileCoordInPixel_(coordinate, zoom);
     const service = 'WMTS';
     const request = 'GetFeatureInfo';
     const version = '1.0.0';
@@ -365,8 +366,8 @@ class WMTS extends LayerBase {
     const infoFormat = formatInfo;
     const tilecol = tcr[0];
     const tilerow = tcr[1];
-    const I = coordinate[0];
-    const J = coordinate[1];
+    const I = coordPxl[0];
+    const J = coordPxl[1];
     const url = addParameters(this.url, {
       service,
       request,
@@ -401,6 +402,27 @@ class WMTS extends LayerBase {
       }
     }
     return tcr.slice(1);
+  }
+
+  /**
+   * @function
+   * @private
+   */
+  getRelativeTileCoordInPixel_(coordinate, zoom) {
+    let coordPixel;
+    if (!isNullOrEmpty(this.ol3Layer)) {
+      const source = this.ol3Layer.getSource();
+      if (!isNullOrEmpty(source)) {
+        const { tileGrid } = source;
+        const tileCoord = tileGrid.getTileCoordForCoordAndZ(coordinate, zoom);
+        const tileExtent = tileGrid.getTileCoordExtent(tileCoord, []);
+        const tileResolution = tileGrid.getResolution(tileCoord[0]);
+        const x = Math.floor((coordinate[0] - tileExtent[0]) / tileResolution);
+        const y = Math.floor((tileExtent[3] - coordinate[1]) / tileResolution);
+        coordPixel = [x, y];
+      }
+    }
+    return coordPixel;
   }
 }
 
