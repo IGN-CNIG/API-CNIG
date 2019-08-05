@@ -25,8 +25,7 @@ module.exports = {
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html'],
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         exclude: /(node_modules\/(?!ol)|bower_components)/,
         use: {
@@ -48,15 +47,14 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          {
+        use: [{
             loader: MiniCssExtractPlugin.loader,
           },
           {
             loader: 'css-loader',
-            options: {
-              minimize: true,
-            },
+            // options: {
+            //   minimize: true,
+            // },
           },
         ],
         exclude: [/node_modules/],
@@ -65,7 +63,8 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         exclude: /node_modules/,
         loader: 'url-loader?name=fonts/[name].[ext]',
-      }],
+      }
+    ],
   },
   optimization: {
     noEmitOnErrors: true,
