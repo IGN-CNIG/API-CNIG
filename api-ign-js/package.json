@@ -1,6 +1,6 @@
 {
-  "name": "api-ign",
-  "version": "5.1.0",
+  "name": "apiign",
+  "version": "1.0.0",
   "description": "Herramienta para desarrollo de mapas interactivos de forma sencilla",
   "keywords": [
     "map",

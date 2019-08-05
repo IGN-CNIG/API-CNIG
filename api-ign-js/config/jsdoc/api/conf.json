@@ -1,7 +1,7 @@
 {
   "custom": {
     "titleApp": "API IGN Core",
-    "versionApp": "5.1.0"
+    "versionApp": "1.0.0"
   },
   "opts": {
     "recurse": true,
