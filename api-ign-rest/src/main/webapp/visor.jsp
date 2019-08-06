@@ -77,14 +77,14 @@
         });
 
         const layerinicial = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',
             legend: 'Limite administrativo',
             tiled: false,
         }, {});
 
         const layerUA = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeUnit',
             legend: 'Unidad administrativa',
             tiled: false
@@ -102,7 +102,7 @@
 
         const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false');
 
-        map.addLayers([layerinicial, layerUA, kml, ocupacionSuelo]);
+        map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
 
         const mp = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
@@ -117,7 +117,7 @@
             scale: 10000,
             defaultAttribution: 'Instituto Geográfico Nacional',
             defaultURL: 'https://www.ign.es/',
-            url: 'files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+            url: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
             type: 'kml'
         });
 
