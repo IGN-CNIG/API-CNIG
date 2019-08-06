@@ -44,6 +44,10 @@ const ocupacionSuelo = new M.layer.WMTS({
 const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false');
 
 mapjs.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
+// mapjs.addLayers([ocupacionSuelo]);
+// mapjs.addLayers([layerinicial]);
+// mapjs.addLayers([layerUA]);
+// mapjs.addLayers([kml]);
 
 
 const mp = new IGNSearch({

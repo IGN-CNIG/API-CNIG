@@ -209,23 +209,38 @@ class Map extends MObject {
    * @returns {Map}
    */
   addLayers(layers) {
-    // gets the layers with type defined and undefined
-    const unknowLayers = layers.filter((layer) => {
-      return !LayerType.know(layer.type);
-    });
+    let layersRec = layers;
 
-    const knowLayers = layers.filter((layer) => {
-      return LayerType.know(layer.type);
-    });
+    // parse to Array
+    if (isNullOrEmpty(layersRec)) {
+      layersRec = [];
+    }
 
-    this.addUnknowLayers_(unknowLayers);
-    this.facadeMap_.addWMS(knowLayers.filter(layer => (layer.type === LayerType.WMS)));
-    this.facadeMap_.addWMTS(knowLayers.filter(layer => (layer.type === LayerType.WMTS)));
-    this.facadeMap_.addKML(knowLayers.filter(layer => (layer.type === LayerType.KML)));
-    this.facadeMap_.addWFS(knowLayers.filter(layer => (layer.type === LayerType.WFS)));
+    if (!isArray(layersRec)) {
+      layersRec = [layersRec];
+    }
+
+    if (layersRec.length === 0) {
+      return this;
+    }
+
+    layersRec.forEach((layer) => {
+      if (layer.type === LayerType.WMS) {
+        this.facadeMap_.addWMS(layer);
+      } else if (layer.type === LayerType.WMTS) {
+        this.facadeMap_.addWMTS(layer);
+      } else if (layer.type === LayerType.KML) {
+        this.facadeMap_.addKML(layer);
+      } else if (layer.type === LayerType.WFS) {
+        this.facadeMap_.addWFS(layer);
+      } else if (!LayerType.know(layer.type)) {
+        this.addUnknowLayers_(layer);
+      }
+    });
 
     return this;
   }
+
 
   /**
    * This function removes the layers from the map
