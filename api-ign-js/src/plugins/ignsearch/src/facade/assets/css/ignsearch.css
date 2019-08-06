@@ -33,10 +33,10 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
 
 #m-ignsearch-results {
     align-items: center;
-    display: flex;
-    width: 100%;
     background-color: white;
+    display: flex;
     position: absolute;
+    width: 100%;
 }
 
 #m-ignsearch-results::before {
@@ -141,13 +141,10 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
 }
 
 @media only screen and (max-width: 768px) {
-    #div-contenedor.m-ignsearch {
-        width: 100%;
+    div.m-panel.ign-search-panel.opened {
+        width: 85% !important;
     }
 
-    /* .m-ignsearch>.search-panel {
-        vertical-align: middle;
-    } */
 
     .m-ignsearch>.search-panel>button#m-ignsearch-locate-button,
     .m-ignsearch>.search-panel>button#m-ignsearch-clear-button {
@@ -155,11 +152,7 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
     }
 
     .m-ignsearch #m-ignsearch-search-input {
-        width: calc(100vw - 180px);
-    }
-
-    .ign-search-panel.opened {
-        width: calc(100vw - 75px);
+        width: 50%;
     }
 
     .ign-search-panel>.g-cartografia-flecha-izquierda {
