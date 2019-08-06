@@ -3,7 +3,6 @@ build/
 dist/
 node_modules/
 test/
-webpack-config/
 node
 target
 externs
