@@ -2,8 +2,8 @@
  * @module M/control/ZoomExtentControl
  */
 
-import ZoomExtentImplControl from 'impl/zoomextentcontrol';
-import template from 'templates/zoomextent';
+import ZoomExtentImplControl from '../../impl/ol/js/zoomextentcontrol';
+import template from '../../templates/zoomextent';
 
 export default class ZoomExtentControl extends M.Control {
   /**

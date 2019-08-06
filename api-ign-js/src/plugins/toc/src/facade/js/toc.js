@@ -1,8 +1,8 @@
 /**
  * @module M/plugin/TOC
  */
-import 'assets/css/toc';
-import 'assets/css/fonts';
+import '../assets/css/toc';
+import '../assets/css/fonts';
 import TOCControl from './toc_control';
 
 export default class TOC extends M.Plugin {

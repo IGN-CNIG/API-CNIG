@@ -1,8 +1,8 @@
 /**
  * @module M/plugin/Attributions
  */
-import 'assets/css/attributions';
-import AttributionsImpl from 'impl/attributions';
+import '../assets/css/attributions';
+import AttributionsImpl from '../../impl/ol/js/attributions';
 import AttributionsControl from './attributionscontrol';
 import { intersect } from './filter';
 

@@ -1,9 +1,9 @@
 /**
  * @module M/control/ShareMapControl
  */
-import template from 'templates/sharemap';
-import modal from 'templates/modal';
-import createStyle from 'facade/styles';
+import template from '../../templates/sharemap';
+import modal from '../../templates/modal';
+import createStyle from './styles';
 
 /**
  * This function adds the animation shade class.

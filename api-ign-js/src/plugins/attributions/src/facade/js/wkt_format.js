@@ -1,7 +1,7 @@
 /**
  * @module M/format/WKT
  */
-import WKTImpl from 'impl/wkt_format';
+import WKTImpl from '../../impl/ol/js/wkt_format';
 
 /**
  * @classdesc

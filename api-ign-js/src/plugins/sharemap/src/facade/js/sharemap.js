@@ -1,7 +1,7 @@
 /**
  * @module M/plugin/ShareMap
  */
-import 'assets/css/sharemap';
+import '../assets/css/sharemap';
 import ShareMapControl from './sharemapcontrol';
 
 /**

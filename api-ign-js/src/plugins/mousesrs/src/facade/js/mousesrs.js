@@ -1,7 +1,7 @@
 /**
  * @module M/plugin/MouseSRS
  */
-import 'assets/css/mousesrs';
+import '../assets/css/mousesrs';
 import MouseSRSControl from './mousesrscontrol';
 
 export default class MouseSRS extends M.Plugin {

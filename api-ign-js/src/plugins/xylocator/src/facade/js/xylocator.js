@@ -1,7 +1,7 @@
 /**
  * @module M/plugin/XYLocator
  */
-import 'assets/css/xylocator';
+import '../assets/css/xylocator';
 import XYLocatorControl from './xylocatorcontrol';
 
 /**
