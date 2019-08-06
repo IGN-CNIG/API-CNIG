@@ -91,7 +91,9 @@ module.exports = {
   ],
   devServer: {
     hot: true,
+    // host: '0.0.0.0',
     open: true,
+    // port: 6123,
     openPage: `test/development/${testName}.html`,
     watchOptions: {
       poll: 1000,
