@@ -2,9 +2,9 @@
  * @module M/control/XYLocatorControl
  */
 
-import XYLocatorImplControl from 'impl/xylocatorcontrol';
-import template from 'templates/xylocator';
-import projections from 'templates/options';
+import XYLocatorImplControl from '../../impl/ol/js/xylocatorcontrol';
+import template from '../../templates/xylocator';
+import projections from '../../templates/options';
 
 /**
  * @classdesc

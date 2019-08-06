@@ -1,7 +1,7 @@
 /**
  * @module M/plugin/ZoomExtent
  */
-import 'assets/css/zoomextent';
+import '../assets/css/zoomextent';
 import ZoomExtentControl from './zoomextentcontrol';
 
 export default class ZoomExtent extends M.Plugin {

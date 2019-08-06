@@ -1,8 +1,8 @@
 /**
  * @module M/control/AttributionsControl
  */
-import AttributionsImplControl from 'impl/attributionscontrol';
-import template from 'templates/attributions';
+import AttributionsImplControl from '../../impl/ol/js/attributionscontrol';
+import template from '../../templates/attributions';
 
 /**
  * @classdesc

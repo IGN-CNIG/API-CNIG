@@ -2,8 +2,8 @@
  * @module M/control/MouseSRSControl
  */
 
-import MouseSRSImplControl from 'impl/mousesrscontrol';
-import template from 'templates/mousesrs';
+import MouseSRSImplControl from '../../impl/ol/js/mousesrscontrol';
+import template from '../../templates/mousesrs';
 
 export default class MouseSRSControl extends M.Control {
   /**

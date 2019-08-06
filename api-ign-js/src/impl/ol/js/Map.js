@@ -1900,11 +1900,11 @@ class Map extends MObject {
  */
 Map.Z_INDEX = {};
 Map.Z_INDEX_BASELAYER = 0;
-Map.Z_INDEX[LayerType.WMS] = 1000;
-Map.Z_INDEX[LayerType.WMTS] = 2000;
-Map.Z_INDEX[LayerType.KML] = 3000;
-Map.Z_INDEX[LayerType.WFS] = 9999;
-Map.Z_INDEX[LayerType.Vector] = 9999;
-Map.Z_INDEX[LayerType.GeoJSON] = 9999;
+Map.Z_INDEX[LayerType.WMS] = 10;
+Map.Z_INDEX[LayerType.WMTS] = 10;
+Map.Z_INDEX[LayerType.KML] = 10;
+Map.Z_INDEX[LayerType.WFS] = 10;
+Map.Z_INDEX[LayerType.Vector] = 10;
+Map.Z_INDEX[LayerType.GeoJSON] = 10;
 
 export default Map;

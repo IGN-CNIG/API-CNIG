@@ -2,7 +2,7 @@
  * @module M/control/TOCControl
  */
 
-import template from 'templates/toc';
+import template from '../../templates/toc';
 
 /**
  * @private
@@ -51,8 +51,11 @@ export default class TOCControl extends M.Control {
    * @api
    */
   getTemplateVariables() {
-    const layers = this.map_.getWMS().concat(this.map_.getWMTS())
-      .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true);
+    // const layers = this.map_.getWMS().concat(this.map_.getWMTS())
+    //   .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true);
+    const layers = this.map_.getLayers()
+      .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true)
+      .reverse();
     const layersOpts = layers.map((layer) => {
       return {
         outOfRange: !layer.inRange(),
