@@ -1,19 +1,7 @@
-import { map as Mmap } from 'M/mapea';
-
-import WMS from 'M/layer/WMS';
-import WMTS from 'M/layer/WMTS';
-import KML from 'M/layer/KML';
-
 import IGNSearch from 'plugins/ignsearch/src/facade/js/ignsearch';
-// import Attributions from 'plugins/attributions/facade/js/attributions';
-// import ShareMap from 'plugins/sharemap/facade/js/sharemap';
-// import XYLocator from 'plugins/xylocator/facade/js/xylocator';
-// import ZoomExtent from 'plugins/zoomextent/facade/js/zoomextent';
-// import MouseSRS from 'plugins/mousesrs/facade/js/mousesrs';
-// import TOC from 'plugins/toc/src/facade/js/toc';
 
 
-const mapjs = Mmap({
+const mapjs = M.map({
   container: 'map',
   controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'backgroundlayers', 'getfeatureinfo'],
   zoom: 5,
@@ -24,33 +12,16 @@ const mapjs = Mmap({
 
 window.mapjs = mapjs;
 
-const layerinicial = new WMS({
+const layerinicial = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeBoundary',
   legend: 'Limite administrativo',
   tiled: false,
 }, {});
 
-const layerUA = new WMS({
-  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-  name: 'AU.AdministrativeUnit',
-  legend: 'Unidad administrativa',
-  tiled: false
-}, {});
+const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false');
 
-const ocupacionSuelo = new WMTS({
-  url: 'http://wmts-mapa-lidar.idee.es/lidar',
-  name: 'EL.GridCoverageDSM',
-  legend: 'Modelo Digital de Superficies LiDAR',
-  matrixSet: 'GoogleMapsCompatible',
-}, {
-  visibility: false,
-});
-
-
-const kml = new KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false');
-
-mapjs.addLayers([layerinicial, layerUA, kml, ocupacionSuelo]);
+mapjs.addLayers([layerinicial, kml]);
 
 const mp = new IGNSearch({
   servicesToSearch: 'gn',
@@ -60,29 +31,5 @@ const mp = new IGNSearch({
   countryCode: 'es',
   reverse: true,
 });
-const mp2 = new Attributions({
-  mode: 1,
-  scale: 10000,
-  defaultAttribution: 'Instituto Geográfico Nacional',
-  defaultURL: 'https://www.ign.es/',
-});
-const mp3 = new ShareMap({
-  baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
-  position: 'BR',
-});
-const mp4 = new XYLocator({
-  position: 'TL',
-});
-const mp6 = new ZoomExtent();
-const mp7 = new MouseSRS({
-  projection: 'EPSG:4326',
-});
-const mp8 = new TOC();
 
 mapjs.addPlugin(mp);
-mapjs.addPlugin(mp2);
-mapjs.addPlugin(mp3);
-mapjs.addPlugin(mp4);
-mapjs.addPlugin(mp6);
-mapjs.addPlugin(mp7);
-mapjs.addPlugin(mp8);

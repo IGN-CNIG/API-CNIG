@@ -1,9 +1,9 @@
 /**
  * @module M/control/IGNSearchControl
  */
-import IGNSearchImplControl from 'impl/ignsearchcontrol';
-import template from 'templates/ignsearch';
-import results from 'templates/results';
+import IGNSearchImplControl from '../../impl/ol/js/ignsearchcontrol';
+import template from '../../templates/ignsearch';
+import results from '../../templates/results';
 import registerHelpers from './helpers';
 import geographicNameType from './constants';
 

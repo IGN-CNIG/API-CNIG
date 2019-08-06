@@ -1,8 +1,8 @@
 /**
  * @module M/plugin/IGNSearch
  */
-import 'assets/css/ignsearch';
-import 'assets/css/fonts';
+import '../assets/css/ignsearch';
+import '../assets/css/fonts';
 import IGNSearchControl from './ignsearchcontrol';
 
 export default class IGNSearch extends M.Plugin {
