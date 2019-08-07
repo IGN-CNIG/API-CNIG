@@ -267,8 +267,8 @@ div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
         font-size: 2em;
     }
 
-    .m-panel.m-xylocator.left.opened>button {
-        display: none;
+    .m-areas>div.m-area>div.m-panel.m-xylocator.left>button.m-panel-btn {
+        right: -40px;
     }
 }
 
