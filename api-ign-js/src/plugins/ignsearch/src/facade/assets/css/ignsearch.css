@@ -59,11 +59,9 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
 }
 
 .m-ignsearch #m-ignsearch-results #m-ignsearch-results-list {
-    height: 200px;
     list-style-position: outside;
     list-style-type: none;
     overflow: hidden;
-    overflow-y: scroll;
     padding-left: 0.5em;
     width: 100%;
 }
@@ -136,6 +134,13 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
     display: none;
 }
 
+.m-ignsearch>.search-panel>button#m-ignsearch-locate-button,
+.m-ignsearch>.search-panel>button#m-ignsearch-clear-button {
+    vertical-align: middle;
+}
+
+/* MEDIA QUERIES */
+
 @media only screen and (min-width: 769px) {
 
     .search-panel {
@@ -146,22 +151,9 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
 
 @media only screen and (max-width: 768px) {
 
-    /* .m-ignsearch>.search-panel>button#m-ignsearch-locate-button,
-    .m-ignsearch>.search-panel>button#m-ignsearch-clear-button {
-        vertical-align: middle;
-    }
-
-    .ign-search-panel>.g-cartografia-flecha-izquierda {
-        display: none;
-    } */
-}
-
-
-@media only screen and (min-width: 601px) {
-
-    .m-ignsearch>.search-panel>button#m-ignsearch-locate-button,
-    .m-ignsearch>.search-panel>button#m-ignsearch-clear-button {
-        vertical-align: middle;
+    .m-ignsearch #m-ignsearch-results #m-ignsearch-results-list {
+        height: 200px;
+        overflow-y: scroll;
     }
 }
 
