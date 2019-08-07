@@ -132,6 +132,10 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
     width: 250px;
 }
 
+.ign-search-panel>.g-cartografia-flecha-izquierda {
+    display: none;
+}
+
 @media only screen and (min-width: 769px) {
 
     .search-panel {
@@ -141,21 +145,42 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
 }
 
 @media only screen and (max-width: 768px) {
-    div.m-panel.ign-search-panel.opened {
-        width: 85% !important;
+
+    /* .m-ignsearch>.search-panel>button#m-ignsearch-locate-button,
+    .m-ignsearch>.search-panel>button#m-ignsearch-clear-button {
+        vertical-align: middle;
     }
 
+    .ign-search-panel>.g-cartografia-flecha-izquierda {
+        display: none;
+    } */
+}
+
+
+@media only screen and (min-width: 601px) {
 
     .m-ignsearch>.search-panel>button#m-ignsearch-locate-button,
     .m-ignsearch>.search-panel>button#m-ignsearch-clear-button {
         vertical-align: middle;
     }
+}
+
+@media only screen and (min-width: 411px) and (max-width: 600px) {
+    div.m-control.m-container.m-ignsearch {
+        width: 300px;
+    }
+
+    .m-ignsearch #m-ignsearch-search-input {
+        width: 65%;
+    }
+}
+
+@media only screen and (max-width: 410px) {
+    div.m-panel.ign-search-panel.opened {
+        width: 85% !important;
+    }
 
     .m-ignsearch #m-ignsearch-search-input {
         width: 50%;
-    }
-
-    .ign-search-panel>.g-cartografia-flecha-izquierda {
-        display: none;
     }
 }
