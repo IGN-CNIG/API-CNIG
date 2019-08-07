@@ -132,8 +132,9 @@ class GetFeatureInfo extends Control {
 
     return wmsLayers.map((layer) => {
       const olLayer = layer.getImpl().getOL3Layer();
-      let param = {};
+      let param;
       if (layer.isVisible() && layer.isQueryable() && !isNullOrEmpty(olLayer)) {
+        param = {};
         const getFeatureInfoParams = {
           INFO_FORMAT: this.userFormats[this.currentFormat],
           FEATURE_COUNT: this.featureCount,
@@ -473,7 +474,6 @@ class GetFeatureInfo extends Control {
       popup.addTab(loadingInfoTab);
       this.facadeMap_.addPopup(popup, coordinate);
     } else {
-      // removes popup if all contents are getfeatureinfo
       const hasExternalContent =
         popup.getTabs().some(tab => tab.title !== GetFeatureInfo.POPUP_TITLE);
       if (!hasExternalContent) {
