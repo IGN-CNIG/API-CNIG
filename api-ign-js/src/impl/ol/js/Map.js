@@ -211,7 +211,6 @@ class Map extends MObject {
   addLayers(layers) {
     let layersRec = layers;
 
-    // parse to Array
     if (isNullOrEmpty(layersRec)) {
       layersRec = [];
     }
@@ -234,7 +233,7 @@ class Map extends MObject {
       } else if (layer.type === LayerType.WFS) {
         this.facadeMap_.addWFS(layer);
       } else if (!LayerType.know(layer.type)) {
-        this.addUnknowLayers_(layer);
+        this.addUnknowLayers_([layer]);
       }
     });
 

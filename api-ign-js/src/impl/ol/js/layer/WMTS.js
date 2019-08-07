@@ -165,42 +165,44 @@ class WMTS extends LayerBase {
    * @function
    */
   addLayer_(capabilitiesOptions) {
-    const extent = this.facadeLayer_.getMaxExtent();
-    // gets resolutions from defined min/max resolutions
-    const capabilitiesOptionsVariable = capabilitiesOptions;
-    const minResolution = this.options.minResolution;
-    const maxResolution = this.options.maxResolution;
-    capabilitiesOptionsVariable.format = this.options.format || capabilitiesOptions.format;
+    if (!isNullOrEmpty(this.map)) {
+      const extent = this.facadeLayer_.getMaxExtent();
+      // gets resolutions from defined min/max resolutions
+      const capabilitiesOptionsVariable = capabilitiesOptions;
+      const minResolution = this.options.minResolution;
+      const maxResolution = this.options.maxResolution;
+      capabilitiesOptionsVariable.format = this.options.format || capabilitiesOptions.format;
 
-    const wmtsSource = new OLSourceWMTS(extend(capabilitiesOptionsVariable, {
-      // tileGrid: new OLTileGridWMTS({
-      //   origin: getBottomLeft(extent),
-      //   resolutions,
-      //   matrixIds,
-      // }),
-      extent,
-    }, true));
+      const wmtsSource = new OLSourceWMTS(extend(capabilitiesOptionsVariable, {
+        // tileGrid: new OLTileGridWMTS({
+        //   origin: getBottomLeft(extent),
+        //   resolutions,
+        //   matrixIds,
+        // }),
+        extent,
+      }, true));
 
-    this.ol3Layer = new OLLayerTile(extend({
-      visible: this.options.visibility,
-      source: wmtsSource,
-      minResolution,
-      maxResolution,
-    }, this.vendorOptions_, true));
+      this.ol3Layer = new OLLayerTile(extend({
+        visible: this.options.visibility,
+        source: wmtsSource,
+        minResolution,
+        maxResolution,
+      }, this.vendorOptions_, true));
 
-    // keeps z-index values before ol resets
-    const zIndex = this.zIndex_;
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+      // keeps z-index values before ol resets
+      const zIndex = this.zIndex_;
+      this.map.getMapImpl().addLayer(this.ol3Layer);
 
-    // sets its z-index
-    if (zIndex !== null) {
-      this.setZIndex(zIndex);
+      // sets its z-index
+      if (zIndex !== null) {
+        this.setZIndex(zIndex);
+      }
+
+      // activates animation always for WMTS layers
+      this.ol3Layer.set('animated', true);
+
+      this.fire(EventType.ADDED_TO_MAP, this);
     }
-
-    // activates animation always for WMTS layers
-    this.ol3Layer.set('animated', true);
-
-    this.fire(EventType.ADDED_TO_MAP, this);
   }
 
   /**
