@@ -117,8 +117,8 @@
             scale: 10000,
             defaultAttribution: 'Instituto Geográfico Nacional',
             defaultURL: 'https://www.ign.es/',
-            url: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-            type: 'kml'
+            url: M.config.attributions.url,
+            type: 'kml',
         });
 
 

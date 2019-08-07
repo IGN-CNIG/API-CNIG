@@ -65,6 +65,8 @@ const mp2 = new Attributions({
   scale: 10000,
   defaultAttribution: 'Instituto Geográfico Nacional',
   defaultURL: 'https://www.ign.es/',
+  url: M.config.attributions.url,
+  type: 'kml',
 });
 const mp3 = new ShareMap({
   baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',

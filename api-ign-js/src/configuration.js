@@ -153,6 +153,16 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
   });
 
   /**
+   * Attributions configuration
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('attributions', {
+    url: '${attributions.url}',
+  });
+
+  /**
    * BackgroundLayers Control
    *
    * @private
