@@ -62,10 +62,10 @@ const mp = new IGNSearch({
 const mp2 = new Attributions({
   mode: 1,
   scale: 10000,
-  defaultAttribution: 'Instituto Geográfico Nacional',
-  defaultURL: 'https://www.ign.es/',
-  url: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-  type: 'kml',
+  // defaultAttribution: 'Instituto Geográfico Nacional',
+  // defaultURL: 'https://www.ign.es/',
+  // url: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+  // type: 'kml',
 });
 
 const mp3 = new ShareMap({

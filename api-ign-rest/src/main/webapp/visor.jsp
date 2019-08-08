@@ -118,7 +118,7 @@
             defaultAttribution: 'Instituto Geográfico Nacional',
             defaultURL: 'https://www.ign.es/',
             url: M.config.attributions.url,
-            type: 'kml',
+            type: M.config.attributions.type,
         });
 
 

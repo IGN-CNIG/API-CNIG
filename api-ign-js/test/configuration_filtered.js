@@ -9,6 +9,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
   };
 });
 
+
 const config = (configKey, configValue) => {
   config[configKey] = configValue;
 };
@@ -226,6 +227,20 @@ function fun(M_) {
    * @type {object}
    */
   M_.config('backgroundlayers', backgroundlayersOpts);
+
+  /**
+   * Attributions configuration
+   *
+   * @private
+   * @type {object}
+   */
+  M_.config('attributions', {
+    defaultAttribution: 'Instituto Geográfico Nacional',
+    defaultURL: 'https://www.ign.es/', 
+    url: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+    type: 'kml',
+  });
+
 
   /**
    * Controls configuration

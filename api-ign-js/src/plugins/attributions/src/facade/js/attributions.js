@@ -85,7 +85,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {URLLike}
      */
-    this.url_ = options.url || 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml';
+    this.url_ = options.url || M.config.attributions.url; // 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml';
 
     /**
      * Type of the data url
@@ -93,7 +93,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.type_ = options.type || 'kml';
+    this.type_ = options.type || M.config.attributions.type; // 'kml';
 
     /**
      * The name of the vector layer hat contains the attribution information.
@@ -161,7 +161,8 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.defaultAttribution_ = options.defaultAttribution;
+    // eslint-disable-next-line max-len
+    this.defaultAttribution_ = M.config.attributions.defaultAttribution; // options.defaultAttribution;
 
     /**
      * Default url attribution
@@ -169,7 +170,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.defaultURL_ = options.defaultURL;
+    this.defaultURL_ = M.config.attributions.defaultURL; // options.defaultURL;
 
     /**
      * Tooltip of the UI Plugin

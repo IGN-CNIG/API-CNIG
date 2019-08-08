@@ -159,7 +159,10 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @type {object}
    */
   M.config('attributions', {
+    defaultAttribution: '${attributions.defaultAttribution}',
+    defaultURL: '${attributions.defaultURL}', 
     url: '${attributions.url}',
+    type: '${attributions.type}',
   });
 
   /**

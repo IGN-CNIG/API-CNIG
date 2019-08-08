@@ -63,10 +63,10 @@ const mp = new IGNSearch({
 const mp2 = new Attributions({
   mode: 1,
   scale: 10000,
-  defaultAttribution: 'Instituto Geográfico Nacional',
-  defaultURL: 'https://www.ign.es/',
-  url: M.config.attributions.url,
-  type: 'kml',
+  // defaultAttribution: 'Instituto Geográfico Nacional',
+  // defaultURL: 'https://www.ign.es/',
+  // url: M.config.attributions.url,
+  // type: M.config.attributions.url,
 });
 const mp3 = new ShareMap({
   baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
