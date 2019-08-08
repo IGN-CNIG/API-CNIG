@@ -55,14 +55,14 @@
             </div>
 
             <div class="col-md-9">
-                <h1><strong>Mapea</strong></h1>
+                <h1><strong>API-IGN</strong></h1>
                 <p>
-                   Mapea</a>  es una herramienta que permite integrar de una forma muy sencilla un visualizador de mapas interactivo en
+                   El API-IGN</a>  es una herramienta que permite integrar de una forma muy sencilla un visualizador de mapas interactivo en
                     cualquier página web y configurarlo consumiendo ficheros WMC, servicios WMS, servicios WFS, ficheros KML, etc. Además,
                     provee la capacidad de añadir una gran cantidad de herramientas y controles.
                 </p>
                 <p>
-                    Para adaptarse a las necesidades de los usuarios y ser mucho más flexible, Mapea cuenta con dos APIs. De esta manera, es
+                    Para adaptarse a las necesidades de los usuarios y ser mucho más flexible, el API-IGN cuenta con dos APIs. De esta manera, es
                     el propio usuario el que selecciona la que más se adapta a las necesidades que necesite cubrir en cada momento:
                 </p>
 
@@ -70,11 +70,11 @@
                     A través de una API REST muy sencilla y documentada permite incluir un visualizador interactivo en cualquier página web
                     sin necesidad de disponer de conocimientos específicos en programación ni en el ámbito de los SIG.
                     A través de una API JavaScript que permite crear desde visualizadores de mapas básico hasta otros de mayor complejidad.
-                    Mapea se presenta como una solución gratuita para la incorporación de clientes de mapas interactivos en nuestras páginas
+                    El API-IGN se presenta como una solución gratuita para la incorporación de clientes de mapas interactivos en nuestras páginas
                     web muy facilmente.
                 </p>
-                <p>La versión inicial de Mapea junto con su código puede consultarse en el repositorio de GitHub del <a href="https://github.com/sigcorporativo-ja/Mapea4">
-                    SIG Corporativo de la Junta de Andalucía</a>. La versión del CNIG es un <em>fork</em> de este repositorio que está pendiente de su publicación</p>
+                <p>El API-IGN es un <em>fork</em> del proyecto MAPEA, que puede consultarse en el repositorio de GitHub del <a href="https://github.com/sigcorporativo-ja/Mapea4">
+                    SIG Corporativo de la Junta de Andalucía</a>.</p>
 
 
                 <p class="page" id="Primeros-pasos"></p>
@@ -82,11 +82,11 @@
                 <p>Para añadir un mapa básico a tu página web, realiza los siguientes pasos:</p>
                 <p>1.- Importa los siguientes ficheros en tu html:</p>
                 <pre class="hljs"><span class="hljs-comment">&lt;!-- fichero estilos --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://URL_MAPEA_CNIG/assets/css/mapea-x.y.z.ol.min.css"</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://URL_API-IGN_CNIG/assets/css/apiign-x.y.z.ol.min.css"</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> /&gt;</span>
 
 <span class="hljs-comment">&lt;!-- ficheros javascript --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://URL_MAPEA_CNIG/js/mapea-x.y.z.ol.min.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://URL_MAPEA_CNIG/js/configuration-x.y.z.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://URL_API-IGN_CNIG/js/apiign-x.y.z.ol.min.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://URL_API-IGN_CNIG/js/configuration-x.y.z.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
                 <p>Donde <em>x.y.z</em> es el número de la versión a integrar. La versión más reciente es la <strong>1.0.0</strong> </p>
                 <p>2.- Añade un elemento <em>div</em> donde quieras que se muestre el mapa, asignándole un id:</p>
                 <pre class="hljs"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"map"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></pre>
@@ -94,13 +94,13 @@
                 <pre class="hljs">mapajs = M.map({
    <span class="hljs-attr">container</span>:<span class="hljs-string">"map"</span>
 });</pre>
-                <p>Como no hemos especificado qué datos o capas queremos ver, por defecto Mapea muestra el <strong>Callejero del IGN</strong>, consulta otras secciones de esta wiki para ver cómo cambiarlo y mostrar la información geográfica que quieras.
+                <p>Como no hemos especificado qué datos o capas queremos ver, por defecto el API-IGN muestra el <strong>Callejero del IGN</strong>, consulta otras secciones de esta wiki para ver cómo cambiarlo y mostrar la información geográfica que quieras.
                     <p><strong>JSONP</strong></p>
                     <p>Además de programarlo directamente, otra alternativa al paso 3 sería llamar al API Rest, que generará el código javascript
                         del visor por nosotros. Para este ejemplo básico, únicamente necesitaría conocer el id del <em>div</em> donde dibujar el mapa:</p>
-                    <pre class="hljs"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://URL_MAPEA_CNIG/api/js?container=map"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
+                    <pre class="hljs"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://URL_API-IGN_CNIG/api/js?container=map"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
                     <p>Y en caso de que queramos manipular el objeto mapa después de que nos sea devuelto, podemos indicar como parámetro opcional una función de <strong>callback</strong>: </p>
-                    <pre class="hljs">&lt;script src=<span class="hljs-string">"https://URL_MAPEA_CNIG/api/js?container=map&amp;callback=mifuncion"</span>&gt;
+                    <pre class="hljs">&lt;script src=<span class="hljs-string">"https://URL_API-IGN_CNIG/api/js?container=map&amp;callback=mifuncion"</span>&gt;
 <span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mifuncion</span>(<span class="hljs-params">json</span>) </span>{
   <span class="hljs-keyword">var</span> mapajs = json;
@@ -110,14 +110,14 @@
                     <h1><strong>Personalizar del mapa</strong></h1>
                     <p>La personalización del mapa que queremos construir recae en las siguientes categorías: </p>
                     <ul>
-                        <li><strong>Capas</strong>: Son los datos a mostrar, y conforman el mapa que se dibujará. Actualmente, Mapea acepta los principales orígenes de datos OGC: <em>WMS</em>, <em>WFS</em>, <em>KML</em>, <em>WMTS</em>, <em>Geojson</em>, y <em>WMC</em> (Web Map Context). <a href="#Capas">Más información sobre las Capas</a> </li>
+                        <li><strong>Capas</strong>: Son los datos a mostrar, y conforman el mapa que se dibujará. Actualmente, el API-IGN acepta los principales orígenes de datos OGC: <em>WMS</em>, <em>WFS</em>, <em>KML</em>, <em>WMTS</em>, <em>Geojson</em>, y <em>WMC</em> (Web Map Context). <a href="#Capas">Más información sobre las Capas</a> </li>
                         <li><strong>Controles</strong>: Son las herramientas que incluye el mapa y que permiten trabajar con él, tales como herramientas de medición, de coordenadas, etc. Se dividen en dos categorías: <em>básicos</em> y <em>plugins</em>. <a href="#Controles">Más información sobre los Controles</a> </li>
                         <li><strong>Opciones</strong>: Permiten establecer características concretas del mapa o del área a visualizar, como son el centrado en un punto, nivel de zool inicial, sistema de referencia, etc. <a href="#Opciones">Consulta las Opciones existentes</a></li>
                     </ul>
                     <p class="page" id="Capas"></p>
                     <h1>Capas</h1>
-                    <p>Las <strong>capas</strong> son para Mapea los proveedores de información espacial que mostrar en el mapa. Existen
-                        diversos formatos bajo los que ofrecer esas capas, y estos son los que acepta Mapea:</p>
+                    <p>Las <strong>capas</strong> son para el API-IGN los proveedores de información espacial que mostrar en el mapa. Existen
+                        diversos formatos bajo los que ofrecer esas capas, y estos son los que acepta el API-IGN:</p>
                     <p><a href="#WMS">WMS</a>, <a href="#WFS">WFS</a> , <a href="#WMC">WMC</a>, <a href="#WMTS">WMTS</a>, <a href="#KML">KML</a>, <a href="#GeoJSON">GeoJSON</a> </p>
                     <p>Existen varios métodos que permiten gestionar las capas de un mapa. </p>
                     <pre class="hljs"><span class="hljs-comment">// Acceder y eliminar las capas del mapa</span>
@@ -137,8 +137,8 @@
 
                     <p class="page" id="Capas-raster"></p>
                     <h1><strong>&gt; Capas raster</strong></h1>
-                    <p>Las <strong>capas</strong> son para Mapea la información espacial que mostrar en el mapa. Son de tipo <strong>raster</strong> cuando consisten en imágenes, formadas a su vez por un conjunto de pixeles, creadas generalmente por servidores de mapas externos al cliente en función de los parámetros que indiquemos. El cliente, por tanto, recibe una <em>representación</em> de los datos geográficos, no los datos en sí. </p>
-                    <p>Mapea soporta los siguientes tipos de capas raster:</p>
+                    <p>Las <strong>capas</strong> son para el API-IGN la información espacial que mostrar en el mapa. Son de tipo <strong>raster</strong> cuando consisten en imágenes, formadas a su vez por un conjunto de pixeles, creadas generalmente por servidores de mapas externos al cliente en función de los parámetros que indiquemos. El cliente, por tanto, recibe una <em>representación</em> de los datos geográficos, no los datos en sí. </p>
+                    <p>El API-IGN soporta los siguientes tipos de capas raster:</p>
                     <p><a href="#WMS">WMS</a>, <a href="#WMTS">WMTS</a>, <a href="#WMC">WMC</a> </p>
                     <p>Existen varios métodos que permiten gestionar las capas de un mapa. </p>
                     <pre class="hljs"><span class="hljs-comment">// Acceder y eliminar las capas del mapa</span>
@@ -155,7 +155,7 @@ mapajs.removeLayers(layer1); <span class="hljs-comment">// eliminar una o varias
                     </blockquote>
                     <p class="page" id="WMS"></p>
                     <h1>WMS</h1>
-                    <p><strong>WMS</strong> (Web Map Service)<br>Definido por una url, el servicio puede ofrecer una o muchas capas, individuales o agrupadas, cada una con un nombre propio. Hay varias formas de añadir capas WMS en Mapea: </p>
+                    <p><strong>WMS</strong> (Web Map Service)<br>Definido por una url, el servicio puede ofrecer una o muchas capas, individuales o agrupadas, cada una con un nombre propio. Hay varias formas de añadir capas WMS a través del API: </p>
                     <p>1.- En el constructor del mapa:</p>
                     <pre class="hljs"><span class="hljs-comment">// En modo cadena u objeto    </span>
   mapajs = M.map({
@@ -214,8 +214,8 @@ mapajs.removeLayers(layer1); <span class="hljs-comment">// eliminar una o varias
 });
 mapajs.addWMC(miWmc);</pre>
                     <p>Como se ve también en el ejemplo anterior, si en un mapa se añade más de un contexto, aparece un <strong>selector de contextos</strong> con el que el usuario puede seleccionar el que desea activar en cada momento.</p>
-                    <p><strong>Contextos predefinidos en Mapea</strong></p>
-                    <p>Mapea incluye como contextos predefinidos tres contextos. Para usarlos, basta con indicar su nombre, no es necesario conocer las urls de los mismos:</p>
+                    <p><strong>Contextos predefinidos en </strong></p>
+                    <p>El API-IGN incluye como contextos predefinidos tres contextos. Para usarlos, basta con indicar su nombre, no es necesario conocer las urls de los mismos:</p>
                     <ul>
                         <li>Callejero: "cnig_mapa" </li>
                         <li>Imagen: "cnig_imagen" </li>
@@ -246,7 +246,7 @@ mapajs.on(M.evt.COMPLETED, <span class="hljs-function"><span class="hljs-keyword
                     <p>Un mapa puede combinar wmc y capas (WMS, WFS, etc.) tanto como quiera. Al cambiar de contexto, seguirán respetándose las capas que se han añadido externamente al mismo.</p>
                     <p class="page" id="WMTS"></p>
                     <h1>WMTS</h1>
-                    <p><strong>WMTS</strong> (<strong>W</strong>eb <strong>M</strong>ap <strong>T</strong>ile <strong>S</strong>ervice) es un <a href="http://www.opengeospatial.org/standards/wmts">estándar OGC</a> para servir información geográfica en forma de tiles pregenerados a unas resoluciones específicas. Mapea permite visualizar este tipo de capas. </p>
+                    <p><strong>WMTS</strong> (<strong>W</strong>eb <strong>M</strong>ap <strong>T</strong>ile <strong>S</strong>ervice) es un <a href="http://www.opengeospatial.org/standards/wmts">estándar OGC</a> para servir información geográfica en forma de tiles pregenerados a unas resoluciones específicas. El api permite visualizar este tipo de capas. </p>
                     <p>1.- Añadiéndolas en el constructor del mapa </p>
                     <pre class="hljs">  mapajs = M.map({
     <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
@@ -279,7 +279,7 @@ mapajs.on(M.evt.COMPLETED, <span class="hljs-function"><span class="hljs-keyword
                     
                     <p class="page" id="Capas-vectoriales"></p>
                     <h1><strong>&gt; Capas vectoriales</strong></h1>
-                    <p>A diferencia de las capas raster, donde el cliente recibe una imagen de la misma generada por el servidor de mapas, las capas vectoriales se descargan al cliente, y éste es el que las representa. Mapea soporta los siguientes tipos de capas vectoriales: </p>
+                    <p>A diferencia de las capas raster, donde el cliente recibe una imagen de la misma generada por el servidor de mapas, las capas vectoriales se descargan al cliente, y éste es el que las representa. El API soporta los siguientes tipos de capas vectoriales: </p>
                     <p><a href="#WFS">WFS</a>, <a href="#GeoJSON">GeoJSON</a>, <a href="#KML">KML</a> </p>
                     <p>El cliente dispone de los elementos geográficos o <strong>features</strong> que forman la capa, y de cada uno de ellos posee a su vez todos sus atributos, tanto su geometría como los campos alfanuméricos. </p>
                     <p>Algunos métodos comunes a todas las capas vectoriales: </p>
@@ -297,7 +297,7 @@ capaVectorial.clear();
                     <p class="page" id="WFS"></p>
                     <h1>WFS</h1>
                     <p><strong>WFS</strong> (<strong>W</strong>eb <strong>F</strong>eature <strong>S</strong>ervice) es un <a href="http://www.opengeospatial.org/standards/wfs">estándar OGC</a> para la transferencia de información geográfica, donde los elementos geográficos o <em>features</em> se transmiten en su totalidad al cliente.</p>
-                    <p>Para visualizar capas WFS en Mapea, se pueden:</p>
+                    <p>Para visualizar capas WFS en el API, se pueden:</p>
                     <p>1.- Añadir en el constructor del mapa, tanto en modo cadena como objeto: </p>
                     <pre class="hljs"><span class="hljs-comment">// Ejemplo de caps WFS en modo cadena </span>
 <span class="hljs-keyword">var</span> mapajs = M.map({
@@ -329,7 +329,7 @@ mapajs.addWFS(layer);</pre>
                         <li><strong>version</strong>: <em>Opcional</em> - Versión del estandar a usar. Por defecto es 1.0.0. </li>
                     </ul>
                     
-                    <p><strong>Formato de salida</strong><br>Mapea pide las capas WFS al servidor OGC en formato geojson usando por defecto como outputFormat &#39;<em>application/json</em>&#39;. Sin embargo, en función del tipo de servidor OGC que esté atendiendo las peticiones (Geoserver, Mapserver, etc.), puede que tenga asignando un nombre diferente. En ese caso, se puede establecer el nombre del outputFormat para las peticiones getFeature y describeFeature, se usan las opciones de usuario &#39;<strong>getFeatureOutputFormat</strong>&#39; y &#39;<strong>describeFeatureTypeOutputFormat</strong>&#39;: </p>
+                    <p><strong>Formato de salida</strong><br>El API pide las capas WFS al servidor OGC en formato geojson usando por defecto como outputFormat &#39;<em>application/json</em>&#39;. Sin embargo, en función del tipo de servidor OGC que esté atendiendo las peticiones (Geoserver, Mapserver, etc.), puede que tenga asignando un nombre diferente. En ese caso, se puede establecer el nombre del outputFormat para las peticiones getFeature y describeFeature, se usan las opciones de usuario &#39;<strong>getFeatureOutputFormat</strong>&#39; y &#39;<strong>describeFeatureTypeOutputFormat</strong>&#39;: </p>
                     <pre class="hljs">lAguasSupRediam = <span class="hljs-keyword">new</span> M.layer.WFS({
   <span class="hljs-attr">url</span>: <span class="hljs-string">'http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_WFS_RN_Aguas?bbox=508887.12101065,4131323.42844933,509462.159552335,4131744.12235486'</span>,
   <span class="hljs-attr">legend</span>: <span class="hljs-string">'Cursos de Agua Rediam'</span>,
@@ -369,7 +369,7 @@ mapajs.addWFS(layer);</pre>
     <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Dinagat Islands"</span>
   }
 }</pre>
-                    <p>Dependiendo la fuente del GeoJSON, para añadirlo a Mapea:</p>
+                    <p>Dependiendo la fuente del GeoJSON, para añadirlo al API:</p>
                     <blockquote>
                         <p> <a> En el caso de las capas de tipo GeoJSON, se diferencia si el mismo es servido (<em>url</em>) o si por el contrario lo tenemos en local (<em>source</em>). </a></p>
                     </blockquote>
@@ -440,7 +440,7 @@ mapajs.addLayers(layer);</pre>
                         <li><strong>estática</strong>: fichero servido a través de un servidor de aplicaciones (p.ej. <a href="http://mapea4-sigc.juntadeandalucia.es/files/kml/museos_utf.kml">http://mapea4-sigc.juntadeandalucia.es/files/kml/museos_utf.kml</a>)</li>
                         <li><strong>dinámica</strong>: servicio que genera el KML al vuelo (p.ej. <a href="http://mapea-sigc.juntadeandalucia.es/sepim_server/api/datos/kml/1193/item/341">http://mapea-sigc.juntadeandalucia.es/sepim_server/api/datos/kml/1193/item/341</a>) </li>
                     </ul>
-                    <p>Hay varias formas de añadir capas KML en Mapea:</p>
+                    <p>Hay varias formas de añadir capas KML en el API:</p>
                     <p>1.- En el constructor del mapa:</p>
                     <pre class="hljs">mapajs = M.map({
           <span class="hljs-attr">container</span>:<span class="hljs-string">"map"</span>,
@@ -553,7 +553,7 @@ layer.on(M.evt.LOAD, <span class="hljs-function"><span class="hljs-keyword">func
                         
                         <p class="page" id="simbologia"></p>
                         <h1>Simbología</h1>
-                        <p>Las capa vectoriales están formadas por elementos o features que poseen información geométrica con la que representarlos en el mapa. Mapea asigna un estilo de representación por defecto a estas capas, pero el usuario puede definir y asignar sus propios estilos.</p>
+                        <p>Las capa vectoriales están formadas por elementos o features que poseen información geométrica con la que representarlos en el mapa. El API asigna un estilo de representación por defecto a estas capas, pero el usuario puede definir y asignar sus propios estilos.</p>
                         <p>Dichos estilos pueden ser:</p>
                         <ol>
                             <li><strong>Básicos</strong> - el usuario define las características de la simbología que quiera establecer, según el tipo de geometría de la capa: colores de relleno, transparencias, etiquetado, etc. </li>
@@ -676,7 +676,7 @@ capa.setStyle(estiloSerializado);
 
 <span class="hljs-comment">// O ser deserializado</span>
 <span class="hljs-keyword">let</span> estiloDeserializado = M.Style.deserialize(estiloSerializado);</pre>
-                        <p>El API REST de Mapea acepta un <a href="http://mapea4-sigc.juntadeandalucia.es/?wmcfile=mapa&amp;layers=GeoJSON*Provincias*http%3A%2F%2Fgeostematicos-sigc.juntadeandalucia.es%2Fgeoserver%2Ftematicos%2Fows%3Fservice%3DWFS%26version%3D1.0.0%26request%3DGetFeature%26typeName%3Dtematicos%3AProvincias%26maxFeatures%3D50%26outputFormat%3Dapplication%252Fjson*true*eyJwYXJhbWV0ZXJzIjpbeyJmaWxsIjp7ImNvbG9yIjoicGluayIsIm9wYWNpdHkiOjAuNX0sInN0cm9rZSI6eyJjb2xvciI6IiNGRjAwMDAiLCJ3aWR0aCI6Mn19XSwiZGVzZXJpYWxpemVkTWV0aG9kIjoiKChzZXJpYWxpemVkUGFyYW1ldGVycykgPT4gTS5zdHlsZS5TaW1wbGUuZGVzZXJpYWxpemUoc2VyaWFsaXplZFBhcmFtZXRlcnMsICdNLnN0eWxlLlBvbHlnb24nKSkifQ==">estilo serializado como parámetro de las capas vectoriales</a> . </p>
+                        <p>El API REST acepta un <a href="http://mapea4-sigc.juntadeandalucia.es/?wmcfile=mapa&amp;layers=GeoJSON*Provincias*http%3A%2F%2Fgeostematicos-sigc.juntadeandalucia.es%2Fgeoserver%2Ftematicos%2Fows%3Fservice%3DWFS%26version%3D1.0.0%26request%3DGetFeature%26typeName%3Dtematicos%3AProvincias%26maxFeatures%3D50%26outputFormat%3Dapplication%252Fjson*true*eyJwYXJhbWV0ZXJzIjpbeyJmaWxsIjp7ImNvbG9yIjoicGluayIsIm9wYWNpdHkiOjAuNX0sInN0cm9rZSI6eyJjb2xvciI6IiNGRjAwMDAiLCJ3aWR0aCI6Mn19XSwiZGVzZXJpYWxpemVkTWV0aG9kIjoiKChzZXJpYWxpemVkUGFyYW1ldGVycykgPT4gTS5zdHlsZS5TaW1wbGUuZGVzZXJpYWxpemUoc2VyaWFsaXplZFBhcmFtZXRlcnMsICdNLnN0eWxlLlBvbHlnb24nKSkifQ==">estilo serializado como parámetro de las capas vectoriales</a> . </p>
                         <p class="page" id="M.style.Point"></p>
                         <h1>&#8226; Puntos</h1>
                         <p><img src="https://raw.githubusercontent.com/wiki/sigcorporativo-ja/Mapea4/images/mind_map_point.png" /></p>
@@ -787,7 +787,7 @@ capa.setStyle(estiloSerializado);
    }
  })</span>;</pre>
                         <blockquote>
-                            <p> Para las capas puntuales, Mapea aplica el estilo por defecto <em>M.style.Point.DEFAULT</em>. Para cambiarlo, basta con redefinir dicha constante.</p>
+                            <p> Para las capas puntuales, el api aplica el estilo por defecto <em>M.style.Point.DEFAULT</em>. Para cambiarlo, basta con redefinir dicha constante.</p>
                         </blockquote>
                         <p class="page" id="M.style.Line"></p>
                         <h1>Líneas</h1>
@@ -870,7 +870,7 @@ capa.setStyle(estiloSerializado);
    }   
  });</pre>
                         <blockquote>
-                            <p> Para las capas lineales, Mapea aplica el estilo por defecto <em>M.style.Line.DEFAULT</em>. Para cambiarlo, basta con redefinir dicha constante y asignarle el estilo deseado. </p>
+                            <p> Para las capas lineales, el api aplica el estilo por defecto <em>M.style.Line.DEFAULT</em>. Para cambiarlo, basta con redefinir dicha constante y asignarle el estilo deseado. </p>
                         </blockquote>
                         <p class="page" id="M.style.Polygon"></p>
                         <h1>Polígonos</h1>
@@ -952,12 +952,12 @@ capa.setStyle(estiloSerializado);
    }
 });</pre>
                         <blockquote>
-                            <p> Para las capas poligonales, Mapea aplica el estilo por defecto <em>M.style.Polygon.DEFAULT</em>. Para cambiarlo, basta con redefinir dicha constante. </p>
+                            <p> Para las capas poligonales, el api aplica el estilo por defecto <em>M.style.Polygon.DEFAULT</em>. Para cambiarlo, basta con redefinir dicha constante. </p>
                         </blockquote>
                         
                                     <p class="page" id="Controles"></p>
                                     <h1>Controles básicos</h1>
-                                    <p>Mapea dispone de una serie de <strong>controles básicos</strong>, que se especifican mediante el parámetro
+                                    <p>El API dispone de una serie de <strong>controles básicos</strong>, que se especifican mediante el parámetro
                                         &#39;<em>controls</em>&#39; en el constructor del mapa, o llamando al método <em>.addControls</em> del mismo. En
                                         ambos casos pueden especificarse como cadenas o como objetos: </p>
                                     <pre class="hljs">mapajs = M.map({
@@ -974,7 +974,7 @@ mapajs.addControls([
 <span class="hljs-keyword">var</span> controles = mapajs.getControls();
 <span class="hljs-comment">// Filtrar controles por nombre</span>
 <span class="hljs-keyword">var</span> controlRotate = mapajs.getControls({<span class="hljs-attr">name</span>:<span class="hljs-string">'rotate'</span>})[<span class="hljs-number">0</span>];</pre>
-                                    <p>Estos son los controles básicos que incluye Mapea:</p>
+                                    <p>Estos son los controles básicos que incluye el API:</p>
                                     <ul>
                                         <li><strong>Panzoom</strong>, <strong>Panzoombar</strong>: Añade una barra de desplazamiento para acercarse/alejarse del mapa.</li>
                                         <li><strong>Scale</strong>, <strong>ScaleLine</strong>: añade escalas numérica y gráfica respectivamente. </li>
@@ -1002,7 +1002,7 @@ ctrlRotate.deactivate(); <span class="hljs-comment">//para desactivarlo</span></
                                     <p class="page" id="Opciones"></p>
                                     <h1><strong>&gt; Opciones</strong></h1>
                                     <p><strong>Opciones de personalización</strong></p>
-                                    <p>Mapea4 implementa por defecto una serie de propiedades que permiten personalizar el mapa a visualizar. Estas opciones son:</p>
+                                    <p>El API implementa por defecto una serie de propiedades que permiten personalizar el mapa a visualizar. Estas opciones son:</p>
                                     <table>
                                         <thead>
                                             <tr>
@@ -1107,7 +1107,7 @@ mapajs = M.map({
 });</pre>
                                     <p class="page" id="Paneles"></p>
                                     <h1><strong>&gt; Paneles</strong></h1>
-                                    <p>Mapea proporciona una serie de paneles que facilitan la organización de plugins y controles sobre el mapa. Para crear uno de estos paneles se proporciona el objeto del tipo <em>M.ui.Panel</em>:</p>
+                                    <p>El API proporciona una serie de paneles que facilitan la organización de plugins y controles sobre el mapa. Para crear uno de estos paneles se proporciona el objeto del tipo <em>M.ui.Panel</em>:</p>
                                     <pre class="hljs"><span class="hljs-keyword">var</span> panelExtra = <span class="hljs-keyword">new</span> M.ui.Panel(<span class="hljs-string">'toolsExtra'</span>, {
   <span class="hljs-string">"collapsible"</span>: <span class="hljs-literal">true</span>,
   <span class="hljs-string">"className"</span>: <span class="hljs-string">'m-tools'</span>,
@@ -1119,7 +1119,7 @@ mapajs.addPanels([panelExtra]);</pre>
                                     <ul>
                                         <li><strong>collapsible:</strong> indica si se podrá contraer (true) o no (false).</li>
                                         <li>
-                                            <p><strong>className:</strong> clase CSS que se usará para los estilos del panel.<br>Es posible especificar varias clases de manera que se puedan extender las existentes con las personalizaciones que se deseen, bastaría con definir los estilos deseados en nuestro <em>css</em> e importarlo después del de Mapea: </p>
+                                            <p><strong>className:</strong> clase CSS que se usará para los estilos del panel.<br>Es posible especificar varias clases de manera que se puedan extender las existentes con las personalizaciones que se deseen, bastaría con definir los estilos deseados en nuestro <em>css</em> e importarlo después del del API: </p>
                                             <pre class="hljs">  <span class="hljs-string">"className"</span>: <span class="hljs-string">'m-tools m-tools-extra'</span></pre>
                                             <pre class="hljs">  <span class="hljs-selector-class">.m-tools-extra</span> &gt; <span class="hljs-selector-tag">button</span><span class="hljs-selector-class">.m-panel-btn</span> {
     <span class="hljs-attribute">color</span>: <span class="hljs-number">#f00819</span>;
@@ -1146,9 +1146,9 @@ mapajs.addPanels([panelExtra]);</pre>
                                     <pre class="hljs">    <span class="hljs-keyword">var</span> controles = panel.getControls();</pre>
                                     <p class="page" id="Plugins"></p>
                                     <h1><strong>Plugins</strong></h1>
-                                    <p>Los <strong>plugins</strong> son organizaciones funcionales de uno o más controles que ofrecen utilidades específicas que, a diferencia de los <a href="#Controles">controles básicos</a>, suelen usarse sólo en escenarios concretos, por lo que se separan del <em>core</em> o núcleo principal de Mapea para no penalizar con su descarga a quien no los necesite. Algunos ejemplos son el plugin de búsquedas del IGN o el plugin de atribuciones.</p>
-                                    <p>Por esa razón, cada plugin tiene sus propios ficheros de recursos, que deben importarse junto a los del core de Mapea, tal como se indica en la sección de <a href="#Primeros-pasos">primeros pasos de esta wiki</a>.</p>
-                                    <p>El conjunto de plugins incluidos en el core de Mapea es el siguiente:</p>
+                                    <p>Los <strong>plugins</strong> son organizaciones funcionales de uno o más controles que ofrecen utilidades específicas que, a diferencia de los <a href="#Controles">controles básicos</a>, suelen usarse sólo en escenarios concretos, por lo que se separan del <em>core</em> o núcleo principal del API para no penalizar con su descarga a quien no los necesite. Algunos ejemplos son el plugin de búsquedas del IGN o el plugin de atribuciones.</p>
+                                    <p>Por esa razón, cada plugin tiene sus propios ficheros de recursos, que deben importarse junto a los del core del api, tal como se indica en la sección de <a href="#Primeros-pasos">primeros pasos de esta wiki</a>.</p>
+                                    <p>El conjunto de plugins incluidos en el core del API es el siguiente:</p>
                                     <table>
                                         <thead>
                                             <tr>
@@ -1189,7 +1189,7 @@ mapajs.addPanels([panelExtra]);</pre>
                                         </tbody>
                                     </table>
                                     <p>En la carpeta principal de cada uno existe un fichero README.md que lo documenta: <em>descripción</em>, <em>ficheros de recursos</em> y <em>ejemplos</em>. </p>
-                                    <p>Existen plugins adicionales externos al core de Mapea, desarrollados tanto dezde el IGN como por terceros. La distribución y características de estos variará según el desarrollador</p>
+                                    <p>Existen plugins adicionales externos al core del API, desarrollados tanto dezde el IGN como por terceros. La distribución y características de estos variará según el desarrollador</p>
                                     <p><strong>Estructura interna</strong></p>
                                     <p>Existen unas normas y pautas establecidas para el desarrollo de plugins, que garantizan homogeneidad en su estructura interna, y facilitan el desarrollo de nuevos componentes. Estas normas y pautas están recogidas con detalle en la <strong><a href="https://github.com/sigcorporativo-ja/Mapea4-dev-webpack/wiki"></a>guía de desarrollo de plugins</a></strong>. </p>
                                     <p>El mapa gestiona los plugins a través de los siguientes métodos: </p>
@@ -1206,26 +1206,26 @@ mapajs.removePlugins(p);</pre>
                                     <h1><strong>Proxys</strong></h1>
                                     <p>La <a href="https://en.wikipedia.org/wiki/Same-origin_policy"><strong>política del mismo origen</strong></a> establece que, por motivos de seguridad, un script de una página web no puede acceder a contenido de dominios web diferentes de aquel en el que residen, salvo algunas excepciones, como contenido de tipo imagen. Es decir, no se permite <strong>cross domain</strong>.</p>
                                     <p>La lógica del visualizador está implementada en javascript, por lo que está supeditada a dicha política del mismo origen. Eso significa que peticiones <em>getMap</em> o <em>getLegendGraphic</em> del estándar WMS pueden realizarse sin problemas ya que están solicitando imágenes, pero no ocurre lo mismo con peticiones como <em>getCapabilities</em>, <em>getFeatures</em>, <em>getFeatureInfo</em>, o cualquiera que devuelva contenido de otro tipo (GML/XML en estos casos).</p>
-                                    <p>Existen en la actualidad diversos enfoques que permiten a una aplicación realizar esas peticiones, y en Mapea se llevan a cabo haciendo uso de <strong>proxys</strong>.</p>
-                                    <p>Un <strong>proxy</strong> es una lógica o servicio que se encarga de realizar las peticiones de recursos que le solicita un tercero, en este caso el visualizador, ya que no está supeditado a la política del mismo origen generalmente al no estar implementado con scripts. Por lo tanto, el visualizador solicita el recurso a un proxy que esté en su mismo dominio, éste lo obtiene, y se lo devuelve al visualizador. En Mapea existen dos proxys diferentes: JSONP y POST.</p>
+                                    <p>Existen en la actualidad diversos enfoques que permiten a una aplicación realizar esas peticiones, y en el api se llevan a cabo haciendo uso de <strong>proxys</strong>.</p>
+                                    <p>Un <strong>proxy</strong> es una lógica o servicio que se encarga de realizar las peticiones de recursos que le solicita un tercero, en este caso el visualizador, ya que no está supeditado a la política del mismo origen generalmente al no estar implementado con scripts. Por lo tanto, el visualizador solicita el recurso a un proxy que esté en su mismo dominio, éste lo obtiene, y se lo devuelve al visualizador. En el api existen dos proxys diferentes: JSONP y POST.</p>
                                     <p><strong>Proxy JSONP</strong></p>
-                                    <p>Este proxy devuelve el recurso solicitado en formato <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>. Esto permite ejecutarlo directamente desde un script, en su atributo &quot;<em>src</em>&quot;, mediante la función de callback definida en el cliente, sin que afecte así la política del mismo origen. Es por eso que <em>este proxy no necesita estar desplegado en el mismo dominio que la aplicación web que lo llama</em>. Cualquier aplicación puede usar por tanto el de Mapea4: </p>
+                                    <p>Este proxy devuelve el recurso solicitado en formato <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>. Esto permite ejecutarlo directamente desde un script, en su atributo &quot;<em>src</em>&quot;, mediante la función de callback definida en el cliente, sin que afecte así la política del mismo origen. Es por eso que <em>este proxy no necesita estar desplegado en el mismo dominio que la aplicación web que lo llama</em>. Cualquier aplicación puede usar por tanto el del api: </p>
                                     <p><a href="https://cnigvisores_pub.desarrollo.guadaltel.es/mapea/api/proxy?url=http%3A%2F%2Fwww.ign.es%2Fwmts%2Fign-base%3Frequest%3DGetCapabilities%26service%3DWMTS&amp;callback=mifuncion">Respuesta</a></p>
-                                    <p>El programador <em>no necesita hacer uso explícito de este proxy</em>, el api de Mapea4 se hace cargo de llamarlo cuando sea necesario.</p>
+                                    <p>El programador <em>no necesita hacer uso explícito de este proxy</em>, el api se hace cargo de llamarlo cuando sea necesario.</p>
                                     <p><strong>Proxy POST</strong> </p>
                                     <p>Para algunas comunicaciones donde se adjunta un alto volumen de información, como por ejemplo en las peticiones WFST, no es viable el uso del proxy JSONP, debido a las limitaciones que establecen las peticiones GET. </p>
-                                    <p>Para esos casos ha de usarse el proxy <strong>POST</strong>. Debe estar desplegado en el mismo dominio que la aplicación, para que haya una comunicación entre ambos sin cross domain, y hay que configurar Mapea para que lo use.</p>
+                                    <p>Para esos casos ha de usarse el proxy <strong>POST</strong>. Debe estar desplegado en el mismo dominio que la aplicación, para que haya una comunicación entre ambos sin cross domain, y hay que configurar el api para que lo use.</p>
                                     <p><strong>Visibilidad</strong> </p>
-                                    <p>Como el acceso final al recurso que pide el visualizador lo realiza el proxy, <strong>éste debe tener visibilidad de dicho recurso</strong>. Es decir, si se solicita por ejemplo un fichero wmc, dicho fichero deberá estar en una url accesible por el proxy. Esto hay que tenerlo en cuenta especialmente cuando se trabaja en entornos de Prueba y de Desarrollo, donde por lo general los recursos que se usan no son públicos. En esos casos suelen usarse proxys locales durante la etapa de desarrollo, configurando Mapea para que use esos proxys.</p>
+                                    <p>Como el acceso final al recurso que pide el visualizador lo realiza el proxy, <strong>éste debe tener visibilidad de dicho recurso</strong>. Es decir, si se solicita por ejemplo un fichero wmc, dicho fichero deberá estar en una url accesible por el proxy. Esto hay que tenerlo en cuenta especialmente cuando se trabaja en entornos de Prueba y de Desarrollo, donde por lo general los recursos que se usan no son públicos. En esos casos suelen usarse proxys locales durante la etapa de desarrollo, configurando el api para que use esos proxys.</p>
                                     <p><strong>Configuración de los proxys</strong> </p>
-                                    <p>La configuración de los proxys se lleva a cabo en el fichero <em>configuration.js</em> de Mapea. Para cambiar las urls de los mismos y usar otros proxys, después de haber importado dicho fichero, y antes de comenzar con la creación de los mapas, hay que indicar las nuevas urls mediante las siguientes instrucciones:</p>
+                                    <p>La configuración de los proxys se lleva a cabo en el fichero <em>configuration.js</em> del api. Para cambiar las urls de los mismos y usar otros proxys, después de haber importado dicho fichero, y antes de comenzar con la creación de los mapas, hay que indicar las nuevas urls mediante las siguientes instrucciones:</p>
                                     <pre class="hljs">M.config(<span class="hljs-string">'PROXY_POST_URL'</span>, <span class="hljs-string">'$URL_PROXY_POST'</span>);
 M.config(<span class="hljs-string">'PROXY_URL'</span>, <span class="hljs-string">'$URL_PROXY_JSONP'</span>);</pre>
                                     <p>También es posible desactivar el uso de proxys:</p>
                                     <pre class="hljs">M.proxy(<span class="hljs-literal">false</span>);</pre>
                                     <p class="page" id="Eventos"></p>
                                     <h1><strong>Eventos</strong></h1>
-                                    <p>Los <strong>eventos</strong> son disparadores que permiten al programador conocer cuándo ha ocurrido un suceso determinado, de manera que pueda actuar en consecuencia. Estos son los eventos que maneja Mapea: </p>
+                                    <p>Los <strong>eventos</strong> son disparadores que permiten al programador conocer cuándo ha ocurrido un suceso determinado, de manera que pueda actuar en consecuencia. Estos son los eventos que maneja el api: </p>
                                     <p><strong>Asociados al mapa y a las capas</strong></p>
                                     <table>
                                         <thead>
@@ -1433,7 +1433,7 @@ mapajs.removePopup();</pre>
 });</pre>
                                     <hr>
                                     <p><strong>Remote</strong></p>
-                                    <p>Mapea incluye un mecanismo para realizar peticiones AJAX, haciendo uso de proxy si este está configurado, evitando de esta forma tener que escribir todo el código para hacer la petición o tener que hacer uso de más librerías que facilitan esta tarea.</p>
+                                    <p>El API incluye un mecanismo para realizar peticiones AJAX, haciendo uso de proxy si este está configurado, evitando de esta forma tener que escribir todo el código para hacer la petición o tener que hacer uso de más librerías que facilitan esta tarea.</p>
                                     <pre class="hljs"><span class="hljs-comment">//Creamos el mapa</span>
 <span class="hljs-keyword">var</span> mapajs = M.map({
   <span class="hljs-attr">container</span>: <span class="hljs-string">"map"</span>,
@@ -1452,10 +1452,10 @@ mapajs.getMapImpl().on(<span class="hljs-string">'click'</span>,<span class="hlj
 });</pre>
                                     <p class="page" id="Acceso-libreria-base"></p>
                                     <h1><strong>Acceso librerías base</strong></h1>
-                                    <p>Mapea es una capa en forma de API que se coloca sobre una librería de mapas base, como pueden ser Open Layers o Leaflet, con el fin, entre otros, de independizar el uso directo de las mismas. Esto facilita por ejemplo la migración o actualización de las librerías de mapas subyacientes de una manera transparente al usuario, que si usa únicamente el api de Mapea, ve como actualizar su código a esas nuevas versiones se convierte en una tarea trivial, beneficiándose de las mejoras que ello conlleva. </p>
-                                    <p>Para ello, Mapea ofrece en su API las operaciones de construcción y manipulación de mapas y orígenes de datos más comunes en los visualizadores web. Sin embargo, para que esto no suponga una limitación, el programador siempre podrá acceder a los objetos mapa y layer de la librería que use, y manipularlos directamente. </p>
+                                    <p>El API-IGN, igual que su padre Mapea, es una capa en forma de API que se coloca sobre una librería de mapas base, como pueden ser Open Layers o Leaflet, con el fin, entre otros, de independizar el uso directo de las mismas. Esto facilita por ejemplo la migración o actualización de las librerías de mapas subyacientes de una manera transparente al usuario, que si usa únicamente el api, ve como actualizar su código a esas nuevas versiones se convierte en una tarea trivial, beneficiándose de las mejoras que ello conlleva. </p>
+                                    <p>Para ello, el API-IGN ofrece en su API las operaciones de construcción y manipulación de mapas y orígenes de datos más comunes en los visualizadores web. Sin embargo, para que esto no suponga una limitación, el programador siempre podrá acceder a los objetos mapa y layer de la librería que use, y manipularlos directamente. </p>
                                     <p>Esta práctica <strong>no es recomendable</strong> porque estará generando una dependencia directa de nuestro código con la librería base, pero en caso de ser necesario, puede hacerse tal como muestra el siguiente ejemplo: </p>
-                                    <pre class="hljs"><span class="hljs-comment">// Construimos un mapa de Mapea</span>
+                                    <pre class="hljs"><span class="hljs-comment">// Construimos un mapa con el API-IGN</span>
 mapajs = M.map({
      <span class="hljs-attr">container</span>:<span class="hljs-string">"map"</span>,
      <span class="hljs-attr">controls</span>:[<span class="hljs-string">'scale'</span>,<span class="hljs-string">'location'</span>,<span class="hljs-string">'rotate'</span>,<span class="hljs-string">'mouse'</span>]
@@ -1465,13 +1465,13 @@ mapajs = M.map({
 <span class="hljs-keyword">var</span> mapaOL = mapajs.getMapImpl();
 
 <span class="hljs-comment">// Puede hacerse lo mismo con los objetos de tipo Layer</span>
-<span class="hljs-comment">// En este caso, estamos usando la implementación de OL de Mapea</span>
+<span class="hljs-comment">// En este caso, estamos usando la implementación de OL del api</span>
 <span class="hljs-keyword">var</span> layerOL = layerMapea.getImpl().getOL3Layer();</pre>
-                                    <p>En el desarrollo de una página web que accede y manipula directamente los objetos de la librería de mapas base, se recomienda que el código que lo hace se encuentre claramente independizado del resto, aplicando un enfoque <strong>fachada/implementación</strong>, de manera que sea fácil identificarlo en el caso de que se tenga que tratar. Es por ejemplo lo que se hace en los plugins de Mapea. </p>
+                                    <p>En el desarrollo de una página web que accede y manipula directamente los objetos de la librería de mapas base, se recomienda que el código que lo hace se encuentre claramente independizado del resto, aplicando un enfoque <strong>fachada/implementación</strong>, de manera que sea fácil identificarlo en el caso de que se tenga que tratar. Es por ejemplo lo que se hace en los plugins. </p>
                                     <h2 id="versionado"><strong>versionado</strong></h2>
-                                    <p class="page" id="Mapea-iframe"></p>
-                                    <h1><strong>Mapea iframe</strong></h1>
-                                    <p>Al igual que se hacía con Mapea3, Mapea4 puede ser integrado en paǵinas web mediante el uso de iframes.
+                                    <p class="page" id="API-IGN-iframe"></p>
+                                    <h1><strong>API-IGN iframe</strong></h1>
+                                    <p>Al igual que Mapea, el API-IGN, puede ser integrado en paǵinas web mediante el uso de iframes.
                                         A través del API REST se puede incluir un visualizador interactivo en cualquier página web sin necesidad de disponer de conocimientos específicos en programación ni en el ámbito de los SIG. Para ello únicamente es necesario que el usuario configure el mapa a visualizar a través de una URL:</p>
                                     <p><a href="https://api-ign-lite.desarrollo.guadaltel.es/api-core/?controls=scaleline,location,rotate&amp;layers=WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas*true&amp;getfeatureinfo=html">https://api-ign-lite.desarrollo.guadaltel.es/api-core/?controls=scaleline,location&amp;layers=WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas*true&amp;getfeatureinfo=html</a></p>
                                     <p>Esto puede integrarse directamente en un iframe, como se hacía anteriormente:</p>
@@ -1613,10 +1613,10 @@ mapajs = M.map({
                                     <ul>
                                         <li>
                                             <p>Problema: El mapa se queda en blanco. La consola de error muestra el mensaje &#39;<em>Promise is not defined</em> &#39;.<br>Solución: El navegador <a href="https://kangax.github.io/compat-table/es6/">no es compatible</a> con la versión de javascript <a href="https://en.wikipedia.org/wiki/ECMAScript">ES2015</a>, se necesita importar la librería: </p>
-                                            <pre class="hljs"> &lt;script type=<span class="hljs-string">"text/javascript"</span> src=<span class="hljs-string">"https://URL_MAPEA_CNIG.es/vendor/browser-polyfill.js"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></pre>
+                                            <pre class="hljs"> &lt;script type=<span class="hljs-string">"text/javascript"</span> src=<span class="hljs-string">"https://URL_API-IGN_CNIG.es/vendor/browser-polyfill.js"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></pre>
                                         </li>
                                         <li>
-                                            <p>Problema: al usar mapea junto con JQuery Mobile, se cambian los estilos de algunos controles.<br>Solución: modificar la plantilla html del control y añadirle la etiqueta <em>data-role=&quot;none&quot;</em>, quedando así:</p>
+                                            <p>Problema: al usar el api junto con JQuery Mobile, se cambian los estilos de algunos controles.<br>Solución: modificar la plantilla html del control y añadirle la etiqueta <em>data-role=&quot;none&quot;</em>, quedando así:</p>
                                             <pre class="hljs"> <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"m-wmcselector-select"</span> <span class="hljs-attr">data-role</span>=<span class="hljs-string">"none"</span>&gt;</span></pre>
                                         </li>
                                     </ul>
