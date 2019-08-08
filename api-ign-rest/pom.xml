@@ -76,7 +76,7 @@
                      <company>GuadalTEL S.A.</company>
                   </manifestEntries>
                </archive>
-               <encoding>${project.build.sourceEncoding}</encoding>
+               <resourceEncoding>${project.build.sourceEncoding}</resourceEncoding>
             </configuration>
          </plugin>
          <plugin>
@@ -95,6 +95,7 @@
                      <includeArtifacIds>api-ign-js</includeArtifacIds>
                      <excludeArtifactIds>api-ign-proxy</excludeArtifactIds>
                      <excludeTransitive>true</excludeTransitive>
+                     <encoding>${project.build.sourceEncoding}</encoding>
                   </configuration>
                </execution>
             </executions>
