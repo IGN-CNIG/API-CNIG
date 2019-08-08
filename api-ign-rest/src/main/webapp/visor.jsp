@@ -115,13 +115,7 @@
         const mp2 = new M.plugin.Attributions({
             mode: 1,
             scale: 10000,
-            defaultAttribution: 'Instituto Geográfico Nacional',
-            defaultURL: 'https://www.ign.es/',
-            url: M.config.attributions.url,
-            type: M.config.attributions.type,
         });
-
-
 
         const mp3 = new M.plugin.ShareMap({
             baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
@@ -138,6 +132,7 @@
             geoDecimalDigits: 4,
             utmDecimalDigits: 2,
         });
+
         const mp8 = new M.plugin.TOC();
 
         map.addPlugin(mp);
