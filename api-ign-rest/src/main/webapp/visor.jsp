@@ -125,7 +125,7 @@
             position: 'TL',
         });
         const mp6 = new M.plugin.ZoomExtent();
-        const mp7 = new MouseSRS({
+        const mp7 = new M.plugin.MouseSRS({
             srs: 'EPSG:4326',
             label: 'WGS84',
             precision: 6,
