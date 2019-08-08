@@ -287,8 +287,8 @@ export default class Attributions extends M.Plugin {
       const link = document.createElement('a');
       link.target = '_blank';
       link.href = attrOpt.url;
-      link.innerText = attrOpt.attribution;
-      link.innerText += arr.length - 1 === index ? '' : ',';
+      link.innerHTML = attrOpt.attribution;
+      link.innerHTML += arr.length - 1 === index ? '' : ',';
       return link;
     });
     const div = document.createElement('div');

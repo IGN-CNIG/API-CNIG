@@ -68,7 +68,7 @@ class BackgroundLayers extends ControlBase {
       this.listen(html);
       // html.querySelector('button').click();
       this.uniqueButton = this.html.querySelector('#m-baselayerselector-unique-btn');
-      this.uniqueButton.innerText = this.layers[0].title;
+      this.uniqueButton.innerHTML = this.layers[0].title;
       this.on(ADDED_TO_MAP, () => {
         const visible = this.visible;
         if (this.idLayer > -1) {
@@ -163,7 +163,7 @@ class BackgroundLayers extends ControlBase {
         button.classList.remove('activeBaseLayerButton');
       }
     });
-    e.target.innerText = title;
+    e.target.innerHTML = title;
     e.target.parentElement
       .querySelector(`#m-baselayerselector-${id}`).classList.add('activeBaseLayerButton');
     this.map.addLayers(layers);
