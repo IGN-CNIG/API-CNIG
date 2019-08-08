@@ -79,9 +79,9 @@ const mp4 = new XYLocator({
 const mp6 = new ZoomExtent();
 const mp7 = new MouseSRS({
   projection: 'EPSG:4326',
-  precision: 4,
-  utmDecimalDigits: 4,
-  geoDecimalDigits: 4,
+  precision: 6,
+  geoDecimalDigits: 3,
+  utmDecimalDigits: 5,
 });
 const mp8 = new TOC();
 

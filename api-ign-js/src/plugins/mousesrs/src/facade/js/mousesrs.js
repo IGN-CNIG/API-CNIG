@@ -56,18 +56,33 @@ export default class MouseSRS extends M.Plugin {
     this.srs_ = options.srs || 'EPSG:4326';
 
     /**
+     * Label with SRS name
      * @private
      * @type {string}
      */
     this.label_ = options.label || 'WGS84';
 
     /**
-     * Precision of coodinates
+     * Precision of coordinates
      *
      * @private
      * @type {number}
      */
     this.precision_ = M.utils.isNullOrEmpty(options.precision) ? 4 : options.precision;
+
+    /**
+     * Coordinates decimal digits for geographical projections
+     * @private
+     * @type {number}
+     */
+    this.geoDecimalDigits = options.geoDecimalDigits;
+
+    /**
+     * Coordinates decimal digits for UTM projections
+     * @private
+     * @type {number}
+     */
+    this.utmDecimalDigits = options.utmDecimalDigits;
   }
 
   /**
@@ -79,7 +94,13 @@ export default class MouseSRS extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new MouseSRSControl(this.srs_, this.label_, this.precision));
+    this.controls_.push(new MouseSRSControl(
+      this.srs_,
+      this.label_,
+      this.precision,
+      this.geoDecimalDigits,
+      this.utmDecimalDigits,
+    ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelMouseSRS', {
       collapsible: false,

@@ -36,14 +36,14 @@ export default class MouseSRSControl extends M.impl.Control {
      * @private
      * @type {number}
      */
-    this.geoDecimalDigits = geoDecimalDigits || 2;
+    this.geoDecimalDigits = geoDecimalDigits;
 
     /**
      * Number of decimal digits for UTM coordinates.
      * @private
      * @type {number}
      */
-    this.utmDecimalDigits = utmDecimalDigits || 3;
+    this.utmDecimalDigits = utmDecimalDigits;
   }
 
   /**
@@ -59,7 +59,7 @@ export default class MouseSRSControl extends M.impl.Control {
   addTo(map, html) {
     this.facadeMap_ = map;
     this.mousePositionControl = new ExtendedMouse({
-      coordinateFormat: ol.coordinate.createStringXY(this.precision_),
+      coordinateFormat: ol.coordinate.createStringXY(this.getDecimalUnits()), // this.precision_),
       projection: this.srs_,
       label: this.label_,
       undefinedHTML: '',
@@ -73,6 +73,25 @@ export default class MouseSRSControl extends M.impl.Control {
     map.getMapImpl().addControl(this.mousePositionControl);
 
     super.addTo(map, html);
+  }
+
+  /**
+   * Calculates desired decimal digits for coordinate format.
+   * @private
+   * @function
+   */
+  getDecimalUnits() {
+    let decimalDigits;
+    // eslint-disable-next-line no-underscore-dangle
+    if (this.facadeMap_.getProjection().units === 'd' && this.geoDecimalDigits !== undefined) { // geographical coordinates
+      decimalDigits = this.geoDecimalDigits;
+      // eslint-disable-next-line no-underscore-dangle
+    } else if (this.facadeMap_.getProjection().units === 'm' && this.utmDecimalDigits !== undefined) { // 'm'
+      decimalDigits = this.utmDecimalDigits;
+    } else {
+      decimalDigits = this.precision_;
+    }
+    return decimalDigits;
   }
 
   /**

@@ -15,28 +15,12 @@ export default class MouseSRSControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(srs, label, precision) {
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits) {
     if (M.utils.isUndefined(MouseSRSImplControl)) {
       M.exception('La implementación usada no puede crear controles MouseSRSControl');
     }
-    const impl = new MouseSRSImplControl(srs, label, precision);
+    const impl = new MouseSRSImplControl(srs, label, precision, geoDecimalDigits, utmDecimalDigits);
     super(impl, 'MouseSRS');
-
-    /**
-     * Coordinates spatial reference system
-     *
-     * @type { ProjectionLike } https://openlayers.org/en/latest/apidoc/module-ol_proj.html#~ProjectionLike
-     * @private
-     */
-    this.srs_ = srs;
-
-    /**
-     * Label to show
-     *
-     * @type {string}
-     * @private
-     */
-    this.label_ = label;
   }
 
   /**
