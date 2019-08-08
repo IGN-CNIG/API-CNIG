@@ -21,18 +21,13 @@ class Mouse extends ol.control.MousePosition {
     super(vendorOptions);
 
     /**
-     * Vendor options for the base library
-     * @private
-     * @type {Object}
-     */
-    this.vendorOptions_ = vendorOptions;
-
-    /**
      * Coordinate format given in OpenLayers format.
      * @private
      * @type {Object}
      */
     this.coordinateFormat = vendorOptions.coordinateFormat;
+
+    this.label = vendorOptions.label;
 
     // FIXME: is this what mapProjection is supposed to be?
     this.mapProjection_ = vendorOptions.projection;
@@ -127,24 +122,12 @@ class Mouse extends ol.control.MousePosition {
 
       // eslint-disable-next-line no-underscore-dangle
       // if (this.getProjection().units_ === 'd') { // geographical coordinates
-      //   decimalDigits = this.vendorOptions_.geoDecimalDigits;
+      //   decimalDigits = this.geoDecimalDigits;
       // } else { // 'm'
-      //   decimalDigits = this.vendorOptions_.utmDecimalDigits;
+      //   decimalDigits = this.utmDecimalDigits;
       // }
 
-      // Truncates coordinates to wanted decimal digits
-      // let digitsToTruncate = 0;
-      // html = html.split(', ').map((x) => {
-      //   if (decimalDigits > 0 && decimalDigits <= 4) {
-      //     digitsToTruncate = 4 - decimalDigits;
-      //   } else if (decimalDigits === 0) {
-      //     digitsToTruncate = 5;
-      //   } else {
-      //     digitsToTruncate = 0;
-      //   }
-      //   return x.substring(0, x.length - digitsToTruncate);
-      // });
-      html += ` | ${this.vendorOptions_.label}`;
+      html += ` | ${this.label}`;
     }
 
     if (!this.renderedHTML_ || html !== this.renderedHTML_) {
