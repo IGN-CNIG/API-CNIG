@@ -25,11 +25,11 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BL':bottom left 
   - 'BR':bottom right
 - **tootltip**. Tooltip que se muestra sobre el plugin
-- **srs**. SRS sobre el que se mostrarán las coordenadas del ratón
-- **label**.
-- **precision**. Precision of coordinates
-- **geoDecimalDigits**. Coordinates decimal digits for geographical projections.
-- **utmDecimalDigits**. Coordinates decimal digits for UTM projections.
+- **srs**. Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón.
+- **label**. Nombre del SRS sobre el que se mostrarán las coordenadas del ratón.
+- **precision**. Precisión de las coordenadas.
+- **geoDecimalDigits**. Cifras decimales para proyecciones geográficas.
+- **utmDecimalDigits**. Cifras decimales para proyecciones UTM.
 
 ### Plugin sin parámetros
 
@@ -43,6 +43,7 @@ const mp = new MouseSRS({
   position: 'BL',
   tooltip: 'Muestra coordenadas',
   srs: 'EPSG:4326',
+  label: 'WGS84',
   precision: 4,
   geoDecimalDigits: 3,
   utmDecimalDigits: 2,

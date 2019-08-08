@@ -82,11 +82,15 @@ export default class MouseSRSControl extends M.impl.Control {
    */
   getDecimalUnits() {
     let decimalDigits;
+
     // eslint-disable-next-line no-underscore-dangle
-    if (this.facadeMap_.getProjection().units === 'd' && this.geoDecimalDigits !== undefined) { // geographical coordinates
+    const srsUnits = ol.proj.get(this.srs_).units_;
+
+    // eslint-disable-next-line no-underscore-dangle
+    if (srsUnits === 'd' && this.geoDecimalDigits !== undefined) { // geographical coordinates
       decimalDigits = this.geoDecimalDigits;
       // eslint-disable-next-line no-underscore-dangle
-    } else if (this.facadeMap_.getProjection().units === 'm' && this.utmDecimalDigits !== undefined) { // 'm'
+    } else if (srsUnits === 'm' && this.utmDecimalDigits !== undefined) { // 'm'
       decimalDigits = this.utmDecimalDigits;
     } else {
       decimalDigits = this.precision_;
