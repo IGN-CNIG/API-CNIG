@@ -131,8 +131,12 @@
             position: 'TL',
         });
         const mp6 = new M.plugin.ZoomExtent();
-        const mp7 = new M.plugin.MouseSRS({
-            projection: 'EPSG:4326',
+        const mp7 = new MouseSRS({
+            srs: 'EPSG:4326',
+            label: 'WGS84',
+            precision: 6,
+            geoDecimalDigits: 4,
+            utmDecimalDigits: 2,
         });
         const mp8 = new M.plugin.TOC();
 

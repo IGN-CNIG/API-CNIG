@@ -79,8 +79,9 @@ const mp4 = new XYLocator({
 const mp6 = new ZoomExtent();
 const mp7 = new MouseSRS({
   srs: 'EPSG:4326',
+  label: 'WGS84',
   precision: 6,
-  geoDecimalDigits: 5,
+  geoDecimalDigits: 4,
   utmDecimalDigits: 2,
 });
 const mp8 = new TOC();
