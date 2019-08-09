@@ -42,7 +42,7 @@
     <link type="text/css" rel="stylesheet" href="plugins/<%=cssfile%>">
     </link>
 
-    <% }
+    <% 
       } %>
 </head>
 
