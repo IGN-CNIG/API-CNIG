@@ -142,6 +142,7 @@ class Location extends Control {
     this.removePositions_();
     this.element.classList.remove('m-located');
     this.element.classList.remove('m-locating');
+    this.geolocation_ = null;
   }
 
   /**
