@@ -231,7 +231,7 @@ export default class IGNSearchControl extends M.Control {
 
               const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
               const perfectResult = featureJSON.properties.state;
-              this.showSearchPopUp(fullAddress, coordinates, perfectResult);
+              this.showSearchPopUp(fullAddress, coordinates, perfectResult, { fake: true });
             }
             M.proxy(true);
           });
