@@ -36,12 +36,16 @@
       "position": 6
     }, {
       "type": "simple",
-      "name": "searchValue",
+      "name": "requestStreet",
       "position": 7
     }, {
       "type": "simple",
-      "name": "geocoderCoords",
+      "name": "locationID",
       "position": 8
+    }, {
+      "type": "simple",
+      "name": "geocoderCoords",
+      "position": 9
     }]
   }],
   "files": {

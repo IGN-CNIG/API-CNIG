@@ -36,7 +36,13 @@ class WMS extends LayerBase {
     }
     // This Layer is of parameters.
     const parameters = parameter.layer(userParameters, LayerType.WMS);
-    const impl = new WMSImpl(options, vendorOptions);
+    const optionsVar = {
+      ...options,
+      visibility: parameters.visibility,
+      queryable: parameters.queryable,
+      displayInLayerSwitcher: parameters.displayInLayerSwitcher,
+    };
+    const impl = new WMSImpl(optionsVar, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
     // legend
@@ -57,7 +63,7 @@ class WMS extends LayerBase {
     this.transparent = parameters.transparent;
 
     // options
-    this.options = options;
+    this.options = optionsVar;
 
     /**
      * get WMS getCapabilities promise

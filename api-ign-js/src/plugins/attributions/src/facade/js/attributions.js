@@ -228,9 +228,9 @@ export default class Attributions extends M.Plugin {
         };
 
         if (this.type_ === 'geojson') {
-          this.layer_ = new M.layer.GeoJSON(optionsLayer);
+          this.layer_ = new M.layer.GeoJSON(optionsLayer, { displayInLayerSwitcher: false });
         } else if (this.type_ === 'kml') {
-          this.layer_ = new M.layer.KML(optionsLayer);
+          this.layer_ = new M.layer.KML(optionsLayer, { displayInLayerSwitcher: false });
         } else if (this.type === 'topojson') {
           // TODO: Implement in Mapea M.layer.TopoJSON
         }
