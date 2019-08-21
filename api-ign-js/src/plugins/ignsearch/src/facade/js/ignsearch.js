@@ -149,7 +149,14 @@ export default class IGNSearch extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.searchValue_ = options.searchValue || '';
+    this.locationID_ = (options.locationID && options.locationID.replace(/\^/g, '&')) || '';
+
+    /**
+     * Text to search
+     * @private
+     * @type {string}
+     */
+    this.requestStreet_ = (options.requestStreet && options.requestStreet.replace(/\^/g, '&')) || '';
 
     let geocoderCoords = options.geocoderCoords;
     if (M.utils.isString(geocoderCoords)) {
@@ -189,7 +196,8 @@ export default class IGNSearch extends M.Plugin {
       this.urlDispatcher,
       this.resultVisibility,
       this.reverse_,
-      this.searchValue_,
+      this.locationID_,
+      this.requestStreet_,
       this.geocoderCoords_,
     ));
     this.controls_[0].on('ignsearch:entityFound', (extent) => {
@@ -253,8 +261,17 @@ export default class IGNSearch extends M.Plugin {
    * @getter
    * @function
    */
-  get searchValue() {
-    return this.controls_[0].searchValue;
+  get requestStreet() {
+    return this.controls_[0].requestStreet;
+  }
+
+  /**
+   * Text to search
+   * @getter
+   * @function
+   */
+  get locationID() {
+    return this.controls_[0].locationID;
   }
 
   /**
@@ -265,6 +282,6 @@ export default class IGNSearch extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.position}*${this.reverse}*${this.searchValue}*${this.geocoderCoords}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
   }
 }

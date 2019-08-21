@@ -29,10 +29,7 @@ class WMTS extends LayerBase {
     const parameters = parameter.layer(userParameters, LayerType.WMTS);
     const optionsVar = {
       ...options,
-      visibility: parameters.visibility,
-      queryable: parameters.queryable,
-      displayInLayerSwitcher: parameters.displayInLayerSwitcher,
-      format: parameters.format,
+      ...parameters,
     };
 
     /**
@@ -66,7 +63,7 @@ class WMTS extends LayerBase {
     this.transparent = parameters.transparent;
 
     // options
-    this.options = options;
+    this.options = optionsVar;
   }
 
   /**

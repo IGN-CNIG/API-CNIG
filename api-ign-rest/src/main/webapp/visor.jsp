@@ -95,12 +95,11 @@
             name: 'EL.GridCoverageDSM',
             legend: 'Modelo Digital de Superficies LiDAR',
             matrixSet: 'GoogleMapsCompatible',
-        }, {
             visibility: false,
-        });
+        }, {});
 
 
-        const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false');
+        const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
 
@@ -118,7 +117,7 @@
         });
 
         const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
+            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
             position: 'BR',
         });
         const mp4 = new M.plugin.XYLocator({

@@ -60,6 +60,13 @@ class WMTS extends LayerBase {
      * @type {Promise}
      */
     this.getCapabilitiesPromise_ = null;
+
+    /**
+     * Options
+     * @private
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -183,7 +190,7 @@ class WMTS extends LayerBase {
       }, true));
 
       this.ol3Layer = new OLLayerTile(extend({
-        visible: this.options.visibility,
+        visible: this.visibility,
         source: wmtsSource,
         minResolution,
         maxResolution,

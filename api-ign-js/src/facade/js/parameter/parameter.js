@@ -105,7 +105,7 @@ const getNameKML = (parameter) => {
   if (isString(parameter)) {
     if (/^KML\*.+/i.test(parameter)) {
       // <KML>*<NAME>*<URL>(*<FILENAME>)?*<EXTRACT>
-      if (/^KML\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?$/i.test(parameter)) {
+      if (/^KML\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?/i.test(parameter)) {
         params = parameter.split(/\*/);
         name = params[1].trim();
       }
@@ -180,10 +180,10 @@ const getExtractKML = (parameter) => {
   let extract;
   let params;
   if (isString(parameter)) {
-    // <KML>*<NAME>*<URL>(*<FILENAME>)?*<EXTRACT>
-    if (/^KML\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?$/i.test(parameter)) {
+    // <KML>*<NAME>*<URL>(*<FILENAME>)?*<EXTRACT>*<LABEL>*<VISIBILITY>
+    if (/^KML\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?/i.test(parameter)) {
       params = parameter.split(/\*/);
-      extract = params[params.length - 2].trim();
+      extract = params[params.length - 3].trim();
     } else if (/^[^*]+\*[^*]+\*(true|false)$/i.test(parameter)) {
       // <NAME>*<URL>*<EXTRACT>
       params = parameter.split(/\*/);
@@ -217,7 +217,7 @@ const getLabelKML = (parameter) => {
   let params;
   if (isString(parameter)) {
     params = parameter.split(/\*/);
-    label = params[params.length - 1].trim();
+    label = params[params.length - 2].trim();
     label = label !== 'false';
   } else if (isObject(parameter)) {
     label = normalize(parameter.label);
@@ -225,6 +225,25 @@ const getLabelKML = (parameter) => {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
   return label;
+};
+
+/**
+ * @private
+ * @function
+ */
+const getVisibilityKML = (parameter) => {
+  let visibility;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split(/\*/);
+    visibility = params[params.length - 1].trim();
+    visibility = visibility !== 'false';
+  } else if (isObject(parameter)) {
+    visibility = normalize(parameter.visibility);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return visibility;
 };
 
 /**
@@ -426,7 +445,7 @@ const getURLKML = (parameter) => {
       const params = parameter.split(/\*/);
       url = params[2].concat(params[3]);
     } else {
-      const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)(\*(true|false))(\*(true|false))?$/i);
+      const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)\*.*/i);
       if (urlMatches && (urlMatches.length > 2)) {
         url = urlMatches[2];
       }
@@ -641,6 +660,8 @@ export const kml = (userParamer) => {
     // get the show option label
     layerObj.label = getLabelKML(userParam);
 
+    // get the visibility option
+    layerObj.visibility = getVisibilityKML(userParam);
     return layerObj;
   });
 
@@ -1627,6 +1648,75 @@ const getOptionsWMS = (parameter) => {
 };
 
 /**
+ * @private
+ * @function
+ */
+const getDisplayInLayerSwitcherWMS = (parameter) => {
+  let displayInLayerSwitcher;
+  let params;
+  if (isString(parameter)) {
+    if (/^WMS\*[^*]+\*[^*]+\*[^*]+\*(true|false)\*(true|false)\*.*\*(\d\.\d\.\d)\*(true|false)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      displayInLayerSwitcher = params[8].trim();
+    }
+  } else if (isObject(parameter)) {
+    displayInLayerSwitcher = normalize(parameter.displayInLayerSwitcher);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(displayInLayerSwitcher)) {
+    displayInLayerSwitcher = /^1|(true)$/i.test(displayInLayerSwitcher);
+  }
+  return displayInLayerSwitcher;
+};
+
+/**
+ * @private
+ * @function
+ */
+const getQueryableWMS = (parameter) => {
+  let queryable;
+  let params;
+  if (isString(parameter)) {
+    if (/^WMS\*[^*]+\*[^*]+\*[^*]+\*(true|false)\*(true|false)\*.*\*(\d\.\d\.\d)\*(true|false)\*(true|false)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      queryable = params[9].trim();
+    }
+  } else if (isObject(parameter)) {
+    queryable = normalize(parameter.queryable);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(queryable)) {
+    queryable = /^1|(true)$/i.test(queryable);
+  }
+  return queryable;
+};
+
+/**
+ * @private
+ * @function
+ */
+const getVisibilityWMS = (parameter) => {
+  let visibility;
+  let params;
+  if (isString(parameter)) {
+    if (/^WMS\*[^*]+\*[^*]+\*[^*]+\*(true|false)\*(true|false)\*.*\*(\d\.\d\.\d)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      visibility = params[10].trim();
+    }
+  } else if (isObject(parameter)) {
+    visibility = normalize(parameter.visibility);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(visibility)) {
+    visibility = /^1|(true)$/i.test(visibility);
+  }
+  return visibility;
+};
+
+/**
  * Parses the specified user layer WMS parameters to a object
  *
  * @param {string|Mx.parameters.Layer} userParameters parameters
@@ -1660,6 +1750,9 @@ export const wms = (userParameters) => {
     const maxExtentWMS = getMaxExtentWMS(userParam);
     const version = getVersionWMS(userParam);
     const options = getOptionsWMS(userParam);
+    const displayInLayerSwitcher = getDisplayInLayerSwitcherWMS(userParam);
+    const queryable = getQueryableWMS(userParam);
+    const visibility = getVisibilityWMS(userParam);
     return {
       type,
       name,
@@ -1669,6 +1762,9 @@ export const wms = (userParameters) => {
       tiled,
       maxExtent: maxExtentWMS,
       version,
+      displayInLayerSwitcher,
+      queryable,
+      visibility,
       options,
     };
   });

@@ -33,7 +33,8 @@ export default class IGNSearchControl extends M.Control {
     urlDispatcher,
     resultVisibility = true,
     reverse,
-    searchValue,
+    locationID,
+    requestStreet,
     geocoderCoords,
     nomenclatorSearchType = geographicNameType,
   ) {
@@ -134,7 +135,13 @@ export default class IGNSearchControl extends M.Control {
      * @private
      * @type {string}
      */
-    this.searchValue = searchValue;
+    this.locationID = locationID;
+    /**
+     * Text to search
+     * @private
+     * @type {string}
+     */
+    this.requestStreet = requestStreet;
     /**
      * Reverse geocoder coordinates
      * @private
@@ -174,9 +181,60 @@ export default class IGNSearchControl extends M.Control {
         html.querySelector('#m-ignsearch-locate-button').style.display = 'none';
       }
       this.on(M.evt.ADDED_TO_MAP, () => {
-        if (this.searchValue && this.searchValue.length > 3) {
-          html.querySelector('#m-ignsearch-search-input').value = this.searchValue;
-          this.searchInputValue({ target: { value: this.searchValue } }, true);
+        if (this.locationID && this.locationID.length > 0) {
+          this.point = new M.style.Point({
+            radius: 5,
+            icon: {
+              form: 'none',
+              class: 'g-cartografia-pin',
+              radius: 12,
+              rotation: 0,
+              rotate: false,
+              offset: [0, -12],
+              color: '#f00',
+              opacity: 1,
+            },
+          });
+          this.drawNomenclatorResult(this.locationID, false);
+        }
+        if (this.requestStreet && this.requestStreet.length > 0) {
+          M.proxy(false);
+          M.remote.get(this.requestStreet).then((res) => {
+            const geoJsonData = res.text.substring(9, res.text.length - 1);
+            this.map.removeLayers(this.clickedElementLayer);
+            const featureJSON = JSON.parse(geoJsonData);
+            featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
+            // Center coordinates
+            this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
+            // New layer with geometry
+            this.clickedElementLayer = new M.layer.GeoJSON({
+              name: 'Resultado búsquedas',
+              source: {
+                type: 'FeatureCollection',
+                features: [featureJSON],
+              },
+            });
+            this.clickedElementLayer.displayInLayerSwitcher = false;
+
+            if (featureJSON.geometry.type === 'Point') {
+              this.clickedElementLayer.setStyle(this.point);
+            }
+
+            // Stops showing polygon geometry
+            if (!this.resultVisibility_) {
+              this.clickedElementLayer.setStyle(this.simple);
+            }
+            this.map.addLayers(this.clickedElementLayer);
+            // show popup for streets
+            if (featureJSON.properties.type === 'callejero' || featureJSON.properties.type === 'portal') {
+              const fullAddress = this.createFullAddress(featureJSON.properties);
+
+              const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
+              const perfectResult = featureJSON.properties.state;
+              this.showSearchPopUp(fullAddress, coordinates, perfectResult);
+            }
+            M.proxy(true);
+          });
         }
         if (this.geocoderCoords && this.geocoderCoords.length === 2) {
           this.activateDeactivateReverse();
@@ -411,13 +469,16 @@ export default class IGNSearchControl extends M.Control {
    * @param {string} locationId - id of the location object
    * @api
    */
-  drawNomenclatorResult(locationId) {
-    M.remote.get(this.urlDispatcher, {
+  drawNomenclatorResult(locationId, zoomIn = true) {
+    this.requestStreet = '';
+    this.requestPlace = M.utils.addParameters(this.urlDispatcher, {
       request: 'OpenQuerySource',
       query: `<ogc:Filter><ogc:FeatureId fid="${locationId}"/></ogc:Filter>`,
       sourcename: `${this.urlPrefix}communicationsPoolServlet/sourceAccessWFS-INSPIRE-NGBE.rdf`,
       outputformat: 'application/json',
-    }).then((res) => {
+    });
+    this.locationID = locationId;
+    M.remote.get(this.requestPlace).then((res) => {
       const latLngString = JSON.parse(res.text).results[0].location;
       const resultTitle = JSON.parse(res.text).results[0].title;
       const latLngArray = latLngString.split(' ');
@@ -450,7 +511,9 @@ export default class IGNSearchControl extends M.Control {
         this.clickedElementLayer.setStyle(this.simple);
       }
       this.map.addLayers(this.clickedElementLayer);
-      this.zoomInLocation('n', 'Point');
+      if (zoomIn === true) {
+        this.zoomInLocation('n', 'Point');
+      }
     });
   }
   /**
@@ -549,6 +612,8 @@ export default class IGNSearchControl extends M.Control {
       }
       const params = `${type}${via}${id}${portal}&outputformat=geojson`;
       const urlToGet = `${this.urlFind}?q=${address}${params}`;
+      this.requestStreet = urlToGet;
+      this.locationID = '';
       M.proxy(false);
       M.remote.get(urlToGet).then((res) => {
         const geoJsonData = res.text.substring(9, res.text.length - 1);
@@ -594,11 +659,11 @@ export default class IGNSearchControl extends M.Control {
         if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
           this.setScale(17061); // last scale requested by our client: 2000
         }
-        this.resultsList.innerHTML = '';
-        this.searchInput.value = '';
-        this.searchInput.value = this.currentElement.querySelector('#info').innerHTML;
-        this.searchValue = this.searchInput.value.trim();
-        this.resultsList.appendChild(this.currentElement);
+        // this.resultsList.innerHTML = '';
+        // this.searchInput.value = '';
+        // this.searchInput.value = this.currentElement.querySelector('#info').innerHTML;
+        // this.searchValue = this.searchInput.value.trim();
+        // this.resultsList.appendChild(this.currentElement);
         // Fires ignsearch:EntityFound event after zoom-in result
         this.fire('ignsearch:entityFound', [extent]);
       });

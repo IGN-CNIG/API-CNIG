@@ -67,6 +67,13 @@ class KML extends Vector {
      * @type {bool}
      */
     this.label_ = options.label;
+
+    /**
+     * Visibility of the layer
+     * @private
+     * @type {bool}
+     */
+    this.visibility = options.visibility;
   }
 
   /**
@@ -112,9 +119,9 @@ class KML extends Vector {
     this.ol3Layer = new OLLayerVector(extend({}, this.vendorOptions_, true));
     this.updateSource_();
     // sets its visibility if it is in range
-    if (this.options.visibility !== false) {
-      this.setVisible(this.inRange());
-    }
+    // if (this.options.visibility !== false) {
+    this.setVisible(this.options.visibility);
+    // }
     // sets its z-index
     if (this.zIndex_ !== null) {
       this.setZIndex(this.zIndex_);

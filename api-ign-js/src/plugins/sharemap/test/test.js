@@ -7,20 +7,47 @@ const map = M.map({
 });
 
 const mp = new ShareMap({
-  baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
+  baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
   position: 'BR',
 });
 
 map.addPlugin(mp);
 // map.addKML(new M.layer.KML("KML*Arboleda*http://mapea4-sigc.juntadeandalucia.es/files/kml/*arbda_sing_se.kml*true"))
 window.map = map;
-const kml2 = new M.layer.KML({
-  url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
-  name: 'Delegaciones',
-  extract: false,
-  label: false,
+// const kml2 = new M.layer.KML({
+//   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
+//   name: 'Delegaciones',
+//   extract: false,
+//   label: false,
+// });
+// map.addLayers(kml2);
+const kml = new M.layer.KML('KML*Delegaciones*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
+map.addLayers(kml)
+const layerinicial = new M.layer.WMS({
+  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeBoundary',
+  legend: 'Limite administrativo',
+  tiled: false,
+  version: '1.1.1',
+}, {});
+
+const layerUA = new M.layer.WMS({
+  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeUnit',
+  legend: 'Unidad administrativa',
+  tiled: false
+}, {});
+
+const ocupacionSuelo = new M.layer.WMTS({
+  url: 'http://wmts-mapa-lidar.idee.es/lidar',
+  name: 'EL.GridCoverageDSM',
+  legend: 'Modelo Digital de Superficies LiDAR',
+  matrixSet: 'GoogleMapsCompatible',
+}, {
+  visibility: false,
 });
-map.addLayers(kml2);
+
+map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
 
 const mp3 = new M.plugin.IGNSearch({
@@ -49,3 +76,5 @@ map.addPlugin(mp3);
 map.addPlugin(mp6);
 map.addPlugin(mp7);
 map.addPlugin(mp8);
+const mp9 = new M.plugin.TOC();
+map.addPlugin(mp9);
