@@ -90,7 +90,7 @@ class Location extends Control {
         const accuracyGeom = evt.target.get(evt.key);
         this.accuracyFeature_.getImpl().getOLFeature().setGeometry(accuracyGeom);
       });
-      this.geolocation_.on('change:position', (evt) => {
+      this.geolocation_.once('change:position', (evt) => {
         const newCoord = evt.target.get(evt.key);
         const newPosition = isNullOrEmpty(newCoord) ?
           null : new OLGeomPoint(newCoord);
