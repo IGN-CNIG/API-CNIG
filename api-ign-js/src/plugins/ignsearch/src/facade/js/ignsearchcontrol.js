@@ -195,6 +195,12 @@ export default class IGNSearchControl extends M.Control {
               opacity: 1,
             },
           });
+          this.simple = new M.style.Polygon({
+            fill: {
+              color: 'black',
+              opacity: 0,
+            },
+          });
           this.drawNomenclatorResult(this.locationID, false);
         }
         if (this.requestStreet && this.requestStreet.length > 0) {
