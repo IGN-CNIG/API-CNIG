@@ -1539,7 +1539,7 @@ const getTiledWMS = (parameter) => {
   let params;
   if (isString(parameter)) {
     // <WMS>*<NAME>*<URL>*<TITLE>*<TRANSPARENCE>*<TILED>
-    if (/^WMS\*[^*]+\*[^*]+\*[^*]+\*(true|false)\*(true|false)$/i.test(parameter)) {
+    if (/^WMS\*[^*]+\*[^*]+\*[^*]+\*(true|false)\*(true|false)/i.test(parameter)) {
       params = parameter.split(/\*/);
       tiled = params[5].trim();
     } else if (/^WMS\*[^*]+\*[^*]+\*[^*]+\*(true|false)/i.test(parameter)) {
