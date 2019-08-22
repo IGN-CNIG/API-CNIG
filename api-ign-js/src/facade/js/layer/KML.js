@@ -29,6 +29,7 @@ class KML extends LayerVector {
     const parameters = parameter.layer(userParameters, LayerType.KML);
     const optionsVar = options;
     optionsVar.label = parameters.label;
+    optionsVar.visibility = parameters.visibility;
 
     /**
      * Implementation of this layer

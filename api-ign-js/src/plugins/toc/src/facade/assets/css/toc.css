@@ -64,6 +64,10 @@
     background-color: #fff;
 }
 
+.m-control.m-container.m-toc .m-toc-content {
+    cursor: pointer;
+}
+
 .m-toc-container .m-toc-panel {
     margin: 0;
     top: 0px;

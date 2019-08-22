@@ -15,7 +15,6 @@
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
     <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
     <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
-    <link href="plugins/backgroundlayersselector/backgroundlayerselector.ol.min.css" rel="stylesheet" />
     <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
@@ -42,7 +41,7 @@
     <link type="text/css" rel="stylesheet" href="plugins/<%=cssfile%>">
     </link>
 
-    <% }
+    <% 
       } %>
 </head>
 
@@ -53,7 +52,6 @@
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
     <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
     <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/backgroundlayersselector/backgroundlayerselector.ol.min.js"></script>
     <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>

@@ -525,10 +525,11 @@ class GetFeatureInfo extends Control {
               },
               parseToHtml: false,
             });
+            const parsedContent = popupContent.replace(/(.*)(<a href=.*)(>.*<\/a.*)/g, '$1$2 target="_blank"$3');
             popup.addTab({
               icon: 'g-cartografia-info',
               title: GetFeatureInfo.POPUP_TITLE,
-              content: popupContent,
+              content: parsedContent,
               listeners: [{
                 selector: '.m-getfeatureinfo-content-info div.m-arrow-right',
                 all: true,

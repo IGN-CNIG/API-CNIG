@@ -41,7 +41,7 @@ export default class TOCControl extends M.Control {
       });
       this.panel_ = html;
       success(html);
-      listenAll(this.panel_, '.m-check', 'click', e => this.toogleVisible(e));
+      listenAll(this.panel_, 'li', 'click', e => this.toogleVisible(e));
     });
   }
 
@@ -79,7 +79,7 @@ export default class TOCControl extends M.Control {
       vars: templateVars,
     });
     this.panel_.innerHTML = html.innerHTML;
-    listenAll(this.panel_, '.m-check', 'click', e => this.toogleVisible(e));
+    listenAll(this.panel_, 'li', 'click', e => this.toogleVisible(e));
   }
 
   /**
@@ -88,9 +88,10 @@ export default class TOCControl extends M.Control {
    * @api
    */
   toogleVisible(evt) {
-    const { target } = evt;
-    const { dataset } = target;
-    const { layerName } = dataset;
+    // const { target } = evt;
+    // const { dataset } = target;
+    // const { layerName } = dataset;
+    const layerName = evt.currentTarget.querySelector('.m-check').dataset.layerName;
     const layerFound = this.map_.getLayers({ name: layerName })[0];
     const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :
       layerFound.isVisible();

@@ -77,30 +77,29 @@
         });
 
         const layerinicial = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',
             legend: 'Limite administrativo',
             tiled: false,
         }, {});
 
         const layerUA = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeUnit',
             legend: 'Unidad administrativa',
             tiled: false
         }, {});
 
         const ocupacionSuelo = new M.layer.WMTS({
-            url: 'http://wmts-mapa-lidar.idee.es/lidar',
+            url: 'https://wmts-mapa-lidar.idee.es/lidar',
             name: 'EL.GridCoverageDSM',
             legend: 'Modelo Digital de Superficies LiDAR',
             matrixSet: 'GoogleMapsCompatible',
-        }, {
             visibility: false,
-        });
+        }, {});
 
 
-        const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false');
+        const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
 
@@ -118,7 +117,7 @@
         });
 
         const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
+            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
             position: 'BR',
         });
         const mp4 = new M.plugin.XYLocator({

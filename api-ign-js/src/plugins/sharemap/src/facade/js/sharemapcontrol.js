@@ -282,7 +282,7 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getLayers() {
-    const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__' && layer.isVisible());
+    const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__' && layer.displayInLayerSwitcher !== false);
     return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
   }
 
@@ -319,7 +319,7 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getKML(layer) {
-    return `KML*${layer.name}*${layer.url}*${layer.extract}*${layer.label}`;
+    return `KML*${layer.name}*${layer.url}*${layer.extract}*${layer.label}*${layer.isVisible()}`;
   }
 
   /**
@@ -340,7 +340,7 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getWMS(layer) {
-    return `WMS*${layer.legend || layer.name}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}`;
+    return `WMS*${layer.legend || layer.name}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}*${layer.userMaxExtent || ''}*${layer.version}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
 
   /**
@@ -362,7 +362,7 @@ export default class ShareMapControl extends M.Control {
    */
   getWMTS(layer) {
     const { code } = this.map_.getProjection();
-    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${layer.getLegend()}*${layer.transparent}`;
+    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${layer.getLegend()}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
 
   /**
