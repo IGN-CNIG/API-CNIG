@@ -4,7 +4,9 @@ const map = M.map({
   container: 'mapjs',
 });
 
-const mp = new TOC();
+const mp = new TOC({
+  collapsed: false,
+});
 
 map.addPlugin(mp);
 const layerUA = new M.layer.WMS({

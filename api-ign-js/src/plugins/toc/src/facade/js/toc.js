@@ -34,6 +34,13 @@ export default class TOC extends M.Plugin {
      * @type {string}
      */
     this.position_ = options.position || 'TR';
+
+    /**
+     * This parameter set if the plugin is collapsed
+     * @private
+     * @type {boolean}
+     */
+    this.collapsed_ = options.collapsed === true;
   }
 
   /**
@@ -53,6 +60,7 @@ export default class TOC extends M.Plugin {
       collapsedButtonClass: 'g-plugin-toc-capas2',
       className: 'm-plugin-toc',
       tooltip: 'Capas',
+      collapsed: this.collapsed_,
     });
     this.panel_.addControls([this.control]);
     map.addPanels(this.panel_);
@@ -84,6 +92,16 @@ export default class TOC extends M.Plugin {
   }
 
   /**
+   * Collapsed parameter
+   *
+   * @getter
+   * @function
+   */
+  get collapsed() {
+    return this.panel_.isCollapsed();
+  }
+
+  /**
    * Get the API REST Parameters of the plugin
    *
    * @function
@@ -91,6 +109,6 @@ export default class TOC extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}`;
+    return `${this.name}=${this.position}*${this.collapsed}`;
   }
 }
