@@ -69,7 +69,7 @@
             layerVisibility: true,
             layerOpts: [{
                     id: 'mapa',
-                    preview: '../src/facade/assets/images/svqmapa.png',
+                    preview: 'backimglayer/svqmapa.png',
                     title: 'Mapa',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/ign-base?',
@@ -83,7 +83,7 @@
                 {
                     id: 'imagen',
                     title: 'Imagen',
-                    preview: '../src/facade/assets/images/svqimagen.png',
+                    preview: 'backimglayer/svqimagen.png',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
@@ -96,7 +96,7 @@
                 {
                     id: 'hibrido',
                     title: 'Híbrido',
-                    preview: '../src/facade/assets/images/svqhibrid.png',
+                    preview: 'backimglayer/svqhibrid.png',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
@@ -115,7 +115,7 @@
                 },
                 {
                     id: 'lidar',
-                    preview: '../src/facade/assets/images/svqlidar.png',
+                    preview: 'backimglayer/svqlidar.png',
                     title: 'LIDAR',
                     layers: [new M.layer.WMTS({
                         url: 'https://wmts-mapa-lidar.idee.es/lidar?',
