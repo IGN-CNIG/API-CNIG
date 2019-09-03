@@ -44,15 +44,24 @@ div#m-backimglayer-titulo {
 
 div[id^="m-backimglayer-lyr-"]>span {
     background-color: white;
-    color: grey;
-    height: 20px;
+    color: rgb(73, 73, 73);
+    height: 0;
     left: 0;
     line-height: 25px;
+    margin-top: 20px;
     opacity: 0.6;
     position: absolute;
+    transition: all 0.3s linear;
     text-align: center;
-    top: 80px;
+    top: 100px;
     width: 100px;
+}
+
+/* span transition */
+div[id^="m-backimglayer-lyr-"]:hover>span {
+    height: 20px;
+    margin-top: 0;
+    top: 80px;
 }
 
 .m-backimglayer .activeBackimglayerDiv {
