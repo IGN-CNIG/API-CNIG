@@ -8,8 +8,6 @@
 .m-plugin-backimglayer.opened .m-panel-btn.g-cartografia-flecha-izquierda {
     background-color: white !important;
     color: #71a7d3 !important;
-    /* position: relative;
-    left: -40px; */
 }
 
 /* Title and images container */
@@ -81,20 +79,16 @@ div[id^="m-backimglayer-lyr-"]>span {
     padding-right: 40px;
 }
 
-/* .m-right>.m-plugin-backimglayer.opened>.m-panel-btn {
-    position: relative;
-    left: -40px;
-} */
-
-/* Left position of plugin fix for Chrome */
-
-/* .m-left.m-bottom .m-control.m-container.m-backimglayer {
-    margin-left: 35px;
-} */
-
-/* 
 .m-areas>div.m-area>div.m-panel.opened.m-plugin-backimglayer {
     background-color: transparent !important;
     box-shadow: none !important;
     order: -10;
-} */
+}
+
+/* Firefox fix */
+
+@-moz-document url-prefix() {
+    .m-bottom.m-right .m-plugin-backimglayer.opened {
+        display: flex;
+    }
+}
