@@ -4,8 +4,8 @@
     height: 40px;
 }
 
-.opened .m-panel-btn.g-cartografia-flecha-derecha,
-.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+.m-plugin-backimglayer.opened .m-panel-btn.g-cartografia-flecha-derecha,
+.m-plugin-backimglayer.opened .m-panel-btn.g-cartografia-flecha-izquierda {
     background-color: white !important;
     color: #71a7d3 !important;
     /* position: relative;
@@ -34,7 +34,7 @@ div#m-backimglayer-titulo {
 
 /* Images container */
 
-.m-panel.m-plugin-backimglayer.opened .m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div[id^="m-backimglayer-"] {
+.m-panel.m-plugin-backimglayer.opened .m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div[id^="m-backimglayer-lyr-"] {
     border: 5px solid white;
     box-sizing: border-box;
     float: left;
@@ -44,7 +44,7 @@ div#m-backimglayer-titulo {
     width: 110px;
 }
 
-div[id^="m-backimglayer-"]>span {
+div[id^="m-backimglayer-lyr-"]>span {
     background-color: white;
     color: grey;
     height: 20px;
@@ -56,6 +56,35 @@ div[id^="m-backimglayer-"]>span {
     top: 80px;
     width: 100px;
 }
+
+.m-backimglayer .activeBackimglayerDiv {
+    border: 5px solid #92c1e7 !important;
+}
+
+/* Bottom positions fix when images row turns into columns */
+
+.m-bottom .m-control.m-container.m-backimglayer>#m-backimglayer-previews {
+    display: flex;
+}
+
+.m-bottom.m-left>.m-panel.m-plugin-backimglayer.opened>.m-panel-controls {
+    display: flow-root;
+}
+
+.m-bottom.m-left>.m-plugin-backimglayer.opened>.m-panel-btn {
+    position: relative;
+    right: -40px;
+}
+
+
+.m-bottom.m-right .m-control.m-container.m-backimglayer {
+    padding-right: 40px;
+}
+
+/* .m-right>.m-plugin-backimglayer.opened>.m-panel-btn {
+    position: relative;
+    left: -40px;
+} */
 
 /* Left position of plugin fix for Chrome */
 
@@ -69,13 +98,3 @@ div[id^="m-backimglayer-"]>span {
     box-shadow: none !important;
     order: -10;
 } */
-
-.m-backimglayer .activeBackimglayerDiv {
-    border: 5px solid #92c1e7 !important;
-}
-
-/* Bottom positions fix when mosaic */
-
-.m-bottom .m-control.m-container.m-backimglayer>#m-backimglayer-previews {
-    display: flex;
-}

@@ -5,7 +5,7 @@ const map = M.map({
 });
 
 const mp = new BackImgLayer({
-  position: 'BL',
+  position: 'TL',
   layerId: 0,
   layerVisibility: true,
   layerOpts: [{
@@ -37,6 +37,7 @@ const mp = new BackImgLayer({
     {
       id: 'hibrido',
       title: 'Híbrido',
+      preview: '../src/facade/assets/images/mapea4sigc.png',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
