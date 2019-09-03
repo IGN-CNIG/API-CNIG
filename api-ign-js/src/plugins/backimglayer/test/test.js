@@ -5,7 +5,7 @@ const map = M.map({
 });
 
 const mp = new BackImgLayer({
-  position: 'TL',
+  position: 'TR',
   layerId: 0,
   layerVisibility: true,
   layerOpts: [{
