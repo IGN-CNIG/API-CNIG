@@ -31,15 +31,6 @@ export default class BackImgLayerControl extends M.Control {
     map.getBaseLayers().forEach((layer) => {
       layer.on(M.evt.LOAD, map.removeLayers(layer));
     });
-    // this.layers = M.config.backgroundlayers.slice(0, MAXIMUM_LAYERS).map((layer) => {
-    // return {
-    //   id: layer.id,
-    //   title: layer.title,
-    //   layers: layer.layers.map((subLayer) => {
-    //     return /WMTS.*/.test(subLayer) ? new M.layer.WMTS(subLayer) : new M.layer.WMS(subLayer);
-    //   }),
-    // };
-    // });
     this.layers = layerOpts.slice(0, MAXIMUM_LAYERS);
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
     this.activeLayer = -1;
@@ -76,7 +67,7 @@ export default class BackImgLayerControl extends M.Control {
           }, this.layers[this.activeLayer], this.activeLayer);
         }
         if (visible === false) {
-          this.map_.removeLayers(this.map_.getBaseLayers());
+          this.map.removeLayers(this.map.getBaseLayers());
         }
       });
       success(html);
@@ -114,11 +105,11 @@ export default class BackImgLayerControl extends M.Control {
     // const { layers, title } = layersInfo;
     const { layers } = layersInfo;
     const isActived = e.currentTarget.parentElement
-      .querySelector(`#m-backimglayer-${layersInfo.id}`)
+      .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`)
       .classList.contains('activeBackimglayerDiv');
     layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
 
-    e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-"]').forEach((imgContainer) => {
+    e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((imgContainer) => {
       if (imgContainer.classList.contains('activeBackimglayerDiv')) {
         imgContainer.classList.remove('activeBackimglayerDiv');
       }
@@ -129,7 +120,7 @@ export default class BackImgLayerControl extends M.Control {
       // e.currentTarget.parentElement
       // .querySelector('#m-backimglayer-unique-btn').innerText = title;
       e.currentTarget.parentElement
-        .querySelector(`#m-backimglayer-${layersInfo.id}`).classList.add('activeBackimglayerDiv');
+        .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`).classList.add('activeBackimglayerDiv');
       this.map.addLayers(layers);
     }
   }
@@ -149,14 +140,14 @@ export default class BackImgLayerControl extends M.Control {
 
     layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
 
-    e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-"]').forEach((imgContainer) => {
+    e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((imgContainer) => {
       if (imgContainer.classList.contains('activeBackimglayerDiv')) {
         imgContainer.classList.remove('activeBackimglayerDiv');
       }
     });
     e.currentTarget.innerHTML = title;
     e.currentTarget.parentElement
-      .querySelector(`#m-backimglayer-${id}`).classList.add('activeBackimglayerDiv');
+      .querySelector(`#m-backimglayer-lyr-${id}`).classList.add('activeBackimglayerDiv');
     this.map.addLayers(layers);
   }
 
@@ -179,7 +170,7 @@ export default class BackImgLayerControl extends M.Control {
    * @api
    */
   listen(html) {
-    html.querySelectorAll('div[id^="m-backimglayer-"]')
+    html.querySelectorAll('div[id^="m-backimglayer-lyr-"]')
       .forEach((b, i) => b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i)));
     // html.querySelector('#m-backimglayer-unique-btn')
     // .addEventListener('click', e => this.showBaseLayer(e));
