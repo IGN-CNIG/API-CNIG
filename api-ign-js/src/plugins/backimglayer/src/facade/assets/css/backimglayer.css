@@ -2,6 +2,7 @@
 
 .m-panel.m-plugin-backimglayer.collapsed {
     height: 40px;
+    order: -99;
 }
 
 .m-plugin-backimglayer.opened .m-panel-btn.g-cartografia-flecha-derecha,
