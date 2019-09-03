@@ -1,24 +1,64 @@
 {
   "url": {
-    "name": "BackImgLayer",
+    "name": "backimglayer",
     "separator": "*"
   },
   "constructor": "M.plugin.BackImgLayer",
-  "parameters": [],
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "string",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BR", "BL"]
+    }, {
+      "type": "number",
+      "name": "layerId",
+      "position": 1
+    }, {
+      "type": "boolean",
+      "name": "layerVisibility",
+      "position": 2
+    }, {
+      "type": "array",
+      "name": "layerOpts",
+      "position": 3,
+      "properties": [{
+        "type": "object",
+        "properties": [{
+          "type": "simple",
+          "name": "id"
+        }, {
+          "type": "simple",
+          "name": "preview"
+        }, {
+          "type": "simple",
+          "name": "title"
+        }, {
+          "type": "array",
+          "name": "layers"
+        }]
+      }]
+    }]
+  }],
   "files": {
     "ol": {
-      "scripts": [],
-      "styles": []
+      "scripts": [
+        "backimglayer.ol.min.js"
+      ],
+      "styles": [
+        "backimglayer.ol.min.css"
+      ]
     }
   },
   "metadata": {
-    "name": "BackImgLayer",
-    "description": "Description of the plugin",
-    "text": "A full text about plugin",
+    "name": "backimglayer",
+    "description": "Sets background layer",
+    "text": "Shows different options for background layer as clickable images and changes background layer on click on an option.",
     "version": "1.0.0",
-    "date": "",
-    "author": "",
-    "org": "",
+    "date": "3rd September 2019",
+    "author": "CNIG",
+    "org": "CNIG",
     "tags": "mapea,plugin",
     "icon": "./facade/assets/icons/icons.svg"
   }

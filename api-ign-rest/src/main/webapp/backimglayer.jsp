@@ -13,6 +13,13 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
+    <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
+    <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
+    <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
+    <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
+    <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
@@ -43,6 +50,13 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
+    <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/toc/toc.ol.min.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -57,13 +71,74 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
+            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'backgroundlayers', 'getfeatureinfo'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
             center: [-467062.8225, 4683459.6216],
         });
 
-        const mp = new M.plugin.BackImgLayer({
+        const layerinicial = new M.layer.WMS({
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeBoundary',
+            legend: 'Limite administrativo',
+            tiled: false,
+        }, {});
+
+        const layerUA = new M.layer.WMS({
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeUnit',
+            legend: 'Unidad administrativa',
+            tiled: false
+        }, {});
+
+        const ocupacionSuelo = new M.layer.WMTS({
+            url: 'https://wmts-mapa-lidar.idee.es/lidar',
+            name: 'EL.GridCoverageDSM',
+            legend: 'Modelo Digital de Superficies LiDAR',
+            matrixSet: 'GoogleMapsCompatible',
+            visibility: false,
+        }, {});
+
+
+        const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
+
+        map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
+
+        const mp = new M.plugin.IGNSearch({
+            servicesToSearch: 'gn',
+            maxResults: 10,
+            isCollapsed: false,
+            noProcess: 'municipio,poblacion',
+            countryCode: 'es',
+            reverse: true,
+        });
+        const mp2 = new M.plugin.Attributions({
+            mode: 1,
+            scale: 10000,
+        });
+
+        const mp3 = new M.plugin.ShareMap({
+            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
+            position: 'BR',
+        });
+        const mp4 = new M.plugin.XYLocator({
+            position: 'TL',
+        });
+        const mp6 = new M.plugin.ZoomExtent();
+        const mp7 = new M.plugin.MouseSRS({
+            srs: 'EPSG:4326',
+            label: 'WGS84',
+            precision: 6,
+            geoDecimalDigits: 4,
+            utmDecimalDigits: 2,
+        });
+
+        const mp8 = new M.plugin.TOC({
+            collapsed: false,
+        });
+
+        const mp9 = new M.plugin.BackImgLayer({
             position: 'TR',
             layerId: 0,
             layerVisibility: true,
@@ -130,6 +205,13 @@
         });
 
         map.addPlugin(mp);
+        map.addPlugin(mp2);
+        map.addPlugin(mp3);
+        map.addPlugin(mp4);
+        map.addPlugin(mp6);
+        map.addPlugin(mp7);
+        map.addPlugin(mp8);
+        map.addPlugin(mp9);
     </script>
 </body>
 
