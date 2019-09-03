@@ -10,7 +10,7 @@ const mp = new BackImgLayer({
   layerVisibility: true,
   layerOpts: [{
       id: 'mapa',
-      preview: '../src/facade/assets/images/mapea4sigc.png',
+      preview: '../src/facade/assets/images/svqmapa.png',
       title: 'Mapa',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/ign-base?',
@@ -24,7 +24,7 @@ const mp = new BackImgLayer({
     {
       id: 'imagen',
       title: 'Imagen',
-      preview: '../src/facade/assets/images/osm.png',
+      preview: '../src/facade/assets/images/svqimagen.png',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
@@ -37,7 +37,7 @@ const mp = new BackImgLayer({
     {
       id: 'hibrido',
       title: 'Híbrido',
-      preview: '../src/facade/assets/images/mapea4sigc.png',
+      preview: '../src/facade/assets/images/svqhibrid.png',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
@@ -50,6 +50,19 @@ const mp = new BackImgLayer({
         name: 'IGNBaseOrto',
         matrixSet: 'GoogleMapsCompatible',
         legend: 'Mapa IGN',
+      }, {
+        format: 'image/png',
+      })],
+    },
+    {
+      id: 'lidar',
+      preview: '../src/facade/assets/images/svqlidar.png',
+      title: 'LIDAR',
+      layers: [new M.layer.WMTS({
+        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+        name: 'EL.GridCoverageDSM',
+        legend: 'Modelo Digital de Superficies LiDAR',
+        matrixSet: 'GoogleMapsCompatible',
       }, {
         format: 'image/png',
       })],
