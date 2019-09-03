@@ -57,48 +57,19 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'backgroundlayers', 'getfeatureinfo'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
             center: [-467062.8225, 4683459.6216],
         });
 
-        // const layerinicial = new M.layer.WMS({
-        //     url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-        //     name: 'AU.AdministrativeBoundary',
-        //     legend: 'Limite administrativo',
-        //     tiled: false,
-        // }, {});
-
-        // const layerUA = new M.layer.WMS({
-        //     url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-        //     name: 'AU.AdministrativeUnit',
-        //     legend: 'Unidad administrativa',
-        //     tiled: false
-        // }, {});
-
-        // const ocupacionSuelo = new M.layer.WMTS({
-        //     url: 'http://wmts-mapa-lidar.idee.es/lidar',
-        //     name: 'EL.GridCoverageDSM',
-        //     legend: 'Modelo Digital de Superficies LiDAR',
-        //     matrixSet: 'GoogleMapsCompatible',
-        // }, {
-        //     visibility: false,
-        // });
-
-
-        // const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false');
-
-        // map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
-
-        const mp = new BackImgLayer({
+        const mp = new M.plugin.BackImgLayer({
             position: 'TR',
             layerId: 0,
             layerVisibility: true,
             layerOpts: [{
                     id: 'mapa',
-                    preview: '../src/facade/assets/images/mapea4sigc.png',
+                    preview: '../src/facade/assets/images/svqmapa.png',
                     title: 'Mapa',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/ign-base?',
@@ -112,7 +83,7 @@
                 {
                     id: 'imagen',
                     title: 'Imagen',
-                    preview: '../src/facade/assets/images/osm.png',
+                    preview: '../src/facade/assets/images/svqimagen.png',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
@@ -125,7 +96,7 @@
                 {
                     id: 'hibrido',
                     title: 'Híbrido',
-                    preview: '../src/facade/assets/images/mapea4sigc.png',
+                    preview: '../src/facade/assets/images/svqhibrid.png',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
@@ -138,6 +109,19 @@
                         name: 'IGNBaseOrto',
                         matrixSet: 'GoogleMapsCompatible',
                         legend: 'Mapa IGN',
+                    }, {
+                        format: 'image/png',
+                    })],
+                },
+                {
+                    id: 'lidar',
+                    preview: '../src/facade/assets/images/svqlidar.png',
+                    title: 'LIDAR',
+                    layers: [new M.layer.WMTS({
+                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                        name: 'EL.GridCoverageDSM',
+                        legend: 'Modelo Digital de Superficies LiDAR',
+                        matrixSet: 'GoogleMapsCompatible',
                     }, {
                         format: 'image/png',
                     })],
