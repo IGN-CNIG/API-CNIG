@@ -1,7 +1,8 @@
 /**
  * @module M/plugin/BackImgLayer
  */
-import 'assets/css/backimglayer';
+// import '/assets/css/backimglayer';
+import '../assets/css/backimglayer';
 import BackImgLayerControl from './backimglayercontrol';
 
 export default class BackImgLayer extends M.Plugin {
@@ -44,7 +45,7 @@ export default class BackImgLayer extends M.Plugin {
      * @private
      * @type {Object}
      */
-    this.layerOpts = options.layerOpts;
+    this.layerOpts = options.layerOpts || undefined;
 
     /**
      * Position of current background layer on layers array.
@@ -65,6 +66,43 @@ export default class BackImgLayer extends M.Plugin {
      * @type {object}
      */
     this.options = options;
+
+    /**
+     * Plugin name
+     * @public
+     * @type {String}
+     */
+    this.name = 'backimglayer';
+
+    /**
+     * Layers id's separated by ','.
+     * @public
+     * @type {String}
+     */
+    this.ids = options.ids || '';
+
+    /**
+     * Layers titles separated by ','.
+     * @public
+     * @type {String}
+     */
+    this.titles = options.titles || '';
+
+    /**
+     * Layers preview urls separated by ','.
+     * @public
+     * @type {String}
+     */
+    this.previews = options.previews || '';
+
+    /**
+     * Layers separated by ','.
+     * Each base layer can contain more than one layer separated by '+'.
+     * Each of these layers has different parameters separated by '^' (NOT *).
+     * @public
+     * @type {String}
+     */
+    this.layers = options.layers || '';
   }
 
   /**
@@ -81,15 +119,81 @@ export default class BackImgLayer extends M.Plugin {
       this.layerOpts,
       this.layerId,
       this.layerVisibility,
+      this.ids,
+      this.titles,
+      this.previews,
+      this.layers,
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelBackImgLayer', {
-      collapsible: true, // TODO: change back to true
+      collapsible: true,
       position: M.ui.position[this.position_],
       className: 'm-plugin-backimglayer',
       tooltip: 'Selección de capa de fondo',
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  /**
+   * Gets the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    const layers = this.layerOpts === undefined ?
+      `ids=${this.ids}&titles=${this.titles}&previews=${this.previews}&layers=${this.layers}` :
+      this.turnLayerOptsIntoUrl();
+    return `${this.name}=${this.position_}*${this.layerId}*${this.layerVisibility}*${layers}`;
+  }
+
+  /**
+   * Turns layerOpts parameter into piece of REST url.
+   * @public
+   * @function
+   * @api
+   */
+  turnLayerOptsIntoUrl() {
+    let ids = '';
+    let titles = '';
+    let previews = '';
+    let layersUrl = '';
+
+    this.layerOpts.forEach((l) => {
+      const backLayerIndex = this.layerOpts.indexOf(l);
+      if (backLayerIndex !== 0) {
+        ids += ',';
+        titles += ',';
+        previews += ',';
+        layersUrl += ',';
+      }
+
+      ids += l.id;
+      titles += l.title;
+      previews += l.preview;
+
+      l.layers.forEach((layer) => {
+        const isFirstLayer = l.layers.indexOf(layer) === 0;
+
+        if (!isFirstLayer) layersUrl += '+';
+
+        layersUrl += `${layer.type}`;
+        layersUrl += `^${layer.url}`;
+        layersUrl += `^${layer.name}`;
+        layersUrl += `^${layer.matrixSet}`;
+        layersUrl += `^${layer.legend}`; // legend
+
+        layersUrl += isFirstLayer ? '^false' : '^true'; // transparent (= false means it's a baselayer)
+
+        layersUrl += '^image/jpeg';
+        layersUrl += '^false';
+        layersUrl += '^false';
+        layersUrl += '^true';
+      });
+    });
+
+    return `ids=${ids}&titles=${titles}&previews=${previews}&layers=${layersUrl}`;
   }
 }
