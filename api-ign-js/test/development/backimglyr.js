@@ -1,12 +1,25 @@
-const map = M.map({
+// import { map as Mmap } from 'M/mapea';
+import IGNSearch from 'plugins/ignsearch/src/facade/js/ignsearch';
+import Attributions from 'plugins/attributions/src/facade/js/attributions';
+import ShareMap from 'plugins/sharemap/src/facade/js/sharemap';
+import XYLocator from 'plugins/xylocator/src/facade/js/xylocator';
+import ZoomExtent from 'plugins/zoomextent/src/facade/js/zoomextent';
+import MouseSRS from 'plugins/mousesrs/src/facade/js/mousesrs';
+import TOC from 'plugins/toc/src/facade/js/toc';
+import BackImgLayer from 'plugins/backimglayer/src/facade/js/backimglayer';
+
+const mapjs = M.map({
   container: 'map',
   controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
   zoom: 5,
+  maxZoom: 20,
+  minZoom: 4,
   center: [-467062.8225, 4683459.6216],
-  getfeatureinfo: true,
 });
 
-const mp = new M.plugin.IGNSearch({
+window.mapjs = mapjs;
+
+const mp = new IGNSearch({
   servicesToSearch: 'gn',
   maxResults: 10,
   isCollapsed: false,
@@ -14,35 +27,40 @@ const mp = new M.plugin.IGNSearch({
   countryCode: 'es',
   reverse: true,
 });
-const mp2 = new M.plugin.Attributions({
+
+const mp2 = new Attributions({
   mode: 1,
   scale: 10000,
 });
-const mp3 = new M.plugin.ShareMap({
+
+const mp3 = new ShareMap({
   baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
   position: 'BR',
 });
-const mp4 = new M.plugin.XYLocator({
+
+const mp4 = new XYLocator({
   position: 'TL',
 });
-const mp6 = new M.plugin.ZoomExtent();
-const mp7 = new M.plugin.MouseSRS({
-  projection: 'EPSG:4326',
+const mp6 = new ZoomExtent();
+const mp7 = new MouseSRS({
+  srs: 'EPSG:4326',
+  label: 'WGS84',
+  precision: 6,
+  geoDecimalDigits: 4,
+  utmDecimalDigits: 2,
 });
-const mp8 = new M.plugin.TOC({
-  collapsed: false,
-});
+const mp8 = new TOC();
 
-const mp9 = new M.plugin.BackImgLayer({
+const mp9 = new BackImgLayer({
   position: 'TR',
   layerId: 0,
   layerVisibility: true,
   layerOpts: [{
       id: 'mapa',
-      preview: '../../src/plugins/backimglayer/src/facade/assets/images/svqmapa.png',
+      preview: 'svqmapa.png',
       title: 'Mapa',
       layers: [new M.layer.WMTS({
-        url: 'https://www.ign.es/wmts/ign-base?',
+        url: 'http://www.ign.es/wmts/ign-base?',
         name: 'IGNBaseTodo',
         legend: 'Mapa IGN',
         matrixSet: 'GoogleMapsCompatible',
@@ -53,9 +71,9 @@ const mp9 = new M.plugin.BackImgLayer({
     {
       id: 'imagen',
       title: 'Imagen',
-      preview: '../../src/plugins/backimglayer/src/facade/assets/images/svqimagen.png',
+      preview: 'svqimagen.png',
       layers: [new M.layer.WMTS({
-        url: 'https://www.ign.es/wmts/pnoa-ma?',
+        url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
         legend: 'Imagen (PNOA)',
         matrixSet: 'GoogleMapsCompatible',
@@ -66,16 +84,16 @@ const mp9 = new M.plugin.BackImgLayer({
     {
       id: 'hibrido',
       title: 'Híbrido',
-      preview: '../../src/plugins/backimglayer/src/facade/assets/images/svqhibrid.png',
+      preview: 'svqhibrid.png',
       layers: [new M.layer.WMTS({
-        url: 'https://www.ign.es/wmts/pnoa-ma?',
+        url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
         legend: 'Imagen (PNOA)',
         matrixSet: 'GoogleMapsCompatible',
       }, {
         format: 'image/png',
       }), new M.layer.WMTS({
-        url: 'https://www.ign.es/wmts/ign-base?',
+        url: 'http://www.ign.es/wmts/ign-base?',
         name: 'IGNBaseOrto',
         matrixSet: 'GoogleMapsCompatible',
         legend: 'Mapa IGN',
@@ -85,7 +103,7 @@ const mp9 = new M.plugin.BackImgLayer({
     },
     {
       id: 'lidar',
-      preview: '../../src/plugins/backimglayer/src/facade/assets/images/svqlidar.png',
+      preview: 'svqlidar.png',
       title: 'LIDAR',
       layers: [new M.layer.WMTS({
         url: 'https://wmts-mapa-lidar.idee.es/lidar?',
@@ -99,13 +117,11 @@ const mp9 = new M.plugin.BackImgLayer({
   ],
 });
 
-map.addPlugin(mp);
-map.addPlugin(mp2);
-map.addPlugin(mp3);
-map.addPlugin(mp4);
-map.addPlugin(mp6);
-map.addPlugin(mp7);
-map.addPlugin(mp8);
-map.addPlugin(mp9);
-
-window.map = map;
+mapjs.addPlugin(mp);
+mapjs.addPlugin(mp2);
+mapjs.addPlugin(mp3);
+mapjs.addPlugin(mp4);
+mapjs.addPlugin(mp6);
+mapjs.addPlugin(mp7);
+mapjs.addPlugin(mp8);
+mapjs.addPlugin(mp9);

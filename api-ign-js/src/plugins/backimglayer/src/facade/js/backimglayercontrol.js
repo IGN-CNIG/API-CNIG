@@ -2,7 +2,8 @@
  * @module M/control/BackImgLayerControl
  */
 
-import template from 'templates/backimglayer';
+// import template from 'templates/backimglayer';
+import template from '../../templates/backimglayer';
 
 /**
  * This parameter indicates the maximum base layers of plugin
@@ -12,7 +13,6 @@ import template from 'templates/backimglayer';
  * @private
  */
 const MAXIMUM_LAYERS = 5;
-
 
 /**
  * @classdesc
@@ -25,13 +25,42 @@ export default class BackImgLayerControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(map, layerOpts, idLayer, visible) {
+  constructor(map, layerOpts, idLayer, visible, ids, titles, previews, layers) {
     const impl = new M.impl.Control();
     super(impl, 'BackImgLayer');
     map.getBaseLayers().forEach((layer) => {
       layer.on(M.evt.LOAD, map.removeLayers(layer));
     });
-    this.layers = layerOpts.slice(0, MAXIMUM_LAYERS);
+    this.layers = [];
+
+    if (layerOpts !== undefined) {
+      // Array<Object> => Object: { id, title, preview, Array<MapeaLayer>}
+      this.layers = layerOpts.slice(0, MAXIMUM_LAYERS);
+    } else {
+      const idsArray = ids.split(',');
+      const titlesArray = titles.split(',');
+      const previewArray = previews.split(',');
+      const layersArray = layers.split(',');
+      layersArray.forEach((baseLayer, idx) => {
+        const siblingLayers = [];
+        let backgroundLayers = [baseLayer];
+        if (baseLayer.contains('+')) {
+          backgroundLayers = baseLayer.split('+');
+        }
+        backgroundLayers.forEach((urlLayer) => {
+          const layer = urlLayer.replace(/\^/g, '*');
+          siblingLayers.push(layer); // Array<String>
+        });
+        siblingLayers.join('+');
+        const mapeaLyrsObject = {
+          id: idsArray[idx],
+          title: titlesArray[idx],
+          preview: previewArray[idx],
+          layers: [siblingLayers],
+        };
+        this.layers.push(mapeaLyrsObject);
+      });
+    }
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
     this.activeLayer = -1;
     /* this.idLayer saves active layer position on layers array */

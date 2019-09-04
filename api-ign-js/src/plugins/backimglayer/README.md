@@ -8,7 +8,7 @@ Plugin que permite la elección de cada de fondo mediante previsualización de l
 - backimglayer.ol.min.css
 
 ```html
- <link href="../../plugins/attribution/backimglayer.ol.min.css" rel="stylesheet" />
+ <link href="../../plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
  <script type="text/javascript" src="../../plugins/backimglayer/backimglayer.ol.min.js"></script>
 ```
 
@@ -40,7 +40,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
       position: 'TR',
       layerId: 0,
       layerVisibility: true,
-      layerOpts: [{
+      layerOpts: [
+         {
             id: 'mapa',
             preview: '../src/facade/assets/images/svqmapa.png',
             title: 'Mapa',

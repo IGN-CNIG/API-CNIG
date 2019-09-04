@@ -266,8 +266,6 @@ export default class ShareMapControl extends M.Control {
           } else {
             backgroundlayersAPI = 'backgroundlayers';
           }
-        } else {
-          backgroundlayersAPI = 'backgroundlayers';
         }
         resolvedControls.push(backgroundlayersAPI);
         resolve(resolvedControls);
