@@ -7,39 +7,37 @@
   "parameters": [{
     "type": "object",
     "properties": [{
-      "type": "string",
-      "name": "position",
-      "position": 0,
-      "possibleValues": ["TL", "TR", "BR", "BL"]
-    }, {
-      "type": "number",
-      "name": "layerId",
-      "position": 1
-    }, {
-      "type": "boolean",
-      "name": "layerVisibility",
-      "position": 2
-    }, {
-      "type": "array",
-      "name": "layerOpts",
-      "position": 3,
-      "properties": [{
-        "type": "object",
-        "properties": [{
-          "type": "simple",
-          "name": "id"
-        }, {
-          "type": "simple",
-          "name": "preview"
-        }, {
-          "type": "simple",
-          "name": "title"
-        }, {
-          "type": "array",
-          "name": "layers"
-        }]
-      }]
-    }]
+        "type": "simple",
+        "name": "position",
+        "position": 0,
+        "possibleValues": ["TL", "TR", "BR", "BL"]
+      }, {
+        "type": "number",
+        "name": "layerId",
+        "position": 1
+      }, {
+        "type": "boolean",
+        "name": "layerVisibility",
+        "position": 2
+      },
+      {
+        "type": "simple",
+        "name": "ids",
+        "position": 3
+      }, {
+        "type": "simple",
+        "name": "titles",
+        "position": 4
+      }, {
+        "type": "simple",
+        "name": "previews",
+        "position": 5
+      }, {
+        "type": "simple",
+        "name": "layers",
+        "position": 6
+      }
+    ]
   }],
   "files": {
     "ol": {

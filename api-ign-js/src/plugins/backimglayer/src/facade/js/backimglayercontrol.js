@@ -42,21 +42,24 @@ export default class BackImgLayerControl extends M.Control {
       const previewArray = previews.split(',');
       const layersArray = layers.split(',');
       layersArray.forEach((baseLayer, idx) => {
-        const siblingLayers = [];
-        let backgroundLayers = [baseLayer];
-        if (baseLayer.contains('+')) {
-          backgroundLayers = baseLayer.split('+');
-        }
+        let siblingLayers = [];
+        const backgroundLayers = baseLayer.split('+');
         backgroundLayers.forEach((urlLayer) => {
-          const layer = urlLayer.replace(/\^/g, '*');
+          const layer = urlLayer.replace(/asterisco/g, '*');
           siblingLayers.push(layer); // Array<String>
         });
-        siblingLayers.join('+');
+        // turns it into Array <Mapea layer>
+        siblingLayers = siblingLayers.map((sibling) => {
+          const mapeaLayer = new M.layer.WMTS(sibling);
+          console.log(mapeaLayer);
+          console.log(typeof mapeaLayer);
+          return mapeaLayer;
+        });
         const mapeaLyrsObject = {
           id: idsArray[idx],
           title: titlesArray[idx],
           preview: previewArray[idx],
-          layers: [siblingLayers],
+          layers: siblingLayers,
         };
         this.layers.push(mapeaLyrsObject);
       });
@@ -89,6 +92,8 @@ export default class BackImgLayerControl extends M.Control {
         const visible = this.visible;
         if (this.idLayer > -1) {
           this.activeLayer = this.idLayer;
+          console.log('createView this.layers[this.activeLayer]:');
+          console.log(this.layers[this.activeLayer]);
           this.showBaseLayer({
             currentTarget: {
               parentElement: html,
@@ -111,6 +116,7 @@ export default class BackImgLayerControl extends M.Control {
    * @api
    */
   showBaseLayer(e, layersInfo, i) {
+    console.log('showBaseLayer layersInfo:');
     let callback = this.handlerClickDesktop.bind(this);
     if (window.innerWidth <= M.config.MOBILE_WIDTH) {
       callback = this.handlerClickMobile.bind(this);
@@ -129,6 +135,8 @@ export default class BackImgLayerControl extends M.Control {
    * @param {} i
    */
   handlerClickDesktop(e, layersInfo, i) {
+    console.log('handlerClickDesktop layersInfo:');
+    console.log(layersInfo);
     this.removeLayers();
     this.visible = false;
     // const { layers, title } = layersInfo;
