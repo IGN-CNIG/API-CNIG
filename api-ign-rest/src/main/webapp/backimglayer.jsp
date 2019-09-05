@@ -101,9 +101,9 @@
         }, {});
 
 
-        const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
+        // const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
 
-        map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
+        map.addLayers([ocupacionSuelo, layerinicial, layerUA]); // + kml
 
         const mp = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
@@ -151,6 +151,10 @@
                         name: 'IGNBaseTodo',
                         legend: 'Mapa IGN',
                         matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
                     }, {
                         format: 'image/jpeg',
                     })],
@@ -164,6 +168,10 @@
                         name: 'OI.OrthoimageCoverage',
                         legend: 'Imagen (PNOA)',
                         matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
                     }, {
                         format: 'image/png',
                     })],
@@ -177,6 +185,10 @@
                         name: 'OI.OrthoimageCoverage',
                         legend: 'Imagen (PNOA)',
                         matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
                     }, {
                         format: 'image/png',
                     }), new M.layer.WMTS({
@@ -184,6 +196,10 @@
                         name: 'IGNBaseOrto',
                         matrixSet: 'GoogleMapsCompatible',
                         legend: 'Mapa IGN',
+                        transparent: true,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
                     }, {
                         format: 'image/png',
                     })],
@@ -197,6 +213,10 @@
                         name: 'EL.GridCoverageDSM',
                         legend: 'Modelo Digital de Superficies LiDAR',
                         matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
                     }, {
                         format: 'image/png',
                     })],

@@ -33,19 +33,26 @@ export default class BackImgLayer extends M.Plugin {
     this.controls_ = [];
 
     /**
+     * Plugin name
+     * @public
+     * @type {String}
+     */
+    this.name = 'backimglayer';
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
+
+    /**
      * Position of the plugin
      *
      * @private
      * @type {Enum} TL | TR | BL | BR
      */
     this.position_ = options.position || 'TR';
-
-    /**
-     * Layers to use as background. Each one has id, title, preview and layers attributes.
-     * @private
-     * @type {Object}
-     */
-    this.layerOpts = options.layerOpts || undefined;
 
     /**
      * Position of current background layer on layers array.
@@ -62,17 +69,11 @@ export default class BackImgLayer extends M.Plugin {
     this.layerVisibility = options.layerVisibility || true;
 
     /**
-     * @public
-     * @type {object}
+     * Layers to use as background. Each one has id, title, preview and layers attributes.
+     * @private
+     * @type {Object}
      */
-    this.options = options;
-
-    /**
-     * Plugin name
-     * @public
-     * @type {String}
-     */
-    this.name = 'backimglayer';
+    this.layerOpts = options.layerOpts || undefined;
 
     /**
      * Layers id's separated by ','.
@@ -98,7 +99,7 @@ export default class BackImgLayer extends M.Plugin {
     /**
      * Layers separated by ','.
      * Each base layer can contain more than one layer separated by '+'.
-     * Each of these layers has different parameters separated by '^' (NOT *).
+     * Each of these layers has different parameters separated by 'asterisco'(NOT * ).
      * @public
      * @type {String}
      */
@@ -144,7 +145,7 @@ export default class BackImgLayer extends M.Plugin {
    */
   getAPIRest() {
     const layers = this.layerOpts === undefined ?
-      `ids=${this.ids}&titles=${this.titles}&previews=${this.previews}&layers=${this.layers}` :
+      `${this.ids}*${this.titles}*${this.previews}*${this.layers}` :
       this.turnLayerOptsIntoUrl();
     return `${this.name}=${this.position_}*${this.layerId}*${this.layerVisibility}*${layers}`;
   }
@@ -180,20 +181,23 @@ export default class BackImgLayer extends M.Plugin {
         if (!isFirstLayer) layersUrl += '+';
 
         layersUrl += `${layer.type}`;
-        layersUrl += `^${layer.url}`;
-        layersUrl += `^${layer.name}`;
-        layersUrl += `^${layer.matrixSet}`;
-        layersUrl += `^${layer.legend}`; // legend
+        layersUrl += `asterisco${layer.url}`;
+        layersUrl += `asterisco${layer.name}`;
+        layersUrl += `asterisco${layer.matrixSet}`;
+        layersUrl += `asterisco${layer.legend}`; // legend
 
-        layersUrl += isFirstLayer ? '^false' : '^true'; // transparent (= false means it's a baselayer)
+        // transparent (= false means it's a baselayer)
+        layersUrl += isFirstLayer ? 'asteriscofalse' : 'asteriscotrue';
 
-        layersUrl += '^image/jpeg';
-        layersUrl += '^false';
-        layersUrl += '^false';
-        layersUrl += '^true';
+        console.log(layersUrl);
+
+        layersUrl += 'asteriscoimage/jpeg'; // FIXME: insert format (LIDAR layers needs png)
+        layersUrl += 'asteriscofalse';
+        layersUrl += 'asteriscofalse';
+        layersUrl += 'asteriscotrue';
       });
     });
 
-    return `ids=${ids}&titles=${titles}&previews=${previews}&layers=${layersUrl}`;
+    return `${ids}*${titles}*${previews}*${layersUrl}`;
   }
 }
