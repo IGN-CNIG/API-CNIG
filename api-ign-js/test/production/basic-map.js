@@ -39,12 +39,10 @@ const mp9 = new M.plugin.BackImgLayer({
   layerVisibility: true,
   layerOpts: [{
       id: 'mapa',
-      // preview: '../../src/plugins/backimglayer/src/facade/assets/images/svqmapa.png',
-      preview: 'svqmapa.png',
-      // preview: 'https://ibb.co/42Z01gN',
+      preview: 'plugins/backimglayer/images/svqmapa.png',
       title: 'Mapa',
       layers: [new M.layer.WMTS({
-        url: 'https://www.ign.es/wmts/ign-base?',
+        url: 'http://www.ign.es/wmts/ign-base?',
         name: 'IGNBaseTodo',
         legend: 'Mapa IGN',
         matrixSet: 'GoogleMapsCompatible',
@@ -52,64 +50,57 @@ const mp9 = new M.plugin.BackImgLayer({
         displayInLayerSwitcher: false,
         queryable: false,
         visible: true,
-      }, {
+        visibility: true,
         format: 'image/jpeg',
       })],
     },
     {
       id: 'imagen',
       title: 'Imagen',
-      // preview: '../../src/plugins/backimglayer/src/facade/assets/images/svqimagen.png',
-      preview: 'svqimagen.png',
-      // preview: 'https://ibb.co/nCtDHfN',
+      preview: 'plugins/backimglayer/images/svqimagen.png',
       layers: [new M.layer.WMTS({
-        url: 'https://www.ign.es/wmts/pnoa-ma?',
+        url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
         legend: 'Imagen (PNOA)',
         matrixSet: 'GoogleMapsCompatible',
         transparent: false,
         displayInLayerSwitcher: false,
         queryable: false,
-        visible: true,
-      }, {
-        format: 'image/png',
+        visibility: true,
+        format: 'image/jpeg',
       })],
     },
     {
       id: 'hibrido',
       title: 'Híbrido',
-      // preview: '../../src/plugins/backimglayer/src/facade/assets/images/svqhibrid.png',
-      preview: 'svqhibrid.png',
-      // preview: 'https://ibb.co/J2jswhL',
+      preview: 'plugins/backimglayer/images/svqhibrid.png',
       layers: [new M.layer.WMTS({
-        url: 'https://www.ign.es/wmts/pnoa-ma?',
+        url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
         legend: 'Imagen (PNOA)',
         matrixSet: 'GoogleMapsCompatible',
         transparent: false,
         displayInLayerSwitcher: false,
         queryable: false,
-        visible: true,
+        visibility: true,
+        format: 'image/jpeg',
       }, {
         format: 'image/png',
       }), new M.layer.WMTS({
-        url: 'https://www.ign.es/wmts/ign-base?',
+        url: 'http://www.ign.es/wmts/ign-base?',
         name: 'IGNBaseOrto',
         matrixSet: 'GoogleMapsCompatible',
         legend: 'Mapa IGN',
         transparent: true,
         displayInLayerSwitcher: false,
         queryable: false,
-        visible: true,
-      }, {
+        visibility: true,
         format: 'image/png',
       })],
     },
     {
       id: 'lidar',
-      // preview: '../../src/plugins/backimglayer/src/facade/assets/images/svqlidar.png',
-      preview: 'svqlidar.png',
-      // preview: 'https://ibb.co/7b83Vrh',
+      preview: 'plugins/backimglayer/images/svqlidar.png',
       title: 'LIDAR',
       layers: [new M.layer.WMTS({
         url: 'https://wmts-mapa-lidar.idee.es/lidar?',
@@ -119,18 +110,18 @@ const mp9 = new M.plugin.BackImgLayer({
         transparent: false,
         displayInLayerSwitcher: false,
         queryable: false,
-        visible: true,
-      }, {
+        visibility: true,
         format: 'image/png',
       })],
     },
   ],
-  ids: 'mapa,hibrido',
-  titles: 'Mapa,Hibrido',
-  previews: 'svqmapa.png,svqhibrid.png', // '../src/facade/assets/images/svqmapa.png,../src/facade/assets/images/svqhibrid.png',
-  layers: 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue+WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue',
-
 });
+// ids: 'mapa,hibrido',
+// titles: 'Mapa,Hibrido',
+// previews: 'svqmapa.png,svqhibrid.png', // '../src/facade/assets/images/svqmapa.png,
+// ../src/facade/assets/images/svqhibrid.png',
+// layers: 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue+WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue',
+
 
 map.addPlugin(mp);
 map.addPlugin(mp2);

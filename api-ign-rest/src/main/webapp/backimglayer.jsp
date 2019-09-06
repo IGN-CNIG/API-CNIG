@@ -92,18 +92,18 @@
             tiled: false
         }, {});
 
-        const ocupacionSuelo = new M.layer.WMTS({
-            url: 'https://wmts-mapa-lidar.idee.es/lidar',
-            name: 'EL.GridCoverageDSM',
-            legend: 'Modelo Digital de Superficies LiDAR',
-            matrixSet: 'GoogleMapsCompatible',
-            visibility: false,
-        }, {});
+        // const ocupacionSuelo = new M.layer.WMTS({
+        //     url: 'https://wmts-mapa-lidar.idee.es/lidar',
+        //     name: 'EL.GridCoverageDSM',
+        //     legend: 'Modelo Digital de Superficies LiDAR',
+        //     matrixSet: 'GoogleMapsCompatible',
+        //     visibility: false,
+        // }, {});
 
 
         // const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
 
-        map.addLayers([ocupacionSuelo, layerinicial, layerUA]); // + kml
+        map.addLayers([layerinicial, layerUA]); // ocupacionSuelo + kml
 
         const mp = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
@@ -144,7 +144,7 @@
             layerVisibility: true,
             layerOpts: [{
                     id: 'mapa',
-                    preview: 'backimglayer/svqmapa.png',
+                    preview: 'plugins/backimglayer/images/svqmapa.png',
                     title: 'Mapa',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/ign-base?',
@@ -155,14 +155,13 @@
                         displayInLayerSwitcher: false,
                         queryable: false,
                         visible: true,
-                    }, {
                         format: 'image/jpeg',
                     })],
                 },
                 {
                     id: 'imagen',
                     title: 'Imagen',
-                    preview: 'backimglayer/svqimagen.png',
+                    preview: 'plugins/backimglayer/images/svqimagen.png',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
@@ -172,41 +171,40 @@
                         displayInLayerSwitcher: false,
                         queryable: false,
                         visible: true,
-                    }, {
-                        format: 'image/png',
+                        format: 'image/jpeg',
                     })],
                 },
                 {
                     id: 'hibrido',
                     title: 'Híbrido',
-                    preview: 'backimglayer/svqhibrid.png',
+                    preview: 'plugins/backimglayer/images/svqhibrid.png',
                     layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/pnoa-ma?',
-                        name: 'OI.OrthoimageCoverage',
-                        legend: 'Imagen (PNOA)',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                    }, {
-                        format: 'image/png',
-                    }), new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/ign-base?',
-                        name: 'IGNBaseOrto',
-                        matrixSet: 'GoogleMapsCompatible',
-                        legend: 'Mapa IGN',
-                        transparent: true,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                    }, {
-                        format: 'image/png',
-                    })],
+                            url: 'http://www.ign.es/wmts/pnoa-ma?',
+                            name: 'OI.OrthoimageCoverage',
+                            legend: 'Imagen (PNOA)',
+                            matrixSet: 'GoogleMapsCompatible',
+                            transparent: true,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/png',
+                        }),
+                        new M.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/ign-base?',
+                            name: 'IGNBaseOrto',
+                            matrixSet: 'GoogleMapsCompatible',
+                            legend: 'Mapa IGN',
+                            transparent: false,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/png',
+                        })
+                    ],
                 },
                 {
                     id: 'lidar',
-                    preview: 'backimglayer/svqlidar.png',
+                    preview: 'plugins/backimglayer/images/svqlidar.png',
                     title: 'LIDAR',
                     layers: [new M.layer.WMTS({
                         url: 'https://wmts-mapa-lidar.idee.es/lidar?',
@@ -217,7 +215,6 @@
                         displayInLayerSwitcher: false,
                         queryable: false,
                         visible: true,
-                    }, {
                         format: 'image/png',
                     })],
                 },
