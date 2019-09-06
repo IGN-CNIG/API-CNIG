@@ -24,17 +24,17 @@ const layerinicial = new M.layer.WMS({
   visibility: false,
 });
 
-const ocupacionSuelo = new M.layer.WMTS({
-  url: 'http://wmts-mapa-lidar.idee.es/lidar',
-  name: 'EL.GridCoverageDSM',
-  legend: 'Modelo Digital de Superficies LiDAR',
-  matrixSet: 'GoogleMapsCompatible',
-}, {
-  visibility: false,
-});
+// const ocupacionSuelo = new M.layer.WMTS({
+//   url: 'http://wmts-mapa-lidar.idee.es/lidar',
+//   name: 'EL.GridCoverageDSM',
+//   legend: 'Modelo Digital de Superficies LiDAR',
+//   matrixSet: 'GoogleMapsCompatible',
+// }, {
+//   visibility: false,
+// });
 map.addLayers(layerUA);
 map.addLayers(layerinicial);
-map.addLayers(ocupacionSuelo);
+// map.addLayers(ocupacionSuelo);
 
 
 window.map = map;

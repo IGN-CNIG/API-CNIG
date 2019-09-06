@@ -98,7 +98,7 @@ export default class BackImgLayer extends M.Plugin {
 
     /**
      * Layers separated by ','.
-     * Each base layer can contain more than one layer separated by '+'.
+     * Each base layer can contain more than one layer separated by 'sumar' (before: '+').
      * Each of these layers has different parameters separated by 'asterisco'(NOT * ).
      * @public
      * @type {String}
@@ -132,6 +132,11 @@ export default class BackImgLayer extends M.Plugin {
       className: 'm-plugin-backimglayer',
       tooltip: 'Selección de capa de fondo',
     });
+
+    this.controls_[0].on('backimglayer:activeChanges', (data) => {
+      this.layerId = data.activeLayerId;
+    });
+
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
@@ -178,23 +183,23 @@ export default class BackImgLayer extends M.Plugin {
       l.layers.forEach((layer) => {
         const isFirstLayer = l.layers.indexOf(layer) === 0;
 
-        if (!isFirstLayer) layersUrl += '+';
+        if (!isFirstLayer) layersUrl += 'sumar'; // FIXME: +
 
-        layersUrl += `${layer.type}`;
-        layersUrl += `asterisco${layer.url}`;
-        layersUrl += `asterisco${layer.name}`;
-        layersUrl += `asterisco${layer.matrixSet}`;
-        layersUrl += `asterisco${layer.legend}`; // legend
+        layersUrl += `${layer.options.type}`;
+        layersUrl += `asterisco${layer.options.url}`;
+        layersUrl += `asterisco${layer.options.name}`;
+        layersUrl += `asterisco${layer.options.matrixSet}`;
+        layersUrl += `asterisco${layer.options.legend}`;
 
         // transparent (= false means it's a baselayer)
-        layersUrl += isFirstLayer ? 'asteriscofalse' : 'asteriscotrue';
+        // layersUrl += isFirstLayer ? 'asteriscofalse' : 'asteriscotrue';
+        layersUrl += `asterisco${layer.options.transparent}`;
 
-        console.log(layersUrl);
-
-        layersUrl += 'asteriscoimage/jpeg'; // FIXME: insert format (LIDAR layers needs png)
-        layersUrl += 'asteriscofalse';
-        layersUrl += 'asteriscofalse';
-        layersUrl += 'asteriscotrue';
+        layersUrl += `asterisco${layer.options.format}`;
+        layersUrl += `asterisco${layer.options.displayInLayerSwitcher}`;
+        layersUrl += `asterisco${layer.options.queryable}`;
+        layersUrl += `asterisco${layer.options.visibility}`;
+        // map.getPlugins()[7].options.layerOpts[0].layers[0].options.displayInLayerSwitcher
       });
     });
 
