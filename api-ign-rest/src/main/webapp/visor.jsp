@@ -132,7 +132,9 @@
             utmDecimalDigits: 2,
         });
 
-        const mp8 = new M.plugin.TOC();
+        const mp8 = new M.plugin.TOC({
+            collapsed: false,
+        });
 
         map.addPlugin(mp);
         map.addPlugin(mp2);
