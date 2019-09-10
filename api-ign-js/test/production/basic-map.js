@@ -122,6 +122,10 @@ const mp9 = new M.plugin.BackImgLayer({
 // ../src/facade/assets/images/svqhibrid.png',
 // layers: 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue+WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue',
 
+const mp10 = new M.plugin.ViewHistory({
+  position: 'TL',
+});
+
 
 map.addPlugin(mp);
 map.addPlugin(mp2);
@@ -131,5 +135,6 @@ map.addPlugin(mp6);
 map.addPlugin(mp7);
 map.addPlugin(mp8);
 map.addPlugin(mp9);
+map.addPlugin(mp10);
 
 window.map = map;
