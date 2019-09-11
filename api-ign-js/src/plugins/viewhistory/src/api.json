@@ -1,0 +1,33 @@
+{
+  "url": {
+    "name": "ViewHistory",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.ViewHistory",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "enum",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BR", "BL"]
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": "viewhistory.ol.min.js",
+      "styles": "viewhistory.ol.min.js"
+    }
+  },
+  "metadata": {
+    "name": "ViewHistory",
+    "description": "Navigation among map views",
+    "text": "Navigation among previous and next map views",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}
