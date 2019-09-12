@@ -11,6 +11,8 @@ import XYLocator from 'plugins/xylocator/facade/js/xylocator';
 import ZoomExtent from 'plugins/zoomextent/facade/js/zoomextent';
 import MouseSRS from 'plugins/mousesrs/facade/js/mousesrs';
 import TOC from 'plugins/toc/src/facade/js/toc';
+import BackImgLayer from 'plugins/backimglayer/src/facade/js/backimglayer';
+import ViewHistory from 'plugins/viewhistory/src/facade/js/viewhistory';
 
 
 const mapjs = Mmap({
@@ -35,7 +37,7 @@ const layerUA = new WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
   legend: 'Unidad administrativa',
-  tiled: false
+  tiled: false,
 }, {});
 
 const ocupacionSuelo = new WMTS({
@@ -63,10 +65,6 @@ const mp = new IGNSearch({
 const mp2 = new Attributions({
   mode: 1,
   scale: 10000,
-  // defaultAttribution: 'Instituto Geográfico Nacional',
-  // defaultURL: 'https://www.ign.es/',
-  // url: M.config.attributions.url,
-  // type: M.config.attributions.url,
 });
 const mp3 = new ShareMap({
   baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
@@ -81,6 +79,93 @@ const mp7 = new MouseSRS({
 });
 const mp8 = new TOC();
 
+const mp9 = new BackImgLayer({
+  position: 'TR',
+  layerId: 0,
+  layerVisibility: true,
+  layerOpts: [{
+      id: 'mapa',
+      preview: 'plugins/backimglayer/images/svqmapa.png',
+      title: 'Mapa',
+      layers: [new M.layer.WMTS({
+        url: 'http://www.ign.es/wmts/ign-base?',
+        name: 'IGNBaseTodo',
+        legend: 'Mapa IGN',
+        matrixSet: 'GoogleMapsCompatible',
+        transparent: false,
+        displayInLayerSwitcher: false,
+        queryable: false,
+        visible: true,
+        format: 'image/jpeg',
+      })],
+    },
+    {
+      id: 'imagen',
+      title: 'Imagen',
+      preview: 'plugins/backimglayer/images/svqimagen.png',
+      layers: [new M.layer.WMTS({
+        url: 'http://www.ign.es/wmts/pnoa-ma?',
+        name: 'OI.OrthoimageCoverage',
+        legend: 'Imagen (PNOA)',
+        matrixSet: 'GoogleMapsCompatible',
+        transparent: false,
+        displayInLayerSwitcher: false,
+        queryable: false,
+        visible: true,
+        format: 'image/jpeg',
+      })],
+    },
+    {
+      id: 'hibrido',
+      title: 'Híbrido',
+      preview: 'plugins/backimglayer/images/svqhibrid.png',
+      layers: [new M.layer.WMTS({
+          url: 'http://www.ign.es/wmts/pnoa-ma?',
+          name: 'OI.OrthoimageCoverage',
+          legend: 'Imagen (PNOA)',
+          matrixSet: 'GoogleMapsCompatible',
+          transparent: true,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/png',
+        }),
+        new M.layer.WMTS({
+          url: 'http://www.ign.es/wmts/ign-base?',
+          name: 'IGNBaseOrto',
+          matrixSet: 'GoogleMapsCompatible',
+          legend: 'Mapa IGN',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/png',
+        })
+      ],
+    },
+    {
+      id: 'lidar',
+      preview: 'plugins/backimglayer/images/svqlidar.png',
+      title: 'LIDAR',
+      layers: [new M.layer.WMTS({
+        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+        name: 'EL.GridCoverageDSM',
+        legend: 'Modelo Digital de Superficies LiDAR',
+        matrixSet: 'GoogleMapsCompatible',
+        transparent: false,
+        displayInLayerSwitcher: false,
+        queryable: false,
+        visible: true,
+        format: 'image/png',
+      })],
+    },
+  ],
+});
+
+const mp10 = new ViewHistory({
+  position: 'TL',
+});
+
 mapjs.addPlugin(mp);
 mapjs.addPlugin(mp2);
 mapjs.addPlugin(mp3);
@@ -88,3 +173,5 @@ mapjs.addPlugin(mp4);
 mapjs.addPlugin(mp6);
 mapjs.addPlugin(mp7);
 mapjs.addPlugin(mp8);
+mapjs.addPlugin(mp9);
+mapjs.addPlugin(mp10);

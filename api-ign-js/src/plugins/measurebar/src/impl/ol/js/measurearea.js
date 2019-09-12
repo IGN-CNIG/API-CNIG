@@ -1,8 +1,3 @@
-// import { HELP_KEEP_MESSAGE } from 'plugins/measurebar/facade/js/measurearea';
-
-// import FacadeMeasure from 'plugins/measurebar/facade/js/measurebase';
-// import FacadeMeasureLength from 'plugins/measurebar/facade/js/measurelength';
-
 import { HELP_KEEP_MESSAGE } from '../../../facade/js/measurearea';
 
 import FacadeMeasure from '../../../facade/js/measurebase';

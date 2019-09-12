@@ -87,7 +87,6 @@ export default class MeasureBar extends M.Plugin {
     this.measureLength_ = new MeasureLength();
     this.measureArea_ = new MeasureArea();
     this.measureClear_ = new MeasureClear(this.measureLength_, this.measureArea_);
-    // map.addControls([this.measureLength_, this.measureArea_, this.measureClear_]);
 
     this.controls_.push(this.measureLength_, this.measureArea_, this.measureClear_);
 
@@ -95,7 +94,7 @@ export default class MeasureBar extends M.Plugin {
       collapsible: true,
       position: M.ui.position[this.position_],
       className: 'm-panel-measurebar',
-      // collapsedButtonClass: 'g-cartografia-info',
+      collapsedButtonClass: 'measurebar-regla',
       tooltip: 'Herramientas de medición',
     });
 

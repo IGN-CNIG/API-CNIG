@@ -39,8 +39,8 @@
     line-break: auto;
 }
 
-.m-measure-tooltip.measure,
-.m-measure-tooltip.pointer {
+/* .m-measure-tooltip.pointer */
+.m-measure-tooltip.measure {
     position: relative;
     background: #b54d01;
     border-radius: 4px;
@@ -78,15 +78,16 @@
     border-top-color: #337ceb;
 }
 
+
 /* Icons font */
 
 @font-face {
     font-family: 'measurebar';
-    src: url('../fonts/measurebar.eot?kntodg');
-    src: url('../fonts/measurebar.eot?kntodg#iefix') format('embedded-opentype'),
-        url('../fonts/measurebar.ttf?kntodg') format('truetype'),
-        url('../fonts/measurebar.woff?kntodg') format('woff'),
-        url('../fonts/measurebar.svg?kntodg#measurebar') format('svg');
+    src: url('../fonts/measurebar.eot?ax3k4p');
+    src: url('../fonts/measurebar.eot?ax3k4p#iefix') format('embedded-opentype'),
+        url('../fonts/measurebar.ttf?ax3k4p') format('truetype'),
+        url('../fonts/measurebar.woff?ax3k4p') format('woff'),
+        url('../fonts/measurebar.svg?ax3k4p#measurebar') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -94,6 +95,7 @@
 
 [class^="measurebar-"],
 [class*=" measurebar-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'measurebar' !important;
     speak: none;
     font-style: normal;
@@ -102,6 +104,7 @@
     text-transform: none;
     line-height: 1;
 
+    /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -114,6 +117,18 @@
     content: "\e1911";
 }
 
+.measurebar-regla:before {
+    content: "\e1912";
+}
+
+/* Mapea font override */
+
+.m-areas>div.m-area>div.m-panel.m-panel-measurebar.collapsed>button.m-panel-btn,
+#measurebar-area-btn,
+#measurebar-length-btn {
+    font-family: 'measurebar' !important;
+}
+
 /* Buttons */
 
 div.m-panel.m-panel-measurebar.opened>button.m-panel-btn {
@@ -121,15 +136,22 @@ div.m-panel.m-panel-measurebar.opened>button.m-panel-btn {
     color: white;
 }
 
-.m-areas>div.m-area>div.m-panel.m-panel-measurebar.opened>div.m-panel-controls>div.m-control>button[id^="measurebar-"],
-.m-areas>div.m-area>div.m-panel.m-panel-measurebar.opened>div.m-panel-controls>div.m-control>button[class^=g-cartografia-],
-.m-area .m-panel.m-panel-measurebar.opened div.m-control button[class^=g-cartografia-] {
+.m-areas>div.m-area>div.m-panel.m-panel-measurebar.opened>div.m-panel-controls>div.m-control>button[class^="measurebar-"],
+.m-areas>div.m-area>div.m-panel.m-panel-measurebar.opened>div.m-panel-controls>div.m-control>button#measurebar-clear-btn {
     background-color: white;
     border: none;
-    color: #71a7d3 !important;
+    color: grey !important;
     font-size: 24px;
     height: 40px;
     width: 40px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-panel-measurebar.opened>div.m-panel-controls>div.m-control.activated>button {
+    color: #71a7d3 !important;
+}
+
+.m-areas>div.m-area>div.m-panel.m-panel-measurebar.opened>div.m-panel-controls>div.m-control>button {
+    outline: none !important;
 }
 
 .m-areas>div.m-area.m-bottom>div.m-panel.m-panel-measurebar.opened {
