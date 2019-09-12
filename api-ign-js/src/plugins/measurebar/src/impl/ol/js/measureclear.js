@@ -1,3 +1,6 @@
+import FacadeMeasureArea from '../../../facade/js/measurearea';
+import FacadeMeasureLength from '../../../facade/js/measurelength';
+
 /**
  * @classdesc
  * Main constructor of the class. Creates a MeasureClear
@@ -63,6 +66,29 @@ export default class MeasureClear extends M.impl.Control {
   onClick() {
     this.measureLengthControl_.clear();
     this.measureAreaControl_.clear();
+    this.deactivateOtherBtns();
+  }
+
+  /**
+   * Deactivates length measure and area measure buttons.
+   * @public
+   * @function
+   * @api
+   */
+  deactivateOtherBtns() {
+    const measureLength = this.facadeMap_.getControls().filter((control) => {
+      return (control instanceof FacadeMeasureLength);
+    })[0];
+
+    if (measureLength) {
+      measureLength.deactivate();
+    }
+    const measureArea = this.facadeMap_.getControls().filter((control) => {
+      return (control instanceof FacadeMeasureArea);
+    })[0];
+    if (measureArea) {
+      measureArea.deactivate();
+    }
   }
 
   /**
