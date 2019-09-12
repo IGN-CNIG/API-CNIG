@@ -73,7 +73,7 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
+            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
