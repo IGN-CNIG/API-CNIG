@@ -1,4 +1,4 @@
-# M.plugin.TOC
+# M.plugin.SelectionDraw
 
 Permite dibujar geometrías y obtenerlas al terminar.
 
@@ -34,7 +34,7 @@ Permite dibujar geometrías y obtenerlas al terminar.
      container: 'map'
    });
   
-   const mp = new M.plugin.SelectionDRAW({
+   const mp = new M.plugin.SelectionDraw({
         postition,
         collapsed,
         collapsible,
