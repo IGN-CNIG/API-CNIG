@@ -1,6 +1,5 @@
 import { GeoJSONReader } from 'jsts/org/locationtech/jts/io';
 import RelateOp from 'jsts/org/locationtech/jts/operation/relate/RelateOp';
-import WKT from './wkt_format';
 
 /**
  * @classdesc
@@ -171,7 +170,7 @@ export const parseParamToGeometries = (paramParameter) => {
  */
 const toCQLFilter = (operation, geometries) => {
   let cqlFilter = '';
-  const wktFormat = new WKT();
+  const wktFormat = new M.format.WKT();
   geometries.forEach((value, index) => {
     if (index !== 0) {
       // es un OR porque se hace una interseccion completa con todas
