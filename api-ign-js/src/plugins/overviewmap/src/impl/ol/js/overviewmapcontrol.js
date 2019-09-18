@@ -210,6 +210,20 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     }, this.toggleDelay_);
   }
 
+  /**
+   * This function destroys this control, cleaning the HTML
+   * and unregistering all events
+   *
+   * @public
+   * @function
+   * @api stable
+   * @export
+   */
+  destroy() {
+    this.facadeMap_.getMapImpl().removeControl(this);
+    this.facadeMap_ = null;
+  }
+
   /* Mapea M.utils methods (not included in API IGN Lite) */
 
   classToggle(htmlElement, className) {

@@ -1,25 +1,19 @@
-/* .m-areas>div.m-area>div.m-panel.m-overviewmap-panel.opened>button.m-panel-btn {
-    color: #71a7d3 !important;
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control {
+    margin-left: 0 !important;
 }
 
-.m-areas>div.m-area>div.m-panel-btn.m-overviewmap-panel.collapsed>button.m-panel-btn.overviewmap-mundo {
-    color: white !important;
-} */
-
-/* div.m-areas>div.m-area>div.m-panel.m-overviewmap-panel.opened>div.m-panel-controls {
-    height: 100px !important;
-    width: 100px !important;
-} */
-
-.m-areas>div.m-area>div.m-panel.m-overviewmap-panel>button.m-panel-btn {
-    display: none !important;
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control>button::before {
+    font-family: 'overviewmap' !important;
 }
 
-div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap>button.overviewmap-mundo {
-    background-color: #71a7d3 !important;
-    color: white !important;
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control>button>span {
+    display: inline;
 }
 
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control.ol-collapsed>button>span {
+    display: none;
+}
 
 /* Collapsed icon font */
 
