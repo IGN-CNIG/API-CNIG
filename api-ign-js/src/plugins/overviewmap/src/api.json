@@ -4,17 +4,21 @@
     "separator": "*"
   },
   "constructor": "M.plugin.OverviewMap",
-  "parameters": [],
+  "parameters": [{
+    "type": "simple",
+    "name": "position",
+    "position": 0
+  }],
   "files": {
     "ol": {
-      "scripts": [],
-      "styles": []
+      "scripts": "overviewmap.ol.min.js",
+      "styles": "overviewmap.ol.min.css"
     }
   },
   "metadata": {
     "name": "OverviewMap",
-    "description": "Description of the plugin",
-    "text": "A full text about plugin",
+    "description": "Shows preview of area where map is zoomed.",
+    "text": "Shows preview of area where map is zoomed.",
     "version": "1.0.0",
     "date": "",
     "author": "",

@@ -56,7 +56,7 @@
    %>
     <script type="text/javascript">
         const map = M.map({
-            container: 'map',
+            container: 'mapjs',
         });
 
         const mp = new M.plugin.OverviewMap({
