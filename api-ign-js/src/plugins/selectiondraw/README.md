@@ -35,10 +35,10 @@ Permite dibujar geometrías y obtenerlas al terminar.
    });
   
    const mp = new M.plugin.SelectionDraw({
-        postition,
-        collapsed,
-        collapsible,
-        projection,
+        projection: 'EPSG:4326',
+        position: 'TL',
+        collapsed: false,
+        collapsible: true,
    });
 
    mp.on('finisihed:draw', (featureJSON) => {

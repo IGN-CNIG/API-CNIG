@@ -104,6 +104,9 @@ export default class BackImgLayer extends M.Plugin {
      * @type {String}
      */
     this.layers = options.layers || '';
+
+    this.collapsed = options.collapsed || true;
+    this.collapsible = options.collapsible || true;
   }
 
   /**
@@ -127,7 +130,8 @@ export default class BackImgLayer extends M.Plugin {
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelBackImgLayer', {
-      collapsible: true,
+      collapsible: this.collapsible,
+      collapsed: this.collapsed,
       position: M.ui.position[this.position_],
       className: 'm-plugin-backimglayer',
       tooltip: 'Selección de capa de fondo',

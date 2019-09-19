@@ -20,6 +20,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - *position*.  Ubicación del plugin sobre el mapa (Default = 'BL')
   - 'BL' = Bottom left
   - 'BR' = Bottom right
+- *collapsible*. Indica si el plugin se puede collapsar en un botón (true/false).
+- *collapsed*. Indica si el plugin viene colapsado de entrada (true/false).
 - *layerId*. Posición de la capa que se carga por defecto en el array de capas mandadas como parámetro.
 - *layerVisibility*. Valor que indica si se muestra la capa cargada o no.
 - *layerOpts*. Array con las capas que se quieren utilizar como opciones para capa de fondo.
@@ -38,6 +40,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   
    const mp = new M.plugin.BackImgLayer({
             position: 'TR',
+            collapsible: true,
+            collapsed: true,
             layerId: 0,
             layerVisibility: true,
             layerOpts: [{

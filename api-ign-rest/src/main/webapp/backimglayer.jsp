@@ -140,6 +140,8 @@
 
         const mp9 = new M.plugin.BackImgLayer({
             position: 'TR',
+            collapsible: true,
+            collapsed: true,
             layerId: 0,
             layerVisibility: true,
             layerOpts: [{
