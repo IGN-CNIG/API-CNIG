@@ -12,6 +12,8 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       layers: [],
     }, vendorOptions, true));
 
+    this.position = options.position;
+
     this.toggleDelay_ = 0;
     if (!M.utils.isNullOrEmpty(options.toggleDelay)) {
       this.toggleDelay_ = options.toggleDelay;
@@ -22,7 +24,11 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       this.collapsedButtonClass_ = options.collapsedButtonClass;
     }
 
-    this.openedButtonClass_ = 'g-cartografia-flecha-derecha2';
+    if (options.position === 'TR' || options.position === 'BR') {
+      this.openedButtonClass_ = 'g-cartografia-flecha-derecha';
+    } else {
+      this.openedButtonClass_ = 'g-cartografia-flecha-izquierda';
+    }
     if (!M.utils.isNullOrEmpty(options.openedButtonClass)) {
       this.openedButtonClass_ = options.openedButtonClass;
     }
@@ -63,7 +69,11 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     this.facadeMap_ = map;
     this.update(map, html);
     if (!this.getCollapsed()) {
-      this.addLayers(this.facadeMap_);
+      this.element.querySelector('button').click();
+      this.element.querySelector('button').click();
+      this.addLayers();
+    } else {
+      this.addOpenEventListener(this.element.querySelector('button'), map);
     }
   }
 
@@ -86,7 +96,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     } else {
       button.classList.add(this.openedButtonClass_);
     }
-    this.addOpenEventListener(button, map);
+    // this.addOpenEventListener(button, map);
     this.setTarget();
   }
 
@@ -108,7 +118,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
   openEventListener(evt) {
     const event = evt;
     if (this.getCollapsed() === true) {
-      this.addLayers(this.facadeMap_);
+      this.addLayers();
       event.target.onclick = null;
     }
   }
@@ -147,20 +157,20 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
    * @function
    */
   addLayer_(layer) {
-    layer.un(M.evt.ADDED_TO_MAP, this.addLayer_, this);
     this.getOverviewMap().addLayer(layer.getOL3Layer());
   }
-
 
   /**
    * This function adds the layers of map to overviewmap control
    * @function
+   * @public
    * @param {M/Map}
    */
-  addLayers(map) {
+  addLayers() {
     const olLayers = [];
-    map.getLayers().forEach((layer) => {
-      if ((layer.type === M.layer.type.WMS || layer.transparent === false) && layer.isVisible()) {
+    this.facadeMap_.getLayers().forEach((layer) => {
+      if ((layer.type === M.layer.type.WMS ||
+          layer.transparent === false) && layer.isVisible()) {
         const olLayer = layer.getImpl().getOL3Layer();
         if (M.utils.isNullOrEmpty(olLayer)) {
           layer.getImpl().on(M.evt.ADDED_TO_MAP, this.addLayer_.bind(this));
@@ -170,13 +180,12 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       }
     });
     const newView = new M.impl.View({
-      projection: ol.proj.get(map.getProjection().code),
-      resolutions: map.getResolutions(),
+      projection: ol.proj.get(this.facadeMap_.getProjection().code),
+      resolutions: this.facadeMap_.getResolutions(),
     });
-
     this.ovmap_.setView(newView);
     olLayers.forEach(layer => this.ovmap_.addLayer(layer));
-    map.getMapImpl().addControl(this);
+    this.facadeMap_.getMapImpl().addControl(this);
     this.wasOpen_ = true;
   }
 

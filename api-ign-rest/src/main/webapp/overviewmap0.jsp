@@ -61,6 +61,9 @@
 
         const mp = new M.plugin.OverviewMap({
             position: 'BR',
+        }, {
+            collapsed: false,
+            collapsible: true,
         });
 
         map.addLayers(['WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*false', 'WMS_FULL*http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Permeabilidad_Andalucia?']);

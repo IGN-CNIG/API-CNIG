@@ -15,13 +15,15 @@ Muestra una previsualización de la zona donde está centrado el mapa.
 
 # Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+- El constructor se inicializa con dos objetos de opciones. El primero contiene el atributo 'position' y el segundo los atributos 'collapsed' y 'collapsible', descritos a continuación.
 
 - **position**. Indica la posición donde se mostrará el plugin
   - 'TL':top left
   - 'TR':top right
   - 'BL':bottom left (por defecto)
   - 'BR':bottom right
+- **collapsed**. Indica si el plugin aparece abierto por defecto (true/false).
+- **collapsible**. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).
 
   
 # Ejemplos de uso
@@ -38,8 +40,23 @@ map.addPlugin(mp);
    });
 
    const mp = new M.plugin.OverviewMap({
-        position: 'TL',
-      });
+  position: 'BR',
+});
+
+   map.addPlugin(mp);
+```
+
+```javascript
+   const map = M.map({
+     container: 'map'
+   });
+
+   const mp = new M.plugin.OverviewMap({
+  position: 'BR',
+}, {
+  collapsed: false,
+  collapsible: true,
+});
 
    map.addPlugin(mp);
 ```

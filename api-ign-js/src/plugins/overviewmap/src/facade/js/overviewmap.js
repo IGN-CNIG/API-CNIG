@@ -32,9 +32,10 @@ export default class OverviewMap extends M.Plugin {
     this.controls_ = [];
 
     this.options = options || {};
-    this.position = options.position || 'BL';
-
+    this.position = options !== undefined ? options.position : 'BR';
     this.vendorOptions = vendorOptions || {};
+    this.vendorOptions.collapsed = vendorOptions !== undefined ? vendorOptions.collapsed : false;
+    this.vendorOptions.collapsible = vendorOptions !== undefined ? vendorOptions.collapsible : true;
   }
 
   /**
@@ -50,8 +51,6 @@ export default class OverviewMap extends M.Plugin {
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelOverviewMap', {
       className: 'm-overviewmap-panel',
-      collapsible: false,
-      collapsed: true,
       position: M.ui.position[this.position],
     });
     this.panel_.addControls(this.controls_);
