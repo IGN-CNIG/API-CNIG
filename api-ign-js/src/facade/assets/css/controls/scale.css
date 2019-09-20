@@ -40,7 +40,8 @@
 @supports (-ms-ime-align:auto) {
     div.m-panel-controls>div.m-scale-container>div.m-scale#m-scale-span {
         /* font-family: Arial, Helvetica, sans-serif !important; */
-        font-size: 11px;
+        font-family: Verdana !important;
+        font-size: 10.5px;
         line-height: 1.3;
     }
 
