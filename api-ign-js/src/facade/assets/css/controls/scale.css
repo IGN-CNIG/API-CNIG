@@ -37,10 +37,14 @@
 
 /* Edge fix */
 
-@supports (-ms-ime-align:auto) {}
+@supports (-ms-ime-align:auto) {
+    div.m-panel-controls>div.m-scale-container>div.m-scale#m-scale-span {
+        /* font-family: Arial, Helvetica, sans-serif !important; */
+        font-size: 11px;
+        line-height: 1.3;
+    }
 
-/* div.m-panel-controls>div.m-scale-container>div.m-scale,
-div.m-panel-controls>div.m-scale-container>div.m-unit,
-div.m-panel-controls>div.m-scale-container>div.m-unit:before {
-    vertical-align: middle !important;
-} */
+    .m-scale-container>.m-unit {
+        width: 75px;
+    }
+}
