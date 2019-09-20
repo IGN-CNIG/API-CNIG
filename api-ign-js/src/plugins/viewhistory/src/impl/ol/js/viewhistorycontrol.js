@@ -1,6 +1,26 @@
 /**
  * @module M/impl/control/ViewHistoryControl
  */
+
+/**
+ * @class
+ */
+class Properties {
+  constructor(center, resolution) {
+    this.center = center;
+    this.resolution = resolution;
+  }
+
+  equals(properties) {
+    let equals = false;
+    if (properties instanceof Properties) {
+      equals = properties.center[0] === this.center[0] &&
+        properties.center[1] === this.center[1] &&
+        properties.resolution === this.resolution;
+    }
+    return equals;
+  }
+}
 export default class ViewHistoryControl extends M.impl.Control {
   /**
    * This function adds the control to the specified map
@@ -31,12 +51,6 @@ export default class ViewHistoryControl extends M.impl.Control {
      * @private
      */
     this.clickBtn_ = false;
-
-    /**
-     * Checks if there's previous history view (index)
-     * @private
-     */
-    this.activePrevious_ = false;
   }
 
   /**
@@ -63,17 +77,17 @@ export default class ViewHistoryControl extends M.impl.Control {
       this.clickBtn_ = false;
       return;
     }
-    const properties = {
-      center: this.facadeMap_.getMapImpl().getView().getCenter(),
-      resolution: this.facadeMap_.getMapImpl().getView().getResolution(),
-    };
-    if (this.activePrevious_) {
-      this.history_[this.history_.length - 1] = properties;
-      this.activePrevious_ = false;
-    } else {
-      this.history_.push(properties);
+    const properties = new Properties(
+      this.facadeMap_.getMapImpl().getView().getCenter(),
+      this.facadeMap_.getMapImpl().getView().getResolution(),
+    );
+    const previousProperties = this.history_[this.historyNow_];
+    if (!properties.equals(previousProperties)) {
+      this.history_ = this.history_.slice(0, this.historyNow_ + 1)
+        .concat(properties)
+        .concat(this.history_.slice(this.historyNow_ + 1));
+      this.historyNow_ += 1;
     }
-    this.historyNow_ += 1;
     this.clickBtn_ = false;
   }
 
@@ -90,7 +104,6 @@ export default class ViewHistoryControl extends M.impl.Control {
       const previousResolution = this.history_[this.historyNow_ - 1].resolution;
       this.clickBtn_ = true;
       this.historyNow_ -= 1;
-      this.activePrevious_ = true;
       this.facadeMap_.getMapImpl().getView().setCenter(previousCenter);
       this.facadeMap_.getMapImpl().getView().setResolution(previousResolution);
     }
