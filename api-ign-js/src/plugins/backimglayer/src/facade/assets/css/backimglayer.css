@@ -121,8 +121,8 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
     font-display: block;
 }
 
-.m-areas>div.m-area>div.m-panel.no-collapsible>div.m-panel-controls>div.m-control>button,
-.m-areas>div.m-area>div.m-panel>button.m-panel-btn.backimglyr-simbolo-cuadros,
+.m-areas>div.m-area>div.m-panel.m-plugin-backimglayer>div.m-panel-controls>div.m-control>button,
+.m-areas>div.m-area>div.m-panel.m-plugin-backimglayer>button.m-panel-btn.backimglyr-simbolo-cuadros,
 [class^="backimglyr-"],
 [class*=" backimglyr-"] {
     font-family: 'backimglyr' !important;
