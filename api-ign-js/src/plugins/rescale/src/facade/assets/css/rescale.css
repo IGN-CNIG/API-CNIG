@@ -1,0 +1,24 @@
+.m-areas>div.m-area>div.m-panel.m-rescale-panel.opened {
+    border-radius: 0 !important;
+}
+
+.m-areas>div.m-area>div.m-panel.m-rescale-panel.collapsed {
+    height: 40px;
+}
+
+.m-areas>div.m-area.m-bottom>div.m-panel.m-rescale-panel .m-control.m-container.m-rescale {
+    width: 220px;
+}
+
+
+.m-areas>div.m-area>div.m-panel.m-rescale-panel.opened>button.m-panel-btn {
+    color: #71a7d3 !important;
+}
+
+.m-rescale-panel .m-control.m-container.m-rescale>label {
+    padding-left: 10px;
+}
+
+.m-rescale-panel .m-control.m-container.m-rescale>label>input {
+    border: 1px solid silver;
+}
