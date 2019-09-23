@@ -134,7 +134,8 @@ export default class BackImgLayer extends M.Plugin {
       collapsed: this.collapsed,
       position: M.ui.position[this.position_],
       className: 'm-plugin-backimglayer',
-      tooltip: 'Selección de capa de fondo',
+      tooltip: 'Capas de fondo',
+      collapsedButtonClass: 'backimglyr-simbolo-cuadros',
     });
 
     this.controls_[0].on('backimglayer:activeChanges', (data) => {
