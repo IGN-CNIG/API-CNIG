@@ -53,7 +53,7 @@ const mp = new BackImgLayer({
           displayInLayerSwitcher: false,
           queryable: false,
           visible: true,
-          format: 'image/png',
+          format: 'image/jpeg',
         }),
         new M.layer.WMTS({
           url: 'http://www.ign.es/wmts/ign-base?',
@@ -86,10 +86,11 @@ const mp = new BackImgLayer({
     },
   ],
 });
+// Formato parámetros REST:
 // ids: 'mapa,hibrido',
 // titles: 'Mapa,Hibrido',
 // previews: '', // '../src/facade/assets/images/svqmapa.png,../src/facade/assets/images/svqhibrid.png',
-// layers: 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue+WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue',
+// layers: 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/pngasteriscofalseasteriscofalseasteriscotruesumarWMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue',
 
 
 map.addPlugin(mp);
