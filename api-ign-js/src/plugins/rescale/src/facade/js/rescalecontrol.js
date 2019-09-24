@@ -61,20 +61,20 @@ export default class RescaleControl extends M.Control {
       const scaleRegExp = /^1:[1-9]\d*$/;
       const simpleScaleRegExp = /^[1-9]\d*$/;
       if (scaleRegExp.test(writtenScale)) {
-        this.impl_.zoomToScale(writtenScale.substring(2));
+        this.impl_.zoomToScale(parseInt(writtenScale.substring(2), 10));
       } else if (simpleScaleRegExp.test(writtenScale)) {
-        this.impl_.zoomToScale(writtenScale);
+        this.impl_.zoomToScale(parseInt(writtenScale, 10));
       }
     }
   }
 
-  /**
-   * This function sets a timeout between keypress and search.
-   * @public
-   * @function
-   * @param {e} event that triggers the method
-   * @api
-   */
+  // /**
+  //  * This function sets a timeout between keypress and search.
+  //  * @public
+  //  * @function
+  //  * @param {e} event that triggers the method
+  //  * @api
+  //  */
   // createTimeout(e) {
   //   clearTimeout(typingTimer);
   //   typingTimer = setTimeout(() => this.zoomToInputScale(e), 500);
