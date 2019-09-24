@@ -21,7 +21,7 @@
     <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
     <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
-    <link href="plugins/backimglayer/rescale.ol.min.css" rel="stylesheet" />
+    <link href="plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,

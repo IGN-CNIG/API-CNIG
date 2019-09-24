@@ -13,7 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
-    <link href="plugins/backimglayer/rescale.ol.min.css" rel="stylesheet" />
+    <link href="plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
