@@ -45,7 +45,14 @@
         line-height: 1.3;
     }
 
-    .m-scale-container>.m-unit {
-        width: 75px;
+    div.m-panel-controls>div.m-scale-container {
+        padding-left: 0 !important;
+        white-space: normal !important;
+    }
+
+    div.m-panel-controls>div.m-scale-container>.m-unit {
+        padding-left: 5px !important;
+        white-space: normal !important;
+        width: 90px;
     }
 }
