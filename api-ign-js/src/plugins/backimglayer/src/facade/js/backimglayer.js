@@ -188,7 +188,7 @@ export default class BackImgLayer extends M.Plugin {
       l.layers.forEach((layer) => {
         const isFirstLayer = l.layers.indexOf(layer) === 0;
 
-        if (!isFirstLayer) layersUrl += 'sumar'; // FIXME: +
+        if (!isFirstLayer) layersUrl += 'sumar';
 
         layersUrl += `${layer.options.type}`;
         layersUrl += `asterisco${layer.options.url}`;
@@ -196,15 +196,12 @@ export default class BackImgLayer extends M.Plugin {
         layersUrl += `asterisco${layer.options.matrixSet}`;
         layersUrl += `asterisco${layer.options.legend}`;
 
-        // transparent (= false means it's a baselayer)
-        // layersUrl += isFirstLayer ? 'asteriscofalse' : 'asteriscotrue';
         layersUrl += `asterisco${layer.options.transparent}`;
 
         layersUrl += `asterisco${layer.options.format}`;
         layersUrl += `asterisco${layer.options.displayInLayerSwitcher}`;
         layersUrl += `asterisco${layer.options.queryable}`;
         layersUrl += `asterisco${layer.options.visibility}`;
-        // map.getPlugins()[7].options.layerOpts[0].layers[0].options.displayInLayerSwitcher
       });
     });
 
