@@ -1,0 +1,17 @@
+//INTEGRACIÓN DE PARÁMETROS EN API REST
+//OPCIONES - (1) Nuevo parámetro en la API REST, normalmente porque requiera parámetros
+//de configuración.
+//Example: <url_mapea>?geosearch=
+//Example: <url_mapea>?printer=
+//(2) Nuevo valor para el parámetro plugins, el plugin no requiere configuración
+//Example: <url_mapea>?plugins=measurebar,streetview
+
+
+//Plugin sin parámetros
+
+{
+  "url": {
+    "name": "EditionTools"
+  },
+  "constructor": "M.plugin.EditionTools"
+}
