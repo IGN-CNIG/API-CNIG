@@ -6,13 +6,30 @@ div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewm
     font-family: 'overviewmap' !important;
 }
 
-
-div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control>button>span {
-    display: inline;
-}
-
 div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control.ol-collapsed>button>span {
     display: none;
+}
+
+/* Closing arrows*/
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control:not(.ol-collapsed)>button {
+    padding-bottom: 10px !important;
+    padding-left: 4px !important;
+}
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control:not(.ol-collapsed)>button::before {
+    font-family: 'g-cartografia' !important;
+    font-size: 8px !important;
+}
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control:not(.ol-collapsed)>button.g-cartografia-flecha-derecha {
+    right: 135px !important;
+}
+
+/* Zoomed bbox preview square */
+
+div.ol-overviewmap-box {
+    border: 1px solid red;
 }
 
 /* Collapsed icon font */
