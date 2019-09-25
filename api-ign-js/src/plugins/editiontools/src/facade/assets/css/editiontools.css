@@ -1,0 +1,1073 @@
+.m-clearfeature-container {
+    order: 3;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 580px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-freedrawig-dialog-button-active {
+    background-color: #949494;
+}
+
+.m-deletefeature-container {
+    order: 1;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 450px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-movefeature-container {
+    order: 7;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 850px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-pickfeature-container {
+    order: 8;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 320px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-drawfeature-container {
+    order: 5;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 320px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-drawfeature-container2 {
+    order: 4;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 320px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-drawfeature-container3 {
+    order: 3;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 320px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-drawfeature-container5 {
+    order: 2;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 320px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-locallayers-container2 {
+    order: 9;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 710px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-editfeature-container {
+    order: 6;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    left: 710px;
+    font-weight: bold;
+    bottom: 2em;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: smaller;
+    background-color: rgba(103, 175, 19, 0.5);
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.m-styletools-simple-section {
+    background-color: #f4f4f4 !important;
+}
+
+.m-tools-editionTools>.m-panel-controls {
+    flex-direction: column-reverse;
+    text-align: center;
+    top: 50% !important;
+}
+
+.m-tools-editionTools {
+    top: 10%;
+}
+
+.m-tools-editionTools>.m-panel-controls>div.m-control.activated>button {
+    color: #D5006E;
+}
+
+.m-savefeature-saving {
+    border: 2px solid red;
+}
+
+/*********************
+       GENERAL
+*********************/
+.m-locallayers-container {
+    /*min-width: 200px;*/
+    color: #404040;
+    width: 100%;
+}
+
+.m-locallayers-container .dnone {
+    display: none;
+}
+
+/*********************
+      LOCALLAYERS TITLE
+ *********************/
+.m-locallayers-container>div.title {
+    line-height: 40px;
+    text-align: center;
+    height: 39px;
+    border-bottom: 1px solid rgba(0, 0, 0, .13);
+    font-size: 15px;
+    background-color: #00897B !important;
+    color: white;
+    font-weight: 600;
+}
+
+/*********************
+      LOCALLAYERS FORM
+ *********************/
+.m-locallayers-container>div.form>div {
+    margin-bottom: 10px;
+}
+
+.m-locallayers-container input {
+    max-width: 100%;
+}
+
+/* NAME AND FILE */
+.m-locallayers-container>div.form>div {
+    width: 90%;
+    margin: 10px auto;
+}
+
+.m-locallayers-container>div.form>div.name>input {
+    width: calc(100% - 10px);
+    min-width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 0px;
+    padding: 5px;
+    height: 20px;
+}
+
+.m-locallayers-container>div.form>div.name>input:disabled {
+    background-color: rgb(235, 235, 228);
+}
+
+/* CENTER LAYER */
+.m-locallayers-container>div.form>div.centerview,
+.m-locallayers-container>div.form>div.extractstyle {
+    float: right;
+    border-radius: 0px;
+    text-align: right;
+    margin-right: 5%;
+}
+
+/*********************
+      BUTTONS
+ *********************/
+.m-locallayers-container>div.button {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    display: table;
+    background-color: #FFB74D;
+}
+
+.m-locallayers-container>div.button>button {
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    font-size: 15px;
+    line-height: 25px;
+    cursor: pointer;
+    opacity: 0.75;
+    -webkit-transition: opacity 0.25s ease 0s;
+    transition: opacity 0.25s ease 0s;
+    color: #404040;
+}
+
+.m-locallayers-container>div.button>button:hover:enabled {
+    opacity: 1;
+}
+
+.m-locallayers-container>div.button>button:focus:enabled {
+    outline: none;
+}
+
+.m-locallayers-container>div.button>button:before {
+    font-size: 21px;
+    margin-right: 10px;
+}
+
+.m-locallayers-container>div.button>button.load {
+    width: 60%;
+    margin: 10px 5% 10px 5%;
+    padding: 5px;
+    background-color: #fff;
+    font-family: 'Muli', 'sans-serif' !important;
+    cursor: pointer;
+}
+
+.m-locallayers-container>div.button>button.load:disabled {
+    cursor: not-allowed
+}
+
+@-moz-document url-prefix() {
+    .m-locallayers-container>div.button>button.print {
+        margin: 10px 4% 10px 5%;
+    }
+}
+
+.m-locallayers-container>div.button>button i {
+    font-size: 20px;
+    vertical-align: text-bottom;
+}
+
+.m-control>button {
+    color: #404040;
+}
+
+/***************
+        PANEL
+ ***************/
+.m-areas>div.m-area>div.m-panel.m-locallayers {
+    order: 1;
+    border-top-right-radius: 0px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-locallayers.opened {
+    border-top-left-radius: 0px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-locallayers.collapsed {
+    order: 1;
+    border-top-right-radius: 20px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-locallayers>button.m-panel-btn {
+    background-color: #00897B;
+    position: absolute;
+    left: initial;
+    color: #fff;
+    z-index: 999999;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+}
+
+.m-areas>div.m-area>div.m-panel.m-locallayers.opened>button.m-panel-btn {
+    left: -40px;
+}
+
+@media only screen and (max-width: 768px) {
+    .m-areas>div.m-area>div.m-panel.m-locallayers.opened>button.m-panel-btn {
+        background-color: transparent;
+        position: absolute;
+        right: 0;
+        left: initial;
+        color: #fff;
+        z-index: 999999;
+        box-shadow: none;
+    }
+}
+
+.m-areas>div.m-area>div.m-panel.m-locallayers.collapsed>button.m-panel-btn {
+    color: #00897B;
+    position: inherit;
+    right: 0;
+    box-shadow: none;
+}
+
+/* ANIMATIONS */
+.m-areas>div.m-area>div.m-panel.m-locallayers {
+    -webkit-transition: max-height .33s ease-in-out 0s;
+    transition: max-height .33s ease-in-out 0s;
+    max-height: 100vh;
+}
+
+.m-areas>div.m-area>div.m-panel.m-locallayers.collapsed {
+    -webkit-transition: max-height .33s ease-in-out 0s;
+    transition: max-height .33s ease-in-out 0s;
+    max-height: 40px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-locallayers>div.m-panel-controls {
+    -webkit-transition: max-width .5s ease 0s, opacity .44s ease 0s;
+    transition: max-width .5s ease 0s, opacity .44s ease 0s;
+    background: white;
+    width: 100%;
+}
+
+.m-locallayers-container>.results-panel>div.results {
+    -webkit-transition: max-height .33s ease-in-out 0s;
+    transition: max-height .33s ease-in-out 0s;
+}
+
+.m-areas>div.m-area>div.m-panel.m-locallayers.opened {
+    width: 440px;
+}
+
+@media only screen and (max-width: 768px) {
+    .m-areas>div.m-area>div.m-panel.m-locallayers.opened {
+        margin-left: 0;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin: 0;
+        z-index: 10000;
+        overflow: auto;
+    }
+}
+
+@font-face {
+    font-family: 'g-cartografia';
+    src: url('fonts/g-cartografia.eot?yp518r');
+    src: url('fonts/g-cartografia.eot?yp518r#iefix') format('embedded-opentype'),
+        url('fonts/g-cartografia.ttf?yp518r') format('truetype'),
+        url('fonts/g-cartografia.woff?yp518r') format('woff'),
+        url('fonts/g-cartografia.svg?yp518r#g-cartografia') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="g-cartografia-"],
+[class*=" g-cartografia-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'g-cartografia' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.g-cartografia-alerta:before {
+    content: "\e900";
+}
+
+.g-cartografia-ayuda:before {
+    content: "\e901";
+}
+
+.g-cartografia-bandera:before {
+    content: "\e902";
+}
+
+.g-cartografia-brujula:before {
+    content: "\e903";
+}
+
+.g-cartografia-cancelar:before {
+    content: "\e904";
+}
+
+.g-cartografia-cancelar2:before {
+    content: "\e905";
+}
+
+.g-cartografia-capas:before {
+    content: "\e906";
+}
+
+.g-cartografia-capas2:before {
+    content: "\e907";
+}
+
+.g-cartografia-check:before {
+    content: "\e908";
+}
+
+.g-cartografia-check2:before {
+    content: "\e909";
+}
+
+.g-cartografia-check3:before {
+    content: "\e90a";
+}
+
+.g-cartografia-check4:before {
+    content: "\e90b";
+}
+
+.g-cartografia-check5:before {
+    content: "\e90c";
+}
+
+.g-cartografia-comentarios:before {
+    content: "\e90d";
+}
+
+.g-cartografia-descargar:before {
+    content: "\e90e";
+}
+
+.g-cartografia-editar:before {
+    content: "\e90f";
+}
+
+.g-cartografia-editar2:before {
+    content: "\e910";
+}
+
+.g-cartografia-escala:before {
+    content: "\e911";
+}
+
+.g-cartografia-escala2:before {
+    content: "\e912";
+}
+
+.g-cartografia-escala3:before {
+    content: "\e913";
+}
+
+.g-cartografia-flecha:before {
+    content: "\e914";
+}
+
+.g-cartografia-flecha-abajo:before {
+    content: "\e915";
+}
+
+.g-cartografia-flecha-abajo2:before {
+    content: "\e916";
+}
+
+.g-cartografia-flecha-arriba:before {
+    content: "\e917";
+}
+
+.g-cartografia-flecha-arriba2:before {
+    content: "\e918";
+}
+
+.g-cartografia-flecha-derecha:before {
+    content: "\e919";
+}
+
+.g-cartografia-flecha-derecha2:before {
+    content: "\e91a";
+}
+
+.g-cartografia-flecha-derecha3:before {
+    content: "\e91b";
+}
+
+.g-cartografia-flecha-deshacer:before {
+    content: "\e91c";
+}
+
+.g-cartografia-flecha-izquierda:before {
+    content: "\e91d";
+}
+
+.g-cartografia-flecha-izquierda2:before {
+    content: "\e91e";
+}
+
+.g-cartografia-flecha-izquierda3:before {
+    content: "\e91f";
+}
+
+.g-cartografia-flecha-link:before {
+    content: "\e920";
+}
+
+.g-cartografia-flechas-mover:before {
+    content: "\e921";
+}
+
+.g-cartografia-gps:before {
+    content: "\e922";
+}
+
+.g-cartografia-gps2:before {
+    content: "\e923";
+}
+
+.g-cartografia-gps3:before {
+    content: "\e924";
+}
+
+.g-cartografia-gps4:before {
+    content: "\e925";
+}
+
+.g-cartografia-guardar:before {
+    content: "\e926";
+}
+
+.g-cartografia-herramienta:before {
+    content: "\e927";
+}
+
+.g-cartografia-impresora:before {
+    content: "\e928";
+}
+
+.g-cartografia-info:before {
+    content: "\e929";
+}
+
+.g-cartografia-linea:before {
+    content: "\e92a";
+}
+
+.g-cartografia-lineas:before {
+    content: "\e92b";
+}
+
+.g-cartografia-lista:before {
+    content: "\e92c";
+}
+
+.g-cartografia-localizacion:before {
+    content: "\e92d";
+}
+
+.g-cartografia-localizacion2:before {
+    content: "\e92e";
+}
+
+.g-cartografia-localizacion3:before {
+    content: "\e92f";
+}
+
+.g-cartografia-localizacion4:before {
+    content: "\e930";
+}
+
+.g-cartografia-mano:before {
+    content: "\e931";
+}
+
+.g-cartografia-mano2:before {
+    content: "\e932";
+}
+
+.g-cartografia-mapa:before {
+    content: "\e933";
+}
+
+.g-cartografia-mas:before {
+    content: "\e934";
+}
+
+.g-cartografia-mas2:before {
+    content: "\e935";
+}
+
+.g-cartografia-medir-area:before {
+    content: "\e936";
+}
+
+.g-cartografia-medir-linea:before {
+    content: "\e937";
+}
+
+.g-cartografia-menos:before {
+    content: "\e938";
+}
+
+.g-cartografia-menos2:before {
+    content: "\e939";
+}
+
+.g-cartografia-menu:before {
+    content: "\e93a";
+}
+
+.g-cartografia-mundo:before {
+    content: "\e93b";
+}
+
+.g-cartografia-mundo2:before {
+    content: "\e93c";
+}
+
+.g-cartografia-opciones:before {
+    content: "\e93d";
+}
+
+.g-cartografia-papelera:before {
+    content: "\e93e";
+}
+
+.g-cartografia-pin:before {
+    content: "\e93f";
+}
+
+.g-cartografia-pin2:before {
+    content: "\e940";
+}
+
+.g-cartografia-pin3:before {
+    content: "\e941";
+}
+
+.g-cartografia-pin4:before {
+    content: "\e942";
+}
+
+.g-cartografia-pin5:before {
+    content: "\e943";
+}
+
+.g-cartografia-pin-nuevo:before {
+    content: "\e944";
+}
+
+.g-cartografia-pin-nuevo2:before {
+    content: "\e945";
+}
+
+.g-cartografia-pin-seleccionado:before {
+    content: "\e946";
+}
+
+.g-cartografia-poligono:before {
+    content: "\e947";
+}
+
+.g-cartografia-posicion:before {
+    content: "\e948";
+}
+
+.g-cartografia-posicion2:before {
+    content: "\e949";
+}
+
+.g-cartografia-posicion3:before {
+    content: "\e94a";
+}
+
+.g-cartografia-posicion4:before {
+    content: "\e94b";
+}
+
+.g-cartografia-posicion5:before {
+    content: "\e94c";
+}
+
+.g-cartografia-posicion6:before {
+    content: "\e94d";
+}
+
+.g-cartografia-posicion7:before {
+    content: "\e94e";
+}
+
+.g-cartografia-prismaticos:before {
+    content: "\e94f";
+}
+
+.g-cartografia-regla:before {
+    content: "\e950";
+}
+
+.g-cartografia-reglas:before {
+    content: "\e951";
+}
+
+.g-cartografia-ruta:before {
+    content: "\e952";
+}
+
+.g-cartografia-spinner:before {
+    content: "\e953";
+}
+
+.g-cartografia-spinner2 .path1:before {
+    content: "\e954";
+    color: rgb(107, 107, 107);
+}
+
+.g-cartografia-spinner2 .path2:before {
+    content: "\e955";
+    margin-left: -1em;
+    color: rgb(107, 107, 107);
+    opacity: 0.1;
+}
+
+.g-cartografia-spinner2 .path3:before {
+    content: "\e956";
+    margin-left: -1em;
+    color: rgb(107, 107, 107);
+    opacity: 0.2;
+}
+
+.g-cartografia-spinner2 .path4:before {
+    content: "\e957";
+    margin-left: -1em;
+    color: rgb(107, 107, 107);
+    opacity: 0.3;
+}
+
+.g-cartografia-spinner2 .path5:before {
+    content: "\e958";
+    margin-left: -1em;
+    color: rgb(107, 107, 107);
+    opacity: 0.4;
+}
+
+.g-cartografia-spinner2 .path6:before {
+    content: "\e959";
+    margin-left: -1em;
+    color: rgb(107, 107, 107);
+    opacity: 0.5;
+}
+
+.g-cartografia-spinner2 .path7:before {
+    content: "\e95a";
+    margin-left: -1em;
+    color: rgb(107, 107, 107);
+    opacity: 0.6;
+}
+
+.g-cartografia-spinner2 .path8:before {
+    content: "\e95b";
+    margin-left: -1em;
+    color: rgb(107, 107, 107);
+    opacity: 0.7;
+}
+
+.g-cartografia-spinner2 .path9:before {
+    content: "\e95c";
+    margin-left: -1em;
+    color: rgb(107, 107, 107);
+    opacity: 0.8;
+}
+
+.g-cartografia-spinner2 .path10:before {
+    content: "\e95d";
+    margin-left: -1em;
+    color: rgb(107, 107, 107);
+    opacity: 0.9;
+}
+
+.g-cartografia-subir:before {
+    content: "\e95e";
+}
+
+.g-cartografia-tamano:before {
+    content: "\e95f";
+}
+
+.g-cartografia-temperatura:before {
+    content: "\e960";
+}
+
+.g-cartografia-texto:before {
+    content: "\e961";
+}
+
+.g-cartografia-usuario:before {
+    content: "\e962";
+}
+
+.g-cartografia-usuario2:before {
+    content: "\e963";
+}
+
+.g-cartografia-zoom:before {
+    content: "\e964";
+}
+
+.g-cartografia-zoom-extension:before {
+    content: "\e965";
+}
+
+.g-cartografia-zoom-mas:before {
+    content: "\e966";
+}
+
+.g-cartografia-zoom-menos:before {
+    content: "\e967";
+}
+
+.g-cartografia-cancelar3:before {
+    content: "\e968";
+}
+
+.g-cartografia-circulo:before {
+    content: "\e969";
+}
+
+.g-cartografia-cuadrado:before {
+    content: "\e96a";
+}
+
+.g-cartografia-cuadrado-borde:before {
+    content: "\e96b";
+}
+
+.g-cartografia-cuadrado-circulo:before {
+    content: "\e96c";
+}
+
+.g-cartografia-estrella:before {
+    content: "\e96d";
+}
+
+.g-cartografia-estrella-borde:before {
+    content: "\e96e";
+}
+
+.g-cartografia-flecha-doble-derecha:before {
+    content: "\e96f";
+}
+
+.g-cartografia-flecha-doble-izquierda:before {
+    content: "\e970";
+}
+
+.g-cartografia-flecha-triple-derecha:before {
+    content: "\e971";
+}
+
+.g-cartografia-flecha-triple-izquierda:before {
+    content: "\e972";
+}
+
+.g-cartografia-linea-grosor:before {
+    content: "\e973";
+}
+
+.g-cartografia-linea-tipos:before {
+    content: "\e974";
+}
+
+.g-cartografia-zoom-capa:before {
+    content: "\e975";
+}
+
+.g-cartografia-zoom-marco:before {
+    content: "\e976";
+}
+
+.g-cartografia-arbol:before {
+    content: "\e977";
+}
+
+.g-cartografia-agua:before {
+    content: "\e978";
+}
+
+.g-cartografia-avion:before {
+    content: "\e979";
+}
+
+.g-cartografia-casa:before {
+    content: "\e97a";
+}
+
+.g-cartografia-coche:before {
+    content: "\e97b";
+}
+
+.g-cartografia-edificio:before {
+    content: "\e97c";
+}
+
+.g-cartografia-mover-punto:before {
+    content: "\e97d";
+}
+
+.g-cartografia-tamanyo .path1:before {
+    content: "\e97e";
+    color: rgb(0, 0, 0);
+}
+
+.g-cartografia-tamanyo .path2:before {
+    content: "\e97f";
+    margin-left: -1em;
+    color: rgb(221, 221, 221);
+}
+
+.g-cartografia-tamanyo .path3:before {
+    content: "\e980";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+
+.g-cartografia-tamanyo .path4:before {
+    content: "\e981";
+    margin-left: -1em;
+    color: rgb(96, 96, 96);
+}
+
+.g-cartografia-fuente:before {
+    content: "\e982";
+}
+
+.g-cartografia-gota:before {
+    content: "\e983";
+}
+
+.g-cartografia-merendero:before {
+    content: "\e984";
+}
+
+.g-cartografia-prismaticos1:before {
+    content: "\e985";
+}
+
+.g-cartografia-tienda:before {
+    content: "\e986";
+}
+
+.g-cartografia-triangulo:before {
+    content: "\e987";
+}
+
+.g-cartografia-castillo:before {
+    content: "\e988";
+}
+
+.g-cartografia-iglesia:before {
+    content: "\e989";
+}
+
+.g-cartografia-templo:before {
+    content: "\e98a";
+}
+
+.g-cartografia-torre:before {
+    content: "\e98b";
+}
+
+.g-cartografia-escultura:before {
+    content: "\e98c";
+}
+
+.g-cartografia-cafeteria:before {
+    content: "\e98d";
+}
+
+.g-cartografia-comida-rapida:before {
+    content: "\e98e";
+}
+
+.g-cartografia-restaurante:before {
+    content: "\e98f";
+}
+
+.g-cartografia-coliseo:before {
+    content: "\e990";
+}
+
+.g-cartografia-paleta:before {
+    content: "\e991";
+}
+
+.g-cartografia-pincel:before {
+    content: "\e992";
+}
+
+/**/
+
+.m-areas>div.m-area>div.m-panel.m-tools-editionTools.opened>button.m-panel-btn {
+    color: grey !important;
+}
