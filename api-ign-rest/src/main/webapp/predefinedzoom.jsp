@@ -21,7 +21,7 @@
     <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
     <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
-    <link href="plugins/viewhistory/viewhistory.ol.min.css" rel="stylesheet" />
+    <link href="plugins/predefinedzoom/predefinedzoom.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -59,7 +59,7 @@
     <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
     <script type="text/javascript" src="plugins/toc/toc.ol.min.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/viewhistory/viewhistory.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/predefinedzoom/predefinedzoom.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -73,7 +73,7 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
+            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
@@ -110,7 +110,7 @@
         });
 
         const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://componentes.ign.es/api-core/',
+            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
             position: 'BR',
         });
         const mp4 = new M.plugin.XYLocator({
@@ -131,6 +131,8 @@
 
         const mp9 = new M.plugin.BackImgLayer({
             position: 'TR',
+            collapsible: true,
+            collapsed: true,
             layerId: 0,
             layerVisibility: true,
             layerOpts: [{
@@ -178,7 +180,7 @@
                             displayInLayerSwitcher: false,
                             queryable: false,
                             visible: true,
-                            format: 'image/png',
+                            format: 'image/jpeg',
                         }),
                         new M.layer.WMTS({
                             url: 'http://www.ign.es/wmts/ign-base?',
@@ -212,8 +214,12 @@
             ],
         });
 
-        const mp10 = new M.plugin.ViewHistory({
-            position: 'TL'
+        const mp10 = new M.plugin.PredefinedZoom({
+            position: 'TR',
+            savedZooms: [{
+                name: 'Zoom a la extensión del mapa',
+                bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
+            }, ],
         });
 
         map.addPlugin(mp);

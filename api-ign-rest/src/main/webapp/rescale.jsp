@@ -94,7 +94,7 @@
             tiled: false
         }, {});
 
-        map.addLayers([layerinicial, layerUA]); // ocupacionSuelo + kml
+        map.addLayers([layerinicial, layerUA]);
 
         const mp = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
