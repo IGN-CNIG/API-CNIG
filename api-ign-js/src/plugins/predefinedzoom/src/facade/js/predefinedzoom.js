@@ -44,6 +44,13 @@ export default class PredefinedZoom extends M.Plugin {
      * @type {Array<Object>} [ {name, bbox}, {...} ]
      */
     this.savedZooms = options.savedZooms || [];
+
+    /**
+     * Plugin name
+     * @public
+     * @type {String}
+     */
+    this.name = 'predefinedzoom';
   }
 
   /**
@@ -61,9 +68,19 @@ export default class PredefinedZoom extends M.Plugin {
       collapsible: false,
       position: M.ui.position[this.position],
       className: 'm-predefinedzoom',
-      // collapsedButtonClass: 'g-cartografia-flecha-izquierda',
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  /**
+   * Gets the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position}*${this.savedZooms}`;
   }
 }
