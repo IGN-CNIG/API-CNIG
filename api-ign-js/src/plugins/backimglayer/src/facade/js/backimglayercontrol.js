@@ -42,17 +42,7 @@ export default class BackImgLayerControl extends M.Control {
       const previewArray = previews.split(',');
       const layersArray = layers.split(',');
       layersArray.forEach((baseLayer, idx) => {
-        let backgroundLayers = baseLayer.split('sumar'); // before: ('+')
-        // let siblingLayers = [];
-        // backgroundLayers.forEach((urlLayer) => {
-        //   const layer = urlLayer.replace(/asterisco/g, '*');
-        //   siblingLayers.push(layer); // Array<String>
-        // });
-        // // turns it into Array <Mapea layer>
-        // siblingLayers = siblingLayers.map((sibling) => {
-        //   const mapeaLayer = new M.layer.WMTS(sibling);
-        //   return mapeaLayer;
-        // });
+        let backgroundLayers = baseLayer.split('sumar');
 
         backgroundLayers = backgroundLayers.map((urlLayer) => {
           const stringLayer = urlLayer.replace(/asterisco/g, '*');
@@ -64,7 +54,7 @@ export default class BackImgLayerControl extends M.Control {
           id: idsArray[idx],
           title: titlesArray[idx],
           preview: previewArray[idx],
-          layers: backgroundLayers, // siblingLayers,
+          layers: backgroundLayers,
         };
         this.layers.push(mapeaLyrsObject);
       });
@@ -86,13 +76,10 @@ export default class BackImgLayerControl extends M.Control {
    */
   createView(map) {
     this.map = map;
-    this.mapea4compatibility();
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, { vars: { layers: this.layers } });
       this.html = html;
       this.listen(html);
-      // this.uniqueButton = this.html.querySelector('#m-backimglayer-unique-btn');
-      // this.uniqueButton.innerHTML = this.layers[0].title;
       this.on(M.evt.ADDED_TO_MAP, () => {
         const visible = this.visible;
         if (this.idLayer > -1) {
@@ -139,12 +126,10 @@ export default class BackImgLayerControl extends M.Control {
   handlerClickDesktop(e, layersInfo, i) {
     this.removeLayers();
     this.visible = false;
-    // const { layers, title } = layersInfo;
     const { layers } = layersInfo;
     const isActivated = e.currentTarget.parentElement
       .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`)
       .classList.contains('activeBackimglayerDiv');
-    // layers.forEach((evt, layer, index, array) => layer.setZIndex(index - array.length));
     layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
 
     e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((imgContainer) => {
@@ -155,8 +140,6 @@ export default class BackImgLayerControl extends M.Control {
     if (!isActivated) {
       this.visible = true;
       this.activeLayer = i;
-      // e.currentTarget.parentElement
-      // .querySelector('#m-backimglayer-unique-btn').innerText = title;
       e.currentTarget.parentElement
         .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`).classList.add('activeBackimglayerDiv');
       this.map.addLayers(layers);
@@ -212,36 +195,6 @@ export default class BackImgLayerControl extends M.Control {
   listen(html) {
     html.querySelectorAll('div[id^="m-backimglayer-lyr-"]')
       .forEach((b, i) => b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i)));
-    // html.querySelector('#m-backimglayer-unique-btn')
-    // .addEventListener('click', e => this.showBaseLayer(e));
-  }
-
-  /**
-   * Makes control compatible with Mapea 4.
-   * @function
-   * @public
-   * @api
-   */
-  mapea4compatibility() {
-    if (!M.template.compileSync) { // JGL: retrocompatibilidad Mapea4
-      M.template.compileSync = (string, options) => {
-        let templateCompiled;
-        let templateVars = {};
-        let parseToHtml;
-        if (!M.utils.isUndefined(options)) {
-          templateVars = M.utils.extendsObj(templateVars, options.vars);
-          parseToHtml = options.parseToHtml;
-        }
-        const templateFn = Handlebars.compile(string);
-        const htmlText = templateFn(templateVars);
-        if (parseToHtml !== false) {
-          templateCompiled = M.utils.stringToHtml(htmlText);
-        } else {
-          templateCompiled = htmlText;
-        }
-        return templateCompiled;
-      };
-    }
   }
 
   /**

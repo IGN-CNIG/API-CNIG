@@ -42,7 +42,7 @@ export default class PredefinedZoomControl extends M.Control {
         const bbox = customZoom.bbox;
         const newBtn = document.createElement('button');
         newBtn.setAttribute('title', customZoom.name);
-        newBtn.setAttribute('class', 'predefinedzoom-mundo2'); // FIXME: temporal attribute for just one button
+        newBtn.setAttribute('class', 'predefinedzoom-mundo2');
         newBtn.addEventListener('click', () => this.zoomToGivenBox(bbox));
         html.appendChild(newBtn);
       });

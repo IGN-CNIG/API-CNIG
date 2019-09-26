@@ -180,7 +180,7 @@
                             displayInLayerSwitcher: false,
                             queryable: false,
                             visible: true,
-                            format: 'image/png',
+                            format: 'image/jpeg',
                         }),
                         new M.layer.WMTS({
                             url: 'http://www.ign.es/wmts/ign-base?',

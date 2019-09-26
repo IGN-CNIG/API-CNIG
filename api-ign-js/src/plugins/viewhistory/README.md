@@ -23,12 +23,10 @@ Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y
      container: 'map'
    });
 
-   // crear el plugin
    const mp = new M.plugin.ViewHistory({
      position: 'TL'
    });
 
-   // añadirlo al mapa
    map.addPlugin(mp);
 });
 ```
@@ -42,60 +40,3 @@ Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y
 
    map.addPlugin(mp);
 ```
-
-## Api.json
-
-
-### Plugin sin parámetros
-
-```
-{
-   "url": {
-      "name": "viewhistory"
-   },
-   "constructor": "M.plugin.ViewHistory"
-}
-```
-
-### Plugin con parámetros
-
-```
-{
-  "url": {
-    "name": "viewhistory",
-    "separator": "*"
-  },
-  "constructor": "M.plugin.ViewHistory",
-  "parameters": [{
-    "type": "object",
-    "properties": [{
-      "type": "enum",
-      "name": "position",
-      "position": 0,
-      "possibleValues": ["TL", "TR", "BR", "BL"]
-    }]
-  }],
-  "files": {
-    "ol": {
-      "scripts": [
-        "viewhistory.ol.min.js"
-      ],
-      "styles": [
-        "viewhistory.ol.min.css"
-      ]
-    }
-  },
-  "metadata": {
-    "name": "ViewHistory",
-    "description": "Shows map view history",
-    "text": "Navigates among previous map views",
-    "version": "1.0.0",
-    "date": "",
-    "author": "",
-    "org": "",
-    "tags": "mapea,plugin",
-    "icon": "./facade/assets/icons/icons.svg"
-  }
-}
-```
-

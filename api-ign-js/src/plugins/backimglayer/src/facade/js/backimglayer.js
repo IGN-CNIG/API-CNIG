@@ -187,6 +187,7 @@ export default class BackImgLayer extends M.Plugin {
 
       l.layers.forEach((layer) => {
         const isFirstLayer = l.layers.indexOf(layer) === 0;
+        const visible = layer.options.visibility === undefined ? true : layer.options.visibility;
 
         if (!isFirstLayer) layersUrl += 'sumar';
 
@@ -201,7 +202,7 @@ export default class BackImgLayer extends M.Plugin {
         layersUrl += `asterisco${layer.options.format}`;
         layersUrl += `asterisco${layer.options.displayInLayerSwitcher}`;
         layersUrl += `asterisco${layer.options.queryable}`;
-        layersUrl += `asterisco${layer.options.visibility}`;
+        layersUrl += `asterisco${visible}`;
       });
     });
 

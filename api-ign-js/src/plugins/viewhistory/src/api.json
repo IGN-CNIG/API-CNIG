@@ -7,7 +7,7 @@
   "parameters": [{
     "type": "object",
     "properties": [{
-      "type": "enum",
+      "type": "simple",
       "name": "position",
       "position": 0,
       "possibleValues": ["TL", "TR", "BR", "BL"]

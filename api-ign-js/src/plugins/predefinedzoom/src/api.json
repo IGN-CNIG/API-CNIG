@@ -5,14 +5,16 @@
   },
   "constructor": "M.plugin.PredefinedZoom",
   "parameters": [{
-    "type": "simple",
-    "name": "position",
-    "position": 0
-  }, {
-    "type": "array",
-    "name": "savedZooms",
-    "position": 1
-  }],
+      "type": "simple",
+      "name": "position",
+      "position": 0
+    },
+    {
+      "type": "array",
+      "name": "savedZooms",
+      "position": 1
+    }
+  ],
   "files": {
     "ol": {
       "scripts": ["predefinedzoom.ol.min.js"],

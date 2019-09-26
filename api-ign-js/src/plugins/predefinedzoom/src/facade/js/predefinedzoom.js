@@ -72,15 +72,4 @@ export default class PredefinedZoom extends M.Plugin {
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
-
-  /**
-   * Gets the API REST Parameters of the plugin
-   *
-   * @function
-   * @public
-   * @api
-   */
-  getAPIRest() {
-    return `${this.name}=${this.position}*${this.savedZooms}`;
-  }
 }
