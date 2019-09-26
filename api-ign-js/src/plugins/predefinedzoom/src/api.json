@@ -15,8 +15,8 @@
   }],
   "files": {
     "ol": {
-      "scripts": "predefinedzoom.ol.min.js",
-      "styles": "predefinedzoom.ol.min.css"
+      "scripts": ["predefinedzoom.ol.min.js"],
+      "styles": ["predefinedzoom.ol.min.css"]
     }
   },
   "metadata": {

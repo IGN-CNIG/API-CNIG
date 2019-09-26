@@ -15,8 +15,8 @@
   }],
   "files": {
     "ol": {
-      "scripts": "viewhistory.ol.min.js",
-      "styles": "viewhistory.ol.min.js"
+      "scripts": ["viewhistory.ol.min.js"],
+      "styles": ["viewhistory.ol.min.js"]
     }
   },
   "metadata": {

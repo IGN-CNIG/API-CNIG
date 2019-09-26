@@ -157,7 +157,7 @@ export default class BackImgLayer extends M.Plugin {
     const layers = this.layerOpts === undefined ?
       `${this.ids}*${this.titles}*${this.previews}*${this.layers}` :
       this.turnLayerOptsIntoUrl();
-    return `${this.name}=${this.position_}*${this.layerId}*${this.layerVisibility}*${layers}`;
+    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.layerId}*${this.layerVisibility}*${layers}`;
   }
 
   /**
