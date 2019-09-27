@@ -108,7 +108,7 @@
         });
 
         const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'http://componentes.ign.es/api-core/',
+            baseUrl: 'https://componentes.ign.es/api-core/',
             position: 'BR',
         });
         const mp4 = new M.plugin.XYLocator({

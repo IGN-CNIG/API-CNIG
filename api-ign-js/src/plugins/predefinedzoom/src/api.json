@@ -5,16 +5,24 @@
   },
   "constructor": "M.plugin.PredefinedZoom",
   "parameters": [{
-      "type": "simple",
-      "name": "position",
-      "position": 0
-    },
-    {
-      "type": "array",
-      "name": "savedZooms",
-      "position": 1
-    }
-  ],
+    "type": "object",
+    "properties": [{
+        "type": "simple",
+        "name": "position",
+        "position": 0,
+        "possibleValues": ["TL", "TR", "BR", "BL"]
+      },
+      {
+        "type": "simple",
+        "name": "names",
+        "position": 1
+      }, {
+        "type": "simple",
+        "name": "boxes",
+        "position": 2
+      }
+    ]
+  }],
   "files": {
     "ol": {
       "scripts": ["predefinedzoom.ol.min.js"],

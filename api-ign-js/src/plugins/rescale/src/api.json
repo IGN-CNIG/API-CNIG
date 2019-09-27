@@ -5,9 +5,12 @@
   },
   "constructor": "M.plugin.Rescale",
   "parameters": [{
-    "type": "simple",
-    "name": "position",
-    "position": 0
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0
+    }]
   }],
   "files": {
     "ol": {
@@ -16,7 +19,7 @@
     }
   },
   "metadata": {
-    "name": "rescale",
+    "name": "Rescale",
     "description": "Zooms to given scale",
     "text": "Zooms to given scale",
     "version": "1.0.0",

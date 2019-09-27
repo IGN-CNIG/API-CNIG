@@ -15,7 +15,7 @@ export default class Rescale extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options) {
+  constructor(options = {}) {
     super();
     /**
      * Facade of the map
@@ -34,23 +34,30 @@ export default class Rescale extends M.Plugin {
     /**
      * This variable indicates plugin's position on window
      * @private
-     * @type {string} { 'TL' | 'TR' | 'BL' | 'BR' } (corners)
+     * @type {String} { 'TL' | 'TR' | 'BL' | 'BR' } (corners)
      */
-    this.position = options !== undefined ? options.position : 'TR';
+    this.position_ = options.position || 'TR';
 
     /**
      * This variable indicates if this plugin is collapsible.
      * @private
      * @type {boolean}
      */
-    this.collapsible = options !== undefined ? options.collapsible : true;
+    this.collapsible = options.collapsible || true;
 
     /**
      * This variable indicates if this plugin is collapsed on load.
      * @private
      * @type {boolean}
      */
-    this.collapsed = options !== undefined ? options.collapsed : true;
+    this.collapsed = options.collapsed || true;
+
+    /**
+     * Name of the plugin
+     * @private
+     * @type {String}
+     */
+    this.name = 'rescale';
   }
 
   /**
@@ -68,10 +75,21 @@ export default class Rescale extends M.Plugin {
       className: 'm-rescale-panel',
       collapsible: this.collapsible,
       collapsed: this.collapsed,
-      position: M.ui.position[this.position],
+      position: M.ui.position[this.position_],
       collapsedButtonClass: 'g-cartografia-escala3',
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position_}`;
   }
 }

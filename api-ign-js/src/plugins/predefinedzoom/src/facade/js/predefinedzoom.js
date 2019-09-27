@@ -15,7 +15,7 @@ export default class PredefinedZoom extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options) {
+  constructor(options = {}) {
     super();
     /**
      * Facade of the map
@@ -36,14 +36,14 @@ export default class PredefinedZoom extends M.Plugin {
      * @private
      * @type {string} { 'TL' | 'TR' | 'BL' | 'BR' } (corners)
      */
-    this.position = options.position || 'TL';
+    this.position_ = options.position || 'TL';
 
     /**
      * Bbox entered by user.
      * @private
      * @type {Array<Object>} [ {name, bbox}, {...} ]
      */
-    this.savedZooms = options.savedZooms || [];
+    this.savedZooms = options.savedZooms;
 
     /**
      * Plugin name
@@ -51,6 +51,20 @@ export default class PredefinedZoom extends M.Plugin {
      * @type {String}
      */
     this.name = 'predefinedzoom';
+
+    /**
+     * Saved zooms names.
+     * @public
+     * @type {String}
+     */
+    this.names = options.names || '';
+
+    /**
+     * Saved zooms bboxes.
+     * @public
+     * @type {String}
+     */
+    this.boxes = options.boxes || [];
   }
 
   /**
@@ -62,14 +76,80 @@ export default class PredefinedZoom extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new PredefinedZoomControl(this.savedZooms));
+    const zooms = this.savedZooms === undefined ? this.turnUrlIntoZooms() : this.savedZooms;
+    this.controls_.push(new PredefinedZoomControl(zooms));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelPredefinedZoom', {
       collapsible: false,
-      position: M.ui.position[this.position],
+      position: M.ui.position[this.position_],
       className: 'm-predefinedzoom',
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  /**
+   * Gets the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    const zooms = this.savedZooms === undefined ? `${this.names}*${this.boxes}` : this.turnZoomsIntoUrl();
+    return `${this.name}=${this.position_}*${zooms}`;
+  }
+
+  /**
+   * Turns saved zooms object into string.
+   * @public
+   * @function
+   * @api
+   */
+  turnZoomsIntoUrl() {
+    let names = '';
+    let boxes = '';
+
+    this.savedZooms.forEach((zoomObject, idx) => {
+      if (idx > 0) {
+        names += ',';
+        boxes += ',';
+      }
+      names += zoomObject.name;
+      zoomObject.bbox.forEach((coord, index) => {
+        if (index > 0) {
+          boxes += 'coma';
+        }
+        boxes += coord;
+      });
+    });
+
+    return `${names}*${boxes}`;
+  }
+
+  /**
+   * Turns string received by rest request into zooms object.
+   * @public
+   * @function
+   * @api
+   */
+  turnUrlIntoZooms() {
+    const myZooms = [];
+
+    const names = this.names.split(',');
+    const boxes = this.boxes.split(',');
+
+    names.forEach((name, idx) => {
+      myZooms.push({ name });
+    });
+    boxes.forEach((box, index) => {
+      myZooms[index].bbox = [];
+      const coordinates = box.split('coma');
+      coordinates.forEach((c) => {
+        myZooms[index].bbox.push(c);
+      });
+    });
+
+    return myZooms;
   }
 }

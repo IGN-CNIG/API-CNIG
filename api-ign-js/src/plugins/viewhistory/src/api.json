@@ -1,6 +1,6 @@
 {
   "url": {
-    "name": "ViewHistory",
+    "name": "viewhistory",
     "separator": "*"
   },
   "constructor": "M.plugin.ViewHistory",
@@ -9,14 +9,13 @@
     "properties": [{
       "type": "simple",
       "name": "position",
-      "position": 0,
-      "possibleValues": ["TL", "TR", "BR", "BL"]
+      "position": 0
     }]
   }],
   "files": {
     "ol": {
       "scripts": ["viewhistory.ol.min.js"],
-      "styles": ["viewhistory.ol.min.js"]
+      "styles": ["viewhistory.ol.min.css"]
     }
   },
   "metadata": {

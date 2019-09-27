@@ -7,20 +7,12 @@ const map = M.map({
 });
 
 const mp = new ShareMap({
-  baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
+  baseUrl: 'https://http://componentes.ign.es/api-core/',
   position: 'BR',
 });
 
 map.addPlugin(mp);
-// map.addKML(new M.layer.KML("KML*Arboleda*http://mapea4-sigc.juntadeandalucia.es/files/kml/*arbda_sing_se.kml*true"))
 window.map = map;
-// const kml2 = new M.layer.KML({
-//   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
-//   name: 'Delegaciones',
-//   extract: false,
-//   label: false,
-// });
-// map.addLayers(kml2);
 const kml = new M.layer.KML('KML*Delegaciones*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
 map.addLayers(kml)
 const layerinicial = new M.layer.WMS({
