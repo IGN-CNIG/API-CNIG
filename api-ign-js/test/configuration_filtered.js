@@ -217,7 +217,7 @@ function fun(M_) {
    * @type {object}
    */
   M_.config('wmts', {
-    base: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*EPSG:4326*Callejero*false',
+    base: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Callejero*false',
   });
 
   /**
@@ -236,7 +236,7 @@ function fun(M_) {
    */
   M_.config('attributions', {
     defaultAttribution: 'Instituto Geográfico Nacional',
-    defaultURL: 'https://www.ign.es/', 
+    defaultURL: 'https://www.ign.es/',
     url: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
     type: 'kml',
   });
