@@ -43,13 +43,13 @@ const printer = new M.plugin.Printer({
   },
 });
 
-// const selectiondraw = new M.plugin.SelectionDraw({
-//   projection: 'EPSG:4326',
-// });
-// selectiondraw.on('finished:draw', (feature) => {
-//   console.log(feature);
-// });
-// map.addPlugin(selectiondraw);
+const selectiondraw = new M.plugin.SelectionDraw({
+  projection: 'EPSG:3857',
+});
+selectiondraw.on('finished:draw', (feature) => {
+  console.log(feature);
+});
+map.addPlugin(selectiondraw);
 
 map.addLayers([layerinicial, campamentos]);
 map.addPlugin(printer);
