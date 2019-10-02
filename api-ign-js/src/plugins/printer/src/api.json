@@ -8,11 +8,16 @@
     "type": "object",
     "properties": [{
       "type": "simple",
-      "name": "url",
+      "name": "position",
       "position": 0
+    }, {
+      "type": "simple",
+      "name": "url",
+      "position": 1
     }, {
       "type": "object",
       "name": "params",
+      "position": 2,
       "properties": [{
         "type": "object",
         "name": "layout",
@@ -60,7 +65,7 @@
   "metadata": {
     "name": "Printer",
     "description": "Prints map",
-    "text": "Prints map",
+    "text": "Prints map using Mapfish",
     "version": "1.0.0",
     "date": "",
     "author": "",

@@ -431,3 +431,9 @@ div.m-areas>div.m-area>div.m-panel.m-printer.collapsed>button.m-panel-btn {
 .printer-impresora:before {
     content: "\e1920";
 }
+
+/* Fix for left position closing arrow */
+
+div.m-panel.m-printer.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
+    left: 440px !important;
+}

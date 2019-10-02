@@ -58,7 +58,7 @@ export default class Printer extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.url_ = 'http://geoprint-sigc.juntadeandalucia.es/geoprint/pdf'; // M.config.geoprint.URL;
+    this.url_ = 'https://geoprint.desarrollo.guadaltel.es/print/CNIG';
     if (!M.utils.isNullOrEmpty(parameters.url)) {
       this.url_ = parameters.url;
     }
@@ -82,6 +82,13 @@ export default class Printer extends M.Plugin {
     if (!M.utils.isNullOrEmpty(parameters.options)) {
       this.options_ = parameters.options;
     }
+
+    /**
+     * Position of the plugin
+     * @private
+     * @type {String}
+     */
+    this.position_ = parameters.position || 'TR';
   }
 
   /**
@@ -104,7 +111,7 @@ export default class Printer extends M.Plugin {
       collapsible: true,
       className: 'm-printer',
       collapsedButtonClass: 'printer-impresora',
-      position: M.ui.position.TR, // FIXME: position
+      position: M.ui.position[this.position_],
       tooltip: 'Impresión del mapa',
     });
     this.panel_.on(M.evt.ADDED_TO_MAP, (html) => {
@@ -115,6 +122,17 @@ export default class Printer extends M.Plugin {
     this.control_.on(M.evt.ADDED_TO_MAP, () => {
       this.fire(M.evt.ADDED_TO_MAP);
     });
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position_}*${this.url_}`; // FIXME:
   }
 
   /**
