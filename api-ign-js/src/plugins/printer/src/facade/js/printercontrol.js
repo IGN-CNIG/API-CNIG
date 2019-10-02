@@ -203,8 +203,9 @@ export default class PrinterControl extends M.Control {
             outputFormat.default = true;
             break;
           }
-          // Fix to show only pdf, png & jpeg formats
-          if (outputFormat === 'pdf' || outputFormat === 'png' || outputFormat === 'jpeg') {
+          // Fix to show only pdf, png & jpeg formats FIXME: add jpeg
+          // if (outputFormat === 'pdf' || outputFormat === 'png' || outputFormat === 'jpeg') {
+          if (outputFormat === 'pdf' || outputFormat === 'png') {
             const object = { name: outputFormat };
             capabilities.format.push(object);
           }
@@ -453,8 +454,9 @@ export default class PrinterControl extends M.Control {
     const scale = this.map_.getScale();
     const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
-    const attributionContainer = document.querySelector('#m-attributions-container>div>a');
-    const attribution = attributionContainer !== null ? attributionContainer.innerHTML : 'Sin atribución.';
+    // const attributionContainer = document.querySelector('#m-attributions-container>div>a');
+    // const attribution = attributionContainer !== null ?
+    // attributionContainer.innerHTML : 'Sin atribución.';
 
     const printData = M.utils.extend({
       layout,
@@ -464,7 +466,7 @@ export default class PrinterControl extends M.Control {
         description,
         epsg: projection,
         escala: `1:${scale}`,
-        field12: attribution, // FIXME: move attribution to desired location
+        // field12: attribution, // FIXME: move attribution to desired location
         map: {
           projection,
           dpi,
@@ -512,44 +514,41 @@ export default class PrinterControl extends M.Control {
    * @function
    */
   encodeLayers() {
+    // Filters visible layers whose resolution is inside map resolutions range
+    // and that doesn't have Cluster style.
     const layers = this.map_.getLayers().filter((layer) => {
       return ((layer.isVisible() === true) && (layer.inRange() === true) && layer.name !== 'cluster_cover');
     });
+
     let numLayersToProc = layers.length;
 
     return (new Promise((success, fail) => {
       let encodedLayers = [];
-      const encodedLayersVector = [];
+      const vectorLayers = [];
+      const wmsLayers = [];
+      const otherBaseLayers = [];
       layers.forEach((layer) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
           // Vector layers are added after non vector layers (otherwise they won't be visible).
-          if (!M.utils.isNullOrEmpty(encodedLayer) && encodedLayer.type !== 'Vector') {
-            encodedLayers.push(encodedLayer);
-          } else {
-            encodedLayersVector.push(encodedLayer);
+          if (!M.utils.isNullOrEmpty(encodedLayer)) {
+            if (encodedLayer.type === 'Vector') {
+              vectorLayers.push(encodedLayer);
+            } else if (encodedLayer.type === 'WMS') {
+              wmsLayers.push(encodedLayer);
+            } else {
+              otherBaseLayers.push(encodedLayer);
+            }
           }
+
           numLayersToProc -= 1;
           if (numLayersToProc === 0) {
-            encodedLayers = encodedLayers.concat(encodedLayersVector);
-            // baseLayer must be under the rest (Mapfish changes layer order)
+            encodedLayers = encodedLayers.concat(otherBaseLayers)
+              .concat(wmsLayers).concat(vectorLayers);
+            // Mapfish requires reverse order
             success(encodedLayers.reverse());
           }
         });
       });
-      // const encodedLayers = [];
-      // layers.forEach((layer) => {
-      //   this.getImpl().encodeLayer(layer).then((encodedLayer) => {
-      //     if (!M.utils.isNullOrEmpty(encodedLayer)) {
-      //       encodedLayers.push(encodedLayer);
-      //     }
-      //     numLayersToProc -= 1;
-      //     if (numLayersToProc === 0) {
-      //       // se usa reverse() para invertir el orden de las capas, así la capa base queda abajo
-      //       // y se visualiza el mapa correctamente.
-      //       success(encodedLayers.reverse());
-      //     }
-      //   });
-      // });
     }));
   }
 
