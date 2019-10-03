@@ -23,7 +23,19 @@ Centra el mapa en la/s vista/s indicada/s por parámetro.
   - 'TR':top right (default)
   - 'BL':bottom left
   - 'BR':bottom right
-- **savedZooms**. Indica el zoom deseado en el que se centrará el mapa.
+- **savedZooms**. Indica los zooms deseados en los que se podrá centrar el mapa. Por defecto, hay un solo zoom a España. Para añadir un zoom adicional se seguirá el siguiente formato:
+
+```javascript
+    savedZooms: [{
+        name: 'Zoom a la extensión del mapa',
+        bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
+      },
+      {
+        name: 'Nuevo zoom',
+        bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
+      },
+    ],
+```
 
   
 # Ejemplos de uso
