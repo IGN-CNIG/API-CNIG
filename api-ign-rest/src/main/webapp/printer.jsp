@@ -15,6 +15,7 @@
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
     <link href="plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
     <link href="plugins/printer/printer.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -46,6 +47,7 @@
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
     <script type="text/javascript" src="plugins/selectiondraw/selectiondraw.ol.min.js"></script>
     <script type="text/javascript" src="plugins/printer/printer.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -59,6 +61,10 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
+            zoom: 5,
+            maxZoom: 20,
+            minZoom: 4,
+            center: [-467062.8225, 4683459.6216],
         });
 
         const layerinicial = new M.layer.WMS({
@@ -81,25 +87,14 @@
         // map.addLayers(['WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*false', 'WMS_FULL*http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Permeabilidad_Andalucia?']);
 
         const printer = new M.plugin.Printer({
+            collapsed: true,
+            collapsible: true,
             position: 'TR',
-            url: 'https://geoprint.desarrollo.guadaltel.es/print/CNIG',
-            params: {
-                layout: {
-                    outputFilename: 'mapea_${yyyy-MM-dd_hhmmss}',
-                },
-                pages: {
-                    clientLogo: 'http://www.juntadeandalucia.es/economiayhacienda/images/plantilla/logo_cabecera.gif',
-                    creditos: 'Impresión generada a través de Mapea',
-                },
-                parameters: {
-                    imageSpain: 'file://E01_logo_IGN_CNIG.png',
-                    imageCoordinates: 'file://E01_logo_IGN_CNIG.png',
-                },
-            },
-        }, {
-            options: {
-                legend: 'true',
-            },
+        });
+
+        const share = new M.plugin.ShareMap({
+            baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
+            position: 'BR',
         });
 
         const selectiondraw = new M.plugin.SelectionDraw({
@@ -112,6 +107,7 @@
 
         map.addLayers([layerinicial, campamentos]);
         map.addPlugin(printer);
+        map.addPlugin(share);
 
         window.map = map;
     </script>

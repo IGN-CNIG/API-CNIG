@@ -12,60 +12,28 @@
       "position": 0
     }, {
       "type": "simple",
-      "name": "url",
+      "name": "collapsed",
       "position": 1
     }, {
-      "type": "object",
-      "name": "params",
-      "position": 2,
-      "properties": [{
-        "type": "object",
-        "name": "layout",
-        "properties": [{
-          "type": "simple",
-          "name": "outputFilename",
-          "value": "mapea_${yyyy-MM-dd_hhmmss}"
-        }]
-      }, {
-        "type": "object",
-        "name": "pages",
-        "properties": [{
-          "type": "simple",
-          "name": "clientLogo",
-          "value": "http://www.juntadeandalucia.es/economiayhacienda/images/plantilla/logo_cabecera.gif"
-        }, {
-          "type": "simple",
-          "name": "creditos",
-          "value": "Impresión generada a través de Mapea"
-        }]
-      }]
-    }]
-  }, {
-    "type": "object",
-    "properties": [{
-      "type": "object",
-      "name": "options",
-      "properties": [{
-        "type": "simple",
-        "name": "legend",
-        "value": "true"
-      }]
+      "type": "simple",
+      "name": "collapsible",
+      "position": 2
     }]
   }],
   "files": {
     "ol": {
       "scripts": [
-        "printer-2.0.0.ol.min.js"
+        "printer.ol.min.js"
       ],
       "styles": [
-        "printer-2.0.0.min.css"
+        "printer.ol.min.css"
       ]
     }
   },
   "metadata": {
     "name": "Printer",
     "description": "Prints map",
-    "text": "Prints map using Mapfish",
+    "text": "Prints current map using Mapfish in pdf, jpeg or png formats",
     "version": "1.0.0",
     "date": "",
     "author": "",

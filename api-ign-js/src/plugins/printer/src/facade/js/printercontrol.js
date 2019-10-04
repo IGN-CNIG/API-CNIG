@@ -35,13 +35,11 @@ export default class PrinterControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(url, params, options) {
-    // implementation of this control
+  constructor() {
     const impl = new PrinterControlImpl();
 
     super(impl, PrinterControl.NAME);
 
-    // checks if the implementation can manage this control
     if (M.utils.isUndefined(PrinterControlImpl)) {
       M.exception('La implementación usada no puede crear controles Printer');
     }
@@ -55,21 +53,36 @@ export default class PrinterControl extends M.Control {
     }
 
     /**
-     * Facade of the map
+     * Mapfish server url
      * @private
-     * @type {M.Map}
+     * @type {String}
      */
-    this.url_ = url;
+    this.serverUrl_ = 'https://geoprint.desarrollo.guadaltel.es';
 
     /**
-     * Facade of the map
+     * Mapfish template url
+     * @private
+     * @type {String}
+     */
+    this.printTemplateUrl_ = 'https://geoprint.desarrollo.guadaltel.es/print/CNIG';
+
+
+    /**
+     * Url for getting priting status
+     * @private
+     * @type {String}
+     */
+    this.printStatusUrl_ = 'https://geoprint.desarrollo.guadaltel.es/print/status';
+
+    /**
+     * Map title
      * @private
      * @type {HTMLElement}
      */
     this.inputTitle_ = null;
 
     /**
-     * Facade of the map
+     * Map description
      * @private
      * @type {HTMLElement}
      */
@@ -83,35 +96,43 @@ export default class PrinterControl extends M.Control {
     this.layout_ = null;
 
     /**
-     * Facade of the map
+     * Map format to print
      * @private
      * @type {HTMLElement}
      */
     this.format_ = null;
 
     /**
-     * Facade of the map
+     * Map dpi to print
      * @private
      * @type {HTMLElement}
      */
     this.dpi_ = null;
 
     /**
-     * Facade of the map
+     * Force scale boolean
      * @private
      * @type {HTMLElement}
      */
     this.forceScale_ = null;
 
     /**
-     * Facade of the map
+     * Mapfish params
      * @private
-     * @type {Promise}
+     * @type {String}
      */
-    this.params_ = params || {};
+    this.params_ = {
+      layout: {
+        outputFilename: 'mapa_${yyyy-MM-dd_hhmmss}',
+      },
+      parameters: {
+        imageSpain: 'file://E01_logo_IGN_CNIG.png',
+        imageCoordinates: 'file://E01_logo_IGN_CNIG.png',
+      },
+    };
 
     /**
-     * Facade of the map
+     * Container of maps available for download
      * @private
      * @type {HTMLElement}
      */
@@ -125,32 +146,17 @@ export default class PrinterControl extends M.Control {
     this.capabilitiesPromise_ = null;
 
     /**
-     * Facade of the map
+     * Mapfish options params
      * @private
-     * @type {M.Map}
+     * @type {String}
      */
-    this.options_ = options || {};
-    // gets default values
-    // layout
-    if (M.utils.isNullOrEmpty(this.options_.layout)) {
-      this.options_.layout = 'A4 horizontal (Leyenda en una hoja)'; // M.config.geoprint.TEMPLATE;
-    }
-    // dpi
-    if (M.utils.isNullOrEmpty(this.options_.dpi)) {
-      this.options_.dpi = 150; // M.config.geoprint.DPI;
-    }
-    // format
-    if (M.utils.isNullOrEmpty(this.options_.format)) {
-      this.options_.format = 'pdf'; // M.config.geoprint.FORMAT;
-    }
-    // force scale
-    if (M.utils.isNullOrEmpty(this.options_.forceScale)) {
-      this.options_.forceScale = false; // M.config.geoprint.FORCE_SCALE;
-    }
-    // legend
-    if (M.utils.isNullOrEmpty(this.options_.legend)) {
-      this.options_.legend = true; // M.config.geoprint.LEGEND;
-    }
+    this.options_ = {
+      dpi: 150,
+      forceScale: false,
+      format: 'pdf',
+      legend: 'true',
+      layout: 'A4 horizontal',
+    };
   }
 
   /**
@@ -168,6 +174,7 @@ export default class PrinterControl extends M.Control {
         const capabilities = capabilitiesParam;
         let i = 0;
         let ilen;
+
         // default layout
         for (i = 0, ilen = capabilities.layouts.length; i < ilen; i += 1) {
           const layout = capabilities.layouts[i];
@@ -176,6 +183,12 @@ export default class PrinterControl extends M.Control {
             break;
           }
         }
+
+        // show only template names withoug 'jpg' on their names
+        capabilities.layouts = capabilities.layouts.filter((l) => {
+          return !l.name.endsWith('jpg');
+        });
+
         capabilities.dpis = [];
         let attribute;
         // default dpi
@@ -185,6 +198,7 @@ export default class PrinterControl extends M.Control {
             attribute = capabilities.layouts[0].attributes[i];
           }
         }
+
         for (i = 0, ilen = attribute.clientInfo.dpiSuggestions.length; i < ilen; i += 1) {
           const dpi = attribute.clientInfo.dpiSuggestions[i];
 
@@ -195,6 +209,7 @@ export default class PrinterControl extends M.Control {
           const object = { value: dpi };
           capabilities.dpis.push(object);
         }
+
         capabilities.format = [];
         // default outputFormat
         for (i = 0, ilen = capabilities.formats.length; i < ilen; i += 1) {
@@ -203,13 +218,13 @@ export default class PrinterControl extends M.Control {
             outputFormat.default = true;
             break;
           }
-          // Fix to show only pdf, png & jpeg formats FIXME: add jpeg
-          // if (outputFormat === 'pdf' || outputFormat === 'png' || outputFormat === 'jpeg') {
-          if (outputFormat === 'pdf' || outputFormat === 'png') {
+          // Fix to show only pdf, png & jpeg formats
+          if (outputFormat === 'pdf' || outputFormat === 'png' || outputFormat === 'jpeg') {
             const object = { name: outputFormat };
             capabilities.format.push(object);
           }
         }
+
         // forceScale
         capabilities.forceScale = this.options_.forceScale;
         const html = M.template.compileSync(printerHTML, { jsonp: true, vars: capabilities });
@@ -328,8 +343,7 @@ export default class PrinterControl extends M.Control {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Sets layout
    *
    * @private
    * @function
@@ -339,8 +353,7 @@ export default class PrinterControl extends M.Control {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Sets format
    *
    * @private
    * @function
@@ -350,8 +363,7 @@ export default class PrinterControl extends M.Control {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Sets dpi
    *
    * @private
    * @function
@@ -361,8 +373,7 @@ export default class PrinterControl extends M.Control {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Sets force scale option
    *
    * @private
    * @function
@@ -372,7 +383,7 @@ export default class PrinterControl extends M.Control {
   }
 
   /**
-   * This function
+   * This function prints on click
    *
    * @private
    * @function
@@ -381,7 +392,7 @@ export default class PrinterControl extends M.Control {
     evt.preventDefault();
 
     this.getPrintData().then((printData) => {
-      let printUrl = M.utils.concatUrlPaths([this.url_, `report.${printData.outputFormat}`]);
+      let printUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, `report.${printData.outputFormat}`]);
 
       const queueEl = this.createQueueElement();
       this.queueContainer_.appendChild(queueEl);
@@ -391,7 +402,7 @@ export default class PrinterControl extends M.Control {
         let response = responseParam;
         const responseStatusURL = JSON.parse(response.text);
         const ref = responseStatusURL.ref;
-        const statusURL = M.utils.concatUrlPaths(['https://geoprint.desarrollo.guadaltel.es/print/print/status', `${ref}.json`]);
+        const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
         // Deletes loading icon after map is printed
         getStatus(statusURL, () => queueEl.classList.remove(PrinterControl.LOADING_CLASS));
 
@@ -399,7 +410,7 @@ export default class PrinterControl extends M.Control {
           let downloadUrl;
           try {
             response = JSON.parse(response.text);
-            downloadUrl = M.utils.concatUrlPaths(['https://geoprint.desarrollo.guadaltel.es', response.downloadURL]);
+            downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
           } catch (err) {
             M.exception(err);
           }
@@ -423,7 +434,7 @@ export default class PrinterControl extends M.Control {
   getCapabilities() {
     if (M.utils.isNullOrEmpty(this.capabilitiesPromise_)) {
       this.capabilitiesPromise_ = new Promise((success, fail) => {
-        const capabilitiesUrl = M.utils.concatUrlPaths([this.url_, 'capabilities.json']);
+        const capabilitiesUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, 'capabilities.json']);
         M.remote.get(capabilitiesUrl).then((response) => {
           let capabilities = {};
           try {
@@ -448,7 +459,7 @@ export default class PrinterControl extends M.Control {
     const title = this.inputTitle_.value;
     const description = this.areaDescription_.value;
     const projection = this.map_.getProjection().code;
-    const layout = this.layout_.name;
+    let layout = this.layout_.name; // "A3 landscape" (nombre de la plantilla de yaml)
     const dpi = this.dpi_.value;
     const outputFormat = this.format_;
     const scale = this.map_.getScale();
@@ -457,6 +468,10 @@ export default class PrinterControl extends M.Control {
     // const attributionContainer = document.querySelector('#m-attributions-container>div>a');
     // const attribution = attributionContainer !== null ?
     // attributionContainer.innerHTML : 'Sin atribución.';
+
+    if (outputFormat === 'jpeg') {
+      layout += ' jpg';
+    }
 
     const printData = M.utils.extend({
       layout,
