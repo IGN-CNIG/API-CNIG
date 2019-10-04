@@ -7,7 +7,10 @@
 }
 
 .m-areas>div.m-area>div.m-plugin-toc.m-panel.opened>button.m-panel-btn {
+    background-color: white !important;
+    color: #71a7d3 !important;
     float: none;
+    left: -40px;
     position: absolute;
     z-index: 999;
     transition: none;
@@ -17,10 +20,6 @@
     width: 350px;
 }
 
-.m-areas div.m-plugin-toc.m-panel.opened>button.m-panel-btn {
-    background-color: #71a7d3 !important;
-}
-
 .m-areas div.m-plugin-toc.m-panel.opened .m-toc-panel ul.m-toc-content {
     padding-left: 0;
     list-style: none;
@@ -28,10 +27,12 @@
 }
 
 .m-areas div.m-plugin-toc.m-panel.opened div.title {
+    background-color: #71a7d3 !important;
+    color: white !important;
     line-height: normal;
     margin: 0px;
     font-size: 15px;
-    color: #404040;
+    /* color: #404040; */
     font-family: 'Muli', sans-serif !important;
     line-height: 40px;
     text-align: center;
@@ -73,8 +74,9 @@
     top: 0px;
     right: 0px;
     height: 100%;
+    padding-bottom: 1px;
     text-align: left;
-    background-color: #f4f4f4;
+    background-color: #e9e8e8;
 }
 
 @media only screen and (max-width: 768px) {

@@ -23,7 +23,7 @@ div#m-backimglayer-titulo {
     background-color: #71a7d3;
     color: white;
     display: block;
-    font-weight: bold;
+    font-size: 15px;
     height: 40px;
     line-height: 40px;
     padding: 0 5px;
@@ -34,7 +34,7 @@ div#m-backimglayer-titulo {
 /* Images container */
 
 .m-panel.m-plugin-backimglayer.opened .m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div[id^="m-backimglayer-lyr-"] {
-    border: 5px solid white;
+    border: 5px solid #e9e8e8;
     box-sizing: border-box;
     float: left;
     font-size: 0.9em;
@@ -87,7 +87,6 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
     position: relative;
     right: -40px;
 }
-
 
 .m-bottom.m-right .m-control.m-container.m-backimglayer {
     padding-right: 40px;
