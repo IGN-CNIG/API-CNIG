@@ -1,8 +1,6 @@
 ## Descripción
 
-Plugin de impresión a través del servicio Geoprint. Las capacidades del mismo definen las opciones de impresión disponibles: dpi,
-formatos y plantillas. En función de la plantilla elegida, en el construtctor del plugin habrá que incluir los parámetros que dicha
-plantilla necesite. Las plantillas 'imagen apaisada' e 'imagen cuadrada' no necesitan parámetros.
+Plugin de impresión a través del servicio Geoprint. Las capacidades del mismo definen las opciones de impresión disponibles: dpi, formatos y plantillas.
 
 ## Recursos y uso
 
@@ -16,19 +14,7 @@ mapajs.addPlugin(new M.plugin.Printer());
 Establecimiento de parámetros y valores seleccionados por defecto en los selectores:
 ```javascript
 mapajs.addPlugin(new M.plugin.Printer({
-  "params": {
-    "pages": {
-      "creditos": "Impresión generada a través de Mapea"
-    },
-    "layout": {
-      "outputFilename": "mapea_${yyyy-MM-dd_hhmmss}"
-    },
-  },
-  'options': {
-      'layout': 'imagen apaisada',
-      'format': 'png',
-      'dpi': '127'
-    }
+  position: 'TR',
 }));
 ```
 
@@ -40,34 +26,8 @@ mapajs = M.map({
 });
 
 mapajs.addPlugin(new M.plugin.Printer({
-  "params": {
-    "pages": {
-      "creditos": "Impresión generada a través de Mapea"
-    },
-    "layout": {
-      "outputFilename": "mapea_${yyyy-MM-dd_hhmmss}"
-    }
-  },
-  'options': {
-      'layout': 'imagen apaisada',
-      'format': 'png',
-      'dpi': '127'
-    } 
+  position: 'TR',
 }));
 ```
 
-[JSFiddle](http://jsfiddle.net/sigcJunta/b6d4hd53/)  
-
-## Observaciones  
-Los json que Mapea envía al servidor Geoprint deben cumplir con las siguientes condiciones:  
-* Los colores se indican en formato hexadecimal de seis dígitos, sin dígito para transparencia.
-* No contener atributos de estilo vacíos.  
-
-## Tabla de compatibilidad de versiones   
-En caso de utilizar un core de Mapea con número de versión explícito, debe cumplirse la siguiente relación:  
-
-versión plugin | versión Mapea |
---- | --- |
-1.0.0 | <= 4.1.0
-1.1.0 | 4.2.0
-2.0.0 | >= 5.0.0
+[JSFiddle de Mapea4](http://jsfiddle.net/sigcJunta/b6d4hd53/)  

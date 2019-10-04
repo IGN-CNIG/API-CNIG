@@ -39,7 +39,7 @@ export default class Printer extends M.Plugin {
     this.control_ = null;
 
     /**
-     * TODO
+     * Panel of this plugin
      * @private
      * @type {M.ui.Panel}
      */
@@ -54,41 +54,27 @@ export default class Printer extends M.Plugin {
     this.name = Printer.NAME;
 
     /**
-     * Facade of the map
-     * @private
-     * @type {String}
-     */
-    this.url_ = 'https://geoprint.desarrollo.guadaltel.es/print/CNIG';
-    if (!M.utils.isNullOrEmpty(parameters.url)) {
-      this.url_ = parameters.url;
-    }
-
-    /**
-     * Facade of the map
-     * @private
-     * @type {String}
-     */
-    this.params_ = {};
-    if (!M.utils.isNullOrEmpty(parameters.params)) {
-      this.params_ = parameters.params;
-    }
-
-    /**
-     * Facade of the map
-     * @private
-     * @type {String}
-     */
-    this.options_ = {};
-    if (!M.utils.isNullOrEmpty(parameters.options)) {
-      this.options_ = parameters.options;
-    }
-
-    /**
      * Position of the plugin
      * @private
      * @type {String}
      */
     this.position_ = parameters.position || 'TR';
+
+    /**
+     * Option to allow the plugin to be collapsed or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsed_ = parameters.collapsed;
+    if (this.collapsed_ === undefined) this.collapsed_ = true;
+
+    /**
+     * Option to allow the plugin to be collapsible or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsible_ = parameters.collapsible;
+    if (this.collapsible_ === undefined) this.collapsible_ = true;
   }
 
   /**
@@ -101,14 +87,11 @@ export default class Printer extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
-    this.control_ = new PrinterControl(
-      this.url_,
-      this.params_,
-      this.options_,
-    );
+    this.control_ = new PrinterControl();
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printer', {
-      collapsible: true,
+      collapsed: this.collapsed_,
+      collapsible: this.collapsible_,
       className: 'm-printer',
       collapsedButtonClass: 'printer-impresora',
       position: M.ui.position[this.position_],
@@ -132,7 +115,7 @@ export default class Printer extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.url_}`; // FIXME:
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}`;
   }
 
   /**
@@ -159,9 +142,6 @@ export default class Printer extends M.Plugin {
     this.control_ = null;
     this.controls_ = null;
     this.panel_ = null;
-    this.url_ = null;
-    this.params_ = null;
-    this.options_ = null;
     this.name = null;
   }
 
