@@ -13,12 +13,12 @@ const layerUA = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
   legend: 'Unidad administrativa',
-  tiled: false
+  tiled: false,
 }, {});
 const layerinicial = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeBoundary',
-  legend: 'Limite administrativogggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg',
+  legend: 'Limite administrativo',
   tiled: false,
 }, {
   visibility: false,
