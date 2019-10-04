@@ -125,6 +125,10 @@ export default class PrinterControl extends M.Control {
       layout: {
         outputFilename: 'mapa_${yyyy-MM-dd_hhmmss}',
       },
+      pages: {
+        clientLogo: '', // logo url
+        creditos: 'Impresión generada a través de Mapea',
+      },
       parameters: {
         imageSpain: 'file://E01_logo_IGN_CNIG.png',
         imageCoordinates: 'file://E01_logo_IGN_CNIG.png',
@@ -465,9 +469,9 @@ export default class PrinterControl extends M.Control {
     const scale = this.map_.getScale();
     const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
-    // const attributionContainer = document.querySelector('#m-attributions-container>div>a');
-    // const attribution = attributionContainer !== null ?
-    // attributionContainer.innerHTML : 'Sin atribución.';
+    const attributionContainer = document.querySelector('#m-attributions-container>div>a');
+    const attribution = attributionContainer !== null ?
+      attributionContainer.innerHTML : 'Sin atribución.';
 
     if (outputFormat === 'jpeg') {
       layout += ' jpg';
@@ -481,7 +485,7 @@ export default class PrinterControl extends M.Control {
         description,
         epsg: projection,
         escala: `1:${scale}`,
-        // field12: attribution, // FIXME: move attribution to desired location
+        field12: attribution, // FIXME: move attribution to desired location
         map: {
           projection,
           dpi,
