@@ -106,6 +106,14 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
     }
 }
 
+/* Mobile fix */
+
+@media only screen and (max-width: 850px) {
+    .m-panel.m-plugin-backimglayer.opened {
+        margin-top: 60px !important;
+    }
+}
+
 /* Icon font */
 
 @font-face {
