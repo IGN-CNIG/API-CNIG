@@ -401,8 +401,13 @@ export default class IGNSearchControl extends M.Control {
             this.resultsBox.appendChild(compiledResult);
             // Service doesn't find results
             if (this.allCandidates.length === 0) {
+              const parragraph = document.createElement('p');
               const infoMsg = document.createTextNode('No se encuentran resultados para esta petición.');
-              this.resultsBox.appendChild(infoMsg);
+              parragraph.appendChild(infoMsg);
+              this.resultsBox.appendChild(parragraph);
+              document.getElementById('m-ignsearch-results-list').style.display = 'none';
+            } else {
+              document.getElementById('m-ignsearch-results-list').style.display = 'block';
             }
           });
         });

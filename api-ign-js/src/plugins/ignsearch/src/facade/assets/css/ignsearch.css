@@ -139,6 +139,11 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
     vertical-align: middle;
 }
 
+#m-ignsearch-results>p {
+    text-align: center;
+    white-space: pre-wrap;
+}
+
 /* MEDIA QUERIES */
 
 @media only screen and (min-width: 769px) {
