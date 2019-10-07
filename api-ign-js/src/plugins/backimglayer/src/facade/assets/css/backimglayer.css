@@ -110,7 +110,25 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
 
 @media only screen and (max-width: 850px) {
     .m-panel.m-plugin-backimglayer.opened {
+        height: 260px;
         margin-top: 60px !important;
+        overflow: scroll;
+        width: 150px;
+    }
+
+    .m-control.m-container.m-backimglayer {
+        min-width: 110px;
+    }
+
+    .m-control.m-container.m-backimglayer>div#m-backimglayer-titulo {
+        font-size: 13px;
+        padding-left: 0;
+        padding-right: 0;
+        width: 110px;
+    }
+
+    #m-backimglayer-previews {
+        width: 100px;
     }
 }
 
