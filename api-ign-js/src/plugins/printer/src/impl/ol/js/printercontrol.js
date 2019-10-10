@@ -434,7 +434,7 @@ export default class PrinterControl extends M.impl.Control {
             type: parseType,
             fillColor: M.utils.isNullOrEmpty(fill) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
             fillOpacity: M.utils.isNullOrEmpty(fill) ?
-              1 : M.utils.getOpacityFromRgba(fill.getColor()),
+              0 : M.utils.getOpacityFromRgba(fill.getColor()),
             strokeColor: M.utils.isNullOrEmpty(stroke) ? '#000000' : M.utils.rgbaToHex(stroke.getColor()),
             strokeOpacity: M.utils.isNullOrEmpty(stroke) ?
               0 : M.utils.getOpacityFromRgba(stroke.getColor()),
