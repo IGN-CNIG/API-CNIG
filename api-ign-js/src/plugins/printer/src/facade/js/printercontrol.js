@@ -405,7 +405,8 @@ export default class PrinterControl extends M.Control {
       this.queueContainer_.appendChild(queueEl);
       queueEl.classList.add(PrinterControl.LOADING_CLASS);
       printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
-      M.proxy(false); // FIXME:
+      // FIXME: delete proxy deactivation and uncomment if/else when proxy is fixed on Mapea
+      M.proxy(false);
       M.remote.post(printUrl, printData).then((responseParam) => {
         let response = responseParam;
         const responseStatusURL = JSON.parse(response.text);
@@ -457,6 +458,36 @@ export default class PrinterControl extends M.Control {
     return this.capabilitiesPromise_;
   }
 
+  /** FIXME: check method is correct
+   * Converts decimal coordinates to degrees, minutes, seconds
+   * @public
+   * @function
+   * @param {*} coordinate - single coordinate (one of a pair)
+   * @api
+   */
+  converterDecimalToDMS(coordinate) {
+    let res;
+    let aux;
+    const coord = coordinate.toString();
+    const splittedCoord = coord.split('.');
+    // Degrees
+    res = `${splittedCoord[0]}º `;
+    // Minutes
+    aux = `0.${splittedCoord[1]}`;
+    aux *= 60;
+    aux = aux.toString();
+    aux = aux.split('.');
+    res = `${res}${aux[0]}' `;
+    // Seconds
+    aux = `0.${aux[1]}`;
+    aux *= 60;
+    aux = aux.toString();
+    aux = aux.split('.');
+    res = `${res}${aux[0]}'' `;
+    return res;
+  }
+
+
   /**
    * This function returns request JSON.
    *
@@ -467,7 +498,8 @@ export default class PrinterControl extends M.Control {
     const title = this.inputTitle_.value;
     const description = this.areaDescription_.value;
     const projection = this.map_.getProjection().code;
-    let layout = this.layout_.name; // "A3 landscape" (nombre de la plantilla de yaml)
+    const bbox = this.map_.getBbox();
+    let layout = this.layout_.name; // "A3 landscape" (yaml template)
     const dpi = this.dpi_.value;
     const outputFormat = this.format_;
     const scale = this.map_.getScale();
@@ -481,19 +513,35 @@ export default class PrinterControl extends M.Control {
       layout += ' jpg';
     }
 
+    // Get Bbox
+    // if UTM
+    // converterDecimalToDMS => check correct
+
+    const date = new Date();
+    const currentDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+
     const printData = M.utils.extend({
       layout,
       outputFormat,
       attributes: {
         title,
         description,
-        epsg: projection,
-        escala: `1:${scale}`,
-        field12: attribution, // FIXME: move attribution to desired location
+        attributionInfo: attribution,
+        refsrs: this.turnProjIntoLegend(projection),
+        numscale: `1:${scale}`,
+        printDate: currentDate,
         map: {
           projection,
           dpi,
-        },
+        }, // FIXME: check following lines are correct:
+        xCoordBotRight: this.converterDecimalToDMS(bbox.x.max),
+        yCoordBotRight: this.converterDecimalToDMS(bbox.y.max),
+        xCoordBotLeft: this.converterDecimalToDMS(bbox.x.max),
+        yCoordBotLeft: this.converterDecimalToDMS(bbox.y.min),
+        xCoordTopRight: this.converterDecimalToDMS(bbox.x.min),
+        yCoordTopRight: this.converterDecimalToDMS(bbox.y.max),
+        xCoordTopLeft: this.converterDecimalToDMS(bbox.x.min),
+        yCoordTopLeft: this.converterDecimalToDMS(bbox.y.min),
       },
     }, this.params_.layout);
 
@@ -518,7 +566,7 @@ export default class PrinterControl extends M.Control {
         printData.attributes.map.projection = 'EPSG:3857';
       }
       if (this.forceScale_ === false) {
-        const bbox = this.map_.getBbox();
+        // const bbox = this.map_.getBbox();
         printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
         if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
           printData.attributes.map.bbox = ol.proj.transformExtent(printData.attributes.map.bbox, projection.code, 'EPSG:3857');
@@ -632,6 +680,44 @@ export default class PrinterControl extends M.Control {
     if (!M.utils.isNullOrEmpty(downloadUrl)) {
       window.open(downloadUrl, '_blank');
     }
+  }
+
+
+  /**
+   *  Converts epsg code to projection name.
+   * @public
+   * @function
+   * @param {String} projection - EPSG:xxxx
+   * @api
+   */
+  turnProjIntoLegend(projection) {
+    let projectionLegend;
+    switch (projection) {
+      case 'EPSG:4258':
+        projectionLegend = 'ETRS89 (4258)';
+        break;
+      case 'EPSG:4326':
+        projectionLegend = 'WGS84 (4326)';
+        break;
+      case 'EPSG:3857':
+        projectionLegend = 'WGS84 (3857)';
+        break;
+      case 'EPSG:25831':
+        projectionLegend = 'UTM zone 31N (25831)';
+        break;
+      case 'EPSG:25830':
+        projectionLegend = 'UTM zone 30N (25830)';
+        break;
+      case 'EPSG:25829':
+        projectionLegend = 'UTM zone 29N (25829)';
+        break;
+      case 'EPSG:25828':
+        projectionLegend = 'UTM zone 28N (25828)';
+        break;
+      default:
+        projectionLegend = '';
+    }
+    return projectionLegend;
   }
 
   /**
