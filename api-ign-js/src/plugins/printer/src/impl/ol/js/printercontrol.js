@@ -94,7 +94,7 @@ export default class PrinterControl extends M.impl.Control {
 
     if (layer.displayInLayerSwitcher) {
       encodedLegend = {
-        name: layer.name,
+        // name: layer.name,
         classes: [],
       };
 
@@ -104,7 +104,8 @@ export default class PrinterControl extends M.impl.Control {
       if (!M.utils.isNullOrEmpty(legendURL) && !regExpImgDefault.test(legendURL) &&
         !regExpImgError.test(legendURL)) {
         encodedLegend.classes[0] = {
-          name: '',
+          // name: '',
+          name: layer.name,
           icons: [layer.getLegendURL()],
         };
         if (layer instanceof M.layer.Vector) {
@@ -138,9 +139,12 @@ export default class PrinterControl extends M.impl.Control {
     const resolution = this.facadeMap_.getMapImpl().getView().getResolution();
 
     const encodedFeatures = [];
-    const encodedStyles = [];
-    const stylesNames = {};
     let index = 1;
+    let style = '';
+    let nameFeature;
+    let nameFeature2;
+    let filter;
+
     features.forEach((feature) => {
       const geometry = feature.getGeometry();
       let styleId = feature.get('styleUrl');
@@ -156,53 +160,88 @@ export default class PrinterControl extends M.impl.Control {
           if (M.utils.isNullOrEmpty(imgSize)) {
             imgSize = [64, 64];
           }
+
+          let parseType;
+          if (feature.getGeometry().getType().toLowerCase() === 'multipolygon') {
+            parseType = 'polygon';
+          } else if (feature.getGeometry().getType().toLowerCase() === 'multipoint') {
+            parseType = 'point';
+          } else {
+            parseType = feature.getGeometry().getType().toLowerCase();
+          }
+
           const stroke = featureStyle.getStroke();
-          const style = {
+          let styleText;
+          const styleGeom = {
             id: styleId,
             externalGraphic: img.getSrc(),
             graphicHeight: imgSize[0],
             graphicWidth: imgSize[1],
             graphicOpacity: img.getOpacity(),
             strokeWidth: stroke.getWidth(),
-            type: feature.getGeometry().getType().toLowerCase() === 'multipolygon' ? 'polygon' : feature.getGeometry().getType().toLowerCase(),
+            type: parseType,
           };
           const text = (featureStyle.getText && featureStyle.getText());
           if (!M.utils.isNullOrEmpty(text)) {
-            const textStyle = {
-              label: M.utils.isNullOrEmpty(text.getText()) ? feature.get('name') : text.getText(),
+            styleText = {
+              conflictResolution: 'false',
               fontColor: M.utils.isNullOrEmpty(text.getFill()) ? '' : M.utils.rgbToHex(M.utils.isArray(text.getFill().getColor()) ?
                 `rgba(${text.getFill().getColor().toString()})` :
                 text.getFill().getColor()),
-              // text.getFont() -->"bold 13px Helvetica, sans-serif"
               fontSize: '11px',
               fontFamily: 'Helvetica, sans-serif',
               fontWeight: 'bold',
-              //
+              label: M.utils.isNullOrEmpty(text.getText()) ? feature.get('name') : text.getText(),
               labelAlign: text.getTextAlign(),
               labelXOffset: text.getOffsetX(),
               labelYOffset: text.getOffsetY(),
-              // no pinta la línea
               labelOutlineColor: M.utils.isNullOrEmpty(text.getStroke()) ? '' : M.utils.rgbToHex(M.utils.isArray(text.getStroke().getColor()) ?
                 `rgba(${text.getStroke().getColor().toString()})` :
                 text.getStroke().getColor()),
               labelOutlineWidth: M.utils.isNullOrEmpty(text.getStroke()) ? '' : text.getStroke().getWidth(),
               type: 'text',
             };
-            encodedStyles.push(textStyle);
+            // encodedStyles.push(styleText);
           }
 
-          if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) {
-            const styleStr = JSON.stringify(style);
-            let styleName = stylesNames[styleStr];
-            if (M.utils.isUndefined(styleName)) {
-              styleName = index;
-              stylesNames[styleStr] = styleName;
-              encodedStyles.push(style);
-              index += 1;
+          nameFeature = `draw${index}`;
+          nameFeature2 = `'draw${index}'`;
+          filter = `[name = '${nameFeature2}']`;
+
+          if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) ||
+            !M.utils.isNullOrEmpty(text)) {
+            const styleStr = JSON.stringify(styleGeom);
+
+            const styleTextStr = JSON.stringify(styleText);
+            const symbolizers = [];
+            if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) {
+              symbolizers.push(styleStr);
             }
+            if (!M.utils.isNullOrEmpty(text)) {
+              symbolizers.push(styleTextStr);
+            }
+            const a = `${filter}: {
+              'symbolizers': [${symbolizers}]
+            }`;
+
+            if (style !== '') {
+              style += `,${a}`;
+            } else {
+              style += `{${a},'version': '2'`;
+            }
+
+            // let styleName = stylesNames[styleStr];
+            // if (M.utils.isUndefined(styleName)) {
+            //   styleName = index;
+            //   stylesNames[styleStr] = styleName;
+            //   encodedStyles.push(style);
+            // }
+
+            index += 1;
             const geoJSONFeature = geoJSONFormat.writeFeatureObject(feature);
             geoJSONFeature.properties = {
-              _gx_style: styleName,
+              name: nameFeature,
+              // _gx_style: styleName,
             };
             encodedFeatures.push(geoJSONFeature);
           }
@@ -210,14 +249,26 @@ export default class PrinterControl extends M.impl.Control {
       }
     }, this);
 
+    if (style !== '') {
+      style = JSON.parse(style.concat('}'));
+    } else {
+      style = {
+        '*': {
+          symbolizers: [],
+        },
+        version: '2',
+      };
+    }
+
     encodedLayer = {
       type: 'Vector',
-      style: {
-        version: '2',
-        '*': {
-          symbolizers: encodedStyles,
-        },
-      },
+      style,
+      // style: {
+      //   version: '2',
+      //   '*': {
+      //     symbolizers: encodedStyles,
+      //   },
+      // },
       styleProperty: '_gx_style',
       geoJson: {
         type: 'FeatureCollection',
@@ -323,9 +374,13 @@ export default class PrinterControl extends M.impl.Control {
       const resolution = this.facadeMap_.getMapImpl().getView().getResolution();
 
       const encodedFeatures = [];
-      const encodedStyles = [];
-      const stylesNames = {};
+      let nameFeature;
+      let nameFeature2;
+      let filter;
       let index = 1;
+      let style = '';
+      // const encodedStyles = [];
+      // const stylesNames = {};
       features.forEach((feature) => {
         const geometry = feature.getGeometry();
         let featureStyle;
@@ -342,7 +397,7 @@ export default class PrinterControl extends M.impl.Control {
         }
 
         if (featureStyle instanceof Array) {
-          // JGL20180118: prioridad al estilo que tiene SRC
+          // SRC style has priority
           if (featureStyle.length > 1) {
             featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
                 featureStyle[1].getImage().getSrc) ?
@@ -353,7 +408,6 @@ export default class PrinterControl extends M.impl.Control {
         }
 
         if (!M.utils.isNullOrEmpty(featureStyle)) {
-          // console.log(featureStyle);
           const image = featureStyle.getImage();
           const imgSize = M.utils
             .isNullOrEmpty(image) ? [0, 0] : (image.getImageSize() || [24, 24]);
@@ -366,9 +420,18 @@ export default class PrinterControl extends M.impl.Control {
           const fill = M.utils.isNullOrEmpty(image) ?
             featureStyle.getFill() : (image.getFill && image.getFill());
 
-          // JGL20180118: fillOpacity=1 por defecto
-          let style = {
-            type: feature.getGeometry().getType().toLowerCase() == 'multipolygon' ? 'polygon' : feature.getGeometry().getType().toLowerCase(),
+          let parseType;
+          if (feature.getGeometry().getType().toLowerCase() === 'multipolygon') {
+            parseType = 'polygon';
+          } else if (feature.getGeometry().getType().toLowerCase() === 'multipoint') {
+            parseType = 'point';
+          } else {
+            parseType = feature.getGeometry().getType().toLowerCase();
+          }
+
+          let styleText;
+          const styleGeom = {
+            type: parseType,
             fillColor: M.utils.isNullOrEmpty(fill) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
             fillOpacity: M.utils.isNullOrEmpty(fill) ?
               1 : M.utils.getOpacityFromRgba(fill.getColor()),
@@ -424,7 +487,8 @@ export default class PrinterControl extends M.impl.Control {
                 }
               }
             }
-            let textStyle = {
+            styleText = {
+              type: 'text',
               label: text.getText(),
               fontColor: M.utils.isNullOrEmpty(text.getFill()) ? '#000000' : M.utils.rgbToHex(text.getFill().getColor()),
               fontSize,
@@ -433,22 +497,35 @@ export default class PrinterControl extends M.impl.Control {
               fontWeight,
               labelXOffset: text.getOffsetX(),
               labelYOffset: text.getOffsetY(),
-              fillColor: style.fillColor || '#FF0000',
-              fillOpacity: style.fillOpacity || 1, // JGL20180118: fillOpacity=1 por defecto
+              fillColor: styleGeom.fillColor || '#FF0000',
+              fillOpacity: styleGeom.fillOpacity || 1, // JGL20180118: fillOpacity=1 por defecto
               labelOutlineColor: M.utils.isNullOrEmpty(text.getStroke()) ? '' : M.utils.rgbToHex(text.getStroke().getColor() || '#FF0000'),
               labelOutlineWidth: M.utils.isNullOrEmpty(text.getStroke()) ? '' : text.getStroke().getWidth(),
               labelAlign: align,
             };
-            encodedStyles.push(styleText);
           }
 
-          if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) {
-            const styleStr = JSON.stringify(style);
-            let styleName = stylesNames[styleStr];
-            if (M.utils.isUndefined(styleName)) {
-              styleName = index;
-              stylesNames[styleStr] = styleName;
-              encodedStyles.push(style);
+          nameFeature = `draw${index}`;
+          nameFeature2 = `'draw${index}'`;
+          filter = '"[name = ' + `${nameFeature2}` + ']"';
+
+          if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) || !M.utils.isNullOrEmpty(text)) {
+            const styleStr = JSON.stringify(styleGeom);
+            const styleTextStr = JSON.stringify(styleText);
+            let symbolizers = [];
+            if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) {
+              symbolizers.push(styleStr);
+            }
+            if (!M.utils.isNullOrEmpty(text)) {
+              symbolizers.push(styleTextStr);
+            }
+            let a = '' + filter + ': {' +
+              '"symbolizers": [' + symbolizers +
+              ']}';
+            if (style != '') {
+              style += ',' + a;
+            } else {
+              style += '{' + a + ',"version": "2"';
             }
             index += 1;
             let geoJSONFeature;
@@ -461,21 +538,28 @@ export default class PrinterControl extends M.impl.Control {
               geoJSONFeature = geoJSONFormat.writeFeatureObject(feature);
             }
             geoJSONFeature.properties = {
-              _gx_style: styleName,
+              name: nameFeature,
+              // _gx_style: styleName,
             };
             encodedFeatures.push(geoJSONFeature);
           }
         }
       }, this);
 
+      if (style != '') {
+        style = JSON.parse(style.concat('}'));
+      } else {
+        style = {
+          '*': {
+            'symbolizers': []
+          },
+          'version': '2'
+        }
+      }
+
       encodedLayer = {
         type: 'Vector',
-        style: {
-          version: '2',
-          '*': {
-            symbolizers: encodedStyles,
-          },
-        },
+        style,
         styleProperty: '_gx_style',
         geoJson: {
           type: 'FeatureCollection',
@@ -507,19 +591,20 @@ export default class PrinterControl extends M.impl.Control {
 
     const layerUrl = layer.url;
     const layerName = layer.name;
-    // var layerVersion = layer.version;
     const layerOpacity = olLayer.getOpacity();
     const layerReqEncoding = layerSource.getRequestEncoding();
-    // var style = layerSource.getStyle();
     const matrixSet = layerSource.getMatrixSet();
+    const tiled = layerImpl.tiled;
+    const layerExtent = olLayer.getExtent();
+    const params = {};
+    const tileSize = tileGrid.getTileSize(zoom);
+    const resolutions = tileGrid.getResolutions();
+
+    // var style = layerSource.getStyle();
+    // var layerVersion = layer.version;
     // var tileOrigin = tileGrid.getOrigin(zoom);
     // var matrixIds = tileGrid.getMatrixIds();
     // old parameters
-    // const tiled = layerImpl.tiled;
-    // const tileSize = tileGrid.getTileSize(zoom);
-    // const resolutions = tileGrid.getResolutions();
-    // const layerExtent = olLayer.getExtent();
-    // const params = {};
 
     /**
      * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
@@ -535,8 +620,6 @@ export default class PrinterControl extends M.impl.Control {
         // dimensions: [],
         imageFormat: 'image/png',
         layer: layerName,
-        // matrices:
-        // matrixIds:
         matrices: matrixIdsObj.TileMatrix.map((tileMatrix, i) => {
           return {
             identifier: tileMatrix.Identifier,

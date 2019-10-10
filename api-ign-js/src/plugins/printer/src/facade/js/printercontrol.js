@@ -214,20 +214,23 @@ export default class PrinterControl extends M.Control {
           capabilities.dpis.push(object);
         }
 
-        capabilities.format = [];
-        // default outputFormat
-        for (i = 0, ilen = capabilities.formats.length; i < ilen; i += 1) {
-          const outputFormat = capabilities.formats[i];
-          if (outputFormat.name === this.options_.format) {
-            outputFormat.default = true;
-            break;
-          }
-          // Fix to show only pdf, png & jpeg formats
-          if (outputFormat === 'pdf' || outputFormat === 'png' || outputFormat === 'jpeg') {
-            const object = { name: outputFormat };
-            capabilities.format.push(object);
-          }
-        }
+        // Fix to show only pdf, png & jpeg formats
+        capabilities.format = [{ name: 'pdf' }, { name: 'png' }, { name: 'jpg' }];
+
+        // capabilities.format = [];
+        // // default outputFormat
+        // for (i = 0, ilen = capabilities.formats.length; i < ilen; i += 1) {
+        //   const outputFormat = capabilities.formats[i];
+        //   if (outputFormat.name === this.options_.format) {
+        //     outputFormat.default = true;
+        //     break;
+        //   }
+        //   // Fix to show only pdf, png & jpeg formats
+        //   if (outputFormat === 'pdf' || outputFormat === 'png' || outputFormat === 'jpeg') {
+        //     const object = { name: outputFormat };
+        //     capabilities.format.push(object);
+        //   }
+        // }
 
         // forceScale
         capabilities.forceScale = this.options_.forceScale;
@@ -402,28 +405,29 @@ export default class PrinterControl extends M.Control {
       this.queueContainer_.appendChild(queueEl);
       queueEl.classList.add(PrinterControl.LOADING_CLASS);
       printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
+      M.proxy(false); // FIXME:
       M.remote.post(printUrl, printData).then((responseParam) => {
         let response = responseParam;
         const responseStatusURL = JSON.parse(response.text);
         const ref = responseStatusURL.ref;
         const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-        // Deletes loading icon after map is printed
         getStatus(statusURL, () => queueEl.classList.remove(PrinterControl.LOADING_CLASS));
 
-        if (response.error !== true) {
-          let downloadUrl;
-          try {
-            response = JSON.parse(response.text);
-            downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
-          } catch (err) {
-            M.exception(err);
-          }
-          queueEl.setAttribute(PrinterControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-          queueEl.addEventListener('click', this.downloadPrint);
-        } else {
-          M.dialog.error('Se ha producido un error en la impresión.');
+        // if (response.error !== true) { // withoud proxy, response.error === true
+        let downloadUrl;
+        try {
+          response = JSON.parse(response.text);
+          downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+        } catch (err) {
+          M.exception(err);
         }
+        queueEl.setAttribute(PrinterControl.DOWNLOAD_ATTR_NAME, downloadUrl);
+        queueEl.addEventListener('click', this.downloadPrint);
+        // } else {
+        //   M.dialog.error('Se ha producido un error en la impresión.');
+        // }
       });
+      M.proxy(true);
     });
   }
 
@@ -497,7 +501,8 @@ export default class PrinterControl extends M.Control {
       printData.attributes.map.layers = encodedLayers;
       printData.attributes = Object.assign(printData.attributes, parameters);
       printData.legends = this.encodeLegends();
-      if (this.options_.legend === true) {
+
+      if (this.options_.legend) {
         for (let i = 0, ilen = printData.legends.length; i < ilen; i += 1) {
           if (printData.legends[i] !== undefined) {
             printData.attributes[`leyenda${i}`] = printData.legends[i].name;
