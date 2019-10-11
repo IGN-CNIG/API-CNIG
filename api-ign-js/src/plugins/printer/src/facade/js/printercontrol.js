@@ -458,35 +458,80 @@ export default class PrinterControl extends M.Control {
     return this.capabilitiesPromise_;
   }
 
-  /** FIXME: check method is correct
-   * Converts decimal coordinates to degrees, minutes, seconds
+  /**
+   * Converts decimal degrees coordinates to degrees, minutes, seconds
    * @public
    * @function
-   * @param {*} coordinate - single coordinate (one of a pair)
+   * @param {String} coordinate - single coordinate (one of a pair)
    * @api
    */
   converterDecimalToDMS(coordinate) {
-    let res;
+    let dms;
     let aux;
     const coord = coordinate.toString();
     const splittedCoord = coord.split('.');
     // Degrees
-    res = `${splittedCoord[0]}º `;
+    dms = `${splittedCoord[0]}º `;
     // Minutes
     aux = `0.${splittedCoord[1]}`;
     aux *= 60;
     aux = aux.toString();
     aux = aux.split('.');
-    res = `${res}${aux[0]}' `;
+    dms = `${dms}${aux[0]}' `;
     // Seconds
     aux = `0.${aux[1]}`;
     aux *= 60;
     aux = aux.toString();
     aux = aux.split('.');
-    res = `${res}${aux[0]}'' `;
-    return res;
+    dms = `${dms}${aux[0]}'' `;
+    return dms;
   }
 
+  /**
+   * Converts original bbox coordinates to DMS coordinates.
+   * @public
+   * @function
+   * @api
+   * @param {Array<Object>} bbox - { x: {min, max}, y: {min, max} }
+   */
+  convertBboxToDMS(bbox) {
+    const proj = this.map_.getProjection();
+    let dmsBbox = bbox;
+
+    if (proj.units === 'm') {
+      const min = [bbox.x.min, bbox.y.min];
+      const max = [bbox.x.max, bbox.y.max];
+      const newMin = this.getImpl().reproject(proj.code, min);
+      const newMax = this.getImpl().reproject(proj.code, max);
+      dmsBbox = {
+        x: { min: newMin[0], max: newMax[0] },
+        y: { min: newMin[1], max: newMax[1] },
+      };
+    }
+
+    dmsBbox = this.convertDecimalBoxToDMS(dmsBbox);
+    return dmsBbox;
+  }
+
+  /**
+   * Converts decimal coordinates Bbox to DMS coordinates Bbox.
+   * @public
+   * @function
+   * @api
+   * @param { Array < Object > } bbox - { x: { min, max }, y: { min, max } }
+   */
+  convertDecimalBoxToDMS(bbox) {
+    return {
+      x: {
+        min: this.converterDecimalToDMS(bbox.x.min),
+        max: this.converterDecimalToDMS(bbox.x.max),
+      },
+      y: {
+        min: this.converterDecimalToDMS(bbox.y.min),
+        max: this.converterDecimalToDMS(bbox.y.max),
+      },
+    };
+  }
 
   /**
    * This function returns request JSON.
@@ -499,23 +544,20 @@ export default class PrinterControl extends M.Control {
     const description = this.areaDescription_.value;
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
+    const dmsBbox = this.convertBboxToDMS(bbox);
     let layout = this.layout_.name; // "A3 landscape" (yaml template)
     const dpi = this.dpi_.value;
     const outputFormat = this.format_;
-    const scale = this.map_.getScale();
+    const scale = this.map_.getScale().toLocaleString('en').replace(',', '.', 'g');
     const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
     const attribution = attributionContainer !== null ?
-      attributionContainer.innerHTML : 'Sin atribución.';
+      `Cartografía base: ${attributionContainer.innerHTML}` : '';
 
     if (outputFormat === 'jpeg') {
       layout += ' jpg';
     }
-
-    // Get Bbox
-    // if UTM
-    // converterDecimalToDMS => check correct
 
     const date = new Date();
     const currentDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
@@ -533,15 +575,15 @@ export default class PrinterControl extends M.Control {
         map: {
           projection,
           dpi,
-        }, // FIXME: check following lines are correct:
-        xCoordBotRight: this.converterDecimalToDMS(bbox.x.max),
-        yCoordBotRight: this.converterDecimalToDMS(bbox.y.max),
-        xCoordBotLeft: this.converterDecimalToDMS(bbox.x.max),
-        yCoordBotLeft: this.converterDecimalToDMS(bbox.y.min),
-        xCoordTopRight: this.converterDecimalToDMS(bbox.x.min),
-        yCoordTopRight: this.converterDecimalToDMS(bbox.y.max),
-        xCoordTopLeft: this.converterDecimalToDMS(bbox.x.min),
-        yCoordTopLeft: this.converterDecimalToDMS(bbox.y.min),
+        },
+        xCoordTopLeft: dmsBbox.y.max,
+        yCoordTopLeft: dmsBbox.x.min,
+        xCoordTopRight: dmsBbox.y.max,
+        yCoordTopRight: dmsBbox.x.max,
+        xCoordBotRight: dmsBbox.y.min,
+        yCoordBotRight: dmsBbox.x.max,
+        xCoordBotLeft: dmsBbox.y.min,
+        yCoordBotLeft: dmsBbox.x.min,
       },
     }, this.params_.layout);
 
@@ -569,7 +611,7 @@ export default class PrinterControl extends M.Control {
         // const bbox = this.map_.getBbox();
         printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
         if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
-          printData.attributes.map.bbox = ol.proj.transformExtent(printData.attributes.map.bbox, projection.code, 'EPSG:3857');
+          printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection.code, 'EPSG:3857');
         }
       } else if (this.forceScale_ === true) {
         printData.attributes.map.center = [center.x, center.y];
