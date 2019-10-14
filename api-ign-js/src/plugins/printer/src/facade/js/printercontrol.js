@@ -547,7 +547,7 @@ export default class PrinterControl extends M.Control {
     let layout = this.layout_.name; // "A3 landscape" (yaml template)
     const dpi = this.dpi_.value;
     const outputFormat = this.format_;
-    const scale = this.map_.getScale().toLocaleString('en').replace(',', '.', 'g');
+    const scale = this.map_.getScale().toLocaleString('en').replace(/,/g, '.');
     const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
@@ -631,7 +631,7 @@ export default class PrinterControl extends M.Control {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
           // Vector layers are added after non vector layers (otherwise they won't be visible).
           if (!M.utils.isNullOrEmpty(encodedLayer)) {
-            if (encodedLayer.type === 'Vector') {
+            if (encodedLayer.type === 'Vector' || encodedLayer.type === 'KML') {
               vectorLayers.push(encodedLayer);
             } else if (encodedLayer.type === 'WMS') {
               wmsLayers.push(encodedLayer);
