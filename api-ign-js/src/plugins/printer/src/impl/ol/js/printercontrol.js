@@ -367,14 +367,6 @@ export default class PrinterControl extends M.impl.Control {
   encodeWFS(layer) {
     let encodedLayer = null;
     const continuePrint = true;
-    // Following lines would need to be activated if Chart and Cluster styles
-    // are merged into Mapea Lite API Core.
-    // if (layer.getStyle() instanceof M.style.Chart) {
-    //   continuePrint = false;
-    // } else if (layer.getStyle() instanceof M.style.Cluster &&
-    //   layer.getStyle().getOldStyle() instanceof M.style.Chart) {
-    //   continuePrint = false;
-    // }
     if (continuePrint) {
       const projection = this.facadeMap_.getProjection();
       const olLayer = layer.getImpl().getOL3Layer();
@@ -533,9 +525,10 @@ export default class PrinterControl extends M.impl.Control {
             let styleNameText = stylesNamesText[styleTextStr];
 
             if (M.utils.isUndefined(styleName) || M.utils.isUndefined(styleNameText)) {
-              let symbolizers = [];
+              const symbolizers = [];
               let flag = 0;
-              if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) && M.utils.isUndefined(styleName)) {
+              if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
+                M.utils.isUndefined(styleName)) {
                 styleName = indexGeom;
                 stylesNames[styleStr] = styleName;
                 flag = 1;
