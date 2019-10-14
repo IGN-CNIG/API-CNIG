@@ -5,26 +5,6 @@
 import PrinterControlImpl from '../../impl/ol/js/printercontrol';
 import printerHTML from '../../templates/printer';
 
-/**
- * This function checks when map printing is finished.
- * @param {String} url - Mapfish GET request url
- * @param {Function} callback - function that removes loading icon class.
- */
-const getStatus = (url, callback) => {
-  M.remote.get(url).then((response) => {
-    const statusJson = JSON.parse(response.text);
-    const { status } = statusJson;
-    if (status === 'finished') {
-      callback();
-    } else if (status === 'error' || status === 'cancelled') {
-      callback();
-      M.dialog.error('Se ha producido un error en la impresión.');
-    } else {
-      setTimeout(() => getStatus(url, callback), 1000);
-    }
-  });
-};
-
 export default class PrinterControl extends M.Control {
   /**
    * @classdesc
@@ -158,14 +138,33 @@ export default class PrinterControl extends M.Control {
       dpi: 150,
       forceScale: false,
       format: 'pdf',
-      legend: 'true',
+      legend: 'false',
       layout: 'A4 horizontal',
     };
   }
 
   /**
-   * This function creates the view to the specified map. Igual que el render de react.
-   * Es la función más importante.
+   * This function checks when map printing is finished.
+   * @param {String} url - Mapfish GET request url
+   * @param {Function} callback - function that removes loading icon class.
+   */
+  getStatus(url, callback) {
+    M.remote.get(url).then((response) => {
+      const statusJson = JSON.parse(response.text);
+      const { status } = statusJson;
+      if (status === 'finished') {
+        callback();
+      } else if (status === 'error' || status === 'cancelled') {
+        callback();
+        M.dialog.error('Se ha producido un error en la impresión.');
+      } else {
+        setTimeout(() => this.getStatus(url, callback), 1000);
+      }
+    });
+  }
+
+  /**
+   * This function creates the view to the specified map.
    *
    * @public
    * @function
@@ -412,7 +411,7 @@ export default class PrinterControl extends M.Control {
         const responseStatusURL = JSON.parse(response.text);
         const ref = responseStatusURL.ref;
         const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-        getStatus(statusURL, () => queueEl.classList.remove(PrinterControl.LOADING_CLASS));
+        this.getStatus(statusURL, () => queueEl.classList.remove(PrinterControl.LOADING_CLASS));
 
         // if (response.error !== true) { // withoud proxy, response.error === true
         let downloadUrl;
@@ -592,23 +591,10 @@ export default class PrinterControl extends M.Control {
       printData.attributes = Object.assign(printData.attributes, parameters);
       printData.legends = this.encodeLegends();
 
-      if (this.options_.legend) {
-        for (let i = 0, ilen = printData.legends.length; i < ilen; i += 1) {
-          if (printData.legends[i] !== undefined) {
-            printData.attributes[`leyenda${i}`] = printData.legends[i].name;
-
-            if (printData.legends[i].classes[0] !== undefined &&
-              printData.legends[i].classes[0].icons !== undefined) {
-              printData.attributes[`imagenLeyenda${i}`] = printData.legends[i].classes[0].icons[0];
-            }
-          }
-        }
-      }
       if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';
       }
-      if (this.forceScale_ === false) {
-        // const bbox = this.map_.getBbox();
+      if (!this.forceScale_) {
         printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
         if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
           printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection.code, 'EPSG:3857');
