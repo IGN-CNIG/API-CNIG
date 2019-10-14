@@ -335,9 +335,10 @@
     .m-areas>div.m-area>div.m-panel.m-printer.opened>button.m-panel-btn {
         background-color: transparent;
         position: absolute;
-        right: 0;
-        left: initial;
-        color: #e7338c;
+        left: 0 !important;
+        /* right: 0;
+        left: initial; */
+        color: white;
         z-index: 999999;
         box-shadow: none;
     }
