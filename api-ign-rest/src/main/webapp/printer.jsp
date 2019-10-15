@@ -16,7 +16,6 @@
     <link href="plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
     <link href="plugins/printer/printer.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
-    </link>
     <style type="text/css">
         html,
         body {

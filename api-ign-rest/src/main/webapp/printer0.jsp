@@ -13,8 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css" />
-    <link href="plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
-    </link>
+    <link href="plugins/printer/printer.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
@@ -43,7 +42,7 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
-    <script type="text/javascript" src="plugins/rescale/rescale.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/printer/printer.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -57,7 +56,6 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
@@ -65,28 +63,34 @@
         });
 
         const layerinicial = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',
             legend: 'Limite administrativo',
             tiled: false,
         }, {});
 
-        const layerUA = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeUnit',
-            legend: 'Unidad administrativa',
-            tiled: false
-        }, {});
+        const campamentos = new M.layer.GeoJSON({
+            name: 'Campamentos',
+            url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
+            extract: true,
+        });
 
-        map.addLayers([layerinicial, layerUA]);
+        // OVERVIEW
+        // const mp = new M.plugin.OverviewMap({
+        //   position: 'BR',
+        // });
+        // map.addLayers(['WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*false', 'WMS_FULL*http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Permeabilidad_Andalucia?']);
 
-        const mp = new M.plugin.Rescale({
-            collapsible: true,
+        const printer = new M.plugin.Printer({
             collapsed: true,
+            collapsible: true,
             position: 'TR',
         });
 
-        map.addPlugin(mp);
+        map.addLayers([layerinicial, campamentos]);
+        map.addPlugin(printer);
+
+        window.map = map;
     </script>
 </body>
 
