@@ -143,7 +143,6 @@ export default class PrinterControl extends M.impl.Control {
     const stylesNames = {};
     const stylesNamesText = {};
     let nameFeature;
-    let nameFeature2;
     let filter;
 
     features.forEach((feature) => {
@@ -154,7 +153,12 @@ export default class PrinterControl extends M.impl.Control {
       }
       const styleFn = feature.getStyle();
       if (!M.utils.isNullOrEmpty(styleFn)) {
-        const featureStyle = styleFn(feature, resolution)[0];
+        let featureStyle;
+        try {
+          featureStyle = styleFn(feature, resolution)[0];
+        } catch (e) {
+          featureStyle = styleFn.call(feature, resolution)[0];
+        }
         if (!M.utils.isNullOrEmpty(featureStyle)) {
           const img = featureStyle.getImage();
           let imgSize = img.getImageSize();
@@ -202,12 +206,11 @@ export default class PrinterControl extends M.impl.Control {
               labelOutlineWidth: M.utils.isNullOrEmpty(text.getStroke()) ? '' : text.getStroke().getWidth(),
               type: 'text',
             };
-            // encodedStyles.push(styleText);
+            styleText.fontColor = styleText.fontColor.slice(0, 7);
+            styleText.labelOutlineColor = styleText.labelOutlineColor.slice(0, 7);
           }
 
           nameFeature = `draw${index}`;
-          nameFeature2 = `'draw${index}'`;
-          filter = `[name = '${nameFeature2}']`;
 
           if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) ||
             !M.utils.isNullOrEmpty(text)) {
@@ -245,6 +248,7 @@ export default class PrinterControl extends M.impl.Control {
               if (styleNameText === undefined) {
                 styleNameText = 0;
               }
+
               filter = `"[_gx_style ='${styleName + styleNameText}']"`;
 
               if (!M.utils.isNullOrEmpty(symbolizers)) {
@@ -307,7 +311,7 @@ export default class PrinterControl extends M.impl.Control {
     const olLayer = layer.getImpl().getOL3Layer();
     const layerUrl = layer.url;
     const layerOpacity = olLayer.getOpacity();
-    const tiled = layer.getImpl().tiled;
+    // const tiled = layer.getImpl().tiled;
     const params = olLayer.getSource().getParams();
     const paramsLayers = [params.LAYERS];
     const paramsFormat = params.FORMAT;
@@ -315,7 +319,7 @@ export default class PrinterControl extends M.impl.Control {
     encodedLayer = {
       baseURL: layerUrl,
       opacity: layerOpacity,
-      singleTile: !tiled,
+      // singleTile: !tiled,
       type: 'WMS',
       layers: paramsLayers.join(',').split(','),
       format: paramsFormat || 'image/jpeg',
@@ -325,14 +329,23 @@ export default class PrinterControl extends M.impl.Control {
     /** ***********************************
      MAPEA DE CAPAS TILEADA.
     ************************************ */
-    /* eslint-disable */
-    layer._updateNoCache();
-    /* eslint-enable */
-    const noCacheName = layer.getNoCacheName();
-    const noChacheUrl = layer.getNoCacheUrl();
-    if (!M.utils.isNullOrEmpty(noCacheName) && !M.utils.isNullOrEmpty(noChacheUrl)) {
-      encodedLayer.layers = [noCacheName];
-      encodedLayer.baseURL = noChacheUrl;
+    // eslint-disable-next-line no-underscore-dangle
+    if (layer._updateNoCache) {
+      // eslint-disable-next-line no-underscore-dangle
+      layer._updateNoCache();
+      const noCacheName = layer.getNoCacheName();
+      const noChacheUrl = layer.getNoCacheUrl();
+      if (!M.utils.isNullOrEmpty(noCacheName) && !M.utils.isNullOrEmpty(noChacheUrl)) {
+        encodedLayer.layers = [noCacheName];
+        encodedLayer.baseURL = noChacheUrl;
+      }
+    } else {
+      const noCacheName = layer.getNoChacheName();
+      const noCacheUrl = layer.getNoChacheUrl();
+      if (!M.utils.isNullOrEmpty(noCacheName) && !M.utils.isNullOrEmpty(noCacheUrl)) {
+        encodedLayer.layers = [noCacheName];
+        encodedLayer.baseURL = noCacheUrl;
+      }
     }
 
     /** *********************************  */
@@ -428,6 +441,8 @@ export default class PrinterControl extends M.impl.Control {
             parseType = 'polygon';
           } else if (feature.getGeometry().getType().toLowerCase() === 'multipoint') {
             parseType = 'point';
+          } else if (feature.getGeometry().getType().toLowerCase() === 'multilinestring') {
+            parseType = 'line';
           } else {
             parseType = feature.getGeometry().getType().toLowerCase();
           }
