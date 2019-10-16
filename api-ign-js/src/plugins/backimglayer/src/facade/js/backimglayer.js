@@ -105,8 +105,8 @@ export default class BackImgLayer extends M.Plugin {
      */
     this.layers = options.layers || '';
 
-    this.collapsed = options.collapsed || true;
-    this.collapsible = options.collapsible || true;
+    this.collapsed = options !== undefined ? options.collapsed : true;
+    this.collapsible = options !== undefined ? options.collapsible : true;
   }
 
   /**
