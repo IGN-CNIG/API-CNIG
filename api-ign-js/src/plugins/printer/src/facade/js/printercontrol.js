@@ -94,7 +94,7 @@ export default class PrinterControl extends M.Control {
      * @private
      * @type {HTMLElement}
      */
-    this.forceScale_ = null;
+    this.forceScale_ = true; // null;
 
     /**
      * Mapfish params
@@ -136,7 +136,7 @@ export default class PrinterControl extends M.Control {
      */
     this.options_ = {
       dpi: 150,
-      forceScale: false,
+      forceScale: true, // false,
       format: 'pdf',
       legend: 'false',
       layout: 'A4 horizontal',
@@ -232,7 +232,7 @@ export default class PrinterControl extends M.Control {
         // }
 
         // forceScale
-        capabilities.forceScale = this.options_.forceScale;
+        capabilities.forceScale = true; // this.options_.forceScale;
         const html = M.template.compileSync(printerHTML, { jsonp: true, vars: capabilities });
         this.addEvents(html);
         success(html);
@@ -298,11 +298,11 @@ export default class PrinterControl extends M.Control {
     this.setFormat(selectFormat.value);
 
     // force scale
-    const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
-    checkboxForceScale.addEventListener('click', (event) => {
-      this.setForceScale(checkboxForceScale.checked === true);
-    });
-    this.setForceScale(checkboxForceScale.checked === true);
+    // const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
+    // checkboxForceScale.addEventListener('click', (event) => {
+    //   this.setForceScale(checkboxForceScale.checked);
+    // });
+    // this.setForceScale(checkboxForceScale.checked);
 
     // print button
     const printBtn = this.element_.querySelector('.button > button.print');
@@ -319,7 +319,7 @@ export default class PrinterControl extends M.Control {
       selectLayout.value = this.options_.layout;
       selectDpi.value = this.options_.dpi;
       selectFormat.value = this.options_.format;
-      checkboxForceScale.checked = this.options_.forceScale;
+      // checkboxForceScale.checked = this.options_.forceScale;
 
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
@@ -330,7 +330,7 @@ export default class PrinterControl extends M.Control {
       selectLayout.dispatchEvent(changeEvent);
       selectDpi.dispatchEvent(changeEvent);
       selectFormat.dispatchEvent(changeEvent);
-      checkboxForceScale.dispatchEvent(clickEvent);
+      // checkboxForceScale.dispatchEvent(clickEvent);
 
       // clean queue
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
@@ -385,7 +385,7 @@ export default class PrinterControl extends M.Control {
    * @function
    */
   setForceScale(forceScale) {
-    this.forceScale_ = forceScale;
+    this.forceScale_ = true; // forceScale;
   }
 
   /**
@@ -554,7 +554,7 @@ export default class PrinterControl extends M.Control {
     const attribution = attributionContainer !== null ?
       `Cartografía base: ${attributionContainer.innerHTML}` : '';
 
-    if (outputFormat === 'jpeg') {
+    if (outputFormat === 'jpg') {
       layout += ' jpg';
     }
 
@@ -601,7 +601,7 @@ export default class PrinterControl extends M.Control {
         if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
           printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection.code, 'EPSG:3857');
         }
-      } else if (this.forceScale_ === true) {
+      } else if (this.forceScale_) {
         printData.attributes.map.center = [center.x, center.y];
         printData.attributes.map.scale = this.map_.getScale();
       }
@@ -620,7 +620,7 @@ export default class PrinterControl extends M.Control {
     // Filters visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     const layers = this.map_.getLayers().filter((layer) => {
-      return ((layer.isVisible() === true) && (layer.inRange() === true) && layer.name !== 'cluster_cover');
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover');
     });
 
     let numLayersToProc = layers.length;
