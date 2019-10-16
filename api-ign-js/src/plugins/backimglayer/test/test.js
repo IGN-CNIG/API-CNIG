@@ -89,7 +89,8 @@ const mp = new BackImgLayer({
 // Formato parámetros REST:
 // ids: 'mapa,hibrido',
 // titles: 'Mapa,Hibrido',
-// previews: '', // '../src/facade/assets/images/svqmapa.png,../src/facade/assets/images/svqhibrid.png',
+// previews: '', // '../src/facade/assets/images/svqmapa.png,
+// ../src/facade/assets/images/svqhibrid.png',
 // layers: 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/pngasteriscofalseasteriscofalseasteriscotruesumarWMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue',
 
 
