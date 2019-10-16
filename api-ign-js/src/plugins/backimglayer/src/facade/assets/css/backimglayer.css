@@ -109,28 +109,83 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
 /* Mobile fix */
 
 @media only screen and (max-width: 850px) {
-    .m-panel.m-plugin-backimglayer.opened {
-        height: 260px;
-        margin-top: 60px !important;
-        overflow: scroll;
-        width: 150px;
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        height: 100vh;
+        margin: auto;
+        padding: calc((100vw - 210px) / 2);
+        padding-top: 10px;
+        width: 100vw;
+        z-index: 99999;
     }
 
-    .m-control.m-container.m-backimglayer {
-        min-width: 110px;
+    .m-panel.m-plugin-backimglayer.opened>button {
+        left: 0;
+        top: 0;
     }
 
-    .m-control.m-container.m-backimglayer>div#m-backimglayer-titulo {
+    .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-titulo {
         font-size: 13px;
         padding-left: 0;
         padding-right: 0;
-        width: 110px;
+        width: 210px;
     }
 
-    #m-backimglayer-previews {
-        width: 100px;
+    .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews {
+        height: calc(100vh - 50px);
+        overflow: scroll;
+        width: 210px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div {
+        height: 210px;
+        width: 210px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div>img {
+        height: 200px;
+        width: 200px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div>span {
+        font-size: 1.3em;
+        height: 40px;
+        line-height: 40px;
+        top: 160px;
+        width: 200px;
+    }
+
+    /* Firefox fix */
+    @-moz-document url-prefix() {
+        .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened {
+            padding: 10px 50px 0;
+        }
+
+        .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews {
+            padding-bottom: 50px;
+        }
+    }
+
+    /* Chrome fix */
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+        .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews {
+            height: calc(100vh - 100px);
+        }
+    }
+
+}
+
+@media only screen and (max-width: 433px) {
+
+    /* Edge fix */
+    @supports (-ms-ime-align:auto) {
+        .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened {
+            padding: 10px 50px 0;
+        }
     }
 }
+
 
 /* Icon font */
 
