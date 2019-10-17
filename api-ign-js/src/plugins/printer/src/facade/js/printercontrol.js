@@ -94,7 +94,7 @@ export default class PrinterControl extends M.Control {
      * @private
      * @type {HTMLElement}
      */
-    this.forceScale_ = true; // null;
+    this.forceScale_ = null;
 
     /**
      * Mapfish params
@@ -136,7 +136,7 @@ export default class PrinterControl extends M.Control {
      */
     this.options_ = {
       dpi: 150,
-      forceScale: true, // false,
+      forceScale: false,
       format: 'pdf',
       legend: 'false',
       layout: 'A4 horizontal',
@@ -232,7 +232,7 @@ export default class PrinterControl extends M.Control {
         // }
 
         // forceScale
-        capabilities.forceScale = true; // this.options_.forceScale;
+        capabilities.forceScale = this.options_.forceScale;
         const html = M.template.compileSync(printerHTML, { jsonp: true, vars: capabilities });
         this.addEvents(html);
         success(html);
@@ -298,11 +298,11 @@ export default class PrinterControl extends M.Control {
     this.setFormat(selectFormat.value);
 
     // force scale
-    // const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
-    // checkboxForceScale.addEventListener('click', (event) => {
-    //   this.setForceScale(checkboxForceScale.checked);
-    // });
-    // this.setForceScale(checkboxForceScale.checked);
+    const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
+    checkboxForceScale.addEventListener('click', (event) => {
+      this.setForceScale(checkboxForceScale.checked);
+    });
+    this.setForceScale(checkboxForceScale.checked);
 
     // print button
     const printBtn = this.element_.querySelector('.button > button.print');
@@ -319,7 +319,7 @@ export default class PrinterControl extends M.Control {
       selectLayout.value = this.options_.layout;
       selectDpi.value = this.options_.dpi;
       selectFormat.value = this.options_.format;
-      // checkboxForceScale.checked = this.options_.forceScale;
+      checkboxForceScale.checked = this.options_.forceScale;
 
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
@@ -330,7 +330,7 @@ export default class PrinterControl extends M.Control {
       selectLayout.dispatchEvent(changeEvent);
       selectDpi.dispatchEvent(changeEvent);
       selectFormat.dispatchEvent(changeEvent);
-      // checkboxForceScale.dispatchEvent(clickEvent);
+      checkboxForceScale.dispatchEvent(clickEvent);
 
       // clean queue
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
@@ -385,7 +385,7 @@ export default class PrinterControl extends M.Control {
    * @function
    */
   setForceScale(forceScale) {
-    this.forceScale_ = true; // forceScale;
+    this.forceScale_ = forceScale;
   }
 
   /**
@@ -572,8 +572,9 @@ export default class PrinterControl extends M.Control {
         numscale: `1:${scale}`,
         printDate: currentDate,
         map: {
-          projection,
           dpi,
+          projection,
+          useAdjustBounds: true,
         },
         xCoordTopLeft: dmsBbox.y.max,
         yCoordTopLeft: dmsBbox.x.min,
