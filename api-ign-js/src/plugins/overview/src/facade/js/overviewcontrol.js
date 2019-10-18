@@ -33,6 +33,8 @@ export default class OverviewControl extends M.Control {
    */
   createView(map) {
     this.map = map;
+    this.oldZoom = map.getMapImpl().getView().getZoom();
+    this.oldCenter = map.getMapImpl().getView().getCenter();
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
       this.addEvents();
@@ -42,7 +44,7 @@ export default class OverviewControl extends M.Control {
 
   addEvents() {
     this.on(M.evt.ADDED_TO_PANEL, this.addMap.bind(this));
-    this.map.getMapImpl().on('moveend', this.moveMap);
+    this.map.getMapImpl().on('moveend', this.moveMap.bind(this));
   }
 
   /**
@@ -51,7 +53,11 @@ export default class OverviewControl extends M.Control {
   addMap() {
     this.smallMap = M.map({
       container: 'smallmap',
-      zoom: 0, // this.map.getZoom() >= 2 ? this.map.getZoom() - 2 : 0,
+      zoom: 2,
+      maxZoom: 14,
+      minZoom: 2,
+      center: [-467062.8225, 4683459.6216],
+      // this.map.getZoom() >= 2 ? this.map.getZoom() - 2 : 0,
     });
 
     this.smallMap.removeControls('panzoom');
@@ -61,7 +67,20 @@ export default class OverviewControl extends M.Control {
    * Moves map on zoom, drag or pan
    */
   moveMap(e) {
-    console.log(e);
+    const newZoom = this.map.getMapImpl().getView().getZoom();
+    const newCenter = this.map.getMapImpl().getView().getCenter();
+
+    if (newZoom !== this.oldZoom) {
+      const zoomChange = newZoom - this.oldZoom;
+      // FIXME: check new zoom doesn't exit zoom limits
+      this.smallMap.setZoom(this.smallMap.getMapImpl().getView().getZoom() + zoomChange);
+      this.oldZoom = newZoom;
+    }
+
+    if (newCenter !== this.oldCenter) {
+      this.smallMap.setCenter(newCenter);
+      this.oldCenter = newCenter;
+    }
   }
 
   /**
