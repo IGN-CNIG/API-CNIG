@@ -46,8 +46,10 @@ export default class Overview extends M.Plugin {
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelOverview', {
       collapsible: true,
+      collapsed: false,
       position: M.ui.position.TR,
       collapsedButtonClass: 'g-cartografia-flecha-izquierda',
+      className: 'overview-panel',
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

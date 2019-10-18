@@ -1,23 +1,30 @@
-div.m-panel.opened {
+div.m-areas>div.m-area>div.m-panel.opened.overview-panel {
     background-color: transparent !important;
     box-shadow: none !important;
 }
 
-div.m-panel.opened>div.m-panel-controls {
+div.m-panel.overview-panel.opened>div.m-panel-controls {
     background-color: white !important;
 }
 
-div.m-panel.opened>div.m-panel-controls>div.m-control.m-container.m-overview>div#smallmap {
-    border: 1px solid #71a7d3;
-    height: 150px;
-    width: 150px;
-}
-
-div.m-panel.collapsed>button.m-panel-btn {
+div.m-panel.overview-panel.opened>button.m-panel-btn {
+    background-color: white !important;
     color: #71a7d3 !important;
 }
 
-div.m-panel.opened>button.m-panel-btn {
-    background-color: #71a7d3 !important;
-    color: white !important;
+div.m-panel.overview-panel.opened>div.m-panel-controls>div.m-control.m-container.m-overview>div#smallmap {
+    border: 1px solid #71a7d3;
+    height: 150px;
+    position: relative;
+    width: 150px;
+}
+
+div.m-panel.overview-panel.opened>div.m-panel-controls>div.m-control.m-container.m-overview>span#zoomSquare {
+    background-color: transparent;
+    border: 1px solid red;
+    height: 40px;
+    left: 85px;
+    position: absolute;
+    top: 55px;
+    width: 60px;
 }
