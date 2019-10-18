@@ -42,6 +42,12 @@ export default class OverviewControl extends M.Control {
     });
   }
 
+  /**
+   * Adds events
+   * @public
+   * @function
+   * @api
+   */
   addEvents() {
     this.on(M.evt.ADDED_TO_PANEL, this.addMap.bind(this));
     this.map.getMapImpl().on('moveend', this.moveMap.bind(this));
@@ -49,13 +55,16 @@ export default class OverviewControl extends M.Control {
 
   /**
    * Adds overview map to control.
+   * @public
+   * @function
+   * @api
    */
   addMap() {
     this.smallMap = M.map({
       container: 'smallmap',
-      zoom: 2,
+      zoom: 1,
       maxZoom: 14,
-      minZoom: 2,
+      minZoom: 1,
       center: [-467062.8225, 4683459.6216],
       // this.map.getZoom() >= 2 ? this.map.getZoom() - 2 : 0,
     });
@@ -63,10 +72,13 @@ export default class OverviewControl extends M.Control {
     this.smallMap.removeControls('panzoom');
   }
 
-  /*
-   * Moves map on zoom, drag or pan
+  /**
+   * Moves overview map on zoom, drag or pan
+   * @public
+   * @function
+   * @api
    */
-  moveMap(e) {
+  moveMap() {
     const newZoom = this.map.getMapImpl().getView().getZoom();
     const newCenter = this.map.getMapImpl().getView().getCenter();
 
