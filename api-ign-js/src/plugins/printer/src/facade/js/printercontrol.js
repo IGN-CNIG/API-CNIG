@@ -8,8 +8,7 @@ import printerHTML from '../../templates/printer';
 export default class PrinterControl extends M.Control {
   /**
    * @classdesc
-   * Main constructor of the class. Creates a WMCSelector
-   * control to provides a way to select an specific WMC
+   * Main constructor of the class.
    *
    * @constructor
    * @extends {M.Control}
@@ -26,10 +25,6 @@ export default class PrinterControl extends M.Control {
 
     if (M.utils.isUndefined(PrinterControlImpl.prototype.encodeLayer)) {
       M.exception('La implementación usada no posee el método encodeLayer');
-    }
-
-    if (M.utils.isUndefined(PrinterControlImpl.prototype.encodeLegend)) {
-      M.exception('La implementación usada no posee el método encodeLegend');
     }
 
     /**
@@ -69,7 +64,7 @@ export default class PrinterControl extends M.Control {
     this.areaDescription_ = null;
 
     /**
-     * Facade of the map
+     * Layout
      * @private
      * @type {HTMLElement}
      */
@@ -197,7 +192,7 @@ export default class PrinterControl extends M.Control {
         // default dpi
         // recommended DPI list attribute search
         for (i = 0, ilen = capabilities.layouts[0].attributes.length; i < ilen; i += 1) {
-          if (capabilities.layouts[0].attributes[i].clientInfo != null) {
+          if (capabilities.layouts[0].attributes[i].clientInfo !== null) {
             attribute = capabilities.layouts[0].attributes[i];
           }
         }
@@ -215,21 +210,6 @@ export default class PrinterControl extends M.Control {
 
         // Fix to show only pdf, png & jpeg formats
         capabilities.format = [{ name: 'pdf' }, { name: 'png' }, { name: 'jpg' }];
-
-        // capabilities.format = [];
-        // // default outputFormat
-        // for (i = 0, ilen = capabilities.formats.length; i < ilen; i += 1) {
-        //   const outputFormat = capabilities.formats[i];
-        //   if (outputFormat.name === this.options_.format) {
-        //     outputFormat.default = true;
-        //     break;
-        //   }
-        //   // Fix to show only pdf, png & jpeg formats
-        //   if (outputFormat === 'pdf' || outputFormat === 'png' || outputFormat === 'jpeg') {
-        //     const object = { name: outputFormat };
-        //     capabilities.format.push(object);
-        //   }
-        // }
 
         // forceScale
         capabilities.forceScale = this.options_.forceScale;
@@ -252,15 +232,12 @@ export default class PrinterControl extends M.Control {
   addEvents(html) {
     this.element_ = html;
 
-    // title
     this.inputTitle_ = this.element_.querySelector('.form div.title > input');
 
-    // description
     this.areaDescription_ = this.element_.querySelector('.form div.description > textarea');
 
-    // layout
     const selectLayout = this.element_.querySelector('.form div.layout > select');
-    selectLayout.addEventListener('change', (event) => {
+    selectLayout.addEventListener('change', (e) => {
       const layoutValue = selectLayout.value;
       this.setLayout({
         value: layoutValue,
@@ -274,9 +251,8 @@ export default class PrinterControl extends M.Control {
       name: layoutValue,
     });
 
-    // dpi
     const selectDpi = this.element_.querySelector('.form div.dpi > select');
-    selectDpi.addEventListener('change', (event) => {
+    selectDpi.addEventListener('change', (e) => {
       const dpiValue = selectDpi.value;
       this.setDpi({
         value: dpiValue,
@@ -290,30 +266,26 @@ export default class PrinterControl extends M.Control {
       name: dpiValue,
     });
 
-    // format
     const selectFormat = this.element_.querySelector('.form div.format > select');
-    selectFormat.addEventListener('change', (event) => {
+    selectFormat.addEventListener('change', (e) => {
       this.setFormat(selectFormat.value);
     });
     this.setFormat(selectFormat.value);
 
-    // force scale
     const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
-    checkboxForceScale.addEventListener('click', (event) => {
+    checkboxForceScale.addEventListener('click', (e) => {
       this.setForceScale(checkboxForceScale.checked);
     });
     this.setForceScale(checkboxForceScale.checked);
 
-    // print button
     const printBtn = this.element_.querySelector('.button > button.print');
     printBtn.addEventListener('click', this.printClick_.bind(this));
 
-    // clean button
     const cleanBtn = this.element_.querySelector('.button > button.remove');
     cleanBtn.addEventListener('click', (event) => {
       event.preventDefault();
 
-      // resets values
+      // reset values
       this.inputTitle_.value = '';
       this.areaDescription_.value = '';
       selectLayout.value = this.options_.layout;
@@ -343,7 +315,6 @@ export default class PrinterControl extends M.Control {
       }
     });
 
-    // queue
     this.queueContainer_ = this.element_.querySelector('.queue > ul.queue-container');
     M.utils.enableTouchScroll(this.queueContainer_);
   }
@@ -432,7 +403,7 @@ export default class PrinterControl extends M.Control {
   }
 
   /**
-   * Gets capabilities (.yaml)
+   * Gets capabilities
    *
    * @public
    * @function
@@ -590,7 +561,6 @@ export default class PrinterControl extends M.Control {
     return this.encodeLayers().then((encodedLayers) => {
       printData.attributes.map.layers = encodedLayers;
       printData.attributes = Object.assign(printData.attributes, parameters);
-      // printData.legends = this.encodeLegends();
 
       if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';
@@ -633,7 +603,7 @@ export default class PrinterControl extends M.Control {
       const otherBaseLayers = [];
       layers.forEach((layer) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
-          // Vector layers are added after non vector layers (otherwise they won't be visible).
+          // Vector layers must be added after non vector layers.
           if (!M.utils.isNullOrEmpty(encodedLayer)) {
             if (encodedLayer.type === 'Vector' || encodedLayer.type === 'KML') {
               vectorLayers.push(encodedLayer);
@@ -657,31 +627,7 @@ export default class PrinterControl extends M.Control {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
-   *
-   * @private
-   * @function
-   */
-  encodeLegends() {
-    // TODO
-    const encodedLegends = [];
-
-    const layers = this.map_.getLayers();
-    layers.forEach((layer) => {
-      if ((layer.isVisible() === true) && (layer.inRange() === true)) {
-        const encodedLegend = this.getImpl().encodeLegend(layer);
-        if (encodedLegend !== null) {
-          encodedLegends.push(encodedLegend);
-        }
-      }
-    }, this);
-    return encodedLegends;
-  }
-
-  /**
    * This function creates list element.
-   * to this control
    *
    * @public
    * @function
@@ -698,8 +644,7 @@ export default class PrinterControl extends M.Control {
   }
 
   /**
-   * This function downloads printed map
-   * to this control
+   * This function downloads printed map.
    *
    * @public
    * @function
@@ -713,7 +658,6 @@ export default class PrinterControl extends M.Control {
       window.open(downloadUrl, '_blank');
     }
   }
-
 
   /**
    *  Converts epsg code to projection name.
