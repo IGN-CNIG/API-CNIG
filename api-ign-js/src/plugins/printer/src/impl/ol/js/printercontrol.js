@@ -78,43 +78,6 @@ export default class PrinterControl extends M.impl.Control {
   }
 
   /**
-   * This function encodes legend.
-   *
-   * @public
-   * @function
-   * @param {M.Map} map to add the plugin
-   * @param {function} template template of this control
-   * @api stable
-   */
-  encodeLegend(layer) {
-    let encodedLegend = null;
-
-    if (layer.displayInLayerSwitcher) {
-      encodedLegend = {
-        // name: layer.name,
-        classes: [],
-      };
-
-      const regExpImgDefault = new RegExp(`.*${M.Layer.LEGEND_DEFAULT}$`);
-      const regExpImgError = new RegExp(`.*${M.Layer.LEGEND_ERROR}$`);
-      const legendURL = layer.getLegendURL();
-      if (!M.utils.isNullOrEmpty(legendURL) && !regExpImgDefault.test(legendURL) &&
-        !regExpImgError.test(legendURL)) {
-        encodedLegend.classes[0] = {
-          // name: '',
-          name: layer.name,
-          icons: [layer.getLegendURL()],
-        };
-        if (layer instanceof M.layer.Vector) {
-          delete encodedLegend.classes[0].icons;
-        }
-      }
-    }
-
-    return encodedLegend;
-  }
-
-  /**
    * This function adds the control to the specified map
    *
    * @public
