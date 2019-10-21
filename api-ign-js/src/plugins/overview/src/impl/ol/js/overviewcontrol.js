@@ -12,40 +12,19 @@ export default class OverviewControl extends M.impl.Control {
    * @api stable
    */
   addTo(map, html) {
-    // obtengo la interacción por defecto del dblclick para manejarla
-    const olMap = map.getMapImpl();
-    olMap.getInteractions().forEach((interaction) => {
-      if (interaction instanceof ol.interaction.DoubleClickZoom) {
-        this.dblClickInteraction_ = interaction;
-      }
-    });
-
-    // super addTo - don't delete
     super.addTo(map, html);
   }
 
-  // Add your own functions
-  activateClick(map) {
-    // desactivo el zoom al dobleclick
-    this.dblClickInteraction_.setActive(false);
-
-    // añado un listener al evento dblclick
-    const olMap = map.getMapImpl();
-    olMap.on('dblclick', (evt) => {
-      // disparo un custom event con las coordenadas del dobleclick
-      const customEvt = new CustomEvent('mapclicked', {
-        detail: evt.coordinate,
-        bubbles: true,
-      });
-      map.getContainer().dispatchEvent(customEvt);
+  /**
+   * Adds animation to zoom or center transition to new value on overview map.
+   * @param {*} smallMapView - overview map impl view
+   * @param {Array<Number>} newCenter - new center value for overview map
+   * @param {Number} zoomChange - difference between previous and new zoom on main map
+   */
+  animateViewChange(smallMapView, newCenter, zoomChange) {
+    smallMapView.animate({
+      center: newCenter,
+      zoom: smallMapView.getZoom() + zoomChange,
     });
-  }
-
-  deactivateClick(map) {
-    // activo el zoom al dobleclick
-    this.dblClickInteraction_.setActive(true);
-
-    // elimino el listener del evento
-    map.getMapImpl().removeEventListener('dblclick');
   }
 }

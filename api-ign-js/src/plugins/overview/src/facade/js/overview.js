@@ -69,7 +69,7 @@ export default class Overview extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.control_ = new OverviewControl(this.baseLayer_);
+    this.control_ = new OverviewControl(this.baseLayer_, this.collapsed_);
     this.controls_.push(this.control_);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelOverview', {
