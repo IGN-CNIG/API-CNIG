@@ -15,12 +15,41 @@ export default class OverviewControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor() {
+  constructor(baseLayer, collapsed) {
     if (M.utils.isUndefined(OverviewImplControl)) {
       M.exception('La implementación usada no puede crear controles OverviewControl');
     }
     const impl = new OverviewImplControl();
     super(impl, 'Overview');
+
+    /**
+     * Base layer for overview map.
+     * @private
+     * @type {String}
+     */
+    this.baseLayer = baseLayer;
+
+    /**
+     * Indicates if plugin is collapsed on the beginning.
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsed = collapsed;
+
+    /**
+     * Indicates if collapsed plugin button has already been opened (false) or not (true).
+     * @private
+     * @type {Boolean}
+     */
+    this.isFirstOpening = true;
+
+    /**
+     * Indicates if current zoom change is odd or even change in a series of changes.
+     * So that small map only zooms once every two zoom changes.
+     * @private
+     * @type {Boolean}
+     */
+    // this.isOddViewChange = true;
   }
 
   /**
@@ -49,8 +78,27 @@ export default class OverviewControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.on(M.evt.ADDED_TO_PANEL, this.addMap.bind(this));
+    // loads map
+    if (this.collapsed) {
+      document.querySelector('.overview-panel.collapsed>.m-panel-btn.overview-mundo').addEventListener('click', this.openSmallMap.bind(this));
+    } else {
+      this.on(M.evt.ADDED_TO_PANEL, this.addMap.bind(this));
+    }
+
     this.map.getMapImpl().on('moveend', this.moveMap.bind(this));
+  }
+
+  /**
+   * Adds map on first open click.
+   * @public
+   * @function
+   * @api
+   */
+  openSmallMap() {
+    if (this.isFirstOpening) {
+      this.addMap();
+      this.isFirstOpening = false;
+    }
   }
 
   /**
@@ -66,14 +114,18 @@ export default class OverviewControl extends M.Control {
       maxZoom: 14,
       minZoom: 1,
       center: [-467062.8225, 4683459.6216],
-      // this.map.getZoom() >= 2 ? this.map.getZoom() - 2 : 0,
     });
 
     this.smallMap.removeControls('panzoom');
+
+    if (this.baseLayer !== undefined) {
+      this.smallMap.getBaseLayers().forEach(layer => this.smallMap.removeLayers(layer));
+      this.smallMap.addLayers(this.baseLayer);
+    }
   }
 
   /**
-   * Moves overview map on zoom, drag or pan
+   * Moves overview map on zoom, drag or pan of main map.
    * @public
    * @function
    * @api
@@ -82,15 +134,11 @@ export default class OverviewControl extends M.Control {
     const newZoom = this.map.getMapImpl().getView().getZoom();
     const newCenter = this.map.getMapImpl().getView().getCenter();
 
-    if (newZoom !== this.oldZoom) {
+    if (newZoom !== this.oldZoom || newCenter !== this.oldCenter) {
       const zoomChange = newZoom - this.oldZoom;
-      // FIXME: check new zoom doesn't exit zoom limits
-      this.smallMap.setZoom(this.smallMap.getMapImpl().getView().getZoom() + zoomChange);
+      const smallMapView = this.smallMap.getMapImpl().getView();
+      this.getImpl().animateViewChange(smallMapView, newCenter, zoomChange);
       this.oldZoom = newZoom;
-    }
-
-    if (newCenter !== this.oldCenter) {
-      this.smallMap.setCenter(newCenter);
       this.oldCenter = newCenter;
     }
   }
