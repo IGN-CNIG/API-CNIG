@@ -122,6 +122,8 @@ export default class OverviewControl extends M.Control {
       this.smallMap.getBaseLayers().forEach(layer => this.smallMap.removeLayers(layer));
       this.smallMap.addLayers(this.baseLayer);
     }
+
+    this.fixSquareSize();
   }
 
   /**
@@ -140,8 +142,41 @@ export default class OverviewControl extends M.Control {
       this.getImpl().animateViewChange(smallMapView, newCenter, zoomChange);
       this.oldZoom = newZoom;
       this.oldCenter = newCenter;
+
+      if (this.smallMap !== undefined) setTimeout(this.fixSquareSize.bind(this), 3000);
     }
   }
+
+  /**
+   * Changes preview square size to fit large map bbox.
+   * @public
+   * @function
+   * @api
+   */
+  fixSquareSize() {
+    const square = document.getElementById('zoomSquare');
+    // const square = document.querySelector('div.m-panel.overview-panel.opened>
+    // div.m-panel-controls>div.m-control.m-container.m-overview>span#zoomSquare');
+    const bigBbox = this.map.getBbox();
+    const smallBbox = this.smallMap.getBbox();
+    const smallXDiff = smallBbox.x.max - smallBbox.x.min;
+    const smallYDiff = smallBbox.y.max - smallBbox.y.min;
+    const bigXDiff = bigBbox.x.max - bigBbox.x.min;
+    const bigYDiff = bigBbox.y.max - bigBbox.y.min;
+    const sqWidth = (bigXDiff * 150) / smallXDiff; // 150px container width
+    const sqHeight = (bigYDiff * 150) / smallYDiff; // 150px container height
+    const xMinDiff = bigBbox.x.min - smallBbox.x.min;
+    const yMaxDiff = smallBbox.y.max - bigBbox.y.max;
+    const leftPosition = (150 * xMinDiff) / smallXDiff;
+    const topPosition = (150 * yMaxDiff) / smallYDiff;
+    square.setAttribute('style', `
+     width: ${sqWidth}px !important;
+     height: ${sqHeight}px !important;
+     left: ${leftPosition}px;
+     top: ${topPosition}px
+    `);
+  }
+
 
   /**
    * This function compares controls
