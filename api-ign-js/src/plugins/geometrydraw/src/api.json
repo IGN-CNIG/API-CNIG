@@ -1,0 +1,25 @@
+{
+  "url": {
+    "name": "GeometryDraw",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.GeometryDraw",
+  "parameters": [],
+  "files": {
+    "ol": {
+      "scripts": [],
+      "styles": []
+    }
+  },
+  "metadata": {
+    "name": "GeometryDraw",
+    "description": "Description of the plugin",
+    "text": "A full text about plugin",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}
