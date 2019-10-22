@@ -35,7 +35,7 @@ export default class ZoomExtent extends M.Plugin {
      * Position of the plugin
      *
      * @private
-     * @type {Enum} TL | TR | BL | BR
+     * @type {String} TL | TR | BL | BR
      */
     this.position_ = options.position || 'TL';
   }
@@ -52,8 +52,8 @@ export default class ZoomExtent extends M.Plugin {
     this.controls_.push(new ZoomExtentControl());
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelZoomExtent', {
-      position: M.ui.position[this.position_],
       className: 'm-plugin-zoomextent',
+      position: M.ui.position[this.position_],
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

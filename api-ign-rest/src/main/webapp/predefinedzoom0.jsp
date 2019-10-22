@@ -84,17 +84,9 @@
         const mp = new M.plugin.PredefinedZoom({
             position: 'TR',
             savedZooms: [{
-                    name: 'Zoom a la extensión del mapa',
-                    bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
-                },
-                // {
-                // name: 'asturias',
-                // bbox: [-885446.5357, 5214839.8177, -420709.4037, 5503466.0365],
-                // }, {
-                // name: 'andalucia',
-                // bbox: [-760701.3055, 4292703.5085, -178556.8981, 4632695.4103],
-                // }
-            ],
+                name: 'Zoom a la extensión del mapa',
+                bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
+            }, ],
         });
 
         map.addPlugin(mp);

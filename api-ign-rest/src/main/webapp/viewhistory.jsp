@@ -94,18 +94,7 @@
             tiled: false
         }, {});
 
-        // const ocupacionSuelo = new M.layer.WMTS({
-        //     url: 'https://wmts-mapa-lidar.idee.es/lidar',
-        //     name: 'EL.GridCoverageDSM',
-        //     legend: 'Modelo Digital de Superficies LiDAR',
-        //     matrixSet: 'GoogleMapsCompatible',
-        //     visibility: false,
-        // }, {});
-
-
-        // const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
-
-        map.addLayers([layerinicial, layerUA]); // ocupacionSuelo + kml
+        map.addLayers([layerinicial, layerUA]);
 
         const mp = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
@@ -121,7 +110,7 @@
         });
 
         const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
+            baseUrl: 'https://componentes.ign.es/api-core/',
             position: 'BR',
         });
         const mp4 = new M.plugin.XYLocator({
@@ -189,7 +178,7 @@
                             displayInLayerSwitcher: false,
                             queryable: false,
                             visible: true,
-                            format: 'image/png',
+                            format: 'image/jpeg',
                         }),
                         new M.layer.WMTS({
                             url: 'http://www.ign.es/wmts/ign-base?',
