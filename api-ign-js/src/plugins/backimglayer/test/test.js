@@ -10,7 +10,7 @@ const mp = new BackImgLayer({
   layerVisibility: true,
   layerOpts: [{
       id: 'mapa',
-      preview: 'plugins/backimglayer/images/svqmapa.png',
+      preview: '../src/facade/assets/images/svqmapa.png',
       title: 'Mapa',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/ign-base?',
@@ -27,7 +27,7 @@ const mp = new BackImgLayer({
     {
       id: 'imagen',
       title: 'Imagen',
-      preview: 'plugins/backimglayer/images/svqimagen.png',
+      preview: '../src/facade/assets/images/svqimagen.png',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
@@ -43,7 +43,7 @@ const mp = new BackImgLayer({
     {
       id: 'hibrido',
       title: 'Híbrido',
-      preview: 'plugins/backimglayer/images/svqhibrid.png',
+      preview: '../src/facade/assets/images/svqhibrid.png',
       layers: [new M.layer.WMTS({
           url: 'http://www.ign.es/wmts/pnoa-ma?',
           name: 'OI.OrthoimageCoverage',
@@ -70,7 +70,7 @@ const mp = new BackImgLayer({
     },
     {
       id: 'lidar',
-      preview: 'plugins/backimglayer/images/svqlidar.png',
+      preview: '../src/facade/assets/images/svqlidar.png',
       title: 'LIDAR',
       layers: [new M.layer.WMTS({
         url: 'https://wmts-mapa-lidar.idee.es/lidar?',
@@ -89,7 +89,8 @@ const mp = new BackImgLayer({
 // Formato parámetros REST:
 // ids: 'mapa,hibrido',
 // titles: 'Mapa,Hibrido',
-// previews: '', // '../src/facade/assets/images/svqmapa.png,../src/facade/assets/images/svqhibrid.png',
+// previews: '', // '../src/facade/assets/images/svqmapa.png,
+// ../src/facade/assets/images/svqhibrid.png',
 // layers: 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/pngasteriscofalseasteriscofalseasteriscotruesumarWMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue',
 
 

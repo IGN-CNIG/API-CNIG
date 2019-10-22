@@ -110,7 +110,7 @@
         });
 
         const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'http://componentes.ign.es/api-core/',
+            baseUrl: 'https://componentes.ign.es/api-core/',
             position: 'BR',
         });
         const mp4 = new M.plugin.XYLocator({
@@ -178,7 +178,7 @@
                             displayInLayerSwitcher: false,
                             queryable: false,
                             visible: true,
-                            format: 'image/png',
+                            format: 'image/jpeg',
                         }),
                         new M.layer.WMTS({
                             url: 'http://www.ign.es/wmts/ign-base?',

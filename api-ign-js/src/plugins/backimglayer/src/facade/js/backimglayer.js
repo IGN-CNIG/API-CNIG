@@ -105,8 +105,8 @@ export default class BackImgLayer extends M.Plugin {
      */
     this.layers = options.layers || '';
 
-    this.collapsed = options.collapsed || true;
-    this.collapsible = options.collapsible || true;
+    this.collapsed = options !== undefined ? options.collapsed : true;
+    this.collapsible = options !== undefined ? options.collapsible : true;
   }
 
   /**
@@ -157,7 +157,7 @@ export default class BackImgLayer extends M.Plugin {
     const layers = this.layerOpts === undefined ?
       `${this.ids}*${this.titles}*${this.previews}*${this.layers}` :
       this.turnLayerOptsIntoUrl();
-    return `${this.name}=${this.position_}*${this.layerId}*${this.layerVisibility}*${layers}`;
+    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.layerId}*${this.layerVisibility}*${layers}`;
   }
 
   /**
@@ -187,8 +187,9 @@ export default class BackImgLayer extends M.Plugin {
 
       l.layers.forEach((layer) => {
         const isFirstLayer = l.layers.indexOf(layer) === 0;
+        const visible = layer.options.visibility === undefined ? true : layer.options.visibility;
 
-        if (!isFirstLayer) layersUrl += 'sumar'; // FIXME: +
+        if (!isFirstLayer) layersUrl += 'sumar';
 
         layersUrl += `${layer.options.type}`;
         layersUrl += `asterisco${layer.options.url}`;
@@ -196,15 +197,12 @@ export default class BackImgLayer extends M.Plugin {
         layersUrl += `asterisco${layer.options.matrixSet}`;
         layersUrl += `asterisco${layer.options.legend}`;
 
-        // transparent (= false means it's a baselayer)
-        // layersUrl += isFirstLayer ? 'asteriscofalse' : 'asteriscotrue';
         layersUrl += `asterisco${layer.options.transparent}`;
 
         layersUrl += `asterisco${layer.options.format}`;
         layersUrl += `asterisco${layer.options.displayInLayerSwitcher}`;
         layersUrl += `asterisco${layer.options.queryable}`;
-        layersUrl += `asterisco${layer.options.visibility}`;
-        // map.getPlugins()[7].options.layerOpts[0].layers[0].options.displayInLayerSwitcher
+        layersUrl += `asterisco${visible}`;
       });
     });
 

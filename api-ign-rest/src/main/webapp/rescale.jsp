@@ -22,7 +22,6 @@
     <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     <link href="plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
-    </link>
     <style type="text/css">
         html,
         body {
@@ -110,7 +109,7 @@
         });
 
         const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
+            baseUrl: 'https://componentes.ign.es/api-core/',
             position: 'BR',
         });
         const mp4 = new M.plugin.XYLocator({
@@ -180,7 +179,7 @@
                             displayInLayerSwitcher: false,
                             queryable: false,
                             visible: true,
-                            format: 'image/png',
+                            format: 'image/jpeg',
                         }),
                         new M.layer.WMTS({
                             url: 'http://www.ign.es/wmts/ign-base?',

@@ -13,8 +13,8 @@ import DrawFeature from './drawFeature';
 import DeleteFeature from './deleteFeature';
 // import CuadradoSVG from '../assets/css/images/rectangle.svg';
 // import TrianguloSVG from '../assets/css/images/triangulo.svg';
-import CuadradoSVG from '../assets/css/images/rectangle';
-import TrianguloSVG from '../assets/css/images/triangulo';
+import CuadradoSVG from '../assets/css/images/rectangle.svg';
+import TrianguloSVG from '../assets/css/images/triangulo.svg';
 import LocalLayersControl from './locallayersControl';
 
 /**

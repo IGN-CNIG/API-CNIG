@@ -29,13 +29,15 @@
      TITLES
 *********************/
 .m-xylocator-container>div.m-xylocator-panel div.title {
-    color: #71a7d3 !important;
+    color: white !important;
+    background-color: #71a7d3 !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 15px;
+    height: 39px;
     line-height: 40px;
     padding: 0;
     padding-left: 10px;
-    height: 39px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    font-size: 14px;
+    text-align: center;
 }
 
 /*********************
@@ -106,7 +108,7 @@ DROPDOWN ****************************/
 
 
 /****************************
-     FIREFOX HACKS
+     FIREFOX AND CHROME HACKS
 ****************************/
 @-moz-document url-prefix() {
     div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
@@ -117,6 +119,12 @@ DROPDOWN ****************************/
     div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
         width: 33%;
         display: inline-block;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
+        background-color: #e9e8e8 !important;
     }
 }
 
@@ -159,7 +167,7 @@ div.m-xylocator-container>div.m-xylocator-panel>div.button {
     justify-content: center;
     text-align: center;
     display: flex;
-    background-color: #eaeaea;
+    background-color: #e9e8e8;
 }
 
 /***************
@@ -170,16 +178,18 @@ div.m-xylocator-container>div.m-xylocator-panel>div.button {
 }
 
 .m-areas>div.m-area>div.m-panel.m-xylocator>button.m-panel-btn {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2),
+        0 -1px 0px rgba(0, 0, 0, 0.02);
+    color: #71a7d3;
     position: absolute;
-    background-color: #71a7d3;
-    color: #fff;
+    right: -40px;
     z-index: 999999;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
 }
 
-.m-areas>div.m-area>div.m-panel.m-xylocator.left>button.m-panel-btn {
+/* .m-areas>div.m-area>div.m-panel.m-xylocator.left>button.m-panel-btn {
     right: 0;
-}
+} */
 
 .m-areas>div.m-area>div.m-panel.m-xylocator.collapsed>button.m-panel-btn {
     position: inherit;
@@ -236,8 +246,8 @@ div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
 
     .m-areas>div.m-area>div.m-panel.m-xylocator>button.m-panel-btn {
         position: absolute;
-        background-color: #71a7d3;
-        color: #fff;
+        background-color: #fff;
+        color: #71a7d3;
         z-index: 999999;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
     }

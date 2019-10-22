@@ -1,0 +1,44 @@
+{
+  "url": {
+    "name": "printer",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.Printer",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0
+    }, {
+      "type": "simple",
+      "name": "collapsed",
+      "position": 1
+    }, {
+      "type": "simple",
+      "name": "collapsible",
+      "position": 2
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": [
+        "printer.ol.min.js"
+      ],
+      "styles": [
+        "printer.ol.min.css"
+      ]
+    }
+  },
+  "metadata": {
+    "name": "Printer",
+    "description": "Prints map",
+    "text": "Prints current map using Mapfish in pdf, jpeg or png formats",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

@@ -39,11 +39,6 @@ export default class RescaleControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
       html.querySelector('#m-rescale-scaleinput').addEventListener('keyup', e => this.zoomToInputScale(e));
-      // html.querySelector('#m-rescale-scaleinput')
-      // .addEventListener('keyup', e => this.createTimeout(e));
-      // html.querySelector('#m-rescale-scaleinput').addEventListener('keydown', () => {
-      //   clearTimeout(typingTimer);
-      // });
       success(html);
     });
   }
@@ -67,18 +62,6 @@ export default class RescaleControl extends M.Control {
       }
     }
   }
-
-  // /**
-  //  * This function sets a timeout between keypress and search.
-  //  * @public
-  //  * @function
-  //  * @param {e} event that triggers the method
-  //  * @api
-  //  */
-  // createTimeout(e) {
-  //   clearTimeout(typingTimer);
-  //   typingTimer = setTimeout(() => this.zoomToInputScale(e), 500);
-  // }
 
   /**
    * This function gets activation button

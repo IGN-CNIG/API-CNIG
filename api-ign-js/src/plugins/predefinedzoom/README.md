@@ -23,6 +23,19 @@ Centra el mapa en la/s vista/s indicada/s por parámetro.
   - 'TR':top right (default)
   - 'BL':bottom left
   - 'BR':bottom right
+- **savedZooms**. Indica los zooms deseados en los que se podrá centrar el mapa. Por defecto, hay un solo zoom a España. Para añadir un zoom adicional se seguirá el siguiente formato:
+
+```javascript
+    savedZooms: [{
+        name: 'Zoom a la extensión del mapa',
+        bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
+      },
+      {
+        name: 'Nuevo zoom',
+        bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
+      },
+    ],
+```
 
   
 # Ejemplos de uso
@@ -48,55 +61,4 @@ map.addPlugin(mp);
       });
 
    map.addPlugin(mp);
-```
-
-
-## Api.json
-
-### Plugin sin parámetros
-
-```
-{
-   "url": {
-      "name": "predefinedzoom"
-   },
-   "constructor": "M.plugin.PredefinedZoom"
-}
-```
-### Plugin con parámetros
-
-```
-{
-  "url": {
-    "name": "predefinedzoom",
-    "separator": "*"
-  },
-  "constructor": "M.plugin.PredefinedZoom",
-  "parameters": [{
-    "type": "simple",
-    "name": "position",
-    "position": 0
-  }, {
-    "type": "array",
-    "name": "savedZooms",
-    "position": 1
-  }],
-  "files": {
-    "ol": {
-      "scripts": "predefinedzoom.ol.min.js",
-      "styles": "predefinedzoom.ol.min.css"
-    }
-  },
-  "metadata": {
-    "name": "predefinedzoom",
-    "description": "Zooms to predefined map views",
-    "text": "Zooms to predefined map views (given Bbox)",
-    "version": "1.0.0",
-    "date": "",
-    "author": "",
-    "org": "",
-    "tags": "mapea,plugin",
-    "icon": "./facade/assets/icons/icons.svg"
-  }
-}
 ```

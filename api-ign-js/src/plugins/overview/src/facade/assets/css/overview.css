@@ -1,0 +1,88 @@
+/* Panel & co */
+
+div.m-areas>div.m-area>div.m-panel.opened.overview-panel {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+div.m-panel.overview-panel.opened>div.m-panel-controls {
+    background-color: white !important;
+}
+
+div.m-areas>div.m-area.m-bottom>div.m-panel.overview-panel.opened>div.m-panel-controls {
+    width: 100%;
+}
+
+
+/* Closing button */
+
+div.m-areas>div.m-area>div.m-panel.overview-panel.opened>button.m-panel-btn {
+    background-color: white !important;
+    color: #71a7d3 !important;
+}
+
+div.m-areas>div.m-area.m-bottom.m-left>div.m-panel.overview-panel.opened>button.m-panel-btn {
+    position: absolute;
+    right: -40px;
+}
+
+div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.overview-panel.opened>button.m-panel-btn {
+    position: absolute;
+    left: -40px;
+}
+
+
+/* Small map*/
+
+div.m-panel.overview-panel.opened>div.m-panel-controls>div.m-control.m-container.m-overview>div#smallmap {
+    border: 1px solid #71a7d3;
+    height: 150px;
+    position: relative;
+    width: 150px;
+}
+
+div.m-panel.overview-panel.opened>div.m-panel-controls>div.m-control.m-container.m-overview>span#zoomSquare {
+    background-color: transparent;
+    border: 1px solid red;
+    height: 60px;
+    left: 80px;
+    position: absolute;
+    top: 45px;
+    width: 80px;
+}
+
+div.m-area.m-left>div.m-panel.overview-panel.opened>div.m-panel-controls>div.m-control.m-container.m-overview>span#zoomSquare,
+div.m-area.m-right.m-bottom>div.m-panel.overview-panel.opened>div.m-panel-controls>div.m-control.m-container.m-overview>span#zoomSquare {
+    left: 38px;
+}
+
+/* Icon font */
+
+@font-face {
+    font-family: 'overview';
+    src: url('../fonts/overview.eot?7hnq13');
+    src: url('../fonts/overview.eot?7hnq13#iefix') format('embedded-opentype'),
+        url('../fonts/overview.ttf?7hnq13') format('truetype'),
+        url('../fonts/overview.woff?7hnq13') format('woff'),
+        url('../fonts/overview.svg?7hnq13#overview') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+div.m-areas>div.m-area>div.m-panel.overview-panel.collapsed>button.m-panel-btn {
+    font-family: 'overview' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+div.m-areas>div.m-area>div.m-panel.overview-panel.collapsed>button.m-panel-btn.overview-mundo:before {
+    content: "\e1999";
+}

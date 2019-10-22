@@ -13,8 +13,8 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
-    <link href="plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
-    </link>
+    <link href="plugins/overview/overview.ol.min.css" rel="stylesheet" />
+    <link href="plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
@@ -43,7 +43,8 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
-    <script type="text/javascript" src="plugins/measurebar/measurebar.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/overview/overview.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/overviewmap/overviewmap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -57,35 +58,33 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
             center: [-467062.8225, 4683459.6216],
         });
 
-        const layerinicial = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
+        // OVERVIEW
+        // const mp = new M.plugin.OverviewMap({
+        //   position: 'BR',
+        // });
+        // map.addLayers(['WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*false', 'WMS_FULL*http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Permeabilidad_Andalucia?']);
 
-        const layerUA = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeUnit',
-            legend: 'Unidad administrativa',
-            tiled: false
-        }, {});
-
-        map.addLayers([layerinicial, layerUA]);
-
-
-        const mp = new M.plugin.MeasureBar({
-            position: 'TL'
+        const ov = new M.plugin.Overview({
+            collapsed: true,
+            collapsible: true,
+            position: 'BR',
+            baseLayer: 'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA*false*image/jpeg*false*false*true',
         });
 
+        const mp = new M.plugin.OverviewMap({
+            position: 'TR',
+        });
+
+        map.addPlugin(ov);
         map.addPlugin(mp);
+
+        window.map = map;
     </script>
 </body>
 

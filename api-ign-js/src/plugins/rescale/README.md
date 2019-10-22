@@ -1,52 +1,47 @@
 # M.plugin.Rescale
 
-## Api.json
 
-INTEGRACIÓN DE PARÁMETROS EN API REST
-
-OPCIONES:  
-1. Nuevo parámetro en la API REST normalmente porque requiera parámetros de configuración.
-Example: <url_mapea>?geosearch=[params]
-Example: <url_mapea>?printer=[params]
-
-2. Nuevo valor para el parámetro plugins, el plugin no requiere configuración
-Example: <url_mapea>?plugins=measurebar,streetview
+Hace zoom a la escala elegida.
 
 
-### Plugin sin parámetros
+# Dependencias
 
+- rescale.ol.min.js
+- rescale.ol.min.css
+
+
+```html
+ <link href="../../plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/rescale/rescale.ol.min.js"></script>
 ```
-{
-   "url": {
-      "name": "nombre_plugin"
-   },
-   "constructor": "M.plugin.nombre_plugin"
-}
-```
-### Plugin con parámetros
 
+# Parámetros
+
+- El constructor se inicializa con un JSON de options con los siguientes atributos:
+
+- **position**. Indica la posición donde se mostrará el plugin
+  - 'TL':top left
+  - 'TR':top right (default)
+  - 'BL':bottom left
+  - 'BR':bottom right
+
+  
+# Ejemplos de uso
+
+```javascript
+const mp = new M.plugin.Rescale();
+
+map.addPlugin(mp);
 ```
-{
-   "url": {
-      "name": "geosearch",
-      "separator": "*"
-   },
-   "constructor": "M.plugin.Geosearch",
-   "parameters": [{
-      "type": "object",
-      "properties": [{
-         "type": "simple",
-         "name": "url",
-         "position": 0
-      }, {
-         "type": "simple",
-         "name": "core",
-         "position": 1
-      }, {
-         "type": "simple",
-         "name": "handler",
-         "position": 2
-      }]
-   }]
-}
+
+```javascript
+   const map = M.map({
+     container: 'map'
+   });
+
+   const mp = new M.plugin.Rescale({
+        position: 'TL',
+      });
+
+   map.addPlugin(mp);
 ```
