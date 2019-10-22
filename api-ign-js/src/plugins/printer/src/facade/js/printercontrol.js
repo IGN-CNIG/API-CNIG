@@ -518,7 +518,7 @@ export default class PrinterControl extends M.Control {
     let layout = this.layout_.name; // "A3 landscape" (yaml template)
     const dpi = this.dpi_.value;
     const outputFormat = this.format_;
-    const scale = this.map_.getScale().toLocaleString('en').replace(/,/g, '.');
+    // const scale = this.map_.getScale().toLocaleString('en').replace(/,/g, '.');
     const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
@@ -540,7 +540,7 @@ export default class PrinterControl extends M.Control {
         description,
         attributionInfo: attribution,
         refsrs: this.turnProjIntoLegend(projection),
-        numscale: `1:${scale}`,
+        // numscale: `1:${scale}`,
         printDate: currentDate,
         map: {
           dpi,
