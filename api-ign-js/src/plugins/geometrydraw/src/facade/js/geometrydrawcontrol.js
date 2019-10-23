@@ -23,17 +23,67 @@ export default class GeometryDrawControl extends M.Control {
     const impl = new GeometryDrawImplControl();
     super(impl, 'GeometryDraw');
 
+    /**
+     * Number of features drawn on current layer.
+     */
     this.numberOfDrawFeatures = 0;
 
+    /**
+     * Check if click on point/line/polygon button is
+     * activation click (true) or deactivation click (false).
+     */
+    this.oddPointClick = undefined;
+    this.oddLineClick = undefined;
+    this.oddPolygonClick = undefined;
+
+    /**
+     * Selected feature
+     */
+    this.feature = undefined;
+
+    /**
+     * Current geometry selected.
+     */
+    this.geometry = undefined; // Point, LineString, Polygon
+
+    /**
+     * Template that expands drawing tools with color and thickness options.
+     */
+    this.drawingTools = undefined;
+
+    /**
+     * Current color for drawing features.
+     */
+    this.currentColor = undefined;
+
+    /**
+     * Current line thickness (or circle radius) for drawing features.
+     */
+    this.currentThickness = undefined;
+
+    /**
+     * Saves OL instance of drawing layer ( __ draw__ layer from Mapea)
+     * where features will be drawn.
+     */
+    this.vectorLayer = undefined;
+
+    /**
+     * Source for vector layer
+     */
+    this.vectorSource = undefined;
+
+    /**
+     * Style for vector layer
+     */
+    this.vectorStyle = undefined;
+
+    /**
+     * Mapea layer where a square will be drawn around selected feature.
+     */
     this.selectionLayer = new M.layer.Vector({
       name: 'selectLayer',
       source: this.getImpl().newVectorSourceWithCollectionFeatures(),
     });
-
-    /**
-     * Checks if click on point button is activation click or deactivation click.
-     */
-    this.oddPointClick = undefined;
   }
 
   /**
@@ -46,42 +96,118 @@ export default class GeometryDrawControl extends M.Control {
    */
   createView(map) {
     this.map = map;
-
-    this.doStuff();
-
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
+      this.initializeLayers();
+      this.createDrawingTemplate();
       this.addEvents(html);
       success(html);
     });
   }
 
-  addEvents(html) {
-    html.querySelector('#pointdrawing').addEventListener('click', this.pointClick.bind(this));
-    // FIXME: create listeners for line and polygon
+  /**
+   * Creates template with drawing options.
+   * @public
+   * @function
+   * @api
+   */
+  createDrawingTemplate() {
+    this.drawingTools = M.template.compileSync(drawingTemplate, { jsonp: true });
+
+    this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
+    this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
+
+    this.drawingTools.querySelector('#colorSelector').addEventListener('change', this.styleChange.bind(this));
+    this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', this.styleChange.bind(this));
   }
 
-  pointClick() {
-    // activates drawing, adds events 1st time
-    if (this.oddPointClick || this.oddPointClick === undefined) {
-      const drawingTools = M.template.compileSync(drawingTemplate, { jsonp: true });
-      this.geometry = 'Point'; // LineString, Polygon
-      this.currentFill = drawingTools.querySelector('#colorSelector').value;
-      this.currentRadius = drawingTools.querySelector('#thicknessSelector').value;
+  /**
+   * Adds event listeners to geometry buttons.
+   * @public
+   * @function
+   * @api
+   * @param {String} html - Geometry buttons template.
+   */
+  addEvents(html) {
+    html.querySelector('#pointdrawing').addEventListener('click', (e) => {
+      this.geometryBtnClick('Point');
+    });
+    html.querySelector('#linedrawing').addEventListener('click', (e) => {
+      this.geometryBtnClick('LineString');
+    });
+    html.querySelector('#polygondrawing').addEventListener('click', (e) => {
+      this.geometryBtnClick('Polygon');
+    });
+    html.querySelector('#cleanAll').addEventListener('click', this.cleanDrawnFeatures.bind(this));
+  }
 
-      if (this.oddPointClick === undefined) {
-        drawingTools.querySelector('#colorSelector').addEventListener('change', this.styleChange.bind(this));
-        drawingTools.querySelector('#thicknessSelector').addEventListener('change', this.styleChange.bind(this));
+  /**
+   * Deletes all drawn features.
+   * @public
+   * @function
+   * @api
+   */
+  cleanDrawnFeatures() {
+    // FIXME: doesn't clean properly
+    const layer = this.vectorLayer;
+    this.vectorSource.getFeatures().forEach((feature) => {
+      layer.getSource().removeFeature(feature);
+    });
+    this.selectionLayer.getImpl().getOL3Layer().getSource().removeFeature(this.square);
+  }
+
+  /**
+   * Shows/hides drawing template and
+   * adds/removes draw interaction.
+   * @public
+   * @function
+   * @api
+   * @param {String} geometry - clicked button geometry type
+   */
+  geometryBtnClick(geometry) {
+    const lastGeometry = this.geometry;
+    let oddOrNot;
+    this.geometry = geometry;
+
+    switch (geometry) {
+      case 'Point':
+        oddOrNot = this.oddPointClick;
+        this.oddPointClick = this.oddPointClick === false;
+        break;
+      case 'LineString':
+        oddOrNot = this.oddLineClick;
+        this.oddLineClick = this.oddLineClick === false;
+        break;
+      case 'Polygon':
+        oddOrNot = this.oddPolygonClick;
+        this.oddPolygonClick = this.oddPolygonClick === false;
+        break;
+      default:
+        break;
+    }
+
+    // button is clicked for the 1st time
+    if (oddOrNot || oddOrNot === undefined) {
+      // resets last used geometry button counter
+      // to avoid conflicts if two buttons are clicked consecutively
+      if (document.querySelector('.m-geometrydraw').querySelector('#drawingtools') !== null) {
+        if (lastGeometry === 'Point') {
+          this.oddPointClick = true;
+        } else if (lastGeometry === 'LineString') {
+          this.oddLineClick = true;
+        } else {
+          this.oddPolygonClick = true;
+        }
+        this.deleteOnClickEvent();
+        // FIXME: unselect last feature
       }
-      document.querySelector('.m-geometrydraw').appendChild(drawingTools);
+      document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       this.addOnClickEvent();
-      this.oddPointClick = false;
-    } else {
-      // TODO: deactivates click, hide template
+    } else { // button is clicked for the 2nd time
+      document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
       this.deleteOnClickEvent();
-      // FIXME: either delete template or create is just once
-      // document.querySelector('#drawingtools').style.display = 'none';
-      this.oddPointClick = true;
+      this.selectionLayer.getImpl().getOL3Layer().getSource().removeFeature(this.square);
+      this.feature = undefined;
     }
   }
 
@@ -89,24 +215,46 @@ export default class GeometryDrawControl extends M.Control {
    * Changes style of current feature.
    */
   styleChange() {
-    const fillValue = document.querySelector('#colorSelector').value;
-    const radiusValue = document.querySelector('#thicknessSelector').value;
-    this.currentFill = fillValue;
-    this.currentRadius = radiusValue;
+    this.currentColor = document.querySelector('#colorSelector').value;
+    this.currentThickness = document.querySelector('#thicknessSelector').value;
 
-    const newPointStyle = this.getImpl().newOLCircleStyle({
-      radius: radiusValue,
-      strokeColor: 'white',
-      strokeWidth: 2,
-      fillColor: fillValue,
-    });
-    this.feature.setStyle(newPointStyle);
+    switch (this.geometry) {
+      case 'Point':
+        const newPointStyle = this.getImpl().newOLCircleStyle({
+          radius: this.currentThickness,
+          strokeColor: 'white',
+          strokeWidth: 2,
+          fillColor: this.currentColor,
+        });
+        if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
+        break;
+      case 'LineString':
+        const newLineStyle = this.getImpl()
+          .newSimpleLineStyle(this.currentColor, this.currentThickness);
+        if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
+        break;
+      case 'Polygon':
+        const newPolygonStyle = this.getImpl().newPolygonStyle({
+          fillColor: 'rgba(255, 255, 255, 0.2)',
+          strokeColor: this.currentColor,
+          strokeWidth: this.currentThickness,
+        });
+        if (this.feature !== undefined) this.feature.setStyle(newPolygonStyle);
+        break;
+      default:
+        break;
+    }
   }
 
-
-  /* FIXME: fix following TAKE to Impl */
-
-  doStuff() {
+  /**
+   * Refreshes number of drawn features.
+   * Adds style and source to vector layer.
+   * Adds selection layer to map.
+   * @public
+   * @function
+   * @api
+   */
+  initializeLayers() {
     if (this.numberOfDrawFeatures === 0) {
       this.numberOfDrawFeatures = this.map.getLayers()[this.map.getLayers().length - 1]
         .getFeatures().length;
@@ -114,31 +262,22 @@ export default class GeometryDrawControl extends M.Control {
     this.vectorLayer = this.map.getLayers()[this.map.getLayers().length - 1]
       .getImpl().getOL3Layer();
     this.vectorSource = this.getImpl().newVectorSource();
+
+    // default layer styles
     this.vectorStyle = this.getImpl().newOLStyle({
       fillColor: 'rgba(255, 255, 255, 0.2)',
-      strokeColor: '#ffcc33',
+      strokeColor: '#71a7d3',
       strokeWidth: 2,
       circleRadius: 7,
-      circleFill: '#ffcc33',
+      circleFill: '#71a7d3',
     });
-    // this.vectorLayer.set('vendor.mapaalacarta.selectable', true);
     this.map.addLayers(this.selectionLayer);
     this.vectorLayer.setStyle(this.vectorStyle);
     this.vectorLayer.setSource(this.vectorSource);
   }
 
-  activate() {
-    super.activate();
-    this.addOnClickEvent();
-  }
-
-  deactivate() {
-    super.deactivate();
-    this.deleteOnClickEvent();
-  }
-
   /**
-   * This function adds the event singleclick to the specified map
+   * This function adds draw interaction to map.
    *
    * @private
    * @function
@@ -146,15 +285,10 @@ export default class GeometryDrawControl extends M.Control {
   addOnClickEvent() {
     const olMap = this.map.getMapImpl();
     if (this.geometry !== 'Text') {
+      // creates new draw interaction
       this.draw = this.getImpl().newDrawInteraction(this.vectorSource, this.geometry);
-      this.draw.on('drawend', (event) => {
-        this.feature = event.feature;
-        this.feature.setId(`draw-${this.numberOfDrawFeatures}`);
-        this.feature.set('name', this.feature.getId());
-        this.numberOfDrawFeatures += 1;
-        const featureMapea = this.convertToMFeature_(this.feature);
-        this.setFeature2(featureMapea.getImpl().getOLFeature());
-      });
+      // saves new feature (on draw ending)
+      this.addDrawEvent();
     } else {
       this.draw = this.getImpl().newDrawInteraction(this.vectorSource, 'Point');
       this.draw.on('drawend', (event) => {
@@ -165,26 +299,79 @@ export default class GeometryDrawControl extends M.Control {
     olMap.addInteraction(this.draw);
   }
 
+  /**
+   * Defines function to be executed on click on draw interaction.
+   * Creates feature with drawing and adds it to map.
+   */
+  addDrawEvent() {
+    this.draw.on('drawend', (event) => {
+      this.feature = event.feature;
+      // this.feature.set('name', this.feature.getId());
+      // this.feature.setId(`draw-${this.numberOfDrawFeatures}`);
+      // this.numberOfDrawFeatures += 1;
+
+      if (this.geometry === 'Point') {
+        this.feature.setStyle(this.getImpl().newOLCircleStyle({
+          radius: this.currentThickness || 6,
+          strokeColor: 'white',
+          strokeWidth: 2,
+          fillColor: this.currentColor || '#71a7d3',
+        }));
+      } else if (this.geometry === 'LineString') {
+        this.feature.setStyle(this.getImpl().newSimpleLineStyle(
+          this.currentColor,
+          this.currentThickness,
+        ));
+      } else { // Polygon
+        this.feature.setStyle(this.getImpl().newPolygonStyle({
+          fillColor: 'rgba(255, 255, 255, 0.2)',
+          strokeColor: this.currentColor,
+          strokeWidth: this.currentThickness,
+        }));
+      }
+
+      const featureMapea = this.getImpl().OLToMapeaFeature(this.feature);
+      this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(featureMapea);
+      this.setFeature(featureMapea.getImpl().getOLFeature());
+    });
+  }
+
+  // turnPointsIntoCoords(pointsArray) {
+  //   const coordsArray = [];
+  //   for (let i = 0; i < pointsArray.length; i += 2) {
+  //     coordsArray.push([pointsArray[i], pointsArray[i + 1]]);
+  //   }
+  //   return coordsArray;
+  // }
+
   setContent_(feature) {
-    feature.setStyle(this.getImpl().newOLTextStyle(
-      'Texto',
-      '12px Arial',
-      '#000000',
-      'rgba(213, 0, 110, 0)',
-      0,
-    ));
+    feature.setStyle(this.getImpl().newOLTextStyle({
+      text: 'Texto',
+      font: '12px Arial',
+      textFillColor: '#000000',
+      defaultColor: 'rgba(213, 0, 110, 0)',
+      strokeWidth: 0,
+    }));
     this.feature = feature;
     this.feature.setId(`draw-${this.numberOfDrawFeatures}`);
     this.numberOfDrawFeatures += 1;
     this.feature.set('name', this.feature.getId());
-    const featureMapea = this.convertToMFeature_(this.feature);
-    this.setFeature2(featureMapea.getImpl().getOLFeature());
+    const featureMapea = this.getImpl().OLToMapeaFeature(this.feature);
+    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(featureMapea);
+    this.setFeature(featureMapea.getImpl().getOLFeature());
   }
 
+  /**
+   * Removes draw interaction from map.
+   */
   deleteOnClickEvent() {
     this.map.getMapImpl().removeInteraction(this.draw);
   }
 
+  /**
+   * Turns OpenLayers feature into Mapea feature.
+   * @param {OpenLayers Feature} olFeature - recently drawn feature
+   */
   convertToMFeature_(olFeature) {
     const feature = new M.Feature(olFeature.getId(), {
       geometry: {
@@ -194,81 +381,62 @@ export default class GeometryDrawControl extends M.Control {
       properties: olFeature.getProperties(),
     });
     feature.getImpl().getOLFeature().setStyle(olFeature.getStyle());
-    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(feature);
     return feature;
   }
 
   /**
-   * This function set layer
-   *
-   * @public
-   * @function
-   * @param {M.layer} layer - Layer
-   * @api stable
+   * Clears selection layer.
+   * Draws square around feature and adds it to selection layer.
+   * For points:
+   *    If feature doesn't have style, sets new style.
    */
-  setFeature(feature) {
-    this.feature = feature.getArray()[0];
-    this.changeSquare(this.feature);
-    // if (this.stylePlugin === null) {
-    //   this.stylePlugin = new M.plugin.StyleTools(this.feature, this.map, this);
-    // } else {
-    //   this.stylePlugin.changeElements(this.feature, this);
-    // }
-  }
-
-  changeSquare(feature) {
+  changeSquare() {
     this.square = null;
     this.selectionLayer.getImpl().getOL3Layer().getSource().clear();
-    if (this.feature.getGeometry().getType() === 'Point' || this.feature.getGeometry().getType() === 'MultiPoint') {
-      if (this.feature.getStyle() === null) {
-        const style2 = this.getImpl().newOLCircleStyle({
-          radius: 6, // this.currentRadius, // FIXME: square grows a lot
-          strokeColor: 'white',
-          strokeWidth: 2,
-          fillColor: this.currentFill || '#71a7d3',
-        });
-        this.feature.setStyle(style2);
-        this.feature.changed();
-        // eslint-disable-next-line no-underscore-dangle
-      } else if (this.feature.getStyle().text_ !== null) {
-        return;
-      }
-
-      let featureSize;
-
-      if (this.feature.getStyle().getImage().getSize() === undefined ||
-        this.feature.getStyle().getImage().getSize() === null) {
-        featureSize = this.feature.get('size');
-      } else {
-        featureSize = this.feature.getStyle().getImage().getSize()[0];
-      }
+    if (this.feature.getGeometry().getType() === 'Point' ||
+      this.feature.getGeometry().getType() === 'MultiPoint') {
+      // if (this.feature.getStyle() === null) {
+      //   // adds new style to feature
+      //   const style2 = this.getImpl().newOLCircleStyle({
+      //     radius: 6, // this.currentThickness,
+      //     strokeColor: 'white',
+      //     strokeWidth: 2,
+      //     fillColor: this.currentColor || '#71a7d3',
+      //   });
+      //   this.feature.setStyle(style2);
+      //   // fires 'change' (& increases revision counter)
+      //   this.feature.changed();
+      // }
+      // eslint-disable-next-line no-underscore-dangle
+      //  else if (this.feature.getStyle().text_ !== null) {
+      //   return;
+      // }
 
       this.square = this.getImpl().cloneFeature(this.feature.getGeometry().clone());
       this.square.setStyle(this.getImpl().newRegularShapeStyle({
         strokeColor: '#FF0000',
         strokeWidth: 2,
         points: 4,
-        radius: (featureSize / 1.5) + 5,
+        radius: 25,
         rotation: Math.PI / 4,
       }));
-
       this.selectionLayer.getImpl().getOL3Layer().getSource().addFeature(this.square);
     } else {
       const extent = this.feature.getGeometry().getExtent();
       this.square = this.getImpl().newPolygonFeature(extent);
-      this.square.setStyle(this.getImpl().newSquareStyle('#FF0000', 2));
+      this.square.setStyle(this.getImpl().newSimpleLineStyle('#FF0000', 2));
       this.selectionLayer.getImpl().getOL3Layer().getSource().addFeature(this.square);
     }
   }
 
-  setFeature2(feature) {
-    this.feature = feature;
-    this.changeSquare(this.feature);
-    // if (this.stylePlugin === null) {
-    //   this.stylePlugin = new M.plugin.StyleTools(this.feature, this.map, this);
-    // } else {
-    //   this.stylePlugin.changeElements(this.feature, this);
-    // }
+  /**
+   * Updates current feature var.
+   * Adds selection square to feature.
+   * @param {*} feature -
+   */
+  setFeature(feature) {
+    this.feature = feature; // = feature.getArray()[0];
+    this.changeSquare();
   }
 
   // radiansToDegrees_(radians) {
