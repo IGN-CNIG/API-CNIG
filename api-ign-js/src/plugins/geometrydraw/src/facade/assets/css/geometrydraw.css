@@ -9,7 +9,8 @@ div.m-panel.m-geometrydraw.collapsed {
     height: 40px;
 }
 
-div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#geometryBtns>button {
+div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#geometryBtns>button,
+div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#otherBtns>button {
     background-color: white;
     border: none;
     font-size: 20px;
@@ -35,6 +36,7 @@ div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#geometryB
 /* [class^="geometrydraw-"],
 [class*=" geometrydraw-"] */
 div.m-geometrydraw>div#geometryBtns>button,
+div.m-geometrydraw>div#otherBtns>button,
 .m-areas>div.m-area>div.m-panel.collapsed>button.m-panel-btn.geometrydraw-editar {
     font-family: 'geometrydraw' !important;
     font-style: normal;
