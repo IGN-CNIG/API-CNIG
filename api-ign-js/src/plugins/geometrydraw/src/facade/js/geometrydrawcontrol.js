@@ -20,8 +20,12 @@ export default class GeometryDrawControl extends M.Control {
     if (M.utils.isUndefined(GeometryDrawImplControl)) {
       M.exception('La implementación usada no puede crear controles GeometryDrawControl');
     }
+
     const impl = new GeometryDrawImplControl();
     super(impl, 'GeometryDraw');
+
+    // facade control goes to impl as reference param
+    impl.facadeControl = this;
 
     /**
      * Number of features drawn on current layer.
@@ -29,12 +33,17 @@ export default class GeometryDrawControl extends M.Control {
     this.numberOfDrawFeatures = 0;
 
     /**
-     * Check if click on point/line/polygon button is
+     * Checks if click on point/line/polygon button is
      * activation click (true) or deactivation click (false).
      */
-    this.oddPointClick = undefined;
-    this.oddLineClick = undefined;
-    this.oddPolygonClick = undefined;
+    this.firstPointClick = undefined;
+    this.firstLineClick = undefined;
+    this.firstPolygonClick = undefined;
+
+    /**
+     * Checks if click on edition button is first click.
+     */
+    this.firstEditClick = undefined;
 
     /**
      * Selected feature
@@ -75,7 +84,7 @@ export default class GeometryDrawControl extends M.Control {
     /**
      * OL vector source for draw interactions.
      */
-    this.vectorSource = undefined;
+    this.vectorSource = this.getImpl().newVectorSource(false);
 
     /**
      * Style for vector layer
@@ -87,7 +96,7 @@ export default class GeometryDrawControl extends M.Control {
      */
     this.selectionLayer = new M.layer.Vector({
       name: 'selectLayer',
-      source: this.getImpl().newVectorSourceWithCollectionFeatures(),
+      source: this.getImpl().newVectorSource(true),
     });
   }
 
@@ -144,7 +153,8 @@ export default class GeometryDrawControl extends M.Control {
       this.geometryBtnClick('Polygon');
     });
     html.querySelector('#cleanAll').addEventListener('click', this.cleanDrawnFeatures.bind(this));
-    html.querySelector('#download').addEventListener('click', this.download.bind(this));
+    html.querySelector('#download').addEventListener('click', this.downloadLayer.bind(this));
+    html.querySelector('#edit').addEventListener('click', this.editBtnClick.bind(this));
   }
 
   /**
@@ -154,6 +164,7 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   cleanDrawnFeatures() {
+    this.resetDrawButtons(this.geometry);
     this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
     this.selectionLayer.removeFeatures([this.square]);
   }
@@ -173,16 +184,16 @@ export default class GeometryDrawControl extends M.Control {
 
     switch (geometry) {
       case 'Point':
-        oddOrNot = this.oddPointClick;
-        this.oddPointClick = this.oddPointClick === false;
+        oddOrNot = this.firstPointClick;
+        this.firstPointClick = this.firstPointClick === false;
         break;
       case 'LineString':
-        oddOrNot = this.oddLineClick;
-        this.oddLineClick = this.oddLineClick === false;
+        oddOrNot = this.firstLineClick;
+        this.firstLineClick = this.firstLineClick === false;
         break;
       case 'Polygon':
-        oddOrNot = this.oddPolygonClick;
-        this.oddPolygonClick = this.oddPolygonClick === false;
+        oddOrNot = this.firstPolygonClick;
+        this.firstPolygonClick = this.firstPolygonClick === false;
         break;
       default:
         break;
@@ -190,26 +201,36 @@ export default class GeometryDrawControl extends M.Control {
 
     // button is clicked for the 1st time
     if (oddOrNot || oddOrNot === undefined) {
-      // resets last used geometry button counter
-      // to avoid conflicts if two buttons are clicked consecutively
-      if (document.querySelector('.m-geometrydraw').querySelector('#drawingtools') !== null) {
-        if (lastGeometry === 'Point') {
-          this.oddPointClick = true;
-        } else if (lastGeometry === 'LineString') {
-          this.oddLineClick = true;
-        } else {
-          this.oddPolygonClick = true;
-        }
-        this.deleteOnClickEvent();
-        // FIXME: unselect last feature
-      }
+      this.resetDrawButtons(lastGeometry);
       document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
-      this.addOnClickEvent();
+      this.addDrawInteraction();
     } else { // button is clicked for the 2nd time
       document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
-      this.deleteOnClickEvent();
+      this.deleteDrawInteraction();
       this.selectionLayer.removeFeatures([this.square]);
       this.feature = undefined;
+    }
+  }
+
+  /**
+   * Resets last used geometry button counter
+   * to avoid conflicts if two buttons are clicked consecutively.
+   * @public
+   * @function
+   * @api
+   * @param {*} lastGeometry - last geometry activated
+   */
+  resetDrawButtons(lastGeometry) {
+    if (document.querySelector('.m-geometrydraw').querySelector('#drawingtools') !== null) {
+      if (lastGeometry === 'Point') {
+        this.firstPointClick = true;
+      } else if (lastGeometry === 'LineString') {
+        this.firstLineClick = true;
+      } else {
+        this.firstPolygonClick = true;
+      }
+      this.deleteDrawInteraction();
+      // FIXME: unselect last feature
     }
   }
 
@@ -265,7 +286,6 @@ export default class GeometryDrawControl extends M.Control {
         .getFeatures().length;
     }
     this.drawLayer = this.map.getLayers()[this.map.getLayers().length - 1];
-    this.vectorSource = this.getImpl().newVectorSource();
 
     // default layer styles
     this.vectorStyle = this.getImpl().newOLStyle({
@@ -286,7 +306,7 @@ export default class GeometryDrawControl extends M.Control {
    * @function
    * @api
    */
-  addOnClickEvent() {
+  addDrawInteraction() {
     const olMap = this.map.getMapImpl();
     if (this.geometry !== 'Text') {
       // creates new draw interaction
@@ -375,7 +395,7 @@ export default class GeometryDrawControl extends M.Control {
   /**
    * Removes draw interaction from map.
    */
-  deleteOnClickEvent() {
+  deleteDrawInteraction() {
     this.map.getMapImpl().removeInteraction(this.draw);
   }
 
@@ -419,56 +439,29 @@ export default class GeometryDrawControl extends M.Control {
     this.changeSquare();
   }
 
-  // radiansToDegrees_(radians) {
-  //   const pi = Math.PI;
-  //   return radians * (180 / pi);
-  // }
+  /* SELECT FEATURE */
 
-  // changeProjectionPoint(arrayCoord, projectionOrigen, projectionDestino) {
-  //   const arrayCoordo = arrayCoord;
-  //   if (this.arrayDimension(arrayCoord, 1) > 1) {
-  //     for (let i = 0; i < arrayCoord.length; i += 1) {
-  //       arrayCoordo[i] = this
-  //         .changeProjectionPoint(arrayCoordo[i], projectionOrigen, projectionDestino);
-  //     }
-  //     return arrayCoordo;
-  //   }
-  //   return ol.proj.transform(arrayCoordo, projectionOrigen, projectionDestino);
-  // }
-
-  // arrayDimension(arr, count) {
-  //   let countputoSlim = count;
-  //   if (arr[0].length !== undefined) {
-  //     countputoSlim += 1;
-  //     return this.arrayDimension(arr[0], countputoSlim);
-  //   }
-  //   return countputoSlim;
-  // }
-
-  // rgbaToHex_(arrayColor) {
-  //   const toHex = (color) => {
-  //     let hex = Number(color).toString(16);
-  //     if (hex.length < 2) {
-  //       hex = `0${hex}`;
-  //     }
-  //     return hex;
-  //   };
-  //   const red = toHex(arrayColor[0]);
-  //   const green = toHex(arrayColor[1]);
-  //   const blue = toHex(arrayColor[2]);
-  //   return `#${red}${green}${blue}`;
-  // }
-
-  // getNumberOfIdFeature() {
-  //   return this.numberOfDrawFeatures;
-  // }
-  // getFeature() {
-  //   return this.feature;
-  // }
+  /**
+   * Activates or deactivates feature selection & modify interaction.
+   * @public
+   * @function
+   * @api
+   */
+  editBtnClick() {
+    this.resetDrawButtons(this.geometry);
+    if (this.firstEditClick || this.firstEditClick === undefined) {
+      this.getImpl().activateSelection();
+      this.firstEditClick = false;
+    } else {
+      this.getImpl().deactivateSelection();
+      this.firstEditClick = true;
+    }
+  }
 
   /* LAYER DOWNLOAD METHODS */
 
-  download() {
+  downloadLayer() {
+    this.resetDrawButtons(this.geometry);
     if (this.drawLayer.getFeatures().length !== 0) {
       const json = JSON.stringify(this.drawLayer.toGeoJSON());
       // const json = JSON.stringify(this.turnMultiGeometriesSimple(this.drawLayer.toGeoJSON()));
@@ -552,4 +545,51 @@ export default class GeometryDrawControl extends M.Control {
   equals(control) {
     return control instanceof GeometryDrawControl;
   }
+
+  // radiansToDegrees_(radians) {
+  //   const pi = Math.PI;
+  //   return radians * (180 / pi);
+  // }
+
+  // changeProjectionPoint(arrayCoord, projectionOrigen, projectionDestino) {
+  //   const arrayCoordo = arrayCoord;
+  //   if (this.arrayDimension(arrayCoord, 1) > 1) {
+  //     for (let i = 0; i < arrayCoord.length; i += 1) {
+  //       arrayCoordo[i] = this
+  //         .changeProjectionPoint(arrayCoordo[i], projectionOrigen, projectionDestino);
+  //     }
+  //     return arrayCoordo;
+  //   }
+  //   return ol.proj.transform(arrayCoordo, projectionOrigen, projectionDestino);
+  // }
+
+  // arrayDimension(arr, count) {
+  //   let countputoSlim = count;
+  //   if (arr[0].length !== undefined) {
+  //     countputoSlim += 1;
+  //     return this.arrayDimension(arr[0], countputoSlim);
+  //   }
+  //   return countputoSlim;
+  // }
+
+  // rgbaToHex_(arrayColor) {
+  //   const toHex = (color) => {
+  //     let hex = Number(color).toString(16);
+  //     if (hex.length < 2) {
+  //       hex = `0${hex}`;
+  //     }
+  //     return hex;
+  //   };
+  //   const red = toHex(arrayColor[0]);
+  //   const green = toHex(arrayColor[1]);
+  //   const blue = toHex(arrayColor[2]);
+  //   return `#${red}${green}${blue}`;
+  // }
+
+  // getNumberOfIdFeature() {
+  //   return this.numberOfDrawFeatures;
+  // }
+  // getFeature() {
+  //   return this.feature;
+  // }
 }
