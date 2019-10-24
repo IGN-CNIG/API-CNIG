@@ -144,6 +144,7 @@ export default class GeometryDrawControl extends M.Control {
       this.geometryBtnClick('Polygon');
     });
     html.querySelector('#cleanAll').addEventListener('click', this.cleanDrawnFeatures.bind(this));
+    html.querySelector('#download').addEventListener('click', this.download.bind(this));
   }
 
   /**
@@ -214,6 +215,9 @@ export default class GeometryDrawControl extends M.Control {
 
   /**
    * Changes style of current feature.
+   * @public
+   * @function
+   * @api
    */
   styleChange() {
     this.currentColor = document.querySelector('#colorSelector').value;
@@ -278,9 +282,9 @@ export default class GeometryDrawControl extends M.Control {
 
   /**
    * This function adds draw interaction to map.
-   *
-   * @private
+   * @public
    * @function
+   * @api
    */
   addOnClickEvent() {
     const olMap = this.map.getMapImpl();
@@ -302,6 +306,9 @@ export default class GeometryDrawControl extends M.Control {
   /**
    * Defines function to be executed on click on draw interaction.
    * Creates feature with drawing and adds it to map.
+   * @public
+   * @function
+   * @api
    */
   addDrawEvent() {
     this.draw.on('drawend', (event) => {
@@ -340,14 +347,13 @@ export default class GeometryDrawControl extends M.Control {
     });
   }
 
-  // turnPointsIntoCoords(pointsArray) {
-  //   const coordsArray = [];
-  //   for (let i = 0; i < pointsArray.length; i += 2) {
-  //     coordsArray.push([pointsArray[i], pointsArray[i + 1]]);
-  //   }
-  //   return coordsArray;
-  // }
-
+  /**
+   * Sets text content on feature
+   * @public
+   * @function
+   * @api
+   * @param {*} feature - OL feature
+   */
   setContent_(feature) {
     feature.setStyle(this.getImpl().newOLTextStyle({
       text: 'Texto',
@@ -458,6 +464,81 @@ export default class GeometryDrawControl extends M.Control {
   // }
   // getFeature() {
   //   return this.feature;
+  // }
+
+  /* LAYER DOWNLOAD METHODS */
+
+  download() {
+    if (this.drawLayer.getFeatures().length !== 0) {
+      const json = JSON.stringify(this.drawLayer.toGeoJSON());
+      // const json = JSON.stringify(this.turnMultiGeometriesSimple(this.drawLayer.toGeoJSON()));
+      const url = window.URL.createObjectURL(new window.Blob([json], { type: 'application/json' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${this.layer}.json`);
+      document.body.appendChild(link);
+      link.click();
+    } else {
+      M.dialog.info('La capa de dibujo está vacía.');
+    }
+  }
+
+
+  // /**
+  //  * This function turns multigeometries into several simple geometries
+  //  * @public
+  //  * @function
+  //  * @param json - geojson
+  //  * @api
+  //  */
+  // turnMultiGeometriesSimple(json) {
+  //   const newJson = {
+  //     type: json.type,
+  //     // totalFeatures: json.totalFeatures,
+  //     features: [],
+  //   };
+  //   json.features.forEach((feature) => {
+  //     const newFeature = {
+  //       type: feature.type,
+  //       id: feature.id,
+  //       geometry: {
+  //         type: '',
+  //         coordinates: [],
+  //       },
+  //       // geometry_name: feature.geometry_name,
+  //       properties: feature.properties,
+  //     };
+
+  //     switch (feature.geometry.type) {
+  //       case 'MultiPoint':
+  //         newFeature.geometry.type = 'Point';
+  //         break;
+  //       case 'MultiLineString':
+  //         newFeature.geometry.type = 'LineString';
+  //         break;
+  //       case 'MultiPolygon':
+  //         newFeature.geometry.type = 'Polygon';
+  //         break;
+  //       default:
+  //         newFeature.geometry.type = feature.geometry.type;
+  //     }
+
+  //     if (feature.geometry.type === 'MultiPoint' ||
+  //       feature.geometry.type === 'MultiLineString' ||
+  //       feature.geometry.type === 'MultiPolygon') {
+  //       feature.geometry.coordinates.forEach((multiElement) => {
+  //         multiElement.forEach((element) => {
+  //           newFeature.geometry.coordinates[0] = element;
+  //           newJson.features.push(newFeature);
+  //         });
+  //       });
+  //     } else {
+  //       newFeature.geometry.coordinates = feature.geometry.coordinates;
+  //       newJson.features.push(newFeature);
+  //     }
+  //   });
+
+  //   return newJson;
   // }
 
   /**
