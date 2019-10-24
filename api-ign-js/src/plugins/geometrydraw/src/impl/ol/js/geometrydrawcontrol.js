@@ -52,6 +52,61 @@ export default class GeometryDrawControl extends M.impl.Control {
   }
 
   /**
+   * Creates polygon feature from extent.
+   * @public
+   * @function
+   * @api
+   * @param {Array} extent - geometry extent
+   */
+  newPolygonFeature(extent) {
+    return new ol.Feature({ geometry: ol.geom.Polygon.fromExtent(extent) });
+  }
+
+  newDrawnPolygonFeature(vertices) {
+    return new ol.Feature({ geometry: ol.geom.Polygon(vertices) });
+  }
+
+  /**
+   * Clones feature
+   * @public
+   * @function
+   * @param {Object} f - OL feature
+   * @api
+   */
+  cloneFeature(f) {
+    return new ol.Feature(f);
+  }
+
+  /**
+   * Turns OpenLayers feature into Mapea feature.
+   * @param {OpenLayers Feature} olFeature - recently drawn feature
+   */
+  OLToMapeaFeature(olFeature) {
+    const feature = new M.Feature(olFeature.getId(), {
+      geometry: {
+        coordinates: olFeature.getGeometry().getCoordinates(),
+        type: olFeature.getGeometry().getType(),
+      },
+      properties: olFeature.getProperties(),
+    });
+    feature.getImpl().getOLFeature().setStyle(olFeature.getStyle());
+    return feature;
+  }
+
+  /**
+   * Sets vector source for layer
+   * @param {*} layer - Mapea layer
+   * @param {*} source - OL source
+   */
+  setOLSource(layer, source) {
+    layer.getImpl().getOL3Layer().setSource(source);
+  }
+
+  /** ***************************************************************************** */
+  /* STYLE METHODS => FIXME: This should be translated into Mapea styles on facade */
+  /** *************************************************************************** */
+
+  /**
    * Creates new OpenLayers style
    * @public
    * @function
@@ -140,21 +195,6 @@ export default class GeometryDrawControl extends M.impl.Control {
   }
 
   /**
-   * Creates polygon feature from extent.
-   * @public
-   * @function
-   * @api
-   * @param {Array} extent - geometry extent
-   */
-  newPolygonFeature(extent) {
-    return new ol.Feature({ geometry: ol.geom.Polygon.fromExtent(extent) });
-  }
-
-  newDrawnPolygonFeature(vertices) {
-    return new ol.Feature({ geometry: ol.geom.Polygon(vertices) });
-  }
-
-  /**
    * Creates OL style for simple line
    * (just color and width)
    * @public
@@ -165,41 +205,5 @@ export default class GeometryDrawControl extends M.impl.Control {
    */
   newSimpleLineStyle(color, width) {
     return new ol.style.Style({ stroke: new ol.style.Stroke({ color, width }) });
-  }
-
-  /**
-   * Clones feature
-   * @public
-   * @function
-   * @param {Object} f - OL feature
-   * @api
-   */
-  cloneFeature(f) {
-    return new ol.Feature(f);
-  }
-
-  /**
-   * Turns OpenLayers feature into Mapea feature.
-   * @param {OpenLayers Feature} olFeature - recently drawn feature
-   */
-  OLToMapeaFeature(olFeature) {
-    const feature = new M.Feature(olFeature.getId(), {
-      geometry: {
-        coordinates: olFeature.getGeometry().getCoordinates(),
-        type: olFeature.getGeometry().getType(),
-      },
-      properties: olFeature.getProperties(),
-    });
-    feature.getImpl().getOLFeature().setStyle(olFeature.getStyle());
-    return feature;
-  }
-
-  /**
-   * Sets vector source for layer
-   * @param {*} layer - Mapea layer
-   * @param {*} source - OL source
-   */
-  setOLSource(layer, source) {
-    layer.getImpl().getOL3Layer().setSource(source);
   }
 }
