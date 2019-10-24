@@ -13,6 +13,7 @@ export default class GeometryDrawControl extends M.impl.Control {
    */
   addTo(map, html) {
     super.addTo(map, html);
+    this.facadeMap_ = map;
   }
 
   /**
@@ -20,20 +21,13 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @public
    * @function
    * @api
+   * @param {Boolean} featuresIncluded - indicates if an OL collection of
+   * features should be included in new source
    */
-  newVectorSource() {
-    return new ol.source.Vector();
-  }
-
-  /**
-   * Creates new OpenLayers vector source with
-   * OpenLayers collections as features
-   * @public
-   * @function
-   * @api
-   */
-  newVectorSourceWithCollectionFeatures() {
-    return new ol.source.Vector({ features: new ol.Collection([]) });
+  newVectorSource(featuresIncluded) {
+    return featuresIncluded ?
+      new ol.source.Vector({ features: new ol.Collection([]) }) :
+      new ol.source.Vector();
   }
 
   /**
@@ -100,6 +94,52 @@ export default class GeometryDrawControl extends M.impl.Control {
    */
   setOLSource(layer, source) {
     layer.getImpl().getOL3Layer().setSource(source);
+  }
+
+  /* SELECTION METHODS */
+
+  activateSelection() {
+    // FIXME: bug on selection
+    const olMap = this.facadeMap_.getMapImpl();
+    const facadeControl = this.facadeControl;
+    this.select = new ol.interaction.Select({
+      wrapX: false,
+      layers: facadeControl.drawLayer,
+      // (layer) => {
+      //   return (layer.get('vendor.mapaalacarta.selectable')
+      // != null && layer.get('vendor.mapaalacarta.selectable') == true);
+      // },
+    });
+
+    this.select.on('select', (e) => {
+      if (e.target.getFeatures().getArray().length > 0) {
+        this.facadeControl.feature = e.target.getFeatures().getArray()[0];
+        this.facadeControl.changeSquare(e.target.getFeatures().getArray()[0]);
+      }
+    });
+
+    olMap.addInteraction(this.select);
+
+    this.edit = new ol.interaction.Modify({ features: this.select.getFeatures() });
+    this.edit.on('modifyend', (evt) => {
+      // eslint-disable-next-line no-underscore-dangle
+      this.facadeControl.feature = evt.target.features_.getArray()[0];
+      if (this.facadeControl.feature.getStyle() !== null &&
+        this.facadeControl.feature.getStyle().length > 1) {
+        this.facadeControl.feature.getStyle()[1].setGeometry(new ol.geom.Point(this.facadeControl
+          .feature.getGeometry().getCoordinates()[this.facadeControl
+            .feature.getGeometry().getCoordinates().length - 1]));
+        this.facadeControl.feature.changed();
+      }
+      // eslint-disable-next-line no-underscore-dangle
+      this.facadeControl.changeSquare(evt.target.features_.getArray()[0]);
+    });
+    olMap.addInteraction(this.edit);
+  }
+
+  deactivateSelection() {
+    this.facadeMap_.getMapImpl().removeInteraction(this.edit);
+    this.facadeMap_.getMapImpl().removeInteraction(this.select);
   }
 
   /** ***************************************************************************** */
