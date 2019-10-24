@@ -193,4 +193,13 @@ export default class GeometryDrawControl extends M.impl.Control {
     feature.getImpl().getOLFeature().setStyle(olFeature.getStyle());
     return feature;
   }
+
+  /**
+   * Sets vector source for layer
+   * @param {*} layer - Mapea layer
+   * @param {*} source - OL source
+   */
+  setOLSource(layer, source) {
+    layer.getImpl().getOL3Layer().setSource(source);
+  }
 }
