@@ -165,6 +165,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   cleanDrawnFeatures() {
     this.resetDrawButtons(this.geometry);
+    this.getImpl().deactivateSelection();
     this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
     this.selectionLayer.removeFeatures([this.square]);
   }
@@ -218,7 +219,7 @@ export default class GeometryDrawControl extends M.Control {
    * @public
    * @function
    * @api
-   * @param {*} lastGeometry - last geometry activated
+   * @param {String} lastGeometry - last geometry activated
    */
   resetDrawButtons(lastGeometry) {
     if (document.querySelector('.m-geometrydraw').querySelector('#drawingtools') !== null) {
@@ -246,24 +247,36 @@ export default class GeometryDrawControl extends M.Control {
 
     switch (this.geometry) {
       case 'Point':
-        const newPointStyle = this.getImpl().newOLCircleStyle({
+        const newPointStyle = new M.style.Point({
           radius: this.currentThickness,
-          strokeColor: 'white',
-          strokeWidth: 2,
-          fillColor: this.currentColor,
+          fill: {
+            color: this.currentColor,
+          },
+          stroke: {
+            color: 'white',
+            width: 2,
+          },
         });
         if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
         break;
       case 'LineString':
-        const newLineStyle = this.getImpl()
-          .newSimpleLineStyle(this.currentColor, this.currentThickness);
+        const newLineStyle = new M.style.Line({
+          stroke: {
+            color: this.currentColor,
+            width: this.currentThickness,
+          },
+        });
         if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
         break;
       case 'Polygon':
-        const newPolygonStyle = this.getImpl().newPolygonStyle({
-          fillColor: 'rgba(255, 255, 255, 0.2)',
-          strokeColor: this.currentColor,
-          strokeWidth: this.currentThickness,
+        const newPolygonStyle = new M.style.Polygon({
+          fill: {
+            color: 'rgba(255, 255, 255, 0.2)',
+          },
+          stroke: {
+            color: this.currentColor,
+            width: this.currentThickness,
+          },
         });
         if (this.feature !== undefined) this.feature.setStyle(newPolygonStyle);
         break;
@@ -340,22 +353,32 @@ export default class GeometryDrawControl extends M.Control {
 
       // sets OL style to OL feature
       if (this.geometry === 'Point') {
-        this.feature.setStyle(this.getImpl().newOLCircleStyle({
-          radius: this.currentThickness || 6,
-          strokeColor: 'white',
-          strokeWidth: 2,
-          fillColor: this.currentColor || '#71a7d3',
+        this.feature.setStyle(new M.style.Point({
+          radius: this.currentThickness,
+          fill: {
+            color: this.currentColor,
+          },
+          stroke: {
+            color: 'white',
+            width: 2,
+          },
         }));
       } else if (this.geometry === 'LineString') {
-        this.feature.setStyle(this.getImpl().newSimpleLineStyle(
-          this.currentColor,
-          this.currentThickness,
-        ));
+        this.feature.setStyle(new M.style.Line({
+          stroke: {
+            color: this.currentColor,
+            width: this.currentThickness,
+          },
+        }));
       } else { // Polygon
-        this.feature.setStyle(this.getImpl().newPolygonStyle({
-          fillColor: 'rgba(255, 255, 255, 0.2)',
-          strokeColor: this.currentColor,
-          strokeWidth: this.currentThickness,
+        this.feature.setStyle(new M.style.Polygon({
+          fill: {
+            color: 'rgba(255, 255, 255, 0.2)',
+          },
+          stroke: {
+            color: this.currentColor,
+            width: this.currentThickness,
+          },
         }));
       }
 
@@ -363,7 +386,7 @@ export default class GeometryDrawControl extends M.Control {
       const featureMapea = this.getImpl().OLToMapeaFeature(this.feature);
       this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(featureMapea);
       // this.setFeature(featureMapea.getImpl().getOLFeature());
-      this.setFeature(this.feature);
+      this.setFeature(featureMapea);
     });
   }
 
@@ -389,11 +412,14 @@ export default class GeometryDrawControl extends M.Control {
     const featureMapea = this.getImpl().OLToMapeaFeature(this.feature);
     this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(featureMapea);
     // this.setFeature(featureMapea.getImpl().getOLFeature());
-    this.setFeature(this.feature);
+    this.setFeature(featureMapea);
   }
 
   /**
    * Removes draw interaction from map.
+   * @public
+   * @function
+   * @api
    */
   deleteDrawInteraction() {
     this.map.getMapImpl().removeInteraction(this.draw);
@@ -404,29 +430,56 @@ export default class GeometryDrawControl extends M.Control {
    * Draws square around feature and adds it to selection layer.
    * For points:
    *    If feature doesn't have style, sets new style.
+   * @public
+   * @function
+   * @api
    */
   changeSquare() {
     this.square = null;
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
-    if (this.feature.getGeometry().getType() === 'Point' ||
-      this.feature.getGeometry().getType() === 'MultiPoint') {
-      // this.square is born being a OL feature
-      this.square = this.getImpl().cloneFeature(this.feature.getGeometry().clone());
-      this.square.setStyle(this.getImpl().newRegularShapeStyle({
-        strokeColor: '#FF0000',
-        strokeWidth: 2,
-        points: 4,
-        radius: 25,
-        rotation: Math.PI / 4,
-      }));
-    } else {
-      const extent = this.feature.getGeometry().getExtent();
-      this.square = this.getImpl().newPolygonFeature(extent);
-      this.square.setStyle(this.getImpl().newSimpleLineStyle('#FF0000', 2));
+    if (this.feature) {
+      // if (this.feature.getGeometry().getType() === 'Point' ||
+      //   this.feature.getGeometry().getType() === 'MultiPoint') {
+      if (this.feature.getGeometry().type === 'Point' ||
+        this.feature.getGeometry().type === 'MultiPoint') {
+        // this.square is born being a OL feature
+        // eslint-disable-next-line no-underscore-dangle
+        const thisOLfeat = this.feature.getImpl().olFeature_;
+        const OLFeatClone = thisOLfeat.clone(); // getGeometry().clone()
+        this.square = M.impl.Feature.olFeature2Facade(OLFeatClone);
+        // this.getImpl().cloneFeature(x);
+
+        // FIXME:
+        this.getImpl().setOLStyleToMFeature(this.square, this.getImpl().newRegularShapeStyle({
+          strokeColor: '#FF0000',
+          strokeWidth: 2,
+          points: 4,
+          radius: 25,
+          rotation: Math.PI / 4,
+        }));
+        // this.square.setStyle(this.getImpl().newRegularShapeStyle({
+        //   strokeColor: '#FF0000',
+        //   strokeWidth: 2,
+        //   points: 4,
+        //   radius: 25,
+        //   rotation: Math.PI / 4,
+        // }));
+      } else {
+        // eslint-disable-next-line no-underscore-dangle
+        const extent = this.feature.getImpl().olFeature_.getGeometry().getExtent();
+        this.square = this.getImpl().newPolygonFeature(extent);
+        this.square.setStyle(new M.style.Line({
+          stroke: {
+            color: '#FF0000',
+            width: 2,
+          },
+        }));
+        this.square = this.getImpl().OLToMapeaFeature(this.square);
+      }
+      // this.square is now a Mapea feature
+      // this.square = this.getImpl().OLToMapeaFeature(this.square);
+      this.selectionLayer.addFeatures([this.square]);
     }
-    // this.square is now a Mapea feature
-    this.square = this.getImpl().OLToMapeaFeature(this.square);
-    this.selectionLayer.addFeatures([this.square]);
   }
 
   /**
