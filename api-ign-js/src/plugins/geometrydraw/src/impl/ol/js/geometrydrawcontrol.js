@@ -60,16 +60,16 @@ export default class GeometryDrawControl extends M.impl.Control {
     return new ol.Feature({ geometry: ol.geom.Polygon(vertices) });
   }
 
-  /**
-   * Clones feature
-   * @public
-   * @function
-   * @param {Object} f - OL feature
-   * @api
-   */
-  cloneFeature(f) {
-    return new ol.Feature(f);
-  }
+  // /**
+  //  * Clones feature
+  //  * @public
+  //  * @function
+  //  * @param {Object} f - OL feature
+  //  * @api
+  //  */
+  // cloneFeature(f) {
+  //   return new ol.Feature(f);
+  // }
 
   /**
    * Turns OpenLayers feature into Mapea feature.
@@ -99,47 +99,54 @@ export default class GeometryDrawControl extends M.impl.Control {
   /* SELECTION METHODS */
 
   activateSelection() {
-    // FIXME: bug on selection
     const olMap = this.facadeMap_.getMapImpl();
     const facadeControl = this.facadeControl;
-    this.select = new ol.interaction.Select({
-      wrapX: false,
-      layers: facadeControl.drawLayer,
-      // (layer) => {
-      //   return (layer.get('vendor.mapaalacarta.selectable')
-      // != null && layer.get('vendor.mapaalacarta.selectable') == true);
-      // },
-    });
+    const drawingLayer = facadeControl.drawLayer.getImpl().getOL3Layer();
 
-    this.select.on('select', (e) => {
-      if (e.target.getFeatures().getArray().length > 0) {
-        this.facadeControl.feature = e.target.getFeatures().getArray()[0];
-        this.facadeControl.changeSquare(e.target.getFeatures().getArray()[0]);
-      }
-    });
+    if (drawingLayer) {
+      this.select = new ol.interaction.Select({
+        wrapX: false,
+        layers: [drawingLayer],
+      });
+      this.select.on('select', (e) => {
+        if (e.target.getFeatures().getArray().length > 0) {
+          this.facadeControl.feature = this.OLToMapeaFeature(e.target.getFeatures().getArray()[0]);
+          this.facadeControl.changeSquare();
+          document.querySelector('.m-geometrydraw').appendChild(this.facadeControl.drawingTools);
+        }
+      });
+      olMap.addInteraction(this.select);
 
-    olMap.addInteraction(this.select);
+      this.edit = new ol.interaction.Modify({ features: this.select.getFeatures() });
+      this.edit.on('modifyend', (evt) => {
+        // eslint-disable-next-line no-underscore-dangle
+        this.facadeControl.feature = this.OLToMapeaFeature(evt.target.features_.getArray()[0]);
 
-    this.edit = new ol.interaction.Modify({ features: this.select.getFeatures() });
-    this.edit.on('modifyend', (evt) => {
-      // eslint-disable-next-line no-underscore-dangle
-      this.facadeControl.feature = evt.target.features_.getArray()[0];
-      if (this.facadeControl.feature.getStyle() !== null &&
-        this.facadeControl.feature.getStyle().length > 1) {
-        this.facadeControl.feature.getStyle()[1].setGeometry(new ol.geom.Point(this.facadeControl
-          .feature.getGeometry().getCoordinates()[this.facadeControl
-            .feature.getGeometry().getCoordinates().length - 1]));
-        this.facadeControl.feature.changed();
-      }
-      // eslint-disable-next-line no-underscore-dangle
-      this.facadeControl.changeSquare(evt.target.features_.getArray()[0]);
-    });
-    olMap.addInteraction(this.edit);
+        if (this.facadeControl.feature.getStyle() !== null &&
+          this.facadeControl.feature.getStyle().length > 1) {
+          this.facadeControl.feature.getStyle()[1].setGeometry(new ol.geom.Point(this.facadeControl
+            .feature.getGeometry().getCoordinates()[this.facadeControl
+              .feature.getGeometry().getCoordinates().length - 1]));
+          this.facadeControl.feature.changed();
+        }
+
+        // eslint-disable-next-line no-underscore-dangle
+        this.facadeControl.changeSquare();
+      });
+      olMap.addInteraction(this.edit);
+    }
   }
 
   deactivateSelection() {
-    this.facadeMap_.getMapImpl().removeInteraction(this.edit);
-    this.facadeMap_.getMapImpl().removeInteraction(this.select);
+    if (this.facadeControl.drawLayer) {
+      if (document.querySelector('.m-geometrydraw #drawingtools')) {
+        document.querySelector('.m-geometrydraw').removeChild(this.facadeControl.drawingTools);
+      }
+      this.facadeControl.feature = undefined;
+      this.facadeControl.changeSquare();
+      this.facadeMap_.getMapImpl().removeInteraction(this.edit);
+      this.facadeMap_.getMapImpl().removeInteraction(this.select);
+    }
   }
 
   /** ***************************************************************************** */
@@ -165,42 +172,6 @@ export default class GeometryDrawControl extends M.impl.Control {
   }
 
   /**
-   * Creates new OpenLayers style for polygon
-   * @public
-   * @function
-   * @api
-   * @param {Object} options - colors and measures for the style
-   */
-  newPolygonStyle(options) {
-    return new ol.style.Style({
-      fill: new ol.style.Fill({ color: options.fillColor }),
-      stroke: new ol.style.Stroke({ color: options.strokeColor, width: options.strokeWidth }),
-    });
-  }
-
-  /**
-   * Creates new style for circle points.
-   * @public
-   * @function
-   * @api
-   * @param {Object} options - colors and measures for the style
-   */
-  newOLCircleStyle(options) {
-    return new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: options.radius,
-        stroke: new ol.style.Stroke({
-          color: options.strokeColor,
-          width: options.strokeWidth,
-        }),
-        fill: new ol.style.Fill({
-          color: options.fillColor,
-        }),
-      }),
-    });
-  }
-
-  /**
    * Creates new style for text feature.
    * @public
    * @function
@@ -221,7 +192,10 @@ export default class GeometryDrawControl extends M.impl.Control {
 
   /**
    * Creates regular polygon style
-   * @param {Object} options -
+   * @public
+   * @function
+   * @api
+   * @param {Object} options - style colors and measures
    */
   newRegularShapeStyle(options) {
     return new ol.style.Style({
@@ -234,16 +208,10 @@ export default class GeometryDrawControl extends M.impl.Control {
     });
   }
 
-  /**
-   * Creates OL style for simple line
-   * (just color and width)
-   * @public
-   * @function
-   * @api
-   * @param {String} color - line color
-   * @param {Number} width - line stroke width
-   */
-  newSimpleLineStyle(color, width) {
-    return new ol.style.Style({ stroke: new ol.style.Stroke({ color, width }) });
+  setOLStyleToMFeature(Mfeature, OLstyle) {
+    // eslint-disable-next-line no-underscore-dangle
+    const olFeature = Mfeature.getImpl().olFeature_;
+    olFeature.setStyle(OLstyle);
+    return this.OLToMapeaFeature(olFeature);
   }
 }
