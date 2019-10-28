@@ -57,7 +57,7 @@ export default class GeometryDrawControl extends M.Control {
     this.square = undefined;
 
     /**
-     * Current geometry selected.
+     * Current geometry type selected.
      */
     this.geometry = undefined; // Point, LineString, Polygon
 
@@ -85,11 +85,6 @@ export default class GeometryDrawControl extends M.Control {
      * OL vector source for draw interactions.
      */
     this.vectorSource = this.getImpl().newVectorSource(false);
-
-    /**
-     * Style for vector layer
-     */
-    this.vectorStyle = undefined;
 
     /**
      * Mapea layer where a square will be drawn around selected feature.
@@ -271,7 +266,8 @@ export default class GeometryDrawControl extends M.Control {
       case 'Polygon':
         const newPolygonStyle = new M.style.Polygon({
           fill: {
-            color: 'rgba(255, 255, 255, 0.2)',
+            color: this.currentColor,
+            opacity: 0.2,
           },
           stroke: {
             color: this.currentColor,
@@ -299,17 +295,7 @@ export default class GeometryDrawControl extends M.Control {
         .getFeatures().length;
     }
     this.drawLayer = this.map.getLayers()[this.map.getLayers().length - 1];
-
-    // default layer styles
-    this.vectorStyle = this.getImpl().newOLStyle({
-      fillColor: 'rgba(255, 255, 255, 0.2)',
-      strokeColor: '#71a7d3',
-      strokeWidth: 2,
-      circleRadius: 7,
-      circleFill: '#71a7d3',
-    });
     this.map.addLayers(this.selectionLayer);
-    this.drawLayer.setStyle(this.vectorStyle);
     this.getImpl().setOLSource(this.drawLayer, this.vectorSource);
   }
 
@@ -344,14 +330,16 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   addDrawEvent() {
+    // FIXME: to impl?
     this.draw.on('drawend', (event) => {
-      // creates OL feature
+      // creates OL feature & turns it into Mapea feature
       this.feature = event.feature;
+      this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+
       // this.feature.set('name', this.feature.getId());
       // this.feature.setId(`draw-${this.numberOfDrawFeatures}`);
       // this.numberOfDrawFeatures += 1;
 
-      // sets OL style to OL feature
       if (this.geometry === 'Point') {
         this.feature.setStyle(new M.style.Point({
           radius: this.currentThickness,
@@ -373,7 +361,8 @@ export default class GeometryDrawControl extends M.Control {
       } else { // Polygon
         this.feature.setStyle(new M.style.Polygon({
           fill: {
-            color: 'rgba(255, 255, 255, 0.2)',
+            color: this.currentColor,
+            opacity: 0.2,
           },
           stroke: {
             color: this.currentColor,
@@ -382,11 +371,9 @@ export default class GeometryDrawControl extends M.Control {
         }));
       }
 
-      // turns OL feature to Mapea feature & adds it to draw layer
-      const featureMapea = this.getImpl().OLToMapeaFeature(this.feature);
-      this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(featureMapea);
+      this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
       // this.setFeature(featureMapea.getImpl().getOLFeature());
-      this.setFeature(featureMapea);
+      this.setFeature(this.feature);
     });
   }
 
@@ -398,18 +385,41 @@ export default class GeometryDrawControl extends M.Control {
    * @param {*} feature - OL feature
    */
   setContent_(feature) {
-    feature.setStyle(this.getImpl().newOLTextStyle({
-      text: 'Texto',
-      font: '12px Arial',
-      textFillColor: '#000000',
-      defaultColor: 'rgba(213, 0, 110, 0)',
-      strokeWidth: 0,
-    }));
+    const textStyle = M.style.Point({
+      radius: this.currentThickness,
+      fill: {
+        color: this.currentColor,
+      },
+      stroke: {
+        color: 'white',
+        width: 2,
+      },
+      label: {
+        text: 'Texto',
+        font: '12px Arial',
+        color: 'black',
+        stroke: {
+          color: 'black',
+          width: 0,
+        },
+      },
+    });
+
+    // feature.setStyle(this.getImpl().newOLTextStyle({
+    //   text: 'Texto',
+    //   font: '12px Arial',
+    //   textFillColor: '#000000',
+    //   defaultColor: 'rgba(213, 0, 110, 0)',
+    //   strokeWidth: 0,
+    // }));
+
+    feature.setStyle(textStyle);
+
     this.feature = feature;
     this.feature.setId(`draw-${this.numberOfDrawFeatures}`);
     this.numberOfDrawFeatures += 1;
     this.feature.set('name', this.feature.getId());
-    const featureMapea = this.getImpl().OLToMapeaFeature(this.feature);
+    const featureMapea = M.impl.Feature.olFeature2Facade(this.feature);
     this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(featureMapea);
     // this.setFeature(featureMapea.getImpl().getOLFeature());
     this.setFeature(featureMapea);
@@ -438,11 +448,8 @@ export default class GeometryDrawControl extends M.Control {
     this.square = null;
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
     if (this.feature) {
-      // if (this.feature.getGeometry().getType() === 'Point' ||
-      //   this.feature.getGeometry().getType() === 'MultiPoint') {
       if (this.feature.getGeometry().type === 'Point' ||
-        this.feature.getGeometry().type === 'MultiPoint') {
-        // this.square is born being a OL feature
+        this.feature.getGeometry().type === 'MultiPoint') { // .getType()
         // eslint-disable-next-line no-underscore-dangle
         const thisOLfeat = this.feature.getImpl().olFeature_;
         const OLFeatClone = thisOLfeat.clone(); // getGeometry().clone()
@@ -450,12 +457,12 @@ export default class GeometryDrawControl extends M.Control {
         // this.getImpl().cloneFeature(x);
 
         // FIXME:
-        this.getImpl().setOLStyleToMFeature(this.square, this.getImpl().newRegularShapeStyle({
-          strokeColor: '#FF0000',
-          strokeWidth: 2,
-          points: 4,
-          radius: 25,
-          rotation: Math.PI / 4,
+        this.square.setStyle(new M.style.Point({
+          radius: 20,
+          stroke: {
+            color: '#FF0000',
+            width: 2,
+          },
         }));
         // this.square.setStyle(this.getImpl().newRegularShapeStyle({
         //   strokeColor: '#FF0000',
@@ -467,17 +474,14 @@ export default class GeometryDrawControl extends M.Control {
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.feature.getImpl().olFeature_.getGeometry().getExtent();
-        this.square = this.getImpl().newPolygonFeature(extent);
+        this.square = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
         this.square.setStyle(new M.style.Line({
           stroke: {
             color: '#FF0000',
             width: 2,
           },
         }));
-        this.square = this.getImpl().OLToMapeaFeature(this.square);
       }
-      // this.square is now a Mapea feature
-      // this.square = this.getImpl().OLToMapeaFeature(this.square);
       this.selectionLayer.addFeatures([this.square]);
     }
   }
@@ -485,7 +489,10 @@ export default class GeometryDrawControl extends M.Control {
   /**
    * Updates current feature var.
    * Adds selection square to feature.
+   * @public
+   * @function
    * @param {*} feature - OL feature
+   * @api
    */
   setFeature(feature) {
     this.feature = feature;
@@ -513,6 +520,12 @@ export default class GeometryDrawControl extends M.Control {
 
   /* LAYER DOWNLOAD METHODS */
 
+  /**
+   * Downloads draw layer as GeoJSON.
+   * @public
+   * @function
+   * @api
+   */
   downloadLayer() {
     this.resetDrawButtons(this.geometry);
     if (this.drawLayer.getFeatures().length !== 0) {
