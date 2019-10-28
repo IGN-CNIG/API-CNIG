@@ -46,7 +46,7 @@ export default class GeometryDrawControl extends M.Control {
     this.firstEditClick = undefined;
 
     /**
-     * Selected feature
+     * Selected Mapea feature
      */
     this.feature = undefined;
 
@@ -57,7 +57,7 @@ export default class GeometryDrawControl extends M.Control {
     this.square = undefined;
 
     /**
-     * Current geometry type selected.
+     * Current geometry type selected for drawing.
      */
     this.geometry = undefined; // Point, LineString, Polygon
 
@@ -150,6 +150,23 @@ export default class GeometryDrawControl extends M.Control {
     html.querySelector('#cleanAll').addEventListener('click', this.cleanDrawnFeatures.bind(this));
     html.querySelector('#download').addEventListener('click', this.downloadLayer.bind(this));
     html.querySelector('#edit').addEventListener('click', this.editBtnClick.bind(this));
+    html.querySelector('#delete').addEventListener('click', this.deleteGeometry.bind(this));
+    // TODO: add delete icon to css
+  }
+
+  /**
+   * Deletes selected geometry.
+   * @public
+   * @function
+   * @api
+   */
+  deleteGeometry() {
+    this.drawLayer.removeFeatures([this.feature]);
+    this.feature = undefined;
+    this.geometry = undefined;
+    this.selectionLayer.removeFeatures([this.square]);
+    this.getImpl().deactivateSelection();
+    this.getImpl().activateSelection();
   }
 
   /**
@@ -162,6 +179,8 @@ export default class GeometryDrawControl extends M.Control {
     this.resetDrawButtons(this.geometry);
     this.getImpl().deactivateSelection();
     this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
+    this.feature = undefined;
+    this.geometry = undefined;
     this.selectionLayer.removeFeatures([this.square]);
   }
 
@@ -175,32 +194,31 @@ export default class GeometryDrawControl extends M.Control {
    */
   geometryBtnClick(geometry) {
     const lastGeometry = this.geometry;
-    let oddOrNot;
+    let firstClick;
     this.geometry = geometry;
 
     switch (geometry) {
       case 'Point':
-        oddOrNot = this.firstPointClick;
+        firstClick = this.firstPointClick;
         this.firstPointClick = this.firstPointClick === false;
         break;
       case 'LineString':
-        oddOrNot = this.firstLineClick;
+        firstClick = this.firstLineClick;
         this.firstLineClick = this.firstLineClick === false;
         break;
       case 'Polygon':
-        oddOrNot = this.firstPolygonClick;
+        firstClick = this.firstPolygonClick;
         this.firstPolygonClick = this.firstPolygonClick === false;
         break;
       default:
         break;
     }
 
-    // button is clicked for the 1st time
-    if (oddOrNot || oddOrNot === undefined) {
+    if (firstClick || firstClick === undefined) {
       this.resetDrawButtons(lastGeometry);
       document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       this.addDrawInteraction();
-    } else { // button is clicked for the 2nd time
+    } else {
       document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
       this.deleteDrawInteraction();
       this.selectionLayer.removeFeatures([this.square]);
@@ -240,7 +258,7 @@ export default class GeometryDrawControl extends M.Control {
     this.currentColor = document.querySelector('#colorSelector').value;
     this.currentThickness = document.querySelector('#thicknessSelector').value;
 
-    switch (this.geometry) {
+    switch (this.feature.getGeometry().type) {
       case 'Point':
         const newPointStyle = new M.style.Point({
           radius: this.currentThickness,
@@ -308,16 +326,15 @@ export default class GeometryDrawControl extends M.Control {
   addDrawInteraction() {
     const olMap = this.map.getMapImpl();
     if (this.geometry !== 'Text') {
-      // creates new draw interaction
       this.draw = this.getImpl().newDrawInteraction(this.vectorSource, this.geometry);
-      // saves new feature (on draw ending)
       this.addDrawEvent();
     } else {
       this.draw = this.getImpl().newDrawInteraction(this.vectorSource, 'Point');
-      this.draw.on('drawend', (event) => {
-        const feature = event.feature;
-        this.setContent_(feature);
-      });
+      this.addDrawEvent();
+      // this.draw.on('drawend', (event) => {
+      //   const feature = event.feature;
+      //   this.setContent_(feature);
+      // });
     }
     olMap.addInteraction(this.draw);
   }
@@ -372,8 +389,7 @@ export default class GeometryDrawControl extends M.Control {
       }
 
       this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
-      // this.setFeature(featureMapea.getImpl().getOLFeature());
-      this.setFeature(this.feature);
+      this.changeSquare();
     });
   }
 
@@ -419,10 +435,9 @@ export default class GeometryDrawControl extends M.Control {
     this.feature.setId(`draw-${this.numberOfDrawFeatures}`);
     this.numberOfDrawFeatures += 1;
     this.feature.set('name', this.feature.getId());
-    const featureMapea = M.impl.Feature.olFeature2Facade(this.feature);
-    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(featureMapea);
-    // this.setFeature(featureMapea.getImpl().getOLFeature());
-    this.setFeature(featureMapea);
+    this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
+    this.changeSquare();
   }
 
   /**
@@ -449,12 +464,11 @@ export default class GeometryDrawControl extends M.Control {
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
     if (this.feature) {
       if (this.feature.getGeometry().type === 'Point' ||
-        this.feature.getGeometry().type === 'MultiPoint') { // .getType()
+        this.feature.getGeometry().type === 'MultiPoint') {
         // eslint-disable-next-line no-underscore-dangle
         const thisOLfeat = this.feature.getImpl().olFeature_;
-        const OLFeatClone = thisOLfeat.clone(); // getGeometry().clone()
+        const OLFeatClone = thisOLfeat.clone();
         this.square = M.impl.Feature.olFeature2Facade(OLFeatClone);
-        // this.getImpl().cloneFeature(x);
 
         // FIXME:
         this.square.setStyle(new M.style.Point({
@@ -464,13 +478,6 @@ export default class GeometryDrawControl extends M.Control {
             width: 2,
           },
         }));
-        // this.square.setStyle(this.getImpl().newRegularShapeStyle({
-        //   strokeColor: '#FF0000',
-        //   strokeWidth: 2,
-        //   points: 4,
-        //   radius: 25,
-        //   rotation: Math.PI / 4,
-        // }));
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.feature.getImpl().olFeature_.getGeometry().getExtent();
@@ -484,19 +491,6 @@ export default class GeometryDrawControl extends M.Control {
       }
       this.selectionLayer.addFeatures([this.square]);
     }
-  }
-
-  /**
-   * Updates current feature var.
-   * Adds selection square to feature.
-   * @public
-   * @function
-   * @param {*} feature - OL feature
-   * @api
-   */
-  setFeature(feature) {
-    this.feature = feature;
-    this.changeSquare();
   }
 
   /* SELECT FEATURE */
