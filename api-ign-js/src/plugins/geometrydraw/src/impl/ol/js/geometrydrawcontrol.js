@@ -93,8 +93,12 @@ export default class GeometryDrawControl extends M.impl.Control {
       });
       this.select.on('select', (e) => {
         if (e.target.getFeatures().getArray().length > 0) {
-          facadeControl.feature = M.impl.Feature
-            .olFeature2Facade(e.target.getFeatures().getArray()[0]);
+          const MFeatures = this.facadeControl.drawLayer.getFeatures();
+          const olFeature = e.target.getFeatures().getArray()[0];
+
+          facadeControl.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
+            olFeature)[0] || undefined;
+
           facadeControl.changeSquare();
           facadeControl.geometry = facadeControl.feature.getGeometry().type;
           document.querySelector('.m-geometrydraw').appendChild(facadeControl.drawingTools);
@@ -118,6 +122,7 @@ export default class GeometryDrawControl extends M.impl.Control {
         document.querySelector('.m-geometrydraw').removeChild(this.facadeControl.drawingTools);
       }
       this.facadeControl.feature = undefined;
+      this.facadeControl.geometry = undefined;
       this.facadeControl.changeSquare();
       this.facadeMap_.getMapImpl().removeInteraction(this.edit);
       this.facadeMap_.getMapImpl().removeInteraction(this.select);
@@ -127,39 +132,6 @@ export default class GeometryDrawControl extends M.impl.Control {
   /** ***************************************************************************** */
   /* STYLE METHODS => FIXME: This should be translated into Mapea styles on facade */
   /** *************************************************************************** */
-
-  /**
-   * Creates regular polygon style
-   * @public
-   * @function
-   * @api
-   * @param {Object} options - style colors and measures
-   */
-  newRegularShapeStyle(options) {
-    return new ol.style.Style({
-      image: new ol.style.RegularShape({
-        stroke: new ol.style.Stroke({ color: options.strokeColor, width: options.strokeWidth }),
-        points: options.points,
-        radius: options.radius,
-        rotation: options.rotation,
-      }),
-    });
-  }
-
-  /**
-   * Sets OpenLayers style on Mapea feature
-   * @public
-   * @function
-   * @param {*} Mfeature - Mapea feature
-   * @param {*} OLstyle - Open Layers style
-   * @api
-   */
-  setOLStyleToMFeature(Mfeature, OLstyle) {
-    // eslint-disable-next-line no-underscore-dangle
-    const olFeature = Mfeature.getImpl().olFeature_;
-    olFeature.setStyle(OLstyle);
-    return M.impl.Feature.olFeature2Facade(olFeature);
-  }
 
   // /**
   //  * Creates new style for text feature.
