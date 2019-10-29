@@ -33,19 +33,16 @@ export default class GeometryDrawControl extends M.Control {
     this.numberOfDrawFeatures = 0;
 
     /**
-     * Checks if click on point/line/polygon button is
-     * activation click (true) or deactivation click (false).
-     * true means button is deactivated
-     * false means button is activated
+     * Checks if point/line/polygon drawing tool is active.
      */
-    this.firstPointClick = undefined;
-    this.firstLineClick = undefined;
-    this.firstPolygonClick = undefined;
+    this.isPointActive = false;
+    this.isLineActive = false;
+    this.isPolygonActive = false;
 
     /**
-     * Checks if click on edition button is first click.
+     * Checks if edition tool is active.
      */
-    this.firstEditClick = undefined;
+    this.isEditionActive = false;
 
     /**
      * Selected Mapea feature
@@ -178,7 +175,7 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   deleteDrawnFeatures() {
-    this.resetDrawButtons(this.geometry);
+    this.deactivateDrawing();
     this.getImpl().deactivateSelection();
     this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
     this.feature = undefined;
@@ -195,36 +192,63 @@ export default class GeometryDrawControl extends M.Control {
    * @param {String} geometry - clicked button geometry type
    */
   geometryBtnClick(geometry) {
-    const lastGeometry = this.geometry;
-    let firstClick;
-    this.geometry = geometry;
+    let lastBtnState;
+    if (geometry === 'Point') {
+      lastBtnState = this.isPointActive;
+    } else if (geometry === 'LineString') {
+      lastBtnState = this.isLineActive;
+    } else {
+      lastBtnState = this.isPolygonActive;
+    }
+
+    if (this.isEditionActive) {
+      this.deactivateEdition();
+      document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
+    }
+    this.deactivateDrawing();
 
     switch (geometry) {
       case 'Point':
-        firstClick = this.firstPointClick;
-        this.firstPointClick = this.firstPointClick === false;
+        if (lastBtnState) {
+          this.geometry = undefined;
+          this.isPointActive = false;
+          document.getElementById('pointdrawing').classList.remove('activeTool');
+        } else {
+          this.isPointActive = true;
+          this.geometry = geometry;
+          document.getElementById('pointdrawing').classList.add('activeTool');
+        }
         break;
       case 'LineString':
-        firstClick = this.firstLineClick;
-        this.firstLineClick = this.firstLineClick === false;
+        if (lastBtnState) {
+          this.geometry = undefined;
+          this.isLineActive = false;
+          document.getElementById('linedrawing').classList.remove('activeTool');
+        } else {
+          this.isLineActive = true;
+          this.geometry = geometry;
+          document.getElementById('linedrawing').classList.add('activeTool');
+        }
         break;
       case 'Polygon':
-        firstClick = this.firstPolygonClick;
-        this.firstPolygonClick = this.firstPolygonClick === false;
+        if (lastBtnState) {
+          this.geometry = undefined;
+          this.isPolygonActive = false;
+          document.getElementById('polygondrawing').classList.remove('activeTool');
+        } else {
+          this.isPolygonActive = true;
+          this.geometry = geometry;
+          document.getElementById('polygondrawing').classList.add('activeTool');
+        }
         break;
       default:
         break;
     }
 
-    if (firstClick || firstClick === undefined) {
-      this.resetDrawButtons(lastGeometry);
+    if (this.isPointActive || this.isLineActive || this.isPolygonActive) {
       document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       this.addDrawInteraction();
-    } else {
-      document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
-      this.deleteDrawInteraction();
-      this.selectionLayer.removeFeatures([this.square]);
-      this.feature = undefined;
+      this.changeSquare();
     }
   }
 
@@ -236,68 +260,52 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   deactivateDrawing() {
-    if (this.firstPointClick === false || this.firstLineClick === false ||
-      this.firstPolygonClick === false) {
-      if (this.firstPointClick === false) {
-        this.firstPointClick = true;
-      } else if (this.firstLineClick === false) {
-        this.firstLineClick = true;
-      } else {
-        this.firstPolygonClick = true;
-      }
+    if (this.isPointActive || this.isLineActive || this.isPolygonActive) {
       document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
       this.deleteDrawInteraction();
       this.selectionLayer.removeFeatures([this.square]);
       this.feature = undefined;
+      this.isPointActive = false;
+      this.isLineActive = false;
+      this.isPolygonActive = false;
+      document.getElementById('pointdrawing').classList.remove('activeTool');
+      document.getElementById('linedrawing').classList.remove('activeTool');
+      document.getElementById('polygondrawing').classList.remove('activeTool');
     }
   }
 
+  /**
+   * Deactivates edition tool.
+   * @public
+   * @function
+   * @api
+   */
   deactivateEdition() {
-    if (this.firstEditClick === false) {
-      this.firstEditClick = true;
+    if (this.isEditionActive) {
+      this.isEditionActive = false;
       this.getImpl().deactivateSelection();
     }
   }
 
   /**
    * Activates or deactivates feature selection & modify interaction.
+   * Deactivates drawing if it's active.
    * @public
    * @function
    * @api
    */
   editBtnClick() {
-    // this.resetDrawButtons(this.geometry);
-    if (this.firstEditClick || this.firstEditClick === undefined) {
+    if (this.isEditionActive) {
+      this.deactivateEdition();
+      document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
+      this.isEditionActive = false;
+    } else {
+      this.deactivateDrawing();
       this.getImpl().activateSelection();
-      this.firstEditClick = false;
+      this.isEditionActive = true;
+      document.querySelector('#otherBtns>#edit').classList.add('activeTool');
     }
-    //  else {
-    //   this.getImpl().deactivateSelection();
-    //   this.firstEditClick = true;
-    // }
   }
-
-  // /**
-  //  * Resets last used geometry button counter
-  //  * to avoid conflicts if two buttons are clicked consecutively.
-  //  * @public
-  //  * @function
-  //  * @api
-  //  * @param {String} lastGeometry - last geometry activated
-  //  */
-  // resetDrawButtons(lastGeometry) {
-  //   if (document.querySelector('.m-geometrydraw').querySelector('#drawingtools') !== null) {
-  //     if (lastGeometry === 'Point') {
-  //       this.firstPointClick = true;
-  //     } else if (lastGeometry === 'LineString') {
-  //       this.firstLineClick = true;
-  //     } else {
-  //       this.firstPolygonClick = true;
-  //     }
-  //     this.deleteDrawInteraction();
-  //     // FIXME : unselect last feature
-  //   }
-  // }
 
   /**
    * Changes style of current feature.
@@ -398,9 +406,7 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   addDrawEvent() {
-    // FIXME: to impl?
     this.draw.on('drawend', (event) => {
-      // creates OL feature & turns it into Mapea feature
       this.feature = event.feature;
       this.feature = M.impl.Feature.olFeature2Facade(this.feature);
 
@@ -426,7 +432,7 @@ export default class GeometryDrawControl extends M.Control {
             width: this.currentThickness,
           },
         }));
-      } else { // Polygon
+      } else {
         this.feature.setStyle(new M.style.Polygon({
           fill: {
             color: this.currentColor,
@@ -514,8 +520,7 @@ export default class GeometryDrawControl extends M.Control {
     this.square = null;
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
     if (this.feature) {
-      if (this.feature.getGeometry().type === 'Point' ||
-        this.feature.getGeometry().type === 'MultiPoint') {
+      if (this.geometry === 'Point' || this.geometry === 'MultiPoint') {
         // eslint-disable-next-line no-underscore-dangle
         const thisOLfeat = this.feature.getImpl().olFeature_;
         const OLFeatClone = thisOLfeat.clone();
