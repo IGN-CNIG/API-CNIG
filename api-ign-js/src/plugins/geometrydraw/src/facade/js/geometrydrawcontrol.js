@@ -35,6 +35,8 @@ export default class GeometryDrawControl extends M.Control {
     /**
      * Checks if click on point/line/polygon button is
      * activation click (true) or deactivation click (false).
+     * true means button is deactivated
+     * false means button is activated
      */
     this.firstPointClick = undefined;
     this.firstLineClick = undefined;
@@ -147,10 +149,10 @@ export default class GeometryDrawControl extends M.Control {
     html.querySelector('#polygondrawing').addEventListener('click', (e) => {
       this.geometryBtnClick('Polygon');
     });
-    html.querySelector('#cleanAll').addEventListener('click', this.cleanDrawnFeatures.bind(this));
+    html.querySelector('#cleanAll').addEventListener('click', this.deleteDrawnFeatures.bind(this));
     html.querySelector('#download').addEventListener('click', this.downloadLayer.bind(this));
     html.querySelector('#edit').addEventListener('click', this.editBtnClick.bind(this));
-    html.querySelector('#delete').addEventListener('click', this.deleteGeometry.bind(this));
+    html.querySelector('#delete').addEventListener('click', this.deleteSingleFeature.bind(this));
     // TODO: add delete icon to css
   }
 
@@ -160,7 +162,7 @@ export default class GeometryDrawControl extends M.Control {
    * @function
    * @api
    */
-  deleteGeometry() {
+  deleteSingleFeature() {
     this.drawLayer.removeFeatures([this.feature]);
     this.feature = undefined;
     this.geometry = undefined;
@@ -175,7 +177,7 @@ export default class GeometryDrawControl extends M.Control {
    * @function
    * @api
    */
-  cleanDrawnFeatures() {
+  deleteDrawnFeatures() {
     this.resetDrawButtons(this.geometry);
     this.getImpl().deactivateSelection();
     this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
@@ -227,26 +229,75 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Resets last used geometry button counter
-   * to avoid conflicts if two buttons are clicked consecutively.
+   * Checks if any drawing button is active and deactivates it,
+   * deleting drawing interaction.
    * @public
    * @function
    * @api
-   * @param {String} lastGeometry - last geometry activated
    */
-  resetDrawButtons(lastGeometry) {
-    if (document.querySelector('.m-geometrydraw').querySelector('#drawingtools') !== null) {
-      if (lastGeometry === 'Point') {
+  deactivateDrawing() {
+    if (this.firstPointClick === false || this.firstLineClick === false ||
+      this.firstPolygonClick === false) {
+      if (this.firstPointClick === false) {
         this.firstPointClick = true;
-      } else if (lastGeometry === 'LineString') {
+      } else if (this.firstLineClick === false) {
         this.firstLineClick = true;
       } else {
         this.firstPolygonClick = true;
       }
+      document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
       this.deleteDrawInteraction();
-      // FIXME: unselect last feature
+      this.selectionLayer.removeFeatures([this.square]);
+      this.feature = undefined;
     }
   }
+
+  deactivateEdition() {
+    if (this.firstEditClick === false) {
+      this.firstEditClick = true;
+      this.getImpl().deactivateSelection();
+    }
+  }
+
+  /**
+   * Activates or deactivates feature selection & modify interaction.
+   * @public
+   * @function
+   * @api
+   */
+  editBtnClick() {
+    // this.resetDrawButtons(this.geometry);
+    if (this.firstEditClick || this.firstEditClick === undefined) {
+      this.getImpl().activateSelection();
+      this.firstEditClick = false;
+    }
+    //  else {
+    //   this.getImpl().deactivateSelection();
+    //   this.firstEditClick = true;
+    // }
+  }
+
+  // /**
+  //  * Resets last used geometry button counter
+  //  * to avoid conflicts if two buttons are clicked consecutively.
+  //  * @public
+  //  * @function
+  //  * @api
+  //  * @param {String} lastGeometry - last geometry activated
+  //  */
+  // resetDrawButtons(lastGeometry) {
+  //   if (document.querySelector('.m-geometrydraw').querySelector('#drawingtools') !== null) {
+  //     if (lastGeometry === 'Point') {
+  //       this.firstPointClick = true;
+  //     } else if (lastGeometry === 'LineString') {
+  //       this.firstLineClick = true;
+  //     } else {
+  //       this.firstPolygonClick = true;
+  //     }
+  //     this.deleteDrawInteraction();
+  //     // FIXME : unselect last feature
+  //   }
+  // }
 
   /**
    * Changes style of current feature.
@@ -493,24 +544,6 @@ export default class GeometryDrawControl extends M.Control {
     }
   }
 
-  /* SELECT FEATURE */
-
-  /**
-   * Activates or deactivates feature selection & modify interaction.
-   * @public
-   * @function
-   * @api
-   */
-  editBtnClick() {
-    this.resetDrawButtons(this.geometry);
-    if (this.firstEditClick || this.firstEditClick === undefined) {
-      this.getImpl().activateSelection();
-      this.firstEditClick = false;
-    } else {
-      this.getImpl().deactivateSelection();
-      this.firstEditClick = true;
-    }
-  }
 
   /* LAYER DOWNLOAD METHODS */
 
@@ -521,7 +554,6 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   downloadLayer() {
-    this.resetDrawButtons(this.geometry);
     if (this.drawLayer.getFeatures().length !== 0) {
       const json = JSON.stringify(this.drawLayer.toGeoJSON());
       // const json = JSON.stringify(this.turnMultiGeometriesSimple(this.drawLayer.toGeoJSON()));
