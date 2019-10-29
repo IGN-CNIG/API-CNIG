@@ -14,19 +14,19 @@
 *********************/
 
 .m-printer-container>div.title {
+    background-color: #71a7d3;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    color: white !important;
+    font-size: 15px;
+    height: 39px;
     line-height: 40px;
     text-align: center;
-    height: 39px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    font-size: 15px;
 }
 
 
 /*********************
      PRINTER FORM
 *********************/
-
-.m-printer-container>div.form {}
 
 .m-printer-container>div.form>div {
     margin-bottom: 10px;
@@ -119,28 +119,6 @@
 }
 
 
-/* FORMAT */
-
-.m-printer-container>div.form>div.format {
-    /*
-   width: 50%;
-   float: left;
-   border-radius: 0px;
-*/
-}
-
-
-/* FORCE SCALE */
-
-.m-printer-container>div.form>div.forcescale {
-    /*
-   width: 50%;
-   float: right;
-   border-radius: 0px;
-*/
-}
-
-
 /*********************
      BUTTONS
 *********************/
@@ -150,7 +128,7 @@
     margin: 0 auto;
     text-align: center;
     display: table;
-    background-color: #eaeaea;
+    background-color: rgb(170, 170, 170) !important;
 }
 
 .m-printer-container>div.button>button.print,
@@ -226,8 +204,8 @@
 }
 
 .m-printer-container>div.queue>ul.queue-container {
-    margin: 0px;
-    padding: 5px;
+    margin: 0;
+    padding: 0;
 }
 
 @media only screen and (min-width: 769px) {
@@ -319,10 +297,10 @@
 }
 
 .m-areas>div.m-area>div.m-panel.m-printer>button.m-panel-btn {
-    background-color: #e7338c;
+    background-color: white !important;
     position: absolute;
     left: initial;
-    color: #fff;
+    color: #71a7d3;
     z-index: 999999;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
 }
@@ -345,7 +323,8 @@
 }
 
 .m-areas>div.m-area>div.m-panel.m-printer.collapsed>button.m-panel-btn {
-    color: #e7338c;
+    background-color: #71a7d3 !important;
+    color: white;
     position: inherit;
     right: 0;
     box-shadow: none;
