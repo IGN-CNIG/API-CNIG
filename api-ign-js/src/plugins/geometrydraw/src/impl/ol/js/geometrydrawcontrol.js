@@ -99,8 +99,8 @@ export default class GeometryDrawControl extends M.impl.Control {
           facadeControl.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
             olFeature)[0] || undefined;
 
-          facadeControl.changeSquare();
           facadeControl.geometry = facadeControl.feature.getGeometry().type;
+          facadeControl.changeSquare();
           document.querySelector('.m-geometrydraw').appendChild(facadeControl.drawingTools);
         }
       });
