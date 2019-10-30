@@ -168,6 +168,7 @@ export default class GeometryDrawControl extends M.Control {
   deleteDrawnFeatures() {
     if (this.feature !== undefined) {
       this.deleteSingleFeature();
+      this.deactivateDrawing();
     } else {
       this.deactivateDrawing();
       this.getImpl().deactivateSelection();
@@ -175,7 +176,7 @@ export default class GeometryDrawControl extends M.Control {
       this.feature = undefined;
       this.geometry = undefined;
       this.selectionLayer.removeFeatures([this.square]);
-      document.querySelector('#drawingtools>#featureInfo').innerHTML = '';
+      document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
     }
   }
 
@@ -205,6 +206,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   geometryBtnClick(geometry) {
     let lastBtnState;
+
     if (geometry === 'Point') {
       lastBtnState = this.isPointActive;
     } else if (geometry === 'LineString') {
@@ -261,6 +263,10 @@ export default class GeometryDrawControl extends M.Control {
       document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       this.addDrawInteraction();
       this.changeSquare();
+
+      if (document.querySelector('#drawingtools>#featureInfo') !== null) {
+        document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+      }
     }
   }
 
@@ -273,7 +279,10 @@ export default class GeometryDrawControl extends M.Control {
    */
   deactivateDrawing() {
     if (this.isPointActive || this.isLineActive || this.isPolygonActive) {
-      document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
+      if (document.querySelector('.m-geometrydraw #drawingtools') !== null) {
+        document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
+      }
+
       this.deleteDrawInteraction();
       this.selectionLayer.removeFeatures([this.square]);
       this.feature = undefined;
@@ -297,7 +306,7 @@ export default class GeometryDrawControl extends M.Control {
       this.isEditionActive = false;
       this.getImpl().deactivateSelection();
       if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-        document.querySelector('#drawingtools>#featureInfo').innerHTML = '';
+        document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
       }
     }
   }
@@ -533,13 +542,18 @@ export default class GeometryDrawControl extends M.Control {
   showFeatureInfo() {
     const olFeature = this.feature.getImpl().getOLFeature();
     const infoContainer = document.querySelector('#drawingtools>#featureInfo');
+    if (document.querySelector('#drawingtools>#featureInfo') !== null) {
+      document.querySelector('#drawingtools>#featureInfo').style.display = 'block';
+    }
     if (infoContainer !== null) infoContainer.innerHTML = '';
 
     switch (this.geometry) {
       case 'Point':
         const x = this.getImpl().getFeatureCoordinates(olFeature)[0];
         const y = this.getImpl().getFeatureCoordinates(olFeature)[1];
-        infoContainer.innerHTML = `Coordenadas: ${x}, ${y}`;
+        infoContainer.innerHTML = `Coordenadas<br/>
+        x: ${Math.round(x * 1000) / 1000},<br/>
+        y: ${Math.round(y * 1000) / 1000}`;
         break;
       case 'LineString':
         let lineLength = this.getImpl().getFeatureLength(olFeature);
@@ -564,7 +578,9 @@ export default class GeometryDrawControl extends M.Control {
         infoContainer.innerHTML = `Área: ${area} ${areaUnits}`;
         break;
       default:
-        infoContainer.innerHTML = '';
+        if (document.querySelector('#drawingtools>#featureInfo') !== null) {
+          document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+        }
         break;
     }
   }

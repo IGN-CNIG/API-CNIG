@@ -7,7 +7,7 @@ const map = M.map({
 const mp = new GeometryDraw({
   collapsed: true,
   collapsible: true,
-  position: 'TL',
+  position: 'TR',
 });
 
 map.addPlugin(mp);
