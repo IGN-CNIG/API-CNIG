@@ -1,41 +1,23 @@
 const map = M.map({
   container: 'map',
+  zoom: 5,
+  maxZoom: 17,
+  minZoom: 5,
+  center: [-467062.8225, 4683459.6216],
 });
 
-const layerinicial = new M.layer.WMS({
-  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-  name: 'AU.AdministrativeBoundary',
-  legend: 'Limite administrativo',
-  tiled: false,
-}, {});
+// const layerinicial = new M.layer.WMS({
+//   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+//   name: 'AU.AdministrativeBoundary',
+//   legend: 'Limite administrativo',
+//   tiled: false,
+// }, {});
 
-const campamentos = new M.layer.GeoJSON({
-  name: 'Campamentos',
-  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
-  extract: true,
-});
-
-// OVERVIEW
-// const mp = new M.plugin.OverviewMap({
-//   position: 'BR',
+// const campamentos = new M.layer.GeoJSON({
+//   name: 'Campamentos',
+//   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
+//   extract: true,
 // });
-// map.addLayers(['WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*false', 'WMS_FULL*http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Permeabilidad_Andalucia?']);
-
-const printer = new M.plugin.Printer({
-  collapsed: true,
-  collapsible: true,
-  position: 'TR',
-});
-
-const mp3 = new M.plugin.ShareMap({
-  baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
-  position: 'BR',
-});
-
-const mp2 = new M.plugin.Attributions({
-  mode: 1,
-  scale: 10000,
-});
 
 // const selectiondraw = new M.plugin.SelectionDraw({
 //   projection: 'EPSG:3857',
@@ -45,9 +27,15 @@ const mp2 = new M.plugin.Attributions({
 // });
 // map.addPlugin(selectiondraw);
 
-map.addLayers([layerinicial, campamentos]);
-map.addPlugin(printer);
-map.addPlugin(mp3);
-map.addPlugin(mp2);
+const mp = new M.plugin.EditionTools(9);
+
+const provincias = new M.layer.GeoJSON({ name: 'Provincias', url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application/json', extract: false });
+const lineas = new M.layer.GeoJSON({ name: 'Provincias', url: 'https://gischgdes.chguadalquivir.es/geoserver/chg/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=chg:act2009&maxFeatures=50&outputFormat=application/json', extract: false });
+const puntos = new M.layer.GeoJSON({ name: 'Provincias', url: 'https://gischgdes.chguadalquivir.es/geoserver/chg/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=chg:vertidos_no_autorizados&maxFeatures=50&outputFormat=application/json', extract: false });
+
+map.addLayers([provincias, lineas, puntos]);
+
+
+map.addPlugin(mp);
 
 window.map = map;
