@@ -50,6 +50,23 @@ div#drawingtools>#featureInfo {
     text-align: center;
 }
 
+/* Bottom positions fix */
+
+div.m-areas>div.m-area.m-bottom>div.m-panel.m-geometrydraw.opened,
+div.m-areas>div.m-area.m-bottom>div.m-panel.m-geometrydraw>div.m-panel-controls {
+    width: 130px;
+}
+
+div.m-areas>div.m-area.m-left>div.m-panel.m-geometrydraw>button.m-panel-btn {
+    position: absolute;
+    right: -40px;
+}
+
+div.m-areas>div.m-area.m-right>div.m-panel.m-geometrydraw>button.m-panel-btn {
+    position: absolute;
+    left: -40px;
+}
+
 /* Icon font */
 
 @font-face {

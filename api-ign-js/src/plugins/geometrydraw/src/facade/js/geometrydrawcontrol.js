@@ -510,6 +510,7 @@ export default class GeometryDrawControl extends M.Control {
 
       this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
       this.changeSquare();
+      this.showFeatureInfo();
     });
   }
 

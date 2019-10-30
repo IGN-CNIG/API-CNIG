@@ -1,22 +1,38 @@
 {
   "url": {
-    "name": "GeometryDraw",
+    "name": "geometrydraw",
     "separator": "*"
   },
   "constructor": "M.plugin.GeometryDraw",
-  "parameters": [],
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BL", "BR"]
+    }, {
+      "type": "boolean",
+      "name": "collapsed",
+      "position": 1
+    }, {
+      "type": "boolean",
+      "name": "collapsible",
+      "position": 2
+    }]
+  }],
   "files": {
     "ol": {
-      "scripts": [],
-      "styles": []
+      "scripts": ["geometrydraw.ol.min.js"],
+      "styles": ["geometrydraw.ol.min.css"]
     }
   },
   "metadata": {
     "name": "GeometryDraw",
-    "description": "Description of the plugin",
-    "text": "A full text about plugin",
+    "description": "Geometry drawing",
+    "text": "Geometry drawing and downloading",
     "version": "1.0.0",
-    "date": "",
+    "date": "October 2019",
     "author": "",
     "org": "",
     "tags": "mapea,plugin",
