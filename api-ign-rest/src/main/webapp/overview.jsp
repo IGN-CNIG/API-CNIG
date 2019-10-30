@@ -13,7 +13,6 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
-    <link href="plugins/overview/overview.ol.min.css" rel="stylesheet" />
     <link href="plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
@@ -43,7 +42,6 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
-    <script type="text/javascript" src="plugins/overview/overview.ol.min.js"></script>
     <script type="text/javascript" src="plugins/overviewmap/overviewmap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -64,24 +62,10 @@
             center: [-467062.8225, 4683459.6216],
         });
 
-        // OVERVIEW
-        // const mp = new M.plugin.OverviewMap({
-        //   position: 'BR',
-        // });
-        // map.addLayers(['WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*false', 'WMS_FULL*http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Permeabilidad_Andalucia?']);
-
-        const ov = new M.plugin.Overview({
-            collapsed: true,
-            collapsible: true,
-            position: 'BR',
-            baseLayer: 'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA*false*image/jpeg*false*false*true',
-        });
-
         const mp = new M.plugin.OverviewMap({
             position: 'TR',
         });
 
-        map.addPlugin(ov);
         map.addPlugin(mp);
 
         window.map = map;
