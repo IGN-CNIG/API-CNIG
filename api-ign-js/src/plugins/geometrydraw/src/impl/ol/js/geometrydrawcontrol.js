@@ -99,9 +99,10 @@ export default class GeometryDrawControl extends M.impl.Control {
           facadeControl.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
             olFeature)[0] || undefined;
 
-          facadeControl.geometry = facadeControl.feature.getGeometry().type;
-          facadeControl.changeSquare();
           document.querySelector('.m-geometrydraw').appendChild(facadeControl.drawingTools);
+          facadeControl.updateInputValues();
+          facadeControl.changeSquare();
+          facadeControl.showFeatureInfo();
         }
       });
       olMap.addInteraction(this.select);
@@ -114,6 +115,39 @@ export default class GeometryDrawControl extends M.impl.Control {
       });
       olMap.addInteraction(this.edit);
     }
+  }
+
+  /**
+   * Gets feature coordinates
+   * @public
+   * @function
+   * @api
+   * @param {*} olFeature - Open Layers feature
+   */
+  getFeatureCoordinates(olFeature) {
+    return olFeature.getGeometry().getCoordinates();
+  }
+
+  /**
+   * Gets feature length
+   * @public
+   * @function
+   * @api
+   * @param {*} olFeature - Open Layers feature
+   */
+  getFeatureLength(olFeature) {
+    return olFeature.getGeometry().getLength();
+  }
+
+  /**
+   * Gets feature area
+   * @public
+   * @function
+   * @api
+   * @param {*} olFeature - Open Layers feature
+   */
+  getFeatureArea(olFeature) {
+    return olFeature.getGeometry().getArea();
   }
 
   deactivateSelection() {

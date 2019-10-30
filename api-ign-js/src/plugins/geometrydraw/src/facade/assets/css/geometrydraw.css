@@ -9,6 +9,15 @@ div.m-panel.m-geometrydraw.collapsed {
     height: 40px;
 }
 
+div.m-panel.m-geometrydraw.collapsed * {
+    display: none
+}
+
+div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
+    display: inline-block;
+}
+
+
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#geometryBtns>button,
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#otherBtns>button {
     background-color: white;
@@ -24,6 +33,22 @@ div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#otherBtns
     color: white !important;
 }
 
+div#drawingtools {
+    max-width: 200px;
+    padding: 10px 5px;
+}
+
+div#drawingtools>label>input#thicknessSelector {
+    padding-left: 10px;
+    text-align: center;
+    width: 30px;
+}
+
+div#drawingtools>#featureInfo {
+    max-width: 200px;
+    padding: 10px 0 0;
+    text-align: center;
+}
 
 /* Icon font */
 

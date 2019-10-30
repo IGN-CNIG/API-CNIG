@@ -30,14 +30,15 @@ export default class GeometryDrawControl extends M.Control {
     /**
      * Number of features drawn on current layer.
      */
-    this.numberOfDrawFeatures = 0;
+    // this.numberOfDrawFeatures = 0;
 
     /**
-     * Checks if point/line/polygon drawing tool is active.
+     * Checks if point/line/polygon/text drawing tool is active.
      */
     this.isPointActive = false;
     this.isLineActive = false;
     this.isPolygonActive = false;
+    // this.isTextActive = false;
 
     /**
      * Checks if edition tool is active.
@@ -74,6 +75,11 @@ export default class GeometryDrawControl extends M.Control {
      * Current line thickness (or circle radius) for drawing features.
      */
     this.currentThickness = undefined;
+
+    /**
+     * Current feature name/description text.
+     */
+    this.currentText = '';
 
     /**
      * Saves drawing layer ( __ draw__) from Mapea.
@@ -124,9 +130,11 @@ export default class GeometryDrawControl extends M.Control {
 
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
+    this.currentText = this.drawingTools.querySelector('#featureName').value;
 
     this.drawingTools.querySelector('#colorSelector').addEventListener('change', this.styleChange.bind(this));
     this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', this.styleChange.bind(this));
+    this.drawingTools.querySelector('#featureName').addEventListener('input', this.styleChange.bind(this));
   }
 
   /**
@@ -149,8 +157,26 @@ export default class GeometryDrawControl extends M.Control {
     html.querySelector('#cleanAll').addEventListener('click', this.deleteDrawnFeatures.bind(this));
     html.querySelector('#download').addEventListener('click', this.downloadLayer.bind(this));
     html.querySelector('#edit').addEventListener('click', this.editBtnClick.bind(this));
-    html.querySelector('#delete').addEventListener('click', this.deleteSingleFeature.bind(this));
-    // TODO: add delete icon to css
+  }
+
+  /**
+   * Deletes all drawn features.
+   * @public
+   * @function
+   * @api
+   */
+  deleteDrawnFeatures() {
+    if (this.feature !== undefined) {
+      this.deleteSingleFeature();
+    } else {
+      this.deactivateDrawing();
+      this.getImpl().deactivateSelection();
+      this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
+      this.feature = undefined;
+      this.geometry = undefined;
+      this.selectionLayer.removeFeatures([this.square]);
+      document.querySelector('#drawingtools>#featureInfo').innerHTML = '';
+    }
   }
 
   /**
@@ -168,20 +194,6 @@ export default class GeometryDrawControl extends M.Control {
     this.getImpl().activateSelection();
   }
 
-  /**
-   * Deletes all drawn features.
-   * @public
-   * @function
-   * @api
-   */
-  deleteDrawnFeatures() {
-    this.deactivateDrawing();
-    this.getImpl().deactivateSelection();
-    this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
-    this.feature = undefined;
-    this.geometry = undefined;
-    this.selectionLayer.removeFeatures([this.square]);
-  }
 
   /**
    * Shows/hides drawing template and
@@ -284,6 +296,9 @@ export default class GeometryDrawControl extends M.Control {
     if (this.isEditionActive) {
       this.isEditionActive = false;
       this.getImpl().deactivateSelection();
+      if (document.querySelector('#drawingtools>#featureInfo') !== null) {
+        document.querySelector('#drawingtools>#featureInfo').innerHTML = '';
+      }
     }
   }
 
@@ -304,6 +319,7 @@ export default class GeometryDrawControl extends M.Control {
       this.getImpl().activateSelection();
       this.isEditionActive = true;
       document.querySelector('#otherBtns>#edit').classList.add('activeTool');
+      // document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
     }
   }
 
@@ -316,6 +332,7 @@ export default class GeometryDrawControl extends M.Control {
   styleChange() {
     this.currentColor = document.querySelector('#colorSelector').value;
     this.currentThickness = document.querySelector('#thicknessSelector').value;
+    this.currentText = document.querySelector('#featureName').value;
 
     switch (this.feature.getGeometry().type) {
       case 'Point':
@@ -328,6 +345,9 @@ export default class GeometryDrawControl extends M.Control {
             color: 'white',
             width: 2,
           },
+          label: {
+            text: this.currentText,
+          },
         });
         if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
         break;
@@ -336,6 +356,9 @@ export default class GeometryDrawControl extends M.Control {
           stroke: {
             color: this.currentColor,
             width: this.currentThickness,
+          },
+          label: {
+            text: this.currentText,
           },
         });
         if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
@@ -350,6 +373,9 @@ export default class GeometryDrawControl extends M.Control {
             color: this.currentColor,
             width: this.currentThickness,
           },
+          label: {
+            text: this.currentText,
+          },
         });
         if (this.feature !== undefined) this.feature.setStyle(newPolygonStyle);
         break;
@@ -359,7 +385,61 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Refreshes number of drawn features.
+   * Gets given feature thickness.
+   * @public
+   * @function
+   * @api
+   * @param {*} feature - Mapea feature
+   */
+  getFeatureThickness(feature) {
+    if (feature.getGeometry().type === 'Point') {
+      return feature.getStyle().get('radius');
+    }
+    return feature.getStyle().get('stroke.width');
+  }
+
+  /**
+   * Gets given feature color.
+   * @public
+   * @function
+   * @api
+   * @param {*} feature - Mapea feature
+   */
+  getFeatureColor(feature) {
+    if (feature.getGeometry().type === 'Point') {
+      return feature.getStyle().get('fill.color');
+    }
+    return feature.getStyle().get('stroke.color');
+  }
+
+  /**
+   * Gets given feature label.
+   * @public
+   * @function
+   * @api
+   * @param {*} feature - Mapea feature
+   */
+  getFeatureText(feature) {
+    return feature.getStyle().get('label.text') || '';
+  }
+
+  /**
+   * Updates input values with selected feature values.
+   * @public
+   * @function
+   * @api
+   */
+  updateInputValues() {
+    this.geometry = this.feature.getGeometry().type;
+    this.currentColor = this.getFeatureColor(this.feature);
+    this.currentThickness = this.getFeatureThickness(this.feature);
+    this.currentText = this.getFeatureText(this.feature);
+    this.drawingTools.querySelector('#colorSelector').value = this.currentColor;
+    this.drawingTools.querySelector('#thicknessSelector').value = this.currentThickness;
+    this.drawingTools.querySelector('#featureName').value = this.currentText;
+  }
+
+  /**
    * Adds style and source to vector layer.
    * Adds selection layer to map.
    * @public
@@ -367,10 +447,6 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   initializeLayers() {
-    if (this.numberOfDrawFeatures === 0) {
-      this.numberOfDrawFeatures = this.map.getLayers()[this.map.getLayers().length - 1]
-        .getFeatures().length;
-    }
     this.drawLayer = this.map.getLayers()[this.map.getLayers().length - 1];
     this.map.addLayers(this.selectionLayer);
     this.getImpl().setOLSource(this.drawLayer, this.vectorSource);
@@ -384,17 +460,8 @@ export default class GeometryDrawControl extends M.Control {
    */
   addDrawInteraction() {
     const olMap = this.map.getMapImpl();
-    if (this.geometry !== 'Text') {
-      this.draw = this.getImpl().newDrawInteraction(this.vectorSource, this.geometry);
-      this.addDrawEvent();
-    } else {
-      this.draw = this.getImpl().newDrawInteraction(this.vectorSource, 'Point');
-      this.addDrawEvent();
-      // this.draw.on('drawend', (event) => {
-      //   const feature = event.feature;
-      //   this.setContent_(feature);
-      // });
-    }
+    this.draw = this.getImpl().newDrawInteraction(this.vectorSource, this.geometry);
+    this.addDrawEvent();
     olMap.addInteraction(this.draw);
   }
 
@@ -409,10 +476,6 @@ export default class GeometryDrawControl extends M.Control {
     this.draw.on('drawend', (event) => {
       this.feature = event.feature;
       this.feature = M.impl.Feature.olFeature2Facade(this.feature);
-
-      // this.feature.set('name', this.feature.getId());
-      // this.feature.setId(`draw-${this.numberOfDrawFeatures}`);
-      // this.numberOfDrawFeatures += 1;
 
       if (this.geometry === 'Point') {
         this.feature.setStyle(new M.style.Point({
@@ -451,53 +514,6 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Sets text content on feature
-   * @public
-   * @function
-   * @api
-   * @param {*} feature - OL feature
-   */
-  setContent_(feature) {
-    const textStyle = M.style.Point({
-      radius: this.currentThickness,
-      fill: {
-        color: this.currentColor,
-      },
-      stroke: {
-        color: 'white',
-        width: 2,
-      },
-      label: {
-        text: 'Texto',
-        font: '12px Arial',
-        color: 'black',
-        stroke: {
-          color: 'black',
-          width: 0,
-        },
-      },
-    });
-
-    // feature.setStyle(this.getImpl().newOLTextStyle({
-    //   text: 'Texto',
-    //   font: '12px Arial',
-    //   textFillColor: '#000000',
-    //   defaultColor: 'rgba(213, 0, 110, 0)',
-    //   strokeWidth: 0,
-    // }));
-
-    feature.setStyle(textStyle);
-
-    this.feature = feature;
-    this.feature.setId(`draw-${this.numberOfDrawFeatures}`);
-    this.numberOfDrawFeatures += 1;
-    this.feature.set('name', this.feature.getId());
-    this.feature = M.impl.Feature.olFeature2Facade(this.feature);
-    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
-    this.changeSquare();
-  }
-
-  /**
    * Removes draw interaction from map.
    * @public
    * @function
@@ -505,6 +521,51 @@ export default class GeometryDrawControl extends M.Control {
    */
   deleteDrawInteraction() {
     this.map.getMapImpl().removeInteraction(this.draw);
+  }
+
+  /**
+   * On select, shows feature info.
+   * @public
+   * @function
+   * @api
+   */
+  showFeatureInfo() {
+    const olFeature = this.feature.getImpl().getOLFeature();
+    const infoContainer = document.querySelector('#drawingtools>#featureInfo');
+    if (infoContainer !== null) infoContainer.innerHTML = '';
+
+    switch (this.geometry) {
+      case 'Point':
+        const x = this.getImpl().getFeatureCoordinates(olFeature)[0];
+        const y = this.getImpl().getFeatureCoordinates(olFeature)[1];
+        infoContainer.innerHTML = `Coordenadas: ${x}, ${y}`;
+        break;
+      case 'LineString':
+        let lineLength = this.getImpl().getFeatureLength(olFeature);
+        let units = 'km';
+        if (lineLength > 100) {
+          lineLength = Math.round((lineLength / 1000) * 100) / 100;
+        } else {
+          lineLength = Math.round(lineLength * 100) / 100;
+          units = 'm';
+        }
+        infoContainer.innerHTML = `Longitud: ${lineLength} ${units}`;
+        break;
+      case 'Polygon':
+        let area = this.getImpl().getFeatureArea(olFeature);
+        let areaUnits = `km${'2'.sup()}`;
+        if (area > 10000) {
+          area = Math.round((area / 1000000) * 100) / 100;
+        } else {
+          area = Math.round(area * 100) / 100;
+          areaUnits = `m${'2'.sup()}`;
+        }
+        infoContainer.innerHTML = `Área: ${area} ${areaUnits}`;
+        break;
+      default:
+        infoContainer.innerHTML = '';
+        break;
+    }
   }
 
   /**
@@ -526,7 +587,6 @@ export default class GeometryDrawControl extends M.Control {
         const OLFeatClone = thisOLfeat.clone();
         this.square = M.impl.Feature.olFeature2Facade(OLFeatClone);
 
-        // FIXME:
         this.square.setStyle(new M.style.Point({
           radius: 20,
           stroke: {
@@ -548,9 +608,6 @@ export default class GeometryDrawControl extends M.Control {
       this.selectionLayer.addFeatures([this.square]);
     }
   }
-
-
-  /* LAYER DOWNLOAD METHODS */
 
   /**
    * Downloads draw layer as GeoJSON.
@@ -642,51 +699,4 @@ export default class GeometryDrawControl extends M.Control {
   equals(control) {
     return control instanceof GeometryDrawControl;
   }
-
-  // radiansToDegrees_(radians) {
-  //   const pi = Math.PI;
-  //   return radians * (180 / pi);
-  // }
-
-  // changeProjectionPoint(arrayCoord, projectionOrigen, projectionDestino) {
-  //   const arrayCoordo = arrayCoord;
-  //   if (this.arrayDimension(arrayCoord, 1) > 1) {
-  //     for (let i = 0; i < arrayCoord.length; i += 1) {
-  //       arrayCoordo[i] = this
-  //         .changeProjectionPoint(arrayCoordo[i], projectionOrigen, projectionDestino);
-  //     }
-  //     return arrayCoordo;
-  //   }
-  //   return ol.proj.transform(arrayCoordo, projectionOrigen, projectionDestino);
-  // }
-
-  // arrayDimension(arr, count) {
-  //   let countputoSlim = count;
-  //   if (arr[0].length !== undefined) {
-  //     countputoSlim += 1;
-  //     return this.arrayDimension(arr[0], countputoSlim);
-  //   }
-  //   return countputoSlim;
-  // }
-
-  // rgbaToHex_(arrayColor) {
-  //   const toHex = (color) => {
-  //     let hex = Number(color).toString(16);
-  //     if (hex.length < 2) {
-  //       hex = `0${hex}`;
-  //     }
-  //     return hex;
-  //   };
-  //   const red = toHex(arrayColor[0]);
-  //   const green = toHex(arrayColor[1]);
-  //   const blue = toHex(arrayColor[2]);
-  //   return `#${red}${green}${blue}`;
-  // }
-
-  // getNumberOfIdFeature() {
-  //   return this.numberOfDrawFeatures;
-  // }
-  // getFeature() {
-  //   return this.feature;
-  // }
 }
