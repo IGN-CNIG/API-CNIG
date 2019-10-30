@@ -4,7 +4,11 @@ const map = M.map({
   container: 'mapjs',
 });
 
-const mp = new GeometryDraw();
+const mp = new GeometryDraw({
+  collapsed: true,
+  collapsible: true,
+  position: 'TL',
+});
 
 map.addPlugin(mp);
 

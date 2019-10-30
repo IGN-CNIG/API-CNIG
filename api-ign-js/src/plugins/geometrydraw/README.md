@@ -1,52 +1,63 @@
 # M.plugin.GeometryDraw
 
-## Api.json
-
-INTEGRACIÓN DE PARÁMETROS EN API REST
-
-OPCIONES:  
-1. Nuevo parámetro en la API REST normalmente porque requiera parámetros de configuración.
-Example: <url_mapea>?geosearch=[params]
-Example: <url_mapea>?printer=[params]
-
-2. Nuevo valor para el parámetro plugins, el plugin no requiere configuración
-Example: <url_mapea>?plugins=measurebar,streetview
+Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como su descarga.
 
 
-### Plugin sin parámetros
+# Dependencias
 
+- geometrydraw.ol.min.js
+- geometrydraw.ol.min.css
+
+
+```html
+ <link href="../../plugins/geometrydraw/geometrydraw.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/geometrydraw/geometrydraw.ol.min.js"></script>
 ```
-{
-   "url": {
-      "name": "nombre_plugin"
-   },
-   "constructor": "M.plugin.nombre_plugin"
-}
-```
-### Plugin con parámetros
 
+# Parámetros
+
+El constructor se inicializa con un JSON de options con los siguientes atributos:
+
+- **collapsed**. Indica si el plugin viene cerrado por defecto (true/false).
+- **collapsible**. Indica si el plugin se puede cerrar (true/false).
+- **position**. Indica la posición donde se mostrará el plugin
+  - 'TL':top left (default)
+  - 'TR':top right 
+  - 'BL':bottom left 
+  - 'BR':bottom right
+
+# Parámetros API REST
+```javascript
+URL_API?geometrydraw=position*collapsed*collapsible
+````
+Ejemplo:
+```javascript
+http://cnig-api-core.desarrollo.guadaltel.es/api-core/?geometrydraw=BL*true*true
 ```
-{
-   "url": {
-      "name": "geosearch",
-      "separator": "*"
-   },
-   "constructor": "M.plugin.Geosearch",
-   "parameters": [{
-      "type": "object",
-      "properties": [{
-         "type": "simple",
-         "name": "url",
-         "position": 0
-      }, {
-         "type": "simple",
-         "name": "core",
-         "position": 1
-      }, {
-         "type": "simple",
-         "name": "handler",
-         "position": 2
-      }]
-   }]
-}
+
+
+### Ejemplos de uso
+
+```javascript
+const map = M.map({
+  container: 'mapjs',
+});
+
+const mp = new GeometryDraw();
+
+map.addPlugin(mp);
+```
+
+```javascript
+const map = M.map({
+  container: 'mapjs',
+});
+
+const mp = new GeometryDraw({
+  collapsed: true,
+  collapsible: true,
+  position: 'TL',
+});
+
+map.addPlugin(mp);
 ```
