@@ -28,10 +28,30 @@ div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#otherBtns
 }
 
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#geometryBtns>button.activeTool,
-div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#otherBtns>button.activeTool {
+div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#otherBtns>button.activeTool,
+div.m-panel.m-geometrydraw>div#downloadFormat>button {
     background-color: #71a7d3 !important;
     color: white !important;
 }
+
+div.m-panel.m-geometrydraw>div#downloadFormat>select,
+div.m-panel.m-geometrydraw>div#downloadFormat>button {
+    display: block;
+    margin: 10px auto;
+
+}
+
+div.m-panel.m-geometrydraw>div#downloadFormat>select {
+    background-color: white;
+    padding: 5px;
+}
+
+div.m-panel.m-geometrydraw>div#downloadFormat>button {
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+}
+
 
 div#drawingtools>label>input#thicknessSelector {
     padding-left: 10px;

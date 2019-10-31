@@ -5,6 +5,7 @@
 import GeometryDrawImplControl from 'impl/geometrydrawcontrol';
 import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
+import downloadingTemplate from 'templates/downloading';
 
 export default class GeometryDrawControl extends M.Control {
   /**
@@ -67,6 +68,11 @@ export default class GeometryDrawControl extends M.Control {
     this.drawingTools = undefined;
 
     /**
+     * Template with downloading format options.
+     */
+    this.downloadingTemplate = undefined;
+
+    /**
      * Current color for drawing features.
      */
     this.currentColor = undefined;
@@ -114,9 +120,21 @@ export default class GeometryDrawControl extends M.Control {
       const html = M.template.compileSync(template);
       this.initializeLayers();
       this.createDrawingTemplate();
+      this.createDownloadingTemplate();
       this.addEvents(html);
       success(html);
     });
+  }
+
+  /**
+   * Creates template with download options.
+   * @public
+   * @function
+   * @api
+   */
+  createDownloadingTemplate() {
+    this.downloadingTemplate = M.template.compileSync(downloadingTemplate, { jsonp: true });
+    this.downloadingTemplate.querySelector('button').addEventListener('click', this.downloadLayer.bind(this));
   }
 
   /**
@@ -155,7 +173,7 @@ export default class GeometryDrawControl extends M.Control {
       this.geometryBtnClick('Polygon');
     });
     html.querySelector('#cleanAll').addEventListener('click', this.deleteDrawnFeatures.bind(this));
-    html.querySelector('#download').addEventListener('click', this.downloadLayer.bind(this));
+    html.querySelector('#download').addEventListener('click', this.openDownloadOptions.bind(this));
     html.querySelector('#edit').addEventListener('click', this.editBtnClick.bind(this));
   }
 
@@ -283,7 +301,7 @@ export default class GeometryDrawControl extends M.Control {
         document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
       }
 
-      this.deleteDrawInteraction();
+      this.map.getMapImpl().removeInteraction(this.draw);
       this.selectionLayer.removeFeatures([this.square]);
       this.feature = undefined;
       this.isPointActive = false;
@@ -524,16 +542,6 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Removes draw interaction from map.
-   * @public
-   * @function
-   * @api
-   */
-  deleteDrawInteraction() {
-    this.map.getMapImpl().removeInteraction(this.draw);
-  }
-
-  /**
    * On select, shows feature info.
    * @public
    * @function
@@ -627,83 +635,75 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
+   * Opens download template
+   * @public
+   * @function
+   * @api
+   */
+  openDownloadOptions() {
+    if (this.drawLayer.getFeatures().length !== 0) {
+      if (this.isEditionActive) {
+        this.deactivateEdition();
+        document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
+      }
+      this.deactivateDrawing();
+      document.querySelector('.m-geometrydraw').appendChild(this.downloadingTemplate);
+    } else {
+      M.dialog.info('La capa de dibujo está vacía.');
+    }
+  }
+
+  /**
    * Downloads draw layer as GeoJSON.
    * @public
    * @function
    * @api
    */
   downloadLayer() {
-    if (this.drawLayer.getFeatures().length !== 0) {
-      const json = JSON.stringify(this.drawLayer.toGeoJSON());
-      // const json = JSON.stringify(this.turnMultiGeometriesSimple(this.drawLayer.toGeoJSON()));
-      const url = window.URL.createObjectURL(new window.Blob([json], { type: 'application/json' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${this.layer}.json`);
-      document.body.appendChild(link);
-      link.click();
-    } else {
-      M.dialog.info('La capa de dibujo está vacía.');
+    const downloadFormat = this.downloadingTemplate.querySelector('select').value;
+    let arrayContent;
+    let mimeType;
+    let extensionFormat;
+
+    switch (downloadFormat) {
+      case 'geojson':
+        arrayContent = JSON.stringify(this.drawLayer.toGeoJSON());
+        mimeType = 'json';
+        extensionFormat = 'geojson';
+        break;
+      case 'kml': // take to Impl
+        const olFeats = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
+        const format = new ol.format.KML();
+        arrayContent = format.writeFeatures(olFeats, { featureProjection: 'EPSG:3857' });
+        mimeType = 'xml';
+        extensionFormat = 'kml';
+        break;
+      case 'gml': // FIXME:
+        const olFeats2 = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
+        const format2 = new ol.format.GML3();
+        arrayContent = format2.writeFeatures(olFeats2);
+        //
+        mimeType = 'xml';
+        extensionFormat = 'gml';
+        break;
+      case 'shp':
+        break;
+      default:
+        M.dialog.error('No se ha seleccionado formato de descarga.');
+        break;
     }
+
+    const url = window.URL.createObjectURL(new window.Blob([arrayContent], {
+      type: `application/${mimeType}`,
+    }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${this.layer}.${extensionFormat}`);
+    document.body.appendChild(link);
+    link.click();
+
+    document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
   }
-
-
-  // /**
-  //  * This function turns multigeometries into several simple geometries
-  //  * @public
-  //  * @function
-  //  * @param json - geojson
-  //  * @api
-  //  */
-  // turnMultiGeometriesSimple(json) {
-  //   const newJson = {
-  //     type: json.type,
-  //     // totalFeatures: json.totalFeatures,
-  //     features: [],
-  //   };
-  //   json.features.forEach((feature) => {
-  //     const newFeature = {
-  //       type: feature.type,
-  //       id: feature.id,
-  //       geometry: {
-  //         type: '',
-  //         coordinates: [],
-  //       },
-  //       // geometry_name: feature.geometry_name,
-  //       properties: feature.properties,
-  //     };
-
-  //     switch (feature.geometry.type) {
-  //       case 'MultiPoint':
-  //         newFeature.geometry.type = 'Point';
-  //         break;
-  //       case 'MultiLineString':
-  //         newFeature.geometry.type = 'LineString';
-  //         break;
-  //       case 'MultiPolygon':
-  //         newFeature.geometry.type = 'Polygon';
-  //         break;
-  //       default:
-  //         newFeature.geometry.type = feature.geometry.type;
-  //     }
-
-  //     if (feature.geometry.type === 'MultiPoint' ||
-  //       feature.geometry.type === 'MultiLineString' ||
-  //       feature.geometry.type === 'MultiPolygon') {
-  //       feature.geometry.coordinates.forEach((multiElement) => {
-  //         multiElement.forEach((element) => {
-  //           newFeature.geometry.coordinates[0] = element;
-  //           newJson.features.push(newFeature);
-  //         });
-  //       });
-  //     } else {
-  //       newFeature.geometry.coordinates = feature.geometry.coordinates;
-  //       newJson.features.push(newFeature);
-  //     }
-  //   });
-
-  //   return newJson;
-  // }
 
   /**
    * This function compares controls
