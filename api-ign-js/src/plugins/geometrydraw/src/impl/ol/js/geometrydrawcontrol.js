@@ -86,6 +86,10 @@ export default class GeometryDrawControl extends M.impl.Control {
     const facadeControl = this.facadeControl;
     const drawingLayer = facadeControl.drawLayer.getImpl().getOL3Layer();
 
+    if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(facadeControl.downloadingTemplate);
+    }
+
     if (drawingLayer) {
       this.select = new ol.interaction.Select({
         wrapX: false,
@@ -100,6 +104,7 @@ export default class GeometryDrawControl extends M.impl.Control {
             olFeature)[0] || undefined;
 
           document.querySelector('.m-geometrydraw').appendChild(facadeControl.drawingTools);
+          document.querySelector('.m-geometrydraw>#drawingtools>button').style.display = 'block';
           facadeControl.updateInputValues();
           facadeControl.changeSquare();
           facadeControl.showFeatureInfo();
@@ -112,6 +117,7 @@ export default class GeometryDrawControl extends M.impl.Control {
         // eslint-disable-next-line no-underscore-dangle
         facadeControl.feature = M.impl.Feature.olFeature2Facade(evt.target.features_.getArray()[0]);
         facadeControl.changeSquare();
+        facadeControl.showFeatureInfo();
       });
       olMap.addInteraction(this.edit);
     }
@@ -153,6 +159,7 @@ export default class GeometryDrawControl extends M.impl.Control {
   deactivateSelection() {
     if (this.facadeControl.drawLayer) {
       if (document.querySelector('.m-geometrydraw #drawingtools')) {
+        document.querySelector('.m-geometrydraw>#drawingtools>button').style.display = 'none';
         document.querySelector('.m-geometrydraw').removeChild(this.facadeControl.drawingTools);
       }
       this.facadeControl.feature = undefined;
@@ -161,6 +168,23 @@ export default class GeometryDrawControl extends M.impl.Control {
       this.facadeMap_.getMapImpl().removeInteraction(this.edit);
       this.facadeMap_.getMapImpl().removeInteraction(this.select);
     }
+  }
+
+  /**
+   * Creates GML string with Open Layers features.
+   * @public
+   * @function
+   * @api
+   * @param {*} options - object with features, projection and metadata.
+   */
+  getGML(options) {
+    const gmlFormat = new ol.format.GML3();
+    const gmlFeatures = gmlFormat.writeFeatures(options.olFeatures, {
+      featureProjection: options.epsg,
+      featureNS: options.featureNS,
+      featureType: options.featureType,
+    });
+    return gmlFeatures;
   }
 
   /** ***************************************************************************** */

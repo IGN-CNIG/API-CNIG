@@ -155,6 +155,9 @@ export default class GeometryDrawControl extends M.Control {
     this.drawingTools.querySelector('#colorSelector').addEventListener('change', this.styleChange.bind(this));
     this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', this.styleChange.bind(this));
     this.drawingTools.querySelector('#featureName').addEventListener('input', this.styleChange.bind(this));
+    this.drawingTools.querySelector('button').addEventListener('click', this.deleteSingleFeature.bind(this));
+
+    this.drawingTools.querySelector('button').style.display = 'none';
   }
 
   /**
@@ -186,20 +189,23 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   deleteDrawnFeatures() {
-    if (this.feature !== undefined) {
-      this.deleteSingleFeature();
-      this.deactivateDrawing();
-    } else {
-      this.deactivateDrawing();
-      this.getImpl().deactivateSelection();
-      this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
-      this.feature = undefined;
-      this.geometry = undefined;
-      this.selectionLayer.removeFeatures([this.square]);
-      if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-        document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
-      }
+    // if (this.feature !== undefined) {
+    //   this.deleteSingleFeature();
+    //   this.deactivateDrawing();
+    // } else {
+    this.deactivateDrawing();
+    this.getImpl().deactivateSelection();
+    this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
+    this.feature = undefined;
+    this.geometry = undefined;
+    this.selectionLayer.removeFeatures([this.square]);
+    if (document.querySelector('#drawingtools>#featureInfo') !== null) {
+      document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
     }
+    if (document.querySelector('#otherBtns>#edit')) {
+      document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
+    }
+    // }
   }
 
   /**
@@ -681,25 +687,16 @@ export default class GeometryDrawControl extends M.Control {
         mimeType = 'json';
         extensionFormat = 'geojson';
         break;
-      case 'kml': // FIXME: take to Impl
+      case 'kml':
         arrayContent = tokml(geojsonLayer);
-        // const kmlFormat = new ol.format.KML();
-        // arrayContent = kmlFormat.writeFeatures(olFeatures, {
-        //   decimals: 3,
-        //   featureProjection: 'EPSG:3857', // map.getView().getProjection()
-        // });
         mimeType = 'xml';
         extensionFormat = 'kml';
         break;
       case 'gml':
-        const gmlFormat = new ol.format.GML3(); // Cannot read property 'undefined' of undefined
-        // const gmlFormat = new ol.format.GML2(); // Failed to execute 'serializeToString' on
-        // 'XMLSerializer': parameter 1 is not of type 'Node'.
-        // const gmlFormat = new ol.format.GML(); // Cannot read property 'undefined' of undefined
-        // const gmlFormat = new ol.format.GML32(); // is not a constructor
-        arrayContent = gmlFormat.writeFeatures(olFeatures, {
-          featureProjection: 'EPSG:3857',
-          featureNS: 'http://abcdef.xyz/dummy', // Namespace used for feature attributes.
+        arrayContent = this.getImpl().getGML({
+          olFeatures,
+          epsg: 'EPSG:3857',
+          featureNS: 'http://abcdef.xyz/dummy',
           featureType: 'dummy',
         });
         mimeType = 'xml';
