@@ -52,24 +52,6 @@ div.m-panel.m-geometrydraw>div#downloadFormat>button {
     padding: 8px;
 }
 
-
-div#drawingtools>label>input#thicknessSelector {
-    padding-left: 10px;
-    text-align: center;
-    width: 30px;
-}
-
-div#drawingtools>#featureInfo {
-    max-width: 200px;
-    padding: 10px 0 0;
-    text-align: center;
-}
-
-div.m-panel.m-geometrydraw.opened,
-div.m-panel.m-geometrydraw>div.m-panel-controls {
-    width: 260px;
-}
-
 div.m-panel.m-geometrydraw>div#drawingtools {
     border-top: 1px solid black;
     padding: 20px 35px;
@@ -83,6 +65,29 @@ div.m-panel.m-geometrydraw>div#drawingtools input#featureName {
 div.m-panel.m-geometrydraw>div#drawingtools #featureInfo {
     border-top: 1px solid silver;
     margin-top: 10px;
+    max-width: 200px;
+    padding: 10px 0 0;
+    text-align: center;
+}
+
+div#drawingtools>label>input#thicknessSelector {
+    padding-left: 10px;
+    text-align: center;
+    width: 30px;
+}
+
+div#drawingtools>button {
+    background-color: #71a7d3;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin: 20px auto 0;
+    padding: 10px;
+}
+
+div.m-panel.m-geometrydraw.opened,
+div.m-panel.m-geometrydraw>div.m-panel-controls {
+    width: 260px;
 }
 
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-control.m-container.m-geometrydraw>div#geometryBtns,
