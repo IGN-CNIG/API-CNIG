@@ -654,13 +654,14 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Downloads draw layer as GeoJSON.
+   * Downloads draw layer as GeoJSON, kml or gml.
    * @public
    * @function
    * @api
    */
   downloadLayer() {
     const downloadFormat = this.downloadingTemplate.querySelector('select').value;
+    const olFeatures = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
     let arrayContent;
     let mimeType;
     let extensionFormat;
@@ -671,18 +672,23 @@ export default class GeometryDrawControl extends M.Control {
         mimeType = 'json';
         extensionFormat = 'geojson';
         break;
-      case 'kml': // take to Impl
-        const olFeats = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
-        const format = new ol.format.KML();
-        arrayContent = format.writeFeatures(olFeats, { featureProjection: 'EPSG:3857' });
+      case 'kml': // FIXME: take to Impl
+        const kmlFormat = new ol.format.KML();
+        arrayContent = kmlFormat.writeFeatures(olFeatures, { featureProjection: 'EPSG:3857' });
         mimeType = 'xml';
         extensionFormat = 'kml';
         break;
-      case 'gml': // FIXME:
-        const olFeats2 = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
-        const format2 = new ol.format.GML3();
-        arrayContent = format2.writeFeatures(olFeats2);
-        //
+      case 'gml':
+        const gmlFormat = new ol.format.GML3(); // Cannot read property 'undefined' of undefined
+        // const gmlFormat = new ol.format.GML2(); // Failed to execute 'serializeToString' on
+        // 'XMLSerializer': parameter 1 is not of type 'Node'.
+        // const gmlFormat = new ol.format.GML(); // Cannot read property 'undefined' of undefined
+        // const gmlFormat = new ol.format.GML32(); // is not a constructor
+        arrayContent = gmlFormat.writeFeatures(olFeatures, {
+          featureProjection: 'EPSG:3857',
+          featureNS: 'http://abcdef.xyz/dummy', // Namespace used for feature attributes.
+          featureType: 'dummy',
+        });
         mimeType = 'xml';
         extensionFormat = 'gml';
         break;
