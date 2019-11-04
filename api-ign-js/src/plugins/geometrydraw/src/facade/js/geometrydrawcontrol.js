@@ -7,6 +7,7 @@ import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
 import downloadingTemplate from 'templates/downloading';
 import shpWrite from 'shp-write';
+import tokml from 'tokml';
 
 export default class GeometryDrawControl extends M.Control {
   /**
@@ -195,7 +196,9 @@ export default class GeometryDrawControl extends M.Control {
       this.feature = undefined;
       this.geometry = undefined;
       this.selectionLayer.removeFeatures([this.square]);
-      document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+      if (document.querySelector('#drawingtools>#featureInfo') !== null) {
+        document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+      }
     }
   }
 
@@ -285,6 +288,10 @@ export default class GeometryDrawControl extends M.Control {
 
       if (document.querySelector('#drawingtools>#featureInfo') !== null) {
         document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+      }
+
+      if (document.querySelector('.m-geometrydraw>#downloadFormat')) {
+        document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
       }
     }
   }
@@ -663,19 +670,24 @@ export default class GeometryDrawControl extends M.Control {
   downloadLayer() {
     const downloadFormat = this.downloadingTemplate.querySelector('select').value;
     const olFeatures = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
+    const geojsonLayer = this.drawLayer.toGeoJSON();
     let arrayContent;
     let mimeType;
     let extensionFormat;
 
     switch (downloadFormat) {
       case 'geojson':
-        arrayContent = JSON.stringify(this.drawLayer.toGeoJSON());
+        arrayContent = JSON.stringify(geojsonLayer);
         mimeType = 'json';
         extensionFormat = 'geojson';
         break;
       case 'kml': // FIXME: take to Impl
-        const kmlFormat = new ol.format.KML();
-        arrayContent = kmlFormat.writeFeatures(olFeatures, { featureProjection: 'EPSG:3857' });
+        arrayContent = tokml(geojsonLayer);
+        // const kmlFormat = new ol.format.KML();
+        // arrayContent = kmlFormat.writeFeatures(olFeatures, {
+        //   decimals: 3,
+        //   featureProjection: 'EPSG:3857', // map.getView().getProjection()
+        // });
         mimeType = 'xml';
         extensionFormat = 'kml';
         break;
@@ -694,7 +706,7 @@ export default class GeometryDrawControl extends M.Control {
         extensionFormat = 'gml';
         break;
       case 'shp':
-        const json = this.drawLayer.toGeoJSON();
+        const json = geojsonLayer;
         const options = {
           folder: this.layer,
           types: {
