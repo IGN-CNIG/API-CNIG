@@ -109,11 +109,11 @@ div.m-areas>div.m-area.m-right>div.m-panel.m-geometrydraw>button.m-panel-btn {
 
 @font-face {
     font-family: 'geometrydraw';
-    src: url('../fonts/geometrydraw.eot?2nw5r9');
-    src: url('../fonts/geometrydraw.eot?2nw5r9#iefix') format('embedded-opentype'),
-        url('../fonts/geometrydraw.ttf?2nw5r9') format('truetype'),
-        url('../fonts/geometrydraw.woff?2nw5r9') format('woff'),
-        url('../fonts/geometrydraw.svg?2nw5r9#geometrydraw') format('svg');
+    src: url('../fonts/geometrydraw.eot?924fud');
+    src: url('../fonts/geometrydraw.eot?924fud#iefix') format('embedded-opentype'),
+        url('../fonts/geometrydraw.ttf?924fud') format('truetype'),
+        url('../fonts/geometrydraw.woff?924fud') format('woff'),
+        url('../fonts/geometrydraw.svg?924fud#geometrydraw') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -123,7 +123,7 @@ div.m-areas>div.m-area.m-right>div.m-panel.m-geometrydraw>button.m-panel-btn {
 [class*=" geometrydraw-"] */
 div.m-geometrydraw>div#geometryBtns>button,
 div.m-geometrydraw>div#otherBtns>button,
-.m-areas>div.m-area>div.m-panel.collapsed>button.m-panel-btn.geometrydraw-editar {
+.m-areas>div.m-area>div.m-panel>button.m-panel-btn.geometrydraw-editar {
     font-family: 'geometrydraw' !important;
     font-style: normal;
     font-weight: normal;
@@ -135,8 +135,12 @@ div.m-geometrydraw>div#otherBtns>button,
     -moz-osx-font-smoothing: grayscale;
 }
 
-.geometrydraw-editar:before {
+.geometrydraw-mover-punto:before {
     content: "\e1500";
+}
+
+.geometrydraw-editar:before {
+    content: "\e1508";
 }
 
 .geometrydraw-poligono:before {

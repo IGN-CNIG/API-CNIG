@@ -6,6 +6,7 @@ import GeometryDrawImplControl from 'impl/geometrydrawcontrol';
 import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
 import downloadingTemplate from 'templates/downloading';
+import shpWrite from 'shp-write';
 
 export default class GeometryDrawControl extends M.Control {
   /**
@@ -693,20 +694,32 @@ export default class GeometryDrawControl extends M.Control {
         extensionFormat = 'gml';
         break;
       case 'shp':
+        const json = this.drawLayer.toGeoJSON();
+        const options = {
+          folder: this.layer,
+          types: {
+            point: this.layer,
+            polygon: this.layer,
+            line: this.layer,
+          },
+        };
+        shpWrite.download(json, options);
         break;
       default:
         M.dialog.error('No se ha seleccionado formato de descarga.');
         break;
     }
 
-    const url = window.URL.createObjectURL(new window.Blob([arrayContent], {
-      type: `application/${mimeType}`,
-    }));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${this.layer}.${extensionFormat}`);
-    document.body.appendChild(link);
-    link.click();
+    if (downloadFormat !== 'shp') {
+      const url = window.URL.createObjectURL(new window.Blob([arrayContent], {
+        type: `application/${mimeType}`,
+      }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${this.layer}.${extensionFormat}`);
+      document.body.appendChild(link);
+      link.click();
+    }
 
     document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
   }
