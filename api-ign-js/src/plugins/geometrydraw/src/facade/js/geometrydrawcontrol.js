@@ -5,6 +5,7 @@
 import GeometryDrawImplControl from 'impl/geometrydrawcontrol';
 import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
+import textDrawTemplate from 'templates/textdraw';
 import downloadingTemplate from 'templates/downloading';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
@@ -41,7 +42,7 @@ export default class GeometryDrawControl extends M.Control {
     this.isPointActive = false;
     this.isLineActive = false;
     this.isPolygonActive = false;
-    // this.isTextActive = false;
+    this.isTextActive = false;
 
     /**
      * Checks if edition tool is active.
@@ -75,6 +76,11 @@ export default class GeometryDrawControl extends M.Control {
     this.downloadingTemplate = undefined;
 
     /**
+     * Template with text feature drawing tools.
+     */
+    this.textDrawTemplate = undefined;
+
+    /**
      * Current color for drawing features.
      */
     this.currentColor = undefined;
@@ -83,6 +89,26 @@ export default class GeometryDrawControl extends M.Control {
      * Current line thickness (or circle radius) for drawing features.
      */
     this.currentThickness = undefined;
+
+    /**
+     * Current feature name / description text.
+     */
+    this.textContent = 'Texto';
+
+    /**
+     * Current text feature font color.
+     */
+    this.fontColor = '#F00';
+
+    /**
+     * Current text feature font size.
+     */
+    this.fontSize = '12';
+
+    /**
+     * Current text feature font family.
+     */
+    this.fontFamily = 'Verdana';
 
     /**
      * Current feature name/description text.
@@ -122,10 +148,28 @@ export default class GeometryDrawControl extends M.Control {
       const html = M.template.compileSync(template);
       this.initializeLayers();
       this.createDrawingTemplate();
+      this.createTextDrawTemplate();
       this.createDownloadingTemplate();
       this.addEvents(html);
       success(html);
     });
+  }
+
+  createTextDrawTemplate() {
+    this.textDrawTemplate = M.template.compileSync(textDrawTemplate, { jsonp: true });
+
+    this.textContent = this.textDrawTemplate.querySelector('#textContent').value;
+    this.fontColor = this.textDrawTemplate.querySelector('#fontColor').value;
+    this.fontSize = this.textDrawTemplate.querySelector('#fontSize').value;
+    this.fontFamily = this.textDrawTemplate.querySelector('#fontFamily').value;
+
+    this.textDrawTemplate.querySelector('#textContent').addEventListener('input', e => this.styleChange(e));
+    this.textDrawTemplate.querySelector('#fontColor').addEventListener('change', e => this.styleChange(e));
+    this.textDrawTemplate.querySelector('#fontSize').addEventListener('change', e => this.styleChange(e));
+    this.textDrawTemplate.querySelector('#fontFamily').addEventListener('change', e => this.styleChange(e));
+
+    this.textDrawTemplate.querySelector('button').addEventListener('click', this.deleteSingleFeature.bind(this));
+    this.textDrawTemplate.querySelector('button').style.display = 'none';
   }
 
   /**
@@ -152,10 +196,10 @@ export default class GeometryDrawControl extends M.Control {
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
     // this.currentText = this.drawingTools.querySelector('#featureName').value;
 
-    this.drawingTools.querySelector('#colorSelector').addEventListener('change', this.styleChange.bind(this));
-    this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', this.styleChange.bind(this));
+    this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
+    this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
     // this.drawingTools.querySelector('#featureName')
-    // .addEventListener('input', this.styleChange.bind(this));
+    // .addEventListener('input', e => this.styleChange(e));
     this.drawingTools.querySelector('button').addEventListener('click', this.deleteSingleFeature.bind(this));
 
     this.drawingTools.querySelector('button').style.display = 'none';
@@ -177,6 +221,9 @@ export default class GeometryDrawControl extends M.Control {
     });
     html.querySelector('#polygondrawing').addEventListener('click', (e) => {
       this.geometryBtnClick('Polygon');
+    });
+    html.querySelector('#textdrawing').addEventListener('click', (e) => {
+      this.geometryBtnClick('Text');
     });
     html.querySelector('#cleanAll').addEventListener('click', this.deleteDrawnFeatures.bind(this));
     html.querySelector('#download').addEventListener('click', this.openDownloadOptions.bind(this));
@@ -224,7 +271,7 @@ export default class GeometryDrawControl extends M.Control {
 
 
   /**
-   * Shows/hides drawing template and
+   * Shows/hides tools template and
    * adds/removes draw interaction.
    * @public
    * @function
@@ -238,14 +285,17 @@ export default class GeometryDrawControl extends M.Control {
       lastBtnState = this.isPointActive;
     } else if (geometry === 'LineString') {
       lastBtnState = this.isLineActive;
-    } else {
+    } else if (geometry === 'Polygon') {
       lastBtnState = this.isPolygonActive;
+    } else {
+      lastBtnState = this.isTextActive;
     }
 
     if (this.isEditionActive) {
       this.deactivateEdition();
       document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
     }
+
     this.deactivateDrawing();
 
     switch (geometry) {
@@ -282,12 +332,28 @@ export default class GeometryDrawControl extends M.Control {
           document.getElementById('polygondrawing').classList.add('activeTool');
         }
         break;
+      case 'Text':
+        if (lastBtnState) {
+          this.geometry = undefined;
+          this.isTextActive = false;
+          document.getElementById('textdrawing').classList.remove('activeTool');
+        } else {
+          this.isTextActive = true;
+          this.geometry = 'Point';
+          document.getElementById('textdrawing').classList.add('activeTool');
+        }
+        break;
       default:
         break;
     }
 
-    if (this.isPointActive || this.isLineActive || this.isPolygonActive) {
-      document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
+    if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
+      if (this.isTextActive) {
+        document.querySelector('.m-geometrydraw').appendChild(this.textDrawTemplate);
+      } else {
+        document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
+      }
+
       this.addDrawInteraction();
       this.changeSquare();
 
@@ -309,9 +375,11 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   deactivateDrawing() {
-    if (this.isPointActive || this.isLineActive || this.isPolygonActive) {
+    if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
       if (document.querySelector('.m-geometrydraw #drawingtools') !== null) {
         document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
+      } else if (document.querySelector('.m-geometrydraw #textdrawtools') !== null) {
+        document.querySelector('.m-geometrydraw').removeChild(this.textDrawTemplate);
       }
 
       this.map.getMapImpl().removeInteraction(this.draw);
@@ -320,9 +388,11 @@ export default class GeometryDrawControl extends M.Control {
       this.isPointActive = false;
       this.isLineActive = false;
       this.isPolygonActive = false;
+      this.isTextActive = false;
       document.getElementById('pointdrawing').classList.remove('activeTool');
       document.getElementById('linedrawing').classList.remove('activeTool');
       document.getElementById('polygondrawing').classList.remove('activeTool');
+      document.getElementById('textdrawing').classList.remove('activeTool');
     }
   }
 
@@ -359,7 +429,6 @@ export default class GeometryDrawControl extends M.Control {
       this.getImpl().activateSelection();
       this.isEditionActive = true;
       document.querySelector('#otherBtns>#edit').classList.add('activeTool');
-      // document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
     }
   }
 
@@ -369,27 +438,40 @@ export default class GeometryDrawControl extends M.Control {
    * @function
    * @api
    */
-  styleChange() {
-    this.currentColor = document.querySelector('#colorSelector').value;
-    this.currentThickness = document.querySelector('#thicknessSelector').value;
-    // this.currentText = document.querySelector('#featureName').value;
+  styleChange(e) {
+    const evtId = e.target.id;
+
+    if (document.querySelector('#colorSelector') !== null) {
+      this.currentColor = document.querySelector('#colorSelector').value;
+      this.currentThickness = document.querySelector('#thicknessSelector').value;
+      // this.currentText = document.querySelector('#featureName').value;
+    } else {
+      this.textContent = document.querySelector('#textContent').value;
+      this.fontColor = document.querySelector('#fontColor').value;
+      this.fontSize = document.querySelector('#fontSize').value;
+      this.fontFamily = document.querySelector('#fontFamily').value;
+    }
 
     switch (this.feature.getGeometry().type) {
       case 'Point':
-        const newPointStyle = new M.style.Point({
-          radius: this.currentThickness,
-          fill: {
-            color: this.currentColor,
-          },
-          stroke: {
-            color: 'white',
-            width: 2,
-          },
-          // label: {
-          //   text: this.currentText,
-          // },
-        });
-        if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
+        if (evtId === 'colorSelector' || evtId === 'thicknessSelector') {
+          const newPointStyle = new M.style.Point({
+            radius: this.currentThickness,
+            fill: {
+              color: this.currentColor,
+            },
+            stroke: {
+              color: 'white',
+              width: 2,
+            },
+            // label: {
+            //   text: this.currentText,
+            // },
+          });
+          if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
+        } else {
+          this.setTextStyle();
+        }
         break;
       case 'LineString':
         const newLineStyle = new M.style.Line({
@@ -425,58 +507,45 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Gets given feature thickness.
-   * @public
-   * @function
-   * @api
-   * @param {*} feature - Mapea feature
-   */
-  getFeatureThickness(feature) {
-    if (feature.getGeometry().type === 'Point') {
-      return feature.getStyle().get('radius');
-    }
-    return feature.getStyle().get('stroke.width');
-  }
-
-  /**
-   * Gets given feature color.
-   * @public
-   * @function
-   * @api
-   * @param {*} feature - Mapea feature
-   */
-  getFeatureColor(feature) {
-    if (feature.getGeometry().type === 'Point') {
-      return feature.getStyle().get('fill.color');
-    }
-    return feature.getStyle().get('stroke.color');
-  }
-
-  // /**
-  //  * Gets given feature label.
-  //  * @public
-  //  * @function
-  //  * @api
-  //  * @param {*} feature - Mapea feature
-  //  */
-  // getFeatureText(feature) {
-  //   return feature.getStyle().get('label.text') || '';
-  // }
-
-  /**
    * Updates input values with selected feature values.
    * @public
    * @function
    * @api
    */
   updateInputValues() {
+    const featureFillOpacity = this.feature.getStyle().get('fill.opacity');
     this.geometry = this.feature.getGeometry().type;
-    this.currentColor = this.getFeatureColor(this.feature);
-    this.currentThickness = this.getFeatureThickness(this.feature);
-    // this.currentText = this.getFeatureText(this.feature);
-    this.drawingTools.querySelector('#colorSelector').value = this.currentColor;
-    this.drawingTools.querySelector('#thicknessSelector').value = this.currentThickness;
-    // this.drawingTools.querySelector('#featureName').value = this.currentText;
+
+    if (featureFillOpacity === 0) {
+      const fontProps = this.feature.getStyle().get('label.font').split(' ');
+      this.fontColor = this.feature.getStyle().get('label.color');
+      this.textContent = this.feature.getStyle().get('label.text');
+      if (fontProps[0] === 'bold') {
+        this.fontSize = fontProps[1].slice(0, fontProps[1].length - 2);
+        this.fontFamily = fontProps[2];
+      } else {
+        this.fontSize = fontProps[0].slice(0, fontProps[0].length - 2);
+        this.fontFamily = fontProps[1];
+      }
+
+      this.textDrawTemplate.querySelector('#fontColor').value = this.fontColor;
+      this.textDrawTemplate.querySelector('#textContent').value = this.textContent;
+      this.textDrawTemplate.querySelector('#fontFamily').value = this.fontFamily;
+      this.textDrawTemplate.querySelector('#fontSize').value = this.fontSize;
+      document.querySelector('#textdrawtools #fontColor').value = this.fontColor;
+      document.querySelector('#textdrawtools #textContent').value = this.textContent;
+      document.querySelector('#textdrawtools #fontFamily').value = this.fontFamily;
+      document.querySelector('#textdrawtools #fontSize').value = this.fontSize;
+    } else {
+      this.currentColor = this.getFeatureColor(this.feature);
+      this.currentThickness = this.getFeatureThickness(this.feature);
+      // this.currentText = this.getFeatureText(this.feature);
+      this.drawingTools.querySelector('#colorSelector').value = this.currentColor;
+      this.drawingTools.querySelector('#thicknessSelector').value = this.currentThickness;
+      document.querySelector('#drawingtools #colorSelector').value = this.currentColor;
+      document.querySelector('#drawingtools #thicknessSelector').value = this.currentThickness;
+      // this.drawingTools.querySelector('#featureName').value = this.currentText;
+    }
   }
 
   /**
@@ -506,6 +575,32 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
+   * Sets style for text feature
+   * @public
+   * @function
+   * @api
+   */
+  setTextStyle() {
+    const fontProperties = `${this.fontSize}px ${this.fontFamily}`;
+    this.feature.setStyle(new M.style.Point({
+      radius: 0,
+      fill: {
+        color: 'black',
+        opacity: 0,
+      },
+      stroke: {
+        color: 'transparent',
+        width: 0,
+      },
+      label: {
+        text: this.textContent, // 'Texto'
+        font: fontProperties, // '12px Comic Sans MS',
+        color: this.fontColor, // '#F00',
+      },
+    }));
+  }
+
+  /**
    * Defines function to be executed on click on draw interaction.
    * Creates feature with drawing and adds it to map.
    * @public
@@ -516,18 +611,23 @@ export default class GeometryDrawControl extends M.Control {
     this.draw.on('drawend', (event) => {
       this.feature = event.feature;
       this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+      if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
 
       if (this.geometry === 'Point') {
-        this.feature.setStyle(new M.style.Point({
-          radius: this.currentThickness,
-          fill: {
-            color: this.currentColor,
-          },
-          stroke: {
-            color: 'white',
-            width: 2,
-          },
-        }));
+        if (this.isTextActive) {
+          this.setTextStyle();
+        } else {
+          this.feature.setStyle(new M.style.Point({
+            radius: this.currentThickness,
+            fill: {
+              color: this.currentColor,
+            },
+            stroke: {
+              color: 'white',
+              width: 2,
+            },
+          }));
+        }
       } else if (this.geometry === 'LineString') {
         this.feature.setStyle(new M.style.Line({
           stroke: {
@@ -551,6 +651,7 @@ export default class GeometryDrawControl extends M.Control {
       this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
       this.changeSquare();
       this.showFeatureInfo();
+      this.updateInputValues();
     });
   }
 
@@ -563,8 +664,8 @@ export default class GeometryDrawControl extends M.Control {
   showFeatureInfo() {
     const olFeature = this.feature.getImpl().getOLFeature();
     const infoContainer = document.querySelector('#drawingtools>#featureInfo');
-    if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-      document.querySelector('#drawingtools>#featureInfo').style.display = 'block';
+    if (infoContainer !== null) {
+      infoContainer.style.display = 'block';
     }
     if (infoContainer !== null) infoContainer.innerHTML = '';
 
@@ -572,9 +673,11 @@ export default class GeometryDrawControl extends M.Control {
       case 'Point':
         const x = this.getImpl().getFeatureCoordinates(olFeature)[0];
         const y = this.getImpl().getFeatureCoordinates(olFeature)[1];
-        infoContainer.innerHTML = `Coordenadas<br/>
-        x: ${Math.round(x * 1000) / 1000},<br/>
-        y: ${Math.round(y * 1000) / 1000}`;
+        if (infoContainer !== null) {
+          infoContainer.innerHTML = `Coordenadas<br/>
+          x: ${Math.round(x * 1000) / 1000},<br/>
+          y: ${Math.round(y * 1000) / 1000}`;
+        }
         break;
       case 'LineString':
         let lineLength = this.getImpl().getFeatureLength(olFeature);
@@ -585,7 +688,7 @@ export default class GeometryDrawControl extends M.Control {
           lineLength = Math.round(lineLength * 100) / 100;
           units = 'm';
         }
-        infoContainer.innerHTML = `Longitud: ${lineLength} ${units}`;
+        if (infoContainer !== null) infoContainer.innerHTML = `Longitud: ${lineLength} ${units}`;
         break;
       case 'Polygon':
         let area = this.getImpl().getFeatureArea(olFeature);
@@ -596,7 +699,7 @@ export default class GeometryDrawControl extends M.Control {
           area = Math.round(area * 100) / 100;
           areaUnits = `m${'2'.sup()}`;
         }
-        infoContainer.innerHTML = `Área: ${area} ${areaUnits}`;
+        if (infoContainer !== null) infoContainer.innerHTML = `Área: ${area} ${areaUnits}`;
         break;
       default:
         if (document.querySelector('#drawingtools>#featureInfo') !== null) {
@@ -618,8 +721,12 @@ export default class GeometryDrawControl extends M.Control {
   changeSquare() {
     this.square = null;
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
+
     if (this.feature) {
-      if (this.geometry === 'Point' || this.geometry === 'MultiPoint') {
+      // FIXME: check if
+      if ((((this.geometry === 'Point' || this.geometry === 'MultiPoint') && !this.isTextActive) ||
+          (this.geometry === 'Point' || this.geometry === 'MultiPoint')) &&
+        this.feature.getStyle().get('fill.opacity') === 0) {
         // eslint-disable-next-line no-underscore-dangle
         const thisOLfeat = this.feature.getImpl().olFeature_;
         const OLFeatClone = thisOLfeat.clone();
@@ -632,6 +739,11 @@ export default class GeometryDrawControl extends M.Control {
             width: 2,
           },
         }));
+      } else if ((this.geometry === 'Point' || this.geometry ===
+          'MultiPoint') && this.isTextActive) {
+        // TODO: FIXME: create string with font width, size and family
+        const newFont = `bold ${this.fontSize}px ${this.fontFamily}`;
+        this.feature.getStyle().set('label.font', newFont);
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.feature.getImpl().olFeature_.getGeometry().getExtent();
@@ -729,6 +841,46 @@ export default class GeometryDrawControl extends M.Control {
 
     document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
   }
+
+  /**
+   * Gets given feature thickness.
+   * @public
+   * @function
+   * @api
+   * @param {*} feature - Mapea feature
+   */
+  getFeatureThickness(feature) {
+    if (feature.getGeometry().type === 'Point') {
+      return feature.getStyle().get('radius');
+    }
+    return feature.getStyle().get('stroke.width');
+  }
+
+  /**
+   * Gets given feature color.
+   * @public
+   * @function
+   * @api
+   * @param {*} feature - Mapea feature
+   */
+  getFeatureColor(feature) {
+    if (feature.getGeometry().type === 'Point') {
+      return feature.getStyle().get('fill.color');
+    }
+    return feature.getStyle().get('stroke.color');
+  }
+
+  // /**
+  //  * Gets given feature label.
+  //  * @public
+  //  * @function
+  //  * @api
+  //  * @param {*} feature - Mapea feature
+  //  */
+  // getFeatureText(feature) {
+  //   return feature.getStyle().get('label.text') || '';
+  // }
+
 
   /**
    * This function compares controls
