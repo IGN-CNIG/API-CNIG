@@ -87,7 +87,7 @@ export default class GeometryDrawControl extends M.Control {
     /**
      * Current feature name/description text.
      */
-    this.currentText = '';
+    // this.currentText = '';
 
     /**
      * Saves drawing layer ( __ draw__) from Mapea.
@@ -150,11 +150,12 @@ export default class GeometryDrawControl extends M.Control {
 
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
-    this.currentText = this.drawingTools.querySelector('#featureName').value;
+    // this.currentText = this.drawingTools.querySelector('#featureName').value;
 
     this.drawingTools.querySelector('#colorSelector').addEventListener('change', this.styleChange.bind(this));
     this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', this.styleChange.bind(this));
-    this.drawingTools.querySelector('#featureName').addEventListener('input', this.styleChange.bind(this));
+    // this.drawingTools.querySelector('#featureName')
+    // .addEventListener('input', this.styleChange.bind(this));
     this.drawingTools.querySelector('button').addEventListener('click', this.deleteSingleFeature.bind(this));
 
     this.drawingTools.querySelector('button').style.display = 'none';
@@ -189,10 +190,6 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   deleteDrawnFeatures() {
-    // if (this.feature !== undefined) {
-    //   this.deleteSingleFeature();
-    //   this.deactivateDrawing();
-    // } else {
     this.deactivateDrawing();
     this.getImpl().deactivateSelection();
     this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
@@ -202,10 +199,12 @@ export default class GeometryDrawControl extends M.Control {
     if (document.querySelector('#drawingtools>#featureInfo') !== null) {
       document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
     }
-    if (document.querySelector('#otherBtns>#edit')) {
+    if (document.querySelector('#otherBtns>#edit') !== null) {
       document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
     }
-    // }
+    if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
+    }
   }
 
   /**
@@ -373,7 +372,7 @@ export default class GeometryDrawControl extends M.Control {
   styleChange() {
     this.currentColor = document.querySelector('#colorSelector').value;
     this.currentThickness = document.querySelector('#thicknessSelector').value;
-    this.currentText = document.querySelector('#featureName').value;
+    // this.currentText = document.querySelector('#featureName').value;
 
     switch (this.feature.getGeometry().type) {
       case 'Point':
@@ -386,9 +385,9 @@ export default class GeometryDrawControl extends M.Control {
             color: 'white',
             width: 2,
           },
-          label: {
-            text: this.currentText,
-          },
+          // label: {
+          //   text: this.currentText,
+          // },
         });
         if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
         break;
@@ -398,9 +397,9 @@ export default class GeometryDrawControl extends M.Control {
             color: this.currentColor,
             width: this.currentThickness,
           },
-          label: {
-            text: this.currentText,
-          },
+          // label: {
+          //   text: this.currentText,
+          // },
         });
         if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
         break;
@@ -414,9 +413,9 @@ export default class GeometryDrawControl extends M.Control {
             color: this.currentColor,
             width: this.currentThickness,
           },
-          label: {
-            text: this.currentText,
-          },
+          // label: {
+          //   text: this.currentText,
+          // },
         });
         if (this.feature !== undefined) this.feature.setStyle(newPolygonStyle);
         break;
@@ -453,16 +452,16 @@ export default class GeometryDrawControl extends M.Control {
     return feature.getStyle().get('stroke.color');
   }
 
-  /**
-   * Gets given feature label.
-   * @public
-   * @function
-   * @api
-   * @param {*} feature - Mapea feature
-   */
-  getFeatureText(feature) {
-    return feature.getStyle().get('label.text') || '';
-  }
+  // /**
+  //  * Gets given feature label.
+  //  * @public
+  //  * @function
+  //  * @api
+  //  * @param {*} feature - Mapea feature
+  //  */
+  // getFeatureText(feature) {
+  //   return feature.getStyle().get('label.text') || '';
+  // }
 
   /**
    * Updates input values with selected feature values.
@@ -474,10 +473,10 @@ export default class GeometryDrawControl extends M.Control {
     this.geometry = this.feature.getGeometry().type;
     this.currentColor = this.getFeatureColor(this.feature);
     this.currentThickness = this.getFeatureThickness(this.feature);
-    this.currentText = this.getFeatureText(this.feature);
+    // this.currentText = this.getFeatureText(this.feature);
     this.drawingTools.querySelector('#colorSelector').value = this.currentColor;
     this.drawingTools.querySelector('#thicknessSelector').value = this.currentThickness;
-    this.drawingTools.querySelector('#featureName').value = this.currentText;
+    // this.drawingTools.querySelector('#featureName').value = this.currentText;
   }
 
   /**
