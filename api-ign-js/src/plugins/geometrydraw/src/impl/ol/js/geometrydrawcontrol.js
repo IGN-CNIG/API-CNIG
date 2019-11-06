@@ -81,6 +81,12 @@ export default class GeometryDrawControl extends M.impl.Control {
 
   /* SELECTION METHODS */
 
+  /**
+   * Activates selection mode.
+   * @public
+   * @function
+   * @api
+   */
   activateSelection() {
     const olMap = this.facadeMap_.getMapImpl();
     const facadeControl = this.facadeControl;
@@ -122,9 +128,14 @@ export default class GeometryDrawControl extends M.impl.Control {
             document.querySelector('.m-geometrydraw').appendChild(facadeControl.drawingTools);
             document.querySelector('.m-geometrydraw>#drawingtools button').style.display = 'block';
           }
+
+          // TODO: update inputs with feature value
+
+          // facadeControl.setTextStyle(false);
           facadeControl.updateInputValues();
-          facadeControl.changeSquare();
+          facadeControl.emphasizeSelectedFeature();
           facadeControl.showFeatureInfo();
+          // facadeControl.updateInputValues();
         }
       });
 
@@ -134,14 +145,19 @@ export default class GeometryDrawControl extends M.impl.Control {
       this.edit.on('modifyend', (evt) => {
         // eslint-disable-next-line no-underscore-dangle
         facadeControl.feature = M.impl.Feature.olFeature2Facade(evt.target.features_.getArray()[0]);
-        facadeControl.changeSquare();
+        facadeControl.emphasizeSelectedFeature();
         facadeControl.showFeatureInfo();
-        facadeControl.updateInputValues();
       });
       olMap.addInteraction(this.edit);
     }
   }
 
+  /**
+   * Deactivates selection mode.
+   * @public
+   * @function
+   * @api
+   */
   deactivateSelection() {
     if (this.facadeControl.drawLayer) {
       if (document.querySelector('.m-geometrydraw #drawingtools')) {
@@ -161,7 +177,7 @@ export default class GeometryDrawControl extends M.impl.Control {
 
       this.facadeControl.feature = undefined;
       this.facadeControl.geometry = undefined;
-      this.facadeControl.changeSquare();
+      this.facadeControl.emphasizeSelectedFeature();
       this.facadeMap_.getMapImpl().removeInteraction(this.edit);
       this.facadeMap_.getMapImpl().removeInteraction(this.select);
     }
@@ -216,27 +232,4 @@ export default class GeometryDrawControl extends M.impl.Control {
   getFeatureArea(olFeature) {
     return olFeature.getGeometry().getArea();
   }
-
-  /** ***************************************************************************** */
-  /* STYLE METHODS => FIXME: This should be translated into Mapea styles on facade */
-  /** *************************************************************************** */
-
-  // /**
-  //  * Creates new style for text feature.
-  //  * @public
-  //  * @function
-  //  * @api
-  //  * @param {Object} options - style colors and measures
-  //  */
-  // newOLTextStyle(options) {
-  //   return new ol.style.Style({
-  //     text: new ol.style.Text({
-  //       text: options.text,
-  //       font: options.font,
-  //       fill: new ol.style.Fill({ color: options.textFillColor }),
-  //     }),
-  //     stroke: new ol.style.Stroke({ color: options.defaultColor, width: options.strokeWidth }),
-  //     fill: new ol.style.Fill({ color: options.defaultColor }),
-  //   });
-  // }
 }

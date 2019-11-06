@@ -55,10 +55,11 @@ export default class GeometryDrawControl extends M.Control {
     this.feature = undefined;
 
     /**
-     * Selection square
+     * Feature that is drawn on selection layer around this.feature
+     * to emphasize it.
      * @type {M.feature}
      */
-    this.square = undefined;
+    this.emphasis = undefined;
 
     /**
      * Current geometry type selected for drawing.
@@ -242,7 +243,7 @@ export default class GeometryDrawControl extends M.Control {
     this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
     this.feature = undefined;
     this.geometry = undefined;
-    this.selectionLayer.removeFeatures([this.square]);
+    this.selectionLayer.removeFeatures([this.emphasis]);
     if (document.querySelector('#drawingtools>#featureInfo') !== null) {
       document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
     }
@@ -264,7 +265,7 @@ export default class GeometryDrawControl extends M.Control {
     this.drawLayer.removeFeatures([this.feature]);
     this.feature = undefined;
     this.geometry = undefined;
-    this.selectionLayer.removeFeatures([this.square]);
+    this.selectionLayer.removeFeatures([this.emphasis]);
     this.getImpl().deactivateSelection();
     this.getImpl().activateSelection();
   }
@@ -349,13 +350,14 @@ export default class GeometryDrawControl extends M.Control {
 
     if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
       if (this.isTextActive) {
+        this.textDrawTemplate.querySelector('#textContent').value = '';
         document.querySelector('.m-geometrydraw').appendChild(this.textDrawTemplate);
       } else {
         document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       }
 
       this.addDrawInteraction();
-      this.changeSquare();
+      // this.emphasizeSelectedFeature();
 
       if (document.querySelector('#drawingtools>#featureInfo') !== null) {
         document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
@@ -383,7 +385,14 @@ export default class GeometryDrawControl extends M.Control {
       }
 
       this.map.getMapImpl().removeInteraction(this.draw);
-      this.selectionLayer.removeFeatures([this.square]);
+      this.selectionLayer.removeFeatures([this.emphasis]);
+      if ((this.feature !== undefined) && this.feature.getStyle().get('fill.opacity') === 0) {
+        const fontPropsArray = this.feature.getStyle().get('label.font').split(' ');
+        fontPropsArray.shift();
+        const noBoldFont = fontPropsArray.join(' ');
+        this.feature.getStyle().set('label.font', noBoldFont);
+      }
+
       this.feature = undefined;
       this.isPointActive = false;
       this.isLineActive = false;
@@ -439,70 +448,72 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   styleChange(e) {
-    const evtId = e.target.id;
+    if (this.feature) {
+      const evtId = e.target.id;
 
-    if (document.querySelector('#colorSelector') !== null) {
-      this.currentColor = document.querySelector('#colorSelector').value;
-      this.currentThickness = document.querySelector('#thicknessSelector').value;
-      // this.currentText = document.querySelector('#featureName').value;
-    } else {
-      this.textContent = document.querySelector('#textContent').value;
-      this.fontColor = document.querySelector('#fontColor').value;
-      this.fontSize = document.querySelector('#fontSize').value;
-      this.fontFamily = document.querySelector('#fontFamily').value;
-    }
+      if (document.querySelector('#colorSelector') !== null) {
+        this.currentColor = document.querySelector('#colorSelector').value;
+        this.currentThickness = document.querySelector('#thicknessSelector').value;
+        // this.currentText = document.querySelector('#featureName').value;
+      } else {
+        this.textContent = document.querySelector('#textContent').value;
+        this.fontColor = document.querySelector('#fontColor').value;
+        this.fontSize = document.querySelector('#fontSize').value;
+        this.fontFamily = document.querySelector('#fontFamily').value;
+      }
 
-    switch (this.feature.getGeometry().type) {
-      case 'Point':
-        if (evtId === 'colorSelector' || evtId === 'thicknessSelector') {
-          const newPointStyle = new M.style.Point({
-            radius: this.currentThickness,
-            fill: {
-              color: this.currentColor,
-            },
+      switch (this.feature.getGeometry().type) {
+        case 'Point':
+          if (evtId === 'colorSelector' || evtId === 'thicknessSelector') {
+            const newPointStyle = new M.style.Point({
+              radius: this.currentThickness,
+              fill: {
+                color: this.currentColor,
+              },
+              stroke: {
+                color: 'white',
+                width: 2,
+              },
+              // label: {
+              //   text: this.currentText,
+              // },
+            });
+            if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
+          } else {
+            this.setTextStyle(false);
+          }
+          break;
+        case 'LineString':
+          const newLineStyle = new M.style.Line({
             stroke: {
-              color: 'white',
-              width: 2,
+              color: this.currentColor,
+              width: this.currentThickness,
             },
             // label: {
             //   text: this.currentText,
             // },
           });
-          if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
-        } else {
-          this.setTextStyle();
-        }
-        break;
-      case 'LineString':
-        const newLineStyle = new M.style.Line({
-          stroke: {
-            color: this.currentColor,
-            width: this.currentThickness,
-          },
-          // label: {
-          //   text: this.currentText,
-          // },
-        });
-        if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
-        break;
-      case 'Polygon':
-        const newPolygonStyle = new M.style.Polygon({
-          fill: {
-            color: this.currentColor,
-            opacity: 0.2,
-          },
-          stroke: {
-            color: this.currentColor,
-            width: this.currentThickness,
-          },
-          // label: {
-          //   text: this.currentText,
-          // },
-        });
-        if (this.feature !== undefined) this.feature.setStyle(newPolygonStyle);
-        break;
-      default:
-        break;
+          if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
+          break;
+        case 'Polygon':
+          const newPolygonStyle = new M.style.Polygon({
+            fill: {
+              color: this.currentColor,
+              opacity: 0.2,
+            },
+            stroke: {
+              color: this.currentColor,
+              width: this.currentThickness,
+            },
+            // label: {
+            //   text: this.currentText,
+            // },
+          });
+          if (this.feature !== undefined) this.feature.setStyle(newPolygonStyle);
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -513,39 +524,76 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   updateInputValues() {
-    const featureFillOpacity = this.feature.getStyle().get('fill.opacity');
-    this.geometry = this.feature.getGeometry().type;
+    if (this.feature) {
+      const featureFillOpacity = this.feature.getStyle().get('fill.opacity');
+      this.geometry = this.feature.getGeometry().type;
 
-    if (featureFillOpacity === 0) {
-      const fontProps = this.feature.getStyle().get('label.font').split(' ');
-      this.fontColor = this.feature.getStyle().get('label.color');
-      this.textContent = this.feature.getStyle().get('label.text');
-      if (fontProps[0] === 'bold') {
-        this.fontSize = fontProps[1].slice(0, fontProps[1].length - 2);
-        this.fontFamily = fontProps[2];
+      if (featureFillOpacity === 0) {
+        const fontProps = this.feature.getStyle().get('label.font').split(' ');
+        this.fontColor = this.feature.getStyle().get('label.color');
+        this.textContent = this.feature.getStyle().get('label.text');
+        if (fontProps[0] === 'bold') {
+          this.fontSize = fontProps[1].slice(0, fontProps[1].length - 2);
+          this.fontFamily = fontProps[2];
+        } else {
+          this.fontSize = fontProps[0].slice(0, fontProps[0].length - 2);
+          this.fontFamily = fontProps[1];
+        }
+        this.updateTextInputValues(
+          this.textContent,
+          this.fontColor,
+          this.fontSize,
+          this.fontFamily,
+        );
       } else {
-        this.fontSize = fontProps[0].slice(0, fontProps[0].length - 2);
-        this.fontFamily = fontProps[1];
+        this.currentColor = this.getFeatureColor(this.feature);
+        this.currentThickness = this.getFeatureThickness(this.feature);
+        // this.currentText = this.getFeatureText(this.feature);
+        this.drawingTools.querySelector('#colorSelector').value = this.currentColor;
+        this.drawingTools.querySelector('#thicknessSelector').value = this.currentThickness;
+        document.querySelector('#drawingtools #colorSelector').value = this.currentColor;
+        document.querySelector('#drawingtools #thicknessSelector').value = this.currentThickness;
+        // this.drawingTools.querySelector('#featureName').value = this.currentText;
       }
-
-      this.textDrawTemplate.querySelector('#fontColor').value = this.fontColor;
-      this.textDrawTemplate.querySelector('#textContent').value = this.textContent;
-      this.textDrawTemplate.querySelector('#fontFamily').value = this.fontFamily;
-      this.textDrawTemplate.querySelector('#fontSize').value = this.fontSize;
-      document.querySelector('#textdrawtools #fontColor').value = this.fontColor;
-      document.querySelector('#textdrawtools #textContent').value = this.textContent;
-      document.querySelector('#textdrawtools #fontFamily').value = this.fontFamily;
-      document.querySelector('#textdrawtools #fontSize').value = this.fontSize;
-    } else {
-      this.currentColor = this.getFeatureColor(this.feature);
-      this.currentThickness = this.getFeatureThickness(this.feature);
-      // this.currentText = this.getFeatureText(this.feature);
-      this.drawingTools.querySelector('#colorSelector').value = this.currentColor;
-      this.drawingTools.querySelector('#thicknessSelector').value = this.currentThickness;
-      document.querySelector('#drawingtools #colorSelector').value = this.currentColor;
-      document.querySelector('#drawingtools #thicknessSelector').value = this.currentThickness;
-      // this.drawingTools.querySelector('#featureName').value = this.currentText;
     }
+    // else {
+    //   if (featureFillOpacity === 0) {
+    //   } else {
+
+    //   }
+    // }
+  }
+
+  /**
+   * Updates TextDraw menu options with given values.
+   * @param {String} content - #textContent
+   * @param {String} color - #fontColor
+   * @param {String} size - #fontSize
+   * @param {String} family - #fontFamily
+   */
+  updateTextInputValues(content, color, size, family) {
+    this.textDrawTemplate.querySelector('#textContent').value = content;
+    this.textDrawTemplate.querySelector('#fontColor').value = color;
+    this.textDrawTemplate.querySelector('#fontSize').value = size;
+    this.textDrawTemplate.querySelector('#fontFamily').value = family;
+    document.querySelector('#textdrawtools #textContent').value = content;
+    document.querySelector('#textdrawtools #fontColor').value = color;
+    document.querySelector('#textdrawtools #fontSize').value = size;
+    document.querySelector('#textdrawtools #fontFamily').value = family;
+  }
+
+  /**
+   * Updates global text drawing variables with current input values.
+   * @public
+   * @function
+   * @api
+   */
+  updateGlobalsWithInput() {
+    const textInput = document.querySelector('#textdrawtools #textContent');
+    this.textContent = textInput.value === '' ? 'Texto' : textInput.value;
+    this.fontColor = document.querySelector('#textdrawtools #fontColor').value;
+    this.fontSize = document.querySelector('#textdrawtools #fontSize').value;
+    this.fontFamily = document.querySelector('#textdrawtools #fontFamily').value;
   }
 
   /**
@@ -575,13 +623,29 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Sets style for text feature
+   * Sets style for text feature.
    * @public
    * @function
    * @api
+   * @param {Boolean} defaultTextStyle - whether default style should be used
    */
-  setTextStyle() {
-    const fontProperties = `${this.fontSize}px ${this.fontFamily}`;
+  setTextStyle(defaultTextStyle) {
+    let fontProperties;
+
+    if (defaultTextStyle) {
+      this.textContent = 'Texto';
+      this.fontColor = '#71a7d3';
+      this.fontFamily = 'Arial';
+      this.fontSize = 12;
+    }
+
+    if ((this.feature.getStyle() !== null) &&
+      this.feature.getStyle().get('label.font').split(' ')[0] === 'bold') {
+      fontProperties = `bold ${this.fontSize}px ${this.fontFamily}`;
+    } else {
+      fontProperties = `${this.fontSize}px ${this.fontFamily}`;
+    }
+
     this.feature.setStyle(new M.style.Point({
       radius: 0,
       fill: {
@@ -593,11 +657,27 @@ export default class GeometryDrawControl extends M.Control {
         width: 0,
       },
       label: {
-        text: this.textContent, // 'Texto'
-        font: fontProperties, // '12px Comic Sans MS',
-        color: this.fontColor, // '#F00',
+        text: this.textContent,
+        font: fontProperties,
+        color: this.fontColor,
       },
     }));
+  }
+
+  /**
+   * Checks if textdrawtool box has default input values.
+   * @public
+   * @function
+   * @api
+   */
+  defaultTextInputValues() {
+    const defaults = ['', '#71a7d3', '12', 'Arial'];
+    const inputs = document.querySelectorAll('#textdrawtools>label>*');
+    let sameStyles = true;
+    for (let i = 0; i < inputs.length; i += 1) {
+      if (inputs[i].value !== defaults[i]) sameStyles = false;
+    }
+    return sameStyles;
   }
 
   /**
@@ -609,13 +689,19 @@ export default class GeometryDrawControl extends M.Control {
    */
   addDrawEvent() {
     this.draw.on('drawend', (event) => {
+      const lastFeature = this.feature;
       this.feature = event.feature;
       this.feature = M.impl.Feature.olFeature2Facade(this.feature);
       if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
 
       if (this.geometry === 'Point') {
         if (this.isTextActive) {
-          this.setTextStyle();
+          if (lastFeature !== undefined) {
+            this.setTextStyle(true);
+          } else {
+            this.updateGlobalsWithInput();
+            this.setTextStyle(false);
+          }
         } else {
           this.feature.setStyle(new M.style.Point({
             radius: this.currentThickness,
@@ -649,7 +735,7 @@ export default class GeometryDrawControl extends M.Control {
       }
 
       this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
-      this.changeSquare();
+      this.emphasizeSelectedFeature();
       this.showFeatureInfo();
       this.updateInputValues();
     });
@@ -718,45 +804,66 @@ export default class GeometryDrawControl extends M.Control {
    * @function
    * @api
    */
-  changeSquare() {
-    this.square = null;
+  emphasizeSelectedFeature() {
+    this.emphasis = null;
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
 
     if (this.feature) {
-      // FIXME: check if
-      if ((((this.geometry === 'Point' || this.geometry === 'MultiPoint') && !this.isTextActive) ||
-          (this.geometry === 'Point' || this.geometry === 'MultiPoint')) &&
-        this.feature.getStyle().get('fill.opacity') === 0) {
+      const isTextDrawActive = document.querySelector('#textdrawtools') !== null;
+
+      if ((this.geometry === 'Point' || this.geometry === 'MultiPoint') && !isTextDrawActive) {
         // eslint-disable-next-line no-underscore-dangle
         const thisOLfeat = this.feature.getImpl().olFeature_;
         const OLFeatClone = thisOLfeat.clone();
-        this.square = M.impl.Feature.olFeature2Facade(OLFeatClone);
+        this.emphasis = M.impl.Feature.olFeature2Facade(OLFeatClone);
 
-        this.square.setStyle(new M.style.Point({
+        this.emphasis.setStyle(new M.style.Point({
           radius: 20,
           stroke: {
             color: '#FF0000',
             width: 2,
           },
         }));
-      } else if ((this.geometry === 'Point' || this.geometry ===
-          'MultiPoint') && this.isTextActive) {
-        // TODO: FIXME: create string with font width, size and family
+      } else if ((this.geometry === 'Point' || this.geometry === 'MultiPoint') && isTextDrawActive) {
+        if (this.feature.getStyle() === null) this.setTextStyle(false);
+        this.cleanBoldText();
+        // selected text is bold
         const newFont = `bold ${this.fontSize}px ${this.fontFamily}`;
         this.feature.getStyle().set('label.font', newFont);
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.feature.getImpl().olFeature_.getGeometry().getExtent();
-        this.square = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
-        this.square.setStyle(new M.style.Line({
+        this.emphasis = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
+        this.emphasis.setStyle(new M.style.Line({
           stroke: {
             color: '#FF0000',
             width: 2,
           },
         }));
       }
-      this.selectionLayer.addFeatures([this.square]);
+      this.selectionLayer.addFeatures([this.emphasis]);
     }
+  }
+
+  /**
+   * Deletes 'bold' property from all text features.
+   * @public
+   * @function
+   * @api
+   */
+  cleanBoldText() {
+    const textFeatures = this.drawLayer.getFeatures();
+    textFeatures.forEach((f, idx) => {
+      let font = f.getStyle().get('label.font');
+      if (font !== undefined) {
+        const fontPieces = font.split(' ');
+        if (fontPieces[0] === 'bold') {
+          fontPieces.shift();
+          font = fontPieces.join(' ');
+          this.drawLayer.getFeatures()[idx].getStyle().set('label.font', font);
+        }
+      }
+    });
   }
 
   /**
