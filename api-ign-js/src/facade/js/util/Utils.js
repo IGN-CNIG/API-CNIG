@@ -258,9 +258,9 @@ export const getWMSGetCapabilitiesUrl = (serverUrl, version) => {
 
   // PATCH: En mapea 3 no se manda luego aquí tampoco. Hay servicios que dan error....
   //       version
-  //      wmsGetCapabilitiesUrl = addParameters(wmsGetCapabilitiesUrl, {
-  //         'version': version
-  //      });
+  wmsGetCapabilitiesUrl = addParameters(wmsGetCapabilitiesUrl, {
+    version,
+  });
 
   return wmsGetCapabilitiesUrl;
 };
