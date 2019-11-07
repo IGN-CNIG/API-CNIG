@@ -55,7 +55,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
    const mp = new M.plugin.Attributions({ 
             mode: 1, 
             scale: 10000, 
-            defaultAttribution: 'Instituto Geográfico Nacional'
+            defaultAttribution: 'Instituto Geográfico Nacional',
             defaultUrl: 'https://www.ign.es/' });
 
    map.addPlugin(mp);
