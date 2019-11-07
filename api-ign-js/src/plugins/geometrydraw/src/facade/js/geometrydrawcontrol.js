@@ -232,46 +232,6 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Deletes all drawn features.
-   * @public
-   * @function
-   * @api
-   */
-  deleteDrawnFeatures() {
-    this.deactivateDrawing();
-    this.getImpl().deactivateSelection();
-    this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
-    this.feature = undefined;
-    this.geometry = undefined;
-    this.selectionLayer.removeFeatures([this.emphasis]);
-    if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-      document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
-    }
-    if (document.querySelector('#otherBtns>#edit') !== null) {
-      document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
-    }
-    if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
-      document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
-    }
-  }
-
-  /**
-   * Deletes selected geometry.
-   * @public
-   * @function
-   * @api
-   */
-  deleteSingleFeature() {
-    this.drawLayer.removeFeatures([this.feature]);
-    this.feature = undefined;
-    this.geometry = undefined;
-    this.selectionLayer.removeFeatures([this.emphasis]);
-    this.getImpl().deactivateSelection();
-    this.getImpl().activateSelection();
-  }
-
-
-  /**
    * Shows/hides tools template and
    * adds/removes draw interaction.
    * @public
@@ -351,8 +311,10 @@ export default class GeometryDrawControl extends M.Control {
     if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
       if (this.isTextActive) {
         this.textDrawTemplate.querySelector('#textContent').value = '';
+        this.textDrawTemplate.querySelector('button').style.display = 'none';
         document.querySelector('.m-geometrydraw').appendChild(this.textDrawTemplate);
       } else {
+        this.drawingTools.querySelector('button').style.display = 'none';
         document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       }
 
@@ -696,12 +658,14 @@ export default class GeometryDrawControl extends M.Control {
 
       if (this.geometry === 'Point') {
         if (this.isTextActive) {
+          this.updateGlobalsWithInput();
           if (lastFeature !== undefined) {
-            this.setTextStyle(true);
-          } else {
-            this.updateGlobalsWithInput();
-            this.setTextStyle(false);
+            this.textContent = 'Texto';
+            // this.setTextStyle(true);
           }
+          // else {
+          // }
+          this.setTextStyle(false);
         } else {
           this.feature.setStyle(new M.style.Point({
             radius: this.currentThickness,
@@ -732,6 +696,12 @@ export default class GeometryDrawControl extends M.Control {
             width: this.currentThickness,
           },
         }));
+      }
+
+      if (this.isTextActive) {
+        document.querySelector('.m-geometrydraw #textdrawtools button').style.display = 'block';
+      } else {
+        document.querySelector('.m-geometrydraw #drawingtools button').style.display = 'block';
       }
 
       this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
@@ -947,6 +917,45 @@ export default class GeometryDrawControl extends M.Control {
     link.click();
 
     document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
+  }
+
+  /**
+   * Deletes all drawn features.
+   * @public
+   * @function
+   * @api
+   */
+  deleteDrawnFeatures() {
+    this.deactivateDrawing();
+    this.getImpl().deactivateSelection();
+    this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
+    this.feature = undefined;
+    this.geometry = undefined;
+    this.selectionLayer.removeFeatures([this.emphasis]);
+    if (document.querySelector('#drawingtools>#featureInfo') !== null) {
+      document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+    }
+    if (document.querySelector('#otherBtns>#edit') !== null) {
+      document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
+    }
+    if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
+    }
+  }
+
+  /**
+   * Deletes selected geometry.
+   * @public
+   * @function
+   * @api
+   */
+  deleteSingleFeature() {
+    this.drawLayer.removeFeatures([this.feature]);
+    this.feature = undefined;
+    this.geometry = undefined;
+    this.selectionLayer.removeFeatures([this.emphasis]);
+    this.getImpl().deactivateSelection();
+    this.getImpl().activateSelection();
   }
 
   /**

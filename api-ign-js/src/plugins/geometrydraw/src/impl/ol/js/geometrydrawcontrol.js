@@ -129,13 +129,9 @@ export default class GeometryDrawControl extends M.impl.Control {
             document.querySelector('.m-geometrydraw>#drawingtools button').style.display = 'block';
           }
 
-          // TODO: update inputs with feature value
-
-          // facadeControl.setTextStyle(false);
           facadeControl.updateInputValues();
           facadeControl.emphasizeSelectedFeature();
           facadeControl.showFeatureInfo();
-          // facadeControl.updateInputValues();
         }
       });
 
@@ -144,7 +140,8 @@ export default class GeometryDrawControl extends M.impl.Control {
       this.edit = new ol.interaction.Modify({ features: this.select.getFeatures() });
       this.edit.on('modifyend', (evt) => {
         // eslint-disable-next-line no-underscore-dangle
-        facadeControl.feature = M.impl.Feature.olFeature2Facade(evt.target.features_.getArray()[0]);
+        // facadeControl.feature = M.impl.Feature
+        // .olFeature2Facade(evt.target.features_.getArray()[0]);
         facadeControl.emphasizeSelectedFeature();
         facadeControl.showFeatureInfo();
       });
