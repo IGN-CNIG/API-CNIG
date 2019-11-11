@@ -21,6 +21,7 @@ div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#geometryBtns>button,
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#otherBtns>button {
     background-color: white;
+    color: rgb(117, 116, 116);
     border: none;
     font-size: 20px;
     height: 40px;
@@ -55,21 +56,65 @@ div.m-panel.m-geometrydraw>div#downloadFormat>button {
 
 div.m-panel.m-geometrydraw>div#drawingtools,
 div.m-panel.m-geometrydraw>div#textdrawtools {
-    border-top: 1px solid black;
+    border-top: 1px solid rgb(100, 100, 100);
     padding: 20px 35px;
 }
+
+/* Text options */
 
 div.m-panel.m-geometrydraw>div#textdrawtools {
     padding: 0 35px 20px;
 }
 
-div.m-panel.m-geometrydraw>div#textdrawtools>label {
-    display: block;
-    margin: 20px auto;
+div.m-panel.m-geometrydraw>div#textdrawtools>div {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    margin: 10px;
+    position: relative;
 }
 
-div.m-panel.m-geometrydraw>div#drawingtools input#featureName,
-div.m-panel.m-geometrydraw>div#textdrawtools>label>input#textContent {
+div.m-panel.m-geometrydraw>div#textdrawtools>div>label,
+div.m-panel.m-geometrydraw>div#textdrawtools>div>input,
+div.m-panel.m-geometrydraw>div#textdrawtools>div>select {
+    display: inline;
+    line-height: 30px;
+    vertical-align: middle !important;
+}
+
+div.m-panel.m-geometrydraw>div#textdrawtools>div>input,
+div.m-panel.m-geometrydraw>div#textdrawtools>div>select {
+    left: 70px;
+    position: absolute;
+}
+
+div.m-panel.m-geometrydraw>div#textdrawtools>div>input#textContent {
+    height: 15px;
+    margin-left: 0;
+}
+
+div.m-panel.m-geometrydraw>div#textdrawtools>div>input#fontSize {
+    height: 20px;
+    width: 45px;
+}
+
+/* div.m-panel.m-geometrydraw>div#textdrawtools>div>label {
+    line-height: 50px;
+    display: inline;
+    margin: 20px 10px;
+} */
+
+/* div.m-panel.m-geometrydraw>div#textdrawtools>div>input,
+div.m-panel.m-geometrydraw>div#textdrawtools>div>select {
+    line-height: 15px;
+} */
+
+/* div.m-panel.m-geometrydraw>div#textdrawtools>div>input,
+div.m-panel.m-geometrydraw>div#textdrawtools>div>select {
+    margin-left: 50px;
+} */
+
+div.m-panel.m-geometrydraw>div#drawingtools input#featureName {
     margin-top: 10px;
     width: 125px;
 }
@@ -82,24 +127,26 @@ div.m-panel.m-geometrydraw>div#drawingtools #featureInfo {
     text-align: center;
 }
 
-div#drawingtools>label>input#thicknessSelector,
-div.m-panel.m-geometrydraw>div#textdrawtools>label>input#fontSize {
-    padding-left: 10px;
+/* div#drawingtools>div>input#thicknessSelector,
+div.m-panel.m-geometrydraw>div#textdrawtools>div>input#fontSize {
     text-align: center;
     width: 30px;
 }
+ 
 
-div.m-panel.m-geometrydraw>div#textdrawtools>label#colorLabel {
+div.m-panel.m-geometrydraw>div#textdrawtools>div>label#colorLabel {
     width: 90px;
 }
 
-div.m-panel.m-geometrydraw>div#textdrawtools>label#sizeLabel {
+div.m-panel.m-geometrydraw>div#textdrawtools>div>label#sizeLabel {
     width: 105px;
 }
 
-div.m-panel.m-geometrydraw>div#textdrawtools>label#fontLabel {
+div.m-panel.m-geometrydraw>div#textdrawtools>div>label#fontLabel {
     width: 145px;
-}
+} */
+
+/* Buttons */
 
 div#drawingtools>button,
 div#textdrawtools button {
@@ -113,7 +160,7 @@ div#textdrawtools button {
 
 div.m-panel.m-geometrydraw.opened,
 div.m-panel.m-geometrydraw>div.m-panel-controls {
-    width: 260px;
+    width: 305px;
 }
 
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-control.m-container.m-geometrydraw>div#geometryBtns,
