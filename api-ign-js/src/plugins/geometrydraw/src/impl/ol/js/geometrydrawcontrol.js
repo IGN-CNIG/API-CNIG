@@ -81,40 +81,120 @@ export default class GeometryDrawControl extends M.impl.Control {
 
   /* SELECTION METHODS */
 
+  /**
+   * Activates selection mode.
+   * @public
+   * @function
+   * @api
+   */
   activateSelection() {
     const olMap = this.facadeMap_.getMapImpl();
     const facadeControl = this.facadeControl;
     const drawingLayer = facadeControl.drawLayer.getImpl().getOL3Layer();
+
+    if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(facadeControl.downloadingTemplate);
+    }
 
     if (drawingLayer) {
       this.select = new ol.interaction.Select({
         wrapX: false,
         layers: [drawingLayer],
       });
+
       this.select.on('select', (e) => {
         if (e.target.getFeatures().getArray().length > 0) {
-          const MFeatures = this.facadeControl.drawLayer.getFeatures();
+          const MFeatures = facadeControl.drawLayer.getFeatures();
           const olFeature = e.target.getFeatures().getArray()[0];
 
           facadeControl.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
             olFeature)[0] || undefined;
 
-          document.querySelector('.m-geometrydraw').appendChild(facadeControl.drawingTools);
+          facadeControl.geometry = facadeControl.feature.getGeometry().type;
+
+          if (document.querySelector('.m-geometrydraw #drawingtools') !== null) {
+            document.querySelector('.m-geometrydraw').removeChild(facadeControl.drawingTools);
+          } else if (document.querySelector('.m-geometrydraw #textdrawtools') !== null) {
+            document.querySelector('.m-geometrydraw').removeChild(facadeControl.textDrawTemplate);
+          }
+
+          if (facadeControl.geometry === 'Point' &&
+            facadeControl.feature.getStyle().get('fill.opacity') === 0) {
+            document.querySelector('.m-geometrydraw').appendChild(facadeControl.textDrawTemplate);
+            document.querySelector('.m-geometrydraw>#textdrawtools button').style.display = 'block';
+            // document.querySelector('.m-geometrydraw>#textdrawtools>button')
+            // .style.display = 'block';
+          } else {
+            document.querySelector('.m-geometrydraw').appendChild(facadeControl.drawingTools);
+            document.querySelector('.m-geometrydraw>#drawingtools button').style.display = 'block';
+          }
+
           facadeControl.updateInputValues();
-          facadeControl.changeSquare();
+          facadeControl.emphasizeSelectedFeature();
           facadeControl.showFeatureInfo();
         }
       });
+
       olMap.addInteraction(this.select);
 
       this.edit = new ol.interaction.Modify({ features: this.select.getFeatures() });
       this.edit.on('modifyend', (evt) => {
         // eslint-disable-next-line no-underscore-dangle
-        facadeControl.feature = M.impl.Feature.olFeature2Facade(evt.target.features_.getArray()[0]);
-        facadeControl.changeSquare();
+        // facadeControl.feature = M.impl.Feature
+        // .olFeature2Facade(evt.target.features_.getArray()[0]);
+        facadeControl.emphasizeSelectedFeature();
+        facadeControl.showFeatureInfo();
       });
       olMap.addInteraction(this.edit);
     }
+  }
+
+  /**
+   * Deactivates selection mode.
+   * @public
+   * @function
+   * @api
+   */
+  deactivateSelection() {
+    if (this.facadeControl.drawLayer) {
+      if (document.querySelector('.m-geometrydraw #drawingtools')) {
+        document.querySelector('.m-geometrydraw>#drawingtools>button').style.display = 'none';
+        document.querySelector('.m-geometrydraw').removeChild(this.facadeControl.drawingTools);
+      }
+      if (document.querySelector('.m-geometrydraw #textdrawtools')) {
+        document.querySelector('.m-geometrydraw>#textdrawtools button').style.display = 'none';
+        document.querySelector('.m-geometrydraw').removeChild(this.facadeControl.textDrawTemplate);
+      }
+
+      if (this.facadeControl.geometry === 'Point' &&
+        this.facadeControl.feature.getStyle().get('fill.opacity') === 0) {
+        const newFont = `${this.facadeControl.fontSize}px ${this.facadeControl.fontFamily}`;
+        this.facadeControl.feature.getStyle().set('label.font', newFont);
+      }
+
+      this.facadeControl.feature = undefined;
+      this.facadeControl.geometry = undefined;
+      this.facadeControl.emphasizeSelectedFeature();
+      this.facadeMap_.getMapImpl().removeInteraction(this.edit);
+      this.facadeMap_.getMapImpl().removeInteraction(this.select);
+    }
+  }
+
+  /**
+   * Creates GML string with Open Layers features.
+   * @public
+   * @function
+   * @api
+   * @param {*} options - object with features, projection and metadata.
+   */
+  getGML(options) {
+    const gmlFormat = new ol.format.GML3();
+    const gmlFeatures = gmlFormat.writeFeatures(options.olFeatures, {
+      featureProjection: options.epsg,
+      featureNS: options.featureNS,
+      featureType: options.featureType,
+    });
+    return gmlFeatures;
   }
 
   /**
@@ -149,40 +229,4 @@ export default class GeometryDrawControl extends M.impl.Control {
   getFeatureArea(olFeature) {
     return olFeature.getGeometry().getArea();
   }
-
-  deactivateSelection() {
-    if (this.facadeControl.drawLayer) {
-      if (document.querySelector('.m-geometrydraw #drawingtools')) {
-        document.querySelector('.m-geometrydraw').removeChild(this.facadeControl.drawingTools);
-      }
-      this.facadeControl.feature = undefined;
-      this.facadeControl.geometry = undefined;
-      this.facadeControl.changeSquare();
-      this.facadeMap_.getMapImpl().removeInteraction(this.edit);
-      this.facadeMap_.getMapImpl().removeInteraction(this.select);
-    }
-  }
-
-  /** ***************************************************************************** */
-  /* STYLE METHODS => FIXME: This should be translated into Mapea styles on facade */
-  /** *************************************************************************** */
-
-  // /**
-  //  * Creates new style for text feature.
-  //  * @public
-  //  * @function
-  //  * @api
-  //  * @param {Object} options - style colors and measures
-  //  */
-  // newOLTextStyle(options) {
-  //   return new ol.style.Style({
-  //     text: new ol.style.Text({
-  //       text: options.text,
-  //       font: options.font,
-  //       fill: new ol.style.Fill({ color: options.textFillColor }),
-  //     }),
-  //     stroke: new ol.style.Stroke({ color: options.defaultColor, width: options.strokeWidth }),
-  //     fill: new ol.style.Fill({ color: options.defaultColor }),
-  //   });
-  // }
 }

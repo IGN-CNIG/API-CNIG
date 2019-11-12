@@ -20,7 +20,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **baseUrl**. Url sobre la que está montada la instancia de mapea del tipo https://cnigvisores_pub.desarrollo.guadaltel.es/mapea/
+- **baseUrl**. Url sobre la que está montada la instancia de mapea del tipo https://componentes.ign.es/api-core/
 - **title**. Título para la cabecera de la ventana (Por defecto 'Compartir Mapa'
 - **btn**. Título para el botón Aceptar (Por defecto 'Aceptar')
 - **copyBtn**. Título para el botón copiar (Por defecto 'Copiar url')

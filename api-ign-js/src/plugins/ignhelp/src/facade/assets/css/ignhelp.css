@@ -1,0 +1,107 @@
+.m-panel-ignhelp.collapsed {
+    height: 40px;
+    width: 40px;
+}
+
+div.m-areas>div.m-area>div.m-panel-ignhelp.opened {
+    /* background-color: transparent;
+  box-shadow: none;
+  margin: auto;
+  width: 600px; */
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    display: flex;
+    height: 100vh;
+    margin: auto;
+    position: relative;
+    width: 100vw;
+}
+
+/* Opening/closing buttons */
+
+.m-areas>div.m-area>div.m-panel.m-panel-ignhelp.collapsed>button.m-panel-btn {
+    background-color: #71a7d3 !important;
+    color: white;
+}
+
+.m-areas>div.m-area>div.m-panel.m-panel-ignhelp.opened>button {
+    background-color: white;
+    color: #71a7d3;
+    left: calc(50vw - 290px);
+    position: absolute;
+    top: calc(50vh - 250px);
+}
+
+/* Help content */
+
+div.m-panel.m-panel-ignhelp.opened>div.m-panel-controls {
+    height: 500px;
+    margin: auto;
+    width: 500px;
+}
+
+/* div.m-panel.m-panel-ignhelp.opened>div.m-panel-controls>div.m-control.m-container.m-ignhelp {
+    background-color: #b5b6b8;
+    rgba(250, 250, 250, 0.8);
+}*/
+
+div.m-panel.m-panel-ignhelp.opened>div.m-panel-controls>div.m-control.m-container.m-ignhelp>div#ignhelpbox {
+    /* background-clip: content-box; */
+    background-color: white;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-panel-ignhelp.opened div#ignhelpbox {
+    padding: 20px;
+}
+
+.m-panel-ignhelp.opened #ignhelpbox>div>p:first-child {
+    background-color: #71a7d3;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+}
+
+.m-panel-ignhelp.opened #ignhelpbox>div>a {
+    background-color: #b5b6b8;
+    border-radius: 5px;
+    color: white;
+    display: block;
+    margin: auto;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 50px;
+}
+
+/* Icon font */
+
+@font-face {
+    font-family: 'ignhelp';
+    src: url('../fonts/ignhelp.eot?moc4eo');
+    src: url('../fonts/ignhelp.eot?moc4eo#iefix') format('embedded-opentype'),
+        url('../fonts/ignhelp.ttf?moc4eo') format('truetype'),
+        url('../fonts/ignhelp.woff?moc4eo') format('woff'),
+        url('../fonts/ignhelp.svg?moc4eo#ignhelp') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+.m-areas>div.m-area>div.m-panel.m-panel-ignhelp.collapsed>button.m-panel-btn,
+[class^="ignhelp-"],
+[class*=" ignhelp-"] {
+    font-family: 'ignhelp' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.ignhelp-info:before {
+    content: "\e1355";
+}
