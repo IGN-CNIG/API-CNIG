@@ -39,8 +39,16 @@ div.m-panel.m-panel-ignhelp.opened>div.m-panel-controls {
     width: 500px;
 }
 
-div.m-panel.m-panel-ignhelp.opened>div.m-panel-controls>div.m-control.m-container.m-ignhelp {
+/* div.m-panel.m-panel-ignhelp.opened>div.m-panel-controls>div.m-control.m-container.m-ignhelp {
+    background-color: #b5b6b8;
+    rgba(250, 250, 250, 0.8);
+}*/
+
+div.m-panel.m-panel-ignhelp.opened>div.m-panel-controls>div.m-control.m-container.m-ignhelp>div#ignhelpbox {
+    /* background-clip: content-box; */
     background-color: white;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
 }
 
 .m-areas>div.m-area>div.m-panel.m-panel-ignhelp.opened div#ignhelpbox {
