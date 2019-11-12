@@ -28,8 +28,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - *1*. Atribuciones mediante archivo de atribuciones ==DISPONIBLE==
   - *2*. Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa
 - *scale*. Escala a partir de la cual se activa la asignación de atribuciones  (Default = 10000)
-- *defaultAttribution*. Valor por defecto a mostrar en la atribución del mapa.
-- *defaultURL*. Valor por defecto a usar como url asociada a la atribución por defecto.
 - *tooltip*. Valor a usar para mostrar en el tooltip del plugin (Por defecto = Reconocimientos)
 
 - Parámetros específicos en modo 1 (Archivo de atribuciones)
@@ -45,18 +43,23 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BL' = Bottom left
   - 'BR' = Bottom right
 
+# Configuraciones globales
+- *M.config.attributions.defaultAttribution*. Valor por defecto a mostrar en la atribución del mapa.
+- *M.config.attributions.defaultUrl*. Valor por defecto a usar como url asociada a la atribución por defecto.
 # Ejemplo de uso
 
 ```javascript
+  M.config.attributions.defaultAttribution = 'Instituto Geográfico Nacional';
+  M.config.attributions.defaultUrl = 'https://www.ign.es/' 
+
    const map = M.map({
      container: 'map'
    });
   
    const mp = new M.plugin.Attributions({ 
             mode: 1, 
-            scale: 10000, 
-            defaultAttribution: 'Instituto Geográfico Nacional'
-            defaultUrl: 'https://www.ign.es/' });
+            scale: 10000,
+    });
 
    map.addPlugin(mp);
 ```

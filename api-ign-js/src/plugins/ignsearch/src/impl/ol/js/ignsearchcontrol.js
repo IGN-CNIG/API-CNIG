@@ -42,34 +42,34 @@ export default class IGNSearchControl extends M.impl.Control {
       4265.459167699568,
       2132.729583849784,
     ];
-    const wmts3857resolutions = [
-      156543.0339280410,
-      78271.51696402048,
-      39135.75848201023,
-      19567.87924100512,
-      9783.939620502561,
-      4891.969810251280,
-      2445.984905125640,
-      1222.992452562820,
-      611.4962262814100,
-      305.7481131407048,
-      152.8740565703525,
-      76.43702828517624,
-      38.21851414258813,
-      19.10925707129406,
-      9.554628535647032,
-      4.777314267823516,
-      2.388657133911758,
-      1.194328566955879,
-      0.5971642834779395,
-    ];
+    // const wmts3857resolutions = [
+    //   156543.0339280410,
+    //   78271.51696402048,
+    //   39135.75848201023,
+    //   19567.87924100512,
+    //   9783.939620502561,
+    //   4891.969810251280,
+    //   2445.984905125640,
+    //   1222.992452562820,
+    //   611.4962262814100,
+    //   305.7481131407048,
+    //   152.8740565703525,
+    //   76.43702828517624,
+    //   38.21851414258813,
+    //   19.10925707129406,
+    //   9.554628535647032,
+    //   4.777314267823516,
+    //   2.388657133911758,
+    //   1.194328566955879,
+    //   0.5971642834779395,
+    // ];
     // Finds closest standard scale
     const newScale = wmts3857scales.reduce((prev, curr) => {
       return (Math.abs(curr - scale) < Math.abs(prev - scale) ? curr : prev);
     });
-    const newResolution = wmts3857resolutions[wmts3857scales.indexOf(newScale)];
     const olMap = this.facadeMap_.getMapImpl();
     const olView = olMap.getView();
+    const newResolution = olView.getMaxResolution() / (2 ** wmts3857scales.indexOf(newScale));
     olView.setResolution(newResolution);
     // 4.777314267823516); // resolution for scale 17016, table page 120
     // const dpiToCM = M.units.DOTS_PER_INCH / 2.54;

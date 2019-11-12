@@ -90,7 +90,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
-    https: true,
+    // https: true,
     hot: true,
     // host: '0.0.0.0',
     open: true,

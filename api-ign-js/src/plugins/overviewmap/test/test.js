@@ -1,7 +1,9 @@
 import OverviewMap from 'facade/overviewmap';
 
 const map = M.map({
+  center: [-467062.8225, 4783459.6216],
   container: 'mapjs',
+  zoom: 5,
 });
 
 
@@ -11,8 +13,6 @@ const mp = new OverviewMap({
   collapsed: false,
   collapsible: true,
 });
-
-map.addLayers(['WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*false', 'WMS_FULL*http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Permeabilidad_Andalucia?']);
 
 map.addPlugin(mp);
 
