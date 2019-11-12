@@ -6,6 +6,7 @@ import GeometryDrawImplControl from 'impl/geometrydrawcontrol';
 import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
 import textDrawTemplate from 'templates/textdraw';
+import lineStyle from 'templates/linestyle';
 import downloadingTemplate from 'templates/downloading';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
@@ -151,6 +152,7 @@ export default class GeometryDrawControl extends M.Control {
       this.createDrawingTemplate();
       this.createTextDrawTemplate();
       this.createDownloadingTemplate();
+      this.lineStyleTemplate = M.template.compileSync(lineStyle);
       this.addEvents(html);
       success(html);
     });
@@ -269,16 +271,9 @@ export default class GeometryDrawControl extends M.Control {
           this.isPointActive = true;
           this.geometry = geometry;
           document.getElementById('pointdrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtoolspoint') !== null) {
-            document.getElementById('drawingtoolspoint').remove();
-          }
 
-          if (document.getElementById('drawingtoolsline') !== null) {
-            document.getElementById('drawingtoolsline').remove();
-          }
-
-          if (document.getElementById('drawingtoolspolygon') !== null) {
-            document.getElementById('drawingtoolspolygon').remove();
+          if (document.getElementById('drawingtools') !== null) {
+            document.getElementById('drawingtools').remove();
           }
 
           if (document.getElementById('textdrawtools') !== null) {
@@ -295,16 +290,9 @@ export default class GeometryDrawControl extends M.Control {
           this.isLineActive = true;
           this.geometry = geometry;
           document.getElementById('linedrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtoolspoint') !== null) {
-            document.getElementById('drawingtoolspoint').remove();
-          }
 
-          if (document.getElementById('drawingtoolsline') !== null) {
-            document.getElementById('drawingtoolsline').remove();
-          }
-
-          if (document.getElementById('drawingtoolspolygon') !== null) {
-            document.getElementById('drawingtoolspolygon').remove();
+          if (document.getElementById('drawingtools') !== null) {
+            document.getElementById('drawingtools').remove();
           }
 
           if (document.getElementById('textdrawtools') !== null) {
@@ -321,16 +309,8 @@ export default class GeometryDrawControl extends M.Control {
           this.isPolygonActive = true;
           this.geometry = geometry;
           document.getElementById('polygondrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtoolspoint') !== null) {
-            document.getElementById('drawingtoolspoint').remove();
-          }
-
-          if (document.getElementById('drawingtoolsline') !== null) {
-            document.getElementById('drawingtoolsline').remove();
-          }
-
-          if (document.getElementById('drawingtoolspolygon') !== null) {
-            document.getElementById('drawingtoolspolygon').remove();
+          if (document.getElementById('drawingtools') !== null) {
+            document.getElementById('drawingtools').remove();
           }
 
           if (document.getElementById('textdrawtools') !== null) {
@@ -347,16 +327,8 @@ export default class GeometryDrawControl extends M.Control {
           this.isTextActive = true;
           this.geometry = 'Point';
           document.getElementById('textdrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtoolspoint') !== null) {
-            document.getElementById('drawingtoolspoint').remove();
-          }
-
-          if (document.getElementById('drawingtoolsline') !== null) {
-            document.getElementById('drawingtoolsline').remove();
-          }
-
-          if (document.getElementById('drawingtoolspolygon') !== null) {
-            document.getElementById('drawingtoolspolygon').remove();
+          if (document.getElementById('drawingtools') !== null) {
+            document.getElementById('drawingtools').remove();
           }
 
           if (document.getElementById('textdrawtools') !== null) {
@@ -377,6 +349,11 @@ export default class GeometryDrawControl extends M.Control {
         document.querySelector('.m-geometrydraw').appendChild(this.textDrawTemplate);
       } else {
         this.drawingTools.querySelector('button').style.display = 'none';
+
+        if (this.isLineActive) {
+          this.drawingTools.querySelector('#styleOptions').appendChild(this.lineStyleTemplate);
+        }
+
         document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       }
 

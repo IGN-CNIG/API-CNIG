@@ -117,7 +117,7 @@ div.m-panel.m-geometrydraw>div#textdrawtools>div>select {
 
 div.m-panel.m-geometrydraw>div#drawingtools>div {
     margin: 0 auto;
-    width: 220px;
+    width: 225px;
 }
 
 div.m-panel.m-geometrydraw>div#drawingtools input#featureName {
@@ -194,10 +194,24 @@ div.m-panel.m-geometrydraw label {
     margin-right: 5px;
 }
 
-/* TODO:
-#lineStyle option {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAB0CAYAAADAUH2QAAABZElEQVR4nO3c0W7DIAwFUP//T9O3DDog6TTVbnOOdF8AWX6xspW00eDmImK998Y+oKSIOPJrL6EfKKUfkOdBidmmiBxJb0CkbhKfbFDCbDCOvcS+oITZYBx7Cf1AKbPB6PYAAAAAAAAAgB9vvNGHssLLijD3PBz9kBgQbm01HF0KfClFpG7SGxCpm+xHHGQyIHBiNRyt+ScdWmubj3kBAAAAAAAAgF7i7T6kCy8rwpoBgY3TAblwQOTOSW9ApG6yH3GQyYDAhgGBjQt/ZgEAAAAAAAAAg/w3JkXqJr0BkcoBAAAAAAAAAAbLa/arP4/inHNffK58g845l3kOAAAAAAAAABgsr+GtWbNWqxlr1qqtAQAAAAAAAACDdjWza/ndunrqfUG98g2qp15mPQAAAAAAAABg8NL1/Cx/vepXT70PqFe+QfXUy6wHAAAAAAAAAAz+7Wr+bE199T+wfnoD6qtftv4DbAfqNEb06EEAAAAASUVORK5CYII=);
+div#linestyleselect {
+    margin: 10px;
+    margin-left: 0;
+}
+
+/* #linestyleselect select#lineStyle {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAB0CAYAAADAUH2QAAABZElEQVR4nO3c0W7DIAwFUP//T9O3DDog6TTVbnOOdF8AWX6xspW00eDmImK998Y+oKSIOPJrL6EfKKUfkOdBidmmiBxJb0CkbhKfbFDCbDCOvcS+oITZYBx7Cf1AKbPB6PYAAAAAAAAAgB9vvNGHssLLijD3PBz9kBgQbm01HF0KfClFpG7SGxCpm+xHHGQyIHBiNRyt+ScdWmubj3kBAAAAAAAAgF7i7T6kCy8rwpoBgY3TAblwQOTOSW9ApG6yH3GQyYDAhgGBjQt/ZgEAAAAAAAAAg/w3JkXqJr0BkcoBAAAAAAAAAAbLa/arP4/inHNffK58g845l3kOAAAAAAAAABgsr+GtWbNWqxlr1qqtAQAAAAAAAACDdjWza/ndunrqfUG98g2qp15mPQAAAAAAAABg8NL1/Cx/vepXT70PqFe+QfXUy6wHAAAAAAAAAAz+7Wr+bE199T+wfnoD6qtftv4DbAfqNEb06EEAAAAASUVORK5CYII=);
 } */
+
+#linestyleselect select#lineStyle:not([multiple]) option {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* background-position: right 50%;
+    background-repeat: no-repeat; */
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAB0CAYAAADAUH2QAAABZElEQVR4nO3c0W7DIAwFUP//T9O3DDog6TTVbnOOdF8AWX6xspW00eDmImK998Y+oKSIOPJrL6EfKKUfkOdBidmmiBxJb0CkbhKfbFDCbDCOvcS+oITZYBx7Cf1AKbPB6PYAAAAAAAAAgB9vvNGHssLLijD3PBz9kBgQbm01HF0KfClFpG7SGxCpm+xHHGQyIHBiNRyt+ScdWmubj3kBAAAAAAAAgF7i7T6kCy8rwpoBgY3TAblwQOTOSW9ApG6yH3GQyYDAhgGBjQt/ZgEAAAAAAAAAg/w3JkXqJr0BkcoBAAAAAAAAAAbLa/arP4/inHNffK58g845l3kOAAAAAAAAABgsr+GtWbNWqxlr1qqtAQAAAAAAAACDdjWza/ndunrqfUG98g2qp15mPQAAAAAAAABg8NL1/Cx/vepXT70PqFe+QfXUy6wHAAAAAAAAAAz+7Wr+bE199T+wfnoD6qtftv4DbAfqNEb06EEAAAAASUVORK5CYII=);
+    /* padding: .5em;
+    padding-right: 1.5em */
+}
 
 /* Toolbar icons font */
 
