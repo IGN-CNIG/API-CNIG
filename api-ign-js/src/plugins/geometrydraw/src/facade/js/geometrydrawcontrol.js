@@ -5,9 +5,6 @@
 import GeometryDrawImplControl from 'impl/geometrydrawcontrol';
 import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
-import drawingPointTemplate from 'templates/drawingPoint';
-import drawingLineTemplate from 'templates/drawingLine';
-import drawingPolygonTemplate from 'templates/drawingPolygon';
 import textDrawTemplate from 'templates/textdraw';
 import downloadingTemplate from 'templates/downloading';
 import shpWrite from 'shp-write';
@@ -194,15 +191,7 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   createDrawingTemplate() {
-    if (this.isPointActive) {
-      this.drawingTools = M.template.compileSync(drawingPointTemplate, { jsonp: true });
-    } else if (this.isLineActive) {
-      this.drawingTools = M.template.compileSync(drawingLineTemplate, { jsonp: true });
-    } else if (this.isPolygonActive) {
-      this.drawingTools = M.template.compileSync(drawingPolygonTemplate, { jsonp: true });
-    } else {
-      this.drawingTools = M.template.compileSync(drawingTemplate, { jsonp: true });
-    }
+    this.drawingTools = M.template.compileSync(drawingTemplate, { jsonp: true });
 
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
@@ -394,8 +383,8 @@ export default class GeometryDrawControl extends M.Control {
       this.addDrawInteraction();
       // this.emphasizeSelectedFeature();
 
-      if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-        document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+      if (document.querySelector('#drawingtools #featureInfo') !== null) {
+        document.querySelector('#drawingtools #featureInfo').style.display = 'none';
       }
 
       if (document.querySelector('.m-geometrydraw>#downloadFormat')) {
@@ -450,8 +439,8 @@ export default class GeometryDrawControl extends M.Control {
     if (this.isEditionActive) {
       this.isEditionActive = false;
       this.getImpl().deactivateSelection();
-      if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-        document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+      if (document.querySelector('#drawingtools #featureInfo') !== null) {
+        document.querySelector('#drawingtools #featureInfo').style.display = 'none';
       }
     }
   }
@@ -792,7 +781,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   showFeatureInfo() {
     const olFeature = this.feature.getImpl().getOLFeature();
-    const infoContainer = document.querySelector('#drawingtools>#featureInfo');
+    const infoContainer = document.querySelector('#drawingtools #featureInfo');
     if (infoContainer !== null) {
       infoContainer.style.display = 'block';
     }
@@ -831,8 +820,8 @@ export default class GeometryDrawControl extends M.Control {
         if (infoContainer !== null) infoContainer.innerHTML = `Área: ${area} ${areaUnits}`;
         break;
       default:
-        if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-          document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+        if (document.querySelector('#drawingtools #featureInfo') !== null) {
+          document.querySelector('#drawingtools #featureInfo').style.display = 'none';
         }
         break;
     }
@@ -1007,8 +996,8 @@ export default class GeometryDrawControl extends M.Control {
     this.feature = undefined;
     this.geometry = undefined;
     this.selectionLayer.removeFeatures([this.emphasis]);
-    if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-      document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+    if (document.querySelector('#drawingtools #featureInfo') !== null) {
+      document.querySelector('#drawingtools #featureInfo').style.display = 'none';
     }
     if (document.querySelector('#otherBtns>#edit') !== null) {
       document.querySelector('#otherBtns>#edit').classList.remove('activeTool');

@@ -158,7 +158,7 @@ export default class GeometryDrawControl extends M.impl.Control {
   deactivateSelection() {
     if (this.facadeControl.drawLayer) {
       if (document.querySelector('.m-geometrydraw #drawingtools')) {
-        document.querySelector('.m-geometrydraw>#drawingtools>button').style.display = 'none';
+        document.querySelector('.m-geometrydraw>#drawingtools button').style.display = 'none';
         document.querySelector('.m-geometrydraw').removeChild(this.facadeControl.drawingTools);
       }
       if (document.querySelector('.m-geometrydraw #textdrawtools')) {
