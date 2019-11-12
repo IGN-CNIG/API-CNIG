@@ -71,7 +71,7 @@ export default class GeometryDraw extends M.Plugin {
       collapsed: this.collapsed_,
       collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
-      collapsedButtonClass: 'geometrydraw-editar',
+      collapsedButtonClass: 'icon-editar',
       tooltip: 'Dibujo de geometrías',
     });
     this.panel_.addControls(this.controls_);

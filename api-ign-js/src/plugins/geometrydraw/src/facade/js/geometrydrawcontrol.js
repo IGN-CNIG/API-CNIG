@@ -5,6 +5,9 @@
 import GeometryDrawImplControl from 'impl/geometrydrawcontrol';
 import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
+import drawingPointTemplate from 'templates/drawingPoint';
+import drawingLineTemplate from 'templates/drawingLine';
+import drawingPolygonTemplate from 'templates/drawingPolygon';
 import textDrawTemplate from 'templates/textdraw';
 import downloadingTemplate from 'templates/downloading';
 import shpWrite from 'shp-write';
@@ -191,7 +194,15 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   createDrawingTemplate() {
-    this.drawingTools = M.template.compileSync(drawingTemplate, { jsonp: true });
+    if (this.isPointActive) {
+      this.drawingTools = M.template.compileSync(drawingPointTemplate, { jsonp: true });
+    } else if (this.isLineActive) {
+      this.drawingTools = M.template.compileSync(drawingLineTemplate, { jsonp: true });
+    } else if (this.isPolygonActive) {
+      this.drawingTools = M.template.compileSync(drawingPolygonTemplate, { jsonp: true });
+    } else {
+      this.drawingTools = M.template.compileSync(drawingTemplate, { jsonp: true });
+    }
 
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
@@ -269,6 +280,21 @@ export default class GeometryDrawControl extends M.Control {
           this.isPointActive = true;
           this.geometry = geometry;
           document.getElementById('pointdrawing').classList.add('activeTool');
+          if (document.getElementById('drawingtoolspoint') !== null) {
+            document.getElementById('drawingtoolspoint').remove();
+          }
+
+          if (document.getElementById('drawingtoolsline') !== null) {
+            document.getElementById('drawingtoolsline').remove();
+          }
+
+          if (document.getElementById('drawingtoolspolygon') !== null) {
+            document.getElementById('drawingtoolspolygon').remove();
+          }
+
+          if (document.getElementById('textdrawtools') !== null) {
+            document.getElementById('textdrawtools').remove();
+          }
         }
         break;
       case 'LineString':
@@ -280,6 +306,21 @@ export default class GeometryDrawControl extends M.Control {
           this.isLineActive = true;
           this.geometry = geometry;
           document.getElementById('linedrawing').classList.add('activeTool');
+          if (document.getElementById('drawingtoolspoint') !== null) {
+            document.getElementById('drawingtoolspoint').remove();
+          }
+
+          if (document.getElementById('drawingtoolsline') !== null) {
+            document.getElementById('drawingtoolsline').remove();
+          }
+
+          if (document.getElementById('drawingtoolspolygon') !== null) {
+            document.getElementById('drawingtoolspolygon').remove();
+          }
+
+          if (document.getElementById('textdrawtools') !== null) {
+            document.getElementById('textdrawtools').remove();
+          }
         }
         break;
       case 'Polygon':
@@ -291,6 +332,21 @@ export default class GeometryDrawControl extends M.Control {
           this.isPolygonActive = true;
           this.geometry = geometry;
           document.getElementById('polygondrawing').classList.add('activeTool');
+          if (document.getElementById('drawingtoolspoint') !== null) {
+            document.getElementById('drawingtoolspoint').remove();
+          }
+
+          if (document.getElementById('drawingtoolsline') !== null) {
+            document.getElementById('drawingtoolsline').remove();
+          }
+
+          if (document.getElementById('drawingtoolspolygon') !== null) {
+            document.getElementById('drawingtoolspolygon').remove();
+          }
+
+          if (document.getElementById('textdrawtools') !== null) {
+            document.getElementById('textdrawtools').remove();
+          }
         }
         break;
       case 'Text':
@@ -302,11 +358,28 @@ export default class GeometryDrawControl extends M.Control {
           this.isTextActive = true;
           this.geometry = 'Point';
           document.getElementById('textdrawing').classList.add('activeTool');
+          if (document.getElementById('drawingtoolspoint') !== null) {
+            document.getElementById('drawingtoolspoint').remove();
+          }
+
+          if (document.getElementById('drawingtoolsline') !== null) {
+            document.getElementById('drawingtoolsline').remove();
+          }
+
+          if (document.getElementById('drawingtoolspolygon') !== null) {
+            document.getElementById('drawingtoolspolygon').remove();
+          }
+
+          if (document.getElementById('textdrawtools') !== null) {
+            document.getElementById('textdrawtools').remove();
+          }
         }
         break;
       default:
         break;
     }
+
+    this.createDrawingTemplate();
 
     if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
       if (this.isTextActive) {
