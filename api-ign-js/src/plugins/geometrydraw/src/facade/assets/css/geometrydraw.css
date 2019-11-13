@@ -184,6 +184,23 @@ div.m-areas>div.m-area.m-right>div.m-panel.m-geometrydraw>button.m-panel-btn {
 }
 
 /* Icon font */
+/* div.m-panel.m-geometrydraw label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+div#linestyleselect {
+    margin: 10px;
+    margin-left: 0;
+}
+
+#linestyleselect select#lineStyle option {
+    background-image: url('../images/lines-arrows.png');
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAB0CAYAAADAUH2QAAABZElEQVR4nO3c0W7DIAwFUP//T9O3DDog6TTVbnOOdF8AWX6xspW00eDmImK998Y+oKSIOPJrL6EfKKUfkOdBidmmiBxJb0CkbhKfbFDCbDCOvcS+oITZYBx7Cf1AKbPB6PYAAAAAAAAAgB9vvNGHssLLijD3PBz9kBgQbm01HF0KfClFpG7SGxCpm+xHHGQyIHBiNRyt+ScdWmubj3kBAAAAAAAAgF7i7T6kCy8rwpoBgY3TAblwQOTOSW9ApG6yH3GQyYDAhgGBjQt/ZgEAAAAAAAAAg/w3JkXqJr0BkcoBAAAAAAAAAAbLa/arP4/inHNffK58g845l3kOAAAAAAAAABgsr+GtWbNWqxlr1qqtAQAAAAAAAACDdjWza/ndunrqfUG98g2qp15mPQAAAAAAAABg8NL1/Cx/vepXT70PqFe+QfXUy6wHAAAAAAAAAAz+7Wr+bE199T+wfnoD6qtftv4DbAfqNEb06EEAAAAASUVORK5CYII=);
+    background-position: left 0;
+} */
+
+/* Toolbar icons font */
 
 @font-face {
     font-family: 'geometrydraw';
