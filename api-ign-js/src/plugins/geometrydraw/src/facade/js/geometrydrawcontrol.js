@@ -293,6 +293,10 @@ export default class GeometryDrawControl extends M.Control {
           if (document.getElementById('textdrawtools') !== null) {
             document.getElementById('textdrawtools').remove();
           }
+
+          if (document.getElementById('geometrydraw-uploading') !== null) {
+            document.getElementById('geometrydraw-uploading').remove();
+          }
         }
         break;
       case 'LineString':
@@ -312,6 +316,10 @@ export default class GeometryDrawControl extends M.Control {
           if (document.getElementById('textdrawtools') !== null) {
             document.getElementById('textdrawtools').remove();
           }
+
+          if (document.getElementById('geometrydraw-uploading') !== null) {
+            document.getElementById('geometrydraw-uploading').remove();
+          }
         }
         break;
       case 'Polygon':
@@ -330,6 +338,10 @@ export default class GeometryDrawControl extends M.Control {
           if (document.getElementById('textdrawtools') !== null) {
             document.getElementById('textdrawtools').remove();
           }
+
+          if (document.getElementById('geometrydraw-uploading') !== null) {
+            document.getElementById('geometrydraw-uploading').remove();
+          }
         }
         break;
       case 'Text':
@@ -347,6 +359,10 @@ export default class GeometryDrawControl extends M.Control {
 
           if (document.getElementById('textdrawtools') !== null) {
             document.getElementById('textdrawtools').remove();
+          }
+
+          if (document.getElementById('geometrydraw-uploading') !== null) {
+            document.getElementById('geometrydraw-uploading').remove();
           }
         }
         break;
@@ -444,6 +460,9 @@ export default class GeometryDrawControl extends M.Control {
       this.isEditionActive = false;
     } else {
       this.deactivateDrawing();
+      if (document.getElementById('geometrydraw-uploading') !== null) {
+        document.getElementById('geometrydraw-uploading').remove();
+      }
       this.getImpl().activateSelection();
       this.isEditionActive = true;
       document.querySelector('#otherBtns>#edit').classList.add('activeTool');

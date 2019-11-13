@@ -259,21 +259,12 @@ export default class GeometryDrawControl extends M.impl.Control {
       }
     });
     features = this.convertToMFeature_(features);
-    this.createLayer_(layerName, features);
+    this.facadeControl.drawLayer.addFeatures(features);
+    // this.createLayer_(layerName, features);
     return features;
   }
 
   loadKMLLayer(layerName, source, extractStyles) {
-    /*     let layer = new M.layer.KML({
-          name: layerName,
-          url: url,
-          extract: true
-        });
-        this.facadeMap_.addLayers(layer);
-        return layer.getFeatures(); */
-
-    // FIXME: Es necesario usar la libreria base para leer
-    // las features y crear a partir de ellas una capa GeoJSON
     let features = new ol.format.KML({ extractStyles })
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
     features.forEach((feature) => {
@@ -301,7 +292,8 @@ export default class GeometryDrawControl extends M.impl.Control {
       }
     });
     features = this.convertToMFeature_(features);
-    this.createLayer_(layerName, features);
+    this.facadeControl.drawLayer.addFeatures(features);
+    // this.createLayer_(layerName, features);
     return features;
   }
 
@@ -333,18 +325,19 @@ export default class GeometryDrawControl extends M.impl.Control {
       }
     });
     features = this.convertToMFeature_(features);
-    this.createLayer_(layerName, features);
+    this.facadeControl.drawLayer.addFeatures(features);
+    // this.createLayer_(layerName, features);
     return features;
   }
 
-  createLayer_(layerName, features) {
-    const layer = new M.layer.Vector({
-      name: layerName,
-    }, { displayInLayerSwitcher: true });
-    layer.addFeatures(features);
-    this.facadeMap_.addLayers(layer);
-    layer.getImpl().getOL3Layer().set('vendor.mapaalacarta.selectable', true);
-  }
+  // createLayer_(layerName, features) {
+  //   const layer = new M.layer.Vector({
+  //     name: layerName,
+  //   }, { displayInLayerSwitcher: true });
+  //   layer.addFeatures(features);
+  //   this.facadeMap_.addLayers(layer);
+  //   layer.getImpl().getOL3Layer().set('vendor.mapaalacarta.selectable', true);
+  // }
 
   centerFeatures(features) {
     if (!M.utils.isNullOrEmpty(features)) {
