@@ -195,12 +195,10 @@ export default class GeometryDrawControl extends M.Control {
     });
     const inputFile = this.uploadingTemplate.querySelector('#geometrydraw-uploading>input');
     this.loadBtn_ = this.uploadingTemplate.querySelector('#geometrydraw-uploading button');
-    this.inputName_ = this.uploadingTemplate.querySelector('#geometrydraw-uploading #uplayerName input');
     inputFile.addEventListener('change', evt => this.changeFile(evt, inputFile.files[0]));
     this.loadBtn_.addEventListener('click', () => {
       this.loadLayer();
     });
-    this.inputName_.addEventListener('input', e => this.changeName(e));
     this.loadBtn_.setAttribute('disabled', 'disabled');
   }
 
@@ -1048,86 +1046,67 @@ export default class GeometryDrawControl extends M.Control {
 
   /* Layer upload */
 
-  changeName(ev) {
-    const evt = (ev || window.event);
-    const itemTarget = evt.target;
-    if (itemTarget.value.trim() === '') {
-      this.loadBtn_.setAttribute('disabled', 'disabled');
-    } else {
-      this.loadBtn_.removeAttribute('disabled');
-    }
-  }
-
   changeFile(evt, file) {
     this.file_ = file;
-    // Desactivo la escritura y vacio el nombre, además de desactivar el boton
-    this.inputName_.value = '';
-    this.inputName_.setAttribute('disabled', 'disabled');
     this.loadBtn_.setAttribute('disabled', 'disabled');
     if (!M.utils.isNullOrEmpty(file)) {
       if (file.size > 20971520) {
         M.dialog.info('El fichero seleccionado sobrepasa el máximo de 20 MB permitido');
         this.file_ = null;
+        document.querySelector('#fileInfo').innerHTML = '';
       } else {
-        // Elimino la extensión y la pongo como nombre de capa
-        this.inputName_.value = file.name.replace(/\.[^/.]+$/, '');
-        // Activo la escritura en el input y el boton de carga
-        this.inputName_.removeAttribute('disabled');
         this.loadBtn_.removeAttribute('disabled');
+        document.querySelector('#fileInfo').innerHTML = `Fichero seleccionado: ${file.name}`;
       }
     }
   }
 
   loadLayer() {
-    if (this.inputName_.value !== '') {
-      // Consigo la extensión del fichero
-      // eslint-disable-next-line no-bitwise
-      const fileExt = this.file_.name.slice((this.file_.name.lastIndexOf('.') - 1 >>> 0) + 2);
-      const fileReader = new window.FileReader();
-      fileReader.addEventListener('load', (e) => {
-        try {
-          let features = [];
-          if (fileExt === 'zip') {
-            // In case of shp group, this unites features
-            const geojsonArray = [].concat(shp.parseZip(fileReader.result));
-            geojsonArray.forEach((geojson) => {
-              const localFeatures = this.getImpl()
-                .loadGeoJSONLayer(this.map.getLayers().length, geojson);
-              if (localFeatures) {
-                features = features.concat(localFeatures);
-              }
-            });
-          } else if (fileExt === 'kml') {
-            features = this.getImpl()
-              .loadKMLLayer(this.map.getLayers().length, fileReader.result, false);
-          } else if (fileExt === 'gpx') {
-            features = this.getImpl()
-              .loadGPXLayer(this.map.getLayers().length, fileReader.result);
-          } else if (fileExt === 'geojson') {
-            features = this.getImpl()
-              .loadGeoJSONLayer(this.map.getLayers().length, fileReader.result);
-          } else {
-            M.dialog.error('Error al cargar el fichero');
-            return;
-          }
-          if (!features.length) {
-            M.dialog.info('No se han detectado geometrías en este fichero');
-          } else {
-            this.getImpl().centerFeatures(features);
-          }
-        } catch (error) {
-          M.dialog.error('Error al cargar el fichero. Compruebe que se trata del fichero correcto');
+    // Consigo la extensión del fichero
+    // eslint-disable-next-line no-bitwise
+    const fileExt = this.file_.name.slice((this.file_.name.lastIndexOf('.') - 1 >>> 0) + 2);
+    const fileReader = new window.FileReader();
+    fileReader.addEventListener('load', (e) => {
+      try {
+        let features = [];
+        if (fileExt === 'zip') {
+          // In case of shp group, this unites features
+          const geojsonArray = [].concat(shp.parseZip(fileReader.result));
+          geojsonArray.forEach((geojson) => {
+            const localFeatures = this.getImpl()
+              .loadGeoJSONLayer(this.map.getLayers().length, geojson);
+            if (localFeatures) {
+              features = features.concat(localFeatures);
+            }
+          });
+        } else if (fileExt === 'kml') {
+          features = this.getImpl()
+            .loadKMLLayer(this.map.getLayers().length, fileReader.result, false);
+        } else if (fileExt === 'gpx') {
+          features = this.getImpl()
+            .loadGPXLayer(this.map.getLayers().length, fileReader.result);
+        } else if (fileExt === 'geojson') {
+          features = this.getImpl()
+            .loadGeoJSONLayer(this.map.getLayers().length, fileReader.result);
+        } else {
+          M.dialog.error('Error al cargar el fichero');
+          return;
         }
-      });
-      if (fileExt === 'zip') {
-        fileReader.readAsArrayBuffer(this.file_);
-      } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson') {
-        fileReader.readAsText(this.file_);
-      } else {
-        M.dialog.error('No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX y GeoJSON.');
+        if (!features.length) {
+          M.dialog.info('No se han detectado geometrías en este fichero');
+        } else {
+          this.getImpl().centerFeatures(features);
+        }
+      } catch (error) {
+        M.dialog.error('Error al cargar el fichero. Compruebe que se trata del fichero correcto');
       }
+    });
+    if (fileExt === 'zip') {
+      fileReader.readAsArrayBuffer(this.file_);
+    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson') {
+      fileReader.readAsText(this.file_);
     } else {
-      this.inputName_.style.border = '2px solid #ff0000';
+      M.dialog.error('No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX y GeoJSON.');
     }
   }
 }

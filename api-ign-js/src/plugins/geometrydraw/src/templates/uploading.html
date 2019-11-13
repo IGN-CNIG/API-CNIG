@@ -1,9 +1,9 @@
 <div id="geometrydraw-uploading">
     <p>Los formatos aceptados son KML, SHP (.zip), GPX y GeoJSON.</p>
-    <input type="file" accept="{{accept}}">
-    <div id="uplayerName">
-        <label for="">Nombre de la capa:</label>
-        <input type="text" required />
+    <label for="fileInput">Selecciona el fichero</label>
+    <input id="fileInput" type="file" accept="{{accept}}">
+    <p id="fileInfo"></p>
+    <div id="loadButton">
+        <button title="Cargar capa"> <i class="g-cartografia-subir"></i>Cargar capa</button>
     </div>
-    <button title="Cargar capa"> <i class="g-cartografia-subir"></i>Cargar capa</button>
 </div>
