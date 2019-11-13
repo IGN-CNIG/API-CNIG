@@ -230,4 +230,146 @@ export default class GeometryDrawControl extends M.impl.Control {
   getFeatureArea(olFeature) {
     return olFeature.getGeometry().getArea();
   }
+
+  loadGeoJSONLayer(layerName, source2) {
+    let features = new ol.format.GeoJSON()
+      .readFeatures(source2, { featureProjection: this.facadeMap_.getProjection().code });
+    features.forEach((feature) => {
+      const style1 = new ol.style.Style({
+        stroke: new ol.style.Stroke({ color: '#0000FF', width: 8 }),
+        fill: new ol.style.Fill({ color: 'rgba(0, 0, 255, 0.2)' }),
+      });
+      const style2 = new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 6,
+          stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 2,
+          }),
+          fill: new ol.style.Fill({
+            color: '#7CFC00',
+          }),
+        }),
+      });
+
+      if (feature.getGeometry().getType() !== 'Point' && feature.getGeometry().getType() !== 'MultiPoint') {
+        feature.setStyle(style1);
+      } else {
+        feature.setStyle(style2);
+      }
+    });
+    features = this.convertToMFeature_(features);
+    this.createLayer_(layerName, features);
+    return features;
+  }
+
+  loadKMLLayer(layerName, source, extractStyles) {
+    /*     let layer = new M.layer.KML({
+          name: layerName,
+          url: url,
+          extract: true
+        });
+        this.facadeMap_.addLayers(layer);
+        return layer.getFeatures(); */
+
+    // FIXME: Es necesario usar la libreria base para leer
+    // las features y crear a partir de ellas una capa GeoJSON
+    let features = new ol.format.KML({ extractStyles })
+      .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
+    features.forEach((feature) => {
+      const style1 = new ol.style.Style({
+        stroke: new ol.style.Stroke({ color: '#0000FF', width: 8 }),
+        fill: new ol.style.Fill({ color: 'rgba(0, 0, 255, 0.2)' }),
+      });
+      const style2 = new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 6,
+          stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 2,
+          }),
+          fill: new ol.style.Fill({
+            color: '#7CFC00',
+          }),
+        }),
+      });
+
+      if (feature.getGeometry().getType() !== 'Point' && feature.getGeometry().getType() !== 'MultiPoint') {
+        feature.setStyle(style1);
+      } else {
+        feature.setStyle(style2);
+      }
+    });
+    features = this.convertToMFeature_(features);
+    this.createLayer_(layerName, features);
+    return features;
+  }
+
+  loadGPXLayer(layerName, source) {
+    let features = new ol.format.GPX()
+      .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
+    features.forEach((feature) => {
+      const style1 = new ol.style.Style({
+        stroke: new ol.style.Stroke({ color: '#0000FF', width: 8 }),
+        fill: new ol.style.Fill({ color: 'rgba(0, 0, 255, 0.2)' }),
+      });
+      const style2 = new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 24,
+          stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 2,
+          }),
+          fill: new ol.style.Fill({
+            color: '#7CFC00',
+          }),
+        }),
+      });
+
+      if (feature.getGeometry().getType() !== 'Point' && feature.getGeometry().getType() !== 'MultiPoint') {
+        feature.setStyle(style1);
+      } else {
+        feature.setStyle(style2);
+      }
+    });
+    features = this.convertToMFeature_(features);
+    this.createLayer_(layerName, features);
+    return features;
+  }
+
+  createLayer_(layerName, features) {
+    const layer = new M.layer.Vector({
+      name: layerName,
+    }, { displayInLayerSwitcher: true });
+    layer.addFeatures(features);
+    this.facadeMap_.addLayers(layer);
+    layer.getImpl().getOL3Layer().set('vendor.mapaalacarta.selectable', true);
+  }
+
+  centerFeatures(features) {
+    if (!M.utils.isNullOrEmpty(features)) {
+      const extent = M.impl.utils.getFeaturesExtent(features);
+      this.facadeMap_.getMapImpl().getView().fit(extent, {
+        duration: 500,
+        minResolution: 1,
+      });
+    }
+  }
+
+  convertToMFeature_(features) {
+    if (features instanceof Array) {
+      return features.map((olFeature) => {
+        const feature = new M.Feature(olFeature.getId(), {
+          geometry: {
+            coordinates: olFeature.getGeometry().getCoordinates(),
+            type: olFeature.getGeometry().getType(),
+          },
+          properties: olFeature.getProperties(),
+        });
+        feature.getImpl().getOLFeature().setStyle(olFeature.getStyle());
+        return feature;
+      });
+    }
+    return false;
+  }
 }

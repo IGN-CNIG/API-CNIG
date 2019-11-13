@@ -7,8 +7,10 @@ import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
 import textDrawTemplate from 'templates/textdraw';
 import downloadingTemplate from 'templates/downloading';
+import uploadingTemplate from 'templates/uploading';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
+import * as shp from 'shpjs';
 
 export default class GeometryDrawControl extends M.Control {
   /**
@@ -72,6 +74,11 @@ export default class GeometryDrawControl extends M.Control {
     this.downloadingTemplate = undefined;
 
     /**
+     * Template with uploading format options.
+     */
+    this.uploadingTemplate = undefined;
+
+    /**
      * Template with text feature drawing tools.
      */
     this.textDrawTemplate = undefined;
@@ -117,6 +124,11 @@ export default class GeometryDrawControl extends M.Control {
     this.vectorSource = this.getImpl().newVectorSource(false);
 
     /**
+     * File to load.
+     */
+    this.file_ = null;
+
+    /**
      * Mapea layer where a square will be drawn around selected feature.
      */
     this.selectionLayer = new M.layer.Vector({
@@ -141,6 +153,7 @@ export default class GeometryDrawControl extends M.Control {
       this.createDrawingTemplate();
       this.createTextDrawTemplate();
       this.createDownloadingTemplate();
+      this.createUploadingTemplate();
       this.addEvents(html);
       success(html);
     });
@@ -172,6 +185,23 @@ export default class GeometryDrawControl extends M.Control {
   createDownloadingTemplate() {
     this.downloadingTemplate = M.template.compileSync(downloadingTemplate, { jsonp: true });
     this.downloadingTemplate.querySelector('button').addEventListener('click', this.downloadLayer.bind(this));
+  }
+
+  createUploadingTemplate() {
+    const accept = '.kml, .zip, .gpx, .geojson';
+    this.uploadingTemplate = M.template.compileSync(uploadingTemplate, {
+      jsonp: true,
+      vars: { accept },
+    });
+    const inputFile = this.uploadingTemplate.querySelector('#geometrydraw-uploading>input');
+    this.loadBtn_ = this.uploadingTemplate.querySelector('#geometrydraw-uploading button');
+    this.inputName_ = this.uploadingTemplate.querySelector('#geometrydraw-uploading #uplayerName input');
+    inputFile.addEventListener('change', evt => this.changeFile(evt, inputFile.files[0]));
+    this.loadBtn_.addEventListener('click', () => {
+      this.loadLayer();
+    });
+    this.inputName_.addEventListener('input', e => this.changeName(e));
+    this.loadBtn_.setAttribute('disabled', 'disabled');
   }
 
   /**
@@ -215,6 +245,7 @@ export default class GeometryDrawControl extends M.Control {
     });
     html.querySelector('#cleanAll').addEventListener('click', this.deleteDrawnFeatures.bind(this));
     html.querySelector('#download').addEventListener('click', this.openDownloadOptions.bind(this));
+    html.querySelector('#upload').addEventListener('click', this.openUploadOptions.bind(this));
     html.querySelector('#edit').addEventListener('click', this.editBtnClick.bind(this));
   }
 
@@ -856,6 +887,21 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
+   * Opens upload template
+   * @public
+   * @function
+   * @api
+   */
+  openUploadOptions() {
+    if (this.isEditionActive) {
+      this.deactivateEdition();
+      document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
+    }
+    this.deactivateDrawing();
+    document.querySelector('.m-geometrydraw').appendChild(this.uploadingTemplate);
+  }
+
+  /**
    * Downloads draw layer as GeoJSON, kml or gml.
    * @public
    * @function
@@ -998,5 +1044,90 @@ export default class GeometryDrawControl extends M.Control {
    */
   equals(control) {
     return control instanceof GeometryDrawControl;
+  }
+
+  /* Layer upload */
+
+  changeName(ev) {
+    const evt = (ev || window.event);
+    const itemTarget = evt.target;
+    if (itemTarget.value.trim() === '') {
+      this.loadBtn_.setAttribute('disabled', 'disabled');
+    } else {
+      this.loadBtn_.removeAttribute('disabled');
+    }
+  }
+
+  changeFile(evt, file) {
+    this.file_ = file;
+    // Desactivo la escritura y vacio el nombre, además de desactivar el boton
+    this.inputName_.value = '';
+    this.inputName_.setAttribute('disabled', 'disabled');
+    this.loadBtn_.setAttribute('disabled', 'disabled');
+    if (!M.utils.isNullOrEmpty(file)) {
+      if (file.size > 20971520) {
+        M.dialog.info('El fichero seleccionado sobrepasa el máximo de 20 MB permitido');
+        this.file_ = null;
+      } else {
+        // Elimino la extensión y la pongo como nombre de capa
+        this.inputName_.value = file.name.replace(/\.[^/.]+$/, '');
+        // Activo la escritura en el input y el boton de carga
+        this.inputName_.removeAttribute('disabled');
+        this.loadBtn_.removeAttribute('disabled');
+      }
+    }
+  }
+
+  loadLayer() {
+    if (this.inputName_.value !== '') {
+      // Consigo la extensión del fichero
+      // eslint-disable-next-line no-bitwise
+      const fileExt = this.file_.name.slice((this.file_.name.lastIndexOf('.') - 1 >>> 0) + 2);
+      const fileReader = new window.FileReader();
+      fileReader.addEventListener('load', (e) => {
+        try {
+          let features = [];
+          if (fileExt === 'zip') {
+            // In case of shp group, this unites features
+            const geojsonArray = [].concat(shp.parseZip(fileReader.result));
+            geojsonArray.forEach((geojson) => {
+              const localFeatures = this.getImpl()
+                .loadGeoJSONLayer(this.map.getLayers().length, geojson);
+              if (localFeatures) {
+                features = features.concat(localFeatures);
+              }
+            });
+          } else if (fileExt === 'kml') {
+            features = this.getImpl()
+              .loadKMLLayer(this.map.getLayers().length, fileReader.result, false);
+          } else if (fileExt === 'gpx') {
+            features = this.getImpl()
+              .loadGPXLayer(this.map.getLayers().length, fileReader.result);
+          } else if (fileExt === 'geojson') {
+            features = this.getImpl()
+              .loadGeoJSONLayer(this.map.getLayers().length, fileReader.result);
+          } else {
+            M.dialog.error('Error al cargar el fichero');
+            return;
+          }
+          if (!features.length) {
+            M.dialog.info('No se han detectado geometrías en este fichero');
+          } else {
+            this.getImpl().centerFeatures(features);
+          }
+        } catch (error) {
+          M.dialog.error('Error al cargar el fichero. Compruebe que se trata del fichero correcto');
+        }
+      });
+      if (fileExt === 'zip') {
+        fileReader.readAsArrayBuffer(this.file_);
+      } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson') {
+        fileReader.readAsText(this.file_);
+      } else {
+        M.dialog.error('No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX y GeoJSON.');
+      }
+    } else {
+      this.inputName_.style.border = '2px solid #ff0000';
+    }
   }
 }
