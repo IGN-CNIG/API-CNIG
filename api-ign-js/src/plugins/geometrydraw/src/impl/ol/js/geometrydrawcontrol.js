@@ -167,6 +167,7 @@ export default class GeometryDrawControl extends M.impl.Control {
       }
 
       if (this.facadeControl.geometry === 'Point' &&
+        this.facadeControl.feature &&
         this.facadeControl.feature.getStyle().get('fill.opacity') === 0) {
         const newFont = `${this.facadeControl.fontSize}px ${this.facadeControl.fontFamily}`;
         this.facadeControl.feature.getStyle().set('label.font', newFont);

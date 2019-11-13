@@ -6,7 +6,6 @@ import GeometryDrawImplControl from 'impl/geometrydrawcontrol';
 import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
 import textDrawTemplate from 'templates/textdraw';
-import lineStyle from 'templates/linestyle';
 import downloadingTemplate from 'templates/downloading';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
@@ -31,11 +30,6 @@ export default class GeometryDrawControl extends M.Control {
 
     // facade control goes to impl as reference param
     impl.facadeControl = this;
-
-    /**
-     * Number of features drawn on current layer.
-     */
-    // this.numberOfDrawFeatures = 0;
 
     /**
      * Checks if point/line/polygon/text drawing tool is active.
@@ -113,11 +107,6 @@ export default class GeometryDrawControl extends M.Control {
     this.fontFamily = 'Verdana';
 
     /**
-     * Current feature name/description text.
-     */
-    // this.currentText = '';
-
-    /**
      * Saves drawing layer ( __ draw__) from Mapea.
      */
     this.drawLayer = undefined;
@@ -152,7 +141,6 @@ export default class GeometryDrawControl extends M.Control {
       this.createDrawingTemplate();
       this.createTextDrawTemplate();
       this.createDownloadingTemplate();
-      this.lineStyleTemplate = M.template.compileSync(lineStyle);
       this.addEvents(html);
       success(html);
     });
@@ -197,12 +185,9 @@ export default class GeometryDrawControl extends M.Control {
 
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
-    // this.currentText = this.drawingTools.querySelector('#featureName').value;
 
     this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
     this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
-    // this.drawingTools.querySelector('#featureName')
-    // .addEventListener('input', e => this.styleChange(e));
     this.drawingTools.querySelector('button').addEventListener('click', this.deleteSingleFeature.bind(this));
 
     this.drawingTools.querySelector('button').style.display = 'none';
@@ -349,16 +334,10 @@ export default class GeometryDrawControl extends M.Control {
         document.querySelector('.m-geometrydraw').appendChild(this.textDrawTemplate);
       } else {
         this.drawingTools.querySelector('button').style.display = 'none';
-
-        if (this.isLineActive) {
-          this.drawingTools.querySelector('#styleOptions').appendChild(this.lineStyleTemplate);
-        }
-
         document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       }
 
       this.addDrawInteraction();
-      // this.emphasizeSelectedFeature();
 
       if (document.querySelector('#drawingtools #featureInfo') !== null) {
         document.querySelector('#drawingtools #featureInfo').style.display = 'none';
@@ -455,7 +434,6 @@ export default class GeometryDrawControl extends M.Control {
       if (document.querySelector('#colorSelector') !== null) {
         this.currentColor = document.querySelector('#colorSelector').value;
         this.currentThickness = document.querySelector('#thicknessSelector').value;
-        // this.currentText = document.querySelector('#featureName').value;
       } else {
         this.textContent = document.querySelector('#textContent').value;
         this.fontColor = document.querySelector('#fontColor').value;
@@ -475,9 +453,6 @@ export default class GeometryDrawControl extends M.Control {
                 color: 'white',
                 width: 2,
               },
-              // label: {
-              //   text: this.currentText,
-              // },
             });
             if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
           } else {
@@ -490,9 +465,6 @@ export default class GeometryDrawControl extends M.Control {
               color: this.currentColor,
               width: this.currentThickness,
             },
-            // label: {
-            //   text: this.currentText,
-            // },
           });
           if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
           break;
@@ -506,9 +478,6 @@ export default class GeometryDrawControl extends M.Control {
               color: this.currentColor,
               width: this.currentThickness,
             },
-            // label: {
-            //   text: this.currentText,
-            // },
           });
           if (this.feature !== undefined) this.feature.setStyle(newPolygonStyle);
           break;
@@ -549,20 +518,12 @@ export default class GeometryDrawControl extends M.Control {
       } else {
         this.currentColor = this.getFeatureColor(this.feature);
         this.currentThickness = this.getFeatureThickness(this.feature);
-        // this.currentText = this.getFeatureText(this.feature);
         this.drawingTools.querySelector('#colorSelector').value = this.currentColor;
         this.drawingTools.querySelector('#thicknessSelector').value = this.currentThickness;
         document.querySelector('#drawingtools #colorSelector').value = this.currentColor;
         document.querySelector('#drawingtools #thicknessSelector').value = this.currentThickness;
-        // this.drawingTools.querySelector('#featureName').value = this.currentText;
       }
     }
-    // else {
-    //   if (featureFillOpacity === 0) {
-    //   } else {
-
-    //   }
-    // }
   }
 
   /**
@@ -1026,18 +987,6 @@ export default class GeometryDrawControl extends M.Control {
     }
     return feature.getStyle().get('stroke.color');
   }
-
-  // /**
-  //  * Gets given feature label.
-  //  * @public
-  //  * @function
-  //  * @api
-  //  * @param {*} feature - Mapea feature
-  //  */
-  // getFeatureText(feature) {
-  //   return feature.getStyle().get('label.text') || '';
-  // }
-
 
   /**
    * This function compares controls

@@ -60,7 +60,7 @@
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
-            center: [-467062.8225, 4683459.6216],
+            center: [-467062.8225, 4783459.6216],
         });
 
         const mp = new M.plugin.GeometryDraw({
