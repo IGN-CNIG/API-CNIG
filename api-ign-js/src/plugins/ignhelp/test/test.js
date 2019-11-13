@@ -10,4 +10,6 @@ const mp = new IGNHelp({
   contactEmail: 'fototeca@cnig.es',
 });
 
+// map.removeControls('panzoom');
+
 map.addPlugin(mp);

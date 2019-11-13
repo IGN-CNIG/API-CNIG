@@ -15,7 +15,7 @@ export default class IGNHelp extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options) {
+  constructor(options = {}) {
     super();
     /**
      * Facade of the map
@@ -74,5 +74,16 @@ export default class IGNHelp extends M.Plugin {
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position_}*${this.helpLink_}*${this.contactEmail_}`;
   }
 }
