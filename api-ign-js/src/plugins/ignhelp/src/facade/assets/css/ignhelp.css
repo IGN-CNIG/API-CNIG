@@ -26,9 +26,34 @@ div.m-areas>div.m-area>div.m-panel-ignhelp.opened {
 .m-areas>div.m-area>div.m-panel.m-panel-ignhelp.opened>button {
     background-color: white;
     color: #71a7d3;
-    left: calc(50vw - 290px);
     position: absolute;
     top: calc(50vh - 250px);
+}
+
+div.m-areas>div.m-area.m-top.m-right>div.m-panel.m-panel-ignhelp.opened>button {
+    left: calc(50vw - 290px);
+}
+
+div.m-areas>div.m-area.m-top.m-left>div.m-panel.m-panel-ignhelp.opened {
+    order: -71;
+}
+
+div.m-areas>div.m-area.m-left>div.m-panel.m-panel-ignhelp.opened>button {
+    right: calc(50vw - 290px);
+    top: calc(50vh - 230px);
+}
+
+div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-ignhelp.opened {
+    margin: 0;
+}
+
+div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-ignhelp.opened>button {
+    right: calc(50vh + 180px);
+    top: calc(50vw - 180px);
+}
+
+.m-right.m-bottom>.m-panel-ignhelp.collapsed {
+    right: 0;
 }
 
 /* Help content */

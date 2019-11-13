@@ -93,7 +93,7 @@ export default class Printer extends M.Plugin {
       collapsed: this.collapsed_,
       collapsible: this.collapsible_,
       className: 'm-printer',
-      collapsedButtonClass: 'printer-impresora',
+      collapsedButtonClass: 'icon-impresora',
       position: M.ui.position[this.position_],
       tooltip: 'Impresión del mapa',
     });

@@ -136,6 +136,9 @@ export default class PrinterControl extends M.Control {
       legend: 'false',
       layout: 'A4 horizontal',
     };
+
+    this.layoutOptions_ = [];
+    this.dpisOptions_ = [];
   }
 
   /**
@@ -151,7 +154,13 @@ export default class PrinterControl extends M.Control {
         callback();
       } else if (status === 'error' || status === 'cancelled') {
         callback();
-        M.dialog.error('Se ha producido un error en la impresión.');
+        if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
+          M.dialog.error('La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.');
+        } else {
+          M.dialog.error('Se ha producido un error en la impresión.');
+        }
+
+        this.queueContainer_.lastChild.remove();
       } else {
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
@@ -187,6 +196,10 @@ export default class PrinterControl extends M.Control {
           return !l.name.endsWith('jpg');
         });
 
+        this.layoutOptions_ = [].concat(capabilities.layouts.map((item) => {
+          return item.name;
+        }));
+
         capabilities.dpis = [];
         let attribute;
         // default dpi
@@ -207,6 +220,10 @@ export default class PrinterControl extends M.Control {
           const object = { value: dpi };
           capabilities.dpis.push(object);
         }
+
+        this.dpisOptions_ = [].concat(capabilities.dpis.map((item) => {
+          return item.value;
+        }));
 
         // Fix to show only pdf, png & jpeg formats
         capabilities.format = [{ name: 'pdf' }, { name: 'png' }, { name: 'jpg' }];
@@ -288,8 +305,8 @@ export default class PrinterControl extends M.Control {
       // reset values
       this.inputTitle_.value = '';
       this.areaDescription_.value = '';
-      selectLayout.value = this.options_.layout;
-      selectDpi.value = this.options_.dpi;
+      selectLayout.value = this.layoutOptions_[0];
+      selectDpi.value = this.dpisOptions_[0];
       selectFormat.value = this.options_.format;
       checkboxForceScale.checked = this.options_.forceScale;
 
@@ -303,16 +320,13 @@ export default class PrinterControl extends M.Control {
       selectDpi.dispatchEvent(changeEvent);
       selectFormat.dispatchEvent(changeEvent);
       checkboxForceScale.dispatchEvent(clickEvent);
-
       // clean queue
+
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
-        // unlisten events
         child.removeEventListener('click', this.downloadPrint);
       }, this]);
 
-      while (this.queueContainer_.fistChild) {
-        this.queueContainer_(this.queueContainer_.firsChild);
-      }
+      this.queueContainer_.innerHTML = '';
     });
 
     this.queueContainer_ = this.element_.querySelector('.queue > ul.queue-container');
