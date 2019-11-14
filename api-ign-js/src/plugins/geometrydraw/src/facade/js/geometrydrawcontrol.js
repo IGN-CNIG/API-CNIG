@@ -34,102 +34,157 @@ export default class GeometryDrawControl extends M.Control {
     impl.facadeControl = this;
 
     /**
-     * Checks if point/line/polygon/text drawing tool is active.
+     * Checks if point drawing tool is active.
+     * @private
+     * @type {Boolean}
      */
     this.isPointActive = false;
+
+    /**
+     * Checks if line drawing tool is active.
+     * @private
+     * @type {Boolean}
+     */
     this.isLineActive = false;
+
+    /**
+     * Checks if polygon drawing tool is active.
+     * @private
+     * @type {Boolean}
+     */
     this.isPolygonActive = false;
+
+    /**
+     * Checks if text drawing tool is active.
+     * @private
+     * @type {Boolean}
+     */
     this.isTextActive = false;
 
     /**
      * Checks if edition tool is active.
+     * @private
+     * @type {Boolean}
      */
     this.isEditionActive = false;
 
     /**
      * Selected Mapea feature
+     * @private
+     * @type {M.feature}
      */
     this.feature = undefined;
 
     /**
      * Feature that is drawn on selection layer around this.feature
      * to emphasize it.
+     * @private
      * @type {M.feature}
      */
     this.emphasis = undefined;
 
     /**
      * Current geometry type selected for drawing.
+     * @private
+     * @type {String}
      */
     this.geometry = undefined; // Point, LineString, Polygon
 
     /**
      * Template that expands drawing tools with color and thickness options.
+     * @private
+     * @type {String}
      */
     this.drawingTools = undefined;
 
     /**
      * Template with downloading format options.
+     * @private
+     * @type {String}
      */
     this.downloadingTemplate = undefined;
 
     /**
      * Template with uploading format options.
+     * @private
+     * @type {String}
      */
     this.uploadingTemplate = undefined;
 
     /**
      * Template with text feature drawing tools.
+     * @private
+     * @type {String}
      */
     this.textDrawTemplate = undefined;
 
     /**
      * Current color for drawing features.
+     * @private
+     * @type {String}
      */
     this.currentColor = undefined;
 
     /**
      * Current line thickness (or circle radius) for drawing features.
+     * @private
+     * @type {Number} // FIXME: number or string?
      */
     this.currentThickness = undefined;
 
     /**
      * Current feature name / description text.
+     * @private
+     * @type {String}
      */
     this.textContent = 'Texto';
 
     /**
      * Current text feature font color.
+     * @private
+     * @type {String}
      */
     this.fontColor = '#F00';
 
     /**
      * Current text feature font size.
+     * @private
+     * @type {String}
      */
     this.fontSize = '12';
 
     /**
      * Current text feature font family.
+     * @private
+     * @type {String}
      */
     this.fontFamily = 'Verdana';
 
     /**
      * Saves drawing layer ( __ draw__) from Mapea.
+     * @private
+     * @type {*} - Mapea layer
      */
     this.drawLayer = undefined;
 
     /**
      * OL vector source for draw interactions.
+     * @private
+     * @type {*} - OpenLayers vector source
      */
     this.vectorSource = this.getImpl().newVectorSource(false);
 
     /**
-     * File to load.
+     * File to upload.
+     * @private
+     * @type {*}
      */
     this.file_ = null;
 
     /**
      * Mapea layer where a square will be drawn around selected feature.
+     * @private
+     * @type {*}
      */
     this.selectionLayer = new M.layer.Vector({
       name: 'selectLayer',
@@ -159,6 +214,13 @@ export default class GeometryDrawControl extends M.Control {
     });
   }
 
+  /**
+   * Creates text drawing options template.
+   *
+   * @public
+   * @function
+   * @api
+   */
   createTextDrawTemplate() {
     this.textDrawTemplate = M.template.compileSync(textDrawTemplate, { jsonp: true });
 
@@ -177,7 +239,7 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Creates template with download options.
+   * Creates download options template.
    * @public
    * @function
    * @api
@@ -187,6 +249,13 @@ export default class GeometryDrawControl extends M.Control {
     this.downloadingTemplate.querySelector('button').addEventListener('click', this.downloadLayer.bind(this));
   }
 
+  /**
+   * Creates upload options template.
+   *
+   * @public
+   * @function
+   * @api
+   */
   createUploadingTemplate() {
     const accept = '.kml, .zip, .gpx, .geojson';
     this.uploadingTemplate = M.template.compileSync(uploadingTemplate, {
@@ -203,7 +272,7 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Creates template with drawing options.
+   * Creates drawing options template.
    * @public
    * @function
    * @api
@@ -288,13 +357,9 @@ export default class GeometryDrawControl extends M.Control {
 
           if (document.getElementById('drawingtools') !== null) {
             document.getElementById('drawingtools').remove();
-          }
-
-          if (document.getElementById('textdrawtools') !== null) {
+          } else if (document.getElementById('textdrawtools') !== null) {
             document.getElementById('textdrawtools').remove();
-          }
-
-          if (document.getElementById('geometrydraw-uploading') !== null) {
+          } else if (document.getElementById('geometrydraw-uploading') !== null) {
             document.getElementById('geometrydraw-uploading').remove();
           }
         }
@@ -311,13 +376,9 @@ export default class GeometryDrawControl extends M.Control {
 
           if (document.getElementById('drawingtools') !== null) {
             document.getElementById('drawingtools').remove();
-          }
-
-          if (document.getElementById('textdrawtools') !== null) {
+          } else if (document.getElementById('textdrawtools') !== null) {
             document.getElementById('textdrawtools').remove();
-          }
-
-          if (document.getElementById('geometrydraw-uploading') !== null) {
+          } else if (document.getElementById('geometrydraw-uploading') !== null) {
             document.getElementById('geometrydraw-uploading').remove();
           }
         }
@@ -333,13 +394,9 @@ export default class GeometryDrawControl extends M.Control {
           document.getElementById('polygondrawing').classList.add('activeTool');
           if (document.getElementById('drawingtools') !== null) {
             document.getElementById('drawingtools').remove();
-          }
-
-          if (document.getElementById('textdrawtools') !== null) {
+          } else if (document.getElementById('textdrawtools') !== null) {
             document.getElementById('textdrawtools').remove();
-          }
-
-          if (document.getElementById('geometrydraw-uploading') !== null) {
+          } else if (document.getElementById('geometrydraw-uploading') !== null) {
             document.getElementById('geometrydraw-uploading').remove();
           }
         }
@@ -355,13 +412,9 @@ export default class GeometryDrawControl extends M.Control {
           document.getElementById('textdrawing').classList.add('activeTool');
           if (document.getElementById('drawingtools') !== null) {
             document.getElementById('drawingtools').remove();
-          }
-
-          if (document.getElementById('textdrawtools') !== null) {
+          } else if (document.getElementById('textdrawtools') !== null) {
             document.getElementById('textdrawtools').remove();
-          }
-
-          if (document.getElementById('geometrydraw-uploading') !== null) {
+          } else if (document.getElementById('geometrydraw-uploading') !== null) {
             document.getElementById('geometrydraw-uploading').remove();
           }
         }

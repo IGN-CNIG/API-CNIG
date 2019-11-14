@@ -176,6 +176,23 @@ div#geometrydraw-uploading>label {
     width: 127px;
 }
 
+/* Firefox fix */
+
+@-moz-document url-prefix() {
+
+    #drawingtools #styleOptions input#colorSelector,
+    #textdrawtools input#fontColor {
+        height: 25px;
+        padding: 0;
+        width: 45px;
+    }
+
+    #thicknessSelector {
+        /* -moz-appearance: textfield; */
+        width: 30px;
+    }
+}
+
 /* Toolbar icons font */
 
 @font-face {
