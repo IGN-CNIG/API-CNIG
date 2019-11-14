@@ -543,7 +543,10 @@ export default class GeometryDrawControl extends M.Control {
    */
   updateInputValues() {
     if (this.feature) {
-      const featureFillOpacity = this.feature.getStyle().get('fill.opacity');
+      let featureFillOpacity;
+      if (this.feature.getStyle() !== null) {
+        featureFillOpacity = this.feature.getStyle().get('fill.opacity');
+      }
       this.geometry = this.feature.getGeometry().type;
 
       if (featureFillOpacity === 0) {
@@ -918,6 +921,25 @@ export default class GeometryDrawControl extends M.Control {
     document.querySelector('.m-geometrydraw').appendChild(this.uploadingTemplate);
   }
 
+  polygonFix(geojsonLayer) {
+    const newGeoJson = geojsonLayer;
+    const features = geojsonLayer.features;
+    features.forEach((feature, featIdx) => {
+      if (feature.geometry.type === 'Polygon') {
+        const coordinates = feature.geometry.coordinates;
+        coordinates.forEach((polygon, polyIdx) => {
+          polygon.forEach((pointCoords, pointIdx) => {
+            if (pointCoords.length === 1) {
+              features[featIdx].geometry.coordinates[polyIdx][pointIdx] = pointCoords[0];
+            }
+          });
+        });
+      }
+    });
+    newGeoJson.features = features;
+    return newGeoJson;
+  }
+
   /**
    * Downloads draw layer as GeoJSON, kml or gml.
    * @public
@@ -926,8 +948,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   downloadLayer() {
     const downloadFormat = this.downloadingTemplate.querySelector('select').value;
-    const olFeatures = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
-    const geojsonLayer = this.drawLayer.toGeoJSON();
+    const geojsonLayer = this.polygonFix(this.drawLayer.toGeoJSON());
     let arrayContent;
     let mimeType;
     let extensionFormat;
@@ -944,6 +965,7 @@ export default class GeometryDrawControl extends M.Control {
         extensionFormat = 'kml';
         break;
       case 'gml':
+        const olFeatures = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
         arrayContent = this.getImpl().getGML({
           olFeatures,
           epsg: 'EPSG:3857',
