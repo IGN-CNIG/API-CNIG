@@ -360,7 +360,13 @@ export default class ShareMapControl extends M.Control {
    */
   getWMTS(layer) {
     const { code } = this.map_.getProjection();
-    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${layer.getLegend()}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+    let legend = layer.legend;
+    try {
+      legend = layer.getLegend();
+    } catch (err) {
+      legend = layer.legend;
+    }
+    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${legend}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
 
   /**
