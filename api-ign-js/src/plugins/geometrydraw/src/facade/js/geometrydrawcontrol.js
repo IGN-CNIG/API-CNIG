@@ -464,11 +464,8 @@ export default class GeometryDrawControl extends M.Control {
 
       this.map.getMapImpl().removeInteraction(this.draw);
       this.selectionLayer.removeFeatures([this.emphasis]);
-      if ((this.feature !== undefined) && this.feature.getStyle().get('fill.opacity') === 0) {
-        const fontPropsArray = this.feature.getStyle().get('label.font').split(' ');
-        fontPropsArray.shift();
-        const noBoldFont = fontPropsArray.join(' ');
-        this.feature.getStyle().set('label.font', noBoldFont);
+      if ((this.feature !== undefined) && this.feature.getStyle().get('label') !== undefined) {
+        this.feature.getStyle().set('fill.opacity', 0);
       }
 
       this.feature = undefined;
@@ -596,13 +593,13 @@ export default class GeometryDrawControl extends M.Control {
    */
   updateInputValues() {
     if (this.feature) {
-      let featureFillOpacity;
+      let featureIsText;
       if (this.feature.getStyle() !== null) {
-        featureFillOpacity = this.feature.getStyle().get('fill.opacity');
+        featureIsText = this.feature.getStyle().get('label') !== undefined;
       }
       this.geometry = this.feature.getGeometry().type;
 
-      if (featureFillOpacity === 0) {
+      if (featureIsText) {
         const fontProps = this.feature.getStyle().get('label.font').split(' ');
         this.fontColor = this.feature.getStyle().get('label.color');
         this.textContent = this.feature.getStyle().get('label.text');
@@ -713,10 +710,10 @@ export default class GeometryDrawControl extends M.Control {
     }
 
     this.feature.setStyle(new M.style.Point({
-      radius: 0,
+      radius: 3,
       fill: {
-        color: 'black',
-        opacity: 0,
+        color: 'red',
+        opacity: 1,
       },
       stroke: {
         color: 'transparent',
@@ -747,50 +744,37 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Defines function to be executed on click on draw interaction.
-   * Creates feature with drawing and adds it to map.
+   * Sets style for a point, line or polygon feature
    * @public
    * @function
    * @api
+   * @param {*} feature
+   * @param {*} geometryType - Point / LineString / Polygon
    */
-  addDrawEvent() {
-    this.draw.on('drawend', (event) => {
-      const lastFeature = this.feature;
-      this.feature = event.feature;
-      this.feature = M.impl.Feature.olFeature2Facade(this.feature);
-      if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
-
-      if (this.geometry === 'Point') {
-        if (this.isTextActive) {
-          this.updateGlobalsWithInput();
-          if (lastFeature !== undefined) {
-            this.textContent = 'Texto';
-            // this.setTextStyle(true);
-          }
-          // else {
-          // }
-          this.setTextStyle(false);
-        } else {
-          this.feature.setStyle(new M.style.Point({
-            radius: this.currentThickness,
-            fill: {
-              color: this.currentColor,
-            },
-            stroke: {
-              color: 'white',
-              width: 2,
-            },
-          }));
-        }
-      } else if (this.geometry === 'LineString') {
-        this.feature.setStyle(new M.style.Line({
+  setFeatureStyle(feature, geometryType) {
+    switch (geometryType) {
+      case 'Point':
+        feature.setStyle(new M.style.Point({
+          radius: this.currentThickness,
+          fill: {
+            color: this.currentColor,
+          },
+          stroke: {
+            color: 'white',
+            width: 2,
+          },
+        }));
+        break;
+      case 'LineString':
+        feature.setStyle(new M.style.Line({
           stroke: {
             color: this.currentColor,
             width: this.currentThickness,
           },
         }));
-      } else {
-        this.feature.setStyle(new M.style.Polygon({
+        break;
+      case 'Polygon':
+        feature.setStyle(new M.style.Polygon({
           fill: {
             color: this.currentColor,
             opacity: 0.2,
@@ -800,6 +784,33 @@ export default class GeometryDrawControl extends M.Control {
             width: this.currentThickness,
           },
         }));
+        break;
+      default:
+        console.log('Geometría no reconocida.');
+    }
+  }
+
+  /**
+   * Defines function to be executed on click on draw interaction.
+   * Creates feature with drawing and adds it to map.
+   * @public
+   * @function
+   * @api
+   */
+  addDrawEvent() {
+    this.draw.on('drawend', (event) => {
+      const lastFeature = this.feature;
+      this.hideTextPoint();
+      this.feature = event.feature;
+      this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+      if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
+
+      if (this.geometry === 'Point' && this.isTextActive) {
+        this.updateGlobalsWithInput();
+        if (lastFeature !== undefined) this.textContent = 'Texto';
+        this.setTextStyle(false);
+      } else {
+        this.setFeatureStyle(this.feature, this.geometry);
       }
 
       if (this.isTextActive) {
@@ -813,6 +824,76 @@ export default class GeometryDrawControl extends M.Control {
       this.showFeatureInfo();
       this.updateInputValues();
     });
+  }
+
+  deleteFeatureAttributes(features) {
+    const newFeatures = features;
+    newFeatures.forEach((feature) => {
+      const thisFeature = feature;
+      const properties = feature.getImpl().getOLFeature().getProperties();
+      const keys = Object.keys(properties);
+      keys.forEach((key) => {
+        if (key !== 'geometry') thisFeature.getImpl().getOLFeature().unset(key);
+      });
+    });
+    return newFeatures;
+  }
+
+  /**
+   * This function turns multigeometries into several simple geometries
+   * @public
+   * @function
+   * @param json - geojson
+   * @api
+   */
+  turnMultiGeometriesSimple(json) {
+    const newJson = {
+      type: json.type,
+      // totalFeatures: json.totalFeatures,
+      features: [],
+    };
+    json.features.forEach((feature) => {
+      const newFeature = {
+        type: feature.type,
+        id: feature.id,
+        geometry: {
+          type: '',
+          coordinates: [],
+        },
+        // geometry_name: feature.geometry_name,
+        properties: feature.properties,
+      };
+
+      switch (feature.geometry.type) {
+        case 'MultiPoint':
+          newFeature.geometry.type = 'Point';
+          break;
+        case 'MultiLineString':
+          newFeature.geometry.type = 'LineString';
+          break;
+        case 'MultiPolygon':
+          newFeature.geometry.type = 'Polygon';
+          break;
+        default:
+          newFeature.geometry.type = feature.geometry.type;
+      }
+
+      if (feature.geometry.type === 'MultiPoint' ||
+        feature.geometry.type === 'MultiLineString' ||
+        feature.geometry.type === 'MultiPolygon') {
+        feature.geometry.coordinates.forEach((multiElement) => {
+          multiElement.forEach((element) => {
+            newFeature.geometry.coordinates[0] = element;
+            newJson.features.push(newFeature);
+          });
+        });
+      } else {
+        newFeature.geometry.coordinates = feature.geometry.coordinates;
+        newJson.features.push(newFeature);
+      }
+    });
+
+    return newJson;
   }
 
   /**
@@ -874,6 +955,8 @@ export default class GeometryDrawControl extends M.Control {
    * Draws square around feature and adds it to selection layer.
    * For points:
    *    If feature doesn't have style, sets new style.
+   * For text:
+   *    Colours red text feature point. TODO:
    * @public
    * @function
    * @api
@@ -885,6 +968,7 @@ export default class GeometryDrawControl extends M.Control {
     if (this.feature) {
       const isTextDrawActive = document.querySelector('#textdrawtools') !== null;
 
+      // if point vs text vs else
       if ((this.geometry === 'Point' || this.geometry === 'MultiPoint') && !isTextDrawActive) {
         // eslint-disable-next-line no-underscore-dangle
         const thisOLfeat = this.feature.getImpl().olFeature_;
@@ -900,10 +984,9 @@ export default class GeometryDrawControl extends M.Control {
         }));
       } else if ((this.geometry === 'Point' || this.geometry === 'MultiPoint') && isTextDrawActive) {
         if (this.feature.getStyle() === null) this.setTextStyle(false);
-        this.cleanBoldText();
-        // selected text is bold
-        const newFont = `bold ${this.fontSize}px ${this.fontFamily}`;
-        this.feature.getStyle().set('label.font', newFont);
+        this.feature.getStyle().set('fill.opacity', 1);
+        // const newFont = `bold ${this.fontSize}px ${this.fontFamily}`;
+        // this.feature.getStyle().set('label.font', newFont);
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.feature.getImpl().olFeature_.getGeometry().getExtent();
@@ -920,24 +1003,17 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Deletes 'bold' property from all text features.
+   * Hides point associated to text feature.
    * @public
    * @function
    * @api
    */
-  cleanBoldText() {
-    const textFeatures = this.drawLayer.getFeatures();
-    textFeatures.forEach((f, idx) => {
-      let font = f.getStyle().get('label.font');
-      if (font !== undefined) {
-        const fontPieces = font.split(' ');
-        if (fontPieces[0] === 'bold') {
-          fontPieces.shift();
-          font = fontPieces.join(' ');
-          this.drawLayer.getFeatures()[idx].getStyle().set('label.font', font);
-        }
-      }
-    });
+  hideTextPoint() {
+    if (this.geometry === 'Point' &&
+      this.feature &&
+      this.feature.getStyle().get('label') !== undefined) {
+      this.feature.getStyle().set('fill.opacity', 0);
+    }
   }
 
   /**
@@ -974,6 +1050,13 @@ export default class GeometryDrawControl extends M.Control {
     document.querySelector('.m-geometrydraw').appendChild(this.uploadingTemplate);
   }
 
+
+  /**
+   * Fixes .toGeoJSON() bug
+   * @public
+   * @function
+   * @api
+   */
   polygonFix(geojsonLayer) {
     const newGeoJson = geojsonLayer;
     const features = geojsonLayer.features;
@@ -1156,7 +1239,6 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   loadLayer() {
-    // Consigo la extensión del fichero
     // eslint-disable-next-line no-bitwise
     const fileExt = this.file_.name.slice((this.file_.name.lastIndexOf('.') - 1 >>> 0) + 2);
     const fileReader = new window.FileReader();
@@ -1183,16 +1265,16 @@ export default class GeometryDrawControl extends M.Control {
           features = this.getImpl()
             .loadGeoJSONLayer(this.map.getLayers().length, fileReader.result);
         } else {
-          M.dialog.error('Error al cargar el fichero');
+          M.dialog.error('Error al cargar el fichero.');
           return;
         }
         if (!features.length) {
-          M.dialog.info('No se han detectado geometrías en este fichero');
+          M.dialog.info('No se han detectado geometrías en este fichero.');
         } else {
           this.getImpl().centerFeatures(features);
         }
       } catch (error) {
-        M.dialog.error('Error al cargar el fichero. Compruebe que se trata del fichero correcto');
+        M.dialog.error('Error al cargar el fichero. Compruebe que se trata del fichero correcto.');
       }
     });
     if (fileExt === 'zip') {

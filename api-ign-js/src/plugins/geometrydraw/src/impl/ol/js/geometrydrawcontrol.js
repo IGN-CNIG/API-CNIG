@@ -92,6 +92,8 @@ export default class GeometryDrawControl extends M.impl.Control {
     const facadeControl = this.facadeControl;
     const drawingLayer = facadeControl.drawLayer.getImpl().getOL3Layer();
 
+    this.facadeControl.hideTextPoint();
+
     if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
       document.querySelector('.m-geometrydraw').removeChild(facadeControl.downloadingTemplate);
     }
@@ -103,6 +105,7 @@ export default class GeometryDrawControl extends M.impl.Control {
       });
 
       this.select.on('select', (e) => {
+        // TODO: opacity 0 on this.feature
         if (e.target.getFeatures().getArray().length > 0) {
           const MFeatures = facadeControl.drawLayer.getFeatures();
           const olFeature = e.target.getFeatures().getArray()[0];
@@ -118,12 +121,11 @@ export default class GeometryDrawControl extends M.impl.Control {
             document.querySelector('.m-geometrydraw').removeChild(facadeControl.textDrawTemplate);
           }
 
+          // if selected feature is a text feature
           if (facadeControl.geometry === 'Point' &&
-            facadeControl.feature.getStyle().get('fill.opacity') === 0) {
+            facadeControl.feature.getStyle().get('label') !== undefined) {
             document.querySelector('.m-geometrydraw').appendChild(facadeControl.textDrawTemplate);
             document.querySelector('.m-geometrydraw>#textdrawtools button').style.display = 'block';
-            // document.querySelector('.m-geometrydraw>#textdrawtools>button')
-            // .style.display = 'block';
           } else {
             document.querySelector('.m-geometrydraw').appendChild(facadeControl.drawingTools);
             document.querySelector('.m-geometrydraw>#drawingtools button').style.display = 'block';
@@ -139,9 +141,6 @@ export default class GeometryDrawControl extends M.impl.Control {
 
       this.edit = new ol.interaction.Modify({ features: this.select.getFeatures() });
       this.edit.on('modifyend', (evt) => {
-        // eslint-disable-next-line no-underscore-dangle
-        // facadeControl.feature = M.impl.Feature
-        // .olFeature2Facade(evt.target.features_.getArray()[0]);
         facadeControl.emphasizeSelectedFeature();
         facadeControl.showFeatureInfo();
       });
@@ -166,13 +165,7 @@ export default class GeometryDrawControl extends M.impl.Control {
         document.querySelector('.m-geometrydraw').removeChild(this.facadeControl.textDrawTemplate);
       }
 
-      if (this.facadeControl.geometry === 'Point' &&
-        this.facadeControl.feature &&
-        this.facadeControl.feature.getStyle().get('fill.opacity') === 0) {
-        const newFont = `${this.facadeControl.fontSize}px ${this.facadeControl.fontFamily}`;
-        this.facadeControl.feature.getStyle().set('label.font', newFont);
-      }
-
+      this.facadeControl.hideTextPoint();
       this.facadeControl.feature = undefined;
       this.facadeControl.geometry = undefined;
       this.facadeControl.emphasizeSelectedFeature();
@@ -232,74 +225,62 @@ export default class GeometryDrawControl extends M.impl.Control {
   }
 
   loadGeoJSONLayer(layerName, source2) {
+    // FIXME: delete layer attributes before loading
     let features = new ol.format.GeoJSON()
       .readFeatures(source2, { featureProjection: this.facadeMap_.getProjection().code });
-    features.forEach((feature) => {
-      const style1 = new ol.style.Style({
-        stroke: new ol.style.Stroke({ color: '#0000FF', width: 8 }),
-        fill: new ol.style.Fill({ color: 'rgba(0, 0, 255, 0.2)' }),
-      });
-      const style2 = new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: 6,
-          stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 2,
-          }),
-          fill: new ol.style.Fill({
-            color: '#7CFC00',
-          }),
-        }),
-      });
 
-      if (feature.getGeometry().getType() !== 'Point' && feature.getGeometry().getType() !== 'MultiPoint') {
-        feature.setStyle(style1);
-      } else {
-        feature.setStyle(style2);
-      }
+    // FIXME: set style to features
+
+    features.map((feature) => {
+      return M.impl.Feature.olFeature2Facade(feature);
     });
-    features = this.convertToMFeature_(features);
+    features = this.facadeControl.deleteFeatureAttributes(features);
     this.facadeControl.drawLayer.addFeatures(features);
-    // this.createLayer_(layerName, features);
     return features;
   }
 
   loadKMLLayer(layerName, source, extractStyles) {
     let features = new ol.format.KML({ extractStyles })
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
-    features.forEach((feature) => {
-      const style1 = new ol.style.Style({
-        stroke: new ol.style.Stroke({ color: '#0000FF', width: 8 }),
-        fill: new ol.style.Fill({ color: 'rgba(0, 0, 255, 0.2)' }),
-      });
-      const style2 = new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: 6,
-          stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 2,
-          }),
-          fill: new ol.style.Fill({
-            color: '#7CFC00',
-          }),
-        }),
-      });
 
-      if (feature.getGeometry().getType() !== 'Point' && feature.getGeometry().getType() !== 'MultiPoint') {
-        feature.setStyle(style1);
-      } else {
-        feature.setStyle(style2);
-      }
+    const simpleFeatures = [];
+
+    features.map((feature) => {
+      return M.impl.Feature.olFeature2Facade(feature);
     });
-    features = this.convertToMFeature_(features);
-    this.facadeControl.drawLayer.addFeatures(features);
-    // this.createLayer_(layerName, features);
-    return features;
+
+    features = this.facadeControl.deleteFeatureAttributes(features);
+    // TODO: Turn multigeometries into simple geometries
+    const geojsonLayer = {
+      type: 'FeatureCollection',
+      features: [],
+    };
+    // const newGeojsonLayer = this.facadeControl.turnMultiGeometriesSimple(geojsonLayer);
+    features.forEach((feature) => {
+      geojsonLayer.features.push(feature.getGeoJSON());
+    });
+
+    const simpleGeojsonLayer = this.facadeControl.turnMultiGeometriesSimple(geojsonLayer);
+
+    simpleGeojsonLayer.features.forEach((jsonFeature) => {
+      const f = new M.Feature(`myFeature${simpleGeojsonLayer.features.indexOf(jsonFeature)}`);
+      simpleFeatures.push(f);
+    });
+
+    simpleFeatures.forEach((feature) => {
+      this.facadeControl.setFeatureStyle(feature, feature.getGeometry().type);
+    });
+
+    this.facadeControl.drawLayer.addFeatures(simpleFeatures);
+    return simpleFeatures;
   }
 
   loadGPXLayer(layerName, source) {
+    // FIXME: delete layer attributes before loading
     let features = new ol.format.GPX()
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
+    // FIXME: add default style to features
+
     features.forEach((feature) => {
       const style1 = new ol.style.Style({
         stroke: new ol.style.Stroke({ color: '#0000FF', width: 8 }),
@@ -324,20 +305,15 @@ export default class GeometryDrawControl extends M.impl.Control {
         feature.setStyle(style2);
       }
     });
-    features = this.convertToMFeature_(features);
+
+    features.map((feature) => {
+      return M.impl.Feature.olFeature2Facade(feature);
+    });
+
+    features = this.facadeControl.deleteFeatureAttributes(features);
     this.facadeControl.drawLayer.addFeatures(features);
-    // this.createLayer_(layerName, features);
     return features;
   }
-
-  // createLayer_(layerName, features) {
-  //   const layer = new M.layer.Vector({
-  //     name: layerName,
-  //   }, { displayInLayerSwitcher: true });
-  //   layer.addFeatures(features);
-  //   this.facadeMap_.addLayers(layer);
-  //   layer.getImpl().getOL3Layer().set('vendor.mapaalacarta.selectable', true);
-  // }
 
   centerFeatures(features) {
     if (!M.utils.isNullOrEmpty(features)) {
@@ -349,20 +325,21 @@ export default class GeometryDrawControl extends M.impl.Control {
     }
   }
 
-  convertToMFeature_(features) {
-    if (features instanceof Array) {
-      return features.map((olFeature) => {
-        const feature = new M.Feature(olFeature.getId(), {
-          geometry: {
-            coordinates: olFeature.getGeometry().getCoordinates(),
-            type: olFeature.getGeometry().getType(),
-          },
-          properties: olFeature.getProperties(),
-        });
-        feature.getImpl().getOLFeature().setStyle(olFeature.getStyle());
-        return feature;
-      });
-    }
-    return false;
-  }
+  // FIXME: To delete if layer upload is working
+  // convertToMFeature_(features) {
+  //   if (features instanceof Array) {
+  //     return features.map((olFeature) => {
+  //       const feature = new M.Feature(olFeature.getId(), {
+  //         geometry: {
+  //           coordinates: olFeature.getGeometry().getCoordinates(),
+  //           type: olFeature.getGeometry().getType(),
+  //         },
+  //         properties: olFeature.getProperties(),
+  //       });
+  //       feature.getImpl().getOLFeature().setStyle(olFeature.getStyle());
+  //       return feature;
+  //     });
+  //   }
+  //   return false;
+  // }
 }
