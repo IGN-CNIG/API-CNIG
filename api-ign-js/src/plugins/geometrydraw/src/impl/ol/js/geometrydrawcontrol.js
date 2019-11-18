@@ -79,8 +79,6 @@ export default class GeometryDrawControl extends M.impl.Control {
     layer.getImpl().getOL3Layer().setSource(source);
   }
 
-  /* SELECTION METHODS */
-
   /**
    * Activates selection mode.
    * @public
@@ -105,7 +103,6 @@ export default class GeometryDrawControl extends M.impl.Control {
       });
 
       this.select.on('select', (e) => {
-        // TODO: opacity 0 on this.feature
         if (e.target.getFeatures().getArray().length > 0) {
           const MFeatures = facadeControl.drawLayer.getFeatures();
           const olFeature = e.target.getFeatures().getArray()[0];
@@ -224,93 +221,79 @@ export default class GeometryDrawControl extends M.impl.Control {
     return olFeature.getGeometry().getArea();
   }
 
-  loadGeoJSONLayer(layerName, source2) {
-    // FIXME: delete layer attributes before loading
+  /**
+   * Loads GeoJSON layer
+   * @public
+   * @function
+   * @param {*} source2 -
+   */
+  loadGeoJSONLayer(source2) {
     let features = new ol.format.GeoJSON()
       .readFeatures(source2, { featureProjection: this.facadeMap_.getProjection().code });
 
-    // FIXME: set style to features
-
-    features.map((feature) => {
+    features = features.map((feature) => {
       return M.impl.Feature.olFeature2Facade(feature);
     });
+
     features = this.facadeControl.deleteFeatureAttributes(features);
+
+    for (let i = 0; i < features.length; i += 1) {
+      this.facadeControl.setFeatureStyle(features[i], features[i].getGeometry().type);
+    }
+
     this.facadeControl.drawLayer.addFeatures(features);
     return features;
   }
 
-  loadKMLLayer(layerName, source, extractStyles) {
+  /**
+   * Loads KML layer
+   * @public
+   * @function
+   * @api
+   * @param {*} source -
+   * @param {*} extractStyles -
+   */
+  loadKMLLayer(source, extractStyles) {
     let features = new ol.format.KML({ extractStyles })
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
 
-    const simpleFeatures = [];
-
-    features.map((feature) => {
+    features = features.map((feature) => {
       return M.impl.Feature.olFeature2Facade(feature);
     });
 
+    // Avoids future conflicts if different layers are loaded
     features = this.facadeControl.deleteFeatureAttributes(features);
-    // TODO: Turn multigeometries into simple geometries
-    const geojsonLayer = {
-      type: 'FeatureCollection',
-      features: [],
-    };
-    // const newGeojsonLayer = this.facadeControl.turnMultiGeometriesSimple(geojsonLayer);
-    features.forEach((feature) => {
-      geojsonLayer.features.push(feature.getGeoJSON());
-    });
 
-    const simpleGeojsonLayer = this.facadeControl.turnMultiGeometriesSimple(geojsonLayer);
+    // Sets features style
+    for (let i = 0; i < features.length; i += 1) {
+      this.facadeControl.setFeatureStyle(features[i], features[i].getGeometry().type);
+    }
 
-    simpleGeojsonLayer.features.forEach((jsonFeature) => {
-      const f = new M.Feature(`myFeature${simpleGeojsonLayer.features.indexOf(jsonFeature)}`);
-      simpleFeatures.push(f);
-    });
-
-    simpleFeatures.forEach((feature) => {
-      this.facadeControl.setFeatureStyle(feature, feature.getGeometry().type);
-    });
-
-    this.facadeControl.drawLayer.addFeatures(simpleFeatures);
-    return simpleFeatures;
+    this.facadeControl.drawLayer.addFeatures(features);
+    return features;
   }
 
-  loadGPXLayer(layerName, source) {
-    // FIXME: delete layer attributes before loading
+  /**
+   * Loads GPX layer.
+   * @public
+   * @function
+   * @api
+   * @param {*} source -
+   */
+  loadGPXLayer(source) {
     let features = new ol.format.GPX()
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
-    // FIXME: add default style to features
 
-    features.forEach((feature) => {
-      const style1 = new ol.style.Style({
-        stroke: new ol.style.Stroke({ color: '#0000FF', width: 8 }),
-        fill: new ol.style.Fill({ color: 'rgba(0, 0, 255, 0.2)' }),
-      });
-      const style2 = new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: 24,
-          stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 2,
-          }),
-          fill: new ol.style.Fill({
-            color: '#7CFC00',
-          }),
-        }),
-      });
-
-      if (feature.getGeometry().getType() !== 'Point' && feature.getGeometry().getType() !== 'MultiPoint') {
-        feature.setStyle(style1);
-      } else {
-        feature.setStyle(style2);
-      }
-    });
-
-    features.map((feature) => {
+    features = features.map((feature) => {
       return M.impl.Feature.olFeature2Facade(feature);
     });
 
     features = this.facadeControl.deleteFeatureAttributes(features);
+
+    for (let i = 0; i < features.length; i += 1) {
+      this.facadeControl.setFeatureStyle(features[i], features[i].getGeometry().type);
+    }
+
     this.facadeControl.drawLayer.addFeatures(features);
     return features;
   }
@@ -318,28 +301,11 @@ export default class GeometryDrawControl extends M.impl.Control {
   centerFeatures(features) {
     if (!M.utils.isNullOrEmpty(features)) {
       const extent = M.impl.utils.getFeaturesExtent(features);
+      // FIXME: change fit (OL) for setBbox (Mapea)
       this.facadeMap_.getMapImpl().getView().fit(extent, {
         duration: 500,
         minResolution: 1,
       });
     }
   }
-
-  // FIXME: To delete if layer upload is working
-  // convertToMFeature_(features) {
-  //   if (features instanceof Array) {
-  //     return features.map((olFeature) => {
-  //       const feature = new M.Feature(olFeature.getId(), {
-  //         geometry: {
-  //           coordinates: olFeature.getGeometry().getCoordinates(),
-  //           type: olFeature.getGeometry().getType(),
-  //         },
-  //         properties: olFeature.getProperties(),
-  //       });
-  //       feature.getImpl().getOLFeature().setStyle(olFeature.getStyle());
-  //       return feature;
-  //     });
-  //   }
-  //   return false;
-  // }
 }

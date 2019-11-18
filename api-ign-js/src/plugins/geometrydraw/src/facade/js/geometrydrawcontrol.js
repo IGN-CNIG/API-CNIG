@@ -128,7 +128,7 @@ export default class GeometryDrawControl extends M.Control {
     /**
      * Current line thickness (or circle radius) for drawing features.
      * @private
-     * @type {Number} // FIXME: number or string?
+     * @type {Number}
      */
     this.currentThickness = undefined;
 
@@ -541,6 +541,7 @@ export default class GeometryDrawControl extends M.Control {
 
       switch (this.feature.getGeometry().type) {
         case 'Point':
+        case 'MultiPoint':
           if (evtId === 'colorSelector' || evtId === 'thicknessSelector') {
             const newPointStyle = new M.style.Point({
               radius: this.currentThickness,
@@ -558,6 +559,7 @@ export default class GeometryDrawControl extends M.Control {
           }
           break;
         case 'LineString':
+        case 'MultiLineString':
           const newLineStyle = new M.style.Line({
             stroke: {
               color: this.currentColor,
@@ -567,6 +569,7 @@ export default class GeometryDrawControl extends M.Control {
           if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
           break;
         case 'Polygon':
+        case 'MultiPolygon':
           const newPolygonStyle = new M.style.Polygon({
             fill: {
               color: this.currentColor,
@@ -754,6 +757,7 @@ export default class GeometryDrawControl extends M.Control {
   setFeatureStyle(feature, geometryType) {
     switch (geometryType) {
       case 'Point':
+      case 'MultiPoint':
         feature.setStyle(new M.style.Point({
           radius: this.currentThickness,
           fill: {
@@ -766,6 +770,7 @@ export default class GeometryDrawControl extends M.Control {
         }));
         break;
       case 'LineString':
+      case 'MultiLineString':
         feature.setStyle(new M.style.Line({
           stroke: {
             color: this.currentColor,
@@ -774,6 +779,7 @@ export default class GeometryDrawControl extends M.Control {
         }));
         break;
       case 'Polygon':
+      case 'MultiPolygon':
         feature.setStyle(new M.style.Polygon({
           fill: {
             color: this.currentColor,
@@ -781,7 +787,7 @@ export default class GeometryDrawControl extends M.Control {
           },
           stroke: {
             color: this.currentColor,
-            width: this.currentThickness,
+            width: Number.parseInt(this.currentThickness, 10),
           },
         }));
         break;
@@ -826,6 +832,13 @@ export default class GeometryDrawControl extends M.Control {
     });
   }
 
+  /**
+   * Deletes Mapea feature set attributes.
+   * @public
+   * @function
+   * @api
+   * @param {*} features - Mapea features
+   */
   deleteFeatureAttributes(features) {
     const newFeatures = features;
     newFeatures.forEach((feature) => {
@@ -837,63 +850,6 @@ export default class GeometryDrawControl extends M.Control {
       });
     });
     return newFeatures;
-  }
-
-  /**
-   * This function turns multigeometries into several simple geometries
-   * @public
-   * @function
-   * @param json - geojson
-   * @api
-   */
-  turnMultiGeometriesSimple(json) {
-    const newJson = {
-      type: json.type,
-      // totalFeatures: json.totalFeatures,
-      features: [],
-    };
-    json.features.forEach((feature) => {
-      const newFeature = {
-        type: feature.type,
-        id: feature.id,
-        geometry: {
-          type: '',
-          coordinates: [],
-        },
-        // geometry_name: feature.geometry_name,
-        properties: feature.properties,
-      };
-
-      switch (feature.geometry.type) {
-        case 'MultiPoint':
-          newFeature.geometry.type = 'Point';
-          break;
-        case 'MultiLineString':
-          newFeature.geometry.type = 'LineString';
-          break;
-        case 'MultiPolygon':
-          newFeature.geometry.type = 'Polygon';
-          break;
-        default:
-          newFeature.geometry.type = feature.geometry.type;
-      }
-
-      if (feature.geometry.type === 'MultiPoint' ||
-        feature.geometry.type === 'MultiLineString' ||
-        feature.geometry.type === 'MultiPolygon') {
-        feature.geometry.coordinates.forEach((multiElement) => {
-          multiElement.forEach((element) => {
-            newFeature.geometry.coordinates[0] = element;
-            newJson.features.push(newFeature);
-          });
-        });
-      } else {
-        newFeature.geometry.coordinates = feature.geometry.coordinates;
-        newJson.features.push(newFeature);
-      }
-    });
-
-    return newJson;
   }
 
   /**
@@ -912,6 +868,7 @@ export default class GeometryDrawControl extends M.Control {
 
     switch (this.geometry) {
       case 'Point':
+      case 'MultiPoint': // FIXME:
         const x = this.getImpl().getFeatureCoordinates(olFeature)[0];
         const y = this.getImpl().getFeatureCoordinates(olFeature)[1];
         if (infoContainer !== null) {
@@ -921,6 +878,7 @@ export default class GeometryDrawControl extends M.Control {
         }
         break;
       case 'LineString':
+      case 'MultiLineString': // FIXME:
         let lineLength = this.getImpl().getFeatureLength(olFeature);
         let units = 'km';
         if (lineLength > 100) {
@@ -932,6 +890,7 @@ export default class GeometryDrawControl extends M.Control {
         if (infoContainer !== null) infoContainer.innerHTML = `Longitud: ${lineLength} ${units}`;
         break;
       case 'Polygon':
+      case 'MultiPolygon': // FIXME:
         let area = this.getImpl().getFeatureArea(olFeature);
         let areaUnits = `km${'2'.sup()}`;
         if (area > 10000) {
@@ -956,7 +915,7 @@ export default class GeometryDrawControl extends M.Control {
    * For points:
    *    If feature doesn't have style, sets new style.
    * For text:
-   *    Colours red text feature point. TODO:
+   *    Colours red text feature point.
    * @public
    * @function
    * @api
@@ -985,8 +944,6 @@ export default class GeometryDrawControl extends M.Control {
       } else if ((this.geometry === 'Point' || this.geometry === 'MultiPoint') && isTextDrawActive) {
         if (this.feature.getStyle() === null) this.setTextStyle(false);
         this.feature.getStyle().set('fill.opacity', 1);
-        // const newFont = `bold ${this.fontSize}px ${this.fontFamily}`;
-        // this.feature.getStyle().set('label.font', newFont);
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.feature.getImpl().olFeature_.getGeometry().getExtent();
@@ -1028,6 +985,9 @@ export default class GeometryDrawControl extends M.Control {
         this.deactivateEdition();
         document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
       }
+      if (document.querySelector('#geometrydraw-uploading') !== null) {
+        document.querySelector('.m-geometrydraw').removeChild(this.uploadingTemplate);
+      }
       this.deactivateDrawing();
       document.querySelector('.m-geometrydraw').appendChild(this.downloadingTemplate);
     } else {
@@ -1046,6 +1006,9 @@ export default class GeometryDrawControl extends M.Control {
       this.deactivateEdition();
       document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
     }
+    if (document.querySelector('#downloadFormat') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
+    }
     this.deactivateDrawing();
     document.querySelector('.m-geometrydraw').appendChild(this.uploadingTemplate);
   }
@@ -1061,7 +1024,7 @@ export default class GeometryDrawControl extends M.Control {
     const newGeoJson = geojsonLayer;
     const features = geojsonLayer.features;
     features.forEach((feature, featIdx) => {
-      if (feature.geometry.type === 'Polygon') {
+      if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
         const coordinates = feature.geometry.coordinates;
         coordinates.forEach((polygon, polyIdx) => {
           polygon.forEach((pointCoords, pointIdx) => {
@@ -1074,6 +1037,23 @@ export default class GeometryDrawControl extends M.Control {
     });
     newGeoJson.features = features;
     return newGeoJson;
+  }
+
+  fixGeojsonKmlBug(geojsonLayer) { // FIXME: not working properly
+    const newGeojsonLayer = geojsonLayer;
+    const features = newGeojsonLayer.features;
+    features.forEach((feature) => {
+      const coordinates = feature.geometry.coordinates;
+      coordinates.forEach((coord) => {
+        coord.map((c) => {
+          c.pop();
+          c.pop();
+          return c;
+        });
+      });
+    });
+    newGeojsonLayer.features = features;
+    return newGeojsonLayer;
   }
 
   /**
@@ -1096,11 +1076,14 @@ export default class GeometryDrawControl extends M.Control {
         extensionFormat = 'geojson';
         break;
       case 'kml':
+        // parse geojsonLayer.features[i].geometry.coordinates[i][i] .pop() (delete last index: NaN)
+        // const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
+        // arrayContent = tokml(fixedGeojsonLayer);
         arrayContent = tokml(geojsonLayer);
         mimeType = 'xml';
         extensionFormat = 'kml';
         break;
-      case 'gml':
+      case 'gml': // FIXME: barely works when downloading an uploaded layer
         const olFeatures = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
         arrayContent = this.getImpl().getGML({
           olFeatures,
@@ -1121,6 +1104,8 @@ export default class GeometryDrawControl extends M.Control {
             line: this.layer,
           },
         };
+        // this makes the first feature work:
+        // json = JSON.parse(JSON.stringify(json).replace(/MultiPolygon/g, 'Polygon'));
         shpWrite.download(json, options);
         break;
       default:
@@ -1164,6 +1149,9 @@ export default class GeometryDrawControl extends M.Control {
     if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
       document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
     }
+    if (document.querySelector('#geometrydraw-uploading') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(this.uploadingTemplate);
+    }
   }
 
   /**
@@ -1189,7 +1177,7 @@ export default class GeometryDrawControl extends M.Control {
    * @param {*} feature - Mapea feature
    */
   getFeatureThickness(feature) {
-    if (feature.getGeometry().type === 'Point') {
+    if (feature.getGeometry().type === 'Point' || feature.getGeometry().type === 'MultiPoint') {
       return feature.getStyle().get('radius');
     }
     return feature.getStyle().get('stroke.width');
@@ -1203,7 +1191,7 @@ export default class GeometryDrawControl extends M.Control {
    * @param {*} feature - Mapea feature
    */
   getFeatureColor(feature) {
-    if (feature.getGeometry().type === 'Point') {
+    if (feature.getGeometry().type === 'Point' || feature.getGeometry().type === 'MultiPoint') {
       return feature.getStyle().get('fill.color');
     }
     return feature.getStyle().get('stroke.color');
@@ -1228,7 +1216,7 @@ export default class GeometryDrawControl extends M.Control {
     this.loadBtn_.setAttribute('disabled', 'disabled');
     if (!M.utils.isNullOrEmpty(file)) {
       if (file.size > 20971520) {
-        M.dialog.info('El fichero seleccionado sobrepasa el máximo de 20 MB permitido');
+        M.dialog.info('El fichero seleccionado sobrepasa el máximo de 20 MB permitido.');
         this.file_ = null;
         document.querySelector('#fileInfo').innerHTML = '';
       } else {
@@ -1238,6 +1226,12 @@ export default class GeometryDrawControl extends M.Control {
     }
   }
 
+  /**
+   * Loads vector layer features on __draw__ (Mapea) layer.
+   * @public
+   * @function
+   * @api
+   */
   loadLayer() {
     // eslint-disable-next-line no-bitwise
     const fileExt = this.file_.name.slice((this.file_.name.lastIndexOf('.') - 1 >>> 0) + 2);
@@ -1250,20 +1244,20 @@ export default class GeometryDrawControl extends M.Control {
           const geojsonArray = [].concat(shp.parseZip(fileReader.result));
           geojsonArray.forEach((geojson) => {
             const localFeatures = this.getImpl()
-              .loadGeoJSONLayer(this.map.getLayers().length, geojson);
+              .loadGeoJSONLayer(geojson);
             if (localFeatures) {
               features = features.concat(localFeatures);
             }
           });
         } else if (fileExt === 'kml') {
           features = this.getImpl()
-            .loadKMLLayer(this.map.getLayers().length, fileReader.result, false);
+            .loadKMLLayer(fileReader.result, false);
         } else if (fileExt === 'gpx') {
           features = this.getImpl()
-            .loadGPXLayer(this.map.getLayers().length, fileReader.result);
+            .loadGPXLayer(fileReader.result);
         } else if (fileExt === 'geojson') {
           features = this.getImpl()
-            .loadGeoJSONLayer(this.map.getLayers().length, fileReader.result);
+            .loadGeoJSONLayer(fileReader.result);
         } else {
           M.dialog.error('Error al cargar el fichero.');
           return;
