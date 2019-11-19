@@ -1039,21 +1039,96 @@ export default class GeometryDrawControl extends M.Control {
     return newGeoJson;
   }
 
-  fixGeojsonKmlBug(geojsonLayer) { // FIXME: not working properly
-    const newGeojsonLayer = geojsonLayer;
-    const features = newGeojsonLayer.features;
-    features.forEach((feature) => {
-      const coordinates = feature.geometry.coordinates;
-      coordinates.forEach((coord) => {
-        coord.map((c) => {
-          c.pop();
-          c.pop();
-          return c;
-        });
-      });
+  /**
+   * Parses geojsonLayer removing last item on every coordinate (NaN)
+   * before converting the layer to kml.
+   * @public
+   * @function
+   * @api
+   * @param {*} geojsonLayer - geojson layer with drawn features
+   */
+  fixGeojsonKmlBug(geojsonLayer) {
+    // const newGeojsonLayer = geojsonLayer;
+    // const features = newGeojsonLayer.features;
+    // features.forEach((feature) => {
+    //   feature.geometry.coordinates.forEach((coord) => {
+    //     if (feature.geometry.type === 'Polygon' &&
+    //       Number.isNaN(coord[0][-1])) {
+    //       coord.map((c) => {
+    //         c.pop();
+    //         return c;
+    //       });
+    //     } else if (feature.geometry.type === 'MultiPolygon' &&
+    //       Number.isNaN(coord[0][0][-1])) {
+    //       coord.forEach((coordsArray) => {
+    //         coordsArray.map((c) => {
+    //           if (Number.isNaN(c[-1])) c.pop();
+    //           return c;
+    //         });
+    //       });
+    //     }
+    //   });
+
+    //   // const coordinates = feature.geometry.coordinates;
+    //   // switch (feature.geometry.type) {
+    //   //   case 'Polygon':
+    //   //     coordinates.forEach((coord) => {
+    //   //       coord.map((c) => {
+    //   //         if (Number.isNaN(c[-1])) c.pop();
+    //   //         return c;
+    //   //       });
+    //   //     });
+    //   //     break;
+    //   //   case 'MultiPolygon':
+    //   //     coordinates.forEach((coord) => {
+    //   //       coord.forEach((coordsArray) => {
+    //   //         coordsArray.map((c) => {
+    //   //           if (Number.isNaN(c[-1])) c.pop();
+    //   //           return c;
+    //   //         });
+    //   //       });
+    //   //     });
+    //   //     break;
+    //   //   default:
+    //   // }
+    // });
+    // newGeojsonLayer.features = features;
+    // return newGeojsonLayer;
+    return geojsonLayer;
+  }
+
+  /**
+   * Parses geojson before shp download.
+   * Changes geometry type to simple when necessary and removes one pair of brackets.
+   * @public
+   * @function
+   * @api
+   * @param {*} geojsonLayer - geojson layer with drawn and uploaded features
+   */
+  parseGeojsonForShp(geojsonLayer) {
+    const newGeoJson = geojsonLayer;
+    newGeoJson.features = newGeoJson.features.map((feature) => {
+      const newFeature = feature;
+      const type = newFeature.geometry.type;
+      const coordinates = newFeature.geometry.coordinates;
+      if (coordinates[0].length === 1) {
+        coordinates[0] = coordinates[0][0];
+        switch (type) {
+          case 'MultiPolygon':
+            newFeature.geometry.type = 'Polygon';
+            break;
+          case 'MultiLineString':
+            newFeature.geometry.type = 'LineString';
+            break;
+          case 'MultiPoint':
+            newFeature.geometry.type = 'Point';
+            break;
+          default:
+        }
+      }
+      return newFeature;
     });
-    newGeojsonLayer.features = features;
-    return newGeojsonLayer;
+    return newGeoJson;
   }
 
   /**
@@ -1076,10 +1151,8 @@ export default class GeometryDrawControl extends M.Control {
         extensionFormat = 'geojson';
         break;
       case 'kml':
-        // parse geojsonLayer.features[i].geometry.coordinates[i][i] .pop() (delete last index: NaN)
-        // const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
-        // arrayContent = tokml(fixedGeojsonLayer);
-        arrayContent = tokml(geojsonLayer);
+        const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
+        arrayContent = tokml(fixedGeojsonLayer);
         mimeType = 'xml';
         extensionFormat = 'kml';
         break;
@@ -1095,7 +1168,7 @@ export default class GeometryDrawControl extends M.Control {
         extensionFormat = 'gml';
         break;
       case 'shp':
-        const json = geojsonLayer;
+        const json = this.parseGeojsonForShp(geojsonLayer);
         const options = {
           folder: this.layer,
           types: {
