@@ -1048,53 +1048,30 @@ export default class GeometryDrawControl extends M.Control {
    * @param {*} geojsonLayer - geojson layer with drawn features
    */
   fixGeojsonKmlBug(geojsonLayer) {
-    // const newGeojsonLayer = geojsonLayer;
-    // const features = newGeojsonLayer.features;
-    // features.forEach((feature) => {
-    //   feature.geometry.coordinates.forEach((coord) => {
-    //     if (feature.geometry.type === 'Polygon' &&
-    //       Number.isNaN(coord[0][-1])) {
-    //       coord.map((c) => {
-    //         c.pop();
-    //         return c;
-    //       });
-    //     } else if (feature.geometry.type === 'MultiPolygon' &&
-    //       Number.isNaN(coord[0][0][-1])) {
-    //       coord.forEach((coordsArray) => {
-    //         coordsArray.map((c) => {
-    //           if (Number.isNaN(c[-1])) c.pop();
-    //           return c;
-    //         });
-    //       });
-    //     }
-    //   });
+    const newGeojsonLayer = geojsonLayer;
+    const features = newGeojsonLayer.features;
+    features.forEach((feature) => {
+      feature.geometry.coordinates.forEach((coord) => {
+        if (feature.geometry.type === 'Polygon' &&
+          Number.isNaN(coord[0][coord[0].length - 1])) {
+          coord.map((c) => {
+            c.pop();
+            return c;
+          });
+        } else if (feature.geometry.type === 'MultiPolygon' &&
+          Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
+          coord.forEach((coordsArray) => {
+            coordsArray.map((c) => {
+              c.pop();
+              return c;
+            });
+          });
+        }
+      });
+    });
 
-    //   // const coordinates = feature.geometry.coordinates;
-    //   // switch (feature.geometry.type) {
-    //   //   case 'Polygon':
-    //   //     coordinates.forEach((coord) => {
-    //   //       coord.map((c) => {
-    //   //         if (Number.isNaN(c[-1])) c.pop();
-    //   //         return c;
-    //   //       });
-    //   //     });
-    //   //     break;
-    //   //   case 'MultiPolygon':
-    //   //     coordinates.forEach((coord) => {
-    //   //       coord.forEach((coordsArray) => {
-    //   //         coordsArray.map((c) => {
-    //   //           if (Number.isNaN(c[-1])) c.pop();
-    //   //           return c;
-    //   //         });
-    //   //       });
-    //   //     });
-    //   //     break;
-    //   //   default:
-    //   // }
-    // });
-    // newGeojsonLayer.features = features;
-    // return newGeojsonLayer;
-    return geojsonLayer;
+    newGeojsonLayer.features = features;
+    return newGeojsonLayer;
   }
 
   /**
@@ -1131,6 +1108,16 @@ export default class GeometryDrawControl extends M.Control {
     return newGeoJson;
   }
 
+  newNoTextLayer() {
+    const newLayer = new M.layer.Vector({ name: 'copia' });
+    const noTextFeatures = this.drawLayer.getFeatures().filter((feature) => {
+      // eslint-disable-next-line no-underscore-dangle
+      return feature.getStyle().options_.label === undefined;
+    });
+    newLayer.addFeatures(noTextFeatures);
+    return newLayer;
+  }
+
   /**
    * Downloads draw layer as GeoJSON, kml or gml.
    * @public
@@ -1139,10 +1126,17 @@ export default class GeometryDrawControl extends M.Control {
    */
   downloadLayer() {
     const downloadFormat = this.downloadingTemplate.querySelector('select').value;
-    const geojsonLayer = this.polygonFix(this.drawLayer.toGeoJSON());
+    // Creates new vector layer with no text features for downloading
+    const noTextLayer = this.newNoTextLayer();
+    noTextLayer.setVisible(false);
+    this.map.addLayers(noTextLayer);
+    const geojsonLayer = this.polygonFix(noTextLayer.toGeoJSON());
+    this.map.removeLayers(noTextLayer);
     let arrayContent;
     let mimeType;
     let extensionFormat;
+
+    // Delete text features
 
     switch (downloadFormat) {
       case 'geojson':
@@ -1234,12 +1228,14 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   deleteSingleFeature() {
+    const editionMode = this.isEditionActive;
     this.drawLayer.removeFeatures([this.feature]);
     this.feature = undefined;
     this.geometry = undefined;
     this.selectionLayer.removeFeatures([this.emphasis]);
+    this.deactivateDrawing();
     this.getImpl().deactivateSelection();
-    this.getImpl().activateSelection();
+    if (editionMode) this.getImpl().activateSelection();
   }
 
   /**

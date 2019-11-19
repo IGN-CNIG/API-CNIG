@@ -261,6 +261,9 @@ export default class GeometryDrawControl extends M.impl.Control {
       return M.impl.Feature.olFeature2Facade(feature);
     });
 
+    // Parses beautiful GeometryCollection KML
+    features = this.geometryCollectionParse(features);
+
     // Avoids future conflicts if different layers are loaded
     features = this.facadeControl.deleteFeatureAttributes(features);
 
@@ -271,6 +274,37 @@ export default class GeometryDrawControl extends M.impl.Control {
 
     this.facadeControl.drawLayer.addFeatures(features);
     return features;
+  }
+
+  /**
+   * Turns GeometryCollection features into single geometry features.
+   * @public
+   * @function
+   * @api
+   * @param {*} features - Mapea features
+   */
+  geometryCollectionParse(features) { // TODO: to facade
+    const parsedFeatures = [];
+    features.forEach((feature) => {
+      if (feature.getGeometry().type === 'GeometryCollection') {
+        const geometries = feature.getGeometry().geometries;
+        geometries.forEach((geometry) => {
+          const num = Math.random();
+          const newFeature = new M.Feature(`mf${num}`, {
+            type: 'Feature',
+            id: `gf${num}`,
+            geometry: {
+              type: geometry.type,
+              coordinates: geometry.coordinates,
+            },
+          });
+          parsedFeatures.push(newFeature);
+        });
+      } else {
+        parsedFeatures.push(feature);
+      }
+    });
+    return parsedFeatures;
   }
 
   /**
