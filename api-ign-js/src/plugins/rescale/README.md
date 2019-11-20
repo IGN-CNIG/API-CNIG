@@ -24,6 +24,8 @@ Hace zoom a la escala elegida.
   - 'TR':top right (default)
   - 'BL':bottom left
   - 'BR':bottom right
+- **collapsible**. Indica si se puede colapsar el plugin.
+- **collapsed**. Indica si el plugin viene colapsado por defecto.
 
   
 # Ejemplos de uso

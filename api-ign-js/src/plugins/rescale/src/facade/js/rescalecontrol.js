@@ -35,7 +35,7 @@ export default class RescaleControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    this.map = map;
+    this.map_ = map;
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
       html.querySelector('#m-rescale-scaleinput').addEventListener('keyup', e => this.zoomToInputScale(e));
@@ -62,6 +62,31 @@ export default class RescaleControl extends M.Control {
       }
     }
   }
+
+  /**
+   * This function is called on the control activation
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  activate() {
+    super.activate();
+    this.getImpl().activateClick(this.map_);
+  }
+
+  /**
+   * This function is called on the control deactivation
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  deactivate() {
+    super.deactivate();
+    this.getImpl().deactivateClick(this.map_);
+  }
+
 
   /**
    * This function gets activation button

@@ -8,7 +8,7 @@ const map = M.map({
 const mp = new Rescale({
   collapsible: true,
   collapsed: true,
-  position: 'TR',
+  position: 'BL',
 });
 
 map.addPlugin(mp);

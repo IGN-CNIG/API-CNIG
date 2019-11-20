@@ -3,6 +3,7 @@
  */
 import 'assets/css/rescale';
 import RescaleControl from './rescalecontrol';
+import api from '../../api';
 
 export default class Rescale extends M.Plugin {
   /**
@@ -58,6 +59,13 @@ export default class Rescale extends M.Plugin {
      * @type {String}
      */
     this.name = 'rescale';
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -90,6 +98,29 @@ export default class Rescale extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}`;
+    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}`;
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    [this.map_, this.control_, this.panel_] = [null, null, null];
+  }
+
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
   }
 }

@@ -7,10 +7,21 @@
   "parameters": [{
     "type": "object",
     "properties": [{
-      "type": "simple",
-      "name": "position",
-      "position": 0
-    }]
+        "type": "simple",
+        "name": "position",
+        "position": 0
+      },
+      {
+        "type": "simple",
+        "name": "collapsible",
+        "position": 1
+      },
+      {
+        "type": "simple",
+        "name": "collapsed",
+        "position": 2
+      }
+    ]
   }],
   "files": {
     "ol": {

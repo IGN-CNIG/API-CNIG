@@ -24,12 +24,9 @@ export default class RescaleControl extends M.impl.Control {
    * @api stable
    */
   zoomToScale(scale) {
-    // let closestScale = scale;
     let resolution;
     if (scale !== '0') {
       const view = this.facadeMap_.getMapImpl().getView();
-      // closestScale = this.closestIGNScale(scale);
-      // resolution = this.scaleToResolution(closestScale);
       const closestZoom = this.getClosestResolution(scale);
       resolution = closestZoom.resolution;
       view.animate({
@@ -37,7 +34,6 @@ export default class RescaleControl extends M.impl.Control {
         resolution,
         duration: 500,
       });
-      // document.querySelector('#m-rescale-scaleinput').value = `1:${scale}`;
       document.querySelector('#m-rescale-scaleinput').value = Math.trunc(closestZoom.scale);
     }
   }
@@ -70,24 +66,13 @@ export default class RescaleControl extends M.impl.Control {
     return newScale;
   }
 
-  // /**
-  //  * Finds IGN service closest scale to the requested one.
-  //  * @public
-  //  * @function
-  //  * @api
-  //  * @param {*} originalScale - Requested scale
-  //  */
-  // closestIGNScale(originalScale) {
-  //   // EPSG:3857 scales used by IGN
-  //   // const ignScales = [533, 1066, 2132, 4265, 8530, 17061, 34123,
-  //   //   68247, 136494, 272989, 545978, 1091957, 2183915, 4367830, 8735660, 17471320, 34942641,
-  //   // ];
-  //   // const newScale = ignScales.reduce((prev, curr) => {
-  //   //   return (Math.abs(curr - originalScale) < Math.abs(prev - originalScale) ? curr : prev);
-  //   // });
-  //   return newScale;
-  // }
-
+  /**
+   * Gets view and size.
+   * @public
+   * @function
+   * @api
+   * @param {*} resolution -
+   */
   getForViewAndSize(resolution) {
     const dx = (resolution * this.getSizeFromViewport()[0]) / 2;
     const dy = (resolution * this.getSizeFromViewport()[1]) / 2;
@@ -113,6 +98,13 @@ export default class RescaleControl extends M.impl.Control {
     ];
   }
 
+  /**
+   * Gets WMTS scale.
+   * @public
+   * @function
+   * @api
+   * @param {*} resolution -
+   */
   getWMTSScale(resolution) {
     const projection = this.facadeMap_.getProjection().code;
     const olProj = ol.proj.get(projection);
@@ -128,6 +120,12 @@ export default class RescaleControl extends M.impl.Control {
     return scale;
   }
 
+  /**
+   * Gets size from viewport.
+   * @public
+   * @function
+   * @api
+   */
   getSizeFromViewport() {
     const size = [100, 100];
     const selector = `.ol-viewport[data-view="${ol.util.getUid(this.facadeMap_.getMapImpl().getView())}"]`;

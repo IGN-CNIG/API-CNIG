@@ -7,7 +7,7 @@ div.m-areas>div.m-area>div.m-panel.m-rescale-panel.collapsed {
 }
 
 div.m-areas>div.m-area>div.m-panel.m-rescale-panel.opened>div.m-panel-controls>div.m-control.m-container.m-rescale {
-    paddin-left: 10px;
+    padding-left: 10px;
 }
 
 div.m-areas>div.m-area.m-bottom>div.m-panel.m-rescale-panel>div.m-panel-controls>div.m-control.m-container.m-rescale {
@@ -25,4 +25,22 @@ div.m-rescale-panel .m-control.m-container.m-rescale>label {
 
 div.m-rescale-panel .m-control.m-container.m-rescale>label>input {
     border: 1px solid silver;
+}
+
+/* Firefox fix */
+
+@-moz-document url-prefix() {
+    .m-area.m-bottom .m-panel.m-rescale-panel.opened {
+        width: 230px;
+    }
+
+    .m-area.m-bottom.m-right .m-panel.m-rescale-panel.opened>button {
+        position: absolute;
+        left: -40px;
+    }
+
+    .m-area.m-bottom.m-left .m-panel.m-rescale-panel.opened>button {
+        position: absolute;
+        right: -40px;
+    }
 }
