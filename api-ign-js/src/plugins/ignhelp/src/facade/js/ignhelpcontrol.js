@@ -16,17 +16,25 @@ export default class IGNHelpControl extends M.Control {
    * @api stable
    */
   constructor(helpLink, contactEmail) {
-    // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(IGNHelpImplControl)) {
       M.exception('La implementación usada no puede crear controles IGNHelpControl');
     }
-    // 2. implementation of this control
     const impl = new IGNHelpImplControl();
     super(impl, 'IGNHelp');
 
-    this.helpLink = helpLink;
+    /**
+     * Help documentation link.
+     * @private
+     * @type {String}
+     */
+    this.helpLink_ = helpLink;
 
-    this.contactEmail = contactEmail;
+    /**
+     * Contact email
+     * @private
+     * @type {String}
+     */
+    this.contactEmail_ = contactEmail;
   }
 
   /**
@@ -41,11 +49,23 @@ export default class IGNHelpControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {
-          helpLink: this.helpLink,
-          contactEmail: `mailto:${this.contactEmail}`,
+          helpLink: this.helpLink_,
+          contactEmail: `mailto:${this.contactEmail_}`,
         },
       });
       success(html);
     });
+  }
+
+  /**
+   * This function compares controls
+   *
+   * @public
+   * @function
+   * @param {M.Control} control to compare
+   * @api stable
+   */
+  equals(control) {
+    return control instanceof IGNHelpControl;
   }
 }

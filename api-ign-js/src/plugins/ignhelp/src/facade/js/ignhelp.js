@@ -3,6 +3,7 @@
  */
 import 'assets/css/ignhelp';
 import IGNHelpControl from './ignhelpcontrol';
+import api from '../../api';
 
 export default class IGNHelp extends M.Plugin {
   /**
@@ -51,6 +52,20 @@ export default class IGNHelp extends M.Plugin {
      * @type {String}
      */
     this.contactEmail_ = options.contactEmail || 'fototeca@cnig.es';
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
+
+    /**
+     * Name of the plugin
+     * @public
+     * @type {String}
+     */
+    this.name = 'ignhelp';
   }
 
   /**
@@ -85,5 +100,29 @@ export default class IGNHelp extends M.Plugin {
    */
   getAPIRest() {
     return `${this.name}=${this.position_}*${this.helpLink_}*${this.contactEmail_}`;
+  }
+
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
+  }
+
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    [this.map_, this.control_, this.panel_] = [null, null, null];
   }
 }

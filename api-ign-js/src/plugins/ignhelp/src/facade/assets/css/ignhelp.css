@@ -99,6 +99,26 @@ div.m-panel.m-panel-ignhelp.opened>div.m-panel-controls>div.m-control.m-containe
     width: 50px;
 }
 
+/* Mobile fix */
+
+@media only screen and (max-width: 680px) {
+    .m-area>.m-panel.m-panel-ignhelp.opened>.m-panel-btn {
+        box-shadow: none;
+        height: 20px;
+        margin: 5px;
+        width: 20px;
+        z-index: 1000;
+    }
+
+    div.m-areas>div.m-area.m-right>div.m-panel.m-panel-ignhelp.opened>button.m-panel-btn {
+        left: 50vw;
+    }
+
+    div.m-areas>div.m-area.m-left>div.m-panel.m-panel-ignhelp.opened>button.m-panel-btn {
+        right: 50vw;
+    }
+}
+
 /* Icon font */
 
 @font-face {
