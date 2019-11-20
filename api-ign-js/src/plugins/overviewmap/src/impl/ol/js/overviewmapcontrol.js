@@ -12,13 +12,21 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       layers: [],
     }, vendorOptions, true));
 
-    this.position = options.position;
-
+    /**
+     * Toggle delayer
+     * @private
+     * @type {Number}
+     */
     this.toggleDelay_ = 0;
     if (!M.utils.isNullOrEmpty(options.toggleDelay)) {
       this.toggleDelay_ = options.toggleDelay;
     }
 
+    /**
+     * Collapsed button class
+     * @private
+     * @type {String}
+     */
     this.collapsedButtonClass_ = 'overviewmap-mundo';
     if (!M.utils.isNullOrEmpty(options.collapsedButtonClass)) {
       this.collapsedButtonClass_ = options.collapsedButtonClass;
@@ -29,10 +37,16 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     } else {
       this.openedButtonClass_ = 'g-cartografia-flecha-izquierda';
     }
+
     if (!M.utils.isNullOrEmpty(options.openedButtonClass)) {
       this.openedButtonClass_ = options.openedButtonClass;
     }
 
+    /**
+     * Facade of the map
+     * @private
+     * @type {*}
+     */
     this.facadeMap_ = null;
   }
 
@@ -73,7 +87,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       this.element.querySelector('button').click();
       this.addLayers();
     } else {
-      this.addOpenEventListener(this.element.querySelector('button'), map);
+      this.element.querySelector('button').addEventListener('click', this.openEventListener.bind(this));
     }
   }
 
@@ -96,18 +110,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     } else {
       button.classList.add(this.openedButtonClass_);
     }
-    // this.addOpenEventListener(button, map);
     this.setTarget();
-  }
-
-  /**
-   * This method adds the open event listener
-   * @function
-   * @api
-   */
-  addOpenEventListener(btn, map) {
-    const button = btn;
-    button.onclick = this.openEventListener.bind(this);
   }
 
   /**

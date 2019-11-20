@@ -3,6 +3,7 @@
  */
 import 'assets/css/overviewmap';
 import OverviewMapControl from './overviewmapcontrol';
+import api from '../../api';
 
 export default class OverviewMap extends M.Plugin {
   /**
@@ -31,11 +32,54 @@ export default class OverviewMap extends M.Plugin {
      */
     this.controls_ = [];
 
-    this.options = options || {};
-    this.position = options !== undefined ? options.position : 'BR';
+    /**
+     * Options of the plugin
+     * @private
+     * @type {Object}
+     */
+    this.options_ = options || {};
+
+    /**
+     * Position of the plugin
+     * @private
+     * @type {String}
+     */
+    this.position_ = options !== undefined ? options.position : 'BR';
+
+    /**
+     * Vendor options
+     * @public
+     * @type {Object}
+     */
     this.vendorOptions = vendorOptions || {};
+
+    /**
+     * Collapsed flad
+     * @public
+     * @type {Boolean}
+     */
     this.vendorOptions.collapsed = vendorOptions !== undefined ? vendorOptions.collapsed : false;
+
+    /**
+     * Collapsible flag
+     * @public
+     * @type {Boolean}
+     */
     this.vendorOptions.collapsible = vendorOptions !== undefined ? vendorOptions.collapsible : true;
+
+    /**
+     * Name of the plugin
+     * @public
+     * @type {String}
+     */
+    this.name = 'overviewmap';
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -47,13 +91,36 @@ export default class OverviewMap extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new OverviewMapControl(this.options, this.vendorOptions));
+    this.controls_.push(new OverviewMapControl(this.options_, this.vendorOptions));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelOverviewMap', {
       className: 'm-overviewmap-panel',
-      position: M.ui.position[this.position],
+      position: M.ui.position[this.position_],
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    [this.map_, this.control_, this.panel_] = [null, null, null];
   }
 }
