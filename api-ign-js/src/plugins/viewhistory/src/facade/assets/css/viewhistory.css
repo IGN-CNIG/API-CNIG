@@ -1,11 +1,11 @@
-div.m-panel.m-tools {
-    max-height: 40px;
-}
-
 .m-areas>div.m-area>div.m-panel.viewhistory-plugin.no-collapsible.opened>div.m-panel-controls>div.m-control.m-viewhistory-container>button {
     background-color: #71A7D3 !important;
     color: white !important;
     font-family: 'viewhistory' !important;
+}
+
+div.m-area.m-bottom>div.m-panel.viewhistory-plugin.opened>div.m-panel-controls>div.m-control.m-viewhistory-container {
+    width: 80px;
 }
 
 
@@ -15,7 +15,7 @@ div.m-panel.m-tools {
 
 @-moz-document url-prefix() {
     #m-historyprevious-button {
-        margin-right: -5px;
+        margin-right: -7px;
     }
 }
 

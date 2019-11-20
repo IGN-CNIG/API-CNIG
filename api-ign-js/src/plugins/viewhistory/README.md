@@ -12,6 +12,18 @@ Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y
  <link href="../../plugins/viewhistory/viewhistory.ol.min.css" rel="stylesheet" />
  <script type="text/javascript" src="../../plugins/viewhistory/viewhistory.ol.min.js"></script>
 ```
+
+
+# Parámetros
+
+El constructor se inicializa con un JSON de options con los siguientes atributos:
+
+- **position**. Indica la posición donde se mostrará el plugin
+  - 'TL':top left (default)
+  - 'TR':top right 
+  - 'BL':bottom left 
+  - 'BR':bottom right
+
 # Eventos
 
 # Otros métodos

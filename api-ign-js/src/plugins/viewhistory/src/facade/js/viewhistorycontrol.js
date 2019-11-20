@@ -16,11 +16,9 @@ export default class ViewHistoryControl extends M.Control {
    * @api stable
    */
   constructor() {
-    // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(ViewHistoryImplControl)) {
       M.exception('La implementación usada no puede crear controles ViewHistoryControl');
     }
-    // 2. implementation of this control
     const impl = new ViewHistoryImplControl();
     super(impl, 'ViewHistory');
 
@@ -106,39 +104,39 @@ export default class ViewHistoryControl extends M.Control {
     this.getImpl().previousStep();
   }
 
-  // /**
-  //  * This function is called on the control activation
-  //  *
-  //  * @public
-  //  * @function
-  //  * @api stable
-  //  */
-  // activate() {
-  //   super.activate();
-  //   this.getImpl().activateClick(this.map_);
-  // }
-  // /**
-  //  * This function is called on the control deactivation
-  //  *
-  //  * @public
-  //  * @function
-  //  * @api stable
-  //  */
-  // deactivate() {
-  //   super.deactivate();
-  //   this.getImpl().deactivateClick(this.map_);
-  // }
-  // /**
-  //  * This function gets activation button
-  //  *
-  //  * @public
-  //  * @function
-  //  * @param {HTML} html of control
-  //  * @api stable
-  //  */
-  // getActivationButton(html) {
-  //   return html.querySelector('.m-viewhistory button');
-  // }
+  /**
+   * This function is called on the control activation
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  activate() {
+    super.activate();
+  }
+
+  /**
+   * This function is called on the control deactivation
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  deactivate() {
+    super.deactivate();
+  }
+
+  /**
+   * This function gets activation button
+   *
+   * @public
+   * @function
+   * @param {HTML} html of control
+   * @api stable
+   */
+  getActivationButton(html) {
+    return html.querySelector('.m-viewhistory button');
+  }
 
   /**
    * This function compares controls

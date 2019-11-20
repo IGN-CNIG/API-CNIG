@@ -3,6 +3,7 @@
  */
 import 'assets/css/viewhistory';
 import ViewHistoryControl from './viewhistorycontrol';
+import api from '../../api';
 
 export default class ViewHistory extends M.Plugin {
   /**
@@ -17,13 +18,6 @@ export default class ViewHistory extends M.Plugin {
    */
   constructor(options = {}) {
     super();
-    /**
-     * Facade of the map
-     * @private
-     * @type {M.Map}
-     */
-    this.facadeMap_ = null;
-
     /**
      * Array of controls
      * @private
@@ -45,6 +39,13 @@ export default class ViewHistory extends M.Plugin {
      * @type {String}
      */
     this.name = 'viewhistory';
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -56,8 +57,8 @@ export default class ViewHistory extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new ViewHistoryControl());
     this.facadeMap_ = map;
+    this.controls_.push(new ViewHistoryControl());
     this.panel_ = new M.ui.Panel('panelViewHistory', {
       collapsible: false,
       position: M.ui.position[this.position],
@@ -76,5 +77,28 @@ export default class ViewHistory extends M.Plugin {
    */
   getAPIRest() {
     return `${this.name}=${this.position}`;
+  }
+
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.facadeMap_.removeControls([this.control_]);
+    [this.facadeMap_, this.control_, this.panel_] = [null, null, null];
   }
 }
