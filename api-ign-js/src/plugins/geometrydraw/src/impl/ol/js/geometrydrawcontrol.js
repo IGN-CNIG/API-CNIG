@@ -172,28 +172,11 @@ export default class GeometryDrawControl extends M.impl.Control {
   }
 
   /**
-   * Creates GML string with Open Layers features.
-   * @public
-   * @function
-   * @api
-   * @param {*} options - object with features, projection and metadata.
-   */
-  getGML(options) {
-    const gmlFormat = new ol.format.GML3();
-    const gmlFeatures = gmlFormat.writeFeatures(options.olFeatures, {
-      featureProjection: options.epsg,
-      featureNS: options.featureNS,
-      featureType: options.featureType,
-    });
-    return gmlFeatures;
-  }
-
-  /**
    * Gets feature coordinates
    * @public
    * @function
    * @api
-   * @param {*} olFeature - Open Layers feature
+   * @param { OL.Feature } olFeature
    */
   getFeatureCoordinates(olFeature) {
     return olFeature.getGeometry().getCoordinates();
@@ -204,7 +187,7 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @public
    * @function
    * @api
-   * @param {*} olFeature - Open Layers feature
+   * @param {OL.Feature} olFeature
    */
   getFeatureLength(olFeature) {
     return olFeature.getGeometry().getLength();
@@ -215,7 +198,7 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @public
    * @function
    * @api
-   * @param {*} olFeature - Open Layers feature
+   * @param { OL.Feature } olFeature
    */
   getFeatureArea(olFeature) {
     return olFeature.getGeometry().getArea();
@@ -261,8 +244,8 @@ export default class GeometryDrawControl extends M.impl.Control {
       return M.impl.Feature.olFeature2Facade(feature);
     });
 
-    // Parses beautiful GeometryCollection KML
-    features = this.geometryCollectionParse(features);
+    // Parses GeometryCollection KML
+    features = this.facadeControl.geometryCollectionParse(features);
 
     // Avoids future conflicts if different layers are loaded
     features = this.facadeControl.deleteFeatureAttributes(features);
@@ -274,37 +257,6 @@ export default class GeometryDrawControl extends M.impl.Control {
 
     this.facadeControl.drawLayer.addFeatures(features);
     return features;
-  }
-
-  /**
-   * Turns GeometryCollection features into single geometry features.
-   * @public
-   * @function
-   * @api
-   * @param {*} features - Mapea features
-   */
-  geometryCollectionParse(features) { // TODO: to facade
-    const parsedFeatures = [];
-    features.forEach((feature) => {
-      if (feature.getGeometry().type === 'GeometryCollection') {
-        const geometries = feature.getGeometry().geometries;
-        geometries.forEach((geometry) => {
-          const num = Math.random();
-          const newFeature = new M.Feature(`mf${num}`, {
-            type: 'Feature',
-            id: `gf${num}`,
-            geometry: {
-              type: geometry.type,
-              coordinates: geometry.coordinates,
-            },
-          });
-          parsedFeatures.push(newFeature);
-        });
-      } else {
-        parsedFeatures.push(feature);
-      }
-    });
-    return parsedFeatures;
   }
 
   /**
@@ -332,10 +284,16 @@ export default class GeometryDrawControl extends M.impl.Control {
     return features;
   }
 
+  /**
+   * Centers on features
+   * @public
+   * @function
+   * @api
+   * @param {*} features -
+   */
   centerFeatures(features) {
     if (!M.utils.isNullOrEmpty(features)) {
       const extent = M.impl.utils.getFeaturesExtent(features);
-      // FIXME: change fit (OL) for setBbox (Mapea)
       this.facadeMap_.getMapImpl().getView().fit(extent, {
         duration: 500,
         minResolution: 1,

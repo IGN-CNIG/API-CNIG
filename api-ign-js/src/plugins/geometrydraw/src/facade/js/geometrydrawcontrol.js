@@ -12,6 +12,11 @@ import shpWrite from 'shp-write';
 import tokml from 'tokml';
 import * as shp from 'shpjs';
 
+const DEFAULT_TEXT = 'Texto';
+const DEFAULT_FONT_COLOR = '#71a7d3';
+const DEFAULT_FONT_FAMILY = 'Arial';
+const DEFAULT_SIZE = 12;
+
 export default class GeometryDrawControl extends M.Control {
   /**
    * @classdesc
@@ -285,7 +290,7 @@ export default class GeometryDrawControl extends M.Control {
 
     this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
     this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
-    this.drawingTools.querySelector('button').addEventListener('click', this.deleteSingleFeature.bind(this));
+    this.drawingTools.querySelector('button').addEventListener('click', () => this.deleteSingleFeature());
 
     this.drawingTools.querySelector('button').style.display = 'none';
   }
@@ -298,22 +303,34 @@ export default class GeometryDrawControl extends M.Control {
    * @param {String} html - Geometry buttons template.
    */
   addEvents(html) {
-    html.querySelector('#pointdrawing').addEventListener('click', (e) => {
-      this.geometryBtnClick('Point');
-    });
-    html.querySelector('#linedrawing').addEventListener('click', (e) => {
-      this.geometryBtnClick('LineString');
-    });
-    html.querySelector('#polygondrawing').addEventListener('click', (e) => {
-      this.geometryBtnClick('Polygon');
-    });
-    html.querySelector('#textdrawing').addEventListener('click', (e) => {
-      this.geometryBtnClick('Text');
-    });
-    html.querySelector('#cleanAll').addEventListener('click', this.deleteDrawnFeatures.bind(this));
-    html.querySelector('#download').addEventListener('click', this.openDownloadOptions.bind(this));
-    html.querySelector('#upload').addEventListener('click', this.openUploadOptions.bind(this));
-    html.querySelector('#edit').addEventListener('click', this.editBtnClick.bind(this));
+    html.querySelector('#pointdrawing').addEventListener('click', e => this.geometryBtnClick('Point'));
+    html.querySelector('#linedrawing').addEventListener('click', e => this.geometryBtnClick('LineString'));
+    html.querySelector('#polygondrawing').addEventListener('click', e => this.geometryBtnClick('Polygon'));
+    html.querySelector('#textdrawing').addEventListener('click', e => this.geometryBtnClick('Text'));
+    html.querySelector('#cleanAll').addEventListener('click', () => this.deleteDrawnFeatures());
+    html.querySelector('#download').addEventListener('click', () => this.openDownloadOptions());
+    html.querySelector('#upload').addEventListener('click', () => this.openUploadOptions());
+    html.querySelector('#edit').addEventListener('click', () => this.editBtnClick());
+  }
+
+  activationManager(property, idDraw, geometry) {
+    if (this[property]) {
+      this.geometry = undefined;
+      this[property] = false;
+      document.getElementById(idDraw).classList.remove('activeTool');
+    } else {
+      this[property] = true;
+      this.geometry = geometry;
+      document.getElementById(idDraw).classList.add('activeTool');
+
+      if (document.getElementById('drawingtools') !== null) {
+        document.getElementById('drawingtools').remove();
+      } else if (document.getElementById('textdrawtools') !== null) {
+        document.getElementById('textdrawtools').remove();
+      } else if (document.getElementById('geometrydraw-uploading') !== null) {
+        document.getElementById('geometrydraw-uploading').remove();
+      }
+    }
   }
 
   /**
@@ -325,18 +342,6 @@ export default class GeometryDrawControl extends M.Control {
    * @param {String} geometry - clicked button geometry type
    */
   geometryBtnClick(geometry) {
-    let lastBtnState;
-
-    if (geometry === 'Point') {
-      lastBtnState = this.isPointActive;
-    } else if (geometry === 'LineString') {
-      lastBtnState = this.isLineActive;
-    } else if (geometry === 'Polygon') {
-      lastBtnState = this.isPolygonActive;
-    } else {
-      lastBtnState = this.isTextActive;
-    }
-
     if (this.isEditionActive) {
       this.deactivateEdition();
       document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
@@ -346,78 +351,16 @@ export default class GeometryDrawControl extends M.Control {
 
     switch (geometry) {
       case 'Point':
-        if (lastBtnState) {
-          this.geometry = undefined;
-          this.isPointActive = false;
-          document.getElementById('pointdrawing').classList.remove('activeTool');
-        } else {
-          this.isPointActive = true;
-          this.geometry = geometry;
-          document.getElementById('pointdrawing').classList.add('activeTool');
-
-          if (document.getElementById('drawingtools') !== null) {
-            document.getElementById('drawingtools').remove();
-          } else if (document.getElementById('textdrawtools') !== null) {
-            document.getElementById('textdrawtools').remove();
-          } else if (document.getElementById('geometrydraw-uploading') !== null) {
-            document.getElementById('geometrydraw-uploading').remove();
-          }
-        }
+        this.activationManager('isPointActive', 'pointdrawing', geometry);
         break;
       case 'LineString':
-        if (lastBtnState) {
-          this.geometry = undefined;
-          this.isLineActive = false;
-          document.getElementById('linedrawing').classList.remove('activeTool');
-        } else {
-          this.isLineActive = true;
-          this.geometry = geometry;
-          document.getElementById('linedrawing').classList.add('activeTool');
-
-          if (document.getElementById('drawingtools') !== null) {
-            document.getElementById('drawingtools').remove();
-          } else if (document.getElementById('textdrawtools') !== null) {
-            document.getElementById('textdrawtools').remove();
-          } else if (document.getElementById('geometrydraw-uploading') !== null) {
-            document.getElementById('geometrydraw-uploading').remove();
-          }
-        }
+        this.activationManager('isLineActive', 'linedrawing', geometry);
         break;
       case 'Polygon':
-        if (lastBtnState) {
-          this.geometry = undefined;
-          this.isPolygonActive = false;
-          document.getElementById('polygondrawing').classList.remove('activeTool');
-        } else {
-          this.isPolygonActive = true;
-          this.geometry = geometry;
-          document.getElementById('polygondrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtools') !== null) {
-            document.getElementById('drawingtools').remove();
-          } else if (document.getElementById('textdrawtools') !== null) {
-            document.getElementById('textdrawtools').remove();
-          } else if (document.getElementById('geometrydraw-uploading') !== null) {
-            document.getElementById('geometrydraw-uploading').remove();
-          }
-        }
+        this.activationManager('isPolygonActive', 'polygondrawing', geometry);
         break;
       case 'Text':
-        if (lastBtnState) {
-          this.geometry = undefined;
-          this.isTextActive = false;
-          document.getElementById('textdrawing').classList.remove('activeTool');
-        } else {
-          this.isTextActive = true;
-          this.geometry = 'Point';
-          document.getElementById('textdrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtools') !== null) {
-            document.getElementById('drawingtools').remove();
-          } else if (document.getElementById('textdrawtools') !== null) {
-            document.getElementById('textdrawtools').remove();
-          } else if (document.getElementById('geometrydraw-uploading') !== null) {
-            document.getElementById('geometrydraw-uploading').remove();
-          }
-        }
+        this.activationManager('isTextActive', 'textdrawing', 'Point');
         break;
       default:
         break;
@@ -699,10 +642,10 @@ export default class GeometryDrawControl extends M.Control {
     let fontProperties;
 
     if (defaultTextStyle) {
-      this.textContent = 'Texto';
-      this.fontColor = '#71a7d3';
-      this.fontFamily = 'Arial';
-      this.fontSize = 12;
+      this.textContent = DEFAULT_TEXT;
+      this.fontColor = DEFAULT_FONT_COLOR;
+      this.fontFamily = DEFAULT_FONT_FAMILY;
+      this.fontSize = DEFAULT_SIZE;
     }
 
     if ((this.feature.getStyle() !== null) &&
@@ -737,7 +680,7 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   defaultTextInputValues() {
-    const defaults = ['', '#71a7d3', '12', 'Arial'];
+    const defaults = ['', DEFAULT_FONT_COLOR, DEFAULT_SIZE, DEFAULT_FONT_FAMILY];
     const inputs = document.querySelectorAll('#textdrawtools>label>*');
     let sameStyles = true;
     for (let i = 0; i < inputs.length; i += 1) {
@@ -792,7 +735,7 @@ export default class GeometryDrawControl extends M.Control {
         }));
         break;
       default:
-        console.log('Geometría no reconocida.');
+        throw new Error('Geometría no reconocida.');
     }
   }
 
@@ -868,7 +811,7 @@ export default class GeometryDrawControl extends M.Control {
 
     switch (this.geometry) {
       case 'Point':
-      case 'MultiPoint': // FIXME:
+      case 'MultiPoint':
         const x = this.getImpl().getFeatureCoordinates(olFeature)[0];
         const y = this.getImpl().getFeatureCoordinates(olFeature)[1];
         if (infoContainer !== null) {
@@ -878,7 +821,7 @@ export default class GeometryDrawControl extends M.Control {
         }
         break;
       case 'LineString':
-      case 'MultiLineString': // FIXME:
+      case 'MultiLineString':
         let lineLength = this.getImpl().getFeatureLength(olFeature);
         let units = 'km';
         if (lineLength > 100) {
@@ -890,7 +833,7 @@ export default class GeometryDrawControl extends M.Control {
         if (infoContainer !== null) infoContainer.innerHTML = `Longitud: ${lineLength} ${units}`;
         break;
       case 'Polygon':
-      case 'MultiPolygon': // FIXME:
+      case 'MultiPolygon':
         let area = this.getImpl().getFeatureArea(olFeature);
         let areaUnits = `km${'2'.sup()}`;
         if (area > 10000) {
@@ -1125,6 +1068,7 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   downloadLayer() {
+    const fileName = 'misgeometrias';
     const downloadFormat = this.downloadingTemplate.querySelector('select').value;
     // Creates new vector layer with no text features for downloading
     const noTextLayer = this.newNoTextLayer();
@@ -1150,29 +1094,16 @@ export default class GeometryDrawControl extends M.Control {
         mimeType = 'xml';
         extensionFormat = 'kml';
         break;
-      case 'gml': // FIXME: barely works when downloading an uploaded layer
-        const olFeatures = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
-        arrayContent = this.getImpl().getGML({
-          olFeatures,
-          epsg: 'EPSG:3857',
-          featureNS: 'http://abcdef.xyz/dummy',
-          featureType: 'dummy',
-        });
-        mimeType = 'xml';
-        extensionFormat = 'gml';
-        break;
       case 'shp':
         const json = this.parseGeojsonForShp(geojsonLayer);
         const options = {
-          folder: this.layer,
+          folder: fileName,
           types: {
-            point: this.layer,
-            polygon: this.layer,
-            line: this.layer,
+            point: fileName,
+            polygon: fileName,
+            line: fileName,
           },
         };
-        // this makes the first feature work:
-        // json = JSON.parse(JSON.stringify(json).replace(/MultiPolygon/g, 'Polygon'));
         shpWrite.download(json, options);
         break;
       default:
@@ -1186,7 +1117,7 @@ export default class GeometryDrawControl extends M.Control {
       }));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${this.layer}.${extensionFormat}`);
+      link.setAttribute('download', `${fileName}.${extensionFormat}`);
       document.body.appendChild(link);
       link.click();
     }
@@ -1243,7 +1174,7 @@ export default class GeometryDrawControl extends M.Control {
    * @public
    * @function
    * @api
-   * @param {*} feature - Mapea feature
+   * @param {M.Feature} feature - Mapea feature
    */
   getFeatureThickness(feature) {
     if (feature.getGeometry().type === 'Point' || feature.getGeometry().type === 'MultiPoint') {
@@ -1257,7 +1188,7 @@ export default class GeometryDrawControl extends M.Control {
    * @public
    * @function
    * @api
-   * @param {*} feature - Mapea feature
+   * @param {M.Feature} feature - Mapea feature
    */
   getFeatureColor(feature) {
     if (feature.getGeometry().type === 'Point' || feature.getGeometry().type === 'MultiPoint') {
@@ -1280,6 +1211,11 @@ export default class GeometryDrawControl extends M.Control {
 
   /* Layer upload */
 
+  /**
+   * Changes selected file.
+   * @param {*} evt -
+   * @param {*} file -
+   */
   changeFile(evt, file) {
     this.file_ = file;
     this.loadBtn_.setAttribute('disabled', 'disabled');
@@ -1347,5 +1283,36 @@ export default class GeometryDrawControl extends M.Control {
     } else {
       M.dialog.error('No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX y GeoJSON.');
     }
+  }
+
+  /**
+   * Turns GeometryCollection features into single geometry features.
+   * @public
+   * @function
+   * @api
+   * @param {Array<M.Feature>} features
+   */
+  geometryCollectionParse(features) {
+    const parsedFeatures = [];
+    features.forEach((feature) => {
+      if (feature.getGeometry().type === 'GeometryCollection') {
+        const geometries = feature.getGeometry().geometries;
+        geometries.forEach((geometry) => {
+          const num = Math.random();
+          const newFeature = new M.Feature(`mf${num}`, {
+            type: 'Feature',
+            id: `gf${num}`,
+            geometry: {
+              type: geometry.type,
+              coordinates: geometry.coordinates,
+            },
+          });
+          parsedFeatures.push(newFeature);
+        });
+      } else {
+        parsedFeatures.push(feature);
+      }
+    });
+    return parsedFeatures;
   }
 }
