@@ -7,8 +7,10 @@ import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
 import textDrawTemplate from 'templates/textdraw';
 import downloadingTemplate from 'templates/downloading';
+import uploadingTemplate from 'templates/uploading';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
+import * as shp from 'shpjs';
 
 export default class GeometryDrawControl extends M.Control {
   /**
@@ -32,102 +34,157 @@ export default class GeometryDrawControl extends M.Control {
     impl.facadeControl = this;
 
     /**
-     * Number of features drawn on current layer.
-     */
-    // this.numberOfDrawFeatures = 0;
-
-    /**
-     * Checks if point/line/polygon/text drawing tool is active.
+     * Checks if point drawing tool is active.
+     * @private
+     * @type {Boolean}
      */
     this.isPointActive = false;
+
+    /**
+     * Checks if line drawing tool is active.
+     * @private
+     * @type {Boolean}
+     */
     this.isLineActive = false;
+
+    /**
+     * Checks if polygon drawing tool is active.
+     * @private
+     * @type {Boolean}
+     */
     this.isPolygonActive = false;
+
+    /**
+     * Checks if text drawing tool is active.
+     * @private
+     * @type {Boolean}
+     */
     this.isTextActive = false;
 
     /**
      * Checks if edition tool is active.
+     * @private
+     * @type {Boolean}
      */
     this.isEditionActive = false;
 
     /**
      * Selected Mapea feature
+     * @private
+     * @type {M.feature}
      */
     this.feature = undefined;
 
     /**
      * Feature that is drawn on selection layer around this.feature
      * to emphasize it.
+     * @private
      * @type {M.feature}
      */
     this.emphasis = undefined;
 
     /**
      * Current geometry type selected for drawing.
+     * @private
+     * @type {String}
      */
     this.geometry = undefined; // Point, LineString, Polygon
 
     /**
      * Template that expands drawing tools with color and thickness options.
+     * @private
+     * @type {String}
      */
     this.drawingTools = undefined;
 
     /**
      * Template with downloading format options.
+     * @private
+     * @type {String}
      */
     this.downloadingTemplate = undefined;
 
     /**
+     * Template with uploading format options.
+     * @private
+     * @type {String}
+     */
+    this.uploadingTemplate = undefined;
+
+    /**
      * Template with text feature drawing tools.
+     * @private
+     * @type {String}
      */
     this.textDrawTemplate = undefined;
 
     /**
      * Current color for drawing features.
+     * @private
+     * @type {String}
      */
     this.currentColor = undefined;
 
     /**
      * Current line thickness (or circle radius) for drawing features.
+     * @private
+     * @type {Number}
      */
     this.currentThickness = undefined;
 
     /**
      * Current feature name / description text.
+     * @private
+     * @type {String}
      */
     this.textContent = 'Texto';
 
     /**
      * Current text feature font color.
+     * @private
+     * @type {String}
      */
     this.fontColor = '#F00';
 
     /**
      * Current text feature font size.
+     * @private
+     * @type {String}
      */
     this.fontSize = '12';
 
     /**
      * Current text feature font family.
+     * @private
+     * @type {String}
      */
     this.fontFamily = 'Verdana';
 
     /**
-     * Current feature name/description text.
-     */
-    // this.currentText = '';
-
-    /**
      * Saves drawing layer ( __ draw__) from Mapea.
+     * @private
+     * @type {*} - Mapea layer
      */
     this.drawLayer = undefined;
 
     /**
      * OL vector source for draw interactions.
+     * @private
+     * @type {*} - OpenLayers vector source
      */
     this.vectorSource = this.getImpl().newVectorSource(false);
 
     /**
+     * File to upload.
+     * @private
+     * @type {*}
+     */
+    this.file_ = null;
+
+    /**
      * Mapea layer where a square will be drawn around selected feature.
+     * @private
+     * @type {*}
      */
     this.selectionLayer = new M.layer.Vector({
       name: 'selectLayer',
@@ -151,11 +208,19 @@ export default class GeometryDrawControl extends M.Control {
       this.createDrawingTemplate();
       this.createTextDrawTemplate();
       this.createDownloadingTemplate();
+      this.createUploadingTemplate();
       this.addEvents(html);
       success(html);
     });
   }
 
+  /**
+   * Creates text drawing options template.
+   *
+   * @public
+   * @function
+   * @api
+   */
   createTextDrawTemplate() {
     this.textDrawTemplate = M.template.compileSync(textDrawTemplate, { jsonp: true });
 
@@ -174,7 +239,7 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Creates template with download options.
+   * Creates download options template.
    * @public
    * @function
    * @api
@@ -185,7 +250,29 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Creates template with drawing options.
+   * Creates upload options template.
+   *
+   * @public
+   * @function
+   * @api
+   */
+  createUploadingTemplate() {
+    const accept = '.kml, .zip, .gpx, .geojson';
+    this.uploadingTemplate = M.template.compileSync(uploadingTemplate, {
+      jsonp: true,
+      vars: { accept },
+    });
+    const inputFile = this.uploadingTemplate.querySelector('#geometrydraw-uploading>input');
+    this.loadBtn_ = this.uploadingTemplate.querySelector('#geometrydraw-uploading button');
+    inputFile.addEventListener('change', evt => this.changeFile(evt, inputFile.files[0]));
+    this.loadBtn_.addEventListener('click', () => {
+      this.loadLayer();
+    });
+    this.loadBtn_.setAttribute('disabled', 'disabled');
+  }
+
+  /**
+   * Creates drawing options template.
    * @public
    * @function
    * @api
@@ -195,12 +282,9 @@ export default class GeometryDrawControl extends M.Control {
 
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
-    // this.currentText = this.drawingTools.querySelector('#featureName').value;
 
     this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
     this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
-    // this.drawingTools.querySelector('#featureName')
-    // .addEventListener('input', e => this.styleChange(e));
     this.drawingTools.querySelector('button').addEventListener('click', this.deleteSingleFeature.bind(this));
 
     this.drawingTools.querySelector('button').style.display = 'none';
@@ -228,6 +312,7 @@ export default class GeometryDrawControl extends M.Control {
     });
     html.querySelector('#cleanAll').addEventListener('click', this.deleteDrawnFeatures.bind(this));
     html.querySelector('#download').addEventListener('click', this.openDownloadOptions.bind(this));
+    html.querySelector('#upload').addEventListener('click', this.openUploadOptions.bind(this));
     html.querySelector('#edit').addEventListener('click', this.editBtnClick.bind(this));
   }
 
@@ -269,6 +354,14 @@ export default class GeometryDrawControl extends M.Control {
           this.isPointActive = true;
           this.geometry = geometry;
           document.getElementById('pointdrawing').classList.add('activeTool');
+
+          if (document.getElementById('drawingtools') !== null) {
+            document.getElementById('drawingtools').remove();
+          } else if (document.getElementById('textdrawtools') !== null) {
+            document.getElementById('textdrawtools').remove();
+          } else if (document.getElementById('geometrydraw-uploading') !== null) {
+            document.getElementById('geometrydraw-uploading').remove();
+          }
         }
         break;
       case 'LineString':
@@ -280,6 +373,14 @@ export default class GeometryDrawControl extends M.Control {
           this.isLineActive = true;
           this.geometry = geometry;
           document.getElementById('linedrawing').classList.add('activeTool');
+
+          if (document.getElementById('drawingtools') !== null) {
+            document.getElementById('drawingtools').remove();
+          } else if (document.getElementById('textdrawtools') !== null) {
+            document.getElementById('textdrawtools').remove();
+          } else if (document.getElementById('geometrydraw-uploading') !== null) {
+            document.getElementById('geometrydraw-uploading').remove();
+          }
         }
         break;
       case 'Polygon':
@@ -291,6 +392,13 @@ export default class GeometryDrawControl extends M.Control {
           this.isPolygonActive = true;
           this.geometry = geometry;
           document.getElementById('polygondrawing').classList.add('activeTool');
+          if (document.getElementById('drawingtools') !== null) {
+            document.getElementById('drawingtools').remove();
+          } else if (document.getElementById('textdrawtools') !== null) {
+            document.getElementById('textdrawtools').remove();
+          } else if (document.getElementById('geometrydraw-uploading') !== null) {
+            document.getElementById('geometrydraw-uploading').remove();
+          }
         }
         break;
       case 'Text':
@@ -302,11 +410,20 @@ export default class GeometryDrawControl extends M.Control {
           this.isTextActive = true;
           this.geometry = 'Point';
           document.getElementById('textdrawing').classList.add('activeTool');
+          if (document.getElementById('drawingtools') !== null) {
+            document.getElementById('drawingtools').remove();
+          } else if (document.getElementById('textdrawtools') !== null) {
+            document.getElementById('textdrawtools').remove();
+          } else if (document.getElementById('geometrydraw-uploading') !== null) {
+            document.getElementById('geometrydraw-uploading').remove();
+          }
         }
         break;
       default:
         break;
     }
+
+    this.createDrawingTemplate();
 
     if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
       if (this.isTextActive) {
@@ -319,10 +436,9 @@ export default class GeometryDrawControl extends M.Control {
       }
 
       this.addDrawInteraction();
-      // this.emphasizeSelectedFeature();
 
-      if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-        document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+      if (document.querySelector('#drawingtools #featureInfo') !== null) {
+        document.querySelector('#drawingtools #featureInfo').style.display = 'none';
       }
 
       if (document.querySelector('.m-geometrydraw>#downloadFormat')) {
@@ -348,11 +464,8 @@ export default class GeometryDrawControl extends M.Control {
 
       this.map.getMapImpl().removeInteraction(this.draw);
       this.selectionLayer.removeFeatures([this.emphasis]);
-      if ((this.feature !== undefined) && this.feature.getStyle().get('fill.opacity') === 0) {
-        const fontPropsArray = this.feature.getStyle().get('label.font').split(' ');
-        fontPropsArray.shift();
-        const noBoldFont = fontPropsArray.join(' ');
-        this.feature.getStyle().set('label.font', noBoldFont);
+      if ((this.feature !== undefined) && this.feature.getStyle().get('label') !== undefined) {
+        this.feature.getStyle().set('fill.opacity', 0);
       }
 
       this.feature = undefined;
@@ -377,8 +490,8 @@ export default class GeometryDrawControl extends M.Control {
     if (this.isEditionActive) {
       this.isEditionActive = false;
       this.getImpl().deactivateSelection();
-      if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-        document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+      if (document.querySelector('#drawingtools #featureInfo') !== null) {
+        document.querySelector('#drawingtools #featureInfo').style.display = 'none';
       }
     }
   }
@@ -397,6 +510,9 @@ export default class GeometryDrawControl extends M.Control {
       this.isEditionActive = false;
     } else {
       this.deactivateDrawing();
+      if (document.getElementById('geometrydraw-uploading') !== null) {
+        document.getElementById('geometrydraw-uploading').remove();
+      }
       this.getImpl().activateSelection();
       this.isEditionActive = true;
       document.querySelector('#otherBtns>#edit').classList.add('activeTool');
@@ -416,7 +532,6 @@ export default class GeometryDrawControl extends M.Control {
       if (document.querySelector('#colorSelector') !== null) {
         this.currentColor = document.querySelector('#colorSelector').value;
         this.currentThickness = document.querySelector('#thicknessSelector').value;
-        // this.currentText = document.querySelector('#featureName').value;
       } else {
         this.textContent = document.querySelector('#textContent').value;
         this.fontColor = document.querySelector('#fontColor').value;
@@ -426,6 +541,7 @@ export default class GeometryDrawControl extends M.Control {
 
       switch (this.feature.getGeometry().type) {
         case 'Point':
+        case 'MultiPoint':
           if (evtId === 'colorSelector' || evtId === 'thicknessSelector') {
             const newPointStyle = new M.style.Point({
               radius: this.currentThickness,
@@ -436,9 +552,6 @@ export default class GeometryDrawControl extends M.Control {
                 color: 'white',
                 width: 2,
               },
-              // label: {
-              //   text: this.currentText,
-              // },
             });
             if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
           } else {
@@ -446,18 +559,17 @@ export default class GeometryDrawControl extends M.Control {
           }
           break;
         case 'LineString':
+        case 'MultiLineString':
           const newLineStyle = new M.style.Line({
             stroke: {
               color: this.currentColor,
               width: this.currentThickness,
             },
-            // label: {
-            //   text: this.currentText,
-            // },
           });
           if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
           break;
         case 'Polygon':
+        case 'MultiPolygon':
           const newPolygonStyle = new M.style.Polygon({
             fill: {
               color: this.currentColor,
@@ -467,9 +579,6 @@ export default class GeometryDrawControl extends M.Control {
               color: this.currentColor,
               width: this.currentThickness,
             },
-            // label: {
-            //   text: this.currentText,
-            // },
           });
           if (this.feature !== undefined) this.feature.setStyle(newPolygonStyle);
           break;
@@ -487,10 +596,13 @@ export default class GeometryDrawControl extends M.Control {
    */
   updateInputValues() {
     if (this.feature) {
-      const featureFillOpacity = this.feature.getStyle().get('fill.opacity');
+      let featureIsText;
+      if (this.feature.getStyle() !== null) {
+        featureIsText = this.feature.getStyle().get('label') !== undefined;
+      }
       this.geometry = this.feature.getGeometry().type;
 
-      if (featureFillOpacity === 0) {
+      if (featureIsText) {
         const fontProps = this.feature.getStyle().get('label.font').split(' ');
         this.fontColor = this.feature.getStyle().get('label.color');
         this.textContent = this.feature.getStyle().get('label.text');
@@ -510,20 +622,12 @@ export default class GeometryDrawControl extends M.Control {
       } else {
         this.currentColor = this.getFeatureColor(this.feature);
         this.currentThickness = this.getFeatureThickness(this.feature);
-        // this.currentText = this.getFeatureText(this.feature);
         this.drawingTools.querySelector('#colorSelector').value = this.currentColor;
         this.drawingTools.querySelector('#thicknessSelector').value = this.currentThickness;
         document.querySelector('#drawingtools #colorSelector').value = this.currentColor;
         document.querySelector('#drawingtools #thicknessSelector').value = this.currentThickness;
-        // this.drawingTools.querySelector('#featureName').value = this.currentText;
       }
     }
-    // else {
-    //   if (featureFillOpacity === 0) {
-    //   } else {
-
-    //   }
-    // }
   }
 
   /**
@@ -609,10 +713,10 @@ export default class GeometryDrawControl extends M.Control {
     }
 
     this.feature.setStyle(new M.style.Point({
-      radius: 0,
+      radius: 3,
       fill: {
-        color: 'black',
-        opacity: 0,
+        color: 'red',
+        opacity: 1,
       },
       stroke: {
         color: 'transparent',
@@ -643,6 +747,56 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
+   * Sets style for a point, line or polygon feature
+   * @public
+   * @function
+   * @api
+   * @param {*} feature
+   * @param {*} geometryType - Point / LineString / Polygon
+   */
+  setFeatureStyle(feature, geometryType) {
+    switch (geometryType) {
+      case 'Point':
+      case 'MultiPoint':
+        feature.setStyle(new M.style.Point({
+          radius: this.currentThickness,
+          fill: {
+            color: this.currentColor,
+          },
+          stroke: {
+            color: 'white',
+            width: 2,
+          },
+        }));
+        break;
+      case 'LineString':
+      case 'MultiLineString':
+        feature.setStyle(new M.style.Line({
+          stroke: {
+            color: this.currentColor,
+            width: this.currentThickness,
+          },
+        }));
+        break;
+      case 'Polygon':
+      case 'MultiPolygon':
+        feature.setStyle(new M.style.Polygon({
+          fill: {
+            color: this.currentColor,
+            opacity: 0.2,
+          },
+          stroke: {
+            color: this.currentColor,
+            width: Number.parseInt(this.currentThickness, 10),
+          },
+        }));
+        break;
+      default:
+        console.log('Geometría no reconocida.');
+    }
+  }
+
+  /**
    * Defines function to be executed on click on draw interaction.
    * Creates feature with drawing and adds it to map.
    * @public
@@ -652,50 +806,17 @@ export default class GeometryDrawControl extends M.Control {
   addDrawEvent() {
     this.draw.on('drawend', (event) => {
       const lastFeature = this.feature;
+      this.hideTextPoint();
       this.feature = event.feature;
       this.feature = M.impl.Feature.olFeature2Facade(this.feature);
       if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
 
-      if (this.geometry === 'Point') {
-        if (this.isTextActive) {
-          this.updateGlobalsWithInput();
-          if (lastFeature !== undefined) {
-            this.textContent = 'Texto';
-            // this.setTextStyle(true);
-          }
-          // else {
-          // }
-          this.setTextStyle(false);
-        } else {
-          this.feature.setStyle(new M.style.Point({
-            radius: this.currentThickness,
-            fill: {
-              color: this.currentColor,
-            },
-            stroke: {
-              color: 'white',
-              width: 2,
-            },
-          }));
-        }
-      } else if (this.geometry === 'LineString') {
-        this.feature.setStyle(new M.style.Line({
-          stroke: {
-            color: this.currentColor,
-            width: this.currentThickness,
-          },
-        }));
+      if (this.geometry === 'Point' && this.isTextActive) {
+        this.updateGlobalsWithInput();
+        if (lastFeature !== undefined) this.textContent = 'Texto';
+        this.setTextStyle(false);
       } else {
-        this.feature.setStyle(new M.style.Polygon({
-          fill: {
-            color: this.currentColor,
-            opacity: 0.2,
-          },
-          stroke: {
-            color: this.currentColor,
-            width: this.currentThickness,
-          },
-        }));
+        this.setFeatureStyle(this.feature, this.geometry);
       }
 
       if (this.isTextActive) {
@@ -712,6 +833,26 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
+   * Deletes Mapea feature set attributes.
+   * @public
+   * @function
+   * @api
+   * @param {*} features - Mapea features
+   */
+  deleteFeatureAttributes(features) {
+    const newFeatures = features;
+    newFeatures.forEach((feature) => {
+      const thisFeature = feature;
+      const properties = feature.getImpl().getOLFeature().getProperties();
+      const keys = Object.keys(properties);
+      keys.forEach((key) => {
+        if (key !== 'geometry') thisFeature.getImpl().getOLFeature().unset(key);
+      });
+    });
+    return newFeatures;
+  }
+
+  /**
    * On select, shows feature info.
    * @public
    * @function
@@ -719,7 +860,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   showFeatureInfo() {
     const olFeature = this.feature.getImpl().getOLFeature();
-    const infoContainer = document.querySelector('#drawingtools>#featureInfo');
+    const infoContainer = document.querySelector('#drawingtools #featureInfo');
     if (infoContainer !== null) {
       infoContainer.style.display = 'block';
     }
@@ -727,6 +868,7 @@ export default class GeometryDrawControl extends M.Control {
 
     switch (this.geometry) {
       case 'Point':
+      case 'MultiPoint': // FIXME:
         const x = this.getImpl().getFeatureCoordinates(olFeature)[0];
         const y = this.getImpl().getFeatureCoordinates(olFeature)[1];
         if (infoContainer !== null) {
@@ -736,6 +878,7 @@ export default class GeometryDrawControl extends M.Control {
         }
         break;
       case 'LineString':
+      case 'MultiLineString': // FIXME:
         let lineLength = this.getImpl().getFeatureLength(olFeature);
         let units = 'km';
         if (lineLength > 100) {
@@ -747,6 +890,7 @@ export default class GeometryDrawControl extends M.Control {
         if (infoContainer !== null) infoContainer.innerHTML = `Longitud: ${lineLength} ${units}`;
         break;
       case 'Polygon':
+      case 'MultiPolygon': // FIXME:
         let area = this.getImpl().getFeatureArea(olFeature);
         let areaUnits = `km${'2'.sup()}`;
         if (area > 10000) {
@@ -758,8 +902,8 @@ export default class GeometryDrawControl extends M.Control {
         if (infoContainer !== null) infoContainer.innerHTML = `Área: ${area} ${areaUnits}`;
         break;
       default:
-        if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-          document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+        if (document.querySelector('#drawingtools #featureInfo') !== null) {
+          document.querySelector('#drawingtools #featureInfo').style.display = 'none';
         }
         break;
     }
@@ -770,6 +914,8 @@ export default class GeometryDrawControl extends M.Control {
    * Draws square around feature and adds it to selection layer.
    * For points:
    *    If feature doesn't have style, sets new style.
+   * For text:
+   *    Colours red text feature point.
    * @public
    * @function
    * @api
@@ -781,6 +927,7 @@ export default class GeometryDrawControl extends M.Control {
     if (this.feature) {
       const isTextDrawActive = document.querySelector('#textdrawtools') !== null;
 
+      // if point vs text vs else
       if ((this.geometry === 'Point' || this.geometry === 'MultiPoint') && !isTextDrawActive) {
         // eslint-disable-next-line no-underscore-dangle
         const thisOLfeat = this.feature.getImpl().olFeature_;
@@ -796,10 +943,7 @@ export default class GeometryDrawControl extends M.Control {
         }));
       } else if ((this.geometry === 'Point' || this.geometry === 'MultiPoint') && isTextDrawActive) {
         if (this.feature.getStyle() === null) this.setTextStyle(false);
-        this.cleanBoldText();
-        // selected text is bold
-        const newFont = `bold ${this.fontSize}px ${this.fontFamily}`;
-        this.feature.getStyle().set('label.font', newFont);
+        this.feature.getStyle().set('fill.opacity', 1);
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.feature.getImpl().olFeature_.getGeometry().getExtent();
@@ -816,24 +960,17 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Deletes 'bold' property from all text features.
+   * Hides point associated to text feature.
    * @public
    * @function
    * @api
    */
-  cleanBoldText() {
-    const textFeatures = this.drawLayer.getFeatures();
-    textFeatures.forEach((f, idx) => {
-      let font = f.getStyle().get('label.font');
-      if (font !== undefined) {
-        const fontPieces = font.split(' ');
-        if (fontPieces[0] === 'bold') {
-          fontPieces.shift();
-          font = fontPieces.join(' ');
-          this.drawLayer.getFeatures()[idx].getStyle().set('label.font', font);
-        }
-      }
-    });
+  hideTextPoint() {
+    if (this.geometry === 'Point' &&
+      this.feature &&
+      this.feature.getStyle().get('label') !== undefined) {
+      this.feature.getStyle().set('fill.opacity', 0);
+    }
   }
 
   /**
@@ -848,11 +985,137 @@ export default class GeometryDrawControl extends M.Control {
         this.deactivateEdition();
         document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
       }
+      if (document.querySelector('#geometrydraw-uploading') !== null) {
+        document.querySelector('.m-geometrydraw').removeChild(this.uploadingTemplate);
+      }
       this.deactivateDrawing();
       document.querySelector('.m-geometrydraw').appendChild(this.downloadingTemplate);
     } else {
       M.dialog.info('La capa de dibujo está vacía.');
     }
+  }
+
+  /**
+   * Opens upload template
+   * @public
+   * @function
+   * @api
+   */
+  openUploadOptions() {
+    if (this.isEditionActive) {
+      this.deactivateEdition();
+      document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
+    }
+    if (document.querySelector('#downloadFormat') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
+    }
+    this.deactivateDrawing();
+    document.querySelector('.m-geometrydraw').appendChild(this.uploadingTemplate);
+  }
+
+
+  /**
+   * Fixes .toGeoJSON() bug
+   * @public
+   * @function
+   * @api
+   */
+  polygonFix(geojsonLayer) {
+    const newGeoJson = geojsonLayer;
+    const features = geojsonLayer.features;
+    features.forEach((feature, featIdx) => {
+      if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
+        const coordinates = feature.geometry.coordinates;
+        coordinates.forEach((polygon, polyIdx) => {
+          polygon.forEach((pointCoords, pointIdx) => {
+            if (pointCoords.length === 1) {
+              features[featIdx].geometry.coordinates[polyIdx][pointIdx] = pointCoords[0];
+            }
+          });
+        });
+      }
+    });
+    newGeoJson.features = features;
+    return newGeoJson;
+  }
+
+  /**
+   * Parses geojsonLayer removing last item on every coordinate (NaN)
+   * before converting the layer to kml.
+   * @public
+   * @function
+   * @api
+   * @param {*} geojsonLayer - geojson layer with drawn features
+   */
+  fixGeojsonKmlBug(geojsonLayer) {
+    const newGeojsonLayer = geojsonLayer;
+    const features = newGeojsonLayer.features;
+    features.forEach((feature) => {
+      feature.geometry.coordinates.forEach((coord) => {
+        if (feature.geometry.type === 'Polygon' &&
+          Number.isNaN(coord[0][coord[0].length - 1])) {
+          coord.map((c) => {
+            c.pop();
+            return c;
+          });
+        } else if (feature.geometry.type === 'MultiPolygon' &&
+          Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
+          coord.forEach((coordsArray) => {
+            coordsArray.map((c) => {
+              c.pop();
+              return c;
+            });
+          });
+        }
+      });
+    });
+
+    newGeojsonLayer.features = features;
+    return newGeojsonLayer;
+  }
+
+  /**
+   * Parses geojson before shp download.
+   * Changes geometry type to simple when necessary and removes one pair of brackets.
+   * @public
+   * @function
+   * @api
+   * @param {*} geojsonLayer - geojson layer with drawn and uploaded features
+   */
+  parseGeojsonForShp(geojsonLayer) {
+    const newGeoJson = geojsonLayer;
+    newGeoJson.features = newGeoJson.features.map((feature) => {
+      const newFeature = feature;
+      const type = newFeature.geometry.type;
+      const coordinates = newFeature.geometry.coordinates;
+      if (coordinates[0].length === 1) {
+        coordinates[0] = coordinates[0][0];
+        switch (type) {
+          case 'MultiPolygon':
+            newFeature.geometry.type = 'Polygon';
+            break;
+          case 'MultiLineString':
+            newFeature.geometry.type = 'LineString';
+            break;
+          case 'MultiPoint':
+            newFeature.geometry.type = 'Point';
+            break;
+          default:
+        }
+      }
+      return newFeature;
+    });
+    return newGeoJson;
+  }
+
+  newNoTextLayer() {
+    const newLayer = new M.layer.Vector({ name: 'copia' });
+    const noTextFeatures = this.drawLayer.getFeatures().filter((feature) => {
+      // eslint-disable-next-line no-underscore-dangle
+      return feature.getStyle().options_.label === undefined;
+    });
+    newLayer.addFeatures(noTextFeatures);
+    return newLayer;
   }
 
   /**
@@ -863,11 +1126,17 @@ export default class GeometryDrawControl extends M.Control {
    */
   downloadLayer() {
     const downloadFormat = this.downloadingTemplate.querySelector('select').value;
-    const olFeatures = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
-    const geojsonLayer = this.drawLayer.toGeoJSON();
+    // Creates new vector layer with no text features for downloading
+    const noTextLayer = this.newNoTextLayer();
+    noTextLayer.setVisible(false);
+    this.map.addLayers(noTextLayer);
+    const geojsonLayer = this.polygonFix(noTextLayer.toGeoJSON());
+    this.map.removeLayers(noTextLayer);
     let arrayContent;
     let mimeType;
     let extensionFormat;
+
+    // Delete text features
 
     switch (downloadFormat) {
       case 'geojson':
@@ -876,11 +1145,13 @@ export default class GeometryDrawControl extends M.Control {
         extensionFormat = 'geojson';
         break;
       case 'kml':
-        arrayContent = tokml(geojsonLayer);
+        const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
+        arrayContent = tokml(fixedGeojsonLayer);
         mimeType = 'xml';
         extensionFormat = 'kml';
         break;
-      case 'gml':
+      case 'gml': // FIXME: barely works when downloading an uploaded layer
+        const olFeatures = this.drawLayer.getImpl().getOL3Layer().getSource().getFeatures();
         arrayContent = this.getImpl().getGML({
           olFeatures,
           epsg: 'EPSG:3857',
@@ -891,7 +1162,7 @@ export default class GeometryDrawControl extends M.Control {
         extensionFormat = 'gml';
         break;
       case 'shp':
-        const json = geojsonLayer;
+        const json = this.parseGeojsonForShp(geojsonLayer);
         const options = {
           folder: this.layer,
           types: {
@@ -900,6 +1171,8 @@ export default class GeometryDrawControl extends M.Control {
             line: this.layer,
           },
         };
+        // this makes the first feature work:
+        // json = JSON.parse(JSON.stringify(json).replace(/MultiPolygon/g, 'Polygon'));
         shpWrite.download(json, options);
         break;
       default:
@@ -934,14 +1207,17 @@ export default class GeometryDrawControl extends M.Control {
     this.feature = undefined;
     this.geometry = undefined;
     this.selectionLayer.removeFeatures([this.emphasis]);
-    if (document.querySelector('#drawingtools>#featureInfo') !== null) {
-      document.querySelector('#drawingtools>#featureInfo').style.display = 'none';
+    if (document.querySelector('#drawingtools #featureInfo') !== null) {
+      document.querySelector('#drawingtools #featureInfo').style.display = 'none';
     }
     if (document.querySelector('#otherBtns>#edit') !== null) {
       document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
     }
     if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
       document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
+    }
+    if (document.querySelector('#geometrydraw-uploading') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(this.uploadingTemplate);
     }
   }
 
@@ -952,12 +1228,14 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   deleteSingleFeature() {
+    const editionMode = this.isEditionActive;
     this.drawLayer.removeFeatures([this.feature]);
     this.feature = undefined;
     this.geometry = undefined;
     this.selectionLayer.removeFeatures([this.emphasis]);
+    this.deactivateDrawing();
     this.getImpl().deactivateSelection();
-    this.getImpl().activateSelection();
+    if (editionMode) this.getImpl().activateSelection();
   }
 
   /**
@@ -968,7 +1246,7 @@ export default class GeometryDrawControl extends M.Control {
    * @param {*} feature - Mapea feature
    */
   getFeatureThickness(feature) {
-    if (feature.getGeometry().type === 'Point') {
+    if (feature.getGeometry().type === 'Point' || feature.getGeometry().type === 'MultiPoint') {
       return feature.getStyle().get('radius');
     }
     return feature.getStyle().get('stroke.width');
@@ -982,23 +1260,11 @@ export default class GeometryDrawControl extends M.Control {
    * @param {*} feature - Mapea feature
    */
   getFeatureColor(feature) {
-    if (feature.getGeometry().type === 'Point') {
+    if (feature.getGeometry().type === 'Point' || feature.getGeometry().type === 'MultiPoint') {
       return feature.getStyle().get('fill.color');
     }
     return feature.getStyle().get('stroke.color');
   }
-
-  // /**
-  //  * Gets given feature label.
-  //  * @public
-  //  * @function
-  //  * @api
-  //  * @param {*} feature - Mapea feature
-  //  */
-  // getFeatureText(feature) {
-  //   return feature.getStyle().get('label.text') || '';
-  // }
-
 
   /**
    * This function compares controls
@@ -1010,5 +1276,76 @@ export default class GeometryDrawControl extends M.Control {
    */
   equals(control) {
     return control instanceof GeometryDrawControl;
+  }
+
+  /* Layer upload */
+
+  changeFile(evt, file) {
+    this.file_ = file;
+    this.loadBtn_.setAttribute('disabled', 'disabled');
+    if (!M.utils.isNullOrEmpty(file)) {
+      if (file.size > 20971520) {
+        M.dialog.info('El fichero seleccionado sobrepasa el máximo de 20 MB permitido.');
+        this.file_ = null;
+        document.querySelector('#fileInfo').innerHTML = '';
+      } else {
+        this.loadBtn_.removeAttribute('disabled');
+        document.querySelector('#fileInfo').innerHTML = `Fichero seleccionado: ${file.name}`;
+      }
+    }
+  }
+
+  /**
+   * Loads vector layer features on __draw__ (Mapea) layer.
+   * @public
+   * @function
+   * @api
+   */
+  loadLayer() {
+    // eslint-disable-next-line no-bitwise
+    const fileExt = this.file_.name.slice((this.file_.name.lastIndexOf('.') - 1 >>> 0) + 2);
+    const fileReader = new window.FileReader();
+    fileReader.addEventListener('load', (e) => {
+      try {
+        let features = [];
+        if (fileExt === 'zip') {
+          // In case of shp group, this unites features
+          const geojsonArray = [].concat(shp.parseZip(fileReader.result));
+          geojsonArray.forEach((geojson) => {
+            const localFeatures = this.getImpl()
+              .loadGeoJSONLayer(geojson);
+            if (localFeatures) {
+              features = features.concat(localFeatures);
+            }
+          });
+        } else if (fileExt === 'kml') {
+          features = this.getImpl()
+            .loadKMLLayer(fileReader.result, false);
+        } else if (fileExt === 'gpx') {
+          features = this.getImpl()
+            .loadGPXLayer(fileReader.result);
+        } else if (fileExt === 'geojson') {
+          features = this.getImpl()
+            .loadGeoJSONLayer(fileReader.result);
+        } else {
+          M.dialog.error('Error al cargar el fichero.');
+          return;
+        }
+        if (!features.length) {
+          M.dialog.info('No se han detectado geometrías en este fichero.');
+        } else {
+          this.getImpl().centerFeatures(features);
+        }
+      } catch (error) {
+        M.dialog.error('Error al cargar el fichero. Compruebe que se trata del fichero correcto.');
+      }
+    });
+    if (fileExt === 'zip') {
+      fileReader.readAsArrayBuffer(this.file_);
+    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson') {
+      fileReader.readAsText(this.file_);
+    } else {
+      M.dialog.error('No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX y GeoJSON.');
+    }
   }
 }

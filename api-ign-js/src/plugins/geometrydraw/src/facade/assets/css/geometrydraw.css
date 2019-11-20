@@ -63,7 +63,7 @@ div.m-panel.m-geometrydraw>div#textdrawtools {
 /* Text options */
 
 div.m-panel.m-geometrydraw>div#textdrawtools {
-    padding: 0 35px 20px;
+    padding: 20px 35px;
 }
 
 div.m-panel.m-geometrydraw>div#textdrawtools>div {
@@ -71,6 +71,7 @@ div.m-panel.m-geometrydraw>div#textdrawtools>div {
     flex-direction: row;
     height: 30px;
     margin: 10px;
+    margin-left: 30px;
     position: relative;
 }
 
@@ -98,21 +99,10 @@ div.m-panel.m-geometrydraw>div#textdrawtools>div>input#fontSize {
     width: 45px;
 }
 
-/* div.m-panel.m-geometrydraw>div#textdrawtools>div>label {
-    line-height: 50px;
-    display: inline;
-    margin: 20px 10px;
-} */
-
-/* div.m-panel.m-geometrydraw>div#textdrawtools>div>input,
-div.m-panel.m-geometrydraw>div#textdrawtools>div>select {
-    line-height: 15px;
-} */
-
-/* div.m-panel.m-geometrydraw>div#textdrawtools>div>input,
-div.m-panel.m-geometrydraw>div#textdrawtools>div>select {
-    margin-left: 50px;
-} */
+div.m-panel.m-geometrydraw>div#drawingtools>div {
+    margin: 0 auto;
+    width: 225px;
+}
 
 div.m-panel.m-geometrydraw>div#drawingtools input#featureName {
     margin-top: 10px;
@@ -127,29 +117,12 @@ div.m-panel.m-geometrydraw>div#drawingtools #featureInfo {
     text-align: center;
 }
 
-/* div#drawingtools>div>input#thicknessSelector,
-div.m-panel.m-geometrydraw>div#textdrawtools>div>input#fontSize {
-    text-align: center;
-    width: 30px;
-}
- 
-
-div.m-panel.m-geometrydraw>div#textdrawtools>div>label#colorLabel {
-    width: 90px;
-}
-
-div.m-panel.m-geometrydraw>div#textdrawtools>div>label#sizeLabel {
-    width: 105px;
-}
-
-div.m-panel.m-geometrydraw>div#textdrawtools>div>label#fontLabel {
-    width: 145px;
-} */
-
 /* Buttons */
 
-div#drawingtools>button,
-div#textdrawtools button {
+div#drawingtools button,
+div#textdrawtools button,
+div#geometrydraw-uploading button,
+div#geometrydraw-uploading>label {
     background-color: #71a7d3;
     border: none;
     border-radius: 5px;
@@ -160,7 +133,7 @@ div#textdrawtools button {
 
 div.m-panel.m-geometrydraw.opened,
 div.m-panel.m-geometrydraw>div.m-panel-controls {
-    width: 305px;
+    width: 350px;
 }
 
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-control.m-container.m-geometrydraw>div#geometryBtns,
@@ -183,51 +156,78 @@ div.m-areas>div.m-area.m-right>div.m-panel.m-geometrydraw>button.m-panel-btn {
     left: -40px;
 }
 
-/* Icon font */
-/* div.m-panel.m-geometrydraw label {
-    font-weight: bold;
-    margin-right: 5px;
+/* Upload panel */
+
+.m-panel.m-geometrydraw.opened>#geometrydraw-uploading {
+    padding: 10px 20px 20px;
 }
 
-div#linestyleselect {
-    margin: 10px;
-    margin-left: 0;
+.m-panel.m-geometrydraw.opened>#geometrydraw-uploading div#loadButton {
+    display: flex;
+    align-items: center;
 }
 
-#linestyleselect select#lineStyle option {
-    background-image: url('../images/lines-arrows.png');
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAB0CAYAAADAUH2QAAABZElEQVR4nO3c0W7DIAwFUP//T9O3DDog6TTVbnOOdF8AWX6xspW00eDmImK998Y+oKSIOPJrL6EfKKUfkOdBidmmiBxJb0CkbhKfbFDCbDCOvcS+oITZYBx7Cf1AKbPB6PYAAAAAAAAAgB9vvNGHssLLijD3PBz9kBgQbm01HF0KfClFpG7SGxCpm+xHHGQyIHBiNRyt+ScdWmubj3kBAAAAAAAAgF7i7T6kCy8rwpoBgY3TAblwQOTOSW9ApG6yH3GQyYDAhgGBjQt/ZgEAAAAAAAAAg/w3JkXqJr0BkcoBAAAAAAAAAAbLa/arP4/inHNffK58g845l3kOAAAAAAAAABgsr+GtWbNWqxlr1qqtAQAAAAAAAACDdjWza/ndunrqfUG98g2qp15mPQAAAAAAAABg8NL1/Cx/vepXT70PqFe+QfXUy6wHAAAAAAAAAAz+7Wr+bE199T+wfnoD6qtftv4DbAfqNEb06EEAAAAASUVORK5CYII=);
-    background-position: left 0;
-} */
+div#geometrydraw-uploading>input {
+    display: none;
+}
+
+div#geometrydraw-uploading>label {
+    display: block;
+    width: 127px;
+}
+
+/* Firefox fix */
+
+@-moz-document url-prefix() {
+
+    #drawingtools #styleOptions input#colorSelector,
+    #textdrawtools input#fontColor {
+        height: 25px;
+        padding: 0;
+        width: 45px;
+    }
+
+    #thicknessSelector {
+        /* -moz-appearance: textfield; */
+        width: 30px;
+    }
+}
 
 /* Toolbar icons font */
 
 @font-face {
     font-family: 'geometrydraw';
-    src: url('../fonts/geometrydraw.eot?924fud');
-    src: url('../fonts/geometrydraw.eot?924fud#iefix') format('embedded-opentype'),
-        url('../fonts/geometrydraw.ttf?924fud') format('truetype'),
-        url('../fonts/geometrydraw.woff?924fud') format('woff'),
-        url('../fonts/geometrydraw.svg?924fud#geometrydraw') format('svg');
+    src: url('../fonts/geometrydraw.eot?7ozhzm');
+    src: url('../fonts/geometrydraw.eot?7ozhzm#iefix') format('embedded-opentype'),
+        url('../fonts/geometrydraw.ttf?7ozhzm') format('truetype'),
+        url('../fonts/geometrydraw.woff?7ozhzm') format('woff'),
+        url('../fonts/geometrydraw.svg?7ozhzm#geometrydraw') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
 }
 
-/* [class^="geometrydraw-"],
-[class*=" geometrydraw-"] */
 div.m-geometrydraw>div#geometryBtns>button,
 div.m-geometrydraw>div#otherBtns>button,
-.m-areas>div.m-area>div.m-panel>button.m-panel-btn.geometrydraw-editar {
+.m-areas>div.m-area>div.m-panel>button.m-panel-btn.geometrydraw-editar,
+[class^="geometrydraw-"],
+[class*=" geometrydraw-"] {
     font-family: 'geometrydraw' !important;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.geometrydraw-subir:before {
+    content: "\e1510";
+}
+
+.geometrydraw-font:before {
+    content: "\e1511";
 }
 
 .geometrydraw-mover-punto:before {
@@ -250,22 +250,10 @@ div.m-geometrydraw>div#otherBtns>button,
     content: "\e1504";
 }
 
-.geometrydraw-mano:before {
-    content: "\e1505";
-}
-
-.geometrydraw-lineas:before {
-    content: "\e1502";
-}
-
 .geometrydraw-linea:before {
     content: "\e1507";
 }
 
 .geometrydraw-descargar:before {
     content: "\e1506";
-}
-
-.geometrydraw-comentarios:before {
-    content: "\e1509";
 }
