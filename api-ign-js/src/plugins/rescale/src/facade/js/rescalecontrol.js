@@ -64,43 +64,6 @@ export default class RescaleControl extends M.Control {
   }
 
   /**
-   * This function is called on the control activation
-   *
-   * @public
-   * @function
-   * @api stable
-   */
-  activate() {
-    super.activate();
-    this.getImpl().activateClick(this.map_);
-  }
-
-  /**
-   * This function is called on the control deactivation
-   *
-   * @public
-   * @function
-   * @api stable
-   */
-  deactivate() {
-    super.deactivate();
-    this.getImpl().deactivateClick(this.map_);
-  }
-
-
-  /**
-   * This function gets activation button
-   *
-   * @public
-   * @function
-   * @param {HTML} html of control
-   * @api stable
-   */
-  getActivationButton(html) {
-    return html.querySelector('.m-rescale button');
-  }
-
-  /**
    * This function compares controls
    *
    * @public

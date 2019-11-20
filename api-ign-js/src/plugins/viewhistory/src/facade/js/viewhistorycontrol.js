@@ -105,40 +105,6 @@ export default class ViewHistoryControl extends M.Control {
   }
 
   /**
-   * This function is called on the control activation
-   *
-   * @public
-   * @function
-   * @api stable
-   */
-  activate() {
-    super.activate();
-  }
-
-  /**
-   * This function is called on the control deactivation
-   *
-   * @public
-   * @function
-   * @api stable
-   */
-  deactivate() {
-    super.deactivate();
-  }
-
-  /**
-   * This function gets activation button
-   *
-   * @public
-   * @function
-   * @param {HTML} html of control
-   * @api stable
-   */
-  getActivationButton(html) {
-    return html.querySelector('.m-viewhistory button');
-  }
-
-  /**
    * This function compares controls
    *
    * @public
