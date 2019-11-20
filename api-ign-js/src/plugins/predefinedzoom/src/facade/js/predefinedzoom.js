@@ -3,6 +3,7 @@
  */
 import 'assets/css/predefinedzoom';
 import PredefinedZoomControl from './predefinedzoomcontrol';
+import api from '../../api';
 
 export default class PredefinedZoom extends M.Plugin {
   /**
@@ -40,7 +41,7 @@ export default class PredefinedZoom extends M.Plugin {
 
     /**
      * Bbox entered by user.
-     * @private
+     * @public
      * @type {Array<Object>} [ {name, bbox}, {...} ]
      */
     this.savedZooms = options.savedZooms;
@@ -65,6 +66,13 @@ export default class PredefinedZoom extends M.Plugin {
      * @type {String}
      */
     this.boxes = options.boxes || [];
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -86,18 +94,6 @@ export default class PredefinedZoom extends M.Plugin {
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-  }
-
-  /**
-   * Gets the API REST Parameters of the plugin
-   *
-   * @function
-   * @public
-   * @api
-   */
-  getAPIRest() {
-    const zooms = this.savedZooms === undefined ? `${this.names}*${this.boxes}` : this.turnZoomsIntoUrl();
-    return `${this.name}=${this.position_}*${zooms}`;
   }
 
   /**
@@ -151,5 +147,40 @@ export default class PredefinedZoom extends M.Plugin {
     });
 
     return myZooms;
+  }
+
+  /**
+   * Gets the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    const zooms = this.savedZooms === undefined ? `${this.names}*${this.boxes}` : this.turnZoomsIntoUrl();
+    return `${this.name}=${this.position_}*${zooms}`;
+  }
+
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    [this.map_, this.control_, this.panel_] = [null, null, null];
   }
 }
