@@ -964,22 +964,22 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   polygonFix(geojsonLayer) {
-    const newGeoJson = geojsonLayer;
-    const features = geojsonLayer.features;
-    features.forEach((feature, featIdx) => {
-      if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
-        const coordinates = feature.geometry.coordinates;
-        coordinates.forEach((polygon, polyIdx) => {
-          polygon.forEach((pointCoords, pointIdx) => {
-            if (pointCoords.length === 1) {
-              features[featIdx].geometry.coordinates[polyIdx][pointIdx] = pointCoords[0];
-            }
-          });
-        });
-      }
-    });
-    newGeoJson.features = features;
-    return newGeoJson;
+    // const newGeoJson = geojsonLayer;
+    // const features = geojsonLayer.features;
+    // features.forEach((feature, featIdx) => {
+    //   if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
+    //     const coordinates = feature.geometry.coordinates;
+    //     coordinates.forEach((polygon, polyIdx) => {
+    //       polygon.forEach((pointCoords, pointIdx) => {
+    //         if (pointCoords.length === 1) {
+    //           features[featIdx].geometry.coordinates[polyIdx][pointIdx] = pointCoords[0];
+    //         }
+    //       });
+    //     });
+    //   }
+    // });
+    // newGeoJson.features = features;
+    // return newGeoJson;
   }
 
   /**
@@ -991,30 +991,30 @@ export default class GeometryDrawControl extends M.Control {
    * @param {*} geojsonLayer - geojson layer with drawn features
    */
   fixGeojsonKmlBug(geojsonLayer) {
-    const newGeojsonLayer = geojsonLayer;
-    const features = newGeojsonLayer.features;
-    features.forEach((feature) => {
-      feature.geometry.coordinates.forEach((coord) => {
-        if (feature.geometry.type === 'Polygon' &&
-          Number.isNaN(coord[0][coord[0].length - 1])) {
-          coord.map((c) => {
-            c.pop();
-            return c;
-          });
-        } else if (feature.geometry.type === 'MultiPolygon' &&
-          Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
-          coord.forEach((coordsArray) => {
-            coordsArray.map((c) => {
-              c.pop();
-              return c;
-            });
-          });
-        }
-      });
-    });
+    // const newGeojsonLayer = geojsonLayer;
+    // const features = newGeojsonLayer.features;
+    // features.forEach((feature) => {
+    //   feature.geometry.coordinates.forEach((coord) => {
+    //     if (feature.geometry.type === 'Polygon' &&
+    //       Number.isNaN(coord[0][coord[0].length - 1])) {
+    //       coord.map((c) => {
+    //         c.pop();
+    //         return c;
+    //       });
+    //     } else if (feature.geometry.type === 'MultiPolygon' &&
+    //       Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
+    //       coord.forEach((coordsArray) => {
+    //         coordsArray.map((c) => {
+    //           c.pop();
+    //           return c;
+    //         });
+    //       });
+    //     }
+    //   });
+    // });
 
-    newGeojsonLayer.features = features;
-    return newGeojsonLayer;
+    // newGeojsonLayer.features = features;
+    // return newGeojsonLayer;
   }
 
   /**
@@ -1026,29 +1026,29 @@ export default class GeometryDrawControl extends M.Control {
    * @param {*} geojsonLayer - geojson layer with drawn and uploaded features
    */
   parseGeojsonForShp(geojsonLayer) {
-    const newGeoJson = geojsonLayer;
-    newGeoJson.features = newGeoJson.features.map((feature) => {
-      const newFeature = feature;
-      const type = newFeature.geometry.type;
-      const coordinates = newFeature.geometry.coordinates;
-      if (coordinates[0].length === 1) {
-        coordinates[0] = coordinates[0][0];
-        switch (type) {
-          case 'MultiPolygon':
-            newFeature.geometry.type = 'Polygon';
-            break;
-          case 'MultiLineString':
-            newFeature.geometry.type = 'LineString';
-            break;
-          case 'MultiPoint':
-            newFeature.geometry.type = 'Point';
-            break;
-          default:
-        }
-      }
-      return newFeature;
-    });
-    return newGeoJson;
+    // const newGeoJson = geojsonLayer;
+    // newGeoJson.features = newGeoJson.features.map((feature) => {
+    //   const newFeature = feature;
+    //   const type = newFeature.geometry.type;
+    //   const coordinates = newFeature.geometry.coordinates;
+    //   if (coordinates[0].length === 1) {
+    //     coordinates[0] = coordinates[0][0];
+    //     switch (type) {
+    //       case 'MultiPolygon':
+    //         newFeature.geometry.type = 'Polygon';
+    //         break;
+    //       case 'MultiLineString':
+    //         newFeature.geometry.type = 'LineString';
+    //         break;
+    //       case 'MultiPoint':
+    //         newFeature.geometry.type = 'Point';
+    //         break;
+    //       default:
+    //     }
+    //   }
+    //   return newFeature;
+    // });
+    // return newGeoJson;
   }
 
   newNoTextLayer() {
@@ -1074,7 +1074,8 @@ export default class GeometryDrawControl extends M.Control {
     const noTextLayer = this.newNoTextLayer();
     noTextLayer.setVisible(false);
     this.map.addLayers(noTextLayer);
-    const geojsonLayer = this.polygonFix(noTextLayer.toGeoJSON());
+    // const geojsonLayer = this.polygonFix(noTextLayer.toGeoJSON());
+    const geojsonLayer = this.toGeoJSON(noTextLayer); // noTextLayer.toGeoJSON();
     this.map.removeLayers(noTextLayer);
     let arrayContent;
     let mimeType;
@@ -1089,13 +1090,15 @@ export default class GeometryDrawControl extends M.Control {
         extensionFormat = 'geojson';
         break;
       case 'kml':
-        const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
-        arrayContent = tokml(fixedGeojsonLayer);
+        // const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
+        // arrayContent = tokml(fixedGeojsonLayer);
+        arrayContent = tokml(geojsonLayer);
         mimeType = 'xml';
         extensionFormat = 'kml';
         break;
       case 'shp':
-        const json = this.parseGeojsonForShp(geojsonLayer);
+        // const json = this.parseGeojsonForShp(geojsonLayer);
+        const json = geojsonLayer;
         const options = {
           folder: fileName,
           types: {
@@ -1267,7 +1270,7 @@ export default class GeometryDrawControl extends M.Control {
           M.dialog.error('Error al cargar el fichero.');
           return;
         }
-        if (!features.length) {
+        if (features.length === 0) {
           M.dialog.info('No se han detectado geometrías en este fichero.');
         } else {
           this.getImpl().centerFeatures(features);
@@ -1314,5 +1317,79 @@ export default class GeometryDrawControl extends M.Control {
       }
     });
     return parsedFeatures;
+  }
+
+  /* TO GEOJSON WITH BUG FIXED */
+
+  /**
+   * This function gets the geojson representation of the layer
+   * @function
+   * @api
+   */
+  toGeoJSON(layer) {
+    const code = this.map_.getProjection().code;
+    const featuresAsJSON = layer.getFeatures().map(feature => feature.getGeoJSON());
+    return { type: 'FeatureCollection', features: this.geojsonTo4326(featuresAsJSON, code) };
+  }
+
+  /**
+   * Creates GeoJSON feature from a previous feature and a new set of coordinates.
+   * @public
+   * @function
+   * @api
+   * @param {GeoJSON Feature} previousFeature
+   * @param {Array} coordinates
+   */
+  createGeoJSONFeature(previousFeature, coordinates) {
+    return {
+      ...previousFeature,
+      geometry: {
+        type: previousFeature.geometry.type,
+        coordinates,
+      },
+    };
+  }
+
+  /**
+   * Converts features coordinates on geojson format to 4326.
+   */
+  geojsonTo4326(featuresAsJSON, codeProjection) {
+    const transformFunction = ol.proj.getTransform(codeProjection, 'EPSG:4326');
+    const jsonResult = [];
+    // let jsonFeature = {};
+    featuresAsJSON.forEach((featureAsJSON) => {
+      const coordinates = featureAsJSON.geometry.coordinates;
+      let newCoordinates;
+      // Point
+      if (this.isNumber(coordinates[0])) {
+        newCoordinates = transformFunction(coordinates);
+      } else if (this.isNumber(coordinates[0][0])) { // Line
+        newCoordinates = coordinates;
+        newCoordinates = newCoordinates.map((dot) => { return transformFunction(dot); });
+      } else { // Polygon
+        newCoordinates = coordinates.map((polygonLine) => {
+          return polygonLine.map((dot) => { return transformFunction(dot); });
+        });
+      }
+      const jsonFeature = this.createGeoJSONFeature(featureAsJSON, newCoordinates);
+      jsonResult.push(jsonFeature);
+    });
+    return jsonResult;
+  }
+
+  /**
+   * Check whether the value is a JavaScript number.
+   *
+   * First checks typeof, then self-equality to make sure it is
+   * not NaN, then Number.isFinite() to check for Infinity.
+   *
+   * @param {*} value - The value to check
+   * @return {boolean} Whether that value is a number
+   */
+  isNumber(value) {
+    if (typeof value !== 'number') return false;
+    if (value !== Number(value)) return false;
+    if (Number.isFinite(value) === false) return false;
+    return true;
   }
 }
