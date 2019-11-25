@@ -1018,7 +1018,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   parseGeojsonForShp(geojsonLayer) {
     const newGeoJson = geojsonLayer;
-    newGeoJson.features = [];
+    const newFeatures = [];
 
     geojsonLayer.features.forEach((multiFeature) => {
       multiFeature.geometry.coordinates.forEach((simpleFeatureCoordinates) => {
@@ -1036,10 +1036,10 @@ export default class GeometryDrawControl extends M.Control {
             break;
           default:
         }
-        newGeoJson.features.push(newFeature);
+        newFeatures.push(newFeature);
       });
     });
-
+    newGeoJson.features = newFeatures;
     return newGeoJson;
   }
 
