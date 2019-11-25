@@ -296,9 +296,9 @@ export default class GeometryDrawControl extends M.impl.Control {
       if ((features.length === 1) && (features[0].getGeometry().type === 'Point')) {
         const pointView = new ol.View({
           center: features[0].getGeometry().coordinates,
-          zoom: 20,
+          zoom: 15,
         });
-        this.facadeMap_.getMapImpl.setView(pointView);
+        this.facadeMap_.getMapImpl().setView(pointView);
       } else {
         const extent = M.impl.utils.getFeaturesExtent(features);
         this.facadeMap_.getMapImpl().getView().fit(extent, {
