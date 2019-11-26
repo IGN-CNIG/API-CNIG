@@ -228,6 +228,22 @@ export default class GeometryDrawControl extends M.impl.Control {
     return features;
   }
 
+  removeAutomaticAltitude(source, features) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(source, 'text/xml');
+    const coordinateSet = xmlDoc.getElementsByTagName('coordinates')[0];
+    const coordinateArray = coordinateSet.innerHTML.split(',');
+    const containsAltitude = coordinateArray.length > 2;
+    if (containsAltitude === false) {
+      features.forEach((feature) => {
+        while (feature.getGeometry().flatCoordinates.length > 2) {
+          feature.getGeometry().flatCoordinates.pop();
+          // FIXME: works for points only? insert geojsonTo3426 switch here
+        }
+      });
+    }
+  }
+
   /**
    * Loads KML layer
    * @public
@@ -239,6 +255,8 @@ export default class GeometryDrawControl extends M.impl.Control {
   loadKMLLayer(source, extractStyles) {
     let features = new ol.format.KML({ extractStyles })
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
+
+    // this.removeAutomaticAltitude(source, features); TODO: todo?
 
     features = features.map((feature) => {
       return M.impl.Feature.olFeature2Facade(feature);

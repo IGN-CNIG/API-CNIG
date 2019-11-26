@@ -1021,24 +1021,39 @@ export default class GeometryDrawControl extends M.Control {
     const newFeatures = [];
 
     geojsonLayer.features.forEach((multiFeature) => {
-      multiFeature.geometry.coordinates.forEach((simpleFeatureCoordinates) => {
-        const newFeature = multiFeature;
-        newFeature.geometry.coordinates = simpleFeatureCoordinates;
-        switch (multiFeature.geometry.type) {
-          case 'MultiPoint':
-            newFeature.geometry.type = 'Point';
-            break;
-          case 'MultiLineString':
-            newFeature.geometry.type = 'LineString';
-            break;
-          case 'MultiPolygon':
-            newFeature.geometry.type = 'Polygon';
-            break;
-          default:
-        }
-        newFeatures.push(newFeature);
-      });
+      const featureType = multiFeature.geometry.type;
+      const newFeature = {
+        type: 'Feature',
+        id: multiFeature.id,
+        geometry: {
+          type: featureType,
+          coordinates: multiFeature.geometry.coordinates,
+        },
+        properties: {},
+      };
+      if (featureType.match(/^Multi/)) {
+        multiFeature.geometry.coordinates.forEach((simpleFeatureCoordinates, idx) => {
+          newFeature.id = `${multiFeature.id}${idx}`;
+          newFeature.geometry.coordinates = simpleFeatureCoordinates;
+          switch (featureType) {
+            case 'MultiPoint':
+              newFeature.geometry.type = 'Point';
+              break;
+            case 'MultiLineString':
+              newFeature.geometry.type = 'LineString';
+              break;
+            case 'MultiPolygon':
+              newFeature.geometry.type = 'Polygon';
+              break;
+            default:
+          }
+          newFeatures.push(newFeature);
+        });
+      } else {
+        newFeatures.push(multiFeature);
+      }
     });
+
     newGeoJson.features = newFeatures;
     return newGeoJson;
   }
@@ -1341,42 +1356,99 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
+   * Given a coordinate set (x, y, altitude?), returns [x,y].
+   * @public
+   * @function
+   * @param {Array<Number>} coordinatesSet
+   */
+  getXY(coordinatesSet) {
+    const coordinateCopy = [];
+    for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
+    while (coordinateCopy.length > 2) coordinateCopy.pop();
+    return coordinateCopy;
+  }
+
+  // TODO: wrap transformfunction with this
+  getFullCoordinates(oldCoordinates, newXY) {
+    const newCoordinates = oldCoordinates;
+    newCoordinates[0] = newXY[0];
+    newCoordinates[1] = newXY[1];
+    return newCoordinates;
+  }
+
+  getTransformedCoordinates(codeProjection, oldCoordinates) {
+    const transformFunction = ol.proj.getTransform(codeProjection, 'EPSG:4326');
+    return this.getFullCoordinates(
+      oldCoordinates,
+      transformFunction(this.getXY(oldCoordinates)),
+    );
+  }
+
+  /**
    * Converts features coordinates on geojson format to 4326.
    */
   geojsonTo4326(featuresAsJSON, codeProjection) {
-    const transformFunction = ol.proj.getTransform(codeProjection, 'EPSG:4326');
     const jsonResult = [];
     // let jsonFeature = {};
     featuresAsJSON.forEach((featureAsJSON) => {
       const coordinates = featureAsJSON.geometry.coordinates;
-      let newCoordinates;
-
+      let newCoordinates = [];
       switch (featureAsJSON.geometry.type) {
         case 'Point':
-          newCoordinates = transformFunction(coordinates);
+          newCoordinates = this.getTransformedCoordinates(codeProjection, coordinates);
           break;
         case 'MultiPoint':
-          newCoordinates = coordinates.map((dot) => { return transformFunction(dot); });
+          for (let i = 0; i < coordinates.length; i += 1) {
+            const newDot = this
+              .getTransformedCoordinates(codeProjection, coordinates[i]);
+            newCoordinates.push(newDot);
+          }
           break;
         case 'LineString':
-          newCoordinates = coordinates.map((dot) => { return transformFunction(dot); });
+          for (let i = 0; i < coordinates.length; i += 1) {
+            const newDot = this.getTransformedCoordinates(
+              codeProjection,
+              coordinates[i],
+            );
+            newCoordinates.push(newDot);
+          }
           break;
         case 'MultiLineString':
-          newCoordinates = coordinates.map((line) => {
-            return line.map((dot) => { return transformFunction(dot); });
-          });
+          for (let i = 0; i < coordinates.length; i += 1) {
+            const newLine = [];
+            for (let j = 0; j < coordinates[i].length; j += 1) {
+              const newDot = this
+                .getTransformedCoordinates(codeProjection, coordinates[i][j]);
+              newLine.push(newDot);
+            }
+            newCoordinates.push(newLine);
+          }
           break;
         case 'Polygon':
-          newCoordinates = coordinates.map((polygonLine) => {
-            return polygonLine.map((dot) => { return transformFunction(dot); });
-          });
+          for (let i = 0; i < coordinates.length; i += 1) {
+            const newPoly = [];
+            for (let j = 0; j < coordinates[i].length; j += 1) {
+              const newDot = this
+                .getTransformedCoordinates(codeProjection, coordinates[i][j]);
+              newPoly.push(newDot);
+            }
+            newCoordinates.push(newPoly);
+          }
           break;
         case 'MultiPolygon':
-          newCoordinates = coordinates.map((multiPoly) => {
-            return multiPoly.map((poly) => {
-              return poly.map((dot) => { return transformFunction(dot); });
-            });
-          });
+          for (let i = 0; i < coordinates.length; i += 1) {
+            const newPolygon = [];
+            for (let j = 0; j < coordinates[i].length; j += 1) {
+              const newPolygonLine = [];
+              for (let k = 0; k < coordinates[i][j].length; k += 1) {
+                const newDot = this
+                  .getTransformedCoordinates(codeProjection, coordinates[i][j][k]);
+                newPolygonLine.push(newDot);
+              }
+              newPolygon.push(newPolygonLine);
+            }
+            newCoordinates.push(newPolygon);
+          }
           break;
         default:
       }
@@ -1392,6 +1464,8 @@ export default class GeometryDrawControl extends M.Control {
    * First checks typeof, then self-equality to make sure it is
    * not NaN, then Number.isFinite() to check for Infinity.
    *
+   * @public
+   * @function
    * @param {*} value - The value to check
    * @return {boolean} Whether that value is a number
    */
