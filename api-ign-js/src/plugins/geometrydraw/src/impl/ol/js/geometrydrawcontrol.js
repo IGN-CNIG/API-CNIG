@@ -31,6 +31,23 @@ export default class GeometryDrawControl extends M.impl.Control {
   }
 
   /**
+   * This function adds draw interaction to map.
+   * @public
+   * @function
+   * @api
+   */
+  addDrawInteraction() { // FIXME:
+    const olMap = this.facadeControl.map.getMapImpl();
+    this.draw = this.facadeControl.newDrawInteraction(this.vectorSource, this.geometry);
+    this.facadeControl.addDrawEvent();
+    olMap.addInteraction(this.draw);
+  }
+
+  removeDrawInteraction() { // FIXME:
+    this.facadeControl.map.getMapImpl().removeInteraction(this.draw);
+  }
+
+  /**
    * Creates new OpenLayers draw interaction
    * @public
    * @function
@@ -237,9 +254,8 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @api
    * @param {M.Featuer} mapeaFeature
    */
-  getFeatureExtent(mapeaFeature) {
-    // eslint-disable-next-line no-underscore-dangle
-    return mapeaFeature.getImpl().olFeature_.getGeometry().getExtent();
+  getFeatureExtent() {
+    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getExtent();
   }
 
   /**
