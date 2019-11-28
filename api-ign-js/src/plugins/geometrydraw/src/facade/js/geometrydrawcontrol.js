@@ -313,183 +313,67 @@ export default class GeometryDrawControl extends M.Control {
     html.querySelector('#edit').addEventListener('click', () => this.editBtnClick());
   }
 
-  // /**
-  //  * Hides tools menu.
-  //  * @param {*} property - isPointActive
-  //  * @param {*} idDraw - pointdrawing
-  //  * @param {*} geometry
-  //  */
-  // activationManager(property, idDraw, geometry) {
-  //   // if drawing is active
-  //   if (this[property]) {
-  //     this.geometry = undefined;
-  //     this[property] = false;
-  //     document.getElementById(idDraw).classList.remove('activeTool');
-  //   } else {
-  //     this[property] = true;
-  //     this.geometry = geometry;
-  //     document.getElementById(idDraw).classList.add('activeTool');
-
-  //     if (document.getElementById('drawingtools') !== null) {
-  //       document.getElementById('drawingtools').remove();
-  //     } else if (document.getElementById('textdrawtools') !== null) {
-  //       document.getElementById('textdrawtools').remove();
-  //     } else if (document.getElementById('geometrydraw-uploading') !== null) {
-  //       document.getElementById('geometrydraw-uploading').remove();
-  //     }
-  //     // insert active drawing options
-  //   }
-  // }
-
-  // /**
-  //  * Shows/hides tools template and
-  //  * adds/removes draw interaction.
-  //  * @public
-  //  * @function
-  //  * @api
-  //  * @param {String} geometry - clicked button geometry type
-  //  */
-  // geometryBtnClick(geometry) {
-  //   if (this.isEditionActive) {
-  //     this.deactivateEdition();
-  //     document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
-  //   }
-
-  //   this.deactivateDrawing();
-
-  //   switch (geometry) {
-  //     case 'Point':
-  //       this.activationManager('isPointActive', 'pointdrawing', geometry);
-  //       break;
-  //     case 'LineString':
-  //       this.activationManager('isLineActive', 'linedrawing', geometry);
-  //       break;
-  //     case 'Polygon':
-  //       this.activationManager('isPolygonActive', 'polygondrawing', geometry);
-  //       break;
-  //     case 'Text':
-  //       this.activationManager('isTextActive', 'textdrawing', 'Point');
-  //       break;
-  //     default:
-  //   }
-
-  //   this.createDrawingTemplate();
-
-  //   if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
-  //     if (this.isTextActive) {
-  //       this.textDrawTemplate.querySelector('#textContent').value = '';
-  //       this.textDrawTemplate.querySelector('button').style.display = 'none';
-  //       document.querySelector('.m-geometrydraw').appendChild(this.textDrawTemplate);
-  //     } else {
-  //       this.drawingTools.querySelector('button').style.display = 'none';
-  //       document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
-  //     }
-
-  //     this.addDrawInteraction();
-
-  //     if (document.querySelector('#drawingtools #featureInfo') !== null) {
-  //       document.querySelector('#drawingtools #featureInfo').style.display = 'none';
-  //     }
-
-  //     if (document.querySelector('.m-geometrydraw>#downloadFormat')) {
-  //       document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
-  //     }
-  //   }
-  // }
-
-  geometryBtnClick(geometry) {
-    let lastBtnState;
-    if (geometry === 'Point') {
-      lastBtnState = this.isPointActive;
-    } else if (geometry === 'LineString') {
-      lastBtnState = this.isLineActive;
-    } else if (geometry === 'Polygon') {
-      lastBtnState = this.isPolygonActive;
+  /**
+   * Hides tools menu.
+   * @param {*} property - isPointActive
+   * @param {*} idDraw - pointdrawing
+   * @param {*} geometry
+   */
+  activationManager(clickedGeometry, drawingDiv, geometry) {
+    // if drawing is active
+    if (this[clickedGeometry]) {
+      this.deactivateDrawing();
+      this.geometry = undefined;
+      this[clickedGeometry] = false;
+      document.getElementById(drawingDiv).classList.remove('activeTool');
     } else {
-      lastBtnState = this.isTextActive;
+      this.deactivateDrawing();
+      this[clickedGeometry] = true;
+      this.geometry = geometry;
+      document.getElementById(drawingDiv).classList.add('activeTool');
+
+      if (document.getElementById('drawingtools') !== null) {
+        document.getElementById('drawingtools').remove();
+      } else if (document.getElementById('textdrawtools') !== null) {
+        document.getElementById('textdrawtools').remove();
+      } else if (document.getElementById('geometrydraw-uploading') !== null) {
+        document.getElementById('geometrydraw-uploading').remove();
+      }
     }
+  }
+
+  /**
+   * Shows/hides tools template and
+   * adds/removes draw interaction.
+   * @public
+   * @function
+   * @api
+   * @param {String} geometry - clicked button geometry type
+   */
+  geometryBtnClick(geometry) {
     if (this.isEditionActive) {
       this.deactivateEdition();
       document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
     }
-    this.deactivateDrawing();
+
     switch (geometry) {
       case 'Point':
-        if (lastBtnState) {
-          this.geometry = undefined;
-          this.isPointActive = false;
-          document.getElementById('pointdrawing').classList.remove('activeTool');
-        } else {
-          this.isPointActive = true;
-          this.geometry = geometry;
-          document.getElementById('pointdrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtools') !== null) {
-            document.getElementById('drawingtools').remove();
-          } else if (document.getElementById('textdrawtools') !== null) {
-            document.getElementById('textdrawtools').remove();
-          } else if (document.getElementById('geometrydraw-uploading') !== null) {
-            document.getElementById('geometrydraw-uploading').remove();
-          }
-        }
+        this.activationManager('isPointActive', 'pointdrawing', geometry);
         break;
       case 'LineString':
-        if (lastBtnState) {
-          this.geometry = undefined;
-          this.isLineActive = false;
-          document.getElementById('linedrawing').classList.remove('activeTool');
-        } else {
-          this.isLineActive = true;
-          this.geometry = geometry;
-          document.getElementById('linedrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtools') !== null) {
-            document.getElementById('drawingtools').remove();
-          } else if (document.getElementById('textdrawtools') !== null) {
-            document.getElementById('textdrawtools').remove();
-          } else if (document.getElementById('geometrydraw-uploading') !== null) {
-            document.getElementById('geometrydraw-uploading').remove();
-          }
-        }
+        this.activationManager('isLineActive', 'linedrawing', geometry);
         break;
       case 'Polygon':
-        if (lastBtnState) {
-          this.geometry = undefined;
-          this.isPolygonActive = false;
-          document.getElementById('polygondrawing').classList.remove('activeTool');
-        } else {
-          this.isPolygonActive = true;
-          this.geometry = geometry;
-          document.getElementById('polygondrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtools') !== null) {
-            document.getElementById('drawingtools').remove();
-          } else if (document.getElementById('textdrawtools') !== null) {
-            document.getElementById('textdrawtools').remove();
-          } else if (document.getElementById('geometrydraw-uploading') !== null) {
-            document.getElementById('geometrydraw-uploading').remove();
-          }
-        }
+        this.activationManager('isPolygonActive', 'polygondrawing', geometry);
         break;
       case 'Text':
-        if (lastBtnState) {
-          this.geometry = undefined;
-          this.isTextActive = false;
-          document.getElementById('textdrawing').classList.remove('activeTool');
-        } else {
-          this.isTextActive = true;
-          this.geometry = 'Point';
-          document.getElementById('textdrawing').classList.add('activeTool');
-          if (document.getElementById('drawingtools') !== null) {
-            document.getElementById('drawingtools').remove();
-          } else if (document.getElementById('textdrawtools') !== null) {
-            document.getElementById('textdrawtools').remove();
-          } else if (document.getElementById('geometrydraw-uploading') !== null) {
-            document.getElementById('geometrydraw-uploading').remove();
-          }
-        }
+        this.activationManager('isTextActive', 'textdrawing', 'Point');
         break;
       default:
-        break;
     }
+
     this.createDrawingTemplate();
+
     if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
       if (this.isTextActive) {
         this.textDrawTemplate.querySelector('#textContent').value = '';
@@ -499,16 +383,18 @@ export default class GeometryDrawControl extends M.Control {
         this.drawingTools.querySelector('button').style.display = 'none';
         document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       }
+
       this.addDrawInteraction();
+
       if (document.querySelector('#drawingtools #featureInfo') !== null) {
         document.querySelector('#drawingtools #featureInfo').style.display = 'none';
       }
+
       if (document.querySelector('.m-geometrydraw>#downloadFormat')) {
         document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
       }
     }
   }
-
 
   /**
    * Checks if any drawing button is active and deactivates it,
@@ -1048,13 +934,29 @@ export default class GeometryDrawControl extends M.Control {
         this.deactivateEdition();
         document.querySelector('#otherBtns>#edit').classList.remove('activeTool');
       }
-      if (document.querySelector('#geometrydraw-uploading') !== null) {
-        document.querySelector('.m-geometrydraw').removeChild(this.uploadingTemplate);
-      }
+
+      this.cleanUploadTemplate();
+
       this.deactivateDrawing();
       document.querySelector('.m-geometrydraw').appendChild(this.downloadingTemplate);
     } else {
       M.dialog.info('La capa de dibujo está vacía.');
+    }
+  }
+
+  /**
+   * Removes upload template and reboots its options.
+   * @public
+   * @function
+   * @api
+   */
+  cleanUploadTemplate() {
+    if (document.querySelector('#geometrydraw-uploading') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(this.uploadingTemplate);
+      this.uploadingTemplate.querySelector('#geometrydraw-uploading>input').value = '';
+      this.uploadingTemplate.querySelector('#geometrydraw-uploading>p#fileInfo').innerHTML = '';
+      this.file_ = '';
+      this.loadBtn_.setAttribute('disabled', 'disabled');
     }
   }
 
@@ -1074,6 +976,7 @@ export default class GeometryDrawControl extends M.Control {
     }
     this.deactivateDrawing();
     document.querySelector('.m-geometrydraw').appendChild(this.uploadingTemplate);
+    this.loadBtn_.setAttribute('disabled', 'disabled');
   }
 
   /**
@@ -1182,40 +1085,13 @@ export default class GeometryDrawControl extends M.Control {
     return newGeoJson;
   }
 
-  // const features = originalFeature.geometry.coordinates
-  // .map((simpleFeatureCoordinates, idx) => {
-  //   let newFeature;
-  //   if (featureType.match(/^Multi/)) {
-  //     newFeature = {
-  //       type: 'Feature',
-  //       id: `${originalFeature.id}${idx}`,
-  //       geometry: {
-  //         type: '',
-  //         coordinates: simpleFeatureCoordinates,
-  //       },
-  //       properties: {},
-  //     };
-  //     switch (featureType) {
-  //       case 'MultiPoint':
-  //         newFeature.geometry.type = 'Point';
-  //         break;
-  //       case 'MultiLineString':
-  //         newFeature.geometry.type = 'LineString';
-  //         break;
-  //       case 'MultiPolygon':
-  //         newFeature.geometry.type = 'Polygon';
-  //         break;
-  //       default:
-  //     }
-  //   } else {
-  //     newFeature = originalFeature;
-  //   }
-  //   return newFeature;
-  // });
-
-  // newFeatures.push(...features);
-  //
-
+  /**
+   * Creates vector layer copy of __draw__ layer excluding text features.
+   * @public
+   * @function
+   * @api
+   * @returns {M.layer.Vector}
+   */
   newNoTextLayer() {
     const newLayer = new M.layer.Vector({ name: 'copia' });
     const noTextFeatures = this.drawLayer.getFeatures().filter((feature) => {
@@ -1235,7 +1111,6 @@ export default class GeometryDrawControl extends M.Control {
   downloadLayer() {
     const fileName = 'misgeometrias';
     const downloadFormat = this.downloadingTemplate.querySelector('select').value;
-    // Creates new vector layer with no text features for downloading
     const noTextLayer = this.newNoTextLayer();
     noTextLayer.setVisible(false);
     this.map.addLayers(noTextLayer);
@@ -1244,8 +1119,6 @@ export default class GeometryDrawControl extends M.Control {
     let arrayContent;
     let mimeType;
     let extensionFormat;
-
-    // Delete text features
 
     switch (downloadFormat) {
       case 'geojson':
@@ -1312,9 +1185,7 @@ export default class GeometryDrawControl extends M.Control {
     if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
       document.querySelector('.m-geometrydraw').removeChild(this.downloadingTemplate);
     }
-    if (document.querySelector('#geometrydraw-uploading') !== null) {
-      document.querySelector('.m-geometrydraw').removeChild(this.uploadingTemplate);
-    }
+    this.cleanUploadTemplate();
   }
 
   /**
