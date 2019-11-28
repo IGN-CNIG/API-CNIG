@@ -228,68 +228,6 @@ export default class GeometryDrawControl extends M.impl.Control {
     return features;
   }
 
-  removeAutomaticAltitude(source, features) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(source, 'text/xml');
-    const coordinateSet = xmlDoc.getElementsByTagName('coordinates')[0];
-    const coordinateArray = coordinateSet.innerHTML.split(',');
-    // FIXME: > 2 nein: multipoly [[[[x,y]]]]
-    const containsAltitude = coordinateArray.length > 2;
-    if (containsAltitude === false) {
-      features.forEach((feature) => {
-        switch (feature.getGeometry().getType()) {
-          case 'Point':
-            this.popCoordinate(feature.getGeometry().flatCoordinates);
-            break;
-          case 'MultiPoint':
-            break;
-          case 'LineString':
-            feature.getGeometry().setCoordinates(feature
-              .getGeometry().getCoordinates().map((point) => {
-                this.popCoordinate(point);
-                return point;
-              }));
-            break;
-          case 'MultiLineString':
-            break;
-          case 'Polygon':
-            feature.getGeometry().setCoordinates(feature
-              .getGeometry().getCoordinates().map((line) => {
-                return line.map((point) => {
-                  this.popCoordinate(point);
-                  return point;
-                });
-              }));
-            break;
-          case 'MultiPolygon':
-            feature.getGeometry().setCoordinates(feature
-              .getGeometry().getCoordinates().map((polygon) => {
-                return polygon.map((line) => {
-                  return line.map((point) => {
-                    this.popCoordinate(point);
-                    return point;
-                  });
-                });
-              }));
-            break;
-          default:
-        }
-      });
-    }
-  }
-
-  /**
-   * Deletes last coordinate from coordinate set until there's only 2.
-   * @public
-   * @function
-   * @param {Array<Number>} coordinateSet - [lon, lat, altitude?]
-   */
-  popCoordinate(coordinateSet) {
-    while (coordinateSet.length > 2) {
-      coordinateSet.pop();
-    }
-  }
-
   /**
    * Loads KML layer
    * @public
@@ -301,8 +239,6 @@ export default class GeometryDrawControl extends M.impl.Control {
   loadKMLLayer(source, extractStyles) {
     let features = new ol.format.KML({ extractStyles })
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
-
-    this.removeAutomaticAltitude(source, features);
 
     features = features.map((feature) => {
       return M.impl.Feature.olFeature2Facade(feature);
