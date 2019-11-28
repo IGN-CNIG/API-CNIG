@@ -3,6 +3,7 @@
  */
 import 'assets/css/geometrydraw';
 import GeometryDrawControl from './geometrydrawcontrol';
+import api from '../../api';
 
 export default class GeometryDraw extends M.Plugin {
   /**
@@ -53,6 +54,20 @@ export default class GeometryDraw extends M.Plugin {
      */
     this.collapsible_ = options.collapsible;
     if (this.collapsible_ === undefined) this.collapsible_ = true;
+
+    /**
+     * Name of the plugin
+     * @private
+     * @type {String}
+     */
+    this.name_ = 'geometrydraw';
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -86,6 +101,29 @@ export default class GeometryDraw extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}`;
+    return `${this.name_}=${this.position_}*${this.collapsed_}*${this.collapsible_}`;
+  }
+
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    [this.map_, this.control_, this.panel_] = [null, null, null];
   }
 }

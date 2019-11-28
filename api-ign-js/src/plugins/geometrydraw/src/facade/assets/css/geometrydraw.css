@@ -18,6 +18,11 @@ div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
 }
 
 
+/* style fix for left positions */
+.m-areas>.m-left>.m-panel.m-geometrydraw.opened>.m-panel-controls {
+    width: 347px;
+}
+
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#geometryBtns>button,
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#otherBtns>button {
     background-color: white;

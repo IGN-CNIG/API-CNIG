@@ -238,7 +238,6 @@ export default class GeometryDrawControl extends M.Control {
     this.textDrawTemplate.querySelector('#fontColor').addEventListener('change', e => this.styleChange(e));
     this.textDrawTemplate.querySelector('#fontSize').addEventListener('change', e => this.styleChange(e));
     this.textDrawTemplate.querySelector('#fontFamily').addEventListener('change', e => this.styleChange(e));
-
     this.textDrawTemplate.querySelector('button').addEventListener('click', this.deleteSingleFeature.bind(this));
     this.textDrawTemplate.querySelector('button').style.display = 'none';
   }
@@ -314,10 +313,10 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Hides tools menu.
-   * @param {*} property - isPointActive
-   * @param {*} idDraw - pointdrawing
-   * @param {*} geometry
+   * Hides/shows tools menu and de/activates drawing.
+   * @param {Boolean} clickedGeometry - i.e.isPointActive
+   * @param {String} drawingDiv - i.e.pointdrawing
+   * @param {String} geometry - geometry type
    */
   activationManager(clickedGeometry, drawingDiv, geometry) {
     // if drawing is active
@@ -438,7 +437,7 @@ export default class GeometryDrawControl extends M.Control {
   deactivateEdition() {
     if (this.isEditionActive) {
       this.isEditionActive = false;
-      this.getImpl().deactivateSelection();
+      this.deactivateSelection();
       if (document.querySelector('#drawingtools #featureInfo') !== null) {
         document.querySelector('#drawingtools #featureInfo').style.display = 'none';
       }
@@ -621,7 +620,7 @@ export default class GeometryDrawControl extends M.Control {
   initializeLayers() {
     this.drawLayer = this.map.getLayers()[this.map.getLayers().length - 1];
     this.map.addLayers(this.selectionLayer);
-    this.getImpl().setOLSource(this.drawLayer, this.vectorSource);
+    this.getImpl().setImplSource(this.drawLayer, this.vectorSource);
   }
 
   /**
@@ -633,7 +632,7 @@ export default class GeometryDrawControl extends M.Control {
   addDrawInteraction() {
     const olMap = this.map.getMapImpl();
     this.draw = this.getImpl().newDrawInteraction(this.vectorSource, this.geometry);
-    this.addDrawEvent();
+    this.getImpl().addDrawEvent();
     olMap.addInteraction(this.draw);
   }
 
@@ -746,39 +745,39 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Defines function to be executed on click on draw interaction.
-   * Creates feature with drawing and adds it to map.
+   * After draw interaction event is over,
+   * updates feature style, inputs, adds feature to draw layer,
+   * shows feature info and emphasizes it.
    * @public
    * @function
    * @api
+   * @param {Event} event - 'drawend' triggering event
    */
-  addDrawEvent() {
-    this.draw.on('drawend', (event) => {
-      const lastFeature = this.feature;
-      this.hideTextPoint();
-      this.feature = event.feature;
-      this.feature = M.impl.Feature.olFeature2Facade(this.feature);
-      if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
+  onDraw(event) {
+    const lastFeature = this.feature;
+    this.hideTextPoint();
+    this.feature = event.feature;
+    this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+    if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
 
-      if (this.geometry === 'Point' && this.isTextActive) {
-        this.updateGlobalsWithInput();
-        if (lastFeature !== undefined) this.textContent = 'Texto';
-        this.setTextStyle(false);
-      } else {
-        this.setFeatureStyle(this.feature, this.geometry);
-      }
+    if (this.geometry === 'Point' && this.isTextActive) {
+      this.updateGlobalsWithInput();
+      if (lastFeature !== undefined) this.textContent = 'Texto';
+      this.setTextStyle(false);
+    } else {
+      this.setFeatureStyle(this.feature, this.geometry);
+    }
 
-      if (this.isTextActive) {
-        document.querySelector('.m-geometrydraw #textdrawtools button').style.display = 'block';
-      } else {
-        document.querySelector('.m-geometrydraw #drawingtools button').style.display = 'block';
-      }
+    if (this.isTextActive) {
+      document.querySelector('.m-geometrydraw #textdrawtools button').style.display = 'block';
+    } else {
+      document.querySelector('.m-geometrydraw #drawingtools button').style.display = 'block';
+    }
 
-      this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
-      this.emphasizeSelectedFeature();
-      this.showFeatureInfo();
-      this.updateInputValues();
-    });
+    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
+    this.emphasizeSelectedFeature();
+    this.showFeatureInfo();
+    this.updateInputValues();
   }
 
   /**
@@ -786,7 +785,7 @@ export default class GeometryDrawControl extends M.Control {
    * @public
    * @function
    * @api
-   * @param {*} features - Mapea features
+   * @param {Array<M.Feature>} features
    */
   deleteFeatureAttributes(features) {
     const newFeatures = features;
@@ -879,9 +878,9 @@ export default class GeometryDrawControl extends M.Control {
       // if point vs text vs else
       if ((this.geometry === 'Point' || this.geometry === 'MultiPoint') && !isTextDrawActive) {
         // eslint-disable-next-line no-underscore-dangle
-        const thisOLfeat = this.feature.getImpl().olFeature_;
-        const OLFeatClone = thisOLfeat.clone();
-        this.emphasis = M.impl.Feature.olFeature2Facade(OLFeatClone);
+        const thisImplFeature = this.feature.getImpl().olFeature_;
+        const implFeatureClone = this.getImpl().getImplFeatureClone(thisImplFeature);
+        this.emphasis = M.impl.Feature.olFeature2Facade(implFeatureClone);
 
         this.emphasis.setStyle(new M.style.Point({
           radius: 20,
@@ -895,7 +894,7 @@ export default class GeometryDrawControl extends M.Control {
         this.feature.getStyle().set('fill.opacity', 1);
       } else {
         // eslint-disable-next-line no-underscore-dangle
-        const extent = this.feature.getImpl().olFeature_.getGeometry().getExtent();
+        const extent = this.getImpl().getFeatureExtent(this.feature);
         this.emphasis = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
         this.emphasis.setStyle(new M.style.Line({
           stroke: {
@@ -1095,8 +1094,7 @@ export default class GeometryDrawControl extends M.Control {
   newNoTextLayer() {
     const newLayer = new M.layer.Vector({ name: 'copia' });
     const noTextFeatures = this.drawLayer.getFeatures().filter((feature) => {
-      // eslint-disable-next-line no-underscore-dangle
-      return feature.getStyle().options_.label === undefined;
+      return feature.getStyle().get('label') === undefined;
     });
     newLayer.addFeatures(noTextFeatures);
     return newLayer;
@@ -1171,7 +1169,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   deleteDrawnFeatures() {
     this.deactivateDrawing();
-    this.getImpl().deactivateSelection();
+    this.deactivateSelection();
     this.drawLayer.removeFeatures(this.drawLayer.getFeatures());
     this.feature = undefined;
     this.geometry = undefined;
@@ -1201,7 +1199,7 @@ export default class GeometryDrawControl extends M.Control {
     this.geometry = undefined;
     this.selectionLayer.removeFeatures([this.emphasis]);
     this.deactivateDrawing();
-    this.getImpl().deactivateSelection();
+    this.deactivateSelection();
     if (editionMode) this.getImpl().activateSelection();
   }
 
@@ -1249,8 +1247,11 @@ export default class GeometryDrawControl extends M.Control {
 
   /**
    * Changes selected file.
-   * @param {*} evt -
-   * @param {*} file -
+   * @public
+   * @function
+   * @api
+   * @param {Event} evt - file input change event
+   * @param {File} file - selected file on file input
    */
   changeFile(evt, file) {
     this.file_ = file;
@@ -1396,7 +1397,14 @@ export default class GeometryDrawControl extends M.Control {
     return coordinateCopy;
   }
 
-  // TODO: wrap transformfunction with this
+  /**
+   * Substitutes x, y coordinates on coordinate set (x, y, altitude...)
+   * @public
+   * @function
+   * @api
+   * @param {Array} oldCoordinates
+   * @param {Array<Number>} newXY - [x,y]
+   */
   getFullCoordinates(oldCoordinates, newXY) {
     const newCoordinates = oldCoordinates;
     newCoordinates[0] = newXY[0];
@@ -1404,6 +1412,14 @@ export default class GeometryDrawControl extends M.Control {
     return newCoordinates;
   }
 
+  /**
+   * Transforms x,y coordinates to 4326 on coordinates array.
+   * @public
+   * @function
+   * @api
+   * @param {String} codeProjection
+   * @param {Array<Number>} oldCoordinates
+   */
   getTransformedCoordinates(codeProjection, oldCoordinates) {
     const transformFunction = ol.proj.getTransform(codeProjection, 'EPSG:4326');
     return this.getFullCoordinates(
@@ -1414,10 +1430,11 @@ export default class GeometryDrawControl extends M.Control {
 
   /**
    * Converts features coordinates on geojson format to 4326.
+   * @public
+   * @function
    */
   geojsonTo4326(featuresAsJSON, codeProjection) {
     const jsonResult = [];
-    // let jsonFeature = {};
     featuresAsJSON.forEach((featureAsJSON) => {
       const coordinates = featureAsJSON.geometry.coordinates;
       let newCoordinates = [];
@@ -1502,5 +1519,102 @@ export default class GeometryDrawControl extends M.Control {
     if (value !== Number(value)) return false;
     if (Number.isFinite(value) === false) return false;
     return true;
+  }
+
+  /**
+   * Modifies drawing tools, updates inputs, emphasizes selection
+   * and shows feature info on select.
+   * @public
+   * @function
+   * @api
+   * @param {Event}
+   */
+  onSelect(e) {
+    const MFeatures = this.drawLayer.getFeatures();
+    const olFeature = e.target.getFeatures().getArray()[0];
+
+    this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
+      olFeature)[0] || undefined;
+
+    this.geometry = this.feature.getGeometry().type;
+
+    if (document.querySelector('.m-geometrydraw #drawingtools') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
+    } else if (document.querySelector('.m-geometrydraw #textdrawtools') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(this.textDrawTemplate);
+    }
+
+    // if selected feature is a text feature
+    if (this.geometry === 'Point' &&
+      this.feature.getStyle().get('label') !== undefined) {
+      document.querySelector('.m-geometrydraw').appendChild(this.textDrawTemplate);
+      document.querySelector('.m-geometrydraw>#textdrawtools button').style.display = 'block';
+    } else {
+      document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
+      document.querySelector('.m-geometrydraw>#drawingtools button').style.display = 'block';
+    }
+
+    this.updateInputValues();
+    this.emphasizeSelectedFeature();
+    this.showFeatureInfo();
+  }
+
+  /**
+   * Emphasizes selection and shows feature info after feature is modified.
+   * @public
+   * @function
+   * @api
+   */
+  onModify() {
+    this.emphasizeSelectedFeature();
+    this.showFeatureInfo();
+  }
+
+  /**
+   * Deletes features attributes, sets style for features and adds
+   * features to drawLayer.
+   * @function
+   * @public
+   * @api
+   * @param {Array<M.Feature>} features
+   * @return {Array<M.Feature>}
+   */
+  featuresLoader(features) {
+    let newFeatures = features;
+    // Avoids future conflicts if different layers are loaded
+    newFeatures = this.facadeControl.deleteFeatureAttributes(newFeatures);
+
+    for (let i = 0; i < newFeatures.length; i += 1) {
+      this.facadeControl.setFeatureStyle(newFeatures[i], newFeatures[i].getGeometry().type);
+    }
+
+    this.facadeControl.drawLayer.addFeatures(newFeatures);
+    return newFeatures;
+  }
+
+  /**
+   * Deactivates selection mode.
+   * @public
+   * @function
+   * @api
+   */
+  deactivateSelection() {
+    if (this.drawLayer) {
+      if (document.querySelector('.m-geometrydraw #drawingtools')) {
+        document.querySelector('.m-geometrydraw>#drawingtools button').style.display = 'none';
+        document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
+      }
+      if (document.querySelector('.m-geometrydraw #textdrawtools')) {
+        document.querySelector('.m-geometrydraw>#textdrawtools button').style.display = 'none';
+        document.querySelector('.m-geometrydraw').removeChild(this.textDrawTemplate);
+      }
+
+      this.hideTextPoint();
+      this.feature = undefined;
+      this.geometry = undefined;
+      this.emphasizeSelectedFeature();
+      this.map.getMapImpl().removeInteraction(this.edit);
+      this.map.getMapImpl().removeInteraction(this.select);
+    }
   }
 }
