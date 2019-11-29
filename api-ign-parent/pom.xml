@@ -40,6 +40,15 @@
            <environment>local</environment>
         </properties>
      </profile>
+     <profile>
+        <id>cnig-desarrollo</id>
+        <activation>
+           <activeByDefault>false</activeByDefault>
+        </activation>
+        <properties>
+           <environment>cnig-desarrollo</environment>
+        </properties>
+     </profile>
       <profile>
          <id>desarrollo</id>
          <activation>
