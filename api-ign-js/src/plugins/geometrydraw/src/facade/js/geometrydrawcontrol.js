@@ -173,13 +173,6 @@ export default class GeometryDrawControl extends M.Control {
     this.drawLayer = undefined;
 
     /**
-     * OL vector source for draw interactions.
-     * @private
-     * @type {*} - OpenLayers vector source
-     */
-    this.vectorSource = this.getImpl().newVectorSource(false);
-
-    /**
      * File to upload.
      * @private
      * @type {*}
@@ -314,6 +307,9 @@ export default class GeometryDrawControl extends M.Control {
 
   /**
    * Hides/shows tools menu and de/activates drawing.
+   * @public
+   * @function
+   * @api
    * @param {Boolean} clickedGeometry - i.e.isPointActive
    * @param {String} drawingDiv - i.e.pointdrawing
    * @param {String} geometry - geometry type
@@ -555,7 +551,6 @@ export default class GeometryDrawControl extends M.Control {
 
       this.geometry = this.feature.getGeometry().type;
 
-
       if (featureIsText) {
         const fontProps = featureStyle.get('label.font').split(' ');
         this.fontColor = featureStyle.get('label.color');
@@ -574,8 +569,8 @@ export default class GeometryDrawControl extends M.Control {
           this.fontFamily,
         );
       } else {
-        this.currentColor = this.getFeatureColor(this.feature);
-        this.currentThickness = this.getFeatureThickness(this.feature);
+        this.currentColor = this.getFeatureColor();
+        this.currentThickness = this.getFeatureThickness();
         this.drawingTools.querySelector('#colorSelector').value = this.currentColor;
         this.drawingTools.querySelector('#thicknessSelector').value = this.currentThickness;
         document.querySelector('#drawingtools #colorSelector').value = this.currentColor;
@@ -629,8 +624,7 @@ export default class GeometryDrawControl extends M.Control {
   initializeLayers() {
     this.drawLayer = this.map.getLayers()[this.map.getLayers().length - 1];
     this.map.addLayers(this.selectionLayer);
-    // FIXME:
-    this.getImpl().setImplSource(this.drawLayer, this.vectorSource);
+    this.getImpl().setImplSource();
   }
 
 
@@ -743,42 +737,54 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * After draw interaction event is over,
-   * updates feature style, inputs, adds feature to draw layer,
-   * shows feature info and emphasizes it.
+   * Defines function to be executed on click on draw interaction.
+   * Creates feature with drawing and adds it to map.
    * @public
    * @function
    * @api
-   * @param {Event} event - 'drawend' triggering event
    */
-  onDraw(event) {
-    const lastFeature = this.feature;
-    this.hideTextPoint();
-    this.feature = event.feature;
-    this.feature = M.impl.Feature.olFeature2Facade(this.feature);
-    if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
+  addDrawEvent() {
+    this.getImpl().draw.on('drawend', (event) => {
+      const lastFeature = this.feature;
+      this.hideTextPoint();
+      this.feature = event.feature;
+      this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+      if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
 
-    if (this.geometry === 'Point' && this.isTextActive) {
-      this.updateGlobalsWithInput();
-      if (lastFeature !== undefined) this.textContent = 'Texto';
-      this.setTextStyle(false);
-    } else {
-      this.setFeatureStyle(this.feature, this.geometry);
-    }
+      if (this.geometry === 'Point' && this.isTextActive) {
+        this.updateGlobalsWithInput();
+        if (lastFeature !== undefined) this.textContent = 'Texto';
+        this.setTextStyle(false);
+      } else {
+        this.setFeatureStyle(this.feature, this.geometry);
+      }
 
-    if (this.isTextActive) {
-      document.querySelector('.m-geometrydraw #textdrawtools button').style.display = 'block';
-    } else {
-      document.querySelector('.m-geometrydraw #drawingtools button').style.display = 'block';
-    }
+      if (this.isTextActive) {
+        document.querySelector('.m-geometrydraw #textdrawtools button').style.display = 'block';
+      } else {
+        document.querySelector('.m-geometrydraw #drawingtools button').style.display = 'block';
+      }
 
-    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
+      this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
 
-    // FIXME:
-    this.emphasizeSelectedFeature();
-    this.showFeatureInfo();
-    this.updateInputValues();
+      this.emphasizeSelectedFeature();
+      this.showFeatureInfo();
+      this.updateInputValues();
+    });
   }
+
+  // /**
+  //  * After draw interaction event is over,
+  //  * updates feature style, inputs, adds feature to draw layer,
+  //  * shows feature info and emphasizes it.
+  //  * @public
+  //  * @function
+  //  * @api
+  //  * @param {Event} event - 'drawend' triggering event
+  //  */
+  // onDraw(event) {
+
+  // }
 
   /**
    * Deletes Mapea feature set attributes.
@@ -790,15 +796,7 @@ export default class GeometryDrawControl extends M.Control {
   deleteFeatureAttributes(features) {
     const newFeatures = features;
     newFeatures.forEach((feature) => {
-      const thisFeature = feature;
-
-      // FIXME:
-      const properties = feature.getImpl().getOLFeature().getProperties();
-      const keys = Object.keys(properties);
-      keys.forEach((key) => {
-        // FIXME:
-        if (key !== 'geometry') thisFeature.getImpl().getOLFeature().unset(key);
-      });
+      this.getImpl().unsetAttributes(feature);
     });
     return newFeatures;
   }
@@ -810,8 +808,6 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   showFeatureInfo() {
-    // FIXME: to impl
-    const olFeature = this.feature.getImpl().getOLFeature();
     const infoContainer = document.querySelector('#drawingtools #featureInfo');
     if (infoContainer !== null) {
       infoContainer.style.display = 'block';
@@ -821,9 +817,8 @@ export default class GeometryDrawControl extends M.Control {
     switch (this.geometry) {
       case 'Point':
       case 'MultiPoint':
-        // FIXME: to impl
-        const x = this.getImpl().getFeatureCoordinates(olFeature)[0];
-        const y = this.getImpl().getFeatureCoordinates(olFeature)[1];
+        const x = this.getImpl().getFeatureCoordinates()[0];
+        const y = this.getImpl().getFeatureCoordinates()[1];
         if (infoContainer !== null) {
           infoContainer.innerHTML = `Coordenadas<br/>
           x: ${Math.round(x * 1000) / 1000},<br/>
@@ -832,7 +827,7 @@ export default class GeometryDrawControl extends M.Control {
         break;
       case 'LineString':
       case 'MultiLineString':
-        let lineLength = this.getImpl().getFeatureLength(olFeature);
+        let lineLength = this.getImpl().getFeatureLength();
         let units = 'km';
         if (lineLength > 100) {
           lineLength = Math.round((lineLength / 1000) * 100) / 100;
@@ -844,7 +839,7 @@ export default class GeometryDrawControl extends M.Control {
         break;
       case 'Polygon':
       case 'MultiPolygon':
-        let area = this.getImpl().getFeatureArea(olFeature);
+        let area = this.getImpl().getFeatureArea();
         let areaUnits = `km${'2'.sup()}`;
         if (area > 10000) {
           area = Math.round((area / 1000000) * 100) / 100;
@@ -882,10 +877,7 @@ export default class GeometryDrawControl extends M.Control {
 
       // if point vs text vs else
       if ((this.geometry === 'Point' || this.geometry === 'MultiPoint') && !isTextDrawActive) {
-        // eslint-disable-next-line no-underscore-dangle
-        const thisImplFeature = this.feature.getImpl().olFeature_; // FIXME:
-        const implFeatureClone = this.getImpl().getImplFeatureClone(thisImplFeature);
-        this.emphasis = M.impl.Feature.olFeature2Facade(implFeatureClone);
+        this.emphasis = this.getImpl().getMapeaFeatureClone();
 
         this.emphasis.setStyle(new M.style.Point({
           radius: 20,
@@ -1213,9 +1205,9 @@ export default class GeometryDrawControl extends M.Control {
    * @public
    * @function
    * @api
-   * @param {M.Feature} feature - Mapea feature
    */
-  getFeatureThickness(feature) {
+  getFeatureThickness() {
+    const feature = this.feature;
     if (feature.getGeometry().type === 'Point' || feature.getGeometry().type === 'MultiPoint') {
       return feature.getStyle().get('radius');
     }
@@ -1227,9 +1219,9 @@ export default class GeometryDrawControl extends M.Control {
    * @public
    * @function
    * @api
-   * @param {M.Feature} feature - Mapea feature
    */
-  getFeatureColor(feature) {
+  getFeatureColor() {
+    const feature = this.feature;
     if (feature.getGeometry().type === 'Point' || feature.getGeometry().type === 'MultiPoint') {
       return feature.getStyle().get('fill.color');
     }
@@ -1387,50 +1379,6 @@ export default class GeometryDrawControl extends M.Control {
         coordinates,
       },
     };
-  }
-
-  /**
-   * Given a coordinate set (x, y, altitude?), returns [x,y].
-   * @public
-   * @function
-   * @param {Array<Number>} coordinatesSet
-   */
-  getXY(coordinatesSet) {
-    const coordinateCopy = [];
-    for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
-    while (coordinateCopy.length > 2) coordinateCopy.pop();
-    return coordinateCopy;
-  }
-
-  /**
-   * Substitutes x, y coordinates on coordinate set (x, y, altitude...)
-   * @public
-   * @function
-   * @api
-   * @param {Array} oldCoordinates
-   * @param {Array<Number>} newXY - [x,y]
-   */
-  getFullCoordinates(oldCoordinates, newXY) {
-    const newCoordinates = oldCoordinates;
-    newCoordinates[0] = newXY[0];
-    newCoordinates[1] = newXY[1];
-    return newCoordinates;
-  }
-
-  /**
-   * Transforms x,y coordinates to 4326 on coordinates array.
-   * @public
-   * @function
-   * @api
-   * @param {String} codeProjection
-   * @param {Array<Number>} oldCoordinates
-   */
-  getTransformedCoordinates(codeProjection, oldCoordinates) { // FIXME: to impl
-    const transformFunction = ol.proj.getTransform(codeProjection, 'EPSG:4326');
-    return this.getFullCoordinates(
-      oldCoordinates,
-      transformFunction(this.getXY(oldCoordinates)),
-    );
   }
 
   /**
@@ -1620,9 +1568,8 @@ export default class GeometryDrawControl extends M.Control {
       this.geometry = undefined;
       this.emphasizeSelectedFeature();
 
-      // FIXME: to impl
-      this.map.getMapImpl().removeInteraction(this.edit);
-      this.map.getMapImpl().removeInteraction(this.select);
+      this.getImpl().removeEditInteraction();
+      this.getImpl().removeSelectInteraction();
     }
   }
 }

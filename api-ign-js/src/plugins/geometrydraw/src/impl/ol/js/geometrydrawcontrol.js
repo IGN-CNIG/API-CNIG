@@ -13,7 +13,20 @@ export default class GeometryDrawControl extends M.impl.Control {
    */
   addTo(map, html) {
     super.addTo(map, html);
+
+    /**
+     * Facade map
+     * @private
+     * @type {M.map}
+     */
     this.facadeMap_ = map;
+
+    /**
+     * OL vector source for draw interactions.
+     * @private
+     * @type {*} - OpenLayers vector source
+     */
+    this.vectorSource = this.newVectorSource(false);
   }
 
   /**
@@ -31,20 +44,92 @@ export default class GeometryDrawControl extends M.impl.Control {
   }
 
   /**
+   * Transforms x,y coordinates to 4326 on coordinates array.
+   * @public
+   * @function
+   * @api
+   * @param {String} codeProjection
+   * @param {Array<Number>} oldCoordinates
+   */
+  getTransformedCoordinates(codeProjection, oldCoordinates) {
+    const transformFunction = ol.proj.getTransform(codeProjection, 'EPSG:4326');
+    return this.getFullCoordinates(
+      oldCoordinates,
+      transformFunction(this.getXY(oldCoordinates)),
+    );
+  }
+
+  /**
+   * Given a coordinate set (x, y, altitude?), returns [x,y].
+   * @public
+   * @function
+   * @api
+   * @param {Array<Number>} coordinatesSet
+   */
+  getXY(coordinatesSet) {
+    const coordinateCopy = [];
+    for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
+    while (coordinateCopy.length > 2) coordinateCopy.pop();
+    return coordinateCopy;
+  }
+
+  /**
+   * Substitutes x, y coordinates on coordinate set (x, y, altitude...)
+   * @public
+   * @function
+   * @api
+   * @param {Array} oldCoordinates
+   * @param {Array<Number>} newXY - [x,y]
+   */
+  getFullCoordinates(oldCoordinates, newXY) {
+    const newCoordinates = oldCoordinates;
+    newCoordinates[0] = newXY[0];
+    newCoordinates[1] = newXY[1];
+    return newCoordinates;
+  }
+
+
+  /**
    * This function adds draw interaction to map.
    * @public
    * @function
    * @api
    */
-  addDrawInteraction() { // FIXME:
-    const olMap = this.facadeControl.map.getMapImpl();
-    this.draw = this.facadeControl.newDrawInteraction(this.vectorSource, this.geometry);
+  addDrawInteraction() {
+    const olMap = this.facadeMap_.getMapImpl();
+    this.draw = this.newDrawInteraction(this.vectorSource, this.facadeControl.geometry);
     this.facadeControl.addDrawEvent();
     olMap.addInteraction(this.draw);
   }
 
-  removeDrawInteraction() { // FIXME:
-    this.facadeControl.map.getMapImpl().removeInteraction(this.draw);
+  /**
+   * Removes draw interaction from map.
+   * @public
+   * @function
+   * @api
+   */
+  removeDrawInteraction() {
+    this.facadeMap_.getMapImpl().removeInteraction(this.draw);
+  }
+
+  /**
+   * Removes edit interaction
+   * @public
+   * @api
+   * @function
+   */
+  removeEditInteraction() {
+    this.facadeMap_.getMapImpl().removeInteraction(this.edit);
+  }
+
+  /**
+   * Removes select interaction
+   * @public
+   * @function
+   * @api
+   */
+  removeSelectInteraction() {
+    this.facadeMap_.getMapImpl().removeInteraction(this.select);
   }
 
   /**
@@ -92,31 +177,35 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @param {*} source - OL source
    * @api
    */
-  setImplSource(layer, source) {
-    layer.getImpl().getOL3Layer().setSource(source);
+  setImplSource() {
+    this.facadeControl.drawLayer.getImpl().getOL3Layer().setSource(this.vectorSource);
   }
 
   /**
-   * Creates feature clone.
-   * @public
-   * @function
-   * @api
-   * @param {OL.Feature} olFeature
-   */
-  getImplFeatureClone(olFeature) {
-    return olFeature.clone();
-  }
-
-  /**
-   * Defines function to be executed on click on draw interaction.
-   * Creates feature with drawing and adds it to map.
+   * Creates current feature clone.
    * @public
    * @function
    * @api
    */
-  addDrawEvent() {
-    this.facadeControl.draw.on('drawend', (event) => {
-      this.facadeControl.onDraw(event);
+  getMapeaFeatureClone() {
+    // eslint-disable-next-line no-underscore-dangle
+    const implFeatureClone = this.facadeControl.feature.getImpl().olFeature_.clone();
+    const emphasis = M.impl.Feature.olFeature2Facade(implFeatureClone);
+    return emphasis;
+  }
+
+  /**
+   * Deletes attributes from feature.
+   * @public
+   * @function
+   * @api
+   * @param {M.Feature} feature
+   */
+  unsetAttributes(feature) {
+    const properties = feature.getImpl().getOLFeature().getProperties();
+    const keys = Object.keys(properties);
+    keys.forEach((key) => {
+      if (key !== 'geometry') feature.getImpl().getOLFeature().unset(key);
     });
   }
 
@@ -259,14 +348,13 @@ export default class GeometryDrawControl extends M.impl.Control {
   }
 
   /**
-   * Gets feature coordinates
+   * Gets coordinates of current feature.
    * @public
    * @function
    * @api
-   * @param { OL.Feature } olFeature
    */
-  getFeatureCoordinates(olFeature) {
-    return olFeature.getGeometry().getCoordinates();
+  getFeatureCoordinates() {
+    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
   }
 
   /**
@@ -274,10 +362,9 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @public
    * @function
    * @api
-   * @param {OL.Feature} olFeature
    */
-  getFeatureLength(olFeature) {
-    return olFeature.getGeometry().getLength();
+  getFeatureLength() {
+    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getLength();
   }
 
   /**
@@ -285,9 +372,8 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @public
    * @function
    * @api
-   * @param { OL.Feature } olFeature
    */
-  getFeatureArea(olFeature) {
-    return olFeature.getGeometry().getArea();
+  getFeatureArea() {
+    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
   }
 }

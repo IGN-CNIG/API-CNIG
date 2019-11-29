@@ -79,7 +79,6 @@ export default class GeometryDraw extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new GeometryDrawControl());
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelGeometryDraw', {
       className: 'm-geometrydraw',
@@ -89,6 +88,7 @@ export default class GeometryDraw extends M.Plugin {
       collapsedButtonClass: 'geometrydraw-editar',
       tooltip: 'Dibujo de geometrías',
     });
+    this.controls_.push(new GeometryDrawControl());
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
