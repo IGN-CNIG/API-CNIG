@@ -200,6 +200,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   createView(map) {
     this.map = map;
+    this.getImpl().setSource();
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
       this.initializeLayers();
@@ -737,54 +738,41 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
-   * Defines function to be executed on click on draw interaction.
-   * Creates feature with drawing and adds it to map.
+   * After draw interaction event is over,
+   * updates feature style, inputs, adds feature to draw layer,
+   * shows feature info and emphasizes it.
    * @public
    * @function
    * @api
+   * @param {Event} event - 'drawend' triggering event
    */
-  addDrawEvent() {
-    this.getImpl().draw.on('drawend', (event) => {
-      const lastFeature = this.feature;
-      this.hideTextPoint();
-      this.feature = event.feature;
-      this.feature = M.impl.Feature.olFeature2Facade(this.feature);
-      if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
+  onDraw(event) {
+    const lastFeature = this.feature;
+    this.hideTextPoint();
+    this.feature = event.feature;
+    this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+    if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
 
-      if (this.geometry === 'Point' && this.isTextActive) {
-        this.updateGlobalsWithInput();
-        if (lastFeature !== undefined) this.textContent = 'Texto';
-        this.setTextStyle(false);
-      } else {
-        this.setFeatureStyle(this.feature, this.geometry);
-      }
+    if (this.geometry === 'Point' && this.isTextActive) {
+      this.updateGlobalsWithInput();
+      if (lastFeature !== undefined) this.textContent = 'Texto';
+      this.setTextStyle(false);
+    } else {
+      this.setFeatureStyle(this.feature, this.geometry);
+    }
 
-      if (this.isTextActive) {
-        document.querySelector('.m-geometrydraw #textdrawtools button').style.display = 'block';
-      } else {
-        document.querySelector('.m-geometrydraw #drawingtools button').style.display = 'block';
-      }
+    if (this.isTextActive) {
+      document.querySelector('.m-geometrydraw #textdrawtools button').style.display = 'block';
+    } else {
+      document.querySelector('.m-geometrydraw #drawingtools button').style.display = 'block';
+    }
 
-      this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
+    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
 
-      this.emphasizeSelectedFeature();
-      this.showFeatureInfo();
-      this.updateInputValues();
-    });
+    this.emphasizeSelectedFeature();
+    this.showFeatureInfo();
+    this.updateInputValues();
   }
-
-  // /**
-  //  * After draw interaction event is over,
-  //  * updates feature style, inputs, adds feature to draw layer,
-  //  * shows feature info and emphasizes it.
-  //  * @public
-  //  * @function
-  //  * @api
-  //  * @param {Event} event - 'drawend' triggering event
-  //  */
-  // onDraw(event) {
-
-  // }
 
   /**
    * Deletes Mapea feature set attributes.
@@ -1393,18 +1381,18 @@ export default class GeometryDrawControl extends M.Control {
       let newCoordinates = [];
       switch (featureAsJSON.geometry.type) {
         case 'Point':
-          newCoordinates = this.getTransformedCoordinates(codeProjection, coordinates);
+          newCoordinates = this.getImpl().getTransformedCoordinates(codeProjection, coordinates);
           break;
         case 'MultiPoint':
           for (let i = 0; i < coordinates.length; i += 1) {
             const newDot = this
-              .getTransformedCoordinates(codeProjection, coordinates[i]);
+              .getImpl().getTransformedCoordinates(codeProjection, coordinates[i]);
             newCoordinates.push(newDot);
           }
           break;
         case 'LineString':
           for (let i = 0; i < coordinates.length; i += 1) {
-            const newDot = this.getTransformedCoordinates(
+            const newDot = this.getImpl().getTransformedCoordinates(
               codeProjection,
               coordinates[i],
             );
@@ -1416,7 +1404,7 @@ export default class GeometryDrawControl extends M.Control {
             const newLine = [];
             for (let j = 0; j < coordinates[i].length; j += 1) {
               const newDot = this
-                .getTransformedCoordinates(codeProjection, coordinates[i][j]);
+                .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
               newLine.push(newDot);
             }
             newCoordinates.push(newLine);
@@ -1427,7 +1415,7 @@ export default class GeometryDrawControl extends M.Control {
             const newPoly = [];
             for (let j = 0; j < coordinates[i].length; j += 1) {
               const newDot = this
-                .getTransformedCoordinates(codeProjection, coordinates[i][j]);
+                .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
               newPoly.push(newDot);
             }
             newCoordinates.push(newPoly);
@@ -1440,7 +1428,7 @@ export default class GeometryDrawControl extends M.Control {
               const newPolygonLine = [];
               for (let k = 0; k < coordinates[i][j].length; k += 1) {
                 const newDot = this
-                  .getTransformedCoordinates(codeProjection, coordinates[i][j][k]);
+                  .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j][k]);
                 newPolygonLine.push(newDot);
               }
               newPolygon.push(newPolygonLine);

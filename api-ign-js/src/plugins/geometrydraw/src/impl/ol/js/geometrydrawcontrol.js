@@ -26,6 +26,10 @@ export default class GeometryDrawControl extends M.impl.Control {
      * @private
      * @type {*} - OpenLayers vector source
      */
+    this.vectorSource = undefined;
+  }
+
+  setSource() {
     this.vectorSource = this.newVectorSource(false);
   }
 
@@ -98,8 +102,21 @@ export default class GeometryDrawControl extends M.impl.Control {
   addDrawInteraction() {
     const olMap = this.facadeMap_.getMapImpl();
     this.draw = this.newDrawInteraction(this.vectorSource, this.facadeControl.geometry);
-    this.facadeControl.addDrawEvent();
+    this.addDrawEvent();
     olMap.addInteraction(this.draw);
+  }
+
+  /**
+   * Defines function to be executed on click on draw interaction.
+   * Creates feature with drawing and adds it to map.
+   * @public
+   * @function
+   * @api
+   */
+  addDrawEvent() {
+    this.draw.on('drawend', (event) => {
+      this.facadeControl.onDraw(event);
+    });
   }
 
   /**
