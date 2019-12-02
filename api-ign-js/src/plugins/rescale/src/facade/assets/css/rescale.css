@@ -1,3 +1,7 @@
+div.m-areas>div.m-area>div.m-panel.m-rescale-panel {
+    z-index: 1;
+}
+
 div.m-areas>div.m-area>div.m-panel.m-rescale-panel.opened {
     border-radius: 0 !important;
 }
