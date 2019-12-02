@@ -191,17 +191,18 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
         }
       }
     });
-    let newView = new M.impl.View({
-      projection: ol.proj.get(this.facadeMap_.getProjection().code),
-      resolutions: this.facadeMap_.getResolutions(),
-    });
-
+    let newView = {};
     if (this.fixed_ && this.zoom_ !== undefined) {
       newView = new M.impl.View({
         projection: ol.proj.get(this.facadeMap_.getProjection().code),
         resolutions: this.facadeMap_.getResolutions(),
         maxZoom: this.zoom_,
         minZoom: this.zoom_,
+      });
+    } else {
+      newView = new M.impl.View({
+        projection: ol.proj.get(this.facadeMap_.getProjection().code),
+        resolutions: this.facadeMap_.getResolutions(),
       });
     }
 
