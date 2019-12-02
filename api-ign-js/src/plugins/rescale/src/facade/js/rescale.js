@@ -85,6 +85,7 @@ export default class Rescale extends M.Plugin {
       collapsed: this.collapsed,
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'g-cartografia-escala3',
+      tooltip: 'Cambiar escala',
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
