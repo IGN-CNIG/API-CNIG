@@ -80,8 +80,15 @@ export default class SelectionDrawControl extends M.impl.Control {
         });
         this.interaction_.on(DRAW_END_EVENT, (evt) => {
           const feature = evt.feature.clone();
+          const area = ol.sphere.getArea(feature.getGeometry());
           feature.getGeometry().transform(src, this.destProj);
           const featureJSON = GEOJSON_FORMAT.writeFeatureObject(feature);
+          featureJSON.properties = {
+            area: {
+              km: area / (10 ** 6),
+              m: area,
+            },
+          };
           this.facadeControl.fire('finished:draw', [featureJSON]);
         });
         this.olMap.addInteraction(this.interaction_);

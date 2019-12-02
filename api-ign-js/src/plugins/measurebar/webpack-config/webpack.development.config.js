@@ -14,7 +14,8 @@ module.exports = {
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html'],
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /(node_modules\/(?!ol)|bower_components)/,
         use: {
@@ -43,15 +44,13 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         exclude: /node_modules/,
         loader: 'url-loader?name=fonts/[name].[ext]',
-      }
-    ],
+      }],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
     hot: true,
-    // host: '0.0.0.0',
     open: true,
     port: 6123,
     openPage: 'test/dev.html',

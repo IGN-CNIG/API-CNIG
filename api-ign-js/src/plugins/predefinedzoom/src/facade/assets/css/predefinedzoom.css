@@ -1,3 +1,7 @@
+div.m-areas>div.m-area>div.m-panel.m-predefinedzoom {
+    z-index: 1;
+}
+
 div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.m-predefinedzoom {
     display: block;
     height: 40px;
