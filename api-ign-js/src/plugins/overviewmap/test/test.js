@@ -9,6 +9,8 @@ const map = M.map({
 
 const mp = new OverviewMap({
   position: 'BR',
+  fixed: true,
+  zoom: 4,
 }, {
   collapsed: false,
   collapsible: true,

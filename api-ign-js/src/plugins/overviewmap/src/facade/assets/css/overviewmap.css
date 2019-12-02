@@ -30,6 +30,8 @@ div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewm
 
 div.ol-overviewmap-box {
     border: 1px solid red;
+    min-width: 8px;
+    min-height: 8px;
 }
 
 /* Collapsed icon font */

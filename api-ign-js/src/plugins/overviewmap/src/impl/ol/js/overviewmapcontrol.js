@@ -10,6 +10,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
   constructor(options, vendorOptions = {}) {
     super(M.utils.extend({
       layers: [],
+      tipLabel: 'Mapa de situación',
     }, vendorOptions, true));
 
     /**
@@ -40,6 +41,14 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
 
     if (!M.utils.isNullOrEmpty(options.openedButtonClass)) {
       this.openedButtonClass_ = options.openedButtonClass;
+    }
+
+    if (!M.utils.isNullOrEmpty(options.fixed)) {
+      this.fixed_ = options.fixed;
+    }
+
+    if (!M.utils.isNullOrEmpty(options.zoom)) {
+      this.zoom_ = options.zoom;
     }
 
     /**
@@ -182,10 +191,20 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
         }
       }
     });
-    const newView = new M.impl.View({
+    let newView = new M.impl.View({
       projection: ol.proj.get(this.facadeMap_.getProjection().code),
       resolutions: this.facadeMap_.getResolutions(),
     });
+
+    if (this.fixed_ && this.zoom_ !== undefined) {
+      newView = new M.impl.View({
+        projection: ol.proj.get(this.facadeMap_.getProjection().code),
+        resolutions: this.facadeMap_.getResolutions(),
+        maxZoom: this.zoom_,
+        minZoom: this.zoom_,
+      });
+    }
+
     this.ovmap_.setView(newView);
     olLayers.forEach(layer => this.ovmap_.addLayer(layer));
     this.facadeMap_.getMapImpl().addControl(this);

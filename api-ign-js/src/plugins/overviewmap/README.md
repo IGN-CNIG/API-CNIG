@@ -24,8 +24,10 @@ Muestra una previsualización de la zona donde está centrado el mapa.
   - 'BR':bottom right
 - **collapsed**. Indica si el plugin aparece abierto por defecto (true/false).
 - **collapsible**. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).
+- **fixed**. Indice si el mapa del plugin permanece a un zoom fijo.
+- **zoom**. Indice el nivel del zoom al que permanecerá fijo el mapa del plugin.
 
-  
+
 # Ejemplos de uso
 
 ```javascript
@@ -53,6 +55,8 @@ map.addPlugin(mp);
 
    const mp = new M.plugin.OverviewMap({
   position: 'BR',
+  fixed: true,
+  zoom: 4,
 }, {
   collapsed: false,
   collapsible: true,
