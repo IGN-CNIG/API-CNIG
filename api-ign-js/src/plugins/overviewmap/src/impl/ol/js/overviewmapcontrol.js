@@ -43,13 +43,9 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       this.openedButtonClass_ = options.openedButtonClass;
     }
 
-    if (!M.utils.isNullOrEmpty(options.fixed)) {
-      this.fixed_ = options.fixed;
-    }
+    this.fixed_ = options.fixed || false;
 
-    if (!M.utils.isNullOrEmpty(options.zoom)) {
-      this.zoom_ = options.zoom;
-    }
+    this.zoom_ = options.zoom || 4;
 
     /**
      * Facade of the map
@@ -205,10 +201,10 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       }
     });
     let newView = {};
-    if (this.fixed_ && this.zoom_ !== undefined) {
-      newView = new M.impl.View({
+    if (this.fixed_) {
+      newView = new ol.View({
         projection: ol.proj.get(this.facadeMap_.getProjection().code),
-        resolutions: this.facadeMap_.getResolutions(),
+        // resolutions: this.facadeMap_.getResolutions(),
         maxZoom: this.zoom_,
         minZoom: this.zoom_,
       });
