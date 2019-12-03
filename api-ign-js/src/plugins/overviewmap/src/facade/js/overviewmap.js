@@ -47,6 +47,20 @@ export default class OverviewMap extends M.Plugin {
     this.position_ = options !== undefined ? options.position : 'BR';
 
     /**
+     * Fixed zoom
+     * @private
+     * @type {Boolean}
+     */
+    this.fixed_ = options !== undefined ? options.fixed : false;
+
+    /**
+     * Zoom to make fixed
+     * @private
+     * @type {Number}
+     */
+    this.zoom_ = options !== undefined ? options.zoom : 4;
+
+    /**
      * Vendor options
      * @public
      * @type {Object}
@@ -122,5 +136,16 @@ export default class OverviewMap extends M.Plugin {
   destroy() {
     this.map_.removeControls([this.control_]);
     [this.map_, this.control_, this.panel_] = [null, null, null];
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position_}*${this.vendorOptions.collapsed}*${this.vendorOptions.collapsible}*${this.fixed_}*${this.zoom_}`;
   }
 }

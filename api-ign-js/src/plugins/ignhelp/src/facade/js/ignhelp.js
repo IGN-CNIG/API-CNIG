@@ -89,6 +89,13 @@ export default class IGNHelp extends M.Plugin {
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+    this.panel_.on(M.evt.SHOW, () => {
+      window.addEventListener('click', (e) => {
+        if (!document.getElementById('ignhelpbox').parentNode.contains(e.target)) {
+          this.panel_.collapse();
+        }
+      });
+    });
   }
 
   /**

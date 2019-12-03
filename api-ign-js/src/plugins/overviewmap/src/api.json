@@ -16,6 +16,14 @@
     "type": "boolean",
     "name": "collapsible",
     "position": 2
+  }, {
+    "type": "boolean",
+    "name": "fixed",
+    "position": 3
+  }, {
+    "type": "simple",
+    "name": "zoom",
+    "position": 4
   }],
   "files": {
     "ol": {
