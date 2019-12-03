@@ -178,8 +178,8 @@
 }
 */
 
-[class^="icon-"]:before,
-[class*=" icon-"]:before {
+.m-plugin-sharemap [class^="icon-"]:before,
+.m-plugin-sharemap [class*=" icon-"]:before {
     font-family: "fontello";
     font-style: normal;
     font-weight: normal;
@@ -210,8 +210,12 @@
     /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-share-2:before {
+.m-plugin-sharemap .icon-share-2:before {
     content: '\e801';
+}
+
+#m-sharemap-geturl:focus {
+  outline: unset !important;
 }
 
 /* '' */
