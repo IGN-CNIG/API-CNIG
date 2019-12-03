@@ -12,7 +12,7 @@ const mp = new OverviewMap({
   fixed: true,
   zoom: 4,
 }, {
-  collapsed: false,
+  collapsed: true,
   collapsible: true,
 });
 

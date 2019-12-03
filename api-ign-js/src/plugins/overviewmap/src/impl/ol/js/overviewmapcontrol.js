@@ -92,11 +92,12 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     this.facadeMap_ = map;
     this.update(map, html);
     if (!this.getCollapsed()) {
-      this.element.querySelector('button').click();
-      this.element.querySelector('button').click();
+      // this.element.querySelector('button').click();
+      // this.element.querySelector('button').click();
       this.addLayers();
     } else {
-      this.element.querySelector('button').addEventListener('click', this.openEventListener.bind(this));
+      // this.element.querySelector('button').addEventListener('click',
+      // this.openEventListener.bind(this));
     }
   }
 
@@ -119,7 +120,18 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     } else {
       button.classList.add(this.openedButtonClass_);
     }
+    this.addOpenEventListener(button, map);
     this.setTarget();
+  }
+
+  /**
+   * This method adds the open event listener
+   * @function
+   * @api
+   */
+  addOpenEventListener(btn, map) {
+    const button = btn;
+    button.onclick = this.openEventListener.bind(this);
   }
 
   /**
@@ -169,6 +181,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
    * @function
    */
   addLayer_(layer) {
+    layer.un(M.evt.ADDED_TO_MAP, this.addLayer_, this);
     this.getOverviewMap().addLayer(layer.getOL3Layer());
   }
 
