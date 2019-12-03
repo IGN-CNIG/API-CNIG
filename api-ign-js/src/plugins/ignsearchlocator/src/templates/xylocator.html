@@ -1,0 +1,33 @@
+<div class="m-xylocator-container">
+    <div class="m-xylocator-panel panel-codigo">
+        <div class="title">Localizador por coordenadas</div>
+        <div class="m-xylocator-datas">
+            <div id="m-xylocator-coordinatesSystem">
+                <span>Sistema de coordenadas:</span>
+                <select name="srs" id="m-xylocator-srs" class="dropdown">
+				    <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4258" option="selected">ETRS89 (4258)</option>
+				        <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4326">WGS84 (4326)</option>
+				        <option class="m-xylocator-srs-option" data-units="m" value="EPSG:3857">WGS84 (3857)</option>
+				</select>
+            </div>
+            <div id="m-xylocator-utm" style="display:none;">
+
+                <span>X:</span>
+                <input type="text" name="UTM-X" id="UTM-X" style="color:black"><br />
+                <span>Y:</span>
+                <input type="text" name="UTM-Y" id="UTM-Y" style="color:black">
+            </div>
+            <div id="m-xylocator-latlon">
+                <span>Longitud:</span>
+                <input type="text" name="LON" id="LON" style="color:black"><br />
+                <span>Latitud:</span>
+                <input type="text" name="LAT" id="LAT" style="color:black">
+            </div>
+        </div>
+        <div class="button">
+            <button class="represent" id="m-xylocator-loc">
+                <i class="icon-posicion3"></i> Localizar
+            </button>
+        </div>
+    </div>
+</div>
