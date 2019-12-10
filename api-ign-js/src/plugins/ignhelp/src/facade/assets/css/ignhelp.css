@@ -108,31 +108,60 @@ div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-ignhelp.opened {
 /* Icon font */
 
 @font-face {
+  font-family: 'ignhelp';
+  src: url('../fonts/ignhelp.eot?73681823');
+  src: url('../fonts/ignhelp.eot?73681823#iefix') format('embedded-opentype'),
+       url('../fonts/ignhelp.woff2?73681823') format('woff2'),
+       url('../fonts/ignhelp.woff?73681823') format('woff'),
+       url('../fonts/ignhelp.ttf?73681823') format('truetype'),
+       url('../fonts/ignhelp.svg?73681823#ignhelp') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
     font-family: 'ignhelp';
-    src: url('../fonts/ignhelp.eot?moc4eo');
-    src: url('../fonts/ignhelp.eot?moc4eo#iefix') format('embedded-opentype'),
-        url('../fonts/ignhelp.ttf?moc4eo') format('truetype'),
-        url('../fonts/ignhelp.woff?moc4eo') format('woff'),
-        url('../fonts/ignhelp.svg?moc4eo#ignhelp') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
+    src: url('../font/ignhelp.svg?73681823#ignhelp') format('svg');
+  }
+}
+*/
+
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "ignhelp";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.m-areas>div.m-area>div.m-panel.m-panel-ignhelp.collapsed>button.m-panel-btn,
-[class^="ignhelp-"],
-[class*=" ignhelp-"] {
-    font-family: 'ignhelp' !important;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.ignhelp-info:before {
-    content: "\e1355";
-}
+.icon-ayuda:before { content: '\e901'; } /* '' */

@@ -82,7 +82,7 @@ export default class IGNHelp extends M.Plugin {
     this.panel_ = new M.ui.Panel('panelIGNHelp', {
       className: 'm-panel-ignhelp',
       collapsed: true,
-      collapsedButtonClass: 'ignhelp-info',
+      collapsedButtonClass: 'icon-ayuda',
       collapsible: true,
       position: M.ui.position[this.position_],
       tooltip: 'Más información',
