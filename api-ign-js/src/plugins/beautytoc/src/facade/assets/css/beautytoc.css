@@ -68,6 +68,10 @@
   width: 340px;
 }
 
+.m-control.m-container.m-beautytoc .m-beautytoc-content table, .m-control.m-container.m-beautytoc .m-beautytoc-content th, .m-control.m-container.m-beautytoc .m-beautytoc-content td {
+    border: none !important;
+}
+
 .m-control.m-container.m-beautytoc .m-beautytoc-content table.active {
   font-family: sans-serif;
   font-size: 0.8em;

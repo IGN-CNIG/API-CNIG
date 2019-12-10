@@ -360,7 +360,7 @@ export default class ShareMapControl extends M.Control {
    */
   getWMTS(layer) {
     const { code } = this.map_.getProjection();
-    let legend = layer.legend;
+    let legend = null;
     try {
       legend = layer.getLegend();
     } catch (err) {
