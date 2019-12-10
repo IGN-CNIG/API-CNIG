@@ -129,7 +129,7 @@ div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-ignhelp.opened {
 }
 */
 
- [class^="icon-"]:before, [class*=" icon-"]:before {
+ .m-panel-ignhelp [class^="icon-"]:before, .m-panel-ignhelp [class*=" icon-"]:before {
   font-family: "ignhelp";
   font-style: normal;
   font-weight: normal;
