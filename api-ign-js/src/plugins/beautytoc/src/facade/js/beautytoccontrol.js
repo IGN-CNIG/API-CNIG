@@ -98,9 +98,6 @@ export default class BeautyTOCControl extends M.Control {
    * @api
    */
   toogleVisible(evt) {
-    // const { target } = evt;
-    // const { dataset } = target;
-    // const { layerName } = dataset;
     const layerName = evt.currentTarget.querySelector('.m-beautytoc-eye span').dataset.layerName;
     const layerFound = this.map_.getLayers({ name: layerName })[0];
     const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :

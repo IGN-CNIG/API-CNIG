@@ -32,7 +32,7 @@
     "description": "Shows getfeatureinfo onclick when active",
     "text": "On click in a queryable layer shows getfeatureinfo",
     "version": "1.0.0",
-    "date": "2019-07-01",
+    "date": "09/12/2019",
     "author": "Guadaltel",
     "org": "CNIG",
     "tags": "mapea,plugin",

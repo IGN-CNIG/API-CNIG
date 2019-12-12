@@ -3,6 +3,7 @@
  */
 import '../assets/css/ignsearchlocator';
 import '../assets/css/fonts';
+import api from '../../api';
 import IGNSearchLocatorControl from './ignsearchlocatorcontrol';
 
 export default class IGNSearchLocator extends M.Plugin {
@@ -119,13 +120,6 @@ export default class IGNSearchLocator extends M.Plugin {
     this.resultVisibility = options.resultVisibility || true;
 
     /**
-     * This variable indicates whether the plugin can be collapsed.
-     * @private
-     * @type {boolean}
-     */
-    this.isCollapsed = options.isCollapsed || false;
-
-    /**
      * This variable indicates plugin's position on window
      * @private
      * @type {string} { 'TL' | 'TR' | 'BL' | 'BR' } (corners)
@@ -172,6 +166,13 @@ export default class IGNSearchLocator extends M.Plugin {
      * @type {number}
      */
     this.geocoderCoords_ = geocoderCoords || [];
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -208,9 +209,9 @@ export default class IGNSearchLocator extends M.Plugin {
     });
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelIGNSearchLocator', {
-      collapsible: true,
+      collapsible: false,
       position: M.ui.position[this.position],
-      collapsed: this.isCollapsed,
+      collapsed: false,
       className: 'ign-search-panel',
       tooltip: this.tooltip_,
     });
@@ -278,6 +279,18 @@ export default class IGNSearchLocator extends M.Plugin {
   }
 
   /**
+   * This function compares plugins
+   *
+   * @public
+   * @function
+   * @param {M.Plugin} plugin to compare
+   * @api
+   */
+  equals(plugin) {
+    return plugin instanceof IGNSearchLocator;
+  }
+
+  /**
    * Get the API REST Parameters of the plugin
    *
    * @function
@@ -285,6 +298,29 @@ export default class IGNSearchLocator extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
+  }
+
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls(this.controls_);
+    [this.map_, this.controls_, this.panel_] = [null, null, null];
   }
 }

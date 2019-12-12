@@ -6,7 +6,7 @@ const map = M.map({
 });
 
 const mp = new Information({
-  position: 'BR',
+  position: 'TR',
 });
 
 const layerinicial = new M.layer.WMS({

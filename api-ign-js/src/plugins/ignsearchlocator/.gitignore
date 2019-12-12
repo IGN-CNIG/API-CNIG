@@ -2,11 +2,9 @@
 build/
 dist/
 node_modules/
-test/
 node
 target
 externs
 libraries
 doc
-src/index.js
 *~

@@ -71,10 +71,6 @@ export default class BeautyTOCControl extends M.impl.Control {
     const olMap = this.facadeMap_.getMapImpl();
     const olView = olMap.getView();
     olView.setResolution(newResolution);
-    // 4.777314267823516); // resolution for scale 17016, table page 120
-    // const dpiToCM = M.units.DOTS_PER_INCH / 2.54;
-    // const resolution = (scale / dpiToCM) / 100;
-    // olView.setResolution(resolution);
   }
   /**
    * This function reprojects given coordinates to given projection.

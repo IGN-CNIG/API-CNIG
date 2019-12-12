@@ -3,7 +3,8 @@
  */
 import '../assets/css/beautytoc';
 import '../assets/css/fonts';
-import BeautyTOCControl from './beautytoc_control';
+import api from '../../api';
+import BeautyTOCControl from './beautytoccontrol';
 
 export default class BeautyTOC extends M.Plugin {
   /**
@@ -41,6 +42,13 @@ export default class BeautyTOC extends M.Plugin {
      * @type {boolean}
      */
     this.collapsed_ = options.collapsed === true;
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -114,5 +122,40 @@ export default class BeautyTOC extends M.Plugin {
    */
   getAPIRest() {
     return `${this.name}=${this.position}*${this.collapsed}`;
+  }
+
+  /**
+   * This function compares plugins
+   *
+   * @public
+   * @function
+   * @param {M.Plugin} plugin to compare
+   * @api
+   */
+  equals(plugin) {
+    return plugin instanceof BeautyTOC;
+  }
+
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls(this.controls_);
+    [this.map_, this.controls_, this.panel_] = [null, null, null];
   }
 }

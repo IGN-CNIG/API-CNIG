@@ -33,6 +33,7 @@ Example: <url_mapea>?plugins=beautytoc
   - 'TR':top right (default)
   - 'BL':bottom left
   - 'BR':bottom right
+- **collapsed**. Indica si el plugin aparece por defecto colapsado o no.
 
 # Ejemplos de uso
 
@@ -69,13 +70,17 @@ Example: <url_mapea>?plugins=beautytoc
    },
    "constructor": "M.plugin.BeautyTOC",
    "parameters": [{
-      "type": "object",
-      "properties": [{
-         "type": "simple",
-         "name": "position",
-         "position": 0,
-         "possibleValues": ["TL", "TR", "BR", "BL"]
-      }]
-   }]
+     "type": "object",
+     "properties": [{
+       "type": "simple",
+       "name": "position",
+       "position": 0,
+       "possibleValues": ["TL", "TR", "BL", "BR"]
+     }, {
+       "type": "boolean",
+       "name": "collapsed",
+       "position": 1
+     }]
+   }],
 }
 ```

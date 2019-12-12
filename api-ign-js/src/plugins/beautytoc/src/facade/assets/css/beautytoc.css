@@ -9,9 +9,16 @@
     position: absolute;
     z-index: 999;
     transition: none;
-    left: -40px;
     background-color: #fff!important;
     color: #71a7d3!important;
+}
+
+.m-areas>div.m-area.m-right>div.m-plugin-beautytoc.m-panel.opened>button.m-panel-btn {
+    left: -40px;
+}
+
+.m-areas>div.m-area.m-left>div.m-plugin-beautytoc.m-panel.opened>button.m-panel-btn {
+    right: -40px;
 }
 
 .m-areas>div.m-area>div.m-plugin-beautytoc.m-panel.opened>.m-panel-controls .m-beautytoc-panel {
@@ -135,7 +142,7 @@
     }
 }
 
-.vector-container > p, .historic-container > p {
+.m-beautytoc-content .vector-container > p, .m-beautytoc-content .historic-container > p {
   margin-left: 10px;
   font-weight: bold;
   font-size: 16px;

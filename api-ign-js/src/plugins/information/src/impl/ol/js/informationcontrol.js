@@ -34,6 +34,14 @@ export default class InformationControl extends M.impl.Control {
      */
     this.format_ = format;
 
+    if ((M.utils.normalize(this.format_) === 'plain') || (M.utils.normalize(this.format_) === 'text/plain')) {
+      this.format_ = 'text/plain';
+    } else if ((M.utils.normalize(this.format_) === 'gml') || (M.utils.normalize(this.format_) === 'application/vnd.ogc.gml')) {
+      this.format_ = 'application/vnd.ogc.gml';
+    } else {
+      this.format_ = 'text/html';
+    }
+
     /**
      * Maximum feature count
      *
@@ -130,13 +138,6 @@ export default class InformationControl extends M.impl.Control {
    */
   addOnClickEvent_() {
     const olMap = this.facadeMap_.getMapImpl();
-    if ((M.utils.normalize(this.format_) === 'plain') || (M.utils.normalize(this.format_) === 'text/plain')) {
-      this.format_ = 'text/plain';
-    } else if ((M.utils.normalize(this.format_) === 'gml') || (M.utils.normalize(this.format_) === 'application/vnd.ogc.gml')) {
-      this.format_ = 'application/vnd.ogc.gml';
-    } else {
-      this.format_ = 'text/html';
-    }
     this.clickEventKey_ = olMap.on('singleclick', e => this.buildUrl_(M.dialog, e));
     document.querySelector('.m-control.m-container.m-information-container').classList.add('activated');
   }

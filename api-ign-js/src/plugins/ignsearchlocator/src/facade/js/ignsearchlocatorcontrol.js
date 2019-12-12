@@ -279,30 +279,16 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   showReversePopUp(e) {
     if (this.reverseActivated) {
-      // Reproject coordinates to ETRS89 on decimal grades (+ North latitude and East longitude)
       const origin = this.map.getProjection().code;
       const destiny = 'EPSG:4258';
       const etrs89pointCoordinates = this.getImpl()
         .reproject([e.coord[0], e.coord[1]], origin, destiny);
-      // Params:
-      // lon, lat
-      // type (only if refcatastral) = 'refcatastral'
       const params = `lon=${etrs89pointCoordinates[0]}&lat=${etrs89pointCoordinates[1]}`;
       const urlToGet = `${this.urlReverse}?${params}`;
       const mapCoordinates = e.coord;
       this.geocoderCoords = etrs89pointCoordinates;
       const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
       let fullAddress = '';
-      // if device is mobile
-      // if (window.navigator.userAgent.match(/Android/i) ||
-      //   window.navigator.userAgent.match(/webOS/i) ||
-      //   window.navigator.userAgent.match(/iPhone/i) ||
-      //   window.navigator.userAgent.match(/iPad/i) ||
-      //   window.navigator.userAgent.match(/iPod/i) ||
-      //   window.navigator.userAgent.match(/BlackBerry/i) ||
-      //   window.navigator.userAgent.match(/Windows Phone/i)) {
-      //   this.showPopUp('Cargando...', mapCoordinates, dataCoordinates);
-      // }
       M.remote.get(urlToGet).then((res) => {
         if (res.text !== null) {
           const returnData = JSON.parse(res.text);
@@ -371,44 +357,37 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox.classList.add('g-cartografia-spinner');
       this.resultsBox.style.fontSize = '24px';
       this.allCandidates = [];
-      const regExpCoord = /[+-]?\d+\.\d+(\s|,|(,\s))[+-]?\d+\.\d+/;
-      // Checks if input content represents coordinates, else searches text
-      if (regExpCoord.test(value)) {
-        // searches coordinates point (TO DO) if coordinates are entered
-        this.searchCoordinates(value);
-      } else {
-        // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
-        this.getNomenclatorData(value, this.allCandidates).then(() => {
-          // saves on allCandidates search results from CartoCiudad (geocoder)
-          this.getCandidatesData(value, this.allCandidates).then(() => {
-            // Clears previous search
-            this.resultsBox.innerHTML = '';
-            const compiledResult = M.template.compileSync(results, {
-              vars: {
-                places: this.allCandidates,
-              },
-            });
-            const elementList = compiledResult.querySelectorAll('li');
-            elementList.forEach((listElement) => {
-              listElement.addEventListener('click', () => {
-                this.goToLocation(listElement);
-              });
-            });
-            if (firstResult === true && elementList.length > 0) {
-              elementList.item(0).click();
-            }
-            // remove animation class and return to normal font size after loading
-            this.resultsBox.classList.remove('g-cartografia-spinner');
-            this.resultsBox.style.fontSize = '1em';
-            this.resultsBox.appendChild(compiledResult);
-            // Service doesn't find results
-            if (this.allCandidates.length === 0) {
-              const infoMsg = document.createTextNode('No se encuentran resultados para esta petición.');
-              this.resultsBox.appendChild(infoMsg);
-            }
+      // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
+      this.getNomenclatorData(value, this.allCandidates).then(() => {
+        // saves on allCandidates search results from CartoCiudad (geocoder)
+        this.getCandidatesData(value, this.allCandidates).then(() => {
+          // Clears previous search
+          this.resultsBox.innerHTML = '';
+          const compiledResult = M.template.compileSync(results, {
+            vars: {
+              places: this.allCandidates,
+            },
           });
+          const elementList = compiledResult.querySelectorAll('li');
+          elementList.forEach((listElement) => {
+            listElement.addEventListener('click', () => {
+              this.goToLocation(listElement);
+            });
+          });
+          if (firstResult === true && elementList.length > 0) {
+            elementList.item(0).click();
+          }
+          // remove animation class and return to normal font size after loading
+          this.resultsBox.classList.remove('g-cartografia-spinner');
+          this.resultsBox.style.fontSize = '1em';
+          this.resultsBox.appendChild(compiledResult);
+          // Service doesn't find results
+          if (this.allCandidates.length === 0) {
+            const infoMsg = document.createTextNode('No se encuentran resultados para esta petición.');
+            this.resultsBox.appendChild(infoMsg);
+          }
         });
-      }
+      });
     }
   }
   /**
@@ -665,14 +644,9 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clickedElementLayer.calculateMaxExtent().then((extent) => {
         this.map.setBbox(extent);
         if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
-          this.setScale(17061); // last scale requested by our client: 2000
+          this.setScale(17061);
         }
-        // this.resultsList.innerHTML = '';
-        // this.searchInput.value = '';
-        // this.searchInput.value = this.currentElement.querySelector('#info').innerHTML;
-        // this.searchValue = this.searchInput.value.trim();
-        // this.resultsList.appendChild(this.currentElement);
-        // Fires ignsearchlocator:EntityFound event after zoom-in result
+
         this.fire('ignsearchlocator:entityFound', [extent]);
       });
     }
@@ -712,24 +686,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     searches for the corresponding place
   */
   searchCoordinates(setOfCoordinates) {
-    // const latLongSeparationRegExp = /(\s+|,|,\s)/;
-    // setOfCoordinates.replace(latLongSeparationRegExp, ' ');
-    // const latFromSet = setOfCoordinates.split(' ')[0];
-    // const longFromSet = setOfCoordinates.split(' ')[1];
     return new Promise((resolve) => {
-      // TODO
-      // if lat,long separation character/s are not a space, it turns into a space
-      // const latLongSeparationRegExp = /(\s+|,|,\s)/;
-      // setOfCoordinates.replace(latLongSeparationRegExp, ' ');
-      // const latFromSet = setOfCoordinates.split(' ')[0];
-      // const longFromSet = setOfCoordinates.split(' ')[1];
-      // // geocoder service
-      // const urlToGet = `${this.urlReverse}?lat=${latFromSet}&lon=${longFromSet}`;
-      // M.remote.get(urlToGet).then((res) => {
-      //   const parsedResponse = JSON.parse(res.text);
-      //   const coordinatesSetAddress = parsedResponse.address;
-      //   resolve();
-      // });
       resolve();
     });
   }
@@ -870,11 +827,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.map.removeLayers(this.coordinatesLayer);
     if (!Number.isNaN(xFloat) && !Number.isNaN(yFloat)) {
       this.map.setCenter(`${x},${y}*false`);
-      // this.getImpl().setScale(this.scale_);
       this.map.setZoom(14);
       this.fire('xylocator:locationCentered', [{
         zoom: 14,
-        // scale: this.scale_,
         center: [x, y],
       }]);
 

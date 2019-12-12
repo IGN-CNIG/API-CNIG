@@ -2,6 +2,7 @@
  * @module M/plugin/Information
  */
 import '../assets/css/information';
+import api from '../../api';
 import InformationControl from './informationcontrol';
 
 export default class Information extends M.Plugin {
@@ -78,6 +79,13 @@ export default class Information extends M.Plugin {
      * @type {string}
      */
     this.name_ = 'information';
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -134,15 +142,37 @@ export default class Information extends M.Plugin {
   }
 
   /**
-   * This function destroys this plugin
+   * This function compares plugins
+   *
+   * @public
+   * @function
+   * @param {M.Plugin} plugin to compare
+   * @api
+   */
+  equals(plugin) {
+    return plugin instanceof Information;
+  }
+
+  /**
+   * This function gets metadata plugin
    *
    * @public
    * @function
    * @api stable
    */
+  getMetadata() {
+    return this.metadata_;
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
   destroy() {
     this.map_.removeControls(this.controls_);
-    this.map_ = null;
-    this.name_ = null;
+    [this.map_, this.controls_, this.panel_] = [null, null, null];
   }
 }

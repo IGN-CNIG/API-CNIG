@@ -1,7 +1,7 @@
 # M.plugin.IGNSearchLocator
 
 
-Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN)
+Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN), también permite localizar coordenadas en varios SRS
 
 # Dependencias
 

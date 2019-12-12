@@ -23,29 +23,25 @@
       "name": "resultVisibility",
       "position": 3
     }, {
-      "type": "boolean",
-      "name": "isCollapsed",
-      "position": 4
-    }, {
       "type": "simple",
       "name": "position",
-      "position": 5
+      "position": 4
     }, {
       "type": "boolean",
       "name": "reverse",
-      "position": 6
+      "position": 5
     }, {
       "type": "simple",
       "name": "requestStreet",
-      "position": 7
+      "position": 6
     }, {
       "type": "simple",
       "name": "locationID",
-      "position": 8
+      "position": 7
     }, {
       "type": "simple",
       "name": "geocoderCoords",
-      "position": 9
+      "position": 8
     }]
   }],
   "files": {
@@ -56,12 +52,12 @@
   },
   "metadata": {
     "name": "IGNSearchLocator",
-    "description": "Searches location on IGN geocoding services",
-    "text": "Searches location on IGN geocoding services",
+    "description": "Searches location on IGN geocoding services and locates coordinates",
+    "text": "Searches location on IGN geocoding services and locates coordinates",
     "version": "1.0.0",
-    "date": "",
-    "author": "",
-    "org": "",
+    "date": "02/12/2019",
+    "author": "Guadaltel",
+    "org": "CNIG",
     "tags": "mapea,plugin",
     "icon": "./facade/assets/icons/icons.svg"
   }

@@ -5,7 +5,8 @@ const map = M.map({
 });
 
 const mp = new BeautyTOC({
-  collapsed: false,
+  collapsed: true,
+  position: 'BL',
 });
 
 map.addPlugin(mp);

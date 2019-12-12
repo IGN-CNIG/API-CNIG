@@ -39,6 +39,10 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
     width: 100%;
 }
 
+div.m-area.m-bottom > div > div #div-contenedor > #m-ignsearchlocator-results {
+  bottom: 40px;
+}
+
 #m-ignsearchlocator-results::before {
     margin: 0 auto;
     -webkit-animation: mloading 1s linear infinite;

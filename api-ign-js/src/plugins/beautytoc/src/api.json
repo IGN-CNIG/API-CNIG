@@ -25,10 +25,10 @@
   },
   "metadata": {
     "name": "BeautyTOC",
-    "description": "",
-    "text": "",
+    "description": "Table of contents of the map. Pretty design version",
+    "text": "Table of contents of the map. Pretty design version",
     "version": "1.0.0",
-    "date": "2019-07-10",
+    "date": "18/11/2019",
     "author": "Guadaltel",
     "org": "CNIG",
     "tags": "mapea,plugin",
