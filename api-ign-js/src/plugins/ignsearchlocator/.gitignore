@@ -7,4 +7,5 @@ target
 externs
 libraries
 doc
+src/index.js
 *~
