@@ -67,7 +67,7 @@
           maxResults: 10,
           isCollapsed: false,
           position: 'TL',
-        }));
+        });
 
         map.addPlugin(mp);
 
