@@ -47,6 +47,30 @@ export default class PrinterControl extends M.impl.Control {
    * @param {Layer} layer to encode
    * @api stable
    */
+  getParametrizedLayers(paramName, layers) {
+    let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
+      return layer.type === 'IMAGE' && !M.utils.isNullOrEmpty(layer.getSource())
+      && !M.utils.isNullOrEmpty(layer.getSource().getParams())
+      && layer.getSource().getParams()[paramName] !== undefined;
+    });
+
+    others = others.filter((layer) => {
+      return !(layers.some((l) => {
+        return l.url !== undefined && l.url === layer.getSource().getUrl();
+      }));
+    });
+
+    return others;
+  }
+
+  /**
+   * This function encodes a layer.
+   *
+   * @public
+   * @function
+   * @param {Layer} layer to encode
+   * @api stable
+   */
   encodeLayer(layer) {
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.WMC) {
@@ -71,6 +95,8 @@ export default class PrinterControl extends M.impl.Control {
         success(this.encodeMapbox(layer));
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
+      } else if (layer.type === 'IMAGE' && !(layer instanceof M.layer.WMS)) {
+        success(this.encodeImage(layer));
       } else {
         success(this.encodeWFS(layer));
       }
@@ -274,7 +300,6 @@ export default class PrinterControl extends M.impl.Control {
     const olLayer = layer.getImpl().getOL3Layer();
     const layerUrl = layer.url;
     const layerOpacity = olLayer.getOpacity();
-    // const tiled = layer.getImpl().tiled;
     const params = olLayer.getSource().getParams();
     const paramsLayers = [params.LAYERS];
     const paramsFormat = params.FORMAT;
@@ -282,7 +307,6 @@ export default class PrinterControl extends M.impl.Control {
     encodedLayer = {
       baseURL: layerUrl,
       opacity: layerOpacity,
-      // singleTile: !tiled,
       type: 'WMS',
       layers: paramsLayers.join(',').split(','),
       format: paramsFormat || 'image/jpeg',
@@ -328,6 +352,38 @@ export default class PrinterControl extends M.impl.Control {
         encodedLayer.customParams[key] = params[key];
       }
     });
+    return encodedLayer;
+  }
+
+  /**
+   * This function encodes a OL Image layer.
+   *
+   * @public
+   * @function
+   * @param {IMAGE} layer to encode
+   * @api stable
+   */
+  encodeImage(layer) {
+    let encodedLayer = null;
+    const olLayer = layer;
+    const params = olLayer.getSource().getParams();
+    const paramsLayers = [params.LAYERS];
+    const paramsStyles = [params.STYLES];
+    encodedLayer = {
+      baseURL: olLayer.getSource().getUrl(),
+      opacity: olLayer.getOpacity(),
+      type: 'WMS',
+      layers: paramsLayers.join(',').split(','),
+      format: params.FORMAT || 'image/jpeg',
+      styles: paramsStyles.join(',').split(','),
+    };
+
+    encodedLayer.customParams = {
+      IMAGEID: params.IMAGEID,
+      transparent: true,
+      iswmc: false,
+    };
+
     return encodedLayer;
   }
 
@@ -595,29 +651,15 @@ export default class PrinterControl extends M.impl.Control {
    * @api stable
    */
   encodeWMTS(layer) {
-    // const zoom = this.facadeMap_.getZoom();
-    // var units = this.facadeMap_.getProjection().units;
     const layerImpl = layer.getImpl();
     const olLayer = layerImpl.getOL3Layer();
     const layerSource = olLayer.getSource();
-    // const tileGrid = layerSource.getTileGrid();
 
     const layerUrl = layer.url;
     const layerName = layer.name;
     const layerOpacity = olLayer.getOpacity();
     const layerReqEncoding = layerSource.getRequestEncoding();
     const matrixSet = layerSource.getMatrixSet();
-    // const tiled = layerImpl.tiled;
-    // const layerExtent = olLayer.getExtent();
-    // const params = {};
-    // const tileSize = tileGrid.getTileSize(zoom);
-    // const resolutions = tileGrid.getResolutions();
-
-    // var style = layerSource.getStyle();
-    // var layerVersion = layer.version;
-    // var tileOrigin = tileGrid.getOrigin(zoom);
-    // var matrixIds = tileGrid.getMatrixIds();
-    // old parameters
 
     /**
      * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
@@ -628,36 +670,22 @@ export default class PrinterControl extends M.impl.Control {
       })[0];
       return {
         baseURL: layerUrl,
-        // customParams: {},
-        // dimensionParams: {},
-        // dimensions: [],
-        imageFormat: 'image/png',
+        imageFormat: layer.options.imageFormat || 'image/png',
         layer: layerName,
         matrices: matrixIdsObj.TileMatrix.map((tileMatrix, i) => {
           return {
             identifier: tileMatrix.Identifier,
             matrixSize: [tileMatrix.MatrixHeight, tileMatrix.MatrixWidth],
-            // resolution: resolutions[resolutions.length - (i + 1)],
             scaleDenominator: tileMatrix.ScaleDenominator,
             tileSize: [tileMatrix.TileWidth, tileMatrix.TileHeight],
             topLeftCorner: tileMatrix.TopLeftCorner,
           };
         }),
         matrixSet,
-        // maxExtent: layerExtent,
         opacity: layerOpacity,
-        // params,
         requestEncoding: layerReqEncoding,
-        // resolutions,
-        // rotation: 0,
-        // singleTile: !tiled,
-        // 'style': style,
         style: 'default',
         type: 'WMTS',
-        // tileSize,
-        // 'tileOrigin': tileOrigin,
-        // 'zoomOffset': 0,
-        // 'version': layerVersion,
         version: '1.0.0',
       };
     });

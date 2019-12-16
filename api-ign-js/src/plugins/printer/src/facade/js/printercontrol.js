@@ -529,10 +529,9 @@ export default class PrinterControl extends M.Control {
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
     const dmsBbox = this.convertBboxToDMS(bbox);
-    let layout = this.layout_.name; // "A3 landscape" (yaml template)
+    let layout = this.layout_.name;
     const dpi = this.dpi_.value;
     const outputFormat = this.format_;
-    // const scale = this.map_.getScale().toLocaleString('en').replace(/,/g, '.');
     const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
@@ -554,7 +553,6 @@ export default class PrinterControl extends M.Control {
         description,
         attributionInfo: attribution,
         refsrs: this.turnProjIntoLegend(projection),
-        // numscale: `1:${scale}`,
         printDate: currentDate,
         map: {
           dpi,
@@ -604,11 +602,17 @@ export default class PrinterControl extends M.Control {
   encodeLayers() {
     // Filters visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
-    const layers = this.map_.getLayers().filter((layer) => {
+    let layers = this.map_.getLayers().filter((layer) => {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover');
     });
 
     let numLayersToProc = layers.length;
+
+    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
+    if (otherLayers.length > 0) {
+      layers = layers.concat(otherLayers);
+      numLayersToProc = layers.length;
+    }
 
     return (new Promise((success, fail) => {
       let encodedLayers = [];
