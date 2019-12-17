@@ -61,6 +61,13 @@ export default class OverviewMap extends M.Plugin {
     this.zoom_ = options !== undefined ? options.zoom : 4;
 
     /**
+     * Zoom to make fixed
+     * @private
+     * @type {Number}
+     */
+    this.baseLayer_ = options !== undefined ? options.baseLayer : undefined;
+
+    /**
      * Vendor options
      * @public
      * @type {Object}

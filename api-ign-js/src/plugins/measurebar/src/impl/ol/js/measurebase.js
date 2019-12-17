@@ -161,7 +161,7 @@ export default class Measure extends M.impl.Control {
           }),
         }),
       }),
-      zIndex: M.impl.Map.Z_INDEX[M.layer.type.WFS] + 99,
+      zIndex: 9999999999999,
     });
     return layer;
   }

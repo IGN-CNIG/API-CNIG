@@ -26,6 +26,7 @@ Muestra una previsualización de la zona donde está centrado el mapa.
 - **collapsible**. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).
 - **fixed**. Indice si el mapa del plugin permanece a un zoom fijo.
 - **zoom**. Indice el nivel del zoom al que permanecerá fijo el mapa del plugin.
+- **baseLayer**. URL de la capa base si se quiere prefijar 1.
 
 
 # Ejemplos de uso
@@ -57,6 +58,8 @@ map.addPlugin(mp);
   position: 'BR',
   fixed: true,
   zoom: 4,
+  //baseLayer: 'WMS*PNOA 2017*https://www.ign.es/wms/pnoa-historico?*PNOA2017*true*true', Ejemplo WMS
+  baseLayer: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true', //Ejemplo WMTS
 }, {
   collapsed: false,
   collapsible: true,

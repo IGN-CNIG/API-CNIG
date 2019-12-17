@@ -47,6 +47,8 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
 
     this.zoom_ = options.zoom || 4;
 
+    this.baseLayer_ = options.baseLayer;
+
     /**
      * Facade of the map
      * @private
@@ -88,12 +90,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     this.facadeMap_ = map;
     this.update(map, html);
     if (!this.getCollapsed()) {
-      // this.element.querySelector('button').click();
-      // this.element.querySelector('button').click();
       this.addLayers();
-    } else {
-      // this.element.querySelector('button').addEventListener('click',
-      // this.openEventListener.bind(this));
     }
   }
 
@@ -190,8 +187,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
   addLayers() {
     const olLayers = [];
     this.facadeMap_.getLayers().forEach((layer) => {
-      if ((layer.type === M.layer.type.WMS ||
-          layer.transparent === false) && layer.isVisible()) {
+      if (layer.transparent === false && layer.isVisible()) {
         const olLayer = layer.getImpl().getOL3Layer();
         if (M.utils.isNullOrEmpty(olLayer)) {
           layer.getImpl().on(M.evt.ADDED_TO_MAP, this.addLayer_.bind(this));
@@ -204,7 +200,6 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     if (this.fixed_) {
       newView = new ol.View({
         projection: ol.proj.get(this.facadeMap_.getProjection().code),
-        // resolutions: this.facadeMap_.getResolutions(),
         maxZoom: this.zoom_,
         minZoom: this.zoom_,
       });
@@ -216,7 +211,67 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     }
 
     this.ovmap_.setView(newView);
-    olLayers.forEach(layer => this.ovmap_.addLayer(layer));
+    if (this.baseLayer_ !== undefined && this.baseLayer_.length > 3) {
+      const parameters = this.baseLayer_.split('*');
+      if (parameters.length > 1 && (parameters[0] === 'WMS' || parameters[0] === 'WMTS')) {
+        if (parameters[0] === 'WMS') {
+          const layer = new ol.layer.Tile({
+            visible: true,
+            opacity: 1,
+            source: new ol.source.TileWMS({
+              url: parameters[2],
+              params: {
+                LAYERS: parameters[3],
+                /*
+                FORMAT: 'image/png',
+                VERSION: '1.1.1',
+                */
+                TRANSPARENT: false,
+                TILED: true,
+              },
+            }),
+          });
+
+          this.ovmap_.addLayer(layer);
+        } else {
+          const projection = ol.proj.get(this.facadeMap_.getProjection().code);
+          const projectionExtent = projection.getExtent();
+          const size = ol.extent.getWidth(projectionExtent) / 256;
+          const resolutions = new Array(14);
+          const matrixIds = new Array(14);
+          for (let z = 0; z < 14; z += 1) {
+            // generate resolutions and matrixIds arrays for this WMTS
+            resolutions[z] = size / (2 ** z);
+            matrixIds[z] = z;
+          }
+
+          const layer = new ol.layer.Tile({
+            opacity: 1,
+            source: new ol.source.WMTS({
+              url: parameters[1],
+              layer: parameters[2],
+              matrixSet: parameters[3],
+              format: parameters[6],
+              projection,
+              tileGrid: new ol.tilegrid.WMTS({
+                origin: ol.extent.getTopLeft(projectionExtent),
+                resolutions,
+                matrixIds,
+              }),
+              style: 'default',
+              wrapX: true,
+            }),
+          });
+
+          this.ovmap_.addLayer(layer);
+        }
+      } else {
+        this.ovmap_.addLayer(olLayers[0]);
+      }
+    } else {
+      this.ovmap_.addLayer(olLayers[0]);
+    }
+
     this.facadeMap_.getMapImpl().addControl(this);
     this.wasOpen_ = true;
   }
@@ -264,8 +319,6 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     this.facadeMap_.getMapImpl().removeControl(this);
     this.facadeMap_ = null;
   }
-
-  /* Mapea M.utils methods (not included in API IGN Lite) */
 
   classToggle(htmlElement, className) {
     const classList = htmlElement.classList;
