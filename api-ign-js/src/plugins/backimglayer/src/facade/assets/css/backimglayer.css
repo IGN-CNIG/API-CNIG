@@ -14,7 +14,7 @@
 /* Title and images container */
 
 .m-control.m-container.m-backimglayer {
-    min-width: 220px;
+    min-width: auto;
 }
 
 /* Título */
@@ -28,7 +28,7 @@ div#m-backimglayer-titulo {
     line-height: 40px;
     padding: 0 5px;
     text-align: center;
-    width: 100%;
+    width: auto;
 }
 
 /* Images container */
@@ -96,6 +96,7 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
     background-color: transparent !important;
     box-shadow: none !important;
     order: -10;
+    overflow-y: scroll;
 }
 
 /* Firefox fix */

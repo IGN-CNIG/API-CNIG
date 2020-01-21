@@ -12,7 +12,7 @@ import template from '../../templates/backimglayer';
  * @const
  * @private
  */
-const MAXIMUM_LAYERS = 5;
+// const MAXIMUM_LAYERS = 5;
 
 /**
  * @classdesc
@@ -34,8 +34,22 @@ export default class BackImgLayerControl extends M.Control {
     this.layers = [];
 
     if (layerOpts !== undefined) {
+      const layerOptsModified = layerOpts;
+
+      layerOpts.filter((element) => {
+        /* eslint no-underscore-dangle: 0 */
+        return (((layerOpts.indexOf(element)) !== 0) &&
+          (layerOpts.indexOf(element) % (map._plugins[0].options.columnsNumber) === 0));
+      }).map((element) => {
+        const elementIndex = layerOpts.indexOf(element);
+
+        const temp = Object.assign({}, element);
+        temp.firstElement = true;
+        layerOptsModified[elementIndex] = temp;
+        return temp;
+      });
       // Array<Object> => Object: { id, title, preview, Array<MapeaLayer>}
-      this.layers = layerOpts.slice(0, MAXIMUM_LAYERS);
+      this.layers = layerOptsModified.slice(0);
     } else {
       const idsArray = ids.split(',');
       const titlesArray = titles.split(',');
@@ -127,9 +141,11 @@ export default class BackImgLayerControl extends M.Control {
     this.removeLayers();
     this.visible = false;
     const { layers } = layersInfo;
+
     const isActivated = e.currentTarget.parentElement
       .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`)
       .classList.contains('activeBackimglayerDiv');
+
     layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
 
     e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((imgContainer) => {
