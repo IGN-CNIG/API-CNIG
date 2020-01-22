@@ -1,11 +1,19 @@
 <div id="div-contenedor" class="m-control m-container m-backimglayer">
+
     <div id="m-backimglayer-titulo">Capas de fondo</div>
     <div id="m-backimglayer-previews">
         {{#each layers}}
+
+            {{#if this.firstElement}}
+                <p />
+            {{/if}}
+
             <div id="m-backimglayer-lyr-{{this.id}}" title="{{this.title}}">
                 <img src="{{this.preview}}" alt="{{this.title}}" height="100px" width="100px" />
                 <span>{{this.title}}</span>
             </div>
+
+
         {{/each}}
         <!-- <button class="m-backimglayer-unique-btn" id="m-backimglayer-unique-btn" title="Selección de capa de fondo"></button> -->
     </div>
