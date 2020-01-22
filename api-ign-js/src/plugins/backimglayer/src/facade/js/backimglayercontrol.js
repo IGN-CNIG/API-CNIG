@@ -33,13 +33,24 @@ export default class BackImgLayerControl extends M.Control {
     });
     this.layers = [];
 
+    let numColumns = 0;
+
+    map._plugins.filter((element) => {
+      /* eslint no-underscore-dangle: 0 */
+      return (map._plugins[map._plugins.indexOf(element)].name === 'backimglayer');
+    }).map((element) => {
+      numColumns = map._plugins[map._plugins.indexOf(element)].options.columnsNumber;
+      return numColumns;
+    });
+
+
     if (layerOpts !== undefined) {
       const layerOptsModified = layerOpts;
 
       layerOpts.filter((element) => {
         /* eslint no-underscore-dangle: 0 */
         return (((layerOpts.indexOf(element)) !== 0) &&
-          (layerOpts.indexOf(element) % (map._plugins[0].options.columnsNumber) === 0));
+          (layerOpts.indexOf(element) % (numColumns) === 0));
       }).map((element) => {
         const elementIndex = layerOpts.indexOf(element);
 
