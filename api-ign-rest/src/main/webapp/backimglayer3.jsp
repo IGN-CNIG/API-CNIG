@@ -133,7 +133,7 @@
             collapsed: true,
             layerId: 0,
             layerVisibility: true,
-            columnsNumber: 2,
+            columnsNumber: 7,
             layerOpts: [{
                     id: 'mapa',
                     preview: 'plugins/backimglayer/images/svqmapa.png',

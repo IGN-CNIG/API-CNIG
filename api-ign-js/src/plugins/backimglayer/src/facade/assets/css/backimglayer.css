@@ -96,7 +96,6 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
     background-color: transparent !important;
     box-shadow: none !important;
     order: -10;
-    overflow-y: scroll;
 }
 
 /* Firefox fix */
