@@ -849,7 +849,18 @@ export default class IGNSearchLocatorControl extends M.Control {
       });
 
       this.coordinatesLayer.addFeatures([feature]);
-      this.coordinatesLayer.setStyle(this.point);
+      this.coordinatesLayer.setStyle(new M.style.Point({
+        radius: 8,
+        fill: {
+          color: '#f00',
+          opacity: 0.5,
+        },
+        stroke: {
+          color: '#f00',
+          opacity: 1,
+          width: 3,
+        },
+      }));
       this.map.addLayers(this.coordinatesLayer);
     } else {
       M.dialog.error('Las coordenadas introducidas no son correctas.', 'Error');

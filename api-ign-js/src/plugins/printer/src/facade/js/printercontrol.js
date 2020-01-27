@@ -139,6 +139,7 @@ export default class PrinterControl extends M.Control {
 
     this.layoutOptions_ = [];
     this.dpisOptions_ = [];
+    this.outputFormats_ = ['pdf', 'png', 'jpg'];
   }
 
   /**
@@ -191,7 +192,7 @@ export default class PrinterControl extends M.Control {
           }
         }
 
-        // show only template names withoug 'jpg' on their names
+        // show only template names without 'jpg' on their names
         capabilities.layouts = capabilities.layouts.filter((l) => {
           return !l.name.endsWith('jpg');
         });
@@ -225,8 +226,16 @@ export default class PrinterControl extends M.Control {
           return item.value;
         }));
 
-        // Fix to show only pdf, png & jpeg formats
-        capabilities.format = [{ name: 'pdf' }, { name: 'png' }, { name: 'jpg' }];
+        if (Array.isArray(capabilities.formats)) {
+          this.outputFormats_ = capabilities.formats;
+        }
+
+        capabilities.format = this.outputFormats_.map((format) => {
+          return {
+            name: format,
+            default: format === 'pdf',
+          };
+        });
 
         // forceScale
         capabilities.forceScale = this.options_.forceScale;
