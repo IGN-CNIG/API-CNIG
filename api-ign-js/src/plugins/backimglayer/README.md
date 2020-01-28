@@ -23,6 +23,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - *collapsible*. Indica si el plugin se puede collapsar en un botón (true/false).
 - *collapsed*. Indica si el plugin viene colapsado de entrada (true/false).
 - *layerId*. Posición de la capa que se carga por defecto en el array de capas mandadas como parámetro.
+- *columnsNumber*. Número de columnas que parametrizan la tabla de servicios mostrados.
 - *layerVisibility*. Valor que indica si se muestra la capa cargada o no.
 - *layerOpts*. Array con las capas que se quieren utilizar como opciones para capa de fondo.
    * *id*. Identificador de la capa
@@ -43,6 +44,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
             collapsible: true,
             collapsed: true,
             layerId: 0,
+            columnsNumber: 2,
             layerVisibility: true,
             layerOpts: [{
                     id: 'mapa',
