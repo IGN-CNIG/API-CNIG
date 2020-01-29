@@ -5,7 +5,9 @@ const map = M.map({
 });
 
 const mp = new SelectionZoom({
-  position: 'TR',
+  position: 'TL',
+  collapsible: true,
+  collapsed: true,
   layerId: 0,
   layerVisibility: true,
   layerOpts: [{

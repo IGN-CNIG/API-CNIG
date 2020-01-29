@@ -126,7 +126,6 @@ export default class SelectionZoom extends M.Plugin {
       this.ids,
       this.titles,
       this.previews,
-      this.layers,
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelSelectionZoom', {
@@ -134,8 +133,8 @@ export default class SelectionZoom extends M.Plugin {
       collapsed: this.collapsed,
       position: M.ui.position[this.position_],
       className: 'm-plugin-selectionzoom',
-      tooltip: 'Capas de fondo',
-      collapsedButtonClass: 'backimglyr-simbolo-cuadros',
+      tooltip: 'Vistas predefinidas',
+      collapsedButtonClass: 'g-selectionzoom-selezoom',
     });
 
     this.controls_[0].on('selectionzoom:activeChanges', (data) => {

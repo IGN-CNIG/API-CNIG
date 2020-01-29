@@ -2,7 +2,6 @@
 
 .m-panel.m-plugin-selectionzoom.collapsed {
     height: 40px;
-    order: -99;
 }
 
 .m-plugin-selectionzoom.opened .m-panel-btn.g-cartografia-flecha-derecha,
@@ -69,7 +68,7 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
     top: 80px;
 }
 
-.m-selectionzoom .activeSelectionZoomDiv {
+.m-selectionzoom .activeselectionzoomDiv {
     border: 5px solid #92c1e7 !important;
 }
 
@@ -95,7 +94,7 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 .m-areas>div.m-area>div.m-panel.opened.m-plugin-selectionzoom {
     background-color: transparent !important;
     box-shadow: none !important;
-    order: -10;
+    order: 0;
 }
 
 /* Firefox fix */
@@ -108,12 +107,13 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 
 /* Mobile fix */
 
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 1000px) {
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened {
         background-color: rgba(255, 255, 255, 0.5) !important;
+        position: absolute;
         height: 100vh;
-        margin: auto;
+        margin: 0px;
         padding: calc((100vw - 210px) / 2);
         padding-top: 10px;
         width: 100vw;
@@ -187,25 +187,22 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 }
 
 
-/* Icon font */
-
 @font-face {
-    font-family: 'backimglyr';
-    src: url('../fonts/backimglyr.eot?cn6g4');
-    src: url('../fonts/backimglyr.eot?cn6g4#iefix') format('embedded-opentype'),
-        url('../fonts/backimglyr.ttf?cn6g4') format('truetype'),
-        url('../fonts/backimglyr.woff?cn6g4') format('woff'),
-        url('../fonts/backimglyr.svg?cn6g4#backimglyr') format('svg');
+    font-family: 'g-selectionzoom';
+    src: url('../fonts/g-selectionzoom.eot?ymyjx');
+    src: url('../fonts/g-selectionzoom.eot?ymyjx#iefix') format('embedded-opentype'),
+        url('../fonts/g-selectionzoom.ttf?ymyjx') format('truetype'),
+        url('../fonts/g-selectionzoom.woff?ymyjx') format('woff'),
+        url('../fonts/g-selectionzoom.svg?ymyjx#g-selectionzoom') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
 }
 
-.m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom>div.m-panel-controls>div.m-control>button,
-.m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom>button.m-panel-btn.backimglyr-simbolo-cuadros,
-[class^="backimglyr-"],
-[class*=" backimglyr-"] {
-    font-family: 'backimglyr' !important;
+[class^="g-selectionzoom-"],
+[class*=" g-selectionzoom-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'g-selectionzoom' !important;
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -218,6 +215,14 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.backimglyr-simbolo-cuadros:before {
-    content: "\e1777";
+.g-selectionzoom-selezoom:before {
+    content: "\e1555";
+}
+
+div.m-area.m-top.m-left>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {
+    font-family: g-selectionzoom !important;
+}
+
+div.m-area.m-top.m-left>div.m-plugin-selectionzoom.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
 }

@@ -25,7 +25,7 @@ export default class SelectionZoomControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(map, layerOpts, idLayer, visible, ids, titles, previews, layers) {
+  constructor(map, layerOpts, idLayer, visible, ids, titles, previews) {
     const impl = new M.impl.Control();
     super(impl, 'SelectionZoom');
     map.getBaseLayers().forEach((layer) => {
@@ -36,28 +36,6 @@ export default class SelectionZoomControl extends M.Control {
     if (layerOpts !== undefined) {
       // Array<Object> => Object: { id, title, preview, Array<MapeaLayer>}
       this.layers = layerOpts.slice(0, MAXIMUM_LAYERS);
-    } else {
-      const idsArray = ids.split(',');
-      const titlesArray = titles.split(',');
-      const previewArray = previews.split(',');
-      const layersArray = layers.split(',');
-      layersArray.forEach((baseLayer, idx) => {
-        let backgroundLayers = baseLayer.split('sumar');
-
-        backgroundLayers = backgroundLayers.map((urlLayer) => {
-          const stringLayer = urlLayer.replace(/asterisco/g, '*');
-          const mapeaLayer = new M.layer.WMTS(stringLayer);
-          return mapeaLayer;
-        });
-
-        const mapeaLyrsObject = {
-          id: idsArray[idx],
-          title: titlesArray[idx],
-          preview: previewArray[idx],
-          layers: backgroundLayers,
-        };
-        this.layers.push(mapeaLyrsObject);
-      });
     }
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
     this.activeLayer = -1;
@@ -124,13 +102,10 @@ export default class SelectionZoomControl extends M.Control {
    * @param {} i
    */
   handlerClickDesktop(e, layersInfo, i) {
-    this.removeLayers();
     this.visible = false;
-    const { layers } = layersInfo;
     const isActivated = e.currentTarget.parentElement
       .querySelector(`#m-selectionzoom-lyr-${layersInfo.id}`)
       .classList.contains('activeSelectionZoomDiv');
-    layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
 
     e.currentTarget.parentElement.querySelectorAll('div[id^="m-selectionzoom-lyr-"]').forEach((imgContainer) => {
       if (imgContainer.classList.contains('activeSelectionZoomDiv')) {
@@ -151,7 +126,6 @@ export default class SelectionZoomControl extends M.Control {
         e.currentTarget.parentElement
           .querySelector(`#m-selectionzoom-lyr-${layersInfo.id}`).classList.add('activeSelectionZoomDiv');
       }
-      this.map.addLayers(layers);
 
       if (layersInfo.id === 'peninsula' && currentBbox) {
         nuevoBbox.x.min = -1263221.2874767731;
@@ -195,8 +169,6 @@ export default class SelectionZoomControl extends M.Control {
         this.map.setBbox(nuevoBbox);
       }
     } else {
-      this.map.addLayers(layers);
-
       nuevoBbox.x.min = -3493496.3513105395;
       nuevoBbox.x.max = 2768225.0058110994;
 
