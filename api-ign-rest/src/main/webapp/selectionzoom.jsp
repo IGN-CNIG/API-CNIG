@@ -20,6 +20,8 @@
     <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
     <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
     <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
+    <link href="plugins/back/selectionzoom.ol.min.css" rel="stylesheet" />
+    <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
@@ -57,6 +59,7 @@
     <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
     <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
     <script type="text/javascript" src="plugins/toc/toc.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
     <script type="text/javascript" src="plugins/selectionzoom/selectionzoom.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -127,8 +130,93 @@
             collapsed: false,
         });
 
-        const mp9 = new M.plugin.SelectionZoom({
+        const mp9 = new M.plugin.BackImgLayer({
             position: 'TR',
+            collapsible: true,
+            collapsed: true,
+            layerId: 0,
+            layerVisibility: true,
+            layerOpts: [{
+                    id: 'mapa',
+                    preview: 'plugins/backimglayer/images/svqmapa.png',
+                    title: 'Mapa',
+                    layers: [new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/ign-base?',
+                        name: 'IGNBaseTodo',
+                        legend: 'Mapa IGN',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/jpeg',
+                    })],
+                },
+                {
+                    id: 'imagen',
+                    title: 'Imagen',
+                    preview: 'plugins/backimglayer/images/svqimagen.png',
+                    layers: [new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/pnoa-ma?',
+                        name: 'OI.OrthoimageCoverage',
+                        legend: 'Imagen (PNOA)',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/jpeg',
+                    })],
+                },
+                {
+                    id: 'hibrido',
+                    title: 'Híbrido',
+                    preview: 'plugins/backimglayer/images/svqhibrid.png',
+                    layers: [new M.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/pnoa-ma?',
+                            name: 'OI.OrthoimageCoverage',
+                            legend: 'Imagen (PNOA)',
+                            matrixSet: 'GoogleMapsCompatible',
+                            transparent: true,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/jpeg',
+                        }),
+                        new M.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/ign-base?',
+                            name: 'IGNBaseOrto',
+                            matrixSet: 'GoogleMapsCompatible',
+                            legend: 'Mapa IGN',
+                            transparent: false,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/png',
+                        })
+                    ],
+                },
+                {
+                    id: 'lidar',
+                    preview: 'plugins/backimglayer/images/svqlidar.png',
+                    title: 'LIDAR',
+                    layers: [new M.layer.WMTS({
+                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                        name: 'EL.GridCoverageDSM',
+                        legend: 'Modelo Digital de Superficies LiDAR',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/png',
+                    })],
+                },
+            ],
+        });
+
+        const mp10 = new M.plugin.SelectionZoom({
+            position: 'TL',
             collapsible: true,
             collapsed: true,
             layerId: 0,
@@ -137,141 +225,26 @@
                     id: 'peninsula',
                     preview: 'plugins/selectionzoom/images/espana.png',
                     title: 'Peninsula',
-                    layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                            name: 'OI.OrthoimageCoverage',
-                            legend: 'Imagen (PNOA)',
-                            matrixSet: 'GoogleMapsCompatible',
-                            transparent: true,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/jpeg',
-                        }),
-                        new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
-                            name: 'IGNBaseOrto',
-                            matrixSet: 'GoogleMapsCompatible',
-                            legend: 'Mapa IGN',
-                            transparent: false,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/png',
-                        })
-                    ],
                 },
                 {
                     id: 'canarias',
                     title: 'Canarias',
                     preview: 'plugins/selectionzoom/images/canarias.png',
-                    layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                            name: 'OI.OrthoimageCoverage',
-                            legend: 'Imagen (PNOA)',
-                            matrixSet: 'GoogleMapsCompatible',
-                            transparent: true,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/jpeg',
-                        }),
-                        new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
-                            name: 'IGNBaseOrto',
-                            matrixSet: 'GoogleMapsCompatible',
-                            legend: 'Mapa IGN',
-                            transparent: false,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/png',
-                        })
-                    ],
                 },
                 {
                     id: 'baleares',
                     title: 'Baleares',
                     preview: 'plugins/selectionzoom/images/baleares.png',
-                    layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                            name: 'OI.OrthoimageCoverage',
-                            legend: 'Imagen (PNOA)',
-                            matrixSet: 'GoogleMapsCompatible',
-                            transparent: true,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/jpeg',
-                        }),
-                        new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
-                            name: 'IGNBaseOrto',
-                            matrixSet: 'GoogleMapsCompatible',
-                            legend: 'Mapa IGN',
-                            transparent: false,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/png',
-                        })
-                    ],
                 },
                 {
                     id: 'ceuta',
                     preview: 'plugins/selectionzoom/images/ceuta.png',
                     title: 'Ceuta',
-                    layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                            name: 'OI.OrthoimageCoverage',
-                            legend: 'Imagen (PNOA)',
-                            matrixSet: 'GoogleMapsCompatible',
-                            transparent: true,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/jpeg',
-                        }),
-                        new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
-                            name: 'IGNBaseOrto',
-                            matrixSet: 'GoogleMapsCompatible',
-                            legend: 'Mapa IGN',
-                            transparent: false,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/png',
-                        })
-                    ],
                 },
                 {
                     id: 'melilla',
                     preview: 'plugins/selectionzoom/images/melilla.png',
                     title: 'Melilla',
-                    layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                            name: 'OI.OrthoimageCoverage',
-                            legend: 'Imagen (PNOA)',
-                            matrixSet: 'GoogleMapsCompatible',
-                            transparent: true,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/jpeg',
-                        }),
-                        new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
-                            name: 'IGNBaseOrto',
-                            matrixSet: 'GoogleMapsCompatible',
-                            legend: 'Mapa IGN',
-                            transparent: false,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/png',
-                        })
-                    ],
                 },
             ],
         });
@@ -284,6 +257,7 @@
         map.addPlugin(mp7);
         map.addPlugin(mp8);
         map.addPlugin(mp9);
+        map.addPlugin(mp10);
     </script>
 </body>
 
