@@ -127,7 +127,7 @@
         });
 
         const mp8 = new M.plugin.TOC({
-            collapsed: false,
+            collapsed: true,
         });
 
         const mp9 = new M.plugin.BackImgLayer({

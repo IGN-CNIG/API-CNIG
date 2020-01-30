@@ -62,11 +62,6 @@ export default class SelectionZoomControl extends M.Control {
         const visible = this.visible;
         if (this.idLayer > -1) {
           this.activeLayer = this.idLayer;
-          this.showBaseLayer({
-            currentTarget: {
-              parentElement: html,
-            },
-          }, this.layers[this.activeLayer], this.activeLayer);
         }
         if (visible === false) {
           this.map.removeLayers(this.map.getBaseLayers());
@@ -127,55 +122,60 @@ export default class SelectionZoomControl extends M.Control {
           .querySelector(`#m-selectionzoom-lyr-${layersInfo.id}`).classList.add('activeSelectionZoomDiv');
       }
 
-      if (layersInfo.id === 'peninsula' && currentBbox) {
-        nuevoBbox.x.min = -1263221.2874767731;
-        nuevoBbox.x.max = 302209.0518036366;
+      if (layersInfo.id === 'peninsula') {
+        nuevoBbox.x.min = -1200091.444315327;
+        nuevoBbox.x.max = 365338.89496508264;
 
-        nuevoBbox.y.min = 4300430.141912876;
-        nuevoBbox.y.max = 5425583.198270669;
+        nuevoBbox.y.min = 4348955.797933925;
+        nuevoBbox.y.max = 5441088.058072522;
 
         this.map.setBbox(nuevoBbox);
+        this.map.setZoom(7);
       } else if (layersInfo.id === 'canarias') {
-        nuevoBbox.x.min = -2146688.9523023404;
-        nuevoBbox.x.max = -1363973.7826621355;
+        nuevoBbox.x.min = -2170190.6639824593;
+        nuevoBbox.x.max = -1387475.4943422542;
 
-        nuevoBbox.y.min = 3036618.20442022;
-        nuevoBbox.y.max = 3599194.732599117;
+        nuevoBbox.y.min = 3091778.038884449;
+        nuevoBbox.y.max = 3637844.1689537475;
 
         this.map.setBbox(nuevoBbox);
+        this.map.setZoom(8);
       } else if (layersInfo.id === 'baleares') {
-        nuevoBbox.x.min = -95431.5762524241;
-        nuevoBbox.x.max = 687283.5933877807;
+        nuevoBbox.x.min = 115720.89020469127;
+        nuevoBbox.x.max = 507078.4750247937;
 
-        nuevoBbox.y.min = 4508215.653914858;
-        nuevoBbox.y.max = 5070792.182093754;
+        nuevoBbox.y.min = 4658411.436032817;
+        nuevoBbox.y.max = 4931444.501067467;
 
         this.map.setBbox(nuevoBbox);
+        this.map.setZoom(9);
       } else if (layersInfo.id === 'ceuta') {
-        nuevoBbox.x.min = -599441.621163833;
-        nuevoBbox.x.max = -587211.6966382049;
+        nuevoBbox.x.min = -599755.2558583047;
+        nuevoBbox.x.max = -587525.3313326766;
 
-        nuevoBbox.y.min = 4281868.604025825;
-        nuevoBbox.y.max = 4290658.862278621;
+        nuevoBbox.y.min = 4281734.817081453;
+        nuevoBbox.y.max = 4290267.100363785;
 
         this.map.setBbox(nuevoBbox);
       } else if (layersInfo.id === 'melilla') {
-        nuevoBbox.x.min = -334079.3984852897;
-        nuevoBbox.x.max = -321849.4739596615;
+        nuevoBbox.x.min = -334717.4178261766;
+        nuevoBbox.x.max = -322487.4933005484;
 
-        nuevoBbox.y.min = 4199473.280981311;
-        nuevoBbox.y.max = 4208263.539234106;
+        nuevoBbox.y.min = 4199504.016876071;
+        nuevoBbox.y.max = 4208036.300158403;
 
         this.map.setBbox(nuevoBbox);
+        this.map.setZoom(14);
       }
     } else {
-      nuevoBbox.x.min = -3493496.3513105395;
-      nuevoBbox.x.max = 2768225.0058110994;
+      nuevoBbox.x.min = -3597923.5010608193;
+      nuevoBbox.x.max = 2663797.8560608197;
 
-      nuevoBbox.y.min = 2534802.7739878176;
-      nuevoBbox.y.max = 7035414.999418995;
+      nuevoBbox.y.min = 2499195.1013228036;
+      nuevoBbox.y.max = 6867724.141877197;
 
       this.map.setBbox(nuevoBbox);
+      this.map.setZoom(5);
     }
 
     this.fire('selectionzoom:activeChanges', [{ activeLayerId: this.activeLayer }]);
