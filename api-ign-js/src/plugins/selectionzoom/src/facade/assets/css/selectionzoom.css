@@ -68,7 +68,7 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
     top: 80px;
 }
 
-.m-selectionzoom .activeselectionzoomDiv {
+.m-selectionzoom .activeSelectionZoomDiv {
     border: 5px solid #92c1e7 !important;
 }
 
