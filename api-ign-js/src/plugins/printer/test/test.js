@@ -56,7 +56,7 @@ const map = M.map({
 const printer = new Printer({
   collapsed: true,
   collapsible: true,
-  position: 'BR',
+  position: 'TR',
 });
 
 map.addLayers([layerinicial, campamentos]);

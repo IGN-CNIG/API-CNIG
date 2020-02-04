@@ -192,11 +192,6 @@ export default class PrinterControl extends M.Control {
           }
         }
 
-        // show only template names without 'jpg' on their names
-        capabilities.layouts = capabilities.layouts.filter((l) => {
-          return !l.name.endsWith('jpg');
-        });
-
         this.layoutOptions_ = [].concat(capabilities.layouts.map((item) => {
           return item.name;
         }));
@@ -538,7 +533,7 @@ export default class PrinterControl extends M.Control {
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
     const dmsBbox = this.convertBboxToDMS(bbox);
-    let layout = this.layout_.name;
+    const layout = this.layout_.name;
     const dpi = this.dpi_.value;
     const outputFormat = this.format_;
     const center = this.map_.getCenter();
@@ -546,10 +541,6 @@ export default class PrinterControl extends M.Control {
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
     const attribution = attributionContainer !== null ?
       `Cartografía base: ${attributionContainer.innerHTML}` : '';
-
-    if (outputFormat === 'jpg') {
-      layout += ' jpg';
-    }
 
     const date = new Date();
     const currentDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
