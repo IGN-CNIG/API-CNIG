@@ -63,7 +63,7 @@
         });
 
         const mp = new M.plugin.IGNSearch({
-            servicesToSearch: 'g',
+            servicesToSearch: 'gn',
             maxResults: 10,
             noProcess: 'municipio,poblacion',
             countryCode: 'es',
