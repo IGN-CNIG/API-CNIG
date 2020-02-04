@@ -827,9 +827,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.map.removeLayers(this.coordinatesLayer);
     if (!Number.isNaN(xFloat) && !Number.isNaN(yFloat)) {
       this.map.setCenter(`${x},${y}*false`);
-      this.map.setZoom(14);
+      this.map.setZoom(this.map.getMaxZoom() > 20 ? 14 : 13);
       this.fire('xylocator:locationCentered', [{
-        zoom: 14,
+        zoom: this.map.getMaxZoom() > 20 ? 14 : 13,
         center: [x, y],
       }]);
 
