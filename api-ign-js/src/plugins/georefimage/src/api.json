@@ -1,0 +1,44 @@
+{
+  "url": {
+    "name": "georefimage",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.Georefimage",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0
+    }, {
+      "type": "simple",
+      "name": "collapsed",
+      "position": 1
+    }, {
+      "type": "simple",
+      "name": "collapsible",
+      "position": 2
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": [
+        "georefimage.ol.min.js"
+      ],
+      "styles": [
+        "georefimage.ol.min.css"
+      ]
+    }
+  },
+  "metadata": {
+    "name": "Georefimage",
+    "description": "Prints map",
+    "text": "Prints current map using Mapfish in pdf, jpeg or png formats",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

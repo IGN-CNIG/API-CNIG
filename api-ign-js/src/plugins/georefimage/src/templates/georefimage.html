@@ -1,0 +1,32 @@
+<div class="m-control m-container m-georefimage m-georefimage-container">
+    <!-- TITLE -->
+    <div class="title">Impresión del mapa</div>
+    <!-- FORM -->
+    <div class="form">
+        <!-- title -->
+        <div class="title">
+            <input type="text" placeholder="Título">
+        </div>
+        <!-- DPI -->
+        <div class="dpi">
+            <label>DPI </label>
+            <select>
+                {{#each dpis}}
+                    <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+    <!-- buttons -->
+    <div class="button">
+        <button class="print"><i class="icon-impresora"></i> Elaborar imagen</button>
+        <button class="remove"><i class="icon-papelera"></i> Borrar</button>
+    </div>
+    <!-- queue -->
+    <div class="queue">
+        <div class="title">Descargar</div>
+        <ul class="queue-container"></ul>
+    </div>
+    <!-- minimize button -->
+    <div class="minimize" title="Minimizar el control de impresión"></div>
+</div>
