@@ -381,15 +381,15 @@
 /* Printer icon font */
 
 @font-face {
-  font-family: 'printer';
-  src: url('../fonts/printer.eot?97067901');
-  src: url('../fonts/printer.eot?97067901#iefix') format('embedded-opentype'),
-       url('../fonts/printer.woff2?97067901') format('woff2'),
-       url('../fonts/printer.woff?97067901') format('woff'),
-       url('../fonts/printer.ttf?97067901') format('truetype'),
-       url('../fonts/printer.svg?97067901#printer') format('svg');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'printer';
+    src: url('../fonts/printer.eot?97067901');
+    src: url('../fonts/printer.eot?97067901#iefix') format('embedded-opentype'),
+        url('../fonts/printer.woff2?97067901') format('woff2'),
+        url('../fonts/printer.woff?97067901') format('woff'),
+        url('../fonts/printer.ttf?97067901') format('truetype'),
+        url('../fonts/printer.svg?97067901#printer') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 div.m-areas>div.m-area>div.m-panel.m-printer.collapsed>button.m-panel-btn {
@@ -405,30 +405,55 @@ div.m-areas>div.m-area>div.m-panel.m-printer.collapsed>button.m-panel-btn {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.m-panel .m-printer [class^="icon-"]:before, .m-panel .m-printer [class*=" icon-"]:before {
- font-family: "printer" !important;
- font-style: normal;
- font-weight: normal;
- speak: none;
- display: inline-block;
- text-decoration: inherit;
- width: 1em;
- margin-right: .2em;
- text-align: center;
- font-variant: normal;
- text-transform: none;
- line-height: 1em;
- margin-left: .2em;
- -webkit-font-smoothing: antialiased;
- -moz-osx-font-smoothing: grayscale;
+.m-panel .m-printer [class^="icon-"]:before,
+.m-panel .m-printer [class*=" icon-"]:before {
+    font-family: "printer" !important;
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    margin-left: .2em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-descargar:before { content: '\e90e'; } /* '' */
-.icon-flecha-derecha:before { content: '\e919'; } /* '' */
-.icon-flecha-izquierda:before { content: '\e91d'; } /* '' */
-.icon-impresora:before { content: '\e928'; } /* '' */
-.icon-papelera:before { content: '\e93e'; } /* '' */
-.icon-spinner:before { content: '\e953'; } /* '' */
+.icon-descargar:before {
+    content: '\e90e';
+}
+
+/* '' */
+.icon-flecha-derecha:before {
+    content: '\e919';
+}
+
+/* '' */
+.icon-flecha-izquierda:before {
+    content: '\e91d';
+}
+
+/* '' */
+.icon-impresora:before {
+    content: '\e928';
+}
+
+/* '' */
+.icon-papelera:before {
+    content: '\e93e';
+}
+
+/* '' */
+.icon-spinner:before {
+    content: '\e953';
+}
+
+/* '' */
 
 /* Fix for left position closing arrow */
 
