@@ -95,7 +95,7 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
 .m-areas>div.m-area>div.m-panel.opened.m-plugin-backimglayer {
     background-color: transparent !important;
     box-shadow: none !important;
-    order: -10;
+    order: -9999999;
 }
 
 /* Firefox fix */
