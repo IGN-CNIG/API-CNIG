@@ -13,9 +13,18 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
-    <link href="plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
-    <link href="plugins/printer/printer.ol.min.css" rel="stylesheet" />
+    <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
+    <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
+    <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
+    <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
+    <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
+    <link href="plugins/back/selectionzoom.ol.min.css" rel="stylesheet" />
+    <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
+    <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
+    <link href="plugins/printer/printer.ol.min.css" rel="stylesheet" />
+    </link>
     <style type="text/css">
         html,
         body {
@@ -44,9 +53,16 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
-    <script type="text/javascript" src="plugins/selectiondraw/selectiondraw.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/printer/printer.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/toc/toc.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/selectionzoom/selectionzoom.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/printer/printer.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -60,6 +76,7 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
+            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
@@ -67,48 +84,190 @@
         });
 
         const layerinicial = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',
             legend: 'Limite administrativo',
             tiled: false,
         }, {});
 
-        const campamentos = new M.layer.GeoJSON({
-            name: 'Campamentos',
-            url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
-            extract: true,
+        const layerUA = new M.layer.WMS({
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeUnit',
+            legend: 'Unidad administrativa',
+            tiled: false
+        }, {});
+
+        map.addLayers([layerinicial, layerUA]);
+
+        const mp = new M.plugin.IGNSearch({
+            servicesToSearch: 'gn',
+            maxResults: 10,
+            isCollapsed: false,
+            noProcess: 'municipio,poblacion',
+            countryCode: 'es',
+            reverse: true,
+        });
+        const mp2 = new M.plugin.Attributions({
+            mode: 1,
+            scale: 10000,
         });
 
-        // OVERVIEW
-        // const mp = new M.plugin.OverviewMap({
-        //   position: 'BR',
-        // });
-        // map.addLayers(['WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*false', 'WMS_FULL*http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Permeabilidad_Andalucia?']);
+        const mp3 = new M.plugin.ShareMap({
+            baseUrl: 'https://componentes.ign.es/api-core/',
+            position: 'BR',
+        });
+        const mp4 = new M.plugin.XYLocator({
+            position: 'TL',
+        });
+        const mp6 = new M.plugin.ZoomExtent();
+        const mp7 = new M.plugin.MouseSRS({
+            srs: 'EPSG:4326',
+            label: 'WGS84',
+            precision: 6,
+            geoDecimalDigits: 4,
+            utmDecimalDigits: 2,
+        });
 
-        const printer = new M.plugin.Printer({
+        const mp8 = new M.plugin.TOC({
+            collapsed: true,
+        });
+
+        const mp9 = new M.plugin.BackImgLayer({
+            position: 'TR',
+            collapsible: true,
+            collapsed: true,
+            layerId: 0,
+            layerVisibility: true,
+            layerOpts: [{
+                    id: 'mapa',
+                    preview: 'plugins/backimglayer/images/svqmapa.png',
+                    title: 'Mapa',
+                    layers: [new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/ign-base?',
+                        name: 'IGNBaseTodo',
+                        legend: 'Mapa IGN',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/jpeg',
+                    })],
+                },
+                {
+                    id: 'imagen',
+                    title: 'Imagen',
+                    preview: 'plugins/backimglayer/images/svqimagen.png',
+                    layers: [new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/pnoa-ma?',
+                        name: 'OI.OrthoimageCoverage',
+                        legend: 'Imagen (PNOA)',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/jpeg',
+                    })],
+                },
+                {
+                    id: 'hibrido',
+                    title: 'Híbrido',
+                    preview: 'plugins/backimglayer/images/svqhibrid.png',
+                    layers: [new M.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/pnoa-ma?',
+                            name: 'OI.OrthoimageCoverage',
+                            legend: 'Imagen (PNOA)',
+                            matrixSet: 'GoogleMapsCompatible',
+                            transparent: true,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/jpeg',
+                        }),
+                        new M.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/ign-base?',
+                            name: 'IGNBaseOrto',
+                            matrixSet: 'GoogleMapsCompatible',
+                            legend: 'Mapa IGN',
+                            transparent: false,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/png',
+                        })
+                    ],
+                },
+                {
+                    id: 'lidar',
+                    preview: 'plugins/backimglayer/images/svqlidar.png',
+                    title: 'LIDAR',
+                    layers: [new M.layer.WMTS({
+                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                        name: 'EL.GridCoverageDSM',
+                        legend: 'Modelo Digital de Superficies LiDAR',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/png',
+                    })],
+                },
+            ],
+        });
+
+        const mp10 = new M.plugin.SelectionZoom({
+            position: 'TL',
+            collapsible: true,
+            collapsed: true,
+            layerId: 0,
+            layerVisibility: true,
+            layerOpts: [{
+                    id: 'peninsula',
+                    preview: 'plugins/selectionzoom/images/espana.png',
+                    title: 'Peninsula',
+                },
+                {
+                    id: 'canarias',
+                    title: 'Canarias',
+                    preview: 'plugins/selectionzoom/images/canarias.png',
+                },
+                {
+                    id: 'baleares',
+                    title: 'Baleares',
+                    preview: 'plugins/selectionzoom/images/baleares.png',
+                },
+                {
+                    id: 'ceuta',
+                    preview: 'plugins/selectionzoom/images/ceuta.png',
+                    title: 'Ceuta',
+                },
+                {
+                    id: 'melilla',
+                    preview: 'plugins/selectionzoom/images/melilla.png',
+                    title: 'Melilla',
+                },
+            ],
+        });
+
+
+        const mp11 = new M.plugin.Printer({
             collapsed: true,
             collapsible: true,
             position: 'TR',
         });
 
-        const share = new M.plugin.ShareMap({
-            baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
-            position: 'BR',
-        });
-
-        const selectiondraw = new M.plugin.SelectionDraw({
-            projection: 'EPSG:3857',
-        });
-        selectiondraw.on('finished:draw', (feature) => {
-            console.log(feature);
-        });
-        map.addPlugin(selectiondraw);
-
-        map.addLayers([layerinicial, campamentos]);
-        map.addPlugin(printer);
-        map.addPlugin(share);
-
-        window.map = map;
+        map.addPlugin(mp);
+        map.addPlugin(mp2);
+        map.addPlugin(mp3);
+        map.addPlugin(mp4);
+        map.addPlugin(mp6);
+        map.addPlugin(mp7);
+        map.addPlugin(mp8);
+        map.addPlugin(mp9);
+        map.addPlugin(mp10);
+        map.addPlugin(mp11);
     </script>
 </body>
 
