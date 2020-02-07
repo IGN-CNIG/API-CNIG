@@ -2,6 +2,8 @@
  * @module M/control/GeorefimageControl
  */
 
+import JsZip from 'jszip';
+import { saveAs } from 'file-saver';
 import GeorefimageControlImpl from '../../impl/ol/js/georefimagecontrol';
 import georefimageHTML from '../../templates/georefimage';
 
@@ -140,6 +142,9 @@ export default class GeorefimageControl extends M.Control {
     this.layoutOptions_ = [];
     this.dpisOptions_ = [];
     this.outputFormats_ = ['pdf', 'png', 'jpg'];
+
+    this.documentRead_ = document.createElement('img');
+    this.canvas_ = document.createElement('canvas');
   }
 
   /**
@@ -371,17 +376,29 @@ export default class GeorefimageControl extends M.Control {
         try {
           response = JSON.parse(response.text);
           downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+          this.documentRead_.src = downloadUrl;
         } catch (err) {
           M.exception(err);
         }
         queueEl.setAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-        queueEl.addEventListener('click', this.downloadPrint);
+        queueEl.addEventListener('click', this.downloadPrint.bind(this));
         // } else {
         //   M.dialog.error('Se ha producido un error en la impresión.');
         // }
       });
       M.proxy(true);
     });
+  }
+
+
+  getSourceAsDOM(url) {
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('GET', url, true);
+    xmlhttp.send();
+    const parser = new DOMParser();
+    const parser2 = parser.parseFromString(xmlhttp.responseText, 'text/html');
+
+    return parser2;
   }
 
   /**
@@ -633,12 +650,62 @@ export default class GeorefimageControl extends M.Control {
    * @api stable
    */
   downloadPrint(event) {
-    event.preventDefault();
+    // event.preventDefault();
 
-    const downloadUrl = this.getAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME);
-    if (!M.utils.isNullOrEmpty(downloadUrl)) {
-      window.open(downloadUrl, '_blank');
-    }
+    // const downloadUrl = this.getAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME);
+    // if (!M.utils.isNullOrEmpty(downloadUrl)) {
+    //   window.open(downloadUrl, '_blank');
+    //
+
+
+    const base64image = this.getBase64Image(this.documentRead_.src);
+    base64image.then((resolve) => {
+      const Px = ((this.map_.getBbox().x.max - this.map_.getBbox().x.min) /
+        this.canvas_.width).toString();
+      const GiroA = (0).toString();
+      const GiroB = (0).toString();
+      const Py = ((this.map_.getBbox().y.max - this.map_.getBbox().y.min) /
+        this.canvas_.height).toString();
+      const Cx = (this.map_.getBbox().x.min).toString();
+      const Cy = (this.map_.getBbox().y.max).toString();
+
+      let titulo = this.inputTitle_.value;
+
+      if (titulo === '') {
+        const f = new Date();
+        titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay(), '_', f.getHours(), f.getMinutes(), f.getSeconds());
+      }
+
+      const zip = new JsZip();
+      zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
+      zip.file(titulo.concat('.jpg'), resolve, { base64: true });
+      zip.generateAsync({ type: 'blob' })
+        .then((content) => {
+          // see FileSaver.js
+          saveAs(content, titulo.concat('.zip'));
+        });
+    });
+  }
+
+  getBase64Image(imgUrl) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.setAttribute('crossorigin', 'anonymous');
+      img.src = imgUrl;
+      img.onload = function can() {
+        this.canvas_ = document.createElement('canvas');
+        this.canvas_.width = img.width;
+        this.canvas_.height = img.height;
+        const ctx = this.canvas_.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const dataURL = this.canvas_.toDataURL('image/jpeg', 1.0);
+        resolve(dataURL.replace(/^data:image\/(png|jpeg);base64,/, ''));
+      };
+
+      img.onerror = function rej() {
+        Promise.reject(new Error('The image could not be loaded.'));
+      };
+    });
   }
 
   /**
