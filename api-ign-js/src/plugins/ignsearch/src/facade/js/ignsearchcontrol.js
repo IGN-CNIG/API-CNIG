@@ -160,6 +160,7 @@ export default class IGNSearchControl extends M.Control {
    */
   createView(map) {
     this.map = map;
+    M.proxy(false);
     return new Promise((success) => {
       const html = M.template.compileSync(template);
       this.html = html;
