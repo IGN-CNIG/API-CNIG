@@ -532,7 +532,7 @@ export default class PrinterControl extends M.Control {
     const description = this.areaDescription_.value;
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
-    const dmsBbox = this.convertBboxToDMS(bbox);
+    const dmsBbox = bbox;
     const layout = this.layout_.name;
     const dpi = this.dpi_.value;
     const outputFormat = this.format_;
