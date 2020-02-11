@@ -587,7 +587,7 @@ export default class PrinterControl extends M.Control {
         }
       } else if (this.forceScale_) {
         printData.attributes.map.center = [center.x, center.y];
-        printData.attributes.map.scale = M.impl.utils.getWMTSScale(this.map_, false);
+        printData.attributes.map.scale = M.impl.utils.getWMTSScale(this.map_, true);
       }
 
       return printData;
