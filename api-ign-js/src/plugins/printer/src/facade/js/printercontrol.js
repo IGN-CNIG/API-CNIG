@@ -543,7 +543,8 @@ export default class PrinterControl extends M.Control {
       `Cartografía base: ${attributionContainer.innerHTML}` : '';
 
     const date = new Date();
-    const currentDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+
+    const currentDate = ''.concat(date.getDate(), '/', date.getMonth() + 1, '/', date.getFullYear());
 
     const printData = M.utils.extend({
       layout,
@@ -586,7 +587,7 @@ export default class PrinterControl extends M.Control {
         }
       } else if (this.forceScale_) {
         printData.attributes.map.center = [center.x, center.y];
-        printData.attributes.map.scale = this.map_.getScale();
+        printData.attributes.map.scale = M.impl.utils.getWMTSScale(this.map_, false);
       }
 
       return printData;
