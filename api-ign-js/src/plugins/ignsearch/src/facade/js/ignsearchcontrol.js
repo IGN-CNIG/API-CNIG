@@ -160,7 +160,6 @@ export default class IGNSearchControl extends M.Control {
    */
   createView(map) {
     this.map = map;
-    M.proxy(false);
     return new Promise((success) => {
       const html = M.template.compileSync(template);
       this.html = html;
@@ -205,7 +204,6 @@ export default class IGNSearchControl extends M.Control {
           this.drawNomenclatorResult(this.locationID, false);
         }
         if (this.requestStreet && this.requestStreet.length > 0) {
-          M.proxy(false);
           M.remote.get(this.requestStreet).then((res) => {
             const geoJsonData = res.text.substring(9, res.text.length - 1);
             this.map.removeLayers(this.clickedElementLayer);
@@ -240,7 +238,6 @@ export default class IGNSearchControl extends M.Control {
               const perfectResult = featureJSON.properties.state;
               this.showSearchPopUp(fullAddress, coordinates, perfectResult, { fake: true });
             }
-            M.proxy(true);
           });
         }
         if (this.geocoderCoords && this.geocoderCoords.length === 2) {
@@ -626,12 +623,10 @@ export default class IGNSearchControl extends M.Control {
       const urlToGet = `${this.urlFind}?q=${address}${params}`;
       this.requestStreet = urlToGet;
       this.locationID = '';
-      M.proxy(false);
       M.remote.get(urlToGet).then((res) => {
         const geoJsonData = res.text.substring(9, res.text.length - 1);
         resolve(geoJsonData);
       });
-      M.proxy(true);
     });
   }
   /**
