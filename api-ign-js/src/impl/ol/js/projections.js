@@ -73,6 +73,7 @@ const proj4258 = {
   extent: [-16.1, 32.88, 39.65, 84.17],
   codes: ['EPSG:4258', 'urn:ogc:def:crs:EPSG::4258', 'http://www.opengis.net/gml/srs/epsg.xml#4258'],
   units: 'd',
+  metersPerUnit: 111319.49079327358,
 };
 
 
@@ -82,6 +83,7 @@ const proj4230 = {
   extent: [-16.09882145355955, 25.711114310330917, 48.60999527749605, 84.16977336415472],
   codes: ['EPSG:4230', 'urn:ogc:def:crs:EPSG::4230', 'http://www.opengis.net/gml/srs/epsg.xml#4230'],
   units: 'd',
+  metersPerUnit: 111319.49079327358,
 };
 
 // EPSG:32628
@@ -110,6 +112,8 @@ const crs84 = {
   metersPerUnit: 111319.49079327358,
   axisOrientation: 'enu',
 };
+
+
 
 // All projections above
 const projections = [
