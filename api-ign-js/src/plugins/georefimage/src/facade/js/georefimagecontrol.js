@@ -354,7 +354,6 @@ export default class GeorefimageControl extends M.Control {
    */
   printClick_(evt) {
     evt.preventDefault();
-
     this.getPrintData().then((printData) => {
       let printUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, `report.${printData.outputFormat}`]);
 
@@ -389,7 +388,6 @@ export default class GeorefimageControl extends M.Control {
       M.proxy(true);
     });
   }
-
 
   getSourceAsDOM(url) {
     const xmlhttp = new XMLHttpRequest();
@@ -661,11 +659,11 @@ export default class GeorefimageControl extends M.Control {
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
       const Px = ((this.map_.getBbox().x.max - this.map_.getBbox().x.min) /
-        this.canvas_.width).toString();
+        this.documentRead_.width).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
-      const Py = ((this.map_.getBbox().y.max - this.map_.getBbox().y.min) /
-        this.canvas_.height).toString();
+      const Py = ((this.map_.getBbox().y.min - this.map_.getBbox().y.max) /
+        this.documentRead_.height).toString();
       const Cx = (this.map_.getBbox().x.min).toString();
       const Cy = (this.map_.getBbox().y.max).toString();
 
@@ -684,7 +682,7 @@ export default class GeorefimageControl extends M.Control {
           // see FileSaver.js
           saveAs(content, titulo.concat('.zip'));
         });
-    });
+    }).bind(this);
   }
 
   getBase64Image(imgUrl) {
