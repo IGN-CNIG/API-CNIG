@@ -622,13 +622,11 @@ export default class IGNSearchControl extends M.Control {
       const params = `${type}${via}${id}${portal}&outputformat=geojson`;
       const urlToGet = `${this.urlFind}?q=${address}${params}`;
       this.requestStreet = urlToGet;
-      M.proxy(false);
       this.locationID = '';
       M.remote.get(urlToGet).then((res) => {
         const geoJsonData = res.text.substring(9, res.text.length - 1);
         resolve(geoJsonData);
       });
-      M.proxy(true);
     });
   }
   /**
