@@ -102,17 +102,6 @@ const proj4326 = {
   axisOrientation: 'neu',
 };
 
-const crs84 = {
-  def: '+proj=longlat +datum=WGS84 +no_defs',
-  extent: [-180, -90, 180, 90],
-  codes: ['CRS:84'],
-  units: 'd',
-  metersPerUnit: 111319.49079327358,
-  axisOrientation: 'enu',
-};
-
-
-
 // All projections above
 const projections = [
   proj25830,
@@ -127,7 +116,6 @@ const projections = [
   proj25831,
   proj23028,
   proj23031,
-  crs84,
 ];
 
 const addProjections = (projectionsParam) => {
