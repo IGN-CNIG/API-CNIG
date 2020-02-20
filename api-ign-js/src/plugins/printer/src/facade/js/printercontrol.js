@@ -192,6 +192,11 @@ export default class PrinterControl extends M.Control {
           }
         }
 
+        // show only template names without 'jpg' on their names
+        capabilities.layouts = capabilities.layouts.filter((l) => {
+          return !l.name.endsWith('jpg');
+        });
+
         this.layoutOptions_ = [].concat(capabilities.layouts.map((item) => {
           return item.name;
         }));
@@ -293,11 +298,13 @@ export default class PrinterControl extends M.Control {
     });
     this.setFormat(selectFormat.value);
 
+    /*
     const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
     checkboxForceScale.addEventListener('click', (e) => {
       this.setForceScale(checkboxForceScale.checked);
     });
     this.setForceScale(checkboxForceScale.checked);
+    */
 
     const printBtn = this.element_.querySelector('.button > button.print');
     printBtn.addEventListener('click', this.printClick_.bind(this));
@@ -312,7 +319,7 @@ export default class PrinterControl extends M.Control {
       selectLayout.value = this.layoutOptions_[0];
       selectDpi.value = this.dpisOptions_[0];
       selectFormat.value = this.options_.format;
-      checkboxForceScale.checked = this.options_.forceScale;
+      // checkboxForceScale.checked = this.options_.forceScale;
 
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
@@ -323,7 +330,7 @@ export default class PrinterControl extends M.Control {
       selectLayout.dispatchEvent(changeEvent);
       selectDpi.dispatchEvent(changeEvent);
       selectFormat.dispatchEvent(changeEvent);
-      checkboxForceScale.dispatchEvent(clickEvent);
+      // checkboxForceScale.dispatchEvent(clickEvent);
       // clean queue
 
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
@@ -532,8 +539,9 @@ export default class PrinterControl extends M.Control {
     const description = this.areaDescription_.value;
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
+    // const dmsBbox = this.convertBboxToDMS(bbox);
     const dmsBbox = bbox;
-    const layout = this.layout_.name;
+    let layout = this.layout_.name;
     const dpi = this.dpi_.value;
     const outputFormat = this.format_;
     const center = this.map_.getCenter();
@@ -541,6 +549,10 @@ export default class PrinterControl extends M.Control {
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
     const attribution = attributionContainer !== null ?
       `Cartografía base: ${attributionContainer.innerHTML}` : '';
+
+    if (outputFormat === 'jpg') {
+      layout += ' jpg';
+    }
 
     const date = new Date();
 
