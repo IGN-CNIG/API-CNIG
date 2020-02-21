@@ -470,7 +470,7 @@ export default class IGNSearchControl extends M.Control {
       jsonResult.portalNumber === 0) ? '' : jsonResult.portalNumber;
     const muni = (jsonResult.muni === null ||
       jsonResult.muni === undefined) ? '' : jsonResult.muni;
-    return `${via} ${address} ${portal}, ${muni}`;
+    return `${via} ${address} ${portal}, ${muni.toUpperCase()}`;
   }
   /**
    * This function removes last search layer and adds new layer
