@@ -1,0 +1,45 @@
+{
+  "url": {
+    "name": "Transparency",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.Transparency",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+        "type": "enum",
+        "name": "position",
+        "possibleValues": ["TL", "TR", "BL", "BR"],
+        "position": 0
+      },
+      {
+        "type": "array",
+        "name": "layers",
+        "position": 1
+      },
+      {
+        "type": "simple",
+        "name": "radius",
+        "value": 100,
+        "position": 2
+      }
+    ]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["transparency.ol.min.js"],
+      "styles": ["transparency.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "Transparency",
+    "description": "Efecto transparencia sobre capa",
+    "text": "Plugin que permite realizar un efecto de transparencia sobre una capa. En caso de indicar varias capas, se realizará el efecto sobre la capa seleccionada en el selector. ",
+    "version": "2.0.0",
+    "date": "Diciembre, 2019",
+    "author": "",
+    "org": "Consejería de Hacienda, Industria y Energía. Junta de Andalucía",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}
