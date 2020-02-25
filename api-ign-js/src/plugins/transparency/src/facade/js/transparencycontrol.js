@@ -72,7 +72,7 @@ export default class TransparencyControl extends M.Control {
       this.layers = this.transformToLayers(this.layers);
 
       if (this.pluginOnLeft) {
-        document.querySelector('.m-panel.m-plugin-transparency').querySelector('.m-panel-btn.g-cartografia-gps4').addEventListener('click', (evt) => {
+        document.querySelector('.m-panel.m-plugin-transparency').querySelector('.m-panel-btn.icon-gps4').addEventListener('click', (evt) => {
           let buttonOpened = document.querySelector('.m-panel.m-plugin-transparency.opened');
           if (buttonOpened !== null) {
             buttonOpened = buttonOpened.querySelector('.m-panel-btn.g-cartografia-flecha-izquierda');

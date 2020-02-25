@@ -111,7 +111,7 @@ export default class Transparency extends M.Plugin {
       collapsible: true,
       position: M.ui.position[this.position],
       className: this.className,
-      collapsedButtonClass: 'g-cartografia-gps4',
+      collapsedButtonClass: 'icon-gps4',
       tooltip: 'Transparencia',
     });
     this.panel_.addControls(this.controls_);

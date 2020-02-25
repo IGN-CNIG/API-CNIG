@@ -62,6 +62,17 @@
             center: [-467062.8225, 4783459.6216],
         });
 
+ 	let wmts = new M.layer.WMTS({
+	   url: "http://www.ideandalucia.es/geowebcache/service/wmts",
+	   name: "toporaster",
+	   matrixSet: "EPSG:25830",
+	   legend: "Toporaster"
+	 }, {
+	   format: 'image/png'
+	 });
+	 map.addWMTS(wmts);
+
+
         const mp = new M.plugin.Transparency({
                 position: 'TL',
                 layers: ['toporaster', 'WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo']
