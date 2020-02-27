@@ -15,8 +15,8 @@
   }],
   "files": {
     "ol": {
-      "scripts": "measurebar.ol.min.js",
-      "styles": "measurebar.ol.min.css"
+      "scripts": ["measurebar.ol.min.js"],
+      "styles": ["measurebar.ol.min.css"]
     }
   },
   "metadata": {

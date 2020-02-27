@@ -27,8 +27,8 @@
   }],
   "files": {
     "ol": {
-      "scripts": "overviewmap.ol.min.js",
-      "styles": "overviewmap.ol.min.css"
+      "scripts": ["overviewmap.ol.min.js"],
+      "styles": ["overviewmap.ol.min.css"]
     }
   },
   "metadata": {

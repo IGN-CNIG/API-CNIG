@@ -7,8 +7,8 @@
   "parameters": [],
   "files": {
     "ol": {
-      "scripts": [],
-      "styles": []
+      "scripts": ["selectiondraw.ol.min.js"],
+      "styles": ["selectiondraw.ol.min.css"]
     }
   },
   "metadata": {

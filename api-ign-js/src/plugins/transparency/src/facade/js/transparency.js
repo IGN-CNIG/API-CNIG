@@ -4,6 +4,7 @@
 import 'assets/css/transparency';
 import TransparencyControl from './transparencycontrol';
 import api from '../../api';
+// import { isArray } from '../../../../../facade/js/util/Utils';
 
 export default class Transparency extends M.Plugin {
   /**
@@ -62,7 +63,11 @@ export default class Transparency extends M.Plugin {
      * Value: the names separated with coma
      * @type {string}
      */
-    this.layers = options.layers || '';
+    if (Array.isArray(options.layers)) {
+      this.layers = options.layers;
+    } else {
+      this.layers = options.layers.split(",");
+    }
 
     /**
      * Transparent effect radius
