@@ -2,6 +2,29 @@ import SelectionZoom from 'facade/selectionzoom';
 
 const map = M.map({
   container: 'mapjs',
+  layers: [new M.layer.WMTS({
+      url: 'http://www.ign.es/wmts/pnoa-ma?',
+      name: 'OI.OrthoimageCoverage',
+      legend: 'Imagen (PNOA)',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: true,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/jpeg',
+    }),
+    new M.layer.WMTS({
+      url: 'http://www.ign.es/wmts/ign-base?',
+      name: 'IGNBaseOrto',
+      matrixSet: 'GoogleMapsCompatible',
+      legend: 'Mapa IGN',
+      transparent: false,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/png',
+    })
+  ],
 });
 
 const mp = new SelectionZoom({

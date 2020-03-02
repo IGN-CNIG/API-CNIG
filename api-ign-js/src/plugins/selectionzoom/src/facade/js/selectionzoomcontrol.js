@@ -130,7 +130,7 @@ export default class SelectionZoomControl extends M.Control {
         nuevoBbox.y.max = 5441088.058072522;
 
         this.map.setBbox(nuevoBbox);
-        this.map.setZoom(7);
+        // this.map.setZoom(7);
       } else if (layersInfo.id === 'canarias') {
         nuevoBbox.x.min = -2170190.6639824593;
         nuevoBbox.x.max = -1387475.4943422542;
@@ -139,7 +139,7 @@ export default class SelectionZoomControl extends M.Control {
         nuevoBbox.y.max = 3637844.1689537475;
 
         this.map.setBbox(nuevoBbox);
-        this.map.setZoom(8);
+        // this.map.setZoom(8);
       } else if (layersInfo.id === 'baleares') {
         nuevoBbox.x.min = 115720.89020469127;
         nuevoBbox.x.max = 507078.4750247937;
@@ -148,7 +148,7 @@ export default class SelectionZoomControl extends M.Control {
         nuevoBbox.y.max = 4931444.501067467;
 
         this.map.setBbox(nuevoBbox);
-        this.map.setZoom(9);
+        // this.map.setZoom(9);
       } else if (layersInfo.id === 'ceuta') {
         nuevoBbox.x.min = -599755.2558583047;
         nuevoBbox.x.max = -587525.3313326766;
@@ -165,7 +165,7 @@ export default class SelectionZoomControl extends M.Control {
         nuevoBbox.y.max = 4208036.300158403;
 
         this.map.setBbox(nuevoBbox);
-        this.map.setZoom(14);
+        // this.map.setZoom(14);
       }
     } else {
       nuevoBbox.x.min = -3597923.5010608193;
@@ -175,7 +175,7 @@ export default class SelectionZoomControl extends M.Control {
       nuevoBbox.y.max = 6867724.141877197;
 
       this.map.setBbox(nuevoBbox);
-      this.map.setZoom(5);
+      // this.map.setZoom(5);
     }
 
     this.fire('selectionzoom:activeChanges', [{ activeLayerId: this.activeLayer }]);
