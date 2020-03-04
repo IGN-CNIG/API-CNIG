@@ -53,7 +53,7 @@ export default class IGNSearch extends M.Plugin {
      * @private
      * @type {string} - 'municipio' | 'poblacion' | 'toponimo' | 'municipio,poblacion' | etc
      */
-    this.noProcess = options.noProcess || 'municipio,poblacion';
+    this.noProcess = options.noProcess || 'poblacion';
 
     /**
      * This variable indicates the country code.
