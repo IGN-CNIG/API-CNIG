@@ -23,7 +23,7 @@ export default class IGNSearchControl extends M.Control {
   constructor(
     servicesToSearch = 'gn',
     maxResults = 10,
-    noProcess = 'municipio,poblacion',
+    noProcess = 'poblacion',
     countryCode = 'es',
     urlCandidates,
     urlFind,
