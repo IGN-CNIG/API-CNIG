@@ -65,7 +65,7 @@
         const mp = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
             maxResults: 10,
-            noProcess: 'municipio,poblacion',
+            noProcess: 'poblacion',
             countryCode: 'es',
             isCollapsed: false,
             position: 'TL',
