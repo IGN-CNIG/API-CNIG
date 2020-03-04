@@ -20,8 +20,8 @@ Plugin que permite aplicar un efecto de transparencia a la capa seleccionada.
 
 - El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **layer**. Parámetro obligatorio. Array que contiene el/los nombre/s de la/s capa/s (que está/n en el mapa) o la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS. 
-  A esta capa se le aplicará el efecto de transparencia.
+- **layer**. Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa), la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto.
+  A esta/s capa/s se le aplicará el efecto de transparencia.
 
 - **position**. Indica la posición donde se mostrará el plugin.
   - 'TL':top left
@@ -38,7 +38,8 @@ Plugin que permite aplicar un efecto de transparencia a la capa seleccionada.
 # Ejemplos de uso
 
 ## Ejemplo 1
-Insertar un capa a través de un servicio WMS.
+Insertar una capa a través de un servicio WMS. La URL en formato mapea sigue la siguiente estructura:
+  - Servicio,Leyenda,URL,Nombre. Separados por "*".
 ```javascript
   const mp = new M.plugin.Transparency({
   position: 'TL',
@@ -61,6 +62,53 @@ Insertar dos capas a través de servicio WMS.
 ```
 
 ## Ejemplo 3
+Insertar una capa WMS por nombre.
+```javascript
+const wms = new M.layer.WMS({
+  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeBoundary',
+  legend: 'Limite administrativo',
+  tiled: false,
+}, {});
+map,addWMS(wms);
+const mp = new M.plugin.Transparency({
+  position: 'TL',
+  layers: ['AU.AdministrativeBoundary'],
+});
+
+   map.addPlugin(mp);
+```
+
+## Ejemplo 4
+Insertar una capa WMS como objeto.
+```javascript
+const wms = new M.layer.WMS({
+  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeBoundary',
+  legend: 'Limite administrativo',
+  tiled: false,
+}, {});
+map,addWMS(wms);
+const mp = new M.plugin.Transparency({
+  position: 'TL',
+  layers: [wms],
+});
+
+   map.addPlugin(mp);
+```
+
+## Ejemplo 5
+Insertar una capa a través de servicio WMTS. Sigue la misma estructura que las WMS.
+```javascript
+  const mp = new M.plugin.Transparency({
+  position: 'TL',
+  layers: ['WMTS*IGN*http://www.ideandalucia.es/geowebcache/service/wmts*toporaster']
+});
+
+   map.addPlugin(mp);
+```
+
+## Ejemplo 6
 Insertar una capa WMTS por nombre.
 ```javascript
 let wmts = new M.layer.WMTS({
@@ -80,8 +128,27 @@ map.addWMTS(wmts);
    map.addPlugin(mp);
 ```
 
+## Ejemplo 7
+Insertar una capa WMTS como objeto.
+```javascript
+let wmts = new M.layer.WMTS({
+  url: "http://www.ideandalucia.es/geowebcache/service/wmts",
+  name: "toporaster",
+  matrixSet: "EPSG:25830",
+  legend: "Toporaster"
+}, {
+  format: 'image/png'
+});
+map.addWMTS(wmts);
+  const mp = new M.plugin.Transparency({
+  position: 'TL',
+  layers: [wmts],
+});
 
-## Ejemplo 4
+   map.addPlugin(mp);
+```
+
+## Ejemplo 8
 Especificar radio
 ```javascript
 let wmts = new M.layer.WMTS({

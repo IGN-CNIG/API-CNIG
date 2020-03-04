@@ -63,10 +63,15 @@ export default class Transparency extends M.Plugin {
      * Value: the names separated with coma
      * @type {string}
      */
-    if (Array.isArray(options.layers)) {
-      this.layers = options.layers;
+    if (options.layers === undefined) {
+      M.dialog.error('No se ha especificado una capa válida sobre la que aplicar el efecto');
+      this.layers = [];
     } else {
-      this.layers = options.layers.split(",");
+      if (Array.isArray(options.layers)) {
+        this.layers = options.layers;
+      } else {
+        this.layers = options.layers.split(",");
+      }
     }
 
     /**

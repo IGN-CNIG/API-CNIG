@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
     <link href="plugins/transparency/transparency.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
@@ -43,6 +44,7 @@
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
     <script type="text/javascript" src="plugins/transparency/transparency.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -62,23 +64,36 @@
             center: [-467062.8225, 4783459.6216],
         });
 
- 	let wmts = new M.layer.WMTS({
-	   url: "http://www.ideandalucia.es/geowebcache/service/wmts",
-	   name: "toporaster",
-	   matrixSet: "EPSG:25830",
-	   legend: "Toporaster"
-	 }, {
-	   format: 'image/png'
-	 });
-	 map.addWMTS(wmts);
+        let wmts = new M.layer.WMTS({
+            url: "http://www.ideandalucia.es/geowebcache/service/wmts",
+            name: "toporaster",
+            matrixSet: "EPSG:25830",
+            legend: "Toporaster"
+        }, {
+            format: 'image/png'
+        });
+        map.addWMTS(wmts);
 
+        const wms = new M.layer.WMS({
+            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeBoundary',
+            legend: 'Limite administrativo',
+            tiled: false,
+        }, {});
+        map.addWMS(wms);
 
         const mp = new M.plugin.Transparency({
-                position: 'TL',
-                layers: ['toporaster', 'WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo']
-            });
+            position: 'TL',
+            layers: ['toporaster', 'AU.AdministrativeBoundary']
+        });
+
+        const mp2 = new M.plugin.ShareMap({
+            baseUrl: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/',
+            position: 'BR',
+        })
 
         map.addPlugin(mp);
+        map.addPlugin(mp2);
 
         window.map = map;
     </script>

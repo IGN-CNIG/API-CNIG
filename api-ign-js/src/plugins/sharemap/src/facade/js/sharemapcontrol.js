@@ -280,7 +280,9 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getLayers() {
-    const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__' && layer.displayInLayerSwitcher !== false);
+    // const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__' &&
+    // layer.displayInLayerSwitcher !== false);
+    const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__');
     return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
   }
 

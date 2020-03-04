@@ -185,24 +185,29 @@ export default class TransparencyControl extends M.Control {
   transformToLayers(layers) {
     const transform = layers.map(function(layer) {
       let newLayer = null;
-      if (layer.indexOf('*') >= 0) {
-        const urlLayer = layer.split('*');
-        if (urlLayer[0].toUpperCase() == 'WMS') {
-          newLayer = new M.layer.WMS({
-            url: urlLayer[2],
-            name: urlLayer[3]
-          });
-          this.map.addLayers(newLayer);
-        } else if (urlLayer[0].toUpperCase() == 'WMTS') {
-          newLayer = new M.layer.WMTS({
-            url: urlLayer[2],
-            name: urlLayer[3]
-          });
-          this.map.addLayers(newLayer);
+      if (!(layer instanceof Object)) {
+        if (layer.indexOf('*') >= 0) {
+          const urlLayer = layer.split('*');
+          if (urlLayer[0].toUpperCase() == 'WMS') {
+            newLayer = new M.layer.WMS({
+              url: urlLayer[2],
+              name: urlLayer[3]
+            });
+            this.map.addLayers(newLayer);
+          } else if (urlLayer[0].toUpperCase() == 'WMTS') {
+            newLayer = new M.layer.WMTS({
+              url: urlLayer[2],
+              name: urlLayer[3]
+            });
+            this.map.addLayers(newLayer);
+          }
+        } else {
+          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
+          newLayer = this.isValidLayer(layerByName) ? layerByName : null;
         }
-      } else {
-        const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
-        newLayer = this.isValidLayer(layerByName) ? layerByName : null;
+      } else if (layer instanceof Object) {
+        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[0];
+        newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
       }
       if (newLayer !== null) {
         newLayer.displayInLayerSwitcher = false;
