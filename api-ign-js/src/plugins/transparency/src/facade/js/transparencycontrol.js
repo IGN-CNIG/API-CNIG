@@ -106,22 +106,17 @@ export default class TransparencyControl extends M.Control {
         // Botón efecto transparencia      
         this.template.querySelector('#m-transparency-transparent').addEventListener('click', (evt) => {
 
-          if (this.layerSelected === null) this.layerSelected = this.layers[0];
           if (document.getElementsByClassName('buttom-pressed').length == 0) {
-            this.template.querySelector('#m-transparency-transparent').classList.add('buttom-pressed');
-            this.getImpl().effectSelected(this.layerSelected, this.radius);
-            if (names.length > 1) this.activateElements();
+            this.activate();
           } else {
-            this.template.querySelector('#m-transparency-transparent').classList.remove('buttom-pressed');
-            this.removeEffects();
-            this.layerSelected.setVisible(false);
-            if (names.length > 1) this.deactivateElements();
+            this.deactivate();
           }
 
         });
 
         if (options !== '') {
-          this.deactivateElements();
+          this.template.querySelector('select').disabled = true;
+          this.template.querySelector('input').disabled = true;
           this.template.querySelector('select').addEventListener('change', (evt) => {
             this.layerSelected.setVisible(false);
             this.removeEffects();
@@ -144,9 +139,17 @@ export default class TransparencyControl extends M.Control {
    * @function
    * @api stable
    */
-  activateElements() {
-    this.template.querySelector('select').disabled = false;
-    this.template.querySelector('input').disabled = false;
+  activate() {
+    if (this.layerSelected === null) this.layerSelected = this.layers[0];
+    let names = this.layers.map(function(layer) {
+      return layer instanceof Object ? { name: layer.name } : { name: layer };
+    });
+    this.template.querySelector('#m-transparency-transparent').classList.add('buttom-pressed');
+    this.getImpl().effectSelected(this.layerSelected, this.radius);
+    if (names.length > 1) {
+      this.template.querySelector('select').disabled = false;
+      this.template.querySelector('input').disabled = false;
+    }
   }
 
   /**
@@ -156,9 +159,18 @@ export default class TransparencyControl extends M.Control {
    * @function
    * @api stable
    */
-  deactivateElements() {
-    this.template.querySelector('select').disabled = true;
-    this.template.querySelector('input').disabled = true;
+  deactivate() {
+    if (this.layerSelected === null) this.layerSelected = this.layers[0];
+    let names = this.layers.map(function(layer) {
+      return layer instanceof Object ? { name: layer.name } : { name: layer };
+    });
+    this.template.querySelector('#m-transparency-transparent').classList.remove('buttom-pressed');
+    this.removeEffects();
+    this.layerSelected.setVisible(false);
+    if (names.length > 1) {
+      this.template.querySelector('select').disabled = true;
+      this.template.querySelector('input').disabled = true;
+    }
   }
 
 

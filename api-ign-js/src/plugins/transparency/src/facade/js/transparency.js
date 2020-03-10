@@ -177,6 +177,28 @@ export default class Transparency extends M.Plugin {
   }
 
   /**
+   * Activate plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  activate() {
+    this.control_.activate();
+  }
+
+  /**
+   * Desactivate plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  deactivate() {
+    this.control_.deactivate();
+  }
+
+  /**
    * This
    function compare
    if pluging recieved by param is instance of M.plugin.Transparency
@@ -186,7 +208,6 @@ export default class Transparency extends M.Plugin {
    * @param {M.plugin} plugin to compare
    * @api stable
    */
-
   equals(plugin) {
     if (plugin instanceof Transparency) {
       return true;
