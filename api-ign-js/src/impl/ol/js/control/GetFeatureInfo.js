@@ -49,7 +49,7 @@ class GetFeatureInfo extends Control {
      * @type {Integer}
      * @api stable
      */
-    this.buffer = options.buffer;
+    this.buffer = options.buffer || 5;
     this.element = document.createElement('div');
     this.activated = activated;
     this.currentFormat = 0;
@@ -142,11 +142,11 @@ class GetFeatureInfo extends Control {
         const regexBuffer = /buffer/i;
         const source = olLayer.getSource();
         const coord = this.evt.coordinate;
-        const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, getFeatureInfoParams);
-
         if (!regexBuffer.test(layer.url)) {
-          getFeatureInfoParams.Buffer = this.buffer;
+          getFeatureInfoParams.BUFFER = this.buffer;
         }
+
+        const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, getFeatureInfoParams);
         param = { layer: layer.legend || layer.name, url };
       }
       return param;
