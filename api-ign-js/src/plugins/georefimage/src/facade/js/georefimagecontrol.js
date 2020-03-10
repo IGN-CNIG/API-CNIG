@@ -34,14 +34,14 @@ export default class GeorefimageControl extends M.Control {
      * @private
      * @type {String}
      */
-    this.serverUrl_ = 'https://geoprint.desarrollo.guadaltel.es';
+    this.serverUrl_ = 'http://localhost:8080';
 
     /**
      * Mapfish template url
      * @private
      * @type {String}
      */
-    this.printTemplateUrl_ = 'https://geoprint.desarrollo.guadaltel.es/print/CNIG';
+    this.printTemplateUrl_ = 'http://localhost:8080/print-servlet-3.22.0/print/mapexport';
 
 
     /**
@@ -49,7 +49,7 @@ export default class GeorefimageControl extends M.Control {
      * @private
      * @type {String}
      */
-    this.printStatusUrl_ = 'https://geoprint.desarrollo.guadaltel.es/print/status';
+    this.printStatusUrl_ = 'http://localhost:8080/print-servlet-3.22.0/print/status';
 
     /**
      * Map title
@@ -106,10 +106,7 @@ export default class GeorefimageControl extends M.Control {
         clientLogo: '', // logo url
         creditos: 'Impresión generada a través de Mapea',
       },
-      parameters: {
-        imageSpain: 'file://E01_logo_IGN_CNIG.png',
-        imageCoordinates: 'file://E01_logo_IGN_CNIG.png',
-      },
+      parameters: {},
     };
 
     /**
@@ -134,9 +131,9 @@ export default class GeorefimageControl extends M.Control {
     this.options_ = {
       dpi: 150,
       forceScale: false,
-      format: 'pdf',
+      format: 'jpg',
       legend: 'false',
-      layout: 'A4 horizontal',
+      layout: 'A4 horizontal jpg',
     };
 
     this.layoutOptions_ = [];
@@ -153,6 +150,7 @@ export default class GeorefimageControl extends M.Control {
    * @param {Function} callback - function that removes loading icon class.
    */
   getStatus(url, callback) {
+    M.proxy(false);
     M.remote.get(url).then((response) => {
       const statusJson = JSON.parse(response.text);
       const { status } = statusJson;
@@ -187,7 +185,7 @@ export default class GeorefimageControl extends M.Control {
         const capabilities = capabilitiesParam;
         let i = 0;
         let ilen;
-
+        this.dpi_ = capabilitiesParam.layouts[0].attributes[0].clientInfo.maxDPI;
         // default layout
         for (i = 0, ilen = capabilities.layouts.length; i < ilen; i += 1) {
           const layout = capabilities.layouts[i];
@@ -260,21 +258,6 @@ export default class GeorefimageControl extends M.Control {
 
     this.inputTitle_ = this.element_.querySelector('.form div.title > input');
 
-    const selectDpi = this.element_.querySelector('.form div.dpi > select');
-    selectDpi.addEventListener('change', (e) => {
-      const dpiValue = selectDpi.value;
-      this.setDpi({
-        value: dpiValue,
-        name: dpiValue,
-      });
-    });
-
-    const dpiValue = selectDpi.value;
-    this.setDpi({
-      value: dpiValue,
-      name: dpiValue,
-    });
-
     const printBtn = this.element_.querySelector('.button > button.print');
     printBtn.addEventListener('click', this.printClick_.bind(this));
 
@@ -284,7 +267,6 @@ export default class GeorefimageControl extends M.Control {
 
       // reset values
       this.inputTitle_.value = '';
-      selectDpi.value = this.dpisOptions_[0];
 
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
@@ -292,11 +274,10 @@ export default class GeorefimageControl extends M.Control {
       const clickEvent = document.createEvent('HTMLEvents');
       // Fire listeners
       clickEvent.initEvent('click');
-      selectDpi.dispatchEvent(changeEvent);
       // clean queue
 
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
-        child.removeEventListener('click', this.downloadPrint);
+        child.removeEventListener('click', this.downloadPrint.bind(this));
       }, this]);
 
       this.queueContainer_.innerHTML = '';
@@ -326,15 +307,6 @@ export default class GeorefimageControl extends M.Control {
     this.format_ = format;
   }
 
-  /**
-   * Sets dpi
-   *
-   * @private
-   * @function
-   */
-  setDpi(dpi) {
-    this.dpi_ = dpi;
-  }
 
   /**
    * Sets force scale option
@@ -408,6 +380,7 @@ export default class GeorefimageControl extends M.Control {
    * @api stable
    */
   getCapabilities() {
+    M.proxy(false);
     if (M.utils.isNullOrEmpty(this.capabilitiesPromise_)) {
       this.capabilitiesPromise_ = new Promise((success, fail) => {
         const capabilitiesUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, 'capabilities.json']);
@@ -507,45 +480,25 @@ export default class GeorefimageControl extends M.Control {
    * @function
    */
   getPrintData() {
-    const title = this.inputTitle_.value;
-    const description = '';
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
-    const dmsBbox = this.convertBboxToDMS(bbox);
-    const layout = 'Captura de pantalla';
-    const dpi = this.dpi_.value;
+    const width = this.map_.getMapImpl().getSize()[0];
+    const height = this.map_.getMapImpl().getSize()[1];
+    const layout = 'plain';
+    const dpi = this.dpi_;
     const outputFormat = 'jpg';
     const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
-    const attributionContainer = document.querySelector('#m-attributions-container>div>a');
-    const attribution = attributionContainer !== null ?
-      `Cartografía base: ${attributionContainer.innerHTML}` : '';
-
-    const date = new Date();
-    const currentDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
 
     const printData = M.utils.extend({
       layout,
       outputFormat,
       attributes: {
-        title,
-        description,
-        attributionInfo: attribution,
-        refsrs: this.turnProjIntoLegend(projection),
-        printDate: currentDate,
         map: {
           dpi,
           projection,
           useAdjustBounds: true,
         },
-        xCoordTopLeft: dmsBbox.y.max,
-        yCoordTopLeft: dmsBbox.x.min,
-        xCoordTopRight: dmsBbox.y.max,
-        yCoordTopRight: dmsBbox.x.max,
-        xCoordBotRight: dmsBbox.y.min,
-        yCoordBotRight: dmsBbox.x.max,
-        xCoordBotLeft: dmsBbox.y.min,
-        yCoordBotLeft: dmsBbox.x.min,
       },
     }, this.params_.layout);
 
@@ -558,7 +511,11 @@ export default class GeorefimageControl extends M.Control {
       }
 
       if (!this.forceScale_) {
+        printData.attributes.map.dpi = dpi;
+        printData.attributes.map.width = width;
+        printData.attributes.map.height = height;
         printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+
 
         if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
           printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection.code, 'EPSG:3857');
@@ -658,12 +615,15 @@ export default class GeorefimageControl extends M.Control {
 
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      const Px = ((this.map_.getBbox().x.max - this.map_.getBbox().x.min) /
-        this.documentRead_.width).toString();
+      const xminprima = (this.map_.getBbox().x.max - this.map_.getBbox().x.min);
+      const ymaxprima = (this.map_.getBbox().y.max - this.map_.getBbox().y.min);
+
+      const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
+        (72 / this.dpi_)).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
-      const Py = ((this.map_.getBbox().y.min - this.map_.getBbox().y.max) /
-        this.documentRead_.height).toString();
+      const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
+        (72 / this.dpi_)).toString();
       const Cx = (this.map_.getBbox().x.min).toString();
       const Cy = (this.map_.getBbox().y.max).toString();
 
@@ -671,7 +631,7 @@ export default class GeorefimageControl extends M.Control {
 
       if (titulo === '') {
         const f = new Date();
-        titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay(), '_', f.getHours(), f.getMinutes(), f.getSeconds());
+        titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
       }
 
       const zip = new JsZip();
@@ -682,7 +642,7 @@ export default class GeorefimageControl extends M.Control {
           // see FileSaver.js
           saveAs(content, titulo.concat('.zip'));
         });
-    }).bind(this);
+    });
   }
 
   getBase64Image(imgUrl) {
