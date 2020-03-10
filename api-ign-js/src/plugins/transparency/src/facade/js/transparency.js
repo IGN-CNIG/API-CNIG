@@ -138,6 +138,7 @@ export default class Transparency extends M.Plugin {
    */
   destroy() {
     this.control_.removeEffects();
+    this.control_.setVisibleLayers(this.layers);
     this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
   }
