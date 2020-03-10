@@ -510,6 +510,7 @@ export default class GeorefimageControl extends M.Control {
         printData.attributes.map.projection = 'EPSG:3857';
       }
 
+
       if (!this.forceScale_) {
         printData.attributes.map.dpi = dpi;
         printData.attributes.map.width = width;
