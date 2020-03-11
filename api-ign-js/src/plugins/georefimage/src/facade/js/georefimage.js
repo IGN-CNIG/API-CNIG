@@ -1,7 +1,7 @@
 /**
  * @module M/plugin/Georefimage
  */
-import 'assets/css/georefimage';
+import '../assets/css/georefimage';
 import GeorefimageControl from './georefimagecontrol';
 
 export default class Georefimage extends M.Plugin {
