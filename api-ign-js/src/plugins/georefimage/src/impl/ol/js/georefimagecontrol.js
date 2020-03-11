@@ -275,7 +275,6 @@ export default class GeorefimageControl extends M.impl.Control {
     encodedLayer = {
       type: 'Vector',
       style,
-      styleProperty: '_gx_style',
       geoJson: {
         type: 'FeatureCollection',
         features: encodedFeatures,
@@ -302,14 +301,12 @@ export default class GeorefimageControl extends M.impl.Control {
     const layerOpacity = olLayer.getOpacity();
     const params = olLayer.getSource().getParams();
     const paramsLayers = [params.LAYERS];
-    const paramsFormat = params.FORMAT;
     const paramsStyles = [params.STYLES];
     encodedLayer = {
       baseURL: layerUrl,
       opacity: layerOpacity,
       type: 'WMS',
       layers: paramsLayers.join(',').split(','),
-      format: paramsFormat || 'image/jpeg',
       styles: paramsStyles.join(',').split(','),
     };
 
@@ -374,7 +371,6 @@ export default class GeorefimageControl extends M.impl.Control {
       opacity: olLayer.getOpacity(),
       type: 'WMS',
       layers: paramsLayers.join(',').split(','),
-      format: params.FORMAT || 'image/jpeg',
       styles: paramsStyles.join(',').split(','),
     };
 
@@ -629,7 +625,6 @@ export default class GeorefimageControl extends M.impl.Control {
       encodedLayer = {
         type: 'Vector',
         style,
-        styleProperty: '_gx_style',
         geoJson: {
           type: 'FeatureCollection',
           features: encodedFeatures,

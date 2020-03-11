@@ -16,6 +16,7 @@
     <link href="plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
     <link href="plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
@@ -47,6 +48,7 @@
     <script type="text/javascript" src="plugins/selectiondraw/selectiondraw.ol.min.js"></script>
     <script type="text/javascript" src="plugins/georefimage/georefimage.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/selectiondraw/selectiondraw.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -96,8 +98,11 @@
             position: 'BR',
         });
 
-        const selectiondraw = new M.plugin.SelectionDraw({
-            projection: 'EPSG:3857',
+        const selectionDraw = new M.plugin.SelectionDraw({
+            projection: 'EPSG:4326',
+            position: 'TL',
+            collapsed: false,
+            collapsible: true,
         });
         selectiondraw.on('finished:draw', (feature) => {
             console.log(feature);
