@@ -88,7 +88,8 @@ export default class GeometryDraw extends M.Plugin {
       collapsedButtonClass: 'geometrydraw-editar',
       tooltip: 'Dibujo de geometrías',
     });
-    this.controls_.push(new GeometryDrawControl());
+    this.control_ = new GeometryDrawControl();
+    this.controls_.push(this.control_);
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
@@ -123,6 +124,9 @@ export default class GeometryDraw extends M.Plugin {
    * @api
    */
   destroy() {
+    this.control_.deactivateSelection();
+    this.control_.deactivateDrawing();
+    this.control_.deactivateEdition();
     this.map_.removeControls([this.control_]);
     [this.map_, this.control_, this.panel_] = [null, null, null];
   }
