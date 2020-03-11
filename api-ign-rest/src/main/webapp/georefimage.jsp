@@ -13,10 +13,9 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
-    <link href="plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
+    <link href="plugins/geometrydraw/geometrydraw.ol.min.css" rel="stylesheet" />
     <link href="plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
-    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
-    <link href="plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
+    </link>
     <style type="text/css">
         html,
         body {
@@ -45,10 +44,9 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
-    <script type="text/javascript" src="plugins/selectiondraw/selectiondraw.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/geometrydraw/geometrydraw.ol.min.js"></script>
     <script type="text/javascript" src="plugins/georefimage/georefimage.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/selectiondraw/selectiondraw.ol.min.js"></script>
+
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -65,55 +63,23 @@
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
-            center: [-467062.8225, 4683459.6216],
+            center: [-467062.8225, 4783459.6216],
         });
 
-        const layerinicial = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
-
-        const campamentos = new M.layer.GeoJSON({
-            name: 'Campamentos',
-            url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
-            extract: true,
+        const mp = new M.plugin.GeometryDraw({
+            position: 'TR',
+            collapsed: true,
+            collapsible: true,
         });
 
-        // OVERVIEW
-        // const mp = new M.plugin.OverviewMap({
-        //   position: 'BR',
-        // });
-        // map.addLayers(['WMS*Limites*http://www.ideandalucia.es/wms/mta10v_2007?*Limites*false', 'WMS_FULL*http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_Permeabilidad_Andalucia?']);
-
-        const georefimage = new M.plugin.Georefimage({
+        const mp11 = new M.plugin.Georefimage({
             collapsed: true,
             collapsible: true,
             position: 'TR',
         });
 
-        const share = new M.plugin.ShareMap({
-            baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
-            position: 'BR',
-        });
-
-        const selectionDraw = new M.plugin.SelectionDraw({
-            projection: 'EPSG:4326',
-            position: 'TL',
-            collapsed: false,
-            collapsible: true,
-        });
-        selectiondraw.on('finished:draw', (feature) => {
-            console.log(feature);
-        });
-        map.addPlugin(selectiondraw);
-
-        map.addLayers([layerinicial, campamentos]);
-        map.addPlugin(georefimage);
-        map.addPlugin(share);
-
-        window.map = map;
+        map.addPlugin(mp);
+        map.addPlugin(mp11);
     </script>
 </body>
 
