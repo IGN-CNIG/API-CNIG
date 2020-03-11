@@ -34,14 +34,14 @@ export default class GeorefimageControl extends M.Control {
      * @private
      * @type {String}
      */
-    this.serverUrl_ = 'http://localhost:8080';
+    this.serverUrl_ = 'https://geoprint.desarrollo.guadaltel.es';
 
     /**
      * Mapfish template url
      * @private
      * @type {String}
      */
-    this.printTemplateUrl_ = 'http://localhost:8080/print-servlet-3.22.0/print/mapexport';
+    this.printTemplateUrl_ = 'https://geoprint.desarrollo.guadaltel.es/print/mapexport';
 
 
     /**
@@ -49,7 +49,7 @@ export default class GeorefimageControl extends M.Control {
      * @private
      * @type {String}
      */
-    this.printStatusUrl_ = 'http://localhost:8080/print-servlet-3.22.0/print/status';
+    this.printStatusUrl_ = 'https://geoprint.desarrollo.guadaltel.es/print/status';
 
     /**
      * Map title

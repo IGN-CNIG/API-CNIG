@@ -40,6 +40,7 @@ const georefimage = new Georefimage({
   position: 'TR',
 });
 
+
 map.addLayers([layerinicial, campamentos]);
 map.addPlugin(georefimage);
 
