@@ -185,6 +185,7 @@ export default class GeometryDrawControl extends M.Control {
      * @type {*}
      */
     this.selectionLayer = new M.layer.Vector({
+      extract: false,
       name: 'selectLayer',
       source: this.getImpl().newVectorSource(true),
     });
