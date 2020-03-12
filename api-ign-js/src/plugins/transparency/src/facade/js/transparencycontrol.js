@@ -186,13 +186,13 @@ export default class TransparencyControl extends M.Control {
   }
 
   /**
-   * This function put the transparency layers visibles
+   * This function remove the transparency layers
    *
    * @public
    * @function
    * @api stable
    */
-  setVisibleLayers(layers) {
+  removeTransparencyLayers(layers) {
     layers.forEach(layer => {
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
