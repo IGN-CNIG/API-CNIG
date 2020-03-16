@@ -7,7 +7,18 @@
         <div class="title">
             <input type="text" placeholder="Título">
         </div>
+
+        <!-- Proyección -->
+        <div class="projection">
+            <label>Proyección: </label>
+            <select>
+                {{#each proyections}}
+                    <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
+                {{/each}}
+            </select>
+        </div>
     </div>
+
     <!-- buttons -->
     <div class="button">
         <button class="print"><i class="icon-impresora"></i> Elaborar imagen</button>
