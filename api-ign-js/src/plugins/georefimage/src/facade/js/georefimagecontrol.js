@@ -515,7 +515,6 @@ export default class GeorefimageControl extends M.Control {
     const layout = 'plain';
     const dpi = this.dpi_;
     const outputFormat = 'jpg';
-    const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
 
     const printData = M.utils.extend({
@@ -534,27 +533,24 @@ export default class GeorefimageControl extends M.Control {
       printData.attributes.map.layers = encodedLayers;
       printData.attributes = Object.assign(printData.attributes, parameters);
 
-      if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';
       } else {
-        printData.attributes.map.projection = projection;
+        printData.attributes.map.projection = this.map_.getProjection().code;
       }
 
+      printData.attributes.map.dpi = dpi;
+      printData.attributes.map.width = width;
+      printData.attributes.map.height = height;
+      printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
 
-      if (!this.forceScale_) {
-        printData.attributes.map.dpi = dpi;
-        printData.attributes.map.width = width;
-        printData.attributes.map.height = height;
-        printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-
-
-        if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
-          printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
-        }
-      } else if (this.forceScale_) {
-        printData.attributes.map.center = [center.x, center.y];
-        printData.attributes.map.scale = this.map_.getScale();
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+        printData.attributes.map.bbox = this.getImpl().transformExt(
+          printData.attributes.map.bbox, this.map_.getProjection().code,
+          projection,
+        );
       }
+
 
       return printData;
     });
@@ -649,8 +645,14 @@ export default class GeorefimageControl extends M.Control {
       let BboxTransformXminYmax = [this.map_.getBbox().x.min, this.map_.getBbox().y.max];
       let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
 
-      BboxTransformXmaxYmin = this.getImpl().transform(BboxTransformXmaxYmin, 'EPSG:3857', this.projection_.value);
-      BboxTransformXminYmax = this.getImpl().transform(BboxTransformXminYmax, 'EPSG:3857', this.projection_.value);
+      BboxTransformXmaxYmin = this.getImpl().transform(
+        BboxTransformXmaxYmin,
+        this.map_.getProjection().code, this.projection_.value,
+      );
+      BboxTransformXminYmax = this.getImpl().transform(
+        BboxTransformXminYmax,
+        this.map_.getProjection().code, this.projection_.value,
+      );
 
 
       const xminprima = (BboxTransformXmaxYmin[0] - BboxTransformXminYmax[0]);
