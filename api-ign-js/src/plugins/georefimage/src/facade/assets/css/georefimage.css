@@ -28,24 +28,24 @@
      PRINTER FORM
 *********************/
 
-.m-georefimage-container>div.form>div {
+/* .m-georefimage-container>div.form>div {
     margin: 12px !important;
     width: 20% !important;
     float: right;
-}
+} */
 
 
 /* TITLE & DESCRIPTION */
 
 .m-georefimage-container>div.form>div.title {
-    width: 70% !important;
-    margin: 10px !important;
+    width: 45%;
     float: left;
+    border-radius: 0px;
+    margin: 10px;
 }
 
 .m-georefimage-container>div.form>div.title>input {
-    width: calc(100% - 10px);
-    min-width: 200px;
+    width: 50%;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin: 0px;
@@ -54,13 +54,14 @@
 
 .m-georefimage-container>div.form>div.title>input {
     height: 20px;
+    width: 100%;
 }
 
-.m-georefimage-container>div.form>div.dpi>select {
-    height: 25px;
+.m-georefimage-container>div.form>div.projection>select {
+    height: 32px;
     cursor: pointer;
     padding-left: 5px;
-    width: 68%;
+    width: auto;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -70,25 +71,25 @@
 
 @media only screen and (max-width: 380px) {
 
-    .m-georefimage-container>div.form>div.dpi {
+    .m-georefimage-container>div.form>div.projection {
         width: calc(100vw - 10%) !important;
         margin-left: 5% !important;
         text-align: left !important;
     }
 
-    .m-georefimage-container>div.form>div.dpi label {
+    .m-georefimage-container>div.form>div.projection label {
         margin-right: 10px;
     }
 }
 
 
-/* DPI */
+/* PROJECTION */
 
-.m-georefimage-container>div.form>div.dpi {
+.m-georefimage-container>div.form>div.projection {
     width: 45%;
-    float: right;
+    float: left;
     border-radius: 0px;
-    margin-right: 5%;
+    margin: 10px;
 }
 
 

@@ -785,6 +785,10 @@ export default class GeorefimageControl extends M.impl.Control {
     return ol.proj.transformExtent(box, code, currProj);
   }
 
+  transform(box, code, currProj) {
+    return ol.proj.transform(box, code, currProj);
+  }
+
   /**
    * This function destroys this control, clearing the HTML
    * and unregistering all events

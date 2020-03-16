@@ -80,6 +80,20 @@ export default class GeorefimageControl extends M.Control {
     this.format_ = null;
 
     /**
+     * Map projection to print
+     * @private
+     * @type {HTMLElement}
+     */
+    this.projection_ = null;
+
+    /**
+     * Map dpi to print
+     * @private
+     * @type {HTMLElement}
+     */
+    this.dpi_ = null;
+
+    /**
      * Map dpi to print
      * @private
      * @type {HTMLElement}
@@ -199,30 +213,18 @@ export default class GeorefimageControl extends M.Control {
           return item.name;
         }));
 
-        capabilities.dpis = [];
-        let attribute;
-        // default dpi
-        // recommended DPI list attribute search
-        for (i = 0, ilen = capabilities.layouts[0].attributes.length; i < ilen; i += 1) {
-          if (capabilities.layouts[0].attributes[i].clientInfo !== null) {
-            attribute = capabilities.layouts[0].attributes[i];
+        capabilities.proyections = [];
+        const proyectionsDefect = ['EPSG:25828', 'EPSG:25829', 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
+
+
+        for (i = 0, ilen = proyectionsDefect.length; i < ilen; i += 1) {
+          if (proyectionsDefect[i] !== null) {
+            const proyection = proyectionsDefect[i];
+            const object = { value: proyection };
+            capabilities.proyections.push(object);
           }
         }
 
-        for (i = 0, ilen = attribute.clientInfo.dpiSuggestions.length; i < ilen; i += 1) {
-          const dpi = attribute.clientInfo.dpiSuggestions[i];
-
-          if (parseInt(dpi, 10) === this.options_.dpi) {
-            dpi.default = true;
-            break;
-          }
-          const object = { value: dpi };
-          capabilities.dpis.push(object);
-        }
-
-        this.dpisOptions_ = [].concat(capabilities.dpis.map((item) => {
-          return item.value;
-        }));
 
         if (Array.isArray(capabilities.formats)) {
           this.outputFormats_ = capabilities.formats;
@@ -258,6 +260,20 @@ export default class GeorefimageControl extends M.Control {
 
     this.inputTitle_ = this.element_.querySelector('.form div.title > input');
 
+    const selectProjection = this.element_.querySelector('.form div.projection > select');
+    selectProjection.addEventListener('change', (e) => {
+      const projectionValue = selectProjection.value;
+      this.setProjection({
+        value: projectionValue,
+        name: projectionValue,
+      });
+    });
+    const projectionValue = selectProjection.value;
+    this.setProjection({
+      value: projectionValue,
+      name: projectionValue,
+    });
+
     const printBtn = this.element_.querySelector('.button > button.print');
     printBtn.addEventListener('click', this.printClick_.bind(this));
 
@@ -267,6 +283,7 @@ export default class GeorefimageControl extends M.Control {
 
       // reset values
       this.inputTitle_.value = '';
+      selectProjection.value = this.projectionsOptions_[0];
 
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
@@ -274,6 +291,8 @@ export default class GeorefimageControl extends M.Control {
       const clickEvent = document.createEvent('HTMLEvents');
       // Fire listeners
       clickEvent.initEvent('click');
+      selectProjection.dispatchEvent(changeEvent);
+
       // clean queue
 
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
@@ -307,6 +326,15 @@ export default class GeorefimageControl extends M.Control {
     this.format_ = format;
   }
 
+  /**
+   * Sets projection
+   *
+   * @private
+   * @function
+   */
+  setProjection(projection) {
+    this.projection_ = projection;
+  }
 
   /**
    * Sets force scale option
@@ -480,7 +508,7 @@ export default class GeorefimageControl extends M.Control {
    * @function
    */
   getPrintData() {
-    const projection = this.map_.getProjection().code;
+    const projection = this.projection_.value;
     const bbox = this.map_.getBbox();
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
@@ -508,6 +536,8 @@ export default class GeorefimageControl extends M.Control {
 
       if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';
+      } else {
+        printData.attributes.map.projection = projection;
       }
 
 
@@ -519,7 +549,7 @@ export default class GeorefimageControl extends M.Control {
 
 
         if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
-          printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection.code, 'EPSG:3857');
+          printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
         }
       } else if (this.forceScale_) {
         printData.attributes.map.center = [center.x, center.y];
@@ -616,17 +646,25 @@ export default class GeorefimageControl extends M.Control {
 
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      const xminprima = (this.map_.getBbox().x.max - this.map_.getBbox().x.min);
-      const ymaxprima = (this.map_.getBbox().y.max - this.map_.getBbox().y.min);
+      let BboxTransformXminYmax = [this.map_.getBbox().x.min, this.map_.getBbox().y.max];
+      let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
 
+      BboxTransformXmaxYmin = this.getImpl().transform(BboxTransformXmaxYmin, 'EPSG:3857', this.projection_.value);
+      BboxTransformXminYmax = this.getImpl().transform(BboxTransformXminYmax, 'EPSG:3857', this.projection_.value);
+
+
+      const xminprima = (BboxTransformXmaxYmin[0] - BboxTransformXminYmax[0]);
+      const ymaxprima = (BboxTransformXminYmax[1] - BboxTransformXmaxYmin[1]);
       const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
         (72 / this.dpi_)).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
       const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
         (72 / this.dpi_)).toString();
-      const Cx = (this.map_.getBbox().x.min).toString();
-      const Cy = (this.map_.getBbox().y.max).toString();
+      // const Cx = (this.map_.getBbox().x.min).toString();
+      // const Cy = (this.map_.getBbox().y.max).toString();
+      const Cx = (BboxTransformXminYmax[0]).toString();
+      const Cy = (BboxTransformXminYmax[1]).toString();
 
       let titulo = this.inputTitle_.value;
 
