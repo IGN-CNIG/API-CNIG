@@ -18,7 +18,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
      * @private
      * @type {Number}
      */
-    this.toggleDelay_ = 0;
+    this.toggleDelay_ = 1000;
     if (!M.utils.isNullOrEmpty(options.toggleDelay)) {
       this.toggleDelay_ = options.toggleDelay;
     }
@@ -296,6 +296,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       // manage overview map if it had not been rendered before and control
       // is expanded
       const ovmap = this.ovmap_;
+
       if (!this.collapsed_ && !ovmap.isRendered()) {
         ovmap.updateSize();
         this.resetExtent_();
