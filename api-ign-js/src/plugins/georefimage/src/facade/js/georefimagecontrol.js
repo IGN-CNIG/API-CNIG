@@ -156,6 +156,7 @@ export default class GeorefimageControl extends M.Control {
 
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
+    this.proyectionsDefect_ = ['EPSG:25828', 'EPSG:25829', 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
   }
 
   /**
@@ -214,7 +215,7 @@ export default class GeorefimageControl extends M.Control {
         }));
 
         capabilities.proyections = [];
-        const proyectionsDefect = ['EPSG:25828', 'EPSG:25829', 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
+        const proyectionsDefect = this.proyectionsDefect_;
 
 
         for (i = 0, ilen = proyectionsDefect.length; i < ilen; i += 1) {
@@ -283,7 +284,7 @@ export default class GeorefimageControl extends M.Control {
 
       // reset values
       this.inputTitle_.value = '';
-      selectProjection.value = this.projectionsOptions_[0];
+      this.projection_ = 'EPSG:3857';
 
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
@@ -292,11 +293,10 @@ export default class GeorefimageControl extends M.Control {
       // Fire listeners
       clickEvent.initEvent('click');
       selectProjection.dispatchEvent(changeEvent);
-
       // clean queue
 
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
-        child.removeEventListener('click', this.downloadPrint.bind(this));
+        child.removeEventListener('click', this.downloadPrint);
       }, this]);
 
       this.queueContainer_.innerHTML = '';
