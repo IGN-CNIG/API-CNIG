@@ -323,6 +323,7 @@
     -webkit-transition: max-width .5s ease 0s, opacity .44s ease 0s;
     transition: max-width .5s ease 0s, opacity .44s ease 0s;
     background: white;
+    width: 100%;
 }
 
 .m-georefimage-container>.results-panel>div.results {
