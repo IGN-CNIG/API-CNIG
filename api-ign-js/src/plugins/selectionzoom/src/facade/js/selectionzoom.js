@@ -3,6 +3,7 @@
  */
 // import '/assets/css/selectionzoom';
 import '../assets/css/selectionzoom';
+import api from '../../api';
 import SelectionZoomControl from './selectionzoomcontrol';
 
 export default class SelectionZoom extends M.Plugin {
@@ -107,6 +108,13 @@ export default class SelectionZoom extends M.Plugin {
 
     this.collapsed = options !== undefined ? options.collapsed : true;
     this.collapsible = options !== undefined ? options.collapsible : true;
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -222,5 +230,30 @@ export default class SelectionZoom extends M.Plugin {
     this.controls_ = null;
     this.panel_ = null;
     this.name = null;
+  }
+
+  /**
+   * This function compare if pluging recieved by param is instance of   M.plugin.Printer
+   *
+   * @public
+   * @function
+   * @param {M.plugin} plugin to comapre
+   * @api stable
+   */
+  equals(plugin) {
+    if (plugin instanceof SelectionZoom) {
+      return true;
+    }
+    return false;
+  }
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
   }
 }

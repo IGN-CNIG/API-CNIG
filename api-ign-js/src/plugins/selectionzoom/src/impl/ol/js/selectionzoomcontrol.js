@@ -48,4 +48,8 @@ export default class SelectionZoomControl extends M.impl.Control {
     // elimino el listener del evento
     map.getMapImpl().removeEventListener('dblclick');
   }
+
+  transform(box, code, currProj) {
+    return ol.proj.transform(box, code, currProj);
+  }
 }
