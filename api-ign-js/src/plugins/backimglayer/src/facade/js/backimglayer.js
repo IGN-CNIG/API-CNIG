@@ -3,6 +3,7 @@
  */
 // import '/assets/css/backimglayer';
 import '../assets/css/backimglayer';
+import api from '../../api';
 import BackImgLayerControl from './backimglayercontrol';
 
 export default class BackImgLayer extends M.Plugin {
@@ -109,6 +110,13 @@ export default class BackImgLayer extends M.Plugin {
     this.collapsible = options !== undefined ? options.collapsible : true;
 
     this.columnsNumber = options.columnsNumber != null ? options.columnsNumber : 2;
+
+    /**
+     * Metadata from api.json
+     * @private
+     * @type {Object}
+     */
+    this.metadata_ = api.metadata;
   }
 
   /**
@@ -160,7 +168,7 @@ export default class BackImgLayer extends M.Plugin {
     const layers = this.layerOpts === undefined ?
       `${this.ids}*${this.titles}*${this.previews}*${this.layers}` :
       this.turnLayerOptsIntoUrl();
-    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.layerId}*${this.layerVisibility}*${layers}`;
+    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.layerId}*${this.layerVisibility}*${this.columnsNumber}*${layers}`;
   }
 
   /**
@@ -221,10 +229,38 @@ export default class BackImgLayer extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls(this.controls_);
+    this.map_.removeLayers(this.getLayers());
     this.map_ = null;
     this.control_ = null;
     this.controls_ = null;
     this.panel_ = null;
     this.name = null;
+    this.layerOpts = null;
+  }
+
+  /**
+   * This function compare if pluging recieved by param is instance of   M.plugin.Printer
+   *
+   * @public
+   * @function
+   * @param {M.plugin} plugin to comapre
+   * @api stable
+   */
+  equals(plugin) {
+    if (plugin instanceof BackImgLayer) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * This function gets metadata plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getMetadata() {
+    return this.metadata_;
   }
 }
