@@ -208,4 +208,20 @@ export default class BackImgLayer extends M.Plugin {
 
     return `${ids}*${titles}*${previews}*${layersUrl}`;
   }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  destroy() {
+    this.map_.removeControls(this.controls_);
+    this.map_ = null;
+    this.control_ = null;
+    this.controls_ = null;
+    this.panel_ = null;
+    this.name = null;
+  }
 }
