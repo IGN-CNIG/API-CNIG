@@ -93,9 +93,9 @@ export default class Georefimage extends M.Plugin {
       collapsed: this.collapsed_,
       collapsible: this.collapsible_,
       className: 'm-georefimage',
-      collapsedButtonClass: 'icon-impresora',
+      collapsedButtonClass: 'icon-descargar',
       position: M.ui.position[this.position_],
-      tooltip: 'Impresión del mapa',
+      tooltip: 'Imagen georreferenciada',
     });
     this.panel_.on(M.evt.ADDED_TO_MAP, (html) => {
       M.utils.enableTouchScroll(html);
