@@ -7,45 +7,79 @@
   "parameters": [{
     "type": "object",
     "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BR", "BL"]
+    }, {
+      "type": "number",
+      "name": "layerId",
+      "position": 1
+    }, {
+      "type": "boolean",
+      "name": "layerVisibility",
+      "position": 2
+    }, {
+      "type": "number",
+      "name": "columnsNumber",
+      "position": 3
+    }, {
+      "type": "object",
+      "name": "layerOpts",
+      "properties": [{
         "type": "simple",
-        "name": "position",
-        "position": 0,
-        "possibleValues": ["TL", "TR", "BR", "BL"]
-      }, {
-        "type": "boolean",
-        "name": "collapsible",
-        "position": 1
-      }, {
-        "type": "boolean",
-        "name": "collapsed",
-        "position": 2
-      }, {
-        "type": "number",
-        "name": "layerId",
-        "position": 3
-      }, {
-        "type": "boolean",
-        "name": "layerVisibility",
-        "position": 4
-      },
-      {
-        "type": "simple",
-        "name": "ids",
-        "position": 5
+        "name": "id",
+        "value": "mapa"
       }, {
         "type": "simple",
-        "name": "titles",
-        "position": 6
+        "name": "preview",
+        "value": "../src/facade/assets/images/svqmapa.png"
       }, {
         "type": "simple",
-        "name": "previews",
-        "position": 7
+        "name": "title",
+        "value": "Mapa"
       }, {
-        "type": "simple",
+        "type": "object",
         "name": "layers",
-        "position": 8
-      }
-    ]
+        "properties": [{
+          "type": "simple",
+          "name": "url",
+          "value": "http://www.ign.es/wmts/ign-base?"
+        }, {
+          "type": "simple",
+          "name": "name",
+          "value": "IGNBaseTodo"
+        }, {
+          "type": "simple",
+          "name": "legend",
+          "value": "Mapa IGN"
+        }, {
+          "type": "simple",
+          "name": "matrixSet",
+          "value": "GoogleMapsCompatible"
+        }, {
+          "type": "boolean",
+          "name": "transparent",
+          "value": "false"
+        }, {
+          "type": "boolean",
+          "name": "displayInLayerSwitcher",
+          "value": "false"
+        }, {
+          "type": "boolean",
+          "name": "queryable",
+          "value": "false"
+        }, {
+          "type": "boolean",
+          "name": "visible",
+          "value": "true"
+        }, {
+          "type": "simple",
+          "name": "format",
+          "value": "image/jpeg"
+        }]
+      }]
+    }]
   }],
   "files": {
     "ol": {
