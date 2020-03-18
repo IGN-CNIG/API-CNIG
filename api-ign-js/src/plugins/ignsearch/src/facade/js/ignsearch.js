@@ -284,4 +284,20 @@ export default class IGNSearch extends M.Plugin {
   getAPIRest() {
     return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
   }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  destroy() {
+    this.map_.removeControls(this.controls_);
+    this.map_ = null;
+    this.control_ = null;
+    this.controls_ = null;
+    this.panel_ = null;
+    this.name = null;
+  }
 }
