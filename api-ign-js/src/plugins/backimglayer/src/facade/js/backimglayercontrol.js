@@ -25,22 +25,21 @@ export default class BackImgLayerControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(map, layerOpts, idLayer, visible, ids, titles, previews, layers) {
+  constructor(map, layerOpts, idLayer, visible, ids, titles, previews, layers, numColumns) {
     const impl = new M.impl.Control();
+    let numColumnsV;
     super(impl, 'BackImgLayer');
     map.getBaseLayers().forEach((layer) => {
       layer.on(M.evt.LOAD, map.removeLayers(layer));
     });
     this.layers = [];
 
-    let numColumns = 0;
-
     map._plugins.filter((element) => {
       /* eslint no-underscore-dangle: 0 */
       return (map._plugins[map._plugins.indexOf(element)].name === 'backimglayer');
     }).map((element) => {
-      numColumns = map._plugins[map._plugins.indexOf(element)].options.columnsNumber;
-      return numColumns;
+      numColumnsV = numColumns;
+      return numColumnsV;
     });
 
 
@@ -50,7 +49,7 @@ export default class BackImgLayerControl extends M.Control {
       layerOpts.filter((element) => {
         /* eslint no-underscore-dangle: 0 */
         return (((layerOpts.indexOf(element)) !== 0) &&
-          (layerOpts.indexOf(element) % (numColumns) === 0));
+          (layerOpts.indexOf(element) % (numColumnsV) === 0));
       }).map((element) => {
         const elementIndex = layerOpts.indexOf(element);
 
