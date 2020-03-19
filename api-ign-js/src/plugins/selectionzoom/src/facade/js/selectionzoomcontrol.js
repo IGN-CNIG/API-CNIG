@@ -149,12 +149,12 @@ export default class SelectionZoomControl extends M.Control {
       let BboxTransformXminYmax = [layersInfo.bbox.x.min, layersInfo.bbox.y.max];
       let BboxTransformXmaxYmin = [layersInfo.bbox.x.max, layersInfo.bbox.y.min];
       BboxTransformXmaxYmin = this.getImpl().transform(
-        BboxTransformXmaxYmin,
-        this.map_.getProjection().code, 'EPSG:3857',
+        BboxTransformXmaxYmin, 'EPSG:3857',
+        this.map_.getProjection().code,
       );
       BboxTransformXminYmax = this.getImpl().transform(
-        BboxTransformXminYmax,
-        this.map_.getProjection().code, 'EPSG:3857',
+        BboxTransformXminYmax, 'EPSG:3857',
+        this.map_.getProjection().code,
       );
 
       nuevoBbox.x.min = BboxTransformXminYmax[0];
