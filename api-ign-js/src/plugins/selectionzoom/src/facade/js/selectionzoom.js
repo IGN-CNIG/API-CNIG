@@ -231,8 +231,6 @@ export default class SelectionZoom extends M.Plugin {
     this.panel_ = null;
     this.name = null;
   }
-<<<<<<< HEAD
-=======
 
   /**
    * This function compare if pluging recieved by param is instance of   M.plugin.Printer
@@ -258,5 +256,4 @@ export default class SelectionZoom extends M.Plugin {
   getMetadata() {
     return this.metadata_;
   }
->>>>>>> redmine_147107
 }

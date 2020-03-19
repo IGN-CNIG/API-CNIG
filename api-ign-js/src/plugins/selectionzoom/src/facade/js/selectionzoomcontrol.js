@@ -146,29 +146,6 @@ export default class SelectionZoomControl extends M.Control {
           .querySelector(`#m-selectionzoom-lyr-${layersInfo.id}`).classList.add('activeSelectionZoomDiv');
       }
 
-<<<<<<< HEAD
-      if (layersInfo.id === 'peninsula') {
-        nuevoBbox.x.min = -1200091.444315327;
-        nuevoBbox.x.max = 365338.89496508264;
-
-        nuevoBbox.y.min = 4348955.797933925;
-        nuevoBbox.y.max = 5441088.058072522;
-
-        this.map.setBbox(nuevoBbox);
-        // this.map.setZoom(7);
-      } else if (layersInfo.id === 'canarias') {
-        nuevoBbox.x.min = -2170190.6639824593;
-        nuevoBbox.x.max = -1387475.4943422542;
-
-        nuevoBbox.y.min = 3091778.038884449;
-        nuevoBbox.y.max = 3637844.1689537475;
-
-        this.map.setBbox(nuevoBbox);
-        // this.map.setZoom(8);
-      } else if (layersInfo.id === 'baleares') {
-        nuevoBbox.x.min = 115720.89020469127;
-        nuevoBbox.x.max = 507078.4750247937;
-=======
       let BboxTransformXminYmax = [layersInfo.bbox.x.min, layersInfo.bbox.y.max];
       let BboxTransformXmaxYmin = [layersInfo.bbox.x.max, layersInfo.bbox.y.min];
       BboxTransformXmaxYmin = this.getImpl().transform(
@@ -182,36 +159,12 @@ export default class SelectionZoomControl extends M.Control {
 
       nuevoBbox.x.min = BboxTransformXminYmax[0];
       nuevoBbox.x.max = BboxTransformXmaxYmin[0];
->>>>>>> redmine_147107
 
       nuevoBbox.y.min = BboxTransformXmaxYmin[1];
       nuevoBbox.y.max = BboxTransformXminYmax[1];
 
-<<<<<<< HEAD
-        this.map.setBbox(nuevoBbox);
-        // this.map.setZoom(9);
-      } else if (layersInfo.id === 'ceuta') {
-        nuevoBbox.x.min = -599755.2558583047;
-        nuevoBbox.x.max = -587525.3313326766;
-
-        nuevoBbox.y.min = 4281734.817081453;
-        nuevoBbox.y.max = 4290267.100363785;
-
-        this.map.setBbox(nuevoBbox);
-      } else if (layersInfo.id === 'melilla') {
-        nuevoBbox.x.min = -334717.4178261766;
-        nuevoBbox.x.max = -322487.4933005484;
-
-        nuevoBbox.y.min = 4199504.016876071;
-        nuevoBbox.y.max = 4208036.300158403;
-
-        this.map.setBbox(nuevoBbox);
-        // this.map.setZoom(14);
-      }
-=======
       this.map.setBbox(nuevoBbox);
       this.map.setZoom(layersInfo.zoom);
->>>>>>> redmine_147107
     } else {
       nuevoBbox.x.min = bboxbase[0];
       nuevoBbox.x.max = bboxbase[1];
@@ -220,11 +173,7 @@ export default class SelectionZoomControl extends M.Control {
       nuevoBbox.y.max = bboxbase[3];
 
       this.map.setBbox(nuevoBbox);
-<<<<<<< HEAD
-      // this.map.setZoom(5);
-=======
       this.map.setZoom(zoombase);
->>>>>>> redmine_147107
     }
 
     this.fire('selectionzoom:activeChanges', [{ activeLayerId: this.activeLayer }]);
