@@ -17,6 +17,22 @@ import SelectionZoomImpl from '../../impl/ol/js/selectionzoomcontrol';
 const MAXIMUM_LAYERS = 5;
 
 /**
+ * This parameter indicates the maximum base layers of plugin
+ *
+ * @type {array}
+ * @private
+ */
+let bboxbase = null;
+
+/**
+ * This parameter indicates the maximum base layers of plugin
+ *
+ * @type {number}
+ * @private
+ */
+let zoombase = null;
+
+/**
  * @classdesc
  * Background layers selector Mapea control.
  * This control puts a set of layers in the background of the map.
@@ -30,6 +46,7 @@ export default class SelectionZoomControl extends M.Control {
   constructor(map, layerOpts, idLayer, visible, ids, titles, previews) {
     const impl = new SelectionZoomImpl();
     super(impl, 'SelectionZoom');
+
     // map.getBaseLayers().forEach((layer) => {
     //   layer.on(M.evt.LOAD, map.removeLayers(layer));
     // });
@@ -112,6 +129,11 @@ export default class SelectionZoomControl extends M.Control {
 
     const currentBbox = this.map.getBbox();
 
+    if (bboxbase === null) {
+      bboxbase = [currentBbox.x.min, currentBbox.x.max, currentBbox.y.min, currentBbox.y.max];
+      zoombase = this.map.getZoom();
+    }
+
     const nuevoBbox = {};
     nuevoBbox.x = {};
     nuevoBbox.y = {};
@@ -144,14 +166,14 @@ export default class SelectionZoomControl extends M.Control {
       this.map.setBbox(nuevoBbox);
       this.map.setZoom(layersInfo.zoom);
     } else {
-      nuevoBbox.x.min = -3597923.5010608193;
-      nuevoBbox.x.max = 2663797.8560608197;
+      nuevoBbox.x.min = bboxbase[0];
+      nuevoBbox.x.max = bboxbase[1];
 
-      nuevoBbox.y.min = 2499195.1013228036;
-      nuevoBbox.y.max = 6867724.141877197;
+      nuevoBbox.y.min = bboxbase[2];
+      nuevoBbox.y.max = bboxbase[3];
 
       this.map.setBbox(nuevoBbox);
-      this.map.setZoom(5);
+      this.map.setZoom(zoombase);
     }
 
     this.fire('selectionzoom:activeChanges', [{ activeLayerId: this.activeLayer }]);
