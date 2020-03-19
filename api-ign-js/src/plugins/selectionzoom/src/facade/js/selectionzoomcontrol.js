@@ -4,6 +4,8 @@
 
 // import template from 'templates/selectionzoom';
 import template from '../../templates/selectionzoom';
+import SelectionZoomImpl from '../../impl/ol/js/selectionzoomcontrol';
+
 
 /**
  * This parameter indicates the maximum base layers of plugin
@@ -13,6 +15,22 @@ import template from '../../templates/selectionzoom';
  * @private
  */
 const MAXIMUM_LAYERS = 5;
+
+/**
+ * This parameter indicates the maximum base layers of plugin
+ *
+ * @type {array}
+ * @private
+ */
+let bboxbase = null;
+
+/**
+ * This parameter indicates the maximum base layers of plugin
+ *
+ * @type {number}
+ * @private
+ */
+let zoombase = null;
 
 /**
  * @classdesc
@@ -26,11 +44,12 @@ export default class SelectionZoomControl extends M.Control {
    * @api stable
    */
   constructor(map, layerOpts, idLayer, visible, ids, titles, previews) {
-    const impl = new M.impl.Control();
+    const impl = new SelectionZoomImpl();
     super(impl, 'SelectionZoom');
-    map.getBaseLayers().forEach((layer) => {
-      layer.on(M.evt.LOAD, map.removeLayers(layer));
-    });
+
+    // map.getBaseLayers().forEach((layer) => {
+    //   layer.on(M.evt.LOAD, map.removeLayers(layer));
+    // });
     this.layers = [];
 
     if (layerOpts !== undefined) {
@@ -110,6 +129,11 @@ export default class SelectionZoomControl extends M.Control {
 
     const currentBbox = this.map.getBbox();
 
+    if (bboxbase === null) {
+      bboxbase = [currentBbox.x.min, currentBbox.x.max, currentBbox.y.min, currentBbox.y.max];
+      zoombase = this.map.getZoom();
+    }
+
     const nuevoBbox = {};
     nuevoBbox.x = {};
     nuevoBbox.y = {};
@@ -122,6 +146,7 @@ export default class SelectionZoomControl extends M.Control {
           .querySelector(`#m-selectionzoom-lyr-${layersInfo.id}`).classList.add('activeSelectionZoomDiv');
       }
 
+<<<<<<< HEAD
       if (layersInfo.id === 'peninsula') {
         nuevoBbox.x.min = -1200091.444315327;
         nuevoBbox.x.max = 365338.89496508264;
@@ -143,10 +168,26 @@ export default class SelectionZoomControl extends M.Control {
       } else if (layersInfo.id === 'baleares') {
         nuevoBbox.x.min = 115720.89020469127;
         nuevoBbox.x.max = 507078.4750247937;
+=======
+      let BboxTransformXminYmax = [layersInfo.bbox.x.min, layersInfo.bbox.y.max];
+      let BboxTransformXmaxYmin = [layersInfo.bbox.x.max, layersInfo.bbox.y.min];
+      BboxTransformXmaxYmin = this.getImpl().transform(
+        BboxTransformXmaxYmin, 'EPSG:3857',
+        this.map_.getProjection().code,
+      );
+      BboxTransformXminYmax = this.getImpl().transform(
+        BboxTransformXminYmax, 'EPSG:3857',
+        this.map_.getProjection().code,
+      );
 
-        nuevoBbox.y.min = 4658411.436032817;
-        nuevoBbox.y.max = 4931444.501067467;
+      nuevoBbox.x.min = BboxTransformXminYmax[0];
+      nuevoBbox.x.max = BboxTransformXmaxYmin[0];
+>>>>>>> redmine_147107
 
+      nuevoBbox.y.min = BboxTransformXmaxYmin[1];
+      nuevoBbox.y.max = BboxTransformXminYmax[1];
+
+<<<<<<< HEAD
         this.map.setBbox(nuevoBbox);
         // this.map.setZoom(9);
       } else if (layersInfo.id === 'ceuta') {
@@ -167,15 +208,23 @@ export default class SelectionZoomControl extends M.Control {
         this.map.setBbox(nuevoBbox);
         // this.map.setZoom(14);
       }
+=======
+      this.map.setBbox(nuevoBbox);
+      this.map.setZoom(layersInfo.zoom);
+>>>>>>> redmine_147107
     } else {
-      nuevoBbox.x.min = -3597923.5010608193;
-      nuevoBbox.x.max = 2663797.8560608197;
+      nuevoBbox.x.min = bboxbase[0];
+      nuevoBbox.x.max = bboxbase[1];
 
-      nuevoBbox.y.min = 2499195.1013228036;
-      nuevoBbox.y.max = 6867724.141877197;
+      nuevoBbox.y.min = bboxbase[2];
+      nuevoBbox.y.max = bboxbase[3];
 
       this.map.setBbox(nuevoBbox);
+<<<<<<< HEAD
       // this.map.setZoom(5);
+=======
+      this.map.setZoom(zoombase);
+>>>>>>> redmine_147107
     }
 
     this.fire('selectionzoom:activeChanges', [{ activeLayerId: this.activeLayer }]);
