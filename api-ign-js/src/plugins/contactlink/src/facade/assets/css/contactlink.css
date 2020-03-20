@@ -1,0 +1,63 @@
+/** Estilos sobreescritos */
+.g-cartografia-flecha-izquierda {
+    color: #00796B !important;
+}
+
+.g-cartografia-flecha-derecha {
+    color: white !important;
+}
+
+.m-control.activated>button {
+    color: rgb(255, 0, 0) !important;
+}
+
+/** Estilos propios*/
+
+.m-areas>div.m-area>div.m-panel.m-plugin-contactLink.collapsed {
+    max-height: 40px;
+}
+
+.m-areas>div.m-area>div.m-plugin-contactLink.collapsed>button.m-panel-btn {
+    background-color: white !important;
+}
+
+.m-areas>div.m-area>div.m-plugin-contactLink.opened>button.m-panel-btn {
+    position: absolute;
+    left: -2.53rem;
+    background-color: #71a7d3;
+}
+
+/*********************
+     contact TITLE
+*********************/
+
+.m-control.m-container.m-contactlink>div.title {
+    color: #404040 !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 15px;
+    height: 39px;
+    line-height: 40px;
+    text-align: center;
+}
+
+/*********************
+     LINKS
+*********************/
+
+.m-control.m-container.m-contactlink>div.links {
+    margin: 10px;
+}
+
+.info {
+    position: absolute;
+    width: 60%;
+    padding: 5px;
+    top: 10px;
+    left: 20%;
+    background: rgba(245, 245, 245, 0.8);
+    font-size: large;
+    border-radius: 5px;
+    border-style: dashed;
+    border-width: 2px;
+    text-align: center;
+}
