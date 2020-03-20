@@ -1,6 +1,6 @@
 /** Estilos sobreescritos */
-.g-cartografia-flecha-izquierda {
-    color: #00796B !important;
+.g-contactlink-link {
+    color: #71a7d3 !important;
 }
 
 .g-cartografia-flecha-derecha {
@@ -11,6 +11,10 @@
     color: rgb(255, 0, 0) !important;
 }
 
+/* .m-areas>div.m-area>div.m-panel.m-contactlink.collapsed>button.m-panel-btn {
+    font-family: 'g-contactlink' !important;
+} */
+
 /** Estilos propios*/
 
 .m-areas>div.m-area>div.m-panel.m-plugin-contactLink.collapsed {
@@ -19,6 +23,7 @@
 
 .m-areas>div.m-area>div.m-plugin-contactLink.collapsed>button.m-panel-btn {
     background-color: white !important;
+    font-family: 'g-contactlink' !important;
 }
 
 .m-areas>div.m-area>div.m-plugin-contactLink.opened>button.m-panel-btn {
@@ -33,6 +38,8 @@
 
 .m-control.m-container.m-contactlink>div.title {
     color: #404040 !important;
+    font-family: 'Muli',
+        'sans-serif' !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     font-size: 15px;
     height: 39px;
@@ -46,6 +53,17 @@
 
 .m-control.m-container.m-contactlink>div.links {
     margin: 10px;
+}
+
+.m-control.m-container.m-contactlink>div.links>a {
+    color: #404040;
+    font-family: 'Muli',
+        'sans-serif' !important;
+    text-decoration: none
+}
+
+.m-control.m-container.m-contactlink>div.links>a:hover {
+    color: #71a7d3;
 }
 
 .info {

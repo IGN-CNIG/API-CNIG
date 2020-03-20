@@ -1,52 +1,46 @@
 # M.plugin.ContactLink
 
-## Api.json
+Plugin que muestra una serie de enlaces establecidos por el usuario.
 
-INTEGRACIÓN DE PARÁMETROS EN API REST
+# Dependencias
 
-OPCIONES:  
-1. Nuevo parámetro en la API REST normalmente porque requiera parámetros de configuración.
-Example: <url_mapea>?geosearch=[params]
-Example: <url_mapea>?printer=[params]
-
-2. Nuevo valor para el parámetro plugins, el plugin no requiere configuración
-Example: <url_mapea>?plugins=measurebar,streetview
+- contactlink.ol.min.js
+- contactlink.ol.min.css
 
 
-### Plugin sin parámetros
-
+```html
+ <link href="../../plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/contactlink/contactlink.ol.min.js"></script>
 ```
-{
-   "url": {
-      "name": "nombre_plugin"
-   },
-   "constructor": "M.plugin.nombre_plugin"
-}
-```
-### Plugin con parámetros
 
-```
-{
-   "url": {
-      "name": "geosearch",
-      "separator": "*"
-   },
-   "constructor": "M.plugin.Geosearch",
-   "parameters": [{
-      "type": "object",
-      "properties": [{
-         "type": "simple",
-         "name": "url",
-         "position": 0
-      }, {
-         "type": "simple",
-         "name": "core",
-         "position": 1
-      }, {
-         "type": "simple",
-         "name": "handler",
-         "position": 2
-      }]
-   }]
-}
+# Parámetros
+
+- El constructor se inicializa con un JSON de options con los siguientes atributos:
+
+- **links**. Parámetro obligatorio. Array de los enlaces que queremos que muestre el plugin. Cada uno tiene dos parámetros: name (nombre del sitio web) y url (url del sitio web)
+
+# Eventos
+
+# Otros métodos
+
+# Ejemplos de uso
+
+## Ejemplo 1
+Construcción del plugin con dos enlaces: Centro de Descargas CNIG y Visualizador 3D:
+
+```javascript
+  const mp = new ContactLink({
+  links: [{
+      name: 'Centro de Descargas CNIG',
+      url: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp'
+    },
+    {
+      name: 'Visualizador 3D',
+      url: 'https://www.ign.es/3D-Stereo/'
+    }
+  ]
+});
+
+
+   map.addPlugin(mp);
 ```

@@ -2,6 +2,7 @@
  * @module M/plugin/ContactLink
  */
 import 'assets/css/contactlink';
+import 'assets/css/fonts';
 import ContactLinkControl from './contactlinkcontrol';
 import api from '../../api';
 
@@ -91,7 +92,7 @@ export default class ContactLink extends M.Plugin {
       collapsible: true,
       position: M.ui.position.TR,
       className: this.className,
-      collapsedButtonClass: 'g-cartografia-flecha-izquierda',
+      collapsedButtonClass: 'g-contactlink-link',
       tooltip: 'Enlaces',
     });
     this.panel_.addControls(this.controls_);
