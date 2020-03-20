@@ -5,6 +5,11 @@ div.m-panel.m-geometrydraw.opened>button.m-panel-btn {
     font-family: 'g-cartografia' !important;
 }
 
+div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
+    color: #71a7d3 !important;
+    font-family: 'g-cartografia' !important;
+}
+
 div.m-panel.m-geometrydraw.collapsed {
     height: 40px;
 }
@@ -20,7 +25,11 @@ div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
 
 /* style fix for left positions */
 .m-areas>.m-left>.m-panel.m-geometrydraw.opened>.m-panel-controls {
-    width: 347px;
+    width: 400px;
+}
+
+div.m-area.m-left > div.m-panel.m-geometrydraw.collapsed > button {
+  box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02) !important;
 }
 
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-geometrydraw>div#geometryBtns>button,
@@ -109,6 +118,15 @@ div.m-panel.m-geometrydraw>div#drawingtools>div {
     width: 225px;
 }
 
+#drawingtools > div:nth-child(2) {
+    width: 100% !important;
+    text-align: center;
+}
+
+#drawingtools > div:nth-child(2) button {
+    margin-right: 10px;
+}
+
 div.m-panel.m-geometrydraw>div#drawingtools input#featureName {
     margin-top: 10px;
     width: 125px;
@@ -138,7 +156,7 @@ div#geometrydraw-uploading>label {
 
 div.m-panel.m-geometrydraw.opened,
 div.m-panel.m-geometrydraw>div.m-panel-controls {
-    width: 350px;
+    width: 400px;
 }
 
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-control.m-container.m-geometrydraw>div#geometryBtns,
@@ -198,25 +216,56 @@ div#geometrydraw-uploading>label {
     }
 }
 
+#pointlocateddrawing,
+div.ol-overlaycontainer-stopevent > div > div.m-area > div.m-panel.m-geometrydraw.collapsed > button {
+  font-size: 24px !important;
+}
+
+.m-geometrydraw-coordinates-container {
+  margin-top: 1rem;
+}
+
+#m-geometrydraw-coordinates-coordinatesSystem > select {
+    width: 65%;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    box-shadow: 1px 1px 3px 0px #999;
+    margin: 10px 0px 20px 0px;
+}
+
+.m-geometrydraw-coordinates-container .m-geometrydraw-coordinates-buttons {
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 470px) {
+  div.m-panel.m-geometrydraw.opened,
+  div.m-panel.m-geometrydraw>div.m-panel-controls,
+  .m-areas>.m-left>.m-panel.m-geometrydraw.opened>.m-panel-controls {
+    width: 200px;
+  }
+}
+
 /* Toolbar icons font */
 
 @font-face {
-    font-family: 'geometrydraw';
-    src: url('../fonts/geometrydraw.eot?7ozhzm');
-    src: url('../fonts/geometrydraw.eot?7ozhzm#iefix') format('embedded-opentype'),
-        url('../fonts/geometrydraw.ttf?7ozhzm') format('truetype'),
-        url('../fonts/geometrydraw.woff?7ozhzm') format('woff'),
-        url('../fonts/geometrydraw.svg?7ozhzm#geometrydraw') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
+  font-family: 'geometrydraw';
+  src: url('../fonts/geometrydraw.eot?93440891');
+  src: url('../fonts/geometrydraw.eot?93440891#iefix') format('embedded-opentype'),
+       url('../fonts/geometrydraw.woff2?93440891') format('woff2'),
+       url('../fonts/geometrydraw.woff?93440891') format('woff'),
+       url('../fonts/geometrydraw.ttf?93440891') format('truetype'),
+       url('../fonts/geometrydraw.svg?93440891#geometrydraw') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
-div.m-geometrydraw>div#geometryBtns>button,
-div.m-geometrydraw>div#otherBtns>button,
-.m-areas>div.m-area>div.m-panel>button.m-panel-btn.geometrydraw-editar,
-[class^="geometrydraw-"],
-[class*=" geometrydraw-"] {
+div.ol-overlaycontainer-stopevent > div > div.m-area > div.m-panel.m-geometrydraw.collapsed > button,
+div.m-geometrydraw [class^="icon-"],
+div.m-geometrydraw [class*=" icon-"] {
     font-family: 'geometrydraw' !important;
     font-style: normal;
     font-weight: normal;
@@ -227,38 +276,13 @@ div.m-geometrydraw>div#otherBtns>button,
     -moz-osx-font-smoothing: grayscale;
 }
 
-.geometrydraw-subir:before {
-    content: "\e1510";
-}
-
-.geometrydraw-font:before {
-    content: "\e1511";
-}
-
-.geometrydraw-mover-punto:before {
-    content: "\e1500";
-}
-
-.geometrydraw-editar:before {
-    content: "\e1508";
-}
-
-.geometrydraw-poligono:before {
-    content: "\e1503";
-}
-
-.geometrydraw-pin:before {
-    content: "\e1501";
-}
-
-.geometrydraw-papelera:before {
-    content: "\e1504";
-}
-
-.geometrydraw-linea:before {
-    content: "\e1507";
-}
-
-.geometrydraw-descargar:before {
-    content: "\e1506";
-}
+.icon-font:before { content: '\e800'; }
+.icon-subir:before { content: '\e801'; }
+.icon-edit:before { content: '\e802'; }
+.icon-linea:before { content: '\e803'; }
+.icon-descargar:before { content: '\e804'; }
+.icon-papelera:before { content: '\e805'; }
+.icon-poligono:before { content: '\e806'; }
+.icon-pin:before { content: '\e807'; }
+.icon-geom:before { content: '\e809'; }
+.icon-pin-located:before { content: '\e900'; }

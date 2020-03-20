@@ -1,7 +1,7 @@
 /**
  * @module M/plugin/GeometryDraw
  */
-import 'assets/css/geometrydraw';
+import '../assets/css/geometrydraw';
 import GeometryDrawControl from './geometrydrawcontrol';
 import api from '../../api';
 
@@ -85,7 +85,7 @@ export default class GeometryDraw extends M.Plugin {
       collapsed: this.collapsed_,
       collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
-      collapsedButtonClass: 'geometrydraw-editar',
+      collapsedButtonClass: 'icon-geom',
       tooltip: 'Dibujo de geometrías',
     });
     this.control_ = new GeometryDrawControl();

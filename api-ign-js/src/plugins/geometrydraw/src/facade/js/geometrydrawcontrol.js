@@ -5,6 +5,7 @@
 import GeometryDrawImplControl from 'impl/geometrydrawcontrol';
 import template from 'templates/geometrydraw';
 import drawingTemplate from 'templates/drawing';
+import locationDrawingTemplate from 'templates/locationdrawing';
 import textDrawTemplate from 'templates/textdraw';
 import downloadingTemplate from 'templates/downloading';
 import uploadingTemplate from 'templates/uploading';
@@ -44,6 +45,13 @@ export default class GeometryDrawControl extends M.Control {
      * @type {Boolean}
      */
     this.isPointActive = false;
+
+    /**
+     * Checks if located point drawing tool is active.
+     * @private
+     * @type {Boolean}
+     */
+    this.isLocatedPointActive = false;
 
     /**
      * Checks if line drawing tool is active.
@@ -101,6 +109,13 @@ export default class GeometryDrawControl extends M.Control {
      * @type {String}
      */
     this.drawingTools = undefined;
+
+    /**
+     * Template that expands drawing tools with color and thickness options by location
+     * @private
+     * @type {String}
+     */
+    this.locationDrawingTools = undefined;
 
     /**
      * Template with downloading format options.
@@ -164,6 +179,27 @@ export default class GeometryDrawControl extends M.Control {
      * @type {String}
      */
     this.fontFamily = 'Verdana';
+
+    /**
+     * SRS of the input coordinates.
+     * @private
+     * @type {String}
+     */
+    this.srs = 'EPSG:4258';
+
+    /**
+     * Longitude of the input coordinates.
+     * @private
+     * @type {String}
+     */
+    this.x = undefined;
+
+    /**
+     * Latitude of the input coordinates.
+     * @private
+     * @type {String}
+     */
+    this.y = undefined;
 
     /**
      * Saves drawing layer ( __ draw__) from Mapea.
@@ -290,6 +326,88 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
+   * Creates location drawing options template.
+   * @public
+   * @function
+   * @api
+   */
+  createLocationDrawingTemplate() {
+    const innerThis = this;
+    this.locationDrawingTools = M.template.compileSync(locationDrawingTemplate, { jsonp: true });
+
+    this.currentColor = this.locationDrawingTools.querySelector('#colorSelector').value;
+    this.currentThickness = this.locationDrawingTools.querySelector('#thicknessSelector').value;
+
+    this.locationDrawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
+    this.locationDrawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
+    this.locationDrawingTools.querySelector('button#m-geometrydraw-coordinates-delete').addEventListener('click', () => this.deleteSingleFeature());
+    this.locationDrawingTools.querySelector('#m-geometrydraw-coordinates-srs').addEventListener('change', (e) => {
+      const value = e.target.value;
+      if (value === 'EPSG:4258' || value === 'EPSG:4326') {
+        this.locationDrawingTools.querySelector('#m-geometrydraw-coordinates-utm').style.display = 'none';
+        this.locationDrawingTools.querySelector('#m-geometrydraw-coordinates-latlon').style.display = 'block';
+        this.locationDrawingTools.querySelector('#UTM-X').value = '';
+        this.locationDrawingTools.querySelector('#UTM-Y').value = '';
+      } else {
+        this.locationDrawingTools.querySelector('#m-geometrydraw-coordinates-latlon').style.display = 'none';
+        this.locationDrawingTools.querySelector('#m-geometrydraw-coordinates-utm').style.display = 'block';
+        this.locationDrawingTools.querySelector('#LON').value = '';
+        this.locationDrawingTools.querySelector('#LAT').value = '';
+      }
+
+      this.srs = value;
+    });
+
+    this.locationDrawingTools.querySelector('#LON').addEventListener('change', (e) => {
+      const value = e.target.value;
+      this.x = value;
+    });
+
+    this.locationDrawingTools.querySelector('#LAT').addEventListener('change', (e) => {
+      const value = e.target.value;
+      this.y = value;
+    });
+
+    this.locationDrawingTools.querySelector('#UTM-X').addEventListener('change', (e) => {
+      const value = e.target.value;
+      this.x = value;
+    });
+
+    this.locationDrawingTools.querySelector('#UTM-Y').addEventListener('change', (e) => {
+      const value = e.target.value;
+      this.y = value;
+    });
+
+    this.locationDrawingTools.querySelector('button#m-geometrydraw-coordinates-draw').addEventListener('click', () => {
+      const newPointStyle = new M.style.Point({
+        radius: innerThis.currentThickness,
+        fill: {
+          color: innerThis.currentColor,
+        },
+        stroke: {
+          color: 'white',
+          width: 2,
+        },
+      });
+
+      if (innerThis.x !== undefined && innerThis.x.length > 0 &&
+        innerThis.y !== undefined && innerThis.y.length > 0) {
+        const parsedX = parseFloat(innerThis.x);
+        const parsedY = parseFloat(innerThis.y);
+        if (!Number.isNaN(parsedX) && !Number.isNaN(parsedY)) {
+          const coordinates = [parsedX, parsedY];
+          innerThis.feature = innerThis.getImpl().drawPointFeature(coordinates, innerThis.srs);
+          innerThis.feature.setStyle(newPointStyle);
+        } else {
+          M.dialog.error('Las coordenadas introducidas no tienen el formato correcto');
+        }
+      } else {
+        M.dialog.error('No se han introducido las coordenadas correctamente');
+      }
+    });
+  }
+
+  /**
    * Adds event listeners to geometry buttons.
    * @public
    * @function
@@ -298,6 +416,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   addEvents(html) {
     html.querySelector('#pointdrawing').addEventListener('click', e => this.geometryBtnClick('Point'));
+    html.querySelector('#pointlocateddrawing').addEventListener('click', e => this.geometryBtnClick('LocatedPoint'));
     html.querySelector('#linedrawing').addEventListener('click', e => this.geometryBtnClick('LineString'));
     html.querySelector('#polygondrawing').addEventListener('click', e => this.geometryBtnClick('Polygon'));
     html.querySelector('#textdrawing').addEventListener('click', e => this.geometryBtnClick('Text'));
@@ -357,6 +476,9 @@ export default class GeometryDrawControl extends M.Control {
       case 'Point':
         this.activationManager('isPointActive', 'pointdrawing', geometry);
         break;
+      case 'LocatedPoint':
+        this.activationManager('isLocatedPointActive', 'pointlocateddrawing', geometry);
+        break;
       case 'LineString':
         this.activationManager('isLineActive', 'linedrawing', geometry);
         break;
@@ -369,19 +491,28 @@ export default class GeometryDrawControl extends M.Control {
       default:
     }
 
-    this.createDrawingTemplate();
+    if (geometry === 'LocatedPoint') {
+      this.createLocationDrawingTemplate();
+    } else {
+      this.createDrawingTemplate();
+    }
 
-    if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
+    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive ||
+      this.isPolygonActive || this.isTextActive) {
       if (this.isTextActive) {
         this.textDrawTemplate.querySelector('#textContent').value = '';
         this.textDrawTemplate.querySelector('button').style.display = 'none';
         document.querySelector('.m-geometrydraw').appendChild(this.textDrawTemplate);
+      } else if (this.isLocatedPointActive) {
+        document.querySelector('.m-geometrydraw').appendChild(this.locationDrawingTools);
       } else {
         this.drawingTools.querySelector('button').style.display = 'none';
         document.querySelector('.m-geometrydraw').appendChild(this.drawingTools);
       }
 
-      this.getImpl().addDrawInteraction();
+      if (geometry !== 'LocatedPoint') {
+        this.getImpl().addDrawInteraction();
+      }
 
       if (document.querySelector('#drawingtools #featureInfo') !== null) {
         document.querySelector('#drawingtools #featureInfo').style.display = 'none';
@@ -401,14 +532,23 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   deactivateDrawing() {
-    if (this.isPointActive || this.isLineActive || this.isPolygonActive || this.isTextActive) {
-      if (document.querySelector('.m-geometrydraw #drawingtools') !== null) {
-        document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
-      } else if (document.querySelector('.m-geometrydraw #textdrawtools') !== null) {
-        document.querySelector('.m-geometrydraw').removeChild(this.textDrawTemplate);
-      }
+    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive ||
+      this.isPolygonActive || this.isTextActive) {
+      if (this.isLocatedPointActive) {
+        document.querySelector('.m-geometrydraw').removeChild(this.locationDrawingTools);
 
-      this.getImpl().removeDrawInteraction();
+        this.srs = 'EPSG:4258';
+        this.x = undefined;
+        this.y = undefined;
+      } else {
+        if (document.querySelector('.m-geometrydraw #drawingtools') !== null) {
+          document.querySelector('.m-geometrydraw').removeChild(this.drawingTools);
+        } else if (document.querySelector('.m-geometrydraw #textdrawtools') !== null) {
+          document.querySelector('.m-geometrydraw').removeChild(this.textDrawTemplate);
+        }
+
+        this.getImpl().removeDrawInteraction();
+      }
 
       this.selectionLayer.removeFeatures([this.emphasis]);
       if ((this.feature !== undefined) && this.feature.getStyle().get('label') !== undefined) {
@@ -417,10 +557,12 @@ export default class GeometryDrawControl extends M.Control {
 
       this.feature = undefined;
       this.isPointActive = false;
+      this.isLocatedPointActive = false;
       this.isLineActive = false;
       this.isPolygonActive = false;
       this.isTextActive = false;
       document.getElementById('pointdrawing').classList.remove('activeTool');
+      document.getElementById('pointlocateddrawing').classList.remove('activeTool');
       document.getElementById('linedrawing').classList.remove('activeTool');
       document.getElementById('polygondrawing').classList.remove('activeTool');
       document.getElementById('textdrawing').classList.remove('activeTool');
@@ -533,6 +675,9 @@ export default class GeometryDrawControl extends M.Control {
         default:
           break;
       }
+    } else if (document.querySelector('#colorSelector') !== null) {
+      this.currentColor = document.querySelector('#colorSelector').value;
+      this.currentThickness = document.querySelector('#thicknessSelector').value;
     }
   }
 
@@ -625,6 +770,8 @@ export default class GeometryDrawControl extends M.Control {
    */
   initializeLayers() {
     this.drawLayer = this.map.getLayers()[this.map.getLayers().length - 1];
+    // popup desactivated
+    this.map.getLayers()[this.map.getLayers().length - 1].getImpl().extract = false;
     this.map.addLayers(this.selectionLayer);
     this.getImpl().setImplSource();
   }

@@ -186,6 +186,16 @@ export default class GeometryDrawControl extends M.impl.Control {
     return new ol.Feature({ geometry: ol.geom.Polygon(vertices) });
   }
 
+  drawPointFeature(coordinates, srs) {
+    const mapSRS = this.facadeMap_.getProjection().code;
+    const finalCoordinates = ol.proj.transform(coordinates, srs, mapSRS);
+    const feature = new ol.Feature({ geometry: new ol.geom.Point(finalCoordinates) });
+    const mfeature = this.convertToMFeatures(feature);
+    this.facadeControl.drawLayer.addFeatures([mfeature]);
+    this.facadeMap_.setCenter(finalCoordinates);
+    return mfeature;
+  }
+
   /**
    * Sets vector source for layer
    * @public
@@ -392,5 +402,23 @@ export default class GeometryDrawControl extends M.impl.Control {
    */
   getFeatureArea() {
     return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
+  }
+
+  /**
+   * Convert olFeature to M.Feature
+   * @public
+   * @function
+   * @api
+   */
+  convertToMFeatures(olFeature) {
+    const feature = new M.Feature(olFeature.getId(), {
+      geometry: {
+        coordinates: olFeature.getGeometry().getCoordinates(),
+        type: olFeature.getGeometry().getType(),
+      },
+      properties: olFeature.getProperties(),
+    });
+
+    return feature;
   }
 }

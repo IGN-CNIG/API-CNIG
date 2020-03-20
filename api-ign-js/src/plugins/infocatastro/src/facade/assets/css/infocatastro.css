@@ -1,0 +1,11 @@
+.m-control.m-container.m-infocatastro-container button {
+    color: white;
+    background-color: #71a7d3 !important;
+    opacity: 1;
+    border-radius: 40px;
+}
+
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-infocatastro-container>button.activated {
+    background-color: #D1E6F8 !important;
+    color: #364B5F !important;
+}
