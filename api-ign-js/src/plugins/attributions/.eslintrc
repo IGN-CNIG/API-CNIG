@@ -32,5 +32,6 @@
     "no-template-curly-in-string": "off",
     "import/no-duplicates": off,
     "import/no-named-default": "off",
+    "no-console": "off"
   }
 }
