@@ -28,7 +28,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
    * *id*. Identificador de la capa
    * *preview*. Ruta a la imagen de previsualización que se muestra.
    * *title*. Nombre identificativo de la capa que se mostrará sobre la previsualización.
-   * *bbox*. Bbox de la zona geografica a la que se hace zoom.
+   * *bbox*. Bbox de la zona geografica a la que se hace zoom. El bbox debe recoger los datos en la misma proyección en la que se encuentra el mapa.
    * *zoom*. Zoom que toma la capa en la zona geográfica elegida.
 
 
