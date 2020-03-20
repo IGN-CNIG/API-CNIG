@@ -20,7 +20,6 @@
     <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
     <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
     <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
-    <link href="plugins/back/selectionzoom.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
     </link>
@@ -100,10 +99,15 @@
         const mp = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
             maxResults: 10,
-            isCollapsed: false,
-            noProcess: 'municipio,poblacion',
+            noProcess: 'poblacion',
             countryCode: 'es',
+            isCollapsed: false,
+            position: 'TL',
             reverse: true,
+
+            urlCandidates: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
+            urlFind: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
+            urlReverse: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',
         });
         const mp2 = new M.plugin.Attributions({
             mode: 1,
@@ -223,7 +227,7 @@
             layerVisibility: true,
             layerOpts: [{
                     id: 'peninsula',
-                    preview: '../src/facade/assets/images/espana.png',
+                    preview: 'plugins/selectionzoom/images/espana.png',
                     title: 'Peninsula',
                     bbox: {
                         x: {
@@ -240,7 +244,7 @@
                 {
                     id: 'canarias',
                     title: 'Canarias',
-                    preview: '../src/facade/assets/images/canarias.png',
+                    preview: 'plugins/selectionzoom/images/canarias.png',
                     bbox: {
                         x: {
                             min: -2170190.6639824593,
@@ -256,7 +260,7 @@
                 {
                     id: 'baleares',
                     title: 'Baleares',
-                    preview: '../src/facade/assets/images/baleares.png',
+                    preview: 'plugins/selectionzoom/images/baleares.png',
                     bbox: {
                         x: {
                             min: 115720.89020469127,
@@ -271,7 +275,7 @@
                 },
                 {
                     id: 'ceuta',
-                    preview: '../src/facade/assets/images/ceuta.png',
+                    preview: 'plugins/selectionzoom/images/ceuta.png',
                     title: 'Ceuta',
                     bbox: {
                         x: {
@@ -287,7 +291,7 @@
                 },
                 {
                     id: 'melilla',
-                    preview: '../src/facade/assets/images/melilla.png',
+                    preview: 'plugins/selectionzoom/images/melilla.png',
                     title: 'Melilla',
                     bbox: {
                         x: {
