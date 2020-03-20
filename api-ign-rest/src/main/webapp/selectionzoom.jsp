@@ -20,7 +20,6 @@
     <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
     <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
     <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
-    <link href="plugins/back/selectionzoom.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
     </link>
@@ -100,10 +99,15 @@
         const mp = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
             maxResults: 10,
-            isCollapsed: false,
-            noProcess: 'municipio,poblacion',
+            noProcess: 'poblacion',
             countryCode: 'es',
+            isCollapsed: false,
+            position: 'TL',
             reverse: true,
+
+            urlCandidates: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
+            urlFind: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
+            urlReverse: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',
         });
         const mp2 = new M.plugin.Attributions({
             mode: 1,
@@ -225,26 +229,81 @@
                     id: 'peninsula',
                     preview: 'plugins/selectionzoom/images/espana.png',
                     title: 'Peninsula',
+                    bbox: {
+                        x: {
+                            min: -1200091.444315327,
+                            max: 365338.89496508264,
+                        },
+                        y: {
+                            min: 4348955.797933925,
+                            max: 5441088.058207252,
+                        },
+                    },
+                    zoom: 7,
                 },
                 {
                     id: 'canarias',
                     title: 'Canarias',
                     preview: 'plugins/selectionzoom/images/canarias.png',
+                    bbox: {
+                        x: {
+                            min: -2170190.6639824593,
+                            max: -1387475.4943422542,
+                        },
+                        y: {
+                            min: 3091778.038884449,
+                            max: 3637844.1689537475,
+                        },
+                    },
+                    zoom: 8,
                 },
                 {
                     id: 'baleares',
                     title: 'Baleares',
                     preview: 'plugins/selectionzoom/images/baleares.png',
+                    bbox: {
+                        x: {
+                            min: 115720.89020469127,
+                            max: 507078.4750247937,
+                        },
+                        y: {
+                            min: 4658411.436032817,
+                            max: 4931444.501067467,
+                        },
+                    },
+                    zoom: 9,
                 },
                 {
                     id: 'ceuta',
                     preview: 'plugins/selectionzoom/images/ceuta.png',
                     title: 'Ceuta',
+                    bbox: {
+                        x: {
+                            min: -599755.2558583047,
+                            max: -587525.3313326766,
+                        },
+                        y: {
+                            min: 4281734.817081453,
+                            max: 4290267.100363785,
+                        },
+                    },
+                    zoom: 14,
                 },
                 {
                     id: 'melilla',
                     preview: 'plugins/selectionzoom/images/melilla.png',
                     title: 'Melilla',
+                    bbox: {
+                        x: {
+                            min: -334717.4178261766,
+                            max: -322487.4933005484,
+                        },
+                        y: {
+                            min: 4199504.016876071,
+                            max: 4208036.300158403,
+                        },
+                    },
+                    zoom: 14,
                 },
             ],
         });
