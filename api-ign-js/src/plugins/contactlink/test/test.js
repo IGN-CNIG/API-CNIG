@@ -5,47 +5,22 @@ const map = M.map({
 });
 
 const mp = new ContactLink({
-  links: [{
-      name: 'Centro de Descargas CNIG',
-      url: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp'
-    },
-    {
-      name: 'Visualizador 3D',
-      url: 'https://www.ign.es/3D-Stereo/'
-    },
-    {
-      name: 'Comparador PNOA ',
-      url: 'https://www.ign.es/web/comparador_pnoa/index.html'
-    },
-    {
-      name: 'Fototeca',
-      url: 'https://fototeca.cnig.es/'
-    },
-    {
-      name: 'Twitter IGN',
-      url: 'https://twitter.com/IGNSpain'
-    },
-    {
-      name: 'Instagram IGN',
-      url: 'https://www.instagram.com/ignspain/'
-    },
-    {
-      name: 'Facebook',
-      url: 'https://www.facebook.com/IGNSpain/'
-    },
-    {
-      name: 'Youtube',
-      url: 'https://www.youtube.com/user/IGNSpain'
-    },
-    {
-      name: 'Pinterest',
-      url: 'https://www.pinterest.es/IGNSpain/'
-    },
-    {
-      name: 'Contacto email IGN',
-      url: 'ign@fomento.es'
-    }
-  ]
+  position: 'TR',
+  // links: [{
+  //     name: 'Toogle',
+  //     url: 'https://www.deepl.com/es/translator',
+  //   },
+  //   {
+  //     name: 'Redmine',
+  //     url: 'https://www.guadaltel.es/redmine/',
+  //   },
+  //   {
+  //     name: 'css',
+  //     url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/',
+  //   }
+  // ]
 });
 
 map.addPlugin(mp);
+
+window.map = map;

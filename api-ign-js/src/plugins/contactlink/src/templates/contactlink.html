@@ -1,9 +1,27 @@
 <div id="div-contenedor-m-contactlink" class="m-control m-container m-contactlink">
     <!-- TITLE -->
-    <div class="title">Enlaces</div>
+    <div class="title">Enlaces y contacto</div>
     <div class="links">
-        {{#each links}}
-            <a class="link" href="{{this.url}}" target="_blank" title="{{this.name}}">{{this.name}}</a><br>
-        {{/each}}
+        <div class="web">
+            <a class="link" href="http://centrodedescargas.cnig.es/CentroDescargas/index.jsp" target="_blank" title="Centro de Descargas CNIG">Centro de Descargas CNIG</a><br>
+            <a class="link" href="https://www.ign.es/3D-Stereo/" target="_blank" title="Visualizador 3D">Visualizador 3D</a><br>
+            <a class="link" href="https://www.ign.es/web/comparador_pnoa/index.html" target="_blank" title="Comparador PNOA">Comparador PNOA</a><br>
+            <a class="link" href="https://fototeca.cnig.es/" target="_blank" title="Fototeca">Fototeca</a><br>
+            <br>
+        </div>
+        <div class="social">
+            <a class="link" href="https://twitter.com/IGNSpain" target="_blank" title="Twitter IGN">Twitter IGN</a><br>
+            <a class="link" href="https://www.instagram.com/ignspain/" target="_blank" title="Instagram IGN">Instagram IGN</a><br>
+            <a class="link" href="https://www.facebook.com/IGNSpain/" target="_blank" title="Facebook">Facebook</a><br>
+            <a class="link" href="https://www.pinterest.es/IGNSpain/" target="_blank" title="Pinterest">Pinterest</a><br>
+            <a class="link" href="https://www.youtube.com/user/IGNSpain" target="_blank" title="Youtube">Youtube</a><br>
+            <a class="link" href="ign@fomento.es" target="_blank" title="Contacto email IGN">Contacto email IGN</a><br>
+        </div>
+        <br>
+        <div class="other">
+            {{#each links}}
+                <a class="link" href="{{this.url}}" target="_blank" title="{{this.name}}">{{this.name}}</a><br>
+            {{/each}}
+        </div>
     </div>
 </div>

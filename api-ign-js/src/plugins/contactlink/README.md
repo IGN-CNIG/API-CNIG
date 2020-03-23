@@ -19,6 +19,12 @@ Plugin que muestra una serie de enlaces establecidos por el usuario.
 
 - **links**. Parámetro obligatorio. Array de los enlaces que queremos que muestre el plugin. Cada uno tiene dos parámetros: name (nombre del sitio web) y url (url del sitio web)
 
+- **position**. Indica la posición donde se mostrará el plugin.
+  - 'TL':top left
+  - 'TR':top right (default)
+  - 'BL':bottom left
+  - 'BR':bottom right
+
 # Eventos
 
 # Otros métodos
@@ -30,6 +36,7 @@ Construcción del plugin con dos enlaces: Centro de Descargas CNIG y Visualizado
 
 ```javascript
   const mp = new ContactLink({
+  position: 'TR',
   links: [{
       name: 'Centro de Descargas CNIG',
       url: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp'

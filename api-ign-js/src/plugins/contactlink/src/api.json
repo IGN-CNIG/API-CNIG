@@ -7,10 +7,17 @@
   "parameters": [{
     "type": "object",
     "properties": [{
-      "type": "simple",
-      "name": "links",
-      "position": 1
-    }]
+        "type": "simple",
+        "name": "position",
+        "possibleValues": ["TL", "TR", "BL", "BR"],
+        "position": 0
+      },
+      {
+        "type": "simple",
+        "name": "links",
+        "position": 1
+      }
+    ]
   }],
   "files": {
     "ol": {

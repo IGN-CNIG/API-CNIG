@@ -32,6 +32,13 @@
     background-color: #71a7d3;
 }
 
+.m-areas>div.m-area>div.m-plugin-contactLink.opened>button.m-panel-btn.opened-left {
+    position: absolute;
+    right: -2.53rem;
+    left: unset !important;
+    background-color: #71a7d3;
+}
+
 /*********************
      contact TITLE
 *********************/
@@ -55,15 +62,29 @@
     margin: 10px;
 }
 
-.m-control.m-container.m-contactlink>div.links>a {
+.m-control.m-container.m-contactlink>div.links>div.web>a,
+.m-control.m-container.m-contactlink>div.links>div.social>a,
+.m-control.m-container.m-contactlink>div.links>div.other>a {
     color: #404040;
     font-family: 'Muli',
         'sans-serif' !important;
-    text-decoration: none
+    text-decoration: none;
+    margin: 20px;
 }
 
-.m-control.m-container.m-contactlink>div.links>a:hover {
+.m-control.m-container.m-contactlink>div.links>div.web>a:hover,
+.m-control.m-container.m-contactlink>div.links>div.social>a:hover,
+.m-control.m-container.m-contactlink>div.links>div.other>a:hover {
     color: #71a7d3;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.web {
+    border-bottom: 1px solid;
+    border-color: #71a7d3;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.social {
+    margin-top: inherit;
 }
 
 .info {

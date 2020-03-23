@@ -49,13 +49,21 @@ export default class ContactLink extends M.Plugin {
     this.className = 'm-plugin-contactLink';
 
     /**
+     * Position of the Plugin
+     * @public
+     * Posible values: TR | TL | BL | BR
+     * @type {String}
+     */
+    const positions = ['TR', 'TL', 'BL', 'BR'];
+    this.position = positions.includes(options.position) ? options.position : 'TR';
+
+    /**
      * Links
      * @public
      * Value: Access links
      * @type {string}
      */
     if (options.links === undefined) {
-      M.dialog.error('No se han especificado enlaces para acceder');
       this.links = [];
     } else {
       if (Array.isArray(options.links)) {
@@ -83,20 +91,48 @@ export default class ContactLink extends M.Plugin {
    * @api stable
    */
   addTo(map) {
+    const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
+
     const values = {
+      pluginOnLeft,
       links: this.links,
     };
-    this.controls_.push(new ContactLinkControl(values));
+    this.control_ = new ContactLinkControl(values);
+    this.controls_.push(this.control_);
+    // this.controls_.push(new ContactLinkControl(values));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelContactLink', {
       collapsible: true,
-      position: M.ui.position.TR,
+      position: M.ui.position[this.position],
       className: this.className,
       collapsedButtonClass: 'g-contactlink-link',
-      tooltip: 'Enlaces',
+      tooltip: 'Enlaces y contacto',
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    this.links = null;
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position}*${this.links.join(',')}`;
   }
 
   /**
