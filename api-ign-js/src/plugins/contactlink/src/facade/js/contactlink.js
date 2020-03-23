@@ -25,7 +25,7 @@ export default class ContactLink extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.name_ = 'contactLink';
+    this.name_ = 'contactlink';
 
     /**
      * Facade of the map
@@ -46,7 +46,7 @@ export default class ContactLink extends M.Plugin {
      * @public
      * @type {string}
      */
-    this.className = 'm-plugin-contactLink';
+    this.className = 'm-plugin-contactlink';
 
     /**
      * Position of the Plugin

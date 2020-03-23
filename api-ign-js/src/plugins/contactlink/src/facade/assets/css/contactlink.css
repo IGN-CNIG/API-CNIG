@@ -17,22 +17,22 @@
 
 /** Estilos propios*/
 
-.m-areas>div.m-area>div.m-panel.m-plugin-contactLink.collapsed {
+.m-areas>div.m-area>div.m-panel.m-plugin-contactlink.collapsed {
     max-height: 40px;
 }
 
-.m-areas>div.m-area>div.m-plugin-contactLink.collapsed>button.m-panel-btn {
+.m-areas>div.m-area>div.m-plugin-contactlink.collapsed>button.m-panel-btn {
     background-color: white !important;
     font-family: 'g-contactlink' !important;
 }
 
-.m-areas>div.m-area>div.m-plugin-contactLink.opened>button.m-panel-btn {
+.m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn {
     position: absolute;
     left: -2.53rem;
     background-color: #71a7d3;
 }
 
-.m-areas>div.m-area>div.m-plugin-contactLink.opened>button.m-panel-btn.opened-left {
+.m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn.opened-left {
     position: absolute;
     right: -2.53rem;
     left: unset !important;

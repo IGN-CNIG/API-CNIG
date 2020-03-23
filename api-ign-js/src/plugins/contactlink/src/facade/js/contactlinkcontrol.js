@@ -76,8 +76,8 @@ export default class ContactLinkControl extends M.Control {
     }
 
     if (this.pluginOnLeft) {
-      document.querySelector('.m-panel.m-plugin-contactLink').querySelector('.m-panel-btn.g-contactlink-link').addEventListener('click', (evt) => {
-        let buttonOpened = document.querySelector('.m-panel.m-plugin-contactLink.opened');
+      document.querySelector('.m-panel.m-plugin-contactlink').querySelector('.m-panel-btn.g-contactlink-link').addEventListener('click', (evt) => {
+        let buttonOpened = document.querySelector('.m-panel.m-plugin-contactlink.opened');
         if (buttonOpened !== null) {
           buttonOpened = buttonOpened.querySelector('.m-panel-btn.g-cartografia-flecha-izquierda');
         }
