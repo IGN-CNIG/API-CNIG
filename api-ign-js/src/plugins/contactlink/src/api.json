@@ -1,0 +1,39 @@
+{
+  "url": {
+    "name": "contactlink",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.ContactLink",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+        "type": "simple",
+        "name": "position",
+        "possibleValues": ["TL", "TR", "BL", "BR"],
+        "position": 0
+      },
+      {
+        "type": "simple",
+        "name": "links",
+        "position": 1
+      }
+    ]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["contactlink.ol.min.js"],
+      "styles": ["contactlink.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "ContactLink",
+    "description": "Acceso a enlaces",
+    "text": "Un plugin que te permite acceder vía link a contactos, redes sociales, herramientas, etc.",
+    "version": "1.0.0",
+    "date": "Marzo 2020",
+    "author": "Pablo Perejón Linares",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}
