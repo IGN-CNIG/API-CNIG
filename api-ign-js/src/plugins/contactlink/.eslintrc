@@ -4,8 +4,8 @@
     "sourceType": "module"
   },
   "env": {
-        "browser": true,
-        "es6": true
+    "browser": true,
+    "es6": true
   },
   "extends": "eslint:recommended",
   "globals": {
@@ -28,6 +28,7 @@
     "no-unused-vars": ["error", {
       "vars": "all",
       "args": "none"
-    }]
+    }],
+    "import/no-absolute-path": "off",
   }
 }
