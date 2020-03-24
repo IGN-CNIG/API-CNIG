@@ -5,6 +5,7 @@ import '../assets/css/attributions';
 import AttributionsImpl from '../../impl/ol/js/attributions';
 import AttributionsControl from './attributionscontrol';
 import { intersect } from './filter';
+import { getValue } from './i18n/language';
 
 const MODES = {
   mapAttributions: 1, // Map attributions from vector layer
@@ -40,18 +41,18 @@ export default class Attributions extends M.Plugin {
     super();
 
     if (M.utils.isNullOrEmpty(options.mode) || !Object.values(MODES).includes(options.mode)) {
-      throw new Error('Options mode is bad setted. Tip: {mode: 1 | 2 | 3}, ...');
+      throw new Error(getValue('exception.mode'));
     }
 
     if (options.mode === MODES.mapAttributions && !M.utils.isNullOrEmpty(options.url)) {
       if (M.utils.isNullOrEmpty(options.type)) {
-        throw new Error('Missing "type" options. When "url" option is setted the plugin needs "type" option. Values = geojson | kml | topojson');
+        throw new Error(getValue('exception.type'));
       }
     }
 
     if (options.mode === MODES.mapAttributions && !M.utils.isNullOrEmpty(options.layerName)) {
       if (M.utils.isNullOrEmpty(options.type)) {
-        throw new Error('Missing "layerName" options. When "url" option is setted the plugin needs "layerName" option.');
+        throw new Error(getValue('exception.layerName'));
       }
     }
 
@@ -125,7 +126,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.attributionParam_ = options.attributionParam || 'atribucion';
+    this.attributionParam_ = options.attributionParam || getValue('attribution');
 
     /**
      * Parameter of the features of the layer that contains the information of the URL.
@@ -178,7 +179,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.tooltip_ = options.tooltip || 'Reconocimientos';
+    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     window.addEventListener('resize', e => this.setCollapsiblePanel(e));
   }

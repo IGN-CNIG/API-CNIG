@@ -1,5 +1,7 @@
 import Attributions from 'facade/attributions';
 
+M.language.setLang('en');
+
 const map = M.map({
   container: 'mapjs',
   controls: ['scale'],
@@ -16,7 +18,7 @@ const mp = new Attributions({
   mode: 1,
   scale: 25000,
   url: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucion.kml',
-  type: 'kml',
+  // type: 'kml',
 });
 map.addPlugin(mp);
 

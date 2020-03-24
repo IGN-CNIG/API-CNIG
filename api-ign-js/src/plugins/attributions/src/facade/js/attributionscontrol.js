@@ -3,6 +3,7 @@
  */
 import AttributionsImplControl from '../../impl/ol/js/attributionscontrol';
 import template from '../../templates/attributions';
+import { getValue } from './i18n/language';
 
 /**
  * @classdesc
@@ -17,7 +18,7 @@ export default class AttributionsControl extends M.Control {
    */
   constructor(position, closePanel) {
     if (M.utils.isUndefined(AttributionsImplControl)) {
-      M.exception('La implementación usada no puede crear controles AttributionsControl');
+      M.exception(getValue('exception.impl'));
     }
     const impl = new AttributionsImplControl();
     super(impl, 'Attributions');
