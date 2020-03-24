@@ -205,7 +205,7 @@ export default class ShareMapControl extends M.Control {
 
     copyButton.addEventListener('click', () => {
       copyURL(input);
-      beginShade(message.querySelector('#m-plugin-sharemap-tooltip'));
+      beginShade(title.querySelector('#m-plugin-sharemap-tooltip'));
     });
 
     this.buildURL(dialog).then(() => mapeaContainer.appendChild(dialog));
@@ -219,6 +219,9 @@ export default class ShareMapControl extends M.Control {
    */
   buildURL(html) {
     const input = html.querySelector('input');
+    const twitter = html.querySelector('#twitter');
+    const facebook = html.querySelector('#facebook');
+    const pinterest = html.querySelector('#pinterest');
     return this.getControls().then((controls) => {
       const { x, y } = this.map_.getCenter();
       const { code, units } = this.map_.getProjection();
@@ -228,6 +231,9 @@ export default class ShareMapControl extends M.Control {
         shareURL.concat('');
       shareURL = shareURL.concat(`&${this.getPlugins()}`);
       input.value = shareURL;
+      facebook.href = `http://www.facebook.com/sharer.php?u=${shareURL}`;
+      twitter.href = `https://twitter.com/intent/tweet?text=${shareURL}`;
+      pinterest.href = `https://www.pinterest.es/pin/create/button/?url=${shareURL}`;
     });
   }
 

@@ -88,6 +88,15 @@
     border-radius: 5px;
 }
 
+/**************************
+         SOCIAL
+/**************************/
+
+.m-plugin-sharemap-dialog div.m-plugin-sharemap-social {
+    justify-content: center;
+    display: flex;
+}
+
 
 /**************************
          BUTTON
@@ -120,7 +129,7 @@
     padding: 5px 0;
     border-radius: 6px;
     width: 120px;
-    position: absolute;
+    position: inherit;
     z-index: 1;
 }
 
@@ -142,7 +151,7 @@
 .m-plugin-sharemap-tooltip {
     opacity: 0;
     left: 35%;
-    top: 60%;
+    top: 10%;
     position: absolute;
     border-bottom: 1px dotted black;
 }
@@ -215,7 +224,7 @@
 }
 
 #m-sharemap-geturl:focus {
-  outline: unset !important;
+    outline: unset !important;
 }
 
 /* '' */

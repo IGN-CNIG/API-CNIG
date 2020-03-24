@@ -7,7 +7,7 @@ const map = M.map({
 });
 
 const mp = new ShareMap({
-  baseUrl: 'https://http://componentes.ign.es/api-core/',
+  baseUrl: 'https://componentes.ign.es/api-core/',
   position: 'BR',
 });
 
