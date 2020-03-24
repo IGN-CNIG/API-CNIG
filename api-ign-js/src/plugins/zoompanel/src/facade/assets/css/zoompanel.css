@@ -1,0 +1,88 @@
+.m-areas>div.m-area>div.m-panel.m-zoompanel.collapsed button.m-panel-btn,
+.m-areas>div.m-area>div.m-panel.m-zoompanel.no-collapsible.opened>.m-panel-controls>.m-zoompanel button {
+    font-family: 'g-plugin-zoompanel' !important;
+}
+
+.m-areas>div.m-area>div.m-panel.m-zoompanel>button.m-panel-btn {
+    background-color: #71A7D3 !important;
+    color: white !important;
+}
+
+.m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button,
+.m-areas>div.m-area>div.m-panel.m-zoompanel.no-collapsible.opened>.m-panel-controls>.m-zoompanel button {
+    padding: 8px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: .55;
+    -webkit-transition: opacity .25s ease 0s;
+    transition: opacity .25s ease 0s;
+    color: #404040;
+    margin: 0;
+    outline: none !important;
+}
+
+.m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button#clear {
+    color: #f04f4f;
+}
+
+.m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button.activated {
+    color: #009900;
+    opacity: 1;
+}
+
+.m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button:hover {
+    opacity: 1;
+}
+
+.m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button:focus {
+    border: none;
+}
+
+.m-areas>div.m-area>div.m-panel.m-zoompanel.collapsed {
+    height: 40px;
+}
+
+@font-face {
+    font-family: 'g-plugin-zoompanel';
+    src: url('../fonts/g-plugin-zoompanel.eot?1niz4n');
+    src: url('../fonts/g-plugin-zoompanel.eot?1niz4n#iefix') format('embedded-opentype'),
+        url('../fonts/g-plugin-zoompanel.ttf?1niz4n') format('truetype'),
+        url('../fonts/g-plugin-zoompanel.woff?1niz4n') format('woff'),
+        url('../fonts/g-plugin-zoompanel.svg?1niz4n#g-plugin-zoompanel') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="g-plugin-zoompanel-"],
+[class*=" g-plugin-zoompanel-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'g-plugin-zoompanel' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.g-plugin-zoompanel-editar:before {
+    content: "\e2530";
+}
+
+.g-plugin-zoompanel-papelera:before {
+    content: "\e2531";
+}
+
+.g-plugin-zoompanel-poligono:before {
+    content: "\e2532";
+}
+
+.g-plugin-zoompanel-pin-seleccionado:before {
+    content: "\e2533";
+}
