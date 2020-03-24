@@ -12,6 +12,15 @@ const translations = {
   es,
 };
 
+const getLang = () => {
+  let res = 'es';
+  if (typeof M.language.getLang === 'function') {
+    res = M.language.getLang();
+  }
+
+  return res;
+};
+
 /**
  * This function sets a new language translate.
  * @param {string} lang
@@ -46,11 +55,7 @@ export const getTranslation = (lang) => {
  * @api
  */
 
-/*
-export const getValue = (keyPath, lang = M.language.getLang()) => {
-*/
-
-export const getValue = (keyPath, lang = 'es') => {
+export const getValue = (keyPath, lang = getLang()) => {
   const translation = getTranslation(lang);
   let value = '';
   if (M.utils.isNullOrEmpty(translation)) {
