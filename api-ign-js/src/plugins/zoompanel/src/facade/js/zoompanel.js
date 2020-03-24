@@ -4,6 +4,7 @@
 import 'assets/css/zoompanel';
 import ZoomPanelControl from './zoompanelcontrol';
 import api from '../../api';
+import { getValue } from './i18n/language';
 
 export default class ZoomPanel extends M.Plugin {
   /**
@@ -76,6 +77,13 @@ export default class ZoomPanel extends M.Plugin {
      * @type {M.control.ZoomPanel}
      */
     this.control_ = new ZoomPanelControl(options);
+
+    /**
+     * @classdesc
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -94,7 +102,7 @@ export default class ZoomPanel extends M.Plugin {
       position: M.ui.position[this.position],
       collapsedButtonClass: 'g-plugin-zoompanel-editar',
       className: 'm-zoompanel',
-      tooltip: 'Búsqueda por geometría',
+      tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.control_);
     map.addPanels(this.panel_);

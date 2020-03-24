@@ -4,6 +4,7 @@
 
 import ZoomPanelImplControl from 'impl/zoompanelcontrol';
 import template from 'templates/zoompanel';
+import { getValue } from './i18n/language';
 
 export default class ZoomPanelControl extends M.Control {
   /**
@@ -38,7 +39,17 @@ export default class ZoomPanelControl extends M.Control {
     this.facadeMap_ = map;
     this.addOnLoadEvents();
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            zoomin: getValue('zoomin'),
+            zoomout: getValue('zoomout'),
+            previouszoom: getValue('previouszoom'),
+            nextzoom: getValue('nextzoom'),
+            rectzoom: getValue('rectzoom'),
+          },
+        },
+      });
       const zoomInBtn = html.querySelector('button#zoomIn');
       const zoomOutBtn = html.querySelector('button#zoomOut');
       html.querySelector('button#historyprevious').addEventListener('click', this.previousStep_.bind(this));
