@@ -1,18 +1,18 @@
 <div class="m-control m-container m-georefimage m-georefimage-container">
     <!-- TITLE -->
-    <div class="title"> Imagen georreferenciada</div>
+    <div class="title"> {{translations.referenced}}</div>
     <!-- FORM -->
     <div class="form">
         <!-- title -->
         <div class="title">
-            <input type="text" placeholder="Título">
+            <input type="text" placeholder="{{translations.title}}">
         </div>
 
         <!-- Proyección -->
         <div class="projection">
-            <label>Proyección: </label>
+            <label>{{translations.projection}}: </label>
             <select>
-                {{#each proyections}}
+                {{#each capabilities.proyections}}
                     <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
                 {{/each}}
             </select>
@@ -21,14 +21,12 @@
 
     <!-- buttons -->
     <div class="button">
-        <button class="print"><i class="icon-descargar"></i> Descargar imagen</button>
-        <button class="remove"><i class="icon-papelera"></i> Borrar</button>
+        <button class="print"><i class="icon-descargar"></i> {{translations.downImg}}</button>
+        <button class="remove"><i class="icon-papelera"></i> {{translations.delete}}</button>
     </div>
     <!-- queue -->
     <div class="queue">
-        <div class="title">Descargar</div>
+        <div class="title">{{translations.down}}</div>
         <ul class="queue-container"></ul>
     </div>
-    <!-- minimize button -->
-    <div class="minimize" title="Minimizar el control de impresión"></div>
 </div>

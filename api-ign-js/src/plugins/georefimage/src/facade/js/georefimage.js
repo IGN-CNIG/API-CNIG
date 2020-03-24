@@ -3,6 +3,7 @@
  */
 import '../assets/css/georefimage';
 import GeorefimageControl from './georefimagecontrol';
+import { getValue } from './i18n/language';
 
 export default class Georefimage extends M.Plugin {
   /**
@@ -75,6 +76,13 @@ export default class Georefimage extends M.Plugin {
      */
     this.collapsible_ = parameters.collapsible;
     if (this.collapsible_ === undefined) this.collapsible_ = true;
+
+    /**
+      @private *
+      @type { string }
+      * @type { string }
+      */
+    this.tooltip_ = parameters.tooltip || getValue('tooltip');
   }
 
   /**
@@ -95,7 +103,7 @@ export default class Georefimage extends M.Plugin {
       className: 'm-georefimage',
       collapsedButtonClass: 'icon-descargar',
       position: M.ui.position[this.position_],
-      tooltip: 'Imagen georreferenciada',
+      tooltip: this.tooltip_,
     });
     this.panel_.on(M.evt.ADDED_TO_MAP, (html) => {
       M.utils.enableTouchScroll(html);
