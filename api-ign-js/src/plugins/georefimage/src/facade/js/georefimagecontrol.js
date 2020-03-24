@@ -6,6 +6,7 @@ import JsZip from 'jszip';
 import { saveAs } from 'file-saver';
 import GeorefimageControlImpl from '../../impl/ol/js/georefimagecontrol';
 import georefimageHTML from '../../templates/georefimage';
+import { getValue } from './i18n/language';
 
 export default class GeorefimageControl extends M.Control {
   /**
@@ -94,13 +95,6 @@ export default class GeorefimageControl extends M.Control {
     this.dpi_ = null;
 
     /**
-     * Map dpi to print
-     * @private
-     * @type {HTMLElement}
-     */
-    this.dpi_ = null;
-
-    /**
      * Force scale boolean
      * @private
      * @type {HTMLElement}
@@ -118,7 +112,7 @@ export default class GeorefimageControl extends M.Control {
       },
       pages: {
         clientLogo: '', // logo url
-        creditos: 'Impresión generada a través de Mapea',
+        creditos: getValue('printInfo'),
       },
       parameters: {},
     };
@@ -174,9 +168,9 @@ export default class GeorefimageControl extends M.Control {
       } else if (status === 'error' || status === 'cancelled') {
         callback();
         if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
-          M.dialog.error('La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.');
+          M.dialog.error(getValue('exception.teselaError'), 'Error');
         } else {
-          M.dialog.error('Se ha producido un error en la impresión.');
+          M.dialog.error(getValue('exception.printError'), 'Error');
         }
 
         this.queueContainer_.lastChild.remove();
@@ -240,7 +234,20 @@ export default class GeorefimageControl extends M.Control {
 
         // forceScale
         capabilities.forceScale = this.options_.forceScale;
-        const html = M.template.compileSync(georefimageHTML, { jsonp: true, vars: capabilities });
+        const html = M.template.compileSync(georefimageHTML, {
+          jsonp: true,
+          vars: {
+            capabilities,
+            translations: {
+              referenced: getValue('referenced'),
+              projection: getValue('projection'),
+              downImg: getValue('downImg'),
+              delete: getValue('delete'),
+              down: getValue('down'),
+              title: getValue('title'),
+            },
+          },
+        });
         this.addEvents(html);
         success(html);
       });
@@ -618,7 +625,7 @@ export default class GeorefimageControl extends M.Control {
     const queueElem = document.createElement('li');
     let title = this.inputTitle_.value;
     if (M.utils.isNullOrEmpty(title)) {
-      title = GeorefimageControl.NO_TITLE;
+      title = getValue('notitle');
     }
     queueElem.innerHTML = title;
     return queueElem;
@@ -702,7 +709,7 @@ export default class GeorefimageControl extends M.Control {
       };
 
       img.onerror = function rej() {
-        Promise.reject(new Error('The image could not be loaded.'));
+        Promise.reject(new Error(getValue('exception.loaderror')));
       };
     });
   }
@@ -802,4 +809,4 @@ GeorefimageControl.DOWNLOAD_ATTR_NAME = 'data-donwload-url-print';
  * @public
  * @api stable
  */
-GeorefimageControl.NO_TITLE = '(Sin título)';
+GeorefimageControl.NO_TITLE = '(Sin titulo)';
