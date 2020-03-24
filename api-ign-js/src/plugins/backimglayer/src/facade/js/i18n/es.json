@@ -1,8 +1,3 @@
 {
-  "exception": {
-    "impl": "La implementación usada no puede crear controles XYLocatorControl.",
-    "wrong_coords": "Las coordenadas introducidas no son correctas.",
-    "transforming": "Error realizando la transformación."
-  },
   "tooltip": "Capas de fondo"
 }

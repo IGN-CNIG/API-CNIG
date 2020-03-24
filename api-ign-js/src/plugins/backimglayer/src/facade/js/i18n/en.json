@@ -1,8 +1,3 @@
 {
-  "exception": {
-    "impl": "The implementation used cannot create XYLocatorControl.",
-    "wrong_coords": "The coordinates entered are not correct.",
-    "transforming": "Error performing the transformation."
-  },
   "tooltip": "Background layers"
 }
