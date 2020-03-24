@@ -5,6 +5,7 @@
 import '../assets/css/selectionzoom';
 import api from '../../api';
 import SelectionZoomControl from './selectionzoomcontrol';
+import { getValue } from './i18n/language';
 
 export default class SelectionZoom extends M.Plugin {
   /**
@@ -115,6 +116,12 @@ export default class SelectionZoom extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     *@private
+     *@type { string }
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -141,7 +148,7 @@ export default class SelectionZoom extends M.Plugin {
       collapsed: this.collapsed,
       position: M.ui.position[this.position_],
       className: 'm-plugin-selectionzoom',
-      tooltip: 'Vistas predefinidas',
+      tooltip: this.tooltip_,
       collapsedButtonClass: 'g-selectionzoom-selezoom',
     });
 

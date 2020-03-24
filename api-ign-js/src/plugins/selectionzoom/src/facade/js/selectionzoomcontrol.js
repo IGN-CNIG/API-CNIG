@@ -5,7 +5,7 @@
 // import template from 'templates/selectionzoom';
 import template from '../../templates/selectionzoom';
 import SelectionZoomImpl from '../../impl/ol/js/selectionzoomcontrol';
-
+import { getValue } from './i18n/language';
 
 /**
  * This parameter indicates the maximum base layers of plugin
@@ -74,7 +74,14 @@ export default class SelectionZoomControl extends M.Control {
   createView(map) {
     this.map = map;
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template, { vars: { layers: this.layers } });
+      const html = M.template.compileSync(template, {
+        vars: {
+          layers: this.layers,
+          translations: {
+            headertitle: getValue('tooltip'),
+          },
+        },
+      });
       this.html = html;
       this.listen(html);
       this.on(M.evt.ADDED_TO_MAP, () => {
@@ -178,34 +185,6 @@ export default class SelectionZoomControl extends M.Control {
 
     this.fire('selectionzoom:activeChanges', [{ activeLayerId: this.activeLayer }]);
   }
-
-  // /**
-  //  * This function manages the click event when the app is in mobile resolution
-  //  * @function
-  //  * @public
-  //  * @api
-  //  */
-  // handlerClickMobile(e) {
-  //   this.removeLayers();
-  //   this.activeLayer += 1;
-  //   this.activeLayer = this.activeLayer % this.layers.length;
-  //   const layersInfo = this.layers[this.activeLayer];
-  //   const { layers, id, title } = layersInfo;
-
-  //   layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
-
-  //   e.currentTarget.parentElement.querySelectorAll('div[id^="m-selectionzoom-lyr-"]')
-  // .forEach((imgContainer) => {
-  //     if (imgContainer.classList.contains('activeSelectionZoomDiv')) {
-  //       imgContainer.classList.remove('activeSelectionZoomDiv');
-  //     }
-  //   });
-  //   e.currentTarget.innerHTML = title;
-  //   e.currentTarget.parentElement
-  //     .querySelector(`#m-selectionzoom-lyr-${id}`).classList.add('activeSelectionZoomDiv');
-  //   this.map.addLayers(layers);
-  //   this.fire('selectionzoom:activeChanges', [{ activeLayerId: this.activeLayer }]);
-  // }
 
   /**
    * This function removes this.layers from Map.

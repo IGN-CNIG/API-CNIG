@@ -1,5 +1,7 @@
 import SelectionZoom from 'facade/selectionzoom';
 
+M.language.setLang('es');
+
 const map = M.map({
   container: 'mapjs',
   layers: [new M.layer.WMTS({
