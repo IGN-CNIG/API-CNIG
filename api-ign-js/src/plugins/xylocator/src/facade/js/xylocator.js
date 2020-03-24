@@ -3,6 +3,7 @@
  */
 import '../assets/css/xylocator';
 import XYLocatorControl from './xylocatorcontrol';
+import { getValue } from './i18n/language';
 
 /**
  * @classdesc
@@ -53,15 +54,7 @@ export default class XYLocator extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.tooltip_ = options.tooltip || 'Buscar por coordenadas';
-
-    // /**
-    //  * Zoom scale
-    //  *
-    //  * @private
-    //  * @type {number}
-    //  */
-    // this.scale_ = Number.isFinite(options.scale) === true ? options.scale : 2000;
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -74,10 +67,7 @@ export default class XYLocator extends M.Plugin {
    */
   addTo(map) {
     this.facadeMap_ = map;
-    this.control_ = new XYLocatorControl({
-      projections: this.projections_,
-      // scale: this.scale_,
-    });
+    this.control_ = new XYLocatorControl({ projections: this.projections_ });
     this.panel_ = new M.ui.Panel('M.plugin.XYLocator.NAME', {
       collapsible: true,
       className: `m-xylocator ${this.positionClass_}`,
@@ -85,10 +75,12 @@ export default class XYLocator extends M.Plugin {
       position: M.ui.position[this.position_],
       tooltip: this.tooltip_,
     });
+
     this.controls_.push(this.control_);
     this.controls_[0].on('xylocator:locationCentered', (data) => {
       this.fire('xylocator:locationCentered', data);
     });
+
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }

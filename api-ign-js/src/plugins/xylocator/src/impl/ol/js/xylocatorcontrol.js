@@ -40,7 +40,18 @@ export default class XYLocatorControl extends M.impl.Control {
   reproject(origin, coordinates) {
     const originProj = ol.proj.get(origin);
     const destProj = ol.proj.get(this.map.getProjection().code);
-    const coordinatesTransform = ol.proj.transform(coordinates, originProj, destProj);
+    let coordinatesTransform = ol.proj.transform(coordinates, originProj, destProj);
+    coordinatesTransform = [this.normalizeNumber(coordinates[0], coordinatesTransform[0]),
+      this.normalizeNumber(coordinates[1], coordinatesTransform[1])];
     return coordinatesTransform;
+  }
+
+  normalizeNumber(origin, calculated) {
+    let res = origin;
+    if (origin !== 0) {
+      res = parseFloat(calculated.toFixed(9));
+    }
+
+    return res;
   }
 }

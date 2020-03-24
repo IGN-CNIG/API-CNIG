@@ -1,32 +1,71 @@
 <div class="m-control m-xylocator-container">
     <div class="m-xylocator-panel panel-codigo">
-        <div class="title">Localizador por coordenadas</div>
+        <div class="title">{{translations.title}}</div>
         <div class="m-xylocator-datas">
             <div id="m-xylocator-coordinatesSystem">
-                <span>Sistema de coordenadas:</span>
+                <span>{{translations.srs}}:</span>
 
                 <!-- options.html template here-->
 
             </div>
             <div id="m-xylocator-utm" style="display:none;">
-
                 <span>X:</span>
-                <input type="text" name="UTM-X" id="UTM-X" style="color:black"><br />
+                <input type="text" name="UTM-X" id="UTM-X" placeholder="234798.13" style="color:black"><br />
                 <span>Y:</span>
-                <input type="text" name="UTM-Y" id="UTM-Y" style="color:black">
+                <input type="text" name="UTM-Y" id="UTM-Y" placeholder="4154570.15" style="color:black">
+            </div>
+            <div id="m-xylocator-dms" style="display:none;">
+                <p>{{translations.longitude}}:</p>
+                <div>
+                  <div>
+                    <span>º</span>
+                    <input type="number" name="LONHH" id="LONHH" value="0" min="0" style="color:black">
+                  </div>
+                  <div>
+                    <span>'</span>
+                    <input type="number" name="LONMM" id="LONMM" value="0" min="0" max="59" style="color:black">
+                  </div>
+                  <div>
+                    <span>''</span>
+                    <input type="number" name="LONSS" id="LONSS" value="0" min="0" max="59.9999" style="color:black">
+                  </div>
+                  <div class="m-xylocator-dms-radio">
+                    <input type="radio" name="LONDIR" style="color:black" value="east" checked>{{translations.east}}
+                    <input type="radio" name="LONDIR" style="color:black" value="west">{{translations.west}}
+                  </div>
+                </div>
+                <p>{{translations.latitude}}:</p>
+                <div>
+                  <div>
+                    <span>º</span>
+                    <input type="number" name="LATHH" id="LATHH" value="0" min="0" style="color:black">
+                  </div>
+                  <div>
+                    <span>'</span>
+                    <input type="number" name="LATMM" id="LATMM" value="0" min="0" max="59" style="color:black">
+                  </div>
+                  <div>
+                    <span>''</span>
+                    <input type="number" name="LATSS" id="LATSS" value="0" min="0" max="59.9999" style="color:black">
+                  </div>
+                  <div class="m-xylocator-dms-radio">
+                    <input type="radio" name="LATDIR" style="color:black" value="north" checked>{{translations.north}}
+                    <input type="radio" name="LATDIR" style="color:black" value="south">{{translations.south}}
+                  </div>
+                </div>
             </div>
             <div id="m-xylocator-latlon">
-                <span>Longitud:</span>
-                <input type="text" name="LON" id="LON" style="color:black"><br />
-                <span>Latitud:</span>
-                <input type="text" name="LAT" id="LAT" style="color:black">
+                <span>{{translations.longitude}}:</span>
+                <input type="text" name="LON" id="LON" placeholder="-6.0" style="color:black"><br />
+                <span>{{translations.latitude}}:</span>
+                <input type="text" name="LAT" id="LAT" placeholder="37.5" style="color:black">
             </div>
         </div>
         <div class="button">
             <button class="represent" id="m-xylocator-loc">
-                <i class="g-cartografia-posicion3"></i> Localizar
+                <i class="g-cartografia-posicion3"></i> {{translations.locate}}
             </button>
-            <button class="represent" id="m-xylocator-limpiar" title="Limpiar">
+            <button class="represent" id="m-xylocator-limpiar" title="{{translations.clean}}">
                 <i class="g-cartografia-papelera"></i>
             </button>
         </div>

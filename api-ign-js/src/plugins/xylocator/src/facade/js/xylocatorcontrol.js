@@ -5,6 +5,7 @@
 import XYLocatorImplControl from '../../impl/ol/js/xylocatorcontrol';
 import template from '../../templates/xylocator';
 import projections from '../../templates/options';
+import { getValue } from './i18n/language';
 
 /**
  * @classdesc
@@ -19,7 +20,7 @@ export default class XYLocatorControl extends M.Control {
    */
   constructor(options) {
     if (M.utils.isUndefined(XYLocatorImplControl)) {
-      M.exception('La implementación usada no puede crear controles XYLocatorControl');
+      M.exception(getValue('exception.impl'));
     }
     const impl = new XYLocatorImplControl();
     super(impl, 'XYLocator');
@@ -31,14 +32,6 @@ export default class XYLocatorControl extends M.Control {
      * @type {Array<object>} - {code: ..., title: ..., units: m | d}
      */
     this.projections = options.projections;
-
-    //   /**
-    //    * Zoom scale
-    //    *
-    //    * @private
-    //    * @type {number}
-    //    */
-    //   this.scale_ = Number.isFinite(options.scale) === true ? options.scale : 2000;
   }
 
   /**
@@ -51,10 +44,35 @@ export default class XYLocatorControl extends M.Control {
    */
   createView(map) {
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            title: getValue('title'),
+            srs: getValue('srs'),
+            longitude: getValue('longitude'),
+            latitude: getValue('latitude'),
+            locate: getValue('locate'),
+            clean: getValue('clean'),
+            east: getValue('east'),
+            west: getValue('west'),
+            north: getValue('north'),
+            south: getValue('south'),
+          },
+        },
+      });
+
       this.template_ = html;
-      const compiledOptions =
-        M.template.compileSync(projections, { vars: { projections: this.projections } });
+      const compiledOptions = M.template.compileSync(projections, {
+        vars: {
+          projections: this.projections,
+          translations: {
+            geographic: getValue('geographic'),
+            zone: getValue('zone'),
+            dms: getValue('dms'),
+            dd: getValue('dd'),
+          },
+        },
+      });
       this.template_.querySelector('#m-xylocator-coordinatesSystem').appendChild(compiledOptions);
       this.template_.querySelector('button#m-xylocator-limpiar').addEventListener('click', () => this.clear_());
       this.template_.querySelector('select#m-xylocator-srs').addEventListener('change', evt => this.manageInputs_(evt));
@@ -103,35 +121,42 @@ export default class XYLocatorControl extends M.Control {
     const yFloat = parseFloat(y);
     this.map.removeLayers(this.coordinatesLayer);
     if (!isNaN(xFloat) && !isNaN(yFloat)) {
-      this.map.setCenter(`${x},${y}*false`);
-      // this.getImpl().setScale(this.scale_);
+      this.map.setCenter(`${xFloat},${yFloat}*false`);
       this.map.setZoom(14);
       this.fire('xylocator:locationCentered', [{
         zoom: 14,
-        // scale: this.scale_,
-        center: [x, y],
+        center: [xFloat, yFloat],
       }]);
 
       this.coordinatesLayer = new M.layer.Vector({
-        name: 'Resultado búsquedas',
-      }, {
-        displayInLayerSwitcher: false,
-      });
+        name: getValue('search_result'),
+      }, { displayInLayerSwitcher: false });
 
       const feature = new M.Feature('localizacion', {
         type: 'Feature',
         properties: {},
         geometry: {
           type: 'Point',
-          coordinates: [x, y],
+          coordinates: [xFloat, yFloat],
         },
       });
 
       this.coordinatesLayer.addFeatures([feature]);
-      this.coordinatesLayer.setStyle(this.point);
+      this.coordinatesLayer.setStyle(new M.style.Point({
+        radius: 8,
+        fill: {
+          color: '#f00',
+          opacity: 0.5,
+        },
+        stroke: {
+          color: '#f00',
+          opacity: 1,
+          width: 3,
+        },
+      }));
       this.map.addLayers(this.coordinatesLayer);
     } else {
-      M.dialog.error('Las coordenadas introducidas no son correctas.', 'Error');
+      M.dialog.error(getValue('exception.wrong_coords'), 'Error');
     }
   }
 
@@ -145,15 +170,25 @@ export default class XYLocatorControl extends M.Control {
   manageInputs_(evt) {
     const selectTarget = evt.target;
     const selectedOption = selectTarget.options[selectTarget.selectedIndex];
-
     if (selectedOption.getAttribute('data-units') === 'd') {
-      const divToHidden = document.querySelector('div#m-xylocator-utm');
-      divToHidden.style.display = 'none';
+      const divToHidden1 = document.querySelector('div#m-xylocator-utm');
+      divToHidden1.style.display = 'none';
+      const divToHidden2 = document.querySelector('div#m-xylocator-dms');
+      divToHidden2.style.display = 'none';
       const divToShow = document.querySelector('div#m-xylocator-latlon');
       divToShow.style.display = 'block';
+    } else if (selectedOption.getAttribute('data-units') === 'dms') {
+      const divToHidden1 = document.querySelector('div#m-xylocator-utm');
+      divToHidden1.style.display = 'none';
+      const divToHidden2 = document.querySelector('div#m-xylocator-latlon');
+      divToHidden2.style.display = 'none';
+      const divToShow = document.querySelector('div#m-xylocator-dms');
+      divToShow.style.display = 'block';
     } else {
-      const divToHidden = document.querySelector('div#m-xylocator-latlon');
-      divToHidden.style.display = 'none';
+      const divToHidden1 = document.querySelector('div#m-xylocator-latlon');
+      divToHidden1.style.display = 'none';
+      const divToHidden2 = document.querySelector('div#m-xylocator-dms');
+      divToHidden2.style.display = 'none';
       const divToShow = document.querySelector('div#m-xylocator-utm');
       divToShow.style.display = 'block';
     }
@@ -176,26 +211,50 @@ export default class XYLocatorControl extends M.Control {
       let x = -1;
       let y = -1;
       if (selectedOption.getAttribute('data-units') === 'd') {
-        const xString = document.querySelector('div#m-xylocator-latlon input#LON').value;
-        const yString = document.querySelector('div#m-xylocator-latlon input#LAT').value;
         try {
-          const xArray = xString;
-          const yArray = yString;
-          x = parseFloat(xArray);
-          y = parseFloat(yArray);
+          const xString = document.querySelector('div#m-xylocator-latlon input#LON').value;
+          const yString = document.querySelector('div#m-xylocator-latlon input#LAT').value;
+          x = parseFloat(xString);
+          y = parseFloat(yString);
         } catch (ex) {
-          M.dialog.error('Las coordenadas no son correctas', 'Error');
+          M.dialog.error(getValue('exception.transforming'), 'Error');
+        }
+      } else if (selectedOption.getAttribute('data-units') === 'dms') {
+        const hhLon = document.querySelector('div#m-xylocator-dms input#LONHH').value;
+        const mmLon = document.querySelector('div#m-xylocator-dms input#LONMM').value;
+        const ssLon = document.querySelector('div#m-xylocator-dms input#LONSS').value;
+        const dirLon = document.querySelector('div#m-xylocator-dms input[name="LONDIR"]:checked').value;
+        const hhLat = document.querySelector('div#m-xylocator-dms input#LATHH').value;
+        const mmLat = document.querySelector('div#m-xylocator-dms input#LATMM').value;
+        const ssLat = document.querySelector('div#m-xylocator-dms input#LATSS').value;
+        const dirLat = document.querySelector('div#m-xylocator-dms input[name="LATDIR"]:checked').value;
+        try {
+          x = parseFloat(hhLon) + (parseFloat(mmLon) / 60) + (parseFloat(ssLon) / 3600);
+          y = parseFloat(hhLat) + (parseFloat(mmLat) / 60) + (parseFloat(ssLat) / 3600);
+          if (dirLon !== 'east' && x !== 0) {
+            x = -x;
+          }
+
+          if (dirLat !== 'north' && y !== 0) {
+            y = -y;
+          }
+        } catch (ex) {
+          M.dialog.error(getValue('exception.transforming'), 'Error');
         }
       } else {
-        const xString = document.querySelector('div#m-xylocator-utm input#UTM-X').value;
-        const yString = document.querySelector('div#m-xylocator-utm input#UTM-Y').value;
-        x = parseFloat(xString);
-        y = parseFloat(yString);
+        try {
+          const xString = document.querySelector('div#m-xylocator-utm input#UTM-X').value;
+          const yString = document.querySelector('div#m-xylocator-utm input#UTM-Y').value;
+          x = parseFloat(xString);
+          y = parseFloat(yString);
+        } catch (ex) {
+          M.dialog.error(getValue('exception.transforming'), 'Error');
+        }
       }
       const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
       this.locator_(coordinatesTransform);
     } catch (ex) {
-      M.dialog.error('Error realizando la transformación.', 'Error');
+      M.dialog.error(getValue('exception.wrong_coords'), 'Error');
       throw ex;
     }
   }
@@ -211,36 +270,12 @@ export default class XYLocatorControl extends M.Control {
     this.template_.querySelector('input#UTM-Y').value = '';
     this.template_.querySelector('input#LON').value = '';
     this.template_.querySelector('input#LAT').value = '';
+    this.template_.querySelector('input#LONHH').value = 0;
+    this.template_.querySelector('input#LONMM').value = 0;
+    this.template_.querySelector('input#LONSS').value = 0;
+    this.template_.querySelector('input#LATHH').value = 0;
+    this.template_.querySelector('input#LATMM').value = 0;
+    this.template_.querySelector('input#LATSS').value = 0;
     this.map.removeLayers(this.coordinatesLayer);
-  }
-
-  /**
-   * This function adds personal geometry styles to our class
-   *
-   * @public
-   * @function
-   * @api
-   */
-  createGeometryStyles() {
-    this.point = new M.style.Point({
-      radius: 5,
-      icon: {
-        form: 'none',
-        class: 'g-cartografia-pin',
-        radius: 12,
-        rotation: 0,
-        rotate: false,
-        offset: [0, -12],
-        color: '#f00',
-        opacity: 1,
-      },
-    });
-
-    this.simple = new M.style.Polygon({
-      fill: {
-        color: 'black',
-        opacity: 0,
-      },
-    });
   }
 }
