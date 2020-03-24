@@ -4,6 +4,7 @@
 
 // import template from 'templates/backimglayer';
 import template from '../../templates/backimglayer';
+import { getValue } from './i18n/language';
 
 /**
  * This parameter indicates the maximum base layers of plugin
@@ -101,7 +102,14 @@ export default class BackImgLayerControl extends M.Control {
   createView(map) {
     this.map = map;
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template, { vars: { layers: this.layers } });
+      const html = M.template.compileSync(template, {
+        vars: {
+          layers: this.layers,
+          translations: {
+            headertitle: getValue('tooltip'),
+          },
+        },
+      });
       this.html = html;
       this.listen(html);
       this.on(M.evt.ADDED_TO_MAP, () => {
@@ -172,34 +180,6 @@ export default class BackImgLayerControl extends M.Control {
     }
     this.fire('backimglayer:activeChanges', [{ activeLayerId: this.activeLayer }]);
   }
-
-  // /**
-  //  * This function manages the click event when the app is in mobile resolution
-  //  * @function
-  //  * @public
-  //  * @api
-  //  */
-  // handlerClickMobile(e) {
-  //   this.removeLayers();
-  //   this.activeLayer += 1;
-  //   this.activeLayer = this.activeLayer % this.layers.length;
-  //   const layersInfo = this.layers[this.activeLayer];
-  //   const { layers, id, title } = layersInfo;
-
-  //   layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
-
-  //   e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-lyr-"]')
-  // .forEach((imgContainer) => {
-  //     if (imgContainer.classList.contains('activeBackimglayerDiv')) {
-  //       imgContainer.classList.remove('activeBackimglayerDiv');
-  //     }
-  //   });
-  //   e.currentTarget.innerHTML = title;
-  //   e.currentTarget.parentElement
-  //     .querySelector(`#m-backimglayer-lyr-${id}`).classList.add('activeBackimglayerDiv');
-  //   this.map.addLayers(layers);
-  //   this.fire('backimglayer:activeChanges', [{ activeLayerId: this.activeLayer }]);
-  // }
 
   /**
    * This function removes this.layers from Map.

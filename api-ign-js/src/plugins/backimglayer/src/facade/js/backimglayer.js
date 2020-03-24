@@ -5,6 +5,7 @@
 import '../assets/css/backimglayer';
 import api from '../../api';
 import BackImgLayerControl from './backimglayercontrol';
+import { getValue } from './i18n/language';
 
 export default class BackImgLayer extends M.Plugin {
   /**
@@ -117,6 +118,11 @@ export default class BackImgLayer extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+    /**
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -145,7 +151,7 @@ export default class BackImgLayer extends M.Plugin {
       collapsed: this.collapsed,
       position: M.ui.position[this.position_],
       className: 'm-plugin-backimglayer',
-      tooltip: 'Capas de fondo',
+      tooltip: this.tooltip_,
       collapsedButtonClass: 'backimglyr-simbolo-cuadros',
     });
 
