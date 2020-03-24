@@ -1,35 +1,77 @@
 <div class="m-xylocator-container">
     <div class="m-xylocator-panel panel-codigo">
-        <div class="title">Localizador por coordenadas</div>
+        <div class="title">{{translations.title}}</div>
         <div class="m-xylocator-datas">
             <div id="m-xylocator-coordinatesSystem">
-                <span>Sistema de coordenadas:</span>
+                <span>{{translations.srs}}:</span>
                 <select name="srs" id="m-xylocator-srs" class="dropdown">
-                  <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4258" option="selected">ETRS89 Geográficas (4258)</option>
-                  <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4326">WGS84 Geográficas (4326)</option>
+                  <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4258" option="selected">ETRS89 {{translations.geographic}} (4258) {{translations.dd}}</option>
+                  <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4326">WGS84 {{translations.geographic}} (4326) {{translations.dd}}</option>
+                  <option class="m-xylocator-srs-option" data-units="dms" value="EPSG:4258" option="selected">ETRS89 {{translations.geographic}} (4258) {{translations.dms}}</option>
+                  <option class="m-xylocator-srs-option" data-units="dms" value="EPSG:4326">WGS84 {{translations.geographic}} (4326) {{translations.dms}}</option>
                   <option class="m-xylocator-srs-option" data-units="m" value="EPSG:3857">WGS84 Pseudo Mercator (3857)</option>
-                  <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25831">ETRS89 UTM huso 31 (25831)</option>
-                  <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25830">ETRS89 UTM huso 30 (25830)</option>
-                  <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25829">ETRS89 UTM huso 29 (25829)</option>
-                  <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25828">ETRS89 UTM huso 28 (25828)</option>
-      				  </select>
+                  <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25831">ETRS89 UTM {{translations.zone}} 31N (25831)</option>
+                  <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25830">ETRS89 UTM {{translations.zone}} 30N (25830)</option>
+                  <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25829">ETRS89 UTM {{translations.zone}} 29N (25829)</option>
+                  <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25828">ETRS89 UTM {{translations.zone}} 28N (25828)</option>
+                </select>
             </div>
             <div id="m-xylocator-utm" style="display:none;">
                 <span>X:</span>
-                <input type="text" name="UTM-X" id="UTM-X" style="color:black"><br />
+                <input type="text" name="UTM-X" id="UTM-X" placeholder="234798.13" style="color:black"><br />
                 <span>Y:</span>
-                <input type="text" name="UTM-Y" id="UTM-Y" style="color:black">
+                <input type="text" name="UTM-Y" id="UTM-Y" placeholder="4154570.15" style="color:black">
+            </div>
+            <div id="m-xylocator-dms" style="display:none;">
+                <p>{{translations.longitude}}:</p>
+                <div>
+                  <div>
+                    <span>º</span><br/>
+                    <input type="number" name="LONHH" id="LONHH" value="0" min="0" style="color:black">
+                  </div>
+                  <div>
+                    <span>'</span><br/>
+                    <input type="number" name="LONMM" id="LONMM" value="0" min="0" max="59" style="color:black">
+                  </div>
+                  <div>
+                    <span>''</span><br/>
+                    <input type="number" name="LONSS" id="LONSS" value="0" min="0" max="59.9999" style="color:black">
+                  </div>
+                  <div class="m-xylocator-dms-radio">
+                    <input type="radio" name="LONDIR" style="color:black" value="east" checked>{{translations.east}}<br/>
+                    <input type="radio" name="LONDIR" style="color:black" value="west">{{translations.west}}
+                  </div>
+                </div>
+                <p>{{translations.latitude}}:</p>
+                <div>
+                  <div>
+                    <span>º</span><br/>
+                    <input type="number" name="LATHH" id="LATHH" value="0" min="0" style="color:black">
+                  </div>
+                  <div>
+                    <span>'</span><br/>
+                    <input type="number" name="LATMM" id="LATMM" value="0" min="0" max="59" style="color:black">
+                  </div>
+                  <div>
+                    <span>''</span><br/>
+                    <input type="number" name="LATSS" id="LATSS" value="0" min="0" max="59.9999" style="color:black">
+                  </div>
+                  <div class="m-xylocator-dms-radio">
+                    <input type="radio" name="LATDIR" style="color:black" value="north" checked>{{translations.north}}<br/>
+                    <input type="radio" name="LATDIR" style="color:black" value="south">{{translations.south}}
+                  </div>
+                </div>
             </div>
             <div id="m-xylocator-latlon">
-                <span>Longitud:</span>
-                <input type="text" name="LON" id="LON" style="color:black"><br />
-                <span>Latitud:</span>
-                <input type="text" name="LAT" id="LAT" style="color:black">
+                <span>{{translations.longitude}}:</span>
+                <input type="text" name="LON" id="LON" placeholder="-6.0" style="color:black"><br />
+                <span>{{translations.latitude}}:</span>
+                <input type="text" name="LAT" id="LAT" placeholder="37.5" style="color:black">
             </div>
         </div>
         <div class="button">
             <button class="represent" id="m-xylocator-loc">
-                <i class="icon-posicion3"></i> Localizar
+                <i class="icon-posicion3"></i> {{translations.locate}}
             </button>
         </div>
     </div>

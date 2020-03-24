@@ -403,3 +403,26 @@ DROPDOWN ****************************/
     width: 100%;
     margin-top: 3%;
 }
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms p {
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms > div {
+  display: flex;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms > div > div > input[type="number"] {
+  width: 3rem;
+  margin-right: 10px;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms > div > div > span {
+  font-size: 24px;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms .m-xylocator-dms-radio {
+  line-height: 28px;
+}

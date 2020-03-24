@@ -12,6 +12,7 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
    * @api stable
    */
   addTo(map, html) {
+    this.map = map;
     super.addTo(map, html);
   }
   /**
@@ -83,5 +84,31 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
   reproject(coordinates, source, destiny) {
     const transformFunc = ol.proj.getTransform(source, destiny);
     return transformFunc(coordinates);
+  }
+
+  /**
+   * This function reprojects map on selected SRS.
+   *
+   * @function
+   * @param {string} origin - EPSG:25830, EPSG:4326, ..., etc
+   * @param {array<number>} coordinates
+   * @api
+   */
+  reprojectXY(origin, coordinates) {
+    const originProj = ol.proj.get(origin);
+    const destProj = ol.proj.get(this.map.getProjection().code);
+    let coordinatesTransform = ol.proj.transform(coordinates, originProj, destProj);
+    coordinatesTransform = [this.normalizeNumber(coordinates[0], coordinatesTransform[0]),
+      this.normalizeNumber(coordinates[1], coordinatesTransform[1])];
+    return coordinatesTransform;
+  }
+
+  normalizeNumber(origin, calculated) {
+    let res = origin;
+    if (origin !== 0) {
+      res = parseFloat(calculated.toFixed(9));
+    }
+
+    return res;
   }
 }

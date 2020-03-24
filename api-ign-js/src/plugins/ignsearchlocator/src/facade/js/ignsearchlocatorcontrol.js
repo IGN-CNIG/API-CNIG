@@ -7,6 +7,7 @@ import results from '../../templates/results';
 import xylocator from '../../templates/xylocator';
 import registerHelpers from './helpers';
 import geographicNameType from './constants';
+import { getValue } from './i18n/language';
 
 let typingTimer;
 /**
@@ -706,6 +707,12 @@ export default class IGNSearchLocatorControl extends M.Control {
       document.querySelector('.m-xylocator-container input#UTM-Y').value = '';
       document.querySelector('.m-xylocator-container input#LON').value = '';
       document.querySelector('.m-xylocator-container input#LAT').value = '';
+      document.querySelector('.m-xylocator-container input#LONHH').value = 0;
+      document.querySelector('.m-xylocator-container input#LONMM').value = 0;
+      document.querySelector('.m-xylocator-container input#LONSS').value = 0;
+      document.querySelector('.m-xylocator-container input#LATHH').value = 0;
+      document.querySelector('.m-xylocator-container input#LATMM').value = 0;
+      document.querySelector('.m-xylocator-container input#LATSS').value = 0;
     }
   }
   /**
@@ -736,7 +743,25 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clearResults();
     } else {
       this.clearResults();
-      const compiledXYLocator = M.template.compileSync(xylocator, {});
+      const compiledXYLocator = M.template.compileSync(xylocator, {
+        vars: {
+          translations: {
+            title: getValue('title'),
+            srs: getValue('srs'),
+            longitude: getValue('longitude'),
+            latitude: getValue('latitude'),
+            locate: getValue('locate'),
+            east: getValue('east'),
+            west: getValue('west'),
+            north: getValue('north'),
+            south: getValue('south'),
+            geographic: getValue('geographic'),
+            zone: getValue('zone'),
+            dms: getValue('dms'),
+            dd: getValue('dd'),
+          },
+        },
+      });
       compiledXYLocator.querySelector('select#m-xylocator-srs').addEventListener('change', evt => this.manageInputs_(evt));
       compiledXYLocator.querySelector('button#m-xylocator-loc').addEventListener('click', evt => this.calculate_(evt));
       this.resultsBox.appendChild(compiledXYLocator);
@@ -760,29 +785,51 @@ export default class IGNSearchLocatorControl extends M.Control {
       let x = -1;
       let y = -1;
       if (selectedOption.getAttribute('data-units') === 'd') {
-        const xString = document.querySelector('.m-xylocator-container div#m-xylocator-latlon input#LON').value;
-        const yString = document.querySelector('.m-xylocator-container div#m-xylocator-latlon input#LAT').value;
         try {
-          const xArray = xString;
-          const yArray = yString;
-          x = parseFloat(xArray);
-          y = parseFloat(yArray);
+          const xString = document.querySelector('div#m-xylocator-latlon input#LON').value;
+          const yString = document.querySelector('div#m-xylocator-latlon input#LAT').value;
+          x = parseFloat(xString);
+          y = parseFloat(yString);
         } catch (ex) {
-          M.dialog.error('Las coordenadas no son correctas', 'Error');
+          M.dialog.error(getValue('exception.transforming'), 'Error');
+        }
+      } else if (selectedOption.getAttribute('data-units') === 'dms') {
+        const hhLon = document.querySelector('div#m-xylocator-dms input#LONHH').value;
+        const mmLon = document.querySelector('div#m-xylocator-dms input#LONMM').value;
+        const ssLon = document.querySelector('div#m-xylocator-dms input#LONSS').value;
+        const dirLon = document.querySelector('div#m-xylocator-dms input[name="LONDIR"]:checked').value;
+        const hhLat = document.querySelector('div#m-xylocator-dms input#LATHH').value;
+        const mmLat = document.querySelector('div#m-xylocator-dms input#LATMM').value;
+        const ssLat = document.querySelector('div#m-xylocator-dms input#LATSS').value;
+        const dirLat = document.querySelector('div#m-xylocator-dms input[name="LATDIR"]:checked').value;
+        try {
+          x = parseFloat(hhLon) + (parseFloat(mmLon) / 60) + (parseFloat(ssLon) / 3600);
+          y = parseFloat(hhLat) + (parseFloat(mmLat) / 60) + (parseFloat(ssLat) / 3600);
+          if (dirLon !== 'east' && x !== 0) {
+            x = -x;
+          }
+
+          if (dirLat !== 'north' && y !== 0) {
+            y = -y;
+          }
+        } catch (ex) {
+          M.dialog.error(getValue('exception.transforming'), 'Error');
         }
       } else {
-        const xString = document.querySelector('.m-xylocator-container div#m-xylocator-utm input#UTM-X').value;
-        const yString = document.querySelector('.m-xylocator-container div#m-xylocator-utm input#UTM-Y').value;
-        x = parseFloat(xString);
-        y = parseFloat(yString);
+        try {
+          const xString = document.querySelector('div#m-xylocator-utm input#UTM-X').value;
+          const yString = document.querySelector('div#m-xylocator-utm input#UTM-Y').value;
+          x = parseFloat(xString);
+          y = parseFloat(yString);
+        } catch (ex) {
+          M.dialog.error(getValue('exception.transforming'), 'Error');
+        }
       }
 
-      const target = this.map.getProjection().code;
-
-      const coordinatesTransform = this.getImpl().reproject([x, y], origin, target);
+      const coordinatesTransform = this.getImpl().reprojectXY(origin, [x, y]);
       this.locator_(coordinatesTransform);
     } catch (ex) {
-      M.dialog.error('Error realizando la transformación.', 'Error');
+      M.dialog.error(getValue('exception.wrong_coords'), 'Error');
       throw ex;
     }
   }
@@ -797,16 +844,26 @@ export default class IGNSearchLocatorControl extends M.Control {
   manageInputs_(evt) {
     const selectTarget = evt.target;
     const selectedOption = selectTarget.options[selectTarget.selectedIndex];
-
     if (selectedOption.getAttribute('data-units') === 'd') {
-      const divToHidden = document.querySelector('.m-xylocator-container div#m-xylocator-utm');
-      divToHidden.style.display = 'none';
-      const divToShow = document.querySelector('.m-xylocator-container div#m-xylocator-latlon');
+      const divToHidden1 = document.querySelector('div#m-xylocator-utm');
+      divToHidden1.style.display = 'none';
+      const divToHidden2 = document.querySelector('div#m-xylocator-dms');
+      divToHidden2.style.display = 'none';
+      const divToShow = document.querySelector('div#m-xylocator-latlon');
+      divToShow.style.display = 'block';
+    } else if (selectedOption.getAttribute('data-units') === 'dms') {
+      const divToHidden1 = document.querySelector('div#m-xylocator-utm');
+      divToHidden1.style.display = 'none';
+      const divToHidden2 = document.querySelector('div#m-xylocator-latlon');
+      divToHidden2.style.display = 'none';
+      const divToShow = document.querySelector('div#m-xylocator-dms');
       divToShow.style.display = 'block';
     } else {
-      const divToHidden = document.querySelector('.m-xylocator-container div#m-xylocator-latlon');
-      divToHidden.style.display = 'none';
-      const divToShow = document.querySelector('.m-xylocator-container div#m-xylocator-utm');
+      const divToHidden1 = document.querySelector('div#m-xylocator-latlon');
+      divToHidden1.style.display = 'none';
+      const divToHidden2 = document.querySelector('div#m-xylocator-dms');
+      divToHidden2.style.display = 'none';
+      const divToShow = document.querySelector('div#m-xylocator-utm');
       divToShow.style.display = 'block';
     }
   }
@@ -826,25 +883,23 @@ export default class IGNSearchLocatorControl extends M.Control {
     const yFloat = parseFloat(y);
     this.map.removeLayers(this.coordinatesLayer);
     if (!Number.isNaN(xFloat) && !Number.isNaN(yFloat)) {
-      this.map.setCenter(`${x},${y}*false`);
-      this.map.setZoom(this.map.getMaxZoom() > 20 ? 14 : 13);
+      this.map.setCenter(`${xFloat},${yFloat}*false`);
+      this.map.setZoom(14);
       this.fire('xylocator:locationCentered', [{
-        zoom: this.map.getMaxZoom() > 20 ? 14 : 13,
-        center: [x, y],
+        zoom: 14,
+        center: [xFloat, yFloat],
       }]);
 
       this.coordinatesLayer = new M.layer.Vector({
-        name: 'Resultado búsquedas',
-      }, {
-        displayInLayerSwitcher: false,
-      });
+        name: getValue('search_result'),
+      }, { displayInLayerSwitcher: false });
 
       const feature = new M.Feature('localizacion', {
         type: 'Feature',
         properties: {},
         geometry: {
           type: 'Point',
-          coordinates: [x, y],
+          coordinates: [xFloat, yFloat],
         },
       });
 
@@ -861,12 +916,12 @@ export default class IGNSearchLocatorControl extends M.Control {
           width: 3,
         },
       }));
+
       this.map.addLayers(this.coordinatesLayer);
     } else {
-      M.dialog.error('Las coordenadas introducidas no son correctas.', 'Error');
+      M.dialog.error(getValue('exception.wrong_coords'), 'Error');
     }
   }
-
 
   /**
    * This function sets geometry visibility on map (visible|invisible).

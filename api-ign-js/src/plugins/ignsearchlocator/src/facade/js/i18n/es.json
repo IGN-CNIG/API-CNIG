@@ -1,0 +1,19 @@
+{
+  "exception": {
+    "wrong_coords": "Las coordenadas introducidas no son correctas.",
+    "transforming": "Error realizando la transformación."
+  },
+  "geographic": "Geograficas",
+  "zone": "huso",
+  "title": "Localizador por coordenadas",
+  "srs": "Sistema de coordenadas",
+  "longitude": "Longitud",
+  "latitude": "Latitud",
+  "locate": "Localizar",
+  "north": "Norte",
+  "south": "Sur",
+  "east": "Este",
+  "west": "Oeste",
+  "dms": "GMS",
+  "dd": "GD"
+}
