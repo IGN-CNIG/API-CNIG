@@ -6,7 +6,7 @@ const map = M.map({
   container: 'mapjs',
 });
 const mp = new ZoomPanel({
-  position: 'BR',
+  position: 'TL',
   collapsible: true,
   collapsed: true,
   layerId: 0,
