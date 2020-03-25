@@ -226,3 +226,27 @@ div.m-area.m-top.m-left>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {
 div.m-area.m-top.m-left>div.m-plugin-selectionzoom.m-panel.opened>button.m-panel-btn {
     font-family: g-cartografia !important;
 }
+
+div.m-area.m-top.m-right>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {
+    font-family: g-selectionzoom !important;
+}
+
+div.m-area.m-top.m-right>div.m-plugin-selectionzoom.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-bottom.m-right>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {
+    font-family: g-selectionzoom !important;
+}
+
+div.m-area.m-bottom.m-right>div.m-plugin-selectionzoom.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-bottom.m-left>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {
+    font-family: g-selectionzoom !important;
+}
+
+div.m-area.m-bottom.m-left>div.m-plugin-selectionzoom.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
