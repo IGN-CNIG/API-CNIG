@@ -1,7 +1,196 @@
-.m-areas>div.m-area>div.m-panel.m-zoompanel.collapsed button.m-panel-btn,
-.m-areas>div.m-area>div.m-panel.m-zoompanel.no-collapsible.opened>.m-panel-controls>.m-zoompanel button {
-    font-family: 'g-plugin-zoompanel' !important;
+/* Opening & closing buttons */
+
+.m-panel.m-plugin-zoompanel.collapsed {
+    height: 40px;
 }
+
+.m-plugin-zoompanel.opened .m-panel-btn.g-cartografia-flecha-derecha,
+.m-plugin-zoompanel.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+    background-color: white !important;
+    color: #71a7d3 !important;
+}
+
+/* Title and images container */
+
+.m-control.m-container.m-zoompanel {
+    min-width: 220px;
+}
+
+/* Título */
+
+div#m-zoompanel-titulo {
+    background-color: #71a7d3;
+    color: white;
+    display: block;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 5px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Images container */
+
+.m-panel.m-plugin-zoompanel.opened .m-control.m-container.m-zoompanel>div#m-zoompanel-previews>div[id^="m-zoompanel-lyr-"] {
+    border: 5px solid #e9e8e8;
+    box-sizing: border-box;
+    float: left;
+    font-size: 0.9em;
+    height: 110px;
+    position: relative;
+    width: 110px;
+}
+
+div[id^="m-zoompanel-lyr-"]>span {
+    background-color: white;
+    color: rgb(73, 73, 73);
+    height: 20px;
+    margin-top: 0;
+    top: 80px;
+    left: 0;
+    line-height: 25px;
+    opacity: 0.6;
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    /* To insert animation: */
+    /* height: 0; */
+    /* margin-top: 20px; */
+    /* transition: all 0.3s linear; */
+    /* top: 100px; */
+}
+
+/* span transition */
+div[id^="m-zoompanel-lyr-"]:hover>span {
+    height: 20px;
+    margin-top: 0;
+    top: 80px;
+}
+
+.m-zoompanel .activeZoompanelDiv {
+    border: 5px solid #92c1e7 !important;
+}
+
+/* Bottom positions fix when images row turns into columns */
+
+.m-bottom .m-control.m-container.m-zoompanel>#m-zoompanel-previews {
+    display: flex;
+}
+
+.m-bottom.m-left>.m-panel.m-plugin-zoompanel.opened>.m-panel-controls {
+    display: flow-root;
+}
+
+.m-bottom.m-left>.m-plugin-zoompanel.opened>.m-panel-btn {
+    position: relative;
+    right: -40px;
+}
+
+.m-bottom.m-right .m-control.m-container.m-zoompanel {
+    padding-right: 40px;
+}
+
+.m-areas>div.m-area>div.m-panel.opened.m-plugin-zoompanel {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    order: 0;
+}
+
+.m-areas>div.m-area>div.m-panel.opened {
+    background-color: #fff !important;
+    width: 260px;
+}
+
+/* Firefox fix */
+
+@-moz-document url-prefix() {
+    .m-bottom.m-right .m-plugin-zoompanel.opened {
+        display: flex;
+    }
+}
+
+/* Mobile fix */
+
+@media only screen and (max-width: 1000px) {
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        position: absolute;
+        height: 100vh;
+        margin: 0px;
+        padding: calc((100vw - 210px) / 2);
+        padding-top: 10px;
+        width: 100vw;
+        z-index: 99999;
+    }
+
+    .m-panel.m-plugin-zoompanel.opened>button {
+        left: 0;
+        top: 0;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened>div.m-panel-controls>div.m-control.m-container.m-zoompanel>div#m-zoompanel-titulo {
+        font-size: 13px;
+        padding-left: 0;
+        padding-right: 0;
+        width: 210px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened>div.m-panel-controls>div.m-control.m-container.m-zoompanel>div#m-zoompanel-previews {
+        height: calc(100vh - 50px);
+        overflow: scroll;
+        width: 210px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened>div.m-panel-controls>div.m-control.m-container.m-zoompanel>div#m-zoompanel-previews>div {
+        height: 210px;
+        width: 210px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened>div.m-panel-controls>div.m-control.m-container.m-zoompanel>div#m-zoompanel-previews>div>img {
+        height: 200px;
+        width: 200px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened>div.m-panel-controls>div.m-control.m-container.m-zoompanel>div#m-zoompanel-previews>div>span {
+        font-size: 1.3em;
+        height: 40px;
+        line-height: 40px;
+        top: 160px;
+        width: 200px;
+    }
+
+    /* Firefox fix */
+    @-moz-document url-prefix() {
+        .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened {
+            padding: 10px 50px 0;
+        }
+
+        .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened>div.m-panel-controls>div.m-control.m-container.m-zoompanel>div#m-zoompanel-previews {
+            padding-bottom: 50px;
+        }
+    }
+
+    /* Chrome fix */
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+        .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened>div.m-panel-controls>div.m-control.m-container.m-zoompanel>div#m-zoompanel-previews {
+            height: calc(100vh - 100px);
+        }
+    }
+
+}
+
+@media only screen and (max-width: 433px) {
+
+    /* Edge fix */
+    @supports (-ms-ime-align:auto) {
+        .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened {
+            padding: 10px 50px 0;
+        }
+    }
+}
+
 
 .m-areas>div.m-area>div.m-panel.m-zoompanel>button.m-panel-btn {
     background-color: #71A7D3 !important;
@@ -23,26 +212,6 @@
     outline: none !important;
 }
 
-.m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button#clear {
-    color: #f04f4f;
-}
-
-.m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button.activated {
-    color: #009900;
-    opacity: 1;
-}
-
-.m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button:hover {
-    opacity: 1;
-}
-
-.m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button:focus {
-    border: none;
-}
-
-.m-areas>div.m-area>div.m-panel.m-zoompanel.collapsed {
-    height: 40px;
-}
 
 @font-face {
     font-family: 'g-plugin-zoompanel';
@@ -56,6 +225,8 @@
     font-display: block;
 }
 
+.m-areas>div.m-area>div.m-panel.m-zoompanel>div.m-panel-controls>div.m-control>button,
+.m-areas>div.m-area>div.m-panel.m-zoompanel>button.m-panel-btn.g-plugin-zoompanel-zoompanel-icon,
 [class^="g-plugin-zoompanel-"],
 [class*=" g-plugin-zoompanel-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
@@ -71,18 +242,26 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.g-plugin-zoompanel-editar:before {
-    content: "\e2530";
+.g-plugin-zoompanel-buscar-avanzar:before {
+    content: "\e2550";
 }
 
-.g-plugin-zoompanel-papelera:before {
-    content: "\e2531";
+.g-plugin-zoompanel-buscar-retroceder:before {
+    content: "\e2551";
 }
 
-.g-plugin-zoompanel-poligono:before {
-    content: "\e2532";
+.g-plugin-zoompanel-zoom-mas:before {
+    content: "\e2552";
 }
 
-.g-plugin-zoompanel-pin-seleccionado:before {
-    content: "\e2533";
+.g-plugin-zoompanel-zoom-menos:before {
+    content: "\e2553";
+}
+
+.g-plugin-zoompanel-zoom-rectangulo:before {
+    content: "\e2554";
+}
+
+.g-plugin-zoompanel-zoompanel-icon:before {
+    content: "\e2555";
 }
