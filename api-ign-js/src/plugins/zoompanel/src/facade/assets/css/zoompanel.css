@@ -97,11 +97,6 @@ div[id^="m-zoompanel-lyr-"]:hover>span {
     order: 0;
 }
 
-.m-areas>div.m-area>div.m-panel.opened {
-    background-color: #fff !important;
-    width: 260px;
-}
-
 /* Firefox fix */
 
 @-moz-document url-prefix() {
