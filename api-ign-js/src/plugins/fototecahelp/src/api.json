@@ -1,0 +1,41 @@
+{
+  "url": {
+    "name": "fototecahelp",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.FototecaHelp",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BR", "BL"]
+    }, {
+      "type": "simple",
+      "name": "helpLink",
+      "position": 1
+    }, {
+      "type": "simple",
+      "name": "contactEmail",
+      "position": 2
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["fototecahelp.ol.min.js"],
+      "styles": ["fototecahelp.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "FototecaHelp",
+    "description": "Shows information panel and contact data of the IGN Fototeca",
+    "text": "Opens a window with an information link about the site, contact link and terms.",
+    "version": "1.0.0",
+    "date": "11th November 2019",
+    "author": "CNIG",
+    "org": "CNIG",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}
