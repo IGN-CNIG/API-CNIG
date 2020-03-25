@@ -14,6 +14,16 @@
     width: 280px;
 }
 
+div.m-areas>div.m-area.m-left>div.m-panel.m-xylocator>button.m-panel-btn {
+    position: absolute;
+    right: -40px;
+}
+
+div.m-areas>div.m-area.m-right>div.m-panel.m-xylocator>button.m-panel-btn {
+    position: absolute;
+    left: -40px;
+}
+
 #m-xylocator-limpiar {
     float: right;
     margin-right: '1rem';
