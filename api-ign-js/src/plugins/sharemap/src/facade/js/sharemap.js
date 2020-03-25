@@ -3,6 +3,7 @@
  */
 import '../assets/css/sharemap';
 import ShareMapControl from './sharemapcontrol';
+import { getValue } from './i18n/language';
 
 /**
  * @typedef {Object} ShareMapOptions
@@ -117,15 +118,15 @@ export default class ShareMap extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.title_ = options.title || 'Compartir URL';
+    this.title_ = options.title || getValue('title');
 
     /**
-     * Title to share
+     * Title of the modal
      *
      * @private
      * @type {string}
      */
-    this.titleSocial_ = options.titleSocial || 'Compartir en tus redes sociales';
+    this.text_ = options.text || getValue('text');
 
     /**
      * Text of the button
@@ -141,7 +142,15 @@ export default class ShareMap extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.copyBtn_ = options.copyBtn || 'Copiar';
+    this.copyBtn_ = options.copyBtn || getValue('copy');
+
+    /**
+     * Text of the button
+     *
+     * @private
+     * @type {string}
+     */
+    this.copyBtnHtml_ = options.copyBtnHtml || getValue('copy');
 
     /**
      * Styles options
@@ -164,7 +173,7 @@ export default class ShareMap extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.tooltip_ = options.tooltip || '¡Copiado!';
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -179,9 +188,10 @@ export default class ShareMap extends M.Plugin {
     this.control = new ShareMapControl({
       baseUrl: this.baseUrl_,
       title: this.title_,
-      titleSocial: this.titleSocial_,
+      text: this.text_,
       btn: this.btn_,
       copyBtn: this.copyBtn_,
+      copyBtnHtml: this.copyBtnHtml_,
       primaryColor: this.styles_.primaryColor,
       secondaryColor: this.styles_.secondaryColor,
       tooltip: this.tooltip_,
@@ -281,6 +291,17 @@ export default class ShareMap extends M.Plugin {
   }
 
   /**
+   * This function returns the text
+   *
+   * @public
+   * @return {string}
+   * @api
+   */
+  get text() {
+    return this.text_;
+  }
+
+  /**
    * This function returns the accept button
    *
    * @public
@@ -303,6 +324,17 @@ export default class ShareMap extends M.Plugin {
   }
 
   /**
+   * This function returns the copy button html
+   *
+   * @public
+   * @return {string}
+   * @api
+   */
+  get copyBtnHtml() {
+    return this.copyBtnHtml_;
+  }
+
+  /**
    * Get the API REST Parameters of the plugin
    *
    * @function
@@ -310,6 +342,6 @@ export default class ShareMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.baseUrl}*${this.position}*${this.title}*${this.tooltip}*${this.btn}*${this.copyBtn}`;
+    return `${this.name}=${this.baseUrl}*${this.position}*${this.title}*${this.text}*${this.tooltip}*${this.btn}*${this.copyBtn}*${this.copyBtnHtml}`;
   }
 }

@@ -73,12 +73,12 @@ export default class ShareMapControl extends M.Control {
     this.title_ = options.title;
 
     /**
-     * Title to share
+     * Text
      *
      * @private
      * @type {string}
      */
-    this.titleSocial_ = options.titleSocial;
+    this.text_ = options.text;
 
     /**
      * Text of the button
@@ -95,6 +95,14 @@ export default class ShareMapControl extends M.Control {
      * @type {string}
      */
     this.copyBtn_ = options.copyBtn;
+
+    /**
+     * Text of the copy html button
+     *
+     * @private
+     * @type {string}
+     */
+    this.copyBtnHtml_ = options.copyBtnHtml;
 
     /**
      * Primary color of the html view  (hexadecimal format).
@@ -187,26 +195,31 @@ export default class ShareMapControl extends M.Control {
     const dialog = M.template.compileSync(modal, {
       vars: {
         title: this.title_,
-        titleSocial: this.titleSocial_,
+        text: this.text_,
         btn: this.btn_,
         copyBtn: this.copyBtn_,
+        copyBtnHtml: this.copyBtnHtml_,
         tooltip: this.tooltip_,
       },
     });
 
     const content = dialog.querySelector('#m-plugin-sharemap-content');
     const message = dialog.querySelector('#m-plugin-sharemap-message');
+    const html = dialog.querySelector('#m-plugin-sharemap-html');
     const button = dialog.querySelector('#m-plugin-sharemap-button');
     const title = dialog.querySelector('#m-plugin-sharemap-title');
     const okButton = dialog.querySelector('#m-plugin-sharemap-button > button');
     const copyButton = dialog.querySelector('#m-plugin-sharemap-copybutton');
+    const copyButtonHtml = dialog.querySelector('#m-plugin-sharemap-copybuttonhtml');
     const input = message.querySelector('input');
+    const inputHtml = html.querySelector('input');
 
     if (this.overwriteStyles_ === false) {
       content.classList.add(this.classes_.content);
       message.classList.add(this.classes_.message);
       button.classList.add(this.classes_.modalButton);
       title.classList.add(this.classes_.title);
+      // html.classList.add(this.classes_.html);
     }
 
     const mapeaContainer = document.querySelector('div.m-mapea-container');
@@ -217,7 +230,13 @@ export default class ShareMapControl extends M.Control {
       beginShade(title.querySelector('#m-plugin-sharemap-tooltip'));
     });
 
+    copyButtonHtml.addEventListener('click', () => {
+      copyURL(inputHtml);
+      beginShade(title.querySelector('#m-plugin-sharemap-tooltip'));
+    });
+
     this.buildURL(dialog).then(() => mapeaContainer.appendChild(dialog));
+    this.buildHtml(dialog).then(() => mapeaContainer.appendChild(dialog));
   }
 
   /**
@@ -245,6 +264,29 @@ export default class ShareMapControl extends M.Control {
       pinterest.href = `https://www.pinterest.es/pin/create/button/?url=${shareURL}`;
     });
   }
+
+  /**
+   * This method builds the html.
+   *
+   * @public
+   * @function
+   */
+  buildHtml(dialog) {
+    const html = dialog.querySelector('#m-plugin-sharemap-html');
+    const input = html.querySelector('input');
+    return this.getControls().then((controls) => {
+      const { x, y } = this.map_.getCenter();
+      const { code, units } = this.map_.getProjection();
+      let shareURL = `${this.baseUrl_}?controls=${controls}&center=${x},${y}&zoom=${this.map_.getZoom()}`;
+      shareURL = shareURL.concat(`&projection=${code}*${units}`);
+      shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) :
+        shareURL.concat('');
+      shareURL = shareURL.concat(`&${this.getPlugins()}`);
+      const embeddedHtml = `<iframe width = "800" height = "600" frameborder = "0" style = "border:0" src="${shareURL}" ></iframe>`;
+      input.value = embeddedHtml;
+    });
+  }
+
 
   /**
    * This methods gets the controls url parameters

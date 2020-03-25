@@ -10,11 +10,11 @@ const mp = new ShareMap({
   baseUrl: 'https://componentes.ign.es/api-core/',
   position: 'BR',
 });
-
+M.language.setLang('en');
 map.addPlugin(mp);
 window.map = map;
 const kml = new M.layer.KML('KML*Delegaciones*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
-map.addLayers(kml)
+map.addLayers(kml);
 const layerinicial = new M.layer.WMS({
   url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeBoundary',
@@ -26,8 +26,7 @@ const layerinicial = new M.layer.WMS({
 const layerUA = new M.layer.WMS({
   url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
-  legend: 'Unidad administrativa',
-  tiled: false
+  legend: 'Unidad administrativa'
 }, {});
 
 const ocupacionSuelo = new M.layer.WMTS({

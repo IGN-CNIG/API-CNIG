@@ -30,10 +30,6 @@ const styles = (options) => {
       boxShadow: `0 2px 4px ${options.primaryColor}, 0 -1px 0px ${options.primaryColor}`,
     },
     message: {
-      borderBottom: `1px solid ${options.primaryColor}`,
-      '&>input': {
-        border: `1px solid ${options.primaryColor} !important`,
-      },
       '&>button': {
         backgroundColor: `${options.primaryColor}`,
         color: `${options.secondaryColor}`,
