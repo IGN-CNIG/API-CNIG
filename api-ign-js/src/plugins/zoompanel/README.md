@@ -1,16 +1,16 @@
-# M.plugin.SelectionDraw
+# M.plugin.ZoomPanel
 
 Permite dibujar geometrías y obtenerlas al terminar.
 
 # Dependencias
 
-- selectiondraw.ol.min.js
-- selectiondraw.ol.min.css
+- zoompanel.ol.min.js
+- zoompanel.ol.min.css
 
 
 ```html
- <link href="../../plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/selectiondraw/selectiondraw.ol.min.js"></script>
+ <link href="../../plugins/zoompanel/zoompanel.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/zoompanel/zoompanel.ol.min.js"></script>
 ```
 
 # Parámetros
@@ -34,7 +34,7 @@ Permite dibujar geometrías y obtenerlas al terminar.
      container: 'map'
    });
   
-   const mp = new M.plugin.SelectionDraw({
+   const mp = new M.plugin.ZoomPanel({
         projection: 'EPSG:4326',
         position: 'TL',
         collapsed: false,
