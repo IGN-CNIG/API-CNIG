@@ -73,6 +73,14 @@ export default class ShareMapControl extends M.Control {
     this.title_ = options.title;
 
     /**
+     * Title to share
+     *
+     * @private
+     * @type {string}
+     */
+    this.titleSocial_ = options.titleSocial;
+
+    /**
      * Text of the button
      *
      * @private
@@ -179,6 +187,7 @@ export default class ShareMapControl extends M.Control {
     const dialog = M.template.compileSync(modal, {
       vars: {
         title: this.title_,
+        titleSocial: this.titleSocial_,
         btn: this.btn_,
         copyBtn: this.copyBtn_,
         tooltip: this.tooltip_,

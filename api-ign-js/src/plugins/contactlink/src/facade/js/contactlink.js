@@ -58,23 +58,6 @@ export default class ContactLink extends M.Plugin {
     this.position = positions.includes(options.position) ? options.position : 'TR';
 
     /**
-     * Links
-     * @public
-     * Value: Access links
-     * @type {string}
-     */
-    if (options.links === undefined) {
-      this.links = [];
-    } else {
-      if (Array.isArray(options.links)) {
-        this.links = options.links;
-      } else {
-        this.links = options.links.split(",");
-      }
-    }
-
-
-    /**
      * Metadata from api.json
      * @private
      * @type {Object}
@@ -95,7 +78,6 @@ export default class ContactLink extends M.Plugin {
 
     const values = {
       pluginOnLeft,
-      links: this.links,
     };
     this.control_ = new ContactLinkControl(values);
     this.controls_.push(this.control_);

@@ -4,8 +4,10 @@ const map = M.map({
   container: 'mapjs',
 });
 
+// M.language.setLang('en');
+
 const mp = new ContactLink({
-  position: 'TR',
+  position: 'BR',
   // links: [{
   //     name: 'Toogle',
   //     url: 'https://www.deepl.com/es/translator',

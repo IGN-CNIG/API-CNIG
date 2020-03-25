@@ -62,28 +62,60 @@
     margin: 10px;
 }
 
-.m-control.m-container.m-contactlink>div.links>div.web>a,
-.m-control.m-container.m-contactlink>div.links>div.social>a,
-.m-control.m-container.m-contactlink>div.links>div.other>a {
+.m-control.m-container.m-contactlink>div.links>div.web>div.web1>a,
+.m-control.m-container.m-contactlink>div.links>div.web>div.web2>a {
     color: #404040;
+    text-align: center;
     font-family: 'Muli',
         'sans-serif' !important;
     text-decoration: none;
     margin: 20px;
 }
 
-.m-control.m-container.m-contactlink>div.links>div.web>a:hover,
-.m-control.m-container.m-contactlink>div.links>div.social>a:hover,
-.m-control.m-container.m-contactlink>div.links>div.other>a:hover {
-    color: #71a7d3;
+.m-control.m-container.m-contactlink>div.links>div.web>div.web1,
+.m-control.m-container.m-contactlink>div.links>div.web>div.web2 {
+    text-align: center;
+    margin: auto;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.social>a {
+    color: #404040;
+    font-family: 'Muli',
+        'sans-serif' !important;
+    text-decoration: none;
+    margin: 10px;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.web,
+.m-control.m-container.m-contactlink>div.links>div.social,
+.m-control.m-container.m-contactlink>div.links>div.other {
+    justify-content: center;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.web>div.web1>a>img,
+.m-control.m-container.m-contactlink>div.links>div.web>div.web2>a>img {
+    filter: invert(74%) sepia(6%) saturate(3820%) hue-rotate(177deg) brightness(86%) contrast(90%);
+    width: 42px;
+    height: 42px;
+    border: 0;
+    /* margin-bottom: 20px; */
+}
+
+.m-control.m-container.m-contactlink>div.links>div.social>a>img {
+    filter: invert(74%) sepia(6%) saturate(3820%) hue-rotate(177deg) brightness(86%) contrast(90%);
+    width: 30px;
+    height: 30px;
+    border: 0;
 }
 
 .m-control.m-container.m-contactlink>div.links>div.web {
     border-bottom: 1px solid;
+    display: flex;
     border-color: #71a7d3;
 }
 
 .m-control.m-container.m-contactlink>div.links>div.social {
+    display: flex;
     margin-top: inherit;
 }
 

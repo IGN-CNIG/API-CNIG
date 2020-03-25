@@ -120,6 +120,14 @@ export default class ShareMap extends M.Plugin {
     this.title_ = options.title || 'Compartir URL';
 
     /**
+     * Title to share
+     *
+     * @private
+     * @type {string}
+     */
+    this.titleSocial_ = options.titleSocial || 'Compartir en tus redes sociales';
+
+    /**
      * Text of the button
      *
      * @private
@@ -171,6 +179,7 @@ export default class ShareMap extends M.Plugin {
     this.control = new ShareMapControl({
       baseUrl: this.baseUrl_,
       title: this.title_,
+      titleSocial: this.titleSocial_,
       btn: this.btn_,
       copyBtn: this.copyBtn_,
       primaryColor: this.styles_.primaryColor,

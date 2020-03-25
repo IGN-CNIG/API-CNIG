@@ -4,6 +4,7 @@
 
 import ContactLinkImplControl from 'impl/contactlinkcontrol';
 import template from 'templates/contactlink';
+import { getValue } from './i18n/language';
 
 export default class ContactLinkControl extends M.Control {
   /**
@@ -18,7 +19,7 @@ export default class ContactLinkControl extends M.Control {
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(ContactLinkImplControl)) {
-      M.exception('La implementación usada no puede crear controles ContactLinkControl');
+      M.exception(getValue('exceptions.impl'));
     }
     // 2. implementation of this control
     const impl = new ContactLinkImplControl();
@@ -90,7 +91,13 @@ export default class ContactLinkControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {
-          links: this.links
+          title: getValue('title'),
+          links: {
+            downloads: getValue('links.downloads'),
+            compare: getValue('links.compare'),
+            display: getValue('links.3d'),
+            photo: getValue('links.photo')
+          }
         }
       });
       // Añadir código dependiente del DOM
