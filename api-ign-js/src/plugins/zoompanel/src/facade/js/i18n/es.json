@@ -1,8 +1,8 @@
 {
-  "tooltip": "Búsqueda por geometría",
+  "tooltip": "Herramientas de zoom",
   "zoomin": "Aumentar zoom",
   "zoomout": "Disminuir zoom",
-  "previouszoom": "Zoom previo",
+  "previouszoom": "Zoom anterior",
   "nextzoom": "Zoom posterior",
-  "rectzoom": "Zoom rectangular"
+  "rectzoom": "Zoom ventana"
 }
