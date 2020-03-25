@@ -35,10 +35,12 @@ Permite dibujar geometrías y obtenerlas al terminar.
    });
   
    const mp = new M.plugin.ZoomPanel({
-        projection: 'EPSG:4326',
         position: 'TL',
-        collapsed: false,
         collapsible: true,
+        collapsed: true,
+        layerId: 0,
+        layerVisibility: true,
+        projection: 'EPSG:4326'
    });
 
    mp.on('finisihed:draw', (featureJSON) => {

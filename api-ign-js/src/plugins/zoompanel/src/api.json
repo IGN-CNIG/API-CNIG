@@ -1,10 +1,48 @@
 {
   "url": {
-    "name": "ZoomPanel",
+    "name": "zoompanel",
     "separator": "*"
   },
   "constructor": "M.plugin.ZoomPanel",
-  "parameters": [],
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+        "type": "simple",
+        "name": "position",
+        "position": 0,
+        "possibleValues": [
+          "TL",
+          "TR",
+          "BR",
+          "BL"
+        ]
+      },
+      {
+        "type": "simple",
+        "name": "collapsible",
+        "position": 1
+      },
+      {
+        "type": "simple",
+        "name": "collapsed",
+        "position": 2
+      },
+      {
+        "type": "number",
+        "name": "layerId",
+        "position": 3
+      },
+      {
+        "type": "boolean",
+        "name": "layerVisibility",
+        "position": 4
+      }, {
+        "type": "simple",
+        "name": "projection",
+        "position": 5
+      }
+    ]
+  }],
   "files": {
     "ol": {
       "scripts": ["zoompanel.ol.min.js"],
@@ -12,13 +50,13 @@
     }
   },
   "metadata": {
-    "name": "ZoomPanel",
-    "description": "Description of the plugin",
-    "text": "A full text about plugin",
+    "name": "zoompanel",
+    "description": "Zoom tools",
+    "text": "The user can select different zoom tools.",
     "version": "1.0.0",
-    "date": "",
-    "author": "",
-    "org": "",
+    "date": "3rd September 2019",
+    "author": "CNIG",
+    "org": "CNIG",
     "tags": "mapea,plugin",
     "icon": "./facade/assets/icons/icons.svg"
   }
