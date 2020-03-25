@@ -11,7 +11,7 @@ const pjson = require(PJSON_PATH);
 module.exports = {
   mode: 'production',
   entry: {
-    'selectiondraw.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    'zoompanel.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
