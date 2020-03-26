@@ -78,6 +78,8 @@ export default class ZoomPanelControl extends M.Control {
    */
   activate() {
     super.activate();
+    document.getElementById('zoomExtend').style.backgroundColor = '#71A7D3';
+    document.getElementById('zoomExtend').style.color = 'white';
     this.getImpl().activateClick(this.map_);
   }
   /**
@@ -89,6 +91,8 @@ export default class ZoomPanelControl extends M.Control {
    */
   deactivate() {
     super.deactivate();
+    document.getElementById('zoomExtend').style.backgroundColor = 'white';
+    document.getElementById('zoomExtend').style.color = '#7A7A73';
     this.getImpl().deactivateClick(this.map_);
   }
 
