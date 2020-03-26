@@ -13,8 +13,9 @@
 /* Title and images container */
 
 .m-control.m-container.m-zoompanel {
-    min-width: 220px;
+    min-width: 200px;
 }
+
 
 /* Título */
 
@@ -125,6 +126,7 @@ div[id^="m-zoompanel-lyr-"]:hover>span {
         top: 0;
     }
 
+
     .m-areas>div.m-area>div.m-panel.m-plugin-zoompanel.opened>div.m-panel-controls>div.m-control.m-container.m-zoompanel>div#m-zoompanel-titulo {
         font-size: 13px;
         padding-left: 0;
@@ -199,10 +201,9 @@ div[id^="m-zoompanel-lyr-"]:hover>span {
     background: none;
     border: none;
     cursor: pointer;
-    opacity: .55;
     -webkit-transition: opacity .25s ease 0s;
     transition: opacity .25s ease 0s;
-    color: #404040;
+    color: #7A7A73;
     margin: 0;
     outline: none !important;
 }
