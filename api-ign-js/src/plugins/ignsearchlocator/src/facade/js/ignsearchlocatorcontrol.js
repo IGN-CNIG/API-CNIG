@@ -151,6 +151,14 @@ export default class IGNSearchLocatorControl extends M.Control {
      */
     this.geocoderCoords = geocoderCoords;
     registerHelpers();
+
+
+    /**
+     * Checks if point drawing tool is active.
+     * @private
+     * @type {Boolean}
+     */
+    this.isXYLocatorActive = false;
   }
   /**
    * This function creates the view
@@ -741,8 +749,11 @@ export default class IGNSearchLocatorControl extends M.Control {
   openXYLocator() {
     if (this.resultsBox.innerHTML.indexOf('coordinatesSystem') > -1) {
       this.clearResults();
+      this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     } else {
       this.clearResults();
+      this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
+
       const compiledXYLocator = M.template.compileSync(xylocator, {
         vars: {
           translations: {
@@ -765,6 +776,23 @@ export default class IGNSearchLocatorControl extends M.Control {
       compiledXYLocator.querySelector('select#m-xylocator-srs').addEventListener('change', evt => this.manageInputs_(evt));
       compiledXYLocator.querySelector('button#m-xylocator-loc').addEventListener('click', evt => this.calculate_(evt));
       this.resultsBox.appendChild(compiledXYLocator);
+    }
+  }
+
+  /**
+   * Hides/shows tools menu and de/activates drawing.
+   * @public
+   * @function
+   * @api
+   * @param {Boolean} clickedGeometry - i.e.isPointActive
+   * @param {String} drawingDiv - i.e.pointdrawing
+   */
+  activationManager(clickedGeometry, drawingDiv) {
+    // if drawing is active
+    if (clickedGeometry) {
+      document.getElementById(drawingDiv).style.backgroundColor = '#71a7d3';
+    } else {
+      document.getElementById(drawingDiv).style.backgroundColor = 'white';
     }
   }
 
