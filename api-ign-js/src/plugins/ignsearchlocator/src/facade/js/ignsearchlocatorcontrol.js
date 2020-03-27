@@ -5,6 +5,7 @@ import IGNSearchLocatorImplControl from '../../impl/ol/js/ignsearchlocatorcontro
 import template from '../../templates/ignsearchlocator';
 import results from '../../templates/results';
 import xylocator from '../../templates/xylocator';
+import parcela from '../../templates/parcela';
 import registerHelpers from './helpers';
 import geographicNameType from './constants';
 import { getValue } from './i18n/language';
@@ -24,6 +25,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   constructor(
     servicesToSearch = 'gn',
+    CMC_url = null,
+    DNPPP_url = null,
     maxResults = 10,
     noProcess = 'municipio,poblacion',
     countryCode = 'es',
@@ -53,6 +56,50 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {string} - 'g' | 'n' | 'gn'
      */
     this.servicesToSearch = servicesToSearch;
+
+    /**
+     * Url for "consulta de municipios para una provincia"
+     * @private
+     * @type {String}
+     */
+    // eslint-disable-next-line camelcase
+    this.ConsultaMunicipioCodigos_ = CMC_url;
+
+    /**
+     * Url for "consulta de datos no protegidos para un inmueble por su polígono parcela"
+     * @private
+     * @type {String}
+     */
+    // eslint-disable-next-line camelcase
+    this.DNPPP_url_ = DNPPP_url;
+
+    /**
+     * Select element for Provincias
+     * @private
+     * @type {HTMLElement}
+     */
+    this.selectProvincias = null;
+
+    /**
+     * Select element for Municipios
+     * @private
+     * @type {HTMLElement}
+     */
+    this.selectMunicipios = null;
+
+    /**
+     * Input element for Poligono
+     * @private
+     * @type {HTMLElement}
+     */
+    this.inputPoligono = null;
+
+    /**
+     * Input element for Parcela
+     * @private
+     * @type {HTMLElement}
+     */
+    this.inputParcela = null;
     /**
      * This variable sets the maximun results returned by a service
      * (if both services are searched the maximum results will be twice this number)
@@ -176,6 +223,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox = html.querySelector('#m-ignsearchlocator-results');
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
       html.querySelector('#m-ignsearchlocator-clear-button').addEventListener('click', this.clearResultsAndGeometry.bind(this));
+      html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
       html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
@@ -746,12 +794,175 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @function
    * @api
    */
+  openParcela() {
+    if ((this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela') > -1) && (this.resultsBox.innerHTML.indexOf('coordinatesSystem') > -1)) {
+      this.clearResults();
+      this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+    } else {
+      this.clearResults();
+      if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
+        this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+      }
+      this.activationManager(true, 'm-ignsearchlocator-parcela-button');
+
+      const compiledXYLocator = M.template.compileSync(parcela, {
+        vars: {
+          translations: {
+            titleparcela: getValue('titleparcela'),
+            province: getValue('province'),
+            municipality: getValue('municipality'),
+            selectmuni: getValue('selectmuni'),
+            estate: getValue('estate'),
+            plot: getValue('plot'),
+            search: getValue('search'),
+          },
+        },
+      });
+
+      /**
+       *crear provincias y rellenar municipios
+       */
+      this.selectProvincias = compiledXYLocator.querySelector('select#m-searchParamsProvincia-select');
+      this.selectProvincias.addEventListener('change', evt => this.onProvinciaSelect(evt));
+
+      this.selectMunicipios = compiledXYLocator.querySelector('#m-searchParamsMunicipio-select');
+      this.inputPoligono = compiledXYLocator.querySelector('#m-searchParamsPoligono-input');
+      this.inputParcela = compiledXYLocator.querySelector('#m-searchParamsParcela-input');
+
+      compiledXYLocator.querySelector('select#m-searchParamsProvincia-select').addEventListener('change', evt => this.manageInputs_(evt));
+      const buttonParamsSearch = compiledXYLocator.querySelector('button#m-searchParams-button');
+      buttonParamsSearch.addEventListener('click', e => this.onParamsSearch(e));
+      this.resultsBox.appendChild(compiledXYLocator);
+    }
+  }
+
+  /**
+   * Handler for search with params button
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  onParamsSearch(evt) {
+    evt.preventDefault();
+
+    if ((evt.type !== 'keyup') || (evt.keyCode === 13)) {
+      if (M.utils.isNullOrEmpty(this.selectProvincias.value) || this.selectProvincias.value === '0') {
+        M.dialog.info('Debe seleccionar una provincia.');
+        return;
+      }
+      if (M.utils.isNullOrEmpty(this.selectMunicipios.value) || this.selectMunicipios.value === '0') {
+        M.dialog.info('Debe seleccionar un municpio.');
+        return;
+      }
+      if (M.utils.isNullOrEmpty(this.inputPoligono.value)) {
+        M.dialog.info('Debe introducir un polígono.');
+        return;
+      }
+      if (M.utils.isNullOrEmpty(this.inputParcela.value)) {
+        M.dialog.info('Debe introducir una parcela.');
+        return;
+      }
+
+      const searchUrl = M.utils.addParameters(this.DNPPP_url_, {
+        CodigoProvincia: this.selectProvincias.value,
+        CodigoMunicipio: this.selectMunicipios.value,
+        CodigoMunicipioINE: '',
+        Poligono: this.inputPoligono.value,
+        Parcela: this.inputParcela.value,
+      });
+
+      this.search_(
+        searchUrl,
+        this.resultsParamsContainer_,
+        this.searchingParamsResult_,
+        this.showResults_,
+      );
+    }
+  }
+
+  /**
+   * Handler for selecting an option on Provincia select
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  onProvinciaSelect(e) {
+    const elt = e.target;
+    const provinceCode = elt.value;
+    if (provinceCode !== '0') {
+      M.remote.get(this.ConsultaMunicipioCodigos_, {
+        CodigoProvincia: provinceCode,
+        CodigoMunicipio: '',
+        CodigoMunicipioIne: '',
+      }).then((res) => {
+        this.loadMunicipiosSelect(res);
+      });
+    } else {
+      this.clearMunicipiosSelect();
+    }
+  }
+
+  /**
+   * Loads and renders options set to Municipios select
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  loadMunicipiosSelect(response) {
+    if ((response.code === 200) && (response.error === false)) {
+      const rootElement = response.xml.getElementsByTagName('consulta_municipiero')[0];
+      const rootMunicipios = rootElement.getElementsByTagName('municipiero')[0];
+      const muniNodes = rootMunicipios.getElementsByTagName('muni');
+      const select = this.element_.getElementsByTagName('select')['m-searchParamsMunicipio-select'];
+      this.clearMunicipiosSelect();
+      for (let i = 0; i < muniNodes.length; i += 1) {
+        const option = document.createElement('option');
+        const locat = muniNodes[i].getElementsByTagName('locat')[0];
+        option.value = locat.getElementsByTagName('cmc')[0].childNodes[0].nodeValue;
+        option.innerHTML = muniNodes[i].getElementsByTagName('nm')[0].childNodes[0].nodeValue;
+        select.appendChild(option);
+      }
+    } else {
+      M.dialog.error('MAPEA: No es posible establecer la conexión con el servidor de Catastro.');
+    }
+  }
+
+  /**
+   * Clears options set to Municipios select
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  clearMunicipiosSelect() {
+    const select = this.element_.getElementsByTagName('select')['m-searchParamsMunicipio-select'];
+    while (select.firstChild) {
+      select.removeChild(select.firstChild);
+    }
+    const option = document.createElement('option');
+    option.value = '0';
+    option.innerHTML = 'Seleccione un municipio';
+    select.appendChild(option);
+  }
+
+  /**
+   * This function opens xylocator functions
+   * @public
+   * @function
+   * @api
+   */
   openXYLocator() {
-    if (this.resultsBox.innerHTML.indexOf('coordinatesSystem') > -1) {
+    if ((this.resultsBox.innerHTML.indexOf('coordinatesSystem') > -1) && (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela') === -1)) {
       this.clearResults();
       this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     } else {
       this.clearResults();
+      if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
+        this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+      }
       this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
 
       const compiledXYLocator = M.template.compileSync(xylocator, {

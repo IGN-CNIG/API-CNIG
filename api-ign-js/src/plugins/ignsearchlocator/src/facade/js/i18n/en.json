@@ -6,6 +6,15 @@
   "geographic": "Geographic",
   "zone": "zone",
   "title": "Coordinate locator",
+  "titleparcela": "Search to industrial estate and plot",
+  "municipality": "Municipality",
+  "selectmuni": "Select a municipality",
+  "estate": "Industrial estate",
+  "plot": "Plot",
+  "search": "Search",
+
+
+  "province": "Province",
   "srs": "Coordinate system",
   "longitude": "Longitude",
   "latitude": "Latitude",

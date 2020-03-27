@@ -5,7 +5,10 @@ const map = M.map({
   controls: ['scale'],
 });
 
-const mp = new IGNSearchLocator({ position: 'TL' });
+const mp = new IGNSearchLocator({
+  CMC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos',
+  position: 'TL',
+});
 
 // map.removeControls('panzoom');
 

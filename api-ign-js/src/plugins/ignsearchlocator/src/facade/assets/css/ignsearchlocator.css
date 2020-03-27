@@ -39,8 +39,8 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
     width: 100%;
 }
 
-div.m-area.m-bottom > div > div #div-contenedor > #m-ignsearchlocator-results {
-  bottom: 40px;
+div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
+    bottom: 40px;
 }
 
 #m-ignsearchlocator-results::before {
@@ -55,7 +55,7 @@ div.m-area.m-bottom > div > div #div-contenedor > #m-ignsearchlocator-results {
 .m-areas>div.m-area>div.m-panel.ign-search-panel.opened {
     background-color: transparent !important;
     z-index: 2000;
-    box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2), 0 -1px 0 rgba(0, 0, 0, .02);
 }
 
 .m-ignsearchlocator .search-panel {
@@ -99,10 +99,11 @@ div.m-area.m-bottom > div > div #div-contenedor > #m-ignsearchlocator-results {
 
 #m-ignsearchlocator-clear-button,
 #m-ignsearchlocator-xylocator-button,
+#m-ignsearchlocator-parcela-button,
 #m-ignsearchlocator-locate-button {
     background-color: white;
     border: none;
-    margin-right: 1em;
+    width: 40px;
 }
 
 #m-ignsearchlocator-locate-button {
@@ -139,8 +140,7 @@ div.m-area.m-bottom > div > div #div-contenedor > #m-ignsearchlocator-results {
     display: none;
 }
 
-.m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button
-.m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
+.m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
 .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
     vertical-align: middle;
 }
@@ -184,8 +184,9 @@ div.m-area.m-bottom > div > div #div-contenedor > #m-ignsearchlocator-results {
 }
 
 #m-ignsearchlocator-xylocator-button,
+#m-ignsearchlocator-parcela-button,
 #m-ignsearchlocator-clear-button:focus {
-  outline: none;
+    outline: none;
 }
 
 /*********************
@@ -260,7 +261,7 @@ DROPDOWN ****************************/
 #div-contenedor.m-ignsearchlocator .dropdown {
     position: relative;
     display: inline-block;
-    width: 35%;
+    width: 40%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -321,7 +322,7 @@ DROPDOWN ****************************/
     cursor: pointer;
     display: block;
     font-family: Muli, sans-serif !important;
-    border-radius: 4px;
+    border-radius: 0px;
     border: 1px solid rgba(0, 0, 0, .4);
     font-size: 15px;
     -webkit-transition: opacity .25s ease 0s;
@@ -405,24 +406,47 @@ DROPDOWN ****************************/
 }
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms p {
-  font-weight: bold;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms > div {
-  display: flex;
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms>div {
+    display: flex;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms > div > div > input[type="number"] {
-  width: 3rem;
-  margin-right: 10px;
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms>div>div>input[type="number"] {
+    width: 3rem;
+    margin-right: 10px;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms > div > div > span {
-  font-size: 24px;
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms>div>div>span {
+    font-size: 24px;
 }
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms .m-xylocator-dms-radio {
-  line-height: 28px;
+    line-height: 28px;
+}
+
+/****************************
+ INTERNET EXPLORER HACKS
+****************************/
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+    div.search-panel>input.m-input-search {
+        width: 75% !important;
+    }
+
+    div.search-panel>input.m-input-search::-ms-clear {
+        display: none;
+    }
+
+    div#m-searching-result-searchRC,
+    div#m-searching-result-searchParams {
+        padding-left: 44%;
+    }
+
+    div.m-control.m-referencelocatorcatastro-container.shown {
+        display: block !important;
+    }
 }
