@@ -98,6 +98,10 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
     order: -9999999;
 }
 
+.m-areas>div.m-area>div.m-panel.collapsed>div.m-panel-controls {
+    display: none;
+}
+
 /* Firefox fix */
 
 @-moz-document url-prefix() {

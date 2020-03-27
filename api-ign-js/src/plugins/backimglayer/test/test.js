@@ -7,6 +7,8 @@ const map = M.map({
 });
 
 const mp = new BackImgLayer({
+  collapsed: true,
+  collapsible: true,
   position: 'TR',
   layerId: 0,
   layerVisibility: true,
