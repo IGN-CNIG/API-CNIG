@@ -97,6 +97,10 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
     order: 0;
 }
 
+.m-areas>div.m-area>div.m-panel.collapsed>div.m-panel-controls {
+    display: none;
+}
+
 /* Firefox fix */
 
 @-moz-document url-prefix() {
