@@ -587,15 +587,15 @@ export default class PrinterMapControl extends M.Control {
       printData.attributes.map.layers = encodedLayers;
       printData.attributes = Object.assign(printData.attributes, parameters);
 
-      if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';
       }
 
       if (!this.forceScale_) {
         printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
 
-        if (projection.code !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
-          printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection.code, 'EPSG:3857');
+        if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+          printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
         }
       } else if (this.forceScale_) {
         printData.attributes.map.center = [center.x, center.y];
