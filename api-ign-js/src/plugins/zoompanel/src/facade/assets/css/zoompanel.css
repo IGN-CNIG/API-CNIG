@@ -89,7 +89,11 @@ div[id^="m-zoompanel-lyr-"]:hover>span {
 }
 
 .m-bottom.m-right .m-control.m-container.m-zoompanel {
-    padding-right: 40px;
+    padding-right: 200px;
+}
+
+.m-bottom.m-left .m-control.m-container.m-zoompanel {
+    padding-left: 200px;
 }
 
 .m-areas>div.m-area>div.m-panel.opened.m-plugin-zoompanel {
