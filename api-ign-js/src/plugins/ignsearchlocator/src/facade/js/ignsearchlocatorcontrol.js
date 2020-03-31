@@ -872,13 +872,97 @@ export default class IGNSearchLocatorControl extends M.Control {
         Parcela: this.inputParcela.value,
       });
 
-      this.search_(
-        searchUrl,
-        this.resultsParamsContainer_,
-        this.searchingParamsResult_,
-        this.showResults_,
-      );
+      M.remote.get(searchUrl).then((response) => {
+        const success = this.acceptOVCSW(response);
+        if (success) {
+          const docsRC = this.parseCPMRCResults(response.xml);
+          const xcen = docsRC.coords[0].xcen;
+          const ycen = docsRC.coords[0].ycen;
+          const srs = docsRC.coords[0].srs;
+
+          console.log(xcen);
+          console.log(ycen);
+          console.log(srs);
+        }
+      });
     }
+  }
+
+
+  /**
+   * Parses CPMRC results
+   *
+   * @private
+   * @function
+   */
+  parseCPMRCResults(xmlResults) {
+    const rootElement = xmlResults.getElementsByTagName('consulta_coordenadas')[0];
+    const coordenadasNode = rootElement.getElementsByTagName('coordenadas')[0];
+    const coordNode = coordenadasNode.getElementsByTagName('coord')[0];
+
+    const pcNode = coordNode.getElementsByTagName('pc')[0];
+    const pc1Node = pcNode.getElementsByTagName('pc1')[0].childNodes[0].nodeValue;
+    const pc2Node = pcNode.getElementsByTagName('pc2')[0].childNodes[0].nodeValue;
+
+    const geoNode = coordNode.getElementsByTagName('geo')[0];
+    const xcenNode = geoNode.getElementsByTagName('xcen')[0].childNodes[0].nodeValue;
+    const ycenNode = geoNode.getElementsByTagName('ycen')[0].childNodes[0].nodeValue;
+    const srsNode = geoNode.getElementsByTagName('srs')[0].childNodes[0].nodeValue;
+
+    const ldtNode = coordNode.getElementsByTagName('ldt')[0].childNodes[0].nodeValue;
+
+    return {
+      attributes: [{
+        key: 'Referencia Catastral',
+        value: pc1Node + pc2Node,
+      }, {
+        key: 'Descripción',
+        value: ldtNode,
+      }],
+      rcId: `rc_${pc1Node}${pc2Node}`,
+      coords: [{
+        xcen: xcenNode,
+        ycen: ycenNode,
+        srs: srsNode,
+      }],
+    };
+  }
+
+  /**
+   * Checks if response is valid
+   *
+   * @private
+   * @function
+   */
+  acceptOVCSW(response) {
+    let success = true;
+    try {
+      if ((response.code === 200) && (response.error === false)) {
+        const results = response.xml;
+        const rootElement = results.childNodes[0];
+        const controlNode = rootElement.getElementsByTagName('control')[0];
+        const errorCtlNode = controlNode.getElementsByTagName('cuerr')[0];
+        let cuerr = '0';
+        if (errorCtlNode !== undefined) {
+          cuerr = errorCtlNode.childNodes[0].nodeValue;
+        }
+        if (cuerr === '1') {
+          const errorNode = rootElement.getElementsByTagName('lerr')[0];
+          const errorDesc = errorNode.getElementsByTagName('err')[0];
+          const errorDescTxt = errorDesc.getElementsByTagName('des')[0].childNodes[0].nodeValue;
+          this.element_.classList.remove(this.SEARCHING_CLASS);
+          success = false;
+          M.dialog.info(errorDescTxt);
+        }
+      } else {
+        success = false;
+        M.dialog.error('MAPEA: No es posible establecer la conexión con el servidor de Catastro.');
+      }
+    } catch (err) {
+      success = false;
+      M.exception(`La respuesta no es un JSON válido: ${err}.`);
+    }
+    return success;
   }
 
   /**
