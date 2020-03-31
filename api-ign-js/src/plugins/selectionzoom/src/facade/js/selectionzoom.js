@@ -184,7 +184,9 @@ export default class SelectionZoom extends M.Plugin {
     let ids = '';
     let titles = '';
     let previews = '';
-    let layersUrl = '';
+    let bbox = '';
+    let zoom = '';
+
 
     this.layerOpts.forEach((l) => {
       const backLayerIndex = this.layerOpts.indexOf(l);
@@ -192,35 +194,18 @@ export default class SelectionZoom extends M.Plugin {
         ids += ',';
         titles += ',';
         previews += ',';
-        layersUrl += ',';
+        bbox += ',';
+        zoom += ',';
       }
 
       ids += l.id;
       titles += l.title;
       previews += l.preview;
-
-      l.layers.forEach((layer) => {
-        const isFirstLayer = l.layers.indexOf(layer) === 0;
-        const visible = layer.options.visibility === undefined ? true : layer.options.visibility;
-
-        if (!isFirstLayer) layersUrl += 'sumar';
-
-        layersUrl += `${layer.options.type}`;
-        layersUrl += `asterisco${layer.options.url}`;
-        layersUrl += `asterisco${layer.options.name}`;
-        layersUrl += `asterisco${layer.options.matrixSet}`;
-        layersUrl += `asterisco${layer.options.legend}`;
-
-        layersUrl += `asterisco${layer.options.transparent}`;
-
-        layersUrl += `asterisco${layer.options.format}`;
-        layersUrl += `asterisco${layer.options.displayInLayerSwitcher}`;
-        layersUrl += `asterisco${layer.options.queryable}`;
-        layersUrl += `asterisco${visible}`;
-      });
+      bbox += [bbox.x.min, bbox.x.max, bbox.y.min, bbox.y.max];
+      zoom += l.zoom;
     });
 
-    return `${ids}*${titles}*${previews}*${layersUrl}`;
+    return `${ids}*${titles}*${previews}*${bbox}*${zoom}`;
   }
 
   /**
