@@ -104,6 +104,24 @@
             center: [-467062.8225, 4683459.6216],
         });
 
+        let wmts = new M.layer.WMTS({
+            url: "http://www.ideandalucia.es/geowebcache/service/wmts",
+            name: "toporaster",
+            matrixSet: "EPSG:25830",
+            legend: "Toporaster"
+        }, {
+            format: 'image/png'
+        });
+        map.addWMTS(wmts);
+
+        const wms = new M.layer.WMS({
+            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeBoundary',
+            legend: 'Limite administrativo',
+            tiled: false,
+        }, {});
+        map.addWMS(wms);
+
         const layerinicial = new M.layer.WMS({
             url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',

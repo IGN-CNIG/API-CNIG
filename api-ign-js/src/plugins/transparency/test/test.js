@@ -3,6 +3,7 @@ import ShareMap from '../../sharemap/src/facade/js/sharemap';
 
 const map = M.map({
   container: 'mapjs',
+  controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
 });
 
 
@@ -58,7 +59,18 @@ const shareMap = new ShareMap({
   baseUrl: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/',
   position: 'BR',
 })
+
+
+const mp6 = new M.plugin.ZoomExtent();
+
+const mp7 = new M.plugin.XYLocator({
+  position: 'TL',
+});
+
 map.addPlugin(shareMap);
+map.addPlugin(mp6);
+
 
 map.addPlugin(pluginTransparency);
+map.addPlugin(mp7);
 window.map = map;

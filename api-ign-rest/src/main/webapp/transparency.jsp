@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
     <link href="plugins/transparency/transparency.ol.min.css" rel="stylesheet" />
+    <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
@@ -44,6 +45,7 @@
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
     <script type="text/javascript" src="plugins/transparency/transparency.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -87,11 +89,16 @@
             layers: ['toporaster', 'AU.AdministrativeBoundary']
         });
 
+        const mp20 = new M.plugin.XYLocator({
+            position: 'TL',
+        });
+
         const mp2 = new M.plugin.ShareMap({
             baseUrl: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/',
             position: 'BR',
         })
 
+        map.addPlugin(mp20);
         map.addPlugin(mp);
         map.addPlugin(mp2);
 
