@@ -42,18 +42,15 @@
         "name": "layerOpts",
         "properties": [{
             "type": "simple",
-            "name": "id",
-            "value": "peninsula"
+            "name": "id"
           },
           {
             "type": "simple",
-            "name": "preview",
-            "value": "../src/facade/assets/images/espana.png"
+            "name": "preview"
           },
           {
             "type": "simple",
-            "name": "title",
-            "value": "Peninsula"
+            "name": "title"
           },
           {
             "type": "object",
@@ -63,13 +60,11 @@
                 "name": "x",
                 "properties": [{
                     "type": "simple",
-                    "name": "min",
-                    "value": "-1200091.444315327"
+                    "name": "min"
                   },
                   {
                     "type": "simple",
-                    "name": "max",
-                    "value": "365338.89496508264"
+                    "name": "max"
                   }
                 ]
               },
@@ -78,13 +73,11 @@
                 "name": "y",
                 "properties": [{
                     "type": "simple",
-                    "name": "min",
-                    "value": "4348955.797933925"
+                    "name": "min"
                   },
                   {
                     "type": "simple",
-                    "name": "max",
-                    "value": "5441088.058072522"
+                    "name": "max"
                   }
                 ]
               }
@@ -92,8 +85,7 @@
           },
           {
             "type": "simple",
-            "name": "zoom",
-            "value": "7"
+            "name": "zoom"
           }
         ]
       }
