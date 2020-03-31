@@ -201,7 +201,7 @@ export default class SelectionZoom extends M.Plugin {
       ids += l.id;
       titles += l.title;
       previews += l.preview;
-      bbox += [bbox.x.min, bbox.x.max, bbox.y.min, bbox.y.max];
+      bbox += [l.bbox.x.min, l.bbox.x.max, l.bbox.y.min, l.bbox.y.max];
       zoom += l.zoom;
     });
 
