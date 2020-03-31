@@ -2,7 +2,7 @@ import GeometryDraw from 'facade/geometrydraw';
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['layerswitcher'],
+  // controls: ['layerswitcher'],
 });
 
 const mp = new GeometryDraw({
