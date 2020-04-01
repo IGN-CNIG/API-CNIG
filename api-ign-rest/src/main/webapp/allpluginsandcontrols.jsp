@@ -15,10 +15,15 @@
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
     <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
+    <link href="plugins/beautytoc/beautytoc.ol.min.css" rel="stylesheet" />
+    <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
+    <link href="plugins/fototecahelp/fototecahelp.ol.min.css" rel="stylesheet" />
     <link href="plugins/geometrydraw/geometrydraw.ol.min.css" rel="stylesheet" />
     <link href="plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
+    <link href="plugins/iberpixhelp/iberpixhelp.ol.min.css" rel="stylesheet" />
     <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
     <link href="plugins/ignsearchlocator/ignsearchlocator.ol.min.css" rel="stylesheet" />
+    <link href="plugins/infocatastro/infocatastro.ol.min.css" rel="stylesheet" />
     <link href="plugins/information/information.ol.min.css" rel="stylesheet" />
     <link href="plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
     <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
@@ -34,6 +39,7 @@
     <link href="plugins/viewhistory/viewhistory.ol.min.css" rel="stylesheet" />
     <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
+    <link href="plugins/zoompanel/zoompanel.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -65,9 +71,14 @@
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
     <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/beautytoc/beautytoc.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/fototecahelp/fototecahelp.ol.min.js"></script>
     <script type="text/javascript" src="plugins/geometrydraw/geometrydraw.ol.min.js"></script>
     <script type="text/javascript" src="plugins/georefimage/georefimage.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/iberpixhelp/iberpixhelp.ol.min.js"></script>
     <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/infocatastro/infocatastro.ol.min.js"></script>
     <script type="text/javascript" src="plugins/ignsearchlocator/ignsearchlocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/information/information.ol.min.js"></script>
     <script type="text/javascript" src="plugins/measurebar/measurebar.ol.min.js"></script>
@@ -84,6 +95,7 @@
     <script type="text/javascript" src="plugins/viewhistory/viewhistory.ol.min.js"></script>
     <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/zoompanel/zoompanel.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -228,6 +240,21 @@
             ],
         });
 
+        const mp22 = new M.plugin.BeautyTOC({
+            collapsed: true,
+            position: 'TR',
+        });
+
+        const mp23 = new M.plugin.ContactLink({
+            position: 'BR',
+        });
+
+        const mp24 = new M.plugin.FototecaHelp({
+            position: 'TR',
+            helpLink: 'http://fototeca.cnig.es/help_es.pdf',
+            contactEmail: 'fototeca@cnig.es',
+        });
+
         const mp3 = new M.plugin.GeometryDraw({
             collapsed: true,
             collapsible: true,
@@ -239,6 +266,12 @@
             collapsible: true,
             position: 'TR',
         });
+
+        const mp25 = new M.plugin.IberpixHelp({
+            position: 'TR',
+            helpLink: 'https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html',
+        });
+
 
         const mp5 = new M.plugin.IGNSearch({
             servicesToSearch: 'gn',
@@ -256,6 +289,11 @@
 
         const mp6 = new M.plugin.IGNSearchLocator({
             position: 'TL'
+        });
+
+        const mp26 = new M.plugin.InfoCatastro({
+            position: 'TR',
+            tooltip: 'Consultar Catastro',
         });
 
         const mp7 = new M.plugin.Information({
@@ -422,6 +460,15 @@
 
         const mp21 = new M.plugin.ZoomExtent();
 
+        const mp27 = new M.plugin.ZoomPanel({
+            position: 'TR',
+            collapsible: true,
+            collapsed: true,
+            layerId: 0,
+            layerVisibility: true,
+            projection: 'EPSG:4326'
+        });
+
 
         map.addPlugin(mp1);
         map.addPlugin(mp2);
@@ -444,6 +491,12 @@
         map.addPlugin(mp19);
         map.addPlugin(mp20);
         map.addPlugin(mp21);
+        map.addPlugin(mp22);
+        map.addPlugin(mp23);
+        map.addPlugin(mp24);
+        map.addPlugin(mp25);
+        map.addPlugin(mp26);
+        map.addPlugin(mp27);
     </script>
 </body>
 
