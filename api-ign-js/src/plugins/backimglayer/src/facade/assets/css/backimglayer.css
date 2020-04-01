@@ -17,6 +17,10 @@
     min-width: auto;
 }
 
+.m-areas>div.m-area>div.m-panel>button.m-panel-btn.g-cartografia-flecha-derecha {
+    color: #71a7d3 !important;
+}
+
 /* Título */
 
 div#m-backimglayer-titulo {
