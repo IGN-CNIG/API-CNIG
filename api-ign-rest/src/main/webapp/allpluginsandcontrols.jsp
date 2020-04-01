@@ -13,33 +13,35 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
+    <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
     <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
+    <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
+    <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
+    <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
+    <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
+    <link href="plugins/zoompanel/zoompanel.ol.min.css" rel="stylesheet" />
     <link href="plugins/beautytoc/beautytoc.ol.min.css" rel="stylesheet" />
     <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
     <link href="plugins/fototecahelp/fototecahelp.ol.min.css" rel="stylesheet" />
     <link href="plugins/geometrydraw/geometrydraw.ol.min.css" rel="stylesheet" />
     <link href="plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
     <link href="plugins/iberpixhelp/iberpixhelp.ol.min.css" rel="stylesheet" />
-    <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
     <link href="plugins/ignsearchlocator/ignsearchlocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/infocatastro/infocatastro.ol.min.css" rel="stylesheet" />
     <link href="plugins/information/information.ol.min.css" rel="stylesheet" />
     <link href="plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
-    <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
     <link href="plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
     <link href="plugins/predefinedzoom/predefinedzoom.ol.min.css" rel="stylesheet" />
     <link href="plugins/printermap/printermap.ol.min.css" rel="stylesheet" />
     <link href="plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
     <link href="plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
-    <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
-    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
-    <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
-    <link href="plugins/transparency/transparency.ol.min.css" rel="stylesheet" />
     <link href="plugins/viewhistory/viewhistory.ol.min.css" rel="stylesheet" />
-    <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
-    <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
-    <link href="plugins/zoompanel/zoompanel.ol.min.css" rel="stylesheet" />
+    <link href="plugins/transparency/transparency.ol.min.css" rel="stylesheet" />
+
+
     </link>
     <style type="text/css">
         html,
@@ -69,33 +71,33 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
+    <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
     <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/toc/toc.ol.min.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/selectionzoom/selectionzoom.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/zoompanel/zoompanel.ol.min.js"></script>
     <script type="text/javascript" src="plugins/beautytoc/beautytoc.ol.min.js"></script>
     <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
     <script type="text/javascript" src="plugins/fototecahelp/fototecahelp.ol.min.js"></script>
     <script type="text/javascript" src="plugins/geometrydraw/geometrydraw.ol.min.js"></script>
     <script type="text/javascript" src="plugins/georefimage/georefimage.ol.min.js"></script>
     <script type="text/javascript" src="plugins/iberpixhelp/iberpixhelp.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/infocatastro/infocatastro.ol.min.js"></script>
     <script type="text/javascript" src="plugins/ignsearchlocator/ignsearchlocator.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/infocatastro/infocatastro.ol.min.js"></script>
     <script type="text/javascript" src="plugins/information/information.ol.min.js"></script>
     <script type="text/javascript" src="plugins/measurebar/measurebar.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
     <script type="text/javascript" src="plugins/overviewmap/overviewmap.ol.min.js"></script>
     <script type="text/javascript" src="plugins/predefinedzoom/predefinedzoom.ol.min.js"></script>
     <script type="text/javascript" src="plugins/printermap/printermap.ol.min.js"></script>
     <script type="text/javascript" src="plugins/rescale/rescale.ol.min.js"></script>
     <script type="text/javascript" src="plugins/selectiondraw/selectiondraw.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/selectionzoom/selectionzoom.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/toc/toc.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/transparency/transparency.ol.min.js"></script>
     <script type="text/javascript" src="plugins/viewhistory/viewhistory.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/zoompanel/zoompanel.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/transparency/transparency.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -150,12 +152,45 @@
 
         map.addLayers([layerinicial, layerUA]);
 
-        const mp1 = new M.plugin.Attributions({
+        const mp = new M.plugin.IGNSearch({
+            servicesToSearch: 'gn',
+            maxResults: 10,
+            noProcess: 'poblacion',
+            countryCode: 'es',
+            isCollapsed: false,
+            position: 'TL',
+            reverse: true,
+
+            urlCandidates: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
+            urlFind: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
+            urlReverse: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',
+        });
+        const mp2 = new M.plugin.Attributions({
             mode: 1,
             scale: 10000,
         });
 
-        const mp2 = new M.plugin.BackImgLayer({
+        const mp3 = new M.plugin.ShareMap({
+            baseUrl: 'https://componentes.ign.es/api-core/',
+            position: 'BR',
+        });
+        const mp4 = new M.plugin.XYLocator({
+            position: 'TL',
+        });
+        const mp6 = new M.plugin.ZoomExtent();
+        const mp7 = new M.plugin.MouseSRS({
+            srs: 'EPSG:4326',
+            label: 'WGS84',
+            precision: 6,
+            geoDecimalDigits: 4,
+            utmDecimalDigits: 2,
+        });
+
+        const mp8 = new M.plugin.TOC({
+            collapsed: true,
+        });
+
+        const mp9 = new M.plugin.BackImgLayer({
             position: 'TR',
             collapsible: true,
             collapsed: true,
@@ -240,113 +275,7 @@
             ],
         });
 
-        const mp22 = new M.plugin.BeautyTOC({
-            collapsed: true,
-            position: 'TR',
-        });
-
-        const mp23 = new M.plugin.ContactLink({
-            position: 'BR',
-        });
-
-        const mp24 = new M.plugin.FototecaHelp({
-            position: 'TR',
-            helpLink: 'http://fototeca.cnig.es/help_es.pdf',
-            contactEmail: 'fototeca@cnig.es',
-        });
-
-        const mp3 = new M.plugin.GeometryDraw({
-            collapsed: true,
-            collapsible: true,
-            position: 'TR',
-        });
-
-        const mp4 = new M.plugin.Georefimage({
-            collapsed: true,
-            collapsible: true,
-            position: 'TR',
-        });
-
-        const mp25 = new M.plugin.IberpixHelp({
-            position: 'TR',
-            helpLink: 'https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html',
-        });
-
-
-        const mp5 = new M.plugin.IGNSearch({
-            servicesToSearch: 'gn',
-            maxResults: 10,
-            noProcess: 'poblacion',
-            countryCode: 'es',
-            isCollapsed: false,
-            position: 'TL',
-            reverse: true,
-
-            urlCandidates: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
-            urlFind: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
-            urlReverse: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',
-        });
-
-        const mp6 = new M.plugin.IGNSearchLocator({
-            position: 'TL'
-        });
-
-        const mp26 = new M.plugin.InfoCatastro({
-            position: 'TR',
-            tooltip: 'Consultar Catastro',
-        });
-
-        const mp7 = new M.plugin.Information({
-            position: 'TR',
-        });
-
-        const mp8 = new M.plugin.MeasureBar();
-
-        const mp9 = new M.plugin.MouseSRS({
-            srs: 'EPSG:4326',
-            label: 'WGS84',
-            precision: 6,
-            geoDecimalDigits: 4,
-            utmDecimalDigits: 2,
-        });
-
-        const mp10 = new M.plugin.OverviewMap({
-            position: 'BR',
-            fixed: true,
-            zoom: 4,
-            baseLayer: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true',
-
-        }, {
-            collapsed: false,
-            collapsible: true,
-
-        });
-
-        const mp11 = new M.plugin.PredefinedZoom({
-            position: 'TL',
-            savedZooms: [{
-                name: 'Zoom a la extensión del mapa',
-                bbox: [-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895],
-            }],
-        });
-
-        const mp12 = new M.plugin.PrinterMap({
-            collapsed: true,
-            collapsible: true,
-            position: 'TR',
-        });
-
-        const mp13 = new M.plugin.Rescale({
-            collapsible: true,
-            collapsed: true,
-            position: 'BL',
-        });
-
-        const mp14 = new M.plugin.SelectionDraw({
-            projection: 'EPSG:4326'
-        });
-
-        const mp15 = new M.plugin.SelectionZoom({
+        const mp10 = new M.plugin.SelectionZoom({
             position: 'TL',
             collapsible: true,
             collapsed: true,
@@ -435,33 +364,9 @@
             ],
         });
 
-        const mp16 = new M.plugin.ShareMap({
-            baseUrl: 'https://componentes.ign.es/api-core/',
-            position: 'BR',
-        });
 
-        const mp17 = new M.plugin.TOC({
-            collapsed: true,
-        });
-
-        const mp18 = new M.plugin.Transparency({
+        const mp11 = new M.plugin.ZoomPanel({
             position: 'TL',
-            layers: ['toporaster', 'AU.AdministrativeBoundary'],
-            collapsible: false
-        });
-
-        const mp19 = new M.plugin.ViewHistory({
-            position: 'TL',
-        });
-
-        const mp20 = new M.plugin.XYLocator({
-            position: 'TL',
-        });
-
-        const mp21 = new M.plugin.ZoomExtent();
-
-        const mp27 = new M.plugin.ZoomPanel({
-            position: 'BL',
             collapsible: true,
             collapsed: true,
             layerId: 0,
@@ -469,34 +374,126 @@
             projection: 'EPSG:4326'
         });
 
+        const mp22 = new M.plugin.BeautyTOC({
+            collapsed: true,
+            position: 'TR',
+        });
 
-        map.addPlugin(mp1);
+        const mp23 = new M.plugin.ContactLink({
+            position: 'BR',
+        });
+
+        const mp24 = new M.plugin.FototecaHelp({
+            position: 'TR',
+            helpLink: 'http://fototeca.cnig.es/help_es.pdf',
+            contactEmail: 'fototeca@cnig.es',
+        });
+
+        const mp25 = new M.plugin.GeometryDraw({
+            collapsed: true,
+            collapsible: true,
+            position: 'TR',
+        });
+
+        const mp26 = new M.plugin.Georefimage({
+            collapsed: true,
+            collapsible: true,
+            position: 'TR',
+        });
+
+        const mp27 = new M.plugin.IberpixHelp({
+            position: 'TR',
+            helpLink: 'https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html',
+        });
+
+        const mp28 = new M.plugin.IGNSearchLocator({
+            position: 'TL'
+        });
+
+        const mp29 = new M.plugin.InfoCatastro({
+            position: 'TR',
+            tooltip: 'Consultar Catastro',
+        });
+
+        const mp30 = new M.plugin.Information({
+            position: 'TR',
+        });
+
+        const mp31 = new M.plugin.MeasureBar();
+
+        const mp32 = new M.plugin.OverviewMap({
+            position: 'BR',
+            fixed: true,
+            zoom: 4,
+            baseLayer: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true',
+
+        }, {
+            collapsed: false,
+            collapsible: true,
+
+        });
+
+        const mp33 = new M.plugin.PredefinedZoom({
+            position: 'TL',
+            savedZooms: [{
+                name: 'Zoom a la extensión del mapa',
+                bbox: [-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895],
+            }],
+        });
+
+        const mp34 = new M.plugin.PrinterMap({
+            collapsed: true,
+            collapsible: true,
+            position: 'TR',
+        });
+
+        const mp35 = new M.plugin.Rescale({
+            collapsible: true,
+            collapsed: true,
+            position: 'BL',
+        });
+
+        const mp36 = new M.plugin.SelectionDraw({
+            projection: 'EPSG:4326'
+        });
+
+        const mp37 = new M.plugin.ViewHistory({
+            position: 'TL',
+        });
+
+        const mp38 = new M.plugin.Transparency({
+            position: 'TL',
+            layers: ['toporaster', 'AU.AdministrativeBoundary'],
+            collapsible: false
+        });
+
+        map.addPlugin(mp);
         map.addPlugin(mp2);
         map.addPlugin(mp3);
         map.addPlugin(mp4);
-        map.addPlugin(mp5);
         map.addPlugin(mp6);
         map.addPlugin(mp7);
         map.addPlugin(mp8);
         map.addPlugin(mp9);
         map.addPlugin(mp10);
         map.addPlugin(mp11);
-        map.addPlugin(mp12);
-        map.addPlugin(mp13);
-        map.addPlugin(mp14);
-        map.addPlugin(mp15);
-        map.addPlugin(mp16);
-        map.addPlugin(mp17);
-        map.addPlugin(mp18);
-        map.addPlugin(mp19);
-        map.addPlugin(mp20);
-        map.addPlugin(mp21);
         map.addPlugin(mp22);
         map.addPlugin(mp23);
         map.addPlugin(mp24);
         map.addPlugin(mp25);
         map.addPlugin(mp26);
         map.addPlugin(mp27);
+        map.addPlugin(mp28);
+        map.addPlugin(mp29);
+        map.addPlugin(mp30);
+        map.addPlugin(mp31);
+        map.addPlugin(mp32);
+        map.addPlugin(mp33);
+        map.addPlugin(mp34);
+        map.addPlugin(mp35);
+        map.addPlugin(mp36);
+        map.addPlugin(mp37);
+        map.addPlugin(mp38);
     </script>
 </body>
 
