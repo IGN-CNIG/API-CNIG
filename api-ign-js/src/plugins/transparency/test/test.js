@@ -1,6 +1,8 @@
 import Transparency from 'facade/transparency';
 import ShareMap from '../../sharemap/src/facade/js/sharemap';
 
+M.language.setLang('en');
+
 const map = M.map({
   container: 'mapjs',
   controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],

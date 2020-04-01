@@ -4,6 +4,7 @@
 import 'assets/css/transparency';
 import TransparencyControl from './transparencycontrol';
 import api from '../../api';
+import { getValue } from './i18n/language';
 // import { isArray } from '../../../../../facade/js/util/Utils';
 
 export default class Transparency extends M.Plugin {
@@ -96,6 +97,12 @@ export default class Transparency extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     *@private
+     *@type { string }
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -122,7 +129,7 @@ export default class Transparency extends M.Plugin {
       position: M.ui.position[this.position],
       className: this.className,
       collapsedButtonClass: 'icon-gps4',
-      tooltip: 'Transparencia',
+      tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

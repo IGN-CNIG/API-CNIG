@@ -5,6 +5,7 @@
 
 import TransparencyImplControl from 'impl/transparencycontrol';
 import template from 'templates/transparency';
+import { getValue } from './i18n/language';
 
 export default class TransparencyControl extends M.Control {
   /**
@@ -88,7 +89,17 @@ export default class TransparencyControl extends M.Control {
       });
       let options = '';
       if (names.length > 1) {
-        options = { jsonp: true, vars: { options: names } };
+        options = {
+          jsonp: true,
+          vars: {
+            options: names,
+            translations: {
+              transparency: getValue('transparency'),
+              radius: getValue('radius'),
+              layers: getValue('layers'),
+            }
+          }
+        };
       }
 
       this.template = M.template.compileSync(template, options);
