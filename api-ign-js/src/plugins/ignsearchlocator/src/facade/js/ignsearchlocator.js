@@ -58,6 +58,14 @@ export default class IGNSearchLocator extends M.Plugin {
     this.DNPPP_url = options.DNPPP_url != null ? options.DNPPP_url : defectDNPP;
 
     /**
+     * CPMRC_url
+     * @private
+     * @type {String}
+     */
+    const defectCPMRC = 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC';
+    this.CPMRC_url = options.CPMRC_url != null ? options.CPMRC_url : defectCPMRC;
+
+    /**
      * This variable sets the maximun results returned by a service
      * (if both services are searched the maximum results will be twice this number)
      * @private
@@ -204,6 +212,7 @@ export default class IGNSearchLocator extends M.Plugin {
       this.servicesToSearch,
       this.CMC_url,
       this.DNPPP_url,
+      this.CPMRC_url,
       this.maxResults,
       this.noProcess,
       this.countryCode,

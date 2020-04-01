@@ -27,6 +27,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     servicesToSearch = 'gn',
     CMC_url = null,
     DNPPP_url = null,
+    CPMRC_url = null,
     maxResults = 10,
     noProcess = 'municipio,poblacion',
     countryCode = 'es',
@@ -72,6 +73,14 @@ export default class IGNSearchLocatorControl extends M.Control {
      */
     // eslint-disable-next-line camelcase
     this.DNPPP_url_ = DNPPP_url;
+
+    /**
+     * Url for "consulta de coordenadas por Provincia, Municipio y Referencia Catastral"
+     * @private
+     * @type {String}
+     */
+    // eslint-disable-next-line camelcase
+    this.CPMRC_url_ = CPMRC_url;
 
     /**
      * Select element for Provincias
@@ -875,19 +884,39 @@ export default class IGNSearchLocatorControl extends M.Control {
       M.remote.get(searchUrl).then((response) => {
         const success = this.acceptOVCSW(response);
         if (success) {
-          const docsRC = this.parseCPMRCResults(response.xml);
-          const xcen = docsRC.coords[0].xcen;
-          const ycen = docsRC.coords[0].ycen;
-          const srs = docsRC.coords[0].srs;
-
-          console.log(xcen);
-          console.log(ycen);
-          console.log(srs);
+          this.parseParamsResultsForTemplate_(response.xml);
         }
       });
     }
   }
 
+  parseParamsResultsForTemplate_(response) {
+    const rootElement = response.getElementsByTagName('consulta_dnp')[0];
+    const bicoNode = rootElement.getElementsByTagName('bico')[0];
+    const biNode = bicoNode.getElementsByTagName('bi')[0];
+    const idbiNode = biNode.getElementsByTagName('idbi')[0];
+    const rcNode = idbiNode.getElementsByTagName('rc')[0];
+    const pc1Value = rcNode.getElementsByTagName('pc1')[0].childNodes[0].nodeValue;
+    const pc2Value = rcNode.getElementsByTagName('pc2')[0].childNodes[0].nodeValue;
+
+    const searchUrl = M.utils.addParameters(this.CPMRC_url_, {
+      Provincia: '',
+      Municipio: '',
+      SRS: this.map.getProjection().code,
+      RC: pc1Value + pc2Value,
+    });
+
+    return M.remote.get(searchUrl).then((res) => {
+      const success = this.acceptOVCSW(res);
+      if (success) {
+        const docsRC = this.parseCPMRCResults(res.xml);
+        const xcen = docsRC.coords[0].xcen;
+        const ycen = docsRC.coords[0].ycen;
+
+        this.locator_([xcen, ycen]);
+      }
+    });
+  }
 
   /**
    * Parses CPMRC results
@@ -928,6 +957,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     };
   }
 
+
   /**
    * Checks if response is valid
    *
@@ -938,8 +968,8 @@ export default class IGNSearchLocatorControl extends M.Control {
     let success = true;
     try {
       if ((response.code === 200) && (response.error === false)) {
-        const results = response.xml;
-        const rootElement = results.childNodes[0];
+        const results2 = response.xml;
+        const rootElement = results2.childNodes[0];
         const controlNode = rootElement.getElementsByTagName('control')[0];
         const errorCtlNode = controlNode.getElementsByTagName('cuerr')[0];
         let cuerr = '0';
