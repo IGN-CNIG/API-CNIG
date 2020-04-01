@@ -7,9 +7,6 @@
     color: white !important;
 }
 
-.m-control.activated>button {
-    color: rgb(255, 0, 0) !important;
-}
 
 /* .m-areas>div.m-area>div.m-panel.m-contactlink.collapsed>button.m-panel-btn {
     font-family: 'g-contactlink' !important;
