@@ -461,7 +461,7 @@
         const mp21 = new M.plugin.ZoomExtent();
 
         const mp27 = new M.plugin.ZoomPanel({
-            position: 'TR',
+            position: 'BL',
             collapsible: true,
             collapsed: true,
             layerId: 0,
