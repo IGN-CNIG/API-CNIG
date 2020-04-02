@@ -8,6 +8,11 @@
 }
 
 
+.m-areas>div.m-area>div.m-panel.m-plugin-contactlink.opened>button.m-panel-btn.g-cartografia-flecha-derecha {
+    color: white !important;
+}
+
+
 /* .m-areas>div.m-area>div.m-panel.m-contactlink.collapsed>button.m-panel-btn {
     font-family: 'g-contactlink' !important;
 } */

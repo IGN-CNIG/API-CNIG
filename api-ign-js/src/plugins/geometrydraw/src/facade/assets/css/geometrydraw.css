@@ -23,6 +23,9 @@ div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
     display: inline-block;
 }
 
+.m-areas>div.m-area>div.m-panel.m-geometrydraw.opened>button.m-panel-btn.g-cartografia-flecha-derecha {
+    color: white !important;
+}
 
 /* style fix for left positions */
 .m-areas>.m-left>.m-panel.m-geometrydraw.opened>.m-panel-controls {

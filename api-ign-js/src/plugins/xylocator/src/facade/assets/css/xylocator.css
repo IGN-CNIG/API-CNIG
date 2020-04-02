@@ -23,6 +23,10 @@ div.m-areas>div.m-area.m-right>div.m-panel.m-xylocator>button.m-panel-btn {
     left: -40px;
 }
 
+.m-panel.m-xylocator.left.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
+    background-color: white;
+}
+
 #m-xylocator-limpiar {
     float: right;
     margin-right: '1rem';

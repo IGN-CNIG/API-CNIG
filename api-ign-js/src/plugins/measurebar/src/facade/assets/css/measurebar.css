@@ -39,6 +39,10 @@
     line-break: auto;
 }
 
+.m-areas>div.m-area>div.m-panel.m-panel-measurebar.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
+    color: white !important;
+}
+
 /* .m-measure-tooltip.pointer */
 .m-measure-tooltip.measure {
     position: relative;

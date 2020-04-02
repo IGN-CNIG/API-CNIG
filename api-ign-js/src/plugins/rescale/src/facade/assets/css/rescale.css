@@ -18,6 +18,10 @@ div.m-areas>div.m-area.m-bottom>div.m-panel.m-rescale-panel>div.m-panel-controls
     width: 230px;
 }
 
+.m-areas>div.m-area>div.m-panel.m-rescale-panel.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
+    color: white !important;
+}
+
 
 div.m-areas>div.m-area>div.m-panel.m-rescale-panel.opened>button.m-panel-btn {
     background-color: #71a7d3 !important;
