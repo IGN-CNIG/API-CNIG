@@ -1,5 +1,7 @@
 import GeometryDraw from 'facade/geometrydraw';
 
+M.language.setLang('en');
+
 const map = M.map({
   container: 'mapjs',
   // controls: ['layerswitcher'],

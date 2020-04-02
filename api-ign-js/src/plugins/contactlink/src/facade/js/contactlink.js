@@ -5,6 +5,8 @@ import 'assets/css/contactlink';
 import 'assets/css/fonts';
 import ContactLinkControl from './contactlinkcontrol';
 import api from '../../api';
+import { getValue } from './i18n/language';
+
 
 export default class ContactLink extends M.Plugin {
   /**
@@ -63,6 +65,14 @@ export default class ContactLink extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -88,7 +98,7 @@ export default class ContactLink extends M.Plugin {
       position: M.ui.position[this.position],
       className: this.className,
       collapsedButtonClass: 'g-contactlink-link',
-      tooltip: 'Enlaces y contacto',
+      tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

@@ -4,6 +4,8 @@
 
 import FototecaHelpImplControl from 'impl/fototecahelpcontrol';
 import template from 'templates/fototecahelp';
+import { getValue } from './i18n/language';
+
 
 export default class FototecaHelpControl extends M.Control {
   /**
@@ -51,6 +53,28 @@ export default class FototecaHelpControl extends M.Control {
         vars: {
           helpLink: this.helpLink_,
           contactEmail: this.contactEmail_,
+          translations: {
+            ayuda: getValue('ayuda'),
+            consulta: getValue('consulta'),
+            horario: getValue('horario'),
+            aqui: getValue('aqui'),
+            contacto: getValue('contacto'),
+            condiciones: getValue('condiciones'),
+            localizacion: getValue('localizacion'),
+            atencion: getValue('atencion'),
+            personalizada: getValue('personalizada'),
+            correo: getValue('correo'),
+            telefono: getValue('telefono'),
+            la: getValue('la'),
+            fototeca: getValue('fototeca'),
+            centro: getValue('centro'),
+            solo: getValue('solo'),
+            certificaciones: getValue('certificaciones'),
+            cuyos: getValue('cuyos'),
+            fotos: getValue('fotos'),
+            vuelo: getValue('vuelo'),
+            disponibles: getValue('disponibles'),
+          },
         },
       });
       success(html);

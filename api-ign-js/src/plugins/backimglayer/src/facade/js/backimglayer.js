@@ -118,6 +118,7 @@ export default class BackImgLayer extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
     /**
      * @private
      * @type {string}

@@ -1,0 +1,10 @@
+{
+  "exception": {
+    "cobertura": "Checking coverage in the area...",
+    "nocobertura": "This layer has no coverage in this area"
+  },
+  "tooltip": "Layers",
+  "layers": "Layers",
+  "vectoriallayers": "Vectorial layers",
+  "ortofotos": "Orthophotos"
+}

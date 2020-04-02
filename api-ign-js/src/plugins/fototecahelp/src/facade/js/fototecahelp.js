@@ -4,6 +4,7 @@
 import 'assets/css/fototecahelp';
 import FototecaHelpControl from './fototecahelpcontrol';
 import api from '../../api';
+import { getValue } from './i18n/language';
 
 export default class FototecaHelp extends M.Plugin {
   /**
@@ -66,6 +67,14 @@ export default class FototecaHelp extends M.Plugin {
      * @type {String}
      */
     this.name = 'fototecahelp';
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -85,7 +94,7 @@ export default class FototecaHelp extends M.Plugin {
       collapsedButtonClass: 'icon-help',
       collapsible: true,
       position: M.ui.position[this.position_],
-      tooltip: 'Más información',
+      tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

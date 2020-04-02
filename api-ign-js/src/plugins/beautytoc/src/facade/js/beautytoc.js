@@ -5,6 +5,7 @@ import '../assets/css/beautytoc';
 import '../assets/css/fonts';
 import api from '../../api';
 import BeautyTOCControl from './beautytoccontrol';
+import { getValue } from './i18n/language';
 
 export default class BeautyTOC extends M.Plugin {
   /**
@@ -49,6 +50,14 @@ export default class BeautyTOC extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -67,7 +76,7 @@ export default class BeautyTOC extends M.Plugin {
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'icon-capas2',
       className: 'm-plugin-beautytoc',
-      tooltip: 'Capas',
+      tooltip: this.tooltip_,
       collapsed: this.collapsed_,
     });
     this.panel_.addControls([this.control]);
