@@ -1,5 +1,8 @@
 import IGNSearchLocator from 'facade/ignsearchlocator';
 
+M.language.setLang('en');
+
+
 const map = M.map({
   container: 'mapjs',
   controls: ['scale'],

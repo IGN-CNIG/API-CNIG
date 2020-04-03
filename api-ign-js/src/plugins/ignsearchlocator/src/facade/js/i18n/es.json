@@ -1,7 +1,10 @@
 {
   "exception": {
     "wrong_coords": "Las coordenadas introducidas no son correctas.",
-    "transforming": "Error realizando la transformación."
+    "transforming": "Error realizando la transformación.",
+    "mapeaerror": "MAPEA: No es posible establecer la conexión con el servidor de Catastro.",
+    "noresults": "No se encuentran resultados para esta petición.",
+    "noubi": "No existe dirección asociada para esta ubicación."
   },
   "geographic": "Geograficas",
   "zone": "huso",
@@ -10,6 +13,7 @@
   "province": "Provincia",
   "municipality": "Municipio",
   "selectmuni": "Seleccione un municipio",
+  "selectprov": "Seleccione una provincia",
   "estate": "Polígono",
   "plot": "Parcela",
   "search": "Buscar",
@@ -24,5 +28,18 @@
   "east": "Este",
   "west": "Oeste",
   "dms": "GMS",
-  "dd": "GD"
+  "dd": "GD",
+
+  "direccion": "Dirección, topónimo o Ref. catastral (14 dig.)",
+  "obtener": "Obtener dirección en un punto del mapa",
+  "buscparcela": "Buscar por parcela",
+  "busccoord": "Buscar por coordenadas",
+  "borrarresult": "Borrar resultados de la búsqueda",
+  "exact": "Dirección exacta",
+  "aprox": "Dirección aproximada",
+
+  "debeprov": "Debe seleccionar una provincia.",
+  "debemuni": "Debe seleccionar un municipio.",
+  "debepoli": "Debe seleccionar un polígono.",
+  "debeparce": "Debe seleccionar una parcela."
 }

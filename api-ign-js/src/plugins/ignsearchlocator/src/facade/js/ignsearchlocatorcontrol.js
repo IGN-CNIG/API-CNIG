@@ -227,7 +227,17 @@ export default class IGNSearchLocatorControl extends M.Control {
   createView(map) {
     this.map = map;
     return new Promise((success) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            direccion: getValue('direccion'),
+            obtener: getValue('obtener'),
+            buscparcela: getValue('buscparcela'),
+            busccoord: getValue('busccoord'),
+            borrarresult: getValue('borrarresult'),
+          },
+        },
+      });
       this.html = html;
       this.resultsBox = html.querySelector('#m-ignsearchlocator-results');
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
@@ -360,7 +370,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           const returnData = JSON.parse(res.text);
           fullAddress = this.createFullAddress(returnData);
         } else {
-          fullAddress = 'No existe dirección asociada para esta ubicación.';
+          fullAddress = getValue('exception.noubi');
         }
         this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e);
       });
@@ -449,7 +459,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           this.resultsBox.appendChild(compiledResult);
           // Service doesn't find results
           if (this.allCandidates.length === 0) {
-            const infoMsg = document.createTextNode('No se encuentran resultados para esta petición.');
+            const infoMsg = document.createTextNode(getValue('exception.noresults'));
             this.resultsBox.appendChild(infoMsg);
           }
         });
@@ -821,6 +831,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             province: getValue('province'),
             municipality: getValue('municipality'),
             selectmuni: getValue('selectmuni'),
+            selectprov: getValue('selectprov'),
             estate: getValue('estate'),
             plot: getValue('plot'),
             search: getValue('search'),
@@ -857,19 +868,19 @@ export default class IGNSearchLocatorControl extends M.Control {
 
     if ((evt.type !== 'keyup') || (evt.keyCode === 13)) {
       if (M.utils.isNullOrEmpty(this.selectProvincias.value) || this.selectProvincias.value === '0') {
-        M.dialog.info('Debe seleccionar una provincia.');
+        M.dialog.info(getValue('debeprov'));
         return;
       }
       if (M.utils.isNullOrEmpty(this.selectMunicipios.value) || this.selectMunicipios.value === '0') {
-        M.dialog.info('Debe seleccionar un municpio.');
+        M.dialog.info(getValue('debemuni'));
         return;
       }
       if (M.utils.isNullOrEmpty(this.inputPoligono.value)) {
-        M.dialog.info('Debe introducir un polígono.');
+        M.dialog.info(getValue('debepoli'));
         return;
       }
       if (M.utils.isNullOrEmpty(this.inputParcela.value)) {
-        M.dialog.info('Debe introducir una parcela.');
+        M.dialog.info(getValue('debeparce'));
         return;
       }
 
@@ -986,7 +997,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         }
       } else {
         success = false;
-        M.dialog.error('MAPEA: No es posible establecer la conexión con el servidor de Catastro.');
+        M.dialog.error(getValue('exception.mapeaerror'));
       }
     } catch (err) {
       success = false;
@@ -1040,7 +1051,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         select.appendChild(option);
       }
     } else {
-      M.dialog.error('MAPEA: No es posible establecer la conexión con el servidor de Catastro.');
+      M.dialog.error(getValue('exception.mapeaerror'));
     }
   }
 
@@ -1058,7 +1069,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
     const option = document.createElement('option');
     option.value = '0';
-    option.innerHTML = 'Seleccione un municipio';
+    option.innerHTML = getValue('selectmuni');
     select.appendChild(option);
   }
 
@@ -1294,7 +1305,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   changePlaceholder() {
     if (this.servicesToSearch === 'g') {
-      this.searchInput.placeholder = 'Dirección o Ref. catastral (14 díg.) ';
+      this.searchInput.placeholder = getValue('direccion');
     } else if (this.servicesToSearch === 'n') {
       this.searchInput.placeholder = 'Topónimo';
     }
@@ -1344,9 +1355,9 @@ export default class IGNSearchLocatorControl extends M.Control {
       .reproject([coordinates[1], coordinates[0]], destinySource, destinyProj);
     let exitState;
     if (exactResult !== 1) {
-      exitState = 'Dirección aproximada';
+      exitState = getValue('aprox');
     } else {
-      exitState = 'Dirección exacta';
+      exitState = getValue('exact');
     }
     this.showPopUp(fullAddress, newCoordinates, coordinates, exitState, false, e);
   }

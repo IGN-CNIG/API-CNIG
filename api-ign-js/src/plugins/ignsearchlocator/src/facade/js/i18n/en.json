@@ -1,7 +1,10 @@
 {
   "exception": {
     "wrong_coords": "The coordinates entered are not correct.",
-    "transforming": "Error performing the transformation."
+    "transforming": "Error performing the transformation.",
+    "mapeaerror": "MAPEA: It is not possible to establish a connection with the Cadastre server.",
+    "noresults": "No results found for this request.",
+    "noubi": "There is no associated address for this location."
   },
   "geographic": "Geographic",
   "zone": "zone",
@@ -9,6 +12,7 @@
   "titleparcela": "Search to industrial estate and plot",
   "municipality": "Municipality",
   "selectmuni": "Select a municipality",
+  "selectprov": "Select a province",
   "estate": "Industrial estate",
   "plot": "Plot",
   "search": "Search",
@@ -24,5 +28,18 @@
   "east": "East",
   "west": "West",
   "dms": "DMS",
-  "dd": "DD"
+  "dd": "DD",
+
+  "direccion": "Address, place name or cadastral Ref (14 dig.)",
+  "obtener": "Get direction at a point on the map",
+  "buscparcela": "Search plot",
+  "busccoord": "Search coordinates",
+  "borrarresult": "Delete results",
+  "exact": "Exact address",
+  "aprox": "Approximate address",
+
+  "debeprov": "You must select a province.",
+  "debemuni": "You must select a municipality.",
+  "debepoli": "You must select an industrial estate.",
+  "debeparce": "You must select a plot."
 }
