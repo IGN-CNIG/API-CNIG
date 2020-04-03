@@ -4,6 +4,8 @@
 import 'assets/css/iberpixhelp';
 import IberpixHelpControl from './iberpixhelpcontrol';
 import api from '../../api';
+import { getValue } from './i18n/language';
+
 
 export default class IberpixHelp extends M.Plugin {
   /**
@@ -59,6 +61,14 @@ export default class IberpixHelp extends M.Plugin {
      * @type {String}
      */
     this.name = 'iberpixhelp';
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -78,7 +88,7 @@ export default class IberpixHelp extends M.Plugin {
       collapsedButtonClass: 'icon-help',
       collapsible: true,
       position: M.ui.position[this.position_],
-      tooltip: 'Más información',
+      tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
