@@ -70,7 +70,8 @@ export default class IberpixHelp extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new IberpixHelpControl(this.helpLink_));
+    this.control_ = new IberpixHelpControl(this.helpLink_);
+    this.controls_.push(this.control_);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelIberpixHelp', {
       className: 'm-panel-iberpixhelp',

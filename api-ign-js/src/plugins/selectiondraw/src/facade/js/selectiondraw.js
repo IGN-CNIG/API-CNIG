@@ -94,4 +94,18 @@ export default class SelectionDraw extends M.Plugin {
       this.fire('finished:draw', [geometry]);
     });
   }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    this.map_ = null;
+    this.control_ = null;
+    this.panel_ = null;
+  }
 }

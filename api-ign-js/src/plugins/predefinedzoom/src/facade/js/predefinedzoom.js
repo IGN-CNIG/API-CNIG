@@ -85,7 +85,8 @@ export default class PredefinedZoom extends M.Plugin {
    */
   addTo(map) {
     const zooms = this.savedZooms === undefined ? this.turnUrlIntoZooms() : this.savedZooms;
-    this.controls_.push(new PredefinedZoomControl(zooms));
+    this.control_ = new PredefinedZoomControl(zooms);
+    this.controls_.push(this.control_);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelPredefinedZoom', {
       collapsible: false,
@@ -94,6 +95,18 @@ export default class PredefinedZoom extends M.Plugin {
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    [this.map_, this.control_, this.panel_] = [null, null, null];
   }
 
   /**
@@ -170,17 +183,5 @@ export default class PredefinedZoom extends M.Plugin {
    */
   getMetadata() {
     return this.metadata_;
-  }
-
-  /**
-   * This function destroys this plugin
-   *
-   * @public
-   * @function
-   * @api
-   */
-  destroy() {
-    this.map_.removeControls([this.control_]);
-    [this.map_, this.control_, this.panel_] = [null, null, null];
   }
 }

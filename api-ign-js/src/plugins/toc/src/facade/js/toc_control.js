@@ -39,9 +39,9 @@ export default class TOCControl extends M.Control {
       const html = M.template.compileSync(template, {
         vars: templateVars,
       });
-      this.panel_ = html;
+      this.panelHTML_ = html;
       success(html);
-      listenAll(this.panel_, 'li', 'click', e => this.toogleVisible(e));
+      listenAll(this.panelHTML_, 'li', 'click', e => this.toogleVisible(e));
     });
   }
 
@@ -78,8 +78,8 @@ export default class TOCControl extends M.Control {
     const html = M.template.compileSync(template, {
       vars: templateVars,
     });
-    this.panel_.innerHTML = html.innerHTML;
-    listenAll(this.panel_, 'li', 'click', e => this.toogleVisible(e));
+    this.panelHTML_.innerHTML = html.innerHTML;
+    listenAll(this.panelHTML_, 'li', 'click', e => this.toogleVisible(e));
   }
 
   /**

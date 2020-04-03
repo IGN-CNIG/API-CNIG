@@ -10,5 +10,6 @@ const mp = new IberpixHelp({
 });
 
 // map.removeControls('panzoom');
+window.map = map;
 
 map.addPlugin(mp);

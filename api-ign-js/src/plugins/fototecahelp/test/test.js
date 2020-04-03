@@ -12,4 +12,5 @@ const mp = new FototecaHelp({
 
 // map.removeControls('panzoom');
 
+window.map = map;
 map.addPlugin(mp);

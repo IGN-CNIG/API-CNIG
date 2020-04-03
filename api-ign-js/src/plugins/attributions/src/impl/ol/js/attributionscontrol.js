@@ -21,4 +21,18 @@ export default class AttributionsControl extends M.impl.Control {
     // super addTo - don't delete
     super.addTo(map, html);
   }
+
+  /**
+   * This function destroys this control, cleaning the HTML
+   * and unregistering all events
+   *
+   * @public
+   * @function
+   * @api
+   * @export
+   */
+  destroy() {
+    this.facadeMap_.getMapImpl().removeControl(this);
+    this.facadeMap_ = null;
+  }
 }
