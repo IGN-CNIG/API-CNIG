@@ -61,4 +61,8 @@ export default class AttributionsControl extends M.Control {
   equals(control) {
     return control instanceof AttributionsControl;
   }
+
+  destroy() {
+    this.getImpl().destroy();
+  }
 }

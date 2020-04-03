@@ -18,13 +18,14 @@ Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como 
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **collapsed**. Indica si el plugin viene cerrado por defecto (true/false).
-- **collapsible**. Indica si el plugin se puede cerrar (true/false).
 - **position**. Indica la posición donde se mostrará el plugin
   - 'TL':top left (default)
   - 'TR':top right 
   - 'BL':bottom left 
   - 'BR':bottom right
+- **collapsed**. Indica si el plugin viene cerrado por defecto (true/false).
+- **collapsible**. Indica si el plugin se puede cerrar (true/false).
+
 
 # Parámetros API REST
 ```javascript
@@ -54,9 +55,10 @@ const map = M.map({
 });
 
 const mp = new GeometryDraw({
+  position: 'TL',
   collapsed: true,
   collapsible: true,
-  position: 'TL',
+  
 });
 
 map.addPlugin(mp);

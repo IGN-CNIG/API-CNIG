@@ -49,4 +49,8 @@ export default class MouseSRSControl extends M.Control {
   equals(control) {
     return control instanceof MouseSRSControl;
   }
+
+  destroy() {
+    this.getImpl().destroy();
+  }
 }

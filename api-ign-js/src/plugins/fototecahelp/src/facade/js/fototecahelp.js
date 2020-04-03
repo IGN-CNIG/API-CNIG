@@ -86,7 +86,8 @@ export default class FototecaHelp extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new FototecaHelpControl(this.helpLink_, this.contactEmail_));
+    this.control_ = new FototecaHelpControl(this.helpLink_, this.contactEmail_);
+    this.controls_.push(this.control_);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelFototecaHelp', {
       className: 'm-panel-fototecahelp',
@@ -105,6 +106,18 @@ export default class FototecaHelp extends M.Plugin {
         }
       });
     });
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    [this.map_, this.control_, this.panel_] = [null, null, null];
   }
 
   /**
@@ -127,18 +140,5 @@ export default class FototecaHelp extends M.Plugin {
    */
   getMetadata() {
     return this.metadata_;
-  }
-
-
-  /**
-   * This function destroys this plugin
-   *
-   * @public
-   * @function
-   * @api
-   */
-  destroy() {
-    this.map_.removeControls([this.control_]);
-    [this.map_, this.control_, this.panel_] = [null, null, null];
   }
 }

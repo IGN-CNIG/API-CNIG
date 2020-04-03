@@ -80,6 +80,18 @@ export default class TOC extends M.Plugin {
   }
 
   /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls(this.control);
+    [this.map_, this.control, this.panel_] = [null, null, null];
+  }
+
+  /**
    * This function returns the position
    *
    * @public

@@ -164,7 +164,7 @@ export default class BeautyTOC extends M.Plugin {
    * @api
    */
   destroy() {
-    this.map_.removeControls(this.controls_);
-    [this.map_, this.controls_, this.panel_] = [null, null, null];
+    this.map_.removeControls(this.control);
+    [this.map_, this.control, this.panel_] = [null, null, null];
   }
 }

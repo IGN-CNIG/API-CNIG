@@ -85,7 +85,8 @@ export default class Rescale extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new RescaleControl());
+    this.control_ = new RescaleControl();
+    this.controls_.push(this.control_);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelRescale', {
       className: 'm-rescale-panel',

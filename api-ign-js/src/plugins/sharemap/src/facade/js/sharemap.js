@@ -213,6 +213,17 @@ export default class ShareMap extends M.Plugin {
 
     map.addPanels(this.panel_);
   }
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control]);
+    [this.map_, this.control, this.panel_] = [null, null, null];
+  }
 
   /**
    * This functions returns the controls of the plugin.

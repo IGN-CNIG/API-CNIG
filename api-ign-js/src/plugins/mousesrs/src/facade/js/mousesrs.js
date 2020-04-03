@@ -94,13 +94,15 @@ export default class MouseSRS extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new MouseSRSControl(
+    this.control_ = new MouseSRSControl(
       this.srs_,
       this.label_,
       this.precision,
       this.geoDecimalDigits,
       this.utmDecimalDigits,
-    ));
+    );
+    this.controls_.push(this.control_);
+
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelMouseSRS', {
       collapsible: false,
@@ -110,6 +112,21 @@ export default class MouseSRS extends M.Plugin {
     });
     map.addControls(this.controls_);
   }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map_.removeControls([this.control_]);
+    this.map_ = null;
+    this.control_ = null;
+    this.panel_ = null;
+  }
+
 
   /**
    * Name of the plugin

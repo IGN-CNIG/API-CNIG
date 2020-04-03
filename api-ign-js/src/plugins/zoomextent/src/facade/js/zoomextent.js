@@ -49,7 +49,8 @@ export default class ZoomExtent extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new ZoomExtentControl());
+    this.control_ = new ZoomExtentControl();
+    this.controls_.push(this.control_);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelZoomExtent', {
       className: 'm-plugin-zoomextent',
@@ -57,6 +58,19 @@ export default class ZoomExtent extends M.Plugin {
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  /**
+   * This function destroys this plugin
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  destroy() {
+    this.control_.deactivate();
+    this.map_.removeControls([this.control_]);
+    [this.map_, this.control_, this.panel_] = [null, null, null];
   }
 
   /**

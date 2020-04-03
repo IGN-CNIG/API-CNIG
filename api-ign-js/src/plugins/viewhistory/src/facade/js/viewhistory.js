@@ -58,7 +58,8 @@ export default class ViewHistory extends M.Plugin {
    */
   addTo(map) {
     this.facadeMap_ = map;
-    this.controls_.push(new ViewHistoryControl());
+    this.control_ = new ViewHistoryControl();
+    this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('panelViewHistory', {
       collapsible: false,
       position: M.ui.position[this.position],
