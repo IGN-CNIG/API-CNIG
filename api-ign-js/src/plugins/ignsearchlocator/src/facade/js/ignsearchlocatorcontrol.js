@@ -5,6 +5,7 @@ import IGNSearchLocatorImplControl from '../../impl/ol/js/ignsearchlocatorcontro
 import template from '../../templates/ignsearchlocator';
 import results from '../../templates/results';
 import xylocator from '../../templates/xylocator';
+import parcela from '../../templates/parcela';
 import registerHelpers from './helpers';
 import geographicNameType from './constants';
 import { getValue } from './i18n/language';
@@ -24,6 +25,9 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   constructor(
     servicesToSearch = 'gn',
+    CMC_url = null,
+    DNPPP_url = null,
+    CPMRC_url = null,
     maxResults = 10,
     noProcess = 'municipio,poblacion',
     countryCode = 'es',
@@ -53,6 +57,58 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {string} - 'g' | 'n' | 'gn'
      */
     this.servicesToSearch = servicesToSearch;
+
+    /**
+     * Url for "consulta de municipios para una provincia"
+     * @private
+     * @type {String}
+     */
+    // eslint-disable-next-line camelcase
+    this.ConsultaMunicipioCodigos_ = CMC_url;
+
+    /**
+     * Url for "consulta de datos no protegidos para un inmueble por su polígono parcela"
+     * @private
+     * @type {String}
+     */
+    // eslint-disable-next-line camelcase
+    this.DNPPP_url_ = DNPPP_url;
+
+    /**
+     * Url for "consulta de coordenadas por Provincia, Municipio y Referencia Catastral"
+     * @private
+     * @type {String}
+     */
+    // eslint-disable-next-line camelcase
+    this.CPMRC_url_ = CPMRC_url;
+
+    /**
+     * Select element for Provincias
+     * @private
+     * @type {HTMLElement}
+     */
+    this.selectProvincias = null;
+
+    /**
+     * Select element for Municipios
+     * @private
+     * @type {HTMLElement}
+     */
+    this.selectMunicipios = null;
+
+    /**
+     * Input element for Poligono
+     * @private
+     * @type {HTMLElement}
+     */
+    this.inputPoligono = null;
+
+    /**
+     * Input element for Parcela
+     * @private
+     * @type {HTMLElement}
+     */
+    this.inputParcela = null;
     /**
      * This variable sets the maximun results returned by a service
      * (if both services are searched the maximum results will be twice this number)
@@ -151,6 +207,14 @@ export default class IGNSearchLocatorControl extends M.Control {
      */
     this.geocoderCoords = geocoderCoords;
     registerHelpers();
+
+
+    /**
+     * Checks if point drawing tool is active.
+     * @private
+     * @type {Boolean}
+     */
+    this.isXYLocatorActive = false;
   }
   /**
    * This function creates the view
@@ -168,6 +232,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox = html.querySelector('#m-ignsearchlocator-results');
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
       html.querySelector('#m-ignsearchlocator-clear-button').addEventListener('click', this.clearResultsAndGeometry.bind(this));
+      html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
       html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
@@ -738,11 +803,282 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @function
    * @api
    */
-  openXYLocator() {
-    if (this.resultsBox.innerHTML.indexOf('coordinatesSystem') > -1) {
+  openParcela() {
+    if ((this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela') > -1) && (this.resultsBox.innerHTML.indexOf('coordinatesSystem') > -1)) {
       this.clearResults();
+      this.activationManager(false, 'm-ignsearchlocator-parcela-button');
     } else {
       this.clearResults();
+      if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
+        this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+      }
+      this.activationManager(true, 'm-ignsearchlocator-parcela-button');
+
+      const compiledXYLocator = M.template.compileSync(parcela, {
+        vars: {
+          translations: {
+            titleparcela: getValue('titleparcela'),
+            province: getValue('province'),
+            municipality: getValue('municipality'),
+            selectmuni: getValue('selectmuni'),
+            estate: getValue('estate'),
+            plot: getValue('plot'),
+            search: getValue('search'),
+          },
+        },
+      });
+
+      /**
+       *crear provincias y rellenar municipios
+       */
+      this.selectProvincias = compiledXYLocator.querySelector('select#m-searchParamsProvincia-select');
+      this.selectProvincias.addEventListener('change', evt => this.onProvinciaSelect(evt));
+
+      this.selectMunicipios = compiledXYLocator.querySelector('#m-searchParamsMunicipio-select');
+      this.inputPoligono = compiledXYLocator.querySelector('#m-searchParamsPoligono-input');
+      this.inputParcela = compiledXYLocator.querySelector('#m-searchParamsParcela-input');
+
+      compiledXYLocator.querySelector('select#m-searchParamsProvincia-select').addEventListener('change', evt => this.manageInputs_(evt));
+      const buttonParamsSearch = compiledXYLocator.querySelector('button#m-searchParams-button');
+      buttonParamsSearch.addEventListener('click', e => this.onParamsSearch(e));
+      this.resultsBox.appendChild(compiledXYLocator);
+    }
+  }
+
+  /**
+   * Handler for search with params button
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  onParamsSearch(evt) {
+    evt.preventDefault();
+
+    if ((evt.type !== 'keyup') || (evt.keyCode === 13)) {
+      if (M.utils.isNullOrEmpty(this.selectProvincias.value) || this.selectProvincias.value === '0') {
+        M.dialog.info('Debe seleccionar una provincia.');
+        return;
+      }
+      if (M.utils.isNullOrEmpty(this.selectMunicipios.value) || this.selectMunicipios.value === '0') {
+        M.dialog.info('Debe seleccionar un municpio.');
+        return;
+      }
+      if (M.utils.isNullOrEmpty(this.inputPoligono.value)) {
+        M.dialog.info('Debe introducir un polígono.');
+        return;
+      }
+      if (M.utils.isNullOrEmpty(this.inputParcela.value)) {
+        M.dialog.info('Debe introducir una parcela.');
+        return;
+      }
+
+      const searchUrl = M.utils.addParameters(this.DNPPP_url_, {
+        CodigoProvincia: this.selectProvincias.value,
+        CodigoMunicipio: this.selectMunicipios.value,
+        CodigoMunicipioINE: '',
+        Poligono: this.inputPoligono.value,
+        Parcela: this.inputParcela.value,
+      });
+
+      M.remote.get(searchUrl).then((response) => {
+        const success = this.acceptOVCSW(response);
+        if (success) {
+          this.parseParamsResultsForTemplate_(response.xml);
+        }
+      });
+    }
+  }
+
+  parseParamsResultsForTemplate_(response) {
+    const rootElement = response.getElementsByTagName('consulta_dnp')[0];
+    const bicoNode = rootElement.getElementsByTagName('bico')[0];
+    const biNode = bicoNode.getElementsByTagName('bi')[0];
+    const idbiNode = biNode.getElementsByTagName('idbi')[0];
+    const rcNode = idbiNode.getElementsByTagName('rc')[0];
+    const pc1Value = rcNode.getElementsByTagName('pc1')[0].childNodes[0].nodeValue;
+    const pc2Value = rcNode.getElementsByTagName('pc2')[0].childNodes[0].nodeValue;
+
+    const searchUrl = M.utils.addParameters(this.CPMRC_url_, {
+      Provincia: '',
+      Municipio: '',
+      SRS: this.map.getProjection().code,
+      RC: pc1Value + pc2Value,
+    });
+
+    return M.remote.get(searchUrl).then((res) => {
+      const success = this.acceptOVCSW(res);
+      if (success) {
+        const docsRC = this.parseCPMRCResults(res.xml);
+        const xcen = docsRC.coords[0].xcen;
+        const ycen = docsRC.coords[0].ycen;
+
+        this.locator_([xcen, ycen]);
+      }
+    });
+  }
+
+  /**
+   * Parses CPMRC results
+   *
+   * @private
+   * @function
+   */
+  parseCPMRCResults(xmlResults) {
+    const rootElement = xmlResults.getElementsByTagName('consulta_coordenadas')[0];
+    const coordenadasNode = rootElement.getElementsByTagName('coordenadas')[0];
+    const coordNode = coordenadasNode.getElementsByTagName('coord')[0];
+
+    const pcNode = coordNode.getElementsByTagName('pc')[0];
+    const pc1Node = pcNode.getElementsByTagName('pc1')[0].childNodes[0].nodeValue;
+    const pc2Node = pcNode.getElementsByTagName('pc2')[0].childNodes[0].nodeValue;
+
+    const geoNode = coordNode.getElementsByTagName('geo')[0];
+    const xcenNode = geoNode.getElementsByTagName('xcen')[0].childNodes[0].nodeValue;
+    const ycenNode = geoNode.getElementsByTagName('ycen')[0].childNodes[0].nodeValue;
+    const srsNode = geoNode.getElementsByTagName('srs')[0].childNodes[0].nodeValue;
+
+    const ldtNode = coordNode.getElementsByTagName('ldt')[0].childNodes[0].nodeValue;
+
+    return {
+      attributes: [{
+        key: 'Referencia Catastral',
+        value: pc1Node + pc2Node,
+      }, {
+        key: 'Descripción',
+        value: ldtNode,
+      }],
+      rcId: `rc_${pc1Node}${pc2Node}`,
+      coords: [{
+        xcen: xcenNode,
+        ycen: ycenNode,
+        srs: srsNode,
+      }],
+    };
+  }
+
+
+  /**
+   * Checks if response is valid
+   *
+   * @private
+   * @function
+   */
+  acceptOVCSW(response) {
+    let success = true;
+    try {
+      if ((response.code === 200) && (response.error === false)) {
+        const results2 = response.xml;
+        const rootElement = results2.childNodes[0];
+        const controlNode = rootElement.getElementsByTagName('control')[0];
+        const errorCtlNode = controlNode.getElementsByTagName('cuerr')[0];
+        let cuerr = '0';
+        if (errorCtlNode !== undefined) {
+          cuerr = errorCtlNode.childNodes[0].nodeValue;
+        }
+        if (cuerr === '1') {
+          const errorNode = rootElement.getElementsByTagName('lerr')[0];
+          const errorDesc = errorNode.getElementsByTagName('err')[0];
+          const errorDescTxt = errorDesc.getElementsByTagName('des')[0].childNodes[0].nodeValue;
+          this.element_.classList.remove(this.SEARCHING_CLASS);
+          success = false;
+          M.dialog.info(errorDescTxt);
+        }
+      } else {
+        success = false;
+        M.dialog.error('MAPEA: No es posible establecer la conexión con el servidor de Catastro.');
+      }
+    } catch (err) {
+      success = false;
+      M.exception(`La respuesta no es un JSON válido: ${err}.`);
+    }
+    return success;
+  }
+
+  /**
+   * Handler for selecting an option on Provincia select
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  onProvinciaSelect(e) {
+    const elt = e.target;
+    const provinceCode = elt.value;
+    if (provinceCode !== '0') {
+      M.remote.get(this.ConsultaMunicipioCodigos_, {
+        CodigoProvincia: provinceCode,
+        CodigoMunicipio: '',
+        CodigoMunicipioIne: '',
+      }).then((res) => {
+        this.loadMunicipiosSelect(res);
+      });
+    } else {
+      this.clearMunicipiosSelect();
+    }
+  }
+
+  /**
+   * Loads and renders options set to Municipios select
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  loadMunicipiosSelect(response) {
+    if ((response.code === 200) && (response.error === false)) {
+      const rootElement = response.xml.getElementsByTagName('consulta_municipiero')[0];
+      const rootMunicipios = rootElement.getElementsByTagName('municipiero')[0];
+      const muniNodes = rootMunicipios.getElementsByTagName('muni');
+      const select = this.element_.getElementsByTagName('select')['m-searchParamsMunicipio-select'];
+      this.clearMunicipiosSelect();
+      for (let i = 0; i < muniNodes.length; i += 1) {
+        const option = document.createElement('option');
+        const locat = muniNodes[i].getElementsByTagName('locat')[0];
+        option.value = locat.getElementsByTagName('cmc')[0].childNodes[0].nodeValue;
+        option.innerHTML = muniNodes[i].getElementsByTagName('nm')[0].childNodes[0].nodeValue;
+        select.appendChild(option);
+      }
+    } else {
+      M.dialog.error('MAPEA: No es posible establecer la conexión con el servidor de Catastro.');
+    }
+  }
+
+  /**
+   * Clears options set to Municipios select
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  clearMunicipiosSelect() {
+    const select = this.element_.getElementsByTagName('select')['m-searchParamsMunicipio-select'];
+    while (select.firstChild) {
+      select.removeChild(select.firstChild);
+    }
+    const option = document.createElement('option');
+    option.value = '0';
+    option.innerHTML = 'Seleccione un municipio';
+    select.appendChild(option);
+  }
+
+  /**
+   * This function opens xylocator functions
+   * @public
+   * @function
+   * @api
+   */
+  openXYLocator() {
+    if ((this.resultsBox.innerHTML.indexOf('coordinatesSystem') > -1) && (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela') === -1)) {
+      this.clearResults();
+      this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+    } else {
+      this.clearResults();
+      if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
+        this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+      }
+      this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
+
       const compiledXYLocator = M.template.compileSync(xylocator, {
         vars: {
           translations: {
@@ -765,6 +1101,23 @@ export default class IGNSearchLocatorControl extends M.Control {
       compiledXYLocator.querySelector('select#m-xylocator-srs').addEventListener('change', evt => this.manageInputs_(evt));
       compiledXYLocator.querySelector('button#m-xylocator-loc').addEventListener('click', evt => this.calculate_(evt));
       this.resultsBox.appendChild(compiledXYLocator);
+    }
+  }
+
+  /**
+   * Hides/shows tools menu and de/activates drawing.
+   * @public
+   * @function
+   * @api
+   * @param {Boolean} clickedGeometry - i.e.isPointActive
+   * @param {String} drawingDiv - i.e.pointdrawing
+   */
+  activationManager(clickedGeometry, drawingDiv) {
+    // if drawing is active
+    if (clickedGeometry) {
+      document.getElementById(drawingDiv).style.backgroundColor = '#71a7d3';
+    } else {
+      document.getElementById(drawingDiv).style.backgroundColor = 'white';
     }
   }
 

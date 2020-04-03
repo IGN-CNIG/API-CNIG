@@ -6,6 +6,15 @@
   "geographic": "Geograficas",
   "zone": "huso",
   "title": "Localizador por coordenadas",
+  "titleparcela": "Búsqueda por polígono y parcela",
+  "province": "Provincia",
+  "municipality": "Municipio",
+  "selectmuni": "Seleccione un municipio",
+  "estate": "Polígono",
+  "plot": "Parcela",
+  "search": "Buscar",
+
+
   "srs": "Sistema de coordenadas",
   "longitude": "Longitud",
   "latitude": "Latitud",
