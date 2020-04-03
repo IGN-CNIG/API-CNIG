@@ -1,5 +1,7 @@
 import IberpixHelp from 'facade/iberpixhelp';
 
+M.language.setLang('es');
+
 const map = M.map({
   container: 'mapjs',
 });
