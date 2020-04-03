@@ -6,6 +6,7 @@ import template from '../../templates/ignsearch';
 import results from '../../templates/results';
 import registerHelpers from './helpers';
 import geographicNameType from './constants';
+import { getValue } from './i18n/language';
 
 let typingTimer;
 /**
@@ -161,7 +162,15 @@ export default class IGNSearchControl extends M.Control {
   createView(map) {
     this.map = map;
     return new Promise((success) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            deleteresults: getValue('deleteresults'),
+            obtener: getValue('obtener'),
+            direccion: getValue('direccion'),
+          },
+        },
+      });
       this.html = html;
       this.resultsBox = html.querySelector('#m-ignsearch-results');
       this.searchInput = this.html.querySelector('#m-ignsearch-search-input');
@@ -304,7 +313,7 @@ export default class IGNSearchControl extends M.Control {
           const returnData = JSON.parse(res.text);
           fullAddress = this.createFullAddress(returnData);
         } else {
-          fullAddress = 'No existe dirección asociada para esta ubicación.';
+          fullAddress = getValue('exception.exists');
         }
         this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e);
       });
@@ -400,7 +409,7 @@ export default class IGNSearchControl extends M.Control {
             // Service doesn't find results
             if (this.allCandidates.length === 0) {
               const parragraph = document.createElement('p');
-              const infoMsg = document.createTextNode('No se encuentran resultados para esta petición.');
+              const infoMsg = document.createTextNode(getValue('exception.results'));
               parragraph.appendChild(infoMsg);
               this.resultsBox.appendChild(parragraph);
               document.getElementById('m-ignsearch-results-list').style.display = 'none';
@@ -781,7 +790,7 @@ export default class IGNSearchControl extends M.Control {
    */
   changePlaceholder() {
     if (this.servicesToSearch === 'g') {
-      this.searchInput.placeholder = 'Dirección o Ref. catastral (14 díg.) ';
+      this.searchInput.placeholder = getValue('direccion');
     } else if (this.servicesToSearch === 'n') {
       this.searchInput.placeholder = 'Topónimo';
     }
@@ -831,9 +840,9 @@ export default class IGNSearchControl extends M.Control {
       .reproject([coordinates[1], coordinates[0]], destinySource, destinyProj);
     let exitState;
     if (exactResult !== 1) {
-      exitState = 'Dirección aproximada';
+      exitState = getValue('aprox');
     } else {
-      exitState = 'Dirección exacta';
+      exitState = getValue('exact');
     }
     this.showPopUp(fullAddress, newCoordinates, coordinates, exitState, false, e);
   }

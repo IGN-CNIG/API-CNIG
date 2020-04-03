@@ -1,5 +1,7 @@
 import TOC from 'facade/toc';
 
+M.language.setLang('es');
+
 const map = M.map({
   container: 'mapjs',
 });
