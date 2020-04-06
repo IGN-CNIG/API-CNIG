@@ -13,7 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
-    <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
+    <link href="plugins/fototecahelp/fototecahelp.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
@@ -47,6 +47,19 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
 
+        <label for="inputHelpLink">Parámetro helpLink</label>
+        <select id="selectHelpLink">
+            <option value="http://fototeca.cnig.es/help_es.pdf">http://fototeca.cnig.es/help_es.pdf</option>
+            <option value=null></option>
+        </select>
+
+
+        <label for="inputHelpLink">Parámetro contactEmail</label>
+        <select id="selectContactEmail">
+            <option value="fototeca@cnig.es">fototeca@cnig.es</option>
+            <option value=null></option>
+        </select>
+
         <input type="submit" id="buttonAPI" value="API Rest" />
 
     </div>
@@ -54,7 +67,7 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
-    <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/fototecahelp/fototecahelp.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -75,32 +88,57 @@
         });
 
 
-        let mp, posicion = 'TL';
-        crearPlugin(posicion);
+        let mp, posicion = 'TL',
+            helpLink = "http://fototeca.cnig.es/help_es.pdf",
+            contactEmail = 'fototeca@cnig.es';
+        crearPlugin(posicion, helpLink, contactEmail);;
 
         const selectPosicion = document.getElementById("selectPosicion");
+        const selectHelpLink = document.getElementById("selectHelpLink");
+        const selectContactEmail = document.getElementById("selectContactEmail");
         const buttonApi = document.getElementById("buttonAPI");
 
         selectPosicion.addEventListener('change', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            helpLink = selectHelpLink.options[selectHelpLink.selectedIndex].value;
+            contactEmail = selectContactEmail.options[selectContactEmail.selectedIndex].value;
             map.removePlugins(mp);
-            crearPlugin(posicion);
+            crearPlugin(posicion, helpLink, contactEmail);
         })
+
+        selectHelpLink.addEventListener('change', function() {
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            helpLink = selectHelpLink.options[selectHelpLink.selectedIndex].value;
+            contactEmail = selectContactEmail.options[selectContactEmail.selectedIndex].value;
+            map.removePlugins(mp);
+            crearPlugin(posicion, helpLink, contactEmail);;
+        })
+
+        selectContactEmail.addEventListener('change', function() {
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            helpLink = selectHelpLink.options[selectHelpLink.selectedIndex].value;
+            contactEmail = selectContactEmail.options[selectContactEmail.selectedIndex].value;
+            map.removePlugins(mp);
+            crearPlugin(posicion, helpLink, contactEmail);;
+        })
+
+
 
         buttonApi.addEventListener('click', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
 
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion;
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?fototecahelp=' + posicion + '*' + helpLink + '*' + contactEmail;
         })
 
         function crearPlugin(posicion) {
-            mp = new M.plugin.ContactLink({
+            mp = new M.plugin.FototecaHelp({
                 position: posicion,
+                helpLink: helpLink,
+                contactEmail: contactEmail,
             });
 
             map.addPlugin(mp);
         }
-
 
         window.map = map;
     </script>
