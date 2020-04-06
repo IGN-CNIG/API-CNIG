@@ -61,6 +61,8 @@
             <option value=false>false</option>
         </select>
 
+        <input type="submit" id="buttonAPI" value="API Rest" />
+
     </div>
 
     <div id="mapjs" class="m-container"></div>
@@ -94,7 +96,8 @@
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
-        const selectCollapsible = document.getElementById("selectCollapsible")
+        const selectCollapsible = document.getElementById("selectCollapsible");
+        const buttonApi = document.getElementById("buttonAPI");
 
 
         selectPosicion.addEventListener('change', function() {
@@ -119,6 +122,14 @@
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             map.removePlugins(mp);
             crearPlugin(collapsed, collapsible, posicion);
+        })
+
+        buttonApi.addEventListener('click', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?geometrydraw=' + posicion + '*' + collapsed + '*' + collapsible;
         })
 
         function crearPlugin(collapsed, collapsible, posicion) {
