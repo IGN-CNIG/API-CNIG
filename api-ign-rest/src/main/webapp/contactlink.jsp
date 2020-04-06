@@ -38,6 +38,18 @@
 </head>
 
 <body>
+    <div>
+        <label for="selectPosicion">Selector de posición del plugin</label>
+        <select name="position" id="selectPosicion">
+            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="BR">Abajo Derecha (BR)</option>
+            <option value="BL">Abajo Izquierda (BL)</option>
+        </select>
+
+        <input type="submit" id="buttonAPI" value="API Rest" />
+
+    </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
@@ -62,11 +74,33 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        const mp = new M.plugin.ContactLink({
-            position: 'TR',
-        });
 
-        map.addPlugin(mp);
+        let mp, posicion = 'TL';
+        crearPlugin(posicion);
+
+        const selectPosicion = document.getElementById("selectPosicion");
+        const buttonApi = document.getElementById("buttonAPI");
+
+        selectPosicion.addEventListener('change', function() {
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+            crearPlugin(posicion);
+        })
+
+        buttonApi.addEventListener('click', function() {
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion;
+        })
+
+        function crearPlugin(posicion) {
+            mp = new M.plugin.ContactLink({
+                position: posicion,
+            });
+
+            map.addPlugin(mp);
+        }
+
 
         window.map = map;
     </script>
