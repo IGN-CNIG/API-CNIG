@@ -9,9 +9,6 @@ const mp = new ZoomPanel({
   position: 'TR',
   collapsible: true,
   collapsed: true,
-  layerId: 0,
-  layerVisibility: true,
-  projection: 'EPSG:4326'
 });
 mp.on('finished:draw', (feature) => {
   console.log(feature);
