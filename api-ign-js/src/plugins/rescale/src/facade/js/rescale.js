@@ -4,6 +4,8 @@
 import 'assets/css/rescale';
 import RescaleControl from './rescalecontrol';
 import api from '../../api';
+import { getValue } from './i18n/language';
+
 
 export default class Rescale extends M.Plugin {
   /**
@@ -66,6 +68,12 @@ export default class Rescale extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -86,7 +94,7 @@ export default class Rescale extends M.Plugin {
       collapsed: this.collapsed,
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'g-cartografia-escala3',
-      tooltip: 'Cambiar escala',
+      tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

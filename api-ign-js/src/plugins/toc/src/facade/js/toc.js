@@ -4,6 +4,7 @@
 import '../assets/css/toc';
 import '../assets/css/fonts';
 import TOCControl from './toc_control';
+import { getValue } from './i18n/language';
 
 export default class TOC extends M.Plugin {
   /**
@@ -41,6 +42,14 @@ export default class TOC extends M.Plugin {
      * @type {boolean}
      */
     this.collapsed_ = options.collapsed === true;
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -59,7 +68,7 @@ export default class TOC extends M.Plugin {
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'g-plugin-toc-capas2',
       className: 'm-plugin-toc',
-      tooltip: 'Capas',
+      tooltip: this.tooltip_,
       collapsed: this.collapsed_,
     });
     this.panel_.addControls([this.control]);

@@ -4,6 +4,8 @@
 
 import IberpixHelpImplControl from 'impl/iberpixhelpcontrol';
 import template from 'templates/iberpixhelp';
+import { getValue } from './i18n/language';
+
 
 export default class IberpixHelpControl extends M.Control {
   /**
@@ -43,6 +45,14 @@ export default class IberpixHelpControl extends M.Control {
       const html = M.template.compileSync(template, {
         vars: {
           helpLink: this.helpLink_,
+          translations: {
+            ayuda: getValue('ayuda'),
+            consulta: getValue('consulta'),
+            aqui: getValue('aqui'),
+            contacto: getValue('contacto'),
+            localizacion: getValue('localizacion'),
+            telefono: getValue('telefono'),
+          },
         },
       });
       success(html);

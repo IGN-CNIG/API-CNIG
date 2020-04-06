@@ -4,6 +4,7 @@
 import '../assets/css/geometrydraw';
 import GeometryDrawControl from './geometrydrawcontrol';
 import api from '../../api';
+import { getValue } from './i18n/language';
 
 export default class GeometryDraw extends M.Plugin {
   /**
@@ -68,6 +69,14 @@ export default class GeometryDraw extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
   /**
@@ -86,7 +95,7 @@ export default class GeometryDraw extends M.Plugin {
       collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'icon-geom',
-      tooltip: 'Dibujo de geometrías',
+      tooltip: this.tooltip_,
     });
     this.control_ = new GeometryDrawControl();
     this.controls_.push(this.control_);

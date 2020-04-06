@@ -99,7 +99,8 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
     const destProj = ol.proj.get(this.map.getProjection().code);
     let coordinatesTransform = ol.proj.transform(coordinates, originProj, destProj);
     coordinatesTransform = [this.normalizeNumber(coordinates[0], coordinatesTransform[0]),
-      this.normalizeNumber(coordinates[1], coordinatesTransform[1])];
+      this.normalizeNumber(coordinates[1], coordinatesTransform[1]),
+    ];
     return coordinatesTransform;
   }
 

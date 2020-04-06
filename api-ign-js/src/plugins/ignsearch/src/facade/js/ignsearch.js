@@ -4,6 +4,7 @@
 import '../assets/css/ignsearch';
 import '../assets/css/fonts';
 import IGNSearchControl from './ignsearchcontrol';
+import { getValue } from './i18n/language';
 
 export default class IGNSearch extends M.Plugin {
   /**
@@ -136,7 +137,7 @@ export default class IGNSearch extends M.Plugin {
      * @private
      * @type {string} - tooltip on hover on plugin button
      */
-    this.tooltip_ = options.tooltip || 'Búsqueda de lugares';
+    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
      * @private

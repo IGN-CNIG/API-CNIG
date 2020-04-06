@@ -4,6 +4,8 @@
 
 import RescaleImplControl from 'impl/rescalecontrol';
 import template from 'templates/rescale';
+import { getValue } from './i18n/language';
+
 
 // let typingTimer;
 
@@ -37,7 +39,13 @@ export default class RescaleControl extends M.Control {
   createView(map) {
     this.map_ = map;
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            insertscale: getValue('insertscale'),
+          },
+        },
+      });
       html.querySelector('#m-rescale-scaleinput').addEventListener('keyup', e => this.zoomToInputScale(e));
       success(html);
     });

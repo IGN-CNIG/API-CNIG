@@ -1,0 +1,27 @@
+{
+  "tooltip": "More information",
+  "ayuda": "HELP",
+  "consulta": "See additional information about the Fototeca service, as well as its user guide",
+  "aqui": "here",
+
+  "contacto": "CONTACT",
+  "condiciones": "LEGAL CONDITIONS OF SERVICE",
+  "localizacion": "Location",
+  "atencion": "Public attention",
+  "personalizada": "For personalized attention it is necessary to request an appointment",
+
+  "horario": "From 9:00 to 14:00 h, Monday to Friday.",
+
+  "telefono": "Phone",
+  "correo": "Email",
+
+  "la": "The",
+  "fototeca": "Fototeca Digital",
+  "centro": "of the National Center for Geographical Information (CNIG) is a web viewer to view, print (in PDF format) and request certificates for original frames of photogrammetric flights made over Spain.",
+  "solo": "Only",
+  "certificaciones": "frame certifications",
+  "cuyos": "are made whose originals are kept in the CNIG Photo Library Archive. Orthophotos are not certified.",
+  "fotos": "The photos of the",
+  "vuelo": "American flight",
+  "disponibles": "are not available for download nor are they certified because they belong to the Ministry of Defense, they are only allowed to be viewed and printed in pdf. You can request the frames at the following contact:"
+}

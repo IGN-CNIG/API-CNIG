@@ -3,6 +3,7 @@
  */
 
 import template from '../../templates/toc';
+import { getValue } from './i18n/language';
 
 /**
  * @private
@@ -65,7 +66,12 @@ export default class TOCControl extends M.Control {
         title: layer.legend || layer.name,
       };
     });
-    return { layers: layersOpts };
+    return {
+      layers: layersOpts,
+      translations: {
+        capas: getValue('capas'),
+      },
+    };
   }
 
   /**

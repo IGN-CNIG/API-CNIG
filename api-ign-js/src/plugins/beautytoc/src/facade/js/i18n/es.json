@@ -1,0 +1,10 @@
+{
+  "exception": {
+    "cobertura": "Comprobando cobertura en la zona...",
+    "nocobertura": "Esta capa no tiene cobertura en esta zona"
+  },
+  "tooltip": "Capas",
+  "layers": "Capas",
+  "vectoriallayers": "Capas vectoriales",
+  "ortofotos": "Ortofotos"
+}

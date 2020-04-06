@@ -1,0 +1,36 @@
+{
+  "tooltip": "Geometry drawing",
+  "punto": "Point",
+  "coordenadas": "Coordinate point",
+  "linea": "Line",
+  "poligono": "Polygon",
+  "texto": "Text",
+  "editgeometria": "Edit geometry",
+  "descgeometria": "Download geometry",
+  "subircapa": "Import layer",
+  "limpiar": "Clean",
+
+  "color": "Color",
+  "grosor": "Thickness",
+  "borrar": "Delete geometry",
+  "dibujar": "Draw geometry",
+
+  "descargar": "Download",
+
+  "sistema": "Coordinate system",
+
+  "longitud": "Longitude",
+  "latitud": "Latitude",
+
+  "fuente": "Font",
+  "tamaño": "Size",
+  "eliminar": "Delete text",
+
+  "ficheros": "The accepted formats are KML, SHP (.zip), GPX and GeoJSON.",
+  "seleccionar": "Select file",
+  "cargarcapa": "Load layer",
+
+  "emptylater": "The drawing layer is empty."
+
+
+}

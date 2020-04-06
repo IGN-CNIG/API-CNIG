@@ -12,6 +12,8 @@ import uploadingTemplate from 'templates/uploading';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
 import * as shp from 'shpjs';
+import { getValue } from './i18n/language';
+
 
 const DEFAULT_TEXT = 'Texto';
 const DEFAULT_FONT_COLOR = '#71a7d3';
@@ -239,7 +241,24 @@ export default class GeometryDrawControl extends M.Control {
     this.map = map;
     this.getImpl().setSource();
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            punto: getValue('punto'),
+            coordenadas: getValue('coordenadas'),
+            linea: getValue('linea'),
+            poligono: getValue('poligono'),
+            texto: getValue('texto'),
+            editgeometria: getValue('editgeometria'),
+            descgeometria: getValue('descgeometria'),
+            subircapa: getValue('subircapa'),
+            limpiar: getValue('limpiar'),
+            color: getValue('color'),
+            grosor: getValue('grosor'),
+            borrar: getValue('borrar'),
+          },
+        },
+      });
       this.initializeLayers();
       this.createDrawingTemplate();
       this.createTextDrawTemplate();
@@ -258,7 +277,18 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   createTextDrawTemplate() {
-    this.textDrawTemplate = M.template.compileSync(textDrawTemplate, { jsonp: true });
+    this.textDrawTemplate = M.template.compileSync(textDrawTemplate, {
+      jsonp: true,
+      vars: {
+        translations: {
+          texto: getValue('texto'),
+          fuente: getValue('fuente'),
+          tamaño: getValue('tamaño'),
+          color: getValue('color'),
+          eliminar: getValue('eliminar'),
+        },
+      },
+    });
 
     this.textContent = this.textDrawTemplate.querySelector('#textContent').value;
     this.fontColor = this.textDrawTemplate.querySelector('#fontColor').value;
@@ -280,7 +310,14 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   createDownloadingTemplate() {
-    this.downloadingTemplate = M.template.compileSync(downloadingTemplate, { jsonp: true });
+    this.downloadingTemplate = M.template.compileSync(downloadingTemplate, {
+      jsonp: true,
+      vars: {
+        translations: {
+          descargar: getValue('descargar'),
+        },
+      },
+    });
     this.downloadingTemplate.querySelector('button').addEventListener('click', this.downloadLayer.bind(this));
   }
 
@@ -295,7 +332,14 @@ export default class GeometryDrawControl extends M.Control {
     const accept = '.kml, .zip, .gpx, .geojson';
     this.uploadingTemplate = M.template.compileSync(uploadingTemplate, {
       jsonp: true,
-      vars: { accept },
+      vars: {
+        accept,
+        translations: {
+          ficheros: getValue('ficheros'),
+          seleccionar: getValue('seleccionar'),
+          cargarcapa: getValue('cargarcapa'),
+        },
+      },
     });
     const inputFile = this.uploadingTemplate.querySelector('#geometrydraw-uploading>input');
     this.loadBtn_ = this.uploadingTemplate.querySelector('#geometrydraw-uploading button');
@@ -313,7 +357,16 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   createDrawingTemplate() {
-    this.drawingTools = M.template.compileSync(drawingTemplate, { jsonp: true });
+    this.drawingTools = M.template.compileSync(drawingTemplate, {
+      jsonp: true,
+      vars: {
+        translations: {
+          color: getValue('color'),
+          grosor: getValue('grosor'),
+          borrar: getValue('borrar'),
+        },
+      },
+    });
 
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
@@ -333,7 +386,20 @@ export default class GeometryDrawControl extends M.Control {
    */
   createLocationDrawingTemplate() {
     const innerThis = this;
-    this.locationDrawingTools = M.template.compileSync(locationDrawingTemplate, { jsonp: true });
+    this.locationDrawingTools = M.template.compileSync(locationDrawingTemplate, {
+      jsonp: true,
+      vars: {
+        translations: {
+          color: getValue('color'),
+          grosor: getValue('grosor'),
+          sistema: getValue('sistema'),
+          longitud: getValue('longitud'),
+          latitud: getValue('latitud'),
+          dibujar: getValue('dibujar'),
+          borrar: getValue('borrar'),
+        },
+      },
+    });
 
     this.currentColor = this.locationDrawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.locationDrawingTools.querySelector('#thicknessSelector').value;
@@ -399,10 +465,10 @@ export default class GeometryDrawControl extends M.Control {
           innerThis.feature = innerThis.getImpl().drawPointFeature(coordinates, innerThis.srs);
           innerThis.feature.setStyle(newPointStyle);
         } else {
-          M.dialog.error('Las coordenadas introducidas no tienen el formato correcto');
+          M.dialog.error(getValue('exception.formatocoord'));
         }
       } else {
-        M.dialog.error('No se han introducido las coordenadas correctamente');
+        M.dialog.error(getValue('exception.introduzcoord'));
       }
     });
   }
@@ -881,7 +947,7 @@ export default class GeometryDrawControl extends M.Control {
         }));
         break;
       default:
-        throw new Error('Geometría no reconocida.');
+        throw new Error(getValue('exception.geometrianoencontrar'));
     }
   }
 
@@ -1072,7 +1138,7 @@ export default class GeometryDrawControl extends M.Control {
       this.deactivateDrawing();
       document.querySelector('.m-geometrydraw').appendChild(this.downloadingTemplate);
     } else {
-      M.dialog.info('La capa de dibujo está vacía.');
+      M.dialog.info(getValue('exception.emptylater'));
     }
   }
 
@@ -1276,7 +1342,7 @@ export default class GeometryDrawControl extends M.Control {
         shpWrite.download(json, options);
         break;
       default:
-        M.dialog.error('No se ha seleccionado formato de descarga.');
+        M.dialog.error(getValue('exception.ficherosel'));
         break;
     }
 
@@ -1391,7 +1457,7 @@ export default class GeometryDrawControl extends M.Control {
     this.loadBtn_.setAttribute('disabled', 'disabled');
     if (!M.utils.isNullOrEmpty(file)) {
       if (file.size > 20971520) {
-        M.dialog.info('El fichero seleccionado sobrepasa el máximo de 20 MB permitido.');
+        M.dialog.info(getValue('exception.maxfichero'));
         this.file_ = null;
         document.querySelector('#fileInfo').innerHTML = '';
       } else {
@@ -1434,16 +1500,16 @@ export default class GeometryDrawControl extends M.Control {
           features = this.getImpl()
             .loadGeoJSONLayer(fileReader.result);
         } else {
-          M.dialog.error('Error al cargar el fichero.');
+          M.dialog.error(getValue('exception.errorfichero'));
           return;
         }
         if (features.length === 0) {
-          M.dialog.info('No se han detectado geometrías en este fichero.');
+          M.dialog.info(getValue('exception.nodetectado'));
         } else {
           this.getImpl().centerFeatures(features);
         }
       } catch (error) {
-        M.dialog.error('Error al cargar el fichero. Compruebe que se trata del fichero correcto.');
+        M.dialog.error(getValue('exception.comprobar'));
       }
     });
     if (fileExt === 'zip') {
@@ -1451,7 +1517,7 @@ export default class GeometryDrawControl extends M.Control {
     } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson') {
       fileReader.readAsText(this.file_);
     } else {
-      M.dialog.error('No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX y GeoJSON.');
+      M.dialog.error(getValue('exception.insertado'));
     }
   }
 

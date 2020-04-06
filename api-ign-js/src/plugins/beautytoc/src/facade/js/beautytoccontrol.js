@@ -4,6 +4,7 @@
 
 import BeautyTOCImplControl from '../../impl/ol/js/beautytoccontrol';
 import template from '../../templates/beautytoc';
+import { getValue } from './i18n/language';
 
 /**
  * @private
@@ -66,7 +67,14 @@ export default class BeautyTOCControl extends M.Control {
         isOrtofoto: layer.url === 'https://www.ign.es/wms/pnoa-historico?',
       };
     });
-    return { layers: layersOpts };
+    return {
+      layers: layersOpts,
+      translations: {
+        layers: getValue('layers'),
+        vectoriallayers: getValue('vectoriallayers'),
+        ortofotos: getValue('ortofotos'),
+      },
+    };
   }
 
   getLayerDisabled(layer) {
@@ -122,7 +130,7 @@ export default class BeautyTOCControl extends M.Control {
         .concat(height)
         .concat('&BBOX=')
         .concat(bboxFormatted.join(','));
-      M.dialog.info('Comprobando cobertura en la zona...');
+      M.dialog.info(getValue('exception.cobertura'));
       setTimeout(() => {
         document.querySelector('div.m-dialog > div > div > div.m-button').innerHTML = '';
       }, 10);
@@ -143,7 +151,7 @@ export default class BeautyTOCControl extends M.Control {
           layerFound.options.visibility = !visibility;
           this.render(scroll);
         } else {
-          M.dialog.error('Esta capa no tiene cobertura en esta zona', 'AVISO');
+          M.dialog.error(getValue('exception.nocobertura'), 'AVISO');
         }
       });
     } else {

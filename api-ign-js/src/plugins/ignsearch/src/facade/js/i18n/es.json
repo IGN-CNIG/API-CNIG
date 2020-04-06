@@ -1,0 +1,12 @@
+{
+  "exception": {
+    "exists": "No existe dirección asociada para esta ubicación.",
+    "results": "No se encuentran resultados para esta petición."
+  },
+  "tooltip": "Búsqueda de lugares",
+  "deleteresults": "Borrar resultados de la búsqueda",
+  "obtener": "Obtener dirección en un punto del mapa",
+  "direccion": "Dirección, topónimo o Ref. catastral (14 dig.)",
+  "aprox": "Dirección aproximada",
+  "exact": "Dirección exacta"
+}

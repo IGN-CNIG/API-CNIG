@@ -39,6 +39,32 @@
 </head>
 
 <body>
+
+    <div>
+        <label for="selectPosicion">Selector de posición del plugin</label>
+        <select name="position" id="selectPosicion">
+            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="BR">Abajo Derecha (BR)</option>
+            <option value="BL">Abajo Izquierda (BL)</option>
+        </select>
+
+        <label for="selectCollapsed">Selector collapsed</label>
+        <select name="httpValue" id="selectCollapsed">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+
+        <label for="selectCollapsible">Selector collapsible</label>
+        <select name="httpValue" id="selectCollapsible">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+
+        <input type="submit" id="buttonAPI" value="API Rest" />
+
+    </div>
+
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
@@ -63,13 +89,58 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        const mp = new M.plugin.GeometryDraw({
-            position: 'TR',
-            collapsed: true,
-            collapsible: true,
-        });
+        let mp, posicion = 'TL',
+            collapsed = true,
+            collapsible = true;
+        crearPlugin(posicion, collapsed, collapsible);
 
-        map.addPlugin(mp);
+        const selectPosicion = document.getElementById("selectPosicion");
+        const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
+        const buttonApi = document.getElementById("buttonAPI");
+
+
+        selectPosicion.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+            crearPlugin(collapsed, collapsible, posicion);
+        })
+
+        selectCollapsed.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+            crearPlugin(collapsed, collapsible, posicion);
+        })
+
+        selectCollapsible.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+            crearPlugin(collapsed, collapsible, posicion);
+        })
+
+        buttonApi.addEventListener('click', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?geometrydraw=' + posicion + '*' + collapsed + '*' + collapsible;
+        })
+
+        function crearPlugin(collapsed, collapsible, posicion) {
+            mp = new M.plugin.GeometryDraw({
+                position: posicion,
+                collapsed: collapsed,
+                collapsible: collapsible,
+            });
+
+            map.addPlugin(mp);
+        }
     </script>
 </body>
 
