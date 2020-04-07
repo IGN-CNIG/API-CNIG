@@ -16,6 +16,16 @@
     transition: none;
 }
 
+.m-areas>div.m-area.m-left>div.m-plugin-toc.m-panel.opened>button.m-panel-btn {
+    background-color: white !important;
+    color: #71a7d3 !important;
+    float: none;
+    left: 350px;
+    position: absolute;
+    z-index: 999;
+    transition: none;
+}
+
 .m-areas>div.m-area>div.m-plugin-toc.m-panel.opened>.m-panel-controls .m-toc-panel {
     width: 350px;
 }

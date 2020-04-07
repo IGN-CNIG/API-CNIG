@@ -10,7 +10,7 @@ const map = M.map({
 const mp = new GeometryDraw({
   collapsed: true,
   collapsible: true,
-  position: 'TR',
+  position: 'TL',
 });
 
 map.addControls(new M.control.GetFeatureInfo('gml', { buffer: 1000 }));

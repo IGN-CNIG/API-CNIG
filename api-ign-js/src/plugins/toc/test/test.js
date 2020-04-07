@@ -8,6 +8,7 @@ const map = M.map({
 
 const mp = new TOC({
   collapsed: false,
+  position: 'BR',
 });
 
 map.addPlugin(mp);
