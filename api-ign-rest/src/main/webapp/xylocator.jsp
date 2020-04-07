@@ -49,9 +49,7 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
 
-        <form action="http://mapea-lite.desarrollo.guadaltel.es/api-core/?xylocator">
-            <input type="submit" value="API Rest" />
-        </form>
+        <input type="submit" id="buttonAPI" value="API Rest" />
 
     </div>
 
@@ -83,12 +81,19 @@
         crearPlugin(posicion);
 
         const selectPosicion = document.getElementById("selectPosicion");
+        const buttonApi = document.getElementById("buttonAPI");
 
 
         selectPosicion.addEventListener('change', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             map.removePlugins(mp);
             crearPlugin(posicion);
+        })
+
+        buttonApi.addEventListener('click', function() {
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?xylocator=' + posicion;
         })
 
         function crearPlugin(posicion) {

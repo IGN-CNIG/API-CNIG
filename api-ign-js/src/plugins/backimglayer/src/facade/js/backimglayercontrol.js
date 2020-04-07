@@ -85,6 +85,10 @@ export default class BackImgLayerControl extends M.Control {
       });
     }
 
+    if (this.numeroColumnas > this.layers.length) {
+      this.numeroColumnas = this.layers.length;
+    }
+
     this.numeroColumnas = numColumns * 110;
     this.numeroColumnas += 'px';
 

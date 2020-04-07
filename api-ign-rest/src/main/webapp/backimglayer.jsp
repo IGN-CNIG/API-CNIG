@@ -93,7 +93,7 @@
             collapsed = true,
             collapsible = true,
             columnas = true;
-        crearPlugin(posicion, collapsed, collapsible, columnas);
+        crearPlugin(collapsed, collapsible, posicion, columnas);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");

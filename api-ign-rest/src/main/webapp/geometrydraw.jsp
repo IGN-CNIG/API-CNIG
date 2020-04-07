@@ -92,7 +92,7 @@
         let mp, posicion = 'TL',
             collapsed = true,
             collapsible = true;
-        crearPlugin(posicion, collapsed, collapsible);
+        crearPlugin(collapsed, collapsible, posicion);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
