@@ -54,8 +54,8 @@ const photogram = new ol.layer.Image({
 });
 
 const printermap = new PrinterMap({
-  collapsed: true,
-  collapsible: true,
+  collapsed: false,
+  collapsible: false,
   position: 'TR',
 });
 

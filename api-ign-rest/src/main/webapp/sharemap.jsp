@@ -38,6 +38,24 @@
 </head>
 
 <body>
+    <div>
+        <label for="selectURL">Selector URL</label>
+        <select name="URL" id="selectURL">
+            <option value="http://mapea-lite.desarrollo.guadaltel.es/api-core/">mapea-lite</option>
+            <option value="https://componentes.ign.es/api-core/">componentes.ign.es</option>
+        </select>
+
+        <label for="selectPosicion">Selector de posición del plugin</label>
+        <select name="position" id="selectPosicion">
+            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="BR">Abajo Derecha (BR)</option>
+            <option value="BL">Abajo Izquierda (BL)</option>
+        </select>
+
+        <input type="submit" id="buttonAPI" value="API Rest" />
+
+    </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
@@ -60,10 +78,44 @@
             zoom: 3,
         });
 
-        const mp = new M.plugin.ShareMap({
-            baseUrl: 'https://componentes.ign.es/api-core/',
-            position: 'BR',
-        });
+        let mp, posicion = 'BR',
+            url = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/';
+        crearPlugin(url, posicion);
+
+        const selectURL = document.getElementById("selectURL");
+        const selectPosicion = document.getElementById("selectPosicion");
+        const buttonApi = document.getElementById("buttonAPI");
+
+        selectURL.addEventListener('change', function() {
+            url = selectURL.options[selectURL.selectedIndex].value;
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+            crearPlugin(url, posicion);
+        })
+
+        selectPosicion.addEventListener('change', function() {
+            url = selectURL.options[selectURL.selectedIndex].value;
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+            crearPlugin(url, posicion);
+        })
+
+        buttonApi.addEventListener('click', function() {
+            url = selectURL.options[selectURL.selectedIndex].value;
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?sharemap=' + url + '*' + posicion;
+        })
+
+        function crearPlugin(url, posicion) {
+            mp = new M.plugin.ShareMap({
+                baseUrl: url,
+                position: posicion,
+            });
+
+            map.addPlugin(mp);
+        }
+
         M.language.setLang('en');
         map.addPlugin(mp);
         window.map = map;
@@ -94,30 +146,12 @@
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
-
-        const mp3 = new M.plugin.IGNSearch({
-            servicesToSearch: 'gn',
-            maxResults: 10,
-            isCollapsed: false,
-            noProcess: 'municipio,poblacion',
-            countryCode: 'es',
-            reverse: true,
-        });
-        const mp2 = new M.plugin.Attributions({
-            mode: 1,
-            scale: 10000,
-            defaultAttribution: 'Instituto Geográfico Nacional',
-            defaultURL: 'https://www.ign.es/',
-        });
-
         const mp6 = new M.plugin.ZoomExtent();
         const mp7 = new M.plugin.MouseSRS({
             projection: 'EPSG:4326',
         });
         const mp8 = new M.plugin.TOC();
 
-        map.addPlugin(mp2);
-        map.addPlugin(mp3);
         map.addPlugin(mp6);
         map.addPlugin(mp7);
         map.addPlugin(mp8);

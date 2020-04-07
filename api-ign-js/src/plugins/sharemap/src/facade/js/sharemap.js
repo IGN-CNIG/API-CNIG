@@ -222,7 +222,10 @@ export default class ShareMap extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls([this.control]);
-    [this.map_, this.control, this.panel_] = [null, null, null];
+    [this.map_, this.control, this.controls_, this.panel_, this.baseUrl_,
+      this.position_, this.title_, this.text_, this.btn_, this.copyBtn_,
+      this.copyBtnHtml_, this.styles_, this.overwriteStyles_, this.tooltip_,
+    ] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null];
   }
 
   /**
@@ -353,6 +356,8 @@ export default class ShareMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.baseUrl}*${this.position}*${this.title}*${this.text}*${this.tooltip}*${this.btn}*${this.copyBtn}*${this.copyBtnHtml}`;
+    // eslint-disable-next-line max-len
+    // return `${this.name}=${this.baseUrl}*${this.position}*${this.title}*${this.text}*${this.tooltip}*${this.btn}*${this.copyBtn}*${this.copyBtnHtml}`;
+    return `${this.name}=${this.baseUrl}*${this.position}`;
   }
 }
