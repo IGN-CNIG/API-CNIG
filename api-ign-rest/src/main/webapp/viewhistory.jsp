@@ -98,11 +98,12 @@
 
 
         function crearPlugin(posicion) {
-            const mp = new M.plugin.ViewHistory({
+            mp = new M.plugin.ViewHistory({
                 position: posicion,
             });
+
+            map.addPlugin(mp);
         }
-        map.addPlugin(mp);
     </script>
 </body>
 

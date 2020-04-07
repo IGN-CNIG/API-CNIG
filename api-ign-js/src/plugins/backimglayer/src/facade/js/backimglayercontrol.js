@@ -85,11 +85,12 @@ export default class BackImgLayerControl extends M.Control {
       });
     }
 
-    if (this.numeroColumnas > this.layers.length) {
-      this.numeroColumnas = this.layers.length;
+    if (numColumns > this.layers.length) {
+      this.numeroColumnas = this.layers.length * 110;
+    } else {
+      this.numeroColumnas = numColumns * 110;
     }
 
-    this.numeroColumnas = numColumns * 110;
     this.numeroColumnas += 'px';
 
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
