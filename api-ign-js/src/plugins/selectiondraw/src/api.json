@@ -1,6 +1,6 @@
 {
   "url": {
-    "name": "SelectionDraw",
+    "name": "selectiondraw",
     "separator": "*"
   },
   "constructor": "M.plugin.SelectionDraw",

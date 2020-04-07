@@ -68,6 +68,14 @@ export default class SelectionDraw extends M.Plugin {
      * @type {M.control.SelectionDraw}
      */
     this.control_ = new SelectionDrawControl(options);
+
+    /**
+     * Name of this control
+     * @public
+     * @type {string}
+     * @api stable
+     */
+    this.name = SelectionDraw.NAME;
   }
 
   /**
@@ -108,4 +116,24 @@ export default class SelectionDraw extends M.Plugin {
     this.control_ = null;
     this.panel_ = null;
   }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}`;
+  }
 }
+
+/**
+ * Name to identify this plugin
+ * @const
+ * @type {string}
+ * @public
+ * @api stable
+ */
+SelectionDraw.NAME = 'selectiondraw';
