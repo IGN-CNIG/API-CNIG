@@ -13,13 +13,6 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.0.0.ol.min.css">
-    <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
-    <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
-    <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
-    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
-    <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
-    <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
-    <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
@@ -46,17 +39,36 @@
 </head>
 
 <body>
+    <div>
+        <label for="selectPosicion">Selector de posición del plugin</label>
+        <select name="position" id="selectPosicion">
+            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="BR">Abajo Derecha (BR)</option>
+            <option value="BL">Abajo Izquierda (BL)</option>
+        </select>
+
+        <label for="selectCollapsed">Selector collapsed</label>
+        <select name="httpValue" id="selectCollapsed">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+
+        <label for="selectCollapsible">Selector collapsible</label>
+        <select name="httpValue" id="selectCollapsible">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+
+        <label for="ncolumn">Número de columnas:</label>
+        <input type="text" id="ncolumn" name="ncolumn">
+
+    </div>
+
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.0.0.js"></script>
-    <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/toc/toc.ol.min.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -71,219 +83,213 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
             center: [-467062.8225, 4683459.6216],
         });
 
-        const layerinicial = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
+        let mp, posicion = 'TL',
+            collapsed = true,
+            collapsible = true,
+            columnas = true;
+        crearPlugin(posicion, collapsed, collapsible, columnas);
 
-        const layerUA = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeUnit',
-            legend: 'Unidad administrativa',
-            tiled: false
-        }, {});
+        const selectPosicion = document.getElementById("selectPosicion");
+        const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
+        const ncolumn = document.getElementById("ncolumn");
 
-        map.addLayers([layerinicial, layerUA]);
 
-        const mp = new M.plugin.IGNSearch({
-            servicesToSearch: 'gn',
-            maxResults: 10,
-            isCollapsed: false,
-            noProcess: 'municipio,poblacion',
-            countryCode: 'es',
-            reverse: true,
-        });
-        const mp2 = new M.plugin.Attributions({
-            mode: 1,
-            scale: 10000,
-        });
+        selectPosicion.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            columnas = ncolumn.value;
 
-        const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://componentes.ign.es/api-core/',
-            position: 'BR',
-        });
-        const mp4 = new M.plugin.XYLocator({
-            position: 'TL',
-        });
-        const mp6 = new M.plugin.ZoomExtent();
-        const mp7 = new M.plugin.MouseSRS({
-            srs: 'EPSG:4326',
-            label: 'WGS84',
-            precision: 6,
-            geoDecimalDigits: 4,
-            utmDecimalDigits: 2,
-        });
+            map.removePlugins(mp);
+            crearPlugin(collapsed, collapsible, posicion, columnas);
+        })
 
-        const mp8 = new M.plugin.TOC({
-            collapsed: false,
-        });
+        selectCollapsed.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            columnas = ncolumn.value;
 
-        const mp9 = new M.plugin.BackImgLayer({
-            position: 'TR',
-            collapsible: true,
-            collapsed: true,
-            layerId: 0,
-            layerVisibility: true,
-            columnsNumber: 2,
-            layerOpts: [{
-                    id: 'mapa',
-                    preview: 'plugins/backimglayer/images/svqmapa.png',
-                    title: 'Mapa',
-                    layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/ign-base?',
-                        name: 'IGNBaseTodo',
-                        legend: 'Mapa IGN',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/jpeg',
-                    })],
-                },
-                {
-                    id: 'imagen',
-                    title: 'Imagen',
-                    preview: 'plugins/backimglayer/images/svqimagen.png',
-                    layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/pnoa-ma?',
-                        name: 'OI.OrthoimageCoverage',
-                        legend: 'Imagen (PNOA)',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/jpeg',
-                    })],
-                },
-                {
-                    id: 'hibrido',
-                    title: 'Híbrido',
-                    preview: 'plugins/backimglayer/images/svqhibrid.png',
-                    layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                            name: 'OI.OrthoimageCoverage',
-                            legend: 'Imagen (PNOA)',
+            map.removePlugins(mp);
+            crearPlugin(collapsed, collapsible, posicion, columnas);
+        })
+
+        selectCollapsible.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            columnas = ncolumn.value;
+            map.removePlugins(mp);
+            crearPlugin(collapsed, collapsible, posicion, columnas);
+        })
+
+        ncolumn.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            columnas = ncolumn.value;
+            map.removePlugins(mp);
+            crearPlugin(collapsed, collapsible, posicion, columnas);
+        })
+
+        function crearPlugin(collapsed, collapsible, posicion, columnas) {
+
+            mp = new M.plugin.BackImgLayer({
+                position: posicion,
+                collapsible: collapsible,
+                collapsed: collapsed,
+                columnsNumber: columnas,
+                layerOpts: [{
+                        id: 'mapa',
+                        preview: 'plugins/backimglayer/images/svqmapa.png',
+                        title: 'Mapa',
+                        layers: [new M.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/ign-base?',
+                            name: 'IGNBaseTodo',
+                            legend: 'Mapa IGN',
                             matrixSet: 'GoogleMapsCompatible',
-                            transparent: true,
+                            transparent: false,
                             displayInLayerSwitcher: false,
                             queryable: false,
                             visible: true,
                             format: 'image/jpeg',
-                        }),
-                        new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
-                            name: 'IGNBaseOrto',
+                        })],
+                    },
+                    {
+                        id: 'imagen',
+                        title: 'Imagen',
+                        preview: 'plugins/backimglayer/images/svqimagen.png',
+                        layers: [new M.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/pnoa-ma?',
+                            name: 'OI.OrthoimageCoverage',
+                            legend: 'Imagen (PNOA)',
                             matrixSet: 'GoogleMapsCompatible',
-                            legend: 'Mapa IGN',
+                            transparent: false,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/jpeg',
+                        })],
+                    },
+                    {
+                        id: 'hibrido',
+                        title: 'Híbrido',
+                        preview: 'plugins/backimglayer/images/svqhibrid.png',
+                        layers: [new M.layer.WMTS({
+                                url: 'http://www.ign.es/wmts/pnoa-ma?',
+                                name: 'OI.OrthoimageCoverage',
+                                legend: 'Imagen (PNOA)',
+                                matrixSet: 'GoogleMapsCompatible',
+                                transparent: true,
+                                displayInLayerSwitcher: false,
+                                queryable: false,
+                                visible: true,
+                                format: 'image/jpeg',
+                            }),
+                            new M.layer.WMTS({
+                                url: 'http://www.ign.es/wmts/ign-base?',
+                                name: 'IGNBaseOrto',
+                                matrixSet: 'GoogleMapsCompatible',
+                                legend: 'Mapa IGN',
+                                transparent: false,
+                                displayInLayerSwitcher: false,
+                                queryable: false,
+                                visible: true,
+                                format: 'image/png',
+                            })
+                        ],
+                    },
+                    {
+                        id: 'lidar',
+                        preview: 'plugins/backimglayer/images/svqlidar.png',
+                        title: 'LIDAR',
+                        layers: [new M.layer.WMTS({
+                            url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                            name: 'EL.GridCoverageDSM',
+                            legend: 'Modelo Digital de Superficies LiDAR',
+                            matrixSet: 'GoogleMapsCompatible',
                             transparent: false,
                             displayInLayerSwitcher: false,
                             queryable: false,
                             visible: true,
                             format: 'image/png',
-                        })
-                    ],
-                },
-                {
-                    id: 'lidar',
-                    preview: 'plugins/backimglayer/images/svqlidar.png',
-                    title: 'LIDAR',
-                    layers: [new M.layer.WMTS({
-                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-                        name: 'EL.GridCoverageDSM',
-                        legend: 'Modelo Digital de Superficies LiDAR',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/png',
-                    })],
-                }, {
-                    id: 'lidar2',
-                    preview: 'plugins/backimglayer/images/svqlidar.png',
-                    title: 'LIDAR2',
-                    layers: [new M.layer.WMTS({
-                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-                        name: 'EL.GridCoverageDSM',
-                        legend: 'Modelo Digital de Superficies LiDAR',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/png',
-                    })],
-                },
-                {
-                    id: 'lidar3',
-                    preview: 'plugins/backimglayer/images/svqlidar.png',
-                    title: 'LIDAR3',
-                    layers: [new M.layer.WMTS({
-                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-                        name: 'EL.GridCoverageDSM',
-                        legend: 'Modelo Digital de Superficies LiDAR',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/png',
-                    })],
-                },
-                {
-                    id: 'lidar4',
-                    preview: 'plugins/backimglayer/images/svqlidar.png',
-                    title: 'LIDAR4',
-                    layers: [new M.layer.WMTS({
-                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-                        name: 'EL.GridCoverageDSM',
-                        legend: 'Modelo Digital de Superficies LiDAR',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/png',
-                    })],
-                },
-                {
-                    id: 'lidar5',
-                    preview: 'plugins/backimglayer/images/svqlidar.png',
-                    title: 'LIDAR5',
-                    layers: [new M.layer.WMTS({
-                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-                        name: 'EL.GridCoverageDSM',
-                        legend: 'Modelo Digital de Superficies LiDAR',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/png',
-                    })],
-                },
-            ],
-        });
+                        })],
+                    }, {
+                        id: 'lidar2',
+                        preview: 'plugins/backimglayer/images/svqlidar.png',
+                        title: 'LIDAR2',
+                        layers: [new M.layer.WMTS({
+                            url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                            name: 'EL.GridCoverageDSM',
+                            legend: 'Modelo Digital de Superficies LiDAR',
+                            matrixSet: 'GoogleMapsCompatible',
+                            transparent: false,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/png',
+                        })],
+                    },
+                    {
+                        id: 'lidar3',
+                        preview: 'plugins/backimglayer/images/svqlidar.png',
+                        title: 'LIDAR3',
+                        layers: [new M.layer.WMTS({
+                            url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                            name: 'EL.GridCoverageDSM',
+                            legend: 'Modelo Digital de Superficies LiDAR',
+                            matrixSet: 'GoogleMapsCompatible',
+                            transparent: false,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/png',
+                        })],
+                    },
+                    {
+                        id: 'lidar4',
+                        preview: 'plugins/backimglayer/images/svqlidar.png',
+                        title: 'LIDAR4',
+                        layers: [new M.layer.WMTS({
+                            url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                            name: 'EL.GridCoverageDSM',
+                            legend: 'Modelo Digital de Superficies LiDAR',
+                            matrixSet: 'GoogleMapsCompatible',
+                            transparent: false,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/png',
+                        })],
+                    },
+                    {
+                        id: 'lidar5',
+                        preview: 'plugins/backimglayer/images/svqlidar.png',
+                        title: 'LIDAR5',
+                        layers: [new M.layer.WMTS({
+                            url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                            name: 'EL.GridCoverageDSM',
+                            legend: 'Modelo Digital de Superficies LiDAR',
+                            matrixSet: 'GoogleMapsCompatible',
+                            transparent: false,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/png',
+                        })],
+                    },
+                ],
+            });
 
-        map.addPlugin(mp);
-        map.addPlugin(mp2);
-        map.addPlugin(mp3);
-        map.addPlugin(mp4);
-        map.addPlugin(mp6);
-        map.addPlugin(mp7);
-        map.addPlugin(mp8);
-        map.addPlugin(mp9);
+            map.addPlugin(mp);
+        }
     </script>
 </body>
 
