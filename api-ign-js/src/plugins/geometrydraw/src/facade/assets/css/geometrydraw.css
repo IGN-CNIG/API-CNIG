@@ -29,7 +29,7 @@ div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
 
 /* style fix for left positions */
 .m-areas>.m-left>.m-panel.m-geometrydraw.opened>.m-panel-controls {
-    width: 400px;
+    width: max-content;
 }
 
 div.m-area.m-left>div.m-panel.m-geometrydraw.collapsed>button {
@@ -158,10 +158,6 @@ div#geometrydraw-uploading>label {
     padding: 10px;
 }
 
-div.m-panel.m-geometrydraw.opened,
-div.m-panel.m-geometrydraw>div.m-panel-controls {
-    width: 400px;
-}
 
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-control.m-container.m-geometrydraw>div#geometryBtns,
 div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-control.m-container.m-geometrydraw>div#otherBtns {

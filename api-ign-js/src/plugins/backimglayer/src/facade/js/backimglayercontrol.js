@@ -84,6 +84,10 @@ export default class BackImgLayerControl extends M.Control {
         this.layers.push(mapeaLyrsObject);
       });
     }
+
+    this.numeroColumnas = numColumns * 110;
+    this.numeroColumnas += 'px';
+
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
     this.activeLayer = -1;
     /* this.idLayer saves active layer position on layers array */
@@ -126,6 +130,7 @@ export default class BackImgLayerControl extends M.Control {
           this.map.removeLayers(this.map.getBaseLayers());
         }
       });
+
       success(html);
     });
   }
@@ -139,6 +144,8 @@ export default class BackImgLayerControl extends M.Control {
    */
   showBaseLayer(e, layersInfo, i) {
     const callback = this.handlerClickDesktop.bind(this);
+
+    document.getElementById('m-backimglayer-previews').style.width = this.numeroColumnas;
     // if (window.innerWidth <= M.config.MOBILE_WIDTH) {
     //   callback = this.handlerClickMobile.bind(this);
     // }
