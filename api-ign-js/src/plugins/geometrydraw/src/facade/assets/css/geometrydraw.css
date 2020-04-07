@@ -19,6 +19,10 @@ div.m-panel.m-geometrydraw.collapsed * {
     display: none
 }
 
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls>div {
+    width: max-content;
+}
+
 div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
     display: inline-block;
 }
