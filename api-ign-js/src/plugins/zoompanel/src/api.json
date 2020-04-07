@@ -18,13 +18,13 @@
         ]
       },
       {
-        "type": "simple",
-        "name": "collapsible",
+        "type": "boolean",
+        "name": "collapsed",
         "position": 1
       },
       {
-        "type": "simple",
-        "name": "collapsed",
+        "type": "boolean",
+        "name": "collapsible",
         "position": 2
       },
       {

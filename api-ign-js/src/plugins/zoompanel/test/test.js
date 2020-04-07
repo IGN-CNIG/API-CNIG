@@ -7,7 +7,7 @@ const map = M.map({
 });
 const mp = new ZoomPanel({
   position: 'TR',
-  collapsible: true,
+  collapsible: false,
   collapsed: true,
 });
 mp.on('finished:draw', (feature) => {

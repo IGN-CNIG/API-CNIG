@@ -199,7 +199,11 @@ div[id^="m-zoompanel-lyr-"]:hover>span {
 .m-areas>div.m-area>div.m-panel.m-zoompanel>button.m-panel-btn {
     background-color: #71A7D3 !important;
     color: white !important;
-    display: block !important;
+    /* display: block !important;*/
+}
+
+.m-areas>div.m-area>div.m-panel.m-zoompanel.opened.no-collapsible {
+    border-radius: 0px;
 }
 
 .m-areas>div.m-area>div.m-panel.m-zoompanel .m-panel-controls button,

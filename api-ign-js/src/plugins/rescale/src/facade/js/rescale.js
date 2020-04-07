@@ -46,14 +46,17 @@ export default class Rescale extends M.Plugin {
      * @private
      * @type {boolean}
      */
-    this.collapsible = options.collapsible || true;
+    this.collapsible = options.collapsible;
+    if (this.collapsible === undefined) this.collapsible = true;
+
 
     /**
      * This variable indicates if this plugin is collapsed on load.
      * @private
      * @type {boolean}
      */
-    this.collapsed = options.collapsed || true;
+    this.collapsed = options.collapsed;
+    if (this.collapsed === undefined) this.collapsed = true;
 
     /**
      * Name of the plugin

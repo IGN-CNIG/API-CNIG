@@ -9,8 +9,8 @@ const map = M.map({
 });
 
 const mp = new Rescale({
-  collapsible: true,
-  collapsed: true,
+  collapsible: false,
+  collapsed: false,
   position: 'BL',
 });
 

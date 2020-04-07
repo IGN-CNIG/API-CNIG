@@ -49,6 +49,7 @@ export default class ZoomPanel extends M.Plugin {
      * @type {boolean}
      */
     this.collapsed = options.collapsed;
+    if (this.collapsed === undefined) this.collapsed = true;
 
     /**
      * Collapsible attribute
@@ -56,6 +57,7 @@ export default class ZoomPanel extends M.Plugin {
      * @type {boolean}
      */
     this.collapsible = options.collapsible;
+    if (this.collapsible === undefined) this.collapsible = true;
 
     /**
      * Position of plugin
