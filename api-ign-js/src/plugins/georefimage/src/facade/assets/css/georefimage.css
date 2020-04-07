@@ -310,7 +310,7 @@
 .m-areas>div.m-area>div.m-panel.m-georefimage {
     -webkit-transition: max-height .33s ease-in-out 0s;
     transition: max-height .33s ease-in-out 0s;
-    max-height: 100vh;
+    /*max-height: 100vh;*/
 }
 
 .m-areas>div.m-area>div.m-panel.m-georefimage.collapsed {

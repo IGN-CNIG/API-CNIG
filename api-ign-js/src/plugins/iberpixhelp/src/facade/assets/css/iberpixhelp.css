@@ -14,9 +14,9 @@ div.m-areas>div.m-area>div.m-panel-iberpixhelp.opened {
     left: calc(50vw - 250px);
 }
 
-.m-areas>div.m-area>div.m-panel.m-panel-iberpixhelp.opened>button.m-panel-btn.g-cartografia-flecha-derecha {
+/* .m-areas>div.m-area>div.m-panel.m-panel-iberpixhelp.opened>button.m-panel-btn.g-cartografia-flecha-derecha {
     color: white !important;
-}
+} */
 
 /* Opening/closing buttons */
 
