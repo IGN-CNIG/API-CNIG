@@ -38,7 +38,6 @@ div.m-area.m-bottom.m-right>div.m-panel.ign-search-panel.collapsed>button,
     align-items: center;
     background-color: white;
     display: flex;
-    position: absolute;
     width: 100%;
 }
 
@@ -137,14 +136,14 @@ div.m-area.m-bottom.m-right>div.m-panel.ign-search-panel.collapsed>button,
     display: none;
 }*/
 
-div.m-area.m-left > div.m-panel.ign-search-panel.opened > button {
-  position: absolute;
-  right: -40px;
+div.m-area.m-left>div.m-panel.ign-search-panel.opened>button {
+    position: absolute;
+    right: -40px;
 }
 
-div.m-area.m-right > div.m-panel.ign-search-panel.opened > button {
-  position: absolute;
-  left: -40px;
+div.m-area.m-right>div.m-panel.ign-search-panel.opened>button {
+    position: absolute;
+    left: -40px;
 }
 
 .m-ignsearch>.search-panel>button#m-ignsearch-locate-button,
