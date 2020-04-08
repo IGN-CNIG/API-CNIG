@@ -65,28 +65,25 @@ export default class OverviewMap extends M.Plugin {
      * @private
      * @type {Number}
      */
-    this.baseLayer_ = options !== undefined ? options.baseLayer : undefined;
+    this.baseLayer_ = options !== undefined ? options.baseLayer : 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true';
 
     /**
      * Vendor options
      * @public
      * @type {Object}
      */
-    this.vendorOptions = vendorOptions || {};
+    this.vendorOptions = {
+      collapsed: true,
+      collapsible: true,
+    };
 
-    /**
-     * Collapsed flad
-     * @public
-     * @type {Boolean}
-     */
-    this.vendorOptions.collapsed = vendorOptions !== undefined ? vendorOptions.collapsed : false;
+    if (options !== undefined && options.collapsed !== undefined && (options.collapsed === false || options.collapsed === 'false')) {
+      this.vendorOptions.collapsed = false;
+    }
 
-    /**
-     * Collapsible flag
-     * @public
-     * @type {Boolean}
-     */
-    this.vendorOptions.collapsible = vendorOptions !== undefined ? vendorOptions.collapsible : true;
+    if (options !== undefined && options.collapsible !== undefined && (options.collapsible === false || options.collapsible === 'false')) {
+      this.vendorOptions.collapsible = false;
+    }
 
     /**
      * Name of the plugin
