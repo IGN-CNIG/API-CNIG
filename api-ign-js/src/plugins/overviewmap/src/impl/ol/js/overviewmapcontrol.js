@@ -47,7 +47,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
 
     this.zoom_ = options.zoom || 4;
 
-    this.baseLayer_ = options.baseLayer;
+    this.baseLayer_ = options.baseLayer || 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true';
 
     /**
      * Facade of the map
