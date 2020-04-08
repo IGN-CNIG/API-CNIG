@@ -97,7 +97,7 @@
         })
 
         function crearPlugin(posicion) {
-            mp = new M.plugin.Infocatastro({
+            mp = new M.plugin.InfoCatastro({
                 position: posicion,
             });
 
