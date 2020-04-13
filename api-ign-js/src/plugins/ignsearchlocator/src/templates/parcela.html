@@ -2,37 +2,32 @@
     <div class="m-xylocator-panel panel-codigo">
         <div class="title">{{translations.titleparcela}}</div>
         <div class="m-xylocator-datas">
-            <div id="m-searchParams-container" class="m-searchParams-tab m-tabcontent-referencelocatorcatastro">
-
-                <div id="m-xylocator-coordinatesSystemParcela">
-                    <span>{{translations.province}}:</span>
-                    <select id="m-searchParamsProvincia-select" name="srs" class="dropdown">
-                        <option value="0">{{translations.selectprov}}</option>
-                        <option value="04">ALMERÍA</option>
-                        <option value="11">CÁDIZ</option>
-                        <option value="14">CÓRDOBA</option>
-                        <option value="18">GRANADA</option>
-                        <option value="21">HUELVA</option>
-                        <option value="23">JAÉN</option>
-                        <option value="29">MÁLAGA</option>
-                        <option value="41">SEVILLA</option>
-                    </select>
-                </div>
+            <div id="m-searchParams-container">
+                <span>{{translations.province}}:</span>
+                <select id="m-searchParamsProvincia-select" name="srs" class="dropdown">
+                    <option value="0">Seleccione una provincia</option>
+                    <option value="04">ALMERÍA</option>
+                    <option value="11">CÁDIZ</option>
+                    <option value="14">CÓRDOBA</option>
+                    <option value="18">GRANADA</option>
+                    <option value="21">HUELVA</option>
+                    <option value="23">JAÉN</option>
+                    <option value="29">MÁLAGA</option>
+                    <option value="41">SEVILLA</option>
+                </select>
                 <br>
 
-                <div id="m-xylocator-coordinatesSystemParcela">
-                    <span>{{translations.municipality}}:</span>
-                    <select id="m-searchParamsMunicipio-select" name="Municipios" class="dropdown">
-                        <option value="0">{{translations.selectmuni}}</option>
-                    </select>
-                </div>
+                <span>{{translations.municipality}}:</span>
+                <select id="m-searchParamsMunicipio-select" name="Municipios" class="dropdown">
+                    <option value="0">{{translations.selectmuni}}</option>
+                </select>
                 <br>
 
                 <div id="m-xylocator-dms">
-                    <span>{{translations.estate}}:</span>
+                    <p class="parcela--input">{{translations.estate}}:</p>
                     <input type="text" id="m-searchParamsPoligono-input" style="color:black">
                     <br>
-                    <span>{{translations.plot}}:</span>
+                    <p class="parcela--input">{{translations.plot}}:</p>
                     <input type="text" id="m-searchParamsParcela-input" style="color:black">
                 </div>
             </div>

@@ -21,9 +21,7 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
     height: 40px;
 }
 
-.m-ignsearchlocator .search-panel * {
-    color: black;
-}
+
 
 .m-ignsearchlocator .search-panel {
     background-color: white;
@@ -124,9 +122,27 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
     cursor: pointer;
 }
 
-.m-ignsearchlocator .search-panel button span {
+#m-ignsearchlocator-parcela-button {
     color: #7A7A73;
     font-size: 1.4em;
+}
+
+#m-ignsearchlocator-xylocator-button {
+    color: #7A7A73;
+    font-size: 1.4em;
+}
+
+#m-ignsearchlocator-clear-button {
+    color: #7A7A73;
+    font-size: 1.4em;
+}
+
+select#m-searchParamsProvincia-select {
+    margin-left: 15px;
+}
+
+select#m-searchParamsMunicipio-select {
+    margin-left: 11px;
 }
 
 .m-ignsearchlocator .search-panel .icon-papelera::before {
@@ -246,6 +262,37 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
     margin-bottom: 5px;
 }
 
+input#m-searchParamsParcela-input {
+    width: 50%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+input#m-searchParamsPoligono-input {
+    width: 50%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+p.parcela--input {
+    width: 25%;
+    display: inline-table;
+}
+
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas {
     width: 92%;
     padding-left: 4%;
@@ -255,6 +302,8 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div {
     margin-bottom: 4%;
     margin-top: 5%;
+    display: table;
+    width: 100%;
 }
 
 /***************************
@@ -406,28 +455,6 @@ DROPDOWN ****************************/
     margin-top: 3%;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms p {
-    font-weight: bold;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms>div {
-    display: flex;
-}
-
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms>div>div>input[type="number"] {
-    width: 3rem;
-    margin-right: 10px;
-}
-
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms>div>div>span {
-    font-size: 24px;
-}
-
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container #m-xylocator-dms .m-xylocator-dms-radio {
-    line-height: 28px;
-}
 
 /****************************
  INTERNET EXPLORER HACKS

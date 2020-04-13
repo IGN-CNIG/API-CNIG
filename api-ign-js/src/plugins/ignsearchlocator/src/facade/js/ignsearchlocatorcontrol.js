@@ -1131,8 +1131,10 @@ export default class IGNSearchLocatorControl extends M.Control {
     // if drawing is active
     if (clickedGeometry) {
       document.getElementById(drawingDiv).style.backgroundColor = '#71a7d3';
+      document.getElementById(drawingDiv).style.color = 'white';
     } else {
       document.getElementById(drawingDiv).style.backgroundColor = 'white';
+      document.getElementById(drawingDiv).style.color = '#7A7A73';
     }
   }
 
