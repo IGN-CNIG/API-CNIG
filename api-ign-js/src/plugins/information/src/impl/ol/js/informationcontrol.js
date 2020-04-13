@@ -7,11 +7,11 @@ import informationLayersTemplate from '../../../templates/information_layers';
 import { getValue } from '../../../facade/js/i18n/language';
 
 /**
-* Regular expressions of Information
-* @type {object}
-* @public
-* @api
-*/
+ * Regular expressions of Information
+ * @type {object}
+ * @public
+ * @api
+ */
 const regExs = {
   gsResponse: /^results[\w\s\S]*'http:/i,
   msNewFeature: /feature(\s*)(\w+)(\s*):/i,
@@ -576,6 +576,7 @@ export default class InformationControl extends M.impl.Control {
         }
       });
     });
+    this.popup_ = popup;
   }
 
   /**
@@ -590,6 +591,10 @@ export default class InformationControl extends M.impl.Control {
       content.classList.remove('m-content-collapsed');
       target.classList.remove('m-arrow-right');
       target.classList.add('m-arrow-down');
+      const coordinates = this.popup_.getCoordinate();
+      if (!M.utils.isNullOrEmpty(this.popup_.getImpl().panIntoView)) {
+        this.popup_.getImpl().panIntoView(coordinates);
+      }
     } else {
       content.classList.add('m-content-collapsed');
       target.classList.add('m-arrow-right');
