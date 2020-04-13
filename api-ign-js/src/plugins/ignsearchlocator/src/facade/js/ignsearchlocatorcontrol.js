@@ -854,7 +854,6 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.inputPoligono = compiledXYLocator.querySelector('#m-searchParamsPoligono-input');
       this.inputParcela = compiledXYLocator.querySelector('#m-searchParamsParcela-input');
 
-      compiledXYLocator.querySelector('select#m-searchParamsProvincia-select').addEventListener('change', evt => this.manageInputs_(evt));
       const buttonParamsSearch = compiledXYLocator.querySelector('button#m-searchParams-button');
       buttonParamsSearch.addEventListener('click', e => this.onParamsSearch(e));
       this.resultsBox.appendChild(compiledXYLocator);
