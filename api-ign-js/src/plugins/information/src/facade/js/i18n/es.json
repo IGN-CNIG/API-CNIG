@@ -5,5 +5,8 @@
   "tooltip": "Consultar capas",
   "title": "Información",
   "not_queryable": "No existen capas consultables",
-  "querying": "Obteniendo información..."
+  "querying": "Obteniendo información...",
+  "unsupported_format": "Formato no soportado",
+  "no_info": "No existe información asociada",
+  "info_of": "Información de"
 }

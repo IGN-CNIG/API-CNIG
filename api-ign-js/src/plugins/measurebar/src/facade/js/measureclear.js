@@ -1,5 +1,6 @@
 import MeasureClearImpl from '../../impl/ol/js/measureclear';
 import measureclearHTML from '../../templates/measureclear';
+import { getValue } from './i18n/language';
 
 /**
  * @classdesc
@@ -23,7 +24,7 @@ export default class MeasureClear extends M.Control {
 
     // checks if the implementation can create MeasureClear
     if (M.utils.isUndefined(MeasureClearImpl)) {
-      M.Exception('La implementación usada no puede crear controles MeasureClear');
+      M.Exception(getValue('exception.impl_clear'));
     }
   }
 
@@ -39,6 +40,9 @@ export default class MeasureClear extends M.Control {
   createView(map) {
     return M.template.compileSync(measureclearHTML, {
       jsonp: true,
+      vars: {
+        translations: getValue('text'),
+      },
     });
   }
 

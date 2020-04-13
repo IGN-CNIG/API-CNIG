@@ -1,5 +1,7 @@
 import MeasureBar from 'facade/measurebar';
 
+// M.language.setLang('en');
+
 const map = M.map({
   container: 'mapjs',
 });

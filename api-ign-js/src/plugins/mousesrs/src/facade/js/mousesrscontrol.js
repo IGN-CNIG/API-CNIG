@@ -4,6 +4,7 @@
 
 import MouseSRSImplControl from '../../impl/ol/js/mousesrscontrol';
 import template from '../../templates/mousesrs';
+import { getValue } from './i18n/language';
 
 export default class MouseSRSControl extends M.Control {
   /**
@@ -15,11 +16,11 @@ export default class MouseSRSControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits) {
+  constructor(srs, label, precision, geoDD, utmDD, tooltip) {
     if (M.utils.isUndefined(MouseSRSImplControl)) {
-      M.exception('La implementación usada no puede crear controles MouseSRSControl');
+      M.exception(getValue('exception.impl'));
     }
-    const impl = new MouseSRSImplControl(srs, label, precision, geoDecimalDigits, utmDecimalDigits);
+    const impl = new MouseSRSImplControl(srs, label, precision, geoDD, utmDD, tooltip);
     super(impl, 'MouseSRS');
   }
 
@@ -33,7 +34,13 @@ export default class MouseSRSControl extends M.Control {
    */
   createView(map) {
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            tooltip: getValue('tooltip'),
+          },
+        },
+      });
       success(html);
     });
   }

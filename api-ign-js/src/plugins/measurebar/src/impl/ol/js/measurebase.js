@@ -1,5 +1,6 @@
 import tooltipPointerHTML from '../../../templates/measure_pointer_tooltip';
 import tooltipHTML from '../../../templates/measure_tooltip';
+import { getValue } from '../../../facade/js/i18n/language';
 
 /**
  * @classdesc
@@ -211,7 +212,13 @@ export default class Measure extends M.impl.Control {
    * @return {Promise} Template tooltip
    */
   createHelpTooltip_() {
-    const helpTooltipElement = M.template.compileSync(tooltipPointerHTML, { jsonp: true });
+    const helpTooltipElement = M.template.compileSync(tooltipPointerHTML, {
+      jsonp: true,
+      vars: {
+        translations: getValue('text'),
+      },
+    });
+
     this.helpTooltip_ = new ol.Overlay({
       element: helpTooltipElement,
       offset: [15, 0],
@@ -227,7 +234,13 @@ export default class Measure extends M.impl.Control {
    * @function
    */
   createMeasureTooltip_() {
-    const measureTooltipElement = M.template.compileSync(tooltipHTML, { jsonp: true });
+    const measureTooltipElement = M.template.compileSync(tooltipHTML, {
+      jsonp: true,
+      vars: {
+        translations: getValue('text'),
+      },
+    });
+
     if (!M.utils.isNullOrEmpty(this.measureTooltip_)) {
       this.overlays_.push(this.measureTooltip_);
     }

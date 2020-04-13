@@ -4,6 +4,7 @@
 
 import OverviewMapImplControl from 'impl/overviewmapcontrol';
 import template from 'templates/overviewmap';
+import { getValue } from './i18n/language';
 
 export default class OverviewMapControl extends M.Control {
   /**
@@ -17,7 +18,7 @@ export default class OverviewMapControl extends M.Control {
    */
   constructor(options = {}, vendorOptions = {}) {
     if (M.utils.isUndefined(OverviewMapImplControl)) {
-      M.exception('La implementación usada no puede crear controles OverviewMapControl');
+      M.exception(getValue('exception.impl'));
     }
     const impl = new OverviewMapImplControl(options, vendorOptions);
     super(impl, 'OverviewMap');

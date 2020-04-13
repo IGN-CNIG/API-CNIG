@@ -4,7 +4,7 @@
 import ExtendedMouse from './extendedMouse';
 
 export default class MouseSRSControl extends M.impl.Control {
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits) {
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip) {
     super();
 
     /**
@@ -44,6 +44,14 @@ export default class MouseSRSControl extends M.impl.Control {
      * @type {number}
      */
     this.utmDecimalDigits = utmDecimalDigits;
+
+    /**
+     * Tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip = tooltip;
   }
 
   /**
@@ -65,7 +73,7 @@ export default class MouseSRSControl extends M.impl.Control {
       undefinedHTML: '',
       className: 'm-mouse-srs',
       target: html,
-      tooltip: 'Coordenadas',
+      tooltip: this.tooltip,
       geoDecimalDigits: this.geoDecimalDigits,
       utmDecimalDigits: this.utmDecimalDigits,
     });

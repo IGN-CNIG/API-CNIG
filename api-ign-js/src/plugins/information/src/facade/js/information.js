@@ -4,6 +4,7 @@
 import '../assets/css/information';
 import api from '../../api';
 import InformationControl from './informationcontrol';
+import { getValue } from './i18n/language';
 
 export default class Information extends M.Plugin {
   /**
@@ -46,7 +47,7 @@ export default class Information extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.tooltip_ = options.tooltip || 'Consultar capas';
+    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
      * Information format
@@ -97,7 +98,9 @@ export default class Information extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new InformationControl(this.format_, this.featureCount_, this.buffer_));
+    const fc = this.featureCount_;
+    const ctrl = new InformationControl(this.format_, fc, this.buffer_, this.tooltip_);
+    this.controls_.push(ctrl);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelInformation', {
       className: 'm-plugin-information',

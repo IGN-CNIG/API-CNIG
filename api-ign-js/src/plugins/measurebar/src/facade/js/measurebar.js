@@ -4,6 +4,7 @@
 import MeasureLength from './measurelength';
 import MeasureArea from './measurearea';
 import MeasureClear from './measureclear';
+import { getValue } from './i18n/language';
 import '../assets/css/measurebar';
 
 export default class MeasureBar extends M.Plugin {
@@ -95,7 +96,7 @@ export default class MeasureBar extends M.Plugin {
       position: M.ui.position[this.position_],
       className: 'm-panel-measurebar',
       collapsedButtonClass: 'measurebar-regla',
-      tooltip: 'Herramientas de medición',
+      tooltip: getValue('text.tooltip'),
     });
 
     this.panel_.addControls(this.controls_);

@@ -1,23 +1,6 @@
 {
   "exception": {
     "impl": "The implementation used cannot create XYLocatorControl.",
-    "wrong_coords": "The coordinates entered are not correct.",
-    "transforming": "Error performing the transformation."
   },
-  "search_result": "Search results",
-  "tooltip": "Search by coordinates",
-  "geographic": "Geographic",
-  "zone": "zone",
-  "title": "Coordinate locator",
-  "srs": "Coordinate system",
-  "longitude": "Longitude",
-  "latitude": "Latitude",
-  "locate": "Locate",
-  "clean": "Clean",
-  "north": "North",
-  "south": "South",
-  "east": "East",
-  "west": "West",
-  "dms": "DMS",
-  "dd": "DD"
+  "tooltip": "Search by coordinates"
 }

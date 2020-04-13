@@ -3,6 +3,7 @@
  */
 import '../assets/css/mousesrs';
 import MouseSRSControl from './mousesrscontrol';
+import { getValue } from './i18n/language';
 
 export default class MouseSRS extends M.Plugin {
   /**
@@ -45,7 +46,7 @@ export default class MouseSRS extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.tooltip_ = options.tooltip || 'Muestra coordenadas';
+    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
      * Shown coordinates SRS
@@ -100,9 +101,9 @@ export default class MouseSRS extends M.Plugin {
       this.precision,
       this.geoDecimalDigits,
       this.utmDecimalDigits,
+      this.tooltip_,
     );
     this.controls_.push(this.control_);
-
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelMouseSRS', {
       collapsible: false,

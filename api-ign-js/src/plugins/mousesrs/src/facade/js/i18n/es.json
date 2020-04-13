@@ -1,0 +1,6 @@
+{
+  "exception": {
+    "impl": "La implementación usada no puede crear controles MouseSRSControl."
+  },
+  "tooltip": "Coordenadas"
+}

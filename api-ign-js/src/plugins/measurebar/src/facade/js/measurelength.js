@@ -1,6 +1,7 @@
 import Measure from './measurebase';
 import MeasureLengthImpl from '../../impl/ol/js/measurelength';
 import measurelengthHTML from '../../templates/measurelength';
+import { getValue } from './i18n/language';
 
 /**
  * @classdesc
@@ -22,7 +23,7 @@ export default class MeasureLength extends Measure {
 
     // checks if the implementation can create WMC layers
     if (M.utils.isUndefined(MeasureLengthImpl)) {
-      M.Exception('La implementación usada no puede crear controles MeasureLength');
+      M.Exception(getValue('exception.impl_length'));
     }
   }
 
@@ -69,4 +70,4 @@ MeasureLength.TEMPLATE = 'measurelength.html';
  * @public
  * @api stable
  */
-export const HELP_KEEP_MESSAGE = 'Click para continuar dibujando la línea';
+export const HELP_KEEP_MESSAGE = getValue('text.keep_drawing');

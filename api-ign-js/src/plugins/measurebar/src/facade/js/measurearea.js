@@ -1,6 +1,7 @@
 import Measure from './measurebase';
 import MeasureAreaImpl from '../../impl/ol/js/measurearea';
 import measureareaHTML from '../../templates/measurearea';
+import { getValue } from './i18n/language';
 
 export default class MeasureArea extends Measure {
   constructor() {
@@ -12,7 +13,7 @@ export default class MeasureArea extends Measure {
 
     // checks if the implementation can create WMC layers
     if (M.utils.isUndefined(MeasureAreaImpl)) {
-      M.Exception('La implementación usada no puede crear controles MeasureArea');
+      M.Exception(getValue('exception.impl_area'));
     }
   }
   /**
@@ -60,4 +61,4 @@ MeasureArea.TEMPLATE = 'measurearea.html';
  * @public
  * @api stable
  */
-export const HELP_KEEP_MESSAGE = 'Click para continuar dibujando el área';
+export const HELP_KEEP_MESSAGE = getValue('text.keep_drawing_area');

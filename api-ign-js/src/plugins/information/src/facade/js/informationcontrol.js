@@ -4,6 +4,7 @@
 
 import InformationImplControl from '../../impl/ol/js/informationcontrol';
 import template from '../../templates/information';
+import { getValue } from './i18n/language';
 
 export default class InformationControl extends M.Control {
   /**
@@ -15,12 +16,13 @@ export default class InformationControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(format, featureCount, buffer) {
+  constructor(format, featureCount, buffer, tooltip) {
     if (M.utils.isUndefined(InformationImplControl)) {
-      M.exception('La implementación usada no puede crear controles InformationControl');
+      M.exception('');
     }
     const impl = new InformationImplControl(format, featureCount, buffer);
     super(impl, 'Information');
+    this.tooltip = tooltip;
   }
 
   /**
@@ -33,7 +35,13 @@ export default class InformationControl extends M.Control {
    */
   createView(map) {
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            tooltip: this.tooltip || getValue('tooltip'),
+          },
+        },
+      });
       success(html);
     });
   }

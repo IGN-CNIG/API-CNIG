@@ -4,6 +4,7 @@
 
 import informationPopupTemplate from '../../../templates/information_popup';
 import informationLayersTemplate from '../../../templates/information_layers';
+import { getValue } from '../../../facade/js/i18n/language';
 
 /**
 * Regular expressions of Information
@@ -20,7 +21,7 @@ const regExs = {
   msUnsupportedFormat: /error(.*)unsupported(.*)info_format/i,
 };
 
-const POPUP_TITLE = 'Información';
+const POPUP_TITLE = getValue('title');
 
 export default class InformationControl extends M.impl.Control {
   constructor(format, featureCount, buffer) {
@@ -159,7 +160,7 @@ export default class InformationControl extends M.impl.Control {
     if (layerNamesUrls.length > 0) {
       this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
     } else {
-      dialogParam.info('No existen capas consultables');
+      dialogParam.info(getValue('not_queryable'));
     }
   }
 
@@ -495,7 +496,7 @@ export default class InformationControl extends M.impl.Control {
   showInfoFromURL_(layerNamesUrls, coordinate, olMap) {
     const htmlAsText = M.template.compileSync(informationPopupTemplate, {
       vars: {
-        info: 'Obteniendo información...',
+        info: getValue('querying'),
       },
       parseToHtml: false,
     });
@@ -538,7 +539,7 @@ export default class InformationControl extends M.impl.Control {
             infos.push({ formatedInfo, layerName });
           } else if (InformationControl.unsupportedFormat(info, formato)) {
             infos.push({
-              formatedInfo: M.language.getValue('getfeatureinfo').unsupported_format,
+              formatedInfo: getValue('unsupported_format'),
               layerName,
             });
           }
@@ -550,13 +551,13 @@ export default class InformationControl extends M.impl.Control {
             popup.addTab({
               icon: 'g-cartografia-info',
               title: POPUP_TITLE,
-              content: M.language.getValue('getfeatureinfo').no_info,
+              content: getValue('no_info'),
             });
           } else {
             const popupContent = M.template.compileSync(informationLayersTemplate, {
               vars: {
                 layers: infos,
-                info_of: M.language.getValue('getfeatureinfo').info_of,
+                info_of: getValue('info_of'),
               },
               parseToHtml: false,
             });

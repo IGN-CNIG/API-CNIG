@@ -1,5 +1,7 @@
 import Information from 'facade/information';
 
+// M.language.setLang('en');
+
 const map = M.map({
   container: 'mapjs',
   controls: ['scale'],
@@ -25,5 +27,5 @@ const campamentos = new M.layer.GeoJSON({
 
 map.addLayers([layerinicial, campamentos]);
 map.addPlugin(mp);
-window.mp = mp;
+// window.mp = mp;
 window.map = map;

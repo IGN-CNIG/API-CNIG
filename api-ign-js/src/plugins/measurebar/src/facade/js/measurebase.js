@@ -1,3 +1,5 @@
+import { getValue } from './i18n/language';
+
 export default class Measure extends M.Control {
   /**
    * @classdesc
@@ -32,6 +34,9 @@ export default class Measure extends M.Control {
   createView(map) {
     return M.template.compileSync(this.template_, {
       jsonp: true,
+      vars: {
+        translations: getValue('text'),
+      },
     });
   }
 
@@ -113,4 +118,4 @@ Measure.MEASURE_TOOLTIP_TEMPLATE = 'measure_tooltip.html';
  * @public
  * @api stable
  */
-Measure.HELP_MESSAGE = 'Click para empezar a dibujar';
+Measure.HELP_MESSAGE = getValue('text.click_draw');
