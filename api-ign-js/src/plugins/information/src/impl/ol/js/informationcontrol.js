@@ -592,9 +592,9 @@ export default class InformationControl extends M.impl.Control {
       target.classList.remove('m-arrow-right');
       target.classList.add('m-arrow-down');
       const coordinates = this.popup_.getCoordinate();
-      if (!M.utils.isNullOrEmpty(this.popup_.getImpl().panIntoView)) {
-        this.popup_.getImpl().panIntoView(coordinates);
-      }
+      // if (!M.utils.isNullOrEmpty(this.popup_.getImpl().panIntoView)) {
+      this.popup_.getImpl().panIntoView(coordinates);
+      // }
     } else {
       content.classList.add('m-content-collapsed');
       target.classList.add('m-arrow-right');

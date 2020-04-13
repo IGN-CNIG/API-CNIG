@@ -62,6 +62,22 @@
             center: [-467062.8225, 4783459.6216],
         });
 
+        const layerinicial = new M.layer.WMS({
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeBoundary',
+            legend: 'Limite administrativo',
+            tiled: false,
+        }, {});
+
+        const layerUA = new M.layer.WMS({
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeUnit',
+            legend: 'Unidad administrativa',
+            tiled: false
+        }, {});
+
+        map.addLayers([layerinicial, layerUA]);
+
         const mp = new M.plugin.Information({
             position: 'TR',
         });
