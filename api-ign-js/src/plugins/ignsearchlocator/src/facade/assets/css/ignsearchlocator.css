@@ -137,13 +137,6 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
     font-size: 1.4em;
 }
 
-select#m-searchParamsProvincia-select {
-    margin-left: 15px;
-}
-
-select#m-searchParamsMunicipio-select {
-    margin-left: 11px;
-}
 
 .m-ignsearchlocator .search-panel .icon-papelera::before {
     vertical-align: bottom;
