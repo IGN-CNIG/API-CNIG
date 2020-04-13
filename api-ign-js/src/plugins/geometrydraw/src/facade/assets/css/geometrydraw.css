@@ -23,16 +23,12 @@ div.m-panel.m-geometrydraw.collapsed {
     height: 40px;
 }
 
-.m-areas>div.m-area>div.m-panel>div.m-panel-controls>div {
+.m-areas>div.m-area>div.m-panel.m-geometrydraw>div.m-panel-controls>div {
     width: max-content;
 }
 
 div.m-panel.m-geometrydraw.collapsed * {
     display: none
-}
-
-.m-areas>div.m-area>div.m-panel>div.m-panel-controls>div {
-    width: max-content;
 }
 
 div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
