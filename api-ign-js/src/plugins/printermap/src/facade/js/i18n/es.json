@@ -1,0 +1,22 @@
+{
+  "exception": {
+    "impl": "La implementación usada no puede crear controles PrinterMap.",
+    "encode": "La implementación usada no posee el método encodeLayer.",
+    "tile": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
+    "error": "Se ha producido un error en la impresión."
+  },
+  "tooltip": "Impresión del mapa'",
+  "credits": "Impresión generada a través del API-IGN",
+  "no_title": "(Sin título)",
+  "zone": "huso",
+  "base": "Cartografía base",
+  "title": "Título",
+  "description": "Descripción",
+  "layout": "Plantilla",
+  "format": "Formato",
+  "force": "Forzar escala",
+  "print": "Imprimir",
+  "delete": "Borrar",
+  "download": "Descargar",
+  "minimize": "Minimizar el control de impresión"
+}

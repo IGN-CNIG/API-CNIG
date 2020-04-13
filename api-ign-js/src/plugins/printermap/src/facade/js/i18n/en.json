@@ -1,0 +1,22 @@
+{
+  "exception": {
+    "impl": "The implementation used cannot create PrinterMap.",
+    "encode": "The implementation used cannot use encodeLayer.",
+    "tile": "The request for some tile has caused a printing error. <br/>Please try again.",
+    "error": "An error has occurred while printing."
+  },
+  "tooltip": "Map Printing",
+  "credits": "Print generated through API-IGN",
+  "no_title": "(Untitled)",
+  "zone": "zone",
+  "base": "Base Cartography",
+  "title": "Title",
+  "description": "Description",
+  "layout": "Layout",
+  "format": "Format",
+  "force": "Force scale",
+  "print": "Print",
+  "delete": "Remove",
+  "download": "Download",
+  "minimize": "Minimize print control"
+}

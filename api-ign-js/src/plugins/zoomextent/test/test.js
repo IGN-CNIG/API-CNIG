@@ -1,5 +1,7 @@
 import ZoomExtent from 'facade/zoomextent';
 
+// M.language.setLang('en');
+
 const map = M.map({
   container: 'mapjs',
 });

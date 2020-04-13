@@ -1,5 +1,7 @@
 import PrinterMap from 'facade/printermap';
 
+// M.language.setLang('en');
+
 const map = M.map({
   container: 'mapjs',
   zoom: 5,
@@ -54,8 +56,8 @@ const photogram = new ol.layer.Image({
 });
 
 const printermap = new PrinterMap({
-  collapsed: false,
-  collapsible: false,
+  collapsed: true,
+  collapsible: true,
   position: 'TR',
 });
 

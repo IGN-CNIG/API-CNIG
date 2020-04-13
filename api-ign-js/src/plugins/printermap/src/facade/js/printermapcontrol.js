@@ -4,6 +4,7 @@
 
 import PrinterMapControlImpl from '../../impl/ol/js/printermapcontrol';
 import printermapHTML from '../../templates/printermap';
+import { getValue } from './i18n/language';
 
 export default class PrinterMapControl extends M.Control {
   /**
@@ -20,11 +21,11 @@ export default class PrinterMapControl extends M.Control {
     super(impl, PrinterMapControl.NAME);
 
     if (M.utils.isUndefined(PrinterMapControlImpl)) {
-      M.exception('La implementación usada no puede crear controles PrinterMap');
+      M.exception(getValue('exception.impl'));
     }
 
     if (M.utils.isUndefined(PrinterMapControlImpl.prototype.encodeLayer)) {
-      M.exception('La implementación usada no posee el método encodeLayer');
+      M.exception(getValue('exception.encode'));
     }
 
     /**
@@ -102,7 +103,7 @@ export default class PrinterMapControl extends M.Control {
       },
       pages: {
         clientLogo: '', // logo url
-        creditos: 'Impresión generada a través de Mapea',
+        creditos: getValue('credits'),
       },
       parameters: {
         imageSpain: 'file://E01_logo_IGN_CNIG.png',
@@ -156,9 +157,9 @@ export default class PrinterMapControl extends M.Control {
       } else if (status === 'error' || status === 'cancelled') {
         callback();
         if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
-          M.dialog.error('La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.');
+          M.dialog.error(getValue('exception.tile'));
         } else {
-          M.dialog.error('Se ha producido un error en la impresión.');
+          M.dialog.error(getValue('exception.error'));
         }
 
         this.queueContainer_.lastChild.remove();
@@ -239,6 +240,21 @@ export default class PrinterMapControl extends M.Control {
 
         // forceScale
         capabilities.forceScale = this.options_.forceScale;
+
+        // translations
+        capabilities.translations = {
+          tooltip: getValue('tooltip'),
+          title: getValue('title'),
+          description: getValue('description'),
+          layout: getValue('layout'),
+          format: getValue('format'),
+          force: getValue('force'),
+          print: getValue('print'),
+          delete: getValue('delete'),
+          download: getValue('download'),
+          minimize: getValue('minimize'),
+        };
+
         const html = M.template.compileSync(printermapHTML, { jsonp: true, vars: capabilities });
         this.addEvents(html);
         success(html);
@@ -548,7 +564,7 @@ export default class PrinterMapControl extends M.Control {
     const parameters = this.params_.parameters;
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
     const attribution = attributionContainer !== null ?
-      `Cartografía base: ${attributionContainer.innerHTML}` : '';
+      `${getValue('base')}: ${attributionContainer.innerHTML}` : '';
 
     if (outputFormat === 'jpg') {
       layout += ' jpg';
@@ -668,7 +684,7 @@ export default class PrinterMapControl extends M.Control {
     const queueElem = document.createElement('li');
     let title = this.inputTitle_.value;
     if (M.utils.isNullOrEmpty(title)) {
-      title = PrinterMapControl.NO_TITLE;
+      title = getValue('no_title');
     }
     queueElem.innerHTML = title;
     return queueElem;
@@ -710,16 +726,16 @@ export default class PrinterMapControl extends M.Control {
         projectionLegend = 'WGS84 (3857)';
         break;
       case 'EPSG:25831':
-        projectionLegend = 'UTM zone 31N (25831)';
+        projectionLegend = `UTM ${getValue('zone')} 31N (25831)`;
         break;
       case 'EPSG:25830':
-        projectionLegend = 'UTM zone 30N (25830)';
+        projectionLegend = `UTM ${getValue('zone')} 30N (25830)`;
         break;
       case 'EPSG:25829':
-        projectionLegend = 'UTM zone 29N (25829)';
+        projectionLegend = `UTM ${getValue('zone')} 29N (25829)`;
         break;
       case 'EPSG:25828':
-        projectionLegend = 'UTM zone 28N (25828)';
+        projectionLegend = `UTM ${getValue('zone')} 28N (25828)`;
         break;
       default:
         projectionLegend = '';
@@ -777,12 +793,3 @@ PrinterMapControl.LOADING_CLASS = 'printing';
  * @api stable
  */
 PrinterMapControl.DOWNLOAD_ATTR_NAME = 'data-donwload-url-print';
-
-/**
- * M.template for this controls
- * @const
- * @type {string}
- * @public
- * @api stable
- */
-PrinterMapControl.NO_TITLE = '(Sin título)';

@@ -4,6 +4,7 @@
 
 import ZoomExtentImplControl from '../../impl/ol/js/zoomextentcontrol';
 import template from '../../templates/zoomextent';
+import { getValue } from './i18n/language';
 
 export default class ZoomExtentControl extends M.Control {
   /**
@@ -17,7 +18,7 @@ export default class ZoomExtentControl extends M.Control {
    */
   constructor() {
     if (M.utils.isUndefined(ZoomExtentImplControl)) {
-      M.exception('La implementación usada no puede crear controles ZoomExtentControl');
+      M.exception(getValue('exception.impl'));
     }
     const impl = new ZoomExtentImplControl();
     super(impl, 'ZoomExtent');
@@ -33,7 +34,13 @@ export default class ZoomExtentControl extends M.Control {
    */
   createView(map) {
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            tooltip: getValue('tooltip'),
+          },
+        },
+      });
       success(html);
     });
   }

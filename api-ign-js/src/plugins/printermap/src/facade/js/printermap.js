@@ -3,6 +3,7 @@
  */
 import 'assets/css/printermap';
 import PrinterMapControl from './printermapcontrol';
+import { getValue } from './i18n/language';
 
 export default class PrinterMap extends M.Plugin {
   /**
@@ -95,7 +96,7 @@ export default class PrinterMap extends M.Plugin {
       className: 'm-printermap',
       collapsedButtonClass: 'icon-impresora',
       position: M.ui.position[this.position_],
-      tooltip: 'Impresión del mapa',
+      tooltip: getValue('tooltip'),
     });
     this.panel_.on(M.evt.ADDED_TO_MAP, (html) => {
       M.utils.enableTouchScroll(html);
