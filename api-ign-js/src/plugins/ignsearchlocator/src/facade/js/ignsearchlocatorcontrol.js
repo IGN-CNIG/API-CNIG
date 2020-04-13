@@ -419,6 +419,9 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox.innerHTML = '';
     } else {
       this.resultsBox.innerHTML = '';
+      // Eliminamos la seleccion del xylocator y parcela
+      this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+      this.activationManager(false, 'm-ignsearchlocator-parcela-button');
       // Adds animation class during loading
       this.resultsBox.classList.add('g-cartografia-spinner');
       this.resultsBox.style.fontSize = '24px';
@@ -788,6 +791,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   clearResultsAndGeometry() {
     this.clearResults();
+    this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+    this.activationManager(false, 'm-ignsearchlocator-parcela-button');
     if (this.clickedElementLayer !== undefined) {
       this.clickedElementLayer.setStyle(this.simple);
     }
