@@ -109,6 +109,7 @@ export default class PrinterMap extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
+    // eslint-disable-next-line max-len
     this.control_ = new PrinterMapControl(this.serverUrl_, this.printTemplateUrl_, this.printStatusUrl_);
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {

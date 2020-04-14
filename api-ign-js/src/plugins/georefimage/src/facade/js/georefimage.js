@@ -1,7 +1,7 @@
 /**
  * @module M/plugin/Georefimage
  */
-import MConfig from 'M/configuration';
+// import MConfig from 'M/configuration';
 import '../assets/css/georefimage';
 import GeorefimageControl from './georefimagecontrol';
 import { getValue } from './i18n/language';
@@ -117,6 +117,7 @@ export default class Georefimage extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
+    // eslint-disable-next-line max-len
     this.control_ = new GeorefimageControl(this.serverUrl_, this.printTemplateUrl_, this.printStatusUrl_);
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('georefimage', {
