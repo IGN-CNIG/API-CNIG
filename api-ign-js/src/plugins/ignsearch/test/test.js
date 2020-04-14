@@ -12,13 +12,13 @@ const mp = new IGNSearch({
   maxResults: 10,
   noProcess: 'poblacion',
   countryCode: 'es',
-  isCollapsed: false,
-  position: 'TL',
-  reverse: true,
+  isCollapsed: true,
+  position: 'BL',
+  // reverse: true,
 
-  urlCandidates: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
-  urlFind: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
-  urlReverse: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',
+  // urlCandidates: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
+  // urlFind: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
+  // urlReverse: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',
 });
 
 map.addControls(new M.control.GetFeatureInfo('gml', { buffer: 1000 }));
