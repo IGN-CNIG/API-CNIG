@@ -60,14 +60,6 @@ export default class MeasureBar extends M.Plugin {
     this.measureArea_ = null;
 
     /**
-     * Name of this control
-     * @public
-     * @type {string}
-     * @api stable
-     */
-    this.name = 'measurebar';
-
-    /**
      * Control MeasureClear
      * @private
      * @type {M.control.MeasureClear}
@@ -102,6 +94,27 @@ export default class MeasureBar extends M.Plugin {
     this.panel_.addControls(this.controls_);
 
     this.map_.addPanels(this.panel_);
+  }
+
+  /**
+   * Name of the plugin
+   *
+   * @getter
+   * @function
+   */
+  get name() {
+    return 'measurebar';
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position_}`;
   }
 
   /**

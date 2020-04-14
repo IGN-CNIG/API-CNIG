@@ -283,7 +283,7 @@ export default class IGNSearch extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.isCollapsed}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
   }
 
   /**
