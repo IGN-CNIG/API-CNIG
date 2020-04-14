@@ -38,7 +38,12 @@ div.m-area.m-bottom.m-right>div.m-panel.ign-search-panel.collapsed>button,
     align-items: center;
     background-color: white;
     display: flex;
+    position: absolute;
     width: 100%;
+}
+
+div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearch-results {
+    bottom: 40px;
 }
 
 #m-ignsearch-results::before {
