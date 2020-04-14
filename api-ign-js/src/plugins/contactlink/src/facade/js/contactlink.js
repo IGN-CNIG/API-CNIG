@@ -124,7 +124,7 @@ export default class ContactLink extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.links.join(',')}`;
+    return `${this.name}=${this.position}`;
   }
 
   /**

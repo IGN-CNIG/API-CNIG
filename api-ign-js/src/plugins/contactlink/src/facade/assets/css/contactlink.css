@@ -1,6 +1,6 @@
 /** Estilos sobreescritos */
 .g-contactlink-link {
-    color: #71a7d3 !important;
+    color: #fff !important;
 }
 
 .g-cartografia-flecha-derecha {
@@ -9,7 +9,7 @@
 
 
 .m-areas>div.m-area>div.m-panel.m-plugin-contactlink.opened>button.m-panel-btn.g-cartografia-flecha-derecha {
-    color: white !important;
+    color: #71a7d3 !important;
 }
 
 
@@ -24,14 +24,14 @@
 }
 
 .m-areas>div.m-area>div.m-plugin-contactlink.collapsed>button.m-panel-btn {
-    background-color: white !important;
+    background-color: #71a7d3 !important;
     font-family: 'g-contactlink' !important;
 }
 
 .m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn {
     position: absolute;
     left: -2.53rem;
-    background-color: #71a7d3;
+    background-color: #fff !important;
 }
 
 .m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn.opened-left {
@@ -46,7 +46,8 @@
 *********************/
 
 .m-control.m-container.m-contactlink>div.title {
-    color: #404040 !important;
+    color: #fff !important;
+    background-color: #71a7d3;
     font-family: 'Muli',
         'sans-serif' !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
