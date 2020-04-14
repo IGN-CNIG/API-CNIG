@@ -299,6 +299,5 @@ export default class IGNSearch extends M.Plugin {
     this.control_ = null;
     this.controls_ = null;
     this.panel_ = null;
-    this.name = null;
   }
 }

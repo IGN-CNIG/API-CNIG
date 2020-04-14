@@ -15,7 +15,7 @@ export default class PrinterMapControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor() {
+  constructor(serverUrl, printTemplateUrl, printStatusUrl) {
     const impl = new PrinterMapControlImpl();
 
     super(impl, PrinterMapControl.NAME);
@@ -33,14 +33,14 @@ export default class PrinterMapControl extends M.Control {
      * @private
      * @type {String}
      */
-    this.serverUrl_ = 'https://geoprint.desarrollo.guadaltel.es';
+    this.serverUrl_ = serverUrl;
 
     /**
      * Mapfish template url
      * @private
      * @type {String}
      */
-    this.printTemplateUrl_ = 'https://geoprint.desarrollo.guadaltel.es/print/CNIG';
+    this.printTemplateUrl_ = printTemplateUrl;
 
 
     /**
@@ -48,7 +48,7 @@ export default class PrinterMapControl extends M.Control {
      * @private
      * @type {String}
      */
-    this.printStatusUrl_ = 'https://geoprint.desarrollo.guadaltel.es/print/status';
+    this.printStatusUrl_ = printStatusUrl;
 
     /**
      * Map title

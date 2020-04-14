@@ -76,6 +76,27 @@ export default class PrinterMap extends M.Plugin {
      */
     this.collapsible_ = parameters.collapsible;
     if (this.collapsible_ === undefined) this.collapsible_ = true;
+
+    /**
+     * Mapfish server url
+     * @private
+     * @type {String}
+     */
+    this.serverUrl_ = parameters.serverUrl || M.config.GEOPRINT_URL;
+
+    /**
+     * Mapfish template url
+     * @private
+     * @type {String}
+     */
+    this.printTemplateUrl_ = parameters.printTemplateUrl || M.config.PRINTERMAP_TEMPLATE;
+
+    /**
+     * Mapfish template url
+     * @private
+     * @type {String}
+     */
+    this.printStatusUrl_ = parameters.printStatusUrl || M.config.GEOPRINT_STATUS;
   }
 
   /**
@@ -88,7 +109,7 @@ export default class PrinterMap extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
-    this.control_ = new PrinterMapControl();
+    this.control_ = new PrinterMapControl(this.serverUrl_, this.printTemplateUrl_, this.printStatusUrl_);
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {
       collapsed: this.collapsed_,

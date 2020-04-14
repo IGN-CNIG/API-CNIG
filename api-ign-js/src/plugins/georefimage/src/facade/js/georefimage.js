@@ -1,6 +1,7 @@
 /**
  * @module M/plugin/Georefimage
  */
+import MConfig from 'M/configuration';
 import '../assets/css/georefimage';
 import GeorefimageControl from './georefimagecontrol';
 import { getValue } from './i18n/language';
@@ -83,6 +84,27 @@ export default class Georefimage extends M.Plugin {
       * @type { string }
       */
     this.tooltip_ = parameters.tooltip || getValue('tooltip');
+
+    /**
+     * Mapfish server url
+     * @private
+     * @type {String}
+     */
+    this.serverUrl_ = parameters.serverUrl || M.config.GEOPRINT_URL;
+
+    /**
+     * Mapfish template url
+     * @private
+     * @type {String}
+     */
+    this.printTemplateUrl_ = parameters.printTemplateUrl || M.config.GEOREFIMAGE_TEMPLATE;
+
+    /**
+     * Mapfish template url
+     * @private
+     * @type {String}
+     */
+    this.printStatusUrl_ = parameters.printStatusUrl || M.config.GEOPRINT_STATUS;
   }
 
   /**
@@ -95,7 +117,7 @@ export default class Georefimage extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
-    this.control_ = new GeorefimageControl();
+    this.control_ = new GeorefimageControl(this.serverUrl_, this.printTemplateUrl_, this.printStatusUrl_);
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('georefimage', {
       collapsed: this.collapsed_,

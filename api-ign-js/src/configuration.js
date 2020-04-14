@@ -133,6 +133,42 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
   M.config('DEFAULT_PROJ', '${mapea.proj.default}');
 
   /**
+   * Default projection
+   * @const
+   * @type {string}
+   * @public
+   * @api stable
+   */
+  M.config('GEOPRINT_URL', '${geoprint.url}');
+
+  /**
+   * Default projection
+   * @const
+   * @type {string}
+   * @public
+   * @api stable
+   */
+  M.config('GEOREFIMAGE_TEMPLATE', '${geoprint.url}' + '${georefimage.template}');
+
+  /**
+   * Default projection
+   * @const
+   * @type {string}
+   * @public
+   * @api stable
+   */
+  M.config('PRINTERMAP_TEMPLATE', '${geoprint.url}' + '${printermap.template}');
+
+  /**
+   * Default projection
+   * @const
+   * @type {string}
+   * @public
+   * @api stable
+   */
+  M.config('GEOPRINT_STATUS', '${geoprint.url}' + '${geoprint.status}');
+
+  /**
    * WMTS configuration
    *
    * @private
@@ -160,7 +196,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    */
   M.config('attributions', {
     defaultAttribution: '${attributions.defaultAttribution}',
-    defaultURL: '${attributions.defaultURL}', 
+    defaultURL: '${attributions.defaultURL}',
     url: '${attributions.url}',
     type: '${attributions.type}',
   });
