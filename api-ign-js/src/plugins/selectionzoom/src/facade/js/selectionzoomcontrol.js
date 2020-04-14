@@ -7,14 +7,14 @@ import template from '../../templates/selectionzoom';
 import SelectionZoomImpl from '../../impl/ol/js/selectionzoomcontrol';
 import { getValue } from './i18n/language';
 
-/**
- * This parameter indicates the maximum base layers of plugin
- *
- * @type {number}
- * @const
- * @private
- */
-const MAXIMUM_LAYERS = 5;
+// /**
+//  * This parameter indicates the maximum base layers of plugin
+//  *
+//  * @type {number}
+//  * @const
+//  * @private
+//  */
+// const MAXIMUM_LAYERS = 5;
 
 /**
  * This parameter indicates the maximum base layers of plugin
@@ -54,7 +54,8 @@ export default class SelectionZoomControl extends M.Control {
 
     if (layerOpts !== undefined) {
       // Array<Object> => Object: { id, title, preview, Array<MapeaLayer>}
-      this.layers = layerOpts.slice(0, MAXIMUM_LAYERS);
+      // this.layers = layerOpts.slice(0, MAXIMUM_LAYERS);
+      this.layers = layerOpts;
     }
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
     this.activeLayer = -1;
