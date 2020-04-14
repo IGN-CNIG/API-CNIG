@@ -18,6 +18,18 @@
       "type": "boolean",
       "name": "collapsible",
       "position": 2
+    }, {
+      "type": "simple",
+      "name": "serverUrl",
+      "position": 3
+    }, {
+      "type": "simple",
+      "name": "printTemplateUrl",
+      "position": 4
+    }, {
+      "type": "simple",
+      "name": "printStatusUrl",
+      "position": 5
     }]
   }],
   "files": {
@@ -33,7 +45,7 @@
   "metadata": {
     "name": "Georefimage",
     "description": "Prints map",
-    "text": "Prints current map using Mapfish in pdf, jpeg or png formats",
+    "text": "Download current map as a georeferenced image",
     "version": "1.0.0",
     "date": "",
     "author": "",
