@@ -1,7 +1,6 @@
 /**
  * @module M/plugin/Georefimage
  */
-// import MConfig from 'M/configuration';
 import '../assets/css/georefimage';
 import GeorefimageControl from './georefimagecontrol';
 import { getValue } from './i18n/language';
@@ -116,9 +115,17 @@ export default class Georefimage extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.map_ = map;
+    this.map_ = map; <<
+    << << < HEAD
     // eslint-disable-next-line max-len
-    this.control_ = new GeorefimageControl(this.serverUrl_, this.printTemplateUrl_, this.printStatusUrl_);
+    this.control_ = new GeorefimageControl(this.serverUrl_, this.printTemplateUrl_, this.printStatusUrl_); ===
+    === =
+    this.control_ = new GeorefimageControl(
+      this.serverUrl_,
+      this.printTemplateUrl_,
+      this.printStatusUrl_,
+    ); >>>
+    >>> > redmine_154489
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('georefimage', {
       collapsed: this.collapsed_,
