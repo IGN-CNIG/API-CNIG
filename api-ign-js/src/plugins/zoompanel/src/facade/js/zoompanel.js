@@ -114,6 +114,16 @@ export default class ZoomPanel extends M.Plugin {
   }
 
   /**
+   * Name of the plugin
+   *
+   * @getter
+   * @function
+   */
+  get name() {
+    return 'zoompanel';
+  }
+
+  /**
    * Get the API REST Parameters of the plugin
    *
    * @function

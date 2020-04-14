@@ -105,6 +105,16 @@ export default class ContactLink extends M.Plugin {
   }
 
   /**
+   * Name of the plugin
+   *
+   * @getter
+   * @function
+   */
+  get name() {
+    return 'contactlink';
+  }
+
+  /**
    * This function destroys this plugin
    *
    * @public
