@@ -35,6 +35,7 @@ export default class PrinterMapControl extends M.Control {
      */
     this.serverUrl_ = serverUrl;
 
+
     /**
      * Mapfish template url
      * @private
@@ -49,6 +50,7 @@ export default class PrinterMapControl extends M.Control {
      * @type {String}
      */
     this.printStatusUrl_ = printStatusUrl;
+
 
     /**
      * Map title
