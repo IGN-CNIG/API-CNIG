@@ -10,8 +10,7 @@ const map = M.map({
 });
 
 const mp = new MouseSRS({
-  position: 'TR',
-  srs: 'EPSG:4326',
+  srs: 'EPSG:25830',
 });
 
 map.addPlugin(mp);

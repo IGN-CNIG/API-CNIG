@@ -16,7 +16,7 @@ export default class MouseSRS extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options) {
+  constructor(options = {}) {
     super();
     /**
      * Facade of the map
@@ -31,14 +31,6 @@ export default class MouseSRS extends M.Plugin {
      * @type {Array<M.Control>}
      */
     this.controls_ = [];
-
-    /**
-     * Position of the plugin
-     *
-     * @private
-     * @type {string} - TL | TR | BL | BR
-     */
-    this.position_ = options.position || 'BL';
 
     /**
      * Plugin tooltip
@@ -107,7 +99,6 @@ export default class MouseSRS extends M.Plugin {
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelMouseSRS', {
       collapsible: false,
-      position: M.ui.position[this.position_],
       tooltip: this.tooltip_,
       className: 'm-plugin-mousesrs',
     });
@@ -190,6 +181,6 @@ export default class MouseSRS extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.tooltip_}*${this.srs}*${this.label}*${this.precision}`;
+    return `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}`;
   }
 }

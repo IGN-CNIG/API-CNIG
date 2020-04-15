@@ -18,12 +18,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right 
-  - 'BL':bottom left 
-  - 'BR':bottom right
 - **tootltip**. Tooltip que se muestra sobre el plugin
 - **srs**. Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón.
 - **label**. Nombre del SRS sobre el que se mostrarán las coordenadas del ratón.

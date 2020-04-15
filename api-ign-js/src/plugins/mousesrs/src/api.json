@@ -8,25 +8,28 @@
     "type": "object",
     "properties": [{
       "type": "simple",
-      "name": "position",
-      "position": 0,
-      "possibleValues": ["TL", "TR", "BR", "BL"]
-    }, {
-      "type": "simple",
       "name": "tooltip",
-      "position": 1
+      "position": 0
     }, {
       "type": "simple",
       "name": "srs",
-      "position": 2
+      "position": 1
     }, {
       "type": "simple",
       "name": "label",
-      "position": 3
+      "position": 2
     }, {
       "type": "number",
       "name": "precision",
+      "position": 3
+    }, {
+      "type": "number",
+      "name": "geoDecimalDigits",
       "position": 4
+    }, {
+      "type": "number",
+      "name": "utmDecimalDigits",
+      "position": 5
     }]
   }],
   "files": {

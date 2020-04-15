@@ -22,6 +22,7 @@ export default class MouseSRSControl extends M.Control {
     }
     const impl = new MouseSRSImplControl(srs, label, precision, geoDD, utmDD, tooltip);
     super(impl, 'MouseSRS');
+    this.tooltip_ = tooltip;
   }
 
   /**
@@ -37,7 +38,7 @@ export default class MouseSRSControl extends M.Control {
       const html = M.template.compileSync(template, {
         vars: {
           translations: {
-            tooltip: getValue('tooltip'),
+            tooltip: this.tooltip_,
           },
         },
       });
