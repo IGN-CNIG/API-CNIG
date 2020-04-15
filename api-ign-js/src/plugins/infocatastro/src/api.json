@@ -16,18 +16,9 @@
       "name": "tooltip",
       "position": 1
     }, {
-      "type": "object",
+      "type": "simple",
       "name": "catastroWMS",
-      "position": 5,
-      "properties": [{
-        "type": "simple",
-        "name": "wms_url",
-        "value": "https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?"
-      }, {
-        "type": "simple",
-        "name": "name",
-        "value": "Catastro"
-      }]
+      "position": 2
     }]
   }],
   "files": {
