@@ -130,7 +130,6 @@ export default class MeasureBar extends M.Plugin {
     this.measureLength_ = null;
     this.measureArea_ = null;
     this.measureClear_ = null;
-    this.name = null;
   }
 
   /**
