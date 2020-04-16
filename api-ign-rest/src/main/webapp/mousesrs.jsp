@@ -13,7 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
-    <link href="plugins/predefinedzoom/predefinedzoom.ol.min.css" rel="stylesheet" />
+    <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
@@ -53,7 +53,7 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
-    <script type="text/javascript" src="plugins/predefinedzoom/predefinedzoom.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -68,31 +68,13 @@
     <script type="text/javascript">
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
-            center: [-467062.8225, 4683459.6216],
+            center: [-467062.8225, 4783459.6216],
         });
-
-        const layerinicial = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
-
-        const layerUA = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeUnit',
-            legend: 'Unidad administrativa',
-            tiled: false
-        }, {});
-
-        map.addLayers([layerinicial, layerUA]);
-
         let mp,mp2;
-        let posicion = "TL";
+        let posicion = "BL";
         crearPlugin(posicion);
         
         const selectPosicion = document.getElementById("selectPosicion");
@@ -104,12 +86,8 @@
 
         
         function crearPlugin(position){
-            mp = new M.plugin.PredefinedZoom({
-                position: position,
-                savedZooms: [{
-                    name: 'Zoom a la extensión del mapa',
-                    bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
-                }, ],
+            mp = new M.plugin.MouseSRS({
+                position: position
             });
 
             map.addPlugin(mp);

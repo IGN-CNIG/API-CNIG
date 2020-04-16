@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -39,11 +40,21 @@
 </head>
 
 <body>
+    <div>
+        <label for="selectPosicion">Selector de posición del plugin</label>
+        <select name="position" id="selectPosicion">
+            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="BR">Abajo Derecha (BR)</option>
+            <option value="BL">Abajo Izquierda (BL)</option>
+        </select>
+    </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="plugins/measurebar/measurebar.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -62,10 +73,30 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
+        let mp,mp2;
+        let posicion = "TL";
+        crearPlugin(posicion);
+        
+        const selectPosicion = document.getElementById("selectPosicion");
+        selectPosicion.addEventListener('change', function () {
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+			crearPlugin(posicion);
+		});
 
-        const mp = new M.plugin.MeasureBar();
+        
+        function crearPlugin(position){
+            mp = new M.plugin.MeasureBar({
+                position: position
+            });
 
-        map.addPlugin(mp);
+            map.addPlugin(mp);
+            mp2 = new M.plugin.ShareMap({
+				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+				position: "TR",
+			});
+			map.addPlugin(mp2);
+        }
     </script>
 </body>
 
