@@ -48,6 +48,10 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
+        <label for="inputName">Parámetro Name</label>
+        <input type="text" name="nameValue" id="inputName">
+        <label for="inputBbox">Parámetro Bbox</label>
+        <input type="text" name="bbox" id="inputBbox">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
@@ -92,23 +96,28 @@
         map.addLayers([layerinicial, layerUA]);
 
         let mp,mp2;
-        let posicion = "TL";
-        crearPlugin(posicion);
+        let posicion = "TL",nombre,bbox;
+        crearPlugin(posicion,nombre,bbox);
         
         const selectPosicion = document.getElementById("selectPosicion");
+        const inputName = document.getElementById("inputName");
+        const inputBbox = document.getElementById("inputBbox");
+
         selectPosicion.addEventListener('change', function () {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            nombre = inputName.value;
+            bbox = JSON.parse(inputBbox.value);
             map.removePlugins(mp);
-			crearPlugin(posicion);
+			crearPlugin(posicion,nombre,bbox);
 		});
 
         
-        function crearPlugin(position){
+        function crearPlugin(position,name,bbox){
             mp = new M.plugin.PredefinedZoom({
                 position: position,
                 savedZooms: [{
-                    name: 'Zoom a la extensión del mapa',
-                    bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
+                    name: name,
+                    bbox: bbox,
                 }, ],
             });
 

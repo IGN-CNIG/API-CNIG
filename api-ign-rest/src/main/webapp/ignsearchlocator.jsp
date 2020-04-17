@@ -144,7 +144,7 @@
 		inputUrlReverse.addEventListener('change',cambiarTest);
 		function cambiarTest() {
 			sToSearch = selectServiceToSearch.options[selectServiceToSearch.selectedIndex].value;
-			mxResults = inputMaxResults.value;
+			mxResults = parseInt(inputMaxResults.value);
 			noProcess = selectNoProcess.options[selectNoProcess.selectedIndex].value;
 			countryCode = selectCountryCode.options[selectCountryCode.selectedIndex].value;
 			posicion = selectPosicion.options[selectPosicion.selectedIndex].value;

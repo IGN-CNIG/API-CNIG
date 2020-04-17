@@ -41,13 +41,18 @@
 
 <body>
     <div>
-        <label for="selectPosicion">Selector de posición del plugin</label>
-        <select name="position" id="selectPosicion">
-            <option value="TL">Arriba Izquierda (TL)</option>
-            <option value="TR">Arriba Derecha (TR)</option>
-            <option value="BR">Abajo Derecha (BR)</option>
-            <option value="BL">Abajo Izquierda (BL)</option>
-        </select>
+        <label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" name="tooltip" id="inputTooltip">
+        <label for="inputSrs">Parámetro srs</label>
+        <input type="text" name="srs" id="inputSrs">
+        <label for="inputLabel">Parámetro label</label>
+        <input type="text" name="Label" id="inputLabel">
+        <label for="inputPrecision">Parámetro precision</label>
+        <input type="number" name="precision" id="inputPrecision">
+        <label for="inputGeoDecimalDigits">Parámetro geoDecimalDigits</label>
+        <input type="number" name="geoDecimalDigits" id="inputGeoDecimalDigits">
+        <label for="inputUtmDecimalDigits">Parámetro utmDecimalDigits</label>
+        <input type="number" name="utmDecimalDigits" id="inputUtmDecimalDigits">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
@@ -74,20 +79,43 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp,mp2;
-        let posicion = "BL";
-        crearPlugin(posicion);
+        let tooltip='Muestra coordenadas',srs='EPSG:4326',label='WGS84',precision=4,geoDecimalDigits=3,utmDecimalDigits=2;
+        crearPlugin(tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits);
         
-        const selectPosicion = document.getElementById("selectPosicion");
-        selectPosicion.addEventListener('change', function () {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+        const inputTooltip  = document.getElementById("inputTooltip");
+        const inputSrs  = document.getElementById("inputSrs");
+        const inputLabel  = document.getElementById("inputLabel");
+        const inputPrecision  = document.getElementById("inputPrecision");
+        const inputGeoDecimalDigits  = document.getElementById("inputGeoDecimalDigits");
+        const inputUtmDecimalDigits  = document.getElementById("inputUtmDecimalDigits");
+        
+        inputTooltip.addEventListener('change', cambiarTest);
+        inputSrs.addEventListener('change', cambiarTest);
+        inputLabel.addEventListener('change', cambiarTest);
+        inputPrecision.addEventListener('change', cambiarTest);
+        inputGeoDecimalDigits.addEventListener('change', cambiarTest);
+        inputUtmDecimalDigits.addEventListener('change', cambiarTest);
+
+        function cambiarTest(){
+            tooltip = inputTooltip.value;
+            srs = inputSrs.value;
+            label = inputLabel.value;
+            precision = parseInt(inputPrecision.value);
+            geoDecimalDigits = parseInt(inputGeoDecimalDigits.value);
+            utmDecimalDigits = parseInt(inputUtmDecimalDigits.value);
             map.removePlugins(mp);
-			crearPlugin(posicion);
-		});
+			crearPlugin(tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits);
+        }
 
         
-        function crearPlugin(position){
+        function crearPlugin(tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits){
             mp = new M.plugin.MouseSRS({
-                position: position
+                tooltip: tooltip,
+                srs: srs,
+                label: label,
+                precision: precision,
+                geoDecimalDigits: geoDecimalDigits,
+                utmDecimalDigits: utmDecimalDigits,
             });
 
             map.addPlugin(mp);
