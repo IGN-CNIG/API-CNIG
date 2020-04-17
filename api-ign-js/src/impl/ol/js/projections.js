@@ -104,6 +104,31 @@ const proj4326 = {
   axisOrientation: 'neu',
 };
 
+// EPSG:4081 REGCAN95 Geográficas
+const proj4081 = {
+  def: '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs',
+  extent: [-21.93, 24.6, -11.75, 32.76],
+  codes: ['EPSG:4081', 'urn:ogc:def:crs:EPSG::4081', 'http://www.opengis.net/gml/srs/epsg.xml#4081'],
+  units: 'd',
+  metersPerUnit: 111319.49079327358,
+};
+
+// EPSG:4082 REGCAN95 UTM huso 27
+const proj4082 = {
+  def: '+proj=utm +zone=27 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+  extent: [405849.71, 2720975.60, 1367994.77, 3662797.15],
+  codes: ['EPSG:4082', 'urn:ogc:def:crs:EPSG::4082', 'http://www.opengis.net/gml/srs/epsg.xml#4082'],
+  units: 'm',
+};
+
+// EPSG:4083 REGCAN95 UTM huso 28
+const proj4083 = {
+  def: '+proj=utm +zone=28 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ',
+  extent: [-202677.94, 2738405.48, 804488.92, 3629357.10],
+  codes: ['EPSG:4083', 'urn:ogc:def:crs:EPSG::4083', 'http://www.opengis.net/gml/srs/epsg.xml#4083'],
+  units: 'm',
+};
+
 // All projections above
 const projections = [
   proj25830,
@@ -118,6 +143,9 @@ const projections = [
   proj25831,
   proj23028,
   proj23031,
+  proj4081,
+  proj4082,
+  proj4083,
 ];
 
 const addProjections = (projectionsParam) => {
