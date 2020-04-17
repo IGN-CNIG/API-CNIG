@@ -13,6 +13,7 @@ const mp = new IGNSearch({
   noProcess: 'poblacion',
   countryCode: 'es',
   isCollapsed: true,
+  collapsible: false,
   position: 'BL',
   // reverse: true,
 
