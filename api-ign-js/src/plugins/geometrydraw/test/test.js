@@ -9,7 +9,7 @@ const map = M.map({
 
 const mp = new GeometryDraw({
   collapsed: true,
-  collapsible: true,
+  collapsible: false,
   position: 'BL',
 });
 

@@ -11,13 +11,13 @@ div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
     font-family: 'g-cartografia' !important;
 }
 
-.m-areas>div.m-area>div.m-panel.m-geometrydraw.opened.no-collapsible>button.m-panel-btn.g-cartografia-flecha-derecha {
+/* .m-areas>div.m-area>div.m-panel.m-geometrydraw.opened.no-collapsible>button.m-panel-btn.g-cartografia-flecha-derecha {
     display: block !important;
 }
 
 .m-areas>div.m-area>div.m-panel.m-geometrydraw.no-collapsible>button.m-panel-btn {
     display: block;
-}
+} */
 
 div.m-panel.m-geometrydraw.collapsed {
     height: 40px;

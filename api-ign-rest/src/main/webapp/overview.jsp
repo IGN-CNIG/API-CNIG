@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
@@ -38,11 +39,31 @@
 </head>
 
 <body>
+    <div>
+        <label for="selectPosicion">Selector de posición del plugin</label>
+        <select name="position" id="selectPosicion">
+            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="BR">Abajo Derecha (BR)</option>
+            <option value="BL">Abajo Izquierda (BL)</option>
+        </select>   
+        <label for="selectCollapsed">Selector collapsed</label>
+        <select name="collapsedValue" id="selectCollapsed">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="selectCollapsible">Selector collapsible</label>
+        <select name="collapsibleValue" id="selectCollapsible">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+    </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="plugins/overviewmap/overviewmap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -61,17 +82,39 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
+        let mp,mp2;
+        let collapsed = false, posicion = "BR", collapsible = true;
+        crearPlugin(collapsed,posicion,collapsible);
 
-        const mp = new M.plugin.OverviewMap({
-            position: 'BR',
-        }, {
-            collapsed: false,
-            collapsible: true,
-        });
+        const selectPosicion = document.getElementById("selectPosicion");
+        const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
 
-        map.addPlugin(mp);
+        selectPosicion.addEventListener('change', cambiarTest);
+        selectCollapsed.addEventListener('change', cambiarTest);
+        
+        function cambiarTest() {
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsed.selectedIndex].value == 'true');
+			map.removePlugins(mp);
+			crearPlugin(collapsed,posicion,collapsible);
+        }
+        
+        function crearPlugin(collapsed,position,collapsible){
+             mp = new M.plugin.OverviewMap({
+                position: position,
+                collapsed: collapsed,
+                collapsible: collapsible,
+            });
 
-        window.map = map;
+            map.addPlugin(mp);
+            mp2 = new M.plugin.ShareMap({
+				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+				position: "BR",
+			});
+			map.addPlugin(mp2);
+        }
     </script>
 </body>
 
