@@ -21,7 +21,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -57,6 +57,13 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="inputServerUrl">Parámetro serverUrl</label>
+        <input type="text" name="serverUrlValue" id="inputServerUrl">
+        <label for="inputPrintTemplateUrl">Parámetro printTemplateUrl</label>
+        <input type="text" name="printTemplateUrlValue" id="inputPrintTemplateUrl">
+        <label for="inputPrintStatusUrl">Parámetro printStatusUrlValue</label>
+        <input type="text" name="printStatusUrlValue" id="inputPrintStatusUrl">
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
@@ -98,28 +105,41 @@
         map.addLayers([layerinicial, campamentos]);
 
         let mp,mp2;
-        let collapsed = true, posicion = 'TR', collapsible = true;
-        crearPlugin(collapsed,posicion,collapsible);
+        let posicion = 'TR',  collapsed = true, collapsible = true, serverUrlValue, printTemplateUrlValue, printStatusUrlValue;
+        crearPlugin(collapsed,posicion,collapsible,serverUrlValue,printTemplateUrlValue,printStatusUrlValue);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
+        const inputServerUrl = document.getElementById("inputServerUrl");
+        const inputPrintTemplateUrl = document.getElementById("inputPrintTemplateUrl");
+        const inputPrintStatusUrl = document.getElementById("inputPrintStatusUrl");
 
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
+        selectCollapsible.addEventListener('change', cambiarTest);
+        inputServerUrl.addEventListener('change', cambiarTest);
+        inputPrintTemplateUrl.addEventListener('change', cambiarTest);
+        inputPrintStatusUrl.addEventListener('change', cambiarTest);
         
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            serverUrl = inputServerUrl.value;
+            printTemplateUrl = inputPrintTemplateUrl.value;
+            printStatusUrl = inputPrintStatusUrl.value;
 			map.removePlugins(mp);
-			crearPlugin(collapsed,posicion,collapsible);
+			crearPlugin(posicion,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl);
         }
-        function crearPlugin(collapsed,position,collapsible){
+        function crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl){
             mp = new M.plugin.PrinterMap({
+                position: position,
                 collapsed: collapsed,
                 collapsible: collapsible,
-                position: position
+                serverUrl: serverUrl,
+                printTemplateUrl: printTemplateUrl,
+                printStatusUrl: printStatusUrl,
             });
            
             map.addPlugin(mp);
@@ -129,6 +149,10 @@
 			});
 			map.addPlugin(mp2);
         }
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click",function(){
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 
