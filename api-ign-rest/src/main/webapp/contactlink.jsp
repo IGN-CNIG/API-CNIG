@@ -14,14 +14,16 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
+        
     </style>
     <%
       Map<String, String[]> parameterMap = request.getParameterMap();
@@ -48,13 +50,14 @@
         </select>
 
         <input type="submit" id="buttonAPI" value="API Rest" />
-
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
-    <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
+    <script type="text/javascript" src="js/configuration-1.2.0.js"></script> 
     <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -75,7 +78,7 @@
         });
 
 
-        let mp, posicion = 'TL';
+        let mp,mp2,posicion = 'TL';
         crearPlugin(posicion);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -91,7 +94,7 @@
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
 
             window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion;
-        })
+        });
 
         function crearPlugin(posicion) {
             mp = new M.plugin.ContactLink({
@@ -99,10 +102,16 @@
             });
 
             map.addPlugin(mp);
+            mp2 = new M.plugin.ShareMap({
+				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+				position: "TR",
+			});
+			map.addPlugin(mp2)
         }
-
-
-        window.map = map;
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click",function(){
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 

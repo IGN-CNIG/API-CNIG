@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/beautytoc/beautytoc.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -21,7 +22,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -54,6 +55,7 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
     <div id="mapjs" class="m-container"></div>
@@ -61,6 +63,7 @@
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="plugins/beautytoc/beautytoc.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -74,7 +77,7 @@
     <script type="text/javascript">
         let map;
 
-        let mp, posicion = 'TL',
+        let mp, mp2, posicion = 'TL',
             collapsed = true;
         let layers;
 
@@ -385,8 +388,16 @@
                 }
             });
             map.addLayers(layers)
-
+            mp2 = new M.plugin.ShareMap({
+				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+				position: "TR",
+			});
+			map.addPlugin(mp2);
         }
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click",function(){
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 
