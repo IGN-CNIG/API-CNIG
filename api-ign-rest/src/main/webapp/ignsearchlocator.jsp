@@ -21,7 +21,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -55,7 +55,7 @@
             <option value="toponimo">Topónimo</option>
             <option value="municipio,poblacion">Municipio y Población</option>
         </select>
-        <label for="selectCountryCode">Selector de idioma del plugin</label>
+        <label for="selectCountryCode">Selector de countryCode</label>
         <select name="countryCode" id="selectCountryCode">
             <option value="es">Español</option>
             <option value="en">Inglés</option>
@@ -83,6 +83,7 @@
         <input type="text" value="https://www.cartociudad.es/geocoder/api/geocoder/findJsonp" name="urlFind" id="inputUrlFind">
         <label for="inputUrlReverse">Parámetro urlReverse</label>
         <input type="text" value="https://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode" name="urlReverse" id="inputUrlReverse">
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
@@ -178,7 +179,11 @@
 			});
 			map.addPlugin(mp2);
 			
-		}
+        }
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click",function(){
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 
