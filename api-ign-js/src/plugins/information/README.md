@@ -1,5 +1,7 @@
 # M.plugin.Information
 
+Muestra información GetFeatureInfo mediante activación de plugin
+
 # Dependencias
 
 - information.ol.min.js
@@ -30,12 +32,12 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 ### Plugin sin parámetros
 
 ```
-const mp = new Information();
+const mp = new M.plugin.Information();
 ```
 ### Plugin con parámetros
 
 ```
-const mp = new Information({
+const mp = new M.plugin.Information({
   position: 'BL',
   tooltip: 'Consultar capas',
   format: 'html',

@@ -141,7 +141,7 @@ export default class Information extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name_}=${this.position_}*${this.tooltip_}*${this.format_}`;
+    return `${this.name_}=${this.position_}*${this.tooltip_}*${this.format_}*${this.featureCount_}*${this.buffer_}`;
   }
 
   /**
