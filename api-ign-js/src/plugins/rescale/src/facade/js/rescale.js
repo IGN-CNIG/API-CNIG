@@ -111,7 +111,7 @@ export default class Rescale extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}`;
   }
 
   /**
