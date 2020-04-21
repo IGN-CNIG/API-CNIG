@@ -13,8 +13,9 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
-    <link href="plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    </link>
     <style type="text/css">
         html,
         body {
@@ -42,38 +43,38 @@
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-                <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TL">Arriba Izquierda (TL)</option>
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
-        </select>  
-        <label for="selectFixed">Selector Fixed</label>
-        <select name="fixedValue" id="selectFixed">
-            <option value=true>true</option>
-            <option value=false>false</option>
         </select>
-        <label for="inputZoom">Parámetro Zoom</label>
-        <input type="number" name="zoom" id="inputZoom">
-        <label for="inputBaseLayer">Parámetro baseLayer</label>
-        <input type="text" name="baseLayer" id="inputBaseLayer">
+
         <label for="selectCollapsed">Selector collapsed</label>
-        <select name="collapsedValue" id="selectCollapsed">
+        <select name="httpValue" id="selectCollapsed">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+
         <label for="selectCollapsible">Selector collapsible</label>
-        <select name="collapsibleValue" id="selectCollapsible">
+        <select name="httpValue" id="selectCollapsible">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="inputServerUrl">Parámetro inputServerUrl</label>
+        <input type="text" value="" name="serverUrl" id="inputServerUrl">
+        <label for="inputPrintTemplateUrl">Parámetro inputPrintTemplateUrl</label>
+        <input type="text" value="" name="printTemplateUrl" id="inputPrintTemplateUrl">
+        <label for="inputPrintStatusUrl">Parámetro inputPrintStatusUrl</label>
+        <input type="text" value="" name="printStatusUrl" id="inputPrintStatusUrl">
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
-    <script type="text/javascript" src="plugins/overviewmap/overviewmap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/georefimage/georefimage.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -87,61 +88,65 @@
     <script type="text/javascript">
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
-
+        
         const map = M.map({
-            container: 'mapjs',
-            zoom: 5,
-            maxZoom: 20,
-            minZoom: 4,
-            center: [-467062.8225, 4783459.6216],
+        container: 'mapjs',
+        zoom: 5,
+        maxZoom: 20,
+        minZoom: 4,
+        center: [-467062.8225, 4783459.6216],
         });
-        let mp,mp2;
-        let posicion = "BR", fixed, zoom, baseLayer, collapsible = true, collapsed = false;
-        crearPlugin(posicion,fixed,zoom,baseLayer,collapsed,collapsible);
+        let mp, mp2;
+        let position = "TR", collapsed = true, collapsible = true,
+            serverUrl = "https://geoprint.desarrollo.guadaltel.es",
+            printTemplateUrl = "https://geoprint.desarrollo.guadaltel.es/print/mapexport",
+            printStatusUrl = "https://geoprint.desarrollo.guadaltel.es/print/status";
+        
+        crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl);
 
         const selectPosicion = document.getElementById("selectPosicion");
-        const selectFixed = document.getElementById("selectFixed");
-        const inputZoom = document.getElementById("inputZoom");
-        const inputBaseLayer = document.getElementById("inputBaseLayer");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
+        const inputServerUrl = document.getElementById("inputServerUrl");
+        const inputPrintTemplateUrl = document.getElementById("inputPrintTemplateUrl");
+        const inputPrintStatusUrl = document.getElementById("inputPrintStatusUrl");
 
-        selectPosicion.addEventListener('change', cambiarTest);
-        selectFixed.addEventListener('change', cambiarTest);
-        inputZoom.addEventListener('change', cambiarTest);
-        inputBaseLayer.addEventListener('change', cambiarTest);
-        selectCollapsed.addEventListener('change', cambiarTest);
-        selectCollapsible.addEventListener('change', cambiarTest);
-        
-        function cambiarTest() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            fixed = (selectFixed.options[selectFixed.selectedIndex].value == 'true');
-            zoom = parseInt(inputZoom.value);
-            baseLayer = inputBaseLayer.value;
-            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-			map.removePlugins(mp);
-			crearPlugin(posicion,fixed,zoom,baseLayer,collapsed,collapsible);
+        selectPosicion.addEventListener("change",cambiarTest);
+        selectCollapsed.addEventListener("change",cambiarTest);
+        selectCollapsible.addEventListener("change",cambiarTest);
+        inputServerUrl.addEventListener("change",cambiarTest);
+        inputPrintTemplateUrl.addEventListener("change",cambiarTest);
+        inputPrintStatusUrl.addEventListener("change",cambiarTest);
+
+        function cambiarTest(){
+            position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value  == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value  == 'true');
+            serverUrl = inputServerUrl.value;
+            printTemplateUrl = inputPrintTemplateUrl.value;
+            printStatusUrl = inputPrintStatusUrl.value;
+            map.removePlugins(mp);
+            crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl);
         }
-        
-        function crearPlugin(position,fixed,zoom,baseLayer,collapsed,collapsible){
-             mp = new M.plugin.OverviewMap({
-                position: position,
-                fixed:fixed,
-                zoom:zoom,
-                baseLayer:baseLayer,
-            }, {
+
+        function crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl){
+            mp = new M.plugin.Georefimage({
                 collapsed: collapsed,
                 collapsible: collapsible,
+                position: position,
+                serverUrl:serverUrl,
+                printTemplateUrl:printTemplateUrl,
+                printStatusUrl:printStatusUrl
             });
-
             map.addPlugin(mp);
+        
             mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "BR",
-			});
-			map.addPlugin(mp2);
+                baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+                position: "TR",
+            });
+            map.addPlugin(mp2);
         }
+
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

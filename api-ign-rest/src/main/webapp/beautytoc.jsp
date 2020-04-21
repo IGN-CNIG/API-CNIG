@@ -75,6 +75,9 @@
       }
    %>
     <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        M.language.setLang(urlParams.get('language') || 'es');
+
         let map;
 
         let mp, mp2, posicion = 'TL',
