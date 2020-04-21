@@ -19,7 +19,7 @@ export default class ContactLink extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options = {}) {
+  constructor(options) {
     super();
 
     /**
@@ -60,6 +60,76 @@ export default class ContactLink extends M.Plugin {
     this.position = positions.includes(options.position) ? options.position : 'TR';
 
     /**
+     * Link to cnig downloads
+     * @private
+     * @type {String}
+     */
+    this.linksDescargasCnig = options.descargascnig || 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp';
+
+    /**
+     * Link to pnoa comparator
+     * @private
+     * @type {String}
+     */
+    this.linksPnoa = options.pnoa || 'https://www.ign.es/web/comparador_pnoa/index.html';
+
+    /**
+     * Link to 3d visualizer
+     * @private
+     * @type {String}
+     */
+    this.linksVisualizador3d = options.visualizador3d || 'https://www.ign.es/3D-Stereo/';
+
+    /**
+     * Link to fototeca
+     * @private
+     * @type {String}
+     */
+    this.linksFototeca = options.fototeca || 'https://fototeca.cnig.es/';
+
+    /**
+     * Link to twitter
+     * @private
+     * @type {String}
+     */
+    this.linksTwitter = options.twitter || 'https://twitter.com/IGNSpain';
+
+    /**
+     * Link to instagram
+     * @private
+     * @type {String}
+     */
+    this.linksInstagram = options.instagram || 'https://www.instagram.com/ignspain/';
+
+    /**
+     * Link to facebook
+     * @private
+     * @type {String}
+     */
+    this.linksFacebook = options.facebook || 'https://www.facebook.com/IGNSpain/';
+
+    /**
+     * Link to pinterest
+     * @private
+     * @type {String}
+     */
+    this.linksPinterest = options.pinterest || 'https://www.pinterest.es/IGNSpain/';
+
+    /**
+     * Link to cnig downloads
+     * @private
+     * @type {String}
+     */
+    this.linksYoutube = options.youtube || 'https://www.youtube.com/user/IGNSpain';
+
+    /**
+     * Link to mail
+     * @private
+     * @type {String}
+     */
+    this.linksMail = options.mail || 'mailto:ign@fomento.es';
+
+    /**
      * Metadata from api.json
      * @private
      * @type {Object}
@@ -88,7 +158,29 @@ export default class ContactLink extends M.Plugin {
 
     const values = {
       pluginOnLeft,
+
+      descargascnig: this.linksDescargasCnig,
+
+      pnoa: this.linksPnoa,
+
+      visualizador3d: this.linksVisualizador3d,
+
+      fototeca: this.linksFototeca,
+
+      twitter: this.linksTwitter,
+
+      instagram: this.linksInstagram,
+
+      facebook: this.linksFacebook,
+
+      pinterest: this.linksPinterest,
+
+      youtube: this.linksYoutube,
+
+      mail: this.linksMail,
+
     };
+
     this.control_ = new ContactLinkControl(values);
     this.controls_.push(this.control_);
     // this.controls_.push(new ContactLinkControl(values));
@@ -134,7 +226,7 @@ export default class ContactLink extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}`;
+    return `${this.name}=${this.position}*${this.linksDescargasCnig}*${this.linksPnoa}*${this.linksVisualizador3d}*${this.linksFototeca}*${this.linksTwitter}*${this.linksInstagram}*${this.linksFacebook}*${this.linksPinterest}*${this.linksYoutube}*${this.linksMail}`;
   }
 
   /**

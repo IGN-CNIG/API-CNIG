@@ -1,6 +1,6 @@
 # M.plugin.BackImgLayer
 
-Plugin que muestra información sobre la página y manual de uso.
+Muestra información enlace a ayuda, contacto y condiciones del servicio de fototeca.
 
 # Dependencias
 

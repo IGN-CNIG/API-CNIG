@@ -1,6 +1,6 @@
 # M.plugin.BeautyTOC
 
-Muestra un árbol de contenidos con las capas disponibles para mostrar.
+Tabla de contenidos de fototeca. Consulta cobertura de vuelo sobre la vista.
 
 ## Api.json
 

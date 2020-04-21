@@ -30,7 +30,7 @@
   "metadata": {
     "name": "FototecaHelp",
     "description": "Shows information panel and contact data of the IGN Fototeca",
-    "text": "Opens a window with an information link about the site, contact link and terms.",
+    "text": "Muestra información enlace a ayuda, contacto y condiciones del servicio de fototeca.",
     "version": "1.0.0",
     "date": "11th November 2019",
     "author": "CNIG",
