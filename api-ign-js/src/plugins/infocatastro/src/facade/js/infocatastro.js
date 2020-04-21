@@ -4,6 +4,8 @@
 import 'assets/css/infocatastro';
 import InfoCatastroControl from './infocatastrocontrol';
 import api from '../../api';
+import { getValue } from './i18n/language';
+
 
 export default class InfoCatastro extends M.Plugin {
   /**
@@ -47,7 +49,7 @@ export default class InfoCatastro extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.tooltip_ = options.tooltip || 'Consultar Catastro';
+    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
      * catastroWMS
