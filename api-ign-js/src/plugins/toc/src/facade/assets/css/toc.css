@@ -91,6 +91,6 @@
 
 @media only screen and (max-width: 768px) {
     .m-areas>div.m-area>div.m-plugin-toc.m-panel.opened>.m-panel-controls .m-toc-panel {
-        width: 50vw;
+        width: 350px;
     }
 }
