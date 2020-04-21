@@ -14,13 +14,14 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/iberpixhelp/iberpixhelp.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -48,19 +49,16 @@
         </select>
 
         <label for="inputHelpLink">Parámetro helpLink</label>
-        <select id="selectHelpLink">
-            <option value="https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html">https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html</option>
-            <option value=null></option>
-        </select>
-
+        <input type="text" id="inputHelpLink" value="https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html">
         <input type="submit" id="buttonAPI" value="API Rest" />
-
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="plugins/iberpixhelp/iberpixhelp.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -80,27 +78,26 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-
-        let mp, posicion = 'TL',
+        let mp, mp2, posicion = 'TL',
             helpLink = 'https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html';
 
         crearPlugin(posicion, helpLink);
 
         const selectPosicion = document.getElementById("selectPosicion");
-        const selectHelpLink = document.getElementById("selectHelpLink");
+        const inputHelpLink = document.getElementById("inputHelpLink");
         const selectContactEmail = document.getElementById("selectContactEmail");
         const buttonApi = document.getElementById("buttonAPI");
 
         selectPosicion.addEventListener('change', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = selectHelpLink.options[selectHelpLink.selectedIndex].value;
+            helpLink = inputHelpLink.value;
             map.removePlugins(mp);
             crearPlugin(posicion, helpLink);
         })
 
-        selectHelpLink.addEventListener('change', function() {
+        inputHelpLink.addEventListener('change', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = selectHelpLink.options[selectHelpLink.selectedIndex].value;
+            helpLink = inputHelpLink.value;
             map.removePlugins(mp);
             crearPlugin(posicion, helpLink);
         })
@@ -111,16 +108,23 @@
             window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?iberpixhelp=' + posicion + '*' + helpLink;
         })
 
-        function crearPlugin(posicion) {
+        function crearPlugin(posicion,helpLink) {
             mp = new M.plugin.IberpixHelp({
                 position: posicion,
                 helpLink: helpLink,
             });
 
             map.addPlugin(mp);
+            mp2 = new M.plugin.ShareMap({
+				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+				position: "TR",
+			});
+			map.addPlugin(mp2);
         }
-
-        window.map = map;
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click",function(){
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 

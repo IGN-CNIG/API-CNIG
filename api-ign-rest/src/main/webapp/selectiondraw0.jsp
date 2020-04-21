@@ -22,7 +22,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -59,6 +59,7 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
@@ -86,8 +87,8 @@
             minZoom: 6,
         });
         let mp,mp2;
-        let collapsed = false, posicion = 'TL', collapsible = true;
-        crearPlugin(collapsed,posicion,collapsible);
+        let posicion = 'TL', collapsed = false, collapsible = true;
+        crearPlugin(posicion,collapsed,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
@@ -100,11 +101,11 @@
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
 			map.removePlugins(mp);
-			crearPlugin(collapsed,posicion,collapsible);
+			crearPlugin(posicion,collapsed,collapsible);
         }
-        function crearPlugin(collapsed,position,collapsible){
+        function crearPlugin(position,collapsed,collapsible){
             mp = new M.plugin.SelectionDraw({
                 projection: 'EPSG:4326',
                 position: position,
@@ -123,6 +124,10 @@
 			});
 			map.addPlugin(mp2);
         }
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click",function(){
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 

@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/infocatastro/infocatastro.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -21,7 +22,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -50,7 +51,7 @@
         </select>
 
         <input type="submit" id="buttonAPI" value="API Rest" />
-
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
     <div id="mapjs" class="m-container"></div>
@@ -58,6 +59,7 @@
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="plugins/infocatastro/infocatastro.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -77,7 +79,7 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        let mp, posicion = 'TL';
+        let mp, mp2, posicion = 'TL';
         crearPlugin(posicion);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -102,7 +104,16 @@
             });
 
             map.addPlugin(mp);
+            mp2 = new M.plugin.ShareMap({
+				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+				position: "TR",
+			});
+			map.addPlugin(mp2);
         }
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click",function(){
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 

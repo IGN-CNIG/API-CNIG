@@ -7,7 +7,7 @@ const map = M.map({
 // M.language.setLang('en');
 
 const mp = new ContactLink({
-  position: 'BR',
+  position: 'TL',
   // links: [{
   //     name: 'Toogle',
   //     url: 'https://www.deepl.com/es/translator',

@@ -21,7 +21,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -42,11 +42,20 @@
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-            <option value="TL">Arriba Izquierda (TL)</option>
+                <option value="TL">Arriba Izquierda (TL)</option>
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
-        </select>   
+        </select>  
+        <label for="selectFixed">Selector Fixed</label>
+        <select name="fixedValue" id="selectFixed">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="inputZoom">Parámetro Zoom</label>
+        <input type="number" name="zoom" id="inputZoom">
+        <label for="inputBaseLayer">Parámetro baseLayer</label>
+        <input type="text" name="baseLayer" id="inputBaseLayer">
         <label for="selectCollapsed">Selector collapsed</label>
         <select name="collapsedValue" id="selectCollapsed">
             <option value=true>true</option>
@@ -57,6 +66,7 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
@@ -83,27 +93,41 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp,mp2;
-        let collapsed = false, posicion = "BR", collapsible = true;
-        crearPlugin(collapsed,posicion,collapsible);
+        let posicion = "BR", fixed, zoom, baseLayer, collapsible = true, collapsed = false;
+        crearPlugin(posicion,fixed,zoom,baseLayer,collapsed,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");
+        const selectFixed = document.getElementById("selectFixed");
+        const inputZoom = document.getElementById("inputZoom");
+        const inputBaseLayer = document.getElementById("inputBaseLayer");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
 
         selectPosicion.addEventListener('change', cambiarTest);
+        selectFixed.addEventListener('change', cambiarTest);
+        inputZoom.addEventListener('change', cambiarTest);
+        inputBaseLayer.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
+        selectCollapsible.addEventListener('change', cambiarTest);
         
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            fixed = (selectFixed.options[selectFixed.selectedIndex].value == 'true');
+            zoom = parseInt(inputZoom.value);
+            baseLayer = inputBaseLayer.value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
 			map.removePlugins(mp);
-			crearPlugin(collapsed,posicion,collapsible);
+			crearPlugin(posicion,fixed,zoom,baseLayer,collapsed,collapsible);
         }
         
-        function crearPlugin(collapsed,position,collapsible){
+        function crearPlugin(position,fixed,zoom,baseLayer,collapsed,collapsible){
              mp = new M.plugin.OverviewMap({
                 position: position,
+                fixed:fixed,
+                zoom:zoom,
+                baseLayer:baseLayer,
+            }, {
                 collapsed: collapsed,
                 collapsible: collapsible,
             });
@@ -115,6 +139,10 @@
 			});
 			map.addPlugin(mp2);
         }
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click",function(){
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 
