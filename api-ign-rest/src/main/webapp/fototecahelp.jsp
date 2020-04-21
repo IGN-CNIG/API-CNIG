@@ -49,17 +49,9 @@
         </select>
 
         <label for="inputHelpLink">Parámetro helpLink</label>
-        <select id="selectHelpLink">
-            <option value="http://fototeca.cnig.es/help_es.pdf">http://fototeca.cnig.es/help_es.pdf</option>
-            <option value=null></option>
-        </select>
-
-
-        <label for="inputHelpLink">Parámetro contactEmail</label>
-        <select id="selectContactEmail">
-            <option value="fototeca@cnig.es">fototeca@cnig.es</option>
-            <option value=null></option>
-        </select>
+        <input type="text" id="inputHelpLink" value="http://fototeca.cnig.es/help_es.pdf"/>
+        <label for="inputContactEmail">Parámetro contactEmail</label>
+        <input type="text"  id="inputContactEmail" value="fototeca@cnig.es"/>
 
         <input type="submit" id="buttonAPI" value="API Rest" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
@@ -81,6 +73,9 @@
       }
    %>
     <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        M.language.setLang(urlParams.get('language') || 'es');
+
         const map = M.map({
             container: 'mapjs',
             zoom: 5,
@@ -96,30 +91,30 @@
         crearPlugin(posicion, helpLink, contactEmail);;
 
         const selectPosicion = document.getElementById("selectPosicion");
-        const selectHelpLink = document.getElementById("selectHelpLink");
-        const selectContactEmail = document.getElementById("selectContactEmail");
+        const inputHelpLink = document.getElementById("inputHelpLink");
+        const inputContactEmail = document.getElementById("inputContactEmail");
         const buttonApi = document.getElementById("buttonAPI");
 
         selectPosicion.addEventListener('change', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = selectHelpLink.options[selectHelpLink.selectedIndex].value;
-            contactEmail = selectContactEmail.options[selectContactEmail.selectedIndex].value;
+            helpLink = inputHelpLink.value;
+            contactEmail = inputContactEmail.value;
             map.removePlugins(mp);
             crearPlugin(posicion, helpLink, contactEmail);
         })
 
-        selectHelpLink.addEventListener('change', function() {
+        inputHelpLink.addEventListener('change', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = selectHelpLink.options[selectHelpLink.selectedIndex].value;
-            contactEmail = selectContactEmail.options[selectContactEmail.selectedIndex].value;
+            helpLink = inputHelpLink.value;
+            contactEmail = inputContactEmail.value;
             map.removePlugins(mp);
             crearPlugin(posicion, helpLink, contactEmail);;
         })
 
-        selectContactEmail.addEventListener('change', function() {
+        inputContactEmail.addEventListener('change', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = selectHelpLink.options[selectHelpLink.selectedIndex].value;
-            contactEmail = selectContactEmail.options[selectContactEmail.selectedIndex].value;
+            helpLink = inputHelpLink.value;
+            contactEmail = inputContactEmail.value;
             map.removePlugins(mp);
             crearPlugin(posicion, helpLink, contactEmail);;
         })

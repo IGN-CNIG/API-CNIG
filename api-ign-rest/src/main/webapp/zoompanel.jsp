@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/zoompanel/zoompanel.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -21,7 +22,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -62,7 +63,7 @@
         </select>
 
         <input type="submit" id="buttonAPI" value="API Rest" />
-
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
     <div id="mapjs" class="m-container"></div>
@@ -70,6 +71,7 @@
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="plugins/zoompanel/zoompanel.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -81,6 +83,9 @@
       }
    %>
     <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        M.language.setLang(urlParams.get('language') || 'es');
+
         const map = M.map({
             container: 'mapjs',
             zoom: 5,
@@ -134,14 +139,22 @@
         })
 
         function crearPlugin(collapsed, collapsible, posicion) {
-
             mp = new M.plugin.ZoomPanel({
                 position: posicion,
                 collapsed: collapsed,
                 collapsible: collapsible,
             });
             map.addPlugin(mp);
+            mp2 = new M.plugin.ShareMap({
+				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+				position: "TR",
+			});
+			map.addPlugin(mp2);
         }
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click",function(){
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 

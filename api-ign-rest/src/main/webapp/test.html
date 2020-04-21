@@ -40,9 +40,9 @@
             }
 
             .prueba {
-                height: 8em;
-                width: 13.5em;
-                margin: 5px;
+                height: 10em;
+                width: 15.8em;
+                margin: 4px;
                 float: left;
                 overflow: hidden;
                 text-overflow: clip;
@@ -52,7 +52,12 @@
                 text-align: center;
                 background-color: rgba(11, 97, 6, 0.04);
             }
-
+            div.prueba > p:nth-child(3) {
+                font-size: 10pt;
+                padding: 0 0.5em;
+                overflow-y: auto;
+                height: 4.5em;
+            }
             .pending {
                 opacity: 0.4;
                 background-color: #7e7e7e59;
@@ -68,40 +73,267 @@
                 font-size: 10pt;
                 padding: 0 0.5em;
             }
+            .idiomas{
+                padding-top: 0.4em;
+            }
         </style>
     </head>
 
     <body>
         <div class="container">
             <h1>PLUGINS</h1>
-            <a target="_blank" href="attributions.jsp"><div class="prueba pending"><b>[attributions]</b><p></p></div></a>
-            <a target="_blank" href="backimglayer.jsp"><div class="prueba pending"><b>[backimglayer]</b><p></p></div></a>
-            <a target="_blank" href="beautytoc.jsp"><div class="prueba"><b>[beautytoc]</b><p>Muestra un árbol de contenidos con las capas disponibles para mostrar.</p></div></a>
-            <a target="_blank" href="contactlink.jsp"><div class="prueba"><b>[contactlink]</b><p>Plugin que muestra una serie de enlaces establecidos por el usuario.</p></div></a>
-            <a target="_blank" href="fototecahelp.jsp"><div class="prueba"><b>[fototecahelp]</b><p>Plugin que muestra información sobre la página y manual de uso.</p></div></a>
-            <a target="_blank" href="geometrydraw.jsp"><div class="prueba"><b>[geometrydraw]</b><p>Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como su descarga.</p></div></a>
-            <a target="_blank" href="georefimage.jsp"><div class="prueba pending"><b>[georefimage]</b><p></p></div></a>
-            <a target="_blank" href="iberpixhelp.jsp"><div class="prueba"><b>[iberpixhelp]</b><p>Plugin que muestra información sobre la página y manual de uso.</p></div></a>
-            <a target="_blank" href="ignsearch.jsp"><div class="prueba"><b>[ignsearch]</b><p>Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN)</p></div></a>
-            <a target="_blank" href="ignsearchlocator.jsp"><div class="prueba"><b>[ignsearchlocator]</b><p>Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN), también permite localizar coordenadas en varios SRS</p></div></a>
-            <a target="_blank" href="infocatastro.jsp"><div class="prueba"><b>[infocatastro]</b><p>Plugin que permite la localización de parcelas mediante click.</p></div></a>
-            <a target="_blank" href="information.jsp"><div class="prueba"><b>[information]</b><p></p></div></a>
-            <a target="_blank" href="measurebar.jsp"><div class="prueba"><b>[measurebar]</b><p>Herramienta de medición de áreas y distancias.</p></div></a>
-            <a target="_blank" href="mousesrs.jsp"><div class="prueba"><b>[mousesrs]</b><p></p></div></a>
-            <a target="_blank" href="overview.jsp"><div class="prueba"><b>[overview]</b><p>Muestra una previsualización de la zona donde está centrado el mapa.</p></div></a>
-            <a target="_blank" href="predefinedzoom0.jsp"><div class="prueba"><b>[predefinedzoom]</b><p>Centra el mapa en la/s vista/s indicada/s por parámetro.</p></div></a>
-            <a target="_blank" href="printermap0.jsp"><div class="prueba"><b>[printermap]</b><p>Plugin de impresión a través del servicio Geoprint. </p></div></a>
-            <a target="_blank" href="rescale0.jsp"><div class="prueba"><b>[rescale]</b><p>Hace zoom a la escala elegida.</p></div></a>
-            <a target="_blank" href="selectiondraw0.jsp"><div class="prueba"><b>[selectiondraw]</b><p>Permite dibujar geometrías y obtenerlas al terminar.</p></div></a>
-            <a target="_blank" href="selectionzoom.jsp"><div class="prueba pending"><b>[selectionzoom]</b><p></p></div></a>
-            <a target="_blank" href="sharemap.jsp"><div class="prueba pending"><b>[sharemap]</b><p></p></div></a>
-            <a target="_blank" href="toc.jsp"><div class="prueba"><b>[toc]</b><p>Muestra un árbol de contenidos con las capas disponibles para mostrar.</p></div></a> 
-            <a target="_blank" href="transparency.jsp"><div class="prueba pending"><b>[transparency]</b><p></p></div></a>
-            <a target="_blank" href="viewhistory.jsp"><div class="prueba"><b>[viewhistory]</b><p>Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y atrás).</p></div></a>
-            <a target="_blank" href="visor.jsp"><div class="prueba pending"><b>[visor]</b><p></p></div></a>
-            <a target="_blank" href="xylocator.jsp"><div class="prueba pending"><b>[xylocator]</b><p></p></div></a>
-            <a target="_blank" href="zoomextent.jsp"><div class="prueba pending"><b>[zoomextent]</b><p></p></div></a>
-            <a target="_blank" href="zoompanel.jsp"><div class="prueba pending"><b>[zoompanel]</b><p></p></div></a>
+            <!-- attributions -->
+            <div class="prueba pending">
+                <a target="_blank" href="attributions.jsp"><b>[attributions]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="attributions.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="attributions.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p></p><p>v1.0</p>
+            </div>
+            <!-- backimglayer -->
+            <div class="prueba pending">
+                <a target="_blank" href="backimglayer.jsp"><b>[backimglayer]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="backimglayer.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="backimglayer.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p></p><p>v1.0</p>
+            </div>
+            <!-- beautytoc -->
+            <div class="prueba">
+                <a target="_blank" href="beautytoc.jsp"><b>[beautytoc]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="beautytoc.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="beautytoc.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Tabla de contenidos de fototeca. Consulta cobertura de vuelo sobre la vista.</p><p>v1.0</p>
+            </div>
+            <!-- contactlink -->
+             <div class="prueba">
+                <a target="_blank" href="contactlink.jsp"><b>[contactlink]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="contactlink.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="contactlink.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Provee de enlaces a sitios, redes sociales y correo institucionales.</p><p>v1.0</p>
+            </div>
+            <!-- fototecahelp -->
+            <div class="prueba">
+                <a target="_blank" href="fototecahelp.jsp"><b>[fototecahelp]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="fototecahelp.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="fototecahelp.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Muestra información enlace a ayuda, contacto y condiciones del servicio de fototeca.</p><p>v1.0</p>
+            </div>
+            <!-- geometrydraw -->
+            <div class="prueba">
+                <a target="_blank" href="geometrydraw.jsp"><b>[geometrydraw]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="geometrydraw.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="geometrydraw.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Permite el dibujo y edición de geometrías sobre un mapa, así como su carga y descarga.</p><p>v1.0</p>
+            </div>
+            <!-- georefimage -->
+            <div class="prueba">
+                <a target="_blank" href="georefimage0.jsp"><b>[georefimage]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="georefimage0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="georefimage0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla.</p><p>v1.0</p>
+            </div>
+            <!-- iberpixhelp -->
+            <div class="prueba">
+                <a target="_blank" href="iberpixhelp.jsp"><b>[iberpixhelp]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="iberpixhelp.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="iberpixhelp.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Plugin que muestra información sobre la página y manual de uso.</p><p>v1.0</p>
+            </div>
+            <!-- ignsearch -->
+            <div class="prueba">
+                <a target="_blank" href="ignsearch.jsp"><b>[ignsearch]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="ignsearch.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="ignsearch.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN)</p><p>v1.0</p>
+            </div>
+            <!-- ignsearchlocator -->
+            <div class="prueba">
+                <a target="_blank" href="ignsearchlocator.jsp"><b>[ignsearchlocator]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="ignsearchlocator.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="ignsearchlocator.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN), también permite localizar coordenadas en varios SRS</p><p>v1.0</p>
+            </div>
+            <!-- infocatastro -->
+            <div class="prueba">
+                <a target="_blank" href="infocatastro.jsp"><b>[infocatastro]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="infocatastro.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="infocatastro.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Muestra referencia catastral para un punto y provee de enlace a la información de la DGC</p><p>v1.0</p>
+            </div>
+            <!-- information -->
+            <div class="prueba">
+                <a target="_blank" href="information.jsp"><b>[information]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="information.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="information.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Muestra información GetFeatureInfo mediante activación de plugin</p><p>v1.0</p>
+            </div>
+            <!-- measurebar -->
+            <div class="prueba">
+                <a target="_blank" href="measurebar.jsp"><b>[measurebar]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="measurebar.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="measurebar.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Herramienta de medición de áreas y distancias.</p><p>v1.0</p>
+            </div>
+            <!-- mousesrs -->
+            <div class="prueba">
+                <a target="_blank" href="mousesrs.jsp"><b>[mousesrs]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="mousesrs.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="mousesrs.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Las coordenadas de ratón.</p><p>v1.0</p>
+            </div>
+            <!-- overview -->
+            <div class="prueba">
+                <a target="_blank" href="overview.jsp"><b>[overview]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="overview.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="overview.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Muestra una previsualización de la zona donde está centrado el mapa.</p><p>v1.0</p>
+            </div>
+            <!-- predefinedzoom -->
+            <div class="prueba">
+                <a target="_blank" href="predefinedzoom0.jsp"><b>[predefinedzoom]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="predefinedzoom0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="predefinedzoom0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Centra el mapa en la/s vista/s indicada/s por parámetro.</p><p>v1.0</p>
+            </div>
+            <!-- printermap -->
+             <div class="prueba">
+                <a target="_blank" href="printermap0.jsp"><b>[printermap]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="printermap0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="printermap0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Plugin de impresión a través del servicio Geoprint.</p><p>v1.0</p>
+            </div>
+            <!-- rescale -->
+            <div class="prueba">
+                <a target="_blank" href="rescale0.jsp"><b>[rescale]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="rescale0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="rescale0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Hace zoom a la escala elegida.</p><p>v1.0</p>
+            </div>
+            <!-- selectiondraw -->
+             <div class="prueba">
+                <a target="_blank" href="selectiondraw0.jsp"><b>[selectiondraw]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="selectiondraw0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="selectiondraw0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Permite dibujar geometrías y obtenerlas al terminar.</p><p>v1.0</p>
+            </div>
+            <!-- selectionzoom -->
+            <div class="prueba">
+                <a target="_blank" href="selectionzoom0.jsp"><b>[selectionzoom]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="selectionzoom0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="selectionzoom0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Plugin que permite la elección de cada de fondo mediante previsualización de las posibles capas.</p><p>v1.0</p>
+            </div>
+            <!-- sharemap -->
+             <div class="prueba pending">
+                <a target="_blank" href="sharemap.jsp"><b>[sharemap]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="sharemap.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="sharemap.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p></p><p>v1.0</p>
+            </div>
+            <!-- toc -->
+            <div class="prueba">
+                <a target="_blank" href="toc.jsp"><b>[toc]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="toc.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="toc.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Muestra un árbol de contenidos con las capas disponibles para mostrar.</p><p>v1.0</p>
+            </div>
+            <!-- transparency -->
+            <div class="prueba">
+                <a target="_blank" href="transparency0.jsp"><b>[transparency]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="transparency0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="transparency0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Plugin que permite aplicar un efecto de transparencia a la capa seleccionada.</p><p>v1.0</p>
+            </div>
+            <!-- viewhistory -->
+            <div class="prueba">
+                <a target="_blank" href="viewhistory.jsp"><b>[viewhistory]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="viewhistory.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="viewhistory.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y atrás).</p><p>v1.0</p>
+            </div>
+            <!-- visor -->
+            <div class="prueba pending">
+                <a target="_blank" href="visor.jsp"><b>[visor]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="visor.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="visor.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p></p><p>v1.0</p>
+            </div>
+            <!-- xylocator -->
+            <div class="prueba">
+                <a target="_blank" href="xylocator.jsp"><b>[xylocator]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="xylocator.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="xylocator.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Plugin que permite localizar las coordenas introducidas por el usuario en un Sistema de referencia determinado.</p><p>v1.0</p>
+            </div>
+            <!-- zoomextent -->
+            <div class="prueba pending">
+                <a target="_blank" href="zoomextent.jsp"><b>[zoomextent]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="zoomextent.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="zoomextent.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p></p><p>v1.0</p>
+            </div>
+            <!-- zoompanel -->
+            <div class="prueba">
+                <a target="_blank" href="zoompanel.jsp"><b>[zoompanel]</b></a>
+                <div class='idiomas'>
+                    <a target="_blank" href="zoompanel.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
+                    <a target="_blank" href="zoompanel.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
+                </div>
+                <p>Ofrece diferentes herramientas de zoom.</p><p>v1.0</p>
+            </div>
         </div>
 
 

@@ -71,6 +71,9 @@
       }
    %>
     <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        M.language.setLang(urlParams.get('language') || 'es');
+
         const map = M.map({
             container: 'mapjs',
             controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location'],
