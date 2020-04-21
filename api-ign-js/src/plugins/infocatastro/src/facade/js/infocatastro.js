@@ -62,6 +62,13 @@ export default class InfoCatastro extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * Name of the plugin
+     * @private
+     * @type {String}
+     */
+    this.name_ = 'infocatastro';
   }
 
   /**

@@ -29,7 +29,7 @@
   },
   "metadata": {
     "name": "InfoCatastro",
-    "description": "Búsqueda catastral",
+    "description": "Muestra referencia catastral para un punto y provee de enlace a la información de la DGC",
     "text": "Búsqueda catastral mediante click",
     "version": "1.0.0",
     "date": "09/12/2019",
