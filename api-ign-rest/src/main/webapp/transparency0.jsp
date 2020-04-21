@@ -98,7 +98,7 @@
         }, {});
         map.addWMS(wms);
 
-        let mp, mp2;
+        let mp;
         let posicion = "TR", layer = 'toporaster', radius = 50;
         crearPlugin(posicion,layer,radius);
         const selectPosicion = document.getElementById("selectPosicion");
@@ -124,12 +124,12 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-                baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-                position: "TR",
-            });
-            map.addPlugin(mp2);
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

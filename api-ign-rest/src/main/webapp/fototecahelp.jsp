@@ -85,7 +85,7 @@
         });
 
 
-        let mp, mp2, posicion = 'TL',
+        let mp, posicion = 'TL',
             helpLink = "http://fototeca.cnig.es/help_es.pdf",
             contactEmail = 'fototeca@cnig.es';
         crearPlugin(posicion, helpLink, contactEmail);;
@@ -135,12 +135,13 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
+            
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

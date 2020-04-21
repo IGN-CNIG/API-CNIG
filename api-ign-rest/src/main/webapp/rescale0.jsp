@@ -105,7 +105,7 @@
 
         map.addLayers([layerinicial, layerUA]);
 
-        let mp,mp2;
+        let mp;
         let collapsed = false, posicion = 'TR', collapsible = true;
         crearPlugin(collapsed,posicion,collapsible);
 
@@ -132,12 +132,13 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
+            
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

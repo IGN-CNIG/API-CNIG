@@ -111,7 +111,7 @@
                 center: [-467062.8225, 4783459.6216],
             });
         
-        let mp,mp2;
+        let mp;
 
         let sToSearch = 'gn',
             mxResults = 10,
@@ -177,12 +177,12 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-                baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-                position: "TR",
-            });
-            map.addPlugin(mp2);
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

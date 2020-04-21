@@ -99,7 +99,7 @@
 
         map.addLayers([layerinicial, layerUA]);
 
-        let mp,mp2;
+        let mp;
         let posicion = "TL",nombre,bbox;
         crearPlugin(posicion,nombre,bbox);
         
@@ -126,12 +126,12 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
         }
+        mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);
