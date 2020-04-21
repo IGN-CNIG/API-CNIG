@@ -8,19 +8,17 @@ const map = M.map({
 
 const mp = new ContactLink({
   position: 'TL',
-  // links: [{
-  //     name: 'Toogle',
-  //     url: 'https://www.deepl.com/es/translator',
-  //   },
-  //   {
-  //     name: 'Redmine',
-  //     url: 'https://www.guadaltel.es/redmine/',
-  //   },
-  //   {
-  //     name: 'css',
-  //     url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/',
-  //   }
-  // ]
+  descargascnig: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp',
+  pnoa: 'https://www.ign.es/web/comparador_pnoa/index.html',
+  visualizador3d: 'https://www.ign.es/3D-Stereo/',
+  fototeca: 'https://fototeca.cnig.es/',
+  twitter: 'https://twitter.com/IGNSpain',
+  instagram: 'https://www.instagram.com/ignspain/',
+  facebook: 'https://www.facebook.com/IGNSpain/',
+  pinterest: 'https://www.pinterest.es/IGNSpain/',
+  youtube: 'https://www.youtube.com/user/IGNSpain',
+  mail: 'mailto:ign@fomento.es',
+
 });
 
 map.addPlugin(mp);

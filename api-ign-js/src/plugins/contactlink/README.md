@@ -1,6 +1,6 @@
 # M.plugin.ContactLink
 
-Plugin que muestra una serie de enlaces establecidos por el usuario.
+Provee de enlaces a sitios, redes sociales y correo institucionales.
 
 # Dependencias
 
@@ -22,6 +22,16 @@ Plugin que muestra una serie de enlaces establecidos por el usuario.
   - 'TR':top right (default)
   - 'BL':bottom left
   - 'BR':bottom right
+- **descargascnig**. Indica la url al centro de descargas CNIG. 
+- **pnoa**. Indica la url al comparador PNOA.
+- **visualizador3d**. Indica la url al Visualizador3D.
+- **fototeca**. Indica la url a Fototeca.
+- **twitter**. Indica la url al Twitter del CNIG.
+- **instagram**. Indica la url al Instagram del CNIG.
+- **facebook**. Indica la url al Facebook del CNIG.
+- **pinterest**. Indica la url al Pinterest del CNIG.
+- **youtube**. Indica la url al Youtube del CNIG.
+- **mail**. Indica la url para escribir correo al CNIG.
 
 # Eventos
 
@@ -30,11 +40,33 @@ Plugin que muestra una serie de enlaces establecidos por el usuario.
 # Ejemplos de uso
 
 ## Ejemplo 1
-Construcción del plugin con dos enlaces: Centro de Descargas CNIG y Visualizador 3D:
+Construcción del plugin solo con parámetro position:
 
 ```javascript
   const mp = new ContactLink({
   position: 'TR',  
+});
+
+
+   map.addPlugin(mp);
+```
+
+## Ejemplo 2
+Construcción del plugin con todos los parámetros:
+
+```javascript
+  const mp = new ContactLink({
+  position: 'TR', 
+  descargascnig: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp',
+  pnoa: 'https://www.ign.es/web/comparador_pnoa/index.html',
+  visualizador3d: 'https://www.ign.es/3D-Stereo/',
+  fototeca: 'https://fototeca.cnig.es/',
+  twitter: 'https://twitter.com/IGNSpain',
+  instagram: 'https://www.instagram.com/ignspain/',
+  facebook: 'https://www.facebook.com/IGNSpain/',
+  pinterest: 'https://www.pinterest.es/IGNSpain/',
+  youtube: 'https://www.youtube.com/user/IGNSpain',
+  mail: 'mailto:ign@fomento.es', 
 });
 
 
