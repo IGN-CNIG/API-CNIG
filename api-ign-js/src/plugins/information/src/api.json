@@ -15,6 +15,18 @@
       "type": "simple",
       "name": "tooltip",
       "position": 1
+    }, {
+      "type": "simple",
+      "name": "format",
+      "position": 2
+    }, {
+      "type": "Number",
+      "name": "featureCount",
+      "position": 3
+    }, {
+      "type": "Number",
+      "name": "buffer",
+      "position": 4
     }]
   }],
   "files": {
