@@ -46,7 +46,7 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-        <label for="inputLayers">Parámetro Layers (separador: ,)</label>
+        <label for="inputLayers">Parámetro Layers (separador:,)</label>
         <input type="text" id="inputLayers" value="">
         <label for="inputRadius">Parámetro radius</label>
         <input type="number" min="30" value="200" name="radius" id="inputRadius">
@@ -99,7 +99,7 @@
         map.addWMS(wms);
 
         let mp;
-        let posicion, layer, radius;
+        let posicion, layer = ['toporaster', 'AU.AdministrativeBoundary'], radius = 50;
         crearPlugin(posicion,layer,radius);
         const selectPosicion = document.getElementById("selectPosicion");
         const inputLayers = document.getElementById("inputLayers");
@@ -111,7 +111,7 @@
 
         function cambiarTest(){
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            layer = inputLayers.value.split(",");
+            layer = inputLayers.value.split(",") || inputLayers.value;
             radius = inputRadius.value;
             map.removePlugins(mp);
             crearPlugin(posicion,layer,radius);

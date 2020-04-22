@@ -51,10 +51,10 @@
             width: 1em;
             height: 1em;
             transform: rotate(45deg);
-            top: 0;
+            top: .5em;
             border-left: 1px solid #0000001c;
             border-bottom: 1px solid #0000001c;
-            margin-left: -0.5em;
+            margin-left: -0.8em;
             z-index: -1;
         }
 
