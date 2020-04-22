@@ -219,6 +219,11 @@ div#geometrydraw-uploading>label {
     width: 127px;
 }
 
+#thicknessSelector {
+    /* -moz-appearance: textfield; */
+    width: 30px;
+}
+
 /* Firefox fix */
 
 @-moz-document url-prefix() {
