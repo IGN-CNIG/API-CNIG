@@ -83,21 +83,21 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits;
+        let tooltip, srs, label, precision, geoDecimalDigits, utmDecimalDigits;
         crearPlugin({
-            tooltip:tooltip,
-            srs:srs,
-            label:label,
-            precision:precision
+            tooltip: tooltip,
+            srs: srs,
+            label: label,
+            precision: precision
         });
-        
-        const inputTooltip  = document.getElementById("inputTooltip");
-        const inputSrs  = document.getElementById("inputSrs");
-        const inputLabel  = document.getElementById("inputLabel");
-        const inputPrecision  = document.getElementById("inputPrecision");
-        const inputGeoDecimalDigits  = document.getElementById("inputGeoDecimalDigits");
-        const inputUtmDecimalDigits  = document.getElementById("inputUtmDecimalDigits");
-        
+
+        const inputTooltip = document.getElementById("inputTooltip");
+        const inputSrs = document.getElementById("inputSrs");
+        const inputLabel = document.getElementById("inputLabel");
+        const inputPrecision = document.getElementById("inputPrecision");
+        const inputGeoDecimalDigits = document.getElementById("inputGeoDecimalDigits");
+        const inputUtmDecimalDigits = document.getElementById("inputUtmDecimalDigits");
+
         inputTooltip.addEventListener('change', cambiarTest);
         inputSrs.addEventListener('change', cambiarTest);
         inputLabel.addEventListener('change', cambiarTest);
@@ -105,29 +105,29 @@
         inputGeoDecimalDigits.addEventListener('change', cambiarTest);
         inputUtmDecimalDigits.addEventListener('change', cambiarTest);
 
-        function cambiarTest(){
-            let propiedades = {}
-            tooltip = inputTooltip.value != "" ? objeto.tooltip=inputTooltip.value:"";
-            srs = inputSrs.value != "" ? objeto.srs = inputSrs.value:"";
-            label = inputLabel.value != "" ? objeto.label = inputLabel.value:"";
-            precision = inputPrecision.value != "" ? objeto.precision = inputPrecision.value:"";
-            geoDecimalDigits = inputGeoDecimalDigits.value != "" ? objeto.geoDecimalDigits = inputGeoDecimalDigits.value:"";
-            utmDecimalDigits = inputUtmDecimalDigits.value != "" ? objeto.utmDecimalDigits = inputUtmDecimalDigits.value:"";
+        function cambiarTest() {
+            let objeto = {}
+            tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
+            srs = inputSrs.value != "" ? objeto.srs = inputSrs.value : "";
+            label = inputLabel.value != "" ? objeto.label = inputLabel.value : "";
+            precision = inputPrecision.value != "" ? objeto.precision = inputPrecision.value : "";
+            geoDecimalDigits = inputGeoDecimalDigits.value != "" ? objeto.geoDecimalDigits = inputGeoDecimalDigits.value : "";
+            utmDecimalDigits = inputUtmDecimalDigits.value != "" ? objeto.utmDecimalDigits = inputUtmDecimalDigits.value : "";
             map.removePlugins(mp);
-			crearPlugin(propiedades);
+            crearPlugin(objeto);
         }
-        
-        function crearPlugin(propiedades){
+
+        function crearPlugin(propiedades) {
             mp = new M.plugin.MouseSRS(propiedades);
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>
