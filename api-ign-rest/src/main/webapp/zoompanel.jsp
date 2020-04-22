@@ -95,9 +95,9 @@
         });
 
 
-        let mp, posicion = 'TL',
-            collapsed = true,
-            collapsible = true;
+        let mp, posicion,
+            collapsed;
+            collapsible;
         crearPlugin(posicion, collapsed, collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");

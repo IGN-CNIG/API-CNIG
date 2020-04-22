@@ -82,7 +82,6 @@
 
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
@@ -106,7 +105,7 @@
         map.addLayers([layerinicial, layerUA]);
 
         let mp;
-        let collapsed = false, posicion = 'TR', collapsible = true;
+        let collapsed, posicion, collapsible;
         crearPlugin(collapsed,posicion,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");

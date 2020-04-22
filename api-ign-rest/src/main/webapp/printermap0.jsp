@@ -108,7 +108,7 @@
         map.addLayers([layerinicial, campamentos]);
 
         let mp;
-        let posicion = 'TR',  collapsed = true, collapsible = true, serverUrlValue, printTemplateUrlValue, printStatusUrlValue;
+        let posicion, collapsed, collapsible, serverUrlValue, printTemplateUrlValue, printStatusUrlValue;
         crearPlugin(collapsed,posicion,collapsible,serverUrlValue,printTemplateUrlValue,printStatusUrlValue);
 
         const selectPosicion = document.getElementById("selectPosicion");

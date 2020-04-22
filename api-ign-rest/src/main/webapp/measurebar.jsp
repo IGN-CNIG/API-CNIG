@@ -78,7 +78,7 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion = "TL";
+        let posicion;
         crearPlugin(posicion);
         
         const selectPosicion = document.getElementById("selectPosicion");

@@ -81,8 +81,7 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        let mp, posicion = 'TL',
-            helpLink = 'https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html';
+        let mp, posicion, helpLink;
 
         crearPlugin(posicion, helpLink);
 

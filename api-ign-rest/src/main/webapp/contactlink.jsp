@@ -48,7 +48,26 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-
+        <label for="inputDescargascnig">Parámetro descargascnig</label>
+        <input type="text" name="descargascnig" id="inputDescargascnig">
+        <label for="inputPnoa">Parámetro pnoa</label>
+        <input type="text" name="pnoa" id="inputPnoa">
+        <label for="inputVisualizador3d">Parámetro visualizador3d</label>
+        <input type="text" name="visualizador3d" id="inputVisualizador3d">
+        <label for="inputFototeca">Parámetro fototeca</label>
+        <input type="text" name="fototeca" id="inputFototeca">
+        <label for="inputTwitter">Parámetro twitter</label>
+        <input type="text" name="twitter" id="inputTwitter">
+        <label for="inputInstagram">Parámetro instagram</label>
+        <input type="text" name="instagram" id="inputInstagram">
+        <label for="inputFacebook">Parámetro facebook</label>
+        <input type="text" name="facebook" id="inputFacebook">
+        <label for="inputPinterest">Parámetro pinterest</label>
+        <input type="text" name="pinterest" id="inputPinterest">
+        <label for="inputYoutube">Parámetro youtube</label>
+        <input type="text" name="youtube" id="inputYoutube">
+        <label for="inputMail">Parámetro mail</label>
+        <input type="text" name="mail" id="inputMail">
         <input type="submit" id="buttonAPI" value="API Rest" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -81,27 +100,80 @@
         });
 
 
-        let mp,posicion = 'TL';
-        crearPlugin(posicion);
+        let mp,posicion;
+        let descargascnig,pnoa,visualizador3d,fototeca,twitter,instagram,facebook,pinterest,youtube,mail;
+        crearPlugin(posicion,descargascnig,pnoa,visualizador3d,fototeca,twitter,instagram,facebook,pinterest,youtube,mail);
 
         const selectPosicion = document.getElementById("selectPosicion");
+        const inputDescargascnig = document.getElementById("inputDescargascnig");
+        const inputPnoa = document.getElementById("inputPnoa");
+        const inputVisualizador3d = document.getElementById("inputVisualizador3d");
+        const inputFototeca = document.getElementById("inputFototeca");
+        const inputTwitter = document.getElementById("inputTwitter");
+        const inputInstagram = document.getElementById("inputInstagram");
+        const inputFacebook = document.getElementById("inputFacebook");
+        const inputPinterest = document.getElementById("inputPinterest");
+        const inputYoutube = document.getElementById("inputYoutube");
+        const inputMail = document.getElementById("inputMail");
         const buttonApi = document.getElementById("buttonAPI");
 
-        selectPosicion.addEventListener('change', function() {
+        selectPosicion.addEventListener('change', cambiarTest);
+        inputDescargascnig.addEventListener('change',cambiarTest);
+        inputPnoa.addEventListener('change',cambiarTest);
+        inputVisualizador3d.addEventListener('change',cambiarTest);
+        inputFototeca.addEventListener('change',cambiarTest);
+        inputTwitter.addEventListener('change',cambiarTest);
+        inputInstagram.addEventListener('change',cambiarTest);
+        inputFacebook.addEventListener('change',cambiarTest);
+        inputPinterest.addEventListener('change',cambiarTest);
+        inputYoutube.addEventListener('change',cambiarTest);
+        inputMail.addEventListener('change',cambiarTest);
+        
+        function cambiarTest(){
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            descargascnig = inputDescargascnig.value;
+            pnoa = inputPnoa.value;
+            visualizador3d = inputVisualizador3d.value;
+            fototeca = inputFototeca.value;
+            twitter = inputTwitter.value;
+            instagram = inputInstagram.value;
+            facebook = inputFacebook.value;
+            pinterest = inputPinterest.value;
+            youtube = inputYoutube.value;
+            mail = inputMail.value;
             map.removePlugins(mp);
             crearPlugin(posicion);
-        })
+        }
 
         buttonApi.addEventListener('click', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            descargascnig = inputDescargascnig.value;
+            pnoa = inputPnoa.value;
+            visualizador3d = inputVisualizador3d.value;
+            fototeca = inputFototeca.value;
+            twitter = inputTwitter.value;
+            instagram = inputInstagram.value;
+            facebook = inputFacebook.value;
+            pinterest = inputPinterest.value;
+            youtube = inputYoutube.value;
+            mail = inputMail.value;
 
             window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion;
         });
 
-        function crearPlugin(posicion) {
+        function crearPlugin(posicion,descargascnig,pnoa,visualizador3d,fototeca,twitter,instagram,facebook,pinterest,youtube,mail) {
             mp = new M.plugin.ContactLink({
                 position: posicion,
+                descargascnig: descargascnig,
+                pnoa: pnoa,
+                visualizador3d: visualizador3d,
+                fototeca: fototeca,
+                twitter: twitter,
+                instagram: instagram,
+                facebook: facebook,
+                pinterest: pinterest,
+                youtube: youtube,
+                mail: mail,
             });
 
             map.addPlugin(mp);

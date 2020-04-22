@@ -11,6 +11,46 @@
       "name": "position",
       "possibleValues": ["TL", "TR", "BL", "BR"],
       "position": 0
+    }, {
+      "type": "simple",
+      "name": "descargascnig",
+      "position": 1
+    }, {
+      "type": "simple",
+      "name": "pnoa",
+      "position": 2
+    }, {
+      "type": "simple",
+      "name": "visualizador3d",
+      "position": 3
+    }, {
+      "type": "simple",
+      "name": "fototeca",
+      "position": 4
+    }, {
+      "type": "simple",
+      "name": "twitter",
+      "position": 5
+    }, {
+      "type": "simple",
+      "name": "instagram",
+      "position": 6
+    }, {
+      "type": "simple",
+      "name": "facebook",
+      "position": 7
+    }, {
+      "type": "simple",
+      "name": "pinterest",
+      "position": 8
+    }, {
+      "type": "simple",
+      "name": "youtube",
+      "position": 9
+    }, {
+      "type": "simple",
+      "name": "mail",
+      "position": 10
     }]
   }],
   "files": {
@@ -22,7 +62,7 @@
   "metadata": {
     "name": "ContactLink",
     "description": "Acceso a enlaces",
-    "text": "Un plugin que te permite acceder vía link a contactos, redes sociales, herramientas, etc.",
+    "text": "Provee de enlaces a sitios, redes sociales y correo institucionales",
     "version": "1.0.0",
     "date": "Marzo 2020",
     "author": "Pablo Perejón Linares",

@@ -97,10 +97,7 @@
         center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let position = "TR", collapsed = true, collapsible = true,
-            serverUrl = "https://geoprint.desarrollo.guadaltel.es",
-            printTemplateUrl = "https://geoprint.desarrollo.guadaltel.es/print/mapexport",
-            printStatusUrl = "https://geoprint.desarrollo.guadaltel.es/print/status";
+        let position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl;
         
         crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl);
 

@@ -53,7 +53,7 @@
         <input type="text" name="format" id="inputFormat">
         <label for="inputFeatureCount">Parámetro featureCount</label>
         <input type="number" name="featureCount" id="inputFeatureCount">
-        <label for="inputBuffer">Parámetro buffer</label>
+        <label for="inputBuffer">Parámetro buffer (px)</label>
         <input type="number" name="buffer" id="inputBuffer">
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -101,9 +101,8 @@
              }, {});
 
         map.addLayers([layerinicial, layerUA]);
-        map.addLayers([layerinicial, layerUA]);
 
-        let posicion = "TL", tooltip, formato = 'html', featureCount = 5, buffer = 5;
+        let posicion, tooltip, formato, featureCount, buffer;
         crearPlugin(posicion, tooltip, formato, featureCount, buffer);
         
         const selectPosicion = document.getElementById("selectPosicion");

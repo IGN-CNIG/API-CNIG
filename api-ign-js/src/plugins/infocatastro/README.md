@@ -1,7 +1,6 @@
 # M.plugin.InfoCatastro
 
-Plugin que permite la localización de parcelas mediante click.
-
+Muestra referencia catastral para un punto y provee de enlace a la información de la DGC.
 
 ## Dependencias
 

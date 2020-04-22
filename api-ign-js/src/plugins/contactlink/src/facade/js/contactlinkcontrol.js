@@ -33,11 +33,74 @@ export default class ContactLinkControl extends M.Control {
     this.pluginOnLeft = values.pluginOnLeft;
 
     /**
-     * Access links
-     * @public
-     * @public {Array}
+     * Link to cnig downloads
+     * @private
+     * @type {String}
      */
-    this.links = values.links;
+    this.linksDescargascnig = values.descargascnig
+
+    /**
+     * Link to pnoa comparator
+     * @private
+     * @type {String}
+     */
+    this.linksPnoa = values.pnoa
+
+    /**
+     * Link to 3d visualizer
+     * @private
+     * @type {String}
+     */
+    this.linksVisualizador3d = values.visualizador3d
+
+    /**
+     * Link to cnig
+     * @privatecnig
+     * @type {String}
+     */
+    this.linksFototeca = values.fototeca
+
+    /**
+     * Link to twitter
+     * @private
+     * @type {String}
+     */
+    this.linksTwitter = values.twitter
+
+    /**
+     * Link to instagram
+     * @private
+     * @type {String}
+     */
+    this.linksInstagram = values.instagram
+
+    /**
+     * Link to facebook
+     * @private
+     * @type {String}
+     */
+    this.linksFacebook = values.facebook
+
+    /**
+     * Link to pinterest
+     * @private
+     * @type {String}
+     */
+    this.linksPinterest = values.pinterest
+
+    /**
+     * Link to youtube
+     * @private
+     * @type {String}
+     */
+    this.linksYoutube = values.youtube
+
+    /**
+     * Link to cnig downloads
+     * @private
+     * @type {String}
+     */
+    this.linksMail = values.mail
 
     /**
      * Template
@@ -91,6 +154,18 @@ export default class ContactLinkControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {
+          urls: {
+            cnig: this.linksDescargascnig,
+            pnoa: this.linksPnoa,
+            display: this.linksVisualizador3d,
+            fototeca: this.linksFototeca,
+            twitter: this.linksTwitter,
+            instagram: this.linksInstagram,
+            facebook: this.linksFacebook,
+            pinterest: this.linksPinterest,
+            youtube: this.linksYoutube,
+            mail: this.linksMail
+          },
           title: getValue('title'),
           links: {
             downloads: getValue('links.downloads'),

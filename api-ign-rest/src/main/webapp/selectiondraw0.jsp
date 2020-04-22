@@ -90,7 +90,7 @@
             minZoom: 6,
         });
         let mp;
-        let posicion = 'TL', collapsed = false, collapsible = true;
+        let posicion, collapsed, collapsible;
         crearPlugin(posicion,collapsed,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");

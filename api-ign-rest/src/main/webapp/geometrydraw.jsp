@@ -94,9 +94,7 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        let mp, posicion = 'TL',
-            collapsed = true,
-            collapsible = true;
+        let mp, posicion, collapsed, collapsible;
         crearPlugin(collapsed, collapsible, posicion);
 
         const selectPosicion = document.getElementById("selectPosicion");

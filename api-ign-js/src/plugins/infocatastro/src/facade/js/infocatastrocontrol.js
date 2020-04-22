@@ -4,6 +4,8 @@
 
 import InfoCatastroImplControl from 'impl/infocatastrocontrol';
 import template from 'templates/infocatastro';
+import { getValue } from './i18n/language';
+
 
 export default class InfoCatastroControl extends M.Control {
   /**
@@ -42,7 +44,7 @@ export default class InfoCatastroControl extends M.Control {
      * @public
      * @api stable
      */
-    this.POPUP_TITLE = 'Información catastral';
+    this.POPUP_TITLE = getValue('informacionCatastral');
   }
 
   /**
@@ -56,7 +58,13 @@ export default class InfoCatastroControl extends M.Control {
   createView(map) {
     this.facadeMap_ = map;
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      const html = M.template.compileSync(template, {
+        vars: {
+          translations: {
+            consultar: getValue('consultar'),
+          },
+        },
+      });
       this.element_ = html;
       const castastroInfo = this.element_.querySelector('#m-infocatastro-btn');
       castastroInfo.addEventListener('click', this.activate.bind(this));
@@ -167,7 +175,7 @@ export default class InfoCatastroControl extends M.Control {
       }
     } else {
       this.facadeMap_.removePopup();
-      M.dialog.error('No es posible establecer conexión con el servidor de Catastro.');
+      M.dialog.error(getValue('errorConexion'));
     }
   }
 

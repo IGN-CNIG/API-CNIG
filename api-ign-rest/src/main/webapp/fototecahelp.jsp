@@ -85,9 +85,7 @@
         });
 
 
-        let mp, posicion = 'TL',
-            helpLink = "http://fototeca.cnig.es/help_es.pdf",
-            contactEmail = 'fototeca@cnig.es';
+        let mp, posicion, helpLink, contactEmail;
         crearPlugin(posicion, helpLink, contactEmail);;
 
         const selectPosicion = document.getElementById("selectPosicion");

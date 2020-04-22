@@ -1,11 +1,11 @@
 /* Opening & closing buttons */
 
-.m-panel.m-plugin-zoompanel.collapsed {
+.m-panel.m-zoompanel.collapsed {
     height: 40px;
 }
 
-.m-plugin-zoompanel.opened .m-panel-btn.g-cartografia-flecha-derecha,
-.m-plugin-zoompanel.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+.m-zoompanel.opened .m-panel-btn.g-cartografia-flecha-derecha,
+.m-zoompanel.opened .m-panel-btn.g-cartografia-flecha-izquierda {
     background-color: white !important;
     color: #71a7d3 !important;
 }
@@ -19,6 +19,11 @@
 .m-areas>div.m-area>div.m-panel.m-zoompanel.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
     color: white !important;
 }
+
+.m-areas>div.m-area>div.m-panel.m-zoompanel.collapsed {
+    height: 40px;
+}
+
 
 /* Título */
 
@@ -35,16 +40,6 @@ div#m-zoompanel-titulo {
 }
 
 /* Images container */
-
-.m-panel.m-plugin-zoompanel.opened .m-control.m-container.m-zoompanel>div#m-zoompanel-previews>div[id^="m-zoompanel-lyr-"] {
-    border: 5px solid #e9e8e8;
-    box-sizing: border-box;
-    float: left;
-    font-size: 0.9em;
-    height: 110px;
-    position: relative;
-    width: 110px;
-}
 
 div[id^="m-zoompanel-lyr-"]>span {
     background-color: white;
@@ -82,13 +77,12 @@ div[id^="m-zoompanel-lyr-"]:hover>span {
     display: flex;
 }
 
-.m-bottom.m-left>.m-panel.m-plugin-zoompanel.opened>.m-panel-controls {
-    display: flow-root;
+.m-bottom.m-left>.m-panel.m-zoompanel.opened>.m-panel-controls {
+    display: flex;
 }
 
-.m-bottom.m-left>.m-plugin-zoompanel.opened>.m-panel-btn {
+.m-bottom.m-left>.m-zoompanel.opened>.m-panel-btn {
     position: relative;
-    right: -40px;
 }
 
 .m-bottom.m-right .m-control.m-container.m-zoompanel {
@@ -99,17 +93,24 @@ div[id^="m-zoompanel-lyr-"]:hover>span {
     padding-left: 200px;
 }
 
-.m-areas>div.m-area>div.m-panel.opened.m-plugin-zoompanel {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    order: 0;
-}
 
 /* Firefox fix */
 
 @-moz-document url-prefix() {
-    .m-bottom.m-right .m-plugin-zoompanel.opened {
+    .m-bottom.m-right .m-zoompanel.opened {
         display: flex;
+    }
+
+    .m-control.m-container.m-zoompanel {
+        min-width: 216px;
+    }
+
+    .m-bottom.m-left .m-control.m-container.m-zoompanel {
+        padding-left: 40px;
+    }
+
+    .m-bottom.m-right .m-control.m-container.m-zoompanel {
+        padding-right: 0px;
     }
 }
 

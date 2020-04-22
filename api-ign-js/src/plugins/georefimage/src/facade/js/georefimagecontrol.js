@@ -159,7 +159,6 @@ export default class GeorefimageControl extends M.Control {
    * @param {Function} callback - function that removes loading icon class.
    */
   getStatus(url, callback) {
-    M.proxy(false);
     M.remote.get(url).then((response) => {
       const statusJson = JSON.parse(response.text);
       const { status } = statusJson;
@@ -369,7 +368,6 @@ export default class GeorefimageControl extends M.Control {
       queueEl.classList.add(GeorefimageControl.LOADING_CLASS);
       printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
       // FIXME: delete proxy deactivation and uncomment if/else when proxy is fixed on Mapea
-      M.proxy(false);
       M.remote.post(printUrl, printData).then((responseParam) => {
         let response = responseParam;
         const responseStatusURL = JSON.parse(response.text);
@@ -392,7 +390,6 @@ export default class GeorefimageControl extends M.Control {
         //   M.dialog.error('Se ha producido un error en la impresión.');
         // }
       });
-      M.proxy(true);
     });
   }
 
@@ -415,7 +412,6 @@ export default class GeorefimageControl extends M.Control {
    * @api stable
    */
   getCapabilities() {
-    M.proxy(false);
     if (M.utils.isNullOrEmpty(this.capabilitiesPromise_)) {
       this.capabilitiesPromise_ = new Promise((success, fail) => {
         const capabilitiesUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, 'capabilities.json']);

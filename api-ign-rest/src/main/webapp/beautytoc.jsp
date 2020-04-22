@@ -80,8 +80,7 @@
 
         let map;
 
-        let mp, posicion = 'TL',
-            collapsed = true;
+        let mp, posicion, collapsed;
         let layers;
 
         crearPlugin(posicion, collapsed);
@@ -127,28 +126,6 @@
 
             layers = [
                 new M.layer.WMS({
-                    url: 'http://www.ign.es/wms-inspire/cuadriculas?',
-                    name: 'Grid-ETRS89-lonlat-25k,Grid-REGCAN95-lonlat-25k',
-                    legend: 'Cuadrícula cartográfica del MTN25',
-                    tiled: false,
-                    version: '1.1.1',
-                }, {
-                    visibility: false,
-                    displayInLayerSwitcher: true,
-                    queryable: false
-                }),
-                new M.layer.WMS({
-                    url: 'http://www.ign.es/wms-inspire/cuadriculas?',
-                    name: 'Grid-ETRS89-lonlat-50k,Grid-REGCAN95-lonlat-50k',
-                    legend: 'Cuadrícula cartográfica del MTN50',
-                    tiled: false,
-                    version: '1.1.1',
-                }, {
-                    visibility: false,
-                    displayInLayerSwitcher: true,
-                    queryable: false
-                }),
-                new M.layer.WMS({
                     url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
                     name: 'Catastro',
                     legend: 'Catastro',
@@ -158,28 +135,6 @@
                     visibility: false,
                     displayInLayerSwitcher: true,
                     queryable: true
-                }),
-                new M.layer.WMS({
-                    url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-                    name: 'AU.AdministrativeBoundary,AU.AdministrativeUnit',
-                    legend: 'Unidades administrativas',
-                    tiled: false,
-                    version: '1.1.1',
-                }, {
-                    visibility: false,
-                    displayInLayerSwitcher: true,
-                    queryable: false
-                }),
-                new M.layer.WMS({
-                    url: 'https://www.ign.es/wms/pnoa-historico?',
-                    name: 'AMS_1956-1957',
-                    legend: 'Vuelo americano (Serie B, 1956-1957)',
-                    tiled: false,
-                    version: '1.3.0',
-                }, {
-                    visibility: false,
-                    displayInLayerSwitcher: true,
-                    queryable: false
                 }),
                 new M.layer.WMS({
                     url: 'https://www.ign.es/wms/pnoa-historico?',
@@ -398,7 +353,7 @@
 		});
 		map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

@@ -113,17 +113,8 @@
 		center: [-467062.8225, 4783459.6216],
 		});
 		let mp;
-		let sToSearch = 'gn',
-			mxResults = 10,
-			collapsed = false,
-			posicion = "TL",
-			noProcess = "municipio,poblacion",
-			countryCode = "es",
-			reverse = "false",
-			urlCandidates = "https://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp",
-			urlFind = "https://www.cartociudad.es/geocoder/api/geocoder/findJsonp",
-			urlReverse = "https://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode";
-		crearPlugin(sToSearch, mxResults, noProcess, countryCode, collapsed, posicion, reverse ,urlCandidates, urlFind, urlReverse);
+        let sToSearch,mxResults,collapsed,posicion,noProcess,countryCode,reverse,urlCandidates,urlFind,urlReverse;
+        crearPlugin(sToSearch, mxResults, noProcess, countryCode, collapsed, posicion, reverse ,urlCandidates, urlFind, urlReverse);
 
 		const selectServiceToSearch = document.getElementById("selectServiceToSearch");
 		const inputMaxResults = document.getElementById("inputMaxResults");
@@ -148,7 +139,7 @@
 		inputUrlReverse.addEventListener('change',cambiarTest);
 		function cambiarTest() {
 			sToSearch = selectServiceToSearch.options[selectServiceToSearch.selectedIndex].value;
-			mxResults = parseInt(inputMaxResults.value);
+			mxResults = inputMaxResults.value;
 			noProcess = selectNoProcess.options[selectNoProcess.selectedIndex].value;
 			countryCode = selectCountryCode.options[selectCountryCode.selectedIndex].value;
 			posicion = selectPosicion.options[selectPosicion.selectedIndex].value;

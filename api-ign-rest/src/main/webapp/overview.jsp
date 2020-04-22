@@ -96,7 +96,7 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion = "BR", fixed, zoom, baseLayer, collapsible = true, collapsed = false;
+        let posicion, fixed, zoom, baseLayer, collapsible, collapsed;
         crearPlugin(posicion,fixed,zoom,baseLayer,collapsed,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -116,7 +116,7 @@
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             fixed = (selectFixed.options[selectFixed.selectedIndex].value == 'true');
-            zoom = parseInt(inputZoom.value);
+            zoom = inputZoom.value;
             baseLayer = inputBaseLayer.value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');

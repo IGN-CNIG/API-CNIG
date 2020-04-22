@@ -49,9 +49,9 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
         <label for="inputName">Parámetro Name</label>
-        <input type="text" name="nameValue" id="inputName">
+        <input type="text" name="nameValue" id="inputName" value="Zoom a la extensión del mapa">
         <label for="inputBbox">Parámetro Bbox</label>
-        <input type="text" name="bbox" id="inputBbox">
+        <input type="text" name="bbox" id="inputBbox" value="[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]">
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -76,7 +76,6 @@
 
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
@@ -100,7 +99,9 @@
         map.addLayers([layerinicial, layerUA]);
 
         let mp;
-        let posicion = "TL",nombre,bbox;
+        let posicion = "TL",
+            nombre = "Zoom a la extensión del mapa",
+            bbox = JSON.parse("[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]");
         crearPlugin(posicion,nombre,bbox);
         
         const selectPosicion = document.getElementById("selectPosicion");

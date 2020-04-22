@@ -99,7 +99,7 @@
         map.addWMS(wms);
 
         let mp;
-        let posicion = "TR", layer = 'toporaster', radius = 50;
+        let posicion, layer, radius;
         crearPlugin(posicion,layer,radius);
         const selectPosicion = document.getElementById("selectPosicion");
         const inputLayers = document.getElementById("inputLayers");
@@ -112,7 +112,7 @@
         function cambiarTest(){
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             layer = inputLayers.value.split(",");
-            radius = parseInt(inputRadius.value);
+            radius = inputRadius.value;
             map.removePlugins(mp);
             crearPlugin(posicion,layer,radius);
         }

@@ -31,42 +31,91 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html><head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>MAPEA LITE PLUGINS - TESTS</title>
+        <title>Test API-CNIG</title>
         <style type="text/css">
-            .container {
-                float: left;
-                margin-top: 30px;
-                width: 100%;
+            *, ::after, ::before {
+                box-sizing: border-box;
+                margin: 0;
+                font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
             }
-
+            .container {
+                max-width: 1344px;
+                width: 100%;
+                margin: 0 auto;
+            }
+            .cabecera {
+                padding: 3rem 1.5rem;
+                color: white;
+                background: #00d1b2;
+                display: block;
+                position: relative;
+            }
+            body > .container {
+                margin-top: 3rem;
+            }
+            .cabecera .container{
+                padding-left: 0.4rem;
+            }
+            .titulo {
+                font-size: 2rem;
+                font-weight: 600;
+                line-height: 1.125;
+            }
+            .subtitulo{
+                font-size: 1.25rem;
+                font-weight: 400;
+                line-height: 1.25;
+            }
             .prueba {
                 height: 10em;
                 width: 15.8em;
-                margin: 4px;
+                margin: .5rem;
                 float: left;
                 overflow: hidden;
                 text-overflow: clip;
                 word-wrap: break-word;
-                border: 1px solid rgba(0, 0, 0, 0.18);
                 padding: 0.2em;
                 text-align: center;
-                background-color: rgba(11, 97, 6, 0.04);
+                background-color: #209cee;
+                border-radius: 0.4rem;
+                color: white;
             }
             div.prueba > p:nth-child(3) {
                 font-size: 10pt;
                 padding: 0 0.5em;
                 overflow-y: auto;
                 height: 4.5em;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .prueba > a {
+                display: block;
+                position: relative;
+                padding-top: 0.7em;
+                font-size: 14pt;
+                color: white;
+            }
+            img {
+                border-radius: 50%;
+                width: 25px;
+                height: 25px;
+            }
+            img:hover {
+                opacity: 0.7;
+            }
+            div.prueba > p:nth-child(3)::-webkit-scrollbar {
+                display: none;
+            }
+            .prueba:hover {
+                background-color: #5fc6e6;
             }
             .pending {
-                opacity: 0.4;
-                background-color: #7e7e7e59;
+                opacity: 0.5;
                 pointer-events: none;
             }
 
             a {
                 text-decoration: none;
-                font-family: sans-serif;
                 color: #4E4E4E;
             }
             .prueba p {
@@ -80,8 +129,13 @@
     </head>
 
     <body>
+        <div class="cabecera">
+            <div class="container">
+                <div class="titulo">Test API-CNIG</div>
+                <div class="subtitulo">Galería de plugins</div>
+            </div>
+        </div>
         <div class="container">
-            <h1>PLUGINS</h1>
             <!-- attributions -->
             <div class="prueba pending">
                 <a target="_blank" href="attributions.jsp"><b>[attributions]</b></a>
@@ -146,7 +200,7 @@
                 <p>Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla.</p><p>v1.0</p>
             </div>
             <!-- iberpixhelp -->
-            <div class="prueba">
+            <div class="prueba pending">
                 <a target="_blank" href="iberpixhelp.jsp"><b>[iberpixhelp]</b></a>
                 <div class='idiomas'>
                     <a target="_blank" href="iberpixhelp.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
@@ -206,7 +260,7 @@
                     <a target="_blank" href="mousesrs.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30"/></a>
                     <a target="_blank" href="mousesrs.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30"/></a>
                 </div>
-                <p>Las coordenadas de ratón.</p><p>v1.0</p>
+                <p>Muestra las coordenadas de ratón.</p><p>v1.0</p>
             </div>
             <!-- overview -->
             <div class="prueba">

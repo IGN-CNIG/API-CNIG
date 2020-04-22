@@ -127,6 +127,14 @@ export default class IGNSearch extends M.Plugin {
     this.isCollapsed = options.isCollapsed || false;
 
     /**
+     * This variable indicates whether the plugin can be collapsible.
+     * @private
+     * @type {boolean}
+     */
+    this.collapsible = options.collapsible || false;
+
+
+    /**
      * This variable indicates plugin's position on window
      * @private
      * @type {string} { 'TL' | 'TR' | 'BL' | 'BR' } (corners)
@@ -206,7 +214,7 @@ export default class IGNSearch extends M.Plugin {
     });
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelIGNSearch', {
-      collapsible: true,
+      collapsible: this.collapsible,
       position: M.ui.position[this.position],
       collapsed: this.isCollapsed,
       className: 'ign-search-panel',
@@ -283,7 +291,7 @@ export default class IGNSearch extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.isCollapsed}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
   }
 
   /**
