@@ -16,10 +16,8 @@ const mp = new OverviewMap({
   zoom: 4,
   baseLayer: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true',
   // baseLayer: 'WMS*PNOA 2017*https://www.ign.es/wms/pnoa-historico?*PNOA2017*true*true',
-
-}, {
   collapsed: false,
-  collapsible: true,
+  collapsible: false,
 });
 
 map.addPlugin(mp);

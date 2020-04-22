@@ -73,8 +73,8 @@ export default class OverviewMap extends M.Plugin {
      * @type {Object}
      */
     this.vendorOptions = {
-      collapsed: true,
-      collapsible: true,
+      collapsed: options.collapsed,
+      collapsible: options.collapsible,
     };
 
     if (options !== undefined && options.collapsed !== undefined && (options.collapsed === false || options.collapsed === 'false')) {
