@@ -181,6 +181,6 @@ export default class MouseSRS extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}`;
+    return `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}*${this.geoDecimalDigits}*${this.utmDecimalDigits}`;
   }
 }
