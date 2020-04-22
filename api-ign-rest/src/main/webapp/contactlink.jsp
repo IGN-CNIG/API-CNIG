@@ -198,7 +198,8 @@
             youtube = inputYoutube.value;
             mail = inputMail.value;
 
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion;
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion + '*' + descargascnig + '*' + pnoa + '*' + visualizador3d + '*' + fototeca +
+                '*' + twitter + '*' + instagram + '*' + pinterest + '*' + youtube + '*' + mail;
         });
 
         function crearPlugin(posicion, descargascnig, pnoa, visualizador3d, fototeca, twitter, instagram, facebook, pinterest, youtube, mail) {
