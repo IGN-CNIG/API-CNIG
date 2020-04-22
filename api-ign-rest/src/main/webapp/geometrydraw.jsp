@@ -94,9 +94,7 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        let mp, mp2, posicion = 'TL',
-            collapsed = true,
-            collapsible = true;
+        let mp, posicion, collapsed, collapsible;
         crearPlugin(collapsed, collapsible, posicion);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -145,12 +143,12 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

@@ -82,7 +82,6 @@
 
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
@@ -105,8 +104,8 @@
 
         map.addLayers([layerinicial, layerUA]);
 
-        let mp,mp2;
-        let collapsed = false, posicion = 'TR', collapsible = true;
+        let mp;
+        let collapsed, posicion, collapsible;
         crearPlugin(collapsed,posicion,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -120,7 +119,7 @@
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
 			map.removePlugins(mp);
 			crearPlugin(collapsed,posicion,collapsible);
         }
@@ -132,12 +131,13 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
+            
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

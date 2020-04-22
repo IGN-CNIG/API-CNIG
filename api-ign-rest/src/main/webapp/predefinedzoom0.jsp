@@ -49,9 +49,9 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
         <label for="inputName">Parámetro Name</label>
-        <input type="text" name="nameValue" id="inputName">
+        <input type="text" name="nameValue" id="inputName" value="Zoom a la extensión del mapa">
         <label for="inputBbox">Parámetro Bbox</label>
-        <input type="text" name="bbox" id="inputBbox">
+        <input type="text" name="bbox" id="inputBbox" value="[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]">
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -76,7 +76,6 @@
 
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
@@ -99,8 +98,10 @@
 
         map.addLayers([layerinicial, layerUA]);
 
-        let mp,mp2;
-        let posicion = "TL",nombre,bbox;
+        let mp;
+        let posicion = "TL",
+            nombre = "Zoom a la extensión del mapa",
+            bbox = JSON.parse("[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]");
         crearPlugin(posicion,nombre,bbox);
         
         const selectPosicion = document.getElementById("selectPosicion");
@@ -126,12 +127,12 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
         }
+        mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

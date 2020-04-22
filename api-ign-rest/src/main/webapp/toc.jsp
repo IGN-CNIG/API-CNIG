@@ -78,10 +78,30 @@
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
 
-        let map;
-
-        let mp, mp2, posicion = 'TL',
-            collapsed = true;
+        let map = M.map({
+                container: 'mapjs',
+                zoom: 5,
+                maxZoom: 20,
+                minZoom: 4,
+                center: [-467062.8225, 4783459.6216],
+            });
+            layerUA = new M.layer.WMS({
+                url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+                name: 'AU.AdministrativeUnit',
+                legend: 'Unidad administrativa',
+                tiled: false,
+            }, {});
+            layerinicial = new M.layer.WMS({
+                url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+                name: 'AU.AdministrativeBoundary',
+                legend: 'Limite administrativo',
+                tiled: false,
+            }, {
+            visibility: false,
+        });
+        map.addLayers(layerUA);
+        map.addLayers(layerinicial);
+        let mp, posicion, collapsed;
         let layerUA, layerinicial;
 
         crearPlugin(posicion, collapsed);
@@ -109,45 +129,19 @@
 
 
         function crearPlugin(posicion, collapsed) {
-
-            map = M.map({
-                container: 'mapjs',
-                zoom: 5,
-                maxZoom: 20,
-                minZoom: 4,
-                center: [-467062.8225, 4783459.6216],
-            });
-
             mp = new M.plugin.TOC({
                 collapsed: collapsed,
                 position: posicion,
             });
-
             map.addPlugin(mp);
 
-            layerUA = new M.layer.WMS({
-                url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-                name: 'AU.AdministrativeUnit',
-                legend: 'Unidad administrativa',
-                tiled: false,
-            }, {});
-            layerinicial = new M.layer.WMS({
-                url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-                name: 'AU.AdministrativeBoundary',
-                legend: 'Limite administrativo',
-                tiled: false,
-            }, {
-                visibility: false,
-            });
-            map.addLayers(layerUA);
-            map.addLayers(layerinicial);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
 
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

@@ -95,8 +95,8 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
-        let mp,mp2;
-        let posicion = "BR", fixed, zoom, baseLayer, collapsible = true, collapsed = false;
+        let mp;
+        let posicion, fixed, zoom, baseLayer, collapsible, collapsed;
         crearPlugin(posicion,fixed,zoom,baseLayer,collapsed,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -116,7 +116,7 @@
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             fixed = (selectFixed.options[selectFixed.selectedIndex].value == 'true');
-            zoom = parseInt(inputZoom.value);
+            zoom = inputZoom.value;
             baseLayer = inputBaseLayer.value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
@@ -134,14 +134,14 @@
                 collapsed: collapsed,
                 collapsible: collapsible,
             });
-
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "BR",
-			});
-			map.addPlugin(mp2);
         }
+        
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "BR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

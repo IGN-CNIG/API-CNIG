@@ -107,8 +107,8 @@
         });
         map.addLayers([layerinicial, campamentos]);
 
-        let mp,mp2;
-        let posicion = 'TR',  collapsed = true, collapsible = true, serverUrlValue, printTemplateUrlValue, printStatusUrlValue;
+        let mp;
+        let posicion, collapsed, collapsible, serverUrlValue, printTemplateUrlValue, printStatusUrlValue;
         crearPlugin(collapsed,posicion,collapsible,serverUrlValue,printTemplateUrlValue,printStatusUrlValue);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -145,13 +145,13 @@
                 printStatusUrl: printStatusUrl,
             });
            
-            map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
+            map.addPlugin(mp); 
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

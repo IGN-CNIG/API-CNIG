@@ -82,8 +82,8 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
-        let mp,mp2;
-        let tooltip='Muestra coordenadas',srs='EPSG:4326',label='WGS84',precision=4,geoDecimalDigits=3,utmDecimalDigits=2;
+        let mp;
+        let tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits;
         crearPlugin(tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits);
         
         const inputTooltip  = document.getElementById("inputTooltip");
@@ -104,9 +104,9 @@
             tooltip = inputTooltip.value;
             srs = inputSrs.value;
             label = inputLabel.value;
-            precision = parseInt(inputPrecision.value);
-            geoDecimalDigits = parseInt(inputGeoDecimalDigits.value);
-            utmDecimalDigits = parseInt(inputUtmDecimalDigits.value);
+            precision = inputPrecision.value;
+            geoDecimalDigits = inputGeoDecimalDigits.value;
+            utmDecimalDigits = inputUtmDecimalDigits.value;
             map.removePlugins(mp);
 			crearPlugin(tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits);
         }
@@ -123,12 +123,12 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);
