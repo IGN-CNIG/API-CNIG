@@ -1,5 +1,7 @@
 # M.plugin.MouseSRS
 
+Muestra las coordenas en el sistema de referencia elegido del puntero del ratón
+
 # Dependencias
 
 - mousesrs.ol.min.js
@@ -28,12 +30,12 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 ### Plugin sin parámetros
 
 ```
-const mp = new MouseSRS();
+const mp = new M.plugin.MouseSRS();
 ```
 ### Plugin con parámetros
 
 ```
-const mp = new MouseSRS({
+const mp = new M.plugin.MouseSRS({
   position: 'BL',
   tooltip: 'Muestra coordenadas',
   srs: 'EPSG:4326',
