@@ -200,10 +200,10 @@ export default class InfoCatastroControl extends M.Control {
     const controlNode = rootElement.getElementsByTagName('control')[0];
     const errorCtlNode = controlNode.getElementsByTagName('cuerr')[0].childNodes[0].nodeValue;
     if (errorCtlNode === '1') {
-      const errorNode = rootElement.getElementsByTagName('lerr')[0];
-      const errorDesc = errorNode.getElementsByTagName('err')[0];
-      const errorDescTxt = errorDesc.getElementsByTagName('des')[0].childNodes[0].nodeValue;
-      valuePopup = errorDescTxt;
+      // const errorNode = rootElement.getElementsByTagName('lerr')[0];
+      // const errorDesc = errorNode.getElementsByTagName('err')[0];
+      // const errorDescTxt = errorDesc.getElementsByTagName('des')[0].childNodes[0].nodeValue;
+      valuePopup = getValue('noInfo');
     } else {
       const coordenadasNode = rootElement.getElementsByTagName('coordenadas')[0];
       const coordNode = coordenadasNode.getElementsByTagName('coord')[0];
@@ -219,19 +219,19 @@ export default class InfoCatastroControl extends M.Control {
       link = `https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCListaBienes.aspx?del==${codProv}&mun=${codMun}&rc1=${pc1Node}&rc2=${pc2Node}`;
     }
 
-    let formatedInfo = `${M.utils.beautifyAttribute('Información Catastral')}
+    let formatedInfo = `${M.utils.beautifyAttribute(getValue('informacionCatastral'))}
     <div class='divinfo'>
     <table class='mapea-table'>
     <tbody>
     <tr><td class='header' colspan='4'></td></tr>
-    <tr><td class='key'><b>${M.utils.beautifyAttribute('Referencia catastral')}</b></td><td class='value'></b>
+    <tr><td class='key'><b>${M.utils.beautifyAttribute(getValue('reference'))}</b></td><td class='value'></b>
     <a href='${link}' target='_blank'>${valuePopup}</a></td></tr>
-    <tr><td class='key'><b>${M.utils.beautifyAttribute('Descripción')}</b></td>
+    <tr><td class='key'><b>${M.utils.beautifyAttribute(getValue('description'))}</b></td>
     <td class='value'>${ldtNode}</td></tr>
     </tbody></table></div>`;
 
-    if (valuePopup.toLowerCase().indexOf('no hay referencia') > -1) {
-      formatedInfo = `${M.utils.beautifyAttribute('Información Catastral')}
+    if (valuePopup.toLowerCase().indexOf(getValue('noReference')) > -1) {
+      formatedInfo = `${M.utils.beautifyAttribute(getValue('informacionCatastral'))}
       <div class='divinfo'>
       <table class='mapea-table'>
       <tbody>

@@ -1,6 +1,14 @@
 {
-  "tooltip": "Consultar Catastro",
-  "informacionCatastral": "Información catastral",
-  "errorConexion": "No es posible establecer conexión con el servidor de Catastro.",
-  "consultar": "Consultar Catastro"
+  "tooltip": "Cadastre information",
+  "informacionCatastral": "Cadastre information",
+  "errorConexion": "It is not possible to establish a connection with the Cadastre server.",
+  "consultar": "Cadastre information",
+
+  "description": "Description",
+  "reference": "Cadastral reference",
+  "noReference": "No reference",
+  "noInfo": "NO REFERENCES AVAILABLE FOR THESE COORDINATES "
+
+
+
 }

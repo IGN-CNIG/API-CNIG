@@ -1,5 +1,6 @@
 import InfoCatastro from 'facade/infocatastro';
-import ShareMap from '../../sharemap/src/facade/js/sharemap';
+
+M.language.setLang('es');
 
 
 const map = M.map({
@@ -11,10 +12,4 @@ const mp = new InfoCatastro({
   tooltip: 'Consultar Catastro',
 });
 
-const mp2 = new ShareMap({
-  baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
-  position: 'BR',
-});
-
 map.addPlugin(mp);
-map.addPlugin(mp2);
