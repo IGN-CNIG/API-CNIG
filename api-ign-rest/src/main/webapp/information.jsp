@@ -127,8 +127,8 @@
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             tooltip = inputTooltip.value;
             formato = inputFormat.value;
-            featureCount = parseInt(inputFeatureCount.value);
-            buffer = parseInt(inputBuffer.value);
+            featureCount = inputFeatureCount.value;
+            buffer = inputBuffer.value;
             map.removePlugins(mp);
             crearPlugin(posicion, tooltip, formato, featureCount, buffer);
         }
