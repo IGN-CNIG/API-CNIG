@@ -96,7 +96,9 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion, fixed, zoom, baseLayer, collapsible, collapsed;
+        let posicion, fixed, zoom, 
+        baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
+        collapsible, collapsed;
         crearPlugin(posicion,fixed,zoom,baseLayer,collapsed,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -129,8 +131,7 @@
                 position: position,
                 fixed:fixed,
                 zoom:zoom,
-                baseLayer:baseLayer,
-            }, {
+                baseLayer: baseLayer,
                 collapsed: collapsed,
                 collapsible: collapsible,
             });
