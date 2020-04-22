@@ -15,7 +15,17 @@ div.m-areas>div.m-area>div.m-panel.m-rescale-panel.opened>div.m-panel-controls>d
 }
 
 div.m-areas>div.m-area.m-bottom>div.m-panel.m-rescale-panel>div.m-panel-controls>div.m-control.m-container.m-rescale {
-    width: 230px;
+    width: 185px;
+}
+
+div.m-areas>div.m-area.m-left>div.m-panel.m-rescale-panel>button.m-panel-btn {
+    position: absolute;
+    right: -40px;
+}
+
+div.m-areas>div.m-area.m-right>div.m-panel.m-rescale-panel>button.m-panel-btn {
+    position: absolute;
+    left: -40px;
 }
 
 .m-areas>div.m-area>div.m-panel.m-rescale-panel.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
