@@ -23,6 +23,7 @@
             height: 100%;
             overflow: auto;
         }
+
         .tooltip {
             position: relative;
             display: inline-block;
@@ -41,6 +42,7 @@
             border: 1px solid #0000001c;
             margin-left: 1em;
         }
+
         .tooltiptext::after {
             content: "";
             display: block;
@@ -112,7 +114,7 @@
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
-    <script type="text/javascript" src="js/configuration-1.2.0.js"></script> 
+    <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
@@ -138,9 +140,9 @@
         });
 
 
-        let mp,posicion;
-        let descargascnig,pnoa,visualizador3d,fototeca,twitter,instagram,facebook,pinterest,youtube,mail;
-        crearPlugin(posicion,descargascnig,pnoa,visualizador3d,fototeca,twitter,instagram,facebook,pinterest,youtube,mail);
+        let mp, posicion;
+        let descargascnig, pnoa, visualizador3d, fototeca, twitter, instagram, facebook, pinterest, youtube, mail;
+        crearPlugin(posicion, descargascnig, pnoa, visualizador3d, fototeca, twitter, instagram, facebook, pinterest, youtube, mail);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const inputDescargascnig = document.getElementById("inputDescargascnig");
@@ -156,18 +158,18 @@
         const buttonApi = document.getElementById("buttonAPI");
 
         selectPosicion.addEventListener('change', cambiarTest);
-        inputDescargascnig.addEventListener('change',cambiarTest);
-        inputPnoa.addEventListener('change',cambiarTest);
-        inputVisualizador3d.addEventListener('change',cambiarTest);
-        inputFototeca.addEventListener('change',cambiarTest);
-        inputTwitter.addEventListener('change',cambiarTest);
-        inputInstagram.addEventListener('change',cambiarTest);
-        inputFacebook.addEventListener('change',cambiarTest);
-        inputPinterest.addEventListener('change',cambiarTest);
-        inputYoutube.addEventListener('change',cambiarTest);
-        inputMail.addEventListener('change',cambiarTest);
-        
-        function cambiarTest(){
+        inputDescargascnig.addEventListener('change', cambiarTest);
+        inputPnoa.addEventListener('change', cambiarTest);
+        inputVisualizador3d.addEventListener('change', cambiarTest);
+        inputFototeca.addEventListener('change', cambiarTest);
+        inputTwitter.addEventListener('change', cambiarTest);
+        inputInstagram.addEventListener('change', cambiarTest);
+        inputFacebook.addEventListener('change', cambiarTest);
+        inputPinterest.addEventListener('change', cambiarTest);
+        inputYoutube.addEventListener('change', cambiarTest);
+        inputMail.addEventListener('change', cambiarTest);
+
+        function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             descargascnig = inputDescargascnig.value;
             pnoa = inputPnoa.value;
@@ -180,7 +182,7 @@
             youtube = inputYoutube.value;
             mail = inputMail.value;
             map.removePlugins(mp);
-            crearPlugin(posicion);
+            crearPlugin(posicion, descargascnig, pnoa, visualizador3d, fototeca, twitter, instagram, facebook, pinterest, youtube, mail);
         }
 
         buttonApi.addEventListener('click', function() {
@@ -196,10 +198,11 @@
             youtube = inputYoutube.value;
             mail = inputMail.value;
 
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion;
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion + '*' + descargascnig + '*' + pnoa + '*' + visualizador3d + '*' + fototeca +
+                '*' + twitter + '*' + instagram + '*' + pinterest + '*' + youtube + '*' + mail;
         });
 
-        function crearPlugin(posicion,descargascnig,pnoa,visualizador3d,fototeca,twitter,instagram,facebook,pinterest,youtube,mail) {
+        function crearPlugin(posicion, descargascnig, pnoa, visualizador3d, fototeca, twitter, instagram, facebook, pinterest, youtube, mail) {
             mp = new M.plugin.ContactLink({
                 position: posicion,
                 descargascnig: descargascnig,
@@ -215,15 +218,15 @@
             });
 
             map.addPlugin(mp);
-           
+
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>
