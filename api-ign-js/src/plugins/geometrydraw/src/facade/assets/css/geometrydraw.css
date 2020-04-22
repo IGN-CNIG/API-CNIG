@@ -32,7 +32,7 @@ div.m-panel.m-geometrydraw.collapsed {
 }
 
 .m-areas>div.m-area>div.m-panel.m-geometrydraw>div.m-panel-controls>div {
-    width: max-content;
+    width: 392px;
 }
 
 div.m-panel.m-geometrydraw.collapsed * {
@@ -49,7 +49,7 @@ div.m-panel.m-geometrydraw.collapsed>button.m-panel-btn {
 
 /* style fix for left positions */
 .m-areas>.m-left>.m-panel.m-geometrydraw.opened>.m-panel-controls {
-    width: max-content;
+    width: 392px;
 }
 
 div.m-area.m-left>div.m-panel.m-geometrydraw.collapsed>button {
@@ -266,7 +266,7 @@ div.ol-overlaycontainer-stopevent>div>div.m-area>div.m-panel.m-geometrydraw.coll
     div.m-panel.m-geometrydraw.opened,
     div.m-panel.m-geometrydraw>div.m-panel-controls,
     .m-areas>.m-left>.m-panel.m-geometrydraw.opened>.m-panel-controls {
-        width: 200px;
+        width: 310px;
     }
 }
 
