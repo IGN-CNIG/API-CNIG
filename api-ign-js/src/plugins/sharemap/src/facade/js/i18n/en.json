@@ -5,5 +5,6 @@
   "title": "Share URL",
   "text": "Embedded HTML",
   "copy": "Copy",
-  "tooltip": "Copied!"
+  "tooltip": "Copied!",
+  "tooltipPanel": "Share URL"
 }

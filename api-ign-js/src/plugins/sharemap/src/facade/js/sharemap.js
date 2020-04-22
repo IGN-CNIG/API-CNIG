@@ -206,7 +206,7 @@ export default class ShareMap extends M.Plugin {
       collapsible: false,
       position: M.ui.position[this.position_],
       className: 'm-plugin-sharemap',
-      tooltip: 'Compartir enlace',
+      tooltip: getValue('tooltipPanel'),
     });
 
     this.panel_.addControls(this.controls_);
