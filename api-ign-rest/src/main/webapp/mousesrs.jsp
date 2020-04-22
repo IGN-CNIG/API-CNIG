@@ -84,7 +84,12 @@
         });
         let mp;
         let tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits;
-        crearPlugin(tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits);
+        crearPlugin({
+            tooltip:tooltip,
+            srs:srs,
+            label:label,
+            precision:precision
+        });
         
         const inputTooltip  = document.getElementById("inputTooltip");
         const inputSrs  = document.getElementById("inputSrs");
@@ -101,27 +106,19 @@
         inputUtmDecimalDigits.addEventListener('change', cambiarTest);
 
         function cambiarTest(){
-            tooltip = inputTooltip.value;
-            srs = inputSrs.value;
-            label = inputLabel.value;
-            precision = inputPrecision.value;
-            geoDecimalDigits = inputGeoDecimalDigits.value;
-            utmDecimalDigits = inputUtmDecimalDigits.value;
+            let propiedades = {}
+            tooltip = inputTooltip.value != "" ? objeto.tooltip=inputTooltip.value:"";
+            srs = inputSrs.value != "" ? objeto.srs = inputSrs.value:"";
+            label = inputLabel.value != "" ? objeto.label = inputLabel.value:"";
+            precision = inputPrecision.value != "" ? objeto.precision = inputPrecision.value:"";
+            geoDecimalDigits = inputGeoDecimalDigits.value != "" ? objeto.geoDecimalDigits = inputGeoDecimalDigits.value:"";
+            utmDecimalDigits = inputUtmDecimalDigits.value != "" ? objeto.utmDecimalDigits = inputUtmDecimalDigits.value:"";
             map.removePlugins(mp);
-			crearPlugin(tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits);
+			crearPlugin(propiedades);
         }
-
         
-        function crearPlugin(tooltip,srs,label,precision,geoDecimalDigits,utmDecimalDigits){
-            mp = new M.plugin.MouseSRS({
-                tooltip: tooltip,
-                srs: srs,
-                label: label,
-                precision: precision,
-                geoDecimalDigits: geoDecimalDigits,
-                utmDecimalDigits: utmDecimalDigits,
-            });
-
+        function crearPlugin(propiedades){
+            mp = new M.plugin.MouseSRS(propiedades);
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
