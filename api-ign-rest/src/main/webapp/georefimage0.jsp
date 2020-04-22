@@ -96,11 +96,8 @@
         minZoom: 4,
         center: [-467062.8225, 4783459.6216],
         });
-        let mp, mp2;
-        let position = "TR", collapsed = true, collapsible = true,
-            serverUrl = "https://geoprint.desarrollo.guadaltel.es",
-            printTemplateUrl = "https://geoprint.desarrollo.guadaltel.es/print/mapexport",
-            printStatusUrl = "https://geoprint.desarrollo.guadaltel.es/print/status";
+        let mp;
+        let position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl;
         
         crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl);
 
@@ -139,14 +136,12 @@
                 printStatusUrl:printStatusUrl
             });
             map.addPlugin(mp);
-        
-            mp2 = new M.plugin.ShareMap({
-                baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-                position: "TR",
-            });
-            map.addPlugin(mp2);
         }
-
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

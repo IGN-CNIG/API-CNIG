@@ -112,18 +112,9 @@
 		minZoom: 4,
 		center: [-467062.8225, 4783459.6216],
 		});
-		let mp,mp2;
-		let sToSearch = 'gn',
-			mxResults = 10,
-			collapsed = false,
-			posicion = "TL",
-			noProcess = "municipio,poblacion",
-			countryCode = "es",
-			reverse = "false",
-			urlCandidates = "https://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp",
-			urlFind = "https://www.cartociudad.es/geocoder/api/geocoder/findJsonp",
-			urlReverse = "https://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode";
-		crearPlugin(sToSearch, mxResults, noProcess, countryCode, collapsed, posicion, reverse ,urlCandidates, urlFind, urlReverse);
+		let mp;
+        let sToSearch,mxResults,collapsed,posicion,noProcess,countryCode,reverse,urlCandidates,urlFind,urlReverse;
+        crearPlugin(sToSearch, mxResults, noProcess, countryCode, collapsed, posicion, reverse ,urlCandidates, urlFind, urlReverse);
 
 		const selectServiceToSearch = document.getElementById("selectServiceToSearch");
 		const inputMaxResults = document.getElementById("inputMaxResults");
@@ -148,7 +139,7 @@
 		inputUrlReverse.addEventListener('change',cambiarTest);
 		function cambiarTest() {
 			sToSearch = selectServiceToSearch.options[selectServiceToSearch.selectedIndex].value;
-			mxResults = parseInt(inputMaxResults.value);
+			mxResults = inputMaxResults.value;
 			noProcess = selectNoProcess.options[selectNoProcess.selectedIndex].value;
 			countryCode = selectCountryCode.options[selectCountryCode.selectedIndex].value;
 			posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
@@ -176,13 +167,12 @@
 			});
 
 			map.addPlugin(mp);
-			mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
-			
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

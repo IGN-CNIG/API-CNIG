@@ -89,8 +89,8 @@
             layers: ["WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Callejero*false"],
             minZoom: 6,
         });
-        let mp,mp2;
-        let posicion = 'TL', collapsed = false, collapsible = true;
+        let mp;
+        let posicion, collapsed, collapsible;
         crearPlugin(posicion,collapsed,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -120,13 +120,12 @@
                 M.dialog.info(JSON.stringify(feature), 'Información del feature');
             });
             map.addPlugin(mp);
-
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

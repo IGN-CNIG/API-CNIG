@@ -53,7 +53,7 @@
         <input type="text" name="format" id="inputFormat">
         <label for="inputFeatureCount">Parámetro featureCount</label>
         <input type="number" name="featureCount" id="inputFeatureCount">
-        <label for="inputBuffer">Parámetro buffer</label>
+        <label for="inputBuffer">Parámetro buffer (px)</label>
         <input type="number" name="buffer" id="inputBuffer">
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -84,7 +84,7 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
-        let mp,mp2;
+        let mp;
                
         const layerinicial = new M.layer.WMS({
                 url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
@@ -101,9 +101,8 @@
              }, {});
 
         map.addLayers([layerinicial, layerUA]);
-        map.addLayers([layerinicial, layerUA]);
 
-        let posicion = "TL", tooltip, formato = 'html', featureCount = 5, buffer = 5;
+        let posicion, tooltip, formato, featureCount, buffer;
         crearPlugin(posicion, tooltip, formato, featureCount, buffer);
         
         const selectPosicion = document.getElementById("selectPosicion");
@@ -128,8 +127,7 @@
 			crearPlugin(posicion,tooltip,formato,featureCount,buffer);
         }
         
-        function crearPlugin(position,tooltip,format,featureCount,buffer){
-                    
+        function crearPlugin(position,tooltip,format,featureCount,buffer){   
             mp = new M.plugin.Information({
                 position: position,
                 tooltip:tooltip,
@@ -139,12 +137,12 @@
             });
 
             map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

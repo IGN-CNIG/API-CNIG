@@ -112,89 +112,8 @@
 
         map.addLayers([layerinicial, layerUA]);
         
-        let mp,mp2;
-        let posicion = 'BL', collapsible = true, collapsed = true, layerId = 0, layerVisibility = true;
-        let layerOpts = [{
-                        id: 'peninsula',
-                        preview: 'plugins/selectionzoom/images/espana.png',
-                        title: 'Peninsula',
-                        bbox: {
-                            x: {
-                                min: -1200091.444315327,
-                                max: 365338.89496508264,
-                            },
-                            y: {
-                                min: 4348955.797933925,
-                                max: 5441088.058207252,
-                            }
-                        },
-                        zoom: 7
-                    },
-                    {
-                        id: 'canarias',
-                        title: 'Canarias',
-                        preview: 'plugins/selectionzoom/images/canarias.png',
-                        bbox: {
-                            x: {
-                                min: -2170190.6639824593,
-                                max: -1387475.4943422542,
-                            },
-                            y: {
-                                min: 3091778.038884449,
-                                max: 3637844.1689537475,
-                            }
-                        },
-                        zoom: 8
-                    },
-                    {
-                        id: 'baleares',
-                        title: 'Baleares',
-                        preview: 'plugins/selectionzoom/images/baleares.png',
-                        bbox: {
-                            x: {
-                                min: 115720.89020469127,
-                                max: 507078.4750247937,
-                            },
-                            y: {
-                                min: 4658411.436032817,
-                                max: 4931444.501067467,
-                            }
-                        },
-                        zoom: 9
-                    },
-                    {
-                        id: 'ceuta',
-                        preview: 'plugins/selectionzoom/images/ceuta.png',
-                        title: 'Ceuta',
-                        bbox: {
-                            x: {
-                                min: -599755.2558583047,
-                                max: -587525.3313326766,
-                            },
-                            y: {
-                                min: 4281734.817081453,
-                                max: 4290267.100363785,
-                            }
-                        },
-                        zoom: 14
-                    },
-                    {
-                        id: 'melilla',
-                        preview: 'plugins/selectionzoom/images/melilla.png',
-                        title: 'Melilla',
-                        bbox: {
-                            x: {
-                                min: -334717.4178261766,
-                                max: -322487.4933005484,
-                            },
-                            y: {
-                                min: 4199504.016876071,
-                                max: 4208036.300158403,
-                            }
-                        },
-                        zoom: 14
-                    }
-                ];
+        let mp;
+        let posicion, collapsible, collapsed, layerId, layerVisibility, layerOpts;
                 
         crearPlugin(posicion,collapsible,collapsed,layerId,layerVisibility,layerOpts);
     
@@ -214,7 +133,7 @@
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            layerId = parseInt(inputLayerId.value);
+            layerId = inputLayerId.value;
             layerVisibility = (selectLayerVisibility.options[selectLayerVisibility.selectedIndex].value == 'true');
             map.removePlugins(mp);
             crearPlugin(posicion,collapsible,collapsed,layerId,layerVisibility,layerOpts);
@@ -230,13 +149,13 @@
                 layerOpts: layerOpts,
             });
             map.addPlugin(mp);
-
-            mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-            map.addPlugin(mp2);
+           
         }
+        mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);
