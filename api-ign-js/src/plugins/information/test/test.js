@@ -25,7 +25,14 @@ const campamentos = new M.layer.GeoJSON({
   extract: true,
 });
 
-map.addLayers([layerinicial, campamentos]);
+const capaPuntosLimpios = new M.layer.WMS({
+  url: 'http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_puntos_limpios?',
+  name: 'puntos_limpios',
+  legend: 'Puntos Limpios',
+});
+
+
+map.addLayers([layerinicial, capaPuntosLimpios]);
 map.addPlugin(mp);
 // window.mp = mp;
 window.map = map;
