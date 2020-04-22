@@ -108,14 +108,17 @@
         const inputName = document.getElementById("inputName");
         const inputBbox = document.getElementById("inputBbox");
 
-        selectPosicion.addEventListener('change', function () {
+        selectPosicion.addEventListener('change', cambiarTest);
+        inputName.addEventListener('change', cambiarTest);
+        inputBbox.addEventListener('change', cambiarTest);
+
+        function cambiarTest(){
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             nombre = inputName.value;
             bbox = JSON.parse(inputBbox.value);
             map.removePlugins(mp);
 			crearPlugin(posicion,nombre,bbox);
-		});
-
+        }
         
         function crearPlugin(position,name,bbox){
             mp = new M.plugin.PredefinedZoom({

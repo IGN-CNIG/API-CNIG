@@ -84,6 +84,7 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
+        
         let mp;
                
         const layerinicial = new M.layer.WMS({
@@ -99,8 +100,13 @@
               legend: 'Unidad administrativa',
               tiled: false
              }, {});
-
-        map.addLayers([layerinicial, layerUA]);
+    
+        const capaPuntosLimpios = new M.layer.WMS({
+            url: 'http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_puntos_limpios?',
+            name: 'puntos_limpios',
+            legend: 'Puntos Limpios',
+        });
+        map.addLayers([layerinicial, layerUA, capaPuntosLimpios]);
 
         let posicion, tooltip, formato, featureCount, buffer;
         crearPlugin(posicion, tooltip, formato, featureCount, buffer);
