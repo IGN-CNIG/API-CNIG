@@ -101,8 +101,7 @@
         });
         map.addLayers(layerUA);
         map.addLayers(layerinicial);
-        let mp, posicion = 'TL',
-            collapsed = true;
+        let mp, posicion, collapsed;
         let layerUA, layerinicial;
 
         crearPlugin(posicion, collapsed);

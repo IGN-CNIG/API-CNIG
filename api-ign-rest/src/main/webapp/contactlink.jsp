@@ -23,7 +23,42 @@
             height: 100%;
             overflow: auto;
         }
-        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            background-color: #e1e1e1;
+            color: #4d4d4d;
+            text-align: center;
+            border-radius: 4px;
+            padding: 0.2em;
+            position: absolute;
+            z-index: 1;
+            border: 1px solid #0000001c;
+            margin-left: 1em;
+        }
+        .tooltiptext::after {
+            content: "";
+            display: block;
+            position: absolute;
+            background: #e1e1e1;
+            width: 1em;
+            height: 1em;
+            transform: rotate(45deg);
+            top: 0;
+            border-left: 1px solid #0000001c;
+            border-bottom: 1px solid #0000001c;
+            margin-left: -0.5em;
+            z-index: -1;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
     </style>
     <%
       Map<String, String[]> parameterMap = request.getParameterMap();
@@ -48,8 +83,11 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-        <label for="inputDescargascnig">Parámetro descargascnig</label>
-        <input type="text" name="descargascnig" id="inputDescargascnig">
+        <div class="tooltip">
+            <label for="inputDescargascnig">Parámetro descargascnig</label>
+            <input type="text" name="descargascnig" id="inputDescargascnig">
+            <span class="tooltiptext">http://centrodedescargas.cnig.es/CentroDescargas/index.jsp</span>
+        </div>
         <label for="inputPnoa">Parámetro pnoa</label>
         <input type="text" name="pnoa" id="inputPnoa">
         <label for="inputVisualizador3d">Parámetro visualizador3d</label>
