@@ -44,28 +44,28 @@ export default class OverviewMap extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.position_ = options !== undefined ? options.position : 'BR';
+    this.position_ = options.position !== undefined ? options.position : 'BR';
 
     /**
      * Fixed zoom
      * @private
      * @type {Boolean}
      */
-    this.fixed_ = options !== undefined ? options.fixed : false;
+    this.fixed_ = options.fixed !== undefined ? options.fixed : false;
 
     /**
      * Zoom to make fixed
      * @private
      * @type {Number}
      */
-    this.zoom_ = options !== undefined ? options.zoom : 4;
+    this.zoom_ = options.zoom !== undefined ? options.zoom : 4;
 
     /**
      * Zoom to make fixed
      * @private
      * @type {Number}
      */
-    this.baseLayer_ = options !== undefined ? options.baseLayer : 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true';
+    this.baseLayer_ = options.baseLayer !== undefined ? options.baseLayer : 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true';
 
     /**
      * Vendor options
@@ -151,6 +151,6 @@ export default class OverviewMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.vendorOptions.collapsed}*${this.vendorOptions.collapsible}*${this.fixed_}*${this.zoom_}`;
+    return `${this.name}=${this.position_}*!${this.vendorOptions.collapsed}*!${this.vendorOptions.collapsible}*!${this.fixed_}*!*!${this.baseLayer_}`;
   }
 }
