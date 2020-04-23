@@ -217,6 +217,7 @@ div#geometrydraw-uploading>input {
 div#geometrydraw-uploading>label {
     display: block;
     width: 127px;
+    text-align: center;
 }
 
 #thicknessSelector {
