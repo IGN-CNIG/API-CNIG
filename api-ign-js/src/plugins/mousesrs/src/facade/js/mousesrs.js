@@ -181,6 +181,21 @@ export default class MouseSRS extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}*${this.geoDecimalDigits}*${this.utmDecimalDigits}`;
+    let cadena = `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}`;
+
+    if (this.geoDecimalDigits === undefined || this.geoDecimalDigits == null || this.geoDecimalDigits === '') {
+      cadena += '*';
+    } else {
+      cadena += `*${this.geoDecimalDigits}`;
+    }
+
+    if (this.utmDecimalDigits === undefined || this.utmDecimalDigits == null || this.utmDecimalDigits === '') {
+      cadena += '*';
+    } else {
+      cadena += `*${this.utmDecimalDigits}`;
+    }
+    return cadena;
+    // return `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*$
+    // {this.precision}*${this.geoDecimalDigits}*${this.utmDecimalDigits}`;
   }
 }

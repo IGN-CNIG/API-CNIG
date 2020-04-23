@@ -9,9 +9,7 @@ const map = M.map({
   zoom: 4,
 });
 
-const mp = new MouseSRS({
-  srs: 'EPSG:25830',
-});
+const mp = new MouseSRS();
 
 map.addPlugin(mp);
 

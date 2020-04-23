@@ -141,7 +141,14 @@ export default class Information extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name_}=${this.position_}*${this.tooltip_}*${this.format_}*${this.featureCount_}*${this.buffer_}`;
+    let cadena = `${this.name_}=${this.position_}*${this.tooltip_}*${this.format_}*${this.featureCount_}`;
+
+    if (this.buffer_ === undefined || this.buffer_ == null || this.buffer_ === '') {
+      cadena += '*';
+    } else {
+      cadena += `*${this.buffer_}`;
+    }
+    return cadena;
   }
 
   /**
