@@ -48,13 +48,17 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
         <label for="inputTooltip">Parámetro tooltip</label>
-        <input type="text" name="tooltip" id="inputTooltip">
+        <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug">
+        <datalist id="tooltipSug"><option value="Consultar Capas"></option></datalist>
         <label for="inputFormat">Parámetro format</label>
-        <input type="text" name="format" id="inputFormat">
+        <input type="text" name="format" id="inputFormat" list="formatSug">
+        <datalist id="formatSug"><option value="html"></option></datalist>
         <label for="inputFeatureCount">Parámetro featureCount</label>
-        <input type="number" name="featureCount" id="inputFeatureCount">
+        <input type="number" name="featureCount" id="inputFeatureCount" list="featureCountSug">
+        <datalist id="featureCountSug"><option value="5"></option></datalist>
         <label for="inputBuffer">Parámetro buffer (px)</label>
-        <input type="number" name="buffer" id="inputBuffer">
+        <input type="number" name="buffer" id="inputBuffer" list="bufferSug">
+        <datalist id="bufferSug"><option value="5"></option></datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -109,8 +113,14 @@
         map.addLayers([layerinicial, layerUA, capaPuntosLimpios]);
 
         let posicion, tooltip, formato, featureCount, buffer;
-        crearPlugin(posicion, tooltip, formato, featureCount, buffer);
-        
+        crearPlugin({
+            position: posicion,
+            tooltip: tooltip,
+            format: format,
+            featureCount: featureCount,
+            buffer: buffer,
+        });
+
         const selectPosicion = document.getElementById("selectPosicion");
         const inputTooltip = document.getElementById("inputTooltip");
         const inputFormat = document.getElementById("inputFormat");
@@ -123,24 +133,19 @@
         inputFeatureCount.addEventListener('change', cambiarTest);
         inputBuffer.addEventListener('change', cambiarTest);
 
-        function cambiarTest(){
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            tooltip = inputTooltip.value;
-            formato = inputFormat.value; 
-            featureCount = parseInt(inputFeatureCount.value);
-            buffer = parseInt(inputBuffer.value);
+        function cambiarTest() {
+            let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value: "";
+            formato = inputFormat.value != "" ? objeto.formato = inputFormat.value: "";
+            featureCount = inputFeatureCount.value != "" ? objeto.featureCount = inputFeatureCount.value: "";
+            buffer = inputBuffer.value != "" ? objeto.buffer = inputBuffer.value: "";
             map.removePlugins(mp);
-			crearPlugin(posicion,tooltip,formato,featureCount,buffer);
+            crearPlugin(objeto);
         }
-        
-        function crearPlugin(position,tooltip,format,featureCount,buffer){   
-            mp = new M.plugin.Information({
-                position: position,
-                tooltip:tooltip,
-                format:format,
-                featureCount:featureCount,
-                buffer:buffer,
-            });
+
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.Information(propiedades);
 
             map.addPlugin(mp);
         }

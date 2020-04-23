@@ -45,7 +45,7 @@
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
             <option value="TL">Arriba Izquierda (TL)</option>
-            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="TR" selected="selected">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
@@ -77,7 +77,8 @@
     <script type="text/javascript">
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
-
+        
+        let layerUA, layerinicial;
         let map = M.map({
                 container: 'mapjs',
                 zoom: 5,
@@ -101,8 +102,8 @@
         });
         map.addLayers(layerUA);
         map.addLayers(layerinicial);
+
         let mp, posicion, collapsed;
-        let layerUA, layerinicial;
 
         crearPlugin(posicion, collapsed);
 

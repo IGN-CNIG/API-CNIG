@@ -23,42 +23,6 @@
             height: 100%;
             overflow: auto;
         }
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            border-bottom: 1px dotted black;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            background-color: #e1e1e1;
-            color: #4d4d4d;
-            text-align: center;
-            border-radius: 4px;
-            padding: 0.2em;
-            position: absolute;
-            z-index: 1;
-            border: 1px solid #0000001c;
-            margin-left: 1em;
-        }
-        .tooltiptext::after {
-            content: "";
-            display: block;
-            position: absolute;
-            background: #e1e1e1;
-            width: 1em;
-            height: 1em;
-            transform: rotate(45deg);
-            top: .5em;
-            border-left: 1px solid #0000001c;
-            border-bottom: 1px solid #0000001c;
-            margin-left: -0.8em;
-            z-index: -1;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-        }
     </style>
     <%
       Map<String, String[]> parameterMap = request.getParameterMap();
@@ -79,33 +43,40 @@
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
             <option value="TL">Arriba Izquierda (TL)</option>
-            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="TR" selected="selected">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-        <div class="tooltip">
-            <label for="inputDescargascnig">Parámetro descargascnig</label>
-            <input type="text" name="descargascnig" id="inputDescargascnig">
-            <span class="tooltiptext">http://centrodedescargas.cnig.es/CentroDescargas/index.jsp</span>
-        </div>
+        <label for="inputDescargascnig">Parámetro descargascnig</label>
+        <input type="text" name="descargascnig" id="inputDescargascnig" list="descargascnigSug">
+        <datalist id="descargascnigSug"><option value="http://centrodedescargas.cnig.es/CentroDescargas/index.jsp"></option></datalist>
         <label for="inputPnoa">Parámetro pnoa</label>
-        <input type="text" name="pnoa" id="inputPnoa">
+        <input type="text" name="pnoa" id="inputPnoa" list="pnoaSug">
+        <datalist id="pnoaSug"><option value="https://www.ign.es/web/comparador_pnoa/index.html"></option></datalist>
         <label for="inputVisualizador3d">Parámetro visualizador3d</label>
-        <input type="text" name="visualizador3d" id="inputVisualizador3d">
+        <input type="text" name="visualizador3d" id="inputVisualizador3d" list="visualizador3dSug">
+        <datalist id="visualizador3dSug"><option value="https://www.ign.es/3D-Stereo/"></option></datalist>
         <label for="inputFototeca">Parámetro fototeca</label>
-        <input type="text" name="fototeca" id="inputFototeca">
+        <input type="text" name="fototeca" id="inputFototeca" list="fototecaSug">
+        <datalist id="fototecaSug"><option value="https://fototeca.cnig.es/"></option></datalist>
         <label for="inputTwitter">Parámetro twitter</label>
-        <input type="text" name="twitter" id="inputTwitter">
+        <input type="text" name="twitter" id="inputTwitter" list="twitterSug">
+        <datalist id="twitterSug"><option value="https://twitter.com/IGNSpain"></option></datalist>
         <label for="inputInstagram">Parámetro instagram</label>
-        <input type="text" name="instagram" id="inputInstagram">
+        <input type="text" name="instagram" id="inputInstagram" list="instagramSug">
+        <datalist id="instagramSug"><option value="https://www.instagram.com/ignspain/"></option></datalist>
         <label for="inputFacebook">Parámetro facebook</label>
-        <input type="text" name="facebook" id="inputFacebook">
+        <input type="text" name="facebook" id="inputFacebook" list="facebookSug">
+        <datalist id="facebookSug"><option value="https://www.facebook.com/IGNSpain/"></option></datalist>
         <label for="inputPinterest">Parámetro pinterest</label>
-        <input type="text" name="pinterest" id="inputPinterest">
+        <input type="text" name="pinterest" id="inputPinterest" list="pinterestSug">
+        <datalist id="pinterestSug"><option value="https://www.pinterest.es/IGNSpain/"></option></datalist>
         <label for="inputYoutube">Parámetro youtube</label>
-        <input type="text" name="youtube" id="inputYoutube">
+        <input type="text" name="youtube" id="inputYoutube" list="youtubeSug">
+        <datalist id="youtubeSug"><option value="https://www.youtube.com/user/IGNSpain"></option></datalist>
         <label for="inputMail">Parámetro mail</label>
-        <input type="text" name="mail" id="inputMail">
+        <input type="text" name="mail" id="inputMail" list="mailSug">
+        
         <input type="submit" id="buttonAPI" value="API Rest" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -138,9 +109,21 @@
         });
 
 
-        let mp,posicion;
-        let descargascnig,pnoa,visualizador3d,fototeca,twitter,instagram,facebook,pinterest,youtube,mail;
-        crearPlugin(posicion,descargascnig,pnoa,visualizador3d,fototeca,twitter,instagram,facebook,pinterest,youtube,mail);
+        let mp, posicion;
+        let descargascnig, pnoa, visualizador3d, fototeca, twitter, instagram, facebook, pinterest, youtube, mail;
+        crearPlugin({
+            position:posicion,
+            descargascnig:descargascnig,
+            pnoa:pnoa,
+            visualizador3d:visualizador3d,
+            fototeca:fototeca,
+            twitter:twitter,
+            instagram:instagram,
+            facebook:facebook,
+            pinterest:pinterest,
+            youtube:youtube,
+            mail:mail
+        });
 
         const selectPosicion = document.getElementById("selectPosicion");
         const inputDescargascnig = document.getElementById("inputDescargascnig");
@@ -156,31 +139,32 @@
         const buttonApi = document.getElementById("buttonAPI");
 
         selectPosicion.addEventListener('change', cambiarTest);
-        inputDescargascnig.addEventListener('change',cambiarTest);
-        inputPnoa.addEventListener('change',cambiarTest);
-        inputVisualizador3d.addEventListener('change',cambiarTest);
-        inputFototeca.addEventListener('change',cambiarTest);
-        inputTwitter.addEventListener('change',cambiarTest);
-        inputInstagram.addEventListener('change',cambiarTest);
-        inputFacebook.addEventListener('change',cambiarTest);
-        inputPinterest.addEventListener('change',cambiarTest);
-        inputYoutube.addEventListener('change',cambiarTest);
-        inputMail.addEventListener('change',cambiarTest);
-        
-        function cambiarTest(){
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            descargascnig = inputDescargascnig.value;
-            pnoa = inputPnoa.value;
-            visualizador3d = inputVisualizador3d.value;
-            fototeca = inputFototeca.value;
-            twitter = inputTwitter.value;
-            instagram = inputInstagram.value;
-            facebook = inputFacebook.value;
-            pinterest = inputPinterest.value;
-            youtube = inputYoutube.value;
-            mail = inputMail.value;
+        inputDescargascnig.addEventListener('change', cambiarTest);
+        inputPnoa.addEventListener('change', cambiarTest);
+        inputVisualizador3d.addEventListener('change', cambiarTest);
+        inputFototeca.addEventListener('change', cambiarTest);
+        inputTwitter.addEventListener('change', cambiarTest);
+        inputInstagram.addEventListener('change', cambiarTest);
+        inputFacebook.addEventListener('change', cambiarTest);
+        inputPinterest.addEventListener('change', cambiarTest);
+        inputYoutube.addEventListener('change', cambiarTest);
+        inputMail.addEventListener('change', cambiarTest);
+
+        function cambiarTest() {
+            let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            descargascnig = inputDescargascnig.value != "" ? objeto.descargascnig = inputDescargascnig.value : "";
+            pnoa = inputPnoa.value!= "" ? objeto.pnoa = inputPnoa.value : "";
+            visualizador3d = inputVisualizador3d.value!= "" ? objeto.visualizador3d = inputVisualizador3d.value : "";
+            fototeca = inputFototeca.value!= "" ? objeto.fototeca = inputFototeca.value : "";
+            twitter = inputTwitter.value!= "" ? objeto.twitter = inputTwitter.value : "";
+            instagram = inputInstagram.value!= "" ? objeto.instagram = inputInstagram.value : "";
+            facebook = inputFacebook.value!= "" ? objeto.facebook = inputFacebook.value : "";
+            pinterest = inputPinterest.value!= "" ? objeto.pinterest = inputPinterest.value : "";
+            youtube = inputYoutube.value!= "" ? objeto.youtube = inputYoutube.value : "";
+            mail = inputMail.value!= "" ? objeto.mail = inputMail.value : "";
             map.removePlugins(mp);
-            crearPlugin(posicion);
+            crearPlugin(objeto);
         }
 
         buttonApi.addEventListener('click', function() {
@@ -199,23 +183,9 @@
             window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion;
         });
 
-        function crearPlugin(posicion,descargascnig,pnoa,visualizador3d,fototeca,twitter,instagram,facebook,pinterest,youtube,mail) {
-            mp = new M.plugin.ContactLink({
-                position: posicion,
-                descargascnig: descargascnig,
-                pnoa: pnoa,
-                visualizador3d: visualizador3d,
-                fototeca: fototeca,
-                twitter: twitter,
-                instagram: instagram,
-                facebook: facebook,
-                pinterest: pinterest,
-                youtube: youtube,
-                mail: mail,
-            });
-
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.ContactLink(propiedades);
             map.addPlugin(mp);
-           
         }
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",

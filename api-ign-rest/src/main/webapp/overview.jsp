@@ -42,7 +42,7 @@
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-                <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
@@ -52,8 +52,6 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
-        <label for="inputZoom">Parámetro Zoom</label>
-        <input type="number" name="zoom" id="inputZoom">
         <label for="inputBaseLayer">Parámetro baseLayer</label>
         <input type="text" name="baseLayer" id="inputBaseLayer">
         <label for="selectCollapsed">Selector collapsed</label>
@@ -96,21 +94,19 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion, fixed, zoom, 
+        let posicion, fixed, 
         baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
         collapsible, collapsed;
-        crearPlugin(posicion,fixed,zoom,baseLayer,collapsed,collapsible);
+        crearPlugin(posicion,fixed,baseLayer,collapsed,collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectFixed = document.getElementById("selectFixed");
-        const inputZoom = document.getElementById("inputZoom");
         const inputBaseLayer = document.getElementById("inputBaseLayer");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
 
         selectPosicion.addEventListener('change', cambiarTest);
         selectFixed.addEventListener('change', cambiarTest);
-        inputZoom.addEventListener('change', cambiarTest);
         inputBaseLayer.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
@@ -118,19 +114,17 @@
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             fixed = (selectFixed.options[selectFixed.selectedIndex].value == 'true');
-            zoom = inputZoom.value;
             baseLayer = inputBaseLayer.value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
 			map.removePlugins(mp);
-			crearPlugin(posicion,fixed,zoom,baseLayer,collapsed,collapsible);
+			crearPlugin(posicion,fixed,baseLayer,collapsed,collapsible);
         }
         
-        function crearPlugin(position,fixed,zoom,baseLayer,collapsed,collapsible){
+        function crearPlugin(position,fixed,baseLayer,collapsed,collapsible){
              mp = new M.plugin.OverviewMap({
                 position: position,
                 fixed:fixed,
-                zoom:zoom,
                 baseLayer: baseLayer,
                 collapsed: collapsed,
                 collapsible: collapsible,
