@@ -43,7 +43,7 @@
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
@@ -131,7 +131,7 @@
 
             map.addPlugin(mp);
         }
-        mp2 = new M.plugin.ShareMap({
+        let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
             position: "TR",
         });

@@ -44,7 +44,7 @@
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
             <option value="TL">Arriba Izquierda (TL)</option>
-            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="TR" selected="selected">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
@@ -61,11 +61,14 @@
             <option value=false>false</option>
         </select>
         <label for="inputServerUrl">Parámetro inputServerUrl</label>
-        <input type="text" value="" name="serverUrl" id="inputServerUrl">
+        <input type="text" value="" name="serverUrl" id="inputServerUrl" list="serverUrlSug">
+        <datalist id="serverUrlSug"><option value="https://geoprint.desarrollo.guadaltel.es"></option></datalist>
         <label for="inputPrintTemplateUrl">Parámetro inputPrintTemplateUrl</label>
-        <input type="text" value="" name="printTemplateUrl" id="inputPrintTemplateUrl">
+        <input type="text" value="" name="printTemplateUrl" id="inputPrintTemplateUrl" list="printTemplateUrlSug">
+        <datalist id="printTemplateUrlSug"><option value="https://geoprint.desarrollo.guadaltel.es/print/mapexport"></option></datalist>
         <label for="inputPrintStatusUrl">Parámetro inputPrintStatusUrl</label>
-        <input type="text" value="" name="printStatusUrl" id="inputPrintStatusUrl">
+        <input type="text" value="" name="printStatusUrl" id="inputPrintStatusUrl" list="printStatusUrlSug">
+        <datalist id="printStatusUrlSug"><option value="https://geoprint.desarrollo.guadaltel.es/print/status"></option></datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
