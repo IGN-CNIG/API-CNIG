@@ -6,9 +6,9 @@ const map = M.map({
   container: 'mapjs',
 });
 const mp = new ZoomPanel({
-  position: 'TR',
-  collapsible: false,
+  position: 'BL',
   collapsed: true,
+  collapsible: true,
 });
 mp.on('finished:draw', (feature) => {
   console.log(feature);
