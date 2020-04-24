@@ -71,32 +71,40 @@ export default class SelectionZoom extends M.Plugin {
     this.layerVisibility = options.layerVisibility || true;
 
     /**
-     * Layers to use as background. Each one has id, title, preview and layers attributes.
-     * @private
-     * @type {Object}
-     */
-    this.layerOpts = options.layerOpts || undefined;
-
-    /**
      * Layers id's separated by ','.
      * @public
-     * @type {String}
+     * @type {Array}
      */
     this.ids = options.ids || '';
 
     /**
      * Layers titles separated by ','.
      * @public
-     * @type {String}
+     * @type { Array }
      */
     this.titles = options.titles || '';
 
     /**
      * Layers preview urls separated by ','.
      * @public
-     * @type {String}
+     * @type { Array }
      */
     this.previews = options.previews || '';
+
+    /**
+     * Layers preview urls separated by ','.
+     * @public
+     * @type { Array }
+     */
+    this.zooms = options.zooms || '';
+
+    /**
+     * Layers preview urls separated by ','.
+     * @public
+     * @type { Array }
+     */
+    this.bboxs = options.bboxs || '';
+
 
     /**
      * Layers separated by ','.
@@ -135,12 +143,13 @@ export default class SelectionZoom extends M.Plugin {
   addTo(map) {
     this.controls_.push(new SelectionZoomControl(
       map,
-      this.layerOpts,
       this.layerId,
       this.layerVisibility,
       this.ids,
       this.titles,
       this.previews,
+      this.bboxs,
+      this.zooms,
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelSelectionZoom', {
@@ -168,10 +177,8 @@ export default class SelectionZoom extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    const layers = this.layerOpts === undefined ?
-      `${this.ids}*${this.titles}*${this.previews}*${this.layers}` :
-      this.turnLayerOptsIntoUrl();
-    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.layerId}*${this.layerVisibility}*${layers}`;
+    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.layerId}
+    *${this.layerVisibility}*${this.ids}`;
   }
 
   /**
@@ -184,8 +191,8 @@ export default class SelectionZoom extends M.Plugin {
     let ids = '';
     let titles = '';
     let previews = '';
-    let bbox = '';
-    let zoom = '';
+    let bboxs = '';
+    let zooms = '';
 
 
     this.layerOpts.forEach((l) => {
@@ -194,18 +201,18 @@ export default class SelectionZoom extends M.Plugin {
         ids += ',';
         titles += ',';
         previews += ',';
-        bbox += ',';
-        zoom += ',';
+        bboxs += ',';
+        zooms += ',';
       }
 
-      ids += l.id;
-      titles += l.title;
-      previews += l.preview;
-      bbox += [l.bbox.x.min, l.bbox.x.max, l.bbox.y.min, l.bbox.y.max];
-      zoom += l.zoom;
+      ids += l.ids;
+      titles += l.titles;
+      previews += l.previews;
+      bboxs += l.zooms;
+      zooms += l.zooms;
     });
 
-    return `${ids}*${titles}*${previews}*${bbox}*${zoom}`;
+    return `${ids}s*${titles}*${previews}*${bboxs}*${zooms}`;
   }
 
   /**

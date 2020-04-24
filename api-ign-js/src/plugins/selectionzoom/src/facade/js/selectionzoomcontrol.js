@@ -43,7 +43,7 @@ export default class SelectionZoomControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(map, layerOpts, idLayer, visible, ids, titles, previews) {
+  constructor(map, idLayer, visible, ids, titles, previews, bboxs, zooms) {
     const impl = new SelectionZoomImpl();
     super(impl, 'SelectionZoom');
 
@@ -52,11 +52,41 @@ export default class SelectionZoomControl extends M.Control {
     // });
     this.layers = [];
 
-    if (layerOpts !== undefined) {
-      // Array<Object> => Object: { id, title, preview, Array<MapeaLayer>}
-      // this.layers = layerOpts.slice(0, MAXIMUM_LAYERS);
-      this.layers = layerOpts;
-    }
+    // Array<Object> => Object: { id, title, preview, Array<MapeaLayer>}
+    // this.layers = layerOpts.slice(0, MAXIMUM_LAYERS);
+    // const bboxArray = bbox];
+    const idsArray = ids.split(',');
+    const titlesArray = titles.split(',');
+    const previewsArray = previews.split(',');
+    const bboxArray = [];
+    let i = 0;
+    bboxs.split(',').forEach((item, index) => {
+      if (index % 4 === 0 && index > 0) {
+        i += 1;
+        bboxArray[i] = [];
+      }
+
+      if (index % 4 === 0 && index === 0) {
+        bboxArray[i] = [];
+      }
+
+      bboxArray[i].push(item.trim());
+    });
+    const zoomsArray = zooms.split(',');
+
+
+    idsArray.forEach((baseLayer, idx) => {
+      const mapeaLyrsObject = {
+        id: idsArray[idx],
+        title: titlesArray[idx],
+        preview: previewsArray[idx],
+        bbox: bboxArray[idx],
+        zoom: zoomsArray[idx],
+      };
+
+      this.layers.push(mapeaLyrsObject);
+    });
+
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
     this.activeLayer = -1;
     /* this.idLayer saves active layer position on layers array */
@@ -154,8 +184,8 @@ export default class SelectionZoomControl extends M.Control {
           .querySelector(`#m-selectionzoom-lyr-${layersInfo.id}`).classList.add('activeSelectionZoomDiv');
       }
 
-      let BboxTransformXminYmax = [layersInfo.bbox.x.min, layersInfo.bbox.y.max];
-      let BboxTransformXmaxYmin = [layersInfo.bbox.x.max, layersInfo.bbox.y.min];
+      let BboxTransformXminYmax = [layersInfo.bbox[0], layersInfo.bbox[3]];
+      let BboxTransformXmaxYmin = [layersInfo.bbox[1], layersInfo.bbox[2]];
       BboxTransformXmaxYmin = this.getImpl().transform(
         BboxTransformXmaxYmin, 'EPSG:3857',
         this.map_.getProjection().code,
