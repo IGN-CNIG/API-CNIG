@@ -21,7 +21,7 @@ export default class ZoomPanel extends M.Plugin {
     super();
 
     const options = {
-      collapsed: false,
+      collapsed: true,
       collapsible: true,
       position: 'TL',
       projection: 'EPSG:3857',
@@ -49,7 +49,7 @@ export default class ZoomPanel extends M.Plugin {
      * @type {boolean}
      */
     this.collapsed = options.collapsed;
-    if (this.collapsed === undefined) this.collapsed = false;
+    if (this.collapsed === undefined) this.collapsed = true;
 
     /**
      * Collapsible attribute
@@ -131,7 +131,7 @@ export default class ZoomPanel extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}`;
+    return `${this.name}=${this.position}*${this.collapsed}*${this.collapsible}`;
   }
 
   /**

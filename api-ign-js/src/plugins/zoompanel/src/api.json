@@ -26,20 +26,6 @@
         "type": "boolean",
         "name": "collapsible",
         "position": 2
-      },
-      {
-        "type": "number",
-        "name": "layerId",
-        "position": 3
-      },
-      {
-        "type": "boolean",
-        "name": "layerVisibility",
-        "position": 4
-      }, {
-        "type": "simple",
-        "name": "projection",
-        "position": 5
       }
     ]
   }],

@@ -22,9 +22,8 @@ Ofrece diferentes herramientas de zoom.
   - 'TR':top right 
   - 'BL':bottom left 
   - 'BR':bottom right 
-- **collapsed**: Indica si al iniciar el plugin este está abierto o cerrado. Las opciones son true or false. Por defecto false.
+- **collapsed**: Indica si al iniciar el plugin este está abierto o cerrado. Las opciones son true or false. Por defecto true.
 - **collapsible**: Indica si este plugin puede ser cerrado y/o abierto. Las opciones son true or false. Por defecto true.
-- **projection**: Indica la proyección en que seran devueltas las geometrías que se dibujen en el mapa. Por defecto, EPSG:4326
 
 # Ejemplos de uso
 
@@ -36,10 +35,7 @@ Ofrece diferentes herramientas de zoom.
    const mp = new M.plugin.ZoomPanel({
         position: 'TL',
         collapsed: true,
-        collapsible: true,        
-        layerId: 0,
-        layerVisibility: true,
-        projection: 'EPSG:4326'
+        collapsible: true,              
    });   
 
    map.addPlugin(mp);
