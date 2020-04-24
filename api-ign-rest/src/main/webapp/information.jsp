@@ -147,7 +147,7 @@
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
-            formato = inputFormat.value != "" ? objeto.formato = inputFormat.value : "";
+            format = inputFormat.value != "" ? objeto.format = inputFormat.value : "";
             featureCount = inputFeatureCount.value != "" ? objeto.featureCount = inputFeatureCount.value : "";
             buffer = inputBuffer.value != "" ? objeto.buffer = inputBuffer.value : "";
             map.removePlugins(mp);
