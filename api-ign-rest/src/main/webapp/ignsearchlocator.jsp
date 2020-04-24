@@ -62,7 +62,7 @@
         </select>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
@@ -78,11 +78,14 @@
             <option value=false>false</option>
         </select>
         <label for="inputUrlCandidates">Parámetro urlCandidates</label>
-        <input type="text" value="https://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp" name="urlCandidates" id="inputUrlCandidates">
+        <input type="text" name="urlCandidates" id="inputUrlCandidates" list="urlCandidatesSug">
+        <datalist id="urlCandidatesSug"><option value="https://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp"></option></datalist>
         <label for="inputUrlFind">Parámetro urlFind</label>
-        <input type="text" value="https://www.cartociudad.es/geocoder/api/geocoder/findJsonp" name="urlFind" id="inputUrlFind">
+        <input type="text" name="urlFind" id="inputUrlFind" list="urlFindSug">
+        <datalist id="urlFindSug"><option value="https://www.cartociudad.es/geocoder/api/geocoder/findJsonp"></option></datalist>
         <label for="inputUrlReverse">Parámetro urlReverse</label>
-        <input type="text" value="https://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode" name="urlReverse" id="inputUrlReverse">
+        <input type="text" name="urlReverse" id="inputUrlReverse" list="urlReverseSug">
+        <datalist id="urlReverseSug"><option value="https://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode"></option></datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -114,8 +117,18 @@
 		});
 		let mp;
         let sToSearch,mxResults,collapsed,posicion,noProcess,countryCode,reverse,urlCandidates,urlFind,urlReverse;
-        crearPlugin(sToSearch, mxResults, noProcess, countryCode, collapsed, posicion, reverse ,urlCandidates, urlFind, urlReverse);
-
+        crearPlugin({
+            servicesToSearch:sToSearch,
+            maxResults: mxResults,
+            noProcess: noProcess,
+            countryCode: countryCode,
+            isCollapsed: collapsed,
+            position:  posicion,
+            reverse:  reverse ,
+            urlCandidates: urlCandidates,
+            urlFind: urlFind,
+            urlReverse:  urlReverse
+        });
 		const selectServiceToSearch = document.getElementById("selectServiceToSearch");
 		const inputMaxResults = document.getElementById("inputMaxResults");
 		const selectNoProcess = document.getElementById("selectNoProcess");
@@ -138,34 +151,23 @@
 		inputUrlFind.addEventListener('change',cambiarTest); 
 		inputUrlReverse.addEventListener('change',cambiarTest);
 		function cambiarTest() {
-			sToSearch = selectServiceToSearch.options[selectServiceToSearch.selectedIndex].value;
-			mxResults = inputMaxResults.value;
-			noProcess = selectNoProcess.options[selectNoProcess.selectedIndex].value;
-			countryCode = selectCountryCode.options[selectCountryCode.selectedIndex].value;
-			posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-			collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-			reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true');
-			urlCandidates=inputUrlCandidates.value;
-			urlFind=inputUrlFind.value;
-			urlReverse=inputUrlReverse.value;
-			map.removePlugins(mp);
-			crearPlugin(sToSearch, mxResults, noProcess, countryCode, collapsed, posicion, reverse, urlCandidates, urlFind, urlReverse);
+            let objeto = {}
+            objeto.servicesToSearch = selectServiceToSearch.options[selectServiceToSearch.selectedIndex].value;
+            maxResults = inputMaxResults.value != "" ? objeto.maxResults = inputMaxResults.value : "";
+            objeto.noProcess = selectNoProcess.options[selectNoProcess.selectedIndex].value;
+            objeto.countryCode = selectCountryCode.options[selectCountryCode.selectedIndex].value;
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            objeto.isCollapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true');
+            urlCandidates=inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value:"";
+            urlFind=inputUrlFind.value != "" ? objeto.urlFind = inputUrlFind.value:"";
+            urlReverse=inputUrlReverse.value != "" ? objeto.urlReverse = inputUrlReverse.value:"";
+            map.removePlugins(mp);
+            crearPlugin(objeto);
 		}
 
-		function crearPlugin(servicesToSearch, maxResults, noProcess, countryCode, isCollapsed, position, reverse, urlCandidates, urlFind, urlReverse) {
-			mp = new M.plugin.IGNSearchLocator({
-				servicesToSearch: servicesToSearch,
-				maxResults: maxResults,
-				noProcess: noProcess,
-				countryCode: countryCode,
-				isCollapsed: isCollapsed,
-				position: position,
-				reverse: reverse,
-				urlCandidates: urlCandidates,
-				urlFind: urlFind,
-				urlReverse: urlReverse
-			});
-
+		function crearPlugin(propiedades) {
+			mp = new M.plugin.IGNSearchLocator(propiedades);
 			map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({

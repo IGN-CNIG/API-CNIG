@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -21,7 +22,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -43,7 +44,7 @@
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
             <option value="TL">Arriba Izquierda (TL)</option>
-            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="TR" selected="selected">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
@@ -62,7 +63,7 @@
 
         <label for="ncolumn">Número de columnas:</label>
         <input type="text" id="ncolumn" name="ncolumn">
-
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
     <div id="mapjs" class="m-container"></div>
@@ -70,6 +71,7 @@
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -81,6 +83,9 @@
       }
    %>
     <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        M.language.setLang(urlParams.get('language') || 'es');
+
         const map = M.map({
             container: 'mapjs',
             zoom: 5,
@@ -89,64 +94,35 @@
             center: [-467062.8225, 4683459.6216],
         });
 
-        let mp, posicion = 'TL',
-            collapsed = true,
-            collapsible = true,
-            columnas = true;
-        crearPlugin(collapsed, collapsible, posicion, columnas);
+        let mp, posicion, collapsed, collapsible, columnas;
+        crearPlugin({
+            collapsed:collapsed,
+            collapsible:collapsible,
+            position:posicion,
+            columnsNumber:columnas
+        });
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
         const ncolumn = document.getElementById("ncolumn");
 
-
-        selectPosicion.addEventListener('change', function() {
-            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            columnas = ncolumn.value;
-
-            map.removePlugins(mp);
-            crearPlugin(collapsed, collapsible, posicion, columnas);
-        })
-
-        selectCollapsed.addEventListener('change', function() {
-            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            columnas = ncolumn.value;
+        selectPosicion.addEventListener('change',cambiarTest);
+        selectCollapsed.addEventListener('change',cambiarTest);
+        selectCollapsible.addEventListener('change',cambiarTest);
+        ncolumn.addEventListener('change',cambiarTest);
+        function cambiarTest(){
+            let objeto = {}
+            objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            objeto.columnsNumber = ncolumn.value;
 
             map.removePlugins(mp);
-            crearPlugin(collapsed, collapsible, posicion, columnas);
-        })
-
-        selectCollapsible.addEventListener('change', function() {
-            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            columnas = ncolumn.value;
-            map.removePlugins(mp);
-            crearPlugin(collapsed, collapsible, posicion, columnas);
-        })
-
-        ncolumn.addEventListener('change', function() {
-            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            columnas = ncolumn.value;
-            map.removePlugins(mp);
-            crearPlugin(collapsed, collapsible, posicion, columnas);
-        })
-
-        function crearPlugin(collapsed, collapsible, posicion, columnas) {
-
-            mp = new M.plugin.BackImgLayer({
-                position: posicion,
-                collapsible: collapsible,
-                collapsed: collapsed,
-                columnsNumber: columnas,
-                layerOpts: [{
+            crearPlugin(objeto);
+        }
+        function crearPlugin(propiedades) {
+            propiedades.layerOpts = [{
                         id: 'mapa',
                         preview: 'plugins/backimglayer/images/svqmapa.png',
                         title: 'Mapa',
@@ -285,11 +261,19 @@
                             format: 'image/png',
                         })],
                     },
-                ],
-            });
-
+                ];
+            mp = new M.plugin.BackImgLayer(propiedades);
             map.addPlugin(mp);
         }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click", function() {
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 

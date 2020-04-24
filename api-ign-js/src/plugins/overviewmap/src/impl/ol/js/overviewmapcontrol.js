@@ -169,16 +169,16 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     return this.element;
   }
 
-  /**
-   * function remove the event 'click'
-   *
-   * @private
-   * @function
-   */
-  addLayer_(layer) {
-    layer.un(M.evt.ADDED_TO_MAP, this.addLayer_, this);
-    this.getOverviewMap().addLayer(layer.getOL3Layer());
-  }
+  // /**
+  //  * function remove the event 'click'
+  //  *
+  //  * @private
+  //  * @function
+  //  */
+  // addLayer_(layer) {
+  //   layer.un(M.evt.ADDED_TO_MAP, this.addLayer_, this);
+  //   this.getOverviewMap().addLayer(layer.getOL3Layer());
+  // }
 
   /**
    * This function adds the layers of map to overviewmap control
@@ -192,7 +192,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       if (layer.transparent === false && layer.isVisible()) {
         const olLayer = layer.getImpl().getOL3Layer();
         if (M.utils.isNullOrEmpty(olLayer)) {
-          layer.getImpl().on(M.evt.ADDED_TO_MAP, this.addLayer_.bind(this));
+          // layer.getImpl().on(M.evt.ADDED_TO_MAP, this.addLayer_.bind(this));
         } else {
           olLayers.push(olLayer);
         }

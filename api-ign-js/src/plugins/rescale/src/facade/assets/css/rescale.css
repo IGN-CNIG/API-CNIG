@@ -15,7 +15,7 @@ div.m-areas>div.m-area>div.m-panel.m-rescale-panel.opened>div.m-panel-controls>d
 }
 
 div.m-areas>div.m-area.m-bottom>div.m-panel.m-rescale-panel>div.m-panel-controls>div.m-control.m-container.m-rescale {
-    width: 185px;
+    inline-size: max-content;
 }
 
 div.m-areas>div.m-area.m-left>div.m-panel.m-rescale-panel>button.m-panel-btn {
@@ -48,9 +48,9 @@ div.m-rescale-panel .m-control.m-container.m-rescale>label>input {
 /* Firefox fix */
 
 @-moz-document url-prefix() {
-    .m-area.m-bottom .m-panel.m-rescale-panel.opened {
+    /* .m-area.m-bottom .m-panel.m-rescale-panel.opened {
         width: 230px;
-    }
+    } */
 
     .m-area.m-bottom.m-right .m-panel.m-rescale-panel.opened>button {
         position: absolute;

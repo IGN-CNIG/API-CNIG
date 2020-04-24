@@ -71,7 +71,7 @@ export default class Information extends M.Plugin {
      * @private
      * @type {Integer}
      */
-    this.buffer_ = options.buffer;
+    this.buffer_ = options.buffer || 10;
 
     /**
      * Plugin name
@@ -99,8 +99,8 @@ export default class Information extends M.Plugin {
    */
   addTo(map) {
     const fc = this.featureCount_;
-    const ctrl = new InformationControl(this.format_, fc, this.buffer_, this.tooltip_);
-    this.controls_.push(ctrl);
+    this.ctrl = new InformationControl(this.format_, fc, this.buffer_, this.tooltip_);
+    this.controls_.push(this.ctrl);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelInformation', {
       className: 'm-plugin-information',
@@ -182,6 +182,7 @@ export default class Information extends M.Plugin {
    * @api
    */
   destroy() {
+    this.ctrl.deactivate();
     this.map_.removeControls(this.controls_);
     [this.map_, this.controls_, this.panel_] = [null, null, null];
   }

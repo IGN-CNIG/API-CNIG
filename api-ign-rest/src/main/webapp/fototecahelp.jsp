@@ -43,16 +43,18 @@
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
             <option value="TL">Arriba Izquierda (TL)</option>
-            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="TR" selected="selected">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
 
         <label for="inputHelpLink">Parámetro helpLink</label>
-        <input type="text" id="inputHelpLink" value="http://fototeca.cnig.es/help_es.pdf"/>
+        <input type="text" id="inputHelpLink" list="helpLinkSug"/>
+        <datalist id="helpLinkSug"><option value="http://fototeca.cnig.es/help_es.pdf"></option></datalist>
         <label for="inputContactEmail">Parámetro contactEmail</label>
-        <input type="text"  id="inputContactEmail" value="fototeca@cnig.es"/>
-
+        <input type="text" id="inputContactEmail" list="contactEmailSug"/>
+        <datalist id="contactEmailSug"><option value="fototeca@cnig.es"></option></datalist>
+        
         <input type="submit" id="buttonAPI" value="API Rest" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -86,52 +88,39 @@
 
 
         let mp, posicion, helpLink, contactEmail;
-        crearPlugin(posicion, helpLink, contactEmail);;
+        crearPlugin({
+            position:posicion,
+            helpLink:helpLink,
+            contactEmail:contactEmail
+        });
 
         const selectPosicion = document.getElementById("selectPosicion");
         const inputHelpLink = document.getElementById("inputHelpLink");
         const inputContactEmail = document.getElementById("inputContactEmail");
         const buttonApi = document.getElementById("buttonAPI");
 
-        selectPosicion.addEventListener('change', function() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = inputHelpLink.value;
-            contactEmail = inputContactEmail.value;
-            map.removePlugins(mp);
-            crearPlugin(posicion, helpLink, contactEmail);
-        })
-
-        inputHelpLink.addEventListener('change', function() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = inputHelpLink.value;
-            contactEmail = inputContactEmail.value;
-            map.removePlugins(mp);
-            crearPlugin(posicion, helpLink, contactEmail);;
-        })
-
-        inputContactEmail.addEventListener('change', function() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = inputHelpLink.value;
-            contactEmail = inputContactEmail.value;
-            map.removePlugins(mp);
-            crearPlugin(posicion, helpLink, contactEmail);;
-        })
-
-
+        selectPosicion.addEventListener('change', cambiarTest);
+        inputHelpLink.addEventListener('change', cambiarTest);
+        inputContactEmail.addEventListener('change', cambiarTest);
 
         buttonApi.addEventListener('click', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-
+            helpLink = inputHelpLink.value;
+            contactEmail = inputContactEmail.value;
             window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?fototecahelp=' + posicion + '*' + helpLink + '*' + contactEmail;
         })
 
-        function crearPlugin(posicion) {
-            mp = new M.plugin.FototecaHelp({
-                position: posicion,
-                helpLink: helpLink,
-                contactEmail: contactEmail,
-            });
+        function cambiarTest(){
+            let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            helpLink = inputHelpLink.value != "" ? helpLink.srs = inputHelpLink.value : "";
+            contactEmail = inputContactEmail.value != "" ? contactEmail.srs = inputContactEmail.value : "";
+            map.removePlugins(mp);
+            crearPlugin(objeto);
+        }
 
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.FototecaHelp(propiedades);
             map.addPlugin(mp);
             
         }

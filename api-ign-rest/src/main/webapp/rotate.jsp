@@ -13,6 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -42,6 +43,7 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -57,7 +59,7 @@
         M.language.setLang(urlParams.get('language') || 'es');
         const map = M.map({
             container: 'mapjs',
-            controls: ['getfeatureinfo'],
+            controls: ['rotate'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
@@ -79,7 +81,11 @@
         }, {});
 
         map.addLayers([layerinicial, layerUA]);
-
+        let mp = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp);
     </script>
 </body>
 
