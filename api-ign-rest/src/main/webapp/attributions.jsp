@@ -12,10 +12,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>Visor base</title>
-    <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
-    <link href="plugins/predefinedzoom/predefinedzoom.ol.min.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css" />
+    <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
-    </link>
     <style type="text/css">
         html,
         body {
@@ -47,20 +46,14 @@
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
-        </select>
-        <label for="inputName">Parámetro Name</label>
-        <input type="text" name="nameValue" id="inputName" value="Zoom a la extensión del mapa" list="nameValueSug">
-        <datalist id="nameValueSug"><option value="Zoom a la extensión del mapa"></option></datalist>
-        <label for="inputBbox">Parámetro Bbox</label>
-        <input type="text" name="bbox" id="inputBbox" value="[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]" list="bboxSug">
-        <datalist id="bboxSug"><option value="[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]"></option></datalist>
+        </select>   
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
-    <script type="text/javascript" src="plugins/predefinedzoom/predefinedzoom.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -81,56 +74,28 @@
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
-            center: [-467062.8225, 4683459.6216],
+            center: [-467062.8225, 4783459.6216],
         });
-
-        const layerinicial = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
-
-        const layerUA = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeUnit',
-            legend: 'Unidad administrativa',
-            tiled: false
-        }, {});
-
-        map.addLayers([layerinicial, layerUA]);
-
+        
         let mp;
-        let posicion = "TL",
-            nombre = "Zoom a la extensión del mapa",
-            bbox = JSON.parse("[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]");
-        crearPlugin(posicion,nombre,bbox);
-        
+        let position,mode,scale;
+        crearPlugin(position,mode,scale);
+
         const selectPosicion = document.getElementById("selectPosicion");
-        const inputName = document.getElementById("inputName");
-        const inputBbox = document.getElementById("inputBbox");
-
         selectPosicion.addEventListener('change', cambiarTest);
-        inputName.addEventListener('change', cambiarTest);
-        inputBbox.addEventListener('change', cambiarTest);
-
-        function cambiarTest(){
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            nombre = inputName.value;
-            bbox = JSON.parse(inputBbox.value);
-            map.removePlugins(mp);
-			crearPlugin(posicion,nombre,bbox);
-        }
         
-        function crearPlugin(position,name,bbox){
-            mp = new M.plugin.PredefinedZoom({
-                position: position,
-                savedZooms: [{
-                    name: name,
-                    bbox: bbox,
-                }, ],
+        function cambiarTest() {
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+			map.removePlugins(mp);
+			crearPlugin(position,mode,scale);
+        }
+        function crearPlugin(position,mode,scale){
+            mp = new M.plugin.Attributions({
+                position:"TR",
+                mode:2,
+                scale:10000,
             });
-
+           
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
