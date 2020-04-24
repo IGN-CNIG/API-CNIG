@@ -49,16 +49,24 @@
         </select>
         <label for="inputTooltip">Parámetro tooltip</label>
         <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug">
-        <datalist id="tooltipSug"><option value="Consultar Capas"></option></datalist>
+        <datalist id="tooltipSug">
+            <option value="Consultar Capas"></option>
+        </datalist>
         <label for="inputFormat">Parámetro format</label>
         <input type="text" name="format" id="inputFormat" list="formatSug">
-        <datalist id="formatSug"><option value="html"></option></datalist>
+        <datalist id="formatSug">
+            <option value="html"></option>
+        </datalist>
         <label for="inputFeatureCount">Parámetro featureCount</label>
         <input type="number" name="featureCount" id="inputFeatureCount" list="featureCountSug">
-        <datalist id="featureCountSug"><option value="5"></option></datalist>
+        <datalist id="featureCountSug">
+            <option value="5"></option>
+        </datalist>
         <label for="inputBuffer">Parámetro buffer (px)</label>
         <input type="number" name="buffer" id="inputBuffer" list="bufferSug">
-        <datalist id="bufferSug"><option value="5"></option></datalist>
+        <datalist id="bufferSug">
+            <option value="5"></option>
+        </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -88,12 +96,7 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
-<<<<<<< HEAD
-
-        let mp;
-=======
         let mp, mp2;
->>>>>>> redmine_155141
 
         const layerinicial = new M.layer.WMS({
             url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
@@ -109,23 +112,6 @@
             tiled: false
         }, {});
 
-<<<<<<< HEAD
-        const capaPuntosLimpios = new M.layer.WMS({
-            url: 'http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_puntos_limpios?',
-            name: 'puntos_limpios',
-            legend: 'Puntos Limpios',
-        });
-        map.addLayers([layerinicial, layerUA, capaPuntosLimpios]);
-
-        let posicion, tooltip, formato, featureCount, buffer;
-        crearPlugin({
-            position: posicion,
-            tooltip: tooltip,
-            format: format,
-            featureCount: featureCount,
-            buffer: buffer,
-        });
-=======
         const hidrografia = new M.layer.WMS({
             url: 'http://servicios.idee.es/wms-inspire/hidrografia?',
             name: 'HY.PhysicalWaters.HydroPointOfInterest',
@@ -139,7 +125,6 @@
             featureCount = 5,
             buffer = 5;
         crearPlugin(posicion, tooltip, formato, featureCount, buffer);
->>>>>>> redmine_155141
 
         const selectPosicion = document.getElementById("selectPosicion");
         const inputTooltip = document.getElementById("inputTooltip");
@@ -154,13 +139,12 @@
         inputBuffer.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
-<<<<<<< HEAD
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value: "";
-            formato = inputFormat.value != "" ? objeto.formato = inputFormat.value: "";
-            featureCount = inputFeatureCount.value != "" ? objeto.featureCount = inputFeatureCount.value: "";
-            buffer = inputBuffer.value != "" ? objeto.buffer = inputBuffer.value: "";
+            tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
+            formato = inputFormat.value != "" ? objeto.formato = inputFormat.value : "";
+            featureCount = inputFeatureCount.value != "" ? objeto.featureCount = inputFeatureCount.value : "";
+            buffer = inputBuffer.value != "" ? objeto.buffer = inputBuffer.value : "";
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
@@ -169,35 +153,8 @@
             mp = new M.plugin.Information(propiedades);
 
             map.addPlugin(mp);
-=======
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            tooltip = inputTooltip.value;
-            formato = inputFormat.value;
-            featureCount = parseInt(inputFeatureCount.value);
-            buffer = parseInt(inputBuffer.value);
-            map.removePlugins(mp);
-            crearPlugin(posicion, tooltip, formato, featureCount, buffer);
         }
-
-        function crearPlugin(position, tooltip, format, featureCount, buffer) {
-
-            mp = new M.plugin.Information({
-                position: position,
-                tooltip: tooltip,
-                format: format,
-                featureCount: featureCount,
-                buffer: buffer,
-            });
-
-            map.addPlugin(mp);
-            mp2 = new M.plugin.ShareMap({
-                baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
-                position: "TR",
-            });
-            map.addPlugin(mp2);
->>>>>>> redmine_155141
-        }
-        let mp2 = new M.plugin.ShareMap({
+        mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
