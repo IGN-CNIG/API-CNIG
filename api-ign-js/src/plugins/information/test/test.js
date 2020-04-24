@@ -4,27 +4,38 @@ import Information from 'facade/information';
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['scale'],
+  controls: ['location'],
 });
+
+const featureInfo = new M.control.GetFeatureInfo(true, { buffer: 1000 });
+map.addControls(featureInfo);
 
 const mp = new Information({
   position: 'TR',
+  buffer: 100,
 });
 
 const layerinicial = new M.layer.WMS({
-  url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
-  name: 'Catastro',
-  legend: 'Catastro',
+  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeBoundary',
+  legend: 'Limite administrativo',
   tiled: false,
-  version: '1.1.1',
-}, { visibility: true, displayInLayerSwitcher: true, queryable: true });
+}, {});
 
-const campamentos = new M.layer.GeoJSON({
-  name: 'Campamentos',
-  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
-  extract: true,
+const layerUA = new M.layer.WMS({
+  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeUnit',
+  legend: 'Unidad administrativa',
+  tiled: false,
+}, {});
+
+const hidrografia = new M.layer.WMS({
+  url: 'http://servicios.idee.es/wms-inspire/hidrografia?',
+  name: 'HY.PhysicalWaters.HydroPointOfInterest',
+  legend: 'Hidrografía',
 });
 
+<<<<<<< HEAD
 const capaPuntosLimpios = new M.layer.WMS({
   url: 'http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_puntos_limpios?',
   name: 'puntos_limpios',
@@ -33,6 +44,9 @@ const capaPuntosLimpios = new M.layer.WMS({
 
 
 map.addLayers([layerinicial, capaPuntosLimpios]);
+=======
+map.addLayers([layerinicial, layerUA, hidrografia]);
+>>>>>>> redmine_155141
 map.addPlugin(mp);
 // window.mp = mp;
 window.map = map;
