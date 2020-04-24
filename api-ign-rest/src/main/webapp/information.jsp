@@ -84,28 +84,36 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
-        let mp,mp2;
-               
+        let mp, mp2;
+
         const layerinicial = new M.layer.WMS({
-                url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-                name: 'AU.AdministrativeBoundary',
-                legend: 'Limite administrativo',
-                tiled: false,
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeBoundary',
+            legend: 'Limite administrativo',
+            tiled: false,
         }, {});
 
         const layerUA = new M.layer.WMS({
-              url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-              name: 'AU.AdministrativeUnit',
-              legend: 'Unidad administrativa',
-              tiled: false
-             }, {});
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeUnit',
+            legend: 'Unidad administrativa',
+            tiled: false
+        }, {});
 
-        map.addLayers([layerinicial, layerUA]);
-        map.addLayers([layerinicial, layerUA]);
+        const hidrografia = new M.layer.WMS({
+            url: 'http://servicios.idee.es/wms-inspire/hidrografia?',
+            name: 'HY.PhysicalWaters.HydroPointOfInterest',
+            legend: 'Hidrografía',
+        });
 
-        let posicion = "TL", tooltip, formato = 'html', featureCount = 5, buffer = 5;
+        map.addLayers([layerinicial, layerUA, hidrografia]);
+
+        let posicion = "TL",
+            tooltip, formato = 'html',
+            featureCount = 5,
+            buffer = 5;
         crearPlugin(posicion, tooltip, formato, featureCount, buffer);
-        
+
         const selectPosicion = document.getElementById("selectPosicion");
         const inputTooltip = document.getElementById("inputTooltip");
         const inputFormat = document.getElementById("inputFormat");
@@ -118,35 +126,35 @@
         inputFeatureCount.addEventListener('change', cambiarTest);
         inputBuffer.addEventListener('change', cambiarTest);
 
-        function cambiarTest(){
+        function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             tooltip = inputTooltip.value;
-            formato = inputFormat.value; 
+            formato = inputFormat.value;
             featureCount = parseInt(inputFeatureCount.value);
             buffer = parseInt(inputBuffer.value);
             map.removePlugins(mp);
-			crearPlugin(posicion,tooltip,formato,featureCount,buffer);
+            crearPlugin(posicion, tooltip, formato, featureCount, buffer);
         }
-        
-        function crearPlugin(position,tooltip,format,featureCount,buffer){
-                    
+
+        function crearPlugin(position, tooltip, format, featureCount, buffer) {
+
             mp = new M.plugin.Information({
                 position: position,
-                tooltip:tooltip,
-                format:format,
-                featureCount:featureCount,
-                buffer:buffer,
+                tooltip: tooltip,
+                format: format,
+                featureCount: featureCount,
+                buffer: buffer,
             });
 
             map.addPlugin(mp);
             mp2 = new M.plugin.ShareMap({
-				baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-				position: "TR",
-			});
-			map.addPlugin(mp2);
+                baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
+                position: "TR",
+            });
+            map.addPlugin(mp2);
         }
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>
