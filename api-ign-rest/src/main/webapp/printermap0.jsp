@@ -58,11 +58,14 @@
             <option value=false>false</option>
         </select>
         <label for="inputServerUrl">Parámetro serverUrl</label>
-        <input type="text" name="serverUrlValue" id="inputServerUrl">
+        <input type="text" name="serverUrlValue" id="inputServerUrl" list="serverUrlValueSug">
+        <datalist id="serverUrlValueSug"><option value="https://geoprint.desarrollo.guadaltel.es"></option></datalist>
         <label for="inputPrintTemplateUrl">Parámetro printTemplateUrl</label>
-        <input type="text" name="printTemplateUrlValue" id="inputPrintTemplateUrl">
+        <input type="text" name="printTemplateUrlValue" id="inputPrintTemplateUrl" list="printTemplateUrlValueSug">
+        <datalist id="printTemplateUrlValueSug"><option value="https://geoprint.desarrollo.guadaltel.es/print/CNIG"></option></datalist>
         <label for="inputPrintStatusUrl">Parámetro printStatusUrlValue</label>
-        <input type="text" name="printStatusUrlValue" id="inputPrintStatusUrl">
+        <input type="text" name="printStatusUrlValue" id="inputPrintStatusUrl" list="printStatusUrlValueSug">
+        <datalist id="printStatusUrlValueSug"><option value="https://geoprint.desarrollo.guadaltel.es/print/status"></option></datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -108,8 +111,15 @@
         map.addLayers([layerinicial, campamentos]);
 
         let mp;
-        let posicion, collapsed, collapsible, serverUrlValue, printTemplateUrlValue, printStatusUrlValue;
-        crearPlugin(collapsed,posicion,collapsible,serverUrlValue,printTemplateUrlValue,printStatusUrlValue);
+        let posicion, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl;
+        crearPlugin({
+                position: posicion,
+                collapsed: collapsed,
+                collapsible: collapsible,
+                serverUrl: serverUrl,
+                printTemplateUrl: printTemplateUrl,
+                printStatusUrl: printStatusUrl,
+            });
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
@@ -126,25 +136,18 @@
         inputPrintStatusUrl.addEventListener('change', cambiarTest);
         
         function cambiarTest() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            serverUrl = inputServerUrl.value;
-            printTemplateUrl = inputPrintTemplateUrl.value;
-            printStatusUrl = inputPrintStatusUrl.value;
+            let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            serverUrl = inputServerUrl.value != "" ? objeto.serverUrl = inputServerUrl.value:"";
+            printTemplateUrl = inputPrintTemplateUrl.value != "" ? objeto.printTemplateUrl = inputPrintTemplateUrl.value:"";
+            printStatusUrl = inputPrintStatusUrl.value != "" ? objeto.printStatusUrl = inputPrintStatusUrl.value:"";
 			map.removePlugins(mp);
-			crearPlugin(posicion,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl);
+			crearPlugin(objeto);
         }
-        function crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl){
-            mp = new M.plugin.PrinterMap({
-                position: position,
-                collapsed: collapsed,
-                collapsible: collapsible,
-                serverUrl: serverUrl,
-                printTemplateUrl: printTemplateUrl,
-                printStatusUrl: printStatusUrl,
-            });
-           
+        function crearPlugin(propiedades){
+            mp = new M.plugin.PrinterMap(propiedades);
             map.addPlugin(mp); 
         }
         let mp2 = new M.plugin.ShareMap({

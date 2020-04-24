@@ -42,17 +42,23 @@
 <body>
     <div>
         <label for="inputTooltip">Parámetro tooltip</label>
-        <input type="text" name="tooltip" id="inputTooltip">
+        <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug">
+        <datalist id="tooltipSug"><option value="Muestra coordenadas"></option></datalist>
         <label for="inputSrs">Parámetro srs</label>
-        <input type="text" name="srs" id="inputSrs">
+        <input type="text" name="srs" id="inputSrs" list="srsSug">
+        <datalist id="srsSug"><option value="EPSG:4326"></option></datalist>
         <label for="inputLabel">Parámetro label</label>
-        <input type="text" name="Label" id="inputLabel">
+        <input type="text" name="Label" id="inputLabel" list="LabelSug">
+        <datalist id="LabelSug"><option value="WGS84"></option></datalist>
         <label for="inputPrecision">Parámetro precision</label>
-        <input type="number" name="precision" id="inputPrecision">
+        <input type="number" name="precision" id="inputPrecision" list="precisionSug">
+        <datalist id="precisionSug"><option value="4"></option></datalist>
         <label for="inputGeoDecimalDigits">Parámetro geoDecimalDigits</label>
-        <input type="number" name="geoDecimalDigits" id="inputGeoDecimalDigits">
+        <input type="number" name="geoDecimalDigits" id="inputGeoDecimalDigits" list="geoDecimalDigitsSug">
+        <datalist id="geoDecimalDigitsSug"><option value="3"></option></datalist>
         <label for="inputUtmDecimalDigits">Parámetro utmDecimalDigits</label>
-        <input type="number" name="utmDecimalDigits" id="inputUtmDecimalDigits">
+        <input type="number" name="utmDecimalDigits" id="inputUtmDecimalDigits" list="utmDecimalDigitsSug">
+        <datalist id="utmDecimalDigitsSug"><option value="2"></option></datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>

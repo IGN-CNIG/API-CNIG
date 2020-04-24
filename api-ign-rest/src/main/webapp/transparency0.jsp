@@ -47,9 +47,11 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
         <label for="inputLayers">Parámetro Layers (separador:,)</label>
-        <input type="text" id="inputLayers" value="">
+        <input type="text" id="inputLayers" value="WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas,WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo" list="layersSug">
+        <datalist id="layersSug"><option value="WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas,WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo"></option></datalist>
         <label for="inputRadius">Parámetro radius</label>
-        <input type="number" min="30" value="200" name="radius" id="inputRadius">
+        <input type="number" min="30" value="200" name="radius" id="inputRadius" list="radiusSug">
+        <datalist id="radiusSug"><option value="50"></option></datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -100,7 +102,11 @@
 
         let mp;
         let posicion, layer = ['toporaster', 'AU.AdministrativeBoundary'], radius = 50;
-        crearPlugin(posicion,layer,radius);
+        crearPlugin({
+                position: posicion,
+                layers: layer,
+                radius: radius
+            });
         const selectPosicion = document.getElementById("selectPosicion");
         const inputLayers = document.getElementById("inputLayers");
         const inputRadius = document.getElementById("inputRadius");
@@ -110,19 +116,15 @@
         inputRadius.addEventListener("change",cambiarTest);
 
         function cambiarTest(){
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            layer = inputLayers.value.split(",") || inputLayers.value;
-            radius = inputRadius.value;
+            let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            objeto.layers = inputLayers.value != "" ? (inputLayers.value.split(",") || inputLayers.value) : ['toporaster', 'AU.AdministrativeBoundary'];
+            radius = inputRadius.value != "" ? objeto.radius = inputRadius : "";
             map.removePlugins(mp);
-            crearPlugin(posicion,layer,radius);
+            crearPlugin(objeto);
         }
-        function crearPlugin(position,layers,radius){
-            mp = new M.plugin.Transparency({
-                position: position,
-                layers: layers,
-                radius: radius
-            });
-
+        function crearPlugin(propiedades){
+            mp = new M.plugin.Transparency(propiedades);
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
