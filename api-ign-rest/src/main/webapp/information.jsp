@@ -119,6 +119,11 @@
         });
 
         map.addLayers([layerinicial, layerUA, hidrografia]);
+        mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
+            position: "TR",
+        });
+        map.addPlugin(mp2);
 
         let posicion = "TL",
             tooltip, formato = 'html',
