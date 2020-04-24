@@ -1,9 +1,15 @@
 import BackImgLayer from 'facade/backimglayer';
+import ShareMap from '../../sharemap/src/facade/js/sharemap';
 
 M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
+});
+
+const mp2 = new ShareMap({
+  baseUrl: `${window.location.href.substring(0, window.location.href.indexOf('api-core'))}api-core/`,
+  position: 'TR',
 });
 
 const mp = new BackImgLayer({
@@ -106,6 +112,18 @@ const mp = new BackImgLayer({
   ],
 });
 
+// const mp = new BackImgLayer({
+//   collapsed: true,
+//   collapsible: true,
+//   position: 'BR',
+//   columnsNumber: 3,
+//   ids: ['mapa', 'hibrido'],
+//   titles: ['Mapa', 'Hibrido'],
+//   previews: ['../src/facade/assets/images/svqmapa.png', '../src/facade/assets/images/svqhibrid.png'],
+//   layers: ['WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true', 'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true+WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Mapa IGN*true*image/jpeg*false*false*true'],
+// });
+
+
 
 
 // Formato parámetros REST:
@@ -117,5 +135,6 @@ const mp = new BackImgLayer({
 
 
 map.addPlugin(mp);
+map.addPlugin(mp2);
 
 window.map = map;

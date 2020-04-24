@@ -107,8 +107,8 @@ export default class BackImgLayer extends M.Plugin {
      */
     this.layers = options.layers || '';
 
-    this.collapsed = options !== undefined ? options.collapsed : true;
-    this.collapsible = options !== undefined ? options.collapsible : true;
+    this.collapsed = options.collapsed !== undefined ? options.collapsed : true;
+    this.collapsible = options.collapsible !== undefined ? options.collapsible : true;
 
     this.columnsNumber = options.columnsNumber != null ? options.columnsNumber : 2;
 
@@ -173,9 +173,9 @@ export default class BackImgLayer extends M.Plugin {
    */
   getAPIRest() {
     const layers = this.layerOpts === undefined ?
-      `${this.ids}*${this.titles}*${this.previews}*${this.layers}` :
+      `${this.ids}*!${this.titles}*!${this.previews}*!${this.layers}` :
       this.turnLayerOptsIntoUrl();
-    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.layerId}*${this.layerVisibility}*${this.columnsNumber}*${layers}`;
+    return `${this.name}=${this.position_}*!${this.collapsible}*!${this.collapsed}*!${this.layerVisibility}*!${this.layerId}*!${this.columnsNumber}*!${layers}`;
   }
 
   /**
@@ -210,21 +210,21 @@ export default class BackImgLayer extends M.Plugin {
         if (!isFirstLayer) layersUrl += 'sumar';
 
         layersUrl += `${layer.options.type}`;
-        layersUrl += `asterisco${layer.options.url}`;
-        layersUrl += `asterisco${layer.options.name}`;
-        layersUrl += `asterisco${layer.options.matrixSet}`;
-        layersUrl += `asterisco${layer.options.legend}`;
+        layersUrl += `*${layer.options.url}`;
+        layersUrl += `*${layer.options.name}`;
+        layersUrl += `*${layer.options.matrixSet}`;
+        layersUrl += `*${layer.options.legend}`;
 
-        layersUrl += `asterisco${layer.options.transparent}`;
+        layersUrl += `*${layer.options.transparent}`;
 
-        layersUrl += `asterisco${layer.options.format}`;
-        layersUrl += `asterisco${layer.options.displayInLayerSwitcher}`;
-        layersUrl += `asterisco${layer.options.queryable}`;
-        layersUrl += `asterisco${visible}`;
+        layersUrl += `*${layer.options.format}`;
+        layersUrl += `*${layer.options.displayInLayerSwitcher}`;
+        layersUrl += `*${layer.options.queryable}`;
+        layersUrl += `*${visible}`;
       });
     });
 
-    return `${ids}*${titles}*${previews}*${layersUrl}`;
+    return `${ids}*!${titles}*!${previews}*!${layersUrl}`;
   }
 
   /**

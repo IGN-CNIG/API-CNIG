@@ -70,8 +70,7 @@ export default class BackImgLayerControl extends M.Control {
         let backgroundLayers = baseLayer.split('sumar');
 
         backgroundLayers = backgroundLayers.map((urlLayer) => {
-          const stringLayer = urlLayer.replace(/asterisco/g, '*');
-          const mapeaLayer = new M.layer.WMTS(stringLayer);
+          const mapeaLayer = new M.layer.WMTS(urlLayer);
           return mapeaLayer;
         });
 
