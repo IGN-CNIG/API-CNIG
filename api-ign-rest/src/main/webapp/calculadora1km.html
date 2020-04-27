@@ -197,11 +197,15 @@
         //ignsearch
         map.addPlugin(new M.plugin.IGNSearch({}));
 
-map.getPlugins()[0].controls_[0].createTimeout = function(e) {
-    if(e.keyCode === 13){
-        this.searchInputValue(e);
-    }
-}
+        let typingTimer;
+        map.getPlugins()[0].controls_[0].createTimeout = function(e) {
+            		if(e.keyCode === 13){
+               			 this.searchInputValue(e);
+           		 }else{
+                    clearTimeout(typingTimer);
+                    typingTimer = setTimeout(() => this.searchInputValue(e), 1500);
+                 }
+        }
 
         map.getPlugins()[0].controls_[0].showPopUp = function showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
             const featureTabOpts = {
@@ -212,8 +216,8 @@ map.getPlugins()[0].controls_[0].createTimeout = function(e) {
                 featureTabOpts.content += `<div><b>${exitState}</b></div>`;
             }
             featureTabOpts.content += `<div>${fullAddress}</div>
-  <div class='ignsearch-popup'>Lat: ${featureCoordinates[0]}</div>
-  <div class='ignsearch-popup'> Long: ${featureCoordinates[1]} </div>`;
+            <div class='ignsearch-popup'>Lat: ${featureCoordinates[0]}</div>
+            <div class='ignsearch-popup'> Long: ${featureCoordinates[1]} </div>`;
             if (this.map.getPopup() instanceof M.Popup && addTab === true) {
                 this.popup = this.map.getPopup();
                 this.popup.addTab(featureTabOpts);
@@ -223,10 +227,13 @@ map.getPlugins()[0].controls_[0].createTimeout = function(e) {
                 });
                 myPopUp.addTab(featureTabOpts);
 
-                this.map.addPopup(myPopUp, [
-                    mapcoords[0],
-                    mapcoords[1],
-                ]);
+                setTimeout(()=>{
+                  this.map.addPopup(myPopUp, [
+                      mapcoords[0],
+                      mapcoords[1],
+                  ]);
+                }, 1600);
+
                 this.popup = myPopUp;
             }
             this.lat = mapcoords[1];
@@ -257,8 +264,6 @@ map.getPlugins()[0].controls_[0].createTimeout = function(e) {
                 duration: 1500,
                 minResolution: 1,
             });
-
-
         };
 
         map.getPlugins()[0].controls_[0].zoomInLocation = function(service, type) {
