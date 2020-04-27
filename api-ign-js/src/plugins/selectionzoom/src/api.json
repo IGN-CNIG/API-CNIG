@@ -18,12 +18,12 @@
         ]
       },
       {
-        "type": "simple",
+        "type": "boolean",
         "name": "collapsible",
         "position": 1
       },
       {
-        "type": "simple",
+        "type": "boolean",
         "name": "collapsed",
         "position": 2
       },

@@ -98,7 +98,7 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 }
 
 .m-areas>div.m-area>div.m-panel.collapsed>div.m-panel-controls {
-    display: none;
+    display: flex;
 }
 
 /* Firefox fix */
