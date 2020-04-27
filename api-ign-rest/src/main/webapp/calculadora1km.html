@@ -49,6 +49,13 @@
             height: 100%;
             overflow: auto;
         }
+
+        @media screen and (min-color-index:0) and(-webkit-min-device-pixel-ratio:0)
+		{ @media {
+		    #m-ignsearch-results {
+		    	position: initial !important;
+		    }
+		}}
     </style>
 </head>
 
@@ -308,7 +315,7 @@
                     title: 'Híbrido',
                     preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
                     layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
+                            url: 'https://www.ign.es/wmts/pnoa-ma?',
                             name: 'OI.OrthoimageCoverage',
                             legend: 'Imagen (PNOA)',
                             matrixSet: 'GoogleMapsCompatible',
@@ -319,7 +326,7 @@
                             format: 'image/jpeg',
                         }),
                         new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
+                            url: 'https://www.ign.es/wmts/ign-base?',
                             name: 'IGNBaseOrto',
                             matrixSet: 'GoogleMapsCompatible',
                             legend: 'Mapa IGN',
@@ -336,7 +343,7 @@
                     preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
                     title: 'Mapa',
                     layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/ign-base?',
+                        url: 'https://www.ign.es/wmts/ign-base?',
                         name: 'IGNBaseTodo',
                         legend: 'Mapa IGN',
                         matrixSet: 'GoogleMapsCompatible',
