@@ -16,6 +16,13 @@
     min-width: 200px;
 }
 
+/* Para Microsoft EDGE*/
+@supports (-ms-ime-align:auto) {
+    .m-control.m-container.m-zoompanel {
+        min-width: 220px;
+    }
+}
+
 .m-areas>div.m-area>div.m-panel.m-zoompanel.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
     color: white !important;
 }
