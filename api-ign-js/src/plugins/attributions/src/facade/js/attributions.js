@@ -126,7 +126,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.attributionParam_ = options.attributionParam || getValue('attribution');
+    this.attributionParam_ = options.attributionParam || 'attribution';
 
     /**
      * Parameter of the features of the layer that contains the information of the URL.
@@ -225,7 +225,7 @@ export default class Attributions extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls([this.control_]);
-    this.map_ = null;
+    // this.map_ = null;
     this.control_ = null;
     this.panel_ = null;
   }
