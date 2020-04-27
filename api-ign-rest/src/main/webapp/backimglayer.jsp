@@ -94,7 +94,7 @@
             center: [-467062.8225, 4683459.6216],
         });
 
-        let mp, posicion, collapsed, collapsible, columnas;
+        let mp, posicion, collapsed, collapsible, columnas = 2;
         crearPlugin({
             collapsed:collapsed,
             collapsible:collapsible,
@@ -116,7 +116,7 @@
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            objeto.columnsNumber = ncolumn.value;
+            objeto.columnsNumber = ncolumn.value || 2;
 
             map.removePlugins(mp);
             crearPlugin(objeto);
