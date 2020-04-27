@@ -97,7 +97,7 @@
 
 .m-control.m-container.m-contactlink>div.links>div.web>div.web1>a>img,
 .m-control.m-container.m-contactlink>div.links>div.web>div.web2>a>img {
-    filter: invert(74%) sepia(6%) saturate(3820%) hue-rotate(177deg) brightness(86%) contrast(90%);
+    filter: invert(67%) sepia(50%) saturate(359%) hue-rotate(167deg) brightness(87%) contrast(90%);
     width: 42px;
     height: 42px;
     border: 0;
@@ -105,7 +105,7 @@
 }
 
 .m-control.m-container.m-contactlink>div.links>div.social>a>img {
-    filter: invert(74%) sepia(6%) saturate(3820%) hue-rotate(177deg) brightness(86%) contrast(90%);
+    filter: invert(67%) sepia(50%) saturate(359%) hue-rotate(167deg) brightness(87%) contrast(90%);
     width: 30px;
     height: 30px;
     border: 0;
