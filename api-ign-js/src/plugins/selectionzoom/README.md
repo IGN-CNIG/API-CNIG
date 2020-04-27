@@ -47,7 +47,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
     ids: 'peninsula,canarias',
     titles: 'Peninsula,Canarias',
     previews: '../src/facade/assets/images/espana.png,../src/facade/assets/images/canarias.png',
-    bboxs: '-1200091.444315327, 365338.89496508264, 4348955.797933925, 5441088.058207252, -2170190.6639824593, -1387475.4943422542, 3091778.038884449, 3637844.1689537475 ,
+    bboxs: '-1200091.444315327, 365338.89496508264, 4348955.797933925, 5441088.058207252, -2170190.6639824593, -1387475.4943422542, 3091778.038884449, 3637844.1689537475' ,
     zooms: '7,8',
     });
 
