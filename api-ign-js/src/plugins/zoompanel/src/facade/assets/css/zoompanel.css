@@ -16,6 +16,13 @@
     min-width: 200px;
 }
 
+/* Para Microsoft EDGE*/
+@supports (-ms-ime-align:auto) {
+    .m-control.m-container.m-zoompanel {
+        min-width: 220px;
+    }
+}
+
 .m-areas>div.m-area>div.m-panel.m-zoompanel.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
     color: white !important;
 }
@@ -82,16 +89,22 @@ div[id^="m-zoompanel-lyr-"]:hover>span {
 }
 
 .m-bottom.m-left>.m-zoompanel.opened>.m-panel-btn {
-    position: relative;
+    position: absolute;
+    right: -40px;
 }
 
-.m-bottom.m-right .m-control.m-container.m-zoompanel {
+.m-bottom.m-right>.m-zoompanel.opened>.m-panel-btn {
+    position: absolute;
+    left: -40px;
+}
+
+/* .m-bottom.m-right .m-control.m-container.m-zoompanel {
     padding-right: 200px;
-}
+} */
 
-.m-bottom.m-left .m-control.m-container.m-zoompanel {
+/* .m-bottom.m-left .m-control.m-container.m-zoompanel {
     padding-left: 200px;
-}
+} */
 
 
 /* Firefox fix */
@@ -105,9 +118,9 @@ div[id^="m-zoompanel-lyr-"]:hover>span {
         min-width: 216px;
     }
 
-    .m-bottom.m-left .m-control.m-container.m-zoompanel {
+    /* .m-bottom.m-left .m-control.m-container.m-zoompanel {
         padding-left: 40px;
-    }
+    } */
 
     .m-bottom.m-right .m-control.m-container.m-zoompanel {
         padding-right: 0px;

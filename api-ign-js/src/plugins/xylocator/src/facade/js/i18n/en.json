@@ -2,7 +2,8 @@
   "exception": {
     "impl": "The implementation used cannot create XYLocatorControl.",
     "wrong_coords": "The coordinates entered are not correct.",
-    "transforming": "Error performing the transformation."
+    "transforming": "Error performing the transformation.",
+    "wrong_values": "Some value entered are not correct. Remember that minutes and seconds must be between 0 and 59 and degrees must be greater than 0."
   },
   "search_result": "Search results",
   "tooltip": "Search by coordinates",

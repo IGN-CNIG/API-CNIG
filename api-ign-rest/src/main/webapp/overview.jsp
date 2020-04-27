@@ -53,7 +53,9 @@
             <option value=false>false</option>
         </select>
         <label for="inputBaseLayer">Parámetro baseLayer</label>
-        <input type="text" name="baseLayer" id="inputBaseLayer">
+        <input type="text" name="baseLayer" id="inputBaseLayer" list="baseLayerSug">
+        <datalist id="baseLayerSug"><option value="WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true"></option></datalist>
+
         <label for="selectCollapsed">Selector collapsed</label>
         <select name="collapsedValue" id="selectCollapsed">
             <option value=true>true</option>
@@ -98,7 +100,7 @@
         baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
         collapsible, collapsed;
         crearPlugin(posicion,fixed,baseLayer,collapsed,collapsible);
-
+        
         const selectPosicion = document.getElementById("selectPosicion");
         const selectFixed = document.getElementById("selectFixed");
         const inputBaseLayer = document.getElementById("inputBaseLayer");

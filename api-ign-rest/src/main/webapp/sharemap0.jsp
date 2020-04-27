@@ -13,9 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
-    <link href="plugins/predefinedzoom/predefinedzoom.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
-    </link>
     <style type="text/css">
         html,
         body {
@@ -43,24 +41,25 @@
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
+            <option value="TL">Arriba Izquierda (TL)</option>
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-        <label for="inputName">Parámetro Name</label>
-        <input type="text" name="nameValue" id="inputName" value="Zoom a la extensión del mapa" list="nameValueSug">
-        <datalist id="nameValueSug"><option value="Zoom a la extensión del mapa"></option></datalist>
-        <label for="inputBbox">Parámetro Bbox</label>
-        <input type="text" name="bbox" id="inputBbox" value="[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]" list="bboxSug">
-        <datalist id="bboxSug"><option value="[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]"></option></datalist>
+        <label for="selectURL">Parámetro URL</label>
+        <input type="text" id="selectURL" list="urlSug" value="http://mapea-lite.desarrollo.guadaltel.es/api-core/"/>
+        <datalist id="urlSug">
+            <option value="http://mapea-lite.desarrollo.guadaltel.es/api-core/"></option>
+            <option value="https://componentes.ign.es/api-core/"></option>
+        </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+        <input type="submit" id="buttonAPI" value="API Rest" />
+
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
-    <script type="text/javascript" src="plugins/predefinedzoom/predefinedzoom.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -78,66 +77,67 @@
 
         const map = M.map({
             container: 'mapjs',
-            zoom: 5,
-            maxZoom: 20,
-            minZoom: 4,
-            center: [-467062.8225, 4683459.6216],
+            zoom: 3,
         });
-
+        
+        const kml = new M.layer.KML('KML*Delegaciones*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
+        map.addLayers(kml);
         const layerinicial = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',
             legend: 'Limite administrativo',
             tiled: false,
+            version: '1.1.1',
         }, {});
 
         const layerUA = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeUnit',
-            legend: 'Unidad administrativa',
-            tiled: false
+            legend: 'Unidad administrativa'
         }, {});
 
-        map.addLayers([layerinicial, layerUA]);
+        const ocupacionSuelo = new M.layer.WMTS({
+            url: 'http://wmts-mapa-lidar.idee.es/lidar',
+            name: 'EL.GridCoverageDSM',
+            legend: 'Modelo Digital de Superficies LiDAR',
+            matrixSet: 'GoogleMapsCompatible',
+        }, {
+            visibility: false,
+        });
 
-        let mp;
-        let posicion = "TL",
-            nombre = "Zoom a la extensión del mapa",
-            bbox = JSON.parse("[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]");
-        crearPlugin(posicion,nombre,bbox);
-        
+        map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
+
+        let mp, posicion, url = window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/";
+        crearPlugin({
+            position: posicion,
+            baseUrl: url
+        });
+
+        const selectURL = document.getElementById("selectURL");
         const selectPosicion = document.getElementById("selectPosicion");
-        const inputName = document.getElementById("inputName");
-        const inputBbox = document.getElementById("inputBbox");
+        const buttonApi = document.getElementById("buttonAPI");
 
+        selectURL.addEventListener('change', cambiarTest);
         selectPosicion.addEventListener('change', cambiarTest);
-        inputName.addEventListener('change', cambiarTest);
-        inputBbox.addEventListener('change', cambiarTest);
+        buttonApi.addEventListener('click', function() {
+            url = selectURL.value;
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?sharemap=' + url + '*' + posicion;
+        })
 
         function cambiarTest(){
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            nombre = inputName.value;
-            bbox = JSON.parse(inputBbox.value);
+            let objeto = {}
+            url = selectURL.value != "" ?  objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/";
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             map.removePlugins(mp);
-			crearPlugin(posicion,nombre,bbox);
+            crearPlugin(objeto);
         }
-        
-        function crearPlugin(position,name,bbox){
-            mp = new M.plugin.PredefinedZoom({
-                position: position,
-                savedZooms: [{
-                    name: name,
-                    bbox: bbox,
-                }, ],
-            });
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.ShareMap(propiedades);
 
             map.addPlugin(mp);
         }
-        let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
-            position: "TR",
-        });
-        map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click",function(){
             map.removePlugins(mp);

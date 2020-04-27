@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="mapea" content="yes">
+    <meta name="title" content="Visualizador cálculo de distancias de 1km" />
+    <meta name="description" content="Visualizador publicado por el IGN que muestra el área en un radio de 1km a partir de la ubicación de un dispositivo móvil o de una dirección postal">
+    <meta property="og:image" content="https://www.ign.es/resources/viewer/images/IGN1KmCuad.jpg">
+    <meta property="og:image:width" content="173">
+    <meta property="og:image:height" content="173">
+    <meta name="lang" content="es" />
+    <meta name="author" content="Instituto Geográfico Nacional" />
+    <meta name="keywords" content="IGN, CNIG, covid19, menores, niños, paseos, localización, kilómetro" />
+    <meta name="date" scheme="W3CDTF" content="2020-04-25T09:00:00+02:00" />
+    <meta name="organization" content="Instituto Geográfico Nacional" />
+    <meta property="article:section" content="eps" />
+    <meta property="article:tag" content="covid19" />
+    <meta property="article:tag" content="menores" />
+    <title>IGN Distancias 1km</title>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164574488-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-164574488-1');
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/assets/css/apiign-1.0.0.ol.min.css">
+    <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/plugins/ignsearch/ignsearch.ol.min.css">
+    <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/plugins/backimglayer/backimglayer.ol.min.css">
+    <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
+
+
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mapjs" class="m-container"></div>
+    <script type="text/javascript" src="https://componentes.ign.es/api-core/vendor/browser-polyfill.js"></script>
+    <script type="text/javascript" src="https://componentes.ign.es/api-core/js/apiign-1.0.0.ol.min.js"></script>
+    <script type="text/javascript" src="https://componentes.ign.es/api-core/js/configuration-1.0.0.js"></script>
+    <script type="text/javascript" src="https://www.ign.es/resources/viewer/js/ignsearch.ol.min_cache_geocoder.js"></script>
+    <script type="text/javascript" src="https://componentes.ign.es/api-core/plugins/backimglayer/backimglayer.ol.min.js"></script>
+    <script type="text/javascript" src="https://componentes.ign.es/api-core/plugins/overviewmap/overviewmap.ol.min.js"></script>
+    <script type="text/javascript" src="https://componentes.ign.es/api-core/plugins/measurebar/measurebar.ol.min.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163701543-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-163701543-1');
+    </script>
+
+
+    <script type="text/javascript">
+        const map = M.map({
+            container: 'mapjs',
+            controls: ['location', 'scale', 'rotate'],
+            zoom: 5,
+            maxZoom: 20,
+            minZoom: 4,
+            center: [-467062.8225, 4683459.6216],
+        });
+    </script>
+
+    <script type="text/javascript">
+        // click map
+        const distanceLayer = new ol.layer.Vector({
+            name: 'distance',
+            extract: false,
+            visible: true,
+            zIndex: 9999
+        });
+        map.getMapImpl().addLayer(distanceLayer);
+
+        map.getMapImpl().on('click', function(evt) {
+            const coordinate = evt.coordinate;
+            const resolutionAtEquator = map.getMapImpl().getView().getResolution();
+            const pointResolution = ol.proj.getPointResolution(map.getMapImpl().getView().getProjection(), resolutionAtEquator, coordinate);
+            const resolutionFactor = resolutionAtEquator / pointResolution;
+            const radius = (1000 / ol.proj.Units.METERS_PER_UNIT.m) * resolutionFactor;
+            const olFeature = new ol.Feature(new ol.geom.Circle(coordinate, radius));
+
+            const olFeatureCenter = new ol.Feature(new ol.geom.Circle(coordinate, 10));
+            distanceLayer.setSource(new ol.source.Vector({
+                features: new ol.Collection([olFeature, olFeatureCenter])
+            }));
+            olFeature.setStyle(new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(7, 95, 255, 0.21)',
+                    width: 3,
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 255, 255, 0.21)',
+                    opacity: 0.4,
+                }),
+            }));
+            olFeatureCenter.setStyle(new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(7, 95, 255, 0.50)',
+                    width: 3,
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 255, 255, 0.50)',
+                    opacity: 0.4,
+                }),
+            }));
+            const extent = olFeature.getGeometry().getExtent();
+            map.getMapImpl().getView().fit(extent, {
+                duration: 1500,
+                minResolution: 1,
+            });
+        });
+
+
+
+        // location
+        map.getControls()[0].getImpl().activate = function activate() {
+            this.element.classList.add('m-locating');
+            if (M.utils.isNullOrEmpty(this.geolocation_)) {
+                const proj = ol.proj.get(this.facadeMap_.getProjection().code);
+                this.geolocation_ = new ol.Geolocation(M.utils.extend({
+                    projection: proj,
+                    tracking: this.tracking_,
+                    trackingOptions: {
+                        enableHighAccuracy: this.highAccuracy_,
+                        maximumAge: this.maximumAge_,
+                    },
+                }, this.vendorOptions_, true));
+
+                this.geolocation_.once('change:position', (evt) => {
+                    const coordinate = evt.target.get(evt.key);
+                    const resolutionAtEquator = map.getMapImpl().getView().getResolution();
+                    const pointResolution = ol.proj.getPointResolution(map.getMapImpl().getView().getProjection(), resolutionAtEquator, coordinate);
+                    const resolutionFactor = resolutionAtEquator / pointResolution;
+                    const radius = (1000 / ol.proj.Units.METERS_PER_UNIT.m) * resolutionFactor;
+                    const olFeature = new ol.Feature(new ol.geom.Circle(coordinate, radius));
+                    const olFeatureCenter = new ol.Feature(new ol.geom.Circle(coordinate, 10));
+                    distanceLayer.setSource(new ol.source.Vector({
+                        features: new ol.Collection([olFeature, olFeatureCenter])
+                    }));
+                    olFeature.setStyle(new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(7, 95, 255, 0.21)',
+                            width: 3,
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 255, 255, 0.21)',
+                            opacity: 0.4,
+                        }),
+                    }));
+                    olFeatureCenter.setStyle(new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(7, 95, 255, 0.50)',
+                            width: 3,
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 255, 255, 0.50)',
+                            opacity: 0.4,
+                        }),
+                    }));
+                    const extent = olFeature.getGeometry().getExtent();
+                    map.getMapImpl().getView().fit(extent, {
+                        duration: 1500,
+                        minResolution: 1,
+                    });
+                    this.element.classList.remove('m-locating');
+                    this.element.classList.add('m-located');
+                });
+            }
+        }
+
+        //ignsearch
+        map.addPlugin(new M.plugin.IGNSearch({}));
+
+map.getPlugins()[0].controls_[0].createTimeout = function(e) {
+alert(e.keyCode);
+    if(e.keyCode === 13){
+        this.searchInputValue(e);
+    }
+}
+
+        map.getPlugins()[0].controls_[0].showPopUp = function showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
+            const featureTabOpts = {
+                content: '',
+                icon: 'g-plugin-ignsearch-localizacion3'
+            };
+            if (exitState !== null) {
+                featureTabOpts.content += `<div><b>${exitState}</b></div>`;
+            }
+            featureTabOpts.content += `<div>${fullAddress}</div>
+  <div class='ignsearch-popup'>Lat: ${featureCoordinates[0]}</div>
+  <div class='ignsearch-popup'> Long: ${featureCoordinates[1]} </div>`;
+            if (this.map.getPopup() instanceof M.Popup && addTab === true) {
+                this.popup = this.map.getPopup();
+                this.popup.addTab(featureTabOpts);
+            } else {
+                const myPopUp = new M.Popup({
+                    panMapIfOutOfView: !e.fake
+                });
+                myPopUp.addTab(featureTabOpts);
+
+                this.map.addPopup(myPopUp, [
+                    mapcoords[0],
+                    mapcoords[1],
+                ]);
+                this.popup = myPopUp;
+            }
+            this.lat = mapcoords[1];
+            this.lng = mapcoords[0];
+
+            const resolutionAtEquator = map.getMapImpl().getView().getResolution();
+            const pointResolution = ol.proj.getPointResolution(map.getMapImpl().getView().getProjection(), resolutionAtEquator, [this.lng, this.lat]);
+            const resolutionFactor = resolutionAtEquator / pointResolution;
+            const radius = (1000 / ol.proj.Units.METERS_PER_UNIT.m) * resolutionFactor;
+            const olFeature = new ol.Feature(new ol.geom.Circle([this.lng, this.lat], radius));
+
+
+            distanceLayer.setSource(new ol.source.Vector({
+                features: new ol.Collection([olFeature])
+            }));
+            olFeature.setStyle(new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(7, 95, 255, 0.21)',
+                    width: 3,
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 255, 255, 0.21)',
+                    opacity: 0.4,
+                }),
+            }));
+            const extent = olFeature.getGeometry().getExtent();
+            map.getMapImpl().getView().fit(extent, {
+                duration: 1500,
+                minResolution: 1,
+            });
+
+
+        };
+
+        map.getPlugins()[0].controls_[0].zoomInLocation = function(service, type) {
+            this.resultsList = document.getElementById('m-ignsearch-results-list');
+            if (this.clickedElementLayer instanceof M.layer.Vector) {
+                this.clickedElementLayer.calculateMaxExtent().then((extent) => {
+                    //this.map.setBbox(extent);
+                    if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
+                        // this.setScale(17061); // last scale requested by our client: 2000
+                    }
+                    // this.resultsList.innerHTML = '';
+                    // this.searchInput.value = '';
+                    // this.searchInput.value = this.currentElement.querySelector('#info').innerHTML;
+                    // this.searchValue = this.searchInput.value.trim();
+                    // this.resultsList.appendChild(this.currentElement);
+                    // Fires ignsearch:EntityFound event after zoom-in result
+                    this.fire('ignsearch:entityFound', [extent]);
+                });
+            }
+        };
+
+
+        const mp = new M.plugin.OverviewMap({
+            position: 'BL',
+        }, {
+            collapsed: false,
+            collapsible: true,
+        });
+
+        map.addPlugin(mp);
+
+        //backimage
+
+        map.addPlugin(new M.plugin.BackImgLayer({
+            position: 'TR',
+            collapsible: true,
+            collapsed: true,
+            layerId: 0,
+            layerVisibility: true,
+            layerOpts: [{
+                    id: 'hibrido',
+                    title: 'Híbrido',
+                    preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
+                    layers: [new M.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/pnoa-ma?',
+                            name: 'OI.OrthoimageCoverage',
+                            legend: 'Imagen (PNOA)',
+                            matrixSet: 'GoogleMapsCompatible',
+                            transparent: true,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/jpeg',
+                        }),
+                        new M.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/ign-base?',
+                            name: 'IGNBaseOrto',
+                            matrixSet: 'GoogleMapsCompatible',
+                            legend: 'Mapa IGN',
+                            transparent: false,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/png',
+                        })
+                    ],
+                },
+                {
+                    id: 'mapa',
+                    preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
+                    title: 'Mapa',
+                    layers: [new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/ign-base?',
+                        name: 'IGNBaseTodo',
+                        legend: 'Mapa IGN',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/jpeg',
+                    })],
+                },
+            ],
+        }));
+
+        // map.addPlugin(new M.plugin.MeasureBar({
+        //     position: 'TL'
+        // }));
+
+        const content = `<div>
+		  <p style="text-align: center; margin-bottom: 2rem;"><img style="width: 80%;" src="https://www.ign.es/resources/viewer/images/LogoWEBIGNCNIG.PNG"></p>
+		  <p>Con este sencillo visualizador podrás saber hasta dónde salir con los menores tras permitirse los paseos hasta 1km de distancia desde el domicilio.</p>
+		</div>`;
+
+        M.dialog.info(content, 'Información');
+        setTimeout(() => {
+            document.querySelector('div.m-mapea-container div.m-dialog div.m-content').style.maxWidth = '300px';
+            document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#364B5F';
+            const button = document.querySelector('div.m-dialog.info div.m-button > button');
+            button.innerHTML = 'Cerrar';
+            button.style.width = '75px';
+            button.style.backgroundColor = '#364B5F';
+        }, 10);
+    </script>
+</body>
+
+</html>
