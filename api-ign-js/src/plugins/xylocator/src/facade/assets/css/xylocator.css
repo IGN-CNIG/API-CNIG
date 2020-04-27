@@ -11,7 +11,7 @@
 }
 
 .m-areas>div.m-area>div.m-panel>div.m-panel-controls>div.m-xylocator-container {
-    width: 280px;
+    width: 320px;
 }
 
 div.m-areas>div.m-area.m-left>div.m-panel.m-xylocator>button.m-panel-btn {
@@ -314,23 +314,38 @@ div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
 
 #m-xylocator-dms p {
     font-weight: bold;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: -0.8rem;
 }
 
 #m-xylocator-dms>div {
     display: flex;
+    min-width: 300px;
+}
+
+@-moz-document url-prefix() {
+  #m-xylocator-dms > div {
+    min-width: 335px !important;
+  }
 }
 
 #m-xylocator-dms>div>div>input[type="number"] {
-    width: 3rem;
-    margin-right: 10px;
+    width: 2.5rem;
 }
 
 #m-xylocator-dms>div>div>span {
     font-size: 24px;
+    margin-left: 2px;
+    margin-right: 10px;
 }
+
+#m-xylocator-dms > div > div {
+  height: 67px;
+  display: flex;
+  align-items: center;
+}
+
 
 #m-xylocator-dms .m-xylocator-dms-radio {
     line-height: 28px;
+    width: 70px;
 }

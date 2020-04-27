@@ -18,39 +18,41 @@
                 <p>{{translations.longitude}}:</p>
                 <div>
                   <div>
-                    <span>º</span>
-                    <input type="number" name="LONHH" id="LONHH" value="0" min="0" style="color:black">
+                    <input type="number" name="LONHH" id="LONHH" value="0" min="0" style="color:black"><span>º</span>
                   </div>
                   <div>
-                    <span>'</span>
-                    <input type="number" name="LONMM" id="LONMM" value="0" min="0" max="59" style="color:black">
+                    <input type="number" name="LONMM" id="LONMM" value="0" min="0" max="59" style="color:black"><span>'</span>
                   </div>
                   <div>
-                    <span>''</span>
-                    <input type="number" name="LONSS" id="LONSS" value="0" min="0" max="59.9999" style="color:black">
+                    <input type="number" name="LONSS" id="LONSS" value="0" min="0" max="59.9999" style="color:black"><span>''</span>
                   </div>
                   <div class="m-xylocator-dms-radio">
-                    <input type="radio" name="LONDIR" style="color:black" value="east" checked>{{translations.east}}
-                    <input type="radio" name="LONDIR" style="color:black" value="west">{{translations.west}}
+                    <table>
+                      <tbody>
+                        <tr><td><input type="radio" name="LONDIR" style="color:black" value="east" checked></td><td>{{translations.east}}</td></tr>
+                        <tr><td><input type="radio" name="LONDIR" style="color:black" value="west"></td><td>{{translations.west}}</td></tr>
+                      </tbdoy>
+                    </table>
                   </div>
                 </div>
                 <p>{{translations.latitude}}:</p>
                 <div>
                   <div>
-                    <span>º</span>
-                    <input type="number" name="LATHH" id="LATHH" value="0" min="0" style="color:black">
+                    <input type="number" name="LATHH" id="LATHH" value="0" min="0" style="color:black"><span>º</span>
                   </div>
                   <div>
-                    <span>'</span>
-                    <input type="number" name="LATMM" id="LATMM" value="0" min="0" max="59" style="color:black">
+                    <input type="number" name="LATMM" id="LATMM" value="0" min="0" max="59" style="color:black"><span>'</span>
                   </div>
                   <div>
-                    <span>''</span>
-                    <input type="number" name="LATSS" id="LATSS" value="0" min="0" max="59.9999" style="color:black">
+                    <input type="number" name="LATSS" id="LATSS" value="0" min="0" max="59.9999" style="color:black"><span>''</span>
                   </div>
                   <div class="m-xylocator-dms-radio">
-                    <input type="radio" name="LATDIR" style="color:black" value="north" checked>{{translations.north}}
-                    <input type="radio" name="LATDIR" style="color:black" value="south">{{translations.south}}
+                    <table>
+                      <tbody>
+                        <tr><td><input type="radio" name="LATDIR" style="color:black" value="north" checked></td><td>{{translations.north}}</td></tr>
+                        <tr><td><input type="radio" name="LATDIR" style="color:black" value="south"></td><td>{{translations.south}}</td></tr>
+                      </tbdoy>
+                    </table>
                   </div>
                 </div>
             </div>

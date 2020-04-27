@@ -207,15 +207,16 @@ export default class XYLocatorControl extends M.Control {
       const selectTarget = document.querySelector('select#m-xylocator-srs');
       const selectedOption = selectTarget.options[selectTarget.selectedIndex];
       const origin = selectedOption.value;
-
       let x = -1;
       let y = -1;
       if (selectedOption.getAttribute('data-units') === 'd') {
         try {
-          const xString = document.querySelector('div#m-xylocator-latlon input#LON').value;
-          const yString = document.querySelector('div#m-xylocator-latlon input#LAT').value;
+          const xString = document.querySelector('div#m-xylocator-latlon input#LON').value.replace(',', '.');
+          const yString = document.querySelector('div#m-xylocator-latlon input#LAT').value.replace(',', '.');
           x = parseFloat(xString);
           y = parseFloat(yString);
+          const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
+          this.locator_(coordinatesTransform);
         } catch (ex) {
           M.dialog.error(getValue('exception.transforming'), 'Error');
         }
@@ -228,31 +229,41 @@ export default class XYLocatorControl extends M.Control {
         const mmLat = document.querySelector('div#m-xylocator-dms input#LATMM').value;
         const ssLat = document.querySelector('div#m-xylocator-dms input#LATSS').value;
         const dirLat = document.querySelector('div#m-xylocator-dms input[name="LATDIR"]:checked').value;
-        try {
-          x = parseFloat(hhLon) + (parseFloat(mmLon) / 60) + (parseFloat(ssLon) / 3600);
-          y = parseFloat(hhLat) + (parseFloat(mmLat) / 60) + (parseFloat(ssLat) / 3600);
-          if (dirLon !== 'east' && x !== 0) {
-            x = -x;
-          }
 
-          if (dirLat !== 'north' && y !== 0) {
-            y = -y;
+        if (this.checkDegreeValue_(mmLon) && this.checkDegreeValue_(ssLon) &&
+          this.checkDegreeValue_(mmLat) && this.checkDegreeValue_(ssLat) &&
+          parseFloat(hhLon) >= 0 && parseFloat(hhLat) >= 0) {
+          try {
+            x = parseFloat(hhLon) + (parseFloat(mmLon) / 60) + (parseFloat(ssLon) / 3600);
+            y = parseFloat(hhLat) + (parseFloat(mmLat) / 60) + (parseFloat(ssLat) / 3600);
+            if (dirLon !== 'east' && x !== 0) {
+              x = -x;
+            }
+
+            if (dirLat !== 'north' && y !== 0) {
+              y = -y;
+            }
+
+            const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
+            this.locator_(coordinatesTransform);
+          } catch (ex) {
+            M.dialog.error(getValue('exception.transforming'), 'Error');
           }
-        } catch (ex) {
-          M.dialog.error(getValue('exception.transforming'), 'Error');
+        } else {
+          M.dialog.error(getValue('exception.wrong_values'), 'Error');
         }
       } else {
         try {
-          const xString = document.querySelector('div#m-xylocator-utm input#UTM-X').value;
-          const yString = document.querySelector('div#m-xylocator-utm input#UTM-Y').value;
+          const xString = document.querySelector('div#m-xylocator-utm input#UTM-X').value.replace(',', '.');
+          const yString = document.querySelector('div#m-xylocator-utm input#UTM-Y').value.replace(',', '.');
           x = parseFloat(xString);
           y = parseFloat(yString);
+          const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
+          this.locator_(coordinatesTransform);
         } catch (ex) {
           M.dialog.error(getValue('exception.transforming'), 'Error');
         }
       }
-      const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
-      this.locator_(coordinatesTransform);
     } catch (ex) {
       M.dialog.error(getValue('exception.wrong_coords'), 'Error');
       throw ex;
@@ -277,5 +288,17 @@ export default class XYLocatorControl extends M.Control {
     this.template_.querySelector('input#LATMM').value = 0;
     this.template_.querySelector('input#LATSS').value = 0;
     this.map.removeLayers(this.coordinatesLayer);
+  }
+
+  /**
+   * This function checks degree value
+   *
+   * @public
+   * @function
+   * @param {String} num
+   * @api
+   */
+  checkDegreeValue_(num) {
+    return parseFloat(num) >= 0 && parseFloat(num) < 60;
   }
 }
