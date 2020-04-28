@@ -463,6 +463,17 @@ export default class Attributions extends M.Plugin {
   }
 
   /**
+   * Position of the plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get position() {
+    return this.position_;
+  }
+
+  /**
    * Scale of the plugin
    *
    * @public
@@ -503,6 +514,6 @@ export default class Attributions extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}`;
+    return `${this.name}=${this.position}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}`;
   }
 }

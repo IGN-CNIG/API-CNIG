@@ -80,16 +80,6 @@
         <datalist id="defaultAttributionSug">
             <option value="Instituto Geográfico Nacional"></option>
         </datalist>
-        <label for="inputMinWidth">Parámetro minWidth</label>
-        <input type="text" name="minWidth" id="inputMinWidth" list="minWidthSug" value="100px">
-        <datalist id="minWidthSug">
-            <option value="100px"></option>
-        </datalist>
-        <label for="inputMaxWidth">Parámetro maxWidth</label>
-        <input type="text" name="maxWidth" id="inputMaxWidth" list="maxWidthSug" value="200px">
-        <datalist id="maxWidthSug">
-            <option value="200px"></option>
-        </datalist>
         <div id="divModo">
             <label for="inputUrl">Parámetro url</label>
             <input type="text" name="url" id="inputUrl" list="urlSug" value="https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml">
@@ -162,8 +152,6 @@
         const inputScale = document.getElementById("inputScale");
         const inputDefaultURL = document.getElementById("inputDefaultURL");
         const inputDefaultAttribution = document.getElementById("inputDefaultAttribution");
-        const inputMinWidth = document.getElementById("inputMinWidth");
-        const maxWidthSug = document.getElementById("maxWidthSug");
         const inputUrl = document.getElementById("inputUrl");
         const selectType = document.getElementById("selectType");
         const inputLayerName = document.getElementById("inputLayerName");
@@ -177,8 +165,6 @@
         inputScale.addEventListener('change', cambiarTest);
         inputDefaultURL.addEventListener('change', cambiarTest);
         inputDefaultAttribution.addEventListener('change', cambiarTest);
-        inputMinWidth.addEventListener('change', cambiarTest);
-        maxWidthSug.addEventListener('change', cambiarTest);
         inputUrl.addEventListener('change', cambiarTest);
         selectType.addEventListener('change', cambiarTest);
         inputLayerName.addEventListener('change', cambiarTest);
@@ -194,8 +180,6 @@
             scale = inputScale.value != "" ? objeto.scale = inputScale.value : "";
             defaultURL = inputDefaultURL.value != "" ? objeto.defaultURL = inputDefaultURL.value : "";
             defaultAttribution = inputDefaultAttribution.value != "" ? objeto.defaultAttribution = inputDefaultAttribution.value : "";
-            minWidth = inputMinWidth.value != "" ? objeto.minWidth = inputMinWidth.value : "";
-            maxWidth = inputMaxWidth.value != "" ? objeto.maxWidth = inputMaxWidth.value : "";
             if (mode == 1) {
                 url = inputUrl.value != "" ? objeto.url = inputUrl.value : "";
                 type = selectType.options[selectType.selectedIndex].value;
