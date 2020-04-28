@@ -23,10 +23,12 @@
             height: 100%;
             overflow: auto;
         }
-        #divModo{
+
+        #divModo {
             display: contents;
         }
-        #divModo.oculto{
+
+        #divModo.oculto {
             display: none;
         }
     </style>
@@ -59,41 +61,61 @@
             <option value="2">2</option>
         </select>
         <label for="inputTooltip">Parámetro tooltip</label>
-        <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug">
-        <datalist id="tooltipSug"><option value="Reconocimientos"></option></datalist>
+        <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug" value="Reconocimientos">
+        <datalist id="tooltipSug">
+            <option value="Reconocimientos"></option>
+        </datalist>
         <label for="inputScale">Parámetro scale</label>
-        <input type="text" name="scale" id="inputScale" list="scaleSug">
-        <datalist id="scaleSug"><option value="10000"></option></datalist>
+        <input type="text" name="scale" id="inputScale" list="scaleSug" value="10000">
+        <datalist id="scaleSug">
+            <option value="10000"></option>
+        </datalist>
         <label for="inputDefaultURL">Parámetro defaultURL</label>
-        <input type="text" name="defaultURL" id="inputDefaultURL" list="defaultURLSug">
-        <datalist id="defaultURLSug"><option value="https://www.ign.es/"></option></datalist>
+        <input type="text" name="defaultURL" id="inputDefaultURL" list="defaultURLSug" value="https://www.ign.es/">
+        <datalist id="defaultURLSug">
+            <option value="https://www.ign.es/"></option>
+        </datalist>
         <label for="inputDefaultAttribution">Parámetro defaultAttribution</label>
-        <input type="text" name="defaultAttribution" id="inputDefaultAttribution" list="defaultAttributionSug">
-        <datalist id="defaultAttributionSug"><option value="Instituto Geográfico Nacional"></option></datalist>
+        <input type="text" name="defaultAttribution" id="inputDefaultAttribution" list="defaultAttributionSug" value="Instituto Geográfico Nacional">
+        <datalist id="defaultAttributionSug">
+            <option value="Instituto Geográfico Nacional"></option>
+        </datalist>
         <label for="inputMinWidth">Parámetro minWidth</label>
-        <input type="text" name="minWidth" id="inputMinWidth" list="minWidthSug">
-        <datalist id="minWidthSug"><option value="100px"></option></datalist>
+        <input type="text" name="minWidth" id="inputMinWidth" list="minWidthSug" value="100px">
+        <datalist id="minWidthSug">
+            <option value="100px"></option>
+        </datalist>
         <label for="inputMaxWidth">Parámetro maxWidth</label>
-        <input type="text" name="maxWidth" id="inputMaxWidth" list="maxWidthSug">
-        <datalist id="maxWidthSug"><option value="200px"></option></datalist>
+        <input type="text" name="maxWidth" id="inputMaxWidth" list="maxWidthSug" value="200px">
+        <datalist id="maxWidthSug">
+            <option value="200px"></option>
+        </datalist>
         <div id="divModo">
             <label for="inputUrl">Parámetro url</label>
-            <input type="text" name="url" id="inputUrl" list="urlSug">
-            <datalist id="urlSug"><option value="https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml"></option></datalist>
+            <input type="text" name="url" id="inputUrl" list="urlSug" value="https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml">
+            <datalist id="urlSug">
+                <option value="https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml"></option>
+            </datalist>
             <label for="selectType">Selector de tipo</label>
             <select name="type" id="selectType">
                 <option value="kml" selected="selected">kml</option>
                 <option value="geojson">geojson</option>
             </select>
             <label for="inputLayerName">Parámetro layerName</label>
-            <input type="text" name="layerName" id="inputLayerName" list="layerNameSug">
-            <datalist id="layerNameSug"><option value="attributions"></option></datalist>
+            <input type="text" name="layerName" id="inputLayerName" list="layerNameSug" value="attributions">
+            <datalist id="layerNameSug">
+                <option value="attributions"></option>
+            </datalist>
             <label for="inputAttributionParam">Parámetro attributionParam</label>
-            <input type="text" name="attributionParam" id="inputAttributionParam" list="attributionParamSug">
-            <datalist id="attributionParamSug"><option value="atribucion"></option></datalist>
+            <input type="text" name="attributionParam" id="inputAttributionParam" list="attributionParamSug" value="atribucion">
+            <datalist id="attributionParamSug">
+                <option value="atribucion"></option>
+            </datalist>
             <label for="inputUrlParam">Parámetro urlParam</label>
-            <input type="text" name="urlParam" id="inputUrlParam" list="urlParamSug">
-            <datalist id="urlParamSug"><option value="url"></option></datalist>
+            <input type="text" name="urlParam" id="inputUrlParam" list="urlParamSug" value="url">
+            <datalist id="urlParamSug">
+                <option value="url"></option>
+            </datalist>
         </div>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -124,13 +146,13 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
-        
+
         let mp;
-        let position,mode,tooltip,scale,defaultURL,defaultAttribution,minWidth,maxWidth,
-        url,type,layerName,attributionParam,urlParam;
+        let position, mode, tooltip, scale, defaultURL, defaultAttribution, minWidth, maxWidth,
+            url, type, layerName, attributionParam, urlParam;
         crearPlugin({
-            mode:1,
-            scale:10000,
+            mode: 1,
+            scale: 10000,
             tooltip: "Reconocimientos"
         });
         const divModo = document.getElementById("divModo");
@@ -148,18 +170,20 @@
         const inputAttributionParam = document.getElementById("inputAttributionParam");
         const inputUrlParam = document.getElementById("inputUrlParam");
         selectPosicion.addEventListener('change', cambiarTest);
-        selectMode.addEventListener('change', function(){divModo.classList.toggle("oculto")});
-        inputTooltip.addEventListener('change',cambiarTest);
-        inputScale.addEventListener('change',cambiarTest);
-        inputDefaultURL.addEventListener('change',cambiarTest);
-        inputDefaultAttribution.addEventListener('change',cambiarTest);
-        inputMinWidth.addEventListener('change',cambiarTest);
-        maxWidthSug.addEventListener('change',cambiarTest);
-        inputUrl.addEventListener('change',cambiarTest);
-        selectType.addEventListener('change',cambiarTest);
-        inputLayerName.addEventListener('change',cambiarTest);
-        inputAttributionParam.addEventListener('change',cambiarTest);
-        inputUrlParam.addEventListener('change',cambiarTest);
+        selectMode.addEventListener('change', function() {
+            divModo.classList.toggle("oculto")
+        });
+        inputTooltip.addEventListener('change', cambiarTest);
+        inputScale.addEventListener('change', cambiarTest);
+        inputDefaultURL.addEventListener('change', cambiarTest);
+        inputDefaultAttribution.addEventListener('change', cambiarTest);
+        inputMinWidth.addEventListener('change', cambiarTest);
+        maxWidthSug.addEventListener('change', cambiarTest);
+        inputUrl.addEventListener('change', cambiarTest);
+        selectType.addEventListener('change', cambiarTest);
+        inputLayerName.addEventListener('change', cambiarTest);
+        inputAttributionParam.addEventListener('change', cambiarTest);
+        inputUrlParam.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             let objeto = {}
@@ -169,32 +193,34 @@
             tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
             scale = inputScale.value != "" ? objeto.scale = inputScale.value : "";
             defaultURL = inputDefaultURL.value != "" ? objeto.defaultURL = inputDefaultURL.value : "";
-            defaultAttribution = inputDefaultAttribution.value != "" ? objeto.defaultAttribution = inputDefaultAttribution.value: "";
+            defaultAttribution = inputDefaultAttribution.value != "" ? objeto.defaultAttribution = inputDefaultAttribution.value : "";
             minWidth = inputMinWidth.value != "" ? objeto.minWidth = inputMinWidth.value : "";
             maxWidth = inputMaxWidth.value != "" ? objeto.maxWidth = inputMaxWidth.value : "";
-            if(mode == 1){
+            if (mode == 1) {
                 url = inputUrl.value != "" ? objeto.url = inputUrl.value : "";
-                type = inputUrl.value != "" ? selectType.options[selectType.selectedIndex].value : "";
+                type = selectType.options[selectType.selectedIndex].value;
+                objeto.type = type;
                 layerName = inputLayerName.value != "" ? objeto.layerName = inputLayerName.value : "";
                 attributionParam = inputAttributionParam.value != "" ? objeto.attributionParam = inputAttributionParam.value : "";
                 urlParam = inputUrlParam.value != "" ? objeto.urlParam = inputUrlParam.value : "";
             }
-			map.removePlugins(mp);
-			crearPlugin(objeto);
+            map.removePlugins(mp);
+            crearPlugin(objeto);
         }
-        function crearPlugin(propiedades){
+
+        function crearPlugin(propiedades) {
             console.log(propiedades);
             mp = new M.plugin.Attributions(propiedades);
 
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

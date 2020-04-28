@@ -163,7 +163,7 @@ export default class Attributions extends M.Plugin {
      * @type {string}
      */
     // eslint-disable-next-line max-len
-    this.defaultAttribution_ = M.config.attributions.defaultAttribution; // options.defaultAttribution;
+    this.defaultAttribution_ = options.defaultAttribution || M.config.attributions.defaultAttribution; // options.defaultAttribution;
 
     /**
      * Default url attribution
@@ -171,7 +171,8 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.defaultURL_ = M.config.attributions.defaultURL; // options.defaultURL;
+    // eslint-disable-next-line max-len
+    this.defaultURL_ = options.defaultURL || M.config.attributions.defaultURL; // options.defaultURL;
 
     /**
      * Tooltip of the UI Plugin
@@ -225,9 +226,17 @@ export default class Attributions extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls([this.control_]);
-    // this.map_ = null;
-    this.control_ = null;
     this.panel_ = null;
+    this.mode_ = null;
+    this.url_ = null;
+    this.type_ = null;
+    this.layerName_ = null;
+    this.layer_ = null;
+    this.scale_ = null;
+    this.attributionParam_ = null;
+    this.urlParam_ = null;
+    this.minWidth_ = null;
+    this.maxWidth_ = null;
   }
 
   /**
@@ -269,7 +278,7 @@ export default class Attributions extends M.Plugin {
   changeAttributions() {
     this.clearContent();
     if (this.map_.getScale() <= this.scale_) {
-      this.setVisible(true);
+      this.setVisible(false);
       let mapAttributions = [];
       if (this.mode_ === MODES.mapAttributions) {
         mapAttributions = this.getMapAttributions();
@@ -281,8 +290,9 @@ export default class Attributions extends M.Plugin {
 
       this.addContent(mapAttributions);
     } else if (typeof this.defaultAttribution_ !== 'string') {
-      this.setVisible(false);
+      this.setVisible(true);
     } else {
+      this.setVisible(true);
       this.addContent([{
         attribution: this.defaultAttribution_,
         url: this.defaultURL_,
@@ -320,8 +330,10 @@ export default class Attributions extends M.Plugin {
    * @public
    */
   clearContent() {
-    const html = this.control_.getElement();
-    html.querySelectorAll('div').forEach(child => html.removeChild(child));
+    if (!M.utils.isNullOrEmpty(this.control_)) {
+      const html = this.control_.getElement();
+      html.querySelectorAll('div').forEach(child => html.removeChild(child));
+    }
   }
 
   /**

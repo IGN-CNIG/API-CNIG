@@ -14,9 +14,10 @@ window.map = map;
 
 const mp = new Attributions({
   mode: 1,
-  scale: 2500000,
+  scale: 10000,
   url: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucion.kml',
   type: 'kml',
+  position: 'TL',
 });
 map.addPlugin(mp);
 
