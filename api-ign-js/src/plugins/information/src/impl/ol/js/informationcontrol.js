@@ -185,10 +185,11 @@ export default class InformationControl extends M.impl.Control {
         const regexBuffer = /buffer/i;
         const source = olLayer.getSource();
         const coord = this.evt.coordinate;
-        const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, informationParams);
+        // const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, informationParams);
         if (!regexBuffer.test(layer.url)) {
-          informationParams.Buffer = this.buffer_;
+          informationParams.BUFFER = this.buffer_;
         }
+        const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, informationParams);
         param = { layer: layer.legend || layer.name, url };
       }
       return param;

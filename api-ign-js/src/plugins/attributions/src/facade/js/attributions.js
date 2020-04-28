@@ -126,7 +126,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.attributionParam_ = options.attributionParam || getValue('attribution');
+    this.attributionParam_ = options.attributionParam || 'attribution';
 
     /**
      * Parameter of the features of the layer that contains the information of the URL.
@@ -163,7 +163,7 @@ export default class Attributions extends M.Plugin {
      * @type {string}
      */
     // eslint-disable-next-line max-len
-    this.defaultAttribution_ = M.config.attributions.defaultAttribution; // options.defaultAttribution;
+    this.defaultAttribution_ = options.defaultAttribution || M.config.attributions.defaultAttribution; // options.defaultAttribution;
 
     /**
      * Default url attribution
@@ -171,7 +171,8 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.defaultURL_ = M.config.attributions.defaultURL; // options.defaultURL;
+    // eslint-disable-next-line max-len
+    this.defaultURL_ = options.defaultURL || M.config.attributions.defaultURL; // options.defaultURL;
 
     /**
      * Tooltip of the UI Plugin
@@ -225,9 +226,17 @@ export default class Attributions extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls([this.control_]);
-    this.map_ = null;
-    this.control_ = null;
     this.panel_ = null;
+    this.mode_ = null;
+    this.url_ = null;
+    this.type_ = null;
+    this.layerName_ = null;
+    this.layer_ = null;
+    this.scale_ = null;
+    this.attributionParam_ = null;
+    this.urlParam_ = null;
+    this.minWidth_ = null;
+    this.maxWidth_ = null;
   }
 
   /**
@@ -283,6 +292,7 @@ export default class Attributions extends M.Plugin {
     } else if (typeof this.defaultAttribution_ !== 'string') {
       this.setVisible(false);
     } else {
+      // this.setVisible(true);
       this.addContent([{
         attribution: this.defaultAttribution_,
         url: this.defaultURL_,
@@ -320,8 +330,10 @@ export default class Attributions extends M.Plugin {
    * @public
    */
   clearContent() {
-    const html = this.control_.getElement();
-    html.querySelectorAll('div').forEach(child => html.removeChild(child));
+    if (!M.utils.isNullOrEmpty(this.control_)) {
+      const html = this.control_.getElement();
+      html.querySelectorAll('div').forEach(child => html.removeChild(child));
+    }
   }
 
   /**
@@ -451,6 +463,17 @@ export default class Attributions extends M.Plugin {
   }
 
   /**
+   * Position of the plugin
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get position() {
+    return this.position_;
+  }
+
+  /**
    * Scale of the plugin
    *
    * @public
@@ -491,6 +514,6 @@ export default class Attributions extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}`;
+    return `${this.name}=${this.position}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}`;
   }
 }

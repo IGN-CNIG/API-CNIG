@@ -35,7 +35,6 @@
     </script>
 
     <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/assets/css/apiign-1.0.0.ol.min.css">
-    <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/plugins/ignsearch/ignsearch.ol.min.css">
     <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/plugins/backimglayer/backimglayer.ol.min.css">
     <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="https://componentes.ign.es/api-core/plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
@@ -57,7 +56,6 @@
     <script type="text/javascript" src="https://componentes.ign.es/api-core/vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="https://componentes.ign.es/api-core/js/apiign-1.0.0.ol.min.js"></script>
     <script type="text/javascript" src="https://componentes.ign.es/api-core/js/configuration-1.0.0.js"></script>
-    <script type="text/javascript" src="https://www.ign.es/resources/viewer/js/ignsearch.ol.min_cache_geocoder.js"></script>
     <script type="text/javascript" src="https://componentes.ign.es/api-core/plugins/backimglayer/backimglayer.ol.min.js"></script>
     <script type="text/javascript" src="https://componentes.ign.es/api-core/plugins/overviewmap/overviewmap.ol.min.js"></script>
     <script type="text/javascript" src="https://componentes.ign.es/api-core/plugins/measurebar/measurebar.ol.min.js"></script>
@@ -77,6 +75,218 @@
 
 
     <script type="text/javascript">
+        const capa1 = new M.layer.WMTS({
+            url: 'https://www.ign.es/wmts/pnoa-ma?',
+            name: 'OI.OrthoimageCoverage',
+            legend: 'Imagen (PNOA)',
+            matrixSet: 'GoogleMapsCompatible',
+            transparent: false,
+            displayInLayerSwitcher: false,
+            queryable: false,
+            visible: true,
+            format: 'image/jpeg',
+        });
+
+        find = (arr, func) => {
+            const length = arr.length >>> 0;
+            let value;
+
+            for (let i = 0; i < length; i++) {
+                value = arr[i];
+                if (func(value, i, arr)) {
+                    return value;
+                }
+            }
+            return null;
+        }
+        findIndex = (arr, func) => {
+            let index;
+            const found = !arr.every(function(el, idx) {
+                index = idx;
+                return !func(el, idx, arr);
+            });
+            return found ? index : -1;
+        }
+
+        includes = (arr, obj) => {
+            return arr.indexOf(obj) >= 0;
+        }
+
+        capa1.getImpl().getCapabilitiesOptions_ = function() {
+            if (M.utils.isNullOrEmpty(this.capabilitiesOptionsPromise)) {
+                this.capabilitiesOptionsPromise = this.getCapabilities().then((capabilities) => {
+                    const layerName = this.name;
+                    let matrixSet = this.matrixSet;
+                    if (M.utils.isNullOrEmpty(matrixSet)) {
+
+                        matrixSet = this.map.getProjection().code;
+                    }
+                    const extent = this.facadeLayer_.getMaxExtent();
+                    const capabilitiesOpts = optionsFromCapabilitiesWMTS(capabilities, {
+                        layer: layerName,
+                        matrixSet,
+                        extent,
+                    });
+                    capabilitiesOpts.tileGrid.extent = extent;
+                    return capabilitiesOpts;
+                });
+            }
+            return this.capabilitiesOptionsPromise;
+        }
+
+
+        optionsFromCapabilitiesWMTS = (wmtsCap, config) => {
+            const layers = wmtsCap['Contents']['Layer'];
+            const l = find(layers, function(elt, index, array) {
+                return elt['Identifier'] == config['layer'];
+            });
+            if (l === null) {
+                return null;
+            }
+            const tileMatrixSets = wmtsCap['Contents']['TileMatrixSet'];
+            let idx;
+            if (l['TileMatrixSetLink'].length > 1) {
+                if ('projection' in config) {
+                    idx = findIndex(l['TileMatrixSetLink'],
+                        function(elt, index, array) {
+                            const tileMatrixSet = find(tileMatrixSets, function(el) {
+                                return el['Identifier'] == elt['TileMatrixSet'];
+                            });
+                            const supportedCRS = tileMatrixSet['SupportedCRS'];
+                            const proj1 = ol.proj.get(supportedCRS.replace(/urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3')) ||
+                                ol.proj.getProjection(supportedCRS);
+                            const proj2 = ol.proj.get(config['projection']);
+                            if (proj1 && proj2) {
+                                return equivalent(proj1, proj2);
+                            } else {
+                                return supportedCRS == config['projection'];
+                            }
+                        });
+                } else {
+                    idx = findIndex(l['TileMatrixSetLink'],
+                        function(elt, index, array) {
+                            return elt['TileMatrixSet'] == config['matrixSet'];
+                        });
+                }
+            } else {
+                idx = 0;
+            }
+            if (idx < 0) {
+                idx = 0;
+            }
+            const matrixSet = (l['TileMatrixSetLink'][idx]['TileMatrixSet']);
+            const matrixLimits = (l['TileMatrixSetLink'][idx]['TileMatrixSetLimits']);
+            let format = (l['Format'][0]);
+            if ('format' in config) {
+                format = config['format'];
+            }
+            idx = findIndex(l['Style'], function(elt, index, array) {
+                if ('style' in config) {
+                    return elt['Title'] == config['style'];
+                } else {
+                    return elt['isDefault'];
+                }
+            });
+            if (idx < 0) {
+                idx = 0;
+            }
+            const style = (l['Style'][idx]['Identifier']);
+            const dimensions = {};
+            if ('Dimension' in l) {
+                l['Dimension'].forEach(function(elt, index, array) {
+                    const key = elt['Identifier'];
+                    let value = elt['Default'];
+                    if (value === undefined) {
+                        value = elt['Value'][0];
+                    }
+                    dimensions[key] = value;
+                });
+            }
+            const matrixSets = wmtsCap['Contents']['TileMatrixSet'];
+            const matrixSetObj = find(matrixSets, function(elt, index, array) {
+                return elt['Identifier'] == matrixSet;
+            });
+            let projection;
+            const code = matrixSetObj['SupportedCRS'];
+            if (code) {
+                projection = ol.proj.get(code.replace(/urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3')) || ol.proj.get(code);
+            }
+            if ('projection' in config) {
+                const projConfig = ol.proj.get(config['projection']);
+                if (projConfig) {
+                    if (!projection || equivalent(projConfig, projection)) {
+                        projection = projConfig;
+                    }
+                }
+            }
+            const wgs84BoundingBox = l['WGS84BoundingBox'];
+            let extent, wrapX;
+            if (config.extent) {
+                extent = config.extent;
+            } else if (wgs84BoundingBox !== undefined) {
+                const wgs84ProjectionExtent = ol.proj.get('EPSG:4326').getExtent();
+                wrapX = (wgs84BoundingBox[0] == wgs84ProjectionExtent[0] && wgs84BoundingBox[2] == wgs84ProjectionExtent[2]);
+                extent = transformExtent(wgs84BoundingBox, 'EPSG:4326', projection);
+                const projectionExtent = projection.getExtent();
+                if (projectionExtent) {
+                    if (!containsExtent(projectionExtent, extent)) {
+                        extent = undefined;
+                    }
+                }
+            }
+            const tileGrid = ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet(matrixSetObj, extent, matrixLimits);
+            const urls = [];
+            let requestEncoding = config['requestEncoding'];
+            requestEncoding = requestEncoding !== undefined ? requestEncoding : '';
+            if ('OperationsMetadata' in wmtsCap && 'GetTile' in wmtsCap['OperationsMetadata']) {
+                const gets = wmtsCap['OperationsMetadata']['GetTile']['DCP']['HTTP']['Get'];
+                for (let i = 0, ii = gets.length; i < ii; ++i) {
+                    if (gets[i]['Constraint']) {
+                        const constraint = find(gets[i]['Constraint'], function(element) {
+                            return element['name'] == 'GetEncoding';
+                        });
+                        const encodings = constraint['AllowedValues']['Value'];
+                        if (requestEncoding === '') {
+                            requestEncoding = encodings[0];
+                        }
+                        if (requestEncoding === 'KVP') {
+                            if (includes(encodings, 'KVP')) {
+                                urls.push((gets[i]['href']).replace("http", "https"));
+                            }
+                        } else {
+                            break;
+                        }
+                    } else if (gets[i]['href']) {
+                        requestEncoding = 'KVP';
+                        urls.push((gets[i]['href']).replace("http", "https"));
+                    }
+                }
+            }
+            if (urls.length === 0) {
+                requestEncoding = 'REST';
+                l['ResourceURL'].forEach(function(element) {
+                    if (element['resourceType'] === 'tile') {
+                        format = element['format'];
+                        urls.push((element['template']));
+                    }
+                });
+            }
+            return {
+                urls: urls,
+                layer: config['layer'],
+                matrixSet: matrixSet,
+                format: format,
+                projection: projection,
+                requestEncoding: requestEncoding,
+                tileGrid: tileGrid,
+                style: style,
+                dimensions: dimensions,
+                wrapX: wrapX,
+                crossOrigin: config['crossOrigin']
+            };
+        }
+
+
         const map = M.map({
             container: 'mapjs',
             controls: ['location', 'scale', 'rotate'],
@@ -84,286 +294,12 @@
             maxZoom: 20,
             minZoom: 4,
             center: [-467062.8225, 4683459.6216],
+            layers: [capa1]
         });
     </script>
 
     <script type="text/javascript">
-        // click map
-        const distanceLayer = new ol.layer.Vector({
-            name: 'distance',
-            extract: false,
-            visible: true,
-            zIndex: 9999
-        });
-        map.getMapImpl().addLayer(distanceLayer);
 
-        map.getMapImpl().on('click', function(evt) {
-            const coordinate = evt.coordinate;
-            const resolutionAtEquator = map.getMapImpl().getView().getResolution();
-            const pointResolution = ol.proj.getPointResolution(map.getMapImpl().getView().getProjection(), resolutionAtEquator, coordinate);
-            const resolutionFactor = resolutionAtEquator / pointResolution;
-            const radius = (1000 / ol.proj.Units.METERS_PER_UNIT.m) * resolutionFactor;
-            const olFeature = new ol.Feature(new ol.geom.Circle(coordinate, radius));
-
-            const olFeatureCenter = new ol.Feature(new ol.geom.Circle(coordinate, 10));
-            distanceLayer.setSource(new ol.source.Vector({
-                features: new ol.Collection([olFeature, olFeatureCenter])
-            }));
-            olFeature.setStyle(new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(7, 95, 255, 0.21)',
-                    width: 3,
-                }),
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 255, 255, 0.21)',
-                    opacity: 0.4,
-                }),
-            }));
-            olFeatureCenter.setStyle(new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(7, 95, 255, 0.50)',
-                    width: 3,
-                }),
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 255, 255, 0.50)',
-                    opacity: 0.4,
-                }),
-            }));
-            const extent = olFeature.getGeometry().getExtent();
-            map.getMapImpl().getView().fit(extent, {
-                duration: 1500,
-                minResolution: 1,
-            });
-        });
-
-
-
-        // location
-        map.getControls()[0].getImpl().activate = function activate() {
-            this.element.classList.add('m-locating');
-            if (M.utils.isNullOrEmpty(this.geolocation_)) {
-                const proj = ol.proj.get(this.facadeMap_.getProjection().code);
-                this.geolocation_ = new ol.Geolocation(M.utils.extend({
-                    projection: proj,
-                    tracking: this.tracking_,
-                    trackingOptions: {
-                        enableHighAccuracy: this.highAccuracy_,
-                        maximumAge: this.maximumAge_,
-                    },
-                }, this.vendorOptions_, true));
-
-                this.geolocation_.once('change:position', (evt) => {
-                    const coordinate = evt.target.get(evt.key);
-                    const resolutionAtEquator = map.getMapImpl().getView().getResolution();
-                    const pointResolution = ol.proj.getPointResolution(map.getMapImpl().getView().getProjection(), resolutionAtEquator, coordinate);
-                    const resolutionFactor = resolutionAtEquator / pointResolution;
-                    const radius = (1000 / ol.proj.Units.METERS_PER_UNIT.m) * resolutionFactor;
-                    const olFeature = new ol.Feature(new ol.geom.Circle(coordinate, radius));
-                    const olFeatureCenter = new ol.Feature(new ol.geom.Circle(coordinate, 10));
-                    distanceLayer.setSource(new ol.source.Vector({
-                        features: new ol.Collection([olFeature, olFeatureCenter])
-                    }));
-                    olFeature.setStyle(new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(7, 95, 255, 0.21)',
-                            width: 3,
-                        }),
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 255, 255, 0.21)',
-                            opacity: 0.4,
-                        }),
-                    }));
-                    olFeatureCenter.setStyle(new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(7, 95, 255, 0.50)',
-                            width: 3,
-                        }),
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 255, 255, 0.50)',
-                            opacity: 0.4,
-                        }),
-                    }));
-                    const extent = olFeature.getGeometry().getExtent();
-                    map.getMapImpl().getView().fit(extent, {
-                        duration: 1500,
-                        minResolution: 1,
-                    });
-                    this.element.classList.remove('m-locating');
-                    this.element.classList.add('m-located');
-                });
-            }
-        }
-
-        //ignsearch
-        map.addPlugin(new M.plugin.IGNSearch({}));
-
-map.getPlugins()[0].controls_[0].createTimeout = function(e) {
-alert(e.keyCode);
-    if(e.keyCode === 13){
-        this.searchInputValue(e);
-    }
-}
-
-        map.getPlugins()[0].controls_[0].showPopUp = function showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
-            const featureTabOpts = {
-                content: '',
-                icon: 'g-plugin-ignsearch-localizacion3'
-            };
-            if (exitState !== null) {
-                featureTabOpts.content += `<div><b>${exitState}</b></div>`;
-            }
-            featureTabOpts.content += `<div>${fullAddress}</div>
-  <div class='ignsearch-popup'>Lat: ${featureCoordinates[0]}</div>
-  <div class='ignsearch-popup'> Long: ${featureCoordinates[1]} </div>`;
-            if (this.map.getPopup() instanceof M.Popup && addTab === true) {
-                this.popup = this.map.getPopup();
-                this.popup.addTab(featureTabOpts);
-            } else {
-                const myPopUp = new M.Popup({
-                    panMapIfOutOfView: !e.fake
-                });
-                myPopUp.addTab(featureTabOpts);
-
-                this.map.addPopup(myPopUp, [
-                    mapcoords[0],
-                    mapcoords[1],
-                ]);
-                this.popup = myPopUp;
-            }
-            this.lat = mapcoords[1];
-            this.lng = mapcoords[0];
-
-            const resolutionAtEquator = map.getMapImpl().getView().getResolution();
-            const pointResolution = ol.proj.getPointResolution(map.getMapImpl().getView().getProjection(), resolutionAtEquator, [this.lng, this.lat]);
-            const resolutionFactor = resolutionAtEquator / pointResolution;
-            const radius = (1000 / ol.proj.Units.METERS_PER_UNIT.m) * resolutionFactor;
-            const olFeature = new ol.Feature(new ol.geom.Circle([this.lng, this.lat], radius));
-
-
-            distanceLayer.setSource(new ol.source.Vector({
-                features: new ol.Collection([olFeature])
-            }));
-            olFeature.setStyle(new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(7, 95, 255, 0.21)',
-                    width: 3,
-                }),
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 255, 255, 0.21)',
-                    opacity: 0.4,
-                }),
-            }));
-            const extent = olFeature.getGeometry().getExtent();
-            map.getMapImpl().getView().fit(extent, {
-                duration: 1500,
-                minResolution: 1,
-            });
-
-
-        };
-
-        map.getPlugins()[0].controls_[0].zoomInLocation = function(service, type) {
-            this.resultsList = document.getElementById('m-ignsearch-results-list');
-            if (this.clickedElementLayer instanceof M.layer.Vector) {
-                this.clickedElementLayer.calculateMaxExtent().then((extent) => {
-                    //this.map.setBbox(extent);
-                    if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
-                        // this.setScale(17061); // last scale requested by our client: 2000
-                    }
-                    // this.resultsList.innerHTML = '';
-                    // this.searchInput.value = '';
-                    // this.searchInput.value = this.currentElement.querySelector('#info').innerHTML;
-                    // this.searchValue = this.searchInput.value.trim();
-                    // this.resultsList.appendChild(this.currentElement);
-                    // Fires ignsearch:EntityFound event after zoom-in result
-                    this.fire('ignsearch:entityFound', [extent]);
-                });
-            }
-        };
-
-
-        const mp = new M.plugin.OverviewMap({
-            position: 'BL',
-        }, {
-            collapsed: false,
-            collapsible: true,
-        });
-
-        map.addPlugin(mp);
-
-        //backimage
-
-        map.addPlugin(new M.plugin.BackImgLayer({
-            position: 'TR',
-            collapsible: true,
-            collapsed: true,
-            layerId: 0,
-            layerVisibility: true,
-            layerOpts: [{
-                    id: 'hibrido',
-                    title: 'Híbrido',
-                    preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
-                    layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                            name: 'OI.OrthoimageCoverage',
-                            legend: 'Imagen (PNOA)',
-                            matrixSet: 'GoogleMapsCompatible',
-                            transparent: true,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/jpeg',
-                        }),
-                        new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
-                            name: 'IGNBaseOrto',
-                            matrixSet: 'GoogleMapsCompatible',
-                            legend: 'Mapa IGN',
-                            transparent: false,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/png',
-                        })
-                    ],
-                },
-                {
-                    id: 'mapa',
-                    preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
-                    title: 'Mapa',
-                    layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/ign-base?',
-                        name: 'IGNBaseTodo',
-                        legend: 'Mapa IGN',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/jpeg',
-                    })],
-                },
-            ],
-        }));
-
-        // map.addPlugin(new M.plugin.MeasureBar({
-        //     position: 'TL'
-        // }));
-
-        const content = `<div>
-		  <p style="text-align: center; margin-bottom: 2rem;"><img style="width: 80%;" src="https://www.ign.es/resources/viewer/images/LogoWEBIGNCNIG.PNG"></p>
-		  <p>Con este sencillo visualizador podrás saber hasta dónde salir con los menores tras permitirse los paseos hasta 1km de distancia desde el domicilio.</p>
-		</div>`;
-
-        M.dialog.info(content, 'Información');
-        setTimeout(() => {
-            document.querySelector('div.m-mapea-container div.m-dialog div.m-content').style.maxWidth = '300px';
-            document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#364B5F';
-            const button = document.querySelector('div.m-dialog.info div.m-button > button');
-            button.innerHTML = 'Cerrar';
-            button.style.width = '75px';
-            button.style.backgroundColor = '#364B5F';
-        }, 10);
     </script>
 </body>
 

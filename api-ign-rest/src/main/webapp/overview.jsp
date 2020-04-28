@@ -42,15 +42,15 @@
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
+            <option value="TL">Arriba Izquierda (TL)</option>
             <option value="TR">Arriba Derecha (TR)</option>
-            <option value="BR">Abajo Derecha (BR)</option>
+            <option value="BR" selected="selected">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>  
         <label for="selectFixed">Selector Fixed</label>
         <select name="fixedValue" id="selectFixed">
             <option value=true>true</option>
-            <option value=false>false</option>
+            <option value=false selected="selected">false</option>
         </select>
         <label for="inputBaseLayer">Parámetro baseLayer</label>
         <input type="text" name="baseLayer" id="inputBaseLayer" list="baseLayerSug">

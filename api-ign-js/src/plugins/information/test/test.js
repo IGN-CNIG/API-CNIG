@@ -35,18 +35,7 @@ const hidrografia = new M.layer.WMS({
   legend: 'Hidrografía',
 });
 
-<<<<<<< HEAD
-const capaPuntosLimpios = new M.layer.WMS({
-  url: 'http://www.juntadeandalucia.es/medioambiente/mapwms/REDIAM_puntos_limpios?',
-  name: 'puntos_limpios',
-  legend: 'Puntos Limpios',
-});
-
-
-map.addLayers([layerinicial, capaPuntosLimpios]);
-=======
 map.addLayers([layerinicial, layerUA, hidrografia]);
->>>>>>> redmine_155141
 map.addPlugin(mp);
 // window.mp = mp;
 window.map = map;

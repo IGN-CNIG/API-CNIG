@@ -50,10 +50,14 @@
         </select>
         <label for="inputName">Parámetro Name</label>
         <input type="text" name="nameValue" id="inputName" value="Zoom a la extensión del mapa" list="nameValueSug">
-        <datalist id="nameValueSug"><option value="Zoom a la extensión del mapa"></option></datalist>
+        <datalist id="nameValueSug">
+            <option value="Zoom a la extensión del mapa"></option>
+        </datalist>
         <label for="inputBbox">Parámetro Bbox</label>
-        <input type="text" name="bbox" id="inputBbox" value="[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]" list="bboxSug">
-        <datalist id="bboxSug"><option value="[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]"></option></datalist>
+        <input type="text" name="bbox" id="inputBbox" value="[-5126664.066764344, 2296178.3541973755, 4192538.421764345, 7070740.889002625]" list="bboxSug">
+        <datalist id="bboxSug">
+            <option value="[-5126664.066764344, 2296178.3541973755, 4192538.421764345, 7070740.889002625]"></option>
+        </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -103,9 +107,9 @@
         let mp;
         let posicion = "TL",
             nombre = "Zoom a la extensión del mapa",
-            bbox = JSON.parse("[-2563852.2025329857, 3178130.5783665525, 567008.4760278338, 5443112.600512895]");
-        crearPlugin(posicion,nombre,bbox);
-        
+            bbox = JSON.parse("[-5126664.066764344, 2296178.3541973755, 4192538.421764345, 7070740.889002625]");
+        crearPlugin(posicion, nombre, bbox);
+
         const selectPosicion = document.getElementById("selectPosicion");
         const inputName = document.getElementById("inputName");
         const inputBbox = document.getElementById("inputBbox");
@@ -114,15 +118,15 @@
         inputName.addEventListener('change', cambiarTest);
         inputBbox.addEventListener('change', cambiarTest);
 
-        function cambiarTest(){
+        function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             nombre = inputName.value;
             bbox = JSON.parse(inputBbox.value);
             map.removePlugins(mp);
-			crearPlugin(posicion,nombre,bbox);
+            crearPlugin(posicion, nombre, bbox);
         }
-        
-        function crearPlugin(position,name,bbox){
+
+        function crearPlugin(position, name, bbox) {
             mp = new M.plugin.PredefinedZoom({
                 position: position,
                 savedZooms: [{
@@ -134,12 +138,12 @@
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>
