@@ -88,7 +88,7 @@ export default class TOC extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls(this.control);
-    [this.map_, this.control, this.panel_] = [null, null, null];
+    [this.control, this.panel_] = [null, null];
   }
 
   /**

@@ -278,7 +278,7 @@ export default class Attributions extends M.Plugin {
   changeAttributions() {
     this.clearContent();
     if (this.map_.getScale() <= this.scale_) {
-      this.setVisible(false);
+      this.setVisible(true);
       let mapAttributions = [];
       if (this.mode_ === MODES.mapAttributions) {
         mapAttributions = this.getMapAttributions();
@@ -290,9 +290,9 @@ export default class Attributions extends M.Plugin {
 
       this.addContent(mapAttributions);
     } else if (typeof this.defaultAttribution_ !== 'string') {
-      this.setVisible(true);
+      this.setVisible(false);
     } else {
-      this.setVisible(true);
+      // this.setVisible(true);
       this.addContent([{
         attribution: this.defaultAttribution_,
         url: this.defaultURL_,
