@@ -81,23 +81,12 @@
 
 
     <script type="text/javascript">
-        const map = M.map({
-            container: 'mapjs',
-            controls: ['location', 'scale', 'rotate'],
-            zoom: 5,
-            maxZoom: 20,
-            minZoom: 4,
-            center: [-467062.8225, 4683459.6216],
-        });
-    </script>
-
-    <script type="text/javascript">
         const capa1 = new M.layer.WMTS({
             url: 'https://www.ign.es/wmts/pnoa-ma?',
             name: 'OI.OrthoimageCoverage',
             legend: 'Imagen (PNOA)',
             matrixSet: 'GoogleMapsCompatible',
-            transparent: true,
+            transparent: false,
             displayInLayerSwitcher: false,
             queryable: false,
             visible: true,
@@ -116,7 +105,6 @@
             }
             return null;
         }
-
         findIndex = (arr, func) => {
             let index;
             const found = !arr.every(function(el, idx) {
@@ -131,7 +119,6 @@
         }
 
         capa1.getImpl().getCapabilitiesOptions_ = function() {
-            alert("a");
             if (M.utils.isNullOrEmpty(this.capabilitiesOptionsPromise)) {
                 this.capabilitiesOptionsPromise = this.getCapabilities().then((capabilities) => {
                     const layerName = this.name;
@@ -155,7 +142,6 @@
 
 
         optionsFromCapabilitiesWMTS = (wmtsCap, config) => {
-            alert("B");
             const layers = wmtsCap['Contents']['Layer'];
             const l = find(layers, function(elt, index, array) {
                 return elt['Identifier'] == config['layer'];
@@ -306,7 +292,20 @@
             };
         }
 
-        map.addLayers(capa1)
+
+        const map = M.map({
+            container: 'mapjs',
+            controls: ['location', 'scale', 'rotate'],
+            zoom: 5,
+            maxZoom: 20,
+            minZoom: 4,
+            center: [-467062.8225, 4683459.6216],
+            layers: [capa1]
+        });
+    </script>
+
+    <script type="text/javascript">
+
     </script>
 </body>
 
