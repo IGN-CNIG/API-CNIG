@@ -110,53 +110,57 @@
         }, {});
 
         map.addLayers([layerinicial, layerUA]);
-        
+
         let mp;
         let posicion, collapsible, collapsed, layerId, layerVisibility, layerOpts;
-                
-        crearPlugin(posicion,collapsible,collapsed,layerId,layerVisibility,layerOpts);
-    
+
+        crearPlugin(posicion, collapsible, collapsed, layerId, layerVisibility, layerOpts);
+
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
         const inputLayerId = document.getElementById("inputLayerId");
         const selectLayerVisibility = document.getElementById("selectLayerVisibility");
-        
-        selectPosicion.addEventListener('change',cambiarTest);
-        selectCollapsed.addEventListener('change',cambiarTest);
-        selectCollapsible.addEventListener('change',cambiarTest);
-        inputLayerId.addEventListener('change',cambiarTest);
-        selectLayerVisibility.addEventListener('change',cambiarTest);
 
-        function cambiarTest(){
+        selectPosicion.addEventListener('change', cambiarTest);
+        selectCollapsed.addEventListener('change', cambiarTest);
+        selectCollapsible.addEventListener('change', cambiarTest);
+        inputLayerId.addEventListener('change', cambiarTest);
+        selectLayerVisibility.addEventListener('change', cambiarTest);
+
+        function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             layerId = inputLayerId.value;
             layerVisibility = (selectLayerVisibility.options[selectLayerVisibility.selectedIndex].value == 'true');
             map.removePlugins(mp);
-            crearPlugin(posicion,collapsible,collapsed,layerId,layerVisibility,layerOpts);
+            crearPlugin(posicion, collapsible, collapsed, layerId, layerVisibility, layerOpts);
         }
 
-        function crearPlugin(position,collapsible,collapsed,layerId,layerVisibility,layerOpts){
+        function crearPlugin(position, collapsible, collapsed, layerId, layerVisibility, layerOpts) {
             mp = new M.plugin.SelectionZoom({
                 position: position,
                 collapsible: collapsible,
                 collapsed: collapsed,
                 layerId: layerId,
                 layerVisibility: layerVisibility,
-                layerOpts: layerOpts,
+                ids: 'peninsula,canarias,baleares,ceuta,melilla',
+                titles: 'Peninsula,Canarias,Baleares,Ceuta,Melilla',
+                previews: 'plugins/selectionzoom/images/espana.png,plugins/selectionzoom/images/canarias.png,plugins/selectionzoom/images/baleares.png,plugins/selectionzoom/images/ceuta.png,plugins/selectionzoom/images/melilla.png',
+                bboxs: '-1200091.444315327, 365338.89496508264, 4348955.797933925, 5441088.058207252, -2170190.6639824593, -1387475.4943422542, 3091778.038884449, 3637844.1689537475 , 115720.89020469127, 507078.4750247937, 4658411.436032817, 4931444.501067467,-599755.2558583047, -587525.3313326766, 4281734.817081453, 4290267.100363785, -334717.4178261766, -322487.4933005484, 4199504.016876071, 4208036.300158403',
+                zooms: '7,8,9,14,14',
             });
             map.addPlugin(mp);
-           
+
         }
         mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>
