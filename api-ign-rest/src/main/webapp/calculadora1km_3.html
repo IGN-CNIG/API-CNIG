@@ -455,8 +455,8 @@
 
         let typingTimer;
         map.getPlugins()[0].controls_[0].createTimeout = function(e) {
+            clearTimeout(typingTimer);
             if (e.keyCode === 13) {
-                clearTimeout(typingTimer);
                 this.searchInputValue(e);
             } else {
                 typingTimer = setTimeout(() => this.searchInputValue(e), 1500);
