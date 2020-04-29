@@ -28,6 +28,27 @@
       "type": "simple",
       "name": "defaultURL",
       "position": 4
+    }, {
+      "type": "simple",
+      "name": "url",
+      "position": 5
+    }, {
+      "type": "simple",
+      "possibleValues": ["kml", "geojson"],
+      "name": "type",
+      "position": 6
+    }, {
+      "type": "simple",
+      "name": "layerName",
+      "position": 7
+    }, {
+      "type": "simple",
+      "name": "attributionParam",
+      "position": 8
+    }, {
+      "type": "simple",
+      "name": "urlParam",
+      "position": 9
     }]
   }],
   "files": {
