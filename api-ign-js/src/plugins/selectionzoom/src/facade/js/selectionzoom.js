@@ -115,8 +115,17 @@ export default class SelectionZoom extends M.Plugin {
      */
     this.layers = options.layers || '';
 
-    this.collapsed = options !== undefined ? options.collapsed : true;
-    this.collapsible = options !== undefined ? options.collapsible : true;
+    /**
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsed = options.collapsed || true;
+
+    /**
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsible = options.collapsible || true;
 
     /**
      * Metadata from api.json
