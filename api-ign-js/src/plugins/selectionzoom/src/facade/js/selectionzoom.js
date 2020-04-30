@@ -54,7 +54,7 @@ export default class SelectionZoom extends M.Plugin {
      * @private
      * @type {Enum} TL | TR | BL | BR
      */
-    this.position_ = options.position || 'TR';
+    this.position_ = options.position || 'TL';
 
     /**
      * Position of current background layer on layers array.
@@ -115,17 +115,9 @@ export default class SelectionZoom extends M.Plugin {
      */
     this.layers = options.layers || '';
 
-    /**
-     * @private
-     * @type {Boolean}
-     */
-    this.collapsed = options.collapsed || true;
+    this.collapsed = options.collapsed !== undefined ? options.collapsed : true;
+    this.collapsible = options.collapsible !== undefined ? options.collapsible : true;
 
-    /**
-     * @private
-     * @type {Boolean}
-     */
-    this.collapsible = options.collapsible || true;
 
     /**
      * Metadata from api.json

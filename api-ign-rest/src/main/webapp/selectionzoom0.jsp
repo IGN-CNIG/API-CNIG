@@ -43,8 +43,8 @@
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-            <option value="TL">Arriba Izquierda (TL)</option>
-            <option value="TR" selected="selected">Arriba Derecha (TR)</option>
+            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
+            <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
@@ -58,13 +58,7 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
-        <label for="inputLayerId">Parámetro layerId</label>
-        <input type="number" min="0" value="10" name="layerId" id="inputLayerId">
-        <label for="selectLayerVisibility">Selector layerVisibility</label>
-        <select name="layerVisibilityValue" id="selectLayerVisibility">
-            <option value=true>true</option>
-            <option value=false>false</option>
-        </select>
+
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -112,39 +106,31 @@
         map.addLayers([layerinicial, layerUA]);
 
         let mp;
-        let posicion, collapsible, collapsed, layerId, layerVisibility, layerOpts;
+        let posicion, collapsible, collapsed, layerOpts;
 
-        crearPlugin(posicion, collapsible, collapsed, layerId, layerVisibility, layerOpts);
+        crearPlugin(posicion, collapsible, collapsed, layerOpts);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
-        const inputLayerId = document.getElementById("inputLayerId");
-        const selectLayerVisibility = document.getElementById("selectLayerVisibility");
 
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
-        inputLayerId.addEventListener('change', cambiarTest);
-        selectLayerVisibility.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            layerId = inputLayerId.value;
-            layerVisibility = (selectLayerVisibility.options[selectLayerVisibility.selectedIndex].value == 'true');
             map.removePlugins(mp);
-            crearPlugin(posicion, collapsible, collapsed, layerId, layerVisibility, layerOpts);
+            crearPlugin(posicion, collapsible, collapsed, layerOpts);
         }
 
-        function crearPlugin(position, collapsible, collapsed, layerId, layerVisibility, layerOpts) {
+        function crearPlugin(position, collapsible, collapsed, layerOpts) {
             mp = new M.plugin.SelectionZoom({
                 position: position,
                 collapsible: collapsible,
                 collapsed: collapsed,
-                layerId: layerId,
-                layerVisibility: layerVisibility,
                 ids: 'peninsula,canarias,baleares,ceuta,melilla',
                 titles: 'Peninsula,Canarias,Baleares,Ceuta,Melilla',
                 previews: 'plugins/selectionzoom/images/espana.png,plugins/selectionzoom/images/canarias.png,plugins/selectionzoom/images/baleares.png,plugins/selectionzoom/images/ceuta.png,plugins/selectionzoom/images/melilla.png',

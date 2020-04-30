@@ -30,11 +30,9 @@ const map = M.map({
 });
 
 const mp = new SelectionZoom({
-  position: 'TL',
+  position: 'TR',
   collapsible: true,
   collapsed: true,
-  layerId: 0,
-  layerVisibility: true,
   ids: 'peninsula,canarias,baleares,ceuta,melilla',
   titles: 'Peninsula,Canarias,Baleares,Ceuta,Melilla',
   previews: '../src/facade/assets/images/espana.png,../src/facade/assets/images/canarias.png,../src/facade/assets/images/baleares.png,../src/facade/assets/images/ceuta.png,../src/facade/assets/images/melilla.png',
