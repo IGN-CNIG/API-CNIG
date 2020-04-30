@@ -242,13 +242,13 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 
     /* Edge fix */
     @supports (-ms-ime-align:auto) {
-        .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened {
-            padding: 10px 50px 0;
+
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            padding-left: 0px;
         }
 
-
         .m-bottom.m-left>.m-plugin-selectionzoom.opened>.m-panel-btn {
-            position: staticstati;
+            position: static;
         }
     }
 
