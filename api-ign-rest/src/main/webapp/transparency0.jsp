@@ -40,18 +40,23 @@
 
 <body>
     <div>
+        <label for="position">Parámetro de posición</label>
         <select name="position" id="selectPosicion">
             <option value="TL">Arriba Izquierda (TL)</option>
             <option value="TR" selected="selected">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-        <label for="inputLayers">Parámetro Layers (separador:,)</label>
-        <input type="text" id="inputLayers" value="WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas,WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo" list="layersSug">
-        <datalist id="layersSug"><option value="WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas,WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo"></option></datalist>
+        <label for="inputLayers">Parámetro Layers (sobre la/s que se aplicará el efecto)</label>
+        <input type="text" id="inputLayers" size=70 value="WMS*hil*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeBoundary,WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA,WMTS*http://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*usoSuelo" list="layersSug">
+        <datalist id="layersSug">
+            <option value="WMS*hil*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeBoundary,WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA,WMTS*http://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*usoSuelo"></option>
+        </datalist>
         <label for="inputRadius">Parámetro radius</label>
-        <input type="number" min="30" value="200" name="radius" id="inputRadius" list="radiusSug">
-        <datalist id="radiusSug"><option value="50"></option></datalist>
+        <input type="number" name="radius" id="inputRadius" list="radiusSug">
+        <datalist id="radiusSug">
+            <option value="50"></option>
+        </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -82,58 +87,46 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        let wmts = new M.layer.WMTS({
-            url: "http://www.ideandalucia.es/geowebcache/service/wmts",
-            name: "toporaster",
-            matrixSet: "EPSG:25830",
-            legend: "Toporaster"
-        }, {
-            format: 'image/png'
-        });
-        map.addWMTS(wmts);
-
-        const wms = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
-        map.addWMS(wms);
-
-        let mp;
-        let posicion, layer = ['toporaster', 'AU.AdministrativeBoundary'], radius = 50;
-        crearPlugin({
-                position: posicion,
-                layers: layer,
-                radius: radius
-            });
-        const selectPosicion = document.getElementById("selectPosicion");
-        const inputLayers = document.getElementById("inputLayers");
-        const inputRadius = document.getElementById("inputRadius");
-        
-        selectPosicion.addEventListener("change",cambiarTest);
-        inputLayers.addEventListener("change",cambiarTest);
-        inputRadius.addEventListener("change",cambiarTest);
-
-        function cambiarTest(){
-            let objeto = {}
-            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            objeto.layers = inputLayers.value != "" ? (inputLayers.value.split(",") || inputLayers.value) : ['toporaster', 'AU.AdministrativeBoundary'];
-            radius = inputRadius.value != "" ? objeto.radius = inputRadius : "";
-            map.removePlugins(mp);
-            crearPlugin(objeto);
-        }
-        function crearPlugin(propiedades){
-            mp = new M.plugin.Transparency(propiedades);
-            map.addPlugin(mp);
-        }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
+
+        const selectPosicion = document.getElementById("selectPosicion");
+        const inputLayers = document.getElementById("inputLayers");
+        const inputRadius = document.getElementById("inputRadius");
+
+        let mp;
+        let posicion, layer = inputLayers.value,
+            radius = '';
+        crearPlugin({
+            position: posicion,
+            layers: layer,
+            radius: radius
+        });
+
+
+        selectPosicion.addEventListener("change", cambiarTest);
+        inputLayers.addEventListener("change", cambiarTest);
+        inputRadius.addEventListener("change", cambiarTest);
+
+        function cambiarTest() {
+            let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            objeto.layers = inputLayers.value != "" ? (inputLayers.value.split(",") || inputLayers.value) : ['toporaster', 'AU.AdministrativeBoundary'];
+            objeto.radius = inputRadius.value != "" ? objeto.radius = inputRadius.value : "";
+            map.removePlugins(mp);
+            crearPlugin(objeto);
+        }
+
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.Transparency(propiedades);
+            map.addPlugin(mp);
+        }
+
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

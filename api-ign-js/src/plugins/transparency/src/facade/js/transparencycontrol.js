@@ -87,19 +87,20 @@ export default class TransparencyControl extends M.Control {
       let names = this.layers.map(function(layer) {
         return layer instanceof Object ? { name: layer.name } : { name: layer };
       });
-      let options = '';
-      if (names.length > 1) {
-        options = {
-          jsonp: true,
-          vars: {
-            options: names,
-            translations: {
-              transparency: getValue('transparency'),
-              radius: getValue('radius'),
-              layers: getValue('layers'),
-            }
+
+      let options = {
+        jsonp: true,
+        vars: {
+          translations: {
+            transparency: getValue('transparency'),
+            radius: getValue('radius'),
+            layers: getValue('layers'),
           }
-        };
+        }
+      };
+
+      if (names.length >= 1) {
+        options.vars.options = names;
       }
 
       this.template = M.template.compileSync(template, options);
@@ -111,8 +112,8 @@ export default class TransparencyControl extends M.Control {
         this.getImpl().setRadius(this.radius);
       });
 
-      if (this.layers.length == 0) {
-        M.dialog.error('No se ha especificado una capa válida sobre la que aplicar el efecto');
+      if (this.layers.length == 0 || this.layers == '') {
+        M.dialog.error('Transparency: No se ha especificado una capa válida sobre la que aplicar el efecto');
       } else {
         // Botón efecto transparencia      
         this.template.querySelector('#m-transparency-transparent').addEventListener('click', (evt) => {
@@ -157,7 +158,7 @@ export default class TransparencyControl extends M.Control {
     });
     this.template.querySelector('#m-transparency-transparent').classList.add('buttom-pressed');
     this.getImpl().effectSelected(this.layerSelected, this.radius);
-    if (names.length > 1) {
+    if (names.length >= 1) {
       this.template.querySelector('select').disabled = false;
       this.template.querySelector('input').disabled = false;
     }
@@ -178,7 +179,7 @@ export default class TransparencyControl extends M.Control {
     this.template.querySelector('#m-transparency-transparent').classList.remove('buttom-pressed');
     this.removeEffects();
     this.layerSelected.setVisible(false);
-    if (names.length > 1) {
+    if (names.length >= 1) {
       this.template.querySelector('select').disabled = true;
       this.template.querySelector('input').disabled = true;
     }
@@ -245,8 +246,9 @@ export default class TransparencyControl extends M.Control {
             this.map.addLayers(newLayer);
           } else if (urlLayer[0].toUpperCase() == 'WMTS') {
             newLayer = new M.layer.WMTS({
-              url: urlLayer[2],
-              name: urlLayer[3]
+              url: urlLayer[1],
+              name: urlLayer[2],
+              matrixSet: urlLayer[3],
             });
             this.map.addLayers(newLayer);
           }
@@ -262,6 +264,7 @@ export default class TransparencyControl extends M.Control {
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
         return newLayer
+
       } else {
         this.layers.remove(layer);
       }
@@ -293,5 +296,9 @@ export default class TransparencyControl extends M.Control {
    */
   equals(control) {
     return control instanceof TransparencyControl;
+  }
+
+  getLayersNames() {
+    return this.layers.map(l => l.name);
   }
 }

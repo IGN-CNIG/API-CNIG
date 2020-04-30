@@ -1,7 +1,7 @@
 {
   "url": {
     "name": "transparency",
-    "separator": "*"
+    "separator": "*!"
   },
   "constructor": "M.plugin.Transparency",
   "parameters": [{
