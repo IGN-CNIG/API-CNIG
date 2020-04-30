@@ -116,6 +116,16 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
     .m-bottom.m-right .m-plugin-selectionzoom.opened {
         display: flex;
     }
+
+    .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.m-plugin-selectionzoom>div.m-panel-controls>div.m-control.m-container.m-selectionzoom {
+        padding-right: unset;
+    }
+
+    .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.no-collapsible.m-plugin-selectionzoom>div.m-panel-controls>div.m-control.m-container.m-selectionzoom {
+        padding-right: 0px;
+
+    }
+
 }
 
 /* Mobile fix */
@@ -142,6 +152,8 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
         left: unset;
         top: unset;
     }
+
+
 
     button.m-panel-btn.g-cartografia-flecha-izquierda {
         margin-left: -10px;
@@ -194,13 +206,30 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 
     /* Firefox fix */
     @-moz-document url-prefix() {
-        .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened {
-            padding: 10px 50px 0;
+
+        .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>.m-panel-controls {
+            display: flow-root;
         }
 
-        .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews {
-            padding-bottom: 50px;
+        .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened {
+            width: auto;
+
         }
+
+        .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>.m-panel-controls {
+
+            display: flex;
+        }
+
+        .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>button {
+            left: 0px;
+        }
+
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            display: flex;
+        }
+
+
     }
 
     /* Chrome fix */
