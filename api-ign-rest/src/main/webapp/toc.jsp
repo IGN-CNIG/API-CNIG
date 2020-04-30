@@ -55,6 +55,11 @@
             <option value=true>true</option>
             <option value=false selected="selected">false</option>
         </select>
+        <label for="selectCollapsible">Selector collapsible</label>
+        <select name="collapsibleValue" id="selectCollapsible">
+            <option value=true>true</option>
+            <option value=false selected="selected">false</option>
+        </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
@@ -103,32 +108,44 @@
         map.addLayers(layerUA);
         map.addLayers(layerinicial);
 
-        let mp, posicion, collapsed;
+        let mp, posicion, collapsed, collapsible;
 
-        crearPlugin(posicion, collapsed, 0);
+        crearPlugin(posicion, collapsed, collapsible, 0);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
 
         selectPosicion.addEventListener('change', function() {
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             map.removePlugins(mp);
             map.destroy()
-            crearPlugin(posicion, collapsed, 1);
+            crearPlugin(posicion, collapsed, collapsible, 1);
 
         })
 
         selectCollapsed.addEventListener('change', function() {
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             map.removePlugins(mp);
             map.destroy()
-            crearPlugin(posicion, collapsed, 1);
+            crearPlugin(posicion, collapsed, collapsible, 1);
+        })
+
+        selectCollapsible.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+            map.destroy()
+            crearPlugin(posicion, collapsed, collapsible, 1);
         })
 
 
-        function crearPlugin(posicion, collapsed, flag) {
+        function crearPlugin(posicion, collapsed, collapsible, flag) {
             if (flag === 1) {
                 map = M.map({
                     container: 'mapjs',
@@ -156,6 +173,7 @@
             }
             mp = new M.plugin.TOC({
                 collapsed: collapsed,
+                collapsible: collapsible,
                 position: posicion,
             });
             map.addPlugin(mp);
