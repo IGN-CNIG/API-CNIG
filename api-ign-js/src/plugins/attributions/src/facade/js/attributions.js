@@ -87,14 +87,13 @@ export default class Attributions extends M.Plugin {
      * @type {URLLike}
      */
     this.url_ = options.url || M.config.attributions.url; // 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml';
-
     /**
      * Type of the data url
      *
      * @private
      * @type {string}
      */
-    this.type_ = options.type || M.config.attributions.type; // 'kml';
+    this.type_ = options.type || 'kml';
 
     /**
      * The name of the vector layer hat contains the attribution information.
@@ -126,7 +125,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.attributionParam_ = options.attributionParam || 'attribution';
+    this.attributionParam_ = options.attributionParam || 'atribucion';
 
     /**
      * Parameter of the features of the layer that contains the information of the URL.
@@ -227,16 +226,16 @@ export default class Attributions extends M.Plugin {
   destroy() {
     this.map_.removeControls([this.control_]);
     this.panel_ = null;
-    this.mode_ = null;
-    this.url_ = null;
-    this.type_ = null;
-    this.layerName_ = null;
-    this.layer_ = null;
-    this.scale_ = null;
-    this.attributionParam_ = null;
-    this.urlParam_ = null;
-    this.minWidth_ = null;
-    this.maxWidth_ = null;
+    // this.mode_ = null;
+    // this.url_ = null;
+    // this.type_ = null;
+    // this.layerName_ = null;
+    // this.layer_ = null;
+    // this.scale_ = null;
+    // this.attributionParam_ = null;
+    // this.urlParam_ = null;
+    // this.minWidth_ = null;
+    // this.maxWidth_ = null;
   }
 
   /**
@@ -290,7 +289,7 @@ export default class Attributions extends M.Plugin {
 
       this.addContent(mapAttributions);
     } else if (typeof this.defaultAttribution_ !== 'string') {
-      this.setVisible(false);
+      // this.setVisible(false);
     } else {
       // this.setVisible(true);
       this.addContent([{
@@ -350,12 +349,12 @@ export default class Attributions extends M.Plugin {
    */
   getMapAttributions() {
     this.updateBBoxFeature();
-    const featuresAttributions = this.layer_.getFeatures();
+    const featuresAttributions = this.map_.getLayers().filter(l => l.name.includes('attributions'))[0].getFeatures();
     const interFilter = intersect(this.bboxFeature_);
     const filteredFeatures = interFilter.execute(featuresAttributions);
     return filteredFeatures.map((feature) => {
       return {
-        attribution: feature.getAttribute(this.attributionParam_),
+        attribution: feature.getAttribute(this.attributionParam_) || '',
         url: feature.getAttribute(this.urlParam_) || this.defaultURL_,
       };
     }).filter((element, index, array) => // remove repeat elements
@@ -507,6 +506,61 @@ export default class Attributions extends M.Plugin {
   }
 
   /**
+   * url of the layer
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get url() {
+    return this.url_;
+  }
+
+  /**
+   * Type
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get type() {
+    return this.type_;
+  }
+
+  /**
+   * Layer name
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get layerName() {
+    return this.layerName_;
+  }
+
+  /**
+   * Parameter of the features of the layer that contains the information of the attributions.
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get attributionParam() {
+    return this.attributionParam_;
+  }
+
+  /**
+   * Parameter of the features of the layer that contains the information of the URL.
+   *
+   * @public
+   * @function
+   * @api
+   */
+  get urlParam() {
+    return this.urlParam_;
+  }
+
+  /**
    * Get the API REST Parameters of the plugin
    *
    * @function
@@ -514,6 +568,6 @@ export default class Attributions extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}`;
+    return `${this.name}=${this.position}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}*${this.url}*${this.type}*${this.layerName}*${this.attributionParam}*${this.urlParam}`;
   }
 }

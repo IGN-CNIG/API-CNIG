@@ -44,6 +44,13 @@ export default class TOC extends M.Plugin {
     this.collapsed_ = options.collapsed === true;
 
     /**
+     * This parameter set if the plugin is collapsible
+     * @private
+     * @type {boolean}
+     */
+    this.collapsible_ = options.collapsible === true;
+
+    /**
      * Plugin tooltip
      *
      * @private
@@ -64,7 +71,7 @@ export default class TOC extends M.Plugin {
     this.control = new TOCControl();
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelTOC', {
-      collapsible: true,
+      collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'g-plugin-toc-capas2',
       className: 'm-plugin-toc',
@@ -88,7 +95,7 @@ export default class TOC extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls(this.control);
-    [this.control, this.panel_] = [null, null];
+    [this.map_, this.control, this.panel_] = [null, null, null];
   }
 
   /**
@@ -123,6 +130,16 @@ export default class TOC extends M.Plugin {
   }
 
   /**
+   * Collapsed parameter
+   *
+   * @getter
+   * @function
+   */
+  get collapsible() {
+    return this.collapsible_;
+  }
+
+  /**
    * Get the API REST Parameters of the plugin
    *
    * @function
@@ -130,6 +147,6 @@ export default class TOC extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.collapsed}`;
+    return `${this.name}=${this.position}*${this.collapsed}*${this.collapsible}`;
   }
 }

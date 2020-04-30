@@ -15,6 +15,10 @@
       "type": "boolean",
       "name": "collapsed",
       "position": 1
+    }, {
+      "type": "boolean",
+      "name": "collapsible",
+      "position": 2
     }]
   }],
   "files": {

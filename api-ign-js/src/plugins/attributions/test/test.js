@@ -15,7 +15,7 @@ window.map = map;
 const mp = new Attributions({
   mode: 1,
   scale: 10000,
-  url: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucion.kml',
+  url: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   type: 'kml',
   position: 'TL',
 });

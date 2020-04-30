@@ -53,7 +53,12 @@
         <label for="selectCollapsed">Selector collapsed</label>
         <select name="collapsedValue" id="selectCollapsed">
             <option value=true>true</option>
-            <option value=false>false</option>
+            <option value=false selected="selected">false</option>
+        </select>
+        <label for="selectCollapsible">Selector collapsible</label>
+        <select name="collapsibleValue" id="selectCollapsible">
+            <option value=true>true</option>
+            <option value=false selected="selected">false</option>
         </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -77,74 +82,118 @@
     <script type="text/javascript">
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
-        
+
         let layerUA, layerinicial;
         let map = M.map({
-                container: 'mapjs',
-                zoom: 5,
-                maxZoom: 20,
-                minZoom: 4,
-                center: [-467062.8225, 4783459.6216],
-            });
-            layerUA = new M.layer.WMS({
-                url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-                name: 'AU.AdministrativeUnit',
-                legend: 'Unidad administrativa',
-                tiled: false,
-            }, {});
-            layerinicial = new M.layer.WMS({
-                url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-                name: 'AU.AdministrativeBoundary',
-                legend: 'Limite administrativo',
-                tiled: false,
-            }, {
+            container: 'mapjs',
+            zoom: 5,
+            maxZoom: 20,
+            minZoom: 4,
+            center: [-467062.8225, 4783459.6216],
+        });
+        layerUA = new M.layer.WMS({
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeUnit',
+            legend: 'Unidad administrativa',
+            tiled: false,
+        }, {});
+        layerinicial = new M.layer.WMS({
+            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+            name: 'AU.AdministrativeBoundary',
+            legend: 'Limite administrativo',
+            tiled: false,
+        }, {
             visibility: false,
         });
         map.addLayers(layerUA);
         map.addLayers(layerinicial);
 
-        let mp, posicion, collapsed;
+        let mp, posicion, collapsed, collapsible;
 
-        crearPlugin(posicion, collapsed);
+        crearPlugin(posicion, collapsed, collapsible, 0);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
 
         selectPosicion.addEventListener('change', function() {
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             map.removePlugins(mp);
             map.destroy()
-            crearPlugin(posicion, collapsed);
+            crearPlugin(posicion, collapsed, collapsible, 1);
 
         })
 
         selectCollapsed.addEventListener('change', function() {
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             map.removePlugins(mp);
             map.destroy()
+            crearPlugin(posicion, collapsed, collapsible, 1);
+        })
 
-            crearPlugin(posicion, collapsed);
+        selectCollapsible.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+            map.destroy()
+            crearPlugin(posicion, collapsed, collapsible, 1);
         })
 
 
-        function crearPlugin(posicion, collapsed) {
+        function crearPlugin(posicion, collapsed, collapsible, flag) {
+            if (flag === 1) {
+                map = M.map({
+                    container: 'mapjs',
+                    zoom: 5,
+                    maxZoom: 20,
+                    minZoom: 4,
+                    center: [-467062.8225, 4783459.6216],
+                });
+                layerUA = new M.layer.WMS({
+                    url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+                    name: 'AU.AdministrativeUnit',
+                    legend: 'Unidad administrativa',
+                    tiled: false,
+                }, {});
+                layerinicial = new M.layer.WMS({
+                    url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+                    name: 'AU.AdministrativeBoundary',
+                    legend: 'Limite administrativo',
+                    tiled: false,
+                }, {
+                    visibility: false,
+                });
+                map.addLayers(layerUA);
+                map.addLayers(layerinicial);
+            }
             mp = new M.plugin.TOC({
                 collapsed: collapsed,
+                collapsible: collapsible,
                 position: posicion,
             });
             map.addPlugin(mp);
-
-
+            let mp2 = new M.plugin.ShareMap({
+                baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
+                position: "TR",
+            });
+            map.addPlugin(mp2);
+            const botonEliminar = document.getElementById("botonEliminar");
+            botonEliminar.addEventListener("click", function() {
+                map.removePlugins(mp);
+            });
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>
