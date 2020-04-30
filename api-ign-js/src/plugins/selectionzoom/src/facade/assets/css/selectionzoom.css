@@ -239,15 +239,32 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
         }
     }
 
-}
-
-@media only screen and (max-width: 433px) {
 
     /* Edge fix */
     @supports (-ms-ime-align:auto) {
         .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened {
             padding: 10px 50px 0;
         }
+
+
+        .m-bottom.m-left>.m-plugin-selectionzoom.opened>.m-panel-btn {
+            position: staticstati;
+        }
+    }
+
+
+
+
+}
+
+/* Edge fix */
+@supports (-ms-ime-align:auto) {
+    .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+        padding-left: 40px;
+    }
+
+    .m-bottom.m-left>.m-plugin-selectionzoom.opened>.m-panel-btn {
+        right: 0px;
     }
 }
 
