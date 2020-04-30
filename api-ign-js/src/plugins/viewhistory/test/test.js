@@ -1,5 +1,7 @@
 import ViewHistory from 'facade/viewhistory';
 
+M.language.setLang('es');
+
 const map = M.map({
   container: 'mapjs',
   maxZoom: 20,

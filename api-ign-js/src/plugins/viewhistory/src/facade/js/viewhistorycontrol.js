@@ -4,6 +4,7 @@
 
 import ViewHistoryImplControl from 'impl/viewhistorycontrol';
 import template from 'templates/viewhistory';
+import { getValue } from './i18n/language';
 
 export default class ViewHistoryControl extends M.Control {
   /**
@@ -41,7 +42,17 @@ export default class ViewHistoryControl extends M.Control {
     this.facadeMap_ = map;
     this.addOnLoadEvents();
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      const options = {
+        jsonp: true,
+        vars: {
+          translations: {
+            nextView: getValue('nextView'),
+            previousView: getValue('previousView'),
+          },
+        },
+      };
+
+      const html = M.template.compileSync(template, options);
       html.querySelector('#m-historyprevious-button').addEventListener('click', this.previousStep_.bind(this));
       html.querySelector('#m-historynext-button').addEventListener('click', this.nextStep_.bind(this));
       success(html);
