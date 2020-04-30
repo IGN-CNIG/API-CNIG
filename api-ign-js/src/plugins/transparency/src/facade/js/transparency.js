@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * @module M/plugin/Transparency
  */
@@ -64,8 +65,8 @@ export default class Transparency extends M.Plugin {
      * Value: the names separated with coma
      * @type {string}
      */
-    if (options.layers === undefined) {
-      M.dialog.error('No se ha especificado una capa válida sobre la que aplicar el efecto');
+    if (options.layers === undefined || options.layers === '') {
+      M.dialog.error('Transparency: No se ha especificado una capa válida sobre la que aplicar el efecto');
       this.layers = [];
     } else {
       if (Array.isArray(options.layers)) {
@@ -81,14 +82,21 @@ export default class Transparency extends M.Plugin {
      * @type {number}
      * @public
      */
-    this.radius = parseInt(options.radius);
-    if (this.radius <= 30) {
-      this.radius = 30;
-    } else if (this.radius >= 200) {
-      this.radius = 200;
+
+    if (!isNaN(parseInt(options.radius))) {
+
+      if (options.radius >= 30 && options.radius <= 200) {
+        this.radius = parseInt(options.radius);
+      } else if (options.radius > 200) {
+        this.radius = 200;
+      } else if (options.radius < 30) {
+        this.radius = 30;
+      }
+
     } else {
       this.radius = 100; // Default value
     }
+
 
 
     /**
@@ -97,6 +105,8 @@ export default class Transparency extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    this.separatorApiJson = api.url.separator;
 
     /**
      *@private
@@ -145,7 +155,7 @@ export default class Transparency extends M.Plugin {
    */
   destroy() {
     this.control_.removeEffects();
-    this.control_.removeTransparencyLayers(this.layers);
+    this.control_.removeTransparencyLayers(this.control_.getLayersNames());
     this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
   }
@@ -181,7 +191,11 @@ export default class Transparency extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.layers.join(',')}*${this.radius}`;
+    let layersTransparency = this.control_.getLayersNames();
+
+    return `${this.name}=${this.position}${this.separatorApiJson}${layersTransparency.join(',')}${this.separatorApiJson}${this.radius}`;
+
+    // return `${this.name}=${this.position}${this.separatorApiJson}${this.layers.join(',')}${this.separatorApiJson}${this.radius}`;
   }
 
   /**
