@@ -49,7 +49,9 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-
+        <label for="inputZoom">Parámetro zoom</label>
+        <input type="text" name="zoom" id="inputZoom" list="zoomSug">
+        <datalist id="zoomSug"><option value="2"></option></datalist>
         <input type="submit" id="buttonAPI" value="API Rest" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
         <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
@@ -83,32 +85,33 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        let mp, posicion;
-        crearPlugin(posicion);
+        let mp, posicion, zoom;
+        crearPlugin({});
 
         const selectPosicion = document.getElementById("selectPosicion");
+        const inputZoom = document.getElementById("inputZoom");
         const buttonApi = document.getElementById("buttonAPI");
 
 
-        selectPosicion.addEventListener('change', function() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            map.removePlugins(mp);
-            crearPlugin(posicion);
-        })
-
+        selectPosicion.addEventListener('change', cambiarTest);
+        inputZoom.addEventListener('change',cambiarTest);
         buttonApi.addEventListener('click', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-
+            zoom = inputZoom.value;
             window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?xylocator=' + posicion;
-        })
+        });
 
-        function crearPlugin(posicion) {
-            mp = new M.plugin.XYLocator({
-                position: posicion,
-            });
+        function cambiarTest() {
+            let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            zoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "";
+            map.removePlugins(mp);
+            crearPlugin(objeto);
+        }
 
-            map.addPlugin(mp);
-            
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.XYLocator(propiedades);
+            map.addPlugin(mp);           
         }
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
