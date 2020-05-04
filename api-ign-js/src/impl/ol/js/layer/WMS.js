@@ -135,6 +135,10 @@ class WMS extends LayerBase {
     if (isNullOrEmpty(this.options.animated)) {
       this.options.animated = false; // by default
     }
+    // styles
+    this.styles = this.options.styles || '';
+    // sldBody
+    this.sldBody = options.sldBody;
 
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.WMS];
   }
@@ -329,7 +333,13 @@ class WMS extends LayerBase {
         VERSION: this.version,
         TRANSPARENT: this.transparent,
         FORMAT: 'image/png',
+        STYLES: this.styles,
       };
+
+      if (!isNullOrEmpty(this.sldBody)) {
+        layerParams.SLD_BODY = this.sldBody;
+      }
+
       if (!isNullOrEmpty(this.options.params)) {
         Object.keys(this.options.params).forEach((key) => {
           layerParams[key.toUpperCase()] = this.options.params[key];
