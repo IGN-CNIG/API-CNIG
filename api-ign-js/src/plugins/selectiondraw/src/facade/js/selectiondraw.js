@@ -46,21 +46,21 @@ export default class SelectionDraw extends M.Plugin {
      * @public
      * @type {boolean}
      */
-    this.collapsed = options.collapsed;
+    this.collapsed = options.collapsed || false;
 
     /**
      * Collapsible attribute
      * @public
      * @type {boolean}
      */
-    this.collapsible = options.collapsible;
+    this.collapsible = options.collapsible || true;
 
     /**
      * Position of plugin
      * @public
      * @type
      */
-    this.position = options.position;
+    this.position = options.position || 'TL';
 
     /**
      * SelectionDraw control
@@ -125,7 +125,7 @@ export default class SelectionDraw extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}`;
+    return `${this.name}=${this.position}*${this.collapsed}*${this.collapsible}`;
   }
 }
 

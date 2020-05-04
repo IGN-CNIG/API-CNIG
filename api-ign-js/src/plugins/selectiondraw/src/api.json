@@ -4,7 +4,22 @@
     "separator": "*"
   },
   "constructor": "M.plugin.SelectionDraw",
-  "parameters": [],
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0
+    }, {
+      "type": "boolean",
+      "name": "collapsed",
+      "position": 1
+    }, {
+      "type": "boolean",
+      "name": "collapsible",
+      "position": 2
+    }]
+  }],
   "files": {
     "ol": {
       "scripts": ["selectiondraw.ol.min.js"],
