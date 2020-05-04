@@ -22,10 +22,10 @@ export default class IGNSearchControl extends M.Control {
    * @api
    */
   constructor(
-    servicesToSearch = 'gn',
-    maxResults = 10,
-    noProcess = 'poblacion',
-    countryCode = 'es',
+    servicesToSearch,
+    maxResults,
+    noProcess,
+    countryCode,
     urlCandidates,
     urlFind,
     urlReverse,
