@@ -58,7 +58,7 @@ export default class OverviewMap extends M.Plugin {
      * @private
      * @type {Number}
      */
-    this.zoom_ = options.zoom !== undefined ? options.zoom : 4;
+    this.zoom_ = options.zoom !== undefined ? options.zoom : '';
 
     /**
      * Zoom to make fixed
@@ -151,6 +151,6 @@ export default class OverviewMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*!${this.vendorOptions.collapsed}*!${this.vendorOptions.collapsible}*!${this.fixed_}*!*!${this.baseLayer_}`;
+    return `${this.name}=${this.position_}*!${this.vendorOptions.collapsed}*!${this.vendorOptions.collapsible}*!${this.fixed_}*!${this.zoom_}*!${this.baseLayer_}`;
   }
 }
