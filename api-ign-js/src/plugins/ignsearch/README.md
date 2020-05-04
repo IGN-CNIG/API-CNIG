@@ -21,10 +21,10 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - **'g'**: Consulta Geocoder
   - **'n'**: Consulta Topónimos
   - **'gn'** : Consulta Geocoder y Topónimos
-- **maxResults**. Número de resultados en la consulta (10 por defecto)
+- **maxResults**. Número de resultados en cada una de las consultas a los diferentes servicios (Cada uno de estos servicios internamnete tiene tambien su limite de resultados, en geocoder, por ejemplo, es 5 )
 - **noProcess**. En geocoder, indica las entidades que no se incluirán en los resultados.
   - Admite combinación de 'municipio,poblacion,toponimo'
-  - Por defecto ('municipio,poblacion')
+  - Por defecto ('poblacion')
 - **countryCode**. Código por defecto del país en la petición a geocoder. Por defecto countryCode = 'es'
 - **isCollapsed**. Indica si se muestra el plugin cerrado (**true**) o con las búsquedas habilitadas visible (**false**).
 - **resultVisibility**. Indica si se muestra o no la geometría del elemento localizado
