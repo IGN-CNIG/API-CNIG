@@ -49,6 +49,17 @@ export default class XYLocator extends M.Plugin {
     }
 
     /**
+     * Zoom to do
+     *
+     * @private
+     * @type {string / number}
+     */
+    this.zoom_ = 16;
+    if (options.zoom !== undefined) {
+      this.zoom_ = parseInt(options.zoom, 10);
+    }
+
+    /**
      * Plugin tooltip
      *
      * @private
@@ -67,7 +78,7 @@ export default class XYLocator extends M.Plugin {
    */
   addTo(map) {
     this.facadeMap_ = map;
-    this.control_ = new XYLocatorControl({ projections: this.projections_ });
+    this.control_ = new XYLocatorControl({ projections: this.projections_, zoom: this.zoom_ });
     this.panel_ = new M.ui.Panel('M.plugin.XYLocator.NAME', {
       collapsible: true,
       className: `m-xylocator ${this.positionClass_}`,
