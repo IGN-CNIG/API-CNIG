@@ -11,7 +11,8 @@
 }
 
 .m-areas>div.m-area>div.m-panel>div.m-panel-controls>div.m-xylocator-container {
-    width: 320px;
+  max-width: 320px;
+  min-width: 250px;
 }
 
 div.m-areas>div.m-area.m-left>div.m-panel.m-xylocator>button.m-panel-btn {
@@ -267,7 +268,7 @@ div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
 
     .m-areas>div.m-area>div.m-panel.m-xylocator.opened {
         margin-left: 0;
-        width: 250px;
+        max-width: 300px;
         max-height: 100%;
         position: fixed;
         top: 0;
@@ -314,7 +315,7 @@ div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
 
 #m-xylocator-dms p {
     font-weight: bold;
-    margin-bottom: -0.8rem;
+    margin-bottom: -1rem;
 }
 
 #m-xylocator-dms>div {
@@ -346,6 +347,17 @@ div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
 
 
 #m-xylocator-dms .m-xylocator-dms-radio {
-    line-height: 28px;
+    line-height: 14px;
     width: 70px;
+}
+
+.m-xylocator-container input::placeholder {
+  color: #d1d0d0;
+  opacity: 1;
+}
+.m-xylocator-container input:-ms-input-placeholder {
+  color: #d1d0d0;
+}
+.m-xylocator-container input::-ms-input-placeholder {
+  color: #d1d0d0;
 }

@@ -32,6 +32,14 @@ export default class XYLocatorControl extends M.Control {
      * @type {Array<object>} - {code: ..., title: ..., units: m | d}
      */
     this.projections = options.projections;
+
+    /**
+     * Zoom
+     *
+     * @private
+     * @type {number}
+     */
+    this.zoom = options.zoom;
   }
 
   /**
@@ -122,9 +130,9 @@ export default class XYLocatorControl extends M.Control {
     this.map.removeLayers(this.coordinatesLayer);
     if (!isNaN(xFloat) && !isNaN(yFloat)) {
       this.map.setCenter(`${xFloat},${yFloat}*false`);
-      this.map.setZoom(14);
+      this.map.setZoom(this.zoom);
       this.fire('xylocator:locationCentered', [{
-        zoom: 14,
+        zoom: this.zoom,
         center: [xFloat, yFloat],
       }]);
 
