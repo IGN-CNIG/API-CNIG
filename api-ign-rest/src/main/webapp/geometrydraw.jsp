@@ -51,13 +51,13 @@
         </select>
 
         <label for="selectCollapsed">Selector collapsed</label>
-        <select name="httpValue" id="selectCollapsed">
+        <select name="collapsed" id="selectCollapsed">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
 
         <label for="selectCollapsible">Selector collapsible</label>
-        <select name="httpValue" id="selectCollapsible">
+        <select name="collapsible" id="selectCollapsible">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>

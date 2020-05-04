@@ -193,7 +193,6 @@
         }
 
         function crearPlugin(propiedades) {
-            console.log(propiedades);
             mp = new M.plugin.Attributions(propiedades);
 
             map.addPlugin(mp);
