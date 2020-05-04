@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.bean;
+package es.cnig.mapea.bean;
 
 import org.apache.commons.httpclient.Header;
 import org.json.JSONObject;

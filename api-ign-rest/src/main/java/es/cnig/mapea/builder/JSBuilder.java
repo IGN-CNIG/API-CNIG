@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.builder;
+package es.cnig.mapea.builder;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import es.juntadeandalucia.mapea.parameter.Parameters;
-import es.juntadeandalucia.mapea.parameter.PluginAPI;
-import es.juntadeandalucia.mapea.parameter.PluginAPIParam;
+import es.cnig.mapea.parameter.Parameters;
+import es.cnig.mapea.parameter.PluginAPI;
+import es.cnig.mapea.parameter.PluginAPIParam;
 
 public class JSBuilder {
 

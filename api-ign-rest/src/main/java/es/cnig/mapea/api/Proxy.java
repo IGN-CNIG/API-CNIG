@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.api;
+package es.cnig.mapea.api;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -25,9 +25,9 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
 
-import es.juntadeandalucia.mapea.bean.ProxyResponse;
-import es.juntadeandalucia.mapea.builder.JSBuilder;
-import es.juntadeandalucia.mapea.exception.InvalidResponseException;
+import es.cnig.mapea.bean.ProxyResponse;
+import es.cnig.mapea.builder.JSBuilder;
+import es.cnig.mapea.exception.InvalidResponseException;
 
 /**
  * This class manages the request from Mapea and it acts as proxy to check

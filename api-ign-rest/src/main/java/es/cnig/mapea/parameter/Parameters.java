@@ -1,11 +1,11 @@
-package es.juntadeandalucia.mapea.parameter;
+package es.cnig.mapea.parameter;
 
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import es.juntadeandalucia.mapea.parameter.parser.ParametersParser;
+import es.cnig.mapea.parameter.parser.ParametersParser;
 
 public class Parameters {
    private String callbackFn;

@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.parameter;
+package es.cnig.mapea.parameter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

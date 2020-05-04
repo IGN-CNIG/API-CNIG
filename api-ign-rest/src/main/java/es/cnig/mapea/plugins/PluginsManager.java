@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.plugins;
+package es.cnig.mapea.plugins;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,10 +21,10 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import es.juntadeandalucia.mapea.builder.JSBuilder;
-import es.juntadeandalucia.mapea.exception.InvalidAPIException;
-import es.juntadeandalucia.mapea.parameter.PluginAPI;
-import es.juntadeandalucia.mapea.parameter.PluginAPIParam;
+import es.cnig.mapea.builder.JSBuilder;
+import es.cnig.mapea.exception.InvalidAPIException;
+import es.cnig.mapea.parameter.PluginAPI;
+import es.cnig.mapea.parameter.PluginAPIParam;
 
 public abstract class PluginsManager {
 

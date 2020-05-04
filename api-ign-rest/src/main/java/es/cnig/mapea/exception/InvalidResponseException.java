@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.exception;
+package es.cnig.mapea.exception;
 
 public class InvalidResponseException extends Exception {
 

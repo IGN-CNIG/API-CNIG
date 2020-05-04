@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.api;
+package es.cnig.mapea.api;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 
-import es.juntadeandalucia.mapea.builder.JSBuilder;
-import es.juntadeandalucia.mapea.parameter.Parameters;
-import es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4;
-import es.juntadeandalucia.mapea.parameter.parser.ParametersParser;
-import es.juntadeandalucia.mapea.plugins.PluginsManager;
+import es.cnig.mapea.builder.JSBuilder;
+import es.cnig.mapea.parameter.Parameters;
+import es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4;
+import es.cnig.mapea.parameter.parser.ParametersParser;
+import es.cnig.mapea.plugins.PluginsManager;
 
 @Produces("application/javascript; charset=UTF-8") 
 @Path("/")

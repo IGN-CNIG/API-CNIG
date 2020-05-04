@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.util;
+package es.cnig.mapea.util;
 
 import java.util.LinkedList;
 import java.util.List;

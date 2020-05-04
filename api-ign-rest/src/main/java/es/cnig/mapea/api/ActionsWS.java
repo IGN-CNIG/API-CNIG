@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.api;
+package es.cnig.mapea.api;
 
 import java.util.ResourceBundle;
 
@@ -12,9 +12,9 @@ import javax.ws.rs.core.Context;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import es.juntadeandalucia.mapea.builder.JSBuilder;
-import es.juntadeandalucia.mapea.parameter.PluginAPI;
-import es.juntadeandalucia.mapea.plugins.PluginsManager;
+import es.cnig.mapea.builder.JSBuilder;
+import es.cnig.mapea.parameter.PluginAPI;
+import es.cnig.mapea.plugins.PluginsManager;
 
 /**
  * This class manages the available actions an user can execute

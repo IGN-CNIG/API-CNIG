@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.plugins;
+package es.cnig.mapea.plugins;
 
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;

@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.parameter.parser;
+package es.cnig.mapea.parameter.parser;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -8,7 +8,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
 
-import es.juntadeandalucia.mapea.parameter.Parameters;
+import es.cnig.mapea.parameter.Parameters;
 
 public abstract class ParametersParser {
    
