@@ -155,31 +155,6 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
     vertical-align: bottom;
 }
 
-/* MEDIA QUERIES */
-
-
-@media only screen and (max-width: 850px) {
-    div.m-control.m-container.m-ignsearchlocator {
-        width: 400px;
-    }
-
-    .m-ignsearchlocator #m-ignsearchlocator-search-input {
-        width: 50%;
-    }
-
-    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
-    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
-        vertical-align: bottom;
-    }
-
-    div.m-panel.ign-search-panel.opened {
-        width: 85% !important;
-    }
-
-    .m-ignsearchlocator #m-ignsearchlocator-search-input {
-        width: 55%;
-    }
-}
 
 #m-ignsearchlocator-xylocator-button,
 #m-ignsearchlocator-parcela-button,
@@ -337,7 +312,7 @@ input#LAT {
 
 
 input#m-searchParamsParcela-input {
-    width: 50%;
+    width: 35%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -350,7 +325,7 @@ input#m-searchParamsParcela-input {
 }
 
 input#m-searchParamsPoligono-input {
-    width: 50%;
+    width: 35%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -551,7 +526,7 @@ DROPDOWN ****************************/
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
     margin-top: 3%;
-    width: 60%;
+    width: 50%;
 }
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
@@ -617,4 +592,37 @@ DROPDOWN ****************************/
     div.m-control.m-referencelocatorcatastro-container.shown {
         display: block !important;
     }
+}
+
+@media only screen and (max-width: 600px) {
+    div.m-control.m-container.m-ignsearchlocator {
+        width: 230px;
+    }
+
+    .m-ignsearchlocator #m-ignsearchlocator-search-input {
+        width: 25%;
+    }
+
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
+        vertical-align: bottom;
+    }
+
+    div.m-panel.ign-search-panel.opened {
+        width: 85% !important;
+    }
+
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
+
+        width: 35%;
+    }
+
+    input#m-searchParamsPoligono-input {
+        width: 35%;
+    }
+
+    #m-xylocator-dms>div>div>input[type="number"] {
+        width: 1rem;
+    }
+
 }
