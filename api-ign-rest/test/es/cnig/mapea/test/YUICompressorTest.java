@@ -1,4 +1,4 @@
-package es.juntadeandalucia.mapea.test;
+package es.cnig.mapea.test;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

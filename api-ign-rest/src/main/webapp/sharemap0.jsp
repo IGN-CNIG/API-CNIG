@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="es.juntadeandalucia.mapea.plugins.PluginsManager"%>
-<%@ page import="es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
+<%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
+<%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
 
 <!DOCTYPE html>
@@ -47,7 +47,7 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
         <label for="selectURL">Parámetro URL</label>
-        <input type="text" id="selectURL" list="urlSug" value="http://mapea-lite.desarrollo.guadaltel.es/api-core/"/>
+        <input type="text" id="selectURL" list="urlSug" value="http://mapea-lite.desarrollo.guadaltel.es/api-core/" />
         <datalist id="urlSug">
             <option value="http://mapea-lite.desarrollo.guadaltel.es/api-core/"></option>
             <option value="https://componentes.ign.es/api-core/"></option>
@@ -79,7 +79,7 @@
             container: 'mapjs',
             zoom: 3,
         });
-        
+
         const kml = new M.layer.KML('KML*Delegaciones*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
         map.addLayers(kml);
         const layerinicial = new M.layer.WMS({
@@ -107,7 +107,7 @@
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
-        let mp, posicion, url = window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/";
+        let mp, posicion, url = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
         crearPlugin({
             position: posicion,
             baseUrl: url
@@ -126,20 +126,21 @@
             window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?sharemap=' + url + '*' + posicion;
         })
 
-        function cambiarTest(){
+        function cambiarTest() {
             let objeto = {}
-            url = selectURL.value != "" ?  objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/";
+            url = selectURL.value != "" ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
+
         function crearPlugin(propiedades) {
             mp = new M.plugin.ShareMap(propiedades);
 
             map.addPlugin(mp);
         }
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="es.juntadeandalucia.mapea.plugins.PluginsManager"%>
-<%@ page import="es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
+<%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
+<%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,15 +14,15 @@
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
-    
+
     <style type="text/css">
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow: auto;
-    }
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: auto;
+        }
     </style>
     <%
         Map<String, String[]> parameterMap = request.getParameterMap();
@@ -78,13 +78,19 @@
         </select>
         <label for="inputUrlCandidates">Parámetro urlCandidates</label>
         <input type="text" name="urlCandidates" id="inputUrlCandidates" list="urlCandidatesSug">
-        <datalist id="urlCandidatesSug"><option value="https://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp"></option></datalist>
+        <datalist id="urlCandidatesSug">
+            <option value="https://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp"></option>
+        </datalist>
         <label for="inputUrlFind">Parámetro urlFind</label>
         <input type="text" name="urlFind" id="inputUrlFind" list="urlFindSug">
-        <datalist id="urlFindSug"><option value="https://www.cartociudad.es/geocoder/api/geocoder/findJsonp"></option></datalist>
+        <datalist id="urlFindSug">
+            <option value="https://www.cartociudad.es/geocoder/api/geocoder/findJsonp"></option>
+        </datalist>
         <label for="inputUrlReverse">Parámetro urlReverse</label>
         <input type="text" name="urlReverse" id="inputUrlReverse" list="urlReverseSug">
-        <datalist id="urlReverseSug"><option value="https://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode"></option></datalist>
+        <datalist id="urlReverseSug">
+            <option value="https://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode"></option>
+        </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -107,27 +113,27 @@
         M.language.setLang(urlParams.get('language') || 'es');
 
         const map = M.map({
-                container: 'mapjs',
-                zoom: 5,
-                maxZoom: 20,
-                minZoom: 4,
-                center: [-467062.8225, 4783459.6216],
-            });
-        
+            container: 'mapjs',
+            zoom: 5,
+            maxZoom: 20,
+            minZoom: 4,
+            center: [-467062.8225, 4783459.6216],
+        });
+
         let mp;
 
         let sToSearch, mxResults, collapsed, posicion, noProcess, countryCode, reverse, urlCandidates, urlFind, urlReverse;
         crearPlugin({
-            servicesToSearch:sToSearch,
+            servicesToSearch: sToSearch,
             maxResults: mxResults,
             noProcess: noProcess,
             countryCode: countryCode,
             isCollapsed: collapsed,
-            position:  posicion,
-            reverse:  reverse ,
+            position: posicion,
+            reverse: reverse,
             urlCandidates: urlCandidates,
             urlFind: urlFind,
-            urlReverse:  urlReverse
+            urlReverse: urlReverse
         });
 
         const selectServiceToSearch = document.getElementById("selectServiceToSearch");
@@ -148,12 +154,12 @@
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectReverse.addEventListener('change', cambiarTest);
-        inputUrlCandidates.addEventListener('change',cambiarTest); 
-        inputUrlFind.addEventListener('change',cambiarTest); 
-        inputUrlReverse.addEventListener('change',cambiarTest);
+        inputUrlCandidates.addEventListener('change', cambiarTest);
+        inputUrlFind.addEventListener('change', cambiarTest);
+        inputUrlReverse.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
-            let objeto ={}
+            let objeto = {}
             objeto.servicesToSearch = selectServiceToSearch.options[selectServiceToSearch.selectedIndex].value;
             maxResults = inputMaxResults.value != "" ? objeto.maxResults = inputMaxResults.value : "";
             objeto.noProcess = selectNoProcess.options[selectNoProcess.selectedIndex].value;
@@ -161,9 +167,9 @@
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             objeto.isCollapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true');
-            urlCandidates=inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value:"";
-            urlFind=inputUrlFind.value != "" ? objeto.urlFind = inputUrlFind.value:"";
-            urlReverse=inputUrlReverse.value != "" ? objeto.urlReverse = inputUrlReverse.value:"";
+            urlCandidates = inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value : "";
+            urlFind = inputUrlFind.value != "" ? objeto.urlFind = inputUrlFind.value : "";
+            urlReverse = inputUrlReverse.value != "" ? objeto.urlReverse = inputUrlReverse.value : "";
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
@@ -174,12 +180,12 @@
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

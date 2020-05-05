@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="es.juntadeandalucia.mapea.plugins.PluginsManager"%>
-<%@ page import="es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
+<%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
+<%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
 
 <!DOCTYPE html>
@@ -49,12 +49,16 @@
         </select>
 
         <label for="inputHelpLink">Parámetro helpLink</label>
-        <input type="text" id="inputHelpLink" list="helpLinkSug"/>
-        <datalist id="helpLinkSug"><option value="http://fototeca.cnig.es/help_es.pdf"></option></datalist>
+        <input type="text" id="inputHelpLink" list="helpLinkSug" />
+        <datalist id="helpLinkSug">
+            <option value="http://fototeca.cnig.es/help_es.pdf"></option>
+        </datalist>
         <label for="inputContactEmail">Parámetro contactEmail</label>
-        <input type="text" id="inputContactEmail" list="contactEmailSug"/>
-        <datalist id="contactEmailSug"><option value="fototeca@cnig.es"></option></datalist>
-        
+        <input type="text" id="inputContactEmail" list="contactEmailSug" />
+        <datalist id="contactEmailSug">
+            <option value="fototeca@cnig.es"></option>
+        </datalist>
+
         <input type="submit" id="buttonAPI" value="API Rest" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -89,9 +93,9 @@
 
         let mp, posicion, helpLink, contactEmail;
         crearPlugin({
-            position:posicion,
-            helpLink:helpLink,
-            contactEmail:contactEmail
+            position: posicion,
+            helpLink: helpLink,
+            contactEmail: contactEmail
         });
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -110,7 +114,7 @@
             window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?fototecahelp=' + posicion + '*' + helpLink + '*' + contactEmail;
         })
 
-        function cambiarTest(){
+        function cambiarTest() {
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             helpLink = inputHelpLink.value != "" ? helpLink.srs = inputHelpLink.value : "";
@@ -122,15 +126,15 @@
         function crearPlugin(propiedades) {
             mp = new M.plugin.FototecaHelp(propiedades);
             map.addPlugin(mp);
-            
+
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

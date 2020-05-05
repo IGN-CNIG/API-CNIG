@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="es.juntadeandalucia.mapea.plugins.PluginsManager"%>
-<%@ page import="es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
+<%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
+<%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
 
 <!DOCTYPE html>
@@ -46,7 +46,7 @@
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR" selected="selected">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
-        </select>  
+        </select>
         <label for="selectFixed">Selector Fixed</label>
         <select name="fixedValue" id="selectFixed">
             <option value=true>true</option>
@@ -54,7 +54,9 @@
         </select>
         <label for="inputBaseLayer">Parámetro baseLayer</label>
         <input type="text" name="baseLayer" id="inputBaseLayer" list="baseLayerSug">
-        <datalist id="baseLayerSug"><option value="WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true"></option></datalist>
+        <datalist id="baseLayerSug">
+            <option value="WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true"></option>
+        </datalist>
 
         <label for="selectCollapsed">Selector collapsed</label>
         <select name="collapsedValue" id="selectCollapsed">
@@ -96,11 +98,11 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion, fixed, 
-        baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
-        collapsible, collapsed;
-        crearPlugin(posicion,fixed,baseLayer,collapsed,collapsible);
-        
+        let posicion, fixed,
+            baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
+            collapsible, collapsed;
+        crearPlugin(posicion, fixed, baseLayer, collapsed, collapsible);
+
         const selectPosicion = document.getElementById("selectPosicion");
         const selectFixed = document.getElementById("selectFixed");
         const inputBaseLayer = document.getElementById("inputBaseLayer");
@@ -112,35 +114,35 @@
         inputBaseLayer.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
-        
+
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             fixed = (selectFixed.options[selectFixed.selectedIndex].value == 'true');
             baseLayer = inputBaseLayer.value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-			map.removePlugins(mp);
-			crearPlugin(posicion,fixed,baseLayer,collapsed,collapsible);
+            map.removePlugins(mp);
+            crearPlugin(posicion, fixed, baseLayer, collapsed, collapsible);
         }
-        
-        function crearPlugin(position,fixed,baseLayer,collapsed,collapsible){
-             mp = new M.plugin.OverviewMap({
+
+        function crearPlugin(position, fixed, baseLayer, collapsed, collapsible) {
+            mp = new M.plugin.OverviewMap({
                 position: position,
-                fixed:fixed,
+                fixed: fixed,
                 baseLayer: baseLayer,
                 collapsed: collapsed,
                 collapsible: collapsible,
             });
             map.addPlugin(mp);
         }
-        
+
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "BR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

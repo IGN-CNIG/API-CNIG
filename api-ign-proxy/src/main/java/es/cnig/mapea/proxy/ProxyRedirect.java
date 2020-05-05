@@ -43,7 +43,7 @@
  * modificaciones indicadas en la página para que funcione con redirecciones
  * http://www.discursive.com/books/cjcook/reference/http-webdav-sect-handle-redirect.html
  **************************************************************************/
-package es.juntadeandalucia.mapea.proxy;
+package es.cnig.mapea.proxy;
 
 // PATCH import java.io.*;
 // PATCH import java.util.*;
