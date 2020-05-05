@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="es.juntadeandalucia.mapea.plugins.PluginsManager"%>
-<%@ page import="es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
+<%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
+<%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
 
 <!DOCTYPE html>
@@ -62,13 +62,19 @@
         </select>
         <label for="inputServerUrl">Parámetro inputServerUrl</label>
         <input type="text" value="" name="serverUrl" id="inputServerUrl" list="serverUrlSug">
-        <datalist id="serverUrlSug"><option value="https://geoprint.desarrollo.guadaltel.es"></option></datalist>
+        <datalist id="serverUrlSug">
+            <option value="https://geoprint.desarrollo.guadaltel.es"></option>
+        </datalist>
         <label for="inputPrintTemplateUrl">Parámetro inputPrintTemplateUrl</label>
         <input type="text" value="" name="printTemplateUrl" id="inputPrintTemplateUrl" list="printTemplateUrlSug">
-        <datalist id="printTemplateUrlSug"><option value="https://geoprint.desarrollo.guadaltel.es/print/mapexport"></option></datalist>
+        <datalist id="printTemplateUrlSug">
+            <option value="https://geoprint.desarrollo.guadaltel.es/print/mapexport"></option>
+        </datalist>
         <label for="inputPrintStatusUrl">Parámetro inputPrintStatusUrl</label>
         <input type="text" value="" name="printStatusUrl" id="inputPrintStatusUrl" list="printStatusUrlSug">
-        <datalist id="printStatusUrlSug"><option value="https://geoprint.desarrollo.guadaltel.es/print/status"></option></datalist>
+        <datalist id="printStatusUrlSug">
+            <option value="https://geoprint.desarrollo.guadaltel.es/print/status"></option>
+        </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -91,18 +97,18 @@
     <script type="text/javascript">
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
-        
+
         const map = M.map({
-        container: 'mapjs',
-        zoom: 5,
-        maxZoom: 20,
-        minZoom: 4,
-        center: [-467062.8225, 4783459.6216],
+            container: 'mapjs',
+            zoom: 5,
+            maxZoom: 20,
+            minZoom: 4,
+            center: [-467062.8225, 4783459.6216],
         });
         let mp;
         let position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl;
-        
-        crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl);
+
+        crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
@@ -111,42 +117,42 @@
         const inputPrintTemplateUrl = document.getElementById("inputPrintTemplateUrl");
         const inputPrintStatusUrl = document.getElementById("inputPrintStatusUrl");
 
-        selectPosicion.addEventListener("change",cambiarTest);
-        selectCollapsed.addEventListener("change",cambiarTest);
-        selectCollapsible.addEventListener("change",cambiarTest);
-        inputServerUrl.addEventListener("change",cambiarTest);
-        inputPrintTemplateUrl.addEventListener("change",cambiarTest);
-        inputPrintStatusUrl.addEventListener("change",cambiarTest);
+        selectPosicion.addEventListener("change", cambiarTest);
+        selectCollapsed.addEventListener("change", cambiarTest);
+        selectCollapsible.addEventListener("change", cambiarTest);
+        inputServerUrl.addEventListener("change", cambiarTest);
+        inputPrintTemplateUrl.addEventListener("change", cambiarTest);
+        inputPrintStatusUrl.addEventListener("change", cambiarTest);
 
-        function cambiarTest(){
+        function cambiarTest() {
             position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value  == 'true');
-            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value  == 'true');
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             serverUrl = inputServerUrl.value;
             printTemplateUrl = inputPrintTemplateUrl.value;
             printStatusUrl = inputPrintStatusUrl.value;
             map.removePlugins(mp);
-            crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl);
+            crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl);
         }
 
-        function crearPlugin(position,collapsed,collapsible,serverUrl,printTemplateUrl,printStatusUrl){
+        function crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl) {
             mp = new M.plugin.Georefimage({
                 collapsed: collapsed,
                 collapsible: collapsible,
                 position: position,
-                serverUrl:serverUrl,
-                printTemplateUrl:printTemplateUrl,
-                printStatusUrl:printStatusUrl
+                serverUrl: serverUrl,
+                printTemplateUrl: printTemplateUrl,
+                printStatusUrl: printStatusUrl
             });
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

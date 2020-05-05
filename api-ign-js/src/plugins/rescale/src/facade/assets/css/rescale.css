@@ -15,7 +15,9 @@ div.m-areas>div.m-area>div.m-panel.m-rescale-panel.opened>div.m-panel-controls>d
 }
 
 div.m-areas>div.m-area.m-bottom>div.m-panel.m-rescale-panel>div.m-panel-controls>div.m-control.m-container.m-rescale {
-    inline-size: max-content;
+    /* inline-size: max-content; */
+    width: auto;
+    white-space: nowrap;
 }
 
 div.m-areas>div.m-area.m-left>div.m-panel.m-rescale-panel>button.m-panel-btn {

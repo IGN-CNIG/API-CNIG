@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="es.juntadeandalucia.mapea.plugins.PluginsManager"%>
-<%@ page import="es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
+<%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
+<%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
 
 <!DOCTYPE html>
@@ -51,13 +51,13 @@
         </select>
 
         <label for="selectCollapsed">Selector collapsed</label>
-        <select name="httpValue" id="selectCollapsed">
+        <select name="collapsed" id="selectCollapsed">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
 
         <label for="selectCollapsible">Selector collapsible</label>
-        <select name="httpValue" id="selectCollapsible">
+        <select name="collapsible" id="selectCollapsible">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
@@ -145,12 +145,12 @@
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

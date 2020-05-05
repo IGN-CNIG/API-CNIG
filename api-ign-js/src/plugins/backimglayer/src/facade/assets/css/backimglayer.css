@@ -77,7 +77,7 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
 
 
 .m-bottom.m-left>.m-panel.m-plugin-backimglayer.opened>.m-panel-controls {
-    display: flow-root;
+    display: -webkit-box;
 }
 
 .m-bottom.m-left>.m-plugin-backimglayer.opened>.m-panel-btn {

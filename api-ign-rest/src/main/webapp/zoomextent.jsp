@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="es.juntadeandalucia.mapea.plugins.PluginsManager"%>
-<%@ page import="es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
+<%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
+<%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
 
 <!DOCTYPE html>
@@ -46,7 +46,7 @@
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
-        </select>   
+        </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -76,33 +76,34 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
-        
+
         let mp;
         let posicion;
         crearPlugin(posicion);
 
         const selectPosicion = document.getElementById("selectPosicion");
         selectPosicion.addEventListener('change', cambiarTest);
-        
+
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-			map.removePlugins(mp);
-			crearPlugin(posicion);
+            map.removePlugins(mp);
+            crearPlugin(posicion);
         }
-        function crearPlugin(position){
+
+        function crearPlugin(position) {
             mp = new M.plugin.ZoomExtent({
                 position: position,
             });
-           
+
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>

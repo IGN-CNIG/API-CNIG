@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="es.juntadeandalucia.mapea.plugins.PluginsManager"%>
-<%@ page import="es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
+<%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
+<%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
 
 <!DOCTYPE html>
@@ -193,7 +193,6 @@
         }
 
         function crearPlugin(propiedades) {
-            console.log(propiedades);
             mp = new M.plugin.Attributions(propiedades);
 
             map.addPlugin(mp);

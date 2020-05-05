@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="es.juntadeandalucia.mapea.plugins.PluginsManager"%>
-<%@ page import="es.juntadeandalucia.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
+<%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
+<%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
 
 <!DOCTYPE html>
@@ -47,7 +47,7 @@
             <option value="TR" selected="selected">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
-        </select>   
+        </select>
         <label for="selectCollapsed">Selector collapsed</label>
         <select name="collapsedValue" id="selectCollapsed">
             <option value=true>true</option>
@@ -106,7 +106,7 @@
 
         let mp;
         let collapsed, posicion, collapsible;
-        crearPlugin(collapsed,posicion,collapsible);
+        crearPlugin(collapsed, posicion, collapsible);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
@@ -120,10 +120,11 @@
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-			map.removePlugins(mp);
-			crearPlugin(collapsed,posicion,collapsible);
+            map.removePlugins(mp);
+            crearPlugin(collapsed, posicion, collapsible);
         }
-        function crearPlugin(collapsed,position,collapsible){
+
+        function crearPlugin(collapsed, position, collapsible) {
             mp = new M.plugin.Rescale({
                 collapsed: collapsed,
                 collapsible: collapsible,
@@ -131,15 +132,15 @@
             });
 
             map.addPlugin(mp);
-            
+
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0,window.location.href.indexOf('api-core'))+"api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
-        botonEliminar.addEventListener("click",function(){
+        botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
     </script>
