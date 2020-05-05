@@ -152,7 +152,7 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
 
 .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
 .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
-    vertical-align: middle;
+    vertical-align: bottom;
 }
 
 /* MEDIA QUERIES */
@@ -175,21 +175,24 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
 
 @media only screen and (min-width: 411px) and (max-width: 600px) {
     div.m-control.m-container.m-ignsearchlocator {
-        width: 300px;
+        width: 400px;
     }
 
     .m-ignsearchlocator #m-ignsearchlocator-search-input {
-        width: 65%;
+        width: 50%;
     }
-}
 
-@media only screen and (max-width: 410px) {
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
+        vertical-align: bottom;
+    }
+
     div.m-panel.ign-search-panel.opened {
         width: 85% !important;
     }
 
     .m-ignsearchlocator #m-ignsearchlocator-search-input {
-        width: 50%;
+        width: 55%;
     }
 }
 
@@ -479,7 +482,7 @@ DROPDOWN ****************************/
     }
 }
 
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 600) {
 
     .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
     .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
