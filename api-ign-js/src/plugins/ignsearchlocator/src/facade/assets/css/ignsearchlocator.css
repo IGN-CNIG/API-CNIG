@@ -479,6 +479,19 @@ DROPDOWN ****************************/
     }
 }
 
+@media only screen and (max-width: 850px) {
+
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
+        vertical-align: bottom;
+    }
+
+    .m-ignsearchlocator .search-panel {
+        height: 40px;
+        width: 400px;
+    }
+}
+
 /***************
     BUTTON
 ***************/
