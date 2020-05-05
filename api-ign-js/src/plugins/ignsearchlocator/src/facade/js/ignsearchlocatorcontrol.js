@@ -43,6 +43,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     requestStreet,
     geocoderCoords,
     nomenclatorSearchType = geographicNameType,
+    zoom,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
       M.exception('La implementación usada no puede crear controles IGNSearchLocatorControl');
@@ -215,6 +216,14 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {Boolean}
      */
     this.isXYLocatorActive = false;
+
+    /**
+     * Zoom
+     *
+     * @private
+     * @type {number}
+     */
+    this.zoom = zoom || 14;
   }
   /**
    * This function creates the view
@@ -1156,10 +1165,12 @@ export default class IGNSearchLocatorControl extends M.Control {
       let y = -1;
       if (selectedOption.getAttribute('data-units') === 'd') {
         try {
-          const xString = document.querySelector('div#m-xylocator-latlon input#LON').value;
-          const yString = document.querySelector('div#m-xylocator-latlon input#LAT').value;
+          const xString = document.querySelector('div#m-xylocator-latlon input#LON').value.replace(',', '.');
+          const yString = document.querySelector('div#m-xylocator-latlon input#LAT').value.replace(',', '.');
           x = parseFloat(xString);
           y = parseFloat(yString);
+          const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
+          this.locator_(coordinatesTransform);
         } catch (ex) {
           M.dialog.error(getValue('exception.transforming'), 'Error');
         }
@@ -1172,25 +1183,35 @@ export default class IGNSearchLocatorControl extends M.Control {
         const mmLat = document.querySelector('div#m-xylocator-dms input#LATMM').value;
         const ssLat = document.querySelector('div#m-xylocator-dms input#LATSS').value;
         const dirLat = document.querySelector('div#m-xylocator-dms input[name="LATDIR"]:checked').value;
-        try {
-          x = parseFloat(hhLon) + (parseFloat(mmLon) / 60) + (parseFloat(ssLon) / 3600);
-          y = parseFloat(hhLat) + (parseFloat(mmLat) / 60) + (parseFloat(ssLat) / 3600);
-          if (dirLon !== 'east' && x !== 0) {
-            x = -x;
+        if (this.checkDegreeValue_(mmLon) && this.checkDegreeValue_(ssLon) &&
+          this.checkDegreeValue_(mmLat) && this.checkDegreeValue_(ssLat) &&
+          parseFloat(hhLon) >= 0 && parseFloat(hhLon) <= 180 &&
+          parseFloat(hhLat) >= 0 && parseFloat(hhLat) <= 180) {
+          try {
+            x = parseFloat(hhLon) + (parseFloat(mmLon) / 60) + (parseFloat(ssLon) / 3600);
+            y = parseFloat(hhLat) + (parseFloat(mmLat) / 60) + (parseFloat(ssLat) / 3600);
+            if (dirLon !== 'east' && x !== 0) {
+              x = -x;
+            }
+            if (dirLat !== 'north' && y !== 0) {
+              y = -y;
+            }
+            const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
+            this.locator_(coordinatesTransform);
+          } catch (ex) {
+            M.dialog.error(getValue('exception.transforming'), 'Error');
           }
-
-          if (dirLat !== 'north' && y !== 0) {
-            y = -y;
-          }
-        } catch (ex) {
-          M.dialog.error(getValue('exception.transforming'), 'Error');
+        } else {
+          M.dialog.error(getValue('exception.wrong_values'), 'Error');
         }
       } else {
         try {
-          const xString = document.querySelector('div#m-xylocator-utm input#UTM-X').value;
-          const yString = document.querySelector('div#m-xylocator-utm input#UTM-Y').value;
+          const xString = document.querySelector('div#m-xylocator-utm input#UTM-X').value.replace(',', '.');
+          const yString = document.querySelector('div#m-xylocator-utm input#UTM-Y').value.replace(',', '.');
           x = parseFloat(xString);
           y = parseFloat(yString);
+          const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
+          this.locator_(coordinatesTransform);
         } catch (ex) {
           M.dialog.error(getValue('exception.transforming'), 'Error');
         }
@@ -1202,6 +1223,18 @@ export default class IGNSearchLocatorControl extends M.Control {
       M.dialog.error(getValue('exception.wrong_coords'), 'Error');
       throw ex;
     }
+  }
+
+  /**
+   * This function checks degree value
+   *
+   * @public
+   * @function
+   * @param {String} num
+   * @api
+   */
+  checkDegreeValue_(num) {
+    return parseFloat(num) >= 0 && parseFloat(num) < 60;
   }
 
   /**
@@ -1254,9 +1287,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.map.removeLayers(this.coordinatesLayer);
     if (!Number.isNaN(xFloat) && !Number.isNaN(yFloat)) {
       this.map.setCenter(`${xFloat},${yFloat}*false`);
-      this.map.setZoom(14);
+      this.map.setZoom(this.zoom);
       this.fire('xylocator:locationCentered', [{
-        zoom: 14,
+        zoom: this.zoom,
         center: [xFloat, yFloat],
       }]);
 

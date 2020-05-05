@@ -212,6 +212,74 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
     margin-right: '1rem';
 }
 
+#m-xylocator-loc {
+    background-color: #71a7d3;
+    border: none;
+    color: white;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.button {
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    background-color: #eaeaea;
+    padding: 10px 0px;
+}
+
+input#LON {
+    width: 50%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+input#LAT {
+    width: 50%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+
+}
+
+#m-xylocator-dms>div {
+    display: flex;
+    min-width: 300px;
+    margin-top: -25px;
+}
+
+#m-xylocator-dms>div>div {
+    height: 67px;
+    display: flex;
+    align-items: center;
+}
+
+#m-xylocator-dms>div>div>input[type="number"] {
+    width: 2.5rem;
+}
+
+#m-xylocator-dms>div>div>span {
+    font-size: 24px;
+    margin-left: 2px;
+    margin-right: 10px;
+}
+
 /*********************
      TITLES
 *********************/
@@ -235,7 +303,18 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
     /* display: inline-block; */
 }
 
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat {
+    width: 32%;
+}
+
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
+    width: 65%;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    box-shadow: 1px 1px 3px 0px #999;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat>div>select {
     width: 65%;
     appearance: none;
     padding: 2px 0px 3px 5px;
@@ -254,6 +333,20 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
     margin: 0px;
     margin-bottom: 5px;
 }
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat>div>input {
+    width: 63%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
 
 input#m-searchParamsParcela-input {
     width: 50%;
@@ -292,7 +385,21 @@ p.parcela--input {
     padding-right: 4%;
 }
 
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat {
+    width: 92%;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div {
+    margin-bottom: 4%;
+    margin-top: 5%;
+    display: table;
+    width: 100%;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat>div {
     margin-bottom: 4%;
     margin-top: 5%;
     display: table;
@@ -313,9 +420,19 @@ DROPDOWN ****************************/
 }
 
 #div-contenedor.m-ignsearchlocator #m-xylocator-loc {
-    background-color: #71a7d3;
-    border: none;
-    color: white;
+    background-color: #fff;
+    padding: 5px;
+    cursor: pointer;
+    display: block;
+    font-family: Muli,
+        sans-serif !important;
+    border-radius: 0px;
+    border: 1px solid rgba(0, 0, 0, .4);
+    font-size: 15px;
+    -webkit-transition: opacity .25s ease 0s;
+    transition: opacity .25s ease 0s;
+    color: black;
+    height: 28px;
 }
 
 #div-contenedor.m-ignsearchlocator #m-xylocator-limpiar {
@@ -337,6 +454,12 @@ DROPDOWN ****************************/
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
+        width: 33%;
+        display: inline-block;
+    }
+
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat>div>span {
+
         width: 33%;
         display: inline-block;
     }
@@ -435,7 +558,7 @@ DROPDOWN ****************************/
 }
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
-    margin-left: 15px;
+    margin-left: 5px;
 }
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
@@ -448,6 +571,29 @@ DROPDOWN ****************************/
     margin-top: 3%;
 }
 
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat>div>input {
+    margin-top: 3%;
+    width: 60%;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat>div#m-xylocator-latlon>input#LON {
+    margin-left: 5px;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat>div#m-xylocator-latlon>input#LAT {
+    margin-left: 15px;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat>div>span {
+    display: inline;
+}
+
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-lonlat>div>select {
+    display: block;
+    width: 100%;
+    margin-top: 3%;
+}
 
 /****************************
  INTERNET EXPLORER HACKS

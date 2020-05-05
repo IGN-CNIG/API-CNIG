@@ -42,6 +42,10 @@
       "type": "simple",
       "name": "geocoderCoords",
       "position": 8
+    }, {
+      "type": "simple",
+      "name": "zoom",
+      "position": 9
     }]
   }],
   "files": {

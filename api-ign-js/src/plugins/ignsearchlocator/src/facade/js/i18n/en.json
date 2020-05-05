@@ -4,8 +4,10 @@
     "transforming": "Error performing the transformation.",
     "mapeaerror": "MAPEA: It is not possible to establish a connection with the Cadastre server.",
     "noresults": "No results found for this request.",
-    "noubi": "There is no associated address for this location."
+    "noubi": "There is no associated address for this location.",
+    "wrong_values": "Some value entered are not correct. Remember that minutes and seconds must be between 0 and 59 and degrees between 0 and 180."
   },
+  "tooltip": "Search places",
   "geographic": "Geographic",
   "zone": "zone",
   "title": "Coordinate locator",

@@ -5,6 +5,7 @@ import '../assets/css/ignsearchlocator';
 import '../assets/css/fonts';
 import api from '../../api';
 import IGNSearchLocatorControl from './ignsearchlocatorcontrol';
+import { getValue } from './i18n/language';
 
 export default class IGNSearchLocator extends M.Plugin {
   /**
@@ -150,11 +151,12 @@ export default class IGNSearchLocator extends M.Plugin {
      */
     this.position = options.position || 'TL';
 
+
     /**
      * @private
      * @type {string} - tooltip on hover on plugin button
      */
-    this.tooltip_ = options.tooltip || 'Búsqueda de lugares';
+    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
      * @private
@@ -197,6 +199,17 @@ export default class IGNSearchLocator extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * Zoom to do
+     *
+     * @private
+     * @type {string / number}
+     */
+    this.zoom_ = 16;
+    if (options.zoom !== undefined) {
+      this.zoom_ = parseInt(options.zoom, 10);
+    }
   }
 
   /**
@@ -227,6 +240,7 @@ export default class IGNSearchLocator extends M.Plugin {
       this.locationID_,
       this.requestStreet_,
       this.geocoderCoords_,
+      this.zoom_,
     ));
     this.controls_[0].on('ignsearchlocator:entityFound', (extent) => {
       this.fire('ignsearchlocator:entityFound', [extent]);
@@ -325,7 +339,7 @@ export default class IGNSearchLocator extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.zoom}`;
   }
 
   /**
