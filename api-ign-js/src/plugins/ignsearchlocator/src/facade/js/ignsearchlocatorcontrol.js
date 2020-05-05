@@ -46,7 +46,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     zoom,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
-      M.exception('La implementación usada no puede crear controles IGNSearchLocatorControl');
+      M.exception(getValue('impl'));
     }
     const impl = new IGNSearchLocatorImplControl();
     super(impl, 'IGNSearchLocator');
