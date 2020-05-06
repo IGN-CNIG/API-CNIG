@@ -37,13 +37,16 @@ export default class PredefinedZoomControl extends M.Control {
     this.map = map;
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
-
       this.savedZooms.forEach((customZoom) => {
-        const bbox = customZoom.bbox;
         const newBtn = document.createElement('button');
-        newBtn.setAttribute('title', customZoom.name);
         newBtn.setAttribute('class', 'predefinedzoom-mundo2');
-        newBtn.addEventListener('click', () => this.zoomToGivenBox(bbox));
+        newBtn.setAttribute('title', customZoom.name);
+        if (customZoom.bbox !== undefined) {
+          newBtn.addEventListener('click', () => this.zoomToGivenBox(customZoom.bbox));
+        } else if (customZoom.center !== undefined && customZoom.zoom !== undefined) {
+          newBtn.addEventListener('click', () => this.zoomToCenter(customZoom.center, customZoom.zoom));
+        }
+
         html.appendChild(newBtn);
       });
 
@@ -59,6 +62,17 @@ export default class PredefinedZoomControl extends M.Control {
    */
   zoomToGivenBox(bbox) {
     this.map.setBbox(bbox);
+  }
+
+  /**
+   * Zooms to predefined center with a zoom level.
+   * @function
+   * @public
+   * @param {Event} e
+   */
+  zoomToCenter(center, zoom) {
+    this.map.setCenter(center);
+    this.map.setZoom(zoom);
   }
 
   /**

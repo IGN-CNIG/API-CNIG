@@ -13,6 +13,10 @@ div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.
     color: white;
 }
 
+div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.m-predefinedzoom>button:focus {
+  outline: none;
+}
+
 
 /* Icon font */
 
