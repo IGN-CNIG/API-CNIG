@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * @module M/control/TransparencyControl
  */
@@ -20,7 +19,7 @@ export default class TransparencyControl extends M.Control {
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(TransparencyImplControl)) {
-      M.exception('La implementación usada no puede crear controles TransparencyControl');
+      M.exception(getValue('exception'));
     }
     // 2. implementation of this control
     const impl = new TransparencyImplControl();
@@ -113,7 +112,7 @@ export default class TransparencyControl extends M.Control {
       });
 
       if (this.layers.length == 0 || this.layers == '') {
-        M.dialog.error('Transparency: No se ha especificado una capa válida sobre la que aplicar el efecto');
+        M.dialog.error(getValue('errorLayer'));
       } else {
         // Botón efecto transparencia      
         this.template.querySelector('#m-transparency-transparent').addEventListener('click', (evt) => {

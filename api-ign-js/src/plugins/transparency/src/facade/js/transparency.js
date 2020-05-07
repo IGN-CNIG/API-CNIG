@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * @module M/plugin/Transparency
  */
@@ -66,7 +65,7 @@ export default class Transparency extends M.Plugin {
      * @type {string}
      */
     if (options.layers === undefined || options.layers === '') {
-      M.dialog.error('Transparency: No se ha especificado una capa válida sobre la que aplicar el efecto');
+      M.dialog.error(getValue('errorLayer'));
       this.layers = [];
     } else {
       if (Array.isArray(options.layers)) {

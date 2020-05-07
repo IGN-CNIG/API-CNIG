@@ -9,9 +9,20 @@ const map = M.map({
 });
 
 
+const wfs = new M.layer.WFS({
+  url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?",
+  namespace: "tematicos",
+  name: "Provincias",
+  legend: "Provincias",
+  geometry: 'MPOLYGON',
+});
+
+map.addWFS(wfs);
+
+
 // 1 WMS por url
 const pluginTransparency = new Transparency({
-  position: 'TL',
+  position: 'TR',
   layers: ['WMS*hil*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeBoundary', 'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA', 'WMTS*http://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*usoSuelo'],
   radius: ""
 });
