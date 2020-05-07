@@ -213,7 +213,7 @@ export default class IGNSearchControl extends M.Control {
           this.drawNomenclatorResult(this.locationID, false);
         }
         if (this.requestStreet && this.requestStreet.length > 0) {
-          M.proxy(false);
+          M.proxy(true);
           M.remote.get(this.requestStreet).then((res) => {
             const geoJsonData = res.text.substring(9, res.text.length - 1);
             this.map.removeLayers(this.clickedElementLayer);
