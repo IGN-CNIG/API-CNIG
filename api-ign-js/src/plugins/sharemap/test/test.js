@@ -9,7 +9,7 @@ const map = M.map({
 });
 
 const mp = new ShareMap({
-  baseUrl: 'https://componentes.ign.es/api-core/',
+  baseUrl: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/',
   position: 'BR',
 });
 M.language.setLang('en');
@@ -71,3 +71,4 @@ map.addPlugin(mp7);
 map.addPlugin(mp8);
 const mp9 = new M.plugin.TOC();
 map.addPlugin(mp9);
+// M.proxy(false);
