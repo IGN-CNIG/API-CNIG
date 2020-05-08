@@ -1164,16 +1164,12 @@ export default class IGNSearchLocatorControl extends M.Control {
       let x = -1;
       let y = -1;
       if (selectedOption.getAttribute('data-units') === 'd') {
-        try {
-          const xString = document.querySelector('div#m-xylocator-latlon input#LON').value.replace(',', '.');
-          const yString = document.querySelector('div#m-xylocator-latlon input#LAT').value.replace(',', '.');
-          x = parseFloat(xString);
-          y = parseFloat(yString);
-          const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
-          this.locator_(coordinatesTransform);
-        } catch (ex) {
-          M.dialog.error(getValue('exception.transforming'), 'Error');
-        }
+        const xString = document.querySelector('div#m-xylocator-latlon input#LON').value.replace(',', '.');
+        const yString = document.querySelector('div#m-xylocator-latlon input#LAT').value.replace(',', '.');
+        x = parseFloat(xString);
+        y = parseFloat(yString);
+        const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
+        this.locator_(coordinatesTransform);
       } else if (selectedOption.getAttribute('data-units') === 'dms') {
         const hhLon = document.querySelector('div#m-xylocator-dms input#LONHH').value;
         const mmLon = document.querySelector('div#m-xylocator-dms input#LONMM').value;
