@@ -21,7 +21,8 @@
     .m-areas>div.m-area>div.m-plugin-transparency.opened>button.m-panel-btn {
         position: absolute;
         left: -2.53rem;
-        background-color: #71a7d3;
+        background-color: white;
+        color: #71a7d3
     }
 
     .m-areas>div.m-area>div.m-plugin-transparency.opened>button.m-panel-btn.opened-left {
@@ -29,6 +30,7 @@
         position: absolute;
         right: -2.53rem;
         background-color: white;
+
     }
 
     .m-transparency-container {
@@ -83,7 +85,7 @@
         color: #71a7d3;
     }
 
-    .big-buttom.buttom-pressed {
+    .m-transparency-container.big-buttom.buttom-pressed {
         color: #71a7d3;
     }
 
