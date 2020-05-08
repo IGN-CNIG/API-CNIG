@@ -259,9 +259,16 @@ export default class ShareMapControl extends M.Control {
         shareURL.concat('');
       shareURL = shareURL.concat(`&${this.getPlugins()}`);
       input.value = shareURL;
-      facebook.href = `http://www.facebook.com/sharer.php?u=${shareURL}`;
-      twitter.href = `https://twitter.com/intent/tweet?text=${shareURL}`;
-      pinterest.href = `https://www.pinterest.es/pin/create/button/?url=${shareURL}`;
+      // M.proxy(false);
+      // let tweetUrl = shareURL.replace(/ /g, '%20');
+      // const tweetUrl = shareURL.replace(/&/g, '%26');
+      // shareURL = shareURL.replace(/ /g, '%2B');
+      shareURL = encodeURI(shareURL);
+      M.remote.get(`http://tinyurl.com/api-create.php?url=${shareURL}`).then((response) => {
+        facebook.href = `http://www.facebook.com/sharer.php?u=${response.text}`;
+        twitter.href = `https://twitter.com/intent/tweet?url=${response.text}`;
+        pinterest.href = `https://www.pinterest.es/pin/create/button/?url=${response.text}`;
+      });
     });
   }
 
