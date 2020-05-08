@@ -74,16 +74,21 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
     olView.setResolution(newResolution);
   }
   /**
-   * This function reprojects given coordinates to given projection.
-   * @private
+   * This function reprojects map on selected SRS.
+   *
    * @function
-   * @param { Array <number> } coordinates - [x,y]
-   * @param { string } source - 'EPSG:4326'
-   * @param { string } destiny - 'EPSG:4326'
+   * @param {string} origin - EPSG:25830, EPSG:4326, ..., etc
+   * @param {array<number>} coordinates
+   * @api
    */
-  reproject(coordinates, source, destiny) {
-    const transformFunc = ol.proj.getTransform(source, destiny);
-    return transformFunc(coordinates);
+  reproject(origin, coordinates) {
+    const originProj = ol.proj.get(origin);
+    const destProj = ol.proj.get(this.map.getProjection().code);
+    let coordinatesTransform = ol.proj.transform(coordinates, originProj, destProj);
+    coordinatesTransform = [this.normalizeNumber(coordinates[0], coordinatesTransform[0]),
+      this.normalizeNumber(coordinates[1], coordinatesTransform[1]),
+    ];
+    return coordinatesTransform;
   }
 
   /**
