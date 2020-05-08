@@ -15,22 +15,6 @@
       "name": "position",
       "position": 1,
       "possibleValues": ["TL", "TR", "BL", "BR"]
-    }, {
-      "type": "simple",
-      "name": "title",
-      "position": 2
-    }, {
-      "type": "simple",
-      "name": "tooltip",
-      "position": 3
-    }, {
-      "type": "simple",
-      "name": "btn",
-      "position": 4
-    }, {
-      "type": "simple",
-      "name": "copyBtn",
-      "position": 5
     }]
   }],
   "files": {
