@@ -25,10 +25,12 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **noProcess**. En geocoder, indica las entidades que no se incluirán en los resultados.
   - Admite combinación de 'municipio,poblacion,toponimo'
   - Por defecto ('poblacion')
+- **countryCode**. Código por defecto del país en la petición a geocoder. Por defecto countryCode = 'es'
 - **resultVisibility**. Indica si se muestra o no la geometría del elemento localizado
 - **isCollapsed**. Indica si se muestra el plugin cerrado (**true**) o con las búsquedas habilitadas visible (**false**).
-
-COLLAPSIBLE
+- **collapsible**. Valor booleano que indica si el plugin puede colapsarse o no.
+  - true (por defecto)
+  - false
 
 - **position**. Indica la posición donde se mostrará el plugin
   - 'TL':top left (default)
@@ -36,15 +38,14 @@ COLLAPSIBLE
   - 'BL':bottom left 
   - 'BR':bottom right
 
-  REVERSE
+  - **reverse**. Valor booleano que indica si debe aparecer o no el botón que gestiona la consulta de reverse sobre el mapa.
+  La consulta reverse revela la información de un punto determinado del mapa tras pinchar en él.
 
-  REQUESTSTREET
+  - **requeststreet**. Url con la petición find que se le hace al geocoder. Este atributo se usa unicamente cuando se accede al plugin mediante la url de sharemap.
 
-  LOCATION ID
+  - **locationId**. ID del punto geográfico localizado. Este atributo se puede usar como alternativa al requeststreet.
 
-  GEOCODERCOORDS
-
-
+  - **geocodercoords**. Coordenadas x,y de un punto geográfico. Este atributo se usa principalmente para las peticiones de reverse al geocoder.
 
 # Eventos
 
@@ -65,8 +66,6 @@ mp.on('ignsearch:entityFound', (extent) => {
   - Habilita o deshabilita la visualización de los resultados sobre el mapa
 
 # Otros parámetros dentro del código
-
-- **countryCode**. Código por defecto del país en la petición a geocoder. Por defecto countryCode = 'es'
 
 - **nomenclatorSearchType**. En Nomenclátor, Array de cadenas que indica los tipos de entidad que se buscan en nomenclátor.
   - Por defecto se mantiene el siguiente array: 

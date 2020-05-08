@@ -19,38 +19,42 @@
         "name": "noProcess",
         "position": 2
       }, {
-        "type": "boolean",
-        "name": "resultVisibility",
+        "type": "simple",
+        "name": "countryCode",
         "position": 3
       }, {
         "type": "boolean",
-        "name": "isCollapsed",
+        "name": "resultVisibility",
         "position": 4
+      }, {
+        "type": "boolean",
+        "name": "isCollapsed",
+        "position": 5
       },
       {
         "type": "boolean",
         "name": "collapsible",
-        "position": 5
+        "position": 6
       }, {
         "type": "simple",
         "name": "position",
-        "position": 6
+        "position": 7
       }, {
         "type": "boolean",
         "name": "reverse",
-        "position": 7
-      }, {
-        "type": "simple",
-        "name": "requestStreet",
         "position": 8
       }, {
         "type": "simple",
-        "name": "locationID",
+        "name": "requestStreet",
         "position": 9
       }, {
         "type": "simple",
-        "name": "geocoderCoords",
+        "name": "locationID",
         "position": 10
+      }, {
+        "type": "simple",
+        "name": "geocoderCoords",
+        "position": 11
       }
     ]
   }],
