@@ -25,14 +25,49 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **noProcess**. En geocoder, indica las entidades que no se incluirán en los resultados.
   - Admite combinación de 'municipio,poblacion,toponimo'
   - Por defecto ('poblacion')
-- **countryCode**. Código por defecto del país en la petición a geocoder. Por defecto countryCode = 'es'
-- **isCollapsed**. Indica si se muestra el plugin cerrado (**true**) o con las búsquedas habilitadas visible (**false**).
 - **resultVisibility**. Indica si se muestra o no la geometría del elemento localizado
+- **isCollapsed**. Indica si se muestra el plugin cerrado (**true**) o con las búsquedas habilitadas visible (**false**).
+
+COLLAPSIBLE
+
 - **position**. Indica la posición donde se mostrará el plugin
   - 'TL':top left (default)
   - 'TR':top right 
   - 'BL':bottom left 
   - 'BR':bottom right
+
+  REVERSE
+
+  REQUESTSTREET
+
+  LOCATION ID
+
+  GEOCODERCOORDS
+
+
+
+# Eventos
+
+- **ignsearch:entityFound**
+  - Evento que se dispara cuando se ha localizado la búsqueda del plugin sobre el mapa.
+  - Expone, como parámetro devuelto, el **extent** actual calculado en la búsqueda
+
+```javascript
+mp.on('ignsearch:entityFound', (extent) => {
+  // eslint-disable-next-line no-alert
+  window.alert('Encontrado');
+});
+```
+
+# Otros métodos
+
+- **setResultVisibility( boolean )** 
+  - Habilita o deshabilita la visualización de los resultados sobre el mapa
+
+# Otros parámetros dentro del código
+
+- **countryCode**. Código por defecto del país en la petición a geocoder. Por defecto countryCode = 'es'
+
 - **nomenclatorSearchType**. En Nomenclátor, Array de cadenas que indica los tipos de entidad que se buscan en nomenclátor.
   - Por defecto se mantiene el siguiente array: 
 
@@ -102,24 +137,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **urlPrefix**. Prefijo source servicio Nomenclátor. Por defecto 'http://www.idee.es/'
 - **urlAssistant**. Url servicio SearchAssitant de Nomenclátor.
 - **urlDispatcher**. Url servicio Dispatcher de Nomenclátor.
-
-# Eventos
-
-- **ignsearch:entityFound**
-  - Evento que se dispara cuando se ha localizado la búsqueda del plugin sobre el mapa.
-  - Expone, como parámetro devuelto, el **extent** actual calculado en la búsqueda
-
-```javascript
-mp.on('ignsearch:entityFound', (extent) => {
-  // eslint-disable-next-line no-alert
-  window.alert('Encontrado');
-});
-```
-
-# Otros métodos
-
-- **setResultVisibility( boolean )** 
-  - Habilita o deshabilita la visualización de los resultados sobre el mapa
 
 
 # Ejemplo de uso
