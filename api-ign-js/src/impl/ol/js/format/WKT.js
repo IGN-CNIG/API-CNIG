@@ -81,31 +81,45 @@ class WKT extends MObject {
     return mFeatures;
   }
 
-  /**
-   *
-   * @public
-   * @function
-   * @api
-   */
-  write(feature, options = {}) {
-    const opts = getOptsProjection(options);
-    const olFeature = FeatureImpl.facade2OLFeature(feature);
-    const wkt = this.formatter_.writeFeatureText(olFeature, opts);
-    return wkt;
-  }
+  // /**
+  //  *
+  //  * @public
+  //  * @function
+  //  * @api
+  //  */
+  // write(feature, options = {}) {
+  //   const opts = getOptsProjection(options);
+  //   const olFeature = FeatureImpl.facade2OLFeature(feature);
+  //   const wkt = this.formatter_.writeFeatureText(olFeature, opts);
+  //   return wkt;
+  // }
 
   /**
-   *
-   * @public
-   * @function
-   * @api
+   * @inheritDoc
    */
-  writeCollection(features, options = {}) {
-    const opts = getOptsProjection(options);
-    const olFeatures = features.map(f => FeatureImpl.facade2OLFeature(f));
-    const wkt = this.formatter_.writeFeaturesText(olFeatures, opts);
-    return wkt;
+  write(geometry) {
+    const olGeometry = this.gjFormat_.readGeometryFromObject(geometry);
+    if (olGeometry.getType().toLowerCase() === 'point') {
+      const pointCoord = olGeometry.getCoordinates();
+      olGeometry.setCoordinates([pointCoord[0], pointCoord[1]]);
+    }
+    const wktGeom = this.writeGeometryText(olGeometry);
+    return wktGeom;
   }
+}
+
+/**
+ *
+ * @public
+ * @function
+ * @api
+ */
+writeCollection(features, options = {}) {
+  const opts = getOptsProjection(options);
+  const olFeatures = features.map(f => FeatureImpl.facade2OLFeature(f));
+  const wkt = this.formatter_.writeFeaturesText(olFeatures, opts);
+  return wkt;
+}
 }
 
 export default WKT;
