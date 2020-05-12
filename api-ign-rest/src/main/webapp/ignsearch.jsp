@@ -122,7 +122,8 @@
 
         let mp;
 
-        let sToSearch, mxResults, collapsed, posicion, noProcess, countryCode, reverse, urlCandidates, urlFind, urlReverse;
+        let sToSearch, mxResults, collapsed, posicion, noProcess, countryCode, reverse = true,
+            urlCandidates, urlFind, urlReverse;
         crearPlugin({
             servicesToSearch: sToSearch,
             maxResults: mxResults,
