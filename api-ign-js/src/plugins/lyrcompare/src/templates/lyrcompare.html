@@ -1,0 +1,60 @@
+<div id="div-contenedor" class="m-lyrcompare-container">
+    <div id="m-lyrcompare-titulo">{{translations.tooltip}}</div>
+    <div class="div-m-lyrcompare-panel">
+        <div class="m-lyrcompare-effect-buttoms">
+            <button id="m-lyrcompare-vcurtain" class="big-buttom" title="{{translations.tooltip_vcurtain}}"><i class="lyrcompare-vcurtain-icon"></i></button>
+            <button id="m-lyrcompare-hcurtain" class="big-buttom" title="{{translations.tooltip_hcurtain}}"><i class="lyrcompare-hcurtain-icon"></i></button>
+            <button id="m-lyrcompare-multicurtain" class="big-buttom" title="{{translations.tooltip_multicurtain}}"><i class="lyrcompare-multicurtain-icon"></i></button>
+        </div>
+        <div class="div-m-lyrcompare-transparent-opacity">
+            <label for="input-transparent-opacity" title="{{translations.opacity_tooltip}}">{{translations.opacity}}: </label>
+            <input type="range" min="0" max="100" value="100" id="input-transparent-opacity" title="{{translations.opacity_tooltip}}"></input>
+        </div>
+        <div class="div-m-lyrcompare-transparent-static">
+            <input type="radio" id="div-m-lyrcompare-transparent-static-false" name="staticDivision" value="0"><label for="div-m-lyrcompare-transparent-static-false" title="{{translations.dinamic_tooltip}}">{{translations.dinamic}}</label>
+            <input type="radio" id="div-m-lyrcompare-transparent-static-true" name="staticDivision" value="1"><label for="div-m-lyrcompare-transparent-static-true" title="{{translations.static_tooltip}}">{{translations.static}}</label>
+        </div>
+        <hr/>
+        {{#if options}}
+            <div class="m-lyrcompare-select" id="m-lyrcompare-lyrA-cont" >
+                <label id="m-lyrcompare-lyrA-lbl" for="m-lyrcompare-lyrA" title="{{translations.lyrLeftSelect_tooltip}}">👈</label>
+                <select disabled id="m-lyrcompare-lyrA">
+                    {{#each options}}
+                        <option value='{{this.name}}'>{{this.legend}}</option>
+                    {{/each}}
+                </select>
+                <div class="m-lyrcompare-select_arrow"></div>
+            </div>
+            <div class="m-lyrcompare-select" id="m-lyrcompare-lyrB-cont">
+                <label id="m-lyrcompare-lyrB-lbl" for="m-lyrcompare-lyrB" title="{{translations.lyrRightSelect_tooltip}}">👉</label>
+                <select disabled id="m-lyrcompare-lyrB">
+                    {{#each options}}
+                    <option value='{{this.name}}'>{{this.legend}}</option>
+                    {{/each}}
+                </select>
+                <div class="m-lyrcompare-select_arrow">
+                </div>
+            </div>
+            <!--Multi Curtain-->
+            <div class="m-lyrcompare-select"  id="m-lyrcompare-lyrC-cont" >
+                <label id="m-lyrcompare-lyrC-lbl" for="m-lyrcompare-lyrC" title="{{translations.lyrLeftSelect_tooltip}}">C</label>
+                <select disabled id="m-lyrcompare-lyrC">
+                    {{#each options}}
+                        <option value='{{this.name}}'>{{this.legend}}</option>
+                    {{/each}}
+                </select>
+                <div class="m-lyrcompare-select_arrow"></div>
+            </div>
+            <div class="m-lyrcompare-select" id="m-lyrcompare-lyrD-cont">
+                <label id="m-lyrcompare-lyrD-lbl" for="m-lyrcompare-lyrD" title="{{translations.lyrRightSelect_tooltip}}">D</label>
+                <select disabled id="m-lyrcompare-lyrD">
+                    {{#each options}}
+                        <option value='{{this.name}}'>{{this.legend}}</option>
+                    {{/each}}
+                </select>
+                <div class="m-lyrcompare-select_arrow">
+                </div>
+            </div>                    
+        {{/if}}
+    </div>
+</div>
