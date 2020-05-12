@@ -1,0 +1,74 @@
+{
+  "url": {
+    "name": "LyrCompare",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.LyrCompare",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+        "type": "simple",
+        "name": "position",
+        "possibleValues": ["TL", "TR", "BL", "BR"],
+        "position": 0
+      },
+      {
+        "type": "simple",
+        "name": "layers",
+        "position": 1
+      },
+      {
+        "type": "simple",
+        "name": "staticDivision",
+        "position": 2
+      },
+      {
+        "type": "simple",
+        "name": "opacityVal",
+        "position": 3
+      },
+      {
+        "type": "simple",
+        "name": "comparisonMode",
+        "position": 4
+      },
+      {
+        "type": "simple",
+        "name": "defaultLyrA",
+        "position": 5
+      },
+      {
+        "type": "simple",
+        "name": "defaultLyrB",
+        "position": 6
+      },
+      {
+        "type": "simple",
+        "name": "defaultLyrC",
+        "position": 7
+      },
+      {
+        "type": "simple",
+        "name": "defaultLyrD",
+        "position": 8
+      }
+    ]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["lyrcompare.ol.min.js"],
+      "styles": ["lyrcompare.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "LyrCompare",
+    "description": "Comparación entre capas",
+    "text": "Plugin que permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.",
+    "version": "1.0.0",
+    "date": "Abril, 2020",
+    "author": "",
+    "org": "Centro Nacional de Información Geográfica - Instituto Geográfico Nacional. Ministerio de Transportes, Mobilidad y Agenda Urbana",
+    "tags": "apicnig,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

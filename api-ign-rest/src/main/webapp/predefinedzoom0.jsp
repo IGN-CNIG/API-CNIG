@@ -53,10 +53,15 @@
         <datalist id="nameValueSug">
             <option value="Zoom a la extensión del mapa"></option>
         </datalist>
-        <label for="inputBbox">Parámetro Bbox</label>
-        <input type="text" name="bbox" id="inputBbox" value="[-5126664.066764344, 2296178.3541973755, 4192538.421764345, 7070740.889002625]" list="bboxSug">
-        <datalist id="bboxSug">
-            <option value="[-5126664.066764344, 2296178.3541973755, 4192538.421764345, 7070740.889002625]"></option>
+        <label for="inputCenter">Parámetro center</label>
+        <input type="text" name="center" id="inputCenter" value="[-428106.86611520057, 4334472.25393817]" list="centerSug">
+        <datalist id="centerSug">
+            <option value="[-428106.86611520057, 4334472.25393817]"></option>
+        </datalist>
+        <label for="inputZoom">Parámetro zoom</label>
+        <input type="number" name="zoom" id="inputZoom" list="zoomSug">
+        <datalist id="zoomSug">
+            <option value="4"></option>
         </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -107,33 +112,38 @@
         let mp;
         let posicion = "TL",
             nombre = "Zoom a la extensión del mapa",
-            bbox = JSON.parse("[-5126664.066764344, 2296178.3541973755, 4192538.421764345, 7070740.889002625]");
-        crearPlugin(posicion, nombre, bbox);
+            center = JSON.parse("[-428106.86611520057, 4334472.25393817]"), zoom=4;
+        crearPlugin({
+            position:posicion,
+            savedZooms:[{
+                name:nombre,
+                center:center,
+                zoom:zoom
+            }]          
+        });
 
         const selectPosicion = document.getElementById("selectPosicion");
         const inputName = document.getElementById("inputName");
-        const inputBbox = document.getElementById("inputBbox");
+        const inputCenter = document.getElementById("inputCenter");
+        const inputZoom = document.getElementById("inputZoom");
 
         selectPosicion.addEventListener('change', cambiarTest);
         inputName.addEventListener('change', cambiarTest);
-        inputBbox.addEventListener('change', cambiarTest);
+        inputCenter.addEventListener('change', cambiarTest);
+        inputZoom.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            nombre = inputName.value;
-            bbox = JSON.parse(inputBbox.value);
+            let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            objeto.savedZooms.nombre = inputName.value != "" ? objeto.name = inputName.value : "";
+            objeto.savedZooms.center = JSON.parse(inputCenter.value);
+            zoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "";
             map.removePlugins(mp);
-            crearPlugin(posicion, nombre, bbox);
+            crearPlugin(objeto);
         }
 
-        function crearPlugin(position, name, bbox) {
-            mp = new M.plugin.PredefinedZoom({
-                position: position,
-                savedZooms: [{
-                    name: name,
-                    bbox: bbox,
-                }, ],
-            });
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.PredefinedZoom(propiedades);
 
             map.addPlugin(mp);
         }

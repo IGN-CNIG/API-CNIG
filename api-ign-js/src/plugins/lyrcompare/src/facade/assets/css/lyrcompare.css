@@ -1,0 +1,458 @@
+div.m-panel.m-plugin-lyrcompare.opened>.g-cartografia-flecha-izquierda {
+    color: #e8f5e9;
+}
+
+.m-plugin-lyrcompare.collapsed>div.m-panel-controls {
+    display: none !important;
+}
+
+/*Rolled button in panels on the right*/
+.m-areas>div.m-area.m-right>div.m-plugin-lyrcompare.opened>button.m-panel-btn {
+    position: absolute;
+    left: -2.53rem;
+    background-color: #71a7d3;
+}
+
+/*Rolled button in panels on the left*/
+.m-areas>div.m-area.m-left>div.m-plugin-lyrcompare.opened>button.m-panel-btn {
+    position: absolute;
+    right: -2.53rem;
+    left: unset !important;
+    background-color: #71a7d3;
+}
+
+/*
+.m-areas>div.m-area>div.m-plugin-lyrcompare.opened>button.m-panel-btn.opened-left {
+    position: absolute;
+    right: -2.53rem;
+    left: unset !important;
+    background-color: #71a7d3;
+}
+*/
+
+/*
+.m-areas>div.m-area.m-right>div.m-plugin-lyrcompare.opened>button.m-panel-btn {
+    position: absolute;
+    left: -2.53rem;
+    left: unset !important;
+    background-color: #71a7d3;
+}
+*/
+
+.m-lyrcompare-container {
+    text-align: center;
+}
+
+.div-m-lyrcompare-panel {
+    padding-top: 1px;
+    background-color: white;
+    width: 19rem;
+}
+
+.div-m-lyrcompare-transparent-opacity {
+    display: flex;
+    align-items: center;
+    padding: 0px 5px 5px 5px;
+    color: #000000;
+    padding-left: 8%;
+    padding-top: 4%;
+}
+
+.m-lyrcompare-effect-buttoms {
+    padding: 2px 0px 2px 0px;
+    padding-top: 8px;
+}
+
+#m-lyrcompare-eliminar {
+    font-size: 15px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+    outline: none;
+}
+
+#m-lyrcompare-eliminar:hover {
+    color: red;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+Botón para activar el efecto
+*/
+.m-lyrcompare-container .big-buttom {
+    font-size: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: .75;
+    transition: all .25s ease;
+    color: #404040;
+    outline: none;
+}
+
+.m-lyrcompare-container .big-buttom:hover {
+    color: #71a7d3;
+
+}
+
+.m-lyrcompare-container .buttom-pressed-vcurtain {
+    color: #71a7d3;
+
+}
+
+.m-lyrcompare-container .buttom-pressed-vcurtain:hover {
+    color: #71a7d3;
+
+}
+
+.m-lyrcompare-container .buttom-pressed-hcurtain {
+    color: #71a7d3;
+
+}
+
+.m-lyrcompare-container .buttom-pressed-hcurtain:hover {
+    color: #71a7d3;
+
+}
+
+.m-lyrcompare-container .buttom-pressed-multicurtain {
+    color: #71a7d3;
+
+}
+
+.m-lyrcompare-container .buttom-pressed-multicurtain:hover {
+    color: #71a7d3;
+
+}
+
+
+.m-lyrcompare-container input[type=range] {
+    -webkit-appearance: none;
+    width: 59%;
+    height: 8px;
+    padding-left: 4%;
+}
+
+.m-lyrcompare-container input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, .31);
+    border-radius: 12px
+}
+
+.m-lyrcompare-container input[type=range]::-webkit-slider-thumb {
+    height: 10px;
+    width: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    background: #fff;
+    -webkit-appearance: none;
+    margin-top: -4px;
+    background-color: #71a7d3
+}
+
+.m-lyrcompare-container input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, .31);
+    border-radius: 12px
+}
+
+.m-lyrcompare-container input[type=range]::-moz-range-thumb {
+    height: 10px;
+    width: 10px;
+    cursor: pointer;
+    border: none;
+    background: #fff;
+    -webkit-appearance: none;
+    margin-top: 20px;
+    background-color: #71a7d3
+}
+
+
+
+.m-lyrcompare-select {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0px 5px 5px 5px;
+    padding-left: 8%;
+    color: #000000;
+}
+
+.m-lyrcompare-select select {
+    font-family: 'Arial';
+    display: inline-block;
+    width: 75%;
+    cursor: pointer;
+    padding: 3px 10px;
+    outline: 0;
+    border: 0px solid #000000;
+    border-radius: 0px;
+    background: #e6e6e6;
+    color: #000000;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin-left: 4%;
+    white-space: nowrap;
+    padding-right: 11%;
+}
+
+div#m-lyrcompare-titulo {
+    background-color: #71a7d3;
+    color: white;
+    display: block;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 5px;
+    text-align: center;
+    width: 100%;
+}
+
+/****************************
+     FIREFOX HACKS
+****************************/
+
+@-moz-document url-prefix() {
+    .m-lyrcompare-select select {
+        padding: 1px 10px;
+    }
+}
+
+.m-lyrcompare-select select::-ms-expand {
+    display: none;
+}
+
+.m-lyrcompare-select select:hover,
+.m-lyrcompare-select select:focus {
+    background: #e6e6e6;
+}
+
+.m-lyrcompare-select select:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.m-lyrcompare-select_arrow {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    pointer-events: none;
+    border-style: solid;
+    border-width: 8px 5px 0px 5px;
+    border-color: #7b7b7b transparent transparent transparent;
+}
+
+
+.m-plugin-lyrcompare [class^="icon-"]:before,
+.m-plugin-lyrcompare [class*=" icon-"]:before {
+    font-family: "transparency";
+    font-style: normal;
+    font-weight: normal;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* opacity: .8; */
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    margin-left: .2em;
+
+    /* you can be more comfortable with increased icons size */
+    /* font-size: 120%; */
+
+    /* Uncomment for 3D effect */
+    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.m-plugin-lyrcompare .icon-flecha-izquierda:before {
+    content: '\e91d';
+}
+
+.m-plugin-lyrcompare .icon-gps4:before {
+    content: '\e925';
+}
+
+
+/* font: http://fontello.com/ */
+@font-face {
+    font-family: 'lyrcompare';
+    src: url('../fonts/lyrcompare.eot?22009652');
+    src: url('../fonts/lyrcompare.eot?22009652#iefix') format('embedded-opentype'),
+        url('../fonts/lyrcompare.woff?22009652') format('woff'),
+        url('../fonts/lyrcompare.ttf?22009652') format('truetype'),
+        url('../fonts/lyrcompare.svg?22009652#fontlyrcompareello') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.lyrcompare-icon:before {
+    font-family: "lyrcompare";
+    font-style: normal;
+    font-weight: normal;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* opacity: .8; */
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    margin-left: .2em;
+
+    /* You can be more comfortable with increased icons size */
+    /* font-size: 120%; */
+
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Uncomment for 3D effect */
+    /*text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);*/
+    /*content: '\e800';*/
+    content: '\f0db';
+}
+
+.lyrcompare-vcurtain-icon:before {
+    font-family: "lyrcompare";
+    font-style: normal;
+    font-weight: normal;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+
+    margin-left: .2em;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    content: '\f0db';
+}
+
+.lyrcompare-hcurtain-icon:before {
+    font-family: "lyrcompare";
+    font-style: normal;
+    font-weight: normal;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+
+    font-variant: normal;
+    text-transform: none;
+    transform: rotate(270deg);
+    line-height: 1em;
+
+    margin-left: .2em;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    content: '\f0db';
+}
+
+.lyrcompare-multicurtain-icon:before {
+    font-family: "lyrcompare";
+    font-style: normal;
+    font-weight: normal;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+
+    margin-left: .2em;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    content: '\e801';
+}
+
+.m-plugin-lyrcompare {
+    content: '\e800';
+}
+
+.lyrcompare-font {
+    font-family: "vcurtain";
+    font-style: normal;
+    font-weight: normal;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* opacity: .8; */
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    margin-left: .2em;
+
+    /* You can be more comfortable with increased icons size */
+    /* font-size: 120%; */
+
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Uncomment for 3D effect */
+    /*text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);*/
+}
+
+
