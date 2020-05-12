@@ -193,24 +193,26 @@ export default class VectorsControl extends M.Control {
 
     const layers = [];
     filtered.forEach((layer) => {
-      const newLayer = layer;
-      const geometry = !M.utils.isNullOrEmpty(layer.geometry) ?
-        layer.geometry : layer.getGeometryType();
-      if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('point') > -1) {
-        newLayer.point = true;
-      } else if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('polygon') > -1) {
-        newLayer.polygon = true;
-      } else if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('line') > -1) {
-        newLayer.line = true;
-      }
-
-      if (newLayer.point || newLayer.polygon || newLayer.line) {
-        if (newLayer.legend === undefined) {
-          newLayer.legend = newLayer.name;
+      if (!(layer.type.toLowerCase() === 'kml' && layer.name.toLowerCase() === 'attributions')) {
+        const newLayer = layer;
+        const geometry = !M.utils.isNullOrEmpty(layer.geometry) ?
+          layer.geometry : layer.getGeometryType();
+        if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('point') > -1) {
+          newLayer.point = true;
+        } else if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('polygon') > -1) {
+          newLayer.polygon = true;
+        } else if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('line') > -1) {
+          newLayer.line = true;
         }
 
-        newLayer.visible = layer.isVisible();
-        layers.push(newLayer);
+        if (newLayer.point || newLayer.polygon || newLayer.line) {
+          if (newLayer.legend === undefined) {
+            newLayer.legend = newLayer.name;
+          }
+
+          newLayer.visible = layer.isVisible();
+          layers.push(newLayer);
+        }
       }
     });
 
