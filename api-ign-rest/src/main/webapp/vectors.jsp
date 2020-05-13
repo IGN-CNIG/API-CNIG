@@ -85,7 +85,7 @@
         M.language.setLang(urlParams.get('language') || 'es');
 
         const map = M.map({
-            container: 'map',
+            container: 'mapjs',
         });
         let mp,collapsed,collapsible;
         crearPlugin({});
@@ -109,7 +109,7 @@
         }
 
         function crearPlugin(propiedades){
-            mp = new M.Plugin.Vectors(propiedades);
+            mp = new M.plugin.Vectors(propiedades);
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
