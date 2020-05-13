@@ -15,7 +15,7 @@ const mp = new IGNSearch({
   noProcess: 'poblacion',
   countryCode: 'es',
   isCollapsed: true,
-  collapsible: false,
+  collapsible: true,
   position: 'TL',
   reverse: true,
   // urlCandidates: 'http://sergiotorrijos:8084/geocoder/api/geocoder/candidatesJsonp',

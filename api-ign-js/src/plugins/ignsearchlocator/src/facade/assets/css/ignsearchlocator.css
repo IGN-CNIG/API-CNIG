@@ -147,9 +147,6 @@ button#m-ignsearchlocator-locate-button {
     width: 250px;
 }
 
-.ign-search-panel>.g-cartografia-flecha-izquierda {
-    display: none;
-}
 
 .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
 .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
@@ -443,18 +440,7 @@ DROPDOWN ****************************/
     }
 }
 
-@media only screen and (max-width: 600) {
 
-    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
-    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
-        vertical-align: bottom;
-    }
-
-    .m-ignsearchlocator .search-panel {
-        height: 40px;
-        width: 400px;
-    }
-}
 
 /***************
     BUTTON
@@ -597,7 +583,7 @@ DROPDOWN ****************************/
 
 @media only screen and (max-width: 600px) {
     div.m-control.m-container.m-ignsearchlocator {
-        width: 230px;
+        width: 303px;
     }
 
     .m-ignsearchlocator #m-ignsearchlocator-search-input {

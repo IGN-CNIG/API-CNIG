@@ -72,6 +72,11 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="selectCollapsible">Selector collapsible</label>
+        <select name="collapsibleValue" id="selectCollapsible">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
         <label for="selectReverse">Selector reverse</label>
         <select name="reverseValue" id="selectReverse">
             <option value=true>true</option>
@@ -122,7 +127,9 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let sToSearch, mxResults, collapsed, posicion, noProcess, countryCode, reverse = true,
+        let sToSearch, mxResults, collapsed = false,
+            collapsible = true,
+            posicion, noProcess, countryCode, reverse = true,
             urlCandidates, urlFind, urlReverse;
         crearPlugin({
             servicesToSearch: sToSearch,
@@ -130,6 +137,7 @@
             noProcess: noProcess,
             countryCode: countryCode,
             isCollapsed: collapsed,
+            collapsible: collapsible,
             position: posicion,
             reverse: reverse,
             urlCandidates: urlCandidates,
@@ -142,6 +150,7 @@
         const selectCountryCode = document.getElementById("selectCountryCode");
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
         const selectReverse = document.getElementById("selectReverse");
         const inputUrlCandidates = document.getElementById("inputUrlCandidates");
         const inputUrlFind = document.getElementById("inputUrlFind");
@@ -153,6 +162,7 @@
         selectCountryCode.addEventListener('change', cambiarTest);
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
+        selectCollapsible.addEventListener('change', cambiarTest);
         selectReverse.addEventListener('change', cambiarTest);
         inputUrlCandidates.addEventListener('change', cambiarTest);
         inputUrlFind.addEventListener('change', cambiarTest);
@@ -166,6 +176,7 @@
             objeto.countryCode = selectCountryCode.options[selectCountryCode.selectedIndex].value;
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             objeto.isCollapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true');
             urlCandidates = inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value : "";
             urlFind = inputUrlFind.value != "" ? objeto.urlFind = inputUrlFind.value : "";

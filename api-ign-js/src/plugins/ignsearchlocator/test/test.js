@@ -11,6 +11,9 @@ const map = M.map({
 const mp = new IGNSearchLocator({
   CMC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos',
   position: 'TL',
+  isCollapsed: true,
+  collapsible: true,
+  reverse: true,
 });
 
 // map.removeControls('panzoom');
