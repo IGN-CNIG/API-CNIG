@@ -85,7 +85,7 @@
         M.language.setLang(urlParams.get('language') || 'es');
 
         const map = M.map({
-            container: 'map',
+            container: 'mapjs',
         });
         let mp,collapsed,collapsible;
         crearPlugin({});
