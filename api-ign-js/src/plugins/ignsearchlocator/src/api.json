@@ -23,29 +23,37 @@
       "name": "resultVisibility",
       "position": 3
     }, {
-      "type": "simple",
-      "name": "position",
+      "type": "boolean",
+      "name": "isCollapsed",
       "position": 4
     }, {
       "type": "boolean",
-      "name": "reverse",
+      "name": "collapsible",
       "position": 5
     }, {
       "type": "simple",
-      "name": "requestStreet",
+      "name": "position",
       "position": 6
     }, {
-      "type": "simple",
-      "name": "locationID",
+      "type": "boolean",
+      "name": "reverse",
       "position": 7
     }, {
       "type": "simple",
-      "name": "geocoderCoords",
+      "name": "requestStreet",
       "position": 8
     }, {
       "type": "simple",
-      "name": "zoom",
+      "name": "locationID",
       "position": 9
+    }, {
+      "type": "simple",
+      "name": "geocoderCoords",
+      "position": 10
+    }, {
+      "type": "simple",
+      "name": "zoom",
+      "position": 11
     }]
   }],
   "files": {
