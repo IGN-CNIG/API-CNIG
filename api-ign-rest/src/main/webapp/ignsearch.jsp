@@ -128,7 +128,7 @@
 
         let mp;
 
-        let sToSearch, mxResults, collapsed = false,
+        let sToSearch, mxResults, collapsed = true,
             collapsible = true,
             posicion, noProcess, countryCode, reverse = true,
             urlCandidates, urlFind, urlReverse;

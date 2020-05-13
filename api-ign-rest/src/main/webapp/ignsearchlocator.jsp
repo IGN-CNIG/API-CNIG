@@ -127,7 +127,7 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let sToSearch, mxResults, collapsed = false,
+        let sToSearch, mxResults, collapsed = true,
             collapsible = true,
             posicion, noProcess, countryCode, reverse = true,
             urlCandidates, urlFind, urlReverse;

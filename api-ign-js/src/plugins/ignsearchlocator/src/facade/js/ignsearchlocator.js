@@ -268,6 +268,7 @@ export default class IGNSearchLocator extends M.Plugin {
       position: M.ui.position[this.position],
       collapsed: this.isCollapsed,
       className: 'ign-search-panel',
+      collapsedButtonClass: 'icon-lupa',
       tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);

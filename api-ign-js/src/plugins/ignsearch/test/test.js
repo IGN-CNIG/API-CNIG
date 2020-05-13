@@ -16,7 +16,7 @@ const mp = new IGNSearch({
   countryCode: 'es',
   isCollapsed: true,
   collapsible: true,
-  position: 'TL',
+  position: 'BR',
   reverse: true,
   // urlCandidates: 'http://sergiotorrijos:8084/geocoder/api/geocoder/candidatesJsonp',
   // urlFind: 'http://sergiotorrijos:8084/geocoder/api/geocoder/findJsonp',
