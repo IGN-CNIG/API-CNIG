@@ -109,7 +109,7 @@
         }
 
         function crearPlugin(propiedades){
-            mp = new M.Plugin.Vectors(propiedades);
+            mp = new M.plugin.Vectors(propiedades);
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
