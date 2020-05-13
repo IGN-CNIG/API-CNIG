@@ -115,6 +115,11 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearch-results {
     outline: none;
 }
 
+button#m-ignsearchlocator-locate-button {
+    color: #7A7A73;
+    font-size: 1.4em;
+}
+
 .m-ignsearch .search-panel .m-button-limpiar {
     border: none;
     padding: 0;

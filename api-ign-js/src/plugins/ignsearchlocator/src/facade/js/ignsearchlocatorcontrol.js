@@ -364,22 +364,36 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   showReversePopUp(e) {
     if (this.reverseActivated) {
+      // Reproject coordinates to ETRS89 on decimal grades (+ North latitude and East longitude)
       const origin = this.map.getProjection().code;
       const destiny = 'EPSG:4258';
       const etrs89pointCoordinates = this.getImpl()
-        .reproject([e.coord[0], e.coord[1]], origin, destiny);
+        .reprojectReverse([e.coord[0], e.coord[1]], origin, destiny);
+      // Params:
+      // lon, lat
+      // type (only if refcatastral) = 'refcatastral'
       const params = `lon=${etrs89pointCoordinates[0]}&lat=${etrs89pointCoordinates[1]}`;
       const urlToGet = `${this.urlReverse}?${params}`;
       const mapCoordinates = e.coord;
       this.geocoderCoords = etrs89pointCoordinates;
       const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
       let fullAddress = '';
+      // if device is mobile
+      // if (window.navigator.userAgent.match(/Android/i) ||
+      //   window.navigator.userAgent.match(/webOS/i) ||
+      //   window.navigator.userAgent.match(/iPhone/i) ||
+      //   window.navigator.userAgent.match(/iPad/i) ||
+      //   window.navigator.userAgent.match(/iPod/i) ||
+      //   window.navigator.userAgent.match(/BlackBerry/i) ||
+      //   window.navigator.userAgent.match(/Windows Phone/i)) {
+      //   this.showPopUp('Cargando...', mapCoordinates, dataCoordinates);
+      // }
       M.remote.get(urlToGet).then((res) => {
         if (res.text !== null) {
           const returnData = JSON.parse(res.text);
           fullAddress = this.createFullAddress(returnData);
         } else {
-          fullAddress = getValue('exception.noubi');
+          fullAddress = getValue('exception.exists');
         }
         this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e);
       });
