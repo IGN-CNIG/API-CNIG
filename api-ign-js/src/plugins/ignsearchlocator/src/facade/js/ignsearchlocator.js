@@ -145,6 +145,20 @@ export default class IGNSearchLocator extends M.Plugin {
     this.resultVisibility = options.resultVisibility || true;
 
     /**
+     * This variable indicates whether the plugin can be collapsed.
+     * @private
+     * @type {boolean}
+     */
+    this.isCollapsed = options.isCollapsed || false;
+
+    /**
+     * This variable indicates whether the plugin can be collapsible.
+     * @private
+     * @type {boolean}
+     */
+    this.collapsible = options.collapsible || false;
+
+    /**
      * This variable indicates plugin's position on window
      * @private
      * @type {string} { 'TL' | 'TR' | 'BL' | 'BR' } (corners)
@@ -250,9 +264,9 @@ export default class IGNSearchLocator extends M.Plugin {
     });
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelIGNSearchLocator', {
-      collapsible: false,
+      collapsible: this.collapsible,
       position: M.ui.position[this.position],
-      collapsed: false,
+      collapsed: this.isCollapsed,
       className: 'ign-search-panel',
       tooltip: this.tooltip_,
     });
