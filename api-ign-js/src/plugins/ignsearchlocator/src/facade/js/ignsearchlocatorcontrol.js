@@ -261,7 +261,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         clearTimeout(typingTimer);
       });
       html.querySelector('#m-ignsearchlocator-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
-      document.querySelector('.ign-search-panel>.m-panel-btn').addEventListener('click', this.clearResults.bind(this));
+      document.querySelector('.ign-searchlocator-panel>.m-panel-btn').addEventListener('click', this.clearResults.bind(this));
       this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReversePopUp(e));
       this.changePlaceholder();
       if (!this.reverse) {

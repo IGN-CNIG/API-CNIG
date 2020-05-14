@@ -267,7 +267,7 @@ export default class IGNSearchLocator extends M.Plugin {
       collapsible: this.collapsible,
       position: M.ui.position[this.position],
       collapsed: this.isCollapsed,
-      className: 'ign-search-panel',
+      className: 'ign-searchlocator-panel',
       collapsedButtonClass: 'icon-lupa',
       tooltip: this.tooltip_,
     });

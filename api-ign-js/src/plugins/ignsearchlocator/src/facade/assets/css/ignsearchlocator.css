@@ -1,5 +1,5 @@
-div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
-.ign-search-panel .g-cartografia-flecha-izquierda,
+div.m-area.m-top.m-left>div.m-panel.ign-searchlocator-panel.collapsed>button,
+.ign-searchlocator-panel .g-cartografia-flecha-izquierda,
 .g-cartografia-flecha-derecha {
     color: white !important;
     background: #71a7d3 !important;
@@ -9,7 +9,7 @@ div.m-area.m-top.m-left>div.m-panel.ign-search-panel.collapsed>button,
     white-space: nowrap;
 }
 
-.ign-search-panel {
+.ign-searchlocator-panel {
     order: -100;
 }
 
@@ -50,7 +50,7 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
 
 /* Other */
 
-.m-areas>div.m-area>div.m-panel.ign-search-panel.opened {
+.m-areas>div.m-area>div.m-panel.ign-searchlocator-panel.opened {
     background-color: transparent !important;
     z-index: 2000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .2), 0 -1px 0 rgba(0, 0, 0, .02);
@@ -558,11 +558,12 @@ DROPDOWN ****************************/
     margin-top: 3%;
 }
 
-.m-areas>div.m-area.m-bottom.m-right>div.m-panel>div.m-panel-controls {
+.m-areas>div.m-area.m-bottom.m-right>div.m-panel.ign-searchlocator-panel>div.m-panel-controls {
     margin-left: 40px;
 }
 
-.m-areas>div.m-area.m-bottom.m-left>div.m-panel>div.m-panel-controls {
+
+.m-areas>div.m-area.m-bottom.m-left>div.m-panel.ign-searchlocator-panel>div.m-panel-controls {
     margin-right: 40px;
 }
 
@@ -607,7 +608,7 @@ DROPDOWN ****************************/
         vertical-align: bottom;
     }
 
-    .m-areas>div.m-area.m-top>div.m-panel.ign-search-panel.opened {
+    .m-areas>div.m-area.m-top>div.m-panel.ign-searchlocator-panel.opened {
         width: 85% !important;
     }
 
@@ -640,7 +641,7 @@ DROPDOWN ****************************/
     font-display: block;
 }
 
-div.m-areas>div.m-area>div.m-panel.ign-search-panel.collapsed>button.m-panel-btn {
+div.m-areas>div.m-area>div.m-panel.ign-searchlocator-panel.collapsed>button.m-panel-btn {
     font-family: 'ignsearchlocator' !important;
     /* speak: none; */
     font-style: normal;
@@ -653,8 +654,8 @@ div.m-areas>div.m-area>div.m-panel.ign-search-panel.collapsed>button.m-panel-btn
     -moz-osx-font-smoothing: grayscale;
 }
 
-.m-panel .m-ign-search-panel [class^="icon-"]:before,
-.m-panel .m-ign-search-panel [class*=" icon-"]:before {
+.m-panel .m-ign-searchlocator-panel [class^="icon-"]:before,
+.m-panel .m-ign-searchlocator-panel [class*=" icon-"]:before {
     font-family: "ignsearchlocator" !important;
     font-style: normal;
     font-weight: normal;
