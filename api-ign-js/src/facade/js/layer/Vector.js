@@ -10,6 +10,8 @@ import LayerBase from './Layer';
 import * as LayerType from './Type';
 import * as dialog from '../dialog';
 import Style from '../style/Style';
+import FilterBase from '../filter/Base';
+import StyleCluster from '../style/Cluster';
 import * as EventType from '../event/eventtype';
 import { getValue } from '../i18n/language';
 
@@ -70,6 +72,30 @@ class Vector extends LayerBase {
     }
   }
 
+
+  /**
+   * This function return filter
+   *
+   * @function
+   * @public
+   * @return {M.Filter} returns filter assigned
+   * @api
+   */
+  getFilter() {
+    return this.filter_;
+  }
+
+  /**
+   * This function remove filter
+   *
+   * @function
+   * @public
+   * @api
+   */
+  removeFilter() {
+    this.setFilter(null);
+  }
+
   /**
    * This function add features to layer
    *
@@ -98,7 +124,9 @@ class Vector extends LayerBase {
    * @api
    */
   getFeatures(skipFilterParam) {
-    return this.getImpl().getFeatures(true, this.filter_);
+    let skipFilter = skipFilterParam;
+    if (isNullOrEmpty(this.getFilter())) skipFilter = true;
+    return this.getImpl().getFeatures(skipFilter, this.filter_);
   }
 
   /**
@@ -144,6 +172,7 @@ class Vector extends LayerBase {
    * @api
    */
   clear() {
+    this.removeFilter();
     this.removeFeatures(this.getFeatures(true));
   }
 
@@ -332,6 +361,37 @@ class Vector extends LayerBase {
    */
   calculateMaxExtent() {
     return this.getImpl().getFeaturesExtentPromise(true, this.filter_);
+  }
+
+  /**
+   * This function set a filter
+   *
+   * @function
+   * @public
+   * @param {M.Filter} filter - filter to set
+   * @api
+   */
+  setFilter(filter) {
+    if (isNullOrEmpty(filter) || (filter instanceof FilterBase)) {
+      this.filter_ = filter;
+      const style = this.style_;
+      if (style instanceof StyleCluster) {
+        // deactivate change cluster event
+        style.getImpl().deactivateChangeEvent();
+      }
+      this.redraw();
+      if (style instanceof StyleCluster) {
+        // activate change cluster event
+        style.getImpl().activateChangeEvent();
+
+        // Se refresca el estilo para actualizar los cambios del filtro
+        // ya que al haber activado el evento change de source cluster tras aplicar el filter
+        // no se actualiza automaticamente
+        style.refresh();
+      }
+    } else {
+      dialog.error(getValue('dialog').vector_filter);
+    }
   }
 
   /**

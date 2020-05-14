@@ -5,6 +5,7 @@ import MObject from 'M/Object';
 import OLFormatWKT from 'ol/format/WKT';
 import { get } from 'ol/proj';
 import FeatureImpl from '../feature/Feature';
+import GeoJSON from './GeoJSON';
 
 /**
  * @const
@@ -32,6 +33,7 @@ class WKT extends MObject {
    */
   constructor(options = {}) {
     super(options);
+    this.gjFormat_ = new GeoJSON();
     this.formatter_ = new OLFormatWKT({
       splitCollection: true,
       ...options,
@@ -81,45 +83,48 @@ class WKT extends MObject {
     return mFeatures;
   }
 
-  // /**
-  //  *
-  //  * @public
-  //  * @function
-  //  * @api
-  //  */
-  // write(feature, options = {}) {
-  //   const opts = getOptsProjection(options);
-  //   const olFeature = FeatureImpl.facade2OLFeature(feature);
-  //   const wkt = this.formatter_.writeFeatureText(olFeature, opts);
-  //   return wkt;
-  // }
+  /**
+   *
+   * @public
+   * @function
+   * @api
+   */
+  write(feature, options = {}) {
+    const opts = getOptsProjection(options);
+    const olFeature = FeatureImpl.facade2OLFeature(feature);
+    const wkt = this.formatter_.writeFeatureText(olFeature, opts);
+    return wkt;
+  }
 
   /**
-   * @inheritDoc
-   */
-  write(geometry) {
+  * Método auxiliar para las transformaciones y operaciones
+  * geométricas que no se incorporaron en un principio en apiign
+  * geometry: La geometría que se desea transformar.
+  * return:La geometría transformada en formato WKT.
+  */
+  writeFeature(geometry) {
     const olGeometry = this.gjFormat_.readGeometryFromObject(geometry);
     if (olGeometry.getType().toLowerCase() === 'point') {
       const pointCoord = olGeometry.getCoordinates();
       olGeometry.setCoordinates([pointCoord[0], pointCoord[1]]);
     }
-    const wktGeom = this.writeGeometryText(olGeometry);
+    const wktGeom = this.formatter_.writeGeometryText(olGeometry);
     return wktGeom;
   }
-}
 
-/**
- *
- * @public
- * @function
- * @api
- */
-writeCollection(features, options = {}) {
-  const opts = getOptsProjection(options);
-  const olFeatures = features.map(f => FeatureImpl.facade2OLFeature(f));
-  const wkt = this.formatter_.writeFeaturesText(olFeatures, opts);
-  return wkt;
-}
+
+  /**
+  *
+  * @public
+  * @function
+  * @api
+  */
+  writeCollection(features, options = {}) {
+    const opts = getOptsProjection(options);
+    const olFeatures = features.map(f => FeatureImpl.facade2OLFeature(f));
+    const wkt = this.formatter_.writeFeaturesText(olFeatures, opts);
+    return wkt;
+  }
 }
 
 export default WKT;

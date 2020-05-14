@@ -63,7 +63,7 @@ const toCQLFilter = (operation, geometries) => {
     if (geometry.type.toLowerCase() === 'point') {
       geometry.coordinates.length = 2;
     }
-    const formatedGeometry = wktFormat.write(geometry);
+    const formatedGeometry = wktFormat.writeFeature(geometry);
     cqlFilter += `${operation}({{geometryName}}, ${formatedGeometry})`;
   });
   return cqlFilter;
