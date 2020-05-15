@@ -34,7 +34,7 @@ var Profil = function(opt_options) {
     button.setAttribute('type', 'button');
     button.setAttribute('class', 'profile-close-button');
     const close = (e) => {
-      opt_options.map.removeControl(this);
+      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
     };
     button.addEventListener('click', close);
     button.addEventListener('touchstart', close);

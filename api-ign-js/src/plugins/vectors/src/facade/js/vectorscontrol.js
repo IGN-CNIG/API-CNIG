@@ -1296,8 +1296,12 @@ export default class VectorsControl extends M.Control {
   }
 
   getProfile() {
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    }
+
     this.getImpl().calculateProfile(this.feature);
-    this.deactivateDrawing();
-    this.deactivateSelection();
+    // this.deactivateDrawing();
+    // this.deactivateSelection();
   }
 }
