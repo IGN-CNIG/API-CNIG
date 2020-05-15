@@ -304,10 +304,15 @@ div.m-vector-layer-actions .active-tool {
 /*PERFIL TOPOGRAFICO*/
 .ol-control.ol-profil {
     position: absolute;
-    bottom: 0.5em;
-    right: 0.55em;
+    bottom: 3em !important;
+    right: 4em !important;
     text-align: right;
     overflow: hidden;
+    top: unset !important;
+}
+
+.ol-profil button {
+  background-image: none !important;
 }
 
 .ol-profil .ol-inner {

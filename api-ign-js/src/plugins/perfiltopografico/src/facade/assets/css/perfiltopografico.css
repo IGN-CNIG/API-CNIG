@@ -1,0 +1,209 @@
+.m-control.activated>button {
+    color: rgb(255, 0, 0) !important;
+}
+
+.m-perfilestopograficos {
+    display: flex !important;
+    height: 40px;
+}
+
+.m-perfilestopograficos.collapsed button.m-panel-btn {
+    color: #fff !important;
+}
+
+.m-perfilestopograficos button.m-panel-btn {
+    color: #71a7d3 !important;
+    font-family: g-plugin-perfiltopografico !important;
+}
+
+div.m-perfilestopograficos button {
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    margin: auto;
+    flex-direction: row;
+    cursor: pointer;
+}
+
+.g-cartografia-perfiltopografico {
+    background-image: url(./icon.svg) !important;
+    background-repeat: no-repeat !important;
+    background-size: 1.5em !important;
+    background-position: center !important;
+}
+
+.m-areas>div.m-area>div.m-panel>button.m-panel-btn.g-grafica-puntos2 {
+    font-family: g-plugin-perfiltopografico !important;
+}
+
+
+/* NUEVO */
+.ol-control.ol-profil {
+    position: absolute;
+    top: 0.5em;
+    right: 5em;
+    text-align: right;
+    overflow: hidden;
+}
+
+.ol-profil .ol-inner {
+    position: relative;
+    padding: 0.5em;
+    font-size: 0.8em;
+}
+
+.ol-control.ol-profil .ol-inner {
+    display: block;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 2px 2px;
+}
+
+.ol-control.ol-profil.ol-collapsed .ol-inner {
+    display: none;
+}
+
+.ol-profil canvas {
+    display: block;
+}
+
+.ol-profil button {
+    display: none;
+    position: absolute;
+    right: 2px;
+}
+
+.ol-profil button.profile-close-button {
+    position: absolute;
+    right: 2px;
+    top: 0px;
+    display: block !important;
+    color: #676767;
+    border: none;
+    background-color: transparent;
+}
+
+.ol-profil button.profile-close-button:hover {
+    transform: scale(1.2);
+}
+
+.ol-profil button.profile-close-button:after {
+    content: "X";
+}
+
+.ol-profil button.profile-close-button:focus {
+    outline: none;
+}
+
+.ol-profil.ol-collapsed button {
+    position: static;
+}
+
+.ol-profil .ol-profilbar,
+.ol-profil .ol-profilcursor {
+    position: absolute;
+    pointer-events: none;
+    width: 1px;
+    display: none;
+}
+
+.ol-profil .ol-profilcursor {
+    width: 0;
+    height: 0;
+}
+
+.ol-profil .ol-profilcursor:before {
+    content: "";
+    pointer-events: none;
+    display: block;
+    margin: -2px;
+    width: 5px;
+    height: 5px;
+}
+
+.ol-profil .ol-profilbar,
+.ol-profil .ol-profilcursor:before {
+    background: red;
+}
+
+.ol-profil table {
+    text-align: center;
+    width: 100%;
+}
+
+.ol-profil table span {
+    display: block;
+}
+
+.ol-profilpopup {
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 0.5em;
+    padding: 0 0.5em;
+    position: absolute;
+    top: -1em;
+    white-space: nowrap;
+}
+
+.ol-profilpopup.ol-left {
+    right: 0;
+}
+
+
+.ol-profil table td {
+    padding: 0 2px;
+}
+
+.ol-profil table .track-info {
+    display: table-row;
+}
+
+.ol-profil table .point-info {
+    display: none;
+}
+
+.ol-profil .over table .track-info {
+    display: none;
+}
+
+.ol-profil .over table .point-info {
+    display: table-row;
+}
+
+.ol-profil p {
+    text-align: center;
+    margin: 0;
+    font-weight: bold;
+    color: #A01001;
+}
+
+
+/* fonts*/
+@font-face {
+    font-family: 'g-plugin-perfiltopografico';
+    src: url('../fonts/g-plugin-perfiltopografico.eot?qp1ms9');
+    src: url('../fonts/g-plugin-perfiltopografico.eot?qp1ms9#iefix') format('embedded-opentype'),
+        url('../fonts/g-plugin-perfiltopografico.ttf?qp1ms9') format('truetype'),
+        url('../fonts/g-plugin-perfiltopografico.woff?qp1ms9') format('woff'),
+        url('../fonts/g-plugin-perfiltopografico.svg?qp1ms9#g-plugin-perfiltopografico') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+.g-plugin-perfiltopografico {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'g-plugin-perfiltopografico' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.g-grafica-puntos2:before {
+    content: "\5002";
+}
