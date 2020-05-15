@@ -69,6 +69,17 @@ class WKT extends Base {
    * @function
    * @api
    */
+  writeFeature(geometry) {
+    const wkt = this.getImpl().writeFeature(geometry);
+    return wkt;
+  }
+
+  /**
+   *
+   * @public
+   * @function
+   * @api
+   */
   writeCollection(features, options = {}) {
     const wkt = this.getImpl().writeCollection(features, options);
     return wkt;
