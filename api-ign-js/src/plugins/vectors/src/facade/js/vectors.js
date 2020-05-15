@@ -99,6 +99,12 @@ export default class Vectors extends M.Plugin {
       }
     });
 
+    this.map_.on(M.evt.REMOVED_LAYER, () => {
+      if (this.control_ !== null) {
+        this.control_.renderLayers();
+      }
+    });
+
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
@@ -133,9 +139,7 @@ export default class Vectors extends M.Plugin {
    * @api
    */
   destroy() {
-    this.control_.deactivateSelection();
-    this.control_.deactivateDrawing();
-    this.control_.deactivateEdition();
+    this.control_.resetInteractions();
     this.map_.removeControls([this.control_]);
     [this.map_, this.control_, this.panel_] = [null, null, null];
   }
