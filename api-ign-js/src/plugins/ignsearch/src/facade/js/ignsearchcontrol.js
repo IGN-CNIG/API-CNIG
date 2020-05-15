@@ -556,6 +556,14 @@ export default class IGNSearchControl extends M.Control {
         M.remote.get(urlToGet).then((res) => {
           const returnData = JSON.parse(res.text.substring(9, res.text.length - 1));
           for (let i = 0; i < returnData.length; i += 1) {
+            if (returnData[i].type === 'comunidad autonoma') {
+              const address = returnData[i].address.concat(', comunidad autónoma');
+              returnData[i].address = address;
+            }
+            if (returnData[i].type === 'provincia') {
+              const address = returnData[i].address.concat(', provincia');
+              returnData[i].address = address;
+            }
             resultsArray.push(returnData[i]);
           }
           resolve();
