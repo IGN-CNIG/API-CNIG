@@ -52,6 +52,7 @@
             <option value="municipio">Municipio</option>
             <option value="poblacion">Población</option>
             <option value="toponimo">Topónimo</option>
+            <option value="toponimo">Callejero</option>
             <option value="municipio,poblacion">Municipio y Población</option>
         </select>
         <label for="selectCountryCode">Selector de idioma del plugin</label>

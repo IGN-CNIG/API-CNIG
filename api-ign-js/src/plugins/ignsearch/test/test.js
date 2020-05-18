@@ -1,6 +1,6 @@
 import IGNSearch from 'facade/ignsearch';
 
-M.language.setLang('en');
+M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
@@ -16,7 +16,7 @@ const mp = new IGNSearch({
   countryCode: 'es',
   isCollapsed: true,
   collapsible: true,
-  position: 'BR',
+  position: 'TL',
   reverse: true,
   // urlCandidates: 'http://sergiotorrijos:8084/geocoder/api/geocoder/candidatesJsonp',
   // urlFind: 'http://sergiotorrijos:8084/geocoder/api/geocoder/findJsonp',
