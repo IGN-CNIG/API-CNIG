@@ -173,7 +173,7 @@ export default class PerfiltopograficoControl extends M.impl.Control {
     }.bind(this));
     this.draw_.on('drawend', function(evt) {
       this.lineCoord_ = evt.feature.getGeometry().getCoordinates();
-      this.facadeMap_.getMapImpl().addInteraction(this.draw_);
+      // this.facadeMap_.getMapImpl().addInteraction(this.draw_);
       this.pointsCoord_ = new String();
       for (let i = 1; i < this.lineCoord_.length; i++) {
         this.pointsCoord_ = this.pointsCoord_.concat(this.findNewPoints(this.lineCoord_[i - 1], this.lineCoord_[i]));
@@ -222,7 +222,7 @@ export default class PerfiltopograficoControl extends M.impl.Control {
     }).catch(() => {
       M.dialog.error('No se han obtenido datos');
     });
-    this.deactivate();
+    // this.deactivate();
   }
 
 
@@ -248,7 +248,7 @@ export default class PerfiltopograficoControl extends M.impl.Control {
         },
         projection: this.facadeMap_.getProjection().code,
         map: this.facadeMap_.getMapImpl(),
-
+        source: this.source_
       });
       this.facadeMap_.getMapImpl().addControl(this.profil_);
       let drawPoint = function(e) {
@@ -279,9 +279,11 @@ export default class PerfiltopograficoControl extends M.impl.Control {
   }
 
   deactivate() {
-    if (this.draw_) this.facadeMap_.getMapImpl().removeInteraction(this.draw_);
+    if (this.draw_) {
+      this.facadeMap_.getMapImpl().removeInteraction(this.draw_);
+      this.clearLayer();
+    }
     //Aquí hay que poner que se cambie el estilo del botón
-
   }
 
   clearLayer() {

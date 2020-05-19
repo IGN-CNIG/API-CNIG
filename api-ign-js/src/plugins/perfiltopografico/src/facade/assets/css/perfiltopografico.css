@@ -36,7 +36,6 @@ div.m-perfilestopograficos button {
     font-family: g-plugin-perfiltopografico !important;
 }
 
-
 /* NUEVO */
 .ol-control.ol-profil {
     position: absolute;
@@ -147,7 +146,6 @@ div.m-perfilestopograficos button {
     right: 0;
 }
 
-
 .ol-profil table td {
     padding: 0 2px;
 }
@@ -179,17 +177,18 @@ div.m-perfilestopograficos button {
 /* fonts*/
 @font-face {
     font-family: 'g-plugin-perfiltopografico';
-    src: url('../fonts/g-plugin-perfiltopografico.eot?qp1ms9');
-    src: url('../fonts/g-plugin-perfiltopografico.eot?qp1ms9#iefix') format('embedded-opentype'),
-        url('../fonts/g-plugin-perfiltopografico.ttf?qp1ms9') format('truetype'),
-        url('../fonts/g-plugin-perfiltopografico.woff?qp1ms9') format('woff'),
-        url('../fonts/g-plugin-perfiltopografico.svg?qp1ms9#g-plugin-perfiltopografico') format('svg');
+    src: url('../fonts/g-plugin-perfiltopografico.eot?m9t1ud');
+    src: url('../fonts/g-plugin-perfiltopografico.eot?m9t1ud#iefix') format('embedded-opentype'),
+        url('../fonts/g-plugin-perfiltopografico.ttf?m9t1ud') format('truetype'),
+        url('../fonts/g-plugin-perfiltopografico.woff?m9t1ud') format('woff'),
+        url('../fonts/g-plugin-perfiltopografico.svg?m9t1ud#g-plugin-perfiltopografico') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
 }
 
-.g-plugin-perfiltopografico {
+[class^="g-plugin-perfiltopografico"],
+[class*=" g-plugin-perfiltopografico"] {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'g-plugin-perfiltopografico' !important;
     speak: none;
@@ -205,5 +204,5 @@ div.m-perfilestopograficos button {
 }
 
 .g-grafica-puntos2:before {
-    content: "\5002";
+    content: "\e6161";
 }
