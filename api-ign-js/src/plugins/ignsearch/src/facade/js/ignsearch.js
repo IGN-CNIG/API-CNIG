@@ -181,6 +181,13 @@ export default class IGNSearch extends M.Plugin {
      * @type {number}
      */
     this.geocoderCoords_ = geocoderCoords || [];
+
+    /**
+     * This variable indicates Nomenclator SearchAssistant service url
+     * @private
+     * @type {string}
+     */
+    this.searchPosition = options.searchPosition || 'nomenclator,geocoder';
   }
 
   /**
@@ -208,6 +215,7 @@ export default class IGNSearch extends M.Plugin {
       this.locationID_,
       this.requestStreet_,
       this.geocoderCoords_,
+      this.searchPosition,
     ));
     this.controls_[0].on('ignsearch:entityFound', (extent) => {
       this.fire('ignsearch:entityFound', [extent]);
@@ -292,7 +300,7 @@ export default class IGNSearch extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.searchPosition}`;
   }
 
   /**

@@ -18,6 +18,7 @@ const mp = new IGNSearch({
   collapsible: true,
   position: 'TL',
   reverse: true,
+  searchPosition: 'geocoder,nomenclator',
   // urlCandidates: 'http://sergiotorrijos:8084/geocoder/api/geocoder/candidatesJsonp',
   // urlFind: 'http://sergiotorrijos:8084/geocoder/api/geocoder/findJsonp',
   // urlReverse: 'http://sergiotorrijos:8084/geocoder/api/geocoder/reverseGeocode',

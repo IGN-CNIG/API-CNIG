@@ -37,6 +37,7 @@ export default class IGNSearchControl extends M.Control {
     locationID,
     requestStreet,
     geocoderCoords,
+    searchPosition,
     nomenclatorSearchType = geographicNameType,
   ) {
     if (M.utils.isUndefined(IGNSearchImplControl)) {
@@ -119,6 +120,12 @@ export default class IGNSearchControl extends M.Control {
      * @type {Array<string>}
      */
     this.nomenclatorSearchType = nomenclatorSearchType;
+    /**
+     * Text to search
+     * @private
+     * @type {string}
+     */
+    this.searchPosition = searchPosition;
     /**
      * This variable indicates whether reverse geocoder button should be available.
      * @private
@@ -377,7 +384,11 @@ export default class IGNSearchControl extends M.Control {
       // Adds animation class during loading
       this.resultsBox.classList.add('g-cartografia-spinner');
       this.resultsBox.style.fontSize = '24px';
+
+      this.nomenclatorCandidates = [];
+      this.geocoderCandidates = [];
       this.allCandidates = [];
+
       const regExpCoord = /[+-]?\d+\.\d+(\s|,|(,\s))[+-]?\d+\.\d+/;
       // Checks if input content represents coordinates, else searches text
       if (regExpCoord.test(value)) {
@@ -385,9 +396,21 @@ export default class IGNSearchControl extends M.Control {
         this.searchCoordinates(value);
       } else {
         // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
-        this.getNomenclatorData(value, this.allCandidates).then(() => {
+        this.getNomenclatorData(value, this.nomenclatorCandidates).then(() => {
           // saves on allCandidates search results from CartoCiudad (geocoder)
-          this.getCandidatesData(value, this.allCandidates).then(() => {
+          this.getCandidatesData(value, this.geocoderCandidates).then(() => {
+            for (let i = 0; i < this.searchPosition.split(',').length; i += 1) {
+              if (this.searchPosition.split(',')[i] === 'nomenclator') {
+                for (let j = 0; j < this.nomenclatorCandidates.length; j += 1) {
+                  this.allCandidates.push(this.nomenclatorCandidates[j]);
+                }
+              }
+              if (this.searchPosition.split(',')[i] === 'geocoder') {
+                for (let j = 0; j < this.geocoderCandidates.length; j += 1) {
+                  this.allCandidates.push(this.geocoderCandidates[j]);
+                }
+              }
+            }
             // Clears previous search
             this.resultsBox.innerHTML = '';
             const compiledResult = M.template.compileSync(results, {
