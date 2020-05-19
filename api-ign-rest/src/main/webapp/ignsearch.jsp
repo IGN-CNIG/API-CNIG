@@ -83,6 +83,12 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="inputSearchposition">Orden resultados de los servicios</label>
+        <input type="text" name="searchposition" id="inputSearchposition" list="optionsSearchposition">
+        <datalist id="optionsSearchposition">
+            <option value="geocoder,nomenclator"></option>
+            <option value="nomenclator,geocoder"></option>
+        </datalist>
         <label for="inputUrlCandidates">Parámetro urlCandidates</label>
         <input type="text" name="urlCandidates" id="inputUrlCandidates" list="urlCandidatesSug">
         <datalist id="urlCandidatesSug">
@@ -132,7 +138,7 @@
         let sToSearch, mxResults, collapsed = true,
             collapsible = true,
             posicion, noProcess, countryCode, reverse = true,
-            urlCandidates, urlFind, urlReverse;
+            urlCandidates, urlFind, urlReverse, searchposition;
         crearPlugin({
             servicesToSearch: sToSearch,
             maxResults: mxResults,
@@ -144,7 +150,8 @@
             reverse: reverse,
             urlCandidates: urlCandidates,
             urlFind: urlFind,
-            urlReverse: urlReverse
+            urlReverse: urlReverse,
+            searchPosition: searchposition
         });
 
         const selectServiceToSearch = document.getElementById("selectServiceToSearch");
@@ -155,6 +162,7 @@
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
         const selectReverse = document.getElementById("selectReverse");
+        const inputSearchposition = document.getElementById("inputSearchposition");
         const inputUrlCandidates = document.getElementById("inputUrlCandidates");
         const inputUrlFind = document.getElementById("inputUrlFind");
         const inputUrlReverse = document.getElementById("inputUrlReverse");
@@ -167,6 +175,7 @@
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
         selectReverse.addEventListener('change', cambiarTest);
+        inputSearchposition.addEventListener('change', cambiarTest);
         inputUrlCandidates.addEventListener('change', cambiarTest);
         inputUrlFind.addEventListener('change', cambiarTest);
         inputUrlReverse.addEventListener('change', cambiarTest);
@@ -181,6 +190,7 @@
             objeto.isCollapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true');
+            searchPosition = inputSearchposition.value != "" ? objeto.searchPosition = inputSearchposition.value : "";
             urlCandidates = inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value : "";
             urlFind = inputUrlFind.value != "" ? objeto.urlFind = inputUrlFind.value : "";
             urlReverse = inputUrlReverse.value != "" ? objeto.urlReverse = inputUrlReverse.value : "";
