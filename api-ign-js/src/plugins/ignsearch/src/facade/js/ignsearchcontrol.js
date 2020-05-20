@@ -913,6 +913,10 @@ export default class IGNSearchControl extends M.Control {
     }
     this.lat = mapcoords[1];
     this.lng = mapcoords[0];
+
+    this.geocoderCoords += this.lng;
+    this.geocoderCoords += ',';
+    this.geocoderCoords += this.lat;
   }
   /**
    * This function sets given scale to map
