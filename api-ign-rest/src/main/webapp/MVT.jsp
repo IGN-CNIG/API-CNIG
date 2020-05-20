@@ -43,7 +43,6 @@
             <option value="estatal">Teselas vectoriales de ámbito Estatal</option>
             <option value="regional" selected="selected">Teselas vectoriales de ámbito Regional</option>
             <option value="osm">Teselas vectoriales de ámbito global</option>
-            <option value="complementarios">Teselas vectoriales complementarios</option>
         </select>
     </div>
     <div id="mapjs" class="m-container"></div>
