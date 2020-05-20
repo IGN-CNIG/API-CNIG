@@ -2,5 +2,5 @@
   "exception": {
     "impl": "The implementation used cannot create ZoomExtentControl."
   },
-  "tooltip": "Zoom in on box"
+  "tooltip": "Zoom to box"
 }
