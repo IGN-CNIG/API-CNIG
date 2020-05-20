@@ -221,7 +221,7 @@ export default class IGNSearchControl extends M.Control {
         }
         if (this.requestStreet && this.requestStreet.length > 0) {
           M.proxy(true);
-          this.requestStreet = this.requestStreet.replace('<span id="info">', '').replace('<span>', '');
+          this.requestStreet = this.requestStreet.replace('<span id="info">', '').replace('</span>', '');
           M.remote.get(this.requestStreet).then((res) => {
             const geoJsonData = res.text.substring(9, res.text.length - 1);
             this.map.removeLayers(this.clickedElementLayer);
