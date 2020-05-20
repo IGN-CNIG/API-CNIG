@@ -220,7 +220,7 @@ export default class IGNSearchControl extends M.Control {
           this.drawNomenclatorResult(this.locationID, false);
         }
         if (this.requestStreet && this.requestStreet.length > 0) {
-          M.proxy(true);
+          M.proxy(false);
           this.requestStreet = this.requestStreet.replace('<span id="info">', '').replace('</span>', '');
           M.remote.get(this.requestStreet).then((res) => {
             const geoJsonData = res.text.substring(9, res.text.length - 1);
