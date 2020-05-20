@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /**
- * @module M/impl/control/PerfiltopograficoControl
+ * @module M/impl/control/TopographicprofileControl
  */
 import Profil from './profilcontrol';
 import { getValue } from '../../../facade/js/i18n/language';
@@ -9,7 +9,7 @@ const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCovera
 const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_500&' +
   'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
 
-export default class PerfiltopograficoControl extends M.impl.Control {
+export default class TopographicprofileControl extends M.impl.Control {
 
   constructor(opts) {
 
@@ -141,7 +141,7 @@ export default class PerfiltopograficoControl extends M.impl.Control {
   startLoad() {
     document.body.style.cursor = 'wait';
     this.deactivate();
-    let panel = document.querySelector(".m-perfilestopograficos.activated");
+    let panel = document.querySelector(".m-topographicprofile.activated");
     panel.style.pointerEvents = "none";
 
   }
@@ -150,7 +150,7 @@ export default class PerfiltopograficoControl extends M.impl.Control {
   endLoad() {
     document.body.style.cursor = 'default';
     this.activate();
-    let panel = document.querySelector(".m-perfilestopograficos.activated");
+    let panel = document.querySelector(".m-topographicprofile.activated");
     panel.style.pointerEvents = "auto";
   }
 
@@ -160,7 +160,7 @@ export default class PerfiltopograficoControl extends M.impl.Control {
       this.createIteraction("LineString");
     }
     this.facadeMap_.getMapImpl().addInteraction(this.draw_);
-    document.querySelector('#m-perfilestopograficos-btn').classList.add('activated');
+    document.querySelector('#m-topographicprofile-btn').classList.add('activated');
   }
 
   createIteraction(typeGeom) {
@@ -283,7 +283,7 @@ export default class PerfiltopograficoControl extends M.impl.Control {
     if (this.draw_) {
       this.facadeMap_.getMapImpl().removeInteraction(this.draw_);
       this.clearLayer();
-      document.querySelector('#m-perfilestopograficos-btn').classList.remove('activated');
+      document.querySelector('#m-topographicprofile-btn').classList.remove('activated');
     }
     //Aquí hay que poner que se cambie el estilo del botón
   }

@@ -1,12 +1,12 @@
 /**
- * @module M/plugin/Perfiltopografico
+ * @module M/plugin/Topographicprofile
  */
-import 'assets/css/perfiltopografico';
-import PerfiltopograficoControl from './perfiltopograficocontrol';
+import 'assets/css/topographicprofile';
+import TopographicprofileControl from './topographicprofilecontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
-export default class Perfiltopografico extends M.Plugin {
+export default class Topographicprofile extends M.Plugin {
   /**
    * @classdesc
    * Main facade plugin object. This class creates a plugin
@@ -68,12 +68,12 @@ export default class Perfiltopografico extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new PerfiltopograficoControl(this.options_));
+    this.controls_.push(new TopographicprofileControl(this.options_));
     this.map_ = map;
     // panel para agregar control - no obligatorio
-    this.panel_ = new M.ui.Panel('panelPerfiltopografico', {
+    this.panel_ = new M.ui.Panel('panelTopographicprofile', {
       // 'collapsible': true,
-      'className': 'm-perfilestopograficos',
+      'className': 'm-topographicprofile',
       'collapsedButtonClass': 'g-grafica-puntos2',
       'position': M.ui.position[this.position_],
       'tooltip': getValue('tooltip')
@@ -118,6 +118,6 @@ export default class Perfiltopografico extends M.Plugin {
   }
 
   get name() {
-    return "perfiltopografico";
+    return "topographicprofile";
   }
 }

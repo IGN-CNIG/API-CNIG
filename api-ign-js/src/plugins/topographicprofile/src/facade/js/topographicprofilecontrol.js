@@ -1,12 +1,12 @@
 /**
- * @module M/control/PerfiltopograficoControl
+ * @module M/control/Topographicprofilecontrol
  */
 
-import PerfiltopograficoImplControl from 'impl/perfiltopograficocontrol';
+import TopographicprofileImplControl from 'impl/topographicprofilecontrol';
 import template from 'templates/perfiltopografico';
 import { getValue } from './i18n/language';
 
-export default class PerfiltopograficoControl extends M.Control {
+export default class TopographicprofileControl extends M.Control {
   /**
    * @classdesc
    * Main constructor of the class. Creates a PluginControl
@@ -19,12 +19,12 @@ export default class PerfiltopograficoControl extends M.Control {
   constructor(opts) {
 
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(PerfiltopograficoImplControl)) {
-      M.exception('La implementación usada no puede crear controles PerfiltopograficoControl');
+    if (M.utils.isUndefined(TopographicprofileImplControl)) {
+      M.exception('La implementación usada no puede crear controles TopographicprofileControl');
     }
     // 2. implementation of this control
-    const impl = new PerfiltopograficoImplControl(opts);
-    super(impl, 'Perfiltopografico');
+    const impl = new TopographicprofileImplControl(opts);
+    super(impl, 'Topographicprofile');
 
     [this.btnData_, this.btnRemove_, this.facadeMap_, this.html_, this.drawCtrl_, this.opts] = [null, null, null, null, null, impl, opts];
   }
@@ -63,7 +63,7 @@ export default class PerfiltopograficoControl extends M.Control {
       const html = M.template.compileSync(template);
       // Añadir código dependiente del DOM
       this.template_ = html;
-      html.querySelector('#m-perfilestopograficos-btn').title = getValue('title');
+      html.querySelector('#m-topographicprofile-btn').title = getValue('title');
       success(html);
     });
   }
@@ -77,7 +77,7 @@ export default class PerfiltopograficoControl extends M.Control {
    */
 
   getActivationButton(html) {
-    return html.querySelector('#m-perfilestopograficos-btn');
+    return html.querySelector('#m-topographicprofile-btn');
   }
 
 
@@ -101,6 +101,6 @@ export default class PerfiltopograficoControl extends M.Control {
    * @api stable
    */
   equals(control) {
-    return control instanceof PerfiltopograficoControl;
+    return control instanceof TopographicprofileControl;
   }
 }

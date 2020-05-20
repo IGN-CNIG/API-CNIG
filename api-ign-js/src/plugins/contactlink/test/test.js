@@ -2,6 +2,7 @@ import ContactLink from 'facade/contactlink';
 
 const map = M.map({
   container: 'mapjs',
+  // controls: ['layerswitcher'],
 });
 
 // M.language.setLang('en');
@@ -21,6 +22,13 @@ const mp = new ContactLink({
 
 });
 
+const mvt = new M.layer.MVT({
+  url: 'https://herramienta-centralizada-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Global:carloscastellano_rios____cc_20191104@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  name: 'vectortile',
+  projection: 'EPSG:3857',
+});
+
+map.addLayers(mvt)
 map.addPlugin(mp);
 
 window.map = map;

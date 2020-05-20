@@ -1,4 +1,4 @@
-import Perfiltopografico from 'facade/perfiltopografico';
+import Topographicprofile from 'facade/topographicprofile';
 
 const map = M.map({
   container: 'mapjs',
@@ -7,7 +7,7 @@ const map = M.map({
   //projection: 'EPSG:4326*d'
 });
 
-const mp = new Perfiltopografico();
+const mp = new Topographicprofile();
 
 map.addPlugin(mp);
 
