@@ -838,6 +838,30 @@ export const getTextFromHtml = (html) => {
 };
 
 /**
+ * This function gets the inverse of a color. The inverse of a color
+ * is the diff between the hexadecimal value of white (0xFFFFFF)
+ * and the hexadecimal value of the color.
+ * @function
+ * @public
+ * @param {string} color
+ * @return {string} inverse color in hexadecimal format
+ * @api
+ */
+export const inverseColor = (color) => {
+  let inverseColorParam;
+  if (isString(color)) {
+    let hexColor = chroma(color)
+      .hex();
+    hexColor = hexColor.replace(/^#/, '0x');
+    inverseColorParam = chroma(0xFFFFFF - hexColor)
+      .hex();
+  }
+
+  return inverseColorParam;
+};
+
+
+/**
  * This function returns a color as string with opacity
  * @function
  * @public
@@ -878,6 +902,18 @@ export const extendsObj = (destParam = {}, src = {}) => {
     });
   }
   return dest;
+};
+
+/**
+ * This functions returns the order style
+ * @function
+ * @public
+ * @param {M.Style}
+ * @return {number}
+ * @api
+ */
+export const styleComparator = (style, style2) => {
+  return style.ORDER - style2.ORDER;
 };
 
 /**
