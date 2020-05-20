@@ -221,6 +221,7 @@ export default class IGNSearchControl extends M.Control {
         }
         if (this.requestStreet && this.requestStreet.length > 0) {
           M.proxy(true);
+          this.requestStreet = this.requestStreet.replace('<span id="info">', '').replace('<span>', '');
           M.remote.get(this.requestStreet).then((res) => {
             const geoJsonData = res.text.substring(9, res.text.length - 1);
             this.map.removeLayers(this.clickedElementLayer);
@@ -875,8 +876,6 @@ export default class IGNSearchControl extends M.Control {
     const destinySource = 'EPSG:4326';
     const newCoordinates = this.getImpl()
       .reproject([coordinates[1], coordinates[0]], destinySource, destinyProj);
-    this.geocoderCoords += coordinates.reverse();
-    this.geocoderCoords += newCoordinates;
 
     let exitState;
     if (exactResult !== 1) {
