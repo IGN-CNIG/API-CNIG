@@ -875,6 +875,9 @@ export default class IGNSearchControl extends M.Control {
     const destinySource = 'EPSG:4326';
     const newCoordinates = this.getImpl()
       .reproject([coordinates[1], coordinates[0]], destinySource, destinyProj);
+    this.geocoderCoords += coordinates.reverse();
+    this.geocoderCoords += newCoordinates;
+
     let exitState;
     if (exactResult !== 1) {
       exitState = getValue('aprox');
@@ -913,10 +916,6 @@ export default class IGNSearchControl extends M.Control {
     }
     this.lat = mapcoords[1];
     this.lng = mapcoords[0];
-
-    this.geocoderCoords += this.lng;
-    this.geocoderCoords += ',';
-    this.geocoderCoords += this.lat;
   }
   /**
    * This function sets given scale to map
