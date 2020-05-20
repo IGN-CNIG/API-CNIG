@@ -238,6 +238,8 @@ export default class IGNSearchControl extends M.Control {
             });
             this.clickedElementLayer.displayInLayerSwitcher = false;
 
+            this.createGeometryStyles();
+
             if (featureJSON.geometry.type === 'Point') {
               this.clickedElementLayer.setStyle(this.point);
             }
@@ -255,8 +257,6 @@ export default class IGNSearchControl extends M.Control {
               const perfectResult = featureJSON.properties.state;
               this.showSearchPopUp(fullAddress, coordinates, perfectResult, { fake: true });
             }
-
-            this.createGeometryStyles();
 
             M.proxy(true);
           });
