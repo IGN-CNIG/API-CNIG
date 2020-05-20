@@ -1,9 +1,9 @@
 {
   "url": {
-    "name": "perfiltopografico",
+    "name": "topographicprofile",
     "separator": "*"
   },
-  "constructor": "M.plugin.Perfiltopografico",
+  "constructor": "M.plugin.Topographicprofile",
   "parameters": [{
     "type": "object",
     "properties": [{
@@ -15,8 +15,8 @@
   }],
   "files": {
     "ol": {
-      "scripts": ["perfiltopografico.ol.min.js"],
-      "styles": ["perfiltopografico.ol.min.css"]
+      "scripts": ["topographicprofile.ol.min.js"],
+      "styles": ["topographicprofile.ol.min.css"]
     }
   },
   "metadata": {

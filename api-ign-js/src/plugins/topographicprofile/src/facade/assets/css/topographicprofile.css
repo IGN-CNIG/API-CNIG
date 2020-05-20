@@ -1,12 +1,13 @@
-.m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-perfilestopograficos-container button {
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-topographicprofile-container button {
     color: white;
     background-color: #71a7d3 !important;
     opacity: 1;
     border-radius: 40px;
     font-family: g-plugin-perfiltopografico !important;
+    outline: none;
 }
 
-.m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-perfilestopograficos-container>button.activated {
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-topographicprofile-container>button.activated {
     background-color: #D1E6F8 !important;
     color: #364B5F !important;
     font-family: g-plugin-perfiltopografico !important;
