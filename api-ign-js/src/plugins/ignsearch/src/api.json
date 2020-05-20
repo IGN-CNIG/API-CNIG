@@ -55,6 +55,10 @@
         "type": "simple",
         "name": "geocoderCoords",
         "position": 11
+      }, {
+        "type": "simple",
+        "name": "searchPosition",
+        "position": 12
       }
     ]
   }],

@@ -300,7 +300,7 @@ export default class IGNSearch extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.resultVisibility}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.searchPosition}`;
   }
 
   /**

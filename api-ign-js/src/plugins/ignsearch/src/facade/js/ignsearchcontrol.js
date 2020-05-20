@@ -32,7 +32,7 @@ export default class IGNSearchControl extends M.Control {
     urlPrefix,
     urlAssistant,
     urlDispatcher,
-    resultVisibility = true,
+    resultVisibility,
     reverse,
     locationID,
     requestStreet,
