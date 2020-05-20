@@ -160,6 +160,7 @@ export default class PerfiltopograficoControl extends M.impl.Control {
       this.createIteraction("LineString");
     }
     this.facadeMap_.getMapImpl().addInteraction(this.draw_);
+    document.querySelector('#m-perfilestopograficos-btn').classList.add('activated');
   }
 
   createIteraction(typeGeom) {
@@ -282,6 +283,7 @@ export default class PerfiltopograficoControl extends M.impl.Control {
     if (this.draw_) {
       this.facadeMap_.getMapImpl().removeInteraction(this.draw_);
       this.clearLayer();
+      document.querySelector('#m-perfilestopograficos-btn').classList.remove('activated');
     }
     //Aquí hay que poner que se cambie el estilo del botón
   }

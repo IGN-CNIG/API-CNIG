@@ -1,38 +1,14 @@
-.m-control.activated>button {
-    color: rgb(255, 0, 0) !important;
-}
-
-.m-perfilestopograficos {
-    display: flex !important;
-    height: 40px;
-}
-
-.m-perfilestopograficos.collapsed button.m-panel-btn {
-    color: #fff !important;
-}
-
-.m-perfilestopograficos button.m-panel-btn {
-    color: #71a7d3 !important;
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-perfilestopograficos-container button {
+    color: white;
+    background-color: #71a7d3 !important;
+    opacity: 1;
+    border-radius: 40px;
     font-family: g-plugin-perfiltopografico !important;
 }
 
-div.m-perfilestopograficos button {
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-    margin: auto;
-    flex-direction: row;
-    cursor: pointer;
-}
-
-.g-cartografia-perfiltopografico {
-    background-image: url(./icon.svg) !important;
-    background-repeat: no-repeat !important;
-    background-size: 1.5em !important;
-    background-position: center !important;
-}
-
-.m-areas>div.m-area>div.m-panel>button.m-panel-btn.g-grafica-puntos2 {
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-perfilestopograficos-container>button.activated {
+    background-color: #D1E6F8 !important;
+    color: #364B5F !important;
     font-family: g-plugin-perfiltopografico !important;
 }
 

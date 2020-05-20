@@ -58,12 +58,12 @@ export default class PerfiltopograficoControl extends M.Control {
       };
     }
     this.facadeMap_ = map;
-    document.querySelector("div.m-panel.m-perfilestopograficos>button.m-panel-btn").title = getValue('title');
 
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
       // Añadir código dependiente del DOM
       this.template_ = html;
+      html.querySelector('#m-perfilestopograficos-btn').title = getValue('title');
       success(html);
     });
   }
@@ -77,7 +77,7 @@ export default class PerfiltopograficoControl extends M.Control {
    */
 
   getActivationButton(html) {
-    return document.querySelector("div.m-panel.m-perfilestopograficos>button.m-panel-btn");
+    return html.querySelector('#m-perfilestopograficos-btn');
   }
 
 

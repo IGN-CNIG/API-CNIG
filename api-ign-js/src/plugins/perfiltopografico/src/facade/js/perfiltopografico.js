@@ -72,7 +72,7 @@ export default class Perfiltopografico extends M.Plugin {
     this.map_ = map;
     // panel para agregar control - no obligatorio
     this.panel_ = new M.ui.Panel('panelPerfiltopografico', {
-      'collapsible': true,
+      // 'collapsible': true,
       'className': 'm-perfilestopograficos',
       'collapsedButtonClass': 'g-grafica-puntos2',
       'position': M.ui.position[this.position_],
