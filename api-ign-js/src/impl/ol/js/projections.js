@@ -3,6 +3,15 @@ import OLProjection from 'ol/proj/Projection';
 import { register } from 'ol/proj/proj4';
 import { addEquivalentProjections } from 'ol/proj';
 
+// EPSG:4258
+const proj4258 = {
+  def: '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs',
+  extent: [-16.1, 32.88, 39.65, 84.17],
+  codes: ['EPSG:4258', 'urn:ogc:def:crs:EPSG::4258', 'http://www.opengis.net/gml/srs/epsg.xml#4258'],
+  units: 'd',
+  metersPerUnit: 111319.49079327358,
+};
+
 // EPSG:25828
 const proj25828 = {
   def: '+proj=utm +zone=28 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
@@ -33,6 +42,15 @@ const proj25831 = {
   extent: [-1300111.74, 3804640.43, 893164.13, 9478718.31],
   codes: ['EPSG:25831', 'urn:ogc:def:crs:EPSG::25831', 'http://www.opengis.net/gml/srs/epsg.xml#25831'],
   units: 'm',
+};
+
+// EPSG:4230
+const proj4230 = {
+  def: '+proj=longlat +ellps=intl +no_defs',
+  extent: [-16.09882145355955, 25.711114310330917, 48.60999527749605, 84.16977336415472],
+  codes: ['EPSG:4230', 'urn:ogc:def:crs:EPSG::4230', 'http://www.opengis.net/gml/srs/epsg.xml#4230'],
+  units: 'd',
+  metersPerUnit: 111319.49079327358,
 };
 
 // EPSG:23028
@@ -67,34 +85,7 @@ const proj23031 = {
   units: 'm',
 };
 
-// EPSG:4258
-const proj4258 = {
-  def: '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs',
-  extent: [-16.1, 32.88, 39.65, 84.17],
-  codes: ['EPSG:4258', 'urn:ogc:def:crs:EPSG::4258', 'http://www.opengis.net/gml/srs/epsg.xml#4258'],
-  units: 'd',
-  metersPerUnit: 111319.49079327358,
-};
-
-
-// EPSG:4230
-const proj4230 = {
-  def: '+proj=longlat +ellps=intl +no_defs',
-  extent: [-16.09882145355955, 25.711114310330917, 48.60999527749605, 84.16977336415472],
-  codes: ['EPSG:4230', 'urn:ogc:def:crs:EPSG::4230', 'http://www.opengis.net/gml/srs/epsg.xml#4230'],
-  units: 'd',
-  metersPerUnit: 111319.49079327358,
-};
-
-// EPSG:32628
-const proj32628 = {
-  def: '+proj=utm +zone=28 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
-  extent: [166021.44317933178, 0, 833978.5568206678, 9329005.18301614],
-  codes: ['EPSG:32628', 'urn:ogc:def:crs:EPSG::32628', 'http://www.opengis.net/gml/srs/epsg.xml#32628'],
-  units: 'm',
-};
-
-// EPSG:4326
+// EPSG:4326 WGS84 Geográficas
 const proj4326 = {
   def: '+proj=longlat +datum=WGS84 +no_defs',
   extent: [-180, -90, 180, 90],
@@ -102,6 +93,45 @@ const proj4326 = {
   units: 'd',
   metersPerUnit: 111319.49079327358,
   axisOrientation: 'neu',
+};
+
+// EPSG:32627 WGS84 UTM huso 27N
+const proj32627 = {
+  def: '+proj=utm +zone=27 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+  extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
+  codes: ['EPSG:32627', 'urn:ogc:def:crs:EPSG::32627', 'http://www.opengis.net/gml/srs/epsg.xml#32627'],
+  units: 'm',
+};
+
+// EPSG:32628 WGS84 UTM huso 28N
+const proj32628 = {
+  def: '+proj=utm +zone=28 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+  extent: [166021.44317933178, 0, 833978.5568206678, 9329005.18301614],
+  codes: ['EPSG:32628', 'urn:ogc:def:crs:EPSG::32628', 'http://www.opengis.net/gml/srs/epsg.xml#32628'],
+  units: 'm',
+};
+
+// EPSG:32629 WGS84 UTM huso 29N
+const proj32629 = {
+  def: '+proj=utm +zone=29 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+  extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
+  codes: ['EPSG:32629', 'urn:ogc:def:crs:EPSG::32629', 'http://www.opengis.net/gml/srs/epsg.xml#32629'],
+  units: 'm',
+};
+// EPSG:32630 WGS84 UTM huso 30N
+const proj32630 = {
+  def: '+proj=utm +zone=30 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+  extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
+  codes: ['EPSG:32629', 'urn:ogc:def:crs:EPSG::32629', 'http://www.opengis.net/gml/srs/epsg.xml#32629'],
+  units: 'm',
+};
+
+// EPSG:32631 WGS84 UTM huso 31N
+const proj32631 = {
+  def: '+proj=utm +zone=31 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+  extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
+  codes: ['EPSG:32631', 'urn:ogc:def:crs:EPSG::32631', 'http://www.opengis.net/gml/srs/epsg.xml#32631'],
+  units: 'm',
 };
 
 // EPSG:4081 REGCAN95 Geográficas
@@ -113,7 +143,7 @@ const proj4081 = {
   metersPerUnit: 111319.49079327358,
 };
 
-// EPSG:4082 REGCAN95 UTM huso 27
+// EPSG:4082 REGCAN95 UTM huso 27N
 const proj4082 = {
   def: '+proj=utm +zone=27 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
   extent: [405849.71, 2720975.60, 1367994.77, 3662797.15],
@@ -121,7 +151,7 @@ const proj4082 = {
   units: 'm',
 };
 
-// EPSG:4083 REGCAN95 UTM huso 28
+// EPSG:4083 REGCAN95 UTM huso 28N
 const proj4083 = {
   def: '+proj=utm +zone=28 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ',
   extent: [-202677.94, 2738405.48, 804488.92, 3629357.10],
@@ -131,17 +161,21 @@ const proj4083 = {
 
 // All projections above
 const projections = [
-  proj25830,
-  proj23030,
+  proj4326,
+  proj32627,
+  proj32628,
+  proj32629,
+  proj32630,
+  proj32631,
   proj4258,
   proj25829,
-  proj23029,
-  proj4230,
-  proj32628,
-  proj4326,
   proj25828,
+  proj25830,
   proj25831,
+  proj4230,
   proj23028,
+  proj23029,
+  proj23030,
   proj23031,
   proj4081,
   proj4082,

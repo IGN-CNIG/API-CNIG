@@ -73,6 +73,7 @@ var Profil = function(opt_options) {
     button.setAttribute('class', 'profile-close-button');
     const close = (e) => {
       opt_options.map.removeControl(this);
+      options.source.clear();
     };
     button.addEventListener('click', close);
     button.addEventListener('touchstart', close);
