@@ -79,7 +79,7 @@ export default class IGNSearchLocator extends M.Plugin {
      * @private
      * @type {string} - 'municipio' | 'poblacion' | 'toponimo' | 'municipio,poblacion' | etc
      */
-    this.noProcess = options.noProcess || 'municipio,poblacion';
+    this.noProcess = options.noProcess || 'poblacion';
 
     /**
      * This variable indicates the country code.
@@ -224,6 +224,13 @@ export default class IGNSearchLocator extends M.Plugin {
     if (options.zoom !== undefined) {
       this.zoom_ = parseInt(options.zoom, 10);
     }
+
+    /**
+     * This variable indicates Nomenclator SearchAssistant service url
+     * @private
+     * @type {string}
+     */
+    this.searchPosition = options.searchPosition || 'nomenclator,geocoder';
   }
 
   /**
@@ -255,6 +262,7 @@ export default class IGNSearchLocator extends M.Plugin {
       this.requestStreet_,
       this.geocoderCoords_,
       this.zoom_,
+      this.searchPosition,
     ));
     this.controls_[0].on('ignsearchlocator:entityFound', (extent) => {
       this.fire('ignsearchlocator:entityFound', [extent]);
@@ -354,7 +362,7 @@ export default class IGNSearchLocator extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.zoom}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.zoom}*${this.searchPosition}`;
   }
 
   /**

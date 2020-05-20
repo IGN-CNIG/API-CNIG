@@ -24,13 +24,13 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   constructor(
-    servicesToSearch = 'gn',
+    servicesToSearch,
     CMC_url = null,
     DNPPP_url = null,
     CPMRC_url = null,
-    maxResults = 10,
-    noProcess = 'municipio,poblacion',
-    countryCode = 'es',
+    maxResults,
+    noProcess,
+    countryCode,
     urlCandidates,
     urlFind,
     urlReverse,
@@ -42,8 +42,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     locationID,
     requestStreet,
     geocoderCoords,
-    nomenclatorSearchType = geographicNameType,
     zoom,
+    searchPosition,
+    nomenclatorSearchType = geographicNameType,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
       M.exception(getValue('impl'));
@@ -177,6 +178,12 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {Array<string>}
      */
     this.nomenclatorSearchType = nomenclatorSearchType;
+    /**
+     * Text to search
+     * @private
+     * @type {string}
+     */
+    this.searchPosition = searchPosition;
     /**
      * This variable indicates whether reverse geocoder button should be available.
      * @private
@@ -458,11 +465,27 @@ export default class IGNSearchLocatorControl extends M.Control {
       // Adds animation class during loading
       this.resultsBox.classList.add('g-cartografia-spinner');
       this.resultsBox.style.fontSize = '24px';
+
+      this.nomenclatorCandidates = [];
+      this.geocoderCandidates = [];
       this.allCandidates = [];
+
       // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
-      this.getNomenclatorData(value, this.allCandidates).then(() => {
+      this.getNomenclatorData(value, this.nomenclatorCandidates).then(() => {
         // saves on allCandidates search results from CartoCiudad (geocoder)
-        this.getCandidatesData(value, this.allCandidates).then(() => {
+        this.getCandidatesData(value, this.geocoderCandidates).then(() => {
+          for (let i = 0; i < this.searchPosition.split(',').length; i += 1) {
+            if (this.searchPosition.split(',')[i] === 'nomenclator') {
+              for (let j = 0; j < this.nomenclatorCandidates.length; j += 1) {
+                this.allCandidates.push(this.nomenclatorCandidates[j]);
+              }
+            }
+            if (this.searchPosition.split(',')[i] === 'geocoder') {
+              for (let j = 0; j < this.geocoderCandidates.length; j += 1) {
+                this.allCandidates.push(this.geocoderCandidates[j]);
+              }
+            }
+          }
           // Clears previous search
           this.resultsBox.innerHTML = '';
           const compiledResult = M.template.compileSync(results, {
@@ -485,8 +508,13 @@ export default class IGNSearchLocatorControl extends M.Control {
           this.resultsBox.appendChild(compiledResult);
           // Service doesn't find results
           if (this.allCandidates.length === 0) {
-            const infoMsg = document.createTextNode(getValue('exception.noresults'));
-            this.resultsBox.appendChild(infoMsg);
+            const parragraph = document.createElement('p');
+            const infoMsg = document.createTextNode(getValue('exception.results'));
+            parragraph.appendChild(infoMsg);
+            this.resultsBox.appendChild(parragraph);
+            document.getElementById('m-ignsearchlocator-results-list').style.display = 'none';
+          } else {
+            document.getElementById('m-ignsearchlocator-results-list').style.display = 'block';
           }
         });
       });
@@ -623,14 +651,6 @@ export default class IGNSearchLocatorControl extends M.Control {
         M.remote.get(urlToGet).then((res) => {
           const returnData = JSON.parse(res.text.substring(9, res.text.length - 1));
           for (let i = 0; i < returnData.length; i += 1) {
-            if (returnData[i].type === 'comunidad autonoma') {
-              const address = returnData[i].address.concat(', comunidad autónoma');
-              returnData[i].address = address;
-            }
-            if (returnData[i].type === 'provincia') {
-              const address = returnData[i].address.concat(', provincia');
-              returnData[i].address = address;
-            }
             resultsArray.push(returnData[i]);
           }
           resolve();

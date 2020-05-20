@@ -47,7 +47,7 @@ export default class IGNSearch extends M.Plugin {
      * @private
      * @type {number}
      */
-    this.maxResults = options.maxResults || 2;
+    this.maxResults = options.maxResults || 10;
 
     /**
      * This variables indicates which entities shouldn't be searched

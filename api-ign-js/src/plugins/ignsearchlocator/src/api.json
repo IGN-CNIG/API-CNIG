@@ -7,54 +7,60 @@
   "parameters": [{
     "type": "object",
     "properties": [{
-      "type": "simple",
-      "name": "servicesToSearch",
-      "position": 0
-    }, {
-      "type": "number",
-      "name": "maxResults",
-      "position": 1
-    }, {
-      "type": "simple",
-      "name": "noProcess",
-      "position": 2
-    }, {
-      "type": "boolean",
-      "name": "resultVisibility",
-      "position": 3
-    }, {
-      "type": "boolean",
-      "name": "isCollapsed",
-      "position": 4
-    }, {
-      "type": "boolean",
-      "name": "collapsible",
-      "position": 5
-    }, {
-      "type": "simple",
-      "name": "position",
-      "position": 6
-    }, {
-      "type": "boolean",
-      "name": "reverse",
-      "position": 7
-    }, {
-      "type": "simple",
-      "name": "requestStreet",
-      "position": 8
-    }, {
-      "type": "simple",
-      "name": "locationID",
-      "position": 9
-    }, {
-      "type": "simple",
-      "name": "geocoderCoords",
-      "position": 10
-    }, {
-      "type": "simple",
-      "name": "zoom",
-      "position": 11
-    }]
+        "type": "simple",
+        "name": "servicesToSearch",
+        "position": 0
+      }, {
+        "type": "number",
+        "name": "maxResults",
+        "position": 1
+      }, {
+        "type": "simple",
+        "name": "noProcess",
+        "position": 2
+      }, {
+        "type": "boolean",
+        "name": "resultVisibility",
+        "position": 3
+      }, {
+        "type": "boolean",
+        "name": "isCollapsed",
+        "position": 4
+      }, {
+        "type": "boolean",
+        "name": "collapsible",
+        "position": 5
+      }, {
+        "type": "simple",
+        "name": "position",
+        "position": 6
+      }, {
+        "type": "boolean",
+        "name": "reverse",
+        "position": 7
+      }, {
+        "type": "simple",
+        "name": "requestStreet",
+        "position": 8
+      }, {
+        "type": "simple",
+        "name": "locationID",
+        "position": 9
+      }, {
+        "type": "simple",
+        "name": "geocoderCoords",
+        "position": 10
+      }, {
+        "type": "simple",
+        "name": "zoom",
+        "position": 11
+      },
+      {
+        "type": "simple",
+        "name": "searchPosition",
+        "position": 12
+      }
+    ]
   }],
   "files": {
     "ol": {
