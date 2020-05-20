@@ -2,8 +2,8 @@
   "exception": {
     "impl": "The implementation used cannot create Perfiltopografico controls."
   },
-  "tooltip": "Topography",
-  "title": "Topography",
+  "tooltip": "Topography Profile",
+  "title": "Topography Profile",
   "profil": {
     "title": "Topographic Profile",
     "zmin": "Min Alt.",
