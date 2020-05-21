@@ -1,0 +1,79 @@
+<div class="m-control m-container m-infocoordinates">
+
+    <div class="div-m-infocoordinates-panel">
+
+        <div class="m-infocoordinates-title">
+            <p id="titleInfo" class="m-infocoordinates-titleInfo">Información coordenadas</p>
+        </div>
+
+        <div class="m-infocoordinates-content">
+            <!-- Tabs -->
+            <div class="m-infocoordinates-tabs">
+
+            </div>
+
+            <!-- Tab content -->
+            <div id="tabContent" class='m-infocoordinates-tabContent'>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td> Punto:</td>
+                            <td id="m-infocoordinates-point">--</td>
+                            <td><button class="infocoordinates-bin2 noDisplay" id="m-infocoordinates-buttonRemovePoint"></button></td>
+                        </tr>
+                        <tr>
+                            <td>Datum:</td>
+                            <td>
+                                <select id="m-infocoordinates-comboDatum" class="m-infocoordinates-comboDatum" disabled>
+                                    <option value="EPSG:4258" selected>ETRS89</option>
+                                    <option value="EPSG:4326" class="">WGS84</option>
+                                    <option value="EPSG:4081" class="">REGCAN95</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Latitud:</td>
+                            <td id="m-infocoordinates-latitude">--</td>
+                        <tr>
+                            <td>Longitud:</td>
+                            <td id="m-infocoordinates-longitude">--</td>
+
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input id="m-infocoordinates-buttonConversorFormat" type="checkbox" disabled>GMS</td>
+                        </tr>
+
+                        <tr>
+                            <td>Huso UTM:</td>
+                            <td id="m-infocoordinates-zone">--</td>
+                        </tr>
+                        <tr>
+                            <td>Coord. X:</td>
+                            <td id="m-infocoordinates-coordX">--</td>
+                        </tr>
+                        <tr>
+                            <td>Coord. Y:</td>
+                            <td id="m-infocoordinates-coordY">--</td>
+                        </tr>
+
+                        <tr>
+                            <td>Altura (m): </td>
+                            <td id="m-infocoordinates-altitude">--</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="m-infocoordinates-div-buttonRemoveAllPoints noDisplay">
+                <button class="infocoordinates-bin2" id="m-infocoordinates-buttonRemoveAllPoints"></button>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+</div>
