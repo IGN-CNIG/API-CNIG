@@ -15,8 +15,8 @@ window.map = map;
 const mp = new Attributions({
   mode: 1,
   scale: 10000,
-  url: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-  type: 'kml',
+  url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
+  type: 'geojson',
   position: 'TL',
 });
 map.addPlugin(mp);

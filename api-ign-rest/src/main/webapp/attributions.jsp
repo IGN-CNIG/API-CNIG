@@ -193,6 +193,11 @@
         }
 
         function crearPlugin(propiedades) {
+            for (let i = 0, ilen = map.getLayers().length - 1; i < ilen; i += 1) {
+                if (map.getLayers()[i].name.includes('attributions')) {
+                    map.removeLayers(map.getLayers()[i]);
+                }
+            }
             mp = new M.plugin.Attributions(propiedades);
 
             map.addPlugin(mp);
