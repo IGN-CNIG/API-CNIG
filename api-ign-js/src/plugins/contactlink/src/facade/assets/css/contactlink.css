@@ -8,10 +8,6 @@
 }
 
 
-.m-areas>div.m-area>div.m-panel.m-plugin-contactlink.opened>button.m-panel-btn.g-cartografia-flecha-derecha {
-    color: #71a7d3 !important;
-}
-
 
 /* .m-areas>div.m-area>div.m-panel.m-contactlink.collapsed>button.m-panel-btn {
     font-family: 'g-contactlink' !important;
@@ -28,10 +24,16 @@
     font-family: 'g-contactlink' !important;
 }
 
-.m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn {
+.m-areas>div.m-area.m-left>div.m-plugin-contactlink.opened>button.m-panel-btn {
     position: absolute;
-    left: -2.53rem;
-    background-color: #fff !important;
+    margin-left: 320px;
+    background-color: #71a7d3;
+}
+
+.m-areas>div.m-area.m-right>div.m-plugin-contactlink.opened>button.m-panel-btn {
+    position: absolute;
+    left: -40px;
+    background-color: #71a7d3;
 }
 
 .m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn.opened-left {
@@ -40,6 +42,14 @@
     left: unset !important;
     color: #71a7d3;
 }
+
+.m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn.opened-right {
+    position: absolute;
+    left: -2.53rem;
+    right: unset !important;
+    color: #71a7d3;
+}
+
 
 /*********************
      contact TITLE
@@ -121,17 +131,3 @@
     display: flex;
     margin-top: inherit;
 }
-
-/* .info {
-    position: absolute;
-    width: 60%;
-    padding: 5px;
-    top: 10px;
-    left: 20%;
-    background: rgba(245, 245, 245, 0.8);
-    font-size: large;
-    border-radius: 5px;
-    border-style: dashed;
-    border-width: 2px;
-    text-align: center;
-} */

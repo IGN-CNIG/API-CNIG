@@ -25,12 +25,6 @@ export default class ContactLinkControl extends M.Control {
     const impl = new ContactLinkImplControl();
     super(impl, 'ContactLink');
 
-    /**
-     * Position plugin
-     * @public
-     * @type {String}
-     */
-    this.pluginOnLeft = values.pluginOnLeft;
 
     /**
      * Link to cnig downloads
@@ -137,18 +131,6 @@ export default class ContactLinkControl extends M.Control {
         }
         return templateCompiled;
       };
-    }
-
-    if (this.pluginOnLeft) {
-      document.querySelector('.m-panel.m-plugin-contactlink').querySelector('.m-panel-btn.g-contactlink-link').addEventListener('click', (evt) => {
-        let buttonOpened = document.querySelector('.m-panel.m-plugin-contactlink.opened');
-        if (buttonOpened !== null) {
-          buttonOpened = buttonOpened.querySelector('.m-panel-btn.g-cartografia-flecha-izquierda');
-        }
-        if (buttonOpened && this.pluginOnLeft) {
-          buttonOpened.classList.add('opened-left');
-        }
-      });
     }
 
     return new Promise((success, fail) => {

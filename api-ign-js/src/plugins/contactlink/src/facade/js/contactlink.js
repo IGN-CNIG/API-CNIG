@@ -143,6 +143,27 @@ export default class ContactLink extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     * Collapsed attribute
+     * @public
+     * @type {boolean}
+     */
+    this.collapsed = options.collapsed || true;
+
+    /**
+     * Collapsible attribute
+     * @public
+     * @type {boolean}
+     */
+    this.collapsible = options.collapsible || true;
+
+    /**
+     * ContactLink control
+     * @public
+     * @type {M.control.ContactLink}
+     */
+    this.control_ = new ContactLinkControl(options);
   }
 
   /**
@@ -154,45 +175,17 @@ export default class ContactLink extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
-
-    const values = {
-      pluginOnLeft,
-
-      descargascnig: this.linksDescargasCnig,
-
-      pnoa: this.linksPnoa,
-
-      visualizador3d: this.linksVisualizador3d,
-
-      fototeca: this.linksFototeca,
-
-      twitter: this.linksTwitter,
-
-      instagram: this.linksInstagram,
-
-      facebook: this.linksFacebook,
-
-      pinterest: this.linksPinterest,
-
-      youtube: this.linksYoutube,
-
-      mail: this.linksMail,
-
-    };
-
-    this.control_ = new ContactLinkControl(values);
-    this.controls_.push(this.control_);
     // this.controls_.push(new ContactLinkControl(values));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelContactLink', {
-      collapsible: true,
+      collapsible: this.collapsible,
+      collapsed: this.collapsed,
       position: M.ui.position[this.position],
       className: this.className,
       collapsedButtonClass: 'g-contactlink-link',
       tooltip: this.tooltip_,
     });
-    this.panel_.addControls(this.controls_);
+    this.panel_.addControls(this.control_);
     map.addPanels(this.panel_);
   }
 
