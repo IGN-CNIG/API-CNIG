@@ -3,7 +3,7 @@
  */
 import 'assets/css/infocoordinates';
 import InfocoordinatesControl from './infocoordinatescontrol';
-import api from '../../api.json';
+import api from '../../api';
 
 export default class Infocoordinates extends M.Plugin {
   /**
