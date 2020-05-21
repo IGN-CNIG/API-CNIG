@@ -316,6 +316,8 @@ export default class IGNSearchLocatorControl extends M.Control {
             });
             this.clickedElementLayer.displayInLayerSwitcher = false;
 
+            this.createGeometryStyles();
+
             if (featureJSON.geometry.type === 'Point') {
               this.clickedElementLayer.setStyle(this.point);
             }
