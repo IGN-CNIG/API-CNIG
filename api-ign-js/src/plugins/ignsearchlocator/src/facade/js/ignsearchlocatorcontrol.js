@@ -1431,7 +1431,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     const destinyProj = this.map.getProjection().code;
     const destinySource = 'EPSG:4326';
     const newCoordinates = this.getImpl()
-      .reproject([coordinates[1], coordinates[0]], destinySource, destinyProj);
+      .reprojectReverse([coordinates[1], coordinates[0]], destinySource, destinyProj);
     let exitState;
     if (exactResult !== 1) {
       exitState = getValue('aprox');
