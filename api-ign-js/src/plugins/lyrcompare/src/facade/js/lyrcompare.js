@@ -283,9 +283,7 @@ export default class LyrCompare extends M.Plugin {
    * @api stable
    */
   destroy() {
-    console.log("destroy");
-    this.control_.removeEffects();
-    this.control_.removeLyrCompareLayers(this.layers);
+    this.control_.deactivate();
     this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.layers,this.collapsible,this.collapsed, this.staticDivision, this.opacityVal, this.comparisonMode, this.defaultLyrA, this.defaultLyrB, this.defaultLyrC, this.defaultLyrD] = [null, null, null, null,null, null, null, null, null, null, null, null];
   }
