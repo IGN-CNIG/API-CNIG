@@ -344,60 +344,6 @@ export default class Attributions extends M.Plugin {
     html.style.display = visibility === false ? 'none' : '';
   }
 
-  utf8_decode(strData) { // eslint-disable-line camelcase
-    const tmpArr = [];
-    let i = 0;
-    let c1 = 0;
-    let seqlen = 0;
-
-    // eslint-disable-next-line no-param-reassign
-    strData += '';
-
-    while (i < strData.length) {
-      // eslint-disable-next-line no-bitwise
-      c1 = strData.charCodeAt(i) & 0xFF;
-      seqlen = 0;
-
-      // https://en.wikipedia.org/wiki/UTF-8#Codepage_layout
-      if (c1 <= 0xBF) {
-        // eslint-disable-next-line no-bitwise
-        c1 &= 0x7F;
-        seqlen = 1;
-      } else if (c1 <= 0xDF) {
-        // eslint-disable-next-line no-bitwise
-        c1 &= 0x1F;
-        seqlen = 2;
-      } else if (c1 <= 0xEF) {
-        // eslint-disable-next-line no-bitwise
-        c1 &= 0x0F;
-        seqlen = 3;
-      } else {
-        // eslint-disable-next-line no-bitwise
-        c1 &= 0x07;
-        seqlen = 4;
-      }
-
-      for (let ai = 1; ai < seqlen; ai += 1) {
-        // eslint-disable-next-line no-bitwise
-        c1 = ((c1 << 0x06) | (strData.charCodeAt(ai + i) & 0x3F));
-      }
-
-      if (seqlen === 4) {
-        c1 -= 0x10000;
-        // eslint-disable-next-line no-bitwise
-        tmpArr.push(String.fromCharCode(0xD800 | ((c1 >> 10) & 0x3FF)));
-        // eslint-disable-next-line no-bitwise
-        tmpArr.push(String.fromCharCode(0xDC00 | (c1 & 0x3FF)));
-      } else {
-        tmpArr.push(String.fromCharCode(c1));
-      }
-
-      i += seqlen;
-    }
-
-    return tmpArr.join('');
-  }
-
   /**
    * @function
    * @public
@@ -409,7 +355,7 @@ export default class Attributions extends M.Plugin {
     const filteredFeatures = interFilter.execute(featuresAttributions);
     return filteredFeatures.map((feature) => {
       return {
-        attribution: this.utf8_decode(feature.getAttribute(this.attributionParam_)) || '',
+        attribution: feature.getAttribute(this.attributionParam_) || '',
         url: feature.getAttribute(this.urlParam_) || this.defaultURL_,
       };
     }).filter((element, index, array) => // remove repeat elements
