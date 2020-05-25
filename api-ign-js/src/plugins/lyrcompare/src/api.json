@@ -1,7 +1,7 @@
 {
   "url": {
     "name": "lyrcompare", 
-    "separator": "*"
+    "separator": "*!"
   },
   "constructor": "M.plugin.LyrCompare",
   "parameters": [{
@@ -18,39 +18,49 @@
         "position": 1
       },
       {
-        "type": "simple",
-        "name": "staticDivision",
+        "type": "boolean",
+        "name": "collapsible",
         "position": 2
       },
       {
-        "type": "simple",
-        "name": "opacityVal",
+        "type": "boolean",
+        "name": "collapsed",
         "position": 3
       },
       {
         "type": "simple",
-        "name": "comparisonMode",
+        "name": "staticDivision",
         "position": 4
       },
       {
         "type": "simple",
-        "name": "defaultLyrA",
+        "name": "opacityVal",
         "position": 5
       },
       {
         "type": "simple",
-        "name": "defaultLyrB",
+        "name": "comparisonMode",
         "position": 6
       },
       {
         "type": "simple",
-        "name": "defaultLyrC",
+        "name": "defaultLyrA",
         "position": 7
       },
       {
         "type": "simple",
-        "name": "defaultLyrD",
+        "name": "defaultLyrB",
         "position": 8
+      },
+      {
+        "type": "simple",
+        "name": "defaultLyrC",
+        "position": 9
+      },
+      {
+        "type": "simple",
+        "name": "defaultLyrD",
+        "position": 10
       }
     ]
   }],

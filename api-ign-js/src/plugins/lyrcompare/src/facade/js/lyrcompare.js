@@ -318,7 +318,7 @@ export default class LyrCompare extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.layers.join(',')}*${this.collapsible}*${this.collapsed}*${this.staticDivision}*${this.opacityVal}*${this.comparisonMode}*${this.defaultLyrA}*${this.defaultLyrB}*${this.defaultLyrC}*${this.defaultLyrD}`;
+    return `${this.name}=${this.position}*!${this.layers.join(',')}*!${this.collapsible}*!${this.collapsed}*!${this.staticDivision}*!${this.opacityVal}*!${this.comparisonMode}*!${this.defaultLyrA}*!${this.defaultLyrB}*!${this.defaultLyrC}*!${this.defaultLyrD}`;
   }
 
   /**
