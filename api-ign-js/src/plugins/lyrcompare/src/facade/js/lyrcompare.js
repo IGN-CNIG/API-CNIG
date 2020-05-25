@@ -283,7 +283,6 @@ export default class LyrCompare extends M.Plugin {
    * @api stable
    */
   destroy() {
-    this.control_.deactivate();
     this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.layers,this.collapsible,this.collapsed, this.staticDivision, this.opacityVal, this.comparisonMode, this.defaultLyrA, this.defaultLyrB, this.defaultLyrC, this.defaultLyrD] = [null, null, null, null,null, null, null, null, null, null, null, null];
   }
@@ -319,7 +318,7 @@ export default class LyrCompare extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.layers.join(',')}*${this.collapsible}*${this.collapsed}*${this.staticDivision}*${this.opacityVal}*${this.comparisonMode}*${this.defaultLyrA}*${this.defaultLyrB}*${this.defaultLyrC}*${this.defaultLyrD}`;
+    return `${this.name}=${this.position}*!${this.layers.join(',')}*!${this.collapsible}*!${this.collapsed}*!${this.staticDivision}*!${this.opacityVal}*!${this.comparisonMode}*!${this.defaultLyrA}*!${this.defaultLyrB}*!${this.defaultLyrC}*!${this.defaultLyrD}`;
   }
 
   /**

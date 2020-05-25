@@ -132,7 +132,7 @@
             'WMS*AMS_1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957'],
             staticDivision,opacityVal,comparisonMode,defaultLyrA,defaultLyrB,defaultLyrC,defaultLyrD;
         crearPlugin({
-            layers: layers
+            layers: layers,
         });
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -185,7 +185,6 @@
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
-        console.log(window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/" + map.getPlugins()[0].getAPIRest());
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click", function() {
