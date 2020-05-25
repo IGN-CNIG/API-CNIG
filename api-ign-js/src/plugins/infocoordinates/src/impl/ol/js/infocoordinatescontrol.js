@@ -22,7 +22,7 @@ export default class InfocoordinatesControl extends M.impl.Control {
   // Add your own functions
 
 
-  getCoordinates(feature, SRStarget, formatGMS) {
+  getCoordinates(feature, SRStarget, formatGMS, decimalGEOcoord, decimalUTMcoord) {
     //   Si es ETRS89 estará entre una longitud de -12 y 6:
     //               huso 29(-12 al -6)
     //               huso 30(-6 al 0)
@@ -88,16 +88,16 @@ export default class InfocoordinatesControl extends M.impl.Control {
           'projectionGEO': {
             'code': SRStarget,
             'coordinatesGEO': {
-              'longitude': coordinatesGEOoutput[0].toFixed(4),
-              'latitude': coordinatesGEOoutput[1].toFixed(4),
+              'longitude': coordinatesGEOoutput[0].toFixed(decimalGEOcoord),
+              'latitude': coordinatesGEOoutput[1].toFixed(decimalGEOcoord),
             },
           },
           'projectionUTM': {
             'code': projectionUTMCodeTarget,
             'zone': zone,
             'coordinatesUTM': {
-              'coordX': coordinatesUTMoutput[0].toFixed(2),
-              'coordY': coordinatesUTMoutput[1].toFixed(2)
+              'coordX': coordinatesUTMoutput[0].toFixed(decimalUTMcoord),
+              'coordY': coordinatesUTMoutput[1].toFixed(decimalUTMcoord)
             }
           }
         }

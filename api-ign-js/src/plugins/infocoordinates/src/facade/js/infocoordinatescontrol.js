@@ -5,6 +5,7 @@
 
 import InfocoordinatesImplControl from 'impl/infocoordinatescontrol';
 import template from 'templates/infocoordinates';
+import { getValue } from './i18n/language';
 
 export default class InfocoordinatesControl extends M.Control {
   /**
@@ -16,11 +17,11 @@ export default class InfocoordinatesControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor() {
+  constructor(decimalGEOcoord, decimalUTMcoord) {
 
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(InfocoordinatesImplControl)) {
-      M.exception('La implementación usada no puede crear controles InfocoordinatesControl');
+      M.exception(getValue('expection.impl'));
     }
     // 2. implementation of this control
     const impl = new InfocoordinatesImplControl();
@@ -28,12 +29,12 @@ export default class InfocoordinatesControl extends M.Control {
     this.map_ = null;
     this.numTabs = 0;
     this.layerFeatures = new M.layer.Vector();
-    this.SELECTED_FEATURE_STYLE = new M.style.Point({
-      fill: {
-        color: '#71a7d3',
-      }
-    });
+    this.layerFeatures.name = 'infocoordinatesLayerFeatures';
+    this.decimalGEOcoord = decimalGEOcoord;
+    this.decimalUTMcoord = decimalUTMcoord;
   }
+
+
 
   /**
    * This function creates the view
@@ -66,7 +67,26 @@ export default class InfocoordinatesControl extends M.Control {
     }
 
     return new Promise((success, fail) => {
-      const html = M.template.compileSync(template);
+      let options = {
+        jsonp: true,
+        vars: {
+          translations: {
+            title: getValue('title'),
+            point: getValue('point'),
+            datum: getValue('datum'),
+            latitude: getValue('latitude'),
+            longitude: getValue('longitude'),
+            formatCoordinates: getValue('formatCoordinates'),
+            zone: getValue('zone'),
+            coordX: getValue('coordX'),
+            coordY: getValue('coordY'),
+            altitude: getValue('altitude'),
+            removePoint: getValue('removePoint'),
+            removeAllPoints: getValue('removeAllPoints')
+          }
+        }
+      };
+      const html = M.template.compileSync(template, options);
       // Añadir código dependiente del DOM      
 
       this.map_.addLayers(this.layerFeatures);
@@ -150,7 +170,7 @@ export default class InfocoordinatesControl extends M.Control {
     let altitudeFromWCSservice;
     let altitudeBox = document.getElementById('m-infocoordinates-altitude');
     let promesa = new Promise((success, fail) => {
-      altitudeBox.innerHTML = 'Consultando...';
+      altitudeBox.innerHTML = getValue('readingAltitude');
       altitudeFromWCSservice = this.getImpl().readAltitudeFromWCSservice(coordinates, this.map_.getProjection().code)
       success(altitudeFromWCSservice);
     });
@@ -158,7 +178,7 @@ export default class InfocoordinatesControl extends M.Control {
     promesa.then(response => {
       altitudeFromWCSservice = response.text.split(/\n/)[5].split(' ')[1];
       if (altitudeFromWCSservice == undefined) {
-        altitudeFromWCSservice = 'Sin datos';
+        altitudeFromWCSservice = getValue('noDatafromWCS');
       }
       featurePoint.setAttribute('Altitude', altitudeFromWCSservice);
       altitudeBox.innerHTML = altitudeFromWCSservice;
@@ -174,9 +194,14 @@ export default class InfocoordinatesControl extends M.Control {
 
 
   selectFeature(numPoint) {
+    const SELECTED_FEATURE_STYLE = new M.style.Point({
+      fill: {
+        color: '#71a7d3',
+      }
+    });
     this.layerFeatures.getFeatures().map((elemento) => (elemento.clearStyle()));
     let featureSelected = this.layerFeatures.getFeatureById(numPoint);
-    featureSelected.setStyle(this.SELECTED_FEATURE_STYLE);
+    featureSelected.setStyle(SELECTED_FEATURE_STYLE);
   }
 
 
@@ -215,7 +240,7 @@ export default class InfocoordinatesControl extends M.Control {
     let formatGMS = document.getElementById('m-infocoordinates-buttonConversorFormat').checked;
 
     //Cambio coordenadas y calculo las UTM
-    let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS);
+    let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
 
     // pinto 
     pointBox.innerHTML = pointDataOutput.NumPoint;
@@ -293,7 +318,6 @@ export default class InfocoordinatesControl extends M.Control {
     this.numTabs = 0;
   }
 
-
   /**
    * This function compares controls
    *
@@ -304,6 +328,10 @@ export default class InfocoordinatesControl extends M.Control {
    */
   equals(control) {
     return control instanceof InfocoordinatesControl;
+  }
+
+  removeLayerFeatures() {
+    this.map_.removeLayers(this.layerFeatures);
   }
 
 }

@@ -3,7 +3,7 @@
     <div class="div-m-infocoordinates-panel">
 
         <div class="m-infocoordinates-title">
-            <p id="titleInfo" class="m-infocoordinates-titleInfo">Información coordenadas</p>
+            <p id="titleInfo" class="m-infocoordinates-titleInfo">{{translations.title}}</p>
         </div>
 
         <div class="m-infocoordinates-content">
@@ -17,12 +17,12 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td> Punto:</td>
+                            <td>{{translations.point}}</td>
                             <td id="m-infocoordinates-point">--</td>
-                            <td><button class="infocoordinates-bin2 noDisplay" id="m-infocoordinates-buttonRemovePoint"></button></td>
+                            <td><button class="infocoordinates-bin2 noDisplay" id="m-infocoordinates-buttonRemovePoint" title="{{translations.removePoint}}"></button></td>
                         </tr>
                         <tr>
-                            <td>Datum:</td>
+                            <td>{{translations.datum}}</td>
                             <td>
                                 <select id="m-infocoordinates-comboDatum" class="m-infocoordinates-comboDatum" disabled>
                                     <option value="EPSG:4258" selected>ETRS89</option>
@@ -32,40 +32,40 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Latitud:</td>
+                            <td>{{translations.latitude}}</td>
                             <td id="m-infocoordinates-latitude">--</td>
                         <tr>
-                            <td>Longitud:</td>
+                            <td>{{translations.longitude}}</td>
                             <td id="m-infocoordinates-longitude">--</td>
 
                         </tr>
                         <tr>
                             <td></td>
-                            <td><input id="m-infocoordinates-buttonConversorFormat" type="checkbox" disabled>GMS</td>
+                            <td><input id="m-infocoordinates-buttonConversorFormat" type="checkbox" disabled>{{translations.formatCoordinates}}</td>
                         </tr>
 
                         <tr>
-                            <td>Huso UTM:</td>
+                            <td>{{translations.zone}}</td>
                             <td id="m-infocoordinates-zone">--</td>
                         </tr>
                         <tr>
-                            <td>Coord. X:</td>
+                            <td>{{translations.coordX}}</td>
                             <td id="m-infocoordinates-coordX">--</td>
                         </tr>
                         <tr>
-                            <td>Coord. Y:</td>
+                            <td>{{translations.coordY}}</td>
                             <td id="m-infocoordinates-coordY">--</td>
                         </tr>
 
                         <tr>
-                            <td>Altura (m): </td>
+                            <td>{{translations.altitude}}</td>
                             <td id="m-infocoordinates-altitude">--</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="m-infocoordinates-div-buttonRemoveAllPoints noDisplay">
-                <button class="infocoordinates-bin2" id="m-infocoordinates-buttonRemoveAllPoints"></button>
+                <button class="infocoordinates-bin2" id="m-infocoordinates-buttonRemoveAllPoints" title="{{translations.removeAllPoints}}"></button>
             </div>
 
 

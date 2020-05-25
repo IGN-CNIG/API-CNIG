@@ -8,9 +8,13 @@ const map = M.map({
 });
 
 
+M.language.setLang('en');
 
-
-const mp = new Infocoordinates();
+const mp = new Infocoordinates({
+  position: 'TL',
+  decimalGEOcoord: "er",
+  decimalUTMcoord: 15
+});
 
 map.addPlugin(mp);
 

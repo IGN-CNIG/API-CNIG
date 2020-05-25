@@ -1,52 +1,57 @@
 # M.plugin.Infocoordinates
 
-## Api.json
+Tras hacer click en el mapa, muestra las coordenadas geográficas y proyectadas de ese punto con posibilidad de cambiarlas a ETRS89, WGS84 o REGCAN95 y además cambiar el formato a las geográficas entre decimal y GGMMSS.
 
-INTEGRACIÓN DE PARÁMETROS EN API REST
+## Dependencias
 
-OPCIONES:  
-1. Nuevo parámetro en la API REST normalmente porque requiera parámetros de configuración.
-Example: <url_mapea>?geosearch=[params]
-Example: <url_mapea>?printer=[params]
-
-2. Nuevo valor para el parámetro plugins, el plugin no requiere configuración
-Example: <url_mapea>?plugins=measurebar,streetview
+- infocoordinates.ol.min.js
+- infocoordinates.ol.min.css
 
 
-### Plugin sin parámetros
-
+```html
+ <link href="../../plugins/infocoordinates/infocoordinates.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/infocoordinates/infocoordinates.ol.min.js"></script>
 ```
-{
-   "url": {
-      "name": "nombre_plugin"
-   },
-   "constructor": "M.plugin.nombre_plugin"
-}
-```
-### Plugin con parámetros
+# Parámetros
 
+El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
+
+- **position**. Indica la posición donde se mostrará el plugin
+  - 'TL':top left
+  - 'TR':top right (por defecto)
+  - 'BL':bottom left
+  - 'BR':bottom right
+- **decimalGEOcoord**. Indica el número de decimales de las coordenadas geográficas.
+- **decimalUTMcoord**. Indica el número de decimales de las coordenadas proyectadas en UTM.
+## Eventos
+
+## Otros métodos
+
+## Ejemplos de uso
+
+### Ejemplo 1
+```javascript
+   const map = M.map({
+     container: 'map'
+   });
+
+const mp = new M.plugin.Infocoordinates();
+
+map.addPlugin(mp);
 ```
-{
-   "url": {
-      "name": "geosearch",
-      "separator": "*"
-   },
-   "constructor": "M.plugin.Geosearch",
-   "parameters": [{
-      "type": "object",
-      "properties": [{
-         "type": "simple",
-         "name": "url",
-         "position": 0
-      }, {
-         "type": "simple",
-         "name": "core",
-         "position": 1
-      }, {
-         "type": "simple",
-         "name": "handler",
-         "position": 2
-      }]
-   }]
-}
+
+### Ejemplo 2
+```javascript
+   const map = M.map({
+     container: 'map'
+   });
+
+const mp = new M.plugin.Infocoordinates({
+   position: 'TL',
+   decimalGEOcoord: 4,
+   decimalUTMcoord: 2
+   
+});
+
+map.addPlugin(mp);
 ```

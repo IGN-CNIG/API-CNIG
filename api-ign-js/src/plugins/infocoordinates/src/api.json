@@ -4,7 +4,22 @@
     "separator": "*"
   },
   "constructor": "M.plugin.Infocoordinates",
-  "parameters": [],
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0
+    }, {
+      "type": "simple",
+      "name": "decimalGEOcoord",
+      "position": 1
+    }, {
+      "type": "simple",
+      "name": "decimalUTMcoord",
+      "position": 2
+    }]
+  }],
   "files": {
     "ol": {
       "scripts": ["infocoordinates.ol.min.js"],
@@ -13,10 +28,10 @@
   },
   "metadata": {
     "name": "Infocoordinates",
-    "description": "Description of the plugin",
-    "text": "A full text about plugin",
+    "description": "Show coordinates points when clicked on map",
+    "text": "Show coordinates points when clicked on map. Change its SRC and format decimal or DMS",
     "version": "1.0.0",
-    "date": "",
+    "date": "May, 2020",
     "author": "",
     "org": "",
     "tags": "mapea,plugin",
