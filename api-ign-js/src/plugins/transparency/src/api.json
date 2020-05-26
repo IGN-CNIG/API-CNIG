@@ -11,16 +11,24 @@
         "name": "position",
         "possibleValues": ["TL", "TR", "BL", "BR"],
         "position": 0
+      }, {
+        "type": "boolean",
+        "name": "collapsible",
+        "position": 1
+      }, {
+        "type": "boolean",
+        "name": "collapsed",
+        "position": 2
       },
       {
         "type": "simple",
         "name": "layers",
-        "position": 1
+        "position": 3
       },
       {
         "type": "simple",
         "name": "radius",
-        "position": 2
+        "position": 4
       }
     ]
   }],

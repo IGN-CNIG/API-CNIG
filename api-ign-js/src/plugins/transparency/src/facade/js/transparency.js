@@ -112,6 +112,20 @@ export default class Transparency extends M.Plugin {
      *@type { string }
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     * Collapsed attribute
+     * @public
+     * @type {boolean}
+     */
+    this.collapsed = options.collapsed || true;
+
+    /**
+     * Collapsible attribute
+     * @public
+     * @type {boolean}
+     */
+    this.collapsible = options.collapsible || true;
   }
 
   /**
@@ -123,10 +137,8 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
 
     const values = {
-      pluginOnLeft,
       layers: this.layers,
       radius: this.radius,
     };
@@ -134,7 +146,8 @@ export default class Transparency extends M.Plugin {
     this.controls_.push(this.control_);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelTransparency', {
-      collapsible: true,
+      collapsible: this.collapsible,
+      collapsed: this.collapsed,
       position: M.ui.position[this.position],
       className: this.className,
       collapsedButtonClass: 'icon-gps4',
@@ -192,7 +205,7 @@ export default class Transparency extends M.Plugin {
   getAPIRest() {
     let layersTransparency = this.control_.getLayersNames();
 
-    return `${this.name}=${this.position}${this.separatorApiJson}${layersTransparency.join(',')}${this.separatorApiJson}${this.radius}`;
+    return `${this.name}=${this.position}${this.collapsible}${this.collapsed}${this.separatorApiJson}${layersTransparency.join(',')}${this.separatorApiJson}${this.radius}`;
 
     // return `${this.name}=${this.position}${this.separatorApiJson}${this.layers.join(',')}${this.separatorApiJson}${this.radius}`;
   }

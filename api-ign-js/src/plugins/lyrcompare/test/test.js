@@ -8,7 +8,7 @@ const map = M.map({
 });
 */
 
-M.language.setLang('es');//Español
+M.language.setLang('es'); //Español
 //M.language.setLang('en');//Inglés
 
 const map = M.map({
@@ -16,9 +16,9 @@ const map = M.map({
   center: {
     x: -667143.31,
     y: 4493011.77,
-    draw: true  //Dibuja un punto en el lugar de la coordenada
+    draw: true //Dibuja un punto en el lugar de la coordenada
   },
-  controls: ['scale','location'],
+  controls: ['scale', 'location'],
   /*projection: "EPSG:25830*m",*/
   projection: "EPSG:3857*m",
   zoom: 15,
@@ -40,81 +40,81 @@ const mpBIL = new M.plugin.BackImgLayer({
   layerId: 0,
   layerVisibility: true,
   layerOpts: [{
-          id: 'mapa',
-          preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
-          title: 'Mapa',
-          layers: [new M.layer.WMTS({
-              url: 'http://www.ign.es/wmts/ign-base?',
-              name: 'IGNBaseTodo',
-              legend: 'Mapa IGN',
-              matrixSet: 'GoogleMapsCompatible',
-              transparent: false,
-              displayInLayerSwitcher: false,
-              queryable: false,
-              visible: true,
-              format: 'image/jpeg',
-          })],
-      },
-      {
-          id: 'imagen',
-          title: 'Imagen',
-          preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',
-          layers: [new M.layer.WMTS({
-              url: 'http://www.ign.es/wmts/pnoa-ma?',
-              name: 'OI.OrthoimageCoverage',
-              legend: 'Imagen (PNOA)',
-              matrixSet: 'GoogleMapsCompatible',
-              transparent: false,
-              displayInLayerSwitcher: false,
-              queryable: false,
-              visible: true,
-              format: 'image/jpeg',
-          })],
-      },
-      {
-          id: 'hibrido',
-          title: 'Híbrido',
-          preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
-          layers: [new M.layer.WMTS({
-                  url: 'http://www.ign.es/wmts/pnoa-ma?',
-                  name: 'OI.OrthoimageCoverage',
-                  legend: 'Imagen (PNOA)',
-                  matrixSet: 'GoogleMapsCompatible',
-                  transparent: true,
-                  displayInLayerSwitcher: false,
-                  queryable: false,
-                  visible: true,
-                  format: 'image/png',
-              }),
-              new M.layer.WMTS({
-                  url: 'http://www.ign.es/wmts/ign-base?',
-                  name: 'IGNBaseOrto',
-                  matrixSet: 'GoogleMapsCompatible',
-                  legend: 'Mapa IGN',
-                  transparent: false,
-                  displayInLayerSwitcher: false,
-                  queryable: false,
-                  visible: true,
-                  format: 'image/png',
-              })
-          ],
-      },
-      {
-          id: 'lidar',
-          preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',
-          title: 'LIDAR',
-          layers: [new M.layer.WMTS({
-              url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-              name: 'EL.GridCoverageDSM',
-              legend: 'Modelo Digital de Superficies LiDAR',
-              matrixSet: 'GoogleMapsCompatible',
-              transparent: false,
-              displayInLayerSwitcher: false,
-              queryable: false,
-              visible: true,
-              format: 'image/png',
-          })],
-      },
+      id: 'mapa',
+      preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
+      title: 'Mapa',
+      layers: [new M.layer.WMTS({
+        url: 'http://www.ign.es/wmts/ign-base?',
+        name: 'IGNBaseTodo',
+        legend: 'Mapa IGN',
+        matrixSet: 'GoogleMapsCompatible',
+        transparent: false,
+        displayInLayerSwitcher: false,
+        queryable: false,
+        visible: true,
+        format: 'image/jpeg',
+      })],
+    },
+    {
+      id: 'imagen',
+      title: 'Imagen',
+      preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',
+      layers: [new M.layer.WMTS({
+        url: 'http://www.ign.es/wmts/pnoa-ma?',
+        name: 'OI.OrthoimageCoverage',
+        legend: 'Imagen (PNOA)',
+        matrixSet: 'GoogleMapsCompatible',
+        transparent: false,
+        displayInLayerSwitcher: false,
+        queryable: false,
+        visible: true,
+        format: 'image/jpeg',
+      })],
+    },
+    {
+      id: 'hibrido',
+      title: 'Híbrido',
+      preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
+      layers: [new M.layer.WMTS({
+          url: 'http://www.ign.es/wmts/pnoa-ma?',
+          name: 'OI.OrthoimageCoverage',
+          legend: 'Imagen (PNOA)',
+          matrixSet: 'GoogleMapsCompatible',
+          transparent: true,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/png',
+        }),
+        new M.layer.WMTS({
+          url: 'http://www.ign.es/wmts/ign-base?',
+          name: 'IGNBaseOrto',
+          matrixSet: 'GoogleMapsCompatible',
+          legend: 'Mapa IGN',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/png',
+        })
+      ],
+    },
+    {
+      id: 'lidar',
+      preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',
+      title: 'LIDAR',
+      layers: [new M.layer.WMTS({
+        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+        name: 'EL.GridCoverageDSM',
+        legend: 'Modelo Digital de Superficies LiDAR',
+        matrixSet: 'GoogleMapsCompatible',
+        transparent: false,
+        displayInLayerSwitcher: false,
+        queryable: false,
+        visible: true,
+        format: 'image/png',
+      })],
+    },
   ],
 });
 
@@ -212,15 +212,15 @@ map.addWMTS(wmtsSIOSE);
 
 // 4 WMS y WMTS por nombres
 const pluginLyrCompare = new LyrCompare({
-  position: 'TL',
+  position: 'BR',
   layers: [
-      wmtsMTN251edi, wmtsMTN501edi, wmtsToporaster, wmtsMinutasMTN50, wmtsLidar, wmtsSIOSE,
-      'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
-      'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
-      'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
-      'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
-      'WMS*AMS_1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957'
-    ], 
+    wmtsMTN251edi, wmtsMTN501edi, wmtsToporaster, wmtsMinutasMTN50, wmtsLidar, wmtsSIOSE,
+    'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
+    'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
+    'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
+    'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
+    'WMS*AMS_1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957'
+  ],
   /*layers: ['mtn50-edicion1','toporaster', 'AU.AdministrativeBoundary'],*/ //Podemos añadir capas al plugin por el valor del atributo name o por el objeto que las contiene
   collapsible: true,
   collapsed: false,

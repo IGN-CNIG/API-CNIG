@@ -4,7 +4,7 @@
 import 'assets/css/lyrcompare';
 import LyrCompareControl from './lyrcomparecontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';   //e2m: Multilanguage support
+import { getValue } from './i18n/language'; //e2m: Multilanguage support
 // import { isArray } from '../../../../../facade/js/util/Utils';
 
 export default class LyrCompare extends M.Plugin {
@@ -81,16 +81,14 @@ export default class LyrCompare extends M.Plugin {
      * @public
      * @type {boolean}
      */
-    this.collapsed = options.collapsed;
-    if (this.collapsed === undefined) this.collapsed = true;
+    this.collapsed = options.collapsed || true;
 
     /**
      * Collapsible attribute
      * @public
      * @type {boolean}
      */
-    this.collapsible = options.collapsible;
-    if (this.collapsible === undefined) this.collapsible = true;
+    this.collapsible = options.collapsible || true;
 
     /**
      * Transparent effect staticDivision
@@ -99,9 +97,9 @@ export default class LyrCompare extends M.Plugin {
      * @public
      */
     if (options.staticDivision === undefined) {
-      this.staticDivision = 1;  //default: static
-    }else{
-      this.staticDivision = parseInt(options.staticDivision);  
+      this.staticDivision = 1; //default: static
+    } else {
+      this.staticDivision = parseInt(options.staticDivision);
     }
 
     /**
@@ -111,8 +109,8 @@ export default class LyrCompare extends M.Plugin {
      * @public
      */
     if (options.opacityVal === undefined) {
-      this.opacityVal = 100;  //default: 100%
-    }else{
+      this.opacityVal = 100; //default: 100%
+    } else {
       this.opacityVal = parseInt(options.opacityVal);
       if (this.opacityVal <= 0) {
         this.opacityVal = 0;
@@ -128,8 +126,8 @@ export default class LyrCompare extends M.Plugin {
      * @public
      */
     if (options.comparisonMode === undefined) {
-      this.comparisonMode = 0;  //default: 100%
-    }else{
+      this.comparisonMode = 0; //default: 100%
+    } else {
       this.comparisonMode = parseInt(options.comparisonMode);
       if (this.comparisonMode <= 0) {
         this.comparisonMode = 0;
@@ -145,12 +143,12 @@ export default class LyrCompare extends M.Plugin {
      * @public
      */
     if (options.defaultLyrA === undefined) {
-      this.defaultLyrA = 0;  //default: 100%
-    }else{
-      this.defaultLyrA = parseInt(options.defaultLyrA)-1;
+      this.defaultLyrA = 0; //default: 100%
+    } else {
+      this.defaultLyrA = parseInt(options.defaultLyrA) - 1;
       if (this.defaultLyrA < 0) {
         this.defaultLyrA = 0;
-      } else if (this.defaultLyrA > this.layers.length-1) {
+      } else if (this.defaultLyrA > this.layers.length - 1) {
         M.dialog.error("Error defaultLyrA. Sólo existen " + this.layers.length + " capas disponibles");
       }
     }
@@ -163,15 +161,15 @@ export default class LyrCompare extends M.Plugin {
      */
     if (options.defaultLyrB === undefined) {
       this.defaultLyrB = this.defaultLyrA !== 0 ? 0 : 1;
-    }else{
-      this.defaultLyrB = parseInt(options.defaultLyrB)-1;
+    } else {
+      this.defaultLyrB = parseInt(options.defaultLyrB) - 1;
       if (this.defaultLyrB < 0) {
         this.defaultLyrB = this.defaultLyrA !== 0 ? 0 : 1;
-      } else if (this.defaultLyrB > this.layers.length-1) {
+      } else if (this.defaultLyrB > this.layers.length - 1) {
         M.dialog.error("Error defaultLyrB. Sólo existen " + this.layers.length + " capas disponibles");
       }
     }
-    if (this.defaultLyrA===this.defaultLyrB){
+    if (this.defaultLyrA === this.defaultLyrB) {
       M.dialog.error("Las capas por defecto no pueden ser la misma B");
     }
 
@@ -183,15 +181,15 @@ export default class LyrCompare extends M.Plugin {
      */
     if (options.defaultLyrC === undefined) {
       this.defaultLyrC = 2;
-    }else{
-      this.defaultLyrC = parseInt(options.defaultLyrC)-1;
+    } else {
+      this.defaultLyrC = parseInt(options.defaultLyrC) - 1;
       if (this.defaultLyrC < 0) {
         this.defaultLyrC = 2;
-      } else if (this.defaultLyrC > this.layers.length-1) {
+      } else if (this.defaultLyrC > this.layers.length - 1) {
         M.dialog.error("Error defaultLyrC. Sólo existen " + this.layers.length + " capas disponibles");
       }
     }
-    if ((this.defaultLyrA===this.defaultLyrC) || (this.defaultLyrB===this.defaultLyrC)){
+    if ((this.defaultLyrA === this.defaultLyrC) || (this.defaultLyrB === this.defaultLyrC)) {
       M.dialog.error("Las capas por defecto no pueden ser la misma C");
     }
 
@@ -203,15 +201,15 @@ export default class LyrCompare extends M.Plugin {
      */
     if (options.defaultLyrD === undefined) {
       this.defaultLyrD = 3;
-    }else{
-      this.defaultLyrD = parseInt(options.defaultLyrD)-1;
+    } else {
+      this.defaultLyrD = parseInt(options.defaultLyrD) - 1;
       if (this.defaultLyrD < 0) {
         this.defaultLyrD = 3;
-      } else if (this.defaultLyrD > this.layers.length-1) {
+      } else if (this.defaultLyrD > this.layers.length - 1) {
         M.dialog.error("Error defaultLyrD. Sólo existen " + this.layers.length + " capas disponibles");
       }
     }
-    if ((this.defaultLyrA===this.defaultLyrD) || (this.defaultLyrB===this.defaultLyrD) || (this.defaultLyrC===this.defaultLyrD)){
+    if ((this.defaultLyrA === this.defaultLyrD) || (this.defaultLyrB === this.defaultLyrD) || (this.defaultLyrC === this.defaultLyrD)) {
       M.dialog.error("Las capas por defecto no pueden ser la misma D");
     }
 
@@ -228,7 +226,7 @@ export default class LyrCompare extends M.Plugin {
      *@type { string }
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
-}
+  }
 
   /**
    * This function adds this plugin into the map
@@ -239,14 +237,12 @@ export default class LyrCompare extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
 
     const values = {
-      pluginOnLeft,
       layers: this.layers,
-      collapsible:  this.collapsible,
-      collapsed:  this.collapsed,
-      staticDivision: this.staticDivision, 
+      collapsible: this.collapsible,
+      collapsed: this.collapsed,
+      staticDivision: this.staticDivision,
       opacityVal: this.opacityVal,
       comparisonMode: this.comparisonMode,
       defaultLyrA: this.defaultLyrA,
@@ -259,9 +255,9 @@ export default class LyrCompare extends M.Plugin {
 
     this.control_ = new LyrCompareControl(values);
     this.controls_.push(this.control_);
-    this.map_ = map;//panelLyrCompare
+    this.map_ = map; //panelLyrCompare
     this.panel_ = new M.ui.Panel('panel_selection_raw', {
-      collapsible:  this.collapsible,
+      collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position],
       className: this.className,
@@ -271,7 +267,7 @@ export default class LyrCompare extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-    
+
   }
 
 
@@ -287,7 +283,7 @@ export default class LyrCompare extends M.Plugin {
     this.control_.removeEffects();
     this.control_.removeLyrCompareLayers(this.layers);
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.layers,this.collapsible,this.collapsed, this.staticDivision, this.opacityVal, this.comparisonMode, this.defaultLyrA, this.defaultLyrB, this.defaultLyrC, this.defaultLyrD] = [null, null, null, null,null, null, null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.layers, this.collapsible, this.collapsed, this.staticDivision, this.opacityVal, this.comparisonMode, this.defaultLyrA, this.defaultLyrB, this.defaultLyrC, this.defaultLyrD] = [null, null, null, null, null, null, null, null, null, null, null, null];
   }
 
   /**

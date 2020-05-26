@@ -26,12 +26,6 @@ export default class TransparencyControl extends M.Control {
     super(impl, 'Transparency');
 
     /**
-     * Position plugin
-     * @public
-     * @type {String}
-     */
-    this.pluginOnLeft = values.pluginOnLeft;
-    /**
      * All layers
      * @public
      * @public {Array}
@@ -70,18 +64,6 @@ export default class TransparencyControl extends M.Control {
     this.map = map;
     return new Promise((success, fail) => {
       this.layers = this.transformToLayers(this.layers);
-
-      if (this.pluginOnLeft) {
-        document.querySelector('.m-panel.m-plugin-transparency').querySelector('.m-panel-btn.icon-gps4').addEventListener('click', (evt) => {
-          let buttonOpened = document.querySelector('.m-panel.m-plugin-transparency.opened');
-          if (buttonOpened !== null) {
-            buttonOpened = buttonOpened.querySelector('.m-panel-btn.g-cartografia-flecha-izquierda');
-          }
-          if (buttonOpened && this.pluginOnLeft) {
-            buttonOpened.classList.add('opened-left');
-          }
-        });
-      }
 
       let names = this.layers.map(function(layer) {
         return layer instanceof Object ? { name: layer.name } : { name: layer };
