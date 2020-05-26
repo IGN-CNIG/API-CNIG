@@ -1,7 +1,7 @@
 {
   "url": {
-    "name": "LyrCompare",
-    "separator": "*"
+    "name": "lyrcompare", 
+    "separator": "*!"
   },
   "constructor": "M.plugin.LyrCompare",
   "parameters": [{
@@ -21,6 +21,16 @@
         "name": "collapsible",
         "position": 2
       }, {
+        "type": "boolean",
+        "name": "collapsed",
+        "position": 3
+      },
+      {
+        "type": "boolean",
+        "name": "collapsible",
+        "position": 2
+      },
+      {
         "type": "boolean",
         "name": "collapsed",
         "position": 3

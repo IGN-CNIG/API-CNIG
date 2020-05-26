@@ -1,0 +1,21 @@
+{
+  "exception": {
+    "impl": "The implementation used cannot create Infocoordinates controls."
+  },
+  "tooltip": "Coordinates Information",
+  "title": "Coordinates Information",
+  "point": "Point:",
+  "datum": "Datum:",
+  "latitude": "Latitude:",
+  "longitude": "Longitude:",
+  "formatCoordinates": "DMS",
+  "zone": "UTM zone:",
+  "coordX": "Coord.X:",
+  "coordY": "Coord.Y:",
+  "altitude": "Altitude (m):",
+  "readingAltitude": "Reading...",
+  "noDatafromWCS": "No data",
+  "removePoint": "Removes point",
+  "removeAllPoints": "Remove all points"
+
+}

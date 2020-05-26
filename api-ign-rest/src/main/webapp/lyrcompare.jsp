@@ -132,7 +132,7 @@
             'WMS*AMS_1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957'],
             staticDivision,opacityVal,comparisonMode,defaultLyrA,defaultLyrB,defaultLyrC,defaultLyrD;
         crearPlugin({
-            layers: layers
+            layers: layers,
         });
 
         const selectPosicion = document.getElementById("selectPosicion");

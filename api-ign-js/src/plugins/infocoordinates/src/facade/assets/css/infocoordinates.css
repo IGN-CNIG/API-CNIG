@@ -1,0 +1,147 @@
+@font-face {
+    font-family: 'infocoordinates';
+    src: url('fonts/infocoordinates.eot?6jjon1');
+    src: url('fonts/infocoordinates.eot?6jjon1#iefix') format('embedded-opentype'),
+        url('fonts/infocoordinates.ttf?6jjon1') format('truetype'),
+        url('fonts/infocoordinates.woff?6jjon1') format('woff'),
+        url('fonts/infocoordinates.svg?6jjon1#infocoordinates') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-infocoordinates>div.m-panel-controls>div.m-control>button,
+.m-areas>div.m-area>div.m-panel.m-plugin-infocoordinates>button.m-panel-btn.infocoordinates-target,
+[class^="infocoordinates-"],
+[class*=" infocoordinates-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'infocoordinates' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.infocoordinates-bin2:before {
+    content: "\e9ad";
+}
+
+.infocoordinates-target:before {
+    content: "\e5101";
+    font-size: 20px;
+}
+
+.m-panel.m-plugin-infocoordinates.opened>button {
+    color: #71a7d3 !important;
+    background-color: white !important;
+}
+
+.m-right .m-panel.m-plugin-infocoordinates.opened>button {
+    position: absolute;
+    left: -40px;
+}
+
+.m-left .m-panel.m-plugin-infocoordinates.opened>button {
+    position: absolute;
+    right: -40px;
+}
+
+.m-panel.m-plugin-infocoordinates.collapsed {
+    height: 40px;
+}
+
+.div-m-infocoordinates-panel {
+    width: 220px;
+
+}
+
+.m-infocoordinates-title {
+    line-height: 40px;
+    background-color: #71a7d3;
+}
+
+.m-infocoordinates-title>p {
+    margin: 0px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+.m-infocoordinates-tabs {
+    overflow: hidden;
+    background-color: #f1f1f1;
+    margin-left: auto;
+}
+
+.m-infocoordinates-tabs button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin: 3px;
+    transition: 0.3s;
+    width: 30px;
+    height: 20px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px 0px rgba(65, 63, 63, 0.4);
+}
+
+.m-infocoordinates-tabs button:hover {
+    background-color: #ddd;
+}
+
+
+.m-infocoordinates-tabs button.active {
+    background-color: #ccc;
+
+}
+
+.m-infocoordinates-tabContent {
+    border-top: none;
+    width: 100%;
+    padding: 10px;
+    text-align: justify;
+}
+
+.m-panel .m-control.m-container.m-infocoordinates {
+    cursor: default;
+}
+
+#m-infocoordinates-buttonRemovePoint {
+    background-color: transparent;
+    border: none;
+    font-size: 13px;
+    color: gray;
+}
+
+#m-infocoordinates-buttonRemoveAllPoints {
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    color: gray;
+}
+
+#m-infocoordinates-buttonRemovePoint:hover,
+#m-infocoordinates-buttonRemoveAllPoints:hover {
+    color: rgb(91, 91, 91);
+    transition: 0.3s;
+}
+
+.m-infocoordinates-div-buttonRemoveAllPoints {
+    text-align: center;
+    padding: 5px;
+    border-top: 1px solid rgb(228, 226, 226);
+}
+
+
+.m-control.m-container.m-infocoordinates .noDisplay {
+    display: none;
+}
