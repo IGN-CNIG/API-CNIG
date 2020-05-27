@@ -25,6 +25,13 @@
         color: #71a7d3
     }
 
+    .m-areas>div.m-area.m-left>div.m-plugin-transparency.opened>button.m-panel-btn {
+        position: absolute;
+        left: 304px;
+        background-color: white;
+        color: #71a7d3
+    }
+
     .m-areas>div.m-area>div.m-plugin-transparency.opened>button.m-panel-btn.opened-left {
         left: unset !important;
         position: absolute;
@@ -191,6 +198,16 @@
         width: 210px;
     }
 
+    .m-transparency-select_arrow {
+        position: absolute;
+        top: 16px;
+        right: 28px;
+        pointer-events: none;
+        border-style: solid;
+        border-width: 8px 5px 0px 5px;
+        border-color: #7b7b7b transparent transparent transparent;
+    }
+
 
     /****************************
         FIREFOX HACKS
@@ -199,6 +216,11 @@
     @-moz-document url-prefix() {
         .m-transparency-select select {
             padding: 1px 10px;
+            width: 79%;
+        }
+
+        .m-transparency-select_arrow {
+            right: 15px;
         }
     }
 
@@ -216,15 +238,7 @@
         pointer-events: none;
     }
 
-    .m-transparency-select_arrow {
-        position: absolute;
-        top: 16px;
-        right: 28px;
-        pointer-events: none;
-        border-style: solid;
-        border-width: 8px 5px 0px 5px;
-        border-color: #7b7b7b transparent transparent transparent;
-    }
+
 
     @font-face {
         font-family: 'transparency';
