@@ -654,7 +654,7 @@ export default class GeorefimageControl extends M.impl.Control {
     const layerName = layer.name;
     const layerOpacity = olLayer.getOpacity();
     const layerReqEncoding = layerSource.getRequestEncoding();
-    const matrixSet = layerSource.getMatrixSet();
+    const matrixSet = layer.matrixSet;
 
     /**
      * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params

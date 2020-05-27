@@ -533,27 +533,36 @@ export default class GeorefimageControl extends M.Control {
     }, this.params_.layout);
 
     return this.encodeLayers().then((encodedLayers) => {
-      printData.attributes.map.layers = encodedLayers;
+      const returnData = encodedLayers;
+      let encodedLayersModified = [];
+      if (projection === 'EPSG:25830') {
+        for (let i = 0; i < returnData.length; i += 1) {
+          if (returnData[i].matrixSet != null) {
+            const matrixSet = returnData[i].matrixSet.replace('GoogleMapsCompatible', 'EPSG:25830');
+            returnData[i].matrixSet = matrixSet;
+          }
+          encodedLayersModified.push(returnData[i]);
+        }
+      } else {
+        encodedLayersModified = encodedLayers;
+      }
+      printData.attributes.map.layers = encodedLayersModified;
       printData.attributes = Object.assign(printData.attributes, parameters);
 
-      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
-        printData.attributes.map.projection = 'EPSG:3857';
-      } else {
-        printData.attributes.map.projection = this.map_.getProjection().code;
-      }
+      printData.attributes.map.projection = projection;
+
 
       printData.attributes.map.dpi = dpi;
       printData.attributes.map.width = width;
       printData.attributes.map.height = height;
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
 
-      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+      if (this.map_.getProjection().code !== projection) {
         printData.attributes.map.bbox = this.getImpl().transformExt(
           printData.attributes.map.bbox, this.map_.getProjection().code,
           projection,
         );
       }
-
 
       return printData;
     });
@@ -571,6 +580,32 @@ export default class GeorefimageControl extends M.Control {
     let layers = this.map_.getLayers().filter((layer) => {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover');
     });
+    const encodedLayersModified = [];
+    if (this.projection_.value === 'EPSG:3857') {
+      for (let i = 0; i < layers.length; i += 1) {
+        if (layers[i].matrixSet != null) {
+          const matrixSet = layers[i].matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
+          const optsMatrixSet = layers[i].options.matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
+          layers[i].matrixSet = matrixSet;
+          layers[i].options.matrixSet = optsMatrixSet;
+        }
+        encodedLayersModified.push(layers[i]);
+      }
+      layers = encodedLayersModified;
+    } else {
+      for (let i = 0; i < layers.length; i += 1) {
+        if (layers[i].matrixSet != null) {
+          const matrixSet = layers[i].matrixSet
+            .replace(layers[i].matrixSet, this.projection_.value);
+          const optsMatrixSet = layers[i].options.matrixSet
+            .replace(layers[i].matrixSet, this.projection_.value);
+          layers[i].matrixSet = matrixSet;
+          layers[i].options.matrixSet = optsMatrixSet;
+        }
+        encodedLayersModified.push(layers[i]);
+      }
+      layers = encodedLayersModified;
+    }
 
     let numLayersToProc = layers.length;
 
