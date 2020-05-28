@@ -1,0 +1,159 @@
+.m-panel-popup.collapsed {
+    height: 40px;
+    width: 40px;
+}
+
+div.m-areas>div.m-area>div.m-panel-popup.opened {
+    display: flex;
+    position: fixed;
+    margin: auto;
+    background-color: white;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    top: calc(50vh - 250px);
+    left: calc(50vw - 250px);
+}
+
+/* Opening/closing buttons */
+
+.m-areas>div.m-area>div.m-panel.m-panel-popup.collapsed>button.m-panel-btn {
+    background-color: #71a7d3 !important;
+    color: white;
+}
+
+.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
+    color: #71a7d3;
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-shadow: none;
+    z-index: 999;
+}
+
+.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn:before{
+    content: "X";
+    font-weight: bolder;
+    font-family: Arial;
+    font-size: 1rem;
+}
+
+div.m-areas>div.m-area.m-top.m-left>div.m-panel.m-panel-popup.opened {
+    order: -71;
+}
+
+div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened {
+    margin: 0;
+}
+
+.m-right.m-bottom>.m-panel-popup.collapsed {
+    right: 0;
+}
+
+.m-popup::after {
+    content: none;
+}
+
+/* Help content */
+
+.m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popupbox {
+    padding: 20px;
+    overflow-y: hidden;
+    height: 260px;
+    width: 460px;
+}
+
+.m-panel-popup.opened #popupbox>div>p:first-child {
+    background-color: #71a7d3;
+    border-radius: 5px;
+    color: white;
+    padding: 7px 10px 5px 10px;
+    font-weight: bold;
+}
+
+.m-panel-popup.opened #popupbox>div>a {
+    background-color: #b5b6b8;
+    border-radius: 5px;
+    color: white;
+    display: block;
+    margin: auto;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 60px;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popupbox {
+        padding: 20px;
+        overflow-y: auto;
+        height: calc(100vh - 40px);
+        width: calc(100vw - 40px);
+        position: fixed;
+        top: 0 !important;
+        left: 0 !important;
+        position: fixed;
+        background-color: white;
+        border-radius: 5px;
+    }
+
+    .m-area>.m-panel.m-panel-popup.opened>.m-panel-btn {
+        box-shadow: none;
+        height: 20px;
+        margin: 5px;
+        width: 20px;
+        z-index: 1000;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button {
+        background-color: transparent;
+        border-radius: none;
+    }
+
+    div.m-areas>div.m-area.m-right>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
+        left: 50vw;
+        top: 0;
+    }
+
+    div.m-areas>div.m-area.m-left>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
+        right: 50vw;
+        top: 0;
+    }
+}
+
+/* Icon font */
+
+@font-face {
+    font-family: 'popup';
+    src: url('../fonts/popup.eot?45823257');
+    src: url('../fonts/popup.eot?45823257#iefix') format('embedded-opentype'),
+        url('../fonts/popup.woff2?45823257') format('woff2'),
+        url('../fonts/popup.woff?45823257') format('woff'),
+        url('../fonts/popup.ttf?45823257') format('truetype'),
+        url('../fonts/popup.svg?45823257#popup') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.m-panel-popup [class^="icon-"]:before,
+.m-panel-popup [class*=" icon-"]:before {
+    font-family: "popup";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    margin-left: .2em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.m-panel-popup .icon-help:before {
+    content: '\e800';
+}
