@@ -3,8 +3,8 @@
  */
 
 import PopupImplControl from 'impl/popupcontrol';
-import template from 'templates/popup';
-import { getValue } from './i18n/language';
+/** import template from 'templates/popup';
+import { getValue } from './i18n/language'; */
 
 
 export default class PopupControl extends M.Control {
@@ -41,22 +41,16 @@ export default class PopupControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    return new Promise((success, fail) => {
-      const html = M.template.compileSync(template, {
-        vars: {
-          url: this.url_,
-          translations: {
-            ayuda: getValue('ayuda'),
-            consulta: getValue('consulta'),
-            aqui: getValue('aqui'),
-            contacto: getValue('contacto'),
-            localizacion: getValue('localizacion'),
-            telefono: getValue('telefono'),
-          },
-        },
+    return M.remote.get(this.url_)
+      .then((v) => {
+        let html = v.text;
+        html = html.substring(html.indexOf('<div id="popup-box">'), html.lastIndexOf('</div>'));
+        const htmlObject = document.createElement('div');
+        htmlObject.classList.add('m-control', 'm-container', 'm-popup');
+        htmlObject.innerHTML = html;
+        console.log(htmlObject);
+        return htmlObject;
       });
-      success(html);
-    });
   }
 
   /**

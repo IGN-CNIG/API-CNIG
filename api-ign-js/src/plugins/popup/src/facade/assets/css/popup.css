@@ -36,6 +36,21 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
     font-family: Arial;
     font-size: 1rem;
 }
+div.m-areas>div.m-area.m-top.m-right>div.m-panel.m-panel-popup.opened>button {
+    left: calc(50vw - 290px);
+}
+
+div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened>button {
+    left: calc(50vw - 290px);
+}
+
+div.m-areas>div.m-area.m-top.m-left>div.m-panel.m-panel-popup.opened>button {
+    right: calc(50vw - 290px);
+}
+
+div.m-areas>div.m-area.m-bottom.m-left>div.m-panel.m-panel-popup.opened>button {
+    right: calc(50vw - 290px);
+}
 
 div.m-areas>div.m-area.m-top.m-left>div.m-panel.m-panel-popup.opened {
     order: -71;
@@ -55,14 +70,14 @@ div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened {
 
 /* Help content */
 
-.m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popupbox {
-    padding: 20px;
+.m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
+    padding: 30px 20px 20px;
     overflow-y: hidden;
     height: 260px;
     width: 460px;
 }
 
-.m-panel-popup.opened #popupbox>div>p:first-child {
+.m-panel-popup.opened #popup-box>div>p.popup-title {
     background-color: #71a7d3;
     border-radius: 5px;
     color: white;
@@ -70,7 +85,7 @@ div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened {
     font-weight: bold;
 }
 
-.m-panel-popup.opened #popupbox>div>a {
+.m-panel-popup.opened #popup-box>div>a {
     background-color: #b5b6b8;
     border-radius: 5px;
     color: white;
@@ -84,7 +99,7 @@ div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened {
 }
 
 @media only screen and (max-width: 600px) {
-    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popupbox {
+    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
         padding: 20px;
         overflow-y: auto;
         height: calc(100vh - 40px);
@@ -95,29 +110,6 @@ div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened {
         position: fixed;
         background-color: white;
         border-radius: 5px;
-    }
-
-    .m-area>.m-panel.m-panel-popup.opened>.m-panel-btn {
-        box-shadow: none;
-        height: 20px;
-        margin: 5px;
-        width: 20px;
-        z-index: 1000;
-    }
-
-    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button {
-        background-color: transparent;
-        border-radius: none;
-    }
-
-    div.m-areas>div.m-area.m-right>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
-        left: 50vw;
-        top: 0;
-    }
-
-    div.m-areas>div.m-area.m-left>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
-        right: 50vw;
-        top: 0;
     }
 }
 

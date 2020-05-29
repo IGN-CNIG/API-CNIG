@@ -48,9 +48,9 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
 
-        <label for="inputHelpLink">Parámetro helpLink</label>
-        <input type="text" id="inputHelpLink" list="helpLinkSug" />
-        <datalist id="helpLinkSug">
+        <label for="inputHelpLink">Parámetro url</label>
+        <input type="text" id="inputHelpLink" list="urlSug" />
+        <datalist id="urlSug">
             <option value="http://fototeca.cnig.es/help_es.pdf"></option>
         </datalist>
         <label for="inputContactEmail">Parámetro contactEmail</label>
@@ -91,10 +91,10 @@
         });
 
 
-        let mp, posicion, helpLink, contactEmail;
+        let mp, posicion, url, contactEmail;
         crearPlugin({
             position: posicion,
-            helpLink: helpLink,
+            url: url,
             contactEmail: contactEmail
         });
 
@@ -109,15 +109,15 @@
 
         buttonApi.addEventListener('click', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = inputHelpLink.value;
+            url = inputHelpLink.value;
             contactEmail = inputContactEmail.value;
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?popup=' + posicion + '*' + helpLink + '*' + contactEmail;
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?popup=' + posicion + '*' + url + '*' + contactEmail;
         })
 
         function cambiarTest() {
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            helpLink = inputHelpLink.value != "" ? helpLink.srs = inputHelpLink.value : "";
+            url = inputHelpLink.value != "" ? url.srs = inputHelpLink.value : "";
             contactEmail = inputContactEmail.value != "" ? contactEmail.srs = inputContactEmail.value : "";
             map.removePlugins(mp);
             crearPlugin(objeto);

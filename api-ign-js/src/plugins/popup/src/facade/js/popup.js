@@ -46,7 +46,7 @@ export default class Popup extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.url_ = options.url || 'https://thirtiethsupport.htmlpasta.com/';
+    this.url_ = options.url || 'https://raw.githubusercontent.com/irevios/sig/master/ejemplo.html?token=AIPI6ZZQYZ2QICA5YMDCWDS62D2W2';
 
     /**
      * Metadata from api.json
