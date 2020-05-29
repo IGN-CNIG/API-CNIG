@@ -1,6 +1,11 @@
+/**
+ * @module M/impl/util/wmtscapabilities
+ */
+import WMTS from 'M/layer/WMTS';
 import { isNullOrEmpty, isArray, isObject } from 'M/util/Utils';
 import { get as getProj } from 'ol/proj';
 import ImplUtils from './Utils';
+
 
 /**
  * TODO
@@ -24,6 +29,45 @@ const getExtentRecursive = (layer, layerName, code) => {
     }
   }
   return extent;
+};
+
+const getLayersRecursive = (layer, urlService, EPSGcode) => {
+  let layers = [];
+  if (!isNullOrEmpty(layer.Layer)) {
+    layers = getLayersRecursive(layer.Layer);
+  } else if (isArray(layer)) {
+    layer.forEach((layerElem) => {
+      layers = layers.concat(getLayersRecursive(layerElem, urlService, EPSGcode));
+    });
+  } else {
+    const listMatrixSetCapabilities = layer.TileMatrixSetLink;
+    let EPSGcodeToMatrixSet = EPSGcode;
+
+    if (EPSGcode === 'EPSG:3857') {
+      if (!listMatrixSetCapabilities.includes('EPSG:3857')) {
+        EPSGcodeToMatrixSet = 'GoogleMapsCompatible';
+      }
+    }
+
+    layers.push(new WMTS({
+      url: urlService,
+      name: layer.Identifier,
+      matrixSet: EPSGcodeToMatrixSet,
+      legend: layer.Title,
+    }));
+  }
+  return layers;
+};
+
+/**
+ * TODO
+ *
+ * @public
+ * @function
+ * @api
+ */
+export const getLayers = (capabilities, url, EPSGcode) => {
+  return getLayersRecursive(capabilities.Contents.Layer, url, EPSGcode);
 };
 
 /**
