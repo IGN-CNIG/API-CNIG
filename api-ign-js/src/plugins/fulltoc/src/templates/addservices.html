@@ -1,0 +1,45 @@
+<div class="m-fulltoc-addservices">
+    <div class="m-fulltoc-service-type-container">
+      <div>
+        <input type="radio" id="m-fulltoc-addservices-wms" name="service-type" value="wms" checked="checked"><label for="m-fulltoc-addservices-wms">WMS</label>
+      </div>
+      <div>
+        <input type="radio" id="m-fulltoc-addservices-wmts" name="service-type" value="wmts"><label for="m-fulltoc-addservices-wmts">WMTS</label>
+      </div>
+    </div>
+    <div class="search-panel">
+        <input type="text" id="m-fulltoc-addservices-search-input" placeholder="{{translations.url_service}}" class="m-input-search" />
+        <span id="m-fulltoc-addservices-search-btn" class="icon-zoom m-search-btn" title="{{translations.query}}"></span>
+        <span id="m-fulltoc-addservices-list-btn" class="icon-lista m-search-btn" title="{{translations.loaded_services}}"></span>
+        <span id="m-fulltoc-addservices-clear-btn" class="icon-cancelar m-clear-btn" title="{{translations.clean}}"></span>
+    </div>
+    <div id="m-fulltoc-addservices-suggestions" style="display: none;">
+      <table style="width: 100%;">
+        <thead>
+          <tr><th>{{translations.availables}}</th></tr>
+        </thead>
+        <tbody>
+          {{#each precharged.groups}}
+            <tr><td>
+              <span class="m-fulltoc-suggestion-caret">{{name}}</span>
+              <ul class="m-fulltoc-suggestion-group">
+                {{#each services}}
+                  <li><span class="m-fulltoc-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</span></li>
+                {{/each}}
+              </ul>
+            </td></tr>
+          {{/each}}
+          {{#each precharged.services}}
+            <tr><td><span class="m-fulltoc-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</span></td></tr>
+          {{/each}}
+          <!-- <tr><td>-&nbsp;<span class="m-fulltoc-suggestion" data-service-type="WMS" data-link="http://servicios.idee.es/wms-inspire/hidrografia?">IDEE Hidrografía</span></td></tr>
+          <tr><td>-&nbsp;<span class="m-fulltoc-suggestion" data-service-type="WMS" data-link="http://mapas.igme.es/gis/services/Cartografia_Geologica/IGME_Geologico_1M/MapServer/WMSServer?">IGME Geológico</span></td></tr>
+          <tr><td>-&nbsp;<span class="m-fulltoc-suggestion" data-service-type="WMS" data-link="https://www.ign.es/wms-inspire/camino-santiago">Camino de Santiago</span></td></tr>
+          <tr><td>-&nbsp;<span class="m-fulltoc-suggestion" data-service-type="WMS" data-link="https://www.ign.es/wms-inspire/redes-geodesicas">Redes Geodésicas</span></td></tr>
+          <tr><td>-&nbsp;<span class="m-fulltoc-suggestion" data-service-type="WMS" data-link="https://www.ign.es/wms/minutas-cartograficas">Planimetrías</span></td></tr>
+          <tr><td>-&nbsp;<span class="m-fulltoc-suggestion" data-service-type="WMS" data-link=""></span></td></tr> -->
+        </tbody>
+      </table>
+    </div>
+    <div id="m-fulltoc-addservices-results"></div>
+</div>

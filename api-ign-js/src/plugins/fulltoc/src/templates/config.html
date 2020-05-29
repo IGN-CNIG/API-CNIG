@@ -1,0 +1,13 @@
+<div id="m-fulltoc-change-config">
+    <div class="select-container">
+      <select id="m-fulltoc-style-select">
+          <option disabled="disabled" id="layers0" selected="selected">{{translations.select_style}}</option>
+          {{#each styles}}
+              <option name="{{this}}">{{this}}</option>
+          {{/each}}
+      </select>
+    </div>
+    <div class="btn-container">
+      <button class="m-fulltoc-common-btn">{{translations.change}}</button>
+    </div>
+</div>
