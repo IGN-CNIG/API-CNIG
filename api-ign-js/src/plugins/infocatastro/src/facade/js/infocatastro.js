@@ -88,7 +88,7 @@ export default class InfoCatastro extends M.Plugin {
       className: 'm-plugin-catastro',
       position: M.ui.position[this.position_],
       tooltip: this.tooltip_,
-      collapsedButtonClass: 'g-cartografia-info',
+      collapsedButtonClass: 'icon-posicion4',
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
