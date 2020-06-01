@@ -1,5 +1,5 @@
 {
-  "name": "vectors",
+  "name": "Popup",
   "version": "1.0.0",
   "description": "",
   "keywords": [
@@ -56,9 +56,9 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "shp-write": "^0.3.2",
-    "shpjs": "^3.4.3",
-    "togpx": "^0.5.4",
-    "tokml": "^0.4.0"
+    "html-get": "^2.4.15",
+    "http-request": "^0.7.0",
+    "puppeteer": "^3.1.0",
+    "website-scraper": "^4.2.1"
   }
 }
