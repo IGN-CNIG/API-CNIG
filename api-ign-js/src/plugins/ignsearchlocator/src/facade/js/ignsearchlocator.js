@@ -263,6 +263,7 @@ export default class IGNSearchLocator extends M.Plugin {
       this.geocoderCoords_,
       this.zoom_,
       this.searchPosition,
+      this.position,
     ));
     this.controls_[0].on('ignsearchlocator:entityFound', (extent) => {
       this.fire('ignsearchlocator:entityFound', [extent]);
@@ -271,6 +272,9 @@ export default class IGNSearchLocator extends M.Plugin {
       this.fire('xylocator:locationCentered', data);
     });
     this.map_ = map;
+    if (this.position === 'TC') {
+      this.collapsible = false;
+    }
     this.panel_ = new M.ui.Panel('panelIGNSearchLocator', {
       collapsible: this.collapsible,
       position: M.ui.position[this.position],

@@ -34,6 +34,7 @@
   "west": "Oeste",
   "dms": "GMS",
   "dd": "GD",
+  "negative": "Nota: Los valores negativos se corresponden con latitud sur y longitud oeste respectivamente",
 
   "direccion": "Dirección, topónimo o Ref. catastral (14 dig.)",
   "obtener": "Obtener dirección en un punto del mapa",

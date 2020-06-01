@@ -5,9 +5,7 @@ div.m-area.m-top.m-left>div.m-panel.ign-searchlocator-panel.collapsed>button,
     background: #71a7d3 !important;
 }
 
-.m-ignsearchlocator {
-    white-space: nowrap;
-}
+
 
 .ign-searchlocator-panel {
     order: -100;
@@ -91,7 +89,7 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
 }
 
 #m-ignsearchlocator-search-input {
-    width: 300px;
+    width: 150px;
     border: none;
 }
 
@@ -108,6 +106,7 @@ button#m-ignsearchlocator-locate-button {
     border: none;
     width: 40px;
     height: 40px;
+    margin-top: -0.5px;
 }
 
 #m-ignsearchlocator-locate-button {
@@ -191,7 +190,7 @@ button#m-ignsearchlocator-locate-button {
 }
 
 input#LON {
-    width: 50%;
+    width: 23.8%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -205,7 +204,7 @@ input#LON {
 }
 
 input#LAT {
-    width: 50%;
+    width: 23.8%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -217,6 +216,14 @@ input#LAT {
     margin-bottom: 5px;
     margin-left: 5px;
 
+}
+
+input#UTM-X {
+    width: 38%;
+}
+
+input#UTM-Y {
+    width: 38%;
 }
 
 #m-xylocator-dms>div {
@@ -283,7 +290,6 @@ input#LAT {
 }
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
-    width: 63%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -310,7 +316,7 @@ input#LAT {
 
 
 input#m-searchParamsParcela-input {
-    width: 35%;
+    width: 20%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -323,7 +329,7 @@ input#m-searchParamsParcela-input {
 }
 
 input#m-searchParamsPoligono-input {
-    width: 35%;
+    width: 20%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -333,10 +339,11 @@ input#m-searchParamsPoligono-input {
     border-radius: 0px;
     margin: 0px;
     margin-bottom: 5px;
+    margin-right: 10px;
 }
 
 p.parcela--input {
-    width: 110px;
+    width: 90px;
     display: inline-table;
 }
 
@@ -372,7 +379,7 @@ DROPDOWN ****************************/
 #div-contenedor.m-ignsearchlocator .dropdown {
     position: relative;
     display: inline-block;
-    width: 40%;
+    width: 60%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -511,18 +518,6 @@ DROPDOWN ****************************/
     background-color: #fffbfb;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
-    margin-top: 3%;
-    width: 50%;
-}
-
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
-    margin-left: 5px;
-}
-
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
-    margin-left: 5px;
-}
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
     display: inline;
@@ -567,6 +562,14 @@ DROPDOWN ****************************/
     margin-right: 40px;
 }
 
+.m-areas>div.m-area.m-bottom.m-right>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
+    width: 346px;
+}
+
+.m-areas>div.m-area.m-bottom.m-left>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
+    width: 346px;
+}
+
 /****************************
  INTERNET EXPLORER HACKS
 ****************************/
@@ -592,15 +595,49 @@ DROPDOWN ****************************/
 
 @media only screen and (max-width: 600px) {
     .m-areas>div.m-area.m-top>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
-        width: 303px;
+        width: 305px;
     }
+
 
     .m-areas>div.m-area.m-bottom>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
         width: 260px;
     }
 
+    .m-areas>div.m-area.m-bottom.m-right>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
+        width: 261px;
+    }
+
+    .m-areas>div.m-area.m-bottom.m-left>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
+        width: 261px;
+    }
+
     .m-ignsearchlocator #m-ignsearchlocator-search-input {
         width: 25%;
+    }
+
+    #div-contenedor.m-ignsearchlocator .dropdown {
+        width: 93%;
+    }
+
+    p.parcela--input {
+        margin-left: 0px !important;
+    }
+
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
+        margin-right: 30px;
+    }
+
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
+        margin-left: 16px;
+    }
+
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
+        width: 95.5%;
+    }
+
+    #div-contenedor.m-ignsearchlocator .m-xylocator-container>div.m-xylocator-panel div.title {
+        padding-left: 0px;
+        font-size: 14px;
     }
 
     .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
@@ -615,15 +652,22 @@ DROPDOWN ****************************/
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
 
-        width: 35%;
+        width: 33.9%;
+        margin-right: 10px;
     }
 
     input#m-searchParamsPoligono-input {
         width: 35%;
     }
 
+    input#m-searchParamsParcela-input {
+        width: 35%;
+        margin-left: 18px;
+    }
+
+
     #m-xylocator-dms>div>div>input[type="number"] {
-        width: 1rem;
+        width: 1.5rem;
     }
 
 }

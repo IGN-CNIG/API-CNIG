@@ -12,12 +12,12 @@
   "geographic": "Geographic",
   "zone": "zone",
   "title": "Coordinate locator",
-  "titleparcela": "Search to industrial estate and plot",
+  "titleparcela": "Search to plygon and parcel",
   "municipality": "Municipality",
   "selectmuni": "Select a municipality",
   "selectprov": "Select a province",
-  "estate": "Industrial estate",
-  "plot": "Plot",
+  "estate": "Polygon",
+  "plot": "Parcel",
   "search": "Search",
 
 
@@ -32,10 +32,12 @@
   "west": "West",
   "dms": "DMS",
   "dd": "DD",
+  "negative": "Note: Negative values​​ correspond to south latitude and west longitude respectively ",
+
 
   "direccion": "Address, place name or cadastral Ref (14 dig.)",
   "obtener": "Get direction at a point on the map",
-  "buscparcela": "Search plot",
+  "buscparcela": "Search parcel",
   "busccoord": "Search coordinates",
   "borrarresult": "Delete results",
   "exact": "Exact address",
@@ -43,6 +45,6 @@
 
   "debeprov": "You must select a province.",
   "debemuni": "You must select a municipality.",
-  "debepoli": "You must select an industrial estate.",
-  "debeparce": "You must select a plot."
+  "debepoli": "You must select an polygon.",
+  "debeparce": "You must select a parcel."
 }

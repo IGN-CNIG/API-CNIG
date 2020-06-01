@@ -3,12 +3,12 @@
         <div class="title">{{translations.title}}</div>
         <div class="m-xylocator-datas">
             <div id="m-xylocator-coordinatesSystem">
-                <span>{{translations.srs}}:</span>
+                <b><span>{{translations.srs}}:</span></b>
                 <select name="srs" id="m-xylocator-srs" class="dropdown">
-                    <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4258" option="selected">ETRS89 {{translations.geographic}} (4258) {{translations.dd}}</option>
-                    <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4326">WGS84 {{translations.geographic}} (4326) {{translations.dd}}</option>
-                    <option class="m-xylocator-srs-option" data-units="dms" value="EPSG:4258" option="selected">ETRS89 {{translations.geographic}} (4258) {{translations.dms}}</option>
-                    <option class="m-xylocator-srs-option" data-units="dms" value="EPSG:4326">WGS84 {{translations.geographic}} (4326) {{translations.dms}}</option>
+                    <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4258d" option="selected">ETRS89 {{translations.geographic}} (4258) {{translations.dd}}</option>
+                    <option class="m-xylocator-srs-option" data-units="d" value="EPSG:4326d">WGS84 {{translations.geographic}} (4326) {{translations.dd}}</option>
+                    <option class="m-xylocator-srs-option" data-units="dms" value="EPSG:4258dms" option="selected">ETRS89 {{translations.geographic}} (4258) {{translations.dms}}</option>
+                    <option class="m-xylocator-srs-option" data-units="dms" value="EPSG:4326dms">WGS84 {{translations.geographic}} (4326) {{translations.dms}}</option>
                     <option class="m-xylocator-srs-option" data-units="m" value="EPSG:3857">WGS84 Pseudo Mercator (3857)</option>
                     <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25831">ETRS89 UTM {{translations.zone}} 31N (25831)</option>
                     <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25830">ETRS89 UTM {{translations.zone}} 30N (25830)</option>
@@ -17,16 +17,20 @@
                 </select>
             </div>
             <div id="m-xylocator-utm" style="display:none;">
-                <span>X:</span>
-                <input type="text" name="UTM-X" id="UTM-X" placeholder="234798,13" style="color:black"><br />
-                <span>Y:</span>
+                <b>
+                    <p class="parcela--input" style="width: 0px !important;">X:</p>
+                </b>
+                <input type="text" name="UTM-X" id="UTM-X" placeholder="234798,13" style="color:black">
+                <b>
+                    <p class="parcela--input" style="width: 0px !important; margin-left: 15px;">Y:</p>
+                </b>
                 <input type="text" name="UTM-Y" id="UTM-Y" placeholder="4154570,15" style="color:black">
             </div>
             <div id="m-xylocator-dms" style="display:none;">
                 <b>
                     <p>{{translations.longitude}}:</p>
                 </b>
-                <div style="margin-bottom: -0.8rem;">
+                <div style="margin-bottom: -1.5rem;">
                     <div>
                         <input type="number" name="LONHH" id="LONHH" value="0" min="0" max="180" style="color:black"><span>º</span>
                     </div>
@@ -81,10 +85,17 @@
                 </div>
             </div>
             <div class="m-xylocator-lonlat" id="m-xylocator-latlon">
-                <p class="parcela--input">{{translations.longitude}}:</p>
-                <input type="text" name="LON" id="LON" placeholder="-6,0" style="color:black"><br />
-                <p class="parcela--input">{{translations.latitude}}:</p>
-                <input type="text" name="LAT" id="LAT" placeholder="37,5" style="color:black">
+                <b>
+                    <p class="parcela--input" style="width: 0px !important;">{{translations.longitude}}:</p>
+                </b>
+                <input type="text" title="{{translations.negative}}" name="LON" id="LON" placeholder="-6,0" style="color:black">
+                <b>
+                    <p class="parcela--input" style="width: 0px !important;">{{translations.latitude}}:</p>
+                </b>
+                <input type="text" title="{{translations.negative}}" name="LAT" id="LAT" placeholder="37,5" style="color:black">
+                <b>
+                    <p class="parcela--input" style="width: 0px !important;">{{translations.negative}}</p>
+                </b>
             </div>
         </div>
         <div class="button">

@@ -44,6 +44,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     geocoderCoords,
     zoom,
     searchPosition,
+    position,
     nomenclatorSearchType = geographicNameType,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
@@ -231,6 +232,141 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {number}
      */
     this.zoom = zoom || 14;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.position = position;
+
+
+    // PARCELA
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.parcela_prov = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.parcela_mun = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.parcela_pol = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.parcela_parc = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xytype = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xydata = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xylon = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xylat = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xylathh = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xylatmm = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xylatss = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xylonhh = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xylonmm = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xylonss = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xyutmx = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.xyutmy = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.provincecode = null;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.municipalityvalue = null;
   }
   /**
    * This function creates the view
@@ -261,6 +397,15 @@ export default class IGNSearchLocatorControl extends M.Control {
       html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
       html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
+      html.querySelector('#m-ignsearchlocator-search-input').addEventListener('click', () => {
+        if (document.getElementById('m-ignsearchlocator-xylocator-button').style.backgroundColor === 'rgb(113, 167, 211)' ||
+          document.getElementById('m-ignsearchlocator-parcela-button').style.backgroundColor === 'rgb(113, 167, 211)') {
+          // Eliminamos la seleccion del xylocator y parcela
+          this.clearResults();
+          this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+          this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+        }
+      });
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
         clearTimeout(typingTimer);
       });
@@ -274,6 +419,10 @@ export default class IGNSearchLocatorControl extends M.Control {
       if (!this.reverse) {
         html.querySelector('#m-ignsearchlocator-locate-button').style.display = 'none';
       }
+      if (this.position === 'TC') {
+        document.querySelector('.ign-searchlocator-panel').style = 'position: fixed!important; left: calc(50vw - 210px); top: 20px;';
+      }
+
       this.on(M.evt.ADDED_TO_MAP, () => {
         if (this.locationID && this.locationID.length > 0) {
           this.point = new M.style.Point({
@@ -454,6 +603,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   searchInputValue(e, firstResult = false) {
+    document.getElementById('m-ignsearchlocator-results').style = 'width: 89.6%';
+
     // const { value } = e.target;
     const value = e.target.value.replace(',', ' ');
     this.searchValue = value;
@@ -461,9 +612,6 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox.innerHTML = '';
     } else {
       this.resultsBox.innerHTML = '';
-      // Eliminamos la seleccion del xylocator y parcela
-      this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
-      this.activationManager(false, 'm-ignsearchlocator-parcela-button');
       // Adds animation class during loading
       this.resultsBox.classList.add('g-cartografia-spinner');
       this.resultsBox.style.fontSize = '24px';
@@ -578,7 +726,11 @@ export default class IGNSearchLocatorControl extends M.Control {
     const portal = (jsonResult.portalNumber === null ||
       jsonResult.portalNumber === undefined ||
       jsonResult.portalNumber === 0) ? '' : jsonResult.portalNumber;
-    return `${via} ${address} ${portal}`;
+    const muni = (jsonResult.muni === null ||
+      jsonResult.muni === undefined) ? '' : jsonResult.muni;
+    const province = (jsonResult.province === null ||
+      jsonResult.province === undefined) ? '' : jsonResult.province;
+    return `${via} ${address} ${portal}, ${muni.toUpperCase()}, ${province.toUpperCase()}`;
   }
   /**
    * This function removes last search layer and adds new layer
@@ -829,22 +981,12 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   clearResults() {
+    this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+    this.activationManager(false, 'm-ignsearchlocator-parcela-button');
     this.searchInput.value = '';
     this.resultsBox.innerHTML = '';
     this.searchValue = '';
     this.map.removeLayers(this.coordinatesLayer);
-    if (document.querySelector('.m-xylocator-container') !== null) {
-      document.querySelector('.m-xylocator-container input#UTM-X').value = '';
-      document.querySelector('.m-xylocator-container input#UTM-Y').value = '';
-      document.querySelector('.m-xylocator-container input#LON').value = '';
-      document.querySelector('.m-xylocator-container input#LAT').value = '';
-      document.querySelector('.m-xylocator-container input#LONHH').value = 0;
-      document.querySelector('.m-xylocator-container input#LONMM').value = 0;
-      document.querySelector('.m-xylocator-container input#LONSS').value = 0;
-      document.querySelector('.m-xylocator-container input#LATHH').value = 0;
-      document.querySelector('.m-xylocator-container input#LATMM').value = 0;
-      document.querySelector('.m-xylocator-container input#LATSS').value = 0;
-    }
   }
   /**
    * This function clears input content, results box, popup and shown geometry.
@@ -863,6 +1005,23 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.lng,
       this.lat,
     ]);
+
+    this.xytype = null;
+    this.xydata = null;
+    this.xylon = null;
+    this.xylat = null;
+    this.xylathh = null;
+    this.xylatmm = null;
+    this.xylatss = null;
+    this.xylonhh = null;
+    this.xylonmm = null;
+    this.xylonss = null;
+    this.xyutmx = null;
+    this.xyutmy = null;
+    this.provincecode = null;
+    this.selectMunicipios = null;
+    this.inputPoligono = null;
+    this.inputParcela = null;
   }
 
   /**
@@ -881,6 +1040,11 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
       }
       this.activationManager(true, 'm-ignsearchlocator-parcela-button');
+      if (this.position === 'TC') {
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 74.5%';
+      } else {
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 66.9%';
+      }
 
       const compiledXYLocator = M.template.compileSync(parcela, {
         vars: {
@@ -900,12 +1064,35 @@ export default class IGNSearchLocatorControl extends M.Control {
       /**
        *crear provincias y rellenar municipios
        */
-      this.selectProvincias = compiledXYLocator.querySelector('select#m-searchParamsProvincia-select');
-      this.selectProvincias.addEventListener('change', evt => this.onProvinciaSelect(evt));
+      if (this.provincecode === null) {
+        this.selectProvincias = compiledXYLocator.querySelector('select#m-searchParamsProvincia-select');
+        this.selectProvincias.addEventListener('change', evt => this.onProvinciaSelect(evt, null));
+      } else {
+        compiledXYLocator.querySelector('select#m-searchParamsProvincia-select').value = this.provincecode;
+        this.selectProvincias = compiledXYLocator.querySelector('select#m-searchParamsProvincia-select');
+        this.onProvinciaSelect(null, this.provincecode, this.selectMunicipios);
+        this.selectProvincias.addEventListener('change', evt => this.onProvinciaSelect(evt, null, null));
+      }
 
-      this.selectMunicipios = compiledXYLocator.querySelector('#m-searchParamsMunicipio-select');
-      this.inputPoligono = compiledXYLocator.querySelector('#m-searchParamsPoligono-input');
-      this.inputParcela = compiledXYLocator.querySelector('#m-searchParamsParcela-input');
+      if (this.selectMunicipios === null) {
+        this.selectMunicipios = compiledXYLocator.querySelector('#m-searchParamsMunicipio-select');
+      } else {
+        // compiledXYLocator.querySelector('#m-searchParamsMunicipio-select')
+        // .replace(this.municipalityhtml);
+        compiledXYLocator.querySelector('#m-searchParamsMunicipio-select').value = this.selectMunicipios.value;
+      }
+
+      if (this.inputPoligono === null) {
+        this.inputPoligono = compiledXYLocator.querySelector('#m-searchParamsPoligono-input');
+      } else {
+        compiledXYLocator.querySelector('#m-searchParamsPoligono-input').value = this.inputPoligono.value;
+      }
+
+      if (this.inputParcela === null) {
+        this.inputParcela = compiledXYLocator.querySelector('#m-searchParamsParcela-input');
+      } else {
+        compiledXYLocator.querySelector('#m-searchParamsParcela-input').value = this.inputParcela.value;
+      }
 
       const buttonParamsSearch = compiledXYLocator.querySelector('button#m-searchParams-button');
       buttonParamsSearch.addEventListener('click', e => this.onParamsSearch(e));
@@ -928,7 +1115,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         M.dialog.info(getValue('debeprov'));
         return;
       }
-      if (M.utils.isNullOrEmpty(this.selectMunicipios.value) || this.selectMunicipios.value === '0') {
+      if (M.utils.isNullOrEmpty(this.selectMunicipios.value) || document.querySelector('#m-searchParamsMunicipio-select').value === '0') {
         M.dialog.info(getValue('debemuni'));
         return;
       }
@@ -940,6 +1127,11 @@ export default class IGNSearchLocatorControl extends M.Control {
         M.dialog.info(getValue('debeparce'));
         return;
       }
+
+      this.provincecode = this.selectProvincias.value;
+      this.selectMunicipios = document.querySelector('#m-searchParamsMunicipio-select');
+      this.municipalityvalue = this.selectMunicipios.value;
+
 
       const searchUrl = M.utils.addParameters(this.DNPPP_url_, {
         CodigoProvincia: this.selectProvincias.value,
@@ -954,6 +1146,8 @@ export default class IGNSearchLocatorControl extends M.Control {
         if (success) {
           this.parseParamsResultsForTemplate_(response.xml);
         }
+        this.clearResults();
+        this.activationManager(false, 'm-ignsearchlocator-parcela-button');
       });
     }
   }
@@ -1070,21 +1264,32 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @function
    * @api stable
    */
-  onProvinciaSelect(e) {
-    const elt = e.target;
-    const provinceCode = elt.value;
+  onProvinciaSelect(e, idprov, munici) {
+    // En cada click a las provincias, se borran los municipios y se calculan de nuevo.
+    let provinceCode = null;
+    if (e != null) {
+      const elt = e.target;
+      provinceCode = elt.value;
+    } else {
+      provinceCode = idprov;
+    }
     if (provinceCode !== '0') {
+      if (this.element_.getElementsByTagName('select')['m-searchParamsMunicipio-select'] !== undefined) {
+        this.clearMunicipiosSelect();
+      }
+
       M.remote.get(this.ConsultaMunicipioCodigos_, {
         CodigoProvincia: provinceCode,
         CodigoMunicipio: '',
         CodigoMunicipioIne: '',
       }).then((res) => {
-        this.loadMunicipiosSelect(res);
+        this.loadMunicipiosSelect(res, munici);
       });
     } else {
       this.clearMunicipiosSelect();
     }
   }
+
 
   /**
    * Loads and renders options set to Municipios select
@@ -1093,19 +1298,21 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @function
    * @api stable
    */
-  loadMunicipiosSelect(response) {
+  loadMunicipiosSelect(response, munici) {
     if ((response.code === 200) && (response.error === false)) {
       const rootElement = response.xml.getElementsByTagName('consulta_municipiero')[0];
       const rootMunicipios = rootElement.getElementsByTagName('municipiero')[0];
       const muniNodes = rootMunicipios.getElementsByTagName('muni');
       const select = this.element_.getElementsByTagName('select')['m-searchParamsMunicipio-select'];
-      this.clearMunicipiosSelect();
       for (let i = 0; i < muniNodes.length; i += 1) {
         const option = document.createElement('option');
         const locat = muniNodes[i].getElementsByTagName('locat')[0];
         option.value = locat.getElementsByTagName('cmc')[0].childNodes[0].nodeValue;
         option.innerHTML = muniNodes[i].getElementsByTagName('nm')[0].childNodes[0].nodeValue;
         select.appendChild(option);
+      }
+      if (munici !== undefined && munici !== null) {
+        document.querySelector('#m-searchParamsMunicipio-select').value = this.municipalityvalue;
       }
     } else {
       M.dialog.error(getValue('exception.mapeaerror'));
@@ -1146,6 +1353,11 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.activationManager(false, 'm-ignsearchlocator-parcela-button');
       }
       this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
+      if (this.position === 'TC') {
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 87%';
+      } else {
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 78%';
+      }
 
       const compiledXYLocator = M.template.compileSync(xylocator, {
         vars: {
@@ -1155,6 +1367,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             longitude: getValue('longitude'),
             latitude: getValue('latitude'),
             locate: getValue('locate'),
+            negative: getValue('negative'),
             east: getValue('east'),
             west: getValue('west'),
             north: getValue('north'),
@@ -1166,8 +1379,78 @@ export default class IGNSearchLocatorControl extends M.Control {
           },
         },
       });
+
+      if (this.xytype != null) {
+        if (this.xytype === 'EPSG:4258d' && this.xydata === 'd') {
+          compiledXYLocator.querySelector('#m-xylocator-srs').value = this.xytype;
+          const selectTarget = compiledXYLocator.querySelector('#m-xylocator-srs');
+          const selectedOption = selectTarget.options[selectTarget.selectedIndex];
+          selectedOption.setAttribute('data-units', this.xydata);
+          compiledXYLocator.querySelector('input#LON').value = this.xylon;
+          compiledXYLocator.querySelector('input#LAT').value = this.xylat;
+        } else if (this.xytype === 'EPSG:4326d' && this.xydata === 'd') {
+          compiledXYLocator.querySelector('#m-xylocator-srs').value = this.xytype;
+          const selectTarget = compiledXYLocator.querySelector('#m-xylocator-srs');
+          const selectedOption = selectTarget.options[selectTarget.selectedIndex];
+          selectedOption.setAttribute('data-units', this.xydata);
+          compiledXYLocator.querySelector('input#LON').value = this.xylon;
+          compiledXYLocator.querySelector('input#LAT').value = this.xylat;
+        } else if (this.xytype === 'EPSG:4258dms' && this.xydata === 'dms') {
+          compiledXYLocator.querySelector('#m-xylocator-srs').value = this.xytype;
+          const selectTarget = compiledXYLocator.querySelector('#m-xylocator-srs');
+          const selectedOption = selectTarget.options[selectTarget.selectedIndex];
+          selectedOption.setAttribute('data-units', this.xydata);
+          compiledXYLocator.querySelector('input#LONHH').value = this.xylonhh;
+          compiledXYLocator.querySelector('input#LONMM').value = this.xylonmm;
+          compiledXYLocator.querySelector('input#LONSS').value = this.xylonss;
+          compiledXYLocator.querySelector('input#LATHH').value = this.xylathh;
+          compiledXYLocator.querySelector('input#LATMM').value = this.xylatmm;
+          compiledXYLocator.querySelector('input#LATSS').value = this.xylatss;
+        } else if (this.xytype === 'EPSG:4326dms' && this.xydata === 'dms') {
+          compiledXYLocator.querySelector('#m-xylocator-srs').value = this.xytype;
+          const selectTarget = compiledXYLocator.querySelector('#m-xylocator-srs');
+          const selectedOption = selectTarget.options[selectTarget.selectedIndex];
+          selectedOption.setAttribute('data-units', this.xydata);
+          compiledXYLocator.querySelector('input#LONHH').value = this.xylonhh;
+          compiledXYLocator.querySelector('input#LONMM').value = this.xylonmm;
+          compiledXYLocator.querySelector('input#LONSS').value = this.xylonss;
+          compiledXYLocator.querySelector('input#LATHH').value = this.xylathh;
+          compiledXYLocator.querySelector('input#LATMM').value = this.xylatmm;
+          compiledXYLocator.querySelector('input#LATSS').value = this.xylatss;
+        } else {
+          compiledXYLocator.querySelector('#m-xylocator-srs').value = this.xytype;
+          const selectTarget = compiledXYLocator.querySelector('#m-xylocator-srs');
+          const selectedOption = selectTarget.options[selectTarget.selectedIndex];
+          selectedOption.setAttribute('data-units', this.xydata);
+          compiledXYLocator.querySelector('input#UTM-X').value = this.xyutmx;
+          compiledXYLocator.querySelector('input#UTM-Y').value = this.xyutmy;
+        }
+
+        if (this.xydata === 'd') {
+          const divToHidden1 = compiledXYLocator.querySelector('div#m-xylocator-utm');
+          divToHidden1.style.display = 'none';
+          const divToHidden2 = compiledXYLocator.querySelector('div#m-xylocator-dms');
+          divToHidden2.style.display = 'none';
+          const divToShow = compiledXYLocator.querySelector('div#m-xylocator-latlon');
+          divToShow.style.display = 'table';
+        } else if (this.xydata === 'dms') {
+          const divToHidden1 = compiledXYLocator.querySelector('div#m-xylocator-utm');
+          divToHidden1.style.display = 'none';
+          const divToHidden2 = compiledXYLocator.querySelector('div#m-xylocator-latlon');
+          divToHidden2.style.display = 'none';
+          const divToShow = compiledXYLocator.querySelector('div#m-xylocator-dms');
+          divToShow.style.display = 'block';
+        } else {
+          const divToHidden1 = compiledXYLocator.querySelector('div#m-xylocator-latlon');
+          divToHidden1.style.display = 'none';
+          const divToHidden2 = compiledXYLocator.querySelector('div#m-xylocator-dms');
+          divToHidden2.style.display = 'none';
+          const divToShow = compiledXYLocator.querySelector('div#m-xylocator-utm');
+          divToShow.style.display = 'block';
+        }
+      }
       compiledXYLocator.querySelector('select#m-xylocator-srs').addEventListener('change', evt => this.manageInputs_(evt));
-      compiledXYLocator.querySelector('button#m-xylocator-loc').addEventListener('click', evt => this.calculate_(evt));
+      compiledXYLocator.querySelector('button#m-xylocator-loc').addEventListener('click', evt => this.calculate_(evt, compiledXYLocator));
       this.resultsBox.appendChild(compiledXYLocator);
     }
   }
@@ -1186,6 +1469,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       document.getElementById(drawingDiv).style.backgroundColor = '#71a7d3';
       document.getElementById(drawingDiv).style.color = 'white';
     } else {
+      document.querySelectorAll(drawingDiv).forEach(e => e.parentNode.removeChild(e));
       document.getElementById(drawingDiv).style.backgroundColor = 'white';
       document.getElementById(drawingDiv).style.color = '#7A7A73';
     }
@@ -1199,11 +1483,46 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param {DOMEvent} evt - event
    * @api
    */
-  calculate_(evt) {
+  calculate_(evt, compiledXYLocator) {
     try {
       const selectTarget = document.querySelector('.m-xylocator-container select#m-xylocator-srs');
       const selectedOption = selectTarget.options[selectTarget.selectedIndex];
-      const origin = selectedOption.value;
+      let origin = selectedOption.value;
+
+      this.xytype = compiledXYLocator.querySelector('#m-xylocator-srs').value;
+      this.xydata = selectedOption.getAttribute('data-units');
+
+      if (this.xydata === 'd') {
+        origin = origin.replace('d', '');
+      }
+      if (this.xydata === 'dms') {
+        origin = origin.replace('dms', '');
+      }
+
+      if (this.xytype === 'EPSG:4258d' && this.xydata === 'd') {
+        this.xylon = compiledXYLocator.querySelector('input#LON').value;
+        this.xylat = compiledXYLocator.querySelector('input#LAT').value;
+      } else if (this.xytype === 'EPSG:4326d' && this.xydata === 'd') {
+        this.xylon = compiledXYLocator.querySelector('input#LON').value;
+        this.xylat = compiledXYLocator.querySelector('input#LAT').value;
+      } else if (this.xytype === 'EPSG:4258dms' && this.xydata === 'dms') {
+        this.xylonhh = compiledXYLocator.querySelector('input#LONHH').value;
+        this.xylonmm = compiledXYLocator.querySelector('input#LONMM').value;
+        this.xylonss = compiledXYLocator.querySelector('input#LONSS').value;
+        this.xylathh = compiledXYLocator.querySelector('input#LATHH').value;
+        this.xylatmm = compiledXYLocator.querySelector('input#LATMM').value;
+        this.xylatss = compiledXYLocator.querySelector('input#LATSS').value;
+      } else if (this.xytype === 'EPSG:4326dms' && this.xydata === 'dms') {
+        this.xylonhh = compiledXYLocator.querySelector('input#LONHH').value;
+        this.xylonmm = compiledXYLocator.querySelector('input#LONMM').value;
+        this.xylonss = compiledXYLocator.querySelector('input#LONSS').value;
+        this.xylathh = compiledXYLocator.querySelector('input#LATHH').value;
+        this.xylatmm = compiledXYLocator.querySelector('input#LATMM').value;
+        this.xylatss = compiledXYLocator.querySelector('input#LATSS').value;
+      } else {
+        this.xyutmx = compiledXYLocator.querySelector('input#UTM-X').value;
+        this.xyutmy = compiledXYLocator.querySelector('input#UTM-Y').value;
+      }
 
       let x = -1;
       let y = -1;
@@ -1257,6 +1576,9 @@ export default class IGNSearchLocatorControl extends M.Control {
         }
       }
 
+      this.clearResults();
+      this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+
       const coordinatesTransform = this.getImpl().reprojectXY(origin, [x, y]);
       this.locator_(coordinatesTransform);
     } catch (ex) {
@@ -1293,7 +1615,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       const divToHidden2 = document.querySelector('div#m-xylocator-dms');
       divToHidden2.style.display = 'none';
       const divToShow = document.querySelector('div#m-xylocator-latlon');
-      divToShow.style.display = 'block';
+      divToShow.style.display = 'table';
     } else if (selectedOption.getAttribute('data-units') === 'dms') {
       const divToHidden1 = document.querySelector('div#m-xylocator-utm');
       divToHidden1.style.display = 'none';
@@ -1453,8 +1775,8 @@ export default class IGNSearchLocatorControl extends M.Control {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }
     featureTabOpts.content += `<div>${fullAddress}</div>
-                <div class='ignsearchlocator-popup'>Lat: ${featureCoordinates[0]}</div>
-                <div class='ignsearchlocator-popup'> Long: ${featureCoordinates[1]} </div>`;
+                <div class='ignsearchlocator-popup'>Lat: ${featureCoordinates[0].toFixed(2)}</div>
+                <div class='ignsearchlocator-popup'> Long: ${featureCoordinates[1].toFixed(2)} </div>`;
     if (this.map.getPopup() instanceof M.Popup && addTab === true) {
       this.popup = this.map.getPopup();
       this.popup.addTab(featureTabOpts);
