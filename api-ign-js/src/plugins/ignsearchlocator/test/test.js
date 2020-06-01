@@ -1,6 +1,6 @@
 import IGNSearchLocator from 'facade/ignsearchlocator';
 
-M.language.setLang('en');
+M.language.setLang('es');
 
 
 const map = M.map({
@@ -11,7 +11,7 @@ const map = M.map({
 const mp = new IGNSearchLocator({
   CMC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos',
 
-  position: 'BL',
+  position: 'TL',
   servicesToSearch: 'gn',
   maxResults: 10,
   noProcess: 'poblacion',
