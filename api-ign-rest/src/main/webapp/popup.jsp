@@ -47,19 +47,18 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-
-        <label for="inputHelpLink">Parámetro url</label>
-        <input type="text" id="inputHelpLink" list="urlSug" />
+        <label for="selectCollapsed">Selector de collapsed</label>
+        <select name="collapsed" id="selectCollapsed">
+            <option value=''></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
+        <label for="inputUrl">Parámetro url</label>
+        <input type="text" id="inputUrl" list="urlSug" />
         <datalist id="urlSug">
-            <option value="http://fototeca.cnig.es/help_es.pdf"></option>
+            <option value="https://raw.githubusercontent.com/irevios/sig/master/ejemplo.html"></option>
+            <option value="https://raw.githubusercontent.com/irevios/sig/master/plantilla.html"></option>
         </datalist>
-        <label for="inputContactEmail">Parámetro contactEmail</label>
-        <input type="text" id="inputContactEmail" list="contactEmailSug" />
-        <datalist id="contactEmailSug">
-            <option value="fototeca@cnig.es"></option>
-        </datalist>
-
-        <input type="submit" id="buttonAPI" value="API Rest" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -91,34 +90,23 @@
         });
 
 
-        let mp, posicion, url, contactEmail;
-        crearPlugin({
-            position: posicion,
-            url: url,
-            contactEmail: contactEmail
-        });
+        let mp, posicion, url, collapsed;
+        crearPlugin({});
 
         const selectPosicion = document.getElementById("selectPosicion");
-        const inputHelpLink = document.getElementById("inputHelpLink");
-        const inputContactEmail = document.getElementById("inputContactEmail");
-        const buttonApi = document.getElementById("buttonAPI");
+        const inputUrl = document.getElementById("inputUrl");
+        const selectCollapsed = document.getElementById("selectCollapsed");
 
         selectPosicion.addEventListener('change', cambiarTest);
-        inputHelpLink.addEventListener('change', cambiarTest);
-        inputContactEmail.addEventListener('change', cambiarTest);
-
-        buttonApi.addEventListener('click', function() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            url = inputHelpLink.value;
-            contactEmail = inputContactEmail.value;
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?popup=' + posicion + '*' + url + '*' + contactEmail;
-        })
+        inputUrl.addEventListener('change', cambiarTest);
+        selectCollapsed.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            url = inputHelpLink.value != "" ? url.srs = inputHelpLink.value : "";
-            contactEmail = inputContactEmail.value != "" ? contactEmail.srs = inputContactEmail.value : "";
+            url = inputUrl.value != "" ? objeto.url = inputUrl.value : "";
+            collapsed = selectCollapsed.options[selectCollapsed.selectedIndex].value;
+            collapsed != '' ? objeto.collapsed = (collapsed === "true") : '';
             map.removePlugins(mp);
             crearPlugin(objeto);
         }

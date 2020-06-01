@@ -12,9 +12,13 @@
       "position": 0,
       "possibleValues": ["TL", "TR", "BR", "BL"]
     }, {
+      "type": "boolean",
+      "name": "collapse",
+      "position": 1
+    }, {
       "type": "simple",
       "name": "url",
-      "position": 1
+      "position": 2
     }]
   }],
   "files": {
@@ -28,11 +32,11 @@
     }
   },
   "metadata": {
-    "name": "IberpixHelp",
-    "description": "Shows information panel.",
-    "text": "Opens a window with an information link about the site, contact link and terms.",
+    "name": "Popup",
+    "description": "Shows a information panel.",
+    "text": "Opens a window with information.",
     "version": "1.0.0",
-    "date": "11th November 2019",
+    "date": "1st June 2020",
     "author": "CNIG",
     "org": "CNIG",
     "tags": "mapea,plugin",

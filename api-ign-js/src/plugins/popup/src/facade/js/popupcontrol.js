@@ -2,10 +2,9 @@
  * @module M/control/PopupControl
  */
 
+import template from 'templates/popup';
 import PopupImplControl from 'impl/popupcontrol';
-/** import template from 'templates/popup';
-import { getValue } from './i18n/language'; */
-
+import { getValue } from './i18n/language';
 
 export default class PopupControl extends M.Control {
   /**
@@ -19,7 +18,7 @@ export default class PopupControl extends M.Control {
    */
   constructor(url) {
     if (M.utils.isUndefined(PopupImplControl)) {
-      M.exception('La implementación usada no puede crear controles PopupControl');
+      M.exception(getValue('exception_popupcontrol'));
     }
     const impl = new PopupImplControl();
     super(impl, 'Popup');
@@ -41,16 +40,21 @@ export default class PopupControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    return M.remote.get(this.url_)
-      .then((v) => {
-        let html = v.text;
-        html = html.substring(html.indexOf('<div id="popup-box">'), html.lastIndexOf('</div>'));
-        const htmlObject = document.createElement('div');
-        htmlObject.classList.add('m-control', 'm-container', 'm-popup');
-        htmlObject.innerHTML = html;
-        console.log(htmlObject);
-        return htmlObject;
-      });
+    if (this.url_ !== 'template') {
+      return M.remote.get(this.url_)
+        .then((response) => {
+          let html = response.text;
+          html = html.substring(html.indexOf('<!-- Start Popup Content -->'), html.lastIndexOf('<!-- End Popup Content -->'));
+          const htmlObject = document.createElement('div');
+          htmlObject.classList.add('m-control', 'm-container', 'm-popup');
+          htmlObject.innerHTML = html;
+          return htmlObject;
+        });
+    }
+    const htmlObject = document.createElement('div');
+    htmlObject.classList.add('m-control', 'm-container', 'm-popup');
+    htmlObject.innerHTML = template;
+    return htmlObject;
   }
 
   /**

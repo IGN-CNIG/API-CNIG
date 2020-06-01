@@ -8,7 +8,7 @@ const map = M.map({
 
 const mp = new Popup({
   position: 'TR',
-  helpLink: 'https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html',
+  url: 'https://raw.githubusercontent.com/irevios/sig/master/ejemplo.html',
 });
 
 // map.removeControls('panzoom');

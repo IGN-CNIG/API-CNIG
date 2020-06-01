@@ -23,48 +23,22 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
 
 .m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
     color: #71a7d3;
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: fixed;
+    left: calc(50vw + 210px);
+    top: inherit;
+    right: 0 !important;
     box-shadow: none;
-    z-index: 999;
+    z-index: 9999;
 }
 
 .m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn:before{
-    content: "X";
+    content: "\2716";
     font-weight: bolder;
     font-family: Arial;
     font-size: 1rem;
 }
-div.m-areas>div.m-area.m-top.m-right>div.m-panel.m-panel-popup.opened>button {
-    left: calc(50vw - 290px);
-}
 
-div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened>button {
-    left: calc(50vw - 290px);
-}
-
-div.m-areas>div.m-area.m-top.m-left>div.m-panel.m-panel-popup.opened>button {
-    right: calc(50vw - 290px);
-}
-
-div.m-areas>div.m-area.m-bottom.m-left>div.m-panel.m-panel-popup.opened>button {
-    right: calc(50vw - 290px);
-}
-
-div.m-areas>div.m-area.m-top.m-left>div.m-panel.m-panel-popup.opened {
-    order: -71;
-}
-
-div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened {
-    margin: 0;
-}
-
-.m-right.m-bottom>.m-panel-popup.collapsed {
-    right: 0;
-}
-
-.m-popup::after {
+.m-popup::after,.m-popup::before {
     content: none;
 }
 
@@ -73,7 +47,6 @@ div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened {
 .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
     padding: 30px 20px 20px;
     overflow-y: hidden;
-    height: 260px;
     width: 460px;
 }
 
@@ -98,6 +71,12 @@ div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened {
     font-weight: bold;
 }
 
+
+.m-areas > div.m-area > div.m-panel-popup.opened > div.m-panel-controls > div {
+    width: auto;
+    height: auto;
+}
+
 @media only screen and (max-width: 600px) {
     .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
         padding: 20px;
@@ -110,6 +89,16 @@ div.m-areas>div.m-area.m-bottom.m-right>div.m-panel.m-panel-popup.opened {
         position: fixed;
         background-color: white;
         border-radius: 5px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened {
+        z-index: 9999;
+    }
+    
+    div.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
+        left: 50vw;
+        top: 0;
+        z-index: 9999;
     }
 }
 

@@ -42,11 +42,19 @@ export default class Popup extends M.Plugin {
     this.position_ = options.position || 'TR';
 
     /**
+     * Option to allow the plugin to be collapsed or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsed_ = options.collapsed;
+    if (this.collapsed_ === undefined) this.collapsed_ = true;
+
+    /**
      * Url of HTML with the content for popup.
      * @private
      * @type {String}
      */
-    this.url_ = options.url || 'https://raw.githubusercontent.com/irevios/sig/master/ejemplo.html?token=AIPI6ZZQYZ2QICA5YMDCWDS62D2W2';
+    this.url_ = options.url || 'template';
 
     /**
      * Metadata from api.json
@@ -85,7 +93,7 @@ export default class Popup extends M.Plugin {
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelPopup', {
       className: 'm-panel-popup',
-      collapsed: true,
+      collapsed: this.collapsed_,
       collapsedButtonClass: 'icon-help',
       collapsible: true,
       position: M.ui.position[this.position_],
@@ -93,13 +101,6 @@ export default class Popup extends M.Plugin {
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-    this.panel_.on(M.evt.SHOW, () => {
-      window.addEventListener('click', (e) => {
-        if (!document.getElementById('popupbox').parentNode.contains(e.target)) {
-          this.panel_.collapse();
-        }
-      });
-    });
   }
 
   /**
@@ -110,7 +111,7 @@ export default class Popup extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.url_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.url_}`;
   }
 
   /**
