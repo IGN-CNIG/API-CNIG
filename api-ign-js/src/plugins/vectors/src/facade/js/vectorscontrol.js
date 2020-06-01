@@ -11,6 +11,7 @@ import uploadingTemplate from 'templates/uploading';
 import changeNameTemplate from 'templates/changename';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
+import togpx from 'togpx';
 import * as shp from 'shpjs';
 import { getValue } from './i18n/language';
 
@@ -259,11 +260,13 @@ export default class VectorsControl extends M.Control {
           line: getValue('line'),
           delete_geom: getValue('delete_geom'),
           query_profile: getValue('query_profile'),
+          collapse: getValue('collapse'),
         },
       },
     });
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
+    this.drawingTools.querySelector('.collapsor').addEventListener('click', e => this.toogleCollapse(e));
     this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
     this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
     this.drawingTools.querySelector('button.m-vector-layer-delete-feature').addEventListener('click', () => this.deleteSingleFeature());
@@ -321,6 +324,19 @@ export default class VectorsControl extends M.Control {
     });
   }
 
+  toogleCollapse(e) {
+    const elem = document.querySelector('#drawingtools .drawingToolsContainer');
+    if (elem !== null) {
+      if (elem.style.display !== 'none') {
+        elem.style.display = 'none';
+        document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('expand')}&nbsp;&nbsp;<span class="icon-show"></span>`;
+      } else {
+        elem.style.display = 'block';
+        document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('collapse')}&nbsp;&nbsp;<span class="icon-hide"></span>`;
+      }
+    }
+  }
+
   /**
    * Creates upload options template.
    *
@@ -329,7 +345,7 @@ export default class VectorsControl extends M.Control {
    * @api
    */
   createUploadingTemplate() {
-    const accept = '.kml, .zip, .gpx, .geojson';
+    const accept = '.kml, .zip, .gpx, .geojson, .gml';
     this.uploadingTemplate = M.template.compileSync(uploadingTemplate, {
       jsonp: true,
       vars: {
@@ -382,6 +398,9 @@ export default class VectorsControl extends M.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.geometry = geom;
     this.map.addLayers(layer);
+    setTimeout(() => {
+      document.querySelector(`li[name="${layerName}"] span.m-vector-layer-add`).click();
+    }, 100);
   }
 
   /**
@@ -662,7 +681,7 @@ export default class VectorsControl extends M.Control {
    * @api
    */
   downloadLayer(layer) {
-    const fileName = layer.name;
+    const fileName = layer.legend || layer.name;
     const selector = `.m-vectors #m-vector-list li[name="${layer.name}"] .m-vector-layer-actions-container`;
     const downloadFormat = document.querySelector(selector).querySelector('select').value;
     const geojsonLayer = this.toGeoJSON(layer);
@@ -681,6 +700,11 @@ export default class VectorsControl extends M.Control {
         arrayContent = tokml(fixedGeojsonLayer);
         mimeType = 'xml';
         extensionFormat = 'kml';
+        break;
+      case 'gpx':
+        arrayContent = togpx(geojsonLayer);
+        mimeType = 'xml';
+        extensionFormat = 'gpx';
         break;
       case 'shp':
         const json = this.parseGeojsonForShp(geojsonLayer);
@@ -756,6 +780,7 @@ export default class VectorsControl extends M.Control {
   loadLayer() {
     // eslint-disable-next-line no-bitwise
     const fileExt = this.file_.name.slice((this.file_.name.lastIndexOf('.') - 1 >>> 0) + 2);
+    const fileName = this.file_.name.split('.').slice(0, -1).join('.');
     const fileReader = new window.FileReader();
     fileReader.addEventListener('load', (e) => {
       try {
@@ -763,13 +788,15 @@ export default class VectorsControl extends M.Control {
         if (fileExt === 'zip') {
           // In case of shp group, this unites features
           const geojsonArray = [].concat(shp.parseZip(fileReader.result));
-          features = this.getImpl().loadAllInGeoJSONLayer(geojsonArray);
+          features = this.getImpl().loadAllInGeoJSONLayer(geojsonArray, fileName);
         } else if (fileExt === 'kml') {
-          features = this.getImpl().loadKMLLayer(fileReader.result, false);
+          features = this.getImpl().loadKMLLayer(fileReader.result, fileName, false);
         } else if (fileExt === 'gpx') {
-          features = this.getImpl().loadGPXLayer(fileReader.result);
+          features = this.getImpl().loadGPXLayer(fileReader.result, fileName);
         } else if (fileExt === 'geojson') {
-          features = this.getImpl().loadGeoJSONLayer(fileReader.result);
+          features = this.getImpl().loadGeoJSONLayer(fileReader.result, fileName);
+        } else if (fileExt === 'gml') {
+          features = this.getImpl().loadGMLLayer(fileReader.result, fileName);
         } else {
           M.dialog.error(getValue('exception.load'));
           return;
@@ -786,7 +813,7 @@ export default class VectorsControl extends M.Control {
 
     if (fileExt === 'zip') {
       fileReader.readAsArrayBuffer(this.file_);
-    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson') {
+    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson' || fileExt === 'gml') {
       fileReader.readAsText(this.file_);
     } else {
       M.dialog.error(getValue('exception.extension'));
@@ -897,13 +924,15 @@ export default class VectorsControl extends M.Control {
   onSelect(e) {
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
-    this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
-      olFeature)[0] || undefined;
-
+    this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() === olFeature)[0] || undefined;
     this.geometry = this.feature.getGeometry().type;
     const selector = `#m-vector-list li[name="${this.drawLayer.name}"] div.m-vector-layer-actions-container`;
     document.querySelector(selector).appendChild(this.drawingTools);
     document.querySelector('div.m-vector-layer-actions-container #drawingtools button').style.display = 'block';
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    }
+
     this.emphasizeSelectedFeature();
     this.showFeatureInfo();
   }

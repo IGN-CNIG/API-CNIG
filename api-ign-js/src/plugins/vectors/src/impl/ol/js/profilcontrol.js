@@ -39,6 +39,21 @@ var Profil = function(opt_options) {
     button.addEventListener('click', close);
     button.addEventListener('touchstart', close);
     elementTitle.appendChild(button);
+
+    const button2 = document.createElement('button');
+    button2.setAttribute('type', 'button');
+    button2.setAttribute('class', 'profile-download-button icon-download');
+    const download = (e) => {
+      const image = this.getImage();
+      const a = document.createElement('a');
+      a.href = image;
+      a.download = 'Perfil.png';
+      a.click();
+      a.remove();
+    };
+    button2.addEventListener('click', download);
+    button2.addEventListener('touchstart', download);
+    elementTitle.appendChild(button2);
   }
 
   var div_inner = document.createElement('div');

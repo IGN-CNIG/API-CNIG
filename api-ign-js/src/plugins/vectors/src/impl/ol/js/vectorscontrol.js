@@ -8,7 +8,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 const WGS84 = 'EPSG:4326';
 const MERCATOR = 'EPSG:900913';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
-const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_500&' +
+const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
 
 export default class VectorsControl extends M.impl.Control {
@@ -164,6 +164,16 @@ export default class VectorsControl extends M.impl.Control {
     this.draw.on('drawend', (event) => {
       this.facadeControl.onDraw(event);
     });
+
+    this.draw.on('drawstart', () => {
+      document.addEventListener('keydown', this.addUndoEvent.bind(this));
+    });
+  }
+
+  addUndoEvent(evt) {
+    if (evt.ctrlKey && evt.key === 'z') {
+      this.draw.removeLastPoint();
+    }
   }
 
   /**
@@ -174,6 +184,7 @@ export default class VectorsControl extends M.impl.Control {
    */
   removeDrawInteraction() {
     this.facadeMap_.getMapImpl().removeInteraction(this.draw);
+    document.removeEventListener('keydown', this.addUndoEvent);
   }
 
   /**
@@ -289,12 +300,47 @@ export default class VectorsControl extends M.impl.Control {
    * @function
    * @param {*} source2 -
    */
-  loadGeoJSONLayer(source) {
+  loadGeoJSONLayer(source, layerName) {
     let features = new ol.format.GeoJSON()
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
 
     features = this.featuresToFacade(features);
-    const layerName = `temp_${new Date().getTime()}`;
+    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+    layer.addFeatures(features);
+    this.facadeMap_.addLayers(layer);
+    return features;
+  }
+
+  /**
+   * Loads GML layer
+   * @public
+   * @function
+   * @param {*} source2 -
+   */
+  loadGMLLayer(source, layerName) {
+    let srs = this.facadeMap_.getProjection().code;
+    let features = [];
+    if (source.split('srsName="')[1].indexOf('http') > -1 && source.indexOf('gml:pos') > -1) {
+      srs = `EPSG:${source.split('srsName="')[1].split('#')[1].split('"')[0]}`;
+      features = new ol.format.WFS({ gmlFormat: new ol.format.GML3() }).readFeatures(source, {
+        dataProjection: srs,
+        featureProjection: this.facadeMap_.getProjection().code,
+      });
+    } else if (source.split('srsName="')[1].indexOf('crs:EPSG::') > -1 && source.indexOf('gml:pos') > -1) {
+      srs = `EPSG:${source.split('srsName="')[1].split('::')[1].split('"')[0]}`;
+      features = new ol.format.WFS({ gmlFormat: new ol.format.GML3() }).readFeatures(source, {
+        dataProjection: srs,
+        featureProjection: this.facadeMap_.getProjection().code,
+      });
+    } else if (source.indexOf('gml:coordinates') > -1) {
+      srs = source.split('srsName="')[1].split('"')[0];
+      features = new ol.format.WFS({ gmlFormat: new ol.format.GML2() }).readFeatures(source, {
+        dataProjection: srs,
+        featureProjection: this.facadeMap_.getProjection().code,
+      });
+    }
+
+    features = this.featuresToFacade(features);
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
@@ -307,7 +353,7 @@ export default class VectorsControl extends M.impl.Control {
    * @function
    * @param {*} source2 -
    */
-  loadAllInGeoJSONLayer(sources) {
+  loadAllInGeoJSONLayer(sources, layerName) {
     let features = [];
     sources.forEach((source) => {
       const localFeatures = new ol.format.GeoJSON()
@@ -318,7 +364,6 @@ export default class VectorsControl extends M.impl.Control {
     });
 
     features = this.featuresToFacade(features);
-    const layerName = `temp_${new Date().getTime()}`;
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
@@ -333,13 +378,12 @@ export default class VectorsControl extends M.impl.Control {
    * @param {*} source -
    * @param {*} extractStyles -
    */
-  loadKMLLayer(source, extractStyles) {
+  loadKMLLayer(source, layerName, extractStyles) {
     let features = new ol.format.KML({ extractStyles })
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
 
     features = this.featuresToFacade(features);
     features = this.geometryCollectionParse(features);
-    const layerName = `temp_${new Date().getTime()}`;
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
@@ -353,12 +397,11 @@ export default class VectorsControl extends M.impl.Control {
    * @api
    * @param {*} source -
    */
-  loadGPXLayer(source) {
+  loadGPXLayer(source, layerName) {
     let features = new ol.format.GPX()
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
 
     features = this.featuresToFacade(features);
-    const layerName = `temp_${new Date().getTime()}`;
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
