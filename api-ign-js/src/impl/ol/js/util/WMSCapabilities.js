@@ -178,7 +178,18 @@ class GetCapabilities {
         layers = layers.concat(this.getLayersRecursive_(layerElem));
       });
     } else { // base case
-      layers.push(new WMS({ url: this.serviceUrl_, name: layer.Name }));
+      layers.push(new WMS({
+        url: this.serviceUrl_,
+        name: layer.Name,
+        legend: !isNullOrEmpty(layer.Title) ? layer.Title : '',
+      }, {}, {
+        capabilitiesMetadata: {
+          abstract: !isNullOrEmpty(layer.Abstract) ? layer.Abstract : '',
+          attribution: !isNullOrEmpty(layer.Attribution) ? layer.Attribution : '',
+          metadataURL: !isNullOrEmpty(layer.MetadataURL) ? layer.MetadataURL : '',
+          style: !isNullOrEmpty(layer.Style) ? layer.Style : '',
+        },
+      }));
     }
     return layers;
   }

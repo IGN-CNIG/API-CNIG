@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * @module M/layer/WMS
  */
@@ -25,7 +26,7 @@ class WMS extends LayerBase {
    * @param {Object} vendorOptions vendor options for the base library
    * @api
    */
-  constructor(userParameters, options = {}, vendorOptions) {
+  constructor(userParameters, options = {}, vendorOptions = {}) {
     // checks if the implementation can create WMC layers
     if (isUndefined(WMSImpl)) {
       Exception(getValue('exception').wms_method);
@@ -61,6 +62,11 @@ class WMS extends LayerBase {
 
     // transparent
     this.transparent = parameters.transparent;
+
+    // capabilitiesMetadata
+    if (!isNullOrEmpty(vendorOptions.capabilitiesMetadata)) {
+      this.capabilitiesMetadata = vendorOptions.capabilitiesMetadata;
+    }
 
     // options
     this.options = optionsVar;
