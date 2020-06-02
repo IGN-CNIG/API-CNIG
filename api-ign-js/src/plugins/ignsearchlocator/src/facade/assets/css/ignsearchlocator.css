@@ -419,6 +419,7 @@ DROPDOWN ****************************/
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
         border: 1px solid rgb(167, 160, 160);
         padding: 1px 1px 2px 3px;
+        width: 85% !important;
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
@@ -431,6 +432,65 @@ DROPDOWN ****************************/
         width: 33%;
         display: inline-block;
     }
+
+    #m-searchParamsProvincia-select {
+        font-size: 13px;
+        width: 58% !important;
+    }
+
+    #m-searchParamsMunicipio-select {
+        font-size: 13px;
+        width: 58% !important;
+    }
+
+    #div-m-xylocator-coordinatesSystemParcela p.parcela--input {
+        display: inline-block;
+    }
+
+    input#LON {
+        width: 19%;
+    }
+
+    input#LAT {
+        width: 19%;
+    }
+
+    #m-xylocator-dms>div>div>input[type="number"] {
+        width: 2rem;
+    }
+
+    input#UTM-X {
+        width: 36%;
+    }
+
+    input#UTM-Y {
+        width: 36%;
+    }
+
+    input#m-searchParamsPoligono-input {
+        width: 17% !important;
+    }
+
+    input#m-searchParamsParcela-input {
+        width: 17% !important;
+    }
+
+    #m-provin {
+
+        width: 91px !important;
+
+    }
+
+    #m-munici {
+
+        width: 91px !important;
+
+    }
+
+    #m-informa {
+        font-size: 11px !important;
+    }
+
 }
 
 /****************************
@@ -525,7 +585,7 @@ DROPDOWN ****************************/
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
     display: block;
-    width: 100%;
+    width: 80%;
     margin-top: 3%;
 }
 

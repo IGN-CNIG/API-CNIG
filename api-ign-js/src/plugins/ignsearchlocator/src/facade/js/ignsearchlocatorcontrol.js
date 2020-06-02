@@ -1097,6 +1097,14 @@ export default class IGNSearchLocatorControl extends M.Control {
       const buttonParamsSearch = compiledXYLocator.querySelector('button#m-searchParams-button');
       buttonParamsSearch.addEventListener('click', e => this.onParamsSearch(e));
       this.resultsBox.appendChild(compiledXYLocator);
+
+      if (M.language.getLang() === 'es') {
+        document.querySelectorAll('p.parcela--input')[0].style = 'width: 71px';
+        document.querySelectorAll('p.parcela--input')[1].style = 'width: 71px';
+
+        document.querySelector('#m-searchParamsProvincia-select').style = 'width: 68%';
+        document.querySelector('#m-searchParamsMunicipio-select').style = 'width: 68%';
+      }
     }
   }
 
@@ -1109,6 +1117,9 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   onParamsSearch(evt) {
     evt.preventDefault();
+    // Actualizamos los inputs de parcela y poligino
+    this.inputPoligono = document.querySelector('#m-searchParamsPoligono-input');
+    this.inputParcela = document.querySelector('#m-searchParamsParcela-input');
 
     if ((evt.type !== 'keyup') || (evt.keyCode === 13)) {
       if (M.utils.isNullOrEmpty(this.selectProvincias.value) || this.selectProvincias.value === '0') {
@@ -1154,10 +1165,18 @@ export default class IGNSearchLocatorControl extends M.Control {
 
   parseParamsResultsForTemplate_(response) {
     const rootElement = response.getElementsByTagName('consulta_dnp')[0];
-    const bicoNode = rootElement.getElementsByTagName('bico')[0];
-    const biNode = bicoNode.getElementsByTagName('bi')[0];
-    const idbiNode = biNode.getElementsByTagName('idbi')[0];
-    const rcNode = idbiNode.getElementsByTagName('rc')[0];
+    let rcNode;
+    const lrcdnpNode = rootElement.getElementsByTagName('lrcdnp');
+
+    if (lrcdnpNode.length > 0) {
+      const rcdnpNode = lrcdnpNode[0].getElementsByTagName('rcdnp')[0];
+      rcNode = rcdnpNode.getElementsByTagName('rc')[0];
+    } else {
+      const bicoNode = rootElement.getElementsByTagName('bico')[0];
+      const biNode = bicoNode.getElementsByTagName('bi')[0];
+      const idbiNode = biNode.getElementsByTagName('idbi')[0];
+      rcNode = idbiNode.getElementsByTagName('rc')[0];
+    }
     const pc1Value = rcNode.getElementsByTagName('pc1')[0].childNodes[0].nodeValue;
     const pc2Value = rcNode.getElementsByTagName('pc2')[0].childNodes[0].nodeValue;
 
