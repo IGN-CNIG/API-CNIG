@@ -535,12 +535,13 @@ export default class FullTOCControl extends M.Control {
               try {
                 const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
                 const getCapabilities = getCapabilitiesParser.read(response.xml);
-                const getCapabilitiesUtils = new M.impl.GetCapabilities(
-                  getCapabilities,
+                const layers = M.impl.util.wmtscapabilities.getLayers(
+                  getCapabilities.capabilities,
                   url,
                   this.map_.getProjection().code,
                 );
-                this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
+
+                this.capabilities = this.filterResults(layers);
                 this.showResults();
               } catch (err) {
                 M.dialog.error(getValue('exception.capabilities'));
@@ -557,7 +558,6 @@ export default class FullTOCControl extends M.Control {
                   this.map_.getProjection().code,
                 );
                 this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
-                console.log(this.capabilities);
                 this.showResults();
               } catch (err) {
                 M.dialog.error(getValue('exception.capabilities'));
@@ -599,9 +599,8 @@ export default class FullTOCControl extends M.Control {
       });
     }
 
-    console.log(allServices);
-
     allLayers.forEach((layer) => {
+      let insideService = false;
       allServices.forEach((service) => {
         if (service.type === layer.type && service.url === layer.url) {
           if (service.white_list !== undefined && service.white_list.length > 0 &&
@@ -612,8 +611,15 @@ export default class FullTOCControl extends M.Control {
             layers.push(layer);
             layerNames.push(layer.name);
           }
+
+          insideService = true;
         }
       });
+
+      if (!insideService) {
+        layers.push(layer);
+        layerNames.push(layer.name);
+      }
     });
 
     return layers;
@@ -631,26 +637,31 @@ export default class FullTOCControl extends M.Control {
       result.push(capability.getImpl());
     });
 
-    const html = M.template.compileSync(resultstemplate, {
-      vars: {
-        result,
-        translations: {
-          layers: getValue('layers'),
-          add: getValue('add'),
-        },
-      },
-    });
-
     const container = document.querySelector('#m-fulltoc-addservices-results');
-    container.innerHTML = html.innerHTML;
-    M.utils.enableTouchScroll(container);
-    const results = container.querySelectorAll('span.m-check-fulltoc-addservices');
-    for (let i = 0; i < results.length; i += 1) {
-      results[i].addEventListener('click', evt => this.registerCheck(evt));
-    }
+    if (result.length > 0) {
+      const html = M.template.compileSync(resultstemplate, {
+        vars: {
+          result,
+          translations: {
+            layers: getValue('layers'),
+            add: getValue('add'),
+          },
+        },
+      });
 
-    container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
-    container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', evt => this.addLayers(evt));
+
+      container.innerHTML = html.innerHTML;
+      M.utils.enableTouchScroll(container);
+      const results = container.querySelectorAll('span.m-check-fulltoc-addservices');
+      for (let i = 0; i < results.length; i += 1) {
+        results[i].addEventListener('click', evt => this.registerCheck(evt));
+      }
+
+      container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
+      container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', evt => this.addLayers(evt));
+    } else {
+      container.innerHTML = `<p class="m-fulltoc-noresults">${getValue('exception.no_results')}</p>`;
+    }
   }
 
   /**
@@ -737,8 +748,8 @@ export default class FullTOCControl extends M.Control {
     } else {
       for (let i = 0; i < elmSel.length; i += 1) {
         for (let j = 0; j < this.capabilities.length; j += 1) {
-          if (elmSel[i].id === this.capabilities[j].legend.replace(/ /g, '')) {
-            this.capabilities[j].options.origen = 'WMS';
+          if (elmSel[i].id === this.capabilities[j].name) {
+            this.capabilities[j].options.origen = this.capabilities[j].type;
             layers.push(this.capabilities[j]);
           }
         }

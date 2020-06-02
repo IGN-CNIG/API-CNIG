@@ -771,3 +771,8 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 .m-fulltoc-suggestion-group.active {
   display: block;
 }
+
+.m-fulltoc-noresults {
+  margin-top: 1.5rem;
+  text-align: center;
+}

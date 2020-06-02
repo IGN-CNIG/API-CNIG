@@ -8,7 +8,8 @@
     "no_http_https": "No se permiten servicios http ni https",
     "valid_url": "Debes indicar una URL válida",
     "empty": "Los campos están vacíos",
-    "select_layer": "Debes seleccionar al menos una capa"
+    "select_layer": "Debes seleccionar al menos una capa",
+    "no_results": "No se han encontrado capas en este servicio"
   },
   "tooltip": "Capas",
   "info": "Información",

@@ -8,7 +8,8 @@
     "no_http_https": "No http or https services allowed",
     "valid_url": "You must provide a valid URL",
     "empty": "The fields are empty",
-    "select_layer": "You must select at least one layer"
+    "select_layer": "You must select at least one layer",
+    "no_results": "Aucune couche trouvée dans ce service"
   },
   "tooltip": "Layers",
   "info": "Information",
