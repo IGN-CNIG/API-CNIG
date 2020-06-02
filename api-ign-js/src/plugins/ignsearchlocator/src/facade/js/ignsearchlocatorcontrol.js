@@ -420,7 +420,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         html.querySelector('#m-ignsearchlocator-locate-button').style.display = 'none';
       }
       if (this.position === 'TC') {
-        document.querySelector('.ign-searchlocator-panel').style = 'position: fixed!important; left: calc(50vw - 210px); top: 20px;';
+        document.querySelector('.ign-searchlocator-panel').style = 'position: fixed!important; left: calc(50vw - 210px);';
       }
 
       this.on(M.evt.ADDED_TO_MAP, () => {
