@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * @module M/layer/WMTS
  */
@@ -25,7 +26,7 @@ class WMTS extends LayerBase {
    * @param {Object} vendorOptions vendor options for the base library
    * @api
    */
-  constructor(userParameters, options = {}, vendorOptions) {
+  constructor(userParameters, options = {}, vendorOptions = {}) {
     const parameters = parameter.layer(userParameters, LayerType.WMTS);
     const optionsVar = {
       ...options,
@@ -64,6 +65,11 @@ class WMTS extends LayerBase {
 
     // options
     this.options = optionsVar;
+
+    // capabilitiesMetadata
+    if (!isNullOrEmpty(vendorOptions.capabilitiesMetadata)) {
+      this.capabilitiesMetadata = vendorOptions.capabilitiesMetadata;
+    }
   }
 
   /**
