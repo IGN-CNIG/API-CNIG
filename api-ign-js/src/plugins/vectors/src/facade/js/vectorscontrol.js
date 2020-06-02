@@ -189,7 +189,8 @@ export default class VectorsControl extends M.Control {
 
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
-      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1;
+      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
+        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__';
     });
 
     const layers = [];
