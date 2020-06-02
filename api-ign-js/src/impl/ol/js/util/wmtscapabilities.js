@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * @module M/impl/util/wmtscapabilities
  */
@@ -31,13 +32,14 @@ const getExtentRecursive = (layer, layerName, code) => {
   return extent;
 };
 
-const getLayersRecursive = (layer, urlService, EPSGcode) => {
+const getLayersRecursive = (layer, urlService, EPSGcode, capabilities) => {
   let layers = [];
+
   if (!isNullOrEmpty(layer.Layer)) {
     layers = getLayersRecursive(layer.Layer);
   } else if (isArray(layer)) {
     layer.forEach((layerElem) => {
-      layers = layers.concat(getLayersRecursive(layerElem, urlService, EPSGcode));
+      layers = layers.concat(getLayersRecursive(layerElem, urlService, EPSGcode, capabilities));
     });
   } else {
     const listMatrixSetCapabilities = layer.TileMatrixSetLink;
@@ -53,7 +55,13 @@ const getLayersRecursive = (layer, urlService, EPSGcode) => {
       url: urlService,
       name: layer.Identifier,
       matrixSet: EPSGcodeToMatrixSet,
-      legend: layer.Title,
+      legend: !isNullOrEmpty(layer.Title) ? layer.Title : '',
+    }, {}, {
+      capabilitiesMetadata: {
+        abstract: !isNullOrEmpty(layer.Abstract) ? layer.Abstract : '',
+        attribution: !isNullOrEmpty(capabilities.ServiceProvider) ? capabilities.ServiceProvider : '',
+        style: !isNullOrEmpty(layer.Style) ? layer.Style : '',
+      },
     }));
   }
   return layers;
@@ -67,7 +75,7 @@ const getLayersRecursive = (layer, urlService, EPSGcode) => {
  * @api
  */
 export const getLayers = (capabilities, url, EPSGcode) => {
-  return getLayersRecursive(capabilities.Contents.Layer, url, EPSGcode);
+  return getLayersRecursive(capabilities.Contents.Layer, url, EPSGcode, capabilities);
 };
 
 /**
