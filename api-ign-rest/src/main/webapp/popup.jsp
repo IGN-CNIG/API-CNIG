@@ -56,8 +56,8 @@
         <label for="inputUrl">Parámetro url</label>
         <input type="text" id="inputUrl" list="urlSug" />
         <datalist id="urlSug">
-            <option value="https://raw.githubusercontent.com/irevios/sig/master/ejemplo.html"></option>
-            <option value="https://raw.githubusercontent.com/irevios/sig/master/plantilla.html"></option>
+            <option value="https://raw.githubusercontent.com/irevios/sig/master/iberpixhelp.html"></option>
+            <option value="https://raw.githubusercontent.com/irevios/sig/master/fototecahelp.html"></option>
         </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
