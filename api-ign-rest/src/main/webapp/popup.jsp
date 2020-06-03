@@ -53,11 +53,17 @@
             <option value="true" selected="selected">true</option>
             <option value="false">false</option>
         </select>
-        <label for="inputUrl">Parámetro url</label>
-        <input type="text" id="inputUrl" list="urlSug" />
-        <datalist id="urlSug">
-            <option value="https://raw.githubusercontent.com/irevios/sig/master/iberpixhelp.html"></option>
-            <option value="https://raw.githubusercontent.com/irevios/sig/master/fototecahelp.html"></option>
+        <label for="inputUrl_es">Parámetro url_es</label>
+        <input type="text" id="inputUrl_es" list="urlEsSug" />
+        <datalist id="urlEsSug">
+            <option value="https://raw.githubusercontent.com/irevios/sig/master/iberpixhelp_es.html"></option>
+            <option value="https://raw.githubusercontent.com/irevios/sig/master/fototecahelp_es.html"></option>
+        </datalist>
+        <label for="inputUrl_en">Parámetro url_en</label>
+        <input type="text" id="inputUrl_en" list="urlEnSug" />
+        <datalist id="urlEnSug">
+            <option value="https://raw.githubusercontent.com/irevios/sig/master/iberpixhelp_en.html"></option>
+            <option value="https://raw.githubusercontent.com/irevios/sig/master/fototecahelp_en.html"></option>
         </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -90,21 +96,24 @@
         });
 
 
-        let mp, posicion, url, collapsed;
+        let mp, posicion, url_es, url_en, collapsed;
         crearPlugin({});
 
         const selectPosicion = document.getElementById("selectPosicion");
-        const inputUrl = document.getElementById("inputUrl");
+        const inputUrl_es = document.getElementById("inputUrl_es");
+        const inputUrl_en = document.getElementById("inputUrl_en");
         const selectCollapsed = document.getElementById("selectCollapsed");
 
         selectPosicion.addEventListener('change', cambiarTest);
-        inputUrl.addEventListener('change', cambiarTest);
+        inputUrl_es.addEventListener('change', cambiarTest);
+        inputUrl_en.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            url = inputUrl.value != "" ? objeto.url = inputUrl.value : "";
+            url_es = inputUrl_es.value != "" ? objeto.url_es = inputUrl_es.value : "";
+            url_en = inputUrl_en.value != "" ? objeto.url_en = inputUrl_en.value : "";
             collapsed = selectCollapsed.options[selectCollapsed.selectedIndex].value;
             collapsed != '' ? objeto.collapsed = (collapsed === "true") : '';
             map.removePlugins(mp);
