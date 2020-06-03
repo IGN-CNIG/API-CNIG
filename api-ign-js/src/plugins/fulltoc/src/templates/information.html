@@ -1,0 +1,26 @@
+<div id="m-fulltoc-information">
+  <div class="m-fulltoc-info-capabilities">
+    <p><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
+    <p><span>{{translations.name}}:</span>&nbsp; {{name}}</p>
+    <p style="margin-bottom: 0.2rem;"><span>{{translations.abstract}}:</span></p>
+    <div>
+      {{abstract}}
+    </div>
+    {{#if provider}}
+      <p style="margin-bottom: 0.2rem;"><span>{{translations.provider}}:</span></p>
+    {{/if}}
+    {{#if provider}}
+      <div>
+        {{{provider}}}
+      </div>
+    {{/if}}
+  </div>
+    <div class="btn-container">
+      {{#if metadata}}
+        <a class="m-fulltoc-common-btn" href="{{metadata}}" target="_blank">{{translations.query_metadata}}</a>
+      {{/if}}
+      {{#if downloadCenter}}
+        <a class="m-fulltoc-common-btn" href="{{downloadCenter}}" target="_blank">{{translations.download_center}}</a>
+      {{/if}}
+    </div>
+</div>
