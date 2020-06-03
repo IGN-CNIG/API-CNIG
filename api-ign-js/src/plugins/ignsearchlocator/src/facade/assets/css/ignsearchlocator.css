@@ -675,24 +675,39 @@ DROPDOWN ****************************/
         width: 25%;
     }
 
+    div#m-ignsearchlocator-results {
+        width: 72% !important;
+    }
+
+    select#m-searchParamsProvincia-select {
+        width: 100% !important;
+    }
+
+    select#m-searchParamsMunicipio-select {
+        width: 100% !important;
+    }
+
     #div-contenedor.m-ignsearchlocator .dropdown {
         width: 93%;
     }
 
     p.parcela--input {
         margin-left: 0px !important;
+        width: 60px !important;
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
-        margin-right: 30px;
+        width: 60%;
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
-        margin-left: 16px;
+        width: 60%;
+        margin-left: 11px;
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
-        width: 95.5%;
+        width: 100%;
+        font-size: 12.5px;
     }
 
     #div-contenedor.m-ignsearchlocator .m-xylocator-container>div.m-xylocator-panel div.title {
@@ -713,22 +728,26 @@ DROPDOWN ****************************/
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
 
         width: 33.9%;
-        margin-right: 10px;
+        margin-right: 5px;
     }
 
     input#m-searchParamsPoligono-input {
-        width: 35%;
+        width: 60%;
     }
 
     input#m-searchParamsParcela-input {
-        width: 35%;
-        margin-left: 18px;
+        width: 60%;
     }
 
 
     #m-xylocator-dms>div>div>input[type="number"] {
         width: 1.5rem;
     }
+
+    #m-xylocator-dms>div>div {
+        width: 45px;
+    }
+
 
 }
 
