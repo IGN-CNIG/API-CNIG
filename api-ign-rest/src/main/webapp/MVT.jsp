@@ -37,14 +37,6 @@
 </head>
 
 <body>
-    <div>
-        <label for="selectType">Selector de teselas</label>
-        <select name="type" id="selectType">
-            <option value="estatal">Teselas vectoriales de ámbito Estatal</option>
-            <option value="regional" selected="selected">Teselas vectoriales de ámbito Regional</option>
-            <option value="osm">Teselas vectoriales de ámbito global</option>
-        </select>
-    </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
@@ -68,60 +60,12 @@
             getfeatureinfo: 'plain',
         });
 
-        const estatal = new M.layer.MVT({
-            url: 'https://vts.larioja.org/igo/{z}/{x}/{y}.pbf',
+        const mvt = new M.layer.MVT({
+            url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
             name: 'vectortile',
             projection: 'EPSG:3857',
         });
-
-        const regional = new M.layer.MVT({
-            url: 'https://vts.larioja.org/rioja/{z}/{x}/{y}.pbf',
-            name: 'vectortile2',
-            projection: 'EPSG:3857',
-        });
-
-        const osm = new M.layer.MVT({
-            url: 'https://vts.larioja.org/osm/{z}/{x}/{y}.pbf',
-            name: 'vectortile3',
-            projection: 'EPSG:3857',
-        });
-
-        const complementarios = new M.layer.MVT({
-            url: 'https://vts.larioja.org/srtm/{z}/{x}/{y}.pbf',
-            name: 'vectortile4',
-            projection: 'EPSG:3857',
-        });
-
-        let type = 'regional';
-        añadirTeselas(type, 0);
-
-        const selectType = document.getElementById("selectType");
-
-        selectType.addEventListener('change', cambiarTest);
-
-        function cambiarTest() {
-            type = selectType.options[selectType.selectedIndex].value;
-            map.destroy()
-            añadirTeselas(type, 1);
-        }
-
-        function añadirTeselas(type, flag) {
-            if (flag === 1) {
-                map = M.map({
-                    container: 'mapjs',
-                    getfeatureinfo: 'plain',
-                });
-            }
-            if (type === 'regional') {
-                map.addLayers(regional);
-            } else if (type === 'estatal') {
-                map.addLayers(estatal);
-            } else if (type === 'osm') {
-                map.addLayers(osm);
-            } else if (type === 'complementarios') {
-                map.addLayers(complementarios);
-            }
-        }
+        map.addLayers(mvt)
     </script>
 </body>
 
