@@ -15,11 +15,6 @@ import addServicesTemplate from '../../templates/addservices';
 import resultstemplate from '../../templates/addservicesresults';
 import { getValue } from './i18n/language';
 
-const LOREM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum eu nisl eget porttitor.' +
-' Praesent cursus diam at aliquam mattis. Donec luctus ut mauris nec viverra. Nullam sollicitudin ullamcorper blandit.' +
-' Vestibulum iaculis cursus erat vel porttitor. Pellentesque fermentum, risus vel accumsan dictum, ' +
-'nisi neque interdum felis, a finibus nisi mauris blandit mauris.';
-
 export default class FullTOCControl extends M.Control {
   /**
    * @constructor
@@ -169,7 +164,7 @@ export default class FullTOCControl extends M.Control {
             jsonp: true,
             parseToHtml: false,
             vars: {
-              styles: ['Estilo1', 'Estilo2'],
+              styles: layer.capabilitiesMetadata.style,
               translations: {
                 select_style: getValue('select_style'),
                 change: getValue('change'),
@@ -188,12 +183,10 @@ export default class FullTOCControl extends M.Control {
             button.style.backgroundColor = '#71a7d3';
           }, 10);
         } else if (evt.target.classList.contains('m-fulltoc-info')) {
-          const metadata = 'http://www.ign.es/csw-inspire/srv/spa/csw?SERVICE=CSW&VERSION=2.0.2&REQUEST=GetRecordById&outputSchema=http://www.isotc211.org/2005/gmd&ElementSetName=full&ID=spaignHIDROGRAFIA_IGR';
           const vars = {
             name: layer.name,
             title: layer.legend,
-            abstract: LOREM,
-            provider: LOREM,
+            abstract: layer.capabilitiesMetadata.abstract,
             translations: {
               title: getValue('title'),
               name: getValue('name'),
@@ -204,9 +197,27 @@ export default class FullTOCControl extends M.Control {
             },
           };
 
-          if (!M.utils.isNullOrEmpty(metadata) && M.utils.isUrl(metadata)) {
-            vars.metadata = metadata;
-            M.remote.get(metadata).then((response) => {
+          if (layer.type === 'WMS') {
+            const murl = layer.capabilitiesMetadata.metadataURL;
+            vars.metadata = !M.utils.isNullOrEmpty(murl) ? murl[0].OnlineResource : '';
+            if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
+              vars.provider = `${layer.capabilitiesMetadata.attribution.Title}` +
+              `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
+            }
+          } else if (layer.type === 'WMTS') {
+            if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
+              vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
+              `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+              const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
+              if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
+                const mail = sc.ContactInfo.Address.ElectronicMailAddress;
+                vars.provider += `<p><a class="m-fulltoc-provider-link" href="mailto:${mail}">${mail}</a></p>`;
+              }
+            }
+          }
+
+          if (!M.utils.isNullOrEmpty(vars.metadata) && M.utils.isUrl(vars.metadata)) {
+            M.remote.get(vars.metadata).then((response) => {
               const unfiltered = response.text.split('<gmd:URL>').filter((elem) => {
                 return elem.indexOf('centrodedescargas') > -1;
               });
@@ -306,7 +317,23 @@ export default class FullTOCControl extends M.Control {
   }
 
   changeLayerConfig(layer) {
-    document.querySelector('div.m-mapea-container div.m-dialog').remove();
+    const styleSelected = document.querySelector('#m-fulltoc-change-config #m-fulltoc-style-select').value;
+    if (styleSelected !== '') {
+      layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
+      document.querySelector('div.m-mapea-container div.m-dialog').remove();
+      const cm = layer.capabilitiesMetadata;
+      if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
+        const filtered = layer.capabilitiesMetadata.style.filter((style) => {
+          return style.Name === styleSelected;
+        });
+
+        if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
+          const newURL = filtered[0].LegendURL[0].OnlineResource;
+          layer.setLegendURL(newURL);
+          this.render();
+        }
+      }
+    }
   }
 
   /**
@@ -359,30 +386,36 @@ export default class FullTOCControl extends M.Control {
 
       this.registerImgErrorEvents_(html);
       this.template_.innerHTML = html.innerHTML;
-      // document.querySelector('.m-fulltoc-container .m-title .span-title').click();
       const layerList = document.querySelector('.m-fulltoc-container .m-layers');
       const layers = templateVars.layers;
-      Sortable.create(layerList, {
-        animation: 150,
-        ghostClass: 'm-fulltoc-gray-shadow',
-        onEnd: (evt) => {
-          const from = evt.from;
-          let maxZIndex = Math.max(...(layers.map((l) => {
-            return l.getZIndex();
-          })));
-          from.querySelectorAll('li.m-layer div.m-visible-control span').forEach((elem) => {
-            const name = elem.getAttribute('data-layer-name');
-            const filtered = layers.filter((layer) => {
-              return layer.name === name;
-            });
+      if (layerList !== null) {
+        Sortable.create(layerList, {
+          animation: 150,
+          ghostClass: 'm-fulltoc-gray-shadow',
+          onEnd: (evt) => {
+            const from = evt.from;
+            let maxZIndex = Math.max(...(layers.map((l) => {
+              return l.getZIndex();
+            })));
+            from.querySelectorAll('li.m-layer div.m-visible-control span').forEach((elem) => {
+              const name = elem.getAttribute('data-layer-name');
+              const filtered = layers.filter((layer) => {
+                return layer.name === name;
+              });
 
-            if (filtered.length > 0) {
-              filtered[0].setZIndex(maxZIndex);
-              maxZIndex -= 1;
-            }
-          });
-        },
-      });
+              if (filtered.length > 0) {
+                filtered[0].setZIndex(maxZIndex);
+                maxZIndex -= 1;
+              }
+            });
+          },
+        });
+      }
+      /*
+      setTimeout(() => {
+        document.querySelector('.m-fulltoc-container .m-title .span-title').click();
+      }, 500);
+      */
     });
   }
 
@@ -461,6 +494,8 @@ export default class FullTOCControl extends M.Control {
       }
     }
 
+    const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
+      !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
     return new Promise((success, fail) => {
       const layerVarTemplate = {
         visible: (layer.isVisible() === true),
@@ -468,10 +503,12 @@ export default class FullTOCControl extends M.Control {
         title: layerTitle,
         outOfRange: !layer.inRange(),
         opacity: layer.getOpacity(),
-        // metadata: !M.utils.isNullOrEmpty(layer.getImpl().options.metadataUrl),
+        metadata: hasMetadata,
         type: layer.type,
+        hasStyles: hasMetadata && layer.capabilitiesMetadata.style.length > 1,
         isIcon,
       };
+
       const legendUrl = layer.getLegendURL();
       if (legendUrl instanceof Promise) {
         legendUrl.then((url) => {
@@ -483,23 +520,6 @@ export default class FullTOCControl extends M.Control {
         success(layerVarTemplate);
       }
     });
-  }
-
-  getCapabilitiesWFS_(url) {
-    const layerUrl = url.replace('wfs?', 'wms?');
-    const projection = this.map_.getProjection();
-    const getCapabilitiesPromise = new Promise((success, fail) => {
-      const wmsGetCapabilitiesUrl = M.utils.getWMSGetCapabilitiesUrl(layerUrl, '1.1.0');
-      M.remote.get(wmsGetCapabilitiesUrl).then((response) => {
-        const gcDoc = response.xml;
-        const gcParser = new M.impl.format.WMSCapabilities();
-        const gc = gcParser.read(gcDoc);
-        const gcUtils = new M.impl.GetCapabilities(gc, layerUrl, projection);
-        success(gcUtils);
-      });
-    });
-
-    return getCapabilitiesPromise;
   }
 
   /**
@@ -749,6 +769,7 @@ export default class FullTOCControl extends M.Control {
       for (let i = 0; i < elmSel.length; i += 1) {
         for (let j = 0; j < this.capabilities.length; j += 1) {
           if (elmSel[i].id === this.capabilities[j].name) {
+            this.capabilities[j].tiled = this.capabilities[j].type === 'WMTS';
             this.capabilities[j].options.origen = this.capabilities[j].type;
             layers.push(this.capabilities[j]);
           }

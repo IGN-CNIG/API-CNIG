@@ -130,9 +130,8 @@ div.m-area.m-bottom.m-left div.m-plugin-fulltoc div.m-panel-controls {
 }
 
 .m-fulltoc-container .m-tools .m-opacity-container {
-  margin-right: 3%;
+  margin-left: 25px;
   width: 60%;
-  text-align: left;
 }
 
 .m-fulltoc-container .m-tools .m-action-tools {
@@ -603,6 +602,11 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   margin-right: 4px;
 }
 
+.m-fulltoc-container .m-title-container .m-title {
+  max-width: 385px;
+  text-align: left;
+}
+
 .m-fulltoc-container .m-title .m-layer-type {
   color: white;
   background-color: #9a9a9a;
@@ -658,14 +662,6 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   margin-right: 10px;
   outline: none;
   text-decoration: none;
-}
-
-#m-fulltoc-information {
-  max-width: 50vw;
-}
-
-#m-fulltoc-information > p > span {
-  font-weight: bold;
 }
 
 #m-fulltoc-information .btn-container {
@@ -775,4 +771,37 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 .m-fulltoc-noresults {
   margin-top: 1.5rem;
   text-align: center;
+}
+
+.m-fulltoc-provider-link {
+  font-weight: bold;
+  padding-top: 7px;
+  text-decoration: none;
+}
+
+.m-fulltoc-provider-link:hover {
+  text-decoration: underline;
+}
+
+.table-results .table-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #cccccc;
+  padding: 10px;
+}
+
+.m-title-container {
+  display: flex;
+}
+
+.m-fulltoc-info-capabilities {
+  max-width: 50vw;
+  max-height: 230px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #cccccc;
+}
+
+.m-fulltoc-info-capabilities > p > span {
+  font-weight: bold;
 }

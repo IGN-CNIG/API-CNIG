@@ -1,12 +1,14 @@
 {{#*inline "fulltocLayer"}}
   {{#each layers}}
     <li class="m-layer {{#if outOfRange}}disabled{{/if}}{{#if visible}} visible{{/if}}">
-      <div class="m-visible-control">
-        <span data-layer-name="{{id}}" class="m-check {{#if visible}}icon-ver{{^}}icon-ocultar{{/if}}"></span>
-      </div>
-      <div class="m-title">
-        <span class="m-layer-type">{{type}}</span>
-        <span>{{title}}</span>
+      <div class="m-title-container">
+        <div class="m-visible-control">
+          <span data-layer-name="{{id}}" class="m-check {{#if visible}}icon-ver{{^}}icon-ocultar{{/if}}"></span>
+        </div>
+        <div class="m-title">
+          <span class="m-layer-type">{{type}}</span>
+          <span>{{title}}</span>
+        </div>
       </div>
       {{#if visible}}
         <div class="m-tools">
@@ -17,8 +19,12 @@
           <div class="m-action-tools">
             <span title="{{../translations.show_hide}}" data-layer-name="{{id}}" class="icon-leyenda m-fulltoc-legend"></span>
             <span title="{{../translations.zoom}}" data-layer-name="{{id}}" class="icon-localizacion3 m-fulltoc-zoom"></span>
-            <span title="{{../translations.info_metadata}}" data-layer-name="{{id}}" class="icon-info m-fulltoc-info"></span>
-            <span title="{{../translations.change_style}}" data-layer-name="{{id}}" class="icon-pincel m-fulltoc-config"></span>
+            {{#if metadata}}
+              <span title="{{../translations.info_metadata}}" data-layer-name="{{id}}" class="icon-info m-fulltoc-info"></span>
+            {{/if}}
+            {{#if hasStyles}}
+              <span title="{{../translations.change_style}}" data-layer-name="{{id}}" class="icon-pincel m-fulltoc-config"></span>
+            {{/if}}
             <span title="{{../translations.remove_layer}}" data-layer-name="{{id}}" class="icon-papelera m-fulltoc-remove"></span>
           </div>
         </div>

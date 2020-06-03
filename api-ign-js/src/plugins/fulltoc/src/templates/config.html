@@ -1,9 +1,9 @@
 <div id="m-fulltoc-change-config">
     <div class="select-container">
       <select id="m-fulltoc-style-select">
-          <option disabled="disabled" id="layers0" selected="selected">{{translations.select_style}}</option>
+          <option disabled="disabled" value="" selected="selected">{{translations.select_style}}</option>
           {{#each styles}}
-              <option name="{{this}}">{{this}}</option>
+              <option value="{{Name}}">{{Title}}</option>
           {{/each}}
       </select>
     </div>

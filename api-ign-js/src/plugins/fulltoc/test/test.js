@@ -62,7 +62,7 @@ const precharged = {
 }*/
 
 const mp = new FullTOC({
-  collapsed: true,
+  collapsed: false,
   position: 'TR',
   https: true,
   http: true,
@@ -73,7 +73,7 @@ window.mp = mp;
 window.FullTOC = FullTOC;
 
 map.addPlugin(mp);
-const layerUA = new M.layer.WMS({
+/*const layerUA = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
   legend: 'Unidad administrativa',
@@ -86,7 +86,7 @@ const layerinicial = new M.layer.WMS({
   tiled: false,
 }, {
   visibility: false,
-});
+});*/
 
 const ocupacionSuelo = new M.layer.WMTS({
   url: 'http://wmts-mapa-lidar.idee.es/lidar',
@@ -97,8 +97,8 @@ const ocupacionSuelo = new M.layer.WMTS({
   visibility: false,
 });
 
-map.addLayers(layerUA);
-map.addLayers(layerinicial);
+/*map.addLayers(layerUA);
+map.addLayers(layerinicial);*/
 map.addLayers(ocupacionSuelo);
 
 window.map = map;
