@@ -2,7 +2,8 @@
  * @module M/control/PopupControl
  */
 
-import template from 'templates/popup';
+import templateEN from 'templates/popup_en';
+import templateES from 'templates/popup_es';
 import PopupImplControl from 'impl/popupcontrol';
 import { getValue } from './i18n/language';
 
@@ -40,7 +41,7 @@ export default class PopupControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    if (this.url_ !== 'template') {
+    if (this.url_ !== 'template_es' && this.url_ !== 'template_en') {
       return M.remote.get(this.url_)
         .then((response) => {
           let html = response.text;
@@ -53,7 +54,7 @@ export default class PopupControl extends M.Control {
     }
     const htmlObject = document.createElement('div');
     htmlObject.classList.add('m-control', 'm-container', 'm-popup');
-    htmlObject.innerHTML = template;
+    htmlObject.innerHTML = M.language.getLang() === 'en' ? templateEN : templateES;
     return htmlObject;
   }
 
