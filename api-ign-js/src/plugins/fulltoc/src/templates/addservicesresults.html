@@ -1,0 +1,25 @@
+<div>
+    <div class="table-results">
+      <div class="table-container">
+        <table style="width: 100%;">
+            <thead>
+              <tr>
+                  <th>Capa</th>
+                  <th><span id="m-fulltoc-addservices-selectall" class="icon-check"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+                {{#each result}}
+                    <tr>
+                      <td>{{legend}}</td>
+                      <td style="text-align: center;"><span id={{name}} class="m-check-fulltoc-addservices icon-check"></span></td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+      </div>
+      <div class="button">
+        <button class="m-fulltoc-addservices-add m-fulltoc-common-btn">Añadir</button>
+      </div>
+    </div>
+</div>
