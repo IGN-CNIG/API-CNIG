@@ -751,6 +751,22 @@ DROPDOWN ****************************/
 
 }
 
+/* MICROSOFT EDGE HACK */
+
+@supports (-ms-ime-align:auto) {
+    input#m-searchParamsPoligono-input {
+        width: 19% !important;
+    }
+
+    input#m-searchParamsParcela-input {
+        width: 19% !important;
+    }
+
+    #m-informa {
+        display: inline !important;
+    }
+}
+
 
 @font-face {
     font-family: 'ignsearchlocator';
