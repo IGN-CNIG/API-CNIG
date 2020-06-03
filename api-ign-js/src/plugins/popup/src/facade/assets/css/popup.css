@@ -47,9 +47,9 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
 .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
     margin: 30px 0 20px 0;
     padding: 0 20px;
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 460px;
-    height: 460px;
+    max-height: 460px;
 }
 
 .m-panel-popup.opened #popup-box>div>p.popup-title {
