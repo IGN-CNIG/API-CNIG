@@ -50,11 +50,15 @@ export default class Popup extends M.Plugin {
     if (this.collapsed_ === undefined) this.collapsed_ = true;
 
     /**
-     * Url of HTML with the content for popup.
+     * Url of HTML with the content for popup in the selected language.
      * @private
      * @type {String}
      */
-    this.url_ = options.url || 'template';
+    if (M.language.getLang() === 'en') {
+      this.url_ = options.url_en || 'template_en';
+    } else {
+      this.url_ = options.url_es || 'template_es';
+    }
 
     /**
      * Metadata from api.json
@@ -111,7 +115,7 @@ export default class Popup extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed_}*${this.url_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.url_es_}*${this.url_en_}`;
   }
 
   /**

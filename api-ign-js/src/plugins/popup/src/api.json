@@ -17,8 +17,12 @@
       "position": 1
     }, {
       "type": "simple",
-      "name": "url",
+      "name": "url_es",
       "position": 2
+    }, {
+      "type": "simple",
+      "name": "url_en",
+      "position": 3
     }]
   }],
   "files": {

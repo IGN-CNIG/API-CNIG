@@ -45,9 +45,11 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
 /* Help content */
 
 .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
-    padding: 30px 20px 20px;
-    overflow-y: hidden;
+    margin: 30px 0 20px 0;
+    padding: 0 20px;
+    overflow-y: scroll;
     width: 460px;
+    height: 460px;
 }
 
 .m-panel-popup.opened #popup-box>div>p.popup-title {
@@ -79,7 +81,8 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
 
 @media only screen and (max-width: 600px) {
     .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
-        padding: 20px;
+        padding: 30px 20px 20px;
+        margin: 0;
         overflow-y: auto;
         height: calc(100vh - 40px);
         width: calc(100vw - 40px);
