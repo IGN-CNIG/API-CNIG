@@ -162,9 +162,9 @@
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             let collapsedValor = selectCollapsed.options[selectCollapsed.selectedIndex].value;
-            collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor==true) : "";
+            collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor=="true") : "";
             let collapsibleValor = selectCollapsible.options[selectCollapsible.selectedIndex].value;
-            collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == true) : "";
+            collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == "true") : "";
             objeto.layers = inputLayer.value != "" ? inputLayer.value : layers;
             objeto.staticDivision = selectStaticDivision.options[selectStaticDivision.selectedIndex].value;
             opacityVal = inputOpacityVal.value != "" ? objeto.opacityVal = inputOpacityVal.value : "";

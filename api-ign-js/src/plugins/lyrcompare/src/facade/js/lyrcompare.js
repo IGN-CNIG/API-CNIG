@@ -145,7 +145,7 @@ export default class LyrCompare extends M.Plugin {
     if (options.defaultLyrA === undefined) {
       this.defaultLyrA = 0; //default: 100%
     } else {
-      this.defaultLyrA = parseInt(options.defaultLyrA) - 1;
+      this.defaultLyrA = parseInt(options.defaultLyrA);
       if (this.defaultLyrA < 0) {
         this.defaultLyrA = 0;
       } else if (this.defaultLyrA > this.layers.length - 1) {
@@ -162,7 +162,7 @@ export default class LyrCompare extends M.Plugin {
     if (options.defaultLyrB === undefined) {
       this.defaultLyrB = this.defaultLyrA !== 0 ? 0 : 1;
     } else {
-      this.defaultLyrB = parseInt(options.defaultLyrB) - 1;
+      this.defaultLyrB = parseInt(options.defaultLyrB);
       if (this.defaultLyrB < 0) {
         this.defaultLyrB = this.defaultLyrA !== 0 ? 0 : 1;
       } else if (this.defaultLyrB > this.layers.length - 1) {
@@ -182,7 +182,7 @@ export default class LyrCompare extends M.Plugin {
     if (options.defaultLyrC === undefined) {
       this.defaultLyrC = 2;
     } else {
-      this.defaultLyrC = parseInt(options.defaultLyrC) - 1;
+      this.defaultLyrC = parseInt(options.defaultLyrC);
       if (this.defaultLyrC < 0) {
         this.defaultLyrC = 2;
       } else if (this.defaultLyrC > this.layers.length - 1) {
@@ -202,7 +202,7 @@ export default class LyrCompare extends M.Plugin {
     if (options.defaultLyrD === undefined) {
       this.defaultLyrD = 3;
     } else {
-      this.defaultLyrD = parseInt(options.defaultLyrD) - 1;
+      this.defaultLyrD = parseInt(options.defaultLyrD);
       if (this.defaultLyrD < 0) {
         this.defaultLyrD = 3;
       } else if (this.defaultLyrD > this.layers.length - 1) {
@@ -279,8 +279,10 @@ export default class LyrCompare extends M.Plugin {
    * @api stable
    */
   destroy() {
+    this.control_.removeEffectsComparison();
+    this.control_.removeCurtainLayers(this.layers);
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.layers, this.collapsible, this.collapsed, this.staticDivision, this.opacityVal, this.comparisonMode, this.defaultLyrA, this.defaultLyrB, this.defaultLyrC, this.defaultLyrD] = [null, null, null, null, null, null, null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.layers, this.collapsible, this.collapsed, this.staticDivision, this.opacityVal, this.comparisonMode, this.defaultLyrA, this.defaultLyrB, this.defaultLyrC, this.defaultLyrD] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
   }
 
   /**

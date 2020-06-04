@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * @module M/control/LyrCompareControl
  */
@@ -147,7 +146,6 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   createView(map) {
-
     this.map = map;
     return new Promise((success, fail) => {
 
@@ -519,14 +517,15 @@ export default class LyrCompareControl extends M.Control {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
           let name = urlLayer[3]
-          const layerByUrl = this.map.getLayers().filter(l => name.includes(l.name))[0];
+          const layerByUrl = this.map.getLayers().filter(l => name.includes(l.name))[this.map.getLayers().filter(l => name.includes(l.name)).length-1];
           this.map.removeLayers(layerByUrl);
+          
         } else {
-          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
+          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[this.map.getLayers().filter(l => layer.includes(l.name)).length-1];
           this.map.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[0];
+        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[this.map.getLayers().filter(l => layer.name.includes(l.name)).length-1];
         this.map.removeLayers(layerByObject);
       }
     });
