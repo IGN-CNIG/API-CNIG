@@ -11,8 +11,7 @@
         "name": "position",
         "possibleValues": ["TL", "TR", "BL", "BR"],
         "position": 0
-      },
-      {
+      }, {
         "type": "simple",
         "name": "layers",
         "position": 1
@@ -24,48 +23,31 @@
         "type": "boolean",
         "name": "collapsed",
         "position": 3
-      },
-      {
-        "type": "boolean",
-        "name": "collapsible",
-        "position": 2
-      },
-      {
-        "type": "boolean",
-        "name": "collapsed",
-        "position": 3
-      },
-      {
+      }, {
         "type": "simple",
         "name": "staticDivision",
         "position": 4
-      },
-      {
+      }, {
         "type": "simple",
         "name": "opacityVal",
         "position": 5
-      },
-      {
+      }, {
         "type": "simple",
         "name": "comparisonMode",
         "position": 6
-      },
-      {
+      }, {
         "type": "simple",
         "name": "defaultLyrA",
         "position": 7
-      },
-      {
+      }, {
         "type": "simple",
         "name": "defaultLyrB",
         "position": 8
-      },
-      {
+      }, {
         "type": "simple",
         "name": "defaultLyrC",
         "position": 9
-      },
-      {
+      }, {
         "type": "simple",
         "name": "defaultLyrD",
         "position": 10

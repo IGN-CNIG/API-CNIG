@@ -2,7 +2,7 @@
   "exception": {
     "impl": "The implementation used cannot create Attributions controls."
   },
-  "tooltip": "Links and contact",
+  "tooltip": "IGN links and contact",
   "title": "Links and contact",
   "links": {
     "downloads": "CNIG Downloads",
