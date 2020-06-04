@@ -201,8 +201,10 @@ export default class FullTOCControl extends M.Control {
             const murl = layer.capabilitiesMetadata.metadataURL;
             vars.metadata = !M.utils.isNullOrEmpty(murl) ? murl[0].OnlineResource : '';
             if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
-              vars.provider = `${layer.capabilitiesMetadata.attribution.Title}` +
-              `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
+              vars.provider = `${layer.capabilitiesMetadata.attribution.Title}`;
+              if (layer.capabilitiesMetadata.attribution.OnlineResource !== undefined) {
+                vars.provider += `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
+              }
             }
           } else if (layer.type === 'WMTS') {
             if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
@@ -228,7 +230,7 @@ export default class FullTOCControl extends M.Control {
               }
 
               this.renderInfo(vars);
-            }).catch(() => {
+            }).catch((err) => {
               this.renderInfo(vars);
             });
           } else {
@@ -568,7 +570,7 @@ export default class FullTOCControl extends M.Control {
               }
             });
           } else {
-            M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url)).then((response) => {
+            M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response) => {
               try {
                 const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
                 const getCapabilities = getCapabilitiesParser.read(response.xml);
@@ -768,7 +770,8 @@ export default class FullTOCControl extends M.Control {
     } else {
       for (let i = 0; i < elmSel.length; i += 1) {
         for (let j = 0; j < this.capabilities.length; j += 1) {
-          if (elmSel[i].id === this.capabilities[j].name) {
+          const name = this.capabilities[j].name;
+          if (elmSel[i].id === name || elmSel[i].name === name) {
             this.capabilities[j].tiled = this.capabilities[j].type === 'WMTS';
             this.capabilities[j].options.origen = this.capabilities[j].type;
             layers.push(this.capabilities[j]);
@@ -790,5 +793,6 @@ export default class FullTOCControl extends M.Control {
     evt.preventDefault();
     document.querySelector('#m-fulltoc-addservices-results').innerHTML = '';
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
+    document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = '';
   }
 }

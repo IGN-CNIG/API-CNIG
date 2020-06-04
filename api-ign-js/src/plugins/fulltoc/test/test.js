@@ -4,6 +4,11 @@ import FullTOC from 'facade/fulltoc';
 
 const map = M.map({
   container: 'mapjs',
+  center: {
+    x: -528863.345515127,
+    y: 4514194.232367303,
+  },
+  zoom: 9,
 });
 
 const precharged = {
