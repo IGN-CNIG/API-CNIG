@@ -36,7 +36,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     this.addLayerC(layerC);
 
     const layerD = [optionsE.lyrD].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
-    this.addLayerC(layerD);
+    this.addLayerD(layerD);
     
   }
 
