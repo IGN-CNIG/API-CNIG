@@ -77,8 +77,15 @@ export default class FullTOCControl extends M.Control {
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
         this.getImpl().registerEvents();
         this.render();
+        this.afterRender();
       });
     });
+  }
+
+  afterRender() {
+    setTimeout(() => {
+      document.querySelector('.m-fulltoc-container .m-title .span-title').click();
+    }, 500);
   }
 
   /**
@@ -413,11 +420,6 @@ export default class FullTOCControl extends M.Control {
           },
         });
       }
-      /*
-      setTimeout(() => {
-        document.querySelector('.m-fulltoc-container .m-title .span-title').click();
-      }, 500);
-      */
     });
   }
 
@@ -779,6 +781,7 @@ export default class FullTOCControl extends M.Control {
         }
       }
       this.map_.addLayers(layers);
+      this.afterRender();
     }
   }
 
