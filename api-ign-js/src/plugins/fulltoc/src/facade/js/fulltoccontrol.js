@@ -357,11 +357,10 @@ export default class FullTOCControl extends M.Control {
         const overlayLayers = map.getRootLayers().filter((layer) => {
           const isTransparent = (layer.transparent === true);
           const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
-          const isNotWMC = (layer.type !== M.layer.type.WMC);
+          const isRaster = ['wms', 'wmts'].indexOf(layer.type.toLowerCase()) > -1;
           const isNotWMSFull = !((layer.type === M.layer.type.WMS) &&
           M.utils.isNullOrEmpty(layer.name));
-          const isDraw = layer.type === 'Vector' && layer.name === 'selectLayer';
-          return (isTransparent && isNotWMC && isNotWMSFull && displayInLayerSwitcher && !isDraw);
+          return (isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull);
         }).reverse();
 
         const overlayLayersPromise = Promise.all(overlayLayers.map(this.parseLayerForTemplate_));

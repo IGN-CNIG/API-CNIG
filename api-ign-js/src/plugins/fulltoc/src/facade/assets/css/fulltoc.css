@@ -499,6 +499,8 @@ GROUPS
 .m-fulltoc-container ul.m-groups, .m-fulltoc-container ul.m-layers, .m-fulltoc-container ul.m-base-layers, ul.m-groups>li.m-group>ul.m-layers {
   list-style: none;
   padding: 10px;
+  max-height: 50vh !important;
+  overflow-y: auto;
 }
 
 
