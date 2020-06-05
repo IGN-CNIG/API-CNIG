@@ -123,8 +123,8 @@
         });
         let mp,collapsed,collapsible,
         layers = [
+            'WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo',    
             'WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas',
-            'WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo',
             'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
             'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
             'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',

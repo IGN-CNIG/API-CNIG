@@ -81,14 +81,18 @@ export default class LyrCompare extends M.Plugin {
      * @public
      * @type {boolean}
      */
-    this.collapsed = options.collapsed || true;
+    this.collapsed = options.collapsed;
+    if (this.collapsed === undefined) this.collapsed = true;
+
 
     /**
      * Collapsible attribute
      * @public
      * @type {boolean}
      */
-    this.collapsible = options.collapsible || true;
+    this.collapsible = options.collapsible;
+    if (this.collapsible === undefined) this.collapsible = true;
+
 
     /**
      * Transparent effect staticDivision

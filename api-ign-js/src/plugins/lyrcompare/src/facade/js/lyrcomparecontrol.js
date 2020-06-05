@@ -7,9 +7,9 @@ import template from 'templates/lyrcompare';
 import { getValue as getValueTranslate } from './i18n/language'; //e2m: Multilanguage support. Alias -> getValue is too generic
 
 //e2m: Eliminate duplicated values in array
-Array.prototype.unique = function(a) {
-  return function() { return this.filter(a) }
-}(function(a, b, c) {
+Array.prototype.unique = function (a) {
+  return function () { return this.filter(a) }
+}(function (a, b, c) {
   return c.indexOf(a, b + 1) < 0
 });
 
@@ -150,10 +150,15 @@ export default class LyrCompareControl extends M.Control {
     return new Promise((success, fail) => {
 
       //e2m: Transform stringLyr definition to apicnigLyr
+      this.map.getLayers().forEach((layer, i) => {
+        if (i !== 0) {
+          this.map.removeLayers(layer);
+        }
+      });
       this.layers = this.transformToLayers(this.layers);
 
       //e2m: getting layers array with name and legend for plugin
-      let capas = this.layers.map(function(layer) {
+      let capas = this.layers.map(function (layer) {
         return layer instanceof Object ? { name: layer.name, legend: layer.legend } : { name: layer, legend: layer };
       });
 
@@ -187,7 +192,7 @@ export default class LyrCompareControl extends M.Control {
 
 
       //e2m: config a helper in Handlebars for embedding conditionals in template
-      Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+      Handlebars.registerHelper('ifCond', function (v1, v2, options) {
         if (v1 === v2) {
           return options.fn(this);
         }
@@ -263,7 +268,7 @@ export default class LyrCompareControl extends M.Control {
           //e2m: creamos los eventos para manejar el cambio de selección
           this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
             item.addEventListener('change', evt => {
-              const layer = this.layers.filter(function(layer) {
+              const layer = this.layers.filter(function (layer) {
                 return layer.name === evt.target.value
               });
               let lstLayers = [];
@@ -517,15 +522,15 @@ export default class LyrCompareControl extends M.Control {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
           let name = urlLayer[3]
-          const layerByUrl = this.map.getLayers().filter(l => name.includes(l.name))[this.map.getLayers().filter(l => name.includes(l.name)).length-1];
+          const layerByUrl = this.map.getLayers().filter(l => name.includes(l.name))[this.map.getLayers().filter(l => name.includes(l.name)).length - 1];
           this.map.removeLayers(layerByUrl);
-          
+
         } else {
-          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[this.map.getLayers().filter(l => layer.includes(l.name)).length-1];
+          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[this.map.getLayers().filter(l => layer.includes(l.name)).length - 1];
           this.map.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[this.map.getLayers().filter(l => layer.name.includes(l.name)).length-1];
+        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[this.map.getLayers().filter(l => layer.name.includes(l.name)).length - 1];
         this.map.removeLayers(layerByObject);
       }
     });
@@ -544,7 +549,7 @@ export default class LyrCompareControl extends M.Control {
    * @return
    */
   transformToLayers(layers) {
-    const transform = layers.map(function(layer) {
+    const transform = layers.map(function (layer) {
       let newLayer = null;
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
