@@ -487,7 +487,7 @@ export default class IGNSearchControl extends M.Control {
         }
 
         for (let i = 0; i < b.length; i += 1) {
-          const hol = b[i].substring(0, 10).replace('(', '');
+          const hol = b[i].substring(0, 9).replace('(', '');
 
           if (geoJsonData.includes('[[['.concat(hol))) {
             geoJsonData2 = geoJsonData2.replace('[[['.concat(hol), '[[[['.concat(hol));
