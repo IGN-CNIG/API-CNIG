@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * @module M/impl/control/CurtainControl
  */

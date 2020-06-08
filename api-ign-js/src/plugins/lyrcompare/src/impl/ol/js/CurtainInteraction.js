@@ -22,10 +22,10 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
 
     // Default options
     const optionsE = options || {};
-    
+
     this.pos = false;
     this.opacityVal = (optionsE.opacityVal || 100);
-    
+
     const layerA = [optionsE.lyrA].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
     this.addLayerA(layerA);
 
@@ -37,31 +37,24 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
 
     const layerD = [optionsE.lyrD].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
     this.addLayerD(layerD);
-    
+
   }
 
   /** Set the map > start postcompose
    */
 
   setMap(map) {
-   
+
     //e2m?
     if (this.getMap()) {
       for (let i = 0; i < this.layers_.length; i += 1) {
         if (this.layers_[i].precompose) ol.Observable.unByKey(this.layers_[i].precompose);
         if (this.layers_[i].postcompose) ol.Observable.unByKey(this.layers_[i].postcompose);
         this.layers_[i].precompose = this.layers_[i].postcompose = null;
-        console.log("Cargo " + i);
       }
       this.getMap().renderSync();
-      console.log("PasoPrevio");
     }
-    console.log(this.getMap());
     ol.interaction.Pointer.prototype.setMap.call(this, map);
-    console.log(this.getMap());
-    console.log(map);
-    console.log(this.layers_[0]);
-    console.log(this.layers_.length);
     if (map) {
       this.layers_[0].precompose = this.layers_[0].on('precompose', this.precomposeA_.bind(this));
       this.layers_[0].postcompose = this.layers_[0].on('postcompose', this.postcomposeA_.bind(this));
@@ -70,13 +63,9 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
       this.layers_[2].precompose = this.layers_[2].on('precompose', this.precomposeC_.bind(this));
       this.layers_[2].postcompose = this.layers_[2].on('postcompose', this.postcomposeC_.bind(this));
       this.layers_[3].precompose = this.layers_[3].on('precompose', this.precomposeD_.bind(this));
-      this.layers_[3].postcompose = this.layers_[3].on('postcompose', this.postcomposeD_.bind(this));      
+      this.layers_[3].postcompose = this.layers_[3].on('postcompose', this.postcomposeD_.bind(this));
       map.renderSync();
-      console.log("Simap");
-    }else{
-      console.log("Nomap");
     }
-
   }
 
   /** 
@@ -89,7 +78,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     this.opacityVal = opacityVal;
     if (this.getMap()) {
       for (let i = 0; i < this.layers_.length; i += 1) {
-        this.layers_[i].setOpacity(this.opacityVal/100);
+        this.layers_[i].setOpacity(this.opacityVal / 100);
       }
     }
     //e2m?
@@ -128,13 +117,11 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    * @function
    * @api stable
    */
-  setVisibilityLayersCD(){
-    console.log("NCap:" + this.layers_.length);
-    //console.log(this.layers_[2]);
-    if ((this.comparisonMode===1) || (this.comparisonMode===2)){
+  setVisibilityLayersCD() {
+    if ((this.comparisonMode === 1) || (this.comparisonMode === 2)) {
       this.layers_[2].setVisible(false);
       this.layers_[3].setVisible(false);
-    }else{
+    } else {
       this.layers_[2].setVisible(true);
       this.layers_[3].setVisible(true);
     }
@@ -149,8 +136,8 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    */
   addLayerA(layers) {
 
-   if (!(layers instanceof Array)) layers = [layers];
-    const l = { 
+    if (!(layers instanceof Array)) layers = [layers];
+    const l = {
       layer: layers[0]
     };
     if (this.getMap()) {
@@ -202,7 +189,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    * 
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
-   addLayerD(layers) {
+  addLayerD(layers) {
     if (!(layers instanceof Array)) layers = [layers];
     const l = {
       layer: layers[0]
@@ -213,8 +200,8 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
       this.getMap().renderSync();
     }
     this.layers_.push(layers[0]);
-    
-  }  
+
+  }
 
   /**
    *  Remove a layer to clip
@@ -223,9 +210,9 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    */
   removeLayer(layers) {
 
-    /* eslint-disable */
-    if (!(layers instanceof Array)) layers = [layers];
-    /* eslint-enable */
+    if (!(layers instanceof Array)) {
+      layers = [layers];
+    }
     for (let i = 0; i < layers.length; i += 1) {
       let k;
       for (k = 0; k < this.layers_.length; k += 1) {
@@ -253,9 +240,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     } else if (e && e instanceof Array) {
       this.pos = e;
     } else {
-      /* eslint-disable */  //e2m:?
       e = [-10000000, -10000000];
-      /* eslint-enable */
     }
     if (this.getMap()) this.getMap().renderSync();
   }
@@ -272,22 +257,22 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
-    if (this.staticDivision){
-      if (this.comparisonMode==1){
-        ctx.rect(0, 0,  lienzoMapa[0]/2* ratio - margenClip * ratio, lienzoMapa[1]); //e2m: left fixed
-      }else if (this.comparisonMode==2){
-        ctx.rect(0, 0, lienzoMapa[0], lienzoMapa[1] * ratio/2- margenClip * ratio);//e2m: up fixed
-      }else if (this.comparisonMode==3){
-        ctx.rect(0, 0,  lienzoMapa[0]/2* ratio - margenClip * ratio, lienzoMapa[1]/2);//e2m: up&left fixed
+    if (this.staticDivision) {
+      if (this.comparisonMode == 1) {
+        ctx.rect(0, 0, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1]); //e2m: left fixed
+      } else if (this.comparisonMode == 2) {
+        ctx.rect(0, 0, lienzoMapa[0], lienzoMapa[1] * ratio / 2 - margenClip * ratio);//e2m: up fixed
+      } else if (this.comparisonMode == 3) {
+        ctx.rect(0, 0, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1] / 2);//e2m: up&left fixed
       }
     }
-    else{
-      if (this.comparisonMode==1){
+    else {
+      if (this.comparisonMode == 1) {
         ctx.rect(0, 0, this.pos[0] - margenClip * ratio, lienzoMapa[1]); //e2m: left dynamic
-      }else if (this.comparisonMode==2){
-        ctx.rect(0, 0, ctx.canvas.width, this.pos[1] * ratio- margenClip * ratio);  //e2m: up dynamic
-      }else if (this.comparisonMode==3){
-        ctx.rect(0, 0, this.pos[0] - margenClip * ratio,  this.pos[1] - margenClip * ratio);  //e2m: up&left dynamic
+      } else if (this.comparisonMode == 2) {
+        ctx.rect(0, 0, ctx.canvas.width, this.pos[1] * ratio - margenClip * ratio);  //e2m: up dynamic
+      } else if (this.comparisonMode == 3) {
+        ctx.rect(0, 0, this.pos[0] - margenClip * ratio, this.pos[1] - margenClip * ratio);  //e2m: up&left dynamic
       }
     }
 
@@ -296,8 +281,8 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
      * e2m: con esto podemos pintar una línea de color para contornear la capa. Pero no queda bien
      * 
      */
-    if (margenClip>0){
-      ctx.lineWidth = 2* margenClip * ratio;
+    if (margenClip > 0) {
+      ctx.lineWidth = 2 * margenClip * ratio;
       ctx.strokeStyle = 'rgba(0, 102, 204, 0.9)';
       ctx.stroke();
     }
@@ -322,27 +307,27 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
-    if (this.staticDivision){
-      if (this.comparisonMode==1){
-        ctx.rect(lienzoMapa[0]* ratio/2 + margenClip * ratio, 0, ctx.canvas.width - lienzoMapa[0]* ratio/2, lienzoMapa[1]); //e2m: Right fixed
-      }else if (this.comparisonMode==2){
-        ctx.rect(0, lienzoMapa[1]* ratio/2 + margenClip * ratio, ctx.canvas.width, ctx.canvas.height-lienzoMapa[1]* ratio/2); //e2m: Down fixed
-      }else if (this.comparisonMode==3){
-        ctx.rect(lienzoMapa[0]* ratio/2, 0, ctx.canvas.width - lienzoMapa[0]* ratio/2, lienzoMapa[1]/2); //e2m: up&right fixed
+    if (this.staticDivision) {
+      if (this.comparisonMode == 1) {
+        ctx.rect(lienzoMapa[0] * ratio / 2 + margenClip * ratio, 0, ctx.canvas.width - lienzoMapa[0] * ratio / 2, lienzoMapa[1]); //e2m: Right fixed
+      } else if (this.comparisonMode == 2) {
+        ctx.rect(0, lienzoMapa[1] * ratio / 2 + margenClip * ratio, ctx.canvas.width, ctx.canvas.height - lienzoMapa[1] * ratio / 2); //e2m: Down fixed
+      } else if (this.comparisonMode == 3) {
+        ctx.rect(lienzoMapa[0] * ratio / 2, 0, ctx.canvas.width - lienzoMapa[0] * ratio / 2, lienzoMapa[1] / 2); //e2m: up&right fixed
       }
-    }else{
-      if (this.comparisonMode==1){
+    } else {
+      if (this.comparisonMode == 1) {
         ctx.rect(this.pos[0], 0, lienzoMapa[0] - this.pos[0], lienzoMapa[1]); //e2m: Right dynamic
-      }else if (this.comparisonMode==2){
-        ctx.rect(0, this.pos[1],ctx.canvas.width, ctx.canvas.height-this.pos[1]); //e2m: Down dynamic
-      }else if (this.comparisonMode==3){
+      } else if (this.comparisonMode == 2) {
+        ctx.rect(0, this.pos[1], ctx.canvas.width, ctx.canvas.height - this.pos[1]); //e2m: Down dynamic
+      } else if (this.comparisonMode == 3) {
         //ctx.rect(this.pos[0], 0, lienzoMapa[0] - this.pos[0], lienzoMapa[1]); //e2m: split screen three. maybe
         ctx.rect(this.pos[0], 0, lienzoMapa[0] - this.pos[0], this.pos[1]); //e2m: up&right dynamic
-      }       
-      
+      }
+
     }
-    if (margenClip>0){
-      ctx.lineWidth = 2* margenClip * ratio;
+    if (margenClip > 0) {
+      ctx.lineWidth = 2 * margenClip * ratio;
       ctx.strokeStyle = 'rgba(0, 102, 204, 0.9)';
       ctx.stroke();
     }
@@ -364,21 +349,21 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     let margenClip = 0; //Stroke size in pixels.
     //e2m: Canvas size --> lienzoMapa
     //e2m: Mouse coordinates --> this.pos
-    
+
     ctx.save();
     ctx.beginPath();
-    if (this.staticDivision){
-      if (this.comparisonMode==3){
-        ctx.rect(0, lienzoMapa[1]* ratio/2,  lienzoMapa[0]/2* ratio - margenClip * ratio, lienzoMapa[1]);  //e2m: down&left fixed
+    if (this.staticDivision) {
+      if (this.comparisonMode == 3) {
+        ctx.rect(0, lienzoMapa[1] * ratio / 2, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1]);  //e2m: down&left fixed
       }
     }
-    else{
-      if (this.comparisonMode==3){
-        ctx.rect(0, this.pos[1]* ratio,  this.pos[0]* ratio - margenClip * ratio, (lienzoMapa[1]-this.pos[1])* ratio- margenClip * ratio);  //e2m: down&left dynamic
+    else {
+      if (this.comparisonMode == 3) {
+        ctx.rect(0, this.pos[1] * ratio, this.pos[0] * ratio - margenClip * ratio, (lienzoMapa[1] - this.pos[1]) * ratio - margenClip * ratio);  //e2m: down&left dynamic
       }
     }
-    if (margenClip>0){
-      ctx.lineWidth = 2* margenClip * ratio;
+    if (margenClip > 0) {
+      ctx.lineWidth = 2 * margenClip * ratio;
       ctx.strokeStyle = 'rgba(0, 102, 204, 0.9)';
       ctx.stroke();
     }
@@ -398,21 +383,21 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     let margenClip = 0; //Stroke size in pixels.
     //e2m: Canvas size --> lienzoMapa
     //e2m: Mouse coordinates --> this.pos
-    
+
     ctx.save();
     ctx.beginPath();
-    if (this.staticDivision){
-      if (this.comparisonMode==3){
-        ctx.rect(lienzoMapa[0]* ratio/2, lienzoMapa[1]* ratio/2, ctx.canvas.width* ratio/2- margenClip * ratio, ctx.canvas.height* ratio/2- margenClip * ratio); //e2m: down&right fixed
+    if (this.staticDivision) {
+      if (this.comparisonMode == 3) {
+        ctx.rect(lienzoMapa[0] * ratio / 2, lienzoMapa[1] * ratio / 2, ctx.canvas.width * ratio / 2 - margenClip * ratio, ctx.canvas.height * ratio / 2 - margenClip * ratio); //e2m: down&right fixed
       }
     }
-    else{
-      if (this.comparisonMode==3){
-        ctx.rect(this.pos[0]* ratio, this.pos[1]* ratio, (ctx.canvas.width-this.pos[0])* ratio- margenClip * ratio, (ctx.canvas.height-this.pos[1])* ratio- margenClip * ratio); //e2m: down&right dynamic
+    else {
+      if (this.comparisonMode == 3) {
+        ctx.rect(this.pos[0] * ratio, this.pos[1] * ratio, (ctx.canvas.width - this.pos[0]) * ratio - margenClip * ratio, (ctx.canvas.height - this.pos[1]) * ratio - margenClip * ratio); //e2m: down&right dynamic
       }
     }
-    if (margenClip>0){
-      ctx.lineWidth = 2* margenClip * ratio;
+    if (margenClip > 0) {
+      ctx.lineWidth = 2 * margenClip * ratio;
       ctx.strokeStyle = 'rgba(0, 102, 204, 0.9)';
       ctx.stroke();
     }
