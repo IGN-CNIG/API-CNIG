@@ -2,6 +2,7 @@
  * @module M/control/VectorsControl
  */
 
+import Sortable from 'sortablejs';
 import VectorsImplControl from 'impl/vectorscontrol';
 import template from 'templates/vectors';
 import layersTemplate from 'templates/layers';
@@ -9,6 +10,8 @@ import drawingTemplate from 'templates/drawing';
 import downloadingTemplate from 'templates/downloading';
 import uploadingTemplate from 'templates/uploading';
 import changeNameTemplate from 'templates/changename';
+import addWFSTemplate from 'templates/addwfs';
+import selectWFSTemplate from 'templates/selectwfs';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
 import togpx from 'togpx';
@@ -163,6 +166,7 @@ export default class VectorsControl extends M.Control {
             add_point_layer: getValue('add_point_layer'),
             add_line_layer: getValue('add_line_layer'),
             add_poly_layer: getValue('add_poly_layer'),
+            add_wfs_layer: getValue('add_wfs_layer'),
             load_layer: getValue('load_layer'),
           },
         },
@@ -242,6 +246,28 @@ export default class VectorsControl extends M.Control {
     if (layers.length > 0) {
       container.appendChild(html);
       html.addEventListener('click', this.clickLayer.bind(this), false);
+      const layerList = this.html.querySelector('#m-vector-list');
+      Sortable.create(layerList, {
+        animation: 150,
+        ghostClass: 'm-vectors-gray-shadow',
+        onEnd: (evt) => {
+          const from = evt.from;
+          let maxZIndex = Math.max(...(layers.map((l) => {
+            return l.getZIndex();
+          })));
+          from.querySelectorAll('li.m-vector-layer').forEach((elem) => {
+            const name = elem.getAttribute('name');
+            const filtered2 = layers.filter((layer) => {
+              return layer.name === name;
+            });
+
+            if (filtered2.length > 0) {
+              filtered2[0].setZIndex(maxZIndex);
+              maxZIndex -= 1;
+            }
+          });
+        },
+      });
     }
   }
 
@@ -346,7 +372,7 @@ export default class VectorsControl extends M.Control {
    * @api
    */
   createUploadingTemplate() {
-    const accept = '.kml, .zip, .gpx, .geojson, .gml';
+    const accept = '.kml, .zip, .gpx, .geojson';
     this.uploadingTemplate = M.template.compileSync(uploadingTemplate, {
       jsonp: true,
       vars: {
@@ -373,8 +399,136 @@ export default class VectorsControl extends M.Control {
     html.querySelector('#vector-add-point').addEventListener('click', this.addNewLayer.bind(this, 'Point'));
     html.querySelector('#vector-add-line').addEventListener('click', this.addNewLayer.bind(this, 'LineString'));
     html.querySelector('#vector-add-poly').addEventListener('click', this.addNewLayer.bind(this, 'Polygon'));
+    html.querySelector('#vector-add-wfs').addEventListener('click', this.openAddWFS.bind(this));
     html.querySelector('#vector-upload').addEventListener('click', () => this.openUploadOptions());
     this.addDragDropEvents();
+  }
+
+  openAddWFS() {
+    const addWFS = M.template.compileSync(addWFSTemplate, {
+      jsonp: true,
+      parseToHtml: false,
+      vars: {
+        translations: {
+          url_service: getValue('url_service'),
+          query: getValue('query'),
+          clean: getValue('clean'),
+        },
+      },
+    });
+
+    M.dialog.info(addWFS, getValue('add_wfs_layer'));
+    setTimeout(() => {
+      document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('click', e => this.readWFSCapabilities(e));
+      document.querySelector('#m-vectors-addwfs-clear-btn').addEventListener('click', e => this.removeContains(e));
+      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+      const button = document.querySelector('div.m-dialog.info div.m-button > button');
+      button.innerHTML = getValue('close');
+      button.style.width = '75px';
+      button.style.backgroundColor = '#71a7d3';
+    }, 10);
+  }
+
+  /**
+   * This function remove results show
+   *
+   * @function
+   * @param {goog.events.BrowserEvent} evt - Event
+   * @private
+   */
+  removeContains(evt) {
+    evt.preventDefault();
+    document.querySelector('#m-vectors-addwfs-results').innerHTML = '';
+    document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value = '';
+  }
+
+  /**
+   * This function reads WFS service capabilities
+   *
+   * @function
+   * @private
+   * @param {Event} evt - Click event
+   */
+  readWFSCapabilities(evt) {
+    evt.preventDefault();
+    let url = document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value.trim();
+    if (!M.utils.isNullOrEmpty(url)) {
+      if (M.utils.isUrl(url)) {
+        url += url.endsWith('?') ? '' : '?';
+        url += 'service=WFS&request=GetCapabilities';
+        M.remote.get(url).then((response) => {
+          try {
+            const services = [];
+            const prenode = response.text.split('<FeatureTypeList>')[1].split('</FeatureTypeList>')[0];
+            if (prenode.indexOf('<FeatureType>') > -1) {
+              const nodes = prenode.split('<FeatureType>');
+              nodes.forEach((node) => {
+                if (node.indexOf('</Name>') > -1) {
+                  services.push({
+                    name: node.split('</Name>')[0].split('>')[1].trim(),
+                    title: node.split('</Title>')[0].split('<Title>')[1].trim(),
+                  });
+                }
+              });
+            } else if (prenode.indexOf('<FeatureType') > -1) {
+              const nodes = prenode.split('<FeatureType');
+              nodes.forEach((node) => {
+                if (node.indexOf('</Name>') > -1) {
+                  services.push({
+                    name: node.split('</Name>')[0].split('<Name>')[1].trim(),
+                    title: node.split('</Title>')[0].split('<Title>')[1].trim(),
+                  });
+                }
+              });
+            }
+
+            this.showResults(services);
+          } catch (err) {
+            M.dialog.error(getValue('exception.capabilities'));
+          }
+        });
+      } else {
+        M.dialog.error(getValue('exception.valid_url'));
+      }
+    } else {
+      M.dialog.error(getValue('exception.empty'));
+    }
+  }
+
+  showResults(services) {
+    const selectWFS = M.template.compileSync(selectWFSTemplate, {
+      jsonp: true,
+      vars: {
+        services,
+        translations: {
+          select_service: getValue('select_service'),
+          select: getValue('select'),
+        },
+      },
+    });
+
+    document.querySelector('#m-vectors-addwfs-results').innerHTML = '';
+    document.querySelector('#m-vectors-addwfs-results').appendChild(selectWFS);
+    const selector = '#m-vectors-select-wfs .m-vectors-common-btn';
+    document.querySelector(selector).addEventListener('click', e => this.openWFSFilters(e, services));
+  }
+
+  openWFSFilters(evt, services) {
+    evt.preventDefault();
+    const selected = document.querySelector('#m-vectors-wfs-select').value;
+    let url = document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value.trim();
+    url += url.endsWith('?') ? '' : '?';
+    document.querySelector('div.m-mapea-container div.m-dialog').remove();
+    let legend = selected;
+    const filtered = services.filter((s) => {
+      return s.name === selected;
+    });
+
+    if (filtered.length > 0) {
+      legend = filtered[0].title;
+    }
+
+    this.getImpl().addWFSLayer(url, selected, legend);
   }
 
   addDragDropEvents() {
@@ -676,7 +830,7 @@ export default class VectorsControl extends M.Control {
   }
 
   /**
-   * Downloads draw layer as GeoJSON, kml or gml.
+   * Downloads selected layer as GeoJSON, kml, gpx or shp.
    * @public
    * @function
    * @api
@@ -773,7 +927,7 @@ export default class VectorsControl extends M.Control {
   }
 
   /**
-   * Loads vector layer features on __draw__ (Mapea) layer.
+   * Loads vector layer on map.
    * @public
    * @function
    * @api
@@ -796,8 +950,6 @@ export default class VectorsControl extends M.Control {
           features = this.getImpl().loadGPXLayer(fileReader.result, fileName);
         } else if (fileExt === 'geojson') {
           features = this.getImpl().loadGeoJSONLayer(fileReader.result, fileName);
-        } else if (fileExt === 'gml') {
-          features = this.getImpl().loadGMLLayer(fileReader.result, fileName);
         } else {
           M.dialog.error(getValue('exception.load'));
           return;
@@ -814,7 +966,7 @@ export default class VectorsControl extends M.Control {
 
     if (fileExt === 'zip') {
       fileReader.readAsArrayBuffer(this.file_);
-    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson' || fileExt === 'gml') {
+    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson') {
       fileReader.readAsText(this.file_);
     } else {
       M.dialog.error(getValue('exception.extension'));

@@ -7,10 +7,15 @@
     "load": "Error when loading the file.",
     "no_geoms": "No geometries have been detected in this file.",
     "load_correct": "Error when loading the file. Check that it is the right file.",
-    "extension": "A not allowed file extension has been inserted. The allowed ones are: KML, SHP(.zip), GPX, GML and GeoJSON.",
+    "extension": "A not allowed file extension has been inserted. The allowed ones are: KML, SHP(.zip), GPX and GeoJSON.",
     "not_extent": "Cannot get the layer extension.",
     "no_features": "This layer does not yet have any entities. Add entities first.",
-    "query_profile": "The altitude data for this entity could not be queried."
+    "query_profile": "The altitude data for this entity could not be queried.",
+    "capabilities": "An error has occurred in obtaining the GetCapabilities document",
+    "valid_url": "You must provide a valid URL",
+    "empty": "The fields are empty",
+    "error_features_wfs": "Unable to load layer features. Try increasing the zoom level in the area of interest.",
+    "error_wfs": "Could not load WFS service"
   },
   "tooltip": "Vector layers management",
   "change_name": "Change name",
@@ -31,6 +36,7 @@
   "add_point_layer": "Add point layer",
   "add_line_layer": "Add linear layer",
   "add_poly_layer": "Add polygonal layer",
+  "add_wfs_layer": "Add WFS layer",
   "load_layer": "Load layer",
   "point_layer": "Point layer",
   "line_layer": "Linear layer",
@@ -46,10 +52,15 @@
   "line": "Stroke",
   "delete_geom": "Remove geometry",
   "query_profile": "Query topographic profile",
-  "accepted": "The accepted formats are KML, SHP (.zip), GPX, GML and GeoJSON.",
+  "accepted": "The accepted formats are KML, SHP (.zip), GPX and GeoJSON.",
   "select_file": "Select the file",
   "download": "Download",
   "change": "Change",
   "expand": "Show",
-  "collapse": "Hide"
+  "collapse": "Hide",
+  "url_service": "Service URL",
+  "query": "Consult",
+  "clean": "Clean search",
+  "select_service": "Select a service",
+  "select" : "Select"
 }

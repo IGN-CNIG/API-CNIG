@@ -125,7 +125,7 @@ div#vectors-uploading>label {
 
 div.m-panel.m-vectors.opened,
 div.m-panel.m-vectors>div.m-panel-controls {
-    width: 400px;
+    max-width: 400px;
 }
 
 div.m-panel.m-vectors>div.m-panel-controls>div.m-control.m-container.m-vectors>div#m-vector-actions {
@@ -577,6 +577,69 @@ div.m-vector-layer-actions .active-tool {
   margin-top: 0rem;
   font-size: 12px;
   font-weight: bold;
+}
+
+.m-vectors-gray-shadow {
+  opacity: 0.3;
+  background-color: #D1E6F8;
+}
+
+.m-vectors-addwfs .search-panel {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.m-vectors-addwfs .search-panel input {
+  width: 230px;
+  margin-right: 20px;
+}
+
+.m-vectors-addwfs .search-panel span {
+  margin-left: -10px;
+  cursor: pointer;
+  color: #6c6c6c !important;
+  opacity: 1 !important;
+  font-size: 16px !important;
+}
+
+#m-vectors-addwfs-results > div {
+  margin: 1rem 0.5rem 0rem 0.5rem;
+}
+
+#m-vectors-addwfs-results .button {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+#m-vectors-select-wfs .select-container {
+  text-align: center;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+#m-vectors-wfs-select {
+  background-color: white;
+  padding: 5px;
+}
+
+#m-vectors-select-wfs .btn-container {
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 0.6rem;
+}
+
+.m-vectors-common-btn {
+  padding: 8px 7px;
+  background-color: #71a7d3;
+  font-family: Muli,"sans-serif"!important;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #71a7d3;
+  color: white;
+  font-weight: bold;
+  margin-right: 10px;
+  outline: none;
+  text-decoration: none;
 }
 
 .m-vectors #drawingtools .stroke-container .stroke-options div.stroke-continuous {

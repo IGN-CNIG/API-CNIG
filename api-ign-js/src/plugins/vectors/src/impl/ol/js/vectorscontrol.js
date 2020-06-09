@@ -7,9 +7,34 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 const WGS84 = 'EPSG:4326';
 const MERCATOR = 'EPSG:900913';
+const GML_FORMAT = 'text/xml; subtype=gml/3.1.1';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
 const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+const WFS_EXCEPTIONS = [
+  'https://servicios.idee.es/wfs-inspire/hidrografia?',
+  'https://servicios.idee.es/wfs-inspire/hidrografia',
+  'https://www.ign.es/wfs-inspire/unidades-administrativas?',
+  'https://www.ign.es/wfs-inspire/unidades-administrativas',
+  'https://servicios.idee.es/wfs-inspire/transportes?',
+  'https://servicios.idee.es/wfs-inspire/transportes',
+  'https://servicios.idee.es/wfs-inspire/ocupacion-suelo?',
+  'https://servicios.idee.es/wfs-inspire/ocupacion-suelo',
+  'https://www.cartociudad.es/wfs-inspire/direcciones?',
+  'https://www.cartociudad.es/wfs-inspire/direcciones',
+  'http://ideihm.covam.es/wfs/costaspain?',
+  'http://ideihm.covam.es/wfs/costaspain',
+  'http://ideihm.covam.es/wfs/catalogoENC?',
+  'http://ideihm.covam.es/wfs/catalogoENC',
+  'http://ideihm.covam.es/wfs/catalogoPapel?',
+  'http://ideihm.covam.es/wfs/catalogoPapel',
+  'http://ideihm.covam.es/wfs/lucesIHM?',
+  'http://ideihm.covam.es/wfs/lucesIHM',
+  'http://ideihm.covam.es/wfs/limitesMAR?',
+  'http://ideihm.covam.es/wfs/limitesMAR',
+  'http://ideihm.covam.es/wfs/CartaOF?',
+  'http://ideihm.covam.es/wfs/CartaOF',
+];
 
 export default class VectorsControl extends M.impl.Control {
   /**
@@ -317,6 +342,7 @@ export default class VectorsControl extends M.impl.Control {
    * @function
    * @param {*} source2 -
    */
+  /*
   loadGMLLayer(source, layerName) {
     let srs = this.facadeMap_.getProjection().code;
     let features = [];
@@ -326,7 +352,8 @@ export default class VectorsControl extends M.impl.Control {
         dataProjection: srs,
         featureProjection: this.facadeMap_.getProjection().code,
       });
-    } else if (source.split('srsName="')[1].indexOf('crs:EPSG::') > -1 && source.indexOf('gml:pos') > -1) {
+    } else if (source.split('srsName="')[1].indexOf('crs:EPSG::') > -1 &&
+         source.indexOf('gml:pos') > -1) {
       srs = `EPSG:${source.split('srsName="')[1].split('::')[1].split('"')[0]}`;
       features = new ol.format.WFS({ gmlFormat: new ol.format.GML3() }).readFeatures(source, {
         dataProjection: srs,
@@ -346,6 +373,7 @@ export default class VectorsControl extends M.impl.Control {
     this.facadeMap_.addLayers(layer);
     return features;
   }
+  */
 
   /**
    * Loads GeoJSON layer
@@ -599,6 +627,7 @@ export default class VectorsControl extends M.impl.Control {
       name: 'Line',
     });
 
+    this.pt = new ol.Feature(new ol.geom.Point([0, 0]));
     const profil = new Profil({
       info: {
         zmin: getValue('zmin'),
@@ -614,6 +643,7 @@ export default class VectorsControl extends M.impl.Control {
       projection: this.facadeMap_.getProjection().code,
       map: this.facadeMap_.getMapImpl(),
       title: getValue('profile'),
+      pointLayer: this.source_,
     });
 
     this.facadeMap_.getMapImpl().addControl(profil);
@@ -628,7 +658,6 @@ export default class VectorsControl extends M.impl.Control {
     };
 
     profil.setGeometry(feature);
-    this.pt = new ol.Feature(new ol.geom.Point([0, 0]));
     this.pt.setStyle([]);
     this.source_.addFeature(this.pt);
     profil.on(['over', 'out'], (e) => {
@@ -770,5 +799,99 @@ export default class VectorsControl extends M.impl.Control {
         map.getMapImpl().removeOverlay(item);
       }
     });
+  }
+
+  addWFSLayer(url, name, legend) {
+    const map = this.facadeMap_;
+    const srs = map.getProjection().code;
+    if (WFS_EXCEPTIONS.indexOf(url) > -1) {
+      const bbox = map.getBbox();
+      const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+      const wfsURL = `${url}service=WFS&version=2.0.0&request=GetFeature&typename=${name}&` +
+        `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
+      const layer = new M.layer.Vector({ name, legend, extract: false });
+      M.remote.get(wfsURL).then((response) => {
+        const responseWFS = response.text.replace(/wfs:member/gi, 'gml:featureMember');
+        const formatter = new ol.format.WFS({ gmlFormat: ol.format.GML2() });
+        let features = formatter.readFeatures(responseWFS);
+        features = features.map((f, index) => {
+          const newF = f;
+          if (!f.getGeometry()) {
+            newF.setGeometry(f.get('geometry'));
+          }
+
+          return newF;
+        });
+
+        features = this.featuresToFacade(features);
+        layer.addFeatures(features);
+        layer.updatable = true;
+        layer.url = url;
+        this.facadeMap_.addLayers(layer);
+        this.facadeMap_.getMapImpl().on('moveend', this.reloadFeaturesUpdatables.bind(this));
+      }).catch(() => {
+        M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
+      });
+    } else {
+      try {
+        const layer = new M.layer.WFS({
+          url,
+          name,
+          legend,
+        });
+
+        this.facadeMap_.addLayers(layer);
+        this.waitLayerLoaded(layer);
+      } catch (err) {
+        M.dialog.error(getValue('exception.error_wfs'), 'Error');
+      }
+    }
+  }
+
+  reloadFeaturesUpdatables() {
+    const map = this.facadeMap_;
+    const srs = map.getProjection().code;
+    const updatables = map.getLayers().filter((layer) => {
+      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible() &&
+        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable;
+    });
+
+    if (updatables.length > 0) {
+      const bbox = map.getBbox();
+      const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+      updatables.forEach((u) => {
+        const wfsURL = `${u.url}service=WFS&version=2.0.0&request=GetFeature&typename=${u.name}&` +
+          `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
+        M.remote.get(wfsURL).then((response) => {
+          const responseWFS = response.text.replace(/wfs:member/gi, 'gml:featureMember');
+          const formatter = new ol.format.WFS({ gmlFormat: ol.format.GML2() });
+          let features = formatter.readFeatures(responseWFS);
+          features = features.map((f, index) => {
+            const newF = f;
+            if (!f.getGeometry()) {
+              newF.setGeometry(f.get('geometry'));
+            }
+
+            return newF;
+          });
+
+          features = this.featuresToFacade(features);
+          // posibilidad eliminar features anteriores
+          u.addFeatures(features);
+        }).catch(() => {
+          M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
+        });
+      });
+    }
+  }
+
+  waitLayerLoaded(layer) {
+    if (layer.getGeometryType() === null) {
+      setTimeout(() => {
+        this.waitLayerLoaded(layer);
+      }, 200);
+    } else {
+      this.facadeControl.renderLayers();
+    }
   }
 }
