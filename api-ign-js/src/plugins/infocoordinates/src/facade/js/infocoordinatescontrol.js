@@ -82,7 +82,8 @@ export default class InfocoordinatesControl extends M.Control {
             coordY: getValue('coordY'),
             altitude: getValue('altitude'),
             removePoint: getValue('removePoint'),
-            removeAllPoints: getValue('removeAllPoints')
+            removeAllPoints: getValue('removeAllPoints'),
+            importAllPoints: getValue('importAllPoints')
           }
         }
       };
@@ -95,6 +96,7 @@ export default class InfocoordinatesControl extends M.Control {
 
       success(html);
       html.querySelector('#m-infocoordinates-buttonRemoveAllPoints').addEventListener('click', this.removeAllPoints.bind(this));
+      html.querySelector('#m-infocoordinates-buttonImportAllPoints').addEventListener('click', this.removeAllPoints.bind(this));
       html.querySelector('#m-infocoordinates-comboDatum').addEventListener('change', this.changeSelectSRSorChangeFormat.bind(this));
       html.querySelector('#m-infocoordinates-buttonConversorFormat').addEventListener('change', this.changeSelectSRSorChangeFormat.bind(this));
       html.querySelector('#m-infocoordinates-buttonRemovePoint').addEventListener('click', this.removePoint.bind(this));
@@ -136,6 +138,8 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-buttonConversorFormat').removeAttribute('disabled');
     document.getElementById('m-infocoordinates-buttonRemovePoint').classList.remove('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonRemoveAllPoints')[0].classList.remove('noDisplay');
+    document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.remove('noDisplay');
+
 
 
     // Agrego la tab que es un botón con el número de punto
@@ -181,7 +185,7 @@ export default class InfocoordinatesControl extends M.Control {
         altitudeFromWCSservice = getValue('noDatafromWCS');
       }
       featurePoint.setAttribute('Altitude', altitudeFromWCSservice);
-      altitudeBox.innerHTML = altitudeFromWCSservice;
+      altitudeBox.innerHTML = parseFloat(altitudeFromWCSservice).toFixed(2);
       buttonTab.addEventListener('click', () => this.openTabFromTab(numPoint));
     })
 
@@ -194,14 +198,40 @@ export default class InfocoordinatesControl extends M.Control {
 
 
   selectFeature(numPoint) {
-    const SELECTED_FEATURE_STYLE = new M.style.Point({
-      fill: {
-        color: '#71a7d3',
-      }
+    this.point = new M.style.Point({
+      radius: 5,
+      icon: {
+        form: 'none',
+        class: 'g-cartografia-pin',
+        radius: 15,
+        rotation: 0,
+        rotate: false,
+        offset: [0, 0],
+        color: '#005eff',
+        border: '5px solid green',
+
+        opacity: 1,
+      },
     });
-    this.layerFeatures.getFeatures().map((elemento) => (elemento.clearStyle()));
+
+    this.pointDisable = new M.style.Point({
+      radius: 5,
+      icon: {
+        form: 'none',
+        class: 'g-cartografia-papelera',
+        radius: 15,
+        rotation: 0,
+        rotate: false,
+        offset: [0, 0],
+        color: '#005eff',
+        border: '5px solid green',
+
+        opacity: 1,
+      },
+    });
+    this.layerFeatures.getFeatures().map((elemento) => (elemento.setStyle(this.pointDisable)));
     let featureSelected = this.layerFeatures.getFeatureById(numPoint);
-    featureSelected.setStyle(SELECTED_FEATURE_STYLE);
+    featureSelected.setStyle(this.point);
   }
 
 
@@ -307,6 +337,7 @@ export default class InfocoordinatesControl extends M.Control {
 
     document.getElementById('m-infocoordinates-buttonRemovePoint').classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonRemoveAllPoints')[0].classList.add('noDisplay');
+    document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.add('noDisplay');
     document.getElementById('m-infocoordinates-buttonConversorFormat').setAttribute('disabled', 'disabled');
     document.getElementById('m-infocoordinates-comboDatum').setAttribute('disabled', 'disabled');
 

@@ -16,5 +16,6 @@
   "readingAltitude": "Consultando...",
   "noDatafromWCS": "Sin datos",
   "removePoint": "Elimina el punto",
-  "removeAllPoints": "Elimina todos los puntos"
+  "removeAllPoints": "Elimina todos los puntos",
+  "importAllPoints": "Importa todos los puntos"
 }
