@@ -475,19 +475,19 @@ export default class IGNSearchControl extends M.Control {
 
       let geoJsonData2 = geoJsonData;
 
-      let a;
-      let b;
+      let datosGeometria;
+      let datosCoordenadas;
       if (urlSinJSON.includes('MULTIPOLYGON (((')) {
-        a = urlSinJSON.split('(((');
-        b = a[1].split('), (');
+        datosGeometria = urlSinJSON.split('(((');
+        datosCoordenadas = datosGeometria[1].split('), (');
 
 
         if (geoJsonData2.includes(']]]')) {
           geoJsonData2 = geoJsonData2.replace(']]]', ']]]]');
         }
 
-        for (let i = 0; i < b.length; i += 1) {
-          const hol = b[i].substring(0, 9).replace('(', '');
+        for (let i = 0; i < datosCoordenadas.length; i += 1) {
+          const hol = datosCoordenadas[i].substring(0, 9).replace('(', '');
 
           if (geoJsonData.includes('[[['.concat(hol))) {
             geoJsonData2 = geoJsonData2.replace('[[['.concat(hol), '[[[['.concat(hol));
@@ -498,8 +498,8 @@ export default class IGNSearchControl extends M.Control {
           }
         }
       } else if (urlSinJSON.includes('POLYGON ((')) {
-        a = urlSinJSON.split('((');
-        b = a[1].split('), (');
+        datosGeometria = urlSinJSON.split('((');
+        datosCoordenadas = datosGeometria[1].split('), (');
 
 
         if (geoJsonData2.includes(']]')) {
@@ -508,8 +508,8 @@ export default class IGNSearchControl extends M.Control {
 
         geoJsonData2 = geoJsonData2.replace('Polygon', 'MultiPolygon');
 
-        for (let i = 0; i < b.length; i += 1) {
-          const holita = b[i].substring(0, 15).replace('(', '');
+        for (let i = 0; i < datosCoordenadas.length; i += 1) {
+          const holita = datosCoordenadas[i].substring(0, 15).replace('(', '');
 
           if (geoJsonData.includes('[[['.concat(holita))) {
             geoJsonData2 = geoJsonData2.replace('[[['.concat(holita), '[[[['.concat(holita));
@@ -518,8 +518,6 @@ export default class IGNSearchControl extends M.Control {
           }
         }
       }
-      // AQUI
-      console.log(geoJsonData2);
       const featureJSON = JSON.parse(geoJsonData2);
 
       // featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);

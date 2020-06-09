@@ -1794,8 +1794,8 @@ export default class IGNSearchLocatorControl extends M.Control {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }
     featureTabOpts.content += `<div>${fullAddress}</div>
-                <div class='ignsearchlocator-popup'>Lat: ${featureCoordinates[0].toFixed(2)}</div>
-                <div class='ignsearchlocator-popup'> Long: ${featureCoordinates[1].toFixed(2)} </div>`;
+                <div class='ignsearchlocator-popup'>Lat: ${featureCoordinates[0].toFixed(6)}</div>
+                <div class='ignsearchlocator-popup'> Long: ${featureCoordinates[1].toFixed(6)} </div>`;
     if (this.map.getPopup() instanceof M.Popup && addTab === true) {
       this.popup = this.map.getPopup();
       this.popup.addTab(featureTabOpts);
