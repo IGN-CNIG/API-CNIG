@@ -7,10 +7,15 @@
     "load": "Error al cargar el fichero.",
     "no_geoms": "No se han detectado geometrías en este fichero.",
     "load_correct": "Error al cargar el fichero. Compruebe que se trata del fichero correcto.",
-    "extension": "No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX, GML y GeoJSON.",
+    "extension": "No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX y GeoJSON.",
     "not_extent": "No se puede obtener la extensión de la capa.",
     "no_features": "Esta capa todavía no tiene ninguna entidad. Añada entidades primero.",
-    "query_profile": "No se han podido consultar los datos de altitud para esta entidad."
+    "query_profile": "No se han podido consultar los datos de altitud para esta entidad.",
+    "capabilities": "Ha ocurrido un error al obtener el documento GetCapabilities",
+    "valid_url": "Debes indicar una URL válida",
+    "empty": "Los campos están vacíos",
+    "error_features_wfs": "No se han podido cargar features de la capa. Inténtalo aumentando el nivel de zoom en la zona de interés.",
+    "error_wfs": "No se ha podido cargar el servicio WFS"
   },
   "tooltip": "Gestión de capas vectoriales",
   "change_name": "Cambiar nombre",
@@ -31,6 +36,7 @@
   "add_point_layer": "Añadir capa puntual",
   "add_line_layer": "Añadir capa lineal",
   "add_poly_layer": "Añadir capa poligonal",
+  "add_wfs_layer": "Añadir capa WFS",
   "load_layer": "Cargar capa",
   "point_layer": "Capa puntual",
   "line_layer": "Capa lineal",
@@ -46,10 +52,15 @@
   "line": "Trazo",
   "delete_geom": "Borrar geometría",
   "query_profile": "Consultar perfil topográfico",
-  "accepted": "Los formatos aceptados son KML, SHP (.zip), GPX, GML y GeoJSON.",
+  "accepted": "Los formatos aceptados son KML, SHP (.zip), GPX y GeoJSON.",
   "select_file": "Selecciona el fichero",
   "download": "Descargar",
   "change": "Cambiar",
   "expand": "Mostrar",
-  "collapse": "Ocultar"
+  "collapse": "Ocultar",
+  "url_service": "URL del servicio",
+  "query": "Consultar",
+  "clean": "Limpiar búsqueda",
+  "select_service": "Selecciona un servicio",
+  "select" : "Seleccionar"
 }

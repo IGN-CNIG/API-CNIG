@@ -1,16 +1,18 @@
 @font-face {
   font-family: 'vectors';
-  src: url('../fonts/vectors.eot?78192392');
-  src: url('../fonts/vectors.eot?78192392#iefix') format('embedded-opentype'),
-       url('../fonts/vectors.woff2?78192392') format('woff2'),
-       url('../fonts/vectors.woff?78192392') format('woff'),
-       url('../fonts/vectors.ttf?78192392') format('truetype'),
-       url('../fonts/vectors.svg?78192392#vectors') format('svg');
+  src: url('../fonts/vectors.eot?23144163');
+  src: url('../fonts/vectors.eot?23144163#iefix') format('embedded-opentype'),
+       url('../fonts/vectors.woff2?23144163') format('woff2'),
+       url('../fonts/vectors.woff?23144163') format('woff'),
+       url('../fonts/vectors.ttf?23144163') format('truetype'),
+       url('../fonts/vectors.svg?23144163#vectors') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 div.ol-overlaycontainer-stopevent > div > div.m-area > div.m-panel.m-vectors.collapsed > button:before,
+.m-vectors-addwfs [class^="icon-"],
+.m-vectors-addwfs [class*=" icon-"],
 div.m-vectors [class^="icon-"],
 div.m-vectors [class*=" icon-"] {
   font-family: "vectors";
@@ -45,3 +47,11 @@ div.m-vectors [class*=" icon-"] {
 .m-vectors .icon-delete:before { content: '\e93e'; }
 .m-vectors .icon-polygon:before { content: '\e947'; }
 .m-vectors .icon-upload:before { content: '\e95e'; }
+.m-vectors .icon-cancel:before { content: '\e905'; }
+.m-vectors .icon-check:before { content: '\e909'; }
+.m-vectors .icon-checked:before { content: '\e90a'; }
+.m-vectors .icon-filters:before { content: '\e93d'; }
+.m-vectors .icon-search:before { content: '\e964'; }
+
+.m-vectors-addwfs .icon-search:before { content: '\e964'; }
+.m-vectors-addwfs .icon-cancel:before { content: '\e905'; }

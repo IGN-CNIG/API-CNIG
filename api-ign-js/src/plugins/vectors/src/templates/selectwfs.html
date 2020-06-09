@@ -1,0 +1,13 @@
+<div id="m-vectors-select-wfs">
+    <div class="select-container">
+      <select id="m-vectors-wfs-select">
+          <option disabled="disabled" value="" selected="selected">{{translations.select_service}}</option>
+          {{#each services}}
+              <option value="{{name}}">{{title}}</option>
+          {{/each}}
+      </select>
+    </div>
+    <div class="btn-container">
+      <button class="m-vectors-common-btn">{{translations.select}}</button>
+    </div>
+</div>

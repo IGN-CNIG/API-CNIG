@@ -35,6 +35,9 @@ var Profil = function(opt_options) {
     button.setAttribute('class', 'profile-close-button');
     const close = (e) => {
       document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+      if (options.pointLayer !== undefined) {
+        options.pointLayer.clear();
+      }
     };
     button.addEventListener('click', close);
     button.addEventListener('touchstart', close);
