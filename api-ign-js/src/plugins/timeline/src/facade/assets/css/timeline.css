@@ -1,0 +1,190 @@
+/** Estilos sobreescritos */
+
+.m-panel.m-plugin-timeline>button.m-panel-btn.m-panel-btn.g-cartografia-gps4 {
+    color: #71a7d3;
+}
+
+.m-areas>div.m-area>div.m-plugin-timeline.collapsed>button.m-panel-btn {
+    background-color: white !important;
+}
+
+/** Estilos propios */
+.m-areas>div.m-area.m-left>div.m-plugin-timeline.opened>button.m-panel-btn {
+    position: absolute;
+    right: -2.53rem;
+    left: unset !important;
+    background-color: #71a7d3;
+}
+div.m-panel.m-plugin-timeline.opened>.g-cartografia-flecha-izquierda {
+    color: #e8f5e9;
+}
+
+.m-plugin-timeline.collapsed {
+    height: 40px;
+}
+
+.m-areas>div.m-area>div.m-plugin-timeline.opened>button.m-panel-btn {
+    position: absolute;
+    left: -2.53rem;
+    background-color: #71a7d3;
+}
+
+.m-areas>div.m-area>div.m-plugin-timeline.opened>button.m-panel-btn.opened-left {
+    left: unset !important;
+    position: absolute;
+    right: -2.53rem;
+    background-color: #71a7d3;
+}
+
+.m-timeline-container {
+    text-align: center;
+}
+
+.div-m-timeline-panel {
+    padding-top: 1px;
+    background-color: white;
+    width: 19rem;
+}
+
+.div-m-timeline-slider {
+    padding: 1rem;
+    color: #000000;
+    padding-left: 8%;
+    padding-top: 4%;
+}
+
+.m-timeline-container input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    padding: 4%;
+    margin: 0 auto;
+    outline: none;
+}
+
+.m-timeline-container input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, .31);
+    border-radius: 12px
+}
+
+.m-timeline-container input[type=range]::-webkit-slider-thumb {
+    height: 10px;
+    width: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    background: #fff;
+    -webkit-appearance: none;
+    margin-top: -4px;
+    background-color: #71a7d3
+}
+
+.m-timeline-container input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, .31);
+    border-radius: 12px
+}
+
+.m-timeline-container input[type=range]::-moz-range-thumb {
+    height: 10px;
+    width: 10px;
+    cursor: pointer;
+    border: none;
+    background: #fff;
+    -webkit-appearance: none;
+    margin-top: 20px;
+    background-color: #71a7d3
+}
+
+
+.m-timeline-select {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0px 5px 5px 5px;
+    padding-left: 8%;
+    color: #000000;
+}
+
+div#m-timeline-title {
+    display: block;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 5px;
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, .08);
+}
+
+.m-printermap-container>div.title {
+    line-height: 40px;
+    text-align: center;
+    height: 39px;
+    border-bottom: 1px solid rgba(0, 0, 0, .08);
+    font-size: 15px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-timeline.opened>div.m-panel-controls>div.m-control.m-container.m-timeline>div#m-timeline-title {
+    font-size: 13px;
+    padding-left: 0;
+    padding-right: 0;
+    width: 210px;
+}
+
+.m-timeline-names {
+    display: none;
+    margin: 0 1rem 1rem;
+    border-top: 1px solid #b0b0b057;
+    padding-top: 1rem;
+}
+
+#m-timeline-play {
+    background: none;
+    border: 2px solid #b0b0b0;
+    padding: 0.5rem;
+    border-radius: 50rem;
+    margin-top: 1rem;
+}
+
+#m-timeline-play:hover {
+    background-color: #b0b0b0;
+    color: white;
+}
+.m-timeline-button span {
+    font-size: 15px;
+}
+
+.div-m-timeline-slider {
+    width: 81%;
+}
+.div-m-timeline-slider input {
+    width: 100%;
+    margin: 0;
+}
+.div-m-timeline-slider .slider-tags {
+    display: flex;
+    justify-content: space-between;
+    height: 6px;
+    margin: -12px -5px 11px 14.2px;
+    font-size: 11px;
+    counter-reset: count -1;
+}
+.div-m-timeline-slider .slider-tags > div {
+    height: 100%;
+    width: 1px;
+    background: silver;
+    counter-increment: count 1;
+}
+
+.div-m-timeline-slider .slider-tags > div:nth-child(1n)::before {
+    display: block;
+    content: attr(data-tag);
+    transform: translate(-80%, 70%);
+    text-align: center;
+    width: 16px;
+}
