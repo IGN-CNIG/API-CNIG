@@ -36,5 +36,6 @@
   "provider": "Proveedor",
   "query_metadata": "Consultar metadato",
   "download_center": "Centro de descargas",
-  "add": "Añadir"
+  "add": "Añadir",
+  "drag_drop": "Arrastre y suelte para cambiar el orden de visualización"
 }

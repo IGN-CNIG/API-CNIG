@@ -180,10 +180,15 @@ div.m-area.m-bottom.m-left div.m-plugin-fulltoc div.m-panel-controls {
 }
 
 .m-fulltoc-container li span.m-fulltoc-zoom {
-  margin-right: 3%;
+  margin-right: 4px;
   font-size: 15px;
   color: rgba(0, 0, 0, 0.53);
   cursor: pointer;
+}
+
+.m-fulltoc-container li span.m-fulltoc-config,
+.m-fulltoc-container li span.m-fulltoc-info {
+  margin-right: 4px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -630,15 +635,25 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   float: right;
   position: relative;
   right: 10px;
-  top: 10px;
+  top: 5px;
   cursor: pointer;
   font-size: 18px !important;
+  padding: 6px;
+  background-color: #71a7d3;
+  border-radius: 100px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
 }
 
 #m-fulltoc-change-config .select-container {
   text-align: center;
   margin: 0 auto;
   padding: 10px;
+}
+
+#m-fulltoc-addservices-selectall {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 #m-fulltoc-style-select {

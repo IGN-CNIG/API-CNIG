@@ -37,7 +37,7 @@ export default class VectorsControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor() {
+  constructor(options) {
     if (M.utils.isUndefined(VectorsImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -146,6 +146,8 @@ export default class VectorsControl extends M.Control {
     this.isDownloadActive = false;
 
     this.pluginOpened = false;
+
+    this.wfszoom = options.wfszoom;
   }
 
   /**
@@ -237,6 +239,7 @@ export default class VectorsControl extends M.Control {
           download_layer: getValue('download_layer'),
           delete_layer: getValue('delete_layer'),
           change_name: getValue('change_name'),
+          reload_from_view: getValue('reload_from_view'),
         },
       },
     });
@@ -257,8 +260,9 @@ export default class VectorsControl extends M.Control {
           })));
           from.querySelectorAll('li.m-vector-layer').forEach((elem) => {
             const name = elem.getAttribute('name');
+            const url = elem.getAttribute('url');
             const filtered2 = layers.filter((layer) => {
-              return layer.name === name;
+              return layer.name === name && (layer.url === url || url === '');
             });
 
             if (filtered2.length > 0) {
@@ -372,7 +376,7 @@ export default class VectorsControl extends M.Control {
    * @api
    */
   createUploadingTemplate() {
-    const accept = '.kml, .zip, .gpx, .geojson';
+    const accept = '.kml, .zip, .gpx, .geojson, .gml';
     this.uploadingTemplate = M.template.compileSync(uploadingTemplate, {
       jsonp: true,
       vars: {
@@ -950,6 +954,8 @@ export default class VectorsControl extends M.Control {
           features = this.getImpl().loadGPXLayer(fileReader.result, fileName);
         } else if (fileExt === 'geojson') {
           features = this.getImpl().loadGeoJSONLayer(fileReader.result, fileName);
+        } else if (fileExt === 'gml') {
+          features = this.getImpl().loadGMLLayer(fileReader.result, fileName);
         } else {
           M.dialog.error(getValue('exception.load'));
           return;
@@ -960,13 +966,14 @@ export default class VectorsControl extends M.Control {
           this.getImpl().centerFeatures(features);
         }
       } catch (error) {
+        // console.error(error);
         M.dialog.error(getValue('exception.load_correct'));
       }
     });
 
     if (fileExt === 'zip') {
       fileReader.readAsArrayBuffer(this.file_);
-    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson') {
+    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson' || fileExt === 'gml') {
       fileReader.readAsText(this.file_);
     } else {
       M.dialog.error(getValue('exception.extension'));
@@ -1110,10 +1117,11 @@ export default class VectorsControl extends M.Control {
   clickLayer(evtParameter) {
     const evt = (evtParameter || window.event);
     const layerName = evt.target.getAttribute('data-layer-name');
+    const layerURL = evt.target.getAttribute('data-layer-url');
     let render = false;
     if (!M.utils.isNullOrEmpty(layerName)) {
       evt.stopPropagation();
-      const layer = this.map.getLayers().filter(l => l.name === layerName)[0];
+      const layer = this.map.getLayers().filter(l => l.name === layerName && (l.url === layerURL || layerURL === ''))[0];
       if (evt.target.classList.contains('m-vector-layer-legend-change')) {
         const changeName = M.template.compileSync(changeNameTemplate, {
           jsonp: true,
@@ -1157,6 +1165,8 @@ export default class VectorsControl extends M.Control {
         } else {
           M.dialog.info(getValue('exception.not_extent'), getValue('info'));
         }
+      } else if (evt.target.classList.contains('m-vector-layer-reload')) {
+        this.getImpl().reloadFeaturesUpdatables(layer.name, layer.url);
       } else if (evt.target.classList.contains('m-vector-layer-toogle')) {
         this.isDownloadActive = false;
         this.resetInteractions();

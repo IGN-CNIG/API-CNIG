@@ -17,6 +17,7 @@ const mp = new Vectors({
   collapsed: true,
   collapsible: true,
   position: 'TR',
+  wfszoom: 12,
 });
 
 const provincias = new M.layer.WFS({

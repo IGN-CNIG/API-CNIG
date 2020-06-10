@@ -19,6 +19,10 @@
       "type": "boolean",
       "name": "collapsible",
       "position": 2
+    }, {
+      "type": "simple",
+      "name": "wfszoom",
+      "position": 3
     }]
   }],
   "files": {
