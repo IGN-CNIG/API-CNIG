@@ -16,7 +16,7 @@ export default class TimelineControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(intervals) {
+  constructor(options) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(TimelineImplControl)) {
       M.exception(getValue('exception'));
@@ -25,7 +25,9 @@ export default class TimelineControl extends M.Control {
     const impl = new TimelineImplControl();
     super(impl, 'Timeline');
     this.running = false;
-    this.intervals = intervals;
+    this.animation = options.animation;
+    this.speed = options.speed;
+    this.intervals = options.intervals;
     /**
      * Template
      * @public
@@ -46,13 +48,12 @@ export default class TimelineControl extends M.Control {
     this.map = map;
     return new Promise((success, fail) => {
       let intervals = [];
-      this.map.getLayers().forEach((layer, i) => {
-        if (i !== 0) {
-          this.map.removeLayers(layer);
-        }
-      });
       this.intervals.forEach((interval, k) => {
         const layer = this.transformToLayers(interval[2]);
+        const copy = this.getMapLayer(layer);
+        if (copy !== undefined) {
+          this.map.removeLayers(copy);
+        }
         this.map.addLayers(layer);
         let iv = {
           number: k,
@@ -76,11 +77,13 @@ export default class TimelineControl extends M.Control {
         tag.dataset.tag = interval.tag;
         this.template.querySelector('.slider-tags').append(tag);
       });
+      this.template.querySelector('.div-m-timeline-panel').style.setProperty('--num', this.intervals.length);
       const slider = this.template.querySelector('#input-slider');
       slider.setAttribute('max', intervals.length - 1);
       slider.addEventListener('input', (e) => this.changeSlider(slider));
       slider.addEventListener('change', (e) => {
-        document.querySelector('.m-timeline-button span').textContent = getValue('play');
+        document.querySelector('.m-timeline-button button').classList.add('timeline-control-siguiente');
+        document.querySelector('.m-timeline-button button').classList.remove('timeline-control-pausa');
         clearTimeout(this.running);
         this.running = false;
       });
@@ -143,7 +146,14 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   changeSlider(elem) {
+    const left = (((elem.value - elem.min) / (elem.max - elem.min)) * ((256 - 5) - 5)) + 5;
+    console.log(left); //eslint-disable-line
+    document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 'px');
+    document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '1');
     document.querySelector('.m-timeline-names').style.display = 'block';
+    if (this.animation) {
+      document.querySelector('.m-timeline-button').style.display = 'block';
+    }
     let step = parseFloat(elem.value);
     this.intervals.forEach((interval) => {
       this.getMapLayer(interval.service).setVisible(false);
@@ -152,10 +162,13 @@ export default class TimelineControl extends M.Control {
     if (step % 1 == 0) {
       this.getMapLayer(this.intervals[step].service).setVisible(true);
       document.querySelector('.m-timeline-names').innerHTML = this.intervals[step].name;
+      document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[step].tag + '"');
+
     } else {
       this.getMapLayer(this.intervals[parseInt(step)].service).setVisible(true);
       this.getMapLayer(this.intervals[parseInt(step) + 1].service).setVisible(true);
       document.querySelector('.m-timeline-names').innerHTML = this.intervals[parseInt(step)].name + ' y ' + this.intervals[parseInt(step) + 1].name;
+      document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[parseInt(step)].tag + ' - ' + this.intervals[parseInt(step) + 1].tag + '"');
     }
   }
 
@@ -168,7 +181,7 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   getMapLayer(layerSearch) {
-    return this.map.getLayers().filter(layer => layer === layerSearch)[0];
+    return this.map.getLayers().filter(layer => layer.getImpl().legend === layerSearch.getImpl().legend)[0];
   }
 
   /** This function make the play animation
@@ -184,7 +197,8 @@ export default class TimelineControl extends M.Control {
     const slider = document.querySelector('#input-slider');
     let step = parseInt(slider.value);
     if (this.running) {
-      document.querySelector('.m-timeline-button span').textContent = getValue('play');
+      document.querySelector('.m-timeline-button button').classList.add('timeline-control-siguiente');
+      document.querySelector('.m-timeline-button button').classList.remove('timeline-control-pausa');
       clearTimeout(this.running);
     }
     if (!next) {
@@ -204,10 +218,11 @@ export default class TimelineControl extends M.Control {
     if (step < start) {
       step = start;
     }
-    slider.value = parseFloat(slider.value) + 0.1;
+    slider.value = parseFloat(slider.value) + 1;
     this.changeSlider(slider);
-    document.querySelector('.m-timeline-button span').textContent = getValue('pause');
-    this.running = setTimeout((e) => this.playTimeline(true), 100);
+    document.querySelector('.m-timeline-button button').classList.remove('timeline-control-siguiente');
+    document.querySelector('.m-timeline-button button').classList.add('timeline-control-pausa');
+    this.running = setTimeout((e) => this.playTimeline(true), this.speed * 1000);
   }
 
   /**
@@ -218,6 +233,7 @@ export default class TimelineControl extends M.Control {
    * @api stable
    */
   removeTimelineLayers() {
+    clearInterval(this.running);
     this.intervals.forEach((interval) => {
       this.map.removeLayers(this.getMapLayer(interval.service));
     })
