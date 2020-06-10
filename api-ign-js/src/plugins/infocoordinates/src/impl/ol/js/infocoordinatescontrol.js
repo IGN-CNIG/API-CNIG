@@ -174,41 +174,13 @@ export default class InfocoordinatesControl extends M.impl.Control {
 
   }
 
+  transform(box, code, currProj) {
+    return ol.proj.transform(box, code, currProj);
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  transformExt(box, code, currProj) {
+    return ol.proj.transformExtent(box, code, currProj);
+  }
 
   activateClick(map) {
     // desactivo el zoom al dobleclick

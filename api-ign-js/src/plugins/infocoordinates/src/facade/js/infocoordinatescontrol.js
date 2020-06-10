@@ -2,10 +2,11 @@
 /**
  * @module M/control/InfocoordinatesControl
  */
-
 import InfocoordinatesImplControl from 'impl/infocoordinatescontrol';
 import template from 'templates/infocoordinates';
 import { getValue } from './i18n/language';
+
+
 
 export default class InfocoordinatesControl extends M.Control {
   /**
@@ -83,7 +84,9 @@ export default class InfocoordinatesControl extends M.Control {
             altitude: getValue('altitude'),
             removePoint: getValue('removePoint'),
             removeAllPoints: getValue('removeAllPoints'),
-            importAllPoints: getValue('importAllPoints')
+            importAllPoints: getValue('importAllPoints'),
+            displayONAllPoints: getValue('displayONAllPoints'),
+            displayOFFAllPoints: getValue('displayOFFAllPoints')
           }
         }
       };
@@ -96,7 +99,8 @@ export default class InfocoordinatesControl extends M.Control {
 
       success(html);
       html.querySelector('#m-infocoordinates-buttonRemoveAllPoints').addEventListener('click', this.removeAllPoints.bind(this));
-      html.querySelector('#m-infocoordinates-buttonImportAllPoints').addEventListener('click', this.removeAllPoints.bind(this));
+      html.querySelector('#m-infocoordinates-buttonImportAllPoints').addEventListener('click', this.importAllPoints.bind(this));
+      html.querySelector('#m-infocoordinates-buttonDisplayAllPoints').addEventListener('click', this.displayAllPoints.bind(this));
       html.querySelector('#m-infocoordinates-comboDatum').addEventListener('change', this.changeSelectSRSorChangeFormat.bind(this));
       html.querySelector('#m-infocoordinates-buttonConversorFormat').addEventListener('change', this.changeSelectSRSorChangeFormat.bind(this));
       html.querySelector('#m-infocoordinates-buttonRemovePoint').addEventListener('click', this.removePoint.bind(this));
@@ -139,7 +143,12 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-buttonRemovePoint').classList.remove('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonRemoveAllPoints')[0].classList.remove('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.remove('noDisplay');
+    document.getElementsByClassName('m-infocoordinates-div-buttonDisplayAllPoints')[0].classList.remove('noDisplay');
 
+    // Eliminamos las etiquetas de los puntos
+    if (this.map_.getMapImpl().getOverlays().array_.length > 0) {
+      this.removeAllDisplaysPoints();
+    }
 
 
     // Agrego la tab que es un botón con el número de punto
@@ -194,23 +203,23 @@ export default class InfocoordinatesControl extends M.Control {
     this.openTab(numPoint)
     this.numTabs = numPoint;
 
+
+    //PopUp
+    // this.selectFeatures();
+
+
   }
 
 
   selectFeature(numPoint) {
     this.point = new M.style.Point({
-      radius: 5,
       icon: {
-        form: 'none',
-        class: 'g-cartografia-pin',
+        form: M.style.form.NONE,
+        class: '+',
+        fontsize: 1.5,
         radius: 15,
-        rotation: 0,
-        rotate: false,
-        offset: [0, 0],
-        color: '#005eff',
-        border: '5px solid green',
-
-        opacity: 1,
+        color: 'black',
+        fill: 'white',
       },
     });
 
@@ -218,15 +227,16 @@ export default class InfocoordinatesControl extends M.Control {
       radius: 5,
       icon: {
         form: 'none',
-        class: 'g-cartografia-papelera',
-        radius: 15,
+        class: '+',
+        radius: 20,
         rotation: 0,
         rotate: false,
         offset: [0, 0],
-        color: '#005eff',
-        border: '5px solid green',
-
+        color: '#2690e7',
         opacity: 1,
+        stroke: {
+          width: 20
+        }
       },
     });
     this.layerFeatures.getFeatures().map((elemento) => (elemento.setStyle(this.pointDisable)));
@@ -323,6 +333,140 @@ export default class InfocoordinatesControl extends M.Control {
   }
 
 
+  importAllPoints() {
+    // const projectionSelect = document.getElementById('m-infocoordinates-projectionPrint').value;
+    // const projectionPoints = this.layerFeatures.impl_.features_[0].formatGeoJSON_.impl_.dataProjection.code_;
+    let printDocument = [];
+
+    for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
+
+      let featureSelected = this.layerFeatures.impl_.features_[i];
+
+      //Cojo el srs seleccionado en el select
+      let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
+
+      //Cojo el formato de las coordenadas geográficas
+      let formatGMS = document.getElementById('m-infocoordinates-buttonConversorFormat').checked;
+
+      //Cambio coordenadas y calculo las UTM
+      let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
+
+
+
+      let coordinatesGEO = [
+        pointDataOutput.projectionGEO.coordinatesGEO.longitude,
+        pointDataOutput.projectionGEO.coordinatesGEO.latitude
+      ];
+
+      let coordinatesUTM = [
+        pointDataOutput.projectionUTM.coordinatesUTM.coordX,
+        pointDataOutput.projectionUTM.coordinatesUTM.coordY
+      ];
+
+      // tranformCoordinates = this.getImpl().transform(
+      //   tranformCoordinates,
+      //   projectionPoints,
+      //   projectionSelect);
+
+      printDocument.push('Punto ' + i + ': ' + '\n');
+      printDocument.push(pointDataOutput.projectionGEO.code + ': ');
+      printDocument.push('[' + coordinatesGEO + ']' + '\n');
+      printDocument.push(pointDataOutput.projectionUTM.code + ': ');
+      printDocument.push('[' + coordinatesUTM + ']' + '\n');
+    }
+
+    const toBlobType = new Blob(printDocument, {
+      type: 'text/plain'
+    })
+
+    const f = new Date();
+    const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
+
+    this.descargarArchivo(toBlobType, titulo.concat('.txt'));
+  }
+
+  displayAllPoints() {
+    if (this.map_.getMapImpl().getOverlays().array_.length > 0) {
+      this.removeAllDisplaysPoints();
+    } else {
+      // Modificamos el icono
+      document.getElementsByClassName('icon-infocoordinates-displayON')[0].classList.replace("icon-infocoordinates-displayON", "icon-infocoordinates-displayOFF")
+      document.getElementsByClassName('icon-infocoordinates-displayOFF')[0].title = getValue("displayOFFAllPoints")
+
+
+      // Creamos las etiquetas de los puntos
+      for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
+
+        var pos = this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.coordinates;
+
+        const textHTML = `<div class="m-popup m-collapsed">
+              <div class="contenedorCoordPunto">
+                <table>
+                    <tbody>
+                      <tr>
+                        <td style="font-weight: bold">Punto ${i}</td></b>
+                      </tr>
+                      <tr>
+                        <td>X: ${this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.coordinates[0].toFixed(6)}</td>
+                      </tr>
+                      <tr>
+                        <td>Y: ${this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.coordinates[1].toFixed(6)}</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+      </div>`
+
+        const helpTooltipElement = M.template.compileSync(textHTML, {
+          jsonp: true,
+          vars: {
+            translations: getValue('text'),
+          },
+        });
+
+        this.helpTooltip_ = new ol.Overlay({
+          element: helpTooltipElement,
+          offset: [10, -5],
+        });
+
+        this.helpTooltip_.setPosition(pos);
+        this.map_.getMapImpl().addOverlay(this.helpTooltip_);
+      }
+    }
+  }
+
+  removeAllDisplaysPoints() {
+    // Modificamos el icono
+    document.getElementsByClassName('icon-infocoordinates-displayOFF')[0].classList.replace("icon-infocoordinates-displayOFF", "icon-infocoordinates-displayON")
+    document.getElementsByClassName('icon-infocoordinates-displayON')[0].title = getValue("displayONAllPoints")
+
+
+    // Eliminamos todas las etiquetas de los puntos
+    const numOverlays = this.map_.getMapImpl().getOverlays().getArray().length;
+    for (let i = numOverlays; i > -1; i -= 1) {
+      this.map_.getMapImpl().removeOverlay(this.map_.getMapImpl().getOverlays().getArray()[i]);
+    }
+  }
+
+  descargarArchivo(contenidoEnBlob, nombreArchivo) {
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      var save = document.createElement('a');
+      save.href = event.target.result;
+      save.target = '_blank';
+      save.download = nombreArchivo || 'archivo.dat';
+      var clicEvent = new MouseEvent('click', {
+        'view': window,
+        'bubbles': true,
+        'cancelable': true
+      });
+      save.dispatchEvent(clicEvent);
+      (window.URL || window.webkitURL).revokeObjectURL(save.href);
+    };
+    reader.readAsDataURL(contenidoEnBlob);
+  }
+
   removeAllPoints() {
     let divTabContainer = document.getElementsByClassName('m-infocoordinates-tabs')[0];
     divTabContainer.innerHTML = '';
@@ -338,6 +482,7 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-buttonRemovePoint').classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonRemoveAllPoints')[0].classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.add('noDisplay');
+    document.getElementsByClassName('m-infocoordinates-div-buttonDisplayAllPoints')[0].classList.add('noDisplay');
     document.getElementById('m-infocoordinates-buttonConversorFormat').setAttribute('disabled', 'disabled');
     document.getElementById('m-infocoordinates-comboDatum').setAttribute('disabled', 'disabled');
 
