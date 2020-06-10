@@ -1,0 +1,7 @@
+{
+  "tooltip": "Timeline",
+  "title": "Timeline",
+  "play": "Play",
+  "pause": "Pause",
+  "excepcion": "The implementation used cannot create timelineControl controls"
+}
