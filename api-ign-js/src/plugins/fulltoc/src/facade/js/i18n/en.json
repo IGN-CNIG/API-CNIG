@@ -36,5 +36,6 @@
   "provider": "Provider",
   "query_metadata": "Consult metadata",
   "download_center": "Download center",
-  "add": "Add"
+  "add": "Add",
+  "drag_drop": "Drag and drop to change display order"
 }

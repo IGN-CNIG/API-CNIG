@@ -340,30 +340,58 @@ export default class VectorsControl extends M.impl.Control {
    * Loads GML layer
    * @public
    * @function
-   * @param {*} source2 -
+   * @param {*} source -
    */
-  /*
   loadGMLLayer(source, layerName) {
+    let newSource = source;
     let srs = this.facadeMap_.getProjection().code;
-    let features = [];
-    if (source.split('srsName="')[1].indexOf('http') > -1 && source.indexOf('gml:pos') > -1) {
-      srs = `EPSG:${source.split('srsName="')[1].split('#')[1].split('"')[0]}`;
-      features = new ol.format.WFS({ gmlFormat: new ol.format.GML3() }).readFeatures(source, {
+    if (newSource.split('srsName="')[1].indexOf('http') > -1) {
+      try {
+        srs = `EPSG:${newSource.split('srsName="')[1].split('#')[1].split('"')[0]}`;
+      } catch (err) {
+        srs = `EPSG:${newSource.split('srsName="')[1].split('/EPSG/')[1].split('/')[1]}`;
+      }
+    } else if (newSource.split('srsName="')[1].indexOf('crs:EPSG::') > -1) {
+      srs = `EPSG:${newSource.split('srsName="')[1].split('::')[1].split('"')[0]}`;
+    } else {
+      srs = newSource.split('srsName="')[1].split('"')[0];
+    }
+
+    if (newSource.indexOf('<member>') > -1) {
+      newSource = newSource.replace(/member/gi, 'gml:featureMember');
+    } else if (newSource.indexOf('<wfs:member>') > -1) {
+      newSource = newSource.replace(/wfs:member/gi, 'gml:featureMember');
+    } else if (newSource.indexOf('<ogr:featureMember>') > -1) {
+      newSource = newSource.replace(/ogr:featureMember/gi, 'gml:featureMember');
+    }
+
+    let features = new ol.format.WFS({ gmlFormat: new ol.format.GML2() }).readFeatures(newSource, {
+      dataProjection: srs,
+      featureProjection: this.facadeMap_.getProjection().code,
+    });
+
+    features = features.map((f, index) => {
+      const newF = f;
+      if (!f.getGeometry()) {
+        newF.setGeometry(f.get('geometry'));
+      }
+
+      return newF;
+    });
+
+    if (features[0].getGeometry() === undefined) {
+      features = new ol.format.WFS({ gmlFormat: ol.format.GML2() }).readFeatures(newSource, {
         dataProjection: srs,
         featureProjection: this.facadeMap_.getProjection().code,
       });
-    } else if (source.split('srsName="')[1].indexOf('crs:EPSG::') > -1 &&
-         source.indexOf('gml:pos') > -1) {
-      srs = `EPSG:${source.split('srsName="')[1].split('::')[1].split('"')[0]}`;
-      features = new ol.format.WFS({ gmlFormat: new ol.format.GML3() }).readFeatures(source, {
-        dataProjection: srs,
-        featureProjection: this.facadeMap_.getProjection().code,
-      });
-    } else if (source.indexOf('gml:coordinates') > -1) {
-      srs = source.split('srsName="')[1].split('"')[0];
-      features = new ol.format.WFS({ gmlFormat: new ol.format.GML2() }).readFeatures(source, {
-        dataProjection: srs,
-        featureProjection: this.facadeMap_.getProjection().code,
+
+      features = features.map((f, index) => {
+        const newF = f;
+        if (!f.getGeometry()) {
+          newF.setGeometry(f.get('geometry'));
+        }
+
+        return newF;
       });
     }
 
@@ -373,13 +401,12 @@ export default class VectorsControl extends M.impl.Control {
     this.facadeMap_.addLayers(layer);
     return features;
   }
-  */
 
   /**
    * Loads GeoJSON layer
    * @public
    * @function
-   * @param {*} source2 -
+   * @param {*} source-
    */
   loadAllInGeoJSONLayer(sources, layerName) {
     let features = [];
@@ -805,33 +832,59 @@ export default class VectorsControl extends M.impl.Control {
     const map = this.facadeMap_;
     const srs = map.getProjection().code;
     if (WFS_EXCEPTIONS.indexOf(url) > -1) {
-      const bbox = map.getBbox();
-      const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-      const wfsURL = `${url}service=WFS&version=2.0.0&request=GetFeature&typename=${name}&` +
-        `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
-      const layer = new M.layer.Vector({ name, legend, extract: false });
-      M.remote.get(wfsURL).then((response) => {
-        const responseWFS = response.text.replace(/wfs:member/gi, 'gml:featureMember');
-        const formatter = new ol.format.WFS({ gmlFormat: ol.format.GML2() });
-        let features = formatter.readFeatures(responseWFS);
-        features = features.map((f, index) => {
-          const newF = f;
-          if (!f.getGeometry()) {
-            newF.setGeometry(f.get('geometry'));
-          }
+      const facadeControl = this.facadeControl;
+      if (map.getZoom() >= facadeControl.wfszoom) {
+        let cancelFlag = false;
+        const content = '<p class="m-vectors-loading"><span class="icon-spinner" /></p>';
+        M.dialog.info(content, getValue('loading'));
+        setTimeout(() => {
+          document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+          const button = document.querySelector('div.m-dialog.info div.m-button > button');
+          button.innerHTML = getValue('cancel');
+          button.style.width = '75px';
+          button.style.backgroundColor = '#71a7d3';
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            cancelFlag = true;
+          });
 
-          return newF;
-        });
+          const bbox = map.getBbox();
+          const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+          const wfsURL = `${url}service=WFS&version=2.0.0&request=GetFeature&typename=${name}&` +
+            `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
+          const layer = new M.layer.Vector({ name, legend, extract: false });
+          M.remote.get(wfsURL).then((response) => {
+            if (!cancelFlag) {
+              const responseWFS = response.text.replace(/wfs:member/gi, 'gml:featureMember');
+              const formatter = new ol.format.WFS({ gmlFormat: ol.format.GML2() });
+              let features = formatter.readFeatures(responseWFS);
+              features = features.map((f, index) => {
+                const newF = f;
+                if (!f.getGeometry()) {
+                  newF.setGeometry(f.get('geometry'));
+                }
 
-        features = this.featuresToFacade(features);
-        layer.addFeatures(features);
-        layer.updatable = true;
-        layer.url = url;
-        this.facadeMap_.addLayers(layer);
-        this.facadeMap_.getMapImpl().on('moveend', this.reloadFeaturesUpdatables.bind(this));
-      }).catch(() => {
-        M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
-      });
+                return newF;
+              });
+
+              features = this.featuresToFacade(features);
+              layer.addFeatures(features);
+              layer.updatable = true;
+              layer.url = url;
+              this.facadeMap_.addLayers(layer);
+            }
+
+            document.querySelector('div.m-mapea-container div.m-dialog').remove();
+          }).catch(() => {
+            document.querySelector('div.m-mapea-container div.m-dialog').remove();
+            if (!cancelFlag) {
+              M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
+            }
+          });
+        }, 10);
+      } else {
+        M.dialog.info(getValue('exception.wfs_zoom'), getValue('warning'));
+      }
     } else {
       try {
         const layer = new M.layer.WFS({
@@ -848,40 +901,69 @@ export default class VectorsControl extends M.impl.Control {
     }
   }
 
-  reloadFeaturesUpdatables() {
+  reloadFeaturesUpdatables(layerName, layerURL) {
     const map = this.facadeMap_;
     const srs = map.getProjection().code;
-    const updatables = map.getLayers().filter((layer) => {
+    const filtered = map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible() &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable;
+        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable &&
+        layer.name === layerName && layer.url === layerURL;
     });
 
-    if (updatables.length > 0) {
-      const bbox = map.getBbox();
-      const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-      updatables.forEach((u) => {
-        const wfsURL = `${u.url}service=WFS&version=2.0.0&request=GetFeature&typename=${u.name}&` +
-          `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
-        M.remote.get(wfsURL).then((response) => {
-          const responseWFS = response.text.replace(/wfs:member/gi, 'gml:featureMember');
-          const formatter = new ol.format.WFS({ gmlFormat: ol.format.GML2() });
-          let features = formatter.readFeatures(responseWFS);
-          features = features.map((f, index) => {
-            const newF = f;
-            if (!f.getGeometry()) {
-              newF.setGeometry(f.get('geometry'));
-            }
-
-            return newF;
+    if (filtered.length > 0) {
+      const layer = filtered[0];
+      const facadeControl = this.facadeControl;
+      if (map.getZoom() >= facadeControl.wfszoom) {
+        let cancelFlag = false;
+        const content = '<p class="m-vectors-loading"><span class="icon-spinner" /></p>';
+        M.dialog.info(content, getValue('loading'));
+        setTimeout(() => {
+          document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+          const button = document.querySelector('div.m-dialog.info div.m-button > button');
+          button.innerHTML = getValue('cancel');
+          button.style.width = '75px';
+          button.style.backgroundColor = '#71a7d3';
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            cancelFlag = true;
           });
 
-          features = this.featuresToFacade(features);
-          // posibilidad eliminar features anteriores
-          u.addFeatures(features);
-        }).catch(() => {
-          M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
-        });
-      });
+          const bbox = map.getBbox();
+          const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+          const wfsURL = `${layer.url}service=WFS&version=2.0.0&request=GetFeature&typename=${layer.name}&` +
+            `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
+          M.remote.get(wfsURL).then((response) => {
+            if (!cancelFlag) {
+              const responseWFS = response.text.replace(/wfs:member/gi, 'gml:featureMember');
+              const formatter = new ol.format.WFS({ gmlFormat: ol.format.GML2() });
+              let features = formatter.readFeatures(responseWFS);
+              features = features.map((f, index) => {
+                const newF = f;
+                if (!f.getGeometry()) {
+                  newF.setGeometry(f.get('geometry'));
+                }
+
+                return newF;
+              });
+
+              features = this.featuresToFacade(features);
+              layer.removeFeatures(layer.getFeatures());
+              layer.addFeatures(features);
+            }
+
+            document.querySelector('div.m-mapea-container div.m-dialog').remove();
+          }).catch(() => {
+            document.querySelector('div.m-mapea-container div.m-dialog').remove();
+            if (!cancelFlag) {
+              M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
+            }
+          });
+        }, 10);
+      } else {
+        M.dialog.info(getValue('exception.wfs_zoom'), getValue('warning'));
+      }
+    } else {
+      M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
     }
   }
 

@@ -58,6 +58,14 @@ export default class Vectors extends M.Plugin {
     if (this.collapsible_ === undefined) this.collapsible_ = true;
 
     /**
+     * Option to allow the plugin to be collapsible or not
+     * @private
+     * @type {Boolean}
+     */
+    this.wfszoom_ = parseInt(options.wfszoom, 10);
+    if (this.wfszoom_ === undefined || Number.isNaN(this.wfszoom_)) this.wfszoom_ = 12;
+
+    /**
      * Name of the plugin
      * @private
      * @type {String}
@@ -90,7 +98,7 @@ export default class Vectors extends M.Plugin {
       collapsedButtonClass: 'icon-vectors',
       tooltip: getValue('tooltip'),
     });
-    this.control_ = new VectorsControl();
+    this.control_ = new VectorsControl({ wfszoom: this.wfszoom_ });
     this.controls_.push(this.control_);
 
     this.map_.on(M.evt.ADDED_LAYER, () => {

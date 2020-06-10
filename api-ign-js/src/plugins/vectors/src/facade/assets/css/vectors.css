@@ -1,3 +1,7 @@
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
 /* Buttons */
 
 div.m-panel.m-vectors.opened>button.m-panel-btn {
@@ -640,6 +644,16 @@ div.m-vector-layer-actions .active-tool {
   margin-right: 10px;
   outline: none;
   text-decoration: none;
+}
+
+.m-vectors-loading {
+  width: 100%;
+  text-align: center;
+}
+
+.m-vectors-loading span {
+  font-size: 3.5rem;
+  animation: rotate 1s linear infinite;
 }
 
 .m-vectors #drawingtools .stroke-container .stroke-options div.stroke-continuous {

@@ -129,9 +129,12 @@ export default class FullTOCControl extends M.Control {
     let notRender = false;
     if (!M.utils.isNullOrEmpty(evt.target)) {
       const layerName = evt.target.getAttribute('data-layer-name');
-      if (!M.utils.isNullOrEmpty(layerName)) {
+      const layerURL = evt.target.getAttribute('data-layer-url');
+      if (!M.utils.isNullOrEmpty(layerName) && layerURL !== null) {
         evt.stopPropagation();
-        const layer = this.map_.getLayers().filter(l => l.name === layerName)[0];
+        const layer = this.map_.getLayers().filter((l) => {
+          return l.name === layerName && l.url === layerURL;
+        })[0];
         // checkbox
         if (evt.target.classList.contains('m-check')) {
           if (layer.transparent === true || !layer.isVisible()) {
@@ -270,6 +273,10 @@ export default class FullTOCControl extends M.Control {
           button.innerHTML = getValue('close');
           button.style.width = '75px';
           button.style.backgroundColor = '#71a7d3';
+          document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').addEventListener('keyup', (e) => {
+            const url = document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value.trim();
+            document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = url;
+          });
           document.querySelectorAll('.m-fulltoc-suggestion-caret').forEach((elem) => {
             elem.addEventListener('click', () => {
               elem.parentElement.querySelector('.m-fulltoc-suggestion-group').classList.toggle('active');
@@ -375,6 +382,7 @@ export default class FullTOCControl extends M.Control {
             info_metadata: getValue('info_metadata'),
             change_style: getValue('change_style'),
             remove_layer: getValue('remove_layer'),
+            drag_drop: getValue('drag_drop'),
           },
         }));
       }
@@ -400,6 +408,8 @@ export default class FullTOCControl extends M.Control {
         Sortable.create(layerList, {
           animation: 150,
           ghostClass: 'm-fulltoc-gray-shadow',
+          filter: '.m-opacity-container',
+          preventOnFilter: false,
           onEnd: (evt) => {
             const from = evt.from;
             let maxZIndex = Math.max(...(layers.map((l) => {
@@ -407,8 +417,9 @@ export default class FullTOCControl extends M.Control {
             })));
             from.querySelectorAll('li.m-layer div.m-visible-control span').forEach((elem) => {
               const name = elem.getAttribute('data-layer-name');
+              const url = elem.getAttribute('data-layer-url');
               const filtered = layers.filter((layer) => {
-                return layer.name === name;
+                return layer.name === name && layer.url === url;
               });
 
               if (filtered.length > 0) {
@@ -427,9 +438,12 @@ export default class FullTOCControl extends M.Control {
     Array.prototype.forEach.call(imgElements, (imgElem) => {
       imgElem.addEventListener('error', (evt) => {
         const layerName = evt.target.getAttribute('data-layer-name');
+        const layerURL = evt.target.getAttribute('data-layer-url');
         const legendErrorUrl = M.utils.concatUrlPaths([M.config.THEME_URL,
           M.layer.WMS.LEGEND_ERROR]);
-        const layer = this.map_.getLayers().filter(l => l.name === layerName)[0];
+        const layer = this.map_.getLayers().filter((l) => {
+          return l.name === layerName && l.url === layerURL;
+        })[0];
         if (!M.utils.isNullOrEmpty(layer)) {
           layer.setLegendURL(legendErrorUrl);
         }
@@ -489,14 +503,6 @@ export default class FullTOCControl extends M.Control {
    */
   parseLayerForTemplate_(layer) {
     const layerTitle = layer.legend || layer.name;
-    let isIcon = false;
-    if (layer instanceof M.layer.Vector) {
-      const style = layer.getStyle();
-      if (style instanceof M.style.Point && !M.utils.isNullOrEmpty(style.get('icon.src'))) {
-        isIcon = true;
-      }
-    }
-
     const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
       !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
     return new Promise((success, fail) => {
@@ -509,7 +515,7 @@ export default class FullTOCControl extends M.Control {
         metadata: hasMetadata,
         type: layer.type,
         hasStyles: hasMetadata && layer.capabilitiesMetadata.style.length > 1,
-        isIcon,
+        url: layer.url,
       };
 
       const legendUrl = layer.getLegendURL();

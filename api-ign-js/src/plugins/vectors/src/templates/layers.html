@@ -1,6 +1,6 @@
 <div id="m-vector-list">
   {{#each layers}}
-    <li class="m-vector-layer" name="{{name}}">
+    <li class="m-vector-layer" name="{{name}}" url={{url}}>
       <table>
         <tbody>
           <tr>
@@ -16,16 +16,20 @@
               {{/if}}
             </td>
             <td class="m-vector-layer-legend">
-              <span class="m-vector-layer-legend-change" data-layer-name="{{name}}" title="{{../translations.change_name}}">{{legend}}</span>
+              <span class="m-vector-layer-legend-change" data-layer-name="{{name}}" data-layer-url="{{url}}" title="{{../translations.change_name}}">{{legend}}</span>
             </td>
             <td>
               <div class="m-vector-layer-actions">
-                <span title="{{../translations.show_hide}}" data-layer-name="{{name}}" class="{{#if visible}}icon-visible{{^}}icon-invisible{{/if}} m-vector-layer-toogle"></span>
-                <span title="{{../translations.add_geom}}" data-layer-name="{{name}}" class="icon-add m-vector-layer-add"></span>
-                <span title="{{../translations.edit_geom}}" data-layer-name="{{name}}" class="icon-edit m-vector-layer-edit"></span>
-                <span title="{{../translations.layer_zoom}}" data-layer-name="{{name}}" class="icon-zoom m-vector-layer-zoom"></span>
-                <span title="{{../translations.download_layer}}" data-layer-name="{{name}}" class="icon-download m-vector-layer-download"></span>
-                <span title="{{../translations.delete_layer}}" data-layer-name="{{name}}" class="icon-delete m-vector-layer-delete"></span>
+                <span title="{{../translations.show_hide}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="{{#if visible}}icon-visible{{^}}icon-invisible{{/if}} m-vector-layer-toogle"></span>
+                <span title="{{../translations.add_geom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-add m-vector-layer-add"></span>
+                <span title="{{../translations.edit_geom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-edit m-vector-layer-edit"></span>
+                {{#if updatable}}
+                  <span title="{{../translations.reload_from_view}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-spinner m-vector-layer-reload"></span>
+                {{^}}
+                  <span title="{{../translations.layer_zoom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-zoom m-vector-layer-zoom"></span>
+                {{/if}}
+                <span title="{{../translations.download_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-download m-vector-layer-download"></span>
+                <span title="{{../translations.delete_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-delete m-vector-layer-delete"></span>
               </div>
             </td>
           </tr>
