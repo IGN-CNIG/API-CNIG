@@ -33,7 +33,7 @@
     --num: 7;
     --valor: '';
     padding-top: 1px;
-    width: calc((19rem * var(--num)) / 7);
+    width: 19rem;
 }
 
 .m-timeline-container input[type=range] {

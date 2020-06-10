@@ -74,7 +74,11 @@ export default class TimelineControl extends M.Control {
       });
       this.intervals.forEach((interval, k) => {
         let tag = document.createElement('div');
-        tag.dataset.tag = interval.tag;
+        if(k !=0  && k != this.intervals.length - 1 && k!= parseInt(this.intervals.length/2)){
+          tag.dataset.tag = '';
+        } else {
+          tag.dataset.tag = interval.tag;
+        }
         this.template.querySelector('.slider-tags').append(tag);
       });
       this.template.querySelector('.div-m-timeline-panel').style.setProperty('--num', this.intervals.length);
@@ -84,6 +88,7 @@ export default class TimelineControl extends M.Control {
       slider.addEventListener('change', (e) => {
         document.querySelector('.m-timeline-button button').classList.add('timeline-control-siguiente');
         document.querySelector('.m-timeline-button button').classList.remove('timeline-control-pausa');
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
         clearTimeout(this.running);
         this.running = false;
       });
