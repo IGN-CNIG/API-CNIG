@@ -215,6 +215,13 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {string}
      */
     this.geocoderCoords = geocoderCoords;
+
+    /**
+     * Reverse geocoder coordinates
+     * @private
+     * @type {string}
+     */
+    this.urlParse = null;
     registerHelpers();
 
 
@@ -670,6 +677,106 @@ export default class IGNSearchLocatorControl extends M.Control {
       });
     }
   }
+
+
+  /**
+   * This function removes last search layer and adds new layer with current result (from geocoder)
+   * features to map, zooms in result, edits popup information and shows a message saying
+   *  if it's a perfect result or an approximation.
+   * @public
+   * @function
+   * @param {Object} geoJsonData - clicked result object
+   * @api
+   */
+  drawGeocoderResultProv(geoJsonData) {
+    this.map.removeLayers(this.clickedElementLayer);
+
+    M.proxy(false);
+    M.remote.get(this.urlParse).then((res) => {
+      const urlSinJSON = res.text.substring(9, res.text.length - 1);
+
+      let geoJsonData2 = geoJsonData;
+
+      let datosGeometria;
+      let datosCoordenadas;
+      if (urlSinJSON.includes('MULTIPOLYGON (((')) {
+        datosGeometria = urlSinJSON.split('(((');
+        datosCoordenadas = datosGeometria[1].split('), (');
+
+
+        if (geoJsonData2.includes(']]]')) {
+          geoJsonData2 = geoJsonData2.replace(']]]', ']]]]');
+        }
+
+        for (let i = 0; i < datosCoordenadas.length; i += 1) {
+          const hol = datosCoordenadas[i].substring(0, 9).replace('(', '');
+
+          if (geoJsonData.includes('[[['.concat(hol))) {
+            geoJsonData2 = geoJsonData2.replace('[[['.concat(hol), '[[[['.concat(hol));
+          } else if (geoJsonData.includes(']],[['.concat(hol))) {
+            geoJsonData2 = geoJsonData2.replace(']],[['.concat(hol), ']]],[[['.concat(hol));
+          } else if (geoJsonData.includes('],['.concat(hol))) {
+            geoJsonData2 = geoJsonData2.replace('],['.concat(hol), ']],[['.concat(hol));
+          }
+        }
+      } else if (urlSinJSON.includes('POLYGON ((')) {
+        datosGeometria = urlSinJSON.split('((');
+        datosCoordenadas = datosGeometria[1].split('), (');
+
+
+        if (geoJsonData2.includes(']]')) {
+          geoJsonData2 = geoJsonData2.replace(']]', ']]]');
+        }
+
+        geoJsonData2 = geoJsonData2.replace('Polygon', 'MultiPolygon');
+
+        for (let i = 0; i < datosCoordenadas.length; i += 1) {
+          const holita = datosCoordenadas[i].substring(0, 15).replace('(', '');
+
+          if (geoJsonData.includes('[[['.concat(holita))) {
+            geoJsonData2 = geoJsonData2.replace('[[['.concat(holita), '[[[['.concat(holita));
+          } else if (geoJsonData.includes('],['.concat(holita))) {
+            geoJsonData2 = geoJsonData2.replace('],['.concat(holita), ']],[['.concat(holita));
+          }
+        }
+      }
+      const featureJSON = JSON.parse(geoJsonData2);
+
+      // featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
+      // Center coordinates
+      this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
+      // New layer with geometry
+      this.clickedElementLayer = new M.layer.GeoJSON({
+        name: 'Resultado búsquedas',
+        source: {
+          type: 'FeatureCollection',
+          features: [featureJSON],
+        },
+      });
+      this.clickedElementLayer.displayInLayerSwitcher = false;
+
+      if (featureJSON.geometry.type === 'Point') {
+        this.clickedElementLayer.setStyle(this.point);
+      }
+
+      // Stops showing polygon geometry
+      if (!this.resultVisibility_) {
+        this.clickedElementLayer.setStyle(this.simple);
+      }
+      this.map.addLayers(this.clickedElementLayer);
+      this.zoomInLocation('g', featureJSON.geometry.type);
+      // show popup for streets
+      if (featureJSON.properties.type === 'callejero' ||
+        featureJSON.properties.type === 'portal') {
+        const fullAddress = this.createFullAddress(featureJSON.properties);
+
+        const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
+        const perfectResult = featureJSON.properties.state;
+        this.showSearchPopUp(fullAddress, coordinates, perfectResult);
+      }
+    });
+    M.proxy(true);
+  }
   /**
    * This function removes last search layer and adds new layer with current result (from geocoder)
    * features to map, zooms in result, edits popup information and shows a message saying
@@ -883,6 +990,8 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       const params = `${type}${via}${id}${portal}&outputformat=geojson`;
       const urlToGet = `${this.urlFind}?q=${address}${params}`;
+      this.urlParse = urlToGet.replace('&outputformat=geojson', '');
+
       this.requestStreet = urlToGet;
       this.locationID = '';
       M.proxy(false);
@@ -907,7 +1016,11 @@ export default class IGNSearchLocatorControl extends M.Control {
     // if item comes from geocoder
     if (Object.prototype.hasOwnProperty.call(selectedObject, 'address')) {
       this.getFindData(listElement, this.allCandidates).then((geoJsonData) => {
-        this.drawGeocoderResult(geoJsonData);
+        if (geoJsonData.includes('"tip_via":"CALLE"')) {
+          this.drawGeocoderResult(geoJsonData);
+        } else {
+          this.drawGeocoderResultProv(geoJsonData);
+        }
       });
     } else { // if item comes from nomenclator
       this.drawNomenclatorResult(selectedObject.id);
