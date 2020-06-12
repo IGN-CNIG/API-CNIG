@@ -764,7 +764,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.clickedElementLayer.setStyle(this.simple);
       }
       this.map.addLayers(this.clickedElementLayer);
-      this.zoomInLocation('g', featureJSON.geometry.type);
+      this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
       // show popup for streets
       if (featureJSON.properties.type === 'callejero' ||
         featureJSON.properties.type === 'portal') {
@@ -811,7 +811,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clickedElementLayer.setStyle(this.simple);
     }
     this.map.addLayers(this.clickedElementLayer);
-    this.zoomInLocation('g', featureJSON.geometry.type);
+    this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
     // show popup for streets
     if (featureJSON.properties.type === 'callejero' || featureJSON.properties.type === 'portal') {
       const fullAddress = this.createFullAddress(featureJSON.properties);
@@ -890,7 +890,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       this.map.addLayers(this.clickedElementLayer);
       if (zoomIn === true) {
-        this.zoomInLocation('n', 'Point');
+        this.zoomInLocation('n', 'Point', this.zoom);
       }
     });
   }
@@ -1035,7 +1035,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param { string } type of geometry in which we zoom
    * @api
    */
-  zoomInLocation(service, type) {
+  zoomInLocation(service, type, zoom) {
     this.resultsList = document.getElementById('m-ignsearchlocator-results-list');
     if (this.clickedElementLayer instanceof M.layer.Vector) {
       this.clickedElementLayer.calculateMaxExtent().then((extent) => {
@@ -1043,7 +1043,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
           this.setScale(17061);
         }
-        this.map.setZoom(this.zoom);
+        this.map.setZoom(zoom);
         this.fire('ignsearchlocator:entityFound', [extent]);
       });
     }
