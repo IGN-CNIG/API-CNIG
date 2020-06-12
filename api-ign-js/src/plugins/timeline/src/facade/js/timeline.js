@@ -66,11 +66,30 @@ export default class Timeline extends M.Plugin {
      */
     if (options !== undefined) {
       if (M.utils.isString(options.intervals)) {
-        this.intervals = JSON.parse(options.intervals.replace(/!!/g,'[').replace(/¡¡/g,']'));
+        this.intervals = JSON.parse(options.intervals.replace(/!!/g, '[').replace(/¡¡/g, ']'));
       } else {
         this.intervals = options.intervals;
       }
     }
+
+    /**
+   * Animation of the timeline
+   * @public
+   * Value: true / false
+   * @type {boolean}
+   */
+    this.animation = options.animation;
+    if (this.animation === undefined) {
+      this.animation = true;
+    }
+
+    /**
+     * Speed of animation
+     * @public
+     * Value: 1 - 100
+     * @type {number}
+     */
+    this.speed = parseFloat(options.speed) || 1;
 
     /**
      * Metadata from api.json
@@ -97,14 +116,18 @@ export default class Timeline extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.control_ = new TimelineControl(this.intervals);
+    this.control_ = new TimelineControl({
+      intervals: this.intervals,
+      animation: this.animation,
+      speed: this.speed,
+    });
     this.controls_.push(this.control_);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelTimeline', {
       collapsible: true,
       position: M.ui.position[this.position],
       className: this.className,
-      collapsedButtonClass: 'g-cartografia-timeline',
+      collapsedButtonClass: 'timeline-gestion-reloj2',
       tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
@@ -156,7 +179,7 @@ export default class Timeline extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    const intervals = JSON.stringify(this.intervals).replace(/\[/g,'!!').replace(/\]/g,'¡¡');
+    const intervals = JSON.stringify(this.intervals).replace(/\[/g, '!!').replace(/\]/g, '¡¡');
     return `${this.name}=${this.position}*!${intervals}`;
   }
 
