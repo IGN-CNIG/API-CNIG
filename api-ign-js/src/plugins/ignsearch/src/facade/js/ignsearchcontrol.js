@@ -37,6 +37,7 @@ export default class IGNSearchControl extends M.Control {
     locationID,
     requestStreet,
     geocoderCoords,
+    zoom,
     searchPosition,
     nomenclatorSearchType = geographicNameType,
   ) {
@@ -156,6 +157,14 @@ export default class IGNSearchControl extends M.Control {
      * @type {string}
      */
     this.geocoderCoords = geocoderCoords;
+
+    /**
+     * Zoom
+     *
+     * @private
+     * @type {number}
+     */
+    this.zoom = zoom || 14;
 
 
     /**

@@ -57,8 +57,12 @@
         "position": 11
       }, {
         "type": "simple",
-        "name": "searchPosition",
+        "name": "zoom",
         "position": 12
+      }, {
+        "type": "simple",
+        "name": "searchPosition",
+        "position": 13
       }
     ]
   }],

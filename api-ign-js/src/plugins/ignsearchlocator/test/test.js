@@ -19,6 +19,7 @@ const mp = new IGNSearchLocator({
   isCollapsed: true,
   collapsible: true,
   reverse: true,
+  zoom: 10,
 });
 
 // map.removeControls('panzoom');

@@ -183,6 +183,17 @@ export default class IGNSearch extends M.Plugin {
     this.geocoderCoords_ = geocoderCoords || [];
 
     /**
+     * Zoom to do
+     *
+     * @private
+     * @type {string / number}
+     */
+    this.zoom_ = 16;
+    if (options.zoom !== undefined) {
+      this.zoom_ = parseInt(options.zoom, 10);
+    }
+
+    /**
      * This variable indicates Nomenclator SearchAssistant service url
      * @private
      * @type {string}
@@ -215,6 +226,7 @@ export default class IGNSearch extends M.Plugin {
       this.locationID_,
       this.requestStreet_,
       this.geocoderCoords_,
+      this.zoom_,
       this.searchPosition,
     ));
     this.controls_[0].on('ignsearch:entityFound', (extent) => {
@@ -300,7 +312,7 @@ export default class IGNSearch extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.resultVisibility}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.searchPosition}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.resultVisibility}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.zoom}*${this.searchPosition}`;
   }
 
   /**
