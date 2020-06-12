@@ -1043,7 +1043,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
           this.setScale(17061);
         }
-
+        this.map.setZoom(this.zoom);
         this.fire('ignsearchlocator:entityFound', [extent]);
       });
     }

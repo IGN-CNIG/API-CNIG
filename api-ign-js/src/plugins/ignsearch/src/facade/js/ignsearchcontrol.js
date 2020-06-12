@@ -826,12 +826,7 @@ export default class IGNSearchControl extends M.Control {
         if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
           this.setScale(17061); // last scale requested by our client: 2000
         }
-        // this.resultsList.innerHTML = '';
-        // this.searchInput.value = '';
-        // this.searchInput.value = this.currentElement.querySelector('#info').innerHTML;
-        // this.searchValue = this.searchInput.value.trim();
-        // this.resultsList.appendChild(this.currentElement);
-        // Fires ignsearch:EntityFound event after zoom-in result
+        this.map.setZoom(this.zoom);
         this.fire('ignsearch:entityFound', [extent]);
       });
     }
