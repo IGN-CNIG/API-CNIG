@@ -385,6 +385,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   createView(map) {
     this.map = map;
+    this.destroyMapLayers();
     return new Promise((success) => {
       const html = M.template.compileSync(template, {
         vars: {
@@ -506,6 +507,24 @@ export default class IGNSearchLocatorControl extends M.Control {
       success(html);
     });
   }
+
+  /**
+   * This function remove search layers.
+   *
+   * @public
+   * @function
+   * @api
+   *
+   */
+  destroyMapLayers() {
+    for (let i = 0; i < this.map.getLayers().length; i += 1) {
+      if (this.map.getLayers()[i].name === 'Resultado búsquedas') {
+        this.map.removeLayers(this.map.getLayers()[i]);
+        this.map.removePopup();
+      }
+    }
+  }
+
   /**
    * This function toggles reverse geocoder button activation.
    *
