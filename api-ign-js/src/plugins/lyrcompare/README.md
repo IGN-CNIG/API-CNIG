@@ -33,7 +33,7 @@ Plugin que permite comparar varias capas sobre una cartografía base. La extensi
 
 - **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
 
-- **staticDivision**. Permite definir si al arrancar la herramienta dividirá laas coas por la posición del ratón *(valor 0)* o por el ñpunto medio del lienzo de cartografía *(valor 1)*.
+- **staticDivision**. Permite definir si al arrancar la herramienta dividirá laas coas por la posición del ratón *(valor 0)* o por el punto medio del lienzo de cartografía *(valor 1)*.
 
 - **opacityVal**. Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
 

@@ -31,14 +31,10 @@ export default class CurtainControl extends M.impl.Control {
    * @param { Number } opacityVal nivel de opacidad
    * @api stable
    */
-  effectSelectedCurtain(lyrA,lyrB,lyrC,lyrD, opacityVal, staticDivision, comparisonMode) {
+  effectSelectedCurtain(lyrA, lyrB, lyrC, lyrD, opacityVal, staticDivision, comparisonMode) {
 
     lyrA.setVisible(true);
-    lyrA.setZIndex(3000);
     lyrB.setVisible(true);
-    lyrB.setZIndex(3000);
-    lyrC.setZIndex(3000);
-    lyrD.setZIndex(3000);
 
     //e2m: access map objects with this.olMap
     this.transparentInteraction_ = new CurtainInteraction({
@@ -48,7 +44,7 @@ export default class CurtainControl extends M.impl.Control {
       lyrC,
       lyrD,
     });
-    
+
     //this.setVisibilityLayersCD();//e2m?: si no quito esto, a este procedimiento se le llama dos veces. No sé el motivo. Parece que al crearse el CurtainInteraction ya se hace la llamada
 
     this.olMap.addInteraction(this.transparentInteraction_); //e2m: Important control number interactions this.olMap.interactions.array_
@@ -80,19 +76,19 @@ export default class CurtainControl extends M.impl.Control {
    * @api stable
    */
   setOpacity(opacityVal) {
-    
+
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setOpacity(opacityVal);
 
   }
 
-/**
-   * Layers comparison mode
-   *
-   * @public
-   * @function
-   * @param { Number } comparisonMode opacidad de las capas
-   * @api stable
-   */
+  /**
+     * Layers comparison mode
+     *
+     * @public
+     * @function
+     * @param { Number } comparisonMode opacidad de las capas
+     * @api stable
+     */
   setComparisonMode(comparisonMode) {
 
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setComparisonMode(comparisonMode);
@@ -108,7 +104,7 @@ export default class CurtainControl extends M.impl.Control {
    * @param { Number } staticDivision establece el tipo de división
    * @api stable
    */
-  
+
   setStaticDivision(staticDivision) {
 
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setStaticDivision(staticDivision);
@@ -137,9 +133,7 @@ export default class CurtainControl extends M.impl.Control {
    * @api stable
    */
   removeEffectsCurtain() {
-
     this.olMap.removeInteraction(this.transparentInteraction_);
-
   }
 
 

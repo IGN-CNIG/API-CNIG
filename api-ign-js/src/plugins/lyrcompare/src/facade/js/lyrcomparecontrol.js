@@ -26,7 +26,7 @@ export default class LyrCompareControl extends M.Control {
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(CurtainImplControl)) {
-      M.exception('La implementación usada no puede crear controles CurtainControl');
+      M.exception(getValueTranslate('exception'));
     }
     // 2. implementation of this control
     const impl = new CurtainImplControl();
@@ -134,8 +134,6 @@ export default class LyrCompareControl extends M.Control {
 
   }
 
-
-
   //e2m: Launched by map.addPlugin
   /**
    * This function creates the view
@@ -151,7 +149,7 @@ export default class LyrCompareControl extends M.Control {
 
       //e2m: Transform stringLyr definition to apicnigLyr
       this.map.getLayers().forEach((layer, i) => {
-        if (i !== 0) {
+        if (layer.zindex_ != 0) {
           this.map.removeLayers(layer);
         }
       });
@@ -361,8 +359,6 @@ export default class LyrCompareControl extends M.Control {
 
   }
 
-
-
   /**
    * This function checks selected layers are diferent
    *
@@ -412,7 +408,6 @@ export default class LyrCompareControl extends M.Control {
       this.layerSelectedD = this.layers[this.defaultLyrD];
       this.template.querySelector('#m-lyrcompare-lyrD').selectedIndex = this.defaultLyrD;
     }
-
     this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
     this.updateControls();
   }

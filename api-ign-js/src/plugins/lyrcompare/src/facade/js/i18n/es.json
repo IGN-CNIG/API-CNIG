@@ -15,5 +15,10 @@
   "lyrLeftSelect_tooltip": "Selecciona la capa de la izquierda",
   "lyrRightSelect_tooltip": "Selecciona la capa de la derecha",
   "advice_sameLayer":"No puede cargarse la misma capa en varios sitios",
-  "no_layers_plugin": "No hay capas"
+  "no_layers_plugin": "No hay capas",
+  "exception": "La implementación usada no puede crear controles CurtainControl",
+  "exception_repeat_part1": "Sólo existen ",
+  "exception_repeat_part2": " capas disponibles",
+  "cannot_same":"Las capas por defecto no pueden ser la misma",
+  "effect_layer":"No se ha especificado una capa válida sobre la que aplicar el efecto"
 }

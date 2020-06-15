@@ -4,8 +4,7 @@
 import 'assets/css/lyrcompare';
 import LyrCompareControl from './lyrcomparecontrol';
 import api from '../../api';
-import { getValue } from './i18n/language'; //e2m: Multilanguage support
-// import { isArray } from '../../../../../facade/js/util/Utils';
+import { getValue as getValueTranslate } from './i18n/language';
 
 export default class LyrCompare extends M.Plugin {
   /**
@@ -67,7 +66,7 @@ export default class LyrCompare extends M.Plugin {
 
     this.layers = [];
     if (options.layers === undefined) {
-      M.dialog.error('No se ha especificado una capa válida sobre la que aplicar el efecto');
+      M.dialog.error(getValueTranslate('effect_layer'));
     } else {
       if (Array.isArray(options.layers)) {
         this.layers = options.layers;
@@ -153,7 +152,7 @@ export default class LyrCompare extends M.Plugin {
       if (this.defaultLyrA < 0) {
         this.defaultLyrA = 0;
       } else if (this.defaultLyrA > this.layers.length - 1) {
-        M.dialog.error("Error defaultLyrA. Sólo existen " + this.layers.length + " capas disponibles");
+        M.dialog.error("Error defaultLyrA. " + getValueTranslate('exception_repeat_part1') + this.layers.length + getValueTranslate('exception_repeat_part2'));
       }
     }
 
@@ -170,11 +169,11 @@ export default class LyrCompare extends M.Plugin {
       if (this.defaultLyrB < 0) {
         this.defaultLyrB = this.defaultLyrA !== 0 ? 0 : 1;
       } else if (this.defaultLyrB > this.layers.length - 1) {
-        M.dialog.error("Error defaultLyrB. Sólo existen " + this.layers.length + " capas disponibles");
+        M.dialog.error("Error defaultLyrB. " + getValueTranslate('exception_repeat_part1') + this.layers.length + getValueTranslate('exception_repeat_part2'));
       }
     }
     if (this.defaultLyrA === this.defaultLyrB) {
-      M.dialog.error("Las capas por defecto no pueden ser la misma B");
+      M.dialog.error(getValueTranslate('cannot_same') + " B");
     }
 
     /**
@@ -190,11 +189,11 @@ export default class LyrCompare extends M.Plugin {
       if (this.defaultLyrC < 0) {
         this.defaultLyrC = 2;
       } else if (this.defaultLyrC > this.layers.length - 1) {
-        M.dialog.error("Error defaultLyrC. Sólo existen " + this.layers.length + " capas disponibles");
+        M.dialog.error("Error defaultLyrC. " + getValueTranslate('exception_repeat_part1') + this.layers.length + getValueTranslate('exception_repeat_part2'));
       }
     }
     if ((this.defaultLyrA === this.defaultLyrC) || (this.defaultLyrB === this.defaultLyrC)) {
-      M.dialog.error("Las capas por defecto no pueden ser la misma C");
+      M.dialog.error(getValueTranslate('cannot_same') + " C");
     }
 
     /**
@@ -210,11 +209,11 @@ export default class LyrCompare extends M.Plugin {
       if (this.defaultLyrD < 0) {
         this.defaultLyrD = 3;
       } else if (this.defaultLyrD > this.layers.length - 1) {
-        M.dialog.error("Error defaultLyrD. Sólo existen " + this.layers.length + " capas disponibles");
+        M.dialog.error("Error defaultLyrD. " + getValueTranslate('exception_repeat_part1') + this.layers.length + getValueTranslate('exception_repeat_part2'));
       }
     }
     if ((this.defaultLyrA === this.defaultLyrD) || (this.defaultLyrB === this.defaultLyrD) || (this.defaultLyrC === this.defaultLyrD)) {
-      M.dialog.error("Las capas por defecto no pueden ser la misma D");
+      M.dialog.error(getValueTranslate('cannot_same') + " D");
     }
 
 
@@ -229,7 +228,7 @@ export default class LyrCompare extends M.Plugin {
      *@private
      *@type { string }
      */
-    this.tooltip_ = options.tooltip || getValue('tooltip');
+    this.tooltip_ = options.tooltip || getValueTranslate('tooltip');
   }
 
   /**

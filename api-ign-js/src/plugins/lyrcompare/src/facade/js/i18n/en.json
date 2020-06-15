@@ -15,5 +15,10 @@
   "lyrLeftSelect_tooltip": "Select layer on the left",
   "lyrRightSelect_tooltip": "Select layer on the right",
   "advice_sameLayer": "One layer in different places is not allowed",
-  "no_layers_plugin": "No layers"
+  "no_layers_plugin": "No layers",
+  "exception": "The used implementation cannot create CurtainControl controls",
+  "exception_repeat_part1": "Only exists ",
+  "exception_repeat_part2": " available layers",
+  "cannot_same":"Default layer cannot be the same",
+  "effect_layer":"No valid layer specified on which to apply the effect"
 }
