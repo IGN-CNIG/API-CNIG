@@ -125,6 +125,11 @@ button#m-ignsearchlocator-locate-button {
     font-size: 1.4em;
 }
 
+#m-ignsearchlocator-parcela-button span {
+    position: relative;
+    top: 2px;
+}
+
 #m-ignsearchlocator-xylocator-button {
     color: #7A7A73;
     font-size: 1.4em;
@@ -135,6 +140,10 @@ button#m-ignsearchlocator-locate-button {
     font-size: 1.4em;
 }
 
+#m-ignsearchlocator-clear-button span {
+    position: relative;
+    bottom: 2px;
+}
 
 .m-ignsearchlocator .search-panel .icon-papelera::before {
     vertical-align: bottom;
