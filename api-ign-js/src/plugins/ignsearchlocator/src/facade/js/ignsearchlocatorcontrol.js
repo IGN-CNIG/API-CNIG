@@ -1035,7 +1035,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     // if item comes from geocoder
     if (Object.prototype.hasOwnProperty.call(selectedObject, 'address')) {
       this.getFindData(listElement, this.allCandidates).then((geoJsonData) => {
-        if (geoJsonData.includes('"tip_via":"CALLE"')) {
+        if (geoJsonData.includes('"tip_via":"CALLE"') || geoJsonData.includes('"tip_via":"AVENIDA"')) {
           this.drawGeocoderResult(geoJsonData);
         } else {
           this.drawGeocoderResultProv(geoJsonData);
