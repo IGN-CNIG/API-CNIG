@@ -345,6 +345,18 @@ export default class VectorsControl extends M.impl.Control {
   loadGMLLayer(source, layerName) {
     let newSource = source;
     let srs = this.facadeMap_.getProjection().code;
+    if (newSource.indexOf('srsName="GCS_WGS_1984"') > -1) {
+      newSource = newSource.replace(/srsName="GCS_WGS_1984"/gi, 'srsName="EPSG:4326"');
+    }
+
+    if (newSource.indexOf('cp:geometry') > -1) {
+      newSource = newSource.replace(/cp:geometry/gi, 'ogr:geometryProperty');
+    }
+
+    if (newSource.indexOf('certificacion:the_geom') > -1) {
+      newSource = newSource.replace(/certificacion:the_geom/gi, 'ogr:geometryProperty');
+    }
+
     if (newSource.split('srsName="')[1].indexOf('http') > -1) {
       try {
         srs = `EPSG:${newSource.split('srsName="')[1].split('#')[1].split('"')[0]}`;
@@ -379,8 +391,8 @@ export default class VectorsControl extends M.impl.Control {
       return newF;
     });
 
-    if (features[0].getGeometry() === undefined) {
-      features = new ol.format.WFS({ gmlFormat: ol.format.GML2() }).readFeatures(newSource, {
+    if (features.length === 0 || features[0].getGeometry() === undefined) {
+      features = new ol.format.WFS({ gmlFormat: new ol.format.GML3() }).readFeatures(newSource, {
         dataProjection: srs,
         featureProjection: this.facadeMap_.getProjection().code,
       });

@@ -32,7 +32,7 @@ div.m-panel.m-vectors.collapsed>button.m-panel-btn {
 
 /* style fix for left positions */
 .m-areas>.m-left>.m-panel.m-vectors.opened>.m-panel-controls {
-    width: 400px;
+    max-width: 400px;
 }
 
 div.m-area.m-left > div.m-panel.m-vectors.collapsed > button {

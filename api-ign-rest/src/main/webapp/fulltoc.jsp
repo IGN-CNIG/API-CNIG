@@ -101,7 +101,7 @@
         });
 
         let mp, posicion, collapsed = true,
-            http, https, ocupacionSuelo;
+            http, https, ocupacionSuelo, layerUA, layerinicial;
         crearPlugin(collapsed, posicion, http, https);
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -265,6 +265,24 @@
                 visibility: false,
             });
 
+            layerUA = new M.layer.WMS({
+			  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+			  name: 'AU.AdministrativeUnit',
+			  legend: 'Unidad administrativa',
+			  tiled: false,
+			}, {});
+			
+			layerinicial = new M.layer.WMS({
+			  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+			  name: 'AU.AdministrativeBoundary',
+			  legend: 'Limite administrativo',
+			  tiled: false,
+			}, {
+			  visibility: false,
+			});
+
+			map.addLayers(layerUA);
+			map.addLayers(layerinicial);
             map.addLayers(ocupacionSuelo);
 
             let mp2 = new M.plugin.ShareMap({
