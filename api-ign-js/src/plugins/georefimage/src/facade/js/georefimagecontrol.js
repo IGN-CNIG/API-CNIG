@@ -368,6 +368,7 @@ export default class GeorefimageControl extends M.Control {
       queueEl.classList.add(GeorefimageControl.LOADING_CLASS);
       printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
       // FIXME: delete proxy deactivation and uncomment if/else when proxy is fixed on Mapea
+      // M.proxy(false);
       M.remote.post(printUrl, printData).then((responseParam) => {
         let response = responseParam;
         const responseStatusURL = JSON.parse(response.text);
@@ -511,7 +512,14 @@ export default class GeorefimageControl extends M.Control {
    * @function
    */
   getPrintData() {
-    const projection = this.projection_.value;
+    let projection;
+    if (this.projection_.value === 'EPSG:4326' || this.projection_.value === 'EPSG:4258') {
+      projection = this.map_.getProjection().code;
+      this.projection_.value = projection;
+    } else {
+      projection = this.projection_.value;
+    }
+    // const projection = this.projection_.value;
     const bbox = this.map_.getBbox();
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
@@ -527,7 +535,6 @@ export default class GeorefimageControl extends M.Control {
         map: {
           dpi,
           projection,
-          useAdjustBounds: true,
         },
       },
     }, this.params_.layout);
@@ -680,21 +687,25 @@ export default class GeorefimageControl extends M.Control {
 
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      let BboxTransformXminYmax = [this.map_.getBbox().x.min, this.map_.getBbox().y.max];
+      // let BboxTransformXminYmax = [this.map_.getBbox().x.min, this.map_.getBbox().y.max];
       let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
 
-      BboxTransformXmaxYmin = this.getImpl().transform(
-        BboxTransformXmaxYmin,
-        this.map_.getProjection().code, this.projection_.value,
+      const bbox = [this.map_.getBbox().x.min, this.map_.getBbox().y.min,
+        this.map_.getBbox().x.max, this.map_.getBbox().y.max,
+      ];
+
+      BboxTransformXmaxYmin = this.getImpl().transformExt(
+        bbox,
+        this.map_.getProjection().code, this.projection_.name,
       );
-      BboxTransformXminYmax = this.getImpl().transform(
-        BboxTransformXminYmax,
-        this.map_.getProjection().code, this.projection_.value,
-      );
+      // BboxTransformXminYmax = this.getImpl().transformExt(
+      //   BboxTransformXminYmax,
+      //   this.map_.getProjection().code, this.projection_.name,
+      // );
 
 
-      const xminprima = (BboxTransformXmaxYmin[0] - BboxTransformXminYmax[0]);
-      const ymaxprima = (BboxTransformXminYmax[1] - BboxTransformXmaxYmin[1]);
+      const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
+      const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
       const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
         (72 / this.dpi_)).toString();
       const GiroA = (0).toString();
@@ -703,8 +714,8 @@ export default class GeorefimageControl extends M.Control {
         (72 / this.dpi_)).toString();
       // const Cx = (this.map_.getBbox().x.min).toString();
       // const Cy = (this.map_.getBbox().y.max).toString();
-      const Cx = (BboxTransformXminYmax[0]).toString();
-      const Cy = (BboxTransformXminYmax[1]).toString();
+      const Cx = (BboxTransformXmaxYmin[0]).toString();
+      const Cy = (BboxTransformXmaxYmin[3]).toString();
 
       let titulo = this.inputTitle_.value;
 

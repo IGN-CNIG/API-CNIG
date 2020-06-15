@@ -90,14 +90,12 @@ export default class Georefimage extends M.Plugin {
      * @type {String}
      */
     this.serverUrl_ = parameters.serverUrl || M.config.GEOPRINT_URL;
-
     /**
      * Mapfish template url
      * @private
      * @type {String}
      */
     this.printTemplateUrl_ = parameters.printTemplateUrl || M.config.GEOREFIMAGE_TEMPLATE;
-
     /**
      * Mapfish template url
      * @private

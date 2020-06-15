@@ -681,7 +681,7 @@ export default class GeorefimageControl extends M.impl.Control {
         requestEncoding: layerReqEncoding,
         style: 'default',
         type: 'WMTS',
-        version: '1.0.0',
+        version: '1.3.0',
       };
     });
   }

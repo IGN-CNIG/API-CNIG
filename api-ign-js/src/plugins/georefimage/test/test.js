@@ -17,9 +17,22 @@ const map = M.map({
   // minZoom: 4,
   // center: [1294092, 4180386],
 
-  // layers: ['WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA'],
-  layers: ['WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*IGNBaseTodo*false*image/png*false*false*true'],
+  layers: ['WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*EPSG:4326*IGNBaseTodo*false*image/png*false*false*true'],
+  // layer: ['OSM'],
+  projection: 'EPSG:4326*d',
+  // layers: ['WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*IGNBaseTodo*false*image/png*false*false*true'],
 });
+
+// const wmts = new M.layer.WMTS({
+//   url: 'http://www.ign.es/wmts/ign-base?',
+//   name: 'IGNBaseTodo',
+//   matrixSet: 'EPSG:25830',
+//   // legend: 'IGNBaseTodo',
+//   tiled: false,
+// }, {
+//   format: 'image/png',
+// });
+// map.addWMTS(wmts);
 
 
 // layers: ['WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*EPSG:25830*IGNBaseTodo*false*image/png*false*false*true'],
@@ -45,13 +58,13 @@ const map = M.map({
 //   ],
 // });
 
-// const layerinicial = new M.layer.WMS({
-//   url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-//   name: 'AU.AdministrativeBoundary',
+const layerinicial = new M.layer.WMS({
+  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeBoundary',
 
-//   legend: 'Limite administrativo',
-//   tiled: false,
-// }, {});
+  legend: 'Limite administrativo',
+  tiled: false,
+}, {});
 // const campamentos = new M.layer.GeoJSON({
 //   name: 'Campamentos',
 //   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
@@ -62,6 +75,6 @@ const georefimage = new Georefimage({
   collapsible: true,
   position: 'TR',
 });
-// map.addLayers([layerinicial]);
+map.addLayers([layerinicial]);
 map.addPlugin(georefimage);
 window.map = map;
