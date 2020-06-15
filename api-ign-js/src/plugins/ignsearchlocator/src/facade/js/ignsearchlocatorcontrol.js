@@ -238,7 +238,7 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @private
      * @type {number}
      */
-    this.zoom = zoom || 14;
+    this.zoom = zoom;
 
     /**
      * Reverse geocoder coordinates

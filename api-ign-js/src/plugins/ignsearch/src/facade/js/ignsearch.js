@@ -324,7 +324,6 @@ export default class IGNSearch extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls(this.controls_);
-    this.map_.removeLayers(this.clickedElementLayer);
     this.map_ = null;
     this.control_ = null;
     this.controls_ = null;
