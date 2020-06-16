@@ -635,14 +635,11 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   float: right;
   position: relative;
   right: 10px;
-  top: 5px;
+  top: 10px;
   cursor: pointer;
-  font-size: 18px !important;
-  padding: 6px;
-  background-color: #71a7d3;
-  border-radius: 100px;
-  color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
+  font-size: 20px !important;
+  -webkit-text-stroke: 1px #6c6c6c;
+  text-stroke: 1px #6c6c6c;
 }
 
 #m-fulltoc-change-config .select-container {
