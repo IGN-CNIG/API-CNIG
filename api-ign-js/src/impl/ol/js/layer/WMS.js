@@ -257,9 +257,9 @@ class WMS extends LayerBase {
    */
   addSingleLayer_() {
     this.getCapabilities().then((getCapabilities) => {
-      let capabilitiesLayer = getCapabilities.capabilities.Capability.Layer;
+      let capabilitiesLayer = getCapabilities.capabilities.Capability.Layer.Layer;
       if (isArray(capabilitiesLayer)) {
-        capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
+        capabilitiesLayer = capabilitiesLayer.filter(l => l.Name === this.facadeLayer_.name)[0];
       }
 
       const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
@@ -273,7 +273,9 @@ class WMS extends LayerBase {
         metadataURL,
         style,
       };
-      this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
+      if (this.facadeLayer_.capabilitiesMetadata === undefined) {
+        this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
+      }
     });
 
     this.facadeLayer_.calculateMaxExtent().then((extent) => {

@@ -262,7 +262,9 @@ class WMTS extends LayerBase {
           style,
         };
         capabilitiesOpts.tileGrid.extent = extent;
-        this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
+        if (this.facadeLayer_.capabilitiesMetadata === undefined) {
+          this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
+        }
         return capabilitiesOpts;
       });
     }
