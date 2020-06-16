@@ -1,17 +1,19 @@
 @font-face {
   font-family: 'fulltoc';
-  src: url('../fonts/fulltoc.eot?42245223');
-  src: url('../fonts/fulltoc.eot?42245223#iefix') format('embedded-opentype'),
-       url('../fonts/fulltoc.woff2?42245223') format('woff2'),
-       url('../fonts/fulltoc.woff?42245223') format('woff'),
-       url('../fonts/fulltoc.ttf?42245223') format('truetype'),
-       url('../fonts/fulltoc.svg?42245223#fulltoc') format('svg');
+  src: url('../fonts/fulltoc.eot?80493965');
+  src: url('../fonts/fulltoc.eot?80493965#iefix') format('embedded-opentype'),
+       url('../fonts/fulltoc.woff2?80493965') format('woff2'),
+       url('../fonts/fulltoc.woff?80493965') format('woff'),
+       url('../fonts/fulltoc.ttf?80493965') format('truetype'),
+       url('../fonts/fulltoc.svg?80493965#fulltoc') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 .m-fulltoc-addservices [class^="icon-"],
 .m-fulltoc-addservices [class*=" icon-"],
+#m-fulltoc-information [class^="icon-"],
+#m-fulltoc-information [class*=" icon-"],
 div.m-plugin-fulltoc [class^="icon-"],
 div.m-plugin-fulltoc [class*=" icon-"] {
   font-family: "fulltoc" !important;
@@ -38,6 +40,9 @@ div.m-plugin-fulltoc [class*=" icon-"] {
 .m-plugin-fulltoc .icon-papelera:before { content: '\e93e'; }
 .m-plugin-fulltoc .icon-zoom:before { content: '\e964'; }
 .m-plugin-fulltoc .icon-pincel:before { content: '\f1fc'; }
+
+#m-fulltoc-information .icon-desplegar:before { content: '\e916'; }
+#m-fulltoc-information .icon-colapsar:before { content: '\e918'; }
 
 .m-fulltoc-addservices .icon-lista:before { content: '\e92c'; }
 .m-fulltoc-addservices .icon-zoom:before { content: '\e964'; }

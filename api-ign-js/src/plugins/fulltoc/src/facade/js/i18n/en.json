@@ -37,5 +37,13 @@
   "query_metadata": "Consult metadata",
   "download_center": "Download center",
   "add": "Add",
-  "drag_drop": "Drag and drop to change display order"
+  "drag_drop": "Drag and drop to change display order",
+  "see_more": "Show more",
+  "see_less": "Show less",
+  "service": "Service",
+  "metadata_abstract": "Abstract (metadata)",
+  "responsible": "Responsible",
+  "access_constraints": "Access constraints",
+  "use_constraints": "Use constraints",
+  "online_resource": "Online resource"
 }

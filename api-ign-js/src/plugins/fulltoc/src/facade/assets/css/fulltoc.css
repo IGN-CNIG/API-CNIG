@@ -801,7 +801,7 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 }
 
 .table-results .table-container {
-  max-height: 200px;
+  max-height: 150px;
   overflow-y: auto;
   border: 1px solid #cccccc;
   padding: 10px;
@@ -820,5 +820,20 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 }
 
 .m-fulltoc-info-capabilities > p > span {
+  font-weight: bold;
+}
+
+#m-fulltoc-information .show-more-metadata {
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+
+#m-fulltoc-information .more-metadata {
+  display: none;
+}
+
+#m-fulltoc-information .more-metadata p a,
+#m-fulltoc-information .more-metadata p span {
   font-weight: bold;
 }

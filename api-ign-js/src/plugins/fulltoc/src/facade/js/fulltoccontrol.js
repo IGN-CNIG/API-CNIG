@@ -204,6 +204,13 @@ export default class FullTOCControl extends M.Control {
               provider: getValue('provider'),
               query_metadata: getValue('query_metadata'),
               download_center: getValue('download_center'),
+              see_more: getValue('see_more'),
+              service: getValue('service'),
+              metadata_abstract: getValue('metadata_abstract'),
+              responsible: getValue('responsible'),
+              access_constraints: getValue('access_constraints'),
+              use_constraints: getValue('use_constraints'),
+              online_resource: getValue('online_resource'),
             },
           };
 
@@ -230,13 +237,95 @@ export default class FullTOCControl extends M.Control {
 
           if (!M.utils.isNullOrEmpty(vars.metadata) && M.utils.isUrl(vars.metadata)) {
             M.remote.get(vars.metadata).then((response) => {
-              const unfiltered = response.text.split('<gmd:URL>').filter((elem) => {
+              const metadataText = response.text;
+              const unfiltered = metadataText.split('<gmd:URL>').filter((elem) => {
                 return elem.indexOf('centrodedescargas') > -1;
               });
 
               if (unfiltered.length > 0) {
                 const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
                 vars.downloadCenter = downloadCenter;
+              }
+
+              const dataid = metadataText.split('<gmd:MD_DataIdentification>')[1];
+              const legal = metadataText.split('<gmd:MD_LegalConstraints>')[1];
+              const transfer = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1];
+              let metadataService;
+              let metadataAbstract;
+              let responsible;
+              let accessConstraint;
+              let useConstraint;
+              let onlineResource;
+
+              try {
+                metadataService = dataid.split('<gmd:CI_Citation>')[1].split('</gmd:CI_Citation>')[0]
+                  .split('CharacterString>')[1].split('</gco')[0].trim();
+              } catch (err) {
+                metadataService = '';
+              }
+
+              try {
+                metadataAbstract = dataid.split('<gmd:abstract>')[1].split('</gmd:abstract>')[0]
+                  .split('CharacterString>')[1].split('</gco')[0].trim();
+              } catch (err) {
+                metadataAbstract = '';
+              }
+
+              try {
+                responsible = dataid.split('<gmd:pointOfContact>')[1].split('<gmd:organisationName>')[1]
+                  .split('</gmd:organisationName>')[0].split('CharacterString>')[1].split('</gco')[0].trim();
+              } catch (err) {
+                responsible = '';
+              }
+
+              try {
+                accessConstraint = legal.split('<gmd:accessConstraints>')[1].split('<gmd:MD_RestrictionCode')[1]
+                  .split('>')[1].split('<')[0].trim();
+              } catch (err) {
+                accessConstraint = '';
+              }
+
+              try {
+                useConstraint = legal.split('<gmd:useConstraints>')[1].split('<gmd:MD_RestrictionCode')[1]
+                  .split('>')[1].split('<')[0].trim();
+              } catch (err) {
+                useConstraint = '';
+              }
+
+              try {
+                onlineResource = transfer.split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim();
+              } catch (err) {
+                onlineResource = '';
+              }
+
+              if (!M.utils.isNullOrEmpty(metadataService)) {
+                vars.metadataService = metadataService;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(metadataAbstract)) {
+                vars.metadataAbstract = metadataAbstract;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(responsible)) {
+                vars.responsible = responsible;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(accessConstraint)) {
+                vars.accessConstraint = accessConstraint;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(useConstraint)) {
+                vars.useConstraint = useConstraint;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(onlineResource)) {
+                vars.onlineResource = onlineResource;
+                vars.extended = true;
               }
 
               this.renderInfo(vars);
@@ -253,6 +342,7 @@ export default class FullTOCControl extends M.Control {
           parseToHtml: false,
           vars: {
             precharged: this.precharged,
+            hasPrecharged: this.precharged.groups.length > 0 || this.precharged.services.length > 0,
             translations: {
               url_service: getValue('url_service'),
               query: getValue('query'),
@@ -309,6 +399,19 @@ export default class FullTOCControl extends M.Control {
       button.innerHTML = getValue('close');
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
+      const elem = document.querySelector('#m-fulltoc-information .show-more-metadata');
+      if (elem !== null) {
+        elem.addEventListener('click', () => {
+          const block = document.querySelector('#m-fulltoc-information .more-metadata');
+          if (block.style.display !== 'block') {
+            block.style.display = 'block';
+            elem.innerHTML = `<span class="icon-colapsar"></span>&nbsp;${getValue('see_less')}`;
+          } else {
+            block.style.display = 'none';
+            elem.innerHTML = `<span class="icon-desplegar"></span>&nbsp;${getValue('see_more')}`;
+          }
+        });
+      }
     }, 10);
   }
 

@@ -77,7 +77,7 @@ export default class FullTOC extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.precharged = options.precharged;
+    this.precharged = options.precharged || {};
   }
 
   /**
