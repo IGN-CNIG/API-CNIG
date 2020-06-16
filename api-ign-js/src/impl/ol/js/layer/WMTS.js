@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * @module M/impl/layer/WMTS
  */
@@ -17,6 +18,7 @@ import { get as getRemote } from 'M/util/Remote';
 import * as EventType from 'M/event/eventtype';
 import { get as getProj } from 'ol/proj';
 import OLLayerTile from 'ol/layer/Tile';
+import { isArray } from 'M/util/Utils';
 import { optionsFromCapabilities } from 'patches';
 import LayerBase from './Layer';
 /**
@@ -239,13 +241,28 @@ class WMTS extends LayerBase {
           */
           matrixSet = this.map.getProjection().code;
         }
+        let capabilitiesLayer = capabilities.Contents.Layer;
+        if (isArray(capabilitiesLayer)) {
+          capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
+        }
+
+        const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
+        const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
         const extent = this.facadeLayer_.getMaxExtent();
+        const attribution = !isNullOrEmpty(capabilities.ServiceProvider) ? capabilities.ServiceProvider : '';
+
         const capabilitiesOpts = optionsFromCapabilities(capabilities, {
           layer: layerName,
           matrixSet,
           extent,
         });
+        const capabilitiesMetadata = {
+          abstract,
+          attribution,
+          style,
+        };
         capabilitiesOpts.tileGrid.extent = extent;
+        this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
         return capabilitiesOpts;
       });
     }
