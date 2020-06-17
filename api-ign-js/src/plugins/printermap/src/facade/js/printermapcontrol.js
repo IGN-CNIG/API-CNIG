@@ -576,6 +576,17 @@ export default class PrinterMapControl extends M.Control {
 
     const currentDate = ''.concat(date.getDate(), '/', date.getMonth() + 1, '/', date.getFullYear());
 
+    let fileTitle = title.replace(' ', '');
+
+    if (fileTitle.length <= 8) {
+      fileTitle = fileTitle.concat('${yyyyMMddhhmmss}');
+      this.params_.layout.outputFilename = fileTitle;
+    } else {
+      fileTitle = fileTitle.substring(0, 7).concat('${yyyyMMddhhmmss}');
+      this.params_.layout.outputFilename = fileTitle;
+    }
+
+
     const printData = M.utils.extend({
       layout,
       outputFormat,
@@ -719,25 +730,25 @@ export default class PrinterMapControl extends M.Control {
     let projectionLegend;
     switch (projection) {
       case 'EPSG:4258':
-        projectionLegend = 'ETRS89 (4258)';
+        projectionLegend = 'EPSG:4258 (ETRS89)';
         break;
       case 'EPSG:4326':
-        projectionLegend = 'WGS84 (4326)';
+        projectionLegend = 'EPSG:4326 (WGS84)';
         break;
       case 'EPSG:3857':
-        projectionLegend = 'WGS84 (3857)';
+        projectionLegend = 'EPSG:3857 (WGS84)';
         break;
       case 'EPSG:25831':
-        projectionLegend = `UTM ${getValue('zone')} 31N (25831)`;
+        projectionLegend = `EPSG:25831 (UTM ${getValue('zone')} 31N)`;
         break;
       case 'EPSG:25830':
-        projectionLegend = `UTM ${getValue('zone')} 30N (25830)`;
+        projectionLegend = `EPSG:25830 (UTM ${getValue('zone')} 30N)`;
         break;
       case 'EPSG:25829':
-        projectionLegend = `UTM ${getValue('zone')} 29N (25829)`;
+        projectionLegend = `EPSG:25829 (UTM ${getValue('zone')} 29N)`;
         break;
       case 'EPSG:25828':
-        projectionLegend = `UTM ${getValue('zone')} 28N (25828)`;
+        projectionLegend = `EPSG:25828 (UTM ${getValue('zone')} 28N)`;
         break;
       default:
         projectionLegend = '';
