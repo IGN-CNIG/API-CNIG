@@ -281,9 +281,9 @@
 			  visibility: false,
 			});
 
+			map.addLayers(ocupacionSuelo);
 			map.addLayers(layerUA);
 			map.addLayers(layerinicial);
-            map.addLayers(ocupacionSuelo);
 
             let mp2 = new M.plugin.ShareMap({
                 baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",

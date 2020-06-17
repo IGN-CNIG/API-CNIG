@@ -66,5 +66,13 @@
   "select" : "Select",
   "loading": "Loading",
   "cancel": "Cancel",
-  "reload_from_view": "Reload from the view"
+  "reload_from_view": "Reload from the view",
+  "loaded_services": "Preloaded services",
+  "availables": "Preloaded services available",
+  "show_service_info": "Show service information",
+  "hide_service_info": "Hide service information",
+  "title": "Title",
+  "abstract": "Abstract",
+  "responsible": "Responsible",
+  "access_constraints": "Access constraints"
 }

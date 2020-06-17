@@ -1,17 +1,57 @@
 <div>
+    <div class="m-fulltoc-service-capabilities">
+      <p class="m-fulltoc-show-capabilities"><span class="icon-desplegar"></span>&nbsp;{{translations.show_service_info}}</p>
+      <div class="m-fulltoc-capabilities-container">
+        {{#if serviceCapabilities.title}}
+          <p style="margin-bottom: 0.2rem;"><span>{{translations.title}}:</span></p>
+        {{/if}}
+        {{#if serviceCapabilities.title}}
+          <div>
+            {{serviceCapabilities.title}}
+          </div>
+        {{/if}}
+
+        {{#if serviceCapabilities.abstract}}
+          <p style="margin-bottom: 0.2rem;"><span>{{translations.abstract}}:</span></p>
+        {{/if}}
+        {{#if serviceCapabilities.abstract}}
+          <div>
+            {{serviceCapabilities.abstract}}
+          </div>
+        {{/if}}
+
+        {{#if serviceCapabilities.contact}}
+          <p style="margin-bottom: 0.2rem;"><span>{{translations.responsible}}:</span></p>
+        {{/if}}
+        {{#if serviceCapabilities.contact}}
+          <div>
+            {{{serviceCapabilities.contact}}}
+          </div>
+        {{/if}}
+
+        {{#if serviceCapabilities.accessConstraints}}
+          <p style="margin-bottom: 0.2rem;"><span>{{translations.access_constraints}}:</span></p>
+        {{/if}}
+        {{#if serviceCapabilities.accessConstraints}}
+          <div>
+            {{serviceCapabilities.accessConstraints}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
     <div class="table-results">
       <div class="table-container">
         <table style="width: 100%;">
             <thead>
               <tr>
-                  <th>Capa</th>
+                  <th>{{translations.layers}}</th>
                   <th><span id="m-fulltoc-addservices-selectall" class="icon-check"></span></th>
               </tr>
             </thead>
             <tbody>
                 {{#each result}}
                     <tr>
-                      <td>{{legend}}</td>
+                      <td class="table-layer-name" title="{{abstract}}">{{legend}}</td>
                       <td style="text-align: center;"><span id="{{name}}" name="{{name}}" class="m-check-fulltoc-addservices icon-check"></span></td>
                     </tr>
                 {{/each}}
@@ -19,7 +59,7 @@
         </table>
       </div>
       <div class="button">
-        <button class="m-fulltoc-addservices-add m-fulltoc-common-btn">Añadir</button>
+        <button class="m-fulltoc-addservices-add m-fulltoc-common-btn">{{translations.add}}</button>
       </div>
     </div>
 </div>

@@ -204,6 +204,13 @@ export default class FullTOCControl extends M.Control {
               provider: getValue('provider'),
               query_metadata: getValue('query_metadata'),
               download_center: getValue('download_center'),
+              see_more: getValue('see_more'),
+              service: getValue('service'),
+              metadata_abstract: getValue('metadata_abstract'),
+              responsible: getValue('responsible'),
+              access_constraints: getValue('access_constraints'),
+              use_constraints: getValue('use_constraints'),
+              online_resource: getValue('online_resource'),
             },
           };
 
@@ -230,13 +237,95 @@ export default class FullTOCControl extends M.Control {
 
           if (!M.utils.isNullOrEmpty(vars.metadata) && M.utils.isUrl(vars.metadata)) {
             M.remote.get(vars.metadata).then((response) => {
-              const unfiltered = response.text.split('<gmd:URL>').filter((elem) => {
+              const metadataText = response.text;
+              const unfiltered = metadataText.split('<gmd:URL>').filter((elem) => {
                 return elem.indexOf('centrodedescargas') > -1;
               });
 
               if (unfiltered.length > 0) {
                 const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
                 vars.downloadCenter = downloadCenter;
+              }
+
+              const dataid = metadataText.split('<gmd:MD_DataIdentification>')[1];
+              const legal = metadataText.split('<gmd:MD_LegalConstraints>')[1];
+              const transfer = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1];
+              let metadataService;
+              let metadataAbstract;
+              let responsible;
+              let accessConstraint;
+              let useConstraint;
+              let onlineResource;
+
+              try {
+                metadataService = dataid.split('<gmd:CI_Citation>')[1].split('</gmd:CI_Citation>')[0]
+                  .split('CharacterString>')[1].split('</gco')[0].trim();
+              } catch (err) {
+                metadataService = '';
+              }
+
+              try {
+                metadataAbstract = dataid.split('<gmd:abstract>')[1].split('</gmd:abstract>')[0]
+                  .split('CharacterString>')[1].split('</gco')[0].trim();
+              } catch (err) {
+                metadataAbstract = '';
+              }
+
+              try {
+                responsible = dataid.split('<gmd:pointOfContact>')[1].split('<gmd:organisationName>')[1]
+                  .split('</gmd:organisationName>')[0].split('CharacterString>')[1].split('</gco')[0].trim();
+              } catch (err) {
+                responsible = '';
+              }
+
+              try {
+                accessConstraint = legal.split('<gmd:accessConstraints>')[1].split('<gmd:MD_RestrictionCode')[1]
+                  .split('>')[1].split('<')[0].trim();
+              } catch (err) {
+                accessConstraint = '';
+              }
+
+              try {
+                useConstraint = legal.split('<gmd:useConstraints>')[1].split('<gmd:MD_RestrictionCode')[1]
+                  .split('>')[1].split('<')[0].trim();
+              } catch (err) {
+                useConstraint = '';
+              }
+
+              try {
+                onlineResource = transfer.split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim();
+              } catch (err) {
+                onlineResource = '';
+              }
+
+              if (!M.utils.isNullOrEmpty(metadataService)) {
+                vars.metadataService = metadataService;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(metadataAbstract)) {
+                vars.metadataAbstract = metadataAbstract;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(responsible)) {
+                vars.responsible = responsible;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(accessConstraint)) {
+                vars.accessConstraint = accessConstraint;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(useConstraint)) {
+                vars.useConstraint = useConstraint;
+                vars.extended = true;
+              }
+
+              if (!M.utils.isNullOrEmpty(onlineResource)) {
+                vars.onlineResource = onlineResource;
+                vars.extended = true;
               }
 
               this.renderInfo(vars);
@@ -248,11 +337,15 @@ export default class FullTOCControl extends M.Control {
           }
         }
       } else if (evt.target.classList.contains('m-fulltoc-addservice')) {
+        const precharged = this.precharged;
+        const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
+          (precharged.services !== undefined && precharged.services.length > 0);
         const addServices = M.template.compileSync(addServicesTemplate, {
           jsonp: true,
           parseToHtml: false,
           vars: {
-            precharged: this.precharged,
+            precharged,
+            hasPrecharged,
             translations: {
               url_service: getValue('url_service'),
               query: getValue('query'),
@@ -265,9 +358,12 @@ export default class FullTOCControl extends M.Control {
 
         M.dialog.info(addServices, getValue('load_ext_services'));
         setTimeout(() => {
+          if (document.querySelector('#m-fulltoc-addservices-list-btn') !== null) {
+            document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('click', e => this.showSuggestions(e));
+          }
+
           document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', e => this.readCapabilities(e));
           document.querySelector('#m-fulltoc-addservices-clear-btn').addEventListener('click', e => this.removeContains(e));
-          document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('click', e => this.showSuggestions(e));
           document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
           const button = document.querySelector('div.m-dialog.info div.m-button > button');
           button.innerHTML = getValue('close');
@@ -309,6 +405,19 @@ export default class FullTOCControl extends M.Control {
       button.innerHTML = getValue('close');
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
+      const elem = document.querySelector('#m-fulltoc-information .show-more-metadata');
+      if (elem !== null) {
+        elem.addEventListener('click', () => {
+          const block = document.querySelector('#m-fulltoc-information .more-metadata');
+          if (block.style.display !== 'block') {
+            block.style.display = 'block';
+            elem.innerHTML = `<span class="icon-colapsar"></span>&nbsp;${getValue('see_less')}`;
+          } else {
+            block.style.display = 'none';
+            elem.innerHTML = `<span class="icon-desplegar"></span>&nbsp;${getValue('see_more')}`;
+          }
+        });
+      }
     }, 10);
   }
 
@@ -564,6 +673,7 @@ export default class FullTOCControl extends M.Control {
               try {
                 const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
                 const getCapabilities = getCapabilitiesParser.read(response.xml);
+                this.serviceCapabilities = getCapabilities.capabilities || {};
                 const layers = M.impl.util.wmtscapabilities.getLayers(
                   getCapabilities.capabilities,
                   url,
@@ -581,6 +691,7 @@ export default class FullTOCControl extends M.Control {
               try {
                 const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
                 const getCapabilities = getCapabilitiesParser.read(response.xml);
+                this.serviceCapabilities = getCapabilities.Service || {};
                 const getCapabilitiesUtils = new M.impl.GetCapabilities(
                   getCapabilities,
                   url,
@@ -662,18 +773,75 @@ export default class FullTOCControl extends M.Control {
    */
   showResults() {
     const result = [];
+    let serviceType = 'WMS';
     this.capabilities.forEach((capability) => {
-      result.push(capability.getImpl());
+      const add = capability.getImpl();
+      add.abstract = capability.capabilitiesMetadata.abstract.trim();
+      serviceType = capability.type;
+      result.push(add);
     });
 
     const container = document.querySelector('#m-fulltoc-addservices-results');
     if (result.length > 0) {
+      const serviceCapabilities = {};
+      if (serviceType === 'WMTS') {
+        const si = this.serviceCapabilities.ServiceIdentification;
+        const sp = this.serviceCapabilities.ServiceProvider;
+        if (si !== undefined && si.Title !== undefined) {
+          serviceCapabilities.title = si.Title.trim();
+        }
+
+        if (si !== undefined && si.Abstract !== undefined) {
+          serviceCapabilities.abstract = si.Abstract.trim();
+        }
+
+        if (si !== undefined && si.AccessConstraints !== undefined) {
+          serviceCapabilities.accessConstraints = si.AccessConstraints.trim();
+        }
+
+        if (sp !== undefined) {
+          let contact = `${sp.ProviderName}<p><a class="m-fulltoc-provider-link" href="${sp.ProviderSite}" target="_blank">${sp.ProviderSite}</a></p>`;
+          const ci = sp.ServiceContact.ContactInfo;
+          if (!M.utils.isNullOrEmpty(sp.ServiceContact) && !M.utils.isNullOrEmpty(ci)) {
+            const mail = ci.Address.ElectronicMailAddress;
+            contact += `<p><a class="m-fulltoc-provider-link" href="mailto:${mail}">${mail}</a></p>`;
+          }
+
+          serviceCapabilities.contact = contact;
+        }
+      } else {
+        const ci = this.serviceCapabilities.ContactInformation;
+        if (this.serviceCapabilities.Title !== undefined) {
+          serviceCapabilities.title = this.serviceCapabilities.Title.trim();
+        }
+
+        if (this.serviceCapabilities.Abstract !== undefined) {
+          serviceCapabilities.abstract = this.serviceCapabilities.Abstract.trim();
+        }
+
+        if (this.serviceCapabilities.AccessConstraints !== undefined) {
+          serviceCapabilities.accessConstraints = this.serviceCapabilities.AccessConstraints.trim();
+        }
+
+        if (ci !== undefined && ci.ContactPersonPrimary !== undefined) {
+          if (ci.ContactPersonPrimary.ContactOrganization !== undefined) {
+            serviceCapabilities.contact = ci.ContactPersonPrimary.ContactOrganization.trim();
+          }
+        }
+      }
+
       const html = M.template.compileSync(resultstemplate, {
         vars: {
           result,
+          serviceCapabilities,
           translations: {
             layers: getValue('layers'),
             add: getValue('add'),
+            title: getValue('title'),
+            abstract: getValue('abstract'),
+            responsible: getValue('responsible'),
+            access_constraints: getValue('access_constraints'),
+            show_service_info: getValue('show_service_info'),
           },
         },
       });
@@ -688,6 +856,17 @@ export default class FullTOCControl extends M.Control {
 
       container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
       container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', evt => this.addLayers(evt));
+      const elem = container.querySelector('.m-fulltoc-show-capabilities');
+      elem.addEventListener('click', () => {
+        const block = container.querySelector('.m-fulltoc-capabilities-container');
+        if (block.style.display !== 'block') {
+          block.style.display = 'block';
+          elem.innerHTML = `<span class="icon-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
+        } else {
+          block.style.display = 'none';
+          elem.innerHTML = `<span class="icon-desplegar"></span>&nbsp;${getValue('show_service_info')}`;
+        }
+      });
     } else {
       container.innerHTML = `<p class="m-fulltoc-noresults">${getValue('exception.no_results')}</p>`;
     }

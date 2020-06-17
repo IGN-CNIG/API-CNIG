@@ -2,7 +2,22 @@
     <div class="search-panel">
         <input type="text" id="m-vectors-addwfs-search-input" placeholder="{{translations.url_service}}" class="m-input-search" />
         <span id="m-vectors-addwfs-search-btn" class="icon-search m-search-btn" title="{{translations.query}}"></span>
+        {{#if hasPrecharged}}
+          <span id="m-vectors-addwfs-list-btn" class="icon-list m-search-btn" title="{{translations.loaded_services}}"></span>
+        {{/if}}
         <span id="m-vectors-addwfs-clear-btn" class="icon-cancel m-clear-btn" title="{{translations.clean}}"></span>
+    </div>
+    <div id="m-vectors-addwfs-suggestions" style="display: none;">
+      <table style="width: 100%;">
+        <thead>
+          <tr><th>{{translations.availables}}</th></tr>
+        </thead>
+        <tbody>
+          {{#each precharged}}
+            <tr><td><span class="m-vectors-addwfs-suggestion" data-link="{{url}}">{{name}}</span></td></tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
     <div id="m-vectors-addwfs-results"></div>
 </div>

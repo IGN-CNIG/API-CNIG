@@ -145,9 +145,9 @@
               visibility: false,
             });
 
+            map.addLayers(ocupacionSuelo);
             map.addLayers(layerUA);
             map.addLayers(layerinicial);
-            map.addLayers(ocupacionSuelo);
 
             const  mp2 = new M.plugin.Vectors({
                 collapsed: true,

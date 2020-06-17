@@ -148,6 +148,8 @@ export default class VectorsControl extends M.Control {
     this.pluginOpened = false;
 
     this.wfszoom = options.wfszoom;
+
+    this.precharged = options.precharged;
   }
 
   /**
@@ -413,16 +415,24 @@ export default class VectorsControl extends M.Control {
       jsonp: true,
       parseToHtml: false,
       vars: {
+        hasPrecharged: this.precharged.length > 0,
+        precharged: this.precharged,
         translations: {
           url_service: getValue('url_service'),
           query: getValue('query'),
           clean: getValue('clean'),
+          availables: getValue('availables'),
+          loaded_services: getValue('loaded_services'),
         },
       },
     });
 
     M.dialog.info(addWFS, getValue('add_wfs_layer'));
     setTimeout(() => {
+      if (document.querySelector('#m-vectors-addwfs-list-btn') !== null) {
+        document.querySelector('#m-vectors-addwfs-list-btn').addEventListener('click', e => this.showSuggestions(e));
+      }
+
       document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('click', e => this.readWFSCapabilities(e));
       document.querySelector('#m-vectors-addwfs-clear-btn').addEventListener('click', e => this.removeContains(e));
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
@@ -430,7 +440,21 @@ export default class VectorsControl extends M.Control {
       button.innerHTML = getValue('close');
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
+      document.querySelectorAll('#m-vectors-addwfs-suggestions .m-vectors-addwfs-suggestion').forEach((elem) => {
+        elem.addEventListener('click', e => this.loadSuggestion(e));
+      });
     }, 10);
+  }
+
+  showSuggestions() {
+    document.querySelector('#m-vectors-addwfs-results').innerHTML = '';
+    document.querySelector('#m-vectors-addwfs-suggestions').style.display = 'block';
+  }
+
+  loadSuggestion(evt) {
+    const url = evt.target.getAttribute('data-link');
+    document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value = url;
+    this.readWFSCapabilities(evt);
   }
 
   /**
@@ -443,6 +467,7 @@ export default class VectorsControl extends M.Control {
   removeContains(evt) {
     evt.preventDefault();
     document.querySelector('#m-vectors-addwfs-results').innerHTML = '';
+    document.querySelector('#m-vectors-addwfs-suggestions').style.display = 'none';
     document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value = '';
   }
 
@@ -455,6 +480,7 @@ export default class VectorsControl extends M.Control {
    */
   readWFSCapabilities(evt) {
     evt.preventDefault();
+    document.querySelector('#m-vectors-addwfs-suggestions').style.display = 'none';
     let url = document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value.trim();
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
@@ -486,7 +512,30 @@ export default class VectorsControl extends M.Control {
               });
             }
 
-            this.showResults(services);
+            const capabilities = {};
+            let hasCapabilities = false;
+            try {
+              capabilities.title = response.text.split('<ows:Title>')[1].split('</ows:Title>')[0];
+              hasCapabilities = true;
+            } catch (err) {
+              hasCapabilities = hasCapabilities || false;
+            }
+
+            try {
+              capabilities.abstract = response.text.split('<ows:Abstract>')[1].split('</ows:Abstract>')[0];
+              hasCapabilities = true;
+            } catch (err) {
+              hasCapabilities = hasCapabilities || false;
+            }
+
+            try {
+              capabilities.accessConstraints = response.text.split('<ows:AccessConstraints>')[1].split('</ows:AccessConstraints>')[0];
+              hasCapabilities = true;
+            } catch (err) {
+              hasCapabilities = hasCapabilities || false;
+            }
+
+            this.showResults(services, capabilities, hasCapabilities);
           } catch (err) {
             M.dialog.error(getValue('exception.capabilities'));
           }
@@ -499,14 +548,21 @@ export default class VectorsControl extends M.Control {
     }
   }
 
-  showResults(services) {
+  showResults(services, capabilities, hasCapabilities) {
     const selectWFS = M.template.compileSync(selectWFSTemplate, {
       jsonp: true,
       vars: {
         services,
+        capabilities,
+        hasCapabilities,
         translations: {
           select_service: getValue('select_service'),
           select: getValue('select'),
+          show_service_info: getValue('show_service_info'),
+          title: getValue('title'),
+          abstract: getValue('abstract'),
+          responsible: getValue('responsible'),
+          access_constraints: getValue('access_constraints'),
         },
       },
     });
@@ -515,6 +571,19 @@ export default class VectorsControl extends M.Control {
     document.querySelector('#m-vectors-addwfs-results').appendChild(selectWFS);
     const selector = '#m-vectors-select-wfs .m-vectors-common-btn';
     document.querySelector(selector).addEventListener('click', e => this.openWFSFilters(e, services));
+    const elem = document.querySelector('#m-vectors-select-wfs .m-vectors-wfs-show-capabilities');
+    if (elem !== null) {
+      elem.addEventListener('click', () => {
+        const block = document.querySelector('#m-vectors-select-wfs .m-vectors-wfs-capabilities-container');
+        if (block.style.display !== 'block') {
+          block.style.display = 'block';
+          elem.innerHTML = `<span class="icon-hide"></span>&nbsp;${getValue('hide_service_info')}`;
+        } else {
+          block.style.display = 'none';
+          elem.innerHTML = `<span class="icon-show"></span>&nbsp;${getValue('show_service_info')}`;
+        }
+      });
+    }
   }
 
   openWFSFilters(evt, services) {
@@ -966,7 +1035,6 @@ export default class VectorsControl extends M.Control {
           this.getImpl().centerFeatures(features);
         }
       } catch (error) {
-        // console.error(error);
         M.dialog.error(getValue('exception.load_correct'));
       }
     });

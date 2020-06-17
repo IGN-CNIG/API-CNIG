@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * @module M/impl/layer/WMS
  */
@@ -22,6 +23,7 @@ import OLLayerImage from 'ol/layer/Image';
 import { get as getProj } from 'ol/proj';
 import OLTileGrid from 'ol/tilegrid/TileGrid';
 import { getBottomLeft } from 'ol/extent';
+import { isArray } from 'M/util/Utils';
 import ImplUtils from '../util/Utils';
 import ImplMap from '../Map';
 import LayerBase from './Layer';
@@ -254,6 +256,28 @@ class WMS extends LayerBase {
    * @function
    */
   addSingleLayer_() {
+    this.getCapabilities().then((getCapabilities) => {
+      let capabilitiesLayer = getCapabilities.capabilities.Capability.Layer.Layer;
+      if (isArray(capabilitiesLayer)) {
+        capabilitiesLayer = capabilitiesLayer.filter(l => l.Name === this.facadeLayer_.name)[0];
+      }
+
+      const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
+      const attribution = !isNullOrEmpty(capabilitiesLayer.Attribution) ? capabilitiesLayer.Attribution : '';
+      const metadataURL = !isNullOrEmpty(capabilitiesLayer.MetadataURL) ? capabilitiesLayer.MetadataURL : '';
+      const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
+
+      const capabilitiesMetadata = {
+        abstract,
+        attribution,
+        metadataURL,
+        style,
+      };
+      if (this.facadeLayer_.capabilitiesMetadata === undefined) {
+        this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
+      }
+    });
+
     this.facadeLayer_.calculateMaxExtent().then((extent) => {
       const minResolution = this.options.minResolution;
       const maxResolution = this.options.maxResolution;

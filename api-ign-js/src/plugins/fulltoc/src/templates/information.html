@@ -14,13 +14,68 @@
         {{{provider}}}
       </div>
     {{/if}}
+    {{#if extended}}
+      <div>
+        <p class="show-more-metadata"><span class="icon-desplegar"></span>&nbsp;{{translations.see_more}}</p>
+        <div class="more-metadata">
+          {{#if metadataService}}
+            <p style="margin-bottom: 0.2rem;"><span>{{translations.service}}:</span></p>
+          {{/if}}
+          {{#if metadataService}}
+            <div>
+              {{metadataService}}
+            </div>
+          {{/if}}
+
+          {{#if metadataAbstract}}
+            <p style="margin-bottom: 0.2rem;"><span>{{translations.metadata_abstract}}:</span></p>
+          {{/if}}
+          {{#if metadataAbstract}}
+            <div>
+              {{metadataAbstract}}
+            </div>
+          {{/if}}
+
+          {{#if responsible}}
+            <p style="margin-bottom: 0.2rem;"><span>{{translations.responsible}}:</span></p>
+          {{/if}}
+          {{#if responsible}}
+            <div>
+              {{responsible}}
+            </div>
+          {{/if}}
+
+          {{#if accessConstraint}}
+            <p style="margin-bottom: 0.2rem;"><span>{{translations.access_constraints}}:</span></p>
+          {{/if}}
+          {{#if accessConstraint}}
+            <div>
+              {{accessConstraint}}
+            </div>
+          {{/if}}
+
+          {{#if useConstraint}}
+            <p style="margin-bottom: 0.2rem;"><span>{{translations.use_constraints}}:</span></p>
+          {{/if}}
+          {{#if useConstraint}}
+            <div>
+              {{useConstraint}}
+            </div>
+          {{/if}}
+
+          {{#if onlineResource}}
+            <p style="margin-bottom: 0.2rem;"><a href="{{onlineResource}}" target="_blank">{{translations.online_resource}}</a></p>
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
   </div>
-    <div class="btn-container">
-      {{#if metadata}}
-        <a class="m-fulltoc-common-btn" href="{{metadata}}" target="_blank">{{translations.query_metadata}}</a>
-      {{/if}}
-      {{#if downloadCenter}}
-        <a class="m-fulltoc-common-btn" href="{{downloadCenter}}" target="_blank">{{translations.download_center}}</a>
-      {{/if}}
-    </div>
+  <div class="btn-container">
+    {{#if metadata}}
+      <a class="m-fulltoc-common-btn" href="{{metadata}}" target="_blank">{{translations.query_metadata}}</a>
+    {{/if}}
+    {{#if downloadCenter}}
+      <a class="m-fulltoc-common-btn" href="{{downloadCenter}}" target="_blank">{{translations.download_center}}</a>
+    {{/if}}
+  </div>
 </div>

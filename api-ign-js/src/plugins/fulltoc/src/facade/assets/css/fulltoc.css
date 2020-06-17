@@ -635,14 +635,11 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   float: right;
   position: relative;
   right: 10px;
-  top: 5px;
+  top: 10px;
   cursor: pointer;
-  font-size: 18px !important;
-  padding: 6px;
-  background-color: #71a7d3;
-  border-radius: 100px;
-  color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
+  font-size: 20px !important;
+  -webkit-text-stroke: 1px #6c6c6c;
+  text-stroke: 1px #6c6c6c;
 }
 
 #m-fulltoc-change-config .select-container {
@@ -801,7 +798,7 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 }
 
 .table-results .table-container {
-  max-height: 200px;
+  max-height: 150px;
   overflow-y: auto;
   border: 1px solid #cccccc;
   padding: 10px;
@@ -821,4 +818,47 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 
 .m-fulltoc-info-capabilities > p > span {
   font-weight: bold;
+}
+
+#m-fulltoc-information .show-more-metadata {
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+
+#m-fulltoc-information .more-metadata {
+  display: none;
+}
+
+#m-fulltoc-information .more-metadata p a,
+#m-fulltoc-information .more-metadata p span {
+  font-weight: bold;
+}
+
+.table-results .table-layer-name:hover {
+  text-decoration: underline;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-service-capabilities {
+  max-width: 400px;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-service-capabilities > p {
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-capabilities-container {
+  border: 1px solid #cccccc;
+  padding: 10px;
+  display: none;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-capabilities-container p {
+  font-weight: bold;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-capabilities-container div {
+  word-break: break-word;
 }
