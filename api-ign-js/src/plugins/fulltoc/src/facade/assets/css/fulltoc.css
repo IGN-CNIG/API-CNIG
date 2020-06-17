@@ -834,3 +834,31 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 #m-fulltoc-information .more-metadata p span {
   font-weight: bold;
 }
+
+.table-results .table-layer-name:hover {
+  text-decoration: underline;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-service-capabilities {
+  max-width: 400px;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-service-capabilities > p {
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-capabilities-container {
+  border: 1px solid #cccccc;
+  padding: 10px;
+  display: none;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-capabilities-container p {
+  font-weight: bold;
+}
+
+#m-fulltoc-addservices-results .m-fulltoc-capabilities-container div {
+  word-break: break-word;
+}

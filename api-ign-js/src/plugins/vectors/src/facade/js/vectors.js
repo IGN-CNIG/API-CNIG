@@ -65,6 +65,8 @@ export default class Vectors extends M.Plugin {
     this.wfszoom_ = parseInt(options.wfszoom, 10);
     if (this.wfszoom_ === undefined || Number.isNaN(this.wfszoom_)) this.wfszoom_ = 12;
 
+    this.precharged_ = options.precharged || [];
+
     /**
      * Name of the plugin
      * @private
@@ -98,7 +100,7 @@ export default class Vectors extends M.Plugin {
       collapsedButtonClass: 'icon-vectors',
       tooltip: getValue('tooltip'),
     });
-    this.control_ = new VectorsControl({ wfszoom: this.wfszoom_ });
+    this.control_ = new VectorsControl({ wfszoom: this.wfszoom_, precharged: this.precharged_ });
     this.controls_.push(this.control_);
 
     this.map_.on(M.evt.ADDED_LAYER, () => {

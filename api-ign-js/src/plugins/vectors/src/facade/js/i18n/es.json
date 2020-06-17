@@ -66,5 +66,13 @@
   "select" : "Seleccionar",
   "loading": "Cargando",
   "cancel": "Cancelar",
-  "reload_from_view": "Recargar desde la vista"
+  "reload_from_view": "Recargar desde la vista",
+  "loaded_services": "Servicios precargados",
+  "availables": "Servicios precargados disponibles",
+  "show_service_info": "Mostrar información del servicio",
+  "hide_service_info": "Ocultar información del servicio",
+  "title": "Título",
+  "abstract": "Resumen",
+  "responsible": "Responsable",
+  "access_constraints": "Restricciones de acceso"
 }

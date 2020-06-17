@@ -43,6 +43,8 @@ div.m-plugin-fulltoc [class*=" icon-"] {
 
 #m-fulltoc-information .icon-desplegar:before { content: '\e916'; }
 #m-fulltoc-information .icon-colapsar:before { content: '\e918'; }
+#m-fulltoc-addservices-results .icon-desplegar:before { content: '\e916'; }
+#m-fulltoc-addservices-results .icon-colapsar:before { content: '\e918'; }
 
 .m-fulltoc-addservices .icon-lista:before { content: '\e92c'; }
 .m-fulltoc-addservices .icon-zoom:before { content: '\e964'; }

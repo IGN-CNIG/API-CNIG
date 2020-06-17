@@ -13,11 +13,23 @@ const map = M.map({
   ],*/
 });
 
+const precharged = [
+  {
+    name: 'Hidrografía',
+    url: 'https://servicios.idee.es/wfs-inspire/hidrografia?',
+  },
+  {
+    name: 'Límites administrativos',
+    url: 'https://www.ign.es/wfs-inspire/unidades-administrativas?',
+  },
+];
+
 const mp = new Vectors({
   collapsed: true,
   collapsible: true,
   position: 'TR',
   wfszoom: 12,
+  precharged,
 });
 
 const provincias = new M.layer.WFS({

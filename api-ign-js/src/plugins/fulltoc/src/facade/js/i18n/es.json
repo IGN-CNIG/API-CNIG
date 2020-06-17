@@ -38,12 +38,14 @@
   "download_center": "Centro de descargas",
   "add": "Añadir",
   "drag_drop": "Arrastre y suelte para cambiar el orden de visualización",
-  "see_more": "Ver más",
-  "see_less": "Ver menos",
+  "see_more": "Mostrar metadato del conjunto de datos",
+  "see_less": "Ocultar metadato del conjunto de datos",
   "service": "Servicio",
   "metadata_abstract": "Resumen (metadato)",
   "responsible": "Responsable",
   "access_constraints": "Restricciones de acceso",
   "use_constraints": "Restricciones de uso",
-  "online_resource": "Acceso al recurso online"
+  "online_resource": "Acceso al recurso online",
+  "show_service_info": "Mostrar información del servicio",
+  "hide_service_info": "Ocultar información del servicio"
 }

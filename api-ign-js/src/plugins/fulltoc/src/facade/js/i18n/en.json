@@ -38,12 +38,14 @@
   "download_center": "Download center",
   "add": "Add",
   "drag_drop": "Drag and drop to change display order",
-  "see_more": "Show more",
-  "see_less": "Show less",
+  "see_more": "Show dataset metadata",
+  "see_less": "Hide dataset metadata",
   "service": "Service",
   "metadata_abstract": "Abstract (metadata)",
   "responsible": "Responsible",
   "access_constraints": "Access constraints",
   "use_constraints": "Use constraints",
-  "online_resource": "Online resource"
+  "online_resource": "Online resource",
+  "show_service_info": "Show service information",
+  "hide_service_info": "Hide service information"
 }

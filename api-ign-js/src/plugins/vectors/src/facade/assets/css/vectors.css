@@ -302,6 +302,38 @@ div.m-vector-layer-actions .active-tool {
   border-radius: 5px !important;
 }
 
+#vector-add-wfs {
+  font-weight: bold;
+  font-size: 9px !important;
+  position: relative;
+  bottom: 3px;
+  border: 2px solid rgb(117, 116, 116) !important;
+  border-radius: 100px;
+  height: 30px !important;
+  width: 30px !important;
+}
+
+#vector-add-wfs span {
+  position: relative;
+  right: 2px;
+}
+
+#m-vectors-addwfs-suggestions {
+  margin: 1rem 0.5rem;
+}
+
+#m-vectors-addwfs-suggestions table thead tr th {
+  padding-bottom: 0.5rem;
+}
+
+#m-vectors-addwfs-suggestions table tbody tr td span {
+  cursor: pointer;
+}
+
+#m-vectors-addwfs-suggestions table tbody tr td span:hover {
+  text-decoration: underline;
+}
+
 /*PERFIL TOPOGRAFICO*/
 .ol-control.ol-profil {
     position: absolute;
@@ -588,6 +620,11 @@ div.m-vector-layer-actions .active-tool {
   background-color: #D1E6F8;
 }
 
+.m-vectors-addwfs {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
 .m-vectors-addwfs .search-panel {
   text-align: center;
   margin: 0 auto;
@@ -615,10 +652,35 @@ div.m-vector-layer-actions .active-tool {
   text-align: center;
 }
 
+#m-vectors-select-wfs .m-vectors-wfs-capabilities {
+  max-width: 400px;
+}
+
+#m-vectors-select-wfs .m-vectors-wfs-capabilities > p {
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+#m-vectors-select-wfs .m-vectors-wfs-capabilities-container {
+  border: 1px solid #cccccc;
+  padding: 10px;
+  display: none;
+}
+
+#m-vectors-select-wfs .m-vectors-wfs-capabilities-container p {
+  font-weight: bold;
+}
+
+#m-vectors-select-wfs .m-vectors-wfs-capabilities-container div {
+  word-break: break-word;
+}
+
 #m-vectors-select-wfs .select-container {
   text-align: center;
   margin: 0 auto;
   padding: 10px;
+  margin-top: 1rem;
 }
 
 #m-vectors-wfs-select {
@@ -630,6 +692,7 @@ div.m-vector-layer-actions .active-tool {
   text-align: center;
   margin: 0 auto;
   margin-top: 0.6rem;
+  margin-bottom: 1rem;
 }
 
 .m-vectors-common-btn {
