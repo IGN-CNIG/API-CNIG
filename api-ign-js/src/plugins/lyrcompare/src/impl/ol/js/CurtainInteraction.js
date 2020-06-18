@@ -15,8 +15,11 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     super(options);
     this.layers_ = [];
 
+    this.swipeClicked = false;
+
     ol.interaction.Pointer.call(this, {
       handleDownEvent: this.setPosition,
+      handleUpEvent: () => this.swipeClicked = false,
       handleMoveEvent: this.setPosition,
     });
 
@@ -32,20 +35,19 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     const layerB = [optionsE.lyrB].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
     this.addLayerB(layerB);
 
-    const layerC = [optionsE.lyrC].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
-    this.addLayerC(layerC);
+    if (optionsE.lyrC !== undefined && optionsE.lyrD !== undefined) {
+      const layerC = [optionsE.lyrC].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+      this.addLayerC(layerC);
 
-    const layerD = [optionsE.lyrD].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
-    this.addLayerD(layerD);
-
+      const layerD = [optionsE.lyrD].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+      this.addLayerC(layerD);
+    }
   }
 
   /** Set the map > start postcompose
    */
 
   setMap(map) {
-
-    //e2m?
     if (this.getMap()) {
       for (let i = 0; i < this.layers_.length; i += 1) {
         if (this.layers_[i].precompose) ol.Observable.unByKey(this.layers_[i].precompose);
@@ -56,14 +58,17 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     }
     ol.interaction.Pointer.prototype.setMap.call(this, map);
     if (map) {
+      this.createSwipeControl();
       this.layers_[0].precompose = this.layers_[0].on('precompose', this.precomposeA_.bind(this));
       this.layers_[0].postcompose = this.layers_[0].on('postcompose', this.postcomposeA_.bind(this));
       this.layers_[1].precompose = this.layers_[1].on('precompose', this.precomposeB_.bind(this));
       this.layers_[1].postcompose = this.layers_[1].on('postcompose', this.postcomposeB_.bind(this));
-      this.layers_[2].precompose = this.layers_[2].on('precompose', this.precomposeC_.bind(this));
-      this.layers_[2].postcompose = this.layers_[2].on('postcompose', this.postcomposeC_.bind(this));
-      this.layers_[3].precompose = this.layers_[3].on('precompose', this.precomposeD_.bind(this));
-      this.layers_[3].postcompose = this.layers_[3].on('postcompose', this.postcomposeD_.bind(this));
+      if (this.layers_[2] !== undefined && this.layers_[3] !== undefined) {
+        this.layers_[2].precompose = this.layers_[2].on('precompose', this.precomposeC_.bind(this));
+        this.layers_[2].postcompose = this.layers_[2].on('postcompose', this.postcomposeC_.bind(this));
+        this.layers_[3].precompose = this.layers_[3].on('precompose', this.precomposeD_.bind(this));
+        this.layers_[3].postcompose = this.layers_[3].on('postcompose', this.postcomposeD_.bind(this));
+      }
       map.renderSync();
     }
   }
@@ -74,16 +79,12 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    * @param {integer} opacityVal
    */
   setOpacity(opacityVal) {
-
     this.opacityVal = opacityVal;
     if (this.getMap()) {
       for (let i = 0; i < this.layers_.length; i += 1) {
         this.layers_[i].setOpacity(this.opacityVal / 100);
       }
     }
-    //e2m?
-    //if (this.getMap()) this.getMap().renderSync();
-
   }
 
   /** 
@@ -92,11 +93,8 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    * @param {integer} staticDivision
    */
   setStaticDivision(staticDivision) {
-
     this.staticDivision = staticDivision;
-    //e2m?
-    //if (this.getMap()) this.getMap().renderSync();
-
+    this.updatePosition();
   }
 
   /** 
@@ -105,9 +103,18 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    * @param {integer} comparisonMode
    */
   setComparisonMode(comparisonMode) {
-
     this.comparisonMode = comparisonMode;
-
+    const swipeControl = document.querySelector('.lyrcompare-swipe-control');
+    if (swipeControl) {
+      if (this.comparisonMode == 1) {
+        swipeControl.classList = 'lyrcompare-swipe-control vertical' + (this.staticDivision == 1 ? ' static' : '');
+      } else if (this.comparisonMode == 2) {
+        swipeControl.classList = 'lyrcompare-swipe-control horizontal' + (this.staticDivision == 1 ? ' static' : '');
+      } else if (this.comparisonMode == 3) {
+        swipeControl.classList = 'lyrcompare-swipe-control vertical horizontal' + (this.staticDivision == 1 ? ' static' : '');
+      }
+    }
+    this.updatePosition();
   }
 
   /**
@@ -118,14 +125,13 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    * @api stable
    */
   setVisibilityLayersCD() {
-    if ((this.comparisonMode === 1) || (this.comparisonMode === 2)) {
+    if ((this.layers_[2] !== undefined && this.layers_[3] !== undefined) && (this.comparisonMode === 1 || this.comparisonMode === 2)) {
       this.layers_[2].setVisible(false);
       this.layers_[3].setVisible(false);
-    } else {
+    } else if (this.layers_[2] !== undefined && this.layers_[3] !== undefined) {
       this.layers_[2].setVisible(true);
       this.layers_[3].setVisible(true);
     }
-
   }
 
 
@@ -235,20 +241,43 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    * @param {ol.Pixel|ol.MapBrowserEvent}
    */
   setPosition(e) {
-    if (e.pixel) {
-      this.pos = e.pixel;
-    } else if (e && e instanceof Array) {
-      this.pos = e;
-    } else {
-      e = [-10000000, -10000000];
+    if ((this.staticDivision === 2 && this.swipeClicked) || this.staticDivision !== 2) {
+      if (e.pixel) {
+        this.pos = e.pixel;
+      } else if (e && e instanceof Array) {
+        this.pos = e;
+      } else {
+        e = [-10000000, -10000000];
+      }
+      if (this.staticDivision === 2 && e.pointerEvent.buttons !== 1) {
+        const lienzoMapa = this.map_.getSize();
+        this.pos = [lienzoMapa[0] / 2, lienzoMapa[1] / 2];
+        this.swipeClicked = false;
+      }
+      if (this.getMap()) this.getMap().renderSync();
+      this.moveSwipeControl();
     }
+  }
+  /**
+   *  Update position of the clip
+   * 
+   */
+  updatePosition() {
+    const swipeIcon = document.querySelector('.lyrcompare-swipe-control .control-icon');
+    if (swipeIcon) {
+      swipeIcon.style.visibility = this.staticDivision == 1 ? 'hidden' : 'visible';
+    }
+    const lienzoMapa = this.map_.getSize();
+    const swipeControl = document.querySelector('.lyrcompare-swipe-control');
+    swipeControl.style.left = (lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2) + 'px';
+    swipeControl.style.top = (lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2) + 'px';
+    this.pos = [lienzoMapa[0] / 2, lienzoMapa[1] / 2];
+    this.swipeClicked = false;
     if (this.getMap()) this.getMap().renderSync();
   }
-
   /* @private
-   */
+     */
   precomposeA_(e) {
-
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
     const lienzoMapa = this.map_.getSize();
@@ -257,7 +286,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
-    if (this.staticDivision) {
+    if (this.staticDivision == 1) {
       if (this.comparisonMode == 1) {
         ctx.rect(0, 0, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1]); //e2m: left fixed
       } else if (this.comparisonMode == 2) {
@@ -307,7 +336,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
-    if (this.staticDivision) {
+    if (this.staticDivision == 1) {
       if (this.comparisonMode == 1) {
         ctx.rect(lienzoMapa[0] * ratio / 2 + margenClip * ratio, 0, ctx.canvas.width - lienzoMapa[0] * ratio / 2, lienzoMapa[1]); //e2m: Right fixed
       } else if (this.comparisonMode == 2) {
@@ -352,7 +381,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
 
     ctx.save();
     ctx.beginPath();
-    if (this.staticDivision) {
+    if (this.staticDivision == 1) {
       if (this.comparisonMode == 3) {
         ctx.rect(0, lienzoMapa[1] * ratio / 2, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1]);  //e2m: down&left fixed
       }
@@ -386,7 +415,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
 
     ctx.save();
     ctx.beginPath();
-    if (this.staticDivision) {
+    if (this.staticDivision == 1) {
       if (this.comparisonMode == 3) {
         ctx.rect(lienzoMapa[0] * ratio / 2, lienzoMapa[1] * ratio / 2, ctx.canvas.width * ratio / 2 - margenClip * ratio, ctx.canvas.height * ratio / 2 - margenClip * ratio); //e2m: down&right fixed
       }
@@ -408,6 +437,55 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    */
   postcomposeD_(e) {
     e.context.restore();
+  }
+  /**
+   * Create the swipe indicator
+   * 
+   */
+  createSwipeControl() {
+    let swipeControl;
+    let swipeIcon;
+    if (document.querySelector('.lyrcompare-swipe-control') == null) {
+      swipeControl = document.createElement('div');
+      swipeControl.classList.add('lyrcompare-swipe-control');
+      swipeIcon = document.createElement('div');
+      swipeIcon.classList.add('control-icon');
+      swipeControl.append(swipeIcon);
+      document.querySelector('.ol-overlaycontainer-stopevent').append(swipeControl);
+    } else {
+      swipeControl = document.querySelector('.lyrcompare-swipe-control');
+      swipeIcon = document.querySelector('.lyrcompare-swipe-control .control-icon');
+    }
+    swipeControl.addEventListener('mousedown', () => this.swipeClicked = true);
+    swipeControl.addEventListener('mouseup', () => this.swipeClicked = false);
+    swipeControl.addEventListener('touchstart', () => this.swipeClicked = true);
+    swipeControl.addEventListener('touchend', () => this.swipeClicked = false);
+  }
+
+  /**
+  * Move the swipe indicator
+  * 
+  */
+  moveSwipeControl() {
+    const lienzoMapa = this.map_.getSize();
+    const swipeControl = document.querySelector('.lyrcompare-swipe-control');
+    if (swipeControl && this.getMap()) {
+      if (this.staticDivision == 0 || this.staticDivision == 2) {
+        if (this.comparisonMode == 1) {
+          swipeControl.style.top = (lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2) + 'px';
+          swipeControl.style.left = (this.pos[0]) - (swipeControl.offsetWidth / 2) + 'px';
+        } else if (this.comparisonMode == 2) {
+          swipeControl.style.left = (lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2) + 'px';
+          swipeControl.style.top = (this.pos[1]) - (swipeControl.offsetHeight / 2) + 'px';
+        } else if (this.comparisonMode == 3) {
+          swipeControl.style.left = (this.pos[0]) - (swipeControl.offsetWidth / 2) + 'px';
+          swipeControl.style.top = (this.pos[1]) - (swipeControl.offsetHeight / 2) + 'px';
+        }
+      } else {
+        swipeControl.style.left = (lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2) + 'px';
+        swipeControl.style.top = (lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2) + 'px';
+      }
+    }
   }
 
   /**
