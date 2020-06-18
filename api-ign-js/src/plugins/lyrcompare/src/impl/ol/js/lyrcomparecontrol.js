@@ -32,14 +32,9 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   effectSelectedCurtain(lyrA, lyrB, lyrC, lyrD, opacityVal, staticDivision, comparisonMode) {
+
     lyrA.setVisible(true);
-    //    lyrA.setZIndex(3000);
     lyrB.setVisible(true);
-    //    lyrB.setZIndex(3000);
-    //if (lyrC !== undefined && lyrD !== undefined) {
-    //  lyrC.setZIndex(3000);
-    //  lyrD.setZIndex(3000);
-    //    }
 
     this.transparentInteraction_ = new CurtainInteraction({
       opacityVal,

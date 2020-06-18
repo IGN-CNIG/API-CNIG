@@ -7,7 +7,7 @@
   "radius": "Radius",
   "opacity": "Opacity",
   "static": "Static",
-  "dynamic": "dynamic",
+  "dynamic": "Dynamic",
   "mixed": "Mixed",
   "layer": "Layer",
   "opacity_tooltip": "Opacity of the layers (0-100%)",
