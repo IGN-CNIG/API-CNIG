@@ -19,7 +19,7 @@
         <p class="show-more-metadata"><span class="icon-desplegar"></span>&nbsp;{{translations.see_more}}</p>
         <div class="more-metadata">
           {{#if metadataService}}
-            <p style="margin-bottom: 0.2rem;"><span>{{translations.service}}:</span></p>
+            <p style="margin-bottom: 0.2rem;"><span>{{translations.title}}:</span></p>
           {{/if}}
           {{#if metadataService}}
             <div>
@@ -63,8 +63,13 @@
             </div>
           {{/if}}
 
-          {{#if onlineResource}}
-            <p style="margin-bottom: 0.2rem;"><a href="{{onlineResource}}" target="_blank">{{translations.online_resource}}</a></p>
+          {{#if onlineResources}}
+            <p><span>{{translations.online_resources}}:</span></p>
+            <ul>
+            {{#each onlineResources}}
+              <li><a href="{{url}}" target="_blank">{{name}}</a></li>
+            {{/each}}
+            </ul>
           {{/if}}
         </div>
       </div>
