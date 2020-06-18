@@ -137,6 +137,7 @@ export default class InfocoordinatesControl extends M.Control {
 
 
   addPoint(evt) {
+
     let numPoint = this.numTabs + 1;
     document.getElementById('m-infocoordinates-comboDatum').removeAttribute('disabled');
     document.getElementById('m-infocoordinates-buttonConversorFormat').removeAttribute('disabled');
@@ -179,6 +180,8 @@ export default class InfocoordinatesControl extends M.Control {
 
 
 
+
+
     //Altura 
     let altitudeFromWCSservice;
     let altitudeBox = document.getElementById('m-infocoordinates-altitude');
@@ -210,6 +213,40 @@ export default class InfocoordinatesControl extends M.Control {
 
   }
 
+  activateSelection() {
+    const olMap = this.facadeMap_.getMapImpl();
+    const facadeControl = this.facadeControl;
+    const drawingLayer = facadeControl.drawLayer.getImpl().getOL3Layer();
+
+    this.facadeControl.hideTextPoint();
+
+    if (document.querySelector('.m-geometrydraw>#downloadFormat') !== null) {
+      document.querySelector('.m-geometrydraw').removeChild(facadeControl.downloadingTemplate);
+    }
+
+    if (drawingLayer) {
+      this.select = new ol.interaction.Select({
+        wrapX: false,
+        layers: [drawingLayer],
+      });
+
+      this.select.on('select', (e) => {
+        if (e.target.getFeatures().getArray().length > 0) {
+          this.facadeControl.onSelect(e);
+        }
+      });
+
+      olMap.addInteraction(this.select);
+
+      this.edit = new ol.interaction.Modify({ features: this.select.getFeatures() });
+      this.edit.on('modifyend', (evt) => {
+        this.facadeControl.onModify();
+      });
+      olMap.addInteraction(this.edit);
+    }
+  }
+
+
 
   selectFeature(numPoint) {
     this.point = new M.style.Point({
@@ -217,7 +254,7 @@ export default class InfocoordinatesControl extends M.Control {
         form: M.style.form.NONE,
         class: '+',
         fontsize: 1.5,
-        radius: 15,
+        radius: 10,
         color: 'black',
         fill: 'white',
       },
@@ -228,7 +265,7 @@ export default class InfocoordinatesControl extends M.Control {
       icon: {
         form: 'none',
         class: '+',
-        radius: 20,
+        radius: 15,
         rotation: 0,
         rotate: false,
         offset: [0, 0],
@@ -399,22 +436,28 @@ export default class InfocoordinatesControl extends M.Control {
 
         var pos = this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.coordinates;
 
-        const textHTML = `<div class="m-popup m-collapsed">
+        const varUTM = this.calculateUTMcoordinates(i + 1);
+
+        const textHTML = `<div class="m-popup m-collapsed" style="padding: 5px 5px 5px 5px !important;background-color: rgba(255, 255, 255, 0.7) !important;">
               <div class="contenedorCoordPunto">
                 <table>
                     <tbody>
                       <tr>
-                        <td style="font-weight: bold">Punto ${i}</td></b>
+                        <td style="font-weight: bold">Punto ${i+1}</td></b>
                       </tr>
                       <tr>
-                        <td>X: ${this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.coordinates[0].toFixed(6)}</td>
+                        <td>X: ${varUTM[0]}</td>
                       </tr>
                       <tr>
-                        <td>Y: ${this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.coordinates[1].toFixed(6)}</td>
+                        <td>Y: ${varUTM[1]}</td>
+                      </tr>
+                      <tr>
+                        <td>${getValue('altitude')} ${this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.Altitude}</td>
                       </tr>
                     </tbody>
                 </table>
             </div>
+          </div>
           </div>
       </div>`
 
@@ -434,6 +477,20 @@ export default class InfocoordinatesControl extends M.Control {
         this.map_.getMapImpl().addOverlay(this.helpTooltip_);
       }
     }
+  }
+
+  calculateUTMcoordinates(numPoint) {
+    let featureSelected = this.layerFeatures.getFeatureById(numPoint);
+    //Cojo el srs seleccionado en el select
+    let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
+
+    //Cojo el formato de las coordenadas geográficas
+    let formatGMS = document.getElementById('m-infocoordinates-buttonConversorFormat').checked;
+
+    //Cambio coordenadas y calculo las UTM
+    let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
+
+    return [pointDataOutput.projectionUTM.coordinatesUTM.coordX, pointDataOutput.projectionUTM.coordinatesUTM.coordY];
   }
 
   removeAllDisplaysPoints() {
