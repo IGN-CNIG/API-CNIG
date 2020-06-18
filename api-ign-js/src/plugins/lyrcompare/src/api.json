@@ -51,6 +51,11 @@
         "type": "simple",
         "name": "defaultLyrD",
         "position": 10
+      },
+      {
+        "type": "boolean",
+        "name": "interface",
+        "position": 11
       }
     ]
   }],

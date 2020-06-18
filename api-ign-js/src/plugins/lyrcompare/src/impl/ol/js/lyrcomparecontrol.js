@@ -1,10 +1,10 @@
 /**
- * @module M/impl/control/CurtainControl
+ * @module M/impl/control/Lyrcomparecontrol
  */
 import CurtainInteraction from 'impl/CurtainInteraction';
 
 
-export default class CurtainControl extends M.impl.Control {
+export default class Lyrcomparecontrol extends M.impl.Control {
   /**
    * This function adds the control to the specified map
    *
@@ -31,27 +31,20 @@ export default class CurtainControl extends M.impl.Control {
    * @param { Number } opacityVal nivel de opacidad
    * @api stable
    */
-  effectSelectedCurtain(lyrA,lyrB,lyrC,lyrD, opacityVal, staticDivision, comparisonMode) {
+  effectSelectedCurtain(lyrA, lyrB, lyrC, lyrD, opacityVal, staticDivision, comparisonMode) {
 
     lyrA.setVisible(true);
-    lyrA.setZIndex(3000);
     lyrB.setVisible(true);
-    lyrB.setZIndex(3000);
-    lyrC.setZIndex(3000);
-    lyrD.setZIndex(3000);
 
-    //e2m: access map objects with this.olMap
     this.transparentInteraction_ = new CurtainInteraction({
       opacityVal,
       lyrA,
       lyrB,
       lyrC,
-      lyrD,
+      lyrD
     });
-    
-    //this.setVisibilityLayersCD();//e2m?: si no quito esto, a este procedimiento se le llama dos veces. No sé el motivo. Parece que al crearse el CurtainInteraction ya se hace la llamada
 
-    this.olMap.addInteraction(this.transparentInteraction_); //e2m: Important control number interactions this.olMap.interactions.array_
+    this.olMap.addInteraction(this.transparentInteraction_);
     this.setOpacity(opacityVal);
     this.setComparisonMode(comparisonMode);
     this.setStaticDivision(staticDivision);
@@ -80,21 +73,20 @@ export default class CurtainControl extends M.impl.Control {
    * @api stable
    */
   setOpacity(opacityVal) {
-    
+
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setOpacity(opacityVal);
 
   }
 
-/**
-   * Layers comparison mode
-   *
-   * @public
-   * @function
-   * @param { Number } comparisonMode opacidad de las capas
-   * @api stable
-   */
+  /**
+     * Layers comparison mode
+     *
+     * @public
+     * @function
+     * @param { Number } comparisonMode opacidad de las capas
+     * @api stable
+     */
   setComparisonMode(comparisonMode) {
-
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setComparisonMode(comparisonMode);
     this.setVisibilityLayersCD();
 
@@ -108,11 +100,9 @@ export default class CurtainControl extends M.impl.Control {
    * @param { Number } staticDivision establece el tipo de división
    * @api stable
    */
-  
+
   setStaticDivision(staticDivision) {
-
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setStaticDivision(staticDivision);
-
   }
 
   /**
@@ -124,9 +114,7 @@ export default class CurtainControl extends M.impl.Control {
    * @api stable
    */
   addLayer(layer) {
-
     this.transparentInteraction_.addLayer(layer.getImpl().getOL3Layer());
-
   }
 
   /**
@@ -137,9 +125,8 @@ export default class CurtainControl extends M.impl.Control {
    * @api stable
    */
   removeEffectsCurtain() {
-
     this.olMap.removeInteraction(this.transparentInteraction_);
-
+    
   }
 
 
@@ -152,11 +139,8 @@ export default class CurtainControl extends M.impl.Control {
    * @api stable
    */
   removeLayer(layer) {
-
     this.transparentInteraction_.removeLayer(layer.getImpl().getOL3Layer());
 
   }
-
-
 
 }

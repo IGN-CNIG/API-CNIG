@@ -20,8 +20,9 @@ Plugin que permite comparar varias capas sobre una cartografía base. La extensi
 
 - El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **layer**. Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa), la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto.
-  A esta/s capa/s se le aplicará el efecto de transparencia.
+- **layer**. Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa),
+la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto.
+A esta/s capa/s se le aplicará el efecto de transparencia.
 
 - **position**. Indica la posición donde se mostrará el plugin.
   - 'TL':top left
@@ -33,7 +34,7 @@ Plugin que permite comparar varias capas sobre una cartografía base. La extensi
 
 - **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
 
-- **staticDivision**. Permite definir si al arrancar la herramienta dividirá laas coas por la posición del ratón *(valor 0)* o por el ñpunto medio del lienzo de cartografía *(valor 1)*.
+- **staticDivision**. Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón *(valor 0)*, por el punto medio del lienzo de cartografía *(valor 1)* o por el punto medio del lienzo de cartografía con líneas arrastrables *(valor 2)*.
 
 - **opacityVal**. Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
 
@@ -51,18 +52,19 @@ Plugin que permite comparar varias capas sobre una cartografía base. La extensi
 
 - **defaultLyrD**. Define la capa uno que se carga por defecto. Valores de 4 al número de capas disponibles.
 
+- **interface**. Define si mostrar o no la interfaz del plugin.
+
 # Eventos
 
 # Multi idioma
 
-Actualmente viene preparado para español e inglés. Para definir con qué idioma arranca, hay que ir al fichero test.js y modificar
+Actualmente está disponible español e inglés.
 
 ```javascript
 M.language.setLang('es');//Idioma español
 M.language.setLang('en');//Idioma inglés
 ```
 Se pueden crear más ficheros de idioma. Basta con copiar la estructura de los ficheros **json** de la carpeta *\src\facade\js\i18n* , renombrar con la abreviatura del nuevo idioma (fr para el fránces), y cambiar los textos, manteniendo las *keywords*.
-
 
 
 # Otros métodos
@@ -72,40 +74,207 @@ No aplica
 # Ejemplos de uso
 
 ## Ejemplo 1
-Insertar dos capas a través de servicio WMS. La división vertical entre las capas es estática y la marca el punto medio del lienzo.
+Insertar capas WMS con formato Mapea.
+El modo de comparación es 0, por lo que no se iniciará al cargarlo.
+El modo de división es 1 por lo que será estático.
+La interfaz está activa.
 
 ```javascript
-  const mp = new M.plugin.LyrCompare({
+const pluginLyrCompare = new LyrCompare({
   position: 'TL',
   layers: [
-      'WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas',
-      'WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo'],
-      'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
-      'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
-      'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
-      'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
-      'WMS*AMS_1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957'
+    'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
+    'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
+    'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
+    'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
   ],
-  collapsible: false,
+  collapsible: true,
+  collapsed: true,
   staticDivision: 1,
-  opacityVal:100,
+  opacityVal: 100,
   comparisonMode: 0,
-  defaultLyrA: 1, //Número de capa A que arranca por defecto. Valores 1...nº de capas
-  defaultLyrB: 2, //Número de capa B que arranca por defecto. Valores 1...nº de capas
-  defaultLyrC: 3, //Número de capa C que arranca por defecto. Valores 1...nº de capas
-  defaultLyrD: 4, //Número de capa D que arranca por defecto. Valores 1...nº de capas  
+  defaultLyrA: 1,
+  defaultLyrB: 2,
+  defaultLyrC: 3,
+  defaultLyrD: 4,
+  interface: true,
 });
-
-   map.addPlugin(mp);
 ```
 
 
-## Inclusión de iconos
+## Ejemplo 2
+Al no indicar capas mostrará un error en pantalla: El número de capas es insuficiente para aplicar el efecto
 
-1. Descargamos el icono en SVG.
-2. Si necesitas cambiar la orientación de la imagen la rotamos.
-3. Entramos en [https://icomoon.io/app/#/select](https://icomoon.io/app/#/select), importamos el svg, lo seleccionamos de la lista y le das a Generate Font.
-4. Entras en [http://fontello.com/](http://fontello.com/) y cargas la fuente que has generado, selecciona el icono
-5. Descargar el paquete y copiar los ficheros (transparency.eot, transparency.svg, transparency.ttf, transparency.woff, transparency.woff2) en api-ign-js/src/plugins/transparency/src/facade/assets/css/fonts
-6. Copiar el contenido de XXX-embedded.css en el css del plugin, indicando antes de cada regla ".m-plugin-XX" 
-7. Cambiar el nombre del icono el panel (XXX.js  [PLUGIN]) y donde se usen los iconos (por ejemplo: document.querySelector('.m-panel.m-plugin-transparency').querySelector('.m-panel-btn.icon-gps4')) y en la plantilla por el actual
+```javascript
+const pluginLyrCompare = new LyrCompare({
+  position: 'TL',
+  collapsible: true,
+  collapsed: false,
+  staticDivision: 1,
+  opacityVal: 100,
+  comparisonMode: 0,
+  defaultLyrA: 1,
+  defaultLyrB: 2,
+  defaultLyrC: 3,
+  defaultLyrD: 4,
+  interface: true,
+});
+```
+
+## Ejemplo 3
+WMS con formato Mapea y sin interfaz
+
+```javascript
+const pluginLyrCompare = new LyrCompare({
+  position: 'TL',
+  layers: [
+    'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
+    'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
+    'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
+    'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
+  ],
+  collapsible: true,
+  collapsed: false,
+  staticDivision: 0,
+  opacityVal: 100,
+  comparisonMode: 2,
+  defaultLyrA: 1,
+  defaultLyrB: 2,
+  defaultLyrC: 3,
+  defaultLyrD: 4,
+  interface: false,
+});
+```
+
+
+## Ejemplo 4
+WMTS con formato Mapea y sin interfaz
+
+```javascript
+const pluginLyrCompare = new LyrCompare({
+  position: 'TL',
+  layers: [
+    'WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11',
+    'WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster',
+    'WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*SPOT_Andalucia',
+    'WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*base',
+  ],
+  collapsible: true,
+  collapsed: false,
+  staticDivision: 1,
+  opacityVal: 100,
+  comparisonMode: 1,
+  defaultLyrA: 1,
+  defaultLyrB: 2,
+  defaultLyrC: 3,
+  defaultLyrD: 4,
+  interface: false,
+});
+```
+
+## Ejemplo 5
+WMS como objeto
+
+```javascript
+const wms1 = new M.layer.WMS('WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC');
+const wms2 = new M.layer.WMS('WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT');
+const wms3 = new M.layer.WMS('WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986');
+const wms4 = new M.layer.WMS('WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986');
+map.addLayers([wms1, wms2, wms3, wms4]);
+
+const pluginLyrCompare = new LyrCompare({
+  position: 'TL',
+  layers: [
+    'SIGPAC', 'OLISTAT', 'Nacional_1981-1986', 'Interministerial_1973-1986'
+  ],
+  collapsible: true,
+  collapsed: false,
+  staticDivision: 1,
+  opacityVal: 100,
+  comparisonMode: 1,
+  defaultLyrA: 1,
+  defaultLyrB: 2,
+  defaultLyrC: 3,
+  defaultLyrD: 4,
+  interface: false,
+});
+```
+
+## Ejemplo 6
+WMTS como objeto
+
+```javascript
+const wmts1 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11');
+const wmts2 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster');
+const wmts3 = new M.layer.WMTS('WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*SPOT_Andalucia');
+const wmts4 = new M.layer.WMTS('WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*base');
+myMap.addLayers([wmts1, wmts2, wmts3, wmts4]);
+
+const pluginLyrCompare = new LyrCompare({
+  position: 'TL',
+  layers: [
+    'orto_2010-11', 'toporaster', 'SPOT_Andalucia-1986', 'base'
+  ],
+  collapsible: true,
+  collapsed: false,
+  staticDivision: 1,
+  opacityVal: 100,
+  comparisonMode: 1,
+  defaultLyrA: 1,
+  defaultLyrB: 2,
+  defaultLyrC: 3,
+  defaultLyrD: 4,
+  interface: false,
+});
+```
+
+## Ejemplo 7
+WMS + WMTS como cadena y como texto
+
+```javascript
+const wmts1 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11');
+const wms2 = new M.layer.WMS('WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT');
+myMap.addLayers([wmts1, wms2]);
+
+const pluginLyrCompare = new LyrCompare({
+  position: 'TL',
+  layers: [
+    'orto_2010-11', 'OLISTAT', 'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986', 'WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*base'
+  ],
+  collapsible: true,
+  collapsed: false,
+  staticDivision: 1,
+  opacityVal: 100,
+  comparisonMode: 1,
+  defaultLyrA: 1,
+  defaultLyrB: 2,
+  defaultLyrC: 3,
+  defaultLyrD: 4,
+  interface: false,
+});
+```
+
+## Ejemplo 8
+Al añadir capas que no son válidas para el plugin no se contarán y mostrará el mensaje: El número de capas es insuficiente para aplicar el efecto
+
+```javascript
+const pluginLyrCompare = new LyrCompare({
+  position: 'TL',
+  layers: [
+    'WFST*CapaWFS*http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?*tematicos:Provincias*MPOLYGON',
+    'KML*Arboleda*http://mapea4-sigc.juntadeandalucia.es/files/kml/*arbda_sing_se.kml*true',
+    'WFST*CapaWFSColegio*http://g-gis-online-lab.desarrollo.guadaltel.es/geoserver/ggiscloud_root/wms?*ggiscloud_root:a1585301579731_colegios*MPOINT',
+    'WFST*CapaWFSRed*http://g-gis-online-lab.desarrollo.guadaltel.es/geoserver/ggiscloud_root/wms?*ggiscloud_root:a1585301955480_red_hidrografica*MLINE',
+  ],
+  collapsible: true,
+  collapsed: false,
+  staticDivision: 1,
+  opacityVal: 100,
+  comparisonMode: 0,
+  defaultLyrA: 1,
+  defaultLyrB: 2,
+  defaultLyrC: 3,
+  defaultLyrD: 4,
+  interface: true,
+});
+```
