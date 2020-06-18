@@ -147,7 +147,7 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementsByClassName('m-infocoordinates-div-buttonDisplayAllPoints')[0].classList.remove('noDisplay');
 
     // Eliminamos las etiquetas de los puntos
-    if (this.map_.getMapImpl().getOverlays().array_.length > 0) {
+    if (document.getElementsByClassName('icon-infocoordinates-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
       this.removeAllDisplaysPoints();
     }
 
@@ -205,12 +205,6 @@ export default class InfocoordinatesControl extends M.Control {
     this.layerFeatures.addFeatures([featurePoint]);
     this.openTab(numPoint)
     this.numTabs = numPoint;
-
-
-    //PopUp
-    // this.selectFeatures();
-
-
   }
 
   activateSelection() {
@@ -276,9 +270,47 @@ export default class InfocoordinatesControl extends M.Control {
         }
       },
     });
+
+    this.displayPoint(numPoint);
     this.layerFeatures.getFeatures().map((elemento) => (elemento.setStyle(this.pointDisable)));
     let featureSelected = this.layerFeatures.getFeatureById(numPoint);
     featureSelected.setStyle(this.point);
+  }
+
+  displayPoint(numPoint) {
+    var pos = this.layerFeatures.impl_.features_[numPoint - 1].impl_.olFeature_.values_.coordinates;
+
+    // Modificamos el color del estilo de los puntos anteriores.
+    if (this.map_.getMapImpl().getOverlays().array_.length > 0) {
+      document.getElementsByClassName('contenedorPuntoSelect')[0].classList.replace('contenedorPuntoSelect', 'contenedorPunto');
+    }
+
+    const textHTML = `<div class="contenedorPuntoSelect">
+                <table>
+                    <tbody>
+                      <tr>
+                        <td style="font-weight: bold">${numPoint}</td></b>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+      </div>`
+
+    const helpTooltipElement = M.template.compileSync(textHTML, {
+      jsonp: true,
+      vars: {
+        translations: getValue('text'),
+      },
+    });
+
+    this.helpTooltip_ = new ol.Overlay({
+      element: helpTooltipElement,
+      offset: [10, -5],
+    });
+
+    this.helpTooltip_.setPosition(pos);
+    this.map_.getMapImpl().addOverlay(this.helpTooltip_);
   }
 
 
@@ -405,7 +437,7 @@ export default class InfocoordinatesControl extends M.Control {
       //   projectionPoints,
       //   projectionSelect);
 
-      printDocument.push('Punto ' + i + ': ' + '\n');
+      printDocument.push(getValue('point') + i + ': ' + '\n');
       printDocument.push(pointDataOutput.projectionGEO.code + ': ');
       printDocument.push('[' + coordinatesGEO + ']' + '\n');
       printDocument.push(pointDataOutput.projectionUTM.code + ': ');
@@ -423,13 +455,18 @@ export default class InfocoordinatesControl extends M.Control {
   }
 
   displayAllPoints() {
-    if (this.map_.getMapImpl().getOverlays().array_.length > 0) {
+    if (document.getElementsByClassName('icon-infocoordinates-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
       this.removeAllDisplaysPoints();
     } else {
       // Modificamos el icono
       document.getElementsByClassName('icon-infocoordinates-displayON')[0].classList.replace("icon-infocoordinates-displayON", "icon-infocoordinates-displayOFF")
       document.getElementsByClassName('icon-infocoordinates-displayOFF')[0].title = getValue("displayOFFAllPoints")
 
+      // Eliminamos el num sobre el punto
+      for (let i = 0; i < document.getElementsByClassName('contenedorPunto').length; i += 1) {
+        document.getElementsByClassName('contenedorPunto')[i].style = 'display: none';
+      }
+      document.getElementsByClassName('contenedorPuntoSelect')[0].style = 'display: none'
 
       // Creamos las etiquetas de los puntos
       for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
@@ -443,7 +480,7 @@ export default class InfocoordinatesControl extends M.Control {
                 <table>
                     <tbody>
                       <tr>
-                        <td style="font-weight: bold">Punto ${i+1}</td></b>
+                        <td style="font-weight: bold">${getValue('point')} ${i+1}</td></b>
                       </tr>
                       <tr>
                         <td>X: ${varUTM[0]}</td>
@@ -495,14 +532,23 @@ export default class InfocoordinatesControl extends M.Control {
 
   removeAllDisplaysPoints() {
     // Modificamos el icono
-    document.getElementsByClassName('icon-infocoordinates-displayOFF')[0].classList.replace("icon-infocoordinates-displayOFF", "icon-infocoordinates-displayON")
-    document.getElementsByClassName('icon-infocoordinates-displayON')[0].title = getValue("displayONAllPoints")
+    document.getElementsByClassName('icon-infocoordinates-displayOFF')[0].classList.replace("icon-infocoordinates-displayOFF", "icon-infocoordinates-displayON");
+    document.getElementsByClassName('icon-infocoordinates-displayON')[0].title = getValue("displayONAllPoints");
+
+    // Mostramos el num sobre el punto
+    for (let i = 0; i < document.getElementsByClassName('contenedorPunto').length; i += 1) {
+      document.getElementsByClassName('contenedorPunto')[i].style = 'display: block';
+    }
+    document.getElementsByClassName('contenedorPuntoSelect')[0].style = 'display: block'
 
 
     // Eliminamos todas las etiquetas de los puntos
     const numOverlays = this.map_.getMapImpl().getOverlays().getArray().length;
-    for (let i = numOverlays; i > -1; i -= 1) {
-      this.map_.getMapImpl().removeOverlay(this.map_.getMapImpl().getOverlays().getArray()[i]);
+    for (let i = numOverlays - 1; i > -1; i -= 1) {
+      if (this.map_.getMapImpl().getOverlays().array_[i].options.element.className === 'm-popup m-collapsed') {
+        this.map_.getMapImpl().removeOverlay(this.map_.getMapImpl().getOverlays().getArray()[i]);
+      }
+
     }
   }
 
@@ -546,6 +592,12 @@ export default class InfocoordinatesControl extends M.Control {
 
     //Elimino todas las features
     this.layerFeatures.removeFeatures((this.layerFeatures.getFeatures()));
+
+    // Elimino todos los popups del mapa
+    const numOverlays = this.map_.getMapImpl().getOverlays().getArray().length;
+    for (let i = numOverlays - 1; i > -1; i -= 1) {
+      this.map_.getMapImpl().removeOverlay(this.map_.getMapImpl().getOverlays().getArray()[i]);
+    }
 
     //Reseteo el contador de tabs
     this.numTabs = 0;

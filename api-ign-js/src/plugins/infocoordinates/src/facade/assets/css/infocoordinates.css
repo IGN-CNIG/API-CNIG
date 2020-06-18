@@ -136,6 +136,26 @@
     width: max-content;
 }
 
+.contenedorPuntoSelect {
+    position: absolute;
+    top: -18px;
+    left: -8px;
+    font-size: 15px;
+    color: white;
+    font-family: sans;
+    -webkit-text-stroke: 0.8px black;
+}
+
+.contenedorPunto {
+    position: absolute;
+    top: -18px;
+    left: -8px;
+    font-size: 15px;
+    color: white;
+    font-family: sans;
+    -webkit-text-stroke: 0.8px #2690e7;
+}
+
 .m-infocoordinates-title {
     line-height: 40px;
     background-color: #71a7d3;
