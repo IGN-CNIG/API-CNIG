@@ -45,7 +45,7 @@
   "responsible": "Responsible",
   "access_constraints": "Access constraints",
   "use_constraints": "Use constraints",
-  "online_resource": "Online resource",
+  "online_resources": "Online resources",
   "show_service_info": "Show service information",
   "hide_service_info": "Hide service information"
 }

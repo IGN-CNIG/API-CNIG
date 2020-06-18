@@ -703,6 +703,10 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   font-size: 16px !important;
 }
 
+#m-fulltoc-addservices-results {
+  min-width: 400px;
+}
+
 #m-fulltoc-addservices-results > div {
   margin: 1rem 0.5rem 0rem 0.5rem;
 }

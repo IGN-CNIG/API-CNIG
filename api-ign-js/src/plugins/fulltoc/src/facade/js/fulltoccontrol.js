@@ -205,12 +205,11 @@ export default class FullTOCControl extends M.Control {
               query_metadata: getValue('query_metadata'),
               download_center: getValue('download_center'),
               see_more: getValue('see_more'),
-              service: getValue('service'),
               metadata_abstract: getValue('metadata_abstract'),
               responsible: getValue('responsible'),
               access_constraints: getValue('access_constraints'),
               use_constraints: getValue('use_constraints'),
-              online_resource: getValue('online_resource'),
+              online_resources: getValue('online_resources'),
             },
           };
 
@@ -249,13 +248,13 @@ export default class FullTOCControl extends M.Control {
 
               const dataid = metadataText.split('<gmd:MD_DataIdentification>')[1];
               const legal = metadataText.split('<gmd:MD_LegalConstraints>')[1];
-              const transfer = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1];
+              const transfer = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:onLine>');
               let metadataService;
               let metadataAbstract;
               let responsible;
               let accessConstraint;
               let useConstraint;
-              let onlineResource;
+              let onlineResources;
 
               try {
                 metadataService = dataid.split('<gmd:CI_Citation>')[1].split('</gmd:CI_Citation>')[0]
@@ -272,8 +271,13 @@ export default class FullTOCControl extends M.Control {
               }
 
               try {
-                responsible = dataid.split('<gmd:pointOfContact>')[1].split('<gmd:organisationName>')[1]
+                const poc = dataid.split('<gmd:pointOfContact>')[1];
+                responsible = poc.split('<gmd:organisationName>')[1]
                   .split('</gmd:organisationName>')[0].split('CharacterString>')[1].split('</gco')[0].trim();
+                if (poc.indexOf('<gmd:CI_OnlineResource>') > -1) {
+                  const link = poc.split('<gmd:CI_OnlineResource>')[1].split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim();
+                  responsible = `<a href="${link}" target="_blank">${responsible}</a>`;
+                }
               } catch (err) {
                 responsible = '';
               }
@@ -293,9 +297,21 @@ export default class FullTOCControl extends M.Control {
               }
 
               try {
-                onlineResource = transfer.split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim();
+                if (transfer.length > 0) {
+                  onlineResources = [];
+                  transfer.forEach((t) => {
+                    if (t.indexOf('<gmd:name>') > -1 && t.indexOf('<gmd:URL>')) {
+                      const link = {
+                        name: t.split('<gmd:name>')[1].split('</gmd:name>')[0].split('CharacterString>')[1].split('</gco')[0].trim(),
+                        url: t.split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim(),
+                      };
+
+                      onlineResources.push(link);
+                    }
+                  });
+                }
               } catch (err) {
-                onlineResource = '';
+                onlineResources = '';
               }
 
               if (!M.utils.isNullOrEmpty(metadataService)) {
@@ -323,8 +339,8 @@ export default class FullTOCControl extends M.Control {
                 vars.extended = true;
               }
 
-              if (!M.utils.isNullOrEmpty(onlineResource)) {
-                vars.onlineResource = onlineResource;
+              if (!M.utils.isNullOrEmpty(onlineResources)) {
+                vars.onlineResources = onlineResources;
                 vars.extended = true;
               }
 

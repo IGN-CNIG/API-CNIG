@@ -69,6 +69,7 @@
         <select name="staticDivision" id="selectStaticDivision">
             <option value="0">0 - Dinámico</option>
             <option value="1">1 - Estático</option>
+            <option value="2">2 - Mixto</option>
         </select>
         <label for="inputOpacityVal">Parámetro opacityVal</label>
         <input type="number" min="0" max="100" step="1" name="opacityVal" id="inputOpacityVal" list="opacityValSug">
@@ -92,6 +93,12 @@
         <label for="inputDefaultLyrD">Parámetro defaultLyrD</label>
         <input type="number" min="0" step="1" name="defaultLyrD" id="inputDefaultLyrD" list="defaultLyrDSug">
         <datalist id="defaultLyrDSug"><option value="1"></option></datalist>
+        <label for="selectInterface">Selector de interface</label>
+        <select name="interface" id="selectInterface">
+            <option value=""></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -123,16 +130,15 @@
         });
         let mp,collapsed,collapsible,
         layers = [
-            'WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo',    
             'WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas',
             'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
             'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
             'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
             'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
             'WMS*AMS_1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957'],
-            staticDivision,opacityVal,comparisonMode,defaultLyrA,defaultLyrB,defaultLyrC,defaultLyrD;
+            staticDivision, opacityVal, comparisonMode, defaultLyrA, defaultLyrB, defaultLyrC, defaultLyrD,interface;
         crearPlugin({
-            layers: layers,
+            layers: layers
         });
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -146,23 +152,25 @@
         const inputDefaultLyrB = document.getElementById("inputDefaultLyrB");
         const inputDefaultLyrC = document.getElementById("inputDefaultLyrC");
         const inputDefaultLyrD = document.getElementById("inputDefaultLyrD");
-        selectPosicion.addEventListener('change',cambiarTest);
-        selectCollapsed.addEventListener('change',cambiarTest);
-        selectCollapsible.addEventListener('change',cambiarTest);
-        inputLayer.addEventListener('change',cambiarTest);
-        selectStaticDivision.addEventListener('change',cambiarTest);
-        inputOpacityVal.addEventListener('change',cambiarTest);
-        selectComparisonMode.addEventListener('change',cambiarTest);
-        inputDefaultLyrA.addEventListener('change',cambiarTest);
-        inputDefaultLyrB.addEventListener('change',cambiarTest);
-        inputDefaultLyrC.addEventListener('change',cambiarTest);
-        inputDefaultLyrD.addEventListener('change',cambiarTest);
-        
-        function cambiarTest(){
+        const selectInterface = document.getElementById("selectInterface");
+        selectPosicion.addEventListener('change', cambiarTest);
+        selectCollapsed.addEventListener('change', cambiarTest);
+        selectCollapsible.addEventListener('change', cambiarTest);
+        inputLayer.addEventListener('change', cambiarTest);
+        selectStaticDivision.addEventListener('change', cambiarTest);
+        inputOpacityVal.addEventListener('change', cambiarTest);
+        selectComparisonMode.addEventListener('change', cambiarTest);
+        inputDefaultLyrA.addEventListener('change', cambiarTest);
+        inputDefaultLyrB.addEventListener('change', cambiarTest);
+        inputDefaultLyrC.addEventListener('change', cambiarTest);
+        inputDefaultLyrD.addEventListener('change', cambiarTest);
+        selectInterface.addEventListener('change', cambiarTest)
+
+        function cambiarTest() {
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             let collapsedValor = selectCollapsed.options[selectCollapsed.selectedIndex].value;
-            collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor=="true") : "";
+            collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor == "true") : "";
             let collapsibleValor = selectCollapsible.options[selectCollapsible.selectedIndex].value;
             collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == "true") : "";
             objeto.layers = inputLayer.value != "" ? inputLayer.value : layers;
@@ -173,8 +181,10 @@
             defaultLyrB = inputDefaultLyrB.value != "" ? objeto.defaultLyrB = inputDefaultLyrB.value : "";
             defaultLyrC = inputDefaultLyrC.value != "" ? objeto.defaultLyrC = inputDefaultLyrC.value : "";
             defaultLyrD = inputDefaultLyrD.value != "" ? objeto.defaultLyrD = inputDefaultLyrD.value : "";
+            let interfaceValor = selectInterface.options[selectInterface.selectedIndex].value;
+            interface = interfaceValor != "" ? objeto.interface = (interfaceValor == "true") : "";
             map.removePlugins(mp);
-            crearPlugin(objeto);            
+            crearPlugin(objeto);
         }
 
         function crearPlugin(propiedades){

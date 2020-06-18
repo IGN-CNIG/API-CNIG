@@ -7,19 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>Layer Comparison Test</title>
-
-    <!--<link type="text/css" rel="stylesheet" href="http://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign-1.0.0.ol.min.css" />--><!-- Estilos de MAPEA -->
-    <!--<link type="text/css" rel="stylesheet" href="http://componentes.ign.es/api-core/assets/css/apiign-1.0.0.ol.min.css">--><!-- Estilos de APICNIG -->
-    <link type="text/css" rel="stylesheet" href="http://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign-1.2.0.ol.min.css" /><!-- Estilos de MAPEA -->
-
-    <!-- CSS Plugins APICNIG -->
-    <link type="text/css" rel="stylesheet" href="http://componentes.ign.es/api-core/plugins/backimglayer/backimglayer.ol.min.css"  />                   <!-- CSS Plugin BackImgLayer: Selector de capas -->
-    <!--<link type="text/css" rel="stylesheet" href="http://api-ign-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.css" />-->   <!-- CSS Plugin ShareMap-->
-
-
-    <link rel="icon" href="favicon.svg" sizes="any" type="image/svg+xml">
-
-
+    <link href="http://mapea4-sigc.juntadeandalucia.es/assets/css/mapea-5.1.0.ol.min.css" rel="stylesheet" />
+    <link href="../dist/lyrcompare.ol.min.css" rel="stylesheet" />
     <style rel="stylesheet">
         html,
         body {
@@ -34,20 +23,34 @@
 
 <body>
     <div id="mapjs" class="container"></div>
-
-    <!-- Librería de MAPEA -->
-    <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/js/apiign-1.2.0.ol.min.js"></script>
-    <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/js/configuration-1.2.0.js"></script>
-    
-    <!-- Librería de APICNIG 1.0.0 en IGN-->
-    <!--
-    <script type="text/javascript" src="http://componentes.ign.es/api-core/js/apiign-1.0.0.ol.min.js"></script>
-    <script type="text/javascript" src="http://componentes.ign.es/api-core/js/configuration-1.0.0.js"></script>
-    -->
-    <!-- Plugins APICNIG -->
-    <script type="text/javascript" src="http://componentes.ign.es/api-core/plugins/backimglayer/backimglayer.ol.min.js"></script>                   <!-- JS Plugin BackImgLayer: Selector de capas -->
-    <!--<script type="text/javascript" src="http://api-ign-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.js"></script>-->  <!-- JS Plugin ShareMap-->
-    <script type="text/javascript" src="/main.js"></script>
+    <script type="text/javascript" src="http://mapea4-sigc.juntadeandalucia.es/js/mapea-5.1.0.ol.min.js"></script>
+    <script type="text/javascript" src="http://mapea4-sigc.juntadeandalucia.es/js/configuration-5.1.0.js"></script>
+    <script type="text/javascript" src="../dist/lyrcompare.ol.min.js"></script>
+    <script type="text/javascript">
+        const map = M.map({
+            container: 'mapjs',
+        });
+        const mp = new M.plugin.LyrCompare({
+          position: 'TL',
+          layers: [
+            'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
+            'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
+            'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
+            'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
+          ],
+          collapsible: true,
+          collapsed: true,
+          staticDivision: 1,
+          opacityVal: 100,
+          comparisonMode: 0,
+          defaultLyrA: 1,
+          defaultLyrB: 2,
+          defaultLyrC: 3,
+          defaultLyrD: 4,
+          interface: true,
+        });
+        map.addPlugin(mp);
+    </script>
 </body>
 
 </html>
