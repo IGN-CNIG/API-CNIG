@@ -271,8 +271,13 @@ export default class FullTOCControl extends M.Control {
               }
 
               try {
-                responsible = dataid.split('<gmd:pointOfContact>')[1].split('<gmd:organisationName>')[1]
+                const poc = dataid.split('<gmd:pointOfContact>')[1];
+                responsible = poc.split('<gmd:organisationName>')[1]
                   .split('</gmd:organisationName>')[0].split('CharacterString>')[1].split('</gco')[0].trim();
+                if (poc.indexOf('<gmd:CI_OnlineResource>') > -1) {
+                  const link = poc.split('<gmd:CI_OnlineResource>')[1].split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim();
+                  responsible = `<a href="${link}" target="_blank">${responsible}</a>`;
+                }
               } catch (err) {
                 responsible = '';
               }
