@@ -273,7 +273,22 @@ export default class InfocoordinatesControl extends M.Control {
       },
     });
 
-    this.displayPoint(numPoint);
+    // Calculamos el número de elementos de numPoints que hay
+    const countPoints = document.getElementsByClassName('contenedorPunto').length + document.getElementsByClassName('contenedorPuntoSelect').length;
+    // Si el numPoint que se pasa es mayor que la cantidad de numPoints que existe, quiere decir que es nuevo, se añade.
+    // En el caso de que no sea nuevo, se modifica el estilo del punto.
+    if (numPoint > countPoints) {
+      this.displayPoint(numPoint);
+    } else {
+      document.getElementsByClassName('contenedorPuntoSelect')[0].classList.replace('contenedorPuntoSelect', 'contenedorPunto');
+      document.getElementsByClassName('contenedorPunto')[document.getElementsByClassName('contenedorPunto').length - numPoint].classList.replace('contenedorPunto', 'contenedorPuntoSelect');
+
+      // Eliminamos las etiquetas de los puntos
+      if (document.getElementsByClassName('icon-infocoordinates-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
+        this.removeAllDisplaysPoints();
+      }
+    }
+
     this.layerFeatures.getFeatures().map((elemento) => (elemento.setStyle(this.pointDisable)));
     let featureSelected = this.layerFeatures.getFeatureById(numPoint);
     featureSelected.setStyle(this.point);
