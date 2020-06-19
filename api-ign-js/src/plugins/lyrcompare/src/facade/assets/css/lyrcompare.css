@@ -344,6 +344,13 @@ div#m-lyrcompare-titulo {
 	width: 2.5rem;
 	top: 0;
 	left: 0;
+	visibility: hidden;
+}
+
+.lyrcompare-swipe-control.vertical,
+.lyrcompare-swipe-control.horizontal,
+.lyrcompare-swipe-control.vertical.horizontal{
+	visibility: visible;
 }
 
 .lyrcompare-swipe-control .control-icon::before {
@@ -388,13 +395,22 @@ div#m-lyrcompare-titulo {
 }
 .lyrcompare-swipe-control .control-icon {
 	cursor: grabbing;
-	visibility: visible;
+	visibility: hidden;
 }
 .lyrcompare-swipe-control.static,
-.lyrcompare-swipe-control.static.vertical::before,
-.lyrcompare-swipe-control.static.horizontal::after{
+.lyrcompare-swipe-control.vertical.static::before,
+.lyrcompare-swipe-control.horizontal.static::after{
 	cursor: auto !important;
 }
+
 .lyrcompare-swipe-control.static .control-icon{
+	visibility: hidden !important;
+}
+
+.lyrcompare-swipe-control.dynamic .control-icon{
+	visibility: visible !important;
+}
+.lyrcompare-swipe-control.off,
+.lyrcompare-swipe-control.off .control-icon{
 	visibility: hidden;
 }
