@@ -40,7 +40,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
       this.addLayerC(layerC);
 
       const layerD = [optionsE.lyrD].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
-      this.addLayerC(layerD);
+      this.addLayerD(layerD);
     }
   }
 
@@ -104,16 +104,6 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    */
   setComparisonMode(comparisonMode) {
     this.comparisonMode = comparisonMode;
-    const swipeControl = document.querySelector('.lyrcompare-swipe-control');
-    if (swipeControl) {
-      if (this.comparisonMode == 1) {
-        swipeControl.classList = 'lyrcompare-swipe-control vertical' + (this.staticDivision == 1 ? ' static' : '');
-      } else if (this.comparisonMode == 2) {
-        swipeControl.classList = 'lyrcompare-swipe-control horizontal' + (this.staticDivision == 1 ? ' static' : '');
-      } else if (this.comparisonMode == 3) {
-        swipeControl.classList = 'lyrcompare-swipe-control vertical horizontal' + (this.staticDivision == 1 ? ' static' : '');
-      }
-    }
     this.updatePosition();
   }
 
@@ -263,18 +253,26 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
    * 
    */
   updatePosition() {
-    const swipeIcon = document.querySelector('.lyrcompare-swipe-control .control-icon');
-    if (swipeIcon) {
-      swipeIcon.style.visibility = this.staticDivision == 1 ? 'hidden' : 'visible';
-    }
-    const lienzoMapa = this.map_.getSize();
     const swipeControl = document.querySelector('.lyrcompare-swipe-control');
-    swipeControl.style.left = (lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2) + 'px';
-    swipeControl.style.top = (lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2) + 'px';
-    this.pos = [lienzoMapa[0] / 2, lienzoMapa[1] / 2];
-    this.swipeClicked = false;
-    if (this.getMap()) this.getMap().renderSync();
+    if (swipeControl) {
+      if (this.comparisonMode == 1) {
+        swipeControl.classList = 'lyrcompare-swipe-control vertical' + (this.staticDivision == 1 ? ' static' : ' dynamic');
+      } else if (this.comparisonMode == 2) {
+        swipeControl.classList = 'lyrcompare-swipe-control horizontal' + (this.staticDivision == 1 ? ' static' : ' dynamic');
+      } else if (this.comparisonMode == 3) {
+        swipeControl.classList = 'lyrcompare-swipe-control vertical horizontal' + (this.staticDivision == 1 ? ' static' : ' dynamic');
+      }
+    }
+    if (this.getMap()) {
+      const lienzoMapa = this.map_.getSize();
+      swipeControl.style.left = (lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2) + 'px';
+      swipeControl.style.top = (lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2) + 'px';
+      this.pos = [lienzoMapa[0] / 2, lienzoMapa[1] / 2];
+      this.swipeClicked = false;
+      this.getMap().renderSync();
+    }
   }
+
   /* @private
      */
   precomposeA_(e) {
@@ -460,6 +458,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     swipeControl.addEventListener('mouseup', () => this.swipeClicked = false);
     swipeControl.addEventListener('touchstart', () => this.swipeClicked = true);
     swipeControl.addEventListener('touchend', () => this.swipeClicked = false);
+    this.updatePosition();
   }
 
   /**

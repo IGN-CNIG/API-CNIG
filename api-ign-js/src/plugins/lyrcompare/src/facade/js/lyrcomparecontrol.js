@@ -488,12 +488,15 @@ export default class LyrCompareControl extends M.Control {
    */
   deactivateCurtain() {
     this.comparisonMode = 0;
-    this.layerSelectedA.setVisible(false);
-    this.layerSelectedB.setVisible(false);
-    if (this.layerSelectedC !== undefined && this.layerSelectedC !== undefined) {
+    if (this.layerSelectedA !== null && this.layerSelectedB !== null) {
+      this.layerSelectedA.setVisible(false);
+      this.layerSelectedB.setVisible(false);
+    }
+    if (this.layerSelectedC !== null && this.layerSelectedD !== null && this.layerSelectedC !== undefined && this.layerSelectedD !== undefined) {
       this.layerSelectedC.setVisible(false);
       this.layerSelectedD.setVisible(false);
     }
+    document.querySelector('.lyrcompare-swipe-control').classList.add('off');
     this.removeEffectsComparison();
     this.updateControls();
   }
@@ -519,6 +522,7 @@ export default class LyrCompareControl extends M.Control {
     this.removeActivate();
     this.activateByMode();
 
+    const swapControl = document.querySelector('.lyrcompare-swipe-control');
     if (this.comparisonMode == 0) {
       this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
         item.disabled = true;
@@ -526,7 +530,7 @@ export default class LyrCompareControl extends M.Control {
       this.template.querySelector('input').disabled = true; //Deshabilita el range del radio
       return;
     } else if (this.comparisonMode === 1) {
-
+      if (swapControl) swapControl.style.opacity = '1';
       this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add("lyrcompare-icon-columns-2");
       this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add("lyrcompare-icon-columns-1");
       this.template.querySelector('#m-lyrcompare-lyrA-cont').style.display = 'block';
@@ -534,6 +538,7 @@ export default class LyrCompareControl extends M.Control {
       this.template.querySelector('#m-lyrcompare-lyrA').disabled = false;
       this.template.querySelector('#m-lyrcompare-lyrB').disabled = false;
     } else if (this.comparisonMode === 2) {
+      if (swapControl) swapControl.style.opacity = '1';
       this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add("lyrcompare-icon-columns-4");
       this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add("lyrcompare-icon-columns-3");
       this.template.querySelector('#m-lyrcompare-lyrA-cont').style.display = 'block';
@@ -541,6 +546,7 @@ export default class LyrCompareControl extends M.Control {
       this.template.querySelector('#m-lyrcompare-lyrA').disabled = false;
       this.template.querySelector('#m-lyrcompare-lyrB').disabled = false;
     } else if (this.comparisonMode === 3) {
+      if (swapControl) swapControl.style.opacity = '1';
       this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
         item.disabled = false;
       });
@@ -579,6 +585,10 @@ export default class LyrCompareControl extends M.Control {
     this.template.querySelector('#m-lyrcompare-lyrD-cont').style.display = 'none';
     this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList = '';
     this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList = '';
+    const swapControl = document.querySelector('.lyrcompare-swipe-control');
+    if (swapControl) {
+      swapControl.style.opacity = '0';
+    }
   }
 
   /**
@@ -636,7 +646,7 @@ export default class LyrCompareControl extends M.Control {
               url: urlLayer[2],
               name: urlLayer[3]
             });
-            if(this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0){
+            if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
               this.map.removeLayers(this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0]);
             }
             this.map.addLayers(newLayer);
