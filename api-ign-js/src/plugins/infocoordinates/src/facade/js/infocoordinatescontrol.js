@@ -119,6 +119,7 @@ export default class InfocoordinatesControl extends M.Control {
   activate() {
     this.map_.on(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'crosshair';
+    this.map_.getFeatureHandler().deactivate();
   }
 
 
@@ -132,6 +133,7 @@ export default class InfocoordinatesControl extends M.Control {
   deactivate() {
     this.map_.un(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'default';
+    this.map_.getFeatureHandler().activate();
   }
 
 
