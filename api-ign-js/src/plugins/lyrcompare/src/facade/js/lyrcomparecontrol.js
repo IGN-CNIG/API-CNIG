@@ -496,7 +496,6 @@ export default class LyrCompareControl extends M.Control {
       this.layerSelectedC.setVisible(false);
       this.layerSelectedD.setVisible(false);
     }
-    document.querySelector('.lyrcompare-swipe-control').classList.add('off');
     this.removeEffectsComparison();
     this.updateControls();
   }
