@@ -643,6 +643,10 @@ div.m-vector-layer-actions .active-tool {
   font-size: 16px !important;
 }
 
+#m-vectors-addwfs-results {
+  min-width: 400px;
+}
+
 #m-vectors-addwfs-results > div {
   margin: 1rem 0.5rem 0rem 0.5rem;
 }

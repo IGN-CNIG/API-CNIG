@@ -102,8 +102,8 @@ const ocupacionSuelo = new M.layer.WMTS({
   visibility: false,
 });
 
-map.addLayers(layerUA);
+/*map.addLayers(layerUA);
 map.addLayers(layerinicial);
-map.addLayers(ocupacionSuelo);
+map.addLayers(ocupacionSuelo);*/
 
 window.map = map;

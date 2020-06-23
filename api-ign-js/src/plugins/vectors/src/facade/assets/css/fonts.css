@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'vectors';
-  src: url('../fonts/vectors.eot?78041188');
-  src: url('../fonts/vectors.eot?78041188#iefix') format('embedded-opentype'),
-       url('../fonts/vectors.woff2?78041188') format('woff2'),
-       url('../fonts/vectors.woff?78041188') format('woff'),
-       url('../fonts/vectors.ttf?78041188') format('truetype'),
-       url('../fonts/vectors.svg?78041188#vectors') format('svg');
+  src: url('../fonts/vectors.eot?33558329');
+  src: url('../fonts/vectors.eot?33558329#iefix') format('embedded-opentype'),
+       url('../fonts/vectors.woff2?33558329') format('woff2'),
+       url('../fonts/vectors.woff?33558329') format('woff'),
+       url('../fonts/vectors.ttf?33558329') format('truetype'),
+       url('../fonts/vectors.svg?33558329#vectors') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -32,7 +32,7 @@ div.m-vectors [class*=" icon-"] {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.m-vectors .icon-vectors:before { content: '\e800'; }
+.m-vectors .icon-vectors:before { content: '\e819'; }
 .m-vectors .icon-visible:before { content: '\e801'; }
 .m-vectors .icon-invisible:before { content: '\e802'; }
 .m-vectors .icon-points:before { content: '\e80e'; }
