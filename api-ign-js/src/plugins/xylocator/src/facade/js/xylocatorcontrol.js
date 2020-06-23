@@ -137,7 +137,7 @@ export default class XYLocatorControl extends M.Control {
       }]);
 
       this.coordinatesLayer = new M.layer.Vector({
-        name: getValue('search_result'),
+        name: getValue('coordinateresult'),
       }, { displayInLayerSwitcher: false });
 
       const feature = new M.Feature('localizacion', {

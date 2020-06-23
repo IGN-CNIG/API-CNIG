@@ -473,7 +473,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
             // New layer with geometry
             this.clickedElementLayer = new M.layer.GeoJSON({
-              name: 'Resultado búsquedas',
+              name: getValue('searchresult'),
               source: {
                 type: 'FeatureCollection',
                 features: [featureJSON],
@@ -526,7 +526,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   destroyMapLayers() {
     for (let i = 0; i < this.map.getLayers().length; i += 1) {
-      if (this.map.getLayers()[i].name === 'Resultado búsquedas') {
+      if (this.map.getLayers()[i].name === getValue('searchresult')) {
         this.map.removeLayers(this.map.getLayers()[i]);
         this.map.removePopup();
       }
@@ -774,7 +774,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
       // New layer with geometry
       this.clickedElementLayer = new M.layer.GeoJSON({
-        name: 'Resultado búsquedas',
+        name: getValue('searchresult'),
         source: {
           type: 'FeatureCollection',
           features: [featureJSON],
@@ -822,7 +822,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
     // New layer with geometry
     this.clickedElementLayer = new M.layer.GeoJSON({
-      name: 'Resultado búsquedas',
+      name: getValue('searchresult'),
       source: {
         type: 'FeatureCollection',
         features: [featureJSON],
@@ -892,7 +892,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       const longitude = parseFloat(latLngArray[1]);
       this.map.removeLayers(this.clickedElementLayer);
       const newGeojson = {
-        name: 'Resultado búsquedas',
+        name: getValue('searchresult'),
         source: {
           type: 'FeatureCollection',
           features: [{
@@ -1823,7 +1823,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }]);
 
       this.coordinatesLayer = new M.layer.Vector({
-        name: getValue('search_result'),
+        name: getValue('coordinateresult'),
       }, { displayInLayerSwitcher: false });
 
       const feature = new M.Feature('localizacion', {

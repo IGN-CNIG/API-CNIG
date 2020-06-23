@@ -3,6 +3,7 @@
     "exists": "No existe dirección asociada para esta ubicación.",
     "results": "No se encuentran resultados para esta petición."
   },
+  "searchresult": "searchresult",
   "tooltip": "Búsqueda de lugares",
   "deleteresults": "Borrar resultados de la búsqueda",
   "obtener": "Obtener dirección en un punto del mapa",

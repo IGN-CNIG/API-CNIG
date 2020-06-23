@@ -5,7 +5,7 @@
     "transforming": "Error performing the transformation.",
     "wrong_values": "Some value entered are not correct. Remember that minutes and seconds must be between 0 and 59 and degrees between 0 and 180."
   },
-  "search_result": "Search results",
+  "coordinateresult": "coordinateresult",
   "tooltip": "Search by coordinates",
   "geographic": "Geographic",
   "zone": "zone",

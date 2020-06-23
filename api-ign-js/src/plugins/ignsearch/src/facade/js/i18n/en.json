@@ -3,6 +3,7 @@
     "exists": "There is no associated address for this location.",
     "results": "No results found for this request."
   },
+  "searchresult": "searchresult",
   "tooltip": "Search places",
   "deleteresults": "Delete search results",
   "obtener": "Get direction at a point on the map",
