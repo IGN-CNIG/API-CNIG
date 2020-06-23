@@ -166,6 +166,14 @@ export default class IGNSearchControl extends M.Control {
      */
     this.zoom = zoom;
 
+    /**
+     * searchProvCCAA
+     *
+     * @private
+     * @type { Boolean }
+     */
+    this.searchProvCCAA = false;
+
 
     /**
      * Reverse geocoder coordinates
@@ -830,8 +838,11 @@ export default class IGNSearchControl extends M.Control {
       this.getFindData(listElement, this.allCandidates).then((geoJsonData) => {
         if (geoJsonData.includes('"tip_via":"CALLE"') || geoJsonData.includes('"tip_via":"AVENIDA"')) {
           this.drawGeocoderResult(geoJsonData);
+          this.searchProvCCAA = false;
         } else {
           this.drawGeocoderResultProv(geoJsonData);
+          this.map.removePopup();
+          this.searchProvCCAA = true;
         }
       });
     } else { // if item comes from nomenclator
@@ -855,7 +866,11 @@ export default class IGNSearchControl extends M.Control {
         if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
           this.setScale(17061); // last scale requested by our client: 2000
         }
-        this.map.setZoom(zoom);
+        // En el caso de que se haga una búsqueda de Provincias o CCAA, se dejaría el zoom que
+        // calcula el servicio para no afectar en la visualización de la geometría.
+        if (!this.searchProvCCAA) {
+          this.map.setZoom(zoom);
+        }
         this.fire('ignsearch:entityFound', [extent]);
       });
     }
