@@ -8,6 +8,8 @@
     "noubi": "There is no associated address for this location.",
     "wrong_values": "Some value entered are not correct. Remember that minutes and seconds must be between 0 and 59 and degrees between 0 and 180."
   },
+  "search_result": "coordinateresult",
+
   "tooltip": "Search places",
   "geographic": "Geographic",
   "zone": "zone",
