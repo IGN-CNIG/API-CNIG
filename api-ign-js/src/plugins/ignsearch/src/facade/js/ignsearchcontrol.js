@@ -515,46 +515,58 @@ export default class IGNSearchControl extends M.Control {
       let datosGeometria;
       let datosCoordenadas;
       if (urlSinJSON.includes('MULTIPOLYGON (((')) {
-        datosGeometria = urlSinJSON.split('(((');
-        datosCoordenadas = datosGeometria[1].split('), (');
+        if (geoJsonData2.includes('"type":"MultiPolygon"')) {
+          datosGeometria = urlSinJSON.split('(((');
+          datosCoordenadas = datosGeometria[1].split('), (');
 
 
-        if (geoJsonData2.includes(']]]')) {
-          geoJsonData2 = geoJsonData2.replace(']]]', ']]]]');
-        }
+          if (geoJsonData2.includes(']]]')) {
+            geoJsonData2 = geoJsonData2.replace(']]]', ']]]]');
+          }
 
-        for (let i = 0; i < datosCoordenadas.length; i += 1) {
-          const hol = datosCoordenadas[i].substring(0, 9).replace('(', '');
+          for (let i = 0; i < datosCoordenadas.length; i += 1) {
+            const hol = datosCoordenadas[i].substring(0, 9).replace('(', '');
 
-          if (geoJsonData.includes('[[['.concat(hol))) {
-            geoJsonData2 = geoJsonData2.replace('[[['.concat(hol), '[[[['.concat(hol));
-          } else if (geoJsonData.includes(']],[['.concat(hol))) {
-            geoJsonData2 = geoJsonData2.replace(']],[['.concat(hol), ']]],[[['.concat(hol));
-          } else if (geoJsonData.includes('],['.concat(hol))) {
-            geoJsonData2 = geoJsonData2.replace('],['.concat(hol), ']],[['.concat(hol));
+            if (geoJsonData.includes('[[['.concat(hol))) {
+              geoJsonData2 = geoJsonData2.replace('[[['.concat(hol), '[[[['.concat(hol));
+            } else if (geoJsonData.includes(']],[['.concat(hol))) {
+              geoJsonData2 = geoJsonData2.replace(']],[['.concat(hol), ']]],[[['.concat(hol));
+            } else if (geoJsonData.includes('],['.concat(hol))) {
+              geoJsonData2 = geoJsonData2.replace('],['.concat(hol), ']],[['.concat(hol));
+            }
           }
         }
       } else if (urlSinJSON.includes('POLYGON ((')) {
-        datosGeometria = urlSinJSON.split('((');
-        datosCoordenadas = datosGeometria[1].split('), (');
+        if (geoJsonData2.includes('"type":"Polygon"')) {
+          datosGeometria = urlSinJSON.split('((');
+          datosCoordenadas = datosGeometria[1].split('), (');
 
 
-        if (geoJsonData2.includes(']]')) {
-          geoJsonData2 = geoJsonData2.replace(']]', ']]]');
-        }
-
-        geoJsonData2 = geoJsonData2.replace('Polygon', 'MultiPolygon');
-
-        for (let i = 0; i < datosCoordenadas.length; i += 1) {
-          const holita = datosCoordenadas[i].substring(0, 15).replace('(', '');
-
-          if (geoJsonData.includes('[[['.concat(holita))) {
-            geoJsonData2 = geoJsonData2.replace('[[['.concat(holita), '[[[['.concat(holita));
-          } else if (geoJsonData.includes('],['.concat(holita))) {
-            geoJsonData2 = geoJsonData2.replace('],['.concat(holita), ']],[['.concat(holita));
+          if (geoJsonData2.includes(']]')) {
+            geoJsonData2 = geoJsonData2.replace(']]', ']]]');
           }
+
+          geoJsonData2 = geoJsonData2.replace('Polygon', 'MultiPolygon');
+
+          for (let i = 0; i < datosCoordenadas.length; i += 1) {
+            const holita = datosCoordenadas[i].substring(0, 15).replace('(', '');
+
+            if (geoJsonData.includes('[[['.concat(holita))) {
+              geoJsonData2 = geoJsonData2.replace('[[['.concat(holita), '[[[['.concat(holita));
+            } else if (geoJsonData.includes('],['.concat(holita))) {
+              geoJsonData2 = geoJsonData2.replace('],['.concat(holita), ']],[['.concat(holita));
+            }
+          }
+        } else if (geoJsonData2.includes('"type":"MultiPolygon"')) {
+          geoJsonData2 = geoJsonData2.replace(']]],[[', ']],[[');
+          geoJsonData2 = geoJsonData2.replace('"type":"MultiPolygon"', '"type":"Polygon"');
         }
       }
+
+      if (geoJsonData2.includes('MultiMultiPolygon')) {
+        geoJsonData2 = geoJsonData2.replace('MultiMultiPolygon', 'MultiPolygon');
+      }
+      console.log(geoJsonData2);
       const featureJSON = JSON.parse(geoJsonData2);
 
       // featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
