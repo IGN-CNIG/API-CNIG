@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
 /**
  * @module M/impl/layer/WMS
@@ -256,32 +257,23 @@ class WMS extends LayerBase {
    * @function
    */
   addSingleLayer_() {
+    const selff = this;
     this.getCapabilities().then((getCapabilities) => {
       let capabilitiesLayer = getCapabilities.capabilities.Capability.Layer.Layer;
       if (isArray(capabilitiesLayer)) {
         for (let i = 0, ilen = capabilitiesLayer.length; i < ilen; i += 1) {
-          if (capabilitiesLayer[i].Name !== undefined && capabilitiesLayer[i].Name === this.facadeLayer_.name) {
+          if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name !== undefined && capabilitiesLayer[i].Name === selff.facadeLayer_.name) {
             capabilitiesLayer = capabilitiesLayer[i];
-          } else if (capabilitiesLayer[i].Name === undefined) {
-            capabilitiesLayer = capabilitiesLayer.Layer.filter(l => l.Name === this.facadeLayer_.name)[0];
+            this.addCapabilitiesMetadata(capabilitiesLayer);
+          } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name === undefined) {
+            if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
+              capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
+              this.addCapabilitiesMetadata(capabilitiesLayer);
+            }
           }
         }
       }
-
-      const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
-      const attribution = !isNullOrEmpty(capabilitiesLayer.Attribution) ? capabilitiesLayer.Attribution : '';
-      const metadataURL = !isNullOrEmpty(capabilitiesLayer.MetadataURL) ? capabilitiesLayer.MetadataURL : '';
-      const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
-
-      const capabilitiesMetadata = {
-        abstract,
-        attribution,
-        metadataURL,
-        style,
-      };
-      if (this.facadeLayer_.capabilitiesMetadata === undefined) {
-        this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
-      }
+      this.addCapabilitiesMetadata(capabilitiesLayer);
     });
 
     this.facadeLayer_.calculateMaxExtent().then((extent) => {
@@ -346,6 +338,29 @@ class WMS extends LayerBase {
       const animated = ((this.transparent === false) || (this.options.animated === true));
       this.ol3Layer.set('animated', animated);
     });
+  }
+
+  /**
+   * This function add metedata to layer from capabilities
+   *
+   * @private
+   * @function
+   */
+  addCapabilitiesMetadata(capabilitiesLayer) {
+    const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
+    const attribution = !isNullOrEmpty(capabilitiesLayer.Attribution) ? capabilitiesLayer.Attribution : '';
+    const metadataURL = !isNullOrEmpty(capabilitiesLayer.MetadataURL) ? capabilitiesLayer.MetadataURL : '';
+    const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
+
+    const capabilitiesMetadata = {
+      abstract,
+      attribution,
+      metadataURL,
+      style,
+    };
+    if (this.facadeLayer_.capabilitiesMetadata === undefined) {
+      this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
+    }
   }
 
   /**
