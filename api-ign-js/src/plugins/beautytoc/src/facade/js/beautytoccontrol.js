@@ -157,7 +157,7 @@ export default class BeautyTOCControl extends M.Control {
           M.dialog.error(getValue('exception.nocobertura'), 'AVISO');
         }
       });
-    } else if (layerFound !== null ){
+    } else if (layerFound !== null) {
       const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :
         layerFound.isVisible();
       layerFound.setVisible(!visibility);
