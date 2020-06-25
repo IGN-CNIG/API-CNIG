@@ -113,9 +113,12 @@ export default class BeautyTOCControl extends M.Control {
     const bboxFormatted = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
     const scroll = document.querySelector('#m-beautytoc-panel').scrollTop;
     const layerName = evt.currentTarget.querySelector('.m-beautytoc-eye span').dataset.layerName;
-    const layerFound = this.map_.getLayers({ name: layerName })[0];
+    const filtered = this.map_.getLayers({ name: layerName }).filter((l) => {
+      return l.displayInLayerSwitcher;
+    });
 
-    if (layerFound.url === 'https://www.ign.es/wms/pnoa-historico?' && !layerFound.isVisible()) {
+    const layerFound = filtered.length > 0 ? filtered[0] : null;
+    if (layerFound !== null && layerFound.url === 'https://www.ign.es/wms/pnoa-historico?' && !layerFound.isVisible()) {
       const width = document.querySelector('.m-mapea-container').offsetWidth;
       const height = document.querySelector('.m-mapea-container').offsetHeight;
       const urlCheck = layerFound.url.concat('SERVICE=WMS&VERSION=')
@@ -154,7 +157,7 @@ export default class BeautyTOCControl extends M.Control {
           M.dialog.error(getValue('exception.nocobertura'), 'AVISO');
         }
       });
-    } else {
+    } else if (layerFound !== null ){
       const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :
         layerFound.isVisible();
       layerFound.setVisible(!visibility);

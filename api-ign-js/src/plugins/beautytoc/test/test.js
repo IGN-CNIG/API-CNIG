@@ -11,7 +11,42 @@ const mp = new BeautyTOC({
   position: 'TR',
 });
 
+const mp2 = new M.plugin.LyrCompare({
+  position: 'TL',
+  layers: [
+    `WMS*Vuelo americano (Serie B, 1956-1957)*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957`,
+    `WMS*Vuelo Interministerial (1973-1986)*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986`,
+    `WMS*Vuelo Nacional (1981-1986)*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986`,
+    'WMS*OLISTAT (1997-1998)*https://www.ign.es/wms/pnoa-historico*OLISTAT',
+    'WMS*SIGPAC (1997-2003)*https://www.ign.es/wms/pnoa-historico*SIGPAC',
+    'WMS*PNOA 2004*https://www.ign.es/wms/pnoa-historico*PNOA2004',
+    'WMS*PNOA 2005*https://www.ign.es/wms/pnoa-historico*PNOA2005',
+    'WMS*PNOA 2006*https://www.ign.es/wms/pnoa-historico*PNOA2006',
+    'WMS*PNOA 2007*https://www.ign.es/wms/pnoa-historico*PNOA2007',
+    'WMS*PNOA 2008*https://www.ign.es/wms/pnoa-historico*PNOA2008',
+    'WMS*PNOA 2009*https://www.ign.es/wms/pnoa-historico*PNOA2009',
+    'WMS*PNOA 2010*https://www.ign.es/wms/pnoa-historico*PNOA2010',
+    'WMS*PNOA 2011*https://www.ign.es/wms/pnoa-historico*PNOA2011',
+    'WMS*PNOA 2012*https://www.ign.es/wms/pnoa-historico*PNOA2012',
+    'WMS*PNOA 2013*https://www.ign.es/wms/pnoa-historico*PNOA2013',
+    'WMS*PNOA 2014*https://www.ign.es/wms/pnoa-historico*PNOA2014',
+    'WMS*PNOA 2015*https://www.ign.es/wms/pnoa-historico*PNOA2015',
+    'WMS*PNOA 2016*https://www.ign.es/wms/pnoa-historico*PNOA2016',
+    'WMS*PNOA 2017*https://www.ign.es/wms/pnoa-historico*PNOA2017',
+  ],
+  collapsible: true,
+  collapsed: true,
+  staticDivision: 1,
+  opacityVal: 100,
+  comparisonMode: 0,
+  defaultLyrA: 1,
+  defaultLyrB: 2,
+  defaultLyrC: 3,
+  defaultLyrD: 4,
+});
+
 map.addPlugin(mp);
+map.addPlugin(mp2);
 const layers = [
   new M.layer.WMS({
     url: 'http://www.ign.es/wms-inspire/cuadriculas?',
