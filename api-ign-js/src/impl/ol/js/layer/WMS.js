@@ -259,13 +259,13 @@ class WMS extends LayerBase {
     this.getCapabilities().then((getCapabilities) => {
       let capabilitiesLayer = getCapabilities.capabilities.Capability.Layer.Layer;
       if (isArray(capabilitiesLayer)) {
-        capabilitiesLayer.forEach((layer) => {
-          if (layer.name !== undefined && layer.name === this.facadeLayer_.name) {
-            capabilitiesLayer = layer;
-          } else if (layer.name === undefined) {
+        for (let i = 0, ilen = capabilitiesLayer.length; i < ilen; i += 1) {
+          if (capabilitiesLayer[i].Name !== undefined && capabilitiesLayer[i].Name === this.facadeLayer_.name) {
+            capabilitiesLayer = capabilitiesLayer[i];
+          } else if (capabilitiesLayer[i].Name === undefined) {
             capabilitiesLayer = capabilitiesLayer.Layer.filter(l => l.Name === this.facadeLayer_.name)[0];
           }
-        });
+        }
       }
 
       const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
