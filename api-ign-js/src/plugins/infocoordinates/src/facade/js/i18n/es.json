@@ -17,7 +17,7 @@
   "noDatafromWCS": "Sin datos",
   "removePoint": "Elimina el punto",
   "removeAllPoints": "Elimina todos los puntos",
-  "importAllPoints": "Importa todos los puntos",
+  "importAllPoints": "Exportar todos los puntos",
   "displayONAllPoints": "Mostrar coordenadas de todos los puntos",
   "displayOFFAllPoints": "Ocultar coordenadas de todos los puntos"
 

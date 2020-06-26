@@ -306,7 +306,7 @@ export default class InfocoordinatesControl extends M.Control {
                 <table>
                     <tbody>
                       <tr>
-                        <td style="font-weight: bold">${numPoint}</td></b>
+                        <td style="font-weight: bold; font-family: arial;">${numPoint}</td></b>
                       </tr>
                     </tbody>
                 </table>
@@ -506,7 +506,7 @@ export default class InfocoordinatesControl extends M.Control {
                         <td>Y: ${varUTM[1]}</td>
                       </tr>
                       <tr>
-                        <td>${getValue('altitude')} ${this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.Altitude}</td>
+                        <td>${getValue('altitude')} ${parseFloat(this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.Altitude).toFixed(2)}</td>
                       </tr>
                     </tbody>
                 </table>
