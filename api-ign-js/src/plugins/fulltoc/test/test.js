@@ -25,6 +25,21 @@ const precharged = {
       ],
     },
     {
+      name: 'PNOA',
+      services: [
+        {
+          name: 'PNOA Actual',
+          type: 'WMTS',
+          url: 'http://www.ign.es/wmts/pnoa-ma?',
+        },
+        {
+          name: 'PNOA Histórico',
+          type: 'WMS',
+          url: 'http://www.ign.es/wms/pnoa-historico?',
+        },
+      ],
+    },
+    {
       name: 'Transporte',
       services: [
         {
@@ -39,22 +54,47 @@ const precharged = {
         },
       ],
     },
+    {
+      name: 'Otros servicios',
+      services: [
+        {
+          name: 'Camino de Santiago',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/camino-santiago',
+        },
+        {
+          name: 'Redes Geodésicas',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/redes-geodesicas',
+        },
+        {
+          name: 'Planimetrías',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms/minutas-cartograficas',
+        },
+      ],
+    },
   ],
   services: [
     {
-      name: 'Camino de Santiago',
+      name: 'Catastro',
       type: 'WMS',
-      url: 'https://www.ign.es/wms-inspire/camino-santiago',
+      url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx',
     },
     {
-      name: 'Redes Geodésicas',
+      name: 'Cuadrículas Cartográficas',
       type: 'WMS',
-      url: 'https://www.ign.es/wms-inspire/redes-geodesicas',
+      url: 'http://www.ign.es/wms-inspire/cuadriculas',
     },
     {
-      name: 'Planimetrías',
+      name: 'Elevación',
       type: 'WMS',
-      url: 'https://www.ign.es/wms/minutas-cartograficas',
+      url: 'https://servicios.idee.es/wms-inspire/mdt',
+    },
+    {
+      name: 'Límites Administrativos',
+      type: 'WMS',
+      url: 'http://www.ign.es/wms-inspire/unidades-administrativas',
     },
   ],
 };

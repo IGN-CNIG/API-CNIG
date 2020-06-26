@@ -15,6 +15,8 @@ import addServicesTemplate from '../../templates/addservices';
 import resultstemplate from '../../templates/addservicesresults';
 import { getValue } from './i18n/language';
 
+const CATASTRO = 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
+
 export default class FullTOCControl extends M.Control {
   /**
    * @constructor
@@ -974,6 +976,10 @@ export default class FullTOCControl extends M.Control {
         for (let j = 0; j < this.capabilities.length; j += 1) {
           const name = this.capabilities[j].name;
           if (elmSel[i].id === name || elmSel[i].name === name) {
+            if (this.capabilities[j].url.indexOf(CATASTRO) > -1) {
+              this.capabilities[j].version = '1.1.1';
+            }
+
             this.capabilities[j].tiled = this.capabilities[j].type === 'WMTS';
             this.capabilities[j].options.origen = this.capabilities[j].type;
             layers.push(this.capabilities[j]);

@@ -837,6 +837,7 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 
 .table-results .table-layer-name:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 #m-fulltoc-addservices-results .m-fulltoc-service-capabilities {
