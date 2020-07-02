@@ -627,8 +627,13 @@ export default class GeorefimageControl extends M.Control {
       const vectorLayers = [];
       const wmsLayers = [];
       const otherBaseLayers = [];
+      const BreakException = {};
+
       layers.forEach((layer) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
+          if (encodedLayer === null) {
+            throw BreakException;
+          }
           // Vector layers must be added after non vector layers.
           if (!M.utils.isNullOrEmpty(encodedLayer)) {
             if (encodedLayer.type === 'Vector' || encodedLayer.type === 'KML') {

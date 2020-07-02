@@ -1,6 +1,9 @@
 /**
  * @module M/impl/control/GeorefimageControl
  */
+
+import { getValue } from '../../../facade/js/i18n/language';
+
 export default class GeorefimageControl extends M.impl.Control {
   /**
    * @classdesc
@@ -663,26 +666,56 @@ export default class GeorefimageControl extends M.impl.Control {
       const matrixIdsObj = capabilities.Contents.TileMatrixSet.filter((tileMatrixSet) => {
         return (tileMatrixSet.Identifier === matrixSet);
       })[0];
-      return {
-        baseURL: layerUrl,
-        imageFormat: layer.options.imageFormat || 'image/png',
-        layer: layerName,
-        matrices: matrixIdsObj.TileMatrix.map((tileMatrix, i) => {
-          return {
-            identifier: tileMatrix.Identifier,
-            matrixSize: [tileMatrix.MatrixHeight, tileMatrix.MatrixWidth],
-            scaleDenominator: tileMatrix.ScaleDenominator,
-            tileSize: [tileMatrix.TileWidth, tileMatrix.TileHeight],
-            topLeftCorner: tileMatrix.TopLeftCorner,
-          };
-        }),
-        matrixSet,
-        opacity: layerOpacity,
-        requestEncoding: layerReqEncoding,
-        style: 'default',
-        type: 'WMTS',
-        version: '1.3.0',
-      };
+
+      // if (matrixIdsObj === undefined) {
+      //   M.dialog.error(getValue('errorProjectionCapabilities'));
+      // }
+      // return {
+      //   baseURL: layerUrl,
+      //   imageFormat: layer.options.imageFormat || 'image/png',
+      //   layer: layerName,
+      //   matrices: matrixIdsObj.TileMatrix.map((tileMatrix, i) => {
+      //     return {
+      //       identifier: tileMatrix.Identifier,
+      //       matrixSize: [tileMatrix.MatrixHeight, tileMatrix.MatrixWidth],
+      //       scaleDenominator: tileMatrix.ScaleDenominator,
+      //       tileSize: [tileMatrix.TileWidth, tileMatrix.TileHeight],
+      //       topLeftCorner: tileMatrix.TopLeftCorner,
+      //     };
+      //   }),
+      //   matrixSet,
+      //   opacity: layerOpacity,
+      //   requestEncoding: layerReqEncoding,
+      //   style: 'default',
+      //   type: 'WMTS',
+      //   version: '1.3.0',
+      // };
+
+      try {
+        return {
+          baseURL: layerUrl,
+          imageFormat: layer.options.imageFormat || 'image/png',
+          layer: layerName,
+          matrices: matrixIdsObj.TileMatrix.map((tileMatrix, i) => {
+            return {
+              identifier: tileMatrix.Identifier,
+              matrixSize: [tileMatrix.MatrixHeight, tileMatrix.MatrixWidth],
+              scaleDenominator: tileMatrix.ScaleDenominator,
+              tileSize: [tileMatrix.TileWidth, tileMatrix.TileHeight],
+              topLeftCorner: tileMatrix.TopLeftCorner,
+            };
+          }),
+          matrixSet,
+          opacity: layerOpacity,
+          requestEncoding: layerReqEncoding,
+          style: 'default',
+          type: 'WMTS',
+          version: '1.3.0',
+        };
+      } catch (e) {
+        M.dialog.error(getValue('errorProjectionCapabilities'));
+        return null;
+      }
     });
   }
 

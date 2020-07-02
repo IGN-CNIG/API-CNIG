@@ -4,6 +4,9 @@
     "teselaError": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
     "printError": "Se ha producido un error en la impresión."
   },
+
+  "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
+
   "printInfo": "Impresión generada a través de Mapea",
   "tooltip": "Imagen georreferenciada",
   "referenced": "Imagen georreferenciada",
