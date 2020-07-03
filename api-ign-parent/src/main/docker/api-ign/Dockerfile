@@ -3,7 +3,11 @@ MAINTAINER Emilio Martinez <emiliomartinez@guadaltel.com>
 
 ADD api-core.war $CATALINA_HOME/webapps/api-core.war
 
+ADD local_policy.jar /opt/jdk1.7.0_79/jre/lib/security/lib/security
+ADD US_export_policy.jar /opt/jdk1.7.0_79/jre/lib/security/lib/security
+
 ADD _idee_es /tmp/_idee_es
 RUN echo yes | keytool -importcert -file /tmp/_idee_es -keystore /opt/jdk1.7.0_79/jre/lib/security/cacerts -storepass changeit -alias "idee_es"
+
 
 EXPOSE 8080
