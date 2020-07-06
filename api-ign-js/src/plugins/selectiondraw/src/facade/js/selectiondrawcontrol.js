@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /**
  * @module M/control/SelectionDrawControl
  */
@@ -60,6 +61,18 @@ export default class SelectionDrawControl extends M.Control {
           this.activate(type, polygonBtn);
         }
       });
+
+      function retroceso(e) {
+        // eslint-disable-next-line no-undef
+        const evtobj = window.event ? event : e;
+        if (evtobj.keyCode === 90 && evtobj.ctrlKey) {
+          const numeroFeatures = drawLayer.getImpl().getOL3Layer().getSource().getFeatures().length;
+          // eslint-disable-next-line max-len
+          drawLayer.getImpl().getOL3Layer().getSource().removeFeature(drawLayer.getImpl().getOL3Layer().getSource().getFeatures()[numeroFeatures - 1]);
+        }
+      }
+      document.onkeydown = retroceso;
+
       success(html);
     });
   }
