@@ -299,7 +299,7 @@ export default class InfocoordinatesControl extends M.Control {
     var pos = this.layerFeatures.impl_.features_[numPoint - 1].impl_.olFeature_.values_.coordinates;
 
     // Modificamos el color del estilo de los puntos anteriores.
-    if (this.map_.getMapImpl().getOverlays().array_.length > 0) {
+    if (numPoint > 1) {
       document.getElementsByClassName('contenedorPuntoSelect')[0].classList.replace('contenedorPuntoSelect', 'contenedorPunto');
     }
 
