@@ -62,7 +62,7 @@
   "url_service": "Service URL",
   "query": "Consult",
   "clean": "Clean search",
-  "select_service": "Select a service",
+  "select_service": "Select layer",
   "select" : "Select",
   "loading": "Loading",
   "cancel": "Cancel",

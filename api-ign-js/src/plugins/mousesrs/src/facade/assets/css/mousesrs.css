@@ -23,6 +23,17 @@
     margin-right: 5px;
 }
 
+.m-mousesrs-srs-container {
+  text-align: center;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.m-mousesrs-srs-container select {
+  background-color: white;
+  padding: 7px 10px;
+}
+
 @media (max-width: 768px) {
     .m-control.m-container.m-mousesrs-container {
         display: none;

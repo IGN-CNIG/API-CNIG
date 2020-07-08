@@ -18,6 +18,7 @@ export default class MouseSRS extends M.Plugin {
    */
   constructor(options = {}) {
     super();
+
     /**
      * Facade of the map
      * @private
@@ -76,6 +77,13 @@ export default class MouseSRS extends M.Plugin {
      * @type {number}
      */
     this.utmDecimalDigits = options.utmDecimalDigits;
+
+    /**
+     * Activate viewing z value
+     * @private
+     * @type {boolean}
+     */
+    this.activeZ = options.activeZ || false;
   }
 
   /**
@@ -94,6 +102,7 @@ export default class MouseSRS extends M.Plugin {
       this.geoDecimalDigits,
       this.utmDecimalDigits,
       this.tooltip_,
+      this.activeZ,
     );
     this.controls_.push(this.control_);
     this.map_ = map;
