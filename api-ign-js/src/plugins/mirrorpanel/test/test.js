@@ -1,6 +1,5 @@
 import Mirrorpanel from 'facade/mirrorpanel'; //Importación del plugin que desarrollamos para trabajar
 
-
 M.language.setLang('es'); //Español
 //M.language.setLang('en');//Inglés
 
@@ -182,13 +181,7 @@ const mpMirrorPanel = new Mirrorpanel({
   mirrorLayers: capasPNOA, // Array de capas para los mapas espejo en formato StringAPICNIG
   enabledKeyFunctions: true, // Están habilitadas los comandos por teclado
   showCursors: true, // Se muestran los cursores
-  defaultBaseLyrs: [
-    'WMTS*http://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN',
-    'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA',
-    'WMTS*https://wmts-mapa-lidar.idee.es/lidar?*EL.GridCoverageDSM*GoogleMapsCompatible*LiDAR',
-  ],
-  backImgLayerParams: backImgLayerParams
+  backImgLayersParams: backImgLayerParams
 });
-
 
 map.addPlugin(mpMirrorPanel);

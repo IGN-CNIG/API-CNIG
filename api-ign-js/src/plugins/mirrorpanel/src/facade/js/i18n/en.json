@@ -10,5 +10,6 @@
   "modViz6": "Horizontal four maps",
   "modViz7": "Vertical 2-1-1 proportional maps",
   "modViz8": "One map above and two below",
-  "modViz9": "Two maps above and one below"
+  "modViz9": "Two maps above and one below",
+  "backimglayersparams_undefined":"BackImgLayers' parameters are not defined correctly."
 }

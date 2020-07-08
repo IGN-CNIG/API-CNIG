@@ -136,13 +136,6 @@ export default class MirrorpanelControl extends M.Control {
      * @public {Object}
      */
     this.backImgLayersParams = values.backImgLayersParams;
-
-    // captura de customevent lanzado desde impl con coords
-    window.addEventListener('mapclicked', (e) => {
-      this.map_.addLabel('Hola Mundo!', e.detail);
-    });
-
-
     this.createMapContainers();
   }
 
@@ -207,7 +200,7 @@ export default class MirrorpanelControl extends M.Control {
 
       this.template = M.template.compileSync(template, templateOptions);
 
-      //Defino los evenyos para los clics de botón
+      //Defino los eventos para los clics de botón
       this.template.querySelectorAll('button[id^="set-mirror-"]')
         .forEach((button, modeViz) => {
           button.addEventListener('click', evt => {
@@ -415,12 +408,11 @@ export default class MirrorpanelControl extends M.Control {
     }
     this.mapB = M.map({
       container: 'mapjsB',
-      layers: ((this.defaultBaseLyrs.length >= 1) && (mpBILmapB == null)) ? [this.defaultBaseLyrs[0]] : [],
+      layers: ((this.defaultBaseLyrs.length >= 1) && (mpBILmapB == null)) ? [this.defaultBaseLyrs[0]] : this.map_.getLayers()[0].setMap(this),
       center: this.map_.getCenter(),
       projection: this.map_.getProjection().code + '*' + this.map_.getProjection().units,
       zoom: this.map_.getZoom(),
     });
-
     this.mapB.getMapImpl().setView(this.map_.getMapImpl().getView());
 
     if (plugin4mapB !== null) {
@@ -539,7 +531,7 @@ export default class MirrorpanelControl extends M.Control {
     }
     this.mapC = M.map({
       container: 'mapjsC',
-      layers: ((this.defaultBaseLyrs.length >= 2) && (mpBILmapC == null)) ? [this.defaultBaseLyrs[1]] : [],
+      layers: ((this.defaultBaseLyrs.length >= 2) && (mpBILmapC == null)) ? [this.defaultBaseLyrs[1]] : this.map_.getLayers()[0].setMap(this),
       center: this.map_.getCenter(),
       projection: this.map_.getProjection().code + '*' + this.map_.getProjection().units,
       zoom: this.map_.getZoom(),
@@ -662,7 +654,7 @@ export default class MirrorpanelControl extends M.Control {
     }
     this.mapD = M.map({
       container: 'mapjsD',
-      layers: ((this.defaultBaseLyrs.length >= 3) && (mpBILmapD == null)) ? [this.defaultBaseLyrs[2]] : [],
+      layers: ((this.defaultBaseLyrs.length >= 3) && (mpBILmapD == null)) ? [this.defaultBaseLyrs[2]] : this.map_.getLayers()[0].setMap(this),
       center: this.map_.getCenter(),
       projection: this.map_.getProjection().code + '*' + this.map_.getProjection().units,
       zoom: this.map_.getZoom(),

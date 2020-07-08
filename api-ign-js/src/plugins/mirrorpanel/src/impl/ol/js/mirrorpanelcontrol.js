@@ -19,33 +19,6 @@ export default class MirrorpanelControl extends M.impl.Control {
         this.dblClickInteraction_ = interaction;
       }
     });
-
-    // super addTo - don't delete
     super.addTo(map, html);
-  }
-
-  // Add your own functions
-  activateClick(map) {
-    // desactivo el zoom al dobleclick
-    this.dblClickInteraction_.setActive(false);
-
-    // añado un listener al evento dblclick
-    const olMap = map.getMapImpl();
-    olMap.on('dblclick', (evt) => {
-      // disparo un custom event con las coordenadas del dobleclick
-      const customEvt = new CustomEvent('mapclicked', {
-        detail: evt.coordinate,
-        bubbles: true,
-      });
-      map.getContainer().dispatchEvent(customEvt);
-    });
-  }
-
-  deactivateClick(map) {
-    // activo el zoom al dobleclick
-    this.dblClickInteraction_.setActive(true);
-
-    // elimino el listener del evento
-    map.getMapImpl().removeEventListener('dblclick');
   }
 }

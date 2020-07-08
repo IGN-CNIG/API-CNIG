@@ -144,96 +144,14 @@ export default class Mirrorpanel extends M.Plugin {
      * Value: object with backimglayers' parameters
      * @type {Object}
      */
-    this.backImgLayersParams = {
-      position: 'TR',
-      collapsible: true,
-      collapsed: true,
-      layerVisibility: true,
-      layerOpts: [
-        {
-          id: 'mapa',
-          preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
-          title: 'Mapa',
-          layers: [new M.layer.WMTS({
-            url: 'http://www.ign.es/wmts/ign-base?',
-            name: 'IGNBaseTodo',
-            legend: 'Mapa IGN',
-            matrixSet: 'GoogleMapsCompatible',
-            transparent: false,
-            displayInLayerSwitcher: false,
-            queryable: false,
-            visible: true,
-            format: 'image/jpeg',
-          })],
-        },
-        {
-          id: 'imagen',
-          title: 'Imagen',
-          preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',
-          layers: [new M.layer.WMTS({
-            url: 'http://www.ign.es/wmts/pnoa-ma?',
-            name: 'OI.OrthoimageCoverage',
-            legend: 'Imagen (PNOA)',
-            matrixSet: 'GoogleMapsCompatible',
-            transparent: false,
-            displayInLayerSwitcher: false,
-            queryable: false,
-            visible: true,
-            format: 'image/jpeg',
-          })],
-        },
-        {
-          id: 'raster',
-          preview: '../src/templates/img/svqmtn.png',
-          title: 'Ráster',
-          layers: [new M.layer.WMTS({
-            url: 'http://www.ign.es/wmts/mapa-raster?',
-            name: 'MTN',
-            legend: 'Mapa IGN',
-            matrixSet: 'GoogleMapsCompatible',
-            transparent: false,
-            displayInLayerSwitcher: false,
-            queryable: false,
-            visible: true,
-            format: 'image/jpeg',
-          })],
-        },
-        {
-          id: 'hibrido',
-          title: 'Híbrido',
-          preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
-          layers: [new M.layer.WMTS({
-            url: 'http://www.ign.es/wmts/pnoa-ma?',
-            name: 'OI.OrthoimageCoverage',
-            legend: 'Imagen (PNOA)',
-            matrixSet: 'GoogleMapsCompatible',
-            transparent: true,
-            displayInLayerSwitcher: false,
-            queryable: false,
-            visible: true,
-            format: 'image/png',
-          }),
-          new M.layer.WMTS({
-            url: 'http://www.ign.es/wmts/ign-base?',
-            name: 'IGNBaseOrto',
-            matrixSet: 'GoogleMapsCompatible',
-            legend: 'Mapa IGN',
-            transparent: false,
-            displayInLayerSwitcher: false,
-            queryable: false,
-            visible: true,
-            format: 'image/png',
-          })
-          ],
-        },
-      ]
-    };
     if (options.backImgLayersParams !== undefined) {
       if (M.utils.isObject(options.backImgLayersParams)) {
         this.backImgLayersParams = options.backImgLayersParams;
       } else {
         this.backImgLayersParams = JSON.parse(options.backImgLayersParams);
       }
+    } else {
+      this.backImgLayersParams = undefined;
     }
 
     /** 
@@ -285,6 +203,7 @@ export default class Mirrorpanel extends M.Plugin {
     this.control_ = new MirrorpanelControl(values);
     this.controls_.push(this.control_);
     this.map_ = map;
+
     this.panel_ = new M.ui.Panel('panelMirrorpanel', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
@@ -299,13 +218,18 @@ export default class Mirrorpanel extends M.Plugin {
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
 
+    // Check if backimglayer is main map and backImgLayersParams is defined. If not, throw a error.
+    if (this.map_.getControls("BackImgLayer").length > 0 && this.backImgLayersParams === undefined) {
+      M.dialog.error(getValue('backimglayersparams_undefined'));
+    }
+
     // Keybindings for Ctrl + Shift + (F1-F8) / ESC
     document.addEventListener('keydown', (zEvent) => {
       if (!this.enabledKeyFunctions) {
         return;
       }
-      for(let i=0; i<10; i++){
-        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "F"+(i+1)) {  // case sensitive
+      for (let i = 0; i < 10; i++) {
+        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "F" + (i + 1)) {  // case sensitive
           this.control_.manageVisionPanelByCSSGrid(i);
         }
       }
@@ -316,8 +240,7 @@ export default class Mirrorpanel extends M.Plugin {
         (zEvent.altKey ? "Alt " : "") +
         (zEvent.metaKey ? "Meta " : "") + keyStr;
       if (combinedKeys === "Escape") {
-        //this.control_.manageVisionPanelByCSSGrid(0);
-        this.deactivate();
+        this.control_.manageVisionPanelByCSSGrid(0);
       }
 
     });
@@ -332,7 +255,7 @@ export default class Mirrorpanel extends M.Plugin {
    * @api stable
    */
   destroy() {
-    document.removeEventListener('keydown', (zEvent) => {});
+    document.removeEventListener('keydown', (zEvent) => { });
     this.control_.removeMaps();
     this.control_.destroyMapsContainer();
     this.map_.removeControls([this.control_]);
@@ -369,7 +292,7 @@ export default class Mirrorpanel extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.collapsible}*${this.collapsed}*${this.modeViz}*${this.enabledPlugins}*${this.enabledKeyFunctions}*${this.showCursors}*${this.mirrorLayers}*${this.defaultBaseLyrs}`;
+    return `${this.name}=${this.position}*!${this.collapsible}*!${this.collapsed}*!${this.modeViz}*!${this.enabledPlugins}*!${this.enabledKeyFunctions}*!${this.showCursors}*!${this.mirrorLayers}*!${this.defaultBaseLyrs}*!${this.backImgLayersParams}*!${this.interface}`;
   }
 
   /**

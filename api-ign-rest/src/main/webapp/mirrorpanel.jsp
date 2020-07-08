@@ -13,6 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
+    <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     <link href="plugins/mirrorpanel/mirrorpanel.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
@@ -118,6 +119,7 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
+    <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
     <script type="text/javascript" src="plugins/mirrorpanel/mirrorpanel.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
@@ -133,22 +135,110 @@
     <script type="text/javascript">
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
-
         const map = M.map({
             container: 'mapjs',
-            zoom: 5,
-            maxZoom: 20,
-            minZoom: 4,
-            center: [-467062.8225, 4783459.6216],
+            center: {
+                x: -667143.31,
+                y: 4493011.77,
+            },
+            projection: "EPSG:3857*m",
+            zoom: 15,
         });
+        let backImgLayerParams = {
+            position: 'TR',
+            collapsible: true,
+            collapsed: true,
+            layerId: 0,
+            layerVisibility: true,
+            layerOpts: [
+                {
+                    id: 'mapa',
+                    preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
+                    title: 'Mapa',
+                    layers: [new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/ign-base?',
+                        name: 'IGNBaseTodo',
+                        legend: 'Mapa IGN',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/jpeg',
+                    })],
+                },
+                {
+                    id: 'imagen',
+                    title: 'Imagen',
+                    preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',
+                    layers: [new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/pnoa-ma?',
+                        name: 'OI.OrthoimageCoverage',
+                        legend: 'Imagen (PNOA)',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/jpeg',
+                    })],
+                },
+                {
+                    id: 'raster',
+                    preview: '../src/templates/img/svqmtn.png',
+                    title: 'Ráster',
+                    layers: [new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/mapa-raster?',
+                        name: 'MTN',
+                        legend: 'Mapa IGN',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/jpeg',
+                    })],
+                },
+                {
+                    id: 'hibrido',
+                    title: 'Híbrido',
+                    preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
+                    layers: [new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/pnoa-ma?',
+                        name: 'OI.OrthoimageCoverage',
+                        legend: 'Imagen (PNOA)',
+                        matrixSet: 'GoogleMapsCompatible',
+                        transparent: true,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/png',
+                    }),
+                    new M.layer.WMTS({
+                        url: 'http://www.ign.es/wmts/ign-base?',
+                        name: 'IGNBaseOrto',
+                        matrixSet: 'GoogleMapsCompatible',
+                        legend: 'Mapa IGN',
+                        transparent: false,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        format: 'image/png',
+                    })
+                    ],
+                },
+            ],
+        }
+        const mpBIL = new M.plugin.BackImgLayer(backImgLayerParams);
+        map.addPlugin(mpBIL);
         let mp, collapsed, collapsible, enabledPlugins, enabledKeyFunctions, showCursors, modeViz, mirrorLayers,
             defaultBaseLyrs = [
                 'WMTS*http://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN',
                 'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA',
                 'WMTS*https://wmts-mapa-lidar.idee.es/lidar?*EL.GridCoverageDSM*GoogleMapsCompatible*LiDAR',
-            ], backImgLayersParams,
+            ], backImgLayersParams = backImgLayerParams,
             interface;
-        crearPlugin({defaultBaseLyrs});
+        crearPlugin({ defaultBaseLyrs });
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
@@ -183,16 +273,17 @@
             let enabledPluginsValor = selectEnabledPlugins.options[selectEnabledPlugins.selectedIndex].value;
             enabledPlugins = enabledPluginsValor != "" ? objeto.enabledPlugins = (enabledPluginsValor == "true") : "";
             let enabledKeyFunctionsValor = selectEnabledKeyFunctions.options[selectEnabledKeyFunctions.selectedIndex].value;
-            enabledKeyFunctions = enabledKeyFunctionsValor != "" ? objeto.collapsed = (enabledKeyFunctionsValor == "true") : "";
+            enabledKeyFunctions = enabledKeyFunctionsValor != "" ? objeto.enabledKeyFunctions = (enabledKeyFunctionsValor == "true") : "";
             let showCursorsValor = selectShowCursors.options[selectShowCursors.selectedIndex].value;
-            showCursors = showCursorsValor != "" ? objeto.collapsed = (showCursorsValor == "true") : "";
+            showCursors = showCursorsValor != "" ? objeto.showCursors = (showCursorsValor == "true") : "";
             modeViz = inputModeViz.value != "" ? objeto.modeViz = inputModeViz.value : "";
             mirrorLayers = inputMirrorLayers.value != "" ? objeto.mirrorLayers = inputMirrorLayers.value : "";
             defaultBaseLyrs = inputDefaultBaseLyrs.value != "" ? objeto.defaultBaseLyrs = inputDefaultBaseLyrs.value : "";
-            backImgLayersParams = inputBackImgLayersParams.value != "" ? objeto.backImgLayersParams = inputBackImgLayersParams.value : "";
+            backImgLayersParams = inputBackImgLayersParams.value != "" ? objeto.backImgLayersParams = inputBackImgLayersParams.value : objeto.backImgLayersParams = backImgLayerParams;
             let interfaceValor = selectInterface.options[selectInterface.selectedIndex].value;
             interface = interfaceValor != "" ? objeto.interface = (interfaceValor == "true") : "";
             map.removePlugins(mp);
+            console.log(objeto);
             crearPlugin(objeto);
         }
 
