@@ -994,15 +994,16 @@ export default class IGNSearchControl extends M.Control {
     this.point = new M.style.Point({
       radius: 5,
       icon: {
-        form: 'none',
-        class: 'g-cartografia-pin',
-        radius: 12,
-        rotation: 0,
-        rotate: false,
-        offset: [0, -12],
-        color: '#f00',
-        border: '5px solid green',
-        opacity: 1,
+        src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pinign.svg']),
+        // form: 'none',
+        // class: 'g-cartografia-pin',
+        // radius: 12,
+        // rotation: 0,
+        // rotate: false,
+        // offset: [0, -12],
+        // color: '#f00',
+        // border: '5px solid green',
+        // opacity: 1,
       },
     });
     // Style for hiding geometry
