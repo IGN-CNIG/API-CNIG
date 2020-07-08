@@ -178,10 +178,11 @@ export default class InfocoordinatesControl extends M.Control {
         "EPSGcode": this.map_.getProjection().code,
         "coordinates": [coordinates[0], coordinates[1]]
       }
+
     });
 
-
-
+    // Ubico el scroller centrado en el ultimo botón añadido
+    tabsDiv.scrollTop = tabsDiv.scrollHeight;
 
 
     //Altura 
