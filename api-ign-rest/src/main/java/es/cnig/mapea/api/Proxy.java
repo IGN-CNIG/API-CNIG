@@ -1,5 +1,9 @@
 package es.cnig.mapea.api;
 
+  // Log4J
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,6 +51,9 @@ public class Proxy {
 	private static final String LEGEND_ERROR = "/img/legend-error.png";
 	private static final int IMAGE_MAX_BYTE_SIZE = Integer.parseInt(configProperties.getString("max.image.size"));
 
+  // Log4J
+	private static final Log LOG = LogFactory.getLog(Proxy.class);
+
 	/**
 	 * Proxy to execute a request to specified URL using JSONP protocol to avoid the
 	 * Cross-Domain restriction.
@@ -74,9 +81,11 @@ public class Proxy {
 			this.checkResponse(proxyResponse, url);
 		} catch (HttpException e) {
 			// TODO Auto-generated catch block
+			LOG.error(e);
 			proxyResponse = this.error(url, e);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			LOG.error(e);
 			proxyResponse = this.error(url, e);
 		}
 		response = JSBuilder.wrapCallback(proxyResponse.toJSON(), callbackFn);
@@ -117,10 +126,13 @@ public class Proxy {
 			}
 			response = Response.ok(new ByteArrayInputStream(data), contentType).build();
 		} catch (HttpException e) {
+			LOG.error(e);
 			response = Response.status(Status.BAD_REQUEST).build();
 		} catch (IOException e) {
+			LOG.error(e);
 			response = Response.status(Status.BAD_REQUEST).build();
 		} catch (InvalidResponseException e) {
+			LOG.error(e);
 			response = Response.ok(e.getLocalizedMessage()).status(Status.BAD_REQUEST).build();
 		}
 
@@ -225,17 +237,21 @@ public class Proxy {
 		}
 
 		if (contentType == null) {
+			LOG.error("El content-type está vacío.");
 			throw new InvalidResponseException("El content-type está vacío.");
 		}
 
 		if (!contentType.startsWith("image/")) {
+			LOG.error("El recurso no es de tipo imagen.");
 			throw new InvalidResponseException("El recurso no es de tipo imagen.");
 		}
 
 		if (contentLength == null) {
+			LOG.error("El content-length está vacío.");
 			throw new InvalidResponseException("El content-length está vacío.");
 		}
 		if (Proxy.IMAGE_MAX_BYTE_SIZE < contentLength) {
+			LOG.error("El recurso excede el tamaño permitido");
 			throw new InvalidResponseException("El recurso excede el tamaño permitido");
 		}
 
@@ -251,6 +267,7 @@ public class Proxy {
 		ProxyResponse proxyResponse = new ProxyResponse();
 		proxyResponse.setError(true);
 		proxyResponse.setErrorMessage(message);
+		LOG.error(message);
 		return proxyResponse;
 	}
 
@@ -261,6 +278,7 @@ public class Proxy {
 	 * @param exception Exception object
 	 */
 	private ProxyResponse error(String url, Exception exception) {
+		LOG.error(exception.getLocalizedMessage());
 		return error(url, exception.getLocalizedMessage());
 	}
 
