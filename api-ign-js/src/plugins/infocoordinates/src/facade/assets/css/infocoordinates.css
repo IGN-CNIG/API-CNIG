@@ -169,9 +169,10 @@
 }
 
 .m-infocoordinates-tabs {
-    overflow: hidden;
+    overflow-y: auto;
     background-color: #f1f1f1;
     margin-left: auto;
+    max-height: 54px;
 }
 
 .m-infocoordinates-tabs button {
