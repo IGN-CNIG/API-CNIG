@@ -6,10 +6,12 @@ const map = M.map({
   container: 'mapjs',
   projection: 'EPSG:3857*m',
   center: [-443729, 4860856],
-  zoom: 4,
+  zoom: 8,
 });
 
-const mp = new MouseSRS();
+const mp = new MouseSRS({
+  activeZ: true,
+});
 
 map.addPlugin(mp);
 

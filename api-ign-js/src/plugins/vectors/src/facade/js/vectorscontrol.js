@@ -482,6 +482,7 @@ export default class VectorsControl extends M.Control {
     evt.preventDefault();
     document.querySelector('#m-vectors-addwfs-suggestions').style.display = 'none';
     let url = document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value.trim();
+    const auxurl = document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value.trim();
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
         url += url.endsWith('?') ? '' : '?';
@@ -535,6 +536,7 @@ export default class VectorsControl extends M.Control {
               hasCapabilities = hasCapabilities || false;
             }
 
+            document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value = auxurl;
             this.showResults(services, capabilities, hasCapabilities);
           } catch (err) {
             M.dialog.error(getValue('exception.capabilities'));

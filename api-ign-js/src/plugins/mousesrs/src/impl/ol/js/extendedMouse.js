@@ -2,6 +2,8 @@
  * @module M/impl/control/Mouse
  */
 
+import WCSLoaderManager from './wcsloadermanager';
+
 /**
  * @classdesc
  * @api
@@ -29,7 +31,6 @@ class Mouse extends ol.control.MousePosition {
 
     this.label = vendorOptions.label;
 
-    // FIXME: is this what mapProjection is supposed to be?
     this.mapProjection_ = vendorOptions.projection;
 
     this.target = vendorOptions.target;
@@ -37,6 +38,82 @@ class Mouse extends ol.control.MousePosition {
     this.geoDecimalDigits = vendorOptions.geoDecimalDigits;
 
     this.utmDecimalDigits = vendorOptions.utmDecimalDigits;
+
+    this.activeZ = vendorOptions.activeZ;
+  }
+
+  initWCSLoaderManager(map) {
+    this.facadeMap_ = map;
+    if (this.activeZ) {
+      this.wcsloadermanager = new WCSLoaderManager();
+      const layers = [
+        {
+          url: 'https://servicios.idee.es/wcs-inspire/mdt',
+          options: {
+            coverage: 'Elevacion4258_200',
+            crs: 'EPSG:4326',
+            format: 'ArcGrid',
+            height: 500,
+            interpolationMethod: 'bilinear',
+            service: 'WCS',
+            version: '1.0.0',
+            width: 500,
+          },
+        },
+        {
+          url: 'https://servicios.idee.es/wcs-inspire/mdt',
+          options: {
+            coverage: 'Elevacion4258_25',
+            crs: 'EPSG:4326',
+            format: 'ArcGrid',
+            height: 500,
+            interpolationMethod: 'bilinear',
+            service: 'WCS',
+            version: '1.0.0',
+            width: 500,
+          },
+        },
+        {
+          url: 'https://servicios.idee.es/wcs-inspire/mdt',
+          options: {
+            coverage: 'Elevacion4258_500',
+            crs: 'EPSG:4326',
+            format: 'ArcGrid',
+            height: 500,
+            interpolationMethod: 'bilinear',
+            service: 'WCS',
+            version: '1.0.0',
+            width: 500,
+          },
+        },
+        {
+          url: 'https://servicios.idee.es/wcs-inspire/mdt',
+          options: {
+            coverage: 'Elevacion4258_5',
+            crs: 'EPSG:4326',
+            format: 'ArcGrid',
+            height: 500,
+            interpolationMethod: 'bilinear',
+            service: 'WCS',
+            version: '1.0.0',
+            width: 500,
+          },
+        },
+      ];
+
+      this.wcsloadermanager.addLayers(layers);
+      map.getMapImpl().on('moveend', () => {
+        this.updateDataGrid(map);
+      });
+    }
+  }
+
+  updateDataGrid(map) {
+    const innerMap = this.facadeMap_ !== undefined ? this.facadeMap_ : map;
+    const bbox = innerMap.getBbox();
+    let extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+    extent = ol.proj.transformExtent(extent, innerMap.getProjection().code, 'EPSG:4326');
+    this.wcsloadermanager.updateDataGrid(extent, 'EPSG:4326');
   }
 
   /**
@@ -88,13 +165,9 @@ class Mouse extends ol.control.MousePosition {
    * @function
    */
   updateHTML_(pixel) {
-    // Text shown is empty if coordinates are not available.
-    let html = ''; // this.undefinedHTML;
-    // let decimalDigits;
+    let html = '';
     const projection = this.getProjection();
-
     if (pixel && this.mapProjection_) {
-      // If given projection hasn't been transformed into map projection
       if (!this.transform_) {
         if (projection) {
           this.transform_ = ol.proj.getTransform(this.mapProjection_, projection);
@@ -105,27 +178,18 @@ class Mouse extends ol.control.MousePosition {
 
       const map = this.getMap();
       const coordinate = map.getCoordinateFromPixel(pixel);
-
-      // Transforms coordinates to map projection
       if (coordinate) {
         this.transform_(coordinate, coordinate);
-        html = this.coordinateFormat(coordinate);
-
-        // const coordinateFormat = this.coordinateFormat; // this.getCoordinateFormat();
-
-        // if (coordinateFormat) {
-        //   html = coordinateFormat(coordinate);
-        // } else {
-        //   html = coordinate.toString();
-        // }
+        html = `${this.coordinateFormat(coordinate)}`.replace('.', ',').replace('.', ',').replace(', ', '&nbsp;&nbsp;&nbsp;');
+        if (this.activeZ && this.wcsloadermanager !== undefined) {
+          const orgCoord = map.getCoordinateFromPixel(pixel);
+          const tCoord = ol.proj.transform(orgCoord, this.facadeMap_.getProjection().code, 'EPSG:4326');
+          const value = this.wcsloadermanager.getValue(tCoord, 'EPSG:4326');
+          if (!Number.isNaN(value)) {
+            html += `&nbsp;&nbsp;&nbsp;${value}`;
+          }
+        }
       }
-
-      // eslint-disable-next-line no-underscore-dangle
-      // if (this.getProjection().units_ === 'd') { // geographical coordinates
-      //   decimalDigits = this.geoDecimalDigits;
-      // } else { // 'm'
-      //   decimalDigits = this.utmDecimalDigits;
-      // }
 
       html += ` | ${this.label}`;
     }
@@ -136,4 +200,5 @@ class Mouse extends ol.control.MousePosition {
     }
   }
 }
+
 export default Mouse;

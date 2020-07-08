@@ -2,9 +2,11 @@
  * @module M/impl/control/MouseSRSControl
  */
 import ExtendedMouse from './extendedMouse';
+import template from '../../../templates/srs';
+import { getValue } from '../../../facade/js/i18n/language';
 
 export default class MouseSRSControl extends M.impl.Control {
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip) {
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ) {
     super();
 
     /**
@@ -52,6 +54,13 @@ export default class MouseSRSControl extends M.impl.Control {
      * @type {string}
      */
     this.tooltip = tooltip;
+
+    /**
+     * Activate viewing z value
+     * @private
+     * @type {boolean}
+     */
+    this.activeZ = activeZ;
   }
 
   /**
@@ -65,6 +74,12 @@ export default class MouseSRSControl extends M.impl.Control {
    * @api
    */
   addTo(map, html) {
+    this.auxMap_ = map;
+    this.html_ = html;
+    this.renderPlugin(map, html);
+  }
+
+  renderPlugin(map, html) {
     this.facadeMap_ = map;
     this.mousePositionControl = new ExtendedMouse({
       coordinateFormat: ol.coordinate.createStringXY(this.getDecimalUnits()), // this.precision_),
@@ -72,15 +87,48 @@ export default class MouseSRSControl extends M.impl.Control {
       label: this.label_,
       undefinedHTML: '',
       className: 'm-mouse-srs',
-      target: html,
+      target: this.html_,
       tooltip: this.tooltip,
       geoDecimalDigits: this.geoDecimalDigits,
       utmDecimalDigits: this.utmDecimalDigits,
+      activeZ: this.activeZ,
     });
 
     map.getMapImpl().addControl(this.mousePositionControl);
-
     super.addTo(map, html);
+    setTimeout(() => {
+      this.mousePositionControl.initWCSLoaderManager(map);
+      document.querySelector('.m-mousesrs-container .m-mouse-srs').addEventListener('click', this.openChangeSRS.bind(this, this.auxMap_, html));
+    }, 1000);
+  }
+
+  openChangeSRS(map, html) {
+    const content = M.template.compileSync(template, {
+      jsonp: true,
+      parseToHtml: false,
+      vars: {
+        selected: this.srs_,
+      },
+    });
+
+    M.dialog.info(content, getValue('select_srs'));
+    setTimeout(() => {
+      document.querySelector('#m-mousesrs-srs-selector').addEventListener('change', this.changeSRS.bind(this, map, html));
+      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+      const button = document.querySelector('div.m-dialog.info div.m-button > button');
+      button.innerHTML = getValue('close');
+      button.style.width = '75px';
+      button.style.backgroundColor = '#71a7d3';
+    }, 10);
+  }
+
+  changeSRS(map, html) {
+    const select = document.querySelector('#m-mousesrs-srs-selector');
+    this.srs_ = select.options[select.selectedIndex].value;
+    this.label_ = select.options[select.selectedIndex].text;
+    this.facadeMap_.getMapImpl().removeControl(this.mousePositionControl);
+    document.querySelector('div.m-mapea-container div.m-dialog').remove();
+    this.renderPlugin(map, html);
   }
 
   /**
@@ -90,15 +138,11 @@ export default class MouseSRSControl extends M.impl.Control {
    */
   getDecimalUnits() {
     let decimalDigits;
-
     // eslint-disable-next-line no-underscore-dangle
     const srsUnits = ol.proj.get(this.srs_).units_;
-
-    // eslint-disable-next-line no-underscore-dangle
-    if (srsUnits === 'd' && this.geoDecimalDigits !== undefined) { // geographical coordinates
+    if (srsUnits === 'd' && this.geoDecimalDigits !== undefined) {
       decimalDigits = this.geoDecimalDigits;
-      // eslint-disable-next-line no-underscore-dangle
-    } else if (srsUnits === 'm' && this.utmDecimalDigits !== undefined) { // 'm'
+    } else if (srsUnits === 'm' && this.utmDecimalDigits !== undefined) {
       decimalDigits = this.utmDecimalDigits;
     } else {
       decimalDigits = this.precision_;

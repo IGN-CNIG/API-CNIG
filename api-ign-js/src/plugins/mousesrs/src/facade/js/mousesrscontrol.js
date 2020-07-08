@@ -16,11 +16,11 @@ export default class MouseSRSControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(srs, label, precision, geoDD, utmDD, tooltip) {
+  constructor(srs, label, precision, geoDD, utmDD, tooltip, activeZ) {
     if (M.utils.isUndefined(MouseSRSImplControl)) {
       M.exception(getValue('exception.impl'));
     }
-    const impl = new MouseSRSImplControl(srs, label, precision, geoDD, utmDD, tooltip);
+    const impl = new MouseSRSImplControl(srs, label, precision, geoDD, utmDD, tooltip, activeZ);
     super(impl, 'MouseSRS');
     this.tooltip_ = tooltip;
   }

@@ -30,6 +30,10 @@
       "type": "number",
       "name": "utmDecimalDigits",
       "position": 5
+    }, {
+      "type": "boolean",
+      "name": "activeZ",
+      "position": 6
     }]
   }],
   "files": {

@@ -302,20 +302,13 @@ div.m-vector-layer-actions .active-tool {
   border-radius: 5px !important;
 }
 
-#vector-add-wfs {
-  font-weight: bold;
-  font-size: 9px !important;
-  position: relative;
-  bottom: 3px;
-  border: 2px solid rgb(117, 116, 116) !important;
-  border-radius: 100px;
-  height: 30px !important;
-  width: 30px !important;
+.m-vector-actions button {
+  cursor: pointer;
 }
 
-#vector-add-wfs span {
-  position: relative;
-  right: 2px;
+#vector-add-wfs {
+  font-weight: bold;
+  font-size: 14px !important;
 }
 
 #m-vectors-addwfs-suggestions {
