@@ -144,14 +144,13 @@ export default class Mirrorpanel extends M.Plugin {
      * Value: object with backimglayers' parameters
      * @type {Object}
      */
+    this.backImgLayersParams = options.backImgLayersParams;
     if (options.backImgLayersParams !== undefined) {
       if (M.utils.isObject(options.backImgLayersParams)) {
-        this.backImgLayersParams = options.backImgLayersParams;
-      } else {
-        this.backImgLayersParams = JSON.parse(options.backImgLayersParams);
+        let bIL = new M.plugin.BackImgLayer(options.backImgLayersParams);
+        this.backImgLayersParams = bIL.getAPIRest().replace('backimglayer=', '').replace(/\*!/g, '!!');
       }
-    } else {
-      this.backImgLayersParams = undefined;
+
     }
 
     /** 
@@ -222,7 +221,6 @@ export default class Mirrorpanel extends M.Plugin {
     if (this.map_.getControls("BackImgLayer").length > 0 && this.backImgLayersParams === undefined) {
       M.dialog.error(getValue('backimglayersparams_undefined'));
     }
-
     // Keybindings for Ctrl + Shift + (F1-F8) / ESC
     document.addEventListener('keydown', (zEvent) => {
       if (!this.enabledKeyFunctions) {
@@ -292,7 +290,7 @@ export default class Mirrorpanel extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*!${this.collapsible}*!${this.collapsed}*!${this.modeViz}*!${this.enabledPlugins}*!${this.enabledKeyFunctions}*!${this.showCursors}*!${this.mirrorLayers}*!${this.defaultBaseLyrs}*!${this.backImgLayersParams}*!${this.interface}`;
+    return `${this.name}=${this.position}*!${this.collapsed}*!${this.collapsible}*!${this.modeViz}*!${this.enabledPlugins}*!${this.enabledKeyFunctions}*!${this.showCursors}*!${this.mirrorLayers}*!${this.defaultBaseLyrs}*!${this.backImgLayersParams}*!${this.interface}`;
   }
 
   /**

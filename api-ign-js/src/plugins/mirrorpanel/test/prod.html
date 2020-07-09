@@ -7,110 +7,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>Mirrorpanel TEST</title>
-    <!--<link href="http://mapea4-sigc.juntadeandalucia.es/assets/css/mapea-5.1.0.ol.min.css" rel="stylesheet" />-->
-    <link type="text/css" rel="stylesheet" href="http://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign-1.2.0.ol.min.css" /><!-- Estilos de MAPEA -->
-    <!-- CSS Plugins APICNIG -->
-    
-    <link type="text/css" rel="stylesheet" href="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/toc/toc.ol.min.css" />                              <!-- CSS Plugin TOC: Selector de capas overlay - Feo como él solo pero funciona -->
-    <link type="text/css" rel="stylesheet" href="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/beautytoc/beautytoc.ol.min.css" />                  <!-- CSS Plugin BeautyTOC: Selector de capas overlay - No funciona -->
-    <link type="text/css" rel="stylesheet" href="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/fulltoc/fulltoc.ol.min.css" />                      <!-- CSS Plugin FullTOC: Selector de capas overlay - En desarrollo pero pinta genial -->
-    <link type="text/css" rel="stylesheet" href="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/backimglayer/backimglayer.ol.min.css" />            <!-- CSS Plugin BackImgLayer: Selector de capas bsse -->    
+    <link type="text/css" rel="stylesheet"
+        href="http://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign-1.2.0.ol.min.css" />
     <link type="text/css" rel="stylesheet" href="../dist/mirrorpanel.ol.min.css" />
     <style rel="stylesheet">
-        html, body { 
-        height: 100%; 
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
-        /*
-        .grid-container {
-                height: 100%; 
-                margin: 0;
-                padding: 0;
-                display: grid;
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr;
-                gap: 1px 1px;
-                grid-template-areas: "Mapa1";
-        }
-        */
-        .Mirror1 { grid-area: "Mirror1"; background:rgba(0,0,0,0.3); border: 0px solid #71a7d3;}
-
-        .Mirror2 { grid-area: "Mirror2"; background:rgba(255,255,0,0.3); border: 0px solid #71a7d3;}
-
-        .Mirror3 { grid-area: "Mirror3"; background:rgba(255,0,127,0.3); border: 0px solid #71a7d3;}
-
-        .Mirror4 { grid-area: "Mirror4"; background:rgba(255,125,0,0.3); border: 0px solid #71a7d3;}
-
-        .botonera {
-            background: #e9e8e8;
-            position: absolute; 
-            top: 60px; 
-            left: 75px;
-            width:190px;
-            padding: 5px;
-            margin: 0px;
-            display: flex;
-            flex-flow: row wrap;
-            z-index: 1000;
-            border-radius: 5%;
-            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-        }
-
-        .botonera > button{
-                background-color: #71a7d3; /* Blue */
-                border: none;
-                color: white;
-                padding: 5px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 12px;
-                margin: 4px 2px;
-                cursor: pointer;
-                border-radius: 10%;
-        }
-        .botonera > button:hover {
-            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-        }
-        .botonera > button.btn-press {
-            background: #92c1e7;
-        }
-
-
     </style>
 
 </head>
 
 <body>
-    
-    <div class="botonera" style="display:none;">
-        <button type="button" id="actionDestroyPlugin">Destruir plugin 💣</button>
-        <!--<button type="button" id="actionActivatePlugin">Activar plugin 🔔</button>
-        <button type="button" id="actionDeactivatePlugin">Deactivate plugin 🛌</button>-->
-    </div>
-
-
-
-
     <div id="mapjs"></div>
-
-    
-    
-    <!-- Librería de MAPEA -->
-    <!--<script type="text/javascript" src="http://mapea4-sigc.juntadeandalucia.es/js/mapea-5.1.0.ol.min.js"></script>
-    <script type="text/javascript" src="http://mapea4-sigc.juntadeandalucia.es/js/configuration-5.1.0.js"></script>-->
     <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="../dist/mirrorpanel.ol.min.js"></script>
-    <!-- Plugins APICNIG -->
-    <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/toc/toc.ol.min.js"></script>                         <!-- JS Plugin TOC: Selector de capas overlay - feo pero funciona -->
-    <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/beautytoc/beautytoc.ol.min.js"></script>             <!-- JS Plugin BeautyTOC: Selector de capas overlay - No va bien -->
-    <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/fulltoc/fulltoc.ol.min.js"></script>                 <!-- JS Plugin FullTOC: Selector de capas overlay - Va de PM aunque está en desarrollo -->
-    <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/backimglayer/backimglayer.ol.min.js"></script>       <!-- JS Plugin BackImgLayer: Selector de capas base -->
-    <script type="text/javascript" src="test.js"></script>
+    <script>
+        const map = M.map({
+            container: 'mapjs',
+            center: {
+                x: -667143.31,
+                y: 4493011.77,
+            },
+            projection: "EPSG:3857*m",
+            zoom: 15,
+        });
 
+        const mpMirrorPanel = new M.plugin.Mirrorpanel();
+        map.addPlugin(mpMirrorPanel);
+    </script>
 </body>
 
 </html>

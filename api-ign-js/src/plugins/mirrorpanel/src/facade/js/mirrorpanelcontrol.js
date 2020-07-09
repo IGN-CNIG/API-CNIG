@@ -4,16 +4,7 @@
 
 import MirrorpanelImplControl from 'impl/mirrorpanelcontrol';
 import template from 'templates/mirrorpanel';
-import { getValue as getValueTranslate } from './i18n/language'; //e2m: Multilanguage support. Alias -> getValue is too generic
-
-function clone(obj) {
-  if (null == obj || "object" != typeof obj) return obj;
-  var copy = obj.constructor();
-  for (var attr in obj) {
-    if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-  }
-  return copy;
-}
+import { getValue as getValueTranslate } from './i18n/language';
 
 export default class MirrorpanelControl extends M.Control {
   /**
@@ -26,9 +17,6 @@ export default class MirrorpanelControl extends M.Control {
    * @api stable
    */
   constructor(values) {
-    //Al constructor llegan los parámetros de creación del plugin
-
-
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(MirrorpanelImplControl)) {
       M.exception('La implementación usada no puede crear controles MirrorpanelControl');
@@ -36,8 +24,6 @@ export default class MirrorpanelControl extends M.Control {
     // 2. implementation of this control
     const impl = new MirrorpanelImplControl();
     super(impl, 'Mirrorpanel');
-
-
 
     /**
      * Template
@@ -68,35 +54,26 @@ export default class MirrorpanelControl extends M.Control {
     this.showCursors = values.showCursors;
 
     /**
-     * Template
-     * @public
-     * @type { M.Map }
+     * Defining mirror maps variables
      */
-    this.mapB = null;
-
-    /**
-     * Template
-     * @public
-     * @type { M.Map }
-     */
-    this.mapC = null;
-
-    /**
-     * Template
-     * @public
-     * @type { M.Map }
-     */
-    this.mapD = null;
-
-    this.lyrCursorA = null;
-    this.lyrCursorB = null;
-    this.lyrCursorC = null;
-    this.lyrCursorD = null;
-
-    this.featureLyrCursorA = null;
-    this.featureLyrCursorB = null;
-    this.featureLyrCursorC = null;
-    this.featureLyrCursorD = null;
+    this.mapL = {
+      A: null,
+      B: null,
+      C: null,
+      D: null,
+    }
+    this.lyrCursor = {
+      A: null,
+      B: null,
+      C: null,
+      D: null,
+    }
+    this.featureLyrCursor = {
+      A: null,
+      B: null,
+      C: null,
+      D: null,
+    }
 
     /**
      * Defining cursor style
@@ -105,14 +82,14 @@ export default class MirrorpanelControl extends M.Control {
       icon: {
         form: M.style.form.CIRCLE,
         fontsize: 0.5,
-        radius: 5,                    // Tamaño
-        rotation: 0,                  // Giro del icono en radianes
-        rotate: false,                // Activar rotacion con dispositivo
-        offset: [0, 0],               // Desplazamiento en pixeles en los ejes x,y
+        radius: 5,
+        rotation: 0,
+        rotate: false,
+        offset: [0, 0],
         color: 'black',
         fill: 'red',
-        gradientcolor: '#088A85',     // Color del borde
-        opacity: 0.8                  // Transparencia. 0(transparente)|1(opaco)
+        gradientcolor: '#088A85',
+        opacity: 0.8
       }
     });
 
@@ -136,6 +113,7 @@ export default class MirrorpanelControl extends M.Control {
      * @public {Object}
      */
     this.backImgLayersParams = values.backImgLayersParams;
+
     this.createMapContainers();
   }
 
@@ -149,7 +127,7 @@ export default class MirrorpanelControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    if (!M.template.compileSync) { // JGL: retrocompatibilidad Mapea4
+    if (!M.template.compileSync) {
       M.template.compileSync = (string, options) => {
         let templateCompiled;
         let templateVars = {};
@@ -169,15 +147,10 @@ export default class MirrorpanelControl extends M.Control {
       };
     }
 
-    this.map = map;
+    this.mapL['A'] = map;
 
-    if (this.showCursors) { this.addLayerCursorA(); }
-
+    if (this.showCursors) { this.addLayerCursor('A'); }
     return new Promise((success, fail) => {
-
-      //const html = M.template.compileSync(template);//Lo comento porque guardo el template en la propiedad de la clase
-      // Añadir código dependiente del DOM
-
       let templateOptions = '';
       templateOptions = {
         jsonp: true,
@@ -200,7 +173,7 @@ export default class MirrorpanelControl extends M.Control {
 
       this.template = M.template.compileSync(template, templateOptions);
 
-      //Defino los eventos para los clics de botón
+      // Button's click events
       this.template.querySelectorAll('button[id^="set-mirror-"]')
         .forEach((button, modeViz) => {
           button.addEventListener('click', evt => {
@@ -208,10 +181,9 @@ export default class MirrorpanelControl extends M.Control {
           })
         });
 
-      //Lanzo el modo de visualización por defecto
-      this.manageVisionPanelByCSSGrid(this.modeViz);  //metido aquí
-
-      success(this.template);//Devuelvo el Template creado
+      // Apply default vision
+      this.manageVisionPanelByCSSGrid(this.modeViz);
+      success(this.template);
     });
 
   }
@@ -224,7 +196,6 @@ export default class MirrorpanelControl extends M.Control {
    * @api stable
    */
   activate() {
-    // calls super to manage de/activation
     super.activate();
   }
   /**
@@ -235,19 +206,57 @@ export default class MirrorpanelControl extends M.Control {
    * @api stable
    */
   deactivate() {
-    // calls super to manage de/activation
     super.deactivate();
   }
 
   /**
-   * Initial configurations for applying CSS grid.ç
+  * Parse backImgLayers parameters and copy them for each mirror map.
+  * 
+  */
+  copyBackImgLayersParams(params, layerId) {
+    let copy = params;
+    const paramsSeparate = params.split('!!');
+    const idsArray = paramsSeparate[6].split(',');
+    const titlesArray = paramsSeparate[7].split(',');
+    const previewArray = paramsSeparate[8].split(',');
+    const layersArray = paramsSeparate[9].split(',');
+    let lyrs = [];
+    layersArray.forEach((baseLayer, idx) => {
+      let backgroundLayers = baseLayer.split('sumar');
+      backgroundLayers = backgroundLayers.map((urlLayer) => {
+        const mapeaLayer = new M.layer.WMTS(urlLayer);
+        return mapeaLayer;
+      });
+      const mapeaLyrsObject = {
+        id: idsArray[idx],
+        title: titlesArray[idx],
+        preview: previewArray[idx],
+        layers: backgroundLayers,
+      };
+      lyrs.push(mapeaLyrsObject);
+    });
+    copy = {
+      position: paramsSeparate[0],
+      collapsible: paramsSeparate[1] === 'true' ? true : false,
+      collapsed: paramsSeparate[2] === 'true' ? true : false,
+      layerId: layerId === 'A' ? 0 : layerId === 'B' ? 1 : layerId == 'C' ? 2 : 3,
+      layerVisibility: paramsSeparate[3] === 'true' ? true : false,
+      columnsNumber: paramsSeparate[5],
+      layerOpts: lyrs
+    }
+    return copy;
+  }
+
+  /**
+   * Initial configurations for applying CSS grid.
    * 
    */
   createMapContainers() {
     const bigContainer = document.createElement('div');
     bigContainer.id = "lienzo";
     bigContainer.classList.add('mirrorpanel-grid');
-    const mapjsA = document.getElementById("mapjs");
+
+    const mapjsA = document.getElementById("mapjs") || document.getElementById("map");
     document.body.insertBefore(bigContainer, mapjsA);
     mapjsA.classList.add('mirror1');
     bigContainer.appendChild(mapjsA);
@@ -274,9 +283,9 @@ export default class MirrorpanelControl extends M.Control {
    * 
    */
   manageVisionPanelByCSSGrid(modeViz) {
-
     let oldModeViz = this.modeViz;
-    document.getElementById('mapjs').style.display = 'none';
+    let map0 = document.getElementById('mapjs') || document.getElementById('map');
+    map0.style.display = 'none';
     document.getElementById('mapjsB').style.display = 'none';
     document.getElementById('mapjsC').style.display = 'none';
     document.getElementById('mapjsD').style.display = 'none';
@@ -289,103 +298,44 @@ export default class MirrorpanelControl extends M.Control {
 
     //Create map objects by modeviz
     if ([1, 2].includes(modeViz)) {
-      if (this.mapB == null) {
-        this.createMapBObjects();//Create MapB
+      if (this.mapL['B'] == null) {
+        this.createMapObjects('B');//Create MapB
       }
     }
     if ([3, 7, 8, 9].includes(modeViz)) {
-      if (this.mapB == null) {
-        this.createMapBObjects();//Create MapB
+      if (this.mapL['B'] == null) {
+        this.createMapObjects('B');//Create MapB
       }
-      if (this.mapC == null) {
-        this.createMapCObjects();//Create MapC
+      if (this.mapL['C'] == null) {
+        this.createMapObjects('C');//Create MapC
       }
     }
     if ([4, 5, 6].includes(modeViz)) {
-      if (this.mapB == null) {
-        this.createMapBObjects();//Create MapB
+      if (this.mapL['B'] == null) {
+        this.createMapObjects('B');//Create MapB
       }
-      if (this.mapC == null) {
-        this.createMapCObjects();//Create MapC
+      if (this.mapL['C'] == null) {
+        this.createMapObjects('C');//Create MapC
       }
-      if (this.mapD == null) {
-        this.createMapDObjects();//Create MapD
+      if (this.mapL['D'] == null) {
+        this.createMapObjects('D');//Create MapD
       }
     }
 
     this.modeViz = modeViz;
     this.template.querySelector('#set-mirror-' + modeViz).classList.add('buttom-pressed');
     this.map_.refresh();
-    if (this.mapB !== null) { this.mapB.refresh(); }
-    if (this.mapC !== null) { this.mapC.refresh(); }
-    if (this.mapD !== null) { this.mapD.refresh(); }
+    if (this.mapL['B'] !== null) { this.mapL['B'].refresh(); }
+    if (this.mapL['C'] !== null) { this.mapL['C'].refresh(); }
+    if (this.mapL['D'] !== null) { this.mapL['D'].refresh(); }
   }
 
   /**
-   * Adding a layer for cursor on MapA
+   * Create mirror map object synchro with the main map
    */
-  addLayerCursorA() {
-
-    //Definimos la capa de cursor
-    this.lyrCursorA = new M.layer.Vector({
-      name: 'Coordenadas centro A',
-    }, { displayInLayerSwitcher: false });
-
-    this.featureLyrCursorA = new M.Feature('CenterA', {
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'Point',
-        coordinates: this.map.getCenter(),
-      },
-    });
-
-    this.lyrCursorA.addFeatures([this.featureLyrCursorA]);
-    this.lyrCursorA.setStyle(this.styleCursor);
-    this.lyrCursorA.setZIndex(5000);
-    this.map.addLayers(this.lyrCursorA);
-
-    //Como Mapea no tiene sacado el evento PointerMove, los sacamos de la implementación
-    this.map.getMapImpl().on('pointermove', (event) => {
-
-      this.lyrCursorA.setVisible(false);
-
-      if (this.featureLyrCursorB !== null) {
-        this.lyrCursorB.setVisible(true);
-        this.featureLyrCursorB.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-      if (this.featureLyrCursorC !== null) {
-        this.lyrCursorC.setVisible(true);
-        this.featureLyrCursorC.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-      if (this.featureLyrCursorD !== null) {
-        this.lyrCursorD.setVisible(true);
-        this.featureLyrCursorD.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-    });
-
-  }
-
-  /**
-   * Create MapB object synchro with MapA
-   */
-  createMapBObjects() {
-
-    let plugin4mapB = null;
-    let mpBILmapB = null;
-
+  createMapObjects(mapLyr) {
+    let plugin4map = null;
+    let mpBILmap = null;
 
     if (this.enabledPlugins) {
       //Get main map plugins
@@ -395,356 +345,85 @@ export default class MirrorpanelControl extends M.Control {
         if (itemPlug.metadata_) {
           if (itemPlug.metadata_.name === "FullTOC") {
             //FullTOC
-            plugin4mapB = clone(itemPlug); //Clone main-map plugin in a new object
+            plugin4map = new M.plugin.FullTOC();
           }
           if (itemPlug.metadata_.name === "backimglayer") {
             //BackImgLayer
-            mpBILmapB = new M.plugin.BackImgLayer(this.backImgLayersParams);
-            mpBILmapB.layerId = 1;
+            mpBILmap = new M.plugin.BackImgLayer(this.copyBackImgLayersParams(this.backImgLayersParams, mapLyr));
           }
         }
       });
-
     }
-    this.mapB = M.map({
-      container: 'mapjsB',
-      layers: ((this.defaultBaseLyrs.length >= 1) && (mpBILmapB == null)) ? [this.defaultBaseLyrs[0]] : this.map_.getLayers()[0].setMap(this),
+    this.mapL[mapLyr] = M.map({
+      container: 'mapjs' + mapLyr,
+      layers: ((this.defaultBaseLyrs.length >= 1) && (mpBILmap == null)) ? [this.defaultBaseLyrs[0]] : this.map_.getLayers()[0].setMap(this),
       center: this.map_.getCenter(),
       projection: this.map_.getProjection().code + '*' + this.map_.getProjection().units,
       zoom: this.map_.getZoom(),
     });
-    this.mapB.getMapImpl().setView(this.map_.getMapImpl().getView());
+    this.mapL[mapLyr].getMapImpl().setView(this.map_.getMapImpl().getView());
 
-    if (plugin4mapB !== null) {
-      this.mapB.addPlugin(plugin4mapB);
+    if (plugin4map !== null) {
+      this.mapL[mapLyr].addPlugin(plugin4map);
     }
 
-    if (mpBILmapB !== null) {
-      this.mapB.addPlugin(mpBILmapB);
+    if (mpBILmap !== null) {
+      this.mapL[mapLyr].addPlugin(mpBILmap);
     }
 
-
-    //Plugins enabled
+    // Plugins enabled
     if (this.enabledPlugins) {
-      //Si hay array de capas para añadir
+      // If there is layers for mirror map
       if (this.mirrorLayers.length > 0) {
-        this.mapB.addLayers(this.mirrorLayers);//Las añado
-        //Pongo invisibles las capas que acabo de pasr como parámetro
-        for (let i = this.mapB.getLayers().length - 1; i >= this.mapB.getLayers().length - this.mirrorLayers.length - 1; i--) {
-          this.mapB.getLayers()[i].setVisible(false);
+        this.mapL[mapLyr].addLayers(this.mirrorLayers); // Add them
+        // Set new layers no visible
+        for (let i = this.mapL[mapLyr].getLayers().length - 1; i >= this.mapL[mapLyr].getLayers().length - this.mirrorLayers.length - 1; i--) {
+          this.mapL[mapLyr].getLayers()[i].setVisible(false);
         }
       }
     }
-
-    if (this.showCursors) { this.addLayerCursorB(); }
-
-    this.mapB.refresh();
-
+    if (this.showCursors) { this.addLayerCursor(mapLyr); }
+    this.mapL[mapLyr].refresh();
   }
 
   /**
-   * Adding a layer for cursor on MapB
+   * Adding a layer for cursor on Map
    */
-  addLayerCursorB() {
-
-    //Definimos la capa de cursor
-    this.lyrCursorB = new M.layer.Vector({
-      name: 'Coordenadas centro B',
+  addLayerCursor(mapLyr) {
+    // Cursor Layer
+    this.lyrCursor[mapLyr] = new M.layer.Vector({
+      name: 'Coordenadas centro ' + mapLyr,
     }, { displayInLayerSwitcher: false });
 
-    this.featureLyrCursorB = new M.Feature('CenterB', {
+    this.featureLyrCursor[mapLyr] = new M.Feature('Center' + mapLyr, {
       type: 'Feature',
       properties: {},
       geometry: {
         type: 'Point',
-        coordinates: this.mapB.getCenter(),
+        coordinates: this.mapL[mapLyr].getCenter(),
       },
     });
 
-    this.lyrCursorB.addFeatures([this.featureLyrCursorB]);
-    this.lyrCursorB.setStyle(this.styleCursor);
-    this.lyrCursorB.setZIndex(5000);
-    this.mapB.addLayers(this.lyrCursorB);
+    this.lyrCursor[mapLyr].addFeatures([this.featureLyrCursor[mapLyr]]);
+    this.lyrCursor[mapLyr].setStyle(this.styleCursor);
+    this.lyrCursor[mapLyr].setZIndex(5000);
+    this.mapL[mapLyr].addLayers(this.lyrCursor[mapLyr]);
 
-    //Como Mapea no tiene sacado el evento PointerMove, los sacamos de la implementación
-    this.mapB.getMapImpl().on('pointermove', (event) => {
-
-      this.lyrCursorB.setVisible(false);
-
-      if (this.featureLyrCursorA !== null) {
-        this.lyrCursorA.setVisible(true);
-        this.featureLyrCursorA.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-      if (this.featureLyrCursorC !== null) {
-        this.lyrCursorC.setVisible(true);
-        this.featureLyrCursorC.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-      if (this.featureLyrCursorD !== null) {
-        this.lyrCursorD.setVisible(true);
-        this.featureLyrCursorD.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-    });
-
-
-  }
-
-
-  /**
-   * Create MapC object synchro with MapA
-   */
-  createMapCObjects() {
-
-    let plugin4mapC = null;
-    let mpBILmapC = null;
-
-
-    if (this.enabledPlugins) {
-      //Get main map plugins
-      const listaPlugs = this.map_.getPlugins();
-
-      listaPlugs.forEach((itemPlug) => {
-        if (itemPlug.metadata_) {
-          if (itemPlug.metadata_.name === "FullTOC") {
-            //FullTOC
-            plugin4mapC = clone(itemPlug); //Clone main-map plugin in a new object
-          }
-          if (itemPlug.metadata_.name === "backimglayer") {
-            //BackImgLayer
-            mpBILmapC = new M.plugin.BackImgLayer(this.backImgLayersParams);
-            mpBILmapC.layerId = 2
+    this.mapL[mapLyr].getMapImpl().on('pointermove', (event) => {
+      this.lyrCursor[mapLyr].setVisible(false);
+      Object.keys(this.featureLyrCursor).forEach(k => {
+        if (k != mapLyr) {
+          if (this.featureLyrCursor[k] !== null) {
+            this.lyrCursor[k].setVisible(true);
+            this.featureLyrCursor[k].setGeometry({
+              type: 'Point',
+              coordinates: event.coordinate,
+            });
           }
         }
-      });
-
-    }
-    this.mapC = M.map({
-      container: 'mapjsC',
-      layers: ((this.defaultBaseLyrs.length >= 2) && (mpBILmapC == null)) ? [this.defaultBaseLyrs[1]] : this.map_.getLayers()[0].setMap(this),
-      center: this.map_.getCenter(),
-      projection: this.map_.getProjection().code + '*' + this.map_.getProjection().units,
-      zoom: this.map_.getZoom(),
+      })
     });
-
-    this.mapC.getMapImpl().setView(this.map_.getMapImpl().getView());
-
-    if (plugin4mapC !== null) {
-      this.mapC.addPlugin(plugin4mapC);
-    }
-
-    if (mpBILmapC !== null) {
-      this.mapC.addPlugin(mpBILmapC);
-    }
-
-
-    //Plugins enabled
-    if (this.enabledPlugins) {
-      //Si hay array de capas para añadir
-      if (this.mirrorLayers.length > 0) {
-        this.mapC.addLayers(this.mirrorLayers);//Las añado
-        //Pongo invisibles las capas que acabo de pasr como parámetro
-        for (let i = this.mapC.getLayers().length - 1; i >= this.mapC.getLayers().length - this.mirrorLayers.length - 1; i--) {
-          this.mapC.getLayers()[i].setVisible(false);
-        }
-      }
-    }
-
-    if (this.showCursors) { this.addLayerCursorC(); }
-
-    this.mapC.refresh();
-
   }
-
-
-  /**
-   * Adding a layer for cursor on MapC
-   */
-  addLayerCursorC() {
-
-    //Definimos la capa de cursor
-    this.lyrCursorC = new M.layer.Vector({
-      name: 'Coordenadas centro C',
-    }, { displayInLayerSwitcher: false });
-
-    this.featureLyrCursorC = new M.Feature('CenterC', {
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'Point',
-        coordinates: this.mapB.getCenter(),
-      },
-    });
-
-    this.lyrCursorC.addFeatures([this.featureLyrCursorC]);
-    this.lyrCursorC.setStyle(this.styleCursor);
-    this.lyrCursorC.setZIndex(5000);
-    this.mapC.addLayers(this.lyrCursorC);
-
-    //Como Mapea no tiene sacado el evento PointerMove, los sacamos de la implementación
-    this.mapC.getMapImpl().on('pointermove', (event) => {
-
-      this.lyrCursorC.setVisible(false);
-
-      if (this.featureLyrCursorA !== null) {
-        this.lyrCursorA.setVisible(true);
-        this.featureLyrCursorA.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-      if (this.featureLyrCursorB !== null) {
-        this.lyrCursorB.setVisible(true);
-        this.featureLyrCursorB.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-      if (this.featureLyrCursorD !== null) {
-        this.lyrCursorD.setVisible(true);
-        this.featureLyrCursorD.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-    });
-
-  }
-
-  /**
-   * Create MapD object synchro with MapA
-   */
-  createMapDObjects() {
-
-    let plugin4mapD = null;
-    let mpBILmapD = null;
-
-
-    if (this.enabledPlugins) {
-      //Get main map plugins
-      const listaPlugs = this.map_.getPlugins();
-
-      listaPlugs.forEach((itemPlug) => {
-        if (itemPlug.metadata_) {
-          if (itemPlug.metadata_.name === "FullTOC") {
-            //FullTOC
-            plugin4mapD = clone(itemPlug); //Clone main-map plugin in a new object
-          }
-          if (itemPlug.metadata_.name === "backimglayer") {
-            //BackImgLayer
-            mpBILmapD = new M.plugin.BackImgLayer(this.backImgLayersParams);
-            mpBILmapD.layerId = 3;
-          }
-        }
-      });
-
-    }
-    this.mapD = M.map({
-      container: 'mapjsD',
-      layers: ((this.defaultBaseLyrs.length >= 3) && (mpBILmapD == null)) ? [this.defaultBaseLyrs[2]] : this.map_.getLayers()[0].setMap(this),
-      center: this.map_.getCenter(),
-      projection: this.map_.getProjection().code + '*' + this.map_.getProjection().units,
-      zoom: this.map_.getZoom(),
-    });
-
-    this.mapD.getMapImpl().setView(this.map_.getMapImpl().getView());
-
-    if (plugin4mapD !== null) {
-      this.mapD.addPlugin(plugin4mapD);
-    }
-
-    if (mpBILmapD !== null) {
-      this.mapD.addPlugin(mpBILmapD);
-    }
-
-    //Plugins enabled
-    if (this.enabledPlugins) {
-      //Si hay array de capas para añadir
-      if (this.mirrorLayers.length > 0) {
-        this.mapD.addLayers(this.mirrorLayers);//Las añado
-        //Pongo invisibles las capas que acabo de pasr como parámetro
-        for (let i = this.mapD.getLayers().length - 1; i >= this.mapD.getLayers().length - this.mirrorLayers.length - 1; i--) {
-          this.mapD.getLayers()[i].setVisible(false);
-        }
-      }
-    }
-
-    if (this.showCursors) { this.addLayerCursorD(); }
-
-    this.mapD.refresh();
-
-  }
-
-  /**
-   * Adding a layer for cursor on MapD
-   */
-  addLayerCursorD() {
-
-    //Definimos la capa de cursor
-    this.lyrCursorD = new M.layer.Vector({
-      name: 'Coordenadas centro D',
-    }, { displayInLayerSwitcher: false });
-
-    this.featureLyrCursorD = new M.Feature('CenterD', {
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'Point',
-        coordinates: this.mapB.getCenter(),
-      },
-    });
-
-    this.lyrCursorD.addFeatures([this.featureLyrCursorD]);
-    this.lyrCursorD.setStyle(this.styleCursor);
-    this.lyrCursorD.setZIndex(5000);
-    this.mapD.addLayers(this.lyrCursorD);
-
-    //Como Mapea no tiene sacado el evento PointerMove, los sacamos de la implementación
-    this.mapD.getMapImpl().on('pointermove', (event) => {
-
-      this.lyrCursorD.setVisible(false);
-
-      if (this.featureLyrCursorA !== null) {
-        this.lyrCursorA.setVisible(true);
-        this.featureLyrCursorA.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-      if (this.featureLyrCursorB !== null) {
-        this.lyrCursorB.setVisible(true);
-        this.featureLyrCursorB.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-      if (this.featureLyrCursorC !== null) {
-        this.lyrCursorC.setVisible(true);
-        this.featureLyrCursorC.setGeometry({
-          type: 'Point',
-          coordinates: event.coordinate,
-        });
-      }
-
-    });
-
-  }
-
 
   /**
    * This function is called to remove the effects
@@ -754,26 +433,25 @@ export default class MirrorpanelControl extends M.Control {
    * @api stable
    */
   removeMaps() {
-    this.mapB = null;
-    this.mapC = null;
-    this.mapD = null;
+    this.mapL['B'] = null;
+    this.mapL['C'] = null;
+    this.mapL['D'] = null;
   }
 
   destroyMapsContainer() {
-
-    //Remove mirrors containers
+    // Remove mirrors containers
     document.getElementById("mapjsB").remove();
     document.getElementById("mapjsC").remove();
     document.getElementById("mapjsD").remove();
 
-    //Saco el mapa principal del contenedor 
+    // Take the main map out of the container
     const lienzo = document.getElementById("lienzo");
-    const mapjsA = document.getElementById("mapjs");
+    const mapjsA = document.getElementById("mapjs") || document.getElementById("map");
     mapjsA.style.display = "block";
     mapjsA.classList.remove('mirror1');
     document.body.insertBefore(mapjsA, lienzo);
 
-    //Ahora me cargo el contenedor principal
+    // Load the main container
     document.getElementById("lienzo").remove();
   }
 

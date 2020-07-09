@@ -2,7 +2,7 @@
 
 Plugin que permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
 
-![Imagen -  Cortina Vertical](../img/capture.jpg)
+![Imagen -  Cortina Vertical](../img/mirrorpanel_1.jpg)
 
 
 # Dependencias

@@ -6,17 +6,7 @@ M.language.setLang('es'); //Español
 /**
  * Definimos las capas con notación MAPEA
  */
-const capasPNOA = ['WMS*PNOA 2004*https://www.ign.es/wms/pnoa-historico*PNOA2004',
-  'WMS*PNOA 2005*https://www.ign.es/wms/pnoa-historico*PNOA2005',
-  'WMS*PNOA 2006*https://www.ign.es/wms/pnoa-historico*PNOA2006',
-  'WMS*PNOA 2007*https://www.ign.es/wms/pnoa-historico*PNOA2007',
-  'WMS*PNOA 2008*https://www.ign.es/wms/pnoa-historico*PNOA2008',
-  'WMS*PNOA 2009*https://www.ign.es/wms/pnoa-historico*PNOA2009',
-  'WMS*PNOA 2010*https://www.ign.es/wms/pnoa-historico*PNOA2010',
-  'WMS*PNOA 2011*https://www.ign.es/wms/pnoa-historico*PNOA2011',
-  'WMS*PNOA 2012*https://www.ign.es/wms/pnoa-historico*PNOA2012',
-  'WMS*PNOA 2013*https://www.ign.es/wms/pnoa-historico*PNOA2013',
-  'WMS*PNOA 2014*https://www.ign.es/wms/pnoa-historico*PNOA2014',
+const capasPNOA = [
   'WMS*PNOA 2015*https://www.ign.es/wms/pnoa-historico*PNOA2015',
   'WMS*PNOA 2016*https://www.ign.es/wms/pnoa-historico*PNOA2016',
   'WMS*PNOA 2017*https://www.ign.es/wms/pnoa-historico*PNOA2017',
@@ -81,7 +71,7 @@ const mpFullTOC = new M.plugin.FullTOC({
   },
 });
 
-//map.addPlugin(mpFullTOC);
+map.addPlugin(mpFullTOC); // Puede reducir el rendimiento si se le define muchas capas en el atributo mirrorLayers.
 
 let backImgLayerParams = {
   position: 'TR',
@@ -123,19 +113,19 @@ let backImgLayerParams = {
       })],
     },
     {
-      id: 'raster',
-      preview: '../src/templates/img/svqmtn.png',
-      title: 'Ráster',
+      id: 'lidar',
+      preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',
+      title: 'LIDAR',
       layers: [new M.layer.WMTS({
-        url: 'http://www.ign.es/wmts/mapa-raster?',
-        name: 'MTN',
-        legend: 'Mapa IGN',
+        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+        name: 'EL.GridCoverageDSM',
+        legend: 'Modelo Digital de Superficies LiDAR',
         matrixSet: 'GoogleMapsCompatible',
         transparent: false,
         displayInLayerSwitcher: false,
         queryable: false,
         visible: true,
-        format: 'image/jpeg',
+        format: 'image/png',
       })],
     },
     {

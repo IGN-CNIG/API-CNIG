@@ -9,7 +9,7 @@
       "type": "object",
       "properties": [
         {
-          "type": "enum",
+          "type": "simple",
           "name": "position",
           "possibleValues": [
             "TL",
@@ -21,12 +21,12 @@
         },
         {
           "type": "boolean",
-          "name": "collapsible",
+          "name": "collapsed",
           "position": 1
         },
         {
           "type": "boolean",
-          "name": "collapsed",
+          "name": "collapsible",
           "position": 2
         },
         {
@@ -50,17 +50,17 @@
           "position": 6
         },
         {
-          "type": "array",
+          "type": "simple",
           "name": "mirrorLayers",
           "position": 7
         },
         {
-          "type": "array",
+          "type": "simple",
           "name": "defaultBaseLyrs",
           "position": 8
         },
         {
-          "type": "object",
+          "type": "simple",
           "name": "backImgLayersParams",
           "position": 9
         },
@@ -74,8 +74,8 @@
   ],
   "files": {
     "ol": {
-      "scripts": [],
-      "styles": []
+      "scripts": ["mirrorpanel.ol.min.js"],
+      "styles": ["mirrorpanel.ol.min.css"]
     }
   },
   "metadata": {
