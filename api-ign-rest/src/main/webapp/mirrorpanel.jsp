@@ -104,7 +104,7 @@
         <input type="text" name="backImgLayersParams" id="inputBackImgLayersParams" list="backImgLayersParamsSug">
         <datalist id="backImgLayersParamsSug">
             <option
-                value="{position:'TR',collapsible:true,collapsed:true,layerVisibility:true,layerOpts:[{id:'mapa',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',title:'Mapa',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseTodo',legend:'Mapa IGN',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'imagen',title:'Imagen',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen (PNOA)',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'raster',preview:'../src/templates/img/svqmtn.png',title:'Ráster',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/mapa-raster?',name:'MTN',legend:'Mapa IGN',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'hibrido',title:'Híbrido',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen (PNOA)',matrixSet:'GoogleMapsCompatible',transparent:true,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',}),new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseOrto',matrixSet:'GoogleMapsCompatible',legend:'Mapa IGN',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png'})]}]}">
+                value="{position:'TR',collapsible:true,collapsed:true,layerId:0,layerVisibility:true,layerOpts:[{id:'mapa',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',title:'Mapa',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseTodo',legend:'MapaIGN',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'imagen',title:'Imagen',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen(PNOA)',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'lidar',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',title:'LIDAR',layers:[new M.layer.WMTS({url:'https://wmts-mapa-lidar.idee.es/lidar?',name:'EL.GridCoverageDSM',legend:'ModeloDigitaldeSuperficiesLiDAR',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',})],},{id:'hibrido',title:'Híbrido',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen(PNOA)',matrixSet:'GoogleMapsCompatible',transparent:true,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',}),new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseOrto',matrixSet:'GoogleMapsCompatible',legend:'MapaIGN',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',})],},],}">
             </option>
         </datalist>
         <label for="selectInterface">Selector de interface</label>
@@ -184,19 +184,19 @@
                     })],
                 },
                 {
-                    id: 'raster',
-                    preview: '../src/templates/img/svqmtn.png',
-                    title: 'Ráster',
+                    id: 'lidar',
+                    preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',
+                    title: 'LIDAR',
                     layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/mapa-raster?',
-                        name: 'MTN',
-                        legend: 'Mapa IGN',
+                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                        name: 'EL.GridCoverageDSM',
+                        legend: 'Modelo Digital de Superficies LiDAR',
                         matrixSet: 'GoogleMapsCompatible',
                         transparent: false,
                         displayInLayerSwitcher: false,
                         queryable: false,
                         visible: true,
-                        format: 'image/jpeg',
+                        format: 'image/png',
                     })],
                 },
                 {
@@ -238,7 +238,7 @@
                 'WMTS*https://wmts-mapa-lidar.idee.es/lidar?*EL.GridCoverageDSM*GoogleMapsCompatible*LiDAR',
             ], backImgLayersParams = backImgLayerParams,
             interface;
-        crearPlugin({ defaultBaseLyrs });
+        crearPlugin({ defaultBaseLyrs, backImgLayersParams });
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
@@ -279,11 +279,10 @@
             modeViz = inputModeViz.value != "" ? objeto.modeViz = inputModeViz.value : "";
             mirrorLayers = inputMirrorLayers.value != "" ? objeto.mirrorLayers = inputMirrorLayers.value : "";
             defaultBaseLyrs = inputDefaultBaseLyrs.value != "" ? objeto.defaultBaseLyrs = inputDefaultBaseLyrs.value : "";
-            backImgLayersParams = inputBackImgLayersParams.value != "" ? objeto.backImgLayersParams = inputBackImgLayersParams.value : objeto.backImgLayersParams = backImgLayerParams;
+            backImgLayersParams = inputBackImgLayersParams.value != "" ? objeto.backImgLayersParams = eval('(' + inputBackImgLayersParams.value + ')') : objeto.backImgLayersParams = backImgLayerParams;
             let interfaceValor = selectInterface.options[selectInterface.selectedIndex].value;
             interface = interfaceValor != "" ? objeto.interface = (interfaceValor == "true") : "";
             map.removePlugins(mp);
-            console.log(objeto);
             crearPlugin(objeto);
         }
 
