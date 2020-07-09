@@ -456,18 +456,6 @@ export default class MirrorpanelControl extends M.Control {
   }
 
   /**
-   * This function gets activation button
-   *
-   * @public
-   * @function
-   * @param {HTML} html of control
-   * @api stable
-   */
-  getActivationButton(html) {
-    return html.querySelector('.m-mirrorpanel button');
-  }
-
-  /**
    * This function compares controls
    *
    * @public

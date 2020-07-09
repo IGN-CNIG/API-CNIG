@@ -55,7 +55,7 @@ div.m-plugin-panelMirrorpanel.opened{
 
 .m-areas>div.m-area.m-right>div.m-plugin-panelMirrorpanel.opened>button.m-panel-btn {
 	position: absolute;
-	left: -2.53rem;
+	left: -2.5rem;
 	/*background-color: #71a7d3;*/
 	background-color: #fff;
 }
@@ -65,7 +65,7 @@ div.m-plugin-panelMirrorpanel.opened{
 
 .m-areas>div.m-area.m-left>div.m-plugin-panelMirrorpanel.opened>button.m-panel-btn {
 	position: absolute;
-	right: -2.53rem;
+	right: -2.5rem;
 	left: unset !important;
 	/*background-color: #71a7d3;*/
 	background-color: #fff;
