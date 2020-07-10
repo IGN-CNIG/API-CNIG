@@ -88,6 +88,12 @@
         <datalist id="zoomSug">
             <option value="2"></option>
         </datalist>
+        <label for="selectPointStyle">Estilo del pin de búsqueda</label>
+        <select name="pointStyle" id="selectPointStyle">
+            <option value="pinBlanco">Blanco</option>
+            <option value="pinRojo">Rojo</option>
+            <option value="pinMorado">Morado</option>
+        </select>
         <label for="inputSearchposition">Orden resultados de los servicios</label>
         <input type="text" name="searchposition" id="inputSearchposition" list="optionsSearchposition">
         <datalist id="optionsSearchposition">
@@ -144,7 +150,7 @@
             collapsible = true,
             zoom,
             posicion, noProcess, countryCode, reverse = true,
-            urlCandidates, urlFind, urlReverse, searchposition;
+            urlCandidates, urlFind, urlReverse, searchposition, pointStyle;
         crearPlugin({
             servicesToSearch: sToSearch,
             maxResults: mxResults,
@@ -158,7 +164,8 @@
             urlCandidates: urlCandidates,
             urlFind: urlFind,
             urlReverse: urlReverse,
-            searchPosition: searchposition
+            searchPosition: searchposition,
+            pointStyle: pointStyle
         });
 
         const selectServiceToSearch = document.getElementById("selectServiceToSearch");
@@ -166,6 +173,7 @@
         const selectNoProcess = document.getElementById("selectNoProcess");
         const selectCountryCode = document.getElementById("selectCountryCode");
         const selectPosicion = document.getElementById("selectPosicion");
+        const selectPointStyle = document.getElementById("selectPointStyle");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
         const selectReverse = document.getElementById("selectReverse");
@@ -180,6 +188,7 @@
         selectNoProcess.addEventListener('change', cambiarTest);
         selectCountryCode.addEventListener('change', cambiarTest);
         selectPosicion.addEventListener('change', cambiarTest);
+        selectPointStyle.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
         selectReverse.addEventListener('change', cambiarTest);
@@ -199,11 +208,12 @@
             objeto.isCollapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true');
-            objeto.zoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "";
+            objeto.zoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "16";
             searchPosition = inputSearchposition.value != "" ? objeto.searchPosition = inputSearchposition.value : "";
             urlCandidates = inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value : "";
             urlFind = inputUrlFind.value != "" ? objeto.urlFind = inputUrlFind.value : "";
             urlReverse = inputUrlReverse.value != "" ? objeto.urlReverse = inputUrlReverse.value : "";
+            objeto.pointStyle = selectPointStyle.options[selectPointStyle.selectedIndex].value;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }

@@ -39,6 +39,7 @@ export default class IGNSearchControl extends M.Control {
     geocoderCoords,
     zoom,
     searchPosition,
+    pointStyle,
     nomenclatorSearchType = geographicNameType,
   ) {
     if (M.utils.isUndefined(IGNSearchImplControl)) {
@@ -172,6 +173,13 @@ export default class IGNSearchControl extends M.Control {
      * @type {string}
      */
     this.urlParse = null;
+
+    /**
+     * This variable indicates Nomenclator url prefix
+     * @private
+     * @type {string}
+     */
+    this.pointStyle = pointStyle;
     registerHelpers();
   }
   /**
@@ -991,21 +999,38 @@ export default class IGNSearchControl extends M.Control {
    */
   createGeometryStyles() {
     // Shows pin on drawn point
-    this.point = new M.style.Point({
-      radius: 5,
-      icon: {
-        src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pinign.svg']),
-        // form: 'none',
-        // class: 'g-cartografia-pin',
-        // radius: 12,
-        // rotation: 0,
-        // rotate: false,
-        // offset: [0, -12],
-        // color: '#f00',
-        // border: '5px solid green',
-        // opacity: 1,
-      },
-    });
+
+    if (this.pointStyle === 'pinBlanco') {
+      this.point = new M.style.Point({
+        radius: 5,
+        icon: {
+          form: 'none',
+          class: 'g-cartografia-pin',
+          radius: 12,
+          rotation: 0,
+          rotate: false,
+          offset: [0, -12],
+          color: '#f00',
+          border: '5px solid green',
+          opacity: 1,
+        },
+      });
+    } else if (this.pointStyle === 'pinRojo') {
+      this.point = new M.style.Point({
+        radius: 5,
+        icon: {
+          src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pinign.svg']),
+        },
+      });
+    } else if (this.pointStyle === 'pinMorado') {
+      this.point = new M.style.Point({
+        radius: 5,
+        icon: {
+          src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/m-pin-24.svg']),
+        },
+      });
+    }
+
     // Style for hiding geometry
     this.simple = new M.style.Polygon({
       fill: {
