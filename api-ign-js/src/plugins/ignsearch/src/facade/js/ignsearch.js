@@ -199,6 +199,13 @@ export default class IGNSearch extends M.Plugin {
      * @type {string}
      */
     this.searchPosition = options.searchPosition || 'nomenclator,geocoder';
+
+    /**
+     * This variable indicates Nomenclator SearchAssistant service url
+     * @private
+     * @type {string}
+     */
+    this.pointStyle = options.pointStyle || 'pinBlanco';
   }
 
   /**
@@ -228,6 +235,7 @@ export default class IGNSearch extends M.Plugin {
       this.geocoderCoords_,
       this.zoom_,
       this.searchPosition,
+      this.pointStyle,
     ));
     this.controls_[0].on('ignsearch:entityFound', (extent) => {
       this.fire('ignsearch:entityFound', [extent]);
@@ -312,7 +320,7 @@ export default class IGNSearch extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.resultVisibility}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.zoom}*${this.searchPosition}`;
+    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.countryCode}*${this.resultVisibility}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.zoom}*${this.searchPosition}*${this.pointStyle}`;
   }
 
   /**
