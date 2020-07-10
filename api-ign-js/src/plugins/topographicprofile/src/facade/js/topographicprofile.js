@@ -74,7 +74,7 @@ export default class Topographicprofile extends M.Plugin {
     this.panel_ = new M.ui.Panel('panelTopographicprofile', {
       // 'collapsible': true,
       'className': 'm-topographicprofile',
-      'collapsedButtonClass': 'g-grafica-puntos2',
+      'collapsedButtonClass': 'icon-chart',
       'position': M.ui.position[this.position_],
       'tooltip': getValue('tooltip')
     });
