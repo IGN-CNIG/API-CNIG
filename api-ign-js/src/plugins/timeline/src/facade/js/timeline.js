@@ -5,7 +5,6 @@ import 'assets/css/timeline';
 import TimelineControl from './timelinecontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
-// import { isArray } from '../../../../../facade/js/util/Utils';
 
 export default class Timeline extends M.Plugin {
   /**
@@ -67,21 +66,21 @@ export default class Timeline extends M.Plugin {
     if (options !== undefined) {
       if (M.utils.isString(options.intervals)) {
         this.intervals = JSON.parse(options.intervals.replace(/!!/g, '[').replace(/¡¡/g, ']'));
-      } else {
+      } else if (M.utils.isArray(options.intervals)) {
         this.intervals = options.intervals;
+      } else {
+        M.dialog.error(getValue('intervals_error'));
       }
     }
 
     /**
-   * Animation of the timeline
-   * @public
-   * Value: true / false
-   * @type {boolean}
-   */
+     * Animation of the timeline
+     * @public
+     * Value: true / false
+     * @type {boolean}
+     */
     this.animation = options.animation;
-    if (this.animation === undefined) {
-      this.animation = true;
-    }
+    if (this.animation === undefined) this.animation = true;
 
     /**
      * Speed of animation
@@ -97,8 +96,6 @@ export default class Timeline extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
-
-    this.separatorApiJson = api.url.separator;
 
     /**
      *@private
@@ -180,7 +177,7 @@ export default class Timeline extends M.Plugin {
    */
   getAPIRest() {
     const intervals = JSON.stringify(this.intervals).replace(/\[/g, '!!').replace(/\]/g, '¡¡');
-    return `${this.name}=${this.position}*!${intervals}`;
+    return `${this.name}=${this.position}*!${intervals}*!${this.animation}*!${this.speed}`;
   }
 
   /**

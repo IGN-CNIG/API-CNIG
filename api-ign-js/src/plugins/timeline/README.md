@@ -2,6 +2,8 @@
 
 Plugin de línea del tiempo
 
+![Imagen1](./img/timeline_img.png)
+
 # Dependencias
 
 - timeline.ol.min.js
@@ -17,17 +19,16 @@ Plugin de línea del tiempo
 
 - El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **intervals**. Parámetro obligatorio. Array que contiene nombre, etiqueta y servicio en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
+- **intervals**. Parámetro obligatorio. Array que contiene cada capa junto a sus datos:
+  - Nombre: nombre descriptivo de la capa.
+  - Etiqueta: etiqueta o fecha de la capa.
+  - Servicio en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
 
 - **position**. Indica la posición donde se mostrará el plugin.
   - 'TL':top left
   - 'TR':top right (default)
   - 'BL':bottom left
   - 'BR':bottom right
-
-# Eventos
-
-# Otros métodos
 
 # Ejemplos de uso
 
@@ -37,7 +38,15 @@ Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la
 ```javascript
   const mp = new M.plugin.Timeline({
   position: 'TL',
-  intervals: '[["NACIONAL 1981-1986","1986","WMS*NACIONAL_1981-1986*https://www.ign.es/wms/pnoa-historico*NACIONAL_1981-1986"],["OLISTAT","1998","WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT"],["SIGPAC","2003","WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC"],["PNOA 2004","2004","WMS*pnoa2004*https://www.ign.es/wms/pnoa-historico*pnoa2004"],["PNOA 2005","2005","WMS*pnoa2005*https://www.ign.es/wms/pnoa-historico*pnoa2005"],["PNOA 2006","2006","WMS*pnoa2006*https://www.ign.es/wms/pnoa-historico*pnoa2006"],["PNOA 2010","2010","WMS*pnoa2010*https://www.ign.es/wms/pnoa-historico*pnoa2010"]]',
+  intervals: [
+    ["NACIONAL 1981-1986", "1986", "WMS*NACIONAL_1981-1986*https://www.ign.es/wms/pnoa-historico*NACIONAL_1981-1986"],
+    ["OLISTAT", "1998", "WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT"],
+    ["SIGPAC", "2003", "WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC"],
+    ["PNOA 2004", "2004", "WMS*pnoa2004*https://www.ign.es/wms/pnoa-historico*pnoa2004"],
+    ["PNOA 2005", "2005", "WMS*pnoa2005*https://www.ign.es/wms/pnoa-historico*pnoa2005"],
+    ["PNOA 2006", "2006", "WMS*pnoa2006*https://www.ign.es/wms/pnoa-historico*pnoa2006"],
+    ["PNOA 2010", "2010", "WMS*pnoa2010*https://www.ign.es/wms/pnoa-historico*pnoa2010"]
+  ]
 });
 
    map.addPlugin(mp);
