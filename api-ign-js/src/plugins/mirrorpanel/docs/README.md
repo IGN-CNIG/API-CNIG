@@ -48,7 +48,7 @@ Plugin que permite comparar varias capas dividiendo la pantalla en varias partes
 
 - **showCursors**. Si es *true*, muestra cursores sincronziados en cda unao de los mapas espejo. Por defecto tiene el valor *true*.
 
-- **mirrorLayers**. Es un array de capas para mostrar en los mapas espejo y pdper compararlas entre sí.
+- **mirrorLayers**. Es un array de capas para mostrar en los mapas espejo y poder compararlas entre sí.
 
 - **defaultBaseLyrs**. Es un array de capas para mostrar como mapa por defecto cuando no se importa del mapa principal un plugin **M.plugin.BackImgLayer** o cuando la propiedad *enabledPlugins* es *false*.
 
