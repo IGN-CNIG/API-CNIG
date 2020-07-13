@@ -1,4 +1,4 @@
-/*	Copyright (c) 2016 Jean-Marc VIGLINO, 
+/*	Copyright (c) 2016 Jean-Marc VIGLINO,
 	released under the CeCILL-B license (French BSD license)
 	(http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
 */
@@ -78,6 +78,21 @@ var Profil = function(opt_options) {
     button.addEventListener('click', close);
     button.addEventListener('touchstart', close);
     elementTitle.appendChild(button);
+
+    const button2 = document.createElement('button');
+    button2.setAttribute('type', 'button');
+    button2.setAttribute('class', 'profile-download-button');
+    const download = (e) => {
+      const image = this.getImage();
+      const a = document.createElement('a');
+      a.href = image;
+      a.download = 'Perfil.png';
+      a.click();
+      a.remove();
+    };
+    button2.addEventListener('click', download);
+    button2.addEventListener('touchstart', download);
+    elementTitle.appendChild(button2);
   }
 
   var div_inner = document.createElement("div");
@@ -455,7 +470,7 @@ Profil.prototype.setGeometry = function(g, options) {
 
   ctx.stroke();
 
-  // 
+  //
   ctx.strokeStyle = "#368";
   ctx.lineWidth = 3;
   ctx.setLineDash([]);
