@@ -74,7 +74,7 @@ export default class TimelineControl extends M.Control {
       });
       this.intervals.forEach((interval, k) => {
         let tag = document.createElement('div');
-        if(k !=0  && k != this.intervals.length - 1 && k!= parseInt(this.intervals.length/2)){
+        if (k != 0 && k != this.intervals.length - 1 && k != parseInt(this.intervals.length / 2)) {
           tag.dataset.tag = '';
         } else {
           tag.dataset.tag = interval.tag;
@@ -151,11 +151,12 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   changeSlider(elem) {
+    document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
     const left = (((elem.value - elem.min) / (elem.max - elem.min)) * ((256 - 5) - 5)) + 5;
-    console.log(left); //eslint-disable-line
     document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 'px');
-    document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '1');
-    document.querySelector('.m-timeline-names').style.display = 'block';
+    if(this.animation || this.intervals[0].name !== ''){
+      document.querySelector('.m-timeline-names').style.display = 'block';
+    }
     if (this.animation) {
       document.querySelector('.m-timeline-button').style.display = 'block';
     }
@@ -165,15 +166,31 @@ export default class TimelineControl extends M.Control {
       document.querySelector('.m-timeline-names').innerHTML = '';
     });
     if (step % 1 == 0) {
+      document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 20 + 'px');
       this.getMapLayer(this.intervals[step].service).setVisible(true);
       document.querySelector('.m-timeline-names').innerHTML = this.intervals[step].name;
-      document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[step].tag + '"');
-
+      document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[step].tag + '"')
+      if (this.intervals[step].tag !== '') {
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '1');
+      } else {
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
+      }
     } else {
       this.getMapLayer(this.intervals[parseInt(step)].service).setVisible(true);
       this.getMapLayer(this.intervals[parseInt(step) + 1].service).setVisible(true);
-      document.querySelector('.m-timeline-names').innerHTML = this.intervals[parseInt(step)].name + ' y ' + this.intervals[parseInt(step) + 1].name;
-      document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[parseInt(step)].tag + ' - ' + this.intervals[parseInt(step) + 1].tag + '"');
+      if (this.intervals[parseInt(step)].tag !== '' && this.intervals[parseInt(step) + 1].tag !== '') {
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 'px');
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '1');
+        document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[parseInt(step)].tag + ' - ' + this.intervals[parseInt(step) + 1].tag + '"');
+        document.querySelector('.m-timeline-names').innerHTML = this.intervals[parseInt(step)].name + ' y ' + this.intervals[parseInt(step) + 1].name;
+      } else if (this.intervals[parseInt(step)].tag === '' && this.intervals[parseInt(step) + 1].tag === '') {
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
+      } else {
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 20 + 'px');
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '10');
+        document.querySelector('.m-timeline-names').innerHTML = this.intervals[parseInt(step)].name + this.intervals[parseInt(step) + 1].name;
+        document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[parseInt(step)].tag + this.intervals[parseInt(step) + 1].tag + '"');
+      }
     }
   }
 

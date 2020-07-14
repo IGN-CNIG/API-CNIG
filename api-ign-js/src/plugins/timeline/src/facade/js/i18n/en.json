@@ -3,5 +3,6 @@
   "title": "Timeline",
   "play": "Play",
   "pause": "Pause",
-  "excepcion": "The implementation used cannot create timelineControl controls"
+  "excepcion": "The implementation used cannot create timelineControl controls",
+  "intervals_error": "The intervals were not defined correctly"
 }

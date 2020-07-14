@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
+    <link href="plugins/fulltoc/fulltoc.ol.min.css" rel="stylesheet" />
     <link href="plugins/mirrorpanel/mirrorpanel.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
@@ -120,6 +121,7 @@
     <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/fulltoc/fulltoc.ol.min.js"></script>
     <script type="text/javascript" src="plugins/mirrorpanel/mirrorpanel.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
@@ -144,6 +146,12 @@
             projection: "EPSG:3857*m",
             zoom: 15,
         });
+        const capasPNOA = [
+            'WMS*PNOA 2015*https://www.ign.es/wms/pnoa-historico*PNOA2015',
+            'WMS*PNOA 2016*https://www.ign.es/wms/pnoa-historico*PNOA2016',
+            'WMS*PNOA 2017*https://www.ign.es/wms/pnoa-historico*PNOA2017',
+            'WMS*PNOA 2018*https://www.ign.es/wms/pnoa-historico*PNOA2018',
+        ];
         let backImgLayerParams = {
             position: 'TR',
             collapsible: true,
@@ -231,14 +239,58 @@
         }
         const mpBIL = new M.plugin.BackImgLayer(backImgLayerParams);
         map.addPlugin(mpBIL);
-        let mp, collapsed, collapsible, enabledPlugins, enabledKeyFunctions, showCursors, modeViz, mirrorLayers,
+        const mpFullTOC = new M.plugin.FullTOC({
+            position: 'TR',
+            collapsed: true,
+            http: true,
+            https: true,
+            precharged: {
+                groups: [{
+                    name: 'Cartografía histórica',
+                    services: [{
+                        name: 'Planimetrías',
+                        type: 'WMS',
+                        url: 'https://www.ign.es/wms/minutas-cartograficas',
+                    },
+                    {
+                        name: 'Primeras ediciones de cartografía',
+                        type: 'WMTS',
+                        url: 'http://www.ign.es/wmts/primera-edicion-mtn',
+                    },
+                    ],
+                },
+                {
+                    name: 'Transporte',
+                    services: [{
+                        name: 'IDEE - Red de transporte',
+                        type: 'WMS',
+                        url: 'http://servicios.idee.es/wms-inspire/transportes?',
+                    },
+                    {
+                        name: 'ADIF - Red de transporte ferroviario',
+                        type: 'WMS',
+                        url: 'http://ideadif.adif.es/services/wms?',
+                    },
+                    ],
+                },
+                ],
+                services: [{
+                    name: 'Ortofotografías del PNOA y  Vuelos',
+                    type: 'WMS',
+                    url: 'https://www.ign.es/wms/pnoa-historico',
+                }],
+            },
+        });
+
+        map.addPlugin(mpFullTOC);
+        let mp, collapsed, collapsible, enabledPlugins, enabledKeyFunctions, showCursors, modeViz, mirrorLayers = capasPNOA,
             defaultBaseLyrs = [
                 'WMTS*http://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN',
                 'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA',
                 'WMTS*https://wmts-mapa-lidar.idee.es/lidar?*EL.GridCoverageDSM*GoogleMapsCompatible*LiDAR',
             ], backImgLayersParams = backImgLayerParams,
             interface;
-        crearPlugin({ defaultBaseLyrs, backImgLayersParams });
+        crearPlugin({ defaultBaseLyrs, backImgLayersParams, mirrorLayers });
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
@@ -264,6 +316,7 @@
         selectInterface.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
+            map.removeLayers(map.getLayers().filter(a => ['PNOA2015', 'PNOA2016', 'PNOA2017', 'PNOA2018'].includes(a.getImpl().name)));
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             let collapsedValor = selectCollapsed.options[selectCollapsed.selectedIndex].value;
@@ -277,8 +330,8 @@
             let showCursorsValor = selectShowCursors.options[selectShowCursors.selectedIndex].value;
             showCursors = showCursorsValor != "" ? objeto.showCursors = (showCursorsValor == "true") : "";
             modeViz = inputModeViz.value != "" ? objeto.modeViz = inputModeViz.value : "";
-            mirrorLayers = inputMirrorLayers.value != "" ? objeto.mirrorLayers = inputMirrorLayers.value : "";
-            defaultBaseLyrs = inputDefaultBaseLyrs.value != "" ? objeto.defaultBaseLyrs = inputDefaultBaseLyrs.value : "";
+            mirrorLayers = inputMirrorLayers.value != "" ? objeto.mirrorLayers = inputMirrorLayers.value : objeto.mirrorLayers = capasPNOA;
+            defaultBaseLyrs = inputDefaultBaseLyrs.value != "" ? objeto.defaultBaseLyrs = inputDefaultBaseLyrs.value : objeto.defaultBaseLyrs = defaultBaseLyrs;
             backImgLayersParams = inputBackImgLayersParams.value != "" ? objeto.backImgLayersParams = eval('(' + inputBackImgLayersParams.value + ')') : objeto.backImgLayersParams = backImgLayerParams;
             let interfaceValor = selectInterface.options[selectInterface.selectedIndex].value;
             interface = interfaceValor != "" ? objeto.interface = (interfaceValor == "true") : "";

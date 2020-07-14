@@ -32,6 +32,7 @@
 .div-m-timeline-panel {
     --num: 7;
     --valor: '';
+    --tpVisible: 'visible';
     padding-top: 1px;
     width: 19rem;
 }
@@ -85,6 +86,7 @@
 .div-m-timeline-slider::before {
     content: var(--valor);
     display: block;
+    visibility: var(--tpVisible);
     opacity: var(--opacity);
     position: absolute;
     background:#0000008a;
@@ -97,7 +99,6 @@
     left:var(--left);
     width: max-content;
 }
-
 .m-timeline-select {
     position: relative;
     display: flex;
@@ -141,6 +142,7 @@ div#m-timeline-title {
     margin: 0 1rem 0.5rem;
     border-top: 1px solid #b0b0b057;
     padding-top: 0.5rem;
+    min-height: 17px;
 }
 
 .div-m-timeline-slider {
