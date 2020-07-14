@@ -148,7 +148,12 @@ export default class MirrorpanelControl extends M.Control {
     }
 
     this.mapL['A'] = map;
-
+    if (this.mirrorLayers.length > 0) {
+      this.mapL['A'].addLayers(this.mirrorLayers); 
+      for (let i = this.mapL['A'].getLayers().length - 1; i >= this.mapL['A'].getLayers().length - this.mirrorLayers.length - 1; i--) {
+        this.mapL['A'].getLayers()[i].setVisible(false);
+      }
+    }
     if (this.showCursors) { this.addLayerCursor('A'); }
     return new Promise((success, fail) => {
       let templateOptions = '';
