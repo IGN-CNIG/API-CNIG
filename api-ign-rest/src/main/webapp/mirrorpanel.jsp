@@ -316,6 +316,7 @@
         selectInterface.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
+            map.removeLayers(map.getLayers().filter(a => ['PNOA2015', 'PNOA2016', 'PNOA2017', 'PNOA2018'].includes(a.getImpl().name)));
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             let collapsedValor = selectCollapsed.options[selectCollapsed.selectedIndex].value;
@@ -329,8 +330,8 @@
             let showCursorsValor = selectShowCursors.options[selectShowCursors.selectedIndex].value;
             showCursors = showCursorsValor != "" ? objeto.showCursors = (showCursorsValor == "true") : "";
             modeViz = inputModeViz.value != "" ? objeto.modeViz = inputModeViz.value : "";
-            mirrorLayers = inputMirrorLayers.value != "" ? objeto.mirrorLayers = inputMirrorLayers.value : "";
-            defaultBaseLyrs = inputDefaultBaseLyrs.value != "" ? objeto.defaultBaseLyrs = inputDefaultBaseLyrs.value : "";
+            mirrorLayers = inputMirrorLayers.value != "" ? objeto.mirrorLayers = inputMirrorLayers.value : objeto.mirrorLayers = capasPNOA;
+            defaultBaseLyrs = inputDefaultBaseLyrs.value != "" ? objeto.defaultBaseLyrs = inputDefaultBaseLyrs.value : objeto.defaultBaseLyrs = defaultBaseLyrs;
             backImgLayersParams = inputBackImgLayersParams.value != "" ? objeto.backImgLayersParams = eval('(' + inputBackImgLayersParams.value + ')') : objeto.backImgLayersParams = backImgLayerParams;
             let interfaceValor = selectInterface.options[selectInterface.selectedIndex].value;
             interface = interfaceValor != "" ? objeto.interface = (interfaceValor == "true") : "";
