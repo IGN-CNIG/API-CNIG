@@ -565,7 +565,6 @@ export default class IGNSearchControl extends M.Control {
       if (geoJsonData2.includes('MultiMultiPolygon')) {
         geoJsonData2 = geoJsonData2.replace('MultiMultiPolygon', 'MultiPolygon');
       }
-      console.log(geoJsonData2);
       const featureJSON = JSON.parse(geoJsonData2);
 
       // featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
@@ -847,11 +846,11 @@ export default class IGNSearchControl extends M.Control {
     // if item comes from geocoder
     if (Object.prototype.hasOwnProperty.call(selectedObject, 'address')) {
       this.getFindData(listElement, this.allCandidates).then((geoJsonData) => {
-        if (geoJsonData.includes('"tip_via":"CALLE"') || geoJsonData.includes('"tip_via":"AVENIDA"')) {
-          this.drawGeocoderResult(geoJsonData);
-        } else {
+        if (geoJsonData.includes('"tip_via":null') && (geoJsonData.includes('"type":"Municipio"') || geoJsonData.includes('"type":"Provincia"') || geoJsonData.includes('"type":"comunidad autonoma"'))) {
           this.drawGeocoderResultProv(geoJsonData);
           this.map.removePopup();
+        } else {
+          this.drawGeocoderResult(geoJsonData);
         }
       });
     } else { // if item comes from nomenclator
