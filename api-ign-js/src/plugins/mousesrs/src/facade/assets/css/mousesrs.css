@@ -32,6 +32,11 @@
 .m-mousesrs-srs-container select {
   background-color: white;
   padding: 7px 10px;
+  cursor: pointer;
+}
+
+.m-mousesrs-pointer {
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

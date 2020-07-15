@@ -113,6 +113,7 @@ export default class MouseSRSControl extends M.impl.Control {
 
     M.dialog.info(content, getValue('select_srs'));
     setTimeout(() => {
+      document.querySelector('.m-dialog>div.m-modal>div.m-content').style.minWidth = '260px';
       document.querySelector('#m-mousesrs-srs-selector').addEventListener('change', this.changeSRS.bind(this, map, html));
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');

@@ -15,8 +15,9 @@
     "valid_url": "You must provide a valid URL",
     "empty": "The fields are empty",
     "error_features_wfs": "Unable to load layer features. Try increasing the zoom level in the area of interest.",
+    "error_no_features_wfs": "Unable to load layer features. Try again in another area.",
     "error_wfs": "Could not load WFS service",
-    "wfs_zoom": "Increase the zoom level if you want to add this WFS service"
+    "wfs_zoom": "Increase the zoom in * levels if you want to add this WFS service"
   },
   "tooltip": "Vector layers management",
   "change_name": "Change name",

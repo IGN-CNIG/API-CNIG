@@ -11,6 +11,9 @@ const map = M.map({
 
 const mp = new MouseSRS({
   activeZ: true,
+  geoDecimalDigits: 6,
+  utmDecimalDigits: 2,
+  label: 'EPSG:4326',
 });
 
 map.addPlugin(mp);

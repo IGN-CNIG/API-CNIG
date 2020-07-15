@@ -885,14 +885,20 @@ export default class VectorsControl extends M.impl.Control {
                 return newF;
               });
 
-              features = this.featuresToFacade(features);
-              layer.addFeatures(features);
-              layer.updatable = true;
-              layer.url = url;
-              this.facadeMap_.addLayers(layer);
+              if (features.length > 0) {
+                features = this.featuresToFacade(features);
+                layer.addFeatures(features);
+                layer.updatable = true;
+                layer.url = url;
+                this.facadeMap_.addLayers(layer);
+                document.querySelector('div.m-mapea-container div.m-dialog').remove();
+              } else {
+                document.querySelector('div.m-mapea-container div.m-dialog').remove();
+                M.dialog.error(getValue('exception.error_no_features_wfs'), 'Error');
+              }
+            } else {
+              document.querySelector('div.m-mapea-container div.m-dialog').remove();
             }
-
-            document.querySelector('div.m-mapea-container div.m-dialog').remove();
           }).catch(() => {
             document.querySelector('div.m-mapea-container div.m-dialog').remove();
             if (!cancelFlag) {
@@ -901,7 +907,8 @@ export default class VectorsControl extends M.impl.Control {
           });
         }, 10);
       } else {
-        M.dialog.info(getValue('exception.wfs_zoom'), getValue('warning'));
+        const levels = facadeControl.wfszoom - map.getZoom();
+        M.dialog.info(getValue('exception.wfs_zoom').replace('*', levels), getValue('warning'));
       }
     } else {
       try {
@@ -964,12 +971,18 @@ export default class VectorsControl extends M.impl.Control {
                 return newF;
               });
 
-              features = this.featuresToFacade(features);
-              layer.removeFeatures(layer.getFeatures());
-              layer.addFeatures(features);
+              if (features.length > 0) {
+                features = this.featuresToFacade(features);
+                layer.removeFeatures(layer.getFeatures());
+                layer.addFeatures(features);
+                document.querySelector('div.m-mapea-container div.m-dialog').remove();
+              } else {
+                document.querySelector('div.m-mapea-container div.m-dialog').remove();
+                M.dialog.error(getValue('exception.error_no_features_wfs'), 'Error');
+              }
+            } else {
+              document.querySelector('div.m-mapea-container div.m-dialog').remove();
             }
-
-            document.querySelector('div.m-mapea-container div.m-dialog').remove();
           }).catch(() => {
             document.querySelector('div.m-mapea-container div.m-dialog').remove();
             if (!cancelFlag) {
@@ -978,7 +991,8 @@ export default class VectorsControl extends M.impl.Control {
           });
         }, 10);
       } else {
-        M.dialog.info(getValue('exception.wfs_zoom'), getValue('warning'));
+        const levels = facadeControl.wfszoom - map.getZoom();
+        M.dialog.info(getValue('exception.wfs_zoom').replace('*', levels), getValue('warning'));
       }
     } else {
       M.dialog.error(getValue('exception.error_features_wfs'), 'Error');

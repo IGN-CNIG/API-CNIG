@@ -1181,6 +1181,9 @@ export default class VectorsControl extends M.Control {
   onModify() {
     this.emphasizeSelectedFeature();
     this.showFeatureInfo();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    }
   }
 
   /**
@@ -1287,6 +1290,10 @@ export default class VectorsControl extends M.Control {
     this.isEditionActive = false;
     this.deactivateSelection();
     this.deactivateDrawing();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    }
+
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
     if (cond || !this.isDrawingActive) {
       // this.getImpl().removeMapEvents(this.map);

@@ -191,7 +191,7 @@ class Mouse extends ol.control.MousePosition {
         }
       }
 
-      html += ` | ${this.label}`;
+      html += ` | <b class="m-mousesrs-pointer">${this.label}</b>`;
     }
 
     if (!this.renderedHTML_ || html !== this.renderedHTML_) {
