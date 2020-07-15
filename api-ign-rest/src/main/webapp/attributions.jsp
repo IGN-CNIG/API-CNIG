@@ -65,6 +65,11 @@
         <datalist id="tooltipSug">
             <option value="Reconocimientos"></option>
         </datalist>
+        <label for="inputURLAttribute">Atributo botón Reconocimientos</label>
+        <input type="text" name="urlAttribute" id="inputURLAttribute" list="urlattributeSug" value="Gobierno de España">
+        <datalist id="urlattributeSug">
+            <option value="Gobierno de España"></option>
+        </datalist>
         <label for="inputScale">Parámetro scale</label>
         <input type="text" name="scale" id="inputScale" list="scaleSug" value="10000">
         <datalist id="scaleSug">
@@ -138,7 +143,7 @@
         });
 
         let mp;
-        let position, mode, tooltip, scale, defaultURL, defaultAttribution, minWidth, maxWidth,
+        let position, mode, tooltip, urlAttribute, scale, defaultURL, defaultAttribution, minWidth, maxWidth,
             url, type, layerName, attributionParam, urlParam;
         crearPlugin({
             mode: 1,
@@ -150,6 +155,7 @@
         const selectMode = document.getElementById("selectMode");
         const inputTooltip = document.getElementById("inputTooltip");
         const inputScale = document.getElementById("inputScale");
+        const inputURLAttribute = document.getElementById("inputURLAttribute");
         const inputDefaultURL = document.getElementById("inputDefaultURL");
         const inputDefaultAttribution = document.getElementById("inputDefaultAttribution");
         const inputUrl = document.getElementById("inputUrl");
@@ -163,6 +169,7 @@
         });
         inputTooltip.addEventListener('change', cambiarTest);
         inputScale.addEventListener('change', cambiarTest);
+        inputURLAttribute.addEventListener('change', cambiarTest);
         inputDefaultURL.addEventListener('change', cambiarTest);
         inputDefaultAttribution.addEventListener('change', cambiarTest);
         inputUrl.addEventListener('change', cambiarTest);
@@ -178,6 +185,7 @@
             objeto.mode = parseInt(mode);
             tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
             scale = inputScale.value != "" ? objeto.scale = inputScale.value : "";
+            urlAttribute = inputURLAttribute.value != "" ? objeto.urlAttribute = inputURLAttribute.value : "";
             defaultURL = inputDefaultURL.value != "" ? objeto.defaultURL = inputDefaultURL.value : "";
             defaultAttribution = inputDefaultAttribution.value != "" ? objeto.defaultAttribution = inputDefaultAttribution.value : "";
             if (mode == 1) {
