@@ -237,6 +237,7 @@ export default class VectorsControl extends M.Control {
           show_hide: getValue('show_hide'),
           add_geom: getValue('add_geom'),
           edit_geom: getValue('edit_geom'),
+          edit_geom_line: getValue('edit_geom_line'),
           layer_zoom: getValue('layer_zoom'),
           download_layer: getValue('download_layer'),
           delete_layer: getValue('delete_layer'),
@@ -362,7 +363,11 @@ export default class VectorsControl extends M.Control {
     if (elem !== null) {
       if (elem.style.display !== 'none') {
         elem.style.display = 'none';
-        document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('expand')}&nbsp;&nbsp;<span class="icon-show"></span>`;
+        if (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase().indexOf('linestring') > -1) {
+          document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology_profile')}&nbsp;&nbsp;<span class="icon-show"></span>`;
+        } else {
+          document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology')}&nbsp;&nbsp;<span class="icon-show"></span>`;
+        }
       } else {
         elem.style.display = 'block';
         document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('collapse')}&nbsp;&nbsp;<span class="icon-hide"></span>`;
@@ -1287,7 +1292,8 @@ export default class VectorsControl extends M.Control {
       // this.getImpl().removeMapEvents(this.map);
       this.drawLayer = layer;
       this.isDrawingActive = true;
-      this.drawingTools.querySelector('button').style.display = 'none';
+      this.drawingTools.querySelector('button.m-vector-layer-profile').style.display = 'none';
+      this.drawingTools.querySelector('button.m-vector-layer-delete-feature').style.display = 'none';
       const selector = `#m-vector-list li[name="${layer.name}"] div.m-vector-layer-actions-container`;
       const selector2 = `#m-vector-list li[name="${layer.name}"] div.m-vector-layer-actions .m-vector-layer-add`;
       document.querySelector(selector).appendChild(this.drawingTools);
@@ -1295,6 +1301,15 @@ export default class VectorsControl extends M.Control {
       this.getImpl().addDrawInteraction(layer);
       if (document.querySelector('#drawingtools #featureInfo') !== null) {
         document.querySelector('#drawingtools #featureInfo').style.display = 'none';
+      }
+
+      const elem = document.querySelector('#drawingtools .drawingToolsContainer');
+      if (elem.style.display === 'none') {
+        if (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase().indexOf('linestring') > -1) {
+          document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology_profile')}&nbsp;&nbsp;<span class="icon-show"></span>`;
+        } else {
+          document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology')}&nbsp;&nbsp;<span class="icon-show"></span>`;
+        }
       }
     } else {
       // this.getImpl().addMapsEvents(this.map);
@@ -1307,6 +1322,10 @@ export default class VectorsControl extends M.Control {
     this.isDrawingActive = false;
     this.deactivateSelection();
     this.deactivateDrawing();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    }
+
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
     if (cond || !this.isEditionActive) {
       // this.getImpl().removeMapEvents(this.map);
@@ -1554,6 +1573,7 @@ export default class VectorsControl extends M.Control {
     this.feature = undefined;
     this.geometry = undefined;
     this.emphasizeSelectedFeature();
+    this.getImpl().removeEditInteraction();
     this.getImpl().removeSelectInteraction();
   }
 
@@ -1563,6 +1583,7 @@ export default class VectorsControl extends M.Control {
     }
 
     this.getImpl().calculateProfile(this.feature);
+    this.drawingTools.querySelector('.collapsor').click();
     // this.deactivateDrawing();
     // this.deactivateSelection();
   }

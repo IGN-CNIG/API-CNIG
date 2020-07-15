@@ -687,6 +687,8 @@ export default class VectorsControl extends M.impl.Control {
       map: this.facadeMap_.getMapImpl(),
       title: getValue('profile'),
       pointLayer: this.source_,
+      width: 400,
+      height: 200,
     });
 
     this.facadeMap_.getMapImpl().addControl(profil);
