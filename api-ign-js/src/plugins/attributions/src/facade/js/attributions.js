@@ -182,6 +182,13 @@ export default class Attributions extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
+    /**
+     * Position of the view control
+     * @private
+     * @type {string}
+     */
+    this.urlAttribute = options.urlAttribute || 'Gobierno de España';
+
     window.addEventListener('resize', e => this.setCollapsiblePanel(e));
   }
 
@@ -313,7 +320,8 @@ export default class Attributions extends M.Plugin {
       link.target = '_blank';
       link.href = attrOpt.url;
       link.innerHTML = attrOpt.attribution;
-      link.innerHTML += arr.length - 1 === index ? '' : ',';
+      const attributeURL = attrOpt.attribution === 'Instituto Geogr&aacute;fico Nacional' ? '' : ', '.concat(this.urlAttribute);
+      link.innerHTML += arr.length - 1 === index ? attributeURL : ',';
       return link;
     });
     const div = document.createElement('div');
@@ -569,6 +577,6 @@ export default class Attributions extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}*${this.url}*${this.type}*${this.layerName}*${this.attributionParam}*${this.urlParam}`;
+    return `${this.name}=${this.position}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}*${this.url}*${this.type}*${this.layerName}*${this.attributionParam}*${this.urlParam}*${this.urlAttribute}`;
   }
 }
