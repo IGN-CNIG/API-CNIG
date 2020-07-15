@@ -45,6 +45,7 @@
   "show_hide": "Show/Hide",
   "add_geom": "Add geometry",
   "edit_geom": "Edit geometry",
+  "edit_geom_line": "Edit/Profile",
   "layer_zoom": "Zoom to the layer",
   "download_layer": "Download layer",
   "delete_layer": "Remove layer",
@@ -74,5 +75,7 @@
   "title": "Title",
   "abstract": "Abstract",
   "responsible": "Responsible",
-  "access_constraints": "Access constraints"
+  "access_constraints": "Access constraints",
+  "symbology": "Symbology",
+  "symbology_profile": "Symbology/Profile"
 }

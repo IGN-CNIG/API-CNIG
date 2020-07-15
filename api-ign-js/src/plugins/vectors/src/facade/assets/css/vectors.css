@@ -260,11 +260,16 @@ div.ol-overlaycontainer-stopevent > div > div.m-area > div.m-panel.m-vectors.col
 .m-vectors div#m-vector-list li > table > tbody > tr > td.m-vector-layer-legend {
   width: 190px;
   word-break: break-word;
+  cursor: pointer !important;
 }
 
 .m-vectors div#m-vector-list li > table > tbody > tr > td .m-vector-layer-actions {
   text-align: right;
   font-size: 16px;
+}
+
+.m-vectors div#m-vector-list li > table > tbody > tr > td .m-vector-layer-actions > span{
+  cursor: pointer !important;
 }
 
 div.m-vector-layer-actions .active-tool {
@@ -302,8 +307,15 @@ div.m-vector-layer-actions .active-tool {
   border-radius: 5px !important;
 }
 
-.m-vector-actions button {
-  cursor: pointer;
+#colorSelector,
+.stroke-options > div,
+#m-layer-change-name > button,
+.m-vector-layer-delete-feature,
+.m-vector-layer-profile,
+#downloadFormat > button,
+#vectors-uploading > label,
+#m-vector-actions > button {
+  cursor: pointer !important;
 }
 
 #vector-add-wfs {
@@ -624,7 +636,7 @@ div.m-vector-layer-actions .active-tool {
 }
 
 .m-vectors-addwfs .search-panel input {
-  width: 230px;
+  width: 215px;
   margin-right: 20px;
 }
 
@@ -634,10 +646,6 @@ div.m-vector-layer-actions .active-tool {
   color: #6c6c6c !important;
   opacity: 1 !important;
   font-size: 16px !important;
-}
-
-#m-vectors-addwfs-results {
-  min-width: 400px;
 }
 
 #m-vectors-addwfs-results > div {
@@ -650,7 +658,9 @@ div.m-vector-layer-actions .active-tool {
 }
 
 #m-vectors-select-wfs .m-vectors-wfs-capabilities {
-  max-width: 400px;
+  max-width: 25vw;
+  margin: 0 auto;
+  min-width: 225px;
 }
 
 #m-vectors-select-wfs .m-vectors-wfs-capabilities > p {

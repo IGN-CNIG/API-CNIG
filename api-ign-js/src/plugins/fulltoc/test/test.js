@@ -107,7 +107,7 @@ const precharged = {
 }*/
 
 const mp = new FullTOC({
-  collapsed: false,
+  collapsed: true,
   position: 'TR',
   https: true,
   http: true,

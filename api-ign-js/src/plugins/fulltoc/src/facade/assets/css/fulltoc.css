@@ -198,6 +198,20 @@ div.m-area.m-bottom.m-left div.m-plugin-fulltoc div.m-panel-controls {
   }
 }
 
+@media (max-width: 600px) {
+  #m-fulltoc-addservices-results {
+    min-width: calc(100vw - 200px) !important;
+  }
+
+  .m-fulltoc-addservices .search-panel input {
+    width: 220px !important;
+  }
+
+  /*#m-fulltoc-addservices-results .m-fulltoc-service-capabilities {
+    max-width: calc(100vw - 200px) !important;
+  }*/
+}
+
 .m-layersiwtcher-panel li>div.layer-base, .m-layersiwtcher-panel li>div.layer {
   margin: 0px;
   padding: 5px;
