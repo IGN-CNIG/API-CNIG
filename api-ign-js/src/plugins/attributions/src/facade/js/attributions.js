@@ -320,7 +320,7 @@ export default class Attributions extends M.Plugin {
       link.target = '_blank';
       link.href = attrOpt.url;
       link.innerHTML = attrOpt.attribution;
-      const attributeURL = attrOpt.attribution === 'Instituto Geogr&aacute;fico Nacional' ? '' : ', '.concat(this.urlAttribute);
+      const attributeURL = this.map_.getScale() > this.scale_ ? '' : ', '.concat(this.urlAttribute);
       link.innerHTML += arr.length - 1 === index ? attributeURL : ',';
       return link;
     });
