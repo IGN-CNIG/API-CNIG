@@ -60,12 +60,9 @@
             <option value="true" selected="selected">true</option>
             <option value="false">false</option>
         </select>
-        <label for="wfsZoom">Parámetro wfszoom</label>
-        <input type="number" name="wfsZoom" id="wfsZoom" list="wfsZoomSug">
-        <datalist id="wfsZoomSug">
-            <option value="12"></option>
-        </datalist>
-        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+        <label for="wfsZoomInput">Parámetro wfszoom</label>
+        <input type="number" id="wfsZoomInput" value="12" max="28" min="0" />
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar"/>
 
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -106,21 +103,21 @@
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
-        const wfsZoom = document.getElementById("wfsZoom");
+        const wfsZoomInput = document.getElementById("wfsZoomInput");
         selectPosicion.addEventListener('change',cambiarTest);
         selectCollapsed.addEventListener('change',cambiarTest);
         selectCollapsible.addEventListener('change',cambiarTest);
-        wfsZoom.addEventListener('change',cambiarTest);
+        wfsZoomInput.addEventListener('change',cambiarTest);
 
         function cambiarTest(){
             let objeto = { precharged: precharged }
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             let collapsedValor = selectCollapsed.options[selectCollapsed.selectedIndex].value;
-            collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor==true) : "";
+            collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor == "true" || collapsedValor == true) : "true";
             let collapsibleValor = selectCollapsible.options[selectCollapsible.selectedIndex].value;
-            collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == true) : "";
-            let wfsZoomValor = wfsZoom.value;
-            wfszoom = wfsZoomValor != "" ? objeto.wfszoom = wfszoom :  12;
+            collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == "true" || collapsibleValor == true) : "true";
+            let wfsZoomValor = wfsZoomInput.value;
+            wfszoom = wfsZoomValor != "" ? objeto.wfszoom = parseInt(wfsZoomValor, 10) : objeto.wfszoom =  12;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
