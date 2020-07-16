@@ -61,11 +61,8 @@
             <option value="false">false</option>
         </select>
         <label for="wfsZoomInput">Parámetro wfszoom</label>
-        <input type="number" name="wfsZoomInput" id="wfsZoomInput" list="wfsZoomSug">
-        <datalist id="wfsZoomSug">
-            <option value="12"></option>
-        </datalist>
-        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+        <input type="number" id="wfsZoomInput" value="12" max="28" min="0" />
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar"/>
 
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -120,7 +117,7 @@
             let collapsibleValor = selectCollapsible.options[selectCollapsible.selectedIndex].value;
             collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == "true" || collapsibleValor == true) : "true";
             let wfsZoomValor = wfsZoomInput.value;
-            wfszoom = wfsZoomValor != "" ? objeto.wfszoom = parseInt(wfszoom, 10) :  12;
+            wfszoom = wfsZoomValor != "" ? objeto.wfszoom = parseInt(wfsZoomValor, 10) : objeto.wfszoom =  12;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
