@@ -438,6 +438,11 @@ export default class VectorsControl extends M.Control {
         document.querySelector('#m-vectors-addwfs-list-btn').addEventListener('click', e => this.showSuggestions(e));
       }
 
+      document.querySelector('#m-vectors-addwfs-search-input').addEventListener('keyup', (e) => {
+        const url = document.querySelector('#m-vectors-addwfs-search-input').value.trim();
+        document.querySelector('#m-vectors-addwfs-search-input').value = url;
+      });
+
       document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('click', e => this.readWFSCapabilities(e));
       document.querySelector('#m-vectors-addwfs-clear-btn').addEventListener('click', e => this.removeContains(e));
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
