@@ -41,6 +41,7 @@ div#m-backimglayer-titulo {
     height: 110px;
     position: relative;
     width: 110px;
+    cursor: pointer;
 }
 
 div[id^="m-backimglayer-lyr-"]>span {
@@ -70,7 +71,7 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
 }
 
 .m-backimglayer .activeBackimglayerDiv {
-    border: 5px solid #92c1e7 !important;
+    border: 5px solid #306c9f !important;
 }
 
 /* Bottom positions fix when images row turns into columns */

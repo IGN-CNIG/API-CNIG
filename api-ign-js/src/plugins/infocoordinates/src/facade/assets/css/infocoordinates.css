@@ -34,7 +34,9 @@
 
 .infocoordinates-target:before {
     content: "\e5101";
-    font-size: 20px;
+    font-size: 22px;
+    -webkit-text-stroke: 1px #71a7d3;
+    text-stroke: 1px #71a7d3;
 }
 
 @font-face {
@@ -202,7 +204,7 @@
 
 .m-infocoordinates-tabContent {
     border-top: none;
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 10px;
     text-align: justify;
 }
@@ -216,27 +218,43 @@
     border: none;
     font-size: 13px;
     color: gray;
+    cursor: pointer;
 }
 
 #m-infocoordinates-buttonRemoveAllPoints {
     background-color: transparent;
     border: none;
-    font-size: 25px;
+    font-size: 18px;
     color: gray;
+    cursor: pointer;
 }
 
 #m-infocoordinates-buttonImportAllPoints {
     background-color: transparent;
     border: none;
-    font-size: 25px;
+    font-size: 18px;
     color: gray;
+    cursor: pointer;
 }
 
 #m-infocoordinates-buttonDisplayAllPoints {
     background-color: transparent;
     border: none;
-    font-size: 25px;
+    font-size: 18px;
     color: gray;
+    cursor: pointer;
+}
+
+#m-infocoordinates-buttonRemoveAllPoints:focus,
+#m-infocoordinates-buttonImportAllPoints:focus,
+#m-infocoordinates-buttonDisplayAllPoints:focus,
+#m-infocoordinates-buttonRemovePoint:focus {
+    outline: none !important;
+}
+
+.m-infocoordinates-content {
+  max-height: 305px;
+  overflow-y: auto;
 }
 
 #m-infocoordinates-buttonRemovePoint:hover,
