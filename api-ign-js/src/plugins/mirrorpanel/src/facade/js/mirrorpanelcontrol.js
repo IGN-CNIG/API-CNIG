@@ -335,7 +335,12 @@ export default class MirrorpanelControl extends M.Control {
         if (itemPlug.metadata_) {
           if (itemPlug.metadata_.name === "FullTOC") {
             //FullTOC
-            plugin4map = new M.plugin.FullTOC();
+            console.log(itemPlug)
+            plugin4map = new M.plugin.FullTOC({
+              http: itemPlug.http,
+              https: itemPlug.https,
+              precharged: itemPlug.precharged
+            });
           }
           if (itemPlug.metadata_.name === "backimglayer") {
             //BackImgLayer

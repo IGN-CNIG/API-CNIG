@@ -14,20 +14,6 @@
 
 /** Estilos propios*/
 
-.info {
-	position: absolute;
-	width: 60%;
-	padding: 5px;
-	top: 10px;
-	left: 20%;
-	background: rgba(245, 245, 245, 0.8);
-	font-size: large;
-	border-radius: 5px;
-	border-style: dashed;
-	border-width: 2px;
-	text-align: center;
-}
-
 .m-panel-btn.mirrorpanel-icon {
 	color: #e8f5e9 !important;
 	/*color: #71a7d3 !important;*/
@@ -335,4 +321,3 @@ Estilos del botón
 	grid-template-rows: 1fr 1fr !important;
 	grid-template-areas: 'mirror1 mirror2' 'mirror3 mirror3' !important;
 }
-
