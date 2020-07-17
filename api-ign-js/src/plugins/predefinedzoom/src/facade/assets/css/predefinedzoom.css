@@ -37,10 +37,8 @@ div.m-control.m-container.m-predefinedzoom > button.icon-expand {
 }
 
 
-.m-areas>div.m-area>div.m-panel.m-predefinedzoom.no-collapsible>div.m-panel-controls>div.m-control.m-predefinedzoom>button,
-.m-areas>div.m-area>div.m-panel.m-predefinedzoom>button.m-panel-btn,
-[class^="icon-"],
-[class*=" icon-"] {
+div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.m-predefinedzoom>button[class^="icon-"],
+div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.m-predefinedzoom>button[class*=" icon-"] {
     font-family: 'predefinedzoom' !important;
     speak: none;
     font-style: normal;
@@ -48,7 +46,6 @@ div.m-control.m-container.m-predefinedzoom > button.icon-expand {
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
