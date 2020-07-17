@@ -39,7 +39,7 @@ export default class PredefinedZoomControl extends M.Control {
       const html = M.template.compileSync(template);
       this.savedZooms.forEach((customZoom) => {
         const newBtn = document.createElement('button');
-        newBtn.setAttribute('class', 'predefinedzoom-mundo2');
+        newBtn.setAttribute('class', 'icon-expand');
         newBtn.setAttribute('title', customZoom.name);
         if (customZoom.bbox !== undefined) {
           newBtn.addEventListener('click', () => this.zoomToGivenBox(customZoom.bbox));

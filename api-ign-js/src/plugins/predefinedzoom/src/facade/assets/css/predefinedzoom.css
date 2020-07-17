@@ -17,16 +17,20 @@ div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.
   outline: none;
 }
 
+div.m-control.m-container.m-predefinedzoom > button.icon-expand {
+  transform: rotate(45deg);
+  font-size: 22px !important;
+}
 
 /* Icon font */
 
 @font-face {
     font-family: 'predefinedzoom';
-    src: url('../fonts/predefinedzoom.eot?3gi17p');
-    src: url('../fonts/predefinedzoom.eot?3gi17p#iefix') format('embedded-opentype'),
-        url('../fonts/predefinedzoom.ttf?3gi17p') format('truetype'),
-        url('../fonts/predefinedzoom.woff?3gi17p') format('woff'),
-        url('../fonts/predefinedzoom.svg?3gi17p#predefinedzoom') format('svg');
+    src: url('../fonts/predefinedzoom.eot?17177962');
+    src: url('../fonts/predefinedzoom.eot?17177962#iefix') format('embedded-opentype'),
+        url('../fonts/predefinedzoom.ttf?17177962') format('truetype'),
+        url('../fonts/predefinedzoom.woff?17177962') format('woff'),
+        url('../fonts/predefinedzoom.svg?17177962#predefinedzoom') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -35,8 +39,8 @@ div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.
 
 .m-areas>div.m-area>div.m-panel.m-predefinedzoom.no-collapsible>div.m-panel-controls>div.m-control.m-predefinedzoom>button,
 .m-areas>div.m-area>div.m-panel.m-predefinedzoom>button.m-panel-btn,
-[class^="predefinedzoom-"],
-[class*=" predefinedzoom-"] {
+[class^="icon-"],
+[class*=" icon-"] {
     font-family: 'predefinedzoom' !important;
     speak: none;
     font-style: normal;
@@ -49,6 +53,7 @@ div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.
     -moz-osx-font-smoothing: grayscale;
 }
 
-.predefinedzoom-mundo2:before {
-    content: "\e1999";
+.icon-expand:before {
+  content: '\e921';
+  transform: rotate(-45deg);
 }

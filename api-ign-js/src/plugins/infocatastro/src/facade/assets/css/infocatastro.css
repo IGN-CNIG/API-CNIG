@@ -41,3 +41,7 @@
 .icon-posicion4:before {
     content: "\e99f";
 }
+
+#m-infocatastro-btn:focus {
+  outline: none;
+}

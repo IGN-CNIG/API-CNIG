@@ -115,6 +115,17 @@ export default class Measure extends M.impl.Control {
     this.active = true;
 
     this.createMeasureTooltip_();
+    document.addEventListener('keydown', this.checkEscKey.bind(this));
+  }
+
+  checkEscKey(evt) {
+    if (evt.key === 'Escape') {
+      document.querySelectorAll('.m-panel.m-panel-measurebar .m-panel-controls div.activated > button').forEach((elem) => {
+        elem.click();
+      });
+
+      document.removeEventListener('keydown', this.checkEscKey);
+    }
   }
 
   /**
