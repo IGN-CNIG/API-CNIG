@@ -2,18 +2,18 @@ import Infocoordinates from 'facade/infocoordinates';
 
 const map = M.map({
   container: 'mapjs',
-  zoom: 5,
+  zoom: 7,
   center: [-467062.8225, 4783459.6216],
 
 });
 
 
-M.language.setLang('en');
+M.language.setLang('es');
 
 const mp = new Infocoordinates({
-  position: 'TL',
-  decimalGEOcoord: "er",
-  decimalUTMcoord: 15
+  position: 'TR',
+  decimalGEOcoord: 'er',
+  decimalUTMcoord: 4,
 });
 
 map.addPlugin(mp);

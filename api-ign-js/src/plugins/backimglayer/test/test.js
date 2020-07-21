@@ -15,7 +15,7 @@ const mp2 = new ShareMap({
 const mp = new BackImgLayer({
   collapsed: true,
   collapsible: true,
-  position: 'BR',
+  position: 'TR',
   columnsNumber: 3,
   layerOpts: [{
       id: 'mapa',
@@ -94,9 +94,9 @@ const mp = new BackImgLayer({
       })],
     },
     {
-      id: 'lidar',
+      id: 'lidar2',
       preview: '../src/facade/assets/images/svqlidar.png',
-      title: 'LIDAR',
+      title: 'LIDAR2',
       layers: [new M.layer.WMTS({
         url: 'https://wmts-mapa-lidar.idee.es/lidar?',
         name: 'EL.GridCoverageDSM',
@@ -135,6 +135,6 @@ const mp = new BackImgLayer({
 
 
 map.addPlugin(mp);
-map.addPlugin(mp2);
+// map.addPlugin(mp2);
 
 window.map = map;

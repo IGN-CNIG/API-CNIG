@@ -55,7 +55,16 @@ export default class ZoomExtentControl extends M.Control {
   activate() {
     super.activate();
     this.getImpl().activateClick(this.map_);
+    document.addEventListener('keydown', this.checkEscKey.bind(this));
   }
+
+  checkEscKey(evt) {
+    if (evt.key === 'Escape') {
+      this.deactivate();
+      document.removeEventListener('keydown', this.checkEscKey);
+    }
+  }
+
   /**
    * This function is called on the control deactivation
    *

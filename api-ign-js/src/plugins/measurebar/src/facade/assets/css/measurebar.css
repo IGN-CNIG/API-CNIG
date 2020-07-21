@@ -82,6 +82,10 @@
     border-top-color: #337ceb;
 }
 
+#measurebar-area-btn,
+#measurebar-length-btn {
+  cursor: pointer;
+}
 
 /* Icons font */
 

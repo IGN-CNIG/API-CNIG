@@ -42,36 +42,23 @@
 <body>
     <div>
         <label for="inputTooltip">Parámetro tooltip</label>
-        <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug">
-        <datalist id="tooltipSug">
-            <option value="Muestra coordenadas"></option>
-        </datalist>
+        <input type="text" name="tooltip" id="inputTooltip" value="Muestra coordenadas" />
         <label for="inputSrs">Parámetro srs</label>
-        <input type="text" name="srs" id="inputSrs" list="srsSug">
-        <datalist id="srsSug">
-            <option value="EPSG:4326"></option>
-        </datalist>
+        <input type="text" name="srs" id="inputSrs" value="EPSG:4326" />
         <label for="inputLabel">Parámetro label</label>
-        <input type="text" name="Label" id="inputLabel" list="LabelSug">
-        <datalist id="LabelSug">
-            <option value="WGS84"></option>
-        </datalist>
+        <input type="text" name="Label" id="inputLabel" value="WGS84" />
         <label for="inputPrecision">Parámetro precision</label>
-        <input type="number" name="precision" id="inputPrecision" list="precisionSug">
-        <datalist id="precisionSug">
-            <option value="4"></option>
-        </datalist>
+        <input type="number" name="precision" id="inputPrecision" value="4" />
         <label for="inputGeoDecimalDigits">Parámetro geoDecimalDigits</label>
-        <input type="number" name="geoDecimalDigits" id="inputGeoDecimalDigits" list="geoDecimalDigitsSug">
-        <datalist id="geoDecimalDigitsSug">
-            <option value="3"></option>
-        </datalist>
+        <input type="number" name="geoDecimalDigits" id="inputGeoDecimalDigits" value="3" />
         <label for="inputUtmDecimalDigits">Parámetro utmDecimalDigits</label>
-        <input type="number" name="utmDecimalDigits" id="inputUtmDecimalDigits" list="utmDecimalDigitsSug">
-        <datalist id="utmDecimalDigitsSug">
-            <option value="2"></option>
-        </datalist>
-        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+        <input type="number" name="utmDecimalDigits" id="inputUtmDecimalDigits" value="2" />
+        <label for="selectActiveZ">Selector de activeZ</label>
+        <select name="activeZ" id="selectActiveZ">
+        	<option value="false" selected="selected">false</option>
+            <option value="true">true</option>
+        </select>
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar" />
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
@@ -101,12 +88,15 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let tooltip, srs, label, precision, geoDecimalDigits, utmDecimalDigits;
+        let tooltip, srs, label, precision, geoDecimalDigits, utmDecimalDigits, activeZ;
         crearPlugin({
-            tooltip: tooltip,
-            srs: srs,
-            label: label,
-            precision: precision
+            tooltip: "Muestra coordenadas",
+            srs: "EPSG:4326",
+            label: "WGS84",
+            precision: 4,
+            geoDecimalDigits: 3,
+            utmDecimalDigits: 2,
+            activeZ: false
         });
 
         const inputTooltip = document.getElementById("inputTooltip");
@@ -115,6 +105,7 @@
         const inputPrecision = document.getElementById("inputPrecision");
         const inputGeoDecimalDigits = document.getElementById("inputGeoDecimalDigits");
         const inputUtmDecimalDigits = document.getElementById("inputUtmDecimalDigits");
+        const selectActiveZ = document.getElementById("selectActiveZ");
 
         inputTooltip.addEventListener('change', cambiarTest);
         inputSrs.addEventListener('change', cambiarTest);
@@ -122,6 +113,7 @@
         inputPrecision.addEventListener('change', cambiarTest);
         inputGeoDecimalDigits.addEventListener('change', cambiarTest);
         inputUtmDecimalDigits.addEventListener('change', cambiarTest);
+        selectActiveZ.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             let objeto = {}
@@ -131,6 +123,7 @@
             precision = inputPrecision.value != "" ? objeto.precision = inputPrecision.value : "";
             geoDecimalDigits = inputGeoDecimalDigits.value != "" ? objeto.geoDecimalDigits = inputGeoDecimalDigits.value : "";
             utmDecimalDigits = inputUtmDecimalDigits.value != "" ? objeto.utmDecimalDigits = inputUtmDecimalDigits.value : "";
+            activeZ = selectActiveZ.value != "" && (selectActiveZ.value == "true" || selectActiveZ.value == true) ? objeto.activeZ = true : objeto.activeZ = false;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }

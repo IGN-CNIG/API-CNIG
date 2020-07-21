@@ -56,24 +56,9 @@ export default class MirrorpanelControl extends M.Control {
     /**
      * Defining mirror maps variables
      */
-    this.mapL = {
-      A: null,
-      B: null,
-      C: null,
-      D: null,
-    }
-    this.lyrCursor = {
-      A: null,
-      B: null,
-      C: null,
-      D: null,
-    }
-    this.featureLyrCursor = {
-      A: null,
-      B: null,
-      C: null,
-      D: null,
-    }
+    this.mapL = { A: null, B: null, C: null, D: null }
+    this.lyrCursor = { A: null, B: null, C: null, D: null }
+    this.featureLyrCursor = { A: null, B: null, C: null, D: null }
 
     /**
      * Defining cursor style
@@ -149,10 +134,10 @@ export default class MirrorpanelControl extends M.Control {
 
     this.mapL['A'] = map;
     if (this.mirrorLayers.length > 0) {
-      this.mapL['A'].addLayers(this.mirrorLayers); 
-      for (let i = this.mapL['A'].getLayers().length - 1; i >= this.mapL['A'].getLayers().length - this.mirrorLayers.length - 1; i--) {
-        this.mapL['A'].getLayers()[i].setVisible(false);
-      }
+      this.mapL['A'].addLayers(this.mirrorLayers);
+      this.mapL['A'].getLayers().forEach((l) => {
+        if (l.zindex_ !== 0) { l.setVisible(false); }
+      });
     }
     if (this.showCursors) { this.addLayerCursor('A'); }
     return new Promise((success, fail) => {
@@ -350,7 +335,12 @@ export default class MirrorpanelControl extends M.Control {
         if (itemPlug.metadata_) {
           if (itemPlug.metadata_.name === "FullTOC") {
             //FullTOC
-            plugin4map = new M.plugin.FullTOC();
+            console.log(itemPlug)
+            plugin4map = new M.plugin.FullTOC({
+              http: itemPlug.http,
+              https: itemPlug.https,
+              precharged: itemPlug.precharged
+            });
           }
           if (itemPlug.metadata_.name === "backimglayer") {
             //BackImgLayer
@@ -380,11 +370,10 @@ export default class MirrorpanelControl extends M.Control {
     if (this.enabledPlugins) {
       // If there is layers for mirror map
       if (this.mirrorLayers.length > 0) {
-        this.mapL[mapLyr].addLayers(this.mirrorLayers); // Add them
-        // Set new layers no visible
-        for (let i = this.mapL[mapLyr].getLayers().length - 1; i >= this.mapL[mapLyr].getLayers().length - this.mirrorLayers.length - 1; i--) {
-          this.mapL[mapLyr].getLayers()[i].setVisible(false);
-        }
+        this.mapL[mapLyr].addLayers(this.mirrorLayers);
+        this.mapL[mapLyr].getLayers().forEach((l) => {
+          if (l.zindex_ !== 0) { l.setVisible(false); }
+        });
       }
     }
     if (this.showCursors) { this.addLayerCursor(mapLyr); }

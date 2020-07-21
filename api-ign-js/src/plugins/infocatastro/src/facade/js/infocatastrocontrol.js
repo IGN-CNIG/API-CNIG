@@ -86,6 +86,14 @@ export default class InfoCatastroControl extends M.Control {
       this.facadeMap_.on(M.evt.CLICK, this.buildUrl_, this);
       this.activated = true;
       this.element_.querySelector('#m-infocatastro-btn').classList.add('activated');
+      document.addEventListener('keydown', this.checkEscKey.bind(this));
+    }
+  }
+
+  checkEscKey(evt) {
+    if (evt.key === 'Escape') {
+      this.deactivate();
+      document.removeEventListener('keydown', this.checkEscKey);
     }
   }
 
