@@ -1910,6 +1910,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           border: '5px solid green',
           opacity: 1,
         },
+        zIndex: 999999,
       });
     } else if (this.pointStyle === 'pinRojo') {
       this.point = new M.style.Point({
@@ -1917,6 +1918,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         icon: {
           src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pinign.svg']),
         },
+        zIndex: 999999,
       });
     } else if (this.pointStyle === 'pinMorado') {
       this.point = new M.style.Point({
@@ -1924,6 +1926,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         icon: {
           src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/m-pin-24.svg']),
         },
+        zIndex: 999999,
       });
     }
     // Style for hiding geometry
@@ -1932,6 +1935,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         color: 'black',
         opacity: 0,
       },
+      zIndex: 999999,
     });
   }
   /**
