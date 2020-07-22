@@ -452,13 +452,16 @@ export default class IGNSearchLocatorControl extends M.Control {
               offset: [0, -12],
               color: '#f00',
               opacity: 1,
+              zIndex: 999999,
             },
+            zIndex: 999999,
           });
           this.simple = new M.style.Polygon({
             fill: {
               color: 'black',
               opacity: 0,
             },
+            zIndex: 999999,
           });
           this.drawNomenclatorResult(this.locationID, false);
         }
@@ -1857,6 +1860,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           opacity: 1,
           width: 3,
         },
+        zIndex: 999999,
       }));
 
       this.map.addLayers(this.coordinatesLayer);
@@ -1909,6 +1913,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           color: '#f00',
           border: '5px solid green',
           opacity: 1,
+          zIndex: 999999,
         },
         zIndex: 999999,
       });
@@ -1917,6 +1922,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         radius: 5,
         icon: {
           src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pinign.svg']),
+          zIndex: 999999,
         },
         zIndex: 999999,
       });
@@ -1925,6 +1931,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         radius: 5,
         icon: {
           src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/m-pin-24.svg']),
+          zIndex: 999999,
         },
         zIndex: 999999,
       });
