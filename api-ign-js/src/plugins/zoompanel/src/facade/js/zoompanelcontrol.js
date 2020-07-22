@@ -81,7 +81,16 @@ export default class ZoomPanelControl extends M.Control {
     document.getElementById('zoomExtend').style.backgroundColor = '#71A7D3';
     document.getElementById('zoomExtend').style.color = 'white';
     this.getImpl().activateClick(this.map_);
+    document.addEventListener('keydown', this.checkEscKey.bind(this));
   }
+
+  checkEscKey(evt) {
+    if (evt.key === 'Escape') {
+      this.deactivate();
+      document.removeEventListener('keydown', this.checkEscKey);
+    }
+  }
+
   /**
    * This function is called on the control deactivation
    *

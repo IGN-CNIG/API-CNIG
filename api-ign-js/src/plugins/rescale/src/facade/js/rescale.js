@@ -96,7 +96,7 @@ export default class Rescale extends M.Plugin {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position_],
-      collapsedButtonClass: 'g-cartografia-escala3',
+      collapsedButtonClass: 'icon-scale',
       tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
