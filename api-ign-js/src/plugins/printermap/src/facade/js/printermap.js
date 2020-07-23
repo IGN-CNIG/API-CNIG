@@ -99,6 +99,13 @@ export default class PrinterMap extends M.Plugin {
      * @type {String}
      */
     this.printStatusUrl_ = parameters.printStatusUrl || M.config.GEOPRINT_STATUS;
+
+    /**
+     * Credits text for template
+     * @private
+     * @type {String}
+     */
+    this.credits_ = parameters.credits || '';
   }
 
   /**
@@ -115,6 +122,7 @@ export default class PrinterMap extends M.Plugin {
       this.serverUrl_,
       this.printTemplateUrl_,
       this.printStatusUrl_,
+      this.credits_,
     );
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {
