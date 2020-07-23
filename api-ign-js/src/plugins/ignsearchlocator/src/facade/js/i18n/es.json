@@ -26,6 +26,10 @@
   "plot": "Parcela",
   "search": "Buscar",
 
+  "titlerefCatastral": "Búsqueda referencia catastral",
+  "refCastatro": "Referencia catastral",
+
+
 
   "srs": "Sistema de coordenadas",
   "longitude": "Longitud",
