@@ -99,6 +99,7 @@ button#m-ignsearchlocator-locate-button {
 #m-ignsearchlocator-clear-button,
 #m-ignsearchlocator-xylocator-button,
 #m-ignsearchlocator-parcela-button,
+#m-ignsearchlocator-search-refCatastral,
 #m-ignsearchlocator-locate-button {
     background-color: white;
     border: none;
@@ -130,6 +131,17 @@ button#m-ignsearchlocator-locate-button {
     top: 2px;
 }
 
+#m-ignsearchlocator-search-refCatastral {
+    color: #7A7A73;
+    font-size: 1.4em;
+}
+
+#m-ignsearchlocator-search-refCatastral span {
+    position: relative;
+    top: 2px;
+}
+
+
 #m-ignsearchlocator-xylocator-button {
     color: #7A7A73;
     font-size: 1.4em;
@@ -154,7 +166,10 @@ button#m-ignsearchlocator-locate-button {
 }
 
 
-.m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
+.m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button,
+.m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button,
+.m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-search-refCatastral,
+.m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
 .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
     vertical-align: bottom;
 }
@@ -162,6 +177,7 @@ button#m-ignsearchlocator-locate-button {
 
 #m-ignsearchlocator-xylocator-button,
 #m-ignsearchlocator-parcela-button,
+#m-ignsearchlocator-search-refCatastral,
 #m-ignsearchlocator-clear-button:focus {
     outline: none;
 }
@@ -349,10 +365,30 @@ input#m-searchParamsPoligono-input {
     margin-right: 6px;
 }
 
+input#m-refCatastral-input {
+    width: 20%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+    margin-right: 6px;
+}
+
 p.parcela--input {
     width: 90px;
     display: inline-table;
 }
+
+p.refCastastrl--input {
+    width: 100%;
+    display: inline-table;
+}
+
 
 #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas {
     width: 92%;
@@ -454,6 +490,11 @@ DROPDOWN ****************************/
         display: inline-block;
     }
 
+    #div-m-xylocator-coordinatesSystemRefCatastral p.refCastastrl--input {
+        display: inline-block;
+    }
+
+
     input#LON {
         width: 19%;
     }
@@ -475,6 +516,10 @@ DROPDOWN ****************************/
     }
 
     input#m-searchParamsPoligono-input {
+        width: 17% !important;
+    }
+
+    input#m-refCatastral-input {
         width: 17% !important;
     }
 
@@ -703,6 +748,11 @@ DROPDOWN ****************************/
         width: 60px !important;
     }
 
+    p.refCastastrl--input {
+        margin-left: 0px !important;
+        width: 60px !important;
+    }
+
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
         width: 60%;
     }
@@ -722,7 +772,10 @@ DROPDOWN ****************************/
         font-size: 14px;
     }
 
-    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button,
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button,
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-search-refCatastral,
+    .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-locate-button,
     .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-clear-button {
         vertical-align: bottom;
     }
@@ -739,6 +792,10 @@ DROPDOWN ****************************/
     }
 
     input#m-searchParamsPoligono-input {
+        width: 60%;
+    }
+
+    input#m-refCatastral-input {
         width: 60%;
     }
 
@@ -762,6 +819,10 @@ DROPDOWN ****************************/
 
 @supports (-ms-ime-align:auto) {
     input#m-searchParamsPoligono-input {
+        width: 19% !important;
+    }
+
+    input#m-refCatastral-input {
         width: 19% !important;
     }
 

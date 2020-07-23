@@ -15,7 +15,7 @@ export default class PrinterMapControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(serverUrl, printTemplateUrl, printStatusUrl) {
+  constructor(serverUrl, printTemplateUrl, printStatusUrl, credits) {
     const impl = new PrinterMapControlImpl();
 
     super(impl, PrinterMapControl.NAME);
@@ -51,6 +51,13 @@ export default class PrinterMapControl extends M.Control {
      */
     this.printStatusUrl_ = printStatusUrl;
 
+
+    /**
+     * Credits text for template
+     * @private
+     * @type {String}
+     */
+    this.credits_ = credits;
 
     /**
      * Map title
@@ -554,7 +561,16 @@ export default class PrinterMapControl extends M.Control {
    */
   getPrintData() {
     const title = this.inputTitle_.value;
-    const description = this.areaDescription_.value;
+    let description = this.areaDescription_.value;
+    const credits = this.credits_;
+    if (credits.length > 2) {
+      if (description.length > 0) {
+        description += ` - ${credits}`;
+      } else {
+        description += credits;
+      }
+    }
+
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
     // const dmsBbox = this.convertBboxToDMS(bbox);

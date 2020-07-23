@@ -6,6 +6,7 @@ import template from '../../templates/ignsearchlocator';
 import results from '../../templates/results';
 import xylocator from '../../templates/xylocator';
 import parcela from '../../templates/parcela';
+import refCatastral from '../../templates/refCatastral';
 import registerHelpers from './helpers';
 import geographicNameType from './constants';
 import { getValue } from './i18n/language';
@@ -382,6 +383,13 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {string}
      */
     this.pointStyle = pointStyle;
+
+    /**
+     * Input element for RC
+     * @private
+     * @type {HTMLElement}
+     */
+    this.inputRC_ = null;
   }
   /**
    * This function creates the view
@@ -420,6 +428,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           this.clearResults();
           this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
           this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+          // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
         }
       });
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
@@ -486,6 +495,9 @@ export default class IGNSearchLocatorControl extends M.Control {
             if (featureJSON.geometry.type === 'Point') {
               this.clickedElementLayer.setStyle(this.point);
             }
+
+            // Change zIndex value
+            this.clickedElementLayer.setZIndex(999999);
 
             // Stops showing polygon geometry
             if (!this.resultVisibility_) {
@@ -798,6 +810,9 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.clickedElementLayer.setStyle(this.point);
       }
 
+      // Change zIndex value
+      this.clickedElementLayer.setZIndex(999999);
+
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);
@@ -845,6 +860,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     if (featureJSON.geometry.type === 'Point') {
       this.clickedElementLayer.setStyle(this.point);
     }
+
+    // Change zIndex value
+    this.clickedElementLayer.setZIndex(999999);
 
     // Stops showing polygon geometry
     if (!this.resultVisibility_) {
@@ -924,6 +942,9 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
       this.clickedElementLayer.displayInLayerSwitcher = false;
       this.clickedElementLayer.setStyle(this.point);
+
+      // Change zIndex value
+      this.clickedElementLayer.setZIndex(999999);
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);
@@ -1056,7 +1077,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     // if item comes from geocoder
     if (Object.prototype.hasOwnProperty.call(selectedObject, 'address')) {
       this.getFindData(listElement, this.allCandidates).then((geoJsonData) => {
-        if (geoJsonData.includes('"tip_via":null') && (geoJsonData.includes('"type":"Municipio"') || geoJsonData.includes('"type":"Provincia"') || geoJsonData.includes('"type":"comunidad autonoma"'))) {
+        if (geoJsonData.includes('"tip_via":null') && (geoJsonData.includes('"type":"Municipio"') || geoJsonData.includes('"type":"municipio"') || geoJsonData.includes('"type":"Provincia"') || geoJsonData.includes('"type":"provincia"') || geoJsonData.includes('"type":"comunidad autonoma"'))) {
           this.drawGeocoderResultProv(geoJsonData);
           this.map.removePopup();
         } else {
@@ -1141,6 +1162,8 @@ export default class IGNSearchLocatorControl extends M.Control {
   clearResults() {
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+
     this.searchInput.value = '';
     this.resultsBox.innerHTML = '';
     this.searchValue = '';
@@ -1156,6 +1179,8 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.clearResults();
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+
     if (this.clickedElementLayer !== undefined) {
       this.clickedElementLayer.setStyle(this.simple);
     }
@@ -1188,14 +1213,192 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @function
    * @api
    */
+  openSearchCatastral() {
+    if (this.resultsBox.innerHTML.includes('m-xylocator-coordinatesSystemRefCatastral')) {
+      this.clearResults();
+      this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+    } else {
+      this.clearResults();
+      if (this.resultsBox.innerHTML.indexOf('coordinatesSystemRefCatastral')) {
+        this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+        this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+      }
+      this.activationManager(true, 'm-ignsearchlocator-search-refCatastral');
+
+      if (this.position === 'TC') {
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 66.2%';
+      } else {
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 60%';
+      }
+
+      const compiledXYLocator = M.template.compileSync(refCatastral, {
+        vars: {
+          translations: {
+            titlerefCatastral: getValue('titlerefCatastral'),
+            refCastatro: getValue('refCastatro'),
+            search: getValue('search'),
+          },
+        },
+      });
+
+      // this.inputRC_ = compiledXYLocator.querySelector('#m-refCatastral-input');
+      // this.inputRC_.addEventListener('keyup', this.onRCSearch.bind(this));
+
+      // const buttonParamsSearch = compiledXYLocator.querySelector('button#m-refCatastral-button');
+      // buttonParamsSearch.addEventListener('click', this.onRCSearch.bind(this));
+      this.resultsBox.appendChild(compiledXYLocator);
+    }
+  }
+
+  /**
+   * Handler for search with RC button
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  onRCSearch(evt) {
+    evt.preventDefault();
+    this.inputRC_ = this.element_.querySelector('#m-refCatastral-input').value;
+    if ((evt.type !== 'keyup') || (evt.keyCode === 13)) {
+      let inputRC = this.inputRC_;
+      if (M.utils.isNullOrEmpty(inputRC)) {
+        M.dialog.info('Debe introducir una referencia catastral');
+      } else {
+        inputRC = inputRC.substr(0, 14);
+        const searchUrl = M.utils.addParameters(this.CPMRC_url_, {
+          Provincia: '',
+          Municipio: '',
+          SRS: this.map.getProjection().code,
+          RC: inputRC,
+        });
+        this.search_(searchUrl, this.showResults_);
+      }
+    }
+  }
+
+  /**
+   * Does the GET petition to search
+   *
+   * @private
+   * @function
+   */
+  search_(searchUrl, processor) {
+    M.remote.get(searchUrl).then((response) => {
+      const success = this.acceptOVCSW(response);
+      if (success) {
+        processor.call(this, response.xml);
+      }
+    });
+  }
+
+  /**
+   * This function parses results and compiles template
+   * with vars to show results
+   *
+   * @private
+   * @function
+   */
+  showResults_(result) {
+    let resultsTemplateVars = {};
+    resultsTemplateVars = this.parseRCResultsForTemplate_(result, false);
+
+    Promise.resolve(resultsTemplateVars).then((resultTemplate) => {
+      this.drawGeocoderResultRC(resultTemplate);
+    });
+  }
+
+  /**
+   * This function parses results from RC search for template
+   *
+   * @private
+   * @function
+   */
+  parseRCResultsForTemplate_(result, append) {
+    const docs = this.parseCPMRCResults(result);
+    if (append === true) {
+      this.rcResults_.unshift(docs);
+    } else {
+      this.rcResults_ = [docs];
+    }
+
+    return {
+      docs: this.rcResults_,
+      total: this.rcResults_.length,
+      partial: false,
+      notResutls: false,
+      query: this.inputRC_.value,
+    };
+  }
+
+
+  /**
+   * This function removes last search layer and adds new layer with current result (from geocoder)
+   * features to map, zooms in result, edits popup information and shows a message saying
+   *  if it's a perfect result or an approximation.
+   * @public
+   * @function
+   * @param {Object} geoJsonData - clicked result object
+   * @api
+   */
+  drawGeocoderResultRC(geoJsonData) {
+    this.map.removeLayers(this.clickedElementLayer); // Center coordinates
+    const attri = geoJsonData.docs[0];
+    this.coordinates = [parseFloat(attri.coords[0].xcen), parseFloat(attri.coords[0].ycen)];
+    // New layer with geometry
+    const newGeojson = {
+      name: getValue('searchresult'),
+      source: {
+        type: 'FeatureCollection',
+        features: [{
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [this.coordinates[0], this.coordinates[1]],
+          },
+          properties: {
+            name: getValue('searchresult'),
+          },
+        }],
+      },
+    };
+    this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
+
+    this.clickedElementLayer.displayInLayerSwitcher = false;
+
+    this.clickedElementLayer.setStyle(this.point);
+
+    // Change zIndex value
+    this.clickedElementLayer.setZIndex(999999);
+
+    // Stops showing polygon geometry
+    if (!this.resultVisibility_) {
+      this.clickedElementLayer.setStyle(this.simple);
+    }
+    this.map.addLayers(this.clickedElementLayer);
+    // this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
+
+    // show popup for streets
+    const fullAddress = attri.attributes[1].value;
+    this.showSearchPopUp(fullAddress, this.coordinates, 1);
+  }
+
+
+  /**
+   * This function opens xylocator functions
+   * @public
+   * @function
+   * @api
+   */
   openParcela() {
-    if ((this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela') > -1) && (this.resultsBox.innerHTML.indexOf('coordinatesSystem') > -1)) {
+    if (this.resultsBox.innerHTML.includes('coordinatesSystemParcela')) {
       this.clearResults();
       this.activationManager(false, 'm-ignsearchlocator-parcela-button');
     } else {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
+        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-parcela-button');
       if (this.position === 'TC') {
@@ -1521,13 +1724,14 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   openXYLocator() {
-    if ((this.resultsBox.innerHTML.indexOf('coordinatesSystem') > -1) && (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela') === -1)) {
+    if (this.resultsBox.innerHTML.includes('coordinatesSystemXYLocator')) {
       this.clearResults();
       this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     } else {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
       if (this.position === 'TC') {

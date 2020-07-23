@@ -846,7 +846,7 @@ export default class IGNSearchControl extends M.Control {
     // if item comes from geocoder
     if (Object.prototype.hasOwnProperty.call(selectedObject, 'address')) {
       this.getFindData(listElement, this.allCandidates).then((geoJsonData) => {
-        if (geoJsonData.includes('"tip_via":null') && (geoJsonData.includes('"type":"Municipio"') || geoJsonData.includes('"type":"Provincia"') || geoJsonData.includes('"type":"comunidad autonoma"'))) {
+        if (geoJsonData.includes('"tip_via":null') && (geoJsonData.includes('"type":"Municipio"') || geoJsonData.includes('"type":"municipio"') || geoJsonData.includes('"type":"Provincia"') || geoJsonData.includes('"type":"provincia"') || geoJsonData.includes('"type":"comunidad autonoma"'))) {
           this.drawGeocoderResultProv(geoJsonData);
           this.map.removePopup();
         } else {
