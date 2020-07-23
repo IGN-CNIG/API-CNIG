@@ -1,17 +1,17 @@
 import Rescale from 'facade/rescale';
 
-M.language.setLang('en');
+M.language.setLang('es');
 
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['scale*true', 'panzoom'],
+  controls: ['scale*true'],
 });
 
 const mp = new Rescale({
-  collapsible: false,
-  collapsed: false,
-  position: 'BL',
+  collapsible: true,
+  collapsed: true,
+  position: 'TL',
 });
 
 map.addPlugin(mp);
