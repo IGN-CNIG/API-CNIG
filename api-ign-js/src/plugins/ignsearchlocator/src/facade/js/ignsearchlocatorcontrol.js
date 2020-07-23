@@ -383,6 +383,13 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {string}
      */
     this.pointStyle = pointStyle;
+
+    /**
+     * Input element for RC
+     * @private
+     * @type {HTMLElement}
+     */
+    this.inputRC_ = null;
   }
   /**
    * This function creates the view
@@ -411,19 +418,17 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox = html.querySelector('#m-ignsearchlocator-results');
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
       html.querySelector('#m-ignsearchlocator-clear-button').addEventListener('click', this.clearResultsAndGeometry.bind(this));
-      html.querySelector('#m-ignsearchlocator-search-refCatastral').addEventListener('click', this.openSearchCatastral.bind(this));
       html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
       html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('click', () => {
         if (document.getElementById('m-ignsearchlocator-xylocator-button').style.backgroundColor === 'rgb(113, 167, 211)' ||
-          document.getElementById('m-ignsearchlocator-parcela-button').style.backgroundColor === 'rgb(113, 167, 211)' ||
-          document.getElementById('m-ignsearchlocator-search-refCatastral').style.backgroundColor === 'rgb(113, 167, 211)') {
+          document.getElementById('m-ignsearchlocator-parcela-button').style.backgroundColor === 'rgb(113, 167, 211)') {
           // Eliminamos la seleccion del xylocator y parcela
           this.clearResults();
           this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
           this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-          this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+          // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
         }
       });
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
@@ -456,16 +461,13 @@ export default class IGNSearchLocatorControl extends M.Control {
               offset: [0, -12],
               color: '#f00',
               opacity: 1,
-              zIndex: 999999,
             },
-            zIndex: 999999,
           });
           this.simple = new M.style.Polygon({
             fill: {
               color: 'black',
               opacity: 0,
             },
-            zIndex: 999999,
           });
           this.drawNomenclatorResult(this.locationID, false);
         }
@@ -493,6 +495,9 @@ export default class IGNSearchLocatorControl extends M.Control {
             if (featureJSON.geometry.type === 'Point') {
               this.clickedElementLayer.setStyle(this.point);
             }
+
+            // Change zIndex value
+            this.clickedElementLayer.setZIndex(999999);
 
             // Stops showing polygon geometry
             if (!this.resultVisibility_) {
@@ -937,6 +942,9 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
       this.clickedElementLayer.displayInLayerSwitcher = false;
       this.clickedElementLayer.setStyle(this.point);
+
+      // Change zIndex value
+      this.clickedElementLayer.setZIndex(999999);
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);
@@ -1154,7 +1162,7 @@ export default class IGNSearchLocatorControl extends M.Control {
   clearResults() {
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-    this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
 
     this.searchInput.value = '';
     this.resultsBox.innerHTML = '';
@@ -1171,7 +1179,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.clearResults();
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-    this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
 
     if (this.clickedElementLayer !== undefined) {
       this.clickedElementLayer.setStyle(this.simple);
@@ -1233,9 +1241,148 @@ export default class IGNSearchLocatorControl extends M.Control {
         },
       });
 
+      // this.inputRC_ = compiledXYLocator.querySelector('#m-refCatastral-input');
+      // this.inputRC_.addEventListener('keyup', this.onRCSearch.bind(this));
+
+      // const buttonParamsSearch = compiledXYLocator.querySelector('button#m-refCatastral-button');
+      // buttonParamsSearch.addEventListener('click', this.onRCSearch.bind(this));
       this.resultsBox.appendChild(compiledXYLocator);
     }
   }
+
+  /**
+   * Handler for search with RC button
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  onRCSearch(evt) {
+    evt.preventDefault();
+    this.inputRC_ = this.element_.querySelector('#m-refCatastral-input').value;
+    if ((evt.type !== 'keyup') || (evt.keyCode === 13)) {
+      let inputRC = this.inputRC_;
+      if (M.utils.isNullOrEmpty(inputRC)) {
+        M.dialog.info('Debe introducir una referencia catastral');
+      } else {
+        inputRC = inputRC.substr(0, 14);
+        const searchUrl = M.utils.addParameters(this.CPMRC_url_, {
+          Provincia: '',
+          Municipio: '',
+          SRS: this.map.getProjection().code,
+          RC: inputRC,
+        });
+        this.search_(searchUrl, this.showResults_);
+      }
+    }
+  }
+
+  /**
+   * Does the GET petition to search
+   *
+   * @private
+   * @function
+   */
+  search_(searchUrl, processor) {
+    M.remote.get(searchUrl).then((response) => {
+      const success = this.acceptOVCSW(response);
+      if (success) {
+        processor.call(this, response.xml);
+      }
+    });
+  }
+
+  /**
+   * This function parses results and compiles template
+   * with vars to show results
+   *
+   * @private
+   * @function
+   */
+  showResults_(result) {
+    let resultsTemplateVars = {};
+    resultsTemplateVars = this.parseRCResultsForTemplate_(result, false);
+
+    Promise.resolve(resultsTemplateVars).then((resultTemplate) => {
+      this.drawGeocoderResultRC(resultTemplate);
+    });
+  }
+
+  /**
+   * This function parses results from RC search for template
+   *
+   * @private
+   * @function
+   */
+  parseRCResultsForTemplate_(result, append) {
+    const docs = this.parseCPMRCResults(result);
+    if (append === true) {
+      this.rcResults_.unshift(docs);
+    } else {
+      this.rcResults_ = [docs];
+    }
+
+    return {
+      docs: this.rcResults_,
+      total: this.rcResults_.length,
+      partial: false,
+      notResutls: false,
+      query: this.inputRC_.value,
+    };
+  }
+
+
+  /**
+   * This function removes last search layer and adds new layer with current result (from geocoder)
+   * features to map, zooms in result, edits popup information and shows a message saying
+   *  if it's a perfect result or an approximation.
+   * @public
+   * @function
+   * @param {Object} geoJsonData - clicked result object
+   * @api
+   */
+  drawGeocoderResultRC(geoJsonData) {
+    this.map.removeLayers(this.clickedElementLayer); // Center coordinates
+    const attri = geoJsonData.docs[0];
+    this.coordinates = [parseFloat(attri.coords[0].xcen), parseFloat(attri.coords[0].ycen)];
+    // New layer with geometry
+    const newGeojson = {
+      name: getValue('searchresult'),
+      source: {
+        type: 'FeatureCollection',
+        features: [{
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [this.coordinates[0], this.coordinates[1]],
+          },
+          properties: {
+            name: getValue('searchresult'),
+          },
+        }],
+      },
+    };
+    this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
+
+    this.clickedElementLayer.displayInLayerSwitcher = false;
+
+    this.clickedElementLayer.setStyle(this.point);
+
+    // Change zIndex value
+    this.clickedElementLayer.setZIndex(999999);
+
+    // Stops showing polygon geometry
+    if (!this.resultVisibility_) {
+      this.clickedElementLayer.setStyle(this.simple);
+    }
+    this.map.addLayers(this.clickedElementLayer);
+    // this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
+
+    // show popup for streets
+    const fullAddress = attri.attributes[1].value;
+    this.showSearchPopUp(fullAddress, this.coordinates, 1);
+  }
+
 
   /**
    * This function opens xylocator functions
@@ -1251,13 +1398,13 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
-        this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-parcela-button');
       if (this.position === 'TC') {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 77.3%';
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 74.5%';
       } else {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 70%';
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 66.9%';
       }
 
       const compiledXYLocator = M.template.compileSync(parcela, {
@@ -1584,13 +1731,13 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-        this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
       if (this.position === 'TC') {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 88.5%';
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 87%';
       } else {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 80.3%';
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 78%';
       }
 
       const compiledXYLocator = M.template.compileSync(xylocator, {
@@ -1914,7 +2061,6 @@ export default class IGNSearchLocatorControl extends M.Control {
           opacity: 1,
           width: 3,
         },
-        zIndex: 999999,
       }));
 
       this.map.addLayers(this.coordinatesLayer);
@@ -1967,27 +2113,21 @@ export default class IGNSearchLocatorControl extends M.Control {
           color: '#f00',
           border: '5px solid green',
           opacity: 1,
-          zIndex: 999999,
         },
-        zIndex: 999999,
       });
     } else if (this.pointStyle === 'pinRojo') {
       this.point = new M.style.Point({
         radius: 5,
         icon: {
           src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pinign.svg']),
-          zIndex: 999999,
         },
-        zIndex: 999999,
       });
     } else if (this.pointStyle === 'pinMorado') {
       this.point = new M.style.Point({
         radius: 5,
         icon: {
           src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/m-pin-24.svg']),
-          zIndex: 999999,
         },
-        zIndex: 999999,
       });
     }
     // Style for hiding geometry
@@ -1996,7 +2136,6 @@ export default class IGNSearchLocatorControl extends M.Control {
         color: 'black',
         opacity: 0,
       },
-      zIndex: 999999,
     });
   }
   /**
