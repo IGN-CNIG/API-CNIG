@@ -1228,11 +1228,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       this.activationManager(true, 'm-ignsearchlocator-search-refCatastral');
 
-      if (this.position === 'TC') {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 66.2%';
-      } else {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 60%';
-      }
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px;';
 
       const compiledXYLocator = M.template.compileSync(refCatastral, {
         vars: {
@@ -1383,11 +1379,8 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-parcela-button');
-      if (this.position === 'TC') {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 77.3%';
-      } else {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 70%';
-      }
+
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 301px;';
 
       const compiledXYLocator = M.template.compileSync(parcela, {
         vars: {
@@ -1716,11 +1709,8 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
-      if (this.position === 'TC') {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 88.5%';
-      } else {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 80.3%';
-      }
+
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 345px;';
 
       const compiledXYLocator = M.template.compileSync(xylocator, {
         vars: {
