@@ -418,17 +418,19 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox = html.querySelector('#m-ignsearchlocator-results');
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
       html.querySelector('#m-ignsearchlocator-clear-button').addEventListener('click', this.clearResultsAndGeometry.bind(this));
+      html.querySelector('#m-ignsearchlocator-search-refCatastral').addEventListener('click', this.openSearchCatastral.bind(this));
       html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
       html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('click', () => {
         if (document.getElementById('m-ignsearchlocator-xylocator-button').style.backgroundColor === 'rgb(113, 167, 211)' ||
-          document.getElementById('m-ignsearchlocator-parcela-button').style.backgroundColor === 'rgb(113, 167, 211)') {
+          document.getElementById('m-ignsearchlocator-parcela-button').style.backgroundColor === 'rgb(113, 167, 211)' ||
+          document.getElementById('m-ignsearchlocator-search-refCatastral').style.backgroundColor === 'rgb(113, 167, 211)') {
           // Eliminamos la seleccion del xylocator y parcela
           this.clearResults();
           this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
           this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-          // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+          this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
         }
       });
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
@@ -1162,12 +1164,13 @@ export default class IGNSearchLocatorControl extends M.Control {
   clearResults() {
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+    this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
 
     this.searchInput.value = '';
     this.resultsBox.innerHTML = '';
     this.searchValue = '';
     this.map.removeLayers(this.coordinatesLayer);
+    this.map.removePopup(this.map.getPopup());
   }
   /**
    * This function clears input content, results box, popup and shown geometry.
@@ -1179,7 +1182,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.clearResults();
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+    this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
 
     if (this.clickedElementLayer !== undefined) {
       this.clickedElementLayer.setStyle(this.simple);
@@ -1244,8 +1247,8 @@ export default class IGNSearchLocatorControl extends M.Control {
       // this.inputRC_ = compiledXYLocator.querySelector('#m-refCatastral-input');
       // this.inputRC_.addEventListener('keyup', this.onRCSearch.bind(this));
 
-      // const buttonParamsSearch = compiledXYLocator.querySelector('button#m-refCatastral-button');
-      // buttonParamsSearch.addEventListener('click', this.onRCSearch.bind(this));
+      const buttonParamsSearch = compiledXYLocator.querySelector('button#m-refCatastral-button');
+      buttonParamsSearch.addEventListener('click', this.onRCSearch.bind(this));
       this.resultsBox.appendChild(compiledXYLocator);
     }
   }
@@ -1344,43 +1347,22 @@ export default class IGNSearchLocatorControl extends M.Control {
   drawGeocoderResultRC(geoJsonData) {
     this.map.removeLayers(this.clickedElementLayer); // Center coordinates
     const attri = geoJsonData.docs[0];
-    this.coordinates = [parseFloat(attri.coords[0].xcen), parseFloat(attri.coords[0].ycen)];
-    // New layer with geometry
-    const newGeojson = {
-      name: getValue('searchresult'),
-      source: {
-        type: 'FeatureCollection',
-        features: [{
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [this.coordinates[0], this.coordinates[1]],
-          },
-          properties: {
-            name: getValue('searchresult'),
-          },
-        }],
-      },
-    };
-    this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
+    // Center coordinates
+    this.coordinates = `${attri.coords[0].xcen}, ${attri.coords[0].ycen}`;
+    const coords = [parseFloat(attri.coords[0].xcen), parseFloat(attri.coords[0].ycen)];
+    // this.coordinates = [236284.96, 4144064.69];
 
-    this.clickedElementLayer.displayInLayerSwitcher = false;
-
-    this.clickedElementLayer.setStyle(this.point);
-
-    // Change zIndex value
-    this.clickedElementLayer.setZIndex(999999);
-
-    // Stops showing polygon geometry
-    if (!this.resultVisibility_) {
-      this.clickedElementLayer.setStyle(this.simple);
-    }
-    this.map.addLayers(this.clickedElementLayer);
-    // this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
+    this.locator_(coords, this.point);
 
     // show popup for streets
     const fullAddress = attri.attributes[1].value;
-    this.showSearchPopUp(fullAddress, this.coordinates, 1);
+    this.showSearchPopUpRC(fullAddress, coords, 1, { fake: true });
+
+    const x = coords[0];
+    const y = coords[1];
+    const xFloat = parseFloat(x);
+    const yFloat = parseFloat(y);
+    this.map.setCenter(`${xFloat},${yFloat}*false`);
   }
 
 
@@ -1398,13 +1380,13 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
-        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+        this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-parcela-button');
       if (this.position === 'TC') {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 74.5%';
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 77.3%';
       } else {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 66.9%';
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 70%';
       }
 
       const compiledXYLocator = M.template.compileSync(parcela, {
@@ -1555,7 +1537,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         const xcen = docsRC.coords[0].xcen;
         const ycen = docsRC.coords[0].ycen;
 
-        this.locator_([xcen, ycen]);
+        this.locator_([xcen, ycen], null);
       }
     });
   }
@@ -1731,13 +1713,13 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+        this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
       if (this.position === 'TC') {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 87%';
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 88.5%';
       } else {
-        document.getElementById('m-ignsearchlocator-results').style = 'width: 78%';
+        document.getElementById('m-ignsearchlocator-results').style = 'width: 80.3%';
       }
 
       const compiledXYLocator = M.template.compileSync(xylocator, {
@@ -1913,7 +1895,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         x = parseFloat(xString);
         y = parseFloat(yString);
         const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
-        this.locator_(coordinatesTransform);
+        this.locator_(coordinatesTransform, null);
       } else if (selectedOption.getAttribute('data-units') === 'dms') {
         const hhLon = document.querySelector('div#m-xylocator-dms input#LONHH').value;
         const mmLon = document.querySelector('div#m-xylocator-dms input#LONMM').value;
@@ -1937,7 +1919,7 @@ export default class IGNSearchLocatorControl extends M.Control {
               y = -y;
             }
             const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
-            this.locator_(coordinatesTransform);
+            this.locator_(coordinatesTransform, null);
           } catch (ex) {
             M.dialog.error(getValue('exception.transforming'), 'Error');
           }
@@ -1951,7 +1933,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           x = parseFloat(xString);
           y = parseFloat(yString);
           const coordinatesTransform = this.getImpl().reproject(origin, [x, y]);
-          this.locator_(coordinatesTransform);
+          this.locator_(coordinatesTransform, null);
         } catch (ex) {
           M.dialog.error(getValue('exception.transforming'), 'Error');
         }
@@ -1961,7 +1943,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
 
       const coordinatesTransform = this.getImpl().reprojectXY(origin, [x, y]);
-      this.locator_(coordinatesTransform);
+      this.locator_(coordinatesTransform, null);
     } catch (ex) {
       M.dialog.error(getValue('exception.wrong_coords'), 'Error');
       throw ex;
@@ -2022,7 +2004,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param coords - coordinates writen by user
    * @api
    */
-  locator_(coords) {
+  locator_(coords, point) {
     const x = coords[0];
     const y = coords[1];
     const xFloat = parseFloat(x);
@@ -2050,18 +2032,24 @@ export default class IGNSearchLocatorControl extends M.Control {
       });
 
       this.coordinatesLayer.addFeatures([feature]);
-      this.coordinatesLayer.setStyle(new M.style.Point({
-        radius: 8,
-        fill: {
-          color: '#f00',
-          opacity: 0.5,
-        },
-        stroke: {
-          color: '#f00',
-          opacity: 1,
-          width: 3,
-        },
-      }));
+
+      if (point === null) {
+        this.coordinatesLayer.setStyle(new M.style.Point({
+          radius: 8,
+          fill: {
+            color: '#f00',
+            opacity: 0.5,
+          },
+          stroke: {
+            color: '#f00',
+            opacity: 1,
+            width: 3,
+          },
+        }));
+      } else {
+        this.createGeometryStyles();
+        this.coordinatesLayer.setStyle(this.point);
+      }
 
       this.map.addLayers(this.coordinatesLayer);
     } else {
@@ -2152,6 +2140,29 @@ export default class IGNSearchLocatorControl extends M.Control {
     const destinySource = 'EPSG:4326';
     const newCoordinates = this.getImpl()
       .reprojectReverse([coordinates[1], coordinates[0]], destinySource, destinyProj);
+    let exitState;
+    if (exactResult !== 1) {
+      exitState = getValue('aprox');
+    } else {
+      exitState = getValue('exact');
+    }
+    this.showPopUp(fullAddress, newCoordinates, coordinates, exitState, false, e);
+  }
+
+  /**
+    * This
+    function inserts a popUp with information about the searched location
+      (and whether it 's an exact result or an approximation)
+    * @param { string } fullAddress location address(street, portal, etc.)
+    * @param { Array } coordinates latitude[0] and longitude[1] coordinates
+    * @param { boolean } exactResult indicating
+    if the given result is a perfect match
+    */
+  showSearchPopUpRC(fullAddress, coordinates, exactResult, e = {}) {
+    const destinyProj = this.map.getProjection().code;
+    const destinySource = 'EPSG:3857';
+    const newCoordinates = this.getImpl()
+      .reprojectReverse([coordinates[0], coordinates[1]], destinySource, destinyProj);
     let exitState;
     if (exactResult !== 1) {
       exitState = getValue('aprox');

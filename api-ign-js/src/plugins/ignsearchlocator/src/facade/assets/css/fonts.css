@@ -1,14 +1,15 @@
 @font-face {
-  font-family: 'ignsearchlocator';
-  src: url('../fonts/ignsearchlocator.eot?36733947');
-  src: url('../fonts/ignsearchlocator.eot?36733947#iefix') format('embedded-opentype'),
-       url('../fonts/ignsearchlocator.woff2?36733947') format('woff2'),
-       url('../fonts/ignsearchlocator.woff?36733947') format('woff'),
-       url('../fonts/ignsearchlocator.ttf?36733947') format('truetype'),
-       url('../fonts/ignsearchlocator.svg?36733947#ignsearchlocator') format('svg');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'ignsearchlocator';
+    src: url('../fonts/ignsearchlocator.eot?36733947');
+    src: url('../fonts/ignsearchlocator.eot?36733947#iefix') format('embedded-opentype'),
+        url('../fonts/ignsearchlocator.woff2?36733947') format('woff2'),
+        url('../fonts/ignsearchlocator.woff?36733947') format('woff'),
+        url('../fonts/ignsearchlocator.ttf?36733947') format('truetype'),
+        url('../fonts/ignsearchlocator.svg?36733947#ignsearchlocator') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
+
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
@@ -20,95 +21,141 @@
 }
 */
 
- #div-contenedor.m-ignsearchlocator [class^="icon-"]:before, #div-contenedor.m-ignsearchlocator [class*=" icon-"]:before {
-  font-family: "ignsearchlocator";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
+#div-contenedor.m-ignsearchlocator [class^="icon-"]:before,
+#div-contenedor.m-ignsearchlocator [class*=" icon-"]:before {
+    font-family: "ignsearchlocator";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
 
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
-  /* opacity: .8; */
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* opacity: .8; */
 
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
 
-  /* fix buttons height, for twitter bootstrap */
-  line-height: 1em;
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
 
-  /* Animation center compensation - margins should be symmetric */
-  /* remove if not needed */
-  margin-left: .2em;
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    margin-left: .2em;
 
-  /* you can be more comfortable with increased icons size */
-  /* font-size: 120%; */
+    /* you can be more comfortable with increased icons size */
+    /* font-size: 120%; */
 
-  /* Font smoothing. That was taken from TWBS */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
-  /* Uncomment for 3D effect */
-  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+    /* Uncomment for 3D effect */
+    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-#div-contenedor.m-ignsearchlocator .icon-localizacion3:before { content: '\e800'; } /* '' */
-#div-contenedor.m-ignsearchlocator .icon-papelera:before { content: '\e93e'; } /* '' */
-#div-contenedor.m-ignsearchlocator .icon-posicion3:before { content: '\e94a'; } /* '' */
+#div-contenedor.m-ignsearchlocator .icon-localizacion3:before {
+    content: '\e800';
+}
+
+/* '' */
+#div-contenedor.m-ignsearchlocator .icon-papelera:before {
+    content: '\e93e';
+}
+
+/* '' */
+#div-contenedor.m-ignsearchlocator .icon-posicion3:before {
+    content: '\e94a';
+}
+
+/* '' */
 
 
 
 @font-face {
-  font-family: 'parcela';
-  src:  url('../fonts/parcela.eot?x2zglk');
-  src:  url('../fonts/parcela.eot?x2zglk#iefix') format('embedded-opentype'),
-    url('../fonts/parcela.ttf?x2zglk') format('truetype'),
-    url('../fonts/parcela.woff?x2zglk') format('woff'),
-    url('../fonts/parcela.svg?x2zglk#parcela') format('svg');
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
+    font-family: 'parcela';
+    src: url('../fonts/parcela.eot?x2zglk');
+    src: url('../fonts/parcela.eot?x2zglk#iefix') format('embedded-opentype'),
+        url('../fonts/parcela.ttf?x2zglk') format('truetype'),
+        url('../fonts/parcela.woff?x2zglk') format('woff'),
+        url('../fonts/parcela.svg?x2zglk#parcela') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
 }
 
- #div-contenedor.m-ignsearchlocator [class^="icon-posicion4"]:before, #div-contenedor.m-ignsearchlocator [class*=" icon-posicion4"]:before {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'parcela' !important;
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
+#div-contenedor.m-ignsearchlocator [class^="icon-posicion4"]:before,
+#div-contenedor.m-ignsearchlocator [class*=" icon-posicion4"]:before {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'parcela' !important;
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
 
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
-  /* opacity: .8; */
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* opacity: .8; */
 
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
 
-  /* fix buttons height, for twitter bootstrap */
-  line-height: 1em;
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
 
-  /* Animation center compensation - margins should be symmetric */
-  /* remove if not needed */
-  margin-left: .2em;
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    margin-left: .2em;
 
-  /* you can be more comfortable with increased icons size */
-  /* font-size: 120%; */
+    /* you can be more comfortable with increased icons size */
+    /* font-size: 120%; */
 
-  /* Font smoothing. That was taken from TWBS */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
-  /* Uncomment for 3D effect */
-  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+    /* Uncomment for 3D effect */
+    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
 #div-contenedor.m-ignsearchlocator .icon-posicion4:before {
-  content: "\e95a";
+    content: "\e95a";
+}
+
+@font-face {
+    font-family: 'referencia';
+    src: url('../fonts/infocatastro.eot?a3txc9');
+    src: url('../fonts/infocatastro.eot?a3txc9#iefix') format('embedded-opentype'),
+        url('../fonts/infocatastro.ttf?a3txc9') format('truetype'),
+        url('../fonts/infocatastro.woff?a3txc9') format('woff'),
+        url('../fonts/infocatastro.svg?a3txc9#referencia') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="icon-posicionRC"]:before,
+[class*="icon-posicionRC"]:before {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'referencia' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-posicionRC:before {
+    content: "\e99f";
 }

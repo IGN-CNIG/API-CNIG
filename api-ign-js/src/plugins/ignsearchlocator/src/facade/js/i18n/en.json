@@ -22,6 +22,8 @@
   "estate": "Polygon",
   "plot": "Parcel",
   "search": "Search",
+  "placeHolderRC": "Enter the 14 or 20 digits of the RC",
+
 
   "titlerefCatastral": "Cadastral reference search",
   "refCastatro": "Cadastral reference",
