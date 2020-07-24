@@ -146,6 +146,7 @@
     color: white;
     font-family: sans;
     -webkit-text-stroke: 0.8px black;
+    z-index: 999;
 }
 
 .contenedorPunto {
@@ -156,6 +157,7 @@
     color: white;
     font-family: sans;
     -webkit-text-stroke: 0.8px #2690e7;
+    z-index: 999;
 }
 
 .m-infocoordinates-title {
@@ -207,6 +209,16 @@
     width: calc(100% - 20px);
     padding: 10px;
     text-align: justify;
+}
+
+#tabContent table {
+  border-collapse: inherit !important;
+  margin-bottom: inherit !important;
+  font-size: inherit !important;
+}
+
+#tabContent table, #tabContent th, #tabContent td {
+  border: unset !important;
 }
 
 .m-panel .m-control.m-container.m-infocoordinates {

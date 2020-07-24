@@ -715,6 +715,8 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 
 #m-fulltoc-addservices-results {
   min-width: 400px;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 #m-fulltoc-addservices-results > div {
@@ -852,10 +854,6 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 .table-results .table-layer-name:hover {
   text-decoration: underline;
   cursor: pointer;
-}
-
-#m-fulltoc-addservices-results .m-fulltoc-service-capabilities {
-  max-width: 400px;
 }
 
 #m-fulltoc-addservices-results .m-fulltoc-service-capabilities > p {
