@@ -220,8 +220,7 @@ div#m-zoompanel-titulo {
 }
 
 .m-areas>div.m-area>div.m-panel.m-zoompanel>div.m-panel-controls>div.m-control>button,
-.m-areas>div.m-area>div.m-panel.m-zoompanel>button.m-panel-btn.g-plugin-zoompanel-zoompanel-icon,
-[class^="icon-"]:before, [class*=" icon-"]:before {
+div.m-panel.m-zoompanel [class^="icon-"]:before, div.m-panel.m-zoompanel [class*=" icon-"]:before {
  font-family: "zoompanel" !important;
  font-style: normal;
  font-weight: normal;
