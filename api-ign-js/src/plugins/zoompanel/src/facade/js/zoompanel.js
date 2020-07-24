@@ -102,7 +102,7 @@ export default class ZoomPanel extends M.Plugin {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position],
-      collapsedButtonClass: 'g-plugin-zoompanel-zoompanel-icon',
+      collapsedButtonClass: 'icon-zoompanel',
       className: 'm-zoompanel',
       tooltip: this.tooltip_,
     });
