@@ -1,9 +1,10 @@
 <div id="div-contenedor" class="m-control m-container m-zoompanel">
-    <button id="zoomIn" class="g-plugin-zoompanel-zoom-mas" title="{{translations.zoomin}}"></button>
-    <button id="zoomOut" class="g-plugin-zoompanel-zoom-menos" title="{{translations.zoomout}}"></button>
-
-    <button id="historyprevious" class="g-plugin-zoompanel-buscar-retroceder" title="{{translations.previouszoom}}"></button>
-    <button id="historynext" class="g-plugin-zoompanel-buscar-avanzar" title="{{translations.nextzoom}}"></button>
-
-    <button id="zoomExtend" class="g-plugin-zoompanel-zoom-rectangulo" title="{{translations.rectzoom}}"></button>
+    <button id="zoomIn" class="icon-zoom-in" title="{{translations.zoomin}}"></button>
+    <button id="zoomOut" class="icon-zoom-out" title="{{translations.zoomout}}"></button>
+    <button id="historyprevious" class="icon-zoom-back" title="{{translations.previouszoom}}"></button>
+    <button id="historynext" class="icon-zoom-forward" title="{{translations.nextzoom}}"></button>
+    <button id="zoomToBox" class="icon-zoom-box" title="{{translations.rectzoom}}"></button>
+    {{#if activeExtent}}
+      <button id="zoomExtend" class="icon-zoom-extent" title="{{translations.zoom_extent}}"></button>
+    {{/if}}
 </div>

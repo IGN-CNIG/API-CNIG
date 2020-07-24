@@ -138,7 +138,7 @@ export default class Measure extends M.impl.Control {
   deactivate() {
     this.facadeMap_.getMapImpl().un('pointermove', this.pointerMoveHandler_.bind(this));
     this.facadeMap_.getMapImpl().removeInteraction(this.draw_);
-    this.clear();
+    // this.clear();
     if (!M.utils.isNullOrEmpty(this.helpTooltip_)) {
       this.facadeMap_.getMapImpl().removeOverlay(this.helpTooltip_);
     }

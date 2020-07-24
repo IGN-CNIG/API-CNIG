@@ -25,6 +25,12 @@ export default class ZoomPanelControl extends M.Control {
     this.completed_ = false;
 
     this.load_ = false;
+
+    this.center_ = options.center;
+
+    this.zoom_ = options.zoom;
+
+    this.activeExtent_ = this.center_ !== undefined && this.zoom_ !== undefined;
   }
 
   /**
@@ -41,12 +47,14 @@ export default class ZoomPanelControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {
+          activeExtent: this.activeExtent_,
           translations: {
             zoomin: getValue('zoomin'),
             zoomout: getValue('zoomout'),
             previouszoom: getValue('previouszoom'),
             nextzoom: getValue('nextzoom'),
             rectzoom: getValue('rectzoom'),
+            zoom_extent: getValue('zoom_extent'),
           },
         },
       });
@@ -54,6 +62,9 @@ export default class ZoomPanelControl extends M.Control {
       const zoomOutBtn = html.querySelector('button#zoomOut');
       html.querySelector('button#historyprevious').addEventListener('click', this.previousStep_.bind(this));
       html.querySelector('button#historynext').addEventListener('click', this.nextStep_.bind(this));
+      if (this.activeExtent_) {
+        html.querySelector('button#zoomExtend').addEventListener('click', this.zoomToExtend_.bind(this));
+      }
 
       zoomInBtn.addEventListener('click', () => {
         this.facadeMap_.setZoom(this.facadeMap_.getZoom() + 1);
@@ -78,8 +89,8 @@ export default class ZoomPanelControl extends M.Control {
    */
   activate() {
     super.activate();
-    document.getElementById('zoomExtend').style.backgroundColor = '#71A7D3';
-    document.getElementById('zoomExtend').style.color = 'white';
+    document.getElementById('zoomToBox').style.backgroundColor = '#71A7D3';
+    document.getElementById('zoomToBox').style.color = 'white';
     this.getImpl().activateClick(this.map_);
     document.addEventListener('keydown', this.checkEscKey.bind(this));
   }
@@ -100,8 +111,8 @@ export default class ZoomPanelControl extends M.Control {
    */
   deactivate() {
     super.deactivate();
-    document.getElementById('zoomExtend').style.backgroundColor = 'white';
-    document.getElementById('zoomExtend').style.color = '#7A7A73';
+    document.getElementById('zoomToBox').style.backgroundColor = 'white';
+    document.getElementById('zoomToBox').style.color = '#7A7A73';
     this.getImpl().deactivateClick(this.map_);
   }
 
@@ -114,7 +125,7 @@ export default class ZoomPanelControl extends M.Control {
    * @api
    */
   getActivationButton(html) {
-    return html.querySelector('button#zoomExtend');
+    return html.querySelector('button#zoomToBox');
   }
 
   /**
@@ -171,6 +182,18 @@ export default class ZoomPanelControl extends M.Control {
   previousStep_(evt) {
     evt.preventDefault();
     this.getImpl().previousStep();
+  }
+
+  /**
+   * This function sets de predefined zoom to the map
+   *
+   * @private
+   * @function
+   * @param {Event} evt - Event
+   */
+  zoomToExtend_() {
+    this.facadeMap_.setCenter(this.center_);
+    this.facadeMap_.setZoom(this.zoom_);
   }
 
   /**

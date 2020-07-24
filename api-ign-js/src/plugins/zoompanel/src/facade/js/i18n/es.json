@@ -4,5 +4,6 @@
   "zoomout": "Disminuir zoom",
   "previouszoom": "Zoom anterior",
   "nextzoom": "Zoom posterior",
-  "rectzoom": "Zoom ventana"
+  "rectzoom": "Zoom ventana",
+  "zoom_extent": "Zoom a la extensión del mapa"
 }
