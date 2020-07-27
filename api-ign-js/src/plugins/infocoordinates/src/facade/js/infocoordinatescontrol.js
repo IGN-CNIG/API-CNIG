@@ -91,7 +91,7 @@ export default class InfocoordinatesControl extends M.Control {
         }
       };
       const html = M.template.compileSync(template, options);
-      // Añadir código dependiente del DOM      
+      // Añadir código dependiente del DOM
 
       this.map_.addLayers(this.layerFeatures);
       this.panel_.on(M.evt.SHOW, this.activate, this);
@@ -139,7 +139,6 @@ export default class InfocoordinatesControl extends M.Control {
 
 
   addPoint(evt) {
-
     let numPoint = this.numTabs + 1;
     document.getElementById('m-infocoordinates-comboDatum').removeAttribute('disabled');
     document.getElementById('m-infocoordinates-buttonConversorFormat').removeAttribute('disabled');
@@ -163,7 +162,7 @@ export default class InfocoordinatesControl extends M.Control {
     buttonTab.setAttribute('id', `tablink${numPoint}`);
     tabsDiv.appendChild(buttonTab);
 
-    // cojo las coordenadas del punto pinchado 
+    // cojo las coordenadas del punto pinchado
     let coordinates = evt.coord;
 
     //Agrego la feature
@@ -184,8 +183,7 @@ export default class InfocoordinatesControl extends M.Control {
     // Ubico el scroller centrado en el ultimo botón añadido
     tabsDiv.scrollTop = tabsDiv.scrollHeight;
 
-
-    //Altura 
+    //Altura
     let altitudeFromWCSservice;
     let altitudeBox = document.getElementById('m-infocoordinates-altitude');
     let promesa = new Promise((success, fail) => {
@@ -206,6 +204,7 @@ export default class InfocoordinatesControl extends M.Control {
 
 
     this.layerFeatures.addFeatures([featurePoint]);
+    this.layerFeatures.setZIndex(999);
     this.openTab(numPoint)
     this.numTabs = numPoint;
   }
@@ -369,13 +368,13 @@ export default class InfocoordinatesControl extends M.Control {
     //Cambio coordenadas y calculo las UTM
     let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
 
-    // pinto 
+    // pinto
     pointBox.innerHTML = pointDataOutput.NumPoint;
     latitudeBox.innerHTML = pointDataOutput.projectionGEO.coordinatesGEO.latitude;
     longitudeBox.innerHTML = pointDataOutput.projectionGEO.coordinatesGEO.longitude;
     zoneBox.innerHTML = pointDataOutput.projectionUTM.zone;
-    coordX.innerHTML = pointDataOutput.projectionUTM.coordinatesUTM.coordX;
-    coordY.innerHTML = pointDataOutput.projectionUTM.coordinatesUTM.coordY;
+    coordX.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordX);
+    coordY.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordY);
   }
 
   displayZcoordinate(numPoint) {
@@ -386,7 +385,6 @@ export default class InfocoordinatesControl extends M.Control {
 
 
   openTab(numPoint) {
-
     this.selectFeature(numPoint);
     this.activateTab(numPoint);
     this.displayXYcoordinates(numPoint);
@@ -404,7 +402,7 @@ export default class InfocoordinatesControl extends M.Control {
     if (document.getElementsByClassName('tablinks').length > 1) {
       let tablinkActive = document.querySelector('.tablinks.active');
       let numPoint = tablinkActive.textContent;
-      //Elimina tab   
+      //Elimina tab
       tablinkActive.parentNode.removeChild(tablinkActive);
       // elimina la feature
       let featureSelect = this.layerFeatures.getFeatureById(parseInt(numPoint));
@@ -488,11 +486,8 @@ export default class InfocoordinatesControl extends M.Control {
 
       // Creamos las etiquetas de los puntos
       for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
-
-        var pos = this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.coordinates;
-
+        const pos = this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.coordinates;
         const varUTM = this.calculateUTMcoordinates(i + 1);
-
         const textHTML = `<div class="m-popup m-collapsed" style="padding: 5px 5px 5px 5px !important;background-color: rgba(255, 255, 255, 0.7) !important;">
               <div class="contenedorCoordPunto">
                 <table>
@@ -501,10 +496,10 @@ export default class InfocoordinatesControl extends M.Control {
                         <td style="font-weight: bold">${getValue('point')} ${i+1}</td></b>
                       </tr>
                       <tr>
-                        <td>X: ${varUTM[0]}</td>
+                        <td>X: ${this.formatUTMCoordinate(varUTM[0])}</td>
                       </tr>
                       <tr>
-                        <td>Y: ${varUTM[1]}</td>
+                        <td>Y: ${this.formatUTMCoordinate(varUTM[1])}</td>
                       </tr>
                       <tr>
                         <td>${getValue('altitude')} ${parseFloat(this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.Altitude).toFixed(2)}</td>
@@ -635,6 +630,10 @@ export default class InfocoordinatesControl extends M.Control {
 
   removeLayerFeatures() {
     this.map_.removeLayers(this.layerFeatures);
+  }
+
+  formatUTMCoordinate(coord) {
+    return coord.replace(/\d(?=(\d{3})+\.)/g, '$&*').split('.').join(',').split('*').join('.');
   }
 
 }

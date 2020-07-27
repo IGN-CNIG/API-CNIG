@@ -4,7 +4,7 @@ import PrinterMap from 'facade/printermap';
 
 const map = M.map({
   container: 'mapjs',
-  zoom: 5,
+  zoom: 7,
   maxZoom: 20,
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
@@ -43,7 +43,19 @@ const printermap = new PrinterMap({
   credits: 'Impresión generada desde Fototeca',
 });
 
-map.addLayers([layerinicial, campamentos]);
+//map.addLayers([layerinicial, campamentos]);
 map.addPlugin(printermap);
+
+//map.addPlugin(new M.plugin.Vectors());
+map.addPlugin(new M.plugin.IGNSearchLocator({
+  servicesToSearch: 'gn',
+  searchPosition: 'geocoder,nomenclator',
+  maxResults: 10,
+  isCollapsed: false,
+  position: 'TL',
+  reverse: true,
+  zoom: 13,
+  pointStyle: 'pinRojo',
+}));
 
 window.map = map;

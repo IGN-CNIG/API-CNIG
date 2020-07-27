@@ -239,8 +239,8 @@ export default class FullTOCControl extends M.Control {
           if (!M.utils.isNullOrEmpty(vars.metadata) && M.utils.isUrl(vars.metadata)) {
             M.remote.get(vars.metadata).then((response) => {
               const metadataText = response.text;
-              const unfiltered = metadataText.split('<gmd:URL>').filter((elem) => {
-                return elem.indexOf('centrodedescargas') > -1;
+              const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+                return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
               });
 
               if (unfiltered.length > 0) {
@@ -248,9 +248,9 @@ export default class FullTOCControl extends M.Control {
                 vars.downloadCenter = downloadCenter;
               }
 
+              const transfer = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:onLine>');
               const dataid = metadataText.split('<gmd:MD_DataIdentification>')[1];
               const legal = metadataText.split('<gmd:MD_LegalConstraints>')[1];
-              const transfer = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:onLine>');
               let metadataService;
               let metadataAbstract;
               let responsible;
@@ -703,6 +703,8 @@ export default class FullTOCControl extends M.Control {
               } catch (err) {
                 M.dialog.error(getValue('exception.capabilities'));
               }
+            }).catch((err) => {
+              M.dialog.error(getValue('exception.capabilities'));
             });
           } else {
             M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response) => {
@@ -720,6 +722,8 @@ export default class FullTOCControl extends M.Control {
               } catch (err) {
                 M.dialog.error(getValue('exception.capabilities'));
               }
+            }).catch((err) => {
+              M.dialog.error(getValue('exception.capabilities'));
             });
           }
         } else {
