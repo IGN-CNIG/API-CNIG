@@ -687,7 +687,15 @@ export default class FullTOCControl extends M.Control {
 
         if (HTTPeval === true || HTTPSeval === true) {
           if (type === 'WMTS') {
-            M.remote.get(M.utils.getWMTSGetCapabilitiesUrl(url)).then((response) => {
+            const promise = new Promise((success, reject) => {
+              const id = setTimeout(() => reject(), 15000);
+              M.remote.get(M.utils.getWMTSGetCapabilitiesUrl(url)).then((response) => {
+                clearTimeout(id);
+                success(response);
+              });
+            });
+
+            promise.then((response) => {
               try {
                 const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
                 const getCapabilities = getCapabilitiesParser.read(response.xml);
@@ -697,7 +705,6 @@ export default class FullTOCControl extends M.Control {
                   url,
                   this.map_.getProjection().code,
                 );
-
                 this.capabilities = this.filterResults(layers);
                 this.showResults();
               } catch (err) {
@@ -707,7 +714,15 @@ export default class FullTOCControl extends M.Control {
               M.dialog.error(getValue('exception.capabilities'));
             });
           } else {
-            M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response) => {
+            const promise = new Promise((success, reject) => {
+              const id = setTimeout(() => reject(), 15000);
+              M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response) => {
+                clearTimeout(id);
+                success(response);
+              });
+            });
+
+            promise.then((response) => {
               try {
                 const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
                 const getCapabilities = getCapabilitiesParser.read(response.xml);

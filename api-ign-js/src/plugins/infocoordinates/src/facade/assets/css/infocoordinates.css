@@ -107,8 +107,10 @@
     content: "\e9d1";
 }
 
-
-
+/*Para que los números de los puntos no se vean por encima de los popups de info*/
+.m-popup {
+  z-index: 999999999;
+}
 
 .m-panel.m-plugin-infocoordinates.opened>button {
     color: #71a7d3 !important;
