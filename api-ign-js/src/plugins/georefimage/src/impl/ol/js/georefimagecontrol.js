@@ -459,7 +459,7 @@ export default class GeorefimageControl extends M.impl.Control {
             parseType = 'polygon';
           } else if (feature.getGeometry().getType().toLowerCase() === 'multipoint') {
             parseType = 'point';
-          } else if (feature.getGeometry().getType().toLowerCase() === 'multilinestring') {
+          } else if (feature.getGeometry().getType().toLowerCase().indexOf('linestring') > -1) {
             parseType = 'line';
           } else {
             parseType = feature.getGeometry().getType().toLowerCase();
