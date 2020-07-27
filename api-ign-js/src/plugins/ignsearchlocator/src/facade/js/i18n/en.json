@@ -41,7 +41,7 @@
   "dms": "DMS",
   "dd": "DD",
   "negative": "Note: Negative values​​ correspond to south latitude and west longitude respectively ",
-
+  "notaRef": "Parcel code (first 14 digits). Ex.9977715VK3797F (IGN building)",
 
   "direccion": "Address, place name or cadastral Ref (14 dig.)",
   "obtener": "Get direction at a point on the map",

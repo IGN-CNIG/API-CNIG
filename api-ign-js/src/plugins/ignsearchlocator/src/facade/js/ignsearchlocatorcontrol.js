@@ -1403,6 +1403,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             titlerefCatastral: getValue('titlerefCatastral'),
             refCastatro: getValue('refCastatro'),
             search: getValue('search'),
+            notaRef: getValue('notaRef'),
           },
         },
       });

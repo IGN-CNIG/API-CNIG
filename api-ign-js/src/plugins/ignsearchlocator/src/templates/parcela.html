@@ -63,7 +63,6 @@
                         <option value="52">MELILLA</option>
                     </select>
                 </div>
-                <br>
                 <div id="m-xylocator-coordinatesSystemParcela">
                     <b>
                         <p id="m-munici" class="parcela--input">{{translations.municipality}}:</p>
@@ -72,9 +71,8 @@
                         <option value="0">{{translations.selectmuni}}</option>
                     </select>
                 </div>
-                <br>
 
-                <div id="m-xylocator-dms" style="border-bottom: 1px solid;border-color: #999;height: 50px;">
+                <div id="m-xylocator-dms">
                     <b>
                         <p class="parcela--input" style="width:60px">{{translations.estate}}:</p>
                     </b>
@@ -84,20 +82,31 @@
                     </b>
                     <input type="text" id="m-searchParamsParcela-input" style="color:black">
                 </div>
-
-                <div id="m-xylocator-coordinatesSystemRefCatastral">
-                    <b>
-                        <p class="refCastastrl--input">{{translations.refCastatro}}:</p>
-                    </b>
-                    <input type="text" id="m-refCatastral-input" style="color:black; width: 230px;" maxlength="20">
-                </div>
             </div>
         </div>
         <div class="button">
             <button class="represent" id="m-searchParams-button" style="margin-right:10px">
                 <i class="icon-posicion4"></i> {{translations.search}}
             </button>
+        </div>
 
+        <div class="m-xylocator-datas">
+            <div id="m-searchParams-container">
+                <div id="m-xylocator-coordinatesSystemRefCatastral">
+                    <b>
+                        <p class="refCastastrl--input">{{translations.refCastatro}}:</p>
+                    </b>
+                    <input type="text" id="m-refCatastral-input" style="color:black; width: 97% !important;" maxlength="20">
+
+                    <i>
+                        <p id="m-informa" class="parcela--input" style="width: 0px !important; display: contents; font-size: 13px; font-family: auto;">{{translations.notaRef}}</p>
+                    </i>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="button">
             <button class="represent" id="m-refCatastral-button" style="margin-left:10px">
                 <i class="icon-posicionRC"></i> {{translations.search}}
             </button>

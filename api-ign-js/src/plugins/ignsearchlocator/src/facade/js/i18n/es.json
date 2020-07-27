@@ -43,6 +43,7 @@
   "dms": "GMS",
   "dd": "GD",
   "negative": "Nota: Los valores negativos se corresponden con latitud sur y longitud oeste respectivamente",
+  "notaRef": "Código de parcela (14 primeros dígitos). Ej.9977715VK3797F (edificio del IGN)",
 
   "direccion": "Dirección, topónimo o Ref. catastral (14 dig.)",
   "obtener": "Obtener dirección en un punto del mapa",
