@@ -15,7 +15,7 @@
   "geographic": "Geographic",
   "zone": "zone",
   "title": "Coordinate locator",
-  "titleparcela": "Search parcel",
+  "titleparcela": "Search parcel/cadastre",
   "municipality": "Municipality",
   "selectmuni": "Select a municipality",
   "selectprov": "Select a province",
@@ -45,7 +45,7 @@
 
   "direccion": "Address, place name or cadastral Ref (14 dig.)",
   "obtener": "Get direction at a point on the map",
-  "buscparcela": "Search parcel",
+  "buscparcela": "Search parcel/cadastre",
   "busccoord": "Search coordinates",
   "borrarresult": "Delete results",
   "exact": "Exact address",

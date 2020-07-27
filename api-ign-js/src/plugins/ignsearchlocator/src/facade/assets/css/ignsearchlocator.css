@@ -253,6 +253,9 @@ input#UTM-Y {
     display: flex;
     min-width: 300px;
     margin-top: -25px;
+
+    border-bottom: 1px solid;
+    border-color: #71a7d3;
 }
 
 #m-xylocator-dms>div>div {

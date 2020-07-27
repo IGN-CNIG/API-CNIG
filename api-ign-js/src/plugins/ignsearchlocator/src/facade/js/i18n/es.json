@@ -17,7 +17,7 @@
   "geographic": "Geograficas",
   "zone": "huso",
   "title": "Buscar por coordenadas",
-  "titleparcela": "Buscar por parcela",
+  "titleparcela": "Buscar parcela/catastro",
   "province": "Provincia",
   "municipality": "Municipio",
   "selectmuni": "Seleccione municipio",
@@ -46,7 +46,7 @@
 
   "direccion": "Dirección, topónimo o Ref. catastral (14 dig.)",
   "obtener": "Obtener dirección en un punto del mapa",
-  "buscparcela": "Buscar por parcela",
+  "buscparcela": "Buscar parcela/catastro",
   "busccoord": "Buscar por coordenadas",
   "borrarresult": "Borrar resultados de la búsqueda",
   "exact": "Dirección exacta",

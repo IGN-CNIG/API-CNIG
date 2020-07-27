@@ -114,6 +114,13 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {HTMLElement}
      */
     this.inputParcela = null;
+
+    /**
+     * Input element for Parcela
+     * @private
+     * @type {HTMLElement}
+     */
+    this.inputRefCatastral = null;
     /**
      * This variable sets the maximun results returned by a service
      * (if both services are searched the maximum results will be twice this number)
@@ -418,19 +425,17 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox = html.querySelector('#m-ignsearchlocator-results');
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
       html.querySelector('#m-ignsearchlocator-clear-button').addEventListener('click', this.clearResultsAndGeometry.bind(this));
-      html.querySelector('#m-ignsearchlocator-search-refCatastral').addEventListener('click', this.openSearchCatastral.bind(this));
       html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
       html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('click', () => {
         if (document.getElementById('m-ignsearchlocator-xylocator-button').style.backgroundColor === 'rgb(113, 167, 211)' ||
-          document.getElementById('m-ignsearchlocator-parcela-button').style.backgroundColor === 'rgb(113, 167, 211)' ||
-          document.getElementById('m-ignsearchlocator-search-refCatastral').style.backgroundColor === 'rgb(113, 167, 211)') {
+          document.getElementById('m-ignsearchlocator-parcela-button').style.backgroundColor === 'rgb(113, 167, 211)') {
           // Eliminamos la seleccion del xylocator y parcela
           this.clearResults();
           this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
           this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-          this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+          // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
         }
       });
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
@@ -1164,7 +1169,7 @@ export default class IGNSearchLocatorControl extends M.Control {
   clearResults() {
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-    this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
 
     this.searchInput.value = '';
     this.resultsBox.innerHTML = '';
@@ -1182,7 +1187,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.clearResults();
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-    this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
 
     if (this.clickedElementLayer !== undefined) {
       this.clickedElementLayer.setStyle(this.simple);
@@ -1272,6 +1277,9 @@ export default class IGNSearchLocatorControl extends M.Control {
           RC: inputRC,
         });
         this.search_(searchUrl, this.showResults_);
+
+        this.clearResults();
+        this.activationManager(false, 'm-ignsearchlocator-parcela-button');
       }
     }
   }
@@ -1376,11 +1384,11 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
-        this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-parcela-button');
 
-      document.getElementById('m-ignsearchlocator-results').style = 'width: 301px;';
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px;';
 
       const compiledXYLocator = M.template.compileSync(parcela, {
         vars: {
@@ -1392,6 +1400,8 @@ export default class IGNSearchLocatorControl extends M.Control {
             selectprov: getValue('selectprov'),
             estate: getValue('estate'),
             plot: getValue('plot'),
+            titlerefCatastral: getValue('titlerefCatastral'),
+            refCastatro: getValue('refCastatro'),
             search: getValue('search'),
           },
         },
@@ -1430,8 +1440,19 @@ export default class IGNSearchLocatorControl extends M.Control {
         compiledXYLocator.querySelector('#m-searchParamsParcela-input').value = this.inputParcela.value;
       }
 
+
+      if (this.inputRefCatastral === null) {
+        this.inputRefCatastral = compiledXYLocator.querySelector('#m-refCatastral-input');
+      } else {
+        compiledXYLocator.querySelector('#m-refCatastral-input').value = this.inputRefCatastral.value;
+      }
+
+
       const buttonParamsSearch = compiledXYLocator.querySelector('button#m-searchParams-button');
       buttonParamsSearch.addEventListener('click', e => this.onParamsSearch(e));
+
+      const buttonParamsSearchRC = compiledXYLocator.querySelector('button#m-refCatastral-button');
+      buttonParamsSearchRC.addEventListener('click', this.onRCSearch.bind(this));
       this.resultsBox.appendChild(compiledXYLocator);
 
       if (M.language.getLang() === 'es') {
@@ -1706,11 +1727,11 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-        this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
+        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
 
-      document.getElementById('m-ignsearchlocator-results').style = 'width: 345px;';
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 301px;';
 
       const compiledXYLocator = M.template.compileSync(xylocator, {
         vars: {
