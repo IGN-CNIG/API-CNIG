@@ -1213,6 +1213,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.selectMunicipios = null;
     this.inputPoligono = null;
     this.inputParcela = null;
+    this.inputRefCatastral = null;
   }
 
   /**
@@ -1263,6 +1264,9 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   onRCSearch(evt) {
     evt.preventDefault();
+
+    this.inputRefCatastral = document.querySelector('#m-refCatastral-input');
+
     this.inputRC_ = this.element_.querySelector('#m-refCatastral-input').value;
     if ((evt.type !== 'keyup') || (evt.keyCode === 13)) {
       let inputRC = this.inputRC_;
