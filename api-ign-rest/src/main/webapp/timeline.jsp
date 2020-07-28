@@ -12,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>Visor base</title>
-    <link type="text/css" rel="stylesheet" href="assets/css/apiign-1.2.0.ol.min.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
     <link href="plugins/timeline/timeline.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
@@ -77,8 +77,8 @@
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
-    <script type="text/javascript" src="js/apiign-1.2.0.ol.min.js"></script>
-    <script type="text/javascript" src="js/configuration-1.2.0.js"></script>
+    <script type="text/javascript" src="js/apiign.ol.min.js"></script>
+    <script type="text/javascript" src="js/configuration.js"></script>
     <script type="text/javascript" src="plugins/timeline/timeline.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
