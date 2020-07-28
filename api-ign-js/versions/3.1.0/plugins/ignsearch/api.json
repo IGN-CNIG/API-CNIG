@@ -1,0 +1,68 @@
+{
+  "url": {
+    "name": "ignsearch",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.IGNSearch",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "servicesToSearch",
+      "position": 0
+    }, {
+      "type": "number",
+      "name": "maxResults",
+      "position": 1
+    }, {
+      "type": "simple",
+      "name": "noProcess",
+      "position": 2
+    }, {
+      "type": "boolean",
+      "name": "resultVisibility",
+      "position": 3
+    }, {
+      "type": "boolean",
+      "name": "isCollapsed",
+      "position": 4
+    }, {
+      "type": "simple",
+      "name": "position",
+      "position": 5
+    }, {
+      "type": "boolean",
+      "name": "reverse",
+      "position": 6
+    }, {
+      "type": "simple",
+      "name": "requestStreet",
+      "position": 7
+    }, {
+      "type": "simple",
+      "name": "locationID",
+      "position": 8
+    }, {
+      "type": "simple",
+      "name": "geocoderCoords",
+      "position": 9
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["ignsearch.ol.min.js"],
+      "styles": ["ignsearch.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "IGNSearch",
+    "description": "Searches location on IGN geocoding services",
+    "text": "Searches location on IGN geocoding services",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}
