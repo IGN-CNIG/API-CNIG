@@ -1,0 +1,45 @@
+{
+  "url": {
+    "name": "IGNHelp",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.IGNHelp",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BR", "BL"]
+    }, {
+      "type": "simple",
+      "name": "helpLink",
+      "position": 1
+    }, {
+      "type": "simple",
+      "name": "contactEmail",
+      "position": 2
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": [
+        "ignhelp.ol.min.js"
+      ],
+      "styles": [
+        "ignhelp.ol.min.css"
+      ]
+    }
+  },
+  "metadata": {
+    "name": "IGNHelp",
+    "description": "Shows information panel.",
+    "text": "Opens a window with an information link about the site, contact link and terms.",
+    "version": "1.0.0",
+    "date": "11th November 2019",
+    "author": "CNIG",
+    "org": "CNIG",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

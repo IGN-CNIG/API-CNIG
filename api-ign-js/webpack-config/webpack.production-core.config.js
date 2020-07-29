@@ -11,7 +11,7 @@ const pjson = require(PJSON_PATH);
 module.exports = {
   mode: 'production',
   entry: {
-    [`${pjson.name}-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`${pjson.name}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
@@ -83,10 +83,6 @@ module.exports = {
     new CopywebpackPlugin([{
       from: 'src/configuration.js',
       to: 'filter/configuration.js',
-    }]),
-    new CopywebpackPlugin([{
-      from: 'src/configuration.js',
-      to: `filter/configuration-${pjson.version}.js`,
     }]),
     new CopywebpackPlugin([{
       from: 'src/facade/assets/img',
