@@ -11,6 +11,15 @@
   "searchresult": "searchresult",
   "coordinateresult": "coordinateresult",
 
+  "informacionCatastral": "Cadastre information",
+  "errorConexion": "It is not possible to establish a connection with the Cadastre server.",
+  "consultar": "Cadastre information",
+
+  "description": "Description",
+  "reference": "Cadastral reference",
+  "noReference": "No reference",
+  "noInfo": "NO REFERENCES AVAILABLE FOR THESE COORDINATES ",
+
   "tooltip": "Search places",
   "geographic": "Geographic",
   "zone": "zone",
@@ -23,6 +32,7 @@
   "plot": "Parcel",
   "search": "Search",
   "placeHolderRC": "Enter the 14 or 20 digits of the RC",
+  "consultReference": "Consult Reference",
 
 
   "titlerefCatastral": "Cadastral reference search",
@@ -42,6 +52,8 @@
   "dd": "DD",
   "negative": "Note: Negative values​​ correspond to south latitude and west longitude respectively ",
   "notaRef": "Parcel code (first 14 digits). Ex.9977715VK3797F (IGN building)",
+
+  "RCnull": "You must enter a cadastral reference",
 
   "direccion": "Address, place name or cadastral Ref (14 dig.)",
   "obtener": "Get direction at a point on the map",

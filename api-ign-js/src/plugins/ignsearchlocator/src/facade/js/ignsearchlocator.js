@@ -67,6 +67,14 @@ export default class IGNSearchLocator extends M.Plugin {
     this.CPMRC_url = options.CPMRC_url != null ? options.CPMRC_url : defectCPMRC;
 
     /**
+     * catastroWMS
+     * @private
+     * @type {string}
+     */
+    this.catastroWMS = options.catastroWMS || 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR';
+
+
+    /**
      * This variable sets the maximun results returned by a service
      * (if both services are searched the maximum results will be twice this number)
      * @private
@@ -253,6 +261,7 @@ export default class IGNSearchLocator extends M.Plugin {
       this.CMC_url,
       this.DNPPP_url,
       this.CPMRC_url,
+      this.catastroWMS,
       this.maxResults,
       this.noProcess,
       this.countryCode,

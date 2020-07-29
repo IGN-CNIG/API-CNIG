@@ -576,7 +576,7 @@ DROPDOWN ****************************/
     font-family: Muli, sans-serif !important;
     border-radius: 0px;
     border: 1px solid rgba(0, 0, 0, .4);
-    font-size: 15px;
+    font-size: 13px;
     -webkit-transition: opacity .25s ease 0s;
     transition: opacity .25s ease 0s;
     color: black;
@@ -710,6 +710,11 @@ DROPDOWN ****************************/
 }
 
 @media only screen and (max-width: 600px) {
+
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>div.button>button {
+        font-size: 12px;
+    }
+
     .m-areas>div.m-area.m-top>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
         width: 305px;
     }
