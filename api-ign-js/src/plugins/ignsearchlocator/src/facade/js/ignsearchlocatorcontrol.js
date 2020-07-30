@@ -2374,9 +2374,16 @@ export default class IGNSearchLocatorControl extends M.Control {
     if (exitState !== null) {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }
+    let unidadX = 'X';
+    let unidadY = 'Y';
+    if (this.map.getProjection().code.includes('4258') || this.map.getProjection().code.includes('4326')) {
+      unidadX = 'Lat';
+      unidadY = 'Long';
+    }
+
     featureTabOpts.content += `<div>${fullAddress}</div>
-                <div class='ignsearchlocator-popup'>Lat: ${featureCoordinates[0].toFixed(6)}</div>
-                <div class='ignsearchlocator-popup'> Long: ${featureCoordinates[1].toFixed(6)} </div>`;
+                <div class='ignsearchlocator-popup'>${unidadX}: ${featureCoordinates[0].toFixed(6)}</div>
+                <div class='ignsearchlocator-popup'>${unidadY}: ${featureCoordinates[1].toFixed(6)} </div>`;
     if (this.map.getPopup() instanceof M.Popup && addTab === true) {
       this.popup = this.map.getPopup();
       this.popup.addTab(featureTabOpts);
