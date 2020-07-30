@@ -380,7 +380,12 @@ export default class GeorefimageControl extends M.Control {
         let downloadUrl;
         try {
           response = JSON.parse(response.text);
-          downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+          if (this.serverUrl_.endsWith('/geoprint')) {
+            const url = this.serverUrl_.substring(0, this.serverUrl_.lastIndexOf('/geoprint'));
+            downloadUrl = M.utils.concatUrlPaths([url, response.downloadURL]);
+          } else {
+            downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+          }
           this.documentRead_.src = downloadUrl;
         } catch (err) {
           M.exception(err);
@@ -478,8 +483,14 @@ export default class GeorefimageControl extends M.Control {
       const newMin = this.getImpl().reproject(proj.code, min);
       const newMax = this.getImpl().reproject(proj.code, max);
       dmsBbox = {
-        x: { min: newMin[0], max: newMax[0] },
-        y: { min: newMin[1], max: newMax[1] },
+        x: {
+          min: newMin[0],
+          max: newMax[0],
+        },
+        y: {
+          min: newMin[1],
+          max: newMax[1],
+        },
       };
     }
 
@@ -734,11 +745,10 @@ export default class GeorefimageControl extends M.Control {
       const zip = new JsZip();
       zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
       zip.file(titulo.concat('.jpg'), resolve, { base64: true });
-      zip.generateAsync({ type: 'blob' })
-        .then((content) => {
-          // see FileSaver.js
-          saveAs(content, titulo.concat('.zip'));
-        });
+      zip.generateAsync({ type: 'blob' }).then((content) => {
+        // see FileSaver.js
+        saveAs(content, titulo.concat('.zip'));
+      });
     });
   }
 

@@ -264,7 +264,10 @@ export default class PrinterMapControl extends M.Control {
           minimize: getValue('minimize'),
         };
 
-        const html = M.template.compileSync(printermapHTML, { jsonp: true, vars: capabilities });
+        const html = M.template.compileSync(printermapHTML, {
+          jsonp: true,
+          vars: capabilities,
+        });
         this.addEvents(html);
         success(html);
       });
@@ -438,7 +441,12 @@ export default class PrinterMapControl extends M.Control {
         let downloadUrl;
         try {
           response = JSON.parse(response.text);
-          downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+          if (this.serverUrl_.endsWith('/geoprint')) {
+            const url = this.serverUrl_.substring(0, this.serverUrl_.lastIndexOf('/geoprint'));
+            downloadUrl = M.utils.concatUrlPaths([url, response.downloadURL]);
+          } else {
+            downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+          }
         } catch (err) {
           M.exception(err);
         }
@@ -524,8 +532,14 @@ export default class PrinterMapControl extends M.Control {
       const newMin = this.getImpl().reproject(proj.code, min);
       const newMax = this.getImpl().reproject(proj.code, max);
       dmsBbox = {
-        x: { min: newMin[0], max: newMax[0] },
-        y: { min: newMin[1], max: newMax[1] },
+        x: {
+          min: newMin[0],
+          max: newMax[0],
+        },
+        y: {
+          min: newMin[1],
+          max: newMax[1],
+        },
       };
     }
 
