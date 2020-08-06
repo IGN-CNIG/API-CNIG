@@ -326,13 +326,11 @@ export default class PrinterMapControl extends M.Control {
     });
     this.setFormat(selectFormat.value);
 
-    /*
     const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
     checkboxForceScale.addEventListener('click', (e) => {
       this.setForceScale(checkboxForceScale.checked);
     });
     this.setForceScale(checkboxForceScale.checked);
-    */
 
     const printBtn = this.element_.querySelector('.button > button.print');
     printBtn.addEventListener('click', this.printClick_.bind(this));
@@ -347,7 +345,7 @@ export default class PrinterMapControl extends M.Control {
       selectLayout.value = this.layoutOptions_[0];
       selectDpi.value = this.dpisOptions_[0];
       selectFormat.value = this.options_.format;
-      // checkboxForceScale.checked = this.options_.forceScale;
+      checkboxForceScale.checked = this.options_.forceScale;
 
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
@@ -358,7 +356,7 @@ export default class PrinterMapControl extends M.Control {
       selectLayout.dispatchEvent(changeEvent);
       selectDpi.dispatchEvent(changeEvent);
       selectFormat.dispatchEvent(changeEvent);
-      // checkboxForceScale.dispatchEvent(clickEvent);
+      checkboxForceScale.dispatchEvent(clickEvent);
       // clean queue
 
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
