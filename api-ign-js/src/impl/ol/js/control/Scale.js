@@ -8,14 +8,26 @@ import Control from './Control';
 /**
  * @private
  */
+const formatLongNumber = (num) => {
+  return num.replace(/\d(?=(\d{3})+\.)/g, '$&*').split('*').join('.');
+}
+
+/**
+ * @private
+ */
 const updateElement = (viewState, container, map, exact) => {
   const containerVariable = container;
+  let num;
   if (map.getWMTS().length > 0) {
-    containerVariable.innerHTML = Utils.getWMTSScale(map, exact);
+    num = Utils.getWMTSScale(map, exact);
   } else if (map.getWMTS().length <= 0 && exact === true) {
-    containerVariable.innerHTML = map.getExactScale();
+    num = map.getExactScale();
   } else if (map.getWMTS().length <= 0 && !exact === true) {
-    containerVariable.innerHTML = map.getScale();
+    num = map.getScale();
+  }
+
+  if (!isNullOrEmpty(num)) {
+    containerVariable.innerHTML = formatLongNumber(num);
   }
 };
 

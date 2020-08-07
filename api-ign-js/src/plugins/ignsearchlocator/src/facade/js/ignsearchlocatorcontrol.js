@@ -805,7 +805,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       if (geoJsonData2.includes('MultiMultiPolygon')) {
         geoJsonData2 = geoJsonData2.replace('MultiMultiPolygon', 'MultiPolygon');
       }
-      console.log(geoJsonData2);
+
       const featureJSON = JSON.parse(geoJsonData2);
 
       // featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
