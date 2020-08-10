@@ -9,7 +9,7 @@ import Control from './Control';
  * @private
  */
 const formatLongNumber = (num) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
 /**
