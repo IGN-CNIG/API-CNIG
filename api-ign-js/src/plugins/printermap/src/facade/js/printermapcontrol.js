@@ -439,12 +439,8 @@ export default class PrinterMapControl extends M.Control {
         let downloadUrl;
         try {
           response = JSON.parse(response.text);
-          if (this.serverUrl_.endsWith('/geoprint')) {
-            const url = this.serverUrl_.substring(0, this.serverUrl_.lastIndexOf('/geoprint'));
-            downloadUrl = M.utils.concatUrlPaths([url, response.downloadURL]);
-          } else {
-            downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
-          }
+          const url = response.downloadURL.substring(response.downloadURL.indexOf('/print'), response.downloadURL.length);
+          downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, url]);
         } catch (err) {
           M.exception(err);
         }
