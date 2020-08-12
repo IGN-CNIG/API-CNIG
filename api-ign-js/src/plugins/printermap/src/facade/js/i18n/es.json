@@ -14,7 +14,7 @@
   "description": "Descripción",
   "layout": "Plantilla",
   "format": "Formato",
-  "force": "Forzar escala",
+  "keep": "Conservar vista",
   "print": "Imprimir",
   "delete": "Borrar",
   "download": "Descargar",

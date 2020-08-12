@@ -92,7 +92,7 @@
     .m-printermap-container>div.form>div.layout,
     .m-printermap-container>div.form>div.format,
     .m-printermap-container>div.form>div.dpi,
-    .m-printermap-container>div.form>div.forcescale {
+    .m-printermap-container>div.form>div.keepview {
         width: calc(100vw - 10%) !important;
         margin-left: 5% !important;
         text-align: left !important;
@@ -101,7 +101,7 @@
     .m-printermap-container>div.form>div.layout label,
     .m-printermap-container>div.form>div.format label,
     .m-printermap-container>div.form>div.dpi label,
-    .m-printermap-container>div.form>div.forcescale label {
+    .m-printermap-container>div.form>div.keepview label {
         margin-right: 10px;
     }
 }
@@ -110,7 +110,7 @@
 /* DPI */
 
 .m-printermap-container>div.form>div.dpi,
-.m-printermap-container>div.form>div.forcescale {
+.m-printermap-container>div.form>div.keepview {
     width: 45%;
     float: right;
     border-radius: 0px;

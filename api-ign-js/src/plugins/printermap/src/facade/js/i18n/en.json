@@ -14,7 +14,7 @@
   "description": "Description",
   "layout": "Layout",
   "format": "Format",
-  "force": "Force scale",
+  "keep": "Keep view",
   "print": "Print",
   "delete": "Remove",
   "download": "Download",
