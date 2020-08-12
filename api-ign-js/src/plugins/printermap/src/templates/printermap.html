@@ -9,12 +9,12 @@
         </div>
         <!-- description -->
         <div class="description">
-            <textarea placeholder="{{translations.description}}"></textarea>
+            <textarea placeholder="{{translations.description}}" id="description"></textarea>
         </div>
         <!-- layout -->
         <div class="layout">
             <label>{{translations.layout}} </label>
-            <select>
+            <select id="layout">
                 {{#each layouts}}
                     <option value="{{name}}" {{#if default}} selected{{/if}}>{{name}}</option>
                 {{/each}}
@@ -23,7 +23,7 @@
         <!-- DPI -->
         <div class="dpi">
             <label>DPI </label>
-            <select>
+            <select id="dpi">
                 {{#each dpis}}
                     <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
                 {{/each}}
@@ -32,9 +32,18 @@
         <!-- format -->
         <div class="format">
             <label>{{translations.format}} </label>
-            <select>
+            <select id="format">
                 {{#each format}}
                     <option value="{{name}}" {{#if default}} selected{{/if}}>{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <!-- Proyección -->
+        <div class="projection">
+            <label>{{translations.projection}}: </label>
+            <select id="projection" disabled>
+                {{#each proyections}}
+                    <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
                 {{/each}}
             </select>
         </div>
@@ -42,6 +51,11 @@
         <div class="forcescale">
             <label>{{translations.force}} </label>
             <input type="checkbox" {{#if forceScale}} checked{{/if}}>
+        </div>
+        <!-- georef -->
+        <div class="georef">
+            <label>{{translations.geo}} </label>
+            <input type="checkbox" {{#if georef}} checked{{/if}}>
         </div>
     </div>
     <!-- buttons -->
