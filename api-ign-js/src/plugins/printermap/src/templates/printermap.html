@@ -47,10 +47,10 @@
                 {{/each}}
             </select>
         </div>
-        <!-- force scale -->
-        <div class="forcescale">
-            <label>{{translations.force}} </label>
-            <input type="checkbox" {{#if forceScale}} checked{{/if}}>
+        <!-- keep view -->
+        <div class="keepview">
+            <label>{{translations.keep}} </label>
+            <input type="checkbox" if="keepview" {{#if keepView}} checked{{/if}}>
         </div>
         <!-- georef -->
         <div class="georef">

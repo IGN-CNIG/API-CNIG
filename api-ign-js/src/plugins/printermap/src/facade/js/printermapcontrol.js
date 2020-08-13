@@ -101,12 +101,19 @@ export default class PrinterMapControl extends M.Control {
      */
     this.dpi_ = null;
 
+    // /**
+    //  * Force scale boolean
+    //  * @private
+    //  * @type {HTMLElement}
+    //  */
+    // this.forceScale_ = null;
+
     /**
-     * Force scale boolean
+     * Keep view boolean
      * @private
      * @type {HTMLElement}
      */
-    this.forceScale_ = null;
+    this.keepView_ = null;
 
     /**
      * Georref image boolean
@@ -155,7 +162,7 @@ export default class PrinterMapControl extends M.Control {
      */
     this.options_ = {
       dpi: 150,
-      forceScale: false,
+      keepView: false,
       format: 'pdf',
       legend: 'false',
       layout: 'A4 horizontal',
@@ -243,6 +250,7 @@ export default class PrinterMapControl extends M.Control {
         }
 
         capabilities.dpis = [];
+        capabilities.dpis.push({ value: 100 });
         let attribute;
         // default dpi
         // recommended DPI list attribute search
@@ -252,7 +260,7 @@ export default class PrinterMapControl extends M.Control {
           }
         }
 
-        for (i = 0, ilen = attribute.clientInfo.dpiSuggestions.length; i < ilen; i += 1) {
+        for (i = 1, ilen = attribute.clientInfo.dpiSuggestions.length; i < ilen; i += 1) {
           const dpi = attribute.clientInfo.dpiSuggestions[i];
 
           if (parseInt(dpi, 10) === this.options_.dpi) {
@@ -279,7 +287,10 @@ export default class PrinterMapControl extends M.Control {
         });
 
         // forceScale
-        capabilities.forceScale = this.options_.forceScale;
+        // capabilities.forceScale = this.options_.forceScale;
+
+        // keepView
+        capabilities.keepView = this.options_.keepView;
 
         // translations
         capabilities.translations = {
@@ -289,7 +300,7 @@ export default class PrinterMapControl extends M.Control {
           layout: getValue('layout'),
           format: getValue('format'),
           projection: getValue('projection'),
-          force: getValue('force'),
+          keep: getValue('keep'),
           geo: getValue('geo'),
           print: getValue('print'),
           delete: getValue('delete'),
@@ -372,12 +383,22 @@ export default class PrinterMapControl extends M.Control {
       value: projectionValue,
       name: projectionValue,
     });
+    // const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
+    // checkboxForceScale.addEventListener('click', (e) => {
+    //   this.setForceScale(checkboxForceScale.checked);
+    // });
+    // this.setForceScale(checkboxForceScale.checked);
 
-    const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
-    checkboxForceScale.addEventListener('click', (e) => {
-      this.setForceScale(checkboxForceScale.checked);
+    const checkboxKeepView = this.element_.querySelector('.form div.keepview > input');
+    checkboxKeepView.addEventListener('click', (e) => {
+      this.setKeepView(checkboxKeepView.checked);
+      if (checkboxKeepView.checked) {
+        document.getElementById('dpi').disabled = true;
+      } else {
+        document.getElementById('dpi').disabled = false;
+      }
     });
-    this.setForceScale(checkboxForceScale.checked);
+    this.setKeepView(checkboxKeepView.checked);
 
     const checkboxGeoref = this.element_.querySelector('.form div.georef > input');
     checkboxGeoref.addEventListener('click', (e) => {
@@ -412,7 +433,7 @@ export default class PrinterMapControl extends M.Control {
       selectDpi.value = this.dpisOptions_[0];
       selectFormat.value = this.options_.format;
       this.projection_ = 'EPSG:3857';
-      checkboxForceScale.checked = this.options_.forceScale;
+      checkboxKeepView.checked = this.options_.keepView;
       checkboxGeoref.checked = this.options_.georef;
       document.getElementById('description').disabled = false;
       document.getElementById('layout').disabled = false;
@@ -430,7 +451,7 @@ export default class PrinterMapControl extends M.Control {
       selectDpi.dispatchEvent(changeEvent);
       selectFormat.dispatchEvent(changeEvent);
       selectProjection.dispatchEvent(changeEvent);
-      checkboxForceScale.dispatchEvent(clickEvent);
+      checkboxKeepView.dispatchEvent(clickEvent);
       // clean queue
 
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
@@ -484,14 +505,24 @@ export default class PrinterMapControl extends M.Control {
     this.dpi_ = dpi;
   }
 
+  // /**
+  //  * Sets force scale option
+  //  *
+  //  * @private
+  //  * @function
+  //  */
+  // setForceScale(forceScale) {
+  //   this.forceScale_ = forceScale;
+  // }
+
   /**
-   * Sets force scale option
+   * Sets keep view option
    *
    * @private
    * @function
    */
-  setForceScale(forceScale) {
-    this.forceScale_ = forceScale;
+  setKeepView(keepView) {
+    this.keepView_ = keepView;
   }
 
   /**
@@ -685,9 +716,14 @@ export default class PrinterMapControl extends M.Control {
     // const dmsBbox = this.convertBboxToDMS(bbox);
     const dmsBbox = bbox;
     let layout = this.layout_.name;
-    const dpi = this.dpi_.value;
+    let dpi;
+    if (!this.keepView_) {
+      dpi = this.dpi_.value;
+    } else {
+      dpi = 100;
+    }
     const outputFormat = this.format_;
-    const center = this.map_.getCenter();
+    // const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
     const attribution = attributionContainer !== null ?
@@ -745,16 +781,16 @@ export default class PrinterMapControl extends M.Control {
         printData.attributes.map.projection = 'EPSG:3857';
       }
 
-      if (!this.forceScale_) {
-        printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+      // if (!this.forceScale_) {
+      printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
 
-        if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
-          printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
-        }
-      } else if (this.forceScale_) {
-        printData.attributes.map.center = [center.x, center.y];
-        printData.attributes.map.scale = M.impl.utils.getWMTSScale(this.map_, true);
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+        printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
       }
+      // } else if (this.forceScale_) {
+      //   printData.attributes.map.center = [center.x, center.y];
+      //   printData.attributes.map.scale = M.impl.utils.getWMTSScale(this.map_, true);
+      // }
 
       return printData;
     });

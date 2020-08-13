@@ -15,7 +15,7 @@
   "layout": "Layout",
   "format": "Format",
   "projection": "Projection",
-  "force": "Force scale",
+  "keep": "Keep view",
   "geo": "Georeferenced Image",
   "print": "Print",
   "delete": "Remove",
