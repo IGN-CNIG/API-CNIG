@@ -2,6 +2,8 @@
  * @module M/control/PrinterMapControl
  */
 
+import JsZip from 'jszip';
+import { saveAs } from 'file-saver';
 import PrinterMapControlImpl from '../../impl/ol/js/printermapcontrol';
 import printermapHTML from '../../templates/printermap';
 import { getValue } from './i18n/language';
@@ -15,7 +17,7 @@ export default class PrinterMapControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(serverUrl, printTemplateUrl, printStatusUrl, credits) {
+  constructor(serverUrl, printTemplateUrl, printTemplateGeoUrl, printStatusUrl, credits) {
     const impl = new PrinterMapControlImpl();
 
     super(impl, PrinterMapControl.NAME);
@@ -42,6 +44,13 @@ export default class PrinterMapControl extends M.Control {
      * @type {String}
      */
     this.printTemplateUrl_ = printTemplateUrl;
+
+    /**
+     * Mapfish template url for georef
+     * @private
+     * @type {String}
+     */
+    this.printTemplateGeoUrl_ = printTemplateGeoUrl;
 
 
     /**
@@ -88,11 +97,25 @@ export default class PrinterMapControl extends M.Control {
     this.format_ = null;
 
     /**
+     * Map projection to print
+     * @private
+     * @type {HTMLElement}
+     */
+    this.projection_ = null;
+
+    /**
      * Map dpi to print
      * @private
      * @type {HTMLElement}
      */
     this.dpi_ = null;
+
+    /**
+     * Max map dpi to print
+     * @private
+     * @type {HTMLElement}
+     */
+    this.dpiMax_ = null;
 
     // /**
     //  * Force scale boolean
@@ -107,6 +130,13 @@ export default class PrinterMapControl extends M.Control {
      * @type {HTMLElement}
      */
     this.keepView_ = null;
+
+    /**
+     * Georref image boolean
+     * @private
+     * @type {HTMLElement}
+     */
+    this.georef_ = null;
 
     /**
      * Mapfish params
@@ -125,6 +155,22 @@ export default class PrinterMapControl extends M.Control {
         imageSpain: 'file://E01_logo_IGN_CNIG.png',
         imageCoordinates: 'file://E01_logo_IGN_CNIG.png',
       },
+    };
+
+    /**
+     * Mapfish params for georef
+     * @private
+     * @type {String}
+     */
+    this.paramsGeo_ = {
+      layout: {
+        outputFilename: 'mapa_${yyyy-MM-dd_hhmmss}',
+      },
+      pages: {
+        clientLogo: '', // logo url
+        creditos: getValue('printInfo'),
+      },
+      parameters: {},
     };
 
     /**
@@ -157,6 +203,10 @@ export default class PrinterMapControl extends M.Control {
     this.layoutOptions_ = [];
     this.dpisOptions_ = [];
     this.outputFormats_ = ['pdf', 'png', 'jpg'];
+
+    this.documentRead_ = document.createElement('img');
+    this.canvas_ = document.createElement('canvas');
+    this.proyectionsDefect_ = ['EPSG:25828', 'EPSG:25829', 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
   }
 
   /**
@@ -218,14 +268,30 @@ export default class PrinterMapControl extends M.Control {
           return item.name;
         }));
 
+        capabilities.proyections = [];
+        const proyectionsDefect = this.proyectionsDefect_;
+
+
+        for (i = 0, ilen = proyectionsDefect.length; i < ilen; i += 1) {
+          if (proyectionsDefect[i] !== null) {
+            const proyection = proyectionsDefect[i];
+            const object = { value: proyection };
+            if (proyection === 'EPSG:4258') {
+              object.default = true;
+            }
+
+            capabilities.proyections.push(object);
+          }
+        }
+
         capabilities.dpis = [];
-        capabilities.dpis.push({ value: 100 });
         let attribute;
         // default dpi
         // recommended DPI list attribute search
         for (i = 0, ilen = capabilities.layouts[0].attributes.length; i < ilen; i += 1) {
-          if (capabilities.layouts[0].attributes[i].clientInfo !== null) {
+          if (capabilities.layouts[0].attributes[i].clientInfo !== undefined) {
             attribute = capabilities.layouts[0].attributes[i];
+            this.dpiMax_ = attribute.clientInfo.maxDPI;
           }
         }
 
@@ -268,7 +334,9 @@ export default class PrinterMapControl extends M.Control {
           description: getValue('description'),
           layout: getValue('layout'),
           format: getValue('format'),
+          projection: getValue('projection'),
           keep: getValue('keep'),
+          geo: getValue('geo'),
           print: getValue('print'),
           delete: getValue('delete'),
           download: getValue('download'),
@@ -337,6 +405,19 @@ export default class PrinterMapControl extends M.Control {
     });
     this.setFormat(selectFormat.value);
 
+    const selectProjection = this.element_.querySelector('.form div.projection > select');
+    selectProjection.addEventListener('change', (e) => {
+      const projectionValue = selectProjection.value;
+      this.setProjection({
+        value: projectionValue,
+        name: projectionValue,
+      });
+    });
+    const projectionValue = selectProjection.value;
+    this.setProjection({
+      value: projectionValue,
+      name: projectionValue,
+    });
     // const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
     // checkboxForceScale.addEventListener('click', (e) => {
     //   this.setForceScale(checkboxForceScale.checked);
@@ -354,6 +435,28 @@ export default class PrinterMapControl extends M.Control {
     });
     this.setKeepView(checkboxKeepView.checked);
 
+    const checkboxGeoref = this.element_.querySelector('.form div.georef > input');
+    checkboxGeoref.addEventListener('click', (e) => {
+      this.setGeoref(checkboxGeoref.checked);
+      if (checkboxGeoref.checked === true) {
+        document.getElementById('description').disabled = true;
+        document.getElementById('layout').disabled = true;
+        document.getElementById('dpi').disabled = true;
+        document.getElementById('format').disabled = true;
+        document.getElementById('keepview').disabled = true;
+        document.getElementById('projection').disabled = false;
+        checkboxKeepView.checked = this.options_.keepView;
+      } else {
+        document.getElementById('description').disabled = false;
+        document.getElementById('layout').disabled = false;
+        document.getElementById('dpi').disabled = false;
+        document.getElementById('format').disabled = false;
+        document.getElementById('keepview').disabled = false;
+        document.getElementById('projection').disabled = true;
+      }
+    });
+    this.setGeoref(checkboxGeoref.checked);
+
     const printBtn = this.element_.querySelector('.button > button.print');
     printBtn.addEventListener('click', this.printClick_.bind(this));
 
@@ -367,7 +470,15 @@ export default class PrinterMapControl extends M.Control {
       selectLayout.value = this.layoutOptions_[0];
       selectDpi.value = this.dpisOptions_[0];
       selectFormat.value = this.options_.format;
+      this.projection_ = 'EPSG:3857';
       checkboxKeepView.checked = this.options_.keepView;
+      checkboxGeoref.checked = this.options_.georef;
+      document.getElementById('description').disabled = false;
+      document.getElementById('layout').disabled = false;
+      document.getElementById('dpi').disabled = false;
+      document.getElementById('format').disabled = false;
+      document.getElementById('keepview').disabled = false;
+      document.getElementById('projection').disabled = true;
 
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
@@ -378,6 +489,7 @@ export default class PrinterMapControl extends M.Control {
       selectLayout.dispatchEvent(changeEvent);
       selectDpi.dispatchEvent(changeEvent);
       selectFormat.dispatchEvent(changeEvent);
+      selectProjection.dispatchEvent(changeEvent);
       checkboxKeepView.dispatchEvent(clickEvent);
       // clean queue
 
@@ -413,6 +525,16 @@ export default class PrinterMapControl extends M.Control {
   }
 
   /**
+   * Sets projection
+   *
+   * @private
+   * @function
+   */
+  setProjection(projection) {
+    this.projection_ = projection;
+  }
+
+  /**
    * Sets dpi
    *
    * @private
@@ -443,6 +565,16 @@ export default class PrinterMapControl extends M.Control {
   }
 
   /**
+   * Sets georef image option
+   *
+   * @private
+   * @function
+   */
+  setGeoref(georef) {
+    this.georef_ = georef;
+  }
+
+  /**
    * This function prints on click
    *
    * @private
@@ -450,17 +582,30 @@ export default class PrinterMapControl extends M.Control {
    */
   printClick_(evt) {
     evt.preventDefault();
+    let getPrintData;
+    let printUrl;
+    let download;
 
-    this.getPrintData().then((printData) => {
-      let printUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, `report.${printData.outputFormat}`]);
+    if (this.georef_) {
+      getPrintData = this.getPrintDataGeo();
+      printUrl = this.printTemplateGeoUrl_;
+      download = this.downloadGeoPrint.bind(this);
+    } else {
+      getPrintData = this.getPrintData();
+      printUrl = this.printTemplateUrl_;
+      download = this.downloadPrint;
+    }
+
+    getPrintData.then((printData) => {
+      let url = M.utils.concatUrlPaths([printUrl, `report.${printData.outputFormat}`]);
 
       const queueEl = this.createQueueElement();
       this.queueContainer_.appendChild(queueEl);
       queueEl.classList.add(PrinterMapControl.LOADING_CLASS);
-      printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
+      url = M.utils.addParameters(url, 'mapeaop=geoprint');
       // FIXME: delete proxy deactivation and uncomment if/else when proxy is fixed on Mapea
       M.proxy(false);
-      M.remote.post(printUrl, printData).then((responseParam) => {
+      M.remote.post(url, printData).then((responseParam) => {
         let response = responseParam;
         const responseStatusURL = JSON.parse(response.text);
         const ref = responseStatusURL.ref;
@@ -471,13 +616,14 @@ export default class PrinterMapControl extends M.Control {
         let downloadUrl;
         try {
           response = JSON.parse(response.text);
-          const url = response.downloadURL.substring(response.downloadURL.indexOf('/print'), response.downloadURL.length);
-          downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, url]);
+          const imageUrl = response.downloadURL.substring(response.downloadURL.indexOf('/print'), response.downloadURL.length);
+          downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, imageUrl]);
+          this.documentRead_.src = downloadUrl;
         } catch (err) {
           M.exception(err);
         }
         queueEl.setAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-        queueEl.addEventListener('click', this.downloadPrint);
+        queueEl.addEventListener('click', download);
         // } else {
         //   M.dialog.error('Se ha producido un error en la impresión.');
         // }
@@ -620,7 +766,7 @@ export default class PrinterMapControl extends M.Control {
     if (!this.keepView_) {
       dpi = this.dpi_.value;
     } else {
-      dpi = 100;
+      dpi = 120;
     }
     const outputFormat = this.format_;
     // const center = this.map_.getCenter();
@@ -697,6 +843,76 @@ export default class PrinterMapControl extends M.Control {
   }
 
   /**
+   * This function returns request JSON for georef image.
+   *
+   * @private
+   * @function
+   */
+  getPrintDataGeo() {
+    let projection;
+    if (this.projection_.value === 'EPSG:4326' || this.projection_.value === 'EPSG:4258') {
+      projection = this.map_.getProjection().code;
+      this.projection_.value = projection;
+    } else {
+      projection = this.projection_.value;
+    }
+    // const projection = this.projection_.value;
+    const bbox = this.map_.getBbox();
+    const width = this.map_.getMapImpl().getSize()[0];
+    const height = this.map_.getMapImpl().getSize()[1];
+    const layout = 'plain';
+    const dpi = this.dpiMax_;
+    const outputFormat = 'jpg';
+    const parameters = this.paramsGeo_.parameters;
+
+    const printData = M.utils.extend({
+      layout,
+      outputFormat,
+      attributes: {
+        map: {
+          dpi,
+          projection,
+        },
+      },
+    }, this.paramsGeo_.layout);
+
+    return this.encodeLayersGeo().then((encodeLayersGeo) => {
+      const returnData = encodeLayersGeo;
+      let encodedLayersModified = [];
+      if (projection === 'EPSG:25830') {
+        for (let i = 0; i < returnData.length; i += 1) {
+          if (returnData[i].matrixSet != null) {
+            const matrixSet = returnData[i].matrixSet.replace('GoogleMapsCompatible', 'EPSG:25830');
+            returnData[i].matrixSet = matrixSet;
+          }
+          encodedLayersModified.push(returnData[i]);
+        }
+      } else {
+        encodedLayersModified = encodeLayersGeo;
+      }
+      printData.attributes.map.layers = encodedLayersModified;
+      printData.attributes = Object.assign(printData.attributes, parameters);
+
+      printData.attributes.map.projection = projection;
+
+
+      printData.attributes.map.dpi = dpi;
+      printData.attributes.map.width = width;
+      printData.attributes.map.height = height;
+      printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+
+      if (this.map_.getProjection().code !== projection) {
+        printData.attributes.map.bbox = this.getImpl().transformExt(
+          printData.attributes.map.bbox, this.map_.getProjection().code,
+          projection,
+        );
+      }
+
+      return printData;
+    });
+  }
+
+  /**
    * This function encodes layers.
    *
    * @private
@@ -748,6 +964,90 @@ export default class PrinterMapControl extends M.Control {
   }
 
   /**
+   * This function encodes layers for georef image.
+   *
+   * @private
+   * @function
+   */
+  encodeLayersGeo() {
+    // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
+    // and that doesn't have Cluster style.
+    let layers = this.map_.getLayers().filter((layer) => {
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && ['WMS', 'WMTS'].indexOf(layer.type) > -1);
+    });
+
+    const encodedLayersModified = [];
+    if (this.projection_.value === 'EPSG:3857') {
+      for (let i = 0; i < layers.length; i += 1) {
+        if (layers[i].matrixSet != null) {
+          const matrixSet = layers[i].matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
+          const optsMatrixSet = layers[i].options.matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
+          layers[i].matrixSet = matrixSet;
+          layers[i].options.matrixSet = optsMatrixSet;
+        }
+        encodedLayersModified.push(layers[i]);
+      }
+      layers = encodedLayersModified;
+    } else {
+      for (let i = 0; i < layers.length; i += 1) {
+        if (layers[i].matrixSet != null) {
+          const matrixSet = layers[i].matrixSet
+            .replace(layers[i].matrixSet, this.projection_.value);
+          const optsMatrixSet = layers[i].options.matrixSet
+            .replace(layers[i].matrixSet, this.projection_.value);
+          layers[i].matrixSet = matrixSet;
+          layers[i].options.matrixSet = optsMatrixSet;
+        }
+        encodedLayersModified.push(layers[i]);
+      }
+      layers = encodedLayersModified;
+    }
+
+    let numLayersToProc = layers.length;
+
+    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
+    if (otherLayers.length > 0) {
+      layers = layers.concat(otherLayers);
+      numLayersToProc = layers.length;
+    }
+
+    return (new Promise((success, fail) => {
+      let encodedLayers = [];
+      const vectorLayers = [];
+      const wmsLayers = [];
+      const otherBaseLayers = [];
+      const BreakException = {};
+
+      layers.forEach((layer) => {
+        this.getImpl().encodeLayer(layer).then((encodedLayer) => {
+          if (encodedLayer === null) {
+            throw BreakException;
+          }
+          // Vector layers must be added after non vector layers.
+          if (!M.utils.isNullOrEmpty(encodedLayer)) {
+            if (encodedLayer.type === 'Vector' || encodedLayer.type === 'KML') {
+              vectorLayers.push(encodedLayer);
+            } else if (encodedLayer.type === 'WMS') {
+              wmsLayers.push(encodedLayer);
+            } else {
+              otherBaseLayers.push(encodedLayer);
+            }
+          }
+
+          numLayersToProc -= 1;
+          if (numLayersToProc === 0) {
+            encodedLayers = encodedLayers.concat(otherBaseLayers)
+              .concat(wmsLayers).concat(vectorLayers);
+            // Mapfish requires reverse order
+            success(encodedLayers.reverse());
+          }
+        });
+      });
+    }));
+  }
+
+
+  /**
    * This function creates list element.
    *
    * @public
@@ -778,6 +1078,92 @@ export default class PrinterMapControl extends M.Control {
     if (!M.utils.isNullOrEmpty(downloadUrl)) {
       window.open(downloadUrl, '_blank');
     }
+  }
+
+  /**
+   * This function downloads geo printed map.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  downloadGeoPrint(event) {
+    // event.preventDefault();
+
+    // const downloadUrl = this.getAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME);
+    // if (!M.utils.isNullOrEmpty(downloadUrl)) {
+    //   window.open(downloadUrl, '_blank');
+    //
+
+
+    const base64image = this.getBase64Image(this.documentRead_.src);
+    base64image.then((resolve) => {
+      // let BboxTransformXminYmax = [this.map_.getBbox().x.min, this.map_.getBbox().y.max];
+      let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
+
+      const bbox = [this.map_.getBbox().x.min, this.map_.getBbox().y.min,
+        this.map_.getBbox().x.max, this.map_.getBbox().y.max,
+      ];
+
+      BboxTransformXmaxYmin = this.getImpl().transformExt(
+        bbox,
+        this.map_.getProjection().code, this.projection_.name,
+      );
+      // BboxTransformXminYmax = this.getImpl().transformExt(
+      //   BboxTransformXminYmax,
+      //   this.map_.getProjection().code, this.projection_.name,
+      // );
+
+
+      const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
+      const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
+      const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
+        (72 / this.dpiMax_)).toString();
+      const GiroA = (0).toString();
+      const GiroB = (0).toString();
+      const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
+        (72 / this.dpiMax_)).toString();
+      // const Cx = (this.map_.getBbox().x.min).toString();
+      // const Cy = (this.map_.getBbox().y.max).toString();
+      const Cx = (BboxTransformXmaxYmin[0]).toString();
+      const Cy = (BboxTransformXmaxYmin[3]).toString();
+
+      let titulo = this.inputTitle_.value;
+
+      if (titulo === '') {
+        const f = new Date();
+        titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
+      }
+
+      const zip = new JsZip();
+      zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
+      zip.file(titulo.concat('.jpg'), resolve, { base64: true });
+      zip.generateAsync({ type: 'blob' }).then((content) => {
+        // see FileSaver.js
+        saveAs(content, titulo.concat('.zip'));
+      });
+    });
+  }
+
+  getBase64Image(imgUrl) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.setAttribute('crossorigin', 'anonymous');
+      img.src = imgUrl;
+      img.onload = function can() {
+        this.canvas_ = document.createElement('canvas');
+        this.canvas_.width = img.width;
+        this.canvas_.height = img.height;
+        const ctx = this.canvas_.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const dataURL = this.canvas_.toDataURL('image/jpeg', 1.0);
+        resolve(dataURL.replace(/^data:image\/(png|jpeg);base64,/, ''));
+      };
+
+      img.onerror = function rej() {
+        Promise.reject(new Error(getValue('exception.loaderror')));
+      };
+    });
   }
 
   /**

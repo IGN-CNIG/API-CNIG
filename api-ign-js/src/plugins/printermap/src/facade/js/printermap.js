@@ -94,6 +94,13 @@ export default class PrinterMap extends M.Plugin {
     this.printTemplateUrl_ = parameters.printTemplateUrl || M.config.PRINTERMAP_TEMPLATE;
 
     /**
+     * Mapfish template url for georef
+     * @private
+     * @type {String}
+     */
+    this.printTemplateGeoUrl_ = parameters.printTemplateUrl || M.config.GEOREFIMAGE_TEMPLATE;
+
+    /**
      * Mapfish template url
      * @private
      * @type {String}
@@ -121,6 +128,7 @@ export default class PrinterMap extends M.Plugin {
     this.control_ = new PrinterMapControl(
       this.serverUrl_,
       this.printTemplateUrl_,
+      this.printTemplateGeoUrl_,
       this.printStatusUrl_,
       this.credits_,
     );
@@ -151,7 +159,7 @@ export default class PrinterMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.serverUrl_}*${this.printTemplateUrl_}*${this.printStatusUrl_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.serverUrl_}*${this.printTemplateUrl_}*${this.printTemplateGeoUrl_}*${this.printStatusUrl_}`;
   }
 
   /**

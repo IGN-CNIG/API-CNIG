@@ -28,8 +28,12 @@
       "position": 4
     }, {
       "type": "simple",
-      "name": "printStatusUrl",
+      "name": "printTemplateGeoUrl",
       "position": 5
+    }, {
+      "type": "simple",
+      "name": "printStatusUrl",
+      "position": 6
     }]
   }],
   "files": {

@@ -75,11 +75,12 @@
 
 .m-printermap-container>div.form>div.layout>select,
 .m-printermap-container>div.form>div.dpi>select,
-.m-printermap-container>div.form>div.format>select {
+.m-printermap-container>div.form>div.format>select,
+.m-printermap-container>div.form>div.projection>select {
     height: 25px;
     cursor: pointer;
     padding-left: 5px;
-    width: 68%;
+    width: 60%;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -92,7 +93,9 @@
     .m-printermap-container>div.form>div.layout,
     .m-printermap-container>div.form>div.format,
     .m-printermap-container>div.form>div.dpi,
-    .m-printermap-container>div.form>div.keepview {
+    .m-printermap-container>div.form>div.projection,
+    .m-printermap-container>div.form>div.keepview,
+    .m-printermap-container>div.form>div.georef {
         width: calc(100vw - 10%) !important;
         margin-left: 5% !important;
         text-align: left !important;
@@ -101,7 +104,9 @@
     .m-printermap-container>div.form>div.layout label,
     .m-printermap-container>div.form>div.format label,
     .m-printermap-container>div.form>div.dpi label,
-    .m-printermap-container>div.form>div.keepview label {
+    .m-printermap-container>div.form>div.projection label,
+    .m-printermap-container>div.form>div.keepview label,
+    .m-printermap-container>div.form>div.georef label {
         margin-right: 10px;
     }
 }
@@ -110,9 +115,18 @@
 /* DPI */
 
 .m-printermap-container>div.form>div.dpi,
-.m-printermap-container>div.form>div.keepview {
+.m-printermap-container>div.form>div.keepview,
+.m-printermap-container>div.form>div.georef {
     width: 45%;
     float: right;
+    border-radius: 0px;
+    text-align: right;
+    margin-right: 5%;
+}
+
+.m-printermap-container>div.form>div.projection {
+    width: 45%;
+    float: left;
     border-radius: 0px;
     text-align: right;
     margin-right: 5%;
