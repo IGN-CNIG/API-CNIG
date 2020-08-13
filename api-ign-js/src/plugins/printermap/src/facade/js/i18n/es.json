@@ -14,7 +14,7 @@
   "description": "Descripción",
   "layout": "Plantilla",
   "format": "Formato",
-  "projection": "Projección",
+  "projection": "Proyección",
   "keep": "Conservar vista",
   "geo": "Imagen Georreferenciada",
   "print": "Imprimir",
