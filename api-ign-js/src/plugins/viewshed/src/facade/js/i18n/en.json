@@ -1,0 +1,7 @@
+{
+  "tooltip": "Calculate visibility area",
+  "calculating": "Performing geoprocessing analysis",
+  "warning": "Warning",
+  "outbox": "he coordinates are not within the calculation range",
+  "error_query": "Unable to perform query"
+}

@@ -1,0 +1,37 @@
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
+.m-control.m-container.m-viewshed-container button {
+    color: white;
+    background-color: #71a7d3 !important;
+    opacity: 1;
+    border-radius: 40px;
+}
+
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-viewshed-container>button.activated {
+    background-color: #D1E6F8 !important;
+    color: #364B5F !important;
+}
+
+#m-viewshed-btn {
+  font-size: 26px;
+}
+
+#m-viewshed-btn:focus {
+  outline: none;
+}
+
+.m-dialog .m-viewshed-message {
+  text-align: center;
+}
+
+.m-viewshed-message .m-viewshed-loading {
+  width: 100%;
+  text-align: center;
+}
+
+.m-viewshed-message .m-viewshed-loading span:before {
+  font-size: 3.5rem;
+  animation: rotate 1s linear infinite;
+}
