@@ -43,10 +43,9 @@ const printermap = new PrinterMap({
   credits: 'Impresión generada desde Fototeca',
 });
 
-//map.addLayers([layerinicial, campamentos]);
+
 map.addPlugin(printermap);
 
-//map.addPlugin(new M.plugin.Vectors());
 map.addPlugin(new M.plugin.IGNSearchLocator({
   servicesToSearch: 'gn',
   searchPosition: 'geocoder,nomenclator',
@@ -57,5 +56,7 @@ map.addPlugin(new M.plugin.IGNSearchLocator({
   zoom: 13,
   pointStyle: 'pinRojo',
 }));
+
+map.addLayers([layerinicial, campamentos]);
 
 window.map = map;

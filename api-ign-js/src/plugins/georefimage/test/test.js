@@ -65,11 +65,11 @@ const layerinicial = new M.layer.WMS({
   tiled: false,
 }, {});
 
-// const campamentos = new M.layer.GeoJSON({
-//   name: 'Campamentos',
-//   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
-//   extract: true,
-// });
+const campamentos = new M.layer.GeoJSON({
+  name: 'Campamentos',
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
+  extract: true,
+});
 
 const georefimage = new Georefimage({
   collapsed: true,
@@ -77,6 +77,6 @@ const georefimage = new Georefimage({
   position: 'TR',
 });
 
-map.addLayers([layerinicial]);
+map.addLayers([layerinicial, campamentos]);
 map.addPlugin(georefimage);
 window.map = map;
