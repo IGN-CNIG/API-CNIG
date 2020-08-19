@@ -54,12 +54,14 @@ export default class ViewShedControl extends M.Control {
         vars: {
           translations: {
             tooltip: getValue('tooltip'),
+            active_viewshed: getValue('active_viewshed'),
+            clear: getValue('clear'),
           },
         },
       });
       this.element_ = html;
-      const button = this.element_.querySelector('#m-viewshed-btn');
-      button.addEventListener('click', this.activate.bind(this));
+      html.querySelector('#m-viewshed-clear-btn').addEventListener('click', this.clear.bind(this));
+      html.querySelector('#m-viewshed-calculate-btn').addEventListener('click', this.activate.bind(this));
       success(html);
     });
   }
@@ -77,7 +79,7 @@ export default class ViewShedControl extends M.Control {
     } else {
       this.facadeMap_.on(M.evt.CLICK, this.analizeVisibility, this);
       this.activated = true;
-      this.element_.querySelector('#m-viewshed-btn').classList.add('activated');
+      this.element_.querySelector('#m-viewshed-calculate-btn').classList.add('activated');
       document.addEventListener('keydown', this.checkEscKey.bind(this));
     }
   }
@@ -100,7 +102,7 @@ export default class ViewShedControl extends M.Control {
     this.facadeMap_.removePopup();
     this.facadeMap_.un(M.evt.CLICK, this.analizeVisibility, this);
     this.activated = false;
-    this.element_.querySelector('#m-viewshed-btn').classList.remove('activated');
+    this.element_.querySelector('#m-viewshed-calculate-btn').classList.remove('activated');
   }
 
   /**
@@ -144,6 +146,22 @@ export default class ViewShedControl extends M.Control {
       document.querySelector('div.m-mapea-container div.m-dialog').remove();
       M.dialog.error(getValue('error_query'));
     });
+  }
+
+  /**
+   * This function clears the layer with the area
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  clear() {
+    const remove = this.facadeMap_.getLayers().filter((layer) => {
+      return layer.type === 'Vector' && layer.name === 'viewresult';
+    });
+
+    this.facadeMap_.removeLayers(remove);
+    this.deactivate();
   }
 
   /**

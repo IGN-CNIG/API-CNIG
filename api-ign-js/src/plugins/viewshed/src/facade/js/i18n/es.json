@@ -3,5 +3,7 @@
   "calculating": "Realizando geoproceso de análisis",
   "warning": "Advertencia",
   "outbox": "Las coordenadas no están dentro del ámbito de cálculo",
-  "error_query": "No se ha podido realizar la consulta"
+  "error_query": "No se ha podido realizar la consulta",
+  "active_viewshed": "Hacer click en punto del mapa",
+  "clear": "Limpiar resultado"
 }

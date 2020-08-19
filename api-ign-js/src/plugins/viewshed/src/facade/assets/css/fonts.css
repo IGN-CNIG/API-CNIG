@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'viewshed';
-  src: url('../fonts/viewshed.eot?34501077');
-  src: url('../fonts/viewshed.eot?34501077#iefix') format('embedded-opentype'),
-       url('../fonts/viewshed.woff2?34501077') format('woff2'),
-       url('../fonts/viewshed.woff?34501077') format('woff'),
-       url('../fonts/viewshed.ttf?34501077') format('truetype'),
-       url('../fonts/viewshed.svg?34501077#viewshed') format('svg');
+  src: url('../fonts/viewshed.eot?2713697');
+  src: url('../fonts/viewshed.eot?2713697#iefix') format('embedded-opentype'),
+       url('../fonts/viewshed.woff2?2713697') format('woff2'),
+       url('../fonts/viewshed.woff?2713697') format('woff'),
+       url('../fonts/viewshed.ttf?2713697') format('truetype'),
+       url('../fonts/viewshed.svg?2713697#viewshed') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,5 +26,6 @@
 }
 
 .m-viewshed-container .icon-viewshed:before { content: '\e86b'; }
-.m-viewshed-container .icon-person:before { content: '\e949'; }
+.m-viewshed-container .icon-clear:before { content: '\e93e'; }
+.m-viewshed-container .icon-pin:before { content: '\e94b'; }
 .m-dialog .m-viewshed-message .icon-spinner:before { content: '\e953'; }

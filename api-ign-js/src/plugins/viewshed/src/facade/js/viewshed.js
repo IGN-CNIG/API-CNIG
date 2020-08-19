@@ -45,6 +45,22 @@ export default class ViewShed extends M.Plugin {
     this.position_ = options.position || 'TL';
 
     /**
+     * Option to allow the plugin to be collapsed or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsed_ = options.collapsed;
+    if (this.collapsed_ === undefined) this.collapsed_ = true;
+
+    /**
+     * Option to allow the plugin to be collapsible or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsible_ = options.collapsible;
+    if (this.collapsible_ === undefined) this.collapsible_ = true;
+
+    /**
      * Geoprocess URL
      *
      * @private
@@ -79,7 +95,9 @@ export default class ViewShed extends M.Plugin {
     this.controls_.push(new ViewShedControl({ url: this.url_ }));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelViewShed', {
-      className: 'm-plugin-catastro',
+      className: 'm-viewshed-container',
+      collapsed: this.collapsed_,
+      collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
       tooltip: getValue('tooltip'),
       collapsedButtonClass: 'icon-viewshed',

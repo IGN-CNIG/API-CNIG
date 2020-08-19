@@ -12,9 +12,17 @@
       "position": 0,
       "possibleValues": ["TL", "TR", "BL", "BR"]
     }, {
+      "type": "boolean",
+      "name": "collapsed",
+      "position": 1
+    }, {
+      "type": "boolean",
+      "name": "collapsible",
+      "position": 2
+    }, {
       "type": "simple",
       "name": "url",
-      "position": 1
+      "position": 3
     }]
   }],
   "files": {
