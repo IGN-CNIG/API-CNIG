@@ -892,6 +892,8 @@ export default class IGNSearchLocatorControl extends M.Control {
       const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
       const perfectResult = featureJSON.properties.state;
       this.showSearchPopUp(fullAddress, coordinates, perfectResult);
+    } else if (this.popup !== undefined) {
+      this.map.removePopup(this.popup);
     }
   }
   /**
