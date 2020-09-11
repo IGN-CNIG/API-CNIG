@@ -19,7 +19,7 @@
     "error_wfs": "Could not load WFS service",
     "wfs_zoom": "Increase the zoom in * levels if you want to add this WFS service"
   },
-  "tooltip": "Vector layers management",
+  "tooltip": "Routes and vector layers",
   "change_name": "Change name",
   "close": "CLOSE",
   "info": "Information",
@@ -39,7 +39,7 @@
   "add_line_layer": "Add linear layer",
   "add_poly_layer": "Add polygonal layer",
   "add_wfs_layer": "Add WFS layer",
-  "load_layer": "Load layer",
+  "load_layer": "Load route or layer",
   "point_layer": "Point layer",
   "line_layer": "Linear layer",
   "poly_layer": "Polygonal layer",

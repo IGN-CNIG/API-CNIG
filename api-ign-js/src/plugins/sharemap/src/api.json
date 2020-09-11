@@ -15,6 +15,10 @@
       "name": "position",
       "position": 1,
       "possibleValues": ["TL", "TR", "BL", "BR"]
+    }, {
+      "type": "simple",
+      "name": "minimize",
+      "position": 2
     }]
   }],
   "files": {

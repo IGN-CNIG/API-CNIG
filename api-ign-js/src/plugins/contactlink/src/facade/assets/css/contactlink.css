@@ -1,7 +1,3 @@
-/* .m-areas>div.m-area>div.m-panel.m-contactlink.collapsed>button.m-panel-btn {
-    font-family: 'g-contactlink' !important;
-} */
-
 /** Estilos propios*/
 
 .m-areas>div.m-area>div.m-panel.m-plugin-contactlink.collapsed {
@@ -11,6 +7,11 @@
 .m-areas>div.m-area>div.m-plugin-contactlink.collapsed>button.m-panel-btn {
     background-color: #71a7d3 !important;
     font-family: 'g-contactlink' !important;
+}
+
+.m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn {
+    background-color: white !important;
+    color: #71a7d3 !important;
 }
 
 .m-areas>div.m-area.m-left>div.m-plugin-contactlink.opened>button.m-panel-btn {

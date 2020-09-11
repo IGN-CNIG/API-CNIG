@@ -140,6 +140,14 @@ export default class ShareMapControl extends M.Control {
     this.overwriteStyles_ = options.overwriteStyles || false;
 
     /**
+     * Generate minimized url
+     *
+     * @private
+     * @type {bool}
+     */
+    this.minimize_ = options.minimize || false;
+
+    /**
      * Tooltip information for copy action
      *
      * @private
@@ -257,7 +265,10 @@ export default class ShareMapControl extends M.Control {
       shareURL = shareURL.concat(`&projection=${code}*${units}`);
       shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) :
         shareURL.concat('');
-      shareURL = shareURL.concat(`&${this.getPlugins()}`);
+      if (!this.minimize_) {
+        shareURL = shareURL.concat(`&${this.getPlugins()}`);
+      }
+
       input.value = shareURL;
       // M.proxy(false);
       // let tweetUrl = shareURL.replace(/ /g, '%20');
