@@ -15,7 +15,7 @@
   "info": "Information",
   "configure_layer": "Configure layer",
   "close": "Close",
-  "load_ext_services": "Load external services",
+  "load_ext_services": "Load geographic information layers",
   "layers": "Layers",
   "add_service": "Add service",
   "show_hide": "Show/Hide legend",

@@ -15,7 +15,7 @@
   "info": "Información",
   "configure_layer": "Configurar capa",
   "close": "Cerrar",
-  "load_ext_services": "Cargar servicios externos",
+  "load_ext_services": "Cargar capas de información geográfica",
   "layers": "Capas",
   "add_service": "Añadir servicio",
   "show_hide": "Mostrar/Ocultar leyenda",
