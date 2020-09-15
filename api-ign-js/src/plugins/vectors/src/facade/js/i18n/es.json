@@ -54,7 +54,7 @@
   "thickness": "Grosor",
   "line": "Trazo",
   "delete_geom": "Borrar geometría",
-  "query_profile": "Consultar perfil topográfico",
+  "query_profile": "Perfil topográfico",
   "accepted": "Los formatos aceptados son KML, SHP (.zip), GPX, GML y GeoJSON.",
   "select_file": "Selecciona el fichero",
   "download": "Descargar",

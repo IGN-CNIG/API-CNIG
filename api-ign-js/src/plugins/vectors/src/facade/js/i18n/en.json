@@ -54,7 +54,7 @@
   "thickness": "Thickness",
   "line": "Stroke",
   "delete_geom": "Remove geometry",
-  "query_profile": "Query topographic profile",
+  "query_profile": "Topographic profile",
   "accepted": "The accepted formats are KML, SHP (.zip), GPX, GML and GeoJSON.",
   "select_file": "Select the file",
   "download": "Download",

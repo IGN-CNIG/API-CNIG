@@ -469,8 +469,18 @@ export default class VectorsControl extends M.impl.Control {
    * @param {*} source -
    */
   loadGPXLayer(source, layerName) {
-    let features = new ol.format.GPX()
+    let features = [];
+    const origFeatures = new ol.format.GPX()
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
+    origFeatures.forEach((f) => {
+      if (f.getGeometry().getType() === 'MultiLineString') {
+        if (f.getGeometry().getLineStrings().length === 1) {
+          f.setGeometry(f.getGeometry().getLineStrings()[0]);
+        }
+      }
+
+      features.push(f);
+    });
 
     features = this.featuresToFacade(features);
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
@@ -515,6 +525,52 @@ export default class VectorsControl extends M.impl.Control {
           minResolution: 1,
         });
       }
+
+      features.forEach((f) => {
+        switch (f.getGeometry().type) {
+          case 'Point':
+          case 'MultiPoint':
+            const newPointStyle = new M.style.Point({
+              radius: 6,
+              fill: {
+                color: '#71a7d3',
+              },
+              stroke: {
+                color: 'white',
+                width: 2,
+              },
+            });
+            if (f !== undefined) f.setStyle(newPointStyle);
+            break;
+          case 'LineString':
+          case 'MultiLineString':
+            const newLineStyle = new M.style.Line({
+              stroke: {
+                color: '#71a7d3',
+                width: 6,
+                linedash: undefined,
+              },
+            });
+            if (f !== undefined) f.setStyle(newLineStyle);
+            break;
+          case 'Polygon':
+          case 'MultiPolygon':
+            const newPolygonStyle = new M.style.Polygon({
+              fill: {
+                color: '#71a7d3',
+                opacity: 0.2,
+              },
+              stroke: {
+                color: '#71a7d3',
+                width: 6,
+              },
+            });
+            if (f !== undefined) f.setStyle(newPolygonStyle);
+            break;
+          default:
+            break;
+        }
+      });
     }
   }
 
