@@ -398,8 +398,9 @@ class Utils {
   static getWMTSScale(map, exact) {
     const projection = map.getProjection().code;
     const units = map.getProjection().units;
+    const bbox = map.getBbox();
     const screenLength = (map.getMapImpl().getSize()[0] * 0.026458) / 100;
-    const coord = [[map.getBbox().x.min, map.getBbox().y.min], [map.getBbox().x.max, map.getBbox().y.min]];
+    const coord = [[bbox.x.min, bbox.y.min], [bbox.x.max, bbox.y.min]];
     const line = new ol.geom.LineString(coord);
     let length = Math.round(line.getLength() * 100) / 100;
     if (projection === 'EPSG:3857') {
@@ -428,21 +429,16 @@ class Utils {
   /*
     static getWMTSScale(map, exact) {
       const projection = map.getProjection().code;
-      const units = map.getProjection().units;
-      const screenLength = (map.getMapImpl().getSize()[0] * 0.026458) / 100;
-      const coord = [[map.getBbox().x.min, map.getBbox().y.min], [map.getBbox().x.max, map.getBbox().y.min]];
-      const line = new ol.geom.LineString(coord);
-      let length = Math.round(line.getLength() * 100) / 100;
-      if (projection === 'EPSG:3857') {
-        length = Math.round(ol.sphere.getLength(line) * 100) / 100;
-      } else if (units === 'd') {
-        const coordinates = line.getCoordinates();
-        for (let i = 0, ii = coordinates.length - 1; i < ii; i += 1) {
-          length += ol.sphere.getDistance(ol.proj.transform(coordinates[i], projection, 'EPSG:4326'), ol.proj.transform(coordinates[i + 1], projection, 'EPSG:4326'));
-        }
-      }
-
-      let scale = (length / screenLength);
+      const olProj = getProj(projection);
+      const mpu = olProj.getMetersPerUnit(); // meters per unit in depending on the CRS;
+      const size = map.getMapImpl().getSize();
+      const pix = size[0]; // Numero de pixeles en el mapa
+      // Extension del mapa en grados (xmin, ymin, xmax, ymax)
+      const pix2 = map.getMapImpl().getView().calculateExtent(size);
+      // Extension angular del mapa (cuantos grados estan en el mapa)
+      const ang = pix2[2] - pix2[0];
+      // (numero de metros en el mapa / numero de pixeles) / metros por pixel
+      let scale = (((mpu * ang) / pix) * 1000) / 0.28;
       if (!exact === true) {
         if (scale >= 1000 && scale <= 950000) {
           scale = Math.round(scale / 1000) * 1000;
@@ -452,7 +448,6 @@ class Utils {
           scale = Math.round(scale);
         }
       }
-
       return Math.trunc(scale);
     }
   */
