@@ -38,25 +38,31 @@
                 {{/each}}
             </select>
         </div>
-        <!-- Proyección -->
-        <div class="projection">
-            <label>{{translations.projection}}: </label>
-            <select id="projection" disabled>
-                {{#each proyections}}
-                    <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
-                {{/each}}
-            </select>
-        </div>
+        {{#if georefActive}}
+          <!-- Proyección -->
+          <div class="projection">
+              <label>{{translations.projection}} </label>
+              <select id="projection" disabled>
+                  {{#each proyections}}
+                      <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
+                  {{/each}}
+              </select>
+          </div>
+        {{/if}}
+
         <!-- keep view -->
         <div class="keepview">
             <label>{{translations.keep}} </label>
             <input type="checkbox" id="keepview" {{#if keepView}} checked{{/if}}>
         </div>
-        <!-- georef -->
-        <div class="georef">
-            <label>{{translations.geo}} </label>
-            <input type="checkbox" {{#if georef}} checked{{/if}}>
-        </div>
+
+        {{#if georefActive}}
+          <!-- georef -->
+          <div class="georef">
+              <label>{{translations.geo}} </label>
+              <input type="checkbox" {{#if georef}} checked{{/if}}>
+          </div>
+        {{/if}}
     </div>
     <!-- buttons -->
     <div class="button">

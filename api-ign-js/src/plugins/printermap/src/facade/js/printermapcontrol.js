@@ -17,7 +17,14 @@ export default class PrinterMapControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(serverUrl, printTemplateUrl, printTemplateGeoUrl, printStatusUrl, credits) {
+  constructor(
+    serverUrl,
+    printTemplateUrl,
+    printTemplateGeoUrl,
+    printStatusUrl,
+    credits,
+    georefActive,
+  ) {
     const impl = new PrinterMapControlImpl();
 
     super(impl, PrinterMapControl.NAME);
@@ -67,6 +74,13 @@ export default class PrinterMapControl extends M.Control {
      * @type {String}
      */
     this.credits_ = credits;
+
+    /**
+     * Active or disable georeferenced image download
+     * @private
+     * @type {Boolean}
+     */
+    this.georefActive_ = georefActive;
 
     /**
      * Map title
@@ -327,6 +341,9 @@ export default class PrinterMapControl extends M.Control {
         // keepView
         capabilities.keepView = this.options_.keepView;
 
+        // georefActive
+        capabilities.georefActive = this.georefActive_;
+
         // translations
         capabilities.translations = {
           tooltip: getValue('tooltip'),
@@ -406,18 +423,21 @@ export default class PrinterMapControl extends M.Control {
     this.setFormat(selectFormat.value);
 
     const selectProjection = this.element_.querySelector('.form div.projection > select');
-    selectProjection.addEventListener('change', (e) => {
+    if (this.georefActive_) {
+      selectProjection.addEventListener('change', (e) => {
+        const projectionValue = selectProjection.value;
+        this.setProjection({
+          value: projectionValue,
+          name: projectionValue,
+        });
+      });
       const projectionValue = selectProjection.value;
       this.setProjection({
         value: projectionValue,
         name: projectionValue,
       });
-    });
-    const projectionValue = selectProjection.value;
-    this.setProjection({
-      value: projectionValue,
-      name: projectionValue,
-    });
+    }
+
     // const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
     // checkboxForceScale.addEventListener('click', (e) => {
     //   this.setForceScale(checkboxForceScale.checked);
@@ -436,26 +456,28 @@ export default class PrinterMapControl extends M.Control {
     this.setKeepView(checkboxKeepView.checked);
 
     const checkboxGeoref = this.element_.querySelector('.form div.georef > input');
-    checkboxGeoref.addEventListener('click', (e) => {
+    if (this.georefActive_) {
+      checkboxGeoref.addEventListener('click', (e) => {
+        this.setGeoref(checkboxGeoref.checked);
+        if (checkboxGeoref.checked === true) {
+          document.getElementById('description').disabled = true;
+          document.getElementById('layout').disabled = true;
+          document.getElementById('dpi').disabled = true;
+          document.getElementById('format').disabled = true;
+          document.getElementById('keepview').disabled = true;
+          document.getElementById('projection').disabled = false;
+          checkboxKeepView.checked = this.options_.keepView;
+        } else {
+          document.getElementById('description').disabled = false;
+          document.getElementById('layout').disabled = false;
+          document.getElementById('dpi').disabled = false;
+          document.getElementById('format').disabled = false;
+          document.getElementById('keepview').disabled = false;
+          document.getElementById('projection').disabled = true;
+        }
+      });
       this.setGeoref(checkboxGeoref.checked);
-      if (checkboxGeoref.checked === true) {
-        document.getElementById('description').disabled = true;
-        document.getElementById('layout').disabled = true;
-        document.getElementById('dpi').disabled = true;
-        document.getElementById('format').disabled = true;
-        document.getElementById('keepview').disabled = true;
-        document.getElementById('projection').disabled = false;
-        checkboxKeepView.checked = this.options_.keepView;
-      } else {
-        document.getElementById('description').disabled = false;
-        document.getElementById('layout').disabled = false;
-        document.getElementById('dpi').disabled = false;
-        document.getElementById('format').disabled = false;
-        document.getElementById('keepview').disabled = false;
-        document.getElementById('projection').disabled = true;
-      }
-    });
-    this.setGeoref(checkboxGeoref.checked);
+    }
 
     const printBtn = this.element_.querySelector('.button > button.print');
     printBtn.addEventListener('click', this.printClick_.bind(this));
@@ -472,13 +494,18 @@ export default class PrinterMapControl extends M.Control {
       selectFormat.value = this.options_.format;
       this.projection_ = 'EPSG:3857';
       checkboxKeepView.checked = this.options_.keepView;
-      checkboxGeoref.checked = this.options_.georef;
+      if (this.georefActive_) {
+        checkboxGeoref.checked = this.options_.georef;
+      }
+
       document.getElementById('description').disabled = false;
       document.getElementById('layout').disabled = false;
       document.getElementById('dpi').disabled = false;
       document.getElementById('format').disabled = false;
       document.getElementById('keepview').disabled = false;
-      document.getElementById('projection').disabled = true;
+      if (this.georefActive_) {
+        document.getElementById('projection').disabled = true;
+      }
 
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
@@ -489,7 +516,10 @@ export default class PrinterMapControl extends M.Control {
       selectLayout.dispatchEvent(changeEvent);
       selectDpi.dispatchEvent(changeEvent);
       selectFormat.dispatchEvent(changeEvent);
-      selectProjection.dispatchEvent(changeEvent);
+      if (this.georefActive_) {
+        selectProjection.dispatchEvent(changeEvent);
+      }
+
       checkboxKeepView.dispatchEvent(clickEvent);
       // clean queue
 

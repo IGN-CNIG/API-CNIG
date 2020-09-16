@@ -41,6 +41,7 @@ const printermap = new PrinterMap({
   collapsible: true,
   position: 'TR',
   credits: 'Impresión generada desde Fototeca',
+  georefActive: false,
 });
 
 

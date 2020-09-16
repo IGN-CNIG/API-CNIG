@@ -132,6 +132,18 @@
     margin-right: 5%;
 }
 
+.m-printermap-container>div.form>div.keepview input,
+.m-printermap-container>div.form>div.georef input {
+  position: relative;
+  top: 2px;
+}
+
+@-moz-document url-prefix() {
+  .m-printermap-container>div.form>div.keepview input,
+  .m-printermap-container>div.form>div.georef input {
+    top: 4px;
+  }
+}
 
 /*********************
      BUTTONS
@@ -478,4 +490,12 @@ div.m-areas>div.m-area>div.m-panel.m-printermap.collapsed>button.m-panel-btn {
 
 div.m-panel.m-printermap.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
     left: 440px !important;
+}
+
+.m-control.m-container.m-printermap.m-printermap-container .form .description textarea {
+  resize: none;
+}
+
+.m-control.m-container.m-printermap.m-printermap-container .form .description textarea:focus {
+  outline: none;
 }

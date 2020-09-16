@@ -113,6 +113,13 @@ export default class PrinterMap extends M.Plugin {
      * @type {String}
      */
     this.credits_ = parameters.credits || '';
+
+    /**
+     * Active or disable georeferenced image download
+     * @private
+     * @type {Boolean}
+     */
+    this.georefActive_ = parameters.georefActive !== undefined ? parameters.georefActive : true;
   }
 
   /**
@@ -131,6 +138,7 @@ export default class PrinterMap extends M.Plugin {
       this.printTemplateGeoUrl_,
       this.printStatusUrl_,
       this.credits_,
+      this.georefActive_,
     );
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {
