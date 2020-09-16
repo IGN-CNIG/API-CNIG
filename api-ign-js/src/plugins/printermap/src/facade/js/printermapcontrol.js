@@ -615,7 +615,6 @@ export default class PrinterMapControl extends M.Control {
     let getPrintData;
     let printUrl;
     let download;
-
     if (this.georef_) {
       getPrintData = this.getPrintDataGeo();
       printUrl = this.printTemplateGeoUrl_;
@@ -628,11 +627,19 @@ export default class PrinterMapControl extends M.Control {
 
     getPrintData.then((printData) => {
       let url = M.utils.concatUrlPaths([printUrl, `report.${printData.outputFormat}`]);
-
       const queueEl = this.createQueueElement();
       this.queueContainer_.appendChild(queueEl);
       queueEl.classList.add(PrinterMapControl.LOADING_CLASS);
       url = M.utils.addParameters(url, 'mapeaop=geoprint');
+      const profilControl = this.map_.getMapImpl().getControls().getArray().filter((c) => {
+        return c.element !== undefined && c.element.classList !== undefined && c.element.classList.contains('ol-profil');
+      });
+
+      if ((this.georef_ === null || !this.georef_) && profilControl.length > 0) {
+        // eslint-disable-next-line no-param-reassign
+        printData.attributes.profil = profilControl[0].getImage();
+      }
+
       // FIXME: delete proxy deactivation and uncomment if/else when proxy is fixed on Mapea
       M.proxy(false);
       M.remote.post(url, printData).then((responseParam) => {
