@@ -38,6 +38,10 @@
       "type": "simple",
       "name": "georefActive",
       "position": 7
+    }, {
+      "type": "simple",
+      "name": "logo",
+      "position": 7
     }]
   }],
   "files": {

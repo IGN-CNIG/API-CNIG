@@ -1274,10 +1274,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   onRCSearch(evt) {
     evt.preventDefault();
-
     this.inputRefCatastral = document.querySelector('#m-refCatastral-input');
-
-    this.inputRC_ = this.element_.querySelector('#m-refCatastral-input').value;
+    this.inputRC_ = this.element_.querySelector('#m-refCatastral-input').value.trim();
     if ((evt.type !== 'keyup') || (evt.keyCode === 13)) {
       let inputRC = this.inputRC_;
       if (M.utils.isNullOrEmpty(inputRC)) {
@@ -1291,7 +1289,6 @@ export default class IGNSearchLocatorControl extends M.Control {
           RC: inputRC,
         });
         this.search_(searchUrl, this.showResults_);
-
         this.clearResults();
         this.activationManager(false, 'm-ignsearchlocator-parcela-button');
       }

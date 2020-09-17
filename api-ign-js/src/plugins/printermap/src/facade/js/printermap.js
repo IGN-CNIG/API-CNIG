@@ -120,6 +120,13 @@ export default class PrinterMap extends M.Plugin {
      * @type {Boolean}
      */
     this.georefActive_ = parameters.georefActive !== undefined ? parameters.georefActive : true;
+
+    /**
+     * Logo image url
+     * @private
+     * @type {String}
+     */
+    this.logo_ = parameters.logo || '';
   }
 
   /**
@@ -139,6 +146,7 @@ export default class PrinterMap extends M.Plugin {
       this.printStatusUrl_,
       this.credits_,
       this.georefActive_,
+      this.logo_,
     );
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {

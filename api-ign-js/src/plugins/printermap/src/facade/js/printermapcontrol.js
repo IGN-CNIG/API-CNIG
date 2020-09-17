@@ -24,6 +24,7 @@ export default class PrinterMapControl extends M.Control {
     printStatusUrl,
     credits,
     georefActive,
+    logoUrl,
   ) {
     const impl = new PrinterMapControlImpl();
 
@@ -166,8 +167,7 @@ export default class PrinterMapControl extends M.Control {
         creditos: getValue('credits'),
       },
       parameters: {
-        imageSpain: 'file://E01_logo_IGN_CNIG.png',
-        imageCoordinates: 'file://E01_logo_IGN_CNIG.png',
+        logo: logoUrl,
       },
     };
 
@@ -797,7 +797,20 @@ export default class PrinterMapControl extends M.Control {
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
     // const dmsBbox = this.convertBboxToDMS(bbox);
-    const dmsBbox = bbox;
+    let dmsBbox = bbox;
+    if (this.map_.getProjection().units === 'm') {
+      dmsBbox = {
+        x: {
+          min: Math.trunc(bbox.x.min),
+          max: Math.trunc(bbox.x.max),
+        },
+        y: {
+          min: Math.trunc(bbox.y.min),
+          max: Math.trunc(bbox.y.max),
+        },
+      };
+    }
+
     let layout = this.layout_.name;
     let dpi;
     if (!this.keepView_) {
