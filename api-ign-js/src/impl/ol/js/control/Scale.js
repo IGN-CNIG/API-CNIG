@@ -29,6 +29,8 @@ const updateElement = (viewState, container, map, exact) => {
   if (!isNullOrEmpty(num)) {
     containerVariable.innerHTML = formatLongNumber(num);
   }
+
+  document.querySelector('#m-level-number').innerHTML = map.getZoom();
 };
 
 /**
