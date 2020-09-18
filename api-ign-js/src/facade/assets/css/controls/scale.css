@@ -27,6 +27,11 @@
     margin-right: 5px;
 }
 
+.m-scale-separator {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
 /* Firefox fix */
 
 @-moz-document url-prefix() {

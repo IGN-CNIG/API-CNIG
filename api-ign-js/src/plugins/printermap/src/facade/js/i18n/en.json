@@ -5,6 +5,9 @@
     "tile": "The request for some tile has caused a printing error. <br/>Please try again.",
     "error": "An error has occurred while printing."
   },
+
+  "errorProjectionCapabilities": "The selected projection is not available for this base layer. Please choose another projection.",
+
   "tooltip": "Map Printing",
   "credits": "Print generated through API-IGN",
   "no_title": "(Untitled)",
@@ -14,7 +17,9 @@
   "description": "Description",
   "layout": "Layout",
   "format": "Format",
-  "force": "Force scale",
+  "projection": "Projection",
+  "keep": "Keep view",
+  "geo": "Georeferenced Image",
   "print": "Print",
   "delete": "Remove",
   "download": "Download",

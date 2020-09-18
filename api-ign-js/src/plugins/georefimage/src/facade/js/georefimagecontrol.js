@@ -215,6 +215,10 @@ export default class GeorefimageControl extends M.Control {
           if (proyectionsDefect[i] !== null) {
             const proyection = proyectionsDefect[i];
             const object = { value: proyection };
+            if (proyection === 'EPSG:4258') {
+              object.default = true;
+            }
+
             capabilities.proyections.push(object);
           }
         }
@@ -595,11 +599,12 @@ export default class GeorefimageControl extends M.Control {
    * @function
    */
   encodeLayers() {
-    // Filters visible layers whose resolution is inside map resolutions range
+    // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover');
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && ['WMS', 'WMTS'].indexOf(layer.type) > -1);
     });
+
     const encodedLayersModified = [];
     if (this.projection_.value === 'EPSG:3857') {
       for (let i = 0; i < layers.length; i += 1) {

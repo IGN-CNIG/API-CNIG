@@ -47,6 +47,7 @@ class Scale extends ControlBase {
       vars: {
         title: getValue('scale').title,
         scale: getValue('scale').scale,
+        level: getValue('scale').level,
       },
     });
   }

@@ -8,12 +8,13 @@ const map = M.map({
   maxZoom: 20,
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
+  //projection: 'EPSG:4326*d',
   /*layers: [
     new M.layer.WMTS({
-      url: 'http://www.ideandalucia.es/geowebcache/service/wmts?',
-      name: 'orto_2010-11',
-      legend: 'orto_2010-11',
-      matrixSet: 'SIG-C:25830',
+      url: 'http://www.ign.es/wmts/mapa-raster?',
+      name: 'MTN',
+      legend: 'Mapa',
+      matrixSet: 'EPSG:4326',
       transparent: false,
       displayInLayerSwitcher: false,
       queryable: false,
@@ -41,21 +42,18 @@ const printermap = new PrinterMap({
   collapsible: true,
   position: 'TR',
   credits: 'Impresión generada desde Fototeca',
+  georefActive: false,
+  logo: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/static/media/iberpix_es.f8428667.png',
 });
 
-//map.addLayers([layerinicial, campamentos]);
+
 map.addPlugin(printermap);
 
-//map.addPlugin(new M.plugin.Vectors());
-map.addPlugin(new M.plugin.IGNSearchLocator({
-  servicesToSearch: 'gn',
-  searchPosition: 'geocoder,nomenclator',
-  maxResults: 10,
-  isCollapsed: false,
-  position: 'TL',
-  reverse: true,
-  zoom: 13,
-  pointStyle: 'pinRojo',
+map.addPlugin(new M.plugin.Vectors({
+  position: 'TR',
 }));
+
+//map.addLayers([layerinicial, campamentos]);
+map.addLayers([campamentos]);
 
 window.map = map;

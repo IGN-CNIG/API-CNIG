@@ -805,7 +805,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       if (geoJsonData2.includes('MultiMultiPolygon')) {
         geoJsonData2 = geoJsonData2.replace('MultiMultiPolygon', 'MultiPolygon');
       }
-      console.log(geoJsonData2);
+
       const featureJSON = JSON.parse(geoJsonData2);
 
       // featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
@@ -892,6 +892,8 @@ export default class IGNSearchLocatorControl extends M.Control {
       const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
       const perfectResult = featureJSON.properties.state;
       this.showSearchPopUp(fullAddress, coordinates, perfectResult);
+    } else if (this.popup !== undefined) {
+      this.map.removePopup(this.popup);
     }
   }
   /**
@@ -1272,10 +1274,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   onRCSearch(evt) {
     evt.preventDefault();
-
     this.inputRefCatastral = document.querySelector('#m-refCatastral-input');
-
-    this.inputRC_ = this.element_.querySelector('#m-refCatastral-input').value;
+    this.inputRC_ = this.element_.querySelector('#m-refCatastral-input').value.trim();
     if ((evt.type !== 'keyup') || (evt.keyCode === 13)) {
       let inputRC = this.inputRC_;
       if (M.utils.isNullOrEmpty(inputRC)) {
@@ -1289,7 +1289,6 @@ export default class IGNSearchLocatorControl extends M.Control {
           RC: inputRC,
         });
         this.search_(searchUrl, this.showResults_);
-
         this.clearResults();
         this.activationManager(false, 'm-ignsearchlocator-parcela-button');
       }

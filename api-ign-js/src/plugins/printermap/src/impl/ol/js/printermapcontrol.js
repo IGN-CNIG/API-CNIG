@@ -1,6 +1,9 @@
 /**
  * @module M/impl/control/PrinterMapControl
  */
+
+import { getValue } from '../../../facade/js/i18n/language';
+
 export default class PrinterMapControl extends M.impl.Control {
   /**
    * @classdesc
@@ -49,9 +52,9 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   getParametrizedLayers(paramName, layers) {
     let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
-      return layer.type === 'IMAGE' && !M.utils.isNullOrEmpty(layer.getSource())
-      && !M.utils.isNullOrEmpty(layer.getSource().getParams())
-      && layer.getSource().getParams()[paramName] !== undefined;
+      return layer.type === 'IMAGE' && !M.utils.isNullOrEmpty(layer.getSource()) &&
+        !M.utils.isNullOrEmpty(layer.getSource().getParams()) &&
+        layer.getSource().getParams()[paramName] !== undefined;
     });
 
     others = others.filter((layer) => {
@@ -275,7 +278,7 @@ export default class PrinterMapControl extends M.impl.Control {
     encodedLayer = {
       type: 'Vector',
       style,
-      styleProperty: '_gx_style',
+      // styleProperty: '_gx_style',
       geoJson: {
         type: 'FeatureCollection',
         features: encodedFeatures,
@@ -302,14 +305,14 @@ export default class PrinterMapControl extends M.impl.Control {
     const layerOpacity = olLayer.getOpacity();
     const params = olLayer.getSource().getParams();
     const paramsLayers = [params.LAYERS];
-    const paramsFormat = params.FORMAT;
+    // const paramsFormat = params.FORMAT;
     const paramsStyles = [params.STYLES];
     encodedLayer = {
       baseURL: layerUrl,
       opacity: layerOpacity,
       type: 'WMS',
       layers: paramsLayers.join(',').split(','),
-      format: paramsFormat || 'image/jpeg',
+      // format: paramsFormat || 'image/jpeg',
       styles: paramsStyles.join(',').split(','),
     };
 
@@ -374,7 +377,7 @@ export default class PrinterMapControl extends M.impl.Control {
       opacity: olLayer.getOpacity(),
       type: 'WMS',
       layers: paramsLayers.join(',').split(','),
-      format: params.FORMAT || 'image/jpeg',
+      // format: params.FORMAT || 'image/jpeg',
       styles: paramsStyles.join(',').split(','),
     };
 
@@ -629,7 +632,7 @@ export default class PrinterMapControl extends M.impl.Control {
       encodedLayer = {
         type: 'Vector',
         style,
-        styleProperty: '_gx_style',
+        // styleProperty: '_gx_style',
         geoJson: {
           type: 'FeatureCollection',
           features: encodedFeatures,
@@ -659,7 +662,7 @@ export default class PrinterMapControl extends M.impl.Control {
     const layerName = layer.name;
     const layerOpacity = olLayer.getOpacity();
     const layerReqEncoding = layerSource.getRequestEncoding();
-    const matrixSet = layerSource.getMatrixSet();
+    const matrixSet = layer.matrixSet;
 
     /**
      * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
@@ -668,29 +671,34 @@ export default class PrinterMapControl extends M.impl.Control {
       const matrixIdsObj = capabilities.Contents.TileMatrixSet.filter((tileMatrixSet) => {
         return (tileMatrixSet.Identifier === matrixSet);
       })[0];
-      return {
-        baseURL: layerUrl,
-        imageFormat: layer.options.imageFormat || 'image/png',
-        layer: layerName,
-        matrices: matrixIdsObj.TileMatrix.map((tileMatrix, i) => {
-          return {
-            identifier: tileMatrix.Identifier,
-            matrixSize: [tileMatrix.MatrixHeight, tileMatrix.MatrixWidth],
-            scaleDenominator: tileMatrix.ScaleDenominator,
-            tileSize: [tileMatrix.TileWidth, tileMatrix.TileHeight],
-            topLeftCorner: tileMatrix.TopLeftCorner,
-          };
-        }),
-        matrixSet,
-        opacity: layerOpacity,
-        requestEncoding: layerReqEncoding,
-        style: 'default',
-        type: 'WMTS',
-        version: '1.0.0',
-      };
+
+      try {
+        return {
+          baseURL: layerUrl,
+          imageFormat: layer.options.imageFormat || 'image/png',
+          layer: layerName,
+          matrices: matrixIdsObj.TileMatrix.map((tileMatrix, i) => {
+            return {
+              identifier: tileMatrix.Identifier,
+              matrixSize: [tileMatrix.MatrixHeight, tileMatrix.MatrixWidth],
+              scaleDenominator: tileMatrix.ScaleDenominator,
+              tileSize: [tileMatrix.TileWidth, tileMatrix.TileHeight],
+              topLeftCorner: tileMatrix.TopLeftCorner,
+            };
+          }),
+          matrixSet,
+          opacity: layerOpacity,
+          requestEncoding: layerReqEncoding,
+          style: 'default',
+          type: 'WMTS',
+          version: '1.3.0',
+        };
+      } catch (e) {
+        M.dialog.error(getValue('errorProjectionCapabilities'));
+        return null;
+      }
     });
   }
-
   /**
    * This function
    *

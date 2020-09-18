@@ -8,15 +8,29 @@ import Control from './Control';
 /**
  * @private
  */
+const formatLongNumber = (num) => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
+/**
+ * @private
+ */
 const updateElement = (viewState, container, map, exact) => {
   const containerVariable = container;
+  let num;
   if (map.getWMTS().length > 0) {
-    containerVariable.innerHTML = Utils.getWMTSScale(map, exact);
+    num = Utils.getWMTSScale(map, exact);
   } else if (map.getWMTS().length <= 0 && exact === true) {
-    containerVariable.innerHTML = map.getExactScale();
+    num = map.getExactScale();
   } else if (map.getWMTS().length <= 0 && !exact === true) {
-    containerVariable.innerHTML = map.getScale();
+    num = map.getScale();
   }
+
+  if (!isNullOrEmpty(num)) {
+    containerVariable.innerHTML = formatLongNumber(num);
+  }
+
+  document.querySelector('#m-level-number').innerHTML = map.getZoom();
 };
 
 /**

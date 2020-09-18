@@ -67,6 +67,11 @@
         <datalist id="printTemplateUrlValueSug">
             <option value="https://geoprint.desarrollo.guadaltel.es/print/CNIG"></option>
         </datalist>
+        <label for="inputPrintTemplateGeoUrl">Parámetro printTemplateUrl</label>
+        <input type="text" name="printTemplateGeoUrlValue" id="inputPrintTemplateGeoUrl" list="printTemplateGeoUrlValueSug">
+        <datalist id="printTemplateUrlValueSug">
+            <option value="https://geoprint.desarrollo.guadaltel.es/print/mapexport"></option>
+        </datalist>
         <label for="inputPrintStatusUrl">Parámetro printStatusUrlValue</label>
         <input type="text" name="printStatusUrlValue" id="inputPrintStatusUrl" list="printStatusUrlValueSug">
         <datalist id="printStatusUrlValueSug">
@@ -117,13 +122,14 @@
         map.addLayers([layerinicial, campamentos]);
 
         let mp;
-        let posicion, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl;
+        let posicion, collapsed, collapsible, serverUrl, printTemplateUrl, printTemplateGeoUrl, printStatusUrl;
         crearPlugin({
             position: posicion,
             collapsed: collapsed,
             collapsible: collapsible,
             serverUrl: serverUrl,
             printTemplateUrl: printTemplateUrl,
+            printTemplateGeoUrl: printTemplateGeoUrl,
             printStatusUrl: printStatusUrl,
         });
 
@@ -132,6 +138,7 @@
         const selectCollapsible = document.getElementById("selectCollapsible");
         const inputServerUrl = document.getElementById("inputServerUrl");
         const inputPrintTemplateUrl = document.getElementById("inputPrintTemplateUrl");
+        const inputPrintTemplateGeoUrl = document.getElementById("inputPrintTemplateGeoUrl");
         const inputPrintStatusUrl = document.getElementById("inputPrintStatusUrl");
 
         selectPosicion.addEventListener('change', cambiarTest);
@@ -139,6 +146,7 @@
         selectCollapsible.addEventListener('change', cambiarTest);
         inputServerUrl.addEventListener('change', cambiarTest);
         inputPrintTemplateUrl.addEventListener('change', cambiarTest);
+        inputPrintTemplateGeoUrl.addEventListener('change', cambiarTest);
         inputPrintStatusUrl.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
@@ -148,6 +156,7 @@
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             serverUrl = inputServerUrl.value != "" ? objeto.serverUrl = inputServerUrl.value : "";
             printTemplateUrl = inputPrintTemplateUrl.value != "" ? objeto.printTemplateUrl = inputPrintTemplateUrl.value : "";
+            printTemplateGeoUrl = inputPrintTemplateGeoUrl.value != "" ? objeto.printTemplateGeoUrl = inputPrintTemplateGeoUrl.value : "";
             printStatusUrl = inputPrintStatusUrl.value != "" ? objeto.printStatusUrl = inputPrintStatusUrl.value : "";
             map.removePlugins(mp);
             crearPlugin(objeto);

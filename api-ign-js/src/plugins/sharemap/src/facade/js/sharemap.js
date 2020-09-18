@@ -168,6 +168,14 @@ export default class ShareMap extends M.Plugin {
     this.overwriteStyles_ = options.overwriteStyles || false;
 
     /**
+     * Generate minimized url
+     *
+     * @private
+     * @type {bool}
+     */
+    this.minimize_ = options.minimize || false;
+
+    /**
      * Tooltip information for copy action
      *
      * @private
@@ -196,6 +204,7 @@ export default class ShareMap extends M.Plugin {
       secondaryColor: this.styles_.secondaryColor,
       tooltip: this.tooltip_,
       overwriteStyles: this.overwriteStyles_,
+      minimize: this.minimize_,
     });
 
     this.controls_.push(this.control);

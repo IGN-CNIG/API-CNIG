@@ -8,7 +8,7 @@
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
 
   "printInfo": "Impresión generada a través de Mapea",
-  "tooltip": "Imagen georreferenciada",
+  "tooltip": "Descargar Imagen georreferenciada",
   "referenced": "Imagen georreferenciada",
   "projection": "Proyección",
   "downImg": "Descargar imagen",

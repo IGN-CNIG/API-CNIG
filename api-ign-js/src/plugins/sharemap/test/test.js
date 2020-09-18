@@ -11,6 +11,7 @@ const map = M.map({
 const mp = new ShareMap({
   baseUrl: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/',
   position: 'BR',
+  minimize: false,
 });
 M.language.setLang('en');
 map.addPlugin(mp);

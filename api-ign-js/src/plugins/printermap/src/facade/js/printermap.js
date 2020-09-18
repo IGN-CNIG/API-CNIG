@@ -94,6 +94,13 @@ export default class PrinterMap extends M.Plugin {
     this.printTemplateUrl_ = parameters.printTemplateUrl || M.config.PRINTERMAP_TEMPLATE;
 
     /**
+     * Mapfish template url for georef
+     * @private
+     * @type {String}
+     */
+    this.printTemplateGeoUrl_ = parameters.printTemplateUrl || M.config.GEOREFIMAGE_TEMPLATE;
+
+    /**
      * Mapfish template url
      * @private
      * @type {String}
@@ -106,6 +113,20 @@ export default class PrinterMap extends M.Plugin {
      * @type {String}
      */
     this.credits_ = parameters.credits || '';
+
+    /**
+     * Active or disable georeferenced image download
+     * @private
+     * @type {Boolean}
+     */
+    this.georefActive_ = parameters.georefActive !== undefined ? parameters.georefActive : true;
+
+    /**
+     * Logo image url
+     * @private
+     * @type {String}
+     */
+    this.logo_ = parameters.logo || '';
   }
 
   /**
@@ -121,8 +142,11 @@ export default class PrinterMap extends M.Plugin {
     this.control_ = new PrinterMapControl(
       this.serverUrl_,
       this.printTemplateUrl_,
+      this.printTemplateGeoUrl_,
       this.printStatusUrl_,
       this.credits_,
+      this.georefActive_,
+      this.logo_,
     );
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {
@@ -151,7 +175,7 @@ export default class PrinterMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.serverUrl_}*${this.printTemplateUrl_}*${this.printStatusUrl_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.serverUrl_}*${this.printTemplateUrl_}*${this.printTemplateGeoUrl_}*${this.printStatusUrl_}`;
   }
 
   /**
