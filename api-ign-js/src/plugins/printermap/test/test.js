@@ -53,6 +53,7 @@ map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
 }));
 
-map.addLayers([layerinicial, campamentos]);
+//map.addLayers([layerinicial, campamentos]);
+map.addLayers([campamentos]);
 
 window.map = map;
