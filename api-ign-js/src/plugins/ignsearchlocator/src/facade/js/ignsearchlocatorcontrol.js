@@ -2241,6 +2241,9 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.coordinatesLayer.setStyle(this.point);
       }
 
+      // Change zIndex value
+      this.coordinatesLayer.setZIndex(9999999999999999999);
+
       this.map.addLayers(this.coordinatesLayer);
     } else {
       M.dialog.error(getValue('exception.wrong_coords'), 'Error');
