@@ -363,7 +363,7 @@ export default class VectorsControl extends M.Control {
     if (elem !== null) {
       if (elem.style.display !== 'none') {
         elem.style.display = 'none';
-        if (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase().indexOf('linestring') > -1) {
+        if (this.drawLayer.getGeometryType().toLowerCase() === 'linestring' || (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase() === 'linestring')) {
           document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology_profile')}&nbsp;&nbsp;<span class="icon-show"></span>`;
         } else {
           document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology')}&nbsp;&nbsp;<span class="icon-show"></span>`;
@@ -1317,7 +1317,7 @@ export default class VectorsControl extends M.Control {
 
       const elem = document.querySelector('#drawingtools .drawingToolsContainer');
       if (elem.style.display === 'none') {
-        if (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase().indexOf('linestring') > -1) {
+        if (this.drawLayer.getGeometryType().toLowerCase() === 'linestring' || (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase() === 'linestring')) {
           document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology_profile')}&nbsp;&nbsp;<span class="icon-show"></span>`;
         } else {
           document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology')}&nbsp;&nbsp;<span class="icon-show"></span>`;

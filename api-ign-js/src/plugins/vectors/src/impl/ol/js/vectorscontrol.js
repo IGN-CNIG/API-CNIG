@@ -475,7 +475,19 @@ export default class VectorsControl extends M.impl.Control {
     origFeatures.forEach((f) => {
       if (f.getGeometry().getType() === 'MultiLineString') {
         if (f.getGeometry().getLineStrings().length === 1) {
-          f.setGeometry(f.getGeometry().getLineStrings()[0]);
+          const geom = f.getGeometry().getLineStrings()[0];
+          if (geom.getCoordinates().length > 150) {
+            let i = 2;
+            let newGeom = geom.simplify(i);
+            while (newGeom.getCoordinates().length > 150) {
+              i += 1;
+              newGeom = geom.simplify(i);
+            }
+
+            f.setGeometry(newGeom);
+          } else {
+            f.setGeometry(geom);
+          }
         }
       }
 
@@ -682,6 +694,12 @@ export default class VectorsControl extends M.impl.Control {
     }
 
     let pointsBbox = pointsCoord.split('|');
+    while (pointsBbox.length > 150) {
+      pointsBbox = pointsBbox.filter((elem, i) => {
+        return i % 2 === 0;
+      });
+    }
+
     const altitudes = [];
     const promises = [];
     pointsBbox = pointsBbox.filter((elem) => {
@@ -695,9 +713,17 @@ export default class VectorsControl extends M.impl.Control {
 
     Promise.all(promises).then((responses) => {
       responses.forEach((response) => {
-        const alt = response.text.split('dy')[1].split(' ').filter((item) => {
-          return item !== '';
-        })[1];
+        let alt = 0;
+        if (response.text.indexOf('dy') > -1) {
+          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        } else if (response.text.indexOf('cellsize') > -1) {
+          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        }
+
         altitudes.push(parseFloat(alt));
       });
 
@@ -714,7 +740,7 @@ export default class VectorsControl extends M.impl.Control {
       });
 
       this.showProfile(arrayXZY2);
-    }).catch(() => {
+    }).catch((err) => {
       M.dialog.error(getValue('exception.query_profile'), 'Error');
     });
   }

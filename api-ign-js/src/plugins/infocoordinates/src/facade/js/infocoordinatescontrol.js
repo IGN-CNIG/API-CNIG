@@ -198,7 +198,7 @@ export default class InfocoordinatesControl extends M.Control {
         altitudeFromWCSservice = getValue('noDatafromWCS');
       }
       featurePoint.setAttribute('Altitude', altitudeFromWCSservice);
-      altitudeBox.innerHTML = parseFloat(altitudeFromWCSservice).toFixed(2);
+      altitudeBox.innerHTML = `${parseFloat(altitudeFromWCSservice).toFixed(2)}`.replace('.', ',');
       buttonTab.addEventListener('click', () => this.openTabFromTab(numPoint));
     })
 
@@ -358,7 +358,6 @@ export default class InfocoordinatesControl extends M.Control {
     let coordX = document.getElementById('m-infocoordinates-coordX');
     let coordY = document.getElementById('m-infocoordinates-coordY');
 
-
     //Cojo el srs seleccionado en el select
     let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
 
@@ -370,8 +369,8 @@ export default class InfocoordinatesControl extends M.Control {
 
     // pinto
     pointBox.innerHTML = pointDataOutput.NumPoint;
-    latitudeBox.innerHTML = pointDataOutput.projectionGEO.coordinatesGEO.latitude;
-    longitudeBox.innerHTML = pointDataOutput.projectionGEO.coordinatesGEO.longitude;
+    latitudeBox.innerHTML = `${pointDataOutput.projectionGEO.coordinatesGEO.latitude}`.replace('.', ',');
+    longitudeBox.innerHTML = `${pointDataOutput.projectionGEO.coordinatesGEO.longitude}`.replace('.', ',');
     zoneBox.innerHTML = pointDataOutput.projectionUTM.zone;
     coordX.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordX);
     coordY.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordY);
@@ -380,9 +379,8 @@ export default class InfocoordinatesControl extends M.Control {
   displayZcoordinate(numPoint) {
     let featureSelected = this.layerFeatures.getFeatureById(numPoint);
     let altitudeBox = document.getElementById('m-infocoordinates-altitude');
-    altitudeBox.innerHTML = featureSelected.getAttribute('Altitude');
+    altitudeBox.innerHTML = `${featureSelected.getAttribute('Altitude')}`.replace('.', ',');
   }
-
 
   openTab(numPoint) {
     this.selectFeature(numPoint);
@@ -395,7 +393,6 @@ export default class InfocoordinatesControl extends M.Control {
     this.activateTab(numPoint);
     this.displayXYcoordinates(numPoint);
     this.displayZcoordinate(numPoint);
-
   }
 
   removePoint() {
@@ -488,6 +485,7 @@ export default class InfocoordinatesControl extends M.Control {
       for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
         const pos = this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.coordinates;
         const varUTM = this.calculateUTMcoordinates(i + 1);
+        const altitude = `${parseFloat(this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.Altitude).toFixed(2)}`.replace('.', ',');
         const textHTML = `<div class="m-popup m-collapsed" style="padding: 5px 5px 5px 5px !important;background-color: rgba(255, 255, 255, 0.7) !important;">
               <div class="contenedorCoordPunto">
                 <table>
@@ -502,7 +500,7 @@ export default class InfocoordinatesControl extends M.Control {
                         <td>Y: ${this.formatUTMCoordinate(varUTM[1])}</td>
                       </tr>
                       <tr>
-                        <td>${getValue('altitude')} ${parseFloat(this.layerFeatures.impl_.features_[i].impl_.olFeature_.values_.Altitude).toFixed(2)}</td>
+                        <td>${getValue('altitude')} ${altitude}</td>
                       </tr>
                     </tbody>
                 </table>
