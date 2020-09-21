@@ -269,6 +269,9 @@ export default class IGNSearchControl extends M.Control {
               this.clickedElementLayer.setStyle(this.point);
             }
 
+            // Change zIndex value
+            this.clickedElementLayer.setZIndex(9999999999999999999);
+
             // Stops showing polygon geometry
             if (!this.resultVisibility_) {
               this.clickedElementLayer.setStyle(this.simple);
@@ -584,6 +587,9 @@ export default class IGNSearchControl extends M.Control {
         this.clickedElementLayer.setStyle(this.point);
       }
 
+      // Change zIndex value
+      this.clickedElementLayer.setZIndex(9999999999999999999);
+
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);
@@ -621,6 +627,10 @@ export default class IGNSearchControl extends M.Control {
     if (featureJSON.geometry.type === 'Point') {
       this.clickedElementLayer.setStyle(this.point);
     }
+
+    // Change zIndex value
+    this.clickedElementLayer.setZIndex(9999999999999999999);
+
     // Stops showing polygon geometry
     if (!this.resultVisibility_) {
       this.clickedElementLayer.setStyle(this.simple);
@@ -701,6 +711,9 @@ export default class IGNSearchControl extends M.Control {
       this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
       this.clickedElementLayer.displayInLayerSwitcher = false;
       this.clickedElementLayer.setStyle(this.point);
+
+      // Change zIndex value
+      this.clickedElementLayer.setZIndex(9999999999999999999);
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);
