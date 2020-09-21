@@ -2241,6 +2241,9 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.coordinatesLayer.setStyle(this.point);
       }
 
+      this.createGeometryStyles();
+      this.coordinatesLayer.setStyle(this.point);
+
       // Change zIndex value
       this.coordinatesLayer.setZIndex(9999999999999999999);
 
