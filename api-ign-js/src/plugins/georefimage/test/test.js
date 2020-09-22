@@ -12,14 +12,12 @@ import Georefimage from 'facade/georefimage';
 
 const map = M.map({
   container: 'mapjs',
-  // zoom: 5,
-  // maxZoom: 20,
-  // minZoom: 4,
-  // center: [1294092, 4180386],
-
-  layers: ['WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*EPSG:4326*IGNBaseTodo*false*image/png*false*false*true'],
+  zoom: 9,
+  maxZoom: 20,
+  minZoom: 4,
+  center: [-467062.8225, 4683459.6216],
+  layers: ['WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*IGNBaseTodo*false*image/png*false*false*true'],
   // layer: ['OSM'],
-  projection: 'EPSG:4326*d',
   // layers: ['WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*IGNBaseTodo*false*image/png*false*false*true'],
 });
 
@@ -65,18 +63,12 @@ const layerinicial = new M.layer.WMS({
   tiled: false,
 }, {});
 
-const campamentos = new M.layer.GeoJSON({
-  name: 'Campamentos',
-  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
-  extract: true,
-});
-
 const georefimage = new Georefimage({
   collapsed: true,
   collapsible: true,
   position: 'TR',
 });
 
-map.addLayers([layerinicial, campamentos]);
+map.addLayers([layerinicial]);
 map.addPlugin(georefimage);
 window.map = map;

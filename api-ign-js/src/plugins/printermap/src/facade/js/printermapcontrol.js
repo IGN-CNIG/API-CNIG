@@ -132,13 +132,6 @@ export default class PrinterMapControl extends M.Control {
      */
     this.dpiMax_ = null;
 
-    // /**
-    //  * Force scale boolean
-    //  * @private
-    //  * @type {HTMLElement}
-    //  */
-    // this.forceScale_ = null;
-
     /**
      * Keep view boolean
      * @private
@@ -285,7 +278,6 @@ export default class PrinterMapControl extends M.Control {
         capabilities.proyections = [];
         const proyectionsDefect = this.proyectionsDefect_;
 
-
         for (i = 0, ilen = proyectionsDefect.length; i < ilen; i += 1) {
           if (proyectionsDefect[i] !== null) {
             const proyection = proyectionsDefect[i];
@@ -337,9 +329,6 @@ export default class PrinterMapControl extends M.Control {
           };
         });
 
-        // forceScale
-        // capabilities.forceScale = this.options_.forceScale;
-
         // keepView
         capabilities.keepView = this.options_.keepView;
 
@@ -383,11 +372,8 @@ export default class PrinterMapControl extends M.Control {
    */
   addEvents(html) {
     this.element_ = html;
-
     this.inputTitle_ = this.element_.querySelector('.form div.title > input');
-
     this.areaDescription_ = this.element_.querySelector('.form div.description > textarea');
-
     const selectLayout = this.element_.querySelector('.form div.layout > select');
     selectLayout.addEventListener('change', (e) => {
       const layoutValue = selectLayout.value;
@@ -440,12 +426,6 @@ export default class PrinterMapControl extends M.Control {
       });
     }
 
-    // const checkboxForceScale = this.element_.querySelector('.form div.forcescale > input');
-    // checkboxForceScale.addEventListener('click', (e) => {
-    //   this.setForceScale(checkboxForceScale.checked);
-    // });
-    // this.setForceScale(checkboxForceScale.checked);
-
     const checkboxKeepView = this.element_.querySelector('.form div.keepview > input');
     checkboxKeepView.addEventListener('click', (e) => {
       this.setKeepView(checkboxKeepView.checked);
@@ -483,11 +463,9 @@ export default class PrinterMapControl extends M.Control {
 
     const printBtn = this.element_.querySelector('.button > button.print');
     printBtn.addEventListener('click', this.printClick_.bind(this));
-
     const cleanBtn = this.element_.querySelector('.button > button.remove');
     cleanBtn.addEventListener('click', (event) => {
       event.preventDefault();
-
       // reset values
       this.inputTitle_.value = '';
       this.areaDescription_.value = '';
@@ -523,8 +501,6 @@ export default class PrinterMapControl extends M.Control {
       }
 
       checkboxKeepView.dispatchEvent(clickEvent);
-      // clean queue
-
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
         child.removeEventListener('click', this.downloadPrint);
       }, this]);
@@ -576,16 +552,6 @@ export default class PrinterMapControl extends M.Control {
     this.dpi_ = dpi;
   }
 
-  // /**
-  //  * Sets force scale option
-  //  *
-  //  * @private
-  //  * @function
-  //  */
-  // setForceScale(forceScale) {
-  //   this.forceScale_ = forceScale;
-  // }
-
   /**
    * Sets keep view option
    *
@@ -630,14 +596,13 @@ export default class PrinterMapControl extends M.Control {
     getPrintData.then((printData) => {
       let url = M.utils.concatUrlPaths([printUrl, `report.${printData.outputFormat}`]);
       const queueEl = this.createQueueElement();
-      this.queueContainer_.appendChild(queueEl);
-      queueEl.classList.add(PrinterMapControl.LOADING_CLASS);
-      const list = Array.prototype.slice.call(this.queueContainer_.childNodes).reverse();
-      this.queueContainer_.innerHTML = '';
-      list.forEach((l) => {
-        this.queueContainer_.appendChild(l);
-      });
+      if (Array.prototype.slice.call(this.queueContainer_.childNodes).length > 0) {
+        this.queueContainer_.insertBefore(queueEl, this.queueContainer_.firstChild);
+      } else {
+        this.queueContainer_.appendChild(queueEl);
+      }
 
+      queueEl.classList.add(PrinterMapControl.LOADING_CLASS);
       url = M.utils.addParameters(url, 'mapeaop=geoprint');
       const profilControl = this.map_.getMapImpl().getControls().getArray().filter((c) => {
         return c.element !== undefined && c.element.classList !== undefined && c.element.classList.contains('ol-profil');
@@ -742,7 +707,6 @@ export default class PrinterMapControl extends M.Control {
   convertBboxToDMS(bbox) {
     const proj = this.map_.getProjection();
     let dmsBbox = bbox;
-
     if (proj.units === 'm') {
       const min = [bbox.x.min, bbox.y.min];
       const max = [bbox.x.max, bbox.y.max];
@@ -804,7 +768,6 @@ export default class PrinterMapControl extends M.Control {
 
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
-    // const dmsBbox = this.convertBboxToDMS(bbox);
     let dmsBbox = bbox;
     if (this.map_.getProjection().units === 'm') {
       dmsBbox = {
@@ -827,7 +790,6 @@ export default class PrinterMapControl extends M.Control {
       dpi = 120;
     }
     const outputFormat = this.format_;
-    // const center = this.map_.getCenter();
     const parameters = this.params_.parameters;
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
     const attribution = attributionContainer !== null ?
@@ -838,11 +800,8 @@ export default class PrinterMapControl extends M.Control {
     }
 
     const date = new Date();
-
     const currentDate = ''.concat(date.getDate(), '/', date.getMonth() + 1, '/', date.getFullYear());
-
     let fileTitle = title.replace(' ', '');
-
     if (fileTitle.length <= 8) {
       fileTitle = fileTitle.concat('${yyyyMMddhhmmss}');
       this.params_.layout.outputFilename = fileTitle;
@@ -850,7 +809,6 @@ export default class PrinterMapControl extends M.Control {
       fileTitle = fileTitle.substring(0, 7).concat('${yyyyMMddhhmmss}');
       this.params_.layout.outputFilename = fileTitle;
     }
-
 
     const printData = M.utils.extend({
       layout,
@@ -880,21 +838,14 @@ export default class PrinterMapControl extends M.Control {
     return this.encodeLayers().then((encodedLayers) => {
       printData.attributes.map.layers = encodedLayers;
       printData.attributes = Object.assign(printData.attributes, parameters);
-
       if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';
       }
 
-      // if (!this.forceScale_) {
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-
       if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
       }
-      // } else if (this.forceScale_) {
-      //   printData.attributes.map.center = [center.x, center.y];
-      //   printData.attributes.map.scale = M.impl.utils.getWMTSScale(this.map_, true);
-      // }
 
       return printData;
     });
@@ -914,7 +865,7 @@ export default class PrinterMapControl extends M.Control {
     } else {
       projection = this.projection_.value;
     }
-    // const projection = this.projection_.value;
+
     const bbox = this.map_.getBbox();
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
@@ -922,7 +873,6 @@ export default class PrinterMapControl extends M.Control {
     const dpi = this.dpiMax_;
     const outputFormat = 'jpg';
     const parameters = this.paramsGeo_.parameters;
-
     const printData = M.utils.extend({
       layout,
       outputFormat,
@@ -948,17 +898,14 @@ export default class PrinterMapControl extends M.Control {
       } else {
         encodedLayersModified = encodeLayersGeo;
       }
+
       printData.attributes.map.layers = encodedLayersModified;
       printData.attributes = Object.assign(printData.attributes, parameters);
-
       printData.attributes.map.projection = projection;
-
-
       printData.attributes.map.dpi = dpi;
       printData.attributes.map.width = width;
       printData.attributes.map.height = height;
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-
       if (this.map_.getProjection().code !== projection) {
         printData.attributes.map.bbox = this.getImpl().transformExt(
           printData.attributes.map.bbox, this.map_.getProjection().code,
@@ -984,7 +931,6 @@ export default class PrinterMapControl extends M.Control {
     });
 
     let numLayersToProc = layers.length;
-
     const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
@@ -1043,8 +989,10 @@ export default class PrinterMapControl extends M.Control {
           layers[i].matrixSet = matrixSet;
           layers[i].options.matrixSet = optsMatrixSet;
         }
+
         encodedLayersModified.push(layers[i]);
       }
+
       layers = encodedLayersModified;
     } else {
       for (let i = 0; i < layers.length; i += 1) {
@@ -1056,13 +1004,14 @@ export default class PrinterMapControl extends M.Control {
           layers[i].matrixSet = matrixSet;
           layers[i].options.matrixSet = optsMatrixSet;
         }
+
         encodedLayersModified.push(layers[i]);
       }
+
       layers = encodedLayersModified;
     }
 
     let numLayersToProc = layers.length;
-
     const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
@@ -1075,7 +1024,6 @@ export default class PrinterMapControl extends M.Control {
       const wmsLayers = [];
       const otherBaseLayers = [];
       const BreakException = {};
-
       layers.forEach((layer) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
           if (encodedLayer === null) {
@@ -1104,7 +1052,6 @@ export default class PrinterMapControl extends M.Control {
     }));
   }
 
-
   /**
    * This function creates list element.
    *
@@ -1131,7 +1078,6 @@ export default class PrinterMapControl extends M.Control {
    */
   downloadPrint(event) {
     event.preventDefault();
-
     const downloadUrl = this.getAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME);
     if (!M.utils.isNullOrEmpty(downloadUrl)) {
       window.open(downloadUrl, '_blank');
@@ -1146,19 +1092,9 @@ export default class PrinterMapControl extends M.Control {
    * @api stable
    */
   downloadGeoPrint(event) {
-    // event.preventDefault();
-
-    // const downloadUrl = this.getAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME);
-    // if (!M.utils.isNullOrEmpty(downloadUrl)) {
-    //   window.open(downloadUrl, '_blank');
-    //
-
-
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      // let BboxTransformXminYmax = [this.map_.getBbox().x.min, this.map_.getBbox().y.max];
       let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
-
       const bbox = [this.map_.getBbox().x.min, this.map_.getBbox().y.min,
         this.map_.getBbox().x.max, this.map_.getBbox().y.max,
       ];
@@ -1167,11 +1103,6 @@ export default class PrinterMapControl extends M.Control {
         bbox,
         this.map_.getProjection().code, this.projection_.name,
       );
-      // BboxTransformXminYmax = this.getImpl().transformExt(
-      //   BboxTransformXminYmax,
-      //   this.map_.getProjection().code, this.projection_.name,
-      // );
-
 
       const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
       const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
@@ -1181,14 +1112,10 @@ export default class PrinterMapControl extends M.Control {
       const GiroB = (0).toString();
       const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
         (72 / this.dpiMax_)).toString();
-      // const Cx = (this.map_.getBbox().x.min).toString();
-      // const Cy = (this.map_.getBbox().y.max).toString();
       const Cx = (BboxTransformXmaxYmin[0]).toString();
       const Cy = (BboxTransformXmaxYmin[3]).toString();
-
-      let titulo = this.inputTitle_.value;
-
-      if (titulo === '') {
+      let titulo = event.target.textContent;
+      if (titulo === '' || titulo === getValue('no_title')) {
         const f = new Date();
         titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
       }
