@@ -216,8 +216,8 @@ export default class PrinterMapControl extends M.Control {
 
     this.layoutOptions_ = [];
     this.dpisOptions_ = [];
-    this.outputFormats_ = ['pdf', 'png', 'jpg'];
-
+    // this.outputFormats_ = ['pdf', 'png' /*, 'jpg'*/];
+    this.outputFormats_ = ['pdf', 'png'];
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
     this.proyectionsDefect_ = ['EPSG:25828', 'EPSG:25829', 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
@@ -325,7 +325,9 @@ export default class PrinterMapControl extends M.Control {
         }));
 
         if (Array.isArray(capabilities.formats)) {
-          this.outputFormats_ = capabilities.formats;
+          this.outputFormats_ = capabilities.formats.filter((f) => {
+            return f !== 'jpg';
+          });
         }
 
         capabilities.format = this.outputFormats_.map((format) => {
@@ -630,6 +632,12 @@ export default class PrinterMapControl extends M.Control {
       const queueEl = this.createQueueElement();
       this.queueContainer_.appendChild(queueEl);
       queueEl.classList.add(PrinterMapControl.LOADING_CLASS);
+      const list = Array.prototype.slice.call(this.queueContainer_.childNodes).reverse();
+      this.queueContainer_.innerHTML = '';
+      list.forEach((l) => {
+        this.queueContainer_.appendChild(l);
+      });
+
       url = M.utils.addParameters(url, 'mapeaop=geoprint');
       const profilControl = this.map_.getMapImpl().getControls().getArray().filter((c) => {
         return c.element !== undefined && c.element.classList !== undefined && c.element.classList.contains('ol-profil');

@@ -512,7 +512,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             }
 
             // Change zIndex value
-            this.clickedElementLayer.setZIndex(999999);
+            this.clickedElementLayer.setZIndex(9999999999999999999);
 
             // Stops showing polygon geometry
             if (!this.resultVisibility_) {
@@ -788,12 +788,13 @@ export default class IGNSearchLocatorControl extends M.Control {
           geoJsonData2 = geoJsonData2.replace('Polygon', 'MultiPolygon');
 
           for (let i = 0; i < datosCoordenadas.length; i += 1) {
-            const holita = datosCoordenadas[i].substring(0, 15).replace('(', '');
+            const numFirstValue = datosCoordenadas[i].split(' ');
+            const val = datosCoordenadas[i].substring(0, numFirstValue[0].length).replace('(', '');
 
-            if (geoJsonData.includes('[[['.concat(holita))) {
-              geoJsonData2 = geoJsonData2.replace('[[['.concat(holita), '[[[['.concat(holita));
-            } else if (geoJsonData.includes('],['.concat(holita))) {
-              geoJsonData2 = geoJsonData2.replace('],['.concat(holita), ']],[['.concat(holita));
+            if (geoJsonData.includes('[[['.concat(val))) {
+              geoJsonData2 = geoJsonData2.replace('[[['.concat(val), '[[[['.concat(val));
+            } else if (geoJsonData.includes('],['.concat(val))) {
+              geoJsonData2 = geoJsonData2.replace('],['.concat(val), ']],[['.concat(val));
             }
           }
         } else if (geoJsonData2.includes('"type":"MultiPolygon"')) {
@@ -826,7 +827,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
 
       // Change zIndex value
-      this.clickedElementLayer.setZIndex(999999);
+      this.clickedElementLayer.setZIndex(9999999999999999999);
 
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
@@ -877,7 +878,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
 
     // Change zIndex value
-    this.clickedElementLayer.setZIndex(999999);
+    this.clickedElementLayer.setZIndex(9999999999999999999);
 
     // Stops showing polygon geometry
     if (!this.resultVisibility_) {
@@ -961,7 +962,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clickedElementLayer.setStyle(this.point);
 
       // Change zIndex value
-      this.clickedElementLayer.setZIndex(999999);
+      this.clickedElementLayer.setZIndex(9999999999999999999);
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);
@@ -2240,6 +2241,12 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.createGeometryStyles();
         this.coordinatesLayer.setStyle(this.point);
       }
+
+      this.createGeometryStyles();
+      this.coordinatesLayer.setStyle(this.point);
+
+      // Change zIndex value
+      this.coordinatesLayer.setZIndex(9999999999999999999);
 
       this.map.addLayers(this.coordinatesLayer);
     } else {
