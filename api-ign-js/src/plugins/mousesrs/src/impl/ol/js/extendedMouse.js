@@ -184,7 +184,7 @@ class Mouse extends ol.control.MousePosition {
         if (this.activeZ && this.wcsloadermanager !== undefined) {
           const orgCoord = map.getCoordinateFromPixel(pixel);
           const tCoord = ol.proj.transform(orgCoord, this.facadeMap_.getProjection().code, 'EPSG:4326');
-          const value = this.wcsloadermanager.getValue(tCoord, 'EPSG:4326');
+          const value = Math.round(this.wcsloadermanager.getValue(tCoord, 'EPSG:4326'));
           if (!Number.isNaN(value)) {
             html += `&nbsp;&nbsp;&nbsp;${value}`;
           }
