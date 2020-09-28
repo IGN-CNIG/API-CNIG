@@ -683,6 +683,10 @@ DROPDOWN ****************************/
     width: 346px;
 }
 
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
+    display: block;
+}
+
 /****************************
  INTERNET EXPLORER HACKS
 ****************************/
