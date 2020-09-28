@@ -242,6 +242,7 @@ export default class GeorefimageControl extends M.Control {
               delete: getValue('delete'),
               down: getValue('down'),
               title: getValue('title'),
+              keep: getValue('keep'),
             },
           },
         });
@@ -530,11 +531,12 @@ export default class GeorefimageControl extends M.Control {
       projection = this.projection_.value;
     }
 
+    const keepView = document.getElementById('keepview').checked;
     const bbox = this.map_.getBbox();
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
     const layout = 'plain';
-    const dpi = this.dpi_;
+    const dpi = keepView ? 120 : this.dpi_;
     const outputFormat = 'jpg';
     const parameters = this.params_.parameters;
     const printData = M.utils.extend({

@@ -14,44 +14,17 @@ export default class InfocoordinatesControl extends M.impl.Control {
    */
   addTo(map, html) {
     this.facadeMap_ = map;
-
-    // super addTo - don't delete
     super.addTo(map, html);
   }
 
-  // Add your own functions
-
-
   getCoordinates(feature, SRStarget, formatGMS, decimalGEOcoord, decimalUTMcoord) {
-    //   Si es ETRS89 estará entre una longitud de -12 y 6:
-    //               huso 29(-12 al -6)
-    //               huso 30(-6 al 0)
-    //               huso 31(0 al 6)
-
-    //   Si es WGS84 estará entre una longitud de -24 y 6
-    //               huso 27(-24 al -18)
-    //               huso 28(-18 al -6)
-    //               huso 29(-12 al -6)
-    //               huso 30(-6 al 0)
-    //               huso 31(0 al 6)
-
-    //   Si es REGCAN95 estará entre una longitud de -24 y -6
-    //             huso 27(-24 al - 18)
-    //             huso 28(-18 al - 6)
-
-    //   Para el resto de valores las coordenadas deben ser "--","--"*/
+    const NODATA = '--';
     let numPoint = feature.getId();
     let coordinatesFeature = feature.getAttribute('coordinates');
-
     let SRSfeature = feature.getAttribute('EPSGcode');
-    let coordinatesGEOoutput = ol.proj.transform(coordinatesFeature, SRSfeature, SRStarget);
-
-    let coordinatesGEOoutputLongitude = coordinatesGEOoutput[0];
-
-    let zone;
-    let projectionUTMCodeTarget = null;
-    const NODATA = '--';
-    let salida = {
+    let coordinatesGEOoutput = ol.proj.transform(coordinatesFeature, SRSfeature, 'EPSG:4326');
+    const zone = this.zoneCalc(coordinatesGEOoutput[0]);
+    let res = {
       'NumPoint': numPoint,
       'projectionGEO': {
         'code': NODATA,
@@ -70,47 +43,35 @@ export default class InfocoordinatesControl extends M.impl.Control {
       }
     };
 
-    if (coordinatesGEOoutputLongitude >= -24 && coordinatesGEOoutputLongitude <= 6) {
-      zone = this.zoneCalc(coordinatesGEOoutputLongitude);
-      if (SRStarget == 'EPSG:4326') {
-        projectionUTMCodeTarget = this.projectionUTMcodeCalc(zone, 'EPSG:4326');
-      } else if (SRStarget == 'EPSG:4258' && (coordinatesGEOoutputLongitude >= -12 && coordinatesGEOoutputLongitude <= 6)) {
-        projectionUTMCodeTarget = this.projectionUTMcodeCalc(zone, 'EPSG:4258');
-      } else if (SRStarget == 'EPSG:4081' && (coordinatesGEOoutputLongitude >= -24 && coordinatesGEOoutputLongitude <= -6)) {
-        projectionUTMCodeTarget = this.projectionUTMcodeCalc(zone, 'EPSG:4081');
-      }
-
-      if (projectionUTMCodeTarget != null) {
-        let coordinatesUTMoutput = ol.proj.transform(coordinatesFeature, SRSfeature, projectionUTMCodeTarget);
-
-        salida = {
-          'NumPoint': numPoint,
-          'projectionGEO': {
-            'code': SRStarget,
-            'coordinatesGEO': {
-              'longitude': coordinatesGEOoutput[0].toFixed(decimalGEOcoord),
-              'latitude': coordinatesGEOoutput[1].toFixed(decimalGEOcoord),
-            },
+    if (SRStarget != null) {
+      let coordinatesUTMoutput = ol.proj.transform(coordinatesFeature, SRSfeature, SRStarget);
+      res = {
+        'NumPoint': numPoint,
+        'projectionGEO': {
+          'code': SRStarget,
+          'coordinatesGEO': {
+            'longitude': coordinatesGEOoutput[0].toFixed(decimalGEOcoord),
+            'latitude': coordinatesGEOoutput[1].toFixed(decimalGEOcoord),
           },
-          'projectionUTM': {
-            'code': projectionUTMCodeTarget,
-            'zone': zone,
-            'coordinatesUTM': {
-              'coordX': coordinatesUTMoutput[0].toFixed(decimalUTMcoord),
-              'coordY': coordinatesUTMoutput[1].toFixed(decimalUTMcoord)
-            }
+        },
+        'projectionUTM': {
+          'code': SRStarget,
+          'zone': zone,
+          'coordinatesUTM': {
+            'coordX': coordinatesUTMoutput[0].toFixed(decimalUTMcoord),
+            'coordY': coordinatesUTMoutput[1].toFixed(decimalUTMcoord)
           }
         }
+      }
 
-        if (formatGMS == true) {
-          let coordinateGGMMSS = ol.coordinate.toStringHDMS(coordinatesGEOoutput, 2);
-          salida.projectionGEO.coordinatesGEO.latitude = coordinateGGMMSS.substr(0, 17);
-          salida.projectionGEO.coordinatesGEO.longitude = coordinateGGMMSS.substr(17);
-        }
-
+      if (formatGMS == true) {
+        let coordinateGGMMSS = ol.coordinate.toStringHDMS(coordinatesGEOoutput, 2);
+        res.projectionGEO.coordinatesGEO.latitude = coordinateGGMMSS.substr(0, 17);
+        res.projectionGEO.coordinatesGEO.longitude = coordinateGGMMSS.substr(17);
       }
     }
-    return salida
+
+    return res;
   }
 
 
@@ -132,30 +93,8 @@ export default class InfocoordinatesControl extends M.impl.Control {
     return zone;
   }
 
-  projectionUTMcodeCalc(zone, projectionGEOcode) {
-    let projectionUTMcode;
-
-    switch (projectionGEOcode) {
-      case 'EPSG:4326':
-        projectionUTMcode = 'EPSG:326' + zone;
-        break;
-      case 'EPSG:4258':
-        projectionUTMcode = 'EPSG:258' + zone;
-        break;
-      case 'EPSG:4081':
-        if (zone == 27) {
-          projectionUTMcode = 'EPSG:4082';
-        } else if (zone == 28) {
-          projectionUTMcode = 'EPSG:4083';
-        }
-        break;
-    }
-    return projectionUTMcode
-  }
-
   readAltitudeFromWCSservice(coord, srcMapa) {
-
-    // 1.- transformo las coordenadas a EPSG4258 ya que el servicio WCS es en ese srs    
+    // 1.- transformo las coordenadas a EPSG4258 ya que el servicio WCS es en ese srs
     let coordinatesEPSG4528 = ol.proj.transform(coord, srcMapa, 'EPSG:4258')
 
     // 2.- me genero un bbox de las coordenadas
@@ -169,9 +108,7 @@ export default class InfocoordinatesControl extends M.impl.Control {
     const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
       'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
     const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
-
     return M.remote.get(url)
-
   }
 
   transform(box, code, currProj) {

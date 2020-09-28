@@ -15,5 +15,6 @@
   "delete": "Delete",
   "down": "Download",
   "title": "Title",
-  "notitle": "(No title)"
+  "notitle": "(No title)",
+  "keep": "Keep view"
 }

@@ -69,6 +69,23 @@
     font-family: 'Muli', 'sans-serif';
 }
 
+.m-georefimage-container>div.form>div.keepview {
+    text-align: left;
+    margin-left: 12px;
+    margin-bottom: 5px;
+}
+
+.m-georefimage-container>div.form>div.keepview label {
+  position: relative;
+  bottom: 2px;
+}
+
+@-moz-document url-prefix() {
+  .m-georefimage-container>div.form>div.keepview label {
+    bottom: 4px;
+  }
+}
+
 @media only screen and (max-width: 380px) {
 
     .m-georefimage-container>div.form>div.projection {
