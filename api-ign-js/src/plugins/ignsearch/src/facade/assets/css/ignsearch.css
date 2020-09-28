@@ -167,7 +167,7 @@ div.m-area.m-right>div.m-panel.ign-search-panel.opened>button {
 }
 
 div.m-control.m-container.m-ignsearch {
-    display: block;
+    display: block !important;
 }
 
 /* MEDIA QUERIES */
