@@ -131,32 +131,33 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
         font-size: 13px;
         padding-left: 0;
         padding-right: 0;
-        width: 210px;
+        width: 160px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews {
         height: calc(100vh - 50px);
         overflow: scroll;
-        width: 210px;
+        width: 160px !important;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div {
-        height: 210px;
-        width: 210px;
+        height: 160px;
+        width: 160px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div>img {
-        height: 200px;
-        width: 200px;
+        height: 150px;
+        width: 150px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div>span {
         font-size: 1.3em;
         height: 40px;
         line-height: 40px;
-        top: 160px;
-        width: 200px;
+        top: 110px;
+        width: 150px;
     }
+
 
     /* Firefox fix */
     @-moz-document url-prefix() {
