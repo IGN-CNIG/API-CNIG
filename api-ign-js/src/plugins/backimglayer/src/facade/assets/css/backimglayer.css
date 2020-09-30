@@ -118,6 +118,7 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
         margin: auto;
         padding: calc((100vw - 210px) / 2);
         padding-top: 10px;
+        padding-left: 190px;
         width: 100vw;
         z-index: 99999;
     }
