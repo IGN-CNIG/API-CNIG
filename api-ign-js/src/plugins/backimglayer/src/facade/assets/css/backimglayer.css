@@ -128,34 +128,34 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-titulo {
-        font-size: 13px;
+        font-size: 11px;
         padding-left: 0;
         padding-right: 0;
-        width: 160px;
+        width: 110px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews {
-        height: calc(100vh - 50px);
+        max-height: 80vh;
         overflow: scroll;
-        width: 160px !important;
+        width: 110px !important;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div {
-        height: 160px;
-        width: 160px;
+        height: 110px;
+        width: 110px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div>img {
-        height: 150px;
-        width: 150px;
+        height: 100px;
+        width: 100px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div>span {
-        font-size: 1.3em;
-        height: 40px;
-        line-height: 40px;
-        top: 110px;
-        width: 150px;
+        font-size: 1.1em;
+        height: 20px;
+        line-height: 23px;
+        top: 80px;
+        width: 100px;
     }
 
 
