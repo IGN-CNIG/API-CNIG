@@ -271,6 +271,21 @@ export default class PrinterMapControl extends M.Control {
           return !l.name.endsWith('jpg');
         });
 
+        capabilities.layouts.sort((a, b) => {
+          let res = 0;
+          if (a.name.indexOf('(Perfil') > -1 && b.name.indexOf('(Perfil') === -1) {
+            res = 1;
+          } else if (a.name.indexOf('(Perfil') === -1 && b.name.indexOf('(Perfil') > -1) {
+            res = -1;
+          } else if (a.name === b.name) {
+            res = 0;
+          } else {
+            res = a.name > b.name ? 1 : -1;
+          }
+
+          return res;
+        });
+
         this.layoutOptions_ = [].concat(capabilities.layouts.map((item) => {
           return item.name;
         }));
@@ -768,20 +783,7 @@ export default class PrinterMapControl extends M.Control {
 
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
-    let dmsBbox = bbox;
-    if (this.map_.getProjection().units === 'm') {
-      dmsBbox = {
-        x: {
-          min: Math.trunc(bbox.x.min),
-          max: Math.trunc(bbox.x.max),
-        },
-        y: {
-          min: Math.trunc(bbox.y.min),
-          max: Math.trunc(bbox.y.max),
-        },
-      };
-    }
-
+    const dmsBbox = this.convertBboxToDMS(bbox);
     let layout = this.layout_.name;
     let dpi;
     if (!this.keepView_) {
