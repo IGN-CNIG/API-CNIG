@@ -113,14 +113,6 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
 @media only screen and (max-width: 850px) {
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        height: 100vh;
-        margin: auto;
-        padding: calc((100vw - 210px) / 2);
-        padding-top: 10px;
-        padding-right: 10px;
-        padding-left: 220px;
-        width: 105vw;
         z-index: 99999;
     }
 
