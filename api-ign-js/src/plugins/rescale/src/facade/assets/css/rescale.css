@@ -44,6 +44,10 @@ div.m-areas>div.m-area>div.m-panel.m-rescale-panel.collapsed>button.m-panel-btn 
     font-size: 22px;
 }
 
+div.m-rescale-panel .m-control.m-container.m-rescale {
+    display: block !important;
+}
+
 div.m-rescale-panel .m-control.m-container.m-rescale>label {
     padding-left: 10px;
 }
