@@ -476,6 +476,7 @@ export default class PrinterMapControl extends M.impl.Control {
 
 
           let styleText;
+          const lineDash = featureStyle.getStroke().getLineDash();
           const styleGeom = {
             type: parseType,
             fillColor: M.utils.isNullOrEmpty(fill) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
@@ -489,7 +490,19 @@ export default class PrinterMapControl extends M.impl.Control {
             externalGraphic: M.utils.isNullOrEmpty(image) ? '' : (image.getSrc && image.getSrc()),
             graphicHeight: imgSize[0],
             graphicWidth: imgSize[1],
+            strokeLinecap: 'round',
           };
+
+          if (lineDash !== undefined && lineDash !== null && lineDash.length > 0) {
+            if (lineDash[0] === 1 && lineDash.length === 2) {
+              styleGeom.strokeDashstyle = 'dot';
+            } else if (lineDash[0] === 10) {
+              styleGeom.strokeDashstyle = 'dash';
+            } else if (lineDash[0] === 1 && lineDash.length > 2) {
+              styleGeom.strokeDashstyle = 'dashdot';
+            }
+          }
+
           if (!M.utils.isNullOrEmpty(text)) {
             let tAlign = text.getTextAlign();
             let tBLine = text.getTextBaseline();
