@@ -1,6 +1,8 @@
 /**
  * @module M/impl/control/RescaleControl
  */
+
+
 export default class RescaleControl extends M.impl.Control {
   /**
    * This function adds the control to the specified map
@@ -39,6 +41,45 @@ export default class RescaleControl extends M.impl.Control {
   }
 
   /**
+   * This function sets a new scale to the map.
+   * Developed for WGS 84 / Pseudo - Mercator 3857 projection.
+   * @private
+   * @function
+   */
+  setScale(scale) {
+    const wmts3857scales = [
+      559082264.0287178,
+      279541132.0143589,
+      139770566.0071794,
+      69885283.00358972,
+      34942641.50179486,
+      17471320.75089743,
+      8735660.375448715,
+      4367830.187724357,
+      2183915.093862179,
+      1091957.546931089,
+      545978.7734655447,
+      272989.3867327723,
+      136494.6933663862,
+      68247.34668319309,
+      34123.67334159654,
+      17061.83667079827,
+      8530.918335399136,
+      4265.459167699568,
+      2132.729583849784,
+    ];
+
+    // Finds closest standard scale
+    const newScale = wmts3857scales.reduce((prev, curr) => {
+      return (Math.abs(curr - scale) < Math.abs(prev - scale) ? curr : prev);
+    });
+    const olMap = this.facadeMap_.getMapImpl();
+    const olView = olMap.getView();
+    const newResolution = olView.getMaxResolution() / (2 ** wmts3857scales.indexOf(newScale));
+    olView.setResolution(newResolution);
+  }
+
+  /**
    * Gets inputed scale and returns base layer closest scale and resolution.
    * @public
    * @function
@@ -53,9 +94,11 @@ export default class RescaleControl extends M.impl.Control {
 
     for (let zoom = minZoom; zoom < maxZoom + 1; zoom += 1) {
       const resolution = this.facadeMap_.getMapImpl().getView().getResolutionForZoom(zoom);
-      const scale = this.getWMTSScale(resolution);
+      let scale = this.getWMTSScale(resolution);
       if (scale < originalScale) {
         const oldWins = Math.abs(originalScale - scale) > Math.abs(originalScale - lastZoom.scale);
+        this.setScale(scale);
+        scale = M.impl.utils.getWMTSScale(this.facadeMap_, true);
         newScale = oldWins ? lastZoom : { scale, resolution };
         zoom = maxZoom + 1;
       } else {
