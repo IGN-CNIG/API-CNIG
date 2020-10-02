@@ -31,18 +31,18 @@ const layerinicial = new M.layer.WMS({
   tiled: false,
 }, {});
 
-const campamentos = new M.layer.GeoJSON({
+/* const campamentos = new M.layer.GeoJSON({
   name: 'Campamentos',
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
   extract: true,
-});
+}); */
 
 const printermap = new PrinterMap({
   collapsed: true,
   collapsible: true,
   position: 'TR',
   credits: 'Impresión generada desde Fototeca',
-  georefActive: false,
+  georefActive: true,
   logo: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/static/media/iberpix_es.f8428667.png',
 });
 
@@ -54,6 +54,6 @@ map.addPlugin(new M.plugin.Vectors({
 }));
 
 //map.addLayers([layerinicial, campamentos]);
-map.addLayers([campamentos]);
+//map.addLayers([campamentos]);
 
 window.map = map;

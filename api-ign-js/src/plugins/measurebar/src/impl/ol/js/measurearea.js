@@ -42,13 +42,15 @@ export default class MeasureArea extends MeasureImpl {
     let area = null;
     const projection = this.facadeMap_.getProjection();
     area = ol.sphere.getArea(geometry, { projection: projection.code });
-
     let output;
-    if (area > 10000) {
-      output = `${((Math.round((area / 1000000) * 100) / 100))} km<sup>2</sup>`;
-    } else {
-      output = `${(Math.round(area * 100) / 100)} m<sup>2</sup>`;
+    if (area <= 10000) {
+      output = `${this.formatNumber(Math.round(area * 100) / 100)} m<sup>2</sup>`;
+    } else if (area > 10000 && area <= 1000000) {
+      output = `${this.formatNumber((Math.round((area / 10000) * 10000) / 10000))} ha`;
+    } else if (area > 1000000) {
+      output = `${this.formatNumber((Math.round((area / 1000000) * 10000) / 10000))} km<sup>2</sup>`;
     }
+
     return output;
   }
 
@@ -73,5 +75,10 @@ export default class MeasureArea extends MeasureImpl {
     }
 
     super.activate();
+  }
+
+  /* eslint-disable newline-per-chained-call */
+  formatNumber(number) {
+    return `${number}`.replace(/\d(?=(\d{3})+\.)/g, '$&*').split('.').join(',').split('*').join('.');
   }
 }

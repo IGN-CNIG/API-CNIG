@@ -166,6 +166,10 @@ div.m-area.m-right>div.m-panel.ign-search-panel.opened>button {
     white-space: pre-wrap;
 }
 
+div.m-control.m-container.m-ignsearch {
+    display: block !important;
+}
+
 /* MEDIA QUERIES */
 
 @media only screen and (min-width: 769px) {

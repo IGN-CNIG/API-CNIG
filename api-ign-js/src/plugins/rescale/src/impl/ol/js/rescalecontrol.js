@@ -1,6 +1,8 @@
 /**
  * @module M/impl/control/RescaleControl
  */
+
+
 export default class RescaleControl extends M.impl.Control {
   /**
    * This function adds the control to the specified map
@@ -53,9 +55,11 @@ export default class RescaleControl extends M.impl.Control {
 
     for (let zoom = minZoom; zoom < maxZoom + 1; zoom += 1) {
       const resolution = this.facadeMap_.getMapImpl().getView().getResolutionForZoom(zoom);
-      const scale = this.getWMTSScale(resolution);
+      let scale = this.getWMTSScale(resolution);
       if (scale < originalScale) {
         const oldWins = Math.abs(originalScale - scale) > Math.abs(originalScale - lastZoom.scale);
+        this.facadeMap_.getMapImpl().getView().setResolution(resolution);
+        scale = M.impl.utils.getWMTSScale(this.facadeMap_, true);
         newScale = oldWins ? lastZoom : { scale, resolution };
         zoom = maxZoom + 1;
       } else {
