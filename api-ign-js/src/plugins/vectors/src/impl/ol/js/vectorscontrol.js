@@ -190,7 +190,7 @@ export default class VectorsControl extends M.impl.Control {
       this.facadeControl.onDraw(event);
     });
 
-    this.draw.on('drawstart', (evt) => {
+    this.draw.once('drawstart', (evt) => {
       document.addEventListener('keydown', this.addUndoEvent.bind(this, evt.feature));
     });
   }
