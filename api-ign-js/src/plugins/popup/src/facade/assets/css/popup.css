@@ -38,6 +38,10 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
     font-size: 1rem;
 }
 
+.m-areas>div.m-area>div.m-panel.m-panel-popup.collapsed>.m-panel-controls>.m-popup{
+    display: block;
+}
+
 .m-popup::after,.m-popup::before {
     content: none;
 }
@@ -97,7 +101,7 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
     .m-areas>div.m-area>div.m-panel.m-panel-popup.opened {
         z-index: 9999;
     }
-    
+
     div.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
         left: 50vw;
         top: 0;

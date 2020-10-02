@@ -1019,7 +1019,7 @@ export default class VectorsControl extends M.Control {
    */
   loadLayer() {
     // eslint-disable-next-line no-bitwise
-    const fileExt = this.file_.name.slice((this.file_.name.lastIndexOf('.') - 1 >>> 0) + 2);
+    const fileExt = this.file_.name.slice((this.file_.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     const fileName = this.file_.name.split('.').slice(0, -1).join('.');
     const fileReader = new window.FileReader();
     fileReader.addEventListener('load', (e) => {

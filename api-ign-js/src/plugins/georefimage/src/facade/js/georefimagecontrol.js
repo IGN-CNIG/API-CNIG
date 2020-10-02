@@ -19,9 +19,7 @@ export default class GeorefimageControl extends M.Control {
    */
   constructor(serverUrl, printTemplateUrl, printStatusUrl) {
     const impl = new GeorefimageControlImpl();
-
     super(impl, GeorefimageControl.NAME);
-
     if (M.utils.isUndefined(GeorefimageControlImpl)) {
       M.exception('La implementación usada no puede crear controles Georefimage');
     }
@@ -147,7 +145,6 @@ export default class GeorefimageControl extends M.Control {
     this.layoutOptions_ = [];
     this.dpisOptions_ = [];
     this.outputFormats_ = ['pdf', 'png', 'jpg'];
-
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
     this.proyectionsDefect_ = ['EPSG:25828', 'EPSG:25829', 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
@@ -209,8 +206,6 @@ export default class GeorefimageControl extends M.Control {
 
         capabilities.proyections = [];
         const proyectionsDefect = this.proyectionsDefect_;
-
-
         for (i = 0, ilen = proyectionsDefect.length; i < ilen; i += 1) {
           if (proyectionsDefect[i] !== null) {
             const proyection = proyectionsDefect[i];
@@ -222,7 +217,6 @@ export default class GeorefimageControl extends M.Control {
             capabilities.proyections.push(object);
           }
         }
-
 
         if (Array.isArray(capabilities.formats)) {
           this.outputFormats_ = capabilities.formats;
@@ -248,6 +242,7 @@ export default class GeorefimageControl extends M.Control {
               delete: getValue('delete'),
               down: getValue('down'),
               title: getValue('title'),
+              keep: getValue('keep'),
             },
           },
         });
@@ -255,6 +250,7 @@ export default class GeorefimageControl extends M.Control {
         success(html);
       });
     });
+
     return promise;
   }
 
@@ -268,9 +264,7 @@ export default class GeorefimageControl extends M.Control {
    */
   addEvents(html) {
     this.element_ = html;
-
     this.inputTitle_ = this.element_.querySelector('.form div.title > input');
-
     const selectProjection = this.element_.querySelector('.form div.projection > select');
     selectProjection.addEventListener('change', (e) => {
       const projectionValue = selectProjection.value;
@@ -279,6 +273,7 @@ export default class GeorefimageControl extends M.Control {
         name: projectionValue,
       });
     });
+
     const projectionValue = selectProjection.value;
     this.setProjection({
       value: projectionValue,
@@ -287,15 +282,12 @@ export default class GeorefimageControl extends M.Control {
 
     const printBtn = this.element_.querySelector('.button > button.print');
     printBtn.addEventListener('click', this.printClick_.bind(this));
-
     const cleanBtn = this.element_.querySelector('.button > button.remove');
     cleanBtn.addEventListener('click', (event) => {
       event.preventDefault();
-
       // reset values
       this.inputTitle_.value = '';
       this.projection_ = 'EPSG:3857';
-
       // Create events and init
       const changeEvent = document.createEvent('HTMLEvents');
       changeEvent.initEvent('change');
@@ -304,7 +296,6 @@ export default class GeorefimageControl extends M.Control {
       clickEvent.initEvent('click');
       selectProjection.dispatchEvent(changeEvent);
       // clean queue
-
       Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
         child.removeEventListener('click', this.downloadPrint);
       }, this]);
@@ -366,9 +357,13 @@ export default class GeorefimageControl extends M.Control {
     evt.preventDefault();
     this.getPrintData().then((printData) => {
       let printUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, `report.${printData.outputFormat}`]);
-
       const queueEl = this.createQueueElement();
-      this.queueContainer_.appendChild(queueEl);
+      if (Array.prototype.slice.call(this.queueContainer_.childNodes).length > 0) {
+        this.queueContainer_.insertBefore(queueEl, this.queueContainer_.firstChild);
+      } else {
+        this.queueContainer_.appendChild(queueEl);
+      }
+
       queueEl.classList.add(GeorefimageControl.LOADING_CLASS);
       printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
       // FIXME: delete proxy deactivation and uncomment if/else when proxy is fixed on Mapea
@@ -411,7 +406,6 @@ export default class GeorefimageControl extends M.Control {
     xmlhttp.send();
     const parser = new DOMParser();
     const parser2 = parser.parseFromString(xmlhttp.responseText, 'text/html');
-
     return parser2;
   }
 
@@ -438,6 +432,7 @@ export default class GeorefimageControl extends M.Control {
         });
       });
     }
+
     return this.capabilitiesPromise_;
   }
 
@@ -480,7 +475,6 @@ export default class GeorefimageControl extends M.Control {
   convertBboxToDMS(bbox) {
     const proj = this.map_.getProjection();
     let dmsBbox = bbox;
-
     if (proj.units === 'm') {
       const min = [bbox.x.min, bbox.y.min];
       const max = [bbox.x.max, bbox.y.max];
@@ -536,15 +530,15 @@ export default class GeorefimageControl extends M.Control {
     } else {
       projection = this.projection_.value;
     }
-    // const projection = this.projection_.value;
+
+    const keepView = document.getElementById('keepview').checked;
     const bbox = this.map_.getBbox();
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
     const layout = 'plain';
-    const dpi = this.dpi_;
+    const dpi = keepView ? 120 : this.dpi_;
     const outputFormat = 'jpg';
     const parameters = this.params_.parameters;
-
     const printData = M.utils.extend({
       layout,
       outputFormat,
@@ -565,22 +559,20 @@ export default class GeorefimageControl extends M.Control {
             const matrixSet = returnData[i].matrixSet.replace('GoogleMapsCompatible', 'EPSG:25830');
             returnData[i].matrixSet = matrixSet;
           }
+
           encodedLayersModified.push(returnData[i]);
         }
       } else {
         encodedLayersModified = encodedLayers;
       }
+
       printData.attributes.map.layers = encodedLayersModified;
       printData.attributes = Object.assign(printData.attributes, parameters);
-
       printData.attributes.map.projection = projection;
-
-
       printData.attributes.map.dpi = dpi;
       printData.attributes.map.width = width;
       printData.attributes.map.height = height;
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-
       if (this.map_.getProjection().code !== projection) {
         printData.attributes.map.bbox = this.getImpl().transformExt(
           printData.attributes.map.bbox, this.map_.getProjection().code,
@@ -614,8 +606,10 @@ export default class GeorefimageControl extends M.Control {
           layers[i].matrixSet = matrixSet;
           layers[i].options.matrixSet = optsMatrixSet;
         }
+
         encodedLayersModified.push(layers[i]);
       }
+
       layers = encodedLayersModified;
     } else {
       for (let i = 0; i < layers.length; i += 1) {
@@ -627,13 +621,14 @@ export default class GeorefimageControl extends M.Control {
           layers[i].matrixSet = matrixSet;
           layers[i].options.matrixSet = optsMatrixSet;
         }
+
         encodedLayersModified.push(layers[i]);
       }
+
       layers = encodedLayersModified;
     }
 
     let numLayersToProc = layers.length;
-
     const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
@@ -646,7 +641,6 @@ export default class GeorefimageControl extends M.Control {
       const wmsLayers = [];
       const otherBaseLayers = [];
       const BreakException = {};
-
       layers.forEach((layer) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
           if (encodedLayer === null) {
@@ -688,6 +682,7 @@ export default class GeorefimageControl extends M.Control {
     if (M.utils.isNullOrEmpty(title)) {
       title = getValue('notitle');
     }
+
     queueElem.innerHTML = title;
     return queueElem;
   }
@@ -700,19 +695,9 @@ export default class GeorefimageControl extends M.Control {
    * @api stable
    */
   downloadPrint(event) {
-    // event.preventDefault();
-
-    // const downloadUrl = this.getAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME);
-    // if (!M.utils.isNullOrEmpty(downloadUrl)) {
-    //   window.open(downloadUrl, '_blank');
-    //
-
-
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      // let BboxTransformXminYmax = [this.map_.getBbox().x.min, this.map_.getBbox().y.max];
       let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
-
       const bbox = [this.map_.getBbox().x.min, this.map_.getBbox().y.min,
         this.map_.getBbox().x.max, this.map_.getBbox().y.max,
       ];
@@ -721,11 +706,6 @@ export default class GeorefimageControl extends M.Control {
         bbox,
         this.map_.getProjection().code, this.projection_.name,
       );
-      // BboxTransformXminYmax = this.getImpl().transformExt(
-      //   BboxTransformXminYmax,
-      //   this.map_.getProjection().code, this.projection_.name,
-      // );
-
 
       const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
       const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
@@ -735,14 +715,10 @@ export default class GeorefimageControl extends M.Control {
       const GiroB = (0).toString();
       const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
         (72 / this.dpi_)).toString();
-      // const Cx = (this.map_.getBbox().x.min).toString();
-      // const Cy = (this.map_.getBbox().y.max).toString();
       const Cx = (BboxTransformXmaxYmin[0]).toString();
       const Cy = (BboxTransformXmaxYmin[3]).toString();
-
-      let titulo = this.inputTitle_.value;
-
-      if (titulo === '') {
+      let titulo = event.target.textContent;
+      if (titulo === '' || titulo === getValue('notitle')) {
         const f = new Date();
         titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
       }
@@ -826,6 +802,7 @@ export default class GeorefimageControl extends M.Control {
     if (obj instanceof GeorefimageControl) {
       equals = (this.name === obj.name);
     }
+
     return equals;
   }
 }

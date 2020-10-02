@@ -55,10 +55,10 @@ export default class MeasureLength extends Measure {
       length = Math.round(geometry.getLength() * 100) / 100;
     }
     let output;
-    if (length > 100) {
-      output = `${Math.round(((length / 1000) * 100)) / 100} km`;
+    if (length > 1000) {
+      output = `${this.formatNumber(Math.round(((length / 1000) * 100)) / 100)} km`;
     } else {
-      output = `${Math.round(length * 100) / 100} m`;
+      output = `${this.formatNumber(Math.round(length * 100) / 100)} m`;
     }
     return output;
   }
@@ -82,5 +82,10 @@ export default class MeasureLength extends Measure {
       measureArea.deactivate();
     }
     super.activate();
+  }
+
+  /* eslint-disable newline-per-chained-call */
+  formatNumber(number) {
+    return `${number}`.replace(/\d(?=(\d{3})+\.)/g, '$&*').split('.').join(',').split('*').join('.');
   }
 }

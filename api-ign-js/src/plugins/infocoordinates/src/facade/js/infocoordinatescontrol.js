@@ -360,12 +360,14 @@ export default class InfocoordinatesControl extends M.Control {
 
     //Cojo el srs seleccionado en el select
     let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
+    console.log(selectSRS);
 
     //Cojo el formato de las coordenadas geográficas
     let formatGMS = document.getElementById('m-infocoordinates-buttonConversorFormat').checked;
 
     //Cambio coordenadas y calculo las UTM
     let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
+    console.log(pointDataOutput);
 
     // pinto
     pointBox.innerHTML = pointDataOutput.NumPoint;
