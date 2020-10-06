@@ -342,9 +342,11 @@ export default class InfocoordinatesControl extends M.Control {
 
   changeSelectSRSorChangeFormat() {
     // Cojo la tab activa
-    let numPoint = parseInt(document.querySelector('.tablinks.active').textContent);
-    this.displayXYcoordinates(numPoint);
-
+    const elem = document.querySelector('.tablinks.active');
+    if (elem !== null) {
+      let numPoint = parseInt(elem.textContent);
+      this.displayXYcoordinates(numPoint);
+    }
   }
 
   displayXYcoordinates(numPoint) {
@@ -360,14 +362,12 @@ export default class InfocoordinatesControl extends M.Control {
 
     //Cojo el srs seleccionado en el select
     let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
-    console.log(selectSRS);
 
     //Cojo el formato de las coordenadas geográficas
     let formatGMS = document.getElementById('m-infocoordinates-buttonConversorFormat').checked;
 
     //Cambio coordenadas y calculo las UTM
     let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
-    console.log(pointDataOutput);
 
     // pinto
     pointBox.innerHTML = pointDataOutput.NumPoint;
@@ -418,10 +418,7 @@ export default class InfocoordinatesControl extends M.Control {
 
 
   importAllPoints() {
-    // const projectionSelect = document.getElementById('m-infocoordinates-projectionPrint').value;
-    // const projectionPoints = this.layerFeatures.impl_.features_[0].formatGeoJSON_.impl_.dataProjection.code_;
     let printDocument = [];
-
     for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
 
       let featureSelected = this.layerFeatures.impl_.features_[i];
@@ -435,8 +432,6 @@ export default class InfocoordinatesControl extends M.Control {
       //Cambio coordenadas y calculo las UTM
       let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
 
-
-
       let coordinatesGEO = [
         pointDataOutput.projectionGEO.coordinatesGEO.longitude,
         pointDataOutput.projectionGEO.coordinatesGEO.latitude
@@ -447,13 +442,8 @@ export default class InfocoordinatesControl extends M.Control {
         pointDataOutput.projectionUTM.coordinatesUTM.coordY
       ];
 
-      // tranformCoordinates = this.getImpl().transform(
-      //   tranformCoordinates,
-      //   projectionPoints,
-      //   projectionSelect);
-
-      printDocument.push(getValue('point') + i + ': ' + '\n');
-      printDocument.push(pointDataOutput.projectionGEO.code + ': ');
+      printDocument.push(getValue('point') + (i + 1) + ': ' + '\n');
+      printDocument.push('EPSG:4326: ');
       printDocument.push('[' + coordinatesGEO + ']' + '\n');
       printDocument.push(pointDataOutput.projectionUTM.code + ': ');
       printDocument.push('[' + coordinatesUTM + ']' + '\n');
@@ -600,7 +590,7 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonDisplayAllPoints')[0].classList.add('noDisplay');
     document.getElementById('m-infocoordinates-buttonConversorFormat').setAttribute('disabled', 'disabled');
-    document.getElementById('m-infocoordinates-comboDatum').setAttribute('disabled', 'disabled');
+    // document.getElementById('m-infocoordinates-comboDatum').setAttribute('disabled', 'disabled');
 
 
     //Elimino todas las features
