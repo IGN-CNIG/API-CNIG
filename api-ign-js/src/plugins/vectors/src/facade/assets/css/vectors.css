@@ -2,8 +2,11 @@
   to { transform: rotate(360deg); }
 }
 
-/* Buttons */
+div.m-panel.m-vectors {
+  z-index: 99999 !important;
+}
 
+/* Buttons */
 div.m-panel.m-vectors.opened>button.m-panel-btn {
     background-color: #71a7d3 !important;
     font-family: 'g-cartografia' !important;

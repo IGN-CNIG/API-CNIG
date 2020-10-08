@@ -22,33 +22,31 @@
                             <td><button class="infocoordinates-bin2 noDisplay" id="m-infocoordinates-buttonRemovePoint" title="{{translations.removePoint}}"></button></td>
                         </tr>
                         <tr>
-                            <td>{{translations.datum}}</td>
-                            <td>
-                                <select id="m-infocoordinates-comboDatum" class="m-infocoordinates-comboDatum">
-                                    <option value="EPSG:25828">EPSG:25828</option>
-                                    <option value="EPSG:25829">EPSG:25829</option>
-                                    <option value="EPSG:25830" selected>EPSG:25830</option>
-                                    <option value="EPSG:25831">EPSG:25831</option>
-                                    <option value="EPSG:3857">EPSG:3857</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>{{translations.latitude}}</td>
                             <td id="m-infocoordinates-latitude">--</td>
                         <tr>
                             <td>{{translations.longitude}}</td>
                             <td id="m-infocoordinates-longitude">--</td>
-
                         </tr>
                         <tr>
                             <td></td>
                             <td><input id="m-infocoordinates-buttonConversorFormat" type="checkbox" disabled>{{translations.formatCoordinates}}</td>
                         </tr>
-
                         <tr>
-                            <td>{{translations.zone}}</td>
-                            <td id="m-infocoordinates-zone">--</td>
+                            <td>SRS:</td>
+                            <td>
+                                <select id="m-infocoordinates-comboDatum" class="m-infocoordinates-comboDatum">
+                                    <option value="EPSG:25829">EPSG:25829</option>
+                                    <option value="EPSG:25830" selected>EPSG:25830</option>
+                                    <option value="EPSG:25831">EPSG:25831</option>
+                                    <option value="EPSG:3857">EPSG:3857</option>
+                                    <option value="EPSG:4083">EPSG:4083</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{translations.datum}}</td>
+                            <td id="m-infocoordinates-datum">ETRS89</td>
                         </tr>
                         <tr>
                             <td>{{translations.coordX}}</td>
@@ -58,7 +56,6 @@
                             <td>{{translations.coordY}}</td>
                             <td id="m-infocoordinates-coordY">--</td>
                         </tr>
-
                         <tr>
                             <td>{{translations.altitude}}</td>
                             <td id="m-infocoordinates-altitude">--</td>
@@ -77,7 +74,6 @@
             <div class="m-infocoordinates-div-buttonDisplayAllPoints noDisplay">
                 <button class="icon-infocoordinates-displayON" id="m-infocoordinates-buttonDisplayAllPoints" title="{{translations.displayONAllPoints}}"></button>
             </div>
-
         </div>
 
     </div>

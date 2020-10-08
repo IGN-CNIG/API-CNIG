@@ -51,4 +51,5 @@ const viales = new M.layer.WFS({
 //map.addWFS(provincias);
 //map.addWFS(viales);
 map.addPlugin(mp);
+map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
 window.map = map;

@@ -78,7 +78,6 @@ export default class InfocoordinatesControl extends M.Control {
             latitude: getValue('latitude'),
             longitude: getValue('longitude'),
             formatCoordinates: getValue('formatCoordinates'),
-            zone: getValue('zone'),
             coordX: getValue('coordX'),
             coordY: getValue('coordY'),
             altitude: getValue('altitude'),
@@ -120,8 +119,13 @@ export default class InfocoordinatesControl extends M.Control {
     this.map_.on(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'crosshair';
     this.map_.getFeatureHandler().deactivate();
+    document.addEventListener('keydown', this.checkEscKey.bind(this));
   }
 
+  checkEscKey(evt) {
+    document.querySelector('div.m-panel.m-plugin-infocoordinates.opened > button').click();
+    document.removeEventListener('keydown', this.checkEscKey);
+  }
 
   /**
    * This function is called on the control deactivation
@@ -356,7 +360,7 @@ export default class InfocoordinatesControl extends M.Control {
     let pointBox = document.getElementById('m-infocoordinates-point');
     let latitudeBox = document.getElementById('m-infocoordinates-latitude');
     let longitudeBox = document.getElementById('m-infocoordinates-longitude');
-    let zoneBox = document.getElementById('m-infocoordinates-zone');
+    let datumBox = document.getElementById('m-infocoordinates-datum');
     let coordX = document.getElementById('m-infocoordinates-coordX');
     let coordY = document.getElementById('m-infocoordinates-coordY');
 
@@ -373,7 +377,7 @@ export default class InfocoordinatesControl extends M.Control {
     pointBox.innerHTML = pointDataOutput.NumPoint;
     latitudeBox.innerHTML = `${pointDataOutput.projectionGEO.coordinatesGEO.latitude}`.replace('.', ',');
     longitudeBox.innerHTML = `${pointDataOutput.projectionGEO.coordinatesGEO.longitude}`.replace('.', ',');
-    zoneBox.innerHTML = pointDataOutput.projectionUTM.zone;
+    datumBox.innerHTML = pointDataOutput.projectionUTM.datum;
     coordX.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordX);
     coordY.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordY);
   }
@@ -580,7 +584,6 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-point').innerHTML = '--';
     document.getElementById('m-infocoordinates-latitude').innerHTML = '--';
     document.getElementById('m-infocoordinates-longitude').innerHTML = '--';
-    document.getElementById('m-infocoordinates-zone').innerHTML = '--';
     document.getElementById('m-infocoordinates-coordX').innerHTML = '--';
     document.getElementById('m-infocoordinates-coordY').innerHTML = '--';
     document.getElementById('m-infocoordinates-altitude').innerHTML = '--';
