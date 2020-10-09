@@ -123,8 +123,11 @@ export default class InfocoordinatesControl extends M.Control {
   }
 
   checkEscKey(evt) {
-    document.querySelector('div.m-panel.m-plugin-infocoordinates.opened > button').click();
-    document.removeEventListener('keydown', this.checkEscKey);
+    const opened = document.querySelector('div.m-panel.m-plugin-infocoordinates').classList.contains('opened');
+    if (evt.key === 'Escape' && opened) {
+      document.querySelector('div.m-panel.m-plugin-infocoordinates.opened > button').click();
+      document.removeEventListener('keydown', this.checkEscKey);
+    }
   }
 
   /**
