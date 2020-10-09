@@ -116,6 +116,7 @@ export default class InfocoordinatesControl extends M.Control {
    * @api stable
    */
   activate() {
+    this.invokeEscKey();
     this.map_.on(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'crosshair';
     this.map_.getFeatureHandler().deactivate();
@@ -127,6 +128,23 @@ export default class InfocoordinatesControl extends M.Control {
     if (evt.key === 'Escape' && opened) {
       document.querySelector('div.m-panel.m-plugin-infocoordinates.opened > button').click();
       document.removeEventListener('keydown', this.checkEscKey);
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keydown', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
     }
   }
 

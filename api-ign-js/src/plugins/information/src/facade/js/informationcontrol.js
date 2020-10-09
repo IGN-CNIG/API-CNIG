@@ -80,10 +80,15 @@ export default class InformationControl extends M.Control {
 
   invokeEscKey() {
     try {
-      const keyboardEvent = document.createEvent('KeyboardEvent');
-      const initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
-      keyboardEvent[initMethod]('keydown', true, true, window, false, false, false, false, 27, 0);
-      document.dispatchEvent(keyboardEvent);
+      document.dispatchEvent(new window.KeyboardEvent('keydown', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
     } catch (err) {
       /* eslint-disable no-console */
       console.error(err);
