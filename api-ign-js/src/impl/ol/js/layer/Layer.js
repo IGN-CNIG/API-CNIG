@@ -14,7 +14,6 @@ class LayerBase extends MObject {
    * Main constructor of the class. Creates a layer
    * with parameters specified by the user
    *
-   * @interface
    * @extends {M.Object}
    * @param {Object} options options provided by the user
    * @param {Object} vendorOptions vendor options for the base library
