@@ -35,8 +35,7 @@ function getBinaryPath(binaryName) {
 
 const jsdoc = getBinaryPath('jsdoc');
 
-const jsdocConfig = path.join(__dirname, '..', 'config', 'jsdoc', 'info', 'conf.json');
-
+const jsdocConfig = path.join(__dirname, '..', 'config', 'jsdoc', 'ol-info', 'conf.json');
 
 /**
  * Generate a list of all .js paths in the source directory.

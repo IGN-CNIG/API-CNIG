@@ -4,8 +4,6 @@
  */
 const assert = require('assert');
 const path = require('path');
-
-
 /**
  * Publish hook for the JSDoc template.  Writes to JSON stdout.
  * @param {function} data The root of the Taffy DB containing doclet records.
@@ -13,7 +11,6 @@ const path = require('path');
  * @return {Promise} A promise that resolves when writing is complete.
  */
 exports.publish = function(data, opts) {
-
   function getTypes(data) {
     const types = [];
     data.forEach(function(name) {
@@ -21,7 +18,6 @@ exports.publish = function(data, opts) {
     });
     return types;
   }
-
   // get all doclets with the "api" property or define (excluding events)
   const classes = {};
   const docs = data(
@@ -40,7 +36,6 @@ exports.publish = function(data, opts) {
     ],
     {kind: {'!is': 'file'}},
     {kind: {'!is': 'event'}}).get();
-
   // get symbols data, filter out those that are members of private classes
   const symbols = [];
   const defines = [];
@@ -125,7 +120,6 @@ exports.publish = function(data, opts) {
           return true;
         });
       }
-
       const target = isExterns ? externs : (doc.api ? symbols : base);
       const existingSymbol = symbolsByName[symbol.name];
       if (existingSymbol) {
@@ -134,7 +128,6 @@ exports.publish = function(data, opts) {
       }
       target.push(symbol);
       symbolsByName[symbol.name] = symbol;
-
       if (doc.api && symbol.extends) {
         while (symbol.extends in classes && !classes[symbol.extends].api &&
             classes[symbol.extends].augments) {
@@ -146,11 +139,9 @@ exports.publish = function(data, opts) {
       }
     }
   });
-
   base = base.filter(function(symbol) {
     return (symbol.name in augments || symbol.virtual);
   });
-
   return new Promise(function(resolve, reject) {
     process.stdout.write(
       JSON.stringify({
@@ -161,5 +152,4 @@ exports.publish = function(data, opts) {
         base: base
       }, null, 2));
   });
-
 };

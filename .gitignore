@@ -17,3 +17,4 @@ index-*.js
 entry-points-plugins.json
 *~
 .vscode
+/.metadata/

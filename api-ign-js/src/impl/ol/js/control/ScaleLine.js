@@ -6,7 +6,7 @@ import ProjUnits from 'ol/proj/Units';
 import { getPointResolution, METERS_PER_UNIT } from 'ol/proj';
 import { assert } from 'ol/asserts';
 import { getChangeEventType } from 'ol/Object';
-import { listen, unlistenAll } from 'ol/events';
+import { listen, unlistenByKey } from 'ol/events';
 
 /**
  * @type {string}
@@ -53,7 +53,7 @@ class ScaleLine extends OLControlScaleLine {
    */
   addTo(map, element) {
     this.facadeMap_ = map;
-    unlistenAll(this);
+    unlistenByKey(this);
     listen(this, getChangeEventType(UNITS_PROP), this.handleUnitsChanged, this);
     map.getMapImpl().addControl(this);
   }

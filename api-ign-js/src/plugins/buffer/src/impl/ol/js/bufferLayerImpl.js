@@ -25,8 +25,6 @@ export default class BufferLayerImpl extends M.impl.Layer {
    */
   addTo(map) {
     this.map = map;
-    const olMap = this.map.getMapImpl();
-    olMap.addLayer(this.layerOL);
   }
 
   destroy() {

@@ -39,7 +39,9 @@ export default class Circle extends OLStyleCircle {
     return style;
   }
 
-  render() {
+  /*
+   * render() {
     this.render_();
   }
+  */
 }
