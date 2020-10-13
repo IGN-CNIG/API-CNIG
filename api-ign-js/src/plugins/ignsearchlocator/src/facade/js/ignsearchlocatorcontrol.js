@@ -460,7 +460,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         html.querySelector('#m-ignsearchlocator-locate-button').style.display = 'none';
       }
       if (this.position === 'TC') {
-        document.querySelector('.ign-searchlocator-panel').style = 'position: fixed; left: calc(50vw - 210px);';
+        document.querySelector('.ign-searchlocator-panel').style = 'position: relative; left: calc(50vw - 210px);';
       }
 
       this.on(M.evt.ADDED_TO_MAP, () => {
@@ -1246,7 +1246,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       this.activationManager(true, 'm-ignsearchlocator-search-refCatastral');
 
-      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px !important;';
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px !important; min-width: 258px !important;';
 
       const compiledXYLocator = M.template.compileSync(refCatastral, {
         vars: {
@@ -1564,7 +1564,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       this.activationManager(true, 'm-ignsearchlocator-parcela-button');
 
-      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px !important;';
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px !important; min-width: 258px !important;';
 
       const compiledXYLocator = M.template.compileSync(parcela, {
         vars: {

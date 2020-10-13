@@ -728,7 +728,7 @@ DROPDOWN ****************************/
     }
 
     .m-panel.ign-searchlocator-panel.opened.no-collapsible {
-        left: auto !important;
+        left: calc(50vw - 210px) !important;
         position: initial !important;
     }
 
