@@ -445,7 +445,6 @@ export default class InfocoordinatesControl extends M.Control {
   importAllPoints() {
     let printDocument = [];
     for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
-
       let featureSelected = this.layerFeatures.impl_.features_[i];
 
       //Cojo el srs seleccionado en el select
@@ -456,6 +455,7 @@ export default class InfocoordinatesControl extends M.Control {
 
       //Cambio coordenadas y calculo las UTM
       let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
+      const proj = pointDataOutput.projectionUTM.code;
 
       let coordinatesGEO = [
         pointDataOutput.projectionGEO.coordinatesGEO.longitude,
@@ -468,9 +468,14 @@ export default class InfocoordinatesControl extends M.Control {
       ];
 
       printDocument.push(getValue('point') + (i + 1) + ': ' + '\n');
-      printDocument.push('EPSG:4326: ');
+      if (proj.indexOf('25829') > -1 || proj.indexOf('25830') > -1 || proj.indexOf('25831') > -1) {
+        printDocument.push('EPSG:4258: ');
+      } else {
+        printDocument.push('EPSG:4326: ');
+      }
+
       printDocument.push('[' + coordinatesGEO + ']' + '\n');
-      printDocument.push(pointDataOutput.projectionUTM.code + ': ');
+      printDocument.push(proj + ': ');
       printDocument.push('[' + coordinatesUTM + ']' + '\n');
     }
 

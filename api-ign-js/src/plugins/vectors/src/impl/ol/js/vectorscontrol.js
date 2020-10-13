@@ -191,21 +191,14 @@ export default class VectorsControl extends M.impl.Control {
     });
 
     document.addEventListener('keydown', this.addEscEvent.bind(this));
-
-    /*
     this.draw.once('drawstart', (evt) => {
       document.addEventListener('keydown', this.addUndoEvent.bind(this, evt.feature));
     });
-    */
   }
 
   addUndoEvent(feature, evt) {
     if (evt.ctrlKey && evt.key === 'z') {
       this.draw.removeLastPoint();
-    } else if (evt.key === 'Escape') {
-      this.facadeControl.deactivateDrawing();
-      this.facadeControl.isDrawingActive = false;
-      this.facadeControl.drawLayer = undefined;
     }
   }
 

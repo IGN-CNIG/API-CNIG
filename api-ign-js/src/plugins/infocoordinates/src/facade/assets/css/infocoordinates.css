@@ -107,6 +107,10 @@
     content: "\e9d1";
 }
 
+.m-panel.m-plugin-infocoordinates {
+  z-index: 99999;
+}
+
 /*Para que los números de los puntos no se vean por encima de los popups de info*/
 .m-popup {
   z-index: 999999999;
