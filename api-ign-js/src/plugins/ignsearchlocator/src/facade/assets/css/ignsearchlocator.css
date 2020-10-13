@@ -364,7 +364,8 @@ input#m-searchParamsPoligono-input {
     border-radius: 0px;
     margin: 0px;
     margin-bottom: 5px;
-    margin-right: 2%;
+    margin-top: 10px;
+    float: right;
 }
 
 input#m-refCatastral-input {
@@ -765,7 +766,7 @@ DROPDOWN ****************************/
 
     p.parcela--input {
         margin-left: 0px !important;
-        width: 68px !important;
+        width: auto;
     }
 
     p.refCastastrl--input {
@@ -811,8 +812,7 @@ DROPDOWN ****************************/
     }
 
     input#m-searchParamsPoligono-input {
-        width: 60.4% !important;
-        margin-right: 0px;
+        width: 60% !important;
     }
 
     input#m-refCatastral-input {
