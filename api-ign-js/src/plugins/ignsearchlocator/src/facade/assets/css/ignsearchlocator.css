@@ -729,7 +729,7 @@ DROPDOWN ****************************/
 
     .m-panel.ign-searchlocator-panel.opened.no-collapsible {
         left: auto !important;
-        position: initial;
+        position: initial !important;
     }
 
     .m-popup.m-collapsed.m-no-animation {
