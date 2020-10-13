@@ -256,7 +256,14 @@ export default class TopographicprofileControl extends M.impl.Control {
         if (!this.pt) return;
         if (e.type == "over") { // Show point at coord
           this.pt.setGeometry(new ol.geom.Point(e.coord));
-          this.pt.setStyle(null);
+          this.pt.setStyle([new ol.style.Style({
+            image: new ol.style.Circle({
+              radius: 7,
+              fill: new ol.style.Fill({
+                color: '#ff0000',
+              }),
+            }),
+          })]);
         } else { // hide point
           this.pt.setStyle([]);
         }
