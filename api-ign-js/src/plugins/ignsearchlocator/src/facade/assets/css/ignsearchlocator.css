@@ -364,8 +364,7 @@ input#m-searchParamsPoligono-input {
     border-radius: 0px;
     margin: 0px;
     margin-bottom: 5px;
-    margin-top: 10px;
-    float: right;
+    margin-right: 2%;
 }
 
 input#m-refCatastral-input {
@@ -713,8 +712,23 @@ DROPDOWN ****************************/
 
 @media only screen and (max-width: 600px) {
 
+    input#m-searchParamsPoligono-input {
+        width: 20%;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding: 2px 0px 3px 5px;
+        background-color: #fdfdfd;
+        box-shadow: 1px 1px 3px 0px #999;
+        border-radius: 0px;
+        margin: 0px;
+        margin-bottom: 5px;
+        margin-top: 10px !important;
+        float: right !important;
+    }
+
     .m-panel.ign-searchlocator-panel.opened.no-collapsible {
-        left: calc(50vw - 210px);
+        left: auto !important;
         position: initial;
     }
 
