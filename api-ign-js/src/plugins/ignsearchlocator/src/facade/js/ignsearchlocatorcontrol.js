@@ -1912,7 +1912,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
 
-      document.getElementById('m-ignsearchlocator-results').style = 'width: 301px !important; min-width: 301px !important;';
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 301px;';
 
       const compiledXYLocator = M.template.compileSync(xylocator, {
         vars: {
