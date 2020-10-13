@@ -717,7 +717,7 @@ DROPDOWN ****************************/
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>div.button>button {
-        font-size: 12px;
+        font-size: 10.9px;
     }
 
     .m-areas>div.m-area.m-top>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
@@ -743,6 +743,7 @@ DROPDOWN ****************************/
 
     div#m-ignsearchlocator-results {
         width: 72% !important;
+        min-width: 72% !important;
     }
 
     select#m-searchParamsProvincia-select {
@@ -805,7 +806,7 @@ DROPDOWN ****************************/
     }
 
     input#m-searchParamsPoligono-input {
-        width: 60% !important;
+        width: 60.4% !important;
         margin-right: 0px;
     }
 
