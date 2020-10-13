@@ -712,6 +712,11 @@ DROPDOWN ****************************/
 
 @media only screen and (max-width: 600px) {
 
+    .m-panel.ign-searchlocator-panel.opened.no-collapsible {
+        left: calc(50vw - 210px);
+        position: initial;
+    }
+
     .m-popup.m-collapsed.m-no-animation {
         width: 99% !important;
     }
