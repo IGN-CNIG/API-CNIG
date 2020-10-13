@@ -190,15 +190,27 @@ export default class VectorsControl extends M.impl.Control {
       this.facadeControl.onDraw(event);
     });
 
-    this.draw.on('drawstart', (evt) => {
+    document.addEventListener('keydown', this.addEscEvent.bind(this));
+
+    /*
+    this.draw.once('drawstart', (evt) => {
       document.addEventListener('keydown', this.addUndoEvent.bind(this, evt.feature));
     });
+    */
   }
 
   addUndoEvent(feature, evt) {
     if (evt.ctrlKey && evt.key === 'z') {
       this.draw.removeLastPoint();
     } else if (evt.key === 'Escape') {
+      this.facadeControl.deactivateDrawing();
+      this.facadeControl.isDrawingActive = false;
+      this.facadeControl.drawLayer = undefined;
+    }
+  }
+
+  addEscEvent(evt) {
+    if (evt.key === 'Escape') {
       this.facadeControl.deactivateDrawing();
       this.facadeControl.isDrawingActive = false;
       this.facadeControl.drawLayer = undefined;
@@ -618,13 +630,31 @@ export default class VectorsControl extends M.impl.Control {
     const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
     if (typeof geom.getLength !== 'function') {
       geom.getLineStrings().forEach((line) => {
-        res += line.getLength();
+        res += this.getGeometryLength(line);
       });
     } else {
-      res = geom.getLength();
+      res = this.getGeometryLength(geom);
     }
 
     return res;
+  }
+
+  getGeometryLength(geometry) {
+    let length = 0;
+    const codeProj = this.facadeMap_.getProjection().code;
+    const unitsProj = this.facadeMap_.getProjection().units;
+    if (codeProj === 'EPSG:3857') {
+      length = ol.sphere.getLength(geometry);
+    } else if (unitsProj === 'd') {
+      const coordinates = geometry.getCoordinates();
+      for (let i = 0, ii = coordinates.length - 1; i < ii; i += 1) {
+        length += ol.sphere.getDistance(ol.proj.transform(coordinates[i], codeProj, 'EPSG:4326'), ol.proj.transform(coordinates[i + 1], codeProj, 'EPSG:4326'));
+      }
+    } else {
+      length = geometry.getLength();
+    }
+
+    return length;
   }
 
   /**
@@ -634,7 +664,9 @@ export default class VectorsControl extends M.impl.Control {
    * @api
    */
   getFeatureArea() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
+    const projection = this.facadeMap_.getProjection();
+    const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
+    return ol.sphere.getArea(geom, { projection: projection.code });
   }
 
   /**
@@ -778,7 +810,14 @@ export default class VectorsControl extends M.impl.Control {
       if (!this.pt) return;
       if (e.type === 'over') {
         this.pt.setGeometry(new ol.geom.Point(e.coord));
-        this.pt.setStyle(null);
+        this.pt.setStyle([new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+              color: '#ff0000',
+            }),
+          }),
+        })]);
       } else {
         this.pt.setStyle([]);
       }

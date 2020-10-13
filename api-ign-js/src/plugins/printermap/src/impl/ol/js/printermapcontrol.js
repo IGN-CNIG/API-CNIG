@@ -476,7 +476,9 @@ export default class PrinterMapControl extends M.impl.Control {
 
 
           let styleText;
-          const lineDash = featureStyle.getStroke().getLineDash();
+          const lineDash = (featureStyle.getStroke() !== null &&
+            featureStyle.getStroke() !== undefined) ?
+            featureStyle.getStroke().getLineDash() : undefined;
           const styleGeom = {
             type: parseType,
             fillColor: M.utils.isNullOrEmpty(fill) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),

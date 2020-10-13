@@ -244,6 +244,7 @@ export default class GeorefimageControl extends M.Control {
               title: getValue('title'),
               keep: getValue('keep'),
             },
+            keepView: true,
           },
         });
         this.addEvents(html);

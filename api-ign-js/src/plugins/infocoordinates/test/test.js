@@ -16,10 +16,24 @@ const mp = new Infocoordinates({
   decimalUTMcoord: 4,
 });
 
-map.addPlugin(mp);
-map.addPlugin(new M.plugin.Information({
+const mp2 = new M.plugin.Information({
   position: 'TR',
-}));
+  buffer: 100,
+});
+
+const mp3 = new M.plugin.Vectors({
+  collapsed: true,
+  collapsible: true,
+  position: 'TR',
+  wfszoom: 12,
+});
+
+const mp4 = new M.plugin.MeasureBar({ position: 'TR' });
+
+map.addPlugin(mp);
+map.addPlugin(mp2);
+map.addPlugin(mp3);
+map.addPlugin(mp4);
 map.addPlugin(new M.plugin.FullTOC({
   precharged: {
       groups: [{
