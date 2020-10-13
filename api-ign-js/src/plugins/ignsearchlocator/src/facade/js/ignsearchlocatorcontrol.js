@@ -686,6 +686,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         // saves on allCandidates search results from CartoCiudad (geocoder)
         this.getCandidatesData(value, this.geocoderCandidates).then(() => {
           for (let i = 0; i < this.searchPosition.split(',').length; i += 1) {
+            this.allCandidates = [];
             if (this.searchPosition.split(',')[i] === 'nomenclator') {
               for (let j = 0; j < this.nomenclatorCandidates.length; j += 1) {
                 this.allCandidates.push(this.nomenclatorCandidates[j]);
@@ -2376,7 +2377,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param { string } exitState indicating if the given result is a perfect match
    */
   showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
-    const featureTabOpts = { content: '', icon: 'icon-localizacion3' };
+    const featureTabOpts = { content: '', title: getValue('informacion'), icon: 'icon-localizacion3' };
     if (exitState !== null) {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }

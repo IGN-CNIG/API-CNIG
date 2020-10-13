@@ -11,6 +11,8 @@
   "searchresult": "searchresult",
   "coordinateresult": "coordinateresult",
 
+  "informacion": "Information",
+
   "informacionCatastral": "Cadastre information",
   "errorConexion": "It is not possible to establish a connection with the Cadastre server.",
   "consultar": "Cadastre information",

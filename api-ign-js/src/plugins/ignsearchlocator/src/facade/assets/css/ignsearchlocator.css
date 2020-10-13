@@ -712,6 +712,10 @@ DROPDOWN ****************************/
 
 @media only screen and (max-width: 600px) {
 
+    .m-popup.m-collapsed.m-no-animation {
+        width: 99% !important;
+    }
+
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>div.button>button {
         font-size: 12px;
     }
@@ -763,11 +767,11 @@ DROPDOWN ****************************/
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
-        width: 60%;
+        width: 50%;
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
-        width: 60%;
+        width: 50%;
         margin-left: 11px;
     }
 
