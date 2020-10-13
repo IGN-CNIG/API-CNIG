@@ -1,3 +1,5 @@
+import FacadeFeature from 'M/feature/Feature';
+import { isNullOrEmpty, generateRandom } from 'M/util/Utils';
 import OLGeomGeometry from 'ol/geom/Geometry';
 import OLGeomPoint from 'ol/geom/Point';
 import OLGeomCircle from 'ol/geom/Circle';
@@ -7,11 +9,8 @@ import OLGeomPolygon from 'ol/geom/Polygon';
 import OLGeomMultiLineString from 'ol/geom/MultiLineString';
 import OLGeomMultiPolygon from 'ol/geom/MultiPolygon';
 import OLFeature from 'ol/Feature';
-import FacadeFeature from 'M/feature/Feature';
-import { isNullOrEmpty, generateRandom } from 'M/util/Utils';
 import FormatGeoJSON from '../format/GeoJSON';
 import ImplUtils from '../util/Utils';
-
 /**
  * @module M/impl/Feature
  */
@@ -44,7 +43,6 @@ class Feature {
       this.olFeature_.setId(generateRandom('mapea_feature_'));
     }
   }
-
   /**
    * This function returns the openlayers object of the features
    * @public
@@ -55,7 +53,6 @@ class Feature {
   getOLFeature() {
     return this.olFeature_;
   }
-
   /**
    * This function set the openlayers object of the features
    * @public
@@ -71,7 +68,6 @@ class Feature {
       }
     }
   }
-
   /**
    * This function return attributes feature
    * @public
@@ -87,7 +83,6 @@ class Feature {
     }
     return properties;
   }
-
   /**
    * This function return id feature
    *
@@ -99,7 +94,6 @@ class Feature {
   getId() {
     return this.olFeature_.getId();
   }
-
   /**
    * This function set id
    *
@@ -111,7 +105,6 @@ class Feature {
   setId(id) {
     this.olFeature_.setId(id);
   }
-
   /**
    * This function set attributes feature
    *
@@ -123,13 +116,13 @@ class Feature {
   setAttributes(attributes) {
     this.olFeature_.setProperties(attributes);
   }
-
   /**
    * This funcion transform OLFeature to M.Feature
    *
    * @public
    * @function
    * @param {OLFeature} olFeature - OLFeature
+   * @param {boolean} canBeModified
    * @return {M.Feature}  facadeFeature - M.Feature
    * @api stable
    */
@@ -141,7 +134,22 @@ class Feature {
     }
     return facadeFeature;
   }
-
+  /**
+   * This funcion transform OLRenderFeature to M.Feature
+   *
+   * @public
+   * @function
+   * @param { RenderFeature } olRenderFeature - OLFeature
+   * @param {ol.Projection} tileProjection
+   * @param {ol.Projection} mapProjection
+   * @return {M.Feature} facadeFeature - M.Feature
+   * @api stable
+   */
+  static olRenderFeature2Facade(olRenderFeature, tileProjection, mapProjection) {
+    const olFeature =
+      ImplUtils.olRenderFeature2olFeature(olRenderFeature, tileProjection, mapProjection);
+    return Feature.olFeature2Facade(olFeature);
+  }
   /**
    * This funcion transform M.Feature to OLFeature
    *
@@ -154,7 +162,6 @@ class Feature {
   static facade2OLFeature(feature) {
     return feature.getImpl().getOLFeature();
   }
-
   /**
    * This function returns the value of the indicated attribute
    *
@@ -167,7 +174,6 @@ class Feature {
   getAttribute(attribute) {
     return this.olFeature_.get(attribute);
   }
-
   /**
    * This function set value of the indicated attribute
    *
@@ -180,7 +186,6 @@ class Feature {
   setAttribute(attribute, value) {
     return this.olFeature_.set(attribute, value);
   }
-
   /**
    * This function return geometry feature
    *
@@ -212,7 +217,6 @@ class Feature {
     }
     return geometry;
   }
-
   /**
    * This function set geometry feature
    *
@@ -241,7 +245,6 @@ class Feature {
       this.olFeature_.setGeometry(new OLGeomPolygon(geometry.coordinates));
     }
   }
-
   /**
    * This function set facade class vector
    *
@@ -252,7 +255,6 @@ class Feature {
   setFacadeObj(obj) {
     this.facadeFeature_ = obj;
   }
-
   /**
    * This function returns de centroid of feature
    *
@@ -277,7 +279,6 @@ class Feature {
     olCentroid = olCentroid || Feature.olFeature2Facade(olCentroid);
     return olCentroid;
   }
-
   /**
    * This function clear the style of feature
    *
@@ -290,5 +291,4 @@ class Feature {
     this.olFeature_.setStyle(null);
   }
 }
-
 export default Feature;

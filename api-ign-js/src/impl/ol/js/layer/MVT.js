@@ -123,7 +123,7 @@ class MVT extends Vector {
   parseFeaturesFromTile_(evt) {
     const vectorTile = evt.tile;
     const renderFeatures = vectorTile.getFeatures();
-    const tileProjection = vectorTile.getProjection();
+    const tileProjection = vectorTile.projection;
     const mapProjection = getProj(this.projection_);
     const features = renderFeatures.map(rf => FeatureImpl
       .olRenderFeature2Facade(rf, tileProjection, mapProjection)).filter(f => f !== null);
