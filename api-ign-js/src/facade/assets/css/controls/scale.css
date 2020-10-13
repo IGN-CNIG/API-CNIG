@@ -17,7 +17,7 @@
 }
 
 .m-area.m-bottom.m-right {
-  z-index: 99999;
+  z-index: 99999 !important;
 }
 
 .m-scale-container>.m-unit {
