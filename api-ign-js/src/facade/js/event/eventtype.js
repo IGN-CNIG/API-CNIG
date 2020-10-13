@@ -71,6 +71,22 @@ export const ADDED_VECTOR_TILE = 'added:vectortile';
  * @type {string}
  * @api
  */
+export const REMOVED_LAYER = 'removed:layer';
+
+/**
+ * Event type
+ * @public
+ * @type {string}
+ * @api
+ */
+export const REMOVED_FROM_MAP = 'removed:map';
+
+/**
+ * Event type
+ * @public
+ * @type {string}
+ * @api
+ */
 export const ADDED_WMTS = 'added:wmts';
 
 /**
@@ -200,6 +216,14 @@ export const CHANGE_STYLE = 'change:style';
  * @api
  */
 export const CHANGE_ZOOM = 'change:zoom';
+
+/**
+ * Event Type
+ * @public
+ * @type {string}
+ * @api
+ */
+export const CHANGE_ROTATION = 'change:rotation';
 
 /**
  * Event type
