@@ -1,3 +1,7 @@
+.m-panel.m-panel-measurebar {
+  z-index: 99999;
+}
+
 .m-measurelength-container {
     top: 0px;
     left: 200px;
@@ -18,7 +22,7 @@
 
 .m-measure-tooltip {
     position: absolute;
-    z-index: 1070;
+    z-index: 990;
     display: block;
     font-size: 12px;
     font-style: normal;
