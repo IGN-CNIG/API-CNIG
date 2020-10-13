@@ -630,13 +630,31 @@ export default class VectorsControl extends M.impl.Control {
     const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
     if (typeof geom.getLength !== 'function') {
       geom.getLineStrings().forEach((line) => {
-        res += line.getLength();
+        res += this.getGeometryLength(line);
       });
     } else {
-      res = geom.getLength();
+      res = this.getGeometryLength(geom);
     }
 
     return res;
+  }
+
+  getGeometryLength(geometry) {
+    let length = 0;
+    const codeProj = this.facadeMap_.getProjection().code;
+    const unitsProj = this.facadeMap_.getProjection().units;
+    if (codeProj === 'EPSG:3857') {
+      length = ol.sphere.getLength(geometry);
+    } else if (unitsProj === 'd') {
+      const coordinates = geometry.getCoordinates();
+      for (let i = 0, ii = coordinates.length - 1; i < ii; i += 1) {
+        length += ol.sphere.getDistance(ol.proj.transform(coordinates[i], codeProj, 'EPSG:4326'), ol.proj.transform(coordinates[i + 1], codeProj, 'EPSG:4326'));
+      }
+    } else {
+      length = geometry.getLength();
+    }
+
+    return length;
   }
 
   /**
@@ -646,7 +664,9 @@ export default class VectorsControl extends M.impl.Control {
    * @api
    */
   getFeatureArea() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
+    const projection = this.facadeMap_.getProjection();
+    const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
+    return ol.sphere.getArea(geom, { projection: projection.code });
   }
 
   /**
