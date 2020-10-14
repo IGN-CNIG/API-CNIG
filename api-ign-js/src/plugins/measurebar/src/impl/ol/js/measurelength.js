@@ -82,6 +82,7 @@ export default class MeasureLength extends Measure {
       measureArea.deactivate();
     }
     super.activate();
+    document.querySelector('.m-control.m-measurelength-container').classList.add('activated');
   }
 
   /* eslint-disable newline-per-chained-call */
