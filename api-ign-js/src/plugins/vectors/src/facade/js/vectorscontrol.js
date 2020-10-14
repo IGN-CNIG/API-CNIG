@@ -188,10 +188,8 @@ export default class VectorsControl extends M.Control {
   toogleActivate() {
     if (this.pluginOpened) {
       this.pluginOpened = false;
-      // this.getImpl().removeMapEvents(this.map);
     } else {
       this.pluginOpened = true;
-      // this.getImpl().addMapsEvents(this.map);
     }
   }
 
@@ -1278,7 +1276,6 @@ export default class VectorsControl extends M.Control {
     this.isDrawingActive = false;
     this.isEditionActive = false;
     this.drawLayer = undefined;
-    // this.getImpl().addMapsEvents(this.map);
   }
 
   changeLayerLegend(layer) {
@@ -1288,6 +1285,23 @@ export default class VectorsControl extends M.Control {
       layer.setLegend(newValue);
       this.renderLayers();
       document.querySelector('div.m-mapea-container div.m-dialog').remove();
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keydown', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
     }
   }
 
@@ -1301,7 +1315,7 @@ export default class VectorsControl extends M.Control {
 
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
     if (cond || !this.isDrawingActive) {
-      // this.getImpl().removeMapEvents(this.map);
+      this.invokeEscKey();
       this.drawLayer = layer;
       this.isDrawingActive = true;
       this.drawingTools.querySelector('button.m-vector-layer-profile').style.display = 'none';
@@ -1324,7 +1338,6 @@ export default class VectorsControl extends M.Control {
         }
       }
     } else {
-      // this.getImpl().addMapsEvents(this.map);
       this.isDrawingActive = false;
       this.drawLayer = undefined;
     }
@@ -1340,7 +1353,7 @@ export default class VectorsControl extends M.Control {
 
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
     if (cond || !this.isEditionActive) {
-      // this.getImpl().removeMapEvents(this.map);
+      this.invokeEscKey();
       if (layer.getFeatures().length > 0) {
         this.drawLayer = layer;
         this.isEditionActive = true;
@@ -1351,7 +1364,6 @@ export default class VectorsControl extends M.Control {
         M.dialog.error(getValue('exception.no_features'), getValue('warning'));
       }
     } else {
-      // this.getImpl().addMapsEvents(this.map);
       this.isEditionActive = false;
       this.drawLayer = undefined;
     }

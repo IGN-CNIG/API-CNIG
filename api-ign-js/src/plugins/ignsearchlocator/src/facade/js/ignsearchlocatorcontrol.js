@@ -460,7 +460,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         html.querySelector('#m-ignsearchlocator-locate-button').style.display = 'none';
       }
       if (this.position === 'TC') {
-        document.querySelector('.ign-searchlocator-panel').style = 'position: fixed!important; left: calc(50vw - 210px);';
+        document.querySelector('.ign-searchlocator-panel').style = 'position: relative; left: calc(50vw - 210px);';
       }
 
       this.on(M.evt.ADDED_TO_MAP, () => {
@@ -686,6 +686,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         // saves on allCandidates search results from CartoCiudad (geocoder)
         this.getCandidatesData(value, this.geocoderCandidates).then(() => {
           for (let i = 0; i < this.searchPosition.split(',').length; i += 1) {
+            this.allCandidates = [];
             if (this.searchPosition.split(',')[i] === 'nomenclator') {
               for (let j = 0; j < this.nomenclatorCandidates.length; j += 1) {
                 this.allCandidates.push(this.nomenclatorCandidates[j]);
@@ -1245,7 +1246,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       this.activationManager(true, 'm-ignsearchlocator-search-refCatastral');
 
-      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px;';
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px !important; min-width: 258px !important;';
 
       const compiledXYLocator = M.template.compileSync(refCatastral, {
         vars: {
@@ -1563,7 +1564,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       this.activationManager(true, 'm-ignsearchlocator-parcela-button');
 
-      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px;';
+      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px !important; min-width: 258px !important;';
 
       const compiledXYLocator = M.template.compileSync(parcela, {
         vars: {
@@ -2376,7 +2377,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param { string } exitState indicating if the given result is a perfect match
    */
   showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
-    const featureTabOpts = { content: '', icon: 'icon-localizacion3' };
+    const featureTabOpts = { content: '', title: getValue('informacion'), icon: 'icon-localizacion3' };
     if (exitState !== null) {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }

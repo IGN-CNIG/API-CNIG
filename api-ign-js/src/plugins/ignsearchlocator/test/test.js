@@ -11,7 +11,7 @@ const map = M.map({
 const mp = new IGNSearchLocator({
   CMC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos',
 
-  position: 'TL',
+  position: 'TC',
   servicesToSearch: 'gn',
   maxResults: 10,
   noProcess: 'poblacion',
