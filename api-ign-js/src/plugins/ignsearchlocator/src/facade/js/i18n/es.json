@@ -10,6 +10,8 @@
     "wrong_values": "Algún valor introducido no es correcto. Recuerda que los minutos y los segundos tienen que tener un valor entre 0 y 59 y los grados entre 0 y 180."
   },
 
+  "informacion": "Información",
+
   "informacionCatastral": "Información catastral",
   "errorConexion": "No es posible establecer conexión con el servidor de Catastro.",
   "consultar": "Consultar Catastro",

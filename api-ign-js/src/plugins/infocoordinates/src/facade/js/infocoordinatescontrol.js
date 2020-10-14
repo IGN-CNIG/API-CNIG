@@ -33,6 +33,7 @@ export default class InfocoordinatesControl extends M.Control {
     this.layerFeatures.name = 'infocoordinatesLayerFeatures';
     this.decimalGEOcoord = decimalGEOcoord;
     this.decimalUTMcoord = decimalUTMcoord;
+    this.clickedDeactivate = false;
   }
 
 
@@ -78,7 +79,6 @@ export default class InfocoordinatesControl extends M.Control {
             latitude: getValue('latitude'),
             longitude: getValue('longitude'),
             formatCoordinates: getValue('formatCoordinates'),
-            zone: getValue('zone'),
             coordX: getValue('coordX'),
             coordY: getValue('coordY'),
             altitude: getValue('altitude'),
@@ -117,11 +117,40 @@ export default class InfocoordinatesControl extends M.Control {
    * @api stable
    */
   activate() {
+    this.invokeEscKey();
     this.map_.on(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'crosshair';
     this.map_.getFeatureHandler().deactivate();
+    document.addEventListener('keydown', this.checkEscKey.bind(this));
+    if (this.clickedDeactivate) {
+      document.querySelector('div.m-panel.m-plugin-infocoordinates > button').click();
+    }
   }
 
+  checkEscKey(evt) {
+    const opened = document.querySelector('div.m-panel.m-plugin-infocoordinates').classList.contains('opened');
+    if (evt.key === 'Escape' && opened) {
+      document.querySelector('div.m-panel.m-plugin-infocoordinates.opened > button').click();
+      document.removeEventListener('keydown', this.checkEscKey);
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keydown', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
+    }
+  }
 
   /**
    * This function is called on the control deactivation
@@ -131,6 +160,7 @@ export default class InfocoordinatesControl extends M.Control {
    * @api stable
    */
   deactivate() {
+    this.clickedDeactivate = true;
     this.map_.un(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'default';
     this.map_.getFeatureHandler().activate();
@@ -342,9 +372,11 @@ export default class InfocoordinatesControl extends M.Control {
 
   changeSelectSRSorChangeFormat() {
     // Cojo la tab activa
-    let numPoint = parseInt(document.querySelector('.tablinks.active').textContent);
-    this.displayXYcoordinates(numPoint);
-
+    const elem = document.querySelector('.tablinks.active');
+    if (elem !== null) {
+      let numPoint = parseInt(elem.textContent);
+      this.displayXYcoordinates(numPoint);
+    }
   }
 
   displayXYcoordinates(numPoint) {
@@ -354,26 +386,24 @@ export default class InfocoordinatesControl extends M.Control {
     let pointBox = document.getElementById('m-infocoordinates-point');
     let latitudeBox = document.getElementById('m-infocoordinates-latitude');
     let longitudeBox = document.getElementById('m-infocoordinates-longitude');
-    let zoneBox = document.getElementById('m-infocoordinates-zone');
+    let datumBox = document.getElementById('m-infocoordinates-datum');
     let coordX = document.getElementById('m-infocoordinates-coordX');
     let coordY = document.getElementById('m-infocoordinates-coordY');
 
     //Cojo el srs seleccionado en el select
     let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
-    console.log(selectSRS);
 
     //Cojo el formato de las coordenadas geográficas
     let formatGMS = document.getElementById('m-infocoordinates-buttonConversorFormat').checked;
 
     //Cambio coordenadas y calculo las UTM
     let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
-    console.log(pointDataOutput);
 
     // pinto
     pointBox.innerHTML = pointDataOutput.NumPoint;
     latitudeBox.innerHTML = `${pointDataOutput.projectionGEO.coordinatesGEO.latitude}`.replace('.', ',');
     longitudeBox.innerHTML = `${pointDataOutput.projectionGEO.coordinatesGEO.longitude}`.replace('.', ',');
-    zoneBox.innerHTML = pointDataOutput.projectionUTM.zone;
+    datumBox.innerHTML = pointDataOutput.projectionUTM.datum;
     coordX.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordX);
     coordY.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordY);
   }
@@ -418,12 +448,8 @@ export default class InfocoordinatesControl extends M.Control {
 
 
   importAllPoints() {
-    // const projectionSelect = document.getElementById('m-infocoordinates-projectionPrint').value;
-    // const projectionPoints = this.layerFeatures.impl_.features_[0].formatGeoJSON_.impl_.dataProjection.code_;
     let printDocument = [];
-
     for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
-
       let featureSelected = this.layerFeatures.impl_.features_[i];
 
       //Cojo el srs seleccionado en el select
@@ -434,8 +460,7 @@ export default class InfocoordinatesControl extends M.Control {
 
       //Cambio coordenadas y calculo las UTM
       let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
-
-
+      const proj = pointDataOutput.projectionUTM.code;
 
       let coordinatesGEO = [
         pointDataOutput.projectionGEO.coordinatesGEO.longitude,
@@ -447,15 +472,15 @@ export default class InfocoordinatesControl extends M.Control {
         pointDataOutput.projectionUTM.coordinatesUTM.coordY
       ];
 
-      // tranformCoordinates = this.getImpl().transform(
-      //   tranformCoordinates,
-      //   projectionPoints,
-      //   projectionSelect);
+      printDocument.push(getValue('point') + (i + 1) + ': ' + '\n');
+      if (proj.indexOf('25829') > -1 || proj.indexOf('25830') > -1 || proj.indexOf('25831') > -1) {
+        printDocument.push('EPSG:4258: ');
+      } else {
+        printDocument.push('EPSG:4326: ');
+      }
 
-      printDocument.push(getValue('point') + i + ': ' + '\n');
-      printDocument.push(pointDataOutput.projectionGEO.code + ': ');
       printDocument.push('[' + coordinatesGEO + ']' + '\n');
-      printDocument.push(pointDataOutput.projectionUTM.code + ': ');
+      printDocument.push(proj + ': ');
       printDocument.push('[' + coordinatesUTM + ']' + '\n');
     }
 
@@ -590,7 +615,6 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-point').innerHTML = '--';
     document.getElementById('m-infocoordinates-latitude').innerHTML = '--';
     document.getElementById('m-infocoordinates-longitude').innerHTML = '--';
-    document.getElementById('m-infocoordinates-zone').innerHTML = '--';
     document.getElementById('m-infocoordinates-coordX').innerHTML = '--';
     document.getElementById('m-infocoordinates-coordY').innerHTML = '--';
     document.getElementById('m-infocoordinates-altitude').innerHTML = '--';
@@ -600,7 +624,7 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonDisplayAllPoints')[0].classList.add('noDisplay');
     document.getElementById('m-infocoordinates-buttonConversorFormat').setAttribute('disabled', 'disabled');
-    document.getElementById('m-infocoordinates-comboDatum').setAttribute('disabled', 'disabled');
+    // document.getElementById('m-infocoordinates-comboDatum').setAttribute('disabled', 'disabled');
 
 
     //Elimino todas las features

@@ -712,8 +712,32 @@ DROPDOWN ****************************/
 
 @media only screen and (max-width: 600px) {
 
+    input#m-searchParamsPoligono-input {
+        width: 20%;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding: 2px 0px 3px 5px;
+        background-color: #fdfdfd;
+        box-shadow: 1px 1px 3px 0px #999;
+        border-radius: 0px;
+        margin: 0px;
+        margin-bottom: 5px;
+        margin-top: 10px !important;
+        float: right !important;
+    }
+
+    .m-panel.ign-searchlocator-panel.opened.no-collapsible {
+        left: calc(50vw - 210px) !important;
+        position: initial !important;
+    }
+
+    .m-popup.m-collapsed.m-no-animation {
+        width: 99% !important;
+    }
+
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>div.button>button {
-        font-size: 12px;
+        font-size: 10.9px;
     }
 
     .m-areas>div.m-area.m-top>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
@@ -739,6 +763,7 @@ DROPDOWN ****************************/
 
     div#m-ignsearchlocator-results {
         width: 72% !important;
+        min-width: 72% !important;
     }
 
     select#m-searchParamsProvincia-select {
@@ -755,7 +780,7 @@ DROPDOWN ****************************/
 
     p.parcela--input {
         margin-left: 0px !important;
-        width: 68px !important;
+        width: auto;
     }
 
     p.refCastastrl--input {
@@ -763,11 +788,11 @@ DROPDOWN ****************************/
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
-        width: 60%;
+        width: 50%;
     }
 
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
-        width: 60%;
+        width: 50%;
         margin-left: 11px;
     }
 
@@ -802,7 +827,6 @@ DROPDOWN ****************************/
 
     input#m-searchParamsPoligono-input {
         width: 60% !important;
-        margin-right: 0px;
     }
 
     input#m-refCatastral-input {

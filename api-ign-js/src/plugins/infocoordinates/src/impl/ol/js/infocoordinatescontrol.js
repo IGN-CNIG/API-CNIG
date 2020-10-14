@@ -23,7 +23,7 @@ export default class InfocoordinatesControl extends M.impl.Control {
     let coordinatesFeature = feature.getAttribute('coordinates');
     let SRSfeature = feature.getAttribute('EPSGcode');
     let coordinatesGEOoutput = ol.proj.transform(coordinatesFeature, SRSfeature, 'EPSG:4326');
-    const zone = this.zoneCalc(coordinatesGEOoutput[0]);
+    const datum = this.datumCalc(SRStarget);
     let res = {
       'NumPoint': numPoint,
       'projectionGEO': {
@@ -35,7 +35,7 @@ export default class InfocoordinatesControl extends M.impl.Control {
       },
       'projectionUTM': {
         'code': NODATA,
-        'zone': NODATA,
+        'datum': NODATA,
         'coordinatesUTM': {
           'coordX': NODATA,
           'coordY': NODATA
@@ -56,7 +56,7 @@ export default class InfocoordinatesControl extends M.impl.Control {
         },
         'projectionUTM': {
           'code': SRStarget,
-          'zone': zone,
+          'datum': datum,
           'coordinatesUTM': {
             'coordX': coordinatesUTMoutput[0].toFixed(decimalUTMcoord),
             'coordY': coordinatesUTMoutput[1].toFixed(decimalUTMcoord)
@@ -75,22 +75,15 @@ export default class InfocoordinatesControl extends M.impl.Control {
   }
 
 
-  zoneCalc(coordinatesDEClongitude) {
-    let zone;
-    if (coordinatesDEClongitude > 0 && coordinatesDEClongitude <= 6) {
-      zone = 31
-    } else if (coordinatesDEClongitude >= -6 && coordinatesDEClongitude <= 0) {
-      zone = 30;
-    } else if (coordinatesDEClongitude >= -12 && coordinatesDEClongitude < -6) {
-      zone = 29;
-    } else if (coordinatesDEClongitude >= -18 && coordinatesDEClongitude < -12) {
-      zone = 28
-    } else if (coordinatesDEClongitude >= -24 && coordinatesDEClongitude < -18) {
-      zone = 27
-    } else {
-      zone = null
+  datumCalc(srs) {
+    let datum = 'ETRS89';
+    if (srs.indexOf('3857') > -1) {
+      datum = 'WGS84';
+    } else if (srs.indexOf('4083') > -1) {
+      datum = 'REGCAN95';
     }
-    return zone;
+
+    return datum;
   }
 
   readAltitudeFromWCSservice(coord, srcMapa) {
