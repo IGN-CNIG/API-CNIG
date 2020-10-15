@@ -33,6 +33,7 @@ export default class InfocoordinatesControl extends M.Control {
     this.layerFeatures.name = 'infocoordinatesLayerFeatures';
     this.decimalGEOcoord = decimalGEOcoord;
     this.decimalUTMcoord = decimalUTMcoord;
+    this.clickedDeactivate = false;
   }
 
 
@@ -121,6 +122,9 @@ export default class InfocoordinatesControl extends M.Control {
     document.body.style.cursor = 'crosshair';
     this.map_.getFeatureHandler().deactivate();
     document.addEventListener('keydown', this.checkEscKey.bind(this));
+    if (this.clickedDeactivate) {
+      document.querySelector('div.m-panel.m-plugin-infocoordinates > button').click();
+    }
   }
 
   checkEscKey(evt) {
@@ -156,6 +160,7 @@ export default class InfocoordinatesControl extends M.Control {
    * @api stable
    */
   deactivate() {
+    this.clickedDeactivate = true;
     this.map_.un(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'default';
     this.map_.getFeatureHandler().activate();

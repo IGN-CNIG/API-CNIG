@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="mapea" content="yes">
+    <title>Comparepanel Production TEST</title>
+    <link type="text/css" rel="stylesheet" href="http://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign-1.2.0.ol.min.css" />
+    <link href="../dist/comparepanel.ol.min.css" rel="stylesheet" />
+    <style rel="stylesheet">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="mapjs" class="container"></div>
+    <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/js/apiign-1.2.0.ol.min.js"></script>
+    <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/js/configuration-1.2.0.js"></script>
+    <script type="text/javascript" src="../dist/comparepanel.ol.min.js"></script>
+    <script type="text/javascript">
+        const map = M.map({
+            container: 'mapjs',
+            center: [-467062.8225, 4683459.6216],
+            zoom: 6,
+        });
+        const pluginComparepanel = new M.plugin.Comparepanel({
+            position: 'TR',
+            intervals: [
+                ["NACIONAL 1981-1986", "1986", "WMS*NACIONAL_1981-1986*https://www.ign.es/wms/pnoa-historico*NACIONAL_1981-1986"],
+                ["OLISTAT", "1998", "WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT"],
+            ],
+        });
+        map.addPlugin(pluginComparepanel);
+    </script>
+</body>
+
+</html>

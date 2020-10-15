@@ -190,9 +190,10 @@ export default class VectorsControl extends M.impl.Control {
       this.facadeControl.onDraw(event);
     });
 
-    document.addEventListener('keydown', this.addEscEvent.bind(this));
+    document.addEventListener('keyup', this.addEscEvent.bind(this));
     this.draw.once('drawstart', (evt) => {
-      document.addEventListener('keydown', this.addUndoEvent.bind(this, evt.feature));
+      document.onkeydown = this.addUndoEvent.bind(this, evt.feature);
+      // document.addEventListener('keydown', this.addUndoEvent.bind(this, evt.feature));
     });
   }
 
@@ -217,8 +218,8 @@ export default class VectorsControl extends M.impl.Control {
    * @api
    */
   removeDrawInteraction() {
+    document.onkeydown = null;
     this.facadeMap_.getMapImpl().removeInteraction(this.draw);
-    document.removeEventListener('keydown', this.addUndoEvent);
   }
 
   /**
