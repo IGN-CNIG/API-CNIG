@@ -9,6 +9,7 @@ import Mirrorpanel from './cpmirrorpanel';
 import Timeline from './cptimeline';
 import LyrCompare from './cplyrcompare';
 import { getValue as getValueTranslate } from './i18n/language';
+import Transparency from './cptransparency';
 
 export default class ComparepanelControl extends M.Control {
   /**
@@ -36,16 +37,25 @@ export default class ComparepanelControl extends M.Control {
     this.template = null;
 
     this.baseLayers = options.baseLayers;
-
+    this.position = options.position;
     this.layers = [];
     this.baseLayers.forEach(e => this.layers.push(e[2]));
+    this.params = [options.mirrorpanelParams, options.timelineParams, options.lyrcompareParams, options.transparencyParams];
+    this.params.forEach(p => {
+      p.position = this.position;
+    })
     options.mirrorpanelParams.defaultBaseLyrs = this.layers;
-    this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams);
     options.timelineParams.intervals = this.baseLayers;
-    this.timeline = new Timeline(options.timelineParams);
     options.lyrcompareParams.layers = this.layers;
+    options.transparencyParams.layers = this.layers;
+
+    this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams);
+    this.timeline = new Timeline(options.timelineParams);
     this.lyrcompare = new LyrCompare(options.lyrcompareParams);
-    this.plugins = [this.mirrorpanel, this.timeline, this.lyrcompare];
+    this.transparency = new Transparency(options.transparencyParams);
+    this.panels = [];
+
+    this.plugins = [this.mirrorpanel, this.timeline, this.lyrcompare, this.transparency];
   }
 
   /**
@@ -66,18 +76,20 @@ export default class ComparepanelControl extends M.Control {
             tooltipLyr: getValueTranslate('tooltipLyr'),
             tooltipMirrorpanel: getValueTranslate('tooltipMirrorpanel'),
             tooltipTimeline: getValueTranslate('tooltipTimeline'),
+            tooltipTransparency: getValueTranslate('tooltipTransparency'),
           }
         }
       }
       this.template = M.template.compileSync(template, options);
-      this.addComparators(map);
       success(this.template);
+      this.addComparators(map);
     });
   }
 
   addComparators(map) {
     this.plugins.forEach((p) => {
       map.addPlugin(p);
+      this.panels.push(p.panel_._element);
       let element = document.querySelector("." + p.panel_._className + " .m-panel-controls");
       element.classList.add('cp-' + p.name);
       document.querySelector("." + p.panel_._className).remove();
@@ -103,13 +115,18 @@ export default class ComparepanelControl extends M.Control {
       p.deactivate();
     });
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.toggle('active');
+    if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name == 'transparency') {
+      plugin.activate();
+    }
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-' + plugin.name).classList.toggle('hide-panel');
   }
 
-  deactivate(){
-    this.plugins.forEach(p => {
+  deactivate() {
+    this.plugins.forEach((p, k) => {
       p.deactivate();
+      document.querySelector('.m-plugin-comparepanel').parentElement.append(this.panels[k]);
     });
+    this.map.removePlugins(this.plugins);
   }
   /**
    * This function compares controls

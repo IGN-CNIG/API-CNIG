@@ -635,7 +635,6 @@ export default class LyrCompareControl extends M.Control {
               name: urlLayer[3]
             });
             if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
-              //this.map.removeLayers(this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0]);
               newLayer = this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0];
             }else{
               this.map.addLayers(newLayer);
