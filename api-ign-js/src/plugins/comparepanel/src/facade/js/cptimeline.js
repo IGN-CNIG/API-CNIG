@@ -53,7 +53,7 @@ export default class Timeline extends M.Plugin {
      * @public
      * @type {String}
      */
-    this.position = 'TR';
+    this.position = options.position;
 
     /**
      * Intervals
@@ -165,19 +165,7 @@ export default class Timeline extends M.Plugin {
   getMetadata() {
     return this.metadata_;
   }
-
-  /**
-   * Get the API REST Parameters of the plugin
-   *
-   * @function
-   * @public
-   * @api
-   */
-  getAPIRest() {
-    const intervals = JSON.stringify(this.intervals).replace(/\[/g, '!!').replace(/\]/g, '¡¡');
-    return `${this.name}=${this.position}*!${intervals}*!${this.animation}*!${this.speed}`;
-  }
-
+  
   /**
    * Activate plugin
    *

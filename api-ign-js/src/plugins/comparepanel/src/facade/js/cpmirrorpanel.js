@@ -53,7 +53,7 @@ export default class Mirrorpanel extends M.Plugin {
      * @public
      * @type {String}
      */
-    this.position = 'TR';
+    this.position = options.position;
 
     /**
      * Collapsed attribute
@@ -276,17 +276,6 @@ export default class Mirrorpanel extends M.Plugin {
    */
   getMetadata() {
     return this.metadata_;
-  }
-
-  /**
-   * Get the API REST Parameters of the plugin
-   *
-   * @function
-   * @public
-   * @api
-   */
-  getAPIRest() {
-    return `${this.name}=${this.position}*!${this.collapsed}*!${this.collapsible}*!${this.modeViz}*!${this.enabledPlugins}*!${this.enabledKeyFunctions}*!${this.showCursors}*!${this.mirrorLayers}*!${this.defaultBaseLyrs}*!${this.backImgLayersParams}*!${this.interface}`;
   }
 
   /**

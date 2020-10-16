@@ -39,5 +39,8 @@
   "modViz9": "Two maps above and one below",
   "backimglayersparams_undefined":"BackImgLayers' parameters are not defined correctly.",
   "tooltipTimeline": "Timeline",
-  "titleTimeline": "Timeline"
+  "titleTimeline": "Timeline",
+  "tooltipTransparency": "Transparency",
+  "transparency": "Transparency",
+  "errorLayer": "Transparency: No valid layer specified on which to apply the effect"
 }
