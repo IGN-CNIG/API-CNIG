@@ -48,7 +48,7 @@ div.m-plugin-panelMirrorpanel.opened{
 }
 
 .m-mirrorpanel-effect-buttoms {
-	padding: 0.3rem 0;
+	padding: 0.6rem 0.2rem;
 	text-align: center;
 }
 
@@ -74,7 +74,7 @@ Estilos del botón
 */
 
 .m-mirrorpanel-container .big-button {
-	font-size: 32px;
+	font-size: 25px;
 	background: none;
 	border: none;
 	cursor: pointer;
@@ -90,19 +90,6 @@ Estilos del botón
 
 .m-mirrorpanel-container .buttom-pressed {
 	color: #71a7d3;
-}
-
-[class^="mirrorpanel-"],
-[class*=" mirrorpanel-"] {
-	font-family: 'mirrorpanel' !important;
-	speak: never;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 }
 
 [class^="mirrorpanel-"]:before,

@@ -59,6 +59,7 @@ export default class CompareMirrorpanel extends M.Control {
     this.mapL = { A: null, B: null, C: null, D: null }
     this.lyrCursor = { A: null, B: null, C: null, D: null }
     this.featureLyrCursor = { A: null, B: null, C: null, D: null }
+    this.oldClass = '';
 
     /**
      * Defining cursor style
@@ -140,6 +141,7 @@ export default class CompareMirrorpanel extends M.Control {
         if (l.zindex_ !== 0) { l.setVisible(false); }
       });
       this.mapL['A'].addLayers(this.defaultBaseLyrs[0]);
+      
     }
     if (this.showCursors) { this.addLayerCursor('A'); }
     return new Promise((success, fail) => {
@@ -148,7 +150,7 @@ export default class CompareMirrorpanel extends M.Control {
         jsonp: true,
         vars: {
           translations: {
-            title: getValueTranslate('titleMirrorpanel'),
+            titleMirrorpanel: getValueTranslate('titleMirrorpanel'),
             modViz0: getValueTranslate('modViz0'),
             modViz1: getValueTranslate('modViz1'),
             modViz2: getValueTranslate('modViz2'),
@@ -249,6 +251,7 @@ export default class CompareMirrorpanel extends M.Control {
     bigContainer.classList.add('mirrorpanel-grid');
 
     const mapjsA = document.getElementById("mapjs") || document.getElementById("map");
+    this.oldClass = mapjsA.classList.toString();
     document.body.insertBefore(bigContainer, mapjsA);
     mapjsA.classList.add('mirror1');
     bigContainer.appendChild(mapjsA);
@@ -337,7 +340,6 @@ export default class CompareMirrorpanel extends M.Control {
         if (itemPlug.metadata_) {
           if (itemPlug.metadata_.name === "FullTOC") {
             //FullTOC
-            console.log(itemPlug)
             plugin4map = new M.plugin.FullTOC({
               http: itemPlug.http,
               https: itemPlug.https,

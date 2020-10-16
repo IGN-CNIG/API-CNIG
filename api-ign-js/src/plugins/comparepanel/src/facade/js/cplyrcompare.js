@@ -75,7 +75,7 @@ export default class LyrCompare extends M.Plugin {
        * @public
        * @type {String}
        */
-      this.position = 'TR';
+      this.position = options.position;
 
       /**
        * Collapsed attribute
@@ -304,16 +304,6 @@ export default class LyrCompare extends M.Plugin {
     return this.metadata_;
   }
 
-  /**
-   * Get the API REST Parameters of the plugin
-   *
-   * @function
-   * @public
-   * @api
-   */
-  getAPIRest() {
-    return `${this.name}=${this.position}*!${this.layers.join(',')}*!${this.collapsible}*!${this.collapsed}*!${this.staticDivision}*!${this.opacityVal}*!${this.comparisonMode}*!${this.defaultLyrA}*!${this.defaultLyrB}*!${this.defaultLyrC}*!${this.defaultLyrD}*!${this.interface}`;
-  }
 
   /**
    * Activate plugin

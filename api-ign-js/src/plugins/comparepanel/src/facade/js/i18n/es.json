@@ -39,5 +39,8 @@
   "modViz9": "Dos mapas arriba y uno abajo",
   "backimglayersparams_undefined":"Los parámetros de BackImgLayers no están definidos correctamente.",
   "tooltipTimeline": "Línea de tiempo",
-  "titleTimeline": "Línea de tiempo"
+  "titleTimeline": "Línea de tiempo",
+  "tooltipTransparency": "Transparencia",
+  "transparency": "Transparencia",
+  "errorLayer": "Transparency: No se ha especificado una capa válida sobre la que aplicar el efecto"
 }

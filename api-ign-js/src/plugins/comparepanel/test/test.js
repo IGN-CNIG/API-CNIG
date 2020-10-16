@@ -5,12 +5,12 @@ M.language.setLang('es');
 const map = M.map({
   container: 'mapjs',
   center: [-467062.8225, 4683459.6216],
-  zoom: 6,
+  zoom: 9,
 });
 
 const pluginComparepanel = new Comparepanel({
   position: 'TR',
-  vertical:true,
+  vertical: false,
   baseLayers: [
     ["NACIONAL 1981-1986", "1986", "WMS*NACIONAL_1981-1986*https://www.ign.es/wms/pnoa-historico*NACIONAL_1981-1986"],
     ["OLISTAT", "1998", "WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT"],
@@ -20,5 +20,8 @@ const pluginComparepanel = new Comparepanel({
     ["PNOA 2006", "2006", "WMS*pnoa2006*https://www.ign.es/wms/pnoa-historico*pnoa2006"],
     ["PNOA 2010", "2010", "WMS*pnoa2010*https://www.ign.es/wms/pnoa-historico*pnoa2010"]
   ],
+  timelineParams: { animation: false, },
+  transparencyParams: { radius: 140, },
+  lyrcompareParams: { staticDivision: 2, }
 });
 map.addPlugin(pluginComparepanel);

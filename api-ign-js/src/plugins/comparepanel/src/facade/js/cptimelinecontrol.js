@@ -67,7 +67,7 @@ export default class TimelineControl extends M.Control {
       this.template = M.template.compileSync(template, {
         vars: {
           translations: {
-            title: getValue('titleTimeline'),
+            titleTimeline: getValue('titleTimeline'),
             play: getValue('play'),
           }
         }
@@ -242,8 +242,6 @@ export default class TimelineControl extends M.Control {
     }
     slider.value = parseFloat(slider.value) + 1;
     this.changeSlider(slider);
-    document.querySelector('.m-timeline-button button').classList.remove('cp-control-siguiente');
-    document.querySelector('.m-timeline-button button').classList.add('cp-control-pausa');
     this.running = setTimeout((e) => this.playTimeline(true), this.speed * 1000);
   }
 
@@ -270,7 +268,10 @@ export default class TimelineControl extends M.Control {
    * @api
    */
   activate() {
-    this.control_.activate();
+    clearInterval(this.running);
+    this.running = false;
+    document.querySelector('.m-timeline-button button').classList.add('cp-control-siguiente');
+    document.querySelector('.m-timeline-button button').classList.remove('cp-control-pausa');
   }
 
   /**
@@ -283,8 +284,6 @@ export default class TimelineControl extends M.Control {
   deactivate() {
     clearInterval(this.running);
     this.running = false;
-    document.querySelector('.m-timeline-button button').classList.add('cp-control-siguiente');
-    document.querySelector('.m-timeline-button button').classList.remove('cp-control-pausa');
     this.intervals.forEach((interval) => {
       this.getMapLayer(interval.service).setVisible(false);
     })

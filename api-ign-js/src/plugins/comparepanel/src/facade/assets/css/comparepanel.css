@@ -224,9 +224,11 @@ div#m-comparepanel-title {
 }
 
 .cp-control-pausa:before {
+	content: "\e901";
+}
+.cp-transparency-icon:before {
 	content: "\e900";
 }
-
 .cp-control-siguiente:before {
 	content: "\e828";
 }
@@ -365,7 +367,8 @@ div#m-comparepanel-title {
 
 .cp-mirrorpanel.m-panel-controls,
 .cp-timeline.m-panel-controls,
-.cp-lyrcompare.m-panel-controls {
+.cp-lyrcompare.m-panel-controls,
+.cp-transparency.m-panel-controls {
 	display: none;
 	position: absolute;
 	background-color: white;
@@ -374,9 +377,11 @@ div#m-comparepanel-title {
 .m-area.m-left .orientation-vertical .cp-mirrorpanel.m-panel-controls,
 .m-area.m-left .orientation-vertical .cp-timeline.m-panel-controls,
 .m-area.m-left .orientation-vertical .cp-lyrcompare.m-panel-controls,
+.m-area.m-left .orientation-vertical .cp-transparency.m-panel-controls,
 .m-area.m-right.m-bottom .orientation-horizontal .cp-mirrorpanel.m-panel-controls,
 .m-area.m-right.m-bottom .orientation-horizontal .cp-timeline.m-panel-controls,
-.m-area.m-right.m-bottom .orientation-horizontal .cp-lyrcompare.m-panel-controls{
+.m-area.m-right.m-bottom .orientation-horizontal .cp-lyrcompare.m-panel-controls,
+.m-area.m-right.m-bottom .orientation-horizontal .cp-transparency.m-panel-controls{
 	left: 0;
 	margin-left: 41px;
 	border-radius: 4px 0 4px 0 ;
@@ -385,67 +390,82 @@ div#m-comparepanel-title {
 .m-area.m-right .orientation-vertical .cp-mirrorpanel.m-panel-controls,
 .m-area.m-right .orientation-vertical .cp-timeline.m-panel-controls,
 .m-area.m-right .orientation-vertical .cp-lyrcompare.m-panel-controls,
+.m-area.m-right .orientation-vertical .cp-transparency.m-panel-controls,
 .m-area.m-left.m-top .orientation-horizontal .cp-mirrorpanel.m-panel-controls,
 .m-area.m-left.m-top .orientation-horizontal .cp-timeline.m-panel-controls,
 .m-area.m-left.m-top .orientation-horizontal .cp-lyrcompare.m-panel-controls,
+.m-area.m-left.m-top .orientation-horizontal .cp-transparency.m-panel-controls,
 .m-area.m-right.m-top .orientation-horizontal .cp-mirrorpanel.m-panel-controls,
 .m-area.m-right.m-top .orientation-horizontal .cp-timeline.m-panel-controls,
-.m-area.m-right.m-top .orientation-horizontal .cp-lyrcompare.m-panel-controls{
+.m-area.m-right.m-top .orientation-horizontal .cp-lyrcompare.m-panel-controls,
+.m-area.m-right.m-top .orientation-horizontal .cp-transparency.m-panel-controls{
 	right: 0;
 	margin-right: 41px;
 	border-radius: 4px 0 0 4px;
 }
 .m-area.m-bottom .cp-timeline.m-panel-controls,
-.m-area.m-bottom .cp-lyrcompare.m-panel-controls{
+.m-area.m-bottom .cp-lyrcompare.m-panel-controls,
+.m-area.m-bottom .cp-transparency.m-panel-controls{
 	bottom: 0;
 }
 
 .orientation-vertical.m-panel.m-plugin-comparepanel.opened {
 	transform: none;
 }
+.m-plugin-comparepanel.no-collapsible.opened.orientation-horizontal{
+	--translate: 64;
+}
+.m-plugin-comparepanel.opened.orientation-horizontal{
+	--translate: 84;
+}
+
 .m-area.m-right .orientation-horizontal{
 	--rotate: 270;
-	--translateX:-65px;
-	--translateY:-56px;
+	--translateX: calc(-1px * var(--translate));
+	--translateY: calc(-1px * var(--translate));
 }
 .m-area.m-left .orientation-horizontal{
 	--rotate: 270;
-	--translateX:65px;
-	--translateY:-56px;
+	--translateX: calc(1px * var(--translate));
+	--translateY: calc(-1px * var(--translate));
 }
 .m-area.m-bottom.m-right .orientation-horizontal{
 	--rotate: 270;
-	--translateX: -56px;
-	--translateY: 63px;
+	--translateX: calc(-1px * var(--translate));
+	--translateY: calc(1px * var(--translate));
 	--rotateY: 180deg;
 }
 .m-area.m-bottom.m-left .orientation-horizontal{
 	--rotate: 270;
-	--translateX: 56px;
-	--translateY: 63px;
+	--translateX: calc(1px * var(--translate));
+	--translateY: calc(1px * var(--translate));
 	--rotateY: 180deg;
 }
 .m-area.m-top .orientation-horizontal{
 	--rotateY: 180deg;
 }
 .m-area.m-top.m-right .orientation-horizontal .cp-lyrcompare,
+.m-area.m-top.m-right .orientation-horizontal .cp-transparency,
 .m-area.m-top.m-right .orientation-horizontal .cp-timeline{
 	--translateX: 0;
 	--translateY: 41px;
 	transform-origin: top right;
 }
 .m-area.m-top.m-left .orientation-horizontal .cp-lyrcompare,
+.m-area.m-top.m-left .orientation-horizontal .cp-transparency,
 .m-area.m-top.m-left .orientation-horizontal .cp-timeline{
 	--translateX:304px;
 	--translateY:0;
 }
 .m-area.m-bottom.m-right .orientation-horizontal .cp-lyrcompare,
+.m-area.m-bottom.m-right .orientation-horizontal .cp-transparency,
 .m-area.m-bottom.m-right .orientation-horizontal .cp-timeline{
 	--translateX:0;
 	--translateY:-306px;
 	transform-origin: bottom left;
 }
 .m-area.m-bottom.m-left .orientation-horizontal .cp-lyrcompare,
+.m-area.m-bottom.m-left .orientation-horizontal .cp-transparency,
 .m-area.m-bottom.m-left .orientation-horizontal .cp-timeline{
 	--translateX:-304px;
 	--translateY:141px;
@@ -456,6 +476,7 @@ div#m-comparepanel-title {
 	transform: translate(var(--translateX),var(--translateY)) rotate(calc(var(--rotate) * 1deg));
 }
 .orientation-horizontal .cp-lyrcompare,
+.orientation-horizontal .cp-transparency,
 .orientation-horizontal .cp-timeline{
 	transform: translate(var(--translateX),var(--translateY)) rotate(calc(var(--rotate) * -1deg));
 	transform-origin: 0 0;
@@ -475,7 +496,7 @@ div#m-comparepanel-title {
 	border: 0;
 	background: none;
 	width: 100%;
-	font-size: 21px;
+	font-size: 23px;
 	padding: 10px;
 	cursor: pointer;
 	color: #6f6f93;
