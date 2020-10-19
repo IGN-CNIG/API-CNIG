@@ -208,4 +208,11 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @type {object}
    */
   M.config('backgroundlayers', backgroundlayersOpts);
+
+  /**
+   * URL of sql wasm file
+   * @private
+   * @type {String}
+   */
+  M.config('SQL_WASM_URL', location.protocol + '${sql_wasm.url}');
 })(window.M);

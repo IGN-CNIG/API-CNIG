@@ -173,11 +173,13 @@ class Map extends MObject {
     const wfsLayers = this.getWFS(filters);
     const wmtsLayers = this.getWMTS(filters);
     const mvtLayers = this.getMVT(filters);
+    const mbtilesLayers = this.getMBTiles(filters);
     const unknowLayers = this.getUnknowLayers_(filters);
 
     return kmlLayers.concat(wmsLayers).concat(wfsLayers)
       .concat(wmtsLayers)
       .concat(mvtLayers)
+      .concat(mbtilesLayers)
       .concat(unknowLayers);
   }
 
@@ -236,6 +238,8 @@ class Map extends MObject {
         this.facadeMap_.addWFS(layer);
       } else if (layer.type === LayerType.MVT) {
         this.facadeMap_.addMVT(layer);
+      } else if (layer.type === LayerType.MBTiles) {
+        this.facadeMap_.addMBTiles(layer);
       } else if (!LayerType.know(layer.type)) {
         this.addUnknowLayers_([layer]);
       }
@@ -268,6 +272,7 @@ class Map extends MObject {
       this.removeWFS(knowLayers);
       this.removeWMTS(knowLayers);
       this.removeMVT(knowLayers);
+      this.removeMBTiles(knowLayers);
       this.removeMBtiles(knowLayers);
     }
 
@@ -860,8 +865,53 @@ class Map extends MObject {
    * @returns {Array<M.layer.MBtiles>} layers from the map
    * @api stable
    */
-  getMBtiles(filters) {
-    const foundLayers = [];
+  getMBTiles(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+
+    const allLayers = this.layers_;
+    const mbtilesLayers = allLayers.filter((layer) => {
+      return (layer.type === LayerType.MBTiles);
+    });
+
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = mbtilesLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredMBTilesLayers = mbtilesLayers.filter((mbtileLayer) => {
+          let layerMatched = true;
+          if (!foundLayers.includes(mbtileLayer)) {
+            // type
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === mbtileLayer.type));
+            }
+            // URL
+            if (!isNullOrEmpty(filterLayer.url)) {
+              layerMatched = (layerMatched && (filterLayer.url === mbtileLayer.url));
+            }
+            // name
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === mbtileLayer.name));
+            }
+            // legend
+            if (!isNullOrEmpty(filterLayer.legend)) {
+              layerMatched = (layerMatched && (filterLayer.legend === mbtileLayer.legend));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredMBTilesLayers);
+      });
+    }
     return foundLayers;
   }
 
@@ -873,12 +923,25 @@ class Map extends MObject {
    * @returns {Map}
    * @api stable
    */
-  addMBtiles(layers) {
+  addMBTiles(layers) {
+    const baseLayers = this.getBaseLayers();
+    const existsBaseLayer = (baseLayers.length > 0);
+
     layers.forEach((layer) => {
-      // checks if layer is MBtiles and was added to the map
-      if ((layer.type === LayerType.MBtiles) && !includes(this.layers_, layer)) {
-        // TODO creating and adding the MBtiles layer with ol3
-        this.layers_.push(layer);
+      // checks if layer is WFS and was added to the map
+      if (layer.type === LayerType.MBTiles) {
+        if (!includes(this.layers_, layer)) {
+          layer.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(layer);
+          layer.setZIndex(layer.getZIndex());
+          if (layer.getZIndex() == null) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.MBTiles];
+            layer.setZIndex(zIndex);
+          }
+          if (!existsBaseLayer) {
+            this.updateResolutionsFromBaseLayer();
+          }
+        }
       }
     });
 
@@ -893,11 +956,12 @@ class Map extends MObject {
    * @returns {Map}
    * @api stable
    */
-  removeMBtiles(layers) {
-    const mbtilesMapLayers = this.getMBtiles(layers);
+  removeMBTiles(layers) {
+    const mbtilesMapLayers = this.getMBTiles(layers);
     mbtilesMapLayers.forEach((mbtilesLayer) => {
-      // TODO removing the MBtiles layer with ol3
       this.layers_ = this.layers_.filter(layer => !layer.equals(mbtilesLayer));
+      mbtilesLayer.getImpl().destroy();
+      mbtilesLayer.fire(EventType.REMOVED_FROM_MAP, [mbtilesLayer]);
     });
 
     return this;
@@ -2027,5 +2091,6 @@ Map.Z_INDEX[LayerType.WFS] = 10;
 Map.Z_INDEX[LayerType.MVT] = 10;
 Map.Z_INDEX[LayerType.Vector] = 10;
 Map.Z_INDEX[LayerType.GeoJSON] = 10;
+Map.Z_INDEX[LayerType.MBTiles] = 10;
 
 export default Map;

@@ -34,6 +34,9 @@ entrypoint.config = config;
 
 module.exports = {
   mode: 'development',
+  node: {
+    fs: 'empty',
+  },
   entry: entrypoint,
   output: {
     filename: '[name].js',

@@ -251,6 +251,13 @@ function fun(M_) {
   M_.config('controls', {
     default: '',
   });
+
+  /**
+   * URL of sql wasm file
+   * @private
+   * @type {String}
+   */
+  M_.config('SQL_WASM_URL', '../../../../node_modules/sql.js/dist/');
 }
 
 fun(window.M);
