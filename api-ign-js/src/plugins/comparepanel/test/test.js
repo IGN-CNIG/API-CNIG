@@ -10,7 +10,8 @@ const map = M.map({
 
 const pluginComparepanel = new Comparepanel({
   position: 'TR',
-  vertical: false,
+  vertical: true,
+  collapsible: false,
   baseLayers: [
     ["NACIONAL 1981-1986", "1986", "WMS*NACIONAL_1981-1986*https://www.ign.es/wms/pnoa-historico*NACIONAL_1981-1986"],
     ["OLISTAT", "1998", "WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT"],
