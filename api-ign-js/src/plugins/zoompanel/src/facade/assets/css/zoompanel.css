@@ -31,6 +31,10 @@
     height: 40px;
 }
 
+#zoomToBox.active {
+  background-color: #71A7D3;
+  color: white;
+}
 
 /* Título */
 
