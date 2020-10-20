@@ -89,8 +89,7 @@ export default class ZoomPanelControl extends M.Control {
    */
   activate() {
     super.activate();
-    document.getElementById('zoomToBox').style.backgroundColor = '#71A7D3';
-    document.getElementById('zoomToBox').style.color = 'white';
+    document.getElementById('zoomToBox').classList.add('active');
     this.getImpl().activateClick(this.map_);
     document.addEventListener('keydown', this.checkEscKey.bind(this));
   }
@@ -111,8 +110,7 @@ export default class ZoomPanelControl extends M.Control {
    */
   deactivate() {
     super.deactivate();
-    document.getElementById('zoomToBox').style.backgroundColor = 'white';
-    document.getElementById('zoomToBox').style.color = '#7A7A73';
+    document.getElementById('zoomToBox').classList.remove('active');
     this.getImpl().deactivateClick(this.map_);
   }
 
