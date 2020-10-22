@@ -16,8 +16,6 @@ Plugin que permite realizar zoom con una caja sobre el mapa.
 
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
-
 - El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 

@@ -24,10 +24,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BL':bottom left 
   - 'BR':bottom right
 
-# Eventos
-
-# Otros métodos
-
 # Ejemplos de uso
 
 ```javascript
@@ -41,14 +37,4 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
    map.addPlugin(mp);
 });
-```
-
-```javascript
-   const map = M.map({
-     container: 'map'
-   });
-
-   const mp = new M.plugin.ViewHistory();
-
-   map.addPlugin(mp);
 ```

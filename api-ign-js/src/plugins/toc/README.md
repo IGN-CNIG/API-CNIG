@@ -47,35 +47,3 @@ Example: <url_mapea>?plugins=toc
 
    map.addPlugin(mp);
 ```
-
-
-### Plugin sin parámetros
-
-```
-{
-   "url": {
-      "name": "toc"
-   },
-   "constructor": "M.plugin.TOC"
-}
-```
-### Plugin con parámetros
-
-```
-{
-   "url": {
-      "name": "toc",
-      "separator": "*"
-   },
-   "constructor": "M.plugin.TOC",
-   "parameters": [{
-      "type": "object",
-      "properties": [{
-         "type": "simple",
-         "name": "position",
-         "position": 0,
-         "possibleValues": ["TL", "TR", "BR", "BL"]
-      }]
-   }]
-}
-```

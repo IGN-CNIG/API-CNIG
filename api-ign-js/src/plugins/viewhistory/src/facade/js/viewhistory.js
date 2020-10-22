@@ -31,7 +31,7 @@ export default class ViewHistory extends M.Plugin {
      * @type {String}
      * Possible values: 'TL', 'TR', 'BR', 'BL'
      */
-    this.position = options.position || 'TR';
+    this.position = options.position || 'TL';
 
     /**
      * Name of the plugin
