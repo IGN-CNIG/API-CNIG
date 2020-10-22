@@ -17,7 +17,9 @@ Plugin que permite la elección de cada de fondo mediante previsualización de l
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 
-- *position*.  Ubicación del plugin sobre el mapa (Default = 'BL')
+- *position*.  Ubicación del plugin sobre el mapa (Default = 'TR')
+  - 'TL' = Top left
+  - 'TR' = Top right
   - 'BL' = Bottom left
   - 'BR' = Bottom right
 - *collapsible*. Indica si el plugin se puede collapsar en un botón (true/false).
@@ -33,7 +35,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 
 # Ejemplo de uso
-
 ```javascript
    const map = M.map({
      container: 'map'
@@ -48,7 +49,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
             layerVisibility: true,
             layerOpts: [{
                     id: 'mapa',
-                    preview: 'plugins/backimglayer/images/svqmapa.png',
+                    preview: 'plugins/backimglayer/images/svqmapa.png', // ruta relativa, edite por la deseada
                     title: 'Mapa',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/ign-base?',
@@ -65,7 +66,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
                 {
                     id: 'imagen',
                     title: 'Imagen',
-                    preview: 'plugins/backimglayer/images/svqimagen.png',
+                    preview: 'plugins/backimglayer/images/svqimagen.png', // ruta relativa, edite por la deseada
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
@@ -81,7 +82,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
                 {
                     id: 'hibrido',
                     title: 'Híbrido',
-                    preview: 'plugins/backimglayer/images/svqhibrid.png',
+                    preview: 'plugins/backimglayer/images/svqhibrid.png', // ruta relativa, edite por la deseada
                     layers: [new M.layer.WMTS({
                             url: 'http://www.ign.es/wmts/pnoa-ma?',
                             name: 'OI.OrthoimageCoverage',
@@ -108,7 +109,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
                 },
                 {
                     id: 'lidar',
-                    preview: 'plugins/backimglayer/images/svqlidar.png',
+                    preview: 'plugins/backimglayer/images/svqlidar.png', // ruta relativa, edite por la deseada
                     title: 'LIDAR',
                     layers: [new M.layer.WMTS({
                         url: 'https://wmts-mapa-lidar.idee.es/lidar?',

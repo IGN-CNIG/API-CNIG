@@ -54,10 +54,6 @@ mp.on('xylocator:locationCentered', (data) => {
    center: ${data.center[0].toFixed(2)}, ${data.center[1].toFixed(2)}`);
 });
 ```
-
-# Otros métodos
-
-
 # Ejemplos de uso
 
 ```javascript
@@ -73,7 +69,7 @@ mp.on('xylocator:locationCentered', (data) => {
 ```
 
 ```javascript
-const mp = new XYLocator({
+const mp = new M.plugin.XYLocator({
   projections: [
     { title: 'WGS84 (4326)', code: 'EPSG:4326', units: 'd' },
     { title: 'ETRS89/UTM zone 31N (25831)', code: 'EPSG:25831', units: 'm' },
