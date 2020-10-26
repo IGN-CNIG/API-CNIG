@@ -273,7 +273,6 @@ class Map extends MObject {
       this.removeWMTS(knowLayers);
       this.removeMVT(knowLayers);
       this.removeMBTiles(knowLayers);
-      this.removeMBtiles(knowLayers);
     }
 
     if (unknowLayers.length > 0) {

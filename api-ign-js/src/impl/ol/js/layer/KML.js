@@ -73,7 +73,7 @@ class KML extends Vector {
      * @private
      * @type {bool}
      */
-    this.visibility = options.visibility;
+    this.visibility = options.visibility == null ? true : options.visibility;
   }
 
   /**
@@ -120,7 +120,7 @@ class KML extends Vector {
     this.updateSource_();
     // sets its visibility if it is in range
     // if (this.options.visibility !== false) {
-    this.setVisible(this.options.visibility);
+    this.setVisible(this.visibility);
     // }
     // sets its z-index
     if (this.zIndex_ !== null) {
