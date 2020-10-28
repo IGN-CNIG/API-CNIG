@@ -8,6 +8,18 @@
 	background-color: #fff;
 }
 
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical {
+	background-color: #71a7d3 !important;
+}
+
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button {
+	color: white !important;
+}
+
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button:focus {
+	outline: unset !important;
+}
+
 .m-plugin-comparepanel.collapsed {
 	height: 40px;
 }
@@ -517,4 +529,3 @@ div#m-comparepanel-title {
 .m-plugin-comparepanel .m-panel-btn{
 	box-shadow: none !important;
 }
-
