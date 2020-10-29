@@ -44,11 +44,29 @@
         text-align: center;
     }
 
+    .m-plugin-comparepanel.orientation-vertical .cp-mirrorpanel.m-panel-controls,
+    .m-plugin-comparepanel.orientation-vertical .cp-lyrcompare.m-panel-controls,
+    .m-plugin-comparepanel.orientation-vertical .cp-timeline.m-panel-controls,
+    .m-plugin-comparepanel.orientation-vertical .cp-transparency.m-panel-controls {
+      background-color: transparent !important;
+      right: 2px !important;
+    }
+
     .div-m-transparency-panel {
         padding-top: 1px;
         background-color: white;
         width: 19rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
+        border-radius: 5px;
     }
+
+  .m-plugin-comparepanel.orientation-vertical div.div-m-mirrorpanel-panel,
+  .m-plugin-comparepanel.orientation-vertical div.m-lyrcompare-container,
+  .m-plugin-comparepanel.orientation-vertical div.m-timeline-container {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
+  }
 
     .div-m-transparency-transparent-radius {
         display: flex;
