@@ -176,8 +176,9 @@ export default class CompareMirrorpanel extends M.Control {
         });
 
       // Apply default vision
-      this.manageVisionPanelByCSSGrid(this.modeViz);
+     
       success(this.template);
+      this.manageVisionPanelByCSSGrid(this.modeViz);
     });
 
   }
