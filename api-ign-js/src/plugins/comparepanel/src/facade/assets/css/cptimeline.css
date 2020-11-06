@@ -198,3 +198,7 @@ div#m-timeline-title {
 #m-timeline-play:hover {
     color: #8cbee6;
 }
+
+#m-timeline-play:focus {
+    outline: unset;
+}

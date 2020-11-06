@@ -14,7 +14,6 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
   constructor(options) {
     super(options);
     this.layers_ = [];
-
     ol.interaction.Pointer.call(this, {
       handleDownEvent: this.setPosition,
       handleMoveEvent: this.setPosition,
@@ -46,16 +45,17 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
         this.layers_[i].precompose = this.layers_[i].postcompose = null;
         /* eslint-enable */
       }
+
       this.getMap().renderSync();
     }
 
     ol.interaction.Pointer.prototype.setMap.call(this, map);
-
     if (map) {
       for (i = 0; i < this.layers_.length; i += 1) {
         this.layers_[i].precompose = this.layers_[i].on('precompose', this.precompose_.bind(this));
         this.layers_[i].postcompose = this.layers_[i].on('postcompose', this.postcompose_.bind(this));
       }
+
       map.renderSync();
     }
   }
@@ -100,6 +100,7 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
           break;
         }
       }
+
       if (k !== this.layers_.length && this.getMap()) {
         if (this.layers_[k].precompose) ol.Observable.unByKey(this.layers_[k].precompose);
         if (this.layers_[k].postcompose) ol.Observable.unByKey(this.layers_[k].postcompose);
@@ -122,6 +123,7 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
       e = [-10000000, -10000000];
       /* eslint-enable */
     }
+
     if (this.getMap()) this.getMap().renderSync();
   }
 
@@ -130,7 +132,6 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
   precompose_(e) {
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
-
     ctx.save();
     ctx.beginPath();
     ctx.arc(this.pos[0] * ratio, this.pos[1] * ratio, this.radius * ratio, 0, 2 * Math.PI);

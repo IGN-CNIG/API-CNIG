@@ -3,7 +3,7 @@
   "title": "Panel de Comparadores",
   "play": "Iniciar",
   "pause": "Parar",
-  "excepcion": "La implementación usada no puede crear controles ComparepanelControl",
+  "exception": "La implementación usada no puede crear controles ComparepanelControl",
   "intervals_error": "Los intervalos no fueron definidos correctamente",
   "tooltipLyr": "Comparador de capas",
   "tooltip_vcurtain": "Cortina vertical",
@@ -37,10 +37,10 @@
   "modViz7": "Tres mapas en proporción 2-1-1",
   "modViz8": "Un mapa arriba y dos abajo",
   "modViz9": "Dos mapas arriba y uno abajo",
-  "backimglayersparams_undefined":"Los parámetros de BackImgLayers no están definidos correctamente.",
   "tooltipTimeline": "Línea de tiempo",
   "titleTimeline": "Línea de tiempo",
   "tooltipTransparency": "Transparencia",
   "transparency": "Transparencia",
-  "errorLayer": "Transparency: No se ha especificado una capa válida sobre la que aplicar el efecto"
+  "errorLayer": "Transparency: No se ha especificado una capa válida sobre la que aplicar el efecto",
+  "nolayertext": "Ninguna capa"
 }

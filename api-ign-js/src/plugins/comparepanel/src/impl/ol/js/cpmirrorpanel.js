@@ -19,6 +19,7 @@ export default class CompareMirrorpanel extends M.impl.Control {
         this.dblClickInteraction_ = interaction;
       }
     });
+
     super.addTo(map, html);
   }
 }

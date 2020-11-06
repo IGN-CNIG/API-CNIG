@@ -43,6 +43,10 @@ div.m-plugin-panelMirrorpanel.opened{
 	background-color: #fff;
 }
 
+.div-m-mirrorpanel-panel {
+	/*padding: .7rem;*/
+}
+
 .m-mirrorpanel-effect-buttoms {
 	padding: 0.6rem 0.2rem;
 	text-align: center;
@@ -135,8 +139,8 @@ Estilos del botón
   */
 
 .mirrorpanel-grid.modeViz0 {
-	grid-template-columns: 100% !important;
-	grid-template-rows: 100% !important;
+	grid-template-columns: 1fr !important;
+	grid-template-rows: 1fr !important;
 	grid-template-areas: 'mirror1' !important;
 }
 
@@ -146,8 +150,8 @@ Estilos del botón
   */
 
 .mirrorpanel-grid.modeViz1 {
-	grid-template-columns: 50% 50% !important;
-	grid-template-rows: 100% !important;
+	grid-template-columns: 1fr 1fr !important;
+	grid-template-rows: 1fr !important;
 	grid-template-areas: 'mirror1 mirror2' !important;
 }
 
@@ -158,8 +162,8 @@ Estilos del botón
 */
 
 .mirrorpanel-grid.modeViz2 {
-	grid-template-columns: 100% !important;
-	grid-template-rows: 50% 50% !important;
+	grid-template-columns: 1fr !important;
+	grid-template-rows: 1fr 1fr !important;
 	grid-template-areas: 'mirror1' 'mirror2' !important;
 }
 
@@ -169,8 +173,8 @@ Estilos del botón
 */
 
 .mirrorpanel-grid.modeViz3 {
-	grid-template-columns: 33.33% 33.33% 33.33% !important;
-	grid-template-rows: 100% !important;
+	grid-template-columns: 1fr 1fr 1fr !important;
+	grid-template-rows: 1fr !important;
 	grid-template-areas: 'mirror1 mirror2 mirror3' !important;
 }
 
@@ -180,8 +184,8 @@ Estilos del botón
 */
 
 .mirrorpanel-grid.modeViz4 {
-	grid-template-columns: 25% 25% 25% 25% !important;
-	grid-template-rows: 100% !important;
+	grid-template-columns: 1fr 1fr 1fr 1fr !important;
+	grid-template-rows: 1fr !important;
 	grid-template-areas: 'mirror1 mirror2 mirror3 mirror4' !important;
 }
 
@@ -192,8 +196,8 @@ Estilos del botón
 */
 
 .mirrorpanel-grid.modeViz5 {
-	grid-template-columns: 50% 50% !important;
-	grid-template-rows: 50% 50% !important;
+	grid-template-columns: 1fr 1fr !important;
+	grid-template-rows: 1fr 1fr !important;
 	grid-template-areas: 'mirror1 mirror2' 'mirror3 mirror4' !important;
 }
 
@@ -206,8 +210,8 @@ Estilos del botón
 */
 
 .mirrorpanel-grid.modeViz6 {
-	grid-template-columns: 100% !important;
-	grid-auto-rows: 25% 25% 25% 25% !important;
+	grid-template-columns: 1fr !important;
+	grid-auto-rows: 1fr 1fr 1fr 1fr !important;
 	grid-template-areas: 'mirror1' 'mirror2' 'mirror3' 'mirror4' !important;
 }
 
@@ -217,8 +221,8 @@ Estilos del botón
 */
 
 .mirrorpanel-grid.modeViz7 {
-	grid-template-columns: 50% 25% 25% !important;
-	grid-template-rows: 100% !important;
+	grid-template-columns: 2fr 1fr 1fr !important;
+	grid-template-rows: 1fr !important;
 	grid-template-areas: 'mirror1 mirror2 mirror3' !important;
 }
 
@@ -229,8 +233,8 @@ Estilos del botón
 */
 
 .mirrorpanel-grid.modeViz8 {
-	grid-template-columns: 50% 50% !important;
-	grid-template-rows: 50% 50% !important;
+	grid-template-columns: 1fr 1fr !important;
+	grid-template-rows: 1fr 1fr !important;
 	grid-template-areas: 'mirror1 mirror1' 'mirror2 mirror3' !important;
 }
 
@@ -241,7 +245,7 @@ Estilos del botón
 */
 
 .mirrorpanel-grid.modeViz9 {
-	grid-template-columns: 50% 50% !important;
-	grid-template-rows: 50% 50% !important;
+	grid-template-columns: 1fr 1fr !important;
+	grid-template-rows: 1fr 1fr !important;
 	grid-template-areas: 'mirror1 mirror2' 'mirror3 mirror3' !important;
 }

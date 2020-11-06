@@ -4,9 +4,7 @@
 import 'assets/css/cplyrcompare';
 import LyrCompareControl from './cplyrcomparecontrol';
 import api from '../../api';
-import {
-  getValue
-} from './i18n/language';
+import { getValue } from './i18n/language';
 
 export default class LyrCompare extends M.Plugin {
   /**
@@ -49,7 +47,7 @@ export default class LyrCompare extends M.Plugin {
       if (Array.isArray(options.layers)) {
         this.layers = options.layers;
       } else {
-        this.layers = options.layers.split(",");
+        this.layers = options.layers.split(',');
       }
     }
 
@@ -171,6 +169,7 @@ export default class LyrCompare extends M.Plugin {
       } else {
         this.defaultLyrB = parseInt(options.defaultLyrB);
       }
+
       if (this.defaultLyrA === this.defaultLyrB) {
         M.dialog.error(getValue('repeated_layers'), 'lyrcompare');
         this.error_ = true;
@@ -186,6 +185,7 @@ export default class LyrCompare extends M.Plugin {
       } else {
         this.defaultLyrC = parseInt(options.defaultLyrC);
       }
+
       if ((this.defaultLyrA === this.defaultLyrC) || (this.defaultLyrB === this.defaultLyrC)) {
         M.dialog.error(getValue('repeated_layers'), 'lyrcompare');
         this.error_ = true;
@@ -201,6 +201,7 @@ export default class LyrCompare extends M.Plugin {
       } else {
         this.defaultLyrD = parseInt(options.defaultLyrD);
       }
+
       if ((this.defaultLyrA === this.defaultLyrD) || (this.defaultLyrB === this.defaultLyrD) || (this.defaultLyrC === this.defaultLyrD)) {
         M.dialog.error(getValue('repeated_layers'), 'lyrcompare');
         this.error_ = true;
@@ -231,6 +232,7 @@ export default class LyrCompare extends M.Plugin {
       defaultLyrD: this.defaultLyrD,
       interface: this.interface,
     };
+
     this.control_ = new LyrCompareControl(values);
     this.controls_.push(this.control_);
     if (this.error_) {
@@ -254,6 +256,7 @@ export default class LyrCompare extends M.Plugin {
           className: 'm-plugin-lyrcompare-hidden',
         });
       }
+
       this.panel_.addControls(this.controls_);
       map.addPanels(this.panel_);
     }
@@ -273,6 +276,7 @@ export default class LyrCompare extends M.Plugin {
     if (swipeControl) {
       swipeControl.remove();
     }
+
     this.map_.removeControls([this.control_]);
     this.control_.removeCurtainLayers(this.control_.getLayersNames());
     [this.name_, this.error_, this.layers, this.controls_, this.map_, this.position, this.collapsed, this.collapsible,
@@ -337,9 +341,6 @@ export default class LyrCompare extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof LyrCompare) {
-      return true;
-    }
-    return false;
+    return plugin instanceof LyrCompare;
   }
 }

@@ -1,12 +1,13 @@
 /**
- * @module M/plugin/Transparency
+ * @module M/plugin/Lyrdropdown
  */
-import 'assets/css/cptransparency';
-import TransparencyControl from './cptransparencycontrol';
-import api from '../../api';
-import { getValue } from './i18n/language';
 
-export default class Transparency extends M.Plugin {
+import 'assets/css/lyrdropdown';
+import LyrdropdownControl from './lyrdropdowncontrol';
+import api from '../../api';
+import { getValue } from './i18n/language';   //e2m: Multilanguage support
+
+export default class Lyrdropdown extends M.Plugin {
   /**
    * @classdesc
    * Main facade plugin object. This class creates a plugin
@@ -25,7 +26,7 @@ export default class Transparency extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.name_ = 'transparency';
+    this.name_ = 'lyrdropdown';
 
     /**
      * Facade of the map
@@ -46,7 +47,7 @@ export default class Transparency extends M.Plugin {
      * @public
      * @type {string}
      */
-    this.className = 'm-plugin-transparency';
+    this.className = 'm-plugin-lyrdropdown';
 
     /**
      * Position of the Plugin
@@ -54,7 +55,24 @@ export default class Transparency extends M.Plugin {
      * Posible values: TR | TL | BL | BR
      * @type {String}
      */
-    this.position = options.position;
+    const positions = ['TR', 'TL', 'BL', 'BR'];
+    this.position = positions.includes(options.position) ? options.position : 'TR';
+
+    /**
+     * Collapsed attribute
+     * @public
+     * @type {boolean}
+     */
+    this.collapsed = options.collapsed;
+    if (this.collapsed === undefined) this.collapsed = true;
+
+    /**
+     * Collapsible attribute
+     * @public
+     * @type {boolean}
+     */
+    this.collapsible = options.collapsible;
+    if (this.collapsible === undefined) this.collapsible = true;
 
     /**
      * Layer names that will have effects
@@ -62,9 +80,9 @@ export default class Transparency extends M.Plugin {
      * Value: the names separated with coma
      * @type {string}
      */
-    if (options.layers === undefined || options.layers === '') {
-      M.dialog.error(getValue('errorLayer'));
-      this.layers = [];
+    this.layers = [];
+    if (options.layers === undefined) {
+      M.dialog.error('No se ha especificado una capa válida sobre la que aplicar el efecto');
     } else {
       if (Array.isArray(options.layers)) {
         this.layers = options.layers;
@@ -74,23 +92,10 @@ export default class Transparency extends M.Plugin {
     }
 
     /**
-     * Transparent effect radius
-     * Value: number in range 30 - 200
-     * @type {number}
-     * @public
+     *@private
+     *@type { string }
      */
-
-    if (!isNaN(parseInt(options.radius))) {
-      if (options.radius >= 30 && options.radius <= 200) {
-        this.radius = parseInt(options.radius);
-      } else if (options.radius > 200) {
-        this.radius = 200;
-      } else if (options.radius < 30) {
-        this.radius = 30;
-      }
-    } else {
-      this.radius = 100; // Default value
-    }
+    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
      * Metadata from api.json
@@ -98,28 +103,6 @@ export default class Transparency extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
-
-    this.separatorApiJson = api.url.separator;
-
-    /**
-     *@private
-     *@type { string }
-     */
-    this.tooltip_ = options.tooltip || getValue('tooltip');
-
-    /**
-     * Collapsed attribute
-     * @public
-     * @type {boolean}
-     */
-    this.collapsed = options.collapsed || true;
-
-    /**
-     * Collapsible attribute
-     * @public
-     * @type {boolean}
-     */
-    this.collapsible = options.collapsible || true;
   }
 
   /**
@@ -131,20 +114,22 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    const values = {
+    const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
+    this.control_ = new LyrdropdownControl({
+      pluginOnLeft,
+      collapsible:  this.collapsible,
+      collapsed:  this.collapsed,
       layers: this.layers,
-      radius: this.radius,
-    };
+    });
 
-    this.control_ = new TransparencyControl(values);
     this.controls_.push(this.control_);
     this.map_ = map;
-    this.panel_ = new M.ui.Panel('panelTransparency', {
+    // panel para agregar control - no obligatorio
+    this.panel_ = new M.ui.Panel('panelLyrdropdown', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
-      position: M.ui.position[this.position],
-      className: this.className,
-      collapsedButtonClass: 'icon-gps4',
+      position: M.ui.position[this.position], //M.ui.position.TR
+      collapsedButtonClass: 'g-cartografia-flecha-izquierda',
       tooltip: this.tooltip_,
     });
 
@@ -160,10 +145,8 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   destroy() {
-    this.control_.removeEffects();
-    this.control_.removeTransparencyLayers(this.control_.getLayersNames());
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.collapsible,this.collapsed,this.layers] = [null, null, null, null, null, null];
   }
 
   /**
@@ -177,19 +160,31 @@ export default class Transparency extends M.Plugin {
     return this.name_;
   }
 
+
+
   /**
    * This function gets metadata plugin
    *
    * @public
-   * @getter
+   * @function
    * @api stable
-   * @return {Object}
    */
-  getMetadata() {
+  getMetadata(){
     return this.metadata_;
   }
 
   /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position}*${this.collapsible}*${this.collapsed}*${this.layers.join(',')}`;
+  }
+
+    /**
    * Activate plugin
    *
    * @function
@@ -214,7 +209,6 @@ export default class Transparency extends M.Plugin {
   /**
    * This
    function compare
-   if pluging recieved by param is instance of M.plugin.Transparency
    *
    * @public
    * @function
@@ -222,6 +216,7 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    return plugin instanceof Transparency;
+    return plugin instanceof Lyrdropdown;
   }
+
 }
