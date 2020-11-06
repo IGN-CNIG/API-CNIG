@@ -118,7 +118,7 @@
         color: #71a7d3;
     }
 
-    .m-areas>div.m-area>div.m-panel>button.m-panel-btn.g-cartografia-flecha-izquierda {
+    .m-areas>div.m-area>div.m-panel.m-plugin-comparepanel>button.m-panel-btn.g-cartografia-flecha-izquierda {
         color: #71a7d3 !important;
     }
 
