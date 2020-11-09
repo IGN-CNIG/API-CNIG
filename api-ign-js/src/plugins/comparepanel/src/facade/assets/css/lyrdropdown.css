@@ -5,9 +5,6 @@
 .m-panel.m-plugin-comparepanel .g-cartografia-flecha-derecha {
   color: #536DFE !important;
 }
-.m-control.activated>button {
-  color: rgb(255, 0, 0) !important;
-}
 
 /** Estilos propios*/
 .m-lyrdropdown-select select {

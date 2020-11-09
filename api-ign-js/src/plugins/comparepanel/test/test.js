@@ -12,21 +12,23 @@ M.language.setLang('es');//Español
 
 const map = M.map({
   container: 'mapjs',
-  center: {
-    x: -667143.31,
-    y: 4493011.77,
-    draw: false,
-  },
-  controls: ['scale','location'],
-  projection: 'EPSG:3857*m',
-  zoom: 6,
+  controls: ['location'],
+  center: [-412300, 4926700],
+  resolutions: [51444.18059766173, 25722.090298830866, 12861.045149415433,
+    6430.522574707717, 3215.2612873538583, 1607.6306436769291, 803.8153218384646,
+    401.9076609192323, 200.95383045961614, 100.47691522980807, 50.238457614904036,
+    25.119228807452018, 12.559614403726009, 6.2798072018630045, 3.1399036009315022,
+    1.5699518004657511, 0.7849759002328756, 0.3699518004657511, 0.18497590023287555,
+  ],
+  zoom: 14,
+  minZoom: 14,
 });
 
 /**
  * Plugin Comparador
  */
 
-const pluginComparepanel = new Comparepanel({
+/*const pluginComparepanel = new Comparepanel({
   position: 'TR',
   vertical: true,
   collapsed: false,
@@ -58,6 +60,28 @@ const pluginComparepanel = new Comparepanel({
   transparencyParams: { radius: 140, },
   lyrcompareParams: { staticDivision: 2, },
   mirrorpanelParams: { showCursors: true, }
+});*/
+
+const pluginComparepanel = new Comparepanel({
+  position: 'TR',
+  vertical: true,
+  collapsible: false,
+  baseLayers: [
+    ['Plano de Mancelli, 1622', '1622', 'WMS*Mancelli 1622*https://www.ign.es/wms/planos*MancelliMadrid'],
+    ['Plano de Texeira, 1656', '1656', 'WMS*Texeira 1656*https://www.ign.es/wms/planos*Texeira'],
+    ['Plano de Nicolás Chalmandrier, 1761', '1761', 'WMS*Chalmandrier 1761*https://www.ign.es/wms/planos*ChalmadrierMadrid'],
+    ['Plano de Espinosa de los Monteros, 1769', '1769', 'WMS*Espinosa de los Monteros 1769*https://www.ign.es/wms/planos*EspinosaMadrid'],
+    ['Plano Geométrico de Madrid de Tomás López, 1785', '1785', 'WMS*Tomás López 1785*https://www.ign.es/wms/planos*GeometricoMadrid'],
+    ['Plano de Madoz y Coello, 1848', '1848', 'WMS*Madoz y Coello 1848*https://www.ign.es/wms/planos*madozMadrid'],
+    ['Plano de Facundo Cañada, 1900', '1900', 'WMS*Facundo Cañada 1900*https://www.ign.es/wms/planos*facundoMadrid'],
+    ['Plano de Nuñez Granés, 1910', '1910', 'WMS*Nuñez Granés 1910*https://www.ign.es/wms/planos*nunezMadrid'],
+    ['Plano parcelario, 1929', '1929', 'WMS*Parcelario 1929*https://www.ign.es/wms/planos*ayuntamientoMadrid'],
+    ['Plano parcelario, 1940', '1940', 'WMS*Parcelario 1940*https://www.ign.es/wms/planos*parcelarioMadrid'],
+  ],
+  timelineParams: { animation: true },
+  transparencyParams: { radius: 140 },
+  lyrcompareParams: { staticDivision: 2 },
+  mirrorpanelParams: { showCursors: true },
 });
 
 map.addPlugin(pluginComparepanel);

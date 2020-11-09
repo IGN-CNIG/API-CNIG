@@ -86,19 +86,21 @@ export default class ComparepanelControl extends M.Control {
   }
 
   addComparators(map) {
-    this.plugins.forEach((p) => {
+    this.plugins.forEach((p, index) => {
       map.addPlugin(p);
       this.panels.push(p.panel_._element);
       let element = document.querySelector('.' + p.panel_._className + ' .m-panel-controls');
       element.classList.add('cp-' + p.name);
       document.querySelector('.' + p.panel_._className).remove();
       this.template.querySelector('#m-cp-' + p.name).append(element);
+      if (index === this.plugins.length - 1) {
+        this.addButtonEvents();
+      }
     });
-
-    this.addButtonEvents();
   }
 
   addButtonEvents() {
+    console.log(this.plugins);
     this.plugins.forEach(p => {
       this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
         this.deactivateAndActivate(p);
