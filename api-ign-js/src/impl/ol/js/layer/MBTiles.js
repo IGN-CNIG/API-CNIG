@@ -11,6 +11,9 @@ import ImplMap from '../Map';
 import Layer from './Layer';
 import * as LayerType from '../../../../facade/js/layer/Type';
 import TileProvider from '../../../../facade/js/provider/Tile';
+
+const DEFAULT_WHITE_TILE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAQAAAD2e2DtAAABu0lEQVR42u3SQREAAAzCsOHf9F6oIJXQS07TxQIABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAgAACwAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAAsAEAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAKg9kK0BATSHu+YAAAAASUVORK5CYII=';
+
 /**
  * Default tile size of MBTiles
  * @const
@@ -50,41 +53,55 @@ class MBTiles extends Layer {
   constructor(userParameters, options = {}, vendorOptions) {
     // calls the super constructor
     super(options, vendorOptions);
+
+    /**
+     * User tile load function
+     * @private
+     * @type {function}
+     */
+    this.tileLoadFunction_ = userParameters.tileLoadFunction || null;
+
     /**
      * MBTiles url
      * @private
      * @type {string}
      */
     this.url_ = userParameters.url;
+
     /**
      * MBTiles source
      * @type {ArrayBuffer|Uint8Array|Response|File}
      */
     this.source_ = userParameters.source;
+
     /**
      * Tile size (default value 256)
      * @private
      * @type {number}
      */
     this.tileSize_ = typeof userParameters.tileSize === 'number' ? userParameters.tileSize : DEFAULT_TILE_SIZE;
+
     /**
      * Layer extent
      * @private
      * @type {Mx.Extent}
      */
     this.maxExtent_ = userParameters.maxExtent || null;
+
     /**
      * Min zoom level
      * @private
      * @type {number}
      */
     this.minZoomLevel_ = typeof userParameters.minZoomLevel === 'number' ? userParameters.minZoomLevel : 0;
+
     /**
      * Max zoom level
      * @private
      * @type {number}
      */
     this.maxZoomLevel_ = typeof userParameters.maxZoomLevel === 'number' ? userParameters.maxZoomLevel : 0;
+
     /**
      * Layer opacity
      * @private
@@ -115,32 +132,59 @@ class MBTiles extends Layer {
     const projection = getProj('EPSG:3857');
     const extent = projection.getExtent();
     const resolutions = generateResolutions(extent, this.tileSize_, 16);
-    this.fetchSource().then((tileProvider) => {
-      this.tileProvider_ = tileProvider;
-      this.ol3Layer = new OLLayerTile({
-        visible: this.visibility,
-        opacity: this.opacity_,
-        zIndex: this.zIndex_,
-        extent,
-        source: new MBTilesSource({
+
+    this.ol3Layer = new OLLayerTile({
+      visible: this.visibility,
+      opacity: this.opacity_,
+      zIndex: this.zIndex_,
+      extent,
+    });
+    this.map.getMapImpl().addLayer(this.ol3Layer);
+    if (!this.tileLoadFunction_) {
+      this.fetchSource().then((tileProvider) => {
+        this.tileProvider_ = tileProvider;
+        const source = new MBTilesSource({
           projection,
-          tileLoadFunction: tile => this.loadTile(tile, tileProvider),
+          tileLoadFunction: tile => this.loadTileWithProvider(tile, tileProvider),
           tileGrid: new TileGrid({
             extent,
             origin: getBottomLeft(extent),
             resolutions,
           }),
+        });
+        this.ol3Layer.setSource(source);
+      });
+    } else {
+      const source = new MBTilesSource({
+        projection,
+        tileLoadFunction: tile => this.loadTile(tile),
+        tileGrid: new TileGrid({
+          extent,
+          origin: getBottomLeft(extent),
+          resolutions,
         }),
       });
-      this.map.getMapImpl().addLayer(this.ol3Layer);
-    });
+      this.ol3Layer.setSource(source);
+    }
   }
-  loadTile(tile, tileProvider) {
+
+  loadTile(tile) {
+    const imgTile = tile;
+    const tileCoord = tile.getTileCoord();
+    let tileSrc = this.tileLoadFunction_(tileCoord[0], tileCoord[1], -tileCoord[2] - 1);
+    if (!tileSrc) {
+      tileSrc = DEFAULT_WHITE_TILE;
+    }
+    imgTile.getImage().src = tileSrc;
+  }
+
+  loadTileWithProvider(tile, tileProvider) {
     const imgTile = tile;
     const tileCoord = tile.getTileCoord();
     const tileSrc = tileProvider.getTile([tileCoord[0], tileCoord[1], -tileCoord[2] - 1]);
     imgTile.getImage().src = tileSrc;
   }
+
   fetchSource() {
     return new Promise((resolve, reject) => {
       if (this.tileProvider_) {
