@@ -237,7 +237,7 @@ export default class CompareMirrorpanel extends M.Control {
 
     const mapjsA = document.getElementById('mapjs') || document.getElementById('map');
     this.oldClass = mapjsA.classList.toString();
-    document.body.insertBefore(bigContainer, mapjsA);
+    mapjsA.parentElement.insertBefore(bigContainer, mapjsA);
     mapjsA.classList.add('mirror1');
     bigContainer.appendChild(mapjsA);
 
