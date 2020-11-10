@@ -21,6 +21,7 @@ export default class TimelineControl extends M.Control {
     if (M.utils.isUndefined(TimelineImplControl)) {
       M.exception(getValue('exception'));
     }
+
     // 2. implementation of this control
     const impl = new TimelineImplControl();
     super(impl, 'Timeline');
@@ -28,6 +29,7 @@ export default class TimelineControl extends M.Control {
     this.animation = options.animation;
     this.speed = options.speed;
     this.intervals = options.intervals;
+
     /**
      * Template
      * @public
@@ -54,24 +56,28 @@ export default class TimelineControl extends M.Control {
         if (copy !== undefined) {
           this.map.removeLayers(copy);
         }
+
         this.map.addLayers(layer);
         let iv = {
           number: k,
           name: interval[0],
           tag: interval[1],
           service: layer
-        }
+        };
+
         intervals.push(iv);
       });
+
       this.intervals = intervals;
       this.template = M.template.compileSync(template, {
         vars: {
           translations: {
             titleTimeline: getValue('titleTimeline'),
             play: getValue('play'),
-          }
-        }
+          },
+        },
       });
+
       this.intervals.forEach((interval, k) => {
         let tag = document.createElement('div');
         if (k != 0 && k != this.intervals.length - 1 && k != parseInt(this.intervals.length / 2)) {
@@ -79,8 +85,10 @@ export default class TimelineControl extends M.Control {
         } else {
           tag.dataset.tag = interval.tag;
         }
+
         this.template.querySelector('.slider-tags').append(tag);
       });
+
       this.template.querySelector('.div-m-timeline-panel').style.setProperty('--num', this.intervals.length);
       const slider = this.template.querySelector('#input-slider');
       slider.setAttribute('max', intervals.length - 1);
@@ -92,6 +100,7 @@ export default class TimelineControl extends M.Control {
         clearTimeout(this.running);
         this.running = false;
       });
+
       const play = this.template.querySelector('#m-timeline-play');
       play.addEventListener('click', (e) => this.playTimeline(false));
       success(this.template);
@@ -100,7 +109,7 @@ export default class TimelineControl extends M.Control {
 
   /**
    * Transform StringLayers to Mapea M.Layer
-   * 
+   *
    * WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*EPSG:25830*PNOA
    * WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo
    *
@@ -115,15 +124,18 @@ export default class TimelineControl extends M.Control {
     if (!(layer instanceof Object)) {
       if (layer.indexOf('*') >= 0) {
         const urlLayer = layer.split('*');
-        if (urlLayer[0].toUpperCase() == 'WMS') {
+        if (urlLayer[0].toUpperCase() === 'WMS') {
           newLayer = new M.layer.WMS({
             url: urlLayer[2],
             name: urlLayer[3]
           });
-        } else if (urlLayer[0].toUpperCase() == 'WMTS') {
+        } else if (urlLayer[0].toUpperCase() === 'WMTS') {
           newLayer = new M.layer.WMTS({
             url: urlLayer[2],
-            name: urlLayer[3]
+            name: urlLayer[3],
+            legend: urlLayer[1],
+            matrixSet: urlLayer[4],
+            format: urlLayer[5],
           });
         }
       } else {
@@ -134,6 +146,7 @@ export default class TimelineControl extends M.Control {
       const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[0];
       newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
     }
+
     if (newLayer !== null) {
       newLayer.displayInLayerSwitcher = false;
       newLayer.setVisible(false);
@@ -157,15 +170,18 @@ export default class TimelineControl extends M.Control {
     if(this.animation || this.intervals[0].name !== ''){
       document.querySelector('.m-timeline-names').style.display = 'block';
     }
+
     if (this.animation) {
       document.querySelector('.m-timeline-button').style.display = 'block';
     }
+
     let step = parseFloat(elem.value);
     this.intervals.forEach((interval) => {
       this.getMapLayer(interval.service).setVisible(false);
       document.querySelector('.m-timeline-names').innerHTML = '';
     });
-    if (step % 1 == 0) {
+
+    if (step % 1 === 0) {
       document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 20 + 'px');
       this.getMapLayer(this.intervals[step].service).setVisible(true);
       document.querySelector('.m-timeline-names').innerHTML = this.intervals[step].name;
@@ -193,7 +209,6 @@ export default class TimelineControl extends M.Control {
       }
     }
   }
-
 
   /** This function search a layer in the map
    *
@@ -223,6 +238,7 @@ export default class TimelineControl extends M.Control {
       document.querySelector('.m-timeline-button button').classList.remove('cp-control-pausa');
       clearTimeout(this.running);
     }
+
     if (!next) {
       if (step > start && step < end && this.running) {
         this.running = false;
@@ -232,14 +248,17 @@ export default class TimelineControl extends M.Control {
         step = start;
       }
     }
+
     if (step >= end) {
       slider.value = 0;
       this.changeSlider(slider);
       return;
     }
+
     if (step < start) {
       step = start;
     }
+
     slider.value = parseFloat(slider.value) + 1;
     this.changeSlider(slider);
     this.running = setTimeout((e) => this.playTimeline(true), this.speed * 1000);
@@ -259,7 +278,6 @@ export default class TimelineControl extends M.Control {
     })
   }
 
-  
   /**
    * Activate plugin
    *

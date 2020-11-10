@@ -18,7 +18,6 @@ export default class Lyrcomparecontrol extends M.impl.Control {
     // super addTo - don't delete
     this.map = map;
     this.olMap = map.getMapImpl();
-
     super.addTo(map, html);
   }
 
@@ -32,10 +31,8 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   effectSelectedCurtain(lyrA, lyrB, lyrC, lyrD, opacityVal, staticDivision, comparisonMode) {
-
     lyrA.setVisible(true);
     lyrB.setVisible(true);
-
     this.transparentInteraction_ = new LyrcompareInteraction({
       opacityVal,
       lyrA,
@@ -59,9 +56,7 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   setVisibilityLayersCD() {
-
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setVisibilityLayersCD();
-
   }
 
   /**
@@ -73,9 +68,7 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   setOpacity(opacityVal) {
-
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setOpacity(opacityVal);
-
   }
 
   /**
@@ -89,7 +82,6 @@ export default class Lyrcomparecontrol extends M.impl.Control {
   setComparisonMode(comparisonMode) {
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setComparisonMode(comparisonMode);
     this.setVisibilityLayersCD();
-
   }
 
   /**
@@ -126,9 +118,7 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    */
   removeEffectsCurtain() {
     this.olMap.removeInteraction(this.transparentInteraction_);
-
   }
-
 
   /**
    * Remove layer
@@ -140,7 +130,5 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    */
   removeLayer(layer) {
     this.transparentInteraction_.removeLayer(layer.getImpl().getOL3Layer());
-
   }
-
 }

@@ -15,7 +15,6 @@ export default class ComparepanelControl extends M.impl.Control {
   addTo(map, html) {
     this.map = map;
     this.olMap = map.getMapImpl();
-
     super.addTo(map, html);
   }
 }

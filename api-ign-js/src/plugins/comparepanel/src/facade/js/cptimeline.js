@@ -116,6 +116,7 @@ export default class Timeline extends M.Plugin {
       animation: this.animation,
       speed: this.speed,
     });
+
     this.controls_.push(this.control_);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelTimeline', {
@@ -125,6 +126,7 @@ export default class Timeline extends M.Plugin {
       collapsedButtonClass: 'timeline-gestion-reloj2',
       tooltip: this.tooltip_,
     });
+
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
@@ -165,7 +167,7 @@ export default class Timeline extends M.Plugin {
   getMetadata() {
     return this.metadata_;
   }
-  
+
   /**
    * Activate plugin
    *
@@ -199,9 +201,6 @@ export default class Timeline extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof Timeline) {
-      return true;
-    }
-    return false;
+    return plugin instanceof Timeline;
   }
 }

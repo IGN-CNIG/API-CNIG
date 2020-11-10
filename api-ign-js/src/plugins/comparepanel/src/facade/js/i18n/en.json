@@ -3,7 +3,7 @@
   "title": "Comparepanel",
   "play": "Play",
   "pause": "Pause",
-  "excepcion": "The implementation used cannot create comparepanelControl controls",
+  "exception": "The implementation used cannot create comparepanelControl controls",
   "intervals_error": "The intervals were not defined correctly",
   "tooltipLyr": "Layer Comparison",
   "tooltip_vcurtain": "Vertical curtain",
@@ -37,10 +37,10 @@
   "modViz7": "Vertical 2-1-1 proportional maps",
   "modViz8": "One map above and two below",
   "modViz9": "Two maps above and one below",
-  "backimglayersparams_undefined":"BackImgLayers' parameters are not defined correctly.",
   "tooltipTimeline": "Timeline",
   "titleTimeline": "Timeline",
   "tooltipTransparency": "Transparency",
   "transparency": "Transparency",
-  "errorLayer": "Transparency: No valid layer specified on which to apply the effect"
+  "errorLayer": "Transparency: No valid layer specified on which to apply the effect",
+  "nolayertext": "No layer selected"
 }

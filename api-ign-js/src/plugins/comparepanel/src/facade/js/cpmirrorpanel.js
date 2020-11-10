@@ -1,6 +1,7 @@
 /**
  * @module M/plugin/Mirrorpanel
  */
+
 import 'assets/css/cpmirrorpanel';
 import MirrorpanelControl from './cpmirrorpanelcontrol';
 import api from '../../api';
@@ -79,14 +80,6 @@ export default class Mirrorpanel extends M.Plugin {
     if (this.modeViz === undefined) this.modeViz = 0;
 
     /**
-     * Mirror maps with plugins
-     * @type {boolean}
-     * @public
-     */
-    this.enabledPlugins = options.enabledPlugins;
-    if (this.enabledPlugins === undefined) this.enabledPlugins = true;
-
-    /**
      * Enabled key functions
      * @type {boolean}
      * @public
@@ -108,13 +101,12 @@ export default class Mirrorpanel extends M.Plugin {
      * Value: the names separated with coma
      * @type {string}
      */
-
     this.mirrorLayers = [];
     if (options.mirrorLayers !== undefined) {
       if (Array.isArray(options.mirrorLayers)) {
         this.mirrorLayers = options.mirrorLayers;
       } else {
-        this.mirrorLayers = options.mirrorLayers.split(",");
+        this.mirrorLayers = options.mirrorLayers.split(',');
       }
     }
 
@@ -124,45 +116,27 @@ export default class Mirrorpanel extends M.Plugin {
      * Value: the names separated with coma
      * @type {string}
      */
-
     this.defaultBaseLyrs = [];
     if (options.defaultBaseLyrs !== undefined) {
       if (Array.isArray(options.defaultBaseLyrs)) {
         this.defaultBaseLyrs = options.defaultBaseLyrs;
       } else {
-        this.defaultBaseLyrs = options.defaultBaseLyrs.split(",");
+        this.defaultBaseLyrs = options.defaultBaseLyrs.split(',');
       }
     }
 
     /**
-     * BackImgLayers' Parameters
-     * @public
-     * Value: object with backimglayers' parameters
-     * @type {Object}
-     */
-    this.backImgLayersParams = options.backImgLayersParams;
-    if (options.backImgLayersParams !== undefined) {
-      if (M.utils.isObject(options.backImgLayersParams)) {
-        let bIL = new M.plugin.BackImgLayer(options.backImgLayersParams);
-        this.backImgLayersParams = bIL.getAPIRest().replace('backimglayer=', '').replace(/\*!/g, '!!');
-      }
-
-    }
-
-    /** 
      * Show interface
      *@public
      *@type{boolean}
      */
     this.interface = options.interface === undefined ? true : options.interface;
 
-
     /**
      *@private
      *@type { string }
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
-
 
     /**
      * Metadata from api.json
@@ -182,63 +156,54 @@ export default class Mirrorpanel extends M.Plugin {
    */
   addTo(map) {
     const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
-
     const values = {
       pluginOnLeft,
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       modeViz: this.modeViz,
-      enabledPlugins: this.enabledPlugins,
       showCursors: this.showCursors,
       mirrorLayers: this.mirrorLayers,
       defaultBaseLyrs: this.defaultBaseLyrs,
-      backImgLayersParams: this.backImgLayersParams
     };
 
     this.control_ = new MirrorpanelControl(values);
     this.controls_.push(this.control_);
     this.map_ = map;
-
     this.panel_ = new M.ui.Panel('panelMirrorpanel', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position],
       modeViz: this.modeViz,
-      enabledPlugins: this.enabledPlugins,
       showCursors: this.showCursors,
       className: this.interface ? 'm-plugin-panelMirrorpanel' : 'm-plugin-panelMirrorpanel hidden',
       collapsedButtonClass: 'mirrorpanel-icon',
       tooltip: this.tooltip_,
     });
+
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
 
-    // Check if backimglayer is main map and backImgLayersParams is defined. If not, throw a error.
-    if (this.map_.getControls("BackImgLayer").length > 0 && this.backImgLayersParams === undefined) {
-      M.dialog.error(getValue('backimglayersparams_undefined'));
-    }
     // Keybindings for Ctrl + Shift + (F1-F8) / ESC
     document.addEventListener('keydown', (zEvent) => {
       if (!this.enabledKeyFunctions) {
         return;
       }
+
       for (let i = 0; i < 10; i++) {
-        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "F" + (i + 1)) {  // case sensitive
+        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'F' + (i + 1)) {  // case sensitive
           this.control_.manageVisionPanelByCSSGrid(i);
         }
       }
-      var keyStr = ["Control", "Shift", "Alt", "Meta"].includes(zEvent.key) ? "" : zEvent.key;
 
-      var combinedKeys = (zEvent.ctrlKey ? "Control " : "") +
-        (zEvent.shiftKey ? "Shift " : "") +
-        (zEvent.altKey ? "Alt " : "") +
-        (zEvent.metaKey ? "Meta " : "") + keyStr;
-      if (combinedKeys === "Escape") {
+      const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
+      const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '') +
+        (zEvent.shiftKey ? 'Shift ' : '') +
+        (zEvent.altKey ? 'Alt ' : '') +
+        (zEvent.metaKey ? 'Meta ' : '') + keyStr;
+      if (combinedKeys === 'Escape') {
         this.control_.manageVisionPanelByCSSGrid(0);
       }
-
     });
-
   }
 
   /**
@@ -253,7 +218,7 @@ export default class Mirrorpanel extends M.Plugin {
     this.control_.removeMaps();
     this.control_.destroyMapsContainer();
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.modeViz, this.enabledPlugins, this.enabledKeyFunctions, this.showCursors, this.mirrorLayers, this.defaultBaseLyrs, this.backImgLayersParams, this.interface] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.modeViz, this.enabledKeyFunctions, this.showCursors, this.mirrorLayers, this.defaultBaseLyrs, this.backImgLayersParams, this.interface] = [null, null, null, null, null, null, null, null, null, null, null, null];
   }
 
   /**
@@ -299,6 +264,4 @@ export default class Mirrorpanel extends M.Plugin {
   deactivate() {
     this.control_.deactivate();
   }
-
-
 }

@@ -8,7 +8,6 @@ import { getValue } from './i18n/language';
 import Mirrorpanel from './cpmirrorpanel';
 import Timeline from './cptimeline';
 import LyrCompare from './cplyrcompare';
-import { getValue as getValueTranslate } from './i18n/language';
 import Transparency from './cptransparency';
 
 export default class ComparepanelControl extends M.Control {
@@ -35,7 +34,6 @@ export default class ComparepanelControl extends M.Control {
      * @type { HTMLElement }
      */
     this.template = null;
-
     this.baseLayers = options.baseLayers;
     this.position = options.position;
     this.layers = [];
@@ -43,9 +41,10 @@ export default class ComparepanelControl extends M.Control {
     this.params = [options.mirrorpanelParams, options.timelineParams, options.lyrcompareParams, options.transparencyParams];
     this.params.forEach(p => {
       p.position = this.position;
-    })
+    });
+
     options.mirrorpanelParams.defaultBaseLyrs = this.layers;
-    options.timelineParams.intervals = this.baseLayers;
+    options.timelineParams.intervals = this.baseLayers;         //e2m: TimeLine needs this.baseLayers with the time param
     options.lyrcompareParams.layers = this.layers;
     options.transparencyParams.layers = this.layers;
 
@@ -54,7 +53,6 @@ export default class ComparepanelControl extends M.Control {
     this.lyrcompare = new LyrCompare(options.lyrcompareParams);
     this.transparency = new Transparency(options.transparencyParams);
     this.panels = [];
-
     this.plugins = [this.mirrorpanel, this.timeline, this.lyrcompare, this.transparency];
   }
 
@@ -73,13 +71,14 @@ export default class ComparepanelControl extends M.Control {
         jsonp: true,
         vars: {
           translations: {
-            tooltipLyr: getValueTranslate('tooltipLyr'),
-            tooltipMirrorpanel: getValueTranslate('tooltipMirrorpanel'),
-            tooltipTimeline: getValueTranslate('tooltipTimeline'),
-            tooltipTransparency: getValueTranslate('tooltipTransparency'),
+            tooltipLyr: getValue('tooltipLyr'),
+            tooltipMirrorpanel: getValue('tooltipMirrorpanel'),
+            tooltipTimeline: getValue('tooltipTimeline'),
+            tooltipTransparency: getValue('tooltipTransparency'),
           }
         }
-      }
+      };
+
       this.template = M.template.compileSync(template, options);
       success(this.template);
       this.addComparators(map);
@@ -87,18 +86,21 @@ export default class ComparepanelControl extends M.Control {
   }
 
   addComparators(map) {
-    this.plugins.forEach((p) => {
+    this.plugins.forEach((p, index) => {
       map.addPlugin(p);
       this.panels.push(p.panel_._element);
-      let element = document.querySelector("." + p.panel_._className + " .m-panel-controls");
+      let element = document.querySelector('.' + p.panel_._className + ' .m-panel-controls');
       element.classList.add('cp-' + p.name);
-      document.querySelector("." + p.panel_._className).remove();
+      document.querySelector('.' + p.panel_._className).remove();
       this.template.querySelector('#m-cp-' + p.name).append(element);
+      if (index === this.plugins.length - 1) {
+        this.addButtonEvents();
+      }
     });
-    this.addButtonEvents();
   }
 
   addButtonEvents() {
+    console.log(this.plugins);
     this.plugins.forEach(p => {
       this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
         this.deactivateAndActivate(p);
@@ -112,12 +114,15 @@ export default class ComparepanelControl extends M.Control {
         this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').classList.remove('active');
       }
+
       p.deactivate();
     });
+
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.toggle('active');
-    if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name == 'transparency') {
+    if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name === 'transparency') {
       plugin.activate();
     }
+
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-' + plugin.name).classList.toggle('hide-panel');
   }
 
@@ -126,8 +131,10 @@ export default class ComparepanelControl extends M.Control {
       p.deactivate();
       document.querySelector('.m-plugin-comparepanel').parentElement.append(this.panels[k]);
     });
+
     this.map.removePlugins(this.plugins);
   }
+
   /**
    * This function compares controls
    *

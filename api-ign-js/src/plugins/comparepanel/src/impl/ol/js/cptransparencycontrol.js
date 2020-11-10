@@ -19,7 +19,6 @@ export default class TransparencyControl extends M.impl.Control {
     // super addTo - don't delete
     this.map = map;
     this.olMap = map.getMapImpl();
-
     super.addTo(map, html);
   }
 
@@ -77,7 +76,6 @@ export default class TransparencyControl extends M.impl.Control {
   removeEffects() {
     this.olMap.removeInteraction(this.transparentInteraction_);
   }
-
 
   /**
    * Remove layer

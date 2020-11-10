@@ -8,6 +8,16 @@
 	background-color: #fff;
 }
 
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical {
+	background-color: #71a7d3 !important;
+}
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button {
+	color: white;
+}
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button:focus {
+	outline: unset !important;
+}
+
 .m-plugin-comparepanel.collapsed {
 	height: 40px;
 }
@@ -514,7 +524,26 @@ div#m-comparepanel-title {
 	color: #98bddb;
 }
 
-.m-plugin-comparepanel .m-panel-btn{
-	box-shadow: none !important;
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button.cp-button.active {
+	background-color: #d1e6f8;
+	color: #364b5f;
 }
 
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button:hover {
+	background-color: #d1e6f8;
+	color: #364b5f;
+}
+
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical #m-cp-mirrorpanel > button {
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+}
+
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical #m-cp-transparency > button {
+	border-bottom-right-radius: 20px;
+	border-bottom-left-radius: 20px;
+}
+
+.m-plugin-comparepanel .m-panel-btn {
+	box-shadow: none !important;
+}

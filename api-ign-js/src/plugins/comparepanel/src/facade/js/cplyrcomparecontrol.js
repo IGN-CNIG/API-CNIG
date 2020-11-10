@@ -4,15 +4,13 @@
 
 import LyrcompareImplControl from 'impl/cplyrcomparecontrol';
 import template from 'templates/cplyrcompare';
-import {
-  getValue as getValueTranslate
-} from './i18n/language';
+import { getValue } from './i18n/language';
 
-Array.prototype.unique = function (a) {
-  return function () {
+Array.prototype.unique = (a) => {
+  return () => {
     return this.filter(a)
-  }
-}(function (a, b, c) {
+  };
+}; ((a, b, c) => {
   return c.indexOf(a, b + 1) < 0
 });
 
@@ -29,8 +27,9 @@ export default class LyrCompareControl extends M.Control {
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(LyrcompareImplControl)) {
-      M.exception('La implementación usada no puede crear controles LyrCompareControl');
+      M.exception(getValue('exception'));
     }
+
     // 2. implementation of this control
     const impl = new LyrcompareImplControl();
     super(impl, 'LyrCompare');
@@ -152,16 +151,18 @@ export default class LyrCompareControl extends M.Control {
     if (this.interface === false || this.comparisonMode > 0) {
       this.on(M.evt.ADDED_TO_MAP, (e) => {
         this.activateCurtain();
-      })
+      });
     }
+
     this.map = map;
     return new Promise((success, fail) => {
       this.layers = this.transformToLayers(this.layers);
       if (this.layers.length >= 2) {
         if (this.comparisonMode === 3 && this.layers.length < 4) {
-          M.dialog.error(getValueTranslate('no_layers_plugin'), 'lyrcompare');
+          M.dialog.error(getValue('no_layers_plugin'), 'lyrcompare');
           this.comparisonMode = 0;
         }
+
         let isLoad = this.allLayerLoad();
         if (isLoad) {
           this.setFunctionsAndCompile(success);
@@ -172,11 +173,10 @@ export default class LyrCompareControl extends M.Control {
               clearInterval(idInterval);
               this.setFunctionsAndCompile(success);
             }
-          },
-            200);
+          }, 200);
         }
       } else {
-        M.dialog.error(getValueTranslate('no_layers_plugin'), 'lyrcompare');
+        M.dialog.error(getValue('no_layers_plugin'), 'lyrcompare');
       }
     });
   }
@@ -190,14 +190,14 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   setFunctionsAndCompile(success) {
-    let layers = this.layers.map(function (layer) {
+    let layers = this.layers.map((layer) => {
       return layer instanceof Object ? {
         name: layer.name,
         legend: layer.legend
       } : {
-          name: layer,
-          legend: layer
-        };
+        name: layer,
+        legend: layer
+      };
     });
 
     const options = {
@@ -206,30 +206,27 @@ export default class LyrCompareControl extends M.Control {
         options: layers,
         comparisonMode: this.comparisonMode,
         translations: {
-          tooltip_vcurtain: getValueTranslate('tooltip_vcurtain'),
-          tooltip_hcurtain: getValueTranslate('tooltip_hcurtain'),
-          tooltip_multicurtain: getValueTranslate('tooltip_multicurtain'),
-          opacity: getValueTranslate('opacity'),
-          static: getValueTranslate('static'),
-          dynamic: getValueTranslate('dynamic'),
-          mixed: getValueTranslate('mixed'),
-          layer: getValueTranslate('layer'),
-          opacity_tooltip: getValueTranslate('opacity_tooltip'),
-          static_tooltip: getValueTranslate('static_tooltip'),
-          dynamic_tooltip: getValueTranslate('dynamic_tooltip'),
-          mixed_tooltip: getValueTranslate('mixed_tooltip'),
-          lyrLeftSelect_tooltip: getValueTranslate('lyrLeftSelect_tooltip'),
-          lyrRightSelect_tooltip: getValueTranslate('lyrRightSelect_tooltip')
+          tooltip_vcurtain: getValue('tooltip_vcurtain'),
+          tooltip_hcurtain: getValue('tooltip_hcurtain'),
+          tooltip_multicurtain: getValue('tooltip_multicurtain'),
+          opacity: getValue('opacity'),
+          static: getValue('static'),
+          dynamic: getValue('dynamic'),
+          mixed: getValue('mixed'),
+          layer: getValue('layer'),
+          opacity_tooltip: getValue('opacity_tooltip'),
+          static_tooltip: getValue('static_tooltip'),
+          dynamic_tooltip: getValue('dynamic_tooltip'),
+          mixed_tooltip: getValue('mixed_tooltip'),
+          lyrLeftSelect_tooltip: getValue('lyrLeftSelect_tooltip'),
+          lyrRightSelect_tooltip: getValue('lyrRightSelect_tooltip')
         }
       }
     }
 
     //config a helper in Handlebars for embedding conditionals in template
-    Handlebars.registerHelper('ifCond', function (v1, v2, options) {
-      if (v1 === v2) {
-        return options.fn(this);
-      }
-      return options.inverse(this);
+    Handlebars.registerHelper('ifCond', (v1, v2, options) => {
+      return v1 === v2 ? options.fn(this) : options.inverse(this);
     });
 
     //template with default options
@@ -237,33 +234,32 @@ export default class LyrCompareControl extends M.Control {
     this.setEventsAndValues();
     this.updateControls();
 
-    if (this.layers.length == 0) {
-      M.dialog.error(getValueTranslate('no_layers_plugin'));
+    if (this.layers.length === 0) {
+      M.dialog.error(getValue('no_layers_plugin'));
     } else {
       //e2m: Toogle activate/desactivate vcurtain, hcurtain, multicurtain ---> comparisonMode = 1, 2, 3
-      this.template.querySelectorAll('button[id^="m-lyrcompare-"]')
-        .forEach((button, i) => {
-          button.addEventListener('click', evt => {
-            if (this.comparisonMode === 0) {
-              this.comparisonMode = i + 1;
-              this.activateCurtain();
-              return;
-            } else if (this.comparisonMode === i + 1) {
-              this.comparisonMode = 0;
-              this.deactivateCurtain();
-              return;
-            } else {
-              //Cambiamos de modo de visualización sin apagar/encender la interacción
-              this.comparisonMode = i + 1;
-              this.updateControls();
-              this.getImpl().setComparisonMode(this.comparisonMode);
-            }
-          })
-        });
+      this.template.querySelectorAll('button[id^="m-lyrcompare-"]').forEach((button, i) => {
+        button.addEventListener('click', evt => {
+          if (this.comparisonMode === 0) {
+            this.comparisonMode = i + 1;
+            this.activateCurtain();
+            return;
+          } else if (this.comparisonMode === i + 1) {
+            this.comparisonMode = 0;
+            this.deactivateCurtain();
+            return;
+          } else {
+            //Cambiamos de modo de visualización sin apagar/encender la interacción
+            this.comparisonMode = i + 1;
+            this.updateControls();
+            this.getImpl().setComparisonMode(this.comparisonMode);
+          }
+        })
+      });
     }
+
     return success(this.template);
   }
-
 
   /**
    * This function set events and values to template
@@ -305,52 +301,39 @@ export default class LyrCompareControl extends M.Control {
     });
 
     this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
-
       item.addEventListener('change', evt => {
-
-        const layer = this.layers.filter(function (layer) {
-
+        const layer = this.layers.filter((layer) => {
           return layer.name === evt.target.value
-
         });
 
         let lstLayers = [];
-
-        if (item.id === "m-lyrcompare-lyrA") {
-
+        if (item.id === 'm-lyrcompare-lyrA') {
           lstLayers = [layer[0].name, this.layerSelectedB.name, this.layerSelectedC.name, this.layerSelectedD.name];
-
-        } else if (item.id === "m-lyrcompare-lyrB") {
-
+        } else if (item.id === 'm-lyrcompare-lyrB') {
           lstLayers = [this.layerSelectedA.name, layer[0].name, this.layerSelectedC.name, this.layerSelectedD.name];
-
-        } else if (item.id === "m-lyrcompare-lyrC") {
-
+        } else if (item.id === 'm-lyrcompare-lyrC') {
           lstLayers = [this.layerSelectedA.name, this.layerSelectedB.name, layer[0].name, this.layerSelectedD.name];
-
-        } else if (item.id === "m-lyrcompare-lyrD") {
-
+        } else if (item.id === 'm-lyrcompare-lyrD') {
           lstLayers = [this.layerSelectedA.name, this.layerSelectedB.name, this.layerSelectedC.name, layer[0].name];
-
         }
 
         //e2m: de esta forma pasamos los parámetros en forma de array
-
         if (this.checkLayersAreDifferent(...lstLayers) === false) {
-          M.dialog.info(getValueTranslate('advice_sameLayer'));
-          if (item.id === "m-lyrcompare-lyrA") {
+          M.dialog.info(getValue('advice_sameLayer'));
+          if (item.id === 'm-lyrcompare-lyrA') {
             this.template.querySelector('#' + item.id).value = this.layerSelectedA.name
-          } else if (item.id === "m-lyrcompare-lyrB") {
+          } else if (item.id === 'm-lyrcompare-lyrB') {
             this.template.querySelector('#' + item.id).value = this.layerSelectedB.name
-          } else if (item.id === "m-lyrcompare-lyrC") {
+          } else if (item.id === 'm-lyrcompare-lyrC') {
             this.template.querySelector('#' + item.id).value = this.layerSelectedC.name
-          } else if (item.id === "m-lyrcompare-lyrD") {
+          } else if (item.id === 'm-lyrcompare-lyrD') {
             this.template.querySelector('#' + item.id).value = this.layerSelectedD.name
           }
+
           return false;
         }
 
-        if (item.id === "m-lyrcompare-lyrA") {
+        if (item.id === 'm-lyrcompare-lyrA') {
           if (layer[0].name === this.layerSelectedC.name) {
             this.layerSelectedC.setVisible(false);
             this.layerSelectedC = this.layerSelectedA;
@@ -362,8 +345,7 @@ export default class LyrCompareControl extends M.Control {
             this.layerSelectedD = this.layerSelectedA;
             this.template.querySelector('#m-lyrcompare-lyrD').value = this.layerSelectedA.name
           }
-
-        } else if (item.id === "m-lyrcompare-lyrB") {
+        } else if (item.id === 'm-lyrcompare-lyrB') {
           if (layer[0].name === this.layerSelectedC.name) {
             this.layerSelectedC.setVisible(false);
             this.layerSelectedC = this.layerSelectedB;
@@ -375,27 +357,26 @@ export default class LyrCompareControl extends M.Control {
             this.layerSelectedD = this.layerSelectedB;
             this.template.querySelector('#m-lyrcompare-lyrD').value = this.layerSelectedB.name
           }
-
         }
-        if (item.id === "m-lyrcompare-lyrA") {
+
+        if (item.id === 'm-lyrcompare-lyrA') {
           this.layerSelectedA.setVisible(false);
           this.layerSelectedA = layer[0];
-        } else if (item.id === "m-lyrcompare-lyrB") {
+        } else if (item.id === 'm-lyrcompare-lyrB') {
           this.layerSelectedB.setVisible(false);
           this.layerSelectedB = layer[0];
-
-        } else if (item.id === "m-lyrcompare-lyrC") {
+        } else if (item.id === 'm-lyrcompare-lyrC') {
           this.layerSelectedC.setVisible(false);
           this.layerSelectedC = layer[0];
-        } else if (item.id === "m-lyrcompare-lyrD") {
+        } else if (item.id === 'm-lyrcompare-lyrD') {
           this.layerSelectedD.setVisible(false);
           this.layerSelectedD = layer[0];
         }
+
         this.removeEffectsComparison();
         this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
-
-      })
-    })
+      });
+    });
   }
 
   /**
@@ -412,17 +393,15 @@ export default class LyrCompareControl extends M.Control {
    * @return {Boolean}
    */
   checkLayersAreDifferent(lyerA, lyerB, lyerC, lyerD) {
+    let res = true;
     if ((this.comparisonMode === 1) || (this.comparisonMode === 2)) {
-      if (lyerA === lyerB) {
-        return false
-      }
+      res = lyerA !== lyerB;
     } else {
       let compLyers = [lyerA, lyerB, lyerC, lyerD];
-      if (compLyers.length !== compLyers.unique().length) {
-        return false
-      }
+      res = compLyers.length === compLyers.unique().length;
     }
-    return true;
+
+    return res;
   }
 
   /**
@@ -450,14 +429,17 @@ export default class LyrCompareControl extends M.Control {
       this.layerSelectedA = this.layers[this.defaultLyrA];
       this.template.querySelector('#m-lyrcompare-lyrA').selectedIndex = this.defaultLyrA;
     }
+
     if (this.layerSelectedB === null) {
       this.layerSelectedB = this.layers[this.defaultLyrB];
       this.template.querySelector('#m-lyrcompare-lyrB').selectedIndex = this.defaultLyrB;
     }
+
     if (this.layerSelectedC === null) {
       this.layerSelectedC = this.layers[this.defaultLyrC];
       this.template.querySelector('#m-lyrcompare-lyrC').selectedIndex = this.defaultLyrC;
     }
+
     if (this.layerSelectedD === null) {
       this.layerSelectedD = this.layers[this.defaultLyrD];
       this.template.querySelector('#m-lyrcompare-lyrD').selectedIndex = this.defaultLyrD;
@@ -476,19 +458,21 @@ export default class LyrCompareControl extends M.Control {
     if (swipeControl) {
       swipeControl.classList.display = 'none !important';
     }
+
     this.comparisonMode = 0;
     if (this.layerSelectedA !== null && this.layerSelectedB !== null) {
       this.layerSelectedA.setVisible(false);
       this.layerSelectedB.setVisible(false);
     }
+
     if (this.layerSelectedC !== null && this.layerSelectedD !== null && this.layerSelectedC !== undefined && this.layerSelectedD !== undefined) {
       this.layerSelectedC.setVisible(false);
       this.layerSelectedD.setVisible(false);
     }
+
     this.removeEffectsComparison();
     this.updateControls();
   }
-
 
   /**
    * This function is called to remove the effects
@@ -506,29 +490,28 @@ export default class LyrCompareControl extends M.Control {
    *
    */
   updateControls() {
-
     this.removeActivate();
     this.activateByMode();
-
     const swapControl = document.querySelector('.lyrcompare-swipe-control');
-    if (this.comparisonMode == 0) {
+    if (this.comparisonMode === 0) {
       this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
         item.disabled = true;
       });
+
       this.template.querySelector('input').disabled = true; //Deshabilita el range del radio
       return;
     } else if (this.comparisonMode === 1) {
       if (swapControl) swapControl.style.opacity = '1';
-      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add("cp-columns-2");
-      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add("cp-columns-1");
+      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add('cp-columns-2');
+      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add('cp-columns-1');
       this.template.querySelector('#m-lyrcompare-lyrA-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrB-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrA').disabled = false;
       this.template.querySelector('#m-lyrcompare-lyrB').disabled = false;
     } else if (this.comparisonMode === 2) {
       if (swapControl) swapControl.style.opacity = '1';
-      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add("cp-columns-4");
-      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add("cp-columns-3");
+      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add('cp-columns-4');
+      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add('cp-columns-3');
       this.template.querySelector('#m-lyrcompare-lyrA-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrB-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrA').disabled = false;
@@ -538,16 +521,17 @@ export default class LyrCompareControl extends M.Control {
       this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
         item.disabled = false;
       });
-      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add("cp-th-large-1");
-      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add("cp-th-large-2");
-      this.template.querySelector('#m-lyrcompare-lyrC-lbl').classList.add("cp-th-large-3");
-      this.template.querySelector('#m-lyrcompare-lyrD-lbl').classList.add("cp-th-large-4");
 
+      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add('cp-th-large-1');
+      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add('cp-th-large-2');
+      this.template.querySelector('#m-lyrcompare-lyrC-lbl').classList.add('cp-th-large-3');
+      this.template.querySelector('#m-lyrcompare-lyrD-lbl').classList.add('cp-th-large-4');
       this.template.querySelector('#m-lyrcompare-lyrA-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrB-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrC-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrD-cont').style.display = 'block';
     }
+
     this.template.querySelector('input').disabled = false; //Habilita el range del radio
   }
 
@@ -594,7 +578,6 @@ export default class LyrCompareControl extends M.Control {
           let name = urlLayer[3]
           const layerByUrl = this.map.getLayers().filter(l => name.includes(l.name))[this.map.getLayers().filter(l => name.includes(l.name)).length - 1];
           this.map.removeLayers(layerByUrl);
-
         } else {
           const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[this.map.getLayers().filter(l => layer.includes(l.name)).length - 1];
           this.map.removeLayers(layerByName);
@@ -607,12 +590,13 @@ export default class LyrCompareControl extends M.Control {
   }
 
   allLayerLoad() {
+    let res = true;
     if (this.layers[0].load === undefined || this.layers[1].load === undefined &&
       (this.layers[2] !== undefined && this.layers[3] !== undefined && (this.layers[2].load === undefined || this.layers[3].load === undefined))) {
-      return false;
-    } else {
-      return true;
+      res = false;
     }
+
+    return res;
   }
 
   /**
@@ -624,27 +608,33 @@ export default class LyrCompareControl extends M.Control {
    * @return
    */
   transformToLayers(layers) {
-    const transform = layers.map(function (layer) {
+    const transform = layers.map((layer) => {
       let newLayer = null;
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
-          if (urlLayer[0].toUpperCase() == 'WMS') {
+          if (urlLayer[0].toUpperCase() === 'WMS') {
             newLayer = new M.layer.WMS({
               url: urlLayer[2],
-              name: urlLayer[3]
+              name: urlLayer[3],
+              legend: urlLayer[1],
             });
+
             if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
               newLayer = this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0];
-            }else{
+              newLayer.legend = urlLayer[1] || newLayer.name;
+            } else {
               this.map.addLayers(newLayer);
             }
-            
-          } else if (urlLayer[0].toUpperCase() == 'WMTS') {
+          } else if (urlLayer[0].toUpperCase() === 'WMTS') {
             newLayer = new M.layer.WMTS({
-              url: urlLayer[1],
-              name: urlLayer[2]
+              url: urlLayer[2],
+              name: urlLayer[3],
+              legend: urlLayer[1],
+              matrixSet: urlLayer[4],
+              format: urlLayer[5],
             });
+
             this.map.addLayers(newLayer);
           }
         } else {
@@ -659,7 +649,7 @@ export default class LyrCompareControl extends M.Control {
       if (newLayer !== null) {
         if (newLayer.getImpl().getOL3Layer() === null) {
           setTimeout(() => {
-            if (newLayer.type === 'WMS') {
+            if (newLayer.type === 'WMS' || newLayer.type === 'WMTS') {
               newLayer.load = true;
             } else if (newLayer.type === 'WMTS') {
               newLayer.facadeLayer_.load = true;
@@ -668,14 +658,15 @@ export default class LyrCompareControl extends M.Control {
         } else {
           newLayer.load = true;
         }
+
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
-        return newLayer
+        return newLayer;
       } else {
         this.layers.remove(layer);
       }
-
     }, this);
+
     return (transform[0] === undefined) ? [] : transform;
   }
   /**

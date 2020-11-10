@@ -5,7 +5,6 @@ import 'assets/css/cptransparency';
 import TransparencyControl from './cptransparencycontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
-// import { isArray } from '../../../../../facade/js/util/Utils';
 
 export default class Transparency extends M.Plugin {
   /**
@@ -70,7 +69,7 @@ export default class Transparency extends M.Plugin {
       if (Array.isArray(options.layers)) {
         this.layers = options.layers;
       } else {
-        this.layers = options.layers.split(",");
+        this.layers = options.layers.split(',');
       }
     }
 
@@ -82,7 +81,6 @@ export default class Transparency extends M.Plugin {
      */
 
     if (!isNaN(parseInt(options.radius))) {
-
       if (options.radius >= 30 && options.radius <= 200) {
         this.radius = parseInt(options.radius);
       } else if (options.radius > 200) {
@@ -90,12 +88,9 @@ export default class Transparency extends M.Plugin {
       } else if (options.radius < 30) {
         this.radius = 30;
       }
-
     } else {
       this.radius = 100; // Default value
     }
-
-
 
     /**
      * Metadata from api.json
@@ -136,11 +131,11 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-
     const values = {
       layers: this.layers,
       radius: this.radius,
     };
+
     this.control_ = new TransparencyControl(values);
     this.controls_.push(this.control_);
     this.map_ = map;
@@ -152,10 +147,10 @@ export default class Transparency extends M.Plugin {
       collapsedButtonClass: 'icon-gps4',
       tooltip: this.tooltip_,
     });
+
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
-
 
   /**
    * This function destroys this plugin
@@ -227,9 +222,6 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof Transparency) {
-      return true;
-    }
-    return false;
+    return plugin instanceof Transparency;
   }
 }

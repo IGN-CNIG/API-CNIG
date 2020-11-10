@@ -6,8 +6,8 @@ Plugin que permite mostrar información de atribuciones sobre las capas que se v
 
 Un primer mecanismo soportado es el uso de archivo de atribuciones definidos en formato kml o geojson según formato predefinido.
 
-- https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml
-- https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucion.kml
+- https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml
+- https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml
 
 # Dependencias
 
@@ -15,7 +15,7 @@ Un primer mecanismo soportado es el uso de archivo de atribuciones definidos en 
 - attributions.ol.min.css
 
 ```html
- <link href="../../plugins/attribution/attributions.ol.min.css" rel="stylesheet" />
+ <link href="../../plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
  <script type="text/javascript" src="../../plugins/attributions/attributions.ol.min.js"></script>
 ```
 
@@ -40,6 +40,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - *minWidth*. Mínimo ancho de visualización del plugin (Default = '100px')
 - *maxWidth*. Máximo ancho de visualización del plugin (Default = '200px')
 - *position*. Ubicación del plugin sobre el mapa (Default = 'BL')
+  - 'TL' = Top left
+  - 'TR' = Top right
   - 'BL' = Bottom left
   - 'BR' = Bottom right
 
@@ -57,8 +59,11 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
    });
   
    const mp = new M.plugin.Attributions({ 
-            mode: 1, 
-            scale: 10000,
+      mode: 1,
+      scale: 10000,
+      url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
+      type: 'geojson',
+      position: 'TL',
     });
 
    map.addPlugin(mp);

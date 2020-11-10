@@ -4,7 +4,8 @@
 
 import MirrorpanelImplControl from 'impl/cpmirrorpanel';
 import template from 'templates/cpmirrorpanel';
-import { getValue as getValueTranslate } from './i18n/language';
+import { getValue } from './i18n/language';
+import Lyrdropdown from './lyrdropdown';  //e2m: reference LayerDropDown control
 
 export default class CompareMirrorpanel extends M.Control {
   /**
@@ -19,8 +20,9 @@ export default class CompareMirrorpanel extends M.Control {
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(MirrorpanelImplControl)) {
-      M.exception('La implementación usada no puede crear controles CompareMirrorpanel');
+      M.exception(getValue('exception'));
     }
+
     // 2. implementation of this control
     const impl = new MirrorpanelImplControl();
     super(impl, 'Mirrorpanel');
@@ -38,13 +40,6 @@ export default class CompareMirrorpanel extends M.Control {
      * @type {Number}
      */
     this.modeViz = values.modeViz;
-
-    /**
-     * Mirror maps with plugins
-     * @private
-     * @type {boolean}
-     */
-    this.enabledPlugins = values.enabledPlugins;
 
     /**
      * Mirror maps with plugins
@@ -75,8 +70,8 @@ export default class CompareMirrorpanel extends M.Control {
         color: 'black',
         fill: 'red',
         gradientcolor: '#088A85',
-        opacity: 0.8
-      }
+        opacity: 0.8,
+      },
     });
 
     /**
@@ -94,15 +89,39 @@ export default class CompareMirrorpanel extends M.Control {
     this.mirrorLayers = values.mirrorLayers;
 
     /**
-     * BackImgLayers' Parameters
-     * @public
-     * @public {Object}
+     * Define the control for managing layers
+     *
      */
-    this.backImgLayersParams = values.backImgLayersParams;
+    this.lyDropControlA = new Lyrdropdown({
+      position: 'TL',
+      collapsible: false, // El botón para desplegar/replegar el plugin no aparece (false) o sí aparece(true)
+      collapsed: true,    // El panel del plugin se muestra desplegado (false) o replegado (true)
+      layers: this.defaultBaseLyrs,
+    });
+
+    this.lyDropControlB = new Lyrdropdown({
+      position: 'TL',
+      collapsible: false,
+      collapsed: true,
+      layers: this.defaultBaseLyrs,
+    });
+
+    this.lyDropControlC = new Lyrdropdown({
+      position: 'TL',
+      collapsible: false,
+      collapsed: true,
+      layers: this.defaultBaseLyrs,
+    });
+
+    this.lyDropControlD = new Lyrdropdown({
+      position: 'TL',
+      collapsible: false,
+      collapsed: true,
+      layers: this.defaultBaseLyrs,
+    });
 
     this.createMapContainers();
   }
-
 
   /**
    * This function creates the view
@@ -122,6 +141,7 @@ export default class CompareMirrorpanel extends M.Control {
           templateVars = M.utils.extends(templateVars, options.vars);
           parseToHtml = options.parseToHtml;
         }
+
         const templateFn = Handlebars.compile(string);
         const htmlText = templateFn(templateVars);
         if (parseToHtml !== false) {
@@ -129,57 +149,59 @@ export default class CompareMirrorpanel extends M.Control {
         } else {
           templateCompiled = htmlText;
         }
+
         return templateCompiled;
       };
     }
 
     this.mapL['A'] = map;
     if (this.mirrorLayers.length > 0) {
-
       this.mapL['A'].addLayers(this.mirrorLayers);
       this.mapL['A'].getLayers().forEach((l) => {
         if (l.zindex_ !== 0) { l.setVisible(false); }
       });
+
       this.mapL['A'].addLayers(this.defaultBaseLyrs[0]);
-      
     }
-    if (this.showCursors) { this.addLayerCursor('A'); }
+
+    if (this.showCursors) {
+      this.addLayerCursor('A');
+    }
+
     return new Promise((success, fail) => {
       let templateOptions = '';
       templateOptions = {
         jsonp: true,
         vars: {
           translations: {
-            titleMirrorpanel: getValueTranslate('titleMirrorpanel'),
-            modViz0: getValueTranslate('modViz0'),
-            modViz1: getValueTranslate('modViz1'),
-            modViz2: getValueTranslate('modViz2'),
-            modViz3: getValueTranslate('modViz3'),
-            modViz4: getValueTranslate('modViz4'),
-            modViz5: getValueTranslate('modViz5'),
-            modViz6: getValueTranslate('modViz6'),
-            modViz7: getValueTranslate('modViz7'),
-            modViz8: getValueTranslate('modViz8'),
-            modViz9: getValueTranslate('modViz9')
-          }
-        }
+            titleMirrorpanel: getValue('titleMirrorpanel'),
+            modViz0: getValue('modViz0'),
+            modViz1: getValue('modViz1'),
+            modViz2: getValue('modViz2'),
+            modViz3: getValue('modViz3'),
+            modViz4: getValue('modViz4'),
+            modViz5: getValue('modViz5'),
+            modViz6: getValue('modViz6'),
+            modViz7: getValue('modViz7'),
+            modViz8: getValue('modViz8'),
+            modViz9: getValue('modViz9'),
+          },
+        },
       };
 
       this.template = M.template.compileSync(template, templateOptions);
 
       // Button's click events
-      this.template.querySelectorAll('button[id^="set-mirror-"]')
-        .forEach((button, modeViz) => {
-          button.addEventListener('click', evt => {
-            this.manageVisionPanelByCSSGrid(modeViz);
-          })
-        });
+      this.template.querySelectorAll('button[id^="set-mirror-"]').forEach((button, modeViz) => {
+        button.addEventListener('click', evt => {
+          this.manageVisionPanelByCSSGrid(modeViz);
+        })
+      });
 
+      success(this.template);
       // Apply default vision
       this.manageVisionPanelByCSSGrid(this.modeViz);
-      success(this.template);
     });
-
   }
 
   /**
@@ -192,6 +214,7 @@ export default class CompareMirrorpanel extends M.Control {
   activate() {
     super.activate();
   }
+
   /**
    * This function is called on the control deactivation
    *
@@ -204,70 +227,32 @@ export default class CompareMirrorpanel extends M.Control {
   }
 
   /**
-  * Parse backImgLayers parameters and copy them for each mirror map.
-  * 
-  */
-  copyBackImgLayersParams(params, layerId) {
-    let copy = params;
-    const paramsSeparate = params.split('!!');
-    const idsArray = paramsSeparate[6].split(',');
-    const titlesArray = paramsSeparate[7].split(',');
-    const previewArray = paramsSeparate[8].split(',');
-    const layersArray = paramsSeparate[9].split(',');
-    let lyrs = [];
-    layersArray.forEach((baseLayer, idx) => {
-      let backgroundLayers = baseLayer.split('sumar');
-      backgroundLayers = backgroundLayers.map((urlLayer) => {
-        const mapeaLayer = new M.layer.WMTS(urlLayer);
-        return mapeaLayer;
-      });
-      const mapeaLyrsObject = { 
-        id: idsArray[idx],
-        title: titlesArray[idx],
-        preview: previewArray[idx],
-        layers: backgroundLayers,
-      };
-      lyrs.push(mapeaLyrsObject);
-    });
-    copy = {
-      position: paramsSeparate[0],
-      collapsible: paramsSeparate[1] === 'true' ? true : false,
-      collapsed: paramsSeparate[2] === 'true' ? true : false,
-      layerId: layerId === 'A' ? 0 : layerId === 'B' ? 1 : layerId == 'C' ? 2 : 3,
-      layerVisibility: paramsSeparate[3] === 'true' ? true : false,
-      columnsNumber: paramsSeparate[5],
-      layerOpts: lyrs
-    }
-    return copy;
-  }
-
-  /**
    * Initial configurations for applying CSS grid.
-   * 
+   *
    */
   createMapContainers() {
     const bigContainer = document.createElement('div');
-    bigContainer.id = "lienzo";
+    bigContainer.id = 'lienzo';
     bigContainer.classList.add('mirrorpanel-grid');
 
-    const mapjsA = document.getElementById("mapjs") || document.getElementById("map");
+    const mapjsA = document.getElementById('mapjs') || document.getElementById('map');
     this.oldClass = mapjsA.classList.toString();
-    document.body.insertBefore(bigContainer, mapjsA);
+    mapjsA.parentElement.insertBefore(bigContainer, mapjsA);
     mapjsA.classList.add('mirror1');
     bigContainer.appendChild(mapjsA);
 
     const mapjsB = document.createElement('div');
-    mapjsB.id = "mapjsB";
+    mapjsB.id = 'mapjsB';
     mapjsB.classList.add('mirror2');
     bigContainer.appendChild(mapjsB);
 
     const mapjsC = document.createElement('div');
-    mapjsC.id = "mapjsC";
+    mapjsC.id = 'mapjsC';
     mapjsC.classList.add('mirror3');
     bigContainer.appendChild(mapjsC);
 
     const mapjsD = document.createElement('div');
-    mapjsD.id = "mapjsD";
+    mapjsD.id = 'mapjsD';
     mapjsD.classList.add('mirror4');
     bigContainer.appendChild(mapjsD);
   }
@@ -275,7 +260,7 @@ export default class CompareMirrorpanel extends M.Control {
   /**
    * This function shows/hides panel for differents viz options.
    * The mirror maps are launched from here
-   * 
+   *
    */
   manageVisionPanelByCSSGrid(modeViz) {
     let oldModeViz = this.modeViz;
@@ -285,36 +270,60 @@ export default class CompareMirrorpanel extends M.Control {
     document.getElementById('mapjsC').style.display = 'none';
     document.getElementById('mapjsD').style.display = 'none';
     this.template.querySelector('#set-mirror-' + oldModeViz).classList.remove('buttom-pressed');
-
     for (let i = 0; i < 10; i++) {
       document.getElementById('lienzo').classList.remove('modeViz' + i);
     }
-    document.getElementById('lienzo').classList.add('modeViz' + modeViz);
 
+    document.getElementById('lienzo').classList.add('modeViz' + modeViz);
     //Create map objects by modeviz
     if ([1, 2].includes(modeViz)) {
-      if (this.mapL['B'] == null) {
+      if (this.mapL['B'] === null) {
         this.createMapObjects('B');//Create MapB
       }
     }
+
     if ([3, 7, 8, 9].includes(modeViz)) {
-      if (this.mapL['B'] == null) {
+      if (this.mapL['B'] === null) {
         this.createMapObjects('B');//Create MapB
       }
-      if (this.mapL['C'] == null) {
+
+      if (this.mapL['C'] === null) {
         this.createMapObjects('C');//Create MapC
       }
     }
+
     if ([4, 5, 6].includes(modeViz)) {
-      if (this.mapL['B'] == null) {
+      if (this.mapL['B'] === null) {
         this.createMapObjects('B');//Create MapB
       }
-      if (this.mapL['C'] == null) {
+
+      if (this.mapL['C'] === null) {
         this.createMapObjects('C');//Create MapC
       }
-      if (this.mapL['D'] == null) {
+
+      if (this.mapL['D'] === null) {
         this.createMapObjects('D');//Create MapD
       }
+    }
+
+    if (modeViz === 0) {
+      const toDelete = this.map_.getPlugins().filter((p) => {
+        return p.name === 'lyrdropdown';
+      });
+
+      if (toDelete.length > 0) {
+        this.map_.removePlugins(toDelete);
+      }
+    } else {
+      //Añado aquí el DropDownLayer del mapa principal
+      this.lyDropControlA = new Lyrdropdown({
+        position: 'TL',
+        collapsible: false,
+        collapsed: true,
+        layers: this.defaultBaseLyrs,
+      });
+
+      this.mapL['A'].addPlugin(this.lyDropControlA);
     }
 
     this.modeViz = modeViz;
@@ -331,52 +340,14 @@ export default class CompareMirrorpanel extends M.Control {
   createMapObjects(mapLyr) {
     let plugin4map = null;
     let mpBILmap = null;
-
-    if (this.enabledPlugins) {
-      //Get main map plugins
-      const listaPlugs = this.map_.getPlugins();
-
-      listaPlugs.forEach((itemPlug) => {
-        if (itemPlug.metadata_) {
-          if (itemPlug.metadata_.name === "FullTOC") {
-            //FullTOC
-            plugin4map = new M.plugin.FullTOC({
-              http: itemPlug.http,
-              https: itemPlug.https,
-              precharged: itemPlug.precharged
-            });
-          }
-          if (itemPlug.metadata_.name === "backimglayer") {
-            //BackImgLayer
-            mpBILmap = new M.plugin.BackImgLayer(this.copyBackImgLayersParams(this.backImgLayersParams, mapLyr));
-          }
-        }
-      });
-    }
     this.mapL[mapLyr] = M.map({
       container: 'mapjs' + mapLyr,
       center: this.map_.getCenter(),
       projection: this.map_.getProjection().code + '*' + this.map_.getProjection().units,
       zoom: this.map_.getZoom(),
     });
-    let defLyr = null;
-    switch (mapLyr) {
-      case 'B':
-        if (this.defaultBaseLyrs[1]) defLyr = this.defaultBaseLyrs[1];
-        break;
-      case 'C':
-        if (this.defaultBaseLyrs[2]) defLyr = this.defaultBaseLyrs[2];
-        break;
-      case 'D':
-        if (this.defaultBaseLyrs[3]) defLyr = this.defaultBaseLyrs[3];
-        break;
-      default:
-        defLyr = this.map_.getLayers()[0].setMap(this);
-        break;
-    }
-    this.mapL[mapLyr].addLayers(defLyr);
-    this.mapL[mapLyr].getMapImpl().setView(this.map_.getMapImpl().getView());
 
+    this.mapL[mapLyr].getMapImpl().setView(this.map_.getMapImpl().getView());
     if (plugin4map !== null) {
       this.mapL[mapLyr].addPlugin(plugin4map);
     }
@@ -385,16 +356,20 @@ export default class CompareMirrorpanel extends M.Control {
       this.mapL[mapLyr].addPlugin(mpBILmap);
     }
 
-    // Plugins enabled
-    if (this.enabledPlugins) {
-      // If there is layers for mirror map
-      if (this.mirrorLayers.length > 0) {
-        this.mapL[mapLyr].addLayers(this.mirrorLayers);
-        this.mapL[mapLyr].getLayers().forEach((l) => {
-          if (l.zindex_ !== 0) { l.setVisible(false); }
-        });
+    if (this.lyDropControl !== null){
+      if (mapLyr === 'B'){
+        this.mapL[mapLyr].addPlugin(this.lyDropControlB);
+      }
+
+      if (mapLyr === 'C'){
+        this.mapL[mapLyr].addPlugin(this.lyDropControlC);
+      }
+
+      if (mapLyr === 'D'){
+        this.mapL[mapLyr].addPlugin(this.lyDropControlD);
       }
     }
+
     if (this.showCursors) { this.addLayerCursor(mapLyr); }
     this.mapL[mapLyr].refresh();
   }
@@ -421,7 +396,6 @@ export default class CompareMirrorpanel extends M.Control {
     this.lyrCursor[mapLyr].setStyle(this.styleCursor);
     this.lyrCursor[mapLyr].setZIndex(5000);
     this.mapL[mapLyr].addLayers(this.lyrCursor[mapLyr]);
-
     this.mapL[mapLyr].getMapImpl().on('pointermove', (event) => {
       this.lyrCursor[mapLyr].setVisible(false);
       Object.keys(this.featureLyrCursor).forEach(k => {
@@ -434,7 +408,7 @@ export default class CompareMirrorpanel extends M.Control {
             });
           }
         }
-      })
+      });
     });
   }
 
@@ -454,18 +428,18 @@ export default class CompareMirrorpanel extends M.Control {
   destroyMapsContainer() {
     this.manageVisionPanelByCSSGrid(0);
     // Remove mirrors containers
-    document.getElementById("mapjsB").remove();
-    document.getElementById("mapjsC").remove();
-    document.getElementById("mapjsD").remove();
+    document.getElementById('mapjsB').remove();
+    document.getElementById('mapjsC').remove();
+    document.getElementById('mapjsD').remove();
     // Take the main map out of the container
-    const lienzo = document.getElementById("lienzo");
+    const lienzo = document.getElementById('lienzo');
     const mapjsA = document.querySelector('.mirror1');
     lienzo.parentElement.insertBefore(mapjsA, lienzo);
-    mapjsA.style.display = "block";
+    mapjsA.style.display = 'block';
     mapjsA.classList.remove('mirror1');
     mapjsA.classList = this.oldClass;
     // Load the main container
-    document.getElementById("lienzo").remove();
+    document.getElementById('lienzo').remove();
   }
 
   /**
