@@ -145,53 +145,53 @@ class Popup extends OLOverlay {
     // it waits for the previous animation in order to execute this
     this.panIntoSynchronizedAnim_().then(() => {
       this.isAnimating_ = true;
-      if (FacadeWindow.WIDTH > 768) {
-        const tabHeight = 30; // 30px for tabs
-        const popupElement = this.element.querySelector('.m-popup');
-        const popupWidth = popupElement.clientWidth + 20;
-        const popupHeight = popupElement.clientHeight + 20 + tabHeight;
-        const mapSize = this.getMap().getSize();
+      // if (FacadeWindow.WIDTH > 768) {
+      const tabHeight = 30; // 30px for tabs
+      const popupElement = this.element.querySelector('.m-popup');
+      const popupWidth = popupElement.clientWidth + 20;
+      const popupHeight = popupElement.clientHeight + 20 + tabHeight;
+      const mapSize = this.getMap().getSize();
 
-        const center = this.getMap().getView().getCenter();
-        const tailHeight = 20;
-        const tailOffsetLeft = 60;
-        const tailOffsetRight = popupWidth - tailOffsetLeft;
-        const popOffset = this.getOffset();
-        const popPx = this.getMap().getPixelFromCoordinate(coord);
+      const center = this.getMap().getView().getCenter();
+      const tailHeight = 20;
+      const tailOffsetLeft = 60;
+      const tailOffsetRight = popupWidth - tailOffsetLeft;
+      const popOffset = this.getOffset();
+      const popPx = this.getMap().getPixelFromCoordinate(coord);
 
-        if (!isNullOrEmpty(popPx)) {
-          const fromLeft = (popPx[0] - tailOffsetLeft);
-          const fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
+      if (!isNullOrEmpty(popPx)) {
+        const fromLeft = (popPx[0] - tailOffsetLeft);
+        const fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
 
-          const fromTop = popPx[1] - (popupHeight + popOffset[1]);
-          const fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffset[1];
+        const fromTop = popPx[1] - (popupHeight + popOffset[1]);
+        const fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffset[1];
 
-          const curPix = this.getMap().getPixelFromCoordinate(center);
-          const newPx = curPix.slice();
+        const curPix = this.getMap().getPixelFromCoordinate(center);
+        const newPx = curPix.slice();
 
-          if (fromRight < 0) {
-            newPx[0] -= fromRight;
-          } else if (fromLeft < 0) {
-            newPx[0] += fromLeft;
-          }
+        if (fromRight < 0) {
+          newPx[0] -= fromRight;
+        } else if (fromLeft < 0) {
+          newPx[0] += fromLeft;
+        }
 
-          if (fromTop < 0) {
-            newPx[1] += fromTop;
-          } else if (fromBottom < 0) {
-            newPx[1] -= fromBottom;
-          }
+        if (fromTop < 0) {
+          newPx[1] += fromTop;
+        } else if (fromBottom < 0) {
+          newPx[1] -= fromBottom;
+        }
 
-          // if (this.ani && this.ani_opts) {
-          if (!isNullOrEmpty(this.ani_opts) && isNullOrEmpty(this.ani_opts.source)) {
-            this.ani_opts.source = center;
-            this.getMap().getView().animate(this.ani_opts);
-          }
+        // if (this.ani && this.ani_opts) {
+        if (!isNullOrEmpty(this.ani_opts) && isNullOrEmpty(this.ani_opts.source)) {
+          this.ani_opts.source = center;
+          this.getMap().getView().animate(this.ani_opts);
+        }
 
-          if (newPx[0] !== curPix[0] || newPx[1] !== curPix[1]) {
-            this.getMap().getView().setCenter(this.getMap().getCoordinateFromPixel(newPx));
-          }
+        if (newPx[0] !== curPix[0] || newPx[1] !== curPix[1]) {
+          this.getMap().getView().setCenter(this.getMap().getCoordinateFromPixel(newPx));
         }
       }
+      // }
       // the animation ended
       this.isAnimating_ = false;
     });

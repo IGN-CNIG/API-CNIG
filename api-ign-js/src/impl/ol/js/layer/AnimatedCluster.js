@@ -7,6 +7,7 @@ import OLSourceVector from 'ol/source/Vector';
 import OLGeomPoint from 'ol/geom/Point';
 import { easeOut } from 'ol/easing';
 import { buffer } from 'ol/extent';
+import { getVectorContext } from 'ol/render';
 
 /**
  * @classdesc
@@ -25,6 +26,7 @@ class AnimatedCluster extends OLLayerVector {
    */
   constructor(options = {}) {
     super(options);
+
     /**
      * TODO
      * @private
@@ -32,7 +34,9 @@ class AnimatedCluster extends OLLayerVector {
      * @expose
      */
     this.styleCluster_ = options.style;
+
     // super
+
     /**
      * TODO
      * @private
@@ -40,6 +44,7 @@ class AnimatedCluster extends OLLayerVector {
      * @expose
      */
     this.oldCluster_ = new OLSourceVector();
+
     /**
      * TODO
      * @private
@@ -47,6 +52,7 @@ class AnimatedCluster extends OLLayerVector {
      * @expose
      */
     this.clusters_ = [];
+
     /**
      * TODO
      * @private
@@ -56,15 +62,18 @@ class AnimatedCluster extends OLLayerVector {
     this.animation_ = {
       start: false,
     };
+
     this.set('animationDuration', typeof options.animationDuration === 'number' ? options.animationDuration : 700);
     this.set('animationMethod', options.animationMethod || easeOut);
+
     // Save cluster before change
     this.getSource().on('change', this.saveCluster_.bind(this));
     // Animate the cluster
-    this.on('precompose', this.animate.bind(this));
-    this.on('postcompose', this.postanimate.bind(this));
+    this.on('prerender', this.animate.bind(this));
+    this.on('postrender', this.postanimate.bind(this));
     this.setStyle(options.style);
   }
+
   /**
    * This function sets the map object of the layer
    *
@@ -76,6 +85,7 @@ class AnimatedCluster extends OLLayerVector {
   saveCluster_() {
     this.oldCluster_.clear();
     if (!this.get('animationDuration')) return;
+
     const olFeatures = this.getSource().getFeatures();
     if (olFeatures.length && olFeatures[0].get('features')) {
       this.oldCluster_.addFeatures(this.clusters_);
@@ -83,6 +93,7 @@ class AnimatedCluster extends OLLayerVector {
       this.sourceChanged = true;
     }
   }
+
   /**
    * This function sets the map object of the layer
    *
@@ -101,6 +112,7 @@ class AnimatedCluster extends OLLayerVector {
       return result;
     });
   }
+
   /**
    * This function sets the map object of the layer
    *
@@ -113,6 +125,7 @@ class AnimatedCluster extends OLLayerVector {
     const eventVariable = event;
     const duration = this.get('animationDuration');
     if (!duration) return;
+
     // Start a new animation, if change resolution and source has changed
     if (this.animation_.resolution !== eventVariable.frameState.viewState.resolution &&
       this.sourceChanged) {
@@ -122,22 +135,27 @@ class AnimatedCluster extends OLLayerVector {
       this.prepareAnimation_(extent, eventVariable.frameState.viewState.resolution);
       eventVariable.frameState.time = this.animation_.start;
     }
+
     const numClusters = this.animation_.clustersFrom.length;
     if (numClusters > 0 && numClusters <= 1000 && this.animation_.start) {
-      const vectorContext = eventVariable.vectorContext;
+      const vectorContext = getVectorContext(eventVariable);
       let animationProgress = (eventVariable.frameState.time - this.animation_.start) / duration;
+
       // Animation ends
       if (animationProgress > 1) {
         this.animation_.start = false;
         animationProgress = 1;
       }
       animationProgress = this.get('animationMethod')(animationProgress);
+
       // Layer opacity
       eventVariable.context.save();
       eventVariable.context.globalAlpha = this.getOpacity();
+
       this.animation_.clustersFrom.forEach((cluster, i) => {
         const ptFrom = cluster.getGeometry().getCoordinates();
         const ptTo = this.animation_.clustersTo[i].getGeometry().getCoordinates();
+
         // console.log(ptTo[0] === ptFrom[0] && ptTo[1] === ptFrom[1], animationProgress, reverse);
         if (this.animation_.reverse) {
           ptFrom[0] = ptTo[0] + (animationProgress * (ptFrom[0] - ptTo[0]));
@@ -170,9 +188,11 @@ class AnimatedCluster extends OLLayerVector {
           });
         }
       });
+
       eventVariable.context.restore();
       // tell OL3 to continue postcompose animation
       eventVariable.frameState.animate = true;
+
       // PreventVariable layer drawing (clip with null rect)
       eventVariable.context.save();
       eventVariable.context.beginPath();
@@ -185,6 +205,7 @@ class AnimatedCluster extends OLLayerVector {
       this.animation_.start = false;
     }
   }
+
   /**
    * This function sets the map object of the layer
    *
@@ -195,11 +216,15 @@ class AnimatedCluster extends OLLayerVector {
   prepareAnimation_(extent, resolution) {
     this.animation_.clustersFrom = [];
     this.animation_.clustersTo = [];
+
     const extentBuff = buffer(extent, 100 * resolution);
+
     const oldClusters = this.oldCluster_.getFeaturesInExtent(extentBuff);
     const currentClusters = this.getSource().getFeaturesInExtent(extentBuff);
+
     const clustersFrom = this.animation_.reverse ? currentClusters : oldClusters;
     const clustersTo = this.animation_.reverse ? oldClusters : currentClusters;
+
     clustersFrom.forEach((clusterFrom) => {
       const clusterFeatures = clusterFrom.get('features');
       if (!isNullOrEmpty(clusterFeatures)) {
@@ -210,12 +235,15 @@ class AnimatedCluster extends OLLayerVector {
         }
       }
     });
+
     // Save state
     this.animation_.resolution = resolution;
     this.sourceChanged = false;
+
     // Start animation from now
     this.animation_.start = (new Date()).getTime();
   }
+
   /**
    * This function sets the map object of the layer
    *
@@ -230,6 +258,7 @@ class AnimatedCluster extends OLLayerVector {
       this.clip_ = false;
     }
   }
+
   /**
    * This function sets the map object of the layer
    *
@@ -242,4 +271,5 @@ class AnimatedCluster extends OLLayerVector {
     super.setStyle(this.styleCluster_);
   }
 }
+
 export default AnimatedCluster;
