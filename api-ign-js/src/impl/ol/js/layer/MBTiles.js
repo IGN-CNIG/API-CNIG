@@ -171,11 +171,13 @@ class MBTiles extends Layer {
   loadTile(tile) {
     const imgTile = tile;
     const tileCoord = tile.getTileCoord();
-    let tileSrc = this.tileLoadFunction_(tileCoord[0], tileCoord[1], -tileCoord[2] - 1);
-    if (!tileSrc) {
-      tileSrc = DEFAULT_WHITE_TILE;
-    }
-    imgTile.getImage().src = tileSrc;
+    this.tileLoadFunction_(tileCoord[0], tileCoord[1], -tileCoord[2] - 1).then((tileSrc) => {
+      if (!tileSrc) {
+        imgTile.getImage().src = DEFAULT_WHITE_TILE;
+      } else {
+        imgTile.getImage().src = tileSrc;
+      }
+    });
   }
 
   loadTileWithProvider(tile, tileProvider) {
