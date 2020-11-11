@@ -3,6 +3,7 @@
  */
 import { isNullOrEmpty } from 'M/util/Utils';
 import { get as getProj, transformExtent } from 'ol/proj';
+import { inflate } from 'pako';
 import OLLayerTile from 'ol/layer/Tile';
 import OLLayerVectorTile from 'ol/layer/VectorTile';
 import OLSourceVectorTile from 'ol/source/VectorTile';
@@ -18,6 +19,7 @@ import TileState from 'ol/TileState';
 import TileEventType from 'ol/source/TileEventType';
 import ImplMap from '../Map';
 import Vector from './Vector';
+
 /**
  * Default tile size of MBTiles
  * @const
@@ -201,7 +203,7 @@ class MBTilesVector extends Vector {
       const source = new OLSourceVectorTile({
         projection: opts.projection,
         url: '{z},{x},{y}',
-        tileLoadFunction: tile => this.loadVectorTiles(tile, mvtFormat),
+        tileLoadFunction: tile => this.loadVectorTile(tile, mvtFormat),
         tileGrid: new TileGrid({
           extent: opts.sourceExtent,
           origin: getBottomLeft(opts.sourceExtent),
@@ -221,21 +223,23 @@ class MBTilesVector extends Vector {
    * @function
    * @api
    */
-  loadVectorTile(tile, formatter, opts) {
+  loadVectorTile(tile, formatter) {
     tile.setState(TileState.LOADING);
     tile.setLoader((extent, resolution, projection) => {
       const tileCoord = tile.getTileCoord();
-      const pbf = this.tileLoadFunction_(tileCoord[0], tileCoord[1], -tileCoord[2] - 1);
-      if (pbf) {
-        const features = formatter.readFeatures(pbf, {
-          extent,
-          featureProjection: projection,
-        });
-        tile.setFeatures(features);
-        tile.setState(TileState.LOADED);
-      } else {
-        tile.setState(TileState.ERROR);
-      }
+      this.tileLoadFunction_(tileCoord[0], tileCoord[1], -tileCoord[2] - 1).then((_vectorTile) => {
+        if (_vectorTile) {
+          const vectorTile = inflate(_vectorTile);
+          const features = formatter.readFeatures(vectorTile, {
+            extent,
+            featureProjection: projection,
+          });
+          tile.setFeatures(features);
+          tile.setState(TileState.LOADED);
+        } else {
+          tile.setState(TileState.ERROR);
+        }
+      });
     });
   }
 
