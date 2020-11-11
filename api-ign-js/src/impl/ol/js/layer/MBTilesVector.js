@@ -64,7 +64,7 @@ class MBTilesVector extends Vector {
      * @private
      * @type {function}
      */
-    this.tileLoadFunction_ = userParameters.tileLoadFunction || null;
+    this.tileLoadFunction_ = userParameters.tlf || null;
     /**
      * MBTilesVector url
      * @private
@@ -142,36 +142,58 @@ class MBTilesVector extends Vector {
     const projection = getProj(code);
     const extent = projection.getExtent();
     const resolutions = generateResolutions(extent, this.tileSize_, 16);
-    this.fetchSource().then((tileProvider) => {
-      this.tileProvider_ = tileProvider;
-      this.tileProvider_.getExtent().then((mbtilesExtent) => {
-        let reprojectedExtent = mbtilesExtent;
-        if (reprojectedExtent) {
-          reprojectedExtent = transformExtent(mbtilesExtent, 'EPSG:4326', code);
-        }
-        this.ol3Layer = this.createLayer({
-          tileProvider,
-          resolutions,
-          extent: reprojectedExtent,
-          sourceExtent: extent,
-          projection,
-        });
-        this.ol3Layer
-          .getSource().on(TileEventType.TILELOADERROR, evt => this.checkAllTilesLoaded_(evt));
-        this.ol3Layer
-          .getSource().on(TileEventType.TILELOADEND, evt => this.checkAllTilesLoaded_(evt));
-        this.map.on(EventType.CHANGE_ZOOM, () => {
-          if (this.map) {
-            const newZoom = this.map.getZoom();
-            if (this.lastZoom_ !== newZoom) {
-              this.features_.length = 0;
-              this.lastZoom_ = newZoom;
-            }
+    if (!this.tileLoadFunction_) {
+      this.fetchSource().then((tileProvider) => {
+        this.tileProvider_ = tileProvider;
+        this.tileProvider_.getExtent().then((mbtilesExtent) => {
+          let reprojectedExtent = mbtilesExtent;
+          if (reprojectedExtent) {
+            reprojectedExtent = transformExtent(mbtilesExtent, 'EPSG:4326', code);
           }
+          this.ol3Layer = this.createLayer({
+            tileProvider,
+            resolutions,
+            extent: reprojectedExtent,
+            sourceExtent: extent,
+            projection,
+          });
+          this.ol3Layer.getSource()
+            .on(TileEventType.TILELOADERROR, evt => this.checkAllTilesLoaded_(evt));
+          this.ol3Layer.getSource()
+            .on(TileEventType.TILELOADEND, evt => this.checkAllTilesLoaded_(evt));
+          this.map.on(EventType.CHANGE_ZOOM, () => {
+            if (this.map) {
+              const newZoom = this.map.getZoom();
+              if (this.lastZoom_ !== newZoom) {
+                this.features_.length = 0;
+                this.lastZoom_ = newZoom;
+              }
+            }
+          });
+          this.map.getMapImpl().addLayer(this.ol3Layer);
         });
-        this.map.getMapImpl().addLayer(this.ol3Layer);
       });
-    });
+    } else {
+      this.ol3Layer = this.createLayer({
+        resolutions,
+        sourceExtent: extent,
+        projection,
+      });
+      this.ol3Layer.getSource()
+        .on(TileEventType.TILELOADERROR, evt => this.checkAllTilesLoaded_(evt));
+      this.ol3Layer.getSource()
+        .on(TileEventType.TILELOADEND, evt => this.checkAllTilesLoaded_(evt));
+      this.map.on(EventType.CHANGE_ZOOM, () => {
+        if (this.map) {
+          const newZoom = this.map.getZoom();
+          if (this.lastZoom_ !== newZoom) {
+            this.features_.length = 0;
+            this.lastZoom_ = newZoom;
+          }
+        }
+      });
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
   }
   /** This function create the implementation ol layer.
    *
