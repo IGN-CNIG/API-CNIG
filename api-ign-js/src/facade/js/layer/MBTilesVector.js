@@ -28,8 +28,12 @@ export const mode = {
  * @api
  */
 class MBTilesVector extends Vector {
-  constructor(up = {}, options = {}, vendorOptions = {}) {
-    const parameters = { ...mbtilesvector(up), source: up.source, tlf: up.tileLoadFunction };
+  constructor(userParameters = {}, options = {}, vendorOptions = {}) {
+    const parameters = {
+      ...mbtilesvector(userParameters),
+      source: userParameters.source,
+      tileLoadFunction: userParameters.tileLoadFunction,
+    };
     const impl = new MBTilesVectorImpl(parameters, options, vendorOptions);
     super(parameters, options, vendorOptions, impl);
     if (isUndefined(MBTilesVectorImpl)) {

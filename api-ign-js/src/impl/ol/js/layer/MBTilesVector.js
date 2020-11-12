@@ -64,7 +64,7 @@ class MBTilesVector extends Vector {
      * @private
      * @type {function}
      */
-    this.tileLoadFunction_ = userParameters.tlf || null;
+    this.tileLoadFunction_ = userParameters.tileLoadFunction || null;
     /**
      * MBTilesVector url
      * @private
