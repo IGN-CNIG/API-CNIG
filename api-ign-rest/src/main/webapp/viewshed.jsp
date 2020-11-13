@@ -13,7 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/vectors/vectors.ol.min.css" rel="stylesheet" />
+    <link href="plugins/viewshed/viewshed.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -80,6 +80,8 @@
         M.language.setLang(urlParams.get('language') || 'es');
         const map = M.map({
             container: 'mapjs',
+            center:  [-428106.86611520057, 4334472.25393817],
+            zoom: 4,
             layers: [
               new M.layer.WMTS({
                 url: 'https://wmts-mapa-lidar.idee.es/lidar?',
@@ -103,7 +105,6 @@
         selectPosicion.addEventListener('change',cambiarTest);
         selectCollapsed.addEventListener('change',cambiarTest);
         selectCollapsible.addEventListener('change',cambiarTest);
-        wfsZoomInput.addEventListener('change',cambiarTest);
 
         function cambiarTest(){
             let objeto = {}
@@ -117,7 +118,7 @@
         }
 
         function crearPlugin(propiedades){
-            mp = new M.plugin.Viewshed(propiedades);
+            mp = new M.plugin.ViewShed(propiedades);
             map.addPlugin(mp);
         }
 
