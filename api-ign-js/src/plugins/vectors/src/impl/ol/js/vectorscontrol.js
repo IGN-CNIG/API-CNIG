@@ -193,7 +193,6 @@ export default class VectorsControl extends M.impl.Control {
     document.addEventListener('keyup', this.addEscEvent.bind(this));
     this.draw.once('drawstart', (evt) => {
       document.onkeydown = this.addUndoEvent.bind(this, evt.feature);
-      // document.addEventListener('keydown', this.addUndoEvent.bind(this, evt.feature));
     });
   }
 

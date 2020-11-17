@@ -56,7 +56,7 @@ export default class InformationControl extends M.Control {
   activate() {
     this.invokeEscKey();
     this.getImpl().activate();
-    document.addEventListener('keydown', this.checkEscKey.bind(this));
+    document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
   /**
    * This function is called on the control deactivation
@@ -67,20 +67,20 @@ export default class InformationControl extends M.Control {
    */
   deactivate() {
     this.getImpl().deactivate();
-    document.removeEventListener('keydown', this.checkEscKey.bind(this));
+    document.removeEventListener('keyup', this.checkEscKey.bind(this));
   }
 
   checkEscKey(evt) {
     const contains = document.querySelector('.m-control.m-container.m-information-container').classList.contains('activated');
     if (evt.key === 'Escape' && contains) {
-      document.removeEventListener('keydown', this.checkEscKey.bind(this));
+      document.removeEventListener('keyup', this.checkEscKey.bind(this));
       document.querySelector('#m-information-btn').click();
     }
   }
 
   invokeEscKey() {
     try {
-      document.dispatchEvent(new window.KeyboardEvent('keydown', {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
         key: 'Escape',
         keyCode: 27,
         code: '',
