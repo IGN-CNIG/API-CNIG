@@ -21,3 +21,5 @@ function load() {
 }
 
 document.body.onload = () => document.querySelector('#load-button').addEventListener('click', load);
+
+window.map = mapjs;

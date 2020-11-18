@@ -226,6 +226,13 @@ export default class TopographicprofileControl extends M.impl.Control {
     // this.deactivate();
   }
 
+  setDataFromLocal(coordsXYZ) {
+    this.controlProfile();
+    coordsXYZ = coordsXYZ.map((coord) => ol.proj.transform(coord, 'EPSG:4326', this.facadeMap_.getProjection().code));
+    this.lineString_.setCoordinates(coordsXYZ);
+    this.vector_.getSource().addFeature(this.feature_);
+  }
+
 
   controlProfile() {
     if (!this.profil_) {
