@@ -42,16 +42,17 @@ const printermap = new PrinterMap({
   collapsible: true,
   position: 'TR',
   credits: 'Impresión generada desde Fototeca',
-  georefActive: true,
-  logo: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/static/media/iberpix_es.f8428667.png',
+  georefActive: false,
+  serverUrl: 'https://componentes.cnig.es/geoprint',
+  printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
+  printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
 });
-
 
 map.addPlugin(printermap);
 
-map.addPlugin(new M.plugin.Vectors({
+/*map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
-}));
+}));*/
 
 //map.addLayers([layerinicial, campamentos]);
 //map.addLayers([campamentos]);
