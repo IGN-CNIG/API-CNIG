@@ -271,7 +271,7 @@
 			  legend: 'Unidad administrativa',
 			  tiled: false,
 			}, {});
-			
+
 			layerinicial = new M.layer.WMS({
 			  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
 			  name: 'AU.AdministrativeBoundary',
@@ -298,5 +298,14 @@
         }
     </script>
 </body>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-163660977-1');
+</script>
 
 </html>

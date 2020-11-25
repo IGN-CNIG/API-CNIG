@@ -1290,7 +1290,7 @@ export default class VectorsControl extends M.Control {
 
   invokeEscKey() {
     try {
-      document.dispatchEvent(new window.KeyboardEvent('keydown', {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
         key: 'Escape',
         keyCode: 27,
         code: '',

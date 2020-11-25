@@ -222,12 +222,15 @@ export default class PrinterMapControl extends M.Control {
    * @param {Function} callback - function that removes loading icon class.
    */
   getStatus(url, callback) {
+    M.proxy(false);
     M.remote.get(url).then((response) => {
       const statusJson = JSON.parse(response.text);
       const { status } = statusJson;
       if (status === 'finished') {
+        M.proxy(true);
         callback();
       } else if (status === 'error' || status === 'cancelled') {
+        M.proxy(true);
         callback();
         if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
           M.dialog.error(getValue('exception.tile'));
@@ -237,6 +240,7 @@ export default class PrinterMapControl extends M.Control {
 
         this.queueContainer_.lastChild.remove();
       } else {
+        M.proxy(true);
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
     });

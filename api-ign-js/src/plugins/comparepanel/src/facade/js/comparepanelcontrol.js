@@ -100,7 +100,6 @@ export default class ComparepanelControl extends M.Control {
   }
 
   addButtonEvents() {
-    console.log(this.plugins);
     this.plugins.forEach(p => {
       this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
         this.deactivateAndActivate(p);
@@ -110,12 +109,12 @@ export default class ComparepanelControl extends M.Control {
 
   deactivateAndActivate(plugin) {
     this.plugins.forEach(p => {
-      if (p != plugin) {
+      if (p.name !== plugin.name) {
         this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').classList.remove('active');
+      } else if (plugin.name !== 'mirrorpanel') {
+        p.deactivate();
       }
-
-      p.deactivate();
     });
 
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.toggle('active');

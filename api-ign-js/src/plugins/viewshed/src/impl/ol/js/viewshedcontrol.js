@@ -32,24 +32,48 @@ export default class ViewShedControl extends M.impl.Control {
    * @function
    * @param {*} source, layerName
    */
-  loadGeoJSONLayer(source) {
+  loadGeoJSONLayer(source, point) {
     let features = new ol.format.GeoJSON()
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
 
     features = this.featuresToFacade(features);
+    const pointFeature = new M.Feature('clickedPoint', {
+      type: 'Feature',
+      id: 'clickedPoint',
+      geometry: {
+        type: 'Point',
+        coordinates: point,
+      },
+    });
+
     const layer = new M.layer.Vector({ name: 'viewresult', legend: 'viewresult', extract: false });
     layer.addFeatures(features);
+    layer.addFeatures([pointFeature]);
     this.facadeMap_.addLayers(layer);
-    layer.setStyle(new M.style.Polygon({
+    pointFeature.setStyle(new M.style.Point({
+      radius: 7,
       fill: {
-        color: '#71a7d3',
-        opacity: 0.5,
+        color: 'red',
       },
       stroke: {
-        color: '#71a7d3',
+        color: 'white',
         width: 2,
       },
     }));
+
+    features.forEach((f) => {
+      f.setStyle(new M.style.Polygon({
+        fill: {
+          color: '#71a7d3',
+          opacity: 0.5,
+        },
+        stroke: {
+          color: '#71a7d3',
+          width: 2,
+        },
+      }));
+    });
+
     return features;
   }
 

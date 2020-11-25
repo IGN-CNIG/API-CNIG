@@ -90,13 +90,10 @@ export default class Measure extends M.impl.Control {
    */
   addTo(map, element) {
     this.facadeMap_ = map;
-
     // adds layer
     map.getMapImpl().addLayer(this.layer_);
-
     // super addTo
     super.addTo(map, element);
-
     this.createHelpTooltip_();
     this.createMeasureTooltip_();
   }
@@ -115,7 +112,7 @@ export default class Measure extends M.impl.Control {
     this.facadeMap_.getMapImpl().addInteraction(this.draw_);
     this.active = true;
     this.createMeasureTooltip_();
-    document.addEventListener('keydown', this.checkEscKey.bind(this));
+    document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
 
   checkEscKey(evt) {
@@ -124,13 +121,13 @@ export default class Measure extends M.impl.Control {
         elem.click();
       });
 
-      document.removeEventListener('keydown', this.checkEscKey);
+      document.removeEventListener('keyup', this.checkEscKey);
     }
   }
 
   invokeEscKey() {
     try {
-      document.dispatchEvent(new window.KeyboardEvent('keydown', {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
         key: 'Escape',
         keyCode: 27,
         code: '',

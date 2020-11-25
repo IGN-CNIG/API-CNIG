@@ -121,7 +121,7 @@ export default class InfocoordinatesControl extends M.Control {
     this.map_.on(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'crosshair';
     this.map_.getFeatureHandler().deactivate();
-    document.addEventListener('keydown', this.checkEscKey.bind(this));
+    document.addEventListener('keyup', this.checkEscKey.bind(this));
     if (this.clickedDeactivate) {
       document.querySelector('div.m-panel.m-plugin-infocoordinates > button').click();
     }
@@ -131,13 +131,13 @@ export default class InfocoordinatesControl extends M.Control {
     const opened = document.querySelector('div.m-panel.m-plugin-infocoordinates').classList.contains('opened');
     if (evt.key === 'Escape' && opened) {
       document.querySelector('div.m-panel.m-plugin-infocoordinates.opened > button').click();
-      document.removeEventListener('keydown', this.checkEscKey);
+      document.removeEventListener('keyup', this.checkEscKey);
     }
   }
 
   invokeEscKey() {
     try {
-      document.dispatchEvent(new window.KeyboardEvent('keydown', {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
         key: 'Escape',
         keyCode: 27,
         code: '',
