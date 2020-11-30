@@ -25,6 +25,7 @@ export default class PrinterMapControl extends M.Control {
     credits,
     georefActive,
     logoUrl,
+    fototeca,
   ) {
     const impl = new PrinterMapControlImpl();
 
@@ -82,6 +83,13 @@ export default class PrinterMapControl extends M.Control {
      * @type {Boolean}
      */
     this.georefActive_ = georefActive;
+
+    /**
+     * Active or disable fototeca fixed description
+     * @private
+     * @type {Boolean}
+     */
+    this.fototeca_ = fototeca;
 
     /**
      * Map title
@@ -354,6 +362,9 @@ export default class PrinterMapControl extends M.Control {
         // georefActive
         capabilities.georefActive = this.georefActive_;
 
+        // fototeca
+        capabilities.fototeca = this.fototeca_;
+
         // translations
         capabilities.translations = {
           tooltip: getValue('tooltip'),
@@ -368,6 +379,7 @@ export default class PrinterMapControl extends M.Control {
           delete: getValue('delete'),
           download: getValue('download'),
           minimize: getValue('minimize'),
+          fototeca: getValue('fototeca'),
         };
 
         const html = M.template.compileSync(printermapHTML, {
@@ -487,7 +499,11 @@ export default class PrinterMapControl extends M.Control {
       event.preventDefault();
       // reset values
       this.inputTitle_.value = '';
-      this.areaDescription_.value = '';
+      if (!this.fototeca_) {
+        this.areaDescription_.value = '';
+        document.getElementById('description').disabled = false;
+      }
+
       selectLayout.value = this.layoutOptions_[0];
       selectDpi.value = this.dpisOptions_[0];
       selectFormat.value = this.options_.format;
@@ -497,7 +513,6 @@ export default class PrinterMapControl extends M.Control {
         checkboxGeoref.checked = this.options_.georef;
       }
 
-      document.getElementById('description').disabled = false;
       document.getElementById('layout').disabled = false;
       document.getElementById('dpi').disabled = false;
       document.getElementById('format').disabled = false;

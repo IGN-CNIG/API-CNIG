@@ -570,13 +570,42 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   activateDeactivateReverse() {
     if (!this.reverseActivated) {
+      this.invokeEscKey();
       this.reverseActivated = true;
       document.querySelector('#m-ignsearchlocator-locate-button span').style.color = '#71a7d3';
+      document.addEventListener('keyup', this.checkEscKey.bind(this));
     } else {
       this.reverseActivated = false;
       document.querySelector('#m-ignsearchlocator-locate-button span').style.color = '#7A7A73';
+      document.removeEventListener('keyup', this.checkEscKey);
     }
   }
+
+  checkEscKey(evt) {
+    if (evt.key === 'Escape') {
+      this.reverseActivated = false;
+      document.querySelector('#m-ignsearchlocator-locate-button span').style.color = '#7A7A73';
+      document.removeEventListener('keyup', this.checkEscKey);
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
+    }
+  }
+
   /**
    * This function shows information tooltip on clicked point.
    * @param {Event} e - Event

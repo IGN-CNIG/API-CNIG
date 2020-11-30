@@ -40,6 +40,7 @@ div#m-selectionzoom-titulo {
     height: 110px;
     position: relative;
     width: 110px;
+    background-color: #e9e8e8;
 }
 
 div[id^="m-selectionzoom-lyr-"]>span {
