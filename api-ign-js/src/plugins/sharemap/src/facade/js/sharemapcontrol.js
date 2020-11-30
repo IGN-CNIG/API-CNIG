@@ -266,6 +266,10 @@ export default class ShareMapControl extends M.Control {
         shareURL = shareURL.concat(`&controls=${controls}`).concat(`&${this.getPlugins()}`);
       } else {
         let newControls = controls.join(',');
+        if (newControls.endsWith(',')) {
+          newControls = newControls.slice(0, -1);
+        }
+
         if (newControls.indexOf('scale') === -1 || (newControls.indexOf('scale') === newControls.indexOf('scaleline'))) {
           newControls = newControls.concat(',scale*true');
         }
@@ -279,7 +283,6 @@ export default class ShareMapControl extends M.Control {
 
       shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) : shareURL.concat('');
       shareURL = shareURL.concat(`&projection=${code}*${units}`);
-
       input.value = shareURL;
       // M.proxy(false);
       // let tweetUrl = shareURL.replace(/ /g, '%20');
