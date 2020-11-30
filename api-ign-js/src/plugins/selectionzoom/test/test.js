@@ -4,6 +4,7 @@ M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
+  zoom: 4,
   layers: [new M.layer.WMTS({
       url: 'http://www.ign.es/wmts/pnoa-ma?',
       name: 'OI.OrthoimageCoverage',
@@ -15,17 +16,6 @@ const map = M.map({
       visible: true,
       format: 'image/jpeg',
     }),
-    new M.layer.WMTS({
-      url: 'http://www.ign.es/wmts/ign-base?',
-      name: 'IGNBaseOrto',
-      matrixSet: 'GoogleMapsCompatible',
-      legend: 'Mapa IGN',
-      transparent: false,
-      displayInLayerSwitcher: false,
-      queryable: false,
-      visible: true,
-      format: 'image/png',
-    })
   ],
 });
 

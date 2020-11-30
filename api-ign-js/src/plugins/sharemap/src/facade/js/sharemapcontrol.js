@@ -261,13 +261,24 @@ export default class ShareMapControl extends M.Control {
     return this.getControls().then((controls) => {
       const { x, y } = this.map_.getCenter();
       const { code, units } = this.map_.getProjection();
-      let shareURL = `${this.baseUrl_}?controls=${controls}&center=${x},${y}&zoom=${this.map_.getZoom()}`;
-      shareURL = shareURL.concat(`&projection=${code}*${units}`);
-      shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) :
-        shareURL.concat('');
+      let shareURL = `${this.baseUrl_}?center=${x},${y}&zoom=${this.map_.getZoom()}`;
       if (!this.minimize_) {
-        shareURL = shareURL.concat(`&${this.getPlugins()}`);
+        shareURL = shareURL.concat(`&controls=${controls}`).concat(`&${this.getPlugins()}`);
+      } else {
+        let newControls = controls.join(',');
+        if (newControls.indexOf('scale') === -1 || (newControls.indexOf('scale') === newControls.indexOf('scaleline'))) {
+          newControls = newControls.concat(',scale*true');
+        }
+
+        if (newControls.indexOf('backgroundlayers') === -1) {
+          newControls = newControls.concat(',backgroundlayers*0*true');
+        }
+
+        shareURL = shareURL.concat(`&controls=${newControls}`).concat('&plugins=toc,zoompanel,measurebar,mousesrs');
       }
+
+      shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) : shareURL.concat('');
+      shareURL = shareURL.concat(`&projection=${code}*${units}`);
 
       input.value = shareURL;
       // M.proxy(false);

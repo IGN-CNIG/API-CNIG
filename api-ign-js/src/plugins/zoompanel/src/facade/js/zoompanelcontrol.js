@@ -88,16 +88,34 @@ export default class ZoomPanelControl extends M.Control {
    * @api
    */
   activate() {
+    this.invokeEscKey();
     super.activate();
     document.getElementById('zoomToBox').classList.add('active');
     this.getImpl().activateClick(this.map_);
-    document.addEventListener('keydown', this.checkEscKey.bind(this));
+    document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
 
   checkEscKey(evt) {
     if (evt.key === 'Escape') {
       this.deactivate();
-      document.removeEventListener('keydown', this.checkEscKey);
+      document.removeEventListener('keyup', this.checkEscKey);
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
     }
   }
 

@@ -42,6 +42,7 @@ div#m-backimglayer-titulo {
     position: relative;
     width: 110px;
     cursor: pointer;
+    background-color: #e9e8e8;
 }
 
 div[id^="m-backimglayer-lyr-"]>span {

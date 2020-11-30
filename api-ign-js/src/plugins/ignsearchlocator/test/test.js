@@ -1,6 +1,6 @@
 import IGNSearchLocator from 'facade/ignsearchlocator';
 
-M.language.setLang('en');
+// M.language.setLang('en');
 
 
 const map = M.map({

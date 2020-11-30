@@ -41,11 +41,12 @@ const printermap = new PrinterMap({
   collapsed: true,
   collapsible: true,
   position: 'TR',
-  credits: 'Impresión generada desde Fototeca',
+  credits: 'Impresión generada desde Fototeca Digital http://fototeca.cnig.es/',
   georefActive: false,
-  serverUrl: 'https://componentes.cnig.es/geoprint',
-  printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
-  printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
+  // serverUrl: 'https://componentes.cnig.es/geoprint',
+  // printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
+  // printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
+  fototeca: true,
 });
 
 map.addPlugin(printermap);
