@@ -231,7 +231,8 @@ export default class PrinterMapControl extends M.Control {
    */
   getStatus(url, callback) {
     M.proxy(false);
-    M.remote.get(url).then((response) => {
+    const param = new Date().getTime();
+    M.remote.get(`${url}?timestamp=${param}`).then((response) => {
       const statusJson = JSON.parse(response.text);
       const { status } = statusJson;
       if (status === 'finished') {
