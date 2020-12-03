@@ -21,7 +21,7 @@ const map = M.map({
     1.5699518004657511, 0.7849759002328756, 0.3699518004657511, 0.18497590023287555,
   ],
   zoom: 14,
-  minZoom: 14,
+  //minZoom: 14,
 });
 
 /**
@@ -85,3 +85,5 @@ const pluginComparepanel = new Comparepanel({
 });
 
 map.addPlugin(pluginComparepanel);
+
+window.map = map;

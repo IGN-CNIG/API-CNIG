@@ -13,6 +13,8 @@ const mp = new TOC({
 });
 
 map.addPlugin(mp);
+map.addPlugin(new M.plugin.Attributions({ mode: 1, scale: 10000 }));
+
 const layerUA = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',

@@ -371,7 +371,15 @@ export default class ShareMapControl extends M.Control {
   getLayers() {
     // const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__' &&
     // layer.displayInLayerSwitcher !== false);
-    const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__');
+    const layers = this.map_.getLayers().filter((layer) => {
+      let res = layer.name !== '__draw__' && layer.name !== 'selectionLayer';
+      if (layer.name === 'attributions' && layer.type === 'KML') {
+        res = res && false;
+      }
+
+      return res;
+    });
+
     return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
   }
 
