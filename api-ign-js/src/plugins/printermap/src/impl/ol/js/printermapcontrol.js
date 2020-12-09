@@ -495,6 +495,14 @@ export default class PrinterMapControl extends M.impl.Control {
             strokeLinecap: 'round',
           };
 
+          if (layer.name === 'coordinateresult') {
+            styleGeom.fillOpacity = 1;
+            styleGeom.strokeOpacity = 1;
+            styleGeom.fillColor = '#ffffff';
+            styleGeom.strokeColor = '#ff0000';
+            styleGeom.strokeWidth = 2;
+          }
+
           if (lineDash !== undefined && lineDash !== null && lineDash.length > 0) {
             if (lineDash[0] === 1 && lineDash.length === 2) {
               styleGeom.strokeDashstyle = 'dot';
@@ -656,6 +664,7 @@ export default class PrinterMapControl extends M.impl.Control {
         opacity: layerOpacity,
       };
     }
+
     return encodedLayer;
   }
 
