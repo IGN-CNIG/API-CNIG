@@ -671,7 +671,7 @@ export default class FullTOCControl extends M.Control {
     let HTTPSeval = false;
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
     const url = document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value.trim();
-    const type = document.getElementById('m-fulltoc-addservices-wmts').checked ? 'WMTS' : 'WMS';
+    const type = (document.getElementById('m-fulltoc-addservices-wmts').checked || url.indexOf('wmts') > -1) ? 'WMTS' : 'WMS';
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
         if (this.http && !this.https) {
@@ -738,7 +738,32 @@ export default class FullTOCControl extends M.Control {
                 M.dialog.error(getValue('exception.capabilities'));
               }
             }).catch((err) => {
-              M.dialog.error(getValue('exception.capabilities'));
+              const promise2 = new Promise((success, reject) => {
+                const id = setTimeout(() => reject(), 15000);
+                M.remote.get(M.utils.getWMTSGetCapabilitiesUrl(url)).then((response) => {
+                  clearTimeout(id);
+                  success(response);
+                });
+              });
+
+              promise2.then((response) => {
+                try {
+                  const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
+                  const getCapabilities = getCapabilitiesParser.read(response.xml);
+                  this.serviceCapabilities = getCapabilities.capabilities || {};
+                  const layers = M.impl.util.wmtscapabilities.getLayers(
+                    getCapabilities.capabilities,
+                    url,
+                    this.map_.getProjection().code,
+                  );
+                  this.capabilities = this.filterResults(layers);
+                  this.showResults();
+                } catch (error) {
+                  M.dialog.error(getValue('exception.capabilities'));
+                }
+              }).catch((eerror) => {
+                M.dialog.error(getValue('exception.capabilities'));
+              });
             });
           }
         } else {
