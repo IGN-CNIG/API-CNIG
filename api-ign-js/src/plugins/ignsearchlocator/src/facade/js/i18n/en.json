@@ -57,7 +57,7 @@
 
   "RCnull": "You must enter a cadastral reference",
 
-  "direccion": "Address, place name or cadastral Ref (14 dig.)",
+  "direccion": "Search address",
   "obtener": "Get direction at a point on the map",
   "buscparcela": "Search parcel/cadastre",
   "busccoord": "Search coordinates",

@@ -7,7 +7,7 @@
   "tooltip": "Búsqueda de lugares",
   "deleteresults": "Borrar resultados de la búsqueda",
   "obtener": "Obtener dirección en un punto del mapa",
-  "direccion": "Dirección, topónimo o Ref. catastral (14 dig.)",
+  "direccion": "Buscar dirección",
   "aprox": "Dirección aproximada",
   "exact": "Dirección exacta"
 }

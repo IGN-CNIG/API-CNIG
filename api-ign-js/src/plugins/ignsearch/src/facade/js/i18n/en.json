@@ -7,7 +7,7 @@
   "tooltip": "Search places",
   "deleteresults": "Delete search results",
   "obtener": "Get direction at a point on the map",
-  "direccion": "Address, place name or cadastral Ref (14 dig.)",
+  "direccion": "Search address",
   "aprox": "Approximate address",
   "exact": "Exact address"
 }
