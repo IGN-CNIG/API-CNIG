@@ -766,6 +766,7 @@ export default class VectorsControl extends M.impl.Control {
 
       this.showProfile(arrayXZY2);
     }).catch((err) => {
+      document.querySelector('div.m-mapea-container div.m-dialog').remove();
       M.dialog.error(getValue('exception.query_profile'), 'Error');
     });
   }
@@ -825,6 +826,7 @@ export default class VectorsControl extends M.impl.Control {
     });
 
     profil.show();
+    document.querySelector('div.m-mapea-container div.m-dialog').remove();
   }
 
   findNewPoints(originPoint, destPoint) {
@@ -1046,7 +1048,7 @@ export default class VectorsControl extends M.impl.Control {
     const filtered = map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible() &&
         layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable &&
-        layer.name === layerName && layer.url === layerURL;
+        layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult' && layer.name !== 'searchresult';
     });
 
     if (filtered.length > 0) {

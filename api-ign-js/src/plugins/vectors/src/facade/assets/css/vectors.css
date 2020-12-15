@@ -8,7 +8,6 @@ div.m-panel.m-vectors {
 
 /* Buttons */
 div.m-panel.m-vectors.opened>button.m-panel-btn {
-    background-color: #71a7d3 !important;
     font-family: 'g-cartografia' !important;
 }
 
@@ -731,6 +730,23 @@ div.m-vector-layer-actions .active-tool {
 
 #drawingtools .m-vector-layer-btn-container {
   display: flex;
+}
+
+.m-panel.m-vectors.opened>button {
+    color: #71a7d3!important;
+    background-color: #fff!important;
+}
+
+.m-container.m-vectors .m-vectors-title {
+  line-height: 40px;
+  background-color: #71a7d3;
+}
+
+.m-container.m-vectors .m-vectors-title > p {
+  margin: 0;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
 }
 
 .m-vectors #drawingtools .stroke-container .stroke-options div.stroke-continuous {

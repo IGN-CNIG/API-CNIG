@@ -78,5 +78,6 @@
   "responsible": "Responsible",
   "access_constraints": "Access constraints",
   "symbology": "Symbology",
-  "symbology_profile": "Symbology/Profile"
+  "symbology_profile": "Symbology/Profile",
+  "generating_profile": "Generating profile"
 }

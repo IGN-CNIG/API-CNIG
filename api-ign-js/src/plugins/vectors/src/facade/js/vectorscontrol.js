@@ -196,7 +196,7 @@ export default class VectorsControl extends M.Control {
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__';
+        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' && layer.name !== 'searchresult';
     });
 
     const layers = [];
@@ -1608,7 +1608,14 @@ export default class VectorsControl extends M.Control {
 
     this.getImpl().calculateProfile(this.feature);
     this.drawingTools.querySelector('.collapsor').click();
-    // this.deactivateDrawing();
-    // this.deactivateSelection();
+    const content = '<p class="m-vectors-loading"><span class="icon-spinner" /></p>';
+    M.dialog.info(content, getValue('generating_profile'));
+    setTimeout(() => {
+      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+      const button = document.querySelector('div.m-dialog.info div.m-button > button');
+      if (button !== null) {
+        button.remove();
+      }
+    }, 10);
   }
 }
