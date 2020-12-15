@@ -916,6 +916,12 @@ export default class FullTOCControl extends M.Control {
         results[i].addEventListener('click', evt => this.registerCheck(evt));
       }
 
+      const resultsNames = container.querySelectorAll('.table-results .table-container table tbody tr td.table-layer-name');
+      for (let i = 0; i < resultsNames.length; i += 1) {
+        resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
+      }
+
+
       container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
       container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', evt => this.addLayers(evt));
       const elem = container.querySelector('.m-fulltoc-show-capabilities');
@@ -972,6 +978,18 @@ export default class FullTOCControl extends M.Control {
         this.stateSelectAll = true;
       }
     }
+  }
+
+  /**
+   * This function registers the marks or unmarks check and click allselect from layer name
+   *
+   * @function
+   * @private
+   * @param {Event} evt - Event
+   */
+  registerCheckFromName(evt) {
+    const e = (evt || window.event);
+    e.target.parentElement.querySelector('span.m-check-fulltoc-addservices').click();
   }
 
   /**
