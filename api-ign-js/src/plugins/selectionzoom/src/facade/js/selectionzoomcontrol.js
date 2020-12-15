@@ -215,6 +215,7 @@ export default class SelectionZoomControl extends M.Control {
     }
 
     this.fire('selectionzoom:activeChanges', [{ activeLayerId: this.activeLayer }]);
+    document.querySelector('.m-panel.m-plugin-selectionzoom.opened > button.m-panel-btn').click();
   }
 
   /**
