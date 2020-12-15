@@ -87,7 +87,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {URLLike}
      */
-    this.url_ = options.url || M.config.attributions.url; // 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml';
+    this.url_ = options.url || M.config.attributions.url;
     /**
      * Type of the data url
      *
@@ -163,7 +163,7 @@ export default class Attributions extends M.Plugin {
      * @type {string}
      */
     // eslint-disable-next-line max-len
-    this.defaultAttribution_ = options.defaultAttribution || M.config.attributions.defaultAttribution; // options.defaultAttribution;
+    this.defaultAttribution_ = options.defaultAttribution || M.config.attributions.defaultAttribution;
 
     /**
      * Default url attribution
@@ -172,7 +172,7 @@ export default class Attributions extends M.Plugin {
      * @type {string}
      */
     // eslint-disable-next-line max-len
-    this.defaultURL_ = options.defaultURL || M.config.attributions.defaultURL; // options.defaultURL;
+    this.defaultURL_ = options.defaultURL || M.config.attributions.defaultURL;
 
     /**
      * Tooltip of the UI Plugin
@@ -234,16 +234,6 @@ export default class Attributions extends M.Plugin {
   destroy() {
     this.map_.removeControls([this.control_]);
     this.panel_ = null;
-    // this.mode_ = null;
-    // this.url_ = null;
-    // this.type_ = null;
-    // this.layerName_ = null;
-    // this.layer_ = null;
-    // this.scale_ = null;
-    // this.attributionParam_ = null;
-    // this.urlParam_ = null;
-    // this.minWidth_ = null;
-    // this.maxWidth_ = null;
   }
 
   /**
@@ -296,14 +286,27 @@ export default class Attributions extends M.Plugin {
       }
 
       this.addContent(mapAttributions);
-    } else if (typeof this.defaultAttribution_ !== 'string') {
-      // this.setVisible(false);
     } else {
-      // this.setVisible(true);
-      this.addContent([{
-        attribution: this.defaultAttribution_,
-        url: this.defaultURL_,
-      }]);
+      const zoom = this.map_.getZoom();
+      const baseLayer = this.map_.getBaseLayers()[0];
+      let mapAttributions = [{ attribution: this.defaultAttribution_, url: this.defaultURL_ }];
+      if (baseLayer.name === 'OI.OrthoimageCoverage') {
+        if (zoom < 14) {
+          mapAttributions = [{ attribution: 'Copernicus Sentinel 2019', url: 'https://sentinel.esa.int/web/sentinel/home' }];
+        } else {
+          mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }];
+        }
+      } else if (baseLayer.name === 'IGNBaseTodo' || baseLayer.name === 'EL.GridCoverageDSM') {
+        mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }];
+      } else if (baseLayer.name === 'LC.LandCoverSurfaces') {
+        if (zoom < 14) {
+          mapAttributions = [{ attribution: 'CORINE-Land Cover. Instituto Geográfico Nacional', url: this.defaultURL_ }];
+        } else {
+          mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }];
+        }
+      }
+
+      this.addContent(mapAttributions);
     }
   }
 
