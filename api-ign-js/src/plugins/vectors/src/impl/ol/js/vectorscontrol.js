@@ -499,10 +499,29 @@ export default class VectorsControl extends M.impl.Control {
       features.push(f);
     });
 
-    features = this.featuresToFacade(features);
+    let lines = features.filter((f) => {
+      return f.getGeometry().getType().indexOf('LineString') > -1;
+    });
+
+    let points = features.filter((f) => {
+      return f.getGeometry().getType().indexOf('Point') > -1;
+    });
+
+    lines = this.featuresToFacade(lines);
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
-    layer.addFeatures(features);
+    layer.addFeatures(lines);
     this.facadeMap_.addLayers(layer);
+
+    if (points.length > 0) {
+      points = this.featuresToFacade(points);
+      const layer2 = new M.layer.Vector({ name: `${layerName}_points`, legend: `${layerName}_points`, extract: false });
+      layer2.addFeatures(points);
+      this.facadeMap_.addLayers(layer2);
+      features = lines.concat(points);
+    } else {
+      features = lines;
+    }
+
     return features;
   }
 
