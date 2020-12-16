@@ -804,16 +804,19 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   -moz-user-select: none; /* Firefox 2+ */
   -ms-user-select: none; /* IE 10+ */
   user-select: none;
+  font-weight: bold;
 }
 
 .m-fulltoc-suggestion-caret::before {
-  content: "+";
+  font-family: "fulltoc" !important;
+  content: '\e916';
   display: inline-block;
   margin-right: 6px;
 }
 
 .m-fulltoc-suggestion-caret-close::before {
-  content: "-";
+  font-family: "fulltoc" !important;
+  content: '\e918';
 }
 
 .m-fulltoc-suggestion-group {

@@ -88,7 +88,7 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
 
 #m-ignsearchlocator-search-input {
     width: 150px;
-    border: none;
+    border: 1px solid #7a7a73;
 }
 
 button#m-ignsearchlocator-locate-button {
