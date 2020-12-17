@@ -267,6 +267,7 @@ class WMS extends LayerBase {
             this.addCapabilitiesMetadata(capabilitiesLayer);
             try {
               this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+            /* eslint-disable no-empty */
             } catch (err) {}
           } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name === undefined) {
             if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
@@ -274,6 +275,7 @@ class WMS extends LayerBase {
               this.addCapabilitiesMetadata(capabilitiesLayer);
               try {
                 this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+              /* eslint-disable no-empty */
               } catch (err) {}
             }
           }
