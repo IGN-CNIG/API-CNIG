@@ -215,6 +215,10 @@ div.m-area.m-bottom.m-left div.m-plugin-fulltoc div.m-panel-controls {
     max-width: 250px !important;
   }
 
+  ul.m-layers>li>div.m-legend, ul.m-base-layers>li>div.m-legend image {
+    max-width: 250px !important;
+  }
+
   .m-fulltoc-info-capabilities {
     max-width: unset !important;
   }
@@ -595,8 +599,9 @@ ul.m-layers>li, ul.m-base-layers>li {
 }
 
 ul.m-layers>li>div.m-legend, ul.m-base-layers>li>div.m-legend {
-  max-width: 50vw;
+  max-width: 420px;
   display: none;
+  overflow-x: auto;
 }
 
 ul.m-layers>li>div.m-legend-collapse, ul.m-base-layers>li>div.m-legend-collapse {
@@ -609,7 +614,6 @@ ul.m-layers>li>div.m-legend-notcollapse, ul.m-base-layers>li>div.m-legend-notcol
 }
 
 ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
-  max-width: 45vw;
   margin-left: 5px;
   margin-right: 5px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
