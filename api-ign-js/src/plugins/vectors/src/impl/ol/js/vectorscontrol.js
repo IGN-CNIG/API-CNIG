@@ -546,7 +546,7 @@ export default class VectorsControl extends M.impl.Control {
    * @api
    * @param {*} features -
    */
-  centerFeatures(features) {
+  centerFeatures(features, isGPX) {
     if (!M.utils.isNullOrEmpty(features)) {
       if ((features.length === 1) && (features[0].getGeometry().type === 'Point')) {
         const pointView = new ol.View({
@@ -566,7 +566,7 @@ export default class VectorsControl extends M.impl.Control {
         switch (f.getGeometry().type) {
           case 'Point':
           case 'MultiPoint':
-            const newPointStyle = new M.style.Point({
+            const newPointStyle = {
               radius: 6,
               fill: {
                 color: '#71a7d3',
@@ -575,8 +575,33 @@ export default class VectorsControl extends M.impl.Control {
                 color: 'white',
                 width: 2,
               },
-            });
-            if (f !== undefined) f.setStyle(newPointStyle);
+            };
+
+            if (isGPX && f.getAttributes().name !== undefined && f.getAttributes().name !== '') {
+              newPointStyle.label = {
+                fill: {
+                  color: '#ff0000',
+                },
+                stroke: {
+                  color: 'white',
+                  width: 2,
+                  linedash: [0, 0],
+                  linedashoffset: 0,
+                  linecap: 'none',
+                  linejoin: 'none',
+                },
+                scale: 2,
+                text: f.getAttributes().name,
+                font: '10px sanserif',
+                align: 'center',
+                baseline: 'top',
+                rotate: false,
+                rotation: 0,
+                offset: [0, 0],
+              };
+            }
+
+            if (f !== undefined) f.setStyle(new M.style.Point(newPointStyle));
             break;
           case 'LineString':
           case 'MultiLineString':

@@ -44,15 +44,15 @@
         <table style="width: 100%;">
             <thead>
               <tr>
-                  <th>{{translations.layers}}</th>
                   <th><span id="m-fulltoc-addservices-selectall" class="icon-check"></span></th>
+                  <th>{{translations.layers}}</th>
               </tr>
             </thead>
             <tbody>
                 {{#each result}}
                     <tr>
-                      <td class="table-layer-name" name="{{name}}" title="{{abstract}}">{{legend}}</td>
                       <td style="text-align: center;"><span id="{{name}}" name="{{name}}" class="m-check-fulltoc-addservices icon-check"></span></td>
+                      <td class="table-layer-name" name="{{name}}" title="{{abstract}}">{{legend}}</td>
                     </tr>
                 {{/each}}
             </tbody>
