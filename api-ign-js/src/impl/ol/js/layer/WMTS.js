@@ -293,7 +293,7 @@ class WMTS extends LayerBase {
             parsedCapabilities.Contents.Layer.forEach((l) => {
               const name = l.Identifier;
               l.Style.forEach((s) => {
-                const layerText = getCapabilitiesDocument.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
+                const layerText = response.text.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
                 /* eslint-disable no-param-reassign */
                 s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
               });
