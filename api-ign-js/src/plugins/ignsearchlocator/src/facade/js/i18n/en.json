@@ -23,6 +23,7 @@
   "noInfo": "NO REFERENCES AVAILABLE FOR THESE COORDINATES ",
 
   "tooltip": "Search places",
+  "tooltip_input": "Place name, address or postal code",
   "geographic": "Geographic",
   "zone": "zone",
   "title": "Coordinate locator",

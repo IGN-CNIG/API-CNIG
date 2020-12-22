@@ -87,8 +87,9 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
 }
 
 #m-ignsearchlocator-search-input {
-    width: 150px;
+    width: 177px;
     border: 1px solid #7a7a73;
+    margin-right: -2px;
 }
 
 button#m-ignsearchlocator-locate-button {
@@ -103,9 +104,15 @@ button#m-ignsearchlocator-locate-button {
 #m-ignsearchlocator-locate-button {
     background-color: white;
     border: none;
-    width: 40px;
+    width: 35px;
     height: 40px;
     margin-top: -0.5px;
+    text-align: center;
+}
+
+#m-ignsearchlocator-xylocator-button span {
+    position: relative;
+    right: 2px;
 }
 
 #m-ignsearchlocator-locate-button {
@@ -128,7 +135,8 @@ button#m-ignsearchlocator-locate-button {
 
 #m-ignsearchlocator-parcela-button span {
     position: relative;
-    top: 2px;
+    top: 1px;
+    right: 1px;
 }
 
 #m-ignsearchlocator-search-refCatastral {
@@ -154,7 +162,8 @@ button#m-ignsearchlocator-locate-button {
 
 #m-ignsearchlocator-clear-button span {
     position: relative;
-    bottom: 2px;
+    bottom: 1px;
+    right: 2px;
 }
 
 div.m-panel.ign-searchlocator-panel.collapsed button.m-panel-btn.icon-ignsearch::before {

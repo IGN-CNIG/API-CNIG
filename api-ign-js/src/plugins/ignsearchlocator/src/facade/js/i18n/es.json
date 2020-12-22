@@ -25,6 +25,7 @@
   "coordinateresult": "coordinateresult",
 
   "tooltip": "Búsqueda de lugares",
+  "tooltip_input": "Topónimo, dirección o código postal",
   "geographic": "Geograficas",
   "zone": "huso",
   "title": "Buscar por coordenadas",

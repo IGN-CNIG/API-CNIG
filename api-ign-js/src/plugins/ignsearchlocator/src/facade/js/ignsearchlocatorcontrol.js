@@ -425,6 +425,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             buscparcela: getValue('buscparcela'),
             busccoord: getValue('busccoord'),
             borrarresult: getValue('borrarresult'),
+            tooltip_input: getValue('tooltip_input'),
           },
         },
       });
