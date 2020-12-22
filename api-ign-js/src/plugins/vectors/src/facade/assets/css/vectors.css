@@ -721,10 +721,15 @@ div.m-vector-layer-actions .active-tool {
 .m-vectors-loading {
   width: 100%;
   text-align: center;
+  margin-bottom: 1rem;
+}
+
+.m-vectors-loading p {
+  margin-bottom: 0.5rem;
 }
 
 .m-vectors-loading span {
-  font-size: 3.5rem;
+  font-size: 2rem;
   animation: rotate 1s linear infinite;
 }
 

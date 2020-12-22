@@ -1613,14 +1613,7 @@ export default class VectorsControl extends M.Control {
 
     this.getImpl().calculateProfile(this.feature);
     this.drawingTools.querySelector('.collapsor').click();
-    const content = '<p class="m-vectors-loading"><span class="icon-spinner" /></p>';
-    M.dialog.info(content, getValue('generating_profile'));
-    setTimeout(() => {
-      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
-      const button = document.querySelector('div.m-dialog.info div.m-button > button');
-      if (button !== null) {
-        button.remove();
-      }
-    }, 10);
+    const content = `<div class="m-vectors-loading"><p>${getValue('generating_profile')}...</p><span class="icon-spinner" /></div>`;
+    document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = content;
   }
 }

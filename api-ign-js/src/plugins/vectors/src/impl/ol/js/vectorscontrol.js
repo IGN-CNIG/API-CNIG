@@ -592,12 +592,12 @@ export default class VectorsControl extends M.impl.Control {
                 },
                 scale: 2,
                 text: f.getAttributes().name,
-                font: '10px sanserif',
+                font: '8px sanserif',
                 align: 'center',
                 baseline: 'top',
                 rotate: false,
                 rotation: 0,
-                offset: [0, 0],
+                offset: [0, 10],
               };
             }
 
@@ -810,7 +810,7 @@ export default class VectorsControl extends M.impl.Control {
 
       this.showProfile(arrayXZY2);
     }).catch((err) => {
-      document.querySelector('div.m-mapea-container div.m-dialog').remove();
+      document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';
       M.dialog.error(getValue('exception.query_profile'), 'Error');
     });
   }
@@ -870,7 +870,7 @@ export default class VectorsControl extends M.impl.Control {
     });
 
     profil.show();
-    document.querySelector('div.m-mapea-container div.m-dialog').remove();
+    document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';
   }
 
   findNewPoints(originPoint, destPoint) {
