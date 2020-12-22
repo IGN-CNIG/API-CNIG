@@ -279,10 +279,26 @@ export default class Attributions extends M.Plugin {
       let mapAttributions = [];
       if (this.mode_ === MODES.mapAttributions) {
         mapAttributions = this.getMapAttributions();
-      } else if (this.mode_ === MODES.layerAttributions) {
-        // TODO:
-      } else if (this.mode === MODES.mixed) {
-        // TODO:
+        const zoom = this.map_.getZoom();
+        const baseLayer = this.map_.getBaseLayers()[0];
+        const isHybrid = this.map_.getLayers().filter((l) => {
+          return l.type === 'WMTS' && !l.displayInLayerSwitcher && l.name === 'OI.OrthoimageCoverage';
+        }).length > 0;
+        if ((baseLayer !== undefined && baseLayer.name === 'OI.OrthoimageCoverage') || isHybrid) {
+          if (zoom < 14) {
+            mapAttributions = [{ attribution: 'Copernicus Sentinel 2019', url: 'https://sentinel.esa.int/web/sentinel/home' }].concat(mapAttributions);
+          } else {
+            mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }].concat(mapAttributions);
+          }
+        } else if (baseLayer !== undefined && (baseLayer.name === 'IGNBaseTodo' || baseLayer.name === 'EL.GridCoverageDSM')) {
+          mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }].concat(mapAttributions);
+        } else if (baseLayer !== undefined && baseLayer.name === 'LC.LandCoverSurfaces') {
+          if (zoom < 14) {
+            mapAttributions = [{ attribution: 'CORINE-Land Cover. Instituto Geográfico Nacional', url: this.defaultURL_ }].concat(mapAttributions);
+          } else {
+            mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }].concat(mapAttributions);
+          }
+        }
       }
 
       this.addContent(mapAttributions);
@@ -290,15 +306,18 @@ export default class Attributions extends M.Plugin {
       const zoom = this.map_.getZoom();
       const baseLayer = this.map_.getBaseLayers()[0];
       let mapAttributions = [{ attribution: this.defaultAttribution_, url: this.defaultURL_ }];
-      if (baseLayer.name === 'OI.OrthoimageCoverage') {
+      const isHybrid = this.map_.getLayers().filter((l) => {
+        return l.type === 'WMTS' && !l.displayInLayerSwitcher && l.name === 'OI.OrthoimageCoverage';
+      }).length > 0;
+      if ((baseLayer !== undefined && baseLayer.name === 'OI.OrthoimageCoverage') || isHybrid) {
         if (zoom < 14) {
           mapAttributions = [{ attribution: 'Copernicus Sentinel 2019', url: 'https://sentinel.esa.int/web/sentinel/home' }];
         } else {
           mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }];
         }
-      } else if (baseLayer.name === 'IGNBaseTodo' || baseLayer.name === 'EL.GridCoverageDSM') {
+      } else if (baseLayer !== undefined && (baseLayer.name === 'IGNBaseTodo' || baseLayer.name === 'EL.GridCoverageDSM')) {
         mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }];
-      } else if (baseLayer.name === 'LC.LandCoverSurfaces') {
+      } else if (baseLayer !== undefined && baseLayer.name === 'LC.LandCoverSurfaces') {
         if (zoom < 14) {
           mapAttributions = [{ attribution: 'CORINE-Land Cover. Instituto Geográfico Nacional', url: this.defaultURL_ }];
         } else {
