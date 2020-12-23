@@ -298,6 +298,8 @@ export default class Attributions extends M.Plugin {
           } else {
             mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }].concat(mapAttributions);
           }
+        } else {
+          mapAttributions = [{ attribution: this.defaultAttribution_, url: this.defaultURL_ }].concat(mapAttributions);
         }
       }
 

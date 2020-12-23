@@ -17,6 +17,17 @@ const map = M.map({
       visible: true,
       format: 'image/jpeg',
     }),
+    /*new M.layer.WMTS({
+      url: 'https://www.ign.es/wmts/mapa-raster?',
+      name: 'MTN',
+      legend: 'Mapa',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: false,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/jpeg',
+    }),*/
   ],
 });
 
