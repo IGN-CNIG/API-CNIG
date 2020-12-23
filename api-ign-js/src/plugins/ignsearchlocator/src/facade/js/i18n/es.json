@@ -59,7 +59,7 @@
 
   "RCnull": "Debe introducir una referencia catastral",
 
-  "direccion": "Buscar dirección",
+  "direccion": "Topónimo, dirección o código postal",
   "obtener": "Obtener dirección en un punto del mapa",
   "buscparcela": "Buscar parcela/catastro",
   "busccoord": "Buscar por coordenadas",
