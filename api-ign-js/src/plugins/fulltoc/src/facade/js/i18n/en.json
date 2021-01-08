@@ -9,7 +9,8 @@
     "valid_url": "You must provide a valid URL",
     "empty": "The fields are empty",
     "select_layer": "You must select at least one layer",
-    "no_results": "Aucune couche trouvée dans ce service"
+    "no_results": "No layers found in this service",
+    "codsi": "An error occurred while consulting the CODSI catalog"
   },
   "tooltip": "Layers",
   "info": "Information",
@@ -28,6 +29,7 @@
   "url_service": "Service URL",
   "query": "Consult",
   "loaded_services": "Preloaded geographic information layers",
+  "codsi_services": "CODSI Catalog Services",
   "clean": "Clean search",
   "availables": "Preloaded geographic information layers available",
   "title": "Title",

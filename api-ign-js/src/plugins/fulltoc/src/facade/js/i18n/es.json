@@ -9,7 +9,8 @@
     "valid_url": "Debes indicar una URL válida",
     "empty": "Los campos están vacíos",
     "select_layer": "Debes seleccionar al menos una capa",
-    "no_results": "No se han encontrado capas en este servicio"
+    "no_results": "No se han encontrado capas en este servicio",
+    "codsi": "Ha ocurrido un error al consultar el catálogo CODSI"
   },
   "tooltip": "Capas",
   "info": "Información",
@@ -28,6 +29,7 @@
   "url_service": "URL del servicio",
   "query": "Consultar",
   "loaded_services": "Capas de información geográfica",
+  "codsi_services": "Servicios de catálogo CODSI",
   "clean": "Limpiar búsqueda",
   "availables": "Capas de información geográfica disponibles",
   "title": "Título",

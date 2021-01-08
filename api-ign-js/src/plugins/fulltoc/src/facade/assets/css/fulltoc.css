@@ -1,3 +1,15 @@
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes rotate {
+  100% {  -webkit-transform: rotate(360deg); }
+}
+
+@-moz-keyframes rotate {
+  100% { -moz-transform: rotate(360deg); }
+}
+
 .m-panel.m-plugin-fulltoc {
   box-shadow: unset !important;
   background-color: transparent !important;
@@ -908,4 +920,68 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 
 #m-fulltoc-addservices-results .m-fulltoc-capabilities-container div {
   word-break: break-word;
+}
+
+#m-fulltoc-addservices-codsi {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+#m-fulltoc-addservices-codsi > p {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+#m-fulltoc-addservices-codsi-pagination {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+#m-fulltoc-addservices-codsi-pagination button.m-fulltoc-addservices-pagination-btn {
+  padding: 3px 7px;
+  background-color: #71a7d3;
+  font-family: Muli,"sans-serif" !important;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #71a7d3;
+  color: white;
+  font-weight: bold;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  outline: none;
+  text-decoration: none;
+}
+
+#m-fulltoc-addservices-codsi-pagination button.m-fulltoc-addservices-pagination-btn:disabled {
+  color: #767676;
+  background-color: #eeeeee;
+  border-color: #eeeeee;
+}
+
+#m-fulltoc-addservices-codsi-results table tbody tr td span {
+  cursor: pointer;
+}
+
+#m-fulltoc-addservices-codsi-results table tbody tr td span:hover {
+  text-decoration: underline;
+}
+
+.m-fulltoc-loading {
+  width: 100%;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.m-fulltoc-loading p {
+  margin-bottom: 1rem;
+}
+
+.m-fulltoc-loading span {
+  font-size: 3rem;
+  animation: rotate 1s linear infinite;
+  -webkit-animation: rotate 1s linear infinite;
+  -moz-animation: rotate 1s linear infinite;
 }
