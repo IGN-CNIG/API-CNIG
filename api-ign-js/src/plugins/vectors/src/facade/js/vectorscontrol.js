@@ -1435,6 +1435,7 @@ export default class VectorsControl extends M.Control {
     this.drawLayer.addFeatures(this.feature);
     this.emphasizeSelectedFeature();
     this.showFeatureInfo();
+    this.getImpl().calculateElevations(this.feature);
   }
 
   /**

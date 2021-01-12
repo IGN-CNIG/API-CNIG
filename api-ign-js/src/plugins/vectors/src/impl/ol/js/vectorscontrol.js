@@ -755,6 +755,52 @@ export default class VectorsControl extends M.impl.Control {
     return parsedFeatures;
   }
 
+  calculateElevations(feature) {
+    const srs = this.facadeMap_.getProjection().code;
+    const coordinates = feature.getGeometry().coordinates;
+    let pointsCoord = '';
+    coordinates.forEach((c) => {
+      const newC = ol.proj.transform(c, srs, WGS84);
+      pointsCoord += `${newC[0]},${newC[1]},${newC[0] + 0.000001},${newC[1] + 0.000001}|`;
+    });
+
+    const pointsBbox = pointsCoord.split('|').filter((elem) => {
+      return elem !== '' && elem.trim().length > 3;
+    });
+
+    const altitudes = [];
+    const promises = [];
+    pointsBbox.forEach((bbox) => {
+      const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
+      promises.push(M.remote.get(url));
+    });
+
+    Promise.all(promises).then((responses) => {
+      responses.forEach((response) => {
+        let alt = 0;
+        if (response.text.indexOf('dy') > -1) {
+          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        } else if (response.text.indexOf('cellsize') > -1) {
+          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        }
+
+        altitudes.push(parseFloat(alt));
+      });
+
+      const geom = feature.getGeometry();
+      geom.coordinates.forEach((c, index) => {
+        c.push(altitudes[index]);
+      });
+
+      feature.setGeometry(geom);
+      // eslint-disable-next-line no-console
+    }).catch((err) => {});
+  }
+
   calculateProfile(feature) {
     const coordinates = feature.getGeometry().coordinates;
     let pointsCoord = '';
