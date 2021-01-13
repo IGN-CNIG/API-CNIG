@@ -29,7 +29,7 @@
     align-items: center;
     background-color: white;
     display: flex;
-    position: absolute;
+    position: fixed;
     width: 92.5%;
 }
 
