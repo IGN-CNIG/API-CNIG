@@ -689,7 +689,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   searchInputValue(e, firstResult = false) {
-    document.getElementById('m-ignsearchlocator-results').style = 'width: 89.6%';
+    document.getElementById('m-ignsearchlocator-results').style = 'width: 347px';
 
     // const { value } = e.target;
     const value = e.target.value.replace(',', ' ');
