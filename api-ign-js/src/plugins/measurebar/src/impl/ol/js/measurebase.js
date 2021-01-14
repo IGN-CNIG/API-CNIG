@@ -112,6 +112,7 @@ export default class Measure extends M.impl.Control {
     this.facadeMap_.getMapImpl().addInteraction(this.draw_);
     this.active = true;
     this.createMeasureTooltip_();
+    document.body.style.cursor = 'crosshair';
     document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
 
@@ -150,6 +151,7 @@ export default class Measure extends M.impl.Control {
    * @api stable
    */
   deactivate() {
+    document.body.style.cursor = 'default';
     this.facadeMap_.getMapImpl().un('pointermove', this.pointerMoveHandler_.bind(this));
     this.facadeMap_.getMapImpl().removeInteraction(this.draw_);
     // this.clear();

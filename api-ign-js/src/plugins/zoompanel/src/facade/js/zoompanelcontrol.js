@@ -1,7 +1,6 @@
 /**
  * @module M/control/ZoomPanelControl
  */
-
 import ZoomPanelImplControl from 'impl/zoompanelcontrol';
 import template from 'templates/zoompanel';
 import { getValue } from './i18n/language';
@@ -92,6 +91,7 @@ export default class ZoomPanelControl extends M.Control {
     super.activate();
     document.getElementById('zoomToBox').classList.add('active');
     this.getImpl().activateClick(this.map_);
+    document.body.style.cursor = 'url(\'https://i.ibb.co/bPGFbVm/crosshair-zoom.png\') 9 13, auto';
     document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
 
@@ -128,6 +128,7 @@ export default class ZoomPanelControl extends M.Control {
    */
   deactivate() {
     super.deactivate();
+    document.body.style.cursor = 'default';
     document.getElementById('zoomToBox').classList.remove('active');
     this.getImpl().deactivateClick(this.map_);
   }

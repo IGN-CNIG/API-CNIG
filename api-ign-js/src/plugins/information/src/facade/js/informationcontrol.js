@@ -56,6 +56,7 @@ export default class InformationControl extends M.Control {
   activate() {
     this.invokeEscKey();
     this.getImpl().activate();
+    document.body.style.cursor = 'url(\'https://i.ibb.co/HBtH3Qs/click-info.png\') 1 7, auto';
     document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
   /**
@@ -67,6 +68,7 @@ export default class InformationControl extends M.Control {
    */
   deactivate() {
     this.getImpl().deactivate();
+    document.body.style.cursor = 'default';
     document.removeEventListener('keyup', this.checkEscKey.bind(this));
   }
 
