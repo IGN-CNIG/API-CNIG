@@ -985,3 +985,20 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   -webkit-animation: rotate 1s linear infinite;
   -moz-animation: rotate 1s linear infinite;
 }
+
+.m-fulltoc-addservices-codsi-search-panel {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.m-fulltoc-addservices-codsi-search-panel input {
+  width: 160px;
+}
+
+.m-fulltoc-addservices-codsi-search-panel span {
+  margin-left: 3px;
+  cursor: pointer;
+  color: #6c6c6c !important;
+  opacity: 1 !important;
+  font-size: 14px !important;
+}

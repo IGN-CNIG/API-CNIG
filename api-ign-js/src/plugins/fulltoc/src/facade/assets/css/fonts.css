@@ -55,3 +55,4 @@ div.m-plugin-fulltoc [class*=" icon-"] {
 .m-fulltoc-addservices .icon-check-seleccionado:before { content: '\e90a'; }
 .m-fulltoc-addservices .icon-codsi:before { content: '\e94f'; }
 .m-fulltoc-addservices .icon-spinner:before { content: '\e953'; }
+.m-fulltoc-addservices .icon-papelera:before { content: '\e93e'; }

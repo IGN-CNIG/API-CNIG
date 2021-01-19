@@ -377,6 +377,9 @@ export default class FullTOCControl extends M.Control {
               clean: getValue('clean'),
               availables: getValue('availables'),
               codsi_services: getValue('codsi_services'),
+              filter_results: getValue('filter_results'),
+              clean_filter: getValue('clean_filter'),
+              filter_text: getValue('filter_text'),
             },
           },
         });
@@ -389,6 +392,14 @@ export default class FullTOCControl extends M.Control {
 
           if (document.querySelector('#m-fulltoc-addservices-codsi-btn') !== null) {
             document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('click', e => this.showCODSI(e));
+            document.querySelector('#m-fulltoc-addservices-codsi-filter-btn').addEventListener('click', (e) => {
+              this.loadCODSIResults(1);
+            });
+
+            document.querySelector('#m-fulltoc-addservices-codsi-clean-btn').addEventListener('click', (e) => {
+              document.querySelector('#m-fulltoc-addservices-codsi-search-input').value = '';
+              this.loadCODSIResults(1);
+            });
           }
 
           document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', e => this.readCapabilities(e));
@@ -468,52 +479,59 @@ export default class FullTOCControl extends M.Control {
 
   loadCODSIResults(pageNumber) {
     document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = '<p class="m-fulltoc-loading"><span class="icon-spinner" /></p>';
+    const query = document.querySelector('#m-fulltoc-addservices-codsi-search-input').value.trim();
     const start = 1 + ((pageNumber - 1) * CODSI_PAGESIZE);
     const end = pageNumber * CODSI_PAGESIZE;
-    const url = CODSI_CATALOG.split('*1').join(`${start}`).split('*2').join(`${end}`);
+    let url = CODSI_CATALOG.split('*1').join(`${start}`).split('*2').join(`${end}`);
+    if (query !== '') {
+      url += `&any=${query}`;
+    }
+
     M.remote.get(url).then((response) => {
       const data = JSON.parse(response.text);
       const total = data.summary['@count'];
       const results = [];
-      data.metadata.forEach((m) => {
-        let links = [];
-        if (Array.isArray(m.link)) {
-          m.link.forEach((l) => {
+      if (data.metadata !== undefined) {
+        data.metadata.forEach((m) => {
+          let links = [];
+          if (Array.isArray(m.link)) {
+            m.link.forEach((l) => {
+              let parts = [];
+              if (l.indexOf('||') > -1) {
+                parts = l.split('||').filter((part) => {
+                  return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
+                });
+              } else if (l.indexOf('|') > -1) {
+                parts = l.split('|').filter((part) => {
+                  return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
+                });
+              }
+
+              links = links.concat(parts);
+            });
+          } else {
             let parts = [];
-            if (l.indexOf('||') > -1) {
-              parts = l.split('||').filter((part) => {
+            if (m.link.indexOf('||') > -1) {
+              parts = m.link.split('||').filter((part) => {
                 return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
               });
-            } else if (l.indexOf('|') > -1) {
-              parts = l.split('|').filter((part) => {
+            } else if (m.link.indexOf('|') > -1) {
+              parts = m.link.split('|').filter((part) => {
                 return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
               });
             }
 
             links = links.concat(parts);
-          });
-        } else {
-          let parts = [];
-          if (m.link.indexOf('||') > -1) {
-            parts = m.link.split('||').filter((part) => {
-              return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
-            });
-          } else if (m.link.indexOf('|') > -1) {
-            parts = m.link.split('|').filter((part) => {
-              return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
-            });
           }
 
-          links = links.concat(parts);
-        }
-
-        if (links.length > 0) {
-          results.push({
-            title: m.title || m.defaultTitle,
-            url: links[0].split('?')[0],
-          });
-        }
-      });
+          if (links.length > 0) {
+            results.push({
+              title: m.title || m.defaultTitle,
+              url: links[0].split('?')[0],
+            });
+          }
+        });
+      }
 
       this.renderCODSIResults(results);
       this.renderCODSIPagination(pageNumber, total);
@@ -524,40 +542,46 @@ export default class FullTOCControl extends M.Control {
 
   renderCODSIResults(results) {
     document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = '';
-    let textResults = '<table><tbody>';
-    results.forEach((r) => {
-      textResults += `<tr><td><span class="m-fulltoc-codsi-result" data-link="${r.url}">${r.title}</span></td></tr>`;
-    });
-
-    textResults += '</tbody></table>';
-    document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = textResults;
-    document.querySelectorAll('#m-fulltoc-addservices-codsi-results .m-fulltoc-codsi-result').forEach((elem) => {
-      elem.addEventListener('click', (evt) => {
-        const url = elem.getAttribute('data-link');
-        document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = url;
-        this.readCapabilities(evt);
+    if (results.length > 0) {
+      let textResults = '<table><tbody>';
+      results.forEach((r) => {
+        textResults += `<tr><td><span class="m-fulltoc-codsi-result" data-link="${r.url}">${r.title}</span></td></tr>`;
       });
-    });
+
+      textResults += '</tbody></table>';
+      document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = textResults;
+      document.querySelectorAll('#m-fulltoc-addservices-codsi-results .m-fulltoc-codsi-result').forEach((elem) => {
+        elem.addEventListener('click', (evt) => {
+          const url = elem.getAttribute('data-link');
+          document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = url;
+          this.readCapabilities(evt);
+        });
+      });
+    } else {
+      document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = '<div>***No hay resultados para su búsqueda</div>';
+    }
   }
 
   renderCODSIPagination(pageNumber, total) {
     document.querySelector('#m-fulltoc-addservices-codsi-pagination').innerHTML = '';
-    const numPages = Math.ceil(total / CODSI_PAGESIZE);
-    let buttons = '';
-    for (let i = 1; i <= numPages; i += 1) {
-      if (i === pageNumber) {
-        buttons += `<button class="m-fulltoc-addservices-pagination-btn" disabled>${i}</button>`;
-      } else {
-        buttons += `<button class="m-fulltoc-addservices-pagination-btn">${i}</button>`;
+    if (total > 0) {
+      const numPages = Math.ceil(total / CODSI_PAGESIZE);
+      let buttons = '';
+      for (let i = 1; i <= numPages; i += 1) {
+        if (i === pageNumber) {
+          buttons += `<button class="m-fulltoc-addservices-pagination-btn" disabled>${i}</button>`;
+        } else {
+          buttons += `<button class="m-fulltoc-addservices-pagination-btn">${i}</button>`;
+        }
       }
-    }
 
-    document.querySelector('#m-fulltoc-addservices-codsi-pagination').innerHTML = buttons;
-    document.querySelectorAll('#m-fulltoc-addservices-codsi-pagination button').forEach((elem, index) => {
-      elem.addEventListener('click', () => {
-        this.loadCODSIResults(index + 1);
+      document.querySelector('#m-fulltoc-addservices-codsi-pagination').innerHTML = buttons;
+      document.querySelectorAll('#m-fulltoc-addservices-codsi-pagination button').forEach((elem, index) => {
+        elem.addEventListener('click', () => {
+          this.loadCODSIResults(index + 1);
+        });
       });
-    });
+    }
   }
 
   loadSuggestion(evt) {
@@ -1168,6 +1192,7 @@ export default class FullTOCControl extends M.Control {
           }
         }
       }
+
       this.map_.addLayers(layers);
       this.afterRender();
     }
