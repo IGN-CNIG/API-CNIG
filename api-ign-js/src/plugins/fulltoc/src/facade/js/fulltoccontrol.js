@@ -17,7 +17,7 @@ import { getValue } from './i18n/language';
 
 const CATASTRO = 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 const CODSI_CATALOG = 'http://www.idee.es/csw-codsi-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&serviceType=view&resultType=details&sortBy=title&sortOrder=asc&to=*2';
-const CODSI_PAGESIZE = 10;
+const CODSI_PAGESIZE = 9;
 
 export default class FullTOCControl extends M.Control {
   /**
@@ -487,7 +487,7 @@ export default class FullTOCControl extends M.Control {
     const end = pageNumber * CODSI_PAGESIZE;
     let url = CODSI_CATALOG.split('*1').join(`${start}`).split('*2').join(`${end}`);
     if (query !== '') {
-      url += `&any=${query}`;
+      url += `&any=*${query}*`;
     }
 
     M.remote.get(url).then((response) => {
