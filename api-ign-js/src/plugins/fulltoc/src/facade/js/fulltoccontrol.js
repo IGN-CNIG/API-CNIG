@@ -403,7 +403,10 @@ export default class FullTOCControl extends M.Control {
           }
 
           document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', e => this.readCapabilities(e));
-          document.querySelector('#m-fulltoc-addservices-clear-btn').addEventListener('click', e => this.removeContains(e));
+          /*
+          document.querySelector('#m-fulltoc-addservices-clear-btn')
+          .addEventListener('click', e => this.removeContains(e));
+          */
           document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
           const button = document.querySelector('div.m-dialog.info div.m-button > button');
           button.innerHTML = getValue('close');
@@ -558,7 +561,7 @@ export default class FullTOCControl extends M.Control {
         });
       });
     } else {
-      document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = '<div>***No hay resultados para su búsqueda</div>';
+      document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = `<div class="codsi-no-results">${getValue('exception.codsi_no_results')}</div>`;
     }
   }
 

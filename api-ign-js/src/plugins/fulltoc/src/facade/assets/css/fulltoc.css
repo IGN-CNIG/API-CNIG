@@ -1002,3 +1002,8 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   opacity: 1 !important;
   font-size: 14px !important;
 }
+
+div.codsi-no-results {
+  text-align: center;
+  margin-top: 1rem;
+}

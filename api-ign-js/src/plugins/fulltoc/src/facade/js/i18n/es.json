@@ -10,7 +10,8 @@
     "empty": "Los campos están vacíos",
     "select_layer": "Debes seleccionar al menos una capa",
     "no_results": "No se han encontrado capas en este servicio",
-    "codsi": "Ha ocurrido un error al consultar el catálogo CODSI"
+    "codsi": "Ha ocurrido un error al consultar el catálogo CODSI",
+    "codsi_no_results": "No hay resultados para su búsqueda"
   },
   "tooltip": "Capas",
   "info": "Información",

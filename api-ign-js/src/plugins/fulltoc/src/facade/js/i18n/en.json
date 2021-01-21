@@ -10,7 +10,8 @@
     "empty": "The fields are empty",
     "select_layer": "You must select at least one layer",
     "no_results": "No layers found in this service",
-    "codsi": "An error occurred while consulting the CODSI catalog"
+    "codsi": "An error occurred while consulting the CODSI catalog",
+    "codsi_no_results": "There are no results for your search"
   },
   "tooltip": "Layers",
   "info": "Information",
