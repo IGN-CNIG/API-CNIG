@@ -309,6 +309,17 @@ export default class InfocoordinatesControl extends M.Control {
     // En el caso de que no sea nuevo, se modifica el estilo del punto.
     if (numPoint > countPoints) {
       this.displayPoint(numPoint);
+    } else if (numPoint === countPoints) {
+      document.querySelectorAll('.contenedorPunto').forEach((elem) => {
+        if (parseInt(elem.textContent, 10) === numPoint) {
+          elem.classList.replace('contenedorPunto', 'contenedorPuntoSelect');
+        }
+      });
+
+      // Eliminamos las etiquetas de los puntos
+      if (document.getElementsByClassName('icon-infocoordinates-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
+        this.removeAllDisplaysPoints();
+      }
     } else {
       document.getElementsByClassName('contenedorPuntoSelect')[0].classList.replace('contenedorPuntoSelect', 'contenedorPunto');
       document.getElementsByClassName('contenedorPunto')[document.getElementsByClassName('contenedorPunto').length - numPoint].classList.replace('contenedorPunto', 'contenedorPuntoSelect');
@@ -429,6 +440,7 @@ export default class InfocoordinatesControl extends M.Control {
 
   removePoint() {
     if (document.getElementsByClassName('tablinks').length > 1) {
+      const totalTabs = document.getElementsByClassName('m-infocoordinates-tabs')[0].children.length;
       let tablinkActive = document.querySelector('.tablinks.active');
       let numPoint = tablinkActive.textContent;
       //Elimina tab
@@ -436,11 +448,32 @@ export default class InfocoordinatesControl extends M.Control {
       // elimina la feature
       let featureSelect = this.layerFeatures.getFeatureById(parseInt(numPoint));
       this.layerFeatures.removeFeatures(featureSelect);
+      this.layerFeatures.getFeatures().forEach((f) => {
+        if (f.getId() > numPoint) {
+          f.setId(f.getId() - 1);
+        }
+      });
+
+      for (let i = (numPoint - 1); i < (totalTabs - 1); i += 1) {
+        const elem = document.getElementById(`tablink${i + 2}`);
+        const value = parseInt(elem.innerHTML, 10);
+        elem.setAttribute('id', `tablink${value - 1}`);
+        elem.innerHTML = (value - 1);
+      }
+
+      document.querySelector('.contenedorPuntoSelect').parentNode.remove();
+      document.querySelectorAll('.contenedorPunto').forEach((elem) => {
+        if (parseInt(elem.textContent.trim(), 10) > numPoint) {
+          const value = parseInt(elem.querySelector('td').innerHTML, 10);
+          elem.querySelector('td').innerHTML = (value - 1);
+        }
+      });
 
       //mostrar otro punto, muestro el último punto y lo activo
       let lastTablink = document.getElementsByClassName('m-infocoordinates-tabs')[0].lastChild;
       lastTablink.classList.add('active');
-      this.openTabFromTab(parseInt(lastTablink.textContent))
+      this.numTabs = this.numTabs - 1;
+      this.openTabFromTab(parseInt(lastTablink.textContent));
     } else {
       this.removeAllPoints();
     }
