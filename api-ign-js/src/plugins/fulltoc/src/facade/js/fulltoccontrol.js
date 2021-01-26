@@ -396,17 +396,26 @@ export default class FullTOCControl extends M.Control {
               this.loadCODSIResults(1);
             });
 
+            document.querySelector('#m-fulltoc-addservices-codsi-search-input').addEventListener('keypress', (e) => {
+              if (e.keyCode === 13) {
+                this.loadCODSIResults(1);
+              }
+            });
+
             document.querySelector('#m-fulltoc-addservices-codsi-clean-btn').addEventListener('click', (e) => {
               document.querySelector('#m-fulltoc-addservices-codsi-search-input').value = '';
               this.loadCODSIResults(1);
             });
           }
 
+
           document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', e => this.readCapabilities(e));
-          /*
-          document.querySelector('#m-fulltoc-addservices-clear-btn')
-          .addEventListener('click', e => this.removeContains(e));
-          */
+          document.querySelector('#m-fulltoc-addservices-search-input').addEventListener('keypress', (e) => {
+            if (e.keyCode === 13) {
+              this.readCapabilities(e);
+            }
+          });
+
           document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
           const button = document.querySelector('div.m-dialog.info div.m-button > button');
           button.innerHTML = getValue('close');
