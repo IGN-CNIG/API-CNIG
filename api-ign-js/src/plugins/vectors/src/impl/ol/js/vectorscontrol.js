@@ -522,6 +522,10 @@ export default class VectorsControl extends M.impl.Control {
       features = lines;
     }
 
+    lines.forEach((line) => {
+      this.calculateElevations(line);
+    });
+
     return features;
   }
 
