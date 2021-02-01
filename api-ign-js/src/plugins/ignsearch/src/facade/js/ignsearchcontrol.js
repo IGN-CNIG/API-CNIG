@@ -689,6 +689,7 @@ export default class IGNSearchControl extends M.Control {
       outputformat: 'application/json',
     });
     this.locationID = locationId;
+    M.proxy(true);
     M.remote.get(this.requestPlace).then((res) => {
       const latLngString = JSON.parse(res.text).results[0].location;
       const resultTitle = JSON.parse(res.text).results[0].title;
@@ -786,6 +787,7 @@ export default class IGNSearchControl extends M.Control {
       if (this.servicesToSearch !== 'g') {
         const params = `maxresults=${this.maxResults}&name_equals=${newInputVal}`;
         const urlToGet = `${this.urlAssistant}?${params}`;
+        M.proxy(true);
         M.remote.get(urlToGet).then((res) => {
           const temporalData = res.text !== '' ? JSON.parse(res.text) : { results: [] };
           const returnData = temporalData.results;
@@ -1094,7 +1096,7 @@ export default class IGNSearchControl extends M.Control {
    * @param { string } exitState indicating if the given result is a perfect match
    */
   showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
-    const featureTabOpts = { content: '', icon: 'g-plugin-ignsearch-localizacion3' };
+    const featureTabOpts = { content: '', icon: 'icon-locate' };
     if (exitState !== null) {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }
