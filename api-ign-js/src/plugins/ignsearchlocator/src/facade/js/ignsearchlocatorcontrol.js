@@ -527,6 +527,8 @@ export default class IGNSearchLocatorControl extends M.Control {
               this.showSearchPopUp(fullAddress, coordinates, perfectResult, { fake: true });
             }
             M.proxy(true);
+          }).catch((err) => {
+            M.proxy(true);
           });
         }
         if (this.geocoderCoords && this.geocoderCoords.length === 2) {
@@ -871,6 +873,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.showSearchPopUp(fullAddress, coordinates, perfectResult);
       }
     });
+
     M.proxy(true);
   }
 
@@ -1012,8 +1015,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     return new Promise((resolve) => {
       if (this.servicesToSearch !== 'n') {
         let params = `q=${newInputVal}&limit=${this.maxResults}&no_process=${this.noProcess}`;
-        params += `&countrycode=${this.countryCode}&autocancel='true'`;
+        params += `&countrycode=${this.countryCode}&autocancel=true`;
         const urlToGet = `${this.urlCandidates}?${params}`;
+        M.proxy(false);
         M.remote.get(urlToGet).then((res) => {
           const returnData = JSON.parse(res.text.substring(9, res.text.length - 1));
           for (let i = 0; i < returnData.length; i += 1) {
@@ -1021,6 +1025,8 @@ export default class IGNSearchLocatorControl extends M.Control {
           }
           resolve();
         });
+
+        M.proxy(true);
       } else {
         resolve();
       }

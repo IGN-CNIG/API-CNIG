@@ -9,19 +9,19 @@ const map = M.map({
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
   //projection: 'EPSG:4326*d',
-  /*layers: [
+  layers: [
     new M.layer.WMTS({
-      url: 'http://www.ign.es/wmts/mapa-raster?',
-      name: 'MTN',
-      legend: 'Mapa',
-      matrixSet: 'EPSG:4326',
+      url: 'https://www.ign.es/wmts/pnoa-ma?',
+      name: 'OI.OrthoimageCoverage',
+      legend: 'Imagen',
+      matrixSet: 'GoogleMapsCompatible',
       transparent: false,
       displayInLayerSwitcher: false,
       queryable: false,
       visible: true,
-      format: 'image/png',
+      format: 'image/jpeg',
     }),
-  ],*/
+  ],
 });
 
 const layerinicial = new M.layer.WMS({
@@ -41,12 +41,12 @@ const printermap = new PrinterMap({
   collapsed: true,
   collapsible: true,
   position: 'TR',
-  credits: 'Impresión generada desde Fototeca Digital http://fototeca.cnig.es/',
+  // credits: 'Impresión generada desde Fototeca Digital http://fototeca.cnig.es/',
   georefActive: false,
-  serverUrl: 'https://componentes.cnig.es/geoprint',
-  printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
-  printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
-  fototeca: true,
+  // serverUrl: 'https://componentes.cnig.es/geoprint',
+  // printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
+  // printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
+  // fototeca: true,
 });
 
 map.addPlugin(printermap);
