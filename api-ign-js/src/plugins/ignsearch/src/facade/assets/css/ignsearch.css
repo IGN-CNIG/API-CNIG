@@ -108,7 +108,7 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearch-results {
 }
 
 #m-ignsearch-locate-button {
-    font-family: g-plugin-ignsearch;
+    font-family: 'ignsearch';
 }
 
 #m-ignsearch-locate-button:focus {
@@ -173,15 +173,13 @@ div.m-control.m-container.m-ignsearch {
 /* MEDIA QUERIES */
 
 @media only screen and (min-width: 769px) {
-
-    .search-panel {
+   .m-panel.ign-search-panel .search-panel {
         display: flex;
         justify-content: space-between;
     }
 }
 
 @media only screen and (max-width: 768px) {
-
     .m-ignsearch #m-ignsearch-results #m-ignsearch-results-list {
         height: 200px;
         overflow-y: scroll;
@@ -208,50 +206,14 @@ div.m-control.m-container.m-ignsearch {
     }
 }
 
-@font-face {
-    font-family: 'ignsearch';
-    src: url('../fonts/lupa.eot?jbhe8z');
-    src: url('../fonts/lupa.eot?jbhe8z#iefix') format('embedded-opentype'),
-        url('../fonts/lupa.ttf?jbhe8z') format('truetype'),
-        url('../fonts/lupa.woff?jbhe8z') format('woff'),
-        url('../fonts/lupa.svg?jbhe8z#lupa') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
+.m-control.m-container.m-ignsearch button:focus {
+  outline: none !important;
 }
 
-div.m-areas>div.m-area>div.m-panel.ign-search-panel.collapsed>button.m-panel-btn {
-    font-family: 'ignsearch' !important;
-    /* speak: none; */
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.m-panel .m-ign-search-panel [class^="icon-"]:before,
-.m-panel .m-ign-search-panel [class*=" icon-"]:before {
-    font-family: "ignsearch" !important;
-    font-style: normal;
-    font-weight: normal;
-    speak: none;
-    display: inline-block;
-    text-decoration: inherit;
-    width: 1em;
-    margin-right: .2em;
-    text-align: center;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1em;
-    margin-left: .2em;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-lupa:before {
-    content: "\e99e";
+button.m-panel-btn.icon-ignsearch:before {
+  font-family: 'ignsearch' !important;
+  position: relative;
+  top: 1px;
+  vertical-align: top;
+  font-size: 24px;
 }

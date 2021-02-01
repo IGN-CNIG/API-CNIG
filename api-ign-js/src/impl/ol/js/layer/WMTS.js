@@ -181,7 +181,6 @@ class WMTS extends LayerBase {
       const minResolution = this.options.minResolution;
       const maxResolution = this.options.maxResolution;
       capabilitiesOptionsVariable.format = this.options.format || capabilitiesOptions.format;
-
       const wmtsSource = new OLSourceWMTS(extend(capabilitiesOptionsVariable, {
         // tileGrid: new OLTileGridWMTS({
         //   origin: getBottomLeft(extent),
@@ -246,6 +245,10 @@ class WMTS extends LayerBase {
           capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
         }
 
+        if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
+          this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL;
+        }
+
         const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
         const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
         const extent = this.facadeLayer_.getMaxExtent();
@@ -286,6 +289,17 @@ class WMTS extends LayerBase {
         getRemote(getCapabilitiesUrl).then((response) => {
           const getCapabilitiesDocument = response.xml;
           const parsedCapabilities = parser.read(getCapabilitiesDocument);
+          try {
+            parsedCapabilities.Contents.Layer.forEach((l) => {
+              const name = l.Identifier;
+              l.Style.forEach((s) => {
+                const layerText = response.text.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
+                /* eslint-disable no-param-reassign */
+                s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
+              });
+            });
+          /* eslint-disable no-empty */
+          } catch (err) {}
           success.call(this, parsedCapabilities);
         });
       });
@@ -451,6 +465,28 @@ class WMTS extends LayerBase {
       }
     }
     return coordPixel;
+  }
+
+  /**
+   * TODO
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  getLegendURL() {
+    return this.legendUrl_;
+  }
+
+  /**
+   * TODO
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  setLegendURL(legendUrl) {
+    this.legendUrl_ = legendUrl;
   }
 }
 

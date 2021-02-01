@@ -196,7 +196,7 @@ export default class VectorsControl extends M.Control {
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__';
+        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' && layer.name !== 'searchresult';
     });
 
     const layers = [];
@@ -656,7 +656,7 @@ export default class VectorsControl extends M.Control {
       switch (this.feature.getGeometry().type) {
         case 'Point':
         case 'MultiPoint':
-          const newPointStyle = new M.style.Point({
+          const newPointStyle = {
             radius: this.currentThickness,
             fill: {
               color: this.currentColor,
@@ -665,8 +665,13 @@ export default class VectorsControl extends M.Control {
               color: 'white',
               width: 2,
             },
-          });
-          if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
+          };
+
+          if (this.feature.getStyle().getOptions().label !== undefined) {
+            newPointStyle.label = this.feature.getStyle().getOptions().label;
+          }
+
+          if (this.feature !== undefined) this.feature.setStyle(new M.style.Point(newPointStyle));
           break;
         case 'LineString':
         case 'MultiLineString':
@@ -1042,7 +1047,7 @@ export default class VectorsControl extends M.Control {
         if (features.length === 0) {
           M.dialog.info(getValue('exception.no_geoms'));
         } else {
-          this.getImpl().centerFeatures(features);
+          this.getImpl().centerFeatures(features, fileExt === 'gpx');
         }
       } catch (error) {
         M.dialog.error(getValue('exception.load_correct'));
@@ -1430,6 +1435,7 @@ export default class VectorsControl extends M.Control {
     this.drawLayer.addFeatures(this.feature);
     this.emphasizeSelectedFeature();
     this.showFeatureInfo();
+    this.getImpl().calculateElevations(this.feature);
   }
 
   /**
@@ -1608,7 +1614,7 @@ export default class VectorsControl extends M.Control {
 
     this.getImpl().calculateProfile(this.feature);
     this.drawingTools.querySelector('.collapsor').click();
-    // this.deactivateDrawing();
-    // this.deactivateSelection();
+    const content = `<div class="m-vectors-loading"><p>${getValue('generating_profile')}...</p><span class="icon-spinner" /></div>`;
+    document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = content;
   }
 }

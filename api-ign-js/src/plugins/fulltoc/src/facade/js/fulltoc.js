@@ -72,6 +72,8 @@ export default class FullTOC extends M.Plugin {
       this.https = false;
     }
 
+    this.codsi = options.codsi || false;
+
     /**
      * Precharged services
      * @private
@@ -90,7 +92,7 @@ export default class FullTOC extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
-    this.control_ = new FullTOCControl(this.http, this.https, this.precharged);
+    this.control_ = new FullTOCControl(this.http, this.https, this.precharged, this.codsi);
     this.panel_ = new M.ui.Panel('panelFullTOC', {
       className: 'm-plugin-fulltoc',
       collapsed: this.collapsed_,

@@ -265,7 +265,10 @@ export default class ShareMapControl extends M.Control {
       if (!this.minimize_) {
         shareURL = shareURL.concat(`&controls=${controls}`).concat(`&${this.getPlugins()}`);
       } else {
-        let newControls = controls.join(',');
+        let newControls = controls.filter((c) => {
+          return c !== undefined && c.indexOf('backgroundlayers') === -1;
+        }).join(',');
+
         if (newControls.endsWith(',')) {
           newControls = newControls.slice(0, -1);
         }
@@ -274,20 +277,12 @@ export default class ShareMapControl extends M.Control {
           newControls = newControls.concat(',scale*true');
         }
 
-        if (newControls.indexOf('backgroundlayers') === -1) {
-          newControls = newControls.concat(',backgroundlayers*0*true');
-        }
-
         shareURL = shareURL.concat(`&controls=${newControls}`).concat('&plugins=toc,zoompanel,measurebar,mousesrs');
       }
 
       shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) : shareURL.concat('');
       shareURL = shareURL.concat(`&projection=${code}*${units}`);
       input.value = shareURL;
-      // M.proxy(false);
-      // let tweetUrl = shareURL.replace(/ /g, '%20');
-      // const tweetUrl = shareURL.replace(/&/g, '%26');
-      // shareURL = shareURL.replace(/ /g, '%2B');
       shareURL = encodeURI(shareURL);
       M.remote.get(`http://tinyurl.com/api-create.php?url=${shareURL}`).then((response) => {
         facebook.href = `http://www.facebook.com/sharer.php?u=${response.text}`;
@@ -371,7 +366,15 @@ export default class ShareMapControl extends M.Control {
   getLayers() {
     // const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__' &&
     // layer.displayInLayerSwitcher !== false);
-    const layers = this.map_.getLayers().filter(layer => layer.name !== '__draw__');
+    const layers = this.map_.getLayers().filter((layer) => {
+      let res = layer.name !== '__draw__' && layer.name !== 'selectionLayer';
+      if (layer.name === 'attributions' && layer.type === 'KML') {
+        res = res && false;
+      }
+
+      return res;
+    });
+
     return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
   }
 

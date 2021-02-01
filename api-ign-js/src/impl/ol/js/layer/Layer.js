@@ -284,7 +284,7 @@ class LayerBase extends MObject {
    * @api stable
    */
   getNumZoomLevels() {
-    return 16; // 16 zoom levels by default
+    return 20; // 16 zoom levels by default
   }
 
   /**

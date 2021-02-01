@@ -16,6 +16,8 @@ import resultstemplate from '../../templates/addservicesresults';
 import { getValue } from './i18n/language';
 
 const CATASTRO = 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
+const CODSI_CATALOG = 'http://www.idee.es/csw-codsi-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&serviceType=view&resultType=details&sortBy=title&sortOrder=asc&to=*2';
+const CODSI_PAGESIZE = 9;
 
 export default class FullTOCControl extends M.Control {
   /**
@@ -23,7 +25,7 @@ export default class FullTOCControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(http, https, precharged) {
+  constructor(http, https, precharged, codsi) {
     if (M.utils.isUndefined(FullTOCImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -53,6 +55,8 @@ export default class FullTOCControl extends M.Control {
     this.https = https;
 
     this.precharged = precharged;
+
+    this.codsi = codsi;
 
     this.stateSelectAll = false;
   }
@@ -358,18 +362,24 @@ export default class FullTOCControl extends M.Control {
         const precharged = this.precharged;
         const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
           (precharged.services !== undefined && precharged.services.length > 0);
+        const codsiActive = this.codsi;
         const addServices = M.template.compileSync(addServicesTemplate, {
           jsonp: true,
           parseToHtml: false,
           vars: {
             precharged,
             hasPrecharged,
+            codsiActive,
             translations: {
               url_service: getValue('url_service'),
               query: getValue('query'),
               loaded_services: getValue('loaded_services'),
               clean: getValue('clean'),
               availables: getValue('availables'),
+              codsi_services: getValue('codsi_services'),
+              filter_results: getValue('filter_results'),
+              clean_filter: getValue('clean_filter'),
+              filter_text: getValue('filter_text'),
             },
           },
         });
@@ -380,8 +390,32 @@ export default class FullTOCControl extends M.Control {
             document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('click', e => this.showSuggestions(e));
           }
 
+          if (document.querySelector('#m-fulltoc-addservices-codsi-btn') !== null) {
+            document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('click', e => this.showCODSI(e));
+            document.querySelector('#m-fulltoc-addservices-codsi-filter-btn').addEventListener('click', (e) => {
+              this.loadCODSIResults(1);
+            });
+
+            document.querySelector('#m-fulltoc-addservices-codsi-search-input').addEventListener('keypress', (e) => {
+              if (e.keyCode === 13) {
+                this.loadCODSIResults(1);
+              }
+            });
+
+            document.querySelector('#m-fulltoc-addservices-codsi-clean-btn').addEventListener('click', (e) => {
+              document.querySelector('#m-fulltoc-addservices-codsi-search-input').value = '';
+              this.loadCODSIResults(1);
+            });
+          }
+
+
           document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', e => this.readCapabilities(e));
-          document.querySelector('#m-fulltoc-addservices-clear-btn').addEventListener('click', e => this.removeContains(e));
+          document.querySelector('#m-fulltoc-addservices-search-input').addEventListener('keypress', (e) => {
+            if (e.keyCode === 13) {
+              this.readCapabilities(e);
+            }
+          });
+
           document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
           const button = document.querySelector('div.m-dialog.info div.m-button > button');
           button.innerHTML = getValue('close');
@@ -440,8 +474,126 @@ export default class FullTOCControl extends M.Control {
   }
 
   showSuggestions() {
+    if (document.querySelector('#m-fulltoc-addservices-codsi') !== null) {
+      document.querySelector('#m-fulltoc-addservices-codsi').style.display = 'none';
+    }
+
     document.querySelector('#m-fulltoc-addservices-results').innerHTML = '';
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'block';
+  }
+
+  showCODSI() {
+    document.querySelector('#m-fulltoc-addservices-results').innerHTML = '';
+    document.querySelector('#m-fulltoc-addservices-codsi').style.display = 'block';
+    document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
+    this.loadCODSIResults(1);
+  }
+
+  loadCODSIResults(pageNumber) {
+    document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = '<p class="m-fulltoc-loading"><span class="icon-spinner" /></p>';
+    const query = document.querySelector('#m-fulltoc-addservices-codsi-search-input').value.trim();
+    const start = 1 + ((pageNumber - 1) * CODSI_PAGESIZE);
+    const end = pageNumber * CODSI_PAGESIZE;
+    let url = CODSI_CATALOG.split('*1').join(`${start}`).split('*2').join(`${end}`);
+    if (query !== '') {
+      url += `&any=*${query}*`;
+    }
+
+    M.remote.get(url).then((response) => {
+      const data = JSON.parse(response.text);
+      const total = data.summary['@count'];
+      const results = [];
+      if (data.metadata !== undefined) {
+        data.metadata.forEach((m) => {
+          let links = [];
+          if (Array.isArray(m.link)) {
+            m.link.forEach((l) => {
+              let parts = [];
+              if (l.indexOf('||') > -1) {
+                parts = l.split('||').filter((part) => {
+                  return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
+                });
+              } else if (l.indexOf('|') > -1) {
+                parts = l.split('|').filter((part) => {
+                  return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
+                });
+              }
+
+              links = links.concat(parts);
+            });
+          } else {
+            let parts = [];
+            if (m.link.indexOf('||') > -1) {
+              parts = m.link.split('||').filter((part) => {
+                return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
+              });
+            } else if (m.link.indexOf('|') > -1) {
+              parts = m.link.split('|').filter((part) => {
+                return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
+              });
+            }
+
+            links = links.concat(parts);
+          }
+
+          if (links.length > 0) {
+            results.push({
+              title: m.title || m.defaultTitle,
+              url: links[0].split('?')[0],
+            });
+          }
+        });
+      }
+
+      this.renderCODSIResults(results);
+      this.renderCODSIPagination(pageNumber, total);
+    }).catch((err) => {
+      M.dialog.error(getValue('exception.codsi'));
+    });
+  }
+
+  renderCODSIResults(results) {
+    document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = '';
+    if (results.length > 0) {
+      let textResults = '<table><tbody>';
+      results.forEach((r) => {
+        textResults += `<tr><td><span class="m-fulltoc-codsi-result" data-link="${r.url}">${r.title}</span></td></tr>`;
+      });
+
+      textResults += '</tbody></table>';
+      document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = textResults;
+      document.querySelectorAll('#m-fulltoc-addservices-codsi-results .m-fulltoc-codsi-result').forEach((elem) => {
+        elem.addEventListener('click', (evt) => {
+          const url = elem.getAttribute('data-link');
+          document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = url;
+          this.readCapabilities(evt);
+        });
+      });
+    } else {
+      document.querySelector('#m-fulltoc-addservices-codsi-results').innerHTML = `<div class="codsi-no-results">${getValue('exception.codsi_no_results')}</div>`;
+    }
+  }
+
+  renderCODSIPagination(pageNumber, total) {
+    document.querySelector('#m-fulltoc-addservices-codsi-pagination').innerHTML = '';
+    if (total > 0) {
+      const numPages = Math.ceil(total / CODSI_PAGESIZE);
+      let buttons = '';
+      for (let i = 1; i <= numPages; i += 1) {
+        if (i === pageNumber) {
+          buttons += `<button class="m-fulltoc-addservices-pagination-btn" disabled>${i}</button>`;
+        } else {
+          buttons += `<button class="m-fulltoc-addservices-pagination-btn">${i}</button>`;
+        }
+      }
+
+      document.querySelector('#m-fulltoc-addservices-codsi-pagination').innerHTML = buttons;
+      document.querySelectorAll('#m-fulltoc-addservices-codsi-pagination button').forEach((elem, index) => {
+        elem.addEventListener('click', () => {
+          this.loadCODSIResults(index + 1);
+        });
+      });
+    }
   }
 
   loadSuggestion(evt) {
@@ -666,12 +818,16 @@ export default class FullTOCControl extends M.Control {
    * @param {Event} evt - Click event
    */
   readCapabilities(evt) {
+    if (document.querySelector('#m-fulltoc-addservices-codsi') !== null) {
+      document.querySelector('#m-fulltoc-addservices-codsi').style.display = 'none';
+    }
+
     evt.preventDefault();
     let HTTPeval = false;
     let HTTPSeval = false;
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
     const url = document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value.trim();
-    const type = document.getElementById('m-fulltoc-addservices-wmts').checked ? 'WMTS' : 'WMS';
+    const type = (document.getElementById('m-fulltoc-addservices-wmts').checked || url.indexOf('wmts') > -1) ? 'WMTS' : 'WMS';
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
         if (this.http && !this.https) {
@@ -738,7 +894,32 @@ export default class FullTOCControl extends M.Control {
                 M.dialog.error(getValue('exception.capabilities'));
               }
             }).catch((err) => {
-              M.dialog.error(getValue('exception.capabilities'));
+              const promise2 = new Promise((success, reject) => {
+                const id = setTimeout(() => reject(), 15000);
+                M.remote.get(M.utils.getWMTSGetCapabilitiesUrl(url)).then((response) => {
+                  clearTimeout(id);
+                  success(response);
+                });
+              });
+
+              promise2.then((response) => {
+                try {
+                  const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
+                  const getCapabilities = getCapabilitiesParser.read(response.xml);
+                  this.serviceCapabilities = getCapabilities.capabilities || {};
+                  const layers = M.impl.util.wmtscapabilities.getLayers(
+                    getCapabilities.capabilities,
+                    url,
+                    this.map_.getProjection().code,
+                  );
+                  this.capabilities = this.filterResults(layers);
+                  this.showResults();
+                } catch (error) {
+                  M.dialog.error(getValue('exception.capabilities'));
+                }
+              }).catch((eerror) => {
+                M.dialog.error(getValue('exception.capabilities'));
+              });
             });
           }
         } else {
@@ -891,6 +1072,12 @@ export default class FullTOCControl extends M.Control {
         results[i].addEventListener('click', evt => this.registerCheck(evt));
       }
 
+      const resultsNames = container.querySelectorAll('.table-results .table-container table tbody tr td.table-layer-name');
+      for (let i = 0; i < resultsNames.length; i += 1) {
+        resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
+      }
+
+
       container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
       container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', evt => this.addLayers(evt));
       const elem = container.querySelector('.m-fulltoc-show-capabilities');
@@ -950,6 +1137,18 @@ export default class FullTOCControl extends M.Control {
   }
 
   /**
+   * This function registers the marks or unmarks check and click allselect from layer name
+   *
+   * @function
+   * @private
+   * @param {Event} evt - Event
+   */
+  registerCheckFromName(evt) {
+    const e = (evt || window.event);
+    e.target.parentElement.querySelector('span.m-check-fulltoc-addservices').click();
+  }
+
+  /**
    * This function unselects checkboxs
    *
    * @function
@@ -1005,6 +1204,7 @@ export default class FullTOCControl extends M.Control {
           }
         }
       }
+
       this.map_.addLayers(layers);
       this.afterRender();
     }
@@ -1019,6 +1219,10 @@ export default class FullTOCControl extends M.Control {
    */
   removeContains(evt) {
     evt.preventDefault();
+    if (document.querySelector('#m-fulltoc-addservices-codsi') !== null) {
+      document.querySelector('#m-fulltoc-addservices-codsi').style.display = 'none';
+    }
+
     document.querySelector('#m-fulltoc-addservices-results').innerHTML = '';
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
     document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = '';

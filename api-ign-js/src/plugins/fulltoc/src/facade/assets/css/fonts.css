@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'fulltoc';
-  src: url('../fonts/fulltoc.eot?80493965');
-  src: url('../fonts/fulltoc.eot?80493965#iefix') format('embedded-opentype'),
-       url('../fonts/fulltoc.woff2?80493965') format('woff2'),
-       url('../fonts/fulltoc.woff?80493965') format('woff'),
-       url('../fonts/fulltoc.ttf?80493965') format('truetype'),
-       url('../fonts/fulltoc.svg?80493965#fulltoc') format('svg');
+  src: url('../fonts/fulltoc.eot?46188804');
+  src: url('../fonts/fulltoc.eot?46188804#iefix') format('embedded-opentype'),
+       url('../fonts/fulltoc.woff2?46188804') format('woff2'),
+       url('../fonts/fulltoc.woff?46188804') format('woff'),
+       url('../fonts/fulltoc.ttf?46188804') format('truetype'),
+       url('../fonts/fulltoc.svg?46188804#fulltoc') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -40,6 +40,8 @@ div.m-plugin-fulltoc [class*=" icon-"] {
 .m-plugin-fulltoc .icon-papelera:before { content: '\e93e'; }
 .m-plugin-fulltoc .icon-zoom:before { content: '\e964'; }
 .m-plugin-fulltoc .icon-pincel:before { content: '\f1fc'; }
+.m-plugin-fulltoc .icon-codsi:before { content: '\e94f'; }
+.m-plugin-fulltoc .icon-spinner:before { content: '\e953'; }
 
 #m-fulltoc-information .icon-desplegar:before { content: '\e916'; }
 #m-fulltoc-information .icon-colapsar:before { content: '\e918'; }
@@ -51,3 +53,6 @@ div.m-plugin-fulltoc [class*=" icon-"] {
 .m-fulltoc-addservices .icon-cancelar:before { content: '\e905'; }
 .m-fulltoc-addservices .icon-check:before { content: '\e909'; }
 .m-fulltoc-addservices .icon-check-seleccionado:before { content: '\e90a'; }
+.m-fulltoc-addservices .icon-codsi:before { content: '\e94f'; }
+.m-fulltoc-addservices .icon-spinner:before { content: '\e953'; }
+.m-fulltoc-addservices .icon-papelera:before { content: '\e93e'; }

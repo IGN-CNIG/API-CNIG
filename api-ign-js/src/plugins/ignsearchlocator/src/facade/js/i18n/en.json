@@ -23,6 +23,7 @@
   "noInfo": "NO REFERENCES AVAILABLE FOR THESE COORDINATES ",
 
   "tooltip": "Search places",
+  "tooltip_input": "Place name, address or postal code",
   "geographic": "Geographic",
   "zone": "zone",
   "title": "Coordinate locator",
@@ -57,7 +58,7 @@
 
   "RCnull": "You must enter a cadastral reference",
 
-  "direccion": "Address, place name or cadastral Ref (14 dig.)",
+  "direccion": "Place name, address or postal code",
   "obtener": "Get direction at a point on the map",
   "buscparcela": "Search parcel/cadastre",
   "busccoord": "Search coordinates",

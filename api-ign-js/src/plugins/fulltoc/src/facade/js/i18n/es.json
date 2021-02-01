@@ -9,7 +9,9 @@
     "valid_url": "Debes indicar una URL válida",
     "empty": "Los campos están vacíos",
     "select_layer": "Debes seleccionar al menos una capa",
-    "no_results": "No se han encontrado capas en este servicio"
+    "no_results": "No se han encontrado capas en este servicio",
+    "codsi": "Ha ocurrido un error al consultar el catálogo CODSI",
+    "codsi_no_results": "No hay resultados para su búsqueda"
   },
   "tooltip": "Capas",
   "info": "Información",
@@ -28,6 +30,7 @@
   "url_service": "URL del servicio",
   "query": "Consultar",
   "loaded_services": "Capas de información geográfica",
+  "codsi_services": "Catálogo de Servicios INSPIRE (CODSI)",
   "clean": "Limpiar búsqueda",
   "availables": "Capas de información geográfica disponibles",
   "title": "Título",
@@ -47,5 +50,8 @@
   "use_constraints": "Restricciones de uso",
   "online_resources": "Recursos online",
   "show_service_info": "Mostrar información del servicio",
-  "hide_service_info": "Ocultar información del servicio"
+  "hide_service_info": "Ocultar información del servicio",
+  "filter_results": "Filtrar resultados",
+  "clean_filter": "Limpiar filtro",
+  "filter_text": "Texto a buscar"
 }

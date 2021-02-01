@@ -29,7 +29,7 @@
     align-items: center;
     background-color: white;
     display: flex;
-    position: absolute;
+    position: fixed;
     width: 92.5%;
 }
 
@@ -87,8 +87,9 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
 }
 
 #m-ignsearchlocator-search-input {
-    width: 150px;
-    border: none;
+    width: 177px;
+    border: 1px solid #7a7a73;
+    margin-right: -2px;
 }
 
 button#m-ignsearchlocator-locate-button {
@@ -103,9 +104,15 @@ button#m-ignsearchlocator-locate-button {
 #m-ignsearchlocator-locate-button {
     background-color: white;
     border: none;
-    width: 40px;
+    width: 35px;
     height: 40px;
     margin-top: -0.5px;
+    text-align: center;
+}
+
+#m-ignsearchlocator-xylocator-button span {
+    position: relative;
+    right: 2px;
 }
 
 #m-ignsearchlocator-locate-button {
@@ -128,7 +135,8 @@ button#m-ignsearchlocator-locate-button {
 
 #m-ignsearchlocator-parcela-button span {
     position: relative;
-    top: 2px;
+    top: 1px;
+    right: 1px;
 }
 
 #m-ignsearchlocator-search-refCatastral {
@@ -154,10 +162,16 @@ button#m-ignsearchlocator-locate-button {
 
 #m-ignsearchlocator-clear-button span {
     position: relative;
-    bottom: 2px;
+    bottom: 1px;
+    right: 2px;
 }
 
-.m-ignsearchlocator .search-panel .icon-papelera::before {
+div.m-panel.ign-searchlocator-panel.collapsed button.m-panel-btn.icon-ignsearch::before {
+  vertical-align: top;
+  font-size: 24px;
+}
+
+.m-ignsearchlocator .search-panel .icon-remove::before {
     vertical-align: bottom;
 }
 
@@ -867,53 +881,4 @@ DROPDOWN ****************************/
     #m-informa {
         display: inline !important;
     }
-}
-
-
-@font-face {
-    font-family: 'ignsearchlocator';
-    src: url('../fonts/lupa.eot?jbhe8z');
-    src: url('../fonts/lupa.eot?jbhe8z#iefix') format('embedded-opentype'),
-        url('../fonts/lupa.ttf?jbhe8z') format('truetype'),
-        url('../fonts/lupa.woff?jbhe8z') format('woff'),
-        url('../fonts/lupa.svg?jbhe8z#lupa') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
-}
-
-div.m-areas>div.m-area>div.m-panel.ign-searchlocator-panel.collapsed>button.m-panel-btn {
-    font-family: 'ignsearchlocator' !important;
-    /* speak: none; */
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.m-panel .m-ign-searchlocator-panel [class^="icon-"]:before,
-.m-panel .m-ign-searchlocator-panel [class*=" icon-"]:before {
-    font-family: "ignsearchlocator" !important;
-    font-style: normal;
-    font-weight: normal;
-    speak: none;
-    display: inline-block;
-    text-decoration: inherit;
-    width: 1em;
-    margin-right: .2em;
-    text-align: center;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1em;
-    margin-left: .2em;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-lupa:before {
-    content: "\e99e";
 }

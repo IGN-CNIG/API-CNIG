@@ -6,7 +6,6 @@ import template from '../../templates/ignsearchlocator';
 import results from '../../templates/results';
 import xylocator from '../../templates/xylocator';
 import parcela from '../../templates/parcela';
-import refCatastral from '../../templates/refCatastral';
 import registerHelpers from './helpers';
 import geographicNameType from './constants';
 import { getValue } from './i18n/language';
@@ -426,6 +425,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             buscparcela: getValue('buscparcela'),
             busccoord: getValue('busccoord'),
             borrarresult: getValue('borrarresult'),
+            tooltip_input: getValue('tooltip_input'),
           },
         },
       });
@@ -443,7 +443,6 @@ export default class IGNSearchLocatorControl extends M.Control {
           this.clearResults();
           this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
           this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-          // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
         }
       });
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
@@ -527,6 +526,8 @@ export default class IGNSearchLocatorControl extends M.Control {
               const perfectResult = featureJSON.properties.state;
               this.showSearchPopUp(fullAddress, coordinates, perfectResult, { fake: true });
             }
+            M.proxy(true);
+          }).catch((err) => {
             M.proxy(true);
           });
         }
@@ -617,9 +618,6 @@ export default class IGNSearchLocatorControl extends M.Control {
       const destiny = 'EPSG:4258';
       const etrs89pointCoordinates = this.getImpl()
         .reprojectReverse([e.coord[0], e.coord[1]], origin, destiny);
-      // Params:
-      // lon, lat
-      // type (only if refcatastral) = 'refcatastral'
       const params = `lon=${etrs89pointCoordinates[0]}&lat=${etrs89pointCoordinates[1]}`;
       const urlToGet = `${this.urlReverse}?${params}`;
       const mapCoordinates = e.coord;
@@ -693,7 +691,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   searchInputValue(e, firstResult = false) {
-    document.getElementById('m-ignsearchlocator-results').style = 'width: 89.6%';
+    document.getElementById('m-ignsearchlocator-results').style = 'width: 347px';
 
     // const { value } = e.target;
     const value = e.target.value.replace(',', ' ');
@@ -875,6 +873,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.showSearchPopUp(fullAddress, coordinates, perfectResult);
       }
     });
+
     M.proxy(true);
   }
 
@@ -1016,8 +1015,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     return new Promise((resolve) => {
       if (this.servicesToSearch !== 'n') {
         let params = `q=${newInputVal}&limit=${this.maxResults}&no_process=${this.noProcess}`;
-        params += `&countrycode=${this.countryCode}&autocancel='true'`;
+        params += `&countrycode=${this.countryCode}&autocancel=true`;
         const urlToGet = `${this.urlCandidates}?${params}`;
+        M.proxy(false);
         M.remote.get(urlToGet).then((res) => {
           const returnData = JSON.parse(res.text.substring(9, res.text.length - 1));
           for (let i = 0; i < returnData.length; i += 1) {
@@ -1025,6 +1025,8 @@ export default class IGNSearchLocatorControl extends M.Control {
           }
           resolve();
         });
+
+        M.proxy(true);
       } else {
         resolve();
       }
@@ -1210,7 +1212,6 @@ export default class IGNSearchLocatorControl extends M.Control {
   clearResults() {
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
 
     this.searchInput.value = '';
     this.resultsBox.innerHTML = '';
@@ -1228,7 +1229,6 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.clearResults();
     this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
     this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-    // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
 
     if (this.clickedElementLayer !== undefined) {
       this.clickedElementLayer.setStyle(this.simple);
@@ -1255,45 +1255,6 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.inputPoligono = null;
     this.inputParcela = null;
     this.inputRefCatastral = null;
-  }
-
-  /**
-   * This function opens xylocator functions
-   * @public
-   * @function
-   * @api
-   */
-  openSearchCatastral() {
-    if (this.resultsBox.innerHTML.includes('m-xylocator-coordinatesSystemRefCatastral')) {
-      this.clearResults();
-      this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
-    } else {
-      this.clearResults();
-      if (this.resultsBox.innerHTML.indexOf('coordinatesSystemRefCatastral')) {
-        this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
-        this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-      }
-      this.activationManager(true, 'm-ignsearchlocator-search-refCatastral');
-
-      document.getElementById('m-ignsearchlocator-results').style = 'width: 258px !important; min-width: 258px !important;';
-
-      const compiledXYLocator = M.template.compileSync(refCatastral, {
-        vars: {
-          translations: {
-            titlerefCatastral: getValue('titlerefCatastral'),
-            refCastatro: getValue('refCastatro'),
-            search: getValue('search'),
-          },
-        },
-      });
-
-      // this.inputRC_ = compiledXYLocator.querySelector('#m-refCatastral-input');
-      // this.inputRC_.addEventListener('keyup', this.onRCSearch.bind(this));
-
-      const buttonParamsSearch = compiledXYLocator.querySelector('button#m-refCatastral-button');
-      buttonParamsSearch.addEventListener('click', this.onRCSearch.bind(this));
-      this.resultsBox.appendChild(compiledXYLocator);
-    }
   }
 
   /**
@@ -1589,7 +1550,6 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
-        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-parcela-button');
 
@@ -1937,7 +1897,6 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clearResults();
       if (this.resultsBox.innerHTML.indexOf('coordinatesSystemParcela')) {
         this.activationManager(false, 'm-ignsearchlocator-parcela-button');
-        // this.activationManager(false, 'm-ignsearchlocator-search-refCatastral');
       }
       this.activationManager(true, 'm-ignsearchlocator-xylocator-button');
 
@@ -2406,7 +2365,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param { string } exitState indicating if the given result is a perfect match
    */
   showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
-    const featureTabOpts = { content: '', title: getValue('informacion'), icon: 'icon-localizacion3' };
+    const featureTabOpts = { content: '', title: '' };
     if (exitState !== null) {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }
@@ -2417,16 +2376,15 @@ export default class IGNSearchLocatorControl extends M.Control {
       unidadY = 'Long';
     }
 
-    featureTabOpts.content += `<div>${fullAddress}</div>
-                <div class='ignsearchlocator-popup'>${unidadX}: ${featureCoordinates[0].toFixed(6)}</div>
-                <div class='ignsearchlocator-popup'>${unidadY}: ${featureCoordinates[1].toFixed(6)} </div>`;
+    featureTabOpts.content += `<div><b>${fullAddress !== undefined ? fullAddress : '-'}</b></div><br/>
+                <div class='ignsearchlocator-popup'><b>${unidadX}:</b>  ${featureCoordinates[0].toFixed(6)}</div>
+                <div class='ignsearchlocator-popup'><b>${unidadY}:</b>  ${featureCoordinates[1].toFixed(6)} </div>`;
     if (this.map.getPopup() instanceof M.Popup && addTab === true) {
       this.popup = this.map.getPopup();
       this.popup.addTab(featureTabOpts);
     } else {
       const myPopUp = new M.Popup({ panMapIfOutOfView: !e.fake });
       myPopUp.addTab(featureTabOpts);
-
       this.map.addPopup(myPopUp, [
         mapcoords[0],
         mapcoords[1],

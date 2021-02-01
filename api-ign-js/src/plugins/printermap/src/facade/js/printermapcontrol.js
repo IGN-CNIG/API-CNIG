@@ -209,7 +209,7 @@ export default class PrinterMapControl extends M.Control {
      */
     this.options_ = {
       dpi: 150,
-      keepView: false,
+      keepView: true,
       format: 'pdf',
       legend: 'false',
       layout: 'A4 horizontal',

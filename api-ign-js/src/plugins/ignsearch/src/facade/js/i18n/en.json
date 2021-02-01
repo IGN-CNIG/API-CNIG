@@ -5,9 +5,10 @@
   },
   "searchresult": "searchresult",
   "tooltip": "Search places",
+  "tooltip_input": "Place name, address or postal code",
   "deleteresults": "Delete search results",
   "obtener": "Get direction at a point on the map",
-  "direccion": "Address, place name or cadastral Ref (14 dig.)",
+  "direccion": "Place name, address or postal code",
   "aprox": "Approximate address",
   "exact": "Exact address"
 }

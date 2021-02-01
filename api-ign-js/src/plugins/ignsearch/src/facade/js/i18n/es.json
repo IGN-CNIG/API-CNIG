@@ -5,9 +5,10 @@
   },
   "searchresult": "searchresult",
   "tooltip": "Búsqueda de lugares",
+  "tooltip_input": "Topónimo, dirección o código postal",
   "deleteresults": "Borrar resultados de la búsqueda",
   "obtener": "Obtener dirección en un punto del mapa",
-  "direccion": "Dirección, topónimo o Ref. catastral (14 dig.)",
+  "direccion": "Topónimo, dirección o código postal",
   "aprox": "Dirección aproximada",
   "exact": "Dirección exacta"
 }

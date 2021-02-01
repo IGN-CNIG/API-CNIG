@@ -499,10 +499,33 @@ export default class VectorsControl extends M.impl.Control {
       features.push(f);
     });
 
-    features = this.featuresToFacade(features);
+    let lines = features.filter((f) => {
+      return f.getGeometry().getType().indexOf('LineString') > -1;
+    });
+
+    let points = features.filter((f) => {
+      return f.getGeometry().getType().indexOf('Point') > -1;
+    });
+
+    lines = this.featuresToFacade(lines);
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
-    layer.addFeatures(features);
+    layer.addFeatures(lines);
     this.facadeMap_.addLayers(layer);
+
+    if (points.length > 0) {
+      points = this.featuresToFacade(points);
+      const layer2 = new M.layer.Vector({ name: `${layerName}_points`, legend: `${layerName}_points`, extract: false });
+      layer2.addFeatures(points);
+      this.facadeMap_.addLayers(layer2);
+      features = lines.concat(points);
+    } else {
+      features = lines;
+    }
+
+    lines.forEach((line) => {
+      this.calculateElevations(line);
+    });
+
     return features;
   }
 
@@ -527,7 +550,7 @@ export default class VectorsControl extends M.impl.Control {
    * @api
    * @param {*} features -
    */
-  centerFeatures(features) {
+  centerFeatures(features, isGPX) {
     if (!M.utils.isNullOrEmpty(features)) {
       if ((features.length === 1) && (features[0].getGeometry().type === 'Point')) {
         const pointView = new ol.View({
@@ -547,7 +570,7 @@ export default class VectorsControl extends M.impl.Control {
         switch (f.getGeometry().type) {
           case 'Point':
           case 'MultiPoint':
-            const newPointStyle = new M.style.Point({
+            const newPointStyle = {
               radius: 6,
               fill: {
                 color: '#71a7d3',
@@ -556,8 +579,33 @@ export default class VectorsControl extends M.impl.Control {
                 color: 'white',
                 width: 2,
               },
-            });
-            if (f !== undefined) f.setStyle(newPointStyle);
+            };
+
+            if (isGPX && f.getAttributes().name !== undefined && f.getAttributes().name !== '') {
+              newPointStyle.label = {
+                fill: {
+                  color: '#ff0000',
+                },
+                stroke: {
+                  color: 'white',
+                  width: 2,
+                  linedash: [0, 0],
+                  linedashoffset: 0,
+                  linecap: 'none',
+                  linejoin: 'none',
+                },
+                scale: 2,
+                text: f.getAttributes().name,
+                font: '8px sanserif',
+                align: 'center',
+                baseline: 'top',
+                rotate: false,
+                rotation: 0,
+                offset: [0, 10],
+              };
+            }
+
+            if (f !== undefined) f.setStyle(new M.style.Point(newPointStyle));
             break;
           case 'LineString':
           case 'MultiLineString':
@@ -711,6 +759,52 @@ export default class VectorsControl extends M.impl.Control {
     return parsedFeatures;
   }
 
+  calculateElevations(feature) {
+    const srs = this.facadeMap_.getProjection().code;
+    const coordinates = feature.getGeometry().coordinates;
+    let pointsCoord = '';
+    coordinates.forEach((c) => {
+      const newC = ol.proj.transform(c, srs, WGS84);
+      pointsCoord += `${newC[0]},${newC[1]},${newC[0] + 0.000001},${newC[1] + 0.000001}|`;
+    });
+
+    const pointsBbox = pointsCoord.split('|').filter((elem) => {
+      return elem !== '' && elem.trim().length > 3;
+    });
+
+    const altitudes = [];
+    const promises = [];
+    pointsBbox.forEach((bbox) => {
+      const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
+      promises.push(M.remote.get(url));
+    });
+
+    Promise.all(promises).then((responses) => {
+      responses.forEach((response) => {
+        let alt = 0;
+        if (response.text.indexOf('dy') > -1) {
+          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        } else if (response.text.indexOf('cellsize') > -1) {
+          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        }
+
+        altitudes.push(parseFloat(alt));
+      });
+
+      const geom = feature.getGeometry();
+      geom.coordinates.forEach((c, index) => {
+        c.push(altitudes[index]);
+      });
+
+      feature.setGeometry(geom);
+      // eslint-disable-next-line no-console
+    }).catch((err) => {});
+  }
+
   calculateProfile(feature) {
     const coordinates = feature.getGeometry().coordinates;
     let pointsCoord = '';
@@ -766,6 +860,7 @@ export default class VectorsControl extends M.impl.Control {
 
       this.showProfile(arrayXZY2);
     }).catch((err) => {
+      document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';
       M.dialog.error(getValue('exception.query_profile'), 'Error');
     });
   }
@@ -825,6 +920,7 @@ export default class VectorsControl extends M.impl.Control {
     });
 
     profil.show();
+    document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';
   }
 
   findNewPoints(originPoint, destPoint) {
@@ -1046,7 +1142,7 @@ export default class VectorsControl extends M.impl.Control {
     const filtered = map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible() &&
         layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable &&
-        layer.name === layerName && layer.url === layerURL;
+        layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult' && layer.name !== 'searchresult';
     });
 
     if (filtered.length > 0) {

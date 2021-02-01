@@ -4,7 +4,20 @@ M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['scale*true', 'location', 'backgroundlayers'],
+  controls: ['scale*true', 'location'],
+  layers: [
+    new M.layer.WMTS({
+      url: 'https://www.ign.es/wmts/mapa-raster?',
+      name: 'MTN',
+      legend: 'Mapa',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: false,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/jpeg',
+    }),
+  ],
   zoom: 3,
 });
 

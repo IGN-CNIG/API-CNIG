@@ -25,6 +25,7 @@
   "coordinateresult": "coordinateresult",
 
   "tooltip": "Búsqueda de lugares",
+  "tooltip_input": "Topónimo, dirección o código postal",
   "geographic": "Geograficas",
   "zone": "huso",
   "title": "Buscar por coordenadas",
@@ -58,7 +59,7 @@
 
   "RCnull": "Debe introducir una referencia catastral",
 
-  "direccion": "Dirección, topónimo o Ref. catastral (14 dig.)",
+  "direccion": "Topónimo, dirección o código postal",
   "obtener": "Obtener dirección en un punto del mapa",
   "buscparcela": "Buscar parcela/catastro",
   "busccoord": "Buscar por coordenadas",

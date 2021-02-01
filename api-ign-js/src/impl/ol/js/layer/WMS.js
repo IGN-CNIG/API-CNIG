@@ -265,10 +265,18 @@ class WMS extends LayerBase {
           if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name !== undefined && capabilitiesLayer[i].Name === selff.facadeLayer_.name) {
             capabilitiesLayer = capabilitiesLayer[i];
             this.addCapabilitiesMetadata(capabilitiesLayer);
-          } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name === undefined) {
+            try {
+              this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+            /* eslint-disable no-empty */
+            } catch (err) {}
+          } else if (capabilitiesLayer[i] !== undefined) {
             if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
               capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
               this.addCapabilitiesMetadata(capabilitiesLayer);
+              try {
+                this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+              /* eslint-disable no-empty */
+              } catch (err) {}
             }
           }
         }
