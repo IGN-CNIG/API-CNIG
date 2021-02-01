@@ -200,6 +200,7 @@ export default class IGNSearchControl extends M.Control {
             deleteresults: getValue('deleteresults'),
             obtener: getValue('obtener'),
             direccion: getValue('direccion'),
+            tooltip_input: getValue('tooltip_input'),
           },
         },
       });
@@ -287,8 +288,11 @@ export default class IGNSearchControl extends M.Control {
             }
 
             M.proxy(true);
+          }).catch((err) => {
+            M.proxy(true);
           });
         }
+
         if (this.geocoderCoords && this.geocoderCoords.length === 2) {
           this.activateDeactivateReverse();
           const reprojCoords = this.getImpl().reproject(this.geocoderCoords, 'EPSG:4326', map.getProjection().code);
@@ -607,6 +611,7 @@ export default class IGNSearchControl extends M.Control {
         this.showSearchPopUp(fullAddress, coordinates, perfectResult);
       }
     });
+
     M.proxy(true);
   }
 
@@ -738,8 +743,9 @@ export default class IGNSearchControl extends M.Control {
     return new Promise((resolve) => {
       if (this.servicesToSearch !== 'n') {
         let params = `q=${newInputVal}&limit=${this.maxResults}&no_process=${this.noProcess}`;
-        params += `&countrycode=${this.countryCode}&autocancel='true'`;
+        params += `&countrycode=${this.countryCode}&autocancel=true`;
         const urlToGet = `${this.urlCandidates}?${params}`;
+        M.proxy(false);
         M.remote.get(urlToGet).then((res) => {
           const returnData = JSON.parse(res.text.substring(9, res.text.length - 1));
           for (let i = 0; i < returnData.length; i += 1) {
@@ -759,6 +765,8 @@ export default class IGNSearchControl extends M.Control {
           }
           resolve();
         });
+
+        M.proxy(true);
       } else {
         resolve();
       }
@@ -845,6 +853,7 @@ export default class IGNSearchControl extends M.Control {
         const geoJsonData = res.text.substring(9, res.text.length - 1);
         resolve(geoJsonData);
       });
+
       M.proxy(true);
     });
   }
