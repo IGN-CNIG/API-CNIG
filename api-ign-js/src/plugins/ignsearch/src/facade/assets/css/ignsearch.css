@@ -173,15 +173,13 @@ div.m-control.m-container.m-ignsearch {
 /* MEDIA QUERIES */
 
 @media only screen and (min-width: 769px) {
-
-    .search-panel {
+   .m-panel.ign-search-panel .search-panel {
         display: flex;
         justify-content: space-between;
     }
 }
 
 @media only screen and (max-width: 768px) {
-
     .m-ignsearch #m-ignsearch-results #m-ignsearch-results-list {
         height: 200px;
         overflow-y: scroll;
