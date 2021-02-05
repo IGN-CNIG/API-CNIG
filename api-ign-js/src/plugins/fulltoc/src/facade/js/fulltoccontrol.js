@@ -90,7 +90,7 @@ export default class FullTOCControl extends M.Control {
 
   afterRender() {
     setTimeout(() => {
-      document.querySelector('.m-fulltoc-container .m-title .span-title').click();
+      this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
     }, 500);
   }
 
@@ -681,7 +681,7 @@ export default class FullTOCControl extends M.Control {
 
       this.registerImgErrorEvents_(html);
       this.template_.innerHTML = html.innerHTML;
-      const layerList = document.querySelector('.m-fulltoc-container .m-layers');
+      const layerList = this.template_.querySelector('.m-fulltoc-container .m-layers');
       const layers = templateVars.layers;
       if (layerList !== null) {
         Sortable.create(layerList, {
