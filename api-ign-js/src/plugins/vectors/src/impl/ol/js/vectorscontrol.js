@@ -761,12 +761,23 @@ export default class VectorsControl extends M.impl.Control {
 
   calculateElevations(feature) {
     const srs = this.facadeMap_.getProjection().code;
+    const geomType = feature.getGeometry().type;
     const coordinates = feature.getGeometry().coordinates;
     let pointsCoord = '';
-    coordinates.forEach((c) => {
-      const newC = ol.proj.transform(c, srs, WGS84);
+    if (geomType.toLowerCase().indexOf('point') > -1) {
+      const newC = ol.proj.transform(coordinates, srs, WGS84);
       pointsCoord += `${newC[0]},${newC[1]},${newC[0] + 0.000001},${newC[1] + 0.000001}|`;
-    });
+    } else if (geomType.toLowerCase().indexOf('linestring') > -1) {
+      coordinates.forEach((c) => {
+        const newC = ol.proj.transform(c, srs, WGS84);
+        pointsCoord += `${newC[0]},${newC[1]},${newC[0] + 0.000001},${newC[1] + 0.000001}|`;
+      });
+    } else if (geomType.toLowerCase().indexOf('polygon') > -1) {
+      coordinates[0].forEach((c) => {
+        const newC = ol.proj.transform(c, srs, WGS84);
+        pointsCoord += `${newC[0]},${newC[1]},${newC[0] + 0.000001},${newC[1] + 0.000001}|`;
+      });
+    }
 
     const pointsBbox = pointsCoord.split('|').filter((elem) => {
       return elem !== '' && elem.trim().length > 3;
@@ -796,9 +807,17 @@ export default class VectorsControl extends M.impl.Control {
       });
 
       const geom = feature.getGeometry();
-      geom.coordinates.forEach((c, index) => {
-        c.push(altitudes[index]);
-      });
+      if (geomType.toLowerCase().indexOf('point') > -1) {
+        geom.coordinates.push(altitudes[0]);
+      } else if (geomType.toLowerCase().indexOf('linestring') > -1) {
+        geom.coordinates.forEach((c, index) => {
+          c.push(altitudes[index]);
+        });
+      } else if (geomType.toLowerCase().indexOf('polygon') > -1) {
+        geom.coordinates[0].forEach((c, index) => {
+          c.push(altitudes[index]);
+        });
+      }
 
       feature.setGeometry(geom);
       // eslint-disable-next-line no-console
