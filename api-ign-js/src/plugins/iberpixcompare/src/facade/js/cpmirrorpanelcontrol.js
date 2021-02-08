@@ -5,7 +5,6 @@
 import MirrorpanelImplControl from 'impl/cpmirrorpanel';
 import template from 'templates/cpmirrorpanel';
 import { getValue } from './i18n/language';
-import Lyrdropdown from './lyrdropdown';  //e2m: reference LayerDropDown control
 
 export default class CompareMirrorpanel extends M.Control {
   /**
@@ -95,42 +94,6 @@ export default class CompareMirrorpanel extends M.Control {
     this.fullTOCConfig = values.fullTOCConfig;
 
     this.vectorsConfig = values.vectorsConfig;
-
-    /**
-     * Define the control for managing layers
-     *
-     */
-    this.lyDropControlA = new Lyrdropdown({
-      position: 'TL',
-      collapsible: false, // El botón para desplegar/replegar el plugin no aparece (false) o sí aparece(true)
-      collapsed: true,    // El panel del plugin se muestra desplegado (false) o replegado (true)
-      layers: this.defaultBaseLyrs,
-      fullLayers: this.fullLayers,
-    });
-
-    this.lyDropControlB = new Lyrdropdown({
-      position: 'TL',
-      collapsible: false,
-      collapsed: true,
-      layers: this.defaultBaseLyrs,
-      fullLayers: this.fullLayers,
-    });
-
-    this.lyDropControlC = new Lyrdropdown({
-      position: 'TL',
-      collapsible: false,
-      collapsed: true,
-      layers: this.defaultBaseLyrs,
-      fullLayers: this.fullLayers,
-    });
-
-    this.lyDropControlD = new Lyrdropdown({
-      position: 'TL',
-      collapsible: false,
-      collapsed: true,
-      layers: this.defaultBaseLyrs,
-      fullLayers: this.fullLayers,
-    });
 
     this.createMapContainers();
   }
@@ -319,27 +282,6 @@ export default class CompareMirrorpanel extends M.Control {
       }
     }
 
-    if (modeViz === 0) {
-      const toDelete = this.map_.getPlugins().filter((p) => {
-        return p.name === 'lyrdropdown';
-      });
-
-      if (toDelete.length > 0) {
-        this.map_.removePlugins(toDelete);
-      }
-    } else {
-      //Añado aquí el DropDownLayer del mapa principal
-      this.lyDropControlA = new Lyrdropdown({
-        position: 'TL',
-        collapsible: false,
-        collapsed: true,
-        layers: this.defaultBaseLyrs,
-        fullLayers: this.fullLayers,
-      });
-
-      this.mapL['A'].addPlugin(this.lyDropControlA);
-    }
-
     this.modeViz = modeViz;
     this.template.querySelector('#set-mirror-' + modeViz).classList.add('buttom-pressed');
     this.map_.refresh();
@@ -370,21 +312,8 @@ export default class CompareMirrorpanel extends M.Control {
       this.mapL[mapLyr].addPlugin(mpBILmap);
     }
 
-    if (this.lyDropControl !== null){
-      if (mapLyr === 'B'){
-        this.mapL[mapLyr].addPlugin(this.lyDropControlB);
-        this.addCommonPlugins(this.mapL[mapLyr]);
-      }
-
-      if (mapLyr === 'C'){
-        this.mapL[mapLyr].addPlugin(this.lyDropControlC);
-        this.addCommonPlugins(this.mapL[mapLyr]);
-      }
-
-      if (mapLyr === 'D'){
-        this.mapL[mapLyr].addPlugin(this.lyDropControlD);
-        this.addCommonPlugins(this.mapL[mapLyr]);
-      }
+    if (['B', 'C', 'D'].indexOf(mapLyr) > -1) {
+      this.addCommonPlugins(this.mapL[mapLyr]);
     }
 
     if (this.showCursors) { this.addLayerCursor(mapLyr); }
