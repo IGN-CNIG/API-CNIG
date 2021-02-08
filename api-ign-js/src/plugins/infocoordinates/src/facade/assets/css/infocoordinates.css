@@ -310,3 +310,7 @@
 .m-control.m-container.m-infocoordinates .noDisplay {
     display: none;
 }
+
+.m-panel.m-plugin-infocoordinates.opened #tabContent table tbody tr td:first-child {
+  min-width: 80px;
+}
