@@ -689,6 +689,7 @@ export default class PrinterMapControl extends M.Control {
     if (M.utils.isNullOrEmpty(this.capabilitiesPromise_)) {
       this.capabilitiesPromise_ = new Promise((success, fail) => {
         const capabilitiesUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, 'capabilities.json']);
+        M.proxy(false);
         M.remote.get(capabilitiesUrl).then((response) => {
           let capabilities = {};
           try {
@@ -698,6 +699,8 @@ export default class PrinterMapControl extends M.Control {
           }
           success(capabilities);
         });
+
+        M.proxy(true);
       });
     }
     return this.capabilitiesPromise_;
