@@ -216,9 +216,10 @@ export default class InfocoordinatesControl extends M.Control {
     //Altura
     let altitudeFromWCSservice;
     let altitudeBox = document.getElementById('m-infocoordinates-altitude');
+    M.proxy(false);
     let promesa = new Promise((success, fail) => {
       altitudeBox.innerHTML = getValue('readingAltitude');
-      altitudeFromWCSservice = this.getImpl().readAltitudeFromWCSservice(coordinates, this.map_.getProjection().code)
+      altitudeFromWCSservice = this.getImpl().readAltitudeFromWCSservice(coordinates, this.map_.getProjection().code);
       success(altitudeFromWCSservice);
     });
 
@@ -232,7 +233,7 @@ export default class InfocoordinatesControl extends M.Control {
       buttonTab.addEventListener('click', () => this.openTabFromTab(numPoint));
     })
 
-
+    M.proxy(true);
     this.layerFeatures.addFeatures([featurePoint]);
     this.layerFeatures.setZIndex(999);
     this.openTab(numPoint)
