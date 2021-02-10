@@ -177,8 +177,12 @@ div.m-panel.ign-searchlocator-panel.collapsed button.m-panel-btn.icon-ignsearch:
 
 .ignsearchlocator-popup {
     width: 250px;
+    margin-bottom: 2px;
 }
 
+.ignsearchlocator-popup b {
+    margin-right: 8px;
+}
 
 .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-xylocator-button,
 .m-ignsearchlocator>.search-panel>button#m-ignsearchlocator-parcela-button,

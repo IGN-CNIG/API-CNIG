@@ -1094,7 +1094,7 @@ export default class IGNSearchControl extends M.Control {
     }
     featureTabOpts.content += `<div>${fullAddress}</div>
                 <div class='ignsearch-popup'>Lat: ${featureCoordinates[0].toFixed(6)}</div>
-                <div class='ignsearch-popup'> Long: ${featureCoordinates[1].toFixed(6)} </div>`;
+                <div class='ignsearch-popup'> Lon: ${featureCoordinates[1].toFixed(6)} </div>`;
     if (this.map.getPopup() instanceof M.Popup && addTab === true) {
       this.popup = this.map.getPopup();
       this.popup.addTab(featureTabOpts);
