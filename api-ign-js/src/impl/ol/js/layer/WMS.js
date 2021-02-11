@@ -305,17 +305,7 @@ class WMS extends LayerBase {
         }
       }
       const source = this.createOLSource_(resolutions, minResolution, maxResolution, extent);
-      if (this.tiled === true && this.version !== '1.3.0') {
-        console.log('Entra tileada');
-        console.log(extend({
-          visible,
-          source,
-          extent,
-          minResolution,
-          maxResolution,
-          opacity,
-          zIndex,
-        }, this.vendorOptions_, true));
+      if (this.tiled === true) {
         this.ol3Layer = new OLLayerTile(extend({
           visible,
           source,
@@ -326,16 +316,6 @@ class WMS extends LayerBase {
           zIndex,
         }, this.vendorOptions_, true));
       } else {
-        console.log('Entra sin tilear');
-        console.log(extend({
-          visible,
-          source,
-          extent,
-          minResolution,
-          maxResolution,
-          opacity,
-          zIndex,
-        }, this.vendorOptions_, true));
         this.ol3Layer = new OLLayerImage(extend({
           visible,
           source,
@@ -420,7 +400,7 @@ class WMS extends LayerBase {
       }
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
-      if (this.tiled === true) {
+      if (this.tiled === true && this.version !== '1.3.0') {
         const origin = getBottomLeft(extent);
         olSource = new TileWMS({
           url: this.url,
