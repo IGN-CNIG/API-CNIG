@@ -400,7 +400,7 @@ class WMS extends LayerBase {
       }
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
-      if (this.tiled === true && this.version !== '1.3.0') {
+      if (this.tiled === true) {
         const origin = getBottomLeft(extent);
         olSource = new TileWMS({
           url: this.url,
