@@ -215,7 +215,7 @@ const map = M.map({
 });
 
 const pluginIberpixCompare = new IberpixCompare({
-  position: 'TR',
+  position: 'TL',
   vertical: true,
   collapsible: false,
   baseLayers: [
