@@ -305,7 +305,7 @@ class WMS extends LayerBase {
         }
       }
       const source = this.createOLSource_(resolutions, minResolution, maxResolution, extent);
-      if (this.tiled === true) {
+      if (this.tiled === true && this.version !== '1.3.0') {
         this.ol3Layer = new OLLayerTile(extend({
           visible,
           source,
