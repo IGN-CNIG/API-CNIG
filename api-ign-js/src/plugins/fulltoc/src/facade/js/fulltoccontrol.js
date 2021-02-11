@@ -90,7 +90,7 @@ export default class FullTOCControl extends M.Control {
 
   afterRender() {
     setTimeout(() => {
-      document.querySelector('.m-fulltoc-container .m-title .span-title').click();
+      this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
     }, 500);
   }
 
@@ -681,7 +681,7 @@ export default class FullTOCControl extends M.Control {
 
       this.registerImgErrorEvents_(html);
       this.template_.innerHTML = html.innerHTML;
-      const layerList = document.querySelector('.m-fulltoc-container .m-layers');
+      const layerList = this.template_.querySelector('.m-fulltoc-container .m-layers');
       const layers = templateVars.layers;
       if (layerList !== null) {
         Sortable.create(layerList, {
@@ -1200,6 +1200,17 @@ export default class FullTOCControl extends M.Control {
 
             this.capabilities[j].tiled = this.capabilities[j].type === 'WMTS';
             this.capabilities[j].options.origen = this.capabilities[j].type;
+            const legendUrl = this.capabilities[j].getLegendURL();
+            const meta = this.capabilities[j].capabilitiesMetadata;
+            if ((legendUrl.indexOf('GetLegendGraphic') > -1 || legendUrl.indexOf('assets/img/legend-default.png') > -1) && meta !== undefined && meta.style.length > 0) {
+              if (meta.style[0].LegendURL !== undefined && meta.style[0].LegendURL.length > 0) {
+                const style = meta.style[0].LegendURL[0].OnlineResource;
+                if (style !== undefined && style !== null) {
+                  this.capabilities[j].setLegendURL(style);
+                }
+              }
+            }
+
             layers.push(this.capabilities[j]);
           }
         }

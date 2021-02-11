@@ -761,12 +761,23 @@ export default class VectorsControl extends M.impl.Control {
 
   calculateElevations(feature) {
     const srs = this.facadeMap_.getProjection().code;
+    const geomType = feature.getGeometry().type;
     const coordinates = feature.getGeometry().coordinates;
     let pointsCoord = '';
-    coordinates.forEach((c) => {
-      const newC = ol.proj.transform(c, srs, WGS84);
+    if (geomType.toLowerCase().indexOf('point') > -1) {
+      const newC = ol.proj.transform(coordinates, srs, WGS84);
       pointsCoord += `${newC[0]},${newC[1]},${newC[0] + 0.000001},${newC[1] + 0.000001}|`;
-    });
+    } else if (geomType.toLowerCase().indexOf('linestring') > -1) {
+      coordinates.forEach((c) => {
+        const newC = ol.proj.transform(c, srs, WGS84);
+        pointsCoord += `${newC[0]},${newC[1]},${newC[0] + 0.000001},${newC[1] + 0.000001}|`;
+      });
+    } else if (geomType.toLowerCase().indexOf('polygon') > -1) {
+      coordinates[0].forEach((c) => {
+        const newC = ol.proj.transform(c, srs, WGS84);
+        pointsCoord += `${newC[0]},${newC[1]},${newC[0] + 0.000001},${newC[1] + 0.000001}|`;
+      });
+    }
 
     const pointsBbox = pointsCoord.split('|').filter((elem) => {
       return elem !== '' && elem.trim().length > 3;
@@ -774,12 +785,14 @@ export default class VectorsControl extends M.impl.Control {
 
     const altitudes = [];
     const promises = [];
+    M.proxy(false);
     pointsBbox.forEach((bbox) => {
       const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
       promises.push(M.remote.get(url));
     });
 
     Promise.all(promises).then((responses) => {
+      M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
         if (response.text.indexOf('dy') > -1) {
@@ -796,13 +809,22 @@ export default class VectorsControl extends M.impl.Control {
       });
 
       const geom = feature.getGeometry();
-      geom.coordinates.forEach((c, index) => {
-        c.push(altitudes[index]);
-      });
+      if (geomType.toLowerCase().indexOf('point') > -1) {
+        geom.coordinates.push(altitudes[0]);
+      } else if (geomType.toLowerCase().indexOf('linestring') > -1) {
+        geom.coordinates.forEach((c, index) => {
+          c.push(altitudes[index]);
+        });
+      } else if (geomType.toLowerCase().indexOf('polygon') > -1) {
+        geom.coordinates[0].forEach((c, index) => {
+          c.push(altitudes[index]);
+        });
+      }
 
       feature.setGeometry(geom);
-      // eslint-disable-next-line no-console
-    }).catch((err) => {});
+    }).catch((err) => {
+      M.proxy(true);
+    });
   }
 
   calculateProfile(feature) {
@@ -825,12 +847,14 @@ export default class VectorsControl extends M.impl.Control {
       return elem !== '' && elem.trim().length > 3;
     });
 
+    M.proxy(false);
     pointsBbox.forEach((bbox) => {
       const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
       promises.push(M.remote.get(url));
     });
 
     Promise.all(promises).then((responses) => {
+      M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
         if (response.text.indexOf('dy') > -1) {
@@ -860,6 +884,7 @@ export default class VectorsControl extends M.impl.Control {
 
       this.showProfile(arrayXZY2);
     }).catch((err) => {
+      M.proxy(true);
       document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';
       M.dialog.error(getValue('exception.query_profile'), 'Error');
     });

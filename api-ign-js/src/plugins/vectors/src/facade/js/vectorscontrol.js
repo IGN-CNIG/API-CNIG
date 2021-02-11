@@ -196,7 +196,7 @@ export default class VectorsControl extends M.Control {
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' && layer.name !== 'searchresult';
+        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' && layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1;
     });
 
     const layers = [];
@@ -442,7 +442,6 @@ export default class VectorsControl extends M.Control {
       });
 
       document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('click', e => this.readWFSCapabilities(e));
-      document.querySelector('#m-vectors-addwfs-clear-btn').addEventListener('click', e => this.removeContains(e));
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
       button.innerHTML = getValue('close');
@@ -463,20 +462,6 @@ export default class VectorsControl extends M.Control {
     const url = evt.target.getAttribute('data-link');
     document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value = url;
     this.readWFSCapabilities(evt);
-  }
-
-  /**
-   * This function remove results show
-   *
-   * @function
-   * @param {goog.events.BrowserEvent} evt - Event
-   * @private
-   */
-  removeContains(evt) {
-    evt.preventDefault();
-    document.querySelector('#m-vectors-addwfs-results').innerHTML = '';
-    document.querySelector('#m-vectors-addwfs-suggestions').style.display = 'none';
-    document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value = '';
   }
 
   /**

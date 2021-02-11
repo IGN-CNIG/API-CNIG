@@ -1011,3 +1011,7 @@ div.codsi-no-results {
 #m-fulltoc-addservices-codsi-results {
   font-size: 12px;
 }
+
+.m-dialog {
+  z-index: 999999 !important;
+}

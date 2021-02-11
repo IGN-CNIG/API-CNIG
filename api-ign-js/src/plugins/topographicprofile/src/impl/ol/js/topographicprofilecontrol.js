@@ -192,16 +192,26 @@ export default class TopographicprofileControl extends M.impl.Control {
       return elem !== '' && elem.trim().length > 3;
     });
 
+    M.proxy(false);
     pointsBbox.forEach((bbox) => {
       const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
       promises.push(M.remote.get(url));
     });
 
     Promise.all(promises).then((responses) => {
+      M.proxy(true);
       responses.forEach((response) => {
-        const alt = response.text.split('dy')[1].split(' ').filter((item) => {
-          return item !== '';
-        })[1];
+        let alt = 0;
+        if (response.text.indexOf('dy') > -1) {
+          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        } else if (response.text.indexOf('cellsize') > -1) {
+          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        }
+
         altitudes.push(parseFloat(alt));
       });
 
@@ -220,10 +230,10 @@ export default class TopographicprofileControl extends M.impl.Control {
       });
 
       this.lineString_.setCoordinates(arrayXZY2);
-    }).catch(() => {
+    }).catch((err) => {
+      M.proxy(true);
       M.dialog.error('No se han obtenido datos');
     });
-    // this.deactivate();
   }
 
 

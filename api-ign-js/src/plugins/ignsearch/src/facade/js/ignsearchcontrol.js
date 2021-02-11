@@ -361,16 +361,7 @@ export default class IGNSearchControl extends M.Control {
       this.geocoderCoords = etrs89pointCoordinates;
       const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
       let fullAddress = '';
-      // if device is mobile
-      // if (window.navigator.userAgent.match(/Android/i) ||
-      //   window.navigator.userAgent.match(/webOS/i) ||
-      //   window.navigator.userAgent.match(/iPhone/i) ||
-      //   window.navigator.userAgent.match(/iPad/i) ||
-      //   window.navigator.userAgent.match(/iPod/i) ||
-      //   window.navigator.userAgent.match(/BlackBerry/i) ||
-      //   window.navigator.userAgent.match(/Windows Phone/i)) {
-      //   this.showPopUp('Cargando...', mapCoordinates, dataCoordinates);
-      // }
+      M.proxy(false);
       M.remote.get(urlToGet).then((res) => {
         if (res.text !== null) {
           const returnData = JSON.parse(res.text);
@@ -380,6 +371,8 @@ export default class IGNSearchControl extends M.Control {
         }
         this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e);
       });
+
+      M.proxy(true);
     }
   }
 
@@ -511,7 +504,6 @@ export default class IGNSearchControl extends M.Control {
    */
   drawGeocoderResultProv(geoJsonData) {
     this.map.removeLayers(this.clickedElementLayer);
-
     M.proxy(false);
     M.remote.get(this.urlParse).then((res) => {
       const urlSinJSON = res.text.substring(9, res.text.length - 1);
@@ -1102,7 +1094,7 @@ export default class IGNSearchControl extends M.Control {
     }
     featureTabOpts.content += `<div>${fullAddress}</div>
                 <div class='ignsearch-popup'>Lat: ${featureCoordinates[0].toFixed(6)}</div>
-                <div class='ignsearch-popup'> Long: ${featureCoordinates[1].toFixed(6)} </div>`;
+                <div class='ignsearch-popup'> Lon: ${featureCoordinates[1].toFixed(6)} </div>`;
     if (this.map.getPopup() instanceof M.Popup && addTab === true) {
       this.popup = this.map.getPopup();
       this.popup.addTab(featureTabOpts);

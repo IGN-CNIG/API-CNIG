@@ -140,6 +140,11 @@ button#m-ignsearchlocator-locate-button {
 
 .ignsearch-popup {
     width: 250px;
+    margin-bottom: 2px;
+}
+
+.ignsearch-popup b {
+    margin-right: 8px;
 }
 
 /*.ign-search-panel>.g-cartografia-flecha-izquierda {

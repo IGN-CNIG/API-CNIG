@@ -226,14 +226,14 @@ export default class IGNSearchLocatorControl extends M.Control {
      */
     this.requestStreet = requestStreet;
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.geocoderCoords = geocoderCoords;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
@@ -257,7 +257,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.zoom = zoom;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
@@ -266,126 +266,126 @@ export default class IGNSearchLocatorControl extends M.Control {
 
     // PARCELA
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.parcela_prov = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.parcela_mun = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.parcela_pol = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.parcela_parc = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xytype = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xydata = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xylon = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xylat = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xylathh = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xylatmm = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xylatss = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xylonhh = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xylonmm = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xylonss = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xyutmx = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.xyutmy = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
     this.provincecode = null;
 
     /**
-     * Reverse geocoder coordinates
+     *
      * @private
      * @type {string}
      */
@@ -624,16 +624,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.geocoderCoords = etrs89pointCoordinates;
       const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
       let fullAddress = '';
-      // if device is mobile
-      // if (window.navigator.userAgent.match(/Android/i) ||
-      //   window.navigator.userAgent.match(/webOS/i) ||
-      //   window.navigator.userAgent.match(/iPhone/i) ||
-      //   window.navigator.userAgent.match(/iPad/i) ||
-      //   window.navigator.userAgent.match(/iPod/i) ||
-      //   window.navigator.userAgent.match(/BlackBerry/i) ||
-      //   window.navigator.userAgent.match(/Windows Phone/i)) {
-      //   this.showPopUp('Cargando...', mapCoordinates, dataCoordinates);
-      // }
+      M.proxy(false);
       M.remote.get(urlToGet).then((res) => {
         if (res.text !== null) {
           const returnData = JSON.parse(res.text);
@@ -643,6 +634,8 @@ export default class IGNSearchLocatorControl extends M.Control {
         }
         this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e);
       });
+
+      M.proxy(true);
     }
   }
 
@@ -772,7 +765,6 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   drawGeocoderResultProv(geoJsonData) {
     this.map.removeLayers(this.clickedElementLayer);
-
     M.proxy(false);
     M.remote.get(this.urlParse).then((res) => {
       const urlSinJSON = res.text.substring(9, res.text.length - 1);
@@ -2355,6 +2347,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     } else {
       exitState = getValue('exact');
     }
+
     this.showPopUp(fullAddress, newCoordinates, coordinates, exitState, false, e);
   }
   /**
@@ -2369,16 +2362,10 @@ export default class IGNSearchLocatorControl extends M.Control {
     if (exitState !== null) {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }
-    let unidadX = 'X';
-    let unidadY = 'Y';
-    if (this.map.getProjection().code.includes('4258') || this.map.getProjection().code.includes('4326')) {
-      unidadX = 'Lat';
-      unidadY = 'Long';
-    }
 
     featureTabOpts.content += `<div><b>${fullAddress !== undefined ? fullAddress : '-'}</b></div><br/>
-                <div class='ignsearchlocator-popup'><b>${unidadX}:</b>  ${featureCoordinates[0].toFixed(6)}</div>
-                <div class='ignsearchlocator-popup'><b>${unidadY}:</b>  ${featureCoordinates[1].toFixed(6)} </div>`;
+                <div class='ignsearchlocator-popup'><b>Lat:</b>${featureCoordinates[0].toFixed(6)}</div>
+                <div class='ignsearchlocator-popup'><b>Lon:</b>${featureCoordinates[1].toFixed(6)} </div>`;
     if (this.map.getPopup() instanceof M.Popup && addTab === true) {
       this.popup = this.map.getPopup();
       this.popup.addTab(featureTabOpts);
