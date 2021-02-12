@@ -389,6 +389,10 @@ class WMS extends LayerBase {
         STYLES: this.styles,
       };
 
+      if (this.version !== '1.3.0') {
+        layerParams.TILED = this.tiled;
+      }
+
       if (!isNullOrEmpty(this.sldBody)) {
         layerParams.SLD_BODY = this.sldBody;
       }
@@ -398,6 +402,7 @@ class WMS extends LayerBase {
           layerParams[key.toUpperCase()] = this.options.params[key];
         });
       }
+
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
       if (this.tiled === true) {
