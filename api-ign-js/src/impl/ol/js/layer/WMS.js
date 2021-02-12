@@ -400,7 +400,9 @@ class WMS extends LayerBase {
       }
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
+      console.log(this.version);
       if (this.tiled === true) {
+        console.log('Entra tileada');
         const origin = getBottomLeft(extent);
         olSource = new TileWMS({
           url: this.url,
@@ -417,6 +419,7 @@ class WMS extends LayerBase {
           zIndex,
         });
       } else {
+        console.log('Entra sin tilear');
         olSource = new ImageWMS({
           url: this.url,
           params: layerParams,
