@@ -382,7 +382,6 @@ class WMS extends LayerBase {
     if (isNullOrEmpty(this.vendorOptions_.source)) {
       const layerParams = {
         LAYERS: this.name,
-        TILED: true,
         VERSION: this.version,
         TRANSPARENT: this.transparent,
         FORMAT: 'image/png',
