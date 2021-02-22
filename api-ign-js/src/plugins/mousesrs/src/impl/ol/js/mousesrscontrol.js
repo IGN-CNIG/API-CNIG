@@ -97,7 +97,7 @@ export default class MouseSRSControl extends M.impl.Control {
     map.getMapImpl().addControl(this.mousePositionControl);
     super.addTo(map, html);
     setTimeout(() => {
-      this.mousePositionControl.initWCSLoaderManager(map);
+      // this.mousePositionControl.initWCSLoaderManager(map);
       document.querySelector('.m-mousesrs-container .m-mouse-srs').addEventListener('click', this.openChangeSRS.bind(this, this.auxMap_, html));
     }, 1000);
   }
