@@ -131,7 +131,7 @@ class WMS extends LayerBase {
 
     // number of zoom levels
     if (isNullOrEmpty(this.options.numZoomLevels)) {
-      this.options.numZoomLevels = 16; // by default
+      this.options.numZoomLevels = 20; // by default
     }
 
     // animated
@@ -382,12 +382,15 @@ class WMS extends LayerBase {
     if (isNullOrEmpty(this.vendorOptions_.source)) {
       const layerParams = {
         LAYERS: this.name,
-        TILED: true,
         VERSION: this.version,
         TRANSPARENT: this.transparent,
         FORMAT: 'image/png',
         STYLES: this.styles,
       };
+
+      if (this.version !== '1.3.0') {
+        layerParams.TILED = this.tiled;
+      }
 
       if (!isNullOrEmpty(this.sldBody)) {
         layerParams.SLD_BODY = this.sldBody;
@@ -398,6 +401,7 @@ class WMS extends LayerBase {
           layerParams[key.toUpperCase()] = this.options.params[key];
         });
       }
+
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
       if (this.tiled === true) {

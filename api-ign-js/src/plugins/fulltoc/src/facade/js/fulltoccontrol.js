@@ -59,6 +59,8 @@ export default class FullTOCControl extends M.Control {
     this.codsi = codsi;
 
     this.stateSelectAll = false;
+
+    this.filterName = undefined;
   }
 
   /**
@@ -409,9 +411,14 @@ export default class FullTOCControl extends M.Control {
           }
 
 
-          document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', e => this.readCapabilities(e));
+          document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', (e) => {
+            this.filterName = undefined;
+            this.readCapabilities(e);
+          });
+
           document.querySelector('#m-fulltoc-addservices-search-input').addEventListener('keypress', (e) => {
             if (e.keyCode === 13) {
+              this.filterName = undefined;
               this.readCapabilities(e);
             }
           });
@@ -566,6 +573,7 @@ export default class FullTOCControl extends M.Control {
         elem.addEventListener('click', (evt) => {
           const url = elem.getAttribute('data-link');
           document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = url;
+          this.filterName = undefined;
           this.readCapabilities(evt);
         });
       });
@@ -598,6 +606,12 @@ export default class FullTOCControl extends M.Control {
 
   loadSuggestion(evt) {
     const url = evt.target.getAttribute('data-link');
+    try {
+      const group = evt.target.parentElement.parentElement.parentElement;
+      const nameGroup = group.querySelector('span.m-fulltoc-suggestion-caret').innerText;
+      this.filterName = nameGroup;
+      /* eslint-disable no-empty */
+    } catch (err) {}
     const serviceType = evt.target.getAttribute('data-service-type');
     document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = url;
     if (serviceType === 'WMTS') {
@@ -945,40 +959,73 @@ export default class FullTOCControl extends M.Control {
     const layers = [];
     const layerNames = [];
     let allServices = [];
-    if (this.precharged.services !== undefined && this.precharged.services.length > 0) {
-      allServices = allServices.concat(this.precharged.services);
-    }
-
-    if (this.precharged.groups !== undefined && this.precharged.groups.length > 0) {
-      this.precharged.groups.forEach((group) => {
-        if (group.services !== undefined && group.services.length > 0) {
-          allServices = allServices.concat(group.services);
-        }
-      });
-    }
-
-    allLayers.forEach((layer) => {
-      let insideService = false;
-      allServices.forEach((service) => {
-        if (service.type === layer.type && service.url === layer.url) {
-          if (service.white_list !== undefined && service.white_list.length > 0 &&
-            service.white_list.indexOf(layer.name) > -1 && layerNames.indexOf(layer.name) === -1) {
-            layers.push(layer);
-            layerNames.push(layer.name);
-          } else if (service.white_list === undefined && layerNames.indexOf(layer.name) === -1) {
-            layers.push(layer);
-            layerNames.push(layer.name);
-          }
-
-          insideService = true;
-        }
-      });
-
-      if (!insideService) {
-        layers.push(layer);
-        layerNames.push(layer.name);
+    if (this.filterName === undefined) {
+      if (this.precharged.services !== undefined && this.precharged.services.length > 0) {
+        allServices = allServices.concat(this.precharged.services);
       }
-    });
+
+      if (this.precharged.groups !== undefined && this.precharged.groups.length > 0) {
+        this.precharged.groups.forEach((group) => {
+          if (group.services !== undefined && group.services.length > 0) {
+            allServices = allServices.concat(group.services);
+          }
+        });
+      }
+
+      allLayers.forEach((layer) => {
+        let insideService = false;
+        allServices.forEach((service) => {
+          if (service.type === layer.type && service.url === layer.url) {
+            if (service.white_list !== undefined && service.white_list.length > 0 &&
+              service.white_list.indexOf(layer.name) > -1 &&
+              layerNames.indexOf(layer.name) === -1) {
+              layers.push(layer);
+              layerNames.push(layer.name);
+            } else if (service.white_list === undefined && layerNames.indexOf(layer.name) === -1) {
+              layers.push(layer);
+              layerNames.push(layer.name);
+            }
+
+            insideService = true;
+          }
+        });
+
+        if (!insideService) {
+          layers.push(layer);
+          layerNames.push(layer.name);
+        }
+      });
+    } else if (this.precharged.groups !== undefined && this.precharged.groups.length > 0) {
+      this.precharged.groups.forEach((group) => {
+        if (group.services !== undefined && group.services.length > 0 &&
+          group.name === this.filterName) {
+          allLayers.forEach((layer) => {
+            let insideService = false;
+            group.services.forEach((service) => {
+              if (service.type === layer.type && service.url === layer.url) {
+                if (service.white_list !== undefined && service.white_list.length > 0 &&
+                  service.white_list.indexOf(layer.name) > -1 &&
+                  layerNames.indexOf(layer.name) === -1) {
+                  layers.push(layer);
+                  layerNames.push(layer.name);
+                } else if (service.white_list === undefined &&
+                  layerNames.indexOf(layer.name) === -1) {
+                  layers.push(layer);
+                  layerNames.push(layer.name);
+                }
+
+                insideService = true;
+              }
+            });
+
+            if (!insideService) {
+              layers.push(layer);
+              layerNames.push(layer.name);
+            }
+          });
+        }
+      });
+    }
 
     return layers;
   }

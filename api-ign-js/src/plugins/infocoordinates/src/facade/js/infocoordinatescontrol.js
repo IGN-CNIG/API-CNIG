@@ -485,6 +485,7 @@ export default class InfocoordinatesControl extends M.Control {
     let printDocument = [];
     for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
       let featureSelected = this.layerFeatures.impl_.features_[i];
+      const alt = featureSelected.getAttributes().Altitude !== undefined ? parseFloat(featureSelected.getAttributes().Altitude) : '-';
 
       //Cojo el srs seleccionado en el select
       let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
@@ -513,9 +514,9 @@ export default class InfocoordinatesControl extends M.Control {
         printDocument.push('EPSG:4326: ');
       }
 
-      printDocument.push('[' + coordinatesGEO + ']' + '\n');
+      printDocument.push('[' + coordinatesGEO + ',' + alt + ']' + '\n');
       printDocument.push(proj + ': ');
-      printDocument.push('[' + coordinatesUTM + ']' + '\n');
+      printDocument.push('[' + coordinatesUTM + ',' + alt  + ']' + '\n');
     }
 
     const toBlobType = new Blob(printDocument, {
