@@ -134,8 +134,13 @@ export default class FullTOCControl extends M.Control {
    */
   clickLayer(evtParameter) {
     const evt = (evtParameter || window.event);
+    let scroll;
     let notRender = false;
     if (!M.utils.isNullOrEmpty(evt.target)) {
+      if (document.querySelector('.m-panel.m-plugin-fulltoc.opened ul.m-layers') !== null) {
+        scroll = document.querySelector('.m-panel.m-plugin-fulltoc.opened ul.m-layers').scrollTop;
+      }
+
       const layerName = evt.target.getAttribute('data-layer-name');
       const layerURL = evt.target.getAttribute('data-layer-url');
       if (!M.utils.isNullOrEmpty(layerName) && layerURL !== null) {
@@ -446,7 +451,7 @@ export default class FullTOCControl extends M.Control {
     }
 
     if (!notRender) {
-      this.render();
+      this.render(scroll);
     }
   }
 
@@ -626,6 +631,7 @@ export default class FullTOCControl extends M.Control {
   }
 
   changeLayerConfig(layer) {
+    const scroll = document.querySelector('.m-panel.m-plugin-fulltoc.opened ul.m-layers').scrollTop;
     const styleSelected = document.querySelector('#m-fulltoc-change-config #m-fulltoc-style-select').value;
     if (styleSelected !== '') {
       layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
@@ -639,7 +645,7 @@ export default class FullTOCControl extends M.Control {
         if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
           const newURL = filtered[0].LegendURL[0].OnlineResource;
           layer.setLegendURL(newURL);
-          this.render();
+          this.render(scroll);
         }
       }
     }
@@ -687,7 +693,7 @@ export default class FullTOCControl extends M.Control {
    * @public
    * @api
    */
-  render() {
+  render(scroll) {
     this.getTemplateVariables(this.map_).then((templateVars) => {
       const html = M.template.compileSync(template, {
         vars: templateVars,
@@ -722,6 +728,10 @@ export default class FullTOCControl extends M.Control {
             });
           },
         });
+
+        if (scroll !== undefined) {
+          document.querySelector('.m-panel.m-plugin-fulltoc.opened ul.m-layers').scrollTop = scroll;
+        }
       }
     });
   }

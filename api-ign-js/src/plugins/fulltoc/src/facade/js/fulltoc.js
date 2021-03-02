@@ -7,6 +7,170 @@ import FullTOCControl from './fulltoccontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+const PRECHARGED = {
+  groups: [
+    {
+      name: 'IGN',
+      services: [
+        {
+          name: 'Unidades administrativas',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+          white_list: ['AU.AdministrativeBoundary', 'AU.AdministrativeUnit'],
+        },
+        {
+          name: 'Nombres geográficos',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/ngbe?',
+        },
+        {
+          name: 'Redes geodésicas',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
+        },
+        {
+          name: 'Cuadrículas cartográficas',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/cuadriculas?',
+          white_list: ['Grid-REGCAN95-lonlat-50k', 'Grid-ETRS89-lonlat-50k', 'Grid-ETRS89-lonlat-25k', 'Grid-REGCAN95-lonlat-25k', 'Grid-25k-extendida'],
+        },
+        {
+          name: 'Información sísmica y volcánica',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/geofisica?',
+        },
+        {
+          name: 'Fototeca',
+          type: 'WMS',
+          url: 'https://fototeca.cnig.es/wms/fototeca.dll?',
+        },
+        {
+          name: 'Camino de Santiago',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/camino-santiago?',
+        },
+      ],
+    },
+    {
+      name: 'IGN. Cartografía histórica',
+      services: [
+        {
+          name: 'Planos de Madrid (1622 - 1960)',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms/planos?',
+        },
+        {
+          name: 'Hojas kilométricas (Madrid - 1860)',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms/hojas-kilometricas?',
+        },
+        {
+          name: 'Planimetrías',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms/minutas-cartograficas?',
+        },
+        {
+          name: 'Primera edición de los Mapas Topográficos Nacionales',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms/primera-edicion-mtn?',
+        },
+      ],
+    },
+    {
+      name: 'Sistema Cartográfico Nacional',
+      services: [
+        {
+          name: 'PNOA. Ortofotos máxima actualidad',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/pnoa-ma?',
+        },
+        {
+          name: 'PNOA. Ortofotos históricas',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms/pnoa-historico?',
+        },
+        {
+          name: 'Ocupación del suelo',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo?',
+        },
+        {
+          name: 'Ocupación del suelo. Histórico',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo-historico?',
+        },
+        {
+          name: 'Información Geográfica de Referencia. Transportes',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/transportes?',
+        },
+        {
+          name: 'Información Geográfica de Referencia. Hidrografía',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/hidrografia?',
+        },
+        {
+          name: 'Direcciones y códigos postales',
+          type: 'WMS',
+          url: 'https://www.cartociudad.es/wms-inspire/direcciones-ccpp?',
+        },
+        {
+          name: 'Modelos digitales del terreno',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/mdt?',
+        },
+        {
+          name: 'Copernicus Land Monitoring Service',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms/copernicus-landservice-spain?',
+        },
+      ],
+    },
+    {
+      name: 'Capas de fondo',
+      services: [
+        {
+          name: 'Mapa',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/mapa-raster?',
+        },
+        {
+          name: 'Imagen',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/pnoa-ma?',
+        },
+        {
+          name: 'Callejero',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/ign-base?',
+        },
+        {
+          name: 'Relieve',
+          type: 'WMTS',
+          url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+        },
+        {
+          name: 'Ocupación del suelo',
+          type: 'WMTS',
+          url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
+        },
+        {
+          name: 'Mapas Históricos',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/primera-edicion-mtn',
+        },
+      ],
+    },
+  ],
+  services: [
+    {
+      name: 'Catastro',
+      type: 'WMS',
+      url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
+    },
+  ],
+};
+
 export default class FullTOC extends M.Plugin {
   /**
    * @constructor
@@ -79,7 +243,7 @@ export default class FullTOC extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.precharged = options.precharged || {};
+    this.precharged = options.precharged || PRECHARGED;
   }
 
   /**
