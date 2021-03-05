@@ -434,7 +434,6 @@ export default class IGNSearchControl extends M.Control {
 
       this.nomenclatorCandidates = [];
       this.geocoderCandidates = [];
-      this.allCandidates = [];
 
       const regExpCoord = /[+-]?\d+\.\d+(\s|,|(,\s))[+-]?\d+\.\d+/;
       // Checks if input content represents coordinates, else searches text
@@ -445,52 +444,59 @@ export default class IGNSearchControl extends M.Control {
         // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
         this.getNomenclatorData(value, this.nomenclatorCandidates).then(() => {
           // saves on allCandidates search results from CartoCiudad (geocoder)
-          this.getCandidatesData(value, this.geocoderCandidates).then(() => {
-            for (let i = 0; i < this.searchPosition.split(',').length; i += 1) {
-              if (this.searchPosition.split(',')[i] === 'nomenclator') {
-                for (let j = 0; j < this.nomenclatorCandidates.length; j += 1) {
-                  this.allCandidates.push(this.nomenclatorCandidates[j]);
-                }
-              }
-              if (this.searchPosition.split(',')[i] === 'geocoder') {
-                for (let j = 0; j < this.geocoderCandidates.length; j += 1) {
-                  this.allCandidates.push(this.geocoderCandidates[j]);
-                }
-              }
-            }
-            // Clears previous search
-            this.resultsBox.innerHTML = '';
-            const compiledResult = M.template.compileSync(results, {
-              vars: {
-                places: this.allCandidates,
-              },
-            });
-            const elementList = compiledResult.querySelectorAll('li');
-            elementList.forEach((listElement) => {
-              listElement.addEventListener('click', () => {
-                this.goToLocation(listElement);
-              });
-            });
-            if (firstResult === true && elementList.length > 0) {
-              elementList.item(0).click();
-            }
-            // remove animation class and return to normal font size after loading
-            this.resultsBox.classList.remove('g-cartografia-spinner');
-            this.resultsBox.style.fontSize = '1em';
-            this.resultsBox.appendChild(compiledResult);
-            // Service doesn't find results
-            if (this.allCandidates.length === 0) {
-              const parragraph = document.createElement('p');
-              const infoMsg = document.createTextNode(getValue('exception.results'));
-              parragraph.appendChild(infoMsg);
-              this.resultsBox.appendChild(parragraph);
-              document.getElementById('m-ignsearch-results-list').style.display = 'none';
-            } else {
-              document.getElementById('m-ignsearch-results-list').style.display = 'block';
-            }
-          });
+          this.showCandidatesResults(firstResult);
+        });
+
+        this.getCandidatesData(value, this.geocoderCandidates).then(() => {
+          this.showCandidatesResults(firstResult);
         });
       }
+    }
+  }
+
+  showCandidatesResults(firstResult) {
+    this.allCandidates = [];
+    for (let i = 0; i < this.searchPosition.split(',').length; i += 1) {
+      if (this.searchPosition.split(',')[i] === 'nomenclator') {
+        for (let j = 0; j < this.nomenclatorCandidates.length; j += 1) {
+          this.allCandidates.push(this.nomenclatorCandidates[j]);
+        }
+      }
+      if (this.searchPosition.split(',')[i] === 'geocoder') {
+        for (let j = 0; j < this.geocoderCandidates.length; j += 1) {
+          this.allCandidates.push(this.geocoderCandidates[j]);
+        }
+      }
+    }
+    // Clears previous search
+    this.resultsBox.innerHTML = '';
+    const compiledResult = M.template.compileSync(results, {
+      vars: {
+        places: this.allCandidates,
+      },
+    });
+    const elementList = compiledResult.querySelectorAll('li');
+    elementList.forEach((listElement) => {
+      listElement.addEventListener('click', () => {
+        this.goToLocation(listElement);
+      });
+    });
+    if (firstResult === true && elementList.length > 0) {
+      elementList.item(0).click();
+    }
+    // remove animation class and return to normal font size after loading
+    this.resultsBox.classList.remove('g-cartografia-spinner');
+    this.resultsBox.style.fontSize = '1em';
+    this.resultsBox.appendChild(compiledResult);
+    // Service doesn't find results
+    if (this.allCandidates.length === 0) {
+      const parragraph = document.createElement('p');
+      const infoMsg = document.createTextNode(getValue('exception.results'));
+      parragraph.appendChild(infoMsg);
+      this.resultsBox.appendChild(parragraph);
+      document.getElementById('m-ignsearch-results-list').style.display = 'none';
+    } else {
+      document.getElementById('m-ignsearch-results-list').style.display = 'block';
     }
   }
   /**
@@ -890,7 +896,7 @@ export default class IGNSearchControl extends M.Control {
     if (this.clickedElementLayer instanceof M.layer.Vector) {
       this.clickedElementLayer.calculateMaxExtent().then((extent) => {
         this.map.setBbox(extent);
-        if (service === 'n' || type === 'Point' || type === 'LineString' || type === 'MultiLineString') {
+        if (service === 'n' || type === 'Point') {
           this.setScale(17061); // last scale requested by our client: 2000
         }
         // En el caso de que se haga una búsqueda de Provincias o CCAA, se dejaría el zoom que
