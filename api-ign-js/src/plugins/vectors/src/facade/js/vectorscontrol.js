@@ -196,7 +196,8 @@ export default class VectorsControl extends M.Control {
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' && layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1;
+        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' &&
+        layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1 && layer.name !== 'infocoordinatesLayerFeatures';
     });
 
     const layers = [];

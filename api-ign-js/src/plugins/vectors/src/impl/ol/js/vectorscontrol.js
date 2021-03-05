@@ -1167,7 +1167,8 @@ export default class VectorsControl extends M.impl.Control {
     const filtered = map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible() &&
         layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable &&
-        layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult' && layer.name !== 'searchresult';
+        layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult' &&
+        layer.name !== 'searchresult' && layer.name !== 'infocoordinatesLayerFeatures';
     });
 
     if (filtered.length > 0) {
