@@ -7,7 +7,6 @@
 *********************/
 
 .m-georefimage2-container {
-    /*min-width: 200px;*/
     color: #404040;
     width: 100%;
 }
@@ -132,8 +131,6 @@
         background-color: transparent !important;
         position: absolute;
         left: 0 !important;
-        /* right: 0;
-        left: initial; */
         color: white !important;
         z-index: 999999;
         box-shadow: none;
@@ -154,7 +151,6 @@
 .m-areas>div.m-area>div.m-panel.m-georefimage2 {
     -webkit-transition: max-height .33s ease-in-out 0s;
     transition: max-height .33s ease-in-out 0s;
-    /*max-height: 100vh;*/
 }
 
 .m-areas>div.m-area>div.m-panel.m-georefimage2.collapsed {
@@ -233,7 +229,6 @@
 .m-georefimage2-loading span,
 div.m-areas>div.m-area>div.m-panel.m-georefimage2.collapsed>button.m-panel-btn {
     font-family: 'georefimage2' !important;
-    /* speak: none; */
     font-style: normal;
     font-weight: normal;
     font-variant: normal;

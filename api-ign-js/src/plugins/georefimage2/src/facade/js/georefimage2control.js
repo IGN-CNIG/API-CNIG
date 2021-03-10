@@ -69,7 +69,7 @@ export default class Georefimage2Control extends M.Control {
      * @private
      * @type {HTMLElement}
      */
-    this.dpi_ = 120;
+    this.dpi_ = 150;
 
     /**
      * Mapfish params
@@ -234,7 +234,14 @@ export default class Georefimage2Control extends M.Control {
    * @function
    */
   getPrintData() {
-    const projection = this.map_.getProjection().code;
+    let printOption = 'map';
+    if (document.querySelector('#m-georefimage2-image').checked) {
+      printOption = 'image';
+    } else if (document.querySelector('#m-georefimage2-screen').checked) {
+      printOption = 'screen';
+    }
+
+    const projection = printOption === 'screen' ? this.map_.getProjection().code : this.getUTMZoneProjection();
     const bbox = this.map_.getBbox();
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
@@ -244,7 +251,7 @@ export default class Georefimage2Control extends M.Control {
       outputFormat: this.format_,
       attributes: {
         map: {
-          dpi: this.dpi_,
+          dpi: printOption === 'screen' ? 120 : this.dpi_,
           projection,
         },
       },
@@ -269,7 +276,7 @@ export default class Georefimage2Control extends M.Control {
       printData.attributes.map.layers = encodedLayersModified;
       printData.attributes = Object.assign(printData.attributes, parameters);
       printData.attributes.map.projection = projection;
-      printData.attributes.map.dpi = this.dpi_;
+      printData.attributes.map.dpi = printOption === 'screen' ? 120 : this.dpi_;
       printData.attributes.map.width = width;
       printData.attributes.map.height = height;
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
@@ -380,25 +387,23 @@ export default class Georefimage2Control extends M.Control {
     } else if (printOption === 'image') {
       return (new Promise((success, fail) => {
         const BreakException = {};
-        this.getImpl().encodeWMTSNoLayer('https://www.ign.es/wmts/pnoa-ma?', 'OI.OrthoimageCoverage', projection).then((encodedLayer) => {
-          if (encodedLayer === null) {
-            throw BreakException;
-          }
+        const encodedLayer = this.getImpl().encodeWMSNoLayer('http://www.ign.es/wms-inspire/pnoa-ma?', 'OI.OrthoimageCoverage');
+        if (encodedLayer === null) {
+          throw BreakException;
+        }
 
-          success([encodedLayer]);
-        });
+        success([encodedLayer]);
       }));
     /* eslint-disable no-else-return */
     } else {
       return (new Promise((success, fail) => {
         const BreakException = {};
-        this.getImpl().encodeWMTSNoLayer('https://www.ign.es/wmts/mapa-raster?', 'MTN', projection).then((encodedLayer) => {
-          if (encodedLayer === null) {
-            throw BreakException;
-          }
+        const encodedLayer = this.getImpl().encodeWMSNoLayer('http://www.ign.es/wms-inspire/mapa-raster?', 'mtn_rasterizado');
+        if (encodedLayer === null) {
+          throw BreakException;
+        }
 
-          success([encodedLayer]);
-        });
+        success([encodedLayer]);
       }));
     }
   }
@@ -428,6 +433,14 @@ export default class Georefimage2Control extends M.Control {
    * @api stable
    */
   downloadPrint(event) {
+    let printOption = 'map';
+    if (document.querySelector('#m-georefimage2-image').checked) {
+      printOption = 'image';
+    } else if (document.querySelector('#m-georefimage2-screen').checked) {
+      printOption = 'screen';
+    }
+
+    const dpi = printOption === 'screen' ? 120 : this.dpi_;
     const projection = this.map_.getProjection().code;
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
@@ -444,11 +457,11 @@ export default class Georefimage2Control extends M.Control {
       const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
       const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
       const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
-        (72 / this.dpi_)).toString();
+        (72 / dpi)).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
       const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
-        (72 / this.dpi_)).toString();
+        (72 / dpi)).toString();
       const Cx = (BboxTransformXmaxYmin[0]).toString();
       const Cy = (BboxTransformXmaxYmin[3]).toString();
       const f = new Date();

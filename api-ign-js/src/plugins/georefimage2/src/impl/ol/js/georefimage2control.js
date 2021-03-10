@@ -686,7 +686,7 @@ export default class Georefimage2Control extends M.impl.Control {
           requestEncoding: layerReqEncoding,
           style: 'default',
           type: 'WMTS',
-          version: '1.3.0',
+          version: '1.0.0',
         };
       } catch (e) {
         M.dialog.error(getValue('errorProjectionCapabilities'));
@@ -721,13 +721,28 @@ export default class Georefimage2Control extends M.impl.Control {
           requestEncoding: 'KVP',
           style: 'default',
           type: 'WMTS',
-          version: '1.3.0',
+          version: '1.0.0',
         };
       } catch (e) {
         M.dialog.error(getValue('errorProjectionCapabilities'));
         return null;
       }
     });
+  }
+
+  encodeWMSNoLayer(url, layerName, projection) {
+    const encodedLayer = {
+      baseURL: url,
+      opacity: 1,
+      type: 'WMS',
+      layers: [layerName],
+      styles: [''],
+      customParams: {
+        version: '1.3.0',
+      },
+    };
+
+    return encodedLayer;
   }
 
   /**
