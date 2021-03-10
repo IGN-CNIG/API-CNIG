@@ -728,33 +728,36 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
     // Clears previous search
     this.resultsBox.innerHTML = '';
-    const compiledResult = M.template.compileSync(results, {
-      vars: {
-        places: this.allCandidates,
-      },
-    });
-    const elementList = compiledResult.querySelectorAll('li');
-    elementList.forEach((listElement) => {
-      listElement.addEventListener('click', () => {
-        this.goToLocation(listElement);
-      });
-    });
-    if (firstResult === true && elementList.length > 0) {
-      elementList.item(0).click();
-    }
+
     // remove animation class and return to normal font size after loading
     this.resultsBox.classList.remove('g-cartografia-spinner');
     this.resultsBox.style.fontSize = '1em';
-    this.resultsBox.appendChild(compiledResult);
+
     // Service doesn't find results
     if (this.allCandidates.length === 0) {
       const parragraph = document.createElement('p');
-      const infoMsg = document.createTextNode(getValue('exception.results'));
+      parragraph.classList.add('');
+      const infoMsg = document.createTextNode(getValue('exception.noresults'));
       parragraph.appendChild(infoMsg);
       this.resultsBox.appendChild(parragraph);
-      document.getElementById('m-ignsearchlocator-results-list').style.display = 'none';
     } else {
-      document.getElementById('m-ignsearchlocator-results-list').style.display = 'block';
+      const compiledResult = M.template.compileSync(results, {
+        vars: {
+          places: this.allCandidates,
+        },
+      });
+
+      const elementList = compiledResult.querySelectorAll('li');
+      elementList.forEach((listElement) => {
+        listElement.addEventListener('click', () => {
+          this.goToLocation(listElement);
+        });
+      });
+      if (firstResult === true && elementList.length > 0) {
+        elementList.item(0).click();
+      }
+
+      this.resultsBox.appendChild(compiledResult);
     }
   }
 
@@ -780,15 +783,12 @@ export default class IGNSearchLocatorControl extends M.Control {
         if (geoJsonData2.includes('"type":"MultiPolygon"')) {
           datosGeometria = urlSinJSON.split('(((');
           datosCoordenadas = datosGeometria[1].split('), (');
-
-
           if (geoJsonData2.includes(']]]')) {
             geoJsonData2 = geoJsonData2.replace(']]]', ']]]]');
           }
 
           for (let i = 0; i < datosCoordenadas.length; i += 1) {
             const hol = datosCoordenadas[i].substring(0, 9).replace('(', '');
-
             if (geoJsonData.includes('[[['.concat(hol))) {
               geoJsonData2 = geoJsonData2.replace('[[['.concat(hol), '[[[['.concat(hol));
             } else if (geoJsonData.includes(']],[['.concat(hol))) {
@@ -802,18 +802,14 @@ export default class IGNSearchLocatorControl extends M.Control {
         if (geoJsonData2.includes('"type":"Polygon"')) {
           datosGeometria = urlSinJSON.split('((');
           datosCoordenadas = datosGeometria[1].split('), (');
-
-
           if (geoJsonData2.includes(']]')) {
             geoJsonData2 = geoJsonData2.replace(']]', ']]]');
           }
 
           geoJsonData2 = geoJsonData2.replace('Polygon', 'MultiPolygon');
-
           for (let i = 0; i < datosCoordenadas.length; i += 1) {
             const numFirstValue = datosCoordenadas[i].split(' ');
             const val = datosCoordenadas[i].substring(0, numFirstValue[0].length).replace('(', '');
-
             if (geoJsonData.includes('[[['.concat(val))) {
               geoJsonData2 = geoJsonData2.replace('[[['.concat(val), '[[[['.concat(val));
             } else if (geoJsonData.includes('],['.concat(val))) {
@@ -844,7 +840,6 @@ export default class IGNSearchLocatorControl extends M.Control {
         },
       });
       this.clickedElementLayer.displayInLayerSwitcher = false;
-
       if (featureJSON.geometry.type === 'Point') {
         this.clickedElementLayer.setStyle(this.point);
       }
@@ -862,7 +857,6 @@ export default class IGNSearchLocatorControl extends M.Control {
       if (featureJSON.properties.type === 'callejero' ||
         featureJSON.properties.type === 'portal') {
         const fullAddress = this.createFullAddress(featureJSON.properties);
-
         const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
         const perfectResult = featureJSON.properties.state;
         this.showSearchPopUp(fullAddress, coordinates, perfectResult);
@@ -956,7 +950,9 @@ export default class IGNSearchLocatorControl extends M.Control {
       outputformat: 'application/json',
     });
     this.locationID = locationId;
+    M.proxy(false);
     M.remote.get(this.requestPlace).then((res) => {
+      M.proxy(true);
       const latLngString = JSON.parse(res.text).results[0].location;
       const resultTitle = JSON.parse(res.text).results[0].title;
       const latLngArray = latLngString.split(' ');
@@ -995,6 +991,8 @@ export default class IGNSearchLocatorControl extends M.Control {
       if (zoomIn === true) {
         this.zoomInLocation('n', 'Point', this.zoom);
       }
+    }).catch((err) => {
+      M.proxy(true);
     });
   }
   /**
@@ -1680,6 +1678,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         if (success) {
           this.parseParamsResultsForTemplate_(response.xml);
         }
+
         this.clearResults();
         this.activationManager(false, 'm-ignsearchlocator-parcela-button');
       });
