@@ -234,14 +234,7 @@ export default class Georefimage2Control extends M.Control {
    * @function
    */
   getPrintData() {
-    let printOption = 'map';
-    if (document.querySelector('#m-georefimage2-image').checked) {
-      printOption = 'image';
-    } else if (document.querySelector('#m-georefimage2-screen').checked) {
-      printOption = 'screen';
-    }
-
-    const projection = printOption === 'screen' ? this.map_.getProjection().code : this.getUTMZoneProjection();
+    const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
@@ -387,7 +380,7 @@ export default class Georefimage2Control extends M.Control {
     } else if (printOption === 'image') {
       return (new Promise((success, fail) => {
         const BreakException = {};
-        this.getImpl().encodeWMTSNoLayer('https://www.ign.es/wmts/pnoa-ma?', 'OI.OrthoimageCoverage', this.getUTMZoneProjection()).then((encodedLayer) => {
+        this.getImpl().encodeWMTSNoLayer('https://www.ign.es/wmts/pnoa-ma?', 'OI.OrthoimageCoverage', projection).then((encodedLayer) => {
           if (encodedLayer === null) {
             throw BreakException;
           }
@@ -399,7 +392,7 @@ export default class Georefimage2Control extends M.Control {
     } else {
       return (new Promise((success, fail) => {
         const BreakException = {};
-        this.getImpl().encodeWMTSNoLayer('https://www.ign.es/wmts/mapa-raster?', 'MTN', this.getUTMZoneProjection()).then((encodedLayer) => {
+        this.getImpl().encodeWMTSNoLayer('https://www.ign.es/wmts/mapa-raster?', 'MTN', projection).then((encodedLayer) => {
           if (encodedLayer === null) {
             throw BreakException;
           }
@@ -445,7 +438,7 @@ export default class Georefimage2Control extends M.Control {
 
       BboxTransformXmaxYmin = this.getImpl().transformExt(
         bbox,
-        this.map_.getProjection().code, projection,
+        this.getUTMZoneProjection(), projection,
       );
 
       const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
