@@ -456,14 +456,12 @@ export default class Georefimage2Control extends M.Control {
 
       const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
       const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
-      const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
-        (72 / dpi)).toString();
+      const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) * (72 / dpi)).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
-      const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
-        (72 / dpi)).toString();
-      const Cx = (BboxTransformXmaxYmin[0]).toString();
-      const Cy = (BboxTransformXmaxYmin[3]).toString();
+      const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) * (72 / dpi)).toString();
+      const Cx = (BboxTransformXmaxYmin[0] + (Px / 2)).toString();
+      const Cy = (BboxTransformXmaxYmin[3] + (Py / 2)).toString();
       const f = new Date();
       const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
       const zip = new JsZip();
