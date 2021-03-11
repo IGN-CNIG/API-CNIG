@@ -178,7 +178,7 @@ export default class Georefimage2Control extends M.Control {
         const responseStatusURL = JSON.parse(response.text);
         const ref = responseStatusURL.ref;
         const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-        this.getStatus(statusURL, this.downloadPrint.bind(this));
+        this.getStatus(statusURL, this.downloadPrint.bind(this, printData.attributes.map.bbox));
         let downloadUrl;
         try {
           response = JSON.parse(response.text);
@@ -432,7 +432,7 @@ export default class Georefimage2Control extends M.Control {
    * @function
    * @api stable
    */
-  downloadPrint(event) {
+  downloadPrint(bbox) {
     let printOption = 'map';
     if (document.querySelector('#m-georefimage2-image').checked) {
       printOption = 'image';
@@ -441,27 +441,15 @@ export default class Georefimage2Control extends M.Control {
     }
 
     const dpi = printOption === 'screen' ? 120 : this.dpi_;
-    const projection = this.map_.getProjection().code;
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
-      const bbox = [this.map_.getBbox().x.min, this.map_.getBbox().y.min,
-        this.map_.getBbox().x.max, this.map_.getBbox().y.max,
-      ];
-
-      BboxTransformXmaxYmin = this.getImpl().transformExt(
-        bbox,
-        this.getUTMZoneProjection(), projection,
-      );
-
-      const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
-      const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
-      const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) * (72 / dpi)).toString();
+      const size = this.map_.getMapImpl().getSize();
+      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
-      const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) * (72 / dpi)).toString();
-      const Cx = (BboxTransformXmaxYmin[0] + (Px / 2)).toString();
-      const Cy = (BboxTransformXmaxYmin[3] + (Py / 2)).toString();
+      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
+      const Cx = (bbox[0] + (Px / 2)).toString();
+      const Cy = (bbox[3] + (Py / 2)).toString();
       const f = new Date();
       const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
       const zip = new JsZip();
