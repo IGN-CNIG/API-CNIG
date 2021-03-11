@@ -1,7 +1,7 @@
 {
   "exception": {
     "exists": "No existe dirección asociada para esta ubicación.",
-    "results": "No se encuentran resultados para esta petición."
+    "results": "No se han encontrado resultados"
   },
   "searchresult": "searchresult",
   "tooltip": "Búsqueda de lugares",
