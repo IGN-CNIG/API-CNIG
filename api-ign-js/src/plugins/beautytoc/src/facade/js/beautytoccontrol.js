@@ -137,7 +137,9 @@ export default class BeautyTOCControl extends M.Control {
       setTimeout(() => {
         document.querySelector('div.m-dialog > div > div > div.m-button').innerHTML = '';
       }, 10);
+      M.proxy(false);
       M.remote.get(urlCheck).then((response) => {
+        M.proxy(true);
         const rowImage = Buffer.from(response.text).toString('base64');
         const outputImg = document.createElement('img');
         outputImg.src = 'data:image/png;base64,'.concat(rowImage);
@@ -154,8 +156,10 @@ export default class BeautyTOCControl extends M.Control {
           layerFound.options.visibility = !visibility;
           this.render(scroll);
         } else {
-          M.dialog.error(getValue('exception.nocobertura'), 'AVISO');
+          M.dialog.error(getValue('exception.nocobertura'), getValue('warning'));
         }
+      }).catch((err) => {
+        M.proxy(true);
       });
     } else if (layerFound !== null) {
       const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :

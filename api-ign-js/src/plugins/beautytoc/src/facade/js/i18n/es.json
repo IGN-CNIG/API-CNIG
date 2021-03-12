@@ -6,5 +6,6 @@
   "tooltip": "Capas",
   "layers": "Capas",
   "vectoriallayers": "Capas vectoriales",
-  "ortofotos": "Ortofotos"
+  "ortofotos": "Ortofotos",
+  "warning": "AVISO"
 }

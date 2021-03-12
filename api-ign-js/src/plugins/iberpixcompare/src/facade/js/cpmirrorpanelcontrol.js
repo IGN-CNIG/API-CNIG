@@ -288,7 +288,9 @@ export default class CompareMirrorpanel extends M.Control {
     if (this.mapL['B'] !== null) { this.mapL['B'].refresh(); }
     if (this.mapL['C'] !== null) { this.mapL['C'].refresh(); }
     if (this.mapL['D'] !== null) { this.mapL['D'].refresh(); }
-    document.querySelector('#m-cp-mirrorpanel > button').click();
+    if (modeViz !== 0) {
+      document.querySelector('#m-cp-mirrorpanel > button').click();
+    }
   }
 
   /**

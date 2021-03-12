@@ -6,5 +6,6 @@
   "tooltip": "Layers",
   "layers": "Layers",
   "vectoriallayers": "Vectorial layers",
-  "ortofotos": "Orthophotos"
+  "ortofotos": "Orthophotos",
+  "warning": "WARNING"
 }
