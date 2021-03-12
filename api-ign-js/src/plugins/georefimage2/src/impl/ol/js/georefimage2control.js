@@ -670,7 +670,7 @@ export default class Georefimage2Control extends M.impl.Control {
       try {
         return {
           baseURL: layerUrl,
-          imageFormat: layer.options.imageFormat || 'image/png',
+          imageFormat: layer.options.imageFormat || layer.options.format || 'image/png',
           layer: layerName,
           matrices: matrixIdsObj.TileMatrix.map((tileMatrix, i) => {
             return {
