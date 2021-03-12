@@ -706,6 +706,7 @@ export default class VectorsControl extends M.impl.Control {
 
   get3DLength(id) {
     const elem = document.querySelector(`#${id}`);
+    const flatLength = this.getFeatureLength();
     this.calculateProfilePoints(this.facadeControl.feature, (points) => {
       let length = 0;
       for (let i = 0, ii = points.length - 1; i < ii; i += 1) {
@@ -715,7 +716,13 @@ export default class VectorsControl extends M.impl.Control {
         length += Math.sqrt((distance * distance) + (elevDiff * elevDiff));
       }
 
-      length = formatNumber(length);
+      if (length < flatLength) {
+        length = flatLength + ((flatLength - length) / 2);
+        length = formatNumber(length);
+      } else {
+        length = formatNumber(length);
+      }
+
       elem.innerHTML = `${length}m`;
       this.facadeControl.feature.setAttribute('3dLength', length);
     }, () => {
