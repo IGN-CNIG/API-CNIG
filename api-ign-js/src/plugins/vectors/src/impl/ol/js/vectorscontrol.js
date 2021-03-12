@@ -1066,6 +1066,7 @@ export default class VectorsControl extends M.impl.Control {
         } else {
           [addX, addY] = [-1, -1];
         }
+
         const nPA = [(Math.cos((angle * Math.PI) / 180) * (distPoint * i)) + oriMete[0],
           (Math.sin((angle * Math.PI) / 180) * (distPoint * i)) + oriMete[1]];
         const nPB = [(Math.cos((angle * Math.PI) / 180) * ((distPoint * i) + addX)) + oriMete[0],
@@ -1076,6 +1077,26 @@ export default class VectorsControl extends M.impl.Control {
       }
 
       res = points;
+    } else {
+      const distPoint = (distance / this.distance_ > this.distance_) ?
+        distance / this.distance_ : this.distance_;
+      if (angle >= 0 && angle <= 90) {
+        [addX, addY] = [1, 1];
+      } else if (angle >= 90) {
+        [addX, addY] = [-1, 1];
+      } else if (angle <= 0 && angle >= -90) {
+        [addX, addY] = [1, -1];
+      } else {
+        [addX, addY] = [-1, -1];
+      }
+
+      const nPA = [(Math.cos((angle * Math.PI) / 180) * distPoint) + oriMete[0],
+        (Math.sin((angle * Math.PI) / 180) * distPoint) + oriMete[1]];
+      const nPB = [(Math.cos((angle * Math.PI) / 180) * (distPoint + addX)) + oriMete[0],
+        (Math.sin((angle * Math.PI) / 180) * (distPoint + addY)) + oriMete[1]];
+      const coord1 = (ol.proj.transform(nPA, MERCATOR, WGS84));
+      const coord2 = (ol.proj.transform(nPB, MERCATOR, WGS84));
+      res = `${coord1},${coord2}|`;
     }
 
     return res;
