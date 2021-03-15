@@ -5,9 +5,7 @@
     "tile": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
     "error": "Se ha producido un error en la impresión."
   },
-
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
-
   "tooltip": "Impresión del mapa",
   "credits": "Impresión generada a través del API-IGN",
   "no_title": "(Sin título)",
@@ -23,5 +21,6 @@
   "print": "Imprimir",
   "delete": "Borrar",
   "download": "Descargar",
-  "minimize": "Minimizar el control de impresión"
+  "minimize": "Minimizar el control de impresión",
+  "fototeca": "Este documento carece de validez legal"
 }

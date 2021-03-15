@@ -41,7 +41,11 @@
     }, {
       "type": "simple",
       "name": "logo",
-      "position": 7
+      "position": 8
+    }, {
+      "type": "simple",
+      "name": "fototeca",
+      "position": 9
     }]
   }],
   "files": {

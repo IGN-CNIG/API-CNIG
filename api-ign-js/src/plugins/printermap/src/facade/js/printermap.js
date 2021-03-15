@@ -122,6 +122,13 @@ export default class PrinterMap extends M.Plugin {
     this.georefActive_ = parameters.georefActive !== undefined ? parameters.georefActive : true;
 
     /**
+     * Active or disable fototeca fixed description
+     * @private
+     * @type {Boolean}
+     */
+    this.fototeca_ = parameters.fototeca !== undefined ? parameters.fototeca : false;
+
+    /**
      * Logo image url
      * @private
      * @type {String}
@@ -147,6 +154,7 @@ export default class PrinterMap extends M.Plugin {
       this.credits_,
       this.georefActive_,
       this.logo_,
+      this.fototeca_,
     );
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {
@@ -175,7 +183,7 @@ export default class PrinterMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.serverUrl_}*${this.printTemplateUrl_}*${this.printTemplateGeoUrl_}*${this.printStatusUrl_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.serverUrl_}*${this.printTemplateUrl_}*${this.printTemplateGeoUrl_}*${this.printStatusUrl_}*${this.credits_}*${this.georefActive_}*${this.logo_}*${this.fototeca_}`;
   }
 
   /**

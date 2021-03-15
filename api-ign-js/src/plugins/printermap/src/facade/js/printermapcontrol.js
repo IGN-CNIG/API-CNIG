@@ -25,6 +25,7 @@ export default class PrinterMapControl extends M.Control {
     credits,
     georefActive,
     logoUrl,
+    fototeca,
   ) {
     const impl = new PrinterMapControlImpl();
 
@@ -82,6 +83,13 @@ export default class PrinterMapControl extends M.Control {
      * @type {Boolean}
      */
     this.georefActive_ = georefActive;
+
+    /**
+     * Active or disable fototeca fixed description
+     * @private
+     * @type {Boolean}
+     */
+    this.fototeca_ = fototeca;
 
     /**
      * Map title
@@ -201,7 +209,7 @@ export default class PrinterMapControl extends M.Control {
      */
     this.options_ = {
       dpi: 150,
-      keepView: false,
+      keepView: true,
       format: 'pdf',
       legend: 'false',
       layout: 'A4 horizontal',
@@ -222,12 +230,16 @@ export default class PrinterMapControl extends M.Control {
    * @param {Function} callback - function that removes loading icon class.
    */
   getStatus(url, callback) {
-    M.remote.get(url).then((response) => {
+    M.proxy(false);
+    const param = new Date().getTime();
+    M.remote.get(`${url}?timestamp=${param}`).then((response) => {
       const statusJson = JSON.parse(response.text);
       const { status } = statusJson;
       if (status === 'finished') {
+        M.proxy(true);
         callback();
       } else if (status === 'error' || status === 'cancelled') {
+        M.proxy(true);
         callback();
         if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
           M.dialog.error(getValue('exception.tile'));
@@ -237,6 +249,7 @@ export default class PrinterMapControl extends M.Control {
 
         this.queueContainer_.lastChild.remove();
       } else {
+        M.proxy(true);
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
     });
@@ -350,6 +363,9 @@ export default class PrinterMapControl extends M.Control {
         // georefActive
         capabilities.georefActive = this.georefActive_;
 
+        // fototeca
+        capabilities.fototeca = this.fototeca_;
+
         // translations
         capabilities.translations = {
           tooltip: getValue('tooltip'),
@@ -364,6 +380,7 @@ export default class PrinterMapControl extends M.Control {
           delete: getValue('delete'),
           download: getValue('download'),
           minimize: getValue('minimize'),
+          fototeca: getValue('fototeca'),
         };
 
         const html = M.template.compileSync(printermapHTML, {
@@ -483,7 +500,11 @@ export default class PrinterMapControl extends M.Control {
       event.preventDefault();
       // reset values
       this.inputTitle_.value = '';
-      this.areaDescription_.value = '';
+      if (!this.fototeca_) {
+        this.areaDescription_.value = '';
+        document.getElementById('description').disabled = false;
+      }
+
       selectLayout.value = this.layoutOptions_[0];
       selectDpi.value = this.dpisOptions_[0];
       selectFormat.value = this.options_.format;
@@ -493,7 +514,6 @@ export default class PrinterMapControl extends M.Control {
         checkboxGeoref.checked = this.options_.georef;
       }
 
-      document.getElementById('description').disabled = false;
       document.getElementById('layout').disabled = false;
       document.getElementById('dpi').disabled = false;
       document.getElementById('format').disabled = false;
@@ -669,6 +689,7 @@ export default class PrinterMapControl extends M.Control {
     if (M.utils.isNullOrEmpty(this.capabilitiesPromise_)) {
       this.capabilitiesPromise_ = new Promise((success, fail) => {
         const capabilitiesUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, 'capabilities.json']);
+        M.proxy(false);
         M.remote.get(capabilitiesUrl).then((response) => {
           let capabilities = {};
           try {
@@ -678,6 +699,8 @@ export default class PrinterMapControl extends M.Control {
           }
           success(capabilities);
         });
+
+        M.proxy(true);
       });
     }
     return this.capabilitiesPromise_;
@@ -929,7 +952,7 @@ export default class PrinterMapControl extends M.Control {
     // Filters visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover');
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer');
     });
 
     let numLayersToProc = layers.length;

@@ -9,7 +9,11 @@
         </div>
         <!-- description -->
         <div class="description">
-            <textarea placeholder="{{translations.description}}" id="description"></textarea>
+            {{#if fototeca}}
+              <textarea id="description" disabled>{{translations.fototeca}}</textarea>
+            {{^}}
+              <textarea placeholder="{{translations.description}}" id="description"></textarea>
+            {{/if}}
         </div>
         <!-- layout -->
         <div class="layout">
@@ -23,7 +27,7 @@
         <!-- DPI -->
         <div class="dpi">
             <label>DPI </label>
-            <select id="dpi">
+            <select id="dpi" disabled>
                 {{#each dpis}}
                     <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
                 {{/each}}

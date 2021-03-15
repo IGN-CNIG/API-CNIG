@@ -9,19 +9,19 @@ const map = M.map({
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
   //projection: 'EPSG:4326*d',
-  /*layers: [
+  layers: [
     new M.layer.WMTS({
-      url: 'http://www.ign.es/wmts/mapa-raster?',
-      name: 'MTN',
-      legend: 'Mapa',
-      matrixSet: 'EPSG:4326',
+      url: 'https://www.ign.es/wmts/pnoa-ma?',
+      name: 'OI.OrthoimageCoverage',
+      legend: 'Imagen',
+      matrixSet: 'GoogleMapsCompatible',
       transparent: false,
       displayInLayerSwitcher: false,
       queryable: false,
       visible: true,
-      format: 'image/png',
+      format: 'image/jpeg',
     }),
-  ],*/
+  ],
 });
 
 const layerinicial = new M.layer.WMS({
@@ -41,17 +41,34 @@ const printermap = new PrinterMap({
   collapsed: true,
   collapsible: true,
   position: 'TR',
-  credits: 'Impresión generada desde Fototeca',
-  georefActive: true,
-  logo: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/static/media/iberpix_es.f8428667.png',
+  // credits: 'Impresión generada desde Fototeca Digital http://fototeca.cnig.es/',
+  georefActive: false,
+  // serverUrl: 'https://componentes.cnig.es/geoprint',
+  // printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
+  // printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
+  // fototeca: true,
 });
-
 
 map.addPlugin(printermap);
 
-map.addPlugin(new M.plugin.Vectors({
+map.addPlugin(new M.plugin.Infocoordinates({
   position: 'TR',
+  decimalGEOcoord: 6,
+  decimalUTMcoord: 2,
 }));
+
+/*map.addPlugin(new M.plugin.IGNSearchLocator({
+  servicesToSearch: 'gn',
+  searchPosition: 'geocoder,nomenclator',
+  maxResults: 10,
+  isCollapsed: false,
+  position: 'TL',
+  reverse: true,
+}));*/
+
+/*map.addPlugin(new M.plugin.Vectors({
+  position: 'TR',
+}));*/
 
 //map.addLayers([layerinicial, campamentos]);
 //map.addLayers([campamentos]);
