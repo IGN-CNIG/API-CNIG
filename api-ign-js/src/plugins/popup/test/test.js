@@ -8,7 +8,8 @@ const map = M.map({
 
 const mp = new Popup({
   position: 'TR',
-  url: 'https://raw.githubusercontent.com/irevios/sig/master/ejemplo.html',
+  url_es: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/es.html',
+  url_en: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/en.html',
 });
 
 // map.removeControls('panzoom');

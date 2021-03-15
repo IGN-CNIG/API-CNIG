@@ -42,16 +42,16 @@ export default class PopupControl extends M.Control {
    */
   createView(map) {
     if (this.url_ !== 'template_es' && this.url_ !== 'template_en') {
-      return M.remote.get(this.url_)
-        .then((response) => {
-          let html = response.text;
-          html = html.substring(html.indexOf('<!-- Start Popup Content -->'), html.lastIndexOf('<!-- End Popup Content -->'));
-          const htmlObject = document.createElement('div');
-          htmlObject.classList.add('m-control', 'm-container', 'm-popup');
-          htmlObject.innerHTML = html;
-          return htmlObject;
-        });
+      return M.remote.get(this.url_).then((response) => {
+        let html = response.text;
+        html = html.substring(html.indexOf('<!-- Start Popup Content -->'), html.lastIndexOf('<!-- End Popup Content -->'));
+        const htmlObject = document.createElement('div');
+        htmlObject.classList.add('m-control', 'm-container', 'm-popup');
+        htmlObject.innerHTML = html;
+        return htmlObject;
+      });
     }
+
     const htmlObject = document.createElement('div');
     htmlObject.classList.add('m-control', 'm-container', 'm-popup');
     htmlObject.innerHTML = M.language.getLang() === 'en' ? templateEN : templateES;
