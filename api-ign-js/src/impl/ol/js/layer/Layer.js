@@ -209,6 +209,8 @@ class LayerBase extends MObject {
    * @expose
    */
   setOpacity(opacity) {
+    if (!M.utils.isNullOrEmpty(opacity) && M.utils.isString(opacity))
+      opacity = Number(opacity);
     this.opacity_ = opacity;
     if (!isNullOrEmpty(this.getOL3Layer())) {
       this.getOL3Layer().setOpacity(opacity);
