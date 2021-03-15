@@ -162,8 +162,8 @@ class WMTS extends LayerBase {
    * @public
    * @api
    */
-  getGetFeatureInfoUrl(coordinate, zoom, formatInfo) {
-    return this.getImpl().getGetFeatureInfoUrl(coordinate, zoom, formatInfo);
+  getFeatureInfoUrl(coordinate, zoom, formatInfo) {
+    return this.getImpl().getFeatureInfoUrl(coordinate, zoom, formatInfo);
   }
 
   /**

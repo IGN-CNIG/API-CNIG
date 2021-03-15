@@ -185,11 +185,11 @@ export default class InformationControl extends M.impl.Control {
         const regexBuffer = /buffer/i;
         const source = olLayer.getSource();
         const coord = this.evt.coordinate;
-        // const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, informationParams);
+        // const url = source.getFeatureInfoUrl(coord, viewResolution, srs, informationParams);
         if (!regexBuffer.test(layer.url)) {
           informationParams.BUFFER = this.buffer_;
         }
-        const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, informationParams);
+        const url = source.getFeatureInfoUrl(coord, viewResolution, srs, informationParams);
         param = { layer: layer.legend || layer.name, url };
       }
       return param;
@@ -208,7 +208,7 @@ export default class InformationControl extends M.impl.Control {
         param = {};
         const infoFormat = this.format_;
         const coord = this.evt.coordinate;
-        const url = layer.getGetFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat);
+        const url = layer.getFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat);
         param = { layer: layer.legend || layer.name, url };
       }
       return param;

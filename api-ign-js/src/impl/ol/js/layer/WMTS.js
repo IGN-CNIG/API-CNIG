@@ -380,7 +380,7 @@ class WMTS extends LayerBase {
    * @public
    * @api
    */
-  getGetFeatureInfoUrl(coordinate, zoom, formatInfo) {
+  getFeatureInfoUrl(coordinate, zoom, formatInfo) {
     const tcr = this.getTileColTileRow(coordinate, zoom);
     const coordPxl = this.getRelativeTileCoordInPixel_(coordinate, zoom);
     const service = 'WMTS';
