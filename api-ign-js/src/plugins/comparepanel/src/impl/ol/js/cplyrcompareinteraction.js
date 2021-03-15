@@ -42,14 +42,14 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     }
   }
 
-  /** Set the map > start postcompose
+  /** Set the map > start postrender
    */
   setMap(map) {
     if (this.getMap()) {
       for (let i = 0; i < this.layers_.length; i += 1) {
-        if (this.layers_[i].precompose) ol.Observable.unByKey(this.layers_[i].precompose);
-        if (this.layers_[i].postcompose) ol.Observable.unByKey(this.layers_[i].postcompose);
-        this.layers_[i].precompose = this.layers_[i].postcompose = null;
+        if (this.layers_[i].prerender) ol.Observable.unByKey(this.layers_[i].prerender);
+        if (this.layers_[i].postrender) ol.Observable.unByKey(this.layers_[i].postrender);
+        this.layers_[i].prerender = this.layers_[i].postrender = null;
       }
 
       this.getMap().renderSync();
@@ -58,15 +58,15 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     ol.interaction.Pointer.prototype.setMap.call(this, map);
     if (map) {
       this.createSwipeControl();
-      this.layers_[0].precompose = this.layers_[0].on('precompose', this.precomposeA_.bind(this));
-      this.layers_[0].postcompose = this.layers_[0].on('postcompose', this.postcomposeA_.bind(this));
-      this.layers_[1].precompose = this.layers_[1].on('precompose', this.precomposeB_.bind(this));
-      this.layers_[1].postcompose = this.layers_[1].on('postcompose', this.postcomposeB_.bind(this));
+      this.layers_[0].prerender = this.layers_[0].on('prerender', this.prerenderA_.bind(this));
+      this.layers_[0].postrender = this.layers_[0].on('postrender', this.postrenderA_.bind(this));
+      this.layers_[1].prerender = this.layers_[1].on('prerender', this.prerenderB_.bind(this));
+      this.layers_[1].postrender = this.layers_[1].on('postrender', this.postrenderB_.bind(this));
       if (this.layers_[2] !== undefined && this.layers_[3] !== undefined) {
-        this.layers_[2].precompose = this.layers_[2].on('precompose', this.precomposeC_.bind(this));
-        this.layers_[2].postcompose = this.layers_[2].on('postcompose', this.postcomposeC_.bind(this));
-        this.layers_[3].precompose = this.layers_[3].on('precompose', this.precomposeD_.bind(this));
-        this.layers_[3].postcompose = this.layers_[3].on('postcompose', this.postcomposeD_.bind(this));
+        this.layers_[2].prerender = this.layers_[2].on('prerender', this.prerenderC_.bind(this));
+        this.layers_[2].postrender = this.layers_[2].on('postrender', this.postrenderC_.bind(this));
+        this.layers_[3].prerender = this.layers_[3].on('prerender', this.prerenderD_.bind(this));
+        this.layers_[3].postrender = this.layers_[3].on('postrender', this.postrenderD_.bind(this));
       }
 
       map.renderSync();
@@ -133,8 +133,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     if (!(layers instanceof Array)) layers = [layers];
     const l = { layer: layers[0] };
     if (this.getMap()) {
-      l.precompose = layers[0].on('precompose', this.precomposeA_.bind(this));
-      l.postcompose = layers[0].on('postcompose', this.postcomposeA_.bind(this));
+      l.prerender = layers[0].on('prerender', this.prerenderA_.bind(this));
+      l.postrender = layers[0].on('postrender', this.postrenderA_.bind(this));
       this.getMap().renderSync();
     }
 
@@ -150,8 +150,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     if (!(layers instanceof Array)) layers = [layers];
     const l = { layer: layers[0] };
     if (this.getMap()) {
-      l.precompose = layers[0].on('precompose', this.precomposeB_.bind(this));
-      l.postcompose = layers[0].on('postcompose', this.postcomposeB_.bind(this));
+      l.prerender = layers[0].on('prerender', this.prerenderB_.bind(this));
+      l.postrender = layers[0].on('postrender', this.postrenderB_.bind(this));
       this.getMap().renderSync();
     }
 
@@ -167,8 +167,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     if (!(layers instanceof Array)) layers = [layers];
     const l = { layer: layers[0] };
     if (this.getMap()) {
-      l.precompose = layers[0].on('precompose', this.precomposeC_.bind(this));
-      l.postcompose = layers[0].on('postcompose', this.postcomposeC_.bind(this));
+      l.prerender = layers[0].on('prerender', this.prerenderC_.bind(this));
+      l.postrender = layers[0].on('postrender', this.postrenderC_.bind(this));
       this.getMap().renderSync();
     }
 
@@ -184,8 +184,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     if (!(layers instanceof Array)) layers = [layers];
     const l = { layer: layers[0] };
     if (this.getMap()) {
-      l.precompose = layers[0].on('precompose', this.precomposeD_.bind(this));
-      l.postcompose = layers[0].on('postcompose', this.postcomposeD_.bind(this));
+      l.prerender = layers[0].on('prerender', this.prerenderD_.bind(this));
+      l.postrender = layers[0].on('postrender', this.postrenderD_.bind(this));
       this.getMap().renderSync();
     }
 
@@ -211,8 +211,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       }
 
       if (k !== this.layers_.length && this.getMap()) {
-        if (this.layers_[k].precompose) ol.Observable.unByKey(this.layers_[k].precompose);
-        if (this.layers_[k].postcompose) ol.Observable.unByKey(this.layers_[k].postcompose);
+        if (this.layers_[k].prerender) ol.Observable.unByKey(this.layers_[k].prerender);
+        if (this.layers_[k].postrender) ol.Observable.unByKey(this.layers_[k].postrender);
         this.layers_.splice(k, 1);
         this.getMap().renderSync();
       }
@@ -273,7 +273,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
 
   /* @private
      */
-  precomposeA_(e) {
+  prerenderA_(e) {
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
     const lienzoMapa = this.map_.getSize();
@@ -316,13 +316,13 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
 
   /* @private
    */
-  postcomposeA_(e) {
+  postrenderA_(e) {
     e.context.restore();
   }
 
   /* @private
    */
-  precomposeB_(e) {
+  prerenderB_(e) {
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
     const lienzoMapa = this.map_.getSize();
@@ -361,11 +361,11 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
 
   /* @private
    */
-  postcomposeB_(e) {
+  postrenderB_(e) {
     e.context.restore();
   }
 
-  precomposeC_(e) {
+  prerenderC_(e) {
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
     const lienzoMapa = this.map_.getSize();
@@ -395,11 +395,11 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
 
   /* @private
    */
-  postcomposeC_(e) {
+  postrenderC_(e) {
     e.context.restore();
   }
 
-  precomposeD_(e) {
+  prerenderD_(e) {
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
     const lienzoMapa = this.map_.getSize();
@@ -429,7 +429,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
 
   /* @private
    */
-  postcomposeD_(e) {
+  postrenderD_(e) {
     e.context.restore();
   }
   /**
