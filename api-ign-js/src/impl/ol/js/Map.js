@@ -145,6 +145,7 @@ class Map extends MObject {
       // renderer,
       view: new View(),
     });
+    this.map_.getView().setConstrainResolution(true);
     this.facadeMap_.on(EventType.COMPLETED, () => {
       this.map_.updateSize();
     });
@@ -1741,6 +1742,7 @@ class Map extends MObject {
     newView.setUserZoom(oldZoom);
     newView.setMinZoom(minZoom);
     newView.setMaxZoom(maxZoom);
+    newView.setConstrainResolution(true);
     // calculates the new resolution
     let newResolution;
     if (!isNullOrEmpty(oldZoom)) {
@@ -1870,6 +1872,7 @@ class Map extends MObject {
     newView.setUserZoom(userZoom);
     newView.setMinZoom(minZoom);
     newView.setMaxZoom(maxZoom);
+    newView.setConstrainResolution(true);
     olMap.setView(newView);
 
     // updates min, max resolutions of all WMS layers
