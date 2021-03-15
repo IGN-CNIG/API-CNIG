@@ -35,9 +35,9 @@
   "xtitle": "Distance (km)",
   "vector_layers": "Vector layers",
   "profile": "Topographic Profile",
-  "add_point_layer": "Add point layer",
-  "add_line_layer": "Add linear layer",
-  "add_poly_layer": "Add polygonal layer",
+  "add_point_layer": "Points",
+  "add_line_layer": "Routes / Lines",
+  "add_poly_layer": "Polygons",
   "add_wfs_layer": "Add WFS layer",
   "load_layer": "Load route or layer",
   "point_layer": "Point layer",
@@ -79,5 +79,8 @@
   "access_constraints": "Access constraints",
   "symbology": "Symbology",
   "symbology_profile": "Symbology/Profile",
-  "generating_profile": "Generating profile"
+  "generating_profile": "Generating profile",
+  "calculate": "Calculate",
+  "calculating": "Calculating",
+  "try_again": "The query could not be executed. Please try again later"
 }

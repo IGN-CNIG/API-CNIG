@@ -204,7 +204,5 @@ export default class MouseSRS extends M.Plugin {
       cadena += `*${this.utmDecimalDigits}`;
     }
     return cadena;
-    // return `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*$
-    // {this.precision}*${this.geoDecimalDigits}*${this.utmDecimalDigits}`;
   }
 }

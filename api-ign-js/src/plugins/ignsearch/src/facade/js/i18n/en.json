@@ -1,7 +1,7 @@
 {
   "exception": {
     "exists": "There is no associated address for this location.",
-    "results": "No results found for this request."
+    "results": "No results found"
   },
   "searchresult": "searchresult",
   "tooltip": "Search places",

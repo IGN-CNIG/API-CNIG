@@ -36,6 +36,11 @@ const WFS_EXCEPTIONS = [
   'http://ideihm.covam.es/wfs/CartaOF',
 ];
 
+const formatNumber = (x) => {
+  const num = Math.round(x * 100) / 100;
+  return num.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
 export default class VectorsControl extends M.impl.Control {
   /**
    * This function adds the control to the specified map
@@ -253,6 +258,7 @@ export default class VectorsControl extends M.impl.Control {
     return new ol.interaction.Draw({
       source: vectorSource,
       type: geometry,
+      snapTolerance: 1,
     });
   }
 
@@ -698,6 +704,33 @@ export default class VectorsControl extends M.impl.Control {
     return length;
   }
 
+  get3DLength(id) {
+    const elem = document.querySelector(`#${id}`);
+    const flatLength = this.getFeatureLength();
+    this.calculateProfilePoints(this.facadeControl.feature, (points) => {
+      let length = 0;
+      for (let i = 0, ii = points.length - 1; i < ii; i += 1) {
+        const geom = new ol.geom.LineString([points[i], points[i + 1]]);
+        const distance = this.getGeometryLength(geom);
+        const elevDiff = Math.abs(points[i][2] - points[i + 1][2]);
+        length += Math.sqrt((distance * distance) + (elevDiff * elevDiff));
+      }
+
+      if (length < flatLength) {
+        length = flatLength + ((flatLength - length) / 2);
+        length = formatNumber(length);
+      } else {
+        length = formatNumber(length);
+      }
+
+      elem.innerHTML = `${length}m`;
+      this.facadeControl.feature.setAttribute('3dLength', length);
+    }, () => {
+      elem.innerHTML = '-';
+      M.dialog.error(getValue('try_again'));
+    });
+  }
+
   /**
    * Gets feature area
    * @public
@@ -824,6 +857,68 @@ export default class VectorsControl extends M.impl.Control {
       feature.setGeometry(geom);
     }).catch((err) => {
       M.proxy(true);
+    });
+  }
+
+  calculateProfilePoints(feature, callback, callbackError) {
+    const coordinates = feature.getGeometry().coordinates;
+    let pointsCoord = '';
+    for (let i = 1; i < coordinates.length; i += 1) {
+      pointsCoord = pointsCoord.concat(this.findNewPoints(coordinates[i - 1], coordinates[i]));
+    }
+
+    let pointsBbox = pointsCoord.split('|');
+    while (pointsBbox.length > 150) {
+      pointsBbox = pointsBbox.filter((elem, i) => {
+        return i % 2 === 0;
+      });
+    }
+
+    const altitudes = [];
+    const promises = [];
+    pointsBbox = pointsBbox.filter((elem) => {
+      return elem !== '' && elem.trim().length > 3;
+    });
+
+    M.proxy(false);
+    pointsBbox.forEach((bbox) => {
+      const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
+      promises.push(M.remote.get(url));
+    });
+
+    Promise.all(promises).then((responses) => {
+      M.proxy(true);
+      responses.forEach((response) => {
+        let alt = 0;
+        if (response.text.indexOf('dy') > -1) {
+          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        } else if (response.text.indexOf('cellsize') > -1) {
+          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+            return item !== '';
+          })[1];
+        }
+
+        altitudes.push(parseFloat(alt));
+      });
+
+      const arrayXZY = [];
+      altitudes.forEach((data, index) => {
+        const points = pointsBbox[index].split(',');
+        const center = ol.extent.getCenter([parseFloat(points[0]), parseFloat(points[1]),
+          parseFloat(points[2]), parseFloat(points[3])]);
+        arrayXZY.push([center[0], center[1], data]);
+      });
+
+      const arrayXZY2 = arrayXZY.map((coord) => {
+        return ol.proj.transform(coord, 'EPSG:4326', this.facadeMap_.getProjection().code);
+      });
+
+      callback(arrayXZY2);
+    }).catch((err) => {
+      M.proxy(true);
+      callbackError();
     });
   }
 
@@ -971,6 +1066,7 @@ export default class VectorsControl extends M.impl.Control {
         } else {
           [addX, addY] = [-1, -1];
         }
+
         const nPA = [(Math.cos((angle * Math.PI) / 180) * (distPoint * i)) + oriMete[0],
           (Math.sin((angle * Math.PI) / 180) * (distPoint * i)) + oriMete[1]];
         const nPB = [(Math.cos((angle * Math.PI) / 180) * ((distPoint * i) + addX)) + oriMete[0],
@@ -981,6 +1077,26 @@ export default class VectorsControl extends M.impl.Control {
       }
 
       res = points;
+    } else {
+      const distPoint = (distance / this.distance_ > this.distance_) ?
+        distance / this.distance_ : this.distance_;
+      if (angle >= 0 && angle <= 90) {
+        [addX, addY] = [1, 1];
+      } else if (angle >= 90) {
+        [addX, addY] = [-1, 1];
+      } else if (angle <= 0 && angle >= -90) {
+        [addX, addY] = [1, -1];
+      } else {
+        [addX, addY] = [-1, -1];
+      }
+
+      const nPA = [(Math.cos((angle * Math.PI) / 180) * distPoint) + oriMete[0],
+        (Math.sin((angle * Math.PI) / 180) * distPoint) + oriMete[1]];
+      const nPB = [(Math.cos((angle * Math.PI) / 180) * (distPoint + addX)) + oriMete[0],
+        (Math.sin((angle * Math.PI) / 180) * (distPoint + addY)) + oriMete[1]];
+      const coord1 = (ol.proj.transform(nPA, MERCATOR, WGS84));
+      const coord2 = (ol.proj.transform(nPB, MERCATOR, WGS84));
+      res = `${coord1},${coord2}|`;
     }
 
     return res;
@@ -1167,7 +1283,8 @@ export default class VectorsControl extends M.impl.Control {
     const filtered = map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible() &&
         layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable &&
-        layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult' && layer.name !== 'searchresult';
+        layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult' &&
+        layer.name !== 'searchresult' && layer.name !== 'infocoordinatesLayerFeatures';
     });
 
     if (filtered.length > 0) {

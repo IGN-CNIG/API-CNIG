@@ -423,6 +423,7 @@ export default class PrinterMapControl extends M.impl.Control {
       let style = '';
       const stylesNames = {};
       const stylesNamesText = {};
+
       features.forEach((feature) => {
         const geometry = feature.getGeometry();
         let featureStyle;
@@ -503,6 +504,17 @@ export default class PrinterMapControl extends M.impl.Control {
             styleGeom.strokeWidth = 2;
           }
 
+          if (layer.name === 'infocoordinatesLayerFeatures') {
+            styleGeom.fillColor = '#ffffff';
+            styleGeom.fillOpacity = 1;
+            styleGeom.strokeWidth = 1;
+            styleGeom.strokeColor = '#2690e7';
+            styleGeom.strokeOpacity = 1;
+            styleGeom.graphicName = 'cross';
+            styleGeom.graphicWidth = 15;
+            styleGeom.graphicHeight = 15;
+          }
+
           if (lineDash !== undefined && lineDash !== null && lineDash.length > 0) {
             if (lineDash[0] === 1 && lineDash.length === 2) {
               styleGeom.strokeDashstyle = 'dot';
@@ -556,6 +568,7 @@ export default class PrinterMapControl extends M.impl.Control {
                 }
               }
             }
+
             styleText = {
               type: 'text',
               label: text.getText(),
@@ -572,6 +585,23 @@ export default class PrinterMapControl extends M.impl.Control {
               labelOutlineColor: M.utils.isNullOrEmpty(text.getStroke()) ? '' : M.utils.rgbToHex(text.getStroke().getColor() || '#FF0000'),
               labelOutlineWidth: M.utils.isNullOrEmpty(text.getStroke()) ? '' : text.getStroke().getWidth(),
               labelAlign: align,
+            };
+          } else if (layer.name === 'infocoordinatesLayerFeatures') {
+            text = true;
+            styleText = {
+              type: 'text',
+              conflictResolution: 'false',
+              fontFamily: 'Helvetica, sans-serif',
+              fontStyle: 'normal',
+              fontColor: '#ffffff',
+              fontSize: '12px',
+              label: `${feature.getId()}`,
+              labelAlign: 'lb',
+              labelXOffset: '4',
+              labelYOffset: '3',
+              haloColor: '#2690e7',
+              haloRadius: '1',
+              haloOpacity: '1',
             };
           }
 
@@ -632,6 +662,7 @@ export default class PrinterMapControl extends M.impl.Control {
             } else {
               geoJSONFeature = geoJSONFormat.writeFeatureObject(feature);
             }
+
             geoJSONFeature.properties = {
               _gx_style: styleName + styleNameText,
               name: nameFeature,
@@ -699,7 +730,7 @@ export default class PrinterMapControl extends M.impl.Control {
       try {
         return {
           baseURL: layerUrl,
-          imageFormat: layer.options.format || 'image/png',
+          imageFormat: layer.options.imageFormat || layer.options.format || 'image/png',
           layer: layerName,
           matrices: matrixIdsObj.TileMatrix.map((tileMatrix, i) => {
             return {

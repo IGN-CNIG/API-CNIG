@@ -196,7 +196,8 @@ export default class VectorsControl extends M.Control {
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' && layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1;
+        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' &&
+        layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1 && layer.name !== 'infocoordinatesLayerFeatures';
     });
 
     const layers = [];
@@ -1482,9 +1483,10 @@ export default class VectorsControl extends M.Control {
         const y = this.getImpl().getFeatureCoordinates()[1];
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'none';
-          infoContainer.innerHTML = `${getValue('coordinates')}<br/>
-          x: ${Math.round(x * 1000) / 1000},<br/>
-          y: ${Math.round(y * 1000) / 1000}`;
+          let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('coordinates')}</b></td>`;
+          html += `<td><b>X:</b> ${Math.round(x * 1000) / 1000}</td><td><b>Y:</b> ${Math.round(y * 1000) / 1000}</td>`;
+          html += '</tr></tbody></table>';
+          infoContainer.innerHTML = html;
           if (this.feature.getStyle() !== undefined && this.feature.getStyle() !== null) {
             const style = this.feature.getStyle().getOptions();
             this.currentColor = style.fill.color;
@@ -1498,13 +1500,19 @@ export default class VectorsControl extends M.Control {
       case 'MultiLineString':
         const lineLength = this.getImpl().getFeatureLength();
         const m = formatNumber(lineLength);
-        const km = formatNumber(lineLength / 1000);
+        // const km = formatNumber(lineLength / 1000);
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'block';
-          let html = `<table class="m-vectors-results-table"><thead><tr><td colspan="3">${getValue('length')}</td></tr></thead><tbody>`;
-          html += `<tr><td>m</td><td>${m}</td></tr>`;
-          html += `<tr><td>km</td><td>${km}</td></tr>`;
-          html += '</tbody></table>';
+          const id = `m-vectors-3d-measure-${this.drawLayer.name}`;
+          const attr = this.feature.getAttributes()['3dLength'];
+          let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('length')}</b></td>`;
+          if (attr !== undefined && attr.length > 0) {
+            html += `<td><b>2D: </b>${m}m</td><td><b>3D: </b><span>${attr}m</span></td>`;
+          } else {
+            html += `<td><b>2D: </b>${m}m</td><td><b>3D: </b><span class="m-vectors-3d-measure" id="${id}">${getValue('calculate')}</span></td>`;
+          }
+
+          html += '</tr></tbody></table>';
           infoContainer.innerHTML = html;
           if (this.feature.getStyle() !== undefined && this.feature.getStyle() !== null) {
             const stroke = this.feature.getStyle().getOptions().stroke;
@@ -1531,6 +1539,14 @@ export default class VectorsControl extends M.Control {
 
           if (this.geometry === 'LineString') {
             document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
+            const elem = document.querySelector(`#${id}`);
+            if (elem !== null) {
+              elem.addEventListener('click', () => {
+                elem.classList.remove('m-vectors-3d-measure');
+                elem.innerHTML = getValue('calculating');
+                this.getImpl().get3DLength(id);
+              });
+            }
           }
         }
         break;
@@ -1539,13 +1555,11 @@ export default class VectorsControl extends M.Control {
         const area = this.getImpl().getFeatureArea();
         const m2 = formatNumber(area);
         const km2 = formatNumber(area / 1000000);
-        const ha = formatNumber(area / 10000);
+        // const ha = formatNumber(area / 10000);
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'none';
-          let html = `<table class="m-vectors-results-table"><thead><tr><td colspan="3">${getValue('area')}</td></tr></thead><tbody>`;
-          html += `<tr><td>m${'2'.sup()}</td><td>${m2}</td></tr>`;
-          html += `<tr><td>ha</td><td>${ha}</td></tr>`;
-          html += `<tr><td>km${'2'.sup()}</td><td>${km2}</td></tr>`;
+          let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('area')}</b></td>`;
+          html += `<td>${m2}m${'2'.sup()}</td><td>${km2}km${'2'.sup()}</td>`;
           html += '</tbody></table>';
           infoContainer.innerHTML = html;
           if (this.feature.getStyle() !== undefined && this.feature.getStyle() !== null) {

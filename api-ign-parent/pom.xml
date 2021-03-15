@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>es.ign.api</groupId>
    <artifactId>api-ign-parent</artifactId>
-   <version>3.3.11</version>
+   <version>3.3.12</version>
    <packaging>pom</packaging>
    <name>API IGN PARENT</name>
    <description>Herramienta para desarrollo de mapas interactivos de forma sencilla</description>

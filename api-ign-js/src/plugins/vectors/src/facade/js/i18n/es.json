@@ -35,9 +35,9 @@
   "xtitle": "Distancia (km)",
   "vector_layers": "Capas vectoriales",
   "profile": "Perfil Topográfico",
-  "add_point_layer": "Añadir capa puntual",
-  "add_line_layer": "Añadir capa lineal",
-  "add_poly_layer": "Añadir capa poligonal",
+  "add_point_layer": "Puntos",
+  "add_line_layer": "Rutas / Líneas",
+  "add_poly_layer": "Polígonos",
   "add_wfs_layer": "Añadir capa WFS",
   "load_layer": "Cargar ruta o capa",
   "point_layer": "Capa puntual",
@@ -79,5 +79,8 @@
   "access_constraints": "Restricciones de acceso",
   "symbology": "Simbología",
   "symbology_profile": "Simbología/Perfil",
-  "generating_profile": "Generando perfil"
+  "generating_profile": "Generando perfil",
+  "calculate": "Calcular",
+  "calculating": "Calculando",
+  "try_again": "No se ha podido realizar la consulta. Por favor, inténtelo de nuevo más tarde"
 }

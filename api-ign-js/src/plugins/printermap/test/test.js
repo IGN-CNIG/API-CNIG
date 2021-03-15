@@ -51,14 +51,20 @@ const printermap = new PrinterMap({
 
 map.addPlugin(printermap);
 
-map.addPlugin(new M.plugin.IGNSearchLocator({
+map.addPlugin(new M.plugin.Infocoordinates({
+  position: 'TR',
+  decimalGEOcoord: 6,
+  decimalUTMcoord: 2,
+}));
+
+/*map.addPlugin(new M.plugin.IGNSearchLocator({
   servicesToSearch: 'gn',
   searchPosition: 'geocoder,nomenclator',
   maxResults: 10,
   isCollapsed: false,
   position: 'TL',
   reverse: true,
-}));
+}));*/
 
 /*map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
