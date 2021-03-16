@@ -209,11 +209,13 @@ class LayerBase extends MObject {
    * @expose
    */
   setOpacity(opacity) {
-    if (!M.utils.isNullOrEmpty(opacity) && M.utils.isString(opacity))
-      opacity = Number(opacity);
-    this.opacity_ = opacity;
+    let opacityParsed = opacity;
+    if (!M.utils.isNullOrEmpty(opacity) && M.utils.isString(opacity)) {
+      opacityParsed = Number(opacity);
+    }
+    this.opacity_ = opacityParsed;
     if (!isNullOrEmpty(this.getOL3Layer())) {
-      this.getOL3Layer().setOpacity(opacity);
+      this.getOL3Layer().setOpacity(opacityParsed);
     }
   }
 
