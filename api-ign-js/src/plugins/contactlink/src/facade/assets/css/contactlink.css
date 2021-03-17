@@ -72,17 +72,16 @@
 .m-control.m-container.m-contactlink>div.links>div.web>div.web2>a {
     color: #404040;
     text-align: center;
-    font-family: 'Muli', 'sans-serif' !important;
+    font-family: 'Muli',
+        'sans-serif' !important;
     text-decoration: none;
-    margin: 10px 0px;
-    width: 50%;
+    margin: 20px;
 }
 
 .m-control.m-container.m-contactlink>div.links>div.web>div.web1,
 .m-control.m-container.m-contactlink>div.links>div.web>div.web2 {
     text-align: center;
-    margin: 0 auto;
-    display: flex;
+    margin: auto;
 }
 
 .m-control.m-container.m-contactlink>div.links>div.social>a {
@@ -117,7 +116,7 @@
 
 .m-control.m-container.m-contactlink>div.links>div.web {
     border-bottom: 1px solid;
-    display: block;
+    display: flex;
     border-color: #71a7d3;
 }
 

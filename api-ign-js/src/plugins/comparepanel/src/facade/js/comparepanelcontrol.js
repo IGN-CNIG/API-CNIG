@@ -108,9 +108,7 @@ export default class ComparepanelControl extends M.Control {
   }
 
   deactivateAndActivate(plugin) {
-    console.log(plugin);
     this.plugins.forEach(p => {
-      console.log(p);
       if (p.name !== plugin.name) {
         this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').classList.remove('active');
