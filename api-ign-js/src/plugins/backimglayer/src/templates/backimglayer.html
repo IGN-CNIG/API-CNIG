@@ -15,6 +15,12 @@
 
 
         {{/each}}
+        {{#if empty}}
+          <div id="m-backimglayer-lyr-empty" title="{{translations.none}}">
+              <div height="100px" width="100px"></div>
+              <span>{{translations.none}}</span>
+          </div>
+        {{/if}}
         <!-- <button class="m-backimglayer-unique-btn" id="m-backimglayer-unique-btn" title="Selección de capa de fondo"></button> -->
     </div>
 </div>

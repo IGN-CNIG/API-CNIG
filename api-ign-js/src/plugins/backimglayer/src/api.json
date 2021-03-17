@@ -47,6 +47,10 @@
       "type": "simple",
       "name": "layers",
       "position": 9
+    }, {
+      "type": "boolean",
+      "name": "empty",
+      "position": 10
     }]
   }],
   "files": {
