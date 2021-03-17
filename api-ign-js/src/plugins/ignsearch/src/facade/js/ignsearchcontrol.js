@@ -492,6 +492,7 @@ export default class IGNSearchControl extends M.Control {
     if (this.allCandidates.length === 0) {
       const parragraph = document.createElement('p');
       const infoMsg = document.createTextNode(getValue('exception.results'));
+      parragraph.classList.add('m-ignsearch-noresults');
       parragraph.appendChild(infoMsg);
       this.resultsBox.appendChild(parragraph);
       document.getElementById('m-ignsearch-results-list').style.display = 'none';

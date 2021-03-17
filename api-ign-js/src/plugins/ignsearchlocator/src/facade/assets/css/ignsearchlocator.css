@@ -886,3 +886,8 @@ DROPDOWN ****************************/
         display: inline !important;
     }
 }
+
+.m-ignsearchlocator-noresults {
+  text-align: center;
+  width: 100%;
+}

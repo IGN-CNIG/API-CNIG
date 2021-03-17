@@ -736,8 +736,8 @@ export default class IGNSearchLocatorControl extends M.Control {
     // Service doesn't find results
     if (this.allCandidates.length === 0) {
       const parragraph = document.createElement('p');
-      parragraph.classList.add('');
       const infoMsg = document.createTextNode(getValue('exception.noresults'));
+      parragraph.classList.add('m-ignsearchlocator-noresults');
       parragraph.appendChild(infoMsg);
       this.resultsBox.appendChild(parragraph);
     } else {

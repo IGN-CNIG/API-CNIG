@@ -911,8 +911,12 @@ export default class VectorsControl extends M.impl.Control {
         arrayXZY.push([center[0], center[1], data]);
       });
 
-      const arrayXZY2 = arrayXZY.map((coord) => {
+      let arrayXZY2 = arrayXZY.map((coord) => {
         return ol.proj.transform(coord, 'EPSG:4326', this.facadeMap_.getProjection().code);
+      });
+
+      arrayXZY2 = arrayXZY2.filter((item) => {
+        return item[2] > 0;
       });
 
       callback(arrayXZY2);
@@ -973,8 +977,12 @@ export default class VectorsControl extends M.impl.Control {
         arrayXZY.push([center[0], center[1], data]);
       });
 
-      const arrayXZY2 = arrayXZY.map((coord) => {
+      let arrayXZY2 = arrayXZY.map((coord) => {
         return ol.proj.transform(coord, 'EPSG:4326', this.facadeMap_.getProjection().code);
+      });
+
+      arrayXZY2 = arrayXZY2.filter((item) => {
+        return item[2] > 0;
       });
 
       this.showProfile(arrayXZY2);
