@@ -69,7 +69,7 @@ export default class Georefimage2Control extends M.Control {
      * @private
      * @type {HTMLElement}
      */
-    this.dpi_ = 150;
+    this.dpi_ = 120;
 
     /**
      * Mapfish params
