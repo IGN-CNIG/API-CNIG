@@ -284,17 +284,17 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 1) {
-        ctx.rect(0, 0, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1]); //e2m: left fixed
+        ctx.rect(0, 0, lienzoMapa[0] / 2 - margenClip, lienzoMapa[1]); //e2m: left fixed
       } else if (this.comparisonMode === 2) {
-        ctx.rect(0, 0, lienzoMapa[0], lienzoMapa[1] * ratio / 2 - margenClip * ratio);//e2m: up fixed
+        ctx.rect(0, 0, lienzoMapa[0], lienzoMapa[1] / 2 - margenClip);//e2m: up fixed
       } else if (this.comparisonMode === 3) {
-        ctx.rect(0, 0, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1] / 2);//e2m: up&left fixed
+        ctx.rect(0, 0, lienzoMapa[0] / 2 - margenClip, lienzoMapa[1] / 2);//e2m: up&left fixed
       }
     } else {
       if (this.comparisonMode === 1) {
         ctx.rect(0, 0, this.pos[0] - margenClip * ratio, lienzoMapa[1]); //e2m: left dynamic
       } else if (this.comparisonMode === 2) {
-        ctx.rect(0, 0, ctx.canvas.width, this.pos[1] * ratio - margenClip * ratio);  //e2m: up dynamic
+        ctx.rect(0, 0, ctx.canvas.width, this.pos[1]- margenClip);  //e2m: up dynamic
       } else if (this.comparisonMode === 3) {
         ctx.rect(0, 0, this.pos[0] - margenClip * ratio, this.pos[1] - margenClip * ratio);  //e2m: up&left dynamic
       }
@@ -333,11 +333,11 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 1) {
-        ctx.rect(lienzoMapa[0] * ratio / 2 + margenClip * ratio, 0, ctx.canvas.width - lienzoMapa[0] * ratio / 2, lienzoMapa[1]); //e2m: Right fixed
+        ctx.rect(lienzoMapa[0] / 2 + margenClip , 0, ctx.canvas.width - lienzoMapa[0] * ratio / 2, lienzoMapa[1]); //e2m: Right fixed
       } else if (this.comparisonMode === 2) {
-        ctx.rect(0, lienzoMapa[1] * ratio / 2 + margenClip * ratio, ctx.canvas.width, ctx.canvas.height - lienzoMapa[1] * ratio / 2); //e2m: Down fixed
+        ctx.rect(0, lienzoMapa[1] / 2 + margenClip , ctx.canvas.width, ctx.canvas.height - lienzoMapa[1] * ratio / 2); //e2m: Down fixed
       } else if (this.comparisonMode === 3) {
-        ctx.rect(lienzoMapa[0] * ratio / 2, 0, ctx.canvas.width - lienzoMapa[0] * ratio / 2, lienzoMapa[1] / 2); //e2m: up&right fixed
+        ctx.rect(lienzoMapa[0] / 2, 0, ctx.canvas.width - lienzoMapa[0] * ratio / 2, lienzoMapa[1] / 2); //e2m: up&right fixed
       }
     } else {
       if (this.comparisonMode === 1) {
