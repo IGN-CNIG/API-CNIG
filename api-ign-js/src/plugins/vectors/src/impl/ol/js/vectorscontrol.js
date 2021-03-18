@@ -956,7 +956,7 @@ export default class VectorsControl extends M.impl.Control {
           M.remote.get(wfsURL).then((response) => {
             if (!cancelFlag) {
               const responseWFS = response.text.replace(/wfs:member/gi, 'gml:featureMember');
-              const formatter = new ol.format.WFS({ gmlFormat: ol.format.GML2() });
+              const formatter = new ol.format.WFS();
               let features = formatter.readFeatures(responseWFS);
               features = features.map((f, index) => {
                 const newF = f;
