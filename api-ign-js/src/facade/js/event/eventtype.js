@@ -81,6 +81,15 @@ export const ADDED_MBTILES = 'added:mbtiles';
  */
 export const ADDED_MBTILES_VECTOR = 'added:mbtilesvector';
 
+
+/**
+ * Event type
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_XYZ = 'added:xyz';
+
 /**
  * Event type
  * @public

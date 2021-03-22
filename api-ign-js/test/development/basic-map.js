@@ -2,6 +2,7 @@ import { map as Mmap } from 'M/mapea';
 // import WMS from 'M/layer/WMS';
 // import WMTS from 'M/layer/WMTS';
 import MVT from 'M/layer/MVT';
+import XYZ from 'M/layer/XYZ';
 
 
 const mapa = Mmap({
@@ -36,9 +37,16 @@ const mvt4 = new MVT({
   projection: 'EPSG:3857',
 });
 
+const xyz = new XYZ({
+  url: 'https://api.maptiler.com/maps/outdoor/256/{z}/{x}/{y}@2x.png?key=7oapAXDXQ3uctBopr1Wx',
+  name: 'pruebaXYZ',
+  projection: 'EPSG:3857'
+})
+
 // mapa.addLayers(mvt);
 // mapa.addLayers(mvt2);
 mapa.addLayers(mvt3);
+mapa.addXYZ(xyz);
 // mapa.addLayers(mvt4);
 // M.Popup.options.takeMeThere = true;
 window.map = mapa;

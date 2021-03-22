@@ -1,7 +1,7 @@
 /**
  * @module M/impl/Layer
  */
-import { isNullOrEmpty, concatUrlPaths } from 'M/util/Utils';
+import { isNullOrEmpty, concatUrlPaths, isString } from 'M/util/Utils';
 import MObject from 'M/Object';
 import FacadeLayer from 'M/layer/Layer';
 /**
@@ -210,7 +210,7 @@ class LayerBase extends MObject {
    */
   setOpacity(opacity) {
     let opacityParsed = opacity;
-    if (!M.utils.isNullOrEmpty(opacity) && M.utils.isString(opacity)) {
+    if (!isNullOrEmpty(opacity) && isString(opacity)) {
       opacityParsed = Number(opacity);
     }
     this.opacity_ = opacityParsed;
