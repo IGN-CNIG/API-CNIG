@@ -742,7 +742,7 @@ export default class IGNSearchControl extends M.Control {
     const newInputVal = window.encodeURIComponent(inputValue);
     return new Promise((resolve) => {
       if (this.servicesToSearch !== 'n') {
-        let params = `q=${newInputVal}&limit=${this.maxResults}&no_process=${this.noProcess}`;
+        let params = `q=${newInputVal}&limit=${this.maxResults + 5}&no_process=${this.noProcess}`;
         params += `&countrycode=${this.countryCode}&autocancel=true`;
         const urlToGet = `${this.urlCandidates}?${params}`;
         M.proxy(false);
@@ -784,7 +784,7 @@ export default class IGNSearchControl extends M.Control {
     const newInputVal = window.encodeURIComponent(inputValue);
     return new Promise((resolve) => {
       if (this.servicesToSearch !== 'g') {
-        const params = `maxresults=${this.maxResults}&name_equals=${newInputVal}`;
+        const params = `maxresults=${this.maxResults - 5}&name_equals=${newInputVal}`;
         const urlToGet = `${this.urlAssistant}?${params}`;
         M.proxy(true);
         M.remote.get(urlToGet).then((res) => {
