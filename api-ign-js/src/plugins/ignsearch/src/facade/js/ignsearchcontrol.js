@@ -5,7 +5,6 @@ import IGNSearchImplControl from '../../impl/ol/js/ignsearchcontrol';
 import template from '../../templates/ignsearch';
 import results from '../../templates/results';
 import registerHelpers from './helpers';
-import geographicNameType from './constants';
 import { getValue } from './i18n/language';
 
 let typingTimer;
@@ -40,7 +39,7 @@ export default class IGNSearchControl extends M.Control {
     zoom,
     searchPosition,
     pointStyle,
-    nomenclatorSearchType = geographicNameType,
+    nomenclatorSearchType,
   ) {
     if (M.utils.isUndefined(IGNSearchImplControl)) {
       M.exception('La implementación usada no puede crear controles IGNSearchControl');
