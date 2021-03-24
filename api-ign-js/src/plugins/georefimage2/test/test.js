@@ -1,6 +1,6 @@
 import Georefimage2 from 'facade/georefimage2';
 
-// M.language.setLang('en');
+M.language.setLang('en');
 
 // const map = M.map({
 //   container: 'mapjs',

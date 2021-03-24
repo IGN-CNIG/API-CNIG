@@ -69,7 +69,7 @@ export default class Georefimage2Control extends M.Control {
      * @private
      * @type {HTMLElement}
      */
-    this.dpi_ = 120;
+    this.dpi_ = 72;
 
     /**
      * Mapfish params
@@ -166,36 +166,65 @@ export default class Georefimage2Control extends M.Control {
     document.querySelector('div.m-mapea-container div.m-dialog div.m-title span').innerHTML = 'Información';
     document.querySelector('div.m-dialog.info > div.m-modal > div.m-content div.m-message').innerHTML = '';
     document.querySelector('div.m-dialog.info div.m-button').remove();
-    const text = 'Generando imagen georreferenciada';
-    const content = `<div class="m-georefimage2-loading"><p>${text}...</p><span class="icon-spinner" /></div>`;
+    const content = `<div class="m-georefimage2-loading"><p>${getValue('generating')}...</p><span class="icon-spinner" /></div>`;
     document.querySelector('div.m-dialog.info > div.m-modal > div.m-content div.m-message').innerHTML = content;
-    this.getPrintData().then((printData) => {
-      let printUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, `report.${printData.outputFormat}`]);
-      printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
-      M.proxy(false);
-      M.remote.post(printUrl, printData).then((responseParam) => {
-        let response = responseParam;
-        const responseStatusURL = JSON.parse(response.text);
-        const ref = responseStatusURL.ref;
-        const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-        this.getStatus(statusURL, this.downloadPrint.bind(this, printData.attributes.map.bbox));
-        let downloadUrl;
-        try {
-          response = JSON.parse(response.text);
-          if (this.serverUrl_.endsWith('/geoprint')) {
-            const url = this.serverUrl_.substring(0, this.serverUrl_.lastIndexOf('/geoprint'));
-            downloadUrl = M.utils.concatUrlPaths([url, response.downloadURL]);
-          } else {
-            downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
-          }
-          this.documentRead_.src = downloadUrl;
-        } catch (err) {
-          M.exception(err);
-        }
-      });
+    let printOption = 'map';
+    if (document.querySelector('#m-georefimage2-image').checked) {
+      printOption = 'image';
+    } else if (document.querySelector('#m-georefimage2-screen').checked) {
+      printOption = 'screen';
+    }
 
-      M.proxy(true);
-    });
+    if (printOption === 'screen') {
+      this.getPrintData().then((printData) => {
+        let printUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, `report.${printData.outputFormat}`]);
+        printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
+        M.proxy(false);
+        M.remote.post(printUrl, printData).then((responseParam) => {
+          let response = responseParam;
+          const responseStatusURL = JSON.parse(response.text);
+          const ref = responseStatusURL.ref;
+          const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
+          this.getStatus(statusURL, this.downloadPrint.bind(this, printData.attributes.map.bbox));
+          let downloadUrl;
+          try {
+            response = JSON.parse(response.text);
+            if (this.serverUrl_.endsWith('/geoprint')) {
+              const url = this.serverUrl_.substring(0, this.serverUrl_.lastIndexOf('/geoprint'));
+              downloadUrl = M.utils.concatUrlPaths([url, response.downloadURL]);
+            } else {
+              downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+            }
+            this.documentRead_.src = downloadUrl;
+          } catch (err) {
+            M.exception(err);
+          }
+        });
+
+        M.proxy(true);
+      });
+    } else {
+      const projection = this.getUTMZoneProjection();
+      let bbox = this.map_.getBbox();
+      bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+      bbox = this.getImpl().transformExt(bbox, this.map_.getProjection().code, projection);
+      const size = this.map_.getMapImpl().getSize();
+      let url = 'http://www.ign.es/wms-inspire/mapa-raster?';
+      if (printOption === 'image') {
+        url = 'http://www.ign.es/wms-inspire/pnoa-ma?';
+      }
+
+      url += `SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&SRS=${projection}&CRS=${projection}&WIDTH=${size[0]}&HEIGHT=${size[1]}`;
+      url += `&BBOX=${bbox}&FORMAT=image/jpeg&TRANSPARENT=true&STYLES=default`;
+      if (printOption === 'image') {
+        url += '&LAYERS=OI.OrthoimageCoverage';
+      } else {
+        url += '&LAYERS=mtn_rasterizado';
+      }
+
+      this.documentRead_.src = url;
+      this.downloadPrint(bbox);
+    }
   }
 
   /**
@@ -234,14 +263,7 @@ export default class Georefimage2Control extends M.Control {
    * @function
    */
   getPrintData() {
-    let printOption = 'map';
-    if (document.querySelector('#m-georefimage2-image').checked) {
-      printOption = 'image';
-    } else if (document.querySelector('#m-georefimage2-screen').checked) {
-      printOption = 'screen';
-    }
-
-    const projection = printOption === 'screen' ? this.map_.getProjection().code : this.getUTMZoneProjection();
+    const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
@@ -251,7 +273,7 @@ export default class Georefimage2Control extends M.Control {
       outputFormat: this.format_,
       attributes: {
         map: {
-          dpi: printOption === 'screen' ? 120 : this.dpi_,
+          dpi: 120,
           projection,
         },
       },
@@ -276,7 +298,7 @@ export default class Georefimage2Control extends M.Control {
       printData.attributes.map.layers = encodedLayersModified;
       printData.attributes = Object.assign(printData.attributes, parameters);
       printData.attributes.map.projection = projection;
-      printData.attributes.map.dpi = printOption === 'screen' ? 120 : this.dpi_;
+      printData.attributes.map.dpi = 120;
       printData.attributes.map.width = width;
       printData.attributes.map.height = height;
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
@@ -300,112 +322,82 @@ export default class Georefimage2Control extends M.Control {
    */
   encodeLayers() {
     const projection = 'EPSG:3857';
-    let printOption = 'map';
-    if (document.querySelector('#m-georefimage2-image').checked) {
-      printOption = 'image';
-    } else if (document.querySelector('#m-georefimage2-screen').checked) {
-      printOption = 'screen';
-    }
+    // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
+    // and that doesn't have Cluster style.
+    let layers = this.map_.getLayers().filter((layer) => {
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && ['WMS', 'WMTS'].indexOf(layer.type) > -1);
+    });
 
-    if (printOption === 'screen') {
-      // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
-      // and that doesn't have Cluster style.
-      let layers = this.map_.getLayers().filter((layer) => {
-        return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && ['WMS', 'WMTS'].indexOf(layer.type) > -1);
-      });
-
-      const encodedLayersModified = [];
-      if (projection === 'EPSG:3857') {
-        for (let i = 0; i < layers.length; i += 1) {
-          if (layers[i].matrixSet != null) {
-            const matrixSet = layers[i].matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
-            const optsMatrixSet = layers[i].options.matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
-            layers[i].matrixSet = matrixSet;
-            layers[i].options.matrixSet = optsMatrixSet;
-          }
-
-          encodedLayersModified.push(layers[i]);
+    const encodedLayersModified = [];
+    if (projection === 'EPSG:3857') {
+      for (let i = 0; i < layers.length; i += 1) {
+        if (layers[i].matrixSet != null) {
+          const matrixSet = layers[i].matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
+          const optsMatrixSet = layers[i].options.matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
+          layers[i].matrixSet = matrixSet;
+          layers[i].options.matrixSet = optsMatrixSet;
         }
 
-        layers = encodedLayersModified;
-      } else {
-        for (let i = 0; i < layers.length; i += 1) {
-          if (layers[i].matrixSet != null) {
-            const matrixSet = layers[i].matrixSet
-              .replace(layers[i].matrixSet, projection);
-            const optsMatrixSet = layers[i].options.matrixSet
-              .replace(layers[i].matrixSet, projection);
-            layers[i].matrixSet = matrixSet;
-            layers[i].options.matrixSet = optsMatrixSet;
-          }
-
-          encodedLayersModified.push(layers[i]);
-        }
-
-        layers = encodedLayersModified;
+        encodedLayersModified.push(layers[i]);
       }
 
-      let numLayersToProc = layers.length;
-      const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
-      if (otherLayers.length > 0) {
-        layers = layers.concat(otherLayers);
-        numLayersToProc = layers.length;
-      }
-
-      return (new Promise((success, fail) => {
-        let encodedLayers = [];
-        const vectorLayers = [];
-        const wmsLayers = [];
-        const otherBaseLayers = [];
-        const BreakException = {};
-        layers.forEach((layer) => {
-          this.getImpl().encodeLayer(layer).then((encodedLayer) => {
-            if (encodedLayer === null) {
-              throw BreakException;
-            }
-            // Vector layers must be added after non vector layers.
-            if (!M.utils.isNullOrEmpty(encodedLayer)) {
-              if (encodedLayer.type === 'Vector' || encodedLayer.type === 'KML') {
-                vectorLayers.push(encodedLayer);
-              } else if (encodedLayer.type === 'WMS') {
-                wmsLayers.push(encodedLayer);
-              } else {
-                otherBaseLayers.push(encodedLayer);
-              }
-            }
-
-            numLayersToProc -= 1;
-            if (numLayersToProc === 0) {
-              encodedLayers = encodedLayers.concat(otherBaseLayers)
-                .concat(wmsLayers).concat(vectorLayers);
-              // Mapfish requires reverse order
-              success(encodedLayers.reverse());
-            }
-          });
-        });
-      }));
-    } else if (printOption === 'image') {
-      return (new Promise((success, fail) => {
-        const BreakException = {};
-        const encodedLayer = this.getImpl().encodeWMSNoLayer('http://www.ign.es/wms-inspire/pnoa-ma?', 'OI.OrthoimageCoverage');
-        if (encodedLayer === null) {
-          throw BreakException;
-        }
-
-        success([encodedLayer]);
-      }));
-    /* eslint-disable no-else-return */
+      layers = encodedLayersModified;
     } else {
-      return (new Promise((success, fail) => {
-        const BreakException = {};
-        const encodedLayer = this.getImpl().encodeWMSNoLayer('http://www.ign.es/wms-inspire/mapa-raster?', 'mtn_rasterizado');
-        if (encodedLayer === null) {
-          throw BreakException;
+      for (let i = 0; i < layers.length; i += 1) {
+        if (layers[i].matrixSet != null) {
+          const matrixSet = layers[i].matrixSet
+            .replace(layers[i].matrixSet, projection);
+          const optsMatrixSet = layers[i].options.matrixSet
+            .replace(layers[i].matrixSet, projection);
+          layers[i].matrixSet = matrixSet;
+          layers[i].options.matrixSet = optsMatrixSet;
         }
 
-        success([encodedLayer]);
-      }));
+        encodedLayersModified.push(layers[i]);
+      }
+
+      layers = encodedLayersModified;
     }
+
+    let numLayersToProc = layers.length;
+    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
+    if (otherLayers.length > 0) {
+      layers = layers.concat(otherLayers);
+      numLayersToProc = layers.length;
+    }
+
+    return (new Promise((success, fail) => {
+      let encodedLayers = [];
+      const vectorLayers = [];
+      const wmsLayers = [];
+      const otherBaseLayers = [];
+      const BreakException = {};
+      layers.forEach((layer) => {
+        this.getImpl().encodeLayer(layer).then((encodedLayer) => {
+          if (encodedLayer === null) {
+            throw BreakException;
+          }
+          // Vector layers must be added after non vector layers.
+          if (!M.utils.isNullOrEmpty(encodedLayer)) {
+            if (encodedLayer.type === 'Vector' || encodedLayer.type === 'KML') {
+              vectorLayers.push(encodedLayer);
+            } else if (encodedLayer.type === 'WMS') {
+              wmsLayers.push(encodedLayer);
+            } else {
+              otherBaseLayers.push(encodedLayer);
+            }
+          }
+
+          numLayersToProc -= 1;
+          if (numLayersToProc === 0) {
+            encodedLayers = encodedLayers.concat(otherBaseLayers)
+              .concat(wmsLayers).concat(vectorLayers);
+            // Mapfish requires reverse order
+            success(encodedLayers.reverse());
+          }
+        });
+      });
+    }));
   }
 
   getUTMZoneProjection() {
