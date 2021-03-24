@@ -215,7 +215,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @private
    * @type {object}
    */
-   M.config('IGNSEARCH_TYPES_CONFIGURATION', encodeURIComponent([
+   M.config('IGNSEARCH_TYPES_CONFIGURATION', btoa([
      'Estado',
      // 'Comunidad autónoma',
      // 'Ciudad con estatuto de autonomía',
@@ -274,4 +274,6 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
      'Entrante costero y estrecho marítimo',
      'Relieve submarino',
    ]));
+
+   M.config('IGNSEARCH_TYPES_CONFIGURATION_2', '${ignsearch.types_config}');
 })(window.M);

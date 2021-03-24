@@ -1039,7 +1039,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         const params = `maxresults=${this.maxResults - 5}&name_equals=${newInputVal}`;
         const urlToGet = `${this.urlAssistant}?${params}`;
         M.remote.get(urlToGet).then((res) => {
-          const temporalData = res.text !== '' ? JSON.parse(res.text) : { results: [] };
+          const temporalData = (res.text !== '' && res.text !== null) ? JSON.parse(res.text) : { results: [] };
           const returnData = temporalData.results;
           for (let i = 0; i < returnData.length; i += 1) {
             // avoid nameplaces not included in this.nomenclatorSearchType

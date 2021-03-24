@@ -787,7 +787,7 @@ export default class IGNSearchControl extends M.Control {
         const urlToGet = `${this.urlAssistant}?${params}`;
         M.proxy(true);
         M.remote.get(urlToGet).then((res) => {
-          const temporalData = res.text !== '' ? JSON.parse(res.text) : { results: [] };
+          const temporalData = (res.text !== '' && res.text !== null) ? JSON.parse(res.text) : { results: [] };
           const returnData = temporalData.results;
           for (let i = 0; i < returnData.length; i += 1) {
             // avoid nameplaces not included in this.nomenclatorSearchType
