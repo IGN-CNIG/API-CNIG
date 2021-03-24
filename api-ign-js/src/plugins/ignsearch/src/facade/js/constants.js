@@ -1,4 +1,5 @@
-const geographicNameType = ['Estado',
+const geographicNameType = [
+  'Estado',
   // 'Comunidad autónoma',
   // 'Ciudad con estatuto de autonomía',
   // 'Provincia',
