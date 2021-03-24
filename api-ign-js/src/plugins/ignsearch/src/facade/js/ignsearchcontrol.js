@@ -802,6 +802,7 @@ export default class IGNSearchControl extends M.Control {
               resultsArray.splice(0, 0, thisElement);
             }
           }
+
           resolve();
         });
       } else {

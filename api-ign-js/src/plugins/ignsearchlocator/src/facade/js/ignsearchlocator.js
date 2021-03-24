@@ -144,7 +144,7 @@ export default class IGNSearchLocator extends M.Plugin {
      * @private
      * @type {Array<string>}
      */
-    this.nomenclatorSearchType = options.nomenclatorSearchType || geographicNameType;
+    this.nomenclatorSearchType = M.config.IGNSEARCH_TYPES_CONFIGURATION || geographicNameType;
 
     /**
      * This variable indicates whether result geometry should be drawn on map.
