@@ -185,7 +185,12 @@ export default class Georefimage2Control extends M.Control {
           const responseStatusURL = JSON.parse(response.text);
           const ref = responseStatusURL.ref;
           const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-          this.getStatus(statusURL, this.downloadPrint.bind(this, printData.attributes.map.bbox));
+          this.getStatus(statusURL, this.downloadPrint.bind(
+            this,
+            null,
+            printData.attributes.map.bbox,
+          ));
+
           let downloadUrl;
           try {
             response = JSON.parse(response.text);
@@ -222,8 +227,7 @@ export default class Georefimage2Control extends M.Control {
         url += '&LAYERS=mtn_rasterizado';
       }
 
-      this.documentRead_.src = url;
-      this.downloadPrint(bbox);
+      this.downloadPrint(url, bbox);
     }
   }
 
@@ -424,7 +428,7 @@ export default class Georefimage2Control extends M.Control {
    * @function
    * @api stable
    */
-  downloadPrint(bbox) {
+  downloadPrint(url, bbox) {
     let printOption = 'map';
     if (document.querySelector('#m-georefimage2-image').checked) {
       printOption = 'image';
@@ -432,8 +436,9 @@ export default class Georefimage2Control extends M.Control {
       printOption = 'screen';
     }
 
+    const imageUrl = url !== null ? url : this.documentRead_.src;
     const dpi = printOption === 'screen' ? 120 : this.dpi_;
-    const base64image = this.getBase64Image(this.documentRead_.src);
+    const base64image = this.getBase64Image(imageUrl);
     base64image.then((resolve) => {
       const size = this.map_.getMapImpl().getSize();
       const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
@@ -452,6 +457,8 @@ export default class Georefimage2Control extends M.Control {
         saveAs(content, titulo.concat('.zip'));
         document.querySelector('div.m-mapea-container div.m-dialog').remove();
       });
+    }).catch((err) => {
+      M.dialog.error(getValue('exception.imageError'));
     });
   }
 

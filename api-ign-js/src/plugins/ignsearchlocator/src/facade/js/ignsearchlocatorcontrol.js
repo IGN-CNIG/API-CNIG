@@ -949,9 +949,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       outputformat: 'application/json',
     });
     this.locationID = locationId;
-    M.proxy(false);
     M.remote.get(this.requestPlace).then((res) => {
-      M.proxy(true);
       const latLngString = JSON.parse(res.text).results[0].location;
       const resultTitle = JSON.parse(res.text).results[0].title;
       const latLngArray = latLngString.split(' ');
@@ -990,8 +988,6 @@ export default class IGNSearchLocatorControl extends M.Control {
       if (zoomIn === true) {
         this.zoomInLocation('n', 'Point', this.zoom);
       }
-    }).catch((err) => {
-      M.proxy(true);
     });
   }
   /**
