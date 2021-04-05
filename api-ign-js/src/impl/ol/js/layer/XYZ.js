@@ -94,6 +94,28 @@ class XYZ extends OLTileLayer {
 
 
   /**
+   * This function sets a custom tile url function
+   *
+   * @public
+   * @function
+   * @api
+   */
+  setTileUrlFunction(tileUrlFunction) {
+    this.ol3Layer.getSource().setTileUrlFunction(tileUrlFunction);
+  }
+
+  /**
+   * This function returns the current tile url function
+   *
+   * @public
+   * @function
+   * @api
+   */
+  getTileUrlFunction() {
+    this.ol3Layer.getSource().getTileUrlFunction();
+  }
+
+  /**
    * This function return the tile size of the layer
    *
    * @public

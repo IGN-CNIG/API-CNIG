@@ -96,6 +96,14 @@ export const ADDED_XYZ = 'added:xyz';
  * @type {string}
  * @api
  */
+export const ADDED_TMS = 'added:tms';
+
+/**
+ * Event type
+ * @public
+ * @type {string}
+ * @api
+ */
 export const REMOVED_LAYER = 'removed:layer';
 
 /**

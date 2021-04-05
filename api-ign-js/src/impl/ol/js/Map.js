@@ -177,6 +177,7 @@ class Map extends MObject {
     const mbtilesLayers = this.getMBTiles(filters);
     const mbtilesVectorLayers = this.getMBTilesVector(filters);
     const xyzLayers = this.getXYZs(filters);
+    const tmsLayers = this.getTMS(filters);
     const unknowLayers = this.getUnknowLayers_(filters);
 
     return kmlLayers.concat(wmsLayers).concat(wfsLayers)
@@ -185,6 +186,7 @@ class Map extends MObject {
       .concat(mbtilesLayers)
       .concat(mbtilesVectorLayers)
       .concat(xyzLayers)
+      .concat(tmsLayers)
       .concat(unknowLayers);
   }
 
@@ -249,6 +251,8 @@ class Map extends MObject {
         this.facadeMap_.addMBTilesVector(layer);
       } else if (layer.type === LayerType.XYZ) {
         this.facadeMap_.addXYZ(layer);
+      } else if (layer.type === LayerType.TMS) {
+        this.facadeMap_.addTMS(layer);
       } else if (!LayerType.know(layer.type)) {
         this.addUnknowLayers_([layer]);
       }
@@ -283,6 +287,7 @@ class Map extends MObject {
       this.removeMVT(knowLayers);
       this.removeMBTiles(knowLayers);
       this.removeXYZ(knowLayers);
+      this.removeTMS(knowLayers);
     }
 
     if (unknowLayers.length > 0) {
@@ -1397,6 +1402,99 @@ class Map extends MObject {
     return this;
   }
 
+  /**
+   * This function gets the TMS layers added to the map
+   *
+   * @function
+   * @param {Array<M.Layer>} filters to apply to the search
+   * @returns {Array<M.layer.TMS>} layers from the map
+   * @api stable
+   */
+  getTMS(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+    const tmsLayers = this.layers_.filter(layer => layer.type === LayerType.TMS);
+
+    // parse to Array
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = tmsLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredTMSLayers = tmsLayers.filter((tmsLayer) => {
+          let layerMatched = true;
+          // checks if the layer is not in selected layers
+          if (!foundLayers.includes(tmsLayer)) {
+            // type
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === tmsLayer.type));
+            }
+            // URL
+            if (!isNullOrEmpty(filterLayer.url)) {
+              layerMatched = (layerMatched && (filterLayer.url === tmsLayer.url));
+            }
+            // name
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === tmsLayer.name));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredTMSLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+   * This function adds the TMS layers to the map
+   *
+   * @function
+   * @param {Array<M.layer.TMS>} layers
+   * @returns {M.impl.Map}
+   * @api stable
+   */
+  addTMS(layers) {
+    layers.forEach((layer) => {
+      // checks if layer is TMS and was added to the map
+      if (layer.type === LayerType.TMS) {
+        if (!includes(this.layers_, layer)) {
+          layer.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(layer);
+          const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.TMS];
+          layer.getImpl().setZIndex(zIndex);
+        }
+      }
+    });
+    return this;
+  }
+
+  /**
+   * This function removes the TMS layers to the map
+   *
+   * @function
+   * @param {Array<M.layer.TMS>} layers
+   * @returns {M.impl.Map}
+   * @api stable
+   */
+  removeTMS(layers) {
+    const tmsMapLayers = this.getTMS(layers);
+    tmsMapLayers.forEach((tmsLayer) => {
+      tmsLayer.getImpl().destroy();
+      this.layers_ = this.layers_.filter(layer => !layer.equals(tmsLayer));
+    });
+
+    return this;
+  }
+
 
   /**
    * This function adds controls specified by the user
@@ -2300,5 +2398,6 @@ Map.Z_INDEX[LayerType.GeoJSON] = 10;
 Map.Z_INDEX[LayerType.MBTiles] = 10;
 Map.Z_INDEX[LayerType.MBTilesVector] = 10;
 Map.Z_INDEX[LayerType.XYZ] = 10;
+Map.Z_INDEX[LayerType.TMS] = 10;
 
 export default Map;

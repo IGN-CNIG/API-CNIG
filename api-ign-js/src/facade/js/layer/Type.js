@@ -76,6 +76,15 @@ export const MBTilesVector = 'MBTilesVector';
 export const XYZ = 'XYZ';
 
 /**
+ * TMS type
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const TMS = 'TMS';
+
+/**
  * GeoJSON type
  * @const
  * @type {string}
@@ -120,6 +129,7 @@ const layertypes = {
   Vector,
   MVT,
   XYZ,
+  TMS,
 };
 
 /**
@@ -160,6 +170,7 @@ export const know = (type) => {
     MBTilesVector,
     MVT,
     XYZ,
+    TMS,
   ];
   return (knowTypes.indexOf(parse(type)) !== -1);
 };

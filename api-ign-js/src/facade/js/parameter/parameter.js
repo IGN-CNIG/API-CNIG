@@ -2079,10 +2079,11 @@ const getNameXYZ = (parameter) => {
 
 /**
  * Parses the parameter in order to get the service URL
+ * It works for XYZ and TMS layers
  * @private
  * @function
  */
-const getURLXYZ = (parameter) => {
+const getURLXYZSource = (parameter) => {
   let url;
   if (isString(parameter)) {
     const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)([^*]*\*?)*$/i);
@@ -2101,7 +2102,7 @@ const getURLXYZ = (parameter) => {
  * @private
  * @function
  */
-const getExtraParameterXYZ = (parameter, defaultValue, position, nameVariable) => {
+const getExtraParameter = (parameter, defaultValue, position, nameVariable) => {
   let extraParam;
   let params;
   if (isString(parameter)) {
@@ -2159,13 +2160,107 @@ export const xyz = (userParamer) => {
     layerObj.legend = layerObj.name;
 
     // gets the URL
-    layerObj.url = getURLXYZ(userParam);
+    layerObj.url = getURLXYZSource(userParam);
 
     // get the visibility option
-    layerObj.visibility = getExtraParameterXYZ(userParam, 'true', 0, 'visibility');
+    layerObj.visibility = getExtraParameter(userParam, 'true', 0, 'visibility');
 
     // gets transparent
-    layerObj.transparent = getExtraParameterXYZ(userParam, 'true', 1, 'transparent');
+    layerObj.transparent = getExtraParameter(userParam, 'true', 1, 'transparent');
+
+    return layerObj;
+  });
+
+  if (!isArray(userParameters)) {
+    layersVar = layersVar[0];
+  }
+
+  return layersVar;
+};
+
+
+/**
+ * Parses the parameter in order to get the layer name
+ * @private
+ * @function
+ */
+const getNameTMS = (parameter) => {
+  let name;
+  let params;
+  if (isString(parameter)) {
+    if (/^TMS\*.+/i.test(parameter)) {
+      // <KML>*<NAME>*<URL>(*<FILENAME>)?*<EXTRACT>
+      if (/^TMS\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?/i.test(parameter)) {
+        params = parameter.split(/\*/);
+        name = params[1].trim();
+      }
+    } else if (/^[^*]*\*[^*]+/.test(parameter)) {
+      // <NAME>*<URL>(*<FILENAME>)?(*<EXTRACT>)?
+      params = parameter.split(/\*/);
+      name = params[0].trim();
+    } else if (/^[^*]*/.test(parameter)) {
+      // <NAME>(*<URL>(*<FILENAME>)?(*<EXTRACT>)?)? filtering
+      params = parameter.split(/\*/);
+      name = params[0].trim();
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
+    name = parameter.name.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  if (isUrl(name) || /^(true|false)$/i.test(name)) {
+    name = null;
+  }
+  return name;
+};
+
+
+/**
+ * Parses the specified user layer TMS parameters to a object
+ *
+ * @param {string|Mx.parameters.Layer} userParameters parameters
+ * provided by the user
+ * @returns {Mx.parameters.TMS|Array<Mx.parameters.TMS>}
+ * @public
+ * @function
+ * @api
+ */
+export const tms = (userParamer) => {
+  const userParameters = userParamer;
+  let layersVar = [];
+
+  // checks if the param is null or empty
+  if (isNullOrEmpty(userParameters)) {
+    Exception(getValue('exception').no_param);
+  }
+
+  // checks if the parameter is an array
+  let userParametersArray = userParameters;
+  if (!isArray(userParametersArray)) {
+    userParametersArray = [userParametersArray];
+  }
+
+  layersVar = userParametersArray.map((userParam) => {
+    const layerObj = {};
+
+    // gets the layer type
+    layerObj.type = LayerType.TMS;
+
+    // gets the name
+    layerObj.name = getNameTMS(userParam);
+
+    // gets the legend
+    layerObj.legend = layerObj.name;
+
+    // gets the URL
+    layerObj.url = getURLXYZSource(userParam);
+
+    // get the visibility option
+    layerObj.visibility = getExtraParameter(userParam, 'true', 0, 'visibility');
+
+    // gets transparent
+    layerObj.transparent = getExtraParameter(userParam, 'true', 1, 'transparent');
 
     return layerObj;
   });
@@ -2260,6 +2355,7 @@ const parameterFunction = {
   geojson,
   mvt,
   xyz,
+  tms,
 };
 
 
