@@ -84,6 +84,11 @@ const tms = (userParameters) => {
       type: 'string',
       attr: 'legend',
     });
+    const displayInLayerSwitcher = getParameter({
+      parameter: userParam,
+      type: 'boolean',
+      attr: 'displayInLayerSwitcher',
+    });
     let params;
     if (REGEXP_TMS.test(userParam) || isObject(userParam)) {
       params = {
@@ -91,6 +96,7 @@ const tms = (userParameters) => {
         name: name(REGEXP_TMS, 3),
         url: url(REGEXP_TMS, 2),
         legend: legend(REGEXP_TMS, 1),
+        displayInLayerSwitcher: displayInLayerSwitcher(REGEXP_TMS, 4),
       };
     }
     return params;

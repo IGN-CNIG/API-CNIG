@@ -84,6 +84,11 @@ const xyz = (userParameters) => {
       type: 'string',
       attr: 'legend',
     });
+    const displayInLayerSwitcher = getParameter({
+      parameter: userParam,
+      type: 'boolean',
+      attr: 'displayInLayerSwitcher',
+    });
     let params;
     if (REGEXP_XYZ.test(userParam) || isObject(userParam)) {
       params = {
@@ -91,6 +96,7 @@ const xyz = (userParameters) => {
         name: name(REGEXP_XYZ, 3),
         url: url(REGEXP_XYZ, 2),
         legend: legend(REGEXP_XYZ, 1),
+        displayInLayerSwitcher: displayInLayerSwitcher(REGEXP_XYZ, 4),
       };
     }
     return params;

@@ -55,11 +55,12 @@ export default class TOCControl extends M.Control {
     // const layers = this.map_.getWMS().concat(this.map_.getWMTS())
     //   .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true);
     const layers = this.map_.getLayers()
-      .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true)
+      .filter(layer => layer.transparent !== false && (layer.displayInLayerSwitcher === true || layer instanceof M.layer.TMS || layer instanceof M.layer.XYZ ))
       .reverse();
     const layersOpts = layers.map((layer) => {
+      console.log(layer.type === 'XYZ');
       return {
-        outOfRange: !layer.inRange(),
+        outOfRange: layer instanceof M.layer.TMS || layer instanceof M.layer.XYZ ? true : !layer.inRange(),
         visible: (layer instanceof M.layer.WMTS ? layer.options.visibility === true :
           layer.isVisible()),
         id: layer.name,

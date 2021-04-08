@@ -6,13 +6,14 @@ import OLTileLayer from 'ol/layer/Tile';
 import { get as getProj } from 'ol/proj';
 import XYZSource from 'ol/source/XYZ';
 import * as LayerType from '../../../../facade/js/layer/Type';
+import Layer from './Layer';
 import ImplMap from '../Map';
 
 /**
  * @classdesc
  * @api
  */
-class XYZ extends OLTileLayer {
+class XYZ extends Layer {
   /**
    * @classdesc
    * Main constructor of the class. Creates a XYZ layer
@@ -54,13 +55,30 @@ class XYZ extends OLTileLayer {
   }
 
   /**
-   * This function sets the visibility of this layer
-   *
+  * This function sets the visibility of this layer
+  *
+   * @public
    * @function
    * @api
    */
   setVisible(visibility) {
     this.visibility = visibility;
+    // if this layer is base then it hides all base layers
+    if ((visibility === true) && (this.transparent !== true)) {
+      // set this layer visible
+      if (!isNullOrEmpty(this.ol3Layer)) {
+        this.ol3Layer.setVisible(visibility);
+      }
+
+      // updates resolutions and keep the zoom
+      const oldZoom = this.map.getZoom();
+      this.map.getImpl().updateResolutionsFromBaseLayer();
+      if (!isNullOrEmpty(oldZoom)) {
+        this.map.setZoom(oldZoom);
+      }
+    } else if (!isNullOrEmpty(this.ol3Layer)) {
+      this.ol3Layer.setVisible(visibility);
+    }
   }
 
   /**
