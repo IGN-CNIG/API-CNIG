@@ -12,9 +12,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>Visor base</title>
-    <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css" />
-    <link href="plugins/printermap/printermap.ol.min.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
+    <link href="plugins/georefimage2/georefimage2.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    </link>
     <style type="text/css">
         html,
         body {
@@ -47,34 +48,31 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
+
         <label for="selectCollapsed">Selector collapsed</label>
-        <select name="collapsedValue" id="selectCollapsed">
+        <select name="httpValue" id="selectCollapsed">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+
         <label for="selectCollapsible">Selector collapsible</label>
-        <select name="collapsibleValue" id="selectCollapsible">
+        <select name="httpValue" id="selectCollapsible">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
-        <label for="inputServerUrl">Parámetro serverUrl</label>
-        <input type="text" name="serverUrlValue" id="inputServerUrl" list="serverUrlValueSug">
-        <datalist id="serverUrlValueSug">
+        <label for="inputServerUrl">Parámetro inputServerUrl</label>
+        <input type="text" value="" name="serverUrl" id="inputServerUrl" list="serverUrlSug">
+        <datalist id="serverUrlSug">
             <option value="https://geoprint.desarrollo.guadaltel.es"></option>
         </datalist>
-        <label for="inputPrintTemplateUrl">Parámetro printTemplateUrl</label>
-        <input type="text" name="printTemplateUrlValue" id="inputPrintTemplateUrl" list="printTemplateUrlValueSug">
-        <datalist id="printTemplateUrlValueSug">
-            <option value="https://geoprint.desarrollo.guadaltel.es/print/CNIG"></option>
-        </datalist>
-        <label for="inputPrintTemplateGeoUrl">Parámetro printTemplateUrl</label>
-        <input type="text" name="printTemplateGeoUrlValue" id="inputPrintTemplateGeoUrl" list="printTemplateGeoUrlValueSug">
-        <datalist id="printTemplateUrlValueSug">
+        <label for="inputPrintTemplateUrl">Parámetro inputPrintTemplateUrl</label>
+        <input type="text" value="" name="printTemplateUrl" id="inputPrintTemplateUrl" list="printTemplateUrlSug">
+        <datalist id="printTemplateUrlSug">
             <option value="https://geoprint.desarrollo.guadaltel.es/print/mapexport"></option>
         </datalist>
-        <label for="inputPrintStatusUrl">Parámetro printStatusUrlValue</label>
-        <input type="text" name="printStatusUrlValue" id="inputPrintStatusUrl" list="printStatusUrlValueSug">
-        <datalist id="printStatusUrlValueSug">
+        <label for="inputPrintStatusUrl">Parámetro inputPrintStatusUrl</label>
+        <input type="text" value="" name="printStatusUrl" id="inputPrintStatusUrl" list="printStatusUrlSug">
+        <datalist id="printStatusUrlSug">
             <option value="https://geoprint.desarrollo.guadaltel.es/print/status"></option>
         </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
@@ -83,8 +81,9 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/printermap/printermap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/georefimage2/georefimage2.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -104,66 +103,47 @@
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
-            center: [-467062.8225, 4683459.6216],
+            center: [-467062.8225, 4783459.6216],
         });
-
-        const layerinicial = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
-
-        const campamentos = new M.layer.GeoJSON({
-            name: 'Campamentos',
-            url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
-            extract: true,
-        });
-        map.addLayers([layerinicial, campamentos]);
-
         let mp;
-        let posicion, collapsed, collapsible, serverUrl, printTemplateUrl, printTemplateGeoUrl, printStatusUrl;
-        crearPlugin({
-            position: posicion,
-            collapsed: collapsed,
-            collapsible: collapsible,
-            serverUrl: serverUrl,
-            printTemplateUrl: printTemplateUrl,
-            printTemplateGeoUrl: printTemplateGeoUrl,
-            printStatusUrl: printStatusUrl,
-        });
+        let position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl;
+
+        crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
         const inputServerUrl = document.getElementById("inputServerUrl");
         const inputPrintTemplateUrl = document.getElementById("inputPrintTemplateUrl");
-        const inputPrintTemplateGeoUrl = document.getElementById("inputPrintTemplateGeoUrl");
         const inputPrintStatusUrl = document.getElementById("inputPrintStatusUrl");
 
-        selectPosicion.addEventListener('change', cambiarTest);
-        selectCollapsed.addEventListener('change', cambiarTest);
-        selectCollapsible.addEventListener('change', cambiarTest);
-        inputServerUrl.addEventListener('change', cambiarTest);
-        inputPrintTemplateUrl.addEventListener('change', cambiarTest);
-        inputPrintTemplateGeoUrl.addEventListener('change', cambiarTest);
-        inputPrintStatusUrl.addEventListener('change', cambiarTest);
+        selectPosicion.addEventListener("change", cambiarTest);
+        selectCollapsed.addEventListener("change", cambiarTest);
+        selectCollapsible.addEventListener("change", cambiarTest);
+        inputServerUrl.addEventListener("change", cambiarTest);
+        inputPrintTemplateUrl.addEventListener("change", cambiarTest);
+        inputPrintStatusUrl.addEventListener("change", cambiarTest);
 
         function cambiarTest() {
-            let objeto = {}
-            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            serverUrl = inputServerUrl.value != "" ? objeto.serverUrl = inputServerUrl.value : "";
-            printTemplateUrl = inputPrintTemplateUrl.value != "" ? objeto.printTemplateUrl = inputPrintTemplateUrl.value : "";
-            printTemplateGeoUrl = inputPrintTemplateGeoUrl.value != "" ? objeto.printTemplateGeoUrl = inputPrintTemplateGeoUrl.value : "";
-            printStatusUrl = inputPrintStatusUrl.value != "" ? objeto.printStatusUrl = inputPrintStatusUrl.value : "";
+            position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            serverUrl = inputServerUrl.value;
+            printTemplateUrl = inputPrintTemplateUrl.value;
+            printStatusUrl = inputPrintStatusUrl.value;
             map.removePlugins(mp);
-            crearPlugin(objeto);
+            crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl);
         }
 
-        function crearPlugin(propiedades) {
-            mp = new M.plugin.PrinterMap(propiedades);
+        function crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl) {
+            mp = new M.plugin.Georefimage2({
+                collapsed: collapsed,
+                collapsible: collapsible,
+                position: position,
+                serverUrl: serverUrl,
+                printTemplateUrl: printTemplateUrl,
+                printStatusUrl: printStatusUrl
+            });
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({

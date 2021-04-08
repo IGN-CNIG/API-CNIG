@@ -11,17 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
-    <title>Visor base</title>
+    <title>Selection Draw</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
-    <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
-    <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
-    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
-    <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
-    <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
-    <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
-    <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     <link href="plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -29,7 +22,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -42,198 +35,104 @@
    %>
     <link type="text/css" rel="stylesheet" href="plugins/<%=cssfile%>">
     </link>
+
     <%
       } %>
 </head>
 
 <body>
+    <div>
+        <label for="selectPosicion">Selector de posición del plugin</label>
+        <select name="position" id="selectPosicion">
+            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
+            <option value="TR">Arriba Derecha (TR)</option>
+            <option value="BR">Abajo Derecha (BR)</option>
+            <option value="BL">Abajo Izquierda (BL)</option>
+        </select>
+        <label for="selectCollapsed">Selector collapsed</label>
+        <select name="collapsedValue" id="selectCollapsed">
+            <option value=true>true</option>
+            <option value=false selected="selected">false</option>
+        </select>
+        <label for="selectCollapsible">Selector collapsible</label>
+        <select name="collapsibleValue" id="selectCollapsible">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+    </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/toc/toc.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
     <script type="text/javascript" src="plugins/selectiondraw/selectiondraw.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
          String jsfile = jsfiles[i];
    %>
     <script type="text/javascript" src="plugins/<%=jsfile%>"></script>
-
     <%
       }
    %>
     <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        M.language.setLang(urlParams.get('language') || 'es');
+
         const map = M.map({
             container: 'mapjs',
-            controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location'],
-            zoom: 5,
+            controls: ['scale*true'],
+            zoom: 6,
             maxZoom: 20,
-            minZoom: 4,
             center: [-467062.8225, 4683459.6216],
+            layers: ["WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Callejero*false"],
+            minZoom: 6,
         });
+        let mp;
+        let posicion,
+            collapsed,
+            collapsible = true;
+        crearPlugin(posicion, collapsed, collapsible);
 
-        const layerinicial = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
+        const selectPosicion = document.getElementById("selectPosicion");
+        const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
 
-        const layerUA = new M.layer.WMS({
-            url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeUnit',
-            legend: 'Unidad administrativa',
-            tiled: false
-        }, {});
+        selectPosicion.addEventListener('change', cambiarTest);
+        selectCollapsed.addEventListener('change', cambiarTest);
+        selectCollapsible.addEventListener('change', cambiarTest);
 
-        map.addLayers([layerinicial, layerUA]);
+        function cambiarTest() {
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            map.removePlugins(mp);
+            crearPlugin(posicion, collapsed, collapsible);
+        }
 
-        const mp = new M.plugin.IGNSearch({
-            servicesToSearch: 'gn',
-            maxResults: 10,
-            isCollapsed: false,
-            noProcess: 'municipio,poblacion',
-            countryCode: 'es',
-            reverse: true,
+        function crearPlugin(position, collapsed, collapsible) {
+            mp = new M.plugin.SelectionDraw({
+                projection: 'EPSG:4326',
+                position: position,
+                collapsed: collapsed,
+                collapsible: collapsible,
+            });
+
+            mp.on('finished:draw', (feature) => {
+                M.dialog.info(JSON.stringify(feature), 'Información del feature');
+            });
+            map.addPlugin(mp);
+        }
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
+            position: "TR",
         });
-        const mp2 = new M.plugin.Attributions({
-            mode: 1,
-            scale: 10000,
-        });
-
-        const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://componentes.ign.es/api-core/',
-            position: 'BR',
-        });
-        const mp4 = new M.plugin.XYLocator({
-            position: 'TL',
-        });
-        const mp6 = new M.plugin.ZoomExtent();
-        const mp7 = new M.plugin.MouseSRS({
-            srs: 'EPSG:4326',
-            label: 'WGS84',
-            precision: 6,
-            geoDecimalDigits: 4,
-            utmDecimalDigits: 2,
-        });
-
-        const mp8 = new M.plugin.TOC({
-            collapsed: false,
-        });
-
-        const mp9 = new M.plugin.BackImgLayer({
-            position: 'TR',
-            collapsible: true,
-            collapsed: true,
-            layerId: 0,
-            layerVisibility: true,
-            layerOpts: [{
-                    id: 'mapa',
-                    preview: 'plugins/backimglayer/images/svqmapa.png',
-                    title: 'Mapa',
-                    layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/ign-base?',
-                        name: 'IGNBaseTodo',
-                        legend: 'Mapa IGN',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/jpeg',
-                    })],
-                },
-                {
-                    id: 'imagen',
-                    title: 'Imagen',
-                    preview: 'plugins/backimglayer/images/svqimagen.png',
-                    layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/pnoa-ma?',
-                        name: 'OI.OrthoimageCoverage',
-                        legend: 'Imagen (PNOA)',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/jpeg',
-                    })],
-                },
-                {
-                    id: 'hibrido',
-                    title: 'Híbrido',
-                    preview: 'plugins/backimglayer/images/svqhibrid.png',
-                    layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                            name: 'OI.OrthoimageCoverage',
-                            legend: 'Imagen (PNOA)',
-                            matrixSet: 'GoogleMapsCompatible',
-                            transparent: true,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/jpeg',
-                        }),
-                        new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
-                            name: 'IGNBaseOrto',
-                            matrixSet: 'GoogleMapsCompatible',
-                            legend: 'Mapa IGN',
-                            transparent: false,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/png',
-                        })
-                    ],
-                },
-                {
-                    id: 'lidar',
-                    preview: 'plugins/backimglayer/images/svqlidar.png',
-                    title: 'LIDAR',
-                    layers: [new M.layer.WMTS({
-                        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-                        name: 'EL.GridCoverageDSM',
-                        legend: 'Modelo Digital de Superficies LiDAR',
-                        matrixSet: 'GoogleMapsCompatible',
-                        transparent: false,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        format: 'image/png',
-                    })],
-                },
-            ],
-        });
-
-        const selectionDraw = new M.plugin.SelectionDraw({
-            projection: 'EPSG:4326',
-            position: 'TL',
-            collapsed: false,
-            collapsible: true,
-        });
-
-        selectionDraw.on('finished:draw', (feature) => {
-            M.dialog.info(JSON.stringify(feature), 'Información del feature');
-        });
-
-        map.addPlugin(mp);
         map.addPlugin(mp2);
-        map.addPlugin(mp3);
-        map.addPlugin(mp4);
-        map.addPlugin(mp6);
-        map.addPlugin(mp7);
-        map.addPlugin(mp8);
-        map.addPlugin(mp9);
-        map.addPlugin(selectionDraw);
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click", function() {
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 

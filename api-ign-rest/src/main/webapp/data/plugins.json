@@ -90,6 +90,16 @@
     "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla."
   },
   {
+    "name": "georefimage2",
+    "plugin": "[georefimage2]",
+    "version": "v1.0",
+    "url_es": "georefimage2.jsp?language=es",
+    "url_en": "georefimage2.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/georefimage2",
+    "image": "img/api-logo.png",
+    "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla, de los servicios Ráster y de PNOA de forma directa."
+  },
+  {
     "name": "ignsearch",
     "plugin": "[ignsearch]",
     "version": "v1.0",
@@ -213,8 +223,8 @@
     "name": "predefinedzoom",
     "plugin": "[predefinedzoom]",
     "version": "v1.0",
-    "url_es": "predefinedzoom0.jsp?language=es",
-    "url_en": "predefinedzoom0.jsp?language=en",
+    "url_es": "predefinedzoom.jsp?language=es",
+    "url_en": "predefinedzoom.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/predefinedzoom",
     "image": "img/api-logo.png",
     "description": "Centra el mapa en la/s vista/s indicada/s por parámetro."
@@ -233,8 +243,8 @@
     "name": "rescale",
     "plugin": "[rescale]",
     "version": "v1.0",
-    "url_es": "rescale0.jsp?language=es",
-    "url_en": "rescale0.jsp?language=en",
+    "url_es": "rescale.jsp?language=es",
+    "url_en": "rescale.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/rescale",
     "image": "img/api-logo.png",
     "description": "Hace zoom a la escala elegida."
@@ -243,8 +253,8 @@
     "name": "selectiondraw",
     "plugin": "[selectiondraw]",
     "version": "v1.0",
-    "url_es": "selectiondraw0.jsp?language=es",
-    "url_en": "selectiondraw0.jsp?language=en",
+    "url_es": "selectiondraw.jsp?language=es",
+    "url_en": "selectiondraw.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/selectiondraw",
     "image": "img/api-logo.png",
     "description": "Permite dibujar geometrías y obtenerlas al terminar."
@@ -253,8 +263,8 @@
     "name": "selectionzoom",
     "plugin": "[selectionzoom]",
     "version": "v1.0",
-    "url_es": "selectionzoom0.jsp?language=es",
-    "url_en": "selectionzoom0.jsp?language=en",
+    "url_es": "selectionzoom.jsp?language=es",
+    "url_en": "selectionzoom.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/selectionzoom",
     "image": "img/api-logo.png",
     "description": "Plugin que permite la elección de cada de fondo mediante previsualización de las posibles capas."
@@ -263,8 +273,8 @@
     "name": "sharemap",
     "plugin": "[sharemap]",
     "version": "v1.0",
-    "url_es": "sharemap0.jsp?language=es",
-    "url_en": "sharemap0.jsp?language=en",
+    "url_es": "sharemap.jsp?language=es",
+    "url_en": "sharemap.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/sharemap",
     "image": "img/api-logo.png",
     "description": "Plugin que permite copiar la url del mapa actual visualizado. Exporta la información de todas las capas cargadas en el mapa."
@@ -303,8 +313,8 @@
     "name": "transparency",
     "plugin": "[transparency]",
     "version": "v1.0",
-    "url_es": "transparency0.jsp?language=es",
-    "url_en": "transparency0.jsp?language=en",
+    "url_es": "transparency.jsp?language=es",
+    "url_en": "transparency.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/transparency",
     "image": "img/api-logo.png",
     "description": "Plugin de línea del tiempo."

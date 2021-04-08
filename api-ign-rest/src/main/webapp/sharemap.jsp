@@ -20,7 +20,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -39,12 +39,6 @@
 
 <body>
     <div>
-        <label for="selectURL">Selector URL</label>
-        <select name="URL" id="selectURL">
-            <option value="http://mapea-lite.desarrollo.guadaltel.es/api-core/">mapea-lite</option>
-            <option value="https://componentes.ign.es/api-core/">componentes.ign.es</option>
-        </select>
-
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
             <option value="TL">Arriba Izquierda (TL)</option>
@@ -52,7 +46,13 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-
+        <label for="selectURL">Parámetro URL</label>
+        <input type="text" id="selectURL" list="urlSug" value="http://mapea-lite.desarrollo.guadaltel.es/api-core/" />
+        <datalist id="urlSug">
+            <option value="http://mapea-lite.desarrollo.guadaltel.es/api-core/"></option>
+            <option value="https://componentes.ign.es/api-core/"></option>
+        </datalist>
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
         <input type="submit" id="buttonAPI" value="API Rest" />
 
     </div>
@@ -72,53 +72,14 @@
       }
    %>
     <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        M.language.setLang(urlParams.get('language') || 'es');
+
         const map = M.map({
             container: 'mapjs',
-            controls: ['scale*true', 'location', 'backgroundlayers'],
             zoom: 3,
         });
 
-        let mp, posicion = 'BR',
-            url = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/';
-        crearPlugin(url, posicion);
-
-        const selectURL = document.getElementById("selectURL");
-        const selectPosicion = document.getElementById("selectPosicion");
-        const buttonApi = document.getElementById("buttonAPI");
-
-        selectURL.addEventListener('change', function() {
-            url = selectURL.options[selectURL.selectedIndex].value;
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            map.removePlugins(mp);
-            crearPlugin(url, posicion);
-        })
-
-        selectPosicion.addEventListener('change', function() {
-            url = selectURL.options[selectURL.selectedIndex].value;
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            map.removePlugins(mp);
-            crearPlugin(url, posicion);
-        })
-
-        buttonApi.addEventListener('click', function() {
-            url = selectURL.options[selectURL.selectedIndex].value;
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?sharemap=' + url + '*' + posicion;
-        })
-
-        function crearPlugin(url, posicion) {
-            mp = new M.plugin.ShareMap({
-                baseUrl: url,
-                position: posicion,
-            });
-
-            map.addPlugin(mp);
-        }
-
-        M.language.setLang('en');
-        map.addPlugin(mp);
-        window.map = map;
         const kml = new M.layer.KML('KML*Delegaciones*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
         map.addLayers(kml);
         const layerinicial = new M.layer.WMS({
@@ -146,19 +107,42 @@
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
-        const mp6 = new M.plugin.ZoomExtent();
-        const mp7 = new M.plugin.MouseSRS({
-            projection: 'EPSG:4326',
+        let mp, posicion, url = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
+        crearPlugin({
+            position: posicion,
+            baseUrl: url
         });
-        const mp8 = new M.plugin.TOC();
 
-        map.addPlugin(mp6);
-        map.addPlugin(mp7);
-        map.addPlugin(mp8);
-        const mp9 = new M.plugin.TOC();
-        map.addPlugin(mp9);
+        const selectURL = document.getElementById("selectURL");
+        const selectPosicion = document.getElementById("selectPosicion");
+        const buttonApi = document.getElementById("buttonAPI");
 
-        window.map = map;
+        selectURL.addEventListener('change', cambiarTest);
+        selectPosicion.addEventListener('change', cambiarTest);
+        buttonApi.addEventListener('click', function() {
+            url = selectURL.value;
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+
+            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?sharemap=' + url + '*' + posicion;
+        })
+
+        function cambiarTest() {
+            let objeto = {}
+            url = selectURL.value != "" ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            map.removePlugins(mp);
+            crearPlugin(objeto);
+        }
+
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.ShareMap(propiedades);
+
+            map.addPlugin(mp);
+        }
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click", function() {
+            map.removePlugins(mp);
+        });
     </script>
 </body>
 
