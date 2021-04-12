@@ -75,6 +75,7 @@ export default class MeasureArea extends MeasureImpl {
     }
 
     super.activate();
+    document.querySelector('.m-control.m-measurearea-container').classList.add('activated');
   }
 
   /* eslint-disable newline-per-chained-call */

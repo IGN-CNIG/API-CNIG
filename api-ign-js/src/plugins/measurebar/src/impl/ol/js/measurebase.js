@@ -90,13 +90,10 @@ export default class Measure extends M.impl.Control {
    */
   addTo(map, element) {
     this.facadeMap_ = map;
-
     // adds layer
     map.getMapImpl().addLayer(this.layer_);
-
     // super addTo
     super.addTo(map, element);
-
     this.createHelpTooltip_();
     this.createMeasureTooltip_();
   }
@@ -109,13 +106,14 @@ export default class Measure extends M.impl.Control {
    * @api stable
    */
   activate() {
+    this.invokeEscKey();
     this.createHelpTooltip_();
     this.facadeMap_.getMapImpl().on('pointermove', this.pointerMoveHandler_.bind(this));
     this.facadeMap_.getMapImpl().addInteraction(this.draw_);
     this.active = true;
-
     this.createMeasureTooltip_();
-    document.addEventListener('keydown', this.checkEscKey.bind(this));
+    document.body.style.cursor = 'crosshair';
+    document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
 
   checkEscKey(evt) {
@@ -124,7 +122,24 @@ export default class Measure extends M.impl.Control {
         elem.click();
       });
 
-      document.removeEventListener('keydown', this.checkEscKey);
+      document.removeEventListener('keyup', this.checkEscKey);
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
     }
   }
 
@@ -136,6 +151,7 @@ export default class Measure extends M.impl.Control {
    * @api stable
    */
   deactivate() {
+    document.body.style.cursor = 'default';
     this.facadeMap_.getMapImpl().un('pointermove', this.pointerMoveHandler_.bind(this));
     this.facadeMap_.getMapImpl().removeInteraction(this.draw_);
     // this.clear();
