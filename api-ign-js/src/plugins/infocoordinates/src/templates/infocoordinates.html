@@ -23,45 +23,43 @@
                         </tr>
                         <tr>
                             <td>{{translations.datum}}</td>
-                            <td>
-                                <select id="m-infocoordinates-comboDatum" class="m-infocoordinates-comboDatum">
-                                    <option value="EPSG:25828">EPSG:25828</option>
-                                    <option value="EPSG:25829">EPSG:25829</option>
-                                    <option value="EPSG:25830" selected>EPSG:25830</option>
-                                    <option value="EPSG:25831">EPSG:25831</option>
-                                    <option value="EPSG:3857">EPSG:3857</option>
-                                </select>
-                            </td>
+                            <td id="m-infocoordinates-datum" colspan="2">ETRS89</td>
                         </tr>
                         <tr>
                             <td>{{translations.latitude}}</td>
-                            <td id="m-infocoordinates-latitude">--</td>
+                            <td id="m-infocoordinates-latitude" colspan="2">--</td>
                         <tr>
                             <td>{{translations.longitude}}</td>
-                            <td id="m-infocoordinates-longitude">--</td>
-
+                            <td id="m-infocoordinates-longitude" colspan="2">--</td>
                         </tr>
                         <tr>
                             <td></td>
                             <td><input id="m-infocoordinates-buttonConversorFormat" type="checkbox" disabled>{{translations.formatCoordinates}}</td>
+                            <td></td>
                         </tr>
-
                         <tr>
-                            <td>{{translations.zone}}</td>
-                            <td id="m-infocoordinates-zone">--</td>
+                            <td>CRS:</td>
+                            <td colspan="2">
+                                <select id="m-infocoordinates-comboDatum" class="m-infocoordinates-comboDatum">
+                                    <option value="EPSG:25829">EPSG:25829</option>
+                                    <option value="EPSG:25830" selected>EPSG:25830</option>
+                                    <option value="EPSG:25831">EPSG:25831</option>
+                                    <option value="EPSG:3857">EPSG:3857</option>
+                                    <option value="EPSG:4083">EPSG:4083</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td>{{translations.coordX}}</td>
-                            <td id="m-infocoordinates-coordX">--</td>
+                            <td id="m-infocoordinates-coordX" colspan="2">--</td>
                         </tr>
                         <tr>
                             <td>{{translations.coordY}}</td>
-                            <td id="m-infocoordinates-coordY">--</td>
+                            <td id="m-infocoordinates-coordY" colspan="2">--</td>
                         </tr>
-
                         <tr>
                             <td>{{translations.altitude}}</td>
-                            <td id="m-infocoordinates-altitude">--</td>
+                            <td id="m-infocoordinates-altitude" colspan="2">--</td>
                         </tr>
                     </tbody>
                 </table>
@@ -77,7 +75,6 @@
             <div class="m-infocoordinates-div-buttonDisplayAllPoints noDisplay">
                 <button class="icon-infocoordinates-displayON" id="m-infocoordinates-buttonDisplayAllPoints" title="{{translations.displayONAllPoints}}"></button>
             </div>
-
         </div>
 
     </div>

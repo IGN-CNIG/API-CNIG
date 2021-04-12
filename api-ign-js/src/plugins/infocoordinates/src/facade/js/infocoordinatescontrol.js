@@ -33,6 +33,7 @@ export default class InfocoordinatesControl extends M.Control {
     this.layerFeatures.name = 'infocoordinatesLayerFeatures';
     this.decimalGEOcoord = decimalGEOcoord;
     this.decimalUTMcoord = decimalUTMcoord;
+    this.clickedDeactivate = false;
   }
 
 
@@ -78,7 +79,6 @@ export default class InfocoordinatesControl extends M.Control {
             latitude: getValue('latitude'),
             longitude: getValue('longitude'),
             formatCoordinates: getValue('formatCoordinates'),
-            zone: getValue('zone'),
             coordX: getValue('coordX'),
             coordY: getValue('coordY'),
             altitude: getValue('altitude'),
@@ -117,11 +117,40 @@ export default class InfocoordinatesControl extends M.Control {
    * @api stable
    */
   activate() {
+    this.invokeEscKey();
     this.map_.on(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'crosshair';
     this.map_.getFeatureHandler().deactivate();
+    document.addEventListener('keyup', this.checkEscKey.bind(this));
+    if (this.clickedDeactivate) {
+      document.querySelector('div.m-panel.m-plugin-infocoordinates > button').click();
+    }
   }
 
+  checkEscKey(evt) {
+    const opened = document.querySelector('div.m-panel.m-plugin-infocoordinates').classList.contains('opened');
+    if (evt.key === 'Escape' && opened) {
+      document.querySelector('div.m-panel.m-plugin-infocoordinates.opened > button').click();
+      document.removeEventListener('keyup', this.checkEscKey);
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
+    }
+  }
 
   /**
    * This function is called on the control deactivation
@@ -131,6 +160,7 @@ export default class InfocoordinatesControl extends M.Control {
    * @api stable
    */
   deactivate() {
+    this.clickedDeactivate = true;
     this.map_.un(M.evt.CLICK, this.addPoint, this);
     document.body.style.cursor = 'default';
     this.map_.getFeatureHandler().activate();
@@ -186,9 +216,10 @@ export default class InfocoordinatesControl extends M.Control {
     //Altura
     let altitudeFromWCSservice;
     let altitudeBox = document.getElementById('m-infocoordinates-altitude');
+    M.proxy(false);
     let promesa = new Promise((success, fail) => {
       altitudeBox.innerHTML = getValue('readingAltitude');
-      altitudeFromWCSservice = this.getImpl().readAltitudeFromWCSservice(coordinates, this.map_.getProjection().code)
+      altitudeFromWCSservice = this.getImpl().readAltitudeFromWCSservice(coordinates, this.map_.getProjection().code);
       success(altitudeFromWCSservice);
     });
 
@@ -202,7 +233,7 @@ export default class InfocoordinatesControl extends M.Control {
       buttonTab.addEventListener('click', () => this.openTabFromTab(numPoint));
     })
 
-
+    M.proxy(true);
     this.layerFeatures.addFeatures([featurePoint]);
     this.layerFeatures.setZIndex(999);
     this.openTab(numPoint)
@@ -279,6 +310,17 @@ export default class InfocoordinatesControl extends M.Control {
     // En el caso de que no sea nuevo, se modifica el estilo del punto.
     if (numPoint > countPoints) {
       this.displayPoint(numPoint);
+    } else if (numPoint === countPoints) {
+      document.querySelectorAll('.contenedorPunto').forEach((elem) => {
+        if (parseInt(elem.textContent, 10) === numPoint) {
+          elem.classList.replace('contenedorPunto', 'contenedorPuntoSelect');
+        }
+      });
+
+      // Eliminamos las etiquetas de los puntos
+      if (document.getElementsByClassName('icon-infocoordinates-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
+        this.removeAllDisplaysPoints();
+      }
     } else {
       document.getElementsByClassName('contenedorPuntoSelect')[0].classList.replace('contenedorPuntoSelect', 'contenedorPunto');
       document.getElementsByClassName('contenedorPunto')[document.getElementsByClassName('contenedorPunto').length - numPoint].classList.replace('contenedorPunto', 'contenedorPuntoSelect');
@@ -356,7 +398,7 @@ export default class InfocoordinatesControl extends M.Control {
     let pointBox = document.getElementById('m-infocoordinates-point');
     let latitudeBox = document.getElementById('m-infocoordinates-latitude');
     let longitudeBox = document.getElementById('m-infocoordinates-longitude');
-    let zoneBox = document.getElementById('m-infocoordinates-zone');
+    let datumBox = document.getElementById('m-infocoordinates-datum');
     let coordX = document.getElementById('m-infocoordinates-coordX');
     let coordY = document.getElementById('m-infocoordinates-coordY');
 
@@ -373,7 +415,7 @@ export default class InfocoordinatesControl extends M.Control {
     pointBox.innerHTML = pointDataOutput.NumPoint;
     latitudeBox.innerHTML = `${pointDataOutput.projectionGEO.coordinatesGEO.latitude}`.replace('.', ',');
     longitudeBox.innerHTML = `${pointDataOutput.projectionGEO.coordinatesGEO.longitude}`.replace('.', ',');
-    zoneBox.innerHTML = pointDataOutput.projectionUTM.zone;
+    datumBox.innerHTML = pointDataOutput.projectionUTM.datum;
     coordX.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordX);
     coordY.innerHTML = this.formatUTMCoordinate(pointDataOutput.projectionUTM.coordinatesUTM.coordY);
   }
@@ -399,6 +441,7 @@ export default class InfocoordinatesControl extends M.Control {
 
   removePoint() {
     if (document.getElementsByClassName('tablinks').length > 1) {
+      const totalTabs = document.getElementsByClassName('m-infocoordinates-tabs')[0].children.length;
       let tablinkActive = document.querySelector('.tablinks.active');
       let numPoint = tablinkActive.textContent;
       //Elimina tab
@@ -406,11 +449,32 @@ export default class InfocoordinatesControl extends M.Control {
       // elimina la feature
       let featureSelect = this.layerFeatures.getFeatureById(parseInt(numPoint));
       this.layerFeatures.removeFeatures(featureSelect);
+      this.layerFeatures.getFeatures().forEach((f) => {
+        if (f.getId() > numPoint) {
+          f.setId(f.getId() - 1);
+        }
+      });
+
+      for (let i = (numPoint - 1); i < (totalTabs - 1); i += 1) {
+        const elem = document.getElementById(`tablink${i + 2}`);
+        const value = parseInt(elem.innerHTML, 10);
+        elem.setAttribute('id', `tablink${value - 1}`);
+        elem.innerHTML = (value - 1);
+      }
+
+      document.querySelector('.contenedorPuntoSelect').parentNode.remove();
+      document.querySelectorAll('.contenedorPunto').forEach((elem) => {
+        if (parseInt(elem.textContent.trim(), 10) > numPoint) {
+          const value = parseInt(elem.querySelector('td').innerHTML, 10);
+          elem.querySelector('td').innerHTML = (value - 1);
+        }
+      });
 
       //mostrar otro punto, muestro el último punto y lo activo
       let lastTablink = document.getElementsByClassName('m-infocoordinates-tabs')[0].lastChild;
       lastTablink.classList.add('active');
-      this.openTabFromTab(parseInt(lastTablink.textContent))
+      this.numTabs = this.numTabs - 1;
+      this.openTabFromTab(parseInt(lastTablink.textContent));
     } else {
       this.removeAllPoints();
     }
@@ -420,8 +484,8 @@ export default class InfocoordinatesControl extends M.Control {
   importAllPoints() {
     let printDocument = [];
     for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
-
       let featureSelected = this.layerFeatures.impl_.features_[i];
+      const alt = featureSelected.getAttributes().Altitude !== undefined ? parseFloat(featureSelected.getAttributes().Altitude) : '-';
 
       //Cojo el srs seleccionado en el select
       let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
@@ -431,6 +495,7 @@ export default class InfocoordinatesControl extends M.Control {
 
       //Cambio coordenadas y calculo las UTM
       let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
+      const proj = pointDataOutput.projectionUTM.code;
 
       let coordinatesGEO = [
         pointDataOutput.projectionGEO.coordinatesGEO.longitude,
@@ -443,10 +508,15 @@ export default class InfocoordinatesControl extends M.Control {
       ];
 
       printDocument.push(getValue('point') + (i + 1) + ': ' + '\n');
-      printDocument.push('EPSG:4326: ');
-      printDocument.push('[' + coordinatesGEO + ']' + '\n');
-      printDocument.push(pointDataOutput.projectionUTM.code + ': ');
-      printDocument.push('[' + coordinatesUTM + ']' + '\n');
+      if (proj.indexOf('25829') > -1 || proj.indexOf('25830') > -1 || proj.indexOf('25831') > -1) {
+        printDocument.push('EPSG:4258: ');
+      } else {
+        printDocument.push('EPSG:4326: ');
+      }
+
+      printDocument.push('[' + coordinatesGEO + ',' + alt + ']' + '\n');
+      printDocument.push(proj + ': ');
+      printDocument.push('[' + coordinatesUTM + ',' + alt  + ']' + '\n');
     }
 
     const toBlobType = new Blob(printDocument, {
@@ -580,7 +650,6 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-point').innerHTML = '--';
     document.getElementById('m-infocoordinates-latitude').innerHTML = '--';
     document.getElementById('m-infocoordinates-longitude').innerHTML = '--';
-    document.getElementById('m-infocoordinates-zone').innerHTML = '--';
     document.getElementById('m-infocoordinates-coordX').innerHTML = '--';
     document.getElementById('m-infocoordinates-coordY').innerHTML = '--';
     document.getElementById('m-infocoordinates-altitude').innerHTML = '--';
