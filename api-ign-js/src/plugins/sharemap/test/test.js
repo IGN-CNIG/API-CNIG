@@ -4,14 +4,27 @@ M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['scale*true', 'location', 'backgroundlayers'],
+  controls: ['scale*true', 'location'],
+  layers: [
+    new M.layer.WMTS({
+      url: 'https://www.ign.es/wmts/mapa-raster?',
+      name: 'MTN',
+      legend: 'Mapa',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: false,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/jpeg',
+    }),
+  ],
   zoom: 3,
 });
 
 const mp = new ShareMap({
-  baseUrl: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/',
+  baseUrl: 'https://mapea-lite-6.desarrollo.guadaltel.es/api-core/',
   position: 'BR',
-  minimize: false,
+  minimize: true,
 });
 M.language.setLang('en');
 map.addPlugin(mp);
