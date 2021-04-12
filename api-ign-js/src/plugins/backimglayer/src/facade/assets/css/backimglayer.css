@@ -45,6 +45,10 @@ div#m-backimglayer-titulo {
     background-color: #e9e8e8;
 }
 
+.m-panel.m-plugin-backimglayer.opened .m-control.m-container.m-backimglayer>div#m-backimglayer-previews>#m-backimglayer-lyr-empty {
+    background-color: white !important;
+}
+
 div[id^="m-backimglayer-lyr-"]>span {
     background-color: white;
     color: rgb(73, 73, 73);
@@ -170,7 +174,7 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
         .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews {
             height: calc(100vh - 100px);
         }
-    } */
+    }*/
 
 }
 

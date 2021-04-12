@@ -109,6 +109,7 @@ export default class BackImgLayer extends M.Plugin {
 
     this.collapsed = options.collapsed !== undefined ? options.collapsed : true;
     this.collapsible = options.collapsible !== undefined ? options.collapsible : true;
+    this.empty = options.empty !== undefined ? options.empty : false;
 
     this.columnsNumber = options.columnsNumber != null ? options.columnsNumber : 2;
 
@@ -145,6 +146,7 @@ export default class BackImgLayer extends M.Plugin {
       this.previews,
       this.layers,
       this.columnsNumber,
+      this.empty,
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelBackImgLayer', {
