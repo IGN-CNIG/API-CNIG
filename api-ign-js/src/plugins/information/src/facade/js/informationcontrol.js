@@ -54,7 +54,10 @@ export default class InformationControl extends M.Control {
    * @api
    */
   activate() {
+    this.invokeEscKey();
     this.getImpl().activate();
+    document.body.style.cursor = 'url(\'https://i.ibb.co/HBtH3Qs/click-info.png\') 1 7, auto';
+    document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
   /**
    * This function is called on the control deactivation
@@ -65,6 +68,33 @@ export default class InformationControl extends M.Control {
    */
   deactivate() {
     this.getImpl().deactivate();
+    document.body.style.cursor = 'default';
+    document.removeEventListener('keyup', this.checkEscKey.bind(this));
+  }
+
+  checkEscKey(evt) {
+    const contains = document.querySelector('.m-control.m-container.m-information-container').classList.contains('activated');
+    if (evt.key === 'Escape' && contains) {
+      document.removeEventListener('keyup', this.checkEscKey.bind(this));
+      document.querySelector('#m-information-btn').click();
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
+    }
   }
 
   /**
