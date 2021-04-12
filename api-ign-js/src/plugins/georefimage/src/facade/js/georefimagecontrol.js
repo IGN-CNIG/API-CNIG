@@ -156,7 +156,10 @@ export default class GeorefimageControl extends M.Control {
    * @param {Function} callback - function that removes loading icon class.
    */
   getStatus(url, callback) {
-    M.remote.get(url).then((response) => {
+    M.proxy(false);
+    const newUrl = `${url}?timestamp=${new Date().getTime()}`;
+    M.remote.get(newUrl).then((response) => {
+      M.proxy(true);
       const statusJson = JSON.parse(response.text);
       const { status } = statusJson;
       if (status === 'finished') {
@@ -173,6 +176,8 @@ export default class GeorefimageControl extends M.Control {
       } else {
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
+    }).catch((err) => {
+      M.proxy(true);
     });
   }
 
@@ -244,6 +249,7 @@ export default class GeorefimageControl extends M.Control {
               title: getValue('title'),
               keep: getValue('keep'),
             },
+            keepView: true,
           },
         });
         this.addEvents(html);
@@ -421,6 +427,7 @@ export default class GeorefimageControl extends M.Control {
     if (M.utils.isNullOrEmpty(this.capabilitiesPromise_)) {
       this.capabilitiesPromise_ = new Promise((success, fail) => {
         const capabilitiesUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, 'capabilities.json']);
+        M.proxy(false);
         M.remote.get(capabilitiesUrl).then((response) => {
           let capabilities = {};
           try {
@@ -430,6 +437,8 @@ export default class GeorefimageControl extends M.Control {
           }
           success(capabilities);
         });
+
+        M.proxy(true);
       });
     }
 
