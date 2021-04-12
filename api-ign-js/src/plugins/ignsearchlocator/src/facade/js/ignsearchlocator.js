@@ -4,6 +4,7 @@
 import '../assets/css/ignsearchlocator';
 import '../assets/css/fonts';
 import api from '../../api';
+import geographicNameType from './constants';
 import IGNSearchLocatorControl from './ignsearchlocatorcontrol';
 import { getValue } from './i18n/language';
 
@@ -143,7 +144,7 @@ export default class IGNSearchLocator extends M.Plugin {
      * @private
      * @type {Array<string>}
      */
-    this.nomenclatorSearchType = options.nomenclatorSearchType;
+    this.nomenclatorSearchType = M.config.IGNSEARCH_TYPES_CONFIGURATION || geographicNameType;
 
     /**
      * This variable indicates whether result geometry should be drawn on map.
@@ -280,6 +281,7 @@ export default class IGNSearchLocator extends M.Plugin {
       this.searchPosition,
       this.position,
       this.pointStyle,
+      this.nomenclatorSearchType,
     ));
     this.controls_[0].on('ignsearchlocator:entityFound', (extent) => {
       this.fire('ignsearchlocator:entityFound', [extent]);
@@ -296,7 +298,7 @@ export default class IGNSearchLocator extends M.Plugin {
       position: M.ui.position[this.position],
       collapsed: this.isCollapsed,
       className: 'ign-searchlocator-panel',
-      collapsedButtonClass: 'icon-lupa',
+      collapsedButtonClass: 'icon-ignsearch',
       tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
