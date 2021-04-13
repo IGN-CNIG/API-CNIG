@@ -590,6 +590,20 @@ export default class IGNSearchControl extends M.Control {
         this.clickedElementLayer.setStyle(this.point);
       }
 
+      if (featureJSON.geometry.type.indexOf('Polygon') > -1) {
+        this.clickedElementLayer.setStyle(new M.style.Polygon({
+          fill: {
+            color: '#3399CC',
+            opacity: 0,
+          },
+          stroke: {
+            color: '#3399CC',
+            width: 2,
+          },
+          radius: 5,
+        }));
+      }
+
       // Change zIndex value
       this.clickedElementLayer.setZIndex(9999999999999999999);
 
@@ -748,18 +762,6 @@ export default class IGNSearchControl extends M.Control {
         M.remote.get(urlToGet).then((res) => {
           const returnData = JSON.parse(res.text.substring(9, res.text.length - 1));
           for (let i = 0; i < returnData.length; i += 1) {
-            if (returnData[i].type === 'comunidad autonoma') {
-              const address = returnData[i].address.concat(', (comunidad autónoma)');
-              returnData[i].address = address;
-            }
-            if (returnData[i].type === 'provincia') {
-              const address = returnData[i].address.concat(', (provincia)');
-              returnData[i].address = address;
-            }
-            if (returnData[i].type === 'Municipio') {
-              const address = returnData[i].address.concat(', (municipio)');
-              returnData[i].address = address;
-            }
             resultsArray.push(returnData[i]);
           }
           resolve();
