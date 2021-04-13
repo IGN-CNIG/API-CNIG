@@ -843,6 +843,20 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.clickedElementLayer.setStyle(this.point);
       }
 
+      if (featureJSON.geometry.type.indexOf('Polygon') > -1) {
+        this.clickedElementLayer.setStyle(new M.style.Polygon({
+          fill: {
+            color: '#3399CC',
+            opacity: 0,
+          },
+          stroke: {
+            color: '#3399CC',
+            width: 2,
+          },
+          radius: 5,
+        }));
+      }
+
       // Change zIndex value
       this.clickedElementLayer.setZIndex(9999999999999999999);
 
