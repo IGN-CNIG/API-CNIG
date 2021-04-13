@@ -32,6 +32,19 @@ const mp = new Vectors({
   precharged,
 });
 
+const mp2 = new M.plugin.Infocoordinates({
+  position: 'TR',
+  decimalGEOcoord: 4,
+  decimalUTMcoord: 4,
+});
+
+const mp3 = new M.plugin.Information({
+  position: 'TR',
+  buffer: 100,
+});
+
+const mp4 = new M.plugin.MeasureBar({ position: 'TR' });
+
 const provincias = new M.layer.WFS({
   url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?",
   namespace: "tematicos",
@@ -51,4 +64,8 @@ const viales = new M.layer.WFS({
 //map.addWFS(provincias);
 //map.addWFS(viales);
 map.addPlugin(mp);
+map.addPlugin(mp2);
+map.addPlugin(mp3);
+map.addPlugin(mp4);
+map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
 window.map = map;

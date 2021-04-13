@@ -188,17 +188,16 @@ export default class VectorsControl extends M.Control {
   toogleActivate() {
     if (this.pluginOpened) {
       this.pluginOpened = false;
-      // this.getImpl().removeMapEvents(this.map);
     } else {
       this.pluginOpened = true;
-      // this.getImpl().addMapsEvents(this.map);
     }
   }
 
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__';
+        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' &&
+        layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1 && layer.name !== 'infocoordinatesLayerFeatures';
     });
 
     const layers = [];
@@ -363,7 +362,8 @@ export default class VectorsControl extends M.Control {
     if (elem !== null) {
       if (elem.style.display !== 'none') {
         elem.style.display = 'none';
-        if (this.drawLayer.getGeometryType().toLowerCase() === 'linestring' || (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase() === 'linestring')) {
+        const cond = this.drawLayer.getGeometryType() !== null && this.drawLayer.getGeometryType().toLowerCase() === 'linestring';
+        if (cond || (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase() === 'linestring')) {
           document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology_profile')}&nbsp;&nbsp;<span class="icon-show"></span>`;
         } else {
           document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology')}&nbsp;&nbsp;<span class="icon-show"></span>`;
@@ -444,7 +444,6 @@ export default class VectorsControl extends M.Control {
       });
 
       document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('click', e => this.readWFSCapabilities(e));
-      document.querySelector('#m-vectors-addwfs-clear-btn').addEventListener('click', e => this.removeContains(e));
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
       button.innerHTML = getValue('close');
@@ -465,20 +464,6 @@ export default class VectorsControl extends M.Control {
     const url = evt.target.getAttribute('data-link');
     document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value = url;
     this.readWFSCapabilities(evt);
-  }
-
-  /**
-   * This function remove results show
-   *
-   * @function
-   * @param {goog.events.BrowserEvent} evt - Event
-   * @private
-   */
-  removeContains(evt) {
-    evt.preventDefault();
-    document.querySelector('#m-vectors-addwfs-results').innerHTML = '';
-    document.querySelector('#m-vectors-addwfs-suggestions').style.display = 'none';
-    document.querySelector('div.m-dialog #m-vectors-addwfs-search-input').value = '';
   }
 
   /**
@@ -658,7 +643,7 @@ export default class VectorsControl extends M.Control {
       switch (this.feature.getGeometry().type) {
         case 'Point':
         case 'MultiPoint':
-          const newPointStyle = new M.style.Point({
+          const newPointStyle = {
             radius: this.currentThickness,
             fill: {
               color: this.currentColor,
@@ -667,8 +652,13 @@ export default class VectorsControl extends M.Control {
               color: 'white',
               width: 2,
             },
-          });
-          if (this.feature !== undefined) this.feature.setStyle(newPointStyle);
+          };
+
+          if (this.feature.getStyle().getOptions().label !== undefined) {
+            newPointStyle.label = this.feature.getStyle().getOptions().label;
+          }
+
+          if (this.feature !== undefined) this.feature.setStyle(new M.style.Point(newPointStyle));
           break;
         case 'LineString':
         case 'MultiLineString':
@@ -1044,7 +1034,7 @@ export default class VectorsControl extends M.Control {
         if (features.length === 0) {
           M.dialog.info(getValue('exception.no_geoms'));
         } else {
-          this.getImpl().centerFeatures(features);
+          this.getImpl().centerFeatures(features, fileExt === 'gpx');
         }
       } catch (error) {
         M.dialog.error(getValue('exception.load_correct'));
@@ -1278,7 +1268,6 @@ export default class VectorsControl extends M.Control {
     this.isDrawingActive = false;
     this.isEditionActive = false;
     this.drawLayer = undefined;
-    // this.getImpl().addMapsEvents(this.map);
   }
 
   changeLayerLegend(layer) {
@@ -1288,6 +1277,23 @@ export default class VectorsControl extends M.Control {
       layer.setLegend(newValue);
       this.renderLayers();
       document.querySelector('div.m-mapea-container div.m-dialog').remove();
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
     }
   }
 
@@ -1301,7 +1307,7 @@ export default class VectorsControl extends M.Control {
 
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
     if (cond || !this.isDrawingActive) {
-      // this.getImpl().removeMapEvents(this.map);
+      this.invokeEscKey();
       this.drawLayer = layer;
       this.isDrawingActive = true;
       this.drawingTools.querySelector('button.m-vector-layer-profile').style.display = 'none';
@@ -1317,14 +1323,14 @@ export default class VectorsControl extends M.Control {
 
       const elem = document.querySelector('#drawingtools .drawingToolsContainer');
       if (elem.style.display === 'none') {
-        if (this.drawLayer.getGeometryType().toLowerCase() === 'linestring' || (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase() === 'linestring')) {
+        const cond2 = this.drawLayer.getGeometryType() !== null && this.drawLayer.getGeometryType().toLowerCase() === 'linestring';
+        if (cond2 || (this.drawLayer.geometry !== undefined && this.drawLayer.geometry !== '' && this.drawLayer.geometry.toLowerCase() === 'linestring')) {
           document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology_profile')}&nbsp;&nbsp;<span class="icon-show"></span>`;
         } else {
           document.querySelector('#drawingtools .collapsor').innerHTML = `${getValue('symbology')}&nbsp;&nbsp;<span class="icon-show"></span>`;
         }
       }
     } else {
-      // this.getImpl().addMapsEvents(this.map);
       this.isDrawingActive = false;
       this.drawLayer = undefined;
     }
@@ -1340,7 +1346,7 @@ export default class VectorsControl extends M.Control {
 
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
     if (cond || !this.isEditionActive) {
-      // this.getImpl().removeMapEvents(this.map);
+      this.invokeEscKey();
       if (layer.getFeatures().length > 0) {
         this.drawLayer = layer;
         this.isEditionActive = true;
@@ -1351,7 +1357,6 @@ export default class VectorsControl extends M.Control {
         M.dialog.error(getValue('exception.no_features'), getValue('warning'));
       }
     } else {
-      // this.getImpl().addMapsEvents(this.map);
       this.isEditionActive = false;
       this.drawLayer = undefined;
     }
@@ -1418,6 +1423,7 @@ export default class VectorsControl extends M.Control {
     this.drawLayer.addFeatures(this.feature);
     this.emphasizeSelectedFeature();
     this.showFeatureInfo();
+    this.getImpl().calculateElevations(this.feature);
   }
 
   /**
@@ -1479,9 +1485,10 @@ export default class VectorsControl extends M.Control {
         const y = this.getImpl().getFeatureCoordinates()[1];
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'none';
-          infoContainer.innerHTML = `${getValue('coordinates')}<br/>
-          x: ${Math.round(x * 1000) / 1000},<br/>
-          y: ${Math.round(y * 1000) / 1000}`;
+          let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('coordinates')}</b></td>`;
+          html += `<td><b>X:</b> ${Math.round(x * 1000) / 1000}</td><td><b>Y:</b> ${Math.round(y * 1000) / 1000}</td>`;
+          html += '</tr></tbody></table>';
+          infoContainer.innerHTML = html;
           if (this.feature.getStyle() !== undefined && this.feature.getStyle() !== null) {
             const style = this.feature.getStyle().getOptions();
             this.currentColor = style.fill.color;
@@ -1495,13 +1502,19 @@ export default class VectorsControl extends M.Control {
       case 'MultiLineString':
         const lineLength = this.getImpl().getFeatureLength();
         const m = formatNumber(lineLength);
-        const km = formatNumber(lineLength / 1000);
+        // const km = formatNumber(lineLength / 1000);
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'block';
-          let html = `<table class="m-vectors-results-table"><thead><tr><td colspan="3">${getValue('length')}</td></tr></thead><tbody>`;
-          html += `<tr><td>m</td><td>${m}</td></tr>`;
-          html += `<tr><td>km</td><td>${km}</td></tr>`;
-          html += '</tbody></table>';
+          const id = `m-vectors-3d-measure-${this.drawLayer.name}`;
+          const attr = this.feature.getAttributes()['3dLength'];
+          let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('length')}</b></td>`;
+          if (attr !== undefined && attr.length > 0) {
+            html += `<td><b>2D: </b>${m}m</td><td><b>3D: </b><span>${attr}m</span></td>`;
+          } else {
+            html += `<td><b>2D: </b>${m}m</td><td><b>3D: </b><span class="m-vectors-3d-measure" id="${id}">${getValue('calculate')}</span></td>`;
+          }
+
+          html += '</tr></tbody></table>';
           infoContainer.innerHTML = html;
           if (this.feature.getStyle() !== undefined && this.feature.getStyle() !== null) {
             const stroke = this.feature.getStyle().getOptions().stroke;
@@ -1528,6 +1541,14 @@ export default class VectorsControl extends M.Control {
 
           if (this.geometry === 'LineString') {
             document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
+            const elem = document.querySelector(`#${id}`);
+            if (elem !== null) {
+              elem.addEventListener('click', () => {
+                elem.classList.remove('m-vectors-3d-measure');
+                elem.innerHTML = getValue('calculating');
+                this.getImpl().get3DLength(id);
+              });
+            }
           }
         }
         break;
@@ -1536,13 +1557,11 @@ export default class VectorsControl extends M.Control {
         const area = this.getImpl().getFeatureArea();
         const m2 = formatNumber(area);
         const km2 = formatNumber(area / 1000000);
-        const ha = formatNumber(area / 10000);
+        // const ha = formatNumber(area / 10000);
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'none';
-          let html = `<table class="m-vectors-results-table"><thead><tr><td colspan="3">${getValue('area')}</td></tr></thead><tbody>`;
-          html += `<tr><td>m${'2'.sup()}</td><td>${m2}</td></tr>`;
-          html += `<tr><td>ha</td><td>${ha}</td></tr>`;
-          html += `<tr><td>km${'2'.sup()}</td><td>${km2}</td></tr>`;
+          let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('area')}</b></td>`;
+          html += `<td>${m2}m${'2'.sup()}</td><td>${km2}km${'2'.sup()}</td>`;
           html += '</tbody></table>';
           infoContainer.innerHTML = html;
           if (this.feature.getStyle() !== undefined && this.feature.getStyle() !== null) {
@@ -1596,7 +1615,7 @@ export default class VectorsControl extends M.Control {
 
     this.getImpl().calculateProfile(this.feature);
     this.drawingTools.querySelector('.collapsor').click();
-    // this.deactivateDrawing();
-    // this.deactivateSelection();
+    const content = `<div class="m-vectors-loading"><p>${getValue('generating_profile')}...</p><span class="icon-spinner" /></div>`;
+    document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = content;
   }
 }
