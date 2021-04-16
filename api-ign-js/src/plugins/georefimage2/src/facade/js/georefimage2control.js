@@ -8,6 +8,8 @@ import Georefimage2ControlImpl from '../../impl/ol/js/georefimage2control';
 import georefimage2HTML from '../../templates/georefimage2';
 import { getValue } from './i18n/language';
 
+const TIMEOUT = 90;
+
 export default class Georefimage2Control extends M.Control {
   /**
    * @classdesc
@@ -102,6 +104,8 @@ export default class Georefimage2Control extends M.Control {
 
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
+    this.canceled = false;
+    this.time = new Date().getTime();
   }
 
   /**
@@ -163,9 +167,17 @@ export default class Georefimage2Control extends M.Control {
    */
   printClick_(evt) {
     evt.preventDefault();
+    this.canceled = false;
+    this.time = new Date().getTime();
     document.querySelector('div.m-mapea-container div.m-dialog div.m-title span').innerHTML = 'Información';
     document.querySelector('div.m-dialog.info > div.m-modal > div.m-content div.m-message').innerHTML = '';
-    document.querySelector('div.m-dialog.info div.m-button').remove();
+    document.querySelector('div.m-dialog.info div.m-button button:nth-child(2)').remove();
+    document.querySelector('div.m-dialog.info div.m-button button').addEventListener('click', (e) => {
+      e.preventDefault();
+      this.canceled = true;
+      document.querySelector('div.m-mapea-container div.m-dialog').remove();
+    });
+
     const content = `<div class="m-georefimage2-loading"><p>${getValue('generating')}...</p><span class="icon-spinner" /></div>`;
     document.querySelector('div.m-dialog.info > div.m-modal > div.m-content div.m-message').innerHTML = content;
     let printOption = 'map';
@@ -239,25 +251,31 @@ export default class Georefimage2Control extends M.Control {
   getStatus(url, callback) {
     M.proxy(false);
     const newUrl = `${url}?timestamp=${new Date().getTime()}`;
-    M.remote.get(newUrl).then((response) => {
-      M.proxy(true);
-      const statusJson = JSON.parse(response.text);
-      const { status } = statusJson;
-      if (status === 'finished') {
-        callback();
-      } else if (status === 'error' || status === 'cancelled') {
-        callback();
-        if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
-          M.dialog.error(getValue('exception.teselaError'), 'Error');
+    const time = new Date().getTime();
+    if (time - (TIMEOUT * 1000) <= this.time) {
+      M.remote.get(newUrl).then((response) => {
+        M.proxy(true);
+        const statusJson = JSON.parse(response.text);
+        const { status } = statusJson;
+        if (status === 'finished') {
+          callback();
+        } else if (status === 'error' || status === 'cancelled') {
+          callback();
+          if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
+            M.dialog.error(getValue('exception.teselaError'), 'Error');
+          } else {
+            M.dialog.error(getValue('exception.printError'), 'Error');
+          }
         } else {
-          M.dialog.error(getValue('exception.printError'), 'Error');
+          setTimeout(() => this.getStatus(url, callback), 1000);
         }
-      } else {
-        setTimeout(() => this.getStatus(url, callback), 1000);
-      }
-    }).catch((err) => {
-      M.proxy(true);
-    });
+      }).catch((err) => {
+        M.proxy(true);
+      });
+    } else {
+      document.querySelector('div.m-mapea-container div.m-dialog').remove();
+      M.dialog.error(getValue('exception.imageError'));
+    }
   }
 
   /**
@@ -435,31 +453,33 @@ export default class Georefimage2Control extends M.Control {
     } else if (document.querySelector('#m-georefimage2-screen').checked) {
       printOption = 'screen';
     }
-
     const imageUrl = url !== null ? url : this.documentRead_.src;
     const dpi = printOption === 'screen' ? 120 : this.dpi_;
     const base64image = this.getBase64Image(imageUrl);
-    base64image.then((resolve) => {
-      const size = this.map_.getMapImpl().getSize();
-      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
-      const GiroA = (0).toString();
-      const GiroB = (0).toString();
-      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
-      const Cx = (bbox[0] + (Px / 2)).toString();
-      const Cy = (bbox[3] + (Py / 2)).toString();
-      const f = new Date();
-      const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
-      const zip = new JsZip();
-      zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
-      zip.file(titulo.concat('.jpg'), resolve, { base64: true });
-      zip.generateAsync({ type: 'blob' }).then((content) => {
-        // see FileSaver.js
-        saveAs(content, titulo.concat('.zip'));
-        document.querySelector('div.m-mapea-container div.m-dialog').remove();
+    if (!this.canceled) {
+      base64image.then((resolve) => {
+        if (!this.canceled) {
+          const size = this.map_.getMapImpl().getSize();
+          const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
+          const GiroA = (0).toString();
+          const GiroB = (0).toString();
+          const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
+          const Cx = (bbox[0] + (Px / 2)).toString();
+          const Cy = (bbox[3] + (Py / 2)).toString();
+          const f = new Date();
+          const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
+          const zip = new JsZip();
+          zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
+          zip.file(titulo.concat('.jpg'), resolve, { base64: true });
+          zip.generateAsync({ type: 'blob' }).then((content) => {
+            saveAs(content, titulo.concat('.zip'));
+            document.querySelector('div.m-mapea-container div.m-dialog').remove();
+          });
+        }
+      }).catch((err) => {
+        M.dialog.error(getValue('exception.imageError'));
       });
-    }).catch((err) => {
-      M.dialog.error(getValue('exception.imageError'));
-    });
+    }
   }
 
   getBase64Image(imgUrl) {
@@ -479,6 +499,7 @@ export default class Georefimage2Control extends M.Control {
 
       img.onerror = function rej() {
         Promise.reject(new Error(getValue('exception.loaderror')));
+        M.dialog.error(getValue('exception.imageError'));
       };
     });
   }

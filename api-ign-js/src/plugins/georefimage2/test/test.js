@@ -1,6 +1,6 @@
 import Georefimage2 from 'facade/georefimage2';
 
-M.language.setLang('en');
+// M.language.setLang('en');
 
 // const map = M.map({
 //   container: 'mapjs',
@@ -16,8 +16,8 @@ const map = M.map({
   maxZoom: 20,
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
-  /*layers: [
-    new M.layer.WMTS({
+  layers: [
+    /*new M.layer.WMTS({
       url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
       name: 'mtn50-edicion1',
       legend: 'Históricos',
@@ -27,8 +27,19 @@ const map = M.map({
       queryable: false,
       visible: true,
       format: 'image/jpeg',
+    }),*/
+    new M.layer.WMTS({
+      url: 'http://www.ign.es/wmts/pnoa-ma?',
+      name: 'OI.OrthoimageCoverage',
+      legend: 'Imagen (PNOA)',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: false,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/jpeg',
     }),
-  ],*/
+  ],
   // layer: ['OSM'],
   // layers: ['WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*IGNBaseTodo*false*image/png*false*false*true'],
 });

@@ -5,7 +5,7 @@
     "loaderror": "La imagen no ha podido ser cargada.",
     "teselaError": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
     "printError": "Se ha producido un error en la impresión.",
-    "imageError": "No se ha podido descargar la imagen. Inténtelo de nuevo más tarde."
+    "imageError": "No ha podido realizarse la descarga en este momento. Por favor, inténtelo más tarde."
   },
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
   "printInfo": "Impresión generada a través de Mapea",
