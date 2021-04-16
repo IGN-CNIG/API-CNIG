@@ -126,13 +126,14 @@ export default class ViewShedControl extends M.Control {
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
       button.remove();
     }, 10);
+
     M.remote.get(`${this.url_}/api/operations/checkCoordinates?x=${coord[0]}&y=${coord[1]}`).then((response) => {
       const res = JSON.parse(response.text);
       if (res.valid === true) {
         const url = `${this.url_}/api/operations/viewshed?x=${coord[0]}&y=${coord[1]}&distance=0.1`;
         M.remote.get(url).then((response2) => {
           document.querySelector('div.m-mapea-container div.m-dialog').remove();
-          const features = this.getImpl().loadGeoJSONLayer(response2.text);
+          const features = this.getImpl().loadGeoJSONLayer(response2.text, evt.coord);
           this.getImpl().centerFeatures(features);
         }).catch((err) => {
           document.querySelector('div.m-mapea-container div.m-dialog').remove();
