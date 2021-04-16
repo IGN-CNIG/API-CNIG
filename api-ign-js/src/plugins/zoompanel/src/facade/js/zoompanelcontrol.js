@@ -1,7 +1,6 @@
 /**
  * @module M/control/ZoomPanelControl
  */
-
 import ZoomPanelImplControl from 'impl/zoompanelcontrol';
 import template from 'templates/zoompanel';
 import { getValue } from './i18n/language';
@@ -88,17 +87,35 @@ export default class ZoomPanelControl extends M.Control {
    * @api
    */
   activate() {
+    this.invokeEscKey();
     super.activate();
-    document.getElementById('zoomToBox').style.backgroundColor = '#71A7D3';
-    document.getElementById('zoomToBox').style.color = 'white';
+    document.getElementById('zoomToBox').classList.add('active');
     this.getImpl().activateClick(this.map_);
-    document.addEventListener('keydown', this.checkEscKey.bind(this));
+    document.body.style.cursor = 'url(\'https://i.ibb.co/bPGFbVm/crosshair-zoom.png\') 9 13, auto';
+    document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
 
   checkEscKey(evt) {
     if (evt.key === 'Escape') {
       this.deactivate();
-      document.removeEventListener('keydown', this.checkEscKey);
+      document.removeEventListener('keyup', this.checkEscKey);
+    }
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
     }
   }
 
@@ -111,8 +128,8 @@ export default class ZoomPanelControl extends M.Control {
    */
   deactivate() {
     super.deactivate();
-    document.getElementById('zoomToBox').style.backgroundColor = 'white';
-    document.getElementById('zoomToBox').style.color = '#7A7A73';
+    document.body.style.cursor = 'default';
+    document.getElementById('zoomToBox').classList.remove('active');
     this.getImpl().deactivateClick(this.map_);
   }
 
