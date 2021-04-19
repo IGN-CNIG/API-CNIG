@@ -119,7 +119,7 @@ class Utils {
     let newMinZoom;
     let newMaxZoom;
     const generatedResolutions = [];
-    const defaultMaxZoom = 28;
+    const defaultMaxZoom = 20;
     // extent
     if (isNullOrEmpty(extent)) {
       newExtent = projection.getExtent();
