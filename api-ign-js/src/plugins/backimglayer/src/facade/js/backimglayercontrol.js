@@ -179,7 +179,11 @@ export default class BackImgLayerControl extends M.Control {
       this.activeLayer = i;
       e.currentTarget.parentElement
         .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`).classList.add('activeBackimglayerDiv');
+      M.proxy(false);
       this.map.addLayers(layers);
+      setTimeout(() => {
+        M.proxy(true);
+      }, 1000);
     }
     this.fire('backimglayer:activeChanges', [{ activeLayerId: this.activeLayer }]);
   }
