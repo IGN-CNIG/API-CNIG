@@ -237,7 +237,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
      //'Entidad singular',
      'Construcci\u00F3n/instalaci\u00F3n abierta',
      'Edificaci\u00F3n',
-     //'V\u00E9rtice Geod\u00E9sico',
+     'V\u00E9rtice Geod\u00E9sico',
      //'Hitos de demarcaci\u00F3n territorial',
      //'Hitos en v\u00EDas de comunicaci\u00F3n',
      'Alineaci\u00F3n monta\u00F1osa',
