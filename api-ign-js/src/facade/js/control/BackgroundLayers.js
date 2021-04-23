@@ -47,7 +47,7 @@ class BackgroundLayers extends ControlBase {
       };
     });
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
-    this.activeLayer = -1;
+    this.activeLayer = window.innerWidth <= M.config.MOBILE_WIDTH ? -2 : -1;
     this.idLayer = idLayer == null ? 0 : idLayer;
     this.visible = visible == null ? true : visible;
   }
@@ -111,6 +111,7 @@ class BackgroundLayers extends ControlBase {
     if (window.innerWidth <= M.config.MOBILE_WIDTH) {
       callback = this.handlerClickMobile.bind(this);
     }
+
     callback(e, layersInfo, i);
   }
 
@@ -155,17 +156,15 @@ class BackgroundLayers extends ControlBase {
     this.activeLayer = this.activeLayer % this.layers.length;
     const layersInfo = this.layers[this.activeLayer];
     const { layers, id, title } = layersInfo;
-
     layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
-
     e.target.parentElement.querySelectorAll('button[id^="m-baselayerselector-"]').forEach((button) => {
       if (button.classList.contains('activeBaseLayerButton')) {
         button.classList.remove('activeBaseLayerButton');
       }
     });
+
     e.target.innerHTML = title;
-    e.target.parentElement
-      .querySelector(`#m-baselayerselector-${id}`).classList.add('activeBaseLayerButton');
+    e.target.parentElement.querySelector(`#m-baselayerselector-${id}`).classList.add('activeBaseLayerButton');
     this.map.addLayers(layers);
   }
 
