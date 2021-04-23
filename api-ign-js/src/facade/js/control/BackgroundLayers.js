@@ -47,7 +47,7 @@ class BackgroundLayers extends ControlBase {
       };
     });
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
-    this.activeLayer = window.innerWidth <= M.config.MOBILE_WIDTH ? -2 : -1;
+    this.activeLayer = -1;
     this.idLayer = idLayer == null ? 0 : idLayer;
     this.visible = visible == null ? true : visible;
   }
@@ -72,13 +72,17 @@ class BackgroundLayers extends ControlBase {
       this.on(ADDED_TO_MAP, () => {
         const visible = this.visible;
         if (this.idLayer > -1) {
-          this.activeLayer = this.idLayer;
+          if (window.innerWidth > M.config.MOBILE_WIDTH) {
+            this.activeLayer = this.idLayer;
+          }
+
           this.showBaseLayer({
             target: {
               parentElement: html,
             },
           }, this.layers[this.activeLayer], this.activeLayer);
         }
+
         if (visible === false) {
           this.map_.removeLayers(this.map_.getBaseLayers());
         }
