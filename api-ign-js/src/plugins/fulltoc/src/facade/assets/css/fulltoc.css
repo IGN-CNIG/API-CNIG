@@ -1,3 +1,15 @@
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes rotate {
+  100% {  -webkit-transform: rotate(360deg); }
+}
+
+@-moz-keyframes rotate {
+  100% { -moz-transform: rotate(360deg); }
+}
+
 .m-panel.m-plugin-fulltoc {
   box-shadow: unset !important;
   background-color: transparent !important;
@@ -212,6 +224,10 @@ div.m-area.m-bottom.m-left div.m-plugin-fulltoc div.m-panel-controls {
   }
 
   ul.m-layers>li>div.m-legend, ul.m-base-layers>li>div.m-legend {
+    max-width: 250px !important;
+  }
+
+  ul.m-layers>li>div.m-legend, ul.m-base-layers>li>div.m-legend image {
     max-width: 250px !important;
   }
 
@@ -595,8 +611,9 @@ ul.m-layers>li, ul.m-base-layers>li {
 }
 
 ul.m-layers>li>div.m-legend, ul.m-base-layers>li>div.m-legend {
-  max-width: 50vw;
+  max-width: 420px;
   display: none;
+  overflow-x: auto;
 }
 
 ul.m-layers>li>div.m-legend-collapse, ul.m-base-layers>li>div.m-legend-collapse {
@@ -609,7 +626,6 @@ ul.m-layers>li>div.m-legend-notcollapse, ul.m-base-layers>li>div.m-legend-notcol
 }
 
 ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
-  max-width: 45vw;
   margin-left: 5px;
   margin-right: 5px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
@@ -772,7 +788,7 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 }
 
 .m-fulltoc-service-type-container {
-  display: flex;
+  display: none;
   justify-content: center;
   font-size: 12px;
   align-items: center;
@@ -804,16 +820,19 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   -moz-user-select: none; /* Firefox 2+ */
   -ms-user-select: none; /* IE 10+ */
   user-select: none;
+  font-weight: bold;
 }
 
 .m-fulltoc-suggestion-caret::before {
-  content: "+";
+  font-family: "fulltoc" !important;
+  content: '\e916';
   display: inline-block;
   margin-right: 6px;
 }
 
 .m-fulltoc-suggestion-caret-close::before {
-  content: "-";
+  font-family: "fulltoc" !important;
+  content: '\e918';
 }
 
 .m-fulltoc-suggestion-group {
@@ -901,4 +920,98 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 
 #m-fulltoc-addservices-results .m-fulltoc-capabilities-container div {
   word-break: break-word;
+}
+
+#m-fulltoc-addservices-codsi {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+#m-fulltoc-addservices-codsi > p {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+#m-fulltoc-addservices-codsi-pagination {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+#m-fulltoc-addservices-codsi-pagination button.m-fulltoc-addservices-pagination-btn {
+  padding: 3px 7px;
+  background-color: #71a7d3;
+  font-family: Muli,"sans-serif" !important;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #71a7d3;
+  color: white;
+  font-weight: bold;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  outline: none;
+  text-decoration: none;
+}
+
+#m-fulltoc-addservices-codsi-pagination button.m-fulltoc-addservices-pagination-btn:disabled {
+  color: #767676;
+  background-color: #eeeeee;
+  border-color: #eeeeee;
+}
+
+#m-fulltoc-addservices-codsi-results table tbody tr td span {
+  cursor: pointer;
+}
+
+#m-fulltoc-addservices-codsi-results table tbody tr td span:hover {
+  text-decoration: underline;
+}
+
+.m-fulltoc-loading {
+  width: 100%;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.m-fulltoc-loading p {
+  margin-bottom: 1rem;
+}
+
+.m-fulltoc-loading span {
+  font-size: 3rem;
+  animation: rotate 1s linear infinite;
+  -webkit-animation: rotate 1s linear infinite;
+  -moz-animation: rotate 1s linear infinite;
+}
+
+.m-fulltoc-addservices-codsi-search-panel {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.m-fulltoc-addservices-codsi-search-panel input {
+  width: 160px;
+}
+
+.m-fulltoc-addservices-codsi-search-panel span {
+  margin-left: 3px;
+  cursor: pointer;
+  color: #6c6c6c !important;
+  opacity: 1 !important;
+  font-size: 14px !important;
+}
+
+div.codsi-no-results {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+#m-fulltoc-addservices-codsi-results {
+  font-size: 12px;
+}
+
+.m-dialog {
+  z-index: 999999 !important;
 }
