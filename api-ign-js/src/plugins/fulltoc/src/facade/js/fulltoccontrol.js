@@ -510,7 +510,7 @@ export default class FullTOCControl extends M.Control {
     const end = pageNumber * CODSI_PAGESIZE;
     let url = CODSI_CATALOG.split('*1').join(`${start}`).split('*2').join(`${end}`);
     if (query !== '') {
-      url += `&any=*${query}*`;
+      url += `&any=*${encodeURIComponent(query)}*`;
     }
 
     M.remote.get(url).then((response) => {

@@ -71,6 +71,8 @@ span.m-content-collapsed {
 }
 
 .m-popup>div.m-content>div.m-body {
-  max-width: 300px !important;
+  /*max-width: 300px !important;*/
   overflow-x: auto !important;
+  resize: horizontal;
+  min-width: 280px !important;
 }

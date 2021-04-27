@@ -428,7 +428,7 @@ const mp = new FullTOC({
   https: true,
   http: true,
   // precharged,
-  // codsi: true,
+  codsi: true,
 });
 
 window.mp = mp;

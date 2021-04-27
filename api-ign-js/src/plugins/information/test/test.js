@@ -5,7 +5,9 @@ import Information from 'facade/information';
 const map = M.map({
   container: 'mapjs',
   controls: ['location'],
-  zoom: 3,
+  zoom: 7,
+  layers: [],
+  center: [-447979.2542807377, 4849659.371752165],
 });
 
 const mp = new Information({
