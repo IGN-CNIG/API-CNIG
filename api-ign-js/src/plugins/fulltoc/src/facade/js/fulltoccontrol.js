@@ -919,7 +919,10 @@ export default class FullTOCControl extends M.Control {
                 );
                 this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
                 this.capabilities.forEach((layer) => {
-                  this.getParents(getCapabilities, layer);
+                  try {
+                    this.getParents(getCapabilities, layer);
+                  /* eslint-disable no-empty */
+                  } catch (err) {}
                 });
 
                 this.showResults();
@@ -1077,14 +1080,39 @@ export default class FullTOCControl extends M.Control {
         });
 
         if (filtered.length > 0) {
-          parent = l;
+          parent = l.Title;
+        } else if (M.utils.isObject(l.Layer.Layer) && l.Layer.Layer.Name === name) {
+          parent = `${l.Title} - ${l.Layer.Layer.Title}`;
+        } else if (M.utils.isArray(l.Layer) && l.Layer.length > 0) {
+          const innerFiltered = l.Layer.filter((ll) => {
+            return ll.Name === name;
+          });
+
+          if (innerFiltered.length > 0) {
+            parent = `${l.Title} - ${l.Layer.Title}`;
+          } else {
+            const innerInnerFiltered = l.Layer.filter((ll) => {
+              let contains = false;
+              if (ll.Layer !== undefined && ll.Layer.length > 0) {
+                contains = ll.Layer.filter((lll) => {
+                  return lll.Name === name;
+                }).length > 0;
+              }
+
+              return contains;
+            });
+
+            if (innerInnerFiltered.length > 0) {
+              parent = `${l.Title} - ${innerInnerFiltered[0].Title}`;
+            }
+          }
         }
       }
     });
 
     if (parent !== undefined) {
       /* eslint-disable no-param-reassign */
-      layer.legend = `${parent.Title} - ${layer.legend}`;
+      layer.legend = `${parent} - ${layer.legend}`;
     }
   }
 
