@@ -466,9 +466,28 @@ export default class VectorsControl extends M.impl.Control {
 
     features = this.featuresToFacade(features);
     features = this.geometryCollectionParse(features);
-    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
-    layer.addFeatures(features);
-    this.facadeMap_.addLayers(layer);
+    const others = [];
+    const lines = [];
+    features.forEach((f) => {
+      if (f.getGeometry().type.toLowerCase().indexOf('linestring') > -1) {
+        lines.push(f);
+      } else {
+        others.push(f);
+      }
+    });
+
+    if (lines.length > 0) {
+      const layer = new M.layer.Vector({ name: `${layerName}_lines`, legend: `${layerName}_lines`, extract: false });
+      layer.addFeatures(lines);
+      this.facadeMap_.addLayers(layer);
+    }
+
+    if (others.length > 0) {
+      const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+      layer.addFeatures(others);
+      this.facadeMap_.addLayers(layer);
+    }
+
     return features;
   }
 
