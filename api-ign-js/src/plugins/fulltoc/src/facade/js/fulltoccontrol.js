@@ -615,6 +615,9 @@ export default class FullTOCControl extends M.Control {
       const group = evt.target.parentElement.parentElement.parentElement;
       const nameGroup = group.querySelector('span.m-fulltoc-suggestion-caret').innerText;
       this.filterName = nameGroup;
+      if (group.localName === 'tbody') {
+        this.filterName = 'none';
+      }
       /* eslint-disable no-empty */
     } catch (err) {}
     const serviceType = evt.target.getAttribute('data-service-type');
@@ -850,7 +853,7 @@ export default class FullTOCControl extends M.Control {
     let HTTPeval = false;
     let HTTPSeval = false;
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
-    const url = document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value.trim();
+    const url = document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value.trim().split('?')[0];
     const type = (document.getElementById('m-fulltoc-addservices-wmts').checked || url.indexOf('wmts') > -1) ? 'WMTS' : 'WMS';
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
@@ -913,6 +916,12 @@ export default class FullTOCControl extends M.Control {
                   this.map_.getProjection().code,
                 );
                 this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
+                this.capabilities.forEach((layer) => {
+                  try {
+                    this.getParents(getCapabilities, layer);
+                  /* eslint-disable no-empty */
+                  } catch (err) {}
+                });
                 this.showResults();
               } catch (err) {
                 M.dialog.error(getValue('exception.capabilities'));
@@ -983,6 +992,21 @@ export default class FullTOCControl extends M.Control {
       }
 
       allLayers.forEach((layer) => {
+        layers.push(layer);
+        layerNames.push(layer.name);
+      });
+    } else if (this.filterName === 'none') {
+      if (this.precharged.services !== undefined && this.precharged.services.length > 0) {
+        allServices = allServices.concat(this.precharged.services);
+      }
+      if (this.precharged.groups !== undefined && this.precharged.groups.length > 0) {
+        this.precharged.groups.forEach((group) => {
+          if (group.services !== undefined && group.services.length > 0) {
+            allServices = allServices.concat(group.services);
+          }
+        });
+      }
+      allLayers.forEach((layer) => {
         let insideService = false;
         allServices.forEach((service) => {
           if (service.type === layer.type && service.url === layer.url) {
@@ -1038,6 +1062,48 @@ export default class FullTOCControl extends M.Control {
     }
 
     return layers;
+  }
+
+  getParents(capabilities, layer) {
+    const name = layer.name;
+    const layers = capabilities.Capability.Layer.Layer;
+    let parent;
+    layers.forEach((l) => {
+      if (l.Name !== name && l.Layer !== undefined && l.Layer.length > 0) {
+        const filtered = l.Layer.filter((ll) => {
+          return ll.Name === name;
+        });
+        if (filtered.length > 0) {
+          parent = l.Title;
+        } else if (M.utils.isObject(l.Layer.Layer) && l.Layer.Layer.Name === name) {
+          parent = `${l.Title} - ${l.Layer.Layer.Title}`;
+        } else if (M.utils.isArray(l.Layer) && l.Layer.length > 0) {
+          const innerFiltered = l.Layer.filter((ll) => {
+            return ll.Name === name;
+          });
+          if (innerFiltered.length > 0) {
+            parent = `${l.Title} - ${l.Layer.Title}`;
+          } else {
+            const innerInnerFiltered = l.Layer.filter((ll) => {
+              let contains = false;
+              if (ll.Layer !== undefined && ll.Layer.length > 0) {
+                contains = ll.Layer.filter((lll) => {
+                  return lll.Name === name;
+                }).length > 0;
+              }
+              return contains;
+            });
+            if (innerInnerFiltered.length > 0) {
+              parent = `${l.Title} - ${innerInnerFiltered[0].Title}`;
+            }
+          }
+        }
+      }
+    });
+    if (parent !== undefined) {
+      /* eslint-disable no-param-reassign */
+      layer.legend = `${parent} - ${layer.legend}`;
+    }
   }
 
   /**

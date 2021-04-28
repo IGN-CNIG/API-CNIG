@@ -1,10 +1,10 @@
 <ul id="m-ignsearchlocator-results-list">
     {{#each places}}
         {{#if this.address}}
-            {{#printType this.type this.address this.id this.municipality}}
+            {{#printType this.type this.address this.id this.municipality this.cps}}
             {{/printType}}
         {{else}}
-            {{#printType this.type this.title this.id this.municipality}}
+            {{#printType this.type this.title this.id this.municipality this.cps}}
             {{/printType}}
         {{/if}}
     {{/each}}

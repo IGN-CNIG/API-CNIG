@@ -804,7 +804,10 @@ export default class IGNSearchControl extends M.Control {
               resultsArray.splice(0, 0, thisElement);
             }
           }
-
+          resultsArray.forEach((elem) => {
+            // eslint-disable-next-line no-param-reassign
+            elem.cps = true;
+          });
           resolve();
         });
       } else {
