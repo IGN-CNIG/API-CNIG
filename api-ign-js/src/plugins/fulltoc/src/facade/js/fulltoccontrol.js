@@ -1349,6 +1349,7 @@ export default class FullTOCControl extends M.Control {
         }
       }
 
+      layers.reverse();
       this.map_.addLayers(layers);
       this.afterRender();
     }
