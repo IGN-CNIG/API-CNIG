@@ -363,7 +363,19 @@ export default class CompareMirrorpanel extends M.Control {
 
   addCommonPlugins(map) {
     if (M.plugin.BackImgLayer !== undefined && this.backImgLayersConfig.position !== undefined) {
-      map.addPlugin(new M.plugin.BackImgLayer(this.backImgLayersConfig));
+      //e2m: check number of layers for applying the effect
+      if (this.backImgLayersConfig.layerOpts.length<3){
+        M.dialog.info(getValue('no_layers_plugin'));
+      }else{
+        if (mapLyr==='C'){
+          this.backImgLayersConfig.layerId = 1;
+        } else if (mapLyr==='D'){
+          this.backImgLayersConfig.layerId = 2;
+        } else {
+          this.backImgLayersConfig.layerId = 0;
+        }
+        map.addPlugin(new M.plugin.BackImgLayer(this.backImgLayersConfig));
+      }
     }
 
     if (M.plugin.FullTOC !== undefined && this.fullTOCConfig.position !== undefined) {
