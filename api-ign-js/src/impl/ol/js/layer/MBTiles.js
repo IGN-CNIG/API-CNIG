@@ -12,8 +12,6 @@ import Layer from './Layer';
 import * as LayerType from '../../../../facade/js/layer/Type';
 import TileProvider from '../../../../facade/js/provider/Tile';
 
-const DEFAULT_WHITE_TILE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAQAAAD2e2DtAAABu0lEQVR42u3SQREAAAzCsOHf9F6oIJXQS07TxQIABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAgAACwAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAAsAEAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAKg9kK0BATSHu+YAAAAASUVORK5CYII=';
-
 /**
  * Default tile size of MBTiles
  * @const
@@ -175,7 +173,7 @@ class MBTiles extends Layer {
       if (tileSrc) {
         imgTile.getImage().src = tileSrc;
       } else {
-        imgTile.getImage().src = DEFAULT_WHITE_TILE;
+        imgTile.getImage().src = imgTile.getImage().src;
       }
     });
   }
@@ -184,7 +182,11 @@ class MBTiles extends Layer {
     const imgTile = tile;
     const tileCoord = tile.getTileCoord();
     const tileSrc = tileProvider.getTile([tileCoord[0], tileCoord[1], -tileCoord[2] - 1]);
-    imgTile.getImage().src = tileSrc;
+    if (tileSrc) {
+      imgTile.getImage().src = tileSrc;
+    } else {
+      imgTile.getImage().src = imgTile.getImage().src;
+    }
   }
 
   fetchSource() {

@@ -1,9 +1,11 @@
 /**
  * @module M/impl/layer/MBTilesVector
  */
-import { isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, readJSON as readStyleJSON } from 'M/util/Utils';
 import { get as getProj, transformExtent } from 'ol/proj';
 import { inflate } from 'pako';
+import stylefunction from 'ol-mapbox-style/dist/stylefunction';
+
 import OLLayerTile from 'ol/layer/Tile';
 import OLLayerVectorTile from 'ol/layer/VectorTile';
 import OLSourceVectorTile from 'ol/source/VectorTile';
@@ -19,6 +21,7 @@ import TileState from 'ol/TileState';
 import TileEventType from 'ol/source/TileEventType';
 import ImplMap from '../Map';
 import Vector from './Vector';
+
 
 /**
  * Default tile size of MBTiles
@@ -40,6 +43,7 @@ const generateResolutions = (extent, tileSize, zoomLevels) => {
   }
   return resolutions;
 };
+
 /**
  * @classdesc
  * @api
@@ -76,6 +80,11 @@ class MBTilesVector extends Vector {
      * @type {ArrayBuffer|Uint8Array|Response|File}
      */
     this.source_ = userParameters.source;
+    /**
+     * MBTilesVector style
+     * @type {File}
+     */
+    this.style_ = userParameters.style;
     /**
      * Tile size (default value 256)
      * @private
@@ -141,59 +150,63 @@ class MBTilesVector extends Vector {
     const { code } = this.map.getProjection();
     const projection = getProj(code);
     const extent = projection.getExtent();
-    const resolutions = generateResolutions(extent, this.tileSize_, 16);
-    if (!this.tileLoadFunction_) {
-      this.fetchSource().then((tileProvider) => {
-        this.tileProvider_ = tileProvider;
-        this.tileProvider_.getExtent().then((mbtilesExtent) => {
-          let reprojectedExtent = mbtilesExtent;
-          if (reprojectedExtent) {
-            reprojectedExtent = transformExtent(mbtilesExtent, 'EPSG:4326', code);
-          }
-          this.ol3Layer = this.createLayer({
-            tileProvider,
-            resolutions,
-            extent: reprojectedExtent,
-            sourceExtent: extent,
-            projection,
-          });
-          this.ol3Layer.getSource()
-            .on(TileEventType.TILELOADERROR, evt => this.checkAllTilesLoaded_(evt));
-          this.ol3Layer.getSource()
-            .on(TileEventType.TILELOADEND, evt => this.checkAllTilesLoaded_(evt));
-          this.map.on(EventType.CHANGE_ZOOM, () => {
-            if (this.map) {
-              const newZoom = this.map.getZoom();
-              if (this.lastZoom_ !== newZoom) {
-                this.features_.length = 0;
-                this.lastZoom_ = newZoom;
-              }
+    const resolutions = generateResolutions(extent, this.tileSize_, 10);
+    readStyleJSON(this.style_).then((jsonStyle) => {
+      this.glStyle_ = jsonStyle;
+      if (!this.tileLoadFunction_) {
+        this.fetchSource().then((tileProvider) => {
+          this.tileProvider_ = tileProvider;
+          this.tileProvider_.getExtent().then((mbtilesExtent) => {
+            let reprojectedExtent = mbtilesExtent;
+            if (reprojectedExtent) {
+              reprojectedExtent = transformExtent(mbtilesExtent, 'EPSG:4326', code);
             }
+            this.ol3Layer = this.createLayer({
+              tileProvider,
+              resolutions,
+              extent: reprojectedExtent,
+              sourceExtent: extent,
+              projection,
+            });
+            this.ol3Layer.getSource()
+              .on(TileEventType.TILELOADERROR, evt => this.checkAllTilesLoaded_(evt));
+            this.ol3Layer.getSource()
+              .on(TileEventType.TILELOADEND, evt => this.checkAllTilesLoaded_(evt));
+            this.map.on(EventType.CHANGE_ZOOM, () => {
+              if (this.map) {
+                const newZoom = this.map.getZoom();
+                if (this.lastZoom_ !== newZoom) {
+                  this.features_.length = 0;
+                  this.lastZoom_ = newZoom;
+                }
+              }
+            });
+            stylefunction(this.ol3Layer, this.glStyle_, '');
+            this.map.getMapImpl().addLayer(this.ol3Layer);
           });
-          this.map.getMapImpl().addLayer(this.ol3Layer);
         });
-      });
-    } else {
-      this.ol3Layer = this.createLayer({
-        resolutions,
-        sourceExtent: extent,
-        projection,
-      });
-      this.ol3Layer.getSource()
-        .on(TileEventType.TILELOADERROR, evt => this.checkAllTilesLoaded_(evt));
-      this.ol3Layer.getSource()
-        .on(TileEventType.TILELOADEND, evt => this.checkAllTilesLoaded_(evt));
-      this.map.on(EventType.CHANGE_ZOOM, () => {
-        if (this.map) {
-          const newZoom = this.map.getZoom();
-          if (this.lastZoom_ !== newZoom) {
-            this.features_.length = 0;
-            this.lastZoom_ = newZoom;
+      } else {
+        this.ol3Layer = this.createLayer({
+          resolutions,
+          sourceExtent: extent,
+          projection,
+        });
+        this.ol3Layer.getSource()
+          .on(TileEventType.TILELOADERROR, evt => this.checkAllTilesLoaded_(evt));
+        this.ol3Layer.getSource()
+          .on(TileEventType.TILELOADEND, evt => this.checkAllTilesLoaded_(evt));
+        this.map.on(EventType.CHANGE_ZOOM, () => {
+          if (this.map) {
+            const newZoom = this.map.getZoom();
+            if (this.lastZoom_ !== newZoom) {
+              this.features_.length = 0;
+              this.lastZoom_ = newZoom;
+            }
           }
-        }
-      });
-      this.map.getMapImpl().addLayer(this.ol3Layer);
-    }
+        });
+        this.map.getMapImpl().addLayer(this.ol3Layer);
+      }
+    });
   }
   /** This function create the implementation ol layer.
    *
@@ -202,7 +215,9 @@ class MBTilesVector extends Vector {
    * @api
    */
   createLayer(opts) {
-    const mvtFormat = new MVT();
+    const mvtFormat = new MVT({
+      layers: ['0502p_ent_pob_ine'],
+    });
     const layer = new OLLayerVectorTile({
       visible: this.visibility,
       opacity: this.opacity_,
@@ -213,7 +228,8 @@ class MBTilesVector extends Vector {
       const source = new OLSourceVectorTile({
         projection: opts.projection,
         url: '{z},{x},{y}',
-        tileLoadFunction: tile => this.loadVectorTileWithProvider(tile, mvtFormat, opts),
+        format: mvtFormat,
+        tileLoadFunction: tile => this.loadVectorTileWithProvider(tile, opts),
         tileGrid: new TileGrid({
           extent: opts.sourceExtent,
           origin: getBottomLeft(opts.sourceExtent),
@@ -265,11 +281,12 @@ class MBTilesVector extends Vector {
     });
   }
 
-  loadVectorTileWithProvider(tile, formatter, opts) {
+  loadVectorTileWithProvider(tile, opts) {
     tile.setState(TileState.LOADING);
     tile.setLoader((extent, resolution, projection) => {
       const tileCoord = tile.getTileCoord();
-      opts.tileProvider.getVectorTile([tileCoord[0], tileCoord[1], -tileCoord[2] - 1])
+      const formatter = tile.getFormat();
+      opts.tileProvider.getVectorTile([tileCoord[0], tileCoord[1], -tileCoord[2] - 1], extent)
         .then((pbf) => {
           if (pbf) {
             const features = formatter.readFeatures(pbf, {

@@ -2,7 +2,6 @@ import { map as Mmap } from 'M/mapea';
 import WFS from 'M/layer/WFS';
 import Polygon from 'M/style/Polygon';
 import Point from 'M/style/Point';
-import Category from 'M/style/Category';
 import Cluster from 'M/style/Cluster';
 import Clustered from 'M/feature/Clustered';
 import { LOAD as LoadEvt, SELECT_FEATURES as SelectFeaturesEvt } from 'M/event/eventtype';
@@ -71,11 +70,6 @@ let tercera = new Point({
     src: 'https://image.flaticon.com/icons/svg/34/34654.svg',
     scale: 0.1
   },
-});
-let categoryStyle = new Category("categoria", {
-  "Primera": primera,
-  "Segunda": segunda,
-  "Tercera": tercera
 });
 
 //Estilo para cluster

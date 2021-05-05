@@ -113,7 +113,6 @@ class Feature {
     }
     return features;
   }
-
   /**
    * function adds the event 'click'
    *

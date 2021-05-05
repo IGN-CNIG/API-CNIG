@@ -1135,3 +1135,18 @@ export const getUint8ArrayFromData = (data) => {
     }
   });
 };
+
+export const readJSON = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new window.FileReader();
+    reader.onload = () => {
+      const json = JSON.parse(reader.result);
+      resolve(json);
+    };
+    try {
+      reader.readAsText(file);
+    } catch (e) {
+      resolve(null);
+    }
+  });
+};

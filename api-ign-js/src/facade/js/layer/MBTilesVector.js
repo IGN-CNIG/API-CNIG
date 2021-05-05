@@ -32,6 +32,7 @@ class MBTilesVector extends Vector {
     const parameters = {
       ...mbtilesvector(userParameters),
       source: userParameters.source,
+      style: userParameters.style,
       tileLoadFunction: userParameters.tileLoadFunction,
     };
     const impl = new MBTilesVectorImpl(parameters, options, vendorOptions);
