@@ -68,6 +68,12 @@
             <option value=false>false</option>
         </select>
 
+        <label for="selectCODSI">Selector codsi</label>
+        <select name="codsi" id="selectCODSI">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+
         <input type="submit" id="buttonAPI" value="API Rest" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -101,13 +107,14 @@
         });
 
         let mp, posicion, collapsed = true,
-            http, https, ocupacionSuelo, layerUA, layerinicial;
-        crearPlugin(collapsed, posicion, http, https);
+            http, https, ocupacionSuelo, layerUA, layerinicial, codsi;
+        crearPlugin(collapsed, posicion, http, https, codsi);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectHttp = document.getElementById("selectHttp");
         const selectHttps = document.getElementById("selectHttps");
+        const selectCODSI = document.getElementById("selectCODSI");
         const buttonApi = document.getElementById("buttonAPI");
 
 
@@ -115,49 +122,60 @@
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
             https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
-
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            codsi = (selectCODSI.options[selectCODSI.selectedIndex].value == 'true');
             map.removePlugins(mp);
-            crearPlugin(collapsed, http, https, posicion);
-        })
+            crearPlugin(collapsed, http, https, posicion, codsi);
+        });
 
         selectCollapsed.addEventListener('change', function() {
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
             https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            codsi = (selectCODSI.options[selectCODSI.selectedIndex].value == 'true');
             map.removePlugins(mp);
-            crearPlugin(collapsed, http, https, posicion);
-        })
+            crearPlugin(collapsed, http, https, posicion, codsi);
+        });
 
         selectHttp.addEventListener('change', function() {
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
             https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
-
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            codsi = (selectCODSI.options[selectCODSI.selectedIndex].value == 'true');
             map.removePlugins(mp);
-            crearPlugin(collapsed, http, https, posicion);
-        })
+            crearPlugin(collapsed, http, https, posicion, codsi);
+        });
 
         selectHttps.addEventListener('change', function() {
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
             https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
-
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            codsi = (selectCODSI.options[selectCODSI.selectedIndex].value == 'true');
             map.removePlugins(mp);
-            crearPlugin(collapsed, http, https, posicion);
-        })
+            crearPlugin(collapsed, http, https, posicion, codsi);
+        });
+
+        selectCODSI.addEventListener('change', function() {
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
+            https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
+            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            codsi = (selectCODSI.options[selectCODSI.selectedIndex].value == 'true');
+            map.removePlugins(mp);
+            crearPlugin(collapsed, http, https, posicion, codsi);
+        });
 
         buttonApi.addEventListener('click', function() {
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
             https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?fulltoc=' + posicion + '*' + collapsed + '*' + collapsible;
-        })
+            codsi = (selectCODSI.options[selectCODSI.selectedIndex].value == 'true');
+            window.location.href = 'https://mapea-lite-6.desarrollo.guadaltel.es/api-core//api-core/?fulltoc=' + posicion + '*' + collapsed + '*' + collapsible + '*' + codsi;
+        });
 
         // const precharged = {
         //     groups: [{
@@ -204,12 +222,13 @@
 
 
 
-        function crearPlugin(collapsed, http, https, posicion) {
+        function crearPlugin(collapsed, http, https, posicion, codsi) {
             mp = new M.plugin.FullTOC({
                 position: posicion,
                 collapsed: collapsed,
                 http: http,
                 https: https,
+                codsi: (codsi || false),
                 precharged: {
                     groups: [{
                             name: 'Hidrografía',
@@ -271,7 +290,7 @@
 			  legend: 'Unidad administrativa',
 			  tiled: false,
 			}, {});
-			
+
 			layerinicial = new M.layer.WMS({
 			  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
 			  name: 'AU.AdministrativeBoundary',
@@ -298,5 +317,14 @@
         }
     </script>
 </body>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-163660977-1');
+</script>
 
 </html>

@@ -13,8 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/vectors/vectors.ol.min.css" rel="stylesheet" />
-    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/viewshed/viewshed.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -60,17 +59,12 @@
             <option value="true" selected="selected">true</option>
             <option value="false">false</option>
         </select>
-        <label for="wfsZoomInput">Parámetro wfszoom</label>
-        <input type="number" id="wfsZoomInput" value="12" max="28" min="0" />
-        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar"/>
-
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/vectors/vectors.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/viewshed/viewshed.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -84,53 +78,50 @@
     <script type="text/javascript">
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
-
         const map = M.map({
             container: 'mapjs',
+            center:  [-428106.86611520057, 4334472.25393817],
+            zoom: 4,
+            layers: [
+              new M.layer.WMTS({
+                url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                name: 'EL.GridCoverageDSM',
+                legend: 'LiDAR',
+                matrixSet: 'GoogleMapsCompatible',
+                transparent: false,
+                displayInLayerSwitcher: false,
+                queryable: false,
+                visible: true,
+                format: 'image/png',
+              }),
+            ],
         });
-        let mp,collapsed,collapsible,wfszoom;
-        const precharged = [
-        	{
-		      name: 'Hidrografía',
-		      url: 'https://servicios.idee.es/wfs-inspire/hidrografia?',
-		    },
-		    {
-		      name: 'Límites administrativos',
-		      url: 'https://www.ign.es/wfs-inspire/unidades-administrativas?',
-		    },
-		];
-        crearPlugin({ precharged: precharged });
+
+        let mp;
+        crearPlugin({ position: 'TR', collapsed: true, collapsible: true });
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
-        const wfsZoomInput = document.getElementById("wfsZoomInput");
         selectPosicion.addEventListener('change',cambiarTest);
         selectCollapsed.addEventListener('change',cambiarTest);
         selectCollapsible.addEventListener('change',cambiarTest);
-        wfsZoomInput.addEventListener('change',cambiarTest);
 
         function cambiarTest(){
-            let objeto = { precharged: precharged }
+            let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             let collapsedValor = selectCollapsed.options[selectCollapsed.selectedIndex].value;
             collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor == "true" || collapsedValor == true) : "true";
             let collapsibleValor = selectCollapsible.options[selectCollapsible.selectedIndex].value;
             collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == "true" || collapsibleValor == true) : "true";
-            let wfsZoomValor = wfsZoomInput.value;
-            wfszoom = wfsZoomValor != "" ? objeto.wfszoom = parseInt(wfsZoomValor, 10) : objeto.wfszoom =  12;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
 
         function crearPlugin(propiedades){
-            mp = new M.plugin.Vectors(propiedades);
+            mp = new M.plugin.ViewShed(propiedades);
             map.addPlugin(mp);
         }
-        let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
-            position: "TR",
-        });
-        map.addPlugin(mp2);
+
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);

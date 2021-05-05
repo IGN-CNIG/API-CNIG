@@ -29,559 +29,417 @@
 
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-
+<html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Test API-CNIG</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API CNIG - Galería de Test</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" >
+
     <style type="text/css">
-        *,
-        ::after,
-        ::before {
-            box-sizing: border-box;
-            margin: 0;
-            font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
-        }
+      @import url(https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700);
 
-        .container {
-            max-width: 1344px;
-            width: 100%;
-            margin: 0 auto;
-        }
+      html {
+        position: relative;
+        min-height: 100%;
+      }
 
-        .cabecera {
-            padding: 3rem 1.5rem;
-            color: white;
-            background: #00d1b2;
-            display: block;
-            position: relative;
-        }
+      body {
+        font-family: 'Quattrocento Sans', sans-serif;
+        font-size: 16px;
+        padding-top: 70px;
+      }
 
-        h1 {
-            clear: both;
-            font-weight: 400;
-            padding-left: 0.3em;
-            padding-top: 1.2em;
-        }
+      .navbar {
+        background-color: #8f2031;
+        color: white;
+        border: 0;
+        border-radius: 0;
+      }
 
-        .cabecera .container {
-            padding-left: 0.4rem;
-        }
+      .navbar-brand {
+        color: white;
+        font-weight: bold;
+        font-size: 160%;
+        padding: 8px 0;
+      }
 
-        .titulo {
-            font-size: 2rem;
-            font-weight: 600;
-            line-height: 1.125;
-        }
+      .navbar-brand:hover,
+      .navbar-brand:focus {
+        color: #aae1e9;
+      }
 
-        .subtitulo {
-            font-size: 1.25rem;
-            font-weight: 400;
-            line-height: 1.25;
-        }
+      .navbar-brand img {
+        height: 35px;
+        vertical-align: middle;
+        margin-right: 5px;
+        display: inline-block;
+      }
 
-        .prueba {
-            height: 10em;
-            width: 15.8em;
-            margin: .5rem;
-            float: left;
-            overflow: hidden;
-            text-overflow: clip;
-            word-wrap: break-word;
-            padding: 0.2em;
-            text-align: center;
-            background-color: #209cee;
-            border-radius: 0.4rem;
-            color: white;
-        }
+      .dropdown-item.active, .dropdown-item:hover {
+        color: #fff;
+        text-decoration: none;
+        background-color:#268591
+      }
 
-        div.prueba>p:nth-child(3) {
-            font-size: 10pt;
-            padding: 0 0.5em;
-            overflow-y: auto;
-            height: 4.5em;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+      .nav>li>a:hover, .nav>li>a:focus, .nav>li>a.active {
+        background-color: #268591;
+      }
 
-        .prueba>a {
-            display: block;
-            position: relative;
-            padding-top: 0.7em;
-            font-size: 14pt;
-            color: white;
-        }
+      .navbar-nav>li>a {
+        color: white;
+      }
 
-        img {
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-        }
+      .display-table {
+        display: table;
+      }
 
-        img:hover {
-            opacity: 0.7;
-        }
+      a {
+        color: #03899c;
+        text-decoration:none
+      }
 
-        div.prueba>p:nth-child(3)::-webkit-scrollbar {
-            display: none;
-        }
+      a:hover, a:focus {
+        color: #ff7a00;
+        text-decoration:none
+      }
 
-        .prueba:hover {
-            background-color: #5fc6e6;
-        }
+      .btn-link {
+        font-weight: 400;
+        color: #03899c;
+        text-decoration: none;
+      }
 
-        .pending {
-            opacity: 0.5;
-            pointer-events: none;
-        }
+      .btn-link:hover {
+        color: #ff7a00;
+        text-decoration: none;
+      }
 
-        a {
-            text-decoration: none;
-            color: #4E4E4E;
-        }
+      .version-form, .navbar-form {
+      display: table-cell;
+        vertical-align: middle;
+      }
 
-        .prueba p {
-            font-size: 10pt;
-            padding: 0 0.5em;
-        }
+      .version-form {
+        color: #333;
+      }
 
-        .idiomas {
-            padding-top: 0.4em;
-        }
+      #title {
+        margin-top: 0;
+      }
+
+      .badge-group {
+        display: inline-block;
+      }
+
+      .badge-group > .badge:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .badge-group > .badge:not(:first-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .tag-modal-toggle {
+        cursor: pointer;
+      }
+
+      .modal-tag-example .modal-body {
+        padding: 0;
+      }
+
+      .modal-tag-example .list-group-item:focus,
+      .modal-tag-example .list-group-item:hover,
+      .modal-tag-example .list-group-item:active {
+        background-color: rgba(31, 107, 117, .6875);
+        border-color: #1F6B75;
+        color: white;
+      }
+
+      .modal-tag-example .list-group-item.active {
+        background-color: #1F6B75;
+        color: white;
+      }
+
+      #docs {
+        margin-top: 1em;
+      }
+
+      ul.inline,
+      ol.inline {
+        margin-left: 0;
+        padding-left: 0;
+        list-style: none;
+      }
+
+      ul.inline>li,
+      ol.inline>li {
+        display: inline-block;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+
+      .map {
+        height: 400px;
+        width: 100%;
+        background: url(map-background.jpg) repeat;
+        margin-bottom: 10px;
+      }
+
+      .ol-attribution.ol-logo-only,
+      .ol-attribution.ol-uncollapsible {
+        max-width: calc(100% - 3em);
+      }
+
+      .ol-attribution ul {
+        font-size: 14px;
+      }
+
+      .iframe-info iframe {
+        width: 100%;
+      }
+
+      .source-heading {
+        margin-top: 1em;
+        margin-bottom: 0;
+        padding-left: .6em;
+        font-weight: bold;
+      }
+
+      pre[class*="language-"] {
+        background: #FFFFFF;
+        font-size: 87.5%;
+      }
+
+      pre {
+        border: 1px solid #eee;
+        border-radius: 0;
+      }
+
+      #tags, #shortdesc, .hidden {
+        display: none;
+      }
+
+      #api-links ul {
+        display: inline;
+      }
+
+      #latest-check {
+        margin-top: -10px;
+        margin-bottom: 10px;
+      }
+
+      /* restyle prism copy button */
+      div.code-toolbar > .toolbar {
+        opacity: 1;
+        top: -2.4em;
+      }
+
+      div.code-toolbar > .toolbar button {
+        font-size: 16px;
+        color: #03899c;
+        background-color: transparent;
+        box-shadow: none;
+        padding: .615rem .75rem;
+      }
+
+      div.code-toolbar > .toolbar button:hover,
+      div.code-toolbar > .toolbar button:focus {
+        color: #ff7a00;
+      }
+
+      div.code-toolbar > .toolbar button:focus {
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+      }
+
+      div.code-toolbar > .toolbar button:before {
+        margin-right: .184em;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        content: "\f0ea";
+        font-size: 1.33333333em;
+        line-height: .75em;
+        vertical-align: middle;
+      }
     </style>
 </head>
 
 <body>
-    <div class="cabecera">
-        <div class="container">
-            <div class="titulo">API-CNIG</div>
-            <div class="subtitulo">Galería de tests</div>
-        </div>
+
+  <header class="navbar navbar-expand-md navbar-dark mb-3 py-0 fixed-top" role="navigation">
+    <a class="navbar-brand" href="#"><img class="header-logo" src="img/logo-apicnig.png" alt="">&nbsp;API-CNIG</a> Tests
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <nav class="collapse navbar-collapse" id="olmenu">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+        </li>
+        <li class="nav-item"><a target="_blank" class="nav-link" href="https://github.com/IGN-CNIG/API-CNIG/wiki"><i class="fas fa-user-graduate"></i> Wiki</a></li>
+        <li class="nav-item"><a target="_blank" class="nav-link" href="https://github.com/IGN-CNIG/API-CNIG"><i class="fa fa-sitemap mr-1"></i> API</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container mt-5">
+    <div class="col-md-12 m-auto">
+      <h3 class="text-center mb-3">
+        <i class="fas fa-puzzle-piece"> <span style="font-family: 'Quattrocento Sans', sans-serif;">GALERÍA DE PLUGINS</span></i>
+      </h3>
+      <div class="form-group">
+        <input type="text" class="form-control form-control-lg" placeholder="Buscar plugin" name="search" id="search">
+      </div>
+      <div id="match-list" class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3 py-5">
+      </div>
     </div>
+  </main>
 
-    <div class="container">
-        <h1>Plugins</h1>
-        <!-- attributions -->
-        <div class="prueba">
-            <a target="_blank" href="attributions.jsp"><b>[attributions]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="attributions.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="attributions.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite mostrar información de atribuciones sobre las capas que se visualizan en el mapa.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- backimglayer -->
-        <div class="prueba">
-            <a target="_blank" href="backimglayer.jsp"><b>[backimglayer]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="backimglayer.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="backimglayer.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite la elección de cada de fondo mediante previsualización de las posibles capas.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- beautytoc -->
-        <div class="prueba">
-            <a target="_blank" href="beautytoc.jsp"><b>[beautytoc]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="beautytoc.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="beautytoc.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Tabla de contenidos de fototeca. Consulta cobertura de vuelo sobre la vista.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- buffer -->
-        <div class="prueba">
-            <a target="_blank" href="buffer.jsp"><b>[buffer]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="buffer.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="buffer.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Cálculo de áreas de influencia sobre geometrías que se van dibujando sobre la vista.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- contactlink -->
-        <div class="prueba">
-            <a target="_blank" href="contactlink.jsp"><b>[contactlink]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="contactlink.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="contactlink.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Provee de enlaces a sitios, redes sociales y correo institucionales.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- fulltoc -->
-        <div class="prueba">
-            <a target="_blank" href="fulltoc.jsp"><b>[fulltoc]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="fulltoc.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="fulltoc.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Permite gestionar y cargar wms y wmts y configurar opacidad, estilos, visibilidad y consulta de metadatos, además de facilitar la carga de servicios preconfigurados.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- geometrydraw -->
-        <div class="prueba">
-            <a target="_blank" href="geometrydraw.jsp"><b>[geometrydraw]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="geometrydraw.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="geometrydraw.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Permite el dibujo y edición de geometrías sobre un mapa, así como su carga y descarga.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- georefimage -->
-        <div class="prueba">
-            <a target="_blank" href="georefimage0.jsp"><b>[georefimage]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="georefimage0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="georefimage0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- ignsearch -->
-        <div class="prueba">
-            <a target="_blank" href="ignsearch.jsp"><b>[ignsearch]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="ignsearch.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="ignsearch.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN)</p>
-            <p>v1.0</p>
-        </div>
-        <!-- ignsearchlocator -->
-        <div class="prueba">
-            <a target="_blank" href="ignsearchlocator.jsp"><b>[ignsearchlocator]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="ignsearchlocator.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="ignsearchlocator.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN), también permite localizar coordenadas en varios SRS</p>
-            <p>v1.0</p>
-        </div>
-        <!-- infocatastro -->
-        <div class="prueba">
-            <a target="_blank" href="infocatastro.jsp"><b>[infocatastro]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="infocatastro.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="infocatastro.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Muestra referencia catastral para un punto y provee de enlace a la información de la DGC</p>
-            <p>v1.0</p>
-        </div>
-
-        <!-- infocoordinates -->
-        <div class="prueba">
-            <a target="_blank" href="infocoordinates.jsp"><b>[infocoordinates]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="infocoordinates.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="infocoordinates.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Muestra las coordenadas de los puntos que se van señalando en el mapa. Permite cambiarlas entre ETRS89, WGS84 y REGCAN95 </p>
-            <p>v1.0</p>
-        </div>
-
-        <!-- information -->
-        <div class="prueba">
-            <a target="_blank" href="information.jsp"><b>[information]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="information.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="information.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Muestra información GetFeatureInfo mediante activación de plugin</p>
-            <p>v1.0</p>
-        </div>
-        <!-- lyrcompare -->
-        <div class="prueba">
-            <a target="_blank" href="lyrcompare.jsp"><b>[lyrcompare]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="lyrcompare.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="lyrcompare.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite comparar varias capas sobre una cartografía base.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- measurebar -->
-        <div class="prueba">
-            <a target="_blank" href="measurebar.jsp"><b>[measurebar]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="measurebar.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="measurebar.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Herramienta de medición de áreas y distancias.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- mirrorpanel -->
-        <div class="prueba">
-            <a target="_blank" href="mirrorpanel.jsp"><b>[mirrorpanel]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="mirrorpanel.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="mirrorpanel.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite comparar varias capas dividiendo la pantalla en varias partes.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- mousesrs -->
-        <div class="prueba">
-            <a target="_blank" href="mousesrs.jsp"><b>[mousesrs]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="mousesrs.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="mousesrs.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Muestra las coordenadas de ratón.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- MVT -->
-        <div class="prueba">
-            <a target="_blank" href="MVT.jsp"><b>[MVT]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="MVT.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="MVT.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Test para añadir teselas vectoriales al mapa.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- overview -->
-        <div class="prueba">
-            <a target="_blank" href="overview.jsp"><b>[overview]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="overview.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="overview.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Mapa de localización sobre la vista.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- popup -->
-        <div class="prueba">
-            <a target="_blank" href="popup.jsp"><b>[popup]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="popup.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="popup.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Muestra un popup con un contenido html</p>
-            <p>v1.0</p>
-        </div>
-        <!-- predefinedzoom -->
-        <div class="prueba">
-            <a target="_blank" href="predefinedzoom0.jsp"><b>[predefinedzoom]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="predefinedzoom0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="predefinedzoom0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Centra el mapa en la/s vista/s indicada/s por parámetro.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- printermap -->
-        <div class="prueba">
-            <a target="_blank" href="printermap0.jsp"><b>[printermap]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="printermap0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="printermap0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin de impresión a través del servicio Geoprint.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- rescale -->
-        <div class="prueba">
-            <a target="_blank" href="rescale0.jsp"><b>[rescale]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="rescale0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="rescale0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Hace zoom a la escala elegida.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- selectiondraw -->
-        <div class="prueba">
-            <a target="_blank" href="selectiondraw0.jsp"><b>[selectiondraw]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="selectiondraw0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="selectiondraw0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Permite dibujar geometrías y obtenerlas al terminar.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- selectionzoom -->
-        <div class="prueba">
-            <a target="_blank" href="selectionzoom0.jsp"><b>[selectionzoom]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="selectionzoom0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="selectionzoom0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite la elección de cada de fondo mediante previsualización de las posibles capas.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- sharemap -->
-        <div class="prueba">
-            <a target="_blank" href="sharemap0.jsp"><b>[sharemap]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="sharemap0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="sharemap0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite copiar la url del mapa actual visualizado. Exporta la información de todas las capas cargadas en el mapa.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- toc -->
-        <div class="prueba">
-            <a target="_blank" href="toc.jsp"><b>[toc]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="toc.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="toc.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Muestra un árbol de contenidos con las capas disponibles para mostrar.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- topographicprofile -->
-        <div class="prueba">
-            <a target="_blank" href="topographicprofile.jsp"><b>[topographicprofile]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="topographicprofile.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="topographicprofile.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Muestra la topografía de una zona marcada por el usuario.</p>
-            <p>v1.0</p>
-        </div>
-          <!-- timeline -->
-          <div class="prueba">
-            <a target="_blank" href="timeline.jsp"><b>[timeline]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="timeline.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="timeline.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin de línea del tiempo</p>
-            <p>v1.0</p>
-        </div>
-        <!-- transparency -->
-        <div class="prueba">
-            <a target="_blank" href="transparency0.jsp"><b>[transparency]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="transparency0.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="transparency0.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite aplicar un efecto de transparencia a la capa seleccionada.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- vectors -->
-        <div class="prueba">
-            <a target="_blank" href="vectors.jsp"><b>[vectors]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="vectors.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="vectors.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como su descarga.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- viewhistory -->
-        <div class="prueba">
-            <a target="_blank" href="viewhistory.jsp"><b>[viewhistory]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="viewhistory.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="viewhistory.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y atrás).</p>
-            <p>v1.0</p>
-        </div>
-        <!-- xylocator -->
-        <div class="prueba">
-            <a target="_blank" href="xylocator.jsp"><b>[xylocator]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="xylocator.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="xylocator.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite localizar las coordenas introducidas por el usuario en un Sistema de referencia determinado.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- zoomextent -->
-        <div class="prueba">
-            <a target="_blank" href="zoomextent.jsp"><b>[zoomextent]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="zoomextent.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="zoomextent.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Plugin que permite realizar zoom con una caja sobre el mapa.</p>
-            <p>v1.0</p>
-        </div>
-        <!-- zoompanel -->
-        <div class="prueba">
-            <a target="_blank" href="zoompanel.jsp"><b>[zoompanel]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="zoompanel.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="zoompanel.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
-            </div>
-            <p>Ofrece diferentes herramientas de zoom.</p>
-            <p>v1.0</p>
-        </div>
-    </div>
-
-    <div class="container">
-        <h1>Controles</h1>
+  <div class="container">
+    <h1 style="text-align: center; margin-bottom: -1rem;">Controles</h1>
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3 py-5">
+      <div class="col" style="padding-bottom:15px;">
         <!-- backgroundlayers -->
-        <div class="prueba">
-            <a target="_blank" href="backgroundlayers.jsp"><b>[backgroundlayers]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="backgroundlayers.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="backgroundlayers.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
+        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+          <h4 class="text-primary text-center pt-2">[backgroundlayers]</h4>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="backgroundlayers.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                <a href="backgroundlayers.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <div class="col" style="padding-bottom:15px;">
         <!-- getfeatureinfo -->
-        <div class="prueba">
-            <a target="_blank" href="getfeatureinfo.jsp"><b>[getfeatureinfo]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="getfeatureinfo.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="getfeatureinfo.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
+        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+          <h4 class="text-primary text-center pt-2">[getfeatureinfo]</h4>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="getfeatureinfo.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                <a href="getfeatureinfo.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <div class="col" style="padding-bottom:15px;">
         <!-- location -->
-        <div class="prueba">
-            <a target="_blank" href="location.jsp"><b>[location]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="location.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="location.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
+        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+          <h4 class="text-primary text-center pt-2">[location]</h4>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="backgroundlayers.jsp?location=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                <a href="backgroundlayers.jsp?location=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <div class="col" style="padding-bottom:15px;">
         <!-- panzoom -->
-        <div class="prueba">
-            <a target="_blank" href="panzoom.jsp"><b>[panzoom]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="panzoom.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="panzoom.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
+        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+          <h4 class="text-primary text-center pt-2">[panzoom]</h4>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="panzoom.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                <a href="panzoom.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <div class="col" style="padding-bottom:15px;">
         <!-- panzoombar -->
-        <div class="prueba">
-            <a target="_blank" href="panzoombar.jsp"><b>[panzoombar]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="panzoombar.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="panzoombar.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
+        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+          <h4 class="text-primary text-center pt-2">[panzoombar]</h4>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="panzoombar.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                <a href="panzoombar.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <div class="col" style="padding-bottom:15px;">
         <!-- rotate -->
-        <div class="prueba">
-            <a target="_blank" href="rotate.jsp"><b>[rotate]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="rotate.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="rotate.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
+        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+          <h4 class="text-primary text-center pt-2">[rotate]</h4>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="rotate.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                <a href="rotate.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <div class="col" style="padding-bottom:15px;">
         <!-- scale -->
-        <div class="prueba">
-            <a target="_blank" href="scale.jsp"><b>[scale]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="scale.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="scale.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
+        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+          <h4 class="text-primary text-center pt-2">[scale]</h4>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="scale.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                <a href="scale.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <div class="col" style="padding-bottom:15px;">
         <!-- scaleline -->
-        <div class="prueba">
-            <a target="_blank" href="scaleline.jsp"><b>[scaleline]</b></a>
-            <div class='idiomas'>
-                <a target="_blank" href="scaleline.jsp?language=es"><img src="https://i.gyazo.com/48351abb095c62e67ac0e0490e825cff.png" width="30" /></a>
-                <a target="_blank" href="scaleline.jsp?language=en"><img src="https://i.gyazo.com/4635b83889405b888cc7eb6c8fde4b85.png" width="30" /></a>
+        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+          <h4 class="text-primary text-center pt-2">[scaleline]</h4>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="scaleline.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                <a href="scaleline.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  <br/>
+  <br/>
+  <br/>
+
+  <script src="js/stringtools.js"></script>
+  <script src="js/plugins.js"></script>
 </body>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-163660977-1');
+</script>
 
 </html>

@@ -14,7 +14,6 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
     <link href="plugins/transparency/transparency.ol.min.css" rel="stylesheet" />
-    <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
@@ -22,7 +21,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
     </style>
     <%
@@ -40,12 +39,31 @@
 </head>
 
 <body>
+    <div>
+        <label for="position">Parámetro de posición</label>
+        <select name="position" id="selectPosicion">
+            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TR" selected="selected">Arriba Derecha (TR)</option>
+            <option value="BR">Abajo Derecha (BR)</option>
+            <option value="BL">Abajo Izquierda (BL)</option>
+        </select>
+        <label for="inputLayers">Parámetro Layers (sobre la/s que se aplicará el efecto)</label>
+        <input type="text" id="inputLayers" size=70 value="WMS*hil*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeBoundary,WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA,WMTS*http://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*usoSuelo" list="layersSug">
+        <datalist id="layersSug">
+            <option value="WMS*hil*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeBoundary,WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA,WMTS*http://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*usoSuelo"></option>
+        </datalist>
+        <label for="inputRadius">Parámetro radius</label>
+        <input type="number" name="radius" id="inputRadius" list="radiusSug">
+        <datalist id="radiusSug">
+            <option value="50"></option>
+        </datalist>
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+    </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
     <script type="text/javascript" src="plugins/transparency/transparency.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -58,6 +76,9 @@
       }
    %>
     <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        M.language.setLang(urlParams.get('language') || 'es');
+
         const map = M.map({
             container: 'mapjs',
             zoom: 5,
@@ -66,44 +87,58 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        let wmts = new M.layer.WMTS({
-            url: "http://www.ideandalucia.es/geowebcache/service/wmts",
-            name: "toporaster",
-            matrixSet: "EPSG:25830",
-            legend: "Toporaster"
-        }, {
-            format: 'image/png'
+        let mp2 = new M.plugin.ShareMap({
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
+            position: "TR",
         });
-        map.addWMTS(wmts);
-
-        const wms = new M.layer.WMS({
-            url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-            name: 'AU.AdministrativeBoundary',
-            legend: 'Limite administrativo',
-            tiled: false,
-        }, {});
-        map.addWMS(wms);
-
-        const mp = new M.plugin.Transparency({
-            position: 'TL',
-            layers: ['toporaster', 'AU.AdministrativeBoundary']
-        });
-
-        const mp20 = new M.plugin.XYLocator({
-            position: 'TL',
-        });
-
-        const mp2 = new M.plugin.ShareMap({
-            baseUrl: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/',
-            position: 'BR',
-        })
-
-        map.addPlugin(mp20);
-        map.addPlugin(mp);
         map.addPlugin(mp2);
 
-        window.map = map;
+        const selectPosicion = document.getElementById("selectPosicion");
+        const inputLayers = document.getElementById("inputLayers");
+        const inputRadius = document.getElementById("inputRadius");
+
+        let mp;
+        let posicion, layer = inputLayers.value,
+            radius = '';
+        crearPlugin({
+            position: posicion,
+            layers: layer,
+            radius: radius
+        });
+
+
+        selectPosicion.addEventListener("change", cambiarTest);
+        inputLayers.addEventListener("change", cambiarTest);
+        inputRadius.addEventListener("change", cambiarTest);
+
+        function cambiarTest() {
+            let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            objeto.layers = inputLayers.value != "" ? (inputLayers.value.split(",") || inputLayers.value) : ['toporaster', 'AU.AdministrativeBoundary'];
+            objeto.radius = inputRadius.value != "" ? objeto.radius = inputRadius.value : "";
+            map.removePlugins(mp);
+            crearPlugin(objeto);
+        }
+
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.Transparency(propiedades);
+            map.addPlugin(mp);
+        }
+
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click", function() {
+            map.removePlugins(mp);
+        });
     </script>
 </body>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-163660977-1');
+</script>
 
 </html>

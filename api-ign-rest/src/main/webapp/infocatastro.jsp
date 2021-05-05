@@ -98,7 +98,7 @@
         buttonApi.addEventListener('click', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
 
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?infocatastro=' + posicion;
+            window.location.href = 'https://mapea-lite-6.desarrollo.guadaltel.es/api-core//api-core/?infocatastro=' + posicion;
         })
 
         function crearPlugin(posicion) {
@@ -119,5 +119,14 @@
         });
     </script>
 </body>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-163660977-1');
+</script>
 
 </html>

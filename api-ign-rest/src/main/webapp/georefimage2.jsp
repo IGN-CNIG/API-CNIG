@@ -13,7 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/vectors/vectors.ol.min.css" rel="stylesheet" />
+    <link href="plugins/georefimage2/georefimage2.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
@@ -48,29 +48,42 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-        <label for="selectCollapsed">Selector de collapsed</label>
-        <select name="collapsed" id="selectCollapsed">
-            <option value=""></option>
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
-        <label for="selectCollapsible">Selector de collapsible</label>
-        <select name="collapsible" id="selectCollapsible">
-            <option value=""></option>
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
-        <label for="wfsZoomInput">Parámetro wfszoom</label>
-        <input type="number" id="wfsZoomInput" value="12" max="28" min="0" />
-        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar"/>
 
+        <label for="selectCollapsed">Selector collapsed</label>
+        <select name="httpValue" id="selectCollapsed">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+
+        <label for="selectCollapsible">Selector collapsible</label>
+        <select name="httpValue" id="selectCollapsible">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="inputServerUrl">Parámetro inputServerUrl</label>
+        <input type="text" value="" name="serverUrl" id="inputServerUrl" list="serverUrlSug">
+        <datalist id="serverUrlSug">
+            <option value="https://geoprint.desarrollo.guadaltel.es"></option>
+        </datalist>
+        <label for="inputPrintTemplateUrl">Parámetro inputPrintTemplateUrl</label>
+        <input type="text" value="" name="printTemplateUrl" id="inputPrintTemplateUrl" list="printTemplateUrlSug">
+        <datalist id="printTemplateUrlSug">
+            <option value="https://geoprint.desarrollo.guadaltel.es/print/mapexport"></option>
+        </datalist>
+        <label for="inputPrintStatusUrl">Parámetro inputPrintStatusUrl</label>
+        <input type="text" value="" name="printStatusUrl" id="inputPrintStatusUrl" list="printStatusUrlSug">
+        <datalist id="printStatusUrlSug">
+            <option value="https://geoprint.desarrollo.guadaltel.es/print/status"></option>
+        </datalist>
+        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/vectors/vectors.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/georefimage2/georefimage2.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -87,43 +100,50 @@
 
         const map = M.map({
             container: 'mapjs',
+            zoom: 5,
+            maxZoom: 20,
+            minZoom: 4,
+            center: [-467062.8225, 4783459.6216],
         });
-        let mp,collapsed,collapsible,wfszoom;
-        const precharged = [
-        	{
-		      name: 'Hidrografía',
-		      url: 'https://servicios.idee.es/wfs-inspire/hidrografia?',
-		    },
-		    {
-		      name: 'Límites administrativos',
-		      url: 'https://www.ign.es/wfs-inspire/unidades-administrativas?',
-		    },
-		];
-        crearPlugin({ precharged: precharged });
+        let mp;
+        let position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl;
+
+        crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl);
+
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
-        const wfsZoomInput = document.getElementById("wfsZoomInput");
-        selectPosicion.addEventListener('change',cambiarTest);
-        selectCollapsed.addEventListener('change',cambiarTest);
-        selectCollapsible.addEventListener('change',cambiarTest);
-        wfsZoomInput.addEventListener('change',cambiarTest);
+        const inputServerUrl = document.getElementById("inputServerUrl");
+        const inputPrintTemplateUrl = document.getElementById("inputPrintTemplateUrl");
+        const inputPrintStatusUrl = document.getElementById("inputPrintStatusUrl");
 
-        function cambiarTest(){
-            let objeto = { precharged: precharged }
-            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            let collapsedValor = selectCollapsed.options[selectCollapsed.selectedIndex].value;
-            collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor == "true" || collapsedValor == true) : "true";
-            let collapsibleValor = selectCollapsible.options[selectCollapsible.selectedIndex].value;
-            collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == "true" || collapsibleValor == true) : "true";
-            let wfsZoomValor = wfsZoomInput.value;
-            wfszoom = wfsZoomValor != "" ? objeto.wfszoom = parseInt(wfsZoomValor, 10) : objeto.wfszoom =  12;
+        selectPosicion.addEventListener("change", cambiarTest);
+        selectCollapsed.addEventListener("change", cambiarTest);
+        selectCollapsible.addEventListener("change", cambiarTest);
+        inputServerUrl.addEventListener("change", cambiarTest);
+        inputPrintTemplateUrl.addEventListener("change", cambiarTest);
+        inputPrintStatusUrl.addEventListener("change", cambiarTest);
+
+        function cambiarTest() {
+            position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+            collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            serverUrl = inputServerUrl.value;
+            printTemplateUrl = inputPrintTemplateUrl.value;
+            printStatusUrl = inputPrintStatusUrl.value;
             map.removePlugins(mp);
-            crearPlugin(objeto);
+            crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl);
         }
 
-        function crearPlugin(propiedades){
-            mp = new M.plugin.Vectors(propiedades);
+        function crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl) {
+            mp = new M.plugin.Georefimage2({
+                collapsed: collapsed,
+                collapsible: collapsible,
+                position: position,
+                serverUrl: serverUrl,
+                printTemplateUrl: printTemplateUrl,
+                printStatusUrl: printStatusUrl
+            });
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
