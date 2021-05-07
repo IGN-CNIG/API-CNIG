@@ -66,10 +66,10 @@
 
         const vertex = new M.layer.GeoJSON({
           name: 'vertices',
-          url: 'https://srv-store2.gofile.io/download/taf7oR/4cc5c0549f8f4049929dfd733b7cd516/vertices.geojson',
+          url: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/data/vertices.geojson',
         });
 
-        const mp = new QueryAttributes({
+        const mp = new M.plugin.QueryAttributes({
           position: 'TL',
           collapsed: true,
           collapsible: true,
