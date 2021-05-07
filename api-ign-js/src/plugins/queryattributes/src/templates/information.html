@@ -1,0 +1,28 @@
+<div id="m-queryattributes-information-content">
+  <p>
+    {{translations.information}}:
+    <span>
+      <span class="icon-desplegar" title="{{translations.show_hide}}"></span>
+      <span class="icon-cerrar" title="{{translations.close}}"></span>
+    </span>
+  </p>
+  <div>
+    {{#each fields}}
+      <p>
+        <b>{{this.name}}:</b>
+        <br/>
+        {{#if isURL}}
+          <a href="{{this.value}}" target="_blank" rel="noopener noreferrer">{{this.value}}</a>
+        {{/if}}
+
+        {{#if isImage}}
+          <a class="m-queryattributes-information-image-link" href="{{this.value}}" target="_blank" rel="noopener noreferrer"><img src="{{this.value}}" /></a>
+        {{/if}}
+
+        {{#if isString}}
+          {{this.value}}
+        {{/if}}
+      </p>
+    {{/each}}
+  </div>
+</div>

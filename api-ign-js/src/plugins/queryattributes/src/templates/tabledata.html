@@ -1,0 +1,26 @@
+<div id="m-queryattributes-table-content">
+  {{#if attributes}}
+    <div id="m-queryattributes-table-container">
+        <table>
+            <thead>
+              <tr class="m-queryattributes-table-thead">
+                  {{#each headerAtt}}
+                  <th data-sort="{{this.name}}">{{this.alias}} <span class="icon-sort" /></th>
+                  {{/each}}
+              </tr>
+            </thead>
+            <tbody>
+                {{#each attributes}}
+                <tr>
+                    {{#each this}}
+                    <td style="text-align: {{this.align}};"> {{{this.value}}}</td>
+                    {{/each}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+  {{else}}
+    <div class="m-queryattributes-table-noresult">{{translations.not_attributes}}</div>
+  {{/if}}
+</div>
