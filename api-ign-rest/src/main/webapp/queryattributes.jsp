@@ -66,7 +66,7 @@
 
         const vertex = new M.layer.GeoJSON({
           name: 'vertices',
-          url: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/data/vertices.geojson',
+          url: 'data/vertices.geojson',
         });
 
         const mp = new M.plugin.QueryAttributes({
