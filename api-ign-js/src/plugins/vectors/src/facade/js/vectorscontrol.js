@@ -669,7 +669,10 @@ export default class VectorsControl extends M.Control {
               linedash: this.currentLineDash,
             },
           });
-          if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
+          if (this.feature !== undefined) {
+            this.feature.setStyle(newLineStyle);
+            this.style = this.feature.getStyle();
+          }
           break;
         case 'Polygon':
         case 'MultiPolygon':
@@ -1152,6 +1155,10 @@ export default class VectorsControl extends M.Control {
    * @param {Event}
    */
   onSelect(e) {
+    if (this.style !== undefined && this.feature !== undefined) {
+      this.feature.setStyle(this.style);
+    }
+    this.style = undefined;
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
     this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() === olFeature)[0] || undefined;
