@@ -516,11 +516,8 @@ export default class PrinterMapControl extends M.impl.Control {
           }
 
           if (layer.name.indexOf(' Reverse') > -1 && layer.name.indexOf('Cobertura') > -1) {
-            styleGeom.fillColor = stroke.strokeColor;
-            styleGeom.fillOpacity = 1;
-            styleGeom.graphicName = 'X';
-            styleGeom.graphicWidth = 15;
-            styleGeom.graphicHeight = 15;
+            styleGeom.fillColor = styleGeom.strokeColor;
+            styleGeom.fillOpacity = 0.5;
           }
 
           if (lineDash !== undefined && lineDash !== null && lineDash.length > 0) {
