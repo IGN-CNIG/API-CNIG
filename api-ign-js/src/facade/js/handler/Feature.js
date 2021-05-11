@@ -180,7 +180,7 @@ class Features extends Base {
     /* FIXME abelcruz Cambiado por problemas al usar selectFeatures() con features de OL.
     Ver ejemplo cluster-ext-interaction */
     this.prevSelectedFeatures_[layer.name] = this.prevSelectedFeatures_[layer.name]
-     .filter(pf => !features.some(f => f.equals(pf)));
+      .filter(pf => !features.some(f => f.equals(pf)));
     // this.prevSelectedFeatures_[layer.name] = this.prevSelectedFeatures_[layer.name]
     //   .filter(pf => !features.some(f => f.ol_uid === pf.ol_uid));
 
