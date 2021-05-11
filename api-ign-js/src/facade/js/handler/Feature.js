@@ -179,10 +179,10 @@ class Features extends Base {
   unselectFeatures(features, layer, evt) {
     /* FIXME abelcruz Cambiado por problemas al usar selectFeatures() con features de OL.
     Ver ejemplo cluster-ext-interaction */
-    // this.prevSelectedFeatures_[layer.name] = this.prevSelectedFeatures_[layer.name]
-    //  .filter(pf => !features.some(f => f.equals(pf)));
     this.prevSelectedFeatures_[layer.name] = this.prevSelectedFeatures_[layer.name]
-      .filter(pf => !features.some(f => f.ol_uid === pf.ol_uid));
+     .filter(pf => !features.some(f => f.equals(pf)));
+    // this.prevSelectedFeatures_[layer.name] = this.prevSelectedFeatures_[layer.name]
+    //   .filter(pf => !features.some(f => f.ol_uid === pf.ol_uid));
 
     const layerImpl = layer.getImpl();
     if (isFunction(layerImpl.unselectFeatures)) {
