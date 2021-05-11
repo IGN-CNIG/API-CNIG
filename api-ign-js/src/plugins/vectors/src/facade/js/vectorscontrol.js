@@ -658,7 +658,10 @@ export default class VectorsControl extends M.Control {
             newPointStyle.label = this.feature.getStyle().getOptions().label;
           }
 
-          if (this.feature !== undefined) this.feature.setStyle(new M.style.Point(newPointStyle));
+          if (this.feature !== undefined) {
+            this.feature.setStyle(new M.style.Point(newPointStyle));
+            this.style = this.feature.getStyle();
+          }
           break;
         case 'LineString':
         case 'MultiLineString':
@@ -669,7 +672,10 @@ export default class VectorsControl extends M.Control {
               linedash: this.currentLineDash,
             },
           });
-          if (this.feature !== undefined) this.feature.setStyle(newLineStyle);
+          if (this.feature !== undefined) {
+            this.feature.setStyle(newLineStyle);
+            this.style = this.feature.getStyle();
+          }
           break;
         case 'Polygon':
         case 'MultiPolygon':
@@ -683,7 +689,10 @@ export default class VectorsControl extends M.Control {
               width: this.currentThickness,
             },
           });
-          if (this.feature !== undefined) this.feature.setStyle(newPolygonStyle);
+          if (this.feature !== undefined) {
+            this.feature.setStyle(newPolygonStyle);
+            this.style = this.feature.getStyle();
+          }
           break;
         default:
           break;
@@ -1152,6 +1161,10 @@ export default class VectorsControl extends M.Control {
    * @param {Event}
    */
   onSelect(e) {
+    if (this.style !== undefined && this.feature !== undefined) {
+      this.feature.setStyle(this.style);
+    }
+    this.style = undefined;
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
     this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() === olFeature)[0] || undefined;
@@ -1600,12 +1613,16 @@ export default class VectorsControl extends M.Control {
       /* eslint-disable no-param-reassign */
       elem.classList.remove('active-tool');
     });
+    this.getImpl().removeSelectInteraction();
 
+    if (this.style !== undefined && this.feature !== undefined) {
+      this.feature.setStyle(this.style);
+    }
+    this.style = undefined;
     this.feature = undefined;
     this.geometry = undefined;
     this.emphasizeSelectedFeature();
     this.getImpl().removeEditInteraction();
-    this.getImpl().removeSelectInteraction();
   }
 
   getProfile() {
