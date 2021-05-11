@@ -22,7 +22,7 @@ export default class QueryAttributesControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(configuration) {
+  constructor(configuration, filters) {
     if (M.utils.isUndefined(QueryAttributesImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -76,6 +76,8 @@ export default class QueryAttributesControl extends M.Control {
     this.filtered = false;
 
     this.configuration = configuration;
+
+    this.filters = filters;
 
     this.sortProperties_ = {
       active: false,
@@ -141,16 +143,20 @@ export default class QueryAttributesControl extends M.Control {
         this.showAttributeTable(this.layer.name);
         document.querySelector('#m-queryattributes-options-buttons #limpiar-filtro-btn').style.display = 'none';
         document.querySelector('#m-queryattributes-filter #m-queryattributes-search-input').value = '';
+        document.querySelector('#m-queryattributes-options-information-container').innerHTML = '';
       });
 
-    html.querySelector('#m-queryattributes-filter button.filter-bbox').addEventListener('click', this.setBboxFilter.bind(this));
-    html.querySelector('#m-queryattributes-filter button.filter-area').addEventListener('click', this.setDrawFilter.bind(this));
     html.querySelector('#m-queryattributes-filter #m-queryattributes-search-btn').addEventListener('click', this.searchFilter.bind(this));
     html.querySelector('#m-queryattributes-filter #m-queryattributes-search-input').addEventListener('keypress', (e) => {
       if (e.keyCode === 13) {
         this.searchFilter();
       }
     });
+
+    if (this.filters) {
+      html.querySelector('#m-queryattributes-filter button.filter-bbox').addEventListener('click', this.setBboxFilter.bind(this));
+      html.querySelector('#m-queryattributes-filter button.filter-area').addEventListener('click', this.setDrawFilter.bind(this));
+    }
 
     this.map.getKML().forEach((kmlLayer) => {
       kmlLayer.on(M.evt.LOAD, () => {
@@ -160,10 +166,17 @@ export default class QueryAttributesControl extends M.Control {
       });
     });
 
-    this.showAttributeTable(this.configuration.layer);
+    if (this.filters) {
+      this.showAttributeTable(this.configuration.layer);
+    } else {
+      this.showAttributeTable(this.configuration.layer, this.setBboxFilter.bind(this));
+      this.map.getMapImpl().on('moveend', () => {
+        this.setBboxFilter();
+      });
+    }
   }
 
-  showAttributeTable(layerName) {
+  showAttributeTable(layerName, callback) {
     const columns = this.configuration.columns;
     if (!M.utils.isNullOrEmpty(layerName)) {
       this.layer = this.hasLayer_(layerName)[0];
@@ -257,6 +270,10 @@ export default class QueryAttributesControl extends M.Control {
         html.querySelectorAll('table tbody tr').forEach((tr) => {
           tr.addEventListener('click', this.centerOnFeature.bind(this));
         });
+
+        if (callback) {
+          callback();
+        }
       }
     }, 1000);
   }
@@ -351,26 +368,26 @@ export default class QueryAttributesControl extends M.Control {
         },
       });
 
-      document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '400px';
+      document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '15vh';
       document.querySelector('#m-queryattributes-options-information-container').appendChild(html);
       document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').addEventListener('click', () => {
         const elem = document.querySelector('#m-queryattributes-information-content div');
         if (elem.style.display !== 'none') {
           elem.style.display = 'none';
-          document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '76vh';
-          document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.remove('icon-desplegar');
-          document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.add('icon-colapsar');
-        } else {
-          elem.style.display = 'block';
-          document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '400px';
+          document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '64vh';
           document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.remove('icon-colapsar');
           document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.add('icon-desplegar');
+        } else {
+          elem.style.display = 'block';
+          document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '15vh';
+          document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.remove('icon-desplegar');
+          document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.add('icon-colapsar');
         }
       });
 
       document.querySelector('#m-queryattributes-information-content > p > span > span.icon-cerrar').addEventListener('click', () => {
         document.querySelector('#m-queryattributes-options-information-container').innerHTML = '';
-        document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '83vh';
+        document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '75vh';
       });
     }
   }
@@ -415,14 +432,10 @@ export default class QueryAttributesControl extends M.Control {
    * @param {Map} map
    */
   createInitialView(map) {
-    const filteredLayers = map.getLayers().filter((l) => {
-      return l instanceof M.layer.Vector && l.name !== '__draw__' && l.name !== 'attributions';
-    });
-
     const options = {
       jsonp: true,
       vars: {
-        layers: filteredLayers,
+        filters: this.filters,
         translations: {
           filters: getValue('filters'),
           bbox: getValue('bbox'),
@@ -497,10 +510,12 @@ export default class QueryAttributesControl extends M.Control {
     this.filtered = true;
     this.oldFilter = filter;
     this.oldLayer = this.layer;
-    this.map.setBbox(this.getImpl().getLayerExtent(this.layer));
     this.showAttributeTable(this.layer.name);
     const buttons = '#m-queryattributes-options-buttons>button';
     document.querySelector(`${buttons}#limpiar-filtro-btn`).style.display = 'block';
+    if (this.filters) {
+      this.map.setBbox(this.getImpl().getLayerExtent(this.layer));
+    }
   }
 
   setDrawFilter() {

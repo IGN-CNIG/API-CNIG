@@ -10,8 +10,9 @@ const map = M.map({
 
 const mp = new QueryAttributes({
   position: 'TL',
-  collapsed: true,
+  collapsed: false,
   collapsible: true,
+  filters: false,
   configuration: {
     layer: 'vertices',
     initialSort: { name: 'codigoregi', dir: 'asc' },
@@ -44,16 +45,11 @@ const campamentos = new M.layer.WFS({
 
 const vertex = new M.layer.GeoJSON({
   name: 'vertices',
-  url: 'https://srv-store2.gofile.io/download/taf7oR/4cc5c0549f8f4049929dfd733b7cd516/vertices.geojson',
+  url: 'http://mapea-lite.desarrollo.guadaltel.es/api-core/data/vertices.geojson',
 });
 
 // map.addWFS(campamentos);
-M.proxy(false);
 map.addLayers(vertex);
 map.addPlugin(mp);
 
 window.map = map;
-
-setTimeout(() => {
-  M.proxy(true);
-}, 5000);

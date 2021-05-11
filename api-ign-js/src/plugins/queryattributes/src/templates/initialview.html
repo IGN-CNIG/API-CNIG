@@ -4,11 +4,13 @@
         <input type="text" id="m-queryattributes-search-input" placeholder="{{translations.search}}..." />
         <span id="m-queryattributes-search-btn" class="icon-zoom" title="{{translations.search}}"></span>
       </div>
+      {{#if filters}}
       <div class="m-queryattributes-filters-container">
         <span>{{translations.filters}}:</span>
         <button class="filters filter-bbox" title="{{translations.filter_by_bbox}}">{{translations.bbox}}</button>
         <button class="filters filter-area" title="{{translations.filter_by_area}}">{{translations.area}}</button>
       </div>
+      {{/if}}
     </div>
     <div id="m-queryattributes-table">
       <div class="m-queryattributes-table-loading">

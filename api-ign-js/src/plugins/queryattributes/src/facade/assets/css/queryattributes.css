@@ -190,10 +190,12 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
 }
 
 .m-queryattributes #m-queryattributes-table-container {
-  max-height: 83vh;
+  max-height: 75vh;
   overflow: auto;
   margin: 0.5rem;
   margin-top: 1rem;
+  border-top: 1px solid #71a7d3;
+  border-bottom: 1px solid #71a7d3;
 }
 
 .m-queryattributes #m-queryattributes-table-container table {
@@ -277,7 +279,7 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
 }
 
 .m-queryattributes #m-queryattributes-options-information-container {
-  padding: 1rem;
+  padding: 0rem 1rem 1rem 1rem;
   width: 498px;
 }
 
@@ -285,7 +287,11 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
   font-weight: bold;
   font-size: 16px;
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin: 0rem;
+  background-color: #9DC6E8;
+  padding: 0.5rem 0rem 0.5rem 0rem;
+  color: white;
+  border: 1px solid #71a7d3;
 }
 
 .m-queryattributes #m-queryattributes-options-information-container #m-queryattributes-information-content > div {
@@ -293,6 +299,7 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
   padding: 0rem 1rem;
   max-height: 300px;
   overflow-y: auto;
+  border-top: none !important;
 }
 
 .m-queryattributes #m-queryattributes-options-information-container #m-queryattributes-information-content > p > span {

@@ -60,6 +60,9 @@ export default class QueryAttributes extends M.Plugin {
 
     this.configuration_ = options.configuration || {};
 
+    this.filters_ = options.filters;
+    if (this.filters_ === undefined) this.filters_ = true;
+
     /**
      * Metadata from api.json
      * @private
@@ -87,11 +90,25 @@ export default class QueryAttributes extends M.Plugin {
       tooltip: getValue('tooltip'),
     });
 
-    this.control_ = new QueryAttributesControl(this.configuration_);
+    this.control_ = new QueryAttributesControl(this.configuration_, this.filters_);
     this.controls_.push(this.control_);
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-    this.addOpenEvent();
+    if (this.collapsed_) {
+      this.addOpenEvent();
+    } else {
+      this.addCloseEvent();
+      const container = this.map_.getContainer().parentElement.parentElement;
+      container.style.width = 'calc(100% - 530px)';
+      container.style.position = 'fixed';
+      if (this.position_ === 'TL') {
+        container.style.left = '530px';
+      } else {
+        container.style.right = '530px';
+      }
+
+      this.map_.refresh();
+    }
   }
 
   addOpenEvent() {
