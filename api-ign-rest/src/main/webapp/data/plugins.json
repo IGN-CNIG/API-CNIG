@@ -360,6 +360,16 @@
     "description": "Plugin que permite localizar las coordenas introducidas por el usuario en un Sistema de referencia determinado."
   },
   {
+    "name": "XYZ/TMS",
+    "plugin": "[XYZ]",
+    "version": "v1.0",
+    "url_es": "XYZandTMSmap.jsp?language=es",
+    "url_en": "XYZandTMSmap.jsp?language=en",
+    "url_git": "#",
+    "image": "img/api-logo.png",
+    "description": "Test de visualización de capas en formato XYZ y TMS."
+  },
+  {
     "name": "zoomextent",
     "plugin": "[zoomextent]",
     "version": "v1.0",
