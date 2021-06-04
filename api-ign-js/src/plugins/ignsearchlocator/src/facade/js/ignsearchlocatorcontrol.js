@@ -1484,7 +1484,6 @@ export default class IGNSearchLocatorControl extends M.Control {
   showResults_(result) {
     let resultsTemplateVars = {};
     resultsTemplateVars = this.parseRCResultsForTemplate_(result, false);
-
     Promise.resolve(resultsTemplateVars).then((resultTemplate) => {
       this.drawGeocoderResultRC(resultTemplate);
     });
@@ -2354,11 +2353,10 @@ export default class IGNSearchLocatorControl extends M.Control {
     * @param { boolean } exactResult indicating
     if the given result is a perfect match
     */
-  showSearchPopUpRC(fullAddress, coordinates, exactResult, e = {}) {
-    const destinyProj = this.map.getProjection().code;
-    const destinySource = 'EPSG:3857';
-    const newCoordinates = this.getImpl()
-      .reprojectReverse([coordinates[0], coordinates[1]], destinySource, destinyProj);
+  showSearchPopUpRC(fullAddress, coords, exactResult, e = {}) {
+    const target = 'EPSG:4326';
+    const source = this.map.getProjection().code;
+    const newCoords = this.getImpl().reprojectReverse([coords[0], coords[1]], source, target);
     let exitState;
     if (exactResult !== 1) {
       exitState = getValue('aprox');
@@ -2366,7 +2364,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       exitState = getValue('exact');
     }
 
-    this.showPopUp(fullAddress, newCoordinates, coordinates, exitState, false, e);
+    this.showPopUp(fullAddress, coords, newCoords, exitState, false, e);
   }
   /**
    * This function inserts a popup on the map with information about its location.
