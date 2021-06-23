@@ -1,22 +1,22 @@
-import { HELP_KEEP_MESSAGE } from '../../../facade/js/measurelength';
+import { HELP_KEEP_MESSAGE } from '../../../facade/js/measureposition';
 
 import Measure from './measurebase';
 import FacadeMeasure from '../../../facade/js/measurebase';
 import FacadeMeasureArea from '../../../facade/js/measurearea';
-import FacadeMeasurePosition from '../../../facade/js/measureposition';
+import FacadeMeasureLength from '../../../facade/js/measurelength';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a MeasureLength
+ * Main constructor of the class. Creates a MeasurePosition
  * control
  *
  * @constructor
  * @extends {M.impl.control.Measure}
  * @api stable
  */
-export default class MeasureLength extends Measure {
+export default class MeasurePosition extends Measure {
   constructor() {
-    super('LineString');
+    super('LineString-Position-Option');
 
     /**
      * Help message
@@ -32,7 +32,6 @@ export default class MeasureLength extends Measure {
      */
     this.helpMsgContinue_ = HELP_KEEP_MESSAGE;
   }
-
 
   /**
    * This function add tooltip with measure distance
@@ -77,7 +76,7 @@ export default class MeasureLength extends Measure {
 
   activate() {
     const measure = this.facadeMap_.getControls().filter((control) => {
-      return (control instanceof FacadeMeasureArea || control instanceof FacadeMeasurePosition);
+      return (control instanceof FacadeMeasureArea || control instanceof FacadeMeasureLength);
     });
     if (measure[0]) {
       measure[0].deactivate();
@@ -86,7 +85,19 @@ export default class MeasureLength extends Measure {
       measure[1].deactivate();
     }
     super.activate();
-    document.querySelector('.m-control.m-measurelength-container').classList.add('activated');
+    document.querySelector('.m-control.m-measureposition-container').classList.add('activated');
+  }
+
+  /**
+   * This function adds coordinates for MeasurePosition only,
+   * requiered to start this functionality
+   *
+   * @public
+   * @function
+   * @param {array<number>} coord - Starting position
+   */
+  setCoordLocationStart(coord) {
+    this.coordinatesPosition = coord;
   }
 
   /* eslint-disable newline-per-chained-call */

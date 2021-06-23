@@ -35,7 +35,9 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   
    const mp = new M.plugin.MeasureBar({
       position: 'TR',
-});
+   });
 
    map.addPlugin(mp);
+
+   mp.measurePosition_.impl_.setCoordLocationStart([-600000,4300000]]);
 ```

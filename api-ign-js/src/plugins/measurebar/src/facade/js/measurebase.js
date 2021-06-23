@@ -20,6 +20,13 @@ export default class Measure extends M.Control {
      */
 
     this.template_ = template;
+
+    /**
+     * For destroying one function of the plugin
+     * @private
+     * @type {boolean}
+     */
+    this.destroyable = true;
   }
 
   /**
@@ -72,16 +79,20 @@ export default class Measure extends M.Control {
   }
 
   /**
-   * This function destroys this plugin
+   * This function destroys this plugin function
    *
    * @public
    * @function
    * @api stable
    */
   destroy() {
-    this.getImpl().destroy();
-    this.template_ = null;
-    this.impl = null;
+    if (this.destroyable) {
+      this.destroyable = false;
+      this.getImpl().destroy();
+      this.map_.removeControls(this);
+      this.template_ = null;
+      this.impl = null;
+    }
   }
 }
 /**

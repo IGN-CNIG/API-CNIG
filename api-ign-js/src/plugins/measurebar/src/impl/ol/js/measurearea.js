@@ -2,6 +2,7 @@ import { HELP_KEEP_MESSAGE } from '../../../facade/js/measurearea';
 
 import FacadeMeasure from '../../../facade/js/measurebase';
 import FacadeMeasureLength from '../../../facade/js/measurelength';
+import FacadeMeasurePosition from '../../../facade/js/measureposition';
 import MeasureImpl from './measurebase';
 
 /**
@@ -66,12 +67,15 @@ export default class MeasureArea extends MeasureImpl {
   }
 
   activate() {
-    const measureLength = this.facadeMap_.getControls().filter((control) => {
-      return (control instanceof FacadeMeasureLength);
-    })[0];
+    const measure = this.facadeMap_.getControls().filter((control) => {
+      return (control instanceof FacadeMeasureLength || control instanceof FacadeMeasurePosition);
+    });
 
-    if (measureLength) {
-      measureLength.deactivate();
+    if (measure[0]) {
+      measure[0].deactivate();
+    }
+    if (measure[1]) {
+      measure[1].deactivate();
     }
 
     super.activate();
