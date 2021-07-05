@@ -10,7 +10,7 @@
   font-style: normal;
 }
 
-[class^="icon-"]:before, [class*=" icon-"]:before {
+.m-mousesrs-help-button [class^="icon-"]:before, .m-mousesrs-help-button [class*=" icon-"]:before {
   font-family: "mousesrs";
   font-style: normal;
   font-weight: normal;
