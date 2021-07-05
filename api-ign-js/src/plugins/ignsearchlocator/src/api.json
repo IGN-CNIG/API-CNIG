@@ -63,6 +63,10 @@
         "type": "simple",
         "name": "pointStyle",
         "position": 13
+      }, {
+        "type": "simple",
+        "name": "helpUrl",
+        "position": 14
       }
     ]
   }],

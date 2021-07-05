@@ -18,6 +18,10 @@
       "type": "simple",
       "name": "decimalUTMcoord",
       "position": 2
+    }, {
+      "type": "simple",
+      "name": "helpUrl",
+      "position": 3
     }]
   }],
   "files": {

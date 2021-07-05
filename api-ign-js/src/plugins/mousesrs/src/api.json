@@ -34,6 +34,10 @@
       "type": "boolean",
       "name": "activeZ",
       "position": 6
+    }, {
+      "type": "simple",
+      "name": "helpUrl",
+      "position": 7
     }]
   }],
   "files": {

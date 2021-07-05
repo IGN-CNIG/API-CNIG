@@ -1,112 +1,3 @@
-@font-face {
-    font-family: 'infocoordinates';
-    src: url('fonts/infocoordinates.eot?6jjon1');
-    src: url('fonts/infocoordinates.eot?6jjon1#iefix') format('embedded-opentype'),
-        url('fonts/infocoordinates.ttf?6jjon1') format('truetype'),
-        url('fonts/infocoordinates.woff?6jjon1') format('woff'),
-        url('fonts/infocoordinates.svg?6jjon1#infocoordinates') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
-}
-
-.m-areas>div.m-area>div.m-panel.m-plugin-infocoordinates>div.m-panel-controls>div.m-control>button,
-.m-areas>div.m-area>div.m-panel.m-plugin-infocoordinates>button.m-panel-btn.infocoordinates-target,
-[class^="infocoordinates-"],
-[class*=" infocoordinates-"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'infocoordinates' !important;
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.infocoordinates-bin2:before {
-    content: "\e9ad";
-}
-
-.infocoordinates-target:before {
-    content: "\e5101";
-    font-size: 22px;
-    -webkit-text-stroke: 1px #71a7d3;
-    text-stroke: 1px #71a7d3;
-}
-
-@font-face {
-    font-family: 'infocoordinates-file';
-    src: url('fonts/infocoordinates-file.eot?yeaocq');
-    src: url('fonts/infocoordinates-file.eot?yeaocq#iefix') format('embedded-opentype'),
-        url('fonts/infocoordinates-file.ttf?yeaocq') format('truetype'),
-        url('fonts/infocoordinates-file.woff?yeaocq') format('woff'),
-        url('fonts/infocoordinates-file.svg?yeaocq#infocoordinates-file') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
-}
-
-[class^="icon-infocoordinates-file"],
-[class*="icon-infocoordinates-file"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'infocoordinates-file' !important;
-    speak: never;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-infocoordinates-file:before {
-    content: "\e926";
-}
-
-@font-face {
-    font-family: 'infocoordinates-display';
-    src: url('fonts/infocoordinates-display.eot?llpy7u');
-    src: url('fonts/infocoordinates-display.eot?llpy7u#iefix') format('embedded-opentype'),
-        url('fonts/infocoordinates-display.ttf?llpy7u') format('truetype'),
-        url('fonts/infocoordinates-display.woff?llpy7u') format('woff'),
-        url('fonts/infocoordinates-display.svg?llpy7u#infocoordinates-display') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
-}
-
-[class^="icon-infocoordinates-display"],
-[class*=" icon-infocoordinates-display"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'infocoordinates-display' !important;
-    speak: never;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-infocoordinates-displayON:before {
-    content: "\e9ce";
-}
-
-.icon-infocoordinates-displayOFF:before {
-    content: "\e9d1";
-}
-
 .m-panel.m-plugin-infocoordinates {
   z-index: 99999;
 }
@@ -313,4 +204,22 @@
 
 .m-panel.m-plugin-infocoordinates.opened #tabContent table tbody tr td:first-child {
   min-width: 80px;
+}
+
+.m-plugin-infocoordinates .m-infocoordinates-help {
+  float: right;
+  position: relative;
+  left: 5px;
+  top: 1px;
+}
+
+.m-plugin-infocoordinates .m-infocoordinates-help a {
+  color: #71a7d3 !important;
+  font-size: 14px;
+}
+
+.m-plugin-infocoordinates .icon-target:before {
+  font-size: 22px;
+  -webkit-text-stroke: 1px #71a7d3;
+  text-stroke: 1px #71a7d3;
 }

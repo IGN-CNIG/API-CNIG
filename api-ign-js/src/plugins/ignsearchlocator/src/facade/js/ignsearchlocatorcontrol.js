@@ -47,6 +47,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     position,
     pointStyle,
     nomenclatorSearchType,
+    helpUrl,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
       M.exception(getValue('impl'));
@@ -403,6 +404,13 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {HTMLElement}
      */
     this.inputRC_ = null;
+
+    /**
+     * URL to the help for the icon
+     * @private
+     * @type {string}
+     */
+    this.helpUrl = helpUrl;
   }
   /**
    * This function creates the view
@@ -1913,6 +1921,8 @@ export default class IGNSearchLocatorControl extends M.Control {
 
       const compiledXYLocator = M.template.compileSync(xylocator, {
         vars: {
+          hasHelp: this.helpUrl !== undefined && M.utils.isUrl(this.helpUrl),
+          helpUrl: this.helpUrl,
           translations: {
             title: getValue('title'),
             srs: getValue('srs'),

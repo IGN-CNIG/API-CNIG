@@ -891,3 +891,15 @@ DROPDOWN ****************************/
   text-align: center;
   width: 100%;
 }
+
+.m-xylocator-help-button {
+  position: absolute;
+    left: 240px;
+    top: 80px;
+}
+
+.m-xylocator-help-button > a {
+  font-size: 18px;
+  color: #71a7d3 !important;
+  text-decoration: none;
+}
