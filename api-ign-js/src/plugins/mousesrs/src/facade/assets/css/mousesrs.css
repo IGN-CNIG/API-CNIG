@@ -26,7 +26,7 @@
 .m-mousesrs-srs-container {
   text-align: center;
   width: 100%;
-  margin: 1rem 0;
+  margin: 1rem 0 1rem 1.2rem;
   display: flex;
   justify-content: center;
 }
@@ -45,7 +45,7 @@
 }
 
 .m-mousesrs-srs-container .m-mousesrs-help-button a {
-  font-size: 20px;
+  font-size: 25px;
   color: #71a7d3 !important;
   text-decoration: none;
 }

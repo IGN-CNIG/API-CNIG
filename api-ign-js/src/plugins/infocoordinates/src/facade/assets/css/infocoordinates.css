@@ -207,15 +207,33 @@
 }
 
 .m-plugin-infocoordinates .m-infocoordinates-help {
-  float: right;
   position: relative;
-  left: 5px;
-  top: 1px;
+  left: 24px;
+  top: 0px;
 }
 
 .m-plugin-infocoordinates .m-infocoordinates-help a {
   color: #71a7d3 !important;
-  font-size: 14px;
+  font-size: 20px;
+}
+
+.m-plugin-infocoordinates .m-infocoordinates-help-td {
+  display: flex;
+  align-items: center;
+}
+
+@-moz-document url-prefix() {
+  .m-plugin-infocoordinates .m-infocoordinates-help-td {
+    height: 33px;
+  }
+
+  .m-plugin-infocoordinates .m-infocoordinates-help {
+    left: 22px;
+  }
+
+  .m-plugin-infocoordinates .m-infocoordinates-help a {
+    font-size: 22px !important;
+  }
 }
 
 .m-plugin-infocoordinates .icon-target:before {

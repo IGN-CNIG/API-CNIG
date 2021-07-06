@@ -895,11 +895,17 @@ DROPDOWN ****************************/
 .m-xylocator-help-button {
   position: absolute;
     left: 240px;
-    top: 80px;
+    top: 76px;
+}
+
+@-moz-document url-prefix() {
+  .m-xylocator-help-button {
+    left: 252px;
+  }
 }
 
 .m-xylocator-help-button > a {
-  font-size: 18px;
+  font-size: 24px;
   color: #71a7d3 !important;
   text-decoration: none;
 }
