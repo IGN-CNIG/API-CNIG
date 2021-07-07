@@ -141,13 +141,9 @@
           },
         });
 
-        M.proxy(false);
         vertex.setStyle(estiloPoint);
         map.addLayers(vertex);
         map.addPlugin(mp);
-        setTimeout(() => {
-          M.proxy(true);
-        }, 5000);
 
     </script>
 </body>
