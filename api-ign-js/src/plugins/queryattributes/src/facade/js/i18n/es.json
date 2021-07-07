@@ -20,5 +20,6 @@
   "filter_by_bbox": "Filtrar resultados por vista actual",
   "filter_by_area": "Filtrar resultados dibujando geometría",
   "show_hide": "Ocultar / Mostrar",
-  "information": "Información"
+  "information": "Información",
+  "search_all_fields": "Búsqueda en todos los campos"
 }

@@ -20,5 +20,6 @@
   "filter_by_bbox": "Filter results by current view",
   "filter_by_area": "Filter results by drawing geometry",
   "show_hide": "Hide / Show",
-  "information": "Information"
+  "information": "Information",
+  "search_all_fields": "Search over all fields"
 }

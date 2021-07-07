@@ -20,6 +20,7 @@
     "no-underscore-dangle": ["error", { "allowAfterThis": true }],
     "import/extensions": ["error", "never"],
     "import/no-unresolved": "off",
+    "no-console":"off", //0 = off, 1 = warn, 2 = error
     "prefer-destructuring": "off",
     "arrow-body-style": "off",
     "no-unused-vars": ["error", {

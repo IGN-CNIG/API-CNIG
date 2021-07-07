@@ -1,9 +1,24 @@
-import QueryAttributes from 'facade/queryattributes';
 
+const COLORES_PROVINCIA = {
+  2:'olive',
+  5:'green',
+  6:'blue',
+  9:'navy',
+  10:'springgreeen',
+  13:'lightsalmon',
+  16:'steelblue',
+  19:'orangered',
+  28:'red',
+  40:'plum',
+  42:'lime',
+  45:'gold',
+  47:'emerald',
+  50:'turquoise',
+}
 
-M.language.setLang('es'); //Español
-//M.language.setLang('en'); //Inglés
-
+/**
+ * Creamos el objeto Mapa.APICNIG
+ */
 const map = M.map({
   container: 'mapjs',
   controls: ['panzoom','panzoombar', 'scale*true', 'scaleline', 'rotate', 'location','backgroundlayers'], //getfeatureinfo: este control es un poco coñazo, siempre está buscando información al hacer clic en el mapa.
@@ -13,13 +28,17 @@ const map = M.map({
   minZoom: 4,
   projection: "EPSG:3857*m",
   center: {
-      x: -409000, //-712300,
-      y: 4930000, //4310700,
-      draw: false  //Dibuja un punto en el lugar de la coordenada
+      x: -409000, // -712300,
+      y: 4930000, // 4310700,
+      draw: false  // Dibuja un punto en el lugar de la coordenada
   },
 });
 
-const mp = new QueryAttributes({
+/**
+ * e2m:
+ * Configuración del plugin
+ */
+const mp = new M.plugin.QueryAttributes({
   position: 'TL',
   collapsed: true,
   collapsible: true,
@@ -52,9 +71,8 @@ const mp = new QueryAttributes({
     ],
   }
 });
-
-
-
+        
+// Capa de prueba  
 const campamentos = new M.layer.WFS({
   url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?",
   namespace: "sepim",
@@ -67,31 +85,15 @@ const campamentos = new M.layer.WFS({
 });
 map.addWFS(campamentos);
 
-
+// Capa on los vértices geodésicos
 const vertex = new M.layer.GeoJSON({
   name: 'vertices',
-  /*url: 'https://projects.develmap.com/attributestable/roivertexcenter.geojson',*/
   url: 'https://projects.develmap.com/attributestable/roivertexcenterred.geojson',
   extract: true, // Con esta propiedad sale el popup standard con las propiedades
 });
 
-const COLORES_PROVINCIA = {
-  2:'olive',
-  5:'green',
-  6:'blue',
-  9:'navy',
-  10:'springgreeen',
-  13:'lightsalmon',
-  16:'steelblue',
-  19:'orangered',
-  28:'red',
-  40:'plum',
-  42:'lime',
-  45:'gold',
-  47:'emerald',
-  50:'turquoise',
-}
 
+// Definimos unas reglas de estilo para aplicar a la capa de vértices
 let estiloPoint = new M.style.Point({
   icon: {
           /**
@@ -127,20 +129,18 @@ let estiloPoint = new M.style.Point({
           gradient:  function(feature,map) {
                                   return false;
                   },               // Degradado entre color de borde e interior
-          opacity: 1,                    // Transparencia. 0(transparente). 1(opaco).
+          opacity: 1,              // Transparencia. 0(transparente). 1(opaco).
           snaptopixel: true,
   },                                    
 });
-
+        
 vertex.setStyle(estiloPoint);// Asociamos a la capa el estilo definido
 
 map.addLayers(vertex);
 
-
-
 map.addPlugin(mp);
 
-
+// Este plugin con la información de coordenadas nos ayudará
 const plugMouse = new M.plugin.MouseSRS({
   tooltip: "Muestra coordenadas",
   srs: "EPSG:4326",
@@ -151,6 +151,3 @@ const plugMouse = new M.plugin.MouseSRS({
   activeZ: false
 });
 map.addPlugin(plugMouse);
-
-window.map = map;
-

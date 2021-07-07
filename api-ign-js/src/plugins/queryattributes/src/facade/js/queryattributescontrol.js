@@ -22,7 +22,8 @@ export default class QueryAttributesControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(configuration, filters) {
+
+  constructor(configuration, filters, collapsed_, position_) {
     if (M.utils.isUndefined(QueryAttributesImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -77,6 +78,21 @@ export default class QueryAttributesControl extends M.Control {
 
     this.configuration = configuration;
 
+    this.collapsed = collapsed_;
+
+    this.position = position_;
+
+    /**
+     * e2m: add pk column to the beginning of configuration.columns
+     */
+    this.configuration.columns.unshift({
+      name: this.configuration.pk,
+      alias: 'pk',
+      visible: true,
+      align: 'right',
+      type: 'pkcolumn',
+    });
+
     this.filters = filters;
 
     this.sortProperties_ = {
@@ -106,6 +122,36 @@ export default class QueryAttributesControl extends M.Control {
     this.map = map;
     return new Promise((success, fail) => {
       this.createInitialView(map);
+
+      /**
+       * Helper for Formatter Elements.
+       * Symbol = param * value;
+       */
+      Handlebars.registerHelper('pattern', (options) => {
+        let output = '';
+        // for (const k in options.data.root.fields) {
+        //   if (!options.data.root.fields[k].isFormatter) continue;
+        //   if (options.data.root.fields[k].typeparam === undefined) {
+        //     continue;
+        //   }
+        //   const symbolPattern = options.data.root.fields[k].typeparam;
+        //   const numRepeat = options.data.root.fields[k].value;
+        //   for (let i = 0; i < numRepeat; i += 1) {
+        //     output += symbolPattern;
+        //   }
+        // }
+        options.data.root.fields.forEach((field) => {
+          if (!field.isFormatter) return;
+          if (field.typeparam === undefined) return;
+          const symbolPattern = field.typeparam;
+          const numRepeat = field.value;
+          for (let i = 0; i < numRepeat; i += 1) {
+            output += symbolPattern;
+          }
+        });
+        return output;
+      });
+
       const html = M.template.compileSync(template, {
         vars: {
           translations: {
@@ -121,7 +167,6 @@ export default class QueryAttributesControl extends M.Control {
       this.kmlLayers = this.map.getKML().map((layer) => {
         return { layer, loaded: false };
       });
-
       success(html);
     });
   }
@@ -147,10 +192,13 @@ export default class QueryAttributesControl extends M.Control {
       });
 
     html.querySelector('#m-queryattributes-filter #m-queryattributes-search-btn').addEventListener('click', this.searchFilter.bind(this));
-    html.querySelector('#m-queryattributes-filter #m-queryattributes-search-input').addEventListener('keypress', (e) => {
-      if (e.keyCode === 13) {
-        this.searchFilter();
-      }
+    html.querySelector('#m-queryattributes-filter #m-queryattributes-search-input').addEventListener('keyup', (e) => {
+      console.log(e);
+      this.searchFilter();
+      // e2m: en vez de esperar al Enter para buscar, lo hace en cada pulsación
+      // if (e.keyCode === 13) {
+      //   this.searchFilter();
+      // }
     });
 
     if (this.filters) {
@@ -178,6 +226,7 @@ export default class QueryAttributesControl extends M.Control {
 
   showAttributeTable(layerName, callback) {
     const columns = this.configuration.columns;
+
     if (!M.utils.isNullOrEmpty(layerName)) {
       this.layer = this.hasLayer_(layerName)[0];
       if (this.allFeatures === undefined) {
@@ -189,24 +238,49 @@ export default class QueryAttributesControl extends M.Control {
       if (this.isLayerLoaded(this.layer)) {
         clearInterval(interval);
         document.getElementById('m-queryattributes-table').innerHTML = '';
+        document.getElementById('m-queryattributes-search-results').innerHTML = '';
         const headerAtt = [];
         const aligns = [];
+        const typesdata = [];
+        const typesparam = [];
         let attributes = [];
         const features = this.layer.getFeatures();
+        if (this.allFeatures.length !== features.length) {
+          document.getElementById('m-queryattributes-search-results').innerHTML = `Filtrados ${features.length} de ${this.allFeatures.length} registros.`;
+        } else {
+          document.getElementById('m-queryattributes-search-results').innerHTML = `Total: ${this.allFeatures.length} registros. `;
+        }
+        // e2m: ocultamos nuestro spinner de búsqueda.
+        this.html.querySelector('#m-queryattributes-searching-results').style.display = 'none';
+
+
         if (!M.utils.isNullOrEmpty(features)) {
           Object.keys(features[0].getAttributes()).forEach((attr) => {
             if (columns !== undefined && columns.length > 0) {
               const filtered = columns.filter((elem) => {
                 return elem.name === attr && elem.visible;
               });
-
               if (filtered.length > 0) {
-                headerAtt.push({ name: attr, alias: filtered[0].alias });
-                aligns.push(filtered[0].align);
+                filtered.forEach((item) => {
+                  headerAtt.push({
+                    name: attr,
+                    alias: item.alias,
+                    isPkColumn: item.type === 'pkcolumn',
+                  });
+                  aligns.push(item.align);
+                  typesdata.push(item.type);
+                  typesparam.push(item.typeparam);
+                });
               }
             } else {
-              headerAtt.push({ name: attr, alias: attr });
+              headerAtt.push({
+                name: attr,
+                alias: attr.alias,
+                isPkColumn: attr.type === 'pkcolumn',
+              });
               aligns.push('right');
+              typesdata.push('string');
+              typesparam.push('');
             }
           });
 
@@ -220,19 +294,18 @@ export default class QueryAttributesControl extends M.Control {
                   const filtered = columns.filter((elem) => {
                     return elem.name === keys[index] && elem.visible;
                   });
-
                   if (filtered.length > 0) {
-                    newProperties.push(prop);
+                    filtered.forEach((item) => {
+                      newProperties.push(prop);
+                    });
                   }
                 });
-
                 attributes.push(newProperties);
               } else {
                 attributes.push(properties);
               }
             }
           });
-
           if (this.sortProperties_.active) {
             attributes = this.sortAttributes_(attributes, headerAtt);
           }
@@ -243,12 +316,25 @@ export default class QueryAttributesControl extends M.Control {
         attributes.forEach((values) => {
           const attrP = [];
           values.forEach((v, index) => {
-            attrP.push({ value: v, align: aligns[index] });
+            attrP.push({
+              value: v,
+              align: aligns[index],
+              /**
+               * e2m:
+               * typesdata[index] lo cambiamos por flags -> gestión más fácil en Handlebars
+               */
+              isLinkURL: typesdata[index] === 'linkURL',
+              isButtonURL: typesdata[index] === 'buttonURL',
+              isImage: typesdata[index] === 'image',
+              isString: typesdata[index] === 'string',
+              isPercentage: typesdata[index] === 'percentage',
+              isFormatter: typesdata[index] === 'formatter',
+              isPkColumn: typesdata[index] === 'pkcolumn',
+              typeparam: typesparam[index],
+            });
           });
-
           attributesParam.push(attrP);
         });
-
         if (!M.utils.isUndefined(headerAtt)) {
           params = {
             headerAtt,
@@ -258,22 +344,40 @@ export default class QueryAttributesControl extends M.Control {
         }
 
         params.translations = { not_attributes: getValue('not_attributes') };
-        const options = { jsonp: true, vars: params };
+
+        Handlebars.registerHelper('formatterStr', (item) => {
+          let symbolPattern = '';
+          let numRepeat = 0;
+          let output = '';
+          numRepeat = item.value;
+          symbolPattern = item.typeparam;
+          for (let i = 0; i < numRepeat; i += 1) {
+            output += symbolPattern;
+          }
+          return output;
+        });
+
+        const options = {
+          jsonp: true,
+          vars: params,
+        };
         const html = M.template.compileSync(tabledata, options);
         document.getElementById('m-queryattributes-table').appendChild(html);
         document.getElementById('m-queryattributes-filter').style.display = 'flex';
         document.querySelector('#m-queryattributes-options-buttons #exportar-btn').style.display = 'block';
+
         html.querySelectorAll('table thead tr th span').forEach((th) => {
           th.addEventListener('click', this.sort_.bind(this));
         });
-
         html.querySelectorAll('table tbody tr').forEach((tr) => {
           tr.addEventListener('click', this.centerOnFeature.bind(this));
         });
-
         if (callback) {
           callback();
         }
+        this.map.getMapImpl().on('click', (evt) => {
+          this.actualizaInfo(evt);
+        });
       }
     }, 1000);
   }
@@ -303,7 +407,6 @@ export default class QueryAttributesControl extends M.Control {
     if (this.sortProperties_.sortType === 'desc') {
       attributesSort = attributesSort.reverse();
     }
-
     return attributesSort;
   }
 
@@ -315,21 +418,25 @@ export default class QueryAttributesControl extends M.Control {
       newA = (`${newA}`).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       newB = (`${newB}`).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
-
     if (newA < newB) {
       res = -1;
     } else if (newA > newB) {
       res = 1;
     }
-
     return res;
   }
 
+  /**
+   * e2m:
+   * Procedimiento para mostrar información al hacer clic en el elemento de la tabla
+   * @param {*} evt
+   */
   centerOnFeature(evt) {
     document.querySelector('#m-queryattributes-options-information-container').innerHTML = '';
     const value = evt.target.parentNode.children[0].textContent.trim();
     const features = this.layer.getFeatures();
     const field = Object.keys(features[0].getAttributes())[0];
+    console.log(evt.target.parentNode);
     const filtered = features.filter((f) => {
       return this.compareStrings(`${f.getAttributes()[field]}`.trim(), value) === 0;
     });
@@ -348,12 +455,17 @@ export default class QueryAttributesControl extends M.Control {
       const fields = [];
       Object.entries(filtered[0].getAttributes()).forEach((entry) => {
         const config = this.getColumnConfig(entry[0]);
+        if (config.showpanelinfo === false) return;
         fields.push({
           name: config.alias,
           value: entry[1],
-          isURL: config.type === 'url',
+          isLinkURL: config.type === 'linkURL',
+          isButtonURL: config.type === 'buttonURL',
           isImage: config.type === 'image',
           isString: config.type === 'string',
+          isPercentage: config.type === 'percentage',
+          isFormatter: config.type === 'formatter',
+          typeparam: config.typeparam,
         });
       });
 
@@ -367,29 +479,103 @@ export default class QueryAttributesControl extends M.Control {
           },
         },
       });
-
-      document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '15vh';
-      document.querySelector('#m-queryattributes-options-information-container').appendChild(html);
-      document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').addEventListener('click', () => {
-        const elem = document.querySelector('#m-queryattributes-information-content div');
-        if (elem.style.display !== 'none') {
-          elem.style.display = 'none';
-          document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '64vh';
-          document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.remove('icon-colapsar');
-          document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.add('icon-desplegar');
-        } else {
-          elem.style.display = 'block';
-          document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '15vh';
-          document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.remove('icon-desplegar');
-          document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.add('icon-colapsar');
-        }
-      });
-
-      document.querySelector('#m-queryattributes-information-content > p > span > span.icon-cerrar').addEventListener('click', () => {
-        document.querySelector('#m-queryattributes-options-information-container').innerHTML = '';
-        document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '75vh';
-      });
+      // e2m: Vaciamos el contenedor de información para cargar los datos nuevos
+      this.launchInfoWindow(html);
     }
+  }
+
+  /**
+   * e2m:
+   * Procedimiento para mostrar información al hacer clic en el dfeature sobre la cartografía
+   * @param {*} evt
+   */
+  actualizaInfo(evt) {
+    /* eslint no-underscore-dangle: 0 */
+    const this_ = this;
+    const mapaOL = this.map.getMapImpl();
+    mapaOL.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
+      const featureFacade = M.impl.Feature.olFeature2Facade(feature);
+      console.log(layer); // 📌 Necesito filtrar cuando la capa no es la adecuada
+      console.log(layer.get('name'));
+      console.log(layer.getProperties());
+      const fields = [];
+
+      Object.entries(featureFacade.getAttributes()).forEach((entry) => {
+        const config = this_.getColumnConfig(entry[0]);
+        if (config.showpanelinfo === false) return;
+        fields.push({
+          name: config.alias,
+          value: entry[1],
+          isLinkURL: config.type === 'linkURL',
+          isButtonURL: config.type === 'buttonURL',
+          isImage: config.type === 'image',
+          isString: config.type === 'string',
+          isPercentage: config.type === 'percentage',
+          isFormatter: config.type === 'formatter',
+          typeparam: config.typeparam,
+        });
+      });
+
+      const html = M.template.compileSync(information, {
+        vars: {
+          fields,
+          translations: {
+            close: getValue('close'),
+            information: getValue('information'),
+            show_hide: getValue('show_hide'),
+          },
+        },
+      });
+      this_.launchInfoWindow(html);
+    });
+
+    this.addCierraPanelEvent();
+    const container = this.map_.getContainer().parentElement.parentElement;
+    container.style.width = 'calc(100% - 530px)';
+    container.style.position = 'fixed';
+    if (this_.position === 'TL') {
+      container.style.left = '530px';
+    } else {
+      container.style.right = '530px';
+    }
+
+    const elem = document.querySelector('.m-panel.m-queryattributes.collapsed');
+    if (elem !== null) {
+      elem.classList.remove('collapsed');
+      elem.classList.add('opened');
+    }
+    this.map_.refresh();
+  }
+
+
+  /**
+   * e2m:
+   * Abre el sidepanel por código, al hacer clic sobre uno de los features de la capa vectorial
+   * @param {*} html
+   */
+  launchInfoWindow(html) {
+    document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '25vh';// e2m:tamaño máximo cuando se muestra información
+    document.querySelector('#m-queryattributes-options-information-container').innerHTML = ''; // e2m:borro contenido para evitar que concatene dentro ventanas de información
+    document.querySelector('#m-queryattributes-options-information-container').appendChild(html);
+    document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').addEventListener('click', () => {
+      const elem = document.querySelector('#m-queryattributes-information-content div');
+      if (elem.style.display !== 'none') {
+        elem.style.display = 'none';// e2m:colapsado
+        document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '64vh';
+        document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.remove('icon-colapsar');
+        document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.add('icon-desplegar');
+      } else {
+        elem.style.display = 'block';// e2m:desplegado
+        document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '15vh';
+        document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.remove('icon-desplegar');
+        document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.add('icon-colapsar');
+      }
+    });
+
+    document.querySelector('#m-queryattributes-information-content > p > span > span.icon-cerrar').addEventListener('click', () => {
+      document.querySelector('#m-queryattributes-options-information-container').innerHTML = '';
+      document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '75vh';
+    });
   }
 
   getColumnConfig(column) {
@@ -432,22 +618,26 @@ export default class QueryAttributesControl extends M.Control {
    * @param {Map} map
    */
   createInitialView(map) {
+    const searchingFields = this.configuration.columns.filter((item) => {
+      return item.searchable === true;
+    });
     const options = {
       jsonp: true,
       vars: {
         filters: this.filters,
+        searchableFields: searchingFields,
         translations: {
           filters: getValue('filters'),
           bbox: getValue('bbox'),
           area: getValue('area'),
           loading: getValue('loading'),
           search: getValue('search'),
+          search_all_fields: getValue('search_all_fields'),
           filter_by_bbox: getValue('filter_by_bbox'),
           filter_by_area: getValue('filter_by_area'),
         },
       },
     };
-
     this.initialView = M.template.compileSync(initialView, options);
   }
 
@@ -533,25 +723,62 @@ export default class QueryAttributesControl extends M.Control {
     });
   }
 
+
+  // e2m: búsqueda por filtro de texto.
   searchFilter() {
+    this.html.querySelector('#m-queryattributes-searching-results').style.display = 'block';
     let text = this.html.querySelector('#m-queryattributes-filter #m-queryattributes-search-input').value;
     text = this.normalizeString_(text);
+    const searchbyColumn = document.getElementById('m-queryattributes-fieldselector').value;
+    // e2m: con esto busco en los valores de todos los campos
+    // const filter = new M.filter.Function((feature) => {
+    //   let res = false;
+    //   Object.values(feature.getAttributes()).forEach((v) => {
+    //     console.log(v);
+    //     const value = this.normalizeString_(v);
+    //     if (value.indexOf(text) > -1) {
+    //       res = true;
+    //     }
+    //   });
+    //   return res;
+    // });
+
+    /**
+     * e2m:
+     * Con esto busco en los campos con la propiedad searchable true
+     * Primero filtramos los campos con el aributo searchable = true
+     * Después extraemos a un array lso nombres de los campos
+     */
+    const searchingFields = this.configuration.columns.filter((item) => {
+      return item.searchable === true;
+    }).map(field => field.name);
+
     const filter = new M.filter.Function((feature) => {
       let res = false;
-      Object.values(feature.getAttributes()).forEach((v) => {
-        const value = this.normalizeString_(v);
+      Object.entries(feature.getAttributes()).forEach((entry) => {
+        if (searchingFields.indexOf(entry[0]) < 0) return;
+        if (searchbyColumn !== 'All') {
+          if (entry[0] !== searchbyColumn) return;
+        }
+        const value = this.normalizeString_(entry[1]);
         if (value.indexOf(text) > -1) {
           res = true;
         }
       });
-
       return res;
     });
+
+
     this.layer.setFilter(filter);
     this.filtered = true;
     this.oldFilter = filter;
     this.oldLayer = this.layer;
-    this.map.setBbox(this.getImpl().getLayerExtent(this.layer));
+
+    // e2m: aquí hay que comprobar que el resultado del filtro no es cero
+
+    if (this.layer.getFeatures().length > 0) {
+      this.map.setBbox(this.getImpl().getLayerExtent(this.layer));
+    }
     this.showAttributeTable(this.layer.name);
     const buttons = '#m-queryattributes-options-buttons>button';
     document.querySelector(`${buttons}#limpiar-filtro-btn`).style.display = 'block';
@@ -976,5 +1203,59 @@ export default class QueryAttributesControl extends M.Control {
    */
   equals(control) {
     return control instanceof QueryAttributesControl;
+  }
+
+  addAbrePanelEvent() {
+    const elem = document.querySelector('.m-panel.m-queryattributes.collapsed .m-panel-btn.icon-tabla');
+    if (elem !== null) {
+      elem.addEventListener('click', () => {
+        const container = this.map_.getContainer().parentElement.parentElement;
+        container.style.width = 'calc(100% - 530px)';
+        container.style.position = 'fixed';
+        if (this.position === 'TL') {
+          container.style.left = '530px';
+        } else {
+          container.style.right = '530px';
+        }
+        this.map_.refresh();
+        this.addCierraPanelEvent();
+      });
+    }
+  }
+
+  addCierraPanelEvent() {
+    const elem = document.querySelector('.m-panel.m-queryattributes.opened .m-panel-btn');
+    if (elem !== null) {
+      elem.addEventListener('click', () => {
+        const container = this.map_.getContainer().parentElement.parentElement;
+        container.style.width = '100%';
+        container.style.position = '';
+        if (this.position_ === 'TL') {
+          container.style.left = 'unset';
+        } else {
+          container.style.right = 'unset';
+        }
+
+        this.map_.refresh();
+        this.addAbrePanelEvent();
+      });
+    }
+  }
+
+  initPanelAttributes() {
+    if (this.collapsed) {
+      this.addAbrePanelEvent();
+    } else {
+      this.addCierraPanelEvent();
+      const container = this.map_.getContainer().parentElement.parentElement;
+      container.style.width = 'calc(100% - 530px)';
+      container.style.position = 'fixed';
+      if (this.position === 'TL') {
+        container.style.left = '530px';
+      } else {
+        container.style.right = '530px';
+      }
+      this.map_.refresh();
+    }
   }
 }

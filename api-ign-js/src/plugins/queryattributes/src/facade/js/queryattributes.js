@@ -90,64 +90,71 @@ export default class QueryAttributes extends M.Plugin {
       tooltip: getValue('tooltip'),
     });
 
-    this.control_ = new QueryAttributesControl(this.configuration_, this.filters_);
+    this.control_ = new QueryAttributesControl(this.configuration_, this.filters_, this.collapsed_, this.position_);
     this.controls_.push(this.control_);
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-    if (this.collapsed_) {
-      this.addOpenEvent();
-    } else {
-      this.addCloseEvent();
-      const container = this.map_.getContainer().parentElement.parentElement;
-      container.style.width = 'calc(100% - 530px)';
-      container.style.position = 'fixed';
-      if (this.position_ === 'TL') {
-        container.style.left = '530px';
-      } else {
-        container.style.right = '530px';
-      }
+    this.control_.initPanelAttributes();
 
-      this.map_.refresh();
-    }
+    // e2m: Lo meto en el control
+    // if (this.collapsed_) {
+    //   this.addOpenEvent();
+    // } else {
+    //   this.addCloseEvent();
+    //    const container = this.map_.getContainer().parentElement.parentElement;
+    //    container.style.width = 'calc(100% - 530px)';
+    //    container.style.position = 'fixed';
+    //    if (this.position_ === 'TL') {
+    //      container.style.left = '530px';
+    //    } else {
+    //      container.style.right = '530px';
+    //    }
+    //    this.map_.refresh();
+    // }
   }
 
-  addOpenEvent() {
-    const elem = document.querySelector('.m-panel.m-queryattributes.collapsed .m-panel-btn.icon-tabla');
-    if (elem !== null) {
-      elem.addEventListener('click', () => {
-        const container = this.map_.getContainer().parentElement.parentElement;
-        container.style.width = 'calc(100% - 530px)';
-        container.style.position = 'fixed';
-        if (this.position_ === 'TL') {
-          container.style.left = '530px';
-        } else {
-          container.style.right = '530px';
-        }
+  // e2m: Lo meto en el control
+  /* eslint max-len: ["error", { "code": 150 }] */
+  // addOpenEvent()  {
+  //   const elem = document.querySelector('.m-panel.m-queryattributes.collapsed .m-panel-btn.icon-tabla');
+  //   console.log("openPanel");
+  //   if (elem !== null) {
+  //     console.log("openPanel evtClick");
+  //     elem.addEventListener('click', () => {
+  //       const container = this.map_.getContainer().parentElement.parentElement;
+  //       container.style.width = 'calc(100% - 530px)';
+  //       container.style.position = 'fixed';
+  //       if (this.position_ === 'TL') {
+  //         container.style.left = '530px';
+  //       } else {
+  //         container.style.right = '530px';
+  //       }
+  //       this.map_.refresh();
+  //       this.addCloseEvent();
+  //     });
+  //   }
+  // }
 
-        this.map_.refresh();
-        this.addCloseEvent();
-      });
-    }
-  }
-
-  addCloseEvent() {
-    const elem = document.querySelector('.m-panel.m-queryattributes.opened .m-panel-btn');
-    if (elem !== null) {
-      elem.addEventListener('click', () => {
-        const container = this.map_.getContainer().parentElement.parentElement;
-        container.style.width = '100%';
-        container.style.position = '';
-        if (this.position_ === 'TL') {
-          container.style.left = 'unset';
-        } else {
-          container.style.right = 'unset';
-        }
-
-        this.map_.refresh();
-        this.addOpenEvent();
-      });
-    }
-  }
+  // e2m: Lo meto en el control
+  // addCloseEvent() {
+  //   const elem = document.querySelector('.m-panel.m-queryattributes.opened .m-panel-btn');
+  //   console.log("closePanel");
+  //   if (elem !== null) {
+  //     console.log("closePanel evtClick");
+  //     elem.addEventListener('click', () => {
+  //       const container = this.map_.getContainer().parentElement.parentElement;
+  //       container.style.width = '100%';
+  //       container.style.position = '';
+  //       if (this.position_ === 'TL') {
+  //         container.style.left = 'unset';
+  //       } else {
+  //         container.style.right = 'unset';
+  //       }
+  //       this.map_.refresh();
+  //       this.addOpenEvent();
+  //     });
+  //   }
+  // }
 
   /**
    * Destroys plugin

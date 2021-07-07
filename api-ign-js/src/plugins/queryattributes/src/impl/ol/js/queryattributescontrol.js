@@ -13,10 +13,10 @@ export default class QueryAttributesControl extends M.impl.Control {
    */
   addTo(map, html) {
     super.addTo(map, html);
-
     this.facadeMap = map;
   }
 
+  // e2m: al pulsar en Buscar por área añadimos la interacción
   addDrawInteraction(callback) {
     this.removeDrawInteraction_();
     const drawLayer = this.facadeMap.getLayers().filter(layer => layer.name === '__draw__')[0];
