@@ -506,18 +506,7 @@ export default class VectorsControl extends M.impl.Control {
       if (f.getGeometry().getType() === 'MultiLineString') {
         if (f.getGeometry().getLineStrings().length === 1) {
           const geom = f.getGeometry().getLineStrings()[0];
-          if (geom.getCoordinates().length > 150) {
-            let i = 2;
-            let newGeom = geom.simplify(i);
-            while (newGeom.getCoordinates().length > 150) {
-              i += 1;
-              newGeom = geom.simplify(i);
-            }
-
-            f.setGeometry(newGeom);
-          } else {
-            f.setGeometry(geom);
-          }
+          f.setGeometry(geom);
         }
       }
 
@@ -546,10 +535,6 @@ export default class VectorsControl extends M.impl.Control {
     } else {
       features = lines;
     }
-
-    lines.forEach((line) => {
-      this.calculateElevations(line);
-    });
 
     return features;
   }
