@@ -61,7 +61,7 @@ uniqueNS.forEach((ns) => {
   createNS += `if (!window.${ns}) window.${ns} = {};\n`;
 });
 
-const contentEntryPoint = `${imports}\n${createNS}${exportedClasses}`;
+const contentEntryPoint = `/*eslint-disable*/\n${imports}\n${createNS}${exportedClasses}`;
 
 fs.writeFileSync(path.join(SRC_PATH, 'index.js'), contentEntryPoint);
 fs.removeSync(DIST_PATH);
