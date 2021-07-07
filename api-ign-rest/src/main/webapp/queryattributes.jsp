@@ -58,44 +58,91 @@
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
 
+        const COLORES_PROVINCIA = {
+          2: 'olive',
+          5: 'green',
+          6: 'blue',
+          9: 'navy',
+          10: 'springgreeen',
+          13: 'lightsalmon',
+          16: 'steelblue',
+          19: 'orangered',
+          28: 'red',
+          40: 'plum',
+          42: 'lime',
+          45: 'gold',
+          47: 'emerald',
+          50: 'turquoise',
+        };
+
         let map = M.map({
             container: 'mapjs',
-            zoom: 8,
-            center: [-503395.3366454871, 4896624.823755192],
+            zoom: 10 ,
+            maxZoom: 20,
+            minZoom: 4,
+            center: [-409000, 4930000],
         });
 
         const vertex = new M.layer.GeoJSON({
           name: 'vertices',
-          url: 'data/vertices.geojson',
+          url: 'https://projects.develmap.com/attributestable/roivertexcenterred.geojson',
+          extract: true,
         });
 
         const mp = new M.plugin.QueryAttributes({
           position: 'TL',
           collapsed: true,
           collapsible: true,
+          filters: true,
           configuration: {
             layer: 'vertices',
-            initialSort: { name: 'codigoregi', dir: 'asc' },
+            pk: 'id',
+            initialSort: { name: 'nombre', dir: 'asc' },
             columns: [
-              { name: 'id', alias: 'Identificador', visible: true, align: 'right', type: 'string' },
-              { name: 'nombre', alias: 'Nombre Vértice', visible: true, align: 'left', type: 'string' },
-              { name: 'xutmetrs89', alias: 'Coordenada X (UTM ETRS89)', visible: false, align: 'left', type: 'string' },
-              { name: 'yutmetrs89', alias: 'Coordenada Y (UTM ETRS89)', visible: false, align: 'left', type: 'string' },
-              { name: 'huso', alias: 'Huso UTM', visible: false, align: 'left', type: 'string' },
-              { name: 'horto', alias: 'Altitud Ortométrica', visible: false, align: 'left', type: 'string' },
-              { name: 'summary', alias: 'Descripción', visible: false, align: 'left', type: 'string' },
-              { name: 'lat', alias: 'Latitud', visible: false, align: 'left', type: 'string' },
-              { name: 'lng', alias: 'Longitud', visible: false, align: 'left', type: 'string' },
-              { name: 'urlficha', alias: 'URL PDF Ficha', visible: false, align: 'left', type: 'url' },
-              { name: 'urlcdd', alias: 'URL Centro Descargas', visible: false, align: 'left', type: 'url' },
-              { name: 'hojamtn50', alias: 'Hoja MTN50', visible: false, align: 'left', type: 'string' },
-              { name: 'imagemtn50', alias: 'Imagen Hoja MTN50', visible: false, align: 'left', type: 'image' },
-              { name: 'description', alias: 'Descripción completa', visible: true, align: 'left', type: 'string' },
+              { name: 'id', alias: 'Identificador', visible: false, searchable: false, showpanelinfo: true, align: 'right', type: 'string'},
+              { name: 'nombre', alias: 'Nombre Vértice', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
+              { name: 'xutmetrs89', alias: 'Coordenada X (UTM ETRS89)', visible: false, searchable: false, showpanelinfo: false, align: 'left', type: 'string'},
+              { name: 'yutmetrs89', alias: 'Coordenada Y (UTM ETRS89)', visible: false, searchable: false, showpanelinfo: false, align: 'left', type: 'string'},
+              { name: 'lat', alias: 'Latitud', visible: false, searchable: false, showpanelinfo: true, align: 'left', type: 'string'},
+              { name: 'lng', alias: 'Longitud', visible: false, searchable: false, showpanelinfo: true, align: 'left', type: 'string'},
+              { name: 'horto', alias: 'Altitud Ortométrica', visible: false, searchable: false, showpanelinfo: true, align: 'left', type: 'string'},
+              { name: 'calidad', alias: 'Calidad señal', visible: true, searchable: false, showpanelinfo: true, align: 'left', type: 'formatter', typeparam:'⭐️'},
+              { name: 'nivel', alias: 'Vida útil', visible: true, searchable: false, showpanelinfo: true, align: 'left', type: 'percentage' },
+              { name: 'urlficha', alias: 'URL PDF Ficha', visible: true, searchable: false, showpanelinfo: true, align: 'left', type: 'linkURL', typeparam:'📝 Ficha vértice' },
+              { name: 'urlcdd', alias: 'URL Centro Descargas', visible: true, searchable: false, showpanelinfo: true, align: 'left', type: 'buttonURL', typeparam:'🔗 Acceso CdD' },
+              { name: 'hojamtn50', alias: 'Hoja MTN50', visible: false, searchable: false, showpanelinfo: true, align: 'right', type: 'string' },
+              { name: 'summary', alias: 'Localización', visible: false, searchable: false, showpanelinfo: true, align: 'left', type: 'string'},
+              { name: 'imagemtn50', alias: 'Imagen Hoja MTN50', visible: true, searchable: false, showpanelinfo: true, align: 'left', type: 'image'},
+              { name: 'description', alias: 'Descripción completa', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
+              { name: 'pertenencia', alias: 'Pertenencia', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string' },
+              { name: 'municipio', alias: 'Ayuntamiento', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
+              { name: 'codigoine', alias: 'Municipio', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
+              { name: 'codprov', alias: 'Provincia', visible: false, searchable: false, showpanelinfo: false, align: 'left', type: 'string'},
+              { name: 'codauto', alias: 'Autonomía', visible: false, searchable: false, showpanelinfo: false, align: 'left', type: 'string'},
             ],
-          }
+          },
+        });
+
+        const estiloPoint = new M.style.Point({
+          icon: {
+            form: M.style.form.CIRCLE},
+            radius: 5,
+            rotation: 3.14159,
+            rotate: false,
+            offset: [0,0],
+            color: '#3e77f7',
+            fill: (feature,map) => {
+              return COLORES_PROVINCIA[feature.getAttribute('codprov')] || 'green';
+            },
+            gradientcolor:  '#3e77f7',
+            gradient: false,
+            opacity: 1,
+            snaptopixel: true,
+          },
         });
 
         M.proxy(false);
+        vertex.setStyle(estiloPoint);
         map.addLayers(vertex);
         map.addPlugin(mp);
         setTimeout(() => {
