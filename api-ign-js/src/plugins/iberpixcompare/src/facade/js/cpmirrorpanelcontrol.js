@@ -363,10 +363,12 @@ export default class CompareMirrorpanel extends M.Control {
 
   addCommonPlugins(map, mapLyr) {
     if (M.plugin.BackImgLayer !== undefined && this.backImgLayersConfig.position !== undefined) {
-      if (mapLyr === 'C') {
+      if (mapLyr === 'B') {
         this.backImgLayersConfig.layerId = 1;
-      } else if (mapLyr === 'D'){
+      } else if (mapLyr === 'C'){
         this.backImgLayersConfig.layerId = 2;
+      } else if (mapLyr === 'D') {
+        this.backImgLayersConfig.layerId = 3;
       } else {
         this.backImgLayersConfig.layerId = 0;
       }
