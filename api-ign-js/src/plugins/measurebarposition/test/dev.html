@@ -19,6 +19,26 @@
             height: 100%;
             overflow: hidden;
         }
+        #measurePositionTestDiv{
+            bottom: 1em;
+            position: absolute;
+            background-color: black;
+            padding: 7px;
+            z-index: 1001;
+        }
+        #measurePositionTestDiv button{
+            width: 100px;
+            height: 3em;
+            background-color: #264fde;
+            color: white;
+        }
+        #measurePositionTestDiv input{
+            height:2em;
+            width:5em;
+        }
+        #measurePositionTestDiv p{
+            color:#fff
+        }
     </style>
 
 </head>
@@ -31,7 +51,16 @@
     <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/infocoordinates/infocoordinates.ol.min.js"></script>
     <script type="text/javascript" src="http://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/vectors/vectors.ol.min.js"></script>
     <script type="text/javascript" src="/main.js"></script>
-
+    <div id="measurePositionTestDiv">
+        <p>MeasurePositionTest-EPSG:3857</p>
+        <button onclick="
+            var ev = new Event('testTemporalDeMeasurePosition');
+            ev.coordinates = [parseFloat(document.getElementById('input1').value),parseFloat(document.getElementById('input2').value)];
+            document.dispatchEvent(ev);
+            ">Send Coordinates</button>
+        <input id="input1" value="-430430"/>
+        <input id="input2" value="4852852"/>
+    </div>
 </body>
 
 </html>

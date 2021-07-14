@@ -1,16 +1,19 @@
 {
   "exception": {
+    "impl_position": "The implementation used cannot create MeasurePosition.",
     "impl_length": "The implementation used cannot create MeasureLength.",
     "impl_clear": "The implementation used cannot create MeasureClear.",
-    "impl_area": "The implementation used cannot create MeasureArea"
+    "impl_area": "The implementation used cannot create MeasureArea."
   },
   "text": {
     "tooltip": "Measurement tools",
+    "keep_drawing_new_position_lines": "Click to continue drawing new lines",
     "keep_drawing": "Click to continue drawing the line",
     "click_draw": "Click to start drawing",
     "keep_drawing_area": "Click to continue drawing the area",
     "measure_area": "Measure area",
     "delete": "Remove measures",
-    "measure": "Measuring distances"
+    "measure": "Measuring distances",
+    "measure_position": "Measuring distances from position"
   }
 }

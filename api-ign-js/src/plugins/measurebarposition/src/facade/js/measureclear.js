@@ -10,14 +10,19 @@ import { getValue } from './i18n/language';
  * @constructor
  * @param {M.control.Measure} measureLengthControl - Control measure distances
  * @param {M.control.Measure} measureAreaControl - Control measure areas
+ * @param {M.control.Measure} measurePositionControl - Control measure position
  * @extends {M.Control}
  * @api stable
  */
 
 export default class MeasureClear extends M.Control {
-  constructor(measureLengthControl, measureAreaControl) {
+  constructor(measureLengthControl, measureAreaControl, measurePositionControl) {
     // implementation of this control
-    const impl = new MeasureClearImpl(measureLengthControl.getImpl(), measureAreaControl.getImpl());
+    const impl = new MeasureClearImpl(
+      measureLengthControl.getImpl(),
+      measureAreaControl.getImpl(),
+      measurePositionControl.getImpl(),
+    );
 
     // calls the super constructor
     super(impl, MeasureClear.NAME);
@@ -26,6 +31,13 @@ export default class MeasureClear extends M.Control {
     if (M.utils.isUndefined(MeasureClearImpl)) {
       M.Exception(getValue('exception.impl_clear'));
     }
+
+    /**
+     * For destroying one function of the plugin
+     * @private
+     * @type {boolean}
+     */
+    this.destroyable = true;
   }
 
   /**
@@ -72,8 +84,12 @@ export default class MeasureClear extends M.Control {
    * @api stable
    */
   destroy() {
-    this.getImpl().destroy();
-    this.impl = null;
+    if (this.destroyable) {
+      this.destroyable = false;
+      this.getImpl().destroy();
+      this.map_.removeControls(this);
+      this.impl = null;
+    }
   }
 }
 /**

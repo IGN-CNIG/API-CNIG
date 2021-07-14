@@ -2,6 +2,7 @@ import tooltipPointerHTML from '../../../templates/measure_pointer_tooltip';
 import tooltipHTML from '../../../templates/measure_tooltip';
 import { getValue } from '../../../facade/js/i18n/language';
 
+
 /**
  * @classdesc
  * Main constructor of the measure control.
@@ -20,7 +21,7 @@ export default class Measure extends M.impl.Control {
      * @private
      * @type {string}
      */
-    this.type_ = type;
+    this.type_ = this.checkSetType_(type);
 
     /**
      * Vector layer to draw the measures
@@ -80,6 +81,22 @@ export default class Measure extends M.impl.Control {
   }
 
   /**
+   * This function creates apropiate type
+   *
+   * @private
+   * @function
+   * @return {string} type - type from chosen measure Method
+   */
+  checkSetType_(type) {
+    if (type === 'LineString-Position-Option') {
+      this.isMeasurePosition = true;
+      return 'LineString';
+    }
+    this.isMeasurePosition = false;
+    return type;
+  }
+
+  /**
    * This function adds the control to the specified map
    *
    * @public
@@ -108,12 +125,22 @@ export default class Measure extends M.impl.Control {
   activate() {
     this.invokeEscKey();
     this.createHelpTooltip_();
-    this.facadeMap_.getMapImpl().on('pointermove', this.pointerMoveHandler_.bind(this));
-    this.facadeMap_.getMapImpl().addInteraction(this.draw_);
-    this.active = true;
+    this.listenerPointerMoveHandlerKey = this.facadeMap_.getMapImpl().on('pointermove', this.pointerMoveHandler_.bind(this));
+    if (this.isMeasurePosition) {
+      this.active = true;
+      setTimeout(this.isCoordinatesSupliedWait.bind(this), 10);
+      // eslint-disable-next-line no-underscore-dangle
+      this.draw_.freehandCondition_ = function freehandNull() { return false; };
+    } else {
+      this.facadeMap_.getMapImpl().addInteraction(this.draw_);
+      this.active = true;
+      // eslint-disable-next-line no-underscore-dangle
+      this.draw_.freehandCondition_ = ol.events.condition.shiftKeyOnly;
+    }
     this.createMeasureTooltip_();
     document.body.style.cursor = 'crosshair';
-    document.addEventListener('keyup', this.checkEscKey.bind(this));
+    this.boundCheckEscKey = this.checkEscKey.bind(this);
+    document.addEventListener('keyup', this.boundCheckEscKey);
   }
 
   checkEscKey(evt) {
@@ -122,7 +149,7 @@ export default class Measure extends M.impl.Control {
         elem.click();
       });
 
-      document.removeEventListener('keyup', this.checkEscKey);
+      document.removeEventListener('keyup', this.boundCheckEscKey);
     }
   }
 
@@ -144,6 +171,26 @@ export default class Measure extends M.impl.Control {
   }
 
   /**
+   * This function waits to activate MeasurePosition
+   *
+   * @function
+   * @private
+   */
+  isCoordinatesSupliedWait() {
+    if (this.active) {
+      if (this.coordinatesPosition != null) {
+        this.facadeMap_.getMapImpl().addInteraction(this.draw_);
+        // eslint-disable-next-line no-underscore-dangle
+        this.draw_.startDrawing_({
+          coordinate: this.coordinatesPosition, map: this.facadeMap_.getMapImpl(),
+        });
+      } else {
+        setTimeout(this.isCoordinatesSupliedWait.bind(this), 500);
+      }
+    }
+  }
+
+  /**
    * This function dissable plugin
    *
    * @public
@@ -152,16 +199,20 @@ export default class Measure extends M.impl.Control {
    */
   deactivate() {
     document.body.style.cursor = 'default';
-    this.facadeMap_.getMapImpl().un('pointermove', this.pointerMoveHandler_.bind(this));
-    this.facadeMap_.getMapImpl().removeInteraction(this.draw_);
-    // this.clear();
-    if (!M.utils.isNullOrEmpty(this.helpTooltip_)) {
-      this.facadeMap_.getMapImpl().removeOverlay(this.helpTooltip_);
-    }
-    if (!M.utils.isNullOrEmpty(this.measureTooltip_)) {
-      this.facadeMap_.getMapImpl().removeOverlay(this.measureTooltip_);
+    ol.Observable.unByKey(this.listenerPointerMoveHandlerKey);
+    document.removeEventListener('keyup', this.boundCheckEscKey);
+    if (this.facadeMap_) {
+      this.facadeMap_.getMapImpl().removeInteraction(this.draw_);
+      // this.clear();
+      if (!M.utils.isNullOrEmpty(this.helpTooltip_)) {
+        this.facadeMap_.getMapImpl().removeOverlay(this.helpTooltip_);
+      }
+      if (!M.utils.isNullOrEmpty(this.measureTooltip_)) {
+        this.facadeMap_.getMapImpl().removeOverlay(this.measureTooltip_);
+      }
     }
     this.active = false;
+    this.coordinatesPosition = null;
   }
 
   /**
@@ -307,6 +358,12 @@ export default class Measure extends M.impl.Control {
     this.measureTooltip_.setOffset([0, -7]);
 
     this.createMeasureTooltip_();
+    if (this.isMeasurePosition) {
+      // eslint-disable-next-line no-underscore-dangle
+      this.draw_.startDrawing_({
+        coordinate: this.coordinatesPosition, map: this.facadeMap_.getMapImpl(),
+      });
+    }
   }
 
   /**
@@ -345,6 +402,13 @@ export default class Measure extends M.impl.Control {
       this.measureTooltip_.getElement().innerHTML = tooltipText;
       this.measureTooltip_.setPosition(tooltipCoord);
     }
+    // eslint-disable-next-line no-underscore-dangle
+    if (this.isMeasurePosition && this.draw_.atFinish_({
+      map: this.facadeMap_.getMapImpl(),
+      pixel: this.facadeMap_.getMapImpl().getPixelFromCoordinate(tooltipCoord),
+    })) {
+      this.draw_.finishDrawing();
+    }
   }
 
   /**
@@ -366,7 +430,7 @@ export default class Measure extends M.impl.Control {
 
 
   /**
-   * This function destroys this control and cleaning the HTML
+   * This function stops this control and cleans the HTML
    *
    * @public
    * @function
@@ -375,7 +439,6 @@ export default class Measure extends M.impl.Control {
   destroy() {
     this.deactivate();
     this.element.remove();
-    this.facadeMap_.removeControls(this);
     this.facadeMap_ = null;
     this.overlays_.length = 0;
   }

@@ -1,5 +1,6 @@
 import FacadeMeasureArea from '../../../facade/js/measurearea';
 import FacadeMeasureLength from '../../../facade/js/measurelength';
+import FacadeMeasurePosition from '../../../facade/js/measureposition';
 
 /**
  * @classdesc
@@ -11,7 +12,7 @@ import FacadeMeasureLength from '../../../facade/js/measurelength';
  * @api stable
  */
 export default class MeasureClear extends M.impl.Control {
-  constructor(measureLengthControl, measureAreaControl) {
+  constructor(measureLengthControl, measureAreaControl, measurePositionControl) {
     super();
 
     /**
@@ -34,6 +35,13 @@ export default class MeasureClear extends M.impl.Control {
      * @type {M.impl.control.Measure}
      */
     this.measureAreaControl_ = measureAreaControl;
+
+    /**
+     * Implementation measurePosition
+     * @private
+     * @type {M.impl.control.Measure}
+     */
+    this.measurePositionControl_ = measurePositionControl;
   }
 
   /**
@@ -66,6 +74,7 @@ export default class MeasureClear extends M.impl.Control {
   onClick() {
     this.measureLengthControl_.clear();
     this.measureAreaControl_.clear();
+    this.measurePositionControl_.clear();
     this.deactivateOtherBtns();
   }
 
@@ -79,15 +88,22 @@ export default class MeasureClear extends M.impl.Control {
     const measureLength = this.facadeMap_.getControls().filter((control) => {
       return (control instanceof FacadeMeasureLength);
     })[0];
-
     if (measureLength) {
       measureLength.deactivate();
     }
+
     const measureArea = this.facadeMap_.getControls().filter((control) => {
       return (control instanceof FacadeMeasureArea);
     })[0];
     if (measureArea) {
       measureArea.deactivate();
+    }
+
+    const measurePosition = this.facadeMap_.getControls().filter((control) => {
+      return (control instanceof FacadeMeasurePosition);
+    })[0];
+    if (measurePosition) {
+      measurePosition.deactivate();
     }
   }
 
@@ -100,7 +116,6 @@ export default class MeasureClear extends M.impl.Control {
    */
   destroy() {
     this.element.remove();
-    this.facadeMap_.removeControls(this);
     this.facadeMap_ = null;
   }
 }

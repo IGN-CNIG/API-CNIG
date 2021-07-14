@@ -33,3 +33,7 @@ map.addPlugin(mp3);
 
 window.plugin = plugin;
 window.map = map;
+
+document.addEventListener("testTemporalDeMeasurePosition",function (e){
+  plugin.measurePosition_.impl_.setCoordLocationStart(e.coordinates);
+});

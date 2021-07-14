@@ -4,6 +4,7 @@
 import MeasureLength from './measurelength';
 import MeasureArea from './measurearea';
 import MeasureClear from './measureclear';
+import MeasurePosition from './measureposition';
 import { getValue } from './i18n/language';
 import '../assets/css/measurebar';
 
@@ -65,6 +66,13 @@ export default class MeasureBar extends M.Plugin {
      * @type {M.control.MeasureClear}
      */
     this.measureClear_ = null;
+
+    /**
+     * Control MeasurePosition
+     * @private
+     * @type {M.control.MeasurePosition}
+     */
+    this.measurePosition_ = null;
   }
 
   /**
@@ -79,9 +87,19 @@ export default class MeasureBar extends M.Plugin {
 
     this.measureLength_ = new MeasureLength();
     this.measureArea_ = new MeasureArea();
-    this.measureClear_ = new MeasureClear(this.measureLength_, this.measureArea_);
+    this.measurePosition_ = new MeasurePosition();
+    this.measureClear_ = new MeasureClear(
+      this.measureLength_,
+      this.measureArea_,
+      this.measurePosition_,
+    );
 
-    this.controls_.push(this.measureLength_, this.measureArea_, this.measureClear_);
+    this.controls_.push(
+      this.measureLength_,
+      this.measureArea_,
+      this.measureClear_,
+      this.measurePosition_,
+    );
 
     this.panel_ = new M.ui.Panel('MeasureBar', {
       collapsible: true,
@@ -125,11 +143,17 @@ export default class MeasureBar extends M.Plugin {
    * @api stable
    */
   destroy() {
-    this.map_.removeControls([this.measureLength_, this.measureArea_, this.measureClear_]);
+    this.map_.removeControls([
+      this.measureLength_,
+      this.measureArea_,
+      this.measureClear_,
+      this.measurePosition_,
+    ]);
     this.map_ = null;
     this.measureLength_ = null;
     this.measureArea_ = null;
     this.measureClear_ = null;
+    this.measurePosition_ = null;
   }
 
   /**
@@ -141,7 +165,12 @@ export default class MeasureBar extends M.Plugin {
    */
   getControls() {
     const aControls = [];
-    aControls.push(this.measureArea_, this.measureClear_, this.measureLength_);
+    aControls.push(
+      this.measureArea_,
+      this.measureClear_,
+      this.measureLength_,
+      this.measurePosition_,
+    );
     return aControls;
   }
 
