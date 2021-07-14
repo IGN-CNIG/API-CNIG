@@ -1,7 +1,7 @@
 /**
  * IGN API
  * Version 3.3.18
- * Date 13-07-2021
+ * Date 14-07-2021
  */
 
 const backgroundlayersIds = 'mapa,imagen,hibrido'.split(',');
