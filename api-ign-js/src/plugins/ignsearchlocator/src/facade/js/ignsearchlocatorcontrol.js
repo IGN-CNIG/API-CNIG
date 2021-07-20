@@ -708,12 +708,16 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.geocoderCandidates = [];
 
       // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
+      this.nomenclatorFinished = false;
+      this.candidatesFinished = false;
       this.getNomenclatorData(value, this.nomenclatorCandidates).then(() => {
         // saves on allCandidates search results from CartoCiudad (geocoder)
+        this.nomenclatorFinished = true;
         this.showCandidatesResults(firstResult);
       });
 
       this.getCandidatesData(value, this.geocoderCandidates).then(() => {
+        this.candidatesFinished = true;
         this.showCandidatesResults(firstResult);
       });
     }
@@ -733,21 +737,27 @@ export default class IGNSearchLocatorControl extends M.Control {
         }
       }
     }
-    // Clears previous search
-    this.resultsBox.innerHTML = '';
-
-    // remove animation class and return to normal font size after loading
-    this.resultsBox.classList.remove('g-cartografia-spinner');
-    this.resultsBox.style.fontSize = '1em';
 
     // Service doesn't find results
-    if (this.allCandidates.length === 0) {
+    if (this.allCandidates.length === 0 && this.nomenclatorFinished && this.candidatesFinished) {
+      // Clears previous search
+      this.resultsBox.innerHTML = '';
+
+      // remove animation class and return to normal font size after loading
+      this.resultsBox.classList.remove('g-cartografia-spinner');
+      this.resultsBox.style.fontSize = '1em';
       const parragraph = document.createElement('p');
       const infoMsg = document.createTextNode(getValue('exception.noresults'));
       parragraph.classList.add('m-ignsearchlocator-noresults');
       parragraph.appendChild(infoMsg);
       this.resultsBox.appendChild(parragraph);
-    } else {
+    } else if (this.allCandidates.length > 0) {
+      // Clears previous search
+      this.resultsBox.innerHTML = '';
+
+      // remove animation class and return to normal font size after loading
+      this.resultsBox.classList.remove('g-cartografia-spinner');
+      this.resultsBox.style.fontSize = '1em';
       const compiledResult = M.template.compileSync(results, {
         vars: {
           places: this.allCandidates,
