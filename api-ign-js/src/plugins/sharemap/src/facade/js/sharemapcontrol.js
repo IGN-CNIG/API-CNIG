@@ -386,7 +386,7 @@ export default class ShareMapControl extends M.Control {
         res = res && false;
       }
 
-      if (layer.displayInLayerSwitcher === false) {
+      if (layer.displayInLayerSwitcher === false && layer.transparent === true) {
         res = res && false;
       }
 
