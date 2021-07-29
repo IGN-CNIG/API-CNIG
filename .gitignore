@@ -17,3 +17,5 @@ index-*.js
 entry-points-plugins.json
 *~
 .vscode
+package-lock.json
+/.sonarlint/
