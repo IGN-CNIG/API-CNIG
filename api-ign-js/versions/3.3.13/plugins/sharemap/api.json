@@ -1,0 +1,41 @@
+{
+  "url": {
+    "name": "sharemap",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.ShareMap",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "baseUrl",
+      "position": 0
+    }, {
+      "type": "simple",
+      "name": "position",
+      "position": 1,
+      "possibleValues": ["TL", "TR", "BL", "BR"]
+    }, {
+      "type": "simple",
+      "name": "minimize",
+      "position": 2
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["sharemap.ol.min.js"],
+      "styles": ["sharemap.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "ShareMap",
+    "description": "Shares map url",
+    "text": "Shares map url and allows clipboard copy",
+    "version": "1.0.0",
+    "date": "",
+    "author": "",
+    "org": "",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

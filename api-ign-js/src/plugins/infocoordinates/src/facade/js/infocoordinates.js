@@ -1,6 +1,7 @@
 /**
  * @module M/plugin/Infocoordinates
  */
+import 'assets/css/fonts';
 import 'assets/css/infocoordinates';
 import InfocoordinatesControl from './infocoordinatescontrol';
 import api from '../../api';
@@ -28,14 +29,14 @@ export default class Infocoordinates extends M.Plugin {
 
     /**
      *  Decimal digits fixed on geographic coordinates
-     * @public     * 
+     * @public     *
      * @type {int}
      */
     this.decimalGEOcoord_ = options.decimalGEOcoord || 4;
 
     /**
      *  Decimal digits fixed on projected coordinates
-     * @public     * 
+     * @public     *
      * @type {int}
      */
     this.decimalUTMcoord_ = options.decimalUTMcoord || 2;
@@ -71,6 +72,13 @@ export default class Infocoordinates extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * URL to the help for the icon
+     * @private
+     * @type {string}
+     */
+    this.helpUrl_ = options.helpUrl;
   }
 
   /**
@@ -82,7 +90,7 @@ export default class Infocoordinates extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.control_ = new InfocoordinatesControl(this.decimalGEOcoord_, this.decimalUTMcoord_);
+    this.control_ = new InfocoordinatesControl(this.decimalGEOcoord_, this.decimalUTMcoord_, this.helpUrl_);
     this.controls_.push(this.control_);
     this.map_ = map;
     // panel para agregar control - no obligatorio
@@ -91,7 +99,7 @@ export default class Infocoordinates extends M.Plugin {
       collapsible: true,
       position: M.ui.position[this.position_],
       className: 'm-plugin-infocoordinates',
-      collapsedButtonClass: 'infocoordinates-target',
+      collapsedButtonClass: 'icon-target',
       tooltip: getValue('tooltip')
     });
     this.panel_.addControls(this.controls_);

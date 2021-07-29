@@ -46,7 +46,7 @@ div#m-backimglayer-titulo {
 }
 
 .m-panel.m-plugin-backimglayer.opened .m-control.m-container.m-backimglayer>div#m-backimglayer-previews>#m-backimglayer-lyr-empty {
-    background-color: white !important;
+  background-color: white !important;
 }
 
 div[id^="m-backimglayer-lyr-"]>span {
@@ -169,7 +169,7 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
         }
     }
 
-    /* Chrome fix 
+    /* Chrome fix
     @media screen and (-webkit-min-device-pixel-ratio:0) {
         .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews {
             height: calc(100vh - 100px);

@@ -67,7 +67,7 @@ const mp2 = new Attributions({
   defaultURL: 'https://www.ign.es/',
 });
 const mp3 = new ShareMap({
-  baseUrl: 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/',
+  baseUrl: 'https://mapea-lite-6.desarrollo.guadaltel.es/api-core/',
   position: 'BR',
 });
 const mp4 = new XYLocator({

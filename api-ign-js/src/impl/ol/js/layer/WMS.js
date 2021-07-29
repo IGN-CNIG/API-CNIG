@@ -131,7 +131,7 @@ class WMS extends LayerBase {
 
     // number of zoom levels
     if (isNullOrEmpty(this.options.numZoomLevels)) {
-      this.options.numZoomLevels = 16; // by default
+      this.options.numZoomLevels = 20; // by default
     }
 
     // animated
@@ -265,10 +265,18 @@ class WMS extends LayerBase {
           if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name !== undefined && capabilitiesLayer[i].Name === selff.facadeLayer_.name) {
             capabilitiesLayer = capabilitiesLayer[i];
             this.addCapabilitiesMetadata(capabilitiesLayer);
-          } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name === undefined) {
+            try {
+              this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+            /* eslint-disable no-empty */
+            } catch (err) {}
+          } else if (capabilitiesLayer[i] !== undefined) {
             if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
               capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
               this.addCapabilitiesMetadata(capabilitiesLayer);
+              try {
+                this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+              /* eslint-disable no-empty */
+              } catch (err) {}
             }
           }
         }
@@ -374,12 +382,15 @@ class WMS extends LayerBase {
     if (isNullOrEmpty(this.vendorOptions_.source)) {
       const layerParams = {
         LAYERS: this.name,
-        TILED: true,
         VERSION: this.version,
         TRANSPARENT: this.transparent,
         FORMAT: 'image/png',
         STYLES: this.styles,
       };
+
+      if (this.version !== '1.3.0') {
+        layerParams.TILED = this.tiled;
+      }
 
       if (!isNullOrEmpty(this.sldBody)) {
         layerParams.SLD_BODY = this.sldBody;
@@ -390,6 +401,7 @@ class WMS extends LayerBase {
           layerParams[key.toUpperCase()] = this.options.params[key];
         });
       }
+
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
       if (this.tiled === true) {

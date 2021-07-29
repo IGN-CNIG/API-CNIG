@@ -177,6 +177,7 @@ export default class Georefimage2Control extends M.Control {
       this.canceled = true;
       document.querySelector('div.m-mapea-container div.m-dialog').remove();
     });
+
     const content = `<div class="m-georefimage2-loading"><p>${getValue('generating')}...</p><span class="icon-spinner" /></div>`;
     document.querySelector('div.m-dialog.info > div.m-modal > div.m-content div.m-message').innerHTML = content;
     let printOption = 'map';
@@ -452,7 +453,6 @@ export default class Georefimage2Control extends M.Control {
     } else if (document.querySelector('#m-georefimage2-screen').checked) {
       printOption = 'screen';
     }
-
     const imageUrl = url !== null ? url : this.documentRead_.src;
     const dpi = printOption === 'screen' ? 120 : this.dpi_;
     const base64image = this.getBase64Image(imageUrl);
@@ -472,7 +472,6 @@ export default class Georefimage2Control extends M.Control {
           zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
           zip.file(titulo.concat('.jpg'), resolve, { base64: true });
           zip.generateAsync({ type: 'blob' }).then((content) => {
-            // see FileSaver.js
             saveAs(content, titulo.concat('.zip'));
             document.querySelector('div.m-mapea-container div.m-dialog').remove();
           });

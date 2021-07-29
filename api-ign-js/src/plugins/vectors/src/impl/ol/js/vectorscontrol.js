@@ -466,9 +466,7 @@ export default class VectorsControl extends M.impl.Control {
 
     features = this.featuresToFacade(features);
     features = this.geometryCollectionParse(features);
-
     const others = [];
-
     const lines = [];
     features.forEach((f) => {
       if (f.getGeometry().type.toLowerCase().indexOf('linestring') > -1) {
@@ -477,11 +475,13 @@ export default class VectorsControl extends M.impl.Control {
         others.push(f);
       }
     });
+
     if (lines.length > 0) {
       const layer = new M.layer.Vector({ name: `${layerName}_lines`, legend: `${layerName}_lines`, extract: false });
       layer.addFeatures(lines);
       this.facadeMap_.addLayers(layer);
     }
+
     if (others.length > 0) {
       const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
       layer.addFeatures(others);
@@ -506,18 +506,7 @@ export default class VectorsControl extends M.impl.Control {
       if (f.getGeometry().getType() === 'MultiLineString') {
         if (f.getGeometry().getLineStrings().length === 1) {
           const geom = f.getGeometry().getLineStrings()[0];
-          if (geom.getCoordinates().length > 150) {
-            let i = 2;
-            let newGeom = geom.simplify(i);
-            while (newGeom.getCoordinates().length > 150) {
-              i += 1;
-              newGeom = geom.simplify(i);
-            }
-
-            f.setGeometry(newGeom);
-          } else {
-            f.setGeometry(geom);
-          }
+          f.setGeometry(geom);
         }
       }
 
@@ -546,10 +535,6 @@ export default class VectorsControl extends M.impl.Control {
     } else {
       features = lines;
     }
-
-    lines.forEach((line) => {
-      this.calculateElevations(line);
-    });
 
     return features;
   }

@@ -6,7 +6,8 @@ import template from '../../../templates/srs';
 import { getValue } from '../../../facade/js/i18n/language';
 
 export default class MouseSRSControl extends M.impl.Control {
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ) {
+  /* eslint-disable-next-line max-len */
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl) {
     super();
 
     /**
@@ -61,6 +62,13 @@ export default class MouseSRSControl extends M.impl.Control {
      * @type {boolean}
      */
     this.activeZ = activeZ;
+
+    /**
+     * URL to the help for the icon
+     * @private
+     * @type {string}
+     */
+    this.helpUrl = helpUrl;
   }
 
   /**
@@ -108,6 +116,8 @@ export default class MouseSRSControl extends M.impl.Control {
       parseToHtml: false,
       vars: {
         selected: this.srs_,
+        hasHelp: this.helpUrl !== undefined && M.utils.isUrl(this.helpUrl),
+        helpUrl: this.helpUrl,
       },
     });
 

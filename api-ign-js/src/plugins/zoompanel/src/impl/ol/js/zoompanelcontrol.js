@@ -68,8 +68,10 @@ export default class ZoomPanelControl extends M.impl.Control {
    * @api stable
    */
   registerViewEvents() {
-    this.facadeMap_.getMapImpl().on('moveend', () => {
-      this.registerZoom_();
+    this.facadeMap_.getMapImpl().on('movestart', () => {
+      setTimeout(() => {
+        this.registerZoom_();
+      }, 200);
     });
   }
 

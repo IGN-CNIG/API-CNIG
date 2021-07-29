@@ -382,7 +382,7 @@ export default class PrinterMapControl extends M.impl.Control {
     };
 
     encodedLayer.customParams = {
-      IMAGEID: params.IMAGEID,
+      IMAGEN: params.IMAGEN,
       transparent: true,
       iswmc: false,
     };
@@ -513,6 +513,11 @@ export default class PrinterMapControl extends M.impl.Control {
             styleGeom.graphicName = 'cross';
             styleGeom.graphicWidth = 15;
             styleGeom.graphicHeight = 15;
+          }
+
+          if (layer.name.indexOf(' Reverse') > -1 && layer.name.indexOf('Cobertura') > -1) {
+            styleGeom.fillColor = styleGeom.strokeColor;
+            styleGeom.fillOpacity = 0.5;
           }
 
           if (lineDash !== undefined && lineDash !== null && lineDash.length > 0) {

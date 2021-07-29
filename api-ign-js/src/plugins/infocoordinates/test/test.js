@@ -14,6 +14,7 @@ const mp = new Infocoordinates({
   position: 'TR',
   decimalGEOcoord: 4,
   decimalUTMcoord: 4,
+  helpUrl: 'https://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/help?node=node107',
 });
 
 const mp2 = new M.plugin.Information({

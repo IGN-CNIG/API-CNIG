@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import ArcGridParser from './arcgridparser';
 
 export default class WCSLoader {

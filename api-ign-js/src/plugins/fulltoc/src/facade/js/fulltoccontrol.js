@@ -15,7 +15,7 @@ import addServicesTemplate from '../../templates/addservices';
 import resultstemplate from '../../templates/addservicesresults';
 import { getValue } from './i18n/language';
 
-const CATASTRO = 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
+const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 const CODSI_CATALOG = 'http://www.idee.es/csw-codsi-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&serviceType=view&resultType=details&sortBy=title&sortOrder=asc&to=*2';
 const CODSI_PAGESIZE = 9;
 
@@ -437,12 +437,14 @@ export default class FullTOCControl extends M.Control {
             const url = document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value.trim();
             document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = url;
           });
+
           document.querySelectorAll('.m-fulltoc-suggestion-caret').forEach((elem) => {
             elem.addEventListener('click', () => {
               elem.parentElement.querySelector('.m-fulltoc-suggestion-group').classList.toggle('active');
               elem.classList.toggle('m-fulltoc-suggestion-caret-close');
             });
           });
+
           document.querySelectorAll('#m-fulltoc-addservices-suggestions .m-fulltoc-suggestion').forEach((elem) => {
             elem.addEventListener('click', e => this.loadSuggestion(e));
           });
@@ -922,6 +924,7 @@ export default class FullTOCControl extends M.Control {
                   /* eslint-disable no-empty */
                   } catch (err) {}
                 });
+
                 this.showResults();
               } catch (err) {
                 M.dialog.error(getValue('exception.capabilities'));
@@ -999,6 +1002,7 @@ export default class FullTOCControl extends M.Control {
       if (this.precharged.services !== undefined && this.precharged.services.length > 0) {
         allServices = allServices.concat(this.precharged.services);
       }
+
       if (this.precharged.groups !== undefined && this.precharged.groups.length > 0) {
         this.precharged.groups.forEach((group) => {
           if (group.services !== undefined && group.services.length > 0) {
@@ -1006,6 +1010,7 @@ export default class FullTOCControl extends M.Control {
           }
         });
       }
+
       allLayers.forEach((layer) => {
         let insideService = false;
         allServices.forEach((service) => {
@@ -1073,6 +1078,7 @@ export default class FullTOCControl extends M.Control {
         const filtered = l.Layer.filter((ll) => {
           return ll.Name === name;
         });
+
         if (filtered.length > 0) {
           parent = l.Title;
         } else if (M.utils.isObject(l.Layer.Layer) && l.Layer.Layer.Name === name) {
@@ -1081,6 +1087,7 @@ export default class FullTOCControl extends M.Control {
           const innerFiltered = l.Layer.filter((ll) => {
             return ll.Name === name;
           });
+
           if (innerFiltered.length > 0) {
             parent = `${l.Title} - ${l.Layer.Title}`;
           } else {
@@ -1091,8 +1098,10 @@ export default class FullTOCControl extends M.Control {
                   return lll.Name === name;
                 }).length > 0;
               }
+
               return contains;
             });
+
             if (innerInnerFiltered.length > 0) {
               parent = `${l.Title} - ${innerInnerFiltered[0].Title}`;
             }
@@ -1100,6 +1109,7 @@ export default class FullTOCControl extends M.Control {
         }
       }
     });
+
     if (parent !== undefined) {
       /* eslint-disable no-param-reassign */
       layer.legend = `${parent} - ${layer.legend}`;
@@ -1339,6 +1349,7 @@ export default class FullTOCControl extends M.Control {
         }
       }
 
+      layers.reverse();
       this.map_.addLayers(layers);
       this.afterRender();
     }

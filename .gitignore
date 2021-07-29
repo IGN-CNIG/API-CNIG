@@ -13,8 +13,10 @@ doc
 build
 dist
 index.js
+package-lock.json
 index-*.js
 entry-points-plugins.json
 *~
 .vscode
 /.metadata/
+/.sonarlint/

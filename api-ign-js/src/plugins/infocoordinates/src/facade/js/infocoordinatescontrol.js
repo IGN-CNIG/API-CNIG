@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * @module M/control/InfocoordinatesControl
  */
@@ -18,7 +17,7 @@ export default class InfocoordinatesControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(decimalGEOcoord, decimalUTMcoord) {
+  constructor(decimalGEOcoord, decimalUTMcoord, helpUrl) {
 
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(InfocoordinatesImplControl)) {
@@ -33,6 +32,7 @@ export default class InfocoordinatesControl extends M.Control {
     this.layerFeatures.name = 'infocoordinatesLayerFeatures';
     this.decimalGEOcoord = decimalGEOcoord;
     this.decimalUTMcoord = decimalUTMcoord;
+    this.helpUrl = helpUrl;
     this.clickedDeactivate = false;
   }
 
@@ -72,6 +72,8 @@ export default class InfocoordinatesControl extends M.Control {
       let options = {
         jsonp: true,
         vars: {
+          hasHelp: this.helpUrl !== undefined && M.utils.isUrl(this.helpUrl),
+          helpUrl: this.helpUrl,
           translations: {
             title: getValue('title'),
             point: getValue('point'),
@@ -178,7 +180,7 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementsByClassName('m-infocoordinates-div-buttonDisplayAllPoints')[0].classList.remove('noDisplay');
 
     // Eliminamos las etiquetas de los puntos
-    if (document.getElementsByClassName('icon-infocoordinates-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
+    if (document.getElementsByClassName('icon-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
       this.removeAllDisplaysPoints();
     }
 
@@ -318,15 +320,18 @@ export default class InfocoordinatesControl extends M.Control {
       });
 
       // Eliminamos las etiquetas de los puntos
-      if (document.getElementsByClassName('icon-infocoordinates-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
+      if (document.getElementsByClassName('icon-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
         this.removeAllDisplaysPoints();
       }
     } else {
       document.getElementsByClassName('contenedorPuntoSelect')[0].classList.replace('contenedorPuntoSelect', 'contenedorPunto');
-      document.getElementsByClassName('contenedorPunto')[document.getElementsByClassName('contenedorPunto').length - numPoint].classList.replace('contenedorPunto', 'contenedorPuntoSelect');
+      try {
+        document.getElementsByClassName('contenedorPunto')[document.getElementsByClassName('contenedorPunto').length - numPoint].classList.replace('contenedorPunto', 'contenedorPuntoSelect');
+        /* eslint-disable no-empty */
+      } catch (err) {}
 
       // Eliminamos las etiquetas de los puntos
-      if (document.getElementsByClassName('icon-infocoordinates-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
+      if (document.getElementsByClassName('icon-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
         this.removeAllDisplaysPoints();
       }
     }
@@ -423,7 +428,7 @@ export default class InfocoordinatesControl extends M.Control {
   displayZcoordinate(numPoint) {
     let featureSelected = this.layerFeatures.getFeatureById(numPoint);
     let altitudeBox = document.getElementById('m-infocoordinates-altitude');
-    altitudeBox.innerHTML = `${featureSelected.getAttribute('Altitude')}`.replace('.', ',');
+    altitudeBox.innerHTML = `${parseFloat(featureSelected.getAttribute('Altitude')).toFixed(2)}`.replace('.', ',');
   }
 
   openTab(numPoint) {
@@ -530,12 +535,12 @@ export default class InfocoordinatesControl extends M.Control {
   }
 
   displayAllPoints() {
-    if (document.getElementsByClassName('icon-infocoordinates-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
+    if (document.getElementsByClassName('icon-displayON').length === 0 && this.map_.getMapImpl().getOverlays().array_.length > 0) {
       this.removeAllDisplaysPoints();
     } else {
       // Modificamos el icono
-      document.getElementsByClassName('icon-infocoordinates-displayON')[0].classList.replace("icon-infocoordinates-displayON", "icon-infocoordinates-displayOFF")
-      document.getElementsByClassName('icon-infocoordinates-displayOFF')[0].title = getValue("displayOFFAllPoints")
+      document.getElementsByClassName('icon-displayON')[0].classList.replace("icon-displayON", "icon-displayOFF")
+      document.getElementsByClassName('icon-displayOFF')[0].title = getValue("displayOFFAllPoints")
 
       // Eliminamos el num sobre el punto
       for (let i = 0; i < document.getElementsByClassName('contenedorPunto').length; i += 1) {
@@ -605,8 +610,8 @@ export default class InfocoordinatesControl extends M.Control {
 
   removeAllDisplaysPoints() {
     // Modificamos el icono
-    document.getElementsByClassName('icon-infocoordinates-displayOFF')[0].classList.replace("icon-infocoordinates-displayOFF", "icon-infocoordinates-displayON");
-    document.getElementsByClassName('icon-infocoordinates-displayON')[0].title = getValue("displayONAllPoints");
+    document.getElementsByClassName('icon-displayOFF')[0].classList.replace("icon-displayOFF", "icon-displayON");
+    document.getElementsByClassName('icon-displayON')[0].title = getValue("displayONAllPoints");
 
     // Mostramos el num sobre el punto
     for (let i = 0; i < document.getElementsByClassName('contenedorPunto').length; i += 1) {

@@ -316,7 +316,7 @@ export default class CompareMirrorpanel extends M.Control {
     }
 
     if (['B', 'C', 'D'].indexOf(mapLyr) > -1) {
-      this.addCommonPlugins(this.mapL[mapLyr]);
+      this.addCommonPlugins(this.mapL[mapLyr], mapLyr);
     }
 
     if (this.showCursors) { this.addLayerCursor(mapLyr); }
@@ -361,8 +361,18 @@ export default class CompareMirrorpanel extends M.Control {
     });
   }
 
-  addCommonPlugins(map) {
+  addCommonPlugins(map, mapLyr) {
     if (M.plugin.BackImgLayer !== undefined && this.backImgLayersConfig.position !== undefined) {
+      if (mapLyr === 'B') {
+        this.backImgLayersConfig.layerId = 1;
+      } else if (mapLyr === 'C'){
+        this.backImgLayersConfig.layerId = 2;
+      } else if (mapLyr === 'D') {
+        this.backImgLayersConfig.layerId = 3;
+      } else {
+        this.backImgLayersConfig.layerId = 0;
+      }
+
       map.addPlugin(new M.plugin.BackImgLayer(this.backImgLayersConfig));
     }
 

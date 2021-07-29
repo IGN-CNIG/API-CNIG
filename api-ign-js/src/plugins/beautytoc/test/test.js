@@ -1,6 +1,6 @@
 import BeautyTOC from 'facade/beautytoc';
 
-M.language.setLang('en');
+M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
@@ -46,7 +46,7 @@ const mp2 = new M.plugin.LyrCompare({
 });
 
 map.addPlugin(mp);
-map.addPlugin(mp2);
+// map.addPlugin(mp2);
 const layers = [
   new M.layer.WMS({
     url: 'http://www.ign.es/wms-inspire/cuadriculas?',

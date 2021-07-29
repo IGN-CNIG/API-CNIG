@@ -47,6 +47,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     position,
     pointStyle,
     nomenclatorSearchType,
+    helpUrl,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
       M.exception(getValue('impl'));
@@ -403,6 +404,13 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {HTMLElement}
      */
     this.inputRC_ = null;
+
+    /**
+     * URL to the help for the icon
+     * @private
+     * @type {string}
+     */
+    this.helpUrl = helpUrl;
   }
   /**
    * This function creates the view
@@ -502,7 +510,6 @@ export default class IGNSearchLocatorControl extends M.Control {
               },
             });
             this.clickedElementLayer.displayInLayerSwitcher = false;
-
             this.createGeometryStyles();
 
             if (featureJSON.geometry.type === 'Point') {
@@ -700,12 +707,16 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.geocoderCandidates = [];
 
       // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
+      this.nomenclatorFinished = false;
+      this.candidatesFinished = false;
       this.getNomenclatorData(value, this.nomenclatorCandidates).then(() => {
         // saves on allCandidates search results from CartoCiudad (geocoder)
+        this.nomenclatorFinished = true;
         this.showCandidatesResults(firstResult);
       });
 
       this.getCandidatesData(value, this.geocoderCandidates).then(() => {
+        this.candidatesFinished = true;
         this.showCandidatesResults(firstResult);
       });
     }
@@ -725,21 +736,27 @@ export default class IGNSearchLocatorControl extends M.Control {
         }
       }
     }
-    // Clears previous search
-    this.resultsBox.innerHTML = '';
-
-    // remove animation class and return to normal font size after loading
-    this.resultsBox.classList.remove('g-cartografia-spinner');
-    this.resultsBox.style.fontSize = '1em';
 
     // Service doesn't find results
-    if (this.allCandidates.length === 0) {
+    if (this.allCandidates.length === 0 && this.nomenclatorFinished && this.candidatesFinished) {
+      // Clears previous search
+      this.resultsBox.innerHTML = '';
+
+      // remove animation class and return to normal font size after loading
+      this.resultsBox.classList.remove('g-cartografia-spinner');
+      this.resultsBox.style.fontSize = '1em';
       const parragraph = document.createElement('p');
       const infoMsg = document.createTextNode(getValue('exception.noresults'));
       parragraph.classList.add('m-ignsearchlocator-noresults');
       parragraph.appendChild(infoMsg);
       this.resultsBox.appendChild(parragraph);
-    } else {
+    } else if (this.allCandidates.length > 0) {
+      // Clears previous search
+      this.resultsBox.innerHTML = '';
+
+      // remove animation class and return to normal font size after loading
+      this.resultsBox.classList.remove('g-cartografia-spinner');
+      this.resultsBox.style.fontSize = '1em';
       const compiledResult = M.template.compileSync(results, {
         vars: {
           places: this.allCandidates,
@@ -1064,10 +1081,12 @@ export default class IGNSearchLocatorControl extends M.Control {
               resultsArray.splice(0, 0, thisElement);
             }
           }
+
           resultsArray.forEach((elem) => {
             // eslint-disable-next-line no-param-reassign
             elem.cps = true;
           });
+
           resolve();
         });
       } else {
@@ -1482,7 +1501,6 @@ export default class IGNSearchLocatorControl extends M.Control {
   showResults_(result) {
     let resultsTemplateVars = {};
     resultsTemplateVars = this.parseRCResultsForTemplate_(result, false);
-
     Promise.resolve(resultsTemplateVars).then((resultTemplate) => {
       this.drawGeocoderResultRC(resultTemplate);
     });
@@ -1912,6 +1930,8 @@ export default class IGNSearchLocatorControl extends M.Control {
 
       const compiledXYLocator = M.template.compileSync(xylocator, {
         vars: {
+          hasHelp: this.helpUrl !== undefined && M.utils.isUrl(this.helpUrl),
+          helpUrl: this.helpUrl,
           translations: {
             title: getValue('title'),
             srs: getValue('srs'),
@@ -2352,11 +2372,10 @@ export default class IGNSearchLocatorControl extends M.Control {
     * @param { boolean } exactResult indicating
     if the given result is a perfect match
     */
-  showSearchPopUpRC(fullAddress, coordinates, exactResult, e = {}) {
-    const destinyProj = this.map.getProjection().code;
-    const destinySource = 'EPSG:3857';
-    const newCoordinates = this.getImpl()
-      .reprojectReverse([coordinates[0], coordinates[1]], destinySource, destinyProj);
+  showSearchPopUpRC(fullAddress, coords, exactResult, e = {}) {
+    const target = 'EPSG:4326';
+    const source = this.map.getProjection().code;
+    const newCoords = this.getImpl().reprojectReverse([coords[0], coords[1]], source, target);
     let exitState;
     if (exactResult !== 1) {
       exitState = getValue('aprox');
@@ -2364,7 +2383,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       exitState = getValue('exact');
     }
 
-    this.showPopUp(fullAddress, newCoordinates, coordinates, exitState, false, e);
+    this.showPopUp(fullAddress, coords, newCoords, exitState, false, e);
   }
   /**
    * This function inserts a popup on the map with information about its location.

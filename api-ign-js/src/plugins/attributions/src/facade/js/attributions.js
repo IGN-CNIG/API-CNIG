@@ -87,7 +87,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {URLLike}
      */
-    this.url_ = options.url || M.config.attributions.url; // 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml';
+    this.url_ = options.url || M.config.attributions.url;
     /**
      * Type of the data url
      *
@@ -163,7 +163,7 @@ export default class Attributions extends M.Plugin {
      * @type {string}
      */
     // eslint-disable-next-line max-len
-    this.defaultAttribution_ = options.defaultAttribution || M.config.attributions.defaultAttribution; // options.defaultAttribution;
+    this.defaultAttribution_ = options.defaultAttribution || M.config.attributions.defaultAttribution;
 
     /**
      * Default url attribution
@@ -172,7 +172,7 @@ export default class Attributions extends M.Plugin {
      * @type {string}
      */
     // eslint-disable-next-line max-len
-    this.defaultURL_ = options.defaultURL || M.config.attributions.defaultURL; // options.defaultURL;
+    this.defaultURL_ = options.defaultURL || M.config.attributions.defaultURL;
 
     /**
      * Tooltip of the UI Plugin

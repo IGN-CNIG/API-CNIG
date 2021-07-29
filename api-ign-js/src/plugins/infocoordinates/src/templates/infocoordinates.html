@@ -19,7 +19,7 @@
                         <tr>
                             <td>{{translations.point}}</td>
                             <td id="m-infocoordinates-point">--</td>
-                            <td><button class="infocoordinates-bin2 noDisplay" id="m-infocoordinates-buttonRemovePoint" title="{{translations.removePoint}}"></button></td>
+                            <td><button class="icon-bin2 noDisplay" id="m-infocoordinates-buttonRemovePoint" title="{{translations.removePoint}}"></button></td>
                         </tr>
                         <tr>
                             <td>{{translations.datum}}</td>
@@ -38,7 +38,12 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td>CRS:</td>
+                            <td class="m-infocoordinates-help-td">
+                              <span>CRS:</span>
+                              {{#if hasHelp}}
+                                <div class="m-infocoordinates-help" title="EPSG"><a href="{{helpUrl}}" target="_blank"><i class="icon-help"></i></a></div>
+                              {{/if}}
+                            </td>
                             <td colspan="2">
                                 <select id="m-infocoordinates-comboDatum" class="m-infocoordinates-comboDatum">
                                     <option value="EPSG:25829">EPSG:25829</option>
@@ -65,15 +70,15 @@
                 </table>
             </div>
             <div class="m-infocoordinates-div-buttonRemoveAllPoints noDisplay">
-                <button class="infocoordinates-bin2" id="m-infocoordinates-buttonRemoveAllPoints" title="{{translations.removeAllPoints}}"></button>
+                <button class="icon-bin2" id="m-infocoordinates-buttonRemoveAllPoints" title="{{translations.removeAllPoints}}"></button>
             </div>
 
             <div class="m-infocoordinates-div-buttonImportAllPoints noDisplay">
-                <button class="icon-infocoordinates-file" id="m-infocoordinates-buttonImportAllPoints" title="{{translations.importAllPoints}}"></button>
+                <button class="icon-file" id="m-infocoordinates-buttonImportAllPoints" title="{{translations.importAllPoints}}"></button>
             </div>
 
             <div class="m-infocoordinates-div-buttonDisplayAllPoints noDisplay">
-                <button class="icon-infocoordinates-displayON" id="m-infocoordinates-buttonDisplayAllPoints" title="{{translations.displayONAllPoints}}"></button>
+                <button class="icon-displayON" id="m-infocoordinates-buttonDisplayAllPoints" title="{{translations.displayONAllPoints}}"></button>
             </div>
         </div>
 

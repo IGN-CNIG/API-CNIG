@@ -1518,7 +1518,7 @@ export default class VectorsControl extends M.Control {
         // const km = formatNumber(lineLength / 1000);
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'block';
-          const id = `m-vectors-3d-measure-${this.drawLayer.name}`;
+          const id = `m-vectors-3d-measure-${this.drawLayer.name.replaceAll(' ', '')}`;
           const attr = this.feature.getAttributes()['3dLength'];
           let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('length')}</b></td>`;
           if (attr !== undefined && attr.length > 0) {

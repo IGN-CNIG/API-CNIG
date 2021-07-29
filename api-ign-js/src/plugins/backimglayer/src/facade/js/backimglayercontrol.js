@@ -2,7 +2,6 @@
  * @module M/control/BackImgLayerControl
  */
 
-// import template from 'templates/backimglayer';
 import template from '../../templates/backimglayer';
 import { getValue } from './i18n/language';
 

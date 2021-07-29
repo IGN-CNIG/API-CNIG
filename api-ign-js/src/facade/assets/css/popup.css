@@ -365,7 +365,7 @@
         position: inherit;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: left;
         font-size: 22px;
     }
 

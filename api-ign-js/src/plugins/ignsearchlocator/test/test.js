@@ -15,6 +15,7 @@ const mp = new IGNSearchLocator({
   isCollapsed: false,
   position: 'TL',
   reverse: true,
+  helpUrl: 'https://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/help?node=node107',
 });
 
 // map.removeControls('panzoom');

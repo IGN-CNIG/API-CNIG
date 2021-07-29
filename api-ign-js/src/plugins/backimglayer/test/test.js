@@ -1,7 +1,7 @@
 import BackImgLayer from 'facade/backimglayer';
 import ShareMap from '../../sharemap/src/facade/js/sharemap';
 
-M.language.setLang('en');
+M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
@@ -17,6 +17,7 @@ const mp = new BackImgLayer({
   collapsible: true,
   position: 'TR',
   columnsNumber: 3,
+  empty: true,
   layerOpts: [{
       id: 'mapa',
       preview: '../src/facade/assets/images/svqmapa.png',

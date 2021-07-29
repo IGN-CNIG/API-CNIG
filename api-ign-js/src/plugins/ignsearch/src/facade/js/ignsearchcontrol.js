@@ -441,12 +441,16 @@ export default class IGNSearchControl extends M.Control {
         this.searchCoordinates(value);
       } else {
         // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
+        this.nomenclatorFinished = false;
+        this.candidatesFinished = false;
         this.getNomenclatorData(value, this.nomenclatorCandidates).then(() => {
           // saves on allCandidates search results from CartoCiudad (geocoder)
+          this.nomenclatorFinished = true;
           this.showCandidatesResults(firstResult);
         });
 
         this.getCandidatesData(value, this.geocoderCandidates).then(() => {
+          this.candidatesFinished = true;
           this.showCandidatesResults(firstResult);
         });
       }
@@ -467,38 +471,45 @@ export default class IGNSearchControl extends M.Control {
         }
       }
     }
-    // Clears previous search
-    this.resultsBox.innerHTML = '';
-    const compiledResult = M.template.compileSync(results, {
-      vars: {
-        places: this.allCandidates,
-      },
-    });
-    const elementList = compiledResult.querySelectorAll('li');
-    elementList.forEach((listElement) => {
-      listElement.addEventListener('click', () => {
-        this.goToLocation(listElement);
-      });
-    });
-    if (firstResult === true && elementList.length > 0) {
-      elementList.item(0).click();
-    }
-    // remove animation class and return to normal font size after loading
-    this.resultsBox.classList.remove('g-cartografia-spinner');
-    this.resultsBox.style.fontSize = '1em';
-    this.resultsBox.appendChild(compiledResult);
+
     // Service doesn't find results
-    if (this.allCandidates.length === 0) {
+    if (this.allCandidates.length === 0 && this.nomenclatorFinished && this.candidatesFinished) {
+      // Clears previous search
+      this.resultsBox.innerHTML = '';
+      // remove animation class and return to normal font size after loading
+      this.resultsBox.classList.remove('g-cartografia-spinner');
+      this.resultsBox.style.fontSize = '1em';
       const parragraph = document.createElement('p');
       const infoMsg = document.createTextNode(getValue('exception.results'));
       parragraph.classList.add('m-ignsearch-noresults');
       parragraph.appendChild(infoMsg);
       this.resultsBox.appendChild(parragraph);
-      document.getElementById('m-ignsearch-results-list').style.display = 'none';
-    } else {
-      document.getElementById('m-ignsearch-results-list').style.display = 'block';
+    } else if (this.allCandidates.length > 0) {
+      // Clears previous search
+      this.resultsBox.innerHTML = '';
+      // remove animation class and return to normal font size after loading
+      this.resultsBox.classList.remove('g-cartografia-spinner');
+      this.resultsBox.style.fontSize = '1em';
+      const compiledResult = M.template.compileSync(results, {
+        vars: {
+          places: this.allCandidates,
+        },
+      });
+
+      const elementList = compiledResult.querySelectorAll('li');
+      elementList.forEach((listElement) => {
+        listElement.addEventListener('click', () => {
+          this.goToLocation(listElement);
+        });
+      });
+      if (firstResult === true && elementList.length > 0) {
+        elementList.item(0).click();
+      }
+
+      this.resultsBox.appendChild(compiledResult);
     }
   }
+
   /**
    * This function removes last search layer and adds new layer with current result (from geocoder)
    * features to map, zooms in result, edits popup information and shows a message saying
@@ -804,10 +815,12 @@ export default class IGNSearchControl extends M.Control {
               resultsArray.splice(0, 0, thisElement);
             }
           }
+
           resultsArray.forEach((elem) => {
             // eslint-disable-next-line no-param-reassign
             elem.cps = true;
           });
+
           resolve();
         });
       } else {

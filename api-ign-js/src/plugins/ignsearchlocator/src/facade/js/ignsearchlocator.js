@@ -246,6 +246,13 @@ export default class IGNSearchLocator extends M.Plugin {
      * @type {string}
      */
     this.searchPosition = options.searchPosition || 'nomenclator,geocoder';
+
+    /**
+     * URL to the help for the icon
+     * @private
+     * @type {string}
+     */
+    this.helpUrl = options.helpUrl;
   }
 
   /**
@@ -282,6 +289,7 @@ export default class IGNSearchLocator extends M.Plugin {
       this.position,
       this.pointStyle,
       this.nomenclatorSearchType,
+      this.helpUrl,
     ));
     this.controls_[0].on('ignsearchlocator:entityFound', (extent) => {
       this.fire('ignsearchlocator:entityFound', [extent]);
