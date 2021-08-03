@@ -110,28 +110,26 @@ class Point extends Simple {
       const style = new Centroid({
         zIndex: Simple.getValue(options.zindex, featureVariable, this.layer_),
         geometry: (olFeature) => {
+          const center = Utils.getCentroid(olFeature.getGeometry());
+          let geom = new OLGeomPoint(center);
           if (olFeature.getGeometry().getType() === 'MultiPoint') {
-            const geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
-            return geom;
-          } else {
-            const center = Utils.getCentroid(olFeature.getGeometry());
-            const centroidGeometry = new OLGeomPoint(center);
-            return centroidGeometry;
+            geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
           }
+
+          return geom;
         },
       });
 
       const styleIcon = new Centroid({
         zIndex: Simple.getValue(options.zindex, featureVariable, this.layer_),
         geometry: (olFeature) => {
+          const center = Utils.getCentroid(olFeature.getGeometry());
+          let geom = new OLGeomPoint(center);
           if (olFeature.getGeometry().getType() === 'MultiPoint') {
-            const geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
-            return geom;
-          } else {
-            const center = Utils.getCentroid(olFeature.getGeometry());
-            const centroidGeometry = new OLGeomPoint(center);
-            return centroidGeometry;
+            geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
           }
+
+          return geom;
         },
       });
 
