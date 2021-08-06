@@ -42,7 +42,7 @@ const printermap = new PrinterMap({
   collapsible: true,
   position: 'TR',
   // credits: 'Impresión generada desde Fototeca Digital http://fototeca.cnig.es/',
-  georefActive: false,
+  georefActive: true,
   // serverUrl: 'https://componentes.cnig.es/geoprint',
   // printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
   // printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',

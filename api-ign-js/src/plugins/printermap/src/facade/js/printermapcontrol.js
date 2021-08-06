@@ -140,6 +140,8 @@ export default class PrinterMapControl extends M.Control {
      */
     this.dpiMax_ = null;
 
+    this.dpiGeo_ = 120;
+
     /**
      * Keep view boolean
      * @private
@@ -621,7 +623,6 @@ export default class PrinterMapControl extends M.Control {
     if (this.georef_) {
       getPrintData = this.getPrintDataGeo();
       printUrl = this.printTemplateGeoUrl_;
-      download = this.downloadGeoPrint.bind(this);
     } else {
       getPrintData = this.getPrintData();
       printUrl = this.printTemplateUrl_;
@@ -629,6 +630,10 @@ export default class PrinterMapControl extends M.Control {
     }
 
     getPrintData.then((printData) => {
+      if (this.georef_) {
+        download = this.downloadGeoPrint.bind(this, printData.attributes.map.bbox);
+      }
+
       let url = M.utils.concatUrlPaths([printUrl, `report.${printData.outputFormat}`]);
       const queueEl = this.createQueueElement();
       if (Array.prototype.slice.call(this.queueContainer_.childNodes).length > 0) {
@@ -1116,42 +1121,26 @@ export default class PrinterMapControl extends M.Control {
    * @function
    * @api stable
    */
-  downloadGeoPrint(event) {
+  downloadGeoPrint(bbox, event) {
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
-      const bbox = [this.map_.getBbox().x.min, this.map_.getBbox().y.min,
-        this.map_.getBbox().x.max, this.map_.getBbox().y.max,
-      ];
-
-      BboxTransformXmaxYmin = this.getImpl().transformExt(
-        bbox,
-        this.map_.getProjection().code, this.projection_.name,
-      );
-
-      const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
-      const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
-      const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
-        (72 / this.dpiMax_)).toString();
+      const size = this.map_.getMapImpl().getSize();
+      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / this.dpiGeo_)).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
-      const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
-        (72 / this.dpiMax_)).toString();
-      const Cx = (BboxTransformXmaxYmin[0]).toString();
-      const Cy = (BboxTransformXmaxYmin[3]).toString();
-      let titulo = event.target.textContent;
-      if (titulo === '' || titulo === getValue('no_title')) {
-        const f = new Date();
-        titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
-      }
-
+      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / this.dpiGeo_)).toString();
+      const Cx = (bbox[0] + (Px / 2)).toString();
+      const Cy = (bbox[3] + (Py / 2)).toString();
+      const f = new Date();
+      const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
       const zip = new JsZip();
       zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
       zip.file(titulo.concat('.jpg'), resolve, { base64: true });
       zip.generateAsync({ type: 'blob' }).then((content) => {
-        // see FileSaver.js
         saveAs(content, titulo.concat('.zip'));
       });
+    }).catch((err) => {
+      M.dialog.error(getValue('exception.imageError'));
     });
   }
 
