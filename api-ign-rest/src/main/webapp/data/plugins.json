@@ -297,7 +297,7 @@
     "url_en": "topographicprofile.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/topographicprofile",
     "image": "img/api-logo.png",
-    "description": "Muestra un árbol de contenidos con las capas disponibles para mostrar."
+    "description": "Permite consultar el perfil topográfico de una línea al dibujarla."
   },
   {
     "name": "timeline",
@@ -317,7 +317,7 @@
     "url_en": "transparency.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/transparency",
     "image": "img/api-logo.png",
-    "description": "Plugin de línea del tiempo."
+    "description": "Herramienta de comparación de tipo lupa."
   },
   {
     "name": "vectors",

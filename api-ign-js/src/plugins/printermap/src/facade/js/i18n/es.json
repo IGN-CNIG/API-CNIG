@@ -3,7 +3,8 @@
     "impl": "La implementación usada no puede crear controles PrinterMap.",
     "encode": "La implementación usada no posee el método encodeLayer.",
     "tile": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
-    "error": "Se ha producido un error en la impresión."
+    "error": "Se ha producido un error en la impresión.",
+    "imageError": "No ha podido realizarse la descarga en este momento. Por favor, inténtelo más tarde."
   },
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
   "tooltip": "Impresión del mapa",
