@@ -24,6 +24,7 @@ const mp = new QueryAttributes({
   collapsed: true,
   collapsible: true,
   filters: true,
+  refreshBBOXFilterOnPanning: true,
   configuration: {
     layer: 'vertices',
     pk: 'id',

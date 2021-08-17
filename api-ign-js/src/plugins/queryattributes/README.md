@@ -43,6 +43,7 @@ El constructor se inicializa con un JSON de _options_ con los siguientes atribut
   - 'BL':bottom left
   - 'BR':bottom right
 - **filters**: Cuando toma el valor false, en cada panning muestra en la tabla los registros que se encuentran en el bounding box de la pantalla. Cuando toma valor tres, muestra botones para establecer filtro por bounding box o por poligono trazado por el usuario.
+- **refreshBBOXFilterOnPanning**: define el comportamiento del filtro de vista al activarse. Si es *true*, se reevalúa después de cada panning o cambio de zoom. Si su valor es *false*, sólo se aplica la primera vez con los elementos en pantalla, y no se vuelve a calcular después de cada panning. Por defecto es *false*.
 - **configuration**: aquí definimos el aspecto y el tratamiento de lso campos de la capa vectorial dentro de la tabla de atributos.
   - **layer**: nombre de la capa cuyos elementos se mostrarán en la tabla de atributos, especificada en su propiedad *name*.
   - **pk**: nombre del atributo que actúa como clave principal.
@@ -133,6 +134,9 @@ map.addPlugin(mp);
 * Parametrizable con una *whitelist* de campos que se muestran en Información.
 * Parametrizable con una *whitelist* de campos que se muestran en la tabla.
 * Mediante un desplegable con los nombres de los campos *searchables* elegimos si buscamos todos los campos o por uno en particular.
+*	Localización y resaltado en mapa del elemento a partir de hacer clic en un registro en registros. El registro debe quedar resaltado también en registros.
+* Al hacer clic sobre un elemento en el mapa, resaltar este en mapa, y mostrar resaltado en registros. Si está activado información mostrar la información del elemento. Botón de deseleccionar el elemento en el mapa.
+* Mejora del aspecto de los botones con pseudoclass :hover y :active
 
 
 ## ❌ Falta
@@ -142,8 +146,6 @@ map.addPlugin(mp);
   * Clips de video
   * Etiquetas con formato
   * Mostrar contenido html en un modal form
-*	Localización y resaltado en mapa del elemento a partir de hacer clic en un registro en registros. El registro debe quedar resaltado también en registros.
-* Al hacer clic sobre un elemento en el mapa, resaltar este en mapa, y mostrar resaltado en registros. Si está activado información mostrar la información del elemento. Botón de deseleccionar el elemento en el mapa
 * Configuración de ventanas **landscape**. Hay que ver lo que supone esto a prtir de lo que hay montado.
 * Detectar la capa donde pincho el *feature*.
 * Cuando fuerzo la apertura del *sidebar*, no aparece el botón con el icono de cerrar.
@@ -235,7 +237,7 @@ npm run start
 
 Metodologías y herramientas usadas en el proyecto para garantizar el Quality Assurance Code (QAC)
 
-* ESTlint
+* ESLint
   * [NPM ESLint](https://www.npmjs.com/package/eslint) \
   * [NPM ESLint | Airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
 

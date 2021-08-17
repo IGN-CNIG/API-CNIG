@@ -60,6 +60,9 @@ export default class QueryAttributes extends M.Plugin {
 
     this.configuration_ = options.configuration || {};
 
+    this.refreshBBOXFilterOnPanning_ = options.refreshBBOXFilterOnPanning;
+    if (this.refreshBBOXFilterOnPanning_ === undefined) this.refreshBBOXFilterOnPanning_ = false;
+
     this.filters_ = options.filters;
     if (this.filters_ === undefined) this.filters_ = true;
 
@@ -88,9 +91,10 @@ export default class QueryAttributes extends M.Plugin {
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'icon-tabla',
       tooltip: getValue('tooltip'),
+      refreshBBOXFilterOnPanning: this.refreshBBOXFilterOnPanning_,
     });
 
-    this.control_ = new QueryAttributesControl(this.configuration_, this.filters_, this.collapsed_, this.position_);
+    this.control_ = new QueryAttributesControl(this.configuration_, this.filters_, this.collapsed_, this.position_, this.refreshBBOXFilterOnPanning_);
     this.controls_.push(this.control_);
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
