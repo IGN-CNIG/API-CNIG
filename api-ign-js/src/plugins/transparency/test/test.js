@@ -5,7 +5,7 @@ M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
+  controls: ['panzoom', 'scale*true'],
 });
 
 
@@ -17,7 +17,7 @@ const wfs = new M.layer.WFS({
   geometry: 'MPOLYGON',
 });
 
-map.addWFS(wfs);
+//map.addWFS(wfs);
 
 
 // 1 WMS por url
