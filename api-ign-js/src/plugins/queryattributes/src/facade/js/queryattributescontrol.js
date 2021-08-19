@@ -23,7 +23,7 @@ export default class QueryAttributesControl extends M.Control {
    * @api stable
    */
 
-  constructor(configuration, filters, collapsed_, position_) {
+  constructor(configuration, filters, collapsed_, position_, refreshBBOXFilterOnPanning_) {
     if (M.utils.isUndefined(QueryAttributesImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -76,11 +76,44 @@ export default class QueryAttributesControl extends M.Control {
 
     this.filtered = false;
 
+    this.bboxfilter = false;
+
     this.configuration = configuration;
 
     this.collapsed = collapsed_;
 
     this.position = position_;
+
+    this.refreshBBOXFilterOnPanning = refreshBBOXFilterOnPanning_;
+
+    this.selectionLayer = new M.layer.Vector({
+      extract: false,
+      name: 'selectLayer',
+      source: this.getImpl().newVectorSource(true),
+    });
+
+    this.selectionLayerStyle = new M.style.Point({
+      radius: 10,
+      stroke: {
+        color: '#FF0000',
+        width: 2,
+      },
+      /*
+      icon: {
+              form: M.style.form.CIRCLE,
+              radius: 10,
+              rotation: 3.14159,
+              rotate: false,
+              offset: [0,0],
+              color: '#3e77f7',
+              fill: 'green',
+              gradientcolor: '#3e77f7',
+              gradient: false,
+              opacity: 1,
+              snaptopixel: true,
+      },
+      */
+    });
 
     /**
      * e2m: add pk column to the beginning of configuration.columns
@@ -167,6 +200,10 @@ export default class QueryAttributesControl extends M.Control {
       this.kmlLayers = this.map.getKML().map((layer) => {
         return { layer, loaded: false };
       });
+
+      this.selectionLayer.setStyle(this.selectionLayerStyle);
+      this.map.addLayers(this.selectionLayer);
+
       success(html);
     });
   }
@@ -189,11 +226,17 @@ export default class QueryAttributesControl extends M.Control {
         document.querySelector('#m-queryattributes-options-buttons #limpiar-filtro-btn').style.display = 'none';
         document.querySelector('#m-queryattributes-filter #m-queryattributes-search-input').value = '';
         document.querySelector('#m-queryattributes-options-information-container').innerHTML = '';
+        this.bboxfilter = false;
       });
+    html.querySelector('#m-queryattributes-options-buttons>button#cleanEmphasis-btn')
+      .addEventListener('click', () => {
+        document.querySelector('#m-queryattributes-options-buttons #cleanEmphasis-btn').style.display = 'none';
+        this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
+      });
+
 
     html.querySelector('#m-queryattributes-filter #m-queryattributes-search-btn').addEventListener('click', this.searchFilter.bind(this));
     html.querySelector('#m-queryattributes-filter #m-queryattributes-search-input').addEventListener('keyup', (e) => {
-      console.log(e);
       this.searchFilter();
       // e2m: en vez de esperar al Enter para buscar, lo hace en cada pulsación
       // if (e.keyCode === 13) {
@@ -378,6 +421,14 @@ export default class QueryAttributesControl extends M.Control {
         this.map.getMapImpl().on('click', (evt) => {
           this.actualizaInfo(evt);
         });
+
+        if (this.refreshBBOXFilterOnPanning) {
+          this.map.getMapImpl().on('moveend', (evt) => {
+            if (this.bboxfilter) {
+              this.setBboxFilter();
+            }
+          });
+        }
       }
     }, 1000);
   }
@@ -469,6 +520,17 @@ export default class QueryAttributesControl extends M.Control {
         });
       });
 
+      /**
+       * e2m
+       * Una vez que tenemos el feature en el que vamos a centrar lo añadimos
+       * a la capa de selecciones para aplicarle un énfasis
+       */
+      this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
+      this.selectionLayer.addFeatures(filtered[0]);
+      const buttons = '#m-queryattributes-options-buttons>button';
+      document.querySelector(`${buttons}#cleanEmphasis-btn`).style.display = 'block';
+
+
       const html = M.template.compileSync(information, {
         vars: {
           fields,
@@ -496,9 +558,18 @@ export default class QueryAttributesControl extends M.Control {
     mapaOL.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
       const featureFacade = M.impl.Feature.olFeature2Facade(feature);
       console.log(layer); // 📌 Necesito filtrar cuando la capa no es la adecuada
-      console.log(layer.get('name'));
       console.log(layer.getProperties());
       const fields = [];
+
+      /**
+       * e2m
+       * Añado el feature del que consulto la información a la
+       * capa de selecciones para aplicarle un énfasis
+       */
+      this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
+      this.selectionLayer.addFeatures(featureFacade);
+      const buttons = '#m-queryattributes-options-buttons>button';
+      document.querySelector(`${buttons}#cleanEmphasis-btn`).style.display = 'block';
 
       Object.entries(featureFacade.getAttributes()).forEach((entry) => {
         const config = this_.getColumnConfig(entry[0]);
@@ -574,6 +645,7 @@ export default class QueryAttributesControl extends M.Control {
 
     document.querySelector('#m-queryattributes-information-content > p > span > span.icon-cerrar').addEventListener('click', () => {
       document.querySelector('#m-queryattributes-options-information-container').innerHTML = '';
+      this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
       document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '75vh';
     });
   }
@@ -698,6 +770,7 @@ export default class QueryAttributesControl extends M.Control {
     const filter = M.filter.spatial.INTERSECT(feature);
     this.layer.setFilter(filter);
     this.filtered = true;
+    this.bboxfilter = true;
     this.oldFilter = filter;
     this.oldLayer = this.layer;
     this.showAttributeTable(this.layer.name);

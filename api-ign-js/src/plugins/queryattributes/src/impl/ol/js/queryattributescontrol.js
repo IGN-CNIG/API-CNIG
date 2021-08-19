@@ -14,7 +14,33 @@ export default class QueryAttributesControl extends M.impl.Control {
   addTo(map, html) {
     super.addTo(map, html);
     this.facadeMap = map;
+    /**
+     * OL vector source for draw interactions.
+     * @private
+     * @type {*} - OpenLayers vector source
+     */
+    this.vectorSource = undefined;
   }
+
+  setSource() {
+    this.vectorSource = this.newVectorSource(false);
+  }
+
+
+  /**
+     * Creates new OpenLayers vector source
+     * @public
+     * @function
+     * @api
+     * @param {Boolean} featuresIncluded - indicates if an OL collection of
+     * features should be included in new source
+     */
+  newVectorSource(featuresIncluded) {
+    return featuresIncluded ?
+      new ol.source.Vector({ features: new ol.Collection([]) }) :
+      new ol.source.Vector();
+  }
+
 
   // e2m: al pulsar en Buscar por área añadimos la interacción
   addDrawInteraction(callback) {

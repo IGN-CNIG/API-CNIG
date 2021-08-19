@@ -186,16 +186,6 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
   margin-right: 10px;
 }
 
-#m-queryattributes-filter button.filters {
-  padding: 5px 7px;
-  background-color: #71a7d3;
-  font-family: Muli,"sans-serif"!important;
-  cursor: pointer;
-  border-radius: 4px;
-  border: 1px solid #71a7d3;
-  color: white;
-  margin-right: 10px;
-}
 
 #m-queryattributes-filter button.filters i {
   font-size: 22px;
@@ -231,6 +221,27 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
 
 /* Buttons */
 
+/* e2m: Botones superiores de filtros */
+#m-queryattributes-filter button.filters {
+  padding: 5px 7px;
+  background-color: #71a7d3;
+  font-family: Muli,"sans-serif"!important;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #71a7d3;
+  color: white;
+  margin-right: 10px;
+}
+
+#m-queryattributes-filter button.filters:hover {
+  color: black;
+}
+
+#m-queryattributes-filter button.filters:focus {
+  color: black;
+}
+
+/* e2m: Botones inferiores de acciones */
 #m-queryattributes-options-buttons {
     padding: 5px;
     display: flex;
@@ -250,6 +261,10 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
     padding: 5px 7px;
     margin-right: 10px;
     cursor: pointer;
+}
+
+#m-queryattributes-options-buttons>button:hover{
+  color: black;
 }
 
 .m-queryattributes #m-queryattributes-table > p {
