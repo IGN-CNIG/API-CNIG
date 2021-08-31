@@ -222,10 +222,17 @@ export default class Georefimage2Control extends M.Control {
       });
     } else {
       const projection = this.getUTMZoneProjection();
-      let bbox = this.map_.getBbox();
-      bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-      bbox = this.getImpl().transformExt(bbox, this.map_.getProjection().code, projection);
+      // let bbox = this.map_.getBbox();
+      // bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+      // bbox = this.getImpl().transformExt(bbox, this.map_.getProjection().code, projection);
       const size = this.map_.getMapImpl().getSize();
+
+      const v = this.map_.getMapImpl().getView();
+      let ext = v.calculateExtent(size);
+      ext = ol.proj.transformExtent(ext, 'EPSG:3857', projection);
+      const f = (ext[2] - ext[0]) / size[0];
+      ext[3] = ext[1] + (f * size[1]);
+      const bbox = ext;
       let url = 'http://www.ign.es/wms-inspire/mapa-raster?';
       if (printOption === 'image') {
         url = 'http://www.ign.es/wms-inspire/pnoa-ma?';

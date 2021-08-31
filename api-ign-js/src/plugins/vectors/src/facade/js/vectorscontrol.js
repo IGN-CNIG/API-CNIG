@@ -1554,7 +1554,7 @@ export default class VectorsControl extends M.Control {
 
           if (this.geometry === 'LineString') {
             document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
-            const elem = document.querySelector(`#${id}`);
+            const elem = document.getElementById(id);
             if (elem !== null) {
               elem.addEventListener('click', () => {
                 elem.classList.remove('m-vectors-3d-measure');
