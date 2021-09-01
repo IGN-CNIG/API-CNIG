@@ -698,8 +698,13 @@ export default class VectorsControl extends M.impl.Control {
         const projectionNumber = parseInt(coordSystem.substring(coordSystem.indexOf('::') + 2, coordSystem.indexOf('>') - 1), 10) - 6800;
         coordSystem = `EPSG::${projectionNumber}`;
       } else if (coordSystem.indexOf('::') === -1) {
-        const gmlGlobalEPSG = source.indexOf('srsName=') + 9;
-        coordSystem = source.substring(indexInicial, source.indexOf('"', gmlGlobalEPSG));
+        if (coordSystem.indexOf('opengis.net/def/crs')) {
+          const projectionType = coordSystem.indexOf('258') === -1 ? coordSystem.indexOf('326') : coordSystem.indexOf('258');
+          coordSystem = `EPSG::${coordSystem.substring(projectionType, coordSystem.indexOf('>') - 1)}`;
+        } else {
+          const gmlGlobalEPSG = source.indexOf('srsName=') + 9;
+          coordSystem = source.substring(indexInicial, source.indexOf('"', gmlGlobalEPSG));
+        }
       } else {
         coordSystem = coordSystem.substring(coordSystem.indexOf('EPSG'), coordSystem.indexOf('>') - 1);
       }
