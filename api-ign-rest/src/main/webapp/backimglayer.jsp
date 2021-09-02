@@ -129,7 +129,7 @@
                     preview: 'plugins/backimglayer/images/svqmapa.png',
                     title: 'Mapa',
                     layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/ign-base?',
+                        url: 'https://www.ign.es/wmts/ign-base?',
                         name: 'IGNBaseTodo',
                         legend: 'Mapa IGN',
                         matrixSet: 'GoogleMapsCompatible',
@@ -145,7 +145,7 @@
                     title: 'Imagen',
                     preview: 'plugins/backimglayer/images/svqimagen.png',
                     layers: [new M.layer.WMTS({
-                        url: 'http://www.ign.es/wmts/pnoa-ma?',
+                        url: 'https://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
                         legend: 'Imagen (PNOA)',
                         matrixSet: 'GoogleMapsCompatible',
@@ -161,7 +161,7 @@
                     title: 'Híbrido',
                     preview: 'plugins/backimglayer/images/svqhibrid.png',
                     layers: [new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/pnoa-ma?',
+                            url: 'https://www.ign.es/wmts/pnoa-ma?',
                             name: 'OI.OrthoimageCoverage',
                             legend: 'Imagen (PNOA)',
                             matrixSet: 'GoogleMapsCompatible',
@@ -172,7 +172,7 @@
                             format: 'image/jpeg',
                         }),
                         new M.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
+                            url: 'https://www.ign.es/wmts/ign-base?',
                             name: 'IGNBaseOrto',
                             matrixSet: 'GoogleMapsCompatible',
                             legend: 'Mapa IGN',
