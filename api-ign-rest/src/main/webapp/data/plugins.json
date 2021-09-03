@@ -240,6 +240,16 @@
     "description": "Plugin de impresión a través del servicio Geoprint."
   },
   {
+  "name": "queryattributes",
+  "plugin": "[queryattributes]",
+  "version": "v1.0",
+  "url_es": "queryattributes.jsp?language=es",
+  "url_en": "queryattributes.jsp?language=en",
+  "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/queryattributes",
+  "image": "img/api-logo.png",
+  "description": "Lista de los atributos de cada registro de una capa vectorial."
+  },
+  {
     "name": "rescale",
     "plugin": "[rescale]",
     "version": "v1.0",
