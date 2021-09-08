@@ -110,7 +110,6 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
     color: white !important;
 }
 
-
 /**
   Selection field container
 */
@@ -267,6 +266,10 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
   color: black;
 }
 
+/**
+  * e2m: Definición de la tabla de atributos
+  */
+
 .m-queryattributes #m-queryattributes-table > p {
   text-align: center;
   width: 100%;
@@ -291,10 +294,10 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
   cursor: pointer;
 }
 
-.m-queryattributes #m-queryattributes-table-container table tr:hover {
+/*.m-queryattributes #m-queryattributes-table-container table tr:hover {
   background-color: #71a7d3 !important;
   color: white !important;
-}
+}*/
 
 .m-queryattributes #m-queryattributes-table-container table tr > td, .m-queryattributes #m-queryattributes-table-container table tr > th {
   border: 1px solid #71a7d3;
@@ -322,6 +325,14 @@ div.m-area.m-right .m-queryattributes.opened #div-contenedor {
 .m-queryattributes #m-queryattributes-table-container table > thead > tr > th > span {
   cursor: pointer;
 }
+
+.highlight-attrow{
+  font-weight: bolder;
+  color: #0c4b82; 
+  background-color: cyan !important;
+  opacity: 50%;
+}
+
 
 .m-dialog div#downloadFormat>button {
     background-color: #71a7d3 !important;

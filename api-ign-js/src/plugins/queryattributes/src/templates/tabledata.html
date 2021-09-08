@@ -1,7 +1,7 @@
 <div id="m-queryattributes-table-content">
   {{#if attributes}}
     <div id="m-queryattributes-table-container">
-        <table>
+        <table id="attributedata" summary="Tabla con los atributos de los elementos de la capa vectorial">
             <thead>
               <tr class="m-queryattributes-table-thead">
                   {{#each headerAtt}}
@@ -24,7 +24,7 @@
                         <td style="text-align:{{this.align}};"> {{this.value}}</td>
                       {{/if}}
                       {{#if isPkColumn}}
-                        <td style="display:none;"> {{this.value}}</td>
+                        <td id="feat_{{this.value}}" style="display:none;"> {{this.value}}</td>
                       {{/if}}                      
                       {{#if isFormatter}}
                         <td style="text-align:{{this.align}}; font-size:0.5rem;">{{formatterStr this}}</td>
