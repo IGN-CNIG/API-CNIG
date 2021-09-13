@@ -11,6 +11,7 @@ const GML_FORMAT = 'text/xml; subtype=gml/3.1.1';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
 const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+const NO_DATA_VALUE = 'NODATA_value -9999.000';
 const WFS_EXCEPTIONS = [
   'https://servicios.idee.es/wfs-inspire/hidrografia?',
   'https://servicios.idee.es/wfs-inspire/hidrografia',
@@ -372,7 +373,7 @@ export default class VectorsControl extends M.impl.Control {
       newSource = newSource.replace(/certificacion:the_geom/gi, 'ogr:geometryProperty');
     }
 
-    if (newSource.split('srsName="')[1].indexOf('http') > -1) {
+    if (newSource.split('srsName="')[1].split('"')[0].indexOf('http') > -1) {
       try {
         srs = `EPSG:${newSource.split('srsName="')[1].split('#')[1].split('"')[0]}`;
       } catch (err) {
@@ -417,9 +418,19 @@ export default class VectorsControl extends M.impl.Control {
         if (!f.getGeometry()) {
           newF.setGeometry(f.get('geometry'));
         }
-
         return newF;
       });
+    }
+
+    if (features.length === 0 && newSource.indexOf('<au:AdministrativeBoundary') > -1 && newSource.indexOf('<au:geometry>') > -1) {
+      features = this.gmlParserAU(srs, newSource);
+    }
+
+    // En el caso de que no tenga geometrías, comprobamos si es GML 3.2,
+    // si lo es tenemos que parsearlo a mano.
+    if ((features.length === 0 || features[0].getGeometry() === undefined)
+      && newSource.indexOf('gml/3.2') > 0) {
+      features = this.gmlParser(newSource);
     }
 
     features = this.featuresToFacade(features);
@@ -427,6 +438,340 @@ export default class VectorsControl extends M.impl.Control {
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
     return features;
+  }
+
+  gmlParserAU(srs, source) {
+    const features = [];
+    const proj = this.facadeMap_.getProjection().code;
+    source.split('<gml:LineString').forEach((elem) => {
+      if (elem.indexOf('</gml:LineString>') > -1) {
+        const coords = [];
+        const rawCoords = elem.split('<gml:posList>')[1].split('</gml:posList>')[0].split(' ');
+        for (let i = 0; i < rawCoords.length; i += 2) {
+          if (i + 1 < rawCoords.length) {
+            const coord = ol.proj.transform(
+              [parseFloat(rawCoords[i]), parseFloat(rawCoords[i + 1])],
+              srs,
+              proj,
+            );
+
+            coords.push(coord);
+          }
+        }
+
+        const newOlFeature = new ol.Feature({
+          geometry: new ol.geom.LineString(coords),
+        });
+
+        newOlFeature.setId(elem.split('gml:id="')[1].split('"')[0]);
+        features.push(newOlFeature);
+      }
+    });
+
+    return features;
+  }
+
+  /**
+  * Parse the features of a GML 3.2 layer
+  * @private
+  * @function
+  * @param {*} source-
+  */
+  gmlParser(source) {
+    const features = [];
+    let superficies = this.parseSurfacesGml(source);
+    if (superficies.length === 0) {
+      superficies = this.parseGeometriesGml(source);
+    }
+
+    superficies = this.getEPSGFromGML32(source, superficies);
+    const poligonos = this.getCoordinatesFromGML32(source, superficies);
+    const geometriasPoligonos = [];
+    poligonos.forEach((poligono) => {
+      geometriasPoligonos.push({
+        modo: poligono.modo,
+        gml_tipo: poligono.tipo,
+        gml: poligono.fichero,
+        sistema: poligono.sistema,
+        referencia: poligono.id,
+        vertices: poligono.coordenadas.trim().split(' '),
+      });
+    });
+
+    geometriasPoligonos.forEach((geometria) => {
+      const polygonCoords = [];
+      for (let i = 0; i < geometria.vertices.length; i += 2) {
+        polygonCoords.push(ol.proj.transform(
+          [parseFloat(geometria.vertices[i]),
+            parseFloat(geometria.vertices[i + 1])],
+          geometria.sistema,
+          this.facadeMap_.getProjection().code,
+        ));
+      }
+
+      const newOlFeature = new ol.Feature({
+        geometry: new ol.geom.Polygon([polygonCoords]),
+      });
+
+      const style = new ol.style.Style({
+        text: new ol.style.Text({
+          text: `GML: ${geometria.referencia}\nFichero: ${geometria.gml}\n${geometria.modo}`,
+        }),
+      });
+
+      newOlFeature.setStyle(style);
+      newOlFeature.setId(`GML ${features.length + 1}`);
+      features.push(newOlFeature);
+    });
+
+    return features;
+  }
+
+  /**
+  * Parse the surfaces of a GML 3.2 layer
+  * @private
+  * @function
+  * @param {*} source-
+  */
+  parseSurfacesGml(source) {
+    const surfaces = [];
+    const endTagSurface = '</gml:Surface>';
+    let auxSource = source;
+    while (auxSource !== '') {
+      const firstSurfaceTag = auxSource.indexOf('<gml:Surface');
+      let lastSurfaceTag = -2;
+      if (firstSurfaceTag >= 0) {
+        lastSurfaceTag = auxSource.indexOf(endTagSurface);
+      }
+
+      if (lastSurfaceTag > firstSurfaceTag) {
+        surfaces.push({ surface: auxSource.substring(firstSurfaceTag, lastSurfaceTag + endTagSurface.length), id: '', sistema: '' });
+        auxSource = auxSource.substring(lastSurfaceTag + endTagSurface.length, auxSource.length);
+      } else if (auxSource.length !== 0) {
+        auxSource = '';
+      } else if (auxSource.length === 0) {
+        break;
+      }
+    }
+
+    return surfaces;
+  }
+
+  /**
+  * Parse the other geometries of a GML 3.2 layer
+  * @private
+  * @function
+  * @param {*} source-
+  */
+  parseGeometriesGml(source) {
+    const geometries = [];
+    const endTagPoint = '</gml:Point>';
+    const endTagLine = '</gml:LineString>';
+    const endTagInteriorPolygon = '</gml:interior>';
+    const endTagPolygon = '</gml:exterior>';
+    let polygonIndex = source.indexOf('<gml:exterior>');
+    let lineIndex = source.indexOf('<gml:LineString');
+    let pointIndex = source.indexOf('<gml:Point');
+    let sourceAux = source;
+    let indexInicial = -1;
+    while (sourceAux !== '') {
+      let indexEndTag = -2;
+      if (polygonIndex !== '-1') {
+        indexInicial = sourceAux.indexOf('<gml:exterior>');
+        if (indexInicial >= 0) {
+          indexEndTag = sourceAux.indexOf(endTagPolygon) + endTagPolygon.length;
+        } else {
+          polygonIndex = -1;
+        }
+
+        if (sourceAux.indexOf(endTagInteriorPolygon) >= 0) {
+          indexEndTag = sourceAux.indexOf(endTagInteriorPolygon) + endTagInteriorPolygon.length;
+        }
+      }
+
+      if (lineIndex !== -1 && indexInicial < 0) {
+        indexInicial = sourceAux.indexOf('<gml:LineString');
+        if (indexInicial >= 0) {
+          indexEndTag = sourceAux.indexOf(endTagLine) + endTagLine.length;
+        } else {
+          lineIndex = -1;
+        }
+      }
+
+      if (pointIndex !== -1 && indexInicial < 0) {
+        indexInicial = sourceAux.indexOf('<gml:Point');
+        if (indexInicial >= 0) {
+          indexEndTag = sourceAux.indexOf(endTagPoint) + endTagPoint.length;
+        } else {
+          pointIndex = -1;
+        }
+      }
+
+      if (indexInicial > indexEndTag) {
+        geometries.push({ surface: sourceAux.substring(indexInicial, indexEndTag), id: '', sistema: '' });
+      } else {
+        sourceAux = '';
+      }
+    }
+
+    return geometries;
+  }
+
+  /**
+    * Parse the surface coordinates of a GML 3.2 layer
+    * @private
+    * @function
+    * @param {*} source -
+    * @param {*} superficies -
+    */
+  getCoordinatesFromGML32(source, superficies) {
+    const poligonos = [];
+    superficies.forEach((superficie) => {
+      let exteriores = superficie.surface;
+      let posiciones = superficie.surface;
+      let contador = 0;
+      while (exteriores !== '') {
+        let indexInicial = exteriores.indexOf('gml:exterior');
+        let indexFinal = -2;
+        let coordenadas = '';
+        if (indexInicial >= 0) {
+          indexFinal = exteriores.indexOf('</gml:exterior');
+          if (indexFinal > indexInicial) {
+            const exteriorElement = exteriores.substring(indexInicial, indexFinal);
+            const indexInicialElement = exteriorElement.indexOf('gml:posList');
+            let indexFinalElement = -2;
+            if (indexInicialElement >= 0) {
+              indexFinalElement = exteriorElement.indexOf('</gml:posList>');
+              if (indexFinalElement > indexInicialElement) {
+                coordenadas = exteriorElement.substring(indexInicialElement, indexFinalElement);
+              }
+            }
+            exteriores = exteriores.substring(indexFinal + 14, exteriores.length);
+          } else {
+            exteriores = '';
+          }
+        } else {
+          exteriores = '';
+        }
+
+        if (coordenadas !== '') {
+          indexInicial = coordenadas.indexOf('>');
+          if (indexInicial >= 0) {
+            coordenadas = coordenadas.substring(indexInicial + 1, coordenadas.legnth);
+            const idSuperficie = superficie.id !== '' ? superficie.id : `ID_${contador}`;
+            const nombreSuperficie = superficie.id !== '' ? superficie.id : `nombre_${contador}`;
+            poligonos.push({
+              modo: 'Exterior',
+              fichero: undefined,
+              tipo: undefined,
+              id: `${idSuperficie}_${contador}`,
+              coordenadas,
+              nombre: `${nombreSuperficie}_${contador}`,
+              sistema: superficie.sistema,
+            });
+
+            contador += 1;
+          }
+        }
+      }
+
+      while (posiciones.indexOf('<gml:posList>') !== -1) {
+        const lineStringTag = '<gml:posList>';
+        let coordenadas = '';
+        const indexInicial = posiciones.indexOf(lineStringTag) + lineStringTag.length;
+        const indexFinal = posiciones.indexOf('</gml:posList>');
+        if (indexInicial >= 0) {
+          coordenadas = posiciones.substring(indexInicial, indexFinal);
+          posiciones = posiciones.substring(indexFinal, posiciones.length);
+        }
+
+        if (coordenadas !== '') {
+          const idSuperficie = superficie.id !== '' ? superficie.id : `ID_${contador}`;
+          const nombreSuperficie = superficie.id !== '' ? superficie.id : `nombre_${contador}`;
+          poligonos.push({
+            modo: 'Exterior',
+            fichero: undefined,
+            tipo: undefined,
+            id: `${idSuperficie}_${contador}`,
+            coordenadas,
+            nombre: `${nombreSuperficie}_${contador}`,
+            sistema: superficie.sistema,
+          });
+
+          contador += 1;
+        }
+      }
+
+      while (posiciones.indexOf('<gml:pos>') !== -1) {
+        const pointTag = '<gml:pos>';
+        let coordenadas = '';
+        const indexInicial = posiciones.indexOf(pointTag) + pointTag.length;
+        const indexFinal = posiciones.indexOf('</gml:pos>');
+        if (indexInicial >= 0) {
+          coordenadas = posiciones.substring(indexInicial, indexFinal);
+          posiciones = posiciones.substring(indexFinal, posiciones.length);
+        }
+
+        if (coordenadas !== '') {
+          const idSuperficie = superficie.id !== '' ? superficie.id : `ID_${contador}`;
+          const nombreSuperficie = superficie.id !== '' ? superficie.id : `nombre_${contador}`;
+          poligonos.push({
+            modo: 'Exterior',
+            fichero: undefined,
+            tipo: undefined,
+            id: `${idSuperficie}_${contador}`,
+            coordenadas,
+            nombre: `${nombreSuperficie}_${contador}`,
+            sistema: superficie.sistema,
+          });
+
+          contador += 1;
+        }
+      }
+    });
+
+    return poligonos;
+  }
+
+  getEPSGFromGML32(source, superficies) {
+    superficies.map((superficie) => {
+      const superficieAux = superficie;
+      let indexInicial = superficieAux.surface.indexOf('id=');
+      let indexFinal = -2;
+      let coordSystem = '';
+      if (indexInicial >= 0) {
+        indexFinal = superficieAux.surface.indexOf('srsName=', indexInicial + 4);
+      }
+
+      if (indexFinal > indexInicial) {
+        superficieAux.id = superficieAux.surface.substring(indexInicial + 4, indexFinal - 2);
+      }
+
+      indexInicial = superficieAux.surface.indexOf('>', indexFinal + 10);
+      if (indexInicial > indexFinal) {
+        coordSystem = superficieAux.surface.substring(indexInicial + 25, indexFinal - 1);
+      }
+
+      if (coordSystem.indexOf('EPSG::326') > -1) {
+        const projectionNumber = parseInt(coordSystem.substring(coordSystem.indexOf('::') + 2, coordSystem.indexOf('>') - 1), 10) - 6800;
+        coordSystem = `EPSG::${projectionNumber}`;
+      } else if (coordSystem.indexOf('::') === -1) {
+        if (coordSystem.indexOf('opengis.net/def/crs')) {
+          const projectionType = coordSystem.indexOf('258') === -1 ? coordSystem.indexOf('326') : coordSystem.indexOf('258');
+          coordSystem = `EPSG::${coordSystem.substring(projectionType, coordSystem.indexOf('>') - 1)}`;
+        } else {
+          const gmlGlobalEPSG = source.indexOf('srsName=') + 9;
+          coordSystem = source.substring(indexInicial, source.indexOf('"', gmlGlobalEPSG));
+        }
+      } else {
+        coordSystem = coordSystem.substring(coordSystem.indexOf('EPSG'), coordSystem.indexOf('>') - 1);
+      }
+
+      superficieAux.sistema = coordSystem.replace('::', ':');
+      return superficieAux;
+    });
+
+    return superficies;
   }
 
   /**
@@ -832,12 +1177,13 @@ export default class VectorsControl extends M.impl.Control {
       M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
-        if (response.text.indexOf('dy') > -1) {
-          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+        const responseText = response.text.split(NO_DATA_VALUE).join('');
+        if (responseText.indexOf('dy') > -1) {
+          alt = responseText.split('dy')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
-        } else if (response.text.indexOf('cellsize') > -1) {
-          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+        } else if (responseText.indexOf('cellsize') > -1) {
+          alt = responseText.split('cellsize')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
         }
@@ -894,12 +1240,13 @@ export default class VectorsControl extends M.impl.Control {
       M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
-        if (response.text.indexOf('dy') > -1) {
-          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+        const responseText = response.text.split(NO_DATA_VALUE).join('');
+        if (responseText.indexOf('dy') > -1) {
+          alt = responseText.split('dy')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
-        } else if (response.text.indexOf('cellsize') > -1) {
-          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+        } else if (responseText.indexOf('cellsize') > -1) {
+          alt = responseText.split('cellsize')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
         }
@@ -960,12 +1307,13 @@ export default class VectorsControl extends M.impl.Control {
       M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
-        if (response.text.indexOf('dy') > -1) {
-          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+        const responseText = response.text.split(NO_DATA_VALUE).join('');
+        if (responseText.indexOf('dy') > -1) {
+          alt = responseText.split('dy')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
-        } else if (response.text.indexOf('cellsize') > -1) {
-          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+        } else if (responseText.indexOf('cellsize') > -1) {
+          alt = responseText.split('cellsize')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
         }
