@@ -422,15 +422,15 @@ export default class VectorsControl extends M.impl.Control {
       });
     }
 
-    if (features.length === 0 && newSource.indexOf('<au:AdministrativeBoundary') > -1 && newSource.indexOf('<au:geometry>') > -1) {
-      features = this.gmlParserAU(srs, newSource);
-    }
-
     // En el caso de que no tenga geometrías, comprobamos si es GML 3.2,
     // si lo es tenemos que parsearlo a mano.
     if ((features.length === 0 || features[0].getGeometry() === undefined)
       && newSource.indexOf('gml/3.2') > 0) {
       features = this.gmlParser(newSource);
+    }
+
+    if (features.length === 0) {
+      features = this.gmlParserAU(srs, newSource);
     }
 
     features = this.featuresToFacade(features);
@@ -461,6 +461,24 @@ export default class VectorsControl extends M.impl.Control {
 
         const newOlFeature = new ol.Feature({
           geometry: new ol.geom.LineString(coords),
+        });
+
+        newOlFeature.setId(elem.split('gml:id="')[1].split('"')[0]);
+        features.push(newOlFeature);
+      }
+    });
+
+    source.split('<gml:Point').forEach((elem) => {
+      if (elem.indexOf('</gml:Point>') > -1) {
+        const rawCoords = elem.split('<gml:pos>')[1].split('</gml:pos>')[0].split(' ');
+        const coord = ol.proj.transform(
+          [parseFloat(rawCoords[0]), parseFloat(rawCoords[1])],
+          srs,
+          proj,
+        );
+
+        const newOlFeature = new ol.Feature({
+          geometry: new ol.geom.Point(coord),
         });
 
         newOlFeature.setId(elem.split('gml:id="')[1].split('"')[0]);

@@ -93,7 +93,7 @@ export default class FullTOCControl extends M.Control {
   afterRender() {
     setTimeout(() => {
       this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
-    }, 500);
+    }, 700);
   }
 
   /**
@@ -433,6 +433,10 @@ export default class FullTOCControl extends M.Control {
           button.innerHTML = getValue('close');
           button.style.width = '75px';
           button.style.backgroundColor = '#71a7d3';
+          button.addEventListener('click', () => {
+            this.afterRender();
+          });
+
           document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').addEventListener('keyup', (e) => {
             const url = document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value.trim();
             document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = url;
