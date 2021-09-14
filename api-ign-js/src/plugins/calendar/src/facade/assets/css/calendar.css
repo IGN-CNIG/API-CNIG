@@ -11,7 +11,7 @@ div.m-areas>div.m-area>div.m-panel-calendar.opened {
     border: 1px solid #d3d3d3;
     border-radius: 5px;
     top: calc(50vh - 250px);
-    left: calc(50vw - 250px);
+    left: calc(50vw - 215px);
 }
 
 /* Opening/closing buttons */
@@ -19,6 +19,10 @@ div.m-areas>div.m-area>div.m-panel-calendar.opened {
 .m-areas>div.m-area>div.m-panel.m-panel-calendar.collapsed>button.m-panel-btn {
     background-color: #F0822E !important;
     color: white;
+}
+
+.m-areas>div.m-area>div.m-panel.m-panel-calendar.collapsed>button.m-panel-btn:disabled {
+    background-color: #acacac !important;
 }
 
 .m-areas>div.m-area>div.m-panel.m-panel-calendar.collapsed>button.m-panel-btn::before {
@@ -58,7 +62,7 @@ div.m-areas>div.m-area>div.m-panel-calendar.opened {
     margin: 30px 0 20px 0;
     padding: 0 20px;
     overflow-y: auto;
-    width: 460px;
+    width: 420px;
     height: 460px;
 }
 
