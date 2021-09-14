@@ -408,6 +408,23 @@ export default class LyrCompareControl extends M.Control {
     this.activeDefault();
     this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
     this.updateControls();
+    this.disablePrintButton();
+  }
+
+  disablePrintButton() {
+    const printBtn = document.querySelector('.m-panel-btn.icon-impresora');
+    if (printBtn !== null) {
+      printBtn.disabled = true;
+      printBtn.parentNode.title = getValue('print_disabled');
+    }
+  }
+
+  enablePrintButton() {
+    const printBtn = document.querySelector('.m-panel-btn.icon-impresora');
+    if (printBtn !== null) {
+      printBtn.disabled = false;
+      printBtn.parentNode.title = getValue('printmap');
+    }
   }
 
   /**
@@ -465,6 +482,7 @@ export default class LyrCompareControl extends M.Control {
 
     this.removeEffectsComparison();
     this.updateControls();
+    this.enablePrintButton();
   }
 
   /**

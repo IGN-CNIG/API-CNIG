@@ -405,4 +405,10 @@ const pluginIberpixCompare = new IberpixCompare({
 
 map.addPlugin(pluginIberpixCompare);
 
+map.addPlugin(new M.plugin.PrinterMap({
+  position: 'TR',
+  collapsed: true,
+  georefActive: false,
+}));
+
 window.map = map;

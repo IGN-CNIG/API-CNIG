@@ -290,6 +290,25 @@ export default class CompareMirrorpanel extends M.Control {
     if (this.mapL['D'] !== null) { this.mapL['D'].refresh(); }
     if (modeViz !== 0) {
       document.querySelector('#m-cp-mirrorpanel > button').click();
+      this.disablePrintButton();
+    } else {
+      this.enablePrintButton();
+    }
+  }
+
+  disablePrintButton() {
+    const printBtn = document.querySelector('.m-panel-btn.icon-impresora');
+    if (printBtn !== null) {
+      printBtn.disabled = true;
+      printBtn.parentNode.title = getValue('print_disabled');
+    }
+  }
+
+  enablePrintButton() {
+    const printBtn = document.querySelector('.m-panel-btn.icon-impresora');
+    if (printBtn !== null) {
+      printBtn.disabled = false;
+      printBtn.parentNode.title = getValue('printmap');
     }
   }
 

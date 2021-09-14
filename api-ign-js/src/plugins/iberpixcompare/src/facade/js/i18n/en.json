@@ -39,5 +39,7 @@
   "modViz9": "Two maps above and one below",
   "nolayertext": "No layer selected",
   "no_coverage": "The selected layer does not have coverage in this area of the map",
-  "warning": "Warning"
+  "warning": "Warning",
+  "print_disabled": "Printing is not available",
+  "printmap": "Map Printing"
 }
