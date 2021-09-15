@@ -6,7 +6,7 @@
    <parent>
      <groupId>es.ign.api</groupId>
       <artifactId>api-ign-parent</artifactId>
-      <version>3.3.19</version>
+      <version>3.3.20</version>
       <relativePath>../api-ign-parent/pom.xml</relativePath>
    </parent>
 	<licenses>
