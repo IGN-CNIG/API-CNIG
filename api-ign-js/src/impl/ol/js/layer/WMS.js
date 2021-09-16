@@ -424,7 +424,7 @@ class WMS extends LayerBase {
         olSource = new ImageWMS({
           url: this.url,
           params: layerParams,
-          resolutions,
+          // resolutions,
           extent,
           minResolution,
           maxResolution,
