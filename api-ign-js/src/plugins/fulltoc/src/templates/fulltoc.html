@@ -6,8 +6,14 @@
           <span data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-check {{#if visible}}icon-ver{{^}}icon-ocultar{{/if}}"></span>
         </div>
         <div class="m-title">
-          <span class="m-layer-type">{{type}}</span>
-          <span>{{title}}</span>
+          <table>
+            <tbody>
+              <tr>
+                <td><span class="m-layer-type">{{type}}</span></td>
+                <td><span class="m-layer-name">{{title}}</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       {{#if visible}}
