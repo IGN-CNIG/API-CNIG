@@ -169,7 +169,7 @@ class GetCapabilities {
    * @param {String} layerName
    * @returns {Array<Number>} the extension
    */
-  getLayersRecursive_(layer, forceTiled) {
+  getLayersRecursive_(layer) {
     let layers = [];
     if (!isNullOrEmpty(layer.Layer)) {
       layers = this.getLayersRecursive_(layer.Layer);
@@ -178,10 +178,20 @@ class GetCapabilities {
         layers = layers.concat(this.getLayersRecursive_(layerElem));
       });
     } else { // base case
+      let imageFormat = 'image/png';
+      try {
+        const formats = this.capabilities_.Capability.Request.GetMap.Format;
+        if (formats.length === 1) {
+          imageFormat = formats[0];
+        }
+        /* eslint-disable no-empty */
+      } catch (err) {}
+
       layers.push(new WMS({
         url: this.serviceUrl_,
         name: layer.Name,
         legend: !isNullOrEmpty(layer.Title) ? layer.Title : '',
+        format: imageFormat,
       }, {}, {
         capabilitiesMetadata: {
           abstract: !isNullOrEmpty(layer.Abstract) ? layer.Abstract : '',
