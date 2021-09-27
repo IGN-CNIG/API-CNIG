@@ -155,7 +155,8 @@ class GetCapabilities {
    */
   getLayers() {
     const layer = this.capabilities_.Capability.Layer;
-    const layers = this.getLayersRecursive_(layer);
+    const forceTiled = !Number.isNaN(parseInt(this.capabilities_.Service.MaxWidth, 10));
+    const layers = this.getLayersRecursive_(layer, forceTiled);
     return layers;
   }
 
@@ -169,7 +170,7 @@ class GetCapabilities {
    * @param {String} layerName
    * @returns {Array<Number>} the extension
    */
-  getLayersRecursive_(layer) {
+  getLayersRecursive_(layer, forceTiled) {
     let layers = [];
     if (!isNullOrEmpty(layer.Layer)) {
       layers = this.getLayersRecursive_(layer.Layer);
@@ -182,6 +183,7 @@ class GetCapabilities {
         url: this.serviceUrl_,
         name: layer.Name,
         legend: !isNullOrEmpty(layer.Title) ? layer.Title : '',
+        tiled: forceTiled === true,
       }, {}, {
         capabilitiesMetadata: {
           abstract: !isNullOrEmpty(layer.Abstract) ? layer.Abstract : '',
