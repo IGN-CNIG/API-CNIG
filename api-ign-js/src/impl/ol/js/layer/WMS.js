@@ -138,6 +138,10 @@ class WMS extends LayerBase {
     if (isNullOrEmpty(this.options.animated)) {
       this.options.animated = false; // by default
     }
+
+    // format
+    this.format = isNullOrEmpty(this.options.format) ? 'image/png' : this.options.format;
+
     // styles
     this.styles = this.options.styles || '';
     // sldBody
@@ -384,7 +388,7 @@ class WMS extends LayerBase {
         LAYERS: this.name,
         VERSION: this.version,
         TRANSPARENT: this.transparent,
-        FORMAT: 'image/png',
+        FORMAT: this.format,
         STYLES: this.styles,
       };
 
