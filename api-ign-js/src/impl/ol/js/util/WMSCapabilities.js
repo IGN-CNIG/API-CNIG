@@ -27,7 +27,7 @@ class GetCapabilities {
     this.capabilities_ = capabilities;
 
     /**
-     * The projection
+     * The projectionz
      * @private
      * @type {Mx.Projection}
      */
@@ -155,8 +155,7 @@ class GetCapabilities {
    */
   getLayers() {
     const layer = this.capabilities_.Capability.Layer;
-    const forceTiled = !Number.isNaN(parseInt(this.capabilities_.Service.MaxWidth, 10));
-    const layers = this.getLayersRecursive_(layer, forceTiled);
+    const layers = this.getLayersRecursive_(layer);
     return layers;
   }
 
@@ -183,7 +182,6 @@ class GetCapabilities {
         url: this.serviceUrl_,
         name: layer.Name,
         legend: !isNullOrEmpty(layer.Title) ? layer.Title : '',
-        tiled: forceTiled === true,
       }, {}, {
         capabilitiesMetadata: {
           abstract: !isNullOrEmpty(layer.Abstract) ? layer.Abstract : '',
