@@ -191,8 +191,7 @@ class GetCapabilities {
         url: this.serviceUrl_,
         name: layer.Name,
         legend: !isNullOrEmpty(layer.Title) ? layer.Title : '',
-        format: imageFormat,
-      }, {}, {
+      }, { format: imageFormat }, {
         capabilitiesMetadata: {
           abstract: !isNullOrEmpty(layer.Abstract) ? layer.Abstract : '',
           attribution: !isNullOrEmpty(layer.Attribution) ? layer.Attribution : '',
