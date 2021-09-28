@@ -673,6 +673,15 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   font-weight: bold;
 }
 
+.m-fulltoc-container .m-title .m-layer-name {
+  display: block;
+  line-height: 1.4rem;
+}
+
+.m-fulltoc-container .m-title table tr td:nth-child(1) {
+  vertical-align: top;
+}
+
 .m-fulltoc-container ul.m-base-layers>li.m-layer>.m-title, .m-fulltoc-container ul.m-layers>li.m-layer>.m-title {
   width: calc(100% - 40px);
 }

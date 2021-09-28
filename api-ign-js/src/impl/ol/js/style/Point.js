@@ -9,6 +9,7 @@ import * as Align from 'M/style/Align';
 import * as Baseline from 'M/style/Baseline';
 import OLStyleFill from 'ol/style/Fill';
 import OLGeomPoint from 'ol/geom/Point';
+import OLGeomMultiPoint from 'ol/geom/MultiPoint';
 import OLStyleStroke from 'ol/style/Stroke';
 import OLGeomCircle from 'ol/geom/Circle';
 import OLStyleText from 'ol/style/Text';
@@ -105,22 +106,33 @@ class Point extends Simple {
       if (!(featureVariable instanceof OLFeature)) {
         featureVariable = this;
       }
+
       const style = new Centroid({
         zIndex: Simple.getValue(options.zindex, featureVariable, this.layer_),
         geometry: (olFeature) => {
           const center = Utils.getCentroid(olFeature.getGeometry());
-          const centroidGeometry = new OLGeomPoint(center);
-          return centroidGeometry;
+          let geom = new OLGeomPoint(center);
+          if (olFeature.getGeometry().getType() === 'MultiPoint') {
+            geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
+          }
+
+          return geom;
         },
       });
+
       const styleIcon = new Centroid({
         zIndex: Simple.getValue(options.zindex, featureVariable, this.layer_),
         geometry: (olFeature) => {
           const center = Utils.getCentroid(olFeature.getGeometry());
-          const centroidGeometry = new OLGeomPoint(center);
-          return centroidGeometry;
+          let geom = new OLGeomPoint(center);
+          if (olFeature.getGeometry().getType() === 'MultiPoint') {
+            geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
+          }
+
+          return geom;
         },
       });
+
       let fill;
       if (!isNullOrEmpty(options.fill)) {
         const fillColorValue = Simple.getValue(options.fill.color, featureVariable, this.layer_);

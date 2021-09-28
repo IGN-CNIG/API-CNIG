@@ -1,4 +1,3 @@
-
 const COLORES_PROVINCIA = {
   2:'olive',
   5:'green',
@@ -38,11 +37,12 @@ const map = M.map({
  * e2m:
  * Configuración del plugin
  */
-const mp = new M.plugin.QueryAttributes({
+ const mp = new M.plugin.QueryAttributes({
   position: 'TL',
   collapsed: true,
   collapsible: true,
   filters: true,
+  refreshBBOXFilterOnPanning: true,
   configuration: {
     layer: 'vertices',
     pk: 'id',
@@ -88,7 +88,7 @@ map.addWFS(campamentos);
 // Capa on los vértices geodésicos
 const vertex = new M.layer.GeoJSON({
   name: 'vertices',
-  url: 'https://projects.develmap.com/attributestable/roivertexcenterred.geojson',
+  url: 'https://projects.develmap.com/apicnig-plugins/attributestable/roivertexcenterred.geojson',
   extract: true, // Con esta propiedad sale el popup standard con las propiedades
 });
 

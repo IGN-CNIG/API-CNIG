@@ -20,3 +20,4 @@ entry-points-plugins.json
 .vscode
 /.metadata/
 /.sonarlint/
+package-lock.json

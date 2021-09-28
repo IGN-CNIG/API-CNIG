@@ -1,41 +1,13 @@
-<!--
-
-    Empresa desarrolladora: GUADALTEL S.A.
-
-    Autor: Junta de Andalucía
-
-    Derechos de explotación propiedad de la Junta de Andalucía.
-
-    Este programa es software libre: usted tiene derecho a redistribuirlo y/o modificarlo bajo los términos de la
-
-    Licencia EUPL European Public License publicada por el organismo IDABC de la Comisión Europea, en su versión 1.0.
-    o posteriores.
-
-    Este programa se distribuye de buena fe, pero SIN NINGUNA GARANTÍA, incluso sin las presuntas garantías implícitas
-    de USABILIDAD o ADECUACIÓN A PROPÓSITO CONCRETO. Para mas información consulte la Licencia EUPL European Public
-    License.
-
-    Usted recibe una copia de la Licencia EUPL European Public License junto con este programa, si por algún motivo no
-    le es posible visualizarla, puede consultarla en la siguiente URL: http://ec.europa.eu/idabc/servlets/Doc?id=31099
-
-    You should have received a copy of the EUPL European Public License along with this program. If not, see
-    http://ec.europa.eu/idabc/servlets/Doc?id=31096
-
-    Vous devez avoir reçu une copie de la EUPL European Public License avec ce programme. Si non, voir
-    http://ec.europa.eu/idabc/servlets/Doc?id=30194
-
-    Sie sollten eine Kopie der EUPL European Public License zusammen mit diesem Programm. Wenn nicht, finden Sie da
-    http://ec.europa.eu/idabc/servlets/Doc?id=29919
-
--->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API CNIG - Galería de Test</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>API CNIG - Galería de test - Plugins & Controles</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" type="text/css" >
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" >
 
     <style type="text/css">
@@ -289,7 +261,7 @@
   </header>
 
   <main class="container mt-5">
-    <div class="col-md-12 m-auto">
+    <section class="col-md-12 m-auto">
       <h3 class="text-center mb-3">
         <i class="fas fa-puzzle-piece"> <span style="font-family: 'Quattrocento Sans', sans-serif;">GALERÍA DE PLUGINS</span></i>
       </h3>
@@ -298,36 +270,42 @@
       </div>
       <div id="match-list" class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3 py-5">
       </div>
-    </div>
-  </main>
+    </section>
 
-  <div class="container">
-    <h1 style="text-align: center; margin-bottom: -1rem;">Controles</h1>
-    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3 py-5">
-      <div class="col" style="padding-bottom:15px;">
-        <!-- backgroundlayers -->
-        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
-          <h4 class="text-primary text-center pt-2">[backgroundlayers]</h4>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a href="backgroundlayers.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
-                <a href="backgroundlayers.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+    <section class="col-md-12 m-auto">
+      <h3 class="text-center mb-3">
+        <i class="fas fa-gamepad"> <span style="font-family: 'Quattrocento Sans', sans-serif;">CONTROLES</span></i>
+      </h3>
+      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3 py-5">
+        <div class="col" style="padding-bottom:15px;">
+          <!-- backgroundlayers -->
+          <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+            <h4 class="text-primary text-center pt-2">[backgroundlayers]</h4>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="backgroundlayers.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button"
+                    target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                  <a href="backgroundlayers.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button"
+                    target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col" style="padding-bottom:15px;">
-        <!-- getfeatureinfo -->
-        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
-          <h4 class="text-primary text-center pt-2">[getfeatureinfo]</h4>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a href="getfeatureinfo.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
-                <a href="getfeatureinfo.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+        <div class="col" style="padding-bottom:15px;">
+          <!-- getfeatureinfo -->
+          <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+            <h4 class="text-primary text-center pt-2">[getfeatureinfo]</h4>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="getfeatureinfo.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button"
+                    target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                  <a href="getfeatureinfo.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button"
+                    target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+                </div>
               </div>
             </div>
           </div>
@@ -347,87 +325,94 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col" style="padding-bottom:15px;">
-        <!-- panzoom -->
-        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
-          <h4 class="text-primary text-center pt-2">[panzoom]</h4>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a href="panzoom.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
-                <a href="panzoom.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+        <div class="col" style="padding-bottom:15px;">
+          <!-- panzoom -->
+          <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+            <h4 class="text-primary text-center pt-2">[panzoom]</h4>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="panzoom.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank"
+                    data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                  <a href="panzoom.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank"
+                    data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col" style="padding-bottom:15px;">
+          <!-- panzoombar -->
+          <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+            <h4 class="text-primary text-center pt-2">[panzoombar]</h4>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="panzoombar.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button"
+                    target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                  <a href="panzoombar.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button"
+                    target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col" style="padding-bottom:15px;">
+          <!-- rotate -->
+          <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+            <h4 class="text-primary text-center pt-2">[rotate]</h4>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="rotate.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank"
+                    data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                  <a href="rotate.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank"
+                    data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col" style="padding-bottom:15px;">
+          <!-- scale -->
+          <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+            <h4 class="text-primary text-center pt-2">[scale]</h4>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="scale.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank"
+                    data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                  <a href="scale.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank"
+                    data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col" style="padding-bottom:15px;">
+          <!-- scaleline -->
+          <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+            <h4 class="text-primary text-center pt-2">[scaleline]</h4>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="scaleline.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank"
+                    data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                  <a href="scaleline.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank"
+                    data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="col" style="padding-bottom:15px;">
-        <!-- panzoombar -->
-        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
-          <h4 class="text-primary text-center pt-2">[panzoombar]</h4>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a href="panzoombar.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
-                <a href="panzoombar.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col" style="padding-bottom:15px;">
-        <!-- rotate -->
-        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
-          <h4 class="text-primary text-center pt-2">[rotate]</h4>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a href="rotate.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
-                <a href="rotate.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col" style="padding-bottom:15px;">
-        <!-- scale -->
-        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
-          <h4 class="text-primary text-center pt-2">[scale]</h4>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a href="scale.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
-                <a href="scale.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col" style="padding-bottom:15px;">
-        <!-- scaleline -->
-        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
-          <h4 class="text-primary text-center pt-2">[scaleline]</h4>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a href="scaleline.jsp?language=es" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
-                <a href="scaleline.jsp?language=en" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br/>
-  <br/>
-  <br/>
+    </section>
+  </main>
 
   <script src="js/stringtools.js"></script>
   <script src="js/plugins.js"></script>

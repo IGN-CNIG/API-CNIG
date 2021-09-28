@@ -5,7 +5,7 @@ import InfocoordinatesImplControl from 'impl/infocoordinatescontrol';
 import template from 'templates/infocoordinates';
 import { getValue } from './i18n/language';
 
-
+const NO_DATA_VALUE = 'NODATA_value -9999.000';
 
 export default class InfocoordinatesControl extends M.Control {
   /**
@@ -226,7 +226,8 @@ export default class InfocoordinatesControl extends M.Control {
     });
 
     promesa.then(response => {
-      altitudeFromWCSservice = response.text.split(/\n/)[5].split(' ')[1];
+      const responseText = response.text.split(NO_DATA_VALUE).join('');
+      altitudeFromWCSservice = responseText.split(/\n/)[5].split(' ')[1];
       if (altitudeFromWCSservice == undefined) {
         altitudeFromWCSservice = getValue('noDatafromWCS');
       }

@@ -1040,6 +1040,7 @@ export default class VectorsControl extends M.Control {
           M.dialog.error(getValue('exception.load'));
           return;
         }
+
         if (features.length === 0) {
           M.dialog.info(getValue('exception.no_geoms'));
         } else {

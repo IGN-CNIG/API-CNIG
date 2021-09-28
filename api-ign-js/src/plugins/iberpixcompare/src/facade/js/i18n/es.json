@@ -39,5 +39,7 @@
   "modViz9": "Dos mapas arriba y uno abajo",
   "nolayertext": "Ninguna capa",
   "no_coverage": "La capa seleccionada no tiene cobertura en la zona del mapa en la que se encuentra",
-  "warning": "Advertencia"
+  "warning": "Advertencia",
+  "print_disabled": "La impresión no está disponible",
+  "printmap": "Impresión del mapa"
 }
