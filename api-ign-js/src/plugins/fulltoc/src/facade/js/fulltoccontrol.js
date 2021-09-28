@@ -921,6 +921,7 @@ export default class FullTOCControl extends M.Control {
                   url,
                   this.map_.getProjection().code,
                 );
+
                 this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
                 this.capabilities.forEach((layer) => {
                   try {
@@ -1214,7 +1215,6 @@ export default class FullTOCControl extends M.Control {
         resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
       }
 
-
       container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
       container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', evt => this.addLayers(evt));
       const elem = container.querySelector('.m-fulltoc-show-capabilities');
@@ -1331,11 +1331,14 @@ export default class FullTOCControl extends M.Control {
         for (let j = 0; j < this.capabilities.length; j += 1) {
           const name = this.capabilities[j].name;
           if (elmSel[i].id === name || elmSel[i].name === name) {
-            if (this.capabilities[j].url.indexOf(CATASTRO) > -1) {
+            const limit = parseInt(this.serviceCapabilities.MaxWidth, 10);
+            const hasLimit = !Number.isNaN(limit) && limit < 4096;
+            const isIDECanarias = this.serviceCapabilities.Title.toLowerCase().indexOf('idecanarias') > -1;
+            if (this.capabilities[j].url.indexOf(CATASTRO) > -1 || isIDECanarias) {
               this.capabilities[j].version = '1.1.1';
             }
 
-            this.capabilities[j].tiled = this.capabilities[j].type === 'WMTS';
+            this.capabilities[j].tiled = this.capabilities[j].type === 'WMTS' || hasLimit || isIDECanarias;
             this.capabilities[j].options.origen = this.capabilities[j].type;
             const legendUrl = this.capabilities[j].getLegendURL();
             const meta = this.capabilities[j].capabilitiesMetadata;
