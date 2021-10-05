@@ -273,7 +273,7 @@ class WMS extends LayerBase {
               this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
             /* eslint-disable no-empty */
             } catch (err) {}
-          } else if (capabilitiesLayer[i] !== undefined) {
+          } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Layer !== undefined) {
             if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
               capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
               this.addCapabilitiesMetadata(capabilitiesLayer);
