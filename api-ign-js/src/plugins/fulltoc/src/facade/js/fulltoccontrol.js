@@ -1333,7 +1333,7 @@ export default class FullTOCControl extends M.Control {
           if (elmSel[i].id === name || elmSel[i].name === name) {
             const limit = parseInt(this.serviceCapabilities.MaxWidth, 10);
             const hasLimit = !Number.isNaN(limit) && limit < 4096;
-            const isIDECanarias = this.serviceCapabilities.Title.toLowerCase().indexOf('idecanarias') > -1;
+            const isIDECanarias = this.serviceCapabilities.Title !== undefined && this.serviceCapabilities.Title.toLowerCase().indexOf('idecanarias') > -1;
             if (this.capabilities[j].url.indexOf(CATASTRO) > -1 || isIDECanarias) {
               this.capabilities[j].version = '1.1.1';
             }

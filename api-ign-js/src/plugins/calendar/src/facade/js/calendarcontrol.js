@@ -32,7 +32,7 @@ export default class CalendarControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    const content = '<iframe src="https://outlook.office365.com/owa/calendar/fototeca1@cnig.es/bookings/" width="100%" height="100%" scrolling="yes" style="border:0"></iframe>';
+    const content = '<iframe src="https://outlook.office365.com/owa/calendar/fototeca1@cnig.es/bookings/" width="100%" height="460" scrolling="yes" style="border:0"></iframe>';
     const htmlObject = document.createElement('div');
     htmlObject.classList.add('m-control', 'm-container', 'm-calendar');
     htmlObject.setAttribute('id', 'calendar-box');
