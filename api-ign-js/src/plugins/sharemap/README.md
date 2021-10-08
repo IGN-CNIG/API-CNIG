@@ -20,7 +20,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **baseUrl**. Url sobre la que está montada la instancia de mapea del tipo https://componentes.cnig.es/api-core/
+- **baseUrl**. Url sobre la que está montada la instancia de mapea del tipo https://componentes.cnig.es/api-ign/
 - **title**. Título para la cabecera de la ventana (Por defecto 'Compartir Mapa'
 - **btn**. Título para el botón Aceptar (Por defecto 'Aceptar')
 - **copyBtn**. Título para el botón copiar (Por defecto 'Copiar url')
@@ -37,8 +37,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **position**. Indica la posición donde se mostrará el plugin
   - 'TL':top left (default)
-  - 'TR':top right 
-  - 'BL':bottom left 
+  - 'TR':top right
+  - 'BL':bottom left
   - 'BR':bottom right
 
 # Parámetros API REST
@@ -47,7 +47,7 @@ URL_API?sharemap=baseUrl*position*title*tooltip*btn*copyBtn
 ````
 Ejemplo:
 ```
-http://cnig-api-core.desarrollo.guadaltel.es/api-core/?sharemap=http://cnig-api-core.desarrollo.guadaltel.es/api-core/*BL*Compartir URL*Copiado*Aceptar*Copiar
+http://cnig-api-ign.desarrollo.guadaltel.es/api-ign/?sharemap=http://cnig-api-ign.desarrollo.guadaltel.es/api-ign/*BL*Compartir URL*Copiado*Aceptar*Copiar
 ```
 # Eventos
 
@@ -60,9 +60,9 @@ http://cnig-api-core.desarrollo.guadaltel.es/api-core/?sharemap=http://cnig-api-
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.ShareMap({
-     baseUrl: 'https://componentes.cnig.es/api-core/',
+     baseUrl: 'https://componentes.cnig.es/api-ign/',
       postition: 'TL',
    });
 

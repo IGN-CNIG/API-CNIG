@@ -32,7 +32,7 @@ URL_API?vectors=position*collapsed*collapsible
 ````
 Ejemplo:
 ```javascript
-http://cnig-api-core.desarrollo.guadaltel.es/api-core/?vectors=BL*true*true
+http://cnig-api-ign.desarrollo.guadaltel.es/api-ign/?vectors=BL*true*true
 ```
 
 

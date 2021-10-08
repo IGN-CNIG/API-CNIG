@@ -174,7 +174,7 @@
             https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             codsi = (selectCODSI.options[selectCODSI.selectedIndex].value == 'true');
-            window.location.href = 'https://mapea-lite-6.desarrollo.guadaltel.es/api-core//api-core/?fulltoc=' + posicion + '*' + collapsed + '*' + collapsible + '*' + codsi;
+            window.location.href = 'https://mapea-lite-6.desarrollo.guadaltel.es/api-ign//api-ign/?fulltoc=' + posicion + '*' + collapsed + '*' + collapsible + '*' + codsi;
         });
 
         // const precharged = {
@@ -305,7 +305,7 @@
 			map.addLayers(layerinicial);
 
             let mp2 = new M.plugin.ShareMap({
-                baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
+                baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-ign')) + "api-ign/",
                 position: "TR",
             });
             map.addPlugin(mp2);

@@ -105,7 +105,7 @@
         <input type="text" name="backImgLayersParams" id="inputBackImgLayersParams" list="backImgLayersParamsSug">
         <datalist id="backImgLayersParamsSug">
             <option
-                value="{position:'TR',collapsible:true,collapsed:true,layerId:0,layerVisibility:true,layerOpts:[{id:'mapa',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',title:'Mapa',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseTodo',legend:'MapaIGN',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'imagen',title:'Imagen',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen(PNOA)',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'lidar',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',title:'LIDAR',layers:[new M.layer.WMTS({url:'https://wmts-mapa-lidar.idee.es/lidar?',name:'EL.GridCoverageDSM',legend:'ModeloDigitaldeSuperficiesLiDAR',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',})],},{id:'hibrido',title:'Híbrido',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen(PNOA)',matrixSet:'GoogleMapsCompatible',transparent:true,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',}),new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseOrto',matrixSet:'GoogleMapsCompatible',legend:'MapaIGN',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',})],},],}">
+                value="{position:'TR',collapsible:true,collapsed:true,layerId:0,layerVisibility:true,layerOpts:[{id:'mapa',preview:'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqmapa.png',title:'Mapa',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseTodo',legend:'MapaIGN',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'imagen',title:'Imagen',preview:'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqimagen.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen(PNOA)',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'lidar',preview:'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqlidar.png',title:'LIDAR',layers:[new M.layer.WMTS({url:'https://wmts-mapa-lidar.idee.es/lidar?',name:'EL.GridCoverageDSM',legend:'ModeloDigitaldeSuperficiesLiDAR',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',})],},{id:'hibrido',title:'Híbrido',preview:'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqhibrid.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen(PNOA)',matrixSet:'GoogleMapsCompatible',transparent:true,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',}),new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseOrto',matrixSet:'GoogleMapsCompatible',legend:'MapaIGN',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',})],},],}">
             </option>
         </datalist>
         <label for="selectInterface">Selector de interface</label>
@@ -161,7 +161,7 @@
             layerOpts: [
                 {
                     id: 'mapa',
-                    preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
+                    preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqmapa.png',
                     title: 'Mapa',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/ign-base?',
@@ -178,7 +178,7 @@
                 {
                     id: 'imagen',
                     title: 'Imagen',
-                    preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',
+                    preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqimagen.png',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
@@ -193,7 +193,7 @@
                 },
                 {
                     id: 'lidar',
-                    preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',
+                    preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqlidar.png',
                     title: 'LIDAR',
                     layers: [new M.layer.WMTS({
                         url: 'https://wmts-mapa-lidar.idee.es/lidar?',
@@ -210,7 +210,7 @@
                 {
                     id: 'hibrido',
                     title: 'Híbrido',
-                    preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
+                    preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqhibrid.png',
                     layers: [new M.layer.WMTS({
                         url: 'http://www.ign.es/wmts/pnoa-ma?',
                         name: 'OI.OrthoimageCoverage',
@@ -344,7 +344,7 @@
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-ign')) + "api-ign/",
             position: "TR",
         });
         map.addPlugin(mp2);

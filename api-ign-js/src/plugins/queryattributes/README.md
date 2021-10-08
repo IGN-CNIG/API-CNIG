@@ -65,8 +65,8 @@ Cada campo de la capa vectorial necesita un objeto para definirlo. Los atributos
 * **type**: tipo del campo
   * **string**: tipo de cadena. Por defecto.
   * **image**: contiene la URL de una imagen. La imagen se  mostrarla en la tabla.
-  * **linkURL**: contiene una URL. Se muestra dentro de un hipervínculo. 
-  * **buttonURL**: contiene una URL. Se muestra dentro de un botón. 
+  * **linkURL**: contiene una URL. Se muestra dentro de un hipervínculo.
+  * **buttonURL**: contiene una URL. Se muestra dentro de un botón.
   * **formatter**: repite un carácter formateado un número especificado de veces.
   * **percentage**: muestra el valor formateado en una barra de progreso.
 * **typeparam**: parámetros para complementar al atributo *type*.
@@ -93,13 +93,13 @@ const mp = new QueryAttributes({
     pk: 'id',
     initialSort: { name: 'nombre', dir: 'asc' },
     columns: [
-      { 
-          name: 'id', 
-          alias: 'Identificador', 
-          visible: false, 
-          searchable: false , 
-          showpanelinfo: true, 
-          align: 'right', 
+      {
+          name: 'id',
+          alias: 'Identificador',
+          visible: false,
+          searchable: false ,
+          showpanelinfo: true,
+          align: 'right',
           type: 'string'},
       { name: 'nombre', alias: 'Nombre Vértice', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
       { name: 'xutmetrs89', alias: 'Coordenada X', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
@@ -257,9 +257,9 @@ $ncu
 
 ## ⛲️ Recursos y Herramientas
 
-* [APICNIG](https://componentes.ign.es/api-core/doc/)
+* [APICNIG](https://componentes.ign.es/api-ign/doc/)
 * [Mapea Plugins](https://github.com/sigcorporativo-ja/mapea-plugins)
-* [APICNIG Plugins](https://componentes.ign.es/api-core/test.html)
+* [APICNIG Plugins](https://componentes.ign.es/api-ign/test.html)
 * [Wiki APICNIG](https://github.com/IGN-CNIG/API-CNIG/wiki)
 * [Apuntes complementarios](assets/_e2molin.md)
 * [Test](https://projects.develmap.com/attributestable/build/)

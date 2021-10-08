@@ -98,7 +98,7 @@
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-ign')) + "api-ign/",
             position: "TR",
         });
         map.addPlugin(mp2);

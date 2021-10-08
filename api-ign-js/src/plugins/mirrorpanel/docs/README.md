@@ -106,7 +106,7 @@ const mpMirrorPanel = new M.plugin.Mirrorpanel({
   collapsed: false,
   modeViz: 0,
   enabledPlugins: true,
-  enabledKeyFunctions: true, 
+  enabledKeyFunctions: true,
   showCursors: true,
   defaultBaseLyrs: [
     'WMTS*http://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN',
@@ -141,7 +141,7 @@ let backImgLayerParams = {
   layerOpts: [
     {
       id: 'mapa',
-      preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
+      preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqmapa.png',
       title: 'Mapa',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/ign-base?',
@@ -158,7 +158,7 @@ let backImgLayerParams = {
     {
       id: 'imagen',
       title: 'Imagen',
-      preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',
+      preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqimagen.png',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
@@ -190,7 +190,7 @@ let backImgLayerParams = {
     {
       id: 'hibrido',
       title: 'Híbrido',
-      preview: 'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
+      preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqhibrid.png',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
@@ -233,4 +233,3 @@ const mpMirrorPanel = new M.plugin.Mirrorpanel({
 
 map.addPlugin(mpMirrorPanel);
 ```
-
