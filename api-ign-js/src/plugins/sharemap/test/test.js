@@ -22,7 +22,7 @@ const map = M.map({
 });
 
 const mp = new ShareMap({
-  baseUrl: 'https://mapea-lite-6.desarrollo.guadaltel.es/api-ign/',
+  baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-ign/',
   position: 'BR',
   minimize: true,
 });

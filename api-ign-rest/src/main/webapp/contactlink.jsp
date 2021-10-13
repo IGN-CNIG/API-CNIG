@@ -198,7 +198,7 @@
             youtube = inputYoutube.value;
             mail = inputMail.value;
 
-            window.location.href = 'https://mapea-lite-6.desarrollo.guadaltel.es/api-ign//api-ign/?contactlink=' + posicion + '*' + descargascnig + '*' + pnoa + '*' + visualizador3d + '*' + fototeca +
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-ign//api-ign/?contactlink=' + posicion + '*' + descargascnig + '*' + pnoa + '*' + visualizador3d + '*' + fototeca +
                 '*' + twitter + '*' + instagram + '*' + pinterest + '*' + youtube + '*' + mail;
         });
 
