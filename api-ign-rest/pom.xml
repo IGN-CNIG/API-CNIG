@@ -106,7 +106,7 @@
 		<artifactId>docker-maven-plugin</artifactId>
 		<version>0.2.11</version>
 		<configuration>
-			<dockerDirectory>${basedir}/../api-ign-parent/src/main/docker/api-cnig</dockerDirectory>
+			<dockerDirectory>${basedir}/../api-ign-parent/src/main/docker/api-ign</dockerDirectory>
 			<resources>
 				<resource>
 					<targetPath>/</targetPath>
