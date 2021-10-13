@@ -11,10 +11,10 @@ Para adaptarse a las necesidades de los usuarios y ser mucho más flexible, API 
 
 La arquitectura de API IGN está compuesta por los siguientes componentes:
 
-- [api-cnig-js](/api-cnig-js) Librería JavaScript que provee una API para facilitar la creación de visores de mapas.
-- [api-cnig-parent](/api-cnig-parent) Módulo padre que hace uso de maven para compilar y generar el war final de api-cnig.
-- [api-cnig-proxy](/api-cnig-proxy) Proxy para realizar peticiones POST por si el [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) no está habilitado.
-- [api-cnig-rest](/api-cnig-rest) Servicio Web con API RESTful que genera el código JS necesario para generar un visor con la configuración especificada por parámetros.
+- [api-ign-js](/api-ign-js) Librería JavaScript que provee una API para facilitar la creación de visores de mapas.
+- [api-ign-parent](/api-ign-parent) Módulo padre que hace uso de maven para compilar y generar el war final de api-cnig.
+- [api-ign-proxy](/api-ign-proxy) Proxy para realizar peticiones POST por si el [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) no está habilitado.
+- [api-ign-rest](/api-ign-rest) Servicio Web con API RESTful que genera el código JS necesario para generar un visor con la configuración especificada por parámetros.
 
 
 ## Navegadores soportados

@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
-   <artifactId>api-cnig-js</artifactId>
+   <artifactId>api-ign-js</artifactId>
    <packaging>pom</packaging>
    <name>API IGN JS</name>
    <parent>
      <groupId>es.ign.api</groupId>
-      <artifactId>api-cnig-parent</artifactId>
+      <artifactId>api-ign-parent</artifactId>
       <version>4.0.0</version>
-      <relativePath>../api-cnig-parent/pom.xml</relativePath>
+      <relativePath>../api-ign-parent/pom.xml</relativePath>
    </parent>
 	<licenses>
 		<license>

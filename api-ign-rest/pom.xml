@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
-   <artifactId>api-cnig-rest</artifactId>
+   <artifactId>api-ign-rest</artifactId>
    <packaging>war</packaging>
    <name>API IGN REST</name>
    <properties>
@@ -13,9 +13,9 @@
    </properties>
    <parent>
       <groupId>es.ign.api</groupId>
-      <artifactId>api-cnig-parent</artifactId>
+      <artifactId>api-ign-parent</artifactId>
       <version>4.0.0</version>
-      <relativePath>../api-cnig-parent/pom.xml</relativePath>
+      <relativePath>../api-ign-parent/pom.xml</relativePath>
    </parent>
    <licenses>
       <license>
@@ -41,7 +41,7 @@
          </resource>
       </resources>
       <filters>
-         <filter>${basedir}/../api-cnig-parent/src/main/filters/${environment}.properties</filter>
+         <filter>${basedir}/../api-ign-parent/src/main/filters/${environment}.properties</filter>
       </filters>
       <plugins>
          <plugin>
@@ -92,8 +92,8 @@
                   <configuration>
                      <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
                      <includeGroupIds>${project.groupId}</includeGroupIds>
-                     <includeArtifacIds>api-cnig-js</includeArtifacIds>
-                     <excludeArtifactIds>api-cnig-proxy</excludeArtifactIds>
+                     <includeArtifacIds>api-ign-js</includeArtifacIds>
+                     <excludeArtifactIds>api-ign-proxy</excludeArtifactIds>
                      <excludeTransitive>true</excludeTransitive>
                      <encoding>${project.build.sourceEncoding}</encoding>
                   </configuration>
@@ -106,7 +106,7 @@
 		<artifactId>docker-maven-plugin</artifactId>
 		<version>0.2.11</version>
 		<configuration>
-			<dockerDirectory>${basedir}/../api-cnig-parent/src/main/docker/api-cnig</dockerDirectory>
+			<dockerDirectory>${basedir}/../api-ign-parent/src/main/docker/api-cnig</dockerDirectory>
 			<resources>
 				<resource>
 					<targetPath>/</targetPath>
@@ -160,7 +160,7 @@
       <!-- API IGN JS -->
       <dependency>
          <groupId>${project.groupId}</groupId>
-         <artifactId>api-cnig-js</artifactId>
+         <artifactId>api-ign-js</artifactId>
          <version>${project.version}</version>
          <classifier>dist-resources</classifier>
          <type>zip</type>
@@ -168,7 +168,7 @@
       </dependency>
       <dependency>
          <groupId>${project.groupId}</groupId>
-         <artifactId>api-cnig-js</artifactId>
+         <artifactId>api-ign-js</artifactId>
          <version>${project.version}</version>
          <classifier>doc-resources</classifier>
          <type>zip</type>
@@ -176,7 +176,7 @@
       </dependency>
       <dependency>
          <groupId>${project.groupId}</groupId>
-         <artifactId>api-cnig-js</artifactId>
+         <artifactId>api-ign-js</artifactId>
          <version>${project.version}</version>
          <classifier>templates-resources</classifier>
          <type>zip</type>
@@ -186,7 +186,7 @@
       <!-- API IGN PROXY -->
       <dependency>
          <groupId>${project.groupId}</groupId>
-         <artifactId>api-cnig-proxy</artifactId>
+         <artifactId>api-ign-proxy</artifactId>
          <version>${project.version}</version>
       </dependency>
    </dependencies>
