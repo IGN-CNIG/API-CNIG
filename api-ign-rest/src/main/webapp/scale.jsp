@@ -82,7 +82,7 @@
 
         map.addLayers([layerinicial, layerUA]);
         let mp = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-ign')) + "api-ign/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-cnig')) + "api-cnig/",
             position: "TR",
         });
         map.addPlugin(mp);

@@ -137,7 +137,7 @@
         }
 
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-ign')) + "api-ign/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-cnig')) + "api-cnig/",
             position: "BR",
         });
         map.addPlugin(mp2);

@@ -36,7 +36,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('MAPEA_URL', 'https://mapea-lite.desarrollo.guadaltel.es/api-ign/');
+  M_.config('MAPEA_URL', 'https://mapea-lite.desarrollo.guadaltel.es/api-cnig/');
 
   /**
    * The path to the Mapea proxy to send
@@ -46,7 +46,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('PROXY_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-ign/api/proxy');
+  M_.config('PROXY_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-cnig/api/proxy');
 
   /**
    * The path to the Mapea proxy to send
@@ -56,7 +56,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('PROXY_POST_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-ign/proxyPost');
+  M_.config('PROXY_POST_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-cnig/proxyPost');
 
   /**
    * The path to the Mapea templates
@@ -74,7 +74,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('THEME_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-ign/assets/');
+  M_.config('THEME_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-cnig/assets/');
 
   /**
    * TODO
@@ -237,7 +237,7 @@ function fun(M_) {
   M_.config('attributions', {
     defaultAttribution: 'Instituto Geográfico Nacional',
     defaultURL: 'https://www.ign.es/',
-    url: 'https://mapea-lite.desarrollo.guadaltel.es/api-ign/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+    url: 'https://mapea-lite.desarrollo.guadaltel.es/api-cnig/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
     type: 'kml',
   });
 

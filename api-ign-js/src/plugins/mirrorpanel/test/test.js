@@ -82,7 +82,7 @@ let backImgLayerParams = {
   layerOpts: [
     {
       id: 'mapa',
-      preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqmapa.png',
+      preview: 'http://componentes.ign.es/api-cnig/plugins/backimglayer/images/svqmapa.png',
       title: 'Mapa',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/ign-base?',
@@ -99,7 +99,7 @@ let backImgLayerParams = {
     {
       id: 'imagen',
       title: 'Imagen',
-      preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqimagen.png',
+      preview: 'http://componentes.ign.es/api-cnig/plugins/backimglayer/images/svqimagen.png',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',
@@ -114,7 +114,7 @@ let backImgLayerParams = {
     },
     {
       id: 'lidar',
-      preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqlidar.png',
+      preview: 'http://componentes.ign.es/api-cnig/plugins/backimglayer/images/svqlidar.png',
       title: 'LIDAR',
       layers: [new M.layer.WMTS({
         url: 'https://wmts-mapa-lidar.idee.es/lidar?',
@@ -131,7 +131,7 @@ let backImgLayerParams = {
     {
       id: 'hibrido',
       title: 'Híbrido',
-      preview: 'http://componentes.ign.es/api-ign/plugins/backimglayer/images/svqhibrid.png',
+      preview: 'http://componentes.ign.es/api-cnig/plugins/backimglayer/images/svqhibrid.png',
       layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/pnoa-ma?',
         name: 'OI.OrthoimageCoverage',

@@ -2,7 +2,7 @@
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <groupId>es.ign.api</groupId>
-   <artifactId>api-ign-parent</artifactId>
+   <artifactId>api-cnig-parent</artifactId>
    <version>4.0.0</version>
    <packaging>pom</packaging>
    <name>API IGN PARENT</name>
@@ -14,9 +14,9 @@
       <maven.build.timestamp.format>dd-MM-yyyy</maven.build.timestamp.format>
    </properties>
    <modules>
-      <module>../api-ign-js</module>
-      <module>../api-ign-proxy</module>
-      <module>../api-ign-rest</module>
+      <module>../api-cnig-js</module>
+      <module>../api-cnig-proxy</module>
+      <module>../api-cnig-rest</module>
    </modules>
    <licenses>
       <license>

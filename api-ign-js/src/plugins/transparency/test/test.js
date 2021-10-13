@@ -86,7 +86,7 @@ const pluginTransparency = new Transparency({
 
 // Prueba integración con Share Map
 const shareMap = new ShareMap({
-  baseUrl: 'http://localhost:8080/api-ign/',
+  baseUrl: 'http://localhost:8080/api-cnig/',
   position: 'BR',
 })
 

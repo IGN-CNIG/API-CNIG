@@ -171,7 +171,7 @@
         });
 
         const mp3 = new M.plugin.ShareMap({
-            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-ign/',
+            baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-cnig/',
             position: 'BR',
         });
         const mp4 = new M.plugin.XYLocator({

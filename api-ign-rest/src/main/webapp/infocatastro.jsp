@@ -98,7 +98,7 @@
         buttonApi.addEventListener('click', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
 
-            window.location.href = 'https://mapea-lite-6.desarrollo.guadaltel.es/api-ign//api-ign/?infocatastro=' + posicion;
+            window.location.href = 'https://mapea-lite-6.desarrollo.guadaltel.es/api-cnig//api-cnig/?infocatastro=' + posicion;
         })
 
         function crearPlugin(posicion) {
@@ -109,7 +109,7 @@
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-ign')) + "api-ign/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-cnig')) + "api-cnig/",
             position: "TR",
         });
         map.addPlugin(mp2);

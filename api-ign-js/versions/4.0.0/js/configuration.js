@@ -31,7 +31,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('MAPEA_URL', 'http://10.67.33.22:8080/api-ign/');
+  M.config('MAPEA_URL', 'http://10.67.33.22:8080/api-cnig/');
 
   /**
    * The path to the Mapea proxy to send
@@ -41,7 +41,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_URL', location.protocol + '//10.67.33.22:8080/api-ign/api/proxy');
+  M.config('PROXY_URL', location.protocol + '//10.67.33.22:8080/api-cnig/api/proxy');
 
   /**
    * The path to the Mapea proxy to send
@@ -51,7 +51,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_POST_URL', location.protocol + '//10.67.33.22:8080/api-ign/proxyPost');
+  M.config('PROXY_POST_URL', location.protocol + '//10.67.33.22:8080/api-cnig/proxyPost');
 
   /**
    * The path to the Mapea templates
@@ -69,7 +69,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('THEME_URL', location.protocol + '//10.67.33.22:8080/api-ign/assets/');
+  M.config('THEME_URL', location.protocol + '//10.67.33.22:8080/api-cnig/assets/');
 
   /**
    * The path to the Mapea theme
@@ -197,7 +197,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
   M.config('attributions', {
     defaultAttribution: 'Instituto Geogr&aacute;fico Nacional',
     defaultURL: 'https://www.ign.es/',
-    url: 'http://10.67.33.22:8080/api-ign/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+    url: 'http://10.67.33.22:8080/api-cnig/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
     type: 'kml',
   });
 
@@ -214,7 +214,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @private
    * @type {String}
    */
-  M.config('SQL_WASM_URL', location.protocol + 'http://10.67.33.22:8080/api-ign/wasm/');
+  M.config('SQL_WASM_URL', location.protocol + 'http://10.67.33.22:8080/api-cnig/wasm/');
 
   /** IGNSearch List Control
    *

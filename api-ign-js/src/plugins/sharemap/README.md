@@ -20,7 +20,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **baseUrl**. Url sobre la que está montada la instancia de mapea del tipo https://componentes.cnig.es/api-ign/
+- **baseUrl**. Url sobre la que está montada la instancia de mapea del tipo https://componentes.cnig.es/api-cnig/
 - **title**. Título para la cabecera de la ventana (Por defecto 'Compartir Mapa'
 - **btn**. Título para el botón Aceptar (Por defecto 'Aceptar')
 - **copyBtn**. Título para el botón copiar (Por defecto 'Copiar url')
@@ -47,7 +47,7 @@ URL_API?sharemap=baseUrl*position*title*tooltip*btn*copyBtn
 ````
 Ejemplo:
 ```
-http://cnig-api-ign.desarrollo.guadaltel.es/api-ign/?sharemap=http://cnig-api-ign.desarrollo.guadaltel.es/api-ign/*BL*Compartir URL*Copiado*Aceptar*Copiar
+http://cnig-api-cnig.desarrollo.guadaltel.es/api-cnig/?sharemap=http://cnig-api-cnig.desarrollo.guadaltel.es/api-cnig/*BL*Compartir URL*Copiado*Aceptar*Copiar
 ```
 # Eventos
 
@@ -62,7 +62,7 @@ http://cnig-api-ign.desarrollo.guadaltel.es/api-ign/?sharemap=http://cnig-api-ig
    });
 
    const mp = new M.plugin.ShareMap({
-     baseUrl: 'https://componentes.cnig.es/api-ign/',
+     baseUrl: 'https://componentes.cnig.es/api-cnig/',
       postition: 'TL',
    });
 

@@ -8,7 +8,7 @@
   },
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
   "tooltip": "Impresión del mapa",
-  "credits": "Impresión generada a través del API-IGN",
+  "credits": "Impresión generada a través del api-cnig",
   "no_title": "(Sin título)",
   "zone": "huso",
   "base": "Cartografía base",

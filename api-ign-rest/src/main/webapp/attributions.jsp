@@ -87,9 +87,9 @@
         </datalist>
         <div id="divModo">
             <label for="inputUrl">Parámetro url</label>
-            <input type="text" name="url" id="inputUrl" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-ign/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml">
+            <input type="text" name="url" id="inputUrl" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-cnig/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml">
             <datalist id="urlSug">
-                <option value="https://mapea-lite.desarrollo.guadaltel.es/api-ign/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml"></option>
+                <option value="https://mapea-lite.desarrollo.guadaltel.es/api-cnig/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml"></option>
             </datalist>
             <label for="selectType">Selector de tipo</label>
             <select name="type" id="selectType">
@@ -211,7 +211,7 @@
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-ign')) + "api-ign/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-cnig')) + "api-cnig/",
             position: "TR",
         });
         map.addPlugin(mp2);
