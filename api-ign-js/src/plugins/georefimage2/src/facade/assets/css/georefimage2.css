@@ -113,7 +113,7 @@
     border-top-right-radius: 20px;
 }
 
-.m-areas>div.m-area>div.m-panel.m-georefimage2>button.m-panel-btn {
+.m-areas>div.m-area>div.m-panel.m-georefimage2.opened>button.m-panel-btn {
     background-color: white !important;
     position: absolute;
     left: initial;
@@ -142,7 +142,7 @@
 }
 
 .m-areas>div.m-area>div.m-panel.m-georefimage2.collapsed>button.m-panel-btn {
-    background-color: #71a7d3 !important;
+    background-color: #71a7d3;
     color: white !important;
     position: inherit;
     right: 0;
