@@ -41,5 +41,7 @@
   "no_coverage": "La capa seleccionada no tiene cobertura en la zona del mapa en la que se encuentra",
   "warning": "Advertencia",
   "print_disabled": "La impresión no está disponible",
-  "printmap": "Impresión del mapa"
+  "georef_download_disabled": "La descarga no está disponible",
+  "printmap": "Impresión del mapa",
+  "georef_download": "Descargar Imagen georreferenciada"
 }

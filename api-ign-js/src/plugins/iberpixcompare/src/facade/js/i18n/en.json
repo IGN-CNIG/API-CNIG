@@ -41,5 +41,7 @@
   "no_coverage": "The selected layer does not have coverage in this area of the map",
   "warning": "Warning",
   "print_disabled": "Printing is not available",
-  "printmap": "Map Printing"
+  "georef_download_disabled": "Image download is not available",
+  "printmap": "Map Printing",
+  "georef_download": "Download Georeferenced image"
 }

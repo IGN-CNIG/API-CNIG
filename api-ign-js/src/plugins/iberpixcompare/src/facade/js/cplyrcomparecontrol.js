@@ -408,22 +408,34 @@ export default class LyrCompareControl extends M.Control {
     this.activeDefault();
     this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
     this.updateControls();
-    this.disablePrintButton();
+    this.disablePrintButtons();
   }
 
-  disablePrintButton() {
-    const printBtn = document.querySelector('.m-panel-btn.icon-impresora');
+  disablePrintButtons() {
+    const printBtn = document.querySelector('.m-printermap .m-panel-btn.icon-impresora');
+    const downloadBtn = document.querySelector('.m-georefimage2 .m-panel-btn.icon-descargar');
     if (printBtn !== null) {
       printBtn.disabled = true;
       printBtn.parentNode.title = getValue('print_disabled');
     }
+
+    if (downloadBtn !== null) {
+      downloadBtn.disabled = true;
+      downloadBtn.parentNode.title = getValue('georef_download_disabled');
+    }
   }
 
-  enablePrintButton() {
-    const printBtn = document.querySelector('.m-panel-btn.icon-impresora');
+  enablePrintButtons() {
+    const printBtn = document.querySelector('.m-printermap .m-panel-btn.icon-impresora');
+    const downloadBtn = document.querySelector('.m-georefimage2 .m-panel-btn.icon-descargar');
     if (printBtn !== null) {
       printBtn.disabled = false;
       printBtn.parentNode.title = getValue('printmap');
+    }
+
+    if (downloadBtn !== null) {
+      downloadBtn.disabled = false;
+      downloadBtn.parentNode.title = getValue('georef_download');
     }
   }
 
@@ -482,7 +494,7 @@ export default class LyrCompareControl extends M.Control {
 
     this.removeEffectsComparison();
     this.updateControls();
-    this.enablePrintButton();
+    this.enablePrintButtons();
   }
 
   /**

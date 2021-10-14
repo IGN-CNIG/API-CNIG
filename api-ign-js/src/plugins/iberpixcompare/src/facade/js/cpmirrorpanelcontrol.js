@@ -290,25 +290,37 @@ export default class CompareMirrorpanel extends M.Control {
     if (this.mapL['D'] !== null) { this.mapL['D'].refresh(); }
     if (modeViz !== 0) {
       document.querySelector('#m-cp-mirrorpanel > button').click();
-      this.disablePrintButton();
+      this.disablePrintButtons();
     } else {
-      this.enablePrintButton();
+      this.enablePrintButtons();
     }
   }
 
-  disablePrintButton() {
-    const printBtn = document.querySelector('.m-panel-btn.icon-impresora');
+  disablePrintButtons() {
+    const printBtn = document.querySelector('.m-printermap .m-panel-btn.icon-impresora');
+    const downloadBtn = document.querySelector('.m-georefimage2 .m-panel-btn.icon-descargar');
     if (printBtn !== null) {
       printBtn.disabled = true;
       printBtn.parentNode.title = getValue('print_disabled');
     }
+
+    if (downloadBtn !== null) {
+      downloadBtn.disabled = true;
+      downloadBtn.parentNode.title = getValue('georef_download_disabled');
+    }
   }
 
-  enablePrintButton() {
-    const printBtn = document.querySelector('.m-panel-btn.icon-impresora');
+  enablePrintButtons() {
+    const printBtn = document.querySelector('.m-printermap .m-panel-btn.icon-impresora');
+    const downloadBtn = document.querySelector('.m-georefimage2 .m-panel-btn.icon-descargar');
     if (printBtn !== null) {
       printBtn.disabled = false;
       printBtn.parentNode.title = getValue('printmap');
+    }
+
+    if (downloadBtn !== null) {
+      downloadBtn.disabled = false;
+      downloadBtn.parentNode.title = getValue('georef_download');
     }
   }
 

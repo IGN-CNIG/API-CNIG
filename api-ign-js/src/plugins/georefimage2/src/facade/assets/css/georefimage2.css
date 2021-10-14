@@ -122,6 +122,10 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
 }
 
+.m-areas>div.m-area>div.m-panel.m-georefimage2>button.m-panel-btn:disabled {
+  background-color: #acacac !important;
+}
+
 .m-areas>div.m-area>div.m-panel.m-georefimage2.opened>button.m-panel-btn {
     left: -40px;
 }
