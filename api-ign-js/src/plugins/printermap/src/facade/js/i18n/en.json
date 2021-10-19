@@ -8,7 +8,7 @@
   },
   "errorProjectionCapabilities": "The selected projection is not available for this base layer. Please choose another projection.",
   "tooltip": "Map Printing",
-  "credits": "Print generated through api-cnig",
+  "credits": "Print generated through api-core",
   "no_title": "(Untitled)",
   "zone": "zone",
   "base": "Base Cartography",

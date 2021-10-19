@@ -257,9 +257,9 @@ $ncu
 
 ## ⛲️ Recursos y Herramientas
 
-* [APICNIG](https://componentes.ign.es/api-cnig/doc/)
+* [APICNIG](https://componentes.ign.es/api-core/doc/)
 * [Mapea Plugins](https://github.com/sigcorporativo-ja/mapea-plugins)
-* [APICNIG Plugins](https://componentes.ign.es/api-cnig/test.html)
+* [APICNIG Plugins](https://componentes.ign.es/api-core/test.html)
 * [Wiki APICNIG](https://github.com/IGN-CNIG/API-CNIG/wiki)
 * [Apuntes complementarios](assets/_e2molin.md)
 * [Test](https://projects.develmap.com/attributestable/build/)

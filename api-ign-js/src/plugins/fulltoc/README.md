@@ -27,6 +27,8 @@ A la hora de mostrar la leyenda de un servicio que se haya cargado se intentará
   - 'BL':bottom left
   - 'BR':bottom right
 
+- **collapsible**. Si es *true*, el panel del plugin puede abrirse y cerrarse. Por defecto tiene el valor *true*.
+
 - **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
 
 - **http**. Si es *true* o no se rellena se permite la carga de capas de servicios desplegados con http, si se le da valor *false* no se permitirá la carga de servicios http.

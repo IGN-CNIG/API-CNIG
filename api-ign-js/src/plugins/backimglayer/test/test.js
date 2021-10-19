@@ -8,7 +8,7 @@ const map = M.map({
 });
 
 const mp2 = new ShareMap({
-  baseUrl: `${window.location.href.substring(0, window.location.href.indexOf('api-cnig'))}api-cnig/`,
+  baseUrl: `${window.location.href.substring(0, window.location.href.indexOf('api-core'))}api-core/`,
   position: 'TR',
 });
 

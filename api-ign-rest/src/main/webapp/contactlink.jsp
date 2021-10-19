@@ -198,7 +198,7 @@
             youtube = inputYoutube.value;
             mail = inputMail.value;
 
-            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-cnig//api-cnig/?contactlink=' + posicion + '*' + descargascnig + '*' + pnoa + '*' + visualizador3d + '*' + fototeca +
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?contactlink=' + posicion + '*' + descargascnig + '*' + pnoa + '*' + visualizador3d + '*' + fototeca +
                 '*' + twitter + '*' + instagram + '*' + pinterest + '*' + youtube + '*' + mail;
         });
 
@@ -207,7 +207,7 @@
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-cnig')) + "api-cnig/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);

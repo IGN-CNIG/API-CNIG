@@ -47,10 +47,10 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
         <label for="selectURL">Parámetro URL</label>
-        <input type="text" id="selectURL" list="urlSug" value="https://mapea-lite-6.desarrollo.guadaltel.es/api-cnig//api-cnig/" />
+        <input type="text" id="selectURL" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/" />
         <datalist id="urlSug">
-            <option value="https://mapea-lite-6.desarrollo.guadaltel.es/api-cnig//api-cnig/"></option>
-            <option value="https://componentes.ign.es/api-cnig/"></option>
+            <option value="https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/"></option>
+            <option value="https://componentes.ign.es/api-core/"></option>
         </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
         <input type="submit" id="buttonAPI" value="API Rest" />
@@ -107,7 +107,7 @@
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
-        let mp, posicion, url = window.location.href.substring(0, window.location.href.indexOf('api-cnig')) + "api-cnig/";
+        let mp, posicion, url = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
         crearPlugin({
             position: posicion,
             baseUrl: url
@@ -123,12 +123,12 @@
             url = selectURL.value;
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
 
-            window.location.href = 'https://mapea-lite-6.desarrollo.guadaltel.es/api-cnig//api-cnig/?sharemap=' + url + '*' + posicion;
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?sharemap=' + url + '*' + posicion;
         })
 
         function cambiarTest() {
             let objeto = {}
-            url = selectURL.value != "" ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-cnig')) + "api-cnig/";
+            url = selectURL.value != "" ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             map.removePlugins(mp);
             crearPlugin(objeto);

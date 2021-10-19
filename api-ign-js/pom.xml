@@ -22,7 +22,7 @@
 		</developer>
 	</developers>
    <build>
-      <finalName>api-cnig</finalName>
+      <finalName>api-core</finalName>
       <plugins>
          <plugin>
             <groupId>com.github.eirslett</groupId>

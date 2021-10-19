@@ -133,7 +133,7 @@
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
 
-            window.location.href = 'https://mapea-lite-6.desarrollo.guadaltel.es/api-cnig//api-cnig/?zoompanel=' + posicion + '*' + collapsed + '*' + collapsible;
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?zoompanel=' + posicion + '*' + collapsed + '*' + collapsible;
         })
 
         function crearPlugin(collapsed, collapsible, posicion) {
@@ -145,7 +145,7 @@
             map.addPlugin(mp);
         }
         let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-cnig')) + "api-cnig/",
+            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
         map.addPlugin(mp2);

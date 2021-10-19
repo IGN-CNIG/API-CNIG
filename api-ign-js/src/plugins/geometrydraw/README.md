@@ -33,7 +33,7 @@ URL_API?geometrydraw=position*collapsed*collapsible
 ````
 Ejemplo:
 ```javascript
-http://cnig-api-cnig.desarrollo.guadaltel.es/api-cnig/?geometrydraw=BL*true*true
+http://mapea.desarrollo.guadaltel.es/api-core/?geometrydraw=BL*true*true
 ```
 
 
