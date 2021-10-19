@@ -80,8 +80,6 @@
             zoom: 3,
         });
 
-        const kml = new M.layer.KML('KML*Delegaciones*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
-        map.addLayers(kml);
         const layerinicial = new M.layer.WMS({
             url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',
