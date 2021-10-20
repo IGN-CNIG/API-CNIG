@@ -252,6 +252,14 @@ div#m-comparepanel-title {
     font-family: 'comparepanel' !important;
 }
 
+.cp-icon-comparepanel:before {
+    content: "\e817";
+	font-family: 'comparepanel' !important;
+    /*color: #71a7d3;*/
+	/*font-size: 1.4rem;*/
+}
+
+
 .cp-columns-1:before {
     content: "\e90e";
     color: #71a7d3;

@@ -42,7 +42,7 @@ export default class LyrdropdownControl extends M.impl.Control {
    */
   setLayer(lyrA) {
     lyrA.setVisible(true);
-    lyrA.setZIndex(4500);
+    //lyrA.setZIndex(4500);
 
     //this.olMap.addLayer(lyrA); //e2m: Important control number interactions this.olMap.interactions.array_
     //const olMap = map.getMapImpl();

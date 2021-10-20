@@ -79,6 +79,26 @@ export default class Mirrorpanel extends M.Plugin {
     this.modeViz = options.modeViz;
     if (this.modeViz === undefined) this.modeViz = 0;
 
+
+    /**
+     * Opción de situar el mapa principal siempre a la derecha
+     * False: se sitúa a la izquierda. True: se sitúa a la derecha
+     * @type {boolean}
+     * @public
+     */
+    this.reverseLayout = options.reverseLayout;
+    if (this.reverseLayout === undefined) this.reverseLayout = false;
+
+    /**
+     * Opción de situar el mapa principal siempre a la derecha
+     * False: se sitúa a la izquierda. True: se sitúa a la derecha
+     * @type {boolean}
+     * @public
+     */
+     this.enabledPlugins = options.enabledPlugins;
+     if (this.enabledPlugins === undefined) this.enabledPlugins = false;
+
+
     /**
      * Enabled key functions
      * @type {boolean}
@@ -161,6 +181,8 @@ export default class Mirrorpanel extends M.Plugin {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       modeViz: this.modeViz,
+      reverseLayout: this.reverseLayout,
+      enabledPlugins: this.enabledPlugins,
       showCursors: this.showCursors,
       mirrorLayers: this.mirrorLayers,
       defaultBaseLyrs: this.defaultBaseLyrs,
@@ -218,7 +240,20 @@ export default class Mirrorpanel extends M.Plugin {
     this.control_.removeMaps();
     this.control_.destroyMapsContainer();
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.modeViz, this.enabledKeyFunctions, this.showCursors, this.mirrorLayers, this.defaultBaseLyrs, this.backImgLayersParams, this.interface] = [null, null, null, null, null, null, null, null, null, null, null, null];
+    [
+      this.control_, 
+      this.panel_, 
+      this.map_, 
+      this.collapsible, 
+      this.collapsed, 
+      this.modeViz, 
+      this.enabledPlugins, 
+      this.enabledKeyFunctions, 
+      this.showCursors, 
+      this.mirrorLayers, 
+      this.defaultBaseLyrs, 
+      this.backImgLayersParams, 
+      this.interface] =  [null, null, null, null, null, null, null, null, null, null,null, null, null];
   }
 
   /**

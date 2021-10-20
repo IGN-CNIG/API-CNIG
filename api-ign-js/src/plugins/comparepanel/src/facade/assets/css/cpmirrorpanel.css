@@ -155,6 +155,16 @@ Estilos del botón
 	grid-template-areas: 'mirror1 mirror2' !important;
 }
 
+/**
+  *  | B | A |
+  */
+
+  .mirrorpanel-grid.modeViz1.reverseMirror {
+	grid-template-columns: 1fr 1fr !important;
+	grid-template-rows: 1fr !important;
+	grid-template-areas: 'mirror2 mirror1' !important;
+}
+
 
 /**
 *  | A |
@@ -175,9 +185,19 @@ Estilos del botón
 .mirrorpanel-grid.modeViz3 {
 	grid-template-columns: 1fr 1fr 1fr !important;
 	grid-template-rows: 1fr !important;
+	/*grid-template-areas: 'mirror1 mirror2 mirror3' !important;*/
 	grid-template-areas: 'mirror1 mirror2 mirror3' !important;
 }
 
+/**
+*  | C | B | A |
+*/
+
+.mirrorpanel-grid.modeViz3.reverseMirror {
+	grid-template-columns: 1fr 1fr 1fr !important;
+	grid-template-rows: 1fr !important;
+	grid-template-areas: 'mirror3 mirror2 mirror1' !important;
+}
 
 /**
 *  | A | B | C | D |
@@ -189,6 +209,15 @@ Estilos del botón
 	grid-template-areas: 'mirror1 mirror2 mirror3 mirror4' !important;
 }
 
+/**
+*  | D | C | B | A |
+*/
+
+.mirrorpanel-grid.modeViz4.reverseMirror {
+	grid-template-columns: 1fr 1fr 1fr 1fr !important;
+	grid-template-rows: 1fr !important;
+	grid-template-areas: 'mirror4 mirror3 mirror2 mirror1' !important;
+}
 
 /**
 *  | A | B |
@@ -199,6 +228,17 @@ Estilos del botón
 	grid-template-columns: 1fr 1fr !important;
 	grid-template-rows: 1fr 1fr !important;
 	grid-template-areas: 'mirror1 mirror2' 'mirror3 mirror4' !important;
+}
+
+/**
+*  | B | A |
+*  | C | D |
+*/
+
+.mirrorpanel-grid.modeViz5.reverseMirror  {
+	grid-template-columns: 1fr 1fr !important;
+	grid-template-rows: 1fr 1fr !important;
+	grid-template-areas: 'mirror2 mirror1' 'mirror3 mirror4' !important;
 }
 
 
@@ -226,6 +266,16 @@ Estilos del botón
 	grid-template-areas: 'mirror1 mirror2 mirror3' !important;
 }
 
+/**
+*  | C | B |   A   |
+*/
+
+.mirrorpanel-grid.modeViz7.reverseMirror {
+	grid-template-columns: 1fr 1fr 2fr !important;
+	grid-template-rows: 1fr !important;
+	grid-template-areas: 'mirror3 mirror2 mirror1' !important;
+}
+
 
 /**
 *  |   A   |
@@ -248,4 +298,15 @@ Estilos del botón
 	grid-template-columns: 1fr 1fr !important;
 	grid-template-rows: 1fr 1fr !important;
 	grid-template-areas: 'mirror1 mirror2' 'mirror3 mirror3' !important;
+}
+
+/**
+*  | B | A |
+*  |   C   |
+*/
+
+.mirrorpanel-grid.modeViz9.reverseMirror {
+	grid-template-columns: 1fr 1fr !important;
+	grid-template-rows: 1fr 1fr !important;
+	grid-template-areas: 'mirror2 mirror1' 'mirror3 mirror3' !important;
 }

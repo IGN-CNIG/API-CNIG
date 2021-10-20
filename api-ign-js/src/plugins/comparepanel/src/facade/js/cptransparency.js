@@ -189,6 +189,12 @@ export default class Transparency extends M.Plugin {
     return this.metadata_;
   }
 
+  setDefaultLayer(){
+    this.control_.setDefaultLayer();
+  }
+
+
+
   /**
    * Activate plugin
    *
