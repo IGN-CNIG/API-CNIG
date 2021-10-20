@@ -4,6 +4,7 @@
 *.classpath
 *.externalToolBuilders
 .atomignore
+.sonarlint
 node
 node_modules
 target
