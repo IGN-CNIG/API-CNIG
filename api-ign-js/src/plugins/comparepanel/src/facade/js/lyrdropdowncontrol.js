@@ -119,10 +119,12 @@ export default class LyrdropdownControl extends M.Control {
 
       //Events on template component
       this.template.querySelector('#m-lyrdropdown-selector').addEventListener('change', (evt) => {
+        console.log("Entro:" + evt.target.value);
         const layerSel = this.map.getLayers().filter((layer) => {
           return layer.name === evt.target.value;
         });
         //Get selected layer from layer array
+        console.log(this.layerSelected);
         this.layerSelected.setVisible(false);
         this.removeEffects();
         if (layerSel.length === 0){
@@ -164,6 +166,7 @@ export default class LyrdropdownControl extends M.Control {
    * @api stable
    */
   deactivate() {
+    console.log('deactivate');
     if (this.layerSelected === null) this.layerSelected = this.layers[0];
     let names = this.layers.map((layer) => {
       return layer instanceof Object ? { name: layer.name } : { name: layer };
@@ -196,6 +199,7 @@ export default class LyrdropdownControl extends M.Control {
    * @api stable
    */
   removeEffects() {
+    console.log('removeEffects');
     this.getImpl().removeEffects();
   }
 
@@ -211,10 +215,20 @@ export default class LyrdropdownControl extends M.Control {
    * @param {string}
    * @return
    */
+ /**
+   * Transform StringLayers to Mapea M.Layer
+   * Entra tantas veces como mapas lienzo activos haya.
+   * @public
+   * @function
+   * @api stable
+   * @param {string}
+   * @return
+   */
   transformToLayers(layers) {
-    window.map = this.map;
+    console.log("transformToLayers LyerDropDown");
     const transform = layers.map((layer) => {
       let newLayer = null;
+
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
@@ -225,17 +239,39 @@ export default class LyrdropdownControl extends M.Control {
               legend: urlLayer[1],
             });
 
-            this.map.addLayers(newLayer);
+            if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
+              newLayer = this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0];
+              newLayer.legend = urlLayer[1] || newLayer.name;
+            } else {
+              this.map.addLayers(newLayer);
+            }
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
+
+            /*newLayer = new M.layer.WMTS({
+              url: urlLayer[2] + '?',
+              name: urlLayer[3],
+              legend: urlLayer[1],
+              matrixSet: urlLayer[4],
+              transparent: true,              // Es una capa Overlay -> zIndex > 0
+              displayInLayerSwitcher: false,  // No aparece en el TOC
+              queryable: false,               // No GetFeatureInfo
+              visibility: false,              // Visible a false por defecto
+              format: urlLayer[5],
+            }), this.map.addWMTS(newLayer);*/
+
             newLayer = new M.layer.WMTS({
               url: urlLayer[2],
               name: urlLayer[3],
               legend: urlLayer[1],
               matrixSet: urlLayer[4],
+              transparent: true,              // Es una capa Overlay -> zIndex > 0
+              displayInLayerSwitcher: false,  // No aparece en el TOC
+              queryable: false,               // No GetFeatureInfo
+              visibility: false,              // Visible a false por defecto
               format: urlLayer[5],
             });
-
-            this.map.addLayers(newLayer);
+            this.map.addWMTS(newLayer);
+            //this.map.addLayers(newLayer);
           }
         } else {
           const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
@@ -247,9 +283,22 @@ export default class LyrdropdownControl extends M.Control {
       }
 
       if (newLayer !== null) {
+        if (newLayer.getImpl().getOL3Layer() === null) {
+          setTimeout(() => {
+            if (newLayer.type === 'WMS' || newLayer.type === 'WMTS') {
+              newLayer.load = true;
+            } else if (newLayer.type === 'WMTS') {
+              newLayer.facadeLayer_.load = true;
+            }
+          }, 1000);
+        } else {
+          newLayer.load = true;
+        }
+
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
-        return newLayer
+        console.log(newLayer);
+        return newLayer;
       } else {
         this.layers.remove(layer);
       }
@@ -257,6 +306,7 @@ export default class LyrdropdownControl extends M.Control {
 
     return (transform[0] === undefined) ? [] : transform;
   }
+ 
 
   /**
    * This function transform string to M.Layer

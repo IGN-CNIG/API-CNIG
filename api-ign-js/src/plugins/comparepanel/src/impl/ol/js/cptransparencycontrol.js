@@ -32,14 +32,19 @@ export default class TransparencyControl extends M.impl.Control {
    * @api stable
    */
   effectSelected(layers, radius) {
+
     layers.setVisible(true);
-    layers.setZIndex(90000);
+    //layers.setZIndex(90000);
+    //const olVersion = olIndex.VERSION
+    console.log(this.olMap);
+    console.log(M);
     this.transparentInteraction_ = new TransparentInteraction({
       radius,
       layers,
     });
-
     this.olMap.addInteraction(this.transparentInteraction_);
+    return;
+
   }
 
   /**
@@ -63,7 +68,11 @@ export default class TransparencyControl extends M.impl.Control {
    * @api stable
    */
   addLayer(layer) {
-    this.transparentInteraction_.addLayer(layer.getImpl().getOL3Layer());
+
+    //this.transparentInteraction_.addLayer(layer.getImpl().getOL3Layer());
+    console.log(layer)
+    this.transparentInteraction_.addLayer(layer);
+
   }
 
   /**

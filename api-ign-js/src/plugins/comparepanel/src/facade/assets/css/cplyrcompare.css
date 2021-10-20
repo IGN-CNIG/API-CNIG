@@ -267,9 +267,9 @@ div#m-lyrcompare-titulo {
 	display: block;
 	position: absolute;
 	height: 250vh;
-	width: 0.5rem;
+	width: 0.25rem;	/* 0.5rem; Reducimos el ancho del separador vertical */
 	top: -125vh;
-	left: 1rem;
+	left: 1.125rem; /* 1rem; Reducimos el ancho del separador vertical */
 	cursor: ew-resize;
 }
 
@@ -279,9 +279,9 @@ div#m-lyrcompare-titulo {
 	display: block;
 	position: absolute;
 	width: 250vw;
-	height: 0.5rem;
+	height: 0.25rem;	/*0.5rem; Reducimos el alto del separador horizontal */
 	left: -125vw;
-	top: 1rem;
+	top: 1.125rem; 		/* 1rem;  Reducimos el alto del separador horizontal  */
 	cursor: ns-resize;
 }
 .lyrcompare-swipe-control .control-icon {

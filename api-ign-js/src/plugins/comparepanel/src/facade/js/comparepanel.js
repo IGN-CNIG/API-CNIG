@@ -56,6 +56,15 @@ export default class Comparepanel extends M.Plugin {
      * @type {String}
      */
     const positions = ['TR', 'TL', 'BL', 'BR'];
+
+    this.COMP_PLUGIN_NAMES = {
+      'none': 'default',
+      'mirror': 'mirrorpanel',
+      'curtain': 'lyrcompare',
+      'timeline': 'timeline',
+      'spyeye': 'transparency',
+    }
+
     this.position = positions.includes(options.position) ? options.position : 'TR';
 
     /**
@@ -98,6 +107,25 @@ export default class Comparepanel extends M.Plugin {
         M.dialog.error(getValue('baseLayers_error'));
       }
     }
+
+    /**
+     * defaultCompareMode of the Plugin
+     * @public
+     * Posible values: mirror | curtain | spyeye | timeline
+     * @type {String}
+     */
+     const defaultCompareModes = ['mirror', 'curtain', 'spyeye', 'timeline'];
+     this.defaultCompareMode = defaultCompareModes.includes(options.defaultCompareMode) ? options.defaultCompareMode : 'mirror';
+
+    /**
+     * defaultCompareViz
+     * @public
+     * Value: Object with the rest of mirrorpanel's parameters
+     * @type {Object}
+     */
+    this.defaultCompareViz = options.defaultCompareViz || 0;
+
+
 
     /**
      * mirrorpanelParams
@@ -155,12 +183,35 @@ export default class Comparepanel extends M.Plugin {
    * @api stable
    */
   addTo(map) {
+
+    // e2m: ponemos el arraque del visualizador mirror a cero por defecto
+    this.mirrorpanelParams.modeViz = this.mirrorpanelParams.modeViz || {};
+    this.mirrorpanelParams.modeViz = (this.defaultCompareMode==='mirror'? this.defaultCompareViz : 0);
+
+    // e2m: ponemos el arraqnue del visualizador mirror a cero por defecto
+    this.lyrcompareParams.comparisonMode = this.lyrcompareParams.comparisonMode || {};
+    this.lyrcompareParams.comparisonMode = (this.defaultCompareMode==='curtain'? this.defaultCompareViz : 0);
+
+    console.log(this.defaultCompareMode);
+
+    /**COMP_PLUGIN_NAMES[this.defaultCompareMode]
+     * 
+     */
+    
+     //console.log(`defaultComparisonMode: ${this.COMP_PLUGIN_NAMES[this.defaultCompareMode]}`);
+     //console.log(`defaultComparisonViz: ${this.defaultCompareViz}`);
+
+    console.log(this.mirrorpanelParams);
+
+
     this.control_ = new ComparepanelControl({
       baseLayers: this.baseLayers,
       mirrorpanelParams: this.mirrorpanelParams,
       timelineParams: this.timelineParams,
       lyrcompareParams: this.lyrcompareParams,
       transparencyParams: this.transparencyParams,
+      defaultComparisonMode: this.COMP_PLUGIN_NAMES[this.defaultCompareMode],
+      defaultComparisonViz: this.defaultCompareViz,
       position: this.position,
     });
 
@@ -171,7 +222,7 @@ export default class Comparepanel extends M.Plugin {
       collapsed: this.collapsed,
       position: M.ui.position[this.position],
       className: this.className,
-      collapsedButtonClass: 'cp-icon',
+      collapsedButtonClass: 'cp-icon-comparepanel',//cp-icon
       tooltip: this.tooltip_,
     });
 
