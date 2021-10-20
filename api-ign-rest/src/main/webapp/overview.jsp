@@ -92,14 +92,14 @@
 
         const map = M.map({
             container: 'mapjs',
-            zoom: 5,
+            zoom: 6,
             maxZoom: 20,
-            minZoom: 4,
+            minZoom: 5,
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
         let posicion, fixed,
-            baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
+            baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa_IGN*false*image/jpeg*false*false*true",
             collapsible, collapsed;
         crearPlugin(posicion, fixed, baseLayer, collapsed, collapsible);
 

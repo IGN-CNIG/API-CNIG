@@ -14,403 +14,163 @@ const map = M.map({
 const precharged = {
   groups: [
     {
-      name: 'Nombres Geográficos',
+      name: 'IGN',
       services: [
         {
-          name: 'Nomenclátor Geográfico de Aragón',
+          name: 'Unidades administrativas',
           type: 'WMS',
-          url: 'https://idearagon.aragon.es/inspireIdearagon/services/wmsGN',
-          white_list: ['GN.GeographicalNames'],
-        },
-        {
-          name: 'Nombres geográficos de Catalunya',
-          type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-noms-geografics/wms',
-          white_list: ['GN.GeographicalNames'],
-        },
-        {
-          name: 'Nombres geográficos de Gipuzkoa (Euskadi)',
-          type: 'WMS',
-          url: 'http://b5m.gipuzkoa.eus/inspire/wms/gipuzkoa_wms',
-          white_list: ['ad.Address'],
-        },
-        {
-          name: 'Nomenclator Geográfico Básico de España (IGN)',
-          type: 'WMS',
-          url: 'http://www.ign.es/wms-inspire/ngbe',
-        },
-        {
-          name: 'Nomenclàtor Toponímic Valencià',
-          type: 'WMS',
-          url: 'http://catalogo.icv.gva.es/inspireICV/services/wmsGN',
-          white_list: ['GN.GeographicalNames'],
-        },
-      ],
-    },
-    {
-      name: 'Unidades Administrativas',
-      services: [
-        {
-          name: 'Unidades administrativas de Araba (Euskadi)',
-          type: 'WMS',
-          url: 'http://geo.araba.eus/WMS_INSPIRE_AU',
-        },
-        {
-          name: 'Unidades administrativas de Gipuzkoa (Euskadi)',
-          type: 'WMS',
-          url: 'http://b5m.gipuzkoa.eus/inspire/wms/gipuzkoa_wms',
-          white_list: ['au.AdministrativeUnit'],
-        },
-        {
-          name: 'Unidades administrativas de Cataluña',
-          type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-unitats-administratives/wms',
+          url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
           white_list: ['AU.AdministrativeBoundary', 'AU.AdministrativeUnit'],
         },
         {
-          name: 'Unidades administrativas de España (IGN)',
+          name: 'Nombres geográficos',
           type: 'WMS',
-          url: 'http://www.ign.es/wms-inspire/unidades-administrativas',
+          url: 'https://www.ign.es/wms-inspire/ngbe?',
         },
         {
-          name: 'Unidades marítimas del Instituto Hidrográfico de la Marina',
+          name: 'Redes geodésicas',
           type: 'WMS',
-          url: 'http://ideihm.covam.es/ihm-inspire/wms-unidadesmaritimas',
-          white_list: ['AU.Baseline', 'AU.MaritimeBoundary'],
-        },
-      ],
-    },
-    {
-      name: 'Parcelas Catastrales',
-      services: [
-        {
-          name: 'Parcelas catastrales de la C.F. de Navarra',
-          type: 'WMS',
-          url: 'https://inspire.navarra.es/services/CP/wms?',
-          white_list: ['CP.CadastralParcel'],
+          url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
         },
         {
-          name: 'Parcelas catastrales de la D.G de Catastro',
+          name: 'Cuadrículas cartográficas',
           type: 'WMS',
-          url: 'http://ovc.catastro.meh.es/cartografia/INSPIRE/spadgcwms.aspx',
-          white_list: ['CP.CadastralParcel', 'CP.CadastralZoning'],
+          url: 'https://www.ign.es/wms-inspire/cuadriculas?',
+          white_list: ['Grid-REGCAN95-lonlat-50k', 'Grid-ETRS89-lonlat-50k', 'Grid-ETRS89-lonlat-25k', 'Grid-REGCAN95-lonlat-25k', 'Grid-25k-extendida'],
         },
         {
-          name: 'Parcelas catastrales de Araba (Euskadi)',
+          name: 'Información sísmica y volcánica',
           type: 'WMS',
-          url: 'http://geo.araba.eus/WMS_INSPIRE_CP',
-          white_list: ['CP.CadastralParcel'],
+          url: 'https://www.ign.es/wms-inspire/geofisica?',
         },
         {
-          name: 'Parcelas catastrales de Bizkaia (Euskadi)',
+          name: 'Fototeca',
           type: 'WMS',
-          url: 'http://arcgis.bizkaia.eus/inspire/rest/services/Catastro/Annex1/MapServer/exts/InspireView/service',
-          white_list: ['CP.CadastralZoning', 'CP.CadastralParcel'],
+          url: 'https://wms-fototeca.idee.es/fototeca?',
         },
         {
-          name: 'Parcelas catastrales de Gipuzkoa  (Euskadi)',
+          name: 'Camino de Santiago',
           type: 'WMS',
-          url: 'http://b5m.gipuzkoa.eus/inspire/wms/gipuzkoa_wms',
-          white_list: ['cp.CadastralZoning', 'cp.CadastralParcel'],
+          url: 'https://www.ign.es/wms-inspire/camino-santiago?',
         },
       ],
     },
     {
-      name: 'Direcciones',
+      name: 'IGN. Cartografía histórica',
       services: [
         {
-          name: 'Direcciones de Catalunya',
+          name: 'Planos de Madrid (1622 - 1960)',
           type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-adreces/wms',
-          white_list: ['AD.Address'],
+          url: 'https://www.ign.es/wms/planos?',
         },
         {
-          name: 'Direcciones de la C.F. de Navarra',
+          name: 'Hojas kilométricas (Madrid - 1860)',
           type: 'WMS',
-          url: 'https://inspire.navarra.es/services/AD/wms',
+          url: 'https://www.ign.es/wms/hojas-kilometricas?',
         },
         {
-          name: 'Direciones de la D.G. de Catastro',
+          name: 'Planimetrías',
           type: 'WMS',
-          url: 'http://ovc.catastro.meh.es/cartografia/INSPIRE/spadgcwms.aspx',
-          white_list: ['AD.Address'],
+          url: 'https://www.ign.es/wms/minutas-cartograficas?',
         },
         {
-          name: 'Dircciones de Gipuzkoa (Euskadi)',
+          name: 'Primera edición de los Mapas Topográficos Nacionales',
           type: 'WMS',
-          url: 'http://b5m.gipuzkoa.eus/inspire/wms/gipuzkoa_wms',
-          white_list: ['ad.Address'],
+          url: 'https://www.ign.es/wms/primera-edicion-mtn?',
+        },
+      ],
+    },
+	  {
+      name: 'Sistema Cartográfico Nacional',
+      services: [
+        {
+          name: 'PNOA. Ortofotos máxima actualidad',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/pnoa-ma?',
         },
         {
-          name: 'Direcciones (IDEE)',
+          name: 'PNOA. Ortofotos históricas',
           type: 'WMS',
-          url: 'http://www.cartociudad.es/wms-inspire/direcciones-ccpp',
+          url: 'https://www.ign.es/wms/pnoa-historico?',
+        },
+        {
+          name: 'Ocupación del suelo',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo?',
+        },
+        {
+          name: 'Ocupación del suelo. Histórico',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo-historico?',
+        },
+        {
+          name: 'Información Geográfica de Referencia. Transportes',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/transportes?',
+        },
+        {
+          name: 'Información Geográfica de Referencia. Hidrografía',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/hidrografia?',
+        },
+        {
+          name: 'Direcciones y códigos postales',
+          type: 'WMS',
+          url: 'https://www.cartociudad.es/wms-inspire/direcciones-ccpp?',
+        },
+        {
+          name: 'Modelos digitales del terreno',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/mdt?',
+        },
+        {
+          name: 'Copernicus Land Monitoring Service',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms/copernicus-landservice-spain?',
         },
       ],
     },
     {
-      name: 'Hidrografía',
+      name: 'Capas de fondo',
       services: [
         {
-          name: 'Hidrografía de España (IDEE)',
-          type: 'WMS',
-          url: 'http://servicios.idee.es/wms-inspire/hidrografia',
-        },
-        {
-          name: 'Ríos (MITECO)',
-          type: 'WMS',
-          url: 'https://wms.mapama.gob.es/sig/Agua/RiosPfafs/wms.aspx',
-          white_list: ['HY.PhysicalWaters.Waterbodies'],
-        },
-        {
-          name: 'Subcuencas de Ríos (MITECO)',
-          type: 'WMS',
-          url: 'https://wms.mapama.gob.es/sig/Agua/SubcuencasCompPfafs/wms.aspx',
-          white_list: ['HY.PhysicalWaters.Catchments'],
-        },
-        {
-          name: 'Inverntario de presas (MITECO)',
-          type: 'WMS',
-          url: 'https://wms.mapama.gob.es/sig/Agua/Presas/wms.aspx',
-          white_list: ['HY.PhysicalWaters.ManMadeObject'],
-        },
-      ],
-    },
-    {
-      name: 'Transporte',
-      services: [
-        {
-          name: 'Redes de Transporte de España (IDEE)',
-          type: 'WMS',
-          url: 'http://servicios.idee.es/wms-inspire/transportes',
-        },
-        {
-          name: 'Red de Transporte Ferroviario de Adif',
-          type: 'WMS',
-          url: 'http://ideadif.adif.es/services/wms',
-        },
-        {
-          name: 'Puertos del Estado',
-          type: 'WMS',
-          url: 'https://geoserver.puertos.es/wms-inspire/puertos',
-          white_list: ['TN.WaterTransportNetwork.FairwayArea', 'TN.WaterTransportNetwork.PortArea'],
-        },
-      ],
-    },
-    {
-      name: 'Lugares Protegidos',
-      services: [
-        {
-          name: 'Lugares protegidos ENPE de Cataluña',
-          type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-espais-naturals-proteccio-especial/wms',
-          white_list: ['PS.ProtectedSite'],
-        },
-        {
-          name: 'Lugares protegidos ZEC de Cataluña',
-          type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-zones-especial-conservacio/wms',
-          white_list: ['PS.ProtectedSite'],
-        },
-        {
-          name: 'Lugares protegidos PEIN de Cataluña',
-          type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-pla-espais-interes-natural/wms',
-          white_list: ['PS.ProtectedSite'],
-        },
-        {
-          name: 'Lugares protegidos ZEPA de Cataluña',
-          type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-zones-especial-proteccio-aus/wms',
-          white_list: ['PS.ProtectedSite'],
-        },
-        {
-          name: 'Bienes de Interés Cultural  de Extremadura',
-          type: 'WMS',
-          url: 'http://www.ideextremadura.com/CICTEX/patrimonioCultural',
-        },
-        {
-          name: 'Espacios Naturales Protegidos (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/ENP/wms.aspx',
-        },
-        {
-          name: 'Humedales Ramsar (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/RAMSAR/wms.aspx',
-        },
-        {
-          name: 'Lugares de Importancia Comunitaria (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/LICS/wms.aspx',
-        },
-        {
-          name: 'Red Natura 2000 (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/RedNatura/wms.aspx',
-        },
-        {
-          name: 'Red OSPAR de áreas marinas protegidas (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/OSPAR/wms.aspx',
-        },
-        {
-          name: 'Reservas de la Biosfera',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/MAB/wms.aspx',
-        },
-        {
-          name: 'Zona de Especial Protección para las Aves (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/ZEPA/wms.aspx',
-        },
-        {
-          name: 'Zonas Especialmente Protegidas de Importancia para el Mediterráneo (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/ZEPIM/wms.aspx',
-        },
-      ],
-    },
-    {
-      name: 'Cubierta Terrestre',
-      services: [
-        {
-          name: 'Cubierta terrestre de Cataluña',
-          type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-coberta-terrestre-sigpac/wms',
-          white_list: ['LC.LandCoverSurfaces'],
-        },
-        {
-          name: 'Atlas de los Paisajes de España (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/Paisaje/wms.aspx',
-        },
-        {
-          name: 'Inventario Español de Zonas Húmedas (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/IEZH/wms.aspx',
-        },
-        {
-          name: 'Mapa de cultivos 2000 - 2010 (MAPA)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Agricultura/MapaCultivos2000-2010/wms.aspx',
-        },
-        {
-          name: 'Mapa Forestal de España (MITECO)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/sig/Biodiversidad/MFE/wms.aspx',
-        },
-        {
-          name: 'Recintos del sistema de información geográfica de parcelas agrícolas (SIGPAC) (MAPA)',
-          type: 'WMS',
-          url: 'http://wms.mapama.es/wms/wms.aspx',
-          white_list: ['ARBOLES', 'RECINTO', 'PARCELA'],
-        },
-        {
-          name: 'Ocupación del Suelo en España (IDEE)',
-          type: 'WMS',
-          url: 'http://www.ign.es/wms-inspire/ocupacion-suelo',
-          white_list: ['LC.LandCoverSurfaces'],
-        },
-      ],
-    },
-    {
-      name: 'Usos del suelo',
-      services: [
-        {
-          name: 'Ocupación del Suelo en España (IDEE)',
-          type: 'WMS',
-          url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo',
-          white_list: ['LU.ExistingLandUse'],
-        },
-      ],
-    },
-    {
-      name: 'Elevaciones',
-      services: [
-        {
-          name: 'Modelo de Elevaciones del Terreno de Cataluña',
-          type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-elevacions/wms',
-          white_list: ['EL.ElevationGridCoverage'],
-        },
-        {
-          name: 'Modelo Digital del Terreno (IDEE)',
-          type: 'WMS',
-          url: 'https://servicios.idee.es/wms-inspire/mdt',
-          white_list: ['EL.SpotElevation', 'EL.ContourLine', 'EL.GridCoverage'],
-        },
-        {
-          name: 'Isóbatas del Instituto Español de Oceanografía',
-          type: 'WMS',
-          url: 'http://barreto.md.ieo.es/arcgis/services/visorBase/isobatas_maestras/MapServer/WmsServer',
-        },
-        {
-          name: 'MDT en las áreas de riesgo potencial significativo de inundación (ARPSIs) (MITECO)',
-          type: 'WMS',
-          url: 'https://servicios.idee.es/wms-inspire/riesgos-naturales/inundaciones?',
-          white_list: ['EL.GridCoverage'],
-        },
-      ],
-    },
-    {
-      name: 'Geología',
-      services: [
-        {
-          name: 'Mapa Geológico de la Península Ibérica, Baleares y Canarias 1:1M, 1995 (IGME)',
-          type: 'WMS',
-          url: 'http://mapas.igme.es/gis/services/Cartografia_Geologica/IGME_Geologico_1M/MapServer/WMSServer',
-        },
-        {
-          name: 'Mapa Hidrogeológico de España a escala 1:200.000 (IGME)',
-          type: 'WMS',
-          url: 'http://mapas.igme.es/gis/services/Cartografia_Tematica/IGME_Hidrogeologico_200/MapServer/WMSServer',
-        },
-      ],
-    },
-    {
-      name: 'Ortoimágenes',
-      services: [
-        {
-          name: 'Ortofotografía de Euskadi',
-          type: 'WMS',
-          url: 'http://www.geo.euskadi.eus/WMS_ORTOARGAZKIAK',
-        },
-        {
-          name: 'Ortofoto de Cataluña',
-          type: 'WMS',
-          url: 'https://geoserveis.ide.cat/servei/catalunya/inspire-ortoimatges/wms',
-          white_list: ['OI.OrthoimageCoverage'],
-        },
-        {
-          name: 'PNOA Máxima Actualidad (IDEE)',
+          name: 'Mapa',
           type: 'WMTS',
-          url: 'http://www.ign.es/wmts/pnoa-ma?',
+          url: 'https://www.ign.es/wmts/mapa-raster?',
         },
+        {
+          name: 'Imagen',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/pnoa-ma?',
+        },
+        {
+          name: 'Callejero',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/ign-base?',
+        },
+        {
+          name: 'Relieve',
+          type: 'WMTS',
+          url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+        },
+        {
+          name: 'Ocupación del suelo',
+          type: 'WMTS',
+          url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
+        },
+        {
+          name: 'Mapas Históricos',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/primera-edicion-mtn',
+        }
       ],
-    },
+    }
+  ],
+  services: [
     {
-      name: 'Edificios',
-      services: [
-        {
-          name: 'Edificios de la D.G. de Catastro',
-          type: 'WMS',
-          url: 'http://ovc.catastro.meh.es/cartografia/INSPIRE/spadgcwms.aspx',
-          white_list: ['BU.Building'],
-        },
-        {
-          name: 'Edificios de Araba (Euskadi)',
-          type: 'WMS',
-          url: 'http://geo.araba.eus/WMS_INSPIRE_BU',
-          white_list: ['BU.Building'],
-        },
-        {
-          name: 'Edificios de Gipuzkoa (Euskadi)',
-          type: 'WMS',
-          url: 'http://b5m.gipuzkoa.eus/inspire/wms/gipuzkoa_wms',
-          white_list: ['bu.building'],
-        },
-      ],
+      name: 'Catastro',
+      type: 'WMS',
+      url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
     },
   ],
 };
