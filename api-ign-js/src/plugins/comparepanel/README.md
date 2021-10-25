@@ -48,7 +48,22 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
  <script type="text/javascript" src="../../plugins/comparepanel/comparepanel.ol.min.js"></script>
 ```
 
-# Parámetros
+
+## Modos de comparación
+
+<p align="center">
+  <img src="assets/comparadores.png" height="256" />
+</p>
+
+**Comparador de espejo / Mirror**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
+
+**Comparador de cortina / Curtain**: permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.
+
+**Comparador línea del tiempo / Timneline**: comparación para estudiar la evolución de una serie de capas a lo largo del tiempo.
+
+**Comparador zonal / Spyeye**: reducción de la capa comparativa a una zona circular para contratarla con el mapa de fondo.
+
+## Parámetros
 
 - El constructor se inicializa con un JSON de options con los siguientes atributos:
 
@@ -119,7 +134,7 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 - **mirrorpanelParams**. Parámetros opcionales del plugin mirrorpanel. A destacar:
   - showCursors (true/false): Si es true, muestra cursores sincronziados en cda unao de los mapas espejo. Defecto: *true*.
   - reverseLayout (true/false): indica en qué posición de la pantalla se mantiene el mapa principal (el que contiene el botón con las herramientas de comparación) con respecto a los demás. *False*: se sitúa a la izquierda. *True*: se sitúa a la derecha. Defecto: *false*.
-  - enabledPlugins: permite que algunos de los plugins configurados en el mapa principal se repliquen en los mapas espejo: disponible actualmente para el control FullTOC.
+  - enabledPlugins: permite que algunos de los plugins configurados en el mapa principal se repliquen en los mapas espejo: disponible actualmente para el control FullTOC y el control Vectors.
 
 ![](assets/fulltoc-mirror.png)
 
@@ -137,9 +152,9 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 - **transparencyParams**. Parámetros opcionales del plugin transparency.
   - radius (numérico): radio del efecto transparencia. Tiene un rango entre 30 y 200. Defecto: 100.
 
-# Ejemplos de uso
 
 ## Ejemplo
+
 Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la siguiente estructura:
   - Servicio,Leyenda,URL,Nombre. Separados por "*".
 ```javascript
