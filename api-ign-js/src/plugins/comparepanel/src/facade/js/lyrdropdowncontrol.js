@@ -225,10 +225,9 @@ export default class LyrdropdownControl extends M.Control {
    * @return
    */
   transformToLayers(layers) {
-    console.log("transformToLayers LyerDropDown");
+
     const transform = layers.map((layer) => {
       let newLayer = null;
-
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
@@ -297,7 +296,6 @@ export default class LyrdropdownControl extends M.Control {
 
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
-        console.log(newLayer);
         return newLayer;
       } else {
         this.layers.remove(layer);

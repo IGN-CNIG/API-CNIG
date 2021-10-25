@@ -387,7 +387,9 @@ export default class LyrCompareControl extends M.Control {
       res = lyerA !== lyerB;
     } else {
       let compLyers = [lyerA, lyerB, lyerC, lyerD];
-      res = compLyers.length === compLyers.unique().length;
+      const noDups = [... new Set(compLyers)];
+      res = noDups.length === compLyers.length;
+      //res = compLyers.length !== compLyers.unique().length; // No entiendo por qué esto funcionaba antes y ahora no
     }
 
     return res;

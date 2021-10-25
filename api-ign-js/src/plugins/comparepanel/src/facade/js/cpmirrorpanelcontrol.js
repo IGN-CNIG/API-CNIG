@@ -345,7 +345,8 @@ export default class CompareMirrorpanel extends M.Control {
   createMapObjects(mapLyr) {
     let pluginFullTOC4map = null;
     let pluginBackImgLayer4map = null;
-    //let mpBILmap = null;
+    let pluginVector = null;
+
 
     console.log(this.enabledPlugins);
     this.mapL[mapLyr] = M.map({
@@ -356,14 +357,6 @@ export default class CompareMirrorpanel extends M.Control {
     });
 
     this.mapL[mapLyr].getMapImpl().setView(this.map_.getMapImpl().getView());
-    
-    // if (plugin4map !== null) {
-    //   this.mapL[mapLyr].addPlugin(plugin4map);
-    // }
-
-    // if (mpBILmap !== null) {
-    //   this.mapL[mapLyr].addPlugin(mpBILmap);
-    // }
 
     if (this.enabledPlugins) {
       const listaCtrls = this.map_.getControls();
@@ -389,7 +382,14 @@ export default class CompareMirrorpanel extends M.Control {
               precharged: itemPlug.precharged
             });
           }
-          console.log("Paso444" + itemPlug.metadata_.name);
+          //Vector
+          if (itemPlug.metadata_.name === "Vectors") {
+            pluginVector = new M.plugin.Vectors({
+              position: itemPlug.position,
+              collapsed: itemPlug.collapsed,
+              collapsible: itemPlug.collapsible,              
+            });
+          }
           if (itemPlug.metadata_.name === "backimglayer") {
             pluginBackImgLayer4map = new M.plugin.BackImgLayer({
               layerId: itemPlug.layerId,
@@ -420,9 +420,12 @@ export default class CompareMirrorpanel extends M.Control {
     if (pluginFullTOC4map !== null) {
       this.mapL[mapLyr].addPlugin(pluginFullTOC4map);
     } 
-    console.log("Paso555");
+
+    if (pluginVector !== null) {
+      this.mapL[mapLyr].addPlugin(pluginVector);
+    } 
+
     if (pluginBackImgLayer4map !== null) {
-      console.log("PAso555");
       this.mapL[mapLyr].addPlugin(pluginBackImgLayer4map);
     } 
 
