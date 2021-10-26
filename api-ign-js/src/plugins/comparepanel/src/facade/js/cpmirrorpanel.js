@@ -145,6 +145,9 @@ export default class Mirrorpanel extends M.Plugin {
       }
     }
 
+
+    this.backImgLayersConfig = options.backImgLayersConfig;
+
     /**
      * Show interface
      *@public
@@ -175,6 +178,8 @@ export default class Mirrorpanel extends M.Plugin {
    * @api stable
    */
   addTo(map) {
+
+   
     const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
     const values = {
       pluginOnLeft,
@@ -186,6 +191,7 @@ export default class Mirrorpanel extends M.Plugin {
       showCursors: this.showCursors,
       mirrorLayers: this.mirrorLayers,
       defaultBaseLyrs: this.defaultBaseLyrs,
+      backImgLayersConfig: this.backImgLayersConfig,
     };
 
     this.control_ = new MirrorpanelControl(values);

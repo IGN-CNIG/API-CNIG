@@ -52,7 +52,6 @@ export default class ComparepanelControl extends M.Control {
     options.timelineParams.intervals = this.baseLayers;         //e2m: TimeLine needs this.baseLayers with the time param
     options.lyrcompareParams.layers = this.layers;
     options.transparencyParams.layers = this.layers;
-
     this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams);
     this.timeline = new Timeline(options.timelineParams);
     

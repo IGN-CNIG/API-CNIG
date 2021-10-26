@@ -31,7 +31,7 @@ const map = M.map({
     y: 4493011.77,
     draw: false,
   },
-  controls: ['scale','location','backgroundlayers'],
+  controls: ['scale','location'],
   projection: 'EPSG:3857*m',
   zoom: 6,
 });
@@ -220,8 +220,123 @@ const mpBIL = new M.plugin.BackImgLayer({
     ],
   }
 );
-//map.addPlugin(mpBIL);
 
+
+
+const getConfiguredBaseLayersPlugin = () => {
+  return {
+    position: 'TR',
+    layerId: 0,
+    layerVisibility: true,
+    collapsed: true,
+    collapsible: true,
+    columnsNumber: 4,
+    layerOpts: [
+      {
+        id: 'mapa',
+        preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',
+        title: 'Mapa IGN',
+        layers: [
+          new M.layer.WMTS({
+            url: 'http://www.ign.es/wmts/ign-base?',
+            name: 'IGNBaseTodo',
+            legend: 'Mapa IGN',
+            matrixSet: 'GoogleMapsCompatible',
+            transparent: false,
+            displayInLayerSwitcher: false,
+            queryable: false,
+            visible: true,
+            format: 'image/jpeg',
+          }),
+        ],
+      },
+      {
+        id: 'imagen',
+        preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',
+        title: 'Imagen PNOA',
+        layers: [
+          new M.layer.WMTS({
+            url: 'http://www.ign.es/wmts/pnoa-ma?',
+            name: 'OI.OrthoimageCoverage',
+            legend: 'Imagen PNOA',
+            matrixSet: 'GoogleMapsCompatible',
+            transparent: false,
+            displayInLayerSwitcher: false,
+            queryable: false,
+            visible: true,
+            format: 'image/jpeg',
+          }),
+        ],
+      },
+      {
+        id: 'hibrido',
+        title: 'PNOA Híbrido',
+        preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',
+        layers: [
+          new M.layer.WMTS({
+            url: 'http://www.ign.es/wmts/pnoa-ma?',
+            name: 'OI.OrthoimageCoverage',
+            matrixSet: 'GoogleMapsCompatible',
+            legend: 'PNOA Híbrido Mapa',
+            transparent: true,
+            displayInLayerSwitcher: false,
+            queryable: false,
+            visible: true,
+            format: 'image/jpeg',
+          }),
+          new M.layer.WMTS({
+            url: 'http://www.ign.es/wmts/ign-base?',
+            name: 'IGNBaseOrto',
+            matrixSet: 'GoogleMapsCompatible',
+            legend: 'PNOA Híbrido Topo',
+            transparent: true,
+            displayInLayerSwitcher: false,
+            queryable: false,
+            visible: true,
+            format: 'image/png',
+          })
+        ],
+      },
+      {
+        id: 'hibridolidar',
+        title: 'Lídar Híbrido',
+        preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',
+        layers: [
+          new M.layer.WMTS({
+            url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+            name: 'EL.GridCoverageDSM',
+            matrixSet: 'GoogleMapsCompatible',
+            legend: 'Lidar Híbrido Mapa',
+            transparent: true,
+            displayInLayerSwitcher: false,
+            queryable: false,
+            visible: true,
+            format: 'image/png',
+          }),
+          new M.layer.WMTS({
+            url: 'https://www.ign.es/wmts/ign-base?',
+            name: 'IGNBaseOrto',
+            matrixSet: 'GoogleMapsCompatible',
+            legend: 'Lidar Híbrido Topo',
+            transparent: true,
+            displayInLayerSwitcher: false,
+            queryable: false,
+            visible: true,
+            format: 'image/png',
+          })
+        ],
+      },
+    ],
+  };
+}
+
+const backImgLayersConfig = getConfiguredBaseLayersPlugin();
+console.log(backImgLayersConfig);
+const mpBILBasico = new M.plugin.BackImgLayer(
+  backImgLayersConfig
+  );
+
+map.addPlugin(mpBILBasico);
 
 const listBaseLayersByString = [
   // WMS PNOA Histórico
@@ -270,14 +385,14 @@ const listBaseLayersByString = [
 
 
 const mpTOC = new M.plugin.FullTOC({
-  position: 'TL',
+  position: 'TR',
 });
 
 map.addPlugin(mpTOC);
 
 
 const mpVector = new M.plugin.Vectors({
-  position: 'TL',
+  position: 'TR',
   collapsed: true,
   collapsible: true,
 });
@@ -289,7 +404,7 @@ map.addPlugin(mpVector);
 const pluginComparepanel = new Comparepanel({
   position: 'TR',
   vertical: false,
-  collapsed: false,
+  collapsed: true,
   collapsible: true,
   defaultCompareMode: 'mirror',// mirror - curtain - timeline - spyeye
   defaultCompareViz: 1,
@@ -310,7 +425,7 @@ const pluginComparepanel = new Comparepanel({
    },
   mirrorpanelParams: { 
       showCursors: true,
-      reverseLayout:false,
+      reverseLayout:true,
       enabledPlugins: true, 
   }
 });
