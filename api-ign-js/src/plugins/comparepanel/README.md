@@ -79,7 +79,7 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 
 - **vertical**. Si es *true*, el panel se verá con la orientación vertical. Si es *false*, el panel se verá con la orientación horizontal. Por defecto tiene el valor *true*
 
-- **defaultCompareViz**: indica el modo de comparación que se arranca por defecto.
+- **defaultCompareMode**: indica el modo de comparación que se arranca por defecto.
   
   - 'mirror': Comparador de espejo.
   - 'curtain': Comparador de paneles móviles.

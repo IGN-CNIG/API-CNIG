@@ -57,7 +57,7 @@ export default class CompareMirrorpanel extends M.Control {
     this.oldClass = '';
     this.reverseLayout = values.reverseLayout;
     this.enabledPlugins = values.enabledPlugins;
-
+    this.backImgLayersConfig = values.backImgLayersConfig;
     /**
      * Defining cursor style
      */
@@ -377,6 +377,9 @@ export default class CompareMirrorpanel extends M.Control {
           //FullTOC
           if (itemPlug.metadata_.name === "FullTOC") {
             pluginFullTOC4map = new M.plugin.FullTOC({
+              position: itemPlug.position,
+              collapsed: itemPlug.collapsed,
+              collapsible: itemPlug.collapsible,
               http: itemPlug.http,
               https: itemPlug.https,
               precharged: itemPlug.precharged
@@ -392,10 +395,13 @@ export default class CompareMirrorpanel extends M.Control {
           }
           if (itemPlug.metadata_.name === "backimglayer") {
             pluginBackImgLayer4map = new M.plugin.BackImgLayer({
-              layerId: itemPlug.layerId,
+              //layerId: itemPlug.layerId,
+              layerId: mapLyr === 'A' ? 0 : mapLyr === 'B' ? 1 : mapLyr == 'C' ? 2 : 3,
+              layerVisibility:  itemPlug.layerVisibility,
               columnsNumber: itemPlug.columnsNumber,
               layerOpts: itemPlug.layerOpts
             });
+            //pluginBackImgLayer4map = new M.plugin.BackImgLayer(this.backImgLayersConfig);
           }
 
         }

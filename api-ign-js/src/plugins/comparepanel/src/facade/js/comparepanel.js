@@ -161,6 +161,14 @@ export default class Comparepanel extends M.Plugin {
     this.transparencyParams = options.transparencyParams || {};
 
     /**
+     * backImgLayersConfig
+     * @public
+     * Value: Object with configuration of BackImgLayers plugin
+     * @type {Object}
+     */
+     this.backImgLayersConfig = options.backImgLayersConfig || {};
+
+    /**
      * Metadata from api.json
      * @private
      * @type {Object}
