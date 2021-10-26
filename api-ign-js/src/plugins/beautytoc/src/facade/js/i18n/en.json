@@ -3,8 +3,8 @@
     "cobertura": "Checking coverage in the area...",
     "nocobertura": "This layer has no coverage in this area"
   },
-  "tooltip": "Additional layers",
-  "layers": "Additional layers",
+  "tooltip": "Additional Layers",
+  "layers": "Additional Layers",
   "vectoriallayers": "Vectorial layers",
   "ortofotos": "Orthophotos",
   "warning": "WARNING"
