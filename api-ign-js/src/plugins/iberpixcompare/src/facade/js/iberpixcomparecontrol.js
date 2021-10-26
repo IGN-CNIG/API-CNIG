@@ -32,21 +32,17 @@ export default class IberpixCompareControl extends M.Control {
      * @type { HTMLElement }
      */
     this.template = null;
-    this.baseLayers = options.baseLayers;
     this.position = options.position;
-    this.layers = [];
-    this.baseLayers.forEach(e => this.layers.push(e[2]));
     this.params = [options.mirrorpanelParams, options.lyrcompareParams];
     this.params.forEach(p => {
       p.position = this.position;
     });
 
-    options.lyrcompareParams.layers = this.layers;
-    options.mirrorpanelParams.defaultBaseLyrs = this.baseLayers;
     this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams, options.backImgLayersConfig, options.fullTOCConfig, options.vectorsConfig);
     this.lyrcompare = new LyrCompare(options.lyrcompareParams);
     this.panels = [];
     this.plugins = [this.mirrorpanel, this.lyrcompare];
+    // this.plugins = [this.mirrorpanel];
   }
 
   /**

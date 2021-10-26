@@ -184,6 +184,10 @@ div#m-lyrcompare-titulo {
 }
 
 
+.div-m-lyrcompare-panel .m-lyrcompare-effect-buttoms {
+	margin-bottom: 0.5rem;
+}
+
 /****************************
      FIREFOX HACKS
 ****************************/

@@ -16,11 +16,6 @@
         "type": "boolean",
         "name": "vertical",
         "position": 1
-      },
-      {
-        "type": "simple",
-        "name": "baseLayers",
-        "position": 2
       }
     ]
   }],

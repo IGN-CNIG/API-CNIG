@@ -71,7 +71,7 @@
           url: 'https://api.maptiler.com/maps/outdoor/256/{z}/{x}/{y}@2x.png?key=7oapAXDXQ3uctBopr1Wx',
           name: 'pruebaXYZ',
           projection: 'EPSG:3857',
-	      displayInLayerSwitcher: true
+          displayInLayerSwitcher: true
         });
 
         const xyz2 = new M.layer.XYZ({
@@ -128,7 +128,7 @@
 
         mapa.addPlugin(mp);
 
-        
+
     </script>
 </body>
 

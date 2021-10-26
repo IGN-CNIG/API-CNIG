@@ -73,22 +73,6 @@ export default class CompareMirrorpanel extends M.Control {
       },
     });
 
-    /**
-     * Default layers for mirror maps
-     * @public
-     * @public {Array}
-     */
-    this.defaultBaseLyrs = values.defaultBaseLyrs;
-
-    /**
-     * All layers
-     * @public
-     * @public {Array}
-     */
-    this.mirrorLayers = values.mirrorLayers;
-
-    this.fullLayers = values.fullLayers;
-
     this.backImgLayersConfig = values.backImgLayersConfig;
 
     this.fullTOCConfig = values.fullTOCConfig;
@@ -130,15 +114,6 @@ export default class CompareMirrorpanel extends M.Control {
     }
 
     this.mapL['A'] = map;
-    if (this.mirrorLayers.length > 0) {
-      this.mapL['A'].addLayers(this.mirrorLayers);
-      this.mapL['A'].getLayers().forEach((l) => {
-        if (l.zindex_ !== 0) { l.setVisible(false); }
-      });
-
-      this.mapL['A'].addLayers(this.defaultBaseLyrs[0]);
-    }
-
     if (this.showCursors) {
       this.addLayerCursor('A');
     }
