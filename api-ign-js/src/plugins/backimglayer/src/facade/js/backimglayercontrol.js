@@ -169,7 +169,7 @@ export default class BackImgLayerControl extends M.Control {
     layers.forEach((layer, index, array) => {
       let sumIndex = index;
       if (index !== 0) {
-        sumIndex += 11;
+        sumIndex += 16;
       }
 
       layer.setZIndex(sumIndex);
