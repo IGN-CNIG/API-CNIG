@@ -166,7 +166,14 @@ export default class BackImgLayerControl extends M.Control {
       .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`)
       .classList.contains('activeBackimglayerDiv');
 
-    layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
+    layers.forEach((layer, index, array) => {
+      let sumIndex = index;
+      if (index !== 0) {
+        sumIndex += 11;
+      }
+
+      layer.setZIndex(sumIndex);
+    });
 
     e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((imgContainer) => {
       if (imgContainer.classList.contains('activeBackimglayerDiv')) {

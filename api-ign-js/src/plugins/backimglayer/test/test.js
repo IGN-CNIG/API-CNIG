@@ -5,6 +5,8 @@ M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
+  center: [-458756.9690741142, 4682774.665868655],
+  zoom: 6,
 });
 
 const mp2 = new ShareMap({
@@ -38,39 +40,40 @@ const mp = new BackImgLayer({
       id: 'imagen',
       title: 'Imagen',
       preview: '../src/facade/assets/images/svqimagen.png',
-      layers: [new M.layer.WMTS({
-        url: 'http://www.ign.es/wmts/pnoa-ma?',
-        name: 'OI.OrthoimageCoverage',
-        legend: 'Imagen (PNOA)',
-        matrixSet: 'GoogleMapsCompatible',
-        transparent: false,
-        displayInLayerSwitcher: false,
-        queryable: false,
-        visible: true,
-        format: 'image/jpeg',
-      })],
+      layers: [
+        new M.layer.XYZ({
+          url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+          name: 'OI.OrthoimageCoverage',
+          legend: 'Imagen',
+          projection: 'EPSG:3857',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+        }),
+      ],
     },
     {
       id: 'hibrido',
       title: 'Híbrido',
       preview: '../src/facade/assets/images/svqhibrid.png',
-      layers: [new M.layer.WMTS({
-          url: 'http://www.ign.es/wmts/pnoa-ma?',
+      layers: [
+        new M.layer.XYZ({
+          url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
           name: 'OI.OrthoimageCoverage',
-          legend: 'Imagen (PNOA)',
-          matrixSet: 'GoogleMapsCompatible',
-          transparent: true,
+          legend: 'Imagen',
+          projection: 'EPSG:3857',
+          transparent: false,
           displayInLayerSwitcher: false,
           queryable: false,
           visible: true,
-          format: 'image/jpeg',
         }),
         new M.layer.WMTS({
           url: 'http://www.ign.es/wmts/ign-base?',
           name: 'IGNBaseOrto',
           matrixSet: 'GoogleMapsCompatible',
           legend: 'Mapa IGN',
-          transparent: false,
+          transparent: true,
           displayInLayerSwitcher: false,
           queryable: false,
           visible: true,
