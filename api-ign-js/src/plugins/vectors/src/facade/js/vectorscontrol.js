@@ -182,6 +182,7 @@ export default class VectorsControl extends M.Control {
       this.createDrawingTemplate();
       this.createUploadingTemplate();
       this.map.addLayers(this.selectionLayer);
+      this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + 1);
     });
   }
 
@@ -623,6 +624,7 @@ export default class VectorsControl extends M.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.geometry = geom;
     this.map.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
     setTimeout(() => {
       document.querySelector(`li[name="${layerName}"] span.m-vector-layer-add`).click();
     }, 100);

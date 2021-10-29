@@ -349,6 +349,7 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
     return features;
   }
 
@@ -433,6 +434,7 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
     return features;
   }
 
@@ -809,6 +811,7 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
     return features;
   }
 
@@ -840,12 +843,14 @@ export default class VectorsControl extends M.impl.Control {
       const layer = new M.layer.Vector({ name: `${layerName}_lines`, legend: `${layerName}_lines`, extract: false });
       layer.addFeatures(lines);
       this.facadeMap_.addLayers(layer);
+      layer.setZIndex(layer.getZIndex() + 8);
     }
 
     if (others.length > 0) {
       const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
       layer.addFeatures(others);
       this.facadeMap_.addLayers(layer);
+      layer.setZIndex(layer.getZIndex() + 8);
     }
 
     return features;
@@ -885,12 +890,14 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(lines);
     this.facadeMap_.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
 
     if (points.length > 0) {
       points = this.featuresToFacade(points);
       const layer2 = new M.layer.Vector({ name: `${layerName}_points`, legend: `${layerName}_points`, extract: false });
       layer2.addFeatures(points);
       this.facadeMap_.addLayers(layer2);
+      layer2.setZIndex(layer2.getZIndex() + 8);
       features = lines.concat(points);
     } else {
       features = lines;
@@ -1617,6 +1624,7 @@ export default class VectorsControl extends M.impl.Control {
                 layer.updatable = true;
                 layer.url = url;
                 this.facadeMap_.addLayers(layer);
+                layer.setZIndex(layer.getZIndex() + 8);
                 document.querySelector('div.m-mapea-container div.m-dialog').remove();
               } else {
                 document.querySelector('div.m-mapea-container div.m-dialog').remove();
@@ -1732,6 +1740,7 @@ export default class VectorsControl extends M.impl.Control {
         this.waitLayerLoaded(layer);
       }, 200);
     } else {
+      layer.setZIndex(layer.getZIndex() + 8);
       this.facadeControl.renderLayers();
     }
   }
