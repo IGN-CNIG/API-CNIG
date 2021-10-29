@@ -72,7 +72,8 @@ class JSONP extends MObject {
     return new Promise((success) => {
       getRemote(this.url_).then((response) => {
         if (!isNullOrEmpty(response.text)) {
-          const features = this.format_.read(response.text, {
+          const newText = response.text.replace('urn:ogc:def:crs:OGC:1.3:CRS84', 'urn:ogc:def:crs:EPSG::4326');
+          const features = this.format_.read(newText, {
             featureProjection: projection,
           });
           success.call(this, [features]);
