@@ -1358,6 +1358,10 @@ export default class FullTOCControl extends M.Control {
 
       layers.reverse();
       this.map_.addLayers(layers);
+      layers.forEach((l) => {
+        l.setZIndex(l.getZIndex() + 8);
+      });
+
       this.afterRender();
     }
   }
