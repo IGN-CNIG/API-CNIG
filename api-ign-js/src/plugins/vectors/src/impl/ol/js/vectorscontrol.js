@@ -346,6 +346,10 @@ export default class VectorsControl extends M.impl.Control {
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
 
     features = this.featuresToFacade(features);
+    features = features.filter((f) => {
+      return f.getGeometry() !== null;
+    });
+
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
