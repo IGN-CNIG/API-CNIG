@@ -182,7 +182,7 @@ export default class VectorsControl extends M.Control {
       this.createDrawingTemplate();
       this.createUploadingTemplate();
       this.map.addLayers(this.selectionLayer);
-      this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + 1);
+      this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + 8);
     });
   }
 
