@@ -126,6 +126,30 @@ export default class Comparepanel extends M.Plugin {
     this.defaultCompareViz = options.defaultCompareViz || 0;
 
 
+    /**
+     * The name of the vector layer hat contains the attribution information.
+     *
+     * @private
+     * @type {string}
+     */
+     this.layerName_ = options.layerName || 'attributions';
+
+     /**
+      * Layer of Mapea with attributions
+      *
+      * @private
+      * @type {M.layer.GeoJSON | M.layer.KML}
+      */
+     this.layerCobertura_ = options.layerCobertura;
+
+
+
+    /**
+     * Parameter of the features of the layer that contains the information of the URL.
+     * @private
+     * @type {URLLike}
+     */
+    this.urlCoberturas_ = options.urlcoberturas || 'urlcoberturas';
 
     /**
      * mirrorpanelParams
@@ -194,23 +218,11 @@ export default class Comparepanel extends M.Plugin {
 
     // e2m: ponemos el arraque del visualizador mirror a cero por defecto
     this.mirrorpanelParams.modeViz = this.mirrorpanelParams.modeViz || {};
-    this.mirrorpanelParams.modeViz = (this.defaultCompareMode==='mirror'? this.defaultCompareViz : 0);
+    this.mirrorpanelParams.modeViz = (this.defaultCompareMode === 'mirror' ? this.defaultCompareViz : 0);
 
     // e2m: ponemos el arraqnue del visualizador mirror a cero por defecto
     this.lyrcompareParams.comparisonMode = this.lyrcompareParams.comparisonMode || {};
-    this.lyrcompareParams.comparisonMode = (this.defaultCompareMode==='curtain'? this.defaultCompareViz : 0);
-
-    console.log(this.defaultCompareMode);
-
-    /**COMP_PLUGIN_NAMES[this.defaultCompareMode]
-     * 
-     */
-    
-     //console.log(`defaultComparisonMode: ${this.COMP_PLUGIN_NAMES[this.defaultCompareMode]}`);
-     //console.log(`defaultComparisonViz: ${this.defaultCompareViz}`);
-
-    console.log(this.mirrorpanelParams);
-
+    this.lyrcompareParams.comparisonMode = (this.defaultCompareMode === 'curtain' ? this.defaultCompareViz : 0);
 
     this.control_ = new ComparepanelControl({
       baseLayers: this.baseLayers,
@@ -221,10 +233,12 @@ export default class Comparepanel extends M.Plugin {
       defaultComparisonMode: this.COMP_PLUGIN_NAMES[this.defaultCompareMode],
       defaultComparisonViz: this.defaultCompareViz,
       position: this.position,
+      urlCover: this.urlCoberturas_
     });
 
     this.controls_.push(this.control_);
     this.map_ = map;
+
     this.panel_ = new M.ui.Panel('panelComparepanel', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
@@ -237,8 +251,8 @@ export default class Comparepanel extends M.Plugin {
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
     this.panel_._element.classList.add(this.vertical ? 'orientation-vertical' : 'orientation-horizontal');
-  }
 
+  }
 
   /**
    * This function destroys this plugin

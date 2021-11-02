@@ -7,7 +7,7 @@
         {{#if options}}
             <div class="m-transparency-select">
                 <p>{{translations.layers}}: </p>
-                <select disabled>
+                <select id="m-transparency-lyr" disabled>
                     {{#each options}}
                         <option value="{{name}}">{{legend}}</option>
                     {{/each}}

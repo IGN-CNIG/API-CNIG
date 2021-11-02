@@ -296,6 +296,11 @@ export default class LyrCompare extends M.Plugin {
     return this.name_;
   }
 
+  manageLyrAvailable(lyrList){
+    this.control_.manageLyrAvailable(lyrList);
+  }
+
+
   /**
    * This function gets metadata plugin
    *

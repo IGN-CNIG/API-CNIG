@@ -152,6 +152,14 @@ export default class Transparency extends M.Plugin {
     map.addPanels(this.panel_);
   }
 
+
+
+  manageLyrAvailable(lyrAvailable){
+
+    this.control_.manageLyrAvailable(lyrAvailable);
+
+  }
+
   /**
    * This function destroys this plugin
    *

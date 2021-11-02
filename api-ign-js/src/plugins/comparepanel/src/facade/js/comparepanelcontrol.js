@@ -41,6 +41,7 @@ export default class ComparepanelControl extends M.Control {
     this.defaultComparisonViz = options.defaultComparisonViz;
     this.previousComparisonMode = "";
     this.actualComparisonMode = "";
+    this.urlCover =  options.urlCover;
 
     this.baseLayers.forEach(e => this.layers.push(e[2]));
     this.params = [options.mirrorpanelParams, options.timelineParams, options.lyrcompareParams, options.transparencyParams];
@@ -60,6 +61,9 @@ export default class ComparepanelControl extends M.Control {
     this.panels = [];
     this.plugins = [this.mirrorpanel, this.timeline, this.lyrcompare, this.transparency];
     
+    this.map = null;
+    this.lyrCoverture = null;
+    this.urlCover =  options.urlCover;
   }
 
   /**
@@ -87,10 +91,8 @@ export default class ComparepanelControl extends M.Control {
 
       this.template = M.template.compileSync(template, options);
       success(this.template);
-
       this.addComparators(map);
-      console.log(this.map.getBaseLayers());
-      console.log(this.map.getLayers());
+
     });
   }
 
@@ -107,6 +109,16 @@ export default class ComparepanelControl extends M.Control {
       }
     });
     this.setComparatorsDefaultStyle();
+
+
+    this.loadCoverPNOALyr();
+
+    this.onMoveEnd((evt) => {
+      this.getCobertura(evt);
+    });
+
+
+
   }
 
   addButtonEvents() {
@@ -148,7 +160,6 @@ export default class ComparepanelControl extends M.Control {
     });
 
     if (this.defaultComparisonMode==='mirrorpanel') {
-      console.log("Entro");
       // this.template.querySelector('#m-cp-mirrorpanel .cp-mirrorpanel').classList.toggle('hide-panel');  // Oculto panel
       // this.template.querySelector('#m-cp-mirrorpanel .cp-button').classList.toggle('active');         // Elimino sonbra botón
     }
@@ -163,7 +174,6 @@ export default class ComparepanelControl extends M.Control {
     this.plugins.forEach(p => {
       console.log(p);
       if (p.name !== 'mirrorpanel') {
-        console.log('PAso');
         p.deactivate();
         this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');  // Oculto panel
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').classList.remove('active');           // Elimino sonbra botón
@@ -195,6 +205,67 @@ export default class ComparepanelControl extends M.Control {
     this.template.querySelector('#m-cp-mirrorpanel .cp-button').classList.remove('active');           // Elimino sonbra botón
     
   }
+
+  /**
+       * @public
+       * @function
+       */
+  loadCoverPNOALyr() {
+    let estiloPoly = new M.style.Polygon({
+      fill: {
+        color: 'green',
+        opacity: 0.0,
+      },
+      /*stroke: {
+        color: '#FF0000',
+        width: 0,
+      }*/
+    });// Estilo no visible
+
+    const optionsLayer = {
+      name: 'coverpnoa',
+      url: this.urlCover,
+    };
+    this.lyrCoverture = new M.layer.GeoJSON(optionsLayer, { displayInLayerSwitcher: false });
+
+    this.map.addLayers(this.lyrCoverture);
+    this.lyrCoverture.displayInLayerSwitcher = false;
+    this.lyrCoverture.setVisible(true);
+    this.lyrCoverture.setStyle(estiloPoly);
+
+  }
+
+
+  onMoveEnd(callback) {
+
+    const olMap = this.map.getMapImpl();
+    olMap.on('moveend', e => callback(e));
+
+  }
+
+
+  getCobertura(evt) {
+    const olMap = this.map.getMapImpl();
+    //const extent = olMap.getView().calculateExtent(olMap.getSize());
+    let pixelCentral = olMap.getPixelFromCoordinate(olMap.getView().getCenter());
+    let lyrAvailable = [];
+    //console.log(pixelCentral);
+    olMap.forEachFeatureAtPixel(pixelCentral, function (feature, layer) {
+      //console.log(feature);
+      //console.log(layer);    
+      if (feature.get('layerkey') !== undefined) {
+        lyrAvailable.push(feature.get('layerkey'));
+      }
+    });
+    this.mirrorpanel.manageLyrAvailable(lyrAvailable);
+    this.lyrcompare.manageLyrAvailable(lyrAvailable);
+    this.transparency.manageLyrAvailable(lyrAvailable);
+
+  }
+
+
+
+
 
   deactivate() {
     this.plugins.forEach((p, k) => {

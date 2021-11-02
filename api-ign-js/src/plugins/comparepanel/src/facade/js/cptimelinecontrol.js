@@ -369,11 +369,17 @@ export default class TimelineControl extends M.Control {
    * @api
    */
   deactivate() {
-    clearInterval(this.running);
-    this.running = false;
-    this.intervals.forEach((interval) => {
-      this.getMapLayer(interval.service).setVisible(false);
-    })
+
+    try {
+      clearInterval(this.running);
+      this.running = false;
+      this.intervals.forEach((interval) => {
+        this.getMapLayer(interval.service).setVisible(false);
+      });
+    } catch (error) {
+      console.error(`e2m: ${error}`);
+    }
+
   }
 
   /**

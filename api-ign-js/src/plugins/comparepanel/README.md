@@ -112,6 +112,8 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
   - Etiqueta: etiqueta o fecha de la capa. Se puede dejar vacío con comillas vacías: *''*
   - Servicio en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
 
+-  urlcoberturas: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS.
+
 ```javascript
   // Ejemplos de definiciones de capas esperadas por el comparador en formato StringLayer
 
@@ -175,6 +177,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la
       ["PNOA 2006", "2006", "WMS*pnoa2006*https://www.ign.es/wms/pnoa-historico*pnoa2006"],
       ["PNOA 2010", "2010", "WMS*pnoa2010*https://www.ign.es/wms/pnoa-historico*pnoa2010"]
     ],
+    urlcoberturas: 'https://projects.develmap.com/apicnig/pnoahisto/coberturas.geojson',
     timelineParams: { 
       animation: true, 
     },

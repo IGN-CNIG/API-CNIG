@@ -128,6 +128,26 @@ export default class TransparencyControl extends M.Control {
   }
 
 
+  manageLyrAvailable(lyrList){
+    
+    if (this.template === null){
+      return;
+    }
+    console.log('manageLyrAvailable at SpyEyeCompare');
+
+    try {
+      let dropDownContainer = null;
+      dropDownContainer = this.template.querySelector('#m-transparency-lyr');
+      for (let  iOpt =1; iOpt < dropDownContainer.options.length; iOpt++) {
+        dropDownContainer.options[iOpt].disabled = !lyrList.includes(dropDownContainer.options[iOpt].value);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+
   /**
    * Activate Select/Input
    *
