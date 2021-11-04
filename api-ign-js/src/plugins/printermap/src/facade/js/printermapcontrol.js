@@ -958,7 +958,7 @@ export default class PrinterMapControl extends M.Control {
     // Filters visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer');
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.type !== 'XYZ' && layer.type !== 'TMS');
     });
 
     let numLayersToProc = layers.length;

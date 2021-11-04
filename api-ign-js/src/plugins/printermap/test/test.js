@@ -51,11 +51,11 @@ const printermap = new PrinterMap({
 
 map.addPlugin(printermap);
 
-map.addPlugin(new M.plugin.Infocoordinates({
+/*map.addPlugin(new M.plugin.Infocoordinates({
   position: 'TR',
   decimalGEOcoord: 6,
   decimalUTMcoord: 2,
-}));
+}));*/
 
 /*map.addPlugin(new M.plugin.IGNSearchLocator({
   servicesToSearch: 'gn',
@@ -66,9 +66,9 @@ map.addPlugin(new M.plugin.Infocoordinates({
   reverse: true,
 }));*/
 
-/*map.addPlugin(new M.plugin.Vectors({
+map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
-}));*/
+}));
 
 //map.addLayers([layerinicial, campamentos]);
 //map.addLayers([campamentos]);
