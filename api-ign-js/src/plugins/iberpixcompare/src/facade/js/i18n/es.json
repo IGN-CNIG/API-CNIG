@@ -23,7 +23,7 @@
   "lyrLeftSelect_tooltip": "Selecciona la capa de la izquierda",
   "lyrRightSelect_tooltip": "Selecciona la capa de la derecha",
   "advice_sameLayer": "No puede cargarse la misma capa en varios sitios",
-  "no_layers_plugin": "El número de capas es insuficiente para aplicar el efecto. Por favor, añada más servicios desde la herramienta de capas.",
+  "no_layers_plugin": "Para utilizar esta opción de comparación, debe tener cargadas tantas capas en la herramienta \"Capas\" como divisiones haya seleccionado",
   "tooltipMirrorpanel": "Comparador de mapas espejo",
   "titleMirrorpanel": "Mapas espejo",
   "modViz0": "Mapa standard",

@@ -35,7 +35,7 @@ div.m-panel.m-plugin-lyrcompare.opened>.g-cartografia-flecha-izquierda {
 
 .div-m-lyrcompare-panel {
 	padding-top: 1px;
-	width: 19rem;
+	width: 22rem;
 }
 
 .div-m-lyrcompare-transparent-opacity {
@@ -147,7 +147,7 @@ div.m-panel.m-plugin-lyrcompare.opened>.g-cartografia-flecha-izquierda {
 	display: flex;
 	align-items: center;
 	padding: 0px 5px 5px 5px;
-	padding-left: 8%;
+	padding-left: 5%;
 	color: #000000;
 }
 

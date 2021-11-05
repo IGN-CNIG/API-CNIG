@@ -24,7 +24,7 @@
 .m-areas>div.m-area>div.m-plugin-beautytoc.m-panel.opened>.m-panel-controls .m-beautytoc-panel {
     width: 365px;
     overflow-y: auto;
-    max-height: 74vh;
+    max-height: 60vh;
 }
 
 .m-areas div.m-plugin-beautytoc.m-panel.opened>button.m-panel-btn {
@@ -65,7 +65,7 @@
   font-family: sans-serif;
   font-size: 0.8em;
   line-height: 1.4em;
-  line-height: 28px;
+  line-height: 22px;
   font-size: 15px;
   text-align: left;
   margin: 7px 5px;
@@ -82,7 +82,7 @@
   font-family: sans-serif;
   font-size: 0.8em;
   line-height: 1.4em;
-  line-height: 28px;
+  line-height: 22px;
   font-size: 15px;
   text-align: left;
   margin: 7px 5px;
@@ -137,7 +137,7 @@
 
 @media only screen and (max-width: 768px) {
     .m-areas>div.m-area>div.m-plugin-beautytoc.m-panel.opened>.m-panel-controls .m-beautytoc-panel {
-        width: 50vw;
+        width: 40vw;
     }
 }
 
