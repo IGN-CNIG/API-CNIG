@@ -156,6 +156,16 @@ export default class LyrCompareControl extends M.Control {
   }
 
   renderPlugin(success) {
+    const emptyLayer = new M.layer.WMS({
+      url: 'https://www.ign.es/wms/pnoa-historico?',
+      name: 'empty_layer',
+      legend: 'Sin capa',
+      tiled: false,
+      version: '1.3.0',
+    }, { visibility: true, displayInLayerSwitcher: false, queryable: false });
+    emptyLayer.options.displayInLayerSwitcher = false;
+    emptyLayer.displayInLayerSwitcher = false;
+
     const options = {
       jsonp: true,
       vars: {
@@ -178,19 +188,35 @@ export default class LyrCompareControl extends M.Control {
       button.addEventListener('click', this.assignEventsPlugin.bind(this, i));
     });
 
+    this.map.addLayers([emptyLayer]);
+    this.map.on(M.evt.ADDED_LAYER, (evt) => {
+        if (this.layerSelectedA !== null) {
+          const cm = this.comparisonMode;
+          this.comparisonMode = 0;
+          this.deactivateCurtain();
+          setTimeout(() => {
+            this.comparisonMode = cm;
+            this.activateCurtain();
+          }, 1000);
+        }
+    });
+
     return success(this.template);
   }
 
-  assignEventsPlugin(i) {
-    this.layers = this.map.getRootLayers().filter((layer) => {
+  getAvailableLayers() {
+    return this.map.getRootLayers().filter((layer) => {
       const isTransparent = (layer.transparent === true);
-      const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
+      const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true || (layer.displayInLayerSwitcher === false && layer.name === 'empty_layer'));
       const isRaster = ['wms', 'wmts'].indexOf(layer.type.toLowerCase()) > -1;
       const isNotWMSFull = !((layer.type === M.layer.type.WMS) &&
       M.utils.isNullOrEmpty(layer.name));
       return (isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull);
     }).reverse();
+  }
 
+  assignEventsPlugin(i) {
+    this.layers = this.getAvailableLayers();
     if (this.comparisonMode === 0) {
       if ((i < 2 && this.layers.length < 2) || (i === 2 && this.layers.length < 4)) {
         M.dialog.error(getValue('no_layers_plugin'));
@@ -247,13 +273,33 @@ export default class LyrCompareControl extends M.Control {
 
         let lstLayers = [];
         if (item.id === 'm-lyrcompare-lyrA') {
-          lstLayers = [layer[0].name, this.layerSelectedB.name, this.layerSelectedC.name, this.layerSelectedD.name];
+          lstLayers = [
+            layer[0] !== undefined ? layer[0].name : undefined,
+            this.layerSelectedB !== undefined ? this.layerSelectedB.name : undefined,
+            this.layerSelectedC !== undefined ? this.layerSelectedC.name : undefined,
+            this.layerSelectedD !== undefined ? this.layerSelectedD.name : undefined,
+          ];
         } else if (item.id === 'm-lyrcompare-lyrB') {
-          lstLayers = [this.layerSelectedA.name, layer[0].name, this.layerSelectedC.name, this.layerSelectedD.name];
+          lstLayers = [
+            this.layerSelectedA !== undefined ? this.layerSelectedA.name : undefined,
+            layer[0] !== undefined ? layer[0].name : undefined,
+            this.layerSelectedC !== undefined ? this.layerSelectedC.name : undefined,
+            this.layerSelectedD !== undefined ? this.layerSelectedD.name : undefined,
+          ];
         } else if (item.id === 'm-lyrcompare-lyrC') {
-          lstLayers = [this.layerSelectedA.name, this.layerSelectedB.name, layer[0].name, this.layerSelectedD.name];
+          lstLayers = [
+            this.layerSelectedA !== undefined ? this.layerSelectedA.name : undefined,
+            this.layerSelectedB !== undefined ? this.layerSelectedB.name : undefined,
+            layer[0] !== undefined ? layer[0].name : undefined,
+            this.layerSelectedD !== undefined ? this.layerSelectedD.name : undefined,
+          ];
         } else if (item.id === 'm-lyrcompare-lyrD') {
-          lstLayers = [this.layerSelectedA.name, this.layerSelectedB.name, this.layerSelectedC.name, layer[0].name];
+          lstLayers = [
+            this.layerSelectedA !== undefined ? this.layerSelectedA.name : undefined,
+            this.layerSelectedB !== undefined ? this.layerSelectedB.name : undefined,
+            this.layerSelectedC !== undefined ? this.layerSelectedC.name : undefined,
+            layer[0] !== undefined ? layer[0].name : undefined,
+          ];
         }
 
         //e2m: de esta forma pasamos los parámetros en forma de array
@@ -273,25 +319,25 @@ export default class LyrCompareControl extends M.Control {
         }
 
         if (item.id === 'm-lyrcompare-lyrA') {
-          if (layer[0].name === this.layerSelectedC.name) {
+          if (this.layerSelectedC !== undefined && layer[0].name === this.layerSelectedC.name) {
             this.layerSelectedC.setVisible(false);
             this.layerSelectedC = this.layerSelectedA;
             this.template.querySelector('#m-lyrcompare-lyrC').value = this.layerSelectedA.name
           }
 
-          if (layer[0].name === this.layerSelectedD.name) {
+          if (this.layerSelectedD !== undefined && layer[0].name === this.layerSelectedD.name) {
             this.layerSelectedD.setVisible(false);
             this.layerSelectedD = this.layerSelectedA;
             this.template.querySelector('#m-lyrcompare-lyrD').value = this.layerSelectedA.name
           }
         } else if (item.id === 'm-lyrcompare-lyrB') {
-          if (layer[0].name === this.layerSelectedC.name) {
+          if (this.layerSelectedC !== undefined && layer[0].name === this.layerSelectedC.name) {
             this.layerSelectedC.setVisible(false);
             this.layerSelectedC = this.layerSelectedB;
             this.template.querySelector('#m-lyrcompare-lyrC').value = this.layerSelectedB.name
           }
 
-          if (layer[0].name === this.layerSelectedD.name) {
+          if (this.layerSelectedD !== undefined && layer[0].name === this.layerSelectedD.name) {
             this.layerSelectedD.setVisible(false);
             this.layerSelectedD = this.layerSelectedB;
             this.template.querySelector('#m-lyrcompare-lyrD').value = this.layerSelectedB.name
@@ -351,15 +397,7 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   activateCurtain() {
-    this.layers = this.map.getRootLayers().filter((layer) => {
-      const isTransparent = (layer.transparent === true);
-      const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
-      const isRaster = ['wms', 'wmts'].indexOf(layer.type.toLowerCase()) > -1;
-      const isNotWMSFull = !((layer.type === M.layer.type.WMS) &&
-      M.utils.isNullOrEmpty(layer.name));
-      return (isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull);
-    }).reverse();
-
+    this.layers = this.getAvailableLayers();
     let layers = this.layers.map((layer) => {
       return {
         name: layer.name,
@@ -484,6 +522,7 @@ export default class LyrCompareControl extends M.Control {
     this.layerSelectedC = null;
     this.layerSelectedD = null;
     document.querySelector('#m-lyrcompare-list-container').innerHTML = '';
+    this.map.fire(M.evt.ADDED_LAYER);
   }
 
   /**

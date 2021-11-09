@@ -58,13 +58,22 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     ol.interaction.Pointer.prototype.setMap.call(this, map);
     if (map) {
       this.createSwipeControl();
-      this.layers_[0].prerender = this.layers_[0].on('prerender', this.precomposeA_.bind(this));
-      this.layers_[0].postrender = this.layers_[0].on('postrender', this.postcomposeA_.bind(this));
-      this.layers_[1].prerender = this.layers_[1].on('prerender', this.precomposeB_.bind(this));
-      this.layers_[1].postrender = this.layers_[1].on('postrender', this.postcomposeB_.bind(this));
-      if (this.layers_[2] !== undefined && this.layers_[3] !== undefined) {
+      if (this.layers_[0] !== undefined) {
+        this.layers_[0].prerender = this.layers_[0].on('prerender', this.precomposeA_.bind(this));
+        this.layers_[0].postrender = this.layers_[0].on('postrender', this.postcomposeA_.bind(this));
+      }
+
+      if (this.layers_[1] !== undefined) {
+        this.layers_[1].prerender = this.layers_[1].on('prerender', this.precomposeB_.bind(this));
+        this.layers_[1].postrender = this.layers_[1].on('postrender', this.postcomposeB_.bind(this));
+      }
+
+      if (this.layers_[2] !== undefined) {
         this.layers_[2].prerender = this.layers_[2].on('prerender', this.precomposeC_.bind(this));
         this.layers_[2].postrender = this.layers_[2].on('postrender', this.postcomposeC_.bind(this));
+      }
+
+      if (this.layers_[3] !== undefined) {
         this.layers_[3].prerender = this.layers_[3].on('prerender', this.precomposeD_.bind(this));
         this.layers_[3].postrender = this.layers_[3].on('postrender', this.postcomposeD_.bind(this));
       }

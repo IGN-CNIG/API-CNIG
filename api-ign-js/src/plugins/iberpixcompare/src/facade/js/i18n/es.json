@@ -42,5 +42,6 @@
   "print_disabled": "La impresión no está disponible",
   "georef_download_disabled": "La descarga no está disponible",
   "printmap": "Impresión del mapa",
-  "georef_download": "Descargar Imagen georreferenciada"
+  "georef_download": "Descargar Imagen georreferenciada",
+  "no_layer": "Sin capa"
 }
