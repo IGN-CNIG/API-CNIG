@@ -70,6 +70,8 @@ export default class TimelineControl extends M.Control {
         intervals.push(iv);
         console.log("Cargo capa");
       });
+      
+      console.log(intervals);
 
       this.intervals = intervals;
       this.template = M.template.compileSync(template, {
@@ -80,6 +82,8 @@ export default class TimelineControl extends M.Control {
           },
         },
       });
+
+
 
       this.intervals.forEach((interval, k) => {
         let tag = document.createElement('div');
@@ -135,6 +139,7 @@ export default class TimelineControl extends M.Control {
    */
   transformToLayers(layer) {
     let newLayer = null;
+    console.log("transformToLayers");
     if (!(layer instanceof Object)) {
       if (layer.indexOf('*') >= 0) {
         const urlLayer = layer.split('*');
@@ -370,14 +375,18 @@ export default class TimelineControl extends M.Control {
    */
   deactivate() {
 
+    console.log(this.intervals);
+    
     try {
       clearInterval(this.running);
       this.running = false;
       this.intervals.forEach((interval) => {
-        this.getMapLayer(interval.service).setVisible(false);
+        if (interval.service.zIndex_ !== undefined){
+          this.getMapLayer(interval.service).setVisible(false);
+        }
       });
     } catch (error) {
-      console.error(`e2m: ${error}`);
+      console.error(`e2m (1): ${error}`);
     }
 
   }
