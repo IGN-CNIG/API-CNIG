@@ -476,6 +476,33 @@ export default class LyrCompareControl extends M.Control {
     this.getImpl().removeEffectsCurtain();
   }
 
+
+  manageLyrAvailable(lyrList){
+    
+    if (this.template === null){
+      return;
+    }
+    console.log('manageLyrAvailable at CurtainCompare');
+    this.updateLyrsAvailables(lyrList,"A");
+    this.updateLyrsAvailables(lyrList,"B");
+    this.updateLyrsAvailables(lyrList,"C");
+    this.updateLyrsAvailables(lyrList,"D");
+
+  }
+
+  updateLyrsAvailables(lyrList,dropDownLyrLetter) {
+    try {
+      let dropDownContainer = null;
+      dropDownContainer = this.template.querySelector('#m-lyrcompare-lyr' + dropDownLyrLetter);
+      for (let  iOpt =1; iOpt < dropDownContainer.options.length; iOpt++) {
+        dropDownContainer.options[iOpt].disabled = !lyrList.includes(dropDownContainer.options[iOpt].value);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   /**
    * This procedure updates texts in controls
    *
@@ -612,7 +639,7 @@ export default class LyrCompareControl extends M.Control {
    * @returns 
    */
   transformToLayers(layers) {
-    console.log("transformToLayers Curtain");
+
     const transform = layers.map((layer) => {
       let newLayer = null;
       if (!(layer instanceof Object)) {
@@ -632,7 +659,7 @@ export default class LyrCompareControl extends M.Control {
             } else {
               this.map.addLayers(newLayer);
             }
-            // console.log(newLayer);
+
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
 
             newLayer = new M.layer.WMTS({
@@ -646,7 +673,6 @@ export default class LyrCompareControl extends M.Control {
               visibility: false,              // Visible a false por defecto
               format: urlLayer[5],
             }), this.map.addWMTS(newLayer);
-            // console.log(newLayer);
           }
 
         } else {
@@ -661,13 +687,10 @@ export default class LyrCompareControl extends M.Control {
       if (newLayer !== null) {
         if (newLayer.getImpl().getOL3Layer() === null) {
           setTimeout(() => {
-            console.log(`Cargado ${newLayer.type}`);
             if (newLayer.type === 'WMS' || newLayer.type === 'WMTS') {
               newLayer.load = true;
-
             } else if (newLayer.type === 'WMTS') {
               newLayer.facadeLayer_.load = true;
-
             }
           }, 1000);
         } else {
@@ -676,7 +699,6 @@ export default class LyrCompareControl extends M.Control {
 
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
-        console.log(newLayer);
         return newLayer;
       } else {
         this.layers.remove(layer);

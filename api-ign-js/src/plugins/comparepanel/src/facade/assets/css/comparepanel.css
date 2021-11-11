@@ -532,6 +532,12 @@ div#m-comparepanel-title {
 	color: #98bddb;
 }
 
+.cp-button:disabled {
+	color: #ffb9b9;
+	cursor: default;
+}
+
+
 .m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button.cp-button.active {
 	background-color: #d1e6f8;
 	color: #364b5f;
