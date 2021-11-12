@@ -100,6 +100,8 @@ export default class PrinterMapControl extends M.impl.Control {
         success(this.encodeWFS(layer));
       } else if (layer.type === 'IMAGE' && !(layer instanceof M.layer.WMS)) {
         success(this.encodeImage(layer));
+      } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
+        success(this.encodeXYZ(layer));
       } else {
         success(this.encodeWFS(layer));
       }
@@ -388,6 +390,26 @@ export default class PrinterMapControl extends M.impl.Control {
     };
 
     return encodedLayer;
+  }
+
+  encodeXYZ(layer) {
+    const layerImpl = layer.getImpl();
+    const olLayer = layerImpl.getOL3Layer();
+    const layerSource = olLayer.getSource();
+    const tileGrid = layerSource.getTileGrid();
+    const layerUrl = layer.url;
+    const layerOpacity = olLayer.getOpacity();
+    const layerExtent = tileGrid.getExtent();
+    const tileSize = tileGrid.getTileSize();
+    const resolutions = tileGrid.getResolutions();
+    return {
+      opacity: layerOpacity,
+      baseURL: layerUrl,
+      maxExtent: layerExtent,
+      tileSize: [tileSize, tileSize],
+      resolutions,
+      type: 'osm',
+    };
   }
 
   /**

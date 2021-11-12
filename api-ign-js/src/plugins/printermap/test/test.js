@@ -10,16 +10,15 @@ const map = M.map({
   center: [-467062.8225, 4683459.6216],
   //projection: 'EPSG:4326*d',
   layers: [
-    new M.layer.WMTS({
-      url: 'https://www.ign.es/wmts/pnoa-ma?',
+    new M.layer.XYZ({
+      url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
       name: 'OI.OrthoimageCoverage',
       legend: 'Imagen',
-      matrixSet: 'GoogleMapsCompatible',
+      projection: 'EPSG:3857',
       transparent: false,
       displayInLayerSwitcher: false,
       queryable: false,
       visible: true,
-      format: 'image/jpeg',
     }),
   ],
 });
