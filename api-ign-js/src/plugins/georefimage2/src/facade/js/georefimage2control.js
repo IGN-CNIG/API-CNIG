@@ -354,7 +354,7 @@ export default class Georefimage2Control extends M.Control {
     // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && ['WMS', 'WMTS'].indexOf(layer.type) > -1);
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'empty_layer' && ['WMS', 'WMTS'].indexOf(layer.type) > -1);
     });
 
     const encodedLayersModified = [];

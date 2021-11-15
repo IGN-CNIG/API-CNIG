@@ -15,6 +15,7 @@
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
     <link href="plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -83,6 +84,7 @@
     <script type="text/javascript" src="js/configuration.js"></script>
     <script type="text/javascript" src="plugins/georefimage/georefimage.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
 
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -155,6 +157,153 @@
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
+
+        map.addPlugin(new M.plugin.BackImgLayer({
+          position: 'TR',
+          layerId: 0,
+          layerVisibility: true,
+          collapsed: true,
+          collapsible: true,
+          columnsNumber: 4,
+          empty: true,
+          layerOpts: [
+            {
+              id: 'raster',
+              preview: 'img/raster.png',
+              title: 'Mapa',
+              layers: [
+                new M.layer.WMTS({
+                  url: 'https://www.ign.es/wmts/mapa-raster?',
+                  name: 'MTN',
+                  legend: 'Mapa',
+                  matrixSet: 'GoogleMapsCompatible',
+                  transparent: false,
+                  displayInLayerSwitcher: false,
+                  queryable: false,
+                  visible: true,
+                  format: 'image/jpeg',
+                }),
+              ],
+            },
+            {
+              id: 'imagen',
+              preview: 'img/image.png',
+              title: 'Imagen',
+              layers: [
+                new M.layer.XYZ({
+                  url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+                  name: 'OI.OrthoimageCoverage',
+                  legend: 'Imagen',
+                  projection: 'EPSG:3857',
+                  transparent: false,
+                  displayInLayerSwitcher: false,
+                  queryable: false,
+                  visible: true,
+                }),
+              ],
+            },
+            {
+              id: 'mapa',
+              preview: 'img/mapa.png',
+              title: 'Callejero',
+              layers: [
+                new M.layer.WMTS({
+                  url: 'https://www.ign.es/wmts/ign-base?',
+                  name: 'IGNBaseTodo',
+                  legend: 'Callejero',
+                  matrixSet: 'GoogleMapsCompatible',
+                  transparent: false,
+                  displayInLayerSwitcher: false,
+                  queryable: false,
+                  visible: true,
+                  format: 'image/jpeg',
+                }),
+              ],
+            },
+            {
+              id: 'hibrido',
+              title: 'Híbrido',
+              preview: 'img/hibrido.png',
+              layers: [
+                new M.layer.XYZ({
+                  url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+                  name: 'OI.OrthoimageCoverage',
+                  legend: 'Imagen',
+                  projection: 'EPSG:3857',
+                  transparent: false,
+                  displayInLayerSwitcher: false,
+                  queryable: false,
+                  visible: true,
+                }),
+                new M.layer.WMTS({
+                  url: 'https://www.ign.es/wmts/ign-base?',
+                  name: 'IGNBaseOrto',
+                  matrixSet: 'GoogleMapsCompatible',
+                  legend: 'Topónimos',
+                  transparent: true,
+                  displayInLayerSwitcher: false,
+                  queryable: false,
+                  visible: true,
+                  format: 'image/png',
+                })
+              ],
+            },
+            {
+              id: 'lidar',
+              preview: 'img/lidar.png',
+              title: 'LiDAR',
+              layers: [
+                new M.layer.WMTS({
+                  url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+                  name: 'EL.GridCoverageDSM',
+                  legend: 'LiDAR',
+                  matrixSet: 'GoogleMapsCompatible',
+                  transparent: false,
+                  displayInLayerSwitcher: false,
+                  queryable: false,
+                  visible: true,
+                  format: 'image/png',
+                }),
+              ],
+            },
+            {
+              id: 'ocupacion-suelo',
+              preview: 'img/ocupacion_suelo.png',
+              title: 'Ocupación',
+              layers: [
+                new M.layer.WMTS({
+                  url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
+                  name: 'LC.LandCoverSurfaces',
+                  legend: 'Ocupación',
+                  matrixSet: 'GoogleMapsCompatible',
+                  transparent: false,
+                  displayInLayerSwitcher: false,
+                  queryable: false,
+                  visible: true,
+                  format: 'image/png',
+                }),
+              ],
+            },
+            {
+              id: 'historicos',
+              preview: 'img/historicos.png',
+              title: 'Históricos',
+              layers: [
+                new M.layer.WMTS({
+                  url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
+                  name: 'mtn50-edicion1',
+                  legend: 'Históricos',
+                  matrixSet: 'GoogleMapsCompatible',
+                  transparent: false,
+                  displayInLayerSwitcher: false,
+                  queryable: false,
+                  visible: true,
+                  format: 'image/jpeg',
+                }),
+              ],
+            },
+          ],
+        }));
     </script>
 </body>
 
