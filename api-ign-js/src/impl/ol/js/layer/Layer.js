@@ -94,6 +94,20 @@ class LayerBase extends MObject {
      * @expose
      */
     this.legendUrl_ = concatUrlPaths([M.config.THEME_URL, FacadeLayer.LEGEND_DEFAULT]);
+
+    /**
+     * @private
+     * @type {number}
+     * @expose
+     */
+    this.minZoom = this.options.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * @private
+     * @type {number}
+     * @expose
+     */
+    this.maxZoom = this.options.maxZoom || Number.POSITIVE_INFINITY;
   }
 
   /**
@@ -156,6 +170,62 @@ class LayerBase extends MObject {
 
     if (!isNullOrEmpty(this.ol3Layer)) {
       this.ol3Layer.setVisible(visibility);
+    }
+  }
+
+  /**
+   * This function sets the visibility of this layer
+   *
+   * @function
+   * @api stable
+   * @expose
+   */
+  getMinZoom() {
+    if (!isNullOrEmpty(this.getOL3Layer())) {
+      this.minZoom = this.getOL3Layer().getMinZoom();
+    }
+    return this.minZoom;
+  }
+
+  /**
+   * This function sets the visibility of this layer
+   *
+   * @function
+   * @api stable
+   * @expose
+   */
+  setMinZoom(zoom) {
+    this.minZoom = zoom;
+    if (!isNullOrEmpty(this.getOL3Layer())) {
+      this.getOL3Layer().setMinZoom(zoom);
+    }
+  }
+
+  /**
+   * This function sets the visibility of this layer
+   *
+   * @function
+   * @api stable
+   * @expose
+   */
+  getMaxZoom() {
+    if (!isNullOrEmpty(this.getOL3Layer())) {
+      this.maxZoom = this.getOL3Layer().getMaxZoom();
+    }
+    return this.maxZoom;
+  }
+
+  /**
+   * This function sets the visibility of this layer
+   *
+   * @function
+   * @api stable
+   * @expose
+   */
+  setMaxZoom(zoom) {
+    this.maxZoom = zoom;
+    if (!isNullOrEmpty(this.getOL3Layer())) {
+      this.getOL3Layer().setMaxZoom(zoom);
     }
   }
 
