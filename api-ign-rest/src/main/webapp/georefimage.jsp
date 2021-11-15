@@ -13,7 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
+    <link href="plugins/georefimage2/georefimage2.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     </link>
@@ -82,7 +82,7 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/georefimage/georefimage.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/georefimage2/georefimage2.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
 
@@ -138,7 +138,7 @@
         }
 
         function crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl) {
-            mp = new M.plugin.Georefimage({
+            mp = new M.plugin.Georefimage2({
                 collapsed: collapsed,
                 collapsible: collapsible,
                 position: position,
