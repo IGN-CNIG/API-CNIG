@@ -55,6 +55,13 @@ class TMS extends LayerBase {
      * @type {string}
      */
     this.legend = parameters.legend;
+
+    // minzoom
+    this.minZoom = parameters.minZoom;
+
+    // maxzoom
+    this.maxZoom = parameters.maxZoom;
+
     /**
      * TMS options
      * @public

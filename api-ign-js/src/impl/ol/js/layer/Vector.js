@@ -67,6 +67,10 @@ class Vector extends Layer {
      */
     this.loaded_ = false;
 
+    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
+
+    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
+
     // [WARN]
     // applyOLLayerSetStyleHook();
   }
@@ -83,7 +87,8 @@ class Vector extends Layer {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
     map.on(EventType.CHANGE_PROJ, this.setProjection_.bind(this), this);
-
+    this.vendorOptions_.minZoom = this.minZoom;
+    this.vendorOptions_.maxZoom = this.maxZoom;
     this.ol3Layer = new OLLayerVector(this.vendorOptions_);
     this.updateSource_();
 

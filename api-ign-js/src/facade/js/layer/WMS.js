@@ -68,6 +68,12 @@ class WMS extends LayerBase {
       this.capabilitiesMetadata = vendorOptions.capabilitiesMetadata;
     }
 
+    // minzoom
+    this.minZoom = parameters.minZoom;
+
+    // maxzoom
+    this.maxZoom = parameters.maxZoom;
+
     // options
     this.options = optionsVar;
 

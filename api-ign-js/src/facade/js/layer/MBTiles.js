@@ -55,6 +55,7 @@ class MBTiles extends LayerBase {
      * @type {string}
      */
     this.legend = parameters.legend;
+
     /**
      * MBTiles options
      * @public

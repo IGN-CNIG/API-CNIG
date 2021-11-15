@@ -52,6 +52,10 @@ class XYZ extends Layer {
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.XYZ];
 
     this.visibility = userParameters.visibility === false ? userParameters.visibility : true;
+
+    this.minZoom = userParameters.minZoom || Number.NEGATIVE_INFINITY;
+
+    this.maxZoom = userParameters.maxZoom || Number.POSITIVE_INFINITY;
   }
 
   /**
@@ -103,8 +107,8 @@ class XYZ extends Layer {
     const source = new XYZSource({
       projection: this.map.getProjection().code,
       url: this.url,
-      minZoom: this.map.getMinZoom(),
-      maxZoom: this.map.getMaxZoom(),
+      minZoom: this.minZoom,
+      maxZoom: this.maxZoom,
       tileSize: this.getTileSize(),
     });
     this.ol3Layer.setSource(source);

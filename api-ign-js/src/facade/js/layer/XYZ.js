@@ -56,6 +56,18 @@ class XYZ extends LayerBase {
      */
     this.legend = parameters.legend;
     /**
+     * XYZ minZoom
+     * @public
+     * @type {number}
+     */
+    this.minZoom = parameters.minZoom;
+    /**
+     * XYZ maxZoom
+     * @public
+     * @type {number}
+     */
+    this.maxZoom = parameters.maxZoom;
+    /**
      * XYZ options
      * @public
      * @type {object}
@@ -69,6 +81,7 @@ class XYZ extends LayerBase {
   get type() {
     return LayerType.XYZ;
   }
+
   set type(newType) {
     if (!isUndefined(newType) &&
       !isNullOrEmpty(newType) && (newType !== LayerType.XYZ)) {

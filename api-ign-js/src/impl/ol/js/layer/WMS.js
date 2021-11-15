@@ -148,6 +148,10 @@ class WMS extends LayerBase {
     this.sldBody = options.sldBody;
 
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.WMS];
+
+    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
+
+    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
   }
 
   /**
@@ -316,6 +320,8 @@ class WMS extends LayerBase {
           extent,
           minResolution,
           maxResolution,
+          minZoom: this.minZoom,
+          maxZoom: this.maxZoom,
           opacity,
           zIndex,
         }, this.vendorOptions_, true));
@@ -326,6 +332,8 @@ class WMS extends LayerBase {
           extent,
           minResolution,
           maxResolution,
+          minZoom: this.minZoom,
+          maxZoom: this.maxZoom,
           opacity,
           zIndex,
         }, this.vendorOptions_, true));

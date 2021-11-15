@@ -98,14 +98,14 @@ class LayerBase extends Base {
      * @type {number}
      * @expose
      */
-    this.minZoom = parameter.minZoom;
+    this.minZoom = parameter.minZoom || Number.NEGATIVE_INFINITY;
 
     /**
      * @private
      * @type {number}
      * @expose
      */
-    this.maxZoom = parameter.maxZoom;
+    this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
   }
 
   /**

@@ -63,6 +63,12 @@ class WMTS extends LayerBase {
     // transparent
     this.transparent = parameters.transparent;
 
+    // minzoom
+    this.minZoom = parameters.minZoom;
+
+    // maxzoom
+    this.maxZoom = parameters.maxZoom;
+
     // options
     this.options = optionsVar;
 

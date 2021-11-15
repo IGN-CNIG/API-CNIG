@@ -63,6 +63,10 @@ class WMTS extends LayerBase {
      */
     this.getCapabilitiesPromise_ = null;
 
+    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
+
+    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
+
     /**
      * Options
      * @private
@@ -181,6 +185,8 @@ class WMTS extends LayerBase {
       const minResolution = this.options.minResolution;
       const maxResolution = this.options.maxResolution;
       capabilitiesOptionsVariable.format = this.options.format || capabilitiesOptions.format;
+      capabilitiesOptionsVariable.minZoom = this.minZoom;
+      capabilitiesOptionsVariable.maxZoom = this.maxZoom;
       const wmtsSource = new OLSourceWMTS(extend(capabilitiesOptionsVariable, {
         // tileGrid: new OLTileGridWMTS({
         //   origin: getBottomLeft(extent),
