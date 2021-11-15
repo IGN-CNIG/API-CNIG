@@ -80,21 +80,11 @@
     "description": "Permite el dibujo y edición de geometrías sobre un mapa, así como su carga y descarga."
   },
   {
-    "name": "georefimage",
-    "plugin": "[georefimage]",
-    "version": "v1.0",
-    "url_es": "georefimage.jsp?language=es",
-    "url_en": "georefimage.jsp?language=en",
-    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/georefimage",
-    "image": "img/api-logo.png",
-    "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla."
-  },
-  {
     "name": "georefimage2",
     "plugin": "[georefimage2]",
     "version": "v1.0",
-    "url_es": "georefimage2.jsp?language=es",
-    "url_en": "georefimage2.jsp?language=en",
+    "url_es": "georefimage.jsp?language=es",
+    "url_en": "georefimage.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/georefimage2",
     "image": "img/api-logo.png",
     "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla, de los servicios Ráster y de PNOA de forma directa."
