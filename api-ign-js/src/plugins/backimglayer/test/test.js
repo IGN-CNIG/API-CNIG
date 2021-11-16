@@ -5,6 +5,7 @@ M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
+  controls: ['scale'],
   center: [-458756.9690741142, 4682774.665868655],
   zoom: 6,
 });
@@ -41,15 +42,27 @@ const mp = new BackImgLayer({
       title: 'Imagen',
       preview: '../src/facade/assets/images/svqimagen.png',
       layers: [
-        new M.layer.XYZ({
+        /*new M.layer.XYZ({
           url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
-          name: 'OI.OrthoimageCoverage',
+          name: 'PNOA-MA',
           legend: 'Imagen',
           projection: 'EPSG:3857',
           transparent: false,
           displayInLayerSwitcher: false,
           queryable: false,
           visible: true,
+        }),*/
+        new M.layer.WMTS({
+          url: 'https://www.ign.es/wmts/pnoa-ma?',
+          name: 'OI.OrthoimageCoverage',
+          matrixSet: 'GoogleMapsCompatible',
+          legend: 'Imagen',
+          transparent: true,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/jpeg',
+          minZoom: 10,
         }),
       ],
     },
