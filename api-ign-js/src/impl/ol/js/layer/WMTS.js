@@ -204,6 +204,10 @@ class WMTS extends LayerBase {
       // keeps z-index values before ol resets
       const zIndex = this.zIndex_;
       this.map.getMapImpl().addLayer(this.ol3Layer);
+      setTimeout(() => {
+        this.ol3Layer.setMaxZoom(this.maxZoom);
+        this.ol3Layer.setMinZoom(this.minZoom);
+      }, 500);
 
       // sets its z-index
       if (zIndex !== null) {
@@ -212,8 +216,6 @@ class WMTS extends LayerBase {
 
       // activates animation always for WMTS layers
       this.ol3Layer.set('animated', true);
-      this.ol3Layer.setMaxZoom(this.maxZoom);
-      this.ol3Layer.setMinZoom(this.minZoom);
       this.fire(EventType.ADDED_TO_MAP, this);
     }
   }
