@@ -40,9 +40,11 @@ class WMTS extends LayerBase {
      */
     const impl = new WMTSImpl(optionsVar, vendorOptions);
 
-
     // calls the super constructor
     super(parameters, impl);
+    console.log(userParameters);
+    console.log(options);
+    console.log(vendorOptions);
 
     // checks if the implementation can create WMTS layers
     if (isUndefined(WMTSImpl)) {
@@ -62,12 +64,6 @@ class WMTS extends LayerBase {
 
     // transparent
     this.transparent = parameters.transparent;
-
-    // minzoom
-    this.minZoom = parameters.minZoom;
-
-    // maxzoom
-    this.maxZoom = parameters.maxZoom;
 
     // options
     this.options = optionsVar;
