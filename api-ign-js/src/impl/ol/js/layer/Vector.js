@@ -87,14 +87,14 @@ class Vector extends Layer {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
     map.on(EventType.CHANGE_PROJ, this.setProjection_.bind(this), this);
-    this.vendorOptions_.minZoom = this.minZoom;
-    this.vendorOptions_.maxZoom = this.maxZoom;
     this.ol3Layer = new OLLayerVector(this.vendorOptions_);
     this.updateSource_();
 
     this.setVisible(this.visibility);
     const olMap = this.map.getMapImpl();
     olMap.addLayer(this.ol3Layer);
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
   }
 
   /**

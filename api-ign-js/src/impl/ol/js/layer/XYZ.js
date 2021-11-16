@@ -100,8 +100,6 @@ class XYZ extends Layer {
       visible: this.visibility,
       opacity: this.opacity_,
       zIndex: this.zIndex_,
-      minZoom: this.minZoom,
-      maxZoom: this.maxZoom,
       extent,
     });
     this.map.getMapImpl().addLayer(this.ol3Layer);
@@ -111,6 +109,8 @@ class XYZ extends Layer {
       tileSize: this.getTileSize(),
     });
     this.ol3Layer.setSource(source);
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
   }
 
 

@@ -185,8 +185,6 @@ class WMTS extends LayerBase {
       const minResolution = this.options.minResolution;
       const maxResolution = this.options.maxResolution;
       capabilitiesOptionsVariable.format = this.options.format || capabilitiesOptions.format;
-      capabilitiesOptionsVariable.minZoom = this.minZoom;
-      capabilitiesOptionsVariable.maxZoom = this.maxZoom;
       const wmtsSource = new OLSourceWMTS(extend(capabilitiesOptionsVariable, {
         // tileGrid: new OLTileGridWMTS({
         //   origin: getBottomLeft(extent),
@@ -214,7 +212,8 @@ class WMTS extends LayerBase {
 
       // activates animation always for WMTS layers
       this.ol3Layer.set('animated', true);
-
+      this.ol3Layer.setMaxZoom(this.maxZoom);
+      this.ol3Layer.setMinZoom(this.minZoom);
       this.fire(EventType.ADDED_TO_MAP, this);
     }
   }

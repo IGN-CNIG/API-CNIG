@@ -320,8 +320,6 @@ class WMS extends LayerBase {
           extent,
           minResolution,
           maxResolution,
-          minZoom: this.minZoom,
-          maxZoom: this.maxZoom,
           opacity,
           zIndex,
         }, this.vendorOptions_, true));
@@ -332,8 +330,6 @@ class WMS extends LayerBase {
           extent,
           minResolution,
           maxResolution,
-          minZoom: this.minZoom,
-          maxZoom: this.maxZoom,
           opacity,
           zIndex,
         }, this.vendorOptions_, true));
@@ -357,6 +353,8 @@ class WMS extends LayerBase {
       // activates animation for base layers or animated parameters
       const animated = ((this.transparent === false) || (this.options.animated === true));
       this.ol3Layer.set('animated', animated);
+      this.ol3Layer.setMaxZoom(this.maxZoom);
+      this.ol3Layer.setMinZoom(this.minZoom);
     });
   }
 
