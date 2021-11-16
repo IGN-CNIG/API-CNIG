@@ -157,6 +157,8 @@ export default class IncicartoControl extends M.Control {
     this.errors = options.errors;
     this.products = options.products;
     this.geometryIncidence = null;
+    this.geometryIncidenceX = 0;
+    this.geometryIncidenceY = 0;
 
   }
 
@@ -437,9 +439,9 @@ export default class IncicartoControl extends M.Control {
    */
   addEvents(html) {
 
-    // html.querySelector('#m-incicarto-send').addEventListener('click', ()=>{
-    //    this.activateModal();
-    // });
+    html.querySelector('#incicarto-test-modal').addEventListener('click', ()=>{
+       this.activateModal();
+    });
     document.querySelector('.m-incicarto > button.m-panel-btn').addEventListener('click', this.toogleActivate.bind(this));
     html.querySelector('#incicarto-add-point').addEventListener('click', this.addNewLayer.bind(this, 'Point'));
     html.querySelector('#incicarto-add-line').addEventListener('click', this.addNewLayer.bind(this, 'LineString'));
@@ -504,11 +506,17 @@ export default class IncicartoControl extends M.Control {
         let mailto_composed = this.composeMailtoSend(destinatary)
         
         window.open(mailto_composed,'emailWindow');
-
+        // document.querySelector('div.m-mapea-container div.m-dialog').remove(); // Así cerramos a lo loco
+        document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
+        document.querySelector("#result-notification").innerHTML ="<small>El correo con la incidencia se ha generado correctamente. Utilice su cliente habitual para enviarlo.</small>";
+        
       });
 
       document.querySelector("#m-plugin-incicarto-connect-incicarto").addEventListener('click',(e)=>{
-        console.log("Alta en INCIGEO");
+        
+        this.composeIncidencia4INCIGEO();
+        document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled = true;
+
       });
 
       // Para configurar la apariencia del botón Cerrar del modal
@@ -543,6 +551,166 @@ export default class IncicartoControl extends M.Control {
            
 
     return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
+
+  }
+
+
+  composeIncidencia4INCIGEO(){
+
+    const urlINCIGEOToken = "https://incigeo.ign.es/incigeo_pre/webservice.aspx";
+    const urlINCIGEOCreateError = "https://incigeo.ign.es/incigeo_pre/webservice.aspx";
+    const loginUser = "pruebas_inserciones";  //usr_signa
+    const loginPwd = "pruebas";               //pr_signa
+
+
+    const soapCreateError = (tokenAccess) => {
+  
+      const codeViaEntrada = "WEBAPP";    // Directo, IDV
+      const procedenciaCd = "USUARIO_EXTERNO";  // SIGNA  , INCICARTO
+      
+      const prioridad = "1" //Opciones 1: normal, 99: urgente.
+
+      let themeMetadataContainer = document.querySelector("#theme-select");
+      let errorMetadataContainer = document.querySelector("#error-select");
+      let productMetadataContainer = document.querySelector("#product-select");
+      let themeError = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].text;
+      let typeError = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].text;
+      let productError = productMetadataContainer.options[productMetadataContainer.selectedIndex].text;
+
+      let cooX = this.geometryIncidenceX;
+      let cooY = this.geometryIncidenceY;
+      let descriptionIncidencia = document.querySelector("#err-description").value;
+      let emailUser = document.querySelector("#email-notify").value;
+      let descriptionErr = "Descripción del error";
+      let urlVisualizador = "https://iberpix.cnig.es/iberpix/visor/";
+    
+      let strNewErrorMessage3 = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.b2tconcept.com/webservices/">
+                      <soapenv:Header/>
+                      <soapenv:Body>
+                        <web:CreateErrorsIGN>
+                          <web:token>${tokenAccess}</web:token>
+                          <web:codeViaEntrada>${codeViaEntrada}</web:codeViaEntrada>
+                          <web:procedenciaCd>${procedenciaCd}</web:procedenciaCd>
+                          <web:emailDs>${emailUser}</web:emailDs>
+                          <web:ordenPrioridadNm >${prioridad}</web:ordenPrioridadNm>
+                          <web:descInciDs>${descriptionIncidencia}</web:descInciDs>
+                          <web:arrayErrors>
+                            <web:WS_ERROR_DATA>
+                            <web:desc>${descriptionErr}</web:desc><!-- Mandatory -->
+                            <web:x>${cooX}</web:x><!-- Mandatory -->
+                            <web:y>${cooY}</web:y><!-- Mandatory -->
+                            <web:theme>${themeError}</web:theme><!--- Control list -->
+                            <web:type>${typeError}</web:type><!--- Control list -->
+                            <web:prodDetectCd>${productError}</web:prodDetectCd><!--- Control list -->
+                            <web:urlDs>${urlVisualizador}</web:urlDs>
+                              <web:fileExtCd></web:fileExtCd>
+                              <web:fileBase64Ds></web:fileBase64Ds>
+                              </web:WS_ERROR_DATA>
+                          </web:arrayErrors>
+                        </web:CreateErrorsIGN>
+                      </soapenv:Body>
+                    </soapenv:Envelope>`;
+    
+    
+      const parserRequest = new DOMParser();
+      const xmlDOMRequest = parserRequest.parseFromString(strNewErrorMessage3, "text/xml");
+      console.log(xmlDOMRequest);
+    
+    
+    
+      function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+          console.log("1");
+          xhr.open(method, url, false);
+        } else if (typeof XDomainRequest != "undefined") {
+          console.log("2");
+          xhr = new XDomainRequest();
+          xhr.open(method, url);
+        } else {
+          console.log("CORS not supported");
+          alert("CORS not supported");
+          xhr = null;
+        }
+        return xhr;
+      }
+      
+      var xhr = createCORSRequest("POST", urlINCIGEOCreateError);
+      if (!xhr) {
+        console.log("XHR issue");
+        return;
+      }
+    
+      xhr.onload = function () {
+        var results = xhr.responseText;
+        const parserResponse = new DOMParser();
+        const xmlDOMResponse = parserResponse.parseFromString(results, "text/xml");
+        console.log(xmlDOMResponse);
+        const returnCD = xmlDOMResponse.getElementsByTagName("web:RETURN_CD")[0].childNodes[0].nodeValue;
+        const returnDS = xmlDOMResponse.getElementsByTagName("web:RETURN_DS")[0].childNodes[0].nodeValue;
+        const codeInc = xmlDOMResponse.getElementsByTagName("web:codeInc")[0].childNodes[0].nodeValue;
+        console.info(returnCD); // Devuelve cero si se ha creado
+        console.info(returnDS); // Descripción literal del código devuelto "La operación se ha realizado correctamente"
+        console.info(codeInc);  // Devuelve código de incidencia para seguimiento
+        document.querySelector("#result-notification").innerHTML =`<small>${returnDS}. Incidencia ${codeInc}</small>`;
+      }
+    
+      xhr.setRequestHeader('Content-Type', 'text/xml');
+      xhr.send(strNewErrorMessage3);
+    
+    }
+
+    const soapTokenRequest = () => {
+
+      var strTokenRequest = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.b2tconcept.com/webservices/">
+                   <soapenv:Header/>
+                    <soapenv:Body>
+                      <web:DoLogin>
+                        <web:loginDs>${loginUser}</web:loginDs>
+                        <web:pwdCd>${loginPwd}</web:pwdCd>
+                      </web:DoLogin>
+                    </soapenv:Body>
+                   </soapenv:Envelope>`;
+    
+      function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+          xhr.open(method, url, false);
+        } else if (typeof XDomainRequest != "undefined") {
+          xhr = new XDomainRequest();
+          xhr.open(method, url);
+        } else {
+          console.log("CORS not supported");
+          alert("CORS not supported");
+          xhr = null;
+        }
+        return xhr;
+      }
+      var xhr = createCORSRequest("POST", urlINCIGEOToken);
+      if (!xhr) {
+        console.log("XHR issue");
+        return;
+      }
+    
+      xhr.onload = function () {
+        var results = xhr.responseText;
+        const parser = new DOMParser();
+        const xmlDOM = parser.parseFromString(results, "text/xml");
+        const value = xmlDOM.getElementsByTagName("web:TOKEN_CD")[0].childNodes[0].nodeValue;
+        console.log(xmlDOM);
+        console.log(value);
+        console.log(results);
+        soapCreateError(value);
+      }
+    
+      xhr.setRequestHeader('Content-Type', 'text/xml');
+      xhr.send(strTokenRequest);
+    }
+
+
+    soapTokenRequest();
+    console.log("Proceso de alta en INCIGEO");
+
 
   }
 
@@ -1159,10 +1327,50 @@ export default class IncicartoControl extends M.Control {
         M.dialog.error(getValue('exception.format_not_selected'));
         break;
     }
-    this.geometryIncidence = arrayContent;
-    this.activateModal();
+
+
+    if (geojsonLayer.features.length > 0){
+      this.geometryIncidence = arrayContent;
+      this.getCentroid4INCIGEO(geojsonLayer);
+      this.activateModal();
+    }else{
+      M.dialog.error("No hay geometrías trazadas en la incidencia");
+    }
+
     document.querySelector(selector).innerHTML = '';
   }
+
+
+  getCentroid4INCIGEO(geojsonLayer) {
+
+    if (geojsonLayer.features.length > 0) {
+      //layer.getFeatures().map(feature => {
+      //  console.log(feature.getGeoJSON());
+      //});
+      //console.log(geojsonLayer);
+      //console.log(JSON.stringify(geojsonLayer));
+      //console.log(geojsonLayer.features[0].geometry.coordinates); // Si es puntual esto es un array de 2
+      //console.log(geojsonLayer.features[0].geometry.coordinates[0]);  // Si es puntual esto deveulve la X
+      //console.log(geojsonLayer.features[0].geometry.coordinates[0].length);
+
+      if (geojsonLayer.features[0].geometry.coordinates.length === 2) {
+        this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0];
+        this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[1];
+        //console.log(`X:${geojsonLayer.features[0].geometry.coordinates[0]}`);
+        //console.log(`Y:${geojsonLayer.features[0].geometry.coordinates[1]}`);
+      } else {
+        this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0];
+        this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][1];
+        //console.log(geojsonLayer.features[0].geometry.coordinates[0]);
+        //console.log(`X:${geojsonLayer.features[0].geometry.coordinates[0][0]}`);
+        //console.log(`Y:${geojsonLayer.features[0].geometry.coordinates[0][1]}`);
+      }
+
+    }
+
+  }
+
+
 
   /**
    * This function compares controls
