@@ -96,19 +96,18 @@ class XYZ extends Layer {
     this.map = map;
     const projection = getProj('EPSG:3857');
     const extent = projection.getExtent();
-
     this.ol3Layer = new OLTileLayer({
       visible: this.visibility,
       opacity: this.opacity_,
       zIndex: this.zIndex_,
+      minZoom: this.minZoom,
+      maxZoom: this.maxZoom,
       extent,
     });
     this.map.getMapImpl().addLayer(this.ol3Layer);
     const source = new XYZSource({
       projection: this.map.getProjection().code,
       url: this.url,
-      minZoom: this.minZoom,
-      maxZoom: this.maxZoom,
       tileSize: this.getTileSize(),
     });
     this.ol3Layer.setSource(source);
