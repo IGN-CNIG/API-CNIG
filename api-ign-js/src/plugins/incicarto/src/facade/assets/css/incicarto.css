@@ -913,7 +913,7 @@ span.m-incicarto-3d-measure:hover {
 }
 
 .m-plugin-incicarto-html>span {
-  margin-top: 20px;
+  margin-top: 10px;
   color: #71a7d3;
   font-weight: bold;
 }
@@ -981,6 +981,33 @@ span.m-incicarto-3d-measure:hover {
   border-style: solid;
   border-width: 8px 5px 0px 5px;
   border-color: #7b7b7b transparent transparent transparent;
+}
+
+
+.m-plugin-incicarto-form {
+  display: flex;
+  margin-top: 15px;
+  width: 100%;
+  justify-content: center;
+  align-content: center;
+  flex-direction:column;
+  flex-grow: 2;
+  font-size: 15px;
+  align-items: center;
+}
+
+.m-plugin-incicarto-form-input-group{
+  display: flex;
+  flex-direction:column;
+  width: 75%;
+  margin-top: 10px;
+}
+
+.m-plugin-incicarto-form-input-group textarea{
+  display: block;
+  border: 2px solid #000000;
+  color: #0000ff;
+  resize: none;
 }
 
 

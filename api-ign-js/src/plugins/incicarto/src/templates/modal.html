@@ -40,9 +40,15 @@
               </div>
             </div>
             {{/if}}
-            <div id="m-incicarto-metadata-description" class="m-plugin-incicarto-html">
-                <label style="display:block;">Descripción</label>
-                <textarea id="err-description" type="text" name="err-description"></textarea> 
+            <div id="m-incicarto-metadata-description" class="m-plugin-incicarto-form">
+                      <div class="m-plugin-incicarto-form-input-group">
+                        <label for="email-notify">Notificaciones</label>
+                        <input id="email-notify" type="email" name="email-notify" placeholder="Correo electrónico para seguimiento"></input> 
+                      </div>
+                      <div class="m-plugin-incicarto-form-input-group">
+                        <label for="err-description">Descripción</label>
+                        <textarea id="err-description" type="text" name="err-description"></textarea> 
+                      </div>
             </div>
 
             <div class="m-plugin-incicarto-html">
@@ -76,7 +82,9 @@
             <div class="m-plugin-incicarto-html">
                 <button id="m-plugin-incicarto-connect-incicarto">{{translations.btntext2}}</button>
             </div>
-
+            <div class="m-plugin-incicarto-html">
+                <p id ="result-notification" style="color:#1c521c;"></p>
+            </div>
         </div>
     </div>
 </div>
