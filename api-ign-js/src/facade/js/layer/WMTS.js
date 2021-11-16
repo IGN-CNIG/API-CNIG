@@ -33,18 +33,24 @@ class WMTS extends LayerBase {
       ...parameters,
     };
 
+    if (userParameters.minZoom !== undefined) {
+      optionsVar.minZoom = userParameters.minZoom;
+    }
+
+    if (userParameters.maxZoom !== undefined) {
+      optionsVar.maxZoom = userParameters.maxZoom;
+    }
+
     /**
      * Implementation of this layer
      * @public
      * @type {M.layer.WMTS}
      */
+    console.log(optionsVar, vendorOptions);
     const impl = new WMTSImpl(optionsVar, vendorOptions);
 
     // calls the super constructor
     super(parameters, impl);
-    console.log(userParameters);
-    console.log(options);
-    console.log(vendorOptions);
 
     // checks if the implementation can create WMTS layers
     if (isUndefined(WMTSImpl)) {
