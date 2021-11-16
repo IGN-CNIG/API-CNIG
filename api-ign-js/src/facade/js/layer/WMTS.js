@@ -46,7 +46,6 @@ class WMTS extends LayerBase {
      * @public
      * @type {M.layer.WMTS}
      */
-    console.log(optionsVar, vendorOptions);
     const impl = new WMTSImpl(optionsVar, vendorOptions);
 
     // calls the super constructor

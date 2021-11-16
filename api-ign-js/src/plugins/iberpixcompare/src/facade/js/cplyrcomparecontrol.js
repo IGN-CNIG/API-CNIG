@@ -157,7 +157,7 @@ export default class LyrCompareControl extends M.Control {
 
   renderPlugin(success) {
     const emptyLayer = new M.layer.WMS({
-      url: 'https://www.ign.es/wms/pnoa-historico?',
+      url: 'https://www.ign.es/wms/ign-base?',
       name: 'empty_layer',
       legend: 'Sin capa',
       tiled: false,

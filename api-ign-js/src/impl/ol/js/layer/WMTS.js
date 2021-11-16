@@ -67,9 +67,6 @@ class WMTS extends LayerBase {
 
     this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
 
-    console.log('Constructor');
-    console.log(options, vendorOptions);
-
     /**
      * Options
      * @private
@@ -208,9 +205,6 @@ class WMTS extends LayerBase {
       const zIndex = this.zIndex_;
       this.map.getMapImpl().addLayer(this.ol3Layer);
       setTimeout(() => {
-        console.log('AddLayers');
-        console.log(this.options);
-        console.log(this.vendorOptions_);
         this.ol3Layer.setMaxZoom(this.maxZoom);
         this.ol3Layer.setMinZoom(this.minZoom);
       }, 500);

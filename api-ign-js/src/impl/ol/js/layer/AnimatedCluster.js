@@ -156,7 +156,6 @@ class AnimatedCluster extends OLLayerVector {
         const ptFrom = cluster.getGeometry().getCoordinates();
         const ptTo = this.animation_.clustersTo[i].getGeometry().getCoordinates();
 
-        // console.log(ptTo[0] === ptFrom[0] && ptTo[1] === ptFrom[1], animationProgress, reverse);
         if (this.animation_.reverse) {
           ptFrom[0] = ptTo[0] + (animationProgress * (ptFrom[0] - ptTo[0]));
           ptFrom[1] = ptTo[1] + (animationProgress * (ptFrom[1] - ptTo[1]));

@@ -47,9 +47,11 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
   setMap(map) {
     if (this.getMap()) {
       for (let i = 0; i < this.layers_.length; i += 1) {
-        if (this.layers_[i].prerender) ol.Observable.unByKey(this.layers_[i].prerender);
-        if (this.layers_[i].postrender) ol.Observable.unByKey(this.layers_[i].postrender);
-        this.layers_[i].prerender = this.layers_[i].postrender = null;
+        if (this.layers_[i] !== undefined) {
+          if (this.layers_[i].prerender) ol.Observable.unByKey(this.layers_[i].prerender);
+          if (this.layers_[i].postrender) ol.Observable.unByKey(this.layers_[i].postrender);
+          this.layers_[i].prerender = this.layers_[i].postrender = null;
+        }
       }
 
       this.getMap().renderSync();
@@ -91,7 +93,9 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     this.opacityVal = opacityVal;
     if (this.getMap()) {
       for (let i = 0; i < this.layers_.length; i += 1) {
-        this.layers_[i].setOpacity(this.opacityVal / 100);
+        if (this.layers_[i] !== undefined) {
+          this.layers_[i].setOpacity(this.opacityVal / 100);
+        }
       }
     }
   }

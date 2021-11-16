@@ -15,7 +15,7 @@ const mp2 = new ShareMap({
   position: 'TR',
 });
 
-/*const mp = new BackImgLayer({
+const mp = new BackImgLayer({
   collapsed: true,
   collapsible: true,
   position: 'TR',
@@ -42,7 +42,7 @@ const mp2 = new ShareMap({
       title: 'Imagen',
       preview: '../src/facade/assets/images/svqimagen.png',
       layers: [
-        /*new M.layer.XYZ({
+        new M.layer.XYZ({
           url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
           name: 'PNOA-MA',
           legend: 'Imagen',
@@ -127,7 +127,7 @@ const mp2 = new ShareMap({
       })],
     }
   ],
-});*/
+});
 
 // const mp = new BackImgLayer({
 //   collapsed: true,
@@ -151,9 +151,9 @@ const mp2 = new ShareMap({
 // layers: 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/pngasteriscofalseasteriscofalseasteriscotruesumarWMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue',
 
 
-// map.addPlugin(mp);
+map.addPlugin(mp);
 // map.addPlugin(mp2);
-map.addLayers(new M.layer.WMTS({
+/*map.addLayers(new M.layer.WMTS({
   url: 'https://www.ign.es/wmts/pnoa-ma?',
   name: 'OI.OrthoimageCoverage',
   matrixSet: 'GoogleMapsCompatible',
@@ -164,6 +164,6 @@ map.addLayers(new M.layer.WMTS({
   visible: true,
   format: 'image/jpeg',
   minZoom: 10,
-}));
+}));*/
 
 window.map = map;
