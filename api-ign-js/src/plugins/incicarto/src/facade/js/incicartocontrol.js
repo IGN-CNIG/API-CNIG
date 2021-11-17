@@ -643,20 +643,24 @@ export default class IncicartoControl extends M.Control {
       }
     
       xhr.onload = function () {
-        var results = xhr.responseText;
-        const parserResponse = new DOMParser();
-        const xmlDOMResponse = parserResponse.parseFromString(results, "text/xml");
-        console.log(xmlDOMResponse);
-        const returnCD = xmlDOMResponse.getElementsByTagName("web:RETURN_CD")[0].childNodes[0].nodeValue;
-        const returnDS = xmlDOMResponse.getElementsByTagName("web:RETURN_DS")[0].childNodes[0].nodeValue;
-        const codeInc = xmlDOMResponse.getElementsByTagName("web:codeInc")[0].childNodes[0].nodeValue;
-        console.info(returnCD); // Devuelve cero si se ha creado
-        console.info(returnDS); // Descripción literal del código devuelto "La operación se ha realizado correctamente"
-        console.info(codeInc);  // Devuelve código de incidencia para seguimiento
-        document.querySelector("#result-notification").innerHTML =`<small>${returnDS}. Incidencia ${codeInc}</small>`;
-        document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled=true;
+          var results = xhr.responseText;
+          const parserResponse = new DOMParser();
+          const xmlDOMResponse = parserResponse.parseFromString(results, "text/xml");
+          console.log(xmlDOMResponse);
+          const returnCD = xmlDOMResponse.getElementsByTagName("web:RETURN_CD")[0].childNodes[0].nodeValue;
+          const returnDS = xmlDOMResponse.getElementsByTagName("web:RETURN_DS")[0].childNodes[0].nodeValue;
+          if (returnCD==='0'){
+            let codeInc = xmlDOMResponse.getElementsByTagName("web:codeInc")[0].childNodes[0].nodeValue;
+            document.querySelector("#result-notification").innerHTML =`<small>${returnDS}. Incidencia ${codeInc}</small>`;
+            document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled=true;
+          }else{
+            document.querySelector("#result-notification").innerHTML =`<small>${returnDS}. Error: ${returnCD}</small>`;          
+          }
+          console.info(returnCD); // Devuelve cero si se ha creado
+          console.info(returnDS); // Descripción literal del código devuelto "La operación se ha realizado correctamente"
+          console.info(codeInc);  // Devuelve código de incidencia para seguimiento
       }
-    
+   
       xhr.setRequestHeader('Content-Type', 'text/xml');
       xhr.send(strNewErrorMessage3);
     
@@ -1342,7 +1346,6 @@ export default class IncicartoControl extends M.Control {
     document.querySelector(selector).innerHTML = '';
   }
 
-
   getCentroid4INCIGEO(geojsonLayer) {
 
     if (geojsonLayer.features.length > 0) {
@@ -1356,22 +1359,27 @@ export default class IncicartoControl extends M.Control {
       //console.log(geojsonLayer.features[0].geometry.coordinates[0].length);
 
       if (geojsonLayer.features[0].geometry.coordinates.length === 2) {
+        // Punto
         this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0];
         this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[1];
-        //console.log(`X:${geojsonLayer.features[0].geometry.coordinates[0]}`);
-        //console.log(`Y:${geojsonLayer.features[0].geometry.coordinates[1]}`);
       } else {
-        this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0];
-        this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][1];
-        //console.log(geojsonLayer.features[0].geometry.coordinates[0]);
-        //console.log(`X:${geojsonLayer.features[0].geometry.coordinates[0][0]}`);
-        //console.log(`Y:${geojsonLayer.features[0].geometry.coordinates[0][1]}`);
+        console.log(geojsonLayer.features[0].geometry.coordinates[0]);
+        if (geojsonLayer.features[0].geometry.coordinates[0].length===2){
+            // Línea
+            this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0];
+            this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][1];
+        }else{
+          // Polígono
+            this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0][0];
+            this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][0][1];
+        }
+        //console.log(`X:${this.geometryIncidenceX}`);
+        //console.log(`Y:${this.geometryIncidenceY}`);
       }
 
     }
 
   }
-
 
 
   /**
