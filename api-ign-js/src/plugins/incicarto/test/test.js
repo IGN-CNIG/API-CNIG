@@ -308,6 +308,23 @@ const mp = new Incicarto({
     email: 'sismologia@mitma.es',
   }
   ],
+  controllist:[
+    {
+      id: 'themeList',
+      name:'Temas de errores',
+      mandatory: true,
+    },
+    {
+      id: 'errorList',
+      name:'Tipos de errores',
+      mandatory: true,
+    },
+    {
+      id: 'productList',
+      name:'Lista de productos',
+      mandatory: true,
+    }
+  ],
   themeList: [
     'No especificado',
     'Relieve',
