@@ -241,8 +241,8 @@ const mp = new Incicarto({
   collapsed: false,
   collapsible: true,
   position: 'TL',
-  wfszoom: 12,
-  precharged,
+  /*wfszoom: 12,*/
+  /*precharged,*/
   buzones: [{
     name: 'Cartografía (MTN, BTN, RT, HY, Pob, BCN, Prvinciales, escalas pequeñas)',
     email: 'cartografia.ign@mitma.es',

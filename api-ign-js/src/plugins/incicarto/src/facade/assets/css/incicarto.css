@@ -930,11 +930,20 @@ span.m-incicarto-3d-measure:hover {
   font-weight: bold;
   padding: 5px 10px;
   border-radius: 5px;
-}
-
-.m-plugin-incicarto-html>button {
   background-color: #71a7d3;
   color: #fff;
+}
+
+.m-plugin-incicarto-html>button:hover{
+  background-color:#3e8ecf;
+  color: #fff;
+  cursor: pointer;
+}
+
+.m-plugin-incicarto-html>button:disabled{
+  background-color:#848d94;
+  color: #fff;
+  cursor: default;
 }
 
 .m-plugin-incicarto-html p {
@@ -1009,14 +1018,6 @@ span.m-incicarto-3d-measure:hover {
   color: #0000ff;
   resize: none;
 }
-
-
-
-
-
-
-
-
 
 
 /**************************
