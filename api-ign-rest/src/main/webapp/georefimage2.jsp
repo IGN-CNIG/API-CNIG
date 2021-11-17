@@ -2,8 +2,10 @@
 <%@ page import="es.cnig.mapea.plugins.PluginsManager"%>
 <%@ page import="es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4"%>
 <%@ page import="java.util.Map"%>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -11,7 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
+    <link href="plugins/georefimage2/georefimage2.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     </link>
@@ -37,6 +39,7 @@
     <%
       } %>
 </head>
+
 <body>
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
@@ -46,11 +49,13 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
+
         <label for="selectCollapsed">Selector collapsed</label>
         <select name="httpValue" id="selectCollapsed">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+
         <label for="selectCollapsible">Selector collapsible</label>
         <select name="httpValue" id="selectCollapsible">
             <option value=true>true</option>
@@ -77,21 +82,24 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/georefimage/georefimage.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/georefimage2/georefimage2.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
+
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
          String jsfile = jsfiles[i];
    %>
     <script type="text/javascript" src="plugins/<%=jsfile%>"></script>
+
     <%
       }
    %>
     <script type="text/javascript">
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
+
         const map = M.map({
             container: 'mapjs',
             zoom: 5,
@@ -101,19 +109,23 @@
         });
         let mp;
         let position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl;
+
         crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl);
+
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
         const inputServerUrl = document.getElementById("inputServerUrl");
         const inputPrintTemplateUrl = document.getElementById("inputPrintTemplateUrl");
         const inputPrintStatusUrl = document.getElementById("inputPrintStatusUrl");
+
         selectPosicion.addEventListener("change", cambiarTest);
         selectCollapsed.addEventListener("change", cambiarTest);
         selectCollapsible.addEventListener("change", cambiarTest);
         inputServerUrl.addEventListener("change", cambiarTest);
         inputPrintTemplateUrl.addEventListener("change", cambiarTest);
         inputPrintStatusUrl.addEventListener("change", cambiarTest);
+
         function cambiarTest() {
             position = selectPosicion.options[selectPosicion.selectedIndex].value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
@@ -124,8 +136,9 @@
             map.removePlugins(mp);
             crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl);
         }
+
         function crearPlugin(position, collapsed, collapsible, serverUrl, printTemplateUrl, printStatusUrl) {
-            mp = new M.plugin.Georefimage({
+            mp = new M.plugin.Georefimage2({
                 collapsed: collapsed,
                 collapsible: collapsible,
                 position: position,
@@ -319,6 +332,7 @@
         }));
     </script>
 </body>
+
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
 <script>
@@ -327,4 +341,5 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'UA-163660977-1');
 </script>
+
 </html>
