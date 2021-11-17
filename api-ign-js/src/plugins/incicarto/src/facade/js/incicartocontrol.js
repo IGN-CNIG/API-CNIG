@@ -438,10 +438,10 @@ export default class IncicartoControl extends M.Control {
    * @param {String} html - Geometry buttons template.
    */
   addEvents(html) {
-
-    html.querySelector('#incicarto-test-modal').addEventListener('click', ()=>{
+    console.log("Eventos cargados");
+    /*html.querySelector('#incicarto-test-modal').addEventListener('click', ()=>{
        this.activateModal();
-    });
+    });*/
     document.querySelector('.m-incicarto > button.m-panel-btn').addEventListener('click', this.toogleActivate.bind(this));
     html.querySelector('#incicarto-add-point').addEventListener('click', this.addNewLayer.bind(this, 'Point'));
     html.querySelector('#incicarto-add-line').addEventListener('click', this.addNewLayer.bind(this, 'LineString'));
@@ -449,6 +449,7 @@ export default class IncicartoControl extends M.Control {
     //html.querySelector('#incicarto-add-wfs').addEventListener('click', this.openAddWFS.bind(this));
     //html.querySelector('#incicarto-upload').addEventListener('click', () => this.openUploadOptions());
     this.addDragDropEvents();
+    console.log("Eventos cargados");
 
 
     
@@ -509,7 +510,7 @@ export default class IncicartoControl extends M.Control {
         // document.querySelector('div.m-mapea-container div.m-dialog').remove(); // Así cerramos a lo loco
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
         document.querySelector("#result-notification").innerHTML ="<small>El correo con la incidencia se ha generado correctamente. Utilice su cliente habitual para enviarlo.</small>";
-        
+        document.querySelector("#m-plugin-incicarto-send-email").disabled=true;
       });
 
       document.querySelector("#m-plugin-incicarto-connect-incicarto").addEventListener('click',(e)=>{
@@ -653,6 +654,7 @@ export default class IncicartoControl extends M.Control {
         console.info(returnDS); // Descripción literal del código devuelto "La operación se ha realizado correctamente"
         console.info(codeInc);  // Devuelve código de incidencia para seguimiento
         document.querySelector("#result-notification").innerHTML =`<small>${returnDS}. Incidencia ${codeInc}</small>`;
+        document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled=true;
       }
     
       xhr.setRequestHeader('Content-Type', 'text/xml');
