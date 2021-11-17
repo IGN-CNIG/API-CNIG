@@ -153,6 +153,13 @@ export default class IncicartoControl extends M.Control {
     this.precharged = options.precharged;
 
     this.buzones = options.buzones;
+
+    this.errThemes = options.errThemes;
+    this.errTypes = options.errTypes;
+    this.errProducts = options.errProducts;
+
+
+
     this.themes = options.themes;
     this.errors = options.errors;
     this.products = options.products;
@@ -189,15 +196,15 @@ export default class IncicartoControl extends M.Control {
           products:{},
         },
       };
-
+      console.log(this.errThemes);
+      console.log(this.errTypes);
+      console.log(this.errProducts);
       if (this.themes.length >= 1) {
         optionsTemplate.vars.themes = this.themes;
       }
-
       if (this.errors.length >= 1) {
         optionsTemplate.vars.errors = this.errors;
       }
-
       if (this.products.length >= 1) {
         optionsTemplate.vars.products = this.products;
       }
@@ -206,9 +213,7 @@ export default class IncicartoControl extends M.Control {
       this.html = html;
       this.renderLayers();
       success(html);
-      console.log("Paso A");
       this.addEvents(html);
-      console.log("Paso B");
       this.createDrawingTemplate();
       this.createUploadingTemplate();
       this.map.addLayers(this.selectionLayer);
@@ -491,9 +496,6 @@ export default class IncicartoControl extends M.Control {
       optionsModal.vars.products = this.products;
     }
 
-
-
-
     const dialog = M.template.compileSync(modal, optionsModal);
     M.dialog.info(dialog,"Enviar notificación de incidencia en cartografía");
     
@@ -502,22 +504,24 @@ export default class IncicartoControl extends M.Control {
       document.querySelector("#m-plugin-incicarto-send-email").addEventListener('click',(e)=>{
         let destinataryContainer = document.querySelector("#email-to");
         let destinatary = destinataryContainer.options[destinataryContainer.selectedIndex].value;
-        console.log(`Envío de correo electrónico ${destinatary}`);
-
         let mailto_composed = this.composeMailtoSend(destinatary)
-        
+        if (mailto_composed===false){
+          console.log("El mail no ha sido validado");
+          return;
+        }
+        console.log(`Envío de correo electrónico ${destinatary}`);
         window.open(mailto_composed,'emailWindow');
         // document.querySelector('div.m-mapea-container div.m-dialog').remove(); // Así cerramos a lo loco
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
-        document.querySelector("#result-notification").innerHTML ="<small>El correo con la incidencia se ha generado correctamente. Utilice su cliente habitual para enviarlo.</small>";
+        this.showMessageInModal("El correo con la incidencia se ha generado correctamente. Utilice su cliente habitual para enviarlo.","okmessage");
         document.querySelector("#m-plugin-incicarto-send-email").disabled=true;
       });
 
       document.querySelector("#m-plugin-incicarto-connect-incicarto").addEventListener('click',(e)=>{
         
+
         this.composeIncidencia4INCIGEO();
         document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled = true;
-
       });
 
       // Para configurar la apariencia del botón Cerrar del modal
@@ -531,11 +535,59 @@ export default class IncicartoControl extends M.Control {
     
   }
 
+/**
+ * 
+ * @param {*} messageText 
+ * @param {String} classHTML Nombre de la clase para asignar estilo: okmessage, nakmessage 
+ */
+  showMessageInModal(messageText,classHTML){
+    this.resetMessageInModal();
+    document.querySelector("#result-notification").innerHTML = messageText;
+    document.querySelector("#result-notification").classList.add(classHTML);
+  }
+
+/**
+ * Limpia el cuadro para mensajes en el modal
+ */
+  resetMessageInModal(){
+    document.querySelector("#result-notification").innerHTML = "";
+    document.querySelector("#result-notification").classList.remove("okmessage");
+    document.querySelector("#result-notification").classList.remove("nakmessage");
+  }
+
+  validateIncidenciaMessage(){
+
+    const themeMetadataContainer = document.querySelector("#theme-select");
+    const errorMetadataContainer = document.querySelector("#error-select");
+    const productMetadataContainer = document.querySelector("#product-select");
+
+      if (this.errThemes.mandatory===true && themeMetadataContainer.selectedIndex===0){
+        this.showMessageInModal("Clasifique el error con un tema","nakmessage");
+        return false;
+      }else if (this.errTypes.mandatory===true && errorMetadataContainer.selectedIndex===0){
+        this.showMessageInModal("Clasifique el error con un tipo","nakmessage");
+        return false;
+      }else if (this.errProducts.mandatory===true && productMetadataContainer.selectedIndex===0){
+        this.showMessageInModal("Clasifique el error con un producto","nakmessage");
+        return false;
+      }
+
+      return true;
+
+  }
+
   composeMailtoSend(destinatary) {
 
     let themeMetadataContainer = document.querySelector("#theme-select");
     let errorMetadataContainer = document.querySelector("#error-select");
     let productMetadataContainer = document.querySelector("#product-select");
+
+
+    if (this.validateIncidenciaMessage()===false){
+      console.log("Validación errónea");
+      return false;
+    };
+
     let theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
     let error = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].value;
     let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
@@ -550,7 +602,6 @@ export default class IncicartoControl extends M.Control {
       "geometry": this.geometryIncidence,
     };
            
-
     return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
 
   }
@@ -563,6 +614,8 @@ export default class IncicartoControl extends M.Control {
     const loginUser = "pruebas_inserciones";  //usr_signa
     const loginPwd = "pruebas";               //pr_signa
 
+
+    console.log("Proceso de alta en INCIGEO");
 
     const soapCreateError = (tokenAccess) => {
   
@@ -649,13 +702,24 @@ export default class IncicartoControl extends M.Control {
         console.log(xmlDOMResponse);
         const returnCD = xmlDOMResponse.getElementsByTagName("web:RETURN_CD")[0].childNodes[0].nodeValue;
         const returnDS = xmlDOMResponse.getElementsByTagName("web:RETURN_DS")[0].childNodes[0].nodeValue;
-        const codeInc = xmlDOMResponse.getElementsByTagName("web:codeInc")[0].childNodes[0].nodeValue;
-        console.info(returnCD); // Devuelve cero si se ha creado
-        console.info(returnDS); // Descripción literal del código devuelto "La operación se ha realizado correctamente"
-        console.info(codeInc);  // Devuelve código de incidencia para seguimiento
-        document.querySelector("#result-notification").innerHTML =`<small>${returnDS}. Incidencia ${codeInc}</small>`;
-        document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled=true;
-      }
+        if (returnCD==='0'){
+          let codeInc = xmlDOMResponse.getElementsByTagName("web:codeInc")[0].childNodes[0].nodeValue;
+          //document.querySelector("#result-notification").innerHTML =`<small>${returnDS}. Incidencia ${codeInc}</small>`;
+          document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled=true;
+          document.querySelector("#result-notification").innerHTML = `${returnDS}. Incidencia ${codeInc}.`;
+          document.querySelector("#result-notification").classList.remove("okmessage");
+          document.querySelector("#result-notification").classList.remove("nakmessage");
+          document.querySelector("#result-notification").classList.add("okmessage");
+        }else{
+          document.querySelector("#result-notification").innerHTML = `<small>${returnDS}. Error: ${returnCD}.</small>`;
+          document.querySelector("#result-notification").classList.remove("okmessage");
+          document.querySelector("#result-notification").classList.remove("nakmessage");
+          document.querySelector("#result-notification").classList.add("nakmessage");
+        }
+        //console.info(returnCD); // Devuelve cero si se ha creado
+        //console.info(returnDS); // Descripción literal del código devuelto "La operación se ha realizado correctamente"
+        //console.info(codeInc);  // Devuelve código de incidencia para seguimiento
+    }
     
       xhr.setRequestHeader('Content-Type', 'text/xml');
       xhr.send(strNewErrorMessage3);
@@ -709,11 +773,13 @@ export default class IncicartoControl extends M.Control {
       xhr.send(strTokenRequest);
     }
 
-
-    soapTokenRequest();
-    console.log("Proceso de alta en INCIGEO");
-
-
+    // Si no hacemos esto, no da tiempo a que salga el mensaje
+    setTimeout(() => {
+      soapTokenRequest();
+    }, 250);
+    
+    this.showMessageInModal("Conectando con INCIGEO para enviar incidencia","okmessage");
+    
   }
 
   openAddWFS() {
@@ -1349,24 +1415,32 @@ export default class IncicartoControl extends M.Control {
       //layer.getFeatures().map(feature => {
       //  console.log(feature.getGeoJSON());
       //});
-      //console.log(geojsonLayer);
-      //console.log(JSON.stringify(geojsonLayer));
-      //console.log(geojsonLayer.features[0].geometry.coordinates); // Si es puntual esto es un array de 2
-      //console.log(geojsonLayer.features[0].geometry.coordinates[0]);  // Si es puntual esto deveulve la X
-      //console.log(geojsonLayer.features[0].geometry.coordinates[0].length);
+      console.log(JSON.stringify(geojsonLayer));
+      console.log(geojsonLayer.features[0].geometry.coordinates); // Si es puntual esto es un array de 2
+      console.log(geojsonLayer.features[0].geometry.coordinates[0]);  // Si es puntual esto deveulve la X
+      console.log(geojsonLayer.features[0].geometry.coordinates.length);
 
       if (geojsonLayer.features[0].geometry.coordinates.length === 2) {
+        // Punto 2D
         this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0];
         this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[1];
-        //console.log(`X:${geojsonLayer.features[0].geometry.coordinates[0]}`);
-        //console.log(`Y:${geojsonLayer.features[0].geometry.coordinates[1]}`);
+       }else if (geojsonLayer.features[0].geometry.coordinates.length === 3) {
+        // Punto 3D
+        this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0];
+        this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[1];
       } else {
-        this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0];
-        this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][1];
-        //console.log(geojsonLayer.features[0].geometry.coordinates[0]);
-        //console.log(`X:${geojsonLayer.features[0].geometry.coordinates[0][0]}`);
-        //console.log(`Y:${geojsonLayer.features[0].geometry.coordinates[0][1]}`);
+        if (geojsonLayer.features[0].geometry.coordinates[0].length===2){
+            // Línea
+            this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0];
+            this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][1];
+        }else{
+          // Polígono
+            this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0][0];
+            this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][0][1];
+        }
       }
+      console.log(`X:${this.geometryIncidenceX}`);
+      console.log(`Y:${this.geometryIncidenceY}`);
 
     }
 

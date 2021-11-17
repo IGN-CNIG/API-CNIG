@@ -50,7 +50,7 @@ Plugin que permite la identificación de incidencias sobre la cartografía. El u
 
 | | |
 |:----:|:----:|
-|<img src='./assets/incicarto-func01.png'  style='width:500px;'>|El usuario despliega la herramienta de notificación de incidencias y se sitúa en la zona donde ha enciontrado el error.|
+|<img src='./assets/incicarto-func01.png'  style='width:500px;'>|El usuario despliega la herramienta de notificación de incidencias y se sitúa en la zona donde ha encontrado el error.|
 |El usuario elige entre las herramientas disponibles para señalar la incidencia; punto, línea o polígono. Se desplegará el menú de incidencias, desde donde podrá crear geometrías, editarlas y aplicarles un estilo.|<img src='./assets/incicarto-func02.png'  style='width:500px;'>|
 |<img src='./assets/incicarto-func03.png'  style='width:500px;'>|Una vez creada la incidencia , el usuario puede modificarla en cualquier momento para redefinirla mejor o, borrarla, o incluso generar más incidencias presentes en la zona..|
 |Una vez localizadas las incidencias de la zona de estudio, podemos notificar las incidencias para su corrección. Para ello pulsará en la herramienta con la campanilla.|<img src='./assets/incicarto-func04.png'  style='width:500px;'>|
@@ -74,12 +74,16 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TR':top right
   - 'BL':bottom left
   - 'BR':bottom right
-- **buzones**: contiene un array con los objetos qued definen el nombre y direcciones de los buzones de incidencias. Cada onjeto buzón contiene dos parámetros.
+- **buzones**. Contiene un array con los objetos qued definen el nombre y direcciones de los buzones de incidencias. Cada onjeto buzón contiene dos parámetros.
   - 'name': nombre del propietario del buzón de incidencias.
   - 'email': correo electrónico del buzón.
-- **themeList**: lista de control con los temas por los que podemos clasificar una incidencia.
-- **errorList**: lista de control con las posibles categorizaciones del error.
-- **productList**: lista de control con los productos del IGN en los que se ha detectado el error.
+- **controllist**. Contiene un array enumerando las listas controladas con sus características.
+  - 'id': identificador de la lista.
+  - 'name': nombre de la lista.
+  - 'mandatory': indica si el usuario está obligado a legir una opción.
+- **themeList**. Lista de control con los temas por los que podemos clasificar una incidencia.
+- **errorList**. Lista de control con las posibles categorizaciones del error.
+- **productList**. Lista de control con los productos del IGN en los que se ha detectado el error.
 
 # Parámetros API REST
 
@@ -91,7 +95,6 @@ Ejemplo:
 ```javascript
 http://mapea-lite.desarrollo.guadaltel.es/api-core/?incicarto=BL*true*true
 ```
-
 
 ## Ejemplo
 
@@ -109,6 +112,23 @@ const mp = new M.plugin.Incicarto({
     email: 'ane@mitma.es',
   },
   {...},
+  ],
+  controllist:[
+    {
+      id: 'themeList',
+      name:'Temas de errores',
+      mandatory: true,
+    },
+    {
+      id: 'errorList',
+      name:'Tipos de errores',
+      mandatory: true,
+    },
+    {
+      id: 'productList',
+      name:'Lista de productos',
+      mandatory: true,
+    }
   ],
   themeList: [
     'No especificado',

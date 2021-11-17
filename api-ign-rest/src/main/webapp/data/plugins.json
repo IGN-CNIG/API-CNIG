@@ -150,6 +150,16 @@
     "description": "Muestra información GetFeatureInfo mediante activación de plugin."
   },
   {
+    "name": "incicarto",
+    "plugin": "[incicarto]",
+    "version": "v1.0",
+    "url_es": "incicarto.jsp?language=es",
+    "url_en": "incicarto.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/incicarto",
+    "image": "img/api-logo.png",
+    "description": "Plugin para dar de alta incidencias."
+  },
+  {
     "name": "lyrcompare",
     "plugin": "[lyrcompare]",
     "version": "v1.0",

@@ -950,6 +950,18 @@ span.m-incicarto-3d-measure:hover {
   padding: 0px;
 }
 
+.m-plugin-incicarto-html p.okmessage {
+  color:#1c521c;
+  font-size: 0.90rem;
+  padding: 0px;
+}
+
+.m-plugin-incicarto-html p.nakmessage {
+  color:#ff0000;
+  font-size: 0.90rem;
+  padding: 0px;
+}
+
 .m-plugin-incicarto-html label {
   display: inline-block;
   width: 75px;

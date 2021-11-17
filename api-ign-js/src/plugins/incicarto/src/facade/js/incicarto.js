@@ -67,6 +67,7 @@ export default class Incicarto extends M.Plugin {
 
     this.precharged_ = options.precharged || [];
 
+    this.controllist_ = options.controllist || [];
 
     this.buzones_ = options.buzones;
     this.themes_ = options.themeList;
@@ -106,13 +107,30 @@ export default class Incicarto extends M.Plugin {
       collapsedButtonClass: 'icon-incicarto', //Icono de la App
       tooltip: getValue('tooltip'),
     });
+
+    console.log(this.controllist_);
+    if (this.controllist_[0].id==="themeList"){
+      this.errThemes_=this.controllist_[0];
+    }
+    if (this.controllist_[1].id==="errorList"){
+      this.errTypes_=this.controllist_[1];
+    }
+    if (this.controllist_[2].id==="productList"){
+      this.errProducts_=this.controllist_[2];
+    }
+
+
     this.control_ = new IncicartoControl({ 
         wfszoom: this.wfszoom_, 
         precharged: this.precharged_,
+        controllist: this.controllist_,
         buzones: this.buzones_,
         themes: this.themes_,
         errors: this.errors_,
         products: this.products_,
+        errThemes: this.errThemes_,
+        errTypes: this.errTypes_,
+        errProducts: this.errProducts_,
     });
 
     this.controls_.push(this.control_);
