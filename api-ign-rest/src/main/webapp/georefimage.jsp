@@ -177,17 +177,6 @@
               preview: 'img/image.png',
               title: 'Imagen',
               layers: [
-                new M.layer.XYZ({
-                  url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
-                  name: 'PNOA-MA',
-                  legend: 'Imagen',
-                  projection: 'EPSG:3857',
-                  transparent: false,
-                  displayInLayerSwitcher: false,
-                  queryable: false,
-                  visible: true,
-                  maxZoom: 19,
-                }),
                 new M.layer.WMTS({
                   url: 'https://www.ign.es/wmts/pnoa-ma?',
                   name: 'OI.OrthoimageCoverage',
@@ -198,7 +187,6 @@
                   queryable: false,
                   visible: true,
                   format: 'image/jpeg',
-                  minZoom: 19,
                 }),
               ],
             },
@@ -225,17 +213,6 @@
               title: 'Híbrido',
               preview: 'img/hibrido.png',
               layers: [
-                new M.layer.XYZ({
-                  url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
-                  name: 'PNOA-MA',
-                  legend: 'Imagen',
-                  projection: 'EPSG:3857',
-                  transparent: false,
-                  displayInLayerSwitcher: false,
-                  queryable: false,
-                  visible: true,
-                  maxZoom: 19,
-                }),
                 new M.layer.WMTS({
                   url: 'https://www.ign.es/wmts/pnoa-ma?',
                   name: 'OI.OrthoimageCoverage',
@@ -246,7 +223,6 @@
                   queryable: false,
                   visible: true,
                   format: 'image/jpeg',
-                  minZoom: 19,
                 }),
                 new M.layer.WMTS({
                   url: 'https://www.ign.es/wmts/ign-base?',
