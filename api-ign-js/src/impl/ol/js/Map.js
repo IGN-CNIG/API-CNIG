@@ -150,7 +150,7 @@ class Map extends MObject {
       controls: [],
       target: div.id,
       // renderer,
-      view: view,
+      view,
     });
     this.map_.getView().setConstrainResolution(true);
     this.facadeMap_.on(EventType.COMPLETED, () => {
