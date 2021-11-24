@@ -134,13 +134,6 @@ class Map extends MObject {
     //   renderer = this.options_.renderer;
     // }
 
-    let view = new View();
-    if (options.extent !== undefined && options.extent.length === 4) {
-      view = new View({
-        extent: options.extent,
-        smoothExtentConstraint: true,
-      });
-    }
     /**
      * Implementation of this map
      * @private
@@ -150,7 +143,7 @@ class Map extends MObject {
       controls: [],
       target: div.id,
       // renderer,
-      view,
+      view: new View(),
     });
     this.map_.getView().setConstrainResolution(true);
     this.facadeMap_.on(EventType.COMPLETED, () => {
