@@ -1005,6 +1005,7 @@ export default class IGNSearchControl extends M.Control {
     this.clearResults();
     if (this.clickedElementLayer !== undefined) {
       this.clickedElementLayer.setStyle(this.simple);
+      this.map.removeLayers(this.clickedElementLayer);
     }
     this.map.removePopup(this.popup, [
       this.lng,

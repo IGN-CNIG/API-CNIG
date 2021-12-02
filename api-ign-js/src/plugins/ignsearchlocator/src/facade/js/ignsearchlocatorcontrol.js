@@ -1243,6 +1243,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.resultsBox.innerHTML = '';
     this.searchValue = '';
     this.map.removeLayers(this.coordinatesLayer);
+    this.map.removeLayers(this.clickedElementLayer);
     this.map.removePopup(this.map.getPopup());
   }
   /**
