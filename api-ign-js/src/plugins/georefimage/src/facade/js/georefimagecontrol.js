@@ -704,28 +704,25 @@ export default class GeorefimageControl extends M.Control {
    * @api stable
    */
   downloadPrint(event) {
+    const keepView = document.getElementById('keepview').checked;
+    const dpi = keepView ? 120 : this.dpi_;
+    const code = this.map_.getProjection().code;
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
-      const bbox = [this.map_.getBbox().x.min, this.map_.getBbox().y.min,
-        this.map_.getBbox().x.max, this.map_.getBbox().y.max,
+      let bbox = [
+        this.map_.getBbox().x.min,
+        this.map_.getBbox().y.min,
+        this.map_.getBbox().x.max,
+        this.map_.getBbox().y.max,
       ];
-
-      BboxTransformXmaxYmin = this.getImpl().transformExt(
-        bbox,
-        this.map_.getProjection().code, this.projection_.name,
-      );
-
-      const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
-      const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
-      const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
-        (72 / this.dpi_)).toString();
+      bbox = this.getImpl().transformExt(bbox, code, this.projection_.name);
+      const size = this.map_.getMapImpl().getSize();
+      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
-      const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
-        (72 / this.dpi_)).toString();
-      const Cx = (BboxTransformXmaxYmin[0]).toString();
-      const Cy = (BboxTransformXmaxYmin[3]).toString();
+      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
+      const Cx = (bbox[0] + (Px / 2)).toString();
+      const Cy = (bbox[3] + (Py / 2)).toString();
       let titulo = event.target.textContent;
       if (titulo === '' || titulo === getValue('notitle')) {
         const f = new Date();
