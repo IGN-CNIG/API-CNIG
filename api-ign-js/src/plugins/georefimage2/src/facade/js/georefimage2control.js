@@ -389,7 +389,7 @@ export default class Georefimage2Control extends M.Control {
     }
 
     let numLayersToProc = layers.length;
-    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
+    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEN', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
       numLayersToProc = layers.length;

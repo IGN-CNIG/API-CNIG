@@ -52,8 +52,9 @@ export default class Georefimage2Control extends M.impl.Control {
    */
   getParametrizedLayers(paramName, layers) {
     let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
-      return layer.type === 'IMAGE' && !M.utils.isNullOrEmpty(layer.getSource()) &&
-        !M.utils.isNullOrEmpty(layer.getSource().getParams()) &&
+      return !M.utils.isNullOrEmpty(layer.getSource()) &&
+      // eslint-disable-next-line no-underscore-dangle
+        !M.utils.isNullOrEmpty(layer.getSource().params_) &&
         layer.getSource().getParams()[paramName] !== undefined;
     });
 
@@ -380,7 +381,7 @@ export default class Georefimage2Control extends M.impl.Control {
     };
 
     encodedLayer.customParams = {
-      IMAGEID: params.IMAGEID,
+      IMAGEN: params.IMAGEN,
       transparent: true,
       iswmc: false,
     };
