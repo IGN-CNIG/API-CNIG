@@ -99,7 +99,13 @@
         }, {});
 
 
-        const kml = new M.layer.KML('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
+        const kml = new M.layer.KML({
+          url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
+          name:  'delegacionesIGN',
+          extract: false,
+          legend: 'Delegaciones IGN',
+          transparent: true,
+        });
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
 

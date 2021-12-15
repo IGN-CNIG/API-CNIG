@@ -76,14 +76,6 @@ export default class PrinterMapControl extends M.impl.Control {
    * @api stable
    */
   encodeLayer(layer) {
-    // eslint-disable-next-line no-console
-    console.log(layer);
-    const isParametrized = (typeof layer.getSource === 'function') &&
-      !M.utils.isNullOrEmpty(layer.getSource()) &&
-      // eslint-disable-next-line no-underscore-dangle
-      !M.utils.isNullOrEmpty(layer.getSource().params_) &&
-      layer.getSource().getParams().IMAGEN !== undefined;
-
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.WMC) {
         // none
@@ -107,12 +99,13 @@ export default class PrinterMapControl extends M.impl.Control {
         success(this.encodeMapbox(layer));
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
+      // eslint-disable-next-line no-underscore-dangle
+      } else if (typeof layer.getSource === 'function' && !M.utils.isNullOrEmpty(layer.getSource()) && !M.utils.isNullOrEmpty(layer.getSource().params_) && layer.getSource().getParams().IMAGEN !== undefined) {
+        success(this.encodeImage(layer));
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
         success(this.encodeXYZ(layer));
-      } else if (isParametrized) {
-        // eslint-disable-next-line no-console
-        console.log('Entra');
-        success(this.encodeImage(layer));
+      } else {
+        success(this.encodeWFS(layer));
       }
     }));
   }
@@ -513,7 +506,7 @@ export default class PrinterMapControl extends M.impl.Control {
             featureStyle.getStroke().getLineDash() : undefined;
           const styleGeom = {
             type: parseType,
-            fillColor: M.utils.isNullOrEmpty(fill) || (layer.name.indexOf(' Reverse') > -1 && layer.name.indexOf('Cobertura') > -1) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
+            fillColor: M.utils.isNullOrEmpty(fill) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
             fillOpacity: M.utils.isNullOrEmpty(fill) ?
               0 : M.utils.getOpacityFromRgba(fill.getColor()),
             strokeColor: M.utils.isNullOrEmpty(stroke) ? '#000000' : M.utils.rgbaToHex(stroke.getColor()),

@@ -993,8 +993,6 @@ export default class PrinterMapControl extends M.Control {
             // Mapfish requires reverse order
             success(encodedLayers.reverse());
           }
-        }).catch((err) => {
-          console.error(err);
         });
       });
     }));
@@ -1080,8 +1078,6 @@ export default class PrinterMapControl extends M.Control {
             // Mapfish requires reverse order
             success(encodedLayers.reverse());
           }
-        }).catch((err) => {
-          console.error(err);
         });
       });
     }));
