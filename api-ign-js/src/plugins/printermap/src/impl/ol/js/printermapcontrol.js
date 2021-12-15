@@ -76,6 +76,8 @@ export default class PrinterMapControl extends M.impl.Control {
    * @api stable
    */
   encodeLayer(layer) {
+    // eslint-disable-next-line no-console
+    console.log(layer);
     const isParametrized = (typeof layer.getSource === 'function') &&
       !M.utils.isNullOrEmpty(layer.getSource()) &&
       // eslint-disable-next-line no-underscore-dangle
