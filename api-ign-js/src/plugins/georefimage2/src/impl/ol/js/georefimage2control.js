@@ -76,7 +76,8 @@ export default class Georefimage2Control extends M.impl.Control {
    * @api stable
    */
   encodeLayer(layer) {
-    const isParametrized = !M.utils.isNullOrEmpty(layer.getSource()) &&
+    const isParametrized = typeof layer.getSource === 'function' &&
+      !M.utils.isNullOrEmpty(layer.getSource()) &&
       // eslint-disable-next-line no-underscore-dangle
       !M.utils.isNullOrEmpty(layer.getSource().params_) &&
       layer.getSource().getParams().IMAGEN !== undefined;
