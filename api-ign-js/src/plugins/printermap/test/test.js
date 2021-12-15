@@ -30,20 +30,12 @@ const layerinicial = new M.layer.WMS({
   tiled: false,
 }, {});
 
-const layerKML = new M.layer.KML({
-  url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
-  extract: false,
-  legend: 'Delegaciones IGN',
-  transparent: true,
-});
 
 /* const campamentos = new M.layer.GeoJSON({
   name: 'Campamentos',
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
   extract: true,
 }); */
-
-map.addLayers('KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true');
 
 const printermap = new PrinterMap({
   collapsed: true,
