@@ -76,6 +76,11 @@ export default class Georefimage2Control extends M.impl.Control {
    * @api stable
    */
   encodeLayer(layer) {
+    const isParametrized = !M.utils.isNullOrEmpty(layer.getSource()) &&
+      // eslint-disable-next-line no-underscore-dangle
+      !M.utils.isNullOrEmpty(layer.getSource().params_) &&
+      layer.getSource().getParams().IMAGEN !== undefined;
+
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.WMC) {
         // none
@@ -99,7 +104,7 @@ export default class Georefimage2Control extends M.impl.Control {
         success(this.encodeMapbox(layer));
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
-      } else if (layer.type === 'IMAGE' && !(layer instanceof M.layer.WMS)) {
+      } else if (isParametrized) {
         success(this.encodeImage(layer));
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
         success(this.encodeXYZ(layer));
