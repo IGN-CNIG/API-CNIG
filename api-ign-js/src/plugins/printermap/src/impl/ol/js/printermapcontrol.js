@@ -109,9 +109,9 @@ export default class PrinterMapControl extends M.impl.Control {
         success(this.encodeImage(layer));
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
         success(this.encodeXYZ(layer));
-      }/* else {
+      } else {
         success(this.encodeWFS(layer));
-      }*/
+      }
     }));
   }
 
