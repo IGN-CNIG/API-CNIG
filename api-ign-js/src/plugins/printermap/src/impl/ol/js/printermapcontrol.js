@@ -76,7 +76,7 @@ export default class PrinterMapControl extends M.impl.Control {
    * @api stable
    */
   encodeLayer(layer) {
-    const isParametrized = typeof layer.getSource === 'function' &&
+    const isParametrized = (typeof layer.getSource === 'function') &&
       !M.utils.isNullOrEmpty(layer.getSource()) &&
       // eslint-disable-next-line no-underscore-dangle
       !M.utils.isNullOrEmpty(layer.getSource().params_) &&
@@ -109,9 +109,9 @@ export default class PrinterMapControl extends M.impl.Control {
         success(this.encodeImage(layer));
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
         success(this.encodeXYZ(layer));
-      } else {
+      }/* else {
         success(this.encodeWFS(layer));
-      }
+      }*/
     }));
   }
 
