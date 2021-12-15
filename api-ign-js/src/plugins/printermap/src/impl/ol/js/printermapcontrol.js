@@ -107,12 +107,12 @@ export default class PrinterMapControl extends M.impl.Control {
         success(this.encodeMapbox(layer));
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
-      } else if (isParametrized) {
-        success(this.encodeImage(layer));
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
         success(this.encodeXYZ(layer));
-      } else {
-        success(this.encodeWFS(layer));
+      } else if (isParametrized) {
+        // eslint-disable-next-line no-console
+        console.log('Entra');
+        success(this.encodeImage(layer));
       }
     }));
   }
