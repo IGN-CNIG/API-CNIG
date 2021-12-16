@@ -76,7 +76,6 @@ export default class PrinterMapControl extends M.impl.Control {
    * @api stable
    */
   encodeLayer(layer) {
-    console.log(layer);
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.WMC) {
         // none
@@ -110,11 +109,12 @@ export default class PrinterMapControl extends M.impl.Control {
         success(this.encodeXYZ(layer));
       } else {
         console.log(layer);
+        console.log(typeof layer.getSource);
         console.log('typeof layer.getSource === \'function\'', typeof layer.getSource === 'function');
         // eslint-disable-next-line no-underscore-dangle
-        console.log('Caso 1', typeof layer.getSource === 'function' && layer.getSource() !== undefined && layer.getSource().params_ !== undefined && layer.getSource().getParams().IMAGEN !== undefined);
+        console.log('Caso 1', layer.getSource() !== undefined && layer.getSource().params_ !== undefined && layer.getSource().getParams().IMAGEN !== undefined);
         // eslint-disable-next-line no-underscore-dangle
-        console.log('Caso 2', typeof layer.getSource === 'function' && layer.getSource() !== null && layer.getSource().url_ !== undefined && layer.getSource().params_ !== undefined && layer.getSource().params_.IMAGEN !== undefined);
+        console.log('Caso 2', layer.getSource() !== null && layer.getSource().url_ !== undefined && layer.getSource().params_ !== undefined && layer.getSource().params_.IMAGEN !== undefined);
         success(this.encodeWFS(layer));
       }
     }));
