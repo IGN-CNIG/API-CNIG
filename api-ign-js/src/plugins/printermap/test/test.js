@@ -70,6 +70,26 @@ map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
 }));
 
+const source = new ol.source.ImageWMS({
+  url: 'https://wms-fototeca.idee.es/fototeca?',
+  params: {
+    LAYERS: `imagenquinquenal_1998_2003`,
+    FORMAT: 'image/png',
+    VERSION: '1.1.1',
+    TRANSPARENT: true,
+    IMAGEN: '/var/www/apps/fototeca/data/Vuelos_Historicos/vuelo_quinquenal/Quinquenal_hu30/0822_fot_28658_etrs89_UTM_hu30.ecw',
+  },
+  serverType: 'mapserver'
+});
+
+const layer = new ol.layer.Image({
+  visible: true,
+  opacity: 1,
+  zIndex: 999999999,
+  source: source,
+});
+
+map.getMapImpl().addLayer(layer);
 //map.addLayers([layerinicial, campamentos]);
 //map.addLayers([campamentos]);
 

@@ -76,7 +76,6 @@ export default class PrinterMapControl extends M.impl.Control {
    * @api stable
    */
   encodeLayer(layer) {
-    console.log(layer);
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.WMC) {
         // none
@@ -92,24 +91,16 @@ export default class PrinterMapControl extends M.impl.Control {
         this.encodeWMTS(layer).then((encodedLayer) => {
           success(encodedLayer);
         });
-      } else if (layer.type === M.layer.type.MBtiles) {
+      } else if (layer.type === M.layer.type.MBTiles) {
         // none
-      } else if (layer.type === M.layer.type.OSM) {
-        success(this.encodeOSM(layer));
-      } else if (layer.type === M.layer.type.Mapbox) {
-        success(this.encodeMapbox(layer));
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
       // eslint-disable-next-line no-underscore-dangle
       } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
-        console.log('Entra imagen');
-        console.log(layer);
         success(this.encodeImage(layer));
-      // eslint-disable-next-line no-underscore-dangle
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
         success(this.encodeXYZ(layer));
       } else {
-        console.log('Entra default');
         success(this.encodeWFS(layer));
       }
     }));

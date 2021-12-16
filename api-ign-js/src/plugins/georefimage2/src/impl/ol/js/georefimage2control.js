@@ -76,12 +76,6 @@ export default class Georefimage2Control extends M.impl.Control {
    * @api stable
    */
   encodeLayer(layer) {
-    const isParametrized = typeof layer.getSource === 'function' &&
-      !M.utils.isNullOrEmpty(layer.getSource()) &&
-      // eslint-disable-next-line no-underscore-dangle
-      !M.utils.isNullOrEmpty(layer.getSource().params_) &&
-      layer.getSource().getParams().IMAGEN !== undefined;
-
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.WMC) {
         // none
@@ -97,15 +91,12 @@ export default class Georefimage2Control extends M.impl.Control {
         this.encodeWMTS(layer).then((encodedLayer) => {
           success(encodedLayer);
         });
-      } else if (layer.type === M.layer.type.MBtiles) {
+      } else if (layer.type === M.layer.type.MBTiles) {
         // none
-      } else if (layer.type === M.layer.type.OSM) {
-        success(this.encodeOSM(layer));
-      } else if (layer.type === M.layer.type.Mapbox) {
-        success(this.encodeMapbox(layer));
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
-      } else if (isParametrized) {
+      // eslint-disable-next-line no-underscore-dangle
+      } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
         success(this.encodeImage(layer));
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
         success(this.encodeXYZ(layer));
