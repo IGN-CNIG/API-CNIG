@@ -108,13 +108,16 @@ export default class PrinterMapControl extends M.impl.Control {
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
         success(this.encodeXYZ(layer));
       } else {
-        console.log(layer);
-        console.log(typeof layer.getSource);
-        console.log('typeof layer.getSource === \'function\'', typeof layer.getSource === 'function');
-        // eslint-disable-next-line no-underscore-dangle
-        console.log('Caso 1', layer.getSource() !== undefined && layer.getSource().params_ !== undefined && layer.getSource().getParams().IMAGEN !== undefined);
-        // eslint-disable-next-line no-underscore-dangle
-        console.log('Caso 2', layer.getSource() !== null && layer.getSource().url_ !== undefined && layer.getSource().params_ !== undefined && layer.getSource().params_.IMAGEN !== undefined);
+        if (layer.name !== '__draw__') {
+          console.log(layer);
+          console.log(typeof layer.getSource);
+          console.log('typeof layer.getSource === \'function\'', typeof layer.getSource === 'function');
+          // eslint-disable-next-line no-underscore-dangle
+          console.log('Caso 1', layer.getSource() !== undefined && layer.getSource().params_ !== undefined && layer.getSource().getParams().IMAGEN !== undefined);
+          // eslint-disable-next-line no-underscore-dangle
+          console.log('Caso 2', layer.getSource() !== null && layer.getSource().url_ !== undefined && layer.getSource().params_ !== undefined && layer.getSource().params_.IMAGEN !== undefined);
+        }
+
         success(this.encodeWFS(layer));
       }
     }));
