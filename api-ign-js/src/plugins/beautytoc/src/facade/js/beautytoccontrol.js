@@ -156,7 +156,9 @@ export default class BeautyTOCControl extends M.Control {
           layerFound.options.visibility = !visibility;
           this.render(scroll);
         } else {
-          M.dialog.error(getValue('exception.nocobertura'), getValue('warning'));
+          setTimeout(() => {
+            M.dialog.error(getValue('exception.nocobertura'), getValue('warning'));
+          }, 10);
         }
       }).catch((err) => {
         M.proxy(true);
