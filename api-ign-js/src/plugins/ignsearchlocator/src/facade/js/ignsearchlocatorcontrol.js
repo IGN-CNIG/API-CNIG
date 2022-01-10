@@ -931,7 +931,20 @@ export default class IGNSearchLocatorControl extends M.Control {
     // Stops showing polygon geometry
     if (!this.resultVisibility_) {
       this.clickedElementLayer.setStyle(this.simple);
+    } else if (featureJSON.geometry.type.indexOf('Polygon') > -1) {
+      this.clickedElementLayer.setStyle(new M.style.Polygon({
+        fill: {
+          color: '#3399CC',
+          opacity: 0,
+        },
+        stroke: {
+          color: '#3399CC',
+          width: 2,
+        },
+        radius: 5,
+      }));
     }
+
     this.map.addLayers(this.clickedElementLayer);
     this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
     // show popup for streets
