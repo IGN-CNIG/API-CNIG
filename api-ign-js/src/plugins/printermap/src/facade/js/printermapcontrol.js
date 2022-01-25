@@ -1006,6 +1006,10 @@ export default class PrinterMapControl extends M.Control {
       return zia > zib;
     });
 
+    layers.forEach((l) => {
+      console.log(l.getZIndex());
+    });
+
     return (new Promise((success, fail) => {
       const encodedLayers = [];
       layers.forEach((layer, index) => {
