@@ -1004,10 +1004,10 @@ export default class PrinterMapControl extends M.Control {
 
     return (new Promise((success, fail) => {
       const encodedLayers = [];
-      layers.forEach((layer) => {
+      layers.forEach((layer, index) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
           if (!M.utils.isNullOrEmpty(encodedLayer)) {
-            encodedLayers.push(encodedLayer);
+            encodedLayers[index] = encodedLayer;
           }
 
           numLayersToProc -= 1;
@@ -1107,15 +1107,10 @@ export default class PrinterMapControl extends M.Control {
 
     return (new Promise((success, fail) => {
       const encodedLayers = [];
-      const BreakException = {};
-      layers.forEach((layer) => {
+      layers.forEach((layer, index) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
-          if (encodedLayer === null) {
-            throw BreakException;
-          }
-
           if (!M.utils.isNullOrEmpty(encodedLayer)) {
-            encodedLayers.push(encodedLayer);
+            encodedLayers[index] = encodedLayer;
           }
 
           numLayersToProc -= 1;

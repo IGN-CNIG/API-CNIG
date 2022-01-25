@@ -9,7 +9,7 @@ const map = M.map({
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
   //projection: 'EPSG:4326*d',
-  layers: [
+  /*layers: [
     new M.layer.XYZ({
       url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
       name: 'OI.OrthoimageCoverage',
@@ -20,7 +20,7 @@ const map = M.map({
       queryable: false,
       visible: true,
     }),
-  ],
+  ],*/
 });
 
 const layerinicial = new M.layer.WMS({
@@ -67,6 +67,10 @@ map.addPlugin(printermap);
 }));*/
 
 map.addPlugin(new M.plugin.Vectors({
+  position: 'TR',
+}));
+
+map.addPlugin(new M.plugin.FullTOC({
   position: 'TR',
 }));
 
