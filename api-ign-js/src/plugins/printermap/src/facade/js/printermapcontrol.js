@@ -997,9 +997,16 @@ export default class PrinterMapControl extends M.Control {
     }
 
     layers = layers.sort((a, b) => {
+      const res = 0;
       const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
       const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
-      return parseInt(zia, 10) > parseInt(zib, 10);
+      if (zia > zib) {
+        res = 1;
+      } else if (zia < zib) {
+        res = -1;
+      }
+
+      return res;
     });
 
     layers.forEach((l) => {
