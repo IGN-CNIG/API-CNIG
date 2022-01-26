@@ -996,10 +996,6 @@ export default class PrinterMapControl extends M.Control {
       numLayersToProc = layers.length;
     }
 
-    layers.forEach((l) => {
-      console.log(l.getZIndex());
-    });
-
     layers = layers.sort((a, b) => {
       const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
       const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
@@ -1010,6 +1006,7 @@ export default class PrinterMapControl extends M.Control {
       console.log(l.getZIndex());
     });
 
+    console.log(layers);
     return (new Promise((success, fail) => {
       const encodedLayers = [];
       layers.forEach((layer, index) => {
