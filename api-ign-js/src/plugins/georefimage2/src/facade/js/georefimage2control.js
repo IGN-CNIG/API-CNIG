@@ -424,9 +424,16 @@ export default class Georefimage2Control extends M.Control {
     }
 
     layers = layers.sort((a, b) => {
+      let res = 0;
       const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
       const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
-      return zia > zib;
+      if (zia > zib) {
+        res = 1;
+      } else if (zia < zib) {
+        res = -1;
+      }
+
+      return res;
     });
 
     return (new Promise((success, fail) => {

@@ -1009,11 +1009,6 @@ export default class PrinterMapControl extends M.Control {
       return res;
     });
 
-    layers.forEach((l) => {
-      console.log(l.getZIndex());
-    });
-
-    console.log(layers);
     return (new Promise((success, fail) => {
       const encodedLayers = [];
       layers.forEach((layer, index) => {
@@ -1112,9 +1107,16 @@ export default class PrinterMapControl extends M.Control {
     }
 
     layers = layers.sort((a, b) => {
+      let res = 0;
       const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
       const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
-      return zia > zib;
+      if (zia > zib) {
+        res = 1;
+      } else if (zia < zib) {
+        res = -1;
+      }
+
+      return res;
     });
 
     return (new Promise((success, fail) => {
