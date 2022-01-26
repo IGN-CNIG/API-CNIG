@@ -1003,7 +1003,8 @@ export default class PrinterMapControl extends M.Control {
     layers = layers.sort((a, b) => {
       const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
       const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
-      return zia > zib;
+      // Mapfish requires reverse order
+      return zia < zib;
     });
 
     layers.forEach((l) => {
@@ -1020,8 +1021,7 @@ export default class PrinterMapControl extends M.Control {
 
           numLayersToProc -= 1;
           if (numLayersToProc === 0) {
-            // Mapfish requires reverse order
-            success(encodedLayers.reverse());
+            success(encodedLayers);
           }
         });
       });
