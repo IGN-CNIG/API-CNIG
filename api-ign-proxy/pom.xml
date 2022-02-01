@@ -24,6 +24,19 @@
          <organizationUrl>www.guadaltel.com</organizationUrl>
       </developer>
    </developers>
+   <repositories>
+  		<repository>
+         <releases>
+                 <enabled>true</enabled>
+         </releases>
+         <snapshots>
+                 <enabled>true</enabled>
+         </snapshots>
+         <id>guadaltel-repo</id>
+         <name>Guadaltel Maven Repository</name>
+         <url>http://maven.guadaltel.es/nexus/content/groups/public</url>
+      </repository>
+   </repositories>
    <build>
       <finalName>api-core</finalName>
       <defaultGoal>install</defaultGoal>
@@ -65,6 +78,11 @@
          <groupId>javax.servlet</groupId>
          <artifactId>servlet-api</artifactId>
          <version>2.4</version>
+      </dependency>
+      <dependency>
+         <groupId>es.guadaltel.framework</groupId>
+         <artifactId>ticket</artifactId>
+         <version>0.0.1</version>
       </dependency>
       <dependency>
          <groupId>commons-fileupload</groupId>
