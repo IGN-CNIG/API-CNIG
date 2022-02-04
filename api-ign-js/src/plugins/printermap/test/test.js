@@ -74,7 +74,7 @@ map.addPlugin(new M.plugin.FullTOC({
   position: 'TR',
 }));
 
-const source = new ol.source.ImageWMS({
+/*const source = new ol.source.ImageWMS({
   url: 'https://wms-fototeca.idee.es/fototeca?',
   params: {
     LAYERS: `imagenquinquenal_1998_2003`,
@@ -93,7 +93,7 @@ const layer = new ol.layer.Image({
   source: source,
 });
 
-map.getMapImpl().addLayer(layer);
+map.getMapImpl().addLayer(layer);*/
 //map.addLayers([layerinicial, campamentos]);
 //map.addLayers([campamentos]);
 

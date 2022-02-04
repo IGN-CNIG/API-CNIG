@@ -1006,6 +1006,7 @@ export default class VectorsControl extends M.Control {
       if (file.size > 20971520) {
         M.dialog.info(getValue('exception.size'));
         this.file_ = null;
+        this.uploadingTemplate.querySelector('#vectors-uploading>input').value = '';
       } else {
         this.loadLayer();
       }
@@ -1048,7 +1049,10 @@ export default class VectorsControl extends M.Control {
         } else {
           this.getImpl().centerFeatures(features, fileExt === 'gpx');
         }
+
+        this.uploadingTemplate.querySelector('#vectors-uploading>input').value = '';
       } catch (error) {
+        this.uploadingTemplate.querySelector('#vectors-uploading>input').value = '';
         M.dialog.error(getValue('exception.load_correct'));
       }
     });
