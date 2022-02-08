@@ -4,6 +4,7 @@ M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
+  controls: ['scale'],
 });
 
 const mp = new BeautyTOC({
