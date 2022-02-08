@@ -57,7 +57,7 @@ export default class BeautyTOCControl extends M.Control {
       .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true);
     const layersOpts = layers.map((layer) => {
       return {
-        //disabled: this.getLayerDisabled(layer),
+        // disabled: this.getLayerDisabled(layer),
         visible: (layer instanceof M.layer.WMTS ? layer.options.visibility === true :
           layer.isVisible()),
         id: layer.name,
