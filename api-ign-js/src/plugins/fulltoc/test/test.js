@@ -4,6 +4,7 @@ import FullTOC from 'facade/fulltoc';
 
 const map = M.map({
   container: 'mapjs',
+  controls: ['scale'],
   center: {
     x: -528863.345515127,
     y: 4514194.232367303,
@@ -219,8 +220,22 @@ const ocupacionSuelo = new M.layer.WMTS({
   visibility: false,
 });
 
+/*const xyz = new M.layer.XYZ({
+  url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+  name: 'PNOA-MA',
+  legend: 'Imagen',
+  projection: 'EPSG:3857',
+  transparent: true,
+  displayInLayerSwitcher: false,
+  queryable: false,
+  visible: true,
+  tileGridMaxZoom: 19,
+});*/
+
 /*map.addLayers(layerUA);
 map.addLayers(layerinicial);
 map.addLayers(ocupacionSuelo);*/
+
+// map.addLayers(xyz);
 
 window.map = map;
