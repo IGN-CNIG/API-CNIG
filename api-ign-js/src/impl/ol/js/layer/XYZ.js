@@ -111,6 +111,8 @@ class XYZ extends Layer {
     this.ol3Layer.setSource(source);
     this.ol3Layer.setMaxZoom(this.maxZoom);
     this.ol3Layer.setMinZoom(this.minZoom);
+    this.ol3Layer.getSource().tileGrid.minZoom = this.minZoom;
+    this.ol3Layer.getSource().tileGrid.maxZoom = this.maxZoom;
   }
 
 
