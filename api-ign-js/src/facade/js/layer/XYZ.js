@@ -68,6 +68,12 @@ class XYZ extends LayerBase {
      */
     this.maxZoom = parameters.maxZoom;
     /**
+     * XYZ tileGridMaxZoom
+     * @public
+     * @type {number}
+     */
+    this.tileGridMaxZoom = parameters.tileGridMaxZoom;
+    /**
      * XYZ options
      * @public
      * @type {object}
