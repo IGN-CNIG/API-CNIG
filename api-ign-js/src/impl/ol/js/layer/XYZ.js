@@ -111,10 +111,11 @@ class XYZ extends Layer {
       tileSize: this.getTileSize(),
     });
     this.ol3Layer.setSource(source);
-    this.ol3Layer.setMaxZoom(this.maxZoom);
-    this.ol3Layer.setMinZoom(this.minZoom);
     if (this.tileGridMaxZoom !== undefined && this.tileGridMaxZoom > 0) {
       this.ol3Layer.getSource().tileGrid.maxZoom = this.tileGridMaxZoom;
+    } else {
+      this.ol3Layer.setMaxZoom(this.maxZoom);
+      this.ol3Layer.setMinZoom(this.minZoom);
     }
   }
 
