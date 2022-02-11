@@ -11,6 +11,7 @@ import downloadingTemplate from 'templates/downloading';
 import uploadingTemplate from 'templates/uploading';
 import changeNameTemplate from 'templates/changename';
 import addWFSTemplate from 'templates/addwfs';
+import fromURLTemplate from 'templates/fromurl';
 import selectWFSTemplate from 'templates/selectwfs';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
@@ -18,9 +19,17 @@ import togpx from 'togpx';
 import * as shp from 'shpjs';
 import { getValue } from './i18n/language';
 
-const formatNumber = (x) => {
-  const num = Math.round(x * 100) / 100;
-  return num.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const formatNumber = (x, decimals) => {
+  const pow = 10 ** decimals;
+  let num = Math.round(x * pow) / pow;
+  num = num.toString().replace('.', ',');
+  if (decimals > 2) {
+    num = `${num.split(',')[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${num.split(',')[1]}`;
+  } else {
+    num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  return num;
 };
 
 const POINTS = [1, 15];
@@ -392,11 +401,92 @@ export default class VectorsControl extends M.Control {
         translations: {
           accepted: getValue('accepted'),
           select_file: getValue('select_file'),
+          from_url: getValue('from_url'),
         },
       },
     });
     const inputFile = this.uploadingTemplate.querySelector('#vectors-uploading>input');
+    const fromURL = this.uploadingTemplate.querySelector('#vectors-uploading #uploadFromURL');
     inputFile.addEventListener('change', evt => this.changeFile(evt, inputFile.files[0]));
+    fromURL.addEventListener('click', () => this.openFromURL());
+  }
+
+  openFromURL() {
+    const fromURL = M.template.compileSync(fromURLTemplate, {
+      jsonp: true,
+      parseToHtml: false,
+      vars: {
+        translations: {
+          url_layer: getValue('url_layer'),
+          add_layer: getValue('add_layer'),
+          clean: getValue('clean').split(' ')[0],
+        },
+      },
+    });
+
+    M.dialog.info(fromURL, getValue('add_from_url'));
+    setTimeout(() => {
+      const input = document.querySelector('#m-vectors-fromurl-search-input');
+      document.querySelector('#m-vectors-fromurl-add-btn').addEventListener('click', () => {
+        const url = input.value.trim();
+        if (M.utils.isUrl(url)) {
+          const fileName = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
+          const extension = url.substring(url.lastIndexOf('.') + 1, url.length);
+          if (['zip', 'kml', 'gpx', 'geojson', 'gml'].indexOf(extension) > -1) {
+            const content = `<div class="m-vectors-loading"><p>${getValue('loading')}...</p><span class="icon-spinner" /></div>`;
+            const previous = document.querySelector('.m-dialog .m-vectors-fromurl').innerHTML;
+            document.querySelector('.m-dialog .m-vectors-fromurl').innerHTML = previous + content;
+            M.remote.get(url).then((response) => {
+              const source = response.text;
+              let features = [];
+              if (extension === 'zip') {
+                const geojsonArray = [].concat(shp.parseZip(source));
+                features = this.getImpl().loadAllInGeoJSONLayer(geojsonArray, fileName);
+              } else if (extension === 'kml') {
+                features = this.getImpl().loadKMLLayer(source, fileName, false);
+              } else if (extension === 'gpx') {
+                features = this.getImpl().loadGPXLayer(source, fileName);
+              } else if (extension === 'geojson') {
+                features = this.getImpl().loadGeoJSONLayer(source, fileName);
+              } else if (extension === 'gml') {
+                features = this.getImpl().loadGMLLayer(source, fileName);
+              } else {
+                M.dialog.error(getValue('exception.load'));
+                return;
+              }
+
+              if (features.length === 0) {
+                M.dialog.info(getValue('exception.no_geoms'));
+              } else {
+                this.getImpl().centerFeatures(features, extension === 'gpx');
+              }
+
+              input.value = '';
+              document.querySelector('.m-dialog .m-vectors-fromurl .m-vectors-loading').remove();
+            }).catch((err) => {
+              input.value = '';
+              M.dialog.error(getValue('exception.load_correct'));
+            });
+          } else {
+            input.value = '';
+            M.dialog.error(getValue('exception.extension'));
+          }
+        } else {
+          input.value = '';
+          M.dialog.error(getValue('exception.url_not_valid'));
+        }
+      });
+
+      document.querySelector('#m-vectors-fromurl-clean-btn').addEventListener('click', () => {
+        input.value = '';
+      });
+
+      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+      const button = document.querySelector('div.m-dialog.info div.m-button > button');
+      button.innerHTML = getValue('close');
+      button.style.width = '75px';
+      button.style.backgroundColor = '#71a7d3';
+    }, 10);
   }
 
   /**
@@ -1521,17 +1611,20 @@ export default class VectorsControl extends M.Control {
       case 'LineString':
       case 'MultiLineString':
         const lineLength = this.getImpl().getFeatureLength();
-        const m = formatNumber(lineLength);
-        // const km = formatNumber(lineLength / 1000);
+        let m = `${formatNumber(lineLength / 1000, 2)}km`;
+        if (lineLength < 1000) {
+          m = `${formatNumber(lineLength, 0)}m`;
+        }
+
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'block';
           const id = `m-vectors-3d-measure-${this.drawLayer.name.replaceAll(' ', '')}`;
           const attr = this.feature.getAttributes()['3dLength'];
           let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('length')}</b></td>`;
           if (attr !== undefined && attr.length > 0) {
-            html += `<td><b>2D: </b>${m}m</td><td><b>3D: </b><span>${attr}m</span></td>`;
+            html += `<td><b>2D: </b>${m}</td><td><b>3D: </b><span>${attr}m</span></td>`;
           } else {
-            html += `<td><b>2D: </b>${m}m</td><td><b>3D: </b><span class="m-vectors-3d-measure" id="${id}">${getValue('calculate')}</span></td>`;
+            html += `<td><b>2D: </b>${m}</td><td><b>3D: </b><span class="m-vectors-3d-measure" id="${id}">${getValue('calculate')}</span></td>`;
           }
 
           html += '</tr></tbody></table>';
@@ -1575,14 +1668,15 @@ export default class VectorsControl extends M.Control {
       case 'Polygon':
       case 'MultiPolygon':
         const area = this.getImpl().getFeatureArea();
-        const m2 = formatNumber(area);
-        const km2 = formatNumber(area / 1000000);
-        // const ha = formatNumber(area / 10000);
+        let m2 = `${formatNumber(area / 1000000, 4)}km${'2'.sup()}`;
+        if (area < 1000000) {
+          m2 = `${formatNumber(area, 0)}m${'2'.sup()}`;
+        }
+
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'none';
           let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('area')}</b></td>`;
-          html += `<td>${m2}m${'2'.sup()}</td><td>${km2}km${'2'.sup()}</td>`;
-          html += '</tbody></table>';
+          html += `<td>${m2}</td></tr></tbody></table>`;
           infoContainer.innerHTML = html;
           if (this.feature.getStyle() !== undefined && this.feature.getStyle() !== null) {
             const style = this.feature.getStyle().getOptions();

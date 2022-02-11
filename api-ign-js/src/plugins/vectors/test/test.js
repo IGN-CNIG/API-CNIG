@@ -68,4 +68,69 @@ map.addPlugin(mp2);
 map.addPlugin(mp3);
 map.addPlugin(mp4);
 map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
+map.addPlugin(new M.plugin.BackImgLayer({
+  position: 'TR',
+  layerId: 0,
+  layerVisibility: true,
+  collapsed: true,
+  collapsible: true,
+  columnsNumber: 4,
+  empty: true,
+  layerOpts: [
+    {
+      id: 'raster',
+      preview: '',
+      title: 'Mapa',
+      layers: [
+        new M.layer.WMTS({
+          url: 'https://www.ign.es/wmts/mapa-raster?',
+          name: 'MTN',
+          legend: 'Mapa',
+          matrixSet: 'GoogleMapsCompatible',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/jpeg',
+        }),
+      ],
+    },
+    {
+      id: 'imagen',
+      preview: '',
+      title: 'Imagen',
+      layers: [
+        new M.layer.XYZ({
+          url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+          name: 'PNOA-MA',
+          legend: 'Imagen',
+          projection: 'EPSG:3857',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          tileGridMaxZoom: 19,
+        }),
+      ],
+    },
+    {
+      id: 'mapa',
+      preview: '',
+      title: 'Callejero',
+      layers: [
+        new M.layer.WMTS({
+          url: 'https://www.ign.es/wmts/ign-base?',
+          name: 'IGNBaseTodo',
+          legend: 'Callejero',
+          matrixSet: 'GoogleMapsCompatible',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/jpeg',
+        }),
+      ],
+    },
+  ],
+}));
 window.map = map;

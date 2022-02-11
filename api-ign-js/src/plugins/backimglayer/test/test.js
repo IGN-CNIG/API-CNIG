@@ -156,4 +156,8 @@ map.addPlugin(mp);
   minZoom: 10,
 }));*/
 
+map.addPlugin(new M.plugin.Vectors({
+  position: 'TR',
+}));
+
 window.map = map;

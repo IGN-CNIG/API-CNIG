@@ -37,9 +37,17 @@ const WFS_EXCEPTIONS = [
   'http://ideihm.covam.es/wfs/CartaOF',
 ];
 
-const formatNumber = (x) => {
-  const num = Math.round(x * 100) / 100;
-  return num.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const formatNumber = (x, decimals) => {
+  const pow = 10 ** decimals;
+  let num = Math.round(x * pow) / pow;
+  num = num.toString().replace('.', ',');
+  if (decimals > 2) {
+    num = `${num.split(',')[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${num.split(',')[1]}`;
+  } else {
+    num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  return num;
 };
 
 export default class VectorsControl extends M.impl.Control {
@@ -210,6 +218,7 @@ export default class VectorsControl extends M.impl.Control {
 
   addEscEvent(evt) {
     if (evt.key === 'Escape') {
+      this.draw.finishDrawing();
       this.facadeControl.deactivateDrawing();
       this.facadeControl.isDrawingActive = false;
       this.facadeControl.drawLayer = undefined;
@@ -1093,12 +1102,14 @@ export default class VectorsControl extends M.impl.Control {
 
       if (length < flatLength) {
         length = flatLength + ((flatLength - length) / 2);
-        length = formatNumber(length);
-      } else {
-        length = formatNumber(length);
       }
 
-      elem.innerHTML = `${length}m`;
+      let m = `${formatNumber(length / 1000, 2)}km`;
+      if (length < 1000) {
+        m = `${formatNumber(length, 0)}m`;
+      }
+
+      elem.innerHTML = m;
       this.facadeControl.feature.setAttribute('3dLength', length);
     }, () => {
       elem.innerHTML = '-';

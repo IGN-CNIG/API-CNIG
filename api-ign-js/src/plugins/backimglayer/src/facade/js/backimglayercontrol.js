@@ -159,6 +159,7 @@ export default class BackImgLayerControl extends M.Control {
    * @param {} i
    */
   showBaseLayer(e, layersInfo, i) {
+    this.invokeEscKey();
     this.removeLayers();
     this.visible = false;
     const { layers } = layersInfo;
@@ -222,6 +223,23 @@ export default class BackImgLayerControl extends M.Control {
         b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i));
       }
     });
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
+    }
   }
 
   /**

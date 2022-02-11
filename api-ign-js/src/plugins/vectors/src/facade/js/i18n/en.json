@@ -17,7 +17,8 @@
     "error_features_wfs": "Unable to load layer features. Try increasing the zoom level in the area of interest.",
     "error_no_features_wfs": "Unable to load layer features. Try again in another area.",
     "error_wfs": "Could not load WFS service",
-    "wfs_zoom": "Increase the zoom in * levels if you want to add this WFS service"
+    "wfs_zoom": "Increase the zoom in * levels if you want to add this WFS service",
+    "url_not_valid": "The entered URL is not valid"
   },
   "tooltip": "Routes and vector layers",
   "change_name": "Change name",
@@ -82,5 +83,9 @@
   "generating_profile": "Generating profile",
   "calculate": "Calculate",
   "calculating": "Calculating",
-  "try_again": "The query could not be executed. Please try again later"
+  "try_again": "The query could not be executed. Please try again later",
+  "from_url": "From URL",
+  "url_layer": "File URL",
+  "add_layer": "Add layer",
+  "add_from_url": "Add layer from URL"
 }
