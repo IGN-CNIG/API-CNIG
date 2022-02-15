@@ -49,9 +49,6 @@ class WMS extends LayerBase {
     // legend
     this.legend = parameters.legend;
 
-    // cql
-    this.cql = parameters.cql;
-
     // version
     this.version = parameters.version;
 
@@ -134,17 +131,6 @@ class WMS extends LayerBase {
     } else {
       this.getImpl().tiled = true;
     }
-  }
-
-  /**
-   * 'cql' the CQL filter
-   */
-  get cql() {
-    return this.getImpl().cql;
-  }
-
-  set cql(newCql) {
-    this.getImpl().cql = newCql;
   }
 
   /**
@@ -310,11 +296,9 @@ class WMS extends LayerBase {
    */
   equals(obj) {
     let equals = false;
-
     if (obj instanceof WMS) {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
-      equals = equals && (this.cql === obj.cql);
       equals = equals && (this.version === obj.version);
     }
 

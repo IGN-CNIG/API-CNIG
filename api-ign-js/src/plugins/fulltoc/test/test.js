@@ -189,6 +189,7 @@ const mp = new FullTOC({
   https: true,
   http: true,
   // precharged,
+  precharged: {},
   codsi: true,
 });
 
@@ -237,5 +238,16 @@ map.addLayers(layerinicial);
 map.addLayers(ocupacionSuelo);*/
 
 // map.addLayers(xyz);
+
+/*const terremotos = new M.layer.WMS({
+  url: 'https://www.ign.es/wms-inspire/geofisica',
+  name: 'NZ.ObservedEvent',
+  legend: 'terremotos 3',
+  visibility: true,
+  tiled: true,
+},{ params: { CQL_FILTER: 'magnitud>3' } }
+);
+
+map.addLayers(terremotos);*/
 
 window.map = map;
