@@ -49,8 +49,8 @@
         </select>
         <label for="selectFixed">Selector Fixed</label>
         <select name="fixedValue" id="selectFixed">
-            <option value=true>true</option>
-            <option value=false selected="selected">false</option>
+            <option value=true selected="selected">true</option>
+            <option value=false>false</option>
         </select>
         <label for="inputBaseLayer">Parámetro baseLayer</label>
         <input type="text" name="baseLayer" id="inputBaseLayer" list="baseLayerSug">
