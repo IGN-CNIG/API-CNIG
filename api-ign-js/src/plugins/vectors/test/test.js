@@ -2,6 +2,7 @@ import Vectors from 'facade/vectors';
 
 const map = M.map({
   container: 'mapjs',
+  controls: ['scale'],
   center: {
     x: -528863.345515127,
     y: 4514194.232367303,

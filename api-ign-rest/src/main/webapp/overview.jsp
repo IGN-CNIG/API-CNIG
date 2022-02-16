@@ -129,6 +129,7 @@
             mp = new M.plugin.OverviewMap({
                 position: position,
                 fixed: fixed,
+                zoom: 4,
                 baseLayer: baseLayer,
                 collapsed: collapsed,
                 collapsible: collapsible,
