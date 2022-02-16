@@ -114,6 +114,9 @@
         inputBaseLayer.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
+        setTimeout(() => {
+          map.setCenter([-479529.76895509224, 4702535.197017747]);
+        }, 50);
 
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
