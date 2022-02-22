@@ -57,6 +57,7 @@ div.m-incicarto [class*=" icon-"] {
 .m-incicarto .icon-search:before { content: '\e964'; }
 .m-incicarto .icon-spinner:before { content: '\e953'; }
 .m-incicarto .icon-list:before { content: '\e92c'; }
+.m-plugin-incicarto-form .icon-upload:before { content: '\e95e'; }
 
 #m-incicarto-select-wfs .icon-show:before { content: '\e916'; }
 #m-incicarto-select-wfs .icon-hide:before { content: '\e918'; }

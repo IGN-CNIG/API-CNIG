@@ -23,16 +23,18 @@ const customBGLoptions = customBGLids.map((id, index) => {
 
 M.config('backgroundlayers', customBGLoptions);
 */
-
 const map = M.map({
   container: 'mapjs',
   center: {
     x: -667143.31,
     y: 4493011.77,
+    //x: -3.23232333,
+    //y: 42.2365656,
     draw: false,
   },
   controls: ['scale','location'],
   projection: 'EPSG:3857*m',
+  //projection: 'EPSG:4326*d',
   zoom: 6,
 });
 
@@ -238,7 +240,7 @@ const getConfiguredBaseLayersPlugin = () => {
         title: 'Mapa IGN',
         layers: [
           new M.layer.WMTS({
-            url: 'http://www.ign.es/wmts/ign-base?',
+            url: 'https://www.ign.es/wmts/ign-base?',
             name: 'IGNBaseTodo',
             legend: 'Mapa IGN',
             matrixSet: 'GoogleMapsCompatible',
@@ -256,7 +258,7 @@ const getConfiguredBaseLayersPlugin = () => {
         title: 'Imagen PNOA',
         layers: [
           new M.layer.WMTS({
-            url: 'http://www.ign.es/wmts/pnoa-ma?',
+            url: 'https://www.ign.es/wmts/pnoa-ma?',
             name: 'OI.OrthoimageCoverage',
             legend: 'Imagen PNOA',
             matrixSet: 'GoogleMapsCompatible',
@@ -285,7 +287,7 @@ const getConfiguredBaseLayersPlugin = () => {
             format: 'image/jpeg',
           }),
           new M.layer.WMTS({
-            url: 'http://www.ign.es/wmts/ign-base?',
+            url: 'https://www.ign.es/wmts/ign-base?',
             name: 'IGNBaseOrto',
             matrixSet: 'GoogleMapsCompatible',
             legend: 'PNOA Híbrido Topo',
@@ -331,7 +333,7 @@ const getConfiguredBaseLayersPlugin = () => {
 }
 
 const backImgLayersConfig = getConfiguredBaseLayersPlugin();
-console.log(backImgLayersConfig);
+
 const mpBILBasico = new M.plugin.BackImgLayer(
   backImgLayersConfig
   );
@@ -400,19 +402,17 @@ const mpVector = new M.plugin.Vectors({
 
 map.addPlugin(mpVector);
 
-
-
 const pluginComparepanel = new Comparepanel({
   position: 'TR',
-  vertical: false,
-  collapsed: true,
+  vertical: true,
+  collapsed: false,
   collapsible: true,
   defaultCompareMode: 'mirror',// mirror - curtain - timeline - spyeye
   defaultCompareViz: 1,
   baseLayers: listBaseLayersByString,
   urlcoberturas: 'https://projects.develmap.com/apicnig/pnoahisto/coberturas.geojson',
   timelineParams: { 
-    animation: true, 
+    animation: true,
   },
   transparencyParams: { 
     radius: 100, 
@@ -423,12 +423,13 @@ const pluginComparepanel = new Comparepanel({
       defaultLyrB:1,
       defaultLyrC:2,
       defaultLyrD:3,
-      opacityVal:50,
+      opacityVal:100,
    },
   mirrorpanelParams: { 
       showCursors: true,
       reverseLayout:true,
-      enabledPlugins: true, 
+      enabledPlugins: true,
+      enabledKeyFunctions: true,
   }
 });
 

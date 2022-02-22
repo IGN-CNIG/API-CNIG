@@ -57,6 +57,14 @@ export default class Transparency extends M.Plugin {
     this.position = options.position;
 
     /**
+     * Enabled key functions
+     * @type {boolean}
+     * @public
+     */
+     this.enabledKeyFunctions = options.enabledKeyFunctions;
+     if (this.enabledKeyFunctions === undefined) this.enabledKeyFunctions = true;
+
+    /**
      * Layer names that will have effects
      * @public
      * Value: the names separated with coma
@@ -150,6 +158,51 @@ export default class Transparency extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+
+
+    document.addEventListener('keydown', (zEvent) => {
+      if (!this.enabledKeyFunctions) {
+        return;
+      }
+      // console.log(zEvent.key);
+      // for (let i = 0; i < 10; i++) {
+      //   if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'F' + (i + 1)) {  // case sensitive
+      //     //this.control_.manageVisionPanelByCSSGrid(i);
+      //     console.log("Entro");
+      //   }
+      // }
+      // const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
+      // console.log(keyStr);
+      //32-200
+      console.log(zEvent.key);
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowUp') {  // case sensitive
+        if (this.control_.radius>=200) return;
+        this.control_.radius += 20;
+        this.control_.getImpl().setRadius(this.control_.radius);
+        this.control_.template.querySelector('#input-transparent-radius').value=this.control_.radius;
+      }
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowDown') {  // case sensitive
+        if (this.control_.radius<=32) return;
+        this.control_.radius -= 20;
+        this.control_.getImpl().setRadius(this.control_.radius);
+        this.control_.template.querySelector('#input-transparent-radius').value=this.control_.radius;
+      }
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'Enter') {
+        this.control_.freeze= !this.control_.freeze;
+        this.control_.getImpl().setFreeze(this.control_.freeze);
+      }
+
+      // const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
+      // const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '') +
+      //   (zEvent.shiftKey ? 'Shift ' : '') +
+      //   (zEvent.altKey ? 'Alt ' : '') +
+      //   (zEvent.metaKey ? 'Meta ' : '') + keyStr;
+      // if (combinedKeys === 'Escape') {
+      //   this.control_.manageVisionPanelByCSSGrid(0);
+      // }
+    });
+
+
   }
 
 
@@ -211,6 +264,7 @@ export default class Transparency extends M.Plugin {
    * @api
    */
   activate() {
+    console.log("Aactivate SpyEye 1");
     this.control_.activate();
   }
 
@@ -222,6 +276,7 @@ export default class Transparency extends M.Plugin {
    * @api
    */
   deactivate() {
+    console.log("Deactivate SpyEye 1");
     this.control_.deactivate();
   }
 

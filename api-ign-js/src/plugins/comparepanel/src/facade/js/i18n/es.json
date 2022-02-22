@@ -9,6 +9,7 @@
   "tooltip_vcurtain": "Cortina vertical",
   "tooltip_hcurtain": "Cortina horizontal",
   "tooltip_multicurtain": "Multivista",
+  "tooltip_deactivatecurtain": "Desactivar cortina",
   "layers": "Capas",
   "radius": "Radio",
   "opacity": "Opacidad",

@@ -202,6 +202,7 @@ Para el stack de desarrollo de este componente se ha utilizado
 
 * NodeJS Version: 14.16
 * NPM Version: 6.14.11
+* Entorno Windows.
 
 ## 📐 Para configurar el stack de desarrollo
 

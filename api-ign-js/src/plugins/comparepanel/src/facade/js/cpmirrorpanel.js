@@ -179,7 +179,6 @@ export default class Mirrorpanel extends M.Plugin {
    */
   addTo(map) {
 
-   
     const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
     const values = {
       pluginOnLeft,

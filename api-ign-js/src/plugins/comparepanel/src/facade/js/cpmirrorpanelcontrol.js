@@ -316,8 +316,11 @@ export default class CompareMirrorpanel extends M.Control {
       });
 
       if (toDelete.length > 0) {
+        this.lyDropControlA.deactivate(); /** Se quedaba enganchada la última capa. Ahora parece que va al introducir esta línea */
         this.map_.removePlugins(toDelete);
       }
+
+
     } else {
       //Añado aquí el DropDownLayer del mapa principal
       this.lyDropControlA = new Lyrdropdown({
@@ -336,7 +339,14 @@ export default class CompareMirrorpanel extends M.Control {
     if (this.mapL['B'] !== null) { this.mapL['B'].refresh(); }
     if (this.mapL['C'] !== null) { this.mapL['C'].refresh(); }
     if (this.mapL['D'] !== null) { this.mapL['D'].refresh(); }
-    document.querySelector('#m-cp-mirrorpanel > button').click();
+
+    // e2m: esta manera de cerrar el panel provocaba que se lanzara el evento deactivateAndActivateMirrorPanel
+    //document.querySelector('#m-cp-mirrorpanel > button').click();
+    // e2m: de esta manera se oculta el panel y no se lanza el evento, pero es un poco raro
+    document.querySelector('#m-cp-mirrorpanel-btn').classList.remove('active');
+    document.querySelector('.m-panel-controls .cp-mirrorpanel').classList.remove('hide-panel');
+
+    
   }
 
   /**
@@ -477,8 +487,6 @@ export default class CompareMirrorpanel extends M.Control {
   
   manageLyrAvailable(lyrList){
     
-    console.log('manageLyrAvailable MirrorCompare');
-
     if (this.lyDropControlA.control_!== null){
       this.lyDropControlA.setDisabledLyrs(lyrList);
     }

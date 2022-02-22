@@ -249,6 +249,9 @@ div#m-lyrcompare-titulo {
 	font-family: 'comparepanel';
 	position: absolute;
 	display: block;
+	/* Jugamos con la opacidad para hacer aparecer el botón. COmo la opacidad va de 0 a 100, se puede dividir en fraccciones y las transciones tienen efecto */
+	/* Si jugáramos con la visibilidad (hidden/visible) o con el display (none/block), a tener valores puntuales, la transición no les afecta y el efecto no se nota */
+	opacity: 0;
 	font-size: 1.3rem;
 	text-align: center;
 	line-height: 2.5rem;
@@ -259,6 +262,7 @@ div#m-lyrcompare-titulo {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.51), 0 -1px 0 rgba(0, 0, 0, .02);
 	background-color: white;
 	z-index: 3;
+	transition: opacity 0.3s ease-out; /* Establecemos una transición para que al aparecer lo haga de manera gradual. Más elegante*/
 }
 
 .lyrcompare-swipe-control.vertical::before {
@@ -267,7 +271,7 @@ div#m-lyrcompare-titulo {
 	display: block;
 	position: absolute;
 	height: 250vh;
-	width: 0.25rem;	/* 0.5rem; Reducimos el ancho del separador vertical */
+	width: 0.15rem;	/* 0.5rem -> 0.25rem; Reducimos el ancho del separador vertical */
 	top: -125vh;
 	left: 1.125rem; /* 1rem; Reducimos el ancho del separador vertical */
 	cursor: ew-resize;
@@ -279,20 +283,34 @@ div#m-lyrcompare-titulo {
 	display: block;
 	position: absolute;
 	width: 250vw;
-	height: 0.25rem;	/*0.5rem; Reducimos el alto del separador horizontal */
+	height: 0.15rem;	/*0.5rem -> 0.25rem ; Reducimos el alto del separador horizontal */
 	left: -125vw;
 	top: 1.125rem; 		/* 1rem;  Reducimos el alto del separador horizontal  */
 	cursor: ns-resize;
 }
+
 .lyrcompare-swipe-control .control-icon {
 	cursor: grabbing;
 	visibility: hidden;
 }
+
+/* e2m. Al hacer hover, se rellena el botón con el icono correspondiente y se aplica un pequeño cambio de escala para acentuar la transición */
+
+.lyrcompare-swipe-control.vertical:hover >.control-icon::before{
+	content: '\e9c4';
+	opacity: 1;
+}
+
+
 .lyrcompare-swipe-control.static,
 .lyrcompare-swipe-control.vertical.static::before,
 .lyrcompare-swipe-control.horizontal.static::after{
 	cursor: auto !important;
 }
+
+/*
+Establece la visibilidad del icono de dragging
+*/
 
 .lyrcompare-swipe-control.static .control-icon{
 	visibility: hidden !important;

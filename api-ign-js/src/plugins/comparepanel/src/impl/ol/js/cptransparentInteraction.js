@@ -22,22 +22,14 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     // Default options
     const optionsE = options || {};
 
-    this.pos = false;
+    this.freeze = optionsE.freeze;
+    this.pos = optionsE.freezeInPosition;
     this.radius = (optionsE.radius || 100);
     this.OLVersion = "OL6";
 
-    console.log(optionsE);
     const layer = [optionsE.layers].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
     this.addLayer(layer);
 
-
-    /*if (optionsE.layers) {
-      optionsE.layers = [optionsE.layers];
-      console.log(layer);
-      const layer = optionsE.layers.map(layer => layer.getImpl().getOL3Layer())
-        .filter(layer => layer != null);
-      this.addLayer(layer);
-    }*/
   }
 
   /** Set the map > start postcompose
@@ -45,8 +37,6 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
   setMap(map) {
     let i;
 
-    
-    console.log(this.getMap());
     if (this.getMap()) {
       // e2m: Por aquí pasamos al desactivar el control
       for (i = 0; i < this.layers_.length; i += 1) {
@@ -87,6 +77,22 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     if (this.getMap()) this.getMap().renderSync();
   }
 
+  /** Set clip radius
+  * @param {integer} radius
+  */
+  setFreeze(value) {
+    this.freeze = value;
+    if (this.getMap()) this.getMap().renderSync();
+  }
+
+  /** Set Freeze
+   * @param {boolean} state
+   */
+  toogleFreeze() {
+    this.freeze = !this.freeze;
+    if (this.getMap()) this.getMap().renderSync();
+  }
+
   /** Add a layer to clip
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
@@ -97,7 +103,6 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     /* eslint-enable */
     console.log(layers);
     for (let i = 0; i < layers.length; i += 1) {
-      
        //e2m: deprecated. Esto no se usa ¿? 
       const l = { layer: layers[i] };
       if (this.getMap()) {
@@ -138,64 +143,113 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
    * @param {ol.Pixel|ol.MapBrowserEvent}
    */
   setPosition(e) {
+
+    //const pointerPos = ol.render.getRenderPixel(e, [this.pos[0]],this.pos[1]);
+
+    //console.log(ol.render.getRenderPixel(e, e.pixel));
     if (e.pixel) {
-      this.pos = e.pixel;
+      //console.log(e.pixel);
+      if (this.freeze===false){
+        this.pos = e.pixel;
+        //this.pos = ol.render.getRenderPixel(e,[e.pixel[0],e.pixel[1]]);
+      } 
     } else if (e && e instanceof Array) {
       this.pos = e;
+      console.log("El valor de E es un Array");
     } else {
       /* eslint-disable */
       e = [-10000000, -10000000];
       /* eslint-enable */
     }
-
     if (this.getMap()) this.getMap().renderSync();
   }
 
   /* @private
    */
-
-  // e2m: deprecated
-/*
   precompose_(e) {
-    console.log("precompose_");
     const ctx = e.context;
-    const ratio = e.frameState.pixelRatio;
-
+    //const ratio = e.frameState.pixelRatio;
     ctx.save();
     ctx.beginPath();
-    ctx.arc(this.pos[0] * ratio, this.pos[1] * ratio, this.radius * ratio, 0, 2 * Math.PI);
-    ctx.clip();
-  }
-*/
-  /* @private
-   */
-  // e2m: deprecated
-/*
-  postcompose_(e) {
-    //console.log("postcompose_");
-    e.context.restore();
-  }
-*/
-  /* @private
- */
-  precompose_(e) {
-    //console.log("precompose_");
-    const ctx = e.context;
-    const ratio = e.frameState.pixelRatio;
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(this.pos[0] * ratio, this.pos[1] * ratio, this.radius * ratio, 0, 2 * Math.PI);
-    ctx.lineWidth = (5 * this.radius * ratio) / this.radius;
-    ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+    ctx.arc(this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI);
+
+    ctx.lineWidth = 3;
+    if (this.freeze){
+      ctx.strokeStyle = 'rgba(255,0,0,0.7)';
+    } else {
+      ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+    }
     ctx.stroke();
     ctx.clip();
 
+    //ctx.save();
+    //ctx.beginPath();
+      // only show a circle around the mouse
+      //const pointerPos = ol.render.getRenderPixel(e, [this.pos[0]],this.pos[1]);
+      /*const offset = getRenderPixel(e, [
+        mousePosition[0] + this.radius,
+        mousePosition[1],
+      ]);    
+      const canvasRadius = Math.sqrt(
+        Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2)
+      );*/
+      //ctx.arc(pixel[0], pixel[1], canvasRadius, 0, 2 * Math.PI);
+      //ctx.lineWidth = (5 * canvasRadius) / radius;
+      //ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+
+    //ctx.clip();
+      //console.log(pointerPos);
+
+
+
+
+//Rectangle
+//var ctx = event.context;
+//var pixelRatio = event.frameState.pixelRatio;
+//ctx.save();
+//ctx.beginPath();
+//var x = ctx.canvas.width / 2 - 100;
+//var y = ctx.canvas.height / 2 - 100;
+//ctx.rect(x, y, 100, 100);
+//ctx.clip();
+
+// Heart
+
+  // const ctx = event.context;
+  // // calculate the pixel ratio and rotation of the canvas
+  // const matrix = event.inversePixelTransform;
+  // const canvasPixelRatio = Math.sqrt(
+  //   matrix[0] * matrix[0] + matrix[1] * matrix[1]
+  // );
+  // const canvasRotation = -Math.atan2(matrix[1], matrix[0]);
+  // ctx.save();
+  // // center the canvas and remove rotation to position clipping
+  // ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
+  // ctx.rotate(-canvasRotation);
+
+  // ctx.scale(3 * canvasPixelRatio, 3 * canvasPixelRatio);
+  // ctx.translate(-75, -80);
+  // ctx.beginPath();
+  // ctx.moveTo(75, 40);
+  // ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+  // ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+  // ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+  // ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+  // ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+  // ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+  // ctx.clip();
+  // ctx.translate(75, 80);
+  // ctx.scale(1 / 3 / canvasPixelRatio, 1 / 3 / canvasPixelRatio);
+
+  // // reapply canvas rotation and position
+  // ctx.rotate(canvasRotation);
+  // ctx.translate(-ctx.canvas.width / 2, -ctx.canvas.height / 2);
+
   }
 
   /* @private
    */
   postcompose_(e) {
-    //console.log("postcompose_");
     e.context.restore();
   }
 
