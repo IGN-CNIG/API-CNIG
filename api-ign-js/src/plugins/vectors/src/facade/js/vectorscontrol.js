@@ -1652,16 +1652,14 @@ export default class VectorsControl extends M.Control {
             }
           }
 
-          if (this.geometry === 'LineString') {
-            document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
-            const elem = document.getElementById(id);
-            if (elem !== null) {
-              elem.addEventListener('click', () => {
-                elem.classList.remove('m-vectors-3d-measure');
-                elem.innerHTML = getValue('calculating');
-                this.getImpl().get3DLength(id);
-              });
-            }
+          document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
+          const elem = document.getElementById(id);
+          if (elem !== null) {
+            elem.addEventListener('click', () => {
+              elem.classList.remove('m-vectors-3d-measure');
+              elem.innerHTML = getValue('calculating');
+              this.getImpl().get3DLength(id);
+            });
           }
         }
         break;
@@ -1684,6 +1682,10 @@ export default class VectorsControl extends M.Control {
             document.querySelector('#colorSelector').value = style.fill.color;
             this.currentThickness = style.stroke.width || 6;
             document.querySelector('#thicknessSelector').value = style.stroke.width || 6;
+          }
+
+          if (this.geometry === 'Polygon') {
+            document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
           }
         }
         break;

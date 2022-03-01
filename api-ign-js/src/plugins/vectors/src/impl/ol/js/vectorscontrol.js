@@ -1248,7 +1248,15 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   calculateProfilePoints(feature, callback, callbackError) {
-    const coordinates = feature.getGeometry().coordinates;
+    let coordinates = [];
+    if (feature.getGeometry().type === 'MultiLineString') {
+      feature.getGeometry().coordinates.forEach((path) => {
+        coordinates = coordinates.concat(path);
+      });
+    } else {
+      coordinates = feature.getGeometry().coordinates;
+    }
+
     let pointsCoord = '';
     for (let i = 1; i < coordinates.length; i += 1) {
       pointsCoord = pointsCoord.concat(this.findNewPoints(coordinates[i - 1], coordinates[i]));
@@ -1315,7 +1323,18 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   calculateProfile(feature) {
-    const coordinates = feature.getGeometry().coordinates;
+    let coordinates = [];
+    if (feature.getGeometry().type === 'MultiLineString') {
+      feature.getGeometry().coordinates.forEach((path) => {
+        coordinates = coordinates.concat(path);
+      });
+    } else if (feature.getGeometry().type === 'Polygon') {
+      coordinates = [].concat(feature.getGeometry().coordinates[0]);
+      coordinates.pop();
+    } else {
+      coordinates = [].concat(feature.getGeometry().coordinates);
+    }
+
     let pointsCoord = '';
     for (let i = 1; i < coordinates.length; i += 1) {
       pointsCoord = pointsCoord.concat(this.findNewPoints(coordinates[i - 1], coordinates[i]));

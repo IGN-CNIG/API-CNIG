@@ -65,10 +65,10 @@ const viales = new M.layer.WFS({
 //map.addWFS(provincias);
 //map.addWFS(viales);
 map.addPlugin(mp);
-map.addPlugin(mp2);
-map.addPlugin(mp3);
-map.addPlugin(mp4);
-map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
+// map.addPlugin(mp2);
+// map.addPlugin(mp3);
+// map.addPlugin(mp4);
+// map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
 map.addPlugin(new M.plugin.BackImgLayer({
   position: 'TR',
   layerId: 0,
