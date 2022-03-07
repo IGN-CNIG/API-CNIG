@@ -87,5 +87,6 @@
   "from_url": "From URL",
   "url_layer": "File URL",
   "add_layer": "Add layer",
-  "add_from_url": "Add layer from URL"
+  "add_from_url": "Add layer from URL",
+  "add_points": "Add points"
 }
