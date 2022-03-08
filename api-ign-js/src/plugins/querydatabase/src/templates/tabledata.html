@@ -1,0 +1,18 @@
+<table id="dataelements" summary="Tabla con los atributos de los elementos de la capa vectorial">
+  <thead>
+    <tr class="m-querydatabase-table-thead">
+      {{#each atributos}}
+      <th>{{value}}</th>
+      {{/each}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each elementos}}
+      <tr >
+        {{#each datos}}
+        <td>{{this}}</td>
+        {{/each}}
+      </tr>
+      {{/each}}
+    </tbody>
+</table>
