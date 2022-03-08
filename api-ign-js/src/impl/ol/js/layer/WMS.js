@@ -725,6 +725,7 @@ class WMS extends LayerBase {
     if (obj instanceof WMS) {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
+      equals = equals && (this.cql === obj.cql);
       equals = equals && (this.version === obj.version);
     }
 

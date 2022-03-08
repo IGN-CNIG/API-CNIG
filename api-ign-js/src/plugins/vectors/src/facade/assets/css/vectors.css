@@ -118,23 +118,13 @@ div.m-panel.m-vectors div#drawingtools #featureInfo {
 
 div#drawingtools button,
 div#vectors-uploading button,
-div#vectors-uploading label {
+div#vectors-uploading>label {
     background-color: #71a7d3;
     border: none;
     border-radius: 5px;
     color: white;
+    margin: 20px auto 0;
     padding: 10px;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-div#vectors-uploading > p {
-  margin-top: -0.5rem;
-  margin-bottom: 2rem;
-}
-
-div#vectors-uploading > div {
-  margin-bottom: 30px;
 }
 
 div#drawingtools button {
@@ -228,14 +218,8 @@ div.ol-overlaycontainer-stopevent > div > div.m-area > div.m-panel.m-vectors.col
 }
 
 .m-vectors #m-vector-list {
-  max-height: 40vh;
+  max-height: 60vh;
   overflow-y: auto;
-}
-
-@media (max-height: 770px) {
-  .m-vectors #m-vector-list {
-    max-height: 18vh;
-  }
 }
 
 .m-vectors div#m-vector-list {
@@ -640,19 +624,16 @@ div.m-vector-layer-actions .active-tool {
   overflow-y: auto;
 }
 
-.m-vectors-fromurl .search-panel,
 .m-vectors-addwfs .search-panel {
   text-align: center;
   margin: 0 auto;
 }
 
-.m-vectors-fromurl .search-panel input,
 .m-vectors-addwfs .search-panel input {
   width: 215px;
   margin-right: 20px;
 }
 
-.m-vectors-fromurl .search-panel span,
 .m-vectors-addwfs .search-panel span {
   margin-left: -10px;
   cursor: pointer;
@@ -746,8 +727,6 @@ div.m-vector-layer-actions .active-tool {
 
 #drawingtools .m-vector-layer-btn-container {
   display: flex;
-  justify-content: center;
-  margin-top: 1rem;
 }
 
 .m-panel.m-vectors.opened>button {

@@ -17,8 +17,7 @@
     "error_features_wfs": "No se han podido cargar features de la capa. Inténtalo aumentando el nivel de zoom en la zona de interés.",
     "error_no_features_wfs": "No se han podido cargar features de la capa. Inténtalo de nuevo en otra zona.",
     "error_wfs": "No se ha podido cargar el servicio WFS",
-    "wfs_zoom": "Aumente el nivel de zoom * niveles si quiere añadir este servicio WFS",
-    "url_not_valid": "La URL introducida no es válida"
+    "wfs_zoom": "Aumente el nivel de zoom * niveles si quiere añadir este servicio WFS,"
   },
   "tooltip": "Rutas y Capas Vectoriales",
   "change_name": "Cambiar nombre",
@@ -83,10 +82,5 @@
   "generating_profile": "Generando perfil",
   "calculate": "Calcular",
   "calculating": "Calculando",
-  "try_again": "No se ha podido realizar la consulta. Por favor, inténtelo de nuevo más tarde",
-  "from_url": "Desde URL",
-  "url_layer": "URL del fichero",
-  "add_layer": "Añadir capa",
-  "add_from_url": "Añadir capa desde URL",
-  "add_points": "Añadir puntos"
+  "try_again": "No se ha podido realizar la consulta. Por favor, inténtelo de nuevo más tarde"
 }

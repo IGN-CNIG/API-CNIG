@@ -52,9 +52,8 @@ export default class Georefimage2Control extends M.impl.Control {
    */
   getParametrizedLayers(paramName, layers) {
     let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
-      return !M.utils.isNullOrEmpty(layer.getSource()) &&
-      // eslint-disable-next-line no-underscore-dangle
-        !M.utils.isNullOrEmpty(layer.getSource().params_) &&
+      return layer.type === 'IMAGE' && !M.utils.isNullOrEmpty(layer.getSource()) &&
+        !M.utils.isNullOrEmpty(layer.getSource().getParams()) &&
         layer.getSource().getParams()[paramName] !== undefined;
     });
 
@@ -91,12 +90,15 @@ export default class Georefimage2Control extends M.impl.Control {
         this.encodeWMTS(layer).then((encodedLayer) => {
           success(encodedLayer);
         });
-      } else if (layer.type === M.layer.type.MBTiles) {
+      } else if (layer.type === M.layer.type.MBtiles) {
         // none
+      } else if (layer.type === M.layer.type.OSM) {
+        success(this.encodeOSM(layer));
+      } else if (layer.type === M.layer.type.Mapbox) {
+        success(this.encodeMapbox(layer));
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
-      // eslint-disable-next-line no-underscore-dangle
-      } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
+      } else if (layer.type === 'IMAGE' && !(layer instanceof M.layer.WMS)) {
         success(this.encodeImage(layer));
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
         success(this.encodeXYZ(layer));
@@ -378,7 +380,7 @@ export default class Georefimage2Control extends M.impl.Control {
     };
 
     encodedLayer.customParams = {
-      IMAGEN: params.IMAGEN,
+      IMAGEID: params.IMAGEID,
       transparent: true,
       iswmc: false,
     };

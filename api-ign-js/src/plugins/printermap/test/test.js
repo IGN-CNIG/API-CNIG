@@ -9,7 +9,7 @@ const map = M.map({
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
   //projection: 'EPSG:4326*d',
-  /*layers: [
+  layers: [
     new M.layer.XYZ({
       url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
       name: 'OI.OrthoimageCoverage',
@@ -20,7 +20,7 @@ const map = M.map({
       queryable: false,
       visible: true,
     }),
-  ],*/
+  ],
 });
 
 const layerinicial = new M.layer.WMS({
@@ -29,7 +29,6 @@ const layerinicial = new M.layer.WMS({
   legend: 'Limite administrativo',
   tiled: false,
 }, {});
-
 
 /* const campamentos = new M.layer.GeoJSON({
   name: 'Campamentos',
@@ -70,30 +69,6 @@ map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
 }));
 
-map.addPlugin(new M.plugin.FullTOC({
-  position: 'TR',
-}));
-
-/*const source = new ol.source.ImageWMS({
-  url: 'https://wms-fototeca.idee.es/fototeca?',
-  params: {
-    LAYERS: `imagenquinquenal_1998_2003`,
-    FORMAT: 'image/png',
-    VERSION: '1.1.1',
-    TRANSPARENT: true,
-    IMAGEN: '/var/www/apps/fototeca/data/Vuelos_Historicos/vuelo_quinquenal/Quinquenal_hu30/0822_fot_28658_etrs89_UTM_hu30.ecw',
-  },
-  serverType: 'mapserver'
-});
-
-const layer = new ol.layer.Image({
-  visible: true,
-  opacity: 1,
-  zIndex: 999999999,
-  source: source,
-});
-
-map.getMapImpl().addLayer(layer);*/
 //map.addLayers([layerinicial, campamentos]);
 //map.addLayers([campamentos]);
 

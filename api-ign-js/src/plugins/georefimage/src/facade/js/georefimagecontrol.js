@@ -603,36 +603,8 @@ export default class GeorefimageControl extends M.Control {
     // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer' && ['WMS', 'WMTS', 'TMS', 'XYZ'].indexOf(layer.type) > -1);
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer' && ['WMS', 'WMTS'].indexOf(layer.type) > -1);
     });
-
-    if (this.map_.getZoom() === 20) {
-      let contains = false;
-      layers.forEach((l) => {
-        if (l.url !== undefined && l.url === 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg') {
-          contains = true;
-        }
-      });
-
-      if (contains) {
-        layers = layers.filter((l) => {
-          return l.url !== 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg';
-        });
-      }
-    } else if (this.map_.getZoom() < 20) {
-      let contains = false;
-      layers.forEach((l) => {
-        if (l.url !== undefined && l.name !== undefined && l.url === 'https://www.ign.es/wmts/pnoa-ma?' && l.name === 'OI.OrthoimageCoverage') {
-          contains = true;
-        }
-      });
-
-      if (contains) {
-        layers = layers.filter((l) => {
-          return l.url !== 'https://www.ign.es/wmts/pnoa-ma?' && l.name !== 'OI.OrthoimageCoverage';
-        });
-      }
-    }
 
     const encodedLayersModified = [];
     if (this.projection_.value === 'EPSG:3857') {
@@ -666,35 +638,38 @@ export default class GeorefimageControl extends M.Control {
     }
 
     let numLayersToProc = layers.length;
-    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEN', layers);
+    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
       numLayersToProc = layers.length;
     }
 
-    layers = layers.sort((a, b) => {
-      let res = 0;
-      const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
-      const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
-      if (zia > zib) {
-        res = 1;
-      } else if (zia < zib) {
-        res = -1;
-      }
-
-      return res;
-    });
-
     return (new Promise((success, fail) => {
-      const encodedLayers = [];
-      layers.forEach((layer, index) => {
+      let encodedLayers = [];
+      const vectorLayers = [];
+      const wmsLayers = [];
+      const otherBaseLayers = [];
+      const BreakException = {};
+      layers.forEach((layer) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
+          if (encodedLayer === null) {
+            throw BreakException;
+          }
+          // Vector layers must be added after non vector layers.
           if (!M.utils.isNullOrEmpty(encodedLayer)) {
-            encodedLayers[index] = encodedLayer;
+            if (encodedLayer.type === 'Vector' || encodedLayer.type === 'KML') {
+              vectorLayers.push(encodedLayer);
+            } else if (encodedLayer.type === 'WMS') {
+              wmsLayers.push(encodedLayer);
+            } else {
+              otherBaseLayers.push(encodedLayer);
+            }
           }
 
           numLayersToProc -= 1;
           if (numLayersToProc === 0) {
+            encodedLayers = encodedLayers.concat(otherBaseLayers)
+              .concat(wmsLayers).concat(vectorLayers);
             // Mapfish requires reverse order
             success(encodedLayers.reverse());
           }
@@ -729,25 +704,28 @@ export default class GeorefimageControl extends M.Control {
    * @api stable
    */
   downloadPrint(event) {
-    const keepView = document.getElementById('keepview').checked;
-    const dpi = keepView ? 120 : this.dpi_;
-    const code = this.map_.getProjection().code;
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      let bbox = [
-        this.map_.getBbox().x.min,
-        this.map_.getBbox().y.min,
-        this.map_.getBbox().x.max,
-        this.map_.getBbox().y.max,
+      let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
+      const bbox = [this.map_.getBbox().x.min, this.map_.getBbox().y.min,
+        this.map_.getBbox().x.max, this.map_.getBbox().y.max,
       ];
-      bbox = this.getImpl().transformExt(bbox, code, this.projection_.name);
-      const size = this.map_.getMapImpl().getSize();
-      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
+
+      BboxTransformXmaxYmin = this.getImpl().transformExt(
+        bbox,
+        this.map_.getProjection().code, this.projection_.name,
+      );
+
+      const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
+      const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
+      const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
+        (72 / this.dpi_)).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
-      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
-      const Cx = (bbox[0] + (Px / 2)).toString();
-      const Cy = (bbox[3] + (Py / 2)).toString();
+      const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
+        (72 / this.dpi_)).toString();
+      const Cx = (BboxTransformXmaxYmin[0]).toString();
+      const Cy = (BboxTransformXmaxYmin[3]).toString();
       let titulo = event.target.textContent;
       if (titulo === '' || titulo === getValue('notitle')) {
         const f = new Date();

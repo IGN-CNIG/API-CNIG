@@ -52,6 +52,7 @@ module.exports = {
   devServer: {
     // https: true,
     hot: true,
+    // host: '0.0.0.0',
     open: true,
     // port: 6123,
     openPage: 'test/dev.html',

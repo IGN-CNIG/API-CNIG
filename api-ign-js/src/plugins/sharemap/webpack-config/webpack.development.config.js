@@ -47,6 +47,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
+    host: '0.0.0.0',
     hot: true,
     open: true,
     port: 6123,

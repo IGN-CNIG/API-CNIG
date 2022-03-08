@@ -559,11 +559,6 @@ GROUPS
   max-width: 50vw;
 }
 
-@media (max-height: 770px) {
-  .m-fulltoc-container ul.m-groups, .m-fulltoc-container ul.m-layers, .m-fulltoc-container ul.m-base-layers, ul.m-groups>li.m-group>ul.m-layers {
-      max-height: 25vh !important;
-  }
-}
 
 /******************
 GROUP

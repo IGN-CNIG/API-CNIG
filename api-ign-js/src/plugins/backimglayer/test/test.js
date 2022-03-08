@@ -43,7 +43,7 @@ const mp = new BackImgLayer({
       preview: '../src/facade/assets/images/svqimagen.png',
       layers: [
         new M.layer.XYZ({
-          url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+          url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
           name: 'PNOA-MA',
           legend: 'Imagen',
           projection: 'EPSG:3857',
@@ -51,7 +51,18 @@ const mp = new BackImgLayer({
           displayInLayerSwitcher: false,
           queryable: false,
           visible: true,
-          tileGridMaxZoom: 19,
+        }),
+        new M.layer.WMTS({
+          url: 'https://www.ign.es/wmts/pnoa-ma?',
+          name: 'OI.OrthoimageCoverage',
+          matrixSet: 'GoogleMapsCompatible',
+          legend: 'Imagen',
+          transparent: true,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/jpeg',
+          minZoom: 10,
         }),
       ],
     },
@@ -61,15 +72,14 @@ const mp = new BackImgLayer({
       preview: '../src/facade/assets/images/svqhibrid.png',
       layers: [
         new M.layer.XYZ({
-          url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
-          name: 'PNOA-MA',
+          url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+          name: 'OI.OrthoimageCoverage',
           legend: 'Imagen',
           projection: 'EPSG:3857',
           transparent: false,
           displayInLayerSwitcher: false,
           queryable: false,
           visible: true,
-          tileGridMaxZoom: 19,
         }),
         new M.layer.WMTS({
           url: 'http://www.ign.es/wmts/ign-base?',
@@ -155,9 +165,5 @@ map.addPlugin(mp);
   format: 'image/jpeg',
   minZoom: 10,
 }));*/
-
-map.addPlugin(new M.plugin.Vectors({
-  position: 'TR',
-}));
 
 window.map = map;

@@ -37,17 +37,9 @@ const WFS_EXCEPTIONS = [
   'http://ideihm.covam.es/wfs/CartaOF',
 ];
 
-const formatNumber = (x, decimals) => {
-  const pow = 10 ** decimals;
-  let num = Math.round(x * pow) / pow;
-  num = num.toString().replace('.', ',');
-  if (decimals > 2) {
-    num = `${num.split(',')[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${num.split(',')[1]}`;
-  } else {
-    num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  }
-
-  return num;
+const formatNumber = (x) => {
+  const num = Math.round(x * 100) / 100;
+  return num.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
 export default class VectorsControl extends M.impl.Control {
@@ -183,16 +175,13 @@ export default class VectorsControl extends M.impl.Control {
   * @function
   * @api
   */
-  addDrawInteraction(layer, feature) {
+  addDrawInteraction(layer, geom) {
     const olMap = this.facadeMap_.getMapImpl();
     const vectorSource = layer.getImpl().getOL3Layer().getSource();
     const geometry = layer.getGeometryType() !== null ? layer.getGeometryType() : layer.geometry;
     this.draw = this.newDrawInteraction(vectorSource, geometry);
-    this.addDrawEvent(feature !== undefined);
+    this.addDrawEvent();
     olMap.addInteraction(this.draw);
-    if (feature !== undefined) {
-      this.draw.extend(feature.getImpl().getOLFeature());
-    }
   }
 
   /**
@@ -202,23 +191,15 @@ export default class VectorsControl extends M.impl.Control {
   * @function
   * @api
   */
-  addDrawEvent(isAdding) {
+  addDrawEvent() {
     this.draw.on('drawend', (event) => {
       this.facadeControl.onDraw(event);
-      if (isAdding) {
-        this.removeDrawInteraction();
-      }
     });
 
     document.addEventListener('keyup', this.addEscEvent.bind(this));
     this.draw.once('drawstart', (evt) => {
       document.onkeydown = this.addUndoEvent.bind(this, evt.feature);
     });
-  }
-
-  addAddPointsInteraction(layer, feature) {
-    this.removeDrawInteraction();
-    this.addDrawInteraction(layer, feature);
   }
 
   addUndoEvent(feature, evt) {
@@ -229,7 +210,6 @@ export default class VectorsControl extends M.impl.Control {
 
   addEscEvent(evt) {
     if (evt.key === 'Escape') {
-      this.draw.finishDrawing();
       this.facadeControl.deactivateDrawing();
       this.facadeControl.isDrawingActive = false;
       this.facadeControl.drawLayer = undefined;
@@ -1113,14 +1093,12 @@ export default class VectorsControl extends M.impl.Control {
 
       if (length < flatLength) {
         length = flatLength + ((flatLength - length) / 2);
+        length = formatNumber(length);
+      } else {
+        length = formatNumber(length);
       }
 
-      let m = `${formatNumber(length / 1000, 2)}km`;
-      if (length < 1000) {
-        m = `${formatNumber(length, 0)}m`;
-      }
-
-      elem.innerHTML = m;
+      elem.innerHTML = `${length}m`;
       this.facadeControl.feature.setAttribute('3dLength', length);
     }, () => {
       elem.innerHTML = '-';
@@ -1259,15 +1237,7 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   calculateProfilePoints(feature, callback, callbackError) {
-    let coordinates = [];
-    if (feature.getGeometry().type === 'MultiLineString') {
-      feature.getGeometry().coordinates.forEach((path) => {
-        coordinates = coordinates.concat(path);
-      });
-    } else {
-      coordinates = feature.getGeometry().coordinates;
-    }
-
+    const coordinates = feature.getGeometry().coordinates;
     let pointsCoord = '';
     for (let i = 1; i < coordinates.length; i += 1) {
       pointsCoord = pointsCoord.concat(this.findNewPoints(coordinates[i - 1], coordinates[i]));
@@ -1334,18 +1304,7 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   calculateProfile(feature) {
-    let coordinates = [];
-    if (feature.getGeometry().type === 'MultiLineString') {
-      feature.getGeometry().coordinates.forEach((path) => {
-        coordinates = coordinates.concat(path);
-      });
-    } else if (feature.getGeometry().type === 'Polygon') {
-      coordinates = [].concat(feature.getGeometry().coordinates[0]);
-      coordinates.pop();
-    } else {
-      coordinates = [].concat(feature.getGeometry().coordinates);
-    }
-
+    const coordinates = feature.getGeometry().coordinates;
     let pointsCoord = '';
     for (let i = 1; i < coordinates.length; i += 1) {
       pointsCoord = pointsCoord.concat(this.findNewPoints(coordinates[i - 1], coordinates[i]));

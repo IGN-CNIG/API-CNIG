@@ -56,8 +56,6 @@ class XYZ extends Layer {
     this.minZoom = userParameters.minZoom || Number.NEGATIVE_INFINITY;
 
     this.maxZoom = userParameters.maxZoom || Number.POSITIVE_INFINITY;
-
-    this.tileGridMaxZoom = userParameters.tileGridMaxZoom;
   }
 
   /**
@@ -111,12 +109,8 @@ class XYZ extends Layer {
       tileSize: this.getTileSize(),
     });
     this.ol3Layer.setSource(source);
-    if (this.tileGridMaxZoom !== undefined && this.tileGridMaxZoom > 0) {
-      this.ol3Layer.getSource().tileGrid.maxZoom = this.tileGridMaxZoom;
-    } else {
-      this.ol3Layer.setMaxZoom(this.maxZoom);
-      this.ol3Layer.setMinZoom(this.minZoom);
-    }
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
   }
 
 

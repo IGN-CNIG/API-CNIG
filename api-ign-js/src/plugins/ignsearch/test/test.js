@@ -5,7 +5,7 @@ M.language.setLang('es');
 const map = M.map({
   container: 'mapjs',
   center: [-467062.8225, 4683459.6216],
-  //controls: ['getfeatureinfo'],
+  controls: ['getfeatureinfo'],
   zoom: 6,
 });
 

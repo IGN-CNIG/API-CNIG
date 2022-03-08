@@ -4,7 +4,6 @@ import FullTOC from 'facade/fulltoc';
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['scale'],
   center: {
     x: -528863.345515127,
     y: 4514194.232367303,
@@ -189,7 +188,6 @@ const mp = new FullTOC({
   https: true,
   http: true,
   // precharged,
-  precharged: {},
   codsi: true,
 });
 
@@ -221,33 +219,8 @@ const ocupacionSuelo = new M.layer.WMTS({
   visibility: false,
 });
 
-/*const xyz = new M.layer.XYZ({
-  url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
-  name: 'PNOA-MA',
-  legend: 'Imagen',
-  projection: 'EPSG:3857',
-  transparent: true,
-  displayInLayerSwitcher: false,
-  queryable: false,
-  visible: true,
-  tileGridMaxZoom: 19,
-});*/
-
 /*map.addLayers(layerUA);
 map.addLayers(layerinicial);
 map.addLayers(ocupacionSuelo);*/
-
-// map.addLayers(xyz);
-
-/*const terremotos = new M.layer.WMS({
-  url: 'https://www.ign.es/wms-inspire/geofisica',
-  name: 'NZ.ObservedEvent',
-  legend: 'terremotos 3',
-  visibility: true,
-  tiled: true,
-},{ params: { CQL_FILTER: 'magnitud>3' } }
-);
-
-map.addLayers(terremotos);*/
 
 window.map = map;
