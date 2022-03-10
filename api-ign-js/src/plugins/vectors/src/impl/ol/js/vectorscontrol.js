@@ -232,7 +232,10 @@ export default class VectorsControl extends M.impl.Control {
       this.draw.finishDrawing();
       this.facadeControl.deactivateDrawing();
       this.facadeControl.isDrawingActive = false;
+      this.facadeControl.isEditionActive = false;
       this.facadeControl.drawLayer = undefined;
+      this.removeEditInteraction();
+      this.removeSelectInteraction();
     }
   }
 
@@ -351,6 +354,8 @@ export default class VectorsControl extends M.impl.Control {
       this.edit.on('modifyend', (evt) => {
         facadeControl.onModify();
       });
+
+      document.addEventListener('keyup', this.addEscEvent.bind(this));
       olMap.addInteraction(this.edit);
     }
   }

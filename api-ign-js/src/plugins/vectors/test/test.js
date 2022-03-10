@@ -79,24 +79,6 @@ map.addPlugin(new M.plugin.BackImgLayer({
   empty: true,
   layerOpts: [
     {
-      id: 'raster',
-      preview: '',
-      title: 'Mapa',
-      layers: [
-        new M.layer.WMTS({
-          url: 'https://www.ign.es/wmts/mapa-raster?',
-          name: 'MTN',
-          legend: 'Mapa',
-          matrixSet: 'GoogleMapsCompatible',
-          transparent: false,
-          displayInLayerSwitcher: false,
-          queryable: false,
-          visible: true,
-          format: 'image/jpeg',
-        }),
-      ],
-    },
-    {
       id: 'imagen',
       preview: '',
       title: 'Imagen',
@@ -111,6 +93,24 @@ map.addPlugin(new M.plugin.BackImgLayer({
           queryable: false,
           visible: true,
           tileGridMaxZoom: 19,
+        }),
+      ],
+    },
+    {
+      id: 'raster',
+      preview: '',
+      title: 'Mapa',
+      layers: [
+        new M.layer.WMTS({
+          url: 'https://www.ign.es/wmts/mapa-raster?',
+          name: 'MTN',
+          legend: 'Mapa',
+          matrixSet: 'GoogleMapsCompatible',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/jpeg',
         }),
       ],
     },
