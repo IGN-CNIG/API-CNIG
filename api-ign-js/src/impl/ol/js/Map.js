@@ -2388,6 +2388,7 @@ class Map extends MObject {
  */
 Map.Z_INDEX = {};
 Map.Z_INDEX_BASELAYER = 0;
+Map.Z_INDEX[LayerType.OSM] = 5;
 Map.Z_INDEX[LayerType.WMS] = 10;
 Map.Z_INDEX[LayerType.WMTS] = 10;
 Map.Z_INDEX[LayerType.KML] = 10;
