@@ -8,6 +8,7 @@ const map = M.map({
   maxZoom: 20,
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
+  layers: ['OSM'],
   //projection: 'EPSG:4326*d',
   /*layers: [
     new M.layer.XYZ({
@@ -66,13 +67,13 @@ map.addPlugin(printermap);
   reverse: true,
 }));*/
 
-map.addPlugin(new M.plugin.Vectors({
+/*map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
-}));
+}));*/
 
-map.addPlugin(new M.plugin.FullTOC({
+/*map.addPlugin(new M.plugin.FullTOC({
   position: 'TR',
-}));
+}));*/
 
 /*const source = new ol.source.ImageWMS({
   url: 'https://wms-fototeca.idee.es/fototeca?',
