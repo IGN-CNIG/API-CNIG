@@ -61,6 +61,8 @@
      this.moveEvents = [];
 
      this.elementos = [];
+
+     this.cluster = false;
    }
  
    /**
@@ -95,12 +97,6 @@
     this.html = html;
    }
 
-/*   launchComun(html){
-    document.getElementById('m-querydatabase-table').innerHTML = '';
-    document.querySelector('#m-querydatabase-options-information-container').innerHTML = ''; // e2m:borro contenido para evitar que concatene dentro ventanas de información
-    document.querySelector('#m-querydatabase-options-information-container').appendChild(html);
-   }*/
-
    launchComun(html){
     this.html.querySelector('#m-querydatabase-table').innerHTML = '';
     this.html.querySelector('#m-querydatabase-options-information-container').innerHTML = ''; // e2m:borro contenido para evitar que concatene dentro ventanas de información
@@ -124,7 +120,6 @@
    }
 
    launchInicial(){
-   // this.launchComun(html);
     if(this.connection.table){
       this.tabla = this.connection.table;
       if(this.connection.schema){
@@ -160,28 +155,18 @@
           this.drawTable(null);
           this.createFilterView();
           this.addMapMoveEvent(this.filtrarDatos.bind(this));
-        }/*else if(evt.target.getAttribute('class') === 'showdata'){
-          const id = evt.target.parentNode.parentNode.getAttribute('id');
-          const data = id.split('&');
-          this.schema = data[0];
-          this.tabla = data[1];
-          this.paginaActual = 1;
-          this.getDataTable();
-        }*/
+        }
      });
-//     this.addPaginationEvent(this.getTablasDisponibles.bind(this));
      this.addAtrasEvent(this.getBasesDatosDisponibles.bind(this));
     }
 
     launchAttributesWindow(html) {
       this.launchComun(html);
-  //    this.addPaginationEvent(this.getColumnasTablas.bind(this));
       this.addAtrasEvent(this.getTablasDisponibles.bind(this));
     }
 
     launchDataTable(html){
       this.launchComun(html);
-  //    this.addPaginationEvent(this.getDataTable.bind(this));
       this.addAtrasEvent(this.getTablasDisponibles.bind(this));
     }
 
@@ -250,7 +235,6 @@
     }
     M.remote.get(url).then((response) => {
       const pagina = JSON.parse(response.text);
-     // const paginas = this.obtenerPaginas(pagina);
       const tables = pagina.results;
       const html = M.template.compileSync(tabledatatables, {
         vars: {
@@ -271,7 +255,6 @@
     M.remote.get(url).then((response) => {
       const pagina = JSON.parse(response.text);
       const attributes = pagina.results;
-      //const paginas = this.obtenerPaginas(pagina);
       const html = M.template.compileSync(tableAttributes, {
         vars: {
           attributes,
@@ -291,7 +274,6 @@
     M.remote.get(url).then((response) => {
       const pagina = JSON.parse(response.text);
       const rows = pagina.results;
-      //const paginas = this.obtenerPaginas(pagina);
       const html = M.template.compileSync(tabledata, {
         vars : {
           rows,
@@ -301,24 +283,8 @@
     });
   }
 
-/*  drawTable(){
-    let geomBbox = this.buildGeomFromBbox();
-    let url = `${M.config.MAPEA_URL}/api/database/`;
-    url = url.concat(this.token ? this.token : this.database)
-      .concat(`/${this.tabla}/filtered?schema=${this.schema}`);
-    if(this.token){
-      url = url.concat('&token=true');
-    }
-    url = url.concat(`&bbox=${geomBbox}`);
-      M.remote.get(url).then((response) => {
-        const pagina = JSON.parse(response.text);
-        if(pagina && pagina.results){
-          this.drawElements(pagina.results);
-        }
-      });
-  }*/
-
   drawTable(filtros){
+    this.cluster = false;
     const geomBbox = this.buildGeomFromBbox();
     let url = `${M.config.MAPEA_URL}/api/database/`;
     url = url.concat(this.token ? this.token : this.database)
@@ -326,7 +292,9 @@
     if(this.token){
       url = url.concat('&token=true');
     }
-    url = url.concat(`&bbox=${geomBbox}&size=1000`);
+    url = url.concat(`&bbox=${geomBbox}`);
+    const zoom = this.map.getZoom();
+    url = url.concat(`&zoom=${zoom}`);
     if(filtros){
       url = url.concat(filtros);
     }
@@ -334,23 +302,29 @@
         const pagina = JSON.parse(response.text);
         if(pagina && pagina.results){
           this.elementos = pagina.results;
+          if(pagina.numPagina === -999){//Se devuelve cluster en vez de los datos de la tabla
+            this.cluster = true;
+          }
+          this.drawElements();
           this.createDataView();
-          this.drawElements(pagina.results);
         }
       });
   }
 
   createDataView(){
-    const atributos = this.getAttributes();
-    const elementos = this.getElementsWithAttributes();
-    const html = M.template.compileSync(tabledata, {
-      vars: {
-        elementos,
-        atributos,
-      },
-    });
     this.html.querySelector('#m-querydatabase-table-container').innerHTML = '';
-    this.html.querySelector('#m-querydatabase-table-container').appendChild(html);
+    if(!this.cluster){
+      const atributos = this.getAttributes();
+      const elementos = this.getElementsWithAttributes();
+      const html = M.template.compileSync(tabledata, {
+        vars: {
+          elementos,
+          atributos,
+        },
+      });
+      html.addEventListener('click', this.interaccionTabla.bind(this));
+      this.html.querySelector('#m-querydatabase-table-container').appendChild(html);
+    }
   }
 
   createFilterView(){
@@ -383,11 +357,13 @@
     this.drawTable(filtros);
  }
 
-  drawElements(elementos){
+  drawElements(){
     const features = [];
-    for(let i = 0; i < elementos.length; i++){
-      if(elementos[i].geometry){
-        features.push(this.getFeatureFromElement(elementos[i]));
+    for(let i = 0; i < this.elementos.length; i++){
+      if(this.elementos[i].geometry){
+        let feature = this.getFeatureFromElement(this.elementos[i]);
+        features.push(feature);
+        this.elementos[i].featureId = feature.getId();
       }
     }
     this.databaseLayer.removeFeatures(this.databaseLayer.getFeatures());
@@ -408,21 +384,77 @@
     delete element.geometry;
     delete element.srid;
     feature.setAttributes(element);
+    if(this.cluster){
+      feature.setStyle(this.getClusterStyle(element.elementos_cluster));
+    }
     return feature;
   }
 
   selectStyleLayer(geomType){
-    if(geomType && this.styles){
-      let style = null;
-      if(geomType.includes('Point') && this.styles.point){
-        style = this.styles.point;
-      }else if(geomType.includes('Linestring') && this.styles.line){
-        style = this.styles.line;
-      }else if(geomType.includes('Polygon') && this.styles.polygon){
-        style = this.styles.polygon;
+    const style = this.getStyleByGeomType(geomType);
+    this.databaseLayer.setStyle(style);
+  }
+
+  getStyleByGeomType(geomType){
+    let style = null;
+    if(geomType && this.styles && this.styles.default){
+      if(geomType.includes('Point') && this.styles.default.point){
+        style = this.styles.default.point;
+      }else if(geomType.includes('LineString') && this.styles.default.line){
+        style = this.styles.default.line;
+      }else if(geomType.includes('Polygon') && this.styles.default.polygon){
+        style = this.styles.default.polygon;
       }
-      this.databaseLayer.setStyle(style);
     }
+    return style;
+  }
+
+  getClusterStyle(numElementos){
+    let style = this.getStyleByGeomType('Polygon').clone();
+    if(!style){
+      style = new M.style.Polygon({
+        fill: {
+          color: 'blue',
+          opacity: 0.5
+        },
+        stroke: {
+          color: blue
+        }
+      });
+    }
+    style.getOptions().label = {
+      text: numElementos,
+      align: M.style.align.CENTER,
+      baseline: M.style.baseline.MIDDLE
+    };
+    return style;
+  }
+
+  getClusterStyle2(numElementos){
+    let style = this.getStyleByGeomType('Point').clone();
+    if(!style){
+      style = new M.style.Point({
+        fill: {
+          color: 'blue',
+          opacity: 0.5
+        },
+        stroke: {
+          color: blue
+        }
+      });
+    }
+    style.getOptions().label = {
+      text: numElementos,
+      align: M.style.align.CENTER,
+      baseline: M.style.baseline.MIDDLE
+    };
+    style.getOptions().icon = {
+      form: M.style.form.MARKER,
+      fontsize: 0.5,
+      color: 'red',
+      fill: 'red'
+    };
+    return style;
   }
  
    /**
@@ -503,23 +535,6 @@
      }
    }
 
-   obtenerPaginas(pagina){
-      let paginas = [];
-      let pagInicio = 1; 
-      this.paginasTotales = pagina.totalElementos / pagina.tamPagina;
-      if(pagina.totalElementos % pagina.tamPagina > 0){
-        this.paginasTotales++;
-      }
-      if(this.paginaActual - 2 > 0){
-        pagInicio = this.paginaActual - 2;
-      }
-      for(let i = pagInicio; i <= pagInicio+4 && i <= this.paginasTotales; i++){
-        let actual = i === this.paginaActual ? 'pag-actual' : 'pag-disponible';
-        paginas.push({value: i, actual: actual});
-      }
-      return paginas;
-   }
-
    buildGeomFromBbox(){
       let bbox = this.map.getBbox();
       let featureBbox = new M.Feature();
@@ -534,7 +549,6 @@
         coordinates: [coordinates]
       };
       featureBbox.setGeometry(geomBbox);
-    //  featureBbox.getImpl().getOLFeature().getGeometry().transform(this.map.getProjection().code, `EPSG:${this.srid}`);
       let format = new M.format.WKT();
       return format.write(featureBbox).replaceAll(' ', '$')+"srid"+this.map.getProjection().code.slice(5);
    }
@@ -585,9 +599,9 @@
             obj.push(this.elementos[i][this.atributos[j].value]);
           }
         }else{
-          obj = Object.values(this.elementos[i])
+          obj = Object.values(this.elementos[i]).filter((v) => {if(!v.includes('mapea_feature')) return v;});
         }
-        result.push({datos: obj});
+        result.push({featureId: this.elementos[i].featureId, datos: obj});
       }
       return result;
    }
@@ -598,9 +612,41 @@
         && this.atributos && this.atributos.length > 0){
         result = this.atributos;
       }else if(this.elementos && this.elementos.length > 0){
-        result = this.getArrayFormated(Object.keys(this.elementos[0]));
+        result = this.getArrayFormated(Object.keys(this.elementos[0]).filter((v) => {if(v !== 'featureId') return v;}));
       }
       return result;
+   }
+
+   interaccionTabla(evt){
+    if(evt.target.localName === 'td'){
+      this.resaltarElemento(evt.target.parentNode.id);
+    }else if(evt.target.localName === 'tr'){
+      this.resaltarElemento(evt.target.id);
+    }
+   }
+
+   resaltarElemento(featureId){     
+     let feature = this.databaseLayer.getFeatureById(featureId);
+     this.cambiarEstiloFeature(feature);
+   }
+
+   cambiarEstiloFeature(feature){
+    if(this.feature){
+      this.feature.setStyle(null);
+    }
+    let style = null;
+    if(this.styles && this.styles.select){
+       let geomType = feature.getGeometry().type;
+       if(geomType.includes('Point') && this.styles.select.point){
+         style = this.styles.select.point;
+       }else if(geomType.includes('LineString') && this.styles.select.line){
+         style = this.styles.select.line;
+       }else if(geomType.includes('Polygon') && this.styles.select.polygon){
+         style = this.styles.select.polygon;
+       }
+    }
+    feature.setStyle(style);
+    this.feature = feature;
    }
 }
  

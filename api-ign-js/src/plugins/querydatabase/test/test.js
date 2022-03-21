@@ -18,10 +18,10 @@ const map = M.map({
   },
   zoom: 7,
 });
-//M.config('MAPEA_URL', 'http://localhost:8080/api-core');
-//M.config('PROXY_URL', 'http://localhost:8080/api-core/api/proxy');
+M.config('MAPEA_URL', 'http://localhost:8080/api-core');
+M.config('PROXY_URL', 'http://localhost:8080/api-core/api/proxy');
 
-let styles = {
+let stylesDefault = {
   point: new M.style.Point({
     fill: {
       color: 'orange',
@@ -52,6 +52,43 @@ let styles = {
     }
   })
 };
+
+let stylesSelect = {
+  point: new M.style.Point({
+    fill: {
+      color: 'red',
+      opacity: 1
+    },
+    stroke: {
+      color: 'red',
+    }
+  }),
+  line: new M.style.Line({
+    fill: {
+      color: 'blue',
+      opacity: 1
+    },
+    stroke: {
+      color: 'blue',
+      width: 4
+    }
+  }),
+  polygon: new M.style.Polygon({
+    fill: {
+      color: 'orange',
+      opacity: 0.5
+    },
+    stroke: {
+      color: 'orange',
+      width: 3 
+    }
+  })
+};
+
+let styles = {
+  default: stylesDefault,
+  select: stylesSelect
+}
 
 const mp = new QueryDatabase({
   position: 'TL',

@@ -61,12 +61,19 @@ public class DatabaseServiceImpl implements DatabaseService{
 			Map<String, List<String>> filtros, CustomPagination paginacion, boolean token) {
 		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
 		Pagina pagina = new Pagina();
-		pagina.setNumPagina(paginacion.getPage());
 		pagina.setTamPagina(paginacion.getSize());
 		List<DatosTabla> datos = getDatabaseRepository(ds).getFilteredData(schema, table, filtros, paginacion);
 		pagina.setResults(datos);
 		pagina.setTotalElementos(paginacion.getSize());
+		pagina.setNumPagina(paginacion.getPage());
 		return pagina;
+	}
+	
+	@Override
+	public List<String> obtenerValoresDominio(String dataSourceName, String schema, String table, String columna, boolean token){
+		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
+		List<String> result = getDatabaseRepository(ds).getDomainValues(schema, table, columna);
+		return result;
 	}
 	
 	private DataSource getDataSource(String dataSourceName){

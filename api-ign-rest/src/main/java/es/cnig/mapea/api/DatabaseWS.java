@@ -186,6 +186,44 @@ public class DatabaseWS {
 		jsonPagina.put("results", rowsJSON);
 		return JSBuilder.wrapCallback(jsonPagina, callbackFn);
 	}
+	
+	/**
+	    * Returns the domain values from table column
+	    * 
+	    * @param callbackFn the name of the javascript
+	    * function to execute as callback
+	    * @param database the name of database
+	    * @param table the name of table 
+	    * 
+	    * @return the javascript code
+	    */
+		@GET
+		@Path("/{database}/{tabla}/domain/{columna}")
+	public String showDomainValues(@PathParam("database") String database, @PathParam("tabla") String tabla,
+			@PathParam("columna") String columna, @Context UriInfo uriInfo){
+		JSONArray domainJson = new JSONArray();
+		String schema = "public";
+		String callbackFn = null;
+		Map<String, List<String>> params = uriInfo.getQueryParameters(); 
+		if(params.containsKey("schema")){
+			schema = params.get("schema").get(0);
+			params.remove("schema");
+		}
+		if(params.containsKey("callback")){
+			callbackFn = params.get("callback").get(0);
+			params.remove("callback");
+		}
+		boolean token = false;
+		if(params.containsKey("token")){
+			token = Boolean.valueOf(params.get("token").get(0));
+			params.remove("token");
+		}
+		List<String> domains = new DatabaseServiceImpl().obtenerValoresDominio(database, schema, tabla, columna, token);
+		for(String d : domains){
+			domainJson.put(d);
+		}
+		return JSBuilder.wrapCallback(domainJson, callbackFn);
+	}
    
 	private CustomPagination obtenerPaginacion(Map<String, List<String>> params){
 		CustomPagination paginacion = new CustomPagination();

@@ -12,9 +12,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import net.postgis.jdbc.geometry.Geometry;
-import net.postgis.jdbc.geometry.GeometryBuilder;
-import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +19,7 @@ import es.cnig.mapea.database.persistence.domain.Columna;
 import es.cnig.mapea.database.persistence.domain.DatosTabla;
 import es.cnig.mapea.database.persistence.domain.Tabla;
 import es.cnig.mapea.database.persistence.repository.DatabaseRepository;
+import es.cnig.mapea.database.utils.Constants;
 import es.cnig.mapea.database.utils.CustomPagination;
 
 public class DatabaseRepositoryImpl implements DatabaseRepository {
@@ -45,19 +43,21 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			conn = datasource.getConnection();
 			int totalResultados = getTotalResultados(conn, query.toString());
 			query.append(addPaginacion(paginacion));
-			ResultSet rs = conn.prepareStatement(query.toString()).executeQuery();
+			PreparedStatement ps = conn.prepareStatement(query.toString()); 
+			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				Tabla tabla = new Tabla();
 				tabla.setSchema(rs.getString("table_schema"));
 				tabla.setNombre(rs.getString("table_name"));
 				result.add(tabla);
 			}
+			ps.close();
 			paginacion.setSize(totalResultados);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
 			try {
-				if(conn != null && !conn.isClosed()){
+				if(conn != null){
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -87,12 +87,13 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				col.setTipoDato(rs.getString("data_type"));
 				result.add(col);
 			}
+			ps.close();
 			paginacion.setSize(totalResultados);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally{
 			try {
-				if(conn != null && !conn.isClosed()){
+				if(conn != null){
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -108,24 +109,104 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			CustomPagination paginacion) {
 		List<DatosTabla> result = new LinkedList<DatosTabla>();
 		Connection conn = null;
+		Integer zoom = 13;
 		try{
+			if(filtros.containsKey("zoom")){
+				zoom = Integer.parseInt(filtros.get("zoom").get(0));
+				filtros.remove("zoom");
+			}
 			conn = datasource.getConnection();
 			log.info("Obteniendo nombre columna geometrica");
 			String geomColumn = getNombreColumnaGeom(schema, table, conn);
+			Integer sridTable = getGeometrySrid(conn, schema, table, geomColumn); 
 			log.info("Obteniendo el resto de nombres de columnas");
 			String columnas = getColumnasNoGeometricas(conn, schema, table, geomColumn);
 			StringBuilder query = new StringBuilder("SELECT "+ columnas);
 			query.append(", ST_asText(st_force2d(" + geomColumn + ")) as geometry, ST_SRID(" + geomColumn + ") as srid");
 			query.append(" FROM " + schema + "." + table);
-			query.append(sqlFilter(filtros, geomColumn));
+			query.append(sqlFilter(filtros, geomColumn, sridTable));
 			if(geomColumn != null && !"".equals(geomColumn)){
 				query.append(query.indexOf("WHERE") >= 0 ? " AND " : " WHERE ");
 				query.append(geomColumn + " is not null ");
 			}
 			int totalResultados = getTotalResultados(conn, query.toString());
-			query.append(addPaginacion(paginacion));
-			log.info("Obteniendo datos");
+			if(totalResultados <= 4000){
+				//query.append(addPaginacion(paginacion));
+				log.info("Obteniendo datos");
+				PreparedStatement ps = conn.prepareStatement(query.toString());
+				ResultSet rs = ps.executeQuery();
+				ResultSetMetaData rsmd = rs.getMetaData();
+				while(rs.next()){
+					DatosTabla dt = new DatosTabla();
+					for(int i = 1; i <= rsmd.getColumnCount(); i++){
+						Object value = rs.getObject(i);
+						dt.addToMap(rsmd.getColumnLabel(i), value);
+					}
+					result.add(dt);
+				}
+				ps.close();
+			}else{
+				result = getCluster(conn, geomColumn, schema, table, filtros, zoom, totalResultados, sridTable);
+				paginacion.setPage(-999);
+			}
+			paginacion.setSize(totalResultados);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public List<String> getDomainValues(String schema, String table, String columna){
+		List<String> result = new LinkedList<String>();
+		Connection conn = null;
+		try{
+			conn = datasource.getConnection();
+			StringBuilder query = new StringBuilder("SELECT distinct(" + columna + ")");
+			query.append(" FROM " + schema + "." + table);
+			query.append(" ORDER BY " + columna);
 			PreparedStatement ps = conn.prepareStatement(query.toString());
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				result.add(rs.getString(1));
+			}
+			ps.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	private List<DatosTabla> getCluster(Connection conn, String geomColumn, String schema, String table, Map<String, List<String>> filtros, Integer zoom, Integer totalElementos, int sridTable){
+		List<DatosTabla> result = new LinkedList<DatosTabla>();
+		String filtroBbox = "";
+		if(filtros.containsKey("bbox")){
+			filtroBbox = getBboxFilter(filtros.get("bbox").get(0), "center", sridTable);
+			filtros.remove("bbox");
+		}
+		StringBuilder query = new StringBuilder("SELECT row_number() over() as id, st_astext(st_buffer(ST_Transform(center, 3857), (elementos_cluster / ?) * ?)) as geometry,");
+		query.append(" elementos_cluster, 3857 AS srid from");
+		query.append(" (SELECT COUNT(*) AS elementos_cluster,");
+		query.append(" ST_Centroid(ST_Collect(" + geomColumn + ")) AS center");
+		query.append(" FROM " + schema + "." + table);
+		query.append(sqlFilter(filtros, geomColumn, sridTable));
+		query.append(" GROUP BY ST_SnapToGrid(ST_Centroid(" + geomColumn + "),  ?) ORDER BY elementos_cluster DESC) cluster");
+		if(!"".equals(filtroBbox)){
+			query.append(" WHERE "+filtroBbox);
+		}
+		try{
+			PreparedStatement ps = conn.prepareStatement(query.toString());
+			ps.setDouble(1, totalElementos);
+			ps.setDouble(2, getMetrosBufferByZoom(zoom));
+			ps.setDouble(3, getRadiusByZoom(zoom));
 			ResultSet rs = ps.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();
 			while(rs.next()){
@@ -136,34 +217,133 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				}
 				result.add(dt);
 			}
-			paginacion.setSize(totalResultados);
+			ps.close();
 		}catch(SQLException e){
 			e.printStackTrace();
-		}finally{
-			try {
-				if(conn != null && !conn.isClosed()){
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return result;
 	}
 	
+/*	private List<DatosTabla> getCluster2(Connection conn, String geomColumn, String schema, String table, Map<String, List<String>> filtros, Integer zoom){
+		List<DatosTabla> result = new LinkedList<DatosTabla>();
+		StringBuilder query = new StringBuilder("SELECT row_number() over() as id, st_astext(ST_Transform(center, 3857)) as geometry,");
+		query.append(" elementos_cluster, 3857 AS srid from");
+		query.append(" (SELECT COUNT(*) AS elementos_cluster,");
+		query.append(" ST_Centroid(ST_Collect(" + geomColumn + ")) AS center");
+		query.append(" FROM " + schema + "." + table);
+		query.append(sqlFilter(filtros, geomColumn));
+		query.append(" GROUP BY ST_SnapToGrid(ST_Centroid(" + geomColumn + "),  ?) ORDER BY elementos_cluster DESC) cluster");
+		try{
+			PreparedStatement ps = conn.prepareStatement(query.toString());
+			ps.setDouble(1, getRadiusByZoom(zoom));
+			ResultSet rs = ps.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			while(rs.next()){
+				DatosTabla dt = new DatosTabla();
+				for(int i = 1; i <= rsmd.getColumnCount(); i++){
+					Object value = rs.getObject(i);
+					dt.addToMap(rsmd.getColumnLabel(i), value);
+				}
+				result.add(dt);
+			}
+			ps.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return result;
+	}*/
+	
+	/**
+	 * Obtiene el radio del cluster en funcion del zoom del mapa
+	 * @param zoom
+	 * @return radio
+	 */
+	private double getRadiusByZoom(Integer zoom){
+		double radio = 1;
+		if(zoom > 7 && zoom < 10){
+			radio = 0.5;
+		}else if (zoom >= 10 && zoom < 12){
+			radio = 0.25;
+		}else if(zoom >= 12){
+			radio = 0.15;
+		}
+		return radio;
+	}
+	
+	/**
+	 * Obtiene el radio del buffer en funcion del zoom del mapa.
+	 * Este valor se multiplicará por el porcentaje [0-1] de elementos
+	 * del cluster
+	 * @param zoom
+	 * @return buffer
+	 */
+	private double getGradosBufferByZoom(Integer zoom){
+		double buffer = Constants.EQ_GRADO_METRO * 1000000;//1000 km en grados
+		if(zoom > 7 && zoom < 10){
+			buffer = Constants.EQ_GRADO_METRO * 750000;//750 km en grados
+		}else if (zoom >= 10 && zoom < 12){
+			buffer = Constants.EQ_GRADO_METRO * 500000;//500 km en grados
+		}else if(zoom >= 12){
+			buffer = Constants.EQ_GRADO_METRO * 100000;//100 km en grados
+		}
+		return buffer;
+	}
+	
+	private double getMetrosBufferByZoom(Integer zoom){
+		double buffer = 1500000;//1000 km
+		if(zoom > 7 && zoom < 10){
+			buffer = 750000;//750 km
+		}else if (zoom >= 10 && zoom < 12){
+			buffer = 100000;//500 km
+		}else if(zoom >= 12){
+			buffer = 20000;//100 km
+		}
+		return buffer;
+	}
+	
+	/**
+	 * Realiza un count de los resultados de una consulta
+	 * @param conn
+	 * @param query
+	 * @return count
+	 */
 	private int getTotalResultados(Connection conn, String query){
 		String countQuery = "Select count(*) " + query.substring(query.indexOf("FROM"));
 		try{
 			PreparedStatement ps = conn.prepareStatement(countQuery);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			return rs.getInt(1);
+			int count = rs.getInt(1);
+			ps.close();
+			return count;
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
 		return 0;
 	}
 	
+	private Integer getGeometrySrid(Connection conn, String schema, String table, String geomColumn){
+		StringBuilder query = new StringBuilder("select distinct(ST_srid("+geomColumn+")) from "+schema+"."+table);
+		query.append(" where " + geomColumn + " is not null");
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(query.toString());
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Constants.DEFAUL_SRID;
+	}
+	
+	/**
+	 * Obtiene el nombre de la columna que contiene geometría de una tabla
+	 * @param schema
+	 * @param tabla
+	 * @param conn
+	 * @return nombre columna
+	 */
 	private String getNombreColumnaGeom(String schema, String tabla, Connection conn){
 		StringBuilder sql = new StringBuilder("select f_geometry_column from geometry_columns");
 		sql.append(" where f_table_schema = ? and f_table_name = ?");
@@ -181,6 +361,14 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return null;
 	}
 	
+	/**
+	 * Obtiene los nombres de las columnas no geometricas de una tabla
+	 * @param conn
+	 * @param schema
+	 * @param tabla
+	 * @param geomColumn
+	 * @return
+	 */
 	private String getColumnasNoGeometricas(Connection conn, String schema, String tabla, String geomColumn){
 		StringBuilder sql = new StringBuilder("SELECT STRING_AGG(column_name, ', ') as columnas");
 		sql.append(" FROM information_schema.columns");
@@ -202,7 +390,13 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return null;
 	}
 	
-	private String sqlFilter(Map<String, List<String>> filtros, String geomColumn){
+	/**
+	 * Monta en where de una consulta
+	 * @param filtros
+	 * @param geomColumn
+	 * @return
+	 */
+	private String sqlFilter(Map<String, List<String>> filtros, String geomColumn, int sridTable){
 		if(!filtros.isEmpty()){
 			StringBuilder result = new StringBuilder(" WHERE ");
 			Iterator<String> keyset = filtros.keySet().iterator();
@@ -210,11 +404,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				String key = keyset.next();
 				String value = filtros.get(key).get(0);
 				if("bbox".equals(key)){
-					String[] splitGeom = value.split("srid");
-					String geom = splitGeom[0].replace("$", " ");
-					String srid = splitGeom[1];
-					result.append("ST_Intersects("+geomColumn+", "
-							+ "ST_Transform(ST_geomfromtext('"+geom+"', "+srid+"), ST_srid("+geomColumn+")))");
+					result.append(getBboxFilter(value, geomColumn, sridTable));
 				}else{
 					result.append(key + " ilike '%" + value + "%'");
 				}
@@ -225,6 +415,20 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return "";
 	}
 	
+	private String getBboxFilter(String bbox, String geomColumn, int sridTable){
+		String[] splitGeom = bbox.split("srid");
+		String geomValue = splitGeom[0].replace("$", " ");
+		String srid = splitGeom[1];
+		StringBuilder bboxFilter = new StringBuilder("ST_Intersects("+geomColumn+", ");
+		bboxFilter.append("ST_Transform(ST_geomfromtext('"+geomValue+"', "+srid+"), "+sridTable+"))");
+		return bboxFilter.toString();
+	}
+	
+	/**
+	 * Añade la paginación a la consulta sql
+	 * @param paginacion
+	 * @return
+	 */
 	private String addPaginacion(CustomPagination paginacion){
 		StringBuilder result = new StringBuilder("");
 		if(paginacion.getSize() > 0){

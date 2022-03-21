@@ -15,4 +15,6 @@ public interface DatabaseRepository {
 	public List<Columna> getTableColumns(String schema, String table, CustomPagination paginacion);
 	
 	public List<DatosTabla> getFilteredData(String schema, String table, Map<String, List<String>> filtros, CustomPagination paginacion);
+	
+	public List<String> getDomainValues(String schema, String table, String columna);
 }
