@@ -1,0 +1,25 @@
+{
+  "exception": {
+    "impl": "The implementation used cannot create QueryAttributesControl.",
+    "no_data": "No data for export."
+  },
+  "tooltip": "Search by filters",
+  "values": "Values",
+  "attribute_table": "Table of attributes",
+  "clean_filters": "Clean applied filters",
+  "export": "Export data",
+  "not_attributes": "No attributes found.",
+  "close": "Close",
+  "filters": "Filters",
+  "bbox": "By view",
+  "area": "By area",
+  "csv": "CSV (only attributes)",
+  "download": "Download",
+  "loading": "Loading information...",
+  "search": "Search",
+  "filter_by_bbox": "Filter results by current view",
+  "filter_by_area": "Filter results by drawing geometry",
+  "show_hide": "Hide / Show",
+  "information": "Information",
+  "search_all_fields": "Search over all fields"
+}

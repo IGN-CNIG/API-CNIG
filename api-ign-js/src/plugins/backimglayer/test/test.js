@@ -1,10 +1,13 @@
 import BackImgLayer from 'facade/backimglayer';
 import ShareMap from '../../sharemap/src/facade/js/sharemap';
 
-M.language.setLang('en');
+M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
+  controls: ['scale'],
+  center: [-458756.9690741142, 4682774.665868655],
+  zoom: 6,
 });
 
 const mp2 = new ShareMap({
@@ -17,6 +20,7 @@ const mp = new BackImgLayer({
   collapsible: true,
   position: 'TR',
   columnsNumber: 3,
+  empty: true,
   layerOpts: [{
       id: 'mapa',
       preview: '../src/facade/assets/images/svqmapa.png',
@@ -37,39 +41,42 @@ const mp = new BackImgLayer({
       id: 'imagen',
       title: 'Imagen',
       preview: '../src/facade/assets/images/svqimagen.png',
-      layers: [new M.layer.WMTS({
-        url: 'http://www.ign.es/wmts/pnoa-ma?',
-        name: 'OI.OrthoimageCoverage',
-        legend: 'Imagen (PNOA)',
-        matrixSet: 'GoogleMapsCompatible',
-        transparent: false,
-        displayInLayerSwitcher: false,
-        queryable: false,
-        visible: true,
-        format: 'image/jpeg',
-      })],
+      layers: [
+        new M.layer.XYZ({
+          url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+          name: 'PNOA-MA',
+          legend: 'Imagen',
+          projection: 'EPSG:3857',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          tileGridMaxZoom: 19,
+        }),
+      ],
     },
     {
       id: 'hibrido',
       title: 'Híbrido',
       preview: '../src/facade/assets/images/svqhibrid.png',
-      layers: [new M.layer.WMTS({
-          url: 'http://www.ign.es/wmts/pnoa-ma?',
-          name: 'OI.OrthoimageCoverage',
-          legend: 'Imagen (PNOA)',
-          matrixSet: 'GoogleMapsCompatible',
-          transparent: true,
+      layers: [
+        new M.layer.XYZ({
+          url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+          name: 'PNOA-MA',
+          legend: 'Imagen',
+          projection: 'EPSG:3857',
+          transparent: false,
           displayInLayerSwitcher: false,
           queryable: false,
           visible: true,
-          format: 'image/jpeg',
+          tileGridMaxZoom: 19,
         }),
         new M.layer.WMTS({
           url: 'http://www.ign.es/wmts/ign-base?',
           name: 'IGNBaseOrto',
           matrixSet: 'GoogleMapsCompatible',
           legend: 'Mapa IGN',
-          transparent: false,
+          transparent: true,
           displayInLayerSwitcher: false,
           queryable: false,
           visible: true,
@@ -136,5 +143,21 @@ const mp = new BackImgLayer({
 
 map.addPlugin(mp);
 // map.addPlugin(mp2);
+/*map.addLayers(new M.layer.WMTS({
+  url: 'https://www.ign.es/wmts/pnoa-ma?',
+  name: 'OI.OrthoimageCoverage',
+  matrixSet: 'GoogleMapsCompatible',
+  legend: 'Imagen',
+  transparent: true,
+  displayInLayerSwitcher: false,
+  queryable: false,
+  visible: true,
+  format: 'image/jpeg',
+  minZoom: 10,
+}));*/
+
+map.addPlugin(new M.plugin.Vectors({
+  position: 'TR',
+}));
 
 window.map = map;

@@ -10,6 +10,9 @@ const pjson = require(PJSON_PATH);
 
 module.exports = {
   mode: 'production',
+  node: {
+    fs: 'empty',
+  },
   entry: {
     [`${pjson.name}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
@@ -87,6 +90,10 @@ module.exports = {
     new CopywebpackPlugin([{
       from: 'src/facade/assets/img',
       to: 'assets/img',
+    }]),
+    new CopywebpackPlugin([{
+      from: 'node_modules/sql.js/dist/sql-wasm.wasm',
+      to: 'wasm/',
     }]),
   ],
   devtool: 'source-map',

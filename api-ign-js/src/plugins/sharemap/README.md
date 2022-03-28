@@ -37,8 +37,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **position**. Indica la posición donde se mostrará el plugin
   - 'TL':top left (default)
-  - 'TR':top right 
-  - 'BL':bottom left 
+  - 'TR':top right
+  - 'BL':bottom left
   - 'BR':bottom right
 
 # Parámetros API REST
@@ -47,7 +47,7 @@ URL_API?sharemap=baseUrl*position*title*tooltip*btn*copyBtn
 ````
 Ejemplo:
 ```
-http://cnig-api-core.desarrollo.guadaltel.es/api-core/?sharemap=http://cnig-api-core.desarrollo.guadaltel.es/api-core/*BL*Compartir URL*Copiado*Aceptar*Copiar
+https://componentes.cnig.es/api-core/?sharemap=https://componentes.cnig.es/api-core/*BL*Compartir URL*Copiado*Aceptar*Copiar
 ```
 # Eventos
 
@@ -60,7 +60,7 @@ http://cnig-api-core.desarrollo.guadaltel.es/api-core/?sharemap=http://cnig-api-
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.ShareMap({
      baseUrl: 'https://componentes.cnig.es/api-core/',
       postition: 'TL',

@@ -204,13 +204,7 @@ const map = M.map({
   container: 'mapjs',
   controls: ['location'],
   center: [-412300, 4926700],
-  resolutions: [51444.18059766173, 25722.090298830866, 12861.045149415433,
-    6430.522574707717, 3215.2612873538583, 1607.6306436769291, 803.8153218384646,
-    401.9076609192323, 200.95383045961614, 100.47691522980807, 50.238457614904036,
-    25.119228807452018, 12.559614403726009, 6.2798072018630045, 3.1399036009315022,
-    1.5699518004657511, 0.7849759002328756, 0.3699518004657511, 0.18497590023287555,
-  ],
-  zoom: 14,
+  zoom: 5,
   //minZoom: 14,
 });
 
@@ -218,18 +212,6 @@ const pluginIberpixCompare = new IberpixCompare({
   position: 'TL',
   vertical: true,
   collapsible: false,
-  baseLayers: [
-    ['Plano de Mancelli, 1622', '1622', 'WMS*Mancelli 1622*https://www.ign.es/wms/planos*MancelliMadrid', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/mancelli.geojson'],
-    ['Plano de Texeira, 1656', '1656', 'WMS*Texeira 1656*https://www.ign.es/wms/planos*Texeira', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/texeira.geojson'],
-    ['Plano de Nicolás Chalmandrier, 1761', '1761', 'WMS*Chalmandrier 1761*https://www.ign.es/wms/planos*ChalmadrierMadrid', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/chalmandrier.geojson'],
-    ['Plano de Espinosa de los Monteros, 1769', '1769', 'WMS*Espinosa de los Monteros 1769*https://www.ign.es/wms/planos*EspinosaMadrid', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/espinosa_monteros.geojson'],
-    ['Plano Geométrico de Madrid de Tomás López, 1785', '1785', 'WMS*Tomás López 1785*https://www.ign.es/wms/planos*GeometricoMadrid', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/tomas_lopez.geojson'],
-    ['Plano de Madoz y Coello, 1848', '1848', 'WMS*Madoz y Coello 1848*https://www.ign.es/wms/planos*madozMadrid', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/madoz_coello.geojson'],
-    ['Plano de Facundo Cañada, 1900', '1900', 'WMS*Facundo Cañada 1900*https://www.ign.es/wms/planos*facundoMadrid', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/facundo_canada.geojson'],
-    ['Plano de Nuñez Granés, 1910', '1910', 'WMS*Nuñez Granés 1910*https://www.ign.es/wms/planos*nunezMadrid', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/nunez_granes.geojson'],
-    ['Plano parcelario, 1929', '1929', 'WMS*Parcelario 1929*https://www.ign.es/wms/planos*ayuntamientoMadrid', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/parcelario_29.geojson'],
-    ['Plano parcelario, 1940', '1940', 'WMS*Parcelario 1940*https://www.ign.es/wms/planos*parcelarioMadrid', 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/planos_antiguos/coverages/parcelario_40.geojson'],
-  ],
   mirrorpanelParams: { showCursors: true },
   backImgLayersConfig: {
     position: 'TR',
@@ -404,5 +386,30 @@ const pluginIberpixCompare = new IberpixCompare({
 });
 
 map.addPlugin(pluginIberpixCompare);
+
+map.addPlugin(new M.plugin.FullTOC({
+  collapsed: true,
+  position: 'TR',
+  https: true,
+  http: true,
+  precharged: PRECHARGED,
+}));
+
+map.addPlugin(new M.plugin.PrinterMap({
+  position: 'TR',
+  collapsed: true,
+  georefActive: false,
+}));
+
+/*const xyz = new M.layer.XYZ({
+  url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+  name: 'PNOA-MA',
+  projection: 'EPSG:3857',
+  displayInLayerSwitcher: false,
+  transparent: false,
+  legend: 'PNOA-MA',
+});
+
+map.addLayers([xyz]);*/
 
 window.map = map;

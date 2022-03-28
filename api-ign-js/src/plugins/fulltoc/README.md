@@ -1,17 +1,10 @@
 # M.plugin.FullTOC
 
-Muestra un árbol de contenidos con las capas disponibles para mostrar.
+Muestra un árbol de contenidos con las capas disponibles para mostrar. Se permite la carga de capas de un listado predefinido y de otros servicios que introduzca el usuario.
 
-## Api.json
+# Aclaraciones
 
-INTEGRACIÓN DE PARÁMETROS EN MAPEA
-
-OPCIONES:  
-1. Nuevo parámetro en la API REST normalmente porque requiera parámetros de configuración.
-Example: <url_mapea>?fulltoc=[params]
-
-2. Nuevo valor para el parámetro plugins, el plugin no requiere configuración
-Example: <url_mapea>?plugins=fulltoc
+A la hora de mostrar la leyenda de un servicio que se haya cargado se intentará obtener dicha leyenda desde el GetCapabilities del servicio (LegendURL). Si no viniese definido se intentará cargar una leyenda por defecto solicitando la petición GetLegendGraphic y en el caso de que el servicio no tuviese definida una leyenda se mostraría una imagen vacía.
 
 # Dependencias
 
@@ -34,6 +27,18 @@ Example: <url_mapea>?plugins=fulltoc
   - 'BL':bottom left
   - 'BR':bottom right
 
+- **collapsible**. Si es *true*, el panel del plugin puede abrirse y cerrarse. Por defecto tiene el valor *true*.
+
+- **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
+
+- **http**. Si es *true* o no se rellena se permite la carga de capas de servicios desplegados con http, si se le da valor *false* no se permitirá la carga de servicios http.
+
+- **https**. Si es *true* sólo se permite la carga de capas de servicios desplegados con https, si no se rellena o se le da valor *false* se permite la carga de cualquier servicio.
+
+- **codsi**. Si es *true* se habilitará una nueva funcionalidad que permitirá la carga de servicios del catálogo codsi habilitando un listado con buscador de dichos servicios.
+
+- **precharged**. Aquí debemos definir la estructura de los servicios predefinidos que queremos que tenga el plugin (árbol de contenido, servicios sin nodo padre, etc.). También podremos definir un parámetro para cada servicio con el que restringiremos qué capas de cada servicio queremos que sea posible cargar.
+
 # Ejemplos de uso
 
 ```javascript
@@ -42,40 +47,174 @@ Example: <url_mapea>?plugins=fulltoc
    });
 
    const mp = new M.plugin.FullTOC({
-        postition: 'TL',
-      });
+     collapsed: true,
+     position: 'TR',
+     https: true,
+     http: true,
+     precharged: {
+       groups: [
+         {
+           name: 'IGN',
+           services: [
+             {
+               name: 'Unidades administrativas',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+               white_list: ['AU.AdministrativeBoundary', 'AU.AdministrativeUnit'],
+             },
+             {
+               name: 'Nombres geográficos',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms-inspire/ngbe?',
+             },
+             {
+               name: 'Redes geodésicas',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
+             },
+             {
+               name: 'Cuadrículas cartográficas',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms-inspire/cuadriculas?',
+               white_list: ['Grid-REGCAN95-lonlat-50k', 'Grid-ETRS89-lonlat-50k', 'Grid-ETRS89-lonlat-25k', 'Grid-REGCAN95-lonlat-25k', 'Grid-25k-extendida'],
+             },
+             {
+               name: 'Información sísmica y volcánica',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms-inspire/geofisica?',
+             },
+             {
+               name: 'Fototeca',
+               type: 'WMS',
+               url: 'https://wms-fototeca.idee.es/fototeca?',
+             },
+             {
+               name: 'Camino de Santiago',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms-inspire/camino-santiago?',
+             },
+           ],
+         },
+         {
+           name: 'IGN. Cartografía histórica',
+           services: [
+             {
+               name: 'Planos de Madrid (1622 - 1960)',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms/planos?',
+             },
+             {
+               name: 'Hojas kilométricas (Madrid - 1860)',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms/hojas-kilometricas?',
+             },
+             {
+               name: 'Planimetrías',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms/minutas-cartograficas?',
+             },
+             {
+               name: 'Primera edición de los Mapas Topográficos Nacionales',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms/primera-edicion-mtn?',
+             },
+           ],
+         },
+         {
+           name: 'Sistema Cartográfico Nacional',
+           services: [
+             {
+               name: 'PNOA. Ortofotos máxima actualidad',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms-inspire/pnoa-ma?',
+             },
+             {
+               name: 'PNOA. Ortofotos históricas',
+               type: 'WMS',
+               url: 'https://www.ign.es/wms/pnoa-historico?',
+             },
+             {
+               name: 'Ocupación del suelo',
+               type: 'WMS',
+               url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo?',
+             },
+             {
+               name: 'Ocupación del suelo. Histórico',
+               type: 'WMS',
+               url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo-historico?',
+             },
+             {
+               name: 'Información Geográfica de Referencia. Transportes',
+               type: 'WMS',
+               url: 'https://servicios.idee.es/wms-inspire/transportes?',
+             },
+             {
+               name: 'Información Geográfica de Referencia. Hidrografía',
+               type: 'WMS',
+               url: 'https://servicios.idee.es/wms-inspire/hidrografia?',
+             },
+             {
+               name: 'Direcciones y códigos postales',
+               type: 'WMS',
+               url: 'https://www.cartociudad.es/wms-inspire/direcciones-ccpp?',
+             },
+             {
+               name: 'Modelos digitales del terreno',
+               type: 'WMS',
+               url: 'https://servicios.idee.es/wms-inspire/mdt?',
+             },
+             {
+               name: 'Copernicus Land Monitoring Service',
+               type: 'WMS',
+               url: 'https://servicios.idee.es/wms/copernicus-landservice-spain?',
+             },
+           ],
+         },
+         {
+           name: 'Capas de fondo',
+           services: [
+             {
+               name: 'Mapa',
+               type: 'WMTS',
+               url: 'https://www.ign.es/wmts/mapa-raster?',
+             },
+             {
+               name: 'Imagen',
+               type: 'WMTS',
+               url: 'https://www.ign.es/wmts/pnoa-ma?',
+             },
+             {
+               name: 'Callejero',
+               type: 'WMTS',
+               url: 'https://www.ign.es/wmts/ign-base?',
+             },
+             {
+               name: 'Relieve',
+               type: 'WMTS',
+               url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+             },
+             {
+               name: 'Ocupación del suelo',
+               type: 'WMTS',
+               url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
+             },
+             {
+               name: 'Mapas Históricos',
+               type: 'WMTS',
+               url: 'https://www.ign.es/wmts/primera-edicion-mtn',
+             }
+           ],
+         }
+       ],
+       services: [
+         {
+           name: 'Catastro',
+           type: 'WMS',
+           url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
+         },
+       ],
+     },
+   });
 
    map.addPlugin(mp);
-```
-
-
-### Plugin sin parámetros
-
-```
-{
-   "url": {
-      "name": "fulltoc"
-   },
-   "constructor": "M.plugin.FullTOC"
-}
-```
-### Plugin con parámetros
-
-```
-{
-   "url": {
-      "name": "fulltoc",
-      "separator": "*"
-   },
-   "constructor": "M.plugin.FullTOC",
-   "parameters": [{
-      "type": "object",
-      "properties": [{
-         "type": "simple",
-         "name": "position",
-         "position": 0,
-         "possibleValues": ["TL", "TR", "BR", "BL"]
-      }]
-   }]
-}
 ```

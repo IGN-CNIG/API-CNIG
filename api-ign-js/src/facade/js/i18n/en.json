@@ -93,6 +93,8 @@
     "addwmts_method": "The used implementation does not have the addWMTS method.",
     "removewmts_method": "The used implementation does not have the removeWMTS method.",
     "getmbtiles_method": "The used implementation does not have the getMBtiles method.",
+    "getxyzs_method": "The used implementation does not have the getXYZs method.",
+    "gettms_method": "The used implementation does not have the getTMS method.",
     "getcontrols_method": "The used implementation does not have the getControls method.",
     "addcontrols_method": "The used implementation does not have the addControls method.",
     "remove_control": "You have not specified any control to delete.",

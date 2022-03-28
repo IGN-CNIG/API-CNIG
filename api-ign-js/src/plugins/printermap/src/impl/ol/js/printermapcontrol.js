@@ -52,8 +52,9 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   getParametrizedLayers(paramName, layers) {
     let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
-      return layer.type === 'IMAGE' && !M.utils.isNullOrEmpty(layer.getSource()) &&
-        !M.utils.isNullOrEmpty(layer.getSource().getParams()) &&
+      return !M.utils.isNullOrEmpty(layer.getSource()) &&
+      // eslint-disable-next-line no-underscore-dangle
+        !M.utils.isNullOrEmpty(layer.getSource().params_) &&
         layer.getSource().getParams()[paramName] !== undefined;
     });
 
@@ -90,16 +91,15 @@ export default class PrinterMapControl extends M.impl.Control {
         this.encodeWMTS(layer).then((encodedLayer) => {
           success(encodedLayer);
         });
-      } else if (layer.type === M.layer.type.MBtiles) {
+      } else if (layer.type === M.layer.type.MBTiles) {
         // none
-      } else if (layer.type === M.layer.type.OSM) {
-        success(this.encodeOSM(layer));
-      } else if (layer.type === M.layer.type.Mapbox) {
-        success(this.encodeMapbox(layer));
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
-      } else if (layer.type === 'IMAGE' && !(layer instanceof M.layer.WMS)) {
+      // eslint-disable-next-line no-underscore-dangle
+      } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
         success(this.encodeImage(layer));
+      } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
+        success(this.encodeXYZ(layer));
       } else {
         success(this.encodeWFS(layer));
       }
@@ -382,12 +382,32 @@ export default class PrinterMapControl extends M.impl.Control {
     };
 
     encodedLayer.customParams = {
-      IMAGEID: params.IMAGEID,
+      IMAGEN: params.IMAGEN,
       transparent: true,
       iswmc: false,
     };
 
     return encodedLayer;
+  }
+
+  encodeXYZ(layer) {
+    const layerImpl = layer.getImpl();
+    const olLayer = layerImpl.getOL3Layer();
+    const layerSource = olLayer.getSource();
+    const tileGrid = layerSource.getTileGrid();
+    const layerUrl = layer.url;
+    const layerOpacity = olLayer.getOpacity();
+    const layerExtent = tileGrid.getExtent();
+    const tileSize = tileGrid.getTileSize();
+    const resolutions = tileGrid.getResolutions();
+    return {
+      opacity: layerOpacity,
+      baseURL: layerUrl,
+      maxExtent: layerExtent,
+      tileSize: [tileSize, tileSize],
+      resolutions,
+      type: 'osm',
+    };
   }
 
   /**
@@ -482,7 +502,7 @@ export default class PrinterMapControl extends M.impl.Control {
             featureStyle.getStroke().getLineDash() : undefined;
           const styleGeom = {
             type: parseType,
-            fillColor: M.utils.isNullOrEmpty(fill) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
+            fillColor: M.utils.isNullOrEmpty(fill) || (layer.name.indexOf(' Reverse') > -1 && layer.name.indexOf('Cobertura') > -1) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
             fillOpacity: M.utils.isNullOrEmpty(fill) ?
               0 : M.utils.getOpacityFromRgba(fill.getColor()),
             strokeColor: M.utils.isNullOrEmpty(stroke) ? '#000000' : M.utils.rgbaToHex(stroke.getColor()),
@@ -513,6 +533,11 @@ export default class PrinterMapControl extends M.impl.Control {
             styleGeom.graphicName = 'cross';
             styleGeom.graphicWidth = 15;
             styleGeom.graphicHeight = 15;
+          }
+
+          if (layer.name.indexOf(' Reverse') > -1 && layer.name.indexOf('Cobertura') > -1) {
+            styleGeom.fillColor = styleGeom.strokeColor;
+            styleGeom.fillOpacity = 0.5;
           }
 
           if (lineDash !== undefined && lineDash !== null && lineDash.length > 0) {

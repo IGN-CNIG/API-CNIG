@@ -23,8 +23,7 @@
   "lyrLeftSelect_tooltip": "Selecciona la capa de la izquierda",
   "lyrRightSelect_tooltip": "Selecciona la capa de la derecha",
   "advice_sameLayer": "No puede cargarse la misma capa en varios sitios",
-  "no_layers_plugin": "El número de capas es insuficiente para aplicar el efecto",
-  "repeated_layers": "Las capas seleccionadas no se pueden repetir",
+  "no_layers_plugin": "Para utilizar esta opción de comparación, debe tener cargadas tantas capas en la herramienta \"Capas\" como divisiones haya seleccionado",
   "tooltipMirrorpanel": "Comparador de mapas espejo",
   "titleMirrorpanel": "Mapas espejo",
   "modViz0": "Mapa standard",
@@ -39,5 +38,10 @@
   "modViz9": "Dos mapas arriba y uno abajo",
   "nolayertext": "Ninguna capa",
   "no_coverage": "La capa seleccionada no tiene cobertura en la zona del mapa en la que se encuentra",
-  "warning": "Advertencia"
+  "warning": "Advertencia",
+  "print_disabled": "La impresión no está disponible",
+  "georef_download_disabled": "La descarga no está disponible",
+  "printmap": "Impresión del mapa",
+  "georef_download": "Descargar Imagen georreferenciada",
+  "no_layer": "Sin capa"
 }

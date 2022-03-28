@@ -57,3 +57,22 @@ span.m-content-collapsed {
     cursor: pointer;
     margin-right: 5px;
 }
+
+/*SOLUCIÓN BUGS MAQUETACIÓN*/
+.m-popup .m-information-content-info-body #Borde2 {
+  position: unset !important;
+  left: unset !important;
+  top: unset !important;
+  min-width: 950px !important;
+}
+
+.m-popup .m-information-content-info-body #Borde2 .bolaGeo {
+  display: none !important;
+}
+
+.m-popup>div.m-content>div.m-body {
+  /*max-width: 300px !important;*/
+  overflow-x: auto !important;
+  resize: horizontal;
+  min-width: 280px !important;
+}

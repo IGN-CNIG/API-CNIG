@@ -133,7 +133,7 @@
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
 
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?zoompanel=' + posicion + '*' + collapsed + '*' + collapsible;
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?zoompanel=' + posicion + '*' + collapsed + '*' + collapsible;
         })
 
         function crearPlugin(collapsed, collapsible, posicion) {

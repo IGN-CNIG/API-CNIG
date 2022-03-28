@@ -92,6 +92,20 @@ class LayerBase extends Base {
      * @api
      */
     this.legend = parameter.legend;
+
+    /**
+     * @private
+     * @type {number}
+     * @expose
+     */
+    this.minZoom = parameter.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * @private
+     * @type {number}
+     * @expose
+     */
+    this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
   }
 
   /**
@@ -399,6 +413,48 @@ class LayerBase extends Base {
   setZIndex(zIndex) {
     this.zindex_ = zIndex;
     this.getImpl().setZIndex(zIndex);
+  }
+
+  /**
+   * This function gets the z-index of this layer
+   *
+   * @function
+   * @api
+   */
+  getMinZoom() {
+    return this.minZoom;
+  }
+
+  /**
+   * This function sets the z-index for this layer
+   *
+   * @function
+   * @api
+   */
+  setMinZoom(zoom) {
+    this.minZoom = zoom;
+    this.getImpl().setMinZoom(zoom);
+  }
+
+  /**
+   * This function gets the z-index of this layer
+   *
+   * @function
+   * @api
+   */
+  getMaxZoom() {
+    return this.maxZoom;
+  }
+
+  /**
+   * This function sets the z-index for this layer
+   *
+   * @function
+   * @api
+   */
+  setMaxZoom(zoom) {
+    this.maxZoom = zoom;
+    this.getImpl().setMaxZoom(zoom);
   }
 
   /**

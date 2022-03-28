@@ -1,0 +1,50 @@
+<div id="m-queryattributes-initialview">
+    <div class="m-queryattributes-field-container">
+        <label id="m-queryattributes-lbl" for="m-queryattributes-fieldselector" title="Selecciona la capa de la izquierda" class="">Campos</label>
+        <!--<select id="m-queryattributes-fieldselector">
+          <option value='None'>Buscar por todos los campos</option>
+          <option value='id0'>Campo 1</option>
+          <option value='id1'>Campo 2</option>
+          <option value='id2'>Campo 3</option>
+          <option value='id3'>Campo 4</option>
+        </select>-->
+        <select id="m-queryattributes-fieldselector">
+            <!--<option value='All'>{{translations.nolayertext}}</option>-->
+            <option value='All'>{{translations.search_all_fields}}</option>
+            {{#each searchableFields}}
+            <option value='{{this.name}}'>{{this.alias}}</option>
+            {{/each}}        
+        </select>
+        <div class="m-queryattributes-select-fields_arrow"></div>
+    </div>
+    <div id="m-queryattributes-filter" style="display: none;">
+      <!---->
+      <div class="m-queryattributes-search-container">
+        <div id="m-queryattributes-searching-results">
+          <span class="icon-spinner" title="{{translations.search}}" />
+        </div>
+        <input type="text" id="m-queryattributes-search-input" placeholder="{{translations.search}}..." keypress="change"/>
+        <span id="m-queryattributes-search-btn" class="icon-zoom" title="{{translations.search}}"></span>
+        <span id="m-queryattributes-search-results" />
+      </div>
+      {{#if filters}}
+      <div class="m-queryattributes-filters-container">
+        <!--<span>{{translations.filters}}:</span>-->
+        <button class="filters filter-bbox" title="{{translations.filter_by_bbox}}">{{translations.bbox}}</button>
+        <button class="filters filter-area" title="{{translations.filter_by_area}}">{{translations.area}}</button>
+      </div>
+      {{/if}}
+    </div>
+
+
+
+
+
+    <div id="m-queryattributes-table">
+      <div class="m-queryattributes-table-loading">
+        <p>{{translations.loading}}</p>
+        <span class="icon-spinner" />
+      </div>
+    </div>
+
+</div>

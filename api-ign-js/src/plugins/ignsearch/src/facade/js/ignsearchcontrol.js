@@ -5,7 +5,6 @@ import IGNSearchImplControl from '../../impl/ol/js/ignsearchcontrol';
 import template from '../../templates/ignsearch';
 import results from '../../templates/results';
 import registerHelpers from './helpers';
-import geographicNameType from './constants';
 import { getValue } from './i18n/language';
 
 let typingTimer;
@@ -40,7 +39,7 @@ export default class IGNSearchControl extends M.Control {
     zoom,
     searchPosition,
     pointStyle,
-    nomenclatorSearchType = geographicNameType,
+    nomenclatorSearchType,
   ) {
     if (M.utils.isUndefined(IGNSearchImplControl)) {
       M.exception('La implementación usada no puede crear controles IGNSearchControl');
@@ -442,12 +441,16 @@ export default class IGNSearchControl extends M.Control {
         this.searchCoordinates(value);
       } else {
         // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
+        this.nomenclatorFinished = false;
+        this.candidatesFinished = false;
         this.getNomenclatorData(value, this.nomenclatorCandidates).then(() => {
           // saves on allCandidates search results from CartoCiudad (geocoder)
+          this.nomenclatorFinished = true;
           this.showCandidatesResults(firstResult);
         });
 
         this.getCandidatesData(value, this.geocoderCandidates).then(() => {
+          this.candidatesFinished = true;
           this.showCandidatesResults(firstResult);
         });
       }
@@ -468,37 +471,45 @@ export default class IGNSearchControl extends M.Control {
         }
       }
     }
-    // Clears previous search
-    this.resultsBox.innerHTML = '';
-    const compiledResult = M.template.compileSync(results, {
-      vars: {
-        places: this.allCandidates,
-      },
-    });
-    const elementList = compiledResult.querySelectorAll('li');
-    elementList.forEach((listElement) => {
-      listElement.addEventListener('click', () => {
-        this.goToLocation(listElement);
-      });
-    });
-    if (firstResult === true && elementList.length > 0) {
-      elementList.item(0).click();
-    }
-    // remove animation class and return to normal font size after loading
-    this.resultsBox.classList.remove('g-cartografia-spinner');
-    this.resultsBox.style.fontSize = '1em';
-    this.resultsBox.appendChild(compiledResult);
+
     // Service doesn't find results
-    if (this.allCandidates.length === 0) {
+    if (this.allCandidates.length === 0 && this.nomenclatorFinished && this.candidatesFinished) {
+      // Clears previous search
+      this.resultsBox.innerHTML = '';
+      // remove animation class and return to normal font size after loading
+      this.resultsBox.classList.remove('g-cartografia-spinner');
+      this.resultsBox.style.fontSize = '1em';
       const parragraph = document.createElement('p');
       const infoMsg = document.createTextNode(getValue('exception.results'));
+      parragraph.classList.add('m-ignsearch-noresults');
       parragraph.appendChild(infoMsg);
       this.resultsBox.appendChild(parragraph);
-      document.getElementById('m-ignsearch-results-list').style.display = 'none';
-    } else {
-      document.getElementById('m-ignsearch-results-list').style.display = 'block';
+    } else if (this.allCandidates.length > 0) {
+      // Clears previous search
+      this.resultsBox.innerHTML = '';
+      // remove animation class and return to normal font size after loading
+      this.resultsBox.classList.remove('g-cartografia-spinner');
+      this.resultsBox.style.fontSize = '1em';
+      const compiledResult = M.template.compileSync(results, {
+        vars: {
+          places: this.allCandidates,
+        },
+      });
+
+      const elementList = compiledResult.querySelectorAll('li');
+      elementList.forEach((listElement) => {
+        listElement.addEventListener('click', () => {
+          this.goToLocation(listElement);
+        });
+      });
+      if (firstResult === true && elementList.length > 0) {
+        elementList.item(0).click();
+      }
+
+      this.resultsBox.appendChild(compiledResult);
     }
   }
+
   /**
    * This function removes last search layer and adds new layer with current result (from geocoder)
    * features to map, zooms in result, edits popup information and shows a message saying
@@ -590,6 +601,20 @@ export default class IGNSearchControl extends M.Control {
         this.clickedElementLayer.setStyle(this.point);
       }
 
+      if (featureJSON.geometry.type.indexOf('Polygon') > -1) {
+        this.clickedElementLayer.setStyle(new M.style.Polygon({
+          fill: {
+            color: '#3399CC',
+            opacity: 0,
+          },
+          stroke: {
+            color: '#3399CC',
+            width: 2,
+          },
+          radius: 5,
+        }));
+      }
+
       // Change zIndex value
       this.clickedElementLayer.setZIndex(9999999999999999999);
 
@@ -638,7 +663,20 @@ export default class IGNSearchControl extends M.Control {
     // Stops showing polygon geometry
     if (!this.resultVisibility_) {
       this.clickedElementLayer.setStyle(this.simple);
+    } else if (featureJSON.geometry.type.indexOf('Polygon') > -1) {
+      this.clickedElementLayer.setStyle(new M.style.Polygon({
+        fill: {
+          color: '#3399CC',
+          opacity: 0,
+        },
+        stroke: {
+          color: '#3399CC',
+          width: 2,
+        },
+        radius: 5,
+      }));
     }
+
     this.map.addLayers(this.clickedElementLayer);
     this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
     // show popup for streets
@@ -741,25 +779,13 @@ export default class IGNSearchControl extends M.Control {
     const newInputVal = window.encodeURIComponent(inputValue);
     return new Promise((resolve) => {
       if (this.servicesToSearch !== 'n') {
-        let params = `q=${newInputVal}&limit=${this.maxResults}&no_process=${this.noProcess}`;
+        let params = `q=${newInputVal}&limit=${this.maxResults + 5}&no_process=${this.noProcess}`;
         params += `&countrycode=${this.countryCode}&autocancel=true`;
         const urlToGet = `${this.urlCandidates}?${params}`;
         M.proxy(false);
         M.remote.get(urlToGet).then((res) => {
           const returnData = JSON.parse(res.text.substring(9, res.text.length - 1));
           for (let i = 0; i < returnData.length; i += 1) {
-            if (returnData[i].type === 'comunidad autonoma') {
-              const address = returnData[i].address.concat(', (comunidad autónoma)');
-              returnData[i].address = address;
-            }
-            if (returnData[i].type === 'provincia') {
-              const address = returnData[i].address.concat(', (provincia)');
-              returnData[i].address = address;
-            }
-            if (returnData[i].type === 'Municipio') {
-              const address = returnData[i].address.concat(', (municipio)');
-              returnData[i].address = address;
-            }
             resultsArray.push(returnData[i]);
           }
           resolve();
@@ -783,11 +809,11 @@ export default class IGNSearchControl extends M.Control {
     const newInputVal = window.encodeURIComponent(inputValue);
     return new Promise((resolve) => {
       if (this.servicesToSearch !== 'g') {
-        const params = `maxresults=${this.maxResults}&name_equals=${newInputVal}`;
+        const params = `maxresults=${this.maxResults - 5}&name_equals=${newInputVal}`;
         const urlToGet = `${this.urlAssistant}?${params}`;
         M.proxy(true);
         M.remote.get(urlToGet).then((res) => {
-          const temporalData = res.text !== '' ? JSON.parse(res.text) : { results: [] };
+          const temporalData = (res.text !== '' && res.text !== null) ? JSON.parse(res.text) : { results: [] };
           const returnData = temporalData.results;
           for (let i = 0; i < returnData.length; i += 1) {
             // avoid nameplaces not included in this.nomenclatorSearchType
@@ -802,6 +828,12 @@ export default class IGNSearchControl extends M.Control {
               resultsArray.splice(0, 0, thisElement);
             }
           }
+
+          resultsArray.forEach((elem) => {
+            // eslint-disable-next-line no-param-reassign
+            elem.cps = true;
+          });
+
           resolve();
         });
       } else {
@@ -986,6 +1018,7 @@ export default class IGNSearchControl extends M.Control {
     this.clearResults();
     if (this.clickedElementLayer !== undefined) {
       this.clickedElementLayer.setStyle(this.simple);
+      this.map.removeLayers(this.clickedElementLayer);
     }
     this.map.removePopup(this.popup, [
       this.lng,

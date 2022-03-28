@@ -33,13 +33,20 @@ class WMTS extends LayerBase {
       ...parameters,
     };
 
+    if (userParameters.minZoom !== undefined) {
+      optionsVar.minZoom = userParameters.minZoom;
+    }
+
+    if (userParameters.maxZoom !== undefined) {
+      optionsVar.maxZoom = userParameters.maxZoom;
+    }
+
     /**
      * Implementation of this layer
      * @public
      * @type {M.layer.WMTS}
      */
     const impl = new WMTSImpl(optionsVar, vendorOptions);
-
 
     // calls the super constructor
     super(parameters, impl);
@@ -162,8 +169,8 @@ class WMTS extends LayerBase {
    * @public
    * @api
    */
-  getGetFeatureInfoUrl(coordinate, zoom, formatInfo) {
-    return this.getImpl().getGetFeatureInfoUrl(coordinate, zoom, formatInfo);
+  getFeatureInfoUrl(coordinate, zoom, formatInfo) {
+    return this.getImpl().getFeatureInfoUrl(coordinate, zoom, formatInfo);
   }
 
   /**

@@ -52,6 +52,12 @@ class Vector extends LayerBase {
      */
     this.filter_ = null;
 
+    // minzoom
+    this.minZoom = parameters.minZoom;
+
+    // maxzoom
+    this.maxZoom = parameters.maxZoom;
+
     this.setStyle(options.style);
 
     impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));

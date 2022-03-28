@@ -24,12 +24,12 @@ const registerHelpers = () => {
         return options.inverse(this);
     }
   });
-  Handlebars.registerHelper('printType', (type, address, id, municipality) => {
-    let line = `<li id=${id}><span id="info">${address.toUpperCase()}</span>`;
+  Handlebars.registerHelper('printType', (type, address, id, municipality, cps) => {
+    let line = `<li id=${id}><span id="info">${address}</span>`;
     // add following lines if asked to show entity type again
     // (but not if type's portal, callejero or Codpost)
-    if (type !== 'callejero' && type !== 'portal' && type !== 'Codpost') {
-      line += ` (${type.toUpperCase()})`;
+    if (type === 'Municipio' || type === 'provincia' || type === 'comunidad autonoma' || cps === true) {
+      line += ` (${type})`;
     }
     if (municipality !== undefined) {
       line += ` en ${municipality}`;

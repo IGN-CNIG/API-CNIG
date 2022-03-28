@@ -152,6 +152,14 @@ export default class Transparency extends M.Plugin {
     map.addPanels(this.panel_);
   }
 
+
+
+  manageLyrAvailable(lyrAvailable){
+
+    this.control_.manageLyrAvailable(lyrAvailable);
+
+  }
+
   /**
    * This function destroys this plugin
    *
@@ -188,6 +196,12 @@ export default class Transparency extends M.Plugin {
   getMetadata() {
     return this.metadata_;
   }
+
+  setDefaultLayer(){
+    this.control_.setDefaultLayer();
+  }
+
+
 
   /**
    * Activate plugin

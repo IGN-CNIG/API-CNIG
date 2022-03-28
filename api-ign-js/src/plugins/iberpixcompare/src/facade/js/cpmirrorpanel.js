@@ -43,13 +43,6 @@ export default class Mirrorpanel extends M.Plugin {
     this.controls_ = [];
 
     /**
-     * Class name of the html view Plugin
-     * @public
-     * @type {string}
-     */
-    this.className = 'm-plugin-mirrorpanel';
-
-    /**
      * Position of the Plugin
      * @public
      * @type {String}
@@ -95,38 +88,6 @@ export default class Mirrorpanel extends M.Plugin {
     this.showCursors = options.showCursors;
     if (this.showCursors === undefined) this.showCursors = true;
 
-    /**
-     * Layer names that will have effects
-     * @public
-     * Value: the names separated with coma
-     * @type {string}
-     */
-    this.mirrorLayers = [];
-    if (options.mirrorLayers !== undefined) {
-      if (Array.isArray(options.mirrorLayers)) {
-        this.mirrorLayers = options.mirrorLayers;
-      } else {
-        this.mirrorLayers = options.mirrorLayers.split(',');
-      }
-    }
-
-    /**
-     * Layer base for the three mirror maps
-     * @public
-     * Value: the names separated with coma
-     * @type {string}
-     */
-    this.defaultBaseLyrs = [];
-    if (options.defaultBaseLyrs !== undefined) {
-      if (Array.isArray(options.defaultBaseLyrs)) {
-        options.defaultBaseLyrs.forEach(e => this.defaultBaseLyrs.push(e[2]));
-      } else {
-        this.defaultBaseLyrs = options.defaultBaseLyrs.split(',');
-      }
-    }
-
-    this.fullLayers = options.defaultBaseLyrs || [];
-
     this.backImgLayersConfig = backImgLayersConfig;
 
     this.fullTOCConfig = fullTOCConfig;
@@ -170,9 +131,6 @@ export default class Mirrorpanel extends M.Plugin {
       collapsed: this.collapsed,
       modeViz: this.modeViz,
       showCursors: this.showCursors,
-      mirrorLayers: this.mirrorLayers,
-      defaultBaseLyrs: this.defaultBaseLyrs,
-      fullLayers: this.fullLayers,
       backImgLayersConfig: this.backImgLayersConfig,
       fullTOCConfig: this.fullTOCConfig,
       vectorsConfig: this.vectorsConfig,
@@ -230,7 +188,7 @@ export default class Mirrorpanel extends M.Plugin {
     this.control_.removeMaps();
     this.control_.destroyMapsContainer();
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.modeViz, this.enabledKeyFunctions, this.showCursors, this.mirrorLayers, this.defaultBaseLyrs, this.backImgLayersParams, this.interface] = [null, null, null, null, null, null, null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.modeViz, this.enabledKeyFunctions, this.showCursors, this.backImgLayersParams, this.interface] = [null, null, null, null, null, null, null, null, null, null];
   }
 
   /**

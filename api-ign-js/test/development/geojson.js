@@ -3,6 +3,7 @@ import GeoJSON from 'M/layer/GeoJSON';
 
 const mapjs = map({
   container: 'map',
+  controls: ['location'],
 });
 
 // mapjs.addLayers(new GeoJSON({

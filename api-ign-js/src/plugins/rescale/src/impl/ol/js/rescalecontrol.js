@@ -67,6 +67,10 @@ export default class RescaleControl extends M.impl.Control {
       }
     }
 
+    if (newScale === undefined) {
+      newScale = lastZoom;
+    }
+
     return newScale;
   }
 
@@ -78,8 +82,8 @@ export default class RescaleControl extends M.impl.Control {
    * @param {*} resolution -
    */
   getForViewAndSize(resolution) {
-    const dx = (resolution * this.getSizeFromViewport()[0]) / 2;
-    const dy = (resolution * this.getSizeFromViewport()[1]) / 2;
+    const dx = (resolution * this.facadeMap_.getMapImpl().getSize()[0]) / 2;
+    const dy = (resolution * this.facadeMap_.getMapImpl().getSize()[1]) / 2;
     const cosRotation = Math.cos(this.facadeMap_.getMapImpl().getView().getRotation());
     const sinRotation = Math.sin(this.facadeMap_.getMapImpl().getView().getRotation());
     const xCos = dx * cosRotation;
@@ -124,21 +128,22 @@ export default class RescaleControl extends M.impl.Control {
     return scale;
   }
 
-  /**
-   * Gets size from viewport.
-   * @public
-   * @function
-   * @api
-   */
-  getSizeFromViewport() {
-    const size = [100, 100];
-    const selector = `.ol-viewport[data-view="${ol.util.getUid(this.facadeMap_.getMapImpl().getView())}"]`;
-    const element = document.querySelector(selector);
-    if (element) {
-      const metrics = window.getComputedStyle(element);
-      size[0] = parseInt(metrics.width, 10);
-      size[1] = parseInt(metrics.height, 10);
-    }
-    return size;
-  }
+  // /**
+  //  * Gets size from viewport.
+  //  * @public
+  //  * @function
+  //  * @api
+  //  */
+  // getSizeFromViewport() {
+  //   const size = [100, 100];
+  //   const selector = `.ol-viewport[data-view="${ol.util.
+  //   getUid(this.facadeMap_.getMapImpl().getView())}"]`;
+  //   const element = document.querySelector(selector);
+  //   if (element) {
+  //     const metrics = window.getComputedStyle(element);
+  //     size[0] = parseInt(metrics.width, 10);
+  //     size[1] = parseInt(metrics.height, 10);
+  //   }
+  //   return size;
+  // }
 }

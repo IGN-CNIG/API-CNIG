@@ -31,8 +31,12 @@ Example: <url_mapea>?plugins=toc
 - **position**. Indica la posición donde se mostrará el plugin sobre el mapa.
   - 'TL':top left
   - 'TR':top right (default)
-  - 'BL':bottom left 
+  - 'BL':bottom left
   - 'BR':bottom right
+
+- **collapsible**. Si es *true*, el panel del plugin puede abrirse y cerrarse. Por defecto tiene el valor *true*.
+
+- **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
 
 # Ejemplos de uso
 
@@ -40,7 +44,7 @@ Example: <url_mapea>?plugins=toc
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.TOC({
         postition: 'TL',
       });

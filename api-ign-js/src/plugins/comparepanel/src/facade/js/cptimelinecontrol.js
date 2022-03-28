@@ -26,6 +26,7 @@ export default class TimelineControl extends M.Control {
     const impl = new TimelineImplControl();
     super(impl, 'Timeline');
     this.running = false;
+    this.animationFrame = 0;
     this.animation = options.animation;
     this.speed = options.speed;
     this.intervals = options.intervals;
@@ -47,6 +48,7 @@ export default class TimelineControl extends M.Control {
    * @api stable
    */
   createView(map) {
+
     this.map = map;
     return new Promise((success, fail) => {
       let intervals = [];
@@ -66,7 +68,10 @@ export default class TimelineControl extends M.Control {
         };
 
         intervals.push(iv);
+        console.log("Cargo capa");
       });
+      
+      console.log(intervals);
 
       this.intervals = intervals;
       this.template = M.template.compileSync(template, {
@@ -77,6 +82,8 @@ export default class TimelineControl extends M.Control {
           },
         },
       });
+
+
 
       this.intervals.forEach((interval, k) => {
         let tag = document.createElement('div');
@@ -100,12 +107,23 @@ export default class TimelineControl extends M.Control {
         clearTimeout(this.running);
         this.running = false;
       });
-
       const play = this.template.querySelector('#m-timeline-play');
-      play.addEventListener('click', (e) => this.playTimeline(false));
+      play.addEventListener('click', (e) => {
+        //e.target.classList.remove('cp-control-siguiente');
+        //e.target.classList.add('cp-control-pausa');
+        this.running = !this.running;
+        if (this.running){
+          console.log(`ENNNVIIIO -> ${this.running}`);
+          this.playTimeline(this.running);
+        }
+        
+        
+      });
       success(this.template);
+
     });
   }
+
 
   /**
    * Transform StringLayers to Mapea M.Layer
@@ -121,6 +139,7 @@ export default class TimelineControl extends M.Control {
    */
   transformToLayers(layer) {
     let newLayer = null;
+    console.log("transformToLayers");
     if (!(layer instanceof Object)) {
       if (layer.indexOf('*') >= 0) {
         const urlLayer = layer.split('*');
@@ -156,6 +175,8 @@ export default class TimelineControl extends M.Control {
     }
   }
 
+  
+
   /** This function change layers and show layer name when slider moves
    *
    * @public
@@ -164,13 +185,13 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   changeSlider(elem) {
+    
     document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
     const left = (((elem.value - elem.min) / (elem.max - elem.min)) * ((256 - 5) - 5)) + 5;
     document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 'px');
     if(this.animation || this.intervals[0].name !== ''){
       document.querySelector('.m-timeline-names').style.display = 'block';
     }
-
     if (this.animation) {
       document.querySelector('.m-timeline-button').style.display = 'block';
     }
@@ -180,7 +201,6 @@ export default class TimelineControl extends M.Control {
       this.getMapLayer(interval.service).setVisible(false);
       document.querySelector('.m-timeline-names').innerHTML = '';
     });
-
     if (step % 1 === 0) {
       document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 20 + 'px');
       this.getMapLayer(this.intervals[step].service).setVisible(true);
@@ -208,6 +228,7 @@ export default class TimelineControl extends M.Control {
         document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[parseInt(step)].tag + this.intervals[parseInt(step) + 1].tag + '"');
       }
     }
+
   }
 
   /** This function search a layer in the map
@@ -221,6 +242,48 @@ export default class TimelineControl extends M.Control {
     return this.map.getLayers().filter(layer => layer.getImpl().legend === layerSearch.getImpl().legend)[0];
   }
 
+  /** This function set default layer shown when plugin is activated
+   * 
+   * @param {integer} indexLyr /** Index layer in intervals array
+   * @returns 
+   */
+  setDefaultLayer(indexLyr) {
+
+    const this_ = this;
+    const html = this_.template;
+    const slider = html.querySelector('#input-slider');
+    const initialLyr = indexLyr<this_.intervals.length ? indexLyr:0;
+
+    slider.value = initialLyr;
+    html.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
+    const left = (((slider.value - slider.min) / (slider.max - slider.min)) * ((256 - 5) - 5)) + 5;
+    html.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 'px');
+    if(this_.animation || this_.intervals[0].name !== ''){
+      html.querySelector('.m-timeline-names').style.display = 'block';
+    }
+    if (this_.animation) {
+      html.querySelector('.m-timeline-button').style.display = 'block';
+    }
+
+    let step = parseFloat(slider.value);
+    this_.intervals.forEach((interval) => {
+      this_.getMapLayer(interval.service).setVisible(false);
+      html.querySelector('.m-timeline-names').innerHTML = '';
+    });
+
+    html.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 20 + 'px');
+    this_.getMapLayer(this_.intervals[step].service).setVisible(true);
+    html.querySelector('.m-timeline-names').innerHTML = this_.intervals[step].name;
+    html.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this_.intervals[step].tag + '"')
+    if (this_.intervals[step].tag !== '') {
+      html.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '1');
+    } else {
+      html.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
+    }
+
+
+  }
+
   /** This function make the play animation
    *
    * @public
@@ -229,11 +292,16 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   playTimeline(next) {
+
     const start = 0;
     const end = this.intervals.length - 1;
     const slider = document.querySelector('#input-slider');
     let step = parseInt(slider.value);
     if (this.running) {
+      document.querySelector('.m-timeline-button button').classList.remove('cp-control-siguiente');
+      document.querySelector('.m-timeline-button button').classList.add('cp-control-pausa');
+
+    }else{
       document.querySelector('.m-timeline-button button').classList.add('cp-control-siguiente');
       document.querySelector('.m-timeline-button button').classList.remove('cp-control-pausa');
       clearTimeout(this.running);
@@ -252,6 +320,9 @@ export default class TimelineControl extends M.Control {
     if (step >= end) {
       slider.value = 0;
       this.changeSlider(slider);
+      document.querySelector('.m-timeline-button button').classList.add('cp-control-siguiente');
+      document.querySelector('.m-timeline-button button').classList.remove('cp-control-pausa');
+      this.running = false;
       return;
     }
 
@@ -259,9 +330,12 @@ export default class TimelineControl extends M.Control {
       step = start;
     }
 
+    if (!this.running){
+      return;
+    }
     slider.value = parseFloat(slider.value) + 1;
     this.changeSlider(slider);
-    this.running = setTimeout((e) => this.playTimeline(true), this.speed * 1000);
+    this.animationFrame = setTimeout((e) => this.playTimeline(true), this.speed * 1000);
   }
 
   /**
@@ -300,11 +374,21 @@ export default class TimelineControl extends M.Control {
    * @api
    */
   deactivate() {
-    clearInterval(this.running);
-    this.running = false;
-    this.intervals.forEach((interval) => {
-      this.getMapLayer(interval.service).setVisible(false);
-    })
+
+    console.log(this.intervals);
+    
+    try {
+      clearInterval(this.running);
+      this.running = false;
+      this.intervals.forEach((interval) => {
+        if (interval.service.zIndex_ !== undefined){
+          this.getMapLayer(interval.service).setVisible(false);
+        }
+      });
+    } catch (error) {
+      console.error(`e2m (1): ${error}`);
+    }
+
   }
 
   /**

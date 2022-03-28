@@ -35,7 +35,7 @@ div.m-panel.m-plugin-lyrcompare.opened>.g-cartografia-flecha-izquierda {
 
 .div-m-lyrcompare-panel {
 	padding-top: 1px;
-	width: 19rem;
+	width: 22rem;
 }
 
 .div-m-lyrcompare-transparent-opacity {
@@ -147,7 +147,7 @@ div.m-panel.m-plugin-lyrcompare.opened>.g-cartografia-flecha-izquierda {
 	display: flex;
 	align-items: center;
 	padding: 0px 5px 5px 5px;
-	padding-left: 8%;
+	padding-left: 5%;
 	color: #000000;
 }
 
@@ -168,6 +168,8 @@ div.m-panel.m-plugin-lyrcompare.opened>.g-cartografia-flecha-izquierda {
 	margin-left: 4%;
 	white-space: nowrap;
 	padding-right: 11%;
+	position: relative;
+	bottom: 4px;
 }
 
 div#m-lyrcompare-titulo {
@@ -183,6 +185,10 @@ div#m-lyrcompare-titulo {
 	color:#fff;
 }
 
+
+.div-m-lyrcompare-panel .m-lyrcompare-effect-buttoms {
+	margin-bottom: 0.5rem;
+}
 
 /****************************
      FIREFOX HACKS
@@ -210,14 +216,14 @@ div#m-lyrcompare-titulo {
 
 .m-lyrcompare-select_arrow {
     position: absolute;
-    top: -1px;
-    right: 1em;
+    top: -4px;
+    right: 1.5em;
     pointer-events: none;
     border-color: #7b7b7b transparent transparent;
-	border-style: solid;
-	border-width: 8px 5px 0;
-	background-color:#e6e6e6;
-	margin: 1em;
+		border-style: solid;
+		border-width: 8px 5px 0;
+		background-color:#e6e6e6;
+		margin: 1em;
 	}
 
 .m-plugin-lyrcompare .icon-flecha-izquierda:before {

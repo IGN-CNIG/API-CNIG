@@ -100,7 +100,7 @@
         buttonApi.addEventListener('click', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             zoom = inputZoom.value;
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?xylocator=' + posicion;
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?xylocator=' + posicion;
         });
 
         function cambiarTest() {

@@ -140,6 +140,8 @@ export default class PrinterMapControl extends M.Control {
      */
     this.dpiMax_ = null;
 
+    this.dpiGeo_ = 120;
+
     /**
      * Keep view boolean
      * @private
@@ -621,7 +623,6 @@ export default class PrinterMapControl extends M.Control {
     if (this.georef_) {
       getPrintData = this.getPrintDataGeo();
       printUrl = this.printTemplateGeoUrl_;
-      download = this.downloadGeoPrint.bind(this);
     } else {
       getPrintData = this.getPrintData();
       printUrl = this.printTemplateUrl_;
@@ -629,6 +630,10 @@ export default class PrinterMapControl extends M.Control {
     }
 
     getPrintData.then((printData) => {
+      if (this.georef_) {
+        download = this.downloadGeoPrint.bind(this, printData.attributes.map.bbox);
+      }
+
       let url = M.utils.concatUrlPaths([printUrl, `report.${printData.outputFormat}`]);
       const queueEl = this.createQueueElement();
       if (Array.prototype.slice.call(this.queueContainer_.childNodes).length > 0) {
@@ -895,7 +900,8 @@ export default class PrinterMapControl extends M.Control {
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
     const layout = 'plain';
-    const dpi = this.dpiMax_;
+    // const dpi = this.dpiMax_;
+    const dpi = this.dpiGeo_;
     const outputFormat = 'jpg';
     const parameters = this.paramsGeo_.parameters;
     const printData = M.utils.extend({
@@ -952,38 +958,67 @@ export default class PrinterMapControl extends M.Control {
     // Filters visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer');
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer');
     });
 
+    if (this.map_.getZoom() === 20) {
+      let contains = false;
+      layers.forEach((l) => {
+        if (l.url !== undefined && l.url === 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg') {
+          contains = true;
+        }
+      });
+
+      if (contains) {
+        layers = layers.filter((l) => {
+          return l.url !== 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg';
+        });
+      }
+    } else if (this.map_.getZoom() < 20) {
+      let contains = false;
+      layers.forEach((l) => {
+        if (l.url !== undefined && l.name !== undefined && l.url === 'https://www.ign.es/wmts/pnoa-ma?' && l.name === 'OI.OrthoimageCoverage') {
+          contains = true;
+        }
+      });
+
+      if (contains) {
+        layers = layers.filter((l) => {
+          return l.url !== 'https://www.ign.es/wmts/pnoa-ma?' && l.name !== 'OI.OrthoimageCoverage';
+        });
+      }
+    }
+
     let numLayersToProc = layers.length;
-    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
+    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEN', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
       numLayersToProc = layers.length;
     }
 
+    layers = layers.sort((a, b) => {
+      let res = 0;
+      const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
+      const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
+      if (zia > zib) {
+        res = 1;
+      } else if (zia < zib) {
+        res = -1;
+      }
+
+      return res;
+    });
+
     return (new Promise((success, fail) => {
-      let encodedLayers = [];
-      const vectorLayers = [];
-      const wmsLayers = [];
-      const otherBaseLayers = [];
-      layers.forEach((layer) => {
+      const encodedLayers = [];
+      layers.forEach((layer, index) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
-          // Vector layers must be added after non vector layers.
           if (!M.utils.isNullOrEmpty(encodedLayer)) {
-            if (encodedLayer.type === 'Vector' || encodedLayer.type === 'KML') {
-              vectorLayers.push(encodedLayer);
-            } else if (encodedLayer.type === 'WMS') {
-              wmsLayers.push(encodedLayer);
-            } else {
-              otherBaseLayers.push(encodedLayer);
-            }
+            encodedLayers[index] = encodedLayer;
           }
 
           numLayersToProc -= 1;
           if (numLayersToProc === 0) {
-            encodedLayers = encodedLayers.concat(otherBaseLayers)
-              .concat(wmsLayers).concat(vectorLayers);
             // Mapfish requires reverse order
             success(encodedLayers.reverse());
           }
@@ -1002,8 +1037,36 @@ export default class PrinterMapControl extends M.Control {
     // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && ['WMS', 'WMTS'].indexOf(layer.type) > -1);
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer' && ['WMS', 'WMTS', 'TMS', 'XYZ'].indexOf(layer.type) > -1);
     });
+
+    if (this.map_.getZoom() === 20) {
+      let contains = false;
+      layers.forEach((l) => {
+        if (l.url !== undefined && l.url === 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg') {
+          contains = true;
+        }
+      });
+
+      if (contains) {
+        layers = layers.filter((l) => {
+          return l.url !== 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg';
+        });
+      }
+    } else if (this.map_.getZoom() < 20) {
+      let contains = false;
+      layers.forEach((l) => {
+        if (l.url !== undefined && l.name !== undefined && l.url === 'https://www.ign.es/wmts/pnoa-ma?' && l.name === 'OI.OrthoimageCoverage') {
+          contains = true;
+        }
+      });
+
+      if (contains) {
+        layers = layers.filter((l) => {
+          return l.url !== 'https://www.ign.es/wmts/pnoa-ma?' && l.name !== 'OI.OrthoimageCoverage';
+        });
+      }
+    }
 
     const encodedLayersModified = [];
     if (this.projection_.value === 'EPSG:3857') {
@@ -1037,38 +1100,35 @@ export default class PrinterMapControl extends M.Control {
     }
 
     let numLayersToProc = layers.length;
-    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEID', layers);
+    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEN', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
       numLayersToProc = layers.length;
     }
 
+    layers = layers.sort((a, b) => {
+      let res = 0;
+      const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
+      const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
+      if (zia > zib) {
+        res = 1;
+      } else if (zia < zib) {
+        res = -1;
+      }
+
+      return res;
+    });
+
     return (new Promise((success, fail) => {
-      let encodedLayers = [];
-      const vectorLayers = [];
-      const wmsLayers = [];
-      const otherBaseLayers = [];
-      const BreakException = {};
-      layers.forEach((layer) => {
+      const encodedLayers = [];
+      layers.forEach((layer, index) => {
         this.getImpl().encodeLayer(layer).then((encodedLayer) => {
-          if (encodedLayer === null) {
-            throw BreakException;
-          }
-          // Vector layers must be added after non vector layers.
           if (!M.utils.isNullOrEmpty(encodedLayer)) {
-            if (encodedLayer.type === 'Vector' || encodedLayer.type === 'KML') {
-              vectorLayers.push(encodedLayer);
-            } else if (encodedLayer.type === 'WMS') {
-              wmsLayers.push(encodedLayer);
-            } else {
-              otherBaseLayers.push(encodedLayer);
-            }
+            encodedLayers[index] = encodedLayer;
           }
 
           numLayersToProc -= 1;
           if (numLayersToProc === 0) {
-            encodedLayers = encodedLayers.concat(otherBaseLayers)
-              .concat(wmsLayers).concat(vectorLayers);
             // Mapfish requires reverse order
             success(encodedLayers.reverse());
           }
@@ -1116,42 +1176,26 @@ export default class PrinterMapControl extends M.Control {
    * @function
    * @api stable
    */
-  downloadGeoPrint(event) {
+  downloadGeoPrint(bbox, event) {
     const base64image = this.getBase64Image(this.documentRead_.src);
     base64image.then((resolve) => {
-      let BboxTransformXmaxYmin = [this.map_.getBbox().x.max, this.map_.getBbox().y.min];
-      const bbox = [this.map_.getBbox().x.min, this.map_.getBbox().y.min,
-        this.map_.getBbox().x.max, this.map_.getBbox().y.max,
-      ];
-
-      BboxTransformXmaxYmin = this.getImpl().transformExt(
-        bbox,
-        this.map_.getProjection().code, this.projection_.name,
-      );
-
-      const xminprima = (BboxTransformXmaxYmin[2] - BboxTransformXmaxYmin[0]);
-      const ymaxprima = (BboxTransformXmaxYmin[3] - BboxTransformXmaxYmin[1]);
-      const Px = ((xminprima / this.map_.getMapImpl().getSize()[0]) *
-        (72 / this.dpiMax_)).toString();
+      const size = this.map_.getMapImpl().getSize();
+      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / this.dpiGeo_)).toString();
       const GiroA = (0).toString();
       const GiroB = (0).toString();
-      const Py = -((ymaxprima / this.map_.getMapImpl().getSize()[1]) *
-        (72 / this.dpiMax_)).toString();
-      const Cx = (BboxTransformXmaxYmin[0]).toString();
-      const Cy = (BboxTransformXmaxYmin[3]).toString();
-      let titulo = event.target.textContent;
-      if (titulo === '' || titulo === getValue('no_title')) {
-        const f = new Date();
-        titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
-      }
-
+      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / this.dpiGeo_)).toString();
+      const Cx = (bbox[0] + (Px / 2)).toString();
+      const Cy = (bbox[3] + (Py / 2)).toString();
+      const f = new Date();
+      const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
       const zip = new JsZip();
       zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
       zip.file(titulo.concat('.jpg'), resolve, { base64: true });
       zip.generateAsync({ type: 'blob' }).then((content) => {
-        // see FileSaver.js
         saveAs(content, titulo.concat('.zip'));
       });
+    }).catch((err) => {
+      M.dialog.error(getValue('exception.imageError'));
     });
   }
 

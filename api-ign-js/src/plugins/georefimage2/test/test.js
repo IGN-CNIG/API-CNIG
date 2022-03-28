@@ -17,10 +17,21 @@ const map = M.map({
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
   layers: [
-    new M.layer.WMTS({
+    /*new M.layer.WMTS({
       url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
       name: 'mtn50-edicion1',
       legend: 'Históricos',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: false,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/jpeg',
+    }),*/
+    new M.layer.WMTS({
+      url: 'http://www.ign.es/wmts/pnoa-ma?',
+      name: 'OI.OrthoimageCoverage',
+      legend: 'Imagen (PNOA)',
       matrixSet: 'GoogleMapsCompatible',
       transparent: false,
       displayInLayerSwitcher: false,

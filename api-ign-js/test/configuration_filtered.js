@@ -36,7 +36,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('MAPEA_URL', 'https://api-ign-lite.desarrollo.guadaltel.es/api-core/');
+  M_.config('MAPEA_URL', 'https://mapea-lite.desarrollo.guadaltel.es/api-core/');
 
   /**
    * The path to the Mapea proxy to send
@@ -46,7 +46,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('PROXY_URL', location.protocol + '//api-ign-lite.desarrollo.guadaltel.es/api-core/api/proxy');
+  M_.config('PROXY_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-core/api/proxy');
 
   /**
    * The path to the Mapea proxy to send
@@ -56,7 +56,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('PROXY_POST_URL', location.protocol + '//api-ign-lite.desarrollo.guadaltel.es/api-core/proxyPost');
+  M_.config('PROXY_POST_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-core/proxyPost');
 
   /**
    * The path to the Mapea templates
@@ -74,7 +74,7 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('THEME_URL', location.protocol + '//api-ign-lite.desarrollo.guadaltel.es/api-core/assets/');
+  M_.config('THEME_URL', location.protocol + '//mapea-lite.desarrollo.guadaltel.es/api-core/assets/');
 
   /**
    * TODO
@@ -251,6 +251,13 @@ function fun(M_) {
   M_.config('controls', {
     default: '',
   });
+
+  /**
+   * URL of sql wasm file
+   * @private
+   * @type {String}
+   */
+  M_.config('SQL_WASM_URL', '../../../../node_modules/sql.js/dist/');
 }
 
 fun(window.M);

@@ -15,6 +15,8 @@ div.ol-overlaycontainer-stopevent > div > div.m-area > div.m-panel.m-vectors.col
 .m-vectors-addwfs [class*=" icon-"],
 .m-vectors-loading [class^="icon-"],
 .m-vectors-loading [class*=" icon-"],
+.m-vectors-fromurl [class^="icon-"],
+.m-vectors-fromurl [class*=" icon-"],
 div.m-vectors [class^="icon-"],
 div.m-vectors [class*=" icon-"] {
   font-family: "vectors";
@@ -63,3 +65,5 @@ div.m-vectors [class*=" icon-"] {
 .m-vectors-addwfs .icon-list:before { content: '\e92c'; }
 .m-vectors-addwfs .icon-cancel:before { content: '\e905'; }
 .m-vectors-loading .icon-spinner:before { content: '\e953'; }
+.m-vectors-fromurl .icon-delete:before { content: '\e93e'; }
+.m-vectors-fromurl .icon-add:before { content: '\e935'; }

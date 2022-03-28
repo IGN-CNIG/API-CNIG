@@ -839,6 +839,7 @@ export default class GeometryDrawControl extends M.Control {
     // popup desactivated
     this.map.getLayers()[this.map.getLayers().length - 1].getImpl().extract = false;
     this.map.addLayers(this.selectionLayer);
+    this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + 8);
     this.getImpl().setImplSource();
   }
 

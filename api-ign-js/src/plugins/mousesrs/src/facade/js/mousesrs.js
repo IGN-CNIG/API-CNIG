@@ -1,6 +1,7 @@
 /**
  * @module M/plugin/MouseSRS
  */
+import '../assets/css/fonts';
 import '../assets/css/mousesrs';
 import MouseSRSControl from './mousesrscontrol';
 import { getValue } from './i18n/language';
@@ -84,6 +85,13 @@ export default class MouseSRS extends M.Plugin {
      * @type {boolean}
      */
     this.activeZ = options.activeZ || false;
+
+    /**
+     * URL to the help for the icon
+     * @private
+     * @type {string}
+     */
+    this.helpUrl = options.helpUrl;
   }
 
   /**
@@ -103,6 +111,7 @@ export default class MouseSRS extends M.Plugin {
       this.utmDecimalDigits,
       this.tooltip_,
       this.activeZ,
+      this.helpUrl,
     );
     this.controls_.push(this.control_);
     this.map_ = map;

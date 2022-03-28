@@ -129,6 +129,7 @@ export default class Timeline extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+    
   }
 
 
@@ -178,6 +179,18 @@ export default class Timeline extends M.Plugin {
   activate() {
     this.control_.activate();
   }
+
+  /**
+   * This function set default layer shown when plugin is activated
+   *
+   * @function
+   * @public
+   * @api
+   */
+   setDefaultLayer(indexLyr) {
+    this.control_.setDefaultLayer(indexLyr);
+  }
+
 
   /**
    * Desactivate plugin

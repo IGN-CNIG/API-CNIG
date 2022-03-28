@@ -94,6 +94,8 @@
     "addwmts_method": "La implementación usada no posee el método addWMTS.",
     "removewmts_method": "La implementación usada no posee el método removeWMTS.",
     "getmbtiles_method": "La implementación usada no posee el método getMBtiles.",
+    "getxyzs_method": "La implementación usada no posee el método getXYZs.",
+    "gettms_method": "La implementación usada no posee el método getTMS.",
     "getcontrols_method": "La implementación usada no posee el método getControls.",
     "addcontrols_method": "La implementación usada no posee el método addControls.",
     "remove_control": "No ha especificado ningún control a eliminar.",

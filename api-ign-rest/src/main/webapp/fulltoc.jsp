@@ -174,7 +174,7 @@
             https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             codsi = (selectCODSI.options[selectCODSI.selectedIndex].value == 'true');
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?fulltoc=' + posicion + '*' + collapsed + '*' + collapsible + '*' + codsi;
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?fulltoc=' + posicion + '*' + collapsed + '*' + collapsible + '*' + codsi;
         });
 
         // const precharged = {

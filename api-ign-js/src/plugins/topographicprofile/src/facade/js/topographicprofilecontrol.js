@@ -26,7 +26,7 @@ export default class TopographicprofileControl extends M.Control {
     const impl = new TopographicprofileImplControl(opts);
     super(impl, 'Topographicprofile');
 
-    [this.btnData_, this.btnRemove_, this.facadeMap_, this.html_, this.drawCtrl_, this.opts] = [null, null, null, null, null, impl, opts];
+
   }
 
   /**
@@ -67,6 +67,7 @@ export default class TopographicprofileControl extends M.Control {
       success(html);
     });
   }
+
   /**
    * This function gets activation button
    *
@@ -75,7 +76,6 @@ export default class TopographicprofileControl extends M.Control {
    * @param {HTML} html of control
    * @api stable
    */
-
   getActivationButton(html) {
     return html.querySelector('#m-topographicprofile-btn');
   }

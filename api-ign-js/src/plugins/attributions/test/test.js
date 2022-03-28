@@ -40,6 +40,9 @@ window.map = map;
 const mp = new Attributions({
   mode: 1,
   scale: 10000,
+  url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
+  type: 'geojson',
+  position: 'BL',
 });
 
 map.addPlugin(mp);

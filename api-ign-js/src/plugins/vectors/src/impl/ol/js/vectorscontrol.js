@@ -11,6 +11,7 @@ const GML_FORMAT = 'text/xml; subtype=gml/3.1.1';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
 const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+const NO_DATA_VALUE = 'NODATA_value -9999.000';
 const WFS_EXCEPTIONS = [
   'https://servicios.idee.es/wfs-inspire/hidrografia?',
   'https://servicios.idee.es/wfs-inspire/hidrografia',
@@ -36,27 +37,35 @@ const WFS_EXCEPTIONS = [
   'http://ideihm.covam.es/wfs/CartaOF',
 ];
 
-const formatNumber = (x) => {
-  const num = Math.round(x * 100) / 100;
-  return num.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const formatNumber = (x, decimals) => {
+  const pow = 10 ** decimals;
+  let num = Math.round(x * pow) / pow;
+  num = num.toString().replace('.', ',');
+  if (decimals > 2) {
+    num = `${num.split(',')[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${num.split(',')[1]}`;
+  } else {
+    num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  return num;
 };
 
 export default class VectorsControl extends M.impl.Control {
   /**
-   * This function adds the control to the specified map
-   *
-   * @public
-   * @function
-   * @param {M.Map} map to add the plugin
-   * @param {HTMLElement} html of the plugin
-   * @api stable
-   */
+  * This function adds the control to the specified map
+  *
+  * @public
+  * @function
+  * @param {M.Map} map to add the plugin
+  * @param {HTMLElement} html of the plugin
+  * @api stable
+  */
   addTo(map, html) {
     /**
-     * Facade map
-     * @private
-     * @type {M.map}
-     */
+    * Facade map
+    * @private
+    * @type {M.map}
+    */
     this.facadeMap_ = map;
 
     this.distance_ = 30;
@@ -110,13 +119,13 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Creates new OpenLayers vector source
-   * @public
-   * @function
-   * @api
-   * @param {Boolean} featuresIncluded - indicates if an OL collection of
-   * features should be included in new source
-   */
+  * Creates new OpenLayers vector source
+  * @public
+  * @function
+  * @api
+  * @param {Boolean} featuresIncluded - indicates if an OL collection of
+  * features should be included in new source
+  */
   newVectorSource(featuresIncluded) {
     return featuresIncluded ?
       new ol.source.Vector({ features: new ol.Collection([]) }) :
@@ -124,13 +133,13 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Transforms x,y coordinates to 4326 on coordinates array.
-   * @public
-   * @function
-   * @api
-   * @param {String} codeProjection
-   * @param {Array<Number>} oldCoordinates
-   */
+  * Transforms x,y coordinates to 4326 on coordinates array.
+  * @public
+  * @function
+  * @api
+  * @param {String} codeProjection
+  * @param {Array<Number>} oldCoordinates
+  */
   getTransformedCoordinates(codeProjection, oldCoordinates) {
     const transformFunction = ol.proj.getTransform(codeProjection, 'EPSG:4326');
     return this.getFullCoordinates(
@@ -140,12 +149,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Given a coordinate set (x, y, altitude?), returns [x,y].
-   * @public
-   * @function
-   * @api
-   * @param {Array<Number>} coordinatesSet
-   */
+  * Given a coordinate set (x, y, altitude?), returns [x,y].
+  * @public
+  * @function
+  * @api
+  * @param {Array<Number>} coordinatesSet
+  */
   getXY(coordinatesSet) {
     const coordinateCopy = [];
     for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
@@ -154,13 +163,13 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Substitutes x, y coordinates on coordinate set (x, y, altitude...)
-   * @public
-   * @function
-   * @api
-   * @param {Array} oldCoordinates
-   * @param {Array<Number>} newXY - [x,y]
-   */
+  * Substitutes x, y coordinates on coordinate set (x, y, altitude...)
+  * @public
+  * @function
+  * @api
+  * @param {Array} oldCoordinates
+  * @param {Array<Number>} newXY - [x,y]
+  */
   getFullCoordinates(oldCoordinates, newXY) {
     const newCoordinates = oldCoordinates;
     newCoordinates[0] = newXY[0];
@@ -169,11 +178,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * This function adds draw interaction to map.
-   * @public
-   * @function
-   * @api
-   */
+  * This function adds draw interaction to map.
+  * @public
+  * @function
+  * @api
+  */
   addDrawInteraction(layer, geom) {
     const olMap = this.facadeMap_.getMapImpl();
     const vectorSource = layer.getImpl().getOL3Layer().getSource();
@@ -184,12 +193,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Defines function to be executed on click on draw interaction.
-   * Creates feature with drawing and adds it to map.
-   * @public
-   * @function
-   * @api
-   */
+  * Defines function to be executed on click on draw interaction.
+  * Creates feature with drawing and adds it to map.
+  * @public
+  * @function
+  * @api
+  */
   addDrawEvent() {
     this.draw.on('drawend', (event) => {
       this.facadeControl.onDraw(event);
@@ -209,6 +218,7 @@ export default class VectorsControl extends M.impl.Control {
 
   addEscEvent(evt) {
     if (evt.key === 'Escape') {
+      this.draw.finishDrawing();
       this.facadeControl.deactivateDrawing();
       this.facadeControl.isDrawingActive = false;
       this.facadeControl.drawLayer = undefined;
@@ -216,44 +226,44 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Removes draw interaction from map.
-   * @public
-   * @function
-   * @api
-   */
+  * Removes draw interaction from map.
+  * @public
+  * @function
+  * @api
+  */
   removeDrawInteraction() {
     document.onkeydown = null;
     this.facadeMap_.getMapImpl().removeInteraction(this.draw);
   }
 
   /**
-   * Removes edit interaction
-   * @public
-   * @api
-   * @function
-   */
+  * Removes edit interaction
+  * @public
+  * @api
+  * @function
+  */
   removeEditInteraction() {
     this.facadeMap_.getMapImpl().removeInteraction(this.edit);
   }
 
   /**
-   * Removes select interaction
-   * @public
-   * @function
-   * @api
-   */
+  * Removes select interaction
+  * @public
+  * @function
+  * @api
+  */
   removeSelectInteraction() {
     this.facadeMap_.getMapImpl().removeInteraction(this.select);
   }
 
   /**
-   * Creates new OpenLayers draw interaction
-   * @public
-   * @function
-   * @api
-   * @param {OLVectorSource} vectorSource -
-   * @param {String} geometry - type of geometry ['Point', 'LineString', 'Polygon']
-   */
+  * Creates new OpenLayers draw interaction
+  * @public
+  * @function
+  * @api
+  * @param {OLVectorSource} vectorSource -
+  * @param {String} geometry - type of geometry ['Point', 'LineString', 'Polygon']
+  */
   newDrawInteraction(vectorSource, geometry) {
     return new ol.interaction.Draw({
       source: vectorSource,
@@ -263,22 +273,22 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Creates polygon feature from extent.
-   * @public
-   * @function
-   * @api
-   * @param {Array} extent - geometry extent
-   */
+  * Creates polygon feature from extent.
+  * @public
+  * @function
+  * @api
+  * @param {Array} extent - geometry extent
+  */
   newPolygonFeature(extent) {
     return new ol.Feature({ geometry: ol.geom.Polygon.fromExtent(extent) });
   }
 
   /**
-   * Creates current feature clone.
-   * @public
-   * @function
-   * @api
-   */
+  * Creates current feature clone.
+  * @public
+  * @function
+  * @api
+  */
   getMapeaFeatureClone() {
     // eslint-disable-next-line no-underscore-dangle
     const implFeatureClone = this.facadeControl.feature.getImpl().olFeature_.clone();
@@ -287,12 +297,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Deletes attributes from feature.
-   * @public
-   * @function
-   * @api
-   * @param {M.Feature} feature
-   */
+  * Deletes attributes from feature.
+  * @public
+  * @function
+  * @api
+  * @param {M.Feature} feature
+  */
   unsetAttributes(feature) {
     const properties = feature.getImpl().getOLFeature().getProperties();
     const keys = Object.keys(properties);
@@ -302,11 +312,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Activates selection mode.
-   * @public
-   * @function
-   * @api
-   */
+  * Activates selection mode.
+  * @public
+  * @function
+  * @api
+  */
   activateSelection(layer) {
     const olMap = this.facadeMap_.getMapImpl();
     const facadeControl = this.facadeControl;
@@ -335,28 +345,33 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Loads GeoJSON layer
-   * @public
-   * @function
-   * @param {*} source2 -
-   */
+  * Loads GeoJSON layer
+  * @public
+  * @function
+  * @param {*} source2 -
+  */
   loadGeoJSONLayer(source, layerName) {
     let features = new ol.format.GeoJSON()
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
 
     features = this.featuresToFacade(features);
+    features = features.filter((f) => {
+      return f.getGeometry() !== null;
+    });
+
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
     return features;
   }
 
   /**
-   * Loads GML layer
-   * @public
-   * @function
-   * @param {*} source -
-   */
+  * Loads GML layer
+  * @public
+  * @function
+  * @param {*} source -
+  */
   loadGMLLayer(source, layerName) {
     let newSource = source;
     let srs = this.facadeMap_.getProjection().code;
@@ -372,7 +387,7 @@ export default class VectorsControl extends M.impl.Control {
       newSource = newSource.replace(/certificacion:the_geom/gi, 'ogr:geometryProperty');
     }
 
-    if (newSource.split('srsName="')[1].indexOf('http') > -1) {
+    if (newSource.split('srsName="')[1].split('"')[0].indexOf('http') > -1) {
       try {
         srs = `EPSG:${newSource.split('srsName="')[1].split('#')[1].split('"')[0]}`;
       } catch (err) {
@@ -417,24 +432,384 @@ export default class VectorsControl extends M.impl.Control {
         if (!f.getGeometry()) {
           newF.setGeometry(f.get('geometry'));
         }
-
         return newF;
       });
+    }
+
+    // En el caso de que no tenga geometrías, comprobamos si es GML 3.2,
+    // si lo es tenemos que parsearlo a mano.
+    if ((features.length === 0 || features[0].getGeometry() === undefined)
+      && newSource.indexOf('gml/3.2') > 0) {
+      features = this.gmlParser(newSource);
     }
 
     features = this.featuresToFacade(features);
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
+    return features;
+  }
+
+  gmlParserAU(srs, source) {
+    const features = [];
+    const proj = this.facadeMap_.getProjection().code;
+    source.split('<gml:LineString').forEach((elem) => {
+      if (elem.indexOf('</gml:LineString>') > -1) {
+        const coords = [];
+        const rawCoords = elem.split('<gml:posList>')[1].split('</gml:posList>')[0].split(' ');
+        for (let i = 0; i < rawCoords.length; i += 2) {
+          if (i + 1 < rawCoords.length) {
+            const coord = ol.proj.transform(
+              [parseFloat(rawCoords[i]), parseFloat(rawCoords[i + 1])],
+              srs,
+              proj,
+            );
+
+            coords.push(coord);
+          }
+        }
+
+        const newOlFeature = new ol.Feature({
+          geometry: new ol.geom.LineString(coords),
+        });
+
+        newOlFeature.setId(elem.split('gml:id="')[1].split('"')[0]);
+        features.push(newOlFeature);
+      }
+    });
+
+    source.split('<gml:Point').forEach((elem) => {
+      if (elem.indexOf('</gml:Point>') > -1) {
+        const rawCoords = elem.split('<gml:pos>')[1].split('</gml:pos>')[0].split(' ');
+        const coord = ol.proj.transform(
+          [parseFloat(rawCoords[0]), parseFloat(rawCoords[1])],
+          srs,
+          proj,
+        );
+
+        const newOlFeature = new ol.Feature({
+          geometry: new ol.geom.Point(coord),
+        });
+
+        newOlFeature.setId(elem.split('gml:id="')[1].split('"')[0]);
+        features.push(newOlFeature);
+      }
+    });
+
     return features;
   }
 
   /**
-   * Loads GeoJSON layer
-   * @public
-   * @function
-   * @param {*} source-
-   */
+  * Parse the features of a GML 3.2 layer
+  * @private
+  * @function
+  * @param {*} source-
+  */
+  gmlParser(source) {
+    const features = [];
+    let superficies = this.parseSurfacesGml(source);
+    if (superficies.length === 0) {
+      superficies = this.parseGeometriesGml(source);
+    }
+
+    superficies = this.getEPSGFromGML32(source, superficies);
+    const poligonos = this.getCoordinatesFromGML32(source, superficies);
+    const geometriasPoligonos = [];
+    poligonos.forEach((poligono) => {
+      geometriasPoligonos.push({
+        modo: poligono.modo,
+        gml_tipo: poligono.tipo,
+        gml: poligono.fichero,
+        sistema: poligono.sistema,
+        referencia: poligono.id,
+        vertices: poligono.coordenadas.trim().split(' '),
+      });
+    });
+
+    geometriasPoligonos.forEach((geometria) => {
+      const polygonCoords = [];
+      for (let i = 0; i < geometria.vertices.length; i += 2) {
+        polygonCoords.push(ol.proj.transform(
+          [parseFloat(geometria.vertices[i]),
+            parseFloat(geometria.vertices[i + 1])],
+          geometria.sistema,
+          this.facadeMap_.getProjection().code,
+        ));
+      }
+
+      const newOlFeature = new ol.Feature({
+        geometry: new ol.geom.Polygon([polygonCoords]),
+      });
+
+      const style = new ol.style.Style({
+        text: new ol.style.Text({
+          text: `GML: ${geometria.referencia}\nFichero: ${geometria.gml}\n${geometria.modo}`,
+        }),
+      });
+
+      newOlFeature.setStyle(style);
+      newOlFeature.setId(`GML ${features.length + 1}`);
+      features.push(newOlFeature);
+    });
+
+    return features;
+  }
+
+  /**
+  * Parse the surfaces of a GML 3.2 layer
+  * @private
+  * @function
+  * @param {*} source-
+  */
+  parseSurfacesGml(source) {
+    const surfaces = [];
+    const endTagSurface = '</gml:Surface>';
+    let auxSource = source;
+    while (auxSource !== '') {
+      const firstSurfaceTag = auxSource.indexOf('<gml:Surface');
+      let lastSurfaceTag = -2;
+      if (firstSurfaceTag >= 0) {
+        lastSurfaceTag = auxSource.indexOf(endTagSurface);
+      }
+
+      if (lastSurfaceTag > firstSurfaceTag) {
+        surfaces.push({ surface: auxSource.substring(firstSurfaceTag, lastSurfaceTag + endTagSurface.length), id: '', sistema: '' });
+        auxSource = auxSource.substring(lastSurfaceTag + endTagSurface.length, auxSource.length);
+      } else if (auxSource.length !== 0) {
+        auxSource = '';
+      } else if (auxSource.length === 0) {
+        break;
+      }
+    }
+
+    return surfaces;
+  }
+
+  /**
+  * Parse the other geometries of a GML 3.2 layer
+  * @private
+  * @function
+  * @param {*} source-
+  */
+  parseGeometriesGml(source) {
+    const geometries = [];
+    const endTagPoint = '</gml:Point>';
+    const endTagLine = '</gml:LineString>';
+    const endTagInteriorPolygon = '</gml:interior>';
+    const endTagPolygon = '</gml:exterior>';
+    let polygonIndex = source.indexOf('<gml:exterior>');
+    let lineIndex = source.indexOf('<gml:LineString');
+    let pointIndex = source.indexOf('<gml:Point');
+    let sourceAux = source;
+    let indexInicial = -1;
+    while (sourceAux !== '') {
+      let indexEndTag = -2;
+      if (polygonIndex !== '-1') {
+        indexInicial = sourceAux.indexOf('<gml:exterior>');
+        if (indexInicial >= 0) {
+          indexEndTag = sourceAux.indexOf(endTagPolygon) + endTagPolygon.length;
+        } else {
+          polygonIndex = -1;
+        }
+
+        if (sourceAux.indexOf(endTagInteriorPolygon) >= 0) {
+          indexEndTag = sourceAux.indexOf(endTagInteriorPolygon) + endTagInteriorPolygon.length;
+        }
+      }
+
+      if (lineIndex !== -1 && indexInicial < 0) {
+        indexInicial = sourceAux.indexOf('<gml:LineString');
+        if (indexInicial >= 0) {
+          indexEndTag = sourceAux.indexOf(endTagLine) + endTagLine.length;
+        } else {
+          lineIndex = -1;
+        }
+      }
+
+      if (pointIndex !== -1 && indexInicial < 0) {
+        indexInicial = sourceAux.indexOf('<gml:Point');
+        if (indexInicial >= 0) {
+          indexEndTag = sourceAux.indexOf(endTagPoint) + endTagPoint.length;
+        } else {
+          pointIndex = -1;
+        }
+      }
+
+      if (indexInicial > indexEndTag) {
+        geometries.push({ surface: sourceAux.substring(indexInicial, indexEndTag), id: '', sistema: '' });
+      } else {
+        sourceAux = '';
+      }
+    }
+
+    return geometries;
+  }
+
+  /**
+    * Parse the surface coordinates of a GML 3.2 layer
+    * @private
+    * @function
+    * @param {*} source -
+    * @param {*} superficies -
+    */
+  getCoordinatesFromGML32(source, superficies) {
+    const poligonos = [];
+    superficies.forEach((superficie) => {
+      let exteriores = superficie.surface;
+      let posiciones = superficie.surface;
+      let contador = 0;
+      while (exteriores !== '') {
+        let indexInicial = exteriores.indexOf('gml:exterior');
+        let indexFinal = -2;
+        let coordenadas = '';
+        if (indexInicial >= 0) {
+          indexFinal = exteriores.indexOf('</gml:exterior');
+          if (indexFinal > indexInicial) {
+            const exteriorElement = exteriores.substring(indexInicial, indexFinal);
+            const indexInicialElement = exteriorElement.indexOf('gml:posList');
+            let indexFinalElement = -2;
+            if (indexInicialElement >= 0) {
+              indexFinalElement = exteriorElement.indexOf('</gml:posList>');
+              if (indexFinalElement > indexInicialElement) {
+                coordenadas = exteriorElement.substring(indexInicialElement, indexFinalElement);
+              }
+            }
+            exteriores = exteriores.substring(indexFinal + 14, exteriores.length);
+          } else {
+            exteriores = '';
+          }
+        } else {
+          exteriores = '';
+        }
+
+        if (coordenadas !== '') {
+          indexInicial = coordenadas.indexOf('>');
+          if (indexInicial >= 0) {
+            coordenadas = coordenadas.substring(indexInicial + 1, coordenadas.legnth);
+            const idSuperficie = superficie.id !== '' ? superficie.id : `ID_${contador}`;
+            const nombreSuperficie = superficie.id !== '' ? superficie.id : `nombre_${contador}`;
+            poligonos.push({
+              modo: 'Exterior',
+              fichero: undefined,
+              tipo: undefined,
+              id: `${idSuperficie}_${contador}`,
+              coordenadas,
+              nombre: `${nombreSuperficie}_${contador}`,
+              sistema: superficie.sistema,
+            });
+
+            contador += 1;
+          }
+        }
+      }
+
+      while (posiciones.indexOf('<gml:posList>') !== -1) {
+        const lineStringTag = '<gml:posList>';
+        let coordenadas = '';
+        const indexInicial = posiciones.indexOf(lineStringTag) + lineStringTag.length;
+        const indexFinal = posiciones.indexOf('</gml:posList>');
+        if (indexInicial >= 0) {
+          coordenadas = posiciones.substring(indexInicial, indexFinal);
+          posiciones = posiciones.substring(indexFinal, posiciones.length);
+        }
+
+        if (coordenadas !== '') {
+          const idSuperficie = superficie.id !== '' ? superficie.id : `ID_${contador}`;
+          const nombreSuperficie = superficie.id !== '' ? superficie.id : `nombre_${contador}`;
+          poligonos.push({
+            modo: 'Exterior',
+            fichero: undefined,
+            tipo: undefined,
+            id: `${idSuperficie}_${contador}`,
+            coordenadas,
+            nombre: `${nombreSuperficie}_${contador}`,
+            sistema: superficie.sistema,
+          });
+
+          contador += 1;
+        }
+      }
+
+      while (posiciones.indexOf('<gml:pos>') !== -1) {
+        const pointTag = '<gml:pos>';
+        let coordenadas = '';
+        const indexInicial = posiciones.indexOf(pointTag) + pointTag.length;
+        const indexFinal = posiciones.indexOf('</gml:pos>');
+        if (indexInicial >= 0) {
+          coordenadas = posiciones.substring(indexInicial, indexFinal);
+          posiciones = posiciones.substring(indexFinal, posiciones.length);
+        }
+
+        if (coordenadas !== '') {
+          const idSuperficie = superficie.id !== '' ? superficie.id : `ID_${contador}`;
+          const nombreSuperficie = superficie.id !== '' ? superficie.id : `nombre_${contador}`;
+          poligonos.push({
+            modo: 'Exterior',
+            fichero: undefined,
+            tipo: undefined,
+            id: `${idSuperficie}_${contador}`,
+            coordenadas,
+            nombre: `${nombreSuperficie}_${contador}`,
+            sistema: superficie.sistema,
+          });
+
+          contador += 1;
+        }
+      }
+    });
+
+    return poligonos;
+  }
+
+  getEPSGFromGML32(source, superficies) {
+    superficies.map((superficie) => {
+      const superficieAux = superficie;
+      let indexInicial = superficieAux.surface.indexOf('id=');
+      let indexFinal = -2;
+      let coordSystem = '';
+      if (indexInicial >= 0) {
+        indexFinal = superficieAux.surface.indexOf('srsName=', indexInicial + 4);
+      }
+
+      if (indexFinal > indexInicial) {
+        superficieAux.id = superficieAux.surface.substring(indexInicial + 4, indexFinal - 2);
+      }
+
+      indexInicial = superficieAux.surface.indexOf('>', indexFinal + 10);
+      if (indexInicial > indexFinal) {
+        coordSystem = superficieAux.surface.substring(indexInicial + 25, indexFinal - 1);
+      }
+
+      if (coordSystem.indexOf('EPSG::326') > -1) {
+        const projectionNumber = parseInt(coordSystem.substring(coordSystem.indexOf('::') + 2, coordSystem.indexOf('>') - 1), 10) - 6800;
+        coordSystem = `EPSG::${projectionNumber}`;
+      } else if (coordSystem.indexOf('::') === -1) {
+        if (coordSystem.indexOf('opengis.net/def/crs')) {
+          const projectionType = coordSystem.indexOf('258') === -1 ? coordSystem.indexOf('326') : coordSystem.indexOf('258');
+          coordSystem = `EPSG::${coordSystem.substring(projectionType, coordSystem.indexOf('>') - 1)}`;
+        } else {
+          const gmlGlobalEPSG = source.indexOf('srsName=') + 9;
+          coordSystem = source.substring(indexInicial, source.indexOf('"', gmlGlobalEPSG));
+        }
+      } else {
+        coordSystem = coordSystem.substring(coordSystem.indexOf('EPSG'), coordSystem.indexOf('>') - 1);
+      }
+
+      superficieAux.sistema = coordSystem.replace('::', ':');
+      return superficieAux;
+    });
+
+    return superficies;
+  }
+
+
+  /**
+  * Loads GeoJSON layer
+  * @public
+  * @function
+  * @param {*} source-
+  */
   loadAllInGeoJSONLayer(sources, layerName) {
     let features = [];
     sources.forEach((source) => {
@@ -449,36 +824,58 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
     return features;
   }
 
   /**
-   * Loads KML layer
-   * @public
-   * @function
-   * @api
-   * @param {*} source -
-   * @param {*} extractStyles -
-   */
+  * Loads KML layer
+  * @public
+  * @function
+  * @api
+  * @param {*} source -
+  * @param {*} extractStyles -
+  */
   loadKMLLayer(source, layerName, extractStyles) {
     let features = new ol.format.KML({ extractStyles })
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
 
     features = this.featuresToFacade(features);
     features = this.geometryCollectionParse(features);
-    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
-    layer.addFeatures(features);
-    this.facadeMap_.addLayers(layer);
+    const others = [];
+    const lines = [];
+    features.forEach((f) => {
+      if (f.getGeometry().type.toLowerCase().indexOf('linestring') > -1) {
+        lines.push(f);
+      } else {
+        others.push(f);
+      }
+    });
+
+    if (lines.length > 0) {
+      const layer = new M.layer.Vector({ name: `${layerName}_lines`, legend: `${layerName}_lines`, extract: false });
+      layer.addFeatures(lines);
+      this.facadeMap_.addLayers(layer);
+      layer.setZIndex(layer.getZIndex() + 8);
+    }
+
+    if (others.length > 0) {
+      const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+      layer.addFeatures(others);
+      this.facadeMap_.addLayers(layer);
+      layer.setZIndex(layer.getZIndex() + 8);
+    }
+
     return features;
   }
 
   /**
-   * Loads GPX layer.
-   * @public
-   * @function
-   * @api
-   * @param {*} source -
-   */
+  * Loads GPX layer.
+  * @public
+  * @function
+  * @api
+  * @param {*} source -
+  */
   loadGPXLayer(source, layerName) {
     let features = [];
     const origFeatures = new ol.format.GPX()
@@ -487,18 +884,7 @@ export default class VectorsControl extends M.impl.Control {
       if (f.getGeometry().getType() === 'MultiLineString') {
         if (f.getGeometry().getLineStrings().length === 1) {
           const geom = f.getGeometry().getLineStrings()[0];
-          if (geom.getCoordinates().length > 150) {
-            let i = 2;
-            let newGeom = geom.simplify(i);
-            while (newGeom.getCoordinates().length > 150) {
-              i += 1;
-              newGeom = geom.simplify(i);
-            }
-
-            f.setGeometry(newGeom);
-          } else {
-            f.setGeometry(geom);
-          }
+          f.setGeometry(geom);
         }
       }
 
@@ -517,32 +903,30 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(lines);
     this.facadeMap_.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
 
     if (points.length > 0) {
       points = this.featuresToFacade(points);
       const layer2 = new M.layer.Vector({ name: `${layerName}_points`, legend: `${layerName}_points`, extract: false });
       layer2.addFeatures(points);
       this.facadeMap_.addLayers(layer2);
+      layer2.setZIndex(layer2.getZIndex() + 8);
       features = lines.concat(points);
     } else {
       features = lines;
     }
 
-    lines.forEach((line) => {
-      this.calculateElevations(line);
-    });
-
     return features;
   }
 
   /**
-   * Converts Openlayers features to Mapea features.
-   * @public
-   * @function
-   * @api
-   * @param {Array<OL.Feature>} implFeatures
-   * @returns {Array<M.Feature>}
-   */
+  * Converts Openlayers features to Mapea features.
+  * @public
+  * @function
+  * @api
+  * @param {Array<OL.Feature>} implFeatures
+  * @returns {Array<M.Feature>}
+  */
   featuresToFacade(implFeatures) {
     return implFeatures.map((feature) => {
       return M.impl.Feature.olFeature2Facade(feature);
@@ -550,12 +934,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Centers on features
-   * @public
-   * @function
-   * @api
-   * @param {*} features -
-   */
+  * Centers on features
+  * @public
+  * @function
+  * @api
+  * @param {*} features -
+  */
   centerFeatures(features, isGPX) {
     if (!M.utils.isNullOrEmpty(features)) {
       if ((features.length === 1) && (features[0].getGeometry().type === 'Point')) {
@@ -646,32 +1030,32 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Gets extent of feature
-   * @public
-   * @function
-   * @api
-   * @param {M.Featuer} mapeaFeature
-   */
+  * Gets extent of feature
+  * @public
+  * @function
+  * @api
+  * @param {M.Featuer} mapeaFeature
+  */
   getFeatureExtent() {
     return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getExtent();
   }
 
   /**
-   * Gets coordinates of current feature.
-   * @public
-   * @function
-   * @api
-   */
+  * Gets coordinates of current feature.
+  * @public
+  * @function
+  * @api
+  */
   getFeatureCoordinates() {
     return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
   }
 
   /**
-   * Gets feature length
-   * @public
-   * @function
-   * @api
-   */
+  * Gets feature length
+  * @public
+  * @function
+  * @api
+  */
   getFeatureLength() {
     let res = 0;
     const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
@@ -718,12 +1102,14 @@ export default class VectorsControl extends M.impl.Control {
 
       if (length < flatLength) {
         length = flatLength + ((flatLength - length) / 2);
-        length = formatNumber(length);
-      } else {
-        length = formatNumber(length);
       }
 
-      elem.innerHTML = `${length}m`;
+      let m = `${formatNumber(length / 1000, 2)}km`;
+      if (length < 1000) {
+        m = `${formatNumber(length, 0)}m`;
+      }
+
+      elem.innerHTML = m;
       this.facadeControl.feature.setAttribute('3dLength', length);
     }, () => {
       elem.innerHTML = '-';
@@ -732,11 +1118,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Gets feature area
-   * @public
-   * @function
-   * @api
-   */
+  * Gets feature area
+  * @public
+  * @function
+  * @api
+  */
   getFeatureArea() {
     const projection = this.facadeMap_.getProjection();
     const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
@@ -744,11 +1130,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Convert olFeature to M.Feature
-   * @public
-   * @function
-   * @api
-   */
+  * Convert olFeature to M.Feature
+  * @public
+  * @function
+  * @api
+  */
   convertToMFeatures(olFeature) {
     const feature = new M.Feature(olFeature.getId(), {
       geometry: {
@@ -762,12 +1148,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-   * Turns GeometryCollection features into single geometry features.
-   * @public
-   * @function
-   * @api
-   * @param {Array<M.Feature>} features
-   */
+  * Turns GeometryCollection features into single geometry features.
+  * @public
+  * @function
+  * @api
+  * @param {Array<M.Feature>} features
+  */
   geometryCollectionParse(features) {
     const parsedFeatures = [];
     features.forEach((feature) => {
@@ -828,12 +1214,13 @@ export default class VectorsControl extends M.impl.Control {
       M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
-        if (response.text.indexOf('dy') > -1) {
-          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+        const responseText = response.text.split(NO_DATA_VALUE).join('');
+        if (responseText.indexOf('dy') > -1) {
+          alt = responseText.split('dy')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
-        } else if (response.text.indexOf('cellsize') > -1) {
-          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+        } else if (responseText.indexOf('cellsize') > -1) {
+          alt = responseText.split('cellsize')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
         }
@@ -890,12 +1277,13 @@ export default class VectorsControl extends M.impl.Control {
       M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
-        if (response.text.indexOf('dy') > -1) {
-          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+        const responseText = response.text.split(NO_DATA_VALUE).join('');
+        if (responseText.indexOf('dy') > -1) {
+          alt = responseText.split('dy')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
-        } else if (response.text.indexOf('cellsize') > -1) {
-          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+        } else if (responseText.indexOf('cellsize') > -1) {
+          alt = responseText.split('cellsize')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
         }
@@ -911,8 +1299,12 @@ export default class VectorsControl extends M.impl.Control {
         arrayXZY.push([center[0], center[1], data]);
       });
 
-      const arrayXZY2 = arrayXZY.map((coord) => {
+      let arrayXZY2 = arrayXZY.map((coord) => {
         return ol.proj.transform(coord, 'EPSG:4326', this.facadeMap_.getProjection().code);
+      });
+
+      arrayXZY2 = arrayXZY2.filter((item) => {
+        return item[2] > 0;
       });
 
       callback(arrayXZY2);
@@ -952,12 +1344,13 @@ export default class VectorsControl extends M.impl.Control {
       M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
-        if (response.text.indexOf('dy') > -1) {
-          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+        const responseText = response.text.split(NO_DATA_VALUE).join('');
+        if (responseText.indexOf('dy') > -1) {
+          alt = responseText.split('dy')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
-        } else if (response.text.indexOf('cellsize') > -1) {
-          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+        } else if (responseText.indexOf('cellsize') > -1) {
+          alt = responseText.split('cellsize')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
         }
@@ -973,8 +1366,12 @@ export default class VectorsControl extends M.impl.Control {
         arrayXZY.push([center[0], center[1], data]);
       });
 
-      const arrayXZY2 = arrayXZY.map((coord) => {
+      let arrayXZY2 = arrayXZY.map((coord) => {
         return ol.proj.transform(coord, 'EPSG:4326', this.facadeMap_.getProjection().code);
+      });
+
+      arrayXZY2 = arrayXZY2.filter((item) => {
+        return item[2] > 0;
       });
 
       this.showProfile(arrayXZY2);
@@ -1242,6 +1639,7 @@ export default class VectorsControl extends M.impl.Control {
                 layer.updatable = true;
                 layer.url = url;
                 this.facadeMap_.addLayers(layer);
+                layer.setZIndex(layer.getZIndex() + 8);
                 document.querySelector('div.m-mapea-container div.m-dialog').remove();
               } else {
                 document.querySelector('div.m-mapea-container div.m-dialog').remove();
@@ -1357,6 +1755,7 @@ export default class VectorsControl extends M.impl.Control {
         this.waitLayerLoaded(layer);
       }, 200);
     } else {
+      layer.setZIndex(layer.getZIndex() + 8);
       this.facadeControl.renderLayers();
     }
   }

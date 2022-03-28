@@ -1,4 +1,7 @@
+/* eslint-disable no-console */
 import ArcGridParser from './arcgridparser';
+
+const NO_DATA_VALUE = 'NODATA_value -9999.000';
 
 export default class WCSLoader {
   constructor(url, options) {
@@ -102,7 +105,7 @@ export default class WCSLoader {
     M.proxy(false);
     M.remote.get(url).then((response) => {
       M.proxy(true);
-      const text = response.text;
+      const text = response.text.split(NO_DATA_VALUE).join('');
       const parser = new ArcGridParser();
       mdtData = parser.parseData(text);
       innerThis.dx = parser.getDx();

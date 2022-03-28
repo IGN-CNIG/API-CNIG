@@ -138,12 +138,20 @@ class WMS extends LayerBase {
     if (isNullOrEmpty(this.options.animated)) {
       this.options.animated = false; // by default
     }
+
+    // format
+    this.format = isNullOrEmpty(this.options.format) ? 'image/png' : this.options.format;
+
     // styles
     this.styles = this.options.styles || '';
     // sldBody
     this.sldBody = options.sldBody;
 
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.WMS];
+
+    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
+
+    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
   }
 
   /**
@@ -269,7 +277,7 @@ class WMS extends LayerBase {
               this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
             /* eslint-disable no-empty */
             } catch (err) {}
-          } else if (capabilitiesLayer[i] !== undefined) {
+          } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Layer !== undefined) {
             if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
               capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
               this.addCapabilitiesMetadata(capabilitiesLayer);
@@ -345,6 +353,8 @@ class WMS extends LayerBase {
       // activates animation for base layers or animated parameters
       const animated = ((this.transparent === false) || (this.options.animated === true));
       this.ol3Layer.set('animated', animated);
+      this.ol3Layer.setMaxZoom(this.maxZoom);
+      this.ol3Layer.setMinZoom(this.minZoom);
     });
   }
 
@@ -384,7 +394,7 @@ class WMS extends LayerBase {
         LAYERS: this.name,
         VERSION: this.version,
         TRANSPARENT: this.transparent,
-        FORMAT: 'image/png',
+        FORMAT: this.format,
         STYLES: this.styles,
       };
 
@@ -424,7 +434,7 @@ class WMS extends LayerBase {
         olSource = new ImageWMS({
           url: this.url,
           params: layerParams,
-          resolutions,
+          // resolutions,
           extent,
           minResolution,
           maxResolution,
@@ -715,7 +725,6 @@ class WMS extends LayerBase {
     if (obj instanceof WMS) {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
-      equals = equals && (this.cql === obj.cql);
       equals = equals && (this.version === obj.version);
     }
 

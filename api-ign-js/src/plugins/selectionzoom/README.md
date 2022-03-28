@@ -37,7 +37,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.SelectionZoom({
     position: 'TL',
     collapsible: true,
@@ -53,4 +53,3 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
    map.addPlugin(mp);
 ```
-

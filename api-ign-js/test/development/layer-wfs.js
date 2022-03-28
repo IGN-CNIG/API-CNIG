@@ -3,6 +3,7 @@ import WFS from 'M/layer/WFS';
 
 const mapjs = map({
   container: 'map',
+  controls: ['navtoolbar']
 });
 
 const wfs = new WFS({

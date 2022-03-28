@@ -21,6 +21,10 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
     color: white;
 }
 
+.m-areas>div.m-area>div.m-panel.m-panel-popup.collapsed>button.m-panel-btn:disabled {
+    background-color: #acacac !important;
+}
+
 .m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
     color: #71a7d3;
     position: fixed;

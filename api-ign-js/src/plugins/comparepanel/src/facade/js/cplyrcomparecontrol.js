@@ -148,11 +148,6 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    if (this.interface === false || this.comparisonMode > 0) {
-      this.on(M.evt.ADDED_TO_MAP, (e) => {
-        this.activateCurtain();
-      });
-    }
 
     this.map = map;
     return new Promise((success, fail) => {
@@ -191,13 +186,7 @@ export default class LyrCompareControl extends M.Control {
    */
   setFunctionsAndCompile(success) {
     let layers = this.layers.map((layer) => {
-      return layer instanceof Object ? {
-        name: layer.name,
-        legend: layer.legend
-      } : {
-        name: layer,
-        legend: layer
-      };
+      return layer instanceof Object ? { name: layer.name, legend: layer.legend} : { name: layer, legend: layer };
     });
 
     const options = {
@@ -398,7 +387,9 @@ export default class LyrCompareControl extends M.Control {
       res = lyerA !== lyerB;
     } else {
       let compLyers = [lyerA, lyerB, lyerC, lyerD];
-      res = compLyers.length === compLyers.unique().length;
+      const noDups = [... new Set(compLyers)];
+      res = noDups.length === compLyers.length;
+      //res = compLyers.length !== compLyers.unique().length; // No entiendo por qué esto funcionaba antes y ahora no
     }
 
     return res;
@@ -484,6 +475,33 @@ export default class LyrCompareControl extends M.Control {
   removeEffectsComparison() {
     this.getImpl().removeEffectsCurtain();
   }
+
+
+  manageLyrAvailable(lyrList){
+    
+    if (this.template === null){
+      return;
+    }
+    console.log('manageLyrAvailable at CurtainCompare');
+    this.updateLyrsAvailables(lyrList,"A");
+    this.updateLyrsAvailables(lyrList,"B");
+    this.updateLyrsAvailables(lyrList,"C");
+    this.updateLyrsAvailables(lyrList,"D");
+
+  }
+
+  updateLyrsAvailables(lyrList,dropDownLyrLetter) {
+    try {
+      let dropDownContainer = null;
+      dropDownContainer = this.template.querySelector('#m-lyrcompare-lyr' + dropDownLyrLetter);
+      for (let  iOpt =1; iOpt < dropDownContainer.options.length; iOpt++) {
+        dropDownContainer.options[iOpt].disabled = !lyrList.includes(dropDownContainer.options[iOpt].value);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   /**
    * This procedure updates texts in controls
@@ -599,20 +617,35 @@ export default class LyrCompareControl extends M.Control {
     return res;
   }
 
+
   /**
-   * Transform StringLayers to Mapea M.Layer
-   * @public
-   * @function
-   * @api stable
-   * @param {string}
-   * @return
+   * 
+   * @param {*} layers
+   * Transform StringLayers o Template Literals to Mapea M.LayerFormato 
+   * 
+   * WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
+   * Tipo de Servicio (WMS/WMTS)
+   * Nombre del servicio para la leyenda (acepta espacios y tildes)
+   * URL del servicio, con protocolo. Omitir la ? final.
+   * Identificador de capa del Capabilities del servicio
+   * Tilematrix
+   * Formato de imagen
+   * 
+   * Ejemplo: WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
+   * 
+   * El resto de parámetros los define la función
+   * Las capas cargadas tienen asignados zIndex pequeños
+   *  
+   * @returns 
    */
   transformToLayers(layers) {
+
     const transform = layers.map((layer) => {
       let newLayer = null;
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
+          // console.log(urlLayer);
           if (urlLayer[0].toUpperCase() === 'WMS') {
             newLayer = new M.layer.WMS({
               url: urlLayer[2],
@@ -626,17 +659,22 @@ export default class LyrCompareControl extends M.Control {
             } else {
               this.map.addLayers(newLayer);
             }
+
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
+
             newLayer = new M.layer.WMTS({
-              url: urlLayer[2],
+              url: urlLayer[2] + '?',
               name: urlLayer[3],
               legend: urlLayer[1],
               matrixSet: urlLayer[4],
+              transparent: true,              // Es una capa Overlay -> zIndex > 0
+              displayInLayerSwitcher: false,  // No aparece en el TOC
+              queryable: false,               // No GetFeatureInfo
+              visibility: false,              // Visible a false por defecto
               format: urlLayer[5],
-            });
-
-            this.map.addLayers(newLayer);
+            }), this.map.addWMTS(newLayer);
           }
+
         } else {
           const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
           newLayer = this.isValidLayer(layerByName) ? layerByName : null;
@@ -669,6 +707,10 @@ export default class LyrCompareControl extends M.Control {
 
     return (transform[0] === undefined) ? [] : transform;
   }
+
+
+
+
   /**
    * This function transform string to M.Layer
    *

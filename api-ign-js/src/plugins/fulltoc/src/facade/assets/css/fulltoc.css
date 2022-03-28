@@ -559,6 +559,11 @@ GROUPS
   max-width: 50vw;
 }
 
+@media (max-height: 770px) {
+  .m-fulltoc-container ul.m-groups, .m-fulltoc-container ul.m-layers, .m-fulltoc-container ul.m-base-layers, ul.m-groups>li.m-group>ul.m-layers {
+      max-height: 25vh !important;
+  }
+}
 
 /******************
 GROUP
@@ -671,6 +676,15 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
   padding: 3px 7px;
   border-radius: 5px;
   font-weight: bold;
+}
+
+.m-fulltoc-container .m-title .m-layer-name {
+  display: block;
+  line-height: 1.4rem;
+}
+
+.m-fulltoc-container .m-title table tr td:nth-child(1) {
+  vertical-align: top;
 }
 
 .m-fulltoc-container ul.m-base-layers>li.m-layer>.m-title, .m-fulltoc-container ul.m-layers>li.m-layer>.m-title {

@@ -47,9 +47,9 @@
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
         <label for="selectURL">Parámetro URL</label>
-        <input type="text" id="selectURL" list="urlSug" value="http://mapea-lite.desarrollo.guadaltel.es/api-core/" />
+        <input type="text" id="selectURL" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/" />
         <datalist id="urlSug">
-            <option value="http://mapea-lite.desarrollo.guadaltel.es/api-core/"></option>
+            <option value="https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/"></option>
             <option value="https://componentes.ign.es/api-core/"></option>
         </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
@@ -123,7 +123,7 @@
             url = selectURL.value;
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
 
-            window.location.href = 'http://mapea-lite.desarrollo.guadaltel.es/api-core/?sharemap=' + url + '*' + posicion;
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?sharemap=' + url + '*' + posicion;
         })
 
         function cambiarTest() {
@@ -145,14 +145,5 @@
         });
     </script>
 </body>
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
-</script>
 
 </html>

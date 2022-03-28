@@ -84,22 +84,6 @@ export default class IberpixCompare extends M.Plugin {
     if (this.vertical === undefined) this.vertical = true;
 
     /**
-     * Base Layers
-     * @public
-     * Value: Array of layers with the layout [{name, tag, service},{...}]
-     * @type {Array}
-     */
-    if (options !== undefined) {
-      if (M.utils.isString(options.baseLayers)) {
-        this.baseLayers = JSON.parse(options.baseLayers.replace(/!!/g, '[').replace(/¡¡/g, ']'));
-      } else if (M.utils.isArray(options.baseLayers)) {
-        this.baseLayers = options.baseLayers;
-      } else {
-        M.dialog.error(getValue('baseLayers_error'));
-      }
-    }
-
-    /**
      * mirrorpanelParams
      * @public
      * Value: Object with the rest of mirrorpanel's parameters
@@ -162,8 +146,8 @@ export default class IberpixCompare extends M.Plugin {
    * @api stable
    */
   addTo(map) {
+    this.map_ = map;
     this.control_ = new IberpixCompareControl({
-      baseLayers: this.baseLayers,
       mirrorpanelParams: this.mirrorpanelParams,
       lyrcompareParams: this.lyrcompareParams,
       backImgLayersConfig: this.backImgLayersConfig,
@@ -173,7 +157,6 @@ export default class IberpixCompare extends M.Plugin {
     });
 
     this.controls_.push(this.control_);
-    this.map_ = map;
     this.panel_ = new M.ui.Panel('panelIberpixCompare', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
@@ -199,7 +182,7 @@ export default class IberpixCompare extends M.Plugin {
   destroy() {
     this.control_.deactivate();
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.baseLayers, this.vertical, this.mirrorpanelParams, this.lyrcompareParams] = [null, null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.vertical, this.mirrorpanelParams, this.lyrcompareParams] = [null, null, null, null, null, null];
   }
 
   /**
@@ -233,8 +216,7 @@ export default class IberpixCompare extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    const baseLayers = JSON.stringify(this.baseLayers).replace(/\[/g, '!!').replace(/\]/g, '¡¡');
-    return `${this.name}=${this.position}*!${this.vertical}*!${baseLayers}`;
+    return `${this.name}=${this.position}*!${this.vertical}`;
   }
 
   /**

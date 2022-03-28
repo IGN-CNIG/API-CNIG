@@ -106,7 +106,7 @@ const mpMirrorPanel = new M.plugin.Mirrorpanel({
   collapsed: false,
   modeViz: 0,
   enabledPlugins: true,
-  enabledKeyFunctions: true, 
+  enabledKeyFunctions: true,
   showCursors: true,
   defaultBaseLyrs: [
     'WMTS*http://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN',
@@ -233,4 +233,3 @@ const mpMirrorPanel = new M.plugin.Mirrorpanel({
 
 map.addPlugin(mpMirrorPanel);
 ```
-

@@ -74,6 +74,7 @@ export default class Map extends MObject {
     const wfsLayers = this.getWFS(filters);
     const wmtsLayers = this.getWMTS(filters);
     const mbtilesLayers = this.getMBtiles(filters);
+    const xyzLayers = this.getXYZs(filters)
 
     const unknowLayers = this.layers_.filter((layer) => {
       return !LayerType.know(layer.type);
@@ -85,6 +86,7 @@ export default class Map extends MObject {
       .concat(wfsLayers)
       .concat(wmtsLayers)
       .concat(mbtilesLayers)
+      .concat(xyzLayers)
       .concat(unknowLayers);
   }
 
@@ -132,6 +134,7 @@ export default class Map extends MObject {
     this.addWMTS(knowLayers);
     this.addKML(knowLayers);
     this.addWFS(knowLayers);
+    this.addXYZ(knowLayers)
 
     // adds unknow layers
     unknowLayers.forEach((layer) => {
@@ -788,6 +791,100 @@ export default class Map extends MObject {
 
     return this;
   }
+
+  /**
+   * This function gets the XYZ layers added to the map
+   *
+   * @function
+   * @param {Array<M.Layer>} filters to apply to the search
+   * @returns {Array<M.layer.XYZ>} layers from the map
+   * @api stable
+   */
+  getXYZs(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+    const xyzLayers = this.layers_.filter(layer => layer.type === LayerType.XYZ);
+
+    // parse to Array
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = xyzLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredXYZLayers = xyzLayers.filter((xyzLayer) => {
+          let layerMatched = true;
+          // checks if the layer is not in selected layers
+          if (!foundLayers.includes(xyzLayer)) {
+            // type
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === xyzLayer.type));
+            }
+            // URL
+            if (!isNullOrEmpty(filterLayer.url)) {
+              layerMatched = (layerMatched && (filterLayer.url === xyzLayer.url));
+            }
+            // name
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === xyzLayer.name));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredXYZLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+   * This function adds the XYZ layers to the map
+   *
+   * @function
+   * @param {Array<M.layer.XYZ>} layers
+   * @returns {M.impl.Map}
+   * @api stable
+   */
+  addXYZ(layers) {
+    layers.forEach((layer) => {
+      // checks if layer is XYZ and was added to the map
+      if (layer.type === LayerType.XYZ) {
+        if (!includes(this.layers_, layer)) {
+          layer.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(layer);
+          const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.XYZ];
+          layer.getImpl().setZIndex(zIndex);
+      }
+    }
+  });
+    return this;
+  }
+
+  /**
+   * This function removes the XYZ layers to the map
+   *
+   * @function
+   * @param {Array<M.layer.XYZ>} layers
+   * @returns {M.impl.Map}
+   * @api stable
+   */
+  removeXYZ(layers) {
+    const xyzMapLayers = this.getXYZs(layers);
+    xyzMapLayers.forEach((xyzLayer) => {
+      xyzLayer.getImpl().destroy();
+      this.layers_ = this.layers_.filter(layer => !layer.equals(xyzLayer));
+    });
+
+    return this;
+  }
+
 
   /**
    * This function adds controls specified by the user

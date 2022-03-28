@@ -146,7 +146,7 @@ class GetFeatureInfo extends Control {
           getFeatureInfoParams.BUFFER = this.buffer;
         }
 
-        const url = source.getGetFeatureInfoUrl(coord, viewResolution, srs, getFeatureInfoParams);
+        const url = source.getFeatureInfoUrl(coord, viewResolution, srs, getFeatureInfoParams);
         param = { layer: layer.legend || layer.name, url };
       }
       return param;
@@ -165,7 +165,7 @@ class GetFeatureInfo extends Control {
         param = {};
         const infoFormat = this.userFormats[this.currentFormat];
         const coord = this.evt.coordinate;
-        const url = layer.getGetFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat);
+        const url = layer.getFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat);
         param = { layer: layer.legend || layer.name, url };
       }
       return param;

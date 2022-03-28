@@ -65,7 +65,7 @@ const propagateNodeLayer = (parentNode, nodeChild) => {
 const layerNodeToJSON = (wmsNode, isRoot = true, rootObj = {}, parent = null) => {
   let rootObjVar = rootObj;
   let node = wmsNode;
-  if (isRoot === true) {
+  if (isRoot === true && wmsNode !== null) {
     node = wmsNode.querySelector('Layer');
   }
   if (node !== null) {

@@ -27,7 +27,7 @@ class GetCapabilities {
     this.capabilities_ = capabilities;
 
     /**
-     * The projection
+     * The projectionz
      * @private
      * @type {Mx.Projection}
      */
@@ -178,11 +178,20 @@ class GetCapabilities {
         layers = layers.concat(this.getLayersRecursive_(layerElem));
       });
     } else { // base case
+      let imageFormat = 'image/png';
+      try {
+        const formats = this.capabilities_.Capability.Request.GetMap.Format;
+        if (formats.length === 1) {
+          imageFormat = formats[0];
+        }
+        /* eslint-disable no-empty */
+      } catch (err) {}
+
       layers.push(new WMS({
         url: this.serviceUrl_,
         name: layer.Name,
         legend: !isNullOrEmpty(layer.Title) ? layer.Title : '',
-      }, {}, {
+      }, { format: imageFormat }, {
         capabilitiesMetadata: {
           abstract: !isNullOrEmpty(layer.Abstract) ? layer.Abstract : '',
           attribution: !isNullOrEmpty(layer.Attribution) ? layer.Attribution : '',

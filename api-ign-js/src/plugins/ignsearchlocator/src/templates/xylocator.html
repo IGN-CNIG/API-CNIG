@@ -14,8 +14,13 @@
                     <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25831">ETRS89 UTM {{translations.zone}} 31N (25831)</option>
                     <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25830">ETRS89 UTM {{translations.zone}} 30N (25830)</option>
                     <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25829">ETRS89 UTM {{translations.zone}} 29N (25829)</option>
-                    <option class="m-xylocator-srs-option" data-units="m" value="EPSG:25828">ETRS89 UTM {{translations.zone}} 28N (25828)</option>
+                    <option class="m-xylocator-srs-option" data-units="m" value="EPSG:4083">REGCAN95 / UTM {{translations.zone}} 28N (4083)</option>
                 </select>
+                {{#if hasHelp}}
+                  <div class="m-xylocator-help-button" title="EPSG">
+                    <a href="{{helpUrl}}" target="_blank"><i class="icon-help"></i></a>
+                  </div>
+                {{/if}}
             </div>
             <div id="m-xylocator-utm" style="display:none;">
                 <b>

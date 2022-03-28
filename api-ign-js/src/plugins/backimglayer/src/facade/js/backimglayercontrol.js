@@ -2,7 +2,6 @@
  * @module M/control/BackImgLayerControl
  */
 
-// import template from 'templates/backimglayer';
 import template from '../../templates/backimglayer';
 import { getValue } from './i18n/language';
 
@@ -26,7 +25,7 @@ export default class BackImgLayerControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(map, layerOpts, idLayer, visible, ids, titles, previews, layers, numColumns) {
+  constructor(map, layerOpts, idLayer, visible, ids, titles, previews, layers, numColumns, empty) {
     const impl = new M.impl.Control();
     let numColumnsV;
     super(impl, 'BackImgLayer');
@@ -97,6 +96,7 @@ export default class BackImgLayerControl extends M.Control {
     /* this.idLayer saves active layer position on layers array */
     this.idLayer = idLayer === null ? 0 : idLayer;
     this.visible = visible === null ? true : visible;
+    this.empty = empty;
   }
 
   /**
@@ -113,8 +113,10 @@ export default class BackImgLayerControl extends M.Control {
       const html = M.template.compileSync(template, {
         vars: {
           layers: this.layers,
+          empty: this.empty,
           translations: {
             headertitle: getValue('tooltip'),
+            none: getValue('none'),
           },
         },
       });
@@ -139,25 +141,15 @@ export default class BackImgLayerControl extends M.Control {
     });
   }
 
-  /**
-   * This function adds layer bound to the button clicked
-   * @public
-   * @param {DOMEvent} e - click html event
-   * @param {object} layersInfo - Layers options
-   * @api
-   */
-  showBaseLayer(e, layersInfo, i) {
-    const callback = this.handlerClickDesktop.bind(this);
-
-    document.getElementById('m-backimglayer-previews').style.width = this.numeroColumnas;
-    // if (window.innerWidth <= M.config.MOBILE_WIDTH) {
-    //   callback = this.handlerClickMobile.bind(this);
-    // }
-    callback(e, layersInfo, i);
+  showEmptyLayer(html) {
+    const elem = html.querySelector('#m-backimglayer-previews div.activeBackimglayerDiv');
+    if (elem !== null) {
+      elem.click();
+    }
   }
 
   /**
-   * This function manages the click event when the app is in desktop resolution
+   * This function adds layer bound to the button clicked
    *
    * @function
    * @public
@@ -166,16 +158,23 @@ export default class BackImgLayerControl extends M.Control {
    * @param {} layersInfo
    * @param {} i
    */
-  handlerClickDesktop(e, layersInfo, i) {
+  showBaseLayer(e, layersInfo, i) {
+    this.invokeEscKey();
     this.removeLayers();
     this.visible = false;
     const { layers } = layersInfo;
-
     const isActivated = e.currentTarget.parentElement
       .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`)
       .classList.contains('activeBackimglayerDiv');
 
-    layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
+    layers.forEach((layer, index, array) => {
+      let sumIndex = index;
+      if (index !== 0) {
+        sumIndex += 16;
+      }
+
+      layer.setZIndex(sumIndex);
+    });
 
     e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((imgContainer) => {
       if (imgContainer.classList.contains('activeBackimglayerDiv')) {
@@ -187,7 +186,11 @@ export default class BackImgLayerControl extends M.Control {
       this.activeLayer = i;
       e.currentTarget.parentElement
         .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`).classList.add('activeBackimglayerDiv');
+      M.proxy(false);
       this.map.addLayers(layers);
+      setTimeout(() => {
+        M.proxy(true);
+      }, 1000);
     }
     this.fire('backimglayer:activeChanges', [{ activeLayerId: this.activeLayer }]);
   }
@@ -211,8 +214,32 @@ export default class BackImgLayerControl extends M.Control {
    * @api
    */
   listen(html) {
-    html.querySelectorAll('div[id^="m-backimglayer-lyr-"]')
-      .forEach((b, i) => b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i)));
+    /* eslint-disable no-param-reassign */
+    html.querySelector('#m-backimglayer-previews').style.width = this.numeroColumnas;
+    html.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((b, i) => {
+      if (b.id === 'm-backimglayer-lyr-empty') {
+        b.addEventListener('click', this.showEmptyLayer.bind(this, html));
+      } else {
+        b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i));
+      }
+    });
+  }
+
+  invokeEscKey() {
+    try {
+      document.dispatchEvent(new window.KeyboardEvent('keyup', {
+        key: 'Escape',
+        keyCode: 27,
+        code: '',
+        which: 69,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+      }));
+    } catch (err) {
+      /* eslint-disable no-console */
+      console.error(err);
+    }
   }
 
   /**

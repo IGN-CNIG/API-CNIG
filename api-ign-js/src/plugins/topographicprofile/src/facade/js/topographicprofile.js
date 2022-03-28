@@ -55,6 +55,7 @@ export default class Topographicprofile extends M.Plugin {
     this.control_ = null;
     this.options_ = opts;
     this.options_.distance = opts.distance || 30;
+    this.options_.visible = opts.hasOwnProperty('visible') ? opts.visible : true;
     // this.options_.serviceURL = opts.serviceURL || ((M.config.GGIS_RESTAPI) ? M.config.GGIS_RESTAPI + "/services/elevation" : "http://ggiscloud.guadaltel.com/ggiscloud/restapi/services/elevation");
     //'http://idecan5.grafcan.es/ServicioWPS/mdt';
   }
@@ -80,8 +81,21 @@ export default class Topographicprofile extends M.Plugin {
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+    if(!this.options_.visible) {
+      document.getElementsByClassName('m-topographicprofile')[0].style.display = 'none';
+    }
   }
 
+  /**
+   * This function set externally data for draw the graphic.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  setDataFromLocal(coordsXYZ) {
+    this.controls_[0].impl_.setDataFromLocal(coordsXYZ);
+  }
 
   /**
    * This function gets metadata plugin

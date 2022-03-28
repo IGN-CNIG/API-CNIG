@@ -4,6 +4,7 @@
 *.classpath
 *.externalToolBuilders
 .atomignore
+.sonarlint
 node
 node_modules
 target
@@ -13,7 +14,11 @@ doc
 build
 dist
 index.js
+package-lock.json
 index-*.js
 entry-points-plugins.json
 *~
 .vscode
+/.metadata/
+/.sonarlint/
+package-lock.json

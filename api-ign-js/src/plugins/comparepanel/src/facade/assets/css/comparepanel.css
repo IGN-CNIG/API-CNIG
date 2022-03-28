@@ -252,6 +252,14 @@ div#m-comparepanel-title {
     font-family: 'comparepanel' !important;
 }
 
+.cp-icon-comparepanel:before {
+    content: "\e817";
+	font-family: 'comparepanel' !important;
+    /*color: #71a7d3;*/
+	/*font-size: 1.4rem;*/
+}
+
+
 .cp-columns-1:before {
     content: "\e90e";
     color: #71a7d3;
@@ -523,6 +531,12 @@ div#m-comparepanel-title {
 .cp-button:hover {
 	color: #98bddb;
 }
+
+.cp-button:disabled {
+	color: #ffb9b9;
+	cursor: default;
+}
+
 
 .m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button.cp-button.active {
 	background-color: #d1e6f8;

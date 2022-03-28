@@ -6,7 +6,7 @@ exports.defineTags = function(dictionary) {
 
   const classTag = dictionary.lookUp('class');
   dictionary.defineTag('interface', {
-    mustHaveValue: false,
+    mustHaveValue: true,
     onTagged: function(doclet, tag) {
       classTag.onTagged.apply(this, arguments);
       doclet.virtual = true;

@@ -62,9 +62,11 @@ export default class TransparencyControl extends M.Control {
    * @api stable
    */
   createView(map) {
+
     this.map = map;
     return new Promise((success, fail) => {
       this.layers = this.transformToLayers(this.layers);
+      
       let names = this.layers.map((layer) => {
         return layer instanceof Object ? { name: layer.name, legend: layer.legend } : { name: layer, legend: layer };
       });
@@ -100,6 +102,7 @@ export default class TransparencyControl extends M.Control {
           this.template.querySelector('select').disabled = true;
           this.template.querySelector('input').disabled = true;
           this.template.querySelector('select').addEventListener('change', (evt) => {
+            
             this.layerSelected.setVisible(false);
             this.removeEffects();
             const layer = this.layers.filter((layer) => {
@@ -116,6 +119,35 @@ export default class TransparencyControl extends M.Control {
     });
   }
 
+  setDefaultLayer(){
+    console.log("Activación remota");
+    //this.template.querySelector('select').disabled = false;
+    //this.template.querySelector('input').disabled = false;
+    //this.getImpl().effectSelected(this.layerSelected, this.radius);
+
+  }
+
+
+  manageLyrAvailable(lyrList){
+    
+    if (this.template === null){
+      return;
+    }
+    console.log('manageLyrAvailable at SpyEyeCompare');
+
+    try {
+      let dropDownContainer = null;
+      dropDownContainer = this.template.querySelector('#m-transparency-lyr');
+      for (let  iOpt =1; iOpt < dropDownContainer.options.length; iOpt++) {
+        dropDownContainer.options[iOpt].disabled = !lyrList.includes(dropDownContainer.options[iOpt].value);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+
   /**
    * Activate Select/Input
    *
@@ -124,16 +156,20 @@ export default class TransparencyControl extends M.Control {
    * @api stable
    */
   activate() {
+    
     if (this.layerSelected === null) this.layerSelected = this.layers[0];
     let names = this.layers.map((layer) => {
       return layer instanceof Object ? { name: layer.name } : { name: layer };
     });
+    
 
-    this.getImpl().effectSelected(this.layerSelected, this.radius);
     if (names.length >= 1) {
       this.template.querySelector('select').disabled = false;
       this.template.querySelector('input').disabled = false;
     }
+
+    this.getImpl().effectSelected(this.layerSelected, this.radius);
+
   }
 
   /**
@@ -203,12 +239,14 @@ export default class TransparencyControl extends M.Control {
    * @param {string}
    * @return
    */
-  transformToLayers(layers) {
+   transformToLayers(layers) {
+
     const transform = layers.map((layer) => {
       let newLayer = null;
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
+          // console.log(urlLayer);
           if (urlLayer[0].toUpperCase() === 'WMS') {
             newLayer = new M.layer.WMS({
               url: urlLayer[2],
@@ -216,23 +254,30 @@ export default class TransparencyControl extends M.Control {
               legend: urlLayer[1],
             });
 
-            if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
-              newLayer = this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0];
-              newLayer.legend = urlLayer[1] || newLayer.name;
-            } else {
-              this.map.addLayers(newLayer);
-            }
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
+
             newLayer = new M.layer.WMTS({
-              url: urlLayer[2],
+              url: urlLayer[2] + '?',
               name: urlLayer[3],
               legend: urlLayer[1],
               matrixSet: urlLayer[4],
+              transparent: true,              // Es una capa Overlay -> zIndex > 0
+              displayInLayerSwitcher: false,  // No aparece en el TOC
+              queryable: false,               // No GetFeatureInfo
+              visibility: false,              // Visible a false por defecto
               format: urlLayer[5],
-            });
+            }), this.map.addWMTS(newLayer);
 
+          }
+
+          if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
+            newLayer = this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0];
+            newLayer.legend = urlLayer[1] || newLayer.name;
+          } else {
             this.map.addLayers(newLayer);
           }
+
+
         } else {
           const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
           newLayer = this.isValidLayer(layerByName) ? layerByName : null;
@@ -245,10 +290,8 @@ export default class TransparencyControl extends M.Control {
       if (newLayer !== null) {
         if (newLayer.getImpl().getOL3Layer() === null) {
           setTimeout(() => {
-            if (newLayer.type === 'WMS') {
+            if (newLayer.type === 'WMS' || newLayer.type === 'WMTS') {
               newLayer.load = true;
-            } else if (newLayer.type === 'WMTS') {
-              newLayer.facadeLayer_.load = true;
             }
           }, 1000);
         } else {
@@ -257,7 +300,7 @@ export default class TransparencyControl extends M.Control {
 
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
-        return newLayer
+        return newLayer;
       } else {
         this.layers.remove(layer);
       }
@@ -265,6 +308,8 @@ export default class TransparencyControl extends M.Control {
 
     return (transform[0] === undefined) ? [] : transform;
   }
+
+   
 
   /**
    * This function transform string to M.Layer

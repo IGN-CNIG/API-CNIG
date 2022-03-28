@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'ignsearchlocator';
-    src: url('../fonts/ignsearchlocator.eot?48669458');
-    src: url('../fonts/ignsearchlocator.eot?48669458#iefix') format('embedded-opentype'),
-        url('../fonts/ignsearchlocator.woff2?48669458') format('woff2'),
-        url('../fonts/ignsearchlocator.woff?48669458') format('woff'),
-        url('../fonts/ignsearchlocator.ttf?48669458') format('truetype'),
-        url('../fonts/ignsearchlocator.svg?48669458#ignsearchlocator') format('svg');
+    src: url('../fonts/ignsearchlocator.eot?56539084');
+    src: url('../fonts/ignsearchlocator.eot?56539084#iefix') format('embedded-opentype'),
+        url('../fonts/ignsearchlocator.woff2?56539084') format('woff2'),
+        url('../fonts/ignsearchlocator.woff?56539084') format('woff'),
+        url('../fonts/ignsearchlocator.ttf?56539084') format('truetype'),
+        url('../fonts/ignsearchlocator.svg?56539084#ignsearchlocator') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -29,7 +29,8 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.m-panel.ign-searchlocator-panel .icon-locate:before { content: '\e800'; }
+.m-panel.ign-searchlocator-panel .icon-help:before { content: '\e800'; }
+.m-panel.ign-searchlocator-panel .icon-locate:before { content: '\e801'; }
 .m-panel.ign-searchlocator-panel .icon-ignsearch:before { content: '\e807'; }
 .m-panel.ign-searchlocator-panel .icon-remove:before { content: '\e93e'; }
 .m-panel.ign-searchlocator-panel .icon-coordinates:before { content: '\e94a'; }

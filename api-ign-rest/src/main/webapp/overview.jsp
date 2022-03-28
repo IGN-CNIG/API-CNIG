@@ -49,8 +49,8 @@
         </select>
         <label for="selectFixed">Selector Fixed</label>
         <select name="fixedValue" id="selectFixed">
-            <option value=true>true</option>
-            <option value=false selected="selected">false</option>
+            <option value=true selected="selected">true</option>
+            <option value=false>false</option>
         </select>
         <label for="inputBaseLayer">Parámetro baseLayer</label>
         <input type="text" name="baseLayer" id="inputBaseLayer" list="baseLayerSug">
@@ -92,14 +92,14 @@
 
         const map = M.map({
             container: 'mapjs',
-            zoom: 5,
+            zoom: 6,
             maxZoom: 20,
-            minZoom: 4,
+            minZoom: 5,
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
         let posicion, fixed,
-            baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
+            baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa_IGN*false*image/jpeg*false*false*true",
             collapsible, collapsed;
         crearPlugin(posicion, fixed, baseLayer, collapsed, collapsible);
 
@@ -114,6 +114,9 @@
         inputBaseLayer.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
+        setTimeout(() => {
+          map.setCenter([-479529.76895509224, 4702535.197017747]);
+        }, 50);
 
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
@@ -129,6 +132,7 @@
             mp = new M.plugin.OverviewMap({
                 position: position,
                 fixed: fixed,
+                zoom: 4,
                 baseLayer: baseLayer,
                 collapsed: collapsed,
                 collapsible: collapsible,

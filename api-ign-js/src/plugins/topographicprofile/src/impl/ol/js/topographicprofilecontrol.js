@@ -8,6 +8,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
 const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_500&' +
   'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+const NO_DATA_VALUE = 'NODATA_value -9999.000';
 
 export default class TopographicprofileControl extends M.impl.Control {
 
@@ -202,12 +203,13 @@ export default class TopographicprofileControl extends M.impl.Control {
       M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
-        if (response.text.indexOf('dy') > -1) {
-          alt = response.text.split('dy')[1].split(' ').filter((item) => {
+        const responseText = response.text.split(NO_DATA_VALUE).join('');
+        if (responseText.indexOf('dy') > -1) {
+          alt = responseText.split('dy')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
-        } else if (response.text.indexOf('cellsize') > -1) {
-          alt = response.text.split('cellsize')[1].split(' ').filter((item) => {
+        } else if (responseText.indexOf('cellsize') > -1) {
+          alt = responseText.split('cellsize')[1].split(' ').filter((item) => {
             return item !== '';
           })[1];
         }
@@ -234,6 +236,13 @@ export default class TopographicprofileControl extends M.impl.Control {
       M.proxy(true);
       M.dialog.error('No se han obtenido datos');
     });
+  }
+
+  setDataFromLocal(coordsXYZ) {
+    this.controlProfile();
+    coordsXYZ = coordsXYZ.map((coord) => ol.proj.transform(coord, 'EPSG:4326', this.facadeMap_.getProjection().code));
+    this.lineString_.setCoordinates(coordsXYZ);
+    this.vector_.getSource().addFeature(this.feature_);
   }
 
 

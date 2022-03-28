@@ -56,6 +56,15 @@ export default class Comparepanel extends M.Plugin {
      * @type {String}
      */
     const positions = ['TR', 'TL', 'BL', 'BR'];
+
+    this.COMP_PLUGIN_NAMES = {
+      'none': 'default',
+      'mirror': 'mirrorpanel',
+      'curtain': 'lyrcompare',
+      'timeline': 'timeline',
+      'spyeye': 'transparency',
+    }
+
     this.position = positions.includes(options.position) ? options.position : 'TR';
 
     /**
@@ -100,6 +109,49 @@ export default class Comparepanel extends M.Plugin {
     }
 
     /**
+     * defaultCompareMode of the Plugin
+     * @public
+     * Posible values: mirror | curtain | spyeye | timeline
+     * @type {String}
+     */
+     const defaultCompareModes = ['mirror', 'curtain', 'spyeye', 'timeline'];
+     this.defaultCompareMode = defaultCompareModes.includes(options.defaultCompareMode) ? options.defaultCompareMode : 'mirror';
+
+    /**
+     * defaultCompareViz
+     * @public
+     * Value: Object with the rest of mirrorpanel's parameters
+     * @type {Object}
+     */
+    this.defaultCompareViz = options.defaultCompareViz || 0;
+
+
+    /**
+     * The name of the vector layer hat contains the attribution information.
+     *
+     * @private
+     * @type {string}
+     */
+     this.layerName_ = options.layerName || 'attributions';
+
+     /**
+      * Layer of Mapea with attributions
+      *
+      * @private
+      * @type {M.layer.GeoJSON | M.layer.KML}
+      */
+     this.layerCobertura_ = options.layerCobertura;
+
+
+
+    /**
+     * Parameter of the features of the layer that contains the information of the URL.
+     * @private
+     * @type {URLLike}
+     */
+    this.urlCoberturas_ = options.urlcoberturas || 'urlcoberturas';
+
+    /**
      * mirrorpanelParams
      * @public
      * Value: Object with the rest of mirrorpanel's parameters
@@ -133,6 +185,14 @@ export default class Comparepanel extends M.Plugin {
     this.transparencyParams = options.transparencyParams || {};
 
     /**
+     * backImgLayersConfig
+     * @public
+     * Value: Object with configuration of BackImgLayers plugin
+     * @type {Object}
+     */
+     this.backImgLayersConfig = options.backImgLayersConfig || {};
+
+    /**
      * Metadata from api.json
      * @private
      * @type {Object}
@@ -155,31 +215,44 @@ export default class Comparepanel extends M.Plugin {
    * @api stable
    */
   addTo(map) {
+
+    // e2m: ponemos el arraque del visualizador mirror a cero por defecto
+    this.mirrorpanelParams.modeViz = this.mirrorpanelParams.modeViz || {};
+    this.mirrorpanelParams.modeViz = (this.defaultCompareMode === 'mirror' ? this.defaultCompareViz : 0);
+
+    // e2m: ponemos el arraqnue del visualizador mirror a cero por defecto
+    this.lyrcompareParams.comparisonMode = this.lyrcompareParams.comparisonMode || {};
+    this.lyrcompareParams.comparisonMode = (this.defaultCompareMode === 'curtain' ? this.defaultCompareViz : 0);
+
     this.control_ = new ComparepanelControl({
       baseLayers: this.baseLayers,
       mirrorpanelParams: this.mirrorpanelParams,
       timelineParams: this.timelineParams,
       lyrcompareParams: this.lyrcompareParams,
       transparencyParams: this.transparencyParams,
+      defaultComparisonMode: this.COMP_PLUGIN_NAMES[this.defaultCompareMode],
+      defaultComparisonViz: this.defaultCompareViz,
       position: this.position,
+      urlCover: this.urlCoberturas_
     });
 
     this.controls_.push(this.control_);
     this.map_ = map;
+
     this.panel_ = new M.ui.Panel('panelComparepanel', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position],
       className: this.className,
-      collapsedButtonClass: 'cp-icon',
+      collapsedButtonClass: 'cp-icon-comparepanel',//cp-icon
       tooltip: this.tooltip_,
     });
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
     this.panel_._element.classList.add(this.vertical ? 'orientation-vertical' : 'orientation-horizontal');
-  }
 
+  }
 
   /**
    * This function destroys this plugin

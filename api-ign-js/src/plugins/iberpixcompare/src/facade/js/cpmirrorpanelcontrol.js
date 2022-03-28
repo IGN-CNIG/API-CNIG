@@ -73,22 +73,6 @@ export default class CompareMirrorpanel extends M.Control {
       },
     });
 
-    /**
-     * Default layers for mirror maps
-     * @public
-     * @public {Array}
-     */
-    this.defaultBaseLyrs = values.defaultBaseLyrs;
-
-    /**
-     * All layers
-     * @public
-     * @public {Array}
-     */
-    this.mirrorLayers = values.mirrorLayers;
-
-    this.fullLayers = values.fullLayers;
-
     this.backImgLayersConfig = values.backImgLayersConfig;
 
     this.fullTOCConfig = values.fullTOCConfig;
@@ -130,15 +114,6 @@ export default class CompareMirrorpanel extends M.Control {
     }
 
     this.mapL['A'] = map;
-    if (this.mirrorLayers.length > 0) {
-      this.mapL['A'].addLayers(this.mirrorLayers);
-      this.mapL['A'].getLayers().forEach((l) => {
-        if (l.zindex_ !== 0) { l.setVisible(false); }
-      });
-
-      this.mapL['A'].addLayers(this.defaultBaseLyrs[0]);
-    }
-
     if (this.showCursors) {
       this.addLayerCursor('A');
     }
@@ -290,6 +265,37 @@ export default class CompareMirrorpanel extends M.Control {
     if (this.mapL['D'] !== null) { this.mapL['D'].refresh(); }
     if (modeViz !== 0) {
       document.querySelector('#m-cp-mirrorpanel > button').click();
+      this.disablePrintButtons();
+    } else {
+      this.enablePrintButtons();
+    }
+  }
+
+  disablePrintButtons() {
+    const printBtn = document.querySelector('.m-printermap .m-panel-btn.icon-impresora');
+    const downloadBtn = document.querySelector('.m-georefimage2 .m-panel-btn.icon-descargar');
+    if (printBtn !== null) {
+      printBtn.disabled = true;
+      printBtn.parentNode.title = getValue('print_disabled');
+    }
+
+    if (downloadBtn !== null) {
+      downloadBtn.disabled = true;
+      downloadBtn.parentNode.title = getValue('georef_download_disabled');
+    }
+  }
+
+  enablePrintButtons() {
+    const printBtn = document.querySelector('.m-printermap .m-panel-btn.icon-impresora');
+    const downloadBtn = document.querySelector('.m-georefimage2 .m-panel-btn.icon-descargar');
+    if (printBtn !== null) {
+      printBtn.disabled = false;
+      printBtn.parentNode.title = getValue('printmap');
+    }
+
+    if (downloadBtn !== null) {
+      downloadBtn.disabled = false;
+      downloadBtn.parentNode.title = getValue('georef_download');
     }
   }
 
@@ -316,7 +322,7 @@ export default class CompareMirrorpanel extends M.Control {
     }
 
     if (['B', 'C', 'D'].indexOf(mapLyr) > -1) {
-      this.addCommonPlugins(this.mapL[mapLyr]);
+      this.addCommonPlugins(this.mapL[mapLyr], mapLyr);
     }
 
     if (this.showCursors) { this.addLayerCursor(mapLyr); }
@@ -361,8 +367,18 @@ export default class CompareMirrorpanel extends M.Control {
     });
   }
 
-  addCommonPlugins(map) {
+  addCommonPlugins(map, mapLyr) {
     if (M.plugin.BackImgLayer !== undefined && this.backImgLayersConfig.position !== undefined) {
+      if (mapLyr === 'B') {
+        this.backImgLayersConfig.layerId = 1;
+      } else if (mapLyr === 'C'){
+        this.backImgLayersConfig.layerId = 2;
+      } else if (mapLyr === 'D') {
+        this.backImgLayersConfig.layerId = 3;
+      } else {
+        this.backImgLayersConfig.layerId = 0;
+      }
+
       map.addPlugin(new M.plugin.BackImgLayer(this.backImgLayersConfig));
     }
 

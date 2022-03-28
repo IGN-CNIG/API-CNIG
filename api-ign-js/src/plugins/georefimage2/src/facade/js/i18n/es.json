@@ -4,11 +4,13 @@
     "encode_method": "La implementación usada no posee el método encodeLayer",
     "loaderror": "La imagen no ha podido ser cargada.",
     "teselaError": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
-    "printError": "Se ha producido un error en la impresión."
+    "printError": "Se ha producido un error en la impresión.",
+    "imageError": "No ha podido realizarse la descarga en este momento. Por favor, inténtelo más tarde."
   },
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
   "printInfo": "Impresión generada a través de Mapea",
   "tooltip": "Descargar Imagen georreferenciada",
+  "generating": "Generando imagen georreferenciada",
   "referenced": "Imagen georreferenciada",
   "projection": "Proyección",
   "downImg": "Descargar imagen",

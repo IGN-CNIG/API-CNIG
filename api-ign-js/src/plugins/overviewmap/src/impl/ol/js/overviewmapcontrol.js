@@ -213,6 +213,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     }
 
     this.ovmap_.setView(newView);
+    this.view_ = newView;
     if (this.baseLayer_ !== undefined && this.baseLayer_.length > 3) {
       const parameters = this.baseLayer_.split('*');
       if (parameters.length > 1 && (parameters[0] === 'WMS' || parameters[0] === 'WMTS')) {

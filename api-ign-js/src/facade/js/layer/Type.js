@@ -49,13 +49,40 @@ export const WFS = 'WFS';
 export const WMTS = 'WMTS';
 
 /**
- * MBtiles type
+ * MBTiles type
  * @const
  * @type {string}
  * @public
  * @api
  */
-export const MBtiles = 'MBtiles';
+export const MBTiles = 'MBTiles';
+
+/**
+ * MBTilesVector type
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const MBTilesVector = 'MBTilesVector';
+
+/**
+ * XYZ type
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const XYZ = 'XYZ';
+
+/**
+ * TMS type
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const TMS = 'TMS';
 
 /**
  * GeoJSON type
@@ -96,10 +123,13 @@ const layertypes = {
   WMS,
   WFS,
   WMTS,
-  MBtiles,
+  MBTiles,
+  MBTilesVector,
   GeoJSON,
   Vector,
   MVT,
+  XYZ,
+  TMS,
 };
 
 /**
@@ -136,8 +166,11 @@ export const know = (type) => {
     WMS,
     WFS,
     WMTS,
-    MBtiles,
+    MBTiles,
+    MBTilesVector,
     MVT,
+    XYZ,
+    TMS,
   ];
   return (knowTypes.indexOf(parse(type)) !== -1);
 };

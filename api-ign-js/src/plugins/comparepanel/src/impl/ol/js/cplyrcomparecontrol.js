@@ -40,7 +40,7 @@ export default class Lyrcomparecontrol extends M.impl.Control {
       lyrC,
       lyrD
     });
-
+    
     this.olMap.addInteraction(this.transparentInteraction_);
     this.setOpacity(opacityVal);
     this.setComparisonMode(comparisonMode);

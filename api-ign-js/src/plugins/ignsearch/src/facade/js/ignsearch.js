@@ -4,6 +4,7 @@
 import '../assets/css/ignsearch';
 import '../assets/css/fonts';
 import IGNSearchControl from './ignsearchcontrol';
+import geographicNameType from './constants';
 import { getValue } from './i18n/language';
 
 export default class IGNSearch extends M.Plugin {
@@ -110,7 +111,7 @@ export default class IGNSearch extends M.Plugin {
      * @private
      * @type {Array<string>}
      */
-    this.nomenclatorSearchType = options.nomenclatorSearchType;
+    this.nomenclatorSearchType = M.config.IGNSEARCH_TYPES_CONFIGURATION || geographicNameType;
 
     /**
      * This variable indicates whether result geometry should be drawn on map.
@@ -236,6 +237,7 @@ export default class IGNSearch extends M.Plugin {
       this.zoom_,
       this.searchPosition,
       this.pointStyle,
+      this.nomenclatorSearchType,
     ));
     this.controls_[0].on('ignsearch:entityFound', (extent) => {
       this.fire('ignsearch:entityFound', [extent]);

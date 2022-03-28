@@ -34,8 +34,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **position**. Indica la posición donde se mostrará el plugin
   - 'TL':top left (default)
-  - 'TR':top right 
-  - 'BL':bottom left 
+  - 'TR':top right
+  - 'BL':bottom left
   - 'BR':bottom right
 
   - **reverse**. Valor booleano que indica si debe aparecer o no el botón que gestiona la consulta de reverse sobre el mapa.
@@ -62,74 +62,10 @@ mp.on('ignsearch:entityFound', (extent) => {
 
 # Otros métodos
 
-- **setResultVisibility( boolean )** 
+- **setResultVisibility( boolean )**
   - Habilita o deshabilita la visualización de los resultados sobre el mapa
 
 # Otros parámetros dentro del código
-
-- **nomenclatorSearchType**. En Nomenclátor, Array de cadenas que indica los tipos de entidad que se buscan en nomenclátor.
-  - Por defecto se mantiene el siguiente array: 
-
-```javascript
- ['Estado',
-  // 'Comunidad autónoma',
-  // 'Ciudad con estatuto de autonomía',
-  'Provincia',
-  // 'Municipio',
-  'EATIM',
-  'Isla administrativa',
-  'Comarca administrativa',
-  'Jurisdicción',
-  // 'Capital de Estado',
-  // 'Capital de comunidad autónoma y ciudad con estatuto de autonomía',
-  // 'Capital de provincia',
-  // 'Capital de municipio',
-  // 'Capital de EATIM',
-  // 'Entidad colectiva',
-  'Entidad menor de población',
-  'Distrito municipal',
-  // 'Barrio',
-  'Entidad singular',
-  'Construcción/instalación abierta',
-  'Edificación',
-  // 'Vértice Geodésico',
-  // 'Hitos de demarcación territorial',
-  // 'Hitos en vías de comunicación',
-  'Alineación montañosa',
-  'Montaña',
-  'Paso de montaña',
-  'Llanura',
-  'Depresión',
-  'Vertientes',
-  'Comarca geográfica',
-  'Paraje',
-  'Elemento puntual del paisaje',
-  'Saliente costero',
-  'Playa',
-  'Isla',
-  'Otro relieve costero',
-  'Parque Nacional y Natural',
-  'Espacio protegido restante',
-  // 'Aeropuerto',
-  // 'Aeródromo',
-  // 'Pista de aviación y helipuerto',
-  // 'Puerto de Estado',
-  'Instalación portuaria',
-  // 'Carretera',
-  'Camino y vía pecuaria',
-  // 'Vía urbana',
-  // 'Ferrocarril',
-  'Curso natural de agua',
-  'Masa de agua',
-  'Curso artificial de agua',
-  'Embalse',
-  'Hidrónimo puntual',
-  'Glaciares',
-  'Mar',
-  'Entrante costero y estrecho marítimo',
-  'Relieve submarino',
-];
-```
 - **urlCandidates**. Url servicio candidates de geocoder. Por defecto 'http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp'
 - **urlFind**. Url servicio find de geocoder. Por defecto 'http://www.cartociudad.es/geocoder/api/geocoder/findJsonp'
 - **urlReverse**. Url Servicio geocoding inverso. Por defecto 'http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode'
@@ -144,7 +80,7 @@ mp.on('ignsearch:entityFound', (extent) => {
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.IGNSearch({
         servicesToSearch: 'gn',
         maxResults: 10,
@@ -161,4 +97,3 @@ mp.on('ignsearch:entityFound', (extent) => {
 
    map.addPlugin(mp);
 ```
-

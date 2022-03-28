@@ -40,11 +40,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     let i;
     if (this.getMap()) {
       for (i = 0; i < this.layers_.length; i += 1) {
-        if (this.layers_[i].precompose) ol.Observable.unByKey(this.layers_[i].precompose);
-        if (this.layers_[i].postcompose) ol.Observable.unByKey(this.layers_[i].postcompose);
-        /* eslint-disable */
-        this.layers_[i].precompose = this.layers_[i].postcompose = null;
-        /* eslint-enable */
+        this.layers_[i].un(['precompose','prerender'], this.precompose_.bind(this));
+        this.layers_[i].un(['postcompose','postrender'], this.postcompose_.bind(this));
       }
       this.getMap().renderSync();
     }
@@ -53,8 +50,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
 
     if (map) {
       for (i = 0; i < this.layers_.length; i += 1) {
-        this.layers_[i].precompose = this.layers_[i].on('precompose', this.precompose_.bind(this));
-        this.layers_[i].postcompose = this.layers_[i].on('postcompose', this.postcompose_.bind(this));
+        this.layers_[i].precompose = this.layers_[i].on(['precompose','prerender'], this.precompose_.bind(this));
+        this.layers_[i].postcompose = this.layers_[i].on(['postcompose','postrender'], this.postcompose_.bind(this));
       }
       map.renderSync();
     }
@@ -72,16 +69,15 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   addLayer(layers) {
-    /* eslint-disable */
     if (!(layers instanceof Array)) layers = [layers];
-    /* eslint-enable */
     for (let i = 0; i < layers.length; i += 1) {
       const l = { layer: layers[i] };
       if (this.getMap()) {
-        l.precompose = layers[i].on('precompose', this.precompose_.bind(this));
-        l.postcompose = layers[i].on('postcompose', this.postcompose_.bind(this));
+        l.precompose = layers[i].on(['precompose','prerender'], this.precompose_.bind(this));
+        l.postcompose = layers[i].on(['postcompose','postrender'], this.postcompose_.bind(this));
         this.getMap().renderSync();
       }
+
       this.layers_.push(layers[i]);
     }
   }
@@ -90,9 +86,7 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   removeLayer(layers) {
-    /* eslint-disable */
     if (!(layers instanceof Array)) layers = [layers];
-    /* eslint-enable */
     for (let i = 0; i < layers.length; i += 1) {
       let k;
       for (k = 0; k < this.layers_.length; k += 1) {
@@ -101,8 +95,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
         }
       }
       if (k !== this.layers_.length && this.getMap()) {
-        if (this.layers_[k].precompose) ol.Observable.unByKey(this.layers_[k].precompose);
-        if (this.layers_[k].postcompose) ol.Observable.unByKey(this.layers_[k].postcompose);
+        this.layers_[k].un(['precompose','prerender'], this.precompose_.bind(this));
+        this.layers_[k].un(['postcompose','postrender'], this.postcompose_.bind(this));
         this.layers_.splice(k, 1);
         this.getMap().renderSync();
       }
@@ -115,13 +109,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
   setPosition(e) {
     if (e.pixel) {
       this.pos = e.pixel;
-    } else if (e && e instanceof Array) {
-      this.pos = e;
-    } else {
-      /* eslint-disable */
-      e = [-10000000, -10000000];
-      /* eslint-enable */
     }
+
     if (this.getMap()) this.getMap().renderSync();
   }
 
@@ -133,7 +122,21 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
 
     ctx.save();
     ctx.beginPath();
-    ctx.arc(this.pos[0] * ratio, this.pos[1] * ratio, this.radius * ratio, 0, 2 * Math.PI);
+    let pt = [this.pos[0], this.pos[1]];
+    let radius = this.radius;
+    const tr = e.inversePixelTransform;
+    if (tr) {
+      pt = [
+        (pt[0]*tr[0] - pt[1]*tr[1] + tr[4]),
+        (-pt[0]*tr[2] + pt[1]*tr[3] + tr[5])
+      ];
+    } else {
+      pt[0] *= ratio;
+      pt[1] *= ratio;
+      radius *= ratio;
+    }
+
+    ctx.arc (pt[0], pt[1], radius, 0, 2*Math.PI);
     ctx.clip();
   }
 

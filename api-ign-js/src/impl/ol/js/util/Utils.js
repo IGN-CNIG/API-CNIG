@@ -3,17 +3,27 @@
  */
 import Feature from 'M/feature/Feature';
 import * as WKT from 'M/geom/WKT';
-import { isNullOrEmpty, isString } from 'M/util/Utils';
+import { isNullOrEmpty, isString, generateRandom } from 'M/util/Utils';
 import { getWidth, extend } from 'ol/extent';
 import { get as getProj, getTransform, transformExtent } from 'ol/proj';
+import OLFeature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
+import GeometryType from 'ol/geom/GeometryType';
+import Point from 'ol/geom/Point';
+import LineString from 'ol/geom/LineString';
+import LinearRing from 'ol/geom/LinearRing';
+import Polygon from 'ol/geom/Polygon';
+import MultiPoint from 'ol/geom/MultiPoint';
+import MultiLineString from 'ol/geom/MultiLineString';
+import MultiPolygon from 'ol/geom/MultiPolygon';
+import GeometryCollection from 'ol/geom/GeometryCollection';
+import Circle from 'ol/geom/Circle';
 
 const getUnitsPerMeter = (projectionCode, meter) => {
   const projection = getProj(projectionCode);
   const metersPerUnit = projection.getMetersPerUnit();
   return meter / metersPerUnit;
 };
-
 export const geojsonTo4326 = (featuresAsJSON, codeProjection) => {
   const transformFunction = getTransform(codeProjection, 'EPSG:4326');
   const jsonResult = [];
@@ -101,8 +111,6 @@ export const geojsonTo4326 = (featuresAsJSON, codeProjection) => {
   });
   return jsonResult;
 };
-
-
 /**
  * @classdesc
  * Static utils class.
@@ -119,14 +127,13 @@ class Utils {
     let newMinZoom;
     let newMaxZoom;
     const generatedResolutions = [];
-    const defaultMaxZoom = 28;
+    const defaultMaxZoom = 20;
     // extent
     if (isNullOrEmpty(extent)) {
       newExtent = projection.getExtent();
     }
     // size
     const size = getWidth(newExtent) / 256;
-
     if (isNullOrEmpty(minZoom)) {
       // ol.DEFAULT_MIN_ZOOM;
       newMinZoom = 0;
@@ -135,14 +142,11 @@ class Utils {
       newMaxZoom = defaultMaxZoom;
     }
     const zoomLevels = newMaxZoom - newMinZoom;
-
     for (let i = 0; i < zoomLevels; i += 1) {
       generatedResolutions[i] = size / (2 ** i);
     }
-
     return generatedResolutions;
   }
-
   /**
    *
    * @function
@@ -159,15 +163,12 @@ class Utils {
     const overlayYUnits = overlayImage.overlayYUnits;
     const size = overlayImage.size;
     const src = overlayImage.src;
-
     // src
     const img = document.createElement('img');
     img.src = src;
-
     // size
     img.style.width = `${size[0]}px`;
     img.style.height = `${size[1]}px`;
-
     // position
     let offsetX = overlayXY[0];
     if (overlayXUnits === 'fraction') {
@@ -188,15 +189,11 @@ class Utils {
     }
     img.style.top = `${top}px`;
     img.style.left = `${left}px`;
-
     // parent
     const container = map.getMapImpl().getOverlayContainerStopEvent();
     container.appendChild(img);
-
     return img;
   }
-
-
   /**
    * Get the height of an extent.
    * @public
@@ -208,7 +205,6 @@ class Utils {
   static getExtentHeight(extent) {
     return extent[3] - extent[1];
   }
-
   /**
    * Get the width of an extent.
    * @public
@@ -220,7 +216,6 @@ class Utils {
   static getExtentWidth(extent) {
     return extent[2] - extent[0];
   }
-
   /**
    * Calcs the geometry center
    * @public
@@ -276,7 +271,6 @@ class Utils {
     }
     return centroid;
   }
-
   /**
    * Get the width of an extent.
    * @public
@@ -306,8 +300,6 @@ class Utils {
     }
     return extents.length === 0 ? null : extents.reduce((ext1, ext2) => extend(ext1, ext2));
   }
-
-
   /**
    * Get the coordinate of centroid
    * @public
@@ -323,7 +315,6 @@ class Utils {
     let points;
     let lineStrings;
     let geometries;
-
     // POINT
     if (geometry.getType() === WKT.POINT) {
       centroid = geometry.getCoordinates();
@@ -360,7 +351,6 @@ class Utils {
     }
     return centroid;
   }
-
   /**
    * Transform the extent. If the extent it is the same
    * than source proj extent then the target proj extent
@@ -375,15 +365,20 @@ class Utils {
    */
   static transformExtent(extent, srcProj, tgtProj) {
     let transformedExtent;
-
     const olSrcProj = isString(srcProj) ? getProj(srcProj) : srcProj;
     const olTgtProj = isString(tgtProj) ? getProj(tgtProj) : tgtProj;
-
     // checks if the extent to transform is the same
     // than source projection extent
     const srcProjExtent = olSrcProj.getExtent();
-    const sameSrcProjExtent = extent.every((coord, i) => coord === srcProjExtent[i]);
-
+    const sameSrcProjExtent = extent.every((coord, i) => {
+      let isProjExtent = false;
+      if (i < 2) {
+        isProjExtent = (coord <= srcProjExtent[i]);
+      } else {
+        isProjExtent = (coord >= srcProjExtent[i]);
+      }
+      return isProjExtent;
+    });
     if (sameSrcProjExtent) {
       transformedExtent = olTgtProj.getExtent();
     } else {
@@ -391,28 +386,131 @@ class Utils {
     }
     return transformedExtent;
   }
-
+  /**
+   * Transforms the renderFeature to standard feature.
+   * @public
+   * @function
+   * @param {RenderFeature} olRenderFeature render feature to transform
+   * @param {ol.Projection} tileProjection
+   * @param {ol.Projection} mapProjection
+   * @return {OLFeature} the ol.Feature
+   * @api stable
+   */
+  static olRenderFeature2olFeature(olRenderFeature, tileProjection, mapProjection) {
+    let olFeature;
+    if (!isNullOrEmpty(olRenderFeature)) {
+      const id = olRenderFeature.getId();
+      const properties = olRenderFeature.getProperties();
+      let geometry;
+      if (isNullOrEmpty(tileProjection) && isNullOrEmpty(tileProjection)) {
+        geometry = this.getGeometryFromRenderFeature(olRenderFeature.getGeometry());
+      } else {
+        const tileExtent = tileProjection.getExtent();
+        const tileWorldExtent = tileProjection.getWorldExtent();
+        if (!isNullOrEmpty(tileExtent) && !isNullOrEmpty(tileWorldExtent)) {
+          const clonedOLRenderFeature = this.cloneOLRenderFeature(olRenderFeature);
+          clonedOLRenderFeature.transform(tileProjection, mapProjection);
+          geometry = this.getGeometryFromRenderFeature(clonedOLRenderFeature.getGeometry());
+        }
+      }
+      olFeature = new OLFeature();
+      if (!isNullOrEmpty(id)) {
+        olFeature.setId(id);
+      } else {
+        olFeature.setId(generateRandom('mapea_feature_'));
+      }
+      olFeature.setProperties(properties, true);
+      olFeature.setGeometry(geometry);
+    }
+    return olFeature;
+  }
+  /**
+   * Clones a renderFeature
+   * @public
+   * @function
+   * @param {RenderFeature} olRenderFeature render feature to clone
+   * @return { RenderFeature } a clone
+   * @api stable
+   */
+  static cloneOLRenderFeature(olRenderFeature) {
+    const type = olRenderFeature.getType();
+    const flatCoordinates = olRenderFeature.getFlatCoordinates();
+    const ends = olRenderFeature.getEnds();
+    const properties = olRenderFeature.getProperties();
+    const id = olRenderFeature.getId();
+    const clonedFlatCoordinates = [...flatCoordinates];
+    const clonedProperties = Object.assign(properties);
+    const clonedEnds = [...ends];
+    const clonedOLRenderFeature =
+      new RenderFeature(type, clonedFlatCoordinates, clonedEnds, clonedProperties, id);
+    return clonedOLRenderFeature;
+  }
+  /**
+   * Creates a OL geometry from a render featuer
+   * @public
+   * @function
+   * @param {RenderFeature} olRenderFeature render feature which will be
+   * used in order to build the Geometry
+   * @param {function} transform function to reproject the coordinates
+   * @return {ol.geom} the geometry of the render feature
+   * @api stable
+   */
+  static getGeometryFromRenderFeature(olRenderFeature) {
+    let geometry;
+    const coordinates = olRenderFeature.getFlatCoordinates();
+    const ends = olRenderFeature.getEnds();
+    const endss = olRenderFeature.getEndss();
+    const type = olRenderFeature.getType();
+    switch (type) {
+      case GeometryType.POINT:
+        geometry = new Point(coordinates);
+        break;
+      case GeometryType.LINE_STRING:
+        geometry = new LineString(coordinates);
+        break;
+      case GeometryType.LINEAR_RING:
+        geometry = new LinearRing(coordinates);
+        break;
+      case GeometryType.POLYGON:
+        geometry = new Polygon(coordinates);
+        break;
+      case GeometryType.MULTI_POINT:
+        geometry = new MultiPoint(coordinates);
+        break;
+      case GeometryType.MULTI_LINE_STRING:
+        geometry = new MultiLineString(coordinates, undefined, ends);
+        break;
+      case GeometryType.MULTI_POLYGON:
+        geometry = new MultiPolygon(coordinates, undefined, endss);
+        break;
+      case GeometryType.GEOMETRY_COLLECTION:
+        const geometries = olRenderFeature.getGeometries();
+        geometry = new GeometryCollection(geometries);
+        break;
+      case GeometryType.CIRCLE:
+        const center = olRenderFeature.getFlatInteriorPoint();
+        geometry = new Circle(center);
+        break;
+      default:
+        geometry = null;
+    }
+    return geometry;
+  }
   /**
    * TODO:
    */
   static getWMTSScale(map, exact) {
     const projection = map.getProjection().code;
-    const units = map.getProjection().units;
-    const bbox = map.getBbox();
-    const screenLength = (map.getMapImpl().getSize()[0] * 0.026458) / 100;
-    const coord = [[bbox.x.min, bbox.y.min], [bbox.x.max, bbox.y.min]];
-    const line = new ol.geom.LineString(coord);
-    let length = Math.round(line.getLength() * 100) / 100;
-    if (projection === 'EPSG:3857') {
-      length = Math.round(ol.sphere.getLength(line) * 100) / 100;
-    } else if (units === 'd') {
-      const coordinates = line.getCoordinates();
-      for (let i = 0, ii = coordinates.length - 1; i < ii; i += 1) {
-        length += ol.sphere.getDistance(ol.proj.transform(coordinates[i], projection, 'EPSG:4326'), ol.proj.transform(coordinates[i + 1], projection, 'EPSG:4326'));
-      }
-    }
-
-    let scale = (length / screenLength);
+    const olProj = getProj(projection);
+    const mpu = olProj.getMetersPerUnit(); // meters per unit in depending on the CRS;
+    const size = map.getMapImpl().getSize();
+    const pix = size[0]; // Numero de pixeles en el mapa
+    // Extension del mapa en grados (xmin, ymin, xmax, ymax)
+    const pix2 = map.getMapImpl().getView().calculateExtent(size);
+    // Extension angular del mapa (cuantos grados estan en el mapa)
+    const ang = pix2[2] - pix2[0];
+    // (numero de metros en el mapa / numero de pixeles) / metros por pixel
+    let scale = (((mpu * ang) / pix) * 1000) / 0.28;
     if (!exact === true) {
       if (scale >= 1000 && scale <= 950000) {
         scale = Math.round(scale / 1000) * 1000;
@@ -422,35 +520,7 @@ class Utils {
         scale = Math.round(scale);
       }
     }
-
     return Math.trunc(scale);
   }
-
-  /*
-    static getWMTSScale(map, exact) {
-      const projection = map.getProjection().code;
-      const olProj = getProj(projection);
-      const mpu = olProj.getMetersPerUnit(); // meters per unit in depending on the CRS;
-      const size = map.getMapImpl().getSize();
-      const pix = size[0]; // Numero de pixeles en el mapa
-      // Extension del mapa en grados (xmin, ymin, xmax, ymax)
-      const pix2 = map.getMapImpl().getView().calculateExtent(size);
-      // Extension angular del mapa (cuantos grados estan en el mapa)
-      const ang = pix2[2] - pix2[0];
-      // (numero de metros en el mapa / numero de pixeles) / metros por pixel
-      let scale = (((mpu * ang) / pix) * 1000) / 0.28;
-      if (!exact === true) {
-        if (scale >= 1000 && scale <= 950000) {
-          scale = Math.round(scale / 1000) * 1000;
-        } else if (scale >= 950000) {
-          scale = Math.round(scale / 1000000) * 1000000;
-        } else {
-          scale = Math.round(scale);
-        }
-      }
-      return Math.trunc(scale);
-    }
-  */
 }
-
 export default Utils;

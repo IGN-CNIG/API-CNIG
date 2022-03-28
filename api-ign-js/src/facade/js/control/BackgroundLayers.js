@@ -72,13 +72,17 @@ class BackgroundLayers extends ControlBase {
       this.on(ADDED_TO_MAP, () => {
         const visible = this.visible;
         if (this.idLayer > -1) {
-          this.activeLayer = this.idLayer;
+          if (window.innerWidth > M.config.MOBILE_WIDTH) {
+            this.activeLayer = this.idLayer;
+          }
+
           this.showBaseLayer({
             target: {
               parentElement: html,
             },
           }, this.layers[this.activeLayer], this.activeLayer);
         }
+
         if (visible === false) {
           this.map_.removeLayers(this.map_.getBaseLayers());
         }
@@ -111,6 +115,7 @@ class BackgroundLayers extends ControlBase {
     if (window.innerWidth <= M.config.MOBILE_WIDTH) {
       callback = this.handlerClickMobile.bind(this);
     }
+
     callback(e, layersInfo, i);
   }
 
@@ -155,17 +160,15 @@ class BackgroundLayers extends ControlBase {
     this.activeLayer = this.activeLayer % this.layers.length;
     const layersInfo = this.layers[this.activeLayer];
     const { layers, id, title } = layersInfo;
-
     layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
-
     e.target.parentElement.querySelectorAll('button[id^="m-baselayerselector-"]').forEach((button) => {
       if (button.classList.contains('activeBaseLayerButton')) {
         button.classList.remove('activeBaseLayerButton');
       }
     });
+
     e.target.innerHTML = title;
-    e.target.parentElement
-      .querySelector(`#m-baselayerselector-${id}`).classList.add('activeBaseLayerButton');
+    e.target.parentElement.querySelector(`#m-baselayerselector-${id}`).classList.add('activeBaseLayerButton');
     this.map.addLayers(layers);
   }
 

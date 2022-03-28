@@ -3,8 +3,8 @@
     "cobertura": "Comprobando cobertura en la zona...",
     "nocobertura": "Esta capa no tiene cobertura en esta zona"
   },
-  "tooltip": "Capas",
-  "layers": "Capas",
+  "tooltip": "Capas Adicionales",
+  "layers": "Capas Adicionales",
   "vectoriallayers": "Capas vectoriales",
   "ortofotos": "Ortofotos",
   "warning": "AVISO"
