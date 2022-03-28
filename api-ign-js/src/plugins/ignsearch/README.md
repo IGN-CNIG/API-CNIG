@@ -90,9 +90,9 @@ mp.on('ignsearch:entityFound', (extent) => {
         position: 'TL',
         reverse: true,
 
-        urlCandidates: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
-        urlFind: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
-        urlReverse: 'http://servicios-de-busqueda-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',
+            urlCandidates: 'https://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp',
+            urlFind: 'https://www.cartociudad.es/geocoder/api/geocoder/findJsonp',
+            urlReverse: 'https://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode',
       });
 
    map.addPlugin(mp);
