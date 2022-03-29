@@ -52,6 +52,7 @@ import MBTiles from './layer/MBTiles';
 import MBTilesVector from './layer/MBTilesVector';
 import XYZ from './layer/XYZ';
 import TMS from './layer/TMS';
+import OSM from './layer/OSM';
 
 /**
  * @classdesc
@@ -464,6 +465,9 @@ class Map extends Base {
                 break;
               case 'TMS':
                 layer = new TMS(parameterVariable);
+                break;
+              case 'OSM':
+                layer = new OSM(layerParam);
                 break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);

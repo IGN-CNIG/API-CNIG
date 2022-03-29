@@ -450,7 +450,7 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getWMS(layer) {
-    return `WMS*${layer.legend || layer.name}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}*${layer.userMaxExtent || ''}*${layer.version}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+    return `WMS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}*${layer.userMaxExtent || ''}*${layer.version}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
 
   /**
@@ -461,7 +461,7 @@ export default class ShareMapControl extends M.Control {
    */
   getWFS(layer) {
     const style = layer.getStyle().serialize();
-    return `WFS*${layer.legend || layer.name}*${layer.url}*${layer.namespace}:${layer.name}:*${layer.geometry || ''}*${layer.ids || ''}*${layer.cql || ''}*${style || ''}`;
+    return `WFS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.namespace}:${layer.name}:*${layer.geometry || ''}*${layer.ids || ''}*${layer.cql || ''}*${style || ''}`;
   }
 
   /**
@@ -478,7 +478,7 @@ export default class ShareMapControl extends M.Control {
     } catch (err) {
       legend = layer.legend;
     }
-    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${legend}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
 
   /**
@@ -504,5 +504,11 @@ export default class ShareMapControl extends M.Control {
    */
   equals(control) {
     return control instanceof ShareMapControl;
+  }
+
+  normalizeString(text) {
+    let newText = text.replace(/,/g, '');
+    newText = newText.replace(/\*/g, '');
+    return newText;
   }
 }

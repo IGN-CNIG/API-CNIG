@@ -183,13 +183,16 @@ export default class VectorsControl extends M.impl.Control {
   * @function
   * @api
   */
-  addDrawInteraction(layer, geom) {
+  addDrawInteraction(layer, feature) {
     const olMap = this.facadeMap_.getMapImpl();
     const vectorSource = layer.getImpl().getOL3Layer().getSource();
     const geometry = layer.getGeometryType() !== null ? layer.getGeometryType() : layer.geometry;
     this.draw = this.newDrawInteraction(vectorSource, geometry);
-    this.addDrawEvent();
+    this.addDrawEvent(feature !== undefined);
     olMap.addInteraction(this.draw);
+    if (feature !== undefined) {
+      this.draw.extend(feature.getImpl().getOLFeature());
+    }
   }
 
   /**
@@ -199,15 +202,23 @@ export default class VectorsControl extends M.impl.Control {
   * @function
   * @api
   */
-  addDrawEvent() {
+  addDrawEvent(isAdding) {
     this.draw.on('drawend', (event) => {
       this.facadeControl.onDraw(event);
+      if (isAdding) {
+        this.removeDrawInteraction();
+      }
     });
 
     document.addEventListener('keyup', this.addEscEvent.bind(this));
     this.draw.once('drawstart', (evt) => {
       document.onkeydown = this.addUndoEvent.bind(this, evt.feature);
     });
+  }
+
+  addAddPointsInteraction(layer, feature) {
+    this.removeDrawInteraction();
+    this.addDrawInteraction(layer, feature);
   }
 
   addUndoEvent(feature, evt) {
@@ -221,7 +232,10 @@ export default class VectorsControl extends M.impl.Control {
       this.draw.finishDrawing();
       this.facadeControl.deactivateDrawing();
       this.facadeControl.isDrawingActive = false;
+      this.facadeControl.isEditionActive = false;
       this.facadeControl.drawLayer = undefined;
+      this.removeEditInteraction();
+      this.removeSelectInteraction();
     }
   }
 
@@ -340,6 +354,8 @@ export default class VectorsControl extends M.impl.Control {
       this.edit.on('modifyend', (evt) => {
         facadeControl.onModify();
       });
+
+      document.addEventListener('keyup', this.addEscEvent.bind(this));
       olMap.addInteraction(this.edit);
     }
   }
@@ -1248,7 +1264,15 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   calculateProfilePoints(feature, callback, callbackError) {
-    const coordinates = feature.getGeometry().coordinates;
+    let coordinates = [];
+    if (feature.getGeometry().type === 'MultiLineString') {
+      feature.getGeometry().coordinates.forEach((path) => {
+        coordinates = coordinates.concat(path);
+      });
+    } else {
+      coordinates = feature.getGeometry().coordinates;
+    }
+
     let pointsCoord = '';
     for (let i = 1; i < coordinates.length; i += 1) {
       pointsCoord = pointsCoord.concat(this.findNewPoints(coordinates[i - 1], coordinates[i]));
@@ -1315,7 +1339,18 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   calculateProfile(feature) {
-    const coordinates = feature.getGeometry().coordinates;
+    let coordinates = [];
+    if (feature.getGeometry().type === 'MultiLineString') {
+      feature.getGeometry().coordinates.forEach((path) => {
+        coordinates = coordinates.concat(path);
+      });
+    } else if (feature.getGeometry().type === 'Polygon') {
+      coordinates = [].concat(feature.getGeometry().coordinates[0]);
+      coordinates.pop();
+    } else {
+      coordinates = [].concat(feature.getGeometry().coordinates);
+    }
+
     let pointsCoord = '';
     for (let i = 1; i < coordinates.length; i += 1) {
       pointsCoord = pointsCoord.concat(this.findNewPoints(coordinates[i - 1], coordinates[i]));

@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'vectors';
-  src: url('../fonts/vectors.eot?33558329');
-  src: url('../fonts/vectors.eot?33558329#iefix') format('embedded-opentype'),
-       url('../fonts/vectors.woff2?33558329') format('woff2'),
-       url('../fonts/vectors.woff?33558329') format('woff'),
-       url('../fonts/vectors.ttf?33558329') format('truetype'),
-       url('../fonts/vectors.svg?33558329#vectors') format('svg');
+  src: url('../fonts/vectors.eot?60475647');
+  src: url('../fonts/vectors.eot?60475647#iefix') format('embedded-opentype'),
+       url('../fonts/vectors.woff2?60475647') format('woff2'),
+       url('../fonts/vectors.woff?60475647') format('woff'),
+       url('../fonts/vectors.ttf?60475647') format('truetype'),
+       url('../fonts/vectors.svg?60475647#vectors') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -58,6 +58,7 @@ div.m-vectors [class*=" icon-"] {
 .m-vectors .icon-search:before { content: '\e964'; }
 .m-vectors .icon-spinner:before { content: '\e953'; }
 .m-vectors .icon-list:before { content: '\e92c'; }
+.m-vectors .icon-select:before { content: '\e931'; }
 
 #m-vectors-select-wfs .icon-show:before { content: '\e916'; }
 #m-vectors-select-wfs .icon-hide:before { content: '\e918'; }
