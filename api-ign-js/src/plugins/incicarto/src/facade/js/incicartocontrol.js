@@ -510,10 +510,7 @@ export default class IncicartoControl extends M.Control {
           return;
         }
         console.log(`Envío de correo electrónico ${destinatary}`);
-        window.open(mailto_composed,'emailWindow');
-        // document.querySelector('div.m-mapea-container div.m-dialog').remove(); // Así cerramos a lo loco
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
-        this.showMessageInModal("El correo con la incidencia se ha generado correctamente. Utilice su cliente habitual para enviarlo.","okmessage");
         document.querySelector("#m-plugin-incicarto-send-email").disabled=true;
       });
 
@@ -601,9 +598,15 @@ export default class IncicartoControl extends M.Control {
       "product": product,
       "geometry": this.geometryIncidence,
     };
-           
-    return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
+    let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
+    emailForm.action = `${M.config.MAPEA_URL}api/email`;
+    document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
+    document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
+    document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
+    emailForm.submit();
 
+    //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
+    return true;
   }
 
 
