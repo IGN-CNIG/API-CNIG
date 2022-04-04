@@ -14,7 +14,7 @@
    <parent>
       <groupId>es.ign.api</groupId>
       <artifactId>api-ign-parent</artifactId>
-      <version>4.1.1</version>
+      <version>4.2.0</version>
       <relativePath>../api-ign-parent/pom.xml</relativePath>
    </parent>
    <licenses>
@@ -94,6 +94,7 @@
                      <includeGroupIds>${project.groupId}</includeGroupIds>
                      <includeArtifacIds>api-ign-js</includeArtifacIds>
                      <excludeArtifactIds>api-ign-proxy</excludeArtifactIds>
+                     <excludeArtifactIds>api-ign-database</excludeArtifactIds>
                      <excludeTransitive>true</excludeTransitive>
                      <encoding>${project.build.sourceEncoding}</encoding>
                   </configuration>
@@ -187,6 +188,12 @@
       <dependency>
          <groupId>${project.groupId}</groupId>
          <artifactId>api-ign-proxy</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <!-- API IGN DATABASE -->
+      <dependency>
+         <groupId>${project.groupId}</groupId>
+         <artifactId>api-ign-database</artifactId>
          <version>${project.version}</version>
       </dependency>
    </dependencies>
