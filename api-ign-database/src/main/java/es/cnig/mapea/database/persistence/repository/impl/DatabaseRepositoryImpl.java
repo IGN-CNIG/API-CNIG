@@ -130,8 +130,10 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				query.append(geomColumn + " is not null ");
 			}
 			int totalResultados = getTotalResultados(conn, query.toString());
-			if(totalResultados <= 4000){
-				//query.append(addPaginacion(paginacion));
+			int size = paginacion != null && paginacion.getSize() <= 4000 && paginacion.getSize() > 0 ?
+					paginacion.getSize() : totalResultados;
+			if(size <= 4000){
+				query.append(addPaginacion(paginacion));
 				log.info("Obteniendo datos");
 				PreparedStatement ps = conn.prepareStatement(query.toString());
 				ResultSet rs = ps.executeQuery();
