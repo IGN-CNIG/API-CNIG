@@ -18,6 +18,8 @@ import es.cnig.mapea.database.utils.CustomDatasource;
 import es.cnig.mapea.database.utils.CustomPagination;
 import org.apache.commons.codec.binary.Base64;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 public class DatabaseServiceImpl implements DatabaseService{
 	
 	DataSourceConfiguration datasourceConfiguration;
@@ -35,6 +37,7 @@ public class DatabaseServiceImpl implements DatabaseService{
 		List<Tabla> tablas = getDatabaseRepository(ds).getGeomTables(paginacion);
 		pagina.setResults(tablas);
 		pagina.setTotalElementos(paginacion.getSize());
+		((HikariDataSource)ds).close();
 		return pagina;
 	}
 
@@ -53,6 +56,7 @@ public class DatabaseServiceImpl implements DatabaseService{
 		List<Columna> columnas = getDatabaseRepository(ds).getTableColumns(schema, table, paginacion);
 		pagina.setResults(columnas);
 		pagina.setTotalElementos(paginacion.getSize());
+		((HikariDataSource)ds).close();
 		return pagina;
 	}
 
@@ -66,6 +70,7 @@ public class DatabaseServiceImpl implements DatabaseService{
 		pagina.setResults(datos);
 		pagina.setTotalElementos(paginacion.getSize());
 		pagina.setNumPagina(paginacion.getPage());
+		((HikariDataSource)ds).close();
 		return pagina;
 	}
 	
@@ -73,6 +78,7 @@ public class DatabaseServiceImpl implements DatabaseService{
 	public List<String> obtenerValoresDominio(String dataSourceName, String schema, String table, String columna, boolean token){
 		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
 		List<String> result = getDatabaseRepository(ds).getDomainValues(schema, table, columna);
+		((HikariDataSource)ds).close();
 		return result;
 	}
 	

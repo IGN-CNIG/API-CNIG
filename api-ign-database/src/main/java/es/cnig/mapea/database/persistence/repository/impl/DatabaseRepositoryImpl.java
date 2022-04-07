@@ -226,35 +226,6 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return result;
 	}
 	
-/*	private List<DatosTabla> getCluster2(Connection conn, String geomColumn, String schema, String table, Map<String, List<String>> filtros, Integer zoom){
-		List<DatosTabla> result = new LinkedList<DatosTabla>();
-		StringBuilder query = new StringBuilder("SELECT row_number() over() as id, st_astext(ST_Transform(center, 3857)) as geometry,");
-		query.append(" elementos_cluster, 3857 AS srid from");
-		query.append(" (SELECT COUNT(*) AS elementos_cluster,");
-		query.append(" ST_Centroid(ST_Collect(" + geomColumn + ")) AS center");
-		query.append(" FROM " + schema + "." + table);
-		query.append(sqlFilter(filtros, geomColumn));
-		query.append(" GROUP BY ST_SnapToGrid(ST_Centroid(" + geomColumn + "),  ?) ORDER BY elementos_cluster DESC) cluster");
-		try{
-			PreparedStatement ps = conn.prepareStatement(query.toString());
-			ps.setDouble(1, getRadiusByZoom(zoom));
-			ResultSet rs = ps.executeQuery();
-			ResultSetMetaData rsmd = rs.getMetaData();
-			while(rs.next()){
-				DatosTabla dt = new DatosTabla();
-				for(int i = 1; i <= rsmd.getColumnCount(); i++){
-					Object value = rs.getObject(i);
-					dt.addToMap(rsmd.getColumnLabel(i), value);
-				}
-				result.add(dt);
-			}
-			ps.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		return result;
-	}*/
-	
 	/**
 	 * Obtiene el radio del cluster en funcion del zoom del mapa
 	 * @param zoom
@@ -270,25 +241,6 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			radio = 0.15;
 		}
 		return radio;
-	}
-	
-	/**
-	 * Obtiene el radio del buffer en funcion del zoom del mapa.
-	 * Este valor se multiplicará por el porcentaje [0-1] de elementos
-	 * del cluster
-	 * @param zoom
-	 * @return buffer
-	 */
-	private double getGradosBufferByZoom(Integer zoom){
-		double buffer = Constants.EQ_GRADO_METRO * 1000000;//1000 km en grados
-		if(zoom > 7 && zoom < 10){
-			buffer = Constants.EQ_GRADO_METRO * 750000;//750 km en grados
-		}else if (zoom >= 10 && zoom < 12){
-			buffer = Constants.EQ_GRADO_METRO * 500000;//500 km en grados
-		}else if(zoom >= 12){
-			buffer = Constants.EQ_GRADO_METRO * 100000;//100 km en grados
-		}
-		return buffer;
 	}
 	
 	private double getMetrosBufferByZoom(Integer zoom){
@@ -332,7 +284,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			ps = conn.prepareStatement(query.toString());
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			return rs.getInt(1);
+			int srid = rs.getInt(1);
+			return srid;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -356,7 +309,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			ps.setString(2, tabla);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			return rs.getString("f_geometry_column");
+			String geomColumn = rs.getString("f_geometry_column");
+			return geomColumn;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -385,7 +339,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			ps.setString(3, geomColumn);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			return rs.getString("columnas");
+			String columnas = rs.getString("columnas");
+			return columnas;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
