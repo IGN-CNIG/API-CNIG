@@ -149,7 +149,7 @@ export default class Comparepanel extends M.Plugin {
      * @private
      * @type {URLLike}
      */
-    this.urlCoberturas_ = options.urlcoberturas || 'urlcoberturas';
+    this.urlCoberturas_ = options.urlcoberturas || '';
 
     /**
      * mirrorpanelParams

@@ -66,12 +66,8 @@ export default class TimelineControl extends M.Control {
           tag: interval[1],
           service: layer
         };
-
         intervals.push(iv);
-        console.log("Cargo capa");
       });
-      
-      console.log(intervals);
 
       this.intervals = intervals;
       this.template = M.template.compileSync(template, {
@@ -82,8 +78,6 @@ export default class TimelineControl extends M.Control {
           },
         },
       });
-
-
 
       this.intervals.forEach((interval, k) => {
         let tag = document.createElement('div');
@@ -139,7 +133,6 @@ export default class TimelineControl extends M.Control {
    */
   transformToLayers(layer) {
     let newLayer = null;
-    console.log("transformToLayers");
     if (!(layer instanceof Object)) {
       if (layer.indexOf('*') >= 0) {
         const urlLayer = layer.split('*');
@@ -197,7 +190,9 @@ export default class TimelineControl extends M.Control {
     }
 
     let step = parseFloat(elem.value);
+    console.log(this.intervals);
     this.intervals.forEach((interval) => {
+      console.o
       this.getMapLayer(interval.service).setVisible(false);
       document.querySelector('.m-timeline-names').innerHTML = '';
     });
@@ -360,10 +355,12 @@ export default class TimelineControl extends M.Control {
    * @api
    */
   activate() {
+    console.log("Activate Timeline 2S");
     clearInterval(this.running);
     this.running = false;
     document.querySelector('.m-timeline-button button').classList.add('cp-control-siguiente');
     document.querySelector('.m-timeline-button button').classList.remove('cp-control-pausa');
+    console.log("Activate Timeline 1S");
   }
 
   /**
@@ -374,9 +371,7 @@ export default class TimelineControl extends M.Control {
    * @api
    */
   deactivate() {
-
-    console.log(this.intervals);
-    
+    console.log("Deactivate Timeline 2S");    
     try {
       clearInterval(this.running);
       this.running = false;
@@ -388,7 +383,7 @@ export default class TimelineControl extends M.Control {
     } catch (error) {
       console.error(`e2m (1): ${error}`);
     }
-
+    console.log("Deactivate Timeline 2E");    
   }
 
   /**

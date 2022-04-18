@@ -9,6 +9,7 @@
   "tooltip_vcurtain": "Vertical curtain",
   "tooltip_hcurtain": "Horizontal curtain",
   "tooltip_multicurtain": "Multi curtain",
+  "tooltip_deactivatecurtain": "Deactivate curtain",
   "layers": "Layehrs",
   "radius": "Radius",
   "opacity": "Opacity",

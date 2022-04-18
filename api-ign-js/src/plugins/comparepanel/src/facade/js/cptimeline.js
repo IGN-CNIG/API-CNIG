@@ -177,6 +177,7 @@ export default class Timeline extends M.Plugin {
    * @api
    */
   activate() {
+    console.log("Activate Timeline 1");
     this.control_.activate();
   }
 
@@ -200,6 +201,7 @@ export default class Timeline extends M.Plugin {
    * @api
    */
   deactivate() {
+    console.log("Deactivate Timeline 1");
     this.control_.deactivate();
   }
 
