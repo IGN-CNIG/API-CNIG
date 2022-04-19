@@ -54,6 +54,21 @@ export default class ComparepanelControl extends M.Control {
     options.lyrcompareParams.layers = this.layers;
     options.transparencyParams.layers = this.layers;
 
+<<<<<<< HEAD
+=======
+    // e2m: extraemos de las definiciones de capa los nombres de todas las capas
+    this.allLayersName = this.layers.map((lyrDef) => {
+      if (lyrDef.indexOf('*') >= 0) {
+        const lyrAttrib = lyrDef.split('*');
+        if (lyrAttrib[0].toUpperCase() === 'WMS') {
+          return lyrAttrib[3];
+        } else if (lyrAttrib[0].toUpperCase() === 'WMTS') {
+          return lyrAttrib[3];
+        }
+      }
+    });
+
+>>>>>>> origin/redmine_204974
     this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams);
     this.timeline = new Timeline(options.timelineParams);
     
@@ -64,7 +79,6 @@ export default class ComparepanelControl extends M.Control {
     
     this.map = null;
     this.lyrCoverture = null;
-    this.urlCover =  options.urlCover;
   }
 
   /**
@@ -111,14 +125,23 @@ export default class ComparepanelControl extends M.Control {
     });
     this.setComparatorsDefaultStyle();
 
-
-    this.loadCoverPNOALyr();
+    if (this.urlCover!==''){
+      this.loadCoverPNOALyr();
+    }
+    
 
     this.onMoveEnd((evt) => {
-      this.getCobertura(evt);
+      
+      if (this.urlCover===''){
+        // e2m: si no hay filtro de comerturas, se pueden elegir todas las capas
+        this.mirrorpanel.manageLyrAvailable(this.allLayersName);
+        this.lyrcompare.manageLyrAvailable(this.allLayersName);
+        this.transparency.manageLyrAvailable(this.allLayersName);
+      } else {
+        // e2m: si tenemos filtro de coberturas, se evalúan las capas visibles
+        this.getCobertura(evt);
+      }
     });
-
-
 
   }
 
@@ -275,6 +298,13 @@ export default class ComparepanelControl extends M.Control {
         lyrAvailable.push(feature.get('layerkey'));
       }
     });
+    console.log(this.urlCover);
+    console.log(lyrAvailable);
+    console.log(this.layers);
+
+  // this.allLayersName
+
+
     this.mirrorpanel.manageLyrAvailable(lyrAvailable);
     this.lyrcompare.manageLyrAvailable(lyrAvailable);
     this.transparency.manageLyrAvailable(lyrAvailable);

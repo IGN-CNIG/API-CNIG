@@ -85,6 +85,7 @@ export default class LyrdropdownControl extends M.Control {
       //e2m: Transform stringLyr definition to apicnigLyr
       this.layers = this.transformToLayers(this.layers);
       //e2m: getting layers array with name and legend for plugin
+      
       let capas = this.layers.map((layer) => {
         return layer instanceof Object ? {  name: layer.name, legend: layer.legend } : { name: layer, legend: layer };
       });

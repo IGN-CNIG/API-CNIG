@@ -112,7 +112,7 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
   - Etiqueta: etiqueta o fecha de la capa. Se puede dejar vacío con comillas vacías: *''*
   - Servicio en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
 
--  urlcoberturas: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS.
+-  urlcoberturas: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS. Si este parámetro no se encuentra presente, no se aplicará el filtro por coberturas y todas las capas podrán seleccionarse siempre, aunque en la zona visible en el mapa no tenga cobertura.
 
 ```javascript
   // Ejemplos de definiciones de capas esperadas por el comparador en formato StringLayer
@@ -204,7 +204,16 @@ Para el stack de desarrollo de este componente se ha utilizado
 * NPM Version: 6.14.11
 * Entorno Windows.
 
-## 📐 Para configurar el stack de desarrollo
+## 📐 Configuración del stack de desarrollo / *Work setup*
+
+
+### 🐑 Clonar el repositorio / *Cloning repository*
+
+Para descargar el repositorio en otro equipo lo clonamos: 
+
+```bash
+git clone [URL del repositorio]
+```
 
 ### 1️⃣ Instalación de dependencias / *Install Dependencies*
 
