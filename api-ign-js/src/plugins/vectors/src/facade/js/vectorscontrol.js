@@ -881,10 +881,10 @@ export default class VectorsControl extends M.Control {
    * @api
    */
   openUploadOptions() {
-    if (document.querySelector('#vectors-uploading') !== null) {
-      document.querySelector('.m-vectors-general-container').innerHTML = '';
+    if (this.html.querySelector('#vectors-uploading') !== null) {
+      this.html.querySelector('.m-vectors-general-container').innerHTML = '';
     } else {
-      document.querySelector('.m-vectors-general-container').appendChild(this.uploadingTemplate);
+      this.html.querySelector('.m-vectors-general-container').appendChild(this.uploadingTemplate);
     }
   }
 
