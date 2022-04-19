@@ -301,13 +301,10 @@ div#m-lyrcompare-titulo {
 	opacity: 1;
 }
 
-<<<<<<< HEAD
-=======
 .lyrcompare-swipe-control.horizontal:hover >.control-icon::before{
 	content: '\e9c4';
 	opacity: 1;
 }
->>>>>>> origin/redmine_204974
 
 .lyrcompare-swipe-control.static,
 .lyrcompare-swipe-control.vertical.static::before,

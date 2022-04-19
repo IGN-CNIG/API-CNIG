@@ -54,8 +54,6 @@ export default class ComparepanelControl extends M.Control {
     options.lyrcompareParams.layers = this.layers;
     options.transparencyParams.layers = this.layers;
 
-<<<<<<< HEAD
-=======
     // e2m: extraemos de las definiciones de capa los nombres de todas las capas
     this.allLayersName = this.layers.map((lyrDef) => {
       if (lyrDef.indexOf('*') >= 0) {
@@ -67,16 +65,14 @@ export default class ComparepanelControl extends M.Control {
         }
       }
     });
-
->>>>>>> origin/redmine_204974
     this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams);
     this.timeline = new Timeline(options.timelineParams);
-    
+
     this.lyrcompare = new LyrCompare(options.lyrcompareParams);
     this.transparency = new Transparency(options.transparencyParams);
     this.panels = [];
     this.plugins = [this.mirrorpanel, this.timeline, this.lyrcompare, this.transparency];
-    
+
     this.map = null;
     this.lyrCoverture = null;
   }
@@ -128,10 +124,10 @@ export default class ComparepanelControl extends M.Control {
     if (this.urlCover!==''){
       this.loadCoverPNOALyr();
     }
-    
+
 
     this.onMoveEnd((evt) => {
-      
+
       if (this.urlCover===''){
         // e2m: si no hay filtro de comerturas, se pueden elegir todas las capas
         this.mirrorpanel.manageLyrAvailable(this.allLayersName);
@@ -150,8 +146,8 @@ export default class ComparepanelControl extends M.Control {
       if (p.name==='mirrorpanel'){
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateMirrorPanel(p);
-        });        
-        
+        });
+
       }else{
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateOtherModes(p);
@@ -189,7 +185,7 @@ export default class ComparepanelControl extends M.Control {
         }
         if (p.name==='timeline') {
           p.setDefaultLayer(this.defaultComparisonViz);
-        }        
+        }
       }
     });
 
@@ -240,11 +236,11 @@ export default class ComparepanelControl extends M.Control {
     }
     if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name === 'timeline') {
       plugin.activate();
-    }    
+    }
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-' + plugin.name).classList.toggle('hide-panel');
     this.template.querySelector('#m-cp-mirrorpanel .cp-mirrorpanel').classList.remove('hide-panel');  // Oculto panel
     this.template.querySelector('#m-cp-mirrorpanel .cp-button').classList.remove('active');           // Elimino sombra botón
-    
+
   }
 
   /**
@@ -293,7 +289,7 @@ export default class ComparepanelControl extends M.Control {
     //console.log(pixelCentral);
     olMap.forEachFeatureAtPixel(pixelCentral, function (feature, layer) {
       //console.log(feature);
-      //console.log(layer);    
+      //console.log(layer);
       if (feature.get('layerkey') !== undefined) {
         lyrAvailable.push(feature.get('layerkey'));
       }
