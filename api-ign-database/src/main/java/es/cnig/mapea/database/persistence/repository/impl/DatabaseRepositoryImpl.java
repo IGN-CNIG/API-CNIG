@@ -110,10 +110,15 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		List<DatosTabla> result = new LinkedList<DatosTabla>();
 		Connection conn = null;
 		Integer zoom = 13;
+		String aliasGeom = "geometry";
 		try{
 			if(filtros.containsKey("zoom")){
 				zoom = Integer.parseInt(filtros.get("zoom").get(0));
 				filtros.remove("zoom");
+			}
+			if(filtros.containsKey("aliasgeom")){
+				aliasGeom = filtros.get("aliasgeom").get(0);
+				filtros.remove("aliasgeom");
 			}
 			conn = datasource.getConnection();
 			log.info("Obteniendo nombre columna geometrica");
@@ -122,7 +127,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			log.info("Obteniendo el resto de nombres de columnas");
 			String columnas = getColumnasNoGeometricas(conn, schema, table, geomColumn);
 			StringBuilder query = new StringBuilder("SELECT "+ columnas);
-			query.append(", ST_asText(st_force2d(" + geomColumn + ")) as geometry, ST_SRID(" + geomColumn + ") as srid");
+			query.append(", ST_asText(st_force2d(" + geomColumn + ")) as " + aliasGeom + ", ST_SRID(" + geomColumn + ") as srid");
 			query.append(" FROM " + schema + "." + table);
 			query.append(sqlFilter(filtros, geomColumn, sridTable));
 			if(geomColumn != null && !"".equals(geomColumn)){
@@ -362,6 +367,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				String value = filtros.get(key).get(0);
 				if("bbox".equals(key)){
 					result.append(getBboxFilter(value, geomColumn, sridTable));
+				}else if("busquedaGeneral".equals(key)){
+					result.append(getSqlBusquedaGeneral(value));
 				}else{
 					result.append(key + " ilike '%" + value + "%'");
 				}
@@ -379,6 +386,23 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		StringBuilder bboxFilter = new StringBuilder("ST_Intersects("+geomColumn+", ");
 		bboxFilter.append("ST_Transform(ST_geomfromtext('"+geomValue+"', "+srid+"), "+sridTable+"))");
 		return bboxFilter.toString();
+	}
+	
+	private String getSqlBusquedaGeneral(String busqueda){
+		//El parametro de busqueda general viene con una secuencia de columnas
+		//en la que buscar y el valor con el formato columna;columna@valor
+		if(busqueda != null && busqueda.contains("@")){
+			StringBuilder filter = new StringBuilder();
+			String[] splitBsq = busqueda.split("@");
+			String[] columnas = splitBsq[0].split(";");
+			String value = splitBsq[1].replace("*", "%");
+			for(String columna : columnas){
+				filter.append(columna + " ilike '%" + value + "%'");
+				filter.append(" AND ");
+			}
+			return filter.substring(0, filter.lastIndexOf("AND"));
+		}
+		return "";
 	}
 	
 	/**
