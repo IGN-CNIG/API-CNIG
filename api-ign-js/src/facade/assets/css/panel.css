@@ -397,7 +397,7 @@ div.m-panel>button {
   border-radius: 0px;
   padding: 0px;
   box-shadow: none;
-  display: table;
+  display: flex;
 }
 
 .m-areas>div.m-area>div.m-panel.m-tools>div.m-panel-controls>div.m-control.activated>button {

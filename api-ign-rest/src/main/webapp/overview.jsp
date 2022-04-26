@@ -61,11 +61,11 @@
         <label for="selectCollapsed">Selector collapsed</label>
         <select name="collapsedValue" id="selectCollapsed">
             <option value=true>true</option>
-            <option value=false>false</option>
+            <option value=false selected="selected">false</option>
         </select>
         <label for="selectCollapsible">Selector collapsible</label>
         <select name="collapsibleValue" id="selectCollapsible">
-            <option value=true>true</option>
+            <option value=true selected="selected">true</option>
             <option value=false>false</option>
         </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">

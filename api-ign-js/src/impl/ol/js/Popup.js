@@ -24,7 +24,7 @@ class Popup extends OLOverlay {
      */
     this.panMapIfOutOfView = options.panMapIfOutOfView;
     if (this.panMapIfOutOfView === undefined) {
-      this.panMapIfOutOfView = true;
+      this.panMapIfOutOfView = false;
     }
 
     /**
