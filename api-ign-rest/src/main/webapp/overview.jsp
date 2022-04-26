@@ -125,6 +125,11 @@
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             map.removePlugins(mp);
+            console.log(typeof posicion, posicion);
+            console.log(typeof fixed, fixed);
+            console.log(typeof baseLayer, baseLayer);
+            console.log(typeof collapsed, collapsed);
+            console.log(typeof collapsible, collapsible);
             crearPlugin(posicion, fixed, baseLayer, collapsed, collapsible);
         }
 
