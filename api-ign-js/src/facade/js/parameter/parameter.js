@@ -2114,9 +2114,13 @@ const getExtraParameter = (parameter, defaultValue, position, nameVariable) => {
   if (isString(parameter)) {
     params = parameter.split(/\*/);
     if (position + 3 <= params.length - 1) {
+      console.log('Entra a leer');
+      console.log(parameter, defaultValue, position, nameVariable);
       extraParam = params[position + 3].trim();
       extraParam = extraParam.toLowerCase() !== 'false';
     } else {
+      console.log('Entra por defecto');
+      console.log(parameter, defaultValue, position, nameVariable);
       extraParam = defaultValue;
     }
   } else if (isObject(parameter)) {
@@ -2267,7 +2271,7 @@ export const tms = (userParamer) => {
 
     // gets transparent
     layerObj.transparent = getExtraParameter(userParam, 'true', 1, 'transparent');
-
+    console.log(layerObj);
     return layerObj;
   });
 
