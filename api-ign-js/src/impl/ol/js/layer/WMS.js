@@ -232,7 +232,7 @@ class WMS extends LayerBase {
         REQUEST: 'GetLegendGraphic',
         LAYER: this.name,
         FORMAT: 'image/png',
-        EXCEPTIONS: 'image/png',
+        // EXCEPTIONS: 'image/png',
       });
     }
   }

@@ -141,12 +141,10 @@ class KML extends Vector {
   selectFeatures(features, coord, evt) {
     // TODO: manage multiples features
     const feature = features[0];
-
     if (this.extract !== true) {
       const featureName = feature.getAttribute('name');
       const featureDesc = feature.getAttribute('description');
       const featureCoord = feature.getImpl().getOLFeature().getGeometry().getFirstCoordinate();
-
       const htmlAsText = compileTemplate(popupKMLTemplate, {
         vars: {
           name: featureName,
@@ -160,6 +158,7 @@ class KML extends Vector {
         content: htmlAsText,
       };
       const popup = this.map.getPopup();
+      console.log(popup);
       if (isNullOrEmpty(popup)) {
         this.popup_ = new Popup();
         this.popup_.addTab(this.tabPopup_);
