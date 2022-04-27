@@ -148,6 +148,7 @@
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "BR",
+            collapsed: false,
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
