@@ -2251,6 +2251,7 @@ export const tms = (userParamer) => {
     userParametersArray = [userParametersArray];
   }
 
+  console.log(userParametersArray);
   layersVar = userParametersArray.map((userParam) => {
     const layerObj = {};
 

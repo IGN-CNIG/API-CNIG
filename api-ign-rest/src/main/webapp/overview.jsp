@@ -116,7 +116,7 @@
         selectCollapsible.addEventListener('change', cambiarTest);
         setTimeout(() => {
           map.setCenter([-479529.76895509224, 4702535.197017747]);
-        }, 50);
+        }, 100);
 
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
@@ -125,11 +125,6 @@
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             map.removePlugins(mp);
-            console.log(typeof posicion, posicion);
-            console.log(typeof fixed, fixed);
-            console.log(typeof baseLayer, baseLayer);
-            console.log(typeof collapsed, collapsed);
-            console.log(typeof collapsible, collapsible);
             crearPlugin(posicion, fixed, baseLayer, collapsed, collapsible);
         }
 
@@ -139,8 +134,8 @@
                 fixed: fixed,
                 zoom: 4,
                 baseLayer: baseLayer,
-                collapsed: collapsed,
-                collapsible: collapsible,
+                collapsed: collapsed || false,
+                collapsible: collapsible || true,
             });
             map.addPlugin(mp);
         }
@@ -148,7 +143,6 @@
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "BR",
-            collapsed: false,
         });
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
