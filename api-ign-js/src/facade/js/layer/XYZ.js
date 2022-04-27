@@ -6,7 +6,6 @@ import LayerBase from './Layer';
 import { isNullOrEmpty, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from './Type';
-import xyz from '../parameter/xyz';
 import { getValue } from '../i18n/language';
 /**
  * @classdesc
@@ -28,13 +27,14 @@ class XYZ extends LayerBase {
     if (isUndefined(XYZImpl)) {
       Exception(getValue('exception').xyz_method);
     }
-    const parameters = { ...xyz(userParameters), source: userParameters.source };
+
+    const parameters = parameter.layer(userParameters, LayerType.XYZ);
     /**
      * Implementation of this layer
      * @public
      * @type {M/impl/layer/XYZ}
      */
-    const impl = new XYZImpl(userParameters, options, vendorOptions);
+    const impl = new XYZImpl(parameters, options, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
     /**
