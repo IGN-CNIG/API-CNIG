@@ -5,6 +5,7 @@ import TMSImpl from 'impl/layer/TMS';
 import LayerBase from './Layer';
 import { isNullOrEmpty, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
+import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
 import { getValue } from '../i18n/language';
 /**
