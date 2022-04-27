@@ -34,7 +34,7 @@ class XYZ extends LayerBase {
      * @public
      * @type {M/impl/layer/XYZ}
      */
-    const impl = new XYZImpl(parameters, options, vendorOptions);
+    const impl = new XYZImpl(userParameters, options, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
     /**
