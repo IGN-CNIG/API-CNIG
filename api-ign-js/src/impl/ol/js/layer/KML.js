@@ -166,7 +166,7 @@ class KML extends Vector {
         this.popup_.addTab(this.tabPopup_);
         this.map.addPopup(this.popup_, featureCoord);
       } else {
-        console.log('Entra add tab')
+        console.log('Entra add tab');
         popup.addTab(this.tabPopup_);
       }
     }
