@@ -140,7 +140,9 @@ class KML extends Vector {
    */
   selectFeatures(features, coord, evt) {
     // TODO: manage multiples features
+    console.log('Entra en el método');
     const feature = features[0];
+    console.log(features);
     if (this.extract !== true) {
       console.log('Entra a compilar plantilla');
       const featureName = feature.getAttribute('name');
