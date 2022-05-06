@@ -140,11 +140,8 @@ class KML extends Vector {
    */
   selectFeatures(features, coord, evt) {
     // TODO: manage multiples features
-    console.log('Entra en el método');
     const feature = features[0];
-    console.log(features);
     if (this.extract !== true) {
-      console.log('Entra a compilar plantilla');
       const featureName = feature.getAttribute('name');
       const featureDesc = feature.getAttribute('description');
       const featureCoord = feature.getImpl().getOLFeature().getGeometry().getFirstCoordinate();
@@ -161,14 +158,11 @@ class KML extends Vector {
         content: htmlAsText,
       };
       const popup = this.map.getPopup();
-      console.log(popup);
       if (isNullOrEmpty(popup)) {
-        console.log('Entra null or empty');
         this.popup_ = new Popup();
         this.popup_.addTab(this.tabPopup_);
         this.map.addPopup(this.popup_, featureCoord);
       } else {
-        console.log('Entra add tab');
         popup.addTab(this.tabPopup_);
       }
     }
