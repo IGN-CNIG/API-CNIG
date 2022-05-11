@@ -10,6 +10,7 @@ const map = M.map({
     y: 4514194.232367303,
   },
   zoom: 9,
+  layers: ['TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*true'],
 });
 
 const precharged = {
@@ -189,7 +190,7 @@ const mp = new FullTOC({
   https: true,
   http: true,
   // precharged,
-  precharged: {},
+  // precharged: {},
   codsi: true,
 });
 
