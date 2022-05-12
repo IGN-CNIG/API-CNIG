@@ -10,16 +10,22 @@ public class Pagina {
 	
 	private int totalElementos;
 	
+	private String error;
+	
+	private String formato;
+	
 	private List results;
 	
 	public Pagina(){
 		
 	}
 
-	public Pagina(int numPagina, int tamPagina, int totalElementos, List results) {
+	public Pagina(int numPagina, int tamPagina, int totalElementos, String error, String formato, List results) {
 		this.numPagina = numPagina;
 		this.tamPagina = tamPagina;
 		this.totalElementos = totalElementos;
+		this.error = error;
+		this.formato = formato;
 		this.results = results;
 	}
 
@@ -45,6 +51,22 @@ public class Pagina {
 
 	public void setTotalElementos(int totalElementos) {
 		this.totalElementos = totalElementos;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public String getFormato() {
+		return formato;
+	}
+
+	public void setFormato(String formato) {
+		this.formato = formato;
 	}
 
 	public List getResults() {

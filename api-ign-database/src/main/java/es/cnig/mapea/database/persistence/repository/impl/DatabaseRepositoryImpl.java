@@ -1,5 +1,9 @@
 package es.cnig.mapea.database.persistence.repository.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +29,16 @@ import es.cnig.mapea.database.utils.CustomPagination;
 public class DatabaseRepositoryImpl implements DatabaseRepository {
 	
 	private static final Logger log = LoggerFactory.getLogger(DatabaseRepositoryImpl.class);
+	
+	private static final String kmlHeader = "<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+			+ " xsi:schemaLocation=\"http://www.opengis.net/kml/2.2 https://developers.google.com/kml/schema/kml22gx.xsd\"><Document>";
+	private static final String kmlFooter = "</Document></kml>";
+	
+	private static final String gmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+				+"<sf:FeatureCollection xmlns=\"http://www.acme.com/namespaces/ns1\" xmlns:sf=\"http://www.opengis.net/ogcapi-features-1/1.0/sf\" xmlns:gml=\"http://www.opengis.net/gml/3.2\""
+				+" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.acme.com/namespaces/ns1"
+				+" http://www.opengis.net/ogcapi-features-1/1.0/sf http://www.w3.org/2005/Atom http://schemas.opengis.net/kml/2.3/atom-author-link.xsd"
+				+" http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd\">";
 
 	DataSource datasource;
 	
@@ -37,7 +51,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		List<Tabla> result = new LinkedList<Tabla>();
 		StringBuilder query = new StringBuilder("SELECT table_schema, table_name FROM information_schema.tables ");
 		query.append("where table_name in ");
-		query.append("(select f_table_name from geometry_columns)");
+		query.append("(select distinct(f_table_name) from geometry_columns)");
 		Connection conn = null;
 		try {
 			conn = datasource.getConnection();
@@ -55,6 +69,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			paginacion.setSize(totalResultados);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			paginacion.setError(e.getMessage());
 		}finally{
 			try {
 				if(conn != null){
@@ -91,6 +106,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			paginacion.setSize(totalResultados);
 		}catch(SQLException e){
 			e.printStackTrace();
+			paginacion.setError(e.getMessage());
 		}finally{
 			try {
 				if(conn != null){
@@ -101,6 +117,46 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			}
 		}
 		
+		return result;
+	}
+	
+	@Override
+	public List<DatosTabla> getCustomQueryData(String schema, String table, Map<String, List<String>> params, CustomPagination paginacion){
+
+		List<DatosTabla> result = new LinkedList<DatosTabla>();
+		Connection conn = null;
+		String query = customQuery(params, schema, table);
+		try{
+			if(query != null && !"".equals(query)){
+				conn = datasource.getConnection();
+				int totalResultados = getTotalResultados(conn, query);
+				PreparedStatement ps = conn.prepareStatement(query.toString());
+				ResultSet rs = ps.executeQuery();
+				ResultSetMetaData rsmd = rs.getMetaData();
+				while(rs.next()){
+					DatosTabla dt = new DatosTabla();
+					for(int i = 1; i <= rsmd.getColumnCount(); i++){
+						Object value = rs.getObject(i);
+						dt.addToMap(rsmd.getColumnLabel(i), value);
+					}
+					result.add(dt);
+				}
+				ps.close();
+				paginacion.setSize(totalResultados);
+				paginacion.setPage(paginacion.getPage());
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			paginacion.setError(e.getMessage());
+		}finally{
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return result;
 	}
 
@@ -127,7 +183,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			log.info("Obteniendo el resto de nombres de columnas");
 			String columnas = getColumnasNoGeometricas(conn, schema, table, geomColumn);
 			StringBuilder query = new StringBuilder("SELECT "+ columnas);
-			query.append(", ST_asText(st_force2d(" + geomColumn + ")) as " + aliasGeom + ", ST_SRID(" + geomColumn + ") as srid");
+			query.append(", ST_transform(" + geomColumn + ", 4326) as "+geomColumn+", 4326 as srid");
 			query.append(" FROM " + schema + "." + table);
 			query.append(sqlFilter(filtros, geomColumn, sridTable));
 			if(geomColumn != null && !"".equals(geomColumn)){
@@ -140,14 +196,31 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			if(size <= 4000){
 				query.append(addPaginacion(paginacion));
 				log.info("Obteniendo datos");
-				PreparedStatement ps = conn.prepareStatement(query.toString());
+				PreparedStatement ps = null;
+				ps = switchFormat(conn, paginacion.getFormato().toLowerCase(), query.toString(), geomColumn, aliasGeom, columnas);
 				ResultSet rs = ps.executeQuery();
 				ResultSetMetaData rsmd = rs.getMetaData();
 				while(rs.next()){
 					DatosTabla dt = new DatosTabla();
 					for(int i = 1; i <= rsmd.getColumnCount(); i++){
-						Object value = rs.getObject(i);
-						dt.addToMap(rsmd.getColumnLabel(i), value);
+						if ("mvt".equals(rsmd.getColumnLabel(i))){
+							try{
+								InputStream binaryStream = rs.getBinaryStream(i);
+								byte[] mvt = new byte[binaryStream.available()];
+								binaryStream.read(mvt);
+								binaryStream.close();
+								File mvtFile = File.createTempFile("mvtTest", ".pbf");
+								OutputStream os = new FileOutputStream(mvtFile);
+								os.write(mvt);
+								os.close();
+								dt.addToMap("mvt", mvtFile.getAbsolutePath());
+							}catch(Exception e){
+								e.printStackTrace();
+							}
+						}else{
+							Object value = rs.getObject(i);
+							dt.addToMap(rsmd.getColumnLabel(i), value);
+						}
 					}
 					result.add(dt);
 				}
@@ -159,6 +232,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			paginacion.setSize(totalResultados);
 		}catch(SQLException e){
 			e.printStackTrace();
+			paginacion.setError(e.getMessage());
 		}finally{
 			try {
 				if(conn != null){
@@ -267,7 +341,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	 * @return count
 	 */
 	private int getTotalResultados(Connection conn, String query){
-		String countQuery = "Select count(*) " + query.substring(query.indexOf("FROM"));
+		String countQuery = "Select count(*) FROM (" + query + ") as query";
 		try{
 			PreparedStatement ps = conn.prepareStatement(countQuery);
 			ResultSet rs = ps.executeQuery();
@@ -307,6 +381,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	private String getNombreColumnaGeom(String schema, String tabla, Connection conn){
 		StringBuilder sql = new StringBuilder("select f_geometry_column from geometry_columns");
 		sql.append(" where f_table_schema = ? and f_table_name = ?");
+		sql.append(" order by f_geometry_column asc limit 1");//se limita a 1 por si tiene varias columnas geometricas
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(sql.toString());
@@ -352,6 +427,66 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return null;
 	}
 	
+	private String customQuery(Map<String, List<String>> params, String schema, String table){
+		
+			String paramValue = "*";
+			StringBuilder result = new StringBuilder("SELECT ");
+			if(params.containsKey("select")){
+				paramValue = params.get("select").get(0); 
+			}
+			result.append(paramValue);
+			result.append(" FROM " + schema + "." + table);
+			if(params.containsKey("where")){
+				paramValue = params.get("where").get(0);
+				if(paramValue != null && !"".equals(paramValue)){
+					result.append(" WHERE ");
+					result.append(paramValue.replace("*", "%"));
+				}
+			}
+			
+			if(params.containsKey("groupby")){
+				paramValue = params.get("groupby").get(0);
+				if(paramValue != null && !"".equals(paramValue)){
+					result.append(" GROUP BY ");
+					result.append(paramValue);
+					
+					if(params.containsKey("having")){
+						paramValue = params.get("having").get(0);
+						if(paramValue != null && !"".equals(paramValue)){
+							result.append(" HAVING ");
+							result.append(paramValue);
+						}
+					}
+				}
+			}
+			
+			if(params.containsKey("orderby")){
+				paramValue = params.get("orderby").get(0);
+				if(paramValue != null && !"".equals(paramValue)){
+					result.append(" ORDER BY ");
+					result.append(paramValue);
+				}
+			}
+			
+			if(params.containsKey("limit")){
+				paramValue = params.get("limit").get(0);
+				if(paramValue != null && !"".equals(paramValue)){
+					result.append(" LIMIT ");
+					result.append(paramValue);
+				}
+			}
+			
+			if(params.containsKey("offset")){
+				paramValue = params.get("offset").get(0);
+				if(paramValue != null && !"".equals(paramValue)){
+					result.append(" OFFSET ");
+					result.append(paramValue);
+				}
+			}
+			
+			return result.toString();
+	}
+	
 	/**
 	 * Monta en where de una consulta
 	 * @param filtros
@@ -392,15 +527,15 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		//El parametro de busqueda general viene con una secuencia de columnas
 		//en la que buscar y el valor con el formato columna;columna@valor
 		if(busqueda != null && busqueda.contains("@")){
-			StringBuilder filter = new StringBuilder();
+			StringBuilder filter = new StringBuilder("(");
 			String[] splitBsq = busqueda.split("@");
 			String[] columnas = splitBsq[0].split(";");
 			String value = splitBsq[1].replace("*", "%");
 			for(String columna : columnas){
 				filter.append(columna + " ilike '%" + value + "%'");
-				filter.append(" AND ");
+				filter.append(" OR ");
 			}
-			return filter.substring(0, filter.lastIndexOf("AND"));
+			return filter.substring(0, filter.lastIndexOf("OR")) + ")";
 		}
 		return "";
 	}
@@ -421,4 +556,89 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		}
 		return result.toString();
 	}
+	
+	private PreparedStatement switchFormat(Connection conn, String formato, String query, String geomColumn, String aliasGeom, String columnas){
+		PreparedStatement ps = null;
+		try{
+			if("wkt".equals(formato)){
+				ps = conn.prepareStatement(getWKT(query, geomColumn, aliasGeom));
+			}else if("geojson".equals(formato)){
+				ps = conn.prepareStatement(getGeoJson(query, geomColumn));
+			}else if("kml".equals(formato)){
+				ps = conn.prepareStatement(getKML(query, geomColumn, columnas));
+			}else if("gml".equals(formato)){
+				ps = conn.prepareStatement(getGML(query, geomColumn, columnas));
+			}else if("mvt".equals(formato)){
+				ps = conn.prepareStatement(getMVT(query, geomColumn));
+			}else{
+				ps = conn.prepareStatement(getWKT(query, geomColumn, aliasGeom));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return ps;
+	}
+	
+	private String getWKT(String query, String geomColumn, String aliasGeom){
+		return query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",", ", ST_asText(st_force2d(ST_transform("+geomColumn+", 4326))) as " + aliasGeom + ",");
+	}
+	
+	private String getGeoJson(String query, String geomColumn){
+		StringBuilder result = new StringBuilder("SELECT jsonb_build_object(");
+		result.append(" 'type', 'FeatureCollection',");
+		result.append(" 'features', jsonb_agg(feature))::text as geojson");
+		result.append(" FROM (SELECT jsonb_build_object(");
+		result.append(" 'type', 'Feature',");
+		result.append(" 'geometry', ST_AsGeoJSON(row." + geomColumn + ", 9, 0)::jsonb,");
+		result.append(" 'properties', to_jsonb(row) - '" + geomColumn + "'");
+		result.append(" ) AS feature");
+		result.append(" FROM (");
+		result.append(query);
+		result.append(") AS row) AS features");
+		return result.toString();
+	}
+	
+	private String getKML(String query, String geomColumn, String columnas){
+		StringBuilder result = new StringBuilder(" select '"+kmlHeader+"' || string_agg(feature, '') || '"+kmlFooter+"' as kml FROM");
+		result.append(" (select '<Placemark>' || ST_asKML("+geomColumn+", 15) || "+getKMLAttributes(columnas)+" || '</Placemark>' as feature FROM");
+		result.append("("+query+") as query) as features");
+		
+		return result.toString();
+	}
+	
+	//Solo para postgresql >= 10.0
+	private String getGML(String query, String geomColumn, String columnas){
+		StringBuilder result = new StringBuilder("SELECT '"+gmlHeader+"' || string_agg(feature, '') || '</sf:FeatureCollection>' as gml FROM ");
+		result.append("(select '<sf:featureMember><geometry>' || ST_asGML(3, "+geomColumn+", 15, 0, null, null) || '</geometry>' "+getGMLAttributes(columnas)+" || '</sf:featureMember>' as feature");
+		result.append(" FROM (" + query + ") as query) as features");
+		return result.toString();
+	}
+	
+	//Solo para Postgis >= 3.0.0
+	private String getMVT(String query, String geomColumn){
+		StringBuilder result = new StringBuilder("WITH mvtgeom AS(");
+		result.append("SELECT ST_AsMVTGeom("+geomColumn+", ST_TileEnvelope(2, 1, 1), 3857, 256, true) AS geom");
+		result.append(" FROM ("+query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",", ", ST_transform(" + geomColumn + ", 3857) as " + geomColumn + ",")+") as query");
+		result.append(") SELECT ST_AsMVT(mvtgeom.*, 'cnig', 3857) as mvt FROM mvtgeom");
+		return result.toString();
+	}
+	
+	private String getGMLAttributes(String columnas){
+		String[] cols = columnas.split(", ");
+		StringBuilder result = new StringBuilder();
+		for(String c : cols){
+			result.append("|| '<" + c + ">' || " + c + " || '</" + c + ">'");
+		}
+		return result.toString();
+	}
+	
+	private String getKMLAttributes(String columnas){
+		String[] cols = columnas.split(", ");
+		StringBuilder result = new StringBuilder("'<ExtendedData>'");
+		for(String c : cols){
+			result.append("|| '<Data name=\"" + c + "\">' || '<value>' || " + c + " || '</value></Data>'");
+		}
+		result.append(" || '</ExtendedData>'");
+		return result.toString();
+	} 
 }

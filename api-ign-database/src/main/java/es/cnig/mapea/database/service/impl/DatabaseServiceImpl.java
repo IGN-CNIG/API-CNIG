@@ -37,6 +37,7 @@ public class DatabaseServiceImpl implements DatabaseService{
 		List<Tabla> tablas = getDatabaseRepository(ds).getGeomTables(paginacion);
 		pagina.setResults(tablas);
 		pagina.setTotalElementos(paginacion.getSize());
+		pagina.setError(paginacion.getError());
 		((HikariDataSource)ds).close();
 		return pagina;
 	}
@@ -56,6 +57,7 @@ public class DatabaseServiceImpl implements DatabaseService{
 		List<Columna> columnas = getDatabaseRepository(ds).getTableColumns(schema, table, paginacion);
 		pagina.setResults(columnas);
 		pagina.setTotalElementos(paginacion.getSize());
+		pagina.setError(paginacion.getError());
 		((HikariDataSource)ds).close();
 		return pagina;
 	}
@@ -70,6 +72,31 @@ public class DatabaseServiceImpl implements DatabaseService{
 		pagina.setResults(datos);
 		pagina.setTotalElementos(paginacion.getSize());
 		pagina.setNumPagina(paginacion.getPage());
+		pagina.setFormato(paginacion.getFormato());
+		pagina.setError(paginacion.getError());
+		((HikariDataSource)ds).close();
+		return pagina;
+	}
+	
+	@Override
+	public Pagina obtenerDatosPersonalizados(String dataSourceName, String schema, String table,
+			Map<String, List<String>> params, CustomPagination paginacion, boolean token){
+		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
+		Pagina pagina = new Pagina();
+		int tamPagina = -1;
+		if(params.containsKey("limit")){
+			tamPagina = Integer.parseInt(params.get("limit").get(0));
+		}
+		List<DatosTabla> datos = getDatabaseRepository(ds).getCustomQueryData(schema, table, params, paginacion);
+		pagina.setResults(datos);
+		if(tamPagina < 0){
+			tamPagina = paginacion.getSize();
+		}
+		pagina.setTamPagina(tamPagina);
+		pagina.setTotalElementos(paginacion.getSize());
+		pagina.setNumPagina(paginacion.getPage());
+		pagina.setError(paginacion.getError());
+		pagina.setFormato(paginacion.getFormato());
 		((HikariDataSource)ds).close();
 		return pagina;
 	}
