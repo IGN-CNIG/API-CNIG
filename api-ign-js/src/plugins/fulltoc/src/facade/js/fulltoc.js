@@ -85,7 +85,7 @@ const PRECHARGED = {
           url: 'https://www.ign.es/wms-inspire/pnoa-ma?',
         },
         {
-          name: 'PNOA. Ortofotos históricas',
+          name: 'PNOA. Ortofotos históricas y PNOA anual',
           type: 'WMS',
           url: 'https://www.ign.es/wms/pnoa-historico?',
         },

@@ -304,6 +304,7 @@ export default class VectorsControl extends M.Control {
           delete_geom: getValue('delete_geom'),
           query_profile: getValue('query_profile'),
           collapse: getValue('collapse'),
+          add_points: getValue('add_points'),
         },
       },
     });
@@ -313,6 +314,7 @@ export default class VectorsControl extends M.Control {
     this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
     this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
     this.drawingTools.querySelector('button.m-vector-layer-delete-feature').addEventListener('click', () => this.deleteSingleFeature());
+    this.drawingTools.querySelector('button.m-vector-layer-add-points').addEventListener('click', () => this.activeAddPoints());
     this.drawingTools.querySelector('button.m-vector-layer-profile').addEventListener('click', () => this.getProfile());
     this.drawingTools.querySelector('button').style.display = 'none';
     this.drawingTools.querySelector('div.stroke-options').addEventListener('click', (e) => {
@@ -879,10 +881,10 @@ export default class VectorsControl extends M.Control {
    * @api
    */
   openUploadOptions() {
-    if (document.querySelector('#vectors-uploading') !== null) {
-      document.querySelector('.m-vectors-general-container').innerHTML = '';
+    if (this.html.querySelector('#vectors-uploading') !== null) {
+      this.html.querySelector('.m-vectors-general-container').innerHTML = '';
     } else {
-      document.querySelector('.m-vectors-general-container').appendChild(this.uploadingTemplate);
+      this.html.querySelector('.m-vectors-general-container').appendChild(this.uploadingTemplate);
     }
   }
 
@@ -1332,7 +1334,7 @@ export default class VectorsControl extends M.Control {
         this.openDrawOptions(layer);
       } else if (evt.target.classList.contains('m-vector-layer-edit')) {
         this.isDownloadActive = false;
-        this.openEditOptions(layer);
+        this.openEditOptions(layer, false);
       } else if (evt.target.classList.contains('m-vector-layer-zoom')) {
         this.isDownloadActive = false;
         this.resetInteractions();
@@ -1421,6 +1423,7 @@ export default class VectorsControl extends M.Control {
       this.drawLayer = layer;
       this.isDrawingActive = true;
       this.drawingTools.querySelector('button.m-vector-layer-profile').style.display = 'none';
+      this.drawingTools.querySelector('button.m-vector-layer-add-points').style.display = 'none';
       this.drawingTools.querySelector('button.m-vector-layer-delete-feature').style.display = 'none';
       const selector = `#m-vector-list li[name="${layer.name}"] div.m-vector-layer-actions-container`;
       const selector2 = `#m-vector-list li[name="${layer.name}"] div.m-vector-layer-actions .m-vector-layer-add`;
@@ -1446,7 +1449,7 @@ export default class VectorsControl extends M.Control {
     }
   }
 
-  openEditOptions(layer) {
+  openEditOptions(layer, afterDelete) {
     this.isDrawingActive = false;
     this.deactivateSelection();
     this.deactivateDrawing();
@@ -1463,7 +1466,7 @@ export default class VectorsControl extends M.Control {
         this.getImpl().activateSelection(layer);
         const selector = `#m-vector-list li[name="${layer.name}"] div.m-vector-layer-actions .m-vector-layer-edit`;
         document.querySelector(selector).classList.add('active-tool');
-      } else {
+      } else if (!afterDelete) {
         M.dialog.error(getValue('exception.no_features'), getValue('warning'));
       }
     } else {
@@ -1510,8 +1513,18 @@ export default class VectorsControl extends M.Control {
     this.selectionLayer.removeFeatures([this.emphasis]);
     if (this.isEditionActive) {
       this.isEditionActive = false;
-      this.openEditOptions(this.drawLayer);
+      this.openEditOptions(this.drawLayer, true);
     }
+  }
+
+  /**
+   * Continues drawing selected feature
+   * @public
+   * @function
+   * @api
+   */
+  activeAddPoints() {
+    this.getImpl().addAddPointsInteraction(this.drawLayer, this.feature);
   }
 
   /**
@@ -1583,6 +1596,7 @@ export default class VectorsControl extends M.Control {
   showFeatureInfo() {
     const infoContainer = document.querySelector('#drawingtools #featureInfo');
     document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'none';
+    document.querySelector('#drawingtools button.m-vector-layer-add-points').style.display = 'none';
     if (infoContainer !== null) {
       infoContainer.style.display = 'block';
       infoContainer.innerHTML = '';
@@ -1652,16 +1666,18 @@ export default class VectorsControl extends M.Control {
             }
           }
 
-          if (this.geometry === 'LineString') {
-            document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
-            const elem = document.getElementById(id);
-            if (elem !== null) {
-              elem.addEventListener('click', () => {
-                elem.classList.remove('m-vectors-3d-measure');
-                elem.innerHTML = getValue('calculating');
-                this.getImpl().get3DLength(id);
-              });
-            }
+          document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
+          if (!this.isDrawingActive) {
+            document.querySelector('#drawingtools button.m-vector-layer-add-points').style.display = 'block';
+          }
+
+          const elem = document.getElementById(id);
+          if (elem !== null) {
+            elem.addEventListener('click', () => {
+              elem.classList.remove('m-vectors-3d-measure');
+              elem.innerHTML = getValue('calculating');
+              this.getImpl().get3DLength(id);
+            });
           }
         }
         break;
@@ -1684,6 +1700,10 @@ export default class VectorsControl extends M.Control {
             document.querySelector('#colorSelector').value = style.fill.color;
             this.currentThickness = style.stroke.width || 6;
             document.querySelector('#thicknessSelector').value = style.stroke.width || 6;
+          }
+
+          if (this.geometry === 'Polygon') {
+            document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
           }
         }
         break;

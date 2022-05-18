@@ -102,7 +102,7 @@ export default class LyrCompareControl extends M.Control {
      * @private
      * @type {Number}
      */
-    this.comparisonMode = values.comparisonMode;
+    this.comparisonMode = values.comparisonMode; // 0: desactivado, 1: vertical, 2: horizontal, 3: multivista
 
     /**
      * Layer A default
@@ -198,6 +198,7 @@ export default class LyrCompareControl extends M.Control {
           tooltip_vcurtain: getValue('tooltip_vcurtain'),
           tooltip_hcurtain: getValue('tooltip_hcurtain'),
           tooltip_multicurtain: getValue('tooltip_multicurtain'),
+          tooltip_deactivatecurtain: getValue('tooltip_deactivatecurtain'),
           opacity: getValue('opacity'),
           static: getValue('static'),
           dynamic: getValue('dynamic'),
@@ -228,25 +229,32 @@ export default class LyrCompareControl extends M.Control {
     } else {
       //e2m: Toogle activate/desactivate vcurtain, hcurtain, multicurtain ---> comparisonMode = 1, 2, 3
       this.template.querySelectorAll('button[id^="m-lyrcompare-"]').forEach((button, i) => {
-        button.addEventListener('click', evt => {
-          if (this.comparisonMode === 0) {
-            this.comparisonMode = i + 1;
-            this.activateCurtain();
-            return;
-          } else if (this.comparisonMode === i + 1) {
+        if (button.id==="m-lyrcompare-deactivate"){
+          button.addEventListener('click', evt => {
             this.comparisonMode = 0;
             this.deactivateCurtain();
             return;
-          } else {
-            //Cambiamos de modo de visualización sin apagar/encender la interacción
-            this.comparisonMode = i + 1;
-            this.updateControls();
-            this.getImpl().setComparisonMode(this.comparisonMode);
-          }
-        })
+          }) 
+        } else{
+          button.addEventListener('click', evt => {
+            if (this.comparisonMode === 0) {
+              this.comparisonMode = i + 1;
+              this.activateCurtain();
+              return;
+            } else if (this.comparisonMode === i + 1) {
+              this.comparisonMode = 0;
+              this.deactivateCurtain();
+              return;
+            } else {
+              //Cambiamos de modo de visualización sin apagar/encender la interacción
+              this.comparisonMode = i + 1;
+              this.updateControls();
+              this.getImpl().setComparisonMode(this.comparisonMode);
+            }
+          })          
+        }
       });
     }
-
     return success(this.template);
   }
 
@@ -403,9 +411,11 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   activateCurtain() {
+    console.log("Activate Curtain 2A");
     this.activeDefault();
     this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
     this.updateControls();
+    console.log("Activate Curtain 2B");
   }
 
   /**
@@ -445,6 +455,7 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   deactivateCurtain() {
+
     const swipeControl = document.querySelector('.lyrcompare-swipe-control');
     if (swipeControl) {
       swipeControl.classList.display = 'none !important';
@@ -463,6 +474,7 @@ export default class LyrCompareControl extends M.Control {
 
     this.removeEffectsComparison();
     this.updateControls();
+
   }
 
   /**
@@ -482,7 +494,6 @@ export default class LyrCompareControl extends M.Control {
     if (this.template === null){
       return;
     }
-    console.log('manageLyrAvailable at CurtainCompare');
     this.updateLyrsAvailables(lyrList,"A");
     this.updateLyrsAvailables(lyrList,"B");
     this.updateLyrsAvailables(lyrList,"C");
@@ -517,6 +528,9 @@ export default class LyrCompareControl extends M.Control {
       });
 
       this.template.querySelector('input').disabled = true; //Deshabilita el range del radio
+      this.template.querySelector('#div-m-lyrcompare-transparent-dynamic').disabled = true; // Deshabilita options de tipo de control de cortina
+      this.template.querySelector('#div-m-lyrcompare-transparent-static').disabled = true; // Deshabilita options de tipo de control de cortina
+      this.template.querySelector('#div-m-lyrcompare-transparent-mixed').disabled = true; // Deshabilita options de tipo de control de cortina
       return;
     } else if (this.comparisonMode === 1) {
       if (swapControl) swapControl.style.opacity = '1';
@@ -551,6 +565,10 @@ export default class LyrCompareControl extends M.Control {
     }
 
     this.template.querySelector('input').disabled = false; //Habilita el range del radio
+    this.template.querySelector('#div-m-lyrcompare-transparent-dynamic').disabled = false; // Habilita options de tipo de control de cortina
+    this.template.querySelector('#div-m-lyrcompare-transparent-static').disabled = false; // Habilita options de tipo de control de cortina
+    this.template.querySelector('#div-m-lyrcompare-transparent-mixed').disabled = false; // Habilita options de tipo de control de cortina
+
   }
 
   activateByMode() {

@@ -71,6 +71,8 @@ class Vector extends Layer {
 
     this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
 
+    this.visibility = options.visibility !== false;
+
     // [WARN]
     // applyOLLayerSetStyleHook();
   }
@@ -89,7 +91,6 @@ class Vector extends Layer {
     map.on(EventType.CHANGE_PROJ, this.setProjection_.bind(this), this);
     this.ol3Layer = new OLLayerVector(this.vendorOptions_);
     this.updateSource_();
-
     this.setVisible(this.visibility);
     const olMap = this.map.getMapImpl();
     olMap.addLayer(this.ol3Layer);

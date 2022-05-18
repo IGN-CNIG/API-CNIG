@@ -74,6 +74,10 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TR':top right
   - 'BL':bottom left
   - 'BR':bottom right
+- **interfazmode**. Indica la modalidad de envío de la incidencia
+  - 'simple': se usará un cleinte de correo para enviar la incidencia.
+  - 'advance': se usará el gestor de incidencias Incigeo
+  - 'both': el usuario puede elegir el tipo de incidencias a enviar.
 - **buzones**. Contiene un array con los objetos qued definen el nombre y direcciones de los buzones de incidencias. Cada onjeto buzón contiene dos parámetros.
   - 'name': nombre del propietario del buzón de incidencias.
   - 'email': correo electrónico del buzón.
@@ -81,7 +85,10 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'id': identificador de la lista.
   - 'name': nombre de la lista.
   - 'mandatory': indica si el usuario está obligado a legir una opción.
-- **themeList**. Lista de control con los temas por los que podemos clasificar una incidencia.
+- **themeList**. Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades
+  - 'idTheme': identificador de código de tema.
+  - 'nameTheme': nombre del tema de error.
+  - 'emailTheme': correo de la entidad responsable de subsanar este error.
 - **errorList**. Lista de control con las posibles categorizaciones del error.
 - **productList**. Lista de control con los productos del IGN en los que se ha detectado el error.
 
@@ -103,6 +110,7 @@ const mp = new M.plugin.Incicarto({
   collapsed: false,
   collapsible: true,
   position: 'TL',
+  interfazmode:'both', //simple, advance, both
   buzones: [{
     name: 'Cartografía (MTN, BTN, RT, HY, Pob, BCN, Prvinciales, escalas pequeñas)',
     email: 'cartografia.ign@mitma.es',
@@ -131,10 +139,16 @@ const mp = new M.plugin.Incicarto({
     }
   ],
   themeList: [
-    'No especificado',
-    'Relieve',
-    'Hidrografía',
-    '...',
+    {
+      idTheme: 1,
+      nameTheme: 'No especificado',
+      emailTheme: 'consultas@cnig.es',
+    },
+    {
+      idTheme: 2,
+      nameTheme: 'Relieve',
+      emailTheme: 'cartografia.ign@mitma.es',
+    },
   ],
   errorList: [
     'No especificado',
@@ -159,6 +173,7 @@ Para el stack de desarrollo de este componente se ha utilizado
 
 * NodeJS Version: 14.16
 * NPM Version: 6.14.11
+* Entorno Windows.
 
 ## 📐 Para configurar el stack de desarrollo
 

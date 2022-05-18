@@ -69,6 +69,9 @@ export default class Incicarto extends M.Plugin {
 
     this.controllist_ = options.controllist || [];
 
+    this.interfazmode_ = options.interfazmode;
+    if (this.interfazmode_ === undefined) this.interfazmode_ = 'simple';
+    
     this.buzones_ = options.buzones;
     this.themes_ = options.themeList;
     this.errors_ = options.errorList;
@@ -124,6 +127,7 @@ export default class Incicarto extends M.Plugin {
         wfszoom: this.wfszoom_, 
         precharged: this.precharged_,
         controllist: this.controllist_,
+        interfazmode: this.interfazmode_,
         buzones: this.buzones_,
         themes: this.themes_,
         errors: this.errors_,

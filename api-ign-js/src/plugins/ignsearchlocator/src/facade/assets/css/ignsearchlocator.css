@@ -478,6 +478,7 @@ DROPDOWN ****************************/
      FIREFOX HACKS
 ****************************/
 @-moz-document url-prefix() {
+
     #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
         border: 1px solid rgb(167, 160, 160);
         padding: 1px 1px 2px 3px;
@@ -515,16 +516,16 @@ DROPDOWN ****************************/
 
 
     input#LON {
-        width: 19%;
+        width: 22%;
     }
 
     input#LAT {
-        width: 19%;
+        width: 22%;
     }
 
-    #m-xylocator-dms>div>div>input[type="number"] {
-        width: 2rem;
-    }
+    /*#m-xylocator-dms>div>div>input[type="number"] {
+        width: 2.2rem;
+    }*/
 
     input#UTM-X {
         width: 36%;

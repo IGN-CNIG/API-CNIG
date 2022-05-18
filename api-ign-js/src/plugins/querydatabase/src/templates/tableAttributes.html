@@ -1,0 +1,21 @@
+<div id="m-querydatabase-table-content">
+    <div id="m-querydatabase-table-container">
+      <table id="attributedata" summary="Tabla con los atributos de los elementos de la capa vectorial">
+            <thead>
+              <tr class="m-querydatabase-table-thead">
+                <th>Nombre</th>
+                <th>Tipo dato</th>
+              </tr>
+            </thead>
+            <tbody>
+                {{#each attributes}}
+                <tr>
+                  <td>{{Nombre}}</td>
+                  <td>{{TipoDato}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <button id="atras">Ver tablas</button>
+</div>

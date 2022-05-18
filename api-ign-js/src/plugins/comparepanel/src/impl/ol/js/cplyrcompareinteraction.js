@@ -71,13 +71,19 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     if (map) {
       this.createSwipeControl();
       if (this.OLVersion === "OL6"){
-        this.layers_[0].prerender = this.layers_[0].on('prerender', this.precomposeA_.bind(this));
-        this.layers_[0].postrender = this.layers_[0].on('postrender', this.postcomposeA_.bind(this));
-        this.layers_[1].prerender = this.layers_[1].on('prerender', this.precomposeB_.bind(this));
-        this.layers_[1].postrender = this.layers_[1].on('postrender', this.postcomposeB_.bind(this));
-        if (this.layers_[2] !== undefined && this.layers_[3] !== undefined) {
+        if (this.layers_[0] !== undefined) {
+          this.layers_[0].prerender = this.layers_[0].on('prerender', this.precomposeA_.bind(this));
+          this.layers_[0].postrender = this.layers_[0].on('postrender', this.postcomposeA_.bind(this));
+        }
+        if (this.layers_[1] !== undefined) {
+          this.layers_[1].prerender = this.layers_[1].on('prerender', this.precomposeB_.bind(this));
+          this.layers_[1].postrender = this.layers_[1].on('postrender', this.postcomposeB_.bind(this));
+        }
+        if (this.layers_[2] !== undefined) {
           this.layers_[2].prerender = this.layers_[2].on('prerender', this.precomposeC_.bind(this));
           this.layers_[2].postrender = this.layers_[2].on('postrender', this.postcomposeC_.bind(this));
+        }
+        if (this.layers_[3] !== undefined) {
           this.layers_[3].prerender = this.layers_[3].on('prerender', this.precomposeD_.bind(this));
           this.layers_[3].postrender = this.layers_[3].on('postrender', this.postcomposeD_.bind(this));
         }
@@ -107,7 +113,9 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     this.opacityVal = opacityVal;
     if (this.getMap()) {
       for (let i = 0; i < this.layers_.length; i += 1) {
-        this.layers_[i].setOpacity(this.opacityVal / 100);
+        if (this.layers_[i] !== undefined) {
+          this.layers_[i].setOpacity(this.opacityVal / 100);
+        }
       }
     }
   }
@@ -179,7 +187,6 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       l.postrender = layers[0].on('postrender', this.postcomposeB_.bind(this));
       this.getMap().renderSync();
     }
-
     this.layers_.push(layers[0]);
   }
 
@@ -196,12 +203,11 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       l.postrender = layers[0].on('postrender', this.postcomposeC_.bind(this));
       this.getMap().renderSync();
     }
-
     this.layers_.push(layers[0]);
   }
 
   /**
-   * Add Layer C to clip
+   * Add Layer D to clip
    *
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
@@ -301,30 +307,61 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
   precomposeA_(e) {
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
-    const lienzoMapa = this.map_.getSize();
-    let margenClip = 0; //Stroke size in pixels.
+    const mapSize = this.map_.getSize();
+    const widthClip = this.pos[0];
+    const heightClip = this.pos[1];
+    const margenClip = 0; //Stroke size in pixels.
+    let tl;
+    let tr;
+    let br;
+    let bl;
     //e2m: Canvas size --> lienzoMapa
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 1) {
-        ctx.rect(0, 0, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1]); //e2m: left fixed
+        tl =  ol.render.getRenderPixel(e, [0, 0]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
       } else if (this.comparisonMode === 2) {
-        ctx.rect(0, 0, lienzoMapa[0], lienzoMapa[1] * ratio / 2 - margenClip * ratio);//e2m: up fixed
+        tl =  ol.render.getRenderPixel(e, [0, 0]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]/2]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]/2]);
       } else if (this.comparisonMode === 3) {
-        ctx.rect(0, 0, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1] / 2);//e2m: up&left fixed
+        tl =  ol.render.getRenderPixel(e, [0, 0]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]/2]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]/2]);
       }
     } else {
       if (this.comparisonMode === 1) {
-        ctx.rect(0, 0, this.pos[0] - margenClip * ratio, lienzoMapa[1]); //e2m: left dynamic
+        tl =  ol.render.getRenderPixel(e, [0, 0]);
+        tr =  ol.render.getRenderPixel(e, [widthClip, 0]);
+        br =  ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
       } else if (this.comparisonMode === 2) {
-        ctx.rect(0, 0, ctx.canvas.width, this.pos[1] * ratio - margenClip * ratio);  //e2m: up dynamic
+        tl =  ol.render.getRenderPixel(e, [0, 0]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
+        bl =  ol.render.getRenderPixel(e, [0, heightClip]);
       } else if (this.comparisonMode === 3) {
-        ctx.rect(0, 0, this.pos[0] - margenClip * ratio, this.pos[1] - margenClip * ratio);  //e2m: up&left dynamic
+        tl =  ol.render.getRenderPixel(e, [0, 0]);
+        tr =  ol.render.getRenderPixel(e, [widthClip, 0]);
+        br =  ol.render.getRenderPixel(e, [widthClip, heightClip]);
+        bl =  ol.render.getRenderPixel(e, [0, heightClip]);
+        // console.log(`Mapa A: TopLeft:${tl} - TopRight:${tr} - BottomRight:${br} - BottomLeft:${bl}`);
       }
     }
-
+    if (tl!==undefined){
+      ctx.moveTo(tl[0], tl[1]);
+      ctx.lineTo(bl[0], bl[1]);
+      ctx.lineTo(br[0], br[1]);
+      ctx.lineTo(tr[0], tr[1]);
+      ctx.closePath();   
+    }
     /**
      *
      * e2m: con esto podemos pintar una línea de color para contornear la capa. Pero no queda bien
@@ -351,29 +388,62 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
     const lienzoMapa = this.map_.getSize();
-    let margenClip = 0; //Stroke size in pixels.
+    const mapSize = lienzoMapa;
+    const widthClip = this.pos[0];
+    const heightClip = this.pos[1];
+    const margenClip = 0; //Stroke size in pixels.
+    let tl;
+    let tr;
+    let br;
+    let bl;    
     //e2m: Canvas size --> lienzoMapa
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 1) {
-        ctx.rect(lienzoMapa[0] * ratio / 2 + margenClip * ratio, 0, ctx.canvas.width - lienzoMapa[0] * ratio / 2, lienzoMapa[1]); //e2m: Right fixed
+        tl =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]]);    
       } else if (this.comparisonMode === 2) {
-        ctx.rect(0, lienzoMapa[1] * ratio / 2 + margenClip * ratio, ctx.canvas.width, ctx.canvas.height - lienzoMapa[1] * ratio / 2); //e2m: Down fixed
+        tl =  ol.render.getRenderPixel(e, [0,mapSize[1]/2]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]/2]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);        
       } else if (this.comparisonMode === 3) {
-        ctx.rect(lienzoMapa[0] * ratio / 2, 0, ctx.canvas.width - lienzoMapa[0] * ratio / 2, lienzoMapa[1] / 2); //e2m: up&right fixed
+        tl =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]/2]);
+        bl =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]/2]);
       }
     } else {
       if (this.comparisonMode === 1) {
-        ctx.rect(this.pos[0], 0, lienzoMapa[0] - this.pos[0], lienzoMapa[1]); //e2m: Right dynamic
+        //ctx.rect(this.pos[0], 0, lienzoMapa[0] - this.pos[0], lienzoMapa[1]); //e2m: Right dynamic
+        tl =  ol.render.getRenderPixel(e, [widthClip, 0]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
       } else if (this.comparisonMode === 2) {
-        ctx.rect(0, this.pos[1], ctx.canvas.width, ctx.canvas.height - this.pos[1]); //e2m: Down dynamic
+        //ctx.rect(0, this.pos[1], ctx.canvas.width, ctx.canvas.height - this.pos[1]); //e2m: Down dynamic
+        tl =  ol.render.getRenderPixel(e, [0,heightClip]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
       } else if (this.comparisonMode === 3) {
-        //ctx.rect(this.pos[0], 0, lienzoMapa[0] - this.pos[0], lienzoMapa[1]); //e2m: split screen three. maybe
-        ctx.rect(this.pos[0], 0, lienzoMapa[0] - this.pos[0], this.pos[1]); //e2m: up&right dynamic
+        tl =  ol.render.getRenderPixel(e, [widthClip, 0]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
+        bl =  ol.render.getRenderPixel(e, [widthClip, heightClip]);
       }
-    }
+   }
+   if (tl!==undefined){
+    ctx.moveTo(tl[0], tl[1]);
+    ctx.lineTo(bl[0], bl[1]);
+    ctx.lineTo(br[0], br[1]);
+    ctx.lineTo(tr[0], tr[1]);
+    ctx.closePath();   
+  }   
 
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
@@ -394,20 +464,40 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
     const lienzoMapa = this.map_.getSize();
-    let margenClip = 0; //Stroke size in pixels.
+    const mapSize = lienzoMapa;
+    const widthClip = this.pos[0];
+    const heightClip = this.pos[1];
+    const margenClip = 0; //Stroke size in pixels.
+    let tl;
+    let tr;
+    let br;
+    let bl;        
     //e2m: Canvas size --> lienzoMapa
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 3) {
-        ctx.rect(0, lienzoMapa[1] * ratio / 2, lienzoMapa[0] / 2 * ratio - margenClip * ratio, lienzoMapa[1]);  //e2m: down&left fixed
+        tl =  ol.render.getRenderPixel(e, [0,mapSize[1]/2]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]/2]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]); 
       }
     } else {
       if (this.comparisonMode === 3) {
-        ctx.rect(0, this.pos[1] * ratio, this.pos[0] * ratio - margenClip * ratio, (lienzoMapa[1] - this.pos[1]) * ratio - margenClip * ratio);  //e2m: down&left dynamic
+        tl =  ol.render.getRenderPixel(e, [0,heightClip]);
+        tr =  ol.render.getRenderPixel(e, [widthClip, heightClip]);
+        br =  ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
       }
     }
+    if (tl!==undefined){
+      ctx.moveTo(tl[0], tl[1]);
+      ctx.lineTo(bl[0], bl[1]);
+      ctx.lineTo(br[0], br[1]);
+      ctx.lineTo(tr[0], tr[1]);
+      ctx.closePath();   
+    }   
 
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
@@ -428,21 +518,40 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     const ctx = e.context;
     const ratio = e.frameState.pixelRatio;
     const lienzoMapa = this.map_.getSize();
-    let margenClip = 0; //Stroke size in pixels.
+    const mapSize = lienzoMapa;
+    const widthClip = this.pos[0];
+    const heightClip = this.pos[1];
+    const margenClip = 0; //Stroke size in pixels.
+    let tl;
+    let tr;
+    let br;
+    let bl; 
     //e2m: Canvas size --> lienzoMapa
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 3) {
-        ctx.rect(lienzoMapa[0] * ratio / 2, lienzoMapa[1] * ratio / 2, ctx.canvas.width * ratio / 2 - margenClip * ratio, ctx.canvas.height * ratio / 2 - margenClip * ratio); //e2m: down&right fixed
+        tl =  ol.render.getRenderPixel(e, [mapSize[0]/2,mapSize[1]/2]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]/2]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [mapSize[0]/2,mapSize[1]]);
       }
     } else {
       if (this.comparisonMode === 3) {
-        ctx.rect(this.pos[0] * ratio, this.pos[1] * ratio, (ctx.canvas.width - this.pos[0]) * ratio - margenClip * ratio, (ctx.canvas.height - this.pos[1]) * ratio - margenClip * ratio); //e2m: down&right dynamic
+        tl =  ol.render.getRenderPixel(e, [widthClip,heightClip]);
+        tr =  ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
+        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [widthClip,mapSize[1]]);
       }
     }
-
+    if (tl!==undefined){
+      ctx.moveTo(tl[0], tl[1]);
+      ctx.lineTo(bl[0], bl[1]);
+      ctx.lineTo(br[0], br[1]);
+      ctx.lineTo(tr[0], tr[1]);
+      ctx.closePath();   
+    }   
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
       ctx.strokeStyle = 'rgba(0, 102, 204, 0.9)';

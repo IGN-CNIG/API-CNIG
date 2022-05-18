@@ -4,6 +4,7 @@ M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
+  layers: ['TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false'],
 });
 
 const mp = new TOC({

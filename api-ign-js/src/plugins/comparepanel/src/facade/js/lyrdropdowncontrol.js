@@ -85,6 +85,7 @@ export default class LyrdropdownControl extends M.Control {
       //e2m: Transform stringLyr definition to apicnigLyr
       this.layers = this.transformToLayers(this.layers);
       //e2m: getting layers array with name and legend for plugin
+      
       let capas = this.layers.map((layer) => {
         return layer instanceof Object ? {  name: layer.name, legend: layer.legend } : { name: layer, legend: layer };
       });
@@ -123,12 +124,16 @@ export default class LyrdropdownControl extends M.Control {
         const layerSel = this.map.getLayers().filter((layer) => {
           return layer.name === evt.target.value;
         });
-        //Get selected layer from layer array
+        // Get selected layer from layer array
         console.log(this.layerSelected);
         this.layerSelected.setVisible(false);
         this.removeEffects();
         if (layerSel.length === 0){
-          return;//No layer option is selected
+          /**
+           * Se ha seleccionado la opción de eliminar capa
+           */
+          //this.getImpl().removeLayer(layer.getImpl().getOL3Layer());
+          return; // No layer option is selected
         }
 
         this.layerSelected = layerSel[0];
@@ -166,17 +171,22 @@ export default class LyrdropdownControl extends M.Control {
    * @api stable
    */
   deactivate() {
-    console.log('deactivate');
+
     if (this.layerSelected === null) this.layerSelected = this.layers[0];
     let names = this.layers.map((layer) => {
       return layer instanceof Object ? { name: layer.name } : { name: layer };
     });
 
-    this.removeEffects();
-    this.layerSelected.setVisible(false);
-    if (names.length >= 1) {
-      this.template.querySelector('#m-lyrdropdown-selector').disabled = true;
+    try {
+      this.removeEffects();
+      this.layerSelected.setVisible(false);
+      if (names.length >= 1) {
+        this.template.querySelector('#m-lyrdropdown-selector').disabled = true;
+      }
+    } catch (error) {
+      console.error(error);
     }
+
   }
 
   /**

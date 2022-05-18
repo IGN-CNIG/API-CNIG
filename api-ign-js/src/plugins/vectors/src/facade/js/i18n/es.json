@@ -87,5 +87,6 @@
   "from_url": "Desde URL",
   "url_layer": "URL del fichero",
   "add_layer": "Añadir capa",
-  "add_from_url": "Añadir capa desde URL"
+  "add_from_url": "Añadir capa desde URL",
+  "add_points": "Añadir puntos"
 }

@@ -247,6 +247,10 @@ div#m-comparepanel-title {
 	content: "\e920";
 }
 
+.cp-gestion-testing:before {
+	content: "\e816";
+}
+
 .cp-icon:before {
     content: "\e802";
     font-family: 'comparepanel' !important;
@@ -331,6 +335,10 @@ div#m-comparepanel-title {
 
 .cp-simbolo-menu2:before {
 	content: "\e9c4";
+}
+
+.cp-deactivateCurtain:before {
+	content: "\e804";
 }
 
 .cp-modeviz0:before {

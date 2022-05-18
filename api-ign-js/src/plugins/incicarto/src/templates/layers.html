@@ -20,6 +20,7 @@
             </td>
             <td>
               <div class="m-incicarto-layer-actions">
+                <!-- Ocultamos algunos botones que no se van a usar para simplificar la creación de geometrías -->
                 <span title="{{../translations.show_hide}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="{{#if visible}}icon-visible{{^}}icon-invisible{{/if}} m-incicarto-layer-toogle"></span>
                 <span title="{{../translations.add_geom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-add m-incicarto-layer-add"></span>
                 {{#if line}}
@@ -33,8 +34,8 @@
                   <span title="{{../translations.layer_zoom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-zoom m-incicarto-layer-zoom"></span>
                 {{/if}}
                 <!--<span title="{{../translations.download_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-download m-incicarto-layer-download"></span>-->
-                <span title="{{../translations.notify_err}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-notify m-incicarto-layer-download"></span>
                 <span title="{{../translations.delete_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-delete m-incicarto-layer-delete"></span>
+                <span title="{{../translations.notify_err}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-notify m-incicarto-layer-download"></span>
               </div>
             </td>
           </tr>

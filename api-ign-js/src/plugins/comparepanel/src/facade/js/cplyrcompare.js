@@ -58,7 +58,6 @@ export default class LyrCompare extends M.Plugin {
      */
     this.controls_ = [];
 
-
     /**
      * Facade of the map
      * @private
@@ -300,7 +299,6 @@ export default class LyrCompare extends M.Plugin {
     this.control_.manageLyrAvailable(lyrList);
   }
 
-
   /**
    * This function gets metadata plugin
    *
@@ -313,7 +311,6 @@ export default class LyrCompare extends M.Plugin {
     return this.metadata_;
   }
 
-
   /**
    * Activate plugin
    *
@@ -322,6 +319,7 @@ export default class LyrCompare extends M.Plugin {
    * @api
    */
   activate() {
+    console.log("Activate Curtain 1");
     this.control_.activateCurtain();
   }
 
@@ -333,8 +331,25 @@ export default class LyrCompare extends M.Plugin {
    * @api
    */
   deactivate() {
+    console.log("Deactivate Curtain 1");
     this.control_.deactivateCurtain();
   }
+
+  /**
+   * Desactivate plugin
+   *
+   * @function
+   * @public
+   * @api
+   * @return {Boolean}
+   */
+   isActive() {
+
+    return this.control_.comparisonMode===0 ? false : true;
+
+  }
+
+
 
   /**
    * This

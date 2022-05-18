@@ -400,6 +400,10 @@ div.m-panel>button {
   display: table;
 }
 
+.m-areas>div.m-area>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-background {
+  display: flex !important;
+}
+
 .m-areas>div.m-area>div.m-panel.m-tools>div.m-panel-controls>div.m-control.activated>button {
   color: #337ceb
 }

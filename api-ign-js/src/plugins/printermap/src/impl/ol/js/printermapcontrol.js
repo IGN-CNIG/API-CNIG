@@ -98,7 +98,7 @@ export default class PrinterMapControl extends M.impl.Control {
       // eslint-disable-next-line no-underscore-dangle
       } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
         success(this.encodeImage(layer));
-      } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
+      } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type) > -1) {
         success(this.encodeXYZ(layer));
       } else {
         success(this.encodeWFS(layer));
@@ -395,11 +395,16 @@ export default class PrinterMapControl extends M.impl.Control {
     const olLayer = layerImpl.getOL3Layer();
     const layerSource = olLayer.getSource();
     const tileGrid = layerSource.getTileGrid();
-    const layerUrl = layer.url;
+    let layerUrl = layer.url;
     const layerOpacity = olLayer.getOpacity();
     const layerExtent = tileGrid.getExtent();
     const tileSize = tileGrid.getTileSize();
     const resolutions = tileGrid.getResolutions();
+
+    if (layer.type === M.layer.type.OSM) {
+      layerUrl = layer.url || 'http://tile.openstreetmap.org/';
+    }
+
     return {
       opacity: layerOpacity,
       baseURL: layerUrl,

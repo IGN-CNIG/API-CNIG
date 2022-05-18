@@ -65,10 +65,10 @@ const viales = new M.layer.WFS({
 //map.addWFS(provincias);
 //map.addWFS(viales);
 map.addPlugin(mp);
-map.addPlugin(mp2);
-map.addPlugin(mp3);
-map.addPlugin(mp4);
-map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
+// map.addPlugin(mp2);
+// map.addPlugin(mp3);
+// map.addPlugin(mp4);
+// map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
 map.addPlugin(new M.plugin.BackImgLayer({
   position: 'TR',
   layerId: 0,
@@ -78,24 +78,6 @@ map.addPlugin(new M.plugin.BackImgLayer({
   columnsNumber: 4,
   empty: true,
   layerOpts: [
-    {
-      id: 'raster',
-      preview: '',
-      title: 'Mapa',
-      layers: [
-        new M.layer.WMTS({
-          url: 'https://www.ign.es/wmts/mapa-raster?',
-          name: 'MTN',
-          legend: 'Mapa',
-          matrixSet: 'GoogleMapsCompatible',
-          transparent: false,
-          displayInLayerSwitcher: false,
-          queryable: false,
-          visible: true,
-          format: 'image/jpeg',
-        }),
-      ],
-    },
     {
       id: 'imagen',
       preview: '',
@@ -111,6 +93,24 @@ map.addPlugin(new M.plugin.BackImgLayer({
           queryable: false,
           visible: true,
           tileGridMaxZoom: 19,
+        }),
+      ],
+    },
+    {
+      id: 'raster',
+      preview: '',
+      title: 'Mapa',
+      layers: [
+        new M.layer.WMTS({
+          url: 'https://www.ign.es/wmts/mapa-raster?',
+          name: 'MTN',
+          legend: 'Mapa',
+          matrixSet: 'GoogleMapsCompatible',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/jpeg',
         }),
       ],
     },

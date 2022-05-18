@@ -30,7 +30,10 @@ const updateElement = (viewState, container, map, exact) => {
     containerVariable.innerHTML = formatLongNumber(num);
   }
 
-  document.querySelector('#m-level-number').innerHTML = Math.round(map.getZoom(), 2);
+  const elem = document.querySelector('#m-level-number');
+  if (elem !== null) {
+    elem.innerHTML = Math.round(map.getZoom(), 2);
+  }
 };
 
 /**

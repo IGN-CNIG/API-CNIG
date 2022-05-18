@@ -1159,6 +1159,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   goToLocation(listElement) {
+    const text = listElement.querySelector('#info').innerHTML;
+    this.html.querySelector('#m-ignsearchlocator-search-input').value = text;
     this.currentElement = listElement; // <li>
     const selectedObject = this.findClickedItem(listElement, this.allCandidates); // json
     this.createGeometryStyles();

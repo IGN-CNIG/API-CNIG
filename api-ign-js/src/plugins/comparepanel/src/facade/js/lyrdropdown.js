@@ -145,6 +145,7 @@ export default class Lyrdropdown extends M.Plugin {
    * @api stable
    */
   destroy() {
+    console.log("Destry LyerDown");
     this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.collapsible,this.collapsed,this.layers] = [null, null, null, null, null, null];
   }
