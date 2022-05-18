@@ -501,7 +501,7 @@ export default class IncicartoControl extends M.Control {
 
     const dialog = M.template.compileSync(modaladvance, optionsModal);
     M.dialog.info(dialog,"Enviar notificación de incidencia en cartografía");
-    
+
     setTimeout(() => {
 
       document.querySelector("#m-plugin-incicarto-send-email").addEventListener('click',(e)=>{
@@ -513,15 +513,13 @@ export default class IncicartoControl extends M.Control {
           return;
         }
         console.log(`Envío de correo electrónico ${destinatary}`);
-        window.open(mailto_composed,'emailWindow');
-        // document.querySelector('div.m-mapea-container div.m-dialog').remove(); // Así cerramos a lo loco
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
         this.showMessageInModalAdvanced("El correo con la incidencia se ha generado correctamente. Utilice su cliente habitual para enviarlo.","okmessage");
         document.querySelector("#m-plugin-incicarto-send-email").disabled=true;
       });
 
       document.querySelector("#m-plugin-incicarto-connect-incicarto").addEventListener('click',(e)=>{
-        
+
 
         this.composeIncidencia4INCIGEO();
         document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled = true;
@@ -535,7 +533,7 @@ export default class IncicartoControl extends M.Control {
       const titleModal = document.querySelector('div.m-dialog.info div.m-title');
       titleModal.style.backgroundColor = '#71a7d3';
     }, 10);
-    
+
   }
 
   /**
@@ -562,7 +560,7 @@ export default class IncicartoControl extends M.Control {
     }
     const dialog = M.template.compileSync(modalsimple, optionsModal);
     M.dialog.info(dialog,"Enviar notificación de incidencia en cartografía");
-    
+
     setTimeout(() => {
 
       document.querySelector("#m-plugin-incicarto-simple-send-email").addEventListener('click',(e)=>{
@@ -578,7 +576,7 @@ export default class IncicartoControl extends M.Control {
       });
 
       document.getElementById('fileUpload').onchange = function () {
-        
+
         let fileName = 'Adjuntar fichero &hellip;';
         if( this.files ){
           if(this.files.length > 1 ){
@@ -591,7 +589,7 @@ export default class IncicartoControl extends M.Control {
         document.getElementById('infoUpload').innerHTML=fileName;
       };
 
-       
+
       // Para configurar la apariencia del botón Cerrar del modal
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
       button.innerHTML = getValue('close');
@@ -600,13 +598,13 @@ export default class IncicartoControl extends M.Control {
       const titleModal = document.querySelector('div.m-dialog.info div.m-title');
       titleModal.style.backgroundColor = '#71a7d3';
     }, 10);
-    
+
   }
 
 /**
- * 
- * @param {*} messageText 
- * @param {String} classHTML Nombre de la clase para asignar estilo: okmessage, nakmessage 
+ *
+ * @param {*} messageText
+ * @param {String} classHTML Nombre de la clase para asignar estilo: okmessage, nakmessage
  */
   showMessageInModalAdvanced(messageText,classHTML){
     this.resetMessageInModalAdvanced();
@@ -625,8 +623,8 @@ export default class IncicartoControl extends M.Control {
 
   /**
    * Valida los datos marcados por el usuario
-   * 
-   * @returns 
+   *
+   * @returns
    */
   validateIncidenciaMessageInModalAdvanced(){
 
@@ -651,9 +649,9 @@ export default class IncicartoControl extends M.Control {
 
   /**
    * Compone el mensaje para el correo enviado por el interfaz Modal Advanced
-   * 
-   * @param {*} destinatary 
-   * @returns 
+   *
+   * @param {*} destinatary
+   * @returns
    */
   composeMailtoSend(destinatary) {
 
@@ -680,15 +678,21 @@ export default class IncicartoControl extends M.Control {
       "product": product,
       "geometry": this.geometryIncidence,
     };
-           
-    return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
+    let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
+    emailForm.action = `${M.config.MAPEA_URL}api/email`;
+    document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
+    document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
+    document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
+    emailForm.submit();
 
+    //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
+    return true;
   }
 
   /**
    * Compone el mensaje para el correo enviado por el interfaz Modal Simple
-   * 
-   * @returns 
+   *
+   * @returns
    */
   composeSimpleMailtoSend() {
 
@@ -707,7 +711,7 @@ export default class IncicartoControl extends M.Control {
     const { code, units } = this.map_.getProjection();
     let shareURL = `?center=${x},${y},zoom=${this.map_.getZoom()}`;
     shareURL = shareURL.concat(`,projection=${code}*${units}`);
-    
+
     let propiedades = {
       "descripción": errDescription,
       "theme": theme,
@@ -731,7 +735,7 @@ export default class IncicartoControl extends M.Control {
 
   /**
    * Compone el protocolo de comunicación con el SOAP de INCIGEO
-   * 
+   *
    */
   composeIncidencia4INCIGEO(){
 
@@ -744,10 +748,10 @@ export default class IncicartoControl extends M.Control {
     console.log("Proceso de alta en INCIGEO");
 
     const soapCreateError = (tokenAccess) => {
-  
+
       const codeViaEntrada = "WEBAPP";    // Directo, IDV
       const procedenciaCd = "USUARIO_EXTERNO";  // SIGNA  , INCICARTO
-      
+
       const prioridad = "1" //Opciones 1: normal, 99: urgente.
 
       let themeMetadataContainer = document.querySelector("#theme-select");
@@ -763,7 +767,7 @@ export default class IncicartoControl extends M.Control {
       let emailUser = document.querySelector("#email-notify").value;
       let descriptionErr = "Descripción del error";
       let urlVisualizador = "https://iberpix.cnig.es/iberpix/visor/";
-    
+
       let strNewErrorMessage3 = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.b2tconcept.com/webservices/">
                       <soapenv:Header/>
                       <soapenv:Body>
@@ -790,14 +794,14 @@ export default class IncicartoControl extends M.Control {
                         </web:CreateErrorsIGN>
                       </soapenv:Body>
                     </soapenv:Envelope>`;
-    
-    
+
+
       const parserRequest = new DOMParser();
       const xmlDOMRequest = parserRequest.parseFromString(strNewErrorMessage3, "text/xml");
       console.log(xmlDOMRequest);
-    
-    
-    
+
+
+
       function createCORSRequest(method, url) {
         var xhr = new XMLHttpRequest();
         if ("withCredentials" in xhr) {
@@ -814,13 +818,13 @@ export default class IncicartoControl extends M.Control {
         }
         return xhr;
       }
-      
+
       var xhr = createCORSRequest("POST", urlINCIGEOCreateError);
       if (!xhr) {
         console.log("XHR issue");
         return;
       }
-    
+
       xhr.onload = function () {
         var results = xhr.responseText;
         const parserResponse = new DOMParser();
@@ -846,10 +850,10 @@ export default class IncicartoControl extends M.Control {
         //console.info(returnDS); // Descripción literal del código devuelto "La operación se ha realizado correctamente"
         //console.info(codeInc);  // Devuelve código de incidencia para seguimiento
     }
-    
+
       xhr.setRequestHeader('Content-Type', 'text/xml');
       xhr.send(strNewErrorMessage3);
-    
+
     }
 
     const soapTokenRequest = () => {
@@ -863,7 +867,7 @@ export default class IncicartoControl extends M.Control {
                       </web:DoLogin>
                     </soapenv:Body>
                    </soapenv:Envelope>`;
-    
+
       function createCORSRequest(method, url) {
         var xhr = new XMLHttpRequest();
         if ("withCredentials" in xhr) {
@@ -883,7 +887,7 @@ export default class IncicartoControl extends M.Control {
         console.log("XHR issue");
         return;
       }
-    
+
       xhr.onload = function () {
         var results = xhr.responseText;
         const parser = new DOMParser();
@@ -894,7 +898,7 @@ export default class IncicartoControl extends M.Control {
         console.log(results);
         soapCreateError(value);
       }
-    
+
       xhr.setRequestHeader('Content-Type', 'text/xml');
       xhr.send(strTokenRequest);
     }
@@ -903,9 +907,9 @@ export default class IncicartoControl extends M.Control {
     setTimeout(() => {
       soapTokenRequest();
     }, 250);
-    
+
     this.showMessageInModalAdvanced("Conectando con INCIGEO para enviar incidencia","okmessage");
-    
+
   }
 
   openAddWFS() {
@@ -1123,7 +1127,7 @@ export default class IncicartoControl extends M.Control {
 
 
 
-  
+
   /**
    * Changes style of current feature.
    * @public
@@ -1310,7 +1314,7 @@ export default class IncicartoControl extends M.Control {
     }
   }
 
-  
+
 
 
   /**
@@ -1559,7 +1563,7 @@ export default class IncicartoControl extends M.Control {
         break;
     }
 
-   
+
     if (geojsonLayer.features.length > 0){
       this.geometryIncidence = arrayContent;
       this.geometryIncidenceJSON = geojsonLayer;
@@ -2018,10 +2022,10 @@ export default class IncicartoControl extends M.Control {
     if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
       document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
     }
-    
+
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
     if (cond || !this.isDrawingActive) {
-      
+
       this.invokeEscKey();
       this.drawLayer = layer;
       this.isDrawingActive = true;
