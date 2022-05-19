@@ -266,6 +266,21 @@
                         idTheme: 9,
                         nameTheme: 'Límite de CCAA o municipio',
                         emailTheme: 'limites_municipales@mitma.es',
+                      },
+                      {
+                        idTheme: 10,
+                        nameTheme: 'Pruebas',
+                        emailTheme: 'danielleon@guadaltel.com',
+                      },
+                      {
+                        idTheme: 10,
+                        nameTheme: 'Pruebas Guadaltel',
+                        emailTheme: 'albertobuces@guadaltel.com',
+                      },
+                      {
+                        idTheme: 11,
+                        nameTheme: 'Pruebas IGN',
+                        emailTheme: 'aurelio.aragon@cnig.es',
                       }
                     ],
                     errorList: [
