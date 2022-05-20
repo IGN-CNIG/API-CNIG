@@ -80,7 +80,8 @@ public class EmailWS {
    
    private File createFile(InputStream fileStream, FormDataContentDisposition fileDetail){
 	   File file = null;
-	   if(fileStream != null && fileDetail != null){
+	   if(fileStream != null && fileDetail != null &&
+			   fileDetail.getFileName() != null && !fileDetail.getFileName().isEmpty()){
 		   try {
 			    String fileName = fileDetail.getFileName();
 			    int index = fileName.lastIndexOf(".");

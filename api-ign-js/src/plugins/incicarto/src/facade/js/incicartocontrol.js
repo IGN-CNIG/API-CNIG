@@ -572,7 +572,7 @@ export default class IncicartoControl extends M.Control {
         //window.open(mailto_composed,'emailWindow');
         // document.querySelector('div.m-mapea-container div.m-dialog').remove(); // Así cerramos a lo loco
         document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
-        this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctamente (simple).","okmessage");
+        this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctamente.","okmessage");
       });
 
       document.getElementById('fileUpload').onchange = function () {
@@ -684,8 +684,10 @@ export default class IncicartoControl extends M.Control {
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
     document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
     let inputFile = document.querySelector('#fileUpload');
-    let inputFileForm = document.querySelector('#fileUploadForm');
-    inputFileForm.files = inputFile.files;
+    if(inputFile.files.length > 0){
+      let inputFileForm = document.querySelector('#fileUploadForm');
+      inputFileForm.files = inputFile.files;
+    }
     emailForm.submit();
 
     //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
@@ -731,8 +733,10 @@ export default class IncicartoControl extends M.Control {
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
     document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
     let inputFile = document.querySelector('#fileUpload');
-    let inputFileForm = document.querySelector('#fileUploadForm');
-    inputFileForm.files = inputFile.files;
+    if(inputFile.files.length > 0){
+      let inputFileForm = document.querySelector('#fileUploadForm');
+      inputFileForm.files = inputFile.files;
+    }
     emailForm.submit();
 
     //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(this.geometryIncidenceJSON);
