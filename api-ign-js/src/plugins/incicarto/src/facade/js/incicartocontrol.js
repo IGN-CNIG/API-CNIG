@@ -514,7 +514,7 @@ export default class IncicartoControl extends M.Control {
         }
         console.log(`Envío de correo electrónico ${destinatary}`);
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
-        this.showMessageInModalAdvanced("El correo con la incidencia se ha generado correctamente. Utilice su cliente habitual para enviarlo.","okmessage");
+        this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctamente.","okmessage");
         document.querySelector("#m-plugin-incicarto-send-email").disabled=true;
       });
 
@@ -569,10 +569,10 @@ export default class IncicartoControl extends M.Control {
           console.log("El mail no ha sido validado");
           return;
         }
-        window.open(mailto_composed,'emailWindow');
+        //window.open(mailto_composed,'emailWindow');
         // document.querySelector('div.m-mapea-container div.m-dialog').remove(); // Así cerramos a lo loco
         document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
-        this.showMessageInModalAdvanced("El correo con la incidencia se ha generado correctamente. Utilice su cliente habitual para enviarlo.","okmessage");
+        this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctamente (simple).","okmessage");
       });
 
       document.getElementById('fileUpload').onchange = function () {
@@ -683,6 +683,9 @@ export default class IncicartoControl extends M.Control {
     document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
     document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
+    let inputFile = document.querySelector('#fileUpload');
+    let inputFileForm = document.querySelector('#fileUploadForm');
+    inputFileForm.files = inputFile.files;
     emailForm.submit();
 
     //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
@@ -712,25 +715,28 @@ export default class IncicartoControl extends M.Control {
     let shareURL = `?center=${x},${y},zoom=${this.map_.getZoom()}`;
     shareURL = shareURL.concat(`,projection=${code}*${units}`);
 
-    let propiedades = {
-      "descripción": errDescription,
+    let email_body = {
+      "description": errDescription,
       "theme": theme,
-      "destinatary": destinatary,
-      "URL": window.location.href,
-      "paramsURL": encodeURI(shareURL),
-    }
+      "geometry": this.geometryIncidenceJSON,
+    };
 
-    // e2m: así sacamos la capas
-    console.log(this.map_.getLayers());
-
-    if (this.geometryIncidenceJSON.features.length>0){
-      this.geometryIncidenceJSON.features[0].properties=propiedades;
-    }
-    console.log(`mailto: ${destinatary}`);
+/*    console.log(`mailto: ${destinatary}`);
     console.log(`subject: ${email_subject}`);
-    console.log(JSON.stringify(this.geometryIncidenceJSON));
+    console.log(JSON.stringify(this.geometryIncidenceJSON));*/
 
-    return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(this.geometryIncidenceJSON);
+    let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
+    emailForm.action = `${M.config.MAPEA_URL}api/email`;
+    document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
+    document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
+    document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
+    let inputFile = document.querySelector('#fileUpload');
+    let inputFileForm = document.querySelector('#fileUploadForm');
+    inputFileForm.files = inputFile.files;
+    emailForm.submit();
+
+    //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(this.geometryIncidenceJSON);
+    return true;
   }
 
   /**

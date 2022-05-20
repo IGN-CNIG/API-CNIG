@@ -273,12 +273,12 @@
                         emailTheme: 'danielleon@guadaltel.com',
                       },
                       {
-                        idTheme: 10,
+                        idTheme: 11,
                         nameTheme: 'Pruebas Guadaltel',
                         emailTheme: 'albertobuces@guadaltel.com',
                       },
                       {
-                        idTheme: 11,
+                        idTheme: 12,
                         nameTheme: 'Pruebas IGN',
                         emailTheme: 'aurelio.aragon@cnig.es',
                       }

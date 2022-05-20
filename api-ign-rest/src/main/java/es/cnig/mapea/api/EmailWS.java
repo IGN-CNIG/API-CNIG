@@ -67,9 +67,9 @@ public class EmailWS {
       JSONObject msg = new JSONObject();
       String message = "Email enviado correctamente";
       File file = createFile(fileStream, fileDetail);
-      boolean enviado = sendEmailSMTP(mailto, subject, body, file);
-      if(!enviado){
-    	  message = "Ha ocurrido un error y no se ha podido enviar el email, por favor intentelo más tarde";
+      String error = sendEmailSMTP(mailto, subject, body, file);
+      if(error != null && !error.isEmpty()){
+    	  message = error;
       }
       if(file != null){
     	  file.delete();
@@ -102,8 +102,8 @@ public class EmailWS {
 	   return file;
    }
 
-   private boolean sendEmailSMTP(String destinatario, String asunto, String cuerpo, File fichAdjunto){
-	   boolean result = true;
+   private String sendEmailSMTP(String destinatario, String asunto, String cuerpo, File fichAdjunto){
+	   String result = null;
 	   // Esto es lo que va delante de @gmail.com en tu cuenta de correo. Es el remitente también.
 	   String remitente = configProperties.getString("smtp.remitente");
 	   String usuario = configProperties.getString("smtp.user");
@@ -127,7 +127,7 @@ public class EmailWS {
 	   Transport transport = null;
 	   try {
 		   message.setFrom(new InternetAddress(remitente));
-		   message.addRecipients(Message.RecipientType.TO, destinatario); //Se podrían añadir varios de la misma manera
+		   message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario)); //Se podrían añadir varios de la misma manera
 		   message.setSubject(asunto);
 		   if(fichAdjunto != null){
 			   //Adjunto
@@ -154,7 +154,7 @@ public class EmailWS {
 		   transport.sendMessage(message, message.getAllRecipients());
 	   }catch (MessagingException me) {
 		   me.printStackTrace();
-		   result = false;
+		   result = me.getMessage();
 	   }finally{
 		   if(transport != null){
 			   try {

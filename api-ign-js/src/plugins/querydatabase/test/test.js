@@ -101,9 +101,9 @@ const mp = new QueryDatabase({
     user: 'nomenclator',
     password: 'ren5ob_Quedd',
     schema: 'nomenclator',
-    table: 'namedplace',
-    attributes: ['identidad', 'localtype', 'beginlifespanversion', 'codigo_ine', 'codigo_ngbe'],
-    filters: ['localtype', 'codigo_ine'],
+    table: 'nombresgeograficostodos',
+    attributes: ['identidad', 'etiqueta', 'tipo', 'codigo_ngbe', 'fuente'],
+    filters: ['etiqueta', 'tipo'],
   },
   styles: styles
 });

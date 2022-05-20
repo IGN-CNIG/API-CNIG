@@ -48,6 +48,16 @@
             <div class="m-plugin-incicarto-html">
                 <button id="m-plugin-incicarto-simple-send-email">{{translations.btntext1}}</button>
             </div>
+            <!-- Se crea un form multipart para que se puedan enviar archivos adjuntos en el email -->
+            <form id="m-plugin-incicarto-email-form" action="/api/email" method="post"
+            enctype="multipart/form-data" target="form-target" style="display:none">
+            <input type="hidden" id="m-plugin-incicarto-email-subject" name="subject" value=""/>
+            <input type="hidden" id="m-plugin-incicarto-email-mailto" name="mailto" value=""/>
+            <input type="hidden" id="m-plugin-incicarto-email-body" name="body" value=""/>
+            <input type="file" name="file" id="fileUploadForm" class="inputfile" data-multiple-caption="{count} ficheros seleccionados" multiple="" hidden="">
+          </form>
+            <!-- Se pone un iframe hidden como target del post para que no actualice la pagina con la respuesta  -->
+            <iframe name="form-target" hidden></iframe>
             <div class="m-plugin-incicarto-html">
                 <p id ="result-notification"></p>
             </div>

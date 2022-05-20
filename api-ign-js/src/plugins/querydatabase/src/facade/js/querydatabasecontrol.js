@@ -298,6 +298,7 @@
     if(filtros){
       url = url.concat(filtros);
     }
+    url = url.concat('&busquedaGeneral=etiqueta;tipo@mont*a');
       M.remote.get(url).then((response) => {
         const pagina = JSON.parse(response.text);
         if(pagina && pagina.results){
