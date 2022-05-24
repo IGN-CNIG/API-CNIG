@@ -95,6 +95,7 @@ public class DataSourceConfiguration {
 		hikariDataSource.setPassword(customDatasource.getPassword());
 		hikariDataSource.setDriverClassName(driverClassName);
 		hikariDataSource.setMaximumPoolSize(this.maxPoolSize);
+		hikariDataSource.setReadOnly(true);
 		return hikariDataSource;
 	}
 }

@@ -9,13 +9,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
+import com.zaxxer.hikari.HikariDataSource;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,8 +129,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 
 		List<DatosTabla> result = new LinkedList<DatosTabla>();
 		Connection conn = null;
-		String query = customQuery(params, schema, table);
 		try{
+			String query = customQuery(params, schema, table);
 			if(query != null && !"".equals(query)){
 				conn = datasource.getConnection();
 				int totalResultados = getTotalResultados(conn, query);
@@ -156,6 +160,36 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+		return result;
+	}
+	
+	@Override
+	public List<DatosTabla> getLayerQueryData(Map<String, List<String>> params, CustomPagination paginacion){
+		List<DatosTabla> result = null;
+		if(params.containsKey("layer")){
+			String tabla = "public.geojsonLayer_" + new Date().getTime();
+			String layer = params.get("layer").get(0);
+			params.remove("layer");
+			Connection conn = null;
+			try{
+				((HikariDataSource)datasource).setReadOnly(false);
+				conn = datasource.getConnection();
+				createGeojsonTable(conn, tabla);
+				insertsGeojsonForeignTable(new JSONObject(layer), conn, tabla);
+				result = getLayerFiltered(conn, tabla, params, paginacion);
+			}catch(SQLException e){
+				e.printStackTrace();
+				paginacion.setError(e.getMessage());
+			}finally{
+				try {
+					deleteGeojsonTable(conn, tabla);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}else{
+			paginacion.setError("El parametro layer es obligatorio");
 		}
 		return result;
 	}
@@ -197,7 +231,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				query.append(addPaginacion(paginacion));
 				log.info("Obteniendo datos");
 				PreparedStatement ps = null;
-				ps = switchFormat(conn, paginacion.getFormato().toLowerCase(), query.toString(), geomColumn, aliasGeom, columnas);
+				ps = switchFormat(conn, paginacion.getFormato().toLowerCase(), query.toString(), geomColumn, aliasGeom, columnas, filtros.containsKey("bbox") ? filtros.get("bbox").get(0) : "");
 				ResultSet rs = ps.executeQuery();
 				ResultSetMetaData rsmd = rs.getMetaData();
 				while(rs.next()){
@@ -427,10 +461,24 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return null;
 	}
 	
-	private String customQuery(Map<String, List<String>> params, String schema, String table){
-		
+	private String customQuery(Map<String, List<String>> params, String schema, String table) throws SQLException{
+		StringBuilder result = new StringBuilder();
+		if(params.containsKey("query")){
+			String query = params.get("query").get(0);
+			if(validCustomQuery(query)){
+				int index = query.toLowerCase().indexOf("where");
+				if(index >= 0){//se hace esto para no sustituir un posible * en el select
+					String select = query.substring(0, index);
+					String where = query.substring(index);
+					query = select.concat(where.replace("*", "%"));
+				}
+				return query;
+			}else{
+				throw new SQLException("Operación no permitida");
+			}
+		}else{
 			String paramValue = "*";
-			StringBuilder result = new StringBuilder("SELECT ");
+			result.append("SELECT ");
 			if(params.containsKey("select")){
 				paramValue = params.get("select").get(0); 
 			}
@@ -483,8 +531,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 					result.append(paramValue);
 				}
 			}
-			
-			return result.toString();
+		}
+		return result.toString();
 	}
 	
 	/**
@@ -557,7 +605,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return result.toString();
 	}
 	
-	private PreparedStatement switchFormat(Connection conn, String formato, String query, String geomColumn, String aliasGeom, String columnas){
+	private PreparedStatement switchFormat(Connection conn, String formato, String query, String geomColumn, String aliasGeom, String columnas, String bbox){
 		PreparedStatement ps = null;
 		try{
 			if("wkt".equals(formato)){
@@ -569,7 +617,9 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			}else if("gml".equals(formato)){
 				ps = conn.prepareStatement(getGML(query, geomColumn, columnas));
 			}else if("mvt".equals(formato)){
-				ps = conn.prepareStatement(getMVT(query, geomColumn));
+				query = query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",", ", ST_transform(" + geomColumn + ", 3857) as " + geomColumn + ",");
+				String tileEnvelope = getTileEnvelope(conn, query, geomColumn, bbox);
+				ps = conn.prepareStatement(getMVT(query, geomColumn, tileEnvelope));
 			}else{
 				ps = conn.prepareStatement(getWKT(query, geomColumn, aliasGeom));
 			}
@@ -580,7 +630,14 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	}
 	
 	private String getWKT(String query, String geomColumn, String aliasGeom){
-		return query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",", ", ST_asText(st_force2d(ST_transform("+geomColumn+", 4326))) as " + aliasGeom + ",");
+		String result = "";
+		//para el servicio de consulta filtrada
+		if(query.contains(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",")){
+			result = query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",", ", ST_asText(st_force2d(ST_transform("+geomColumn+", 4326))) as " + aliasGeom + ",");
+		}else{//para el servicio de capa filtrada
+			result = query.replace("SELECT " + geomColumn + ",", "SELECT ST_asText(" + geomColumn + ") as " + aliasGeom + ",");
+		}
+		return result;
 	}
 	
 	private String getGeoJson(String query, String geomColumn){
@@ -591,6 +648,21 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		result.append(" 'type', 'Feature',");
 		result.append(" 'geometry', ST_AsGeoJSON(row." + geomColumn + ", 9, 0)::jsonb,");
 		result.append(" 'properties', to_jsonb(row) - '" + geomColumn + "'");
+		result.append(" ) AS feature");
+		result.append(" FROM (");
+		result.append(query);
+		result.append(") AS row) AS features");
+		return result.toString();
+	}
+	
+	private String getGeojsonLayer(String query){
+		StringBuilder result = new StringBuilder("SELECT jsonb_build_object(");
+		result.append(" 'type', 'FeatureCollection',");
+		result.append(" 'features', jsonb_agg(feature))::text as geojson");
+		result.append(" FROM (SELECT jsonb_build_object(");
+		result.append(" 'type', 'Feature',");
+		result.append(" 'geometry', ST_AsGeoJSON(row.geometry, 9, 0)::jsonb,");
+		result.append(" 'properties', row.properties");
 		result.append(" ) AS feature");
 		result.append(" FROM (");
 		result.append(query);
@@ -615,12 +687,50 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	}
 	
 	//Solo para Postgis >= 3.0.0
-	private String getMVT(String query, String geomColumn){
+	private String getMVT(String query, String geomColumn, String tileEnvelope){
 		StringBuilder result = new StringBuilder("WITH mvtgeom AS(");
-		result.append("SELECT ST_AsMVTGeom("+geomColumn+", ST_TileEnvelope(2, 1, 1), 3857, 256, true) AS geom");
-		result.append(" FROM ("+query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",", ", ST_transform(" + geomColumn + ", 3857) as " + geomColumn + ",")+") as query");
+		result.append("SELECT ST_AsMVTGeom("+geomColumn+", " + tileEnvelope + ", 3857, 0, false) AS geom");
+		result.append(" FROM ("+ query +") as query");
 		result.append(") SELECT ST_AsMVT(mvtgeom.*, 'cnig', 3857) as mvt FROM mvtgeom");
 		return result.toString();
+	}
+	
+	private String getTileEnvelope(Connection conn, String query, String geomColumn, String bbox) throws SQLException{
+		StringBuilder tileEnvelope = new StringBuilder();
+		if(bbox != null && !bbox.isEmpty()){//se obtiene en base al filtro por bbox
+			String[] splitGeom = bbox.split("srid");
+			String geomValue = splitGeom[0].replace("$", " ");
+			String srid = splitGeom[1];
+			tileEnvelope.append("ST_Transform(ST_geomfromtext('"+geomValue+"', "+srid+"), 3857)");
+		}else{//se obtiene el bbox de los resultados de la query
+			tileEnvelope.append("ST_GeomFromText('");
+			tileEnvelope.append(getTileEnvelopeByQuery(conn, query, geomColumn));
+			tileEnvelope.append("', 3857)");
+		}
+		return tileEnvelope.toString();
+	}
+	
+	private String getTileEnvelopeByQuery(Connection conn, String query, String geomColumn) throws SQLException{
+		StringBuilder tileEnvelope = new StringBuilder("POLYGON((");
+		StringBuilder bboxQuery = new StringBuilder("SELECT min(st_x(" + geomColumn + ")) as min_x,");
+		bboxQuery.append(" min(st_y(" + geomColumn + ")) as min_y,");
+	    bboxQuery.append(" max(st_x(" + geomColumn + ")) as max_x, max(st_y(" + geomColumn + ")) as max_y");
+		bboxQuery.append(" FROM (" + query + ") as query");
+		PreparedStatement ps = conn.prepareStatement(bboxQuery.toString());
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		double minx = rs.getDouble("min_x");
+		double miny = rs.getDouble("min_y");
+		double maxx = rs.getDouble("max_x");
+		double maxy = rs.getDouble("max_y");
+		ps.close();
+		tileEnvelope.append(minx + " " + miny + ",");
+		tileEnvelope.append(minx + " " + maxy + ",");
+		tileEnvelope.append(maxx + " " + maxy + ",");
+		tileEnvelope.append(maxx + " " + miny + ",");
+		tileEnvelope.append(minx + " " + miny + "))");
+		
+		return tileEnvelope.toString();
 	}
 	
 	private String getGMLAttributes(String columnas){
@@ -640,5 +750,150 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		}
 		result.append(" || '</ExtendedData>'");
 		return result.toString();
-	} 
+	}
+	
+	private boolean validCustomQuery(String query){
+		boolean result = true;
+		if(query == null || "".equals(query)){
+			result = false;
+		}
+		String queryUpper = query.toUpperCase();
+		
+		//La query debe empezar por select
+		if(result && !queryUpper.startsWith("SELECT")){
+			result = false;
+		}
+		
+		//Comprobacion de clausulas no permitidas
+		if(result && (queryUpper.contains("UPDATE ") || queryUpper.contains("INSERT ") || queryUpper.contains("DELETE ") || queryUpper.contains("DROP ")
+				|| queryUpper.contains("CREATE ") || queryUpper.contains("ALTER ") || queryUpper.contains("DO ") || queryUpper.contains("GRANT ")
+				|| queryUpper.contains("SET ") || queryUpper.contains("TRUNCATE ") || queryUpper.contains("LOAD ") || queryUpper.contains("LOCK ")
+				|| queryUpper.contains("PREPARE ") || queryUpper.contains("REFRESH ") || queryUpper.contains("REINDEX ") || queryUpper.contains("CALL "))){
+			result = false;
+		}
+		
+		return result;
+	}
+	
+	private void createGeojsonTable(Connection conn, String tabla) throws SQLException{
+		StringBuilder query = new StringBuilder("CREATE TABLE " + tabla + " (");
+		query.append("geometry geometry, ");
+		query.append("properties jsonb )");
+		conn.prepareStatement(query.toString()).executeUpdate();
+	}
+	
+	private void deleteGeojsonTable(Connection conn, String tabla) throws SQLException{
+		String query = "DROP TABLE " + tabla;
+		conn.prepareStatement(query).executeUpdate();
+	}
+	
+	private void insertsGeojsonForeignTable(JSONObject geojson, Connection conn, String tabla) throws SQLException{
+		JSONArray features = geojson.getJSONArray("features");
+		for(int i = 0; i < features.length(); i++){
+			insertFeature(conn, tabla, features.getJSONObject(i));
+		}
+	}
+	
+	private void insertFeature(Connection conn, String tabla, JSONObject feature) throws SQLException{
+		String query = getInsertFeatureQuery(feature, tabla);
+		conn.prepareStatement(query).executeUpdate();
+	}
+	
+	private String getInsertFeatureQuery(JSONObject feature, String tabla){
+		StringBuilder query = new StringBuilder("INSERT INTO " + tabla);
+		query.append(" VALUES (");
+		JSONObject jsonGeom = feature.getJSONObject("geometry");
+		query.append("ST_GeomFromGeoJson('" + jsonGeom.toString() + "'), '");
+		JSONObject properties = feature.getJSONObject("properties");
+		query.append(properties.toString() + "'::jsonb");
+		query.append(");");
+		return query.toString();
+	}
+	
+	private List<DatosTabla> getLayerFiltered(Connection conn, String tabla, Map<String, List<String>> filtros, CustomPagination paginacion) throws SQLException{
+		List<DatosTabla> result = new LinkedList<DatosTabla>();
+		String columnas = getLayerProperties(conn, tabla);
+		StringBuilder query = new StringBuilder(getFilteredLayerQuery(tabla, formatLayerColumns(columnas), filtros));
+		query.append(addPaginacion(paginacion));
+		int totalResultados = getTotalResultados(conn, query.toString());
+//		PreparedStatement ps = conn.prepareStatement(getGeojsonLayer(query));
+		PreparedStatement ps = switchFormat(conn, paginacion.getFormato(), query.toString(), "geometry", "geometry", columnas, "");
+		ResultSet rs = ps.executeQuery();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		while(rs.next()){
+			DatosTabla dt = new DatosTabla();
+			for(int i = 1; i <= rsmd.getColumnCount(); i++){
+				if ("mvt".equals(rsmd.getColumnLabel(i))){
+					try{
+						InputStream binaryStream = rs.getBinaryStream(i);
+						byte[] mvt = new byte[binaryStream.available()];
+						binaryStream.read(mvt);
+						binaryStream.close();
+						File mvtFile = File.createTempFile("mvtTest", ".mvt");
+						OutputStream os = new FileOutputStream(mvtFile);
+						os.write(mvt);
+						os.close();
+						dt.addToMap("mvt", mvtFile.getAbsolutePath());
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}else{
+					Object value = rs.getObject(i);
+					dt.addToMap(rsmd.getColumnLabel(i), value);
+				}
+			}
+			result.add(dt);
+		}
+		paginacion.setSize(totalResultados);
+		ps.close();
+		return result;
+	}
+	
+	private String getLayerProperties(Connection conn, String tabla) throws SQLException{
+		StringBuilder query = new StringBuilder("select string_agg(jsonb_object_keys, ', ') ");
+		query.append("from jsonb_object_keys((select properties from " + tabla + " limit 1))");
+		PreparedStatement ps = conn.prepareStatement(query.toString());
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		String result = rs.getString(1);
+		
+		return result;
+	}
+	
+	private String formatLayerColumns(String columnas){
+		StringBuilder result = new StringBuilder();
+		String[] listColumnas = columnas.split(", ");
+		
+		for(String c : listColumnas){
+			result.append("properties ->> '");
+			result.append(c + "' as " + c +",");
+		}
+		
+		return result.substring(0, result.length()-1);
+	}
+	
+	private String getFilteredLayerQuery(String tabla, String columnas, Map<String, List<String>> filtros){
+		StringBuilder result = new StringBuilder("SELECT geometry, " + columnas + " FROM " + tabla);
+		result.append(sqlLayerFilter(filtros));
+		return result.toString();
+	}
+	
+	private String sqlLayerFilter(Map<String, List<String>> filtros){
+		if(!filtros.isEmpty()){
+			StringBuilder result = new StringBuilder(" WHERE ");
+			Iterator<String> keyset = filtros.keySet().iterator();
+			while(keyset.hasNext()){
+				String key = keyset.next();
+				String value = filtros.get(key).get(0);
+				if("filtrosgeom".equals(key)){
+					result.append(value);
+				}else{
+					result.append("properties ->> '" + key + "' ilike '%" + value + "%'");
+				}
+				result.append(" AND ");
+			}
+			return result.substring(0, result.lastIndexOf("AND"));
+		}
+		return "";
+	}
 }

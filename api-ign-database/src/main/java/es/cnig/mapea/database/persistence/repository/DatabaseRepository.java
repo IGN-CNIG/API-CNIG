@@ -18,5 +18,7 @@ public interface DatabaseRepository {
 	
 	public List<DatosTabla> getCustomQueryData(String schema, String table, Map<String, List<String>> params, CustomPagination paginacion);
 	
+	public List<DatosTabla> getLayerQueryData(Map<String, List<String>> params, CustomPagination paginacion);
+	
 	public List<String> getDomainValues(String schema, String table, String columna);
 }

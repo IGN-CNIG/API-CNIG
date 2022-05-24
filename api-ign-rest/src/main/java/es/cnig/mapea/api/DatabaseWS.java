@@ -40,6 +40,8 @@ public class DatabaseWS {
 
 	@Context
 	private ServletContext context;
+	
+	private String defaultFormat = "wkt";
    
    /**
     * The available databases
@@ -176,6 +178,7 @@ public class DatabaseWS {
 		   @Context UriInfo uriInfo) {
 		JSONArray rowsJSON = new JSONArray();
 		String schema = "public";
+		defaultFormat = "wkt";
 		String callbackFn = null;
 		boolean token = false;
 		boolean consumible = false;
@@ -275,6 +278,59 @@ public class DatabaseWS {
 	    }
 	}
 	
+	@GET
+	@Path("/{database}/layerfilter")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_OCTET_STREAM })
+	public Response layerQuery (@PathParam("database") String database, @Context UriInfo uriInfo){
+		JSONArray rowsJSON = new JSONArray();
+		defaultFormat = "geojson";
+		String schema = "public";
+		String callbackFn = null;
+		Map<String, List<String>> params = uriInfo.getQueryParameters();
+		if(params.containsKey("callback")){
+			callbackFn = params.get("callback").get(0);
+			params.remove("callback");
+		}
+		boolean token = false;
+		if(params.containsKey("token")){
+			token = Boolean.valueOf(params.get("token").get(0));
+			params.remove("token");
+		}
+		Pagina pagina = new DatabaseServiceImpl().obtenerDatosLayer(database, schema, params, obtenerPaginacion(params), token);
+		if(pagina.getError() != null && !"".equals(pagina.getError())){
+	    	return Response.serverError().entity(createErrorResponse(pagina.getError(), callbackFn))
+					.header("Content-Type", MediaType.APPLICATION_JSON).build();
+	    }else{
+			List<DatosTabla> data = pagina.getResults();
+			for(DatosTabla dt : data){
+	    		rowsJSON.put(datosTablaToJson(dt));
+			}
+			
+			if("mvt".equals(pagina.getFormato())){
+	    		JSONObject row = (JSONObject) rowsJSON.get(0);
+				String rutaFile = row.getString(pagina.getFormato());
+				File mvtFile = new File(rutaFile);
+				return Response.ok(mvtFile)
+						.header("Content-Disposition", "attachment; filename=\"mvt-cnig.mvt\"")
+						.header("Content-Type", MediaType.APPLICATION_OCTET_STREAM)
+						.build();
+	    	}else if("wkt".equals(pagina.getFormato())){
+				return Response.ok(JSBuilder.wrapCallback(rowsJSON, callbackFn))
+						.header("Content-Type", MediaType.APPLICATION_JSON).build();
+			}else{
+				JSONObject row = (JSONObject) rowsJSON.get(0);
+				String result = row.getString(pagina.getFormato());
+				ResponseBuilder rb = Response.ok(JSBuilder.wrapCallback(result, callbackFn));
+				if("kml".equals(pagina.getFormato()) || "gml".equals(pagina.getFormato())){
+					rb.header("Content-Type", MediaType.APPLICATION_XML);
+				}else{
+					rb.header("Content-Type", MediaType.APPLICATION_JSON);
+				}
+				return rb.build();
+			}
+	    }
+	}
+	
 	/**
 	* Returns the domain values from table column
 	* 
@@ -363,10 +419,10 @@ public class DatabaseWS {
 			if(!"wkt".equalsIgnoreCase(formato) || !"geojson".equalsIgnoreCase(formato) ||
 					!"kml".equalsIgnoreCase(formato) || !"mvt".equalsIgnoreCase(formato) ||
 					!"gml".equalsIgnoreCase(formato)){
-				formato = "wkt";
+				formato = defaultFormat;
 			}
 		}else{
-			formato = "wkt";
+			formato = defaultFormat;
 		}
 	}
 	

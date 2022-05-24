@@ -102,6 +102,28 @@ public class DatabaseServiceImpl implements DatabaseService{
 	}
 	
 	@Override
+	public Pagina obtenerDatosLayer(String dataSourceName, String schema, Map<String, List<String>> params, CustomPagination paginacion, boolean token){
+		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
+		Pagina pagina = new Pagina();
+		int tamPagina = -1;
+		if(params.containsKey("limit")){
+			tamPagina = Integer.parseInt(params.get("limit").get(0));
+		}
+		List<DatosTabla> datos = getDatabaseRepository(ds).getLayerQueryData(params, paginacion);
+		pagina.setResults(datos);
+		if(tamPagina < 0){
+			tamPagina = paginacion.getSize();
+		}
+		pagina.setTamPagina(tamPagina);
+		pagina.setTotalElementos(paginacion.getSize());
+		pagina.setNumPagina(paginacion.getPage());
+		pagina.setError(paginacion.getError());
+		pagina.setFormato(paginacion.getFormato());
+		((HikariDataSource)ds).close();
+		return pagina;
+	}
+	
+	@Override
 	public List<String> obtenerValoresDominio(String dataSourceName, String schema, String table, String columna, boolean token){
 		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
 		List<String> result = getDatabaseRepository(ds).getDomainValues(schema, table, columna);
