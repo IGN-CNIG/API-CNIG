@@ -195,7 +195,7 @@ class MVT extends Vector {
    * @api stable
    */
   isLoaded() {
-    return this.loaded_;
+    return true;
   }
 
   /**
