@@ -2,9 +2,12 @@ package es.cnig.mapea.api;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
@@ -43,6 +46,20 @@ public class DatabaseWS {
 	
 	private String defaultFormat = "wkt";
    
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/conformance")
+	public Response conformance(){
+		JSONObject response = new JSONObject();
+		JSONArray conformanceTo = new JSONArray();
+		conformanceTo.put("http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/core");
+		conformanceTo.put("http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/geojson");
+		conformanceTo.put("http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/gmlsf0");
+		conformanceTo.put("http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/gmlsf2");
+		response.put("conformanceTo", conformanceTo);
+		return Response.ok(JSBuilder.wrapCallback(response, null)).build();
+	}
+	
    /**
     * The available databases
     * 
@@ -54,8 +71,9 @@ public class DatabaseWS {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response showAvailableDatabases (@QueryParam("callback") String callbackFn) {
-		JSONArray databases = new JSONArray();
-      
+		String urlService = callbackFn != null && !callbackFn.isEmpty() ? "?callback="+callbackFn : ""; 
+		JSONArray links = addLinksToReponse(urlService, null);
+		JSONArray databases = new JSONArray();      
 		List<CustomDatasource> datasources = new DatabaseServiceImpl().obtenerDatasources();
 		for(CustomDatasource ds : datasources){
     		JSONObject dsJson = new JSONObject();
@@ -65,8 +83,10 @@ public class DatabaseWS {
     		dsJson.put("NombreBD", ds.getNombreBd());
     		databases.put(dsJson);
 		}
-      
-		return Response.ok(JSBuilder.wrapCallback(databases, callbackFn)).build();
+		JSONObject response = new JSONObject();
+		response.put("links", links);
+		response.put("results", databases);
+		return Response.ok(JSBuilder.wrapCallback(response, callbackFn)).build();
 	}
 
    /**
@@ -79,12 +99,13 @@ public class DatabaseWS {
     * @return the javascript code
     */
 	@GET
-	@Path("/{database}/tables")
+	@Path("/{database}/collections")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response showAvailableTables (@PathParam("database") String database,
 		   @Context UriInfo uriInfo) {
 		String callbackFn = null;
 		Map<String, List<String>> params = uriInfo.getQueryParameters();
+		String urlService = "/" + database + "/collections" + getUrlParams(params);
 		if(params.containsKey("callback")){
 			callbackFn = params.get("callback").get(0);
 			params.remove("callback");
@@ -95,6 +116,7 @@ public class DatabaseWS {
 			params.remove("token");
 		}
 		Pagina pagina = new DatabaseServiceImpl().obtenerTablasGeometricasDataSource(database, obtenerPaginacion(params), token);
+		JSONArray links = addLinksToReponse(urlService, null);
 	    List<Tabla> listTables = pagina.getResults();
 	    JSONArray tablesJSON = new JSONArray();
 	    for (Tabla tabla : listTables) {
@@ -104,9 +126,12 @@ public class DatabaseWS {
 	        tablesJSON.put(json);
 	    }
 	    if(pagina.getError() != null && !"".equals(pagina.getError())){
-	    	return Response.serverError().entity(createErrorResponse(pagina.getError(), callbackFn)).build();
+	    	String[] errorSplit = pagina.getError().split(";");
+			int code = Integer.parseInt(errorSplit[0]);
+	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn)).build();
 	    }else{
 		    JSONObject jsonPagina = getJsonPagina(pagina);
+		    jsonPagina.put("links", links);
 		    jsonPagina.put("results", tablesJSON);
 		    return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn)).build();
 	    }
@@ -130,7 +155,8 @@ public class DatabaseWS {
 		JSONArray attributesJSON = new JSONArray();
 		String schema = "public";
 		String callbackFn = null;
-		Map<String, List<String>> params = uriInfo.getQueryParameters(); 
+		Map<String, List<String>> params = uriInfo.getQueryParameters();
+		String urlService = "/" + database + "/attributes/" + tabla + getUrlParams(params);
 		if(params.containsKey("schema")){
 			schema = params.get("schema").get(0);
 			params.remove("schema");
@@ -145,6 +171,7 @@ public class DatabaseWS {
 			params.remove("token");
 		}
 		Pagina pagina = new DatabaseServiceImpl().obtenerColumnasTabla(database, schema, tabla, obtenerPaginacion(params), token);
+		JSONArray links = addLinksToReponse(urlService, null);
 		List<Columna> listAttributes = pagina.getResults();
 		for(Columna col : listAttributes){
 			JSONObject json = new JSONObject();
@@ -153,9 +180,12 @@ public class DatabaseWS {
 			attributesJSON.put(json);
 		}
 		if(pagina.getError() != null && !"".equals(pagina.getError())){
-	    	return Response.serverError().entity(createErrorResponse(pagina.getError(), callbackFn)).build();
+			String[] errorSplit = pagina.getError().split(";");
+			int code = Integer.parseInt(errorSplit[0]);
+	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn)).build();
 	    }else{
 			JSONObject jsonPagina = getJsonPagina(pagina);
+			jsonPagina.put("links", links);
 			jsonPagina.put("results", attributesJSON);
 			return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn)).build();
 	    }
@@ -172,7 +202,7 @@ public class DatabaseWS {
     * @return the javascript code
     */
 	@GET
-	@Path("/{database}/{tabla}/filtered")
+	@Path("/{database}/collections/{tabla}/items")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_OCTET_STREAM })
 	public Response showRowsFiltered (@PathParam("database") String database, @PathParam("tabla") String tabla,
 		   @Context UriInfo uriInfo) {
@@ -183,6 +213,7 @@ public class DatabaseWS {
 		boolean token = false;
 		boolean consumible = false;
 		Map<String, List<String>> params = uriInfo.getQueryParameters(); 
+		String urlService = "/" + database + "/collections/" + tabla + "/items" + getUrlParams(params);
 		if(params.containsKey("schema")){
 			schema = params.get("schema").get(0);
 			params.remove("schema");
@@ -199,13 +230,17 @@ public class DatabaseWS {
 			consumible = Boolean.valueOf(params.get("consumible").get(0));
 			params.remove("consumible");
 		}
-		Pagina pagina = new DatabaseServiceImpl().obtenerDatosFiltrados(database, schema, tabla, params, obtenerPaginacion(params), token);
+		CustomPagination paginacion = obtenerPaginacion(params);
+		Pagina pagina = new DatabaseServiceImpl().obtenerDatosFiltrados(database, schema, tabla, params, paginacion, token);
+		JSONArray links = addLinksToReponse(urlService, paginacion.getFormato());
 		List<DatosTabla> data = pagina.getResults();
 		for(DatosTabla dt : data){
     		rowsJSON.put(datosTablaToJson(dt));
 		}
 		if(pagina.getError() != null && !"".equals(pagina.getError())){
-	    	return Response.serverError().entity(createErrorResponse(pagina.getError(), callbackFn))
+			String[] errorSplit = pagina.getError().split(";");
+			int code = Integer.parseInt(errorSplit[0]);
+	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
 					.header("Content-Type", MediaType.APPLICATION_JSON).build();
 	    }else{
 	    	if("mvt".equals(pagina.getFormato())){//formato mvt siempre es consumible
@@ -223,16 +258,23 @@ public class DatabaseWS {
 				}else{
 					JSONObject row = (JSONObject) rowsJSON.get(0);
 					String result = row.getString(pagina.getFormato());
-					ResponseBuilder rb = Response.ok(JSBuilder.wrapCallback(result, callbackFn));
+					ResponseBuilder rb = null;
 					if("kml".equals(pagina.getFormato()) || "gml".equals(pagina.getFormato())){
+						rb = Response.ok(JSBuilder.wrapCallback(result, callbackFn));
 						rb.header("Content-Type", MediaType.APPLICATION_XML);
 					}else{
+						JSONObject response = new JSONObject(result);
+						response.put("links", links);
+						response.put("numberMatched", pagina.getTotalElementos());
+						response.put("numberReturned", pagina.getTamPagina());
+						rb = Response.ok(JSBuilder.wrapCallback(response, callbackFn));
 						rb.header("Content-Type", MediaType.APPLICATION_JSON);
 					}
 					return rb.build();
 				}
 			}else{
 				JSONObject jsonPagina = getJsonPagina(pagina);
+				jsonPagina.put("links", links);
 				jsonPagina.put("results", rowsJSON);
 				return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn))
 						.header("Content-Type", MediaType.APPLICATION_JSON).build();
@@ -248,7 +290,8 @@ public class DatabaseWS {
 		JSONArray rowsJSON = new JSONArray();
 		String schema = "public";
 		String callbackFn = null;
-		Map<String, List<String>> params = uriInfo.getQueryParameters(); 
+		Map<String, List<String>> params = uriInfo.getQueryParameters();
+		String urlService = "/" + database + "/" + tabla + "/sql" + getUrlParams(params);
 		if(params.containsKey("schema")){
 			schema = params.get("schema").get(0);
 			params.remove("schema");
@@ -262,9 +305,12 @@ public class DatabaseWS {
 			token = Boolean.valueOf(params.get("token").get(0));
 			params.remove("token");
 		}
-		Pagina pagina = new DatabaseServiceImpl().obtenerDatosPersonalizados(database, schema, tabla, params, obtenerPaginacion(params), token);
+		JSONArray links = addLinksToReponse(urlService, null);
+		Pagina pagina = new DatabaseServiceImpl().obtenerDatosPersonalizados(database, schema, tabla, params, new CustomPagination(), token);
 		if(pagina.getError() != null && !"".equals(pagina.getError())){
-	    	return Response.serverError().entity(createErrorResponse(pagina.getError(), callbackFn))
+			String[] errorSplit = pagina.getError().split(";");
+			int code = Integer.parseInt(errorSplit[0]);
+	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
 					.header("Content-Type", MediaType.APPLICATION_JSON).build();
 	    }else{
 			List<DatosTabla> data = pagina.getResults();
@@ -272,6 +318,7 @@ public class DatabaseWS {
 	    		rowsJSON.put(datosTablaToJson(dt));
 			}
 			JSONObject jsonPagina = getJsonPagina(pagina);
+			jsonPagina.put("links", links);
 			jsonPagina.put("results", rowsJSON);
 			return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn))
 					.header("Content-Type", MediaType.APPLICATION_JSON).build();
@@ -287,6 +334,7 @@ public class DatabaseWS {
 		String schema = "public";
 		String callbackFn = null;
 		Map<String, List<String>> params = uriInfo.getQueryParameters();
+		String urlService = "/" + database + "/layerfilter" + getUrlParams(params);
 		if(params.containsKey("callback")){
 			callbackFn = params.get("callback").get(0);
 			params.remove("callback");
@@ -296,9 +344,13 @@ public class DatabaseWS {
 			token = Boolean.valueOf(params.get("token").get(0));
 			params.remove("token");
 		}
-		Pagina pagina = new DatabaseServiceImpl().obtenerDatosLayer(database, schema, params, obtenerPaginacion(params), token);
+		CustomPagination paginacion = obtenerPaginacion(params);
+		JSONArray links = addLinksToReponse(urlService, paginacion.getFormato());
+		Pagina pagina = new DatabaseServiceImpl().obtenerDatosLayer(database, schema, params, paginacion, token);
 		if(pagina.getError() != null && !"".equals(pagina.getError())){
-	    	return Response.serverError().entity(createErrorResponse(pagina.getError(), callbackFn))
+			String[] errorSplit = pagina.getError().split(";");
+			int code = Integer.parseInt(errorSplit[0]);
+	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
 					.header("Content-Type", MediaType.APPLICATION_JSON).build();
 	    }else{
 			List<DatosTabla> data = pagina.getResults();
@@ -315,15 +367,22 @@ public class DatabaseWS {
 						.header("Content-Type", MediaType.APPLICATION_OCTET_STREAM)
 						.build();
 	    	}else if("wkt".equals(pagina.getFormato())){
-				return Response.ok(JSBuilder.wrapCallback(rowsJSON, callbackFn))
+	    		JSONObject response = new JSONObject();
+	    		response.put("links", links);
+	    		response.put("results", rowsJSON);
+				return Response.ok(JSBuilder.wrapCallback(response, callbackFn))
 						.header("Content-Type", MediaType.APPLICATION_JSON).build();
 			}else{
 				JSONObject row = (JSONObject) rowsJSON.get(0);
 				String result = row.getString(pagina.getFormato());
-				ResponseBuilder rb = Response.ok(JSBuilder.wrapCallback(result, callbackFn));
+				ResponseBuilder rb = null;
 				if("kml".equals(pagina.getFormato()) || "gml".equals(pagina.getFormato())){
+					rb = Response.ok(JSBuilder.wrapCallback(result, callbackFn));
 					rb.header("Content-Type", MediaType.APPLICATION_XML);
 				}else{
+					JSONObject response = new JSONObject(result);
+					response.put("links", links);
+					rb = Response.ok(JSBuilder.wrapCallback(response, callbackFn));
 					rb.header("Content-Type", MediaType.APPLICATION_JSON);
 				}
 				return rb.build();
@@ -349,7 +408,8 @@ public class DatabaseWS {
 		JSONArray domainJson = new JSONArray();
 		String schema = "public";
 		String callbackFn = null;
-		Map<String, List<String>> params = uriInfo.getQueryParameters(); 
+		Map<String, List<String>> params = uriInfo.getQueryParameters();
+		String urlService = "/" + database + "/" + tabla + "/domain/" + columna + getUrlParams(params);
 		if(params.containsKey("schema")){
 			schema = params.get("schema").get(0);
 			params.remove("schema");
@@ -367,20 +427,24 @@ public class DatabaseWS {
 		for(String d : domains){
 			domainJson.put(d);
 		}
-		return Response.ok(JSBuilder.wrapCallback(domainJson, callbackFn)).build();
+		JSONArray links = addLinksToReponse(urlService, null);
+		JSONObject response = new JSONObject();
+		response.put("links", links);
+		response.put("results", domainJson);
+		return Response.ok(JSBuilder.wrapCallback(response, callbackFn)).build();
 	}
    
 	private CustomPagination obtenerPaginacion(Map<String, List<String>> params){
 		CustomPagination paginacion = new CustomPagination();
-		if(params.containsKey("size")){
-			String size = params.get("size").get(0);
-			paginacion.setSize(Integer.parseInt(size));
-			params.remove("size");
+		if(params.containsKey("limit")){
+			String limit = params.get("limit").get(0);
+			paginacion.setLimit(Integer.parseInt(limit));
+			params.remove("limit");
 		}
-		if(params.containsKey("page")){
-			String page = params.get("page").get(0);
-			paginacion.setPage(Integer.parseInt(page));
-			params.remove("page");
+		if(params.containsKey("offset")){
+			String offset = params.get("offset").get(0);
+			paginacion.setOffset(Integer.parseInt(offset));
+			params.remove("offset");
 		}
 		if(params.containsKey("formato")){
 			String formato = params.get("formato").get(0);
@@ -388,7 +452,7 @@ public class DatabaseWS {
 			paginacion.setFormato(formato);
 			params.remove("formato");
 		}else{
-			paginacion.setFormato("wkt");
+			paginacion.setFormato(defaultFormat);
 		}
 		return paginacion;
 	}
@@ -426,10 +490,119 @@ public class DatabaseWS {
 		}
 	}
 	
-	private String createErrorResponse(String description, String callbackFn){
+	private String createErrorResponse(int code, String description, String callbackFn){
 		JSONObject response = new JSONObject();
-		response.put("code", 500);
+		response.put("code", code);
 		response.put("description", description);
 		return JSBuilder.wrapCallback(response, callbackFn);
+	}
+	
+	private JSONArray addLinksToReponse(String url, String formato){
+		ResourceBundle configProperties = ResourceBundle.getBundle("configuration");
+		String mapeaUrl = configProperties.getString("mapea.url") + "api/database";
+		JSONArray links = new JSONArray();
+		links.put(createLink(mapeaUrl+url, "self", getTypeLinkByFormato(formato), "this document"));
+		addAlternateLinks(links, mapeaUrl+url, formato);
+		
+		return links;
+	}
+	
+	private void addAlternateLinks(JSONArray links, String url, String formato){
+		if(formato != null && !formato.isEmpty()){
+			String rel = "alternate";
+			String urlAlternate = "";
+			boolean containsFormat = url.contains("formato="+formato);
+			boolean urlParams = url.contains("?");
+			if(!"wkt".equals(formato)){
+				if(containsFormat){
+					urlAlternate = url.replace("formato="+formato, "formato=wkt");
+				}else if(urlParams){
+					urlAlternate = url.concat("&formato=wkt");
+				}else{
+					urlAlternate = url.concat("?formato=wkt");
+				}
+				links.put(createLink(urlAlternate, rel, MediaType.APPLICATION_JSON, "this document as json"));
+			}
+			if(!"geojson".equals(formato)){
+				links.put(createLink(urlAlternate, rel, MediaType.APPLICATION_JSON, "this document as geojson"));
+			}
+			if(!"gml".equals(formato)){
+				if(containsFormat){
+					urlAlternate = url.replace("formato="+formato, "formato=gml");
+				}else if(urlParams){
+					urlAlternate = url.concat("&formato=gml");
+				}else{
+					urlAlternate = url.concat("?formato=gml");
+				}
+				links.put(createLink(urlAlternate, rel, MediaType.APPLICATION_XML, "this document as gml"));
+			}
+			if(!"kml".equals(formato)){
+				if(containsFormat){
+					urlAlternate = url.replace("formato="+formato, "formato=kml");
+				}else if(urlParams){
+					urlAlternate = url.concat("&formato=kml");
+				}else{
+					urlAlternate = url.concat("?formato=kml");
+				}
+				links.put(createLink(urlAlternate, rel, MediaType.APPLICATION_XML, "this document as kml"));
+			}
+			if(!"mvt".equals(formato)){
+				if(containsFormat){
+					urlAlternate = url.replace("formato="+formato, "formato=mvt");
+				}else if(urlParams){
+					urlAlternate = url.concat("&formato=mvt");
+				}else{
+					urlAlternate = url.concat("?formato=mvt");
+				}
+				links.put(createLink(urlAlternate, rel, MediaType.APPLICATION_OCTET_STREAM, "this document as mvt"));
+			}
+		}
+	}
+	
+	private JSONObject createLink(String href, String rel, String type, String title){
+		JSONObject link = new JSONObject();
+		link.put("href", href);
+		link.put("rel", rel);
+		link.put("type", type);
+		link.put("title", title);
+		return link;
+	}
+	
+	private String getTypeLinkByFormato(String formato){
+		String result = "";
+		if("wkt".equals(formato) || "geojson".equals(formato)){
+			result = MediaType.APPLICATION_JSON;
+		}else if("gml".equals(formato) || "kml".equals(formato)){
+			result = MediaType.APPLICATION_XML;
+		}else if("mvt".equals(formato)){
+			result = MediaType.APPLICATION_OCTET_STREAM;
+		}else{
+			result = MediaType.APPLICATION_JSON;
+		}
+		return result;
+	}
+	
+	private String getUrlParams(Map<String, List<String>> params){
+		StringBuilder result = new StringBuilder("?");
+		if(params != null && !params.isEmpty()){
+			Iterator<String> it = params.keySet().iterator();
+			while(it.hasNext()){
+				String key = it.next();
+				String value = params.get(key).get(0);
+				if("layer".equals(key)){
+					try {
+						String valueEncode = URLEncoder.encode(value, "UTF-8");
+						result.append(key+"="+valueEncode+"&");
+					} catch (UnsupportedEncodingException e) {
+						result.append(key+"="+value+"&");
+						e.printStackTrace();
+					}
+				}else{
+					result.append(key+"="+value+"&");
+				}
+			}
+			return result.substring(0, result.length()-1);
+		}
+		return "";
 	}
 }
