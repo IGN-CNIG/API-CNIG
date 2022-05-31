@@ -72,6 +72,10 @@ class MVT extends Vector {
      * @type {bool}
      */
     this.loaded_ = false;
+
+    this.opacity_ = parameters.opacity || 1;
+
+    this.visibility_ = parameters.visibility !== false;
   }
 
   /**
@@ -105,10 +109,8 @@ class MVT extends Vector {
       extent,
     }, this.vendorOptions_, true));
 
-    if (this.opacity_) {
-      this.setOpacity(this.opacity_);
-    }
-
+    this.setOpacity(this.opacity_);
+    this.setVisible(this.visibility_);
     this.map.getMapImpl().addLayer(this.ol3Layer);
 
     // clear features when zoom changes
@@ -185,6 +187,15 @@ class MVT extends Vector {
       this.loaded_ = true;
       this.facadeVector_.fire(EventType.LOAD);
     }
+  }
+
+  /**
+   * TODO
+   * @function
+   * @api stable
+   */
+  isLoaded() {
+    return this.loaded_;
   }
 
   /**
