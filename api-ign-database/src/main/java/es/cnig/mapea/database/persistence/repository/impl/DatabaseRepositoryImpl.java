@@ -19,6 +19,7 @@ import javax.sql.DataSource;
 import com.zaxxer.hikari.HikariDataSource;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,11 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				+" http://www.opengis.net/ogcapi-features-1/1.0/sf http://www.w3.org/2005/Atom http://schemas.opengis.net/kml/2.3/atom-author-link.xsd"
 				+" http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd\">";
 
-	DataSource datasource;
+	private DataSource datasource;
+	
+	private int errorCode = 0;
+	
+	private String error = "";
 	
 	public DatabaseRepositoryImpl(DataSource datasource){
 		this.datasource = datasource;
@@ -70,6 +75,9 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				result.add(tabla);
 			}
 			ps.close();
+			if(paginacion.getLimit() <= 0 || paginacion.getLimit() > totalResultados){
+				paginacion.setLimit(totalResultados);
+			}
 			paginacion.setSize(totalResultados);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -107,6 +115,9 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				result.add(col);
 			}
 			ps.close();
+			if(paginacion.getLimit() <= 0 || paginacion.getLimit() > totalResultados){
+				paginacion.setLimit(totalResultados);
+			}
 			paginacion.setSize(totalResultados);
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -133,7 +144,17 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			String query = customQuery(params, schema, table);
 			if(query != null && !"".equals(query)){
 				conn = datasource.getConnection();
-				int totalResultados = getTotalResultados(conn, query);
+				int limitIndex = query.toLowerCase().indexOf("limit");
+				int offsetIndex = query.toLowerCase().indexOf("offset");
+				String queryTotal = "";
+				if(limitIndex > 0 && (limitIndex < offsetIndex || offsetIndex < 0)){
+					queryTotal = query.substring(0, limitIndex);
+				}else if (offsetIndex > 0 && (offsetIndex < limitIndex || limitIndex < 0)){
+					queryTotal = query.substring(0, offsetIndex);
+				}else{
+					queryTotal = query;
+				}
+				int totalResultados = getTotalResultados(conn, queryTotal);
 				PreparedStatement ps = conn.prepareStatement(query.toString());
 				ResultSet rs = ps.executeQuery();
 				ResultSetMetaData rsmd = rs.getMetaData();
@@ -146,12 +167,34 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 					result.add(dt);
 				}
 				ps.close();
+				int limit = 0;
+				int offset = 0;
+				if(limitIndex > 0){
+					String limitQuery = query.substring(limitIndex+6);
+					int indexBlank = limitQuery.indexOf(" ");
+					String limitStr = indexBlank >= 0 ? limitQuery.substring(0, indexBlank) : limitQuery;
+					limit = limitStr != null ? Integer.valueOf(limitStr) : 0;
+				}
+				if(offsetIndex > 0){
+					String offsetQuery = query.substring(offsetIndex+7);
+					int indexBlank = offsetQuery.indexOf(" ");
+					String offsetStr = indexBlank >= 0 ? offsetQuery.substring(0, indexBlank) : offsetQuery;
+					offset = offsetStr != null ? Integer.valueOf(offsetStr) : 0;
+				}
+				if(limit > 0 && limit < totalResultados){
+					paginacion.setLimit(limit);
+				}else if(offset > 0){
+					paginacion.setLimit(totalResultados-offset);
+				}else{
+					paginacion.setLimit(totalResultados);
+				}
 				paginacion.setSize(totalResultados);
-				paginacion.setPage(paginacion.getPage());
+				int page = offset > 0 && limit > 0 ? ((offset/limit)+1) : 1;
+				paginacion.setPage(page);
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
-			paginacion.setError(e.getMessage());
+			paginacion.setError(500 + ";" + e.getMessage());
 		}finally{
 			try {
 				if(conn != null){
@@ -171,6 +214,10 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			String tabla = "public.geojsonLayer_" + new Date().getTime();
 			String layer = params.get("layer").get(0);
 			params.remove("layer");
+			if(!isGeoJson(layer)){
+				paginacion.setError(400 + ";" + "El valor del parámetro layer no es válido");
+				return result;
+			}
 			Connection conn = null;
 			try{
 				((HikariDataSource)datasource).setReadOnly(false);
@@ -180,7 +227,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				result = getLayerFiltered(conn, tabla, params, paginacion);
 			}catch(SQLException e){
 				e.printStackTrace();
-				paginacion.setError(e.getMessage());
+				paginacion.setError(500 + ";" + e.getMessage());
 			}finally{
 				try {
 					deleteGeojsonTable(conn, tabla);
@@ -203,8 +250,14 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		String aliasGeom = "geometry";
 		try{
 			if(filtros.containsKey("zoom")){
-				zoom = Integer.parseInt(filtros.get("zoom").get(0));
+				String zoomStr = filtros.get("zoom").get(0);
 				filtros.remove("zoom");
+				if(isInteger(zoomStr)){
+					zoom = Integer.parseInt(zoomStr);
+				}else{
+					paginacion.setError(400 + ";" + "Valor del parámetro zoom no es válido");
+					return result;
+				}
 			}
 			if(filtros.containsKey("aliasgeom")){
 				aliasGeom = filtros.get("aliasgeom").get(0);
@@ -217,16 +270,21 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			log.info("Obteniendo el resto de nombres de columnas");
 			String columnas = getColumnasNoGeometricas(conn, schema, table, geomColumn);
 			StringBuilder query = new StringBuilder("SELECT "+ columnas);
-			query.append(", ST_transform(" + geomColumn + ", 4326) as "+geomColumn+", 4326 as srid");
+			query.append(", ST_transform(" + geomColumn + ", 4326) as "+geomColumn);
 			query.append(" FROM " + schema + "." + table);
-			query.append(sqlFilter(filtros, geomColumn, sridTable));
+			String sqlFilter = sqlFilter(filtros, geomColumn, sridTable);
+			if(this.errorCode > 0){
+				paginacion.setError(this.errorCode+";"+this.error);
+				return result;
+			}
+			query.append(sqlFilter);
 			if(geomColumn != null && !"".equals(geomColumn)){
 				query.append(query.indexOf("WHERE") >= 0 ? " AND " : " WHERE ");
 				query.append(geomColumn + " is not null ");
 			}
 			int totalResultados = getTotalResultados(conn, query.toString());
-			int size = paginacion != null && paginacion.getSize() <= 4000 && paginacion.getSize() > 0 ?
-					paginacion.getSize() : totalResultados;
+			int size = paginacion != null && paginacion.getLimit() <= 4000 && paginacion.getLimit() > 0 ?
+					paginacion.getLimit() : totalResultados;
 			if(size <= 4000){
 				query.append(addPaginacion(paginacion));
 				log.info("Obteniendo datos");
@@ -243,7 +301,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 								byte[] mvt = new byte[binaryStream.available()];
 								binaryStream.read(mvt);
 								binaryStream.close();
-								File mvtFile = File.createTempFile("mvtTest", ".pbf");
+								File mvtFile = File.createTempFile("mvtTest", ".mvt");
 								OutputStream os = new FileOutputStream(mvtFile);
 								os.write(mvt);
 								os.close();
@@ -262,11 +320,17 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			}else{
 				result = getCluster(conn, geomColumn, schema, table, filtros, zoom, totalResultados, sridTable);
 				paginacion.setPage(-999);
+				if(this.errorCode > 0){
+					paginacion.setError(this.errorCode+";"+this.error);
+				}
+			}
+			if(paginacion.getLimit() <= 0 || paginacion.getLimit() > totalResultados){
+				paginacion.setLimit(totalResultados);
 			}
 			paginacion.setSize(totalResultados);
 		}catch(SQLException e){
 			e.printStackTrace();
-			paginacion.setError(e.getMessage());
+			paginacion.setError(500+";"+e.getMessage());
 		}finally{
 			try {
 				if(conn != null){
@@ -304,15 +368,34 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		List<DatosTabla> result = new LinkedList<DatosTabla>();
 		String filtroBbox = "";
 		if(filtros.containsKey("bbox")){
-			filtroBbox = getBboxFilter(filtros.get("bbox").get(0), "center", sridTable);
+			int sridbbox = 4326;
+			if(filtros.containsKey("bbox-crs")){
+				String srid = filtros.get("bbox-crs").get(0);
+				filtros.remove("bbox-crs");
+				if(isInteger(srid)){
+					sridbbox = Integer.parseInt(srid);
+				}else{
+					this.errorCode = 400;
+					this.error = "Valor del parámetro bbox-crs no válido";
+					return result;
+				}
+			}
+			filtroBbox = getBboxFilter2(filtros.get("bbox").get(0), "center", sridbbox, sridTable);
 			filtros.remove("bbox");
+			if(this.errorCode > 0){
+				return result;
+			}
 		}
 		StringBuilder query = new StringBuilder("SELECT row_number() over() as id, st_astext(st_buffer(ST_Transform(center, 3857), (elementos_cluster / ?) * ?)) as geometry,");
 		query.append(" elementos_cluster, 3857 AS srid from");
 		query.append(" (SELECT COUNT(*) AS elementos_cluster,");
 		query.append(" ST_Centroid(ST_Collect(" + geomColumn + ")) AS center");
 		query.append(" FROM " + schema + "." + table);
-		query.append(sqlFilter(filtros, geomColumn, sridTable));
+		String sqlFilter = sqlFilter(filtros, geomColumn, sridTable);
+		if(this.errorCode > 0){
+			return result;
+		}
+		query.append(sqlFilter);
 		query.append(" GROUP BY ST_SnapToGrid(ST_Centroid(" + geomColumn + "),  ?) ORDER BY elementos_cluster DESC) cluster");
 		if(!"".equals(filtroBbox)){
 			query.append(" WHERE "+filtroBbox);
@@ -334,6 +417,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			}
 			ps.close();
 		}catch(SQLException e){
+			this.errorCode = 500;
+			this.error = e.getMessage();
 			e.printStackTrace();
 		}
 		return result;
@@ -544,13 +629,33 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	private String sqlFilter(Map<String, List<String>> filtros, String geomColumn, int sridTable){
 		if(!filtros.isEmpty()){
 			StringBuilder result = new StringBuilder(" WHERE ");
+			if(filtros.containsKey("bbox")){
+				String bbox = filtros.get("bbox").get(0);
+				int sridbbox = 4326;
+				if(filtros.containsKey("bbox-crs")){
+					String srid = filtros.get("bbox-crs").get(0);
+					filtros.remove("bbox-crs");
+					if(isInteger(srid)){
+						sridbbox = Integer.parseInt(srid);
+					}else{
+						this.errorCode = 400;
+						this.error = "Valor del parámetro bbox-crs no válido";
+						return "";
+					}
+				}
+				String bboxFilter =  getBboxFilter2(bbox, geomColumn, sridbbox, sridTable);
+				if(this.errorCode > 0){
+					return "";
+				}
+				result.append(bboxFilter);
+				result.append(" AND ");
+				filtros.remove("bbox");
+			}
 			Iterator<String> keyset = filtros.keySet().iterator();
 			while(keyset.hasNext()){
 				String key = keyset.next();
 				String value = filtros.get(key).get(0);
-				if("bbox".equals(key)){
-					result.append(getBboxFilter(value, geomColumn, sridTable));
-				}else if("busquedaGeneral".equals(key)){
+				if("busquedaGeneral".equals(key)){
 					result.append(getSqlBusquedaGeneral(value));
 				}else{
 					result.append(key + " ilike '%" + value + "%'");
@@ -571,6 +676,49 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return bboxFilter.toString();
 	}
 	
+	private String getBboxFilter2(String bbox, String geomColumn, int sridbbox, int sridTable){
+		String[] coords = bbox.split(",");
+		if(validateBboxCoords(coords)){
+			StringBuilder geomValue = new StringBuilder("POLYGON((");
+			if(coords.length == 4){//[0] min x, [1] min y, [2] max x, [3] max y
+				geomValue.append(coords[0]+" "+coords[1]+",");
+				geomValue.append(coords[0]+" "+coords[3]+",");
+				geomValue.append(coords[2]+" "+coords[3]+",");
+				geomValue.append(coords[2]+" "+coords[1]+",");
+				geomValue.append(coords[0]+" "+coords[1]);
+			}else{//[0] min x, [1] min y, [2] min z, [3] max x, [4] max y, [5] max z
+				geomValue.append(coords[0]+" "+coords[1]+" "+coords[2]+",");
+				geomValue.append(coords[0]+" "+coords[3]+" "+coords[5]+",");
+				geomValue.append(coords[3]+" "+coords[3]+" "+coords[5]+",");
+				geomValue.append(coords[3]+" "+coords[1]+" "+coords[2]+",");
+				geomValue.append(coords[0]+" "+coords[1]+" "+coords[2]);
+			}
+			geomValue.append("))");
+			StringBuilder bboxFilter = new StringBuilder("ST_Intersects("+geomColumn+", ");
+			bboxFilter.append("ST_Transform(ST_geomfromtext('"+geomValue.toString()+"', "+sridbbox+"), "+sridTable+"))");
+			return bboxFilter.toString();
+		}else{
+			this.errorCode = 400;
+			this.error = "Valor del parámetro bbox no es válido";
+		}
+		return "";
+	}
+	
+	private boolean validateBboxCoords(String[] coords){
+		boolean result = true;
+		if(coords.length == 4 || coords.length == 6){
+			for(String c : coords){
+				if(!isDouble(c)){
+					result = false;
+					break;
+				}
+			}
+		}else{
+			result = false;
+		}
+		return result;
+	}
+	
 	private String getSqlBusquedaGeneral(String busqueda){
 		//El parametro de busqueda general viene con una secuencia de columnas
 		//en la que buscar y el valor con el formato columna;columna@valor
@@ -584,6 +732,9 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				filter.append(" OR ");
 			}
 			return filter.substring(0, filter.lastIndexOf("OR")) + ")";
+		}else{
+			this.errorCode = 400;
+			this.error = "Valor del parámetro busquedaGeneral no es válido";
 		}
 		return "";
 	}
@@ -595,11 +746,12 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	 */
 	private String addPaginacion(CustomPagination paginacion){
 		StringBuilder result = new StringBuilder("");
-		if(paginacion.getSize() > 0){
-			result.append(" limit " + paginacion.getSize());
-			if(paginacion.getPage() > 0){
-				int offset = (paginacion.getPage()*paginacion.getSize()+1) - (paginacion.getSize()+1);
-				result.append(" offset " + offset);
+		if(paginacion.getLimit() > 0){
+			result.append(" limit " + paginacion.getLimit());
+			if(paginacion.getOffset() > 0){
+				result.append(" offset " + paginacion.getOffset());
+				int page = (paginacion.getOffset()/paginacion.getLimit())+1;
+				paginacion.setPage(page);
 			}
 		}
 		return result.toString();
@@ -624,6 +776,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				ps = conn.prepareStatement(getWKT(query, geomColumn, aliasGeom));
 			}
 		}catch(SQLException e){
+			this.errorCode = 500;
+			this.error = e.getMessage();
 			e.printStackTrace();
 		}
 		return ps;
@@ -632,10 +786,10 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	private String getWKT(String query, String geomColumn, String aliasGeom){
 		String result = "";
 		//para el servicio de consulta filtrada
-		if(query.contains(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",")){
-			result = query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",", ", ST_asText(st_force2d(ST_transform("+geomColumn+", 4326))) as " + aliasGeom + ",");
+		if(query.contains(", ST_transform("+geomColumn+", 4326) as "+geomColumn)){
+			result = query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn, ", ST_asText(st_force2d(ST_transform("+geomColumn+", 4326))) as " + aliasGeom);
 		}else{//para el servicio de capa filtrada
-			result = query.replace("SELECT " + geomColumn + ",", "SELECT ST_asText(" + geomColumn + ") as " + aliasGeom + ",");
+			result = query.replace("SELECT " + geomColumn + ",", "SELECT ST_asText(" + geomColumn + ") as " + aliasGeom);
 		}
 		return result;
 	}
@@ -767,7 +921,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		//Comprobacion de clausulas no permitidas
 		if(result && (queryUpper.contains("UPDATE ") || queryUpper.contains("INSERT ") || queryUpper.contains("DELETE ") || queryUpper.contains("DROP ")
 				|| queryUpper.contains("CREATE ") || queryUpper.contains("ALTER ") || queryUpper.contains("DO ") || queryUpper.contains("GRANT ")
-				|| queryUpper.contains("SET ") || queryUpper.contains("TRUNCATE ") || queryUpper.contains("LOAD ") || queryUpper.contains("LOCK ")
+				|| queryUpper.contains(" SET ") || queryUpper.contains("TRUNCATE ") || queryUpper.contains("LOAD ") || queryUpper.contains("LOCK ")
 				|| queryUpper.contains("PREPARE ") || queryUpper.contains("REFRESH ") || queryUpper.contains("REINDEX ") || queryUpper.contains("CALL "))){
 			result = false;
 		}
@@ -818,6 +972,10 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		int totalResultados = getTotalResultados(conn, query.toString());
 //		PreparedStatement ps = conn.prepareStatement(getGeojsonLayer(query));
 		PreparedStatement ps = switchFormat(conn, paginacion.getFormato(), query.toString(), "geometry", "geometry", columnas, "");
+		if(this.errorCode > 0){
+			paginacion.setError(this.errorCode + ";" + this.error);
+			return result;
+		}
 		ResultSet rs = ps.executeQuery();
 		ResultSetMetaData rsmd = rs.getMetaData();
 		while(rs.next()){
@@ -895,5 +1053,38 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			return result.substring(0, result.lastIndexOf("AND"));
 		}
 		return "";
+	}
+	
+	private boolean isDouble(String number){
+		boolean result = true;
+		try{
+			Double.parseDouble(number);
+		}catch(NumberFormatException e){
+			result = false;
+		}
+		return result;
+	}
+	
+	private boolean isInteger(String number){
+		boolean result = true;
+		try{
+			Integer.parseInt(number);
+		}catch(NumberFormatException e){
+			result = false;
+		}
+		return result;
+	}
+	
+	private boolean isGeoJson(String geojson){
+		boolean result = true;
+		try{
+			JSONObject json = new JSONObject(geojson);
+			if(!json.has("type") || !json.has("features")){
+				result = false;
+			}
+		}catch(JSONException e){
+			result = false;
+		}
+		return result;
 	}
 }
