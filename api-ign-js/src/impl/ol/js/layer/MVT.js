@@ -190,7 +190,7 @@ class MVT extends Vector {
   }
 
   /**
-   * TODO
+   *
    * @function
    * @api stable
    */
