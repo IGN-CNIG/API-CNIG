@@ -76,6 +76,10 @@ class MVT extends Vector {
     this.opacity_ = parameters.opacity || 1;
 
     this.visibility_ = parameters.visibility !== false;
+
+    this.layers_ = parameters.layers;
+
+    this.layerName_ = parameters.layerName;
   }
 
   /**
@@ -89,9 +93,27 @@ class MVT extends Vector {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
-    this.formater_ = new MVTFormatter({
-      featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
-    });
+    if (this.layers_ !== undefined && this.layerName_ !== undefined) {
+      this.formater_ = new MVTFormatter({
+        layers: this.layers_,
+        layerName: this.layerName_,
+        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
+      });
+    } else if (this.layers_ !== undefined) {
+      this.formater_ = new MVTFormatter({
+        layers: this.layers_,
+        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
+      });
+    } else if (this.layerName_ !== undefined) {
+      this.formater_ = new MVTFormatter({
+        layerName: this.layerName_,
+        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
+      });
+    } else {
+      this.formater_ = new MVTFormatter({
+        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
+      });
+    }
 
     const extent = this.facadeVector_.getMaxExtent();
     const source = new OLSourceVectorTile({
