@@ -19,6 +19,8 @@ public interface DatabaseService {
 	
 	public Pagina obtenerDatosPersonalizados(String dataSourceName, String schema, String table, Map<String, List<String>> params, CustomPagination paginacion, boolean token);
 	
+	public Pagina obtenerDatosPersonalizados(String dataSourceName, Map<String, List<String>> params, CustomPagination paginacion, boolean token);
+	
 	public Pagina obtenerDatosLayer(String dataSourceName, String schema, Map<String, List<String>> params, CustomPagination paginacion, boolean token);
 	
 	public List<String> obtenerValoresDominio(String dataSourceName, String schema, String table, String columna, boolean token);

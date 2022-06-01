@@ -141,7 +141,82 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		List<DatosTabla> result = new LinkedList<DatosTabla>();
 		Connection conn = null;
 		try{
-			String query = customQuery(params, schema, table);
+			String query = customQuery(params, schema, table, false);
+			if(query != null && !"".equals(query)){
+				conn = datasource.getConnection();
+				int limitIndex = query.toLowerCase().indexOf("limit");
+				int offsetIndex = query.toLowerCase().indexOf("offset");
+				String queryTotal = "";
+				if(limitIndex > 0 && (limitIndex < offsetIndex || offsetIndex < 0)){
+					queryTotal = query.substring(0, limitIndex);
+				}else if (offsetIndex > 0 && (offsetIndex < limitIndex || limitIndex < 0)){
+					queryTotal = query.substring(0, offsetIndex);
+				}else{
+					queryTotal = query;
+				}
+				int totalResultados = getTotalResultados(conn, queryTotal);
+				PreparedStatement ps = conn.prepareStatement(query.toString());
+				ResultSet rs = ps.executeQuery();
+				ResultSetMetaData rsmd = rs.getMetaData();
+				while(rs.next()){
+					DatosTabla dt = new DatosTabla();
+					for(int i = 1; i <= rsmd.getColumnCount(); i++){
+						Object value = rs.getObject(i);
+						dt.addToMap(rsmd.getColumnLabel(i), value);
+					}
+					result.add(dt);
+				}
+				ps.close();
+				int limit = 0;
+				int offset = 0;
+				if(limitIndex > 0){
+					String limitQuery = query.substring(limitIndex+6);
+					int indexBlank = limitQuery.indexOf(" ");
+					String limitStr = indexBlank >= 0 ? limitQuery.substring(0, indexBlank) : limitQuery;
+					limit = limitStr != null ? Integer.valueOf(limitStr) : 0;
+				}
+				if(offsetIndex > 0){
+					String offsetQuery = query.substring(offsetIndex+7);
+					int indexBlank = offsetQuery.indexOf(" ");
+					String offsetStr = indexBlank >= 0 ? offsetQuery.substring(0, indexBlank) : offsetQuery;
+					offset = offsetStr != null ? Integer.valueOf(offsetStr) : 0;
+				}
+				if(limit > 0 && limit < totalResultados){
+					paginacion.setLimit(limit);
+				}else if(offset > 0){
+					paginacion.setLimit(totalResultados-offset);
+				}else{
+					paginacion.setLimit(totalResultados);
+				}
+				paginacion.setSize(totalResultados);
+				int page = offset > 0 && limit > 0 ? ((offset/limit)+1) : 1;
+				paginacion.setPage(page);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			paginacion.setError(500 + ";" + e.getMessage());
+		}finally{
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public List<DatosTabla> getNativeQueryData(Map<String, List<String>> params, CustomPagination paginacion){
+		List<DatosTabla> result = new LinkedList<DatosTabla>();
+		Connection conn = null;
+		try{
+			if(!params.containsKey("query")){
+				paginacion.setError(400 + ";" + "El parámetro query es obligatorio");
+				return result;
+			}
+			String query = customQuery(params, null, null, true);
 			if(query != null && !"".equals(query)){
 				conn = datasource.getConnection();
 				int limitIndex = query.toLowerCase().indexOf("limit");
@@ -546,20 +621,22 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return null;
 	}
 	
-	private String customQuery(Map<String, List<String>> params, String schema, String table) throws SQLException{
+	private String customQuery(Map<String, List<String>> params, String schema, String table, boolean nativeQuery) throws SQLException{
 		StringBuilder result = new StringBuilder();
-		if(params.containsKey("query")){
-			String query = params.get("query").get(0);
-			if(validCustomQuery(query)){
-				int index = query.toLowerCase().indexOf("where");
-				if(index >= 0){//se hace esto para no sustituir un posible * en el select
-					String select = query.substring(0, index);
-					String where = query.substring(index);
-					query = select.concat(where.replace("*", "%"));
+		if(nativeQuery){
+			if(params.containsKey("query")){
+				String query = params.get("query").get(0);
+				if(validCustomQuery(query)){
+					int index = query.toLowerCase().indexOf("where");
+					if(index >= 0){//se hace esto para no sustituir un posible * en el select
+						String select = query.substring(0, index);
+						String where = query.substring(index);
+						query = select.concat(where.replace("*", "%"));
+					}
+					return query;
 				}
-				return query;
 			}else{
-				throw new SQLException("Operación no permitida");
+				throw new SQLException("El parametro query es obligatorio");
 			}
 		}else{
 			String paramValue = "*";

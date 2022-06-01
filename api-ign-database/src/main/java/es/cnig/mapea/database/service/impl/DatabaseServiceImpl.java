@@ -95,6 +95,21 @@ public class DatabaseServiceImpl implements DatabaseService{
 	}
 	
 	@Override
+	public Pagina obtenerDatosPersonalizados(String dataSourceName, Map<String, List<String>> params, CustomPagination paginacion, boolean token){
+		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
+		Pagina pagina = new Pagina();
+		List<DatosTabla> datos = getDatabaseRepository(ds).getNativeQueryData(params, paginacion);
+		pagina.setResults(datos);
+		pagina.setTamPagina(paginacion.getLimit());
+		pagina.setTotalElementos(paginacion.getSize());
+		pagina.setNumPagina(paginacion.getPage());
+		pagina.setError(paginacion.getError());
+		pagina.setFormato(paginacion.getFormato());
+		((HikariDataSource)ds).close();
+		return pagina;
+	}
+	
+	@Override
 	public Pagina obtenerDatosLayer(String dataSourceName, String schema, Map<String, List<String>> params, CustomPagination paginacion, boolean token){
 		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
 		Pagina pagina = new Pagina();
