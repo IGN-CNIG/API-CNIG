@@ -48,6 +48,8 @@ export default class IGNSearchLocatorControl extends M.Control {
     pointStyle,
     nomenclatorSearchType,
     helpUrl,
+    cadastre,
+    searchCoordinates,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
       M.exception(getValue('impl'));
@@ -411,6 +413,20 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {string}
      */
     this.helpUrl = helpUrl;
+
+    /**
+     * @private
+     * @type {Boolean}
+     */
+
+    this.cadastre = cadastre;
+
+    /**
+     * @private
+     * @type {Boolean}
+     */
+
+    this.searchCoordinates = searchCoordinates;
   }
   /**
    * This function creates the view
@@ -440,8 +456,16 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox = html.querySelector('#m-ignsearchlocator-results');
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
       html.querySelector('#m-ignsearchlocator-clear-button').addEventListener('click', this.clearResultsAndGeometry.bind(this));
-      html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
-      html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
+      if (this.cadastre === false) {
+        html.querySelector('#m-ignsearchlocator-parcela-button').remove();
+      } else {
+        html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
+      }
+      if (this.searchCoordinates === false) {
+        html.querySelector('#m-ignsearchlocator-xylocator-button').remove();
+      } else {
+        html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
+      }
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('click', () => {
         if (document.getElementById('m-ignsearchlocator-xylocator-button').style.backgroundColor === 'rgb(113, 167, 211)' ||
@@ -458,6 +482,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
         clearTimeout(typingTimer);
       });
+
       html.querySelector('#m-ignsearchlocator-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
       document.querySelector('.ign-searchlocator-panel>.m-panel-btn').addEventListener('click', this.clearResults.bind(this));
       this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReversePopUp(e));
@@ -465,6 +490,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       if (!this.reverse) {
         html.querySelector('#m-ignsearchlocator-locate-button').style.display = 'none';
       }
+
       if (this.position === 'TC') {
         document.querySelector('.ign-searchlocator-panel').style = 'position: relative; left: calc(50vw - 210px);';
       }

@@ -83,6 +83,16 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="selectCadastre">Selector cadastre</label>
+        <select name="reverseValue" id="selectCadastre">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="selectSearchCoordinates">Selector searchCoordinates</label>
+        <select name="reverseValue" id="selectSearchCoordinates">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
         <label for="inputZoom">Parámetro zoom</label>
         <input type="text" name="zoom" id="inputZoom" list="zoomSug">
         <datalist id="zoomSug">
@@ -174,7 +184,9 @@
         const selectPointStyle = document.getElementById("selectPointStyle");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
-        const selectReverse = document.getElementById("selectReverse");
+        const selectReverse = document.getElementById("selectReverse"); 
+        const selectCadastre = document.getElementById("selectCadastre");
+        const selectSearchCoordinates = document.getElementById("selectSearchCoordinates");
         const inputZoom = document.getElementById("inputZoom");
         const inputSearchposition = document.getElementById("inputSearchposition");
         const inputUrlCandidates = document.getElementById("inputUrlCandidates");
@@ -189,7 +201,9 @@
         selectPointStyle.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
-        selectReverse.addEventListener('change', cambiarTest);
+        selectReverse.addEventListener('change', cambiarTest); 
+        selectCadastre.addEventListener('change', cambiarTest);
+        selectSearchCoordinates.addEventListener('change', selectSearchCoordinates);
         inputZoom.addEventListener('change', cambiarTest);
         inputSearchposition.addEventListener('change', cambiarTest);
         inputUrlCandidates.addEventListener('change', cambiarTest);
@@ -205,7 +219,9 @@
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             objeto.isCollapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true');
+            objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true'); 
+            objeto.cadastre = (selectCadastre.options[selectCadastre.selectedIndex].value == 'true');
+            objeto.selectSearchCoordinates = (selectSearchCoordinates.options[selectSearchCoordinates.selectedIndex].value == 'true');
             zoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "16";
             searchPosition = inputSearchposition.value != "" ? objeto.searchPosition = inputSearchposition.value : "";
             urlCandidates = inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value : "";
