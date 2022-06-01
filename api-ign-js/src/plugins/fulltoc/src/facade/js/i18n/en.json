@@ -15,6 +15,7 @@
   },
   "tooltip": "Layers",
   "info": "Information",
+  "layer_info": "Layer information",
   "configure_layer": "Configure layer",
   "close": "Close",
   "load_ext_services": "Load geographic information layers",
@@ -37,7 +38,7 @@
   "name": "Name",
   "abstract": "Abstract",
   "provider": "Provider",
-  "query_metadata": "Consult metadata",
+  "service_info": "Service information (Capabilities)",
   "download_center": "Download center",
   "add": "Add",
   "drag_drop": "Drag and drop to change display order",
@@ -53,5 +54,8 @@
   "hide_service_info": "Hide service information",
   "filter_results": "Filter results",
   "clean_filter": "Clean filter",
-  "filter_text": "Text to search"
+  "filter_text": "Text to search",
+  "metadata": "Metadata",
+  "see_more_layer": "View more information about the layer (Metadata)",
+  "see_more_service": "View more service information (Metadata)"
 }
