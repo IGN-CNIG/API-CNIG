@@ -326,6 +326,43 @@ public class DatabaseWS {
 	}
 	
 	@GET
+	@Path("/{database}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response nativeQuery (@PathParam("database") String database, @Context UriInfo uriInfo){
+		JSONArray rowsJSON = new JSONArray();
+		String callbackFn = null;
+		Map<String, List<String>> params = uriInfo.getQueryParameters();
+		String urlService = "/" + database + getUrlParams(params);
+		if(params.containsKey("callback")){
+			callbackFn = params.get("callback").get(0);
+			params.remove("callback");
+		}
+		boolean token = false;
+		if(params.containsKey("token")){
+			token = Boolean.valueOf(params.get("token").get(0));
+			params.remove("token");
+		}
+		JSONArray links = addLinksToReponse(urlService, null);
+		Pagina pagina = new DatabaseServiceImpl().obtenerDatosPersonalizados(database, params, new CustomPagination(), token);
+		if(pagina.getError() != null && !"".equals(pagina.getError())){
+			String[] errorSplit = pagina.getError().split(";");
+			int code = Integer.parseInt(errorSplit[0]);
+	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
+					.header("Content-Type", MediaType.APPLICATION_JSON).build();
+	    }else{
+			List<DatosTabla> data = pagina.getResults();
+			for(DatosTabla dt : data){
+	    		rowsJSON.put(datosTablaToJson(dt));
+			}
+			JSONObject jsonPagina = getJsonPagina(pagina);
+			jsonPagina.put("links", links);
+			jsonPagina.put("results", rowsJSON);
+			return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn))
+					.header("Content-Type", MediaType.APPLICATION_JSON).build();
+	    }
+	}
+	
+	@GET
 	@Path("/{database}/layerfilter")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_OCTET_STREAM })
 	public Response layerQuery (@PathParam("database") String database, @Context UriInfo uriInfo){
