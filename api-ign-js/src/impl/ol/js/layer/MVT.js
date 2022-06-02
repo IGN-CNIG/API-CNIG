@@ -78,8 +78,6 @@ class MVT extends Vector {
     this.visibility_ = parameters.visibility !== false;
 
     this.layers_ = parameters.layers;
-
-    this.layerName_ = parameters.layerName;
   }
 
   /**
@@ -92,21 +90,9 @@ class MVT extends Vector {
   addTo(map) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
-
-    if (this.layers_ !== undefined && this.layerName_ !== undefined) {
+    if (this.layers_ !== undefined) {
       this.formater_ = new MVTFormatter({
         layers: this.layers_,
-        layerName: this.layerName_,
-        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
-      });
-    } else if (this.layers_ !== undefined) {
-      this.formater_ = new MVTFormatter({
-        layers: this.layers_,
-        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
-      });
-    } else if (this.layerName_ !== undefined) {
-      this.formater_ = new MVTFormatter({
-        layerName: this.layerName_,
         featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
       });
     } else {
@@ -134,6 +120,9 @@ class MVT extends Vector {
     this.setOpacity(this.opacity_);
     this.setVisible(this.visibility_);
     this.map.getMapImpl().addLayer(this.ol3Layer);
+    if (this.getStyle() !== null) {
+      this.setStyle(this.getStyle());
+    }
 
     // clear features when zoom changes
     this.map.on(EventType.CHANGE_ZOOM, () => {

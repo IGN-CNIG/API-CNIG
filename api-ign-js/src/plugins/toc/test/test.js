@@ -61,10 +61,11 @@ const estilo = new M.style.Line({
   },
 });
 
+// capaMVT.setStyle(estilo);
 
 map.addLayers(capaMVT);
 
-capaMVT.setStyle(estilo);
+
 
 //map.refresh();
 
