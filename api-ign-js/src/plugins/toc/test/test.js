@@ -61,7 +61,7 @@ const estilo = new M.style.Line({
   },
 });
 
-// capaMVT.setStyle(estilo);
+capaMVT.setStyle(estilo);
 
 map.addLayers(capaMVT);
 
