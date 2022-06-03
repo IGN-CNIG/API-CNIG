@@ -120,13 +120,11 @@ class MVT extends Vector {
     this.setOpacity(this.opacity_);
     this.setVisible(this.visibility_);
     this.map.getMapImpl().addLayer(this.ol3Layer);
-    console.log(this.style_);
-    console.log(this.getStyle());
-    /*
-    if (this.getStyle() !== null) {
-      this.setStyle(this.getStyle());
-    }
-    */
+    setTimeout(() => {
+      if (this.getStyle() !== null) {
+        this.setStyle(this.getStyle());
+      }
+    }, 1000);
 
     // clear features when zoom changes
     this.map.on(EventType.CHANGE_ZOOM, () => {
