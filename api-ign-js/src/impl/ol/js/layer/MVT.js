@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /**
  * @module M/impl/layer/MVT
  */
@@ -120,11 +121,6 @@ class MVT extends Vector {
     this.setOpacity(this.opacity_);
     this.setVisible(this.visibility_);
     this.map.getMapImpl().addLayer(this.ol3Layer);
-    setTimeout(() => {
-      if (this.getStyle() !== null) {
-        this.setStyle(this.getStyle());
-      }
-    }, 1000);
 
     // clear features when zoom changes
     this.map.on(EventType.CHANGE_ZOOM, () => {
@@ -136,6 +132,20 @@ class MVT extends Vector {
         }
       }
     });
+
+    setTimeout(() => {
+      const filtered = this.map.getLayers().filter((l) => {
+        const checkLayers = l.getImpl().layers_ !== undefined ?
+          l.getImpl().layers_ === this.layers_ : true;
+        return l.url === this.url && checkLayers;
+      });
+
+      if (filtered.length > 0) {
+        if (filtered[0].getStyle() !== null) {
+          filtered[0].setStyle(filtered[0].getStyle());
+        }
+      }
+    }, 10);
   }
 
   /**
