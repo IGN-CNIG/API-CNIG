@@ -267,7 +267,7 @@ export default class IGNSearchLocator extends M.Plugin {
      * @type {Boolean}
      */
 
-    this.searchCoordinates = options.searchCoordinates;
+    this.searchCoordinatesXYZ = options.searchCoordinatesXYZ;
   }
 
   /**
@@ -306,7 +306,7 @@ export default class IGNSearchLocator extends M.Plugin {
       this.nomenclatorSearchType,
       this.helpUrl,
       this.cadastre,
-      this.searchCoordinates,
+      this.searchCoordinatesXYZ,
     ));
     this.controls_[0].on('ignsearchlocator:entityFound', (extent) => {
       this.fire('ignsearchlocator:entityFound', [extent]);

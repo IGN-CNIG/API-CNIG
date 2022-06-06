@@ -88,8 +88,8 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
-        <label for="selectSearchCoordinates">Selector searchCoordinates</label>
-        <select name="reverseValue" id="selectSearchCoordinates">
+        <label for="searchCoordinatesXYZ">Selector searchCoordinatesXYZ</label>
+        <select name="reverseValue" id="searchCoordinatesXYZ">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
@@ -186,7 +186,7 @@
         const selectCollapsible = document.getElementById("selectCollapsible");
         const selectReverse = document.getElementById("selectReverse"); 
         const selectCadastre = document.getElementById("selectCadastre");
-        const selectSearchCoordinates = document.getElementById("selectSearchCoordinates");
+        const searchCoordinatesXYZ = document.getElementById("searchCoordinatesXYZ");
         const inputZoom = document.getElementById("inputZoom");
         const inputSearchposition = document.getElementById("inputSearchposition");
         const inputUrlCandidates = document.getElementById("inputUrlCandidates");
@@ -203,7 +203,7 @@
         selectCollapsible.addEventListener('change', cambiarTest);
         selectReverse.addEventListener('change', cambiarTest); 
         selectCadastre.addEventListener('change', cambiarTest);
-        selectSearchCoordinates.addEventListener('change', selectSearchCoordinates);
+        searchCoordinatesXYZ.addEventListener('change', cambiarTest);
         inputZoom.addEventListener('change', cambiarTest);
         inputSearchposition.addEventListener('change', cambiarTest);
         inputUrlCandidates.addEventListener('change', cambiarTest);
@@ -221,7 +221,7 @@
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true'); 
             objeto.cadastre = (selectCadastre.options[selectCadastre.selectedIndex].value == 'true');
-            objeto.selectSearchCoordinates = (selectSearchCoordinates.options[selectSearchCoordinates.selectedIndex].value == 'true');
+            objeto.searchCoordinatesXYZ = (searchCoordinatesXYZ.options[searchCoordinatesXYZ.selectedIndex].value == 'true');
             zoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "16";
             searchPosition = inputSearchposition.value != "" ? objeto.searchPosition = inputSearchposition.value : "";
             urlCandidates = inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value : "";

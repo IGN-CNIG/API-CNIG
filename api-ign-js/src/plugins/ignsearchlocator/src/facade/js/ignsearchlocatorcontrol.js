@@ -49,7 +49,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     nomenclatorSearchType,
     helpUrl,
     cadastre,
-    searchCoordinates,
+    searchCoordinatesXYZ,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
       M.exception(getValue('impl'));
@@ -426,7 +426,7 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {Boolean}
      */
 
-    this.searchCoordinates = searchCoordinates;
+    this.searchCoordinatesXYZ = searchCoordinatesXYZ;
   }
   /**
    * This function creates the view
@@ -457,12 +457,12 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
       html.querySelector('#m-ignsearchlocator-clear-button').addEventListener('click', this.clearResultsAndGeometry.bind(this));
       if (this.cadastre === false) {
-        html.querySelector('#m-ignsearchlocator-parcela-button').remove();
+        html.querySelector('#m-ignsearchlocator-parcela-button').style.display = 'none';
       } else {
         html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
       }
-      if (this.searchCoordinates === false) {
-        html.querySelector('#m-ignsearchlocator-xylocator-button').remove();
+      if (this.searchCoordinatesXYZ === false) {
+        html.querySelector('#m-ignsearchlocator-xylocator-button').style.display = 'none';
       } else {
         html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
       }
