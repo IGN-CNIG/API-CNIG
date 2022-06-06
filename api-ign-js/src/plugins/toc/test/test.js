@@ -39,9 +39,34 @@ const layerinicial = new M.layer.WMS({
 // }, {
 //   visibility: false,
 // });
-map.addLayers(layerUA);
-map.addLayers(layerinicial);
+//map.addLayers(layerUA);
+//map.addLayers(layerinicial);
 // map.addLayers(ocupacionSuelo);
 
+const capaMVT = new M.layer.MVT({
+  url: 'https://a.api.tomtom.com/traffic/map/4/tile/flow/relative/{z}/{x}/{y}.pbf?key=sATA9OwG11zrMKQcCxR3eSEjj2n8Jsrg&1637324528580',
+  legend: 'MVT',
+  name: 'MVTLayer',
+  visibility: true,
+});
+
+const estilo = new M.style.Line({
+  fill: {
+    color: 'yellow',
+    width: 1,
+  },
+  stroke: {
+    color: 'red',
+    width: 5,
+  },
+});
+
+capaMVT.setStyle(estilo);
+
+map.addLayers(capaMVT);
+
+
+
+//map.refresh();
 
 window.map = map;

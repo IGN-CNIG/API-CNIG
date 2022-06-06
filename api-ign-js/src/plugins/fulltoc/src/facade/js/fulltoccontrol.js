@@ -215,7 +215,7 @@ export default class FullTOCControl extends M.Control {
               name: getValue('name'),
               abstract: getValue('abstract'),
               provider: getValue('provider'),
-              query_metadata: getValue('query_metadata'),
+              service_info: getValue('service_info'),
               download_center: getValue('download_center'),
               see_more: getValue('see_more'),
               metadata_abstract: getValue('metadata_abstract'),
@@ -223,10 +223,14 @@ export default class FullTOCControl extends M.Control {
               access_constraints: getValue('access_constraints'),
               use_constraints: getValue('use_constraints'),
               online_resources: getValue('online_resources'),
+              see_more_layer: getValue('see_more_layer'),
+              see_more_service: getValue('see_more_service'),
+              metadata: getValue('metadata'),
             },
           };
 
           if (layer.type === 'WMS') {
+            vars.capabilities = M.utils.getWMSGetCapabilitiesUrl(layer.url, layer.version);
             const murl = layer.capabilitiesMetadata.metadataURL;
             vars.metadata = !M.utils.isNullOrEmpty(murl) ? murl[0].OnlineResource : '';
             if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
@@ -236,6 +240,7 @@ export default class FullTOCControl extends M.Control {
               }
             }
           } else if (layer.type === 'WMTS') {
+            vars.capabilities = M.utils.getWMTSGetCapabilitiesUrl(layer.url);
             if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
               vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
               `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
@@ -247,123 +252,56 @@ export default class FullTOCControl extends M.Control {
             }
           }
 
-          if (!M.utils.isNullOrEmpty(vars.metadata) && M.utils.isUrl(vars.metadata)) {
-            M.remote.get(vars.metadata).then((response) => {
-              const metadataText = response.text;
-              const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
-                return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
-              });
+          M.remote.get(vars.capabilities).then((response) => {
+            const source = response.text;
+            const urlService = source.split('<inspire_common:URL>')[1].split('<')[0].split('&amp;').join('&');
+            if (!M.utils.isNullOrEmpty(urlService) && M.utils.isUrl(urlService)) {
+              vars.metadata_service = urlService;
+              vars.hasMetadata = true;
+            }
 
-              if (unfiltered.length > 0) {
-                const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
-                vars.downloadCenter = downloadCenter;
-              }
-
-              const transfer = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:onLine>');
-              const dataid = metadataText.split('<gmd:MD_DataIdentification>')[1];
-              const legal = metadataText.split('<gmd:MD_LegalConstraints>')[1];
-              let metadataService;
-              let metadataAbstract;
-              let responsible;
-              let accessConstraint;
-              let useConstraint;
-              let onlineResources;
-
-              try {
-                metadataService = dataid.split('<gmd:CI_Citation>')[1].split('</gmd:CI_Citation>')[0]
-                  .split('CharacterString>')[1].split('</gco')[0].trim();
-              } catch (err) {
-                metadataService = '';
-              }
-
-              try {
-                metadataAbstract = dataid.split('<gmd:abstract>')[1].split('</gmd:abstract>')[0]
-                  .split('CharacterString>')[1].split('</gco')[0].trim();
-              } catch (err) {
-                metadataAbstract = '';
-              }
-
-              try {
-                const poc = dataid.split('<gmd:pointOfContact>')[1];
-                responsible = poc.split('<gmd:organisationName>')[1]
-                  .split('</gmd:organisationName>')[0].split('CharacterString>')[1].split('</gco')[0].trim();
-                if (poc.indexOf('<gmd:CI_OnlineResource>') > -1) {
-                  const link = poc.split('<gmd:CI_OnlineResource>')[1].split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim();
-                  responsible = `<a href="${link}" target="_blank">${responsible}</a>`;
-                }
-              } catch (err) {
-                responsible = '';
-              }
-
-              try {
-                accessConstraint = legal.split('<gmd:accessConstraints>')[1].split('<gmd:MD_RestrictionCode')[1]
-                  .split('>')[1].split('<')[0].trim();
-              } catch (err) {
-                accessConstraint = '';
-              }
-
-              try {
-                useConstraint = legal.split('<gmd:useConstraints>')[1].split('<gmd:MD_RestrictionCode')[1]
-                  .split('>')[1].split('<')[0].trim();
-              } catch (err) {
-                useConstraint = '';
-              }
-
-              try {
-                if (transfer.length > 0) {
-                  onlineResources = [];
-                  transfer.forEach((t) => {
-                    if (t.indexOf('<gmd:name>') > -1 && t.indexOf('<gmd:URL>')) {
-                      const link = {
-                        name: t.split('<gmd:name>')[1].split('</gmd:name>')[0].split('CharacterString>')[1].split('</gco')[0].trim(),
-                        url: t.split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim(),
-                      };
-
-                      onlineResources.push(link);
-                    }
+            if (M.utils.isNullOrEmpty(vars.metadata) || !M.utils.isUrl(vars.metadata)) {
+              delete vars.metadata;
+              if (vars.metadata_service !== undefined) {
+                M.remote.get(vars.metadata_service).then((response2) => {
+                  const metadataText = response2.text;
+                  const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+                    return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
                   });
+
+                  if (unfiltered.length > 0) {
+                    const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
+                    vars.downloadCenter = downloadCenter;
+                  }
+
+                  this.renderInfo(vars);
+                }).catch((err) => {
+                  this.renderInfo(vars);
+                });
+              } else {
+                this.renderInfo(vars);
+              }
+            } else {
+              vars.hasMetadata = true;
+              M.remote.get(vars.metadata).then((response2) => {
+                const metadataText = response2.text;
+                const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+                  return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
+                });
+
+                if (unfiltered.length > 0) {
+                  const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
+                  vars.downloadCenter = downloadCenter;
                 }
-              } catch (err) {
-                onlineResources = '';
-              }
 
-              if (!M.utils.isNullOrEmpty(metadataService)) {
-                vars.metadataService = metadataService;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(metadataAbstract)) {
-                vars.metadataAbstract = metadataAbstract;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(responsible)) {
-                vars.responsible = responsible;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(accessConstraint)) {
-                vars.accessConstraint = accessConstraint;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(useConstraint)) {
-                vars.useConstraint = useConstraint;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(onlineResources)) {
-                vars.onlineResources = onlineResources;
-                vars.extended = true;
-              }
-
-              this.renderInfo(vars);
-            }).catch((err) => {
-              this.renderInfo(vars);
-            });
-          } else {
+                this.renderInfo(vars);
+              }).catch((err) => {
+                this.renderInfo(vars);
+              });
+            }
+          }).catch((err) => {
             this.renderInfo(vars);
-          }
+          });
         }
       } else if (evt.target.classList.contains('m-fulltoc-addservice')) {
         const precharged = this.precharged;
@@ -468,7 +406,7 @@ export default class FullTOCControl extends M.Control {
       vars,
     });
 
-    M.dialog.info(info, getValue('info'));
+    M.dialog.info(info, getValue('layer_info'));
     setTimeout(() => {
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /**
  * @module M/impl/layer/MVT
  */
@@ -72,6 +73,12 @@ class MVT extends Vector {
      * @type {bool}
      */
     this.loaded_ = false;
+
+    this.opacity_ = parameters.opacity || 1;
+
+    this.visibility_ = parameters.visibility !== false;
+
+    this.layers_ = parameters.layers;
   }
 
   /**
@@ -84,10 +91,16 @@ class MVT extends Vector {
   addTo(map) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
-
-    this.formater_ = new MVTFormatter({
-      featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
-    });
+    if (this.layers_ !== undefined) {
+      this.formater_ = new MVTFormatter({
+        layers: this.layers_,
+        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
+      });
+    } else {
+      this.formater_ = new MVTFormatter({
+        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
+      });
+    }
 
     const extent = this.facadeVector_.getMaxExtent();
     const source = new OLSourceVectorTile({
@@ -105,10 +118,8 @@ class MVT extends Vector {
       extent,
     }, this.vendorOptions_, true));
 
-    if (this.opacity_) {
-      this.setOpacity(this.opacity_);
-    }
-
+    this.setOpacity(this.opacity_);
+    this.setVisible(this.visibility_);
     this.map.getMapImpl().addLayer(this.ol3Layer);
 
     // clear features when zoom changes
@@ -121,6 +132,20 @@ class MVT extends Vector {
         }
       }
     });
+
+    setTimeout(() => {
+      const filtered = this.map.getLayers().filter((l) => {
+        const checkLayers = l.getImpl().layers_ !== undefined ?
+          l.getImpl().layers_ === this.layers_ : true;
+        return l.url === this.url && checkLayers;
+      });
+
+      if (filtered.length > 0) {
+        if (filtered[0].getStyle() !== null) {
+          filtered[0].setStyle(filtered[0].getStyle());
+        }
+      }
+    }, 10);
   }
 
   /**
@@ -185,6 +210,15 @@ class MVT extends Vector {
       this.loaded_ = true;
       this.facadeVector_.fire(EventType.LOAD);
     }
+  }
+
+  /**
+   *
+   * @function
+   * @api stable
+   */
+  isLoaded() {
+    return true;
   }
 
   /**

@@ -32,10 +32,10 @@ public class DatabaseServiceImpl implements DatabaseService{
 	public Pagina obtenerTablasGeometricasDataSource(String dataSourceName, CustomPagination paginacion, boolean token) {
 		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
 		Pagina pagina = new Pagina();
-		pagina.setNumPagina(paginacion.getPage());
-		pagina.setTamPagina(paginacion.getSize());
 		List<Tabla> tablas = getDatabaseRepository(ds).getGeomTables(paginacion);
 		pagina.setResults(tablas);
+		pagina.setTamPagina(paginacion.getLimit());
+		pagina.setNumPagina(paginacion.getPage());
 		pagina.setTotalElementos(paginacion.getSize());
 		pagina.setError(paginacion.getError());
 		((HikariDataSource)ds).close();
@@ -53,8 +53,8 @@ public class DatabaseServiceImpl implements DatabaseService{
 		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
 		Pagina pagina = new Pagina();
 		pagina.setNumPagina(paginacion.getPage());
-		pagina.setTamPagina(paginacion.getSize());
 		List<Columna> columnas = getDatabaseRepository(ds).getTableColumns(schema, table, paginacion);
+		pagina.setTamPagina(paginacion.getLimit());
 		pagina.setResults(columnas);
 		pagina.setTotalElementos(paginacion.getSize());
 		pagina.setError(paginacion.getError());
@@ -67,9 +67,9 @@ public class DatabaseServiceImpl implements DatabaseService{
 			Map<String, List<String>> filtros, CustomPagination paginacion, boolean token) {
 		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
 		Pagina pagina = new Pagina();
-		pagina.setTamPagina(paginacion.getSize());
 		List<DatosTabla> datos = getDatabaseRepository(ds).getFilteredData(schema, table, filtros, paginacion);
 		pagina.setResults(datos);
+		pagina.setTamPagina(paginacion.getLimit());
 		pagina.setTotalElementos(paginacion.getSize());
 		pagina.setNumPagina(paginacion.getPage());
 		pagina.setFormato(paginacion.getFormato());
@@ -83,11 +83,41 @@ public class DatabaseServiceImpl implements DatabaseService{
 			Map<String, List<String>> params, CustomPagination paginacion, boolean token){
 		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
 		Pagina pagina = new Pagina();
+		List<DatosTabla> datos = getDatabaseRepository(ds).getCustomQueryData(schema, table, params, paginacion);
+		pagina.setResults(datos);
+		pagina.setTamPagina(paginacion.getLimit());
+		pagina.setTotalElementos(paginacion.getSize());
+		pagina.setNumPagina(paginacion.getPage());
+		pagina.setError(paginacion.getError());
+		pagina.setFormato(paginacion.getFormato());
+		((HikariDataSource)ds).close();
+		return pagina;
+	}
+	
+	@Override
+	public Pagina obtenerDatosPersonalizados(String dataSourceName, Map<String, List<String>> params, CustomPagination paginacion, boolean token){
+		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
+		Pagina pagina = new Pagina();
+		List<DatosTabla> datos = getDatabaseRepository(ds).getNativeQueryData(params, paginacion);
+		pagina.setResults(datos);
+		pagina.setTamPagina(paginacion.getLimit());
+		pagina.setTotalElementos(paginacion.getSize());
+		pagina.setNumPagina(paginacion.getPage());
+		pagina.setError(paginacion.getError());
+		pagina.setFormato(paginacion.getFormato());
+		((HikariDataSource)ds).close();
+		return pagina;
+	}
+	
+	@Override
+	public Pagina obtenerDatosLayer(String dataSourceName, String schema, Map<String, List<String>> params, CustomPagination paginacion, boolean token){
+		DataSource ds = token ? getDataSourceEncrypt(dataSourceName) : getDataSource(dataSourceName);
+		Pagina pagina = new Pagina();
 		int tamPagina = -1;
 		if(params.containsKey("limit")){
 			tamPagina = Integer.parseInt(params.get("limit").get(0));
 		}
-		List<DatosTabla> datos = getDatabaseRepository(ds).getCustomQueryData(schema, table, params, paginacion);
+		List<DatosTabla> datos = getDatabaseRepository(ds).getLayerQueryData(params, paginacion);
 		pagina.setResults(datos);
 		if(tamPagina < 0){
 			tamPagina = paginacion.getSize();

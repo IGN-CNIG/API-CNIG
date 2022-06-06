@@ -15,6 +15,7 @@
   },
   "tooltip": "Capas",
   "info": "Información",
+  "layer_info": "Información de la capa",
   "configure_layer": "Configurar capa",
   "close": "Cerrar",
   "load_ext_services": "Cargar capas de información geográfica",
@@ -37,7 +38,7 @@
   "name": "Nombre",
   "abstract": "Resumen",
   "provider": "Proveedor",
-  "query_metadata": "Consultar metadato",
+  "service_info": "Información del servicio (Capabilities)",
   "download_center": "Centro de descargas",
   "add": "Añadir",
   "drag_drop": "Arrastre y suelte para cambiar el orden de visualización",
@@ -53,5 +54,8 @@
   "hide_service_info": "Ocultar información del servicio",
   "filter_results": "Filtrar resultados",
   "clean_filter": "Limpiar filtro",
-  "filter_text": "Texto a buscar"
+  "filter_text": "Texto a buscar",
+  "metadata": "Metadatos",
+  "see_more_layer": "Ver más información de la capa",
+  "see_more_service": "Ver más información del servicio"
 }
