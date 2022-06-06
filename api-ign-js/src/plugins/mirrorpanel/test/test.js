@@ -4,7 +4,7 @@ M.language.setLang('es'); //Español
 //M.language.setLang('en');//Inglés
 
 /**
- * Definimos las capas con notación MAPEA
+ * Definimos las capas con notación API-REST
  */
 const capasPNOA = [
   'WMS*PNOA 2015*https://www.ign.es/wms/pnoa-historico*PNOA2015',

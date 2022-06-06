@@ -314,7 +314,7 @@ export default class Georefimage2Control extends M.impl.Control {
     };
 
     /** ***********************************
-     MAPEA DE CAPAS TILEADA.
+     MAPEO DE CAPAS TILEADA.
     ************************************ */
     // eslint-disable-next-line no-underscore-dangle
     if (layer._updateNoCache) {
