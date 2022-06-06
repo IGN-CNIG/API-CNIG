@@ -1044,8 +1044,9 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	private List<DatosTabla> getLayerFiltered(Connection conn, String tabla, Map<String, List<String>> filtros, CustomPagination paginacion) throws SQLException{
 		List<DatosTabla> result = new LinkedList<DatosTabla>();
 		String columnas = getLayerProperties(conn, tabla);
-		StringBuilder query = new StringBuilder(getFilteredLayerQuery(tabla, formatLayerColumns(columnas), filtros));
-		query.append(addPaginacion(paginacion));
+//		StringBuilder query = new StringBuilder(getFilteredLayerQuery(tabla, formatLayerColumns(columnas), filtros));
+		StringBuilder query = new StringBuilder(getFilteredLayerQuery2(tabla, columnas, filtros));
+//		query.append(addPaginacion(paginacion));
 		int totalResultados = getTotalResultados(conn, query.toString());
 //		PreparedStatement ps = conn.prepareStatement(getGeojsonLayer(query));
 		PreparedStatement ps = switchFormat(conn, paginacion.getFormato(), query.toString(), "geometry", "geometry", columnas, "");
@@ -1107,9 +1108,85 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return result.substring(0, result.length()-1);
 	}
 	
+	private String replaceColumnsNames(String columnas, String cad, boolean alias){
+		String result = cad;
+		String[] listColumnas = columnas.split(", ");
+		
+		for(String c : listColumnas){
+			result = result.replace(c, "properties ->> '" + c + (alias ? "' as "+c : "'"));
+		}
+		
+		return result;
+	}
+	
 	private String getFilteredLayerQuery(String tabla, String columnas, Map<String, List<String>> filtros){
 		StringBuilder result = new StringBuilder("SELECT geometry, " + columnas + " FROM " + tabla);
 		result.append(sqlLayerFilter(filtros));
+		return result.toString();
+	}
+	
+	private String getFilteredLayerQuery2(String tabla, String columnas, Map<String, List<String>> params){
+		StringBuilder result = new StringBuilder(); 
+		String paramValue = "geometry, " + formatLayerColumns(columnas);
+		result.append("SELECT ");
+		if(params.containsKey("select")){
+			String select = params.get("select").get(0);
+			if(!"*".equals(select)){
+				paramValue = replaceColumnsNames(columnas, select, true);
+				if(!paramValue.contains("geometry")){
+					paramValue += ", geometry";
+				}
+			}
+		}
+		result.append(paramValue);
+		result.append(" FROM " + tabla);
+		if(params.containsKey("where")){
+			paramValue = params.get("where").get(0);
+			if(paramValue != null && !"".equals(paramValue)){
+				result.append(" WHERE ");
+				result.append(replaceColumnsNames(columnas, paramValue.replace("*", "%"), false));
+			}
+		}
+		
+		if(params.containsKey("groupby")){
+			paramValue = params.get("groupby").get(0);
+			if(paramValue != null && !"".equals(paramValue)){
+				result.append(" GROUP BY ");
+				result.append(replaceColumnsNames(columnas, paramValue, false));
+				
+				if(params.containsKey("having")){
+					paramValue = params.get("having").get(0);
+					if(paramValue != null && !"".equals(paramValue)){
+						result.append(" HAVING ");
+						result.append(replaceColumnsNames(columnas, paramValue, false));
+					}
+				}
+			}
+		}
+		
+		if(params.containsKey("orderby")){
+			paramValue = params.get("orderby").get(0);
+			if(paramValue != null && !"".equals(paramValue)){
+				result.append(" ORDER BY ");
+				result.append(replaceColumnsNames(columnas, paramValue, false));
+			}
+		}
+		
+		if(params.containsKey("limit")){
+			paramValue = params.get("limit").get(0);
+			if(paramValue != null && !"".equals(paramValue)){
+				result.append(" LIMIT ");
+				result.append(paramValue);
+			}
+		}
+		
+		if(params.containsKey("offset")){
+			paramValue = params.get("offset").get(0);
+			if(paramValue != null && !"".equals(paramValue)){
+				result.append(" OFFSET ");
+				result.append(paramValue);
+			}
+		}
 		return result.toString();
 	}
 	
