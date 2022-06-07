@@ -208,7 +208,7 @@ export default class InformationControl extends M.impl.Control {
         param = {};
         const infoFormat = this.format_;
         const coord = this.evt.coordinate;
-        const url = layer.getFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat);
+        const url = layer.getFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat).replace('row=-', 'row=');
         param = { layer: layer.legend || layer.name, url };
       }
       return param;
