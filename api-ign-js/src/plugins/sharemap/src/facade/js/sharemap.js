@@ -182,6 +182,14 @@ export default class ShareMap extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+      * URL API or URL Visor (true o fdefault API, false visor)
+      *
+      * @private
+      * @type @type {bool}
+      */
+    this.urlAPI_ = options.urlAPI || false;
   }
 
   /**
@@ -205,6 +213,7 @@ export default class ShareMap extends M.Plugin {
       tooltip: this.tooltip_,
       overwriteStyles: this.overwriteStyles_,
       minimize: this.minimize_,
+      urlAPI: this.urlAPI_,
     });
 
     this.controls_.push(this.control);

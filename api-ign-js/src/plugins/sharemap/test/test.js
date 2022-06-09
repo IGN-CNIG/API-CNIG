@@ -42,7 +42,7 @@ const layerinicial = new M.layer.WMS({
 const layerUA = new M.layer.WMS({
   url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
-  legend: 'Unidad administrativa'
+  legend: 'Unidad administrativa',
 }, {});
 
 const ocupacionSuelo = new M.layer.WMTS({
