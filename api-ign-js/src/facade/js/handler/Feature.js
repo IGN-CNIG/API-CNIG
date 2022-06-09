@@ -97,19 +97,25 @@ class Features extends Base {
       const impl = this.getImpl();
       // TODO [FIX] Think a better solution for removePopup on unselect features
       this.map_.removePopup();
-      this.layers_.forEach((layer) => {
+
+      this.layers_.forEach((layer, i) => {
         const clickedFeatures = impl.getFeaturesByLayer(evt, layer);
         const prevFeatures = [...(this.prevSelectedFeatures_[layer.name])];
         // no features selected then unselect prev selected features
+        if (prevFeatures[0] === clickedFeatures[0] && i === 1 && clickedFeatures !== []) {
+          this.selectFeatures(prevFeatures, layer, evt);
+        }
         if (clickedFeatures.length === 0 && prevFeatures.length > 0) {
           this.unselectFeatures(prevFeatures, layer, evt);
         } else if (clickedFeatures.length > 0) {
           const newFeatures = clickedFeatures.filter(f => !prevFeatures.some(pf => pf.equals(f)));
+
           const diffFeatures = prevFeatures.filter(f => !clickedFeatures.some(pf => pf.equals(f)));
           // unselect prev selected features which have not been selected this time
           if (diffFeatures.length > 0) {
             this.unselectFeatures(diffFeatures, layer, evt);
           }
+
           // select new selected features
           if (newFeatures.length > 0) {
             this.selectFeatures(newFeatures, layer, evt);

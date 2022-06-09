@@ -4,52 +4,66 @@ import { map as Mmap } from 'M/mapea';
 import MVT from 'M/layer/MVT';
 import XYZ from 'M/layer/XYZ';
 
+import KML from 'M/layer/KML';
 
+//id del contenedor del mapa
 const mapa = Mmap({
   container: 'map',
-  getfeatureinfo: 'plain',
-  // controls: ['layerswitcher'],
-  projection: 'EPSG:3857*m', // CASO EPSG:4326 'EPSG:4326*d',
-  // layers: ['OSM'],
 });
 
-const mvt = new MVT({
-  url: 'https://vts.larioja.org/igo/{z}/{x}/{y}.pbf',
-  name: 'vectortile',
-  projection: 'EPSG:3857',
+
+const transporte = new KML({
+  url: 'https://temp.sh/ABKPZ/transporte.kml',
+  name: 'transporte',
+  layer: 'transporte',
+  extract: true,
+  legend: 'transporte',
+  transparent: true,
+}, {
+  label: false,
 });
 
-const mvt2 = new MVT({
-  url: 'https://vts.larioja.org/rioja/{z}/{x}/{y}.pbf',
-  name: 'vectortile2',
-  projection: 'EPSG:3857',
-});
-
-const mvt3 = new MVT({
-  url: 'https://vts.larioja.org/osm/{z}/{x}/{y}.pbf',
-  name: 'vectortile3',
-  projection: 'EPSG:3857',
-});
-
-const mvt4 = new MVT({
-  url: 'https://vts.larioja.org/srtm/{z}/{x}/{y}.pbf',
-  name: 'vectortile4',
-  projection: 'EPSG:3857',
-});
-
-const xyz = new XYZ({
-  url: 'https://api.maptiler.com/maps/outdoor/256/{z}/{x}/{y}@2x.png?key=7oapAXDXQ3uctBopr1Wx',
-  name: 'pruebaXYZ',
-  projection: 'EPSG:3857'
-})
-
-// mapa.addLayers(mvt);
-// mapa.addLayers(mvt2);
-mapa.addLayers(mvt3);
-mapa.addXYZ(xyz);
+// mapa.addXYZ(xyz);
+mapa.addLayers([transporte])
 // mapa.addLayers(mvt4);
 // M.Popup.options.takeMeThere = true;
 window.map = mapa;
+
+
+
+// const mvt = new MVT({
+//   url: 'https://vts.larioja.org/igo/{z}/{x}/{y}.pbf',
+//   name: 'vectortile',
+//   projection: 'EPSG:3857',
+// });
+
+// const mvt2 = new MVT({
+//   url: 'https://vts.larioja.org/rioja/{z}/{x}/{y}.pbf',
+//   name: 'vectortile2',
+//   projection: 'EPSG:3857',
+// });
+
+// const mvt3 = new MVT({
+//   url: 'https://vts.larioja.org/osm/{z}/{x}/{y}.pbf',
+//   name: 'vectortile3',
+//   projection: 'EPSG:3857',
+// });
+
+// const mvt4 = new MVT({
+//   url: 'https://vts.larioja.org/srtm/{z}/{x}/{y}.pbf',
+//   name: 'vectortile4',
+//   projection: 'EPSG:3857',
+// });
+
+// const xyz = new XYZ({
+//   url: 'https://api.maptiler.com/maps/outdoor/256/{z}/{x}/{y}@2x.png?key=7oapAXDXQ3uctBopr1Wx',
+//   name: 'pruebaXYZ',
+//   projection: 'EPSG:3857'
+// })
+
+// mapa.addLayers(mvt);
+// mapa.addLayers(mvt2);
+
 
 
 // const map = Mmap({

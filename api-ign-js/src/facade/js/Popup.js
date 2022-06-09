@@ -149,6 +149,7 @@ class Popup extends Base {
           tabs: this.tabs_,
         },
       });
+
       if (this.tabs_.length > 0) {
         this.element_ = html;
         this.addEvents(html);
@@ -276,6 +277,8 @@ class Popup extends Base {
     // adds tabs events
     let touchstartY;
     const tabs = html.querySelectorAll('div.m-tab');
+
+    // Aqui no entra
     Array.prototype.forEach.call(tabs, (tab) => {
       tab.addEventListener('click', (evt) => {
         evt.preventDefault();
@@ -307,6 +310,7 @@ class Popup extends Base {
         }
       });
     });
+
 
     // adds close event
     const closeBtn = html.querySelector('a.m-popup-closer');
