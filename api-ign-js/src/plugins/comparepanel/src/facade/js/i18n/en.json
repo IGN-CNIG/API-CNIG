@@ -43,5 +43,9 @@
   "tooltipTransparency": "Transparency",
   "transparency": "Transparency",
   "errorLayer": "Transparency: No valid layer specified on which to apply the effect",
-  "nolayertext": "No layer selected"
+  "nolayertext": "No layer selected",
+  "freeze": "freeze cursor",
+  "unfreeze": "defrost cursor",
+  "activate_spyeye": "SpyEye ON",
+  "deactivate_spyeye": "SpyEye OFF"  
 }

@@ -190,6 +190,13 @@ export default class Transparency extends M.Plugin {
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'Enter') {
         this.control_.freeze= !this.control_.freeze;
         this.control_.getImpl().setFreeze(this.control_.freeze);
+        if (this.control_.freeze){
+          this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'hidden';
+          this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'visible';
+        }else{  
+          this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
+          this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
+        }
       }
 
       // const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
@@ -264,7 +271,7 @@ export default class Transparency extends M.Plugin {
    * @api
    */
   activate() {
-    console.log("Aactivate SpyEye 1");
+    console.log("Activate SpyEye 1");
     this.control_.activate();
   }
 

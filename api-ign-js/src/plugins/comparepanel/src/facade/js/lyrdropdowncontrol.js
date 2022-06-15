@@ -128,6 +128,7 @@ export default class LyrdropdownControl extends M.Control {
         console.log(this.layerSelected);
         this.layerSelected.setVisible(false);
         this.removeEffects();
+        console.table(this.getImpl().map.getImpl().getLayers());
         if (layerSel.length === 0){
           /**
            * Se ha seleccionado la opción de eliminar capa
@@ -306,6 +307,7 @@ export default class LyrdropdownControl extends M.Control {
 
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
+        //newLayer.setZIndex(100);
         return newLayer;
       } else {
         this.layers.remove(layer);

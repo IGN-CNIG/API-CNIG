@@ -239,6 +239,18 @@ div#m-comparepanel-title {
 .cp-transparency-icon:before {
 	content: "\e900";
 }
+
+.cp-lock-icon:before {
+	content: "\e800";
+	color:red;
+}
+
+.cp-unlock-icon:before {
+	content: "\f13e";
+	color:green;
+}
+
+
 .cp-control-siguiente:before {
 	content: "\e828";
 }

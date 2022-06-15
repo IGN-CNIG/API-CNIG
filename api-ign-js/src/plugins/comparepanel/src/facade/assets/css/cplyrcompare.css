@@ -63,7 +63,7 @@ div.m-panel.m-plugin-lyrcompare.opened>.g-cartografia-flecha-izquierda {
 	cursor: pointer;
 	opacity: .75;
 	transition: all .25s ease;
-	color: #404040;
+	color: #404004;
 	outline: none;
 }
 
@@ -72,6 +72,10 @@ div.m-panel.m-plugin-lyrcompare.opened>.g-cartografia-flecha-izquierda {
 }
 .m-lyrcompare-container .big-buttom:hover {
 	color: #71a7d3;
+}
+
+.m-lyrcompare-container .big-buttom:disabled {
+	color: #6a6a6a;
 }
 
 .m-lyrcompare-container .buttom-pressed-vcurtain {

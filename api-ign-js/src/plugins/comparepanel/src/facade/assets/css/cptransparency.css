@@ -110,6 +110,11 @@
         color: #71a7d3;
     }
 
+
+    .m-transparency-container .big-buttom:disabled {
+        color: #6a6a6a;
+    }    
+
     .m-transparency-container.big-buttom.buttom-pressed {
         color: #71a7d3;
     }

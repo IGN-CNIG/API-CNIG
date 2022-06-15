@@ -231,6 +231,12 @@ export default class LyrCompareControl extends M.Control {
       this.template.querySelectorAll('button[id^="m-lyrcompare-"]').forEach((button, i) => {
         if (button.id==="m-lyrcompare-deactivate"){
           button.addEventListener('click', evt => {
+            document.querySelector('#m-lyrdropdown-selector').style.display = 'block';
+
+            // e2m: permitimos que se activen de nuevo los comparadores de Spy Eye al desactivar las cortinas
+            document.querySelector('#m-transparency-active').disabled = false;
+            document.querySelector('#m-transparency-deactivate').disabled = false;
+
             this.comparisonMode = 0;
             this.deactivateCurtain();
             return;
@@ -238,6 +244,13 @@ export default class LyrCompareControl extends M.Control {
         } else{
           button.addEventListener('click', evt => {
             if (this.comparisonMode === 0) {
+              document.querySelector('#m-lyrdropdown-selector').value="none";
+              document.querySelector('#m-lyrdropdown-selector').style.display = 'none';
+
+              // e2m: evitamos que se activen los comparadores de Spy Eye mientras las cortinas estén activas
+              document.querySelector('#m-transparency-active').disabled = true;
+              document.querySelector('#m-transparency-deactivate').disabled = true;
+
               this.comparisonMode = i + 1;
               this.activateCurtain();
               return;

@@ -35,6 +35,7 @@ export default class TransparencyControl extends M.impl.Control {
   effectSelected(layers, radius, freeze) {
 
     layers.setVisible(true);
+    layers.setZIndex(5000);
     //console.log(this.olMap);
     //console.log(M);
     //console.log(this.freezePosition);
