@@ -43,5 +43,9 @@
   "tooltipTransparency": "Transparencia",
   "transparency": "Transparencia",
   "errorLayer": "Transparency: No se ha especificado una capa válida sobre la que aplicar el efecto",
-  "nolayertext": "Ninguna capa"
+  "nolayertext": "Ninguna capa",
+  "freeze": "Inmovilizar cursor",
+  "unfreeze": "liberar cursor",
+  "activate_spyeye": "Activar Spy Eye",
+  "deactivate_spyeye": "Desactivar Spy Eye"  
 }

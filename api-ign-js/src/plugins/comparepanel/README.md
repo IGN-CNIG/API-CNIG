@@ -36,6 +36,9 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 |![Imagen1](./assets/comparepanel-collapsed.png)|![Imagen1](./assets/comparepanel-vertical.png)|![Imagen2](./assets/comparepanel-horizontal.png)|
 
 
+Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa principal. Ahora podemos aplicar uno de estos dos modos de comparación y además acytivar algonmo de los modos de comparación por mapa espejo
+
+
 
 ## Dependencias 👷
 
@@ -52,14 +55,12 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 ## Modos de comparación
 
 <p align="center">
-  <img src="assets/comparadores.png" height="256" />
+  <img src="assets/comparadoresv2.png" height="256" />
 </p>
 
 **Comparador de espejo / Mirror**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
 
 **Comparador de cortina / Curtain**: permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.
-
-**Comparador línea del tiempo / Timneline**: comparación para estudiar la evolución de una serie de capas a lo largo del tiempo.
 
 **Comparador zonal / Spyeye**: reducción de la capa comparativa a una zona circular para contratarla con el mapa de fondo.
 
@@ -147,9 +148,6 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
   - defaultLyrD (numérico): Capa cargada al inicio en posición 4. Valores de 1 al número de capas disponibles. Defecto, 4.
   - opacityVal: Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
   - staticDivision: Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón (valor 0), por el punto medio del lienzo de cartografía (valor 1) o por el punto medio del lienzo de cartografía con líneas arrastrables (valor 2). Por defecto toma el valor 1.
-
-- **timelineParams**. Parámetros opcionales del plugin timeline.
-  - animation (true/false): habilita o deshabilita el modo de animación. Defecto: *true*.
 
 - **transparencyParams**. Parámetros opcionales del plugin transparency.
   - radius (numérico): radio del efecto transparencia. Tiene un rango entre 30 y 200. Defecto: 100.
