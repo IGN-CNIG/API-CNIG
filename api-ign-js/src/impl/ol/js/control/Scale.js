@@ -15,7 +15,7 @@ const formatLongNumber = (num) => {
 /**
  * @private
  */
- const updateElement = (viewState, container, map, exact) => {
+const updateElement = (viewState, container, map, exact) => {
   const containerVariable = container;
   let num;
   if (map.getWMTS().length > 0) {

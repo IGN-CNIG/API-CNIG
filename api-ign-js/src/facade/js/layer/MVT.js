@@ -4,7 +4,7 @@
 import MVTTileImpl from 'impl/layer/MVT';
 import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import Vector from './Vector';
-import { isUndefined, isNullOrEmpty } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
 import Exception from '../exception/exception';
 import { MVT as MVTType } from './Type';
 
@@ -34,6 +34,9 @@ class MVT extends Vector {
     if (isUndefined(MVTTileImpl)) {
       Exception('La implementación usada no puede crear capas Vector');
     }
+
+    // extract
+    this.extract = parameters.extract;
   }
 
   /**
@@ -52,6 +55,22 @@ class MVT extends Vector {
     if (!isUndefined(newType) &&
       !isNullOrEmpty(newType) && (newType !== MVTType)) {
       Exception('El tipo de capa debe ser \''.concat(MVTType).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
+    }
+  }
+
+  get extract() {
+    return this.getImpl().extract;
+  }
+
+  set extract(newExtract) {
+    if (!isNullOrEmpty(newExtract)) {
+      if (isString(newExtract)) {
+        this.getImpl().extract = (normalize(newExtract) === 'true');
+      } else {
+        this.getImpl().extract = newExtract;
+      }
+    } else {
+      this.getImpl().extract = false;
     }
   }
 

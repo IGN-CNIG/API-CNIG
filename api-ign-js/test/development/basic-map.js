@@ -29,6 +29,7 @@ const mvt3 = new MVT({
   url: 'https://vts.larioja.org/osm/{z}/{x}/{y}.pbf',
   name: 'vectortile3',
   projection: 'EPSG:3857',
+  // extract: false,
 });
 
 const mvt4 = new MVT({
@@ -46,7 +47,7 @@ const xyz = new XYZ({
 // mapa.addLayers(mvt);
 // mapa.addLayers(mvt2);
 mapa.addLayers(mvt3);
-mapa.addXYZ(xyz);
+// mapa.addXYZ(xyz);
 // mapa.addLayers(mvt4);
 // M.Popup.options.takeMeThere = true;
 window.map = mapa;

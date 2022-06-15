@@ -4,7 +4,10 @@
  */
 import OLSourceVectorTile from 'ol/source/VectorTile';
 import OLLayerVectorTile from 'ol/layer/VectorTile';
-import { extend } from 'M/util/Utils';
+import { compileSync as compileTemplate } from 'M/util/Template';
+import geojsonPopupTemplate from 'templates/geojson_popup';
+import Popup from 'M/Popup';
+import { isNullOrEmpty, extend, beautifyAttributeName } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import TileEventType from 'ol/source/TileEventType';
 import TileState from 'ol/TileState';
@@ -35,6 +38,13 @@ class MVT extends Vector {
      * @type {ol.format.MVT}
      */
     this.formater_ = null;
+
+    /**
+     * Popup showed
+     * @private
+     * @type {M.impl.Popup}
+     */
+    this.popup_ = null;
 
     /**
      *
@@ -79,6 +89,8 @@ class MVT extends Vector {
     this.visibility_ = parameters.visibility !== false;
 
     this.layers_ = parameters.layers;
+
+    this.extract = parameters.extract;
   }
 
   /**
@@ -146,6 +158,77 @@ class MVT extends Vector {
         }
       }
     }, 10);
+  }
+
+  selectFeatures(features, coord, evt) {
+    const feature = features[0];
+    if (this.extract === true) {
+      this.unselectFeatures();
+      if (!isNullOrEmpty(feature)) {
+        const htmlAsText = compileTemplate(geojsonPopupTemplate, {
+          vars: this.parseFeaturesForTemplate_(features),
+          parseToHtml: false,
+        });
+
+        const featureTabOpts = {
+          icon: 'g-cartografia-pin',
+          title: this.name,
+          content: htmlAsText,
+        };
+
+        let popup = this.map.getPopup();
+        if (isNullOrEmpty(popup)) {
+          popup = new Popup();
+          popup.addTab(featureTabOpts);
+          this.map.addPopup(popup, coord);
+        } else {
+          popup.addTab(featureTabOpts);
+        }
+      }
+    }
+  }
+
+  parseFeaturesForTemplate_(features) {
+    const featuresTemplate = {
+      features: [],
+    };
+
+    features.forEach((feature) => {
+      const properties = feature.getAttributes();
+      const propertyKeys = Object.keys(properties);
+      const attributes = [];
+      propertyKeys.forEach((key) => {
+        attributes.push({
+          key: beautifyAttributeName(key),
+          value: properties[key],
+        });
+      });
+
+      const featureTemplate = {
+        id: feature.getId(),
+        attributes,
+      };
+
+      featuresTemplate.features.push(featureTemplate);
+    });
+    return featuresTemplate;
+  }
+
+  unselectFeatures() {
+    if (!isNullOrEmpty(this.popup_)) {
+      this.popup_.hide();
+      this.popup_ = null;
+    }
+  }
+
+  removePopup() {
+    if (!isNullOrEmpty(this.popup_)) {
+      if (this.popup_.getTabs().length > 1) {
+        this.popup_.removeTab(this.tabPopup_);
+      } else {
+        this.map.removePopup();
+      }
+    }
   }
 
   /**
@@ -232,8 +315,11 @@ class MVT extends Vector {
   equals(obj) {
     let equals = false;
     if (obj instanceof MVT) {
-      equals = this.name === obj.name;
+      equals = (this.url === obj.url);
+      equals = equals && (this.name === obj.name);
+      equals = equals && (this.extract === obj.extract);
     }
+
     return equals;
   }
 }

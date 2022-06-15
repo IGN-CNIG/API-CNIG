@@ -90,7 +90,7 @@ class KML extends LayerVector {
         this.getImpl().extract = newExtract;
       }
     } else {
-      this.getImpl().extract = true;
+      this.getImpl().extract = false;
     }
   }
 
