@@ -150,31 +150,20 @@ export default class Lyrdropdown extends M.Plugin {
     [this.control_, this.panel_, this.map_, this.collapsible,this.collapsed,this.layers] = [null, null, null, null, null, null];
   }
 
-
-  setDisabledLyrs(lyrList){
-    
-    if (this.control_ === undefined){
+  /**
+   * @public
+   * @function
+   * @api stable
+   */
+  setDisabledLyrs(){
+    if(this.controls_ === undefined){
       return;
     }
-    if (this.control_.template === null){
+
+    if(this.controls_.template === null){
       return;
     }
-    //console.log(this.control_.template);
-    try {
-      let optionLyrs = null;
-      optionLyrs = this.control_.template.querySelector('#m-lyrdropdown-selector');
-      optionLyrs.options[2].disabled=true;
-      for (let  iOpt =1; iOpt < optionLyrs.options.length; iOpt++) {
-        optionLyrs.options[iOpt].disabled = !lyrList.includes(optionLyrs.options[iOpt].value)
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  
-   
-   }
-
-
+  }
 
   /**
    * This function gets name plugin

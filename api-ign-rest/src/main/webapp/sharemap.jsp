@@ -41,10 +41,15 @@
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-            <option value="TL">Arriba Izquierda (TL)</option>
+            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
             <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
+        </select>
+        <label for="selectTypeURL">URL desde API:</label>
+        <select name="reverseValue" id="selectTypeURL">
+            <option value=true>true</option>
+            <option value=false>false</option>
         </select>
         <label for="selectURL">Parámetro URL</label>
         <input type="text" id="selectURL" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/" />
@@ -109,17 +114,23 @@
         map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
         let mp, posicion, url = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
+        let typeURL = true;
         crearPlugin({
             position: posicion,
-            baseUrl: url
+            baseUrl: url,
+            typeURL: typeURL
         });
 
         const selectURL = document.getElementById("selectURL");
+        const selectTypeURL = document.getElementById("selectTypeURL");
         const selectPosicion = document.getElementById("selectPosicion");
         const buttonApi = document.getElementById("buttonAPI");
 
         selectURL.addEventListener('change', cambiarTest);
         selectPosicion.addEventListener('change', cambiarTest);
+        selectTypeURL.addEventListener('change', cambiarTest);
+
+
         buttonApi.addEventListener('click', function() {
             url = selectURL.value;
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
@@ -131,6 +142,7 @@
             let objeto = {}
             url = selectURL.value != "" ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            objeto.typeURL = (selectTypeURL.options[selectTypeURL.selectedIndex].value == 'true');
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
