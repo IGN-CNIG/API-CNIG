@@ -537,31 +537,25 @@ export default class InformationControl extends M.impl.Control {
         if (response.code === 200 && response.error === false) {
           const info = response.text;
           if (InformationControl.insert(info, formato) === true) {
-            console.log('HOla1');
             const formatedInfo = this.formatInfo(info, formato, layerName);
             infos.push({ formatedInfo, layerName });
-            console.log(infos, 'HOla1');
           } else if (InformationControl.unsupportedFormat(info, formato)) {
-            console.log('HOla2');
             infos.push({
               formatedInfo: getValue('unsupported_format'),
               layerName,
             });
-            console.log(infos, 'HOla2');
           }
         }
         contFull += 1;
         if (layerNamesUrls.length === contFull && !M.utils.isNullOrEmpty(popup)) {
           popup.removeTab(loadingInfoTab);
           if (infos.length === 0) {
-            console.log('HOla3');
             popup.addTab({
               icon: 'g-cartografia-info',
               title: POPUP_TITLE,
               content: getValue('no_info'),
             });
           } else {
-            console.log('HOla4');
             const popupContent = M.template.compileSync(informationLayersTemplate, {
               vars: {
                 layers: infos,
