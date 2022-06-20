@@ -41,13 +41,17 @@ div.m-area.m-left > div.m-panel.m-incicarto.collapsed > button {
   box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02) !important;
 }
 
+/*
+Difinición de los botnes de acción
+*/
+
 div.m-panel.m-incicarto>div.m-panel-controls>div.m-incicarto>div#m-incicarto-actions>button  {
     background-color: #71a7d3; /*white;*/
     color: rgb(232, 232, 232);/*rgb(117, 116, 116);*/
-    /*border: none;*/
-    font-size: 30px;
+    border: none;
+    font-size: 25px;
     height: 40px;
-    width: 60px;
+    width: 40px;
     margin: 5px;
     border-radius: 20px;
 }
@@ -917,7 +921,7 @@ span.m-incicarto-3d-measure:hover {
 .m-plugin-incicarto-html {
   display: flex;
   justify-content: center;
-  /* padding-top: 10px; */
+  padding-right: 10px;/* Dejamos un poquito de espacio a la derecha */
   font-size: 15px;
   align-items: baseline;
   margin-bottom: 5px;
@@ -958,7 +962,8 @@ span.m-incicarto-3d-measure:hover {
 }
 
 .m-plugin-incicarto-html p {
-  padding: 0px;
+  /*padding: 0px;*/
+  padding-right: 10px;
 }
 
 .m-plugin-incicarto-html p.okmessage {
@@ -1041,6 +1046,41 @@ span.m-incicarto-3d-measure:hover {
   color: #0000ff;
   resize: none;
 }
+
+.m-plugin-incicarto-form-input-group input[type=text]{
+
+  margin: 5px;
+  padding: 5px;
+  background-color: transparent;
+  cursor: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,.5);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: #6c6c6c;
+  font-family: Muli,"sans-serif"!important;
+  font-size: 13px;
+
+}
+
+.m-plugin-incicarto-form-input-group input[type=email]{
+
+  margin: 5px;
+  padding: 5px;
+  background-color: transparent;
+  cursor: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,.5);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: #6c6c6c;
+  font-family: Muli,"sans-serif"!important;
+  font-size: 13px;
+
+}
+
 
 
 /**************************

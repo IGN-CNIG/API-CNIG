@@ -169,6 +169,9 @@ export default class IncicartoControl extends M.Control {
     this.geometryIncidenceX = 0;
     this.geometryIncidenceY = 0;
 
+    this.documentRead_ = document.createElement('img');
+    this.canvas_ = document.createElement('canvas');
+
   }
 
   /**
@@ -505,6 +508,7 @@ export default class IncicartoControl extends M.Control {
     setTimeout(() => {
 
       document.querySelector("#m-plugin-incicarto-send-email").addEventListener('click',(e)=>{
+        console.log("composeMailtoSend");
         let destinataryContainer = document.querySelector("#email-to");
         let destinatary = destinataryContainer.options[destinataryContainer.selectedIndex].value;
         let mailto_composed = this.composeMailtoSend(destinatary)
@@ -564,15 +568,18 @@ export default class IncicartoControl extends M.Control {
     setTimeout(() => {
 
       document.querySelector("#m-plugin-incicarto-simple-send-email").addEventListener('click',(e)=>{
+        
         let mailto_composed = this.composeSimpleMailtoSend()
         if (mailto_composed===false){
           console.log("El mail no ha sido validado");
           return;
         }
-        //window.open(mailto_composed,'emailWindow');
+
+        //window.open(mailto_composed,'emailWindow');//e2m: Activamos. Con esto abrimos outlook para ver qué correo enviamos. Comentar Después
+
         // document.querySelector('div.m-mapea-container div.m-dialog').remove(); // Así cerramos a lo loco
         document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
-        this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctamente.","okmessage");
+        this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctament.","okmessage");
       });
 
       document.getElementById('fileUpload').onchange = function () {
@@ -655,6 +662,7 @@ export default class IncicartoControl extends M.Control {
    */
   composeMailtoSend(destinatary) {
 
+    
     let themeMetadataContainer = document.querySelector("#theme-select");
     let errorMetadataContainer = document.querySelector("#error-select");
     let productMetadataContainer = document.querySelector("#product-select");
@@ -694,12 +702,107 @@ export default class IncicartoControl extends M.Control {
     return true;
   }
 
+
   /**
    * Compone el mensaje para el correo enviado por el interfaz Modal Simple
    *
    * @returns
    */
   composeSimpleMailtoSend() {
+
+
+    //const screenshotTarget = document.body;
+    // const screenshotTarget =document.querySelector("#mapjs");
+    // html2canvas(screenshotTarget).then((canvas) => {
+    //     const base64image = canvas.toDataURL("image/png");
+    //     //window.location.href = base64image;
+    //     console.log(base64image);
+    // });
+
+
+    // Intentandpo capturar pantalla
+    /**
+     * 
+     * https://programming.vip/docs/the-solution-of-canvas.todataurl-error-reporting-is-all-here.html
+     * https://stackoverflow.com/questions/64862027/how-i-put-the-canvas-content-as-a-file-in-a-input-type-file
+     */
+/*
+    const mapCanvas = document.createElement('canvas');
+    const size = this.map_.getImpl().map_.getSize()
+
+    console.log(this.map_.getImpl().map_.getSize());
+    mapCanvas.width = size[0];
+    mapCanvas.height = size[1];
+    const mapContext = mapCanvas.getContext('2d');
+    Array.prototype.forEach.call(
+      this.map_.getImpl().map_.getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer'),
+      function (canvas) {
+        
+        if (canvas.width > 0) {
+          const opacity =  canvas.parentNode.style.opacity || canvas.style.opacity;
+          mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+  
+          const backgroundColor = canvas.parentNode.style.backgroundColor;
+          if (backgroundColor) {
+            mapContext.fillStyle = backgroundColor;
+            mapContext.fillRect(0, 0, canvas.width, canvas.height);
+          }
+  
+          let matrix;
+          const transform = canvas.style.transform;
+          if (transform) {
+            // Get the transform parameters from the style's transform matrix
+            matrix = transform
+              .match(/^matrix\(([^\(]*)\)$/)[1]
+              .split(',')
+              .map(Number);
+          } else {
+            matrix = [
+              parseFloat(canvas.style.width) / canvas.width,
+              0,
+              0,
+              parseFloat(canvas.style.height) / canvas.height,
+              0,
+              0,
+            ];
+          }
+          // Apply the transform to the export map context
+          CanvasRenderingContext2D.prototype.setTransform.apply(
+            mapContext,
+            matrix
+          );
+          canvas.setAttribute('crossorigin', 'anonymous');
+          mapContext.drawImage(canvas, 0, 0);
+          console.log("Relleno");
+        }
+      }
+    );
+    mapContext.globalAlpha = 1;
+
+    if (navigator.msSaveBlob) {
+      // link download attribute does not work on MS browsers
+      navigator.msSaveBlob(mapCanvas.msToBlob(), 'map.png');
+    } else {
+      const link = document.getElementById('image-download');
+      link.href = mapCanvas.toDataURL();
+      link.click();
+    }
+
+
+    // mapCanvas.toBlob( (blob) => {
+    //   const file = new File( [ blob ], "mycanvas.png" );
+    //   const dT = new DataTransfer();
+    //   dT.items.add( file );
+    //   document.querySelector( "input" ).files = dT.files;
+    // } );
+    
+
+
+
+
+    return false
+*/
+
 
     const themeMetadataContainer = document.querySelector("#theme-select");
     if (this.errThemes.mandatory===true && themeMetadataContainer.selectedIndex===-1){
@@ -709,38 +812,59 @@ export default class IncicartoControl extends M.Control {
 
     let theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
     let destinatary = this.themes.find(item => item.idTheme == theme).emailTheme;
-    let errDescription = document.querySelector("#err-description").value;
     let email_subject = 'Metadatos de la incidencia';
+    let emailName = document.querySelector("#person-notify").value;
+    let emailUser = document.querySelector("#email-notify").value;
+    let errDescription = document.querySelector("#err-description").value;
 
     const { x, y } = this.map_.getCenter();
     const { code, units } = this.map_.getProjection();
     let shareURL = `?center=${x},${y},zoom=${this.map_.getZoom()}`;
     shareURL = shareURL.concat(`,projection=${code}*${units}`);
 
-    let email_body = {
-      "description": errDescription,
+    let propiedades_incidencia = {
+      "email_subject": email_subject,
       "theme": theme,
-      "geometry": this.geometryIncidenceJSON,
-    };
+      "destinatary": destinatary,
+      "emailName": emailName,
+      "emailUser": emailUser,
+      "errDescripcion": errDescription,
+      "URL": window.location.href,
+      "paramsURL": encodeURI(shareURL),
+    }
+    //console.log(this.map_.getLayers());
+    //console.log(propiedades_incidencia);
 
-/*    console.log(`mailto: ${destinatary}`);
-    console.log(`subject: ${email_subject}`);
-    console.log(JSON.stringify(this.geometryIncidenceJSON));*/
+    if (this.geometryIncidenceJSON.features.length>0){
+      this.geometryIncidenceJSON.features[0].properties=propiedades_incidencia;
+    }
 
+    // e2m: empaquetamos los datos para la pasarela
+    // ----------------------------------------------------------------------------------------------------------
     let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
     emailForm.action = `${M.config.MAPEA_URL}api/email`;
     document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
-    document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
+
+    document.querySelector("#m-plugin-incicarto-email-sendername").value = emailName;
+    document.querySelector("#m-plugin-incicarto-email-senderemail").value = emailUser;
+    document.querySelector("#m-plugin-incicarto-email-errDescription").value = errDescription;
+    document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
+    document.querySelector("#m-plugin-incicarto-email-shareURL").value = shareURL;
+
+    document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(this.geometryIncidenceJSON, null, '\t');
+
     let inputFile = document.querySelector('#fileUpload');
     if(inputFile.files.length > 0){
       let inputFileForm = document.querySelector('#fileUploadForm');
       inputFileForm.files = inputFile.files;
     }
-    emailForm.submit();
 
-    //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(this.geometryIncidenceJSON);
-    return true;
+    emailForm.submit(); //e2m: desactivamos
+    // ----------------------------------------------------------------------------------------------------------
+
+    //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(this.geometryIncidenceJSON);//e2m: activamos
+    return true; //e2m: desactivamos
   }
 
   /**

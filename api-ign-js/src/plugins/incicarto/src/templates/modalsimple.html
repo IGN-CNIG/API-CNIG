@@ -18,6 +18,10 @@
             {{/if}}
             <div id="m-incicarto-metadata-description" class="m-plugin-incicarto-form">
                       <div class="m-plugin-incicarto-form-input-group">
+                        <label for="person-notify">Nombre</label>
+                        <input id="person-notify" type="text" name="person-notify" placeholder="Nombre para seguimiento"></input> 
+                      </div>
+                      <div class="m-plugin-incicarto-form-input-group">
                         <label for="email-notify">Notificaciones de seguimiento</label>
                         <input id="email-notify" type="email" name="email-notify" placeholder="Correo electrónico para seguimiento"></input> 
                       </div>
@@ -43,16 +47,23 @@
             <div class="m-plugin-incicarto-html">
                 <p>Respecto al tratamiento de sus datos personales para el seguimiento, consulte el apartado 
                   <a href="https://www.cnig.es/proteccionDatos" target="_blank">Privacidad y protección de datos</a> en la web del CNIG.</p>
+                <br/>
+                <a id="image-download" hdownload="map.png">Descargeue la imagen del mapa para enviarla como fichero adjunto</a>
             </div>
  
             <div class="m-plugin-incicarto-html">
                 <button id="m-plugin-incicarto-simple-send-email">{{translations.btntext1}}</button>
             </div>
             <!-- Se crea un form multipart para que se puedan enviar archivos adjuntos en el email -->
-            <form id="m-plugin-incicarto-email-form" action="/api/email" method="post"
-            enctype="multipart/form-data" target="form-target" style="display:none">
+            <form id="m-plugin-incicarto-email-form" action="/api/email" method="post" enctype="multipart/form-data" target="form-target" style="display:none">
             <input type="hidden" id="m-plugin-incicarto-email-subject" name="subject" value=""/>
             <input type="hidden" id="m-plugin-incicarto-email-mailto" name="mailto" value=""/>
+            <input type="hidden" id="m-plugin-incicarto-email-sendername" name="sendername" value=""/>
+            <input type="hidden" id="m-plugin-incicarto-email-senderemail" name="senderemail" value=""/>
+            <input type="hidden" id="m-plugin-incicarto-email-errDescription" name="errDescription" value=""/>
+            <input type="hidden" id="m-plugin-incicarto-email-sendergeometry" name="sendergeometry" value=""/>
+            <input type="hidden" id="m-plugin-incicarto-email-shareURL" name="shareURL" value=""/>
+
             <input type="hidden" id="m-plugin-incicarto-email-body" name="body" value=""/>
             <input type="file" name="file" id="fileUploadForm" class="inputfile" data-multiple-caption="{count} ficheros seleccionados" multiple="" hidden="">
           </form>
