@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -28,18 +31,21 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
 import es.cnig.mapea.builder.JSBuilder;
-
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 
 /**
  * This class manages the available actions an user can execute
- * 
+ *
  * @author Guadaltel S.A.
  */
 @Path("/email")
@@ -48,15 +54,15 @@ public class EmailWS {
 
    @Context
    private ServletContext context;
-   
+
    private ResourceBundle configProperties = ResourceBundle.getBundle("configuration");
-   
+
    /**
     * Send email
-    * 
+    *
     * @param callbackFn the name of the javascript
     * function to execute as callback
-    * 
+    *
     * @return the javascript code
     */
    @POST
@@ -77,7 +83,7 @@ public class EmailWS {
       msg.put("message", message);
       return JSBuilder.wrapCallback(msg, callback);
    }
-   
+
    private File createFile(InputStream fileStream, FormDataContentDisposition fileDetail){
 	   File file = null;
 	   if(fileStream != null && fileDetail != null &&
@@ -87,7 +93,7 @@ public class EmailWS {
 			    int index = fileName.lastIndexOf(".");
 			    String prefix = fileName.substring(0, index);
 			    String suffix = fileName.substring(index+1);
-			    file = File.createTempFile(prefix, suffix);
+			    file = File.createTempFile(prefix, "." + suffix);
 				OutputStream out = new FileOutputStream(file);
 				int read = 0;
 				byte[] bytes = new byte[1024];
@@ -136,8 +142,21 @@ public class EmailWS {
 			   adjunto.setDataHandler(new DataHandler(new FileDataSource(fichAdjunto)));
 			   adjunto.setFileName(fichAdjunto.getName());
 			   //Texto
+			   JSONObject body = new JSONObject(cuerpo);
+			   JSONArray jsonArray = body.getJSONArray("features");
+			   JSONObject properties = jsonArray.getJSONObject(0).getJSONObject("properties");
+			   String shareURL = properties.getString("URL") + properties.getString("paramsURL");
+			   Map<String, Object> data = new HashMap<String, Object>();
+			   data.put("subject", asunto);
+			   data.put("destinatary", destinatario);
+			   data.put("sendername", properties.getString("emailName"));
+			   data.put("senderemail", properties.getString("emailUser"));
+			   data.put("errDescription", properties.getString("errDescripcion"));
+			   data.put("sendergeometry", cuerpo);
+			   data.put("shareURL", shareURL);
+			   String bodyData = getTemplate(data);
 			   BodyPart texto = new MimeBodyPart();
-			   texto.setContent(cuerpo, "text/html; charset=utf-8");
+			   texto.setContent(bodyData, "text/html; charset=utf-8");
 			   MimeMultipart multiparte = new MimeMultipart();
 			   multiparte.addBodyPart(adjunto);
 			   multiparte.addBodyPart(texto);
@@ -167,4 +186,25 @@ public class EmailWS {
 	   }
 	   return result;
    }
+
+   private static String getTemplate(Map<String, Object> data) {
+		String result = null;
+		@SuppressWarnings("deprecation")
+		Configuration cfg = new Configuration();
+		cfg.setClassForTemplateLoading(EmailWS.class, "/");
+		Template template;
+		try {
+			template = cfg.getTemplate("templates/email.ftl");
+			StringWriter out = new StringWriter();
+			template.process(data, out);
+			out.flush();
+			result = out.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TemplateException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
 }

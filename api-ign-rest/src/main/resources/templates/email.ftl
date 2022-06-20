@@ -2,80 +2,99 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>GGIS-CLOUD Cambio de contraseña</title>
-        <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <title>INCIDENCIA</title>
+        <link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
         <style>
-            #ggiscloud-email body {
-                font-family: 'Roboto', sans-serif;
-                font-size: 16px;
-            }
-
-            #ggiscloud-email div {
-                margin: 0 auto;
-                margin-bottom: 2rem;
-            }
-
-            #ggiscloud-email .corporation {
-                margin-top: 3rem;
-            }
-
-            #ggiscloud-email table tbody tr td {
-                padding-right: 12px;
-            }
-
-            #ggiscloud-email .btn-access {
-                color: #ffffff;
-                background-color: #0099DD;
-                text-decoration: none;
-                padding: 10px 20px 10px 20px;
-            }
-
-            #ggiscloud-email .app-title {
-                border: 0px;
-                display: block;
-                vertical-align: top;
-                width: 166px;
-                height: auto;
-            }
-
-            #ggiscloud-email .app-logo {
-                border: 0px;
-                display: block;
-                vertical-align: top;
-                width: 360px;
-                height: auto;
-                background-color: #0099DD;
-            }
-
-            #ggiscloud-email p span {
-                font-weight: bold;
-            }
+            body { 
+			    font-family: Muli; 
+			    font-size: 16px; 
+			    font-style: normal; 
+			    font-variant: normal; 
+			    font-weight: 700; 
+			} 
+			
+			
+			h2 { 
+			    font-family: Muli; 
+			    font-size: 24px; 
+			    font-style: normal; 
+			    font-variant: normal; 
+			    font-weight: 700; 
+			    line-height: 26.4px;
+			} 
+			
+			.main-form {
+			    display: flex;
+			    margin-top: 15px;
+			    width: 100%;
+			    justify-content: center;
+			    align-content: center;
+			    flex-direction: column;
+			    flex-grow: 2;
+			    font-size: 15px;
+			    align-items: center;
+			}
+			
+			.form-item {
+			    display: flex;
+			    flex-direction: column;
+			    width: 75%;
+			    margin-top: 10px;
+			}
+			
+			.form-item input[type=text] {
+			    margin: 5px;
+			    padding: 5px;
+			    background-color: transparent;
+			    cursor: auto;
+			    border-radius: 4px;
+			    border: 1px solid rgba(0,0,0,.5);
+			    -webkit-appearance: none;
+			    -moz-appearance: none;
+			    appearance: none;
+			    color: #6c6c6c;
+			    font-size: 13px;
+			}
+			
+			.form-item textarea {
+			    margin: 5px;
+			    padding: 5px;    
+			    display: block;
+			    border-radius: 4px;
+			    border: 1px solid rgba(0,0,0,.5);
+			    color: #6c6c6c;
+			    resize: none;
+			    height: 4em;
+			}
         </style>
     </head>
-    <body id="ggiscloud-email">
-        <div>
-            <div class="corporation" style="width: 400px;">
-                <img vspace="0" hspace="0" border="0" alt="Logo" style="border: 0px;display: block;width: 400px;" src="${corporation_image}">
-            </div>
-            <div style="width: 550px;">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <img border="0" hspace="0" vspace="0" alt="Application logo" class="app-title" src="${domain}/${context}/static/media/logo-circulo.svg">
-                            </td>
-                            <td>
-                                <div>
-                                    <img border="0" hspace="0" vspace="0" alt="Application Title" class="app-logo" src="${domain}/${context}/static/media/logo-titulo-negativo.svg">
-                                    <p>El administrador del sistema ${admin} ha realizado un cambio de contraseña a su cuenta <span>(${user})</span>. Su nueva contraseña es: <span>${new_password}</span></p>
-                                    <p>Por favor, acceda al sistema con su nueva contraseña y cámbiela lo antes posible.</p><br/>
-                                    <a class="btn-access" target="_new" href="${url}">ACCEDER</a>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <body>
+        <h2>${subject}</h2>
+        <div class="main-form">
+		    <div class="form-item">
+		        <label for="destinatary">Destinatario de la incidencia</label>
+		        <input id="destinatary" type="text" name="destinatary" placeholder="${destinatary}" readonly></input>
+		    </div>
+		    <div class="form-item">
+		        <label for="sendername">Remitente incidencia</label>
+		        <input id="sendername" type="text" name="sendername" placeholder="${sendername}" readonly></input>
+		    </div>
+		    <div class="form-item">
+		        <label for="senderemail">Email remitente incidencia</label>
+		        <input id="senderemail" type="text" name="senderemail" placeholder="${senderemail}" readonly></input>
+		    </div>
+		    <div class="form-item">
+		        <label for="errDescription">Descripción de la incidencia</label>
+		        <textarea id="errDescription" type="text" name="errDescription" placeholder="${errDescription}" readonly></textarea>
+		    </div>
+		    <div class="form-item">
+		        <label for="sendergeometry">Geometría (geoJSON)</label>
+		        <textarea id="sendergeometry" type="text" name="sendergeometry" placeholder="${sendergeometry}" readonly></textarea>
+		    </div>
+		    <div class="form-item">
+		        <label for="shareURL">URL de la App</label>
+		        <input id="shareURL" type="text" name="shareURL" placeholder="${shareURL}" readonly></input>
+		    </div>
+		</div>
     </body>
 </html>
