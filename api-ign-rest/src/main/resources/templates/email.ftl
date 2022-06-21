@@ -64,7 +64,7 @@
 			    border: 1px solid rgba(0,0,0,.5);
 			    color: #6c6c6c;
 			    resize: none;
-			    height: 4em;
+			    min-height: 4em;
 			}
         </style>
     </head>
@@ -73,27 +73,27 @@
         <div class="main-form">
 		    <div class="form-item">
 		        <label for="destinatary">Destinatario de la incidencia</label>
-		        <input id="destinatary" type="text" name="destinatary" placeholder="${destinatary}" readonly></input>
+		        <input id="destinatary" type="text" name="destinatary" value="${destinatary}"></input>
 		    </div>
 		    <div class="form-item">
 		        <label for="sendername">Remitente incidencia</label>
-		        <input id="sendername" type="text" name="sendername" placeholder="${sendername}" readonly></input>
+		        <input id="sendername" type="text" name="sendername" value="${sendername}"></input>
 		    </div>
 		    <div class="form-item">
 		        <label for="senderemail">Email remitente incidencia</label>
-		        <input id="senderemail" type="text" name="senderemail" placeholder="${senderemail}" readonly></input>
+		        <input id="senderemail" type="text" name="senderemail" value="${senderemail}"></input>
 		    </div>
 		    <div class="form-item">
 		        <label for="errDescription">Descripción de la incidencia</label>
-		        <textarea id="errDescription" type="text" name="errDescription" placeholder="${errDescription}" readonly></textarea>
+		        <textarea id="errDescription" type="text" name="errDescription">${errDescription}</textarea>
 		    </div>
 		    <div class="form-item">
 		        <label for="sendergeometry">Geometría (geoJSON)</label>
-		        <textarea id="sendergeometry" type="text" name="sendergeometry" placeholder="${sendergeometry}" readonly></textarea>
+		        <textarea id="sendergeometry" type="text" name="sendergeometry">${sendergeometry}</textarea>
 		    </div>
 		    <div class="form-item">
 		        <label for="shareURL">URL de la App</label>
-		        <input id="shareURL" type="text" name="shareURL" placeholder="${shareURL}" readonly></input>
+		        <input id="shareURL" type="text" name="shareURL" value="${shareURL}"></input>
 		    </div>
 		</div>
     </body>

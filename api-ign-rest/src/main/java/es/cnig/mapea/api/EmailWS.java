@@ -121,11 +121,11 @@ public class EmailWS {
 	   Properties props = new Properties();
 	   props.put("mail.smtp.host", host);//El servidor SMTP
 	   props.put("mail.smtp.starttls.enable", "true"); //Para conectar de manera segura al servidor SMTP
-	   if(usuario != null && !usuario.isEmpty() &&
-			password != null && !password.isEmpty()){
+	   if (usuario != null && !usuario.isEmpty() && password != null && !password.isEmpty()) {
 		   props.put("mail.smtp.auth", "true");//Usar autenticación mediante usuario y clave
 	   }
-	   if(port != null && !port.isEmpty()){
+
+	   if (port != null && !port.isEmpty()) {
 		   props.put("mail.smtp.port", port);//El puerto SMTP
 	   }
 
@@ -136,46 +136,46 @@ public class EmailWS {
 		   message.setFrom(new InternetAddress(remitente));
 		   message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario)); //Se podrían añadir varios de la misma manera
 		   message.setSubject(asunto);
-		   if(fichAdjunto != null){
+		   JSONObject body = new JSONObject(cuerpo);
+		   JSONArray jsonArray = body.getJSONArray("features");
+		   JSONObject properties = jsonArray.getJSONObject(0).getJSONObject("properties");
+		   String shareURL = properties.getString("URL") + properties.getString("paramsURL");
+		   Map<String, Object> data = new HashMap<String, Object>();
+		   data.put("subject", asunto);
+		   data.put("destinatary", destinatario);
+		   data.put("sendername", properties.getString("emailName"));
+		   data.put("senderemail", properties.getString("emailUser"));
+		   data.put("errDescription", properties.getString("errDescripcion"));
+		   data.put("sendergeometry", cuerpo);
+		   data.put("shareURL", shareURL);
+		   String bodyData = getTemplate(data);
+		   if (fichAdjunto != null) {
 			   //Adjunto
 			   BodyPart adjunto = new MimeBodyPart();
 			   adjunto.setDataHandler(new DataHandler(new FileDataSource(fichAdjunto)));
 			   adjunto.setFileName(fichAdjunto.getName());
-			   //Texto
-			   JSONObject body = new JSONObject(cuerpo);
-			   JSONArray jsonArray = body.getJSONArray("features");
-			   JSONObject properties = jsonArray.getJSONObject(0).getJSONObject("properties");
-			   String shareURL = properties.getString("URL") + properties.getString("paramsURL");
-			   Map<String, Object> data = new HashMap<String, Object>();
-			   data.put("subject", asunto);
-			   data.put("destinatary", destinatario);
-			   data.put("sendername", properties.getString("emailName"));
-			   data.put("senderemail", properties.getString("emailUser"));
-			   data.put("errDescription", properties.getString("errDescripcion"));
-			   data.put("sendergeometry", cuerpo);
-			   data.put("shareURL", shareURL);
-			   String bodyData = getTemplate(data);
 			   BodyPart texto = new MimeBodyPart();
 			   texto.setContent(bodyData, "text/html; charset=utf-8");
 			   MimeMultipart multiparte = new MimeMultipart();
 			   multiparte.addBodyPart(adjunto);
 			   multiparte.addBodyPart(texto);
 			   message.setContent(multiparte);
-		   }else{
-			   message.setContent(cuerpo, "text/html; charset=utf-8");
+		   } else {
+			   message.setContent(bodyData, "text/html; charset=utf-8");
 		   }
+
 		   transport = session.getTransport("smtp");
-		   if(usuario != null && !usuario.isEmpty() &&
-					password != null && !password.isEmpty()){
+		   if (usuario != null && !usuario.isEmpty() && password != null && !password.isEmpty()) {
 			   transport.connect(host, usuario, password);
-		   }else{
+		   } else {
 			   transport.connect();
 		   }
+
 		   transport.sendMessage(message, message.getAllRecipients());
-	   }catch (MessagingException me) {
+	   } catch (MessagingException me) {
 		   me.printStackTrace();
 		   result = me.getMessage();
-	   }finally{
+	   } finally {
 		   if(transport != null){
 			   try {
 				   transport.close();
