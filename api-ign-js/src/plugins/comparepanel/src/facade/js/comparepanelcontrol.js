@@ -114,6 +114,11 @@ export default class ComparepanelControl extends M.Control {
       this.panels.push(p.panel_._element);
       let element = document.querySelector('.' + p.panel_._className + ' .m-panel-controls');
       element.classList.add('cp-' + p.name);
+      map._plugins.forEach(element => {
+        if(element.name_ === 'comparepanel' && element.collapsed){
+          this.template.querySelector('#m-cp-' + p.name).parentNode.classList.add(`visibilityContentPlugin`);
+        }
+      });
       document.querySelector('.' + p.panel_._className).remove();
       this.template.querySelector('#m-cp-' + p.name).append(element);
       if (index === this.plugins.length - 1) {
@@ -143,6 +148,10 @@ export default class ComparepanelControl extends M.Control {
   }
 
   addButtonEvents() {
+    const container = document.querySelector('.m-plugin-comparepanel');
+    container.addEventListener('click', ()=> {
+      document.querySelector('.m-comparepanel-container').classList.toggle('visibilityContentPlugin');
+    })
     this.plugins.forEach(p => {
       if (p.name==='mirrorpanel'){
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {

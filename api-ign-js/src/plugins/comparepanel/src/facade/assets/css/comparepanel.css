@@ -403,6 +403,11 @@ div#m-comparepanel-title {
 	display: block !important;
 }
 
+.visibilityContentPlugin {
+	display: none !important;
+}
+
+
 .cp-mirrorpanel.m-panel-controls,
 .cp-timeline.m-panel-controls,
 .cp-lyrcompare.m-panel-controls,
