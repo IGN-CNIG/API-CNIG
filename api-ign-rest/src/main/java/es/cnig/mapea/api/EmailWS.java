@@ -194,7 +194,7 @@ public class EmailWS {
 		cfg.setClassForTemplateLoading(EmailWS.class, "/");
 		Template template;
 		try {
-			template = cfg.getTemplate("templates/email.ftl");
+			template = cfg.getTemplate("email.ftl");
 			StringWriter out = new StringWriter();
 			template.process(data, out);
 			out.flush();

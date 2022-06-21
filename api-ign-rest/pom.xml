@@ -39,6 +39,13 @@
                <include>**/*.properties</include>
             </includes>
          </resource>
+         <resource>
+            <directory>src/main/resources/templates</directory>
+            <filtering>true</filtering>
+            <includes>
+               <include>**/*.ftl</include>
+            </includes>
+         </resource>
       </resources>
       <filters>
          <filter>${basedir}/../api-ign-parent/src/main/filters/${environment}.properties</filter>

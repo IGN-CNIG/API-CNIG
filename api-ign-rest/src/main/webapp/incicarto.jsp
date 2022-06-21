@@ -279,6 +279,11 @@
                       },
                       {
                         idTheme: 12,
+                        nameTheme: 'Pruebas Guadaltel 2',
+                        emailTheme: 'jesusdiaz@guadaltel.com',
+                      },
+                      {
+                        idTheme: 13,
                         nameTheme: 'Pruebas IGN',
                         emailTheme: 'aurelio.aragon@cnig.es',
                       }
