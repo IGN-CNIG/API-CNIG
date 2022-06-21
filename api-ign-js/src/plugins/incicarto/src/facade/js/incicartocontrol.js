@@ -323,7 +323,6 @@ export default class IncicartoControl extends M.Control {
    * @api
    */
   createDrawingTemplate() {
-    console.log("createDrawingTemplate");
     this.drawingTools = M.template.compileSync(drawingTemplate, {
       jsonp: true,
       vars: {
@@ -508,7 +507,6 @@ export default class IncicartoControl extends M.Control {
     setTimeout(() => {
 
       document.querySelector("#m-plugin-incicarto-send-email").addEventListener('click',(e)=>{
-        console.log("composeMailtoSend");
         let destinataryContainer = document.querySelector("#email-to");
         let destinatary = destinataryContainer.options[destinataryContainer.selectedIndex].value;
         let mailto_composed = this.composeMailtoSend(destinatary)
@@ -516,7 +514,7 @@ export default class IncicartoControl extends M.Control {
           console.log("El mail no ha sido validado");
           return;
         }
-        console.log(`Envío de correo electrónico ${destinatary}`);
+
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
         this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctamente.","okmessage");
         document.querySelector("#m-plugin-incicarto-send-email").disabled=true;
@@ -568,7 +566,7 @@ export default class IncicartoControl extends M.Control {
     setTimeout(() => {
 
       document.querySelector("#m-plugin-incicarto-simple-send-email").addEventListener('click',(e)=>{
-        
+
         let mailto_composed = this.composeSimpleMailtoSend()
         if (mailto_composed===false){
           console.log("El mail no ha sido validado");
@@ -592,7 +590,7 @@ export default class IncicartoControl extends M.Control {
             fileName = this.value;
           }
         }
-        console.log(this.files);
+
         document.getElementById('infoUpload').innerHTML=fileName;
       };
 
@@ -662,7 +660,7 @@ export default class IncicartoControl extends M.Control {
    */
   composeMailtoSend(destinatary) {
 
-    
+
     let themeMetadataContainer = document.querySelector("#theme-select");
     let errorMetadataContainer = document.querySelector("#error-select");
     let productMetadataContainer = document.querySelector("#product-select");
@@ -722,7 +720,7 @@ export default class IncicartoControl extends M.Control {
 
     // Intentandpo capturar pantalla
     /**
-     * 
+     *
      * https://programming.vip/docs/the-solution-of-canvas.todataurl-error-reporting-is-all-here.html
      * https://stackoverflow.com/questions/64862027/how-i-put-the-canvas-content-as-a-file-in-a-input-type-file
      */
@@ -737,17 +735,17 @@ export default class IncicartoControl extends M.Control {
     Array.prototype.forEach.call(
       this.map_.getImpl().map_.getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer'),
       function (canvas) {
-        
+
         if (canvas.width > 0) {
           const opacity =  canvas.parentNode.style.opacity || canvas.style.opacity;
           mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-  
+
           const backgroundColor = canvas.parentNode.style.backgroundColor;
           if (backgroundColor) {
             mapContext.fillStyle = backgroundColor;
             mapContext.fillRect(0, 0, canvas.width, canvas.height);
           }
-  
+
           let matrix;
           const transform = canvas.style.transform;
           if (transform) {
@@ -795,7 +793,7 @@ export default class IncicartoControl extends M.Control {
     //   dT.items.add( file );
     //   document.querySelector( "input" ).files = dT.files;
     // } );
-    
+
 
 
 
@@ -832,8 +830,6 @@ export default class IncicartoControl extends M.Control {
       "URL": window.location.href,
       "paramsURL": encodeURI(shareURL),
     }
-    //console.log(this.map_.getLayers());
-    //console.log(propiedades_incidencia);
 
     if (this.geometryIncidenceJSON.features.length>0){
       this.geometryIncidenceJSON.features[0].properties=propiedades_incidencia;
@@ -877,9 +873,6 @@ export default class IncicartoControl extends M.Control {
     const urlINCIGEOCreateError = "https://incigeo.ign.es/incigeo_pre/webservice.aspx";
     const loginUser = "pruebas_inserciones";  //usr_signa
     const loginPwd = "pruebas";               //pr_signa
-
-
-    console.log("Proceso de alta en INCIGEO");
 
     const soapCreateError = (tokenAccess) => {
 
@@ -932,21 +925,15 @@ export default class IncicartoControl extends M.Control {
 
       const parserRequest = new DOMParser();
       const xmlDOMRequest = parserRequest.parseFromString(strNewErrorMessage3, "text/xml");
-      console.log(xmlDOMRequest);
-
-
 
       function createCORSRequest(method, url) {
         var xhr = new XMLHttpRequest();
         if ("withCredentials" in xhr) {
-          console.log("1");
           xhr.open(method, url, false);
         } else if (typeof XDomainRequest != "undefined") {
-          console.log("2");
           xhr = new XDomainRequest();
           xhr.open(method, url);
         } else {
-          console.log("CORS not supported");
           alert("CORS not supported");
           xhr = null;
         }
@@ -963,7 +950,6 @@ export default class IncicartoControl extends M.Control {
         var results = xhr.responseText;
         const parserResponse = new DOMParser();
         const xmlDOMResponse = parserResponse.parseFromString(results, "text/xml");
-        console.log(xmlDOMResponse);
         const returnCD = xmlDOMResponse.getElementsByTagName("web:RETURN_CD")[0].childNodes[0].nodeValue;
         const returnDS = xmlDOMResponse.getElementsByTagName("web:RETURN_DS")[0].childNodes[0].nodeValue;
         if (returnCD==='0'){
@@ -1010,7 +996,6 @@ export default class IncicartoControl extends M.Control {
           xhr = new XDomainRequest();
           xhr.open(method, url);
         } else {
-          console.log("CORS not supported");
           alert("CORS not supported");
           xhr = null;
         }
@@ -1027,9 +1012,6 @@ export default class IncicartoControl extends M.Control {
         const parser = new DOMParser();
         const xmlDOM = parser.parseFromString(results, "text/xml");
         const value = xmlDOM.getElementsByTagName("web:TOKEN_CD")[0].childNodes[0].nodeValue;
-        console.log(xmlDOM);
-        console.log(value);
-        console.log(results);
         soapCreateError(value);
       }
 
@@ -1632,7 +1614,6 @@ export default class IncicartoControl extends M.Control {
         M.dialog.error(getValue('exception.format_not_selected'));
         break;
     }
-    console.log(arrayContent);
 
     if (downloadFormat !== 'shp') {
       const url = window.URL.createObjectURL(new window.Blob([arrayContent], {
@@ -1774,14 +1755,6 @@ export default class IncicartoControl extends M.Control {
   getCentroid4INCIGEO(geojsonLayer) {
 
     if (geojsonLayer.features.length > 0) {
-      //layer.getFeatures().map(feature => {
-      //  console.log(feature.getGeoJSON());
-      //});
-      console.log(JSON.stringify(geojsonLayer));
-      console.log(geojsonLayer.features[0].geometry.coordinates); // Si es puntual esto es un array de 2
-      console.log(geojsonLayer.features[0].geometry.coordinates[0]);  // Si es puntual esto deveulve la X
-      console.log(geojsonLayer.features[0].geometry.coordinates.length);
-
       if (geojsonLayer.features[0].geometry.coordinates.length === 2) {
         // Punto 2D
         this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0];
@@ -1801,9 +1774,6 @@ export default class IncicartoControl extends M.Control {
             this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][0][1];
         }
       }
-      console.log(`X:${this.geometryIncidenceX}`);
-      console.log(`Y:${this.geometryIncidenceY}`);
-
     }
 
   }
@@ -2163,7 +2133,6 @@ export default class IncicartoControl extends M.Control {
       this.invokeEscKey();
       this.drawLayer = layer;
       this.isDrawingActive = true;
-      console.log(this.drawingTools);
       this.drawingTools.querySelector('button.m-incicarto-layer-profile').style.display = 'none';
       this.drawingTools.querySelector('button.m-incicarto-layer-delete-feature').style.display = 'none';
       const selector = `#m-incicarto-list li[name="${layer.name}"] div.m-incicarto-layer-actions-container`;
