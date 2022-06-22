@@ -41,7 +41,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_URL', location.protocol !== 'file' ? location.protocol : 'https' + '${mapea.proxy.url}');
+  M.config('PROXY_URL', (location.protocol !== 'file' ? location.protocol : 'https') + '${mapea.proxy.url}');
 
   /**
    * The path to the Mapea proxy to send
@@ -51,7 +51,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_POST_URL', location.protocol !== 'file' ? location.protocol : 'https' + '${mapea.proxy_post.url}');
+  M.config('PROXY_POST_URL', (location.protocol !== 'file' ? location.protocol : 'https') + '${mapea.proxy_post.url}');
 
   /**
    * The path to the Mapea templates
@@ -69,7 +69,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('THEME_URL', location.protocol !== 'file' ? location.protocol : 'https' + '${mapea.theme.url}');
+  M.config('THEME_URL', (location.protocol !== 'file' ? location.protocol : 'https') + '${mapea.theme.url}');
 
   /**
    * The path to the Mapea theme
@@ -214,7 +214,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @private
    * @type {String}
    */
-  M.config('SQL_WASM_URL', location.protocol !== 'file' ? location.protocol : 'https' + '${sql_wasm.url}');
+  M.config('SQL_WASM_URL', (location.protocol !== 'file' ? location.protocol : 'https') + '${sql_wasm.url}');
 
   /** IGNSearch List Control
    *
