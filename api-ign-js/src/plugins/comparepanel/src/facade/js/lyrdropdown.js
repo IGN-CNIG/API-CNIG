@@ -145,21 +145,20 @@ export default class Lyrdropdown extends M.Plugin {
    * @api stable
    */
   destroy() {
-    console.log("Destry LyerDown");
     this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.collapsible,this.collapsed,this.layers] = [null, null, null, null, null, null];
   }
 
 
   setDisabledLyrs(lyrList){
-    
+
     if (this.control_ === undefined){
       return;
     }
     if (this.control_.template === null){
       return;
     }
-    //console.log(this.control_.template);
+
     try {
       let optionLyrs = null;
       optionLyrs = this.control_.template.querySelector('#m-lyrdropdown-selector');
@@ -168,10 +167,10 @@ export default class Lyrdropdown extends M.Plugin {
         optionLyrs.options[iOpt].disabled = !lyrList.includes(optionLyrs.options[iOpt].value)
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-  
-   
+
+
    }
 
 

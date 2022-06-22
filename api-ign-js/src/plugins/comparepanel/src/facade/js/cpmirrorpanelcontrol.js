@@ -343,10 +343,15 @@ export default class CompareMirrorpanel extends M.Control {
     // e2m: esta manera de cerrar el panel provocaba que se lanzara el evento deactivateAndActivateMirrorPanel
     //document.querySelector('#m-cp-mirrorpanel > button').click();
     // e2m: de esta manera se oculta el panel y no se lanza el evento, pero es un poco raro
-    document.querySelector('#m-cp-mirrorpanel-btn').classList.remove('active');
-    document.querySelector('.m-panel-controls .cp-mirrorpanel').classList.remove('hide-panel');
+    const elem = document.querySelector('#m-cp-mirrorpanel-btn');
+    const elem2 = document.querySelector('.m-panel-controls .cp-mirrorpanel');
+    if (elem !== null) {
+      elem.classList.remove('active');
+    }
 
-    
+    if (elem2 !== null) {
+      elem2.classList.remove('hide-panel');
+    }
   }
 
   /**
@@ -395,7 +400,7 @@ export default class CompareMirrorpanel extends M.Control {
             pluginVector = new M.plugin.Vectors({
               position: itemPlug.position,
               collapsed: itemPlug.collapsed,
-              collapsible: itemPlug.collapsible,              
+              collapsible: itemPlug.collapsible,
             });
           }
           if (itemPlug.metadata_.name === "backimglayer") {
@@ -430,15 +435,15 @@ export default class CompareMirrorpanel extends M.Control {
     // Añadimos plugins secundarios
     if (pluginFullTOC4map !== null) {
       this.mapL[mapLyr].addPlugin(pluginFullTOC4map);
-    } 
+    }
 
     if (pluginVector !== null) {
       this.mapL[mapLyr].addPlugin(pluginVector);
-    } 
+    }
 
     if (pluginBackImgLayer4map !== null) {
       this.mapL[mapLyr].addPlugin(pluginBackImgLayer4map);
-    } 
+    }
 
 
     if (this.showCursors) { this.addLayerCursor(mapLyr); }
@@ -484,21 +489,21 @@ export default class CompareMirrorpanel extends M.Control {
   }
 
 
-  
+
   manageLyrAvailable(lyrList){
-    
+
     if (this.lyDropControlA.control_!== null){
       this.lyDropControlA.setDisabledLyrs(lyrList);
     }
     if (this.lyDropControlB.control_!== null){
       this.lyDropControlB.setDisabledLyrs(lyrList);
-    }  
+    }
     if (this.lyDropControlC.control_!== null){
       this.lyDropControlC.setDisabledLyrs(lyrList);
     }
     if (this.lyDropControlD.control_!== null){
       this.lyDropControlD.setDisabledLyrs(lyrList);
-    }     
+    }
   }
 
   /**

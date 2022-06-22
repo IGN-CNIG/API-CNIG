@@ -107,11 +107,10 @@ export default class TimelineControl extends M.Control {
         //e.target.classList.add('cp-control-pausa');
         this.running = !this.running;
         if (this.running){
-          console.log(`ENNNVIIIO -> ${this.running}`);
           this.playTimeline(this.running);
         }
-        
-        
+
+
       });
       success(this.template);
 
@@ -168,7 +167,7 @@ export default class TimelineControl extends M.Control {
     }
   }
 
-  
+
 
   /** This function change layers and show layer name when slider moves
    *
@@ -178,7 +177,7 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   changeSlider(elem) {
-    
+
     document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
     const left = (((elem.value - elem.min) / (elem.max - elem.min)) * ((256 - 5) - 5)) + 5;
     document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 'px');
@@ -190,7 +189,6 @@ export default class TimelineControl extends M.Control {
     }
 
     let step = parseFloat(elem.value);
-    console.log(this.intervals);
     this.intervals.forEach((interval) => {
       console.o
       this.getMapLayer(interval.service).setVisible(false);
@@ -238,9 +236,9 @@ export default class TimelineControl extends M.Control {
   }
 
   /** This function set default layer shown when plugin is activated
-   * 
+   *
    * @param {integer} indexLyr /** Index layer in intervals array
-   * @returns 
+   * @returns
    */
   setDefaultLayer(indexLyr) {
 
@@ -355,12 +353,10 @@ export default class TimelineControl extends M.Control {
    * @api
    */
   activate() {
-    console.log("Activate Timeline 2S");
     clearInterval(this.running);
     this.running = false;
     document.querySelector('.m-timeline-button button').classList.add('cp-control-siguiente');
     document.querySelector('.m-timeline-button button').classList.remove('cp-control-pausa');
-    console.log("Activate Timeline 1S");
   }
 
   /**
@@ -371,7 +367,6 @@ export default class TimelineControl extends M.Control {
    * @api
    */
   deactivate() {
-    console.log("Deactivate Timeline 2S");    
     try {
       clearInterval(this.running);
       this.running = false;
@@ -381,9 +376,8 @@ export default class TimelineControl extends M.Control {
         }
       });
     } catch (error) {
-      console.error(`e2m (1): ${error}`);
+      console.error(error);
     }
-    console.log("Deactivate Timeline 2E");    
   }
 
   /**

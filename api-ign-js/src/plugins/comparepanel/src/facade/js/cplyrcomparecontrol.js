@@ -240,7 +240,7 @@ export default class LyrCompareControl extends M.Control {
             this.comparisonMode = 0;
             this.deactivateCurtain();
             return;
-          }) 
+          })
         } else{
           button.addEventListener('click', evt => {
             if (this.comparisonMode === 0) {
@@ -264,7 +264,7 @@ export default class LyrCompareControl extends M.Control {
               this.updateControls();
               this.getImpl().setComparisonMode(this.comparisonMode);
             }
-          })          
+          })
         }
       });
     }
@@ -424,11 +424,9 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   activateCurtain() {
-    console.log("Activate Curtain 2A");
     this.activeDefault();
     this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
     this.updateControls();
-    console.log("Activate Curtain 2B");
   }
 
   /**
@@ -503,7 +501,7 @@ export default class LyrCompareControl extends M.Control {
 
 
   manageLyrAvailable(lyrList){
-    
+
     if (this.template === null){
       return;
     }
@@ -522,7 +520,7 @@ export default class LyrCompareControl extends M.Control {
         dropDownContainer.options[iOpt].disabled = !lyrList.includes(dropDownContainer.options[iOpt].value);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -650,10 +648,10 @@ export default class LyrCompareControl extends M.Control {
 
 
   /**
-   * 
+   *
    * @param {*} layers
-   * Transform StringLayers o Template Literals to Mapea M.LayerFormato 
-   * 
+   * Transform StringLayers o Template Literals to Mapea M.LayerFormato
+   *
    * WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
    * Tipo de Servicio (WMS/WMTS)
    * Nombre del servicio para la leyenda (acepta espacios y tildes)
@@ -661,13 +659,13 @@ export default class LyrCompareControl extends M.Control {
    * Identificador de capa del Capabilities del servicio
    * Tilematrix
    * Formato de imagen
-   * 
+   *
    * Ejemplo: WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
-   * 
+   *
    * El resto de parámetros los define la función
    * Las capas cargadas tienen asignados zIndex pequeños
-   *  
-   * @returns 
+   *
+   * @returns
    */
   transformToLayers(layers) {
 
@@ -676,7 +674,6 @@ export default class LyrCompareControl extends M.Control {
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
-          // console.log(urlLayer);
           if (urlLayer[0].toUpperCase() === 'WMS') {
             newLayer = new M.layer.WMS({
               url: urlLayer[2],

@@ -6,11 +6,11 @@ M.language.setLang('es');//Español
 const customBGLids = ['cartomtn','imagen','hibrido','mapa'];
 const customBGLtitles = ['Carto','Imagen','Mixto','Mapa'];
 const customBGLlayers = [
-          'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',        
+          'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',
           'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true',
           'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*true*image/jpeg*false*false*true' + '+' +
           'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true',
-          'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true',        
+          'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true',
         ];
 
 const customBGLoptions = customBGLids.map((id, index) => {
@@ -59,7 +59,7 @@ const map = M.map({
 //const wmtsSIOSE = ['SIOSE', '2020', wmtsSIOSEsource];
 
 /**
- * 
+ *
  * new M.layer.WMTS({
             url: 'https://www.ign.es/wmts/mapa-raster?',
             name: 'MTN',
@@ -72,7 +72,7 @@ const map = M.map({
             format: 'image/png',
           }),
 
- * 
+ *
  */
 
 
@@ -446,7 +446,7 @@ const PNOAlistBaseLayersByString = [
   // ['MDT', '2020', 'WMS*MDT*https://servicios.idee.es/wms-inspire/mdt*EL.GridCoverage'],
   // ['MTN50-Minutas', '2020', 'WMS*MTN50-Minutas*https://www.ign.es/wms/primera-edicion-mtn*catastrones'], // CORS
   // ['MTN50-1Edi', '2020', 'WMS*MTN50-1Edi*https://www.ign.es/wms/primera-edicion-mtn*MTN50'],  // CORS
-  // ['MTN25-1Edi', '2020', 'WMS*MTN25-1Edi*https://www.ign.es/wms/primera-edicion-mtn*MTN25'],  //CORS 
+  // ['MTN25-1Edi', '2020', 'WMS*MTN25-1Edi*https://www.ign.es/wms/primera-edicion-mtn*MTN25'],  //CORS
   // WMTS Varios
   // ['MDT-Relieve', '2020', 'WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg'],
   // ['SIOSE', '2020', 'WMTS*SIOSE*https://servicios.idee.es/wmts/ocupacion-suelo*LC.LandCoverSurfaces*GoogleMapsCompatible*image/png'],
@@ -523,13 +523,13 @@ const pluginComparepanel = new Comparepanel({
   defaultCompareViz: 1,
   baseLayers: SENTINELlistBaseLayersByString,
   /*urlcoberturas: 'https://projects.develmap.com/apicnig/pnoahisto/coberturas.geojson',*/
-  timelineParams: { 
+  timelineParams: {
     animation: true,
   },
-  transparencyParams: { 
-    radius: 100, 
+  transparencyParams: {
+    radius: 100,
   },
-  lyrcompareParams: { 
+  lyrcompareParams: {
       staticDivision: 2,
       defaultLyrA:0,
       defaultLyrB:1,
@@ -537,7 +537,7 @@ const pluginComparepanel = new Comparepanel({
       defaultLyrD:3,
       opacityVal:100,
    },
-  mirrorpanelParams: { 
+  mirrorpanelParams: {
       showCursors: true,
       reverseLayout:true,
       enabledPlugins: true,
@@ -545,5 +545,7 @@ const pluginComparepanel = new Comparepanel({
   }
 });
 
-map.addPlugin(pluginComparepanel);
+window.map = map;
+window.plugin = pluginComparepanel;
 
+map.addPlugin(pluginComparepanel);

@@ -244,20 +244,23 @@ export default class Mirrorpanel extends M.Plugin {
     document.removeEventListener('keydown', (zEvent) => { });
     this.control_.removeMaps();
     this.control_.destroyMapsContainer();
-    this.map_.removeControls([this.control_]);
+    /* eslint-disable no-empty */
+    try {
+      this.map_.removeControls([this.control_]);
+    } catch (err) {}
     [
-      this.control_, 
-      this.panel_, 
-      this.map_, 
-      this.collapsible, 
-      this.collapsed, 
-      this.modeViz, 
-      this.enabledPlugins, 
-      this.enabledKeyFunctions, 
-      this.showCursors, 
-      this.mirrorLayers, 
-      this.defaultBaseLyrs, 
-      this.backImgLayersParams, 
+      this.control_,
+      this.panel_,
+      this.map_,
+      this.collapsible,
+      this.collapsed,
+      this.modeViz,
+      this.enabledPlugins,
+      this.enabledKeyFunctions,
+      this.showCursors,
+      this.mirrorLayers,
+      this.defaultBaseLyrs,
+      this.backImgLayersParams,
       this.interface] =  [null, null, null, null, null, null, null, null, null, null,null, null, null];
   }
 
@@ -273,8 +276,10 @@ export default class Mirrorpanel extends M.Plugin {
   }
 
 
-  manageLyrAvailable(lyrList){
-    this.control_.manageLyrAvailable(lyrList);
+  manageLyrAvailable(lyrList) {
+    if (this.control_ !== null) {
+      this.control_.manageLyrAvailable(lyrList);
+    }
   }
 
   /**

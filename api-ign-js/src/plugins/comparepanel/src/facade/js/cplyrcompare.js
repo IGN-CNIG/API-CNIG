@@ -276,8 +276,11 @@ export default class LyrCompare extends M.Plugin {
       swipeControl.remove();
     }
 
-    this.map_.removeControls([this.control_]);
     this.control_.removeCurtainLayers(this.control_.getLayersNames());
+    /* eslint-disable no-empty */
+    try {
+      this.map_.removeControls([this.control_]);
+    } catch (err) {}
     [this.name_, this.error_, this.layers, this.controls_, this.map_, this.position, this.collapsed, this.collapsible,
       this.staticDivision, this.opacityVal, this.comparisonMode, this.metadata_, this.tooltip_, this.interface, this.defaultLyrA,
       this.defaultLyrB, this.defaultLyrC, this.defaultLyrD
@@ -319,7 +322,6 @@ export default class LyrCompare extends M.Plugin {
    * @api
    */
   activate() {
-    console.log("Activate Curtain 1");
     this.control_.activateCurtain();
   }
 
@@ -331,7 +333,6 @@ export default class LyrCompare extends M.Plugin {
    * @api
    */
   deactivate() {
-    console.log("Deactivate Curtain 1");
     this.control_.deactivateCurtain();
   }
 

@@ -81,7 +81,7 @@ export default class TransparencyControl extends M.Control {
     this.map = map;
     return new Promise((success, fail) => {
       this.layers = this.transformToLayers(this.layers);
-      
+
       let names = this.layers.map((layer) => {
         return layer instanceof Object ? { name: layer.name, legend: layer.legend } : { name: layer, legend: layer };
       });
@@ -115,7 +115,7 @@ export default class TransparencyControl extends M.Control {
       });
 
       this.template.querySelector('#m-transparency-active').addEventListener('click', (evt) => {
-        
+
         // e2m: evitamos que el mapa principal, sobre el que se activa SpyEye pueda poner sobre él capas
         document.querySelector('#m-lyrdropdown-selector').value="none";
         document.querySelector('#m-lyrdropdown-selector').style.display = 'none';
@@ -131,10 +131,9 @@ export default class TransparencyControl extends M.Control {
         this.activate();
       });
       this.template.querySelector('#m-transparency-deactivate').addEventListener('click', (evt) => {
-        
+
         // e2m: volvemos a permitir que el mapa principal pueda poner sobre él capas
         document.querySelector('#m-lyrdropdown-selector').style.display = 'block';
-console.log("habilitamos");
         // e2m: cuando desactivamos SpyEye, permitimos que se activen los comparadores de cortina de nuevo
         document.querySelector('#m-lyrcompare-vcurtain').disabled = false;
         document.querySelector('#m-lyrcompare-hcurtain').disabled = false;
@@ -142,10 +141,10 @@ console.log("habilitamos");
         document.querySelector('#m-lyrcompare-deactivate').disabled = false;
 
         this.template.querySelector('#m-transparency-lock').style.visibility = 'hidden';
-        this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';        
+        this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
 
         this.deactivate()
-      });    
+      });
       this.template.querySelector('#m-transparency-lock').addEventListener('click', (evt) => {
         M.dialog.info('Mueva el cursor a la zona deseada y pulse Ctrl+Shift+ENter para congelar');
       });
@@ -153,8 +152,8 @@ console.log("habilitamos");
         this.freeze= !this.freeze;
         this.getImpl().setFreeze(this.freeze);
         this.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
-        this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';        
-      });    
+        this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
+      });
 
 
 
@@ -166,11 +165,11 @@ console.log("habilitamos");
       } else {
         if (options !== '') {
           this.template.querySelector('#m-transparency-lock').style.visibility = 'hidden';
-          this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';  
+          this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
           this.template.querySelector('select').disabled = true;
           this.template.querySelector('input').disabled = true;
           this.template.querySelector('select').addEventListener('change', (evt) => {
-            
+
             this.layerSelected.setVisible(false);
             this.removeEffects();
             const layer = this.layers.filter((layer) => {
@@ -188,17 +187,14 @@ console.log("habilitamos");
   }
 
   setDefaultLayer(){
-
-    console.log("Activación remota");
     //this.template.querySelector('select').disabled = false;
     //this.template.querySelector('input').disabled = false;
     //this.getImpl().effectSelected(this.layerSelected, this.radius);
-
   }
 
 
   manageLyrAvailable(lyrList){
-    
+
     if (this.template === null){
       return;
     }
@@ -210,7 +206,7 @@ console.log("habilitamos");
         dropDownContainer.options[iOpt].disabled = !lyrList.includes(dropDownContainer.options[iOpt].value);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
   }
@@ -228,13 +224,13 @@ console.log("habilitamos");
     let names = this.layers.map((layer) => {
       return layer instanceof Object ? { name: layer.name } : { name: layer };
     });
-    
+
 
     if (names.length >= 1) {
       this.template.querySelector('select').disabled = false;
       this.template.querySelector('input').disabled = false;
       this.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
-      this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';   
+      this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
     }
 
     this.getImpl().effectSelected(this.layerSelected, this.radius, this.freeze);
@@ -248,7 +244,6 @@ console.log("habilitamos");
    * @api stable
    */
   deactivate() {
-    console.log("Deactivate SpyEye 2S");
     if (this.layerSelected === null) this.layerSelected = this.layers[0];
     let names = this.layers.map((layer) => {
       return layer instanceof Object ? { name: layer.name } : { name: layer };
@@ -259,7 +254,6 @@ console.log("habilitamos");
       this.template.querySelector('select').disabled = true;
       this.template.querySelector('input').disabled = true;
     }
-    console.log("Deactivate SpyEye 2E");
   }
 
   /**
@@ -315,7 +309,6 @@ console.log("habilitamos");
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
-          // console.log(urlLayer);
           if (urlLayer[0].toUpperCase() === 'WMS') {
             newLayer = new M.layer.WMS({
               url: urlLayer[2],

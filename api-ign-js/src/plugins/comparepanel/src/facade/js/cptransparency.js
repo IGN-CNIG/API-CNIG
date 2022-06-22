@@ -164,17 +164,13 @@ export default class Transparency extends M.Plugin {
       if (!this.enabledKeyFunctions) {
         return;
       }
-      // console.log(zEvent.key);
       // for (let i = 0; i < 10; i++) {
       //   if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'F' + (i + 1)) {  // case sensitive
       //     //this.control_.manageVisionPanelByCSSGrid(i);
-      //     console.log("Entro");
       //   }
       // }
       // const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
-      // console.log(keyStr);
       //32-200
-      console.log(zEvent.key);
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowUp') {  // case sensitive
         if (this.control_.radius>=200) return;
         this.control_.radius += 20;
@@ -193,7 +189,7 @@ export default class Transparency extends M.Plugin {
         if (this.control_.freeze){
           this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'hidden';
           this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'visible';
-        }else{  
+        }else{
           this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
           this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
         }
@@ -215,9 +211,9 @@ export default class Transparency extends M.Plugin {
 
 
   manageLyrAvailable(lyrAvailable){
-
-    this.control_.manageLyrAvailable(lyrAvailable);
-
+    if (this.control_ !== null) {
+      this.control_.manageLyrAvailable(lyrAvailable);
+    }
   }
 
   /**
@@ -230,7 +226,10 @@ export default class Transparency extends M.Plugin {
   destroy() {
     this.control_.removeEffects();
     this.control_.removeTransparencyLayers(this.control_.getLayersNames());
-    this.map_.removeControls([this.control_]);
+    /* eslint-disable no-empty */
+    try {
+      this.map_.removeControls([this.control_]);
+    } catch (err) {}
     [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
   }
 
@@ -271,7 +270,6 @@ export default class Transparency extends M.Plugin {
    * @api
    */
   activate() {
-    console.log("Activate SpyEye 1");
     this.control_.activate();
   }
 
@@ -283,7 +281,6 @@ export default class Transparency extends M.Plugin {
    * @api
    */
   deactivate() {
-    console.log("Deactivate SpyEye 1");
     this.control_.deactivate();
   }
 
