@@ -58,6 +58,10 @@ span.m-content-collapsed {
     margin-right: 5px;
 }
 
+.m-information-content-info .m-information-content-info-header div:nth-child(2):hover {
+  text-decoration: underline;
+}
+
 /*SOLUCIÓN BUGS MAQUETACIÓN*/
 .m-popup .m-information-content-info-body #Borde2 {
   position: unset !important;
