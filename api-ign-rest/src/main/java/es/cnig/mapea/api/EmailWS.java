@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -31,6 +32,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -108,6 +110,18 @@ public class EmailWS {
 	   }
 	   return file;
    }
+   
+   private File createGeoJSONFile(String geojson){
+	   String nameFile = "incidencia_" + new Date().getTime();
+	   File file = null;
+		try {
+			file = File.createTempFile(nameFile, ".geojson");
+			FileUtils.writeStringToFile(file, geojson);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	   return file;
+   }
 
    private String sendEmailSMTP(String destinatario, String asunto, String cuerpo, File fichAdjunto){
 	   String result = null;
@@ -149,21 +163,21 @@ public class EmailWS {
 		   data.put("sendergeometry", cuerpo);
 		   data.put("shareURL", shareURL);
 		   String bodyData = getTemplate(data);
+		   BodyPart adjunto = new MimeBodyPart();
+		   File geojsonFile = createGeoJSONFile(cuerpo);
+		   adjunto.setDataHandler(new DataHandler(new FileDataSource(geojsonFile)));
+		   adjunto.setFileName(geojsonFile.getName());
 		   if (fichAdjunto != null) {
-			   //Adjunto
-			   BodyPart adjunto = new MimeBodyPart();
 			   adjunto.setDataHandler(new DataHandler(new FileDataSource(fichAdjunto)));
 			   adjunto.setFileName(fichAdjunto.getName());
-			   BodyPart texto = new MimeBodyPart();
-			   texto.setContent(bodyData, "text/html; charset=utf-8");
-			   MimeMultipart multiparte = new MimeMultipart();
-			   multiparte.addBodyPart(adjunto);
-			   multiparte.addBodyPart(texto);
-			   message.setContent(multiparte);
-		   } else {
-			   message.setContent(bodyData, "text/html; charset=utf-8");
 		   }
 
+		   BodyPart texto = new MimeBodyPart();
+		   texto.setContent(bodyData, "text/html; charset=utf-8");
+		   MimeMultipart multiparte = new MimeMultipart();
+		   multiparte.addBodyPart(adjunto);
+		   multiparte.addBodyPart(texto);
+		   message.setContent(bodyData, "text/html; charset=utf-8");
 		   transport = session.getTransport("smtp");
 		   if (usuario != null && !usuario.isEmpty() && password != null && !password.isEmpty()) {
 			   transport.connect(host, usuario, password);

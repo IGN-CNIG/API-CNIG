@@ -676,7 +676,7 @@ export default class IncicartoControl extends M.Control {
     let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
     let errDescription = document.querySelector("#err-description").value;
 
-    let email_subject = 'Metadatos de la incidencia';
+    let email_subject = 'Incidencia Cartografía - ' + theme;
     let email_body = {
       "description": errDescription,
       "theme": theme,
@@ -810,7 +810,7 @@ export default class IncicartoControl extends M.Control {
 
     let theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
     let destinatary = this.themes.find(item => item.idTheme == theme).emailTheme;
-    let email_subject = 'Metadatos de la incidencia';
+    let email_subject = 'Incidencia cartografía - ' + theme;
     let emailName = document.querySelector("#person-notify").value;
     let emailUser = document.querySelector("#email-notify").value;
     let errDescription = document.querySelector("#err-description").value;
