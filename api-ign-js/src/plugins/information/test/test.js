@@ -50,7 +50,7 @@ const hidrografia = new M.layer.WMS({
   legend: 'Hidrografía',
 });
 
-map.addLayers([layerinicial, layerUA, hidrografia]);
+map.addLayers([layerinicial, layerUA/*, hidrografia*/]);
 map.addPlugin(mp);
 map.addPlugin(mp2);
 map.addPlugin(mp3);

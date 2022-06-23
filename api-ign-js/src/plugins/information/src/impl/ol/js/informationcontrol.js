@@ -572,6 +572,11 @@ export default class InformationControl extends M.impl.Control {
                 all: true,
                 type: 'click',
                 callback: e => this.toogleSection(e),
+              }, {
+                selector: '.m-information-content-info div:nth-child(2) p',
+                all: true,
+                type: 'click',
+                callback: e => this.toogleSection(e),
               }],
             });
           }
@@ -586,8 +591,13 @@ export default class InformationControl extends M.impl.Control {
    * @function
    */
   toogleSection(e) {
-    const { target } = e;
-    const { parentElement } = target.parentElement;
+    let { target } = e;
+    let { parentElement } = target.parentElement;
+    if (!parentElement.classList.contains('m-information-content-info')) {
+      parentElement = parentElement.parentElement.parentElement;
+      target = parentElement.querySelector('.m-information-content-info-header div:nth-child(1)');
+    }
+
     const content = parentElement.querySelector('.m-information-content-info-body');
     if (content.classList.contains('m-content-collapsed')) {
       content.classList.remove('m-content-collapsed');
