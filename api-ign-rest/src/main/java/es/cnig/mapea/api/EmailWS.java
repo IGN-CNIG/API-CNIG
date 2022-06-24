@@ -179,7 +179,7 @@ public class EmailWS {
 		   }
 
 		   multiparte.addBodyPart(texto);
-		   message.setContent(bodyData, "text/html; charset=utf-8");
+		   message.setContent(multiparte);
 		   transport = session.getTransport("smtp");
 		   if (usuario != null && !usuario.isEmpty() && password != null && !password.isEmpty()) {
 			   transport.connect(host, usuario, password);
