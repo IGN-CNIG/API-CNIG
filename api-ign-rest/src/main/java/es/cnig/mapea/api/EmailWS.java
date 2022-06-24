@@ -167,15 +167,17 @@ public class EmailWS {
 		   File geojsonFile = createGeoJSONFile(cuerpo);
 		   adjunto.setDataHandler(new DataHandler(new FileDataSource(geojsonFile)));
 		   adjunto.setFileName(geojsonFile.getName());
-		   if (fichAdjunto != null) {
-			   adjunto.setDataHandler(new DataHandler(new FileDataSource(fichAdjunto)));
-			   adjunto.setFileName(fichAdjunto.getName());
-		   }
-
 		   BodyPart texto = new MimeBodyPart();
 		   texto.setContent(bodyData, "text/html; charset=utf-8");
 		   MimeMultipart multiparte = new MimeMultipart();
 		   multiparte.addBodyPart(adjunto);
+		   if (fichAdjunto != null) {
+			   BodyPart adjunto2 = new MimeBodyPart();
+			   adjunto2.setDataHandler(new DataHandler(new FileDataSource(fichAdjunto)));
+			   adjunto2.setFileName(fichAdjunto.getName());
+			   multiparte.addBodyPart(adjunto2);
+		   }
+
 		   multiparte.addBodyPart(texto);
 		   message.setContent(bodyData, "text/html; charset=utf-8");
 		   transport = session.getTransport("smtp");
