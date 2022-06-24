@@ -659,19 +659,15 @@ export default class IncicartoControl extends M.Control {
    * @returns
    */
   composeMailtoSend(destinatary) {
-
-
     let themeMetadataContainer = document.querySelector("#theme-select");
     let errorMetadataContainer = document.querySelector("#error-select");
     let productMetadataContainer = document.querySelector("#product-select");
 
-
-    if (this.validateIncidenciaMessageInModalAdvanced()===false){
-      console.log("Validación errónea");
+    if (this.validateIncidenciaMessageInModalAdvanced() === false) {
       return false;
     };
 
-    let theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
+    let theme = themeMetadataContainer.selectedOptions[0].innerText;
     let error = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].value;
     let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
     let errDescription = document.querySelector("#err-description").value;
@@ -808,7 +804,7 @@ export default class IncicartoControl extends M.Control {
       return false;
     }
 
-    let theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
+    let theme = themeMetadataContainer.selectedOptions[0].innerText;
     let destinatary = this.themes.find(item => item.idTheme == theme).emailTheme;
     let email_subject = 'Incidencia cartografía - ' + theme;
     let emailName = document.querySelector("#person-notify").value;
