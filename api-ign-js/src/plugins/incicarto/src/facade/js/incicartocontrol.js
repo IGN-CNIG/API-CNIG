@@ -806,7 +806,7 @@ export default class IncicartoControl extends M.Control {
 
     let theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
     let destinatary = this.themes.find(item => item.idTheme == theme).emailTheme;
-    them = themeMetadataContainer.selectedOptions[0].innerText;;
+    theme = themeMetadataContainer.selectedOptions[0].innerText;
     let email_subject = 'Incidencia cartografía - ' + theme;
     let emailName = document.querySelector("#person-notify").value;
     let emailUser = document.querySelector("#email-notify").value;
