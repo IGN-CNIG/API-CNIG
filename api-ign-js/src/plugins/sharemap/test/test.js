@@ -24,7 +24,8 @@ const map = M.map({
 const mp = new ShareMap({
   baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
   position: 'BR',
-  minimize: true,
+  // minimize: true,
+  urlAPI: false,
 });
 M.language.setLang('en');
 map.addPlugin(mp);

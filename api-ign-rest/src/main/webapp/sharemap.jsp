@@ -53,11 +53,10 @@
             <option value="https://componentes.ign.es/api-core/"></option>
         </datalist>
         <label for="selectURLAPI">Parámetro URL API</label>
-        <input type="text" id="selectURLAPI" list="urlAPISug" value="http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/visor" />
-        <datalist id="urlAPISug">
-            <option value="http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/visor"></option>
-            <option value="http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/visualizador"></option>
-        </datalist>
+        <select name="selectURLAPI" id="selectURLAPI">
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
         <input type="submit" id="buttonAPI" value="API Rest" />
 
@@ -115,7 +114,7 @@
         map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
         let mp, posicion, url = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
-        let urlAPI = 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/visor';
+        let urlAPI = true;
         crearPlugin({
             position: posicion,
             baseUrl: url,
@@ -131,7 +130,6 @@
         selectPosicion.addEventListener('change', cambiarTest);
         selectURLAPI.addEventListener('change', cambiarTest);
 
-
         buttonApi.addEventListener('click', function() {
             url = selectURL.value;
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
@@ -142,7 +140,7 @@
             let objeto = {}
             url = selectURL.value != "" ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            objeto.urlAPI = selectURLAPI.value !== '' ? selectURLAPI.value : 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/visor';
+            objeto.urlAPI = selectURLAPI.options[selectURLAPI.selectedIndex].value;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
