@@ -121,9 +121,7 @@ export default class QueryAttributes extends M.Plugin {
   /* eslint max-len: ["error", { "code": 150 }] */
   // addOpenEvent()  {
   //   const elem = document.querySelector('.m-panel.m-queryattributes.collapsed .m-panel-btn.icon-tabla');
-  //   console.log("openPanel");
   //   if (elem !== null) {
-  //     console.log("openPanel evtClick");
   //     elem.addEventListener('click', () => {
   //       const container = this.map_.getContainer().parentElement.parentElement;
   //       container.style.width = 'calc(100% - 530px)';
@@ -142,9 +140,7 @@ export default class QueryAttributes extends M.Plugin {
   // e2m: Lo meto en el control
   // addCloseEvent() {
   //   const elem = document.querySelector('.m-panel.m-queryattributes.opened .m-panel-btn');
-  //   console.log("closePanel");
   //   if (elem !== null) {
-  //     console.log("closePanel evtClick");
   //     elem.addEventListener('click', () => {
   //       const container = this.map_.getContainer().parentElement.parentElement;
   //       container.style.width = '100%';

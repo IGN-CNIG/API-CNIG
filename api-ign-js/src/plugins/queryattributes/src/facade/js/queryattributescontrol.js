@@ -11,7 +11,7 @@
  import shpWrite from 'shp-write';
  import tokml from 'tokml';
  import { getValue } from './i18n/language';
- 
+
  export default class QueryAttributesControl extends M.Control {
    /**
     * @classdesc
@@ -22,79 +22,79 @@
     * @extends {M.Control}
     * @api stable
     */
- 
+
    constructor(configuration, filters, collapsed_, position_, refreshBBOXFilterOnPanning_) {
      if (M.utils.isUndefined(QueryAttributesImplControl)) {
        M.exception(getValue('exception.impl'));
      }
- 
+
      const impl = new QueryAttributesImplControl();
      super(impl, 'QueryAttributes');
- 
+
      /**
       * Mapea filter with the user's query.
       * @public
       */
      this.mapeaFilterQuery = null;
- 
+
      /**
       * Parentheses click counter
       * @public
       * If 0, a '(' is written. If 1, a ')'.
       */
      this.parenthesesClick = 0;
- 
+
      /**
       * Operators for creating queries
       * @public
       */
      this.operators = ['=', '<', '>', '<=', '>=', '<>', '()', 'and', 'or', 'not', 'like', '%', '_'];
- 
+
      /**
       * Operators html codes.
       * @public
       */
      this.operatorCodes = ['&#61;', '&lt;', '&gt;'];
- 
+
      /**
       * Selected layer attributes list.
       * @public
       */
      this.fields = [];
- 
+
      /**
       * Possible values for all fields of the selected layer.
       * @public
       */
      this.fieldValues = [];
- 
+
      /**
       * KML layers added to map.
       * @public
       */
      this.kmlLayers = [];
- 
+
      this.filtered = false;
- 
+
      this.bboxfilter = false;
- 
+
      // e2m: Guarda el id del elemento selecionado
      this.featureIdSelected = -1;
- 
+
      this.configuration = configuration;
- 
+
      this.collapsed = collapsed_;
- 
+
      this.position = position_;
- 
+
      this.refreshBBOXFilterOnPanning = refreshBBOXFilterOnPanning_;
- 
+
      this.selectionLayer = new M.layer.Vector({
        extract: false,
        name: 'selectLayer',
        source: this.getImpl().newVectorSource(true),
      });
- 
+
      this.selectionLayerStyle = new M.style.Point({
        radius: 10,
        stroke: {
@@ -117,7 +117,7 @@
        },
        */
      });
- 
+
      /**
       * e2m: add pk column to the beginning of configuration.columns
       */
@@ -128,15 +128,15 @@
        align: 'right',
        type: 'pkcolumn',
      });
- 
+
      this.filters = filters;
- 
+
      this.sortProperties_ = {
        active: false,
        sortBy: null,
        sortType: 'asc',
      };
- 
+
      if (configuration.initialSort !== undefined) {
        this.sortProperties_ = {
          active: true,
@@ -145,7 +145,7 @@
        };
      }
    }
- 
+
    /**
     * This function creates the view
     *
@@ -158,7 +158,7 @@
      this.map = map;
      return new Promise((success, fail) => {
        this.createInitialView(map);
- 
+
        /**
         * Helper for Formatter Elements.
         * Symbol = param * value;
@@ -187,7 +187,7 @@
          });
          return output;
        });
- 
+
        const html = M.template.compileSync(template, {
          vars: {
            translations: {
@@ -197,20 +197,20 @@
            },
          },
        });
- 
+
        html.querySelector('#m-queryattributes-options-container').appendChild(this.initialView);
        this.addEvents(html);
        this.kmlLayers = this.map.getKML().map((layer) => {
          return { layer, loaded: false };
        });
- 
+
        this.selectionLayer.setStyle(this.selectionLayerStyle);
        this.map.addLayers(this.selectionLayer);
- 
+
        success(html);
      });
    }
- 
+
    /**
     * Adds event listeners to several HTML elements.
     * @public
@@ -246,7 +246,7 @@
          }
          this.featureIdSelected = -1;
        });
- 
+
      html.querySelector('#m-queryattributes-filter #m-queryattributes-search-btn').addEventListener('click', this.searchFilter.bind(this));
      html.querySelector('#m-queryattributes-filter #m-queryattributes-search-input').addEventListener('keyup', (e) => {
        this.searchFilter();
@@ -255,12 +255,12 @@
        //   this.searchFilter();
        // }
      });
- 
+
      if (this.filters) {
        html.querySelector('#m-queryattributes-filter button.filter-bbox').addEventListener('click', this.setBboxFilter.bind(this));
        html.querySelector('#m-queryattributes-filter button.filter-area').addEventListener('click', this.setDrawFilter.bind(this));
      }
- 
+
      this.map.getKML().forEach((kmlLayer) => {
        kmlLayer.on(M.evt.LOAD, () => {
          this.kmlLayers.filter((layer) => {
@@ -268,7 +268,7 @@
          })[0].loaded = true;
        });
      });
- 
+
      if (this.filters) {
        this.showAttributeTable(this.configuration.layer);
      } else {
@@ -278,17 +278,17 @@
        });
      }
    }
- 
+
    showAttributeTable(layerName, callback) {
      const columns = this.configuration.columns;
- 
+
      if (!M.utils.isNullOrEmpty(layerName)) {
        this.layer = this.hasLayer_(layerName)[0];
        if (this.allFeatures === undefined) {
          this.allFeatures = this.layer.getFeatures();
        }
      }
- 
+
      const interval = setInterval(() => {
        if (this.isLayerLoaded(this.layer)) {
          clearInterval(interval);
@@ -307,8 +307,8 @@
          }
          // e2m: ocultamos nuestro spinner de búsqueda.
          this.html.querySelector('#m-queryattributes-searching-results').style.display = 'none';
- 
- 
+
+
          if (!M.utils.isNullOrEmpty(features)) {
            Object.keys(features[0].getAttributes()).forEach((attr) => {
              if (columns !== undefined && columns.length > 0) {
@@ -338,7 +338,7 @@
                typesparam.push('');
              }
            });
- 
+
            features.forEach((feature) => {
              const keys = Object.keys(feature.getAttributes());
              const properties = Object.values(feature.getAttributes());
@@ -365,7 +365,7 @@
              attributes = this.sortAttributes_(attributes, headerAtt);
            }
          }
- 
+
          let params = {};
          const attributesParam = [];
          attributes.forEach((values) => {
@@ -397,9 +397,9 @@
              attributes: (M.utils.isNullOrEmpty(attributesParam)) ? false : attributesParam,
            };
          }
- 
+
          params.translations = { not_attributes: getValue('not_attributes') };
- 
+
          Handlebars.registerHelper('formatterStr', (item) => {
            let symbolPattern = '';
            let numRepeat = 0;
@@ -411,7 +411,7 @@
            }
            return output;
          });
- 
+
          const options = {
            jsonp: true,
            vars: params,
@@ -420,7 +420,7 @@
          document.getElementById('m-queryattributes-table').appendChild(html);
          document.getElementById('m-queryattributes-filter').style.display = 'flex';
          document.querySelector('#m-queryattributes-options-buttons #exportar-btn').style.display = 'block';
- 
+
          html.querySelectorAll('table thead tr th span').forEach((th) => {
            th.addEventListener('click', this.sort_.bind(this));
          });
@@ -433,7 +433,7 @@
          this.map.getMapImpl().on('click', (evt) => {
            this.actualizaInfo(evt);
          });
- 
+
          if (this.refreshBBOXFilterOnPanning) {
            this.map.getMapImpl().on('moveend', (evt) => {
              if (this.bboxfilter) {
@@ -444,7 +444,7 @@
        }
      }, 1000);
    }
- 
+
    /**
     * This function sort attributes
     *
@@ -462,17 +462,17 @@
          pos = index;
        }
      });
- 
+
      let attributesSort = attributes.sort((a, b) => {
        return this.compareStrings(a[pos], b[pos]);
      });
- 
+
      if (this.sortProperties_.sortType === 'desc') {
        attributesSort = attributesSort.reverse();
      }
      return attributesSort;
    }
- 
+
    compareStrings(a, b) {
      let res = 0;
      let newA = a;
@@ -488,7 +488,7 @@
      }
      return res;
    }
- 
+
    /**
     * e2m:
     * Procedimiento para mostrar información al hacer clic en el elemento de la tabla
@@ -499,9 +499,6 @@
      const value = evt.target.parentNode.children[0].textContent.trim();
      const features = this.layer.getFeatures();
      const field = Object.keys(features[0].getAttributes())[0];
-     console.log(evt.target.parentNode);
-     console.log(evt.target.parentNode.parentNode);
- 
      // e2m: Limpiamos filas de la clase highlight-attrow
      const nodes = evt.target.parentNode.parentNode.childNodes;
      for (let i = 0; i < nodes.length; i += 1) {
@@ -511,7 +508,7 @@
      }
      // e2m: Añadimos la clase highlight-attrow
      evt.target.parentNode.classList.add('highlight-attrow');
- 
+
      const filtered = features.filter((f) => {
        return this.compareStrings(`${f.getAttributes()[field]}`.trim(), value) === 0;
      });
@@ -525,7 +522,7 @@
            this.map.setZoom(14);
          }
        }
- 
+
        const fields = [];
        Object.entries(filtered[0].getAttributes()).forEach((entry) => {
          const config = this.getColumnConfig(entry[0]);
@@ -542,7 +539,7 @@
            typeparam: config.typeparam,
          });
        });
- 
+
        /**
         * e2m
         * Una vez que tenemos el feature en el que vamos a centrar lo añadimos
@@ -552,8 +549,8 @@
        this.selectionLayer.addFeatures(filtered[0]);
        const buttons = '#m-queryattributes-options-buttons>button';
        document.querySelector(`${buttons}#cleanEmphasis-btn`).style.display = 'block';
- 
- 
+
+
        const html = M.template.compileSync(information, {
          vars: {
            fields,
@@ -568,7 +565,7 @@
        this.launchInfoWindow(html);
      }
    }
- 
+
    /**
    * e2m:
    * Procedimiento para mostrar información al hacer clic en el dfeature sobre la cartografía
@@ -578,13 +575,11 @@
      /* eslint no-underscore-dangle: 0 */
      const this_ = this;
      const mapaOL = this.map.getMapImpl();
- 
+
      mapaOL.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
        const featureFacade = M.impl.Feature.olFeature2Facade(feature);
-       console.log(layer); // 📌 Necesito filtrar cuando la capa no es la adecuada
-       console.log(layer.getProperties());
        const fields = [];
- 
+
        /**
         * e2m
         * Añado el feature del que consulto la información a la
@@ -594,7 +589,7 @@
        this.selectionLayer.addFeatures(featureFacade);
        const buttons = '#m-queryattributes-options-buttons>button';
        document.querySelector(`${buttons}#cleanEmphasis-btn`).style.display = 'block';
- 
+
        Object.entries(featureFacade.getAttributes()).forEach((entry) => {
          const config = this_.getColumnConfig(entry[0]);
          if (config.showpanelinfo === false) return;
@@ -613,18 +608,17 @@
          if (config.type === 'pkcolumn') { this.featureIdSelected = entry[1]; }
        });
        if (this.featureIdSelected === -1) return;
-       console.log(this.featureIdSelected);
- 
+
        /**
         * e2m
         * Procedimiento para marcar en tabla feature seleccionado
         * Mostrar información atributos en ventana
         * Scroll en lista hasta visualizarlo, sólo si el panel está abierto
         */
- 
+
        // Seleccionamos la fila <tr> que contiene la celda con el pk del elemento
        const rowfeature = document.getElementById(`feat_${this.featureIdSelected}`).parentNode; // e2m: elemento tr
- 
+
        // Limpiamos filas <tr> de la clase highlight-attrow
        const nodes = rowfeature.parentNode.childNodes;
        for (let i = 0; i < nodes.length; i += 1) {
@@ -632,10 +626,10 @@
            nodes[i].classList.remove('highlight-attrow');
          }
        }
- 
+
        // Añadimos la clase highlight-attrow
        rowfeature.classList.add('highlight-attrow');
- 
+
        const html = M.template.compileSync(information, {
          vars: {
            fields,
@@ -647,7 +641,7 @@
          },
        });
        this_.launchInfoWindow(html);
- 
+
        const elemSidebar = document.querySelector('.m-panel.m-queryattributes.opened');
        if (elemSidebar !== null) {
          try {
@@ -662,12 +656,12 @@
          }
        }
      });
- 
+
      const elemSidebar = document.querySelector('.m-panel.m-queryattributes.opened');
      if (elemSidebar !== null) {
        return; // El sidebar está abierto
      }
- 
+
      this.addCierraPanelEvent();
      const container = this.map_.getContainer().parentElement.parentElement;
      container.style.width = 'calc(100% - 530px)';
@@ -677,14 +671,14 @@
      } else {
        container.style.right = '530px';
      }
- 
+
      const elem = document.querySelector('.m-panel.m-queryattributes.collapsed');
      if (elem !== null) {
        elem.classList.remove('collapsed');
        elem.classList.add('opened');
      }
      this.map_.refresh();
- 
+
      // e2m: efecto scroll. Se hace tras redimensionar la tabla y abrir el panel.
      if (this.featureIdSelected >= 0) {
        const rowfeature = document.getElementById(`feat_${this.featureIdSelected}`).parentNode; // e2m: elemento tr
@@ -695,8 +689,8 @@
        });
      }
    }
- 
- 
+
+
    /**
     * e2m:
     * Abre el sidepanel por código, al hacer clic sobre uno de los features de la capa vectorial
@@ -720,27 +714,27 @@
          document.querySelector('#m-queryattributes-information-content > p > span > span:first-child').classList.add('icon-colapsar');
        }
      });
- 
+
      document.querySelector('#m-queryattributes-information-content > p > span > span.icon-cerrar').addEventListener('click', () => {
        document.querySelector('#m-queryattributes-options-information-container').innerHTML = '';
        this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
        document.querySelector('.m-queryattributes #m-queryattributes-table-container').style.maxHeight = '75vh';
      });
    }
- 
+
    getColumnConfig(column) {
      let res = {};
      const filtered = this.configuration.columns.filter((elem) => {
        return elem.name === column;
      });
- 
+
      if (filtered.length > 0) {
        res = filtered[0];
      }
- 
+
      return res;
    }
- 
+
    /**
     * This function sets the order
     *
@@ -759,7 +753,7 @@
      this.sortProperties_.sortBy = sortBy;
      this.showAttributeTable(this.layer.name);
    }
- 
+
    /**
     * Creates initialview.html template dinamically.
     * @public
@@ -790,7 +784,7 @@
      };
      this.initialView = M.template.compileSync(initialView, options);
    }
- 
+
    /**
     * Add html option in Selects.
     * @public
@@ -807,7 +801,7 @@
        htmlSelect.add(htmlOption);
      }
    }
- 
+
    /**
     * Remove html option in Selects.
     * @public
@@ -828,7 +822,7 @@
        htmlSelect.selectedIndex = 0;
      }
    }
- 
+
    /**
     * Check if the layer is not added yet.
     * @public
@@ -840,7 +834,7 @@
      const aChildren = [...htmlSelect.children];
      return !aChildren.some(o => o.innerHTML === layerName);
    }
- 
+
    setBboxFilter() {
      const bbox = this.map.getBbox();
      const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
@@ -858,7 +852,7 @@
        this.map.setBbox(this.getImpl().getLayerExtent(this.layer));
      }
    }
- 
+
    setDrawFilter() {
      this.getImpl().addDrawInteraction(() => {
        const feature = this.getImpl().getPolygonFromDrawnFeature();
@@ -873,8 +867,8 @@
        document.querySelector(`${buttons}#limpiar-filtro-btn`).style.display = 'block';
      });
    }
- 
- 
+
+
    // e2m: búsqueda por filtro de texto.
    searchFilter() {
      this.html.querySelector('#m-queryattributes-searching-results').style.display = 'block';
@@ -885,7 +879,6 @@
      // const filter = new M.filter.Function((feature) => {
      //   let res = false;
      //   Object.values(feature.getAttributes()).forEach((v) => {
-     //     console.log(v);
      //     const value = this.normalizeString_(v);
      //     if (value.indexOf(text) > -1) {
      //       res = true;
@@ -893,7 +886,7 @@
      //   });
      //   return res;
      // });
- 
+
      /**
       * e2m:
       * Con esto busco en los campos con la propiedad searchable true
@@ -903,7 +896,7 @@
      const searchingFields = this.configuration.columns.filter((item) => {
        return item.searchable === true;
      }).map(field => field.name);
- 
+
      const filter = new M.filter.Function((feature) => {
        let res = false;
        Object.entries(feature.getAttributes()).forEach((entry) => {
@@ -918,15 +911,15 @@
        });
        return res;
      });
- 
- 
+
+
      this.layer.setFilter(filter);
      this.filtered = true;
      this.oldFilter = filter;
      this.oldLayer = this.layer;
- 
+
      // e2m: aquí hay que comprobar que el resultado del filtro no es cero
- 
+
      if (this.layer.getFeatures().length > 0) {
        this.map.setBbox(this.getImpl().getLayerExtent(this.layer));
      }
@@ -934,7 +927,7 @@
      const buttons = '#m-queryattributes-options-buttons>button';
      document.querySelector(`${buttons}#limpiar-filtro-btn`).style.display = 'block';
    }
- 
+
    /**
     * Downloads .csv file with results data.
     * @public
@@ -953,7 +946,7 @@
            },
          },
        });
- 
+
        M.dialog.info(download, getValue('export'));
        setTimeout(() => {
          const title = 'div.m-mapea-container div.m-dialog div.m-title';
@@ -970,7 +963,7 @@
        M.dialog.error(getValue('exception.no_data'));
      }
    }
- 
+
    downloadLayer() {
      const layer = this.layer;
      const selector = 'div.m-mapea-container div.m-dialog #downloadFormat select';
@@ -980,7 +973,7 @@
        let arrayContent;
        let mimeType;
        let extensionFormat;
- 
+
        switch (format) {
          case 'geojson':
            arrayContent = JSON.stringify(geojsonLayer);
@@ -1009,7 +1002,7 @@
            M.dialog.error(getValue('exception.no_data'));
            break;
        }
- 
+
        if (format !== 'shp') {
          const url = window.URL.createObjectURL(new window.Blob([arrayContent], {
            type: `application/${mimeType}`,
@@ -1024,10 +1017,10 @@
        const csvString = this.dataToCsv(layer.getFeatures());
        this.downloadCsv(csvString);
      }
- 
+
      document.querySelector('div.m-mapea-container div.m-dialog').remove();
    }
- 
+
    /**
     * Creates GeoJSON feature from a previous feature and a new set of coordinates.
     * @public
@@ -1045,7 +1038,7 @@
        },
      };
    }
- 
+
    /**
     * Converts features coordinates on geojson format to 4326.
     * @public
@@ -1120,7 +1113,7 @@
      });
      return jsonResult;
    }
- 
+
    /**
     * Creates vector layer with copied features
     * @public
@@ -1133,7 +1126,7 @@
      const featuresAsJSON = features.map(feature => feature.getGeoJSON());
      return { type: 'FeatureCollection', features: this.geojsonTo4326(featuresAsJSON, code) };
    }
- 
+
    /**
     * Parses geojsonLayer removing last item on every coordinate (NaN)
     * before converting the layer to kml.
@@ -1181,11 +1174,11 @@
          default:
        }
      });
- 
+
      newGeojsonLayer.features = features;
      return newGeojsonLayer;
    }
- 
+
    /**
     * Parses geojson before shp download.
     * Changes geometry type to simple when necessary and removes one pair of brackets.
@@ -1197,10 +1190,10 @@
    parseGeojsonForShp(geojsonLayer) {
      const newGeoJson = geojsonLayer;
      const newFeatures = [];
- 
+
      geojsonLayer.features.forEach((originalFeature) => {
        const featureType = originalFeature.geometry.type;
- 
+
        if (featureType.match(/^Multi/)) {
          const features = originalFeature.geometry.coordinates
            .map((simpleFeatureCoordinates, idx) => {
@@ -1232,14 +1225,14 @@
          newFeatures.push(originalFeature);
        }
      });
- 
+
      newGeoJson.features = newFeatures;
      for (let i = 0; i < newGeoJson.features.length; i += 1) {
        delete newGeoJson.features[i].id;
      }
      return newGeoJson;
    }
- 
+
    /**
     * Saves features attributes on csv string.
     * @public
@@ -1260,11 +1253,11 @@
        });
        csv = `${csv.substring(0, csv.length - 1)}\n`;
      });
- 
+
      csv = csv.substring(0, csv.length - 1);
      return csv;
    }
- 
+
    /**
     * Creates hidden link element and clicks it to download given csv data.
     * @public
@@ -1280,7 +1273,7 @@
      hiddenLink.download = fileName;
      hiddenLink.click();
    }
- 
+
    /**
     * Checks if layer is loaded.
     * @public
@@ -1299,7 +1292,7 @@
      }
      return isLoaded;
    }
- 
+
    /**
     * Checks if map has given layer and returns that layer.
     *
@@ -1314,7 +1307,7 @@
          !M.utils.isString(layerSearch) && !(layerSearch instanceof M.Layer))) {
        return layersFind;
      }
- 
+
      if (M.utils.isString(layerSearch)) {
        this.map.getLayers().forEach((lay) => {
          if (lay.name === layerSearch) {
@@ -1322,7 +1315,7 @@
          }
        });
      }
- 
+
      if (layerSearch instanceof M.Layer) {
        this.map.getLayers().forEach((lay) => {
          if (lay.equals(layerSearch)) {
@@ -1339,11 +1332,11 @@
      }
      return layersFind;
    }
- 
+
    normalizeString_(string) {
      return `${string}`.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
    }
- 
+
    /**
     * This function compares controls
     *
@@ -1355,7 +1348,7 @@
    equals(control) {
      return control instanceof QueryAttributesControl;
    }
- 
+
    addAbrePanelEvent() {
      const elem = document.querySelector('.m-panel.m-queryattributes.collapsed .m-panel-btn.icon-tabla');
      if (elem !== null) {
@@ -1373,7 +1366,7 @@
        });
      }
    }
- 
+
    addCierraPanelEvent() {
      const elem = document.querySelector('.m-panel.m-queryattributes.opened .m-panel-btn');
      if (elem !== null) {
@@ -1386,13 +1379,13 @@
          } else {
            container.style.right = 'unset';
          }
- 
+
          this.map_.refresh();
          this.addAbrePanelEvent();
        });
      }
    }
- 
+
    initPanelAttributes() {
      if (this.collapsed) {
        this.addAbrePanelEvent();
@@ -1410,4 +1403,3 @@
      }
    }
  }
- 

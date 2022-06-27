@@ -46,16 +46,17 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-        <label for="selectTypeURL">URL desde API:</label>
-        <select name="reverseValue" id="selectTypeURL">
-            <option value=true>true</option>
-            <option value=false>false</option>
-        </select>
         <label for="selectURL">Parámetro URL</label>
-        <input type="text" id="selectURL" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/" />
+        <input type="text" id="selectURL" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-core/" />
         <datalist id="urlSug">
-            <option value="https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/"></option>
+            <option value="https://mapea-lite.desarrollo.guadaltel.es/api-core/"></option>
             <option value="https://componentes.ign.es/api-core/"></option>
+        </datalist>
+        <label for="selectURLAPI">Parámetro URL API</label>
+        <input type="text" id="selectURLAPI" list="urlAPISug" value="http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/visor" />
+        <datalist id="urlAPISug">
+            <option value="http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/visor"></option>
+            <option value="http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/visualizador"></option>
         </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
         <input type="submit" id="buttonAPI" value="API Rest" />
@@ -114,42 +115,40 @@
         map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
         let mp, posicion, url = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
-        let typeURL = true;
+        let urlAPI = 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/visor';
         crearPlugin({
             position: posicion,
             baseUrl: url,
-            typeURL: typeURL
+            urlAPI: urlAPI,
         });
 
         const selectURL = document.getElementById("selectURL");
-        const selectTypeURL = document.getElementById("selectTypeURL");
+        const selectURLAPI = document.getElementById("selectURLAPI");
         const selectPosicion = document.getElementById("selectPosicion");
         const buttonApi = document.getElementById("buttonAPI");
 
         selectURL.addEventListener('change', cambiarTest);
         selectPosicion.addEventListener('change', cambiarTest);
-        selectTypeURL.addEventListener('change', cambiarTest);
+        selectURLAPI.addEventListener('change', cambiarTest);
 
 
         buttonApi.addEventListener('click', function() {
             url = selectURL.value;
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-
-            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?sharemap=' + url + '*' + posicion;
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core/?sharemap=' + url + '*' + posicion;
         })
 
         function cambiarTest() {
             let objeto = {}
             url = selectURL.value != "" ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            objeto.typeURL = (selectTypeURL.options[selectTypeURL.selectedIndex].value == 'true');
+            objeto.urlAPI = selectURLAPI.value !== '' ? selectURLAPI.value : 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/visor';
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
 
         function crearPlugin(propiedades) {
             mp = new M.plugin.ShareMap(propiedades);
-
             map.addPlugin(mp);
         }
         const botonEliminar = document.getElementById("botonEliminar");
