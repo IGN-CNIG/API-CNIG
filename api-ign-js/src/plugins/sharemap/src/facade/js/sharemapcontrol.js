@@ -294,7 +294,7 @@ export default class ShareMapControl extends M.Control {
       } else {
         const { x, y } = this.map_.getCenter();
         const urlBaseVisor = (window.location.search) ? window.location.href.replace(window.location.search, '') : window.location.href;
-        shareURL = `${urlBaseVisor}?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+        shareURL = `${urlBaseVisor}?center=${x},${y}&zoom=${this.map_.getZoom()}&srs=${this.map_.getProjection().code}`;
         input.value = shareURL;
       }
       shareURL = encodeURI(shareURL);
