@@ -41,8 +41,8 @@
     <div>
         <label for="selectPosicion">Selector de posición del plugin</label>
         <select name="position" id="selectPosicion">
-            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
-            <option value="TR">Arriba Derecha (TR)</option>
+          <option value="TR" selected="selected">Arriba Derecha (TR)</option>
+            <option value="TL">Arriba Izquierda (TL)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
@@ -52,11 +52,11 @@
             <option value="https://mapea-lite.desarrollo.guadaltel.es/api-core/"></option>
             <option value="https://componentes.ign.es/api-core/"></option>
         </datalist>
-        <label for="selectURLAPI">Parámetro URL API</label>
+        <!-- <label for="selectURLAPI">Parámetro URL API</label>
         <select name="selectURLAPI" id="selectURLAPI">
             <option value="true" selected="selected">true</option>
             <option value="false">false</option>
-        </select>
+        </select> -->
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
         <input type="submit" id="buttonAPI" value="API Rest" />
 
@@ -113,22 +113,24 @@
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
-        let mp, posicion, url = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
-        let urlAPI = true;
+        let mp = undefined;
+        let posicion = 'TR';
+        let url = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
+        // let urlAPI = true;
         crearPlugin({
             position: posicion,
             baseUrl: url,
-            urlAPI: urlAPI,
+            // urlAPI: urlAPI,
         });
 
         const selectURL = document.getElementById("selectURL");
-        const selectURLAPI = document.getElementById("selectURLAPI");
+        // const selectURLAPI = document.getElementById("selectURLAPI");
         const selectPosicion = document.getElementById("selectPosicion");
         const buttonApi = document.getElementById("buttonAPI");
 
         selectURL.addEventListener('change', cambiarTest);
         selectPosicion.addEventListener('change', cambiarTest);
-        selectURLAPI.addEventListener('change', cambiarTest);
+        // selectURLAPI.addEventListener('change', cambiarTest);
 
         buttonApi.addEventListener('click', function() {
             url = selectURL.value;
@@ -140,7 +142,7 @@
             let objeto = {}
             url = selectURL.value != "" ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            objeto.urlAPI = selectURLAPI.options[selectURLAPI.selectedIndex].value;
+            // objeto.urlAPI = selectURLAPI.options[selectURLAPI.selectedIndex].value;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
@@ -159,10 +161,10 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-163660977-1');
 </script>
 
 </html>
