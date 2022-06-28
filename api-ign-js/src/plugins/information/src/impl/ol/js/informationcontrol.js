@@ -594,7 +594,12 @@ export default class InformationControl extends M.impl.Control {
     let { target } = e;
     let { parentElement } = target.parentElement;
     if (!parentElement.classList.contains('m-information-content-info')) {
-      parentElement = parentElement.parentElement.parentElement;
+      if (parentElement.classList.contains('m-information-content-info-header')) {
+        parentElement = parentElement.parentElement;
+      } else {
+        parentElement = parentElement.parentElement.parentElement;
+      }
+
       target = parentElement.querySelector('.m-information-content-info-header div:nth-child(1)');
     }
 
