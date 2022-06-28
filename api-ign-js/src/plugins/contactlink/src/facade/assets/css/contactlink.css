@@ -93,6 +93,10 @@
     margin: 10px;
 }
 
+.m-control.m-container.m-contactlink>div.links .link {
+  cursor: pointer;
+}
+
 .m-control.m-container.m-contactlink>div.links>div.web,
 .m-control.m-container.m-contactlink>div.links>div.social,
 .m-control.m-container.m-contactlink>div.links>div.other {

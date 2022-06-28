@@ -157,6 +157,20 @@ export default class ContactLinkControl extends M.Control {
           }
         }
       });
+
+      html.querySelector('#urlPNOAContactLink').addEventListener('click', () => {
+        let url = this.linksPnoa;
+        if (this.linksPnoa.indexOf('index.html') === -1 && this.linksPnoa.indexOf('/comparador_pnoa') > -1) {
+          url = `${this.linksPnoa}?center=${map.getCenter().x},${map.getCenter().y}&zoom=${map.getZoom()}&srs=${map.getProjection().code}`;
+        }
+
+        window.open(url);
+      });
+
+      html.querySelector('#urlFototecaContactLink').addEventListener('click', () => {
+        const url = `${this.linksFototeca}fototeca/?center=${map.getCenter().x},${map.getCenter().y}&zoom=${map.getZoom()}&srs=${map.getProjection().code}`;
+        window.open(url);
+      });
       // Añadir código dependiente del DOM
       success(html);
     });
