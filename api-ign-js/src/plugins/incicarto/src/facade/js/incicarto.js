@@ -71,11 +71,14 @@ export default class Incicarto extends M.Plugin {
 
     this.interfazmode_ = options.interfazmode;
     if (this.interfazmode_ === undefined) this.interfazmode_ = 'simple';
-
+    
     this.buzones_ = options.buzones;
     this.themes_ = options.themeList;
     this.errors_ = options.errorList;
     this.products_ = options.productList;
+
+    this.prefixSubject_ = options.prefixSubject;
+    if (this.prefixSubject_ === undefined) this.prefixSubject_ = 'Incidencia cartografía - ';
 
     /**
      * Name of the plugin
@@ -111,6 +114,7 @@ export default class Incicarto extends M.Plugin {
       tooltip: getValue('tooltip'),
     });
 
+    console.log(this.controllist_);
     if (this.controllist_[0].id==="themeList"){
       this.errThemes_=this.controllist_[0];
     }
@@ -122,11 +126,12 @@ export default class Incicarto extends M.Plugin {
     }
 
 
-    this.control_ = new IncicartoControl({
-        wfszoom: this.wfszoom_,
+    this.control_ = new IncicartoControl({ 
+        wfszoom: this.wfszoom_, 
         precharged: this.precharged_,
         controllist: this.controllist_,
         interfazmode: this.interfazmode_,
+        prefixSubject: this.prefixSubject_,
         buzones: this.buzones_,
         themes: this.themes_,
         errors: this.errors_,

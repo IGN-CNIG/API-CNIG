@@ -243,7 +243,8 @@ const mp = new Incicarto({
   position: 'TL',
   /*wfszoom: 12,*/
   /*precharged,*/
-  interfazmode:'simple', //simple, advance, both
+  interfazmode:'simple', //simple, advance
+  prefixSubject:'Incidencia cartográfica - ',
   buzones: [{
     name: 'Cartografía (MTN, BTN, RT, HY, Pob, BCN, Provinciales, escalas pequeñas)',
     email: 'cartografia.ign@mitma.es',
@@ -379,8 +380,8 @@ const mp = new Incicarto({
     },
     {
       idTheme: 11,
-      nameTheme: 'Pruebas Guadaltel',
-      emailTheme: 'albertobuces@guadaltel.com',
+      nameTheme: 'Pruebas Guadaltel/DVM',
+      emailTheme: 'esteban.emolin@gmail.com',
     },
     {
       idTheme: 12,
