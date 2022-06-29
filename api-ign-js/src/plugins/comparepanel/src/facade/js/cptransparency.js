@@ -164,13 +164,6 @@ export default class Transparency extends M.Plugin {
       if (!this.enabledKeyFunctions) {
         return;
       }
-      // for (let i = 0; i < 10; i++) {
-      //   if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'F' + (i + 1)) {  // case sensitive
-      //     //this.control_.manageVisionPanelByCSSGrid(i);
-      //   }
-      // }
-      // const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
-      //32-200
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowUp') {  // case sensitive
         if (this.control_.radius>=200) return;
         this.control_.radius += 20;
@@ -189,31 +182,22 @@ export default class Transparency extends M.Plugin {
         if (this.control_.freeze){
           this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'hidden';
           this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'visible';
-        }else{
+        }else{  
           this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
           this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
         }
       }
 
-      // const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
-      // const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '') +
-      //   (zEvent.shiftKey ? 'Shift ' : '') +
-      //   (zEvent.altKey ? 'Alt ' : '') +
-      //   (zEvent.metaKey ? 'Meta ' : '') + keyStr;
-      // if (combinedKeys === 'Escape') {
-      //   this.control_.manageVisionPanelByCSSGrid(0);
-      // }
     });
-
 
   }
 
 
 
   manageLyrAvailable(lyrAvailable){
-    if (this.control_ !== null) {
-      this.control_.manageLyrAvailable(lyrAvailable);
-    }
+
+    this.control_.manageLyrAvailable(lyrAvailable);
+
   }
 
   /**
@@ -226,10 +210,7 @@ export default class Transparency extends M.Plugin {
   destroy() {
     this.control_.removeEffects();
     this.control_.removeTransparencyLayers(this.control_.getLayersNames());
-    /* eslint-disable no-empty */
-    try {
-      this.map_.removeControls([this.control_]);
-    } catch (err) {}
+    this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
   }
 
@@ -263,7 +244,7 @@ export default class Transparency extends M.Plugin {
 
 
   /**
-   * Activate plugin
+   * Activate plugin SpyEye
    *
    * @function
    * @public
@@ -274,7 +255,7 @@ export default class Transparency extends M.Plugin {
   }
 
   /**
-   * Desactivate plugin
+   * Desactivate plugin SpyEye
    *
    * @function
    * @public

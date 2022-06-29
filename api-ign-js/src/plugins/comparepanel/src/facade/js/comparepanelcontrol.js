@@ -68,12 +68,12 @@ export default class ComparepanelControl extends M.Control {
 
     this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams);
     this.timeline = new Timeline(options.timelineParams);
-
+    
     this.lyrcompare = new LyrCompare(options.lyrcompareParams);
     this.transparency = new Transparency(options.transparencyParams);
     this.panels = [];
     this.plugins = [this.mirrorpanel, this.timeline, this.lyrcompare, this.transparency];
-
+    
     this.map = null;
     this.lyrCoverture = null;
   }
@@ -114,11 +114,6 @@ export default class ComparepanelControl extends M.Control {
       this.panels.push(p.panel_._element);
       let element = document.querySelector('.' + p.panel_._className + ' .m-panel-controls');
       element.classList.add('cp-' + p.name);
-      map._plugins.forEach(element => {
-        if(element.name_ === 'comparepanel' && element.collapsed){
-          this.template.querySelector('#m-cp-' + p.name).parentNode.classList.add(`visibilityContentPlugin`);
-        }
-      });
       document.querySelector('.' + p.panel_._className).remove();
       this.template.querySelector('#m-cp-' + p.name).append(element);
       if (index === this.plugins.length - 1) {
@@ -130,11 +125,11 @@ export default class ComparepanelControl extends M.Control {
     if (this.urlCover!==''){
       this.loadCoverPNOALyr();
     }
-
+    
 
     this.onMoveEnd((evt) => {
-
-      if (this.urlCover === '') {
+      
+      if (this.urlCover===''){
         // e2m: si no hay filtro de comerturas, se pueden elegir todas las capas
         this.mirrorpanel.manageLyrAvailable(this.allLayersName);
         this.lyrcompare.manageLyrAvailable(this.allLayersName);
@@ -148,32 +143,47 @@ export default class ComparepanelControl extends M.Control {
   }
 
   addButtonEvents() {
-    const container = document.querySelector('.m-plugin-comparepanel');
-    container.addEventListener('click', ()=> {
-      document.querySelector('.m-comparepanel-container').classList.toggle('visibilityContentPlugin');
-    })
     this.plugins.forEach(p => {
       if (p.name==='mirrorpanel'){
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateMirrorPanel(p);
-        });
+        }); 
 
       } else if (p.name==='lyrcompare'){
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateOtherModes(p);
-        });
+        });        
       } else {
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateOtherModes(p);
         });
       }
     });
+
+    // e2m: eventos del botón de texto
+    this.template.querySelector('#m-cp-testing-btn').addEventListener('click', (e) => {
+      /*
+      console.log(`actualComparisonMode: ${this.actualComparisonMode}`);
+      console.log(this.map.getMapImpl().getLayers());
+      this.plugins.forEach(p => {
+        console.log(p.name);
+      });
+      */
+      this.map.getMapImpl().getLayers().forEach(lyr=>{
+        /* eslint-disable */
+        console.log(lyr.getSource().key_);
+        /* eslint-enable */
+      })
+    });
+
   }
 
   setComparatorsDefaultStyle(){
 
     if ((this.defaultComparisonMode==='mirrorpanel') && (this.defaultComparisonViz===0)) {
-      // console.log("Modo defecto");
+      /* eslint-disable */
+      console.log("Modo defecto");
+      /* eslint-enable */
     }else{
       //this.template.querySelector('#m-cp-' + this.defaultComparisonMode + ' .cp-' + this.defaultComparisonMode).classList.toggle('hide-panel');  // Muestro panel
       //this.template.querySelector('#m-cp-' + this.defaultComparisonMode + ' .cp-button').classList.toggle('active');                             // Añado scolor botón CamparePanel
@@ -186,7 +196,7 @@ export default class ComparepanelControl extends M.Control {
         }
         if (p.name==='timeline') {
           p.setDefaultLayer(this.defaultComparisonViz);
-        }
+        }        
       }
     });
 
@@ -220,7 +230,7 @@ export default class ComparepanelControl extends M.Control {
   deactivateAndActivateOtherModes(plugin) {
     this.actualComparisonMode = plugin.name;
     if (plugin.name === 'mirrorpanel') return;
-
+    
     this.plugins.forEach(p => {
       if (p.name !== plugin.name) {
         this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');
@@ -235,14 +245,14 @@ export default class ComparepanelControl extends M.Control {
   deactivateAndActivateOtherModesDeprecated(plugin) {
     this.actualComparisonMode = plugin.name;
     if (plugin.name === 'mirrorpanel') return;
-
+    
     // this.plugins.forEach(p => {
     //   if (p.name === 'mirrorpanel'){
     //     return;
     //   }
     //   if (p.name === 'lyrcompare'){
     //     return;
-    //   }
+    //   }      
     //   if (p.name !== plugin.name) {
     //     this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');
     //     this.template.querySelector('#m-cp-' + p.name + ' .cp-button').classList.remove('active');
@@ -253,15 +263,16 @@ export default class ComparepanelControl extends M.Control {
     // });
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.toggle('active');
     // if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name === 'transparency') {
+    //   console.log("3");
     //   plugin.activate();
     // }
     if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name === 'timeline') {
       plugin.activate();
-    }
+    }    
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-' + plugin.name).classList.toggle('hide-panel');
     this.template.querySelector('#m-cp-mirrorpanel .cp-mirrorpanel').classList.remove('hide-panel');  // Oculto panel
     this.template.querySelector('#m-cp-mirrorpanel .cp-button').classList.remove('active');           // Elimino sombra botón
-
+    
   }
 
   /**
@@ -304,7 +315,6 @@ export default class ComparepanelControl extends M.Control {
 
   getCobertura(evt) {
     const olMap = this.map.getMapImpl();
-    //const extent = olMap.getView().calculateExtent(olMap.getSize());
     let pixelCentral = olMap.getPixelFromCoordinate(olMap.getView().getCenter());
     let lyrAvailable = [];
     olMap.forEachFeatureAtPixel(pixelCentral, function (feature, layer) {
@@ -312,9 +322,6 @@ export default class ComparepanelControl extends M.Control {
         lyrAvailable.push(feature.get('layerkey'));
       }
     });
-
-  // this.allLayersName
-
 
     this.mirrorpanel.manageLyrAvailable(lyrAvailable);
     this.lyrcompare.manageLyrAvailable(lyrAvailable);

@@ -262,14 +262,8 @@ export default class Comparepanel extends M.Plugin {
    * @api stable
    */
   destroy() {
+    this.control_.deactivate();
     this.map_.removeControls([this.control_]);
-    this.map_.removePlugins(this.control_.plugins);
-    this.map_.getControls().forEach((c) => {
-      if (['Mirrorpanel', 'Timeline', 'LyrCompare', 'Transparency'].indexOf(c.name) > -1) {
-        this.map_.removeControls(c);
-      }
-    });
-
     [this.control_, this.panel_, this.map_, this.baseLayers, this.vertical, this.mirrorpanelParams, this.lyrcompareParams, this.timelineParams, this.transparencyParams] = [null, null, null, null, null, null, null, null, null];
   }
 

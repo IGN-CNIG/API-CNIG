@@ -129,7 +129,7 @@ export default class Timeline extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-
+    
   }
 
 
@@ -142,10 +142,7 @@ export default class Timeline extends M.Plugin {
    */
   destroy() {
     this.control_.removeTimelineLayers();
-    /* eslint-disable no-empty */
-    try {
-      this.map_.removeControls([this.control_]);
-    } catch (err) {}
+    this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
   }
 
