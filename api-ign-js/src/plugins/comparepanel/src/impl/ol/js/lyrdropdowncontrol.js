@@ -47,6 +47,12 @@ export default class LyrdropdownControl extends M.impl.Control {
     //this.olMap.addLayer(lyrA); //e2m: Important control number interactions this.olMap.interactions.array_
     //const olMap = map.getMapImpl();
 
+    //e2m:Recorrer las interacciones cargadas
+    /*this.olMap.getInteractions().forEach((interaction) => {
+      console.log(interaction);
+    });
+    console.log('Número de interacciones:' + this.olMap.interactions.array_.length);*/
+
     /*
     this.layerdropInteraction_ = new LayerdropInteraction({
       lyrA,
