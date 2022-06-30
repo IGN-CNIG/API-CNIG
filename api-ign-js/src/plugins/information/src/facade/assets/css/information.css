@@ -60,6 +60,7 @@ span.m-content-collapsed {
 
 .m-information-content-info .m-information-content-info-header div:nth-child(2):hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 /*SOLUCIÓN BUGS MAQUETACIÓN*/
