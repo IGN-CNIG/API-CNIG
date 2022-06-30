@@ -366,7 +366,8 @@ public class ProxyRedirect extends HttpServlet {
               } else if (GETINFO_HTML_REGEX.matcher(requesteredUrl).matches()) {
                 response.setContentType("text/html");
               } else if (requesteredUrl.toLowerCase().contains("mapeaop=geosearch")
-              || requesteredUrl.toLowerCase().contains("mapeaop=geoprint")) {
+              || requesteredUrl.toLowerCase().contains("mapeaop=geoprint")
+              || requesteredUrl.toLowerCase().contains("/processes/")) {
                 response.setContentType("application/json");
               } else {
                 response.setContentType("text/xml");
