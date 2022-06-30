@@ -582,7 +582,10 @@ public class ProxyRedirect extends HttpServlet {
       serverUrlChecked = serverUrl;
     } else if (serverUrl.toLowerCase().contains("mapeaop=geoprint")) {
       serverUrlChecked = serverUrl.replaceAll("\\&?\\??mapeaop=geoprint", "");
+    } else if (serverUrl.toLowerCase().contains("/processes/")) {
+      serverUrlChecked = serverUrl;
     }
+
     return serverUrlChecked;
   }
 }

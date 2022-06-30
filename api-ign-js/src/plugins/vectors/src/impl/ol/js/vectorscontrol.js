@@ -229,7 +229,10 @@ export default class VectorsControl extends M.impl.Control {
 
   addEscEvent(evt) {
     if (evt.key === 'Escape') {
-      this.draw.finishDrawing();
+      if (this.draw !== undefined) {
+        this.draw.finishDrawing();
+      }
+
       this.facadeControl.deactivateDrawing();
       this.facadeControl.isDrawingActive = false;
       this.facadeControl.isEditionActive = false;
