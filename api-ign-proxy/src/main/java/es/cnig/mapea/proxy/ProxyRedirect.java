@@ -218,7 +218,7 @@ public class ProxyRedirect extends HttpServlet {
       legend = true;
     }
     serverUrl = checkTypeRequest(serverUrl);
-    // log.info("serverUrl ckecked: " + serverUrl);
+    mantenimiento-cnig-wps.desarrollo.guadaltel.es
     if (!serverUrl.equals("ERROR")) {
       if (serverUrl.startsWith("http://") || serverUrl.startsWith("https://")) {
         PostMethod httppost = null;
@@ -289,6 +289,7 @@ public class ProxyRedirect extends HttpServlet {
           // FIN_PATH_TICKET_MJM-20112405-POST
           // FIN_PATH_MAPEAEDITA_SECURITY - AP
           String body = inputStreamAsString(request.getInputStream());
+          log.info(body);
           StringRequestEntity bodyEntity = new StringRequestEntity(body, null, null);
           if (0 == httppost.getParameters().length) {
             log.debug("No Name/Value pairs found ... pushing as received"); // PATCH
@@ -345,6 +346,8 @@ public class ProxyRedirect extends HttpServlet {
             }
           }
           // dump response to out
+
+          log.info(httppost.getResponseBody());
           if (httppost.getStatusCode() == HttpStatus.SC_OK) {
             // PATH_SECURITY_PROXY - AG
             Header[] respHeaders = httppost.getResponseHeaders();
@@ -352,6 +355,7 @@ public class ProxyRedirect extends HttpServlet {
             ArrayList<Header> headerList = new ArrayList<Header>(Arrays.asList(respHeaders));
             String headersString = headerList.toString();
             checkedContent = checkContent(headersString, compSize, serverUrl);
+            log.info("checkedContent: " + checkedContent);
             // FIN_PATH_SECURITY_PROXY - AG
             if (checkedContent == true) {
               /*
