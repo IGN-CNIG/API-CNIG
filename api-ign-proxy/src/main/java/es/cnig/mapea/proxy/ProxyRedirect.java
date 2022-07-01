@@ -218,7 +218,6 @@ public class ProxyRedirect extends HttpServlet {
       legend = true;
     }
     serverUrl = checkTypeRequest(serverUrl);
-    mantenimiento-cnig-wps.desarrollo.guadaltel.es
     if (!serverUrl.equals("ERROR")) {
       if (serverUrl.startsWith("http://") || serverUrl.startsWith("https://")) {
         PostMethod httppost = null;
