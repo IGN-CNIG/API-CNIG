@@ -226,7 +226,7 @@ const mpBIL = new M.plugin.BackImgLayer({
 
 const getXYZLyrs = () => {
   return {
-    position: 'TR',
+    position: 'BR',
     layerId: 0,
     layerVisibility: true,
     collapsed: true,

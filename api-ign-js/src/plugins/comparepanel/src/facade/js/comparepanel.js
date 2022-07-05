@@ -240,17 +240,17 @@ export default class Comparepanel extends M.Plugin {
     this.map_ = map;
 
     this.panel_ = new M.ui.Panel('panelComparepanel', {
+      position: M.ui.position[this.position],
       collapsible: this.collapsible,
       collapsed: this.collapsed,
-      position: M.ui.position[this.position],
       className: this.className,
-      collapsedButtonClass: 'cp-icon-comparepanel',//cp-icon
+      collapsedButtonClass: 'cp-icon-comparepanel',
       tooltip: this.tooltip_,
     });
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-    this.panel_._element.classList.add(this.vertical ? 'orientation-vertical' : 'orientation-horizontal');
+    //this.panel_._element.classList.add(this.vertical ? 'orientation-vertical' : 'orientation-horizontal');
 
   }
 

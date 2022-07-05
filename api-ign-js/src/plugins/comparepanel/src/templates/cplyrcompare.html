@@ -15,9 +15,10 @@
             <input type="radio" id="div-m-lyrcompare-transparent-static" name="staticDivision" value="1"><label for="div-m-lyrcompare-transparent-static" title="{{translations.static_tooltip}}">{{translations.static}}</label>
             <input type="radio" id="div-m-lyrcompare-transparent-mixed" name="staticDivision" value="2"><label for="div-m-lyrcompare-transparent-mixed" title="{{translations.mixed_tooltip}}">{{translations.mixed}}</label>
         </div>
-        <hr />
+
         {{#if options}}
             <div class="m-lyrcompare-select" id="m-lyrcompare-lyrA-cont">
+                <hr/>
                 <label id="m-lyrcompare-lyrA-lbl" for="m-lyrcompare-lyrA" title="{{translations.lyrLeftSelect_tooltip}}"></label>
                 <select disabled id="m-lyrcompare-lyrA">
                     {{#each options}}
