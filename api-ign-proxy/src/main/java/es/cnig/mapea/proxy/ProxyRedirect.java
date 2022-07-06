@@ -222,7 +222,6 @@ public class ProxyRedirect extends HttpServlet {
       if (serverUrl.startsWith("http://") || serverUrl.startsWith("https://")) {
         PostMethod httppost = null;
         try {
-
           HttpClient client = new HttpClient();
           httppost = new PostMethod(serverUrl);
           // PATH
@@ -307,6 +306,11 @@ public class ProxyRedirect extends HttpServlet {
           if (soap) {
             httppost.addRequestHeader("SOAPAction", serverUrl);
           }
+
+          if (requesteredUrl.toLowerCase().contains("/processes/")) {
+            httppost.addRequestHeader("Content-Type", "application/json");
+          }
+
           client.executeMethod(httppost);
           // PATH_FOLLOW_REDIRECT_POST
           int j = 0;
@@ -346,7 +350,8 @@ public class ProxyRedirect extends HttpServlet {
           }
           // dump response to out
 
-          log.info(httppost.getResponseBody());
+          String res = new String(httppost.getResponseBody(), "UTF-8");
+          log.info(res);
           if (httppost.getStatusCode() == HttpStatus.SC_OK) {
             // PATH_SECURITY_PROXY - AG
             Header[] respHeaders = httppost.getResponseHeaders();
