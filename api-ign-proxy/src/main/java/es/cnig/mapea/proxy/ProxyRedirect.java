@@ -301,13 +301,16 @@ public class ProxyRedirect extends HttpServlet {
               log.debug("parameters:" + nameValuePairs[i].toString());
             }
           }
-          if (!legend)
-          client.getParams().setParameter("http.protocol.content-charset", "UTF-8");
+
+          if (!legend) {
+            client.getParams().setParameter("http.protocol.content-charset", "UTF-8");
+          }
+
           if (soap) {
             httppost.addRequestHeader("SOAPAction", serverUrl);
           }
 
-          if (requesteredUrl.toLowerCase().contains("/processes/")) {
+          if (request.getParameter("url").toLowerCase().contains("/processes/")) {
             httppost.addRequestHeader("Content-Type", "application/json");
           }
 
