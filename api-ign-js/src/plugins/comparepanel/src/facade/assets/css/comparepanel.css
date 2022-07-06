@@ -1,22 +1,23 @@
 /* Opening & closing buttons */
-
-.m-panel.m-comparepanel.collapsed {
-	height: 40px;
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.collapsed {
+	height: 43px;
 }
 
-.m-comparepanel.opened .m-panel-btn.g-cartografia-flecha-derecha,
-.m-comparepanel.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened{
+	width: 43px;
+}
+
+/*.m-plugin-comparepanel.opened .m-panel-btn.g-cartografia-flecha-derecha,
+.m-plugin-comparepanel.opened .m-panel-btn.g-cartografia-flecha-izquierda {
 	background-color: white !important;
 	color: #71a7d3 !important;
-}
+}*/
 
 .m-panel-btn.g-cartografia-flecha-izquierda{
 	margin-left:0px;
 }
 
-
 /* Title and images container */
-
 .m-control.m-container.m-comparepanel {
 	min-width: 200px;
 }
@@ -28,12 +29,13 @@
 	}
 }
 
-.m-areas>div.m-area>div.m-panel.m-comparepanel.opened>button.m-panel-btn.g-cartografia-flecha-izquierda {
+/* Flecha para colapsar el panel */
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>button.m-panel-btn.g-cartografia-flecha-izquierda,
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>button.m-panel-btn.g-cartografia-flecha-derecha {
+	background-color: #71a7d3 !important;
 	color: white !important;
-}
-
-.m-areas>div.m-area>div.m-panel.m-comparepanel.collapsed {
-	height: 40px;
+	width: 43px;
+	height: 43px;
 }
 
 /* Título */
@@ -52,35 +54,45 @@ div#m-comparepanel-titulo {
 
 /*#region Comparison Toolbar TopLeft */
 
-.m-area.m-top.m-left > div.m-panel.m-plugin-comparepanel.opened > button{
-	float:left;
-}
-
-.m-area.m-top.m-left > div.m-panel.m-plugin-comparepanel.opened > div > .m-control.m-container.m-comparepanel-container{
-	margin-left: -40px;
-	margin-top:40px;
-}
-
 .m-area.m-top.m-left {
-	flex-flow: column-reverse;
+	flex-flow: column-reverse;/* e2m: así conseguimos que el selector de capas LyrDrop se coloque arriba del todo, ya que es el último en renderizar */
 }
 
-.m-area.m-top.m-left > div.m-panel.m-plugin-comparepanel .m-panel-controls #m-cp-mirrorpanel {
-	margin-top:0px;
+.m-area.m-top.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>button {
+	float: left;
+	transform: rotate(90deg);
+	border-radius: 4px 0 0 4px;
 }
 
-.m-area.m-top.m-left > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-mirrorpanel{
-	transform: translateX(5px);
+/* Cuando el panel es collapsible, se definen estos márgenes */
+.m-area.m-top.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
+	margin-left: -40px;
+	margin-top: 40px;
+}
+
+/* Cuando el panel es no-collapsible, usamos la clase que viene implícita para eliminar márgenes */
+.m-area.m-top.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened>div>.m-control.m-container.m-comparepanel-container {
+	margin-left: 0px;
+	margin-top: 0px;
+}
+
+.m-area.m-top.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls #m-cp-mirrorpanel {
+	margin-top: 0px;
+}
+
+/* Paneles flotantes de configuración TL */
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel {
+	transform: translateX(416px);
 	border-radius: 4px;
 }
 
-.m-area.m-top.m-left > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-lyrcompare{
-	transform: translateX(5px);
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare {
+	transform: translateX(312px);
 	border-radius: 4px;
 }
 
-.m-area.m-top.m-left > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-transparency{
-	transform: translateX(5px);
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency {
+	transform: translateX(312px);
 	border-radius: 4px;
 }
 
@@ -88,32 +100,37 @@ div#m-comparepanel-titulo {
 
 /*#region Comparison Toolbar TopRight */
 
-.m-area.m-top.m-right > div.m-panel.m-plugin-comparepanel.opened > button{
-	float:right;
-	/*z-index: 5000;*/
+.m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>button {
+	float: right;
+	transform: rotate(-90deg);
+	border-radius: 0 4px 4px 0;
 }
 
-.m-area.m-top.m-right > div.m-panel.m-plugin-comparepanel.opened > div > .m-control.m-container.m-comparepanel-container{
+/* Cuando el panel es collapsible, se definen estos márgenes */
+.m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
 	margin-right: -100px;
-	margin-top:40px;
+	margin-top: 40px;
 }
 
-.m-area.m-top.m-right > div.m-panel.m-plugin-comparepanel .m-panel-controls #m-cp-mirrorpanel {
-	margin-top:0px;
+/* Cuando el panel es no-collapsible, usamos la clase que viene implícita para eliminar márgenes */
+.m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened>div>.m-control.m-container.m-comparepanel-container {
+	margin-right: 0px;
+	margin-top: 0px;
 }
 
-.m-area.m-top.m-right > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-mirrorpanel{
-	transform: translateX(-460px);
-	border-radius: 4px;
+.m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened {
+	width: 42px;
 }
 
-.m-area.m-top.m-right > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-lyrcompare{
-	transform: translateX(-355px);
-	border-radius: 4px;
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls #m-cp-mirrorpanel {
+	margin-top: 0px;
 }
 
-.m-area.m-top.m-right > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-transparency{
-	transform: translateX(-355px);
+/* Paneles flotantes de configuración TR */
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel,
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare,
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency {
+	transform: translateX(-42px);
 	border-radius: 4px;
 }
 
@@ -122,32 +139,37 @@ div#m-comparepanel-titulo {
 
 /*#region Comparison Toolbar BottomRight */
 
-.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.opened > button{
+.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical.opened > button{
 	float:right;
-	/*z-index: 5000;*/
+	transform: rotate(90deg);
 }
 
-.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.opened > div > .m-control.m-container.m-comparepanel-container{
+.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical.opened > div > .m-control.m-container.m-comparepanel-container{
 	margin-right: -100px;
 	margin-top:40px;
 }
 
-.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel .m-panel-controls #m-cp-mirrorpanel {
+.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened > div > .m-control.m-container.m-comparepanel-container{
+	margin-right: 0px;
+	margin-top: 0px;
+}
+
+.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls #m-cp-mirrorpanel {
 	margin-top:0px;
 }
 
-.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-mirrorpanel{
-	transform: translateX(-460px);
+.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel{
+	transform: translateX(-45px);
 	border-radius: 4px;
 }
 
-.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-lyrcompare{
-	transform: translate(-355px,-110px);
+.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare{
+	transform: translate(-45px,-110px);
 	border-radius: 4px;
 }
 
-.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-transparency{
-	transform: translate(-355px,-105px);
+.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency{
+	transform: translate(-45px,-105px);
 	border-radius: 4px;
 }
 
@@ -155,35 +177,37 @@ div#m-comparepanel-titulo {
 
 /*#region Comparison Toolbar BottomLeft */
 
-.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.opened > button{
+.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical.opened > button{
 	float:left;
+	transform: rotate(-90deg);
 }
 
-.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.opened > div > .m-control.m-container.m-comparepanel-container{
+.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical.opened > div > .m-control.m-container.m-comparepanel-container{
 	margin-left: -40px;
 	margin-top:40px;
 }
 
-.m-area.m-bottom.m-left {
-	flex-flow: column-reverse;
+.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened > div > .m-control.m-container.m-comparepanel-container{
+	margin-left: 0px;
+	margin-top: 0px;
 }
 
-.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel .m-panel-controls #m-cp-mirrorpanel {
+.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls #m-cp-mirrorpanel {
 	margin-top:0px;
 }
 
-.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-mirrorpanel{
-	transform: translateX(5px);
+.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel{
+	transform: translateX(415px);
 	border-radius: 4px;
 }
 
-.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-lyrcompare{
-	transform: translate(5px,-110px);
+.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare{
+	transform: translate(310px,-110px);
 	border-radius: 4px;
 }
 
-.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel .m-panel-controls .m-panel-controls.cp-transparency{
-	transform: translate(5px,-110px);
+.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency{
+	transform: translate(310px,-110px);
 	border-radius: 4px;
 }
 

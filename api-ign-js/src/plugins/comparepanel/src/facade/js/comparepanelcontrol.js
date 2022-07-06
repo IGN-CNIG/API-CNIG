@@ -109,6 +109,7 @@ export default class ComparepanelControl extends M.Control {
   }
 
   addComparators(map) {
+    
     this.plugins.forEach((p, index) => {
       map.addPlugin(p);
       this.panels.push(p.panel_._element);
@@ -125,7 +126,7 @@ export default class ComparepanelControl extends M.Control {
     if (this.urlCover!==''){
       this.loadCoverPNOALyr();
     }
-    
+
 
     this.onMoveEnd((evt) => {
       

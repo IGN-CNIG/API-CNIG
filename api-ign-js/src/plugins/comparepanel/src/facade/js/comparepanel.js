@@ -250,7 +250,7 @@ export default class Comparepanel extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-    //this.panel_._element.classList.add(this.vertical ? 'orientation-vertical' : 'orientation-horizontal');
+    this.panel_._element.classList.add(this.vertical ? 'orientation-vertical' : 'orientation-horizontal');
 
   }
 
