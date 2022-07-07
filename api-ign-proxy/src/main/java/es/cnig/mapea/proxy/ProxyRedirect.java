@@ -106,7 +106,7 @@ public class ProxyRedirect extends HttpServlet {
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
     context_ = config.getServletContext();
-    log.info("proxysig.ProxyRedirect: context initialized to: " + context_.getServletContextName());
+    // log.info("proxysig.ProxyRedirect: context initialized to: " + context_.getServletContextName());
   }
 
   /***************************************************************************
@@ -290,7 +290,6 @@ public class ProxyRedirect extends HttpServlet {
 						// FIN_PATH_TICKET_MJM-20112405-POST
 						// FIN_PATH_MAPEAEDITA_SECURITY - AP
 						String body = inputStreamAsString(request.getInputStream());
-						log.info(body);
 						StringRequestEntity bodyEntity = new StringRequestEntity(body, null, null);
 						if (0 == httppost.getParameters().length) {
 							log.debug("No Name/Value pairs found ... pushing as received"); // PATCH
@@ -311,10 +310,6 @@ public class ProxyRedirect extends HttpServlet {
 
 						if (soap) {
 							httppost.addRequestHeader("SOAPAction", serverUrl);
-						}
-
-						if (request.getParameter("url").toLowerCase().contains("/processes/")) {
-							httppost.addRequestHeader("Content-Type", "application/json");
 						}
 
 						client.executeMethod(httppost);
@@ -357,7 +352,6 @@ public class ProxyRedirect extends HttpServlet {
 						// dump response to out
 
 						String res = new String(httppost.getResponseBody(), "UTF-8");
-						log.info(res);
 						if (httppost.getStatusCode() == HttpStatus.SC_OK) {
 							// PATH_SECURITY_PROXY - AG
 							Header[] respHeaders = httppost.getResponseHeaders();
@@ -365,7 +359,6 @@ public class ProxyRedirect extends HttpServlet {
 							ArrayList<Header> headerList = new ArrayList<Header>(Arrays.asList(respHeaders));
 							String headersString = headerList.toString();
 							checkedContent = checkContent(headersString, compSize, serverUrl);
-							log.info("checkedContent: " + checkedContent);
 							// FIN_PATH_SECURITY_PROXY - AG
 							if (checkedContent == true) {
 								/*
@@ -380,8 +373,7 @@ public class ProxyRedirect extends HttpServlet {
 								} else if (GETINFO_HTML_REGEX.matcher(requesteredUrl).matches()) {
 									response.setContentType("text/html");
 								} else if (requesteredUrl.toLowerCase().contains("mapeaop=geosearch")
-										|| requesteredUrl.toLowerCase().contains("mapeaop=geoprint")
-										|| requesteredUrl.toLowerCase().contains("/processes/")) {
+										|| requesteredUrl.toLowerCase().contains("mapeaop=geoprint")) {
 									response.setContentType("application/json");
 								} else {
 									response.setContentType("text/xml");
