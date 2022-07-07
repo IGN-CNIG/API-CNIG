@@ -7,20 +7,25 @@
 	width: 43px;
 }
 
-/*.m-plugin-comparepanel.opened .m-panel-btn.g-cartografia-flecha-derecha,
-.m-plugin-comparepanel.opened .m-panel-btn.g-cartografia-flecha-izquierda {
-	background-color: white !important;
-	color: #71a7d3 !important;
-}*/
+/* Los elementos dentro del panel comparador aparecen en vertical */
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened > div.m-panel-controls > div.m-control.m-container.m-comparepanel-container{
+	display:table;
+}
+/* Los elementos dentro del panel comparador aparecen en horizontal */
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.orientation-horizontal.opened > div.m-panel-controls > div.m-control.m-container.m-comparepanel-container{
+	display:flex;
+	/*width: 180px;*/
+}
+
+/* Es necesario definir un min-with en modo collapsible para las posiciones BR y BL, porque se come un botón */
+.m-panel.m-plugin-comparepanel.orientation-horizontal.opened:not(.no-collapsible) {
+	min-width: 200px;
+}
 
 .m-panel-btn.g-cartografia-flecha-izquierda{
 	margin-left:0px;
 }
 
-/* Title and images container */
-.m-control.m-container.m-comparepanel {
-	min-width: 200px;
-}
 
 /* Para Microsoft EDGE*/
 @supports (-ms-ime-align:auto) {
@@ -80,11 +85,21 @@ div#m-comparepanel-titulo {
 	margin-top: 0px;
 }
 
-/* Paneles flotantes de configuración TL */
+/* Paneles flotantes de configuración TL Vertical */
 .m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel {
-	transform: translateX(416px);
+	transform: translateX(55px);
 	border-radius: 4px;
 }
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel 
+> .m-mirrorpanel-container > .div-m-mirrorpanel-panel > .m-mirrorpanel-effect-buttoms{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 360px;
+	padding: 0.4rem 0.4rem;
+}
+
 
 .m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare {
 	transform: translateX(312px);
@@ -95,6 +110,34 @@ div#m-comparepanel-titulo {
 	transform: translateX(312px);
 	border-radius: 4px;
 }
+
+/* Paneles flotantes de configuración TL Horizontal*/
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel{
+	transform: translate(-30px,50px);
+	border-radius: 4px;
+}
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-hrizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel 
+> .m-mirrorpanel-container > .div-m-mirrorpanel-panel > .m-mirrorpanel-effect-buttoms{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 360px;
+	padding: 0.4rem 0.4rem;
+}
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare{
+	transform: translate(-65px,50px);
+	border-radius: 4px;
+}
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency {
+	transform: translate(-110px,50px);
+	border-radius: 4px;
+}
+
+
+
 
 /*#endregion */
 
@@ -126,13 +169,53 @@ div#m-comparepanel-titulo {
 	margin-top: 0px;
 }
 
-/* Paneles flotantes de configuración TR */
-.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel,
+/* Paneles flotantes de configuración TR Vertical */
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel{
+	transform: translateX(-46px);
+	border-radius: 4px;
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel 
+> .m-mirrorpanel-container > .div-m-mirrorpanel-panel > .m-mirrorpanel-effect-buttoms{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 360px;
+	padding: 0.4rem 0.4rem;
+}
+
 .m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare,
 .m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency {
 	transform: translateX(-42px);
 	border-radius: 4px;
 }
+
+/* Paneles flotantes de configuración TR Horizontal*/
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel{
+	transform: translate(-330px,50px);
+	border-radius: 4px;
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel 
+> .m-mirrorpanel-container > .div-m-mirrorpanel-panel > .m-mirrorpanel-effect-buttoms{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 360px;
+	padding: 0.4rem 0.4rem;
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare{
+	transform: translate(-260px,50px);
+	border-radius: 4px;
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency {
+	transform: translate(-300px,50px);
+	border-radius: 4px;
+}
+
+
 
 /*#endregion */
 
@@ -158,9 +241,19 @@ div#m-comparepanel-titulo {
 	margin-top:0px;
 }
 
+/* Paneles flotantes de configuración BR Vertical*/
 .m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel{
-	transform: translateX(-45px);
+	transform: translate(-45px,-320px);
 	border-radius: 4px;
+}
+
+.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel 
+> .m-mirrorpanel-container > .div-m-mirrorpanel-panel > .m-mirrorpanel-effect-buttoms{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 360px;
+	padding: 0.4rem;
 }
 
 .m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare{
@@ -172,6 +265,32 @@ div#m-comparepanel-titulo {
 	transform: translate(-45px,-105px);
 	border-radius: 4px;
 }
+
+/* Paneles flotantes de configuración BR Horizontal*/
+.m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel{
+	transform: translate(-300px,-55px);
+	border-radius: 4px;
+}
+
+.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel 
+> .m-mirrorpanel-container > .div-m-mirrorpanel-panel > .m-mirrorpanel-effect-buttoms{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	/*width: 360px;*/
+	padding: 0.4rem;
+}
+
+.m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare{
+	transform: translate(-260px,-200px);
+	border-radius: 4px;
+}
+
+.m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency {
+	transform: translate(-305px,-155px);
+	border-radius: 4px;
+}
+
 
 /*#endregion */
 
@@ -196,9 +315,19 @@ div#m-comparepanel-titulo {
 	margin-top:0px;
 }
 
+/* Paneles flotantes de configuración BL Vertical*/
 .m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel{
-	transform: translateX(415px);
+	transform: translate(58px,-320px);
 	border-radius: 4px;
+}
+
+.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel 
+> .m-mirrorpanel-container > .div-m-mirrorpanel-panel > .m-mirrorpanel-effect-buttoms{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 360px;
+	padding: 0.4rem;
 }
 
 .m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare{
@@ -208,6 +337,30 @@ div#m-comparepanel-titulo {
 
 .m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency{
 	transform: translate(310px,-110px);
+	border-radius: 4px;
+}
+
+/* Paneles flotantes de configuración BL Horizontal*/
+.m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel{
+	transform: translate(-30px,-50px);
+	border-radius: 4px;
+}
+
+.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel 
+> .m-mirrorpanel-container > .div-m-mirrorpanel-panel > .m-mirrorpanel-effect-buttoms{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 0.4rem;
+}
+
+.m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare{
+	transform: translate(-60px,-200px);
+	border-radius: 4px;
+}
+
+.m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency {
+	transform: translate(-110px,-155px);
 	border-radius: 4px;
 }
 
