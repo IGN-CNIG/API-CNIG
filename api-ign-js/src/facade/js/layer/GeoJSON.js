@@ -79,7 +79,7 @@ class GeoJSON extends LayerVector {
     }
 
     if (isNullOrEmpty(this.extract)) {
-      this.extract = true; // by default
+      this.extract = false;
     }
 
     // options
