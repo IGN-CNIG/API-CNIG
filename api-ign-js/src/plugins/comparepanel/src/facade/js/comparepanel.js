@@ -152,6 +152,15 @@ export default class Comparepanel extends M.Plugin {
     this.urlCoberturas_ = options.urlcoberturas || '';
 
     /**
+     * Nivel mínimo en el que empiezan a cargarse las capas
+     * Value: number in range 10 - 1000
+     * @type {number}
+     * @public
+     */
+     this.lyrsMirrorMinZindex = options.lyrsMirrorMinZindex;
+     if (this.lyrsMirrorMinZindex === undefined) this.lyrsMirrorMinZindex = 100;
+
+    /**
      * mirrorpanelParams
      * @public
      * Value: Object with the rest of mirrorpanel's parameters
@@ -223,7 +232,6 @@ export default class Comparepanel extends M.Plugin {
     // e2m: ponemos el arraqnue del visualizador mirror a cero por defecto
     this.lyrcompareParams.comparisonMode = this.lyrcompareParams.comparisonMode || {};
     this.lyrcompareParams.comparisonMode = (this.defaultCompareMode === 'curtain' ? this.defaultCompareViz : 0);
-
     this.control_ = new ComparepanelControl({
       baseLayers: this.baseLayers,
       mirrorpanelParams: this.mirrorpanelParams,
@@ -233,7 +241,8 @@ export default class Comparepanel extends M.Plugin {
       defaultComparisonMode: this.COMP_PLUGIN_NAMES[this.defaultCompareMode],
       defaultComparisonViz: this.defaultCompareViz,
       position: this.position,
-      urlCover: this.urlCoberturas_
+      urlCover: this.urlCoberturas_,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex
     });
 
     this.controls_.push(this.control_);

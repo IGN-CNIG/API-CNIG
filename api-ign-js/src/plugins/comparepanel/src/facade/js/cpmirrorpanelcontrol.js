@@ -84,6 +84,13 @@ export default class CompareMirrorpanel extends M.Control {
     this.defaultBaseLyrs = values.defaultBaseLyrs;
 
     /**
+     * Nivel mínimo en el que empiezan a cargarse las capas
+     * @public
+     * @type { integer }
+     */
+     this.lyrsMirrorMinZindex = values.lyrsMirrorMinZindex
+     
+    /**
      * All layers
      * @public
      * @public {Array}
@@ -94,25 +101,31 @@ export default class CompareMirrorpanel extends M.Control {
      * Define the control for managing layers
      *
      */
+
     this.lyDropControlA = new Lyrdropdown({
       position: 'TL',
       collapsible: false, // El botón para desplegar/replegar el plugin no aparece (false) o sí aparece(true)
       collapsed: true,    // El panel del plugin se muestra desplegado (false) o replegado (true)
       layers: this.defaultBaseLyrs,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
+    
 
     this.lyDropControlB = new Lyrdropdown({
       position: 'TL',
       collapsible: false,
       collapsed: true,
       layers: this.defaultBaseLyrs,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
+    
 
     this.lyDropControlC = new Lyrdropdown({
       position: 'TL',
       collapsible: false,
       collapsed: true,
       layers: this.defaultBaseLyrs,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
 
     this.lyDropControlD = new Lyrdropdown({
@@ -120,6 +133,7 @@ export default class CompareMirrorpanel extends M.Control {
       collapsible: false,
       collapsed: true,
       layers: this.defaultBaseLyrs,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
 
     this.createMapContainers();
@@ -328,6 +342,7 @@ export default class CompareMirrorpanel extends M.Control {
         collapsible: false,
         collapsed: true,
         layers: this.defaultBaseLyrs,
+        lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
       });
 
       this.mapL['A'].addPlugin(this.lyDropControlA);
@@ -413,6 +428,7 @@ export default class CompareMirrorpanel extends M.Control {
       });
     }
 
+    
     if (this.lyDropControl !== null){
       if (mapLyr === 'B'){
         this.mapL[mapLyr].addPlugin(this.lyDropControlB);

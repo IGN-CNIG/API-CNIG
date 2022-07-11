@@ -42,6 +42,7 @@ export default class ComparepanelControl extends M.Control {
     this.previousComparisonMode = "";
     this.actualComparisonMode = "";
     this.urlCover =  options.urlCover;
+    this.lyrsMirrorMinZindex= options.lyrsMirrorMinZindex;
 
     this.baseLayers.forEach(e => this.layers.push(e[2]));
     this.params = [options.mirrorpanelParams, options.timelineParams, options.lyrcompareParams, options.transparencyParams];
@@ -50,9 +51,11 @@ export default class ComparepanelControl extends M.Control {
     });
 
     options.mirrorpanelParams.defaultBaseLyrs = this.layers;
+    options.mirrorpanelParams.lyrsMirrorMinZindex = this.lyrsMirrorMinZindex;
     options.timelineParams.intervals = this.baseLayers;         //e2m: TimeLine needs this.baseLayers with the time param
     options.lyrcompareParams.layers = this.layers;
     options.transparencyParams.layers = this.layers;
+
 
     // e2m: extraemos de las definiciones de capa los nombres de todas las capas
     this.allLayersName = this.layers.map((lyrDef) => {
