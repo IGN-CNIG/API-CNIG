@@ -8,7 +8,7 @@ const map = M.map({
   maxZoom: 20,
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
-  layers: ['OSM'],
+  //layers: ['OSM'],
   //projection: 'EPSG:4326*d',
   /*layers: [
     new M.layer.XYZ({
@@ -49,6 +49,17 @@ const printermap = new PrinterMap({
   // printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
   // fototeca: true,
 });
+
+const mvt = new M.layer.MVT({
+    //url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_capa_20220711_111231@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+    url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
+    //url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+    // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/superadmin_carmen_123@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+    name: 'vectortile',
+    projection: 'EPSG:3857',
+});
+
+map.addLayers(mvt);
 
 map.addPlugin(printermap);
 
