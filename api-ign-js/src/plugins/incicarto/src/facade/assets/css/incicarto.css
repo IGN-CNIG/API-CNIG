@@ -880,7 +880,6 @@ span.m-incicarto-3d-measure:hover {
 
 .m-plugin-incicarto-dialog>div.m-plugin-incicarto-modal {
   width: 100%;
-  height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
@@ -897,11 +896,10 @@ span.m-incicarto-3d-measure:hover {
   max-width: 50vw;
   min-width: 30vw;
   margin: 0 auto;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-radius: 4px;
-  
 }
-
 
 /**************************
        TITLE, TEXT

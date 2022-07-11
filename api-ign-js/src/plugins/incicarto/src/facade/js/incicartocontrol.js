@@ -20,16 +20,16 @@
  import * as shp from 'shpjs';
  import { getValue } from './i18n/language';
  import { timesSeries } from 'async';
- 
+
  const formatNumber = (x) => {
    const num = Math.round(x * 100) / 100;
    return num.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
  };
- 
+
  const POINTS = [1, 15];
  const LINES = [10, 15];
  const LINE_POINTS = [1, 15, 20, 15];
- 
+
  export default class IncicartoControl extends M.Control {
    /**
     * @classdesc
@@ -44,20 +44,20 @@
      if (M.utils.isUndefined(IncicartoImplControl)) {
        M.exception(getValue('exception.impl'));
      }
- 
+
      const impl = new IncicartoImplControl();
      super(impl, 'Incicarto');
- 
+
      // facade control goes to impl as reference param
      impl.facadeControl = this;
- 
+
      /**
       * Selected Mapea feature
       * @private
       * @type {M.feature}
       */
      this.feature = undefined;
- 
+
      /**
       * Feature that is drawn on selection layer around this.feature
       * to emphasize it.
@@ -65,70 +65,70 @@
       * @type {M.feature}
       */
      this.emphasis = undefined;
- 
+
      /**
       * Current geometry type selected for drawing.
       * @private
       * @type {String}
       */
      this.geometry = undefined; // Point, LineString, Polygon
- 
+
      /**
       * Template that expands drawing tools with color and thickness options.
       * @private
       * @type {String}
       */
      this.drawingTools = undefined;
- 
+
      /**
       * Template with uploading format options.
       * @private
       * @type {String}
       */
      this.uploadingTemplate = undefined;
- 
+
      /**
       * Current color for drawing features.
       * @private
       * @type {String}
       */
      this.currentColor = undefined;
- 
+
      /**
       * Current line thickness (or circle radius) for drawing features.
       * @private
       * @type {Number}
       */
      this.currentThickness = undefined;
- 
+
      /**
       * Current line dash for drawing linestring features.
       * @private
       * @type {Number}
       */
      this.currentLineDash = undefined;
- 
+
      /**
       * SRS of the input coordinates.
       * @private
       * @type {String}
       */
      this.srs = 'EPSG:4258';
- 
+
      /**
       * Saves drawing layer ( __ draw__) from Mapea.
       * @private
       * @type {*} - Mapea layer
       */
      this.drawLayer = undefined;
- 
+
      /**
       * File to upload.
       * @private
       * @type {*}
       */
      this.file_ = null;
- 
+
      /**
       * Mapea layer where a square will be drawn around selected feature.
       * @private
@@ -139,43 +139,43 @@
        name: 'selectLayer',
        source: this.getImpl().newVectorSource(true),
      });
- 
+
      this.html = null;
- 
+
      this.isEditionActive = false;
- 
+
      this.isDrawingActive = false;
- 
+
      this.isDownloadActive = false;
- 
+
      this.pluginOpened = false;
- 
+
      this.wfszoom = options.wfszoom;
- 
+
      this.precharged = options.precharged;
- 
+
      this.interfazmode = options.interfazmode;
 
      this.prefixSubject = options.prefixSubject;
- 
+
      this.buzones = options.buzones;
- 
+
      this.errThemes = options.errThemes;
      this.errTypes = options.errTypes;
      this.errProducts = options.errProducts;
- 
+
      this.themes = options.themes;
      this.errors = options.errors;
      this.products = options.products;
      this.geometryIncidence = null;
      this.geometryIncidenceX = 0;
      this.geometryIncidenceY = 0;
- 
+
      this.documentRead_ = document.createElement('img');
      this.canvas_ = document.createElement('canvas');
- 
+
    }
- 
+
    /**
     * This function creates the view
     *
@@ -187,7 +187,7 @@
    createView(map) {
      this.map = map;
      return new Promise((success, fail) => {
- 
+
        const optionsTemplate =  {
          jsonp: true,
          vars: {
@@ -203,7 +203,7 @@
            products:{},
          },
        };
- 
+
        if (this.themes.length >= 1) {
          optionsTemplate.vars.themes = this.themes;
        }
@@ -213,7 +213,7 @@
        if (this.products.length >= 1) {
          optionsTemplate.vars.products = this.products;
        }
- 
+
        const html = M.template.compileSync(template,optionsTemplate);
        this.html = html;
        this.renderLayers();
@@ -224,7 +224,7 @@
        this.map.addLayers(this.selectionLayer);
      });
    }
- 
+
    toogleActivate() {
      if (this.pluginOpened) {
        this.pluginOpened = false;
@@ -232,14 +232,14 @@
        this.pluginOpened = true;
      }
    }
- 
+
    renderLayers() {
      const filtered = this.map.getLayers().filter((layer) => {
        return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
          layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' &&
          layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1 && layer.name !== 'infocoordinatesLayerFeatures';
      });
- 
+
      const layers = [];
      filtered.forEach((layer) => {
        if (!(layer.type.toLowerCase() === 'kml' && layer.name.toLowerCase() === 'attributions')) {
@@ -253,18 +253,18 @@
          } else if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('line') > -1) {
            newLayer.line = true;
          }
- 
+
          if (newLayer.point || newLayer.polygon || newLayer.line) {
            if (newLayer.legend === undefined) {
              newLayer.legend = newLayer.name;
            }
- 
+
            newLayer.visible = layer.isVisible();
            layers.push(newLayer);
          }
        }
      });
- 
+
      const html = M.template.compileSync(layersTemplate, {
        jsonp: true,
        vars: {
@@ -286,7 +286,7 @@
          },
        },
      });
- 
+
      const container = this.html.querySelector('.m-incicarto-layers-container');
      container.innerHTML = '';
      if (layers.length > 0) {
@@ -307,7 +307,7 @@
              const filtered2 = layers.filter((layer) => {
                return layer.name === name && (layer.url === url || url === '');
              });
- 
+
              if (filtered2.length > 0) {
                filtered2[0].setZIndex(maxZIndex);
                maxZIndex -= 1;
@@ -317,7 +317,7 @@
        });
      }
    }
- 
+
    /**
     * Creates drawing options template.
     * @public
@@ -353,14 +353,14 @@
          selector.querySelectorAll('div').forEach((elem) => {
            elem.classList.remove('active');
          });
- 
+
          selector.querySelector('div.stroke-continuous').classList.add('active');
          this.currentLineDash = undefined;
        } else if (evt.target.classList.contains('stroke-dots-lines')) {
          selector.querySelectorAll('div').forEach((elem) => {
            elem.classList.remove('active');
          });
- 
+
          if (evt.target.classList.contains('active')) {
            selector.querySelector('div.stroke-continuous').classList.add('active');
            this.currentLineDash = undefined;
@@ -372,7 +372,7 @@
          selector.querySelectorAll('div').forEach((elem) => {
            elem.classList.remove('active');
          });
- 
+
          if (evt.target.classList.contains('active')) {
            selector.querySelector('div.stroke-continuous').classList.add('active');
            this.currentLineDash = undefined;
@@ -384,7 +384,7 @@
          selector.querySelectorAll('div').forEach((elem) => {
            elem.classList.remove('active');
          });
- 
+
          if (evt.target.classList.contains('active')) {
            selector.querySelector('div.stroke-continuous').classList.add('active');
            this.currentLineDash = undefined;
@@ -393,11 +393,11 @@
            this.currentLineDash = POINTS;
          }
        }
- 
+
        this.styleChange(e);
      });
    }
- 
+
    toogleCollapse(e) {
      const elem = document.querySelector('#drawingtools .drawingToolsContainer');
      if (elem !== null) {
@@ -415,7 +415,7 @@
        }
      }
    }
- 
+
    /**
     * Creates upload options template.
     *
@@ -438,7 +438,7 @@
      const inputFile = this.uploadingTemplate.querySelector('#incicarto-uploading>input');
      inputFile.addEventListener('change', evt => this.changeFile(evt, inputFile.files[0]));
    }
- 
+
    /**
     * Adds event listeners to geometry buttons.
     * @public
@@ -447,7 +447,7 @@
     * @param {String} html - Geometry buttons template.
     */
    addEvents(html) {
- 
+
      // e2m: este botón es un botón de test para verificar los formularios modales sin crear
      html.querySelector('#incicarto-test-modal-simple').addEventListener('click', ()=>{
         this.activateModalSimple();
@@ -455,7 +455,7 @@
      html.querySelector('#incicarto-test-modal-advance').addEventListener('click', ()=>{
        this.activateModalAdvanced();
     });
- 
+
      document.querySelector('.m-incicarto > button.m-panel-btn').addEventListener('click', this.toogleActivate.bind(this));
      html.querySelector('#incicarto-add-point').addEventListener('click', this.addNewLayer.bind(this, 'Point'));
      html.querySelector('#incicarto-add-line').addEventListener('click', this.addNewLayer.bind(this, 'LineString'));
@@ -464,12 +464,12 @@
      html.querySelector('#incicarto-upload').addEventListener('click', () => this.openUploadOptions());
      this.addDragDropEvents();
    }
- 
+
    /**
     * Genera la versión avanzada del formulario de Incidencias con conexión a INCIGEO
     */
    activateModalAdvanced() {
- 
+
      let optionsModal = {
        jsonp: true,
        parseToHtml: false, // La compilación de la plantilla devuelve una cadena cuando parseToHtml = false
@@ -487,27 +487,27 @@
          products:{},
        },
      };
- 
+
      if (this.buzones.length >= 1) {
        optionsModal.vars.mails = this.buzones;
      }
      if (this.themes.length >= 1) {
        optionsModal.vars.themes = this.themes;
      }
- 
+
      if (this.errors.length >= 1) {
        optionsModal.vars.errors = this.errors;
      }
- 
+
      if (this.products.length >= 1) {
        optionsModal.vars.products = this.products;
      }
- 
+
      const dialog = M.template.compileSync(modaladvance, optionsModal);
      M.dialog.info(dialog,"Enviar notificación de incidencia en cartografía");
- 
+
      setTimeout(() => {
- 
+
        document.querySelector("#m-plugin-incicarto-send-email").addEventListener('click',(e)=>{
          let destinataryContainer = document.querySelector("#email-to");
          let destinatary = destinataryContainer.options[destinataryContainer.selectedIndex].value;
@@ -516,19 +516,19 @@
            console.log("El mail no ha sido validado");
            return;
          }
- 
+
          document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
          this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctamente.","okmessage");
          document.querySelector("#m-plugin-incicarto-send-email").disabled=true;
        });
- 
+
        document.querySelector("#m-plugin-incicarto-connect-incicarto").addEventListener('click',(e)=>{
- 
- 
+
+
          this.composeIncidencia4INCIGEO();
          document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled = true;
        });
- 
+
        // Para configurar la apariencia del botón Cerrar del modal
        const button = document.querySelector('div.m-dialog.info div.m-button > button');
        button.innerHTML = getValue('close');
@@ -537,14 +537,14 @@
        const titleModal = document.querySelector('div.m-dialog.info div.m-title');
        titleModal.style.backgroundColor = '#71a7d3';
      }, 10);
- 
+
    }
- 
+
    /**
     * Genera la versión sencilla del formulario de Incidencias
     */
    activateModalSimple() {
- 
+
      let optionsModal = {
        jsonp: true,
        parseToHtml: false, // La compilación de la plantilla devuelve una cadena cuando parseToHtml = false
@@ -558,31 +558,31 @@
          products:{},
        },
      };
- 
+
      if (this.themes.length >= 1) {
        optionsModal.vars.themes = this.themes;
      }
      const dialog = M.template.compileSync(modalsimple, optionsModal);
      M.dialog.info(dialog,"Enviar notificación de incidencia en cartografía");
- 
+
      setTimeout(() => {
- 
+
        document.querySelector("#m-plugin-incicarto-simple-send-email").addEventListener('click',(e)=>{
- 
+
          let mailto_composed = this.composeMailtoSendByPasarela()
          if (mailto_composed===false){
            console.log("El mail no ha sido validado");
            return;
          }
- 
+
          //window.open(mailto_composed,'emailWindow');// e2m: Activamos. Con esto abrimos outlook para ver qué correo enviamos. Comentar Después
          // document.querySelector('div.m-mapea-container div.m-dialog').remove(); // e2m: Así cerramos a lo loco
          document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
-         this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctament.","okmessage");
+         this.showMessageInModalAdvanced("El correo con la incidencia se ha enviado correctamente.","okmessage");
        });
- 
+
        document.getElementById('fileUpload').onchange = function () {
- 
+
          let fileName = 'Adjuntar fichero &hellip;';
          if( this.files ){
            if(this.files.length > 1 ){
@@ -591,11 +591,11 @@
              fileName = this.value;
            }
          }
- 
+
          document.getElementById('infoUpload').innerHTML=fileName;
        };
- 
- 
+
+
        // Para configurar la apariencia del botón Cerrar del modal
        const button = document.querySelector('div.m-dialog.info div.m-button > button');
        button.innerHTML = getValue('close');
@@ -604,9 +604,9 @@
        const titleModal = document.querySelector('div.m-dialog.info div.m-title');
        titleModal.style.backgroundColor = '#71a7d3';
      }, 10);
- 
+
    }
- 
+
  /**
   *
   * @param {*} messageText
@@ -617,7 +617,7 @@
      document.querySelector("#result-notification").innerHTML = messageText;
      document.querySelector("#result-notification").classList.add(classHTML);
    }
- 
+
  /**
   * Limpia el cuadro para mensajes en el modal
   */
@@ -626,18 +626,18 @@
      document.querySelector("#result-notification").classList.remove("okmessage");
      document.querySelector("#result-notification").classList.remove("nakmessage");
    }
- 
+
    /**
     * Valida los datos marcados por el usuario
     *
     * @returns
     */
    validateIncidenciaMessageInModalAdvanced(){
- 
+
      const themeMetadataContainer = document.querySelector("#theme-select");
      const errorMetadataContainer = document.querySelector("#error-select");
      const productMetadataContainer = document.querySelector("#product-select");
- 
+
        if (this.errThemes.mandatory===true && themeMetadataContainer.selectedIndex===0){
          this.showMessageInModalAdvanced("Clasifique el error con un tema","nakmessage");
          return false;
@@ -648,11 +648,11 @@
          this.showMessageInModalAdvanced("Clasifique el error con un producto","nakmessage");
          return false;
        }
- 
+
        return true;
- 
+
    }
- 
+
    /**
     * Compone el mensaje para el correo enviado por el interfaz Modal Advanced
     *
@@ -663,16 +663,16 @@
      let themeMetadataContainer = document.querySelector("#theme-select");
      let errorMetadataContainer = document.querySelector("#error-select");
      let productMetadataContainer = document.querySelector("#product-select");
- 
+
      if (this.validateIncidenciaMessageInModalAdvanced() === false) {
        return false;
      };
- 
+
      let theme = themeMetadataContainer.selectedOptions[0].innerText;
      let error = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].value;
      let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
      let errDescription = document.querySelector("#err-description").value;
- 
+
      let email_subject = 'Incidencia Cartografía - ' + theme;
      let email_body = {
        "description": errDescription,
@@ -692,25 +692,25 @@
        inputFileForm.files = inputFile.files;
      }
      emailForm.submit();
- 
+
      //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
      return true;
    }
- 
- 
+
+
    /**
     * Compone el mensaje para el correo enviado por el interfaz Modal Simple y lo envía por pasarela de Fomento
     *
     * @returns
     */
     composeMailtoSendByPasarela() {
- 
+
       const themeMetadataContainer = document.querySelector("#theme-select");
      if (this.errThemes.mandatory===true && themeMetadataContainer.selectedIndex===-1){
        console.log(`Validación errónea: ${themeMetadataContainer.selectedIndex}`);
        return false;
      }
- 
+
      let theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
      let destinatary = this.themes.find(item => item.idTheme == theme).emailTheme;
      theme = themeMetadataContainer.selectedOptions[0].innerText;
@@ -718,12 +718,12 @@
      let emailName = document.querySelector("#person-notify").value;
      let emailUser = document.querySelector("#email-notify").value;
      let errDescription = document.querySelector("#err-description").value;
- 
+
      const { x, y } = this.map_.getCenter();
      const { code, units } = this.map_.getProjection();
      let shareURL = `?center=${x},${y},zoom=${this.map_.getZoom()}`;
      shareURL = shareURL.concat(`,projection=${code}*${units}`);
- 
+
      let propiedades_incidencia = {
        "email_subject": email_subject,
        "theme": theme,
@@ -734,71 +734,71 @@
        "URL": window.location.href,
        "paramsURL": encodeURI(shareURL),
      }
- 
+
      if (this.geometryIncidenceJSON.features.length>0){
        this.geometryIncidenceJSON.features[0].properties=propiedades_incidencia;
      }
- 
+
      // e2m: empaquetamos los datos para la pasarela
      // ----------------------------------------------------------------------------------------------------------
      let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
      emailForm.action = `${M.config.MAPEA_URL}api/email`;
      document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
      document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
- 
+
      document.querySelector("#m-plugin-incicarto-email-sendername").value = emailName;
      document.querySelector("#m-plugin-incicarto-email-senderemail").value = emailUser;
      document.querySelector("#m-plugin-incicarto-email-errDescription").value = errDescription;
      document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
      document.querySelector("#m-plugin-incicarto-email-shareURL").value = shareURL;
- 
+
      document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(this.geometryIncidenceJSON, null, '\t');
- 
+
      let inputFile = document.querySelector('#fileUpload');
      if(inputFile.files.length > 0){
        let inputFileForm = document.querySelector('#fileUploadForm');
        inputFileForm.files = inputFile.files;
      }
- 
+
      emailForm.submit(); //e2m: desactivamos
      // ----------------------------------------------------------------------------------------------------------
- 
+
      //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(this.geometryIncidenceJSON);//e2m: activamos para ver lo que se envía en un correo OUTLOOK
      return true; //e2m: desactivamos
    }
- 
+
    /**
     * Compone el protocolo de comunicación con el SOAP de INCIGEO
     *
     */
    composeIncidencia4INCIGEO(){
- 
+
      const urlINCIGEOToken = "https://incigeo.ign.es/incigeo_pre/webservice.aspx";
      const urlINCIGEOCreateError = "https://incigeo.ign.es/incigeo_pre/webservice.aspx";
      const loginUser = "pruebas_inserciones";  //usr_signa
      const loginPwd = "pruebas";               //pr_signa
- 
+
      const soapCreateError = (tokenAccess) => {
- 
+
        const codeViaEntrada = "WEBAPP";    // Directo, IDV
        const procedenciaCd = "USUARIO_EXTERNO";  // SIGNA  , INCICARTO
- 
+
        const prioridad = "1" //Opciones 1: normal, 99: urgente.
- 
+
        let themeMetadataContainer = document.querySelector("#theme-select");
        let errorMetadataContainer = document.querySelector("#error-select");
        let productMetadataContainer = document.querySelector("#product-select");
        let themeError = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].text;
        let typeError = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].text;
        let productError = productMetadataContainer.options[productMetadataContainer.selectedIndex].text;
- 
+
        let cooX = this.geometryIncidenceX;
        let cooY = this.geometryIncidenceY;
        let descriptionIncidencia = document.querySelector("#err-description").value;
        let emailUser = document.querySelector("#email-notify").value;
        let descriptionErr = "Descripción del error";
        let urlVisualizador = "https://iberpix.cnig.es/iberpix/visor/";
- 
+
        let strNewErrorMessage3 = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.b2tconcept.com/webservices/">
                        <soapenv:Header/>
                        <soapenv:Body>
@@ -825,11 +825,11 @@
                          </web:CreateErrorsIGN>
                        </soapenv:Body>
                      </soapenv:Envelope>`;
- 
- 
+
+
        const parserRequest = new DOMParser();
        const xmlDOMRequest = parserRequest.parseFromString(strNewErrorMessage3, "text/xml");
- 
+
        function createCORSRequest(method, url) {
          var xhr = new XMLHttpRequest();
          if ("withCredentials" in xhr) {
@@ -843,13 +843,13 @@
          }
          return xhr;
        }
- 
+
        var xhr = createCORSRequest("POST", urlINCIGEOCreateError);
        if (!xhr) {
          console.log("XHR issue");
          return;
        }
- 
+
        xhr.onload = function () {
          var results = xhr.responseText;
          const parserResponse = new DOMParser();
@@ -874,14 +874,14 @@
          //console.info(returnDS); // Descripción literal del código devuelto "La operación se ha realizado correctamente"
          //console.info(codeInc);  // Devuelve código de incidencia para seguimiento
      }
- 
+
        xhr.setRequestHeader('Content-Type', 'text/xml');
        xhr.send(strNewErrorMessage3);
- 
+
      }
- 
+
      const soapTokenRequest = () => {
- 
+
        var strTokenRequest = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.b2tconcept.com/webservices/">
                     <soapenv:Header/>
                      <soapenv:Body>
@@ -891,7 +891,7 @@
                        </web:DoLogin>
                      </soapenv:Body>
                     </soapenv:Envelope>`;
- 
+
        function createCORSRequest(method, url) {
          var xhr = new XMLHttpRequest();
          if ("withCredentials" in xhr) {
@@ -910,7 +910,7 @@
          console.log("XHR issue");
          return;
        }
- 
+
        xhr.onload = function () {
          var results = xhr.responseText;
          const parser = new DOMParser();
@@ -918,20 +918,20 @@
          const value = xmlDOM.getElementsByTagName("web:TOKEN_CD")[0].childNodes[0].nodeValue;
          soapCreateError(value);
        }
- 
+
        xhr.setRequestHeader('Content-Type', 'text/xml');
        xhr.send(strTokenRequest);
      }
- 
+
      // Si no hacemos esto, no da tiempo a que salga el mensaje
      setTimeout(() => {
        soapTokenRequest();
      }, 250);
- 
+
      this.showMessageInModalAdvanced("Conectando con INCIGEO para enviar incidencia","okmessage");
- 
+
    }
- 
+
    openAddWFS() {
      const addWFS = M.template.compileSync(addWFSTemplate, {
        jsonp: true,
@@ -948,18 +948,18 @@
          },
        },
      });
- 
+
      M.dialog.info(addWFS, getValue('add_wfs_layer'));
      setTimeout(() => {
        if (document.querySelector('#m-incicarto-addwfs-list-btn') !== null) {
          document.querySelector('#m-incicarto-addwfs-list-btn').addEventListener('click', e => this.showSuggestions(e));
        }
- 
+
        document.querySelector('#m-incicarto-addwfs-search-input').addEventListener('keyup', (e) => {
          const url = document.querySelector('#m-incicarto-addwfs-search-input').value.trim();
          document.querySelector('#m-incicarto-addwfs-search-input').value = url;
        });
- 
+
        document.querySelector('#m-incicarto-addwfs-search-btn').addEventListener('click', e => this.readWFSCapabilities(e));
        document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
        const button = document.querySelector('div.m-dialog.info div.m-button > button');
@@ -971,18 +971,18 @@
        });
      }, 10);
    }
- 
+
    showSuggestions() {
      document.querySelector('#m-incicarto-addwfs-results').innerHTML = '';
      document.querySelector('#m-incicarto-addwfs-suggestions').style.display = 'block';
    }
- 
+
    loadSuggestion(evt) {
      const url = evt.target.getAttribute('data-link');
      document.querySelector('div.m-dialog #m-incicarto-addwfs-search-input').value = url;
      this.readWFSCapabilities(evt);
    }
- 
+
    /**
     * This function reads WFS service capabilities
     *
@@ -1024,7 +1024,7 @@
                  }
                });
              }
- 
+
              const capabilities = {};
              let hasCapabilities = false;
              try {
@@ -1033,21 +1033,21 @@
              } catch (err) {
                hasCapabilities = hasCapabilities || false;
              }
- 
+
              try {
                capabilities.abstract = response.text.split('<ows:Abstract>')[1].split('</ows:Abstract>')[0];
                hasCapabilities = true;
              } catch (err) {
                hasCapabilities = hasCapabilities || false;
              }
- 
+
              try {
                capabilities.accessConstraints = response.text.split('<ows:AccessConstraints>')[1].split('</ows:AccessConstraints>')[0];
                hasCapabilities = true;
              } catch (err) {
                hasCapabilities = hasCapabilities || false;
              }
- 
+
              document.querySelector('div.m-dialog #m-incicarto-addwfs-search-input').value = auxurl;
              this.showResults(services, capabilities, hasCapabilities);
            } catch (err) {
@@ -1061,7 +1061,7 @@
        M.dialog.error(getValue('exception.empty'));
      }
    }
- 
+
    showResults(services, capabilities, hasCapabilities) {
      const selectWFS = M.template.compileSync(selectWFSTemplate, {
        jsonp: true,
@@ -1080,7 +1080,7 @@
          },
        },
      });
- 
+
      document.querySelector('#m-incicarto-addwfs-results').innerHTML = '';
      document.querySelector('#m-incicarto-addwfs-results').appendChild(selectWFS);
      const selector = '#m-incicarto-select-wfs .m-incicarto-common-btn';
@@ -1099,7 +1099,7 @@
        });
      }
    }
- 
+
    openWFSFilters(evt, services) {
      evt.preventDefault();
      const selected = document.querySelector('#m-incicarto-wfs-select').value;
@@ -1110,23 +1110,23 @@
      const filtered = services.filter((s) => {
        return s.name === selected;
      });
- 
+
      if (filtered.length > 0) {
        legend = filtered[0].title;
      }
- 
+
      this.getImpl().addWFSLayer(url, selected, legend);
    }
- 
+
    addDragDropEvents() {
      document.addEventListener('dragover', (e) => {
        e.preventDefault();
      }, false);
- 
+
      document.addEventListener('dragleave', (e) => {
        e.preventDefault();
      }, false);
- 
+
      document.addEventListener('drop', (e) => {
        e.stopPropagation();
        e.preventDefault();
@@ -1134,7 +1134,7 @@
        this.changeFile(e, files[0]);
      }, false);
    }
- 
+
    addNewLayer(geom) {
      const layerName = `incidencia_${new Date().getTime()}`;
      const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
@@ -1144,10 +1144,10 @@
        document.querySelector(`li[name="${layerName}"] span.m-incicarto-layer-add`).click();
      }, 100);
    }
- 
- 
- 
- 
+
+
+
+
    /**
     * Changes style of current feature.
     * @public
@@ -1159,7 +1159,7 @@
      if (this.feature) {
        this.currentColor = document.querySelector('#colorSelector').value;
        this.currentThickness = document.querySelector('#thicknessSelector').value;
- 
+
        switch (this.feature.getGeometry().type) {
          case 'Point':
          case 'MultiPoint':
@@ -1173,11 +1173,11 @@
                width: 2,
              },
            };
- 
+
            if (this.feature.getStyle().getOptions().label !== undefined) {
              newPointStyle.label = this.feature.getStyle().getOptions().label;
            }
- 
+
            if (this.feature !== undefined) {
              this.feature.setStyle(new M.style.Point(newPointStyle));
              this.style = this.feature.getStyle();
@@ -1222,7 +1222,7 @@
        this.currentThickness = document.querySelector('#thicknessSelector').value;
      }
    }
- 
+
    /**
     * Sets style for a point, line or polygon feature
     * @public
@@ -1273,8 +1273,8 @@
          throw new Error(getValue('exception.unknown_geom'));
      }
    }
- 
- 
+
+
    /**
       * Lanza el proceso de notificación por e-mail
       * @public
@@ -1282,12 +1282,12 @@
       * @api
       */
    openNotifyOptions(layer) {
- 
+
      const geojsonLayer = this.toGeoJSON(layer);
      let arrayContent;
- 
+
      arrayContent = JSON.stringify(geojsonLayer);
- 
+
      if (geojsonLayer.features.length > 0){
        this.geometryIncidence = arrayContent;
        this.geometryIncidenceJSON = geojsonLayer;
@@ -1301,7 +1301,7 @@
        M.dialog.error("No hay geometrías trazadas en la incidencia");
      }
    }
- 
+
    /**
     * Lanza el proceso de notificación por e-mail preguntando formatos y permitiendo elegir el tipo de notificación: simple o compleja
     * @public
@@ -1347,7 +1347,7 @@
        document.querySelector('.m-incicarto-general-container').appendChild(this.uploadingTemplate);
      }
    }
- 
+
    /**
     * Parses geojsonLayer removing last item on every coordinate (NaN)
     * before converting the layer to kml.
@@ -1395,11 +1395,11 @@
          default:
        }
      });
- 
+
      newGeojsonLayer.features = features;
      return newGeojsonLayer;
    }
- 
+
    /**
     * Parses geojson before shp download.
     * Changes geometry type to simple when necessary and removes one pair of brackets.
@@ -1411,10 +1411,10 @@
    parseGeojsonForShp(geojsonLayer) {
      const newGeoJson = geojsonLayer;
      const newFeatures = [];
- 
+
      geojsonLayer.features.forEach((originalFeature) => {
        const featureType = originalFeature.geometry.type;
- 
+
        if (featureType.match(/^Multi/)) {
          const features = originalFeature.geometry.coordinates
            .map((simpleFeatureCoordinates, idx) => {
@@ -1446,14 +1446,14 @@
          newFeatures.push(originalFeature);
        }
      });
- 
+
      newGeoJson.features = newFeatures;
      for (let i = 0; i < newGeoJson.features.length; i += 1) {
        delete newGeoJson.features[i].id;
      }
      return newGeoJson;
    }
- 
+
    /**
     * Creates vector layer copy of __draw__ layer excluding text features.
     * @public
@@ -1466,7 +1466,7 @@
      const featuresAsJSON = layer.getFeatures().map(feature => feature.getGeoJSON());
      return { type: 'FeatureCollection', features: this.geojsonTo4326(featuresAsJSON, code) };
    }
- 
+
    /**
     * Downloads selected layer as GeoJSON, kml, gpx or shp.
     * @public
@@ -1481,7 +1481,7 @@
      let arrayContent;
      let mimeType;
      let extensionFormat;
- 
+
      switch (downloadFormat) {
        case 'geojson':
          arrayContent = JSON.stringify(geojsonLayer);
@@ -1515,7 +1515,7 @@
          M.dialog.error(getValue('exception.format_not_selected'));
          break;
      }
- 
+
      if (downloadFormat !== 'shp') {
        const url = window.URL.createObjectURL(new window.Blob([arrayContent], {
          type: `application/${mimeType}`,
@@ -1526,10 +1526,10 @@
        document.body.appendChild(link);
        link.click();
      }
- 
+
      document.querySelector(selector).innerHTML = '';
    }
- 
+
    /**
     * Downloads selected layer as GeoJSON, kml, gpx or shp.
     * @public
@@ -1544,7 +1544,7 @@
      let arrayContent;
      let mimeType;
      let extensionFormat;
- 
+
      switch (downloadFormat) {
        case 'geojson':
          arrayContent = JSON.stringify(geojsonLayer);
@@ -1578,8 +1578,8 @@
          M.dialog.error(getValue('exception.format_not_selected'));
          break;
      }
- 
- 
+
+
      if (geojsonLayer.features.length > 0){
        this.geometryIncidence = arrayContent;
        this.geometryIncidenceJSON = geojsonLayer;
@@ -1588,10 +1588,10 @@
      }else{
        M.dialog.error("No hay geometrías trazadas en la incidencia");
      }
- 
+
      document.querySelector(selector).innerHTML = '';
    }
- 
+
    /**
     * Downloads selected layer as GeoJSON, kml, gpx or shp.
     * @public
@@ -1606,7 +1606,7 @@
      let arrayContent;
      let mimeType;
      let extensionFormat;
- 
+
      switch (downloadFormat) {
        case 'geojson':
          arrayContent = JSON.stringify(geojsonLayer);
@@ -1640,8 +1640,8 @@
          M.dialog.error(getValue('exception.format_not_selected'));
          break;
      }
- 
- 
+
+
      if (geojsonLayer.features.length > 0){
        this.geometryIncidence = arrayContent;
        this.getCentroid4INCIGEO(geojsonLayer);
@@ -1649,12 +1649,12 @@
      }else{
        M.dialog.error("No hay geometrías trazadas en la incidencia");
      }
- 
+
      document.querySelector(selector).innerHTML = '';
    }
- 
+
    getCentroid4INCIGEO(geojsonLayer) {
- 
+
      if (geojsonLayer.features.length > 0) {
        if (geojsonLayer.features[0].geometry.coordinates.length === 2) {
          // Punto 2D
@@ -1676,10 +1676,10 @@
          }
        }
      }
- 
+
    }
- 
- 
+
+
    /**
     * This function compares controls
     *
@@ -1691,9 +1691,9 @@
    equals(control) {
      return control instanceof IncicartoControl;
    }
- 
+
    /* Layer upload */
- 
+
    /**
     * Changes selected file.
     * @public
@@ -1713,7 +1713,7 @@
        }
      }
    }
- 
+
    /**
     * Loads vector layer on map.
     * @public
@@ -1744,7 +1744,7 @@
            M.dialog.error(getValue('exception.load'));
            return;
          }
- 
+
          if (features.length === 0) {
            M.dialog.info(getValue('exception.no_geoms'));
          } else {
@@ -1754,7 +1754,7 @@
          M.dialog.error(getValue('exception.load_correct'));
        }
      });
- 
+
      if (fileExt === 'zip') {
        fileReader.readAsArrayBuffer(this.file_);
      } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson' || fileExt === 'gml') {
@@ -1763,7 +1763,7 @@
        M.dialog.error(getValue('exception.extension'));
      }
    }
- 
+
    /**
     * Creates GeoJSON feature from a previous feature and a new set of coordinates.
     * @public
@@ -1781,7 +1781,7 @@
        },
      };
    }
- 
+
    /**
     * Converts features coordinates on geojson format to 4326.
     * @public
@@ -1856,7 +1856,7 @@
      });
      return jsonResult;
    }
- 
+
    /**
     * Modifies drawing tools, updates inputs, emphasizes selection
     * and shows feature info on select.
@@ -1880,11 +1880,11 @@
      if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
        document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
      }
- 
+
      this.emphasizeSelectedFeature();
      this.showFeatureInfo();
    }
- 
+
    /**
     * Emphasizes selection and shows feature info after feature is modified.
     * @public
@@ -1898,7 +1898,7 @@
        document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
      }
    }
- 
+
    /**
     * Controls clicks events of each layer
     * @public
@@ -1924,7 +1924,7 @@
              },
            },
          });
- 
+
          M.dialog.info(changeName, getValue('change_name'));
          setTimeout(() => {
            const selector = 'div.m-mapea-container div.m-dialog #m-layer-change-name button';
@@ -1974,12 +1974,12 @@
          render = true;
        }
      }
- 
+
      if (render) {
        this.renderLayers();
      }
    }
- 
+
    resetInteractions() {
      this.deactivateDrawing();
      this.deactivateSelection();
@@ -1987,7 +1987,7 @@
      this.isEditionActive = false;
      this.drawLayer = undefined;
    }
- 
+
    changeLayerLegend(layer) {
      const selector = 'div.m-mapea-container div.m-dialog #m-layer-change-name input';
      const newValue = document.querySelector(selector).value.trim();
@@ -1997,7 +1997,7 @@
        document.querySelector('div.m-mapea-container div.m-dialog').remove();
      }
    }
- 
+
    invokeEscKey() {
      try {
        document.dispatchEvent(new window.KeyboardEvent('keyup', {
@@ -2014,19 +2014,19 @@
        console.error(err);
      }
    }
- 
+
    openDrawOptions(layer) {
- 
+
      this.isEditionActive = false;
      this.deactivateSelection();
      this.deactivateDrawing();
      if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
        document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
      }
- 
+
      const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
      if (cond || !this.isDrawingActive) {
- 
+
        this.invokeEscKey();
        this.drawLayer = layer;
        this.isDrawingActive = true;
@@ -2040,7 +2040,7 @@
        if (document.querySelector('#drawingtools #featureInfo') !== null) {
          document.querySelector('#drawingtools #featureInfo').style.display = 'none';
        }
- 
+
        const elem = document.querySelector('#drawingtools .drawingToolsContainer');
        if (elem.style.display === 'none') {
          const cond2 = this.drawLayer.getGeometryType() !== null && this.drawLayer.getGeometryType().toLowerCase() === 'linestring';
@@ -2055,7 +2055,7 @@
        this.drawLayer = undefined;
      }
    }
- 
+
    openEditOptions(layer) {
      this.isDrawingActive = false;
      this.deactivateSelection();
@@ -2063,7 +2063,7 @@
      if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
        document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
      }
- 
+
      const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
      if (cond || !this.isEditionActive) {
        this.invokeEscKey();
@@ -2081,7 +2081,7 @@
        this.drawLayer = undefined;
      }
    }
- 
+
    /**
     * Checks if any drawing button is active and deactivates it,
     * deleting drawing interaction.
@@ -2096,17 +2096,17 @@
        /* eslint-disable no-param-reassign */
        elem.innerHTML = '';
      });
- 
+
      document.querySelectorAll(selector2).forEach((elem) => {
        /* eslint-disable no-param-reassign */
        elem.classList.remove('active-tool');
      });
- 
+
      this.feature = undefined;
      this.emphasizeSelectedFeature();
      this.getImpl().removeDrawInteraction();
    }
- 
+
    /**
     * Deletes selected geometry.
     * @public
@@ -2123,7 +2123,7 @@
        this.openEditOptions(this.drawLayer);
      }
    }
- 
+
    /**
     * After draw interaction event is over,
     * updates feature style, inputs, adds feature to draw layer,
@@ -2145,7 +2145,7 @@
      this.showFeatureInfo();
      this.getImpl().calculateElevations(this.feature);
    }
- 
+
    /**
     * Clears selection layer.
     * Draws square around feature and adds it to selection layer.
@@ -2158,7 +2158,7 @@
    emphasizeSelectedFeature() {
      this.emphasis = null;
      this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
- 
+
      if (this.feature) {
        if ((this.geometry === 'Point' || this.geometry === 'MultiPoint')) {
          this.emphasis = this.getImpl().getMapeaFeatureClone();
@@ -2183,7 +2183,7 @@
        this.selectionLayer.addFeatures([this.emphasis]);
      }
    }
- 
+
    /**
     * On select, shows feature info.
     * @public
@@ -2197,7 +2197,7 @@
        infoContainer.style.display = 'block';
        infoContainer.innerHTML = '';
      }
- 
+
      switch (this.geometry) {
        case 'Point':
        case 'MultiPoint':
@@ -2233,7 +2233,7 @@
            } else {
              html += `<td><b>2D: </b>${m}m</td><td><b>3D: </b><span class="m-incicarto-3d-measure" id="${id}">${getValue('calculate')}</span></td>`;
            }
- 
+
            html += '</tr></tbody></table>';
            infoContainer.innerHTML = html;
            if (this.feature.getStyle() !== undefined && this.feature.getStyle() !== null) {
@@ -2247,7 +2247,7 @@
              selector.querySelectorAll('div').forEach((elem) => {
                elem.classList.remove('active');
              });
- 
+
              if (stroke.linedash !== undefined && stroke.linedash.length > 2) {
                selector.querySelector('div.stroke-dots-lines').classList.add('active');
              } else if (stroke.linedash !== undefined && stroke.linedash[0] > 2) {
@@ -2258,7 +2258,7 @@
                selector.querySelector('div.stroke-continuous').classList.add('active');
              }
            }
- 
+
            if (this.geometry === 'LineString') {
              document.querySelector('#drawingtools button.m-incicarto-layer-profile').style.display = 'block';
              const elem = document.getElementById(id);
@@ -2301,7 +2301,7 @@
          break;
      }
    }
- 
+
    /**
     * Deactivates selection mode.
     * @public
@@ -2315,13 +2315,13 @@
        /* eslint-disable no-param-reassign */
        elem.innerHTML = '';
      });
- 
+
      document.querySelectorAll(selector2).forEach((elem) => {
        /* eslint-disable no-param-reassign */
        elem.classList.remove('active-tool');
      });
      this.getImpl().removeSelectInteraction();
- 
+
      if (this.style !== undefined && this.feature !== undefined) {
        this.feature.setStyle(this.style);
      }
@@ -2331,15 +2331,15 @@
      this.emphasizeSelectedFeature();
      this.getImpl().removeEditInteraction();
    }
- 
+
    getProfile() {
      if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
        document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
      }
- 
+
      this.getImpl().calculateProfile(this.feature);
      this.drawingTools.querySelector('.collapsor').click();
      const content = `<div class="m-incicarto-loading"><p>${getValue('generating_profile')}...</p><span class="icon-spinner" /></div>`;
      document.querySelector('.m-incicarto .m-incicarto-loading-container').innerHTML = content;
    }
- } 
+ }
