@@ -64,6 +64,13 @@ export default class LyrdropdownControl extends M.Control {
     this.layerSelected = null;
 
     /**
+     * Nivel mínimo en el que empiezan a cargarse las capas
+     * @public
+     * @type { integer }
+     */
+     this.lyrsMirrorMinZindex = values.lyrsMirrorMinZindex;
+
+    /**
      * Template
      * @public
      * @type { HTMLElement }
@@ -103,7 +110,6 @@ export default class LyrdropdownControl extends M.Control {
           },
         };
       }
-
       //e2m: config a helper in Handlebars for embedding conditionals in template
       Handlebars.registerHelper('ifCond', (v1, v2, options) => {
         return v1 === v2 ? options.fn(this) : options.inverse(this);
@@ -305,7 +311,7 @@ export default class LyrdropdownControl extends M.Control {
 
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
-        //newLayer.setZIndex(100);
+        newLayer.setZIndex(this.lyrsMirrorMinZindex);/* Establezco un zIndex a partir del cual se cargan las capas*/
         return newLayer;
       } else {
         this.layers.remove(layer);

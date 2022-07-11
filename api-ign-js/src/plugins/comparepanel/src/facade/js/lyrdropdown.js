@@ -92,6 +92,15 @@ export default class Lyrdropdown extends M.Plugin {
     }
 
     /**
+     * Nivel mínimo en el que empiezan a cargarse las capas
+     * Value: number in range 10 - 1000
+     * @type {number}
+     * @public
+     */    
+    this.lyrsMirrorMinZindex = options.lyrsMirrorMinZindex;
+    if (this.lyrsMirrorMinZindex === undefined) this.lyrsMirrorMinZindex = 100;
+
+    /**
      *@private
      *@type { string }
      */
@@ -120,6 +129,7 @@ export default class Lyrdropdown extends M.Plugin {
       collapsible:  this.collapsible,
       collapsed:  this.collapsed,
       layers: this.layers,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
 
     this.controls_.push(this.control_);

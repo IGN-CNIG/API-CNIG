@@ -38,8 +38,6 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 
 Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa principal. Ahora podemos aplicar uno de estos dos modos de comparación y además acytivar algonmo de los modos de comparación por mapa espejo
 
-
-
 ## Dependencias 👷
 
 - comparepanel.ol.min.js
@@ -113,7 +111,8 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
   - Etiqueta: etiqueta o fecha de la capa. Se puede dejar vacío con comillas vacías: *''*
   - Servicio en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
 
--  urlcoberturas: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS. Si este parámetro no se encuentra presente, no se aplicará el filtro por coberturas y todas las capas podrán seleccionarse siempre, aunque en la zona visible en el mapa no tenga cobertura.
+-  **urlcoberturas**: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS. Si este parámetro no se encuentra presente, no se aplicará el filtro por coberturas y todas las capas podrán seleccionarse siempre, aunque en la zona visible en el mapa no tenga cobertura.
+-  **lyrsMirrorMinZindex**: indica el nivel zIndex a partir del cual se cargan las capas superpuestas en los comparadores espejo. Por defecto, tiene valor de 100.
 
 ```javascript
   // Ejemplos de definiciones de capas esperadas por el comparador en formato StringLayer
@@ -176,6 +175,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la
       ["PNOA 2010", "2010", "WMS*pnoa2010*https://www.ign.es/wms/pnoa-historico*pnoa2010"]
     ],
     urlcoberturas: 'https://projects.develmap.com/apicnig/pnoahisto/coberturas.geojson',
+    lyrsMirrorMinZindex: 50,
     timelineParams: { 
       animation: true, 
     },

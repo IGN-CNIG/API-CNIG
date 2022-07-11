@@ -26,7 +26,7 @@ export default class Mirrorpanel extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.name_ = 'mirrorpanel';
+    this.name_ = "mirrorpanel";
 
     /**
      * Facade of the map
@@ -47,7 +47,7 @@ export default class Mirrorpanel extends M.Plugin {
      * @public
      * @type {string}
      */
-    this.className = 'm-plugin-mirrorpanel';
+    this.className = "m-plugin-mirrorpanel";
 
     /**
      * Position of the Plugin
@@ -79,7 +79,6 @@ export default class Mirrorpanel extends M.Plugin {
     this.modeViz = options.modeViz;
     if (this.modeViz === undefined) this.modeViz = 0;
 
-
     /**
      * Opción de situar el mapa principal siempre a la derecha
      * False: se sitúa a la izquierda. True: se sitúa a la derecha
@@ -95,9 +94,8 @@ export default class Mirrorpanel extends M.Plugin {
      * @type {boolean}
      * @public
      */
-     this.enabledPlugins = options.enabledPlugins;
-     if (this.enabledPlugins === undefined) this.enabledPlugins = false;
-
+    this.enabledPlugins = options.enabledPlugins;
+    if (this.enabledPlugins === undefined) this.enabledPlugins = false;
 
     /**
      * Enabled key functions
@@ -126,9 +124,18 @@ export default class Mirrorpanel extends M.Plugin {
       if (Array.isArray(options.mirrorLayers)) {
         this.mirrorLayers = options.mirrorLayers;
       } else {
-        this.mirrorLayers = options.mirrorLayers.split(',');
+        this.mirrorLayers = options.mirrorLayers.split(",");
       }
     }
+
+    /**
+     * Nivel mínimo en el que empiezan a cargarse las capas
+     * Value: number in range 10 - 1000
+     * @type {number}
+     * @public
+     */
+    this.lyrsMirrorMinZindex = options.lyrsMirrorMinZindex;
+    if (this.lyrsMirrorMinZindex === undefined) this.lyrsMirrorMinZindex = 100;
 
     /**
      * Layer base for the three mirror maps
@@ -141,10 +148,9 @@ export default class Mirrorpanel extends M.Plugin {
       if (Array.isArray(options.defaultBaseLyrs)) {
         this.defaultBaseLyrs = options.defaultBaseLyrs;
       } else {
-        this.defaultBaseLyrs = options.defaultBaseLyrs.split(',');
+        this.defaultBaseLyrs = options.defaultBaseLyrs.split(",");
       }
     }
-
 
     this.backImgLayersConfig = options.backImgLayersConfig;
 
@@ -159,7 +165,7 @@ export default class Mirrorpanel extends M.Plugin {
      *@private
      *@type { string }
      */
-    this.tooltip_ = options.tooltip || getValue('tooltip');
+    this.tooltip_ = options.tooltip || getValue("tooltip");
 
     /**
      * Metadata from api.json
@@ -190,6 +196,7 @@ export default class Mirrorpanel extends M.Plugin {
       showCursors: this.showCursors,
       mirrorLayers: this.mirrorLayers,
       defaultBaseLyrs: this.defaultBaseLyrs,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
       backImgLayersConfig: this.backImgLayersConfig,
     };
 
@@ -205,6 +212,7 @@ export default class Mirrorpanel extends M.Plugin {
       className: this.interface ? 'm-plugin-panelMirrorpanel' : 'm-plugin-panelMirrorpanel hidden',
       collapsedButtonClass: 'mirrorpanel-icon',
       tooltip: this.tooltip_,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
 
     this.panel_.addControls(this.controls_);
