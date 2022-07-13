@@ -291,6 +291,16 @@
                         idTheme: 14,
                         nameTheme: 'Pruebas IGN',
                         emailTheme: 'aurelio.aragon@cnig.es',
+                      },
+                      {
+                        idTheme: 15,
+                        nameTheme: 'Pruebas Outlook 1',
+                        emailTheme: 'daleji75@gmail.com',
+                      },
+                      {
+                        idTheme: 16,
+                        nameTheme: 'Pruebas Outlook 2',
+                        emailTheme: 'pruebasdlj@outlook.es',
                       }
                     ],
                     errorList: [

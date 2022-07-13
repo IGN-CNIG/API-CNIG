@@ -52,7 +52,9 @@ const printermap = new PrinterMap({
 
 const mvt = new M.layer.MVT({
     //url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_capa_20220711_111231@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
-    url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
+    //url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
+    url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+    //url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_provincias_20220712_85620@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
     //url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
     // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/superadmin_carmen_123@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
     name: 'vectortile',

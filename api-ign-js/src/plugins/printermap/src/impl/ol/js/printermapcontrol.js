@@ -670,7 +670,7 @@ export default class PrinterMapControl extends M.impl.Control {
           }
 
           let coordinates = geometry.getFlatCoordinates();
-          coordinates = this.inflateCoordinates(coordinates, 0, geometry.getEnds(), 2);
+          coordinates = this.inflateCoordinatesArray(coordinates, 0, geometry.getEnds(), 2);
           const geoJSONFeature = {
             id: feature.getId(),
             type: 'Feature',
@@ -1091,85 +1091,6 @@ export default class PrinterMapControl extends M.impl.Control {
       }
     });
   }
-  /**
-   * This function
-   *
-   * @public
-   * @function
-   * @param {M.Map} map to add the plugin
-   * @param {function} template template of this control
-   * @api stable
-   */
-  encodeOSM(layer) {
-    let encodedLayer = null;
-
-    const layerImpl = layer.getImpl();
-    const olLayer = layerImpl.getOL3Layer();
-    const layerSource = olLayer.getSource();
-    const tileGrid = layerSource.getTileGrid();
-
-    const layerUrl = layer.url || 'http://tile.openstreetmap.org/';
-    const layerName = layer.name;
-    const layerOpacity = olLayer.getOpacity();
-    const tiled = layerImpl.tiled;
-    const layerExtent = tileGrid.getExtent();
-    const tileSize = tileGrid.getTileSize();
-    const resolutions = tileGrid.getResolutions();
-    encodedLayer = {
-      baseURL: layerUrl,
-      opacity: layerOpacity,
-      singleTile: !tiled,
-      layer: layerName,
-      maxExtent: layerExtent,
-      tileSize: [tileSize, tileSize],
-      resolutions,
-      type: 'OSM',
-      extension: 'png',
-    };
-    return encodedLayer;
-  }
-
-  /**
-   * This function adds the control to the specified map
-   *
-   * @public
-   * @function
-   * @param {M.Map} map to add the plugin
-   * @param {function} template template of this control
-   * @api stable
-   */
-  encodeMapbox(layer) {
-    let encodedLayer = null;
-
-    const layerImpl = layer.getImpl();
-    const olLayer = layerImpl.getOL3Layer();
-    const layerSource = olLayer.getSource();
-    const tileGrid = layerSource.getTileGrid();
-
-    const layerUrl = M.utils.concatUrlPaths([M.config.MAPBOX_URL, layer.name]);
-    const layerOpacity = olLayer.getOpacity();
-    const layerExtent = tileGrid.getExtent();
-
-    const tileSize = tileGrid.getTileSize();
-    const resolutions = tileGrid.getResolutions();
-
-
-    const customParams = {};
-    customParams[M.config.MAPBOX_TOKEN_NAME] = M.config.MAPBOX_TOKEN_VALUE;
-    encodedLayer = {
-      opacity: layerOpacity,
-      baseURL: layerUrl,
-      customParams,
-      maxExtent: layerExtent,
-      tileSize: [tileSize, tileSize],
-      resolutions,
-      extension: M.config.MAPBOX_EXTENSION,
-      type: 'xyz',
-      path_format: '/${z}/${x}/${y}.png',
-    };
-
-    return encodedLayer;
-  }
 
   /**
    * This function reprojects map on selected SRS.
@@ -1206,12 +1127,34 @@ export default class PrinterMapControl extends M.impl.Control {
   inflateCoordinates(flatCoordinates, offset, end, stride, optCoordinates) {
     const coordinates = optCoordinates !== undefined ? optCoordinates : [];
     let i = 0;
-    for (let j = offset; j < end; j += stride) {
+    for (let j = offset; j < end[0]; j += stride) {
       // eslint-disable-next-line no-plusplus
       coordinates[i++] = flatCoordinates.slice(j, j + stride);
     }
 
     coordinates.length = i;
     return coordinates;
+  }
+
+  inflateCoordinatesArray(flatCoordinates, offset, ends, stride, optCoordinatess) {
+    const coordinatess = optCoordinatess !== undefined ? optCoordinatess : [];
+    let i = 0;
+    // eslint-disable-next-line no-plusplus
+    for (let j = 0, jj = ends.length; j < jj; ++j) {
+      const end = ends[j];
+      // eslint-disable-next-line no-plusplus
+      coordinatess[i++] = this.inflateCoordinates(
+        flatCoordinates,
+        offset,
+        end,
+        stride,
+        coordinatess[i],
+      );
+      // eslint-disable-next-line no-param-reassign
+      offset = end;
+    }
+
+    coordinatess.length = i;
+    return coordinatess;
   }
 }

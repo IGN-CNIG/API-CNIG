@@ -96,7 +96,7 @@ export default class Lyrdropdown extends M.Plugin {
      * Value: number in range 10 - 1000
      * @type {number}
      * @public
-     */    
+     */
     this.lyrsMirrorMinZindex = options.lyrsMirrorMinZindex;
     if (this.lyrsMirrorMinZindex === undefined) this.lyrsMirrorMinZindex = 100;
 
@@ -161,14 +161,14 @@ export default class Lyrdropdown extends M.Plugin {
 
 
   setDisabledLyrs(lyrList){
-    
+
     if (this.control_ === undefined){
       return;
     }
     if (this.control_.template === null){
       return;
     }
-    //console.log(this.control_.template);
+
     try {
       let optionLyrs = null;
       optionLyrs = this.control_.template.querySelector('#m-lyrdropdown-selector');
@@ -178,11 +178,11 @@ export default class Lyrdropdown extends M.Plugin {
       }
     } catch (error) {
           /* eslint-disable */
-          console.log(error);
+          console.error(error);
           /* eslint-enable */
     }
-  
-   
+
+
    }
 
 

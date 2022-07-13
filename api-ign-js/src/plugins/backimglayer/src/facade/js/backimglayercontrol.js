@@ -190,6 +190,9 @@ export default class BackImgLayerControl extends M.Control {
       this.map.addLayers(layers);
       setTimeout(() => {
         M.proxy(true);
+        layers.forEach((l) => {
+          l.setVisible(true);
+        });
       }, 1000);
     }
     this.fire('backimglayer:activeChanges', [{ activeLayerId: this.activeLayer }]);
@@ -202,8 +205,15 @@ export default class BackImgLayerControl extends M.Control {
    * @api
    */
   removeLayers() {
-    this.map.removeLayers(this.flattedLayers);
-    this.map.removeLayers(this.map.getBaseLayers());
+    try {
+      this.map.removeLayers(this.flattedLayers);
+      /* eslint-disable no-empty */
+    } catch (err) {}
+
+    try {
+      this.map.removeLayers(this.map.getBaseLayers());
+      /* eslint-disable no-empty */
+    } catch (err) {}
   }
 
   /**
