@@ -13,6 +13,7 @@ const map = M.map({
 const mp = new Information({
   position: 'TR',
   buffer: 100,
+  opened: 'one',
 });
 
 const mp2 = new M.plugin.Infocoordinates({
@@ -62,7 +63,7 @@ const layer4 = new M.layer.WMS({
   version: '1.3.0',
 }, {});
 
-map.addLayers([layer1, layer2, layer3, layer4]);
+map.addLayers([layer1/*, layer2, layer3, layer4*/]);
 map.addPlugin(mp);
 // map.addPlugin(mp2);
 // map.addPlugin(mp3);

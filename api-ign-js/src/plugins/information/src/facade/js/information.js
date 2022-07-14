@@ -74,6 +74,14 @@ export default class Information extends M.Plugin {
     this.buffer_ = options.buffer || 10;
 
     /**
+     * Information opened all, only if there is one layer, or not opened
+     *
+     * @private
+     * @type {string}
+     */
+    this.opened_ = options.opened || 'closed';
+
+    /**
      * Plugin name
      *
      * @private
@@ -99,7 +107,7 @@ export default class Information extends M.Plugin {
    */
   addTo(map) {
     const fc = this.featureCount_;
-    this.ctrl = new InformationControl(this.format_, fc, this.buffer_, this.tooltip_);
+    this.ctrl = new InformationControl(this.format_, fc, this.buffer_, this.tooltip_, this.opened_);
     this.controls_.push(this.ctrl);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelInformation', {
@@ -143,11 +151,18 @@ export default class Information extends M.Plugin {
   getAPIRest() {
     let cadena = `${this.name_}=${this.position_}*${this.tooltip_}*${this.format_}*${this.featureCount_}`;
 
-    if (this.buffer_ === undefined || this.buffer_ == null || this.buffer_ === '') {
+    if (this.buffer_ === undefined || this.buffer_ === null || this.buffer_ === '') {
       cadena += '*';
     } else {
       cadena += `*${this.buffer_}`;
     }
+
+    if (this.opened_ === undefined || this.opened_ === null || this.opened_ === '') {
+      cadena += '*';
+    } else {
+      cadena += `*${this.opened_}`;
+    }
+
     return cadena;
   }
 

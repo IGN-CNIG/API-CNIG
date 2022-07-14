@@ -24,7 +24,7 @@ const regExs = {
 const POPUP_TITLE = getValue('title');
 
 export default class InformationControl extends M.impl.Control {
-  constructor(format, featureCount, buffer) {
+  constructor(format, featureCount, buffer, opened) {
     super({});
 
     /**
@@ -58,6 +58,14 @@ export default class InformationControl extends M.impl.Control {
      * @type {Integer}
      */
     this.buffer_ = buffer;
+
+    /**
+     * Information opened all, only if there is one layer, or not opened
+     *
+     * @private
+     * @type {string}
+     */
+    this.opened_ = opened;
 
     /**
      * Facade of the map
@@ -579,6 +587,18 @@ export default class InformationControl extends M.impl.Control {
                 callback: e => this.toogleSection(e),
               }],
             });
+
+            if (this.opened_ === 'all') {
+              setTimeout(() => {
+                document.querySelectorAll('div.m-arrow-right').forEach((elem) => {
+                  elem.click();
+                });
+              }, 100);
+            } else if (this.opened_ === 'one' && layerNamesUrls.length === 1) {
+              setTimeout(() => {
+                document.querySelector('div.m-arrow-right').click();
+              }, 100);
+            }
           }
         }
       });

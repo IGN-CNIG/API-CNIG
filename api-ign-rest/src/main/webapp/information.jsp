@@ -67,6 +67,12 @@
         <datalist id="bufferSug">
             <option value="5"></option>
         </datalist>
+        <label for="selectOpened">Selector de opened del plugin</label>
+        <select name="opened" id="selectOpened">
+            <option value="closed" selected="selected">closed</option>
+            <option value="all">all</option>
+            <option value="one">one</option>
+        </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -128,35 +134,47 @@
         let posicion = "TL",
             tooltip, formato = 'html',
             featureCount = 5,
-            buffer = 5;
-        crearPlugin(posicion, tooltip, formato, featureCount, buffer);
+            buffer = 5,
+            opened = 'closed';
 
+        const properties = {
+          position: posicion,
+          tooltip,
+          format: formato,
+          featureCount,
+          buffer,
+          opened,
+        };
+
+        crearPlugin(properties);
         const selectPosicion = document.getElementById("selectPosicion");
         const inputTooltip = document.getElementById("inputTooltip");
         const inputFormat = document.getElementById("inputFormat");
         const inputFeatureCount = document.getElementById("inputFeatureCount");
         const inputBuffer = document.getElementById("inputBuffer");
+        const selectOpened = document.getElementById("selectOpened");
 
         selectPosicion.addEventListener('change', cambiarTest);
         inputTooltip.addEventListener('change', cambiarTest);
         inputFormat.addEventListener('change', cambiarTest);
         inputFeatureCount.addEventListener('change', cambiarTest);
         inputBuffer.addEventListener('change', cambiarTest);
+        selectOpened.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
-            format = inputFormat.value != "" ? objeto.format = inputFormat.value : "";
-            featureCount = inputFeatureCount.value != "" ? objeto.featureCount = inputFeatureCount.value : "";
-            buffer = inputBuffer.value != "" ? objeto.buffer = inputBuffer.value : "";
+            objeto.tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
+            objeto.format = inputFormat.value != "" ? objeto.format = inputFormat.value : "";
+            objeto.featureCount = inputFeatureCount.value != "" ? objeto.featureCount = inputFeatureCount.value : "";
+            objeto.buffer = inputBuffer.value != "" ? objeto.buffer = inputBuffer.value : "";
+            objeto.opened = selectOpened.options[selectOpened.selectedIndex].value;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
 
         function crearPlugin(propiedades) {
             mp = new M.plugin.Information(propiedades);
-
             map.addPlugin(mp);
         }
         mp2 = new M.plugin.ShareMap({
