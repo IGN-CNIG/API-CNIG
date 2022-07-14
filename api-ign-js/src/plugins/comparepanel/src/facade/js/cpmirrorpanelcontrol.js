@@ -142,7 +142,6 @@ const BASE_LAYERS_CONFIG = {
     },
   ]
 };
-
 export default class CompareMirrorpanel extends M.Control {
   /**
    * @classdesc
@@ -225,7 +224,7 @@ export default class CompareMirrorpanel extends M.Control {
      * @type { integer }
      */
      this.lyrsMirrorMinZindex = values.lyrsMirrorMinZindex
-
+     
     /**
      * All layers
      * @public
@@ -245,7 +244,7 @@ export default class CompareMirrorpanel extends M.Control {
       layers: this.defaultBaseLyrs,
       lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
-
+    
 
     this.lyDropControlB = new Lyrdropdown({
       position: 'TL',
@@ -254,7 +253,7 @@ export default class CompareMirrorpanel extends M.Control {
       layers: this.defaultBaseLyrs,
       lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
-
+    
 
     this.lyDropControlC = new Lyrdropdown({
       position: 'TL',
@@ -497,7 +496,7 @@ export default class CompareMirrorpanel extends M.Control {
     document.querySelector('#m-cp-mirrorpanel-btn').classList.remove('active');
     document.querySelector('.m-panel-controls .cp-mirrorpanel').classList.remove('hide-panel');
 
-
+    
   }
 
   /**
@@ -546,12 +545,28 @@ export default class CompareMirrorpanel extends M.Control {
             pluginVector = new M.plugin.Vectors({
               position: itemPlug.position,
               collapsed: itemPlug.collapsed,
-              collapsible: itemPlug.collapsible,
+              collapsible: itemPlug.collapsible,              
             });
           }
           if (itemPlug.metadata_.name === "backimglayer") {
+
+            /**
+             * Nota de Jesús: OJO!!
+             * El problema del backimglayer venía porque se usaban los mismos objetos capa en ambos mapas y eso provocaba los errores.
+             * Se ha sacado una versión específica para el comparador_pnoa con esa definición de capas fija.
+             * Las siguientes líneas se han comentado para subir al plugin. 
+             * 
+             * ToDO:
+             * Lo ideal sería que se le pasara por parámetro como antiguamente, pero como era una cosa urgente he optado por eso por ahora.
+             * En el iberpixcompare como todavía se usaba la configuración antigua en la que se le metían las capas por parámetro no daba ese error.
+             * Para un futuro lo ideal sería eso, meterlas por parámetro. No le borres nada por si hay que volver a compilar versión con algún cambio.
+             * 
+             * 
+             */
+            // Para el Comparador PNOA descomentar las dos siguientes líneas y comentar la tercera y comentar la definición posterior
             //BASE_LAYERS_CONFIG.layerId = mapLyr === 'A' ? 0 : mapLyr === 'B' ? 1 : mapLyr == 'C' ? 2 : 3,
             //pluginBackImgLayer4map = new M.plugin.BackImgLayer(BASE_LAYERS_CONFIG);
+            
             pluginBackImgLayer4map = new M.plugin.BackImgLayer({
               layerId: mapLyr === 'A' ? 0 : mapLyr === 'B' ? 1 : mapLyr == 'C' ? 2 : 3,
               layerVisibility:  itemPlug.layerVisibility,
@@ -559,10 +574,12 @@ export default class CompareMirrorpanel extends M.Control {
               layerOpts: itemPlug.layerOpts
             });
           }
+
         }
       });
     }
 
+    
     if (this.lyDropControl !== null){
       if (mapLyr === 'B'){
         this.mapL[mapLyr].addPlugin(this.lyDropControlB);
@@ -580,15 +597,15 @@ export default class CompareMirrorpanel extends M.Control {
     // Añadimos plugins secundarios
     if (pluginFullTOC4map !== null) {
       this.mapL[mapLyr].addPlugin(pluginFullTOC4map);
-    }
+    } 
 
     if (pluginVector !== null) {
       this.mapL[mapLyr].addPlugin(pluginVector);
-    }
+    } 
 
     if (pluginBackImgLayer4map !== null) {
       this.mapL[mapLyr].addPlugin(pluginBackImgLayer4map);
-    }
+    } 
 
 
     if (this.showCursors) { this.addLayerCursor(mapLyr); }
@@ -634,21 +651,21 @@ export default class CompareMirrorpanel extends M.Control {
   }
 
 
-
+  
   manageLyrAvailable(lyrList){
-
+    
     if (this.lyDropControlA.control_!== null){
       this.lyDropControlA.setDisabledLyrs(lyrList);
     }
     if (this.lyDropControlB.control_!== null){
       this.lyDropControlB.setDisabledLyrs(lyrList);
-    }
+    }  
     if (this.lyDropControlC.control_!== null){
       this.lyDropControlC.setDisabledLyrs(lyrList);
     }
     if (this.lyDropControlD.control_!== null){
       this.lyDropControlD.setDisabledLyrs(lyrList);
-    }
+    }     
   }
 
   /**

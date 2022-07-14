@@ -1,4 +1,43 @@
 /* Opening & closing buttons */
+
+.cp-mirrorpanel.m-panel-controls,
+.cp-timeline.m-panel-controls,
+.cp-lyrcompare.m-panel-controls,
+.cp-transparency.m-panel-controls {
+	display: none;
+	position: absolute;
+	background-color: white;
+}
+
+.cp-button {
+	display: inline-block;
+	border: 0;
+	background: none;
+	width: 100%;
+	font-size: 23px;
+	padding: 10px;
+	cursor: pointer;
+	color: #6f6f93;
+}
+
+.hide-panel {
+	display: inline-block !important;
+}
+
+.cp-button.active {
+	color: #71a7d3;
+}
+
+.cp-button:hover {
+	color: #98bddb;
+}
+
+.cp-button:disabled {
+	color: #ffb9b9;
+	cursor: default;
+}
+
+
 .m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.collapsed {
 	height: 43px;
 }
@@ -17,9 +56,13 @@
 	/*width: 180px;*/
 }
 
-/* Es necesario definir un min-with en modo collapsible para las posiciones BR y BL, porque se come un botón */
+/* 
+Es necesario definir un min-with en modo collapsible para las posiciones BR y BL, porque se come un botón
+Por cada botón 58 píxeles
+
+ */
 .m-panel.m-plugin-comparepanel.orientation-horizontal.opened:not(.no-collapsible) {
-	min-width: 200px;
+	min-width: 174px;
 }
 
 .m-panel-btn.g-cartografia-flecha-izquierda{
@@ -135,10 +178,6 @@ div#m-comparepanel-titulo {
 	transform: translate(-110px,50px);
 	border-radius: 4px;
 }
-
-
-
-
 /*#endregion */
 
 /*#region Comparison Toolbar TopRight */
@@ -214,9 +253,6 @@ div#m-comparepanel-titulo {
 	transform: translate(-300px,50px);
 	border-radius: 4px;
 }
-
-
-
 /*#endregion */
 
 
@@ -326,17 +362,17 @@ div#m-comparepanel-titulo {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 360px;
+	/*height: 360px;*/
 	padding: 0.4rem;
 }
 
 .m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare{
-	transform: translate(310px,-110px);
+	transform: translate(310px,-150px);
 	border-radius: 4px;
 }
 
 .m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency{
-	transform: translate(310px,-110px);
+	transform: translate(310px,-135px);
 	border-radius: 4px;
 }
 
@@ -366,13 +402,32 @@ div#m-comparepanel-titulo {
 
 /*#endregion */
 
+@media screen and (max-width: 992px) {
 
+	.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare,
+	.m-area.m-bottom.m-left > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency,
+	.m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare,
+	.m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency,
+	.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare,
+	.m-area.m-bottom.m-right > div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency,
+	.m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare,
+	.m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency{
+		top:-500px;
+	}
+
+
+}
+
+
+
+
+/*
 .m-comparepanel .activecomparepanelDiv {
 	border: 5px solid #92c1e7 !important;
 }
-
+*/
 /* Bottom positions fix when images row turns into columns */
-
+/*
 .m-bottom .m-control.m-container.m-comparepanel>#m-comparepanel-previews {
 	display: flex;
 }
@@ -390,7 +445,7 @@ div#m-comparepanel-titulo {
 	position: absolute;
 	left: -40px;
 }
-
+*/
 /* Firefox fix */
 
 @-moz-document url-prefix() {
@@ -406,94 +461,10 @@ div#m-comparepanel-titulo {
 			padding-right: 0px;
 	}
 }
-
-/* Mobile fix */
-
-@media only screen and (max-width: 1000px) {
-
-	.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened {
-			background-color: rgba(255, 255, 255, 0.5) !important;
-			position: absolute;
-			height: 100vh;
-			margin: 0px;
-			padding: calc((100vw - 210px) / 2);
-			padding-top: 10px;
-			width: 100vw;
-			z-index: 99999;
-	}
-
-	.m-panel.m-plugin-comparepanel.opened>button {
-			left: 0;
-			top: 0;
-	}
-
-
-	.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel>div#m-comparepanel-titulo {
-			font-size: 13px;
-			padding-left: 0;
-			padding-right: 0;
-			width: 210px;
-	}
-
-	.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel>div#m-comparepanel-previews {
-			height: calc(100vh - 50px);
-			overflow: scroll;
-			width: 210px;
-	}
-
-	.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel>div#m-comparepanel-previews>div {
-			height: 210px;
-			width: 210px;
-	}
-
-	.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel>div#m-comparepanel-previews>div>img {
-			height: 200px;
-			width: 200px;
-	}
-
-	.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel>div#m-comparepanel-previews>div>span {
-			font-size: 1.3em;
-			height: 40px;
-			line-height: 40px;
-			top: 160px;
-			width: 200px;
-	}
-
-	/* Firefox fix */
-	@-moz-document url-prefix() {
-			.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened {
-					padding: 10px 50px 0;
-			}
-
-			.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel>div#m-comparepanel-previews {
-					padding-bottom: 50px;
-			}
-	}
-
-	/* Chrome fix */
-	@media screen and (-webkit-min-device-pixel-ratio:0) {
-			.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel>div#m-comparepanel-previews {
-					height: calc(100vh - 100px);
-			}
-	}
-
-}
-
-@media only screen and (max-width: 433px) {
-
-	/* Edge fix */
-	@supports (-ms-ime-align:auto) {
-			.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened {
-					padding: 10px 50px 0;
-			}
-	}
-}
-
-
+/*
 .m-areas>div.m-area>div.m-panel.m-comparepanel>button.m-panel-btn {
 	background-color: #71A7D3 !important;
 	color: white !important;
-	/* display: block !important;*/
 }
 
 .m-areas>div.m-area>div.m-panel.m-comparepanel.opened.no-collapsible {
@@ -513,52 +484,9 @@ div#m-comparepanel-titulo {
 	margin: 0;
 	outline: none !important;
 }
+*/
 
-
-.cp-mirrorpanel.m-panel-controls,
-.cp-timeline.m-panel-controls,
-.cp-lyrcompare.m-panel-controls,
-.cp-transparency.m-panel-controls {
-	display: none;
-	position: absolute;
-	background-color: white;
-}
-
-
-
-
-
-
-
-.cp-button {
-	display: inline-block;
-	border: 0;
-	background: none;
-	width: 100%;
-	font-size: 23px;
-	padding: 10px;
-	cursor: pointer;
-	color: #6f6f93;
-}
-
-.hide-panel {
-	display: inline-block !important;
-}
-
-.cp-button.active {
-	color: #71a7d3;
-}
-
-.cp-button:hover {
-	color: #98bddb;
-}
-
-.cp-button:disabled {
-	color: #ffb9b9;
-	cursor: default;
-}
-
-
+/*
 .m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button.cp-button.active {
 	background-color: #d1e6f8;
 	color: #364b5f;
@@ -582,7 +510,7 @@ div#m-comparepanel-titulo {
 .m-plugin-comparepanel .m-panel-btn {
 	box-shadow: none !important;
 }
-
+*/
 
 
 

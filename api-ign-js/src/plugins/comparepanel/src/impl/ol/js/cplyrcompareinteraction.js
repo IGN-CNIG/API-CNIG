@@ -42,7 +42,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       this.addLayerD(layerD);
     }
 
-
+    
 
   }
 
@@ -50,7 +50,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
    */
   setMap(map) {
 
-
+    
     if (this.getMap()) {
       // e2m: Por aquí pasamos al desactivar el control
       for (let i = 0; i < this.layers_.length; i += 1) {
@@ -66,7 +66,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       }
       this.getMap().renderSync();
     }
-
+    
     ol.interaction.Pointer.prototype.setMap.call(this, map);
     if (map) {
       this.createSwipeControl();
@@ -359,7 +359,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       ctx.lineTo(bl[0], bl[1]);
       ctx.lineTo(br[0], br[1]);
       ctx.lineTo(tr[0], tr[1]);
-      ctx.closePath();
+      ctx.closePath();   
     }
     /**
      *
@@ -394,7 +394,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     let tl;
     let tr;
     let br;
-    let bl;
+    let bl;    
     //e2m: Canvas size --> lienzoMapa
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
@@ -404,12 +404,12 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
         tl =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
         tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
         br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]]);    
       } else if (this.comparisonMode === 2) {
         tl =  ol.render.getRenderPixel(e, [0,mapSize[1]/2]);
         tr =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]/2]);
         br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);        
       } else if (this.comparisonMode === 3) {
         tl =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
         tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
@@ -441,8 +441,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     ctx.lineTo(bl[0], bl[1]);
     ctx.lineTo(br[0], br[1]);
     ctx.lineTo(tr[0], tr[1]);
-    ctx.closePath();
-  }
+    ctx.closePath();   
+  }   
 
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
@@ -470,7 +470,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     let tl;
     let tr;
     let br;
-    let bl;
+    let bl;        
     //e2m: Canvas size --> lienzoMapa
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
@@ -480,7 +480,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
         tl =  ol.render.getRenderPixel(e, [0,mapSize[1]/2]);
         tr =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]/2]);
         br =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
+        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]); 
       }
     } else {
       if (this.comparisonMode === 3) {
@@ -495,8 +495,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       ctx.lineTo(bl[0], bl[1]);
       ctx.lineTo(br[0], br[1]);
       ctx.lineTo(tr[0], tr[1]);
-      ctx.closePath();
-    }
+      ctx.closePath();   
+    }   
 
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
@@ -524,7 +524,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     let tl;
     let tr;
     let br;
-    let bl;
+    let bl; 
     //e2m: Canvas size --> lienzoMapa
     //e2m: Mouse coordinates --> this.pos
     ctx.save();
@@ -549,8 +549,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       ctx.lineTo(bl[0], bl[1]);
       ctx.lineTo(br[0], br[1]);
       ctx.lineTo(tr[0], tr[1]);
-      ctx.closePath();
-    }
+      ctx.closePath();   
+    }   
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
       ctx.strokeStyle = 'rgba(0, 102, 204, 0.9)';
