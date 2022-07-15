@@ -129,10 +129,6 @@
       <label for="errDescription">Descripción de la incidencia</label>
       <textarea id="errDescription" type="text" name="errDescription">${errDescription}</textarea>
     </div>
-    <!-- <div class="form-item">
-      <label for="sendergeometry">Geometría (geoJSON)</label>
-      <textarea id="sendergeometry" type="text" name="sendergeometry">${sendergeometry}</textarea>
-    </div> -->
     <div class="form-item">
       <label for="shareURL">URL de la App</label>
       <a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a>
