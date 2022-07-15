@@ -60,7 +60,7 @@ class GeoJSON extends LayerVector {
       this.source = parameters.source;
 
       // extract
-      this.extract = parameters.extract;
+      this.extract = parameters.extract || false;
       // crs
       if (!isNullOrEmpty(parameters.crs)) {
         if (isNullOrEmpty(this.source)) {
@@ -76,10 +76,6 @@ class GeoJSON extends LayerVector {
           },
         };
       }
-    }
-
-    if (isNullOrEmpty(this.extract)) {
-      this.extract = false;
     }
 
     // options
@@ -127,7 +123,7 @@ class GeoJSON extends LayerVector {
         this.getImpl().extract = newExtract;
       }
     } else {
-      this.getImpl().extract = true;
+      this.getImpl().extract = false;
     }
   }
 
