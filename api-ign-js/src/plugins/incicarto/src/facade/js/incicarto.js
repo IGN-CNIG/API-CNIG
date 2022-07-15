@@ -71,7 +71,7 @@ export default class Incicarto extends M.Plugin {
 
     this.interfazmode_ = options.interfazmode;
     if (this.interfazmode_ === undefined) this.interfazmode_ = 'simple';
-    
+
     this.buzones_ = options.buzones;
     this.themes_ = options.themeList;
     this.errors_ = options.errorList;
@@ -114,7 +114,6 @@ export default class Incicarto extends M.Plugin {
       tooltip: getValue('tooltip'),
     });
 
-    console.log(this.controllist_);
     if (this.controllist_[0].id==="themeList"){
       this.errThemes_=this.controllist_[0];
     }
@@ -126,8 +125,8 @@ export default class Incicarto extends M.Plugin {
     }
 
 
-    this.control_ = new IncicartoControl({ 
-        wfszoom: this.wfszoom_, 
+    this.control_ = new IncicartoControl({
+        wfszoom: this.wfszoom_,
         precharged: this.precharged_,
         controllist: this.controllist_,
         interfazmode: this.interfazmode_,

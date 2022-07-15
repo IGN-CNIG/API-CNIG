@@ -512,8 +512,8 @@
          let destinataryContainer = document.querySelector("#email-to");
          let destinatary = destinataryContainer.options[destinataryContainer.selectedIndex].value;
          let mailto_composed = this.composeMailtoSend(destinatary)
-         if (mailto_composed===false){
-           console.log("El mail no ha sido validado");
+         if (mailto_composed === false){
+           console.error("El mail no ha sido validado");
            return;
          }
 
@@ -570,8 +570,8 @@
        document.querySelector("#m-plugin-incicarto-simple-send-email").addEventListener('click',(e)=>{
 
          let mailto_composed = this.composeMailtoSendByPasarela()
-         if (mailto_composed===false){
-           console.log("El mail no ha sido validado");
+         if (mailto_composed === false){
+           console.error ("El mail no ha sido validado");
            return;
          }
 
@@ -706,8 +706,8 @@
     composeMailtoSendByPasarela() {
 
       const themeMetadataContainer = document.querySelector("#theme-select");
-     if (this.errThemes.mandatory===true && themeMetadataContainer.selectedIndex===-1){
-       console.log(`Validación errónea: ${themeMetadataContainer.selectedIndex}`);
+     if (this.errThemes.mandatory === true && themeMetadataContainer.selectedIndex === -1){
+       console.error(`Validación errónea: ${themeMetadataContainer.selectedIndex}`);
        return false;
      }
 
@@ -721,8 +721,12 @@
 
      const { x, y } = this.map_.getCenter();
      const { code, units } = this.map_.getProjection();
-     let shareURL = `?center=${x},${y},zoom=${this.map_.getZoom()}`;
-     shareURL = shareURL.concat(`,projection=${code}*${units}`);
+     let shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+     shareURL = shareURL.concat(`&projection=${code}*${units}`);
+     let url = window.location.href;
+     if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
+       url = M.config.MAPEA_URL;
+     }
 
      let propiedades_incidencia = {
        "email_subject": email_subject,
@@ -731,7 +735,7 @@
        "emailName": emailName,
        "emailUser": emailUser,
        "errDescripcion": errDescription,
-       "URL": window.location.href,
+       "URL": url,
        "paramsURL": encodeURI(shareURL),
      }
 
@@ -846,7 +850,7 @@
 
        var xhr = createCORSRequest("POST", urlINCIGEOCreateError);
        if (!xhr) {
-         console.log("XHR issue");
+         console.error("XHR issue");
          return;
        }
 
@@ -907,7 +911,7 @@
        }
        var xhr = createCORSRequest("POST", urlINCIGEOToken);
        if (!xhr) {
-         console.log("XHR issue");
+         console.error("XHR issue");
          return;
        }
 
