@@ -82,8 +82,8 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
   
   - 'mirror': Comparador de espejo.
   - 'curtain': Comparador de paneles móviles.
-  - 'timeline': Comprador de línea del tiempo.
   - 'spyeye': Comparador de zona o puntual.
+  - 'none': no arranca ninguno de los comparadores. Es equivalente a arrancar como  *defaultCompareMode='mirror'* &  *defaultCompareViz=0*.
 
 - **defaultCompareViz**: ajustamos el modo de visualizaciónuna vea seleccionado el comparador.
 
@@ -103,7 +103,6 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
     - 1: dos mapas en vertical.
     - 2: dos mapas en horizontal.
     - 3: cuatro mapas.
-  - En el caso del modo *timeline* indicamos de 0 a n-1, siendo n el número de capas disponibles, cual de ellas arranca visible.
   - En el caso del modo *spyeye* arranca con la barra de herramientas desplegada con el mapa simple esperando al usuario.
 
 - **baseLayers**. Parámetro obligatorio. Array que contiene cada capa junto a sus datos:
@@ -176,9 +175,6 @@ Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la
     ],
     urlcoberturas: 'https://projects.develmap.com/apicnig/pnoahisto/coberturas.geojson',
     lyrsMirrorMinZindex: 50,
-    timelineParams: { 
-      animation: true, 
-    },
     transparencyParams: { 
       radius: 100, 
     },

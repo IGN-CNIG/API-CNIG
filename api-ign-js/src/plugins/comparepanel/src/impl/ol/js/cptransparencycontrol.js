@@ -33,6 +33,7 @@ export default class TransparencyControl extends M.impl.Control {
    * @api stable
    */
   effectSelected(layers, radius, freeze) {
+
     layers.setVisible(true);
     layers.setZIndex(5000);
     this.transparentInteraction_ = new TransparentInteraction({
@@ -79,7 +80,7 @@ export default class TransparencyControl extends M.impl.Control {
    * @api stable
    */
    toogleFreeze() {
-    this.freezePosition = this.transparentInteraction_.pos;
+    this.freezePosition = this.transparentInteraction_.pos;     
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.toogleFreeze();
   }
 

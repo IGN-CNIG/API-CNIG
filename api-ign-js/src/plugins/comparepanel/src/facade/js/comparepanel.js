@@ -114,7 +114,7 @@ export default class Comparepanel extends M.Plugin {
      * Posible values: mirror | curtain | spyeye | timeline
      * @type {String}
      */
-     const defaultCompareModes = ['mirror', 'curtain', 'spyeye', 'timeline'];
+     const defaultCompareModes = ['mirror', 'curtain', 'spyeye', 'timeline', 'none'];
      this.defaultCompareMode = defaultCompareModes.includes(options.defaultCompareMode) ? options.defaultCompareMode : 'mirror';
 
     /**
@@ -228,6 +228,12 @@ export default class Comparepanel extends M.Plugin {
     // e2m: ponemos el arraque del visualizador mirror a cero por defecto
     this.mirrorpanelParams.modeViz = this.mirrorpanelParams.modeViz || {};
     this.mirrorpanelParams.modeViz = (this.defaultCompareMode === 'mirror' ? this.defaultCompareViz : 0);
+
+    if (this.defaultCompareMode==='none'){
+      this.defaultCompareMode = 'mirror';
+      this.defaultCompareViz = 0;
+    }
+
 
     // e2m: ponemos el arraqnue del visualizador mirror a cero por defecto
     this.lyrcompareParams.comparisonMode = this.lyrcompareParams.comparisonMode || {};

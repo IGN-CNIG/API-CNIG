@@ -310,3 +310,28 @@ Estilos del botón
 	grid-template-rows: 1fr 1fr !important;
 	grid-template-areas: 'mirror2 mirror1' 'mirror3 mirror3' !important;
 }
+
+
+/* Large devices (laptops/desktops, 992px and up) */
+/* If the screen size is 992px wide or less, hide the element */
+@media screen and (max-width: 992px) {
+  #set-mirror-3 {
+    display: none;
+  }
+  #set-mirror-4 {
+    display: none;
+  }
+  #set-mirror-6 {
+    display: none;
+  }
+	#set-mirror-7 {
+    display: none;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media screen and (max-width: 1200px) {
+  #set-mirror-4 {
+    display: none;
+  }
+}

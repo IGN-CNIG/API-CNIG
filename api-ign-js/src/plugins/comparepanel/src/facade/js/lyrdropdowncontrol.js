@@ -92,7 +92,7 @@ export default class LyrdropdownControl extends M.Control {
       //e2m: Transform stringLyr definition to apicnigLyr
       this.layers = this.transformToLayers(this.layers);
       //e2m: getting layers array with name and legend for plugin
-
+      
       let capas = this.layers.map((layer) => {
         return layer instanceof Object ? {  name: layer.name, legend: layer.legend } : { name: layer, legend: layer };
       });
@@ -141,6 +141,7 @@ export default class LyrdropdownControl extends M.Control {
         }
 
         this.layerSelected = layerSel[0];
+        this.layerSelected.setZIndex(this.lyrsMirrorMinZindex);
         this.getImpl().setLayer(this.layerSelected);
       });
 
@@ -189,7 +190,7 @@ export default class LyrdropdownControl extends M.Control {
       }
     } catch (error) {
           /* eslint-disable */
-          console.error(error);
+          console.log(error);
           /* eslint-enable */
     }
 
@@ -320,7 +321,7 @@ export default class LyrdropdownControl extends M.Control {
 
     return (transform[0] === undefined) ? [] : transform;
   }
-
+ 
 
   /**
    * This function transform string to M.Layer

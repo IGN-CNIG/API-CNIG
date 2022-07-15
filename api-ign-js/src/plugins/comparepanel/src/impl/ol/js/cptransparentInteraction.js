@@ -52,7 +52,7 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
       }
       this.getMap().renderSync();
     }
-
+    
     ol.interaction.Pointer.prototype.setMap.call(this, map);
     if (map) {
       for (i = 0; i < this.layers_.length; i += 1) {
@@ -102,14 +102,14 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     if (!(layers instanceof Array)) layers = [layers];
     /* eslint-enable */
     for (let i = 0; i < layers.length; i += 1) {
-       //e2m: deprecated. Esto no se usa ¿?
+       //e2m: deprecated. Esto no se usa ¿? 
       const l = { layer: layers[i] };
       if (this.getMap()) {
         l.prerender = layers[i].on('prerender', this.precompose_.bind(this));
         l.postrender = layers[i].on('postrender', this.postcompose_.bind(this));
         this.getMap().renderSync();
       }
-
+      
       this.layers_.push(layers[i]);
     }
   }
@@ -142,12 +142,11 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
    * @param {ol.Pixel|ol.MapBrowserEvent}
    */
   setPosition(e) {
-    //const pointerPos = ol.render.getRenderPixel(e, [this.pos[0]],this.pos[1]);
+
     if (e.pixel) {
       if (this.freeze===false){
         this.pos = e.pixel;
-        //this.pos = ol.render.getRenderPixel(e,[e.pixel[0],e.pixel[1]]);
-      }
+      } 
     } else if (e && e instanceof Array) {
       this.pos = e;
     } else {
@@ -183,7 +182,7 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
       /*const offset = getRenderPixel(e, [
         mousePosition[0] + this.radius,
         mousePosition[1],
-      ]);
+      ]);    
       const canvasRadius = Math.sqrt(
         Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2)
       );*/
@@ -192,6 +191,7 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
       //ctx.strokeStyle = 'rgba(0,0,0,0.5)';
 
     //ctx.clip();
+      //console.log(pointerPos);
 
 
 

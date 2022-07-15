@@ -71,12 +71,12 @@ export default class ComparepanelControl extends M.Control {
 
     this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams);
     this.timeline = new Timeline(options.timelineParams);
-
+    
     this.lyrcompare = new LyrCompare(options.lyrcompareParams);
     this.transparency = new Transparency(options.transparencyParams);
     this.panels = [];
     this.plugins = [this.mirrorpanel, this.timeline, this.lyrcompare, this.transparency];
-
+    
     this.map = null;
     this.lyrCoverture = null;
   }
@@ -112,7 +112,7 @@ export default class ComparepanelControl extends M.Control {
   }
 
   addComparators(map) {
-
+    
     this.plugins.forEach((p, index) => {
       map.addPlugin(p);
       this.panels.push(p.panel_._element);
@@ -132,7 +132,7 @@ export default class ComparepanelControl extends M.Control {
 
 
     this.onMoveEnd((evt) => {
-
+      
       if (this.urlCover===''){
         // e2m: si no hay filtro de comerturas, se pueden elegir todas las capas
         this.mirrorpanel.manageLyrAvailable(this.allLayersName);
@@ -151,12 +151,12 @@ export default class ComparepanelControl extends M.Control {
       if (p.name==='mirrorpanel'){
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateMirrorPanel(p);
-        });
+        }); 
 
       } else if (p.name==='lyrcompare'){
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateOtherModes(p);
-        });
+        });        
       } else {
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateOtherModes(p);
@@ -193,7 +193,7 @@ export default class ComparepanelControl extends M.Control {
         }
         if (p.name==='timeline') {
           p.setDefaultLayer(this.defaultComparisonViz);
-        }
+        }        
       }
     });
 
@@ -227,7 +227,7 @@ export default class ComparepanelControl extends M.Control {
   deactivateAndActivateOtherModes(plugin) {
     this.actualComparisonMode = plugin.name;
     if (plugin.name === 'mirrorpanel') return;
-
+    
     this.plugins.forEach(p => {
       if (p.name !== plugin.name) {
         this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');
@@ -242,14 +242,14 @@ export default class ComparepanelControl extends M.Control {
   deactivateAndActivateOtherModesDeprecated(plugin) {
     this.actualComparisonMode = plugin.name;
     if (plugin.name === 'mirrorpanel') return;
-
+    
     // this.plugins.forEach(p => {
     //   if (p.name === 'mirrorpanel'){
     //     return;
     //   }
     //   if (p.name === 'lyrcompare'){
     //     return;
-    //   }
+    //   }      
     //   if (p.name !== plugin.name) {
     //     this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');
     //     this.template.querySelector('#m-cp-' + p.name + ' .cp-button').classList.remove('active');
@@ -260,15 +260,16 @@ export default class ComparepanelControl extends M.Control {
     // });
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.toggle('active');
     // if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name === 'transparency') {
+    //   console.log("3");
     //   plugin.activate();
     // }
     if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name === 'timeline') {
       plugin.activate();
-    }
+    }    
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-' + plugin.name).classList.toggle('hide-panel');
     this.template.querySelector('#m-cp-mirrorpanel .cp-mirrorpanel').classList.remove('hide-panel');  // Oculto panel
     this.template.querySelector('#m-cp-mirrorpanel .cp-button').classList.remove('active');           // Elimino sombra botón
-
+    
   }
 
   /**

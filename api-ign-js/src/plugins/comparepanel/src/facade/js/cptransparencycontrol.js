@@ -233,7 +233,7 @@ export default class TransparencyControl extends M.Control {
       }
     } catch (error) {
       /* eslint-disable */
-      console.error(error);
+      console.log(error);
       /* eslint-enable */
     }
   }
