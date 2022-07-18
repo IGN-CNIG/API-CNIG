@@ -21,7 +21,7 @@
   </a>
   <a title="Language" href="https://www.w3schools.com/css/" target="_blank">
     <img src="https://img.shields.io/static/v1?label=Lang&message=CSS3&color=maroon">
-  </a> 
+  </a>
 
   <br />
   <br />
@@ -79,7 +79,7 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
 - **vertical**. Si es *true*, el panel se verá con la orientación vertical. Si es *false*, el panel se verá con la orientación horizontal. Por defecto tiene el valor *true*
 
 - **defaultCompareMode**: indica el modo de comparación que se arranca por defecto.
-  
+
   - 'mirror': Comparador de espejo.
   - 'curtain': Comparador de paneles móviles.
   - 'spyeye': Comparador de zona o puntual.
@@ -129,7 +129,7 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
   ['MTN', '2020', 'WMTS*MTN*https://www.ign.es/wmts/mapa-raster*MTN*GoogleMapsCompatible*image/jpeg'],
   ['SIOSE', '2020', 'WMTS*SIOSE*https://servicios.idee.es/wmts/ocupacion-suelo*LC.LandCoverSurfaces*GoogleMapsCompatible*image/png'],
   ['LIDAR', '2020', 'WMTS*LIDAR*https://wmts-mapa-lidar.idee.es/lidar*EL.GridCoverageDSM*GoogleMapsCompatible*image/png'],
- 
+
 ```
 
 - **mirrorpanelParams**. Parámetros opcionales del plugin mirrorpanel. A destacar:
@@ -162,7 +162,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la
     vertical: false,
     collapsed: false,
     collapsible: true,
-    defaultCompareMode: 'mirror',// mirror - curtain - timeline - spyeye
+    defaultCompareMode: 'mirror',// mirror - curtain - spyeye - none
     defaultCompareViz: 1,
     baseLayers: [
       ["NACIONAL 1981-1986", "1986", "WMS*NACIONAL_1981-1986*https://www.ign.es/wms/pnoa-historico*NACIONAL_1981-1986"],
@@ -175,13 +175,13 @@ Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la
     ],
     urlcoberturas: 'https://projects.develmap.com/apicnig/pnoahisto/coberturas.geojson',
     lyrsMirrorMinZindex: 50,
-    transparencyParams: { 
-      radius: 100, 
+    transparencyParams: {
+      radius: 100,
     },
-    lyrcompareParams: { 
+    lyrcompareParams: {
         staticDivision: 2,
     },
-    mirrorpanelParams: { 
+    mirrorpanelParams: {
         showCursors: true,
         reverseLayout:false,
     }
@@ -203,7 +203,7 @@ Para el stack de desarrollo de este componente se ha utilizado
 
 ### 🐑 Clonar el repositorio / *Cloning repository*
 
-Para descargar el repositorio en otro equipo lo clonamos: 
+Para descargar el repositorio en otro equipo lo clonamos:
 
 ```bash
 git clone [URL del repositorio]

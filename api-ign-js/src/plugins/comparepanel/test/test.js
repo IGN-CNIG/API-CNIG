@@ -6,11 +6,11 @@ M.language.setLang('es');//Español
 const customBGLids = ['cartomtn','imagen','hibrido','mapa'];
 const customBGLtitles = ['Carto','Imagen','Mixto','Mapa'];
 const customBGLlayers = [
-          'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',        
+          'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',
           'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true',
           'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*true*image/jpeg*false*false*true' + '+' +
           'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true',
-          'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true',        
+          'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true',
         ];
 
 const customBGLoptions = customBGLids.map((id, index) => {
@@ -48,7 +48,7 @@ const objWMTSsiose = new M.layer.WMTS({
 
 const objWMTSMapa = new M.layer.WMTS({
   url: "https://www.ign.es/wmts/mapa-raster",
-  name: "MTN",  
+  name: "MTN",
   matrixSet: "GoogleMapsCompatible",
   legend: "Mapa MTN",
   format: "image/jpeg",
@@ -315,18 +315,18 @@ const pluginComparepanel = new Comparepanel({
   vertical: false,
   collapsed: false,
   collapsible: true,
-  defaultCompareMode: 'mirror',// mirror - curtain - timeline - spyeye - none
+  defaultCompareMode: 'mirror',// mirror - curtain - spyeye - none
   defaultCompareViz: 1,
   baseLayers: SENTINELlistBaseLayersByString,
   /*urlcoberturas: 'https://projects.develmap.com/apicnig/pnoahisto/coberturas.geojson',*/
   lyrsMirrorMinZindex:100,
-  /*timelineParams: { 
+  /*timelineParams: {
     animation: true,
   },*/
-  transparencyParams: { 
-    radius: 100, 
+  transparencyParams: {
+    radius: 100,
   },
-  lyrcompareParams: { 
+  lyrcompareParams: {
       staticDivision: 2,
       defaultLyrA:0,
       defaultLyrB:1,
@@ -334,7 +334,7 @@ const pluginComparepanel = new Comparepanel({
       defaultLyrD:3,
       opacityVal:100,
    },
-  mirrorpanelParams: { 
+  mirrorpanelParams: {
       showCursors: true,
       reverseLayout:true,
       enabledPlugins: true,
@@ -343,4 +343,3 @@ const pluginComparepanel = new Comparepanel({
 });
 
 map.addPlugin(pluginComparepanel);
-
