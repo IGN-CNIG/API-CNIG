@@ -72,33 +72,6 @@
         </tr>
 
         <tr style="
-            display: flex;
-            justify-content: center;">
-            <td width="100%" style="
-            border-collapse: collapse; 
-            display: flex;
-            flex-direction: column;
-            width: 75%;
-            margin-top: 10px;">
-
-                <label for="sendername">Remitente incidencia</label>
-                <input style="
-            width: 100%; 
-            margin: 5px 0px;
-            padding: 5px;
-            background-color: transparent;
-            cursor: auto;
-            border: 1px solid rgba(0, 0, 0, .2);
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            color: #6c6c6c;
-            font-size: 13px;
-            " id="sendername" type="text" name="sendername" value="${sendername}"></input>
-            </td>
-        </tr>
-
-        <tr style="
         display: flex;
         justify-content: center;">
 
