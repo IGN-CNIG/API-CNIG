@@ -224,22 +224,16 @@
             </td>
         </tr>
 
-        <tr>
-            <td>
-                <footer 
-                style="
-            height: 50px;
-            background-color: #364b5f;
-            position: absolute;
-            bottom: 0;
-            left: 0px;
-            width: 100%;
-            margin-left: -8px;
-            padding-right: 16px;"
-            >
-
-            </footer>
-            </td>
+        <tr  style="
+        height: 50px;
+        background-color: #364b5f;
+        position: absolute;
+        bottom: 0;
+        left: 0px;
+        width: 100%;
+        margin-left: -8px;
+        padding-right: 16px;">
+            <td></td>
         </tr>
 </body>
 
