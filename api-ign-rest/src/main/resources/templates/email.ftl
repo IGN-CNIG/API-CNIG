@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" style="margin: 0; padding: 0; height: 100%;">
+
 <head>
     <meta charset="utf-8">
     <title>INCIDENCIA</title>
@@ -131,15 +132,15 @@
         display: flex;
         justify-content: center;">
 
-        <td width="100%" style="
+            <td width="100%" style="
         border-collapse: collapse; 
         display: flex;
         flex-direction: column;
         width: 75%;
         margin-top: 10px;">
 
-        <label for="errDescription">Descripción de la incidencia</label>
-        <textarea style="
+                <label for="errDescription">Descripción de la incidencia</label>
+                <textarea style="
         width: 100%; 
         margin: 5px 0px;
         padding: 5px;
@@ -147,8 +148,7 @@
         border: 1px solid rgba(0, 0, 0, .2);
         color: #6c6c6c;
         resize: none;
-        min-height: 4em;" id="errDescription" type="text"
-        name="errDescription">${errDescription}</textarea>
+        min-height: 4em;" id="errDescription" type="text" name="errDescription">${errDescription}</textarea>
             </td>
         </tr>
 
@@ -156,48 +156,21 @@
         display: flex;
         justify-content: center;">
 
-        <td width="100%" style="
+            <td width="100%" style="
         border-collapse: collapse; 
         display: flex;
         flex-direction: column;
         width: 75%;
         margin-top: 10px;">
 
-        <label for="sendergeometry">Geometría (geoJSON)</label>
-        <textarea style="
-        width: 100%; 
-        margin: 5px 0px;
-        padding: 5px;
-        display: block;
-        border: 1px solid rgba(0, 0, 0, .2);
-        color: #6c6c6c;
-        resize: none;
-        min-height: 4em;" id="sendergeometry" type="text"
-        name="sendergeometry">${sendergeometry}</textarea>
-            </td>
-        </tr>
-
-        <tr style="
-        display: flex;
-        justify-content: center;">
-
-        <td width="100%" style="
-        border-collapse: collapse; 
-        display: flex;
-        flex-direction: column;
-        width: 75%;
-        margin-top: 10px;">
-
-        <label for="shareURL">URL de la App</label>
-        <a
-        style="
+                <label for="shareURL">URL de la App</label>
+                <a style="
          margin: 5px 0px;
-        padding: 5px;"
-        href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a>
+        padding: 5px;" href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a>
             </td>
         </tr>
 
-        <tr  style="
+        <tr style="
         height: 50px;
         background-color: #364b5f;
         position: absolute;
@@ -208,7 +181,7 @@
         padding-right: 16px;">
             <td></td>
         </tr>
-        </table>
+    </table>
 </body>
 
 </html>
