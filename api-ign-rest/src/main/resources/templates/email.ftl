@@ -208,9 +208,7 @@
         padding-right: 16px;">
             <td></td>
         </tr>
+        </table>
 </body>
-
-
-</table>
 
 </html>
