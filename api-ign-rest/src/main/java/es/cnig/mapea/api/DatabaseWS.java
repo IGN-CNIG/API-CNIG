@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -29,6 +31,7 @@ import es.cnig.mapea.database.persistence.domain.Columna;
 import es.cnig.mapea.database.persistence.domain.DatosTabla;
 import es.cnig.mapea.database.persistence.domain.Pagina;
 import es.cnig.mapea.database.persistence.domain.Tabla;
+import es.cnig.mapea.database.service.DatabaseService;
 import es.cnig.mapea.database.service.impl.DatabaseServiceImpl;
 import es.cnig.mapea.database.utils.CustomDatasource;
 import es.cnig.mapea.database.utils.CustomPagination;
@@ -70,23 +73,27 @@ public class DatabaseWS {
     */
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response showAvailableDatabases (@QueryParam("callback") String callbackFn) {
-		String urlService = callbackFn != null && !callbackFn.isEmpty() ? "?callback="+callbackFn : ""; 
-		JSONArray links = addLinksToReponse(urlService, null);
-		JSONArray databases = new JSONArray();      
-		List<CustomDatasource> datasources = new DatabaseServiceImpl().obtenerDatasources();
-		for(CustomDatasource ds : datasources){
-    		JSONObject dsJson = new JSONObject();
-    		dsJson.put("Nombre", ds.getNombre());
-    		dsJson.put("Host", ds.getHost());
-    		dsJson.put("Puerto", ds.getPuerto());
-    		dsJson.put("NombreBD", ds.getNombreBd());
-    		databases.put(dsJson);
+	public Response showAvailableDatabases (@QueryParam("callback") String callbackFn, @HeaderParam("Origin") String origin) {
+		if(validateOrigin(origin)){
+			String urlService = callbackFn != null && !callbackFn.isEmpty() ? "?callback="+callbackFn : ""; 
+			JSONArray links = addLinksToReponse(urlService, null);
+			JSONArray databases = new JSONArray();      
+			List<CustomDatasource> datasources = new DatabaseServiceImpl().obtenerDatasources();
+			for(CustomDatasource ds : datasources){
+	    		JSONObject dsJson = new JSONObject();
+	    		dsJson.put("Nombre", ds.getNombre());
+	    		dsJson.put("Host", ds.getHost());
+	    		dsJson.put("Puerto", ds.getPuerto());
+	    		dsJson.put("NombreBD", ds.getNombreBd());
+	    		databases.put(dsJson);
+			}
+			JSONObject response = new JSONObject();
+			response.put("links", links);
+			response.put("results", databases);
+			return Response.ok(JSBuilder.wrapCallback(response, callbackFn)).build();
+		}else{
+			return Response.status(401).build();
 		}
-		JSONObject response = new JSONObject();
-		response.put("links", links);
-		response.put("results", databases);
-		return Response.ok(JSBuilder.wrapCallback(response, callbackFn)).build();
 	}
 
    /**
@@ -102,39 +109,47 @@ public class DatabaseWS {
 	@Path("/{database}/collections")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response showAvailableTables (@PathParam("database") String database,
-		   @Context UriInfo uriInfo) {
-		String callbackFn = null;
-		Map<String, List<String>> params = uriInfo.getQueryParameters();
-		String urlService = "/" + database + "/collections" + getUrlParams(params);
-		if(params.containsKey("callback")){
-			callbackFn = params.get("callback").get(0);
-			params.remove("callback");
+		   @Context UriInfo uriInfo, @HeaderParam("Origin") String origin) {
+		if(validateOrigin(origin)){
+			String callbackFn = null;
+			Map<String, List<String>> params = uriInfo.getQueryParameters();
+			String urlService = "/" + database + "/collections" + getUrlParams(params);
+			if(params.containsKey("callback")){
+				callbackFn = params.get("callback").get(0);
+				params.remove("callback");
+			}
+			boolean token = false;
+			if(params.containsKey("token")){
+				token = Boolean.valueOf(params.get("token").get(0));
+				params.remove("token");
+			}
+			DatabaseService dbService = new DatabaseServiceImpl(); 
+			if(!dbService.validateDatasource(database, token)){
+				return Response.status(400).entity("La conexión indicada no es válida").build();
+			}
+			Pagina pagina = dbService.obtenerTablasGeometricasDataSource(database, obtenerPaginacion(params), token);
+			JSONArray links = addLinksToReponse(urlService, null);
+		    List<Tabla> listTables = pagina.getResults();
+		    JSONArray tablesJSON = new JSONArray();
+		    for (Tabla tabla : listTables) {
+		    	JSONObject json = new JSONObject();
+		    	json.put("Nombre", tabla.getNombre());
+		    	json.put("Schema", tabla.getSchema());
+		        tablesJSON.put(json);
+		    }
+		    if(pagina.getError() != null && !"".equals(pagina.getError())){
+		    	String[] errorSplit = pagina.getError().split(";");
+				int code = Integer.parseInt(errorSplit[0]);
+		    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn)).build();
+		    }else{
+			    JSONObject jsonPagina = getJsonPagina(pagina);
+			    jsonPagina.put("links", links);
+			    jsonPagina.put("results", tablesJSON);
+			    return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn)).build();
+		    }
+		}else{
+			return Response.status(401).build();
 		}
-		boolean token = false;
-		if(params.containsKey("token")){
-			token = Boolean.valueOf(params.get("token").get(0));
-			params.remove("token");
-		}
-		Pagina pagina = new DatabaseServiceImpl().obtenerTablasGeometricasDataSource(database, obtenerPaginacion(params), token);
-		JSONArray links = addLinksToReponse(urlService, null);
-	    List<Tabla> listTables = pagina.getResults();
-	    JSONArray tablesJSON = new JSONArray();
-	    for (Tabla tabla : listTables) {
-	    	JSONObject json = new JSONObject();
-	    	json.put("Nombre", tabla.getNombre());
-	    	json.put("Schema", tabla.getSchema());
-	        tablesJSON.put(json);
-	    }
-	    if(pagina.getError() != null && !"".equals(pagina.getError())){
-	    	String[] errorSplit = pagina.getError().split(";");
-			int code = Integer.parseInt(errorSplit[0]);
-	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn)).build();
-	    }else{
-		    JSONObject jsonPagina = getJsonPagina(pagina);
-		    jsonPagina.put("links", links);
-		    jsonPagina.put("results", tablesJSON);
-		    return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn)).build();
-	    }
 	}
    
    /**
@@ -151,44 +166,52 @@ public class DatabaseWS {
 	@Path("/{database}/attributes/{tabla}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response showAttributes (@PathParam("database") String database, @PathParam("tabla") String tabla,
-		   @Context UriInfo uriInfo) {
-		JSONArray attributesJSON = new JSONArray();
-		String schema = "public";
-		String callbackFn = null;
-		Map<String, List<String>> params = uriInfo.getQueryParameters();
-		String urlService = "/" + database + "/attributes/" + tabla + getUrlParams(params);
-		if(params.containsKey("schema")){
-			schema = params.get("schema").get(0);
-			params.remove("schema");
+		   @Context UriInfo uriInfo, @HeaderParam("Origin") String origin) {
+		if(validateOrigin(origin)){
+			JSONArray attributesJSON = new JSONArray();
+			String schema = "public";
+			String callbackFn = null;
+			Map<String, List<String>> params = uriInfo.getQueryParameters();
+			String urlService = "/" + database + "/attributes/" + tabla + getUrlParams(params);
+			if(params.containsKey("schema")){
+				schema = params.get("schema").get(0);
+				params.remove("schema");
+			}
+			if(params.containsKey("callback")){
+				callbackFn = params.get("callback").get(0);
+				params.remove("callback");
+			}
+			boolean token = false;
+			if(params.containsKey("token")){
+				token = Boolean.valueOf(params.get("token").get(0));
+				params.remove("token");
+			}
+			DatabaseService dbService = new DatabaseServiceImpl(); 
+			if(!dbService.validateDatasource(database, token)){
+				return Response.status(400).entity("La conexión indicada no es válida").build();
+			}
+			Pagina pagina = dbService.obtenerColumnasTabla(database, schema, tabla, obtenerPaginacion(params), token);
+			JSONArray links = addLinksToReponse(urlService, null);
+			List<Columna> listAttributes = pagina.getResults();
+			for(Columna col : listAttributes){
+				JSONObject json = new JSONObject();
+				json.put("Nombre", col.getNombre());
+				json.put("TipoDato", col.getTipoDato());
+				attributesJSON.put(json);
+			}
+			if(pagina.getError() != null && !"".equals(pagina.getError())){
+				String[] errorSplit = pagina.getError().split(";");
+				int code = Integer.parseInt(errorSplit[0]);
+		    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn)).build();
+		    }else{
+				JSONObject jsonPagina = getJsonPagina(pagina);
+				jsonPagina.put("links", links);
+				jsonPagina.put("results", attributesJSON);
+				return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn)).build();
+		    }
+		}else{
+			return Response.status(401).build();
 		}
-		if(params.containsKey("callback")){
-			callbackFn = params.get("callback").get(0);
-			params.remove("callback");
-		}
-		boolean token = false;
-		if(params.containsKey("token")){
-			token = Boolean.valueOf(params.get("token").get(0));
-			params.remove("token");
-		}
-		Pagina pagina = new DatabaseServiceImpl().obtenerColumnasTabla(database, schema, tabla, obtenerPaginacion(params), token);
-		JSONArray links = addLinksToReponse(urlService, null);
-		List<Columna> listAttributes = pagina.getResults();
-		for(Columna col : listAttributes){
-			JSONObject json = new JSONObject();
-			json.put("Nombre", col.getNombre());
-			json.put("TipoDato", col.getTipoDato());
-			attributesJSON.put(json);
-		}
-		if(pagina.getError() != null && !"".equals(pagina.getError())){
-			String[] errorSplit = pagina.getError().split(";");
-			int code = Integer.parseInt(errorSplit[0]);
-	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn)).build();
-	    }else{
-			JSONObject jsonPagina = getJsonPagina(pagina);
-			jsonPagina.put("links", links);
-			jsonPagina.put("results", attributesJSON);
-			return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn)).build();
-	    }
 	}
    
    /**
@@ -205,55 +228,238 @@ public class DatabaseWS {
 	@Path("/{database}/collections/{tabla}/items")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_OCTET_STREAM })
 	public Response showRowsFiltered (@PathParam("database") String database, @PathParam("tabla") String tabla,
-		   @Context UriInfo uriInfo) {
-		JSONArray rowsJSON = new JSONArray();
-		String schema = "public";
-		defaultFormat = "wkt";
-		String callbackFn = null;
-		boolean token = false;
-		boolean consumible = false;
-		Map<String, List<String>> params = uriInfo.getQueryParameters(); 
-		String urlService = "/" + database + "/collections/" + tabla + "/items" + getUrlParams(params);
-		if(params.containsKey("schema")){
-			schema = params.get("schema").get(0);
-			params.remove("schema");
+		   @Context UriInfo uriInfo, @HeaderParam("Origin") String origin) {
+		if(validateOrigin(origin)){
+			JSONArray rowsJSON = new JSONArray();
+			String schema = "public";
+			defaultFormat = "wkt";
+			String callbackFn = null;
+			boolean token = false;
+			boolean consumible = false;
+			Map<String, List<String>> params = uriInfo.getQueryParameters(); 
+			String urlService = "/" + database + "/collections/" + tabla + "/items" + getUrlParams(params);
+			if(params.containsKey("schema")){
+				schema = params.get("schema").get(0);
+				params.remove("schema");
+			}
+			if(params.containsKey("callback")){
+				callbackFn = params.get("callback").get(0);
+				params.remove("callback");
+			}
+			if(params.containsKey("token")){
+				token = Boolean.valueOf(params.get("token").get(0));
+				params.remove("token");
+			}
+			if(params.containsKey("consumible")){
+				consumible = Boolean.valueOf(params.get("consumible").get(0));
+				params.remove("consumible");
+			}
+			DatabaseService dbService = new DatabaseServiceImpl(); 
+			if(!dbService.validateDatasource(database, token)){
+				return Response.status(400).build();
+			}
+			CustomPagination paginacion = obtenerPaginacion(params);
+			Pagina pagina = dbService.obtenerDatosFiltrados(database, schema, tabla, params, paginacion, token);
+			JSONArray links = addLinksToReponse(urlService, paginacion.getFormato());
+			List<DatosTabla> data = pagina.getResults();
+			for(DatosTabla dt : data){
+	    		rowsJSON.put(datosTablaToJson(dt));
+			}
+			if(pagina.getError() != null && !"".equals(pagina.getError())){
+				String[] errorSplit = pagina.getError().split(";");
+				int code = Integer.parseInt(errorSplit[0]);
+		    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
+						.header("Content-Type", MediaType.APPLICATION_JSON).build();
+		    }else{
+		    	if("mvt".equals(pagina.getFormato())){//formato mvt siempre es consumible
+		    		JSONObject row = (JSONObject) rowsJSON.get(0);
+					String rutaFile = row.getString(pagina.getFormato());
+					File mvtFile = new File(rutaFile);
+					return Response.ok(mvtFile)
+							.header("Content-Disposition", "attachment; filename=\"mvt-cnig.mvt\"")
+							.header("Content-Type", MediaType.APPLICATION_OCTET_STREAM)
+							.build();
+		    	}else if(consumible){
+					if("wkt".equals(pagina.getFormato())){
+						return Response.ok(JSBuilder.wrapCallback(rowsJSON, callbackFn))
+								.header("Content-Type", MediaType.APPLICATION_JSON).build();
+					}else{
+						JSONObject row = (JSONObject) rowsJSON.get(0);
+						String result = row.getString(pagina.getFormato());
+						ResponseBuilder rb = null;
+						if("kml".equals(pagina.getFormato()) || "gml".equals(pagina.getFormato())){
+							rb = Response.ok(JSBuilder.wrapCallback(result, callbackFn));
+							rb.header("Content-Type", MediaType.APPLICATION_XML);
+						}else{
+							JSONObject response = new JSONObject(result);
+							response.put("links", links);
+							response.put("numberMatched", pagina.getTotalElementos());
+							response.put("numberReturned", pagina.getTamPagina());
+							rb = Response.ok(JSBuilder.wrapCallback(response, callbackFn));
+							rb.header("Content-Type", MediaType.APPLICATION_JSON);
+						}
+						return rb.build();
+					}
+				}else{
+					JSONObject jsonPagina = getJsonPagina(pagina);
+					jsonPagina.put("links", links);
+					jsonPagina.put("results", rowsJSON);
+					return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn))
+							.header("Content-Type", MediaType.APPLICATION_JSON).build();
+				}
+		    }
+		}else{
+			return Response.status(401).build();
 		}
-		if(params.containsKey("callback")){
-			callbackFn = params.get("callback").get(0);
-			params.remove("callback");
+	}
+	
+	@GET
+	@Path("/{database}/{tabla}/sql")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response customQuery (@PathParam("database") String database, @PathParam("tabla") String tabla,
+		   @Context UriInfo uriInfo, @HeaderParam("Origin") String origin){
+		if(validateOrigin(origin)){
+			JSONArray rowsJSON = new JSONArray();
+			String schema = "public";
+			String callbackFn = null;
+			Map<String, List<String>> params = uriInfo.getQueryParameters();
+			String urlService = "/" + database + "/" + tabla + "/sql" + getUrlParams(params);
+			if(params.containsKey("schema")){
+				schema = params.get("schema").get(0);
+				params.remove("schema");
+			}
+			if(params.containsKey("callback")){
+				callbackFn = params.get("callback").get(0);
+				params.remove("callback");
+			}
+			boolean token = false;
+			if(params.containsKey("token")){
+				token = Boolean.valueOf(params.get("token").get(0));
+				params.remove("token");
+			}
+			DatabaseService dbService = new DatabaseServiceImpl(); 
+			if(!dbService.validateDatasource(database, token)){
+				return Response.status(400).entity("La conexión indicada no es válida").build();
+			}
+			JSONArray links = addLinksToReponse(urlService, null);
+			Pagina pagina = dbService.obtenerDatosPersonalizados(database, schema, tabla, params, new CustomPagination(), token);
+			if(pagina.getError() != null && !"".equals(pagina.getError())){
+				String[] errorSplit = pagina.getError().split(";");
+				int code = Integer.parseInt(errorSplit[0]);
+		    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
+						.header("Content-Type", MediaType.APPLICATION_JSON).build();
+		    }else{
+				List<DatosTabla> data = pagina.getResults();
+				for(DatosTabla dt : data){
+		    		rowsJSON.put(datosTablaToJson(dt));
+				}
+				JSONObject jsonPagina = getJsonPagina(pagina);
+				jsonPagina.put("links", links);
+				jsonPagina.put("results", rowsJSON);
+				return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn))
+						.header("Content-Type", MediaType.APPLICATION_JSON).build();
+		    }
+		}else{
+			return Response.status(401).build();
 		}
-		if(params.containsKey("token")){
-			token = Boolean.valueOf(params.get("token").get(0));
-			params.remove("token");
+	}
+	
+	@GET
+	@Path("/{database}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response nativeQuery (@PathParam("database") String database, @Context UriInfo uriInfo, @HeaderParam("Origin") String origin){
+		if(validateOrigin(origin)){
+			JSONArray rowsJSON = new JSONArray();
+			String callbackFn = null;
+			Map<String, List<String>> params = uriInfo.getQueryParameters();
+			String urlService = "/" + database + getUrlParams(params);
+			if(params.containsKey("callback")){
+				callbackFn = params.get("callback").get(0);
+				params.remove("callback");
+			}
+			boolean token = false;
+			if(params.containsKey("token")){
+				token = Boolean.valueOf(params.get("token").get(0));
+				params.remove("token");
+			}
+			DatabaseService dbService = new DatabaseServiceImpl(); 
+			if(!dbService.validateDatasource(database, token)){
+				return Response.status(400).entity("La conexión indicada no es válida").build();
+			}
+			JSONArray links = addLinksToReponse(urlService, null);
+			Pagina pagina = dbService.obtenerDatosPersonalizados(database, params, new CustomPagination(), token);
+			if(pagina.getError() != null && !"".equals(pagina.getError())){
+				String[] errorSplit = pagina.getError().split(";");
+				int code = Integer.parseInt(errorSplit[0]);
+		    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
+						.header("Content-Type", MediaType.APPLICATION_JSON).build();
+		    }else{
+				List<DatosTabla> data = pagina.getResults();
+				for(DatosTabla dt : data){
+		    		rowsJSON.put(datosTablaToJson(dt));
+				}
+				JSONObject jsonPagina = getJsonPagina(pagina);
+				jsonPagina.put("links", links);
+				jsonPagina.put("results", rowsJSON);
+				return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn))
+						.header("Content-Type", MediaType.APPLICATION_JSON).build();
+		    }
+		}else{
+			return Response.status(401).build();
 		}
-		if(params.containsKey("consumible")){
-			consumible = Boolean.valueOf(params.get("consumible").get(0));
-			params.remove("consumible");
-		}
-		CustomPagination paginacion = obtenerPaginacion(params);
-		Pagina pagina = new DatabaseServiceImpl().obtenerDatosFiltrados(database, schema, tabla, params, paginacion, token);
-		JSONArray links = addLinksToReponse(urlService, paginacion.getFormato());
-		List<DatosTabla> data = pagina.getResults();
-		for(DatosTabla dt : data){
-    		rowsJSON.put(datosTablaToJson(dt));
-		}
-		if(pagina.getError() != null && !"".equals(pagina.getError())){
-			String[] errorSplit = pagina.getError().split(";");
-			int code = Integer.parseInt(errorSplit[0]);
-	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
-					.header("Content-Type", MediaType.APPLICATION_JSON).build();
-	    }else{
-	    	if("mvt".equals(pagina.getFormato())){//formato mvt siempre es consumible
-	    		JSONObject row = (JSONObject) rowsJSON.get(0);
-				String rutaFile = row.getString(pagina.getFormato());
-				File mvtFile = new File(rutaFile);
-				return Response.ok(mvtFile)
-						.header("Content-Disposition", "attachment; filename=\"mvt-cnig.mvt\"")
-						.header("Content-Type", MediaType.APPLICATION_OCTET_STREAM)
-						.build();
-	    	}else if(consumible){
-				if("wkt".equals(pagina.getFormato())){
-					return Response.ok(JSBuilder.wrapCallback(rowsJSON, callbackFn))
+	}
+	
+	@GET
+	@Path("/{database}/layerfilter")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_OCTET_STREAM })
+	public Response layerQuery (@PathParam("database") String database, @Context UriInfo uriInfo, @HeaderParam("Origin") String origin){
+		if(validateOrigin(origin)){
+			JSONArray rowsJSON = new JSONArray();
+			defaultFormat = "geojson";
+			String schema = "public";
+			String callbackFn = null;
+			Map<String, List<String>> params = uriInfo.getQueryParameters();
+			String urlService = "/" + database + "/layerfilter" + getUrlParams(params);
+			if(params.containsKey("callback")){
+				callbackFn = params.get("callback").get(0);
+				params.remove("callback");
+			}
+			boolean token = false;
+			if(params.containsKey("token")){
+				token = Boolean.valueOf(params.get("token").get(0));
+				params.remove("token");
+			}
+			DatabaseService dbService = new DatabaseServiceImpl(); 
+			if(!dbService.validateDatasource(database, token)){
+				return Response.status(400).entity("La conexión indicada no es válida").build();
+			}
+			CustomPagination paginacion = obtenerPaginacion(params);
+			JSONArray links = addLinksToReponse(urlService, paginacion.getFormato());
+			Pagina pagina = dbService.obtenerDatosLayer(database, schema, params, paginacion, token);
+			if(pagina.getError() != null && !"".equals(pagina.getError())){
+				String[] errorSplit = pagina.getError().split(";");
+				int code = Integer.parseInt(errorSplit[0]);
+		    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
+						.header("Content-Type", MediaType.APPLICATION_JSON).build();
+		    }else{
+				List<DatosTabla> data = pagina.getResults();
+				for(DatosTabla dt : data){
+		    		rowsJSON.put(datosTablaToJson(dt));
+				}
+				
+				if("mvt".equals(pagina.getFormato())){
+		    		JSONObject row = (JSONObject) rowsJSON.get(0);
+					String rutaFile = row.getString(pagina.getFormato());
+					File mvtFile = new File(rutaFile);
+					return Response.ok(mvtFile)
+							.header("Content-Disposition", "attachment; filename=\"mvt-cnig.mvt\"")
+							.header("Content-Type", MediaType.APPLICATION_OCTET_STREAM)
+							.build();
+		    	}else if("wkt".equals(pagina.getFormato())){
+		    		JSONObject response = new JSONObject();
+		    		response.put("links", links);
+		    		response.put("results", rowsJSON);
+					return Response.ok(JSBuilder.wrapCallback(response, callbackFn))
 							.header("Content-Type", MediaType.APPLICATION_JSON).build();
 				}else{
 					JSONObject row = (JSONObject) rowsJSON.get(0);
@@ -265,166 +471,15 @@ public class DatabaseWS {
 					}else{
 						JSONObject response = new JSONObject(result);
 						response.put("links", links);
-						response.put("numberMatched", pagina.getTotalElementos());
-						response.put("numberReturned", pagina.getTamPagina());
 						rb = Response.ok(JSBuilder.wrapCallback(response, callbackFn));
 						rb.header("Content-Type", MediaType.APPLICATION_JSON);
 					}
 					return rb.build();
 				}
-			}else{
-				JSONObject jsonPagina = getJsonPagina(pagina);
-				jsonPagina.put("links", links);
-				jsonPagina.put("results", rowsJSON);
-				return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn))
-						.header("Content-Type", MediaType.APPLICATION_JSON).build();
-			}
-	    }
-	}
-	
-	@GET
-	@Path("/{database}/{tabla}/sql")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response customQuery (@PathParam("database") String database, @PathParam("tabla") String tabla,
-		   @Context UriInfo uriInfo){
-		JSONArray rowsJSON = new JSONArray();
-		String schema = "public";
-		String callbackFn = null;
-		Map<String, List<String>> params = uriInfo.getQueryParameters();
-		String urlService = "/" + database + "/" + tabla + "/sql" + getUrlParams(params);
-		if(params.containsKey("schema")){
-			schema = params.get("schema").get(0);
-			params.remove("schema");
+		    }
+		}else{
+			return Response.status(401).build();
 		}
-		if(params.containsKey("callback")){
-			callbackFn = params.get("callback").get(0);
-			params.remove("callback");
-		}
-		boolean token = false;
-		if(params.containsKey("token")){
-			token = Boolean.valueOf(params.get("token").get(0));
-			params.remove("token");
-		}
-		JSONArray links = addLinksToReponse(urlService, null);
-		Pagina pagina = new DatabaseServiceImpl().obtenerDatosPersonalizados(database, schema, tabla, params, new CustomPagination(), token);
-		if(pagina.getError() != null && !"".equals(pagina.getError())){
-			String[] errorSplit = pagina.getError().split(";");
-			int code = Integer.parseInt(errorSplit[0]);
-	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
-					.header("Content-Type", MediaType.APPLICATION_JSON).build();
-	    }else{
-			List<DatosTabla> data = pagina.getResults();
-			for(DatosTabla dt : data){
-	    		rowsJSON.put(datosTablaToJson(dt));
-			}
-			JSONObject jsonPagina = getJsonPagina(pagina);
-			jsonPagina.put("links", links);
-			jsonPagina.put("results", rowsJSON);
-			return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn))
-					.header("Content-Type", MediaType.APPLICATION_JSON).build();
-	    }
-	}
-	
-	@GET
-	@Path("/{database}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response nativeQuery (@PathParam("database") String database, @Context UriInfo uriInfo){
-		JSONArray rowsJSON = new JSONArray();
-		String callbackFn = null;
-		Map<String, List<String>> params = uriInfo.getQueryParameters();
-		String urlService = "/" + database + getUrlParams(params);
-		if(params.containsKey("callback")){
-			callbackFn = params.get("callback").get(0);
-			params.remove("callback");
-		}
-		boolean token = false;
-		if(params.containsKey("token")){
-			token = Boolean.valueOf(params.get("token").get(0));
-			params.remove("token");
-		}
-		JSONArray links = addLinksToReponse(urlService, null);
-		Pagina pagina = new DatabaseServiceImpl().obtenerDatosPersonalizados(database, params, new CustomPagination(), token);
-		if(pagina.getError() != null && !"".equals(pagina.getError())){
-			String[] errorSplit = pagina.getError().split(";");
-			int code = Integer.parseInt(errorSplit[0]);
-	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
-					.header("Content-Type", MediaType.APPLICATION_JSON).build();
-	    }else{
-			List<DatosTabla> data = pagina.getResults();
-			for(DatosTabla dt : data){
-	    		rowsJSON.put(datosTablaToJson(dt));
-			}
-			JSONObject jsonPagina = getJsonPagina(pagina);
-			jsonPagina.put("links", links);
-			jsonPagina.put("results", rowsJSON);
-			return Response.ok(JSBuilder.wrapCallback(jsonPagina, callbackFn))
-					.header("Content-Type", MediaType.APPLICATION_JSON).build();
-	    }
-	}
-	
-	@GET
-	@Path("/{database}/layerfilter")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_OCTET_STREAM })
-	public Response layerQuery (@PathParam("database") String database, @Context UriInfo uriInfo){
-		JSONArray rowsJSON = new JSONArray();
-		defaultFormat = "geojson";
-		String schema = "public";
-		String callbackFn = null;
-		Map<String, List<String>> params = uriInfo.getQueryParameters();
-		String urlService = "/" + database + "/layerfilter" + getUrlParams(params);
-		if(params.containsKey("callback")){
-			callbackFn = params.get("callback").get(0);
-			params.remove("callback");
-		}
-		boolean token = false;
-		if(params.containsKey("token")){
-			token = Boolean.valueOf(params.get("token").get(0));
-			params.remove("token");
-		}
-		CustomPagination paginacion = obtenerPaginacion(params);
-		JSONArray links = addLinksToReponse(urlService, paginacion.getFormato());
-		Pagina pagina = new DatabaseServiceImpl().obtenerDatosLayer(database, schema, params, paginacion, token);
-		if(pagina.getError() != null && !"".equals(pagina.getError())){
-			String[] errorSplit = pagina.getError().split(";");
-			int code = Integer.parseInt(errorSplit[0]);
-	    	return Response.status(code).entity(createErrorResponse(code, errorSplit[1], callbackFn))
-					.header("Content-Type", MediaType.APPLICATION_JSON).build();
-	    }else{
-			List<DatosTabla> data = pagina.getResults();
-			for(DatosTabla dt : data){
-	    		rowsJSON.put(datosTablaToJson(dt));
-			}
-			
-			if("mvt".equals(pagina.getFormato())){
-	    		JSONObject row = (JSONObject) rowsJSON.get(0);
-				String rutaFile = row.getString(pagina.getFormato());
-				File mvtFile = new File(rutaFile);
-				return Response.ok(mvtFile)
-						.header("Content-Disposition", "attachment; filename=\"mvt-cnig.mvt\"")
-						.header("Content-Type", MediaType.APPLICATION_OCTET_STREAM)
-						.build();
-	    	}else if("wkt".equals(pagina.getFormato())){
-	    		JSONObject response = new JSONObject();
-	    		response.put("links", links);
-	    		response.put("results", rowsJSON);
-				return Response.ok(JSBuilder.wrapCallback(response, callbackFn))
-						.header("Content-Type", MediaType.APPLICATION_JSON).build();
-			}else{
-				JSONObject row = (JSONObject) rowsJSON.get(0);
-				String result = row.getString(pagina.getFormato());
-				ResponseBuilder rb = null;
-				if("kml".equals(pagina.getFormato()) || "gml".equals(pagina.getFormato())){
-					rb = Response.ok(JSBuilder.wrapCallback(result, callbackFn));
-					rb.header("Content-Type", MediaType.APPLICATION_XML);
-				}else{
-					JSONObject response = new JSONObject(result);
-					response.put("links", links);
-					rb = Response.ok(JSBuilder.wrapCallback(response, callbackFn));
-					rb.header("Content-Type", MediaType.APPLICATION_JSON);
-				}
-				return rb.build();
-			}
-	    }
 	}
 	
 	/**
@@ -441,34 +496,42 @@ public class DatabaseWS {
 	@Path("/{database}/{tabla}/domain/{columna}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response showDomainValues(@PathParam("database") String database, @PathParam("tabla") String tabla,
-			@PathParam("columna") String columna, @Context UriInfo uriInfo){
-		JSONArray domainJson = new JSONArray();
-		String schema = "public";
-		String callbackFn = null;
-		Map<String, List<String>> params = uriInfo.getQueryParameters();
-		String urlService = "/" + database + "/" + tabla + "/domain/" + columna + getUrlParams(params);
-		if(params.containsKey("schema")){
-			schema = params.get("schema").get(0);
-			params.remove("schema");
+			@PathParam("columna") String columna, @Context UriInfo uriInfo, @HeaderParam("Origin") String origin){
+		if(validateOrigin(origin)){
+			JSONArray domainJson = new JSONArray();
+			String schema = "public";
+			String callbackFn = null;
+			Map<String, List<String>> params = uriInfo.getQueryParameters();
+			String urlService = "/" + database + "/" + tabla + "/domain/" + columna + getUrlParams(params);
+			if(params.containsKey("schema")){
+				schema = params.get("schema").get(0);
+				params.remove("schema");
+			}
+			if(params.containsKey("callback")){
+				callbackFn = params.get("callback").get(0);
+				params.remove("callback");
+			}
+			boolean token = false;
+			if(params.containsKey("token")){
+				token = Boolean.valueOf(params.get("token").get(0));
+				params.remove("token");
+			}
+			DatabaseService dbService = new DatabaseServiceImpl(); 
+			if(!dbService.validateDatasource(database, token)){
+				return Response.status(400).entity("La conexión indicada no es válida").build();
+			}
+			List<String> domains = dbService.obtenerValoresDominio(database, schema, tabla, columna, token);
+			for(String d : domains){
+				domainJson.put(d);
+			}
+			JSONArray links = addLinksToReponse(urlService, null);
+			JSONObject response = new JSONObject();
+			response.put("links", links);
+			response.put("results", domainJson);
+			return Response.ok(JSBuilder.wrapCallback(response, callbackFn)).build();
+		}else{
+			return Response.status(401).build();
 		}
-		if(params.containsKey("callback")){
-			callbackFn = params.get("callback").get(0);
-			params.remove("callback");
-		}
-		boolean token = false;
-		if(params.containsKey("token")){
-			token = Boolean.valueOf(params.get("token").get(0));
-			params.remove("token");
-		}
-		List<String> domains = new DatabaseServiceImpl().obtenerValoresDominio(database, schema, tabla, columna, token);
-		for(String d : domains){
-			domainJson.put(d);
-		}
-		JSONArray links = addLinksToReponse(urlService, null);
-		JSONObject response = new JSONObject();
-		response.put("links", links);
-		response.put("results", domainJson);
-		return Response.ok(JSBuilder.wrapCallback(response, callbackFn)).build();
 	}
    
 	private CustomPagination obtenerPaginacion(Map<String, List<String>> params){
@@ -641,5 +704,49 @@ public class DatabaseWS {
 			return result.substring(0, result.length()-1);
 		}
 		return "";
+	}
+	
+	private boolean validateOrigin(String origin){
+		boolean result = false;
+		ResourceBundle configProperties = ResourceBundle.getBundle("configuration");
+		String list = configProperties.getString("database.list");
+		if("white".equals(list)){
+			result = validateOriginByWhiteList(origin);
+		}else if("black".equals(list)){
+			result = validateOriginByBlackList(origin);
+		}
+		return result;
+	}
+	
+	private boolean validateOriginByWhiteList(String origin){
+		boolean result = false;
+		if(origin == null){
+			return result;
+		}else{
+			origin = origin.replace("https://", "").replace("http://", "");
+		}
+		ResourceBundle configProperties = ResourceBundle.getBundle("configuration");
+		String whiteListProp = configProperties.getString("database.whitelist");
+		if(whiteListProp != null && !whiteListProp.isEmpty()){
+			List<String> whiteList = Arrays.asList(whiteListProp.split(";"));
+			result = whiteList.contains(origin);
+		}
+		return result;
+	}
+	
+	private boolean validateOriginByBlackList(String origin){
+		boolean result = true;
+		if(origin == null){
+			return false;
+		}else{
+			origin = origin.replace("https://", "").replace("http://", "");
+		}
+		ResourceBundle configProperties = ResourceBundle.getBundle("configuration");
+		String blackListProp = configProperties.getString("database.blacklist");
+		if(blackListProp != null && !blackListProp.isEmpty()){
+			List<String> blackList = Arrays.asList(blackListProp.split(";"));
+			result = !blackList.contains(origin);
+		}
+		return result;
 	}
 }

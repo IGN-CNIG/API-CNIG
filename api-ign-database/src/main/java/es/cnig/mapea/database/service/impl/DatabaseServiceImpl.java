@@ -139,6 +139,21 @@ public class DatabaseServiceImpl implements DatabaseService{
 		return result;
 	}
 	
+	public boolean validateDatasource(String datasourceName, boolean token){
+		boolean result = false;
+		DataSource ds = null;
+		if(token){
+			ds = getDataSourceEncrypt(datasourceName);
+		}else{
+			ds = getDataSource(datasourceName);
+		}
+		result = ds != null;
+		if(result){
+			((HikariDataSource)ds).close();
+		}
+		return result;
+	}
+	
 	private DataSource getDataSource(String dataSourceName){
 		DataSource ds = null;
 		if(dataSourceName != null && !"".equals(dataSourceName)){

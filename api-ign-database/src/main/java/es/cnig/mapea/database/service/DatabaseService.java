@@ -24,4 +24,6 @@ public interface DatabaseService {
 	public Pagina obtenerDatosLayer(String dataSourceName, String schema, Map<String, List<String>> params, CustomPagination paginacion, boolean token);
 	
 	public List<String> obtenerValoresDominio(String dataSourceName, String schema, String table, String columna, boolean token);
+	
+	public boolean validateDatasource(String datasourceName, boolean token);
 }
