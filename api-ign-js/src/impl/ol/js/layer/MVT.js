@@ -145,6 +145,18 @@ class MVT extends Vector {
       }
     });
 
+    this.map.on(EventType.MOVE, () => {
+      if (this.map) {
+        const selector = this.map.getContainer().parentElement.parentElement.id;
+        document.getElementById(selector).style.cursor = 'inherit';
+        this.map.getMapImpl().forEachFeatureAtPixel(e.pixel, (feature) => {
+          if (feature) {
+            document.getElementById(selector).style.cursor = 'pointer';
+          }
+        });
+      }
+    });
+
     setTimeout(() => {
       const filtered = this.map.getLayers().filter((l) => {
         const checkLayers = l.getImpl().layers_ !== undefined ?
