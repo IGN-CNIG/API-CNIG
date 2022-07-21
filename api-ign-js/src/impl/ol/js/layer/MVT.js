@@ -145,7 +145,7 @@ class MVT extends Vector {
       }
     });
 
-    this.map.on(EventType.MOVE, () => {
+    this.map.on(EventType.MOVE, (e) => {
       if (this.map) {
         const selector = this.map.getContainer().parentElement.parentElement.id;
         document.getElementById(selector).style.cursor = 'inherit';
