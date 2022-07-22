@@ -169,7 +169,8 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews {
         height: calc(100vh - 50px);
-        overflow: scroll;
+        overflow-y: auto;
+        overflow-x: hidden;
         width: 175px;
     }
 
