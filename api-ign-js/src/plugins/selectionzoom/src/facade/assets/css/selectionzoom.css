@@ -164,32 +164,32 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
         font-size: 13px;
         padding-left: 0;
         padding-right: 0;
-        width: 175px;
+        width: 145px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews {
         height: calc(100vh - 50px);
         overflow-y: auto;
         overflow-x: hidden;
-        width: 175px;
+        width: 145px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div {
-        height: 175px;
-        width: 175px;
+        height: 145px;
+        width: 145px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div>img {
-        height: 165px;
-        width: 165px;
+        height: 135px;
+        width: 135px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div>span {
         font-size: 1.3em;
         height: 40px;
         line-height: 40px;
-        top: 125px;
-        width: 165px;
+        top: 95px;
+        width: 135px;
     }
 
     /* Firefox fix */
