@@ -7,6 +7,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 const WGS84 = 'EPSG:4326';
 const MERCATOR = 'EPSG:900913';
+const PLUS_ZINDEX = 1000;
 const GML_FORMAT = 'text/xml; subtype=gml/3.1.1';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
 const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
@@ -381,7 +382,7 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     return features;
   }
 
@@ -466,7 +467,7 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     return features;
   }
 
@@ -843,7 +844,7 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     return features;
   }
 
@@ -875,14 +876,14 @@ export default class VectorsControl extends M.impl.Control {
       const layer = new M.layer.Vector({ name: `${layerName}_lines`, legend: `${layerName}_lines`, extract: false });
       layer.addFeatures(lines);
       this.facadeMap_.addLayers(layer);
-      layer.setZIndex(layer.getZIndex() + 8);
+      layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     }
 
     if (others.length > 0) {
       const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
       layer.addFeatures(others);
       this.facadeMap_.addLayers(layer);
-      layer.setZIndex(layer.getZIndex() + 8);
+      layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     }
 
     return features;
@@ -922,14 +923,14 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(lines);
     this.facadeMap_.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
 
     if (points.length > 0) {
       points = this.featuresToFacade(points);
       const layer2 = new M.layer.Vector({ name: `${layerName}_points`, legend: `${layerName}_points`, extract: false });
       layer2.addFeatures(points);
       this.facadeMap_.addLayers(layer2);
-      layer2.setZIndex(layer2.getZIndex() + 8);
+      layer2.setZIndex(layer2.getZIndex() + PLUS_ZINDEX);
       features = lines.concat(points);
     } else {
       features = lines;
@@ -1677,7 +1678,7 @@ export default class VectorsControl extends M.impl.Control {
                 layer.updatable = true;
                 layer.url = url;
                 this.facadeMap_.addLayers(layer);
-                layer.setZIndex(layer.getZIndex() + 8);
+                layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
                 document.querySelector('div.m-mapea-container div.m-dialog').remove();
               } else {
                 document.querySelector('div.m-mapea-container div.m-dialog').remove();
@@ -1793,7 +1794,7 @@ export default class VectorsControl extends M.impl.Control {
         this.waitLayerLoaded(layer);
       }, 200);
     } else {
-      layer.setZIndex(layer.getZIndex() + 8);
+      layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
       this.facadeControl.renderLayers();
     }
   }

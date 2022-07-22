@@ -35,6 +35,7 @@ const formatNumber = (x, decimals) => {
 const POINTS = [1, 15];
 const LINES = [10, 15];
 const LINE_POINTS = [1, 15, 20, 15];
+const PLUS_ZINDEX = 1000;
 
 export default class VectorsControl extends M.Control {
   /**
@@ -191,7 +192,7 @@ export default class VectorsControl extends M.Control {
       this.createDrawingTemplate();
       this.createUploadingTemplate();
       this.map.addLayers(this.selectionLayer);
-      this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + 8);
+      this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + PLUS_ZINDEX);
     });
   }
 
@@ -716,7 +717,7 @@ export default class VectorsControl extends M.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.geometry = geom;
     this.map.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     setTimeout(() => {
       document.querySelector(`li[name="${layerName}"] span.m-vector-layer-add`).click();
     }, 100);

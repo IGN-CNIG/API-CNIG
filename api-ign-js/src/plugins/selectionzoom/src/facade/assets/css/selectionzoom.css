@@ -124,45 +124,27 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 
     .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.no-collapsible.m-plugin-selectionzoom>div.m-panel-controls>div.m-control.m-container.m-selectionzoom {
         padding-right: 0px;
-
     }
-
 }
 
 /* Mobile fix */
 
 @media only screen and (max-width: 1000px) {
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-selectionzoom.opened {
+        margin-right: 10px;
+    }
 
-    .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        position: relative;
-        height: 100vh;
-        margin: 0px;
-        padding: calc((100vw - 210px) / 2);
-        padding-top: 10px;
-        width: 100vw;
-        z-index: 99999;
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-selectionzoom.opened {
+        margin-left: 10px;
     }
 
     .m-bottom .m-control.m-container.m-selectionzoom>#m-selectionzoom-previews {
-
         display: block;
     }
 
     .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>button {
         left: unset;
         top: unset;
-    }
-
-
-
-    button.m-panel-btn.g-cartografia-flecha-izquierda {
-        margin-left: -10px;
-    }
-
-    .m-areas>div.m-area.m-top.m-right>.m-panel.m-plugin-selectionzoom.opened {
-        position: absolute;
-
     }
 
     .m-areas>div.m-area>div.m-panel.opened {
@@ -174,51 +156,52 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
         top: 0;
     }
 
+    .m-control.m-container.m-selectionzoom {
+      min-width: unset;
+    }
+
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-titulo {
         font-size: 13px;
         padding-left: 0;
         padding-right: 0;
-        width: 210px;
+        width: 175px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews {
         height: calc(100vh - 50px);
         overflow: scroll;
-        width: 210px;
+        width: 175px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div {
-        height: 210px;
-        width: 210px;
+        height: 175px;
+        width: 175px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div>img {
-        height: 200px;
-        width: 200px;
+        height: 165px;
+        width: 165px;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div>span {
         font-size: 1.3em;
         height: 40px;
         line-height: 40px;
-        top: 160px;
-        width: 200px;
+        top: 125px;
+        width: 165px;
     }
 
     /* Firefox fix */
     @-moz-document url-prefix() {
-
         .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>.m-panel-controls {
             display: flow-root;
         }
 
         .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened {
             width: auto;
-
         }
 
         .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>.m-panel-controls {
-
             display: flex;
         }
 
@@ -229,8 +212,6 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
         .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
             display: flex;
         }
-
-
     }
 
     /* Chrome fix */
