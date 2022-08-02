@@ -122,6 +122,37 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
     return coordinatesTransform;
   }
 
+  readFromWKT(wkt, propertiesString) {
+    const format = new ol.format.WKT();
+    const feature = format.readFeature(wkt, {
+      dataProjection: 'EPSG:4326',
+      featureProjection: this.map.getProjection().code,
+    });
+
+    const properties = JSON.parse(propertiesString);
+    delete properties.geom;
+    feature.setId(`f${new Date().getTime()}`);
+    feature.setProperties(properties);
+    this.wrapComplexFeature(feature);
+    return feature;
+  }
+
+  wrapComplexFeature(feature) {
+    const featureGeom = feature.getGeometry();
+    if ((featureGeom.getType() === M.geom.wkt.type.POLYGON) ||
+      (featureGeom.getType() === M.geom.wkt.type.MULTI_POLYGON)) {
+      let centroid;
+      if (featureGeom.getType() === M.geom.wkt.type.POLYGON) {
+        centroid = featureGeom.getInteriorPoint();
+      } else {
+        centroid = featureGeom.getInteriorPoints();
+      }
+
+      const geometryCollection = new ol.geom.GeometryCollection([centroid, featureGeom]);
+      feature.setGeometry(geometryCollection);
+    }
+  }
+
   normalizeNumber(origin, calculated) {
     let res = origin;
     if (origin !== 0) {

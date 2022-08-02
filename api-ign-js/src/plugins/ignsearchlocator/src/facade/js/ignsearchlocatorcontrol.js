@@ -818,76 +818,28 @@ export default class IGNSearchLocatorControl extends M.Control {
     M.proxy(false);
     M.remote.get(this.urlParse).then((res) => {
       const urlSinJSON = res.text.substring(9, res.text.length - 1);
-      let geoJsonData2 = geoJsonData;
-      let datosGeometria;
-      let datosCoordenadas;
-      if (urlSinJSON.includes('MULTIPOLYGON (((')) {
-        if (geoJsonData2.includes('"type":"MultiPolygon"')) {
-          datosGeometria = urlSinJSON.split('(((');
-          datosCoordenadas = datosGeometria[1].split('), (');
-          if (geoJsonData2.includes(']]]')) {
-            geoJsonData2 = geoJsonData2.replace(']]]', ']]]]');
-          }
-
-          for (let i = 0; i < datosCoordenadas.length; i += 1) {
-            const hol = datosCoordenadas[i].substring(0, 9).replace('(', '');
-            if (geoJsonData.includes('[[['.concat(hol))) {
-              geoJsonData2 = geoJsonData2.replace('[[['.concat(hol), '[[[['.concat(hol));
-            } else if (geoJsonData.includes(']],[['.concat(hol))) {
-              geoJsonData2 = geoJsonData2.replace(']],[['.concat(hol), ']]],[[['.concat(hol));
-            } else if (geoJsonData.includes('],['.concat(hol))) {
-              geoJsonData2 = geoJsonData2.replace('],['.concat(hol), ']],[['.concat(hol));
-            }
-          }
-        }
-      } else if (urlSinJSON.includes('POLYGON ((')) {
-        if (geoJsonData2.includes('"type":"Polygon"')) {
-          datosGeometria = urlSinJSON.split('((');
-          datosCoordenadas = datosGeometria[1].split('), (');
-          if (geoJsonData2.includes(']]')) {
-            geoJsonData2 = geoJsonData2.replace(']]', ']]]');
-          }
-
-          geoJsonData2 = geoJsonData2.replace('Polygon', 'MultiPolygon');
-          for (let i = 0; i < datosCoordenadas.length; i += 1) {
-            const numFirstValue = datosCoordenadas[i].split(' ');
-            const val = datosCoordenadas[i].substring(0, numFirstValue[0].length).replace('(', '');
-            if (geoJsonData.includes('[[['.concat(val))) {
-              geoJsonData2 = geoJsonData2.replace('[[['.concat(val), '[[[['.concat(val));
-            } else if (geoJsonData.includes('],['.concat(val))) {
-              geoJsonData2 = geoJsonData2.replace('],['.concat(val), ']],[['.concat(val));
-            }
-          }
-        } else if (geoJsonData2.includes('"type":"MultiPolygon"')) {
-          geoJsonData2 = geoJsonData2.replace(']]],[[', ']],[[');
-          geoJsonData2 = geoJsonData2.replace('"type":"MultiPolygon"', '"type":"Polygon"');
-        }
-      }
-
-      if (geoJsonData2.includes('MultiMultiPolygon')) {
-        geoJsonData2 = geoJsonData2.replace('MultiMultiPolygon', 'MultiPolygon');
-      }
-
-      const featureJSON = JSON.parse(geoJsonData2);
-      console.log(featureJSON);
-
-      // featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
+      const json = JSON.parse(urlSinJSON);
+      const olFeature = this.getImpl().readFromWKT(json.geom, urlSinJSON);
+      const properties = JSON.parse(urlSinJSON);
       // Center coordinates
-      this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
+      this.coordinates = `${properties.lat}, ${properties.lng}`;
       // New layer with geometry
       this.clickedElementLayer = new M.layer.GeoJSON({
         name: getValue('searchresult'),
         source: {
           type: 'FeatureCollection',
-          features: [featureJSON],
+          features: [],
         },
       });
+
       this.clickedElementLayer.displayInLayerSwitcher = false;
-      if (featureJSON.geometry.type === 'Point') {
+      this.map.addLayers(this.clickedElementLayer);
+      const type = olFeature.getGeometry().getType();
+      if (type === 'Point') {
         this.clickedElementLayer.setStyle(this.point);
       }
 
-      if (featureJSON.geometry.type.indexOf('Polygon') > -1) {
+      if (type.indexOf('Polygon') > -1 || type.indexOf('Collection') > -1) {
         this.clickedElementLayer.setStyle(new M.style.Polygon({
           fill: {
             color: '#3399CC',
@@ -897,25 +849,27 @@ export default class IGNSearchLocatorControl extends M.Control {
             color: '#3399CC',
             width: 2,
           },
-          radius: 5,
         }));
       }
 
       // Change zIndex value
-      this.clickedElementLayer.setZIndex(9999999999999999999);
-
+      this.clickedElementLayer.setZIndex(99999999999999999);
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);
       }
-      this.map.addLayers(this.clickedElementLayer);
-      this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
+
+      console.log(olFeature);
+      console.log(this.clickedElementLayer);
+      setTimeout(() => {
+        this.clickedElementLayer.getImpl().getOL3Layer().getSource().addFeature(olFeature);
+        this.zoomInLocation('g', type, this.zoom);
+      }, 200);
       // show popup for streets
-      if (featureJSON.properties.type === 'callejero' ||
-        featureJSON.properties.type === 'portal') {
-        const fullAddress = this.createFullAddress(featureJSON.properties);
-        const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
-        const perfectResult = featureJSON.properties.state;
+      if (properties.type === 'callejero' || properties.type === 'portal') {
+        const fullAddress = this.createFullAddress(properties);
+        const coordinates = [properties.lat, properties.lng];
+        const perfectResult = properties.state;
         this.showSearchPopUp(fullAddress, coordinates, perfectResult);
       }
     });
@@ -1217,19 +1171,25 @@ export default class IGNSearchLocatorControl extends M.Control {
   zoomInLocation(service, type, zoom) {
     this.resultsList = document.getElementById('m-ignsearchlocator-results-list');
     if (this.clickedElementLayer instanceof M.layer.Vector) {
-      this.clickedElementLayer.calculateMaxExtent().then((extent) => {
+      if (type === 'GeometryCollection') {
+        const extent = this.clickedElementLayer.getImpl().getOL3Layer().getSource().getExtent();
         this.map.setBbox(extent);
-        if (service === 'n' || type === 'Point') {
-          this.setScale(17061);
-        }
-        // En el caso de que se haga una búsqueda de Provincias o CCAA, se dejaría el zoom que
-        // calcula el servicio para no afectar en la visualización de la geometría.
-        if (type === 'Point') {
-          this.map.setZoom(zoom);
-        }
-
         this.fire('ignsearchlocator:entityFound', [extent]);
-      });
+      } else {
+        this.clickedElementLayer.calculateMaxExtent().then((extent) => {
+          this.map.setBbox(extent);
+          if (service === 'n' || type === 'Point') {
+            this.setScale(17061);
+          }
+          // En el caso de que se haga una búsqueda de Provincias o CCAA, se dejaría el zoom que
+          // calcula el servicio para no afectar en la visualización de la geometría.
+          if (type === 'Point') {
+            this.map.setZoom(zoom);
+          }
+
+          this.fire('ignsearchlocator:entityFound', [extent]);
+        });
+      }
     }
   }
   /**
