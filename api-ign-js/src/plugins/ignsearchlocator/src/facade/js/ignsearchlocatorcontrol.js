@@ -869,6 +869,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
 
       const featureJSON = JSON.parse(geoJsonData2);
+      console.log(featureJSON);
 
       // featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
       // Center coordinates
