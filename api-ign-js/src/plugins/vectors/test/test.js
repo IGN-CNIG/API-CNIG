@@ -30,7 +30,7 @@ const mp = new Vectors({
   collapsible: true,
   position: 'TR',
   wfszoom: 12,
-  precharged,
+  // precharged,
 });
 
 const mp2 = new M.plugin.Infocoordinates({

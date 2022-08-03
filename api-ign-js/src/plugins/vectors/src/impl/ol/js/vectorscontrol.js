@@ -8,7 +8,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 const WGS84 = 'EPSG:4326';
 const MERCATOR = 'EPSG:900913';
 const PLUS_ZINDEX = 1000;
-const GML_FORMAT = 'text/xml; subtype=gml/3.1.1';
+const GML_FORMAT = 'text/xml; subtype="gml/3.1.1"';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
 const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
@@ -1687,7 +1687,8 @@ export default class VectorsControl extends M.impl.Control {
             } else {
               document.querySelector('div.m-mapea-container div.m-dialog').remove();
             }
-          }).catch(() => {
+          }).catch((err) => {
+            console.error(err);
             document.querySelector('div.m-mapea-container div.m-dialog').remove();
             if (!cancelFlag) {
               M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
@@ -1772,7 +1773,8 @@ export default class VectorsControl extends M.impl.Control {
             } else {
               document.querySelector('div.m-mapea-container div.m-dialog').remove();
             }
-          }).catch(() => {
+          }).catch((err) => {
+            console.error(err);
             document.querySelector('div.m-mapea-container div.m-dialog').remove();
             if (!cancelFlag) {
               M.dialog.error(getValue('exception.error_features_wfs'), 'Error');

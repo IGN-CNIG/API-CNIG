@@ -7,16 +7,18 @@
         {{/if}}
     </div>
     <div id="m-vectors-addwfs-suggestions">
-      <table style="width: 100%;">
-        <thead>
-          <tr><th>{{translations.availables}}</th></tr>
-        </thead>
-        <tbody>
-          {{#each precharged}}
-            <tr><td><span class="m-vectors-addwfs-suggestion" data-link="{{url}}">{{name}}</span></td></tr>
-          {{/each}}
-        </tbody>
-      </table>
+      {{#if hasPrecharged}}
+        <table style="width: 100%;">
+          <thead>
+            <tr><th>{{translations.availables}}</th></tr>
+          </thead>
+          <tbody>
+            {{#each precharged}}
+              <tr><td><span class="m-vectors-addwfs-suggestion" data-link="{{url}}">{{name}}</span></td></tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/if}}
     </div>
     <div id="m-vectors-addwfs-results"></div>
 </div>
