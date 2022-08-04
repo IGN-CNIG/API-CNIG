@@ -38,6 +38,12 @@
         p {
             font-family: Arial, sans-serif;
         }
+
+        @media (prefers-color-scheme: dark) {
+            .dark {
+                border: 1px solid  #ffffff;
+            }
+        }
     </style>
 
 </head>
@@ -72,7 +78,7 @@
 
                     <tr>
 
-                        <td style="padding:0;" align="center">
+                        <td style="padding: 20px 10px 0px 10px;" align="center">
 
                             <h2>${subject}</h2>
 
@@ -85,7 +91,7 @@
                         <td style="padding:16px 30px 10px 30px;">
 
                             <p>Destinatario de la incidencia</p>
-                            <p style="padding: 10px; border: 1px solid  #00000063;  color: #6c6c6c;">${destinatary}</p>
+                            <p class="dark" style="padding: 10px; border: 1px solid  #00000063;  color: #6c6c6c;">${destinatary}</p>
                         </td>
 
                     </tr>
@@ -96,7 +102,7 @@
                         <td style="padding: 0px 30px 10px 30px;">
 
                             <p>Remitente incidencia</p>
-                            <p style="padding: 10px; border: 1px solid  #00000063;  color: #6c6c6c;">${sendername}</p>
+                            <p class="dark" style="padding: 10px; border: 1px solid  #00000063;  color: #6c6c6c;">${sendername}</p>
                         </td>
 
                     </tr>
@@ -106,7 +112,7 @@
                         <td style="padding: 0px 30px 10px 30px;">
 
                             <p>Email remitente incidencia</p>
-                            <p style="padding: 10px; border: 1px solid  #00000063;  color: #6c6c6c;">${senderemail}</p>
+                            <p class="dark" style="padding: 10px; border: 1px solid  #00000063;  color: #6c6c6c;">${senderemail}</p>
                         </td>
                     </tr>
 
@@ -117,7 +123,7 @@
                         <td style="padding: 0px 30px 10px 30px;">
 
                             <p>Descripción de la incidencia</p>
-                            <p style="padding: 10px; border: 1px solid  #00000063;  color: #6c6c6c;">${errDescription}
+                            <p class="dark" style="padding: 10px; border: 1px solid  #00000063;  color: #6c6c6c;">${errDescription}
                             </p>
                         </td>
 
