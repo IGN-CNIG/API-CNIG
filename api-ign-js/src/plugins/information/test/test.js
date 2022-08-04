@@ -6,7 +6,7 @@ const map = M.map({
   container: 'mapjs',
   controls: ['location'],
   zoom: 7,
-  layers: [],
+  layers: ['OSM'],
   center: [-447979.2542807377, 4849659.371752165],
 });
 
@@ -63,8 +63,28 @@ const layer4 = new M.layer.WMS({
   version: '1.3.0',
 }, {});
 
-map.addLayers([layer1/*, layer2, layer3, layer4*/]);
+const layer5 = new M.layer.WMS({
+  url: 'https://servicios.ine.es/WMS/WMS_INE_SECCIONES_G01/MapServer/WMSServer?',
+  name: 'Secciones2021',
+  legend: 'Secciones censales',
+  version: '1.3.0',
+  tiled: false,
+  visibility: true,
+}, {});
+
+//map.addLayers([layer1/*, layer2, layer3, layer4*/]);
+map.addLayers([layer5]);
 map.addPlugin(mp);
+
+map.addPlugin(new M.plugin.FullTOC({
+  collapsed: true,
+  collapsible: true,
+  position: 'TL',
+  https: true,
+  http: true,
+  codsi: true,
+}));
+
 // map.addPlugin(mp2);
 // map.addPlugin(mp3);
 // map.addPlugin(mp4);

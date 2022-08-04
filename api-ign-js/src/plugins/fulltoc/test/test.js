@@ -177,13 +177,6 @@ const precharged = {
   ],
 };
 
-/*{
-  name: '',
-  type: '',
-  url: '',
-  white_list: ['', ''],
-}*/
-
 const mp = new FullTOC({
   collapsed: true,
   position: 'TR',
@@ -221,6 +214,21 @@ const ocupacionSuelo = new M.layer.WMTS({
 }, {
   visibility: false,
 });
+
+const layer5 = new M.layer.WMS({
+  url: 'https://servicios.ine.es/WMS/WMS_INE_SECCIONES_G01/MapServer/WMSServer?',
+  name: 'Secciones2021',
+  legend: 'Secciones censales',
+  version: '1.3.0',
+  tiled: false,
+  visibility: true,
+}, {});
+
+map.addLayers([layer5]);
+
+map.addPlugin(new M.plugin.Information({
+  position: 'TR',
+}));
 
 /*const xyz = new M.layer.XYZ({
   url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',

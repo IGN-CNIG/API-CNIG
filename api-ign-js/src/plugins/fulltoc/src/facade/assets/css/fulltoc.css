@@ -1029,3 +1029,12 @@ div.codsi-no-results {
 .m-dialog {
   z-index: 999999 !important;
 }
+
+/*ARREGLOS MAQUETACIÓN*/
+.m-plugin-fulltoc table, .m-plugin-fulltoc th, .m-plugin-fulltoc td {
+  border: inherit !important;
+  border-collapse: separate !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+}
