@@ -815,66 +815,59 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   drawGeocoderResultProv(geoJsonData) {
     this.map.removeLayers(this.clickedElementLayer);
-    M.proxy(false);
-    M.remote.get(this.urlParse).then((res) => {
-      const urlSinJSON = res.text.substring(9, res.text.length - 1);
-      const json = JSON.parse(urlSinJSON);
-      const olFeature = this.getImpl().readFromWKT(json.geom, urlSinJSON);
-      const properties = JSON.parse(urlSinJSON);
-      // Center coordinates
-      this.coordinates = `${properties.lat}, ${properties.lng}`;
-      // New layer with geometry
-      this.clickedElementLayer = new M.layer.GeoJSON({
-        name: getValue('searchresult'),
-        source: {
-          type: 'FeatureCollection',
-          features: [],
-        },
-      });
-
-      this.clickedElementLayer.displayInLayerSwitcher = false;
-      this.map.addLayers(this.clickedElementLayer);
-      const type = olFeature.getGeometry().getType();
-      if (type === 'Point') {
-        this.clickedElementLayer.setStyle(this.point);
-      }
-
-      if (type.indexOf('Polygon') > -1 || type.indexOf('Collection') > -1) {
-        this.clickedElementLayer.setStyle(new M.style.Polygon({
-          fill: {
-            color: '#3399CC',
-            opacity: 0,
-          },
-          stroke: {
-            color: '#3399CC',
-            width: 2,
-          },
-        }));
-      }
-
-      // Change zIndex value
-      this.clickedElementLayer.setZIndex(99999999999999999);
-      // Stops showing polygon geometry
-      if (!this.resultVisibility_) {
-        this.clickedElementLayer.setStyle(this.simple);
-      }
-
-      console.log(olFeature);
-      console.log(this.clickedElementLayer);
-      setTimeout(() => {
-        this.clickedElementLayer.getImpl().getOL3Layer().getSource().addFeature(olFeature);
-        this.zoomInLocation('g', type, this.zoom);
-      }, 200);
-      // show popup for streets
-      if (properties.type === 'callejero' || properties.type === 'portal') {
-        const fullAddress = this.createFullAddress(properties);
-        const coordinates = [properties.lat, properties.lng];
-        const perfectResult = properties.state;
-        this.showSearchPopUp(fullAddress, coordinates, perfectResult);
-      }
+    const urlSinJSON = geoJsonData;
+    const json = JSON.parse(urlSinJSON);
+    const olFeature = this.getImpl().readFromWKT(json.geom, urlSinJSON);
+    const properties = JSON.parse(urlSinJSON);
+    // Center coordinates
+    this.coordinates = `${properties.lat}, ${properties.lng}`;
+    // New layer with geometry
+    this.clickedElementLayer = new M.layer.GeoJSON({
+      name: getValue('searchresult'),
+      source: {
+        type: 'FeatureCollection',
+        features: [],
+      },
     });
 
-    M.proxy(true);
+    this.clickedElementLayer.displayInLayerSwitcher = false;
+    this.map.addLayers(this.clickedElementLayer);
+    const type = olFeature.getGeometry().getType();
+    if (type === 'Point') {
+      this.clickedElementLayer.setStyle(this.point);
+    }
+
+    if (type.indexOf('Polygon') > -1 || type.indexOf('Collection') > -1) {
+      this.clickedElementLayer.setStyle(new M.style.Polygon({
+        fill: {
+          color: '#3399CC',
+          opacity: 0,
+        },
+        stroke: {
+          color: '#3399CC',
+          width: 2,
+        },
+      }));
+    }
+
+    // Change zIndex value
+    this.clickedElementLayer.setZIndex(99999999999999999);
+    // Stops showing polygon geometry
+    if (!this.resultVisibility_) {
+      this.clickedElementLayer.setStyle(this.simple);
+    }
+
+    setTimeout(() => {
+      this.clickedElementLayer.getImpl().getOL3Layer().getSource().addFeature(olFeature);
+      this.zoomInLocation('g', type, this.zoom);
+    }, 200);
+    // show popup for streets
+    if (properties.type === 'callejero' || properties.type === 'portal') {
+      const fullAddress = this.createFullAddress(properties);
+      const coordinates = [properties.lat, properties.lng];
+      const perfectResult = properties.state;
+      this.showSearchPopUp(fullAddress, coordinates, perfectResult);
+    }
   }
 
   /**
@@ -1118,10 +1111,11 @@ export default class IGNSearchLocatorControl extends M.Control {
         const parenthesisIndex = listElement.innerHTML.indexOf('(');
         address = listElement.innerHTML.substring(0, parenthesisIndex);
       }
-      const params = `${type}${via}${id}${portal}&outputformat=geojson`;
+      // const params = `${type}${via}${id}${portal}&outputformat=geojson`;
+      const params = `${type}${via}${id}${portal}`;
       const urlToGet = `${this.urlFind}?q=${address}${params}`;
-      this.urlParse = urlToGet.replace('&outputformat=geojson', '');
-
+      // this.urlParse = urlToGet.replace('&outputformat=geojson', '');
+      this.urlParse = urlToGet;
       this.requestStreet = urlToGet;
       this.locationID = '';
       M.proxy(false);
