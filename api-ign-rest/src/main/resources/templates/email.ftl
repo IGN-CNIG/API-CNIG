@@ -123,6 +123,10 @@
                     </tr>
 
                     <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                    </tr>
+
+                    <tr>
 
                         <td style="padding: 20px 10px 0px 10px !important;" align="center">
 
@@ -130,6 +134,10 @@
 
                         </td>
 
+                    </tr>
+
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
                     </tr>
 
                     <tr>
@@ -144,6 +152,10 @@
                             color: #6c6c6c !important;">${destinatary}</p>
                         </td>
 
+                    </tr>
+
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
                     </tr>
 
 
@@ -161,6 +173,10 @@
 
                     </tr>
 
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                    </tr>
+
 
                     <tr>
                         <td style="padding: 0px 30px 10px 30px;">
@@ -174,6 +190,9 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                    </tr>
 
 
                     <tr>
@@ -191,6 +210,9 @@
 
                     </tr>
 
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                    </tr>
 
                     <tr>
                         <td style="padding: 0px 30px 10px 30px !important;">
@@ -198,6 +220,10 @@
                             <p>URL de la App</p>
                             <p><a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a></p>
                         </td>
+                    </tr>
+
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
                     </tr>
 
 
