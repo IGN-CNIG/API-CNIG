@@ -523,39 +523,56 @@ export default class IGNSearchLocatorControl extends M.Control {
           M.remote.get(this.requestStreet).then((res) => {
             const geoJsonData = res.text.substring(9, res.text.length - 1);
             this.map.removeLayers(this.clickedElementLayer);
-            const featureJSON = JSON.parse(geoJsonData);
-            featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
+            const properties = JSON.parse(geoJsonData);
+            const olFeature = this.getImpl().readFromWKT(properties.geom, geoJsonData);
             // Center coordinates
-            this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
+            this.coordinates = `${properties.lat}, ${properties.lng}`;
             // New layer with geometry
             this.clickedElementLayer = new M.layer.GeoJSON({
               name: getValue('searchresult'),
               source: {
                 type: 'FeatureCollection',
-                features: [featureJSON],
+                features: [],
               },
             });
+
             this.clickedElementLayer.displayInLayerSwitcher = false;
             this.createGeometryStyles();
-
-            if (featureJSON.geometry.type === 'Point') {
+            this.map.addLayers(this.clickedElementLayer);
+            const type = olFeature.getGeometry().getType();
+            if (type === 'Point') {
               this.clickedElementLayer.setStyle(this.point);
+            }
+
+            if (type.indexOf('Polygon') > -1 || type.indexOf('Collection') > -1) {
+              this.clickedElementLayer.setStyle(new M.style.Polygon({
+                fill: {
+                  color: '#3399CC',
+                  opacity: 0,
+                },
+                stroke: {
+                  color: '#3399CC',
+                  width: 2,
+                },
+              }));
             }
 
             // Change zIndex value
             this.clickedElementLayer.setZIndex(9999999999999999999);
-
             // Stops showing polygon geometry
             if (!this.resultVisibility_) {
               this.clickedElementLayer.setStyle(this.simple);
             }
-            this.map.addLayers(this.clickedElementLayer);
-            // show popup for streets
-            if (featureJSON.properties.type === 'callejero' || featureJSON.properties.type === 'portal') {
-              const fullAddress = this.createFullAddress(featureJSON.properties);
 
-              const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
-              const perfectResult = featureJSON.properties.state;
+            setTimeout(() => {
+              this.clickedElementLayer.getImpl().getOL3Layer().getSource().addFeature(olFeature);
+              this.zoomInLocation('g', type, this.zoom);
+            }, 200);
+            // show popup for streets
+            if (properties.type === 'callejero' || properties.type === 'portal') {
+              const fullAddress = this.createFullAddress(properties);
+              const coordinates = [properties.lat, properties.lng];
+              const perfectResult = properties.state;
               this.showSearchPopUp(fullAddress, coordinates, perfectResult, { fake: true });
             }
             M.proxy(true);
@@ -563,6 +580,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             M.proxy(true);
           });
         }
+
         if (this.geocoderCoords && this.geocoderCoords.length === 2) {
           this.activateDeactivateReverse();
           const reprojCoords = this.getImpl().reproject(this.geocoderCoords, 'EPSG:4326', map.getProjection().code);
@@ -803,7 +821,6 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
   }
 
-
   /**
    * This function removes last search layer and adds new layer with current result (from geocoder)
    * features to map, zooms in result, edits popup information and shows a message saying
@@ -813,7 +830,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param {Object} geoJsonData - clicked result object
    * @api
    */
-  drawGeocoderResultProv(geoJsonData) {
+  drawGeocoderResult(geoJsonData) {
     this.map.removeLayers(this.clickedElementLayer);
     const urlSinJSON = geoJsonData;
     const json = JSON.parse(urlSinJSON);
@@ -866,67 +883,6 @@ export default class IGNSearchLocatorControl extends M.Control {
       const fullAddress = this.createFullAddress(properties);
       const coordinates = [properties.lat, properties.lng];
       const perfectResult = properties.state;
-      this.showSearchPopUp(fullAddress, coordinates, perfectResult);
-    }
-  }
-
-  /**
-   * This function removes last search layer and adds new layer with current result (from geocoder)
-   * features to map, zooms in result, edits popup information and shows a message saying
-   *  if it's a perfect result or an approximation.
-   * @public
-   * @function
-   * @param {Object} geoJsonData - clicked result object
-   * @api
-   */
-  drawGeocoderResult(geoJsonData) {
-    this.map.removeLayers(this.clickedElementLayer);
-    const featureJSON = JSON.parse(geoJsonData);
-    featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
-    // Center coordinates
-    this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
-    // New layer with geometry
-    this.clickedElementLayer = new M.layer.GeoJSON({
-      name: getValue('searchresult'),
-      source: {
-        type: 'FeatureCollection',
-        features: [featureJSON],
-      },
-    });
-    this.clickedElementLayer.displayInLayerSwitcher = false;
-
-    if (featureJSON.geometry.type === 'Point') {
-      this.clickedElementLayer.setStyle(this.point);
-    }
-
-    // Change zIndex value
-    this.clickedElementLayer.setZIndex(9999999999999999999);
-
-    // Stops showing polygon geometry
-    if (!this.resultVisibility_) {
-      this.clickedElementLayer.setStyle(this.simple);
-    } else if (featureJSON.geometry.type.indexOf('Polygon') > -1) {
-      this.clickedElementLayer.setStyle(new M.style.Polygon({
-        fill: {
-          color: '#3399CC',
-          opacity: 0,
-        },
-        stroke: {
-          color: '#3399CC',
-          width: 2,
-        },
-        radius: 5,
-      }));
-    }
-
-    this.map.addLayers(this.clickedElementLayer);
-    this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
-    // show popup for streets
-    if (featureJSON.properties.type === 'callejero' || featureJSON.properties.type === 'portal') {
-      const fullAddress = this.createFullAddress(featureJSON.properties);
-
-      const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
-      const perfectResult = featureJSON.properties.state;
       this.showSearchPopUp(fullAddress, coordinates, perfectResult);
     } else if (this.popup !== undefined) {
       this.map.removePopup(this.popup);
@@ -1004,7 +960,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       this.map.addLayers(this.clickedElementLayer);
       if (zoomIn === true) {
-        this.zoomInLocation('n', 'Point', this.zoom);
+        this.zoomInLocation('n', 'Point', this.zoom, [longitude, latitude]);
       }
     });
   }
@@ -1142,11 +1098,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     // if item comes from geocoder
     if (Object.prototype.hasOwnProperty.call(selectedObject, 'address')) {
       this.getFindData(listElement, this.allCandidates).then((geoJsonData) => {
+        this.drawGeocoderResult(geoJsonData);
         if (geoJsonData.includes('"tip_via":null') && (geoJsonData.includes('"type":"Municipio"') || geoJsonData.includes('"type":"municipio"') || geoJsonData.includes('"type":"Provincia"') || geoJsonData.includes('"type":"provincia"') || geoJsonData.includes('"type":"comunidad autonoma"'))) {
-          this.drawGeocoderResultProv(geoJsonData);
           this.map.removePopup();
-        } else {
-          this.drawGeocoderResult(geoJsonData);
         }
       });
     } else { // if item comes from nomenclator
@@ -1162,27 +1116,19 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param { string } type of geometry in which we zoom
    * @api
    */
-  zoomInLocation(service, type, zoom) {
+  zoomInLocation(service, type, zoom, coords) {
     this.resultsList = document.getElementById('m-ignsearchlocator-results-list');
     if (this.clickedElementLayer instanceof M.layer.Vector) {
-      if (type === 'GeometryCollection') {
+      if (service === 'n' && type === 'Point') {
+        this.clickedElementLayer.calculateMaxExtent().then((extent) => {
+          this.map.setBbox(extent);
+          this.map.setZoom(zoom);
+          this.fire('ignsearchlocator:entityFound', [extent]);
+        });
+      } else {
         const extent = this.clickedElementLayer.getImpl().getOL3Layer().getSource().getExtent();
         this.map.setBbox(extent);
         this.fire('ignsearchlocator:entityFound', [extent]);
-      } else {
-        this.clickedElementLayer.calculateMaxExtent().then((extent) => {
-          this.map.setBbox(extent);
-          if (service === 'n' || type === 'Point') {
-            this.setScale(17061);
-          }
-          // En el caso de que se haga una búsqueda de Provincias o CCAA, se dejaría el zoom que
-          // calcula el servicio para no afectar en la visualización de la geometría.
-          if (type === 'Point') {
-            this.map.setZoom(zoom);
-          }
-
-          this.fire('ignsearchlocator:entityFound', [extent]);
-        });
       }
     }
   }
@@ -1197,26 +1143,7 @@ export default class IGNSearchLocatorControl extends M.Control {
   findClickedItem(listElement, allCandidates) {
     return allCandidates.filter(element => element.id === listElement.getAttribute('id'))[0];
   }
-  /**
-   * This function fixes path to get to this feature's coordinates
-   * @public
-   * @function
-   * @param {feature} feature with geometry information for the given location
-   * @api
-   */
-  fixCoordinatesPath(feature) {
-    let coordinates;
-    if (feature.geometry.type === 'Point') {
-      coordinates = feature.geometry.coordinates[0][0];
-    } else if (feature.geometry.type === 'MultiPolygon') {
-      coordinates = [feature.geometry.coordinates];
-    } else if (feature.geometry.type === 'LineString') {
-      coordinates = feature.geometry.coordinates[0];
-    } else {
-      coordinates = feature.geometry.coordinates;
-    }
-    return coordinates;
-  }
+
   /* Given a set of coordinates (lat, long),
     searches for the corresponding place
   */
