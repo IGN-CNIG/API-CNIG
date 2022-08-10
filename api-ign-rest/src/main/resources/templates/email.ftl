@@ -127,8 +127,12 @@
                     </tr>
 
                     <tr>
-
-                        <td style="padding: 20px 10px 0px 10px !important;" align="center">
+                        <td style=" 
+                        padding-top: 20 !important;
+                        padding-right: 10px !important;
+                        padding-bottom: 0px !important;
+                        padding-left: 10px !important;
+                        " align="center">
 
                             <h2>${subject}</h2>
 
@@ -142,7 +146,12 @@
 
                     <tr>
 
-                        <td style="padding:16px 30px 10px 30px !important;">
+                        <td style=" 
+                        padding-top: 0 !important;
+                        padding-right: 30px !important;
+                        padding-bottom: 10px !important;
+                        padding-left: 30px !important;
+                        ">
 
                             <p>Destinatario de la incidencia</p>
                             <p class="dark" style="padding: 10px !important;
@@ -161,7 +170,12 @@
 
                     <tr>
 
-                        <td style="padding: 0px 30px 10px 30px;">
+                        <td style=" 
+                        padding-top: 0 !important;
+                        padding-right: 30px !important;
+                        padding-bottom: 10px !important;
+                        padding-left: 30px !important;
+                        ">
 
                             <p>Remitente incidencia</p>
                             <p class="dark" style="padding: 10px !important;
@@ -179,7 +193,12 @@
 
 
                     <tr>
-                        <td style="padding: 0px 30px 10px 30px;">
+                        <td style=" 
+                        padding-top: 0 !important;
+                        padding-right: 30px !important;
+                        padding-bottom: 10px !important;
+                        padding-left: 30px !important;
+                        ">
 
                             <p>Email remitente incidencia</p>
                             <p class="dark" style="padding: 10px !important;
@@ -190,6 +209,8 @@
                         </td>
                     </tr>
 
+
+
                     <tr>
                         <td> &nbsp; <br/> &#160;</td>
                     </tr>
@@ -197,7 +218,12 @@
 
                     <tr>
 
-                        <td style="padding: 0px 30px 10px 30px;">
+                     <td style=" 
+                        padding-top: 0 !important;
+                        padding-right: 30px !important;
+                        padding-bottom: 10px !important;
+                        padding-left: 30px !important;
+                        ">
 
                             <p>Descripción de la incidencia</p>
                             <p class="dark" style="padding: 10px !important;
@@ -215,7 +241,12 @@
                     </tr>
 
                     <tr>
-                        <td style="padding: 0px 30px 10px 30px !important;">
+                        <td style=" 
+                        padding-top: 0 !important;
+                        padding-right: 30px !important;
+                        padding-bottom: 10px !important;
+                        padding-left: 30px !important;
+                        ">
 
                             <p>URL de la App</p>
                             <p><a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a></p>
