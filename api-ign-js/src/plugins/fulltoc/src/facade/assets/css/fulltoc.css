@@ -681,6 +681,7 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 .m-fulltoc-container .m-title .m-layer-name {
   display: block;
   line-height: 1.4rem;
+  margin-left: 4px;
 }
 
 .m-fulltoc-container .m-title table tr td:nth-child(1) {
@@ -1037,4 +1038,13 @@ div.codsi-no-results {
   font-family: inherit !important;
   font-size: inherit !important;
   color: inherit !important;
+  line-height: inherit !important;
+  margin-bottom: inherit !important;
+  border-spacing: inherit !important;
+  white-space: inherit !important;
+  font-weight: inherit !important;
+  font-variant: inherit !important;
+  font-style: inherit !important;
+  text-align: inherit !important;
+  padding-left: inherit !important;
 }
