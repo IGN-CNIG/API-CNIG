@@ -123,8 +123,13 @@
                     </tr>
 
                     <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                        <td> &nbsp; <br/> &#160;</td>
+                    </tr>
+
+                    <tr>
                         <td style=" 
-                        padding-top: 40px !important;
+                        padding-top: 20 !important;
                         padding-right: 10px !important;
                         padding-bottom: 0px !important;
                         padding-left: 10px !important;
@@ -136,6 +141,10 @@
 
                     </tr>
 
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                        <td> &nbsp; <br/> &#160;</td>
+                    </tr>
 
                     <tr>
 
@@ -148,12 +157,18 @@
 
                             <p>Destinatario de la incidencia</p>
                             <p class="dark" style="padding: 10px !important;
+                             margin: 10px !important;
                             border-width: 1px !important;
                             border-style: solid !important;
                             border-color: #6c6c6c !important;
                             color: #6c6c6c !important;">${destinatary}</p>
                         </td>
 
+                    </tr>
+
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                        <td> &nbsp; <br/> &#160;</td>
                     </tr>
 
 
@@ -168,12 +183,18 @@
 
                             <p>Remitente incidencia</p>
                             <p class="dark" style="padding: 10px !important;
+                             margin: 10px !important;
                             border-width: 1px !important;
                             border-style: solid !important;
                             border-color: #6c6c6c !important;
                             color: #6c6c6c !important;">${sendername}</p>
                         </td>
 
+                    </tr>
+
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                        <td> &nbsp; <br/> &#160;</td>
                     </tr>
 
 
@@ -187,11 +208,19 @@
 
                             <p>Email remitente incidencia</p>
                             <p class="dark" style="padding: 10px !important;
+                             margin: 10px !important;
                             border-width: 1px !important;
                             border-style: solid !important;
                             border-color: #6c6c6c !important;
                             color: #6c6c6c !important;">${senderemail}</p>
                         </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                        <td> &nbsp; <br/> &#160;</td>
                     </tr>
 
 
@@ -206,6 +235,7 @@
 
                             <p>Descripción de la incidencia</p>
                             <p class="dark" style="padding: 10px !important;
+                            margin: 10px !important;
                             border-width: 1px !important;
                             border-style: solid !important;
                             border-color: #6c6c6c !important;
@@ -215,6 +245,10 @@
 
                     </tr>
 
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                        <td> &nbsp; <br/> &#160;</td>
+                    </tr>
 
                     <tr>
                         <td style=" 
@@ -228,6 +262,12 @@
                             <p><a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a></p>
                         </td>
                     </tr>
+
+                    <tr>
+                        <td> &nbsp; <br/> &#160;</td>
+                        <td> &nbsp; <br/> &#160;</td>
+                    </tr>
+
 
                     <tr>
 
