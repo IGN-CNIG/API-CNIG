@@ -75,7 +75,8 @@ public class EmailWS {
       JSONObject msg = new JSONObject();
       String message = "Email enviado correctamente";
       File file = createFile(fileStream, fileDetail);
-      String error = sendEmailSMTP(mailto, subject, body, file);
+      String identifier = String.valueOf(new Date().getTime());
+      String error = sendEmailSMTP(mailto, subject, body, file, identifier);
       if(error != null && !error.isEmpty()){
     	  message = error;
       }
@@ -111,8 +112,8 @@ public class EmailWS {
 	   return file;
    }
    
-   private File createGeoJSONFile(String geojson){
-	   String nameFile = "incidencia_" + new Date().getTime();
+   private File createGeoJSONFile(String geojson, String identifier){
+	   String nameFile = "incidencia_" + identifier;
 	   File file = null;
 		try {
 			file = File.createTempFile(nameFile, ".geojson");
@@ -123,7 +124,7 @@ public class EmailWS {
 	   return file;
    }
 
-   private String sendEmailSMTP(String destinatario, String asunto, String cuerpo, File fichAdjunto){
+   private String sendEmailSMTP(String destinatario, String asunto, String cuerpo, File fichAdjunto, String identifier){
 	   String result = null;
 	   // Esto es lo que va delante de @gmail.com en tu cuenta de correo. Es el remitente también.
 	   String remitente = configProperties.getString("smtp.remitente");
@@ -171,7 +172,7 @@ public class EmailWS {
 		   jsonFeature.put("properties", properties);
 		   jsonArray.put(0, jsonFeature);
 		   body.put("features", jsonArray);
-		   File geojsonFile = createGeoJSONFile(body.toString());
+		   File geojsonFile = createGeoJSONFile(body.toString(), identifier);
 		   adjunto.setDataHandler(new DataHandler(new FileDataSource(geojsonFile)));
 		   adjunto.setFileName(geojsonFile.getName());
 		   BodyPart texto = new MimeBodyPart();
@@ -181,7 +182,7 @@ public class EmailWS {
 		   if (fichAdjunto != null) {
 			   BodyPart adjunto2 = new MimeBodyPart();
 			   adjunto2.setDataHandler(new DataHandler(new FileDataSource(fichAdjunto)));
-			   adjunto2.setFileName(fichAdjunto.getName());
+			   adjunto2.setFileName("adjunto_" + identifier);
 			   multiparte.addBodyPart(adjunto2);
 		   }
 
