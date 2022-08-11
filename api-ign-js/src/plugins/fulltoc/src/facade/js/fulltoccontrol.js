@@ -86,11 +86,17 @@ export default class FullTOCControl extends M.Control {
         this.getImpl().registerEvents();
         this.render();
         this.afterRender();
-        document.querySelector('.m-plugin-fulltoc .m-panel-btn.icon-capas').addEventListener('click', () => {
-          setTimeout(() => {
-            this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
-          }, 100);
-        });
+        setTimeout(() => {
+          const openBtn = document.querySelector('.m-plugin-fulltoc .m-panel-btn.icon-capas');
+          if (openBtn !== null) {
+            openBtn.addEventListener('click', () => {
+              this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
+              setTimeout(() => {
+                this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
+              }, 100);
+            });
+          }
+        }, 200);
       });
     });
   }
