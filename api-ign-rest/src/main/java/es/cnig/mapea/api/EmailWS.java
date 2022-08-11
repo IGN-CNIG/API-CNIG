@@ -182,7 +182,8 @@ public class EmailWS {
 		   if (fichAdjunto != null) {
 			   BodyPart adjunto2 = new MimeBodyPart();
 			   adjunto2.setDataHandler(new DataHandler(new FileDataSource(fichAdjunto)));
-			   adjunto2.setFileName("adjunto_" + identifier);
+			   String[] splittedName = fichAdjunto.getName().split("\\.");
+			   adjunto2.setFileName("adjunto_" + identifier + "." + splittedName[splittedName.length - 1]);
 			   multiparte.addBodyPart(adjunto2);
 		   }
 
