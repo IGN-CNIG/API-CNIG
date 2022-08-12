@@ -75,7 +75,7 @@ public class EmailWS {
       JSONObject msg = new JSONObject();
       String message = "Email enviado correctamente";
       File file = createFile(fileStream, fileDetail);
-      String identifier = String.valueOf(new Date().getTime());
+      String identifier = String.valueOf(new Date().getTime()).substring(0, 13);
       String error = sendEmailSMTP(mailto, subject, body, file, identifier);
       if(error != null && !error.isEmpty()){
     	  message = error;
