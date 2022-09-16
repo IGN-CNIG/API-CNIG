@@ -1,8 +1,0 @@
-{
-  "exception": {
-    "impl": "La implementación usada no puede crear controles MouseSRSControl."
-  },
-  "tooltip": "Coordenadas",
-  "select_srs": "Selecciona un sistema de referencia",
-  "close": "Cerrar"
-}

@@ -1,9 +1,0 @@
-{
-  "tooltip": "Zoom tools",
-  "zoomin": "Zoom In",
-  "zoomout": "Zoom Out",
-  "previouszoom": "Previous history",
-  "nextzoom": "Next history",
-  "rectzoom": "Rectangular zoom",
-  "zoom_extent": "Zoom to the map extension"
-}
