@@ -7,8 +7,11 @@
  * works around an issue with `~` characters in module paths by escaping them.
  */
 
-const marked = require('marked');
-const format = require('util').format;
+import { format } from 'util';
+import * as marked from 'marked';
+
+// const marked = require('marked');
+// const format = require('util').format;
 
 const tags = [
   'author',
