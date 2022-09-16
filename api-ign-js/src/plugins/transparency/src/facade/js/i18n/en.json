@@ -1,0 +1,8 @@
+{
+  "tooltip": "Transparency",
+  "layers": "Layers",
+  "radius": "Radius",
+  "transparency": "Transparency",
+  "errorLayer": "Transparency: No valid layer specified on which to apply the effect",
+  "excepcion": "The implementation used cannot create TransparencyControl controls"
+}

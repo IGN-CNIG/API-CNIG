@@ -1,0 +1,16 @@
+{
+  "exception": {
+    "impl_length": "La implementación usada no puede crear controles MeasureLength.",
+    "impl_clear": "La implementación usada no puede crear controles MeasureClear.",
+    "impl_area": "La implementación usada no puede crear controles MeasureArea"
+  },
+  "text": {
+    "tooltip": "Herramientas de medición",
+    "keep_drawing": "Click para continuar dibujando la línea",
+    "click_draw": "Click para empezar a dibujar",
+    "keep_drawing_area": "Click para continuar dibujando el área",
+    "measure_area": "Medir área",
+    "delete": "Borrar medidas",
+    "measure": "Medir distancias"
+  }
+}

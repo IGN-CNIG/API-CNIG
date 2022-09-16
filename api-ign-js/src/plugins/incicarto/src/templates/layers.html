@@ -1,0 +1,48 @@
+<div id="m-incicarto-list">
+  {{#each layers}}
+    <li class="m-incicarto-layer" name="{{name}}" url={{url}}>
+      <table>
+        <tbody>
+          <tr>
+            <td class="m-incicarto-layer-type">
+              {{#if point}}
+                <span class="icon-points" title="{{../translations.point_layer}}"></span>
+              {{/if}}
+              {{#if line}}
+                <span class="icon-lines" title="{{../translations.line_layer}}"></span>
+              {{/if}}
+              {{#if polygon}}
+                <span class="icon-polygon" title="{{../translations.poly_layer}}"></span>
+              {{/if}}
+            </td>
+            <td class="m-incicarto-layer-legend">
+              <span class="m-incicarto-layer-legend-change" data-layer-name="{{name}}" data-layer-url="{{url}}" title="{{../translations.change_name}}">{{legend}}</span>
+            </td>
+            <td>
+              <div class="m-incicarto-layer-actions">
+                <!-- Ocultamos algunos botones que no se van a usar para simplificar la creación de geometrías -->
+                <span title="{{../translations.show_hide}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="{{#if visible}}icon-visible{{^}}icon-invisible{{/if}} m-incicarto-layer-toogle"></span>
+                <span title="{{../translations.add_geom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-add m-incicarto-layer-add"></span>
+                {{#if line}}
+                  <span title="{{../translations.edit_geom_line}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-edit m-incicarto-layer-edit"></span>
+                {{^}}
+                  <span title="{{../translations.edit_geom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-edit m-incicarto-layer-edit"></span>
+                {{/if}}
+                {{#if updatable}}
+                  <span title="{{../translations.reload_from_view}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-spinner m-incicarto-layer-reload"></span>
+                {{^}}
+                  <span title="{{../translations.layer_zoom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-zoom m-incicarto-layer-zoom"></span>
+                {{/if}}
+                <!--<span title="{{../translations.download_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-download m-incicarto-layer-download"></span>-->
+                <span title="{{../translations.delete_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-delete m-incicarto-layer-delete"></span>
+                <span title="{{../translations.notify_err}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-notify m-incicarto-layer-download"></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="m-incicarto-layer-actions-container">
+      </div>
+    </li>
+  {{/each}}
+</div>
