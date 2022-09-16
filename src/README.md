@@ -1,3 +1,0 @@
-# SRC
-
-Archivos fuentes.  

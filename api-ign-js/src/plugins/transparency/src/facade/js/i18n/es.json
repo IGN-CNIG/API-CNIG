@@ -1,0 +1,8 @@
+{
+  "tooltip": "Transparencia",
+  "layers": "Capas",
+  "radius": "Radio",
+  "transparency": "Transparencia",
+  "errorLayer": "Transparency: No se ha especificado una capa válida sobre la que aplicar el efecto",
+  "excepcion": "La implementación usada no puede crear controles TransparencyControl"
+}

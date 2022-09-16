@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2021 by original authors @ fontello.com</metadata>
+<defs>
+<font id="mousesrs" horiz-adv-x="1000" >
+<font-face font-family="mousesrs" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="help" unicode="&#xe800;" d="M0 350q0 95 37 182t100 149 149 100 183 37q95 0 182-37t149-100 100-149 37-182-37-182-100-150-149-100-182-37q-96 0-183 37t-149 100-100 150-37 182z m333 175l31-101q46 29 92 29 50 0 50-22 0-5-2-8t-6-8-7-5-10-6-9-4l-40-21q-22-12-28-25t-6-37v-38h117v16q0 7 0 10t3 6 6 6q1 0 11 4t17 9 19 10 18 14q19 16 29 36t11 56q0 49-42 83t-106 34q-85 0-148-38z m48-333q0-32 21-49t55-17q33 0 54 17t20 49-20 49-54 18q-35 0-55-18t-21-49z" horiz-adv-x="937.5" />
+</font>
+</defs>
+</svg>

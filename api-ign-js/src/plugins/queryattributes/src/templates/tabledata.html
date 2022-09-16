@@ -1,0 +1,50 @@
+<div id="m-queryattributes-table-content">
+  {{#if attributes}}
+    <div id="m-queryattributes-table-container">
+        <table id="attributedata" summary="Tabla con los atributos de los elementos de la capa vectorial">
+            <thead>
+              <tr class="m-queryattributes-table-thead">
+                  {{#each headerAtt}}
+                    {{#if isPkColumn}}
+                      <th data-sort="{{this.name}}" style="display:none;">{{this.alias}} <span class="icon-sort" /></th>
+                    {{else}}
+                      <th data-sort="{{this.name}}">{{this.alias}} <span class="icon-sort" /></th>
+                    {{/if}}  
+                  {{/each}}
+              </tr>
+            </thead>
+            <tbody>
+                {{#each attributes}}
+                <tr>
+                    {{#each this}}
+                      {{#if isImage}}
+                        <td><a class="m-queryattributes-table-image-link" href="#" rel="noopener noreferrer"><img src="{{this.value}}" /></a></td>
+                      {{/if}}
+                      {{#if isString}}
+                        <td style="text-align:{{this.align}};"> {{this.value}}</td>
+                      {{/if}}
+                      {{#if isPkColumn}}
+                        <td id="feat_{{this.value}}" style="display:none;"> {{this.value}}</td>
+                      {{/if}}                      
+                      {{#if isFormatter}}
+                        <td style="text-align:{{this.align}}; font-size:0.5rem;">{{formatterStr this}}</td>
+                      {{/if}}
+                      {{#if isPercentage}}
+                        <td style="text-align:{{this.align}};"><progress value="{{this.value}}" max="100"> {{this.value}} % </progress> {{this.value}} %</td>
+                      {{/if}}
+                      {{#if isLinkURL}}
+                        <td style="text-align:{{this.align}};"><a href="{{this.value}}" target="_blank" rel="noopener noreferrer">{{this.typeparam}}</a></td>
+                      {{/if}}
+                      {{#if isButtonURL}}
+                        <td style="text-align:{{this.align}};"> <a class="m-queryattributes-information-button-link" href="{{this.value}}" target="_blank" rel="noopener noreferrer">{{this.typeparam}}</a></td>
+                      {{/if}}                                            
+                    {{/each}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+  {{else}}
+    <div class="m-queryattributes-table-noresult">{{translations.not_attributes}}</div>
+  {{/if}}
+</div>

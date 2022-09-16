@@ -1,0 +1,90 @@
+{
+  "url": {
+    "name": "ignsearchlocator",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.IGNSearchLocator",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+        "type": "simple",
+        "name": "servicesToSearch",
+        "position": 0
+      }, {
+        "type": "number",
+        "name": "maxResults",
+        "position": 1
+      }, {
+        "type": "simple",
+        "name": "noProcess",
+        "position": 2
+      }, {
+        "type": "boolean",
+        "name": "resultVisibility",
+        "position": 3
+      }, {
+        "type": "boolean",
+        "name": "isCollapsed",
+        "position": 4
+      }, {
+        "type": "boolean",
+        "name": "collapsible",
+        "position": 5
+      }, {
+        "type": "simple",
+        "name": "position",
+        "position": 6
+      }, {
+        "type": "boolean",
+        "name": "reverse",
+        "position": 7
+      }, {
+        "type": "simple",
+        "name": "requestStreet",
+        "position": 8
+      }, {
+        "type": "simple",
+        "name": "locationID",
+        "position": 9
+      }, {
+        "type": "simple",
+        "name": "geocoderCoords",
+        "position": 10
+      }, {
+        "type": "simple",
+        "name": "zoom",
+        "position": 11
+      },
+      {
+        "type": "simple",
+        "name": "searchPosition",
+        "position": 12
+      }, {
+        "type": "simple",
+        "name": "pointStyle",
+        "position": 13
+      }, {
+        "type": "simple",
+        "name": "helpUrl",
+        "position": 14
+      }
+    ]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["ignsearchlocator.ol.min.js"],
+      "styles": ["ignsearchlocator.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "IGNSearchLocator",
+    "description": "Searches location on IGN geocoding services and locates coordinates",
+    "text": "Searches location on IGN geocoding services and locates coordinates",
+    "version": "1.0.0",
+    "date": "02/12/2019",
+    "author": "Guadaltel",
+    "org": "CNIG",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

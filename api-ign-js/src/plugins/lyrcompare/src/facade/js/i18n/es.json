@@ -1,0 +1,22 @@
+{
+  "tooltip": "Comparador de capas",
+  "tooltip_vcurtain": "Cortina vertical",
+  "tooltip_hcurtain": "Cortina horizontal",
+  "tooltip_multicurtain": "Multivista",
+  "layers": "Capas",
+  "radius": "Radio",
+  "opacity": "Opacidad",
+  "static": "Estático",
+  "dynamic": "Dinámico",
+  "mixed": "Mixto",
+  "layer": "Capa",
+  "opacity_tooltip": "Opacidad de las capas que se comparan (0-100%)",
+  "dynamic_tooltip": "La división la marca la posición del cursor",
+  "mixed_tooltip": "La división se arrastra con el ratón",
+  "static_tooltip": "La división es fija en el centro del mapa",
+  "lyrLeftSelect_tooltip": "Selecciona la capa de la izquierda",
+  "lyrRightSelect_tooltip": "Selecciona la capa de la derecha",
+  "advice_sameLayer": "No puede cargarse la misma capa en varios sitios",
+  "no_layers_plugin": "El número de capas es insuficiente para aplicar el efecto",
+  "repeated_layers": "Las capas seleccionadas no se pueden repetir"
+}
