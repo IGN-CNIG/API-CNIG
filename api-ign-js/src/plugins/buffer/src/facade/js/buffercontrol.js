@@ -1,4 +1,4 @@
-import * as jsts from 'jsts';
+import * as jsts from 'jsts/dist/jsts';
 import template from 'templates/buffer';
 import BufferControlImpl from 'impl/buffercontrolImpl';
 import Picker from './vanilla-picker';
