@@ -1,9 +1,8 @@
+import * as jsts from 'jsts';
 import template from 'templates/buffer';
 import BufferControlImpl from 'impl/buffercontrolImpl';
 import Picker from './vanilla-picker';
 import { getValue } from './i18n/language';
-
-const jsts = require('jsts');
 
 export default class BufferControl extends M.Control {
   /**
