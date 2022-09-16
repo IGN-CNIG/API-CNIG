@@ -2108,7 +2108,7 @@ const getURLXYZSource = (parameter) => {
  * @private
  * @function
  */
- const getExtraParameter = (parameter, defaultValue, position, nameVariable) => {
+const getExtraParameter = (parameter, defaultValue, position, nameVariable) => {
   let extraParam;
   let params;
   if (isString(parameter)) {
@@ -2272,7 +2272,7 @@ export const tms = (userParamer) => {
 
     // gets transparent
     layerObj.transparent = getExtraParameter(userParam, 'true', 1, 'transparent');
-    
+
     // get tileGridMaxZoom
     layerObj.tileGridMaxZoom = getExtraParameter(userParam, '17', 2, 'tileGridMaxZoom');
     return layerObj;
