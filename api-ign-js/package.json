@@ -75,7 +75,7 @@
     "generate-test": "node tasks/test-generator",
     "karma": "karma start ./karma.conf.js",
     "prebuild": "node tasks/clean-build.js --path=dist && node tasks/generate-index.js",
-    "postbuild": "npm run generate-doc && node tasks/copy-versions.js",
+    "postbuild": "node tasks/copy-versions.js",
     "start": "webpack-dev-server --config=webpack-config/webpack.development.config.js",
     "start:build": "npm run build && npm run debug:build",
     "test": "npm run karma"
