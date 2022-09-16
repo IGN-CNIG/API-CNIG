@@ -1,0 +1,25 @@
+{
+  "exception": {
+    "impl": "La implementación usada no puede crear controles QueryAttributesControl.",
+    "no_data": "No hay datos para exportar."
+  },
+  "tooltip": "Tabla de atributos",
+  "values": "Valores",
+  "attribute_table": "Tabla de atributos",
+  "clean_filters": "Limpiar filtros aplicados",
+  "export": "Exportar datos",
+  "not_attributes": "No se han encontrado atributos.",
+  "close": "Cerrar",
+  "filters": "Filtros",
+  "bbox": "Por vista",
+  "area": "Por área",
+  "csv": "CSV (sólo atributos)",
+  "download": "Descargar",
+  "loading": "Cargando datos...",
+  "search": "Buscar",
+  "filter_by_bbox": "Filtrar resultados por vista actual",
+  "filter_by_area": "Filtrar resultados dibujando geometría",
+  "show_hide": "Ocultar / Mostrar",
+  "information": "Información",
+  "search_all_fields": "Búsqueda en todos los campos"
+}

@@ -1,0 +1,26 @@
+<div id="m-querydatabase-table-content">
+    <div id="m-querydatabase-table-container">
+        <table id="databases" summary="Tabla con las bases de datos disponibles">
+            <thead>
+              <tr class="m-querydatabase-table-thead">
+                <th>Nombre</th>
+                <th>NombreBD</th>
+                <th>Host</th>
+                <th>Puerto</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+                {{#each databases}}
+                <tr>
+                    <td>{{Nombre}}</td>
+                    <td>{{NombreBD}}</td>
+                    <td>{{Host}}</td>
+                    <td>{{Puerto}}</td>
+                    <td><button class="showtables" id="{{Nombre}}">Mostrar tablas</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

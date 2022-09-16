@@ -1,0 +1,10 @@
+{
+  "exception": {
+    "impl": "The implementation used cannot create Attributions controls."
+  },
+  "title": "Share URL",
+  "text": "Embedded HTML",
+  "copy": "Copy",
+  "tooltip": "Copied!",
+  "tooltipPanel": "Share"
+}

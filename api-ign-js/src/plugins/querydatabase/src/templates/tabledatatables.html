@@ -1,0 +1,27 @@
+<div id="m-querydatabase-table-content">
+    <div id="m-querydatabase-table-container">
+        <table id="tables" summary="Tabla con las tablas geométricas disponibles en una base de datos">
+            <thead>
+              <tr class="m-querydatabase-table-thead">
+                <th>Esquema</th>
+                <th>Nombre</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+                {{#each tables}}
+                <tr id="{{Schema}}&{{Nombre}}">
+                      <td>{{Schema}}</td>
+                      <td>{{Nombre}}</td>
+                      <td>
+                        <button class="filter">Filtrar</button>
+<!--                        <button class="showdata">Ver datos</button>-->
+                        <button class="drawtable">Pintar</button>
+                      </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <button id="atras">Ver conexiones</button>
+</div>

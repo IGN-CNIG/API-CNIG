@@ -1,0 +1,12 @@
+{
+  "exception": {
+    "impl": "The implementation used cannot create InformationControl."
+  },
+  "tooltip": "Consult layers",
+  "title": "Information",
+  "not_queryable": "There are no queryable layers",
+  "querying": "Getting information...",
+  "unsupported_format": "Unsupported format",
+  "no_info": "No associated info",
+  "info_of": "Information about"
+}

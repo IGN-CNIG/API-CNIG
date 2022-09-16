@@ -1,0 +1,6 @@
+{
+  "exception": {
+    "impl": "La implementación usada no puede crear controles ZoomExtentControl."
+  },
+  "tooltip": "Zoom al recuadro"
+}
