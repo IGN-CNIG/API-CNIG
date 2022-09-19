@@ -2115,7 +2115,12 @@ const getExtraParameter = (parameter, defaultValue, position, nameVariable) => {
     params = parameter.split(/\*/);
     if (position + 3 <= params.length - 1) {
       extraParam = params[position + 3].trim();
-      extraParam = extraParam.toLowerCase() !== 'false';
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(extraParam)) {
+        extraParam = extraParam.toLowerCase() !== 'false';
+      } else {
+        extraParam = Number(extraParam);
+      }
     } else {
       extraParam = defaultValue;
     }
@@ -2267,6 +2272,12 @@ export const tms = (userParamer) => {
 
     // gets transparent
     layerObj.transparent = getExtraParameter(userParam, 'true', 1, 'transparent');
+<<<<<<< HEAD
+=======
+
+    // get tileGridMaxZoom
+    layerObj.tileGridMaxZoom = getExtraParameter(userParam, '17', 2, 'tileGridMaxZoom');
+>>>>>>> development
     return layerObj;
   });
 

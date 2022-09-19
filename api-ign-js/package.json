@@ -1,6 +1,6 @@
 {
   "name": "apiign",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Herramienta para desarrollo de mapas interactivos de forma sencilla",
   "keywords": [
     "map",
@@ -75,7 +75,11 @@
     "generate-test": "node tasks/test-generator",
     "karma": "karma start ./karma.conf.js",
     "prebuild": "node tasks/clean-build.js --path=dist && node tasks/generate-index.js",
+<<<<<<< HEAD
     "postbuild": "npm run generate-doc && node tasks/copy-versions.js",
+=======
+    "postbuild": "node tasks/copy-versions.js",
+>>>>>>> development
     "start": "webpack-dev-server --config=webpack-config/webpack.development.config.js",
     "start:build": "npm run build && npm run debug:build",
     "test": "npm run karma"

@@ -63,6 +63,9 @@ class TMS extends LayerBase {
     // maxzoom
     this.maxZoom = parameters.maxZoom;
 
+    // tileGridMaxZoom
+    this.tileGridMaxZoom = parameters.tileGridMaxZoom;
+
     /**
      * TMS options
      * @public
