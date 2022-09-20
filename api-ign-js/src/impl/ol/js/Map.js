@@ -1377,7 +1377,7 @@ class Map extends MObject {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.XYZ];
-          layer.getImpl().setZIndex(zIndex);
+          layer.setZIndex(zIndex);
         }
       }
     });
@@ -1470,7 +1470,7 @@ class Map extends MObject {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.TMS];
-          layer.getImpl().setZIndex(zIndex);
+          layer.setZIndex(zIndex);
         }
       }
     });
@@ -2390,7 +2390,7 @@ Map.Z_INDEX = {};
 Map.Z_INDEX_BASELAYER = 0;
 Map.Z_INDEX[LayerType.OSM] = 5;
 Map.Z_INDEX[LayerType.WMS] = 40;
-Map.Z_INDEX[LayerType.WMTS] = 10;
+Map.Z_INDEX[LayerType.WMTS] = 40;
 Map.Z_INDEX[LayerType.KML] = 40;
 Map.Z_INDEX[LayerType.WFS] = 40;
 Map.Z_INDEX[LayerType.MVT] = 40;
@@ -2398,7 +2398,7 @@ Map.Z_INDEX[LayerType.Vector] = 40;
 Map.Z_INDEX[LayerType.GeoJSON] = 40;
 Map.Z_INDEX[LayerType.MBTiles] = 10;
 Map.Z_INDEX[LayerType.MBTilesVector] = 10;
-Map.Z_INDEX[LayerType.XYZ] = 10;
-Map.Z_INDEX[LayerType.TMS] = 10;
+Map.Z_INDEX[LayerType.XYZ] = 40;
+Map.Z_INDEX[LayerType.TMS] = 40;
 
 export default Map;
