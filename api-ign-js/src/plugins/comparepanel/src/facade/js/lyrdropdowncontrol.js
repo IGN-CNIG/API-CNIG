@@ -2,6 +2,7 @@
  * @module M/control/LyrdropdownControl
  */
 
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 import LyrdropdownImplControl from 'impl/lyrdropdowncontrol';
 import template from 'templates/lyrdropdown';
 import { getValue } from './i18n/language'; //e2m: Multilanguage support. Alias -> getValue is too generic
@@ -92,7 +93,7 @@ export default class LyrdropdownControl extends M.Control {
       //e2m: Transform stringLyr definition to apicnigLyr
       this.layers = this.transformToLayers(this.layers);
       //e2m: getting layers array with name and legend for plugin
-      
+
       let capas = this.layers.map((layer) => {
         return layer instanceof Object ? {  name: layer.name, legend: layer.legend } : { name: layer, legend: layer };
       });
@@ -111,7 +112,8 @@ export default class LyrdropdownControl extends M.Control {
         };
       }
       //e2m: config a helper in Handlebars for embedding conditionals in template
-      Handlebars.registerHelper('ifCond', (v1, v2, options) => {
+      const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
+      insecureHandlebars.registerHelper('ifCond', (v1, v2, options) => {
         return v1 === v2 ? options.fn(this) : options.inverse(this);
       });
 
@@ -321,7 +323,7 @@ export default class LyrdropdownControl extends M.Control {
 
     return (transform[0] === undefined) ? [] : transform;
   }
- 
+
 
   /**
    * This function transform string to M.Layer

@@ -2,6 +2,7 @@
  * @module M/control/QueryAttributesControl
  */
 
+ import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
  import QueryAttributesImplControl from 'impl/queryattributescontrol';
  import template from 'templates/queryattributes';
  import initialView from 'templates/initialview';
@@ -163,7 +164,8 @@
         * Helper for Formatter Elements.
         * Symbol = param * value;
         */
-       Handlebars.registerHelper('pattern', (options) => {
+       const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
+       insecureHandlebars.registerHelper('pattern', (options) => {
          let output = '';
          // for (const k in options.data.root.fields) {
          //   if (!options.data.root.fields[k].isFormatter) continue;
@@ -400,7 +402,8 @@
 
          params.translations = { not_attributes: getValue('not_attributes') };
 
-         Handlebars.registerHelper('formatterStr', (item) => {
+         const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
+         insecureHandlebars.registerHelper('formatterStr', (item) => {
            let symbolPattern = '';
            let numRepeat = 0;
            let output = '';

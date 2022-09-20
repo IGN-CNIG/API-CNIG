@@ -11,7 +11,6 @@ import OLLayerVectorTile from 'ol/layer/VectorTile';
 import OLSourceVectorTile from 'ol/source/VectorTile';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import { getBottomLeft, getWidth } from 'ol/extent';
-import * as LayerType from 'M/layer/Type';
 import TileProvider from 'M/provider/Tile';
 import * as EventType from 'M/event/eventtype';
 import { fromKey } from 'ol/tilecoord';
@@ -120,7 +119,7 @@ class MBTilesVector extends Vector {
      * @private
      * @type {number}
      */
-    this.zIndex_ = ImplMap.Z_INDEX[LayerType.MBTilesVector];
+    this.zIndex_ = ImplMap.Z_INDEX.MBTilesVector;
     /**
      * Visibility of the layer
      * @private

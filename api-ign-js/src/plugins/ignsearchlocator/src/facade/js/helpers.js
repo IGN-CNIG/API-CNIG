@@ -1,8 +1,11 @@
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
+
 const registerHelpers = () => {
-  Handlebars.registerHelper('toUpperCase', (str) => {
+  const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
+  insecureHandlebars.registerHelper('toUpperCase', (str) => {
     return str.toUpperCase();
   });
-  Handlebars.registerHelper('ifCond', (v1, operator, v2, options) => {
+  insecureHandlebars.registerHelper('ifCond', (v1, operator, v2, options) => {
     switch (operator) {
       case '===':
         return (v1 === v2) ? options.fn(this) : options.inverse(this);
@@ -24,7 +27,7 @@ const registerHelpers = () => {
         return options.inverse(this);
     }
   });
-  Handlebars.registerHelper('printType', (type, address, id, municipality, cps) => {
+  insecureHandlebars.registerHelper('printType', (type, address, id, municipality, cps) => {
     let line = `<li id=${id}><span id="info">${address}</span>`;
     // add following lines if asked to show entity type again
     // (but not if type's portal, callejero or Codpost)

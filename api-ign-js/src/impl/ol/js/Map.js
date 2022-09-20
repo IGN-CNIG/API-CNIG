@@ -245,9 +245,9 @@ class Map extends MObject {
         this.facadeMap_.addWFS(layer);
       } else if (layer.type === LayerType.MVT) {
         this.facadeMap_.addMVT(layer);
-      } else if (layer.type === LayerType.MBTiles) {
+      } else if (layer.type === 'MBTiles') {
         this.facadeMap_.addMBTiles(layer);
-      } else if (layer.type === LayerType.MBTilesVector) {
+      } else if (layer.type === 'MBTilesVector') {
         this.facadeMap_.addMBTilesVector(layer);
       } else if (layer.type === LayerType.XYZ) {
         this.facadeMap_.addXYZ(layer);
@@ -885,7 +885,7 @@ class Map extends MObject {
 
     const allLayers = this.layers_;
     const mbtilesLayers = allLayers.filter((layer) => {
-      return (layer.type === LayerType.MBTiles);
+      return (layer.type === 'MBTiles');
     });
 
     if (isNullOrEmpty(filters)) {
@@ -943,13 +943,13 @@ class Map extends MObject {
 
     layers.forEach((layer) => {
       // checks if layer is WFS and was added to the map
-      if (layer.type === LayerType.MBTiles) {
+      if (layer.type === 'MBTiles') {
         if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           layer.setZIndex(layer.getZIndex());
           if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.MBTiles];
+            const zIndex = this.layers_.length + Map.Z_INDEX.MBTiles;
             layer.setZIndex(zIndex);
           }
           if (!existsBaseLayer) {
@@ -994,7 +994,7 @@ class Map extends MObject {
     let filters = filtersParam;
     const allLayers = this.layers_;
     const mbtilesLayers = allLayers.filter((layer) => {
-      return (layer.type === LayerType.MBTilesVector);
+      return (layer.type === 'MBTilesVector');
     });
     if (isNullOrEmpty(filters)) {
       filters = [];
@@ -1048,13 +1048,13 @@ class Map extends MObject {
     const existsBaseLayer = (baseLayers.length > 0);
     layers.forEach((layer) => {
       // checks if layer is WFS and was added to the map
-      if (layer.type === LayerType.MBTilesVector) {
+      if (layer.type === 'MBTilesVector') {
         if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           layer.setZIndex(layer.getZIndex());
           if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.MBTilesVector];
+            const zIndex = this.layers_.length + Map.Z_INDEX.MBTilesVector;
             layer.setZIndex(zIndex);
           }
           if (!existsBaseLayer) {

@@ -3,7 +3,6 @@
  */
 import { isNullOrEmpty, isString, normalize, isArray, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
-import { MBTilesVector } from '../layer/Type';
 import { getValue } from '../i18n/language';
 
 const REGEXP_MBTILES = /MBTiles\*.*/;
@@ -67,7 +66,7 @@ const mbtilesvector = (userParameters) => {
     userParametersArray = [userParametersArray];
   }
   layers = userParametersArray.map((userParam) => {
-    const type = MBTilesVector;
+    const type = 'MBTilesVector';
     const name = getParameter({
       parameter: userParam,
       type: 'string',

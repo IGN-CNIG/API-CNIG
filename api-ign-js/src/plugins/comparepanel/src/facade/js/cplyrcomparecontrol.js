@@ -2,6 +2,7 @@
  * @module M/control/LyrCompareControl
  */
 
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 import LyrcompareImplControl from 'impl/cplyrcomparecontrol';
 import template from 'templates/cplyrcompare';
 import { getValue } from './i18n/language';
@@ -215,7 +216,8 @@ export default class LyrCompareControl extends M.Control {
     }
 
     //config a helper in Handlebars for embedding conditionals in template
-    Handlebars.registerHelper('ifCond', (v1, v2, options) => {
+    const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
+    insecureHandlebars.registerHelper('ifCond', (v1, v2, options) => {
       return v1 === v2 ? options.fn(this) : options.inverse(this);
     });
 
@@ -240,7 +242,7 @@ export default class LyrCompareControl extends M.Control {
             this.comparisonMode = 0;
             this.deactivateCurtain();
             return;
-          }) 
+          })
         } else{
           button.addEventListener('click', evt => {
             if (this.comparisonMode === 0) {
@@ -264,7 +266,7 @@ export default class LyrCompareControl extends M.Control {
               this.updateControls();
               this.getImpl().setComparisonMode(this.comparisonMode);
             }
-          })          
+          })
         }
       });
     }
@@ -501,7 +503,7 @@ export default class LyrCompareControl extends M.Control {
 
 
   manageLyrAvailable(lyrList){
-    
+
     if (this.template === null){
       return;
     }
@@ -650,10 +652,10 @@ export default class LyrCompareControl extends M.Control {
 
 
   /**
-   * 
+   *
    * @param {*} layers
-   * Transform StringLayers o Template Literals to Mapea M.LayerFormato 
-   * 
+   * Transform StringLayers o Template Literals to Mapea M.LayerFormato
+   *
    * WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
    * Tipo de Servicio (WMS/WMTS)
    * Nombre del servicio para la leyenda (acepta espacios y tildes)
@@ -661,13 +663,13 @@ export default class LyrCompareControl extends M.Control {
    * Identificador de capa del Capabilities del servicio
    * Tilematrix
    * Formato de imagen
-   * 
+   *
    * Ejemplo: WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
-   * 
+   *
    * El resto de parámetros los define la función
    * Las capas cargadas tienen asignados zIndex pequeños
-   *  
-   * @returns 
+   *
+   * @returns
    */
   transformToLayers(layers) {
 

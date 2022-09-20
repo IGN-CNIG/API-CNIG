@@ -56,6 +56,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.5",
     "shp-write": "^0.3.2",
     "tokml": "^0.4.0"
   }
