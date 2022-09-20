@@ -539,10 +539,10 @@ export default class InformationControl extends M.impl.Control {
     layerNamesUrls.forEach((layerNameUrl) => {
       const url = layerNameUrl.url.replace('row=-', 'row=').replace('col=-', 'col=');
       const layerName = layerNameUrl.layer;
-      M.proxy(true);
+      M.proxy(false);
       M.remote.get(url).then((response) => {
         popup = this.facadeMap_.getPopup();
-        if (response.code === 200 && response.error === false) {
+        if (response.code === 200) {
           const info = response.text;
           if (InformationControl.insert(info, formato) === true) {
             const formatedInfo = this.formatInfo(info, formato, layerName);
@@ -554,6 +554,7 @@ export default class InformationControl extends M.impl.Control {
             });
           }
         }
+
         contFull += 1;
         if (layerNamesUrls.length === contFull && !M.utils.isNullOrEmpty(popup)) {
           popup.removeTab(loadingInfoTab);
@@ -600,7 +601,11 @@ export default class InformationControl extends M.impl.Control {
               }, 100);
             }
           }
+
+          M.proxy(true);
         }
+      }).catch((err) => {
+        M.proxy(true);
       });
     });
     this.popup_ = popup;
