@@ -32,11 +32,11 @@ const layerinicial = new M.layer.WMS({
 }, {});
 
 
-/* const campamentos = new M.layer.GeoJSON({
+const campamentos = new M.layer.GeoJSON({
   name: 'Campamentos',
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
   extract: true,
-}); */
+});
 
 const printermap = new PrinterMap({
   collapsed: true,
@@ -59,9 +59,10 @@ const mvt = new M.layer.MVT({
     // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/superadmin_carmen_123@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
     name: 'vectortile',
     projection: 'EPSG:3857',
+    extract: true,
 });
 
-map.addLayers(mvt);
+map.addLayers(campamentos);
 
 map.addPlugin(printermap);
 

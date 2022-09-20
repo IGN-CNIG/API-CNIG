@@ -7,7 +7,7 @@ import OLLayerVectorTile from 'ol/layer/VectorTile';
 import { compileSync as compileTemplate } from 'M/util/Template';
 import geojsonPopupTemplate from 'templates/geojson_popup';
 import Popup from 'M/Popup';
-import { isNullOrEmpty, extend, beautifyAttributeName } from 'M/util/Utils';
+import { isNullOrEmpty, extend } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import TileEventType from 'ol/source/TileEventType';
 import TileState from 'ol/TileState';
@@ -211,7 +211,7 @@ class MVT extends Vector {
       const attributes = [];
       propertyKeys.forEach((key) => {
         attributes.push({
-          key: beautifyAttributeName(key),
+          key: key,
           value: properties[key],
         });
       });
