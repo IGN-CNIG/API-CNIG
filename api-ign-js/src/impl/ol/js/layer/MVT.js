@@ -211,7 +211,7 @@ class MVT extends Vector {
       const attributes = [];
       propertyKeys.forEach((key) => {
         attributes.push({
-          key: key,
+          key,
           value: properties[key],
         });
       });

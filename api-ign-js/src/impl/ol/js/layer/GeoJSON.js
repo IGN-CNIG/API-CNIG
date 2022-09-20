@@ -306,7 +306,7 @@ class GeoJSON extends Vector {
         }
         if (addAttribute) {
           attributes.push({
-            key: key,
+            key,
             value: properties[key],
           });
         }
