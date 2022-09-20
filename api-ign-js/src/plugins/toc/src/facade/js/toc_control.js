@@ -56,7 +56,7 @@ export default class TOCControl extends M.Control {
     //   .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true);
     const layers = this.map_.getLayers()
       .filter(layer => layer.transparent !== false && (layer.displayInLayerSwitcher === true ||
-        layer instanceof M.layer.TMS || layer instanceof M.layer.XYZ))
+        layer instanceof M.layer.TMS || layer instanceof M.layer.XYZ) && layer.name !== 'selectLayer' && !layer.name.includes('temp_'))
       .reverse();
     const layersOpts = layers.map((layer) => {
       return {
