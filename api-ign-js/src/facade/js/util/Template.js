@@ -5,8 +5,8 @@ import Handlebars from 'handlebars';
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 import { get as remoteGet } from 'M/util/Remote';
 import { isNullOrEmpty } from 'M/util/Utils';
+import registerHelpers from './handlebarshelpers';
 import { extendsObj, isUndefined, stringToHtml } from './Utils';
-import './handlebarshelpers';
 
 /**
  * @const
@@ -34,6 +34,7 @@ export const compileSync = (string, options) => {
   }
 
   const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
+  registerHelpers(insecureHandlebars);
   const templateFn = insecureHandlebars.compile(string);
   const htmlText = templateFn(templateVars);
   if (parseToHtml !== false) {
@@ -89,6 +90,7 @@ export const get = (templatePath, options) => {
         jsonp: useJsonp,
       }).then((response) => {
         const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
+        registerHelpers(insecureHandlebars);
         templateFn = insecureHandlebars.compile(response.text);
         templates[templatePath] = templateFn;
         success.call(scope, templateFn);

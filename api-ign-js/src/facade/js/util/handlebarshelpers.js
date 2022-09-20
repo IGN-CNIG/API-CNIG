@@ -1,10 +1,6 @@
-import Handlebars from 'handlebars';
-import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 import { getTextFromHtml } from '../util/Utils';
 
-const helpers = () => {
-  const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
-
+const helpers = (insecureHandlebars) => {
   /**
    * Helpers for Handlebars wich compares if the
    * first arguments is greater than the second one
@@ -49,5 +45,5 @@ const helpers = () => {
     return options.inverse(this);
   });
 };
-// Exec the register helpers
-helpers();
+
+export default helpers;
