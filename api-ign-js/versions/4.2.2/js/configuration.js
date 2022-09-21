@@ -1,7 +1,7 @@
 /**
  * IGN API
  * Version 4.2.2
- * Date 19-09-2022
+ * Date 21-09-2022
  */
 
 const backgroundlayersIds = 'mapa,imagen,hibrido'.split(',');
@@ -41,7 +41,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_URL', (location.protocol !== 'file' ? location.protocol : 'https') + '//10.67.33.22:8080/api-core/api/proxy');
+  M.config('PROXY_URL', ((location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https') + '//10.67.33.22:8080/api-core/api/proxy');
 
   /**
    * The path to the Mapea proxy to send
@@ -51,7 +51,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_POST_URL', (location.protocol !== 'file' ? location.protocol : 'https') + '//10.67.33.22:8080/api-core/proxyPost');
+  M.config('PROXY_POST_URL', ((location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https') + '//10.67.33.22:8080/api-core/proxyPost');
 
   /**
    * The path to the Mapea templates
@@ -69,7 +69,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('THEME_URL', (location.protocol !== 'file' ? location.protocol : 'https') + '//10.67.33.22:8080/api-core/assets/');
+  M.config('THEME_URL', ((location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https') + '//10.67.33.22:8080/api-core/assets/');
 
   /**
    * The path to the Mapea theme
@@ -214,7 +214,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @private
    * @type {String}
    */
-  M.config('SQL_WASM_URL', (location.protocol !== 'file' ? location.protocol : 'https') + 'http://10.67.33.22:8080/api-core/wasm/');
+  M.config('SQL_WASM_URL', ((location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https') + 'http://10.67.33.22:8080/api-core/wasm/');
 
   /** IGNSearch List Control
    *

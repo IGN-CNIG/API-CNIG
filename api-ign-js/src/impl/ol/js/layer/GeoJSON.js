@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/GeoJSON
  */
-import { isNullOrEmpty, isObject, beautifyAttributeName, isFunction, includes } from 'M/util/Utils';
+import { isNullOrEmpty, isObject, isFunction, includes } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import Popup from 'M/Popup';
 import { compileSync as compileTemplate } from 'M/util/Template';
@@ -306,7 +306,7 @@ class GeoJSON extends Vector {
         }
         if (addAttribute) {
           attributes.push({
-            key: beautifyAttributeName(key),
+            key,
             value: properties[key],
           });
         }

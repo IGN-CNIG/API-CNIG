@@ -2,10 +2,11 @@
  * @module M/template
  */
 import Handlebars from 'handlebars';
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 import { get as remoteGet } from 'M/util/Remote';
 import { isNullOrEmpty } from 'M/util/Utils';
+import registerHelpers from './handlebarshelpers';
 import { extendsObj, isUndefined, stringToHtml } from './Utils';
-import './handlebarshelpers';
 
 /**
  * @const
@@ -31,7 +32,10 @@ export const compileSync = (string, options) => {
     templateVars = extendsObj(templateVars, options.vars);
     parseToHtml = options.parseToHtml;
   }
-  const templateFn = Handlebars.compile(string);
+
+  const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
+  registerHelpers(insecureHandlebars);
+  const templateFn = insecureHandlebars.compile(string);
   const htmlText = templateFn(templateVars);
   if (parseToHtml !== false) {
     template = stringToHtml(htmlText);
@@ -85,7 +89,9 @@ export const get = (templatePath, options) => {
       remoteGet(templateUrl, null, {
         jsonp: useJsonp,
       }).then((response) => {
-        templateFn = Handlebars.compile(response.text);
+        const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
+        registerHelpers(insecureHandlebars);
+        templateFn = insecureHandlebars.compile(response.text);
         templates[templatePath] = templateFn;
         success.call(scope, templateFn);
       });

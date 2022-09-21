@@ -91,8 +91,6 @@ export default class Georefimage2Control extends M.impl.Control {
         this.encodeWMTS(layer).then((encodedLayer) => {
           success(encodedLayer);
         });
-      } else if (layer.type === M.layer.type.MBTiles) {
-        // none
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
       // eslint-disable-next-line no-underscore-dangle

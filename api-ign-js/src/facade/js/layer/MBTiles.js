@@ -5,7 +5,6 @@ import MBTilesImpl from 'impl/layer/MBTiles';
 import LayerBase from './Layer';
 import { isNullOrEmpty, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
-import * as LayerType from './Type';
 import mbtiles from '../parameter/mbtiles';
 import { getValue } from '../i18n/language';
 /**
@@ -68,12 +67,12 @@ class MBTiles extends LayerBase {
    * the layer was selected
    */
   get type() {
-    return LayerType.MBTiles;
+    return 'MBTiles';
   }
   set type(newType) {
     if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.MBTiles)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.MBTiles).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
+      !isNullOrEmpty(newType) && (newType !== 'MBTiles')) {
+      Exception('El tipo de capa debe ser \''.concat('MBTiles').concat('\' pero se ha especificado \'').concat(newType).concat('\''));
     }
   }
   /**

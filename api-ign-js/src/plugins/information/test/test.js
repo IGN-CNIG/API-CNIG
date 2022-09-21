@@ -72,8 +72,15 @@ const layer5 = new M.layer.WMS({
   visibility: true,
 }, {});
 
+const hidrografia = new M.layer.WMS({
+    url: 'https://servicios.idee.es/wms-inspire/hidrografia',
+    name: 'HY.Network',
+    legend: 'Red hidrográfica',
+    tiled: true,
+});
+
 //map.addLayers([layer1/*, layer2, layer3, layer4*/]);
-map.addLayers([layer5]);
+map.addLayers([hidrografia]);
 map.addPlugin(mp);
 
 map.addPlugin(new M.plugin.FullTOC({
