@@ -59,8 +59,7 @@ export default class TOCControl extends M.Control {
         (layer.displayInLayerSwitcher === true || layer instanceof M.layer.TMS
           || layer instanceof M.layer.XYZ) && layer.name !== 'selectLayer' && layer.name !== '__draw__'
         && layer.name !== 'infocoordinatesLayerFeatures' && layer.name !== 'coordinateresult'
-        && layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1
-        && layer.name !== 'infocoordinatesLayerFeatures')
+        && layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1)
       .reverse();
     const layersOpts = layers.map((layer) => {
       return {
