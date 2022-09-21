@@ -57,8 +57,10 @@ export default class TOCControl extends M.Control {
     const layers = this.map_.getLayers()
       .filter(layer => layer.name !== undefined && layer.transparent !== false &&
         (layer.displayInLayerSwitcher === true || layer instanceof M.layer.TMS
-          || layer instanceof M.layer.XYZ) && layer.name !== 'selectLayer' && !layer.name.includes('temp_')
-        && layer.name !== 'infocoordinatesLayerFeatures' && !layer.name.includes('incidencia_'))
+          || layer instanceof M.layer.XYZ) && layer.name !== 'selectLayer' && layer.name !== '__draw__'
+        && layer.name !== 'infocoordinatesLayerFeatures' && layer.name !== 'coordinateresult'
+        && layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1
+        && layer.name !== 'infocoordinatesLayerFeatures')
       .reverse();
     const layersOpts = layers.map((layer) => {
       return {
