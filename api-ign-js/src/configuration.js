@@ -169,13 +169,13 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
   M.config('GEOPRINT_STATUS', '${geoprint.url}' + '${geoprint.status}');
 
   /**
-   * WMTS configuration
+   * TMS configuration
    *
    * @private
    * @type {object}
    */
-  M.config('wmts', {
-    base: '${wmts.base}',
+  M.config('tms', {
+    base: '${tms.base}',
   });
 
   /**

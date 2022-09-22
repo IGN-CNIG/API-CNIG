@@ -278,7 +278,7 @@ class Map extends Base {
 
     // default WMTS
     if (isNullOrEmpty(params.layers) && !isArray(params.layers)) {
-      this.addWMTS(M.config.wmts.base);
+      this.addTMS(M.config.tms.base);
     }
 
     // center

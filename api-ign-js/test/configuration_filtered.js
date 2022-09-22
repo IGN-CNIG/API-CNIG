@@ -216,8 +216,8 @@ function fun(M_) {
    * @private
    * @type {object}
    */
-  M_.config('wmts', {
-    base: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Callejero*false',
+  M_.config('tms', {
+    base: 'TMS*IGNBaseTodo*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17',
   });
 
   /**
