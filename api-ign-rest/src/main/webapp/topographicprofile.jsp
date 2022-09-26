@@ -46,6 +46,7 @@
             <option value="TR" selected="selected">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
+            <button id="botonEliminar">Eliminar Plugin</button>
         </select>
     </div>
     <div id="mapjs" class="m-container"></div>
