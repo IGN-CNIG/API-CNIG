@@ -77,7 +77,7 @@ class Line extends Simple {
           textAlign: getValue(label.align, featureVariable),
           scale: getValue(label.scale, featureVariable),
           rotateWithView: getValue(label.rotate, featureVariable) || false,
-          textOverflow: getValue(label.textoverflow, featureVariable) || '',
+          overflow: getValue(label.textoverflow, featureVariable) || false,
           minWidth: getValue(label.minwidth, featureVariable) || 0,
           geometry: getValue(label.geometry, featureVariable),
           offsetX: getValue(options.label.offset ? options.label.offset[0] :
@@ -105,9 +105,9 @@ class Line extends Simple {
             isFunction(featureVariable.getGeometry)) {
             style.setGeometry(featureVariable.getGeometry().cspline());
           }
-        } else {
-          style.setText(textPathStyle);
+          textPathStyle.setPlacement('line');
         }
+        style.setText(textPathStyle);
       }
       let fill;
       if (!isNullOrEmpty(options.fill)) {
@@ -168,10 +168,12 @@ class Line extends Simple {
   drawGeometryToCanvas(vectorContext, canvas, style, stroke) {
     let x = Line.getCanvasSize()[0];
     let y = Line.getCanvasSize()[1];
-    vectorContext.drawGeometry(new OLGeomLineString([[0 + (stroke / 2), 0 + (stroke / 2)],
+    vectorContext.drawGeometry(new OLGeomLineString([
+      [0 + (stroke / 2), 0 + (stroke / 2)],
       [(x / 3), (y / 2) - (stroke / 2)],
       [(2 * x) / 3, 0 + (stroke / 2)],
-      [x - (stroke / 2), (y / 2) - (stroke / 2)]]));
+      [x - (stroke / 2), (y / 2) - (stroke / 2)],
+    ]));
     if (!isNullOrEmpty(style)) {
       const width = style.width;
       const ctx = canvas.getContext('2d');
