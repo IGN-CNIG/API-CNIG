@@ -45,7 +45,7 @@ const helpers = (insecureHandlebars) => {
     return options.inverse(this);
   });
 
-  insecureHandlebars.registerHelper('printType', function printType(type, address, id, municipality, cps) {
+  insecureHandlebars.registerHelper('printType', (type, address, id, municipality, cps) => {
     let line = `<li id=${id}><span id="info">${address}</span>`;
     // add following lines if asked to show entity type again
     // (but not if type's portal, callejero or Codpost)
@@ -58,7 +58,7 @@ const helpers = (insecureHandlebars) => {
     return line;
   });
 
-  insecureHandlebars.registerHelper('pattern', function pattern(options) {
+  insecureHandlebars.registerHelper('pattern', (options) => {
     let output = '';
     options.data.root.fields.forEach((field) => {
       if (!field.isFormatter) return;
@@ -72,7 +72,7 @@ const helpers = (insecureHandlebars) => {
     return output;
   });
 
-  insecureHandlebars.registerHelper('formatterStr', function formatterStr(item) {
+  insecureHandlebars.registerHelper('formatterStr', (item) => {
     let symbolPattern = '';
     let numRepeat = 0;
     let output = '';
@@ -84,7 +84,7 @@ const helpers = (insecureHandlebars) => {
     return output;
   });
 
-  insecureHandlebars.registerHelper('ifCond', function ifCond(v1, v2, options) {
+  insecureHandlebars.registerHelper('ifCond', (v1, v2, options) => {
     return v1 === v2 ? options.fn(this) : options.inverse(this);
   });
 };
