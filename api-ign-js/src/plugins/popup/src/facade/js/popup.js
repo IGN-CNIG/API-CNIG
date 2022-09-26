@@ -54,10 +54,16 @@ export default class Popup extends M.Plugin {
      * @private
      * @type {String}
      */
-    if (M.language.getLang() === 'en') {
-      this.url_ = options.url_en || 'template_en';
+
+    const defaultLenguage = {
+      es: 'template_es',
+      en: 'template_en',
+    };
+
+    if (options.helpLink) {
+      this.url_ = options.helpLink[`${M.language.getLang()}`];
     } else {
-      this.url_ = options.url_es || 'template_es';
+      this.url_ = defaultLenguage[`${M.language.getLang()}`];
     }
 
     /**
