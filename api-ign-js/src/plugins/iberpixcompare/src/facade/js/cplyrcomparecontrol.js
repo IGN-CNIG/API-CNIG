@@ -2,7 +2,6 @@
  * @module M/control/LyrCompareControl
  */
 
-import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 import LyrcompareImplControl from 'impl/cplyrcomparecontrol';
 import template from 'templates/cplyrcompare';
 import templateList from 'templates/cplyrcomparelist';
@@ -417,12 +416,6 @@ export default class LyrCompareControl extends M.Control {
         },
       },
     };
-
-    //config a helper in Handlebars for embedding conditionals in template
-    const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
-    insecureHandlebars.registerHelper('ifCond', (v1, v2, options) => {
-      return v1 === v2 ? options.fn(this) : options.inverse(this);
-    });
 
     //template with default options
     const html = M.template.compileSync(templateList, options);

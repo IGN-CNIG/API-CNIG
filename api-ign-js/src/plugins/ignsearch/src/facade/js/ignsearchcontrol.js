@@ -4,7 +4,6 @@
 import IGNSearchImplControl from '../../impl/ol/js/ignsearchcontrol';
 import template from '../../templates/ignsearch';
 import results from '../../templates/results';
-import registerHelpers from './helpers';
 import { getValue } from './i18n/language';
 
 let typingTimer;
@@ -179,7 +178,6 @@ export default class IGNSearchControl extends M.Control {
      * @type {string}
      */
     this.pointStyle = pointStyle;
-    registerHelpers();
   }
   /**
    * This function creates the view

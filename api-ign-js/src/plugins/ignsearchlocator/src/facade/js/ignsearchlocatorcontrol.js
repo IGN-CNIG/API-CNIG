@@ -6,7 +6,6 @@ import template from '../../templates/ignsearchlocator';
 import results from '../../templates/results';
 import xylocator from '../../templates/xylocator';
 import parcela from '../../templates/parcela';
-import registerHelpers from './helpers';
 import { getValue } from './i18n/language';
 
 let typingTimer;
@@ -240,7 +239,6 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {string}
      */
     this.urlParse = null;
-    registerHelpers();
 
 
     /**
@@ -801,6 +799,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       // remove animation class and return to normal font size after loading
       this.resultsBox.classList.remove('g-cartografia-spinner');
       this.resultsBox.style.fontSize = '1em';
+
       const compiledResult = M.template.compileSync(results, {
         vars: {
           places: this.allCandidates,
