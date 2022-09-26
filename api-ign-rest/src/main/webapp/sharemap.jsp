@@ -89,8 +89,6 @@
             url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeBoundary',
             legend: 'Limite administrativo',
-            tiled: false,
-            version: '1.1.1',
         }, {});
 
         const layerUA = new M.layer.WMS({
