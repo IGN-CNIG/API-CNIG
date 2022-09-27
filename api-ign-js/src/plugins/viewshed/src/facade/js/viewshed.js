@@ -5,7 +5,7 @@ import 'assets/css/fonts';
 import 'assets/css/viewshed';
 import ViewShedControl from './viewshedcontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 
 export default class ViewShed extends M.Plugin {
@@ -81,6 +81,18 @@ export default class ViewShed extends M.Plugin {
      * @type {String}
      */
     this.name_ = 'viewshed';
+  }
+
+  /**
+ * change plugin language
+ *
+ * @public
+ * @function
+ * @param {string} lang type language
+ * @api stable
+ */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).viewshed);
   }
 
   /**

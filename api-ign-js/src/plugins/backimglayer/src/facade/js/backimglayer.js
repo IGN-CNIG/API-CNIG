@@ -5,7 +5,7 @@
 import '../assets/css/backimglayer';
 import api from '../../api';
 import BackImgLayerControl from './backimglayercontrol';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class BackImgLayer extends M.Plugin {
   /**
@@ -126,6 +126,19 @@ export default class BackImgLayer extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
   }
+
+  /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).backimglayer);
+  }
+
 
   /**
    * This function adds this plugin into the map

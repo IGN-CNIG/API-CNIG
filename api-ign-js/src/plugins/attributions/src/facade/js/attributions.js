@@ -6,7 +6,7 @@ import '../assets/css/attributions';
 import AttributionsImpl from '../../impl/ol/js/attributions';
 import AttributionsControl from './attributionscontrol';
 import { intersect } from './filter';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 const MODES = {
   mapAttributions: 1, // Map attributions from vector layer
@@ -190,6 +190,18 @@ export default class Attributions extends M.Plugin {
     this.urlAttribute = options.urlAttribute || 'Gobierno de España';
 
     window.addEventListener('resize', e => this.setCollapsiblePanel(e));
+  }
+
+  /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).attributions);
   }
 
   /**

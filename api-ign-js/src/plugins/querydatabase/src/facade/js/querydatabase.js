@@ -5,7 +5,7 @@ import 'assets/css/querydatabase';
 import 'assets/css/fonts';
 import QueryDatabaseControl from './querydatabasecontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class QueryDatabase extends M.Plugin {
   /**
@@ -62,6 +62,18 @@ export default class QueryDatabase extends M.Plugin {
 
     this.styles_ = options.styles;
   }
+
+    /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+     addTranslationPlugin(lang) {
+      addTranslation(lang, M.language.getTranslation(lang).querydatabase);
+    }
 
   /**
    * This function adds this plugin into the map

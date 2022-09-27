@@ -3,6 +3,7 @@
  */
 import 'assets/css/selectiondraw';
 import SelectionDrawControl from './selectiondrawcontrol';
+import { addTranslation } from './i18n/language';
 
 export default class SelectionDraw extends M.Plugin {
   /**
@@ -76,6 +77,18 @@ export default class SelectionDraw extends M.Plugin {
      * @api stable
      */
     this.name = SelectionDraw.NAME;
+  }
+
+  /**
+    * change plugin language
+    *
+    * @public
+    * @function
+    * @param {string} lang type language
+    * @api stable
+    */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).selectiondraw);
   }
 
   /**

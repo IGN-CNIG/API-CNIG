@@ -7,7 +7,7 @@ import 'assets/css/buffer';
 import BufferControl from './buffercontrol';
 import BufferLayer from './bufferLayer';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class Buffer extends M.Plugin {
   /**
@@ -67,6 +67,19 @@ export default class Buffer extends M.Plugin {
      */
     this.metadata_ = api.metadata;
   }
+
+  /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).buffer);
+  }
+
 
   /**
    * This function adds this plugin into the map

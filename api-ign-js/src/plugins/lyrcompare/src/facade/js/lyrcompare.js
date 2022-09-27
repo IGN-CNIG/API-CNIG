@@ -5,7 +5,7 @@ import 'assets/css/lyrcompare';
 import LyrCompareControl from './lyrcomparecontrol';
 import api from '../../api';
 import {
-  getValue
+  getValue, addTranslation
 } from './i18n/language';
 
 export default class LyrCompare extends M.Plugin {
@@ -211,6 +211,18 @@ export default class LyrCompare extends M.Plugin {
       }
     }
   }
+
+    /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+     addTranslationPlugin(lang) {
+      addTranslation(lang, M.language.getTranslation(lang).lyrcompare);
+    }
 
   /**
    * This function adds this plugin into the map

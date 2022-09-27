@@ -5,7 +5,7 @@ import '../assets/css/fulltoc';
 import '../assets/css/fonts';
 import FullTOCControl from './fulltoccontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 const PRECHARGED = {
   groups: [
@@ -244,6 +244,18 @@ export default class FullTOC extends M.Plugin {
      * @type {String}
      */
     this.precharged = options.precharged || PRECHARGED;
+  }
+
+  /**
+     * change plugin language
+     *
+     * @public
+     * @function
+     * @param {string} lang type language
+     * @api stable
+     */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).fulltoc);
   }
 
   /**

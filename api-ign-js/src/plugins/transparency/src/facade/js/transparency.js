@@ -4,7 +4,7 @@
 import 'assets/css/transparency';
 import TransparencyControl from './transparencycontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 // import { isArray } from '../../../../../facade/js/util/Utils';
 
 export default class Transparency extends M.Plugin {
@@ -126,6 +126,18 @@ export default class Transparency extends M.Plugin {
      * @type {boolean}
      */
     this.collapsible = options.collapsible || true;
+  }
+
+  /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+   addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).transparency);
   }
 
   /**

@@ -5,7 +5,7 @@ import 'assets/css/fonts';
 import 'assets/css/infocoordinates';
 import InfocoordinatesControl from './infocoordinatescontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class Infocoordinates extends M.Plugin {
   /**
@@ -80,6 +80,18 @@ export default class Infocoordinates extends M.Plugin {
      */
     this.helpUrl_ = options.helpUrl;
   }
+
+    /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+     addTranslationPlugin(lang) {
+      addTranslation(lang, M.language.getTranslation(lang).infocoordinates);
+    }
 
   /**
    * This function adds this plugin into the map

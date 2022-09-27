@@ -3,7 +3,7 @@
  */
 import '../assets/css/sharemap';
 import ShareMapControl from './sharemapcontrol';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 /**
  * @typedef {Object} ShareMapOptions
@@ -193,6 +193,18 @@ export default class ShareMap extends M.Plugin {
   }
 
   /**
+ * change plugin language
+ *
+ * @public
+ * @function
+ * @param {string} lang type language
+ * @api stable
+ */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).sharemap);
+  }
+
+  /**
    * This function adds this plugin into the map.
    *
    * @public
@@ -241,8 +253,8 @@ export default class ShareMap extends M.Plugin {
   destroy() {
     this.map_.removeControls([this.control]);
     [this.map_, this.control, this.controls_, this.panel_, this.baseUrl_,
-      this.position_, this.title_, this.text_, this.btn_, this.copyBtn_,
-      this.copyBtnHtml_, this.styles_, this.overwriteStyles_, this.tooltip_,
+    this.position_, this.title_, this.text_, this.btn_, this.copyBtn_,
+    this.copyBtnHtml_, this.styles_, this.overwriteStyles_, this.tooltip_,
     ] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null];
   }
 

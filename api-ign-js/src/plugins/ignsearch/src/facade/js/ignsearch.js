@@ -5,7 +5,7 @@ import '../assets/css/ignsearch';
 import '../assets/css/fonts';
 import IGNSearchControl from './ignsearchcontrol';
 import geographicNameType from './constants';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class IGNSearch extends M.Plugin {
   /**
@@ -172,7 +172,7 @@ export default class IGNSearch extends M.Plugin {
     if (M.utils.isString(geocoderCoords)) {
       geocoderCoords = geocoderCoords.split(',');
       geocoderCoords = [Number.parseFloat(geocoderCoords[0]),
-        Number.parseFloat(geocoderCoords[1]),
+      Number.parseFloat(geocoderCoords[1]),
       ];
     }
     /**
@@ -208,6 +208,19 @@ export default class IGNSearch extends M.Plugin {
      */
     this.pointStyle = options.pointStyle || 'pinBlanco';
   }
+
+  /**
+  * change plugin language
+  *
+  * @public
+  * @function
+  * @param {string} lang type language
+  * @api stable
+  */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).ignsearch);
+  }
+
 
   /**
    * This function adds this plugin into the map

@@ -4,6 +4,7 @@
 import 'assets/css/viewhistory';
 import ViewHistoryControl from './viewhistorycontrol';
 import api from '../../api';
+import { addTranslation } from './i18n/language';
 
 export default class ViewHistory extends M.Plugin {
   /**
@@ -46,6 +47,19 @@ export default class ViewHistory extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+  }
+
+
+  /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).viewhistory);
   }
 
   /**

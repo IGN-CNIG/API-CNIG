@@ -5,7 +5,7 @@ import '../assets/css/incicarto';
 import '../assets/css/fonts';
 import IncicartoControl from './incicartocontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class Incicarto extends M.Plugin {
   /**
@@ -94,6 +94,18 @@ export default class Incicarto extends M.Plugin {
      */
     this.metadata_ = api.metadata;
   }
+
+    /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+     addTranslationPlugin(lang) {
+      addTranslation(lang, M.language.getTranslation(lang).incicarto);
+    }
 
   /**
    * This function adds this plugin into the map

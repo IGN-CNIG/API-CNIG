@@ -4,7 +4,7 @@
 import MeasureLength from './measurelength';
 import MeasureArea from './measurearea';
 import MeasureClear from './measureclear';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 import '../assets/css/measurebar';
 
 export default class MeasureBar extends M.Plugin {
@@ -65,6 +65,18 @@ export default class MeasureBar extends M.Plugin {
      * @type {M.control.MeasureClear}
      */
     this.measureClear_ = null;
+  }
+
+  /**
+ * change plugin language
+ *
+ * @public
+ * @function
+ * @param {string} lang type language
+ * @api stable
+ */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).measurebar);
   }
 
   /**

@@ -5,7 +5,7 @@ import 'assets/css/contactlink';
 import 'assets/css/fonts';
 import ContactLinkControl from './contactlinkcontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation} from './i18n/language';
 
 
 export default class ContactLink extends M.Plugin {
@@ -164,6 +164,18 @@ export default class ContactLink extends M.Plugin {
      * @type {M.control.ContactLink}
      */
     this.control_ = new ContactLinkControl(options);
+  }
+
+  /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+   addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).contactlink);
   }
 
   /**

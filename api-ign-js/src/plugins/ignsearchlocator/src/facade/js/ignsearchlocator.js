@@ -6,7 +6,7 @@ import '../assets/css/fonts';
 import api from '../../api';
 import geographicNameType from './constants';
 import IGNSearchLocatorControl from './ignsearchlocatorcontrol';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class IGNSearchLocator extends M.Plugin {
   /**
@@ -211,7 +211,7 @@ export default class IGNSearchLocator extends M.Plugin {
     if (M.utils.isString(geocoderCoords)) {
       geocoderCoords = geocoderCoords.split(',');
       geocoderCoords = [Number.parseFloat(geocoderCoords[0]),
-        Number.parseFloat(geocoderCoords[1]),
+      Number.parseFloat(geocoderCoords[1]),
       ];
     }
     /**
@@ -269,6 +269,19 @@ export default class IGNSearchLocator extends M.Plugin {
 
     this.searchCoordinatesXYZ = options.searchCoordinatesXYZ;
   }
+
+  /**
+ * change plugin language
+ *
+ * @public
+ * @function
+ * @param {string} lang type language
+ * @api stable
+ */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).ignsearchlocator);
+  }
+
 
   /**
    * This function adds this plugin into the map

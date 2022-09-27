@@ -3,7 +3,7 @@
  */
 import 'assets/css/printermap';
 import PrinterMapControl from './printermapcontrol';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class PrinterMap extends M.Plugin {
   /**
@@ -134,6 +134,18 @@ export default class PrinterMap extends M.Plugin {
      * @type {String}
      */
     this.logo_ = parameters.logo || '';
+  }
+
+  /**
+ * change plugin language
+ *
+ * @public
+ * @function
+ * @param {string} lang type language
+ * @api stable
+ */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).printermap);
   }
 
   /**

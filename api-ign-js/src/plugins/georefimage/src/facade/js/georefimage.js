@@ -3,7 +3,7 @@
  */
 import '../assets/css/georefimage';
 import GeorefimageControl from './georefimagecontrol';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class Georefimage extends M.Plugin {
   /**
@@ -102,6 +102,18 @@ export default class Georefimage extends M.Plugin {
      * @type {String}
      */
     this.printStatusUrl_ = parameters.printStatusUrl || M.config.GEOPRINT_STATUS;
+  }
+
+  /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).georefimage);
   }
 
   /**

@@ -5,7 +5,7 @@
 import 'assets/css/iberpixcompare';
 import IberpixCompareControl from './iberpixcomparecontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class IberpixCompare extends M.Plugin {
   /**
@@ -136,6 +136,19 @@ export default class IberpixCompare extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
   }
+
+    /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+     addTranslationPlugin(lang) {
+      addTranslation(lang, M.language.getTranslation(lang).iberpixcompare);
+    }
+  
 
   /**
    * This function adds this plugin into the map

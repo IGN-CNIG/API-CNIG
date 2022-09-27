@@ -41,27 +41,18 @@ export default class PopupControl extends M.Control {
    * @api stable
    */
   async createView(map) {
-    try {
-      setTimeout(() => {
-        if (document.querySelector('.m-panel-popup .m-panel-controls').innerHTML === '') {
-          const divPopup = document.querySelector('.m-panel-popup .m-panel-controls');
-          const htmlObject = document.createElement('div');
-          htmlObject.classList.add('m-control', 'm-container', 'm-popup');
-          htmlObject.innerHTML = M.language.getLang() === 'en' ? templateEN : templateES;
-          divPopup.innerHTML = htmlObject.innerHTML;
-        }
-        throw new Error('No se ha encontrado HTML');
-      }, 2500); // 1000 = 1s
-
-      const response = await M.remote.get(this.url_);
-      let html = response.text;
-      html = html.substring(html.indexOf('<!-- Start Popup Content -->'), html.lastIndexOf('<!-- End Popup Content -->'));
-      const htmlObject = document.createElement('div');
-      htmlObject.classList.add('m-control', 'm-container', 'm-popup');
-      htmlObject.innerHTML = html;
-      return htmlObject;
-    } catch (err) {
-      console.warn(err);
+    if (M.utils.isUrl(this.url_)) {
+      try {
+        const response = await M.remote.get(`${this.url_}`);
+        let html = response.text;
+        html = html.substring(html.indexOf('<!-- Start Popup Content -->'), html.lastIndexOf('<!-- End Popup Content -->'));
+        const htmlObject = document.createElement('div');
+        htmlObject.classList.add('m-control', 'm-container', 'm-popup');
+        htmlObject.innerHTML = html;
+        return htmlObject;
+      } catch (err) {
+        console.warn(err);
+      }
     }
 
     const htmlObject = document.createElement('div');

@@ -4,7 +4,7 @@
 import 'assets/css/topographicprofile';
 import TopographicprofileControl from './topographicprofilecontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class Topographicprofile extends M.Plugin {
   /**
@@ -59,6 +59,18 @@ export default class Topographicprofile extends M.Plugin {
     // this.options_.serviceURL = opts.serviceURL || ((M.config.GGIS_RESTAPI) ? M.config.GGIS_RESTAPI + "/services/elevation" : "http://ggiscloud.guadaltel.com/ggiscloud/restapi/services/elevation");
     //'http://idecan5.grafcan.es/ServicioWPS/mdt';
   }
+
+    /**
+   * change plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+     addTranslationPlugin(lang) {
+      addTranslation(lang, M.language.getTranslation(lang).topographicprofile);
+    }
 
   /**
    * This function adds this plugin into the map

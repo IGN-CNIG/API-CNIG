@@ -4,7 +4,7 @@
 import 'assets/css/calendar';
 import CalendarControl from './calendarcontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 
 export default class Calendar extends M.Plugin {
@@ -70,6 +70,18 @@ export default class Calendar extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+  }
+
+  /**
+  * change plugin language
+  *
+  * @public
+  * @function
+  * @param {string} lang type language
+  * @api stable
+  */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).calendar);
   }
 
   /**

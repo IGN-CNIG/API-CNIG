@@ -4,7 +4,7 @@
 import '../assets/css/fonts';
 import '../assets/css/mousesrs';
 import MouseSRSControl from './mousesrscontrol';
-import { getValue } from './i18n/language';
+import { getValue, addTranslation } from './i18n/language';
 
 export default class MouseSRS extends M.Plugin {
   /**
@@ -92,6 +92,18 @@ export default class MouseSRS extends M.Plugin {
      * @type {string}
      */
     this.helpUrl = options.helpUrl;
+  }
+
+  /**
+ * change plugin language
+ *
+ * @public
+ * @function
+ * @param {string} lang type language
+ * @api stable
+ */
+  addTranslationPlugin(lang) {
+    addTranslation(lang, M.language.getTranslation(lang).mousers);
   }
 
   /**
