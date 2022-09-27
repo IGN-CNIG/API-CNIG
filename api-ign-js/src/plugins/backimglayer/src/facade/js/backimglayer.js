@@ -211,18 +211,27 @@ export default class BackImgLayer extends M.Plugin {
 
         if (!isFirstLayer) layersUrl += 'sumar';
 
-        layersUrl += `${layer.options.type}`;
-        layersUrl += `*${layer.options.url}`;
-        layersUrl += `*${layer.options.name}`;
-        layersUrl += `*${layer.options.matrixSet}`;
-        layersUrl += `*${layer.options.legend}`;
+        if (Object.keys(layer.options).length > 0) {
+          layersUrl += `${layer.options.type}`;
+          layersUrl += `*${layer.options.url}`;
+          layersUrl += `*${layer.options.name}`;
+          layersUrl += `*${layer.options.matrixSet}`;
+          layersUrl += `*${layer.options.legend}`;
 
-        layersUrl += `*${layer.options.transparent}`;
+          layersUrl += `*${layer.options.transparent}`;
 
-        layersUrl += `*${layer.options.format}`;
-        layersUrl += `*${layer.options.displayInLayerSwitcher}`;
-        layersUrl += `*${layer.options.queryable}`;
-        layersUrl += `*${visible}`;
+          layersUrl += `*${layer.options.format}`;
+          layersUrl += `*${layer.options.displayInLayerSwitcher}`;
+          layersUrl += `*${layer.options.queryable}`;
+          layersUrl += `*${visible}`;
+        } else {
+          layersUrl += `${layer.type}`;
+          layersUrl += `*${layer.name}`;
+          layersUrl += `*${layer.url}`;
+          layersUrl += `*${layer.isVisible()}`;
+          layersUrl += `*${layer.transparent}`;
+          layersUrl += `*${layer.tileGridMaxZoom}`;
+        }
       });
     });
 
