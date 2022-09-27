@@ -172,7 +172,7 @@ export default class IGNSearch extends M.Plugin {
     if (M.utils.isString(geocoderCoords)) {
       geocoderCoords = geocoderCoords.split(',');
       geocoderCoords = [Number.parseFloat(geocoderCoords[0]),
-      Number.parseFloat(geocoderCoords[1]),
+        Number.parseFloat(geocoderCoords[1]),
       ];
     }
     /**
