@@ -8,11 +8,10 @@ const map = M.map({
 
 const mp = new Popup({
   position: 'TR',
-  helpLink: {
-    es: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/es.html',
-    en: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/en.html',
-  },
+  url_es: 'https://componentes.cnig.es/ayudaIberpix/es.html',
+  url_en: 'https://componentes.cnig.es/ayudaIberpix/en.html',
 });
+
 
 // map.removeControls('panzoom');
 window.map = map;

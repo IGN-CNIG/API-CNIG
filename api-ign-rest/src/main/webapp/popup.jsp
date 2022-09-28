@@ -104,12 +104,8 @@
         function cambiarTest() {
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            url_es = inputUrl_es.value != "" ? inputUrl_es.value : "";
-            url_en = inputUrl_en.value != "" ? inputUrl_en.value : "";
-            objeto.helpLink = {
-                es: url_es,
-                en: url_en
-            }
+            url_es = inputUrl_es.value != "" ? objeto.url_es = inputUrl_es.value : "";
+            url_en = inputUrl_en.value != "" ? objeto.url_en = inputUrl_en.value : "";
             collapsed = selectCollapsed.options[selectCollapsed.selectedIndex].value;
             collapsed != '' ? objeto.collapsed = (collapsed === "true") : '';
             map.removePlugins(mp);
