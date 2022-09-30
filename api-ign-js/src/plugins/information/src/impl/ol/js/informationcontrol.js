@@ -543,7 +543,7 @@ export default class InformationControl extends M.impl.Control {
       M.remote.get(url).then((response) => {
         popup = this.facadeMap_.getPopup();
         if (response.code === 200) {
-          const info = response.text;
+          const info = this.parseCSSInfo(response.text);
           if (InformationControl.insert(info, formato) === true) {
             const formatedInfo = this.formatInfo(info, formato, layerName);
             infos.push({ formatedInfo, layerName });
@@ -654,5 +654,44 @@ export default class InformationControl extends M.impl.Control {
    */
   getElement() {
     return this.element;
+  }
+
+  parseCSSInfo(text) {
+    let newText = text;
+    try {
+      if (text.indexOf('<style type="text/css">') > -1) {
+        const init = text.split('<style type="text/css">')[0];
+        const style = text.split('<style type="text/css">')[1].split('</style>')[0].trim();
+        const finish = text.split('<style type="text/css">')[1].split('</style>')[1];
+        let newStyle = '';
+        style.split('{').forEach((term) => {
+          if (term.indexOf('}') > -1) {
+            const part1 = term.split('}')[0];
+            let part2 = term.split('}')[1].trim();
+            if (part2.length === 0) {
+              newStyle += `${part1} }`;
+            } else {
+              part2 = part2.split(',').join(', .m-information-content-info .m-information-content-info-body');
+              newStyle += `${part1} } .m-information-content-info .m-information-content-info-body ${part2} {`;
+            }
+          } else {
+            const newTerm = term.split(',').join(', .m-information-content-info .m-information-content-info-body');
+            newStyle += `.m-information-content-info .m-information-content-info-body ${newTerm} {`;
+          }
+        });
+
+        newText = `${init} <style type="text/css"> ${newStyle} </style> ${finish}`;
+      }
+
+      if (newText.indexOf('<link rel="stylesheet"') > -1) {
+        const init = newText.split('<link rel="stylesheet"')[0];
+        const finish = newText.split('<link rel="stylesheet"')[1].split('.css">')[1];
+        newText = init + finish;
+      }
+    } catch (err) {
+      newText = text;
+    }
+
+    return newText;
   }
 }
