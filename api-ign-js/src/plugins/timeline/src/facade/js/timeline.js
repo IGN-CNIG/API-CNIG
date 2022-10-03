@@ -4,7 +4,10 @@
 import 'assets/css/timeline';
 import TimelineControl from './timelinecontrol';
 import api from '../../api';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class Timeline extends M.Plugin {
   /**
@@ -104,17 +107,20 @@ export default class Timeline extends M.Plugin {
     this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
-   /**
-   * change plugin language
+  /**
+   * Return plugin language
    *
    * @public
    * @function
    * @param {string} lang type language
    * @api stable
    */
-    addTranslationPlugin(lang) {
-      addTranslation(lang, M.language.getTranslation(lang).timeline);
+   static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
     }
+    return M.language.getTranslation(lang).timeline;
+  }
 
   /**
    * This function adds this plugin into the map

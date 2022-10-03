@@ -6,7 +6,10 @@ import '../assets/css/attributions';
 import AttributionsImpl from '../../impl/ol/js/attributions';
 import AttributionsControl from './attributionscontrol';
 import { intersect } from './filter';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 const MODES = {
   mapAttributions: 1, // Map attributions from vector layer
@@ -193,15 +196,18 @@ export default class Attributions extends M.Plugin {
   }
 
   /**
-   * change plugin language
+   * Return plugin language
    *
    * @public
    * @function
    * @param {string} lang type language
    * @api stable
    */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).attributions);
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).attributions;
   }
 
   /**

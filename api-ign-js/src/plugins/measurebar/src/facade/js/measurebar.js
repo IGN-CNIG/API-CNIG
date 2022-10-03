@@ -4,8 +4,11 @@
 import MeasureLength from './measurelength';
 import MeasureArea from './measurearea';
 import MeasureClear from './measureclear';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
 import '../assets/css/measurebar';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class MeasureBar extends M.Plugin {
   /**
@@ -68,15 +71,18 @@ export default class MeasureBar extends M.Plugin {
   }
 
   /**
- * change plugin language
- *
- * @public
- * @function
- * @param {string} lang type language
- * @api stable
- */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).measurebar);
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).measurebar;
   }
 
   /**

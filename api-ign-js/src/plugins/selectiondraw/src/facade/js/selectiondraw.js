@@ -3,7 +3,10 @@
  */
 import 'assets/css/selectiondraw';
 import SelectionDrawControl from './selectiondrawcontrol';
-import { addTranslation } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
+import { getValue } from './i18n/language';
 
 export default class SelectionDraw extends M.Plugin {
   /**
@@ -80,15 +83,18 @@ export default class SelectionDraw extends M.Plugin {
   }
 
   /**
-    * change plugin language
-    *
-    * @public
-    * @function
-    * @param {string} lang type language
-    * @api stable
-    */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).selectiondraw);
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).selectiondraw;
   }
 
   /**
@@ -107,7 +113,7 @@ export default class SelectionDraw extends M.Plugin {
       position: M.ui.position[this.position],
       collapsedButtonClass: 'g-plugin-selectordraw-editar',
       className: 'm-selectiondraw',
-      tooltip: 'Búsqueda por geometría',
+      tooltip: getValue('tooltip'),
     });
     this.panel_.addControls(this.control_);
     map.addPanels(this.panel_);

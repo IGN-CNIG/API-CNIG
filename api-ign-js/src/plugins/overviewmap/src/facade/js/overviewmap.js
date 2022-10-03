@@ -4,7 +4,9 @@
 import 'assets/css/overviewmap';
 import OverviewMapControl from './overviewmapcontrol';
 import api from '../../api';
-import { addTranslation } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class OverviewMap extends M.Plugin {
   /**
@@ -102,17 +104,19 @@ export default class OverviewMap extends M.Plugin {
   }
 
   /**
- * change plugin language
- *
- * @public
- * @function
- * @param {string} lang type language
- * @api stable
- */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).overviewmap);
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).overviewmap;
   }
-
 
   /**
    * This function adds this plugin into the map

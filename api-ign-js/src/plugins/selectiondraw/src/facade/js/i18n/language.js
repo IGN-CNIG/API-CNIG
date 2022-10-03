@@ -41,7 +41,10 @@ export const addTranslation = (lang, json) => {
  * @api
  */
 export const getTranslation = (lang) => {
-  return translations[lang];
+  if (lang === 'es' || lang === 'en') {
+    return translations[lang];
+  }
+  return M.language.getTranslation(lang).selectiondraw;
 };
 
 /**

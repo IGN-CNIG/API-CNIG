@@ -5,7 +5,10 @@
 import '../assets/css/selectionzoom';
 import api from '../../api';
 import SelectionZoomControl from './selectionzoomcontrol';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class SelectionZoom extends M.Plugin {
   /**
@@ -134,15 +137,18 @@ export default class SelectionZoom extends M.Plugin {
   }
 
   /**
- * change plugin language
- *
- * @public
- * @function
- * @param {string} lang type language
- * @api stable
- */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).selectionzoom);
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).selectionzoom;
   }
 
   /**

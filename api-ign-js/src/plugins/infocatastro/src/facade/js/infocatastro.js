@@ -4,8 +4,10 @@
 import 'assets/css/infocatastro';
 import InfoCatastroControl from './infocatastrocontrol';
 import api from '../../api';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class InfoCatastro extends M.Plugin {
   /**
@@ -74,15 +76,18 @@ export default class InfoCatastro extends M.Plugin {
   }
 
   /**
-  * change plugin language
-  *
-  * @public
-  * @function
-  * @param {string} lang type language
-  * @api stable
-  */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).infocatastro);
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).infocatastro;
   }
 
   /**

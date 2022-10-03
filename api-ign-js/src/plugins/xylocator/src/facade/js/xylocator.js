@@ -3,7 +3,10 @@
  */
 import '../assets/css/xylocator';
 import XYLocatorControl from './xylocatorcontrol';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 /**
  * @classdesc
@@ -69,15 +72,18 @@ export default class XYLocator extends M.Plugin {
   }
 
   /**
- * change plugin language
- *
- * @public
- * @function
- * @param {string} lang type language
- * @api stable
- */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).xylocator);
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).xylocator;
   }
 
   /**

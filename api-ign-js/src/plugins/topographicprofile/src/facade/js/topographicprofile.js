@@ -4,7 +4,10 @@
 import 'assets/css/topographicprofile';
 import TopographicprofileControl from './topographicprofilecontrol';
 import api from '../../api';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class Topographicprofile extends M.Plugin {
   /**
@@ -60,17 +63,20 @@ export default class Topographicprofile extends M.Plugin {
     //'http://idecan5.grafcan.es/ServicioWPS/mdt';
   }
 
-    /**
-   * change plugin language
+  /**
+   * Return plugin language
    *
    * @public
    * @function
    * @param {string} lang type language
    * @api stable
    */
-     addTranslationPlugin(lang) {
-      addTranslation(lang, M.language.getTranslation(lang).topographicprofile);
+   static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
     }
+    return M.language.getTranslation(lang).topographicprofile;
+  }
 
   /**
    * This function adds this plugin into the map

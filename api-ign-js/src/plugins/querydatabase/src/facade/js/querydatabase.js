@@ -4,8 +4,11 @@
 import 'assets/css/querydatabase';
 import 'assets/css/fonts';
 import QueryDatabaseControl from './querydatabasecontrol';
-import api from '../../api';
-import { getValue, addTranslation } from './i18n/language';
+// import api from '../../api';
+import { getValue } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class QueryDatabase extends M.Plugin {
   /**
@@ -63,17 +66,20 @@ export default class QueryDatabase extends M.Plugin {
     this.styles_ = options.styles;
   }
 
-    /**
-   * change plugin language
+  /**
+   * Return plugin language
    *
    * @public
    * @function
    * @param {string} lang type language
    * @api stable
    */
-     addTranslationPlugin(lang) {
-      addTranslation(lang, M.language.getTranslation(lang).querydatabase);
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
     }
+    return M.language.getTranslation(lang).querydatabase;
+  }
 
   /**
    * This function adds this plugin into the map
@@ -94,7 +100,10 @@ export default class QueryDatabase extends M.Plugin {
       tooltip: getValue('tooltip'),
     });
 
-    this.control_ = new QueryDatabaseControl(this.collapsed_, this.position_, this.connection_, this.styles_);
+    this.control_ = new QueryDatabaseControl(
+      this.collapsed_, this.position_, this.connection_,
+      this.styles_,
+    );
     this.controls_.push(this.control_);
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

@@ -7,7 +7,10 @@ import 'assets/css/buffer';
 import BufferControl from './buffercontrol';
 import BufferLayer from './bufferLayer';
 import api from '../../api';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class Buffer extends M.Plugin {
   /**
@@ -69,15 +72,18 @@ export default class Buffer extends M.Plugin {
   }
 
   /**
-   * change plugin language
+   * Return plugin language
    *
    * @public
    * @function
    * @param {string} lang type language
    * @api stable
    */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).buffer);
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).buffer;
   }
 
 

@@ -5,8 +5,11 @@ import 'assets/css/lyrcompare';
 import LyrCompareControl from './lyrcomparecontrol';
 import api from '../../api';
 import {
-  getValue, addTranslation
+  getValue
 } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class LyrCompare extends M.Plugin {
   /**
@@ -212,17 +215,20 @@ export default class LyrCompare extends M.Plugin {
     }
   }
 
-    /**
-   * change plugin language
+  /**
+   * Return plugin language
    *
    * @public
    * @function
    * @param {string} lang type language
    * @api stable
    */
-     addTranslationPlugin(lang) {
-      addTranslation(lang, M.language.getTranslation(lang).lyrcompare);
+   static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
     }
+    return M.language.getTranslation(lang).lyrcompare;
+  }
 
   /**
    * This function adds this plugin into the map

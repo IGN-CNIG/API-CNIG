@@ -5,8 +5,10 @@ import 'assets/css/contactlink';
 import 'assets/css/fonts';
 import ContactLinkControl from './contactlinkcontrol';
 import api from '../../api';
-import { getValue, addTranslation} from './i18n/language';
+import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class ContactLink extends M.Plugin {
   /**
@@ -167,16 +169,19 @@ export default class ContactLink extends M.Plugin {
   }
 
   /**
-   * change plugin language
+   * Return plugin language
    *
    * @public
    * @function
    * @param {string} lang type language
    * @api stable
    */
-   addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).contactlink);
-  }
+     static getJSONTranslations(lang) {
+      if (lang === 'en' || lang === 'es') {
+        return (lang === 'en') ? en : es;
+      }
+      return M.language.getTranslation(lang).contactlink;
+    }
 
   /**
    * This function adds this plugin into the map

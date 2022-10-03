@@ -5,7 +5,10 @@ import 'assets/css/queryattributes';
 import 'assets/css/fonts';
 import QueryAttributesControl from './queryattributescontrol';
 import api from '../../api';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class QueryAttributes extends M.Plugin {
   /**
@@ -74,18 +77,20 @@ export default class QueryAttributes extends M.Plugin {
     this.metadata_ = api.metadata;
   }
 
-    /**
-   * change plugin language
+  /**
+   * Return plugin language
    *
    * @public
    * @function
    * @param {string} lang type language
    * @api stable
    */
-     addTranslationPlugin(lang) {
-      addTranslation(lang, M.language.getTranslation(lang).queryattributes);
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
     }
-  
+    return M.language.getTranslation(lang).queryattributes;
+  }
 
   /**
    * This function adds this plugin into the map

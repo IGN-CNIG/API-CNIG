@@ -4,8 +4,10 @@
 import 'assets/css/popup';
 import PopupControl from './popupcontrol';
 import api from '../../api';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class Popup extends M.Plugin {
   /**
@@ -54,7 +56,9 @@ export default class Popup extends M.Plugin {
      * @private
      * @type {String}
      */
-    if (M.language.getLang() === 'en') {
+    if (options.helpLink && Object.keys(options.helpLink).length > 0) {
+      this.url_ = options.helpLink[`${M.language.getLang()}`];
+    } else if (M.language.getLang() === 'en') {
       this.url_ = options.url_en || 'template_en';
     } else {
       this.url_ = options.url_es || 'template_es';
@@ -84,15 +88,18 @@ export default class Popup extends M.Plugin {
   }
 
   /**
- * change plugin language
- *
- * @public
- * @function
- * @param {string} lang type language
- * @api stable
- */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).popup);
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).popup;
   }
 
   /**

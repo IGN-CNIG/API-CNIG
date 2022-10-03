@@ -1,4 +1,3 @@
 {
-  "tooltip": "Más información",
-  "exception_popupcontrol": "La implementación usada no puede crear controles PopupControl"
- }
+    "exception_predefinedzoomcontrol": "La implementación usada no puede crear controles PredefinedZoomControl"
+}

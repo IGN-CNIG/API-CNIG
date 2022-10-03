@@ -5,8 +5,10 @@ import 'assets/css/fonts';
 import 'assets/css/viewshed';
 import ViewShedControl from './viewshedcontrol';
 import api from '../../api';
-import { getValue, addTranslation } from './i18n/language';
+import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class ViewShed extends M.Plugin {
   /**
@@ -84,15 +86,18 @@ export default class ViewShed extends M.Plugin {
   }
 
   /**
- * change plugin language
- *
- * @public
- * @function
- * @param {string} lang type language
- * @api stable
- */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).viewshed);
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).viewshed;
   }
 
   /**

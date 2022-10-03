@@ -3,7 +3,9 @@
  */
 import '../assets/css/zoomextent';
 import ZoomExtentControl from './zoomextentcontrol';
-import { addTranslation } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class ZoomExtent extends M.Plugin {
   /**
@@ -42,15 +44,18 @@ export default class ZoomExtent extends M.Plugin {
   }
 
   /**
- * change plugin language
- *
- * @public
- * @function
- * @param {string} lang type language
- * @api stable
- */
-  addTranslationPlugin(lang) {
-    addTranslation(lang, M.language.getTranslation(lang).zoomextent);
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).zoomextent;
   }
 
   /**
