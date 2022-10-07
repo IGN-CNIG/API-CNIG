@@ -10,7 +10,7 @@ const map = M.map({
   center: [-467062.8225, 4683459.6216],
   //layers: ['OSM'],
   //projection: 'EPSG:4326*d',
-  /*layers: [
+  layers: [
     new M.layer.XYZ({
       url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
       name: 'OI.OrthoimageCoverage',
@@ -20,8 +20,9 @@ const map = M.map({
       displayInLayerSwitcher: false,
       queryable: false,
       visible: true,
+      tileGridMaxZoom: 19,
     }),
-  ],*/
+  ],
 });
 
 const layerinicial = new M.layer.WMS({
@@ -72,14 +73,14 @@ map.addPlugin(printermap);
   decimalUTMcoord: 2,
 }));*/
 
-/*map.addPlugin(new M.plugin.IGNSearchLocator({
+map.addPlugin(new M.plugin.IGNSearchLocator({
   servicesToSearch: 'gn',
   searchPosition: 'geocoder,nomenclator',
   maxResults: 10,
   isCollapsed: false,
   position: 'TL',
   reverse: true,
-}));*/
+}));
 
 /*map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
