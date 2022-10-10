@@ -742,23 +742,36 @@ export default class PrinterMapControl extends M.impl.Control {
     const layerOpacity = olLayer.getOpacity();
     let encodedFeatures = [];
     let style = '';
+    let index = 1;
+    let indexText = 1;
+    let indexGeom = 1;
+    const stylesNames = {};
+    const stylesNamesText = {};
     features.forEach((feature) => {
       let encodedFeature = null;
       if (feature.getGeometry().getType().toLowerCase() === 'geometrycollection') {
-        encodedFeature = this.encodeGeometryCollection_(layer, feature, style);
+        encodedFeature = this.encodeGeometryCollection_(layer, feature, style, index, indexGeom);
         if (encodedFeature.geojson.length > 0) {
           encodedFeatures = encodedFeatures.concat(encodedFeature.geojson);
           style += encodedFeature.style;
+          index += encodedFeature.plusIndex;
+          indexGeom += encodedFeature.plusIndexGeom;
         }
       } else {
-        encodedFeature = this.encodeFeature_(layer, feature, style);
+        encodedFeature = this.encodeFeature_(
+          layer, feature, style, index,
+          indexText, indexGeom, stylesNames, stylesNamesText,
+        );
+
         if (encodedFeature.geojson !== null) {
           encodedFeatures.push(encodedFeature.geojson);
-          style += encodedFeature.style;
+          style = encodedFeature.style;
+          index += encodedFeature.plusIndex;
+          indexGeom += encodedFeature.plusIndexGeom;
+          indexText += encodedFeature.plusIndexText;
         }
       }
     }, this);
-
     if (style !== '') {
       style = JSON.parse(style.concat('}'));
     } else {
@@ -784,7 +797,7 @@ export default class PrinterMapControl extends M.impl.Control {
     return encodedLayer;
   }
 
-  encodeFeature_(layer, feature, style) {
+  encodeFeature_(layer, feature, style, index, indexText, indexGeom, stylesNames, stylesNamesText) {
     let res = null;
     const projection = this.facadeMap_.getProjection();
     const olLayer = layer.getImpl().getOL3Layer();
@@ -795,11 +808,9 @@ export default class PrinterMapControl extends M.impl.Control {
     const resolution = this.facadeMap_.getMapImpl().getView().getResolution();
     let nameFeature;
     let filter;
-    let index = 1;
-    let indexText = 1;
-    let indexGeom = 1;
-    const stylesNames = {};
-    const stylesNamesText = {};
+    let plusIndex = 0;
+    let plusIndexText = 0;
+    let plusIndexGeom = 0;
     const geometry = feature.getGeometry();
     let featureStyle;
     const fStyle = feature.getStyle();
@@ -992,26 +1003,27 @@ export default class PrinterMapControl extends M.impl.Control {
         const styleTextStr = JSON.stringify(styleText);
         let styleName = stylesNames[styleStr];
         let styleNameText = stylesNamesText[styleTextStr];
-
         if (M.utils.isUndefined(styleName) || M.utils.isUndefined(styleNameText)) {
           const symbolizers = [];
           let flag = 0;
           if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
             M.utils.isUndefined(styleName)) {
             styleName = indexGeom;
+            // eslint-disable-next-line no-param-reassign
             stylesNames[styleStr] = styleName;
             flag = 1;
             symbolizers.push(styleStr);
-            indexGeom += 1;
-            index += 1;
+            plusIndexGeom += 1;
+            plusIndex += 1;
           }
           if (!M.utils.isNullOrEmpty(text) && M.utils.isUndefined(styleNameText)) {
             styleNameText = indexText;
+            // eslint-disable-next-line no-param-reassign
             stylesNamesText[styleTextStr] = styleNameText;
             symbolizers.push(styleTextStr);
-            indexText += 1;
+            plusIndexText += 1;
             if (flag === 0) {
-              index += 1;
+              plusIndex += 1;
               symbolizers.push(styleStr);
             }
           }
@@ -1057,19 +1069,21 @@ export default class PrinterMapControl extends M.impl.Control {
       }
     }
 
-    return { style: newStyle, geojson: res };
+    return {
+      style: newStyle, geojson: res, plusIndex, plusIndexText, plusIndexGeom,
+    };
   }
 
-  encodeGeometryCollection_(layer, gc, style) {
+  encodeGeometryCollection_(layer, gc, style, index, indexGeom) {
     const res = [];
     const stylesNames = {};
     let nameFeature;
     let bbox = this.facadeMap_.getBbox();
     bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
     let filter;
-    let index = 1;
-    let indexGeom = 1;
     let newStyle = `${style}`;
+    let plusIndex = 0;
+    let plusIndexGeom = 0;
     gc.getGeometry().getGeometries().forEach((geometry) => {
       let parseType;
       if (geometry.getType().toLowerCase() === 'multipolygon') {
@@ -1103,8 +1117,8 @@ export default class PrinterMapControl extends M.impl.Control {
               styleName = indexGeom;
               stylesNames[styleStr] = styleName;
               symbolizers.push(styleStr);
-              indexGeom += 1;
-              index += 1;
+              plusIndexGeom += 1;
+              plusIndex += 1;
             }
 
             if (styleName === undefined) {
@@ -1140,7 +1154,9 @@ export default class PrinterMapControl extends M.impl.Control {
       }
     });
 
-    return { style: newStyle, geojson: res };
+    return {
+      style: newStyle, geojson: res, plusIndex, plusIndexGeom,
+    };
   }
 
   /**

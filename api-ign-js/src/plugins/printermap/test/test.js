@@ -82,9 +82,9 @@ map.addPlugin(new M.plugin.IGNSearchLocator({
   reverse: true,
 }));
 
-/*map.addPlugin(new M.plugin.Vectors({
+map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
-}));*/
+}));
 
 /*map.addPlugin(new M.plugin.FullTOC({
   position: 'TR',
