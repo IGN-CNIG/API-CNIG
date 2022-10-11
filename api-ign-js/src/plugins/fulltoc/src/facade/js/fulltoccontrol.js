@@ -968,7 +968,7 @@ export default class FullTOCControl extends M.Control {
       allLayers.forEach((layer) => {
         let insideService = false;
         allServices.forEach((service) => {
-          if (service.type === layer.type && service.url === layer.url) {
+          if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
             if (service.white_list !== undefined && service.white_list.length > 0 &&
               service.white_list.indexOf(layer.name) > -1 &&
               layerNames.indexOf(layer.name) === -1) {
@@ -995,7 +995,7 @@ export default class FullTOCControl extends M.Control {
           allLayers.forEach((layer) => {
             let insideService = false;
             group.services.forEach((service) => {
-              if (service.type === layer.type && service.url === layer.url) {
+              if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
                 if (service.white_list !== undefined && service.white_list.length > 0 &&
                   service.white_list.indexOf(layer.name) > -1 &&
                   layerNames.indexOf(layer.name) === -1) {
@@ -1331,5 +1331,9 @@ export default class FullTOCControl extends M.Control {
     document.querySelector('#m-fulltoc-addservices-results').innerHTML = '';
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
     document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = '';
+  }
+
+  checkUrls(url1, url2) {
+    return url1 === url2 || (url1.indexOf(url2) > -1) || (url2.indexOf(url1) > -1);
   }
 }

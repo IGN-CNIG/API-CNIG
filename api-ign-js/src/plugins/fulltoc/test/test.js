@@ -22,7 +22,7 @@ const precharged = {
           name: 'Unidades administrativas',
           type: 'WMS',
           url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-          white_list: ['AU.AdministrativeBoundary', 'AU.AdministrativeUnit'],
+          white_list: ['AU.AdministrativeBoundary'/*, 'AU.AdministrativeUnit'*/],
         },
         {
           name: 'Nombres geográficos',
@@ -178,11 +178,11 @@ const precharged = {
 };
 
 const mp = new FullTOC({
-  collapsed: true,
+  collapsed: false,
   position: 'TR',
   https: true,
   http: true,
-  // precharged,
+  precharged,
   // precharged: {},
   codsi: true,
 });
@@ -224,7 +224,7 @@ const layer5 = new M.layer.WMS({
   visibility: true,
 }, {});
 
-map.addLayers([layer5]);
+// map.addLayers([layer5]);
 
 map.addPlugin(new M.plugin.Information({
   position: 'TR',

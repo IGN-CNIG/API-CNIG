@@ -6,6 +6,8 @@ import RescaleControl from './rescalecontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class Rescale extends M.Plugin {
   /**
@@ -77,6 +79,21 @@ export default class Rescale extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).rescale;
   }
 
   /**

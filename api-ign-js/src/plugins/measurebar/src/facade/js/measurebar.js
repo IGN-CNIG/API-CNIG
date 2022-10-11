@@ -7,6 +7,9 @@ import MeasureClear from './measureclear';
 import { getValue } from './i18n/language';
 import '../assets/css/measurebar';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class MeasureBar extends M.Plugin {
   /**
    * @classdesc
@@ -65,6 +68,21 @@ export default class MeasureBar extends M.Plugin {
      * @type {M.control.MeasureClear}
      */
     this.measureClear_ = null;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).measurebar;
   }
 
   /**

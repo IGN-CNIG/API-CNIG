@@ -9,7 +9,7 @@
   "scale": {
     "title": "Escala",
     "scale": "Escala",
-    "level": "Nivel"
+    "level": "Nivel de zoom"
   },
   "getfeatureinfo": {
     "info": "Información",

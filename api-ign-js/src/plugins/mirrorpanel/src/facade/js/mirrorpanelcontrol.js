@@ -214,7 +214,7 @@ export default class MirrorpanelControl extends M.Control {
     layersArray.forEach((baseLayer, idx) => {
       let backgroundLayers = baseLayer.split('sumar');
       backgroundLayers = backgroundLayers.map((urlLayer) => {
-        const mapeaLayer = new M.layer.WMTS(urlLayer);
+        const mapeaLayer = (urlLayer.slice(0,3) === 'TMS') ? new M.layer.TMS(urlLayer) : new M.layer.WMTS(urlLayer);
         return mapeaLayer;
       });
       const mapeaLyrsObject = {
@@ -335,7 +335,6 @@ export default class MirrorpanelControl extends M.Control {
         if (itemPlug.metadata_) {
           if (itemPlug.metadata_.name === "FullTOC") {
             //FullTOC
-            console.log(itemPlug)
             plugin4map = new M.plugin.FullTOC({
               http: itemPlug.http,
               https: itemPlug.https,

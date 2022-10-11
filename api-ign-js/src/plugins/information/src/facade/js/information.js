@@ -6,6 +6,9 @@ import api from '../../api';
 import InformationControl from './informationcontrol';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Information extends M.Plugin {
   /**
    * @classdesc
@@ -95,6 +98,21 @@ export default class Information extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).information;
   }
 
   /**

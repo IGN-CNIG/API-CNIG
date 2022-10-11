@@ -5,6 +5,9 @@ import '../assets/css/sharemap';
 import ShareMapControl from './sharemapcontrol';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 /**
  * @typedef {Object} ShareMapOptions
  * @property {number} [baseUrl] Base url of the shared map.
@@ -190,6 +193,21 @@ export default class ShareMap extends M.Plugin {
       * @type @type {bool}
       */
     this.urlAPI_ = options.urlAPI || false;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).sharemap;
   }
 
   /**

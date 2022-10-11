@@ -5,6 +5,9 @@ import '../assets/css/georefimage2';
 import Georefimage2Control from './georefimage2control';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Georefimage2 extends M.Plugin {
   /**
    * @classdesc
@@ -102,6 +105,21 @@ export default class Georefimage2 extends M.Plugin {
      * @type {String}
      */
     this.printStatusUrl_ = parameters.printStatusUrl || M.config.GEOPRINT_STATUS;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).georefimage2;
   }
 
   /**

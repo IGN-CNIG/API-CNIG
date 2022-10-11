@@ -8,9 +8,15 @@ const map = M.map({
 
 const mp = new Popup({
   position: 'TR',
-  url_es: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/es.html',
-  url_en: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/en.html',
+  helpLink: {
+    es: 'https://componentes.cnig.es/ayudaIberpix/es.html',
+    en: 'https://componentes.cnig.es/ayudaIberpix/en.html',
+  },
+  /* Deprecated */
+  // url_es: 'https://componentes.cnig.es/ayudaIberpix/es.html',
+  // url_en: 'https://componentes.cnig.es/ayudaIberpix/en.html',
 });
+
 
 // map.removeControls('panzoom');
 window.map = map;

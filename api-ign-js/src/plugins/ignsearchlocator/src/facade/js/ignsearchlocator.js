@@ -8,6 +8,9 @@ import geographicNameType from './constants';
 import IGNSearchLocatorControl from './ignsearchlocatorcontrol';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class IGNSearchLocator extends M.Plugin {
   /**
    * @classdesc
@@ -269,6 +272,22 @@ export default class IGNSearchLocator extends M.Plugin {
 
     this.searchCoordinatesXYZ = options.searchCoordinatesXYZ;
   }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).ignsearchlocator;
+  }
+
 
   /**
    * This function adds this plugin into the map

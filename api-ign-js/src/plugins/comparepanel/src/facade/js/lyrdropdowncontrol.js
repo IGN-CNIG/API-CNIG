@@ -2,7 +2,6 @@
  * @module M/control/LyrdropdownControl
  */
 
-import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 import LyrdropdownImplControl from 'impl/lyrdropdowncontrol';
 import template from 'templates/lyrdropdown';
 import { getValue } from './i18n/language'; //e2m: Multilanguage support. Alias -> getValue is too generic
@@ -111,11 +110,6 @@ export default class LyrdropdownControl extends M.Control {
           },
         };
       }
-      //e2m: config a helper in Handlebars for embedding conditionals in template
-      const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
-      insecureHandlebars.registerHelper('ifCond', (v1, v2, options) => {
-        return v1 === v2 ? options.fn(this) : options.inverse(this);
-      });
 
       this.template = M.template.compileSync(template, options);
       //Si no hay capas a las que aplicar la transparencia, el plugin no funciona e informa

@@ -4,7 +4,10 @@
 import 'assets/css/mirrorpanel';
 import MirrorpanelControl from './mirrorpanelcontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';   //e2m: Multilanguage support
+import { getValue } from './i18n/language';
+
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class Mirrorpanel extends M.Plugin {
   /**
@@ -175,6 +178,21 @@ export default class Mirrorpanel extends M.Plugin {
      */
     this.metadata_ = api.metadata;
   }
+
+    /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+     static getJSONTranslations(lang) {
+      if (lang === 'en' || lang === 'es') {
+        return (lang === 'en') ? en : es;
+      }
+      return M.language.getTranslation(lang).mirrorpanel;
+    }
 
   /**
    * This function adds this plugin into the map

@@ -107,7 +107,7 @@ class Features extends Base {
         }
         if (clickedFeatures.length === 0 && prevFeatures.length > 0) {
           this.unselectFeatures(prevFeatures, layer, evt);
-        } else if (clickedFeatures.length > 0) {
+        } else if (clickedFeatures.length > 0 && clickedFeatures[0] !== undefined) {
           const newFeatures = clickedFeatures.filter(f => !prevFeatures.some(pf => pf.equals(f)));
 
           const diffFeatures = prevFeatures.filter(f => !clickedFeatures.some(pf => pf.equals(f)));

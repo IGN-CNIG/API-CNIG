@@ -7,6 +7,9 @@ import IberpixCompareControl from './iberpixcomparecontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class IberpixCompare extends M.Plugin {
   /**
    * @classdesc
@@ -136,6 +139,22 @@ export default class IberpixCompare extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
   }
+
+    /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).iberpixcompare;
+  }
+  
 
   /**
    * This function adds this plugin into the map

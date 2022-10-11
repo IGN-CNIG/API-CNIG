@@ -1,0 +1,4 @@
+{
+    "tooltip" : "Búsqueda por geometría",
+    "exception_selectiondrawcontrol": "La implementación usada no puede crear controles SelectionDrawImplControl"
+}

@@ -7,6 +7,9 @@ import IGNSearchControl from './ignsearchcontrol';
 import geographicNameType from './constants';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class IGNSearch extends M.Plugin {
   /**
    * @classdesc
@@ -207,6 +210,21 @@ export default class IGNSearch extends M.Plugin {
      * @type {string}
      */
     this.pointStyle = options.pointStyle || 'pinBlanco';
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).ignsearch;
   }
 
   /**

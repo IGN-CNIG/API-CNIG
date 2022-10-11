@@ -7,6 +7,8 @@ import ContactLinkControl from './contactlinkcontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class ContactLink extends M.Plugin {
   /**
@@ -165,6 +167,21 @@ export default class ContactLink extends M.Plugin {
      */
     this.control_ = new ContactLinkControl(options);
   }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+     static getJSONTranslations(lang) {
+      if (lang === 'en' || lang === 'es') {
+        return (lang === 'en') ? en : es;
+      }
+      return M.language.getTranslation(lang).contactlink;
+    }
 
   /**
    * This function adds this plugin into the map

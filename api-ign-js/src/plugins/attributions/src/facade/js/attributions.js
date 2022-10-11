@@ -8,6 +8,9 @@ import AttributionsControl from './attributionscontrol';
 import { intersect } from './filter';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 const MODES = {
   mapAttributions: 1, // Map attributions from vector layer
   layerAttributions: 2, // Attributions layer from its capabilities wms service
@@ -190,6 +193,21 @@ export default class Attributions extends M.Plugin {
     this.urlAttribute = options.urlAttribute || 'Gobierno de España';
 
     window.addEventListener('resize', e => this.setCollapsiblePanel(e));
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).attributions;
   }
 
   /**

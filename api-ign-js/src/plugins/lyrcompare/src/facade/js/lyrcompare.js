@@ -8,6 +8,9 @@ import {
   getValue
 } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class LyrCompare extends M.Plugin {
   /**
    * @classdesc
@@ -210,6 +213,21 @@ export default class LyrCompare extends M.Plugin {
         this.error_ = true;
       }
     }
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+   static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).lyrcompare;
   }
 
   /**

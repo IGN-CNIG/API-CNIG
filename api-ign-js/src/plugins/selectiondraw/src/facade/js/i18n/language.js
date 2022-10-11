@@ -41,7 +41,10 @@ export const addTranslation = (lang, json) => {
  * @api
  */
 export const getTranslation = (lang) => {
-  return translations[lang];
+  if (lang === 'es' || lang === 'en') {
+    return translations[lang];
+  }
+  return M.language.getTranslation(lang).selectiondraw;
 };
 
 /**
@@ -54,16 +57,13 @@ export const getTranslation = (lang) => {
  * @public
  * @api
  */
-
 export const getValue = (keyPath, lang = getLang()) => {
   const translation = getTranslation(lang);
   let value = '';
   if (M.utils.isNullOrEmpty(translation)) {
-    /* eslint-disable no-console */
     console.warn(`The translation '${lang}' has not been defined.`);
   } else {
     value = keyPath.split('.').reduce((prev, current) => prev[current], translation);
   }
-
   return value;
 };

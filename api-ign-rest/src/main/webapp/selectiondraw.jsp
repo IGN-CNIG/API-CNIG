@@ -86,7 +86,6 @@
             zoom: 6,
             maxZoom: 20,
             center: [-467062.8225, 4683459.6216],
-            layers: ["WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Callejero*false"],
             minZoom: 6,
         });
         let mp;

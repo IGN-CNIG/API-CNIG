@@ -203,7 +203,8 @@ class Map extends MObject {
     const baseLayers = this.getLayers().filter((layer) => {
       let isBaseLayer = false;
       if ((layer.type === LayerType.WMS) ||
-        (layer.type === LayerType.WMTS)) {
+        (layer.type === LayerType.WMTS)
+        || layer.type === LayerType.TMS) {
         isBaseLayer = (layer.transparent !== true);
       }
       return isBaseLayer;

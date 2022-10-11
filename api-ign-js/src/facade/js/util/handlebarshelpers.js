@@ -44,6 +44,49 @@ const helpers = (insecureHandlebars) => {
     }
     return options.inverse(this);
   });
+
+  insecureHandlebars.registerHelper('printType', (type, address, id, municipality, cps) => {
+    let line = `<li id=${id}><span id="info">${address}</span>`;
+    // add following lines if asked to show entity type again
+    // (but not if type's portal, callejero or Codpost)
+    if (type === 'Municipio' || type === 'provincia' || type === 'comunidad autonoma' || cps === true) {
+      line += ` (${type})`;
+    }
+    if (municipality !== undefined) {
+      line += ` en ${municipality}`;
+    }
+    return line;
+  });
+
+  insecureHandlebars.registerHelper('pattern', (options) => {
+    let output = '';
+    options.data.root.fields.forEach((field) => {
+      if (!field.isFormatter) return;
+      if (field.typeparam === undefined) return;
+      const symbolPattern = field.typeparam;
+      const numRepeat = field.value;
+      for (let i = 0; i < numRepeat; i += 1) {
+        output += symbolPattern;
+      }
+    });
+    return output;
+  });
+
+  insecureHandlebars.registerHelper('formatterStr', (item) => {
+    let symbolPattern = '';
+    let numRepeat = 0;
+    let output = '';
+    numRepeat = item.value;
+    symbolPattern = item.typeparam;
+    for (let i = 0; i < numRepeat; i += 1) {
+      output += symbolPattern;
+    }
+    return output;
+  });
+
+  insecureHandlebars.registerHelper('ifCond', (v1, v2, options) => {
+    return v1 === v2 ? options.fn(this) : options.inverse(this);
+  });
 };
 
 export default helpers;

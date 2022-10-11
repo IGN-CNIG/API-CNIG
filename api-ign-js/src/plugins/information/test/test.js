@@ -5,9 +5,11 @@ import Information from 'facade/information';
 const map = M.map({
   container: 'mapjs',
   controls: ['location'],
-  zoom: 7,
+  //zoom: 7,
+  zoom: 17,
   layers: ['OSM'],
-  center: [-447979.2542807377, 4849659.371752165],
+  //center: [-447979.2542807377, 4849659.371752165],
+  center: [-698506.5558722795, 4371375.632927578],
 });
 
 const mp = new Information({
@@ -77,6 +79,19 @@ const hidrografia = new M.layer.WMS({
     name: 'HY.Network',
     legend: 'Red hidrográfica',
     tiled: true,
+});
+
+const testLayer = new M.layer.WMTS({
+  url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
+  name: 'catastrones',
+  legend: 'catastrones',
+  matrixSet: 'GoogleMapsCompatible',
+  transparent: true,
+  displayInLayerSwitcher: false,
+  queryable: true,
+  visible: true,
+  format: 'image/jpeg',
+
 });
 
 //map.addLayers([layer1/*, layer2, layer3, layer4*/]);

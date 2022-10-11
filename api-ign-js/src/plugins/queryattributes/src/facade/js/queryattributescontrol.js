@@ -2,7 +2,6 @@
  * @module M/control/QueryAttributesControl
  */
 
- import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
  import QueryAttributesImplControl from 'impl/queryattributescontrol';
  import template from 'templates/queryattributes';
  import initialView from 'templates/initialview';
@@ -159,37 +158,6 @@
      this.map = map;
      return new Promise((success, fail) => {
        this.createInitialView(map);
-
-       /**
-        * Helper for Formatter Elements.
-        * Symbol = param * value;
-        */
-       const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
-       insecureHandlebars.registerHelper('pattern', (options) => {
-         let output = '';
-         // for (const k in options.data.root.fields) {
-         //   if (!options.data.root.fields[k].isFormatter) continue;
-         //   if (options.data.root.fields[k].typeparam === undefined) {
-         //     continue;
-         //   }
-         //   const symbolPattern = options.data.root.fields[k].typeparam;
-         //   const numRepeat = options.data.root.fields[k].value;
-         //   for (let i = 0; i < numRepeat; i += 1) {
-         //     output += symbolPattern;
-         //   }
-         // }
-         options.data.root.fields.forEach((field) => {
-           if (!field.isFormatter) return;
-           if (field.typeparam === undefined) return;
-           const symbolPattern = field.typeparam;
-           const numRepeat = field.value;
-           for (let i = 0; i < numRepeat; i += 1) {
-             output += symbolPattern;
-           }
-         });
-         return output;
-       });
-
        const html = M.template.compileSync(template, {
          vars: {
            translations: {
@@ -401,20 +369,6 @@
          }
 
          params.translations = { not_attributes: getValue('not_attributes') };
-
-         const insecureHandlebars = allowInsecurePrototypeAccess(Handlebars);
-         insecureHandlebars.registerHelper('formatterStr', (item) => {
-           let symbolPattern = '';
-           let numRepeat = 0;
-           let output = '';
-           numRepeat = item.value;
-           symbolPattern = item.typeparam;
-           for (let i = 0; i < numRepeat; i += 1) {
-             output += symbolPattern;
-           }
-           return output;
-         });
-
          const options = {
            jsonp: true,
            vars: params,

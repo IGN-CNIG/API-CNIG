@@ -4,5 +4,4 @@ const mapjs = Mmap({
   container: 'map',
   controls: ['rotate'],
 });
-
 window.mapjs = mapjs;

@@ -7,6 +7,9 @@ import VectorsControl from './vectorscontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Vectors extends M.Plugin {
   /**
    * @classdesc
@@ -81,6 +84,22 @@ export default class Vectors extends M.Plugin {
      */
     this.metadata_ = api.metadata;
   }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).vectors;
+  }
+
 
   /**
    * This function adds this plugin into the map

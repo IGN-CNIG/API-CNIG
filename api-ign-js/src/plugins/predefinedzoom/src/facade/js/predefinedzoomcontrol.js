@@ -4,6 +4,7 @@
 
 import PredefinedZoomImplControl from 'impl/predefinedzoomcontrol';
 import template from 'templates/predefinedzoom';
+import { getValue } from './i18n/language';
 
 export default class PredefinedZoomControl extends M.Control {
   /**
@@ -17,7 +18,7 @@ export default class PredefinedZoomControl extends M.Control {
    */
   constructor(savedZooms) {
     if (M.utils.isUndefined(PredefinedZoomImplControl)) {
-      M.exception('La implementación usada no puede crear controles PredefinedZoomControl');
+      M.exception(getValue('exception_predefinedzoomcontrol'));
     }
     const impl = new PredefinedZoomImplControl();
     super(impl, 'PredefinedZoom');

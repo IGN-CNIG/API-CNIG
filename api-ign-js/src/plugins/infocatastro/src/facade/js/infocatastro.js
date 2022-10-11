@@ -6,6 +6,8 @@ import InfoCatastroControl from './infocatastrocontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
 
 export default class InfoCatastro extends M.Plugin {
   /**
@@ -71,6 +73,21 @@ export default class InfoCatastro extends M.Plugin {
      * @type {String}
      */
     this.name_ = 'infocatastro';
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).infocatastro;
   }
 
   /**
