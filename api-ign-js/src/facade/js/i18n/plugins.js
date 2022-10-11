@@ -117,8 +117,8 @@ import esQueryattributes from '../../../plugins/queryattributes/src/facade/js/i1
 import enQueryattributes from '../../../plugins/queryattributes/src/facade/js/i18n/en';
 
 // Querydatabase
-import esQuerydatabase from '../../../plugins/querydatabase/src/facade/js/i18n/es';
-import enQuerydatabase from '../../../plugins/querydatabase/src/facade/js/i18n/en';
+// import esQuerydatabase from '../../../plugins/querydatabase/src/facade/js/i18n/es';
+// import enQuerydatabase from '../../../plugins/querydatabase/src/facade/js/i18n/en';
 
 // Rescale
 import esRescale from '../../../plugins/rescale/src/facade/js/i18n/es';
@@ -285,10 +285,12 @@ export default {
     esQueryattributes,
     enQueryattributes,
   },
+  /*
   querydatabase: {
     esQuerydatabase,
     enQuerydatabase,
   },
+  */
   rescale: {
     esRescale,
     enRescale,

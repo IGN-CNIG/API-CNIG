@@ -1,7 +1,7 @@
 /**
  * IGN API
  * Version 4.2.2
- * Date 21-09-2022
+ * Date 11-10-2022
  */
 
 const backgroundlayersIds = 'mapa,imagen,hibrido'.split(',');
@@ -169,13 +169,13 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
   M.config('GEOPRINT_STATUS', 'http://10.67.33.22:8080/geoprint' + '/print/status');
 
   /**
-   * WMTS configuration
+   * TMS configuration
    *
    * @private
    * @type {object}
    */
-  M.config('wmts', {
-    base: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible**false',
+  M.config('tms', {
+    base: 'TMS*IGNBaseTodo*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17',
   });
 
   /**
