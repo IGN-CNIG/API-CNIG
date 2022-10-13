@@ -73,7 +73,8 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].printermap = pluginsLanguage.printermap.esPrintermap;
     configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .esQueryattributes;
-    configuration.translations[lang].querydatabase = pluginsLanguage.querydatabase.esQuerydatabase;
+    // configuration.translations[lang].querydatabase = pluginsLanguage
+    // .querydatabase.esQuerydatabase;
     configuration.translations[lang].rescale = pluginsLanguage.rescale.esRescale;
     configuration.translations[lang].selectiondraw = pluginsLanguage.selectiondraw.esSelectiondraw;
     configuration.translations[lang].selectionzoom = pluginsLanguage.selectionzoom.esSelectionzoom;
@@ -121,7 +122,8 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].printermap = pluginsLanguage.printermap.enPrintermap;
     configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .enQueryattributes;
-    configuration.translations[lang].querydatabase = pluginsLanguage.querydatabase.enQuerydatabase;
+    // configuration.translations[lang].querydatabase = pluginsLanguage
+    // .querydatabase.enQuerydatabase;
     configuration.translations[lang].rescale = pluginsLanguage.rescale.enRescale;
     configuration.translations[lang].selectiondraw = pluginsLanguage.selectiondraw.enSelectiondraw;
     configuration.translations[lang].selectionzoom = pluginsLanguage.selectionzoom.enSelectionzoom;
