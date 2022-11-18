@@ -2272,12 +2272,9 @@ export const tms = (userParamer) => {
 
     // gets transparent
     layerObj.transparent = getExtraParameter(userParam, 'true', 1, 'transparent');
-<<<<<<< HEAD
-=======
 
     // get tileGridMaxZoom
     layerObj.tileGridMaxZoom = getExtraParameter(userParam, '17', 2, 'tileGridMaxZoom');
->>>>>>> development
     return layerObj;
   });
 
