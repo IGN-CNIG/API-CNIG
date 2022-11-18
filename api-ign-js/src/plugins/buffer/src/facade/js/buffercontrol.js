@@ -1,4 +1,5 @@
-import * as jsts from 'jsts/dist/jsts';
+import OL3Parser from 'jsts/org/locationtech/jts/io/OL3Parser';
+import { BufferOp } from 'jsts/org/locationtech/jts/operation/buffer';
 import template from 'templates/buffer';
 import BufferControlImpl from 'impl/buffercontrolImpl';
 import Picker from './vanilla-picker';
@@ -180,9 +181,9 @@ export default class BufferControl extends M.Control {
    * @export
    */
   addBuffer_(feature, distance, target) {
-    const parser = new jsts.io.OL3Parser();
+    const parser = new OL3Parser();
     const jstsGeom = parser.read(feature.getGeometry());
-    const buffered = jstsGeom.buffer(parseInt(distance, 10));
+    const buffered = BufferOp.bufferOp(jstsGeom, parseInt(distance, 10));
     feature.setGeometry(parser.write(buffered));
     this.manageActivatedDeactivated(target);
   }
