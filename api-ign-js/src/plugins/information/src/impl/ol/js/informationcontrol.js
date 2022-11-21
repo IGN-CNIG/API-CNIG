@@ -539,7 +539,7 @@ export default class InformationControl extends M.impl.Control {
     layerNamesUrls.forEach((layerNameUrl) => {
       const url = layerNameUrl.url.replace('row=-', 'row=').replace('col=-', 'col=');
       const layerName = layerNameUrl.layer;
-      M.proxy(false);
+      // M.proxy(false);
       M.remote.get(url).then((response) => {
         popup = this.facadeMap_.getPopup();
         if (response.code === 200) {
@@ -602,10 +602,10 @@ export default class InformationControl extends M.impl.Control {
             }
           }
 
-          M.proxy(true);
+          // M.proxy(true);
         }
       }).catch((err) => {
-        M.proxy(true);
+        // M.proxy(true);
       });
     });
     this.popup_ = popup;
