@@ -157,7 +157,7 @@
         let mp;
         let sToSearch, mxResults, collapsed = true,
             collapsible = true,
-            zoom,
+            pzoom,
             posicion, noProcess, countryCode, reverse = true,
             urlCandidates, urlFind, urlReverse, searchposition, pointStyle;
         crearPlugin({
@@ -169,7 +169,7 @@
             collapsible: collapsible,
             position: posicion,
             reverse: reverse,
-            zoom: zoom,
+            zoom: pzoom,
             urlCandidates: urlCandidates,
             urlFind: urlFind,
             urlReverse: urlReverse,
@@ -184,7 +184,7 @@
         const selectPointStyle = document.getElementById("selectPointStyle");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
-        const selectReverse = document.getElementById("selectReverse"); 
+        const selectReverse = document.getElementById("selectReverse");
         const selectCadastre = document.getElementById("selectCadastre");
         const searchCoordinatesXYZ = document.getElementById("searchCoordinatesXYZ");
         const inputZoom = document.getElementById("inputZoom");
@@ -201,7 +201,7 @@
         selectPointStyle.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
-        selectReverse.addEventListener('change', cambiarTest); 
+        selectReverse.addEventListener('change', cambiarTest);
         selectCadastre.addEventListener('change', cambiarTest);
         searchCoordinatesXYZ.addEventListener('change', cambiarTest);
         inputZoom.addEventListener('change', cambiarTest);
@@ -219,10 +219,10 @@
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             objeto.isCollapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
-            objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true'); 
+            objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true');
             objeto.cadastre = (selectCadastre.options[selectCadastre.selectedIndex].value == 'true');
             objeto.searchCoordinatesXYZ = (searchCoordinatesXYZ.options[searchCoordinatesXYZ.selectedIndex].value == 'true');
-            zoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "16";
+            inputZoom.value !== "" ? objeto.zoom = inputZoom.value : objeto.zoom = "16";
             searchPosition = inputSearchposition.value != "" ? objeto.searchPosition = inputSearchposition.value : "";
             urlCandidates = inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value : "";
             urlFind = inputUrlFind.value != "" ? objeto.urlFind = inputUrlFind.value : "";
@@ -251,10 +251,13 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-163660977-1');
 </script>
 
 </html>

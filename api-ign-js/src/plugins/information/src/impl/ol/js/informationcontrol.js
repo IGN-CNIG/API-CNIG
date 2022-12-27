@@ -601,7 +601,6 @@ export default class InformationControl extends M.impl.Control {
               }, 100);
             }
           }
-
           // M.proxy(true);
         }
       }).catch((err) => {

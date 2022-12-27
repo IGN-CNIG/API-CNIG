@@ -194,6 +194,7 @@ class WMTS extends LayerBase {
         extent,
       }, true));
 
+      this.facadeLayer_.setFormat(capabilitiesOptionsVariable.format);
       this.ol3Layer = new OLLayerTile(extend({
         visible: this.visibility,
         source: wmtsSource,
@@ -253,7 +254,7 @@ class WMTS extends LayerBase {
         }
 
         if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
-          this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL;
+          this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL.replaceAll('&amp;', '&');
         }
 
         const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
@@ -305,7 +306,7 @@ class WMTS extends LayerBase {
                 s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
               });
             });
-          /* eslint-disable no-empty */
+            /* eslint-disable no-empty */
           } catch (err) {}
           success.call(this, parsedCapabilities);
         });
@@ -408,22 +409,22 @@ class WMTS extends LayerBase {
     const request = 'GetFeatureInfo';
     const version = '1.0.0';
     const layer = this.name;
-    const style = 'default';
-    const format = 'image/jpeg';
     const tilematrixset = this.matrixSet;
-    const tilematrix = zoom;
     const infoFormat = formatInfo;
     const tilecol = tcr[0];
     const tilerow = tcr[1];
     const I = coordPxl[0];
     const J = coordPxl[1];
+    let tilematrix = zoom;
+    if (this.matrixSet.indexOf(':4326') > -1) {
+      tilematrix = `${this.matrixSet}:${tilematrix}`;
+    }
+
     const url = addParameters(this.url, {
       service,
       request,
       version,
       layer,
-      style,
-      format,
       tilematrixset,
       tilematrix,
       tilerow,
@@ -447,7 +448,7 @@ class WMTS extends LayerBase {
       if (!isNullOrEmpty(source)) {
         const { tileGrid } = source;
         tcr = tileGrid.getTileCoordForCoordAndZ(coordinate, zoom);
-        tcr[2] = -tcr[2] - 1;
+        // tcr[2] = -tcr[2] - 1;
       }
     }
     return tcr.slice(1);

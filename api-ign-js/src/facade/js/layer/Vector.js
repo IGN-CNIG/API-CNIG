@@ -3,8 +3,7 @@
  */
 import VectorImpl from 'impl/layer/Vector';
 import { geojsonTo4326 } from 'impl/util/Utils';
-import { isUndefined, isArray, isNullOrEmpty, isString } from '../util/Utils';
-import Utils from '../style/utils';
+import { isUndefined, isArray, isNullOrEmpty, isString, modifySVG } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
 import * as LayerType from './Type';
@@ -14,6 +13,7 @@ import FilterBase from '../filter/Base';
 import StyleCluster from '../style/Cluster';
 import * as EventType from '../event/eventtype';
 import { getValue } from '../i18n/language';
+import Generic from '../style/Generic';
 
 /**
  * @classdesc
@@ -270,22 +270,33 @@ class Vector extends LayerBase {
     if (isString(style)) {
       style = Style.deserialize(style);
     } else if (!(style instanceof Style)) {
-      style = Utils.generateStyleLayer(style, this);
+      style = new Generic(style);
     }
-    // const isCluster = style instanceof StyleCluster;
-    // const isPoint = [POINT, MULTI_POINT].includes(this.getGeometryType());
-    if (style instanceof Style) /* && (!isCluster || isPoint) ) */ {
-      if (!isNullOrEmpty(this.style_) && this.style_ instanceof Style) {
-        this.style_.unapply(this);
+    let options = style.getOptions();
+    if (options.point) {
+      options = options.point;
+    }
+    if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg') &&
+      (options.icon.fill || options.icon.stroke)) {
+      modifySVG(options.icon.src, options).then((resp) => {
+        options.icon.src = resp;
+        this.applyStyle_(styleParam, applyToFeature);
+      });
+    } else {
+      // const isCluster = style instanceof StyleCluster;
+      // const isPoint = [POINT, MULTI_POINT].includes(this.getGeometryType());
+      if (style instanceof Style) /* && (!isCluster || isPoint) ) */ {
+        if (!isNullOrEmpty(this.style_) && this.style_ instanceof Style) {
+          this.style_.unapply(this);
+        }
+        style.apply(this, applyToFeature);
+        this.style_ = style;
+        this.fire(EventType.CHANGE_STYLE, [style, this]);
       }
-      style.apply(this, applyToFeature);
-      this.style_ = style;
+
       this.fire(EventType.CHANGE_STYLE, [style, this]);
     }
-
-    this.fire(EventType.CHANGE_STYLE, [style, this]);
   }
-
 
   /**
    * This function return style vector
@@ -407,13 +418,13 @@ class Vector extends LayerBase {
 }
 
 /**
- * Options style by default
+ * Default params for style vector layers
  * @const
  * @type {object}
  * @public
  * @api
  */
-Vector.DEFAULT_OPTIONS_STYLE = {
+Vector.DEFAULT_PARAMS = {
   fill: {
     color: 'rgba(255, 255, 255, 0.4)',
     opacity: 0.4,
@@ -422,7 +433,26 @@ Vector.DEFAULT_OPTIONS_STYLE = {
     color: '#3399CC',
     width: 1.5,
   },
-  radius: 5,
+};
+
+/**
+ * Default style for Vector layers
+ * @const
+ * @type {object}
+ * @public
+ * @api
+ */
+Vector.DEFAULT_OPTIONS_STYLE = {
+  point: {
+    ...Vector.DEFAULT_PARAMS,
+    radius: 5,
+  },
+  line: {
+    ...Vector.DEFAULT_PARAMS,
+  },
+  polygon: {
+    ...Vector.DEFAULT_PARAMS,
+  },
 };
 
 export default Vector;

@@ -136,6 +136,10 @@ import enSelectionzoom from '../../../plugins/selectionzoom/src/facade/js/i18n/e
 import esSharemap from '../../../plugins/sharemap/src/facade/js/i18n/es';
 import enSharemap from '../../../plugins/sharemap/src/facade/js/i18n/en';
 
+// Sharemap
+import esStylemanager from '../../../plugins/stylemanager/src/facade/js/i18n/es';
+import enStylemanager from '../../../plugins/stylemanager/src/facade/js/i18n/en';
+
 // Timeline
 import esTimeline from '../../../plugins/timeline/src/facade/js/i18n/es';
 import enTimeline from '../../../plugins/timeline/src/facade/js/i18n/en';
@@ -306,6 +310,10 @@ export default {
   sharemap: {
     esSharemap,
     enSharemap,
+  },
+  stylemanager: {
+    esStylemanager,
+    enStylemanager,
   },
   timeline: {
     esTimeline,

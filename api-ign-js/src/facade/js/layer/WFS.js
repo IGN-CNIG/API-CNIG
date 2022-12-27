@@ -219,13 +219,13 @@ class WFS extends Vector {
 }
 
 /**
- * Style options by default for this layer
+ * Default params for style WFS layers
  * @const
  * @type {object}
  * @public
  * @api
  */
-WFS.DEFAULT_OPTIONS_STYLE = {
+WFS.DEFAULT_PARAMS = {
   fill: {
     color: 'rgba(103, 175, 19, 0.2)',
     opacity: 0.4,
@@ -234,7 +234,26 @@ WFS.DEFAULT_OPTIONS_STYLE = {
     color: '#67af13',
     width: 1,
   },
-  radius: 5,
+};
+
+/**
+ * Default style for WFS layers
+ * @const
+ * @type {object}
+ * @public
+ * @api
+ */
+WFS.DEFAULT_OPTIONS_STYLE = {
+  point: {
+    ...WFS.DEFAULT_PARAMS,
+    radius: 5,
+  },
+  line: {
+    ...WFS.DEFAULT_PARAMS,
+  },
+  polygon: {
+    ...WFS.DEFAULT_PARAMS,
+  },
 };
 
 export default WFS;

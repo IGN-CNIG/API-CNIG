@@ -17,6 +17,11 @@
     padding: 8px;
 }
 
+.m-location-container>button#m-location-button {
+    border: 2px solid white !important;
+    border-radius: 50% !important;
+}
+
 /* DELETE AFTER FIX */
 
 /* MICROSOFT EDGE HACK */

@@ -737,7 +737,7 @@ public class DatabaseWS {
 	private boolean validateOriginByBlackList(String origin){
 		boolean result = true;
 		if(origin == null){
-			return false;
+			return result;
 		}else{
 			origin = origin.replace("https://", "").replace("http://", "");
 		}

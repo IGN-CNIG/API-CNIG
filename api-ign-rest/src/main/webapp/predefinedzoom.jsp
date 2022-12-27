@@ -110,15 +110,16 @@
         map.addLayers([layerinicial, layerUA]);
 
         let mp;
-        let posicion = "TL",
-            nombre = "Zoom a la extensión del mapa",
-            center = JSON.parse("[-428106.86611520057, 4334472.25393817]"), zoom=4;
+        let pposicion = "TL",
+            pnombre = "Zoom a la extensión del mapa",
+            pcenter = JSON.parse("[-428106.86611520057, 4334472.25393817]"),
+            pzoom = 4;
         crearPlugin({
-            position:posicion,
-            savedZooms:[{
-                name:nombre,
-                center:center,
-                zoom:zoom
+            position: pposicion,
+            savedZooms: [{
+                name: pnombre,
+                center: pcenter,
+                zoom: pzoom
             }]
         });
 
@@ -162,10 +163,13 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-163660977-1');
 </script>
 
 </html>

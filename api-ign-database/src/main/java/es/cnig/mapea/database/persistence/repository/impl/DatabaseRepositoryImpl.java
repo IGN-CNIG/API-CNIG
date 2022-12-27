@@ -345,8 +345,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			log.info("Obteniendo el resto de nombres de columnas");
 			String columnas = getColumnasNoGeometricas(conn, schema, table, geomColumn);
 			StringBuilder query = new StringBuilder("SELECT "+ columnas);
-			query.append(", ST_transform(" + geomColumn + ", 4326) as "+geomColumn);
-			query.append(" FROM " + schema + "." + table);
+			query.append(", ST_transform(\"" + geomColumn + "\", 4326) as "+geomColumn);
+			query.append(" FROM \"" + schema + "\".\"" + table + "\"");
 			String sqlFilter = sqlFilter(filtros, geomColumn, sridTable);
 			if(this.errorCode > 0){
 				paginacion.setError(this.errorCode+";"+this.error);
@@ -424,9 +424,9 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		Connection conn = null;
 		try{
 			conn = datasource.getConnection();
-			StringBuilder query = new StringBuilder("SELECT distinct(" + columna + ")");
-			query.append(" FROM " + schema + "." + table);
-			query.append(" ORDER BY " + columna);
+			StringBuilder query = new StringBuilder("SELECT distinct(\"" + columna + "\")");
+			query.append(" FROM \"" + schema + "\".\"" + table + "\"");
+			query.append(" ORDER BY \"" + columna + "\"");
 			PreparedStatement ps = conn.prepareStatement(query.toString());
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
@@ -464,14 +464,14 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		StringBuilder query = new StringBuilder("SELECT row_number() over() as id, st_astext(st_buffer(ST_Transform(center, 3857), (elementos_cluster / ?) * ?)) as geometry,");
 		query.append(" elementos_cluster, 3857 AS srid from");
 		query.append(" (SELECT COUNT(*) AS elementos_cluster,");
-		query.append(" ST_Centroid(ST_Collect(" + geomColumn + ")) AS center");
-		query.append(" FROM " + schema + "." + table);
+		query.append(" ST_Centroid(ST_Collect(\"" + geomColumn + "\")) AS center");
+		query.append(" FROM \"" + schema + "\".\"" + table + "\"");
 		String sqlFilter = sqlFilter(filtros, geomColumn, sridTable);
 		if(this.errorCode > 0){
 			return result;
 		}
 		query.append(sqlFilter);
-		query.append(" GROUP BY ST_SnapToGrid(ST_Centroid(" + geomColumn + "),  ?) ORDER BY elementos_cluster DESC) cluster");
+		query.append(" GROUP BY ST_SnapToGrid(ST_Centroid(\"" + geomColumn + "\"),  ?) ORDER BY elementos_cluster DESC) cluster");
 		if(!"".equals(filtroBbox)){
 			query.append(" WHERE "+filtroBbox);
 		}
@@ -550,8 +550,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	}
 	
 	private Integer getGeometrySrid(Connection conn, String schema, String table, String geomColumn){
-		StringBuilder query = new StringBuilder("select distinct(ST_srid("+geomColumn+")) from "+schema+"."+table);
-		query.append(" where " + geomColumn + " is not null");
+		StringBuilder query = new StringBuilder("select distinct(ST_srid(\""+geomColumn+"\")) from \""+schema+"\".\""+table+"\"");
+		query.append(" where \"" + geomColumn + "\" is not null");
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(query.toString());
@@ -645,7 +645,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				paramValue = params.get("select").get(0); 
 			}
 			result.append(paramValue);
-			result.append(" FROM " + schema + "." + table);
+			result.append(" FROM \"" + schema + "\".\"" + table + "\"");
 			if(params.containsKey("where")){
 				paramValue = params.get("where").get(0);
 				if(paramValue != null && !"".equals(paramValue)){
@@ -658,7 +658,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				paramValue = params.get("groupby").get(0);
 				if(paramValue != null && !"".equals(paramValue)){
 					result.append(" GROUP BY ");
-					result.append(paramValue);
+					result.append("\""+paramValue.replace(", ", ",").replace(",", "\",\"")+"\"");
 					
 					if(params.containsKey("having")){
 						paramValue = params.get("having").get(0);
@@ -674,7 +674,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				paramValue = params.get("orderby").get(0);
 				if(paramValue != null && !"".equals(paramValue)){
 					result.append(" ORDER BY ");
-					result.append(paramValue);
+					result.append(formatOrderByColumns(paramValue));
 				}
 			}
 			
@@ -735,7 +735,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				if("busquedaGeneral".equals(key)){
 					result.append(getSqlBusquedaGeneral(value));
 				}else{
-					result.append(key + " ilike '%" + value + "%'");
+					result.append("\"" + key + "\" ilike '%" + value + "%'");
 				}
 				result.append(" AND ");
 			}
@@ -748,7 +748,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		String[] splitGeom = bbox.split("srid");
 		String geomValue = splitGeom[0].replace("$", " ");
 		String srid = splitGeom[1];
-		StringBuilder bboxFilter = new StringBuilder("ST_Intersects("+geomColumn+", ");
+		StringBuilder bboxFilter = new StringBuilder("ST_Intersects(\""+geomColumn+"\", ");
 		bboxFilter.append("ST_Transform(ST_geomfromtext('"+geomValue+"', "+srid+"), "+sridTable+"))");
 		return bboxFilter.toString();
 	}
@@ -771,7 +771,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 				geomValue.append(coords[0]+" "+coords[1]+" "+coords[2]);
 			}
 			geomValue.append("))");
-			StringBuilder bboxFilter = new StringBuilder("ST_Intersects("+geomColumn+", ");
+			StringBuilder bboxFilter = new StringBuilder("ST_Intersects(\""+geomColumn+"\", ");
 			bboxFilter.append("ST_Transform(ST_geomfromtext('"+geomValue.toString()+"', "+sridbbox+"), "+sridTable+"))");
 			return bboxFilter.toString();
 		}else{
@@ -805,7 +805,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			String[] columnas = splitBsq[0].split(";");
 			String value = splitBsq[1].replace("*", "%");
 			for(String columna : columnas){
-				filter.append(columna + " ilike '%" + value + "%'");
+				filter.append("\"" + columna + "\" ilike '%" + value + "%'");
 				filter.append(" OR ");
 			}
 			return filter.substring(0, filter.lastIndexOf("OR")) + ")";
@@ -846,7 +846,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			}else if("gml".equals(formato)){
 				ps = conn.prepareStatement(getGML(query, geomColumn, columnas));
 			}else if("mvt".equals(formato)){
-				query = query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn+",", ", ST_transform(" + geomColumn + ", 3857) as " + geomColumn + ",");
+				query = query.replace(", ST_transform(\""+geomColumn+"\", 4326) as "+geomColumn+",", ", ST_transform(\"" + geomColumn + "\", 3857) as " + geomColumn + ",");
 				String tileEnvelope = getTileEnvelope(conn, query, geomColumn, bbox);
 				ps = conn.prepareStatement(getMVT(query, geomColumn, tileEnvelope));
 			}else{
@@ -863,10 +863,10 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	private String getWKT(String query, String geomColumn, String aliasGeom){
 		String result = "";
 		//para el servicio de consulta filtrada
-		if(query.contains(", ST_transform("+geomColumn+", 4326) as "+geomColumn)){
-			result = query.replace(", ST_transform("+geomColumn+", 4326) as "+geomColumn, ", ST_asText(st_force2d(ST_transform("+geomColumn+", 4326))) as " + aliasGeom);
+		if(query.contains(", ST_transform(\""+geomColumn+"\", 4326) as "+geomColumn)){
+			result = query.replace(", ST_transform(\""+geomColumn+"\", 4326) as "+geomColumn, ", ST_asText(st_force2d(ST_transform(\""+geomColumn+"\", 4326))) as " + aliasGeom);
 		}else{//para el servicio de capa filtrada
-			result = query.replace("SELECT " + geomColumn + ",", "SELECT ST_asText(" + geomColumn + ") as " + aliasGeom);
+			result = query.replace("SELECT " + geomColumn + ",", "SELECT ST_asText(\"" + geomColumn + "\") as " + aliasGeom);
 		}
 		return result;
 	}
@@ -877,7 +877,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		result.append(" 'features', jsonb_agg(feature))::text as geojson");
 		result.append(" FROM (SELECT jsonb_build_object(");
 		result.append(" 'type', 'Feature',");
-		result.append(" 'geometry', ST_AsGeoJSON(row." + geomColumn + ", 9, 0)::jsonb,");
+		result.append(" 'geometry', ST_AsGeoJSON(row.\"" + geomColumn + "\", 9, 0)::jsonb,");
 		result.append(" 'properties', to_jsonb(row) - '" + geomColumn + "'");
 		result.append(" ) AS feature");
 		result.append(" FROM (");
@@ -903,7 +903,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	
 	private String getKML(String query, String geomColumn, String columnas){
 		StringBuilder result = new StringBuilder(" select '"+kmlHeader+"' || string_agg(feature, '') || '"+kmlFooter+"' as kml FROM");
-		result.append(" (select '<Placemark>' || ST_asKML("+geomColumn+", 15) || "+getKMLAttributes(columnas)+" || '</Placemark>' as feature FROM");
+		result.append(" (select '<Placemark>' || ST_asKML(\""+geomColumn+"\", 15) || "+getKMLAttributes(columnas)+" || '</Placemark>' as feature FROM");
 		result.append("("+query+") as query) as features");
 		
 		return result.toString();
@@ -912,7 +912,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	//Solo para postgresql >= 10.0
 	private String getGML(String query, String geomColumn, String columnas){
 		StringBuilder result = new StringBuilder("SELECT '"+gmlHeader+"' || string_agg(feature, '') || '</sf:FeatureCollection>' as gml FROM ");
-		result.append("(select '<sf:featureMember><geometry>' || ST_asGML(3, "+geomColumn+", 15, 0, null, null) || '</geometry>' "+getGMLAttributes(columnas)+" || '</sf:featureMember>' as feature");
+		result.append("(select '<sf:featureMember><geometry>' || ST_asGML(3, \""+geomColumn+"\", 15, 0, null, null) || '</geometry>' "+getGMLAttributes(columnas)+" || '</sf:featureMember>' as feature");
 		result.append(" FROM (" + query + ") as query) as features");
 		return result.toString();
 	}
@@ -920,7 +920,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	//Solo para Postgis >= 3.0.0
 	private String getMVT(String query, String geomColumn, String tileEnvelope){
 		StringBuilder result = new StringBuilder("WITH mvtgeom AS(");
-		result.append("SELECT ST_AsMVTGeom("+geomColumn+", " + tileEnvelope + ", 3857, 0, false) AS geom");
+		result.append("SELECT ST_AsMVTGeom(\""+geomColumn+"\", " + tileEnvelope + ", 3857, 0, false) AS geom");
 		result.append(" FROM ("+ query +") as query");
 		result.append(") SELECT ST_AsMVT(mvtgeom.*, 'cnig', 3857) as mvt FROM mvtgeom");
 		return result.toString();
@@ -943,9 +943,9 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	
 	private String getTileEnvelopeByQuery(Connection conn, String query, String geomColumn) throws SQLException{
 		StringBuilder tileEnvelope = new StringBuilder("POLYGON((");
-		StringBuilder bboxQuery = new StringBuilder("SELECT min(st_x(" + geomColumn + ")) as min_x,");
-		bboxQuery.append(" min(st_y(" + geomColumn + ")) as min_y,");
-	    bboxQuery.append(" max(st_x(" + geomColumn + ")) as max_x, max(st_y(" + geomColumn + ")) as max_y");
+		StringBuilder bboxQuery = new StringBuilder("SELECT min(st_x(\"" + geomColumn + "\")) as min_x,");
+		bboxQuery.append(" min(st_y(\"" + geomColumn + "\")) as min_y,");
+	    bboxQuery.append(" max(st_x\"" + geomColumn + "\")) as max_x, max(st_y(\"" + geomColumn + "\")) as max_y");
 		bboxQuery.append(" FROM (" + query + ") as query");
 		PreparedStatement ps = conn.prepareStatement(bboxQuery.toString());
 		ResultSet rs = ps.executeQuery();
@@ -1240,5 +1240,20 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 			result = false;
 		}
 		return result;
+	}
+
+	private String formatOrderByColumns(String columns){
+		String result = "";
+		String[] order = columns.split(",");
+		for(String s : order){
+			if(s.contains("asc") || s.contains("ASC")){
+				result = result.concat("\"" + s.replace("asc", "").replace("ASC", "").trim() + "\" asc,");
+			}else if(s.contains("desc") || s.contains("desc")){
+				result = result.concat("\"" + s.replace("desc", "").replace("desc", "").trim() + "\" desc,");
+			}else{
+				result = result.concat("\"" + s.trim() + "\",");
+			}
+		}
+		return result.substring(0, result.length()-1);
 	}
 }

@@ -5,7 +5,7 @@
 
 .m-areas>div.m-area>div.m-panel.no-collapsible>div.m-panel-controls>div.m-control.m-container.m-background>button {
     background-color: #71a7d3 !important;
-    border: 1px solid white !important;
+    border: 2px solid white !important;
     border-radius: 5px;
     color: white;
     align-items: center;

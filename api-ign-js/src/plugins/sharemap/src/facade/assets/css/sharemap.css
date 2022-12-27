@@ -1,5 +1,6 @@
 .m-sharemap-container>button#m-sharemap-geturl {
     border-radius: 20px;
+    border: 2px solid white;
 }
 
 .m-sharemap-container>button#m-sharemap-geturl>img {

@@ -157,7 +157,7 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
     }
 
     .m-control.m-container.m-selectionzoom {
-      min-width: unset;
+        min-width: unset;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-titulo {
@@ -284,6 +284,9 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 
 .g-selectionzoom-selezoom:before {
     content: "\e1555";
+    position: relative;
+    bottom: 1px;
+    right: 1px;
 }
 
 div.m-area.m-top.m-left>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {

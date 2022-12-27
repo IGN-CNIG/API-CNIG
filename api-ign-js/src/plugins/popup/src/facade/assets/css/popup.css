@@ -35,18 +35,19 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
     z-index: 9999;
 }
 
-.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn:before{
+.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn:before {
     content: "\2716";
     font-weight: bolder;
     font-family: Arial;
     font-size: 1rem;
 }
 
-.m-areas>div.m-area>div.m-panel.m-panel-popup.collapsed>.m-panel-controls>.m-popup{
+.m-areas>div.m-area>div.m-panel.m-panel-popup.collapsed>.m-panel-controls>.m-popup {
     display: block;
 }
 
-.m-popup::after,.m-popup::before {
+.m-popup::after,
+.m-popup::before {
     content: none;
 }
 
@@ -82,7 +83,7 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
 }
 
 
-.m-areas > div.m-area > div.m-panel-popup.opened > div.m-panel-controls > div {
+.m-areas>div.m-area>div.m-panel-popup.opened>div.m-panel-controls>div {
     width: auto;
     height: auto;
 }
@@ -148,4 +149,43 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
 
 .m-panel-popup .icon-help:before {
     content: '\e800';
+}
+
+/* modal panel */
+
+.m-popup {
+    border: 0 !important;
+}
+
+.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
+    left: auto !important;
+    right: 0;
+    position: absolute !important;
+    float: none;
+    top: 0 !important;
+    cursor: pointer;
+}
+
+div.m-areas>div.m-area>div.m-panel-popup.opened {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    height: auto !important;
+    z-index: 999999;
+}
+
+div#popup-box {
+    max-height: calc(100vh - 175px) !important;
+}
+
+@media (max-width: 600px) {
+    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
+        top: 60px !important;
+    }
+
+    div.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
+        top: 60px !important;
+        position: fixed !important;
+    }
 }

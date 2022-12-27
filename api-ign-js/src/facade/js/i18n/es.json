@@ -41,6 +41,10 @@
   "feature": {
     "incorrect_attributes": "No se han especificado correctamente los atributos."
   },
+  "heatmap": {
+    "features": "La capa no tiene ninguna feature <br/> con el atributo especificado en simbología establecida. <br/>Se setea una ponderación por defecto",
+    "name": "Mapa de calor"
+  },
   "exception": {
     "addto_method": "La implementación usada no posee el método addTo",
     "getelement_method": "La implementación usada no posee el método getElement",

@@ -1,7 +1,7 @@
 /**
  * @module M/utils
  */
-
+import { get as remoteGet } from 'M/util/Remote';
 import chroma from 'chroma-js';
 import * as dynamicImage from 'assets/img/dynamic_legend';
 import { INCHES_PER_UNIT, DOTS_PER_INCH } from '../units';
@@ -905,6 +905,27 @@ export const extendsObj = (destParam = {}, src = {}) => {
 };
 
 /**
+ * This function returns an array whith breaks between head and tail of an array
+ * @function
+ * @public
+ * @param {array} array
+ * @param {number} breaks
+ * @return {array}
+ * @api
+ */
+export const generateIntervals = (array, breaks) => {
+  let intervals = [...array];
+  if (array.length < breaks) {
+    const step = (array[0] + array[1]) / (breaks - 1);
+    for (let i = 1; i < breaks - 1; i += 1) {
+      intervals[i] = step * i;
+    }
+    intervals = [...intervals, array[1]];
+  }
+  return intervals;
+};
+
+/**
  * This functions returns the order style
  * @function
  * @public
@@ -1148,5 +1169,63 @@ export const readJSON = (file) => {
     } catch (e) {
       resolve(null);
     }
+  });
+};
+
+/**
+ * This function gets an array scale color in hexadecimal format
+ * @function
+ * @public
+ * @return {Array<string>} array scale color in hexadecimal format
+ * @api
+ */
+export const generateColorScale = (colors, numberClasses) => {
+  return chroma.scale(colors).colors(numberClasses);
+};
+
+/**
+ * This function modify colors svg file
+ * @function
+ * @public
+ * @return {String} SVG base64
+ * @api
+ */
+export const modifySVG = (url, options) => {
+  return remoteGet(url).then((response) => {
+    let result = '';
+    try {
+      const tags = (options.icon.tag) ?
+        options.icon.tag
+        : ['path', 'circle', 'ellipse', 'line', 'polygon', 'polyline', 'rect', 'foreignObject'];
+
+      const svg = Array.from(response.xml.getElementsByTagName('svg'))[0];
+      const strokeMiddle = options.icon.stroke.width || 1;
+      const width = svg.getAttribute('width').replace(/[^0-9.]/g, '');
+      const height = svg.getAttribute('height').replace(/[^0-9.]/g, '');
+      if (options.icon.stroke && strokeMiddle) {
+        svg.setAttribute('viewBox', `${-strokeMiddle} ${-strokeMiddle} 
+          ${Math.ceil(Number(width)) + (2 * strokeMiddle)} ${Number(height) + (2 * strokeMiddle)}`);
+      }
+
+      tags.forEach((tag) => {
+        Array.from(response.xml.getElementsByTagName(tag)).forEach((element) => {
+          element.classList.remove(...element.classList);
+          if (options.icon.fill && options.icon.fill.color) element.setAttribute('fill', options.icon.fill.color);
+          if (options.icon.fill && options.icon.fill.opacity) element.setAttribute('fill-opacity', options.icon.fill.opacity);
+          if (options.icon.stroke && options.icon.stroke.color) element.setAttribute('stroke', options.icon.stroke.color);
+          if (options.icon.stroke && strokeMiddle) element.setAttribute('stroke-width', strokeMiddle);
+        });
+      });
+
+      Array.from(response.xml.getElementsByTagName('g')).forEach((element) => {
+        if (options.icon.stroke && strokeMiddle) {
+          element.removeAttribute('clip-path');
+        }
+      });
+      // eslint-disable-next-line
+      result = 'data:image/svg+xml,'.concat(encodeURIComponent(new XMLSerializer().serializeToString(response.xml, 'text/xml')));
+      /* eslint-disable no-empty */
+    } catch (err) {}
+    return result;
   });
 };

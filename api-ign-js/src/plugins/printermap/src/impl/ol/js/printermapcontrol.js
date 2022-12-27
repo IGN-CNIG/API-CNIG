@@ -53,7 +53,7 @@ export default class PrinterMapControl extends M.impl.Control {
   getParametrizedLayers(paramName, layers) {
     let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
       return !M.utils.isNullOrEmpty(layer.getSource()) &&
-      // eslint-disable-next-line no-underscore-dangle
+        // eslint-disable-next-line no-underscore-dangle
         !M.utils.isNullOrEmpty(layer.getSource().params_) &&
         layer.getSource().getParams()[paramName] !== undefined;
     });
@@ -93,7 +93,7 @@ export default class PrinterMapControl extends M.impl.Control {
         });
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
-      // eslint-disable-next-line no-underscore-dangle
+        // eslint-disable-next-line no-underscore-dangle
       } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
         success(this.encodeImage(layer));
       } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type) > -1) {
@@ -487,7 +487,7 @@ export default class PrinterMapControl extends M.impl.Control {
 
         let styleText;
         const lineDash = (featureStyle.getStroke() !== null &&
-          featureStyle.getStroke() !== undefined) ?
+            featureStyle.getStroke() !== undefined) ?
           featureStyle.getStroke().getLineDash() : undefined;
         const styleGeom = {
           type: parseType,
@@ -864,7 +864,7 @@ export default class PrinterMapControl extends M.impl.Control {
 
       let styleText;
       const lineDash = (featureStyle.getStroke() !== null &&
-        featureStyle.getStroke() !== undefined) ?
+          featureStyle.getStroke() !== undefined) ?
         featureStyle.getStroke().getLineDash() : undefined;
       const styleGeom = {
         type: parseType,
@@ -1070,7 +1070,11 @@ export default class PrinterMapControl extends M.impl.Control {
     }
 
     return {
-      style: newStyle, geojson: res, plusIndex, plusIndexText, plusIndexGeom,
+      style: newStyle,
+      geojson: res,
+      plusIndex,
+      plusIndexText,
+      plusIndexGeom,
     };
   }
 
@@ -1155,7 +1159,10 @@ export default class PrinterMapControl extends M.impl.Control {
     });
 
     return {
-      style: newStyle, geojson: res, plusIndex, plusIndexGeom,
+      style: newStyle,
+      geojson: res,
+      plusIndex,
+      plusIndexGeom,
     };
   }
 
@@ -1204,7 +1211,7 @@ export default class PrinterMapControl extends M.impl.Control {
           matrixSet,
           opacity: layerOpacity,
           requestEncoding: layerReqEncoding,
-          style: 'default',
+          style: layer.getImpl().getOL3Layer().getSource().getStyle() || 'default',
           type: 'WMTS',
           version: '1.3.0',
         };

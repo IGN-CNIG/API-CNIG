@@ -299,6 +299,16 @@
     "image": "img/api-logo.png",
     "description": "Plugin que permite copiar la url del mapa actual visualizado. Exporta la información de todas las capas cargadas en el mapa."
   },
+    {
+    "name": "stylemanager",
+    "plugin": "[stylemanager]",
+    "version": "v1.0",
+    "url_es": "stylemanager.jsp?language=es",
+    "url_en": "stylemanager.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/stylemanager",
+    "image": "img/api-logo.png",
+    "description": "Plugin para la gestión de la simbología de las capas vectoriales del mapa."
+  },
   {
     "name": "toc",
     "plugin": "[toc]",

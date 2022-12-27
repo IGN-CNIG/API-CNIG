@@ -79,4 +79,23 @@ Point.DEFAULT_NULL = {
   radius: 5,
 };
 
+/**
+ * This function returns the name of the available fonts
+ * @function
+ * @api
+ */
+Point.getFonts = () => {
+  return StylePointImpl.getFonts();
+};
+
+/**
+ * This function returns the available icons for a font
+ * @function
+ * @api
+ * @param { name } name source name
+ */
+Point.getFontsIcons = (name) => {
+  return StylePointImpl.getFontsIcons(name);
+};
+
 export default Point;

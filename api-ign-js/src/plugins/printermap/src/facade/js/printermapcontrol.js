@@ -26,6 +26,8 @@ export default class PrinterMapControl extends M.Control {
     georefActive,
     logoUrl,
     fototeca,
+    headerLegend,
+    filterTemplates,
   ) {
     const impl = new PrinterMapControlImpl();
 
@@ -171,6 +173,7 @@ export default class PrinterMapControl extends M.Control {
       },
       parameters: {
         logo: logoUrl,
+        headerLegend,
       },
     };
 
@@ -224,6 +227,7 @@ export default class PrinterMapControl extends M.Control {
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
     this.proyectionsDefect_ = ['EPSG:25828', 'EPSG:25829', 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
+    this.filterTemplates_ = filterTemplates;
   }
 
   /**
@@ -279,6 +283,12 @@ export default class PrinterMapControl extends M.Control {
             layout.default = true;
             break;
           }
+        }
+
+        if (this.filterTemplates_.length > 0) {
+          capabilities.layouts = capabilities.layouts.filter((l) => {
+            return this.filterTemplates_.indexOf(l.name) > -1;
+          });
         }
 
         // show only template names without 'jpg' on their names

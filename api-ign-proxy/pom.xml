@@ -9,7 +9,7 @@
    <parent>
       <groupId>es.ign.api</groupId>
       <artifactId>api-ign-parent</artifactId>
-      <version>4.2.2</version>
+      <version>4.3.0</version>
       <relativePath>../api-ign-parent/pom.xml</relativePath>
    </parent>
    <licenses>
@@ -24,7 +24,7 @@
          <organizationUrl>www.guadaltel.com</organizationUrl>
       </developer>
    </developers>
-   <repositories>
+   <!-- <repositories>
   		<repository>
          <releases>
                  <enabled>true</enabled>
@@ -36,7 +36,7 @@
          <name>Guadaltel Maven Repository</name>
          <url>http://maven.guadaltel.es/nexus/content/groups/public</url>
       </repository>
-   </repositories>
+   </repositories> -->
    <build>
       <finalName>api-core</finalName>
       <defaultGoal>install</defaultGoal>
@@ -83,6 +83,8 @@
          <groupId>es.guadaltel.framework</groupId>
          <artifactId>ticket</artifactId>
          <version>0.0.1</version>
+         <scope>system</scope>
+         <systemPath>${basedir}/lib/ticket-0.0.1.jar</systemPath>
       </dependency>
       <dependency>
          <groupId>commons-fileupload</groupId>

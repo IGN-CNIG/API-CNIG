@@ -3,6 +3,7 @@
     background-color: #71a7d3 !important;
     border-radius: 25px;
     font-size: 1.5rem !important;
+    border: 2px solid white;
 }
 
 .m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-zoomextent.m-control.m-container.m-zoomextent.activated>button {

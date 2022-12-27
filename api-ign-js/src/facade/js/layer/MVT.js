@@ -172,14 +172,13 @@ class MVT extends Vector {
 }
 
 /**
- * Style options by default for this layer
- *
+ * Params options by default for MVT layer *
  * @const
  * @type {object}
  * @public
  * @api
  */
-MVT.DEFAULT_OPTIONS_STYLE = {
+MVT.DEFAULT_PARAMS_STYLE = {
   fill: {
     color: '#fff',
     opacity: 0.6,
@@ -188,7 +187,27 @@ MVT.DEFAULT_OPTIONS_STYLE = {
     color: '#827ec5',
     width: 2,
   },
-  radius: 5,
+};
+
+/**
+ * Style options by default for this layer
+ *
+ * @const
+ * @type {object}
+ * @public
+ * @api
+ */
+MVT.DEFAULT_OPTIONS_STYLE = {
+  point: {
+    ...MVT.DEFAULT_PARAMS_STYLE,
+    radius: 5,
+  },
+  line: {
+    ...MVT.DEFAULT_PARAMS_STYLE,
+  },
+  polygon: {
+    ...MVT.DEFAULT_PARAMS_STYLE,
+  },
 };
 
 export default MVT;

@@ -1,3 +1,5 @@
+import { modifySVG } from 'M/util/Utils';
+
 /**
  * @module M/style/Feature
  */
@@ -33,7 +35,19 @@ class Feature extends StyleBase {
    */
   applyToFeature(feature) {
     this.feature_ = feature;
-    this.getImpl().applyToFeature(feature);
+    let options = feature.getStyle().getOptions();
+    if (options.point) {
+      options = options.point;
+    }
+    if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg') &&
+      (options.icon.fill || options.icon.stroke)) {
+      modifySVG(options.icon.src, options).then((resp) => {
+        options.icon.src = resp;
+        this.applyToFeature(this.feature_);
+      });
+    } else {
+      this.getImpl().applyToFeature(feature);
+    }
   }
 }
 

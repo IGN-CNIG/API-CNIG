@@ -1,6 +1,9 @@
+import chroma from 'chroma-js';
 import StylePoint from '../style/Point';
 import StyleLine from '../style/Line';
 import StylePolygon from '../style/Polygon';
+import StyleGeneric from '../style/Generic';
+
 
 /**
  * This function returns the appropiate style to geomtry layer
@@ -32,6 +35,44 @@ const generateStyleLayer = (options, layer) => {
   return style;
 };
 
+const generateRandomGenericStyle = (opts) => {
+  const radius = opts.radius;
+  const fillColor = chroma.random().hex();
+  const strokeColor = opts.strokeColor;
+  const strokeWidth = opts.strokeWidth;
+  const options = {
+    point: {
+      radius,
+      fill: {
+        color: fillColor,
+      },
+      stroke: {
+        color: strokeColor,
+        width: strokeWidth,
+      },
+    },
+    line: {
+      fill: {
+        color: fillColor,
+      },
+      stroke: {
+        color: strokeColor,
+        width: strokeWidth,
+      },
+    },
+    polygon: {
+      fill: {
+        color: fillColor,
+      },
+      stroke: {
+        color: strokeColor,
+        width: strokeWidth,
+      },
+    },
+  };
+  return new StyleGeneric(options);
+};
+
 /**
  * @public
  * @function
@@ -39,6 +80,7 @@ const generateStyleLayer = (options, layer) => {
  */
 const Utils = {
   generateStyleLayer,
+  generateRandomGenericStyle,
 };
 
 export default Utils;

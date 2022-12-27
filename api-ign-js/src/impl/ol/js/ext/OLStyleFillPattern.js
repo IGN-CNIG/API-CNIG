@@ -58,6 +58,9 @@ export default class OLStyleFillPattern extends OLStyleFill {
           pattern = ctx.createPattern(canvas, 'repeat');
           this.color_ = pattern;
           this.checksum_ = undefined;
+          if (options.layer) {
+            options.layer.refresh();
+          }
         };
       }
     } else {

@@ -3,18 +3,20 @@ import WMTS from 'M/layer/WMTS';
 
 const mapajs = map({
   container: 'map',
-  layers: ['WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*EPSG:25830*PNOA'],
-  center: [363063, 4150610],
-  zoom: '4',
-  controls: ['layerswitcher'],
+  controls: ['panzoom', 'scale*true', 'scaleline', 'rotate', 'location', 'getfeatureinfo'],
+  zoom: 5,
+  maxZoom: 20,
+  minZoom: 0,
+  layers: ['OSM'],
+  projection: "EPSG:3857*m",
 });
 
-// OPCION 2: Con el metodo addLayers
-const layer = new WMTS({
-  url: 'http://www.ideandalucia.es/geowebcache/service/wmts',
-  name: 'toporaster',
-  matrixSet: 'EPSG:25830',
-  legend: 'Toporaster',
+const layer3 = new WMTS({
+  url: "https://www.ign.es/wmts/ign-base?",
+  name: "IGNBaseTodo",
+  matrixSet: "GoogleMapsCompatible",
+  legend: "Duero",
+  format: 'image/jpeg',
 });
 
-mapajs.addWMTS(layer);
+mapajs.addWMTS(layer3);

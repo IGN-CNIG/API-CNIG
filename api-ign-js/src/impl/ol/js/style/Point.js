@@ -1,7 +1,7 @@
 /**
  * @module M/impl/style/Point
  */
-import { isNullOrEmpty, concatUrlPaths, addParameters, isDynamic, drawDynamicStyle } from 'M/util/Utils';
+import { isNullOrEmpty, concatUrlPaths, addParameters, isDynamic, drawDynamicStyle, isArray } from 'M/util/Utils';
 import chroma from 'chroma-js';
 import OLStyleImage from 'ol/style/Image';
 import OLFeature from 'ol/Feature';
@@ -22,6 +22,7 @@ import Centroid from './Centroid';
 import PointFontSymbol from '../point/FontSymbol';
 import PointIcon from '../point/Icon';
 import PointCircle from '../point/Circle';
+import { isUndefined, modifySVG } from '../../../../facade/js/util/Utils';
 
 /**
  * @classdesc
@@ -198,10 +199,23 @@ class Point extends Simple {
         }
         style.setText(labelText);
       }
+
+      let radius = Simple.getValue(options.radius, featureVariable, this.layer_);
+      if (isArray(options.radius)) {
+        const func = (f, map) => {
+          let col = options.radius.find(element => element.zoom === map.getZoom());
+          if (isUndefined(col)) {
+            col = options.radius.find(element => element.zoom === 'default');
+          }
+          return col ? col.value : 5;
+        };
+        radius = Simple.getValue(func, featureVariable, this.layer_);
+      }
+
       style.setImage(new PointCircle({
         fill,
         stroke,
-        radius: Simple.getValue(options.radius, featureVariable, this.layer_),
+        radius,
         snapToPixel: Simple.getValue(options.snapToPixel, featureVariable, this.layer_),
         // forceGeometryRender: options.forceGeometryRender
       }));
@@ -288,26 +302,37 @@ class Point extends Simple {
    * @api stable
    */
   updateCanvas(canvas) {
-    this.updateFacadeOptions(this.options_);
-    if (!isDynamic(this.options_)) {
-      const canvasSize = this.getCanvasSize();
-      const vectorContext = toContextRender(canvas.getContext('2d'), {
-        size: canvasSize,
+    let options = this.options_;
+    if (options.point) {
+      options = options.point;
+    }
+    if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg') &&
+      (options.icon.fill || options.icon.stroke)) {
+      modifySVG(options.icon.src, options).then(() => {
+        this.updateCanvas(canvas);
       });
-      let applyStyle = this.olStyleFn_()[0];
-      if (!isNullOrEmpty(applyStyle.getText())) {
-        applyStyle.setText(null);
+    } else {
+      this.updateFacadeOptions(options);
+      if (!isDynamic(options)) {
+        const canvasSize = this.getCanvasSize();
+        const vectorContext = toContextRender(canvas.getContext('2d'), {
+          size: canvasSize,
+        });
+        let applyStyle = this.olStyleFn_()[0];
+        if (!isNullOrEmpty(applyStyle.getText())) {
+          applyStyle.setText(null);
+        }
+        if (!isNullOrEmpty(this.olStyleFn_()[1]) &&
+          this.olStyleFn_()[1].getImage() instanceof OLStyleFontsSymbol) {
+          applyStyle = this.olStyleFn_()[1];
+        }
+        const stroke = applyStyle.getImage().getStroke();
+        if (!isNullOrEmpty(stroke) && !isNullOrEmpty(stroke.getWidth())) {
+          stroke.setWidth(3);
+        }
+        vectorContext.setStyle(applyStyle);
+        this.drawGeometryToCanvas(vectorContext);
       }
-      if (!isNullOrEmpty(this.olStyleFn_()[1]) &&
-        this.olStyleFn_()[1].getImage() instanceof OLStyleFontsSymbol) {
-        applyStyle = this.olStyleFn_()[1];
-      }
-      const stroke = applyStyle.getImage().getStroke();
-      if (!isNullOrEmpty(stroke) && !isNullOrEmpty(stroke.getWidth())) {
-        stroke.setWidth(3);
-      }
-      vectorContext.setStyle(applyStyle);
-      this.drawGeometryToCanvas(vectorContext);
     }
   }
 
@@ -351,5 +376,37 @@ class Point extends Simple {
   }
 }
 Point.DEFAULT_WIDTH_POINT = 3;
+
+/**
+ * This function returns the name of the available fonts
+ * @function
+ * @api
+ */
+Point.getFonts = () => {
+  const fonts = [];
+  const defs = OLStyleFontsSymbol.defs.fonts;
+  Object.keys(defs).forEach((font) => {
+    fonts.push(font);
+  });
+  return fonts;
+};
+
+/**
+ * This function returns the available icons for a font
+ * @function
+ * @api
+ * @param { name } name source name
+ */
+Point.getFontsIcons = (name) => {
+  const icons = [];
+  const glyphs = OLStyleFontsSymbol.defs.glyphs;
+  Object.entries(glyphs).forEach((elm) => {
+    if (elm[1].font === name) {
+      icons.push(elm[0]);
+    }
+  });
+  return icons;
+};
+
 
 export default Point;

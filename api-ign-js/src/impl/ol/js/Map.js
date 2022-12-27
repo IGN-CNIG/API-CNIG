@@ -203,8 +203,8 @@ class Map extends MObject {
     const baseLayers = this.getLayers().filter((layer) => {
       let isBaseLayer = false;
       if ((layer.type === LayerType.WMS) ||
-        (layer.type === LayerType.WMTS)
-        || layer.type === LayerType.TMS) {
+        (layer.type === LayerType.WMTS) ||
+        layer.type === LayerType.TMS) {
         isBaseLayer = (layer.transparent !== true);
       }
       return isBaseLayer;
@@ -2405,8 +2405,8 @@ Map.Z_INDEX[LayerType.WFS] = 40;
 Map.Z_INDEX[LayerType.MVT] = 40;
 Map.Z_INDEX[LayerType.Vector] = 40;
 Map.Z_INDEX[LayerType.GeoJSON] = 40;
-Map.Z_INDEX[LayerType.MBTiles] = 10;
-Map.Z_INDEX[LayerType.MBTilesVector] = 10;
+// Map.Z_INDEX[LayerType.MBTiles] = 10;
+// Map.Z_INDEX[LayerType.MBTilesVector] = 10;
 Map.Z_INDEX[LayerType.XYZ] = 40;
 Map.Z_INDEX[LayerType.TMS] = 40;
 

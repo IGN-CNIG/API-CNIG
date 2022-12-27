@@ -10,8 +10,7 @@ import * as OLeasing from 'ol/easing';
 import OLFeature from 'ol/Feature';
 import OLGeomPolygon from 'ol/geom/Polygon';
 import OLGeomPoint from 'ol/geom/Point';
-import Polygon from 'M/style/Polygon';
-import StylePoint from 'M/style/Point';
+import Generic from 'M/style/Generic';
 import FacadeCluster from 'M/style/Cluster';
 import { inverseColor, extendsObj, isFunction, isNullOrEmpty } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
@@ -22,11 +21,13 @@ import SelectCluster from '../interaction/SelectedCluster';
 import Centroid from './Centroid';
 import Feature from '../feature/Feature';
 import coordinatesConvexHull from '../util/convexhull';
+
 /**
  * @classdesc
  * @api
  * @namespace M.style.Cluster
  */
+
 class Cluster extends Style {
   /**
    * @classdesc
@@ -40,6 +41,7 @@ class Cluster extends Style {
    */
   constructor(options, optionsVendor) {
     super({});
+
     /**
      *
      * @private
@@ -47,13 +49,15 @@ class Cluster extends Style {
      * @expose
      */
     this.convexHullLayer_ = null;
+
     /**
      *
      * @private
      * @type {ol.layer.Vector}
      * @expose
      */
-    this.oldOLLayer_ = null;
+    this.oldOL3Layer_ = null;
+
     /**
      *
      * @private
@@ -61,6 +65,7 @@ class Cluster extends Style {
      * @expose
      */
     this.optionsVendor_ = optionsVendor;
+
     /**
      *
      * @private
@@ -68,6 +73,7 @@ class Cluster extends Style {
      * @expose
      */
     this.options_ = options;
+
     /**
      *
      * @private
@@ -75,6 +81,7 @@ class Cluster extends Style {
      * @expose
      */
     this.clusterLayer_ = null;
+
     /**
      *
      * @private
@@ -82,6 +89,7 @@ class Cluster extends Style {
      * @expose
      */
     this.selectClusterInteraction_ = null;
+
     /**
      *
      * @private
@@ -90,6 +98,7 @@ class Cluster extends Style {
      */
     this.hoverInteraction_ = null;
   }
+
   /**
    * Apply the style cluster to layer vectorresolution
    *
@@ -114,6 +123,7 @@ class Cluster extends Style {
       this.layer_.on(EventType.LOAD, this.clusterize_.bind(this), this);
     }
   }
+
   /**
    * Gets the select cluster interaction
    *
@@ -156,13 +166,17 @@ class Cluster extends Style {
     this.clusterLayer_.setZIndex(99999);
     const ol3Layer = this.layer_.getImpl().getOL3Layer();
     if (!(ol3Layer instanceof AnimatedCluster)) {
-      this.oldOLLayer_ = ol3Layer;
+      this.oldOL3Layer_ = ol3Layer;
     }
+    this.clusterLayer_.setMaxResolution(this.oldOL3Layer_.getMaxResolution());
+    this.clusterLayer_.setMinResolution(this.oldOL3Layer_.getMinResolution());
     this.layer_.getImpl().setOL3Layer(this.clusterLayer_);
+
     if (isNullOrEmpty(this.options_.ranges)) {
       this.options_.ranges = this.getDefaultRanges_();
       // this.options_.label.color = '#fff';
     }
+
     if (this.options_.hoverInteraction !== false) {
       this.addCoverInteraction_();
     }
@@ -170,6 +184,7 @@ class Cluster extends Style {
       this.addSelectInteraction_();
     }
   }
+
   /**
    * This function update a set of ranges  defined by user
    *
@@ -187,6 +202,7 @@ class Cluster extends Style {
       this.options_.ranges = newRanges;
     }
   }
+
   /**
    * This function add the max limit to the last range of cluster options if not exists
    *
@@ -215,6 +231,7 @@ class Cluster extends Style {
     }
     return cloneOptions;
   }
+
   /**
    * This function set a specified range
    *
@@ -236,6 +253,7 @@ class Cluster extends Style {
     }
     return element;
   }
+
   /**
    * This function set if layer must be animated
    *
@@ -247,6 +265,7 @@ class Cluster extends Style {
    * @return {M.style.Cluster}
    * @api stable
    */
+
   setAnimated(animated, layer, cluster) {
     const clusterVariable = cluster;
     clusterVariable.getOptions().animated = animated;
@@ -257,6 +276,18 @@ class Cluster extends Style {
     }
     return this;
   }
+
+  /**
+   * Add selected interaction and layer to see the features of cluster
+   *
+   * @function
+   * @public
+   * @api stable
+   */
+  addSelectInteraction() {
+    this.addSelectInteraction_();
+  }
+
   /**
    * Add selected interaction and layer to see the features of cluster
    *
@@ -272,13 +303,25 @@ class Cluster extends Style {
       maxFeaturesToSelect: this.options_.maxFeaturesToSelect,
       pointRadius: this.optionsVendor_.distanceSelectFeatures,
       animate: true,
-      style: this.clusterStyleFn_.bind(this),
+      // style: this.clusterStyleFn_.bind(this),
       layers: [this.clusterLayer_],
     });
     this.selectClusterInteraction_.on('select', this.selectClusterFeature_.bind(this), this);
     map.getMapImpl().addInteraction(this.selectClusterInteraction_);
     map.getMapImpl().on('change:view', evt => this.selectClusterInteraction_.refreshViewEvents(evt));
   }
+
+  /**
+   * Remove selected interaction and layer to see the features of cluster
+   *
+   * @function
+   * @public
+   * @api stable
+   */
+  removeSelectInteraction() {
+    this.removeSelectInteraction_();
+  }
+
   /**
    * Remove selected interaction and layer to see the features of cluster
    *
@@ -289,6 +332,7 @@ class Cluster extends Style {
   removeSelectInteraction_() {
     this.layer_.getImpl().getMap().getMapImpl().removeInteraction(this.selectClusterInteraction_);
   }
+
   /**
    * Add cover interaction and layer to see the cover
    *
@@ -308,6 +352,7 @@ class Cluster extends Style {
           hoveredFeatures.push(hoveredFeature);
         }
       });
+
       const coordinates = hoveredFeatures
         .map(f => f.getImpl().getOLFeature().getGeometry().getCoordinates());
       const convexHull = coordinatesConvexHull(coordinates);
@@ -316,17 +361,19 @@ class Cluster extends Style {
         const convexFeature = Feature.olFeature2Facade(convexOlFeature);
         if (isNullOrEmpty(this.convexHullLayer_)) {
           this.convexHullLayer_ = new LayerVector({
-            name: 'cluster_cover',
+            name: `cluster_cover_${this.layer_.name}`,
             extract: false,
           }, {
             displayInLayerSwitcher: false,
-            style: new Polygon(this.optionsVendor_.convexHullStyle),
+            style: new Generic({ polygon: this.optionsVendor_.convexHullStyle }),
           });
           this.convexHullLayer_.addFeatures(convexFeature);
           this.layer_.getImpl().getMap().addLayers(this.convexHullLayer_);
           this.layer_.getImpl().getMap().getMapImpl().getView()
             .on('change:resolution', this.clearConvexHull.bind(this), this);
-          this.convexHullLayer_.setStyle(new Polygon(this.optionsVendor_.convexHullStyle));
+          this.convexHullLayer_.setStyle(new Generic({
+            polygon: this.optionsVendor_.convexHullStyle,
+          }));
           this.convexHullLayer_.setZIndex(99990);
         } else {
           this.convexHullLayer_.removeFeatures(this.convexHullLayer_.getFeatures());
@@ -335,6 +382,7 @@ class Cluster extends Style {
       }
     }
   }
+
   /**
    * Add cover interaction and layer to see the cover
    * @function
@@ -348,6 +396,7 @@ class Cluster extends Style {
       this.convexHullLayer_.removeFeatures(this.convexHullLayer_.getFeatures());
     }
   }
+
   /**
    * Add cover interaction and layer to see the cover
    *
@@ -359,6 +408,7 @@ class Cluster extends Style {
     this.hoverKey_ = this.layer_.on(EventType.HOVER_FEATURES, this.hoverFeatureFn_.bind(this));
     this.leaveKey_ = this.layer_.on(EventType.LEAVE_FEATURES, this.leaveFeatureFn_.bind(this));
   }
+
   /**
    * Add cover interaction and layer to see the cover
    *
@@ -370,6 +420,7 @@ class Cluster extends Style {
     this.layer_.unByKey(EventType.HOVER_FEATURES, this.hoverKey_);
     this.layer_.unByKey(EventType.LEAVE_FEATURES, this.leaveKey_);
   }
+
   /**
    * This function is a style function to cluster
    * Get a style from ranges of user or default ranges
@@ -392,33 +443,37 @@ class Cluster extends Style {
     const numFeatures = clusterOlFeatures.length;
     const range = this.options_.ranges.find(el => (el.min <= numFeatures && el.max >= numFeatures));
     if (!isNullOrEmpty(range)) {
-      const style = range.style.clone();
+      let style = range.style.clone();
+      if (!(style instanceof Generic)) {
+        style = new Generic({ point: style.getOptions() });
+      }
       if (selected) {
-        style.set('fill.opacity', 0.33);
+        style.set('point.fill.opacity', 0.33);
       } else if (this.options_.displayAmount) {
-        style.set('label', this.options_.label);
-        let labelColor = style.get('label.color');
+        style.set('point.label', this.options_.label);
+        let labelColor = style.get('point.label.color');
         if (isNullOrEmpty(labelColor)) {
-          const fillColor = style.get('fill.color');
+          const fillColor = style.get('point.fill.color');
           if (!isNullOrEmpty(fillColor)) {
             labelColor = inverseColor(fillColor);
           } else {
             labelColor = '#000';
           }
-          style.set('label.color', labelColor);
+          style.set('point.label.color', labelColor);
         }
       }
       olStyle = style.getImpl().olStyleFn(feature, resolution);
     } else if (numFeatures === 1) {
       let clusterOlFeatureStyle = clusterOlFeatures[0].getStyle();
       if (!clusterOlFeatureStyle) {
-        clusterOlFeatureStyle = this.oldOLLayer_.getStyle();
+        clusterOlFeatureStyle = this.oldOL3Layer_.getStyle();
       }
       olStyle = clusterOlFeatureStyle(clusterOlFeatures[0], resolution);
       olStyle[0].setGeometry(clusterOlFeatures[0].getGeometry());
     }
     return olStyle;
   }
+
   /**
    * This function return a default ranges to cluster
    *
@@ -436,15 +491,15 @@ class Cluster extends Style {
     const ranges = [{
       min: 2,
       max: breakpoint,
-      style: new StylePoint(FacadeCluster.RANGE_1_DEFAULT),
+      style: new Generic({ point: FacadeCluster.RANGE_1_DEFAULT }),
     }, {
       min: breakpoint,
       max: breakpoint * 2,
-      style: new StylePoint(FacadeCluster.RANGE_2_DEFAULT),
+      style: new Generic({ point: FacadeCluster.RANGE_2_DEFAULT }),
     }, {
       min: breakpoint * 2,
       max: numFeatures + 1,
-      style: new StylePoint(FacadeCluster.RANGE_3_DEFAULT),
+      style: new Generic({ point: FacadeCluster.RANGE_3_DEFAULT }),
     }];
     this.options_.ranges = ranges;
     return ranges;
@@ -466,6 +521,7 @@ class Cluster extends Style {
     //   this.layer_.fire(M.evt.SELECT_FEATURES, [features, evt]);
     // }
   }
+
   /**
    * This function remove the style to specified layer
    * @function
@@ -474,7 +530,9 @@ class Cluster extends Style {
    */
   unapply() {
     if (!isNullOrEmpty(this.clusterLayer_)) {
-      this.layer_.getImpl().setOL3Layer(this.oldOLLayer_);
+      this.layer_.getImpl().setOL3Layer(this.oldOL3Layer_);
+      this.oldOL3Layer_.setMaxResolution(this.clusterLayer_.getMaxResolution());
+      this.oldOL3Layer_.setMinResolution(this.clusterLayer_.getMinResolution());
       this.removeCoverInteraction_();
       this.removeSelectInteraction_();
       this.clearConvexHull();
@@ -485,6 +543,7 @@ class Cluster extends Style {
       this.layer_.un(EventType.LOAD, this.clusterize_.bind(this), this);
     }
   }
+
   /**
    * TODO
    */
@@ -494,6 +553,7 @@ class Cluster extends Style {
       this.convexHullLayer_ = null;
     }
   }
+
   /**
    * This function
    * @public
@@ -502,6 +562,7 @@ class Cluster extends Style {
    * @api stable
    */
   updateCanvas() {}
+
   /**
    * TODO
    * @public
@@ -516,6 +577,7 @@ class Cluster extends Style {
       clusterSource.getSource().on('change', callback);
     }
   }
+
   /**
    * TODO
    * @public
@@ -536,6 +598,7 @@ class Cluster extends Style {
       });
     }
   }
+
   /**
    * TODO
    * @public
@@ -559,6 +622,7 @@ class Cluster extends Style {
       }
     }
   }
+
   /**
    * TODO
    * @public
@@ -576,12 +640,14 @@ class Cluster extends Style {
       }
     }
   }
+
   /**
-   * oldOLLayer getter
+   * oldOL3Layer getter
    * @public
    */
-  get oldOLLayer() {
-    return this.oldOLLayer_;
+  get oldOL3Layer() {
+    return this.oldOL3Layer_;
   }
 }
+
 export default Cluster;

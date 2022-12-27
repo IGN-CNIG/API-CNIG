@@ -243,7 +243,7 @@ class SelectCluster extends OLInteractionSelect {
 
     let clusterStyleFn = clusterFeature.getStyle();
     if (!clusterStyleFn) {
-      clusterStyleFn = this.facadeLayer_.getStyle().getImpl().oldOLLayer.getStyle();
+      clusterStyleFn = this.facadeLayer_.getStyle().getImpl().oldOL3Layer.getStyle();
     }
     const olClusterStyles = clusterStyleFn(clusterFeature, resolution);
     const clonedStyles =
@@ -320,7 +320,7 @@ class SelectCluster extends OLInteractionSelect {
           // Image style
           let clusterStyleFn = mFeature.getStyle();
           if (!clusterStyleFn) {
-            clusterStyleFn = this.facadeLayer_.getStyle().getImpl().oldOLLayer.getStyle();
+            clusterStyleFn = this.facadeLayer_.getStyle().getImpl().oldOL3Layer.getStyle();
           }
           const olClusterStyles = clusterStyleFn(mFeature, res);
           const st =

@@ -61,6 +61,7 @@ div.ol-overviewmap-box {
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    border: 2px solid white !important;
 }
 
 .overviewmap-mundo:before {

@@ -79,6 +79,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].selectiondraw = pluginsLanguage.selectiondraw.esSelectiondraw;
     configuration.translations[lang].selectionzoom = pluginsLanguage.selectionzoom.esSelectionzoom;
     configuration.translations[lang].sharemap = pluginsLanguage.sharemap.esSharemap;
+    configuration.translations[lang].stylemanager = pluginsLanguage.stylemanager.esStylemanager;
     configuration.translations[lang].timeline = pluginsLanguage.timeline.esTimeline;
     configuration.translations[lang].toc = pluginsLanguage.toc.esToc;
     configuration.translations[lang].topographicprofile = pluginsLanguage.topographicprofile
@@ -128,6 +129,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].selectiondraw = pluginsLanguage.selectiondraw.enSelectiondraw;
     configuration.translations[lang].selectionzoom = pluginsLanguage.selectionzoom.enSelectionzoom;
     configuration.translations[lang].sharemap = pluginsLanguage.sharemap.enSharemap;
+    configuration.translations[lang].stylemanager = pluginsLanguage.stylemanager.enStylemanager;
     configuration.translations[lang].timeline = pluginsLanguage.timeline.enTimeline;
     configuration.translations[lang].toc = pluginsLanguage.toc.enToc;
     configuration.translations[lang].topographicprofile = pluginsLanguage.topographicprofile

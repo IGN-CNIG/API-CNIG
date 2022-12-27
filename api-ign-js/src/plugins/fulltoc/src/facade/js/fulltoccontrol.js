@@ -85,7 +85,7 @@ export default class FullTOCControl extends M.Control {
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
         this.getImpl().registerEvents();
         this.render();
-        this.afterRender();
+        this.afterRender(map.getLayers());
         setTimeout(() => {
           const openBtn = document.querySelector('.m-plugin-fulltoc .m-panel-btn.icon-capas');
           if (openBtn !== null) {
@@ -101,10 +101,20 @@ export default class FullTOCControl extends M.Control {
     });
   }
 
-  afterRender() {
+  afterRender(layers) {
     setTimeout(() => {
       this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
     }, 700);
+
+    if (layers !== undefined && layers.length > 0) {
+      layers.forEach((l) => {
+        l.getImpl().on(M.evt.ADDED_TO_MAP, (layer) => {
+          if (layer.getOL3Layer() != null) {
+            this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
+          }
+        });
+      });
+    }
   }
 
   /**
@@ -254,7 +264,7 @@ export default class FullTOCControl extends M.Control {
             vars.capabilities = M.utils.getWMTSGetCapabilitiesUrl(layer.url);
             if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
               vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
-              `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+                `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
               const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
               if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
                 const mail = sc.ContactInfo.Address.ElectronicMailAddress;
@@ -623,7 +633,7 @@ export default class FullTOCControl extends M.Control {
           const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
           const isRaster = ['wms', 'wmts'].indexOf(layer.type.toLowerCase()) > -1;
           const isNotWMSFull = !((layer.type === M.layer.type.WMS) &&
-          M.utils.isNullOrEmpty(layer.name));
+            M.utils.isNullOrEmpty(layer.name));
           return (isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull);
         }).reverse();
 
@@ -700,14 +710,30 @@ export default class FullTOCControl extends M.Control {
       imgElem.addEventListener('error', (evt) => {
         const layerName = evt.target.getAttribute('data-layer-name');
         const layerURL = evt.target.getAttribute('data-layer-url');
-        const legendErrorUrl = M.utils.concatUrlPaths([M.config.THEME_URL,
-          M.layer.WMS.LEGEND_ERROR]);
+        const legendErrorUrl = M.utils.concatUrlPaths([
+          M.config.THEME_URL,
+          M.layer.WMS.LEGEND_ERROR,
+        ]);
+
         const layer = this.map_.getLayers().filter((l) => {
           return l.name === layerName && l.url === layerURL;
         })[0];
-        if (!M.utils.isNullOrEmpty(layer)) {
+
+        if (!M.utils.isNullOrEmpty(layer) && layerURL.indexOf('/mirame.chduero.es/') === -1) {
           layer.setLegendURL(legendErrorUrl);
         }
+        /*
+        else if (layerURL.indexOf('/mirame.chduero.es/') > -1 &&
+        layer.getImpl().getOL3Layer() !== null) {
+          console.log('Entra en cambiar leyenda');
+          console.log(layer);
+          const styleName = layer.getImpl().getOL3Layer().getSource().getStyle();
+          const urlLegend = layer.getLegendURL().split('&amp;').join('&').split('default')
+            .join(styleName);
+          console.log(urlLegend);
+          layer.setLegendURL(urlLegend);
+        }
+        */
       });
     });
   }
@@ -875,7 +901,7 @@ export default class FullTOCControl extends M.Control {
                 this.capabilities.forEach((layer) => {
                   try {
                     this.getParents(getCapabilities, layer);
-                  /* eslint-disable no-empty */
+                    /* eslint-disable no-empty */
                   } catch (err) {}
                 });
 
@@ -1298,6 +1324,18 @@ export default class FullTOCControl extends M.Control {
                   this.capabilities[j].setLegendURL(style);
                 }
               }
+
+              if (this.capabilities[j].type === 'WMTS') {
+                if (meta.style !== undefined && meta.style.length > 0) {
+                  meta.style.forEach((s) => {
+                    if (s.isDefault === true && s.LegendURL !== undefined &&
+                      s.LegendURL.length > 0) {
+                      const urlDefaultStyle = s.LegendURL[0].href;
+                      this.capabilities[j].setLegendURL(urlDefaultStyle);
+                    }
+                  });
+                }
+              }
             }
 
             layers.push(this.capabilities[j]);
@@ -1311,7 +1349,7 @@ export default class FullTOCControl extends M.Control {
         l.setZIndex(l.getZIndex() + 8);
       });
 
-      this.afterRender();
+      this.afterRender(layers);
     }
   }
 

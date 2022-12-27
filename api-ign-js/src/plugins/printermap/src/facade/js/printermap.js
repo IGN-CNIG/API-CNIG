@@ -137,6 +137,15 @@ export default class PrinterMap extends M.Plugin {
      * @type {String}
      */
     this.logo_ = parameters.logo || '';
+
+    /**
+     * Header legend image url
+     * @private
+     * @type {String}
+     */
+    this.headerLegend_ = parameters.headerLegend || '';
+
+    this.filterTemplates_ = parameters.filterTemplates || [];
   }
 
   /**
@@ -173,6 +182,8 @@ export default class PrinterMap extends M.Plugin {
       this.georefActive_,
       this.logo_,
       this.fototeca_,
+      this.headerLegend_,
+      this.filterTemplates_,
     );
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {

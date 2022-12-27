@@ -35,7 +35,7 @@ class TMS extends LayerBase {
      * @public
      * @type {M/impl/layer/TMS}
      */
-    const impl = new TMSImpl(userParameters, options, vendorOptions);
+    const impl = new TMSImpl(parameters, options, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
     /**

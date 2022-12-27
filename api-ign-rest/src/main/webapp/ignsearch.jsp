@@ -148,7 +148,7 @@
 
         let sToSearch, mxResults, collapsed = true,
             collapsible = true,
-            zoom,
+            pzoom,
             posicion, noProcess, countryCode, reverse = true,
             urlCandidates, urlFind, urlReverse, searchposition, pointStyle;
         crearPlugin({
@@ -160,7 +160,7 @@
             collapsible: collapsible,
             position: posicion,
             reverse: reverse,
-            zoom: zoom,
+            zoom: pzoom,
             urlCandidates: urlCandidates,
             urlFind: urlFind,
             urlReverse: urlReverse,
@@ -238,10 +238,13 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-163660977-1');
 </script>
 
 </html>

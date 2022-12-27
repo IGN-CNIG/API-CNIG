@@ -171,13 +171,12 @@ class GeoJSON extends LayerVector {
 }
 
 /**
- * Options style by default
- * @const
+ * Default params for style GeoJSON layers * @const
  * @type {object}
  * @public
  * @api
  */
-GeoJSON.DEFAULT_OPTIONS_STYLE = {
+GeoJSON.DEFAULT_PARAMS = {
   fill: {
     color: 'rgba(255, 255, 255, 0.4)',
     opacity: 0.4,
@@ -186,7 +185,26 @@ GeoJSON.DEFAULT_OPTIONS_STYLE = {
     color: '#3399CC',
     width: 1.5,
   },
-  radius: 5,
+};
+
+/**
+ * Default style for GeoJSON layers
+ * @const
+ * @type {object}
+ * @public
+ * @api
+ */
+GeoJSON.DEFAULT_OPTIONS_STYLE = {
+  point: {
+    ...GeoJSON.DEFAULT_PARAMS,
+    radius: 5,
+  },
+  line: {
+    ...GeoJSON.DEFAULT_PARAMS,
+  },
+  polygon: {
+    ...GeoJSON.DEFAULT_PARAMS,
+  },
 };
 
 export default GeoJSON;

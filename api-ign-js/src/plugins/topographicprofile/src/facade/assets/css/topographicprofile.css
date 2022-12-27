@@ -5,6 +5,7 @@
     border-radius: 40px;
     font-family: g-plugin-perfiltopografico !important;
     outline: none;
+    border: 2px solid white;
 }
 
 .m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-topographicprofile-container>button.activated {
@@ -71,38 +72,38 @@
 }
 
 .ol-profil button.profile-download-button {
-  position: absolute;
-  right: 20px;
-  top: 0px;
-  display: block !important;
-  color: #676767;
-  border: none;
-  background-color: transparent;
+    position: absolute;
+    right: 20px;
+    top: 0px;
+    display: block !important;
+    color: #676767;
+    border: none;
+    background-color: transparent;
 }
 
 .ol-profil button.profile-download-button:hover {
-  transform: scale(1.2);
+    transform: scale(1.2);
 }
 
 .ol-profil button.profile-download-button:after {
-  content: '\e90e';
-  font-family: "g-plugin-perfiltopografico";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  text-align: center;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1em;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    content: '\e90e';
+    font-family: "g-plugin-perfiltopografico";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .ol-profil button.profile-download-button:focus {
-  outline: none;
+    outline: none;
 }
 
 .ol-profil.ol-collapsed button {
@@ -215,5 +216,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-chart:before { content: '\e800'; }
-.icon-download:before { content: '\e90e'; }
+.icon-chart:before {
+    content: '\e800';
+}
+
+.icon-download:before {
+    content: '\e90e';
+}

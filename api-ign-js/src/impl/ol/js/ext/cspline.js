@@ -152,9 +152,9 @@ OLGeomLineString.prototype.calcCSpline = function calcCSpline(options = {}) {
       st = t / numOfSegments;
 
       // calc cardinals
-      c1 = (2 * (st ** 3)) - ((3 * (st ** 2)) + 1);
+      c1 = ((2 * (st ** 3)) - (3 * (st ** 2))) + 1;
       c2 = -(2 * (st ** 3)) + (3 * (st ** 2));
-      c3 = (st ** 3) - ((2 * (st ** 2)) + st);
+      c3 = ((st ** 3) - (2 * (st ** 2))) + st;
       c4 = (st ** 3) - (st ** 2);
 
       // calc x and y cords with common control vectors
