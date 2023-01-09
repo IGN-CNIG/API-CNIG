@@ -32,7 +32,10 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 const mp = new M.plugin.Popup({
   position: 'TR',
-  helpLink: 'https://www.ign.es/iberpix2/visor/help/Manual%20de%20Usuario.html?1Introduccion.html',
+  helpLink: {
+    es: 'https://componentes.cnig.es/ayudaIberpix/es.html',
+    en: 'https://componentes.cnig.es/ayudaIberpix/en.html',
+  }
 });
 
    map.addPlugin(mp);
