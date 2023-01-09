@@ -30,6 +30,15 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **collapsible**. Valor booleano que indica si el plugin puede colapsarse o no.
   - true (por defecto)
   - false
+- **reverse**. Valor booleano que indica si la funcionalidad obtener dirección en un punto del mapa está activada.
+  - true (por defecto)
+  - false
+- **cadastre**. Valor booleano que indica si la funcionalidad buscar parcela/catastro está activada.
+  - true (por defecto)
+  - false
+- **searchCoordinatesXYZ**. Valor booleano que indica si la funcionalidad buscar por coordenadas está activada.
+  - true (por defecto)
+  - false
 - **resultVisibility**. Indica si se muestra o no la geometría del elemento localizado
 - **position**. Indica la posición donde se mostrará el plugin
   - 'TL':top left (default)
