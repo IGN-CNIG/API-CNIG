@@ -58,8 +58,8 @@ mapajs.addPlugin(new M.plugin.Georefimage({
   position: 'TR',
   collapsed: false,
   collapsible: false,
-  serverUrl: 'https://geoprint.desarrollo.guadaltel.es',
-  printTemplateUrl: 'https://geoprint.desarrollo.guadaltel.es/print/mapexport',
-  printStatusUrl: 'https://geoprint.desarrollo.guadaltel.es/print/status',
+  serverUrl: 'https://componentes.cnig.es', 
+  printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG', 
+  printStatusUrl: 'https://componentes.cnig.es/geoprint/print/CNIG/status',
 
 }));
