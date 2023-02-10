@@ -32,7 +32,7 @@ URL_API?vectors=position*collapsed*collapsible
 ````
 Ejemplo:
 ```javascript
-http://mapea-lite.desarrollo.guadaltel.es/api-core/?vectors=BL*true*true
+http://componentes.cnig.es/api-core/?vectors=BL*true*true
 ```
 
 
