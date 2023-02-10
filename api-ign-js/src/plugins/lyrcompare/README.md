@@ -154,11 +154,11 @@ WMTS con formato Mapea y sin interfaz
 const pluginLyrCompare = new LyrCompare({
   position: 'TL',
   layers: [
-    'WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11',
-    'WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster',
-    'WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*SPOT_Andalucia',
-    'WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*base',
-  ],
+       'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',        
+       'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true',
+       'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true',
+       'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true',        
+     ],
   collapsible: true,
   collapsed: false,
   staticDivision: 1,
@@ -204,10 +204,10 @@ const pluginLyrCompare = new LyrCompare({
 WMTS como objeto
 
 ```javascript
-const wmts1 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11');
-const wmts2 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster');
-const wmts3 = new M.layer.WMTS('WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*SPOT_Andalucia');
-const wmts4 = new M.layer.WMTS('WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*base');
+const wmts1 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true');
+const wmts2 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true');
+const wmts3 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true');
+const wmts4 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true');
 myMap.addLayers([wmts1, wmts2, wmts3, wmts4]);
 
 const pluginLyrCompare = new LyrCompare({
@@ -232,14 +232,14 @@ const pluginLyrCompare = new LyrCompare({
 WMS + WMTS como cadena y como texto
 
 ```javascript
-const wmts1 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11');
+const wmts1 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true');
 const wms2 = new M.layer.WMS('WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT');
 myMap.addLayers([wmts1, wms2]);
 
 const pluginLyrCompare = new LyrCompare({
   position: 'TL',
   layers: [
-    'orto_2010-11', 'OLISTAT', 'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986', 'WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*base'
+    'orto_2010-11', 'OLISTAT', 'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986', 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true'
   ],
   collapsible: true,
   collapsed: false,
@@ -251,30 +251,5 @@ const pluginLyrCompare = new LyrCompare({
   defaultLyrC: 3,
   defaultLyrD: 4,
   interface: false,
-});
-```
-
-## Ejemplo 8
-Al añadir capas que no son válidas para el plugin no se contarán y mostrará el mensaje: El número de capas es insuficiente para aplicar el efecto
-
-```javascript
-const pluginLyrCompare = new LyrCompare({
-  position: 'TL',
-  layers: [
-    'WFST*CapaWFS*http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?*tematicos:Provincias*MPOLYGON',
-    'KML*Arboleda*http://mapea4-sigc.juntadeandalucia.es/files/kml/*arbda_sing_se.kml*true',
-    'WFST*CapaWFSColegio*http://g-gis-online-lab.desarrollo.guadaltel.es/geoserver/ggiscloud_root/wms?*ggiscloud_root:a1585301579731_colegios*MPOINT',
-    'WFST*CapaWFSRed*http://g-gis-online-lab.desarrollo.guadaltel.es/geoserver/ggiscloud_root/wms?*ggiscloud_root:a1585301955480_red_hidrografica*MLINE',
-  ],
-  collapsible: true,
-  collapsed: false,
-  staticDivision: 1,
-  opacityVal: 100,
-  comparisonMode: 0,
-  defaultLyrA: 1,
-  defaultLyrB: 2,
-  defaultLyrC: 3,
-  defaultLyrD: 4,
-  interface: true,
 });
 ```
