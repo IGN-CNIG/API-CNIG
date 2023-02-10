@@ -213,7 +213,7 @@ myMap.addLayers([wmts1, wmts2, wmts3, wmts4]);
 const pluginLyrCompare = new LyrCompare({
   position: 'TL',
   layers: [
-    'orto_2010-11', 'toporaster', 'SPOT_Andalucia-1986', 'base'
+    'MTN', 'OI.OrthoimageCoverage', 'IGNBaseOrto', 'IGNBaseTodo'
   ],
   collapsible: true,
   collapsed: false,
