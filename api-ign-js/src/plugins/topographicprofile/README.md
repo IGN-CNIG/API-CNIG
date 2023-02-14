@@ -24,6 +24,8 @@ El constructor se inicializa con un JSON de _options_ con los siguientes atribut
   - 'TR':top right (default)
   - 'BL':bottom left
   - 'BR':bottom right
+- **distance**. Discancia, por defecto 30.
+- **visible**. Ocultar o mostrar panel. Por defecto true.
 
 # Ejemplos de uso
 
