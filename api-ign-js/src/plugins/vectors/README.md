@@ -25,6 +25,20 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TR':top right
   - 'BL':bottom left
   - 'BR':bottom right
+- **wfszoom**. Zoom WFS, por defecto 12.
+- **precharged**. Conjunto de capas:
+```JavaScript
+const precharged = [
+  {
+    name: 'Hidrografía',
+    url: 'https://servicios.idee.es/wfs-inspire/hidrografia?',
+  },
+  {
+    name: 'Límites administrativos',
+    url: 'https://www.ign.es/wfs-inspire/unidades-administrativas?',
+  },
+];
+```
 
 # Parámetros API REST
 ```javascript
