@@ -26,6 +26,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **precision**. Precisión de las coordenadas.
 - **geoDecimalDigits**. Cifras decimales para proyecciones geográficas.
 - **utmDecimalDigits**. Cifras decimales para proyecciones UTM.
+- **activeZ**. Activar visualización valor z.
+- **helpUrl**. URL a la ayuda para el icono.
 
 ### Plugin sin parámetros
 
