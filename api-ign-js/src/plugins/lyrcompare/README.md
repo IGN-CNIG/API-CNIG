@@ -54,6 +54,8 @@ A esta/s capa/s se le aplicará el efecto de transparencia.
 
 - **interface**. Define si mostrar o no la interfaz del plugin.
 
+- **tootltip**. Tooltip que se muestra sobre el plugin.
+
 # Eventos
 
 # Multi idioma
