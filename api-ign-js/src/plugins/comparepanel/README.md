@@ -113,7 +113,7 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
   - Servicio en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
 
 -  **urlcoberturas**: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS.
--  
+
 - **layerName**. El nombre del sombrero de capa vectorial contiene la información de atribución.
 
 - **layerCobertura**. Capa de cobertura con atribuciones.
