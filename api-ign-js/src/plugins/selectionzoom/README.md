@@ -29,6 +29,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - *previews*. Ruta a la imagen de previsualización que se muestra.
 - *bboxs*. Bbox de la zona geografica a la que se hace zoom. El bbox debe recoger los datos en la misma proyección en la que se encuentra el mapa.
 - *zooms*. Zoom que toma la capa en la zona geográfica elegida.
+- *layers*. Capas separadas por ','. Cada capa base puede contener más de una capa separada por 'sumar' (antes: '+'). Cada una de estas capas tiene diferentes parámetros separados por 'asterisco' (NOT *).
 
 
 # Ejemplo de uso
