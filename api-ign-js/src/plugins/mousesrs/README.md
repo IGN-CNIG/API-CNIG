@@ -18,8 +18,6 @@ Muestra las coordenas en el sistema de referencia elegido del puntero del ratón
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
-
 - **tootltip**. Tooltip que se muestra sobre el plugin
 - **srs**. Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón.
 - **label**. Nombre del SRS sobre el que se mostrarán las coordenadas del ratón.
