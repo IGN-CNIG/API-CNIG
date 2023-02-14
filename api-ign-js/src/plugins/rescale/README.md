@@ -26,7 +26,8 @@ Hace zoom a la escala elegida.
   - 'BR':bottom right
 - **collapsed**. Indica si el plugin viene colapsado por defecto.
 - **collapsible**. Indica si se puede colapsar el plugin.
-  
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+
 # Ejemplos de uso
 
 ```javascript
