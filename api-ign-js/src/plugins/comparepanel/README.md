@@ -118,6 +118,8 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 
 - **layerCobertura**. Capa de cobertura con atribuciones.
 
+- **lyrsMirrorMinZindex**. Nivel mínimo en el que empiezan a cargarse las capas (10 - 100), por defecto 100.
+
 ```javascript
   // Ejemplos de definiciones de capas esperadas por el comparador en formato StringLayer
 
