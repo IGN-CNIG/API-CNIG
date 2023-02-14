@@ -16,7 +16,6 @@ Plugin que permite la elección de cada de fondo mediante previsualización de l
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-
 - *position*.  Ubicación del plugin sobre el mapa (Default = 'TR')
   - 'TL' = Top left
   - 'TR' = Top right
@@ -32,7 +31,11 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
    * *preview*. Ruta a la imagen de previsualización que se muestra.
    * *title*. Nombre identificativo de la capa que se mostrará sobre la previsualización.
    * *layers*. Array con las capas de Mapea que se quieren cargar al seleccionar esta opción.
-
+- *tooltip*. Valor a usar para mostrar en el tooltip del plugin.
+- *empty*. Opción de ninguna capa.
+- *previews*. URL de vista previa de capas separadas por ",".
+- *titles*. Capas de títulos separados por ",".
+- *ids*. ID de capas separadas por ",".
 
 # Ejemplo de uso
 ```javascript
