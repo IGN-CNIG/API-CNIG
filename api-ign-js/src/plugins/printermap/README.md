@@ -36,7 +36,12 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **printTemplateUrl**. URL con las plantillas.
 
 - **printStatusUrl**. URL que indica el estado del servidor Geoprint.
-
+- **credits**. Texto de créditos para la plantilla.
+- **georefActive**. Activar o desactivar la descarga de imágenes georreferenciadas.
+- **fototeca**. Activar o desactivar fototeca descripción fija.
+- **logo**. URL logo.
+- **headerLegend**. Url de la imagen de la leyenda del encabezado.
+- **filterTemplates**. Plantillas, por ejemplo "A3 Horizontal".
 
 # Ejemplos de uso
 
