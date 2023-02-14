@@ -28,6 +28,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **format**. Formato de respuesta de la consulta GetFeatureInfo.
 - **featureCount**. Máximo número de features a los que realizar la consulta.
 - **buffer**. Buffer del click para realizar la consulta.
+- **opened**. Información abierta toda, solo si hay una capa, o no abierta.
 
 ### Plugin sin parámetros
 
