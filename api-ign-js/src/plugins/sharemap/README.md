@@ -41,6 +41,12 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BL':bottom left
   - 'BR':bottom right
 
+- **text**. Texto del segundo título. 
+- **copyBtnHtml**. Título para el segundo botón. 
+- **minimize**. Genera URL minificada.
+- **urlAPI**. URL API o URL Visor (API verdadero o predeterminado, visor falso).
+- **shareLayers**. Selecciona la capa a compartir por el nombre.
+
 # Parámetros API REST
 ```
 URL_API?sharemap=baseUrl*position*title*tooltip*btn*copyBtn
