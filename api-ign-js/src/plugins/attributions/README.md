@@ -45,7 +45,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BL' = Bottom left
   - 'BR' = Bottom right
   
-- *urlAttribute*. Nombre de la URL (texto adicional). Por defecto, 'Gobierno de España'. 
+- *urlAttribute*. Nombre de la URL (texto adicional). Por defecto, "Gobierno de España". 
 
 # Configuraciones globales
 - *M.config.attributions.defaultAttribution*. Valor por defecto a mostrar en la atribución del mapa.
