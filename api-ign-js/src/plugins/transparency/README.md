@@ -30,6 +30,9 @@ Plugin que permite aplicar un efecto de transparencia a la capa seleccionada.
   - 'BR':bottom right
 
 - **radius**. Campo numérico que modifica el radio del efecto transparencia. Tiene un rango entre 30 y 200.
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+- **collapsible**. Indica si el plugin se puede collapsar en un botón (true/false).
+- **collapsed**. Indica si el plugin viene colapsado de entrada (true/false).
 
 # Eventos
 
