@@ -19,8 +19,6 @@ Las coordenadas son transformadas a proyección que tenga el mapa en ese momento
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
-
 - **projections**. Proyecciones de origen que se mostrarán para seleccionar las coordenadas a localizar.
 ** Por defecto los valores posibles son:
 
@@ -41,6 +39,9 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TR':top right 
   - 'BL':bottom left 
   - 'BR':bottom right
+
+- **zoom**. Zoom para hacer. 
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Eventos
 
