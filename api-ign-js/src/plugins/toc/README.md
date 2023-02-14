@@ -37,6 +37,7 @@ Example: <url_mapea>?plugins=toc
 - **collapsible**. Si es *true*, el panel del plugin puede abrirse y cerrarse. Por defecto tiene el valor *true*.
 
 - **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Ejemplos de uso
 
