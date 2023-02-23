@@ -22,7 +22,7 @@ Plugin de línea del tiempo
 - **intervals**. Parámetro obligatorio. Array que contiene cada capa junto a sus datos:
   - Nombre: nombre descriptivo de la capa.
   - Etiqueta: etiqueta o fecha de la capa.
-  - Servicio en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
+  - Servicio en formato API-CNIG para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
 
 - **position**. Indica la posición donde se mostrará el plugin.
   - 'TL':top left
@@ -33,7 +33,7 @@ Plugin de línea del tiempo
 # Ejemplos de uso
 
 ## Ejemplo
-Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la siguiente estructura:
+Insertar intervalos a través de servicios WMS. La URL en formato API-CNIG sigue la siguiente estructura:
   - Servicio,Leyenda,URL,Nombre. Separados por "*".
 ```javascript
   const mp = new M.plugin.Timeline({
