@@ -78,6 +78,10 @@
     box-sizing: border-box;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: self-start !important;
 }
 
 div.m-panel>button {
@@ -136,12 +140,10 @@ div.m-panel>button {
     padding: 0px;
     font-size: 19px;
     background: none;
-    border: none;
     cursor: pointer;
     width: 40px;
     height: 40px;
     box-sizing: border-box;
-    border: 0px;
     font-family: 'g-cartografia' !important;
     speak: none;
     font-style: normal;
@@ -291,11 +293,11 @@ div.m-panel>button {
 /****************************
      FIREFOX HACKS
 ****************************/
-@-moz-document url-prefix() {
+/* @-moz-document url-prefix() {
     .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
         display: inline-flex;
     }
-}
+} */
 
 /****************************
  INTERNET EXPLORER HACKS
@@ -388,6 +390,7 @@ div.m-panel>button {
 }
 
 .m-areas>div.m-area>div.m-panel.collapsed>div.m-panel-controls {
+    display: none;
     opacity: 0;
     max-width: 0px;
     -webkit-transition: max-width .4s ease 0s, opacity .3s ease 0s;
@@ -552,4 +555,13 @@ div.m-panel>button {
 
 .m-kml-desc>table {
     width: 100%;
+}
+
+button.g-cartografia-flecha-derecha, 
+button.g-cartografia-flecha-izquierda {
+    border: none;
+}
+
+.focusStyle {
+    border: 3px solid black !important;
 }

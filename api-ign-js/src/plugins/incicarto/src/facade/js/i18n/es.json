@@ -17,7 +17,9 @@
     "error_features_wfs": "No se han podido cargar features de la capa. Inténtalo aumentando el nivel de zoom en la zona de interés.",
     "error_no_features_wfs": "No se han podido cargar features de la capa. Inténtalo de nuevo en otra zona.",
     "error_wfs": "No se ha podido cargar el servicio WFS",
-    "wfs_zoom": "Aumente el nivel de zoom * niveles si quiere añadir este servicio WFS,"
+    "wfs_zoom": "Aumente el nivel de zoom * niveles si quiere añadir este servicio WFS,",
+    "error_email": "No se ha podido realizar el envío del email.",
+    "error_email_size": "El tamaño del fichero adjunto es demasiado grande. El tamaño máximo de ficheros permitido para correos electrónicos es 25Mb."
   },
   "tooltip": "Notificar incidencia en cartografía",
   "change_name": "Cambiar nombre",
@@ -84,5 +86,7 @@
   "generating_profile": "Generando perfil",
   "calculate": "Calcular",
   "calculating": "Calculando",
-  "try_again": "No se ha podido realizar la consulta. Por favor, inténtelo de nuevo más tarde"
+  "try_again": "No se ha podido realizar la consulta. Por favor, inténtelo de nuevo más tarde",
+  "email_correct": "El correo con la incidencia se ha enviado correctamente.",
+  "sending_email": "El correo está siendo enviado..."
 }

@@ -825,9 +825,14 @@ export default class PrinterMapControl extends M.impl.Control {
       featureStyle = featureStyle.call(featureStyle, feature, resolution);
     }
 
+    let styleIcon = null;
     if (featureStyle instanceof Array) {
       // SRC style has priority
       if (featureStyle.length > 1) {
+        styleIcon = !M.utils.isNullOrEmpty(featureStyle[1]) &&
+          !M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
+          featureStyle[1].getImage().getGlyph ?
+          featureStyle[1].getImage() : null;
         featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
             featureStyle[1].getImage().getSrc) ?
           featureStyle[1] : featureStyle[0];
@@ -914,6 +919,20 @@ export default class PrinterMapControl extends M.impl.Control {
         } else if (lineDash[0] === 1 && lineDash.length > 2) {
           styleGeom.strokeDashstyle = 'dashdot';
         }
+      }
+
+      const imageIcon = !M.utils.isNullOrEmpty(styleIcon) &&
+        styleIcon.getImage ? styleIcon.getImage() : null;
+      if (!M.utils.isNullOrEmpty(imageIcon)) {
+        if (styleIcon.getRadius && styleIcon.getRadius()) {
+          styleGeom.pointRadius = styleIcon.getRadius && styleIcon.getRadius();
+        }
+
+        if (styleIcon.getOpacity && styleIcon.getOpacity()) {
+          styleGeom.graphicOpacity = styleIcon.getOpacity();
+        }
+
+        styleGeom.externalGraphic = imageIcon.toDataURL();
       }
 
       if (!M.utils.isNullOrEmpty(text)) {

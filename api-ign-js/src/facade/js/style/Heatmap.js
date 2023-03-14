@@ -3,7 +3,7 @@
  */
 import HeatmapImpl from 'impl/style/Heatmap';
 import Style from './Style';
-import { isString, isFunction, isArray, inverseColor, isNullOrEmpty, generateIntervals, extendsObj, defineFunctionFromString } from '../util/Utils';
+import { isString, isFunction, isArray, inverseColor, isNullOrEmpty, generateIntervals, defineFunctionFromString } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
@@ -28,11 +28,12 @@ class Heatmap extends Style {
   constructor(attribute, optionsParam = {}, vendorOptionsParam = {}) {
     const options = optionsParam;
     const vendorOptions = vendorOptionsParam;
-    if (!(isString(attribute) || isFunction(attribute))) {
+
+    if (attribute && !(isString(attribute) || isFunction(attribute))) {
       Exception(getValue('exception').no_empty);
     }
 
-    extendsObj(options, Heatmap.DEFAULT_OPTIONS);
+    // extendsObj(options, Heatmap.DEFAULT_OPTIONS);
 
     if (!isNullOrEmpty(options.gradient) && !isArray(options.gradient)) {
       options.gradient = [options.gradient];

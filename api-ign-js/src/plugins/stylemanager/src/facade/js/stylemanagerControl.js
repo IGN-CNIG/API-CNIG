@@ -50,6 +50,7 @@ export default class StyleManagerControl extends M.Control {
             selectLayer: getValue('selectLayer'),
             applyStyle: getValue('applyStyle'),
             clearStyle: getValue('clearStyle'),
+            generateSerialized: getValue('generateSerialized'),
             heatMap: getValue('heatMap'),
             category: getValue('category'),
             choropleths: getValue('choropleths'),
@@ -66,6 +67,7 @@ export default class StyleManagerControl extends M.Control {
       this.subscribeAddedLayer(htmlSelect);
       this.addApplyBtnListener(html);
       this.addClearBtnListener(html);
+      this.addSerializedBtnListener(html);
       this.renderOptionsLayerParam(htmlSelect, html, layers);
       success(html);
       this.loadFonts(html);
@@ -117,6 +119,17 @@ export default class StyleManagerControl extends M.Control {
   addApplyBtnListener(html) {
     const buttonApply = html.querySelector('[data-apply-style]');
     buttonApply.addEventListener('click', this.applyStyle.bind(this));
+  }
+
+  /**
+   * @public
+   * @function
+   * @param {HTMLElement} html to add the plugin
+   * @api stable
+   */
+  addSerializedBtnListener(html) {
+    const buttonSerialized = html.querySelector('[data-serialized-style]');
+    buttonSerialized.addEventListener('click', this.serializedStyle.bind(this));
   }
 
   /**
@@ -250,6 +263,27 @@ export default class StyleManagerControl extends M.Control {
       this.clearStyle();
       const style = this.bindinController_.getStyle();
       this.layer_.setStyle(style);
+    } else {
+      M.dialog.info(getValue('exception.chooseLayer'), getValue('exception.choLayer'));
+    }
+  }
+
+  /**
+   * @public
+   * @function
+   * @api stable
+   */
+  serializedStyle() {
+    if (this.layer_ instanceof M.layer.Vector) {
+      const style = this.bindinController_.getStyle();
+      const text = style.serialize();
+      const p = document.createElement('input');
+      p.value = text;
+      document.body.appendChild(p);
+      p.select();
+      document.execCommand('copy');
+      M.dialog.info(getValue('clipboard'), getValue('serializedStyle'));
+      document.body.removeChild(p);
     } else {
       M.dialog.info(getValue('exception.chooseLayer'), getValue('exception.choLayer'));
     }

@@ -100,16 +100,6 @@
     "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla, de los servicios Ráster y de PNOA de forma directa."
   },
   {
-    "name": "ignsearch",
-    "plugin": "[ignsearch]",
-    "version": "v1.0",
-    "url_es": "ignsearch.jsp?language=es",
-    "url_en": "ignsearch.jsp?language=en",
-    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/ignsearch",
-    "image": "img/api-logo.png",
-    "description": "Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN)."
-  },
-  {
     "name": "ignsearchlocator",
     "plugin": "[ignsearchlocator]",
     "version": "v1.0",

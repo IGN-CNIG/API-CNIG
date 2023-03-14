@@ -44,7 +44,7 @@ class Heatmap extends OLLayerHeatmap {
           }
           return parseFloat(value / maxWeight);
         };
-      } else {
+      } else if (options.weight) {
         dialog.info(getValue('heatmap').features, getValue('heatmap').name);
       }
     } else {

@@ -121,9 +121,11 @@ export default class TransparencyControl extends M.Control {
         .querySelector("#m-transparency-active")
         .addEventListener("click", (evt) => {
           // e2m: evitamos que el mapa principal, sobre el que se activa SpyEye pueda poner sobre él capas
-          document.querySelector("#m-lyrdropdown-selector").value = "none";
-          document.querySelector("#m-lyrdropdown-selector").style.display =
-            "none";
+          if(document.querySelector("#m-lyrdropdown-selector")){
+            document.querySelector("#m-lyrdropdown-selector").value = "none";
+            document.querySelector("#m-lyrdropdown-selector").style.display =
+              "none";
+          }
 
           // e2m: cuando activamos SpyEye, evitamos que se activen los comparadores de cortina
           document.querySelector("#m-lyrcompare-vcurtain").disabled = true;
@@ -142,8 +144,7 @@ export default class TransparencyControl extends M.Control {
         .querySelector("#m-transparency-deactivate")
         .addEventListener("click", (evt) => {
           // e2m: volvemos a permitir que el mapa principal pueda poner sobre él capas
-          document.querySelector("#m-lyrdropdown-selector").style.display =
-            "block";
+          if(document.querySelector("#m-lyrdropdown-selector"))document.querySelector("#m-lyrdropdown-selector").style.display = "block";
 
           // e2m: cuando desactivamos SpyEye, permitimos que se activen los comparadores de cortina de nuevo
           document.querySelector("#m-lyrcompare-vcurtain").disabled = false;

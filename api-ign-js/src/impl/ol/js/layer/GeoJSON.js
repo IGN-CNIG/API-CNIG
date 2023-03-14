@@ -101,7 +101,7 @@ class GeoJSON extends Vector {
     this.formater_ = new GeoJSONFormat({
       defaultDataProjection: getProj(map.getProjection().code),
     });
-    if (!isNullOrEmpty(this.url)) {
+    if (!isNullOrEmpty(this.url) && (this.url.indexOf('http') !== -1 || this.url.indexOf('https') !== -1)) {
       this.loader_ = new JSONPLoader(map, this.url, this.formater_);
     }
     super.addTo(map);

@@ -104,7 +104,7 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 }
 
 .m-areas>div.m-area>div.m-panel.collapsed>div.m-panel-controls {
-    display: flex;
+    display: none;
 }
 
 .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.collapsed>div.m-panel-controls>div {

@@ -10,7 +10,7 @@ export default class Measure extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(impl, template, name) {
+  constructor(impl, template, name, order) {
     super(impl, name);
 
     /**
@@ -20,6 +20,7 @@ export default class Measure extends M.Control {
      */
 
     this.template_ = template;
+    this.order = order;
   }
 
   /**
@@ -36,6 +37,7 @@ export default class Measure extends M.Control {
       jsonp: true,
       vars: {
         translations: getValue('text'),
+        order: this.order,
       },
     });
   }

@@ -216,8 +216,11 @@ div#m-iberpixcompare-title {
 
 @font-face {
     font-family: 'iberpixcompare';
-    src: url('../fonts/iberpixcompare.eot?6ojj88');
-    src: url('../fonts/iberpixcompare.eot?6ojj88#iefix') format('embedded-opentype'), url('../fonts/iberpixcompare.ttf?6ojj88') format('truetype'), url('../fonts/iberpixcompare.woff?6ojj88') format('woff'), url('../fonts/iberpixcompare.svg?6ojj88#iberpixcompare') format('svg');
+    src: url('../fonts/iberpixcompare.eot?elqv5s');
+    src: url('../fonts/iberpixcompare.eot?elqv5s#iefix') format('embedded-opentype'),
+        url('../fonts/iberpixcompare.ttf?elqv5s') format('truetype'),
+        url('../fonts/iberpixcompare.woff?elqv5s') format('woff'),
+        url('../fonts/iberpixcompare.svg?elqv5s#iberpixcompare') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -231,8 +234,16 @@ div#m-iberpixcompare-title {
     font-variant: normal;
     text-transform: none;
     line-height: 1;
+
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.cp-comparador-capas:before {
+    content: "\e902";
+    font-size: 18px;
+    position: relative;
+    bottom: 3px;
 }
 
 .cp-control-pausa:before {
@@ -254,6 +265,9 @@ div#m-iberpixcompare-title {
 .cp-icon:before {
     content: "\e802";
     font-family: 'iberpixcompare' !important;
+    font-size: 18px;
+    position: relative;
+    bottom: 1px;
 }
 
 .cp-columns-1:before {
@@ -508,7 +522,7 @@ div#m-iberpixcompare-title {
     color: #6f6f93;
 }
 
-.cp-button.cp-columns {
+.cp-button.cp-comparador-capas {
     border: 2px solid white;
     border-top: none;
 }

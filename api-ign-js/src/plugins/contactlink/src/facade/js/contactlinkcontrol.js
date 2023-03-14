@@ -102,6 +102,12 @@ export default class ContactLinkControl extends M.Control {
      * @type { HTMLElement }
      */
     this.template = null;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+     this.order = values.order >= -1 ? values.order : 300;
   }
 
   /**
@@ -154,9 +160,15 @@ export default class ContactLinkControl extends M.Control {
             compare: getValue('links.compare'),
             display: getValue('links.3d'),
             photo: getValue('links.photo')
+          },
+          accessibility: {
+            webLinks: getValue('accessibility.webLinks'),
+            socialMedia: getValue('accessibility.socialMedia')
           }
         }
       });
+
+      this.accessibilityTab(html);
 
       html.querySelector('#urlPNOAContactLink').addEventListener('click', () => {
         let url = this.linksPnoa;
@@ -220,5 +232,9 @@ export default class ContactLinkControl extends M.Control {
     return control instanceof ContactLinkControl;
   }
 
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+  }
   // Add your own functions
 }

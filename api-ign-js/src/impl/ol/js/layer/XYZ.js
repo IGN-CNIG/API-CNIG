@@ -58,11 +58,13 @@ class XYZ extends Layer {
     this.maxZoom = userParameters.maxZoom || Number.POSITIVE_INFINITY;
 
     this.tileGridMaxZoom = userParameters.tileGridMaxZoom;
+
+    this.displayInLayerSwitcher = userParameters.displayInLayerSwitcher !== false;
   }
 
   /**
-  * This function sets the visibility of this layer
-  *
+   * This function sets the visibility of this layer
+   *
    * @public
    * @function
    * @api

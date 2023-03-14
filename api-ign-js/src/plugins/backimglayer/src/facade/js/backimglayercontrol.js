@@ -25,7 +25,10 @@ export default class BackImgLayerControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(map, layerOpts, idLayer, visible, ids, titles, previews, layers, numColumns, empty) {
+  constructor(
+    map, layerOpts, idLayer, visible, ids, titles, previews, layers,
+    numColumns, empty, order,
+  ) {
     const impl = new M.impl.Control();
     let numColumnsV;
     super(impl, 'BackImgLayer');
@@ -97,6 +100,8 @@ export default class BackImgLayerControl extends M.Control {
     this.idLayer = idLayer === null ? 0 : idLayer;
     this.visible = visible === null ? true : visible;
     this.empty = empty;
+
+    this.order = order;
   }
 
   /**
@@ -120,6 +125,7 @@ export default class BackImgLayerControl extends M.Control {
           },
         },
       });
+      this.accessibilityTab(html);
       this.html = html;
       this.listen(html);
       this.on(M.evt.ADDED_TO_MAP, () => {
@@ -186,10 +192,10 @@ export default class BackImgLayerControl extends M.Control {
       this.activeLayer = i;
       e.currentTarget.parentElement
         .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`).classList.add('activeBackimglayerDiv');
-      M.proxy(false);
+      // M.proxy(false);
       this.map.addLayers(layers);
       setTimeout(() => {
-        M.proxy(true);
+        // M.proxy(true);
         /*
         layers.forEach((l) => {
           l.setVisible(true);
@@ -231,8 +237,14 @@ export default class BackImgLayerControl extends M.Control {
     html.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((b, i) => {
       if (b.id === 'm-backimglayer-lyr-empty') {
         b.addEventListener('click', this.showEmptyLayer.bind(this, html));
+        b.addEventListener('keydown', ({ key }) => {
+          if (key === 'Enter') this.showEmptyLayer(html);
+        });
       } else {
         b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i));
+        b.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') this.showBaseLayer(e, this.layers[i], i);
+        });
       }
     });
   }
@@ -264,5 +276,10 @@ export default class BackImgLayerControl extends M.Control {
    */
   equals(control) {
     return control instanceof BackImgLayerControl;
+  }
+
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

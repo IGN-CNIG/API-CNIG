@@ -2,7 +2,10 @@
  * @module M/impl/layer/WFS
  */
 import FormatGeoJSON from 'M/format/GeoJSON';
-import { isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction, includes } from 'M/util/Utils';
+import Popup from 'M/Popup';
+import { compileSync as compileTemplate } from 'M/util/Template';
+import geojsonPopupTemplate from 'templates/geojson_popup';
 import * as EventType from 'M/event/eventtype';
 import OLSourceVector from 'ol/source/Vector';
 import { get as getProj } from 'ol/proj';
@@ -68,6 +71,13 @@ class WFS extends Vector {
      */
     this.loaded_ = false;
 
+    /**
+     * Popup showed
+     * @private
+     * @type {M.impl.Popup}
+     */
+    this.popup_ = null;
+
     // GetFeature output format parameter
     if (isNullOrEmpty(this.options.getFeatureOutputFormat)) {
       this.options.getFeatureOutputFormat = 'application/json'; // by default
@@ -101,6 +111,88 @@ class WFS extends Vector {
       this.facadeVector_.removeFeatures(this.facadeVector_.getFeatures(true));
     }
     this.updateSource_(forceNewSource);
+  }
+
+  /**
+   * This function checks if an object is equals
+   * to this layer
+   * @public
+   * @function
+   * @param {ol.Feature} feature
+   * @api stable
+   */
+  selectFeatures(features, coord, evt) {
+    const feature = features[0];
+    if (this.extract === true) {
+      // unselects previous features
+      this.unselectFeatures();
+
+      if (!isNullOrEmpty(feature)) {
+        const clickFn = feature.getAttribute('vendor.mapea.click');
+        if (isFunction(clickFn)) {
+          clickFn(evt, feature);
+        } else {
+          const htmlAsText = compileTemplate(geojsonPopupTemplate, {
+            vars: this.parseFeaturesForTemplate_(features),
+            parseToHtml: false,
+          });
+          const featureTabOpts = {
+            icon: 'g-cartografia-pin',
+            title: this.name,
+            content: htmlAsText,
+          };
+          let popup = this.map.getPopup();
+          if (isNullOrEmpty(popup)) {
+            popup = new Popup();
+            popup.addTab(featureTabOpts);
+            this.map.addPopup(popup, coord);
+          } else {
+            popup.addTab(featureTabOpts);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * This function checks if an object is equals
+   * to this control
+   *
+   * @private
+   * @function
+   */
+  parseFeaturesForTemplate_(features) {
+    const featuresTemplate = {
+      features: [],
+    };
+
+    features.forEach((feature) => {
+      const properties = feature.getAttributes();
+      const propertyKeys = Object.keys(properties);
+      const attributes = [];
+      propertyKeys.forEach((key) => {
+        let addAttribute = true;
+        // adds the attribute just if it is not in
+        // hiddenAttributes_ or it is in showAttributes_
+        if (!isNullOrEmpty(this.showAttributes_)) {
+          addAttribute = includes(this.showAttributes_, key);
+        } else if (!isNullOrEmpty(this.hiddenAttributes_)) {
+          addAttribute = !includes(this.hiddenAttributes_, key);
+        }
+        if (addAttribute) {
+          attributes.push({
+            key,
+            value: properties[key],
+          });
+        }
+      });
+      const featureTemplate = {
+        id: feature.getId(),
+        attributes,
+      };
+      featuresTemplate.features.push(featureTemplate);
+    });
+    return featuresTemplate;
   }
 
   /**
@@ -339,6 +431,7 @@ class WFS extends Vector {
       equals = equals && (this.ids === obj.ids);
       equals = equals && (this.cql === obj.cql);
       equals = equals && (this.version === obj.version);
+      equals = equals && (this.extract === obj.extract);
     }
 
     return equals;

@@ -138,7 +138,7 @@ export default class Comparepanel extends M.Plugin {
      this.layerName_ = options.layerName || 'attributions';
 
      /**
-      * Layer of Mapea with attributions
+      * Layer with attributions
       *
       * @private
       * @type {M.layer.GeoJSON | M.layer.KML}

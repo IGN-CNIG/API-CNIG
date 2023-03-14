@@ -178,6 +178,62 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
 
 }
 
+
+/* For method change Movil */
+.m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.changeStyleResponsive.opened {
+    z-index: 99999;
+}
+
+.m-panel.changeStyleResponsive.opened>button {
+    left: 0;
+    top: 0;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.changeStyleResponsive.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-titulo {
+    font-size: 11px;
+    padding-left: 0;
+    padding-right: 0;
+    width: 110px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.changeStyleResponsive.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews {
+    max-height: 80vh;
+    overflow: scroll;
+    width: 110px !important;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.changeStyleResponsive.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div {
+    height: 110px;
+    width: 110px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.changeStyleResponsive.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div>img {
+    height: 100px;
+    width: 100px;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.changeStyleResponsive.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews>div>span {
+    font-size: 1.1em;
+    height: 20px;
+    line-height: 23px;
+    top: 80px;
+    width: 100px;
+}
+
+
+/* Firefox fix */
+@-moz-document url-prefix() {
+    .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.changeStyleResponsive.opened {
+        padding: 10px 50px 0;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.changeStyleResponsive.opened>div.m-panel-controls>div.m-control.m-container.m-backimglayer>div#m-backimglayer-previews {
+        padding-bottom: 50px;
+    }
+}
+
+
+
 @media only screen and (max-width: 433px) {
 
     /* Edge fix */

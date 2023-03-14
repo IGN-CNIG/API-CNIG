@@ -68,6 +68,12 @@ export default class MeasureBar extends M.Plugin {
      * @type {M.control.MeasureClear}
      */
     this.measureClear_ = null;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32767;
   }
 
   /**
@@ -95,9 +101,9 @@ export default class MeasureBar extends M.Plugin {
   addTo(map) {
     this.map_ = map;
 
-    this.measureLength_ = new MeasureLength();
-    this.measureArea_ = new MeasureArea();
-    this.measureClear_ = new MeasureClear(this.measureLength_, this.measureArea_);
+    this.measureLength_ = new MeasureLength(this.order);
+    this.measureArea_ = new MeasureArea(this.order);
+    this.measureClear_ = new MeasureClear(this.measureLength_, this.measureArea_, this.order);
 
     this.controls_.push(this.measureLength_, this.measureArea_, this.measureClear_);
 
@@ -107,6 +113,7 @@ export default class MeasureBar extends M.Plugin {
       className: 'm-panel-measurebar',
       collapsedButtonClass: 'measurebar-regla',
       tooltip: getValue('text.tooltip'),
+      order: this.order,
     });
 
     this.panel_.addControls(this.controls_);

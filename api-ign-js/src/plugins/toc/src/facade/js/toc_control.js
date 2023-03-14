@@ -56,10 +56,8 @@ export default class TOCControl extends M.Control {
     //   .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true);
     const layers = this.map_.getLayers()
       .filter(layer => layer.name !== undefined && layer.transparent !== false &&
-        (layer.displayInLayerSwitcher === true || layer instanceof M.layer.TMS
-          || layer instanceof M.layer.XYZ) && layer.name !== 'selectLayer' && layer.name !== '__draw__'
-        && layer.name !== 'infocoordinatesLayerFeatures' && layer.name !== 'coordinateresult'
-        && layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1)
+        layer.displayInLayerSwitcher === true &&
+        layer.name !== 'infocoordinatesLayerFeatures')
       .reverse();
     const layersOpts = layers.map((layer) => {
       return {
@@ -86,12 +84,19 @@ export default class TOCControl extends M.Control {
    * @api
    */
   render() {
+    let scroll;
+    if (document.querySelector('.m-panel.m-plugin-toc.opened ul.m-toc-content') !== null) {
+      scroll = document.querySelector('.m-panel.m-plugin-toc.opened ul.m-toc-content').scrollTop;
+    }
     const templateVars = this.getTemplateVariables();
     const html = M.template.compileSync(template, {
       vars: templateVars,
     });
     this.panelHTML_.innerHTML = html.innerHTML;
     listenAll(this.panelHTML_, 'li', 'click', e => this.toogleVisible(e));
+    if (scroll !== undefined) {
+      document.querySelector('.m-panel.m-plugin-toc.opened ul.m-toc-content').scrollTop = scroll;
+    }
   }
 
   /**

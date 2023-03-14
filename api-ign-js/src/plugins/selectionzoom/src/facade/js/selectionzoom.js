@@ -134,6 +134,12 @@ export default class SelectionZoom extends M.Plugin {
      *@type { string }
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32766;
   }
 
   /**
@@ -169,6 +175,7 @@ export default class SelectionZoom extends M.Plugin {
       this.previews,
       this.bboxs,
       this.zooms,
+      this.order,
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelSelectionZoom', {
@@ -178,6 +185,7 @@ export default class SelectionZoom extends M.Plugin {
       className: 'm-plugin-selectionzoom',
       tooltip: this.tooltip_,
       collapsedButtonClass: 'g-selectionzoom-selezoom',
+      order: this.order,
     });
 
     this.controls_[0].on('selectionzoom:activeChanges', (data) => {

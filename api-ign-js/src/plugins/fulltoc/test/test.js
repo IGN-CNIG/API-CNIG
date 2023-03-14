@@ -22,7 +22,7 @@ const precharged = {
           name: 'Unidades administrativas',
           type: 'WMS',
           url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-          white_list: ['AU.AdministrativeBoundary'/*, 'AU.AdministrativeUnit'*/],
+          white_list: ['AU.AdministrativeBoundary'/* , 'AU.AdministrativeUnit' */],
         },
         {
           name: 'Nombres geográficos',
@@ -164,9 +164,9 @@ const precharged = {
           name: 'Mapas Históricos',
           type: 'WMTS',
           url: 'https://www.ign.es/wmts/primera-edicion-mtn',
-        }
+        },
       ],
-    }
+    },
   ],
   services: [
     {
@@ -230,7 +230,7 @@ map.addPlugin(new M.plugin.Information({
   position: 'TR',
 }));
 
-/*const xyz = new M.layer.XYZ({
+/* const xyz = new M.layer.XYZ({
   url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
   name: 'PNOA-MA',
   legend: 'Imagen',
@@ -240,15 +240,15 @@ map.addPlugin(new M.plugin.Information({
   queryable: false,
   visible: true,
   tileGridMaxZoom: 19,
-});*/
+}); */
 
-/*map.addLayers(layerUA);
+/* map.addLayers(layerUA);
 map.addLayers(layerinicial);
-map.addLayers(ocupacionSuelo);*/
+map.addLayers(ocupacionSuelo); */
 
 // map.addLayers(xyz);
 
-/*const terremotos = new M.layer.WMS({
+/* const terremotos = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/geofisica',
   name: 'NZ.ObservedEvent',
   legend: 'terremotos 3',
@@ -257,6 +257,6 @@ map.addLayers(ocupacionSuelo);*/
 },{ params: { CQL_FILTER: 'magnitud>3' } }
 );
 
-map.addLayers(terremotos);*/
+map.addLayers(terremotos); */
 
 window.map = map;

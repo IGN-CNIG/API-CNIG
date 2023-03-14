@@ -8,8 +8,8 @@ const map = M.map({
   maxZoom: 20,
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
-  //layers: ['OSM'],
-  //projection: 'EPSG:4326*d',
+  // layers: ['OSM'],
+  // projection: 'EPSG:4326*d',
   layers: [
     new M.layer.XYZ({
       url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
@@ -54,26 +54,26 @@ const printermap = new PrinterMap({
 });
 
 const mvt = new M.layer.MVT({
-    //url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_capa_20220711_111231@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
-    //url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
-    url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
-    //url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_provincias_20220712_85620@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
-    //url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
-    // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/superadmin_carmen_123@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
-    name: 'vectortile',
-    projection: 'EPSG:3857',
-    extract: true,
+  // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_capa_20220711_111231@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  // url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
+  url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_provincias_20220712_85620@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  // url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/superadmin_carmen_123@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  name: 'vectortile',
+  projection: 'EPSG:3857',
+  extract: true,
 });
 
 map.addLayers(campamentos);
 
 map.addPlugin(printermap);
 
-/*map.addPlugin(new M.plugin.Infocoordinates({
+/* map.addPlugin(new M.plugin.Infocoordinates({
   position: 'TR',
   decimalGEOcoord: 6,
   decimalUTMcoord: 2,
-}));*/
+})); */
 
 map.addPlugin(new M.plugin.IGNSearchLocator({
   servicesToSearch: 'gn',
@@ -88,11 +88,11 @@ map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
 }));
 
-/*map.addPlugin(new M.plugin.FullTOC({
+/* map.addPlugin(new M.plugin.FullTOC({
   position: 'TR',
-}));*/
+})); */
 
-/*const source = new ol.source.ImageWMS({
+/* const source = new ol.source.ImageWMS({
   url: 'https://wms-fototeca.idee.es/fototeca?',
   params: {
     LAYERS: `imagenquinquenal_1998_2003`,
@@ -111,8 +111,8 @@ const layer = new ol.layer.Image({
   source: source,
 });
 
-map.getMapImpl().addLayer(layer);*/
-//map.addLayers([layerinicial, campamentos]);
-//map.addLayers([campamentos]);
+map.getMapImpl().addLayer(layer); */
+// map.addLayers([layerinicial, campamentos]);
+// map.addLayers([campamentos]);
 
 window.map = map;

@@ -29,8 +29,7 @@
     align-items: center;
     background-color: white;
     display: flex;
-    position: fixed;
-    width: 92.5%;
+    position: absolute;
 }
 
 div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
@@ -56,7 +55,8 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
     height: 40px;
 }
 
-.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-results-list {
+.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-results-list,
+.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-recent-results-list {
     list-style-position: outside;
     list-style-type: none;
     overflow: hidden;
@@ -66,7 +66,8 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
 
 /* former text color: #7A7A73; */
 
-.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-results-list li {
+.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-results-list li,
+.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-recent-results-list li {
     color: black;
     line-height: 15px;
     margin: 5px 0;
@@ -75,11 +76,13 @@ div.m-area.m-bottom>div>div #div-contenedor>#m-ignsearchlocator-results {
     white-space: pre-line;
 }
 
-.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-results-list li+span {
+.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-results-list li+span,
+.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-recent-results-list li+span {
     color: #7A7A73;
 }
 
-.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-results-list li:hover {
+.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-results-list li:hover,
+.m-ignsearchlocator #m-ignsearchlocator-results #m-ignsearchlocator-recent-results-list li:hover {
     background-color: #71a7d3;
     color: white;
     cursor: pointer;
@@ -167,8 +170,8 @@ button#m-ignsearchlocator-locate-button {
 }
 
 div.m-panel.ign-searchlocator-panel.collapsed button.m-panel-btn.icon-ignsearch::before {
-  vertical-align: top;
-  font-size: 24px;
+    vertical-align: top;
+    font-size: 24px;
 }
 
 .m-ignsearchlocator .search-panel .icon-remove::before {
@@ -219,7 +222,7 @@ div.m-panel.ign-searchlocator-panel.collapsed button.m-panel-btn.icon-ignsearch:
     color: white;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.button {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container div.button {
     align-items: center;
     width: 100%;
     margin: 0 auto;
@@ -307,7 +310,7 @@ input#UTM-Y {
 /*********************
      COLUMN & CONTENT COLUMN
 *********************/
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div>span {
     width: 32%;
     /* display: inline-block; */
 }
@@ -316,7 +319,7 @@ input#UTM-Y {
     width: 32%;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div>select {
     width: 65%;
     appearance: none;
     padding: 2px 0px 3px 5px;
@@ -330,7 +333,7 @@ input#UTM-Y {
     box-shadow: 1px 1px 3px 0px #999;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div>input {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -410,7 +413,7 @@ p.refCastastrl--input {
 }
 
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas {
     width: 92%;
     padding-left: 4%;
     padding-right: 4%;
@@ -423,7 +426,7 @@ p.refCastastrl--input {
 }
 
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div {
     margin-bottom: 2%;
     display: table;
     width: 100%;
@@ -479,13 +482,13 @@ DROPDOWN ****************************/
 ****************************/
 @-moz-document url-prefix() {
 
-    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div select {
         border: 1px solid rgb(167, 160, 160);
         padding: 1px 1px 2px 3px;
-        width: 85% !important;
+        /* width: 85% !important; */
     }
 
-    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div span {
         width: 33%;
         display: inline-block;
     }
@@ -570,11 +573,11 @@ DROPDOWN ****************************/
 ****************************/
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
-    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select::-ms-expand {
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div>select::-ms-expand {
         display: none;
     }
 
-    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div>select {
         border: 1px solid rgb(167, 160, 160);
     }
 }
@@ -584,7 +587,7 @@ DROPDOWN ****************************/
 /***************
     BUTTON
 ***************/
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>div.button>button {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel section>div.button>button {
     background-color: #fff;
     padding: 5px;
     cursor: pointer;
@@ -599,7 +602,7 @@ DROPDOWN ****************************/
     height: 28px;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>div.button {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel div.button {
     align-items: center;
     width: 100%;
     margin: 0 auto;
@@ -646,16 +649,16 @@ DROPDOWN ****************************/
     top: 0px;
     right: 0px;
     max-height: 100%;
-    text-align: left;
+    text-align: center;
     background-color: #fffbfb;
 }
 
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>span {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div>span {
     display: inline;
 }
 
-#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
+#div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div>select {
     display: block;
     width: 80%;
     margin-top: 3%;
@@ -755,13 +758,13 @@ DROPDOWN ****************************/
         width: 99% !important;
     }
 
-    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>div.button>button {
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel section>div.button>button {
         font-size: 10.9px;
     }
 
-    .m-areas>div.m-area.m-top>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
+    /* .m-areas>div.m-area.m-top>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
         width: 305px;
-    }
+    } */
 
 
     .m-areas>div.m-area.m-bottom>div.m-panel>div.m-panel-controls>div.m-control.m-container.m-ignsearchlocator {
@@ -777,12 +780,12 @@ DROPDOWN ****************************/
     }
 
     .m-ignsearchlocator #m-ignsearchlocator-search-input {
-        width: 25%;
+        max-width: 35%;
     }
 
     div#m-ignsearchlocator-results {
-        width: 72% !important;
-        min-width: 72% !important;
+        width: 75% !important;
+        min-width: 75% !important;
     }
 
     select#m-searchParamsProvincia-select {
@@ -806,16 +809,16 @@ DROPDOWN ****************************/
         margin-left: 0px !important;
     }
 
-    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div#m-xylocator-latlon>input#LON {
         width: 50%;
     }
 
-    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
         width: 50%;
         margin-left: 11px;
     }
 
-    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>select {
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div>select {
         width: 100%;
         font-size: 12.5px;
     }
@@ -833,12 +836,11 @@ DROPDOWN ****************************/
         vertical-align: bottom;
     }
 
-    .m-areas>div.m-area.m-top>div.m-panel.ign-searchlocator-panel.opened {
+    /* .m-areas>div.m-area.m-top>div.m-panel.ign-searchlocator-panel.opened {
         width: 85% !important;
-    }
+    } */
 
-
-    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel>.m-xylocator-datas>div>input {
+    #div-contenedor.m-ignsearchlocator div.m-xylocator-container>div.m-xylocator-panel .m-xylocator-datas>div>input {
 
         width: 33.9%;
         margin-right: 5px;
@@ -866,7 +868,20 @@ DROPDOWN ****************************/
     }
 
 
+    #div-contenedor>div.search-panel {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
 }
+
+@media only screen and (max-width: 398px) {
+    .m-ignsearchlocator #m-ignsearchlocator-search-input {
+        width: 25%;
+    }
+}
+
 
 /* MICROSOFT EDGE HACK */
 
@@ -889,24 +904,82 @@ DROPDOWN ****************************/
 }
 
 .m-ignsearchlocator-noresults {
-  text-align: center;
-  width: 100%;
+    text-align: center;
+    width: 100%;
 }
 
 .m-xylocator-help-button {
-  position: absolute;
+    position: absolute;
     left: 240px;
     top: 76px;
 }
 
 @-moz-document url-prefix() {
-  .m-xylocator-help-button {
-    left: 252px;
-  }
+    .m-xylocator-help-button {
+        left: 252px;
+    }
 }
 
-.m-xylocator-help-button > a {
-  font-size: 24px;
-  color: #71a7d3 !important;
-  text-decoration: none;
+.m-xylocator-help-button>a {
+    font-size: 24px;
+    color: #71a7d3 !important;
+    text-decoration: none;
+}
+
+.m-search-tabs>input[type="radio"] {
+    display: none;
+}
+
+.m-search-tabs .m-search-tab-panels {
+    display: none;
+}
+
+.m-search-tabs>input:first-child:checked~.m-search-tab-content>.m-search-tab-panels:first-child,
+.m-search-tabs>input:nth-child(3):checked~.m-search-tab-content>.m-search-tab-panels:nth-child(2),
+.m-search-tabs>input:nth-child(5):checked~.m-search-tab-content>.m-search-tab-panels:nth-child(3),
+.m-search-tabs>input:nth-child(7):checked~.m-search-tab-content>.m-search-tab-panels:nth-child(4),
+.m-search-tabs>input:nth-child(9):checked~.m-search-tab-content>.m-search-tab-panels:nth-child(5),
+.m-search-tabs>input:nth-child(11):checked~.m-search-tab-content>.m-search-tab-panels:nth-child(6) {
+    display: block;
+}
+
+.m-search-tabs>label {
+    display: inline-block;
+    position: relative;
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    border-bottom: 0;
+    cursor: pointer;
+    margin: 0 -3px;
+}
+
+.m-search-tabs>label::after {
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    height: 3px;
+    background: #8d8d8d;
+    left: 10px;
+    right: 10px;
+}
+
+.m-search-tabs>label:hover,
+.m-search-tabs>input:focus+label {
+    color: #71a7d3;
+}
+
+.m-search-tabs>label:hover::after,
+.m-search-tabs>input:focus+label::after,
+.m-search-tabs>input:checked+label::after {
+    background: #71a7d3;
+}
+
+.m-search-tabs>input:checked+label {
+    border-color: #ccc;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+}
+
+.m-search-tab-panels {
+    border-top: 1px solid #ccc;
 }

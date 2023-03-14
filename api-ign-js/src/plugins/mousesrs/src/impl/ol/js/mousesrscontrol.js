@@ -7,7 +7,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 export default class MouseSRSControl extends M.impl.Control {
   /* eslint-disable-next-line max-len */
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl) {
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order) {
     super();
 
     /**
@@ -69,6 +69,8 @@ export default class MouseSRSControl extends M.impl.Control {
      * @type {string}
      */
     this.helpUrl = helpUrl;
+
+    this.order = order;
   }
 
   /**
@@ -100,13 +102,19 @@ export default class MouseSRSControl extends M.impl.Control {
       geoDecimalDigits: this.geoDecimalDigits,
       utmDecimalDigits: this.utmDecimalDigits,
       activeZ: this.activeZ,
+      order: this.order,
     });
 
     map.getMapImpl().addControl(this.mousePositionControl);
     super.addTo(map, html);
     setTimeout(() => {
       this.mousePositionControl.initWCSLoaderManager(map);
+      document.querySelector('.m-mousesrs-container .m-mouse-srs').setAttribute('role', 'text ');
+      document.querySelector('.m-mousesrs-container .m-mouse-srs').setAttribute('tabIndex', this.order);
       document.querySelector('.m-mousesrs-container .m-mouse-srs').addEventListener('click', this.openChangeSRS.bind(this, this.auxMap_, html));
+      document.querySelector('.m-mousesrs-container .m-mouse-srs').addEventListener('keydown', ({ key }) => {
+        if (key === 'Enter') this.openChangeSRS(this, this.auxMap_, html);
+      });
     }, 1000);
   }
 
@@ -118,10 +126,12 @@ export default class MouseSRSControl extends M.impl.Control {
         selected: this.srs_,
         hasHelp: this.helpUrl !== undefined && M.utils.isUrl(this.helpUrl),
         helpUrl: this.helpUrl,
+        select_srs: getValue('select_srs'),
+        order: this.order,
       },
     });
 
-    M.dialog.info(content, getValue('select_srs'));
+    M.dialog.info(content, getValue('select_srs'), this.order);
     setTimeout(() => {
       document.querySelector('.m-dialog>div.m-modal>div.m-content').style.minWidth = '260px';
       document.querySelector('#m-mousesrs-srs-selector').addEventListener('change', this.changeSRS.bind(this, map, html));

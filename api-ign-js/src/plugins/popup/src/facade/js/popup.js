@@ -85,6 +85,12 @@ export default class Popup extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32767;
   }
 
   /**
@@ -114,13 +120,14 @@ export default class Popup extends M.Plugin {
     this.control_ = new PopupControl(this.url_);
     this.controls_.push(this.control_);
     this.map_ = map;
-    this.panel_ = new M.ui.Panel('panelPopup', {
+    this.panel_ = new M.ui.Panel('Popup', {
       className: 'm-panel-popup',
       collapsed: this.collapsed_,
       collapsedButtonClass: 'icon-help',
       collapsible: true,
       position: M.ui.position[this.position_],
       tooltip: this.tooltip_,
+      order: this.order,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

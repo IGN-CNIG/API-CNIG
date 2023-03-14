@@ -22,100 +22,100 @@ const mp = new BackImgLayer({
   columnsNumber: 3,
   empty: true,
   layerOpts: [{
-      id: 'mapa',
-      preview: '../src/facade/assets/images/svqmapa.png',
-      title: 'Mapa',
-      layers: [new M.layer.WMTS({
+    id: 'mapa',
+    preview: '../src/facade/assets/images/svqmapa.png',
+    title: 'Mapa',
+    layers: [new M.layer.WMTS({
+      url: 'http://www.ign.es/wmts/ign-base?',
+      name: 'IGNBaseTodo',
+      legend: 'Mapa IGN',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: false,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/jpeg',
+    })],
+  },
+  {
+    id: 'imagen',
+    title: 'Imagen',
+    preview: '../src/facade/assets/images/svqimagen.png',
+    layers: [
+      new M.layer.XYZ({
+        url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+        name: 'PNOA-MA',
+        legend: 'Imagen',
+        projection: 'EPSG:3857',
+        transparent: false,
+        displayInLayerSwitcher: false,
+        queryable: false,
+        visible: true,
+        tileGridMaxZoom: 19,
+      }),
+    ],
+  },
+  {
+    id: 'hibrido',
+    title: 'Híbrido',
+    preview: '../src/facade/assets/images/svqhibrid.png',
+    layers: [
+      new M.layer.XYZ({
+        url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+        name: 'PNOA-MA',
+        legend: 'Imagen',
+        projection: 'EPSG:3857',
+        transparent: false,
+        displayInLayerSwitcher: false,
+        queryable: false,
+        visible: true,
+        tileGridMaxZoom: 19,
+      }),
+      new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/ign-base?',
-        name: 'IGNBaseTodo',
+        name: 'IGNBaseOrto',
+        matrixSet: 'GoogleMapsCompatible',
         legend: 'Mapa IGN',
-        matrixSet: 'GoogleMapsCompatible',
-        transparent: false,
-        displayInLayerSwitcher: false,
-        queryable: false,
-        visible: true,
-        format: 'image/jpeg',
-      })],
-    },
-    {
-      id: 'imagen',
-      title: 'Imagen',
-      preview: '../src/facade/assets/images/svqimagen.png',
-      layers: [
-        new M.layer.XYZ({
-          url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
-          name: 'PNOA-MA',
-          legend: 'Imagen',
-          projection: 'EPSG:3857',
-          transparent: false,
-          displayInLayerSwitcher: false,
-          queryable: false,
-          visible: true,
-          tileGridMaxZoom: 19,
-        }),
-      ],
-    },
-    {
-      id: 'hibrido',
-      title: 'Híbrido',
-      preview: '../src/facade/assets/images/svqhibrid.png',
-      layers: [
-        new M.layer.XYZ({
-          url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
-          name: 'PNOA-MA',
-          legend: 'Imagen',
-          projection: 'EPSG:3857',
-          transparent: false,
-          displayInLayerSwitcher: false,
-          queryable: false,
-          visible: true,
-          tileGridMaxZoom: 19,
-        }),
-        new M.layer.WMTS({
-          url: 'http://www.ign.es/wmts/ign-base?',
-          name: 'IGNBaseOrto',
-          matrixSet: 'GoogleMapsCompatible',
-          legend: 'Mapa IGN',
-          transparent: true,
-          displayInLayerSwitcher: false,
-          queryable: false,
-          visible: true,
-          format: 'image/png',
-        })
-      ],
-    },
-    {
-      id: 'lidar',
-      preview: '../src/facade/assets/images/svqlidar.png',
-      title: 'LIDAR',
-      layers: [new M.layer.WMTS({
-        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-        name: 'EL.GridCoverageDSM',
-        legend: 'Modelo Digital de Superficies LiDAR',
-        matrixSet: 'GoogleMapsCompatible',
-        transparent: false,
+        transparent: true,
         displayInLayerSwitcher: false,
         queryable: false,
         visible: true,
         format: 'image/png',
-      })],
-    },
-    {
-      id: 'lidar2',
-      preview: '../src/facade/assets/images/svqlidar.png',
-      title: 'LIDAR2',
-      layers: [new M.layer.WMTS({
-        url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-        name: 'EL.GridCoverageDSM',
-        legend: 'Modelo Digital de Superficies LiDAR',
-        matrixSet: 'GoogleMapsCompatible',
-        transparent: false,
-        displayInLayerSwitcher: false,
-        queryable: false,
-        visible: true,
-        format: 'image/png',
-      })],
-    }
+      }),
+    ],
+  },
+  {
+    id: 'lidar',
+    preview: '../src/facade/assets/images/svqlidar.png',
+    title: 'LIDAR',
+    layers: [new M.layer.WMTS({
+      url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+      name: 'EL.GridCoverageDSM',
+      legend: 'Modelo Digital de Superficies LiDAR',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: false,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/png',
+    })],
+  },
+  {
+    id: 'lidar2',
+    preview: '../src/facade/assets/images/svqlidar.png',
+    title: 'LIDAR2',
+    layers: [new M.layer.WMTS({
+      url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+      name: 'EL.GridCoverageDSM',
+      legend: 'Modelo Digital de Superficies LiDAR',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: false,
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+      format: 'image/png',
+    })],
+  },
   ],
 });
 
@@ -131,8 +131,6 @@ const mp = new BackImgLayer({
 // });
 
 
-
-
 // Formato parámetros REST:
 // ids: 'mapa,hibrido',
 // titles: 'Mapa,Hibrido',
@@ -143,7 +141,7 @@ const mp = new BackImgLayer({
 
 map.addPlugin(mp);
 // map.addPlugin(mp2);
-/*map.addLayers(new M.layer.WMTS({
+/* map.addLayers(new M.layer.WMTS({
   url: 'https://www.ign.es/wmts/pnoa-ma?',
   name: 'OI.OrthoimageCoverage',
   matrixSet: 'GoogleMapsCompatible',
@@ -154,7 +152,7 @@ map.addPlugin(mp);
   visible: true,
   format: 'image/jpeg',
   minZoom: 10,
-}));*/
+})); */
 
 map.addPlugin(new M.plugin.Vectors({
   position: 'TR',

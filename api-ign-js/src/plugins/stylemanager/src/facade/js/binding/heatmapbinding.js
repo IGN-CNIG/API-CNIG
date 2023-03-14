@@ -86,10 +86,7 @@ export class HeatmapBinding extends Binding {
    */
   generateStyle() {
     const opts = this.generateOptions();
-    let style = null;
-    if (opts.attributeName !== '') {
-      style = new M.style.Heatmap(opts.attributeName, opts.options);
-    }
+    const style = new M.style.Heatmap(opts.attributeName, opts.options);
     return style;
   }
 

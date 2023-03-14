@@ -40,11 +40,12 @@ const remove = () => {
  * @returns {Promise}
  * @api
  */
-export const show = (message, title, severity) => {
+export const show = (message, title, severity, order = 300) => {
   const vars = {
     message,
     title,
     severity,
+    order,
   };
   const html = compileTemplate(dialogTemplate, {
     vars,
@@ -71,12 +72,12 @@ export const show = (message, title, severity) => {
  * @returns {Promise}
  * @api
  */
-export const info = (message, titleParam) => {
+export const info = (message, titleParam, order) => {
   let title = titleParam;
   if (isNullOrEmpty(title)) {
     title = getValue('dialog').info;
   }
-  return show(message, title, 'info');
+  return show(message, title, 'info', order);
 };
 
 /**
@@ -89,12 +90,12 @@ export const info = (message, titleParam) => {
  * @returns {Promise}
  * @api
  */
-export const error = (message, titleParam) => {
+export const error = (message, titleParam, order) => {
   let title = titleParam;
   if (isNullOrEmpty(title)) {
     title = getValue('dialog').error;
   }
-  return show(message, title, 'error');
+  return show(message, title, 'error', order);
 };
 
 /**
@@ -107,10 +108,10 @@ export const error = (message, titleParam) => {
  * @returns {Promise}
  * @api
  */
-export const success = (message, titleParam) => {
+export const success = (message, titleParam, order) => {
   let title = titleParam;
   if (isNullOrEmpty(title)) {
     title = getValue('dialog').success;
   }
-  return show(message, title, 'success');
+  return show(message, title, 'success', order);
 };

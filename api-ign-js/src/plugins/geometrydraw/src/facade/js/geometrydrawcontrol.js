@@ -226,7 +226,7 @@ export default class GeometryDrawControl extends M.Control {
       extract: false,
       name: 'selectLayer',
       source: this.getImpl().newVectorSource(true),
-    });
+    }, { displayInLayerSwitcher: false });
   }
 
   /**
@@ -1321,13 +1321,13 @@ export default class GeometryDrawControl extends M.Control {
     switch (downloadFormat) {
       case 'geojson':
         arrayContent = JSON.stringify(geojsonLayer);
-        mimeType = 'json';
+        mimeType = 'geo+json';
         extensionFormat = 'geojson';
         break;
       case 'kml':
         const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
         arrayContent = tokml(fixedGeojsonLayer);
-        mimeType = 'xml';
+        mimeType = 'vnd.google-earth.kml+xml';
         extensionFormat = 'kml';
         break;
       case 'shp':

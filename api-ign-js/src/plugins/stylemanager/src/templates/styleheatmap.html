@@ -6,6 +6,7 @@
                 <div class="style-col-1">
                     <span>{{translations.attribute}}:</span>
                     <select data-options="attributeName">
+                        <option value="{{null}}" selected></option>
                         {{#each attributes}}
                             <option value="{{this.name}}" {{#eq this.name this.selected}}selected{{/eq}}>{{this.name}}</option>
                         {{/each}}

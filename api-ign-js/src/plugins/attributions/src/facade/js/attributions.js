@@ -186,13 +186,19 @@ export default class Attributions extends M.Plugin {
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
-     * Position of the view control
+     * Name url, Additional Text
      * @private
      * @type {string}
      */
     this.urlAttribute = options.urlAttribute || 'Gobierno de España';
 
     window.addEventListener('resize', e => this.setCollapsiblePanel(e));
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32767;
   }
 
   /**
@@ -230,6 +236,7 @@ export default class Attributions extends M.Plugin {
       className: 'm-panel-attributions',
       collapsedButtonClass: 'g-cartografia-info',
       tooltip: this.tooltip_,
+      order: this.order,
     });
 
     this.panel_.addControls(this.control_);
@@ -361,6 +368,9 @@ export default class Attributions extends M.Plugin {
       const link = document.createElement('a');
       link.target = '_blank';
       link.href = attrOpt.url;
+      link.setAttribute('rol', 'link');
+      link.setAttribute('tabindex', this.order);
+
       link.innerHTML = attrOpt.attribution;
       const attributeURL = this.map_.getScale() > this.scale_ ? '' : ', '.concat(this.urlAttribute);
       link.innerHTML += arr.length - 1 === index ? attributeURL : ',';

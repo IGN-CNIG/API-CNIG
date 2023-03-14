@@ -13,6 +13,9 @@ export class SimpleBinding extends Binding {
   constructor(html, htmlParent, styleType, styleParams, layer, controller) {
     super(html, htmlParent, styleType, styleParams, layer);
     this.controller_ = controller;
+    this.compilePromise_.then(() => {
+      this.infoListener();
+    });
   }
 
   /**
@@ -76,6 +79,13 @@ export class SimpleBinding extends Binding {
     });
   }
 
+  infoListener() {
+    const infoButton = this.querySelector('[data-info]');
+    infoButton.addEventListener('click', () => {
+      M.dialog.info(getValue('infoURL'), getValue('info'));
+    });
+  }
+
   /**
    * This function sets the layer of a binding class.
    * @function
@@ -125,7 +135,7 @@ export class SimpleBinding extends Binding {
     if (fmSIcon !== '') {
       const fmSIconArray = fmSIcon.split('-');
       // eslint-disable-next-line
-      const fam = fmSIconArray[0] == 'g' ? 'g-cartografia' : fmSIconArray[0] == 'fa' ? 'fa' : '';
+      const fam = fmSIconArray[0] == 'g' ? 'g-cartografia' : (fmSIconArray[0] == 'fa' ? 'fa' : '');
       famSelector.querySelector(`option[value="${fam}"]`).selected = true;
       famSelector.dispatchEvent(new window.Event('change'));
       document.querySelector('#select-icon').classList = (fam === 'fa' ? 'fa ' : '') + fmSIcon;
@@ -375,21 +385,32 @@ export class SimpleBinding extends Binding {
         }
       }
 
+      let isEmptyValue = false;
       const target = element.dataset['target'];
       if (target !== undefined) {
+        const value1S = this.querySelector(`[data-target="${target}"]`).value;
+        const value2S = this.querySelector(`[data-id="${target}"]`).value;
+        isEmptyValue = (target === 'size' || target === 'anchor') &&
+          (!value1S && !value2S) && (parseFloat(value1S) !== 0 &&
+            parseFloat(value2S) !== 0);
         let value2 = parseFloat(this.querySelector(`[data-id="${target}"]`).value);
         if (Number.isNaN(value2)) {
           value2 = 0;
         }
         value = [value, value2];
       }
-
-      Binding.createObj(styleOpts['options'], path, value);
+      if (!isEmptyValue) {
+        Binding.createObj(styleOpts['options'], path, value);
+      }
     });
 
     this.querySelectorAllForEach('[data-apply]', (element) => {
       const opt = element.dataset['apply'];
       if (element.checked === false) {
+        if (opt === 'point-svg') {
+          Binding.createObj(styleOpts['options'], 'point.src.stroke', undefined);
+          Binding.createObj(styleOpts['options'], 'point.src.fill', undefined);
+        }
         Binding.createObj(styleOpts['options'], opt, undefined);
       }
     });
@@ -584,6 +605,7 @@ export class SimpleBinding extends Binding {
     if (this.style_ != null) {
       options = M.utils.extends({}, this.style_.getOptions());
       options = M.utils.extends(options, SimpleBinding.DEFAULT_OPTIONS_STYLE);
+
       if (this.style_.get('polygon.fill.pattern') != null) {
         options['polygon']['patternfflag'] = true;
       }
@@ -592,6 +614,11 @@ export class SimpleBinding extends Binding {
       }
       if (this.style_.get('line.fill.pattern') != null) {
         options['line']['patternflag'] = true;
+      }
+
+      if (this.style_.get('point.icon') != null && this.style_.get('point.icon.src') != null &&
+        (this.style_.get('point.icon.fill') != null || this.style_.get('point.icon.stroke') != null)) {
+        options['point']['svgflag'] = true;
       }
     }
 
@@ -605,7 +632,6 @@ export class SimpleBinding extends Binding {
     options['polygon']['stroke']['color'] = options['polygon']['stroke']['color'].indexOf('rgba') >= 0 ? chroma(chroma(options['polygon']['stroke']['color']).rgb()).hex() : chroma(options['polygon']['stroke']['color']).hex();
     options['polygon']['fill']['pattern']['color'] = chroma(options['polygon']['fill']['pattern']['color']).hex();
     options['polygon']['stroke']['pattern']['color'] = chroma(options['polygon']['stroke']['pattern']['color']).hex();
-    options['point']['icon']['fill'] = chroma(options['point']['icon']['fill']).hex();
     options['point']['icon']['color'] = chroma(options['point']['icon']['color']).hex();
     options['line']['fill']['pattern']['color'] = chroma(options['polygon']['fill']['pattern']['color']).hex();
     // --
@@ -663,6 +689,26 @@ export class SimpleBinding extends Binding {
     options['polygon']['label']['fontSize'] = options['polygon']['label']['font'].split(' ')[0].replace('px', '');
     options['polygon']['label']['font'] = options['polygon']['label']['font'].split(' ')[1];
 
+
+    // icon SVG
+    if (typeof options['point']['icon']['fill'] === 'string') {
+      options['point']['icon']['fill'] = chroma(options['point']['icon']['fill']).hex();
+      options['point']['src'] = {
+        fill: { color: '#000000', opacity: 1 },
+        stroke: { color: '#000000', width: 1 },
+      };
+    } else {
+      options['point']['src'] = {
+        fill: {
+          color: chroma(options['point']['icon']['fill']['color']).hex() || '#000000',
+          opacity: options['point']['icon']['fill']['opacity'] || 1,
+        },
+        stroke: {
+          color: chroma(options['point']['icon']['stroke']['color']).hex() || '#000000',
+          width: options['point']['icon']['stroke']['width'] || 1,
+        },
+      };
+    }
     return options;
   }
 
@@ -807,6 +853,7 @@ export class SimpleBinding extends Binding {
       },
       stroke: {
         color: '#000000',
+        opacity: 1,
         width: 2,
         linedash: [0, 0],
         linedashoffset: 0,
@@ -845,8 +892,8 @@ export class SimpleBinding extends Binding {
       },
       icon: {
         src: '',
-        size: [40, 40],
-        anchor: [0, 0],
+        size: ['', ''],
+        anchor: ['', ''],
         scale: 1,
         offset: [0, 0],
         rotate: false,

@@ -138,6 +138,12 @@ export default class IberpixCompare extends M.Plugin {
      *@type { string }
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+      /**
+     *@private
+     *@type { Number }
+     */
+     this.order = options.order >= -1 ? options.order : 32767;
   }
 
     /**
@@ -173,6 +179,7 @@ export default class IberpixCompare extends M.Plugin {
       fullTOCConfig: this.fullTOCConfig,
       vectorsConfig: this.vectorsConfig,
       position: this.position,
+      order: this.order
     });
 
     this.controls_.push(this.control_);
@@ -183,6 +190,7 @@ export default class IberpixCompare extends M.Plugin {
       className: this.className,
       collapsedButtonClass: 'cp-icon',
       tooltip: this.tooltip_,
+      order: this.order,
     });
 
     this.panel_.addControls(this.controls_);

@@ -58,5 +58,13 @@
   "debeprov": "Debe seleccionar una provincia.",
   "debemuni": "Debe seleccionar un municipio.",
   "debepoli": "Debe seleccionar un polígono.",
-  "debeparce": "Debe seleccionar una parcela."
+  "debeparce": "Debe seleccionar una parcela.",
+  "accessibility": {
+    "province":"Seleccionar una provincia.",
+    "town":"Seleccione un municipio.",
+    "estate": "Insertar polígono",
+    "plot": "Insertar parcela",
+    "cadastre": "Insertar catastro",
+    "srs": "Seleccionar sistema de coordenadas"
+  }
 }

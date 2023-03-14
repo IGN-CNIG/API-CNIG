@@ -43,7 +43,7 @@ export default class SelectionZoomControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(map, idLayer, visible, ids, titles, previews, bboxs, zooms) {
+  constructor(map, idLayer, visible, ids, titles, previews, bboxs, zooms, order) {
     const impl = new SelectionZoomImpl();
     super(impl, 'SelectionZoom');
 
@@ -92,6 +92,7 @@ export default class SelectionZoomControl extends M.Control {
     /* this.idLayer saves active layer position on layers array */
     this.idLayer = idLayer === null ? 0 : idLayer;
     this.visible = visible === null ? true : visible;
+    this.order = order;
   }
 
   /**
@@ -113,7 +114,9 @@ export default class SelectionZoomControl extends M.Control {
           },
         },
       });
+
       this.html = html;
+      this.accessibilityTab(html);
       this.listen(html);
       this.on(M.evt.ADDED_TO_MAP, () => {
         const visible = this.visible;
@@ -239,6 +242,11 @@ export default class SelectionZoomControl extends M.Control {
   listen(html) {
     html.querySelectorAll('div[id^="m-selectionzoom-lyr-"]')
       .forEach((b, i) => b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i)));
+
+    html.querySelectorAll('div[id^="m-selectionzoom-lyr-"]')
+      .forEach((b, i) => b.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') this.showBaseLayer(e, this.layers[i], i);
+      }));
   }
 
   /**
@@ -251,5 +259,9 @@ export default class SelectionZoomControl extends M.Control {
    */
   equals(control) {
     return control instanceof SelectionZoomControl;
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

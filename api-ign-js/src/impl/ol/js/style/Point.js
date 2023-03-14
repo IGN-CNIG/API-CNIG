@@ -15,6 +15,7 @@ import OLGeomCircle from 'ol/geom/Circle';
 import OLStyleText from 'ol/style/Text';
 import OLStyleIcon from 'ol/style/Icon';
 import { toContext as toContextRender } from 'ol/render';
+import RenderFeature from 'ol/render/Feature';
 import OLStyleFontsSymbol from '../ext/OLStyleFontSymbol';
 import Simple from './Simple';
 import Utils from '../util/Utils';
@@ -113,8 +114,18 @@ class Point extends Simple {
         geometry: (olFeature) => {
           const center = Utils.getCentroid(olFeature.getGeometry());
           let geom = new OLGeomPoint(center);
-          if (olFeature.getGeometry().getType() === 'MultiPoint') {
-            geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
+          if (olFeature.getGeometry().getType() === 'MultiPoint' || (olFeature.getGeometry().getType() === 'Point' && olFeature instanceof RenderFeature)) {
+            if (olFeature instanceof RenderFeature) {
+              const coodOriginal = olFeature.getFlatCoordinates();
+              const coordinates = [];
+              const splt = 2;
+              for (let i = 0; i < coodOriginal.length; i += splt) {
+                coordinates.push(coodOriginal.slice(i, i + splt));
+              }
+              geom = new OLGeomMultiPoint(coordinates);
+            } else {
+              geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
+            }
           }
 
           return geom;
@@ -126,8 +137,18 @@ class Point extends Simple {
         geometry: (olFeature) => {
           const center = Utils.getCentroid(olFeature.getGeometry());
           let geom = new OLGeomPoint(center);
-          if (olFeature.getGeometry().getType() === 'MultiPoint') {
-            geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
+          if (olFeature.getGeometry().getType() === 'MultiPoint' || (olFeature.getGeometry().getType() === 'Point' && olFeature instanceof RenderFeature)) {
+            if (olFeature instanceof RenderFeature) {
+              const coodOriginal = olFeature.getFlatCoordinates();
+              const coordinates = [];
+              const splt = 2;
+              for (let i = 0; i < coodOriginal.length; i += splt) {
+                coordinates.push(coodOriginal.slice(i, i + splt));
+              }
+              geom = new OLGeomMultiPoint(coordinates);
+            } else {
+              geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
+            }
           }
 
           return geom;
@@ -152,10 +173,15 @@ class Point extends Simple {
       if (!isNullOrEmpty(options.stroke)) {
         const strokeColorValue =
           Simple.getValue(options.stroke.color, featureVariable, this.layer_);
+        let strokeOpacityValue =
+          Simple.getValue(options.stroke.opacity, featureVariable, this.layer_);
+        if (!strokeOpacityValue && strokeOpacityValue !== 0) {
+          strokeOpacityValue = 1;
+        }
         if (!isNullOrEmpty(strokeColorValue)) {
           const { linedashoffset } = options.stroke;
           stroke = new OLStyleStroke({
-            color: strokeColorValue,
+            color: chroma(strokeColorValue).alpha(strokeOpacityValue).css(),
             width: Simple.getValue(options.stroke.width, featureVariable, this.layer_),
             lineDash: Simple.getValue(options.stroke.linedash, featureVariable, this.layer_),
             lineDashOffset: Simple.getValue(linedashoffset, featureVariable, this.layer_),

@@ -7,6 +7,7 @@ import results from '../../templates/results';
 import xylocator from '../../templates/xylocator';
 import parcela from '../../templates/parcela';
 import { getValue } from './i18n/language';
+import recentresults from '../../templates/recent-results';
 
 let typingTimer;
 /**
@@ -49,6 +50,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     helpUrl,
     cadastre,
     searchCoordinatesXYZ,
+    order,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
       M.exception(getValue('impl'));
@@ -425,6 +427,8 @@ export default class IGNSearchLocatorControl extends M.Control {
      */
 
     this.searchCoordinatesXYZ = searchCoordinatesXYZ;
+
+    this.order = order;
   }
   /**
    * This function creates the view
@@ -450,6 +454,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           },
         },
       });
+      this.accessibilityTab(html);
       this.html = html;
       this.resultsBox = html.querySelector('#m-ignsearchlocator-results');
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
@@ -472,6 +477,10 @@ export default class IGNSearchLocatorControl extends M.Control {
           this.clearResults();
           this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
           this.activationManager(false, 'm-ignsearchlocator-parcela-button');
+        }
+        if (!document.getElementById('m-ignsearchlocator-search-input').value &&
+          !document.getElementById('m-ignsearchlocator-recent-results-list')) {
+          this.openRecentsResults();
         }
       });
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
@@ -532,7 +541,7 @@ export default class IGNSearchLocatorControl extends M.Control {
                 type: 'FeatureCollection',
                 features: [],
               },
-            });
+            }, { displayInLayerSwitcher: false });
 
             this.clickedElementLayer.displayInLayerSwitcher = false;
             this.createGeometryStyles();
@@ -593,6 +602,33 @@ export default class IGNSearchLocatorControl extends M.Control {
   }
 
   /**
+   * This function openresults
+   *
+   * @public
+   * @function
+   * @api
+   *
+   */
+  openRecentsResults() {
+    document.getElementById('m-ignsearchlocator-results').style = 'width: 347px';
+    const recents = window.localStorage.getItem('recents');
+    if (recents && recents.length > 0) {
+      const compiledResult = M.template.compileSync(recentresults, {
+        vars: {
+          places: JSON.parse(recents),
+        },
+      });
+      const elementList = compiledResult.querySelectorAll('li');
+      elementList.forEach((listElement) => {
+        listElement.addEventListener('click', () => {
+          this.goToLocation(listElement, true);
+        });
+      });
+      this.resultsBox.appendChild(compiledResult);
+    }
+  }
+
+  /**
    * This function remove search layers.
    *
    * @public
@@ -623,10 +659,12 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.reverseActivated = true;
       document.querySelector('#m-ignsearchlocator-locate-button span').style.color = '#71a7d3';
       document.addEventListener('keyup', this.checkEscKey.bind(this));
+      document.getElementsByTagName('body')[0].style.cursor = `url(${M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pushpin.svg'])}) 0 20, auto`;
     } else {
       this.reverseActivated = false;
       document.querySelector('#m-ignsearchlocator-locate-button span').style.color = '#7A7A73';
       document.removeEventListener('keyup', this.checkEscKey);
+      document.getElementsByTagName('body')[0].style.cursor = 'auto';
     }
   }
 
@@ -635,6 +673,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.reverseActivated = false;
       document.querySelector('#m-ignsearchlocator-locate-button span').style.color = '#7A7A73';
       document.removeEventListener('keyup', this.checkEscKey);
+      document.getElementsByTagName('body')[0].style.cursor = 'auto';
     }
   }
 
@@ -680,7 +719,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         } else {
           fullAddress = getValue('exception.exists');
         }
-        this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e);
+        this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e, false);
       });
 
       M.proxy(true);
@@ -805,6 +844,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           places: this.allCandidates,
         },
       });
+      this.accessibilityTab(compiledResult);
 
       const elementList = compiledResult.querySelectorAll('li');
       elementList.forEach((listElement) => {
@@ -844,7 +884,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         type: 'FeatureCollection',
         features: [],
       },
-    });
+    }, { displayInLayerSwitcher: false });
 
     this.clickedElementLayer.displayInLayerSwitcher = false;
     this.map.addLayers(this.clickedElementLayer);
@@ -947,7 +987,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           }],
         },
       };
-      this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
+      this.clickedElementLayer = new M.layer.GeoJSON(newGeojson, { displayInLayerSwitcher: false });
       this.clickedElementLayer.displayInLayerSwitcher = false;
       this.clickedElementLayer.setStyle(this.point);
 
@@ -1088,15 +1128,16 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param {Object} listElement clicked result information
    * @api
    */
-  goToLocation(listElement) {
+  goToLocation(listElement, isRecentElement = false) {
     const text = listElement.querySelector('#info').innerHTML;
     this.html.querySelector('#m-ignsearchlocator-search-input').value = text;
     this.currentElement = listElement; // <li>
-    const selectedObject = this.findClickedItem(listElement, this.allCandidates); // json
+    const candidates = isRecentElement ? JSON.parse(window.localStorage.getItem('recents')) : this.allCandidates;
+    const selectedObject = this.findClickedItem(listElement, candidates);
     this.createGeometryStyles();
     // if item comes from geocoder
     if (Object.prototype.hasOwnProperty.call(selectedObject, 'address')) {
-      this.getFindData(listElement, this.allCandidates).then((geoJsonData) => {
+      this.getFindData(listElement, candidates).then((geoJsonData) => {
         this.drawGeocoderResult(geoJsonData);
         if (geoJsonData.includes('"tip_via":null') && (geoJsonData.includes('"type":"Municipio"') || geoJsonData.includes('"type":"municipio"') || geoJsonData.includes('"type":"Provincia"') || geoJsonData.includes('"type":"provincia"') || geoJsonData.includes('"type":"comunidad autonoma"'))) {
           this.map.removePopup();
@@ -1107,6 +1148,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
     this.resultsBox.innerHTML = '';
   }
+
   /**
    * This function zooms in MaxExtent of clicked element
    * @public
@@ -1140,7 +1182,50 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   findClickedItem(listElement, allCandidates) {
-    return allCandidates.filter(element => element.id === listElement.getAttribute('id'))[0];
+    const elementClicked = allCandidates.filter(element => element.id === listElement.getAttribute('id'))[0];
+    this.setRecents(elementClicked);
+    return elementClicked;
+  }
+
+  /**
+   * This function check duplicates results
+   * @public
+   * @function
+   * @api
+   */
+  checkDuplicateRecent(element) {
+    const recents = JSON.parse(window.localStorage.getItem('recents'));
+    let found = false;
+
+    recents.forEach((r) => {
+      if (r.id === element.id) {
+        found = true;
+      }
+    });
+
+    return found;
+  }
+
+  /**
+   * This function set search
+   * @public
+   * @function
+   * @api
+   */
+  setRecents(element) {
+    let recents = JSON.parse(window.localStorage.getItem('recents'));
+
+    if (!recents || recents.length === 0) {
+      recents = [element];
+    } else if (!this.checkDuplicateRecent(element)) {
+      if (recents.length === 5) {
+        recents.shift();
+        recents.push(element);
+      } else {
+        recents.push(element);
+      }
+    }
+    window.localStorage.setItem('recents', JSON.stringify(recents));
   }
 
   /* Given a set of coordinates (lat, long),
@@ -1519,8 +1604,18 @@ export default class IGNSearchLocatorControl extends M.Control {
             consultReference: getValue('consultReference'),
             notaRef: getValue('notaRef'),
           },
+          accessibility: {
+            province: getValue('accessibility.province'),
+            town: getValue('accessibility.town'),
+            estate: getValue('accessibility.estate'),
+            plot: getValue('accessibility.plot'),
+            cadastre: getValue('accessibility.cadastre'),
+            srs: getValue('accessibility.srs'),
+          },
         },
       });
+
+      this.accessibilityTab(compiledXYLocator);
 
       /**
        *crear provincias y rellenar municipios
@@ -1873,6 +1968,8 @@ export default class IGNSearchLocatorControl extends M.Control {
           },
         },
       });
+
+      this.accessibilityTab(compiledXYLocator);
 
       if (this.xytype != null) {
         if (this.xytype === 'EPSG:4258d' && this.xydata === 'd') {
@@ -2229,15 +2326,16 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.point = new M.style.Point({
         radius: 5,
         icon: {
-          form: 'none',
-          class: 'g-cartografia-pin',
-          radius: 12,
-          rotation: 0,
-          rotate: false,
-          offset: [0, -12],
-          color: '#f00',
-          border: '5px solid green',
-          opacity: 1,
+          src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/marker.svg']),
+          scale: 1.4,
+          fill: {
+            color: '#71a7d3',
+          },
+          stroke: {
+            width: 30,
+            color: 'white',
+          },
+          anchor: [0.5, 1],
         },
       });
     } else if (this.pointStyle === 'pinRojo') {
@@ -2315,7 +2413,10 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param { Array } featureCoordinates latitude[0] and longitude[1] coordinates from feature
    * @param { string } exitState indicating if the given result is a perfect match
    */
-  showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
+  showPopUp(
+    fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {},
+    hasOffset = true,
+  ) {
     const featureTabOpts = { content: '', title: '' };
     if (exitState !== null) {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
@@ -2336,6 +2437,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       ]);
       this.popup = myPopUp;
     }
+    if (hasOffset && this.pointStyle === 'pinBlanco') this.popup.getImpl().setOffset([0, -30]);
     this.lat = mapcoords[1];
     this.lng = mapcoords[0];
   }
@@ -2349,5 +2451,10 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   setScale(scale) {
     this.getImpl().setScale(scale);
+  }
+
+  accessibilityTab(html) {
+    if (html.getAttribute('tabindex')) html.setAttribute('tabindex', this.order);
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

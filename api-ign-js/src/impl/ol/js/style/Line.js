@@ -57,8 +57,13 @@ class Line extends Simple {
       const styleStroke = new Centroid();
       const getValue = Simple.getValue;
       if (!isNullOrEmpty(stroke)) {
+        const strokeColorValue = getValue(stroke.color, featureVariable) || '#000000';
+        let strokeOpacityValue = getValue(stroke.opacity, featureVariable);
+        if (!strokeOpacityValue && strokeOpacityValue !== 0) {
+          strokeOpacityValue = 1;
+        }
         style.setStroke(new OLStyleStroke({
-          color: getValue(stroke.color, featureVariable),
+          color: chroma(strokeColorValue).alpha(strokeOpacityValue).css(),
           width: getValue(stroke.width, featureVariable),
           lineDash: getValue(stroke.linedash, featureVariable),
           lineDashOffset: getValue(stroke.linedashoffset, featureVariable),

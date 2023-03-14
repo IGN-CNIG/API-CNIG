@@ -11,7 +11,8 @@ Array.prototype.unique = (a) => {
   return () => {
     return this.filter(a)
   };
-}; ((a, b, c) => {
+};
+((a, b, c) => {
   return c.indexOf(a, b + 1) < 0
 });
 
@@ -138,6 +139,8 @@ export default class LyrCompareControl extends M.Control {
      *@type{boolean}
      */
     this.interface = values.interface;
+
+    this.order = values.order;
   }
 
   /**
@@ -162,6 +165,7 @@ export default class LyrCompareControl extends M.Control {
       legend: 'Sin capa',
       tiled: false,
       version: '1.3.0',
+      displayInLayerSwitcher: false
     }, { visibility: true, displayInLayerSwitcher: false, queryable: false });
     emptyLayer.options.displayInLayerSwitcher = false;
     emptyLayer.displayInLayerSwitcher = false;
@@ -184,21 +188,25 @@ export default class LyrCompareControl extends M.Control {
 
     //template with default options
     this.template = M.template.compileSync(template, options);
+    this.accessibilityTab(this.template);
     this.template.querySelectorAll('button[id^="m-lyrcompare-"]').forEach((button, i) => {
       button.addEventListener('click', this.assignEventsPlugin.bind(this, i));
+      button.addEventListener('keydown', (e) => {
+        if(e.keyCode === 13) this.assignEventsPlugin.bind(this, i);
+      })
     });
 
     this.map.addLayers([emptyLayer]);
     this.map.on(M.evt.ADDED_LAYER, (evt) => {
-        if (this.layerSelectedA !== null) {
-          const cm = this.comparisonMode;
-          this.comparisonMode = 0;
-          this.deactivateCurtain();
-          setTimeout(() => {
-            this.comparisonMode = cm;
-            this.activateCurtain();
-          }, 1000);
-        }
+      if (this.layerSelectedA !== null) {
+        const cm = this.comparisonMode;
+        this.comparisonMode = 0;
+        this.deactivateCurtain();
+        setTimeout(() => {
+          this.comparisonMode = cm;
+          this.activateCurtain();
+        }, 1000);
+      }
     });
 
     return success(this.template);
@@ -210,7 +218,7 @@ export default class LyrCompareControl extends M.Control {
       const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true || (layer.displayInLayerSwitcher === false && layer.name === 'empty_layer'));
       const isRaster = ['wms', 'wmts'].indexOf(layer.type.toLowerCase()) > -1;
       const isNotWMSFull = !((layer.type === M.layer.type.WMS) &&
-      M.utils.isNullOrEmpty(layer.name));
+        M.utils.isNullOrEmpty(layer.name));
       return (isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull);
     }).reverse();
   }
@@ -419,6 +427,7 @@ export default class LyrCompareControl extends M.Control {
 
     //template with default options
     const html = M.template.compileSync(templateList, options);
+    this.accessibilityTab(html);
     document.querySelector('#m-lyrcompare-list-container').innerHTML = '';
     document.querySelector('#m-lyrcompare-list-container').appendChild(html);
     this.setEventsAndValues();
@@ -674,5 +683,8 @@ export default class LyrCompareControl extends M.Control {
     return this.layers.map(l => l.name);
   }
 
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+  }
 
 }

@@ -18,6 +18,7 @@ const params = window.location.search.split('&');
 let center = '';
 let zoom = '';
 let srs = '';
+let layers = '';
 params.forEach((param) => {
   if (param.indexOf('center') > -1) {
     const values = param.split('=')[1].split(',');
@@ -28,6 +29,9 @@ params.forEach((param) => {
   } else if (param.indexOf('srs') > -1) {
     const value = param.split('=')[1];
     srs = value;
+  } else if (param.indexOf('layers') > -1) {
+    const value = param.substring(param.indexOf('=') + 1, param.length);
+    layers = value.split(',');
   }
 });
 
@@ -320,4 +324,12 @@ params.forEach((param) => {
    * @type {object}
    */
   M.config('MAP_VIEWER_SRS', srs);
+
+  /**
+   * MAP Viewer - Layers
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('MAP_VIEWER_LAYERS', layers);
 })(window.M);

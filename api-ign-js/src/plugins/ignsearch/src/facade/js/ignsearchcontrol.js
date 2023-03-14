@@ -258,7 +258,7 @@ export default class IGNSearchControl extends M.Control {
                 type: 'FeatureCollection',
                 features: [featureJSON],
               },
-            });
+            }, { displayInLayerSwitcher: false });
             this.clickedElementLayer.displayInLayerSwitcher = false;
 
             this.createGeometryStyles();
@@ -299,6 +299,9 @@ export default class IGNSearchControl extends M.Control {
           });
         }
       });
+
+      // eslint-disable-next-line no-alert
+      window.alert('Este plugin está obsoleto. Por favor, utilice la nueva versión del mismo: IGNSearchLocator');
       success(html);
     });
   }
@@ -592,7 +595,7 @@ export default class IGNSearchControl extends M.Control {
           type: 'FeatureCollection',
           features: [featureJSON],
         },
-      });
+      }, { displayInLayerSwitcher: false });
       this.clickedElementLayer.displayInLayerSwitcher = false;
 
       if (featureJSON.geometry.type === 'Point') {
@@ -649,7 +652,7 @@ export default class IGNSearchControl extends M.Control {
         type: 'FeatureCollection',
         features: [featureJSON],
       },
-    });
+    }, { displayInLayerSwitcher: false });
     this.clickedElementLayer.displayInLayerSwitcher = false;
     if (featureJSON.geometry.type === 'Point') {
       this.clickedElementLayer.setStyle(this.point);
@@ -749,7 +752,7 @@ export default class IGNSearchControl extends M.Control {
           }],
         },
       };
-      this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
+      this.clickedElementLayer = new M.layer.GeoJSON(newGeojson, { displayInLayerSwitcher: false });
       this.clickedElementLayer.displayInLayerSwitcher = false;
       this.clickedElementLayer.setStyle(this.point);
 

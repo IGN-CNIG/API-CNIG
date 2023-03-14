@@ -262,9 +262,6 @@ class Vector extends LayerBase {
     }
   }
 
-  /**
-   * TODO
-   */
   applyStyle_(styleParam, applyToFeature) {
     let style = styleParam;
     if (isString(style)) {
@@ -272,20 +269,18 @@ class Vector extends LayerBase {
     } else if (!(style instanceof Style)) {
       style = new Generic(style);
     }
-    let options = style.getOptions();
-    if (options.point) {
-      options = options.point;
-    }
-    if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg') &&
-      (options.icon.fill || options.icon.stroke)) {
-      modifySVG(options.icon.src, options).then((resp) => {
-        options.icon.src = resp;
-        this.applyStyle_(styleParam, applyToFeature);
-      });
-    } else {
-      // const isCluster = style instanceof StyleCluster;
-      // const isPoint = [POINT, MULTI_POINT].includes(this.getGeometryType());
-      if (style instanceof Style) /* && (!isCluster || isPoint) ) */ {
+    if (style instanceof Style) {
+      let options = style.getOptions();
+      if (options.point) {
+        options = options.point;
+      }
+      if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg') &&
+        (options.icon.fill || options.icon.stroke)) {
+        modifySVG(options.icon.src, options).then((resp) => {
+          options.icon.src = resp;
+          this.applyStyle_(styleParam, applyToFeature);
+        });
+      } else if (style instanceof Style) {
         if (!isNullOrEmpty(this.style_) && this.style_ instanceof Style) {
           this.style_.unapply(this);
         }
@@ -293,9 +288,8 @@ class Vector extends LayerBase {
         this.style_ = style;
         this.fire(EventType.CHANGE_STYLE, [style, this]);
       }
-
-      this.fire(EventType.CHANGE_STYLE, [style, this]);
     }
+    this.fire(EventType.CHANGE_STYLE, [style, this]);
   }
 
   /**

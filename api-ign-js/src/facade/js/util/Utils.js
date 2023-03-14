@@ -1195,16 +1195,31 @@ export const modifySVG = (url, options) => {
     let result = '';
     try {
       const tags = (options.icon.tag) ?
-        options.icon.tag
-        : ['path', 'circle', 'ellipse', 'line', 'polygon', 'polyline', 'rect', 'foreignObject'];
+        options.icon.tag : ['path', 'circle', 'ellipse', 'line', 'polygon', 'polyline', 'rect', 'foreignObject'];
 
       const svg = Array.from(response.xml.getElementsByTagName('svg'))[0];
-      const strokeMiddle = options.icon.stroke.width || 1;
-      const width = svg.getAttribute('width').replace(/[^0-9.]/g, '');
-      const height = svg.getAttribute('height').replace(/[^0-9.]/g, '');
-      if (options.icon.stroke && strokeMiddle) {
-        svg.setAttribute('viewBox', `${-strokeMiddle} ${-strokeMiddle} 
-          ${Math.ceil(Number(width)) + (2 * strokeMiddle)} ${Number(height) + (2 * strokeMiddle)}`);
+      const strokeMiddle = options.icon.stroke && options.icon.stroke.width ?
+        options.icon.stroke.width : 1;
+      let width = svg.getAttribute('width') ? svg.getAttribute('width').replace(/[^0-9.]/g, '') : null;
+      let height = svg.getAttribute('height') ? svg.getAttribute('height').replace(/[^0-9.]/g, '') : null;
+      if (svg.getAttribute('viewBox')) {
+        const viewSplit = svg.getAttribute('viewBox').split(' ');
+        if (!width) {
+          svg.setAttribute('width', viewSplit[2]);
+          width = viewSplit[2];
+        }
+        if (!height) {
+          svg.setAttribute('height', viewSplit[3]);
+          height = viewSplit[3];
+        }
+      }
+      if (options.icon.stroke && strokeMiddle && width && height) {
+        if (!svg.getAttribute('viewBox')) {
+          svg.setAttribute('viewBox', `${-strokeMiddle} ${-strokeMiddle} ${Math.ceil(Number(width)) + (2 * strokeMiddle)} ${Number(height) + (2 * strokeMiddle)}`);
+        } else {
+          const viewSplit = svg.getAttribute('viewBox').split(' ');
+          svg.setAttribute('viewBox', `${-strokeMiddle} ${-strokeMiddle} ${Math.ceil(Number(viewSplit[2])) + (2 * strokeMiddle)} ${Number(viewSplit[3]) + (2 * strokeMiddle)}`);
+        }
       }
 
       tags.forEach((tag) => {
@@ -1228,4 +1243,43 @@ export const modifySVG = (url, options) => {
     } catch (err) {}
     return result;
   });
+};
+
+/**
+ *
+ * @function
+ * @api
+ */
+export const dragElement = (elmntID, buttonID) => {
+  document.getElementById(buttonID).onmousedown = (eventMouseDown) => {
+    let pos1 = 0;
+    let pos2 = 0;
+    let pos3 = 0;
+    let pos4 = 0;
+
+    const elmnt = document.getElementById(elmntID);
+    const evtMouseDown = eventMouseDown || window.event;
+    evtMouseDown.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = evtMouseDown.clientX;
+    pos4 = evtMouseDown.clientY;
+    document.onmouseup = () => {
+      document.onmouseup = null;
+      document.onmousemove = null;
+    };
+    // call a function whenever the cursor moves:
+    document.onmousemove = (eventMouseMove) => {
+      const evtMouseMove = eventMouseMove || window.event;
+      evtMouseMove.preventDefault();
+      // calculate the new cursor position:
+      pos1 = pos3 - evtMouseMove.clientX;
+      pos2 = pos4 - evtMouseMove.clientY;
+      pos3 = evtMouseMove.clientX;
+      pos4 = evtMouseMove.clientY;
+
+      // set the element's new position:
+      if (!(elmnt.offsetTop - pos2 >= elmnt.parentElement.clientHeight - elmnt.clientHeight)) { elmnt.style.top = `${Math.abs(elmnt.offsetTop - pos2)}px`; }
+      if (!(elmnt.offsetLeft - pos1 >= elmnt.parentElement.clientWidth - elmnt.clientWidth)) elmnt.style.left = `${Math.abs(elmnt.offsetLeft - pos1)}px`;
+    };
+  };
 };

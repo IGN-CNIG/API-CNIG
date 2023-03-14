@@ -1493,33 +1493,24 @@ class Map extends Base {
         let control;
         let panel;
         if (isString(controlParam)) {
-          controlParam = normalize(controlParam);
-          switch (controlParam) {
+          controlParam = normalize(controlParam).split('*');
+
+          switch (controlParam[0]) {
             case Scale.NAME:
-              control = new Scale();
+              const paramsScale = {};
+              controlParam.forEach((p) => {
+                if (p === 'true') paramsScale.exactScale = Boolean(p);
+                // eslint-disable-next-line no-restricted-globals
+                if (!isNaN(p)) paramsScale.order = Number(p);
+              });
+              control = new Scale(paramsScale);
               panel = this.getPanels('map-info')[0];
               if (isNullOrEmpty(panel)) {
                 panel = new Panel('map-info', {
                   collapsible: false,
                   className: 'm-map-info',
                   position: Position.BR,
-                });
-                panel.on(EventType.ADDED_TO_MAP, (html) => {
-                  if (this.getControls(['wmcselector', 'scale', 'scaleline']).length === 3) {
-                    this.getControls(['scaleline'])[0].getImpl().getElement().classList.add('ol-scale-line-up');
-                  }
-                });
-              }
-              panel.addClassName('m-with-scale');
-              break;
-            case `${Scale.NAME}*true`:
-              control = new Scale({ exactScale: true });
-              panel = this.getPanels('map-info')[0];
-              if (isNullOrEmpty(panel)) {
-                panel = new Panel('map-info', {
-                  collapsible: false,
-                  className: 'm-map-info',
-                  position: Position.BR,
+                  order: (paramsScale.order) ? paramsScale.order : null,
                 });
                 panel.on(EventType.ADDED_TO_MAP, (html) => {
                   if (this.getControls(['wmcselector', 'scale', 'scaleline']).length === 3) {

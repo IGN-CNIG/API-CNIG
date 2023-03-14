@@ -1,89 +1,39 @@
 import ShareMap from 'facade/sharemap';
 
-M.language.setLang('en');
-
 const map = M.map({
   container: 'mapjs',
-  controls: ['scale*true', 'location'],
-  layers: [
-    new M.layer.WMTS({
-      url: 'https://www.ign.es/wmts/mapa-raster?',
-      name: 'MTN',
-      legend: 'Mapa',
-      matrixSet: 'GoogleMapsCompatible',
-      transparent: false,
-      displayInLayerSwitcher: false,
-      queryable: false,
-      visible: true,
-      format: 'image/jpeg',
-    }),
-  ],
+  controls: ['scale*true', 'location', 'backgroundlayers'],
   zoom: 3,
 });
 
+const geoJSON = new M.layer.GeoJSON({
+  name: 'cosas1_poligono',
+  source: {
+    type: 'FeatureCollection',
+    crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } },
+    features: [
+      { type: 'Feature', properties: { fecha_entero: 1950, fecha_fecha: '1950-01-01' }, geometry: { type: 'Polygon', coordinates: [[[-7.803961, 43.786743], [-9.241927, 43.167196], [-8.882436, 41.964781], [-6.590677, 41.819828], [0.584174, 40.716535], [1.632691, 41.214197], [3.010741, 41.730462], [3.205466, 42.486095], [-1.842394, 43.417953], [-1.842394, 43.417953], [-7.803961, 43.786743]]] } },
+      { type: 'Feature', properties: { fecha_entero: 1955, fecha_fecha: '1955-01-01' }, geometry: { type: 'Polygon', coordinates: [[[-7.788982, 43.786743], [-9.226948, 43.167196], [-8.867457, 41.964781], [-8.70269, 41.135274], [-6.635614, 41.349271], [-2.965805, 40.739237], [0.134809, 40.180801], [1.647669, 41.214197], [3.02572, 41.730462], [3.220445, 42.486095], [-1.827415, 43.417953], [-1.827415, 43.417953], [-7.788982, 43.786743]]] } },
+      { type: 'Feature', properties: { fecha_entero: 1960, fecha_fecha: '1960-01-01' }, geometry: { type: 'Polygon', coordinates: [[[-7.788982, 43.786743], [-9.226948, 43.167196], [-8.867457, 41.964781], [-8.70269, 41.135274], [-8.762605, 40.409295], [-4.224025, 40.203685], [-0.284597, 39.560014], [0.134809, 40.180801], [1.647669, 41.214197], [3.02572, 41.730462], [3.220445, 42.486095], [-1.827415, 43.417953], [-1.827415, 43.417953], [-7.788982, 43.786743]]] } },
+      { type: 'Feature', properties: { fecha_entero: 1965, fecha_fecha: '1965-01-01' }, geometry: { type: 'Polygon', coordinates: [[[-7.788982, 43.786743], [-9.226948, 43.167196], [-8.867457, 41.964781], [-8.70269, 41.135274], [-9.032224, 39.663869], [-4.763262, 39.293901], [0.179746, 38.770311], [-0.284597, 39.560014], [0.134809, 40.180801], [1.647669, 41.214197], [3.02572, 41.730462], [3.220445, 42.486095], [-1.827415, 43.417953], [-1.827415, 43.417953], [-7.788982, 43.786743]]] } },
+      { type: 'Feature', properties: { fecha_entero: 1970, fecha_fecha: '1970-01-01' }, geometry: { type: 'Polygon', coordinates: [[[-7.788982, 43.786743], [-9.226948, 43.167196], [-8.867457, 41.964781], [-8.70269, 41.135274], [-9.032224, 39.663869], [-9.451631, 38.781988], [-4.778241, 38.548076], [-0.778898, 37.628537], [0.179746, 38.770311], [-0.284597, 39.560014], [0.134809, 40.180801], [1.647669, 41.214197], [3.02572, 41.730462], [3.220445, 42.486095], [-1.827415, 43.417953], [-1.827415, 43.417953], [-7.788982, 43.786743]]] } },
+      { type: 'Feature', properties: { fecha_entero: 1975, fecha_fecha: '1975-01-01' }, geometry: { type: 'Polygon', coordinates: [[[-7.788982, 43.786743], [-9.226948, 43.167196], [-8.867457, 41.964781], [-8.70269, 41.135274], [-9.032224, 39.663869], [-9.451631, 38.781988], [-8.777584, 38.325152], [-4.898072, 37.367093], [-2.126991, 36.733501], [-0.778898, 37.628537], [0.179746, 38.770311], [-0.284597, 39.560014], [0.134809, 40.180801], [1.647669, 41.214197], [3.02572, 41.730462], [3.220445, 42.486095], [-1.827415, 43.417953], [-1.827415, 43.417953], [-7.788982, 43.786743]]] } },
+      { type: 'Feature', properties: { fecha_entero: 1980, fecha_fecha: '1980-01-01' }, geometry: { type: 'Polygon', coordinates: [[[-7.788982, 43.786743], [-9.226948, 43.167196], [-8.867457, 41.964781], [-8.70269, 41.135274], [-9.032224, 39.663869], [-9.451631, 38.781988], [-8.777584, 38.325152], [-8.95733, 37.033025], [-6.785402, 37.164442], [-4.478665, 36.685469], [-2.126991, 36.733501], [-0.778898, 37.628537], [0.179746, 38.770311], [-0.284597, 39.560014], [0.134809, 40.180801], [1.647669, 41.214197], [3.02572, 41.730462], [3.220445, 42.486095], [-1.827415, 43.417953], [-1.827415, 43.417953], [-7.788982, 43.786743]]] } },
+      { type: 'Feature', properties: { fecha_entero: 1985, fecha_fecha: '1985-01-01' }, geometry: { type: 'Polygon', coordinates: [[[-7.788982, 43.786743], [-9.226948, 43.167196], [-8.867457, 41.964781], [-8.70269, 41.135274], [-9.032224, 39.663869], [-9.451631, 38.781988], [-8.777584, 38.325152], [-8.95733, 37.033025], [-6.785402, 37.164442], [-6.141313, 36.288055], [-5.826758, 35.997749], [-5.332457, 36.082533], [-4.478665, 36.685469], [-2.126991, 36.733501], [-0.778898, 37.628537], [0.179746, 38.770311], [-0.284597, 39.560014], [0.134809, 40.180801], [1.647669, 41.214197], [3.02572, 41.730462], [3.220445, 42.486095], [-1.827415, 43.417953], [-1.827415, 43.417953], [-7.788982, 43.786743]]] } },
+    ],
+  },
+});
+
+map.addLayers(geoJSON);
+
 const mp = new ShareMap({
   baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
-  position: 'BR',
-  // minimize: true,
+  position: 'TR',
+  minimize: true,
   urlAPI: false,
+  // shareLayer: true,
+  // filterLayers: ['cosas1_poligono'],
 });
-M.language.setLang('en');
+
 map.addPlugin(mp);
 window.map = map;
-const kml = new M.layer.KML('KML*Delegaciones*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false*false*true');
-map.addLayers(kml);
-const layerinicial = new M.layer.WMS({
-  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-  name: 'AU.AdministrativeBoundary',
-  legend: 'Limite administrativo',
-  tiled: false,
-  version: '1.1.1',
-}, {});
-
-const layerUA = new M.layer.WMS({
-  url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
-  name: 'AU.AdministrativeUnit',
-  legend: 'Unidad administrativa',
-}, {});
-
-const ocupacionSuelo = new M.layer.WMTS({
-  url: 'http://wmts-mapa-lidar.idee.es/lidar',
-  name: 'EL.GridCoverageDSM',
-  legend: 'Modelo Digital de Superficies LiDAR',
-  matrixSet: 'GoogleMapsCompatible',
-}, {
-  visibility: false,
-});
-
-map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
-
-
-const mp3 = new M.plugin.IGNSearch({
-  servicesToSearch: 'gn',
-  maxResults: 10,
-  isCollapsed: false,
-  noProcess: 'municipio,poblacion',
-  countryCode: 'es',
-  reverse: true,
-});
-const mp2 = new M.plugin.Attributions({
-  mode: 1,
-  scale: 10000,
-  defaultAttribution: 'Instituto Geográfico Nacional',
-  defaultURL: 'https://www.ign.es/',
-});
-
-const mp6 = new M.plugin.ZoomExtent();
-const mp7 = new M.plugin.MouseSRS({
-  projection: 'EPSG:4326',
-});
-const mp8 = new M.plugin.TOC();
-
-map.addPlugin(mp2);
-map.addPlugin(mp3);
-map.addPlugin(mp6);
-map.addPlugin(mp7);
-map.addPlugin(mp8);
-const mp9 = new M.plugin.TOC();
-map.addPlugin(mp9);
-// M.proxy(false);

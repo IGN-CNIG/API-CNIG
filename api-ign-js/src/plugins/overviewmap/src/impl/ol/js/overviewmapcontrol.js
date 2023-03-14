@@ -57,6 +57,8 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
      * @type {*}
      */
     this.facadeMap_ = null;
+
+    this.order = (options.order) ? options.order : 300;
   }
 
   /**
@@ -104,6 +106,9 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
    */
   update(map, html) {
     const button = this.element.querySelector('button');
+    button.setAttribute('tabindex', this.order);
+    button.setAttribute('aria-label', 'Plugin overviewmap');
+    button.setAttribute('role', 'button');
     if (this.collapsed_ === true) {
       if (button.classList.contains(this.collapsedButtonClass_)) {
         button.classList.remove(this.collapsedButtonClass_);
@@ -127,6 +132,9 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
   addOpenEventListener(btn, map) {
     const button = btn;
     button.onclick = this.openEventListener.bind(this);
+    button.addEventListener('keydow', ({ keyCode }) => {
+      if (keyCode === 13) this.openEventListener();
+    });
   }
 
   /**
@@ -285,6 +293,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
   handleToggle_() {
     this.classToggle(this.element, 'ol-collapsed');
     const button = this.element.querySelector('button');
+    button.setAttribute('tabindex', this.order);
     this.classToggle(button, this.openedButtonClass_);
     this.classToggle(button, this.collapsedButtonClass_);
 

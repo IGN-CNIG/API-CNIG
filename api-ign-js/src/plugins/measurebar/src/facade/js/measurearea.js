@@ -4,12 +4,12 @@ import measureareaHTML from '../../templates/measurearea';
 import { getValue } from './i18n/language';
 
 export default class MeasureArea extends Measure {
-  constructor() {
+  constructor(order) {
     // implementation of this control
     const impl = new MeasureAreaImpl();
 
     // const calls the super constructor
-    super(impl, measureareaHTML, MeasureArea.NAME);
+    super(impl, measureareaHTML, MeasureArea.NAME, order);
 
     // checks if the implementation can create WMC layers
     if (M.utils.isUndefined(MeasureAreaImpl)) {

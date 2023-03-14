@@ -58,6 +58,9 @@ class GeoJSON extends LayerVector {
 
       // source
       this.source = parameters.source;
+      if (isString(this.source)) {
+        this.source = this.deserialize(this.source);
+      }
 
       // extract
       this.extract = parameters.extract || false;
@@ -167,6 +170,32 @@ class GeoJSON extends LayerVector {
    */
   setStyle(styleParam, applyToFeature = false, defaultStyle = GeoJSON.DEFAULT_OPTIONS_STYLE) {
     super.setStyle(styleParam, applyToFeature, defaultStyle);
+  }
+
+  /**
+   * This function serializes this object
+   *
+   * @function
+   * @return {String}
+   * @api
+   * @public
+   */
+  serialize() {
+    return window.btoa(unescape(encodeURIComponent(JSON.stringify(this.source))));
+  }
+
+  /**
+   * This function deserializes this object
+   *
+   * @function
+   * @param { String } encodedSerialized
+   * @return {String}
+   * @api
+   * @public
+   */
+  deserialize(encodedSerialized) {
+    const source = JSON.parse(decodeURIComponent(escape(window.atob(encodedSerialized.replace(' ', '+')))));
+    return source;
   }
 }
 

@@ -1,6 +1,6 @@
 import StyleManager from 'facade/stylemanager';
 
-M.language.setLang('en');
+// M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
@@ -1128,3 +1128,26 @@ let layer = new M.layer.WFS({
 });
 
 // map.addLayers([layer]);
+const estilo = new M.style.Point({
+  // fill: {
+  //     color: "#67af13",
+  //     opacity: 0.4
+  // },
+  icon: {
+      class: "fa-heart",
+      color: "#e07e18",
+      fill: "#ffffff",
+      // fontsize: 0,
+      form: "CIRCLE",
+      gradient: false,
+      offset: [0, 0],
+      opacity: 1,
+      radius: 20,
+      rotate: false,
+      rotation: 0,
+      // crossOrigin: 'anonymous'
+  },
+  label: undefined,
+  radius: 5
+});
+// wfs2.setStyle(estilo);

@@ -25,7 +25,7 @@ export default class FullTOCControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(http, https, precharged, codsi) {
+  constructor(http, https, precharged, codsi, order) {
     if (M.utils.isUndefined(FullTOCImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -61,6 +61,8 @@ export default class FullTOCControl extends M.Control {
     this.stateSelectAll = false;
 
     this.filterName = undefined;
+
+    this.order = order;
   }
 
   /**
@@ -82,6 +84,7 @@ export default class FullTOCControl extends M.Control {
         this.template_ = html;
         success(html);
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
+        this.template_.addEventListener('keydown', evt => (evt.keyCode === 13) && evt.target.click());
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
         this.getImpl().registerEvents();
         this.render();
@@ -193,7 +196,7 @@ export default class FullTOCControl extends M.Control {
             const extent = this.getImpl().getGeoJSONExtent(layer);
             this.map_.setBbox(extent);
           } else {
-            M.dialog.info(getValue('exception.extent'), getValue('info'));
+            M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
           }
         } else if (evt.target.classList.contains('m-fulltoc-legend')) {
           const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-legend');
@@ -216,7 +219,7 @@ export default class FullTOCControl extends M.Control {
             },
           });
 
-          M.dialog.info(config, getValue('configure_layer'));
+          M.dialog.info(config, getValue('configure_layer'), this.order);
           setTimeout(() => {
             const selector = 'div.m-mapea-container div.m-dialog #m-fulltoc-change-config button';
             document.querySelector(selector).addEventListener('click', this.changeLayerConfig.bind(this, layer));
@@ -225,6 +228,8 @@ export default class FullTOCControl extends M.Control {
             button.innerHTML = getValue('close');
             button.style.width = '75px';
             button.style.backgroundColor = '#71a7d3';
+
+            this.accessibilityTab(document.querySelector('#m-fulltoc-change-config'));
           }, 10);
         } else if (evt.target.classList.contains('m-fulltoc-info')) {
           const vars = {
@@ -350,17 +355,21 @@ export default class FullTOCControl extends M.Control {
           },
         });
 
-        M.dialog.info(addServices, getValue('load_ext_services'));
+        M.dialog.info(addServices, getValue('load_ext_services'), this.order);
         setTimeout(() => {
           if (document.querySelector('#m-fulltoc-addservices-list-btn') !== null) {
             document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('click', e => this.showSuggestions(e));
+            document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.showSuggestions(e));
           }
 
           if (document.querySelector('#m-fulltoc-addservices-codsi-btn') !== null) {
             document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('click', e => this.showCODSI(e));
+            document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.showCODSI(e));
             document.querySelector('#m-fulltoc-addservices-codsi-filter-btn').addEventListener('click', (e) => {
               this.loadCODSIResults(1);
             });
+
+            document.querySelector('#m-fulltoc-addservices-codsi-filter-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.loadCODSIResults(1));
 
             document.querySelector('#m-fulltoc-addservices-codsi-search-input').addEventListener('keypress', (e) => {
               if (e.keyCode === 13) {
@@ -378,6 +387,13 @@ export default class FullTOCControl extends M.Control {
           document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', (e) => {
             this.filterName = undefined;
             this.readCapabilities(e);
+          });
+
+          document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('keydown', (e) => {
+            if (e.keyCode === 13) {
+              this.filterName = undefined;
+              this.readCapabilities(e);
+            }
           });
 
           document.querySelector('#m-fulltoc-addservices-search-input').addEventListener('keypress', (e) => {
@@ -406,11 +422,20 @@ export default class FullTOCControl extends M.Control {
               elem.parentElement.querySelector('.m-fulltoc-suggestion-group').classList.toggle('active');
               elem.classList.toggle('m-fulltoc-suggestion-caret-close');
             });
+
+            elem.addEventListener('keydown', (e) => {
+              if (e.keyCode === 13) {
+                elem.parentElement.querySelector('.m-fulltoc-suggestion-group').classList.toggle('active');
+                elem.classList.toggle('m-fulltoc-suggestion-caret-close');
+              }
+            });
           });
 
           document.querySelectorAll('#m-fulltoc-addservices-suggestions .m-fulltoc-suggestion').forEach((elem) => {
             elem.addEventListener('click', e => this.loadSuggestion(e));
+            elem.addEventListener('keydown', e => (e.keyCode === 13) && this.loadSuggestion(e));
           });
+          this.accessibilityTab(document.querySelector('.m-fulltoc-addservices'));
         }, 10);
       }
     }
@@ -427,7 +452,7 @@ export default class FullTOCControl extends M.Control {
       vars,
     });
 
-    M.dialog.info(info, getValue('layer_info'));
+    M.dialog.info(info, getValue('layer_info'), this.order);
     setTimeout(() => {
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
@@ -447,6 +472,7 @@ export default class FullTOCControl extends M.Control {
           }
         });
       }
+      this.accessibilityTab(document.querySelector('#m-fulltoc-information'));
     }, 10);
   }
 
@@ -534,7 +560,7 @@ export default class FullTOCControl extends M.Control {
     if (results.length > 0) {
       let textResults = '<table><tbody>';
       results.forEach((r) => {
-        textResults += `<tr><td><span class="m-fulltoc-codsi-result" data-link="${r.url}">${r.title}</span></td></tr>`;
+        textResults += `<tr><td><span tabindex="0" class="m-fulltoc-codsi-result" data-link="${r.url}">${r.title}</span></td></tr>`;
       });
 
       textResults += '</tbody></table>';
@@ -559,9 +585,9 @@ export default class FullTOCControl extends M.Control {
       let buttons = '';
       for (let i = 1; i <= numPages; i += 1) {
         if (i === pageNumber) {
-          buttons += `<button class="m-fulltoc-addservices-pagination-btn" disabled>${i}</button>`;
+          buttons += `<button type="button" tabindex="0" class="m-fulltoc-addservices-pagination-btn" disabled>${i}</button>`;
         } else {
-          buttons += `<button class="m-fulltoc-addservices-pagination-btn">${i}</button>`;
+          buttons += `<button type="button" tabindex="0" class="m-fulltoc-addservices-pagination-btn">${i}</button>`;
         }
       }
 
@@ -666,6 +692,8 @@ export default class FullTOCControl extends M.Control {
       const html = M.template.compileSync(template, {
         vars: templateVars,
       });
+
+      this.accessibilityTab(html);
 
       this.registerImgErrorEvents_(html);
       this.template_.innerHTML = html.innerHTML;
@@ -1174,11 +1202,12 @@ export default class FullTOCControl extends M.Control {
             access_constraints: getValue('access_constraints'),
             show_service_info: getValue('show_service_info'),
           },
+          order: this.order,
         },
       });
 
-
       container.innerHTML = html.innerHTML;
+      this.accessibilityTab(container);
       M.utils.enableTouchScroll(container);
       const results = container.querySelectorAll('span.m-check-fulltoc-addservices');
       for (let i = 0; i < results.length; i += 1) {
@@ -1189,6 +1218,9 @@ export default class FullTOCControl extends M.Control {
       for (let i = 0; i < resultsNames.length; i += 1) {
         resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
       }
+
+      const checkboxResults = container.querySelectorAll('.table-results .table-container table tbody tr td span');
+      checkboxResults.forEach(l => l.addEventListener('keydown', e => (e.keyCode === 13) && this.registerCheckFromName(e)));
 
       container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
       container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', evt => this.addLayers(evt));
@@ -1373,5 +1405,9 @@ export default class FullTOCControl extends M.Control {
 
   checkUrls(url1, url2) {
     return url1 === url2 || (url1.indexOf(url2) > -1) || (url2.indexOf(url1) > -1);
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

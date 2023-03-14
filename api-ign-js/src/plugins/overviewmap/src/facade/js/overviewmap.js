@@ -101,6 +101,12 @@ export default class OverviewMap extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = (options.order) ? options.order : 300;
   }
 
   /**
@@ -130,9 +136,10 @@ export default class OverviewMap extends M.Plugin {
     this.control_ = new OverviewMapControl(this.options_, this.vendorOptions);
     this.controls_.push(this.control_);
     this.map_ = map;
-    this.panel_ = new M.ui.Panel('panelOverviewMap', {
+    this.panel_ = new M.ui.Panel('OverviewMap', {
       className: 'm-overviewmap-panel',
       position: M.ui.position[this.position_],
+      order: this.order,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

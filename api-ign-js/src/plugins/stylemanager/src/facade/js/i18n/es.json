@@ -133,5 +133,10 @@
    "flowLine":"Línea de flujo",
    "absolute": "Absoluto",
    "arrow": "Flecha",
-   "arrowColor": "Color flecha"
+   "arrowColor": "Color flecha",
+   "generateSerialized": "Generar estilo serializado",
+   "serializedStyle": "Estilo serializado",
+   "clipboard":"Copiado estilo serializado en el portapapeles",
+   "modifySVG": "Modificar SVG",
+   "infoURL": "Se encuentra disponible una galería de ficheros SVG en <a target='blank' href='https://componentes.cnig.es/api-core/api/actions/resources/svg'>https://componentes.cnig.es/api-core/api/actions/resources/svg</a>"
 }

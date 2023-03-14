@@ -110,10 +110,37 @@ export default class BackImgLayer extends M.Plugin {
      */
     this.layers = options.layers || '';
 
+    /**
+     * @private
+     * @type {string}
+     *
+     * Indicates if the plugin is collapsed on entry (true/false).
+     */
     this.collapsed = options.collapsed !== undefined ? options.collapsed : true;
+
+    /**
+     * @private
+     * @type {string}
+     *
+     * Indicates if the plugin can be collapsed into a button (true/false).
+     */
     this.collapsible = options.collapsible !== undefined ? options.collapsible : true;
+
+    /**
+     * @private
+     * @type {string}
+     *
+     * Empty Layer
+     */
     this.empty = options.empty !== undefined ? options.empty : false;
 
+
+    /**
+     * @private
+     * @type {string}
+     *
+     * Number of columns that parameterize the table of services shown.
+     */
     this.columnsNumber = options.columnsNumber != null ? options.columnsNumber : 2;
 
     /**
@@ -128,6 +155,13 @@ export default class BackImgLayer extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32767;
   }
 
   /**
@@ -166,15 +200,17 @@ export default class BackImgLayer extends M.Plugin {
       this.layers,
       this.columnsNumber,
       this.empty,
+      this.order,
     ));
     this.map_ = map;
-    this.panel_ = new M.ui.Panel('panelBackImgLayer', {
+    this.panel_ = new M.ui.Panel('BackImgLayer', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position_],
       className: 'm-plugin-backimglayer',
       tooltip: this.tooltip_,
       collapsedButtonClass: 'backimglyr-simbolo-cuadros',
+      order: this.order,
     });
 
     this.controls_[0].on('backimglayer:activeChanges', (data) => {
@@ -299,4 +335,12 @@ export default class BackImgLayer extends M.Plugin {
   getMetadata() {
     return this.metadata_;
   }
+
+  changeStyleResponsive(change) {
+    // eslint-disable-next-line no-unused-expressions
+    (change)
+      ? document.querySelectorAll('.m-panel.m-plugin-backimglayer').forEach(e => e.classList.add('changeStyleResponsive'))
+      : document.querySelectorAll('.m-panel.m-plugin-backimglayer').forEach(e => e.classList.remove('changeStyleResponsive'));
+  }
 }
+

@@ -87,8 +87,15 @@ class Polygon extends Simple {
           layer: this.layer_,
         }));
       } else if (!isNullOrEmpty(options.stroke)) {
+        const strokeColorValue =
+          Simple.getValue(options.stroke.color || '#000000', featureVariable, this.layer_);
+        let strokeOpacityValue =
+          Simple.getValue(options.stroke.opacity, featureVariable, this.layer_);
+        if (!strokeOpacityValue && strokeOpacityValue !== 0) {
+          strokeOpacityValue = 1;
+        }
         style.setStroke(new OLStyleStroke({
-          color: Simple.getValue(options.stroke.color, featureVariable, this.layer_),
+          color: chroma(strokeColorValue).alpha(strokeOpacityValue).css(),
           width: Simple.getValue(options.stroke.width, featureVariable, this.layer_),
           lineDash: Simple.getValue(options.stroke.linedash, featureVariable, this.layer_),
           lineDashOffset: Simple.getValue(

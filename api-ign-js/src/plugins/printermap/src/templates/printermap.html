@@ -1,24 +1,24 @@
 <div class="m-control m-container m-printermap m-printermap-container">
     <!-- TITLE -->
-    <div class="title">{{translations.tooltip}}</div>
+    <div role="heading" tabindex="0" aria-label="{{translations.tooltip}}" class="title">{{translations.tooltip}}</div>
     <!-- FORM -->
     <div class="form">
         <!-- title -->
         <div class="title">
-            <input type="text" placeholder="{{translations.title}}">
+            <input tabindex="0" aria-label="{{translations.title}}" type="text" placeholder="{{translations.title}}">
         </div>
         <!-- description -->
         <div class="description">
             {{#if fototeca}}
-              <textarea id="description" disabled>{{translations.fototeca}}</textarea>
+              <textarea tabindex="0" aria-label="{{translations.fototeca}}" id="description" disabled>{{translations.fototeca}}</textarea>
             {{^}}
-              <textarea placeholder="{{translations.description}}" id="description"></textarea>
+              <textarea tabindex="0" aria-label="{{translations.description}}" placeholder="{{translations.description}}" id="description"></textarea>
             {{/if}}
         </div>
         <!-- layout -->
         <div class="layout">
-            <label>{{translations.layout}} </label>
-            <select id="layout">
+            <label tabindex="0" role="text" aria-label="{{translations.layout}}">{{translations.layout}} </label>
+            <select tabindex="0" role="select" id="layout">
                 {{#each layouts}}
                     <option value="{{name}}" {{#if default}} selected{{/if}}>{{name}}</option>
                 {{/each}}
@@ -26,8 +26,8 @@
         </div>
         <!-- DPI -->
         <div class="dpi">
-            <label>DPI </label>
-            <select id="dpi" disabled>
+            <label tabindex="0" role="text" aria-label="DPI">DPI </label>
+            <select tabindex="0" role="select" id="dpi" disabled>
                 {{#each dpis}}
                     <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
                 {{/each}}
@@ -35,8 +35,8 @@
         </div>
         <!-- format -->
         <div class="format">
-            <label>{{translations.format}} </label>
-            <select id="format">
+            <label tabindex="0" role="text" aria-label="{{translations.format}}">{{translations.format}} </label>
+            <select tabindex="0" role="select" id="format">
                 {{#each format}}
                     <option value="{{name}}" {{#if default}} selected{{/if}}>{{name}}</option>
                 {{/each}}
@@ -45,8 +45,8 @@
         {{#if georefActive}}
           <!-- Proyección -->
           <div class="projection">
-              <label>{{translations.projection}} </label>
-              <select id="projection" disabled>
+              <label tabindex="0" role="text" aria-label="{{translations.projection}}">{{translations.projection}} </label>
+              <select tabindex="0" role="select" id="projection" disabled>
                   {{#each proyections}}
                       <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
                   {{/each}}
@@ -56,22 +56,22 @@
 
         <!-- keep view -->
         <div class="keepview">
-            <label>{{translations.keep}} </label>
-            <input type="checkbox" id="keepview" {{#if keepView}} checked{{/if}}>
+            <label tabindex="0" role="text" aria-label="{{translations.keep}}">{{translations.keep}} </label>
+            <input tabindex="0" type="checkbox" id="keepview" {{#if keepView}} checked{{/if}}>
         </div>
 
         {{#if georefActive}}
           <!-- georef -->
           <div class="georef">
-              <label>{{translations.geo}} </label>
-              <input type="checkbox" {{#if georef}} checked{{/if}}>
+              <label tabindex="0" role="text" aria-label="{{translations.geo}}">{{translations.geo}} </label>
+              <input tabindex="0" type="checkbox" {{#if georef}} checked{{/if}}>
           </div>
         {{/if}}
     </div>
     <!-- buttons -->
     <div class="button">
-        <button class="print"><i class="icon-impresora"></i> {{translations.print}}</button>
-        <button class="remove"><i class="icon-papelera"></i> {{translations.delete}}</button>
+        <button tabindex="0" type="button" class="print"><i class="icon-impresora"></i> {{translations.print}}</button>
+        <button tabindex="0" type="button" class="remove"><i class="icon-papelera"></i> {{translations.delete}}</button>
     </div>
     <!-- queue -->
     <div class="queue">

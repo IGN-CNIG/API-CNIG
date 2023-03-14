@@ -146,6 +146,13 @@ export default class PrinterMap extends M.Plugin {
     this.headerLegend_ = parameters.headerLegend || '';
 
     this.filterTemplates_ = parameters.filterTemplates || [];
+
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = parameters.order >= -1 ? parameters.order : 32767;
   }
 
   /**
@@ -184,6 +191,7 @@ export default class PrinterMap extends M.Plugin {
       this.fototeca_,
       this.headerLegend_,
       this.filterTemplates_,
+      this.order,
     );
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {
@@ -193,6 +201,7 @@ export default class PrinterMap extends M.Plugin {
       collapsedButtonClass: 'icon-impresora',
       position: M.ui.position[this.position_],
       tooltip: getValue('tooltip'),
+      order: this.order,
     });
     this.panel_.on(M.evt.ADDED_TO_MAP, (html) => {
       M.utils.enableTouchScroll(html);

@@ -125,6 +125,18 @@ class BackgroundLayers extends ControlBase {
     callback(e, layersInfo, i);
   }
 
+  changeStyleResponsive(change) {
+    M.config.MOBILE_WIDTH = (change) ? '2000' : '768';
+
+    const buttons = document.querySelectorAll('.m-plugin-baselayer .m-panel-controls #div-contenedor button');
+    buttons.forEach((e) => {
+      // eslint-disable-next-line no-unused-expressions
+      (e.classList.contains('m-background-unique-btn'))
+        ? e.style.display = (change) ? 'block' : 'none'
+        : e.style.display = (change) ? 'none' : 'block';
+    });
+  }
+
   /**
    * This function manages the click event when the app is in desktop resolution
    *

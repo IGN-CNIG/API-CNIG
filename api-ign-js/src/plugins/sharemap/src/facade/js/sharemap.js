@@ -74,7 +74,7 @@ export default class ShareMap extends M.Plugin {
    * @param {ShareMapOptions} options
    * @api
    */
-  constructor(options) {
+  constructor({ filterLayers = [], ...options }) {
     super();
 
     if (M.utils.isNullOrEmpty(options.baseUrl)) {
@@ -193,6 +193,24 @@ export default class ShareMap extends M.Plugin {
       * @type @type {bool}
       */
     this.urlAPI_ = options.urlAPI || false;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32767;
+
+    /** Select layers share by the name
+      * @private
+      * @type @type {Array}
+      */
+    this.filterLayers = (options.shareLayer === undefined) ? filterLayers : [];
+
+    /** Select all layers or not
+      * @private
+      * @type {Boolean}
+      */
+    this.shareLayer = options.shareLayer || false;
   }
 
   /**
@@ -232,17 +250,21 @@ export default class ShareMap extends M.Plugin {
       overwriteStyles: this.overwriteStyles_,
       minimize: this.minimize_,
       urlAPI: this.urlAPI_,
+      order: this.order,
+      filterLayers: this.filterLayers,
+      shareLayer: this.shareLayer,
     });
 
     this.controls_.push(this.control);
 
     this.map_ = map;
 
-    this.panel_ = new M.ui.Panel('panelShareMap', {
+    this.panel_ = new M.ui.Panel('ShareMap', {
       collapsible: false,
       position: M.ui.position[this.position_],
       className: 'm-plugin-sharemap',
       tooltip: getValue('tooltipPanel'),
+      order: this.order,
     });
 
     this.panel_.addControls(this.controls_);

@@ -4,5 +4,8 @@
   },
   "tooltip": "Coordinates",
   "select_srs": "Select a reference system",
-  "close": "Close"
+  "close": "Close",
+  "accessibility": {
+    "src": "Click or Enter to modify the EPSG"
+  }
 }

@@ -16,24 +16,24 @@
               {{/if}}
             </td>
             <td class="m-vector-layer-legend">
-              <span class="m-vector-layer-legend-change" data-layer-name="{{name}}" data-layer-url="{{url}}" title="{{../translations.change_name}}">{{legend}}</span>
+              <span role="button" tabindex="0" class="m-vector-layer-legend-change" data-layer-name="{{name}}" data-layer-url="{{url}}" title="{{../translations.change_name}}">{{legend}}</span>
             </td>
             <td>
               <div class="m-vector-layer-actions">
-                <span title="{{../translations.show_hide}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="{{#if visible}}icon-visible{{^}}icon-invisible{{/if}} m-vector-layer-toogle"></span>
-                <span title="{{../translations.add_geom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-add m-vector-layer-add"></span>
+                <span role="button" tabindex="0" title="{{../translations.show_hide}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="{{#if visible}}icon-visible{{^}}icon-invisible{{/if}} m-vector-layer-toogle"></span>
+                <span role="button" tabindex="0" title="{{../translations.add_geom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-add m-vector-layer-add"></span>
                 {{#if line}}
-                  <span title="{{../translations.edit_geom_line}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-select m-vector-layer-edit"></span>
+                  <span role="button" tabindex="0" title="{{../translations.edit_geom_line}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-select m-vector-layer-edit"></span>
                 {{^}}
-                  <span title="{{../translations.edit_geom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-select m-vector-layer-edit"></span>
+                  <span role="button" tabindex="0" title="{{../translations.edit_geom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-select m-vector-layer-edit"></span>
                 {{/if}}
                 {{#if updatable}}
-                  <span title="{{../translations.reload_from_view}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-spinner m-vector-layer-reload"></span>
+                  <span role="button" tabindex="0" title="{{../translations.reload_from_view}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-spinner m-vector-layer-reload"></span>
                 {{^}}
-                  <span title="{{../translations.layer_zoom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-zoom m-vector-layer-zoom"></span>
+                  <span role="button" tabindex="0" title="{{../translations.layer_zoom}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-zoom m-vector-layer-zoom"></span>
                 {{/if}}
-                <span title="{{../translations.download_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-download m-vector-layer-download"></span>
-                <span title="{{../translations.delete_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-delete m-vector-layer-delete"></span>
+                <span role="button" tabindex="0" title="{{../translations.download_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-download m-vector-layer-download"></span>
+                <span role="button" tabindex="0" title="{{../translations.delete_layer}}" data-layer-name="{{name}}" data-layer-url="{{url}}" class="icon-delete m-vector-layer-delete"></span>
               </div>
             </td>
           </tr>

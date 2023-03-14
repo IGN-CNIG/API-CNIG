@@ -14,7 +14,6 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
     <link href="plugins/timeline/timeline.ol.min.css" rel="stylesheet" />
-    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -48,6 +47,14 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
+        <label for="typeTimeLine">Tipo TimeLine: </label>
+        <select name="typeTimeLine" id="typeTimeLine">
+            <option value="absoluteSimple">absoluteSimple</option>
+            <option value="absolute">absolute</option>
+            <option value="relative">relative</option>
+        </select>
+
+        <div id="origin">
         <label for="inputIntervals">Parámetro intervals</label>
         <input type="text" name="intervals" id="inputIntervals">
         <select id="selectIntervals">
@@ -73,14 +80,60 @@
             <option value='0.1'></option>
             <option value='5'></option>
         </datalist>
-        <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+        </div>
+
+    <div id="dinamic">
+        <!-- VisualizaciónDinamicaPorLineaDeTiempo </label> -->
+        <label for="time">Capas disponibles: </label>
+        <input type="text" name="time" id="time">
+
+
+        <label for="speedDate">Velocidad por segundo: </label>
+        <input type="number" min="1" name="speedDate" id="speedDate">
+
+
+        <label for="paramsDate">Tiempo del Step: </label>
+        <select name="paramsDate" id="paramsDate">
+            <option value="yr">Años (yr)</option>
+            <option value="mos">Meses (mos)</option>
+            <option value="day">Días (day)</option>
+            <option value="hrs">Horas (hrs)</option>
+            <option value="min">Minutos (min)</option>
+            <option value="sec">Segundos (sec)</option>
+        </select>
+
+        <label for="stepValue">Valor del step: </label>
+        <input type="number" min="1" name="stepValue" id="stepValue">
+
+        <label for="sizeWidthDinamic">Tamaño plugin: </label>
+        <select name="sizeWidthDinamic" id="sizeWidthDinamic">
+            <option value="sizeWidthDinamic_medium">Mediano</option>
+            <option value="">Pequeño</option>
+            <option value="sizeWidthDinamic_big">Grande</option>
+        </select>
+
+        <label for="formatValueDinamic">Representación de los datos: </label>
+        <select name="formatValueDinamic" id="formatValueDinamic">
+            <option value="logarithmic">Logarítmica</option>
+            <option value="exponential">Exponencial</option>
+            <option value="linear">Lineal</option>
+        </select>
+
+        <label for="formatMove">Movimiento Step: </label>
+        <select name="formatMove" id="formatMove">
+            <option value="continuous">continuous</option>
+            <option value="discrete">discrete</option>
+        </select>
+    </div>
+
+    <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
     <script type="text/javascript" src="plugins/timeline/timeline.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -100,44 +153,132 @@
             center: [-467062.8225, 4683459.6216],
             zoom: 6,
         });
-        let mp, posicion, animation, speed, intervals = '[["NACIONAL 1981-1986","1986","WMS*NACIONAL_1981-1986*https://www.ign.es/wms/pnoa-historico*NACIONAL_1981-1986"],["OLISTAT","1998","WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT"],["SIGPAC","2003","WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC"],["PNOA 2004","2004","WMS*pnoa2004*https://www.ign.es/wms/pnoa-historico*pnoa2004"],["PNOA 2005","2005","WMS*pnoa2005*https://www.ign.es/wms/pnoa-historico*pnoa2005"],["PNOA 2006","2006","WMS*pnoa2006*https://www.ign.es/wms/pnoa-historico*pnoa2006"],["PNOA 2010","2010","WMS*pnoa2010*https://www.ign.es/wms/pnoa-historico*pnoa2010"]]';
-        crearPlugin({
+        
+        let mp, posicion, animation, speed, dinamic, intervals = '[["NACIONAL 1981-1986","1986","WMS*NACIONAL_1981-1986*https://www.ign.es/wms/pnoa-historico*NACIONAL_1981-1986"],["OLISTAT","1998","WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT"],["SIGPAC","2003","WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC"],["PNOA 2004","2004","WMS*pnoa2004*https://www.ign.es/wms/pnoa-historico*pnoa2004"],["PNOA 2005","2005","WMS*pnoa2005*https://www.ign.es/wms/pnoa-historico*pnoa2005"],["PNOA 2006","2006","WMS*pnoa2006*https://www.ign.es/wms/pnoa-historico*pnoa2006"],["PNOA 2010","2010","WMS*pnoa2010*https://www.ign.es/wms/pnoa-historico*pnoa2010"]]';
+        
+        let time = [
+        {
+          id: '1',
+          init: '1990-05-12T23:39:58.767Z',
+          end: '2015-05-29T20:22:26.001Z',
+          layer: 'WMS*Eventos sísmicos*https://www.ign.es/wms-inspire/geofisica*NZ.ObservedEvent',
+          attributeParam: 'date',
+        },
+        {
+          id: '2',
+          init: '1990-05-12T23:39:58.767Z',
+          end: '2015-05-29T20:22:26.001Z',
+          grupo: 'vectorWMS_GRUPO',
+          layer: 'WMS*Eventos sísmicos*https://www.ign.es/wms-inspire/geofisica*NZ.ObservedEvent',
+          attributeParam: 'date',
+          grupo: 'NZ.ObservedEvent - equalsTimeLine',
+        },
+        ], speedDate = 2, paramsDate = 'yr', stepValue = 5,formatValue = 'logarithmic', sizeWidthDinamic = 'sizeWidthDinamic_medium', formatMove = 'continuous';
+
+        // Type
+        const typeTimeLine = document.getElementById('typeTimeLine');
+
+        if(typeTimeLine.value === 'absolute' || typeTimeLine.value === 'relative') {
+            crearPlugin({
+                timelineType: typeTimeLine.options[typeTimeLine.selectedIndex].value, 
+                intervals: time,
+                speedDate,
+                paramsDate,
+                stepValue,
+                formatMove,
+                formatValue,
+                sizeWidthDinamic
+            });
+        }else {
+            crearPlugin({
+            timelineType: typeTimeLine.options[typeTimeLine.selectedIndex].value, 
             position: posicion,
             intervals: intervals,
-        });
+            });
+        }
+
+        // Original
         const selectPosicion = document.getElementById("selectPosicion");
         const inputIntervals = document.getElementById("inputIntervals");
         const selectIntervals = document.getElementById("selectIntervals");
         const selectAnimation = document.getElementById("selectAnimation");
         const inputSpeed = document.getElementById("inputSpeed");
+
+        typeTimeLine.addEventListener('change', ({target}) => {
+            if(target.value === 'absolute' || target.value === 'relative') {
+                document.querySelector('#dinamic').style.display = 'block';
+                document.querySelector('#origin').style.display = 'none'
+            }else {
+                document.querySelector('#dinamic').style.display = 'none';
+                document.querySelector('#origin').style.display = 'block'
+            }
+            cambiarTest();
+        });
+
         selectPosicion.addEventListener('change', cambiarTest);
         inputIntervals.addEventListener('change', cambiarTest);
         selectIntervals.addEventListener('change', () => {
             inputIntervals.value = selectIntervals.value;
             cambiarTest();
         });
+
         selectAnimation.addEventListener('change', cambiarTest);
         inputSpeed.addEventListener('change', cambiarTest);
 
+        // Dinamic
+        const elementTime = document.getElementById('time');
+        const elementSpeedDate = document.getElementById('speedDate');
+        const elementParamsDate = document.getElementById('paramsDate');
+        const elementStepValue = document.getElementById('stepValue');
+        const elementSizeWidthDinamic = document.getElementById('sizeWidthDinamic');
+        const elementFormatValue = document.getElementById('formatValueDinamic');
+        const elementFormatMove = document.getElementById('formatMove');
+
+        [elementTime, elementSpeedDate, elementParamsDate, elementStepValue, 
+        elementSizeWidthDinamic, elementFormatMove, elementFormatValue].forEach(el => el.addEventListener('change', cambiarTest));
+
+
+        if(typeTimeLine.value === 'absolute' || typeTimeLine.value === 'relative') {
+                document.querySelector('#dinamic').style.display = 'block';
+                document.querySelector('#origin').style.display = 'none';
+        }else {
+                document.querySelector('#dinamic').style.display = 'none';
+                document.querySelector('#origin').style.display = 'block';
+        }
+          
+
+
         function cambiarTest() {
-            let objeto = {}
+          let objeto = {}
+          objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+
+          if(typeTimeLine.value === 'absolute' || typeTimeLine.value === 'relative') {
+            objeto.timelineType =  typeTimeLine.options[typeTimeLine.selectedIndex].value, 
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+            objeto.intervals = elementTime.value !== '' ? elementTime.value : time;
+            objeto.speedDate = elementSpeedDate.value >= 1 ? elementSpeedDate.value : 1;
+            objeto.paramsDate = elementParamsDate.options[elementParamsDate.selectedIndex].value;
+            objeto.stepValue = elementStepValue.value >= 1 ? elementStepValue.value : 1;
+            objeto.sizeWidthDinamic = elementSizeWidthDinamic.options[elementSizeWidthDinamic.selectedIndex].value;
+            objeto.formatValue = elementFormatValue.options[elementFormatValue.selectedIndex].value;
+            objeto.formatMove = elementFormatMove.options[elementFormatMove.selectedIndex].value;
+          }else {
+            objeto.timelineType =  typeTimeLine.options[typeTimeLine.selectedIndex].value, 
             objeto.intervals = inputIntervals.value != '' ? inputIntervals.value : intervals;
             let animationValor = selectAnimation.options[selectAnimation.selectedIndex].value;
             animation = animationValor != "" ? objeto.animation = (animationValor == "true") : "";
             speed = inputSpeed.value != '' ? objeto.speed = inputSpeed.value : '';
+          }
+
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
+
         function crearPlugin(propiedades) {
             mp = new M.plugin.Timeline(propiedades);
             map.addPlugin(mp);
         }
-        mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
-            position: "TR",
-        });
-        map.addPlugin(mp2);
+
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click", function () {
             map.removePlugins(mp);

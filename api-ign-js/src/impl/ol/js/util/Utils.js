@@ -24,93 +24,134 @@ const getUnitsPerMeter = (projectionCode, meter) => {
   const metersPerUnit = projection.getMetersPerUnit();
   return meter / metersPerUnit;
 };
-export const geojsonTo4326 = (featuresAsJSON, codeProjection) => {
+
+/**
+ * Substitutes x, y coordinates on coordinate set (x, y, altitude...)
+ * @public
+ * @function
+ * @api
+ * @param {Array} oldCoordinates
+ * @param {Array<Number>} newXY - [x,y]
+ */
+const getFullCoordinates = (oldCoordinates, newXY) => {
+  const newCoordinates = oldCoordinates;
+  newCoordinates[0] = newXY[0];
+  newCoordinates[1] = newXY[1];
+  return newCoordinates;
+};
+
+/**
+ * Given a coordinate set (x, y, altitude?), returns [x,y].
+ * @public
+ * @function
+ * @api
+ * @param {Array<Number>} coordinatesSet
+ */
+const getXY = (coordinatesSet) => {
+  const coordinateCopy = [];
+  for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
+  while (coordinateCopy.length > 2) coordinateCopy.pop();
+  return coordinateCopy;
+};
+
+/**
+ * Transforms x,y coordinates to 4326 on coordinates array.
+ * @public
+ * @function
+ * @api
+ * @param {String} codeProjection
+ * @param {Array<Number>} oldCoordinates
+ */
+const getTransformedCoordinates = (codeProjection, oldCoordinates) => {
   const transformFunction = getTransform(codeProjection, 'EPSG:4326');
+  return getFullCoordinates(
+    oldCoordinates,
+    transformFunction(getXY(oldCoordinates)),
+  );
+};
+
+/**
+ * Creates GeoJSON feature from a previous feature and a new set of coordinates.
+ * @public
+ * @function
+ * @api
+ */
+const createGeoJSONFeature = (previousFeature, coordinates) => {
+  return {
+    ...previousFeature,
+    geometry: {
+      type: previousFeature.geometry.type,
+      coordinates,
+    },
+  };
+};
+
+export const geojsonTo4326 = (featuresAsJSON, codeProjection) => {
   const jsonResult = [];
-  let jsonFeature = {};
   featuresAsJSON.forEach((featureAsJSON) => {
-    const coordinates = [];
-    if (Array.isArray(featureAsJSON.geometry.coordinates[0]) &&
-      featuresAsJSON.length > 1) { // Type Polygon
-      featureAsJSON.geometry.coordinates.forEach((aCoordinates) => {
-        if (!Number.isFinite(aCoordinates[0]) && Array.isArray(aCoordinates)) {
-          coordinates.push(aCoordinates.map((cord) => {
-            const arrayAuxCC = [];
-            if (Number.isFinite(cord[0])) {
-              arrayAuxCC.push(transformFunction(cord));
-            } else {
-              cord.forEach((coordinate) => {
-                arrayAuxCC.push(transformFunction(coordinate));
-              });
-            }
-            return arrayAuxCC;
-          }));
-          jsonFeature = {
-            ...featureAsJSON,
-            geometry: {
-              type: featureAsJSON.geometry.type,
-              coordinates,
-            },
-          };
-        } else { // type line
-          const coordinate = transformFunction(aCoordinates);
-          coordinates.push(coordinate);
-          jsonFeature = {
-            ...featureAsJSON,
-            geometry: {
-              type: featureAsJSON.geometry.type,
-              coordinates,
-            },
-          };
+    const coordinates = featureAsJSON.geometry.coordinates;
+    let newCoordinates = [];
+    switch (featureAsJSON.geometry.type) {
+      case 'Point':
+        newCoordinates = getTransformedCoordinates(codeProjection, coordinates);
+        break;
+      case 'MultiPoint':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const newDot = getTransformedCoordinates(codeProjection, coordinates[i]);
+          newCoordinates.push(newDot);
         }
-      }); // Type Point
-      jsonResult.push(jsonFeature);
-    } else if (featureAsJSON.geometry.coordinates.length === 3) {
-      featureAsJSON.geometry.coordinates.pop();
-      jsonFeature = {
-        ...featureAsJSON,
-        geometry: {
-          type: featureAsJSON.geometry.type,
-          coordinates: transformFunction(featureAsJSON.geometry.coordinates),
-        },
-      };
-      jsonResult.push(jsonFeature);
-    } else if (featuresAsJSON.length === 1) { // the layer has only one feature line
-      if (featureAsJSON.geometry.coordinates[0].length > 2) {
-        const coordinatesPolygon = featureAsJSON.geometry.coordinates[0]
-          .map(coord => transformFunction(coord));
-        jsonFeature = {
-          ...featureAsJSON,
-          geometry: {
-            type: featureAsJSON.geometry.type,
-            coordinates: coordinatesPolygon,
-          },
-        };
-        jsonResult.push(jsonFeature);
-      } else {
-        jsonFeature = {
-          ...featureAsJSON,
-          geometry: {
-            type: featureAsJSON.geometry.type,
-            coordinates: transformFunction(featureAsJSON.geometry.coordinates[0]),
-          },
-        };
-        jsonResult.push(jsonFeature);
-      }
-    } else if (Number.isFinite(featureAsJSON.geometry.coordinates[0])) {
-      const coordTransformed = transformFunction(featureAsJSON.geometry.coordinates);
-      jsonFeature = {
-        ...featureAsJSON,
-        geometry: {
-          type: featureAsJSON.geometry.type,
-          coordinates: coordTransformed,
-        },
-      };
-      jsonResult.push(jsonFeature);
+        break;
+      case 'LineString':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const newDot = getTransformedCoordinates(
+            codeProjection,
+            coordinates[i],
+          );
+          newCoordinates.push(newDot);
+        }
+        break;
+      case 'MultiLineString':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const newLine = [];
+          for (let j = 0; j < coordinates[i].length; j += 1) {
+            const newDot = getTransformedCoordinates(codeProjection, coordinates[i][j]);
+            newLine.push(newDot);
+          }
+          newCoordinates.push(newLine);
+        }
+        break;
+      case 'Polygon':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const newPoly = [];
+          for (let j = 0; j < coordinates[i].length; j += 1) {
+            const newDot = getTransformedCoordinates(codeProjection, coordinates[i][j]);
+            newPoly.push(newDot);
+          }
+          newCoordinates.push(newPoly);
+        }
+        break;
+      case 'MultiPolygon':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const newPolygon = [];
+          for (let j = 0; j < coordinates[i].length; j += 1) {
+            const newPolygonLine = [];
+            for (let k = 0; k < coordinates[i][j].length; k += 1) {
+              const newDot = getTransformedCoordinates(codeProjection, coordinates[i][j][k]);
+              newPolygonLine.push(newDot);
+            }
+            newPolygon.push(newPolygonLine);
+          }
+          newCoordinates.push(newPolygon);
+        }
+        break;
+      default:
     }
+    const jsonFeature = createGeoJSONFeature(featureAsJSON, newCoordinates);
+    jsonResult.push(jsonFeature);
   });
   return jsonResult;
 };
+
 /**
  * @classdesc
  * Static utils class.

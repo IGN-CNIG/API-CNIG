@@ -93,6 +93,7 @@ export class Binding {
       final: getValue('final'),
       arrow: getValue('arrow'),
       arrowColor: getValue('arrowColor'),
+      modifySVG: getValue('modifySVG'),
     };
     this.htmlParent_ = htmlParent;
     this.htmlTemplate_ = null;

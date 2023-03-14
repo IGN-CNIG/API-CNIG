@@ -80,7 +80,7 @@ export class ChoroplethBinding extends Binding {
     const parent = this.querySelector('[data-colors]');
     this.compileTemplate(colorchoropleth, {
       numbercolor: numberColors,
-      color: '#ffff'
+      color: '#ffff',
     }).then((html) => {
       parent.append(...html.children);
     });

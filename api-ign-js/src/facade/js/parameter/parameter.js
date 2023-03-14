@@ -948,6 +948,26 @@ const getVersionWFS = (parameter) => {
 };
 
 /**
+ * Parses the parameter in order to get the version
+ * @private
+ * @function
+ */
+const getExtractWFS = (parameter) => {
+  let extract;
+  if (isObject(parameter)) {
+    extract = normalize(parameter.extract);
+  }
+
+  if (!isNullOrEmpty(extract)) {
+    extract = /^1|(true)$/i.test(extract);
+  } else {
+    extract = undefined;
+  }
+
+  return extract;
+};
+
+/**
  * Parses the parameter in order to get the options
  * @private
  * @function
@@ -1017,6 +1037,9 @@ export const wfs = (userParameters) => {
 
     // gets the version
     layerObj.version = getVersionWFS(userParam);
+
+    // gets the extract
+    layerObj.extract = getExtractWFS(userParam);
 
     // gets the styles
     layerObj.style = getStyleWFS(userParam);
@@ -1089,6 +1112,31 @@ const getURLGeoJSON = (parameter) => {
 };
 
 /**
+ * Parses the parameter in order to get source
+ * @private
+ * @function
+ */
+const getSourceGeoJSON = (parameter) => {
+  let source;
+  let params;
+
+  if (isString(parameter)) {
+    params = parameter.split(/\*/);
+    if (/^GeoJSON\*[^*]+\*[^*]/i.test(parameter)) {
+      const param = params[2];
+      if (param.indexOf('http') === -1 && param.indexOf('https') === -1) {
+        source = param;
+      }
+    }
+  } else if (isObject(parameter)) {
+    source = parameter.source;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return source;
+};
+
+/**
  * Parses the parameter in order to get the transparence
  * @private
  * @function
@@ -1130,7 +1178,7 @@ const getStyleGeoJSON = (parameter) => {
   let style;
 
   if (isString(parameter)) {
-    if (/^GeoJSON(T)?\*.+/i.test(parameter)) {
+    if (/^GeoJSON\*[^*]+\*[^*]+\*[^*]*(true|false)+\*[^*]/i.test(parameter)) {
       // [TYPE]*[LEGEND]*[URL]*[EXTRACT/HIDE]*[STYLE]
       if (/^GeoJSON(T)?\*[^*]*\*[^*]+\*[^*]+\*[^*]*/i.test(parameter)) {
         params = parameter.split(/\*/);
@@ -1184,6 +1232,9 @@ export const geojson = (userParameters) => {
 
     // gets the URL
     layerObj.url = getURLGeoJSON(userParam);
+
+    // gets the source
+    layerObj.source = getSourceGeoJSON(userParam);
 
     // gets the name
     layerObj.extract = getExtractGeoJSON(userParam);
@@ -2179,6 +2230,9 @@ export const xyz = (userParamer) => {
     // gets transparent
     layerObj.transparent = getExtraParameter(userParam, 'true', 1, 'transparent');
 
+    // get displayInLayerSwitcher
+    layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 2, 'displayInLayerSwitcher');
+
     return layerObj;
   });
 
@@ -2275,6 +2329,9 @@ export const tms = (userParamer) => {
 
     // get tileGridMaxZoom
     layerObj.tileGridMaxZoom = getExtraParameter(userParam, '17', 2, 'tileGridMaxZoom');
+
+    // get displayInLayerSwitcher
+    layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 3, 'displayInLayerSwitcher');
     return layerObj;
   });
 

@@ -166,6 +166,12 @@ export default class ContactLink extends M.Plugin {
      * @type {M.control.ContactLink}
      */
     this.control_ = new ContactLinkControl(options);
+
+    /**
+     *@private
+     *@type { Number }
+     */
+     this.order = options.order >= -1 ? options.order : 32767;
   }
 
   /**
@@ -194,13 +200,14 @@ export default class ContactLink extends M.Plugin {
   addTo(map) {
     // this.controls_.push(new ContactLinkControl(values));
     this.map_ = map;
-    this.panel_ = new M.ui.Panel('panelContactLink', {
+    this.panel_ = new M.ui.Panel('ContactLink', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position],
       className: this.className,
       collapsedButtonClass: 'g-contactlink-link',
       tooltip: this.tooltip_,
+      order: this.order,
     });
     this.panel_.addControls(this.control_);
     map.addPanels(this.panel_);

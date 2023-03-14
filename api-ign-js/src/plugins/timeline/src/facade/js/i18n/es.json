@@ -4,5 +4,7 @@
   "play": "Iniciar",
   "pause": "Parar",
   "excepcion": "La implementación usada no puede crear controles TimelineControl",
-  "intervals_error": "Los intervalos no fueron definidos correctamente"
+  "intervals_error": "Los intervalos no fueron definidos correctamente",
+  "initValue": "Valor inicio",
+  "endValue": "Valor final"
 }

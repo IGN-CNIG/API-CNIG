@@ -155,12 +155,28 @@ export default class ShareMapControl extends M.Control {
     this.tooltip_ = options.tooltip || '¡Copiado!';
 
     /**
-    * URL API or URL Visor (false visor (default), true API)
-    *
-    * @private
-    * @type {bool}
-    */
+     * URL API or URL Visor (false visor (default), true API)
+     *
+     * @private
+     * @type {bool}
+     */
     this.urlAPI_ = options.urlAPI || false;
+
+    this.order = options.order;
+    /**
+     * Layers to show in popup
+     *
+     * @private
+     * @type {Array}
+     */
+    this.filterLayers = options.filterLayers;
+
+
+    /** Select all layers or not
+      * @private
+      * @type {Boolean}
+      */
+    this.shareLayer = options.shareLayer;
   }
 
   /**
@@ -176,11 +192,13 @@ export default class ShareMapControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
       const button = html.querySelector('button');
+      button.setAttribute('tabindex', this.order);
+      button.setAttribute('aria-label', 'Plugin Sharemap');
 
       if (this.overwriteStyles_ === false) {
         button.classList.add(this.classes_.button);
       }
-
+      this.accessibilityTab(html);
       this.addEvents(html);
       success(html);
     });
@@ -195,7 +213,9 @@ export default class ShareMapControl extends M.Control {
    */
   addEvents(html) {
     html.querySelector('#m-sharemap-geturl').addEventListener('click', () => {
-      this.activateModal();
+      if (!document.querySelector('#m-plugin-sharemap-title')) {
+        this.activateModal();
+      }
     });
   }
 
@@ -218,6 +238,8 @@ export default class ShareMapControl extends M.Control {
       },
     });
 
+    this.accessibilityTab(dialog);
+
     const content = dialog.querySelector('#m-plugin-sharemap-content');
     const message = dialog.querySelector('#m-plugin-sharemap-message');
     const html = dialog.querySelector('#m-plugin-sharemap-html');
@@ -238,7 +260,11 @@ export default class ShareMapControl extends M.Control {
     }
 
     const mapeaContainer = document.querySelector('div.m-mapea-container');
-    okButton.addEventListener('click', () => removeElement(dialog));
+    okButton.addEventListener('click', () => {
+      removeElement(dialog);
+      document.querySelector('.m-sharemap-container').click();
+      document.querySelector('#m-sharemap-geturl').focus();
+    });
 
     copyButton.addEventListener('click', () => {
       copyURL(input);
@@ -251,7 +277,9 @@ export default class ShareMapControl extends M.Control {
     });
 
     this.buildURL(dialog).then(() => mapeaContainer.appendChild(dialog));
-    this.buildHtml(dialog).then(() => mapeaContainer.appendChild(dialog));
+    this.buildHtml(dialog)
+      .then(() => mapeaContainer.appendChild(dialog))
+      .then(() => { title.focus(); title.click(); });
   }
 
   /**
@@ -295,6 +323,30 @@ export default class ShareMapControl extends M.Control {
         const { x, y } = this.map_.getCenter();
         const urlBaseVisor = (window.location.search) ? window.location.href.replace(window.location.search, '') : window.location.href;
         shareURL = `${urlBaseVisor}?center=${x},${y}&zoom=${this.map_.getZoom()}&srs=${this.map_.getProjection().code}`;
+        let layers = [];
+
+        if (this.shareLayer === true) {
+          layers = this.getLayersInLayerswitcher();
+        } else if (this.shareLayer === false) {
+          layers = this.getLayersInfilterLayers();
+        }
+
+        shareURL = layers.length > 0 ? shareURL.concat(`&layers=${layers}`) : shareURL.concat('');
+        if (!M.utils.isNullOrEmpty(M.config.MAP_VIEWER_LAYERS)) {
+          if (layers.length > 0) {
+            let includes = '';
+            M.config.MAP_VIEWER_LAYERS.forEach((elm) => {
+              if (layers.indexOf(elm) === -1) {
+                includes = includes.concat(`,${elm}`);
+              }
+            });
+            if (M.utils.isNullOrEmpty(includes)) {
+              shareURL = `${shareURL},${M.config.MAP_VIEWER_LAYERS}`;
+            }
+          } else {
+            shareURL = `${shareURL}&layers=${M.config.MAP_VIEWER_LAYERS}`;
+          }
+        }
         input.value = shareURL;
       }
       shareURL = encodeURI(shareURL);
@@ -345,6 +397,30 @@ export default class ShareMapControl extends M.Control {
         const { x, y } = this.map_.getCenter();
         const urlBaseVisor = (window.location.search) ? window.location.href.replace(window.location.search, '') : window.location.href;
         shareURL = `${urlBaseVisor}?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+        let layers = [];
+
+        if (this.shareLayer === true) {
+          layers = this.getLayersInLayerswitcher();
+        } else if (this.shareLayer === false) {
+          layers = this.getLayersInfilterLayers();
+        }
+
+        shareURL = layers.length > 0 ? shareURL.concat(`&layers=${layers}`) : shareURL.concat('');
+        if (!M.utils.isNullOrEmpty(M.config.MAP_VIEWER_LAYERS)) {
+          if (layers.length > 0) {
+            let includes = '';
+            M.config.MAP_VIEWER_LAYERS.forEach((elm) => {
+              if (layers.indexOf(elm) === -1) {
+                includes = includes.concat(`,${elm}`);
+              }
+            });
+            if (M.utils.isNullOrEmpty(includes)) {
+              shareURL = `${shareURL},${M.config.MAP_VIEWER_LAYERS}`;
+            }
+          } else {
+            shareURL = `${shareURL}&layers=${M.config.MAP_VIEWER_LAYERS}`;
+          }
+        }
         input.value = shareURL;
       }
       const embeddedHtml = `<iframe width="800" height="600" frameborder="0" style="border:0" src="${shareURL}"></iframe>`;
@@ -419,6 +495,29 @@ export default class ShareMapControl extends M.Control {
   }
 
   /**
+   * This method gets the externs layers parameters
+   *
+   * @public
+   * @function
+   */
+  getLayersInLayerswitcher() {
+    const layers = this.map_.getLayers().filter((layer) => {
+      return layer.displayInLayerSwitcher === true && layer.transparent === true;
+    });
+
+    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+  }
+
+  /**
+   * @public
+   * @function
+   */
+  getLayersInfilterLayers() {
+    const layers = this.map_.getLayers().filter(layer => this.filterLayers.includes(layer.name));
+    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+  }
+
+  /**
    * This function gets the url param from layer
    *
    * @public
@@ -440,6 +539,8 @@ export default class ShareMapControl extends M.Control {
       param = this.getWFS(layer);
     } else if (layer.type === 'GeoJSON') {
       param = this.getGeoJSON(layer);
+    } else if (layer.type === 'Vector') {
+      param = this.getVector(layer);
     }
     return param;
   }
@@ -461,8 +562,29 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getGeoJSON(layer) {
-    const style = layer.getStyle().serialize();
-    return layer.url ? `GeoJSON*${layer.name}*${window.encodeURIComponent(layer.url)}*${layer.extract}*${style}` : null;
+    const source = !M.utils.isUndefined(layer.source) ?
+      layer.serialize() : encodeURIComponent(layer.url);
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `GeoJSON*${layer.name}*${source}*${layer.extract}*${style}`;
+  }
+
+  /**
+   * This method gets the geojson url parameter
+   *
+   * @public
+   * @function
+   */
+  getVector(layer) {
+    let source = Object.assign(layer.toGeoJSON());
+    source.crs = {
+      properties: {
+        name: 'EPSG:4326',
+      },
+      type: 'name',
+    };
+    source = window.btoa(unescape(encodeURIComponent(JSON.stringify(source))));
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `GeoJSON*${layer.name}*${source}**${style}`;
   }
 
   /**
@@ -532,5 +654,9 @@ export default class ShareMapControl extends M.Control {
     let newText = text.replace(/,/g, '');
     newText = newText.replace(/\*/g, '');
     return newText;
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

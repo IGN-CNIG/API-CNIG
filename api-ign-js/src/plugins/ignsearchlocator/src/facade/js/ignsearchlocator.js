@@ -271,6 +271,12 @@ export default class IGNSearchLocator extends M.Plugin {
      */
 
     this.searchCoordinatesXYZ = options.searchCoordinatesXYZ;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32767;
   }
 
   /**
@@ -326,6 +332,7 @@ export default class IGNSearchLocator extends M.Plugin {
       this.helpUrl,
       this.cadastre,
       this.searchCoordinatesXYZ,
+      this.order,
     ));
     this.controls_[0].on('ignsearchlocator:entityFound', (extent) => {
       this.fire('ignsearchlocator:entityFound', [extent]);
@@ -337,13 +344,14 @@ export default class IGNSearchLocator extends M.Plugin {
     if (this.position === 'TC') {
       this.collapsible = false;
     }
-    this.panel_ = new M.ui.Panel('panelIGNSearchLocator', {
+    this.panel_ = new M.ui.Panel('IGNSearchLocator', {
       collapsible: this.collapsible,
       position: M.ui.position[this.position],
       collapsed: this.isCollapsed,
       className: 'ign-searchlocator-panel',
       collapsedButtonClass: 'icon-ignsearch',
       tooltip: this.tooltip_,
+      order: this.order,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

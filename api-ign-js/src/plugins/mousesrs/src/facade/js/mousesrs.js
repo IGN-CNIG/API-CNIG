@@ -95,6 +95,12 @@ export default class MouseSRS extends M.Plugin {
      * @type {string}
      */
     this.helpUrl = options.helpUrl;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32767;
   }
 
   /**
@@ -130,6 +136,7 @@ export default class MouseSRS extends M.Plugin {
       this.tooltip_,
       this.activeZ,
       this.helpUrl,
+      this.order,
     );
     this.controls_.push(this.control_);
     this.map_ = map;
@@ -137,6 +144,7 @@ export default class MouseSRS extends M.Plugin {
       collapsible: false,
       tooltip: this.tooltip_,
       className: 'm-plugin-mousesrs',
+      order: this.order,
     });
     map.addControls(this.controls_);
   }

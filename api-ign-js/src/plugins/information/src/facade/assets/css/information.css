@@ -7,7 +7,7 @@
     background-color: #71a7d3 !important;
     opacity: 1;
     border-radius: 40px;
-    border: 2px solid white !important;
+    border: 2px solid white;
 }
 
 .m-areas>div.m-area>div.m-panel>div.m-panel-controls>.m-control.m-container.m-information-container.activated>button {

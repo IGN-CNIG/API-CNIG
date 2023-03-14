@@ -53,10 +53,15 @@ export const getStroke = (options, featureVariable, layer) => {
   if (!isNullOrEmpty(options.stroke)) {
     const strokeColorValue =
       Simple.getValue(options.stroke.color, featureVariable, layer);
+    let strokeOpacityValue =
+      Simple.getValue(options.stroke.opacity, featureVariable, layer);
+    if (!strokeOpacityValue && strokeOpacityValue !== 0) {
+      strokeOpacityValue = 1;
+    }
     if (!isNullOrEmpty(strokeColorValue)) {
       const { linedashoffset } = options.stroke;
       stroke = new OLStyleStroke({
-        color: strokeColorValue,
+        color: chroma(strokeColorValue).alpha(strokeOpacityValue).css(),
         width: Simple.getValue(options.stroke.width, featureVariable, layer),
         lineDash: Simple.getValue(options.stroke.linedash, featureVariable, layer),
         lineDashOffset: Simple.getValue(linedashoffset, featureVariable, layer),

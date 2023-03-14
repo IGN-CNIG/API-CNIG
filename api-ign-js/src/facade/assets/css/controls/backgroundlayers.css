@@ -11,11 +11,15 @@
     align-items: center;
     height: auto;
     font-size: 12px !important;
-    padding: 10px 15px !important;
+    padding: 10px !important;
     font-weight: bold !important;
     width: 75px !important;
     font-family: Muli, "sans-serif" !important;
     margin-left: 5px;
+}
+
+.m-areas>div.m-area>div.m-panel.no-collapsible>div.m-panel-controls>div.m-control.m-container.m-background>button:first-child {
+    margin-left: 0px;
 }
 
 .m-background button:active,

@@ -3,14 +3,15 @@ import WFS from 'M/layer/WFS';
 
 const mapjs = map({
   container: 'map',
-  controls: ['navtoolbar']
+  zoom: 8,
+  center: [-484738.2816316012, 4517252.604665795],
 });
 
 const wfs = new WFS({
-  namespace: 'ggis',
-  name: 'Colegios',
-  url: 'http://clientes.guadaltel.es/desarrollo/geossigc/ows?',
-  legend: 'Prestaciones - Ámbito municipal',
+  namespace: 'gonce',
+  name: 'a1666093351106_colegios',
+  url: 'https://demos.guadaltel.es/geoserver/gonce/ows?',
+  legend: 'Colegios',
 });
 
 mapjs.addLayers([wfs]);

@@ -2,6 +2,7 @@
  * @module M/plugin/Information
  */
 import '../assets/css/information';
+import '../assets/css/fonts';
 import api from '../../api';
 import InformationControl from './informationcontrol';
 import { getValue } from './i18n/language';
@@ -98,6 +99,12 @@ export default class Information extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32767;
   }
 
   /**
@@ -125,14 +132,18 @@ export default class Information extends M.Plugin {
    */
   addTo(map) {
     const fc = this.featureCount_;
-    this.ctrl = new InformationControl(this.format_, fc, this.buffer_, this.tooltip_, this.opened_);
+    this.ctrl = new InformationControl(
+      this.format_, fc, this.buffer_,
+      this.tooltip_, this.opened_, this.order,
+    );
     this.controls_.push(this.ctrl);
     this.map_ = map;
-    this.panel_ = new M.ui.Panel('panelInformation', {
+    this.panel_ = new M.ui.Panel('Information', {
       className: 'm-plugin-information',
       position: M.ui.position[this.position_],
       tooltip: this.tooltip_,
       collapsedButtonClass: 'g-cartografia-info',
+      order: this.order,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

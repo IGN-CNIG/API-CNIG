@@ -31,6 +31,7 @@ class Scale extends ControlBase {
     if (isUndefined(ScaleImpl)) {
       Exception(getValue('exception').scale_method);
     }
+    this.order = options.order;
   }
 
   /**
@@ -48,6 +49,7 @@ class Scale extends ControlBase {
         title: getValue('scale').title,
         scale: getValue('scale').scale,
         level: getValue('scale').level,
+        order: this.order,
       },
     });
   }

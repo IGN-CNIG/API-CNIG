@@ -309,7 +309,7 @@ class Style extends Base {
    * @return {M.Style}
    */
   static deserialize(encodedSerializedStyle) {
-    const serializedStyle = decodeURIComponent(escape(window.atob(encodedSerializedStyle)));
+    const serializedStyle = decodeURIComponent(escape(window.atob(encodedSerializedStyle.replace(' ', '+'))));
     const { parameters, deserializedMethod } = JSON.parse(serializedStyle);
     /* eslint-disable */
     return (new Function("serializedParams", `return ${deserializedMethod}(serializedParams)`))(parameters);

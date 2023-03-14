@@ -106,7 +106,7 @@ export default class PredefinedZoom extends M.Plugin {
     this.control_ = new PredefinedZoomControl(zooms);
     this.controls_.push(this.control_);
     this.map_ = map;
-    this.panel_ = new M.ui.Panel('panelPredefinedZoom', {
+    this.panel_ = new M.ui.Panel('PredefinedZoom', {
       collapsible: false,
       position: M.ui.position[this.position_],
       className: 'm-predefinedzoom',

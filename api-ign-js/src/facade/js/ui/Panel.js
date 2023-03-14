@@ -165,6 +165,15 @@ class Panel extends MObject {
     if (!isNullOrEmpty(options.tooltip)) {
       this._tooltip = options.tooltip;
     }
+
+    /**
+     * @private
+     * @type {Number}
+     * @expose
+     */
+    if (!isNullOrEmpty(options.order)) {
+      this._order = options.order;
+    }
   }
 
   /**
@@ -195,7 +204,25 @@ class Panel extends MObject {
     this._map = map;
     this._areaContainer = areaContainer;
     const html = compileTemplate(panelTemplate);
+    const button = html.querySelector('.m-panel-btn');
+    button.setAttribute('type', 'button');
+
     this._element = html;
+
+    // Accessibility
+    button.setAttribute('role', 'button');
+    button.setAttribute('aria-label', `Plugin ${this.name}`);
+
+    if (this._order) {
+      this._element.style.setProperty('order', this._order, 'important');
+      // this._element.setAttribute('tabIndex', this._order);
+      button.setAttribute('tabIndex', this._order);
+    } else {
+      // this._element.setAttribute('tabIndex', '300');
+      button.setAttribute('tabIndex', '300');
+    }
+
+    this._tabAccessibility();
 
     if (!isNullOrEmpty(this._tooltip)) {
       this._element.setAttribute('title', this._tooltip);
@@ -231,6 +258,29 @@ class Panel extends MObject {
 
     this.addControls(this._controls);
     this.fire(EventType.ADDED_TO_MAP, html);
+  }
+
+  /**
+   * TODO
+   *
+   * @private
+   * @function
+   */
+  _tabAccessibility() {
+    document.body.addEventListener('keyup', ({ key, target }) => {
+      if (key === 'Tab') {
+        if (document.querySelector('.focusStyle')) {
+          document.querySelector('.focusStyle').classList.remove('focusStyle');
+        }
+        target.classList.add('focusStyle');
+      }
+    });
+
+    document.body.addEventListener('click', () => {
+      if (document.querySelector('.focusStyle')) {
+        document.querySelector('.focusStyle').classList.remove('focusStyle');
+      }
+    });
   }
 
   /**
@@ -304,12 +354,13 @@ class Panel extends MObject {
    * @api
    */
   addControls(controlsParam) {
+    this.contador = 0;
     let controls = controlsParam;
     if (!isNullOrEmpty(controls)) {
       if (!isArray(controls)) {
         controls = [controls];
       }
-      controls.forEach((control) => {
+      controls.forEach((control, i) => {
         if (control instanceof ControlBase) {
           if (!this.hasControl(control)) {
             this._controls.push(control);
@@ -322,6 +373,16 @@ class Panel extends MObject {
           }
           control.on(EventType.ACTIVATED, this._manageActivation.bind(this), this);
         }
+        control.on(EventType.ADDED_TO_MAP, () => {
+          // eslint-disable-next-line no-underscore-dangle
+          // control.element_.setAttribute('role', 'button');
+
+          // eslint-disable-next-line no-underscore-dangle
+          // control.element_.setAttribute('tabIndex', 0);
+
+          // eslint-disable-next-line no-underscore-dangle
+          // console.log(control.element_);
+        });
       });
     }
   }

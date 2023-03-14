@@ -693,6 +693,7 @@ export class SimpleCategoryBinding extends Binding {
       },
       stroke: {
         color: '#000000',
+        opacity: 1,
         width: 2,
         linedash: [0, 0],
         linedashoffset: 0,

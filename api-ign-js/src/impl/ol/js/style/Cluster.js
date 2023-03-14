@@ -12,7 +12,7 @@ import OLGeomPolygon from 'ol/geom/Polygon';
 import OLGeomPoint from 'ol/geom/Point';
 import Generic from 'M/style/Generic';
 import FacadeCluster from 'M/style/Cluster';
-import { inverseColor, extendsObj, isFunction, isNullOrEmpty } from 'M/util/Utils';
+import { inverseColor, extendsObj, isFunction, isNullOrEmpty, isArray } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import ClusteredFeature from 'M/feature/Clustered';
 import Style from './Style';
@@ -469,6 +469,9 @@ class Cluster extends Style {
         clusterOlFeatureStyle = this.oldOL3Layer_.getStyle();
       }
       olStyle = clusterOlFeatureStyle(clusterOlFeatures[0], resolution);
+      if (!isArray(olStyle)) {
+        olStyle = [olStyle];
+      }
       olStyle[0].setGeometry(clusterOlFeatures[0].getGeometry());
     }
     return olStyle;

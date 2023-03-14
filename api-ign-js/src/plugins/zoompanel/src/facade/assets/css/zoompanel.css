@@ -243,5 +243,5 @@ div.m-panel.m-zoompanel .icon-zoom-back:before { content: '\e801'; }
 div.m-panel.m-zoompanel .icon-zoom-in:before { content: '\e802'; }
 div.m-panel.m-zoompanel .icon-zoom-out:before { content: '\e803'; }
 div.m-panel.m-zoompanel .icon-zoom-box:before { content: '\e804'; }
-div.m-panel.m-zoompanel .icon-zoompanel:before { content: '\e805'; }
+div.m-panel.m-zoompanel .icon-zoompanel:before { content: '\e802'; padding-bottom: 2px;}
 div.m-panel.m-zoompanel .icon-zoom-extent:before { content: '\e921'; transform: rotate(-45deg); }

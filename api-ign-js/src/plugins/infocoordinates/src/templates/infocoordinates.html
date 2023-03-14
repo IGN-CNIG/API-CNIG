@@ -2,7 +2,7 @@
 
     <div class="div-m-infocoordinates-panel">
 
-        <div class="m-infocoordinates-title">
+        <div role="heading" tabindex="0" class="m-infocoordinates-title">
             <p id="titleInfo" class="m-infocoordinates-titleInfo">{{translations.title}}</p>
         </div>
 
@@ -16,36 +16,36 @@
             <div id="tabContent" class='m-infocoordinates-tabContent'>
                 <table>
                     <tbody>
-                        <tr>
+                        <tr  tabindex="0">
                             <td>{{translations.point}}</td>
                             <td id="m-infocoordinates-point">--</td>
-                            <td><button class="icon-bin2 noDisplay" id="m-infocoordinates-buttonRemovePoint" title="{{translations.removePoint}}"></button></td>
+                            <td><button type="button" tabindex="0" class="icon-bin2 noDisplay" id="m-infocoordinates-buttonRemovePoint" title="{{translations.removePoint}}"></button></td>
                         </tr>
-                        <tr>
+                        <tr  tabindex="0">
                             <td>{{translations.datum}}</td>
                             <td id="m-infocoordinates-datum" colspan="2">ETRS89</td>
                         </tr>
-                        <tr>
+                        <tr tabindex="0">
                             <td>{{translations.latitude}}</td>
                             <td id="m-infocoordinates-latitude" colspan="2">--</td>
-                        <tr>
+                        <tr tabindex="0">
                             <td>{{translations.longitude}}</td>
                             <td id="m-infocoordinates-longitude" colspan="2">--</td>
                         </tr>
-                        <tr>
+                        <tr tabindex="0">
                             <td></td>
-                            <td><input id="m-infocoordinates-buttonConversorFormat" type="checkbox" disabled>{{translations.formatCoordinates}}</td>
+                            <td><input tabindex="0" id="m-infocoordinates-buttonConversorFormat" type="checkbox" disabled>{{translations.formatCoordinates}}</td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr tabindex="0">
                             <td class="m-infocoordinates-help-td">
                               <span>CRS:</span>
                               {{#if hasHelp}}
-                                <div class="m-infocoordinates-help" title="EPSG"><a href="{{helpUrl}}" target="_blank"><i class="icon-help"></i></a></div>
+                                <div role="navigation" class="m-infocoordinates-help" title="EPSG"><a tabindex="0" title="Help" href="{{helpUrl}}" target="_blank"><i class="icon-help"></i></a></div>
                               {{/if}}
                             </td>
                             <td colspan="2">
-                                <select id="m-infocoordinates-comboDatum" class="m-infocoordinates-comboDatum">
+                                <select tabindex="0" id="m-infocoordinates-comboDatum" class="m-infocoordinates-comboDatum">
                                     <option value="EPSG:25829">EPSG:25829</option>
                                     <option value="EPSG:25830" selected>EPSG:25830</option>
                                     <option value="EPSG:25831">EPSG:25831</option>
@@ -54,15 +54,15 @@
                                 </select>
                             </td>
                         </tr>
-                        <tr>
+                        <tr tabindex="0">
                             <td>{{translations.coordX}}</td>
                             <td id="m-infocoordinates-coordX" colspan="2">--</td>
                         </tr>
-                        <tr>
+                        <tr tabindex="0">
                             <td>{{translations.coordY}}</td>
                             <td id="m-infocoordinates-coordY" colspan="2">--</td>
                         </tr>
-                        <tr>
+                        <tr tabindex="0">
                             <td>{{translations.altitude}}</td>
                             <td id="m-infocoordinates-altitude" colspan="2">--</td>
                         </tr>
@@ -70,15 +70,15 @@
                 </table>
             </div>
             <div class="m-infocoordinates-div-buttonRemoveAllPoints noDisplay">
-                <button class="icon-bin2" id="m-infocoordinates-buttonRemoveAllPoints" title="{{translations.removeAllPoints}}"></button>
+                <button type="button" tabindex="0" class="icon-bin2" id="m-infocoordinates-buttonRemoveAllPoints" title="{{translations.removeAllPoints}}"></button>
             </div>
 
             <div class="m-infocoordinates-div-buttonImportAllPoints noDisplay">
-                <button class="icon-file" id="m-infocoordinates-buttonImportAllPoints" title="{{translations.importAllPoints}}"></button>
+                <button type="button" tabindex="0" class="icon-file" id="m-infocoordinates-buttonImportAllPoints" title="{{translations.importAllPoints}}"></button>
             </div>
 
             <div class="m-infocoordinates-div-buttonDisplayAllPoints noDisplay">
-                <button class="icon-displayON" id="m-infocoordinates-buttonDisplayAllPoints" title="{{translations.displayONAllPoints}}"></button>
+                <button type="button" tabindex="0" class="icon-displayON" id="m-infocoordinates-buttonDisplayAllPoints" title="{{translations.displayONAllPoints}}"></button>
             </div>
         </div>
 

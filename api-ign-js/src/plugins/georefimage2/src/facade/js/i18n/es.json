@@ -21,7 +21,7 @@
   "keep": "Conservar vista",
   "cancel": "Cancelar",
   "accept": "Aceptar",
-  "download_modal": "El uso de la información de los productos y servicios de datos geográficos definidos en la <a target=\"_blank\" href=\"https://www.boe.es/boe/dias/2015/12/26/pdfs/BOE-A-2015-14129.pdf\">Orden FOM/2807/2015</a>, así como sus derivados, conlleva la aceptación por el usuario de las condiciones generales de dicha orden, concretada en la siguiente <a target=\"_blank\" href=\"http://www.ign.es/resources/licencia/Condiciones_licenciaUso_IGN.pdf\">licencia de uso</a>, compatible con CC-BY 4.0.",
+  "download_modal": "El uso de la información de los productos y servicios de datos geográficos definidos en la <a tabindex=\"0\" target=\"_blank\" href=\"https://www.boe.es/boe/dias/2015/12/26/pdfs/BOE-A-2015-14129.pdf\">Orden FOM/2807/2015</a>, así como sus derivados, conlleva la aceptación por el usuario de las condiciones generales de dicha orden, concretada en la siguiente <a tabindex=\"0\" target=\"_blank\" href=\"http://www.ign.es/resources/licencia/Condiciones_licenciaUso_IGN.pdf\">licencia de uso</a>, compatible con CC-BY 4.0.",
   "use_license": "Licencia de uso",
   "map": "Mapa",
   "pnoa": "Imagen (PNOA)",

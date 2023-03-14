@@ -133,6 +133,8 @@ export default class LyrCompare extends M.Plugin {
      * @public
      */
     this.defaultLyrD = 3;
+
+    this.order = options.order;
   }
 
   /**
@@ -156,6 +158,7 @@ export default class LyrCompare extends M.Plugin {
       defaultLyrC: this.defaultLyrC,
       defaultLyrD: this.defaultLyrD,
       interface: this.interface,
+      order: this.order
     };
 
     this.control_ = new LyrCompareControl(values);

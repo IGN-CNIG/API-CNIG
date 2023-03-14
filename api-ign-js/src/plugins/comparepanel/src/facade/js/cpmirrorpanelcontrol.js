@@ -408,6 +408,17 @@ export default class CompareMirrorpanel extends M.Control {
     bigContainer.appendChild(mapjsD);
   }
 
+  changeViewPluginsGrid(change){
+      M.config.MOBILE_WIDTH =  (change) ? '2000' : '768';
+      let pluginsControls = [];
+      Object.entries(this.mapL).forEach(([_, e]) => {
+        pluginsControls = (e) ? [...pluginsControls, ...e.getControls(), ...e.getPlugins()]
+        : pluginsControls;
+      })
+      pluginsControls.forEach(e => (e.changeStyleResponsive) ? e.changeStyleResponsive(change) : null);
+  }
+
+
   /**
    * This function shows/hides panel for differents viz options.
    * The mirror maps are launched from here
@@ -496,7 +507,9 @@ export default class CompareMirrorpanel extends M.Control {
     document.querySelector('#m-cp-mirrorpanel-btn').classList.remove('active');
     document.querySelector('.m-panel-controls .cp-mirrorpanel').classList.remove('hide-panel');
 
-
+    setTimeout(() => {
+      this.changeViewPluginsGrid([3,4,7].includes(modeViz));
+    }, 500);
   }
 
   /**
@@ -604,6 +617,7 @@ export default class CompareMirrorpanel extends M.Control {
     }
 
     if (pluginBackImgLayer4map !== null) {
+      console.log('--')
       this.mapL[mapLyr].addPlugin(pluginBackImgLayer4map);
     }
 

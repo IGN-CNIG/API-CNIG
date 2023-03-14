@@ -5,10 +5,10 @@ import Information from 'facade/information';
 const map = M.map({
   container: 'mapjs',
   controls: ['location'],
-  //zoom: 7,
+  // zoom: 7,
   zoom: 17,
   layers: ['OSM'],
-  //center: [-447979.2542807377, 4849659.371752165],
+  // center: [-447979.2542807377, 4849659.371752165],
   center: [-698506.5558722795, 4371375.632927578],
 });
 
@@ -75,10 +75,10 @@ const layer5 = new M.layer.WMS({
 }, {});
 
 const hidrografia = new M.layer.WMS({
-    url: 'https://servicios.idee.es/wms-inspire/hidrografia',
-    name: 'HY.Network',
-    legend: 'Red hidrográfica',
-    tiled: true,
+  url: 'https://servicios.idee.es/wms-inspire/hidrografia',
+  name: 'HY.Network',
+  legend: 'Red hidrográfica',
+  tiled: true,
 });
 
 const testLayer = new M.layer.WMTS({
@@ -94,7 +94,7 @@ const testLayer = new M.layer.WMTS({
 
 });
 
-//map.addLayers([layer1/*, layer2, layer3, layer4*/]);
+// map.addLayers([layer1/*, layer2, layer3, layer4*/]);
 map.addLayers([hidrografia]);
 map.addPlugin(mp);
 

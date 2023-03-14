@@ -89,6 +89,12 @@ export default class ZoomPanel extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : 32767;
   }
 
   /**
@@ -117,13 +123,14 @@ export default class ZoomPanel extends M.Plugin {
    */
   addTo(map) {
     this.facadeMap_ = map;
-    this.panel_ = new M.ui.Panel('panel_selection_raw', {
+    this.panel_ = new M.ui.Panel('zoompanel', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position],
       collapsedButtonClass: 'icon-zoompanel',
       className: 'm-zoompanel',
       tooltip: this.tooltip_,
+      order: this.order,
     });
     this.panel_.addControls(this.control_);
     map.addPanels(this.panel_);
