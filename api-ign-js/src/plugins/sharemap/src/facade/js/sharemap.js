@@ -198,7 +198,7 @@ export default class ShareMap extends M.Plugin {
      *@private
      *@type { Number }
      */
-    this.order = options.order >= -1 ? options.order :  null;
+    this.order = options.order >= -1 ? options.order : null;
 
     /** Select layers share by the name
       * @private
