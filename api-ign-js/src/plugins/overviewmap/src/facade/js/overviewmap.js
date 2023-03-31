@@ -106,7 +106,7 @@ export default class OverviewMap extends M.Plugin {
      *@private
      *@type { Number }
      */
-    this.order = (options.order) ? options.order : 300;
+    this.order = (options.order) ? options.order :  null;
   }
 
   /**

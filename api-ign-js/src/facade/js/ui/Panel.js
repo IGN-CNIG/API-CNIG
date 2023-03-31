@@ -220,6 +220,8 @@ class Panel extends MObject {
     } else {
       // this._element.setAttribute('tabIndex', '300');
       button.setAttribute('tabIndex', '300');
+
+      // this._element.style.setProperty('order', 100, 'important');
     }
 
     this._tabAccessibility();

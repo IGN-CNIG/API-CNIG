@@ -152,7 +152,7 @@ export default class PrinterMap extends M.Plugin {
      *@private
      *@type { Number }
      */
-    this.order = parameters.order >= -1 ? parameters.order : 32767;
+    this.order = parameters.order >= -1 ? parameters.order :  null;
   }
 
   /**

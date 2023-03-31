@@ -107,7 +107,7 @@ export default class ContactLinkControl extends M.Control {
      *@private
      *@type { Number }
      */
-     this.order = values.order >= -1 ? values.order : 300;
+     this.order = values.order >= -1 ? values.order :  null;
   }
 
   /**

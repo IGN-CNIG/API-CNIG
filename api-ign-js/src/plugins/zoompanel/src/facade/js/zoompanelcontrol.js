@@ -31,7 +31,7 @@ export default class ZoomPanelControl extends M.Control {
 
     this.activeExtent_ = this.center_ !== undefined && this.zoom_ !== undefined;
 
-    this.order = (options.order) ? options.order : 300;
+    this.order = (options.order) ? options.order :  null;
   }
 
   /**

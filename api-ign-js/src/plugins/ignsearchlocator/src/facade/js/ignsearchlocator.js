@@ -276,7 +276,7 @@ export default class IGNSearchLocator extends M.Plugin {
      *@private
      *@type { Number }
      */
-    this.order = options.order >= -1 ? options.order : 32767;
+    this.order = options.order >= -1 ? options.order :  null;
   }
 
   /**

@@ -139,7 +139,7 @@ export default class SelectionZoom extends M.Plugin {
      *@private
      *@type { Number }
      */
-    this.order = options.order >= -1 ? options.order : 32766;
+    this.order = options.order >= -1 ? options.order : null;
   }
 
   /**

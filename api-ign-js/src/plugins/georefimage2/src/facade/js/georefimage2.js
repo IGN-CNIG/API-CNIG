@@ -111,7 +111,7 @@ export default class Georefimage2 extends M.Plugin {
      *@private
      *@type { Number }
      */
-    this.order = parameters.order >= -1 ? parameters.order : 32767;
+    this.order = parameters.order >= -1 ? parameters.order :  null;
   }
 
   /**

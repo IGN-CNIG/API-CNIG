@@ -58,7 +58,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
      */
     this.facadeMap_ = null;
 
-    this.order = (options.order) ? options.order : 300;
+    this.order = (options.order) ? options.order :  null;
   }
 
   /**
