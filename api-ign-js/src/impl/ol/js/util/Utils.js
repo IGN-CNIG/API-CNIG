@@ -19,6 +19,17 @@ import MultiPolygon from 'ol/geom/MultiPolygon';
 import GeometryCollection from 'ol/geom/GeometryCollection';
 import Circle from 'ol/geom/Circle';
 
+/**
+  * Este método obtiene la cantidad de unidades por
+  * metros de esta proyección.
+  *
+  * @function
+  * @param {String} projectionCode Código de proyección.
+  * @param {Number} meter Metros.
+  * @return {Number} Unidades por metro.
+  * @public
+  * @api
+  */
 const getUnitsPerMeter = (projectionCode, meter) => {
   const projection = getProj(projectionCode);
   const metersPerUnit = projection.getMetersPerUnit();
@@ -26,13 +37,16 @@ const getUnitsPerMeter = (projectionCode, meter) => {
 };
 
 /**
- * Substitutes x, y coordinates on coordinate set (x, y, altitude...)
- * @public
- * @function
- * @api
- * @param {Array} oldCoordinates
- * @param {Array<Number>} newXY - [x,y]
- */
+  * Sustituye las coordenadas x, y en el conjunto de
+  * coordenadas (x, y, altitud...).
+  *
+  * @function
+  * @param {Array} oldCoordinates Antiguas coordenadas.
+  * @param {Array<Number>} newXY Nuevas coordenadas [x,y].
+  * @return {Array<Number>} Nuevas coordenadas.
+  * @public
+  * @api
+  */
 const getFullCoordinates = (oldCoordinates, newXY) => {
   const newCoordinates = oldCoordinates;
   newCoordinates[0] = newXY[0];
@@ -41,12 +55,14 @@ const getFullCoordinates = (oldCoordinates, newXY) => {
 };
 
 /**
- * Given a coordinate set (x, y, altitude?), returns [x,y].
- * @public
- * @function
- * @api
- * @param {Array<Number>} coordinatesSet
- */
+  * Dado un conjunto de coordenadas (x, y, altitud), devuelve [x,y].
+  *
+  * @function
+  * @param {Array<Number>} coordinatesSet Conjunto de coordenadas (x, y, altitud).
+  * @return {Array<Number>} Coordenadas [x,y].
+  * @public
+  * @api
+  */
 const getXY = (coordinatesSet) => {
   const coordinateCopy = [];
   for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
@@ -55,13 +71,15 @@ const getXY = (coordinatesSet) => {
 };
 
 /**
- * Transforms x,y coordinates to 4326 on coordinates array.
- * @public
- * @function
- * @api
- * @param {String} codeProjection
- * @param {Array<Number>} oldCoordinates
- */
+  * Transforma las coordenadas x, y a EPSG:4326 en la matriz de coordenadas.
+  *
+  * @function
+  * @param {String} codeProjection Código de proyección actual.
+  * @param {Array<Number>} oldCoordinates Coordenadas.
+  * @return {Array<Number>} Coordenadas transformadas a EPSG:4326.
+  * @public
+  * @api
+  */
 const getTransformedCoordinates = (codeProjection, oldCoordinates) => {
   const transformFunction = getTransform(codeProjection, 'EPSG:4326');
   return getFullCoordinates(
@@ -71,11 +89,16 @@ const getTransformedCoordinates = (codeProjection, oldCoordinates) => {
 };
 
 /**
- * Creates GeoJSON feature from a previous feature and a new set of coordinates.
- * @public
- * @function
- * @api
- */
+  * Crea un objetos geográficos de una capa GeoJSON a partir de un objetos geográficos anterior y
+  * un nuevo conjunto de coordenadas.
+  *
+  * @function
+  * @param {ol.Feature} previousFeature Anterior objetos geográficos.
+  * @param {Array<Number>} coordinates Nuevo conjunto de coordenadas.
+  * @return {ol.Feature} Nuevo objetos geográficos.
+  * @public
+  * @api
+  */
 const createGeoJSONFeature = (previousFeature, coordinates) => {
   return {
     ...previousFeature,
@@ -86,6 +109,16 @@ const createGeoJSONFeature = (previousFeature, coordinates) => {
   };
 };
 
+/**
+  * Este método transforma coordenadas de un objetos geográficos como GeoJSON a EPSG:4326.
+  *
+  * @function
+  * @param {Object} featuresAsJSON Objetos geográficos definidos mediante la especificación GeoJSON.
+  * @param {String} codeProjection Código de proyección actual.
+  * @return {ol.Feature} Objetos geográficos.
+  * @public
+  * @api
+  */
 export const geojsonTo4326 = (featuresAsJSON, codeProjection) => {
   const jsonResult = [];
   featuresAsJSON.forEach((featureAsJSON) => {
@@ -153,16 +186,24 @@ export const geojsonTo4326 = (featuresAsJSON, codeProjection) => {
 };
 
 /**
- * @classdesc
- * Static utils class.
- * @api
- */
+  * @classdesc
+  * Implementación de la clase estática Utils.
+  *
+  * @api
+  */
 class Utils {
   /**
-   *
-   * @function
-   * @api stable
-   */
+    * Este método calcula las resoluciones.
+    *
+    * @function
+    * @param {ol.Projection} projection Proyección.
+    * @param {ol.Extent} extent Extensión.
+    * @param {Number} minZoom Nivel mínimo de zoom.
+    * @param {Number} maxZoom Nivel máximo de zoom.
+    * @return {Array<Number>} Resoluciones.
+    * @public
+    * @api
+    */
   static generateResolutions(projection, extent, minZoom, maxZoom) {
     let newExtent;
     let newMinZoom;
@@ -188,11 +229,17 @@ class Utils {
     }
     return generatedResolutions;
   }
+
   /**
-   *
-   * @function
-   * @api stable
-   */
+    * Este método añade una imagen al 'popup'.
+    *
+    * @function
+    * @param {Object} overlayImage 'Popup'.
+    * @param {Map} map Mapa
+    * @return {Object} Elemento HTML de imagen.
+    * @public
+    * @api
+    */
   static addOverlayImage(overlayImage, map) {
     map.getMapImpl().updateSize();
     const mapSize = map.getMapImpl().getSize();
@@ -235,36 +282,42 @@ class Utils {
     container.appendChild(img);
     return img;
   }
+
   /**
-   * Get the height of an extent.
-   * @public
-   * @function
-   * @param {ol.Extent} extent Extent.
-   * @return {number} Height.
-   * @api stable
-   */
+    * Este método obtiene la altura de una extensión.
+    *
+    * @function
+    * @param {ol.Extent} extent Extensión.
+    * @return {number} Altura.
+    * @public
+    * @api
+    */
   static getExtentHeight(extent) {
     return extent[3] - extent[1];
   }
+
   /**
-   * Get the width of an extent.
-   * @public
-   * @function
-   * @param {ol.Extent} extent Extent.
-   * @return {number} Width.
-   * @api stable
-   */
+    * Este método obtiene el ancho de una extensión.
+    *
+    * @function
+    * @param {ol.Extent} extent Extensión.
+    * @return {number} Ancho.
+    * @public
+    * @api
+    */
   static getExtentWidth(extent) {
     return extent[2] - extent[0];
   }
+
   /**
-   * Calcs the geometry center
-   * @public
-   * @function
-   * @param {ol.geom} geom the ol geometry
-   * @return {Array<number>} center coordinates
-   * @api stable
-   */
+    * Calcula el centro de la geometría.
+    *
+    * @function
+    * @param {ol.geom} geometry Geometría.
+    * @return {Array<number>} Coordenads del centro.
+    * @public
+    * @api
+    */
   static getCentroid(geometry) {
     let centroid;
     let coordinates;
@@ -312,14 +365,17 @@ class Utils {
     }
     return centroid;
   }
+
   /**
-   * Get the width of an extent.
-   * @public
-   * @function
-   * @param {ol.Extent} extent Extent.
-   * @return {number} Width.
-   * @api stable
-   */
+    * Este método obtiene las extensiones de los objetos geográficos especificados
+    *
+    * @function
+    * @param {Array<ol.Feature>} features Objetos geográficos.
+    * @param {String} projectionCode Código de proyección
+    * @returns {Array<ol.Extent>} Extensiones de los objetos geográficos.
+    * @public
+    * @api
+    */
   static getFeaturesExtent(features, projectionCode) {
     const olFeatures = features.map(f => (f instanceof Feature ? f.getImpl().getOLFeature() : f));
     let extents = olFeatures.map(feature => feature.getGeometry().getExtent().slice(0));
@@ -341,14 +397,16 @@ class Utils {
     }
     return extents.length === 0 ? null : extents.reduce((ext1, ext2) => extend(ext1, ext2));
   }
+
   /**
-   * Get the coordinate of centroid
-   * @public
-   * @function
-   * @param {ol.geom} geometry geometry
-   * @return {Arra<number>}
-   * @api stable
-   */
+    * Este método obtiene las coordenadas del centroide.
+    *
+    * @function
+    * @param {ol.geom} geometry Geometría.
+    * @return {Array<Number>} Centroide.
+    * @public
+    * @api
+    */
   static getCentroidCoordinate(geometry) {
     let centroid;
     let coordinates;
@@ -392,18 +450,20 @@ class Utils {
     }
     return centroid;
   }
+
   /**
-   * Transform the extent. If the extent it is the same
-   * than source proj extent then the target proj extent
-   * will be returned
-   * @public
-   * @function
-   * @param {ol.Extent} extent Extent to transform.
-   * @param {String} srcProj source projection.
-   * @param {String} tgtProj target projection.
-   * @return {ol.Extent} transformed extent.
-   * @api stable
-   */
+    * Este método transforma la extensión. Si la extensión es
+    * la misma que la extensión de la proyección de origen, se
+    * devolverá la extensión de la proyección de destino.
+    *
+    * @function
+    * @param {ol.Extent} extent Extensión a transformar.
+    * @param {String} srcProj Proyección de origen.
+    * @param {String} tgtProj Proyección de destino.
+    * @return {ol.Extent} Extensión transformada.
+    * @public
+    * @api
+    */
   static transformExtent(extent, srcProj, tgtProj) {
     let transformedExtent;
     const olSrcProj = isString(srcProj) ? getProj(srcProj) : srcProj;
@@ -427,16 +487,18 @@ class Utils {
     }
     return transformedExtent;
   }
+
   /**
-   * Transforms the renderFeature to standard feature.
-   * @public
-   * @function
-   * @param {RenderFeature} olRenderFeature render feature to transform
-   * @param {ol.Projection} tileProjection
-   * @param {ol.Projection} mapProjection
-   * @return {OLFeature} the ol.Feature
-   * @api stable
-   */
+    * Este método transforma un 'RenderFeature' en un objetos geográficos estándar.
+    *
+    * @function
+    * @param {RenderFeature} olRenderFeature 'RenderFeature' a transformar.
+    * @param {ol.Projection} tileProjection Proyección de la tesela.
+    * @param {ol.Projection} mapProjection Proyección del mapa.
+    * @return {ol.Feature} Objetos geográficos.
+    * @public
+    * @api
+    */
   static olRenderFeature2olFeature(olRenderFeature, tileProjection, mapProjection) {
     let olFeature;
     if (!isNullOrEmpty(olRenderFeature)) {
@@ -465,14 +527,16 @@ class Utils {
     }
     return olFeature;
   }
+
   /**
-   * Clones a renderFeature
-   * @public
-   * @function
-   * @param {RenderFeature} olRenderFeature render feature to clone
-   * @return { RenderFeature } a clone
-   * @api stable
-   */
+    * Este método copia un 'RenderFeature'.
+    *
+    * @function
+    * @param {RenderFeature} olRenderFeature 'RenderFeature' a copiar.
+    * @return { RenderFeature } Copia del 'RenderFeature' dado como parámetro.
+    * @public
+    * @api
+    */
   static cloneOLRenderFeature(olRenderFeature) {
     const type = olRenderFeature.getType();
     const flatCoordinates = olRenderFeature.getFlatCoordinates();
@@ -483,19 +547,20 @@ class Utils {
     const clonedProperties = Object.assign(properties);
     const clonedEnds = [...ends];
     const clonedOLRenderFeature =
-      new RenderFeature(type, clonedFlatCoordinates, clonedEnds, clonedProperties, id);
+       new RenderFeature(type, clonedFlatCoordinates, clonedEnds, clonedProperties, id);
     return clonedOLRenderFeature;
   }
+
   /**
-   * Creates a OL geometry from a render featuer
-   * @public
-   * @function
-   * @param {RenderFeature} olRenderFeature render feature which will be
-   * used in order to build the Geometry
-   * @param {function} transform function to reproject the coordinates
-   * @return {ol.geom} the geometry of the render feature
-   * @api stable
-   */
+    * Este método crea una geometría OL a partir de un 'RenderFeature'.
+    *
+    * @function
+    * @param {RenderFeature} olRenderFeature 'RenderFeature' que será utilizado.
+    * para construir la geometría.
+    * @return {ol.geom} Geometría del 'RenderFeature'.
+    * @public
+    * @api
+    */
   static getGeometryFromRenderFeature(olRenderFeature) {
     let geometry;
     const coordinates = olRenderFeature.getFlatCoordinates();
@@ -537,9 +602,17 @@ class Utils {
     }
     return geometry;
   }
+
   /**
-   * TODO:
-   */
+    * Este método obtiene la escala de las capas WMTS.
+    *
+    * @function
+    * @param {Map} map Mapa.
+    * @param {Boolean} exact Indica si el resultado debe ser exacto.
+    * @return {Number} Escala.
+    * @public
+    * @api
+    */
   static getWMTSScale(map, exact) {
     const projection = map.getProjection().code;
     const olProj = getProj(projection);

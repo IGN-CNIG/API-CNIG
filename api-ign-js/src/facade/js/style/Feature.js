@@ -7,18 +7,27 @@ import StyleBase from './Style';
 
 /**
  * @classdesc
+ * Esta clase se encarga de actualizar los objetos geográficos.
  * @api
+ * @extends {M.style}
  */
 class Feature extends StyleBase {
   /**
+   * Constructor principal de la clase.
    * @constructor
+   * @param {Object} options Parámetros.
+   * - icon
+   *    - src: Ruta.
+   *    - stroke: Borde exterior.
+   *    - fill: Color de relleno.
+   * @param {Object} impl Implementación.
    * @api
    */
   constructor(options, impl) {
     super(options, impl);
 
     /**
-     * Feature where the style is applied
+     * Objeto geográfico.
      * @private
      * @type {M.Feature}
      */
@@ -26,10 +35,10 @@ class Feature extends StyleBase {
   }
 
   /**
-   * This function apply style to feature
+   * Este método aplica los estilos a los objetos geográficos.
    *
    * @public
-   * @param {M.Feature} feature - Feature to apply style
+   * @param {M.Feature} feature Objeto geográfico.
    * @function
    * @api
    */

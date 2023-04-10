@@ -20,10 +20,10 @@ Plugin que permite realizar un perfil longitudinal en función del eje que dibuj
 El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
 
 - **position**. Indica la posición donde se mostrará el plugin.
-  - 'TL':top left
-  - 'TR':top right (default)
-  - 'BL':bottom left
-  - 'BR':bottom right
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
 # Ejemplos de uso
 

@@ -18,11 +18,11 @@ Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right 
-  - 'BL':bottom left 
-  - 'BR':bottom right
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
 # Ejemplos de uso
 

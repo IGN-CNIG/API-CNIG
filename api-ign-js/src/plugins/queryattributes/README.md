@@ -35,16 +35,16 @@ Plugin que permite aplicar filtros sobre las capas de un mapa y visualizar de fo
 
 El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
 
-- **collapsed**. Indica si el plugin viene cerrado por defecto (true/false).
-- **collapsible**. Indica si el plugin se puede cerrar (true/false).
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right
-  - 'BL':bottom left
-  - 'BR':bottom right
-- **filters**: Cuando toma el valor false, en cada panning muestra en la tabla los registros que se encuentran en el bounding box de la pantalla. Cuando toma valor tres, muestra botones para establecer filtro por bounding box o por poligono trazado por el usuario.
+- **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **filters**: Cuando toma el valor false, en cada cambio de zoom muestra en la tabla los registros que se encuentran en el bounding box de la pantalla. Cuando toma valor true, muestra botones para establecer filtro por bounding box o por polígono trazado por el usuario. Por defecto: true.
 - **refreshBBOXFilterOnPanning**: define el comportamiento del filtro de vista al activarse. Si es *true*, se reevalúa después de cada panning o cambio de zoom. Si su valor es *false*, sólo se aplica la primera vez con los elementos en pantalla, y no se vuelve a calcular después de cada panning. Por defecto es *false*.
-- **configuration**: aquí definimos el aspecto y el tratamiento de lso campos de la capa vectorial dentro de la tabla de atributos.
+- **configuration**: aquí definimos el aspecto y el tratamiento de los campos de la capa vectorial dentro de la tabla de atributos.
   - **layer**: nombre de la capa cuyos elementos se mostrarán en la tabla de atributos, especificada en su propiedad *name*.
   - **pk**: nombre del atributo que actúa como clave principal.
   - **initialsort**: aquí indicamos el campo por el que se ordena inicialmente
@@ -57,14 +57,14 @@ El constructor se inicializa con un JSON de _options_ con los siguientes atribut
 Cada campo de la capa vectorial necesita un objeto para definirlo. Los atributos del objeto son
 
 * **name**: nombre del campo en el *feature*.
-* **alias**: denominación del campo para mostrar,
+* **alias**: denominación del campo para mostrar.
 * **visible**: true/false. Se muestra o no en la tabla.
 * **searchable**: true/false. Indicamos si el campo atiende a filtros de texto.
 * **showpanelinfo**: true/false. Indicamos si el campo se muestra o no en la ventana de información.
 * **align**: right/left. Alineación horizontal en la celdilla de la tabla
 * **type**: tipo del campo
   * **string**: tipo de cadena. Por defecto.
-  * **image**: contiene la URL de una imagen. La imagen se  mostrarla en la tabla.
+  * **image**: contiene la URL de una imagen. La imagen se  mostrará en la tabla.
   * **linkURL**: contiene una URL. Se muestra dentro de un hipervínculo.
   * **buttonURL**: contiene una URL. Se muestra dentro de un botón.
   * **formatter**: repite un carácter formateado un número especificado de veces.

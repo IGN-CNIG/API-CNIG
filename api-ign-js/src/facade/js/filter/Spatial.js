@@ -1,21 +1,24 @@
 /**
- * @module M/filter
+ * @module M/filter/Spatial
  */
 import FilterFunction from './Function';
 import { isNullOrEmpty } from '../util/Utils';
 
 /**
- * @classdesc
- * @api
- */
+  * @classdesc
+  * Crea un filtro para todos los objetos geográficos
+  * de "Spatial".
+  * @extends {M.filter.Function}
+  * @api
+  */
 class Spatial extends FilterFunction {
   /**
-   * Creates a Filter Spatial to filter features
-   *
-   * @param {function} Function - filter function
-   * TODO @param {object} options
-   * @api
-   */
+    * Constructor principal de la clase.
+    * @constructor
+    * @param {function} Function Función filtro.
+    * @param {object} options Opciones.
+    * @api
+    */
   constructor(FunctionParam, options) {
     const filterFunction = (feature, index) => {
       let geometry = null;

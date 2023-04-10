@@ -1,3 +1,7 @@
+/**
+ * @module M/impl/ol/js/ext/cspline
+ */
+
 import OLGeomGeometry from 'ol/geom/Geometry';
 import OLGeomGeometryCollection from 'ol/geom/GeometryCollection';
 import OLGeomMultiLineString from 'ol/geom/MultiLineString';
@@ -5,15 +9,15 @@ import OLGeomPolygon from 'ol/geom/Polygon';
 import OLGeomMultiPolygon from 'ol/geom/MultiPolygon';
 import OLGeomLineString from 'ol/geom/LineString';
 
-/** Create a cardinal spline version of this geometry.
+/**
+ *
+ * Cree una versión cardinal de esta geometría.
  * Original https://github.com/epistemex/cardinal-spline-js
  * @see https://en.wikipedia.org/wiki/Cubic_Hermite_spline#Cardinal_spline
- *
- * @param {} options
- * tension {Number} a [0,1] number / can be interpreted as the 'length' of the tangent, default 0.5
- * resolution {Number} size of segment to split
- * pointsPerSeg {Interger} number of points per segment to add if
- * no resolution is provided, default add 10 points per segment
+ * @param {Object} options Opciones:
+ * - resolution. Tamaño del segmento a dividir.
+ * - pointsPerSeg. Número de puntos por segmento a sumar si
+ * no se proporciona resolución, por defecto agrega 10 puntos por segmento.
  */
 OLGeomGeometry.prototype.cspline = function cspline(options) {
   let geometry;
@@ -33,7 +37,8 @@ OLGeomGeometry.prototype.cspline = function cspline(options) {
 };
 
 /**
- * TODO
+ * Geometría de OpenLayers, colección de geometrías.
+ * @param {Object} options Opciones.
  */
 OLGeomGeometryCollection.prototype.calcCSpline = function calcCSpline(options) {
   const splineGeom = [];
@@ -44,7 +49,8 @@ OLGeomGeometryCollection.prototype.calcCSpline = function calcCSpline(options) {
 };
 
 /**
- * TODO
+ * Geometría de OpenLayers, múltiples líneas.
+ * @param {Object} options Opciones.
  */
 OLGeomMultiLineString.prototype.calcCSpline = function calcCSpline(options) {
   const splineGeom = [];
@@ -55,7 +61,9 @@ OLGeomMultiLineString.prototype.calcCSpline = function calcCSpline(options) {
 };
 
 /**
- * TODO
+ * Calcula la geometría de la curva de "spline", para polígonos.
+ * @param {Object} options Opciones de la curva de "spline".
+ * @returns {ol.geom.LineString} Geometría de la curva de "spline".
  */
 OLGeomPolygon.prototype.calcCSpline = function calcCSpline(options) {
   const splineGeom = [];
@@ -66,7 +74,9 @@ OLGeomPolygon.prototype.calcCSpline = function calcCSpline(options) {
 };
 
 /**
- * TODO
+ * Calcula la geometría de la curva de "spline", para múltiples polígonos.
+ * @param {Object} options Opciones de la curva de "spline".
+ * @returns {ol.geom.LineString} Geometría de la curva de "spline".
  */
 OLGeomMultiPolygon.prototype.calcCSpline = function calcCSpline(options) {
   const splineGeom = [];
@@ -77,7 +87,15 @@ OLGeomMultiPolygon.prototype.calcCSpline = function calcCSpline(options) {
 };
 
 /**
- * TODO
+ * Calcula la distancia entre dos puntos.
+ * @param {Number} x1 Coordenada x del primer punto.
+ * @param {Number} y1 Coordenada y del primer punto.
+ * @param {Number} x2 Coordenada x del segundo punto.
+ * @param {Number} y2 Coordenada y del segundo punto.
+ * @returns {Number} Distancia entre los dos puntos.
+ * @public
+ * @function
+ * @api
  */
 const dist2d = (x1, y1, x2, y2) => {
   const dx = x2 - x1;
@@ -86,7 +104,9 @@ const dist2d = (x1, y1, x2, y2) => {
 };
 
 /**
- * TODO
+ * Calcula la geometría de la curva de "spline", para líneas.
+ * @param {Object} options Opciones de la curva de "spline".
+ * @returns {ol.geom.LineString} Geometría de la curva de "spline".
  */
 OLGeomLineString.prototype.calcCSpline = function calcCSpline(options = {}) {
   const line = this.getCoordinates();

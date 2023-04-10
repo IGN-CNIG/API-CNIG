@@ -22,19 +22,20 @@ Plugin de línea del tiempo.
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin.
-  - 'TL':top left
-  - 'TR':top right (default)
-  - 'BL':bottom left
-  - 'BR':bottom right
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
-- **timelineType**. Determina el tipo del timeline.
+- **intervals**: Parámetro obligatorio. Array que contiene cada capa junto a sus datos, dependiendo del valor del timelinetype tendrá unos parámetros u otros.
+
+- **timelineType**: Determina el tipo del timeline.
   - _absoluteSimple_: Representación de las capas de manera lineal, sin consultas.
   - _absolute_: Representación de las capas de manera lineal, con consultas.
   - _relative_: Representación de las capas mediante intervalos, con consultas.
 
-- **intervals**. Parámetro obligatorio. Array que contiene cada capa junto a sus datos, dependiendo del valor del timelinetype tendrá unos parámetros u otros.
-  **AbsoluteSimple**
+  **AbsoluteSimple**: 
   - Nombre: nombre descriptivo de la capa.
   - Etiqueta: etiqueta o fecha de la capa.
   - Servicio en formato API-CNIG para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
@@ -87,17 +88,17 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
     },
   ],
   ```
-- speedDate. _Opcional_ Velocidad del Step por segundo, por defecto 2.
-- paramsDate. _Opcional_ Determina el Step, Segundo(sec), Minuto(min), Hora(hrs), Días(day), Meses (mos), Años(yr).
-- stepValue. _Opcional_ Determina el valor del paramsDate, por ejemplo que el step sea de 5 años. 
-- paramsDate. _Opcional_  Determina la forma de moverte por el Slider, lineal, logarítmica o exponencial. Valor por defecto, _linear_.
+- **speedDate**: _Opcional_ Velocidad del Step por segundo, por defecto 2.
+- **paramsDate**: _Opcional_ Determina el Step, Segundo(sec), Minuto(min), Hora(hrs), Días(day), Meses (mos), Años(yr).
+- **stepValue**: _Opcional_ Determina el valor del paramsDate, por ejemplo que el step sea de 5 años. 
+- **paramsDate**: _Opcional_  Determina la forma de moverte por el Slider, lineal, logarítmica o exponencial. Valor por defecto, _linear_.
   - Lineal: Valor String, _linear_. El valor del slider siempre será el mismo.
   - Exponencial: Valor String, _exponential_. Los valores iniciales del slider es mayor que los finales.
   - Logarítmica: Valor String, _logarithmic_. Los valores finales del slider es mayor que los iniciales. 
-- formatMove. _Opcional_  Determina el movimiento del slider cuando se hace _play_. Valor por defecto, _continuous_.
+- **formatMove**: _Opcional_  Determina el movimiento del slider cuando se hace _play_. Valor por defecto, _continuous_.
   - continua: Slider mueve inicio y fin, valor String _continuous_.
   - discreta: Slider mueve solo fin, valor String _discrete_.
-- sizeWidthDinamic. _Opcional_  Determina el tamaño del panel, sin valor y por defecto el tamaño será pequeño.
+- **sizeWidthDinamic**: _Opcional_  Determina el tamaño del panel, sin valor y por defecto el tamaño será pequeño.
   - Mediano: Valor String, sizeWidthDinamic_medium.
   - Grande: Valor String, sizeWidthDinamic_big.
 

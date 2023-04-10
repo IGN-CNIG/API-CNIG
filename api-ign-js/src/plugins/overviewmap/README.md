@@ -15,18 +15,18 @@ Muestra una previsualización de la zona donde está centrado el mapa.
 
 # Parámetros
 
-- El constructor se inicializa con dos objetos de opciones. El primero contiene el atributo 'position' y el segundo los atributos 'collapsed' y 'collapsible', descritos a continuación.
+El constructor se inicializa con dos objetos de opciones. El primero contiene el atributo 'position' y el segundo los atributos 'collapsed' y 'collapsible', descritos a continuación:
 
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (por defecto)
-  - 'TR':top right
-  - 'BL':bottom left 
-  - 'BR':bottom right
-- **collapsed**. Indica si el plugin aparece abierto por defecto (true/false).
-- **collapsible**. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).
-- **fixed**. Indice si el mapa del plugin permanece a un zoom fijo.
+- **position**. Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **collapsed**. Indica si el plugin aparece abierto por defecto (true/false).  Por defecto: false.
+- **collapsible**. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).  Por defecto: false.
+- **fixed**. Indice si el mapa del plugin permanece a un zoom fijo (true/false).
 - **zoom**. Indice el nivel del zoom al que permanecerá fijo el mapa del plugin.
-- **baseLayer**. URL de la capa base si se quiere prefijar 1.
+- **baseLayer**. URL de la capa base si se quiere prefijar una en el plugin overviewmap.
 
 
 # Ejemplos de uso

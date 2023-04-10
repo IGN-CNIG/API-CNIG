@@ -6,17 +6,27 @@ import MObject from 'M/Object';
 import FacadeLayer from 'M/layer/Layer';
 /**
  * @classdesc
+ * De esta clase heredadan todas las capas base.
+ *
  * @api
+ * @extends {M.Object}
  */
 class LayerBase extends MObject {
   /**
    * @classdesc
-   * Main constructor of the class. Creates a layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa
+   * con parámetros especificados por el usuario.
    *
-   * @extends {M.Object}
-   * @param {Object} options options provided by the user
-   * @param {Object} vendorOptions vendor options for the base library
+   *
+   * @param {Object} options Parámetros opcionales para la capa.
+   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * @param {Object} vendorOptions Pasa los "vendorOptions" heredados a la clase
+   * MObject (M/Object).
+   *
    * @api stable
    */
   constructor(options = {}, vendorOptions = {}) {
@@ -24,96 +34,66 @@ class LayerBase extends MObject {
     super(options);
 
     /**
-     * Vendor options for the base library
-     * @private
-     * @type {Object}
+     * Layer vendorOptions_. Opciones de proveedor para la biblioteca base.
      */
     this.vendorOptions_ = vendorOptions;
 
     /**
-     * The map instance
-     * @private
-     * @type {M.Map}
-     * @expose
+     * Layer map. La instancia del mapa.
      */
     this.map = null;
 
     /**
-     * The ol3 layer instance
-     * @private
-     * @type {ol.layer.Vector}
-     * @expose
+     * Layer ol3layer. La instancia de la capa ol3.
      */
     this.ol3Layer = null;
 
     /**
-     * Custom options for this layer
-     * @private
-     * @type {Mx.parameters.LayerOptions}
-     * @expose
+     * Layer options. Opciones personalizadas para esta capa.
      */
     this.options = options;
 
     /**
-     * Indicates the visibility of the layer
-     * @private
-     * @type {Boolean}
-     * @expose
+     * Layer visibility. Indica la visibilidad de la capa.
      */
     this.visibility = this.options.visibility !== false;
 
     /**
-     * Indicates if the layer is displayed in
-     * layerswitcher control
-     * @private
-     * @type {Boolean}
-     * @expose
+     * Layer displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
      */
     this.displayInLayerSwitcher = this.options.displayInLayerSwitcher !== false;
 
     /**
-     * Layer z-index
-     * @private
-     * @type {Number}
-     * @expose
+     * Layer zIndex. Índice z de la capa.
      */
     this.zIndex_ = null;
 
     /**
-     * Layer opacity
-     * @private
-     * @type {Number}
-     * @expose
+     * Layer opacity_. Opacidad de capa, por defecto 1.
      */
     this.opacity_ = this.options.opacity || 1;
 
     /**
-     * Legend URL of this layer
-     * @private
-     * @type {String}
-     * @expose
+     * Layer legendUrl_. Leyenda URL de esta capa.
      */
     this.legendUrl_ = concatUrlPaths([M.config.THEME_URL, FacadeLayer.LEGEND_DEFAULT]);
 
     /**
-     * @private
-     * @type {number}
-     * @expose
+     * Layer minZoom. Zoom mínimo aplicable a la capa.
      */
     this.minZoom = this.options.minZoom || Number.NEGATIVE_INFINITY;
 
     /**
-     * @private
-     * @type {number}
-     * @expose
+     * Layer maxZoom. Zoom máximo aplicable a la capa.
      */
     this.maxZoom = this.options.maxZoom || Number.POSITIVE_INFINITY;
   }
 
   /**
-   * This function indicates if the layer is visible
+   * Este método indica si la capa es visible.
    *
    * @function
+   * @returns {Boolean} Verdadero es visible, falso si no.
    * @api stable
    * @expose
    */
@@ -128,9 +108,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function indicates if the layer is queryable
+   * Este método indica si la capa es consultable.
    *
    * @function
+   * @returns {Boolean} Devuelve falso.
    * @api stable
    * @expose
    *
@@ -140,9 +121,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function indicates if the layer is in range
+   * Este método indica si la capa está dentro del rango.
    *
    * @function
+   * @returns {Boolean} Verdadero está dentro del rango, falso si no.
    * @api stable
    * @expose
    */
@@ -159,9 +141,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método establece la visibilidad de esta capa.
    *
    * @function
+   * @param {Boolean} visibility Verdadero es visibilidad, falso si no.
    * @api stable
    * @expose
    */
@@ -174,9 +157,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método devuelve el zoom mínimo de esta capa.
    *
    * @function
+   * @returns {Number} Devuelve el zoom mínimo aplicable a la capa.
    * @api stable
    * @expose
    */
@@ -188,9 +172,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método establece el zoom mínimo de esta capa.
    *
    * @function
+   * @param {Number} zoom Zoom mínimo aplicable a la capa.
    * @api stable
    * @expose
    */
@@ -202,9 +187,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método devuelve el zoom máximo de esta capa.
    *
    * @function
+   * @returns {Number} Zoom máximo aplicable a la capa.
    * @api stable
    * @expose
    */
@@ -216,9 +202,11 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método establece el zoom máximo de esta capa.
+   *
    *
    * @function
+   * @param {Number} zoom Zoom máximo aplicable a la capa.
    * @api stable
    * @expose
    */
@@ -230,9 +218,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método devuelve el índice z de esta capa.
    *
    * @function
+   * @return {Number} Índice de la capa.
    * @api stable
    * @expose
    */
@@ -244,9 +233,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método establece el índice z de esta capa.
    *
    * @function
+   * @param {Number} zIndex Índice de la capa.
    * @api stable
    * @expose
    */
@@ -258,9 +248,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método devuelve la opacidad de esta capa.
    *
    * @function
+   * @returns {Number} Opacidad (0, 1). Predeterminado 1.
    * @api stable
    * @expose
    */
@@ -272,9 +263,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método establece la opacidad de esta capa.
    *
    * @function
+   * @param {Number} opacity Opacidad (0, 1). Predeterminado 1.
    * @api stable
    * @expose
    */
@@ -290,9 +282,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function gets the created OL layer
+   * Este método obtiene la capa Openlayers creada.
    *
    * @function
+   * @return {ol3Layer} Devuelve la capa Openlayers.
    * @api stable
    * @expose
    */
@@ -301,9 +294,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function sets the OL layer
+   * Este método establece la capa Openlayers.
    *
    * @function
+   * @param {ol.layer} layer Capa de Openlayers.
    * @api stable
    * @expose
    */
@@ -316,9 +310,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function gets the created OL layer
+   * Este método obtiene la implementación del mapa.
    *
    * @function
+   * @returns {M.impl.Map} Es la implementación del mapa.
    * @api stable
    * @expose
    */
@@ -327,9 +322,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function gets the created OL layer
+   * Este método obtiene la URL de la leyenda.
    *
    * @function
+   * @returns {String} URL de la leyenda.
    * @api stable
    * @expose
    */
@@ -338,9 +334,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function gets the created OL layer
+   * Este método establece la url de la leyenda.
    *
    * @function
+   * @param {String} legendUrl URL de la leyenda.
    * @api stable
    * @expose
    */
@@ -349,10 +346,10 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function gets the max resolution for
-   * this WMS
+   * Este método obtiene los niveles de zoom numéricos.
    *
    * @public
+   * @returns {Number} Devuelve la resolución máxima (20).
    * @function
    * @api stable
    */
@@ -361,8 +358,11 @@ class LayerBase extends MObject {
   }
 
   /**
-   * This function exectues an unselect feature
+   * Este método ejecuta una deselección del objetos geográficos.
    *
+   * @param {ol.features} features Openlayers objetos geográficos.
+   * @param {Array} coord Coordenadas.
+   * @param {Object} evt Eventos.
    * @public
    * @function
    * @api stable
@@ -371,9 +371,12 @@ class LayerBase extends MObject {
   unselectFeatures(features, coord, evt) {}
 
   /**
-   * This function exectues a select feature
+   * Este método ejecuta la selección de un objetos geográficos.
    *
    * @function
+   * @param {ol.features} features Openlayers objetos geográficos.
+   * @param {Array} coord Coordenadas.
+   * @param {Object} evt Eventos.
    * @api stable
    * @expose
    */

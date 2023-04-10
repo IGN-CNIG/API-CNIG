@@ -14,15 +14,19 @@ import ImplUtils from '../util/Utils';
 /**
  * @module M/impl/Feature
  */
+
+/**
+ * @classdesc
+ * Crea un objeto geográfico.
+ */
 class Feature {
   /**
-   * @classdesc
-   * Main constructor of the class. Create a Feature
-   *
+   * Contructor para generar un objeto geográfico de Openlayers.
    * @constructor
    * @implements {M.impl.Layer}
-   * @param {string} id - id to feature
-   * @param {Object} geojson - geojson to feature
+   * @param {String} id Identificador del objeto geográfico.
+   * @param {Object} geojson GeoJSON con objetos geográficos.
+   * @param {Object} style Estilo de los objetos geográficos.
    * @api stable
    */
   constructor(id, geojson, style) {
@@ -44,19 +48,20 @@ class Feature {
     }
   }
   /**
-   * This function returns the openlayers object of the features
+   * Este método devuelve el objeto openlayers del objeto geográfico.
    * @public
    * @function
-   * @return {OLFeature} returns the openlayers object of the features
+   * @return {OLFeature} Devuelve el objeto openlayers del objeto geográfico.
    * @api stable
    */
   getOLFeature() {
     return this.olFeature_;
   }
   /**
-   * This function set the openlayers object of the features
+   * Este método sobrescribe el objeto geográfico de Openlayers.
    * @public
-   * @param {OLFeature} olFeature - ol Feature to feature
+   * @param {OLFeature} olFeature Nuevo objeto geográfico.
+   * @param {Boolean} canBeModified Define si puede ser modificable, genera un nuevo id.
    * @function
    * @api stable
    */
@@ -69,9 +74,9 @@ class Feature {
     }
   }
   /**
-   * This function return attributes feature
+   * Este método retorna los atributos de un objeto geográfico.
    * @public
-   * @return {Object} Attributes feature
+   * @return {Object} Atributos.
    * @function
    * @api stable
    */
@@ -84,46 +89,47 @@ class Feature {
     return properties;
   }
   /**
-   * This function return id feature
+   * Este método retorna los atributos de un objeto geográfico.
    *
    * @public
    * @function
-   * @return {string} ID to feature
+   * @return {string} Identificador del objeto geográfico.
    * @api stable
    */
   getId() {
     return this.olFeature_.getId();
   }
   /**
-   * This function set id
+   * Este método modifica el identificador del objeto geográfico.
    *
    * @public
    * @function
-   * @param {string} id - ID to feature
+   * @param {string} id Identificador del objeto geográfico.
    * @api stable
    */
   setId(id) {
     this.olFeature_.setId(id);
   }
   /**
-   * This function set attributes feature
+   * Este método sobrescribe los atributos del objeto geográfico.
    *
    * @public
    * @function
-   * @param {Object} attributes - attributes to feature
+   * @param {Object} attributes Nuevos atributos.
    * @api stable
    */
   setAttributes(attributes) {
     this.olFeature_.setProperties(attributes);
   }
   /**
-   * This funcion transform OLFeature to M.Feature
+   * Este método de la clase transforma "OLFeature" (Objeto geográfico de Openlayer)
+   * a "M.Feature" (Objeto geográfico de API-CNIG).
    *
    * @public
    * @function
-   * @param {OLFeature} olFeature - OLFeature
-   * @param {boolean} canBeModified
-   * @return {M.Feature}  facadeFeature - M.Feature
+   * @param {OLFeature} olFeature  "OLFeature".
+   * @param {boolean} canBeModified Define si puede ser modificado.
+   * @return {M.Feature} Retorna "M.Feature" modificado.
    * @api stable
    */
   static olFeature2Facade(olFeature, canBeModified) {
@@ -135,14 +141,15 @@ class Feature {
     return facadeFeature;
   }
   /**
-   * This funcion transform OLRenderFeature to M.Feature
+   * Este método de la clase transforma "OLRenderFeature" (Objeto geográfico de Openlayer)
+   * a "M.Feature" (Objeto geográfico de API-CNIG).
    *
    * @public
    * @function
-   * @param { RenderFeature } olRenderFeature - OLFeature
-   * @param {ol.Projection} tileProjection
-   * @param {ol.Projection} mapProjection
-   * @return {M.Feature} facadeFeature - M.Feature
+   * @param { RenderFeature } olRenderFeature "OLFeature".
+   * @param {ol.Projection} tileProjection Proyección de la tesela.
+   * @param {ol.Projection} mapProjection Proyección del mapa.
+   * @return {M.Feature} Retorna "M.Feature" modificado.
    * @api stable
    */
   static olRenderFeature2Facade(olRenderFeature, tileProjection, mapProjection) {
@@ -151,48 +158,49 @@ class Feature {
     return Feature.olFeature2Facade(olFeature);
   }
   /**
-   * This funcion transform M.Feature to OLFeature
+   * Este método de la clase transforma "M.Feature" (Objeto geográfico de API-CNIG)
+   * a "OLFeature" (Objeto geográfico de Openlayer).
    *
    * @public
    * @function
-   * @param {M.Feature}  facadeFeature - M.Feature
-   * @return {OLFeature} olFeature - OLFeature
+   * @param {M.Feature} feature "M.Feature".
+   * @return {OLFeature} Retorna "OLFeature".
    * @api stable
    */
   static facade2OLFeature(feature) {
     return feature.getImpl().getOLFeature();
   }
   /**
-   * This function returns the value of the indicated attribute
+   * Este método retorna el valor del atributo.
    *
    * @public
    * @function
-   * @param {string} attribute - Name attribute
-   * @return  {string|number|object} returns the value of the indicated attribute
+   * @param {string} attribute Nombre del atributo.
+   * @return  {string|number|object} Retorna el valor del atributo.
    * @api stable
    */
   getAttribute(attribute) {
     return this.olFeature_.get(attribute);
   }
   /**
-   * This function set value of the indicated attribute
+   * Este método sobrescribe el valor de un atributo del objeto geográfico.
    *
    * @public
    * @function
-   * @param {string} attribute - Name attribute
-   * @return  {string|number|object} returns the value of the indicated attribute
+   * @param {string} attribute Nombre del atributo.
+   * @return  {string|number|object} Retorna el valor del atributo modificado.
    * @api stable
    */
   setAttribute(attribute, value) {
     return this.olFeature_.set(attribute, value);
   }
   /**
-   * This function return geometry feature
+   * Este método retorna la geometría del objeto geográfico.
    *
    * @public
    * @function
-   * @param {object} geojson - GeoJSON Feature
-   * @return {object} Geometry feature
+   * @param {object} geojson Objeto geográfico en formato GeoJSON.
+   * @return {object} Geometría del objeto geográfico.
    * @api stable
    */
   static getGeometry(geojson) {
@@ -218,11 +226,11 @@ class Feature {
     return geometry;
   }
   /**
-   * This function set geometry feature
+   * Este método modifica la geometría del objeto geográfico.
    *
    * @public
    * @function
-   * @param {object} Geometry - GeoJSON Feature
+   * @param {object} Geometry Geometría del objeto geográfico.
    * @api stable
    */
   setGeometry(geometry) {
@@ -246,21 +254,21 @@ class Feature {
     }
   }
   /**
-   * This function set facade class vector
+   * Este método establece el vector de la clase de la fachada.
    *
    * @function
-   * @param {object} obj - Facade vector
+   * @param {object} obj Vector de la fachada.
    * @api stable
    */
   setFacadeObj(obj) {
     this.facadeFeature_ = obj;
   }
   /**
-   * This function returns de centroid of feature
+   * Este método retorna el centroide del objeto geográfico.
    *
    * @public
    * @function
-   * @return {Array<number>}
+   * @return {Array<number>} Centroide.
    * @api stable
    */
   getCentroid() {
@@ -280,7 +288,7 @@ class Feature {
     return olCentroid;
   }
   /**
-   * This function clear the style of feature
+   * Este método elimina el estilo del objeto geográfico.
    *
    * @public
    * @function

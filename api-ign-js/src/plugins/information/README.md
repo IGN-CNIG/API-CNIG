@@ -1,6 +1,6 @@
 # M.plugin.Information
 
-Muestra información GetFeatureInfo mediante activación de plugin
+Muestra información GetFeatureInfo mediante activación de plugin.
 
 # Dependencias
 
@@ -19,16 +19,16 @@ Muestra información GetFeatureInfo mediante activación de plugin
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right
-  - 'BL':bottom left
-  - 'BR':bottom right
-- **tootltip**. Tooltip que se muestra sobre el plugin
-- **format**. Formato de respuesta de la consulta GetFeatureInfo.
-- **featureCount**. Máximo número de features a los que realizar la consulta.
-- **buffer**. Buffer del click para realizar la consulta.
-- **opened**. Indica si queremos que la información devuelta esté abierta por defecto si sólo es una capa, abiertas todas si son varias o cerradas (por defecto). Si no se le indica ningún valor tendrá el funcionamiento por defecto, todas cerradas.
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **tooltip**: Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
+- **format**: Formato de respuesta de la consulta GetFeatureInfo.
+- **featureCount**: Máximo número de features a los que realizar la consulta.
+- **buffer**: Buffer del click para realizar la consulta.
+- **opened**: Indica si queremos que la información devuelta esté abierta por defecto si sólo es una capa, abiertas todas si son varias o cerradas (por defecto). Si no se le indica ningún valor tendrá el funcionamiento por defecto, todas cerradas.
   - 'one': abierta la información si sólo es una capa
   - 'all': todas abiertas
   - 'closed': cerradas

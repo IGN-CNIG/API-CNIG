@@ -1,59 +1,53 @@
 # M.plugin.Attributions
-
-Plugin que permite mostrar información de atribuciones sobre las capas que se visualizan en el mapa.
-
-# Archivos de atribuciones cnig
-
-Un primer mecanismo soportado es el uso de archivo de atribuciones definidos en formato kml o geojson según formato predefinido.
-
+Plugin que permite mostrar la información de las atribuciones sobre las capas que se visualizan en el mapa.
+# Dependencias
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+- **attributions.ol.min.js**
+- **attributions.ol.min.css**
+```html
+ <link href="https://componentes.cnig.es/api-core/plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/attributions/attributions.ol.min.js"></script>
+``` 
+# Configuraciones globales
+- **M.config.attributions.defaultAttribution**: Valor por defecto a mostrar en la atribución del mapa.
+- **M.config.attributions.defaultUrl**: Valor por defecto a usar como url asociada a la atribución por defecto.
+# Parámetros
+El constructor se inicializa con un JSON con los siguientes atributos:
+- **mode**: Modo de uso del plugin Attributions (1 ó 2).
+    1. Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: ==DISPONIBLE==
+        - **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
+        - **type**: Tipo de archivo que se pasa en la url indicada (ejemplos: 'kml','geojson'). Por defecto: 'kml'.
+        - **layerName**: Nombre asociado a la capa de atribuciones (nombre de la capa). Se usa para la construcción de la capa. Por defecto: 'attributions'.
+        - **layer**: Tipo de capa que se remite como archivo de atribuciones {M.layer.GeoJSON | M.layer.KML}. Se usa para la construcción de la capa.
+        - **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
+        - **urlParam**: Nombre del campo de url en el archivo. Por defecto: 'url'.
+        - **minWidth**: Mínimo ancho de visualización del plugin. Por defecto: '100px'.
+        - **maxWidth**: Máximo ancho de visualización del plugin. Por defecto: '200px'.
+        - **position**: Posición del plugin sobre el mapa.
+            - 'TL': (top left) - Arriba a la izquierda.
+            - 'TR': (top right) - Arriba a la derecha.
+            - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
+            - 'BR': (bottom right) - Abajo a la derecha.
+    2. Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. ==NO DISPONIBLE==
+- **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
+- **tooltip**: Valor a usar para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'. 
+- **minWidth**: Mínimo ancho de visualización del plugin. Por defecto '100px'.
+- **maxWidth**: Máximo ancho de visualización del plugin. Por defecto '200px'.
+- **position**: Posición del plugin sobre el mapa.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
+# Archivos de atribuciones CNIG
+Ejemplos de archivo de atribuciones según formato predefinido (kml o geojson):
 - https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml
 - https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml
-
-# Dependencias
-
-- attributions.ol.min.js
-- attributions.ol.min.css
-
-```html
- <link href="../../plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/attributions/attributions.ol.min.js"></script>
-```
-
-# Parámetros
-
-El constructor se inicializa con un JSON de options con los siguientes atributos:
-
-
-- *mode*. Modo de uso attributions (Default = 1)
-  - *1*. Atribuciones mediante archivo de atribuciones ==DISPONIBLE==
-  - *2*. Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa
-- *scale*. Escala a partir de la cual se activa la asignación de atribuciones  (Default = 10000)
-- *tooltip*. Valor a usar para mostrar en el tooltip del plugin (Por defecto = Reconocimientos)
-
-- Parámetros específicos en modo 1 (Archivo de atribuciones)
-  - *url*. Url del archivo de atribuciones a utilizar. (Default = 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml')
-  - *type*. Tipo de archivo que se pasa en la url indicada ('kml','geojson') (Default = 'kml')
-  - *layerName*. Nombre asociado a la capa de atribuciones (Default = 'attributions')
-  - *layer*. Tipo de layer que se remite como archivo de atribuciones {M.layer.GeoJSON | M.layer.KML}
-  - *attributionParam*. Nombre del campo de atribución en el archivo. (Default = atribucion)
-  - *urlParam*. Nombre del campo de url en el archivo. (Default = url)
-- *minWidth*. Mínimo ancho de visualización del plugin (Default = '100px')
-- *maxWidth*. Máximo ancho de visualización del plugin (Default = '200px')
-- *position*. Ubicación del plugin sobre el mapa (Default = 'BL')
-  - 'TL' = Top left
-  - 'TR' = Top right
-  - 'BL' = Bottom left
-  - 'BR' = Bottom right
-
-# Configuraciones globales
-- *M.config.attributions.defaultAttribution*. Valor por defecto a mostrar en la atribución del mapa.
-- *M.config.attributions.defaultUrl*. Valor por defecto a usar como url asociada a la atribución por defecto.
+- https://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson
 # Ejemplo de uso
-
 ```javascript
   M.config.attributions.defaultAttribution = 'Instituto Geográfico Nacional';
   M.config.attributions.defaultUrl = 'https://www.ign.es/' 
-
    const map = M.map({
      container: 'map'
    });
@@ -65,7 +59,5 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
       type: 'geojson',
       position: 'TL',
     });
-
    map.addPlugin(mp);
 ```
-

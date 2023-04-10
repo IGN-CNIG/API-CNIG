@@ -15,27 +15,23 @@ Provee de enlaces a sitios, redes sociales y correo institucionales.
 
 # Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin.
-  - 'TL':top left
-  - 'TR':top right (default)
-  - 'BL':bottom left
-  - 'BR':bottom right
-- **descargascnig**. Indica la url al centro de descargas CNIG. 
-- **pnoa**. Indica la url al comparador PNOA.
-- **visualizador3d**. Indica la url al Visualizador3D.
-- **fototeca**. Indica la url a Fototeca.
-- **twitter**. Indica la url al Twitter del CNIG.
-- **instagram**. Indica la url al Instagram del CNIG.
-- **facebook**. Indica la url al Facebook del CNIG.
-- **pinterest**. Indica la url al Pinterest del CNIG.
-- **youtube**. Indica la url al Youtube del CNIG.
-- **mail**. Indica la url para escribir correo al CNIG.
-
-# Eventos
-
-# Otros métodos
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **descargascnig**: Indica la url al centro de descargas CNIG. 
+- **pnoa**: Indica la url al comparador PNOA.
+- **visualizador3d**: Indica la url al Visualizador3D.
+- **fototeca**: Indica la url a Fototeca.
+- **twitter**: Indica la url al Twitter del CNIG.
+- **instagram**: Indica la url al Instagram del CNIG.
+- **facebook**: Indica la url al Facebook del CNIG.
+- **pinterest**: Indica la url al Pinterest del CNIG.
+- **youtube**: Indica la url al Youtube del CNIG.
+- **mail**: Indica la url para escribir correo al CNIG.
 
 # Ejemplos de uso
 

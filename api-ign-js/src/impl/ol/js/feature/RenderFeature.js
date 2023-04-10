@@ -1,18 +1,24 @@
+/**
+ * @module M/impl/RenderFeature
+ */
+
 import FacadeRenderFeature from 'M/feature/RenderFeature';
 import { isNullOrEmpty } from 'M/util/Utils';
 
 /**
- * @module M/impl/RenderFeature
- */
+ * @classdesc
+ * Crear un objeto geográfico renderizado.
+ * @api
+*/
 class RenderFeature {
   /**
-   * @classdesc
-   * Main constructor of the class. Create a RenderFeature
+   * Contructor principal de la clase.
    * @constructor
+   * @api
    */
   constructor() {
     /**
-     * OL Feature
+     * OL Objeto geográfico.
      * @private
      * @type {ol/render/Feature}
      */
@@ -20,10 +26,10 @@ class RenderFeature {
   }
 
   /**
-   * This function returns the openlayers object of the features
+   * Este método retorna el objeto geográfico de Openlayer.
    * @public
    * @function
-   * @return {OLFeature} returns the openlayers object of the features
+   * @return {OLFeature} Retorna el objeto geográfico de Openlayer.
    * @api
    */
   getOLFeature() {
@@ -31,10 +37,10 @@ class RenderFeature {
   }
 
   /**
-   * Get geometry type of the feature.
+   * Retorna de que tipo es el objeto geográfico.
    * @function
    * @public
-   * @return {string}
+   * @return {string} El tipo del objeto geográfico.
    * @api
    */
   getType() {
@@ -42,9 +48,9 @@ class RenderFeature {
   }
 
   /**
-   * This function set the openlayers object of the features
+   * Este método sobrescribe el objeto geográfico de openlayers.
    * @public
-   * @param {OLFeature} olFeature - ol Feature to feature
+   * @param {OLFeature} olFeature Nuevo objeto geográfico.
    * @function
    * @api
    */
@@ -55,9 +61,9 @@ class RenderFeature {
   }
 
   /**
-   * This function return attributes feature
+   * Este método retorna los atributos del objeto geográfico.
    * @public
-   * @return {Object} Attributes feature
+   * @return {Object} Atributos del objeto geográfico.
    * @function
    * @api
    */
@@ -67,13 +73,13 @@ class RenderFeature {
   }
 
   /**
-   * This funcion transform OLFeature to M.Feature
-   *
+   * Este método de la clase transforma "OLFeature" (Objeto geográfico de Openlayers)
+   * a "M.Feature" (Objeto geográfico de API-CNIG).
    * @public
    * @function
-   * @param {OLFeature} olFeature - OLFeature
-   * @param {boolean} canBeModified
-   * @return {M.Feature}  facadeFeature - M.Feature
+   * @param {OLFeature} olFeature Objeto "OLFeature" (Objeto geográfico de Openlayers).
+   * @param {boolean} canBeModified Define si se puede modificar.
+   * @return {M.Feature} Retorna el objeto "M.Feature" (Objeto geográfico de API-CNIG).
    * @api
    */
   static olFeature2Facade(olFeature, canBeModified) {
@@ -86,12 +92,12 @@ class RenderFeature {
   }
 
   /**
-   * This funcion transform M.Feature to OLFeature
-   *
+   * Método de la clase transforma "M.Feature" (Objeto geográfico de API-CNIG)
+   * a "OLFeature" (Objeto geográfico de Openlayers).
    * @public
    * @function
-   * @param {M.Feature}  facadeFeature - M.Feature
-   * @return {OLFeature} olFeature - OLFeature
+   * @param {M.Feature} facadeFeature Objeto "M.Feature" (Objeto geográfico de API-CNIG).
+   * @return {OLFeature} Retorna el objeto "OLFeature" (Objeto geográfico de Openlayers).
    * @api
    */
   static facade2OLFeature(feature) {
@@ -99,12 +105,11 @@ class RenderFeature {
   }
 
   /**
-   * This function returns the value of the indicated attribute
-   *
+   * Este método retorna el valor del atributo indicado.
    * @public
    * @function
-   * @param {string} attribute - Name attribute
-   * @return  {string|number|object} returns the value of the indicated attribute
+   * @param {string} attribute Nombre del atributo.
+   * @return  {string|number|object} Retorna el valor del atributo indicado.
    * @api
    */
   getAttribute(attribute) {
@@ -112,10 +117,10 @@ class RenderFeature {
   }
 
   /**
-   * This function set facade class vector
-   *
+   * Este método establece el vector de la clase de la fachada.
+   * @public
    * @function
-   * @param {object} obj - Facade vector
+   * @param {object} obj Vector de la fachada.
    * @api
    */
   setFacadeObj(obj) {
@@ -123,11 +128,10 @@ class RenderFeature {
   }
 
   /**
-   * This function returns de centroid of feature
-   *
+   * Este método retorna el centroide del objeto geográfico.
    * @public
    * @function
-   * @return {Array<number>}
+   * @return {Array<number>} Retorna el centroide del objeto geográfico.
    * @api
    */
   getCentroid() {}

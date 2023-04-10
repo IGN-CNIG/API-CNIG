@@ -1,8 +1,8 @@
 # M.plugin.XYLocator
 
 
-Plugin que permite localizar las coordenas introducidas por el usuario en un Sistema de referencia determinado.
-Las coordenadas son transformadas a proyección que tenga el mapa en ese momento.
+Plugin que permite localizar las coordenas introducidas por el usuario en un sistema de referencia determinado.
+Las coordenadas son transformadas a la proyección que tenga el mapa en ese momento.
 
 # Dependencias
 
@@ -19,9 +19,7 @@ Las coordenadas son transformadas a proyección que tenga el mapa en ese momento
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
-
-- **projections**. Proyecciones de origen que se mostrarán para seleccionar las coordenadas a localizar.
+- **projections**: Proyecciones de origen que se mostrarán para seleccionar las coordenadas a localizar.
 ** Por defecto los valores posibles son:
 
 ```javascript
@@ -36,11 +34,11 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   ]
 ```
 
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right 
-  - 'BL':bottom left 
-  - 'BR':bottom right
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
 # Eventos
 

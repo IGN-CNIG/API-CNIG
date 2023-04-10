@@ -2,7 +2,7 @@
 
 Tras hacer click en el mapa, muestra las coordenadas geográficas y proyectadas de ese punto con posibilidad de cambiarlas a ETRS89, WGS84 o REGCAN95 y además cambiar el formato a las geográficas entre decimal y GGMMSS.
 
-## Dependencias
+# Dependencias
 
 - infocoordinates.ol.min.js
 - infocoordinates.ol.min.css
@@ -16,18 +16,14 @@ Tras hacer click en el mapa, muestra las coordenadas geográficas y proyectadas 
 
 El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left
-  - 'TR':top right (por defecto)
-  - 'BL':bottom left
-  - 'BR':bottom right
-- **decimalGEOcoord**. Indica el número de decimales de las coordenadas geográficas.
-- **decimalUTMcoord**. Indica el número de decimales de las coordenadas proyectadas en UTM.
-## Eventos
-
-## Otros métodos
-
-## Ejemplos de uso
+- **position**:  Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **decimalGEOcoord**: Indica el número de decimales de las coordenadas geográficas.
+- **decimalUTMcoord**: Indica el número de decimales de las coordenadas proyectadas en UTM.
+# Ejemplos de uso
 
 ### Ejemplo 1
 ```javascript

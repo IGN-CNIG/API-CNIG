@@ -13,11 +13,11 @@
       "possibleValues": ["TL", "TR", "BL", "BR"]
     }, {
       "type": "boolean",
-      "name": "collapsed",
+      "name": "collapsible",
       "position": 1
     }, {
       "type": "boolean",
-      "name": "collapsible",
+      "name": "collapsed",
       "position": 2
     }]
   }],

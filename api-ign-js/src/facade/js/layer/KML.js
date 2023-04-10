@@ -11,18 +11,52 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a WMS layer
- * with parameters specified by the user
+ * KML (Keyhole Markup Language).
+ *
+ * @property {Boolean} extract Opcional. Activa la consulta haciendo clic en el objeto geográfico,
+  * por defecto falso.
+ * @property {Object} options Parámetros de la capa.
+ * @property {String} label Etiqueta de la capa.
+ *
  * @api
+ * @extends {M.layer.Vector}
  */
 class KML extends LayerVector {
   /**
+   * Constructor principal de la clase. Crea una capa KML
+   * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @extends {M.layer.Vector}
-   * @param {string|Mx.parameters.KML} userParameters parameters
-   * @param {Mx.parameters.LayerOptions} options provided by the user
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {string|Mx.parameters.KML} userParameters Parámetros especificados por el usuario.
+   * - url: Url del fichero o servicio -> https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml
+   * - name: Nombre de la capa que aparecerá en la leyenda -> Delegaciones IGN
+   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
+   * - source: Fuente de la capa.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - type: Tipo de la capa.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * @param {Mx.parameters.LayerOptions} options Parámetros que se pasarán a la implementación.
+   * - label: Etiquetado.
+   * - visibility: Define si la capa es visible o no.
+   * - style: Define el estilo de la capa.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
+   * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
+   * - opacity. Opacidad de capa, por defecto 1.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceVector({
+   *    attributions: 'kml',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
@@ -32,8 +66,9 @@ class KML extends LayerVector {
     optionsVar.visibility = parameters.visibility;
 
     /**
-     * Implementation of this layer
+     * Implementación de la capa.
      * @public
+     * @implements {M.layer.KML}
      * @type {M.layer.KML}
      */
     const impl = new KMLImpl(optionsVar, vendorOptions);
@@ -51,22 +86,42 @@ class KML extends LayerVector {
       Exception(getValue('exception').no_param);
     }
 
-    // extract
+    /**
+    * KML extract: Activa la consulta al hacer clic sobre un objeto geográfico,
+    * por defecto falso.
+    */
     this.extract = parameters.extract;
-    // options
+
+    /**
+    * KML options: Optiones que se mandan a la implementación.
+    */
     this.options = options;
-    // label
+
+    /**
+    * KML label. Etiqueta de la capa KML.
+    */
     this.label = parameters.label;
   }
 
   /**
-   * 'type' This property indicates if
-   * the layer was selected
+   * Devuelve el tipo de capa, KML.
+   * @function
+   * @getter
+   * @returns {M.LayerType.KML} Tipo de capa.
+   * @api
    */
   get type() {
     return LayerType.KML;
   }
 
+  /**
+   * Sobrescribe el tipo de la capa.
+   *
+   * @function
+   * @setter
+   * @param {String} newType Nuevo tipo.
+   * @api
+   */
   set type(newType) {
     if (!isUndefined(newType) &&
       !isNullOrEmpty(newType) && (newType !== LayerType.KML)) {
@@ -75,13 +130,27 @@ class KML extends LayerVector {
   }
 
   /**
-   * 'transparent' the layer name
+   * Devuelve el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @getter
+   * @returns {M.LayerType.KML} Valor de la propiedad "extract".
+   * @api
    */
-
   get extract() {
     return this.getImpl().extract;
   }
 
+  /**
+   * Sobrescribe el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @setter
+   * @param {Boolean} newExtract Nuevo valor para sobreescribir la propiedad "extract".
+   * @api
+   */
   set extract(newExtract) {
     if (!isNullOrEmpty(newExtract)) {
       if (isString(newExtract)) {
@@ -95,21 +164,35 @@ class KML extends LayerVector {
   }
 
   /**
-   * 'options' the layer options
+   * Devuelve las opciones que se mandan a la implementación.
+   * @function
+   * @getter
+   * @returns {M.layer.KML.impl.options} Opciones de la capa KML.
+   * @api
    */
   get options() {
     return this.getImpl().options;
   }
 
+  /**
+   * Sobrescribe las opciones de la capa KML.
+   *
+   * @function
+   * @setter
+   * @param {Object} newOptions Nuevas opciones.
+   * @api
+   */
   set options(newOptions) {
     this.getImpl().options = newOptions;
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
    * @api
    */
   equals(obj) {

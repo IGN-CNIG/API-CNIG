@@ -3,7 +3,7 @@
  */
 
 /**
- * Chart Types
+ * Tipos de gráficos.
  * @const
  * @type {object}
  * @public
@@ -17,7 +17,7 @@ export const types = {
 };
 
 /**
- * Default themes for this style
+ * Esquemas predeterminados para los estilos.
  * @const
  * @type {object}
  * @public

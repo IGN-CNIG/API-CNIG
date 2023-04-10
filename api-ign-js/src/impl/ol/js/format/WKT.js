@@ -8,9 +8,11 @@ import FeatureImpl from '../feature/Feature';
 import GeoJSON from './GeoJSON';
 
 /**
- * @const
- * @api
- */
+  * Opciones de la proyección.
+  * @const
+  * @public
+  * @api
+  */
 const getOptsProjection = (options) => {
   const opts = {
     dataProjection: get(options.dataProjection),
@@ -20,20 +22,38 @@ const getOptsProjection = (options) => {
 };
 
 /**
- * @classdesc
- * @api
- */
+  * @classdesc
+  * Implementación del formateador WKT.
+  *
+  * @property {M.impl.format.GeoJSON} gjFormat_ Formato GeoJSON.
+  * @property {ol.format.WKT} formatter_ Formato de geometría para leer y
+  * escribir datos en formato WKT.
+  *
+  * @api
+  * @extends {M.Object}
+  */
 class WKT extends MObject {
   /**
-   * @classdesc
-   * Feature format for reading and writing data in the GeoJSON format.
-   *
-   * @constructor
-   * @api stable
-   */
+    * Constructor principal de la clase. Formato de los 'features' para
+    * leer y escribir datos en formato WKT.
+    *
+    * @constructor
+    * @param {olx.format.WKTOptions} options Opciones del formato WKT.
+    * @api
+    */
   constructor(options = {}) {
     super(options);
+    /**
+      * Formato GeoJSON.
+      * @type {M.impl.format.GeoJSON}
+      * @private
+      */
     this.gjFormat_ = new GeoJSON();
+    /**
+      * Formato de geometría para leer y escribir datos en formato WKT.
+      * @type {ol.format.WKT}
+      * @private
+      */
     this.formatter_ = new OLFormatWKT({
       splitCollection: true,
       ...options,
@@ -41,20 +61,32 @@ class WKT extends MObject {
   }
 
   /**
-   * @public
-   * @function
-   * @api
-   */
+    * Este método obtiene el formato de geometría.
+    *
+    * @function
+    * @returns {Object|ol.format.WKT} Formateador.
+    * @public
+    * @api
+    */
   getFormatter() {
     return this.formatter_;
   }
 
   /**
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Este método obtiene un objeto geográfico del texto especificado.
+    *
+    * @function
+    * @param {string} wkt Texto del que se obtiene el objeto geográfico.
+    * @param {Object} options Opciones.
+    * - dataProjection: Proyección de los datos leídos.
+    * - featureProjection: Proyección de las geometrías de los objetos geográficos
+    * creados por el lector de formato.
+    * - extent: Extensión de la tesela en unidades de mapa de la tesela
+    * leída
+    * @returns {M.Feature} Objeto geográfico.
+    * @public
+    * @api
+    */
   read(wkt, options = {}) {
     const opts = getOptsProjection(options);
     const { id } = options;
@@ -67,11 +99,20 @@ class WKT extends MObject {
   }
 
   /**
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Este método obtiene los objetos geográficos del texto especificado
+    *
+    * @function
+    * @param {string} wktCollection Texto del que se obtienen los objetos geográficos.
+    * @param {Object} options Opciones.
+    * - dataProjection: Proyección de los datos leídos.
+    * - featureProjection: Proyección de las geometrías de los objetos geográficos
+    * creados por el lector de formato.
+    * - extent: Extensión de la tesela en unidades de mapa de la tesela
+    * leída
+    * @returns {Array<M.Feature>} Objetos geográficos.
+    * @public
+    * @api
+    */
   readCollection(wktCollection, options = {}) {
     const opts = getOptsProjection(options);
     const { ids } = options;
@@ -84,11 +125,20 @@ class WKT extends MObject {
   }
 
   /**
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Este método escribe un objeto geográfico en formato WKT.
+    *
+    * @function
+    * @param {M.Feature} feature Objeto geográfico.
+    * @param {Object} options Opciones.
+    * - dataProjection: Proyección de los datos a escribir.
+    * - featureProjection: Proyección de las geometrías del objeto geográfico
+    * que serán serializadas por el escritor de formato.
+    * - rightHanded: Indica si se sigue la regla 'rigth-hand'.
+    * - decimals: Número máximo de decimales para las coordenadas.
+    * @returns {string} Objeto geográfico en formato WKT.
+    * @public
+    * @api
+    */
   write(feature, options = {}) {
     const opts = getOptsProjection(options);
     const olFeature = FeatureImpl.facade2OLFeature(feature);
@@ -97,11 +147,15 @@ class WKT extends MObject {
   }
 
   /**
-  * Método auxiliar para las transformaciones y operaciones
-  * geométricas que no se incorporaron en un principio en apiign
-  * geometry: La geometría que se desea transformar.
-  * return:La geometría transformada en formato WKT.
-  */
+    * Método auxiliar para las transformaciones y operaciones
+    * geométricas que no se incorporaron en un principio en apiign.
+    *
+    * @function
+    * @param {Object} geometry Geometría que se desea transformar.
+    * @returns {string} Geometría transformada en formato WKT.
+    * @public
+    * @api
+    */
   writeFeature(geometry) {
     const olGeometry = this.gjFormat_.readGeometryFromObject(geometry);
     if (olGeometry.getType().toLowerCase() === 'point') {
@@ -114,11 +168,20 @@ class WKT extends MObject {
 
 
   /**
-  *
-  * @public
-  * @function
-  * @api
-  */
+    * Este método escribe los objetos geográficos en formato WKT.
+    *
+    * @function
+    * @param {Array<M.Feature>} feature Objetos geográficos.
+    * @param {Object} options Opciones.
+    * - dataProjection: Proyección de los datos a escribir.
+    * - featureProjection: Proyección de las geometrías del objeto geográfico
+    * que serán serializadas por el escritor de formato.
+    * - rightHanded: Indica si se sigue la regla 'rigth-hand'.
+    * - decimals: Número máximo de decimales para las coordenadas.
+    * @returns {string} 'Features' en formato WKT
+    * @public
+    * @api
+    */
   writeCollection(features, options = {}) {
     const opts = getOptsProjection(options);
     const olFeatures = features.map(f => FeatureImpl.facade2OLFeature(f));
@@ -128,3 +191,4 @@ class WKT extends MObject {
 }
 
 export default WKT;
+

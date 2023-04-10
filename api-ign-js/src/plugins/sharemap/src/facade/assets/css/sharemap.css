@@ -1,8 +1,3 @@
-.m-sharemap-container>button#m-sharemap-geturl {
-    border-radius: 20px;
-    border: 2px solid white;
-}
-
 .m-sharemap-container>button#m-sharemap-geturl>img {
     width: 50%;
     height: 80%;
@@ -256,3 +251,9 @@
 }
 
 /* '' */
+
+
+.m-sharemap-container>button#m-sharemap-geturl {
+    border-radius: 20px;
+    border: 2px solid white;
+}

@@ -9,52 +9,59 @@ import Exception from 'M/exception/exception';
 import { getValue } from 'M/i18n/language';
 
 /**
- * @classdesc
- * @api
- * @namespace M.impl.control
- */
+  * @classdesc
+  * Implementación de la clase del "loader" para los objetos geográficos KML.
+  *
+  * @property {M.Map} map_ Mapa.
+  * @property {M.impl.service.WFS} url_ URL del servicio WFS.
+  * @property {M.impl.format.GeoJSON} format_ Formato.
+  *
+  * @api
+  * @extends {M.Object}
+  */
 class KML extends MObject {
   /**
-   * @classdesc TODO
-   * control
-   * @param {function} element template of this control
-   * @param {M.Map} map map to add the plugin
-   * @constructor
-   * @extends {M.Object}
-   * @api stable
-   */
+    * Constructor principal de la clase KML.
+    *
+    * @constructor
+    * @param {M.Map} map Mapa
+    * @param {M.impl.service.WFS} url URL del servicio WFS.
+    * @param {M.impl.format.GeoJSON} format Formato.
+    * @api
+    */
   constructor(map, url, format) {
     super();
     /**
-     * TODO
-     * @private
-     * @type {M.Map}
-     */
+      * Mapa.
+      * @private
+      * @type {M.Map}
+      */
     this.map_ = map;
 
     /**
-     * TODO
-     * @private
-     * @type {M.impl.service.WFS}
-     */
+      * URL del servicio WFS.
+      * @private
+      * @type {M.impl.service.WFS}
+      */
     this.url_ = url;
 
     /**
-     * TODO
-     * @private
-     * @type {M.impl.format.GeoJSON}
-     */
+      * Formato.
+      * @private
+      * @type {M.impl.format.GeoJSON}
+      */
     this.format_ = format;
   }
 
   /**
-   * This function destroys this control, cleaning the HTML
-   * and unregistering all events
-   *
-   * @public
-   * @function
-   * @api stable
-   */
+    * Este método ejecutará la función "callback" a los objetos geográficos.
+    *
+    * @function
+    * @param {function} callback Función "callback" de llamada para ejecutar
+    * @returns {function} Método que ejecutará la función 'callback' a los objetos geográficos.
+    * @public
+    * @api
+    */
   getLoaderFn(callback) {
     return ((extent, resolution, projection) => {
       this.loadInternal_(projection).then((response) => {
@@ -64,18 +71,22 @@ class KML extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
-   * @function
-   */
+    * Este método obtiene los objetos geográficos a partir de los parámetros
+    * especificados.
+    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+    * @function
+    * @param {ol.proj.Projection} projection Proyección.
+    * @returns {Promise} Promesa con la obtención de los objetos geográficos.
+    * @public
+    * @api
+    */
   loadInternal_(projection) {
     return new Promise((success, fail) => {
       getRemote(this.url_).then((response) => {
         /*
-          Fix: While the KML URL was being resolved the map projection
-          might have been changed therefore the projection is readed again
-        */
+           Fix: While the KML URL was being resolved the map projection
+           might have been changed therefore the projection is readed again
+         */
         const lastProjection = this.map_.getProjection().code;
         if (!isNullOrEmpty(response.text)) {
           const features = this.format_.readCustomFeatures(response.text, {

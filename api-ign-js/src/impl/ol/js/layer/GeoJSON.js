@@ -15,18 +15,43 @@ import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
+ * GeoJSON, a pesar de no ser un estándar OGC (está en camino de convertirse en uno),
+ * es un formato de intercambio de información geográfica muy extendido que, al igual que WFS,
+ * permite que todos los elementos estén en el cliente.
+ *
  * @api
+ * @extends {M.impl.layer.Vector}
  */
 class GeoJSON extends Vector {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a KML layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa GeoJSON
+   * con parámetros especificados por el usuario.
    *
    * @constructor
    * @implements {M.impl.layer.Vector}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {Object} parameters Parámetros de la fachada, la fachada se refiere a un patrón
+   * estructural como una capa de abstracción con un patrón de diseño.
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - hide. Atributos ocultos.
+   * - show. Mostrar atributos.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
+   * - visibility. Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
+   * - opacity. Opacidad de capa, por defecto 1.
+   * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
+   * - style. Define el estilo de la capa.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceVector({
+   *    attributions: 'geojson',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(parameters, options, vendorOptions) {
@@ -34,44 +59,32 @@ class GeoJSON extends Vector {
     super(options, vendorOptions);
 
     /**
-     * Popup showed
-     * @private
-     * @type {M.impl.Popup}
+     * GeoJSON popup_. Instancia del popup.
      */
     this.popup_ = null;
 
     /**
-     *
-     * @private
-     * @type {M.impl.format.GeoJSON}
+     * GeoJSON formater_. Determina el formato, "GeoJSONFormat".
      */
     this.formater_ = null;
 
     /**
-     *
-     * @private
-     * @type {function}
+     * GeoJSON loader_. Determina si la capa esta cargada, "JSONPLoader".
      */
     this.loader_ = null;
 
     /**
-     *
-     * @private
-     * @type {Promise}
+     * GeoJSON loadFeaturesPromise_. Carga los objetos geográficos, asincrono.
      */
     this.loadFeaturesPromise_ = null;
 
     /**
-     *
-     * @private
-     * @type {Boolean}
+     * GeoJSON loaded_. Define si la capa esta cargada.
      */
     this.loaded_ = false;
 
     /**
-     *
-     * @private
-     * @type {Array<String>}
+     * GeoJSON hiddenAttributes_. Atributos de la capa ocultos.
      */
     this.hiddenAttributes_ = [];
     if (!isNullOrEmpty(options.hide)) {
@@ -79,9 +92,7 @@ class GeoJSON extends Vector {
     }
 
     /**
-     *
-     * @private
-     * @type {Array<String>}
+     * GeoJSON showAttributes_. Atributos de la capa que serán representados.
      */
     this.showAttributes_ = [];
     if (!isNullOrEmpty(options.show)) {
@@ -90,11 +101,11 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método añade a la capa al mapa.
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
   addTo(map) {
@@ -108,11 +119,11 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método refresca la capa.
    *
    * @public
    * @function
-   * @param {M.Map} map
+   * @param {String} source Nueva fuente, por defecto nulo.
    * @api stable
    */
   refresh(source = null) {
@@ -136,11 +147,11 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método devuelve la fuente de la capa.
    *
    * @public
    * @function
-   * @param {M.Map} map
+   * @param {String} source Nueva fuente.
    * @api stable
    */
   setSource(source) {
@@ -151,10 +162,12 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function sets the map object of the layer
-   *
-   * @private
+   * Este método devuelve los objetos geográficos de manera asincrona.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @returns {M.layer.GeoJSON.impl.loadFeaturesPromise_} Objetos geográficos, asíncrono.
+   * @api
    */
   requestFeatures_() {
     if (isNullOrEmpty(this.loadFeaturesPromise_)) {
@@ -173,10 +186,11 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function sets the map object of the layer
-   *
-   * @private
+   * Este método actualiza la fuente de la capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
    */
   updateSource_() {
     if (isNullOrEmpty(this.vendorOptions_.source)) {
@@ -198,12 +212,13 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function return extent of all features or discriminating by the filter
+   * Este método devuelve la extensión de todos los objetos geográficos, se
+   * le puede pasar un filtro.
    *
    * @function
-   * @param {boolean} skipFilter - Indicates whether skip filter
-   * @param {M.Filter} filter - Filter to execute
-   * @return {Array<number>} Extent of features
+   * @param {boolean} skipFilter Indica si se filtra por el filtro "skip".
+   * @param {M.Filter} filter Filtro.
+   * @return {Array<number>} Extensión de los objetos geográficos.
    * @api stable
    */
   getFeaturesExtent(skipFilter, filter) {
@@ -214,12 +229,13 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function return extent of all features or discriminating by the filter
+   * Este método devuelve la extensión de todos los objetos geográficos, se
+   * le puede pasar un filtro. Asíncrono.
    *
    * @function
-   * @param {boolean} skipFilter - Indicates whether skip filter
-   * @param {M.Filter} filter - Filter to execute
-   * @return {Array<number>} Extent of features
+   * @param {boolean} skipFilter Indica si se filtra por el filtro "skip".
+   * @param {M.Filter} filter Filtro.
+   * @return {Array<number>} Extensión de los objetos geográficos.
    * @api stable
    */
   getFeaturesExtentPromise(skipFilter, filter) {
@@ -239,11 +255,13 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Evento que se ejecuta cuando se hace clic sobre un objeto geográfico.
+   *
    * @public
    * @function
-   * @param {ol.Feature} feature
+   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
+   * @param {Array} coord Coordenadas.
+   * @param {Object} evt Eventos.
    * @api stable
    */
   selectFeatures(features, coord, evt) {
@@ -280,11 +298,14 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Pasa los objetos geográficos a la plantilla.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @Public
    * @function
+   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
+   * @returns {Object} "FeaturesTemplate.features".
+   * @api stable
    */
   parseFeaturesForTemplate_(features) {
     const featuresTemplate = {
@@ -340,8 +361,10 @@ class GeoJSON extends Vector {
   // };
 
   /**
-   * TODO
+   * Devuelve si la capa esta cargada o no.
+   *
    * @function
+   * @returns {Boolean} Verdadero se cargo falso si no.
    * @api stable
    */
   isLoaded() {
@@ -349,10 +372,12 @@ class GeoJSON extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Esta función comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api stable
    */
   equals(obj) {

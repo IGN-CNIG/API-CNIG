@@ -4,60 +4,60 @@
 
 /**
  * @classdesc
- * Response for proxy requests
+ * Respuesta para solicitudes de proxy.
+ * @property {String} text Respuesta.
+ * @property {XML} xml Respuesta XML.
+ * @property {Object} headers Cabecera.
+ * @property {boolean} error Respuesta error.
+ * @property {Number} code Respuesta código.
  * @api
  */
 class Response {
   /**
-   *
+   * Constructor principal de la clase.
    * @constructor
    * @extends {M.Object}
-   * @param {Object} response from proxy requests
+   * @param {Object} xmlHttpResponse Respuesta del proxy.
    * @api
    */
   constructor(xmlHttpResponse) {
     /**
-     * @public
      * @type {string}
      * @api
      */
     this.text = null;
 
     /**
-     * @public
      * @type {XML}
      * @api
      */
     this.xml = null;
 
     /**
-     * @public
      * @type {Object}
      * @api
      */
     this.headers = {};
 
     /**
-     * @public
      * @type {boolean}
      * @api
      */
     this.error = false;
 
     /**
-     * @public
-     * @type {int}
+     * @type {Number}
      * @api
      */
     this.code = 0;
   }
 
   /**
-   * This function parses a XmlHttp response
-   * from an ajax request
+   * Esta función analiza una respuesta XmlHttp
+   * de una solicitud ajax.
    *
    * @function
-   * @param {Object} url
+   * @param {Object} xmlHttpResponse Respuesta.
    * @api
    */
   parseXmlHttp(xmlHttpResponse) {
@@ -80,11 +80,11 @@ class Response {
   }
 
   /**
-   * This function parses a XmlHttp response
-   * from an ajax request
+   * Esta función analiza una respuesta XmlHttp
+   * de una solicitud ajax del proxy.
    *
    * @function
-   * @param {Object} url
+   * @param {Object} proxyResponse Respuesta del proxy.
    * @api
    */
   parseProxy(proxyResponse) {

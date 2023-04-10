@@ -4,59 +4,64 @@
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a chart variable
+ * Variables para el gráfico.
  * @api
  */
 class Variable {
   /**
-   * @param {Mx.ChartVariableOptions} options.
-   *  - attribute {string} the feature property name where data is stored
-   *  - label {number}
-   *    - text {string|Function} data label displayed. If this property is a
-   *           function the args passed will be: currentVal, values, feature
-   *    - stroke.
-   *      - color {string} the color of the data label stroke
-   *      - width {number} the width of the data label stroke
-   *    - radiusIncrement {number} distance between text position origin and
-   *                      chart radius
-   *    - fill {string} the color of the data label
-   *    - font {string} the font family of the data label
-   *    - scale {number} the scale of the data label. We can't use a font size so
-   *            canvas will rescales the text
-   *  - fill {number} the color of the chart representation fill (if chart type = 'bar')
-   *         this property sets the bar fill color
-   *  - legend {string} the layerswitcher legend label
-   *
-   *  [WARN] Notice that label property only will be applied if the geometry is
-   *  not of type 'multipolygon' and chart type is distinct of 'bar' type
+   * Contructor principal de la clase.
    *
    * @constructor
+   * @param {Mx.ChartVariableOptions} options.
+   *  - attribute: El nombre de la propiedad del objeto geográfico
+   *    donde se almacenan los datos.
+   *  - label: Opciones mostradas en la etiqueta de datos.
+   *    - text: etiqueta de datos mostrada. Si esta propiedad es una
+    *   función los argumentos pasados serán:  "currentVal", "values", "feature".
+   *    - stroke. Borde.
+   *      - color: el color del trazo de la etiqueta de datos.
+   *      - width: el ancho del trazo de la etiqueta de datos.
+   *    - radiusIncrement: distancia entre el origen de la posición del texto y
+   *                               radio del gráfico.
+   *    - fill: el color de la etiqueta de datos.
+   *    - font: la familia de fuentes de la etiqueta de datos.
+   *    - scale: la escala de la etiqueta de datos. No podemos usar un tamaño de
+   *          fuente, así que lienzo volverá a escalar el texto.
+   *   - fill: el color del relleno de la representación del
+   *    gráfico (si el tipo de gráfico = 'barra') esta propiedad establece el
+   *    color de relleno de la barra.
+   *  - legend: la etiqueta de leyenda del conmutador de capas.
+   *
+   * [ADVERTENCIA] Tenga en cuenta que la propiedad de la etiqueta solo se aplicará
+   * si la geometría es no es del tipo 'multipolígono' y el
+   * tipo de gráfico es distinto del tipo 'barra'.
+   *
    * @api
    */
   constructor(options = {}) {
     /**
-     * Feature property name where data is stored
+     * Nombre de la propiedad del objeto greográfico donde se almacenan los datos.
      * @private
      * @type {string}
      */
     this.attributeName_ = options.attribute || null;
 
     /**
-     * Data label displayed options
+     * Opciones mostradas en la etiqueta de datos.
      * @private
      * @type {object}
      */
     this.label_ = options.label || null;
 
     /**
-     * Data chart color
+     * Color del gráfico de datos.
      * @private
      * @type {string}
      */
     this.fillColor_ = options.fill || null;
 
     /**
-     * Layerswitcher display name
+     * Leyenda.
      * @private
      * @type {string}
      */
@@ -64,45 +69,99 @@ class Variable {
   }
 
   /**
-   * attributeName_ setter & getter declaration
+   * Retorna el nombre de la propiedad del objeto greográfico
+   * donde se almacenan los datos.
+   *
+   * @public
+   * @function
+   * @returns {string} Nombre de la propiedad.
+   * @api
    */
   get attribute() {
     return this.attributeName_;
   }
 
+  /**
+   * Modifica el nombre de la propiedad del objeto greográfico
+   * donde se almacenan los datos.
+   *
+   * @public
+   * @function
+   * @param {string} attribute Nuevo nombre de la propiedad.
+   * @api
+   */
   set attribute(attribute) {
     this.attributeName_ = attribute;
   }
 
   /**
-   * label_ setter & getter declaration
+   * Retorna la etiqueta de datos.
+   *
+   * @public
+   * @function
+   * @returns {string} Nombre de la etiqueta.
+   * @api
    */
   get label() {
     return this.label_;
   }
 
+  /**
+   * Modifica la etiqueta de datos.
+   *
+   * @public
+   * @function
+   * @param {string} label Nueva etiqueta de datos.
+   * @api
+   */
   set label(label) {
     this.label_ = label;
   }
 
   /**
-   * fillColor_ setter & getter declaration
+   * Retorna el color del gráfico de datos.
+   *
+   * @public
+   * @function
+   * @returns {string} Color del gráfico de datos.
+   * @api
    */
   get fillColor() {
     return this.fillColor_;
   }
 
+  /**
+   * Modifica el color del gráfico de datos.
+   *
+   * @public
+   * @function
+   * @param {string} fillColor Nuevo Color del gráfico de datos.
+   * @api
+   */
   set fillColor(fillColor) {
     this.fillColor_ = fillColor;
   }
 
   /**
-   * legend_ setter & getter declaration
+   * Retorna la leyenda.
+   *
+   * @public
+   * @function
+   * @returns {string} Leyenda.
+   * @api
    */
   get legend() {
     return this.legend_;
   }
 
+  /**
+   * Modifica la leyenda.
+   *
+   * @public
+   * @function
+   * @param {string} legend leyenda.
+   * @api
+   */
   set legend(legend) {
     this.legend_ = legend;
   }

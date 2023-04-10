@@ -1,3 +1,8 @@
+/**
+ * @module M/impl/ol/js/ext/OLStyleFlowLine
+ */
+
+
 /* eslint-disable  no-cond-assign */
 import OLStyleStyle from 'ol/style/Style';
 import { asString as olColorAsString } from 'ol/color';
@@ -9,12 +14,36 @@ import './LineStringSplitAt';
  * released under the CeCILL-B license (French BSD license)
  * (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
  */
+
 /**
  * @classdesc
- * Fill style with named pattern
- *
+ * Esta clase implementa un estilo de línea con patrón.
+ * @extends {ol.style.Style}
+ * @api
  */
-export default class OLStyleFlowLine extends OLStyleStyle {
+class OLStyleFlowLine extends OLStyleStyle {
+  /**
+   * Crea un estilo de línea con patrón.
+   * @constructor
+   * @param {Object} options Opciones de estilo.
+   * - stroke: Estilo de línea.
+   * - text: Estilo de texto.
+   * - zIndex: Z-index.
+   * - geometry: Geometría.
+   * - width: Ancho de la línea, por defecto 0.
+   * - width2: Ancho de la línea, por defecto 0.
+   * - color: Color de la línea, por defecto '#000'.
+   * - color2: Color de la línea, por defecto '#000'.
+   * - offset0: Desplazamiento de la línea, por defecto 0.
+   * - offset1: Desplazamiento de la línea, por defecto 0.
+   * - lineCap: Tipo de extremo de la línea, por defecto 'round'.
+   * - arrow: Flecha al final de la línea, por defecto falso.
+   * - arrowSize: Tamaño de la flecha, por defecto 10.
+   * - arrowColor: Color de la flecha, por defecto '#000'.
+   * - noOverlap: No superponer líneas, por defecto falso.
+   * - visible: Visible, por defecto verdadero.
+   * @api
+   */
   constructor(options = {}) {
     super({
       stroke: options.stroke,
@@ -54,28 +83,40 @@ export default class OLStyleFlowLine extends OLStyleStyle {
     // Overlap
     this._noOverlap = options.noOverlap;
   }
-  /** Set the initial width
-   * @param {number} width width, default 0
+  /**
+   * Modifica el ancho inicial de la línea.
+   * @function
+   * @param {number} width Ancho de la línea, por defecto 0.
+   * @api
    */
   setWidth(width) {
     this._width = width || 0;
   }
-  /** Set the final width
-   * @param {number} width width, default 0
+  /**
+   * Modifica el ancho final de la línea.
+   * @function
+   * @param {number} width Ancho de la línea, por defecto 0.
+   * @api
    */
   setWidth2(width) {
     this._width2 = width;
   }
-  /** Get offset at start or end
-   * @param {number} where 0=start, 1=end
-   * @return {number} width
+  /**
+   * Devuelve el desplazamiento inicial o final de la línea.
+   * @function
+   * @param {number} where 0=inicio, 1=final.
+   * @return {number} Desplazamiento de la línea.
+   * @api
    */
   getOffset(where) {
     return this._offset[where];
   }
-  /** Add an offset at start or end
-   * @param {number} width
-   * @param {number} where 0=start, 1=end
+  /**
+   * Añade un desplazamiento al inicio o final de la línea.
+   * @function
+   * @param {number} width Desplazamiento de la línea.
+   * @param {number} where 0=inicio, 1=final.
+   * @api
    */
   setOffset(width, where) {
     const widthAux = Math.max(0, parseFloat(width));
@@ -93,16 +134,21 @@ export default class OLStyleFlowLine extends OLStyleStyle {
       }
     }
   }
-  /** Set the LineCap
-   * @param {steing} cap LineCap (round or butt), default butt
+  /**
+   * Modifica el tipo de extremo de la línea.
+   * @function
+   * @param {String} cap Tipo de extremo de la línea, por defecto "round".
+   * @api
    */
   setLineCap(cap) {
     this._lineCap = (cap === 'round' ? 'round' : 'butt');
   }
-  /** Get the current width at step
-   * @param {ol.feature} feature
-   * @param {number} step current drawing step beetween [0,1]
+  /**
+   * Devuelve el ancho actual en el paso.
+   * @param {ol.feature} feature Objetos geográficos.
+   * @param {number} step Paso.
    * @return {number}
+   * @api
    */
   getWidth(feature, step) {
     if (this._widthFn) {
@@ -111,8 +157,11 @@ export default class OLStyleFlowLine extends OLStyleStyle {
     const w2 = (typeof (this._width2) === 'number') ? this._width2 : this._width;
     return this._width + ((w2 - this._width) * step);
   }
-  /** Set the initial color
-   * @param {ol.colorLike} color
+  /**
+   * Modifica el color inicial de la línea.
+   * @function
+   * @param {ol.colorLike} color Color de la línea, por defecto '#000'.
+   * @api
    */
   setColor(color) {
     try {
@@ -121,8 +170,11 @@ export default class OLStyleFlowLine extends OLStyleStyle {
       this._color = [0, 0, 0, 1];
     }
   }
-  /** Set the final color
-   * @param {ol.colorLike} color
+  /**
+   * Modifica el color final de la línea.
+   * @function
+   * @param {ol.colorLike} color Color de la línea, por defecto '#000'.
+   * @api
    */
   setColor2(color) {
     try {
@@ -131,8 +183,11 @@ export default class OLStyleFlowLine extends OLStyleStyle {
       this._color2 = null;
     }
   }
-  /** Set the arrow color
-   * @param {ol.colorLike} color
+  /**
+   * Modifica el color de la flecha.
+   * @function
+   * @param {ol.colorLike} color Color de la flecha, por defecto '#000'.
+   * @api
    */
   setArrowColor(color) {
     try {
@@ -141,10 +196,13 @@ export default class OLStyleFlowLine extends OLStyleStyle {
       this._acolor = null;
     }
   }
-  /** Get the current color at step
-   * @param {ol.feature} feature
-   * @param {number} step current drawing step beetween [0,1]
-   * @return {string}
+  /**
+   * Devuelve el color actual en el paso.
+   * @function
+   * @param {ol.feature} feature Objetos geográficos.
+   * @param {number} step Paso.
+   * @return {string} Color en formato rgba.
+   * @api
    */
   getColor(feature, step) {
     if (this._colorFn) {
@@ -159,13 +217,20 @@ export default class OLStyleFlowLine extends OLStyleStyle {
       ${(color[3] + ((color2[3] - color[3]) * step))}
       )`;
   }
-  /** Get arrow
+  /**
+   * Devuelve el tipo de flecha.
+   * @function
+   * @return {number} -1 | 0 | 1 | 2
+   * @api
    */
   getArrow() {
     return this._arrow;
   }
-  /** Set arrow
-   * @param {number} n -1 | 0 | 1 | 2, default: 0
+  /**
+   * Modifica el tipo de flecha.
+   * @function
+   * @param {number} n -1 | 0 | 1 | 2, por defecto: 0
+   * @api
    */
   setArrow(n) {
     this._arrow = parseInt(n, 0);
@@ -173,14 +238,20 @@ export default class OLStyleFlowLine extends OLStyleStyle {
       this._arrow = 0;
     }
   }
-  /** getArrowSize
-   * @return {ol.size}
+  /**
+   * Devuelve el tamaño de la flecha.
+   * @function
+   * @return {ol.size} [ancho, alto].
+   * @api
    */
   getArrowSize() {
     return this._arrowSize || [16, 16];
   }
-  /** setArrowSize
-   * @param {number|ol.size} size
+  /**
+   * Modifica el tamaño de la flecha.
+   * @function
+   * @param {number|ol.size} size Tamaño de la flecha, por defecto: [16, 16].
+   * @api
    */
   setArrowSize(size) {
     if (Array.isArray(size)) {
@@ -189,13 +260,16 @@ export default class OLStyleFlowLine extends OLStyleStyle {
       this._arrowSize = [size, size];
     }
   }
-  /** drawArrow
-   * @param {CanvasRenderingContext2D} ctx
-   * @param {ol.coordinate} p0
-   * @param ol.coordinate} p1
-   * @param {number} width
-   * @param {number} ratio pixelratio
-   * @private
+  /**
+   * Dibuja una flecha en el contexto.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @function
+   * @param {CanvasRenderingContext2D} ctx Contexto.
+   * @param {ol.coordinate} p0 Punto inicial.
+   * @param {ol.coordinate} p1 Punto final.
+   * @param {number} width Ancho de la línea.
+   * @param {number} ratio Ratio de resolución.
+   * @api
    */
   drawArrow(ctx, p0, p1, width, ratio) {
     const asize = this.getArrowSize()[0] * ratio;
@@ -210,9 +284,13 @@ export default class OLStyleFlowLine extends OLStyleStyle {
     ctx.lineTo(p0[0], p0[1]);
     ctx.fill();
   }
-  /** Renderer function
-   * @param {Array<ol.coordinate>} geom The pixel coordinates of the geometry in GeoJSON notation
-   * @param {ol.render.State} e The olx.render.State of the layer renderer
+  /**
+   * Renderiza la geometría.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {Array<ol.coordinate>} geom Las coordenadas de píxeles de la geometría
+   * en notación GeoJSON.
+   * @param {ol.render.State} e El "olx.render.State" del renderizador de capas.
+   * @api
    */
   _render(geom, e) {
     if (e.geometry.getType() === 'LineString') {
@@ -297,10 +375,14 @@ export default class OLStyleFlowLine extends OLStyleStyle {
       ctx.restore();
     }
   }
-  /** Split extremity at
-   * @param {ol.geom.LineString} geom
-   * @param {number} asize
-   * @param {boolean} end start=false or end=true, default false (start)
+  /**
+   * Divide la geometría en dos partes, en el punto de la geometría.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {ol.geom.LineString} geom La geometría.
+   * @param {number} asize El tamaño de la flecha.
+   * @param {boolean} end start=falso or end=verdadero, por defecto falso (start).
+   * @return {Array<ol.coordinate>} El punto de la geometría.
+   * @api
    */
   _splitAsize(geom, asize, end) {
     let p;
@@ -342,10 +424,14 @@ export default class OLStyleFlowLine extends OLStyleStyle {
     }
     return [p0, p];
   }
-  /** Split line geometry into equal length geometries
-   * @param {Array<ol.coordinate>} geom
-   * @param {number} nb number of resulting geometries, default 255
-   * @param {number} nim minimum length of the resulting geometries, default 1
+  /**
+   * Divide la geometría en partes de igual longitud.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {Array<ol.coordinate>} geom La geometría.
+   * @param {number} nb Número por defecto de partes, por defecto 255.
+   * @param {number} nim Longitud mínima de las partes, por defecto 255.
+   * @return {Array<Array<ol.coordinate>>} La geometría dividida.
+   * @api
    */
   _splitInto(geom, nb, min) {
     let i;
@@ -393,3 +479,5 @@ export default class OLStyleFlowLine extends OLStyleStyle {
     return geoms;
   }
 }
+
+export default OLStyleFlowLine;

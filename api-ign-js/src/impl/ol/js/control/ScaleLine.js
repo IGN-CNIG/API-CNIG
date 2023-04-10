@@ -25,13 +25,37 @@ const LEADING_DIGITS = [1, 2, 5];
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a WMC selector
- * control
+ * Añadir escala gráfica.
  * @api
  */
 class ScaleLine extends OLControlScaleLine {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base, estas opciones
+   * se pasarán en formato objeto. Opciones disponibles:
+   * - className: Nombre de la clase CSS.
+   * El valor predeterminado es ol-scale-bar
+   * cuando se configura con "bar" es verdadero.
+   * De lo contrario, el valor predeterminado es ol-scale-line.
+   * - minWidth: Ancho mínimo en píxeles en los dpi predeterminados de OGC.
+   * El ancho se ajustará para que coincida con los dpi utilizados.
+   * - render: Función llamada cuando se debe volver a
+   * representar el control.
+   * Esto se llama en una devolución de llamada de requestAnimationFrame.
+   * - target: Especifique un objetivo si desea que
+   * el control se represente fuera de la ventana gráfica del mapa.
+   * - units: Unidades.
+   * - bar: Representa barras de escala en lugar de una línea.
+   * - steps: Número de pasos que debe usar la barra de escala.
+   * Utilice números pares para obtener mejores resultados. Solo se aplica cuando
+   * la barra es verdadera.
+   * - text: Representa la escala de texto arriba de la barra de escala.
+   * Solo se aplica cuando la barra es verdadera.
+   * - dpi: dpi del dispositivo de salida, como una impresora.
+   * Solo se aplica cuando la barra es verdadera.
+   * Si no se define, se asumirá el tamaño de píxel de pantalla predeterminado de OGC de 0,28 mm.
    * @extends {ol.control.Control}
    * @api stable
    */
@@ -43,12 +67,12 @@ class ScaleLine extends OLControlScaleLine {
   }
 
   /**
-   * This function adds the control to the specified map
+   * Este método añade el control al mapa.
    *
    * @public
    * @function
-   * @param {M.Map} map to add the plugin
-   * @param {function} template template of this control
+   * @param {M.Map} map Mapa.
+   * @param {function} template Plantilla del control.
    * @api stable
    */
   addTo(map, element) {
@@ -59,10 +83,11 @@ class ScaleLine extends OLControlScaleLine {
   }
 
   /**
-   * TODO
+   * Devuelve los elementos del control.
    *
    * @public
    * @function
+   * @returns {HTMLElement} Retorna los elementos del control.
    * @api stable
    * @export
    */
@@ -71,8 +96,7 @@ class ScaleLine extends OLControlScaleLine {
   }
 
   /**
-   * This function destroys this control, cleaning the HTML
-   * and unregistering all events
+   * Esta función destruye este control, limpiando el HTML y anula el registro de todos los eventos.
    *
    * @public
    * @function
@@ -85,14 +109,22 @@ class ScaleLine extends OLControlScaleLine {
   }
 
   /**
-   * @private
+   * Actualiza los elementos del control.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @function
+   * @api stable
    */
   handleUnitsChanged_() {
     this.updateElement_();
   }
 
   /**
-   * @private
+   * Actualiza los elementos del control.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @function
+   * @api stable
    */
   updateElement_() {
     const viewState = this.viewState_;

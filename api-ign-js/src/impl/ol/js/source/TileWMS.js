@@ -6,14 +6,36 @@ import OLSourceTileWMS from 'ol/source/TileWMS';
 
 /**
  * @classdesc
- * Layer source for tile data from WMS servers.
+ * Fuente de capa para datos de teselas de servidores WMS.
  * @api
  */
 class TileWMS extends OLSourceTileWMS {
   /**
    * @constructor
    * @extends {ol.source.TileImage}
-   * @param {olx.source.TileWMSOptions=} opt_options Tile WMS options.
+   * @param {olx.source.TileWMSOptions=} opt_options Opciones.
+   * - attributions: Atribuciones.
+   * - attributionsCollapsible: Las atribuciones son plegables.
+   * - cacheSize: Tamaño inicial de caché de teselas.
+   * - crossOrigin: El atributo "crossOrigin" para imágenes cargadas.
+   * - interpolate: Valores interpolados al volver a muestrear.
+   * - params: Parámetros de solicitud de WMS. Se requiere al menos un parámetro LAYERS.
+   * - gutter: El tamaño en píxeles alrededor de los mosaicos de
+   * imágenes que se ignorarán.
+   * - hidpi: Utilice el valor ol/Map#pixelRatio cuando solicite la
+   * imagen del servidor remoto.
+   * - projection: Proyección. El valor predeterminado
+   * es la proyección de la vista.
+   * - reprojectionErrorThreshold: Error de reproyección máximo permitido (en píxeles).
+   * - tileClass: Clase utilizada para crear instancias de mosaicos de imágenes.
+   * El valor predeterminado es "ImageTile".
+   * - tileGrid: La cuadrícula de teselas.
+   * - tileLoadFunction: Cargar una imagen dada una URL.
+   * - url: URL del servicio WMS.
+   * - urls: URLs del servicio WMS.
+   * - wrapX: El mosaico de imágenes se repetirá horizontalmente.
+   * - transition: Transición de la opacidad entre las imágenes de teselas.
+   * - zDirection: Dirección de la cuadrícula de teselas.
    * @api stable
    */
 
@@ -26,7 +48,7 @@ class TileWMS extends OLSourceTileWMS {
   }
 
   /**
-   * TODO
+   * Evento de cambio genérico. Se activa cuando se incrementa el contador de revisión.
    * @public
    * @function
    * @api stable
@@ -41,9 +63,11 @@ class TileWMS extends OLSourceTileWMS {
   }
 
   /**
-   * TODO
+   * Carga de teselas de la fuente.
    * @public
    * @function
+   * @param {ol.ImageTile} imageTile Tesela.
+   * @param {string} src URL de la tesela.
    * @api stable
    */
   static tileLoadFunction(imageTileParam, src) {

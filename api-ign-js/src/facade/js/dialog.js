@@ -8,23 +8,25 @@ import { compileSync as compileTemplate } from './util/Template';
 import { getValue } from './i18n/language';
 
 /**
- * TODO
- *
+ * Eliminar el modal padre.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @public
  * @function
+ * @param {HTMLElement} element Elimina el elemento html.
+ * @api
  */
-const removeElement = (element) => {
+export const removeElement = (element) => {
   const parent = element.parentElement;
   parent.removeChild(element);
 };
 
 /**
- * TODO
- *
+ * Elimina el elemento "Dialog"
  * @public
  * @function
+ * @api
  */
-const remove = () => {
+export const remove = () => {
   const dialogs = document.querySelectorAll('div.m-dialog');
   Array.prototype.forEach.call(dialogs, (dialog) => {
     const parent = dialog.parentElement;
@@ -33,11 +35,14 @@ const remove = () => {
 };
 
 /**
- * TODO
- *
+ * Esta función genera la plantilla del modal.
  * @public
  * @function
  * @returns {Promise}
+ * @param {String} message Contenido que se mostrará.
+ * @param {String} title Título del modal.
+ * @param {String} severity Tipo de modal.
+ * @param {Number} order "tabindex" de los elementos del modal, por defecto 300.
  * @api
  */
 export const show = (message, title, severity, order = 300) => {
@@ -51,7 +56,7 @@ export const show = (message, title, severity, order = 300) => {
     vars,
   });
   // removes previous dialogs
-  remove();
+  // remove();
 
   // append new dialog
   const mapeaContainer = document.querySelector('div.m-mapea-container');
@@ -63,12 +68,13 @@ export const show = (message, title, severity, order = 300) => {
 };
 
 /**
- * TODO
+ * Genera el modal de tipo "info".
  *
  * @public
  * @function
- * @param {string} message to show
- * @param {string} title of the dialog
+ * @param {String} message Mensaje que se mostrará.
+ * @param {String} titleParam Título del dialogo.
+ * @param {Number} order "tabIndex" de los elementos del HTML.
  * @returns {Promise}
  * @api
  */
@@ -81,12 +87,13 @@ export const info = (message, titleParam, order) => {
 };
 
 /**
- * TODO
+ * Genera el modal de tipo "error".
  *
  * @public
  * @function
- * @param {string} message to show
- * @param {string} title of the dialog
+ * @param {String} message Mensaje que se mostrará.
+ * @param {String} title Título del dialogo.
+ * @param {Number} order "tabIndex" de los elementos del HTML.
  * @returns {Promise}
  * @api
  */
@@ -99,12 +106,13 @@ export const error = (message, titleParam, order) => {
 };
 
 /**
- * TODO
+ * Genera el modal de tipo "success".
  *
  * @public
  * @function
- * @param {string} message to show
- * @param {string} title of the dialog
+ * @param {String} message Mensaje que se mostrará.
+ * @param {String} title Título del dialogo.
+ * @param {Number} order "tabIndex" de los elementos del HTML.
  * @returns {Promise}
  * @api
  */
@@ -115,3 +123,13 @@ export const success = (message, titleParam, order) => {
   }
   return show(message, title, 'success', order);
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

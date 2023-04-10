@@ -17,17 +17,17 @@ Plugin que genera un buffer o un área de influencia sobre un punto, linea o pol
 
 ## Parámetros
 
-- El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
+El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin
-    - 'TL':top left
-    - 'TR':top right (default)
-    - 'BL':bottom left
-    - 'BR':bottom right
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsible**. Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto tiene el valor *true*.
+- **collapsible**: Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto: true.
 
-- **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
+- **collapsed**: Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto: true.
 
 ## Ejemplos de uso
 

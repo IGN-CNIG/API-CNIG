@@ -4,10 +4,14 @@
 import OLControl from 'ol/control/Control';
 /**
  * @classdesc
+ * Es la clase de la que heredan todos los controles de la implementación,
+ * crea el "OLControl".
  * @api
  */
 class Control extends OLControl {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
    * @extends {OLControl}
    * @api stable
@@ -23,12 +27,12 @@ class Control extends OLControl {
   }
 
   /**
-   * This function adds the control to the specified map
+   * Este método añade el control al mapa.
    *
    * @public
    * @function
-   * @param {M.Map} map to add the plugin
-   * @param {function} template template of this control
+   * @param {M.Map} map Mapa.
+   * @param {function} template Plantilla del control.
    * @api stable
    * @export
    */
@@ -42,8 +46,8 @@ class Control extends OLControl {
   }
 
   /**
-   * This function destroys this control, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye este control, limpiando el HTML
+   * y anulando el registro de todos los eventos.
    *
    * @public
    * @function
@@ -56,10 +60,11 @@ class Control extends OLControl {
   }
 
   /**
-   * function remove the event 'click'
+   * Este método retorna los elementos.
    *
    * @public
    * @function
+   * @returns {HTMLElement} Elementos.
    * @api stable
    * @export
    */

@@ -8,8 +8,11 @@ import { INCHES_PER_UNIT, DOTS_PER_INCH } from '../units';
 import * as WKT from '../geom/WKT';
 
 /**
- *
+ * Devuelve verdadero si es valor que se le pasa por
+ * parámetros es "undefined".
  * @function
+ * @param {*} obj Valor que se quiere comprobar.
+ * @returns {Boolean} Verdadero si es "undefined".
  * @api
  */
 export const isUndefined = (obj) => {
@@ -17,8 +20,11 @@ export const isUndefined = (obj) => {
 };
 
 /**
- *
+ * Devuelve verdadero si es valor que se le pasa por
+ * parámetros es "boolean".
  * @function
+ * @param {*} obj Valor que se quiere comprobar.
+ * @returns {Boolean} Verdadero si es "boolean".
  * @api
  */
 export const isBoolean = (obj) => {
@@ -30,8 +36,11 @@ export const isBoolean = (obj) => {
 };
 
 /**
- *
+ * Devuelve verdadero si es valor que se le pasa por
+ * parámetros es "null".
  * @function
+ * @param {*} obj Valor que se quiere comprobar.
+ * @returns {Boolean} Verdadero si es "null".
  * @api
  */
 export const isNull = (obj) => {
@@ -51,8 +60,11 @@ export const isNull = (obj) => {
 };
 
 /**
- *
+ * Devuelve verdadero si es valor que se le pasa por
+ * parámetros es "Array".
  * @function
+ * @param {*} obj Valor que se quiere comprobar.
+ * @returns {Boolean} Verdadero si es "Array".
  * @api
  */
 export const isArray = (obj) => {
@@ -64,11 +76,11 @@ export const isArray = (obj) => {
 };
 
 /**
- * This function checks if the obj is null or empty
- *
+ * Devuelve verdadero si es valor que se le pasa por
+ * parámetros es "null" o esta vacío.
  * @function
- * @param {string|Object|Array<*>} obj
- * @returns {boolean}
+ * @param {*} obj Valor que se quiere comprobar.
+ * @returns {Boolean} Verdadero si es "null" o vacío.
  * @api
  */
 export const isNullOrEmpty = (obj) => {
@@ -90,8 +102,11 @@ export const isNullOrEmpty = (obj) => {
 };
 
 /**
- *
+ * Devuelve verdadero si es valor que se le pasa por
+ * parámetros es una función.
  * @function
+ * @param {*} obj Valor que se quiere comprobar.
+ * @returns {Boolean} Verdadero si es una función.
  * @api
  */
 export const isFunction = (obj) => {
@@ -103,8 +118,11 @@ export const isFunction = (obj) => {
 };
 
 /**
- *
+ * Devuelve verdadero si es valor que se le pasa por
+ * parámetros es un objeto.
  * @function
+ * @param {*} obj Valor que se quiere comprobar.
+ * @returns {Boolean} Verdadero si es un objeto.
  * @api
  */
 export const isObject = (obj) => {
@@ -116,8 +134,11 @@ export const isObject = (obj) => {
 };
 
 /**
- *
+ * Devuelve verdadero si es valor que se le pasa por
+ * parámetros es una cadena.
  * @function
+ * @param {*} obj Valor que se quiere comprobar.
+ * @returns {Boolean} Verdadero si es una cadena.
  * @api
  */
 export const isString = (obj) => {
@@ -129,8 +150,11 @@ export const isString = (obj) => {
 };
 
 /**
- *
+ * Devuelve verdadero si es valor que se le pasa por
+ * parámetros es una url.
  * @function
+ * @param {*} obj Valor que se quiere comprobar.
+ * @returns {Boolean} Verdadero si es una url.
  * @api
  */
 export const isUrl = (obj) => {
@@ -143,8 +167,11 @@ export const isUrl = (obj) => {
 
 
 /**
- *
+ * Devuelve un texto normalizado (sin espacios y en mayúsculas o minúsculas).
  * @function
+ * @param {String} stringToNormalize Valor que se quiere normalizar.
+ * @param {Boolean} upperCase Verdadero mayúsculas, falso minúsculas.
+ * @returns {String} Texto normalizado.
  * @api
  */
 export const normalize = (stringToNormalize, upperCase) => {
@@ -159,8 +186,11 @@ export const normalize = (stringToNormalize, upperCase) => {
 };
 
 /**
- *
+ * Devuelve los parámetros de una URL.
  * @function
+ * @param {String} paramName Nombre del parámetro.
+ * @param {String} url URL.
+ * @returns {String} Parámetros de una URL.
  * @api
  */
 export const getParameterValue = (paramName, url) => {
@@ -185,8 +215,11 @@ export const getParameterValue = (paramName, url) => {
 };
 
 /**
- *
+ * Añade parámetros a una URL.
  * @function
+ * @param {String} params Parámetros.
+ * @param {String} url URL.
+ * @returns {String} URL con parámetros.
  * @api
  */
 export const addParameters = (url, params) => {
@@ -218,8 +251,11 @@ export const addParameters = (url, params) => {
 };
 
 /**
- *
+ * Genera un valor aleatorio.
  * @function
+ * @param {String} prefix Prefijo.
+ * @param {String} sufix Sufijo.
+ * @returns {String} Valor aleatorio.
  * @api
  */
 export const generateRandom = (prefix, sufix) => {
@@ -244,8 +280,11 @@ export const generateRandom = (prefix, sufix) => {
 };
 
 /**
- *
+ * Devuelve los metadatos de una url, capa WMS.
  * @function
+ * @param {String} serverUrl URL.
+ * @param {String} version Versión.
+ * @returns {String} Devuelve los metadatos.
  * @api
  */
 export const getWMSGetCapabilitiesUrl = (serverUrl, version) => {
@@ -266,8 +305,11 @@ export const getWMSGetCapabilitiesUrl = (serverUrl, version) => {
 };
 
 /**
- *
+ * Devuelve los metadatos de una url, capa WMTS.
  * @function
+ * @param {String} serverUrl URL.
+ * @param {String} version Versión.
+ * @returns {String} Devuelve los metadatos.
  * @api
  */
 export const getWMTSGetCapabilitiesUrl = (serverUrl, version) => {
@@ -288,14 +330,13 @@ export const getWMTSGetCapabilitiesUrl = (serverUrl, version) => {
 };
 
 /**
- * This function generates the resolution array
- * from min max resolutions
+ * Esta función genera una resolución máxima y mínima.
  *
  * @function
- * @param {Number} minResolution
- * @param {Number} maxResolution
- * @param {Number} numZoomLevels
- * @returns {Array<Number>} the resolutions
+ * @param {Number} minResolution Resolución mínima.
+ * @param {Number} maxResolution Resolución máxima.
+ * @param {Number} numZoomLevels Número de niveles de zoom.
+ * @returns {Array<Number>} Resolución.
  * @api
  */
 export const fillResolutions = (minResolutionParam, maxResolutionParam, numZoomLevels) => {
@@ -325,13 +366,12 @@ export const fillResolutions = (minResolutionParam, maxResolutionParam, numZoomL
 };
 
 /**
- * This function calculates the resolution
- * for a provided scale
+ * Esta función calcula la resolución de una escala.
  *
  * @function
- * @param {Number} scale
- * @param {String} units
- * @returns {Number} the resolution for the specified scale
+ * @param {Number} scale Escala.
+ * @param {String} units Unidades.
+ * @returns {Number} La resolución para la escala especificada.
  * @api
  */
 export const getResolutionFromScale = (scale, unitsParam) => {
@@ -351,15 +391,14 @@ export const getResolutionFromScale = (scale, unitsParam) => {
 };
 
 /**
- * This function generates the resolution array
- * from min max scales
+ * Esta función genera la resulución máxima y mínima para una escala.
  *
  * @function
- * @param {Number} maxScale
- * @param {Number} minScale
- * @param {Number} zoomLevels
- * @param {String} units
- * @returns {Array<Number>} the resolutions
+ * @param {Number} maxScale Escala máxima.
+ * @param {Number} minScale Escala mínima.
+ * @param {Number} zoomLevels Números de zoom.
+ * @param {String} units Unidades.
+ * @returns {Array<Number>} Resolución.
  * @api
  */
 export const generateResolutionsFromScales = (maxScale, minScale, zoomLevels, units) => {
@@ -370,15 +409,15 @@ export const generateResolutionsFromScales = (maxScale, minScale, zoomLevels, un
 };
 
 /**
- * This function generates the resolution array
- * from min max scales
+ * Esta función genera la resolución máxima y mínima para una
+ * extensión.
  *
  * @function
- * @param {Number} maxScale
- * @param {Number} minScale
- * @param {Number} zoomLevels
- * @param {String} units
- * @returns {Array<Number>} the resolutions
+ * @param {Number} extentParam Extensión.
+ * @param {Number} size Tamaño.
+ * @param {Number} zoomLevels Niveles de zoom.
+ * @param {String} units Unidades.
+ * @returns {Array<Number>} Resolución.
  * @api
  */
 export const generateResolutionsFromExtent = (extentParam, size, zoomLevels, units) => {
@@ -406,13 +445,12 @@ export const generateResolutionsFromExtent = (extentParam, size, zoomLevels, uni
 };
 
 /**
- * This function calculates the scale
- * for a provided resolution
+ * Esta función calcula la escala partiendo de una resolución.
  *
  * @function
- * @param {Number} resolution
- * @param {String} units
- * @returns {Number} the scale for the specified resolution
+ * @param {Number} resolution Resolución.
+ * @param {String} unitsParam Unidades.
+ * @returns {Number} La escala para la resolución especificada.
  * @api
  */
 export const getScaleFromResolution = (resolution, unitsParam) => {
@@ -427,8 +465,10 @@ export const getScaleFromResolution = (resolution, unitsParam) => {
 };
 
 /**
- *
+ * Esta función transforma una cadena de texto a
+ * código HTML.
  * @function
+ * @param {String} htmlTxt Cadena.
  * @api
  */
 export const stringToHtml = (htmlTxt) => {
@@ -444,8 +484,10 @@ export const stringToHtml = (htmlTxt) => {
 };
 
 /**
- *
+ * Esta función transforma código HTML a
+ * cadena de texto.
  * @function
+ * @param {HTMLElement} html Contenido HTML.
  * @api
  */
 export const htmlToString = (html) => {
@@ -461,11 +503,11 @@ export const htmlToString = (html) => {
 };
 
 /**
- * formated String
+ * Esta función formatea la cadena de texto.
  *
  * @function
- * @param {String} String text to format string
- * @returns {String} beautifyString formated String
+ * @param {String} text Texto para dar formato a la cadena.
+ * @returns {String} Texto formateado.
  * @api
  */
 export const beautifyString = (text) => {
@@ -502,11 +544,12 @@ export const beautifyString = (text) => {
 };
 
 /**
- * formated String
+ * Esta función formatea los atributos.
+ *
  *
  * @function
- * @param {attributeName} String
- * @returns {Number} formated String
+ * @param {attributeName} String Atributo.
+ * @returns {String} Atributo formateado.
  * @api
  */
 export const beautifyAttribute = (attributeName) => {
@@ -527,11 +570,11 @@ export const beautifyAttribute = (attributeName) => {
 };
 
 /**
- * formated String
+ * Esta función formatea el nombre de los atributos.
  *
  * @function
- * @param {attributeName} String
- * @returns {Number} formated String
+ * @param {String} rawAttributeName Nombre del atributo.
+ * @returns {String} Texto formateado.
  * @api
  */
 export const beautifyAttributeName = (rawAttributeName) => {
@@ -546,11 +589,10 @@ export const beautifyAttributeName = (rawAttributeName) => {
 };
 
 /**
- * formated String
- *
+ * Devuelve una ruta.
  * @function
- * @param {attributeName} String
- * @returns {Number} formated String
+ * @param {String} paths Ruta.
+ * @returns {String} Ruta formateada.
  * @api
  */
 export const concatUrlPaths = (paths) => {
@@ -570,9 +612,12 @@ export const concatUrlPaths = (paths) => {
 };
 
 /**
- *
- *
+ * Comprueba que en un matriz contnega un determinado elemento.
  * @function
+ * @param {Array} array Matriz.
+ * @param {*} searchElement Elemento que se quiere buscar.
+ * @param {Number} fromIndex Indice.
+ * @returns {*} Elemento.
  * @api
  */
 export const includes = (array, searchElement, fromIndex) => {
@@ -603,9 +648,12 @@ export const includes = (array, searchElement, fromIndex) => {
 };
 
 /**
- *
- *
+ * Extiende los prototipos de un objeto.
  * @function
+ * @param {Object} targetParam Objeto.
+ * @param {Object} source Donde se encuentra el prototipo.
+ * @param {Boolean} override Anular, (verdadero o falso).
+ * @returns {Object} Objeto extendido.
  * @api
  */
 export const extend = (targetParam, source, override) => {
@@ -624,9 +672,11 @@ export const extend = (targetParam, source, override) => {
 };
 
 /**
- * TODO
+ * Remplaza los caracteres de tipo XSS.
  *
  * @function
+ * @param {String} xssValue Valor XSS.
+ * @returns {String} Valor remplazado.
  * @api
  */
 export const escapeXSS = (xssValue) => {
@@ -654,9 +704,11 @@ export const escapeXSS = (xssValue) => {
 };
 
 /**
- * TODO
+ * Remplaza el código de JavaScript.
  *
  * @function
+ * @param {String} jsCode Código de JavaScript.
+ * @returns {String} Valor remplazado.
  * @api
  */
 export const escapeJSCode = (jsCode) => {
@@ -669,9 +721,10 @@ export const escapeJSCode = (jsCode) => {
 };
 
 /**
- * TODO
+ * Esta función permite el "scroll" con el "touch".
  *
  * @function
+ * @param {HTMLElement} elem Elemento HTML.
  * @api
  */
 export const enableTouchScroll = (elem) => {
@@ -690,9 +743,11 @@ export const enableTouchScroll = (elem) => {
 };
 
 /**
- * TODO
+ * Esta función transforma el color rgb a hexadecimal.
  *
  * @function
+ * @param {String} rgbColor Color RGB.
+ * @returns {String} Color Hexadecimal.
  * @api
  */
 export const rgbToHex = (rgbColor) => {
@@ -707,9 +762,11 @@ export const rgbToHex = (rgbColor) => {
 };
 
 /**
- * TODO
+ * Esta función transforma el color rgba a hexadecimal.
  *
  * @function
+ * @param {String} rgbaColor Color RGBA.
+ * @returns {String} Color Hexadecimal.
  * @api
  */
 export const rgbaToHex = (rgbaColor) => {
@@ -724,9 +781,11 @@ export const rgbaToHex = (rgbaColor) => {
 };
 
 /**
- * TODO
+ * Esta función devuelve la opacidad de un color rbga.
  *
  * @function
+ * @param {String} rgbaColor Color RGBA.
+ * @returns {String} Opacidad.
  * @api
  */
 export const getOpacityFromRgba = (rgbaColor) => {
@@ -746,9 +805,12 @@ export const getOpacityFromRgba = (rgbaColor) => {
 };
 
 /**
- * TODO
+ * Esta función comprueba que dos URL son iguales.
  *
  * @function
+ * @param {String} url1 URL.
+ * @param {String} url2 URL.
+ * @returns {Boolean} Verdadero si son iguales.
  * @api
  */
 export const sameUrl = (url1, url2) => {
@@ -763,9 +825,12 @@ export const sameUrl = (url1, url2) => {
 };
 
 /**
- * TODO
+ * Esta función devuelve verdadero
+ * si existe el tipo de geometría.
  *
  * @function
+ * @param {String} type Tipo de geometría.
+ * @returns {Boolean} Verdadero si existe.
  * @api
  */
 export const isGeometryType = (type) => {
@@ -804,12 +869,11 @@ export const isGeometryType = (type) => {
 };
 
 /**
- * This function decodes html entities into
- * text
+ * Decodifica el HTML y devuelve su contenido.
  *
  * @function
- * @param {String} encodedHtml encoded text with HTML entities
- * @returns {String} text decoded
+ * @param {String} encodedHtml Texto codificado con entidades HTML.
+ * @returns {String} Texto decodificado.
  * @api
  */
 export const decodeHtml = (encodedHtml) => {
@@ -819,12 +883,12 @@ export const decodeHtml = (encodedHtml) => {
 };
 
 /**
- * This function gets text content from
- * an html string or element
+ * Esta función devuelve el contenido de un texto
+ * extraido del HTML.
  *
  * @function
- * @param {HTMLElement | String} html string or element with HTML tags
- * @returns {String} text contained by the HTML tags
+ * @param {HTMLElement | String} html Cadena o elemento con etiquetas HTML.
+ * @returns {String} Texto contenido por las etiquetas HTML.
  * @api
  */
 export const getTextFromHtml = (html) => {
@@ -838,13 +902,13 @@ export const getTextFromHtml = (html) => {
 };
 
 /**
- * This function gets the inverse of a color. The inverse of a color
- * is the diff between the hexadecimal value of white (0xFFFFFF)
- * and the hexadecimal value of the color.
+ * Esta función obtiene el inverso de un color. El inverso de un color
+ * es la diferencia entre el valor hexadecimal de blanco (0xFFFFFF)
+ * y el valor hexadecimal del color.
  * @function
  * @public
- * @param {string} color
- * @return {string} inverse color in hexadecimal format
+ * @param {string} color Color.
+ * @return {string} Color inverso en formato hexadecimal.
  * @api
  */
 export const inverseColor = (color) => {
@@ -862,11 +926,11 @@ export const inverseColor = (color) => {
 
 
 /**
- * This function returns a color as string with opacity
+ * Esta función devuelve el color RGBA.
  * @function
  * @public
- * @param {string} color
- * @param {number} opacity
+ * @param {string} color Color.
+ * @param {number} opacity Opacidad.
  * @return {string}
  * @api
  */
@@ -877,11 +941,12 @@ export const getRgba = (color, opacity) => {
 };
 
 /**
- * This function set implementation of this control
+ * Esta función extiende un objeto.
  *
  * @public
  * @function
- * @param {M.Map} impl to add the plugin
+ * @param {Object} destParam Parámetro.
+ * @param {Object} src Objeto con los índices.
  * @api
  */
 export const extendsObj = (destParam = {}, src = {}) => {
@@ -905,12 +970,12 @@ export const extendsObj = (destParam = {}, src = {}) => {
 };
 
 /**
- * This function returns an array whith breaks between head and tail of an array
+ * Esta función devuelve una matriz con rupturas entre el principio y lel final de una matriz.
  * @function
  * @public
- * @param {array} array
- * @param {number} breaks
- * @return {array}
+ * @param {array} array Matriz.
+ * @param {number} breaks Punto de ruptura.
+ * @return {array} Intervalo.
  * @api
  */
 export const generateIntervals = (array, breaks) => {
@@ -926,11 +991,12 @@ export const generateIntervals = (array, breaks) => {
 };
 
 /**
- * This functions returns the order style
+ * Esta función devuelve la diferencia en el orden de estilos.
  * @function
  * @public
- * @param {M.Style}
- * @return {number}
+ * @param {M.Style} style Estilo.
+ * @param {M.Style} style2 Estilo.
+ * @return {number} Orden de estilos, 0 es que tienen el mismo.
  * @api
  */
 export const styleComparator = (style, style2) => {
@@ -938,11 +1004,11 @@ export const styleComparator = (style, style2) => {
 };
 
 /**
- * This functions returns the width and height of a image from src
+ * Esta función devuelve el tamaño de una imagen.
  * @function
  * @public
- * @param {string} url
- * @return {Array<number>}
+ * @param {string} url URL.
+ * @return {Array<number>} Promesa, array con el tamaño de la imagen.
  * @api
  */
 export const getImageSize = (url) => {
@@ -954,11 +1020,11 @@ export const getImageSize = (url) => {
 };
 
 /**
- * This functions replaces functions into string
+ * Esta función remplaza funciones en cadenas de texto.
  * @function
  * @public
- * @param {object} objParam
- * @return {obj}
+ * @param {object} objParam Objeto con cadenas de texto.
+ * @return {obj} Devuelve las funciones.
  * @api
  */
 export const stringifyFunctions = (objParam) => {
@@ -985,10 +1051,10 @@ export const stringifyFunctions = (objParam) => {
 };
 
 /**
- * This functions replaces functions into string
+ * Esta función crea funciones dentro de cadenas.
  * @function
  * @public
- * @param {object} objParam
+ * @param {String} objParam Cadena con la función.
  * @return {obj}
  * @api
  */
@@ -1016,11 +1082,11 @@ export const defineFunctionFromString = (objParam) => {
 
 
 /**
- * This function returns true if some object value is function or "{{*}}"
+ * Esta función devuelve verdadero si algún valor de objeto es función o "{{*}}".
  * @function
  * @public
- * @param {object} obj
- * @return {bool}
+ * @param {object} obj Valor.
+ * @return {bool} Verdadero si algún valor de objeto es función o "{{*}}".
  * @api
  */
 export const isDynamic = (obj) => {
@@ -1034,16 +1100,17 @@ export const isDynamic = (obj) => {
 };
 
 /**
- * This parameter represent the src image of the dynamic legend
+ * Este parámetro representa la imagen src de la leyenda dinámica.
  * @const
  * @type {string}
  */
 let dynamicLegend = dynamicImage;
 
 /**
- * This functions sets the dynamic legend constant
+ * Esta función establece la leyenda dinámica constante.
  * @function
  * @public
+ * @param {String} legend url.
  * @api
  */
 export const setDynamicLegend = (legend) => {
@@ -1051,11 +1118,11 @@ export const setDynamicLegend = (legend) => {
 };
 
 /**
- * This function draw in a canvas style which is dynamic
+ * Esta función dibuja en un "canvas" que es dinámico.
  * @function
  * @public
- * @param {object} obj
- * @return {bool}
+ * @param {HTMLCanvasElement} canvas "Canvas".
+ * @return {String} Devuelve el valor de "dynamicLegend".
  * @api
  */
 export const drawDynamicStyle = (canvas) => {
@@ -1063,12 +1130,12 @@ export const drawDynamicStyle = (canvas) => {
 };
 
 /**
- * This function calculates the envolved extent
- * from extents provided by the user
+ * Esta función calcula la extensión envolvente
+ * de los alcances proporcionados por el usuario.
  * @function
  * @public
- * @param {Array<Array<Number>>} extents
- * @return {Array<Number>}
+ * @param {Array<Array<Number>>} extents Extensión.
+ * @return {Array<Number>} Alcance.
  * @api
  */
 export const getEnvolvedExtent = (extents) => {
@@ -1096,9 +1163,14 @@ export const getEnvolvedExtent = (extents) => {
 
 
 /**
- * @private
+ * Esta función transforma "bytes" a Base64.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {Uint8Array} bytes
+ * @param {Array} bytes Matriz con "bytes".
+ * @param {String} format Formato de la imagen, por defecto image/png.
+ * @return {String} Base64.
+ * @api
  */
 export const bytesToBase64 = (bytes, format = 'image/png') => {
   const base64abc = [
@@ -1132,9 +1204,10 @@ export const bytesToBase64 = (bytes, format = 'image/png') => {
 };
 
 /**
+ * Esta función transforma datos a "unit8" .
  * @function
- * @param {File|ArrayBuffer|Response|Uint8Array} data
- * @return {Uint8Array}
+ * @param {File|ArrayBuffer|Response|Uint8Array} data Datos que se quieren transformar.
+ * @return {Uint8Array} Matriz con datos "unit8".
  */
 export const getUint8ArrayFromData = (data) => {
   return new Promise((resolve, reject) => {
@@ -1157,6 +1230,11 @@ export const getUint8ArrayFromData = (data) => {
   });
 };
 
+/**
+ * Esta función lee un JSON.
+ * @param {Object} file JSON.
+ * @return {Object} Devuelve el JSON leído, promesa.
+ */
 export const readJSON = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new window.FileReader();
@@ -1173,10 +1251,12 @@ export const readJSON = (file) => {
 };
 
 /**
- * This function gets an array scale color in hexadecimal format
+ * Esta función obtiene un color de escala de matriz en formato hexadecimal.
  * @function
  * @public
- * @return {Array<string>} array scale color in hexadecimal format
+ * @param {String} colors Color.
+ * @param {String} numberClasses Número del color.
+ * @return {Array<string>} Color de escala de matriz en formato hexadecimal.
  * @api
  */
 export const generateColorScale = (colors, numberClasses) => {
@@ -1184,10 +1264,12 @@ export const generateColorScale = (colors, numberClasses) => {
 };
 
 /**
- * This function modify colors svg file
+ * Esta función modifica el archivo svg de colores.
  * @function
  * @public
- * @return {String} SVG base64
+ * @param {String} url URL.
+ * @param {Object} options Opciones.
+ * @return {String} SVG base64.
  * @api
  */
 export const modifySVG = (url, options) => {
@@ -1246,8 +1328,10 @@ export const modifySVG = (url, options) => {
 };
 
 /**
- *
+ * Esta función proporciona movimiento a un contendor HTML.
  * @function
+ * @param {String} elmntID Identificador del elemento que se quiere mover.
+ * @param {Object} buttonID Identificador del botón.
  * @api
  */
 export const dragElement = (elmntID, buttonID) => {
@@ -1283,3 +1367,13 @@ export const dragElement = (elmntID, buttonID) => {
     };
   };
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

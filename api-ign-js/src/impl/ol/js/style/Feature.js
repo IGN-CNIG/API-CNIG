@@ -5,7 +5,9 @@ import Style from './Style';
 
 /**
  * @classdesc
- * @namespace M.impl.style.Feature
+ * Esta clase se encarga de actualizar los objetos geográficos.
+ * @api
+ * @extends {M.impl.style.Style}
  */
 
 class Feature extends Style {

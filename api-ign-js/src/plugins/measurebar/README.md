@@ -18,12 +18,11 @@ Manteniendo pulsado SHIFT, la línea/área de edición se dibuja a mano alzada.
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-
-- *position*.  Ubicación del plugin sobre el mapa (Default = 'TL')
-  - 'BL' = Bottom left
-  - 'BR' = Bottom right
-  - 'TL' = Top left
-  - 'TR' = Top right
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
 
 # Ejemplo de uso

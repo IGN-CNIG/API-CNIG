@@ -70,9 +70,11 @@
 }
 
 .m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened {
-
     width: 43px;
-
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: column;
 }
 
 /* Los elementos dentro del panel comparador aparecen en vertical */
@@ -188,15 +190,6 @@ div#m-comparepanel-titulo {
 
 }
 
-/* Cuando el panel es collapsible, se definen estos márgenes */
-
-.m-area.m-top.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
-
-    margin-left: -40px;
-
-    margin-top: 40px;
-
-}
 
 /* Cuando el panel es no-collapsible, usamos la clase que viene implícita para eliminar márgenes */
 
@@ -308,24 +301,11 @@ div#m-comparepanel-titulo {
 
 }
 
-/* Cuando el panel es collapsible, se definen estos márgenes */
-
-.m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
-
-    margin-right: -100px;
-
-    margin-top: 40px;
-
-}
-
 /* Cuando el panel es no-collapsible, usamos la clase que viene implícita para eliminar márgenes */
 
 .m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened>div>.m-control.m-container.m-comparepanel-container {
-
     margin-right: 0px;
-
     margin-top: 0px;
-
 }
 
 .m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened {
@@ -423,14 +403,6 @@ div#m-comparepanel-titulo {
     float: right;
 
     transform: rotate(90deg);
-
-}
-
-.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
-
-    margin-right: -100px;
-
-    margin-top: 40px;
 
 }
 
@@ -537,14 +509,6 @@ div#m-comparepanel-titulo {
     float: left;
 
     transform: rotate(-90deg);
-
-}
-
-.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
-
-    margin-left: -40px;
-
-    margin-top: 40px;
 
 }
 

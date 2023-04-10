@@ -16,10 +16,12 @@ Plugin que muestra información sobre la página y manual de uso.
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- *position*.  Ubicación del plugin sobre el mapa (Default = 'BL')
-  - 'BL' = Bottom left
-  - 'BR' = Bottom right
-- *helpLink*. Enlace al manual de uso.
+- **position**:  Ubicación del plugin sobre el mapa.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda (por defecto).
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **helpLink**: Enlace al manual de uso.
 
 
 # Ejemplo de uso

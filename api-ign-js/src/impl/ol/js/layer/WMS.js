@@ -35,18 +35,51 @@ import ImageWMS from '../source/ImageWMS';
 
 /**
  * @classdesc
+ * WMS devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales.
+ * Permitiendo las personalización de las capas mediante estilos. Se trata de un mapa dínamico.
+ *
+ * @property {Object} options Opciones de la capa WMS.
+ * @property {Array<M.layer.WMS>} layers Intancia de WMS con metadatos.
+ *
  * @api
+ * @extends {M.impl.layer.Layer}
  */
 class WMS extends LayerBase {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a WMS layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa WMS
+   * con parámetros especificados por el usuario.
    *
    * @constructor
    * @implements {M.impl.Layer}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - visibility: Indica la visibilidad de la capa.
+   * - singleTile: Indica si la tesela es única o no.
+   * - numZoomLevels: Número de niveles de zoom.
+   * - animated: Define si la capa está animada,
+   * el valor predeterminado es falso.
+   * - format: Formato de la capa, por defecto image/png.
+   * - styles: Estilos de la capa.
+   * - sldBody: Parámetros "ol.source.ImageWMS"
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - queryable: Indica si la capa es consultable.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * - animated: Define si la capa está animada,
+   * el valor predeterminado es falso.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceTileWMS from 'ol/source/TileWMS';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceTileWMS({
+   *    attributions: 'wms',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(options = {}, vendorOptions) {
@@ -54,110 +87,118 @@ class WMS extends LayerBase {
     super(options, vendorOptions);
 
     /**
-     * The facade layer instance
-     * @private
-     * @type {M.layer.WMS}
-     * @expose
+     * WMS facadeLayer_. Instancia de la fachada.
      */
     this.facadeLayer_ = null;
 
     /**
-     * WMS layer options
-     * @private
-     * @type {object}
-     * @expose
+     * WMS options. Opciones de la capa.
      */
     this.options = options;
 
     /**
-     * The WMS layers instances from capabilities
-     * @private
-     * @type {Array<M.layer.WMS>}
+     * WMS layers. Capas.
      */
     this.layers = [];
 
     /**
-     * WMS layer options
-     * @private
-     * @type {boolean}
-     * @expose
+     * WMS displayInLayerSwitcher. Mostrar en el selector de capas.
      */
     this.displayInLayerSwitcher_ = true;
 
     /**
-     * get WMS getCapabilities promise
-     * @private
-     * @type {Promise}
+     * WMS getCapabilitiesPromise. Metadatos, promesa.
      */
     this.getCapabilitiesPromise = null;
 
     /**
-     * get WMS extent promise
-     * @private
-     * @type {Promise}
+     * WMS extentPromise. Extensión de la capa, promesa.
      */
     this.extentPromise = null;
 
     /**
-     * Layer extent which was got from service getCapabilities
-     * @private
-     * @type {Mx.Extent}
+     * WMS extent. Extensión de la capa que se obtuvo del servicio getCapabilities.
      */
     this.extent = null;
 
     /**
-     * Layer resolutions
-     * @private
-     * @type {Array<Number>}
+     * WMS resolutions_. Resoluciones de la capa.
      */
     this.resolutions_ = null;
 
     /**
-     * Current projection
-     * @private
-     * @type {ol.Projection}
+     * WMS extentProj_. Proyección actual.
      */
     this.extentProj_ = null;
 
-    // sets visibility
+    /**
+     * WMS visibility. Indica la visibilidad de la capa.
+     */
     if (this.options.visibility === false) {
       this.visibility = false;
     }
 
-    // tiled
+    /**
+     * WMS tiled. Indica si la tesela es única o no.
+     */
     if (isNullOrEmpty(this.tiled)) {
       this.tiled = (this.options.singleTile !== true);
     }
 
-    // number of zoom levels
+
+    /**
+     * WMS numZoomLevels. Número de niveles de zoom.
+     */
     if (isNullOrEmpty(this.options.numZoomLevels)) {
       this.options.numZoomLevels = 20; // by default
     }
 
-    // animated
+    /**
+     * WMS animated. Define si la capa está animada,
+     * el valor predeterminado es falso.
+     */
     if (isNullOrEmpty(this.options.animated)) {
       this.options.animated = false; // by default
     }
 
-    // format
+    /**
+     * WMS format. Formato de la capa, por defecto image/png.
+     */
     this.format = isNullOrEmpty(this.options.format) ? 'image/png' : this.options.format;
 
-    // styles
+    /**
+     * WMS styles. Estilos de la capa.
+     */
     this.styles = this.options.styles || '';
-    // sldBody
+
+
+    /**
+     * WMS sldBody. Parámetros "ol.source.ImageWMS"
+     */
     this.sldBody = options.sldBody;
 
+    /**
+     * WMS zIndex_. Índice de la capa, (+40).
+     */
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.WMS];
 
+    /**
+     * WMS minZoom. Zoom mínimo aplicable a la capa.
+     */
     this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
+
+    /**
+     * WMS maxZoom. Zoom máximo aplicable a la capa.
+     */
     this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método establece la visibilidad de esta capa.
    *
    * @function
+   * @param {Boolean} visibility Verdadero es visible, falso si no.
    * @api stable
    */
   setVisible(visibility) {
@@ -188,9 +229,10 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function indicates if the layer is queryable
+   * Este método indica si la capa es consultable.
    *
    * @function
+   * @returns {Boolean} Verdadero es consultable, falso si no.
    * @api stable
    * @expose
    */
@@ -199,11 +241,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método agrega la capa al mapa.
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
   addTo(map) {
@@ -238,11 +280,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function sets the resolutions for this layer
+   * Este método establece las resoluciones para esta capa.
    *
    * @public
    * @function
-   * @param {Array<Number>} resolutions
+   * @param {Array<Number>} resolutions Nuevas resoluciones a aplicar.
    * @api stable
    */
   setResolutions(resolutions) {
@@ -259,10 +301,12 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function add this layer as unique layer
+   * Este método agrega esta capa como capa única.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @public
    * @function
+   * @api stable
    */
   addSingleLayer_() {
     const selff = this;
@@ -359,10 +403,13 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function add metedata to layer from capabilities
+   * Este método agrega metadatos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @public
    * @function
+   * @param {Object} capabilitiesLayer Metadatos de la capa.
+   * @api stable
    */
   addCapabilitiesMetadata(capabilitiesLayer) {
     const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
@@ -382,10 +429,16 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function creates the ol source for this instance
-   *
-   * @private
+   * Este método crea la fuente ol para esta instancia.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @param {Array<Number>} resolutions Resolución
+   * @param {Number} minResolution Resolución máxima.
+   * @param {Number} maxResolution Resolución mínima.
+   * @param {Array} extent Extensión.
+   * @return {ol.source} Fuente de Openlayers.
+   * @api
    */
   createOLSource_(resolutions, minResolution, maxResolution, extent) {
     let olSource = this.vendorOptions_.source;
@@ -447,10 +500,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function adds all layers defined int the server
-   *
-   * @private
+   * Este método agrega todas las capas definidas en el servidor.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api stable
    */
   addAllLayers_() {
     this.getCapabilities().then((getCapabilities) => {
@@ -482,11 +536,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function gets the envolved extent for
-   * this WMS
+   * Este método obtiene la extensión.
    *
    * @public
    * @function
+   * @returns {Array<Number>} Extensión, asincrono.
    * @api stable
    */
   getExtent() {
@@ -510,11 +564,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function gets the min resolution for
-   * this WMS
+   * Este método obtiene la resolución mínima.
    *
    * @public
    * @function
+   * @return {Number} Resolución mínima.
    * @api stable
    */
   getMinResolution() {
@@ -522,11 +576,13 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function gets the max resolution for
-   * this WMS
+   * Este método obtiene la resolución máxima para
+   * este WMS.
+   *
    *
    * @public
    * @function
+   * @return {Number} Resolución Máxima.
    * @api stable
    */
   getMaxResolution() {
@@ -534,11 +590,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * Update minimum and maximum resolution WMS layers
+   * Actualiza la resolución mínima y máxima de la capa.
    *
    * @public
    * @function
-   * @param {ol.Projection} projection - Projection map
+   * @param {ol.Projection} projection Proyección del mapa.
    * @api stable
    */
   updateMinMaxResolution(projection) {
@@ -554,7 +610,12 @@ class WMS extends LayerBase {
   }
 
   /**
-   * TODO
+   * Sobrescribe la extensión máxima de la capa.
+   *
+   * @public
+   * @function
+   * @param {maxExtent} maxExtent Extensión máxima.
+   * @api stable
    */
   setMaxExtent(maxExtent) {
     // maxExtentPromise.then((maxExtent) => {
@@ -576,11 +637,12 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function gets the max resolution for
-   * this WMS
+   * Este método obtiene el número de niveles de zoom
+   * disponibles para la capa WMS.
    *
    * @public
    * @function
+   * @returns {Number} Número de niveles de zoom.
    * @api stable
    */
   getNumZoomLevels() {
@@ -588,11 +650,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function gets the layers loaded from this
-   * WMS FULL
+   * Devuelve las capas WMS.
    *
    * @public
    * @function
+   * @return {M.layer.WMS.impl} Capa WMS.
    * @api stable
    */
   getLayers() {
@@ -600,11 +662,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Devuelve los metadatos, asincrono.
    *
    * @public
    * @function
+   * @returns {capabilities} Metadatos.
    * @api stable
    */
   getCapabilities() {
@@ -631,11 +693,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Devuelve la URL de la leyenda.
    *
    * @public
    * @function
+   * @returns {String} URL de la leyenda.
    * @api stable
    */
   getLegendURL() {
@@ -643,10 +705,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * TODO
+   * Sobrescribe la leyenda.
    *
    * @public
    * @function
+   * @param {String} legendUrl URL de la leyenda.
    * @api stable
    */
   setLegendURL(legendUrl) {
@@ -654,8 +717,8 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function refreshes the state of this
-   * layer
+   * Este método actualiza el estado de este
+   * capa.
    *
    * @public
    * @function
@@ -670,10 +733,12 @@ class WMS extends LayerBase {
   }
 
   /**
-   * TODO
+   * Devuelve la extensión de los metadatos.
    *
    * @public
    * @function
+   * @param {capabilities} capabilities Metadatos WMS.
+   * @returns {Array<Number>} WMS Extensión.
    * @api stable
    */
   getExtentFromCapabilities(capabilities) {
@@ -682,10 +747,12 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function set facade class WMS
+   * Este método establece la clase de fachada WMS.
+   * La fachada se refiere a
+   * un patrón estructural como una capa de abstracción con un patrón de diseño.
    *
    * @function
-   * @param {object} obj - Facade layer
+   * @param {object} obj WMS de la fachada.
    * @api stable
    */
   setFacadeObj(obj) {
@@ -693,8 +760,8 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
    *
    * @public
    * @function
@@ -714,10 +781,12 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api stable
    */
   equals(obj) {
@@ -733,7 +802,14 @@ class WMS extends LayerBase {
 }
 
 /**
- * TODO
+ * WMS LEGEND_IMAGE.
+ *
+ * Imagen de la leyenda por defecto.
+ *
+ * @public
+ * @const
+ * @type {string | null}
+ * @api stable
  */
 WMS.LEGEND_IMAGE = null;
 

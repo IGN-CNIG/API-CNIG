@@ -1,22 +1,40 @@
+/**
+ * @module M/impl/ol/js/ext/OLStyleFontSymbol
+ */
+
 import OLStyleRegularShape from 'ol/style/RegularShape';
 import { asString as colorAsString } from 'ol/color';
 
 /* Copyright (c) 2015 Jean-Marc VIGLINO,
 released under the CeCILL-B license (French BSD license)
 (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
+*/
 
-*  Add a marker style to use with font symbols
 /**
  * @classdesc
- * Set fontsymbol style for vector features.
- *
+ * Agregar un estilo de marcador para usar con símbolos de objetos geográficos.
+ * @extends {ol.style.RegularShape}
+ * @implements {ol.structs.IHasChecksum}
+ * @api
  */
-export default class OLStyleFontSymbol extends OLStyleRegularShape {
+class OLStyleFontSymbol extends OLStyleRegularShape {
   /**
+   * Crea un nuevo estilo de marcado.
    * @constructor
-   * @param {olx.style.FontSymbolOptions=} opt_options Options.
-   * @extends {ol.style.RegularShape}
-   * @implements {ol.structs.IHasChecksum}
+   * @param {olx.style.FontSymbolOptions=} opt_options Opciones.
+   * - radius. Radio del marcador.
+   * - fill. Color de relleno.
+   * - rotation. Rotación en radianes (0 radianes = norte).
+   * - rotateWithView. Rotar con la vista.
+   * - color. Color del símbolo.
+   * - fontSize. Tamaño de la fuente.
+   * - stroke. Color del borde.
+   * - gradient. Si se debe usar un gradiente.
+   * - glyph. Símbolo a usar.
+   * - offsetX. Desplazamiento horizontal del símbolo.
+   * - offsetY. Desplazamiento vertical del símbolo.
+   * - form. Forma del símbolo.
+   * @api
    */
   constructor(options = {}) {
     let strokeWidth = 0;
@@ -46,8 +64,11 @@ export default class OLStyleFontSymbol extends OLStyleRegularShape {
   }
 
   /**
-   * Clones the style.
-   * @return {ol.style.FontSymbol}
+   * Clona el estilo.
+   *
+   * @function
+   * @return {ol.style.FontSymbol} Clon del estilo.
+   * @api
    */
   clone() {
     const g = new OLStyleFontSymbol({
@@ -72,14 +93,21 @@ export default class OLStyleFontSymbol extends OLStyleRegularShape {
   }
 
   /**
-   * TODO
+   * Modifica el color del símbolo.
+   * @function
+   * @param {ol.Color} color Color del símbolo.
+   * @api
    */
   setGlyph(glyph) {
     this.glyph_ = glyph;
   }
 
   /**
-   * Static function : add new font defs
+   * Función estática: agregar nuevas definiciones de fuente.
+   * @function
+   * @param {string|object} font Nombre de la fuente o definición de la fuente.
+   * @param {object} glyphs Definición de los símbolos.
+   * @api
    */
   static addDefs(font, glyphs) {
     let thefont = font;
@@ -113,24 +141,31 @@ export default class OLStyleFontSymbol extends OLStyleRegularShape {
   }
 
   /**
-   * Get the fill style for the symbol.
-   * @return {ol.style.Fill} Fill style.
+   * Devuelve el estilo de relleno para el símbolo.
+   * @function
+   * @return {ol.style.Fill} Estilo de relleno.
+   * @api
    */
   getFill() {
     return this.fill_;
   }
 
   /**
-   * Get the stroke style for the symbol.
-   * @return {ol.style.Stroke} Stroke style.
+   * Devuelve el estilo de borde para el símbolo.
+   * @function
+   * @return {ol.style.Stroke} Estilo de borde.
+   * @api
    */
   getStroke() {
     return this.stroke_;
   }
 
   /**
-   * Get the stroke style for the symbol.
-   * @return {ol.style.Stroke} Stroke style.
+   * Devuelve el estilo de borde para el símbolo.
+   * @function
+   * @param {string} name Nombre del símbolo.
+   * @return {ol.style.Stroke} Estilo de borde.
+   * @api
    */
   getGlyph(name) {
     let glyph = this.glyph_;
@@ -148,8 +183,10 @@ export default class OLStyleFontSymbol extends OLStyleRegularShape {
   }
 
   /**
-   * Get the glyph name.
-   * @return {string} the name
+   * Devuelve el nombre del símbolo.
+   * @function
+   * @return {string} Nombre del símbolo.
+   * @api
    */
   getGlyphName() {
     let glyphName = '';
@@ -162,15 +199,21 @@ export default class OLStyleFontSymbol extends OLStyleRegularShape {
   }
 
   /**
-   * Get the stroke style for the symbol.
-   * @return {ol.style.Stroke} Stroke style.
+   * Devuelve el estilo de borde para el símbolo.
+   * @function
+   * @param {object} glyph Parámetro "Glyph".
+   * @return {ol.style.Stroke} Estilo de borde.
+   * @api
    */
   getFontInfo(glyph) {
     return OLStyleFontSymbol.defs.fonts[glyph.font];
   }
 
   /**
-   * TODO
+   * Renderiza el símbolo.
+   * @function
+   * @param {ol.AtlasManager} atlasManager Gestiona la creación de atlas de imágenes.
+   * @api
    */
   renderMaker(atlasManager) {
     let strokeStyle;
@@ -202,9 +245,13 @@ export default class OLStyleFontSymbol extends OLStyleRegularShape {
   }
 
   /**
-   * @private
-   * @param {ol.style.FontSymbol.RenderOptions} renderOptions
-   * @param {CanvasRenderingContext2D} context
+   * Dibuja el símbolo.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {ol.style.FontSymbol.RenderOptions} renderOptions Opciones de renderizado.
+   * @param {CanvasRenderingContext2D} context Contexto del "canvas".
+   * @return {Number} Tamaño del símbolo.
+   * @api
    */
   drawPath_(renderOptions, contextParam) {
     const context = contextParam;
@@ -325,11 +372,14 @@ export default class OLStyleFontSymbol extends OLStyleRegularShape {
   }
 
   /**
-   * @private
-   * @param {ol.style.FontSymbol.RenderOptions} renderOptions
-   * @param {CanvasRenderingContext2D} context
-   * @param {number} x The origin for the symbol (x).
-   * @param {number} y The origin for the symbol (y).
+   * Dibuja el símbolo en el contexto de dibujo.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {ol.style.FontSymbol.RenderOptions} renderOptions Opciones de renderizado.
+   * @param {CanvasRenderingContext2D} context Contexto de dibujo.
+   * @param {number} x El origen para el símbolo (x).
+   * @param {number} y El origen para el símbolo (y).
+   * @api
    */
   drawMarker_(renderOptions, contextParam, x, y) {
     const context = contextParam;
@@ -389,7 +439,12 @@ export default class OLStyleFontSymbol extends OLStyleRegularShape {
   }
 
   /**
-   * @inheritDoc
+   * Este método devuelve el "checksum" del símbolo.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @function
+   * @return {string} El "checksum".
+   * @api
    */
   getChecksum() {
     const strokeChecksum = (this.stroke_ !== null) ?
@@ -416,14 +471,23 @@ export default class OLStyleFontSymbol extends OLStyleRegularShape {
 }
 
 /**
- * Font defs
+ * Fuentes por defecto.
+ * @public
+ * @type {Object}
+ * @const
  */
 OLStyleFontSymbol.defs = {
   fonts: {},
   glyphs: {},
 };
 
-// Add Defs
+/**
+ * Añade una nueva fuente de símbolos.
+ * @public
+ * @function
+ * @param {Object} Object Definición de la fuente.
+ * @param {Object} Object Nombre de la fuente.
+ */
 OLStyleFontSymbol.addDefs({
   font: 'g-cartografia',
   name: 'g-cartografia',
@@ -526,3 +590,5 @@ OLStyleFontSymbol.addDefs({
     search: 'zoom-extension',
   },
 });
+
+export default OLStyleFontSymbol;

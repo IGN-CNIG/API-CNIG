@@ -17,12 +17,24 @@ import Control from './Control';
 import Feature from '../feature/Feature';
 
 /**
- * @classdesc Main constructor of the class. Creates a Locatio control
- * @api
+ *  @classdesc
+ *  Localiza la posición del usuario en el mapa.
+ *  @api
  */
 class Location extends Control {
   /**
+   * Constructor principal de la clase. Crea una ubicación
+   * que permite al usuario localizar y dibujar su
+   * posición en el mapa.
+   *
    * @constructor
+   * @param {Boolean} tracking Seguimiento de la localización, por defecto verdadero.
+   * @param {Boolean} highAccuracy Alta precisión del seguimiento, por defecto falso.
+   * @param {Number} maximumAge Indica la antigüedad máxima en milisegundos de una posible
+   * posición almacenada en caché.
+   * Valor por defecto 60000.
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base,
+   * por defecto objeto vacío. Estos valores no son configurables.
    * @extends {M.impl.Control}
    * @api stable
    */
@@ -31,33 +43,56 @@ class Location extends Control {
     super(vendorOptions);
 
     /**
-     * Vendor options for the base library
+     * Opciones para la biblioteca base.
      * @private
      * @type {Object}
      */
     this.vendorOptions_ = vendorOptions;
 
     /**
-     * Helper class for providing HTML5 Geolocation
+     * Proporcionar Geolocalización HTML5.
      * @private
      * @type {OLGeolocation}
      */
     this.geolocation_ = null;
 
     /**
-     * Feature of the accuracy position
+     * Objeto geográfico de la posición actual.
      * @private
      * @type {OLFeature}
      */
     this.accuracyFeature_ = Feature.olFeature2Facade(new OLFeature());
 
+    /**
+     * Seguimiento de localización, por defecto verdadero.
+     * @private
+     * @type {Boolean}
+     */
     this.tracking_ = tracking;
+
+    /**
+     * Alta precisión del seguimiento, por defecto falso.
+     * @private
+     * @type {Boolean}
+     */
     this.highAccuracy_ = highAccuracy;
+
+    /**
+     * Valor por defecto 60000.
+     * @private
+     * @type {Number}
+     */
     this.maximumAge_ = maximumAge;
+
+    /**
+     * Activa el control.
+     * @private
+     * @type {Boolean}
+     */
     this.activated_ = false;
 
     /**
-     * Feature of the position
+     * Objeto geográfico de la posición.
      * @private
      * @type {OLFeature}
      */
@@ -67,7 +102,7 @@ class Location extends Control {
   }
 
   /**
-   * This function paints a point on the map with your location
+   * Este método pinta un punto en el mapa con tu ubicación.
    *
    * @public
    * @function
@@ -116,10 +151,11 @@ class Location extends Control {
   }
 
   /**
-   * This function remove the drawn location
-   *
-   * @private
+   * Este método elimina la ubicación dibujada.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api stable
    */
   removePositions_() {
     if (!isNullOrEmpty(this.accuracyFeature_)) {
@@ -132,7 +168,7 @@ class Location extends Control {
   }
 
   /**
-   * This function remove the drawn location and restores the style button
+   * Este método elimina la ubicación dibujada y restaura el botón de estilo.
    *
    * @public
    * @function
@@ -146,7 +182,11 @@ class Location extends Control {
   }
 
   /**
-   * TODO
+   * Este método sobrescribe la ubicación.
+   * @public
+   * @function
+   * @param {Object} tracking Rastreo de localización.
+   * @api stable
    */
   setTracking(tracking) {
     this.tracking_ = tracking;
@@ -154,7 +194,7 @@ class Location extends Control {
   }
 
   /**
-   * This function destroys this control and cleaning the HTML
+   * Esta función destruye este control y limpia el HTML.
    *
    * @public
    * @function
@@ -167,7 +207,7 @@ class Location extends Control {
 }
 
 /**
- * Style for location
+ * Estilo de la localización.
  * @const
  * @type {ol.style.Style}
  * @public
@@ -188,7 +228,7 @@ Location.POSITION_STYLE = new OLStyle({
 });
 
 /**
- * Zoom Location
+ * Zoom de la localización.
  * @const
  * @type {number}
  * @public

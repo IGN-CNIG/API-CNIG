@@ -10,37 +10,78 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a WMS layer
- * with parameters specified by the user
+ * GeoJSON, a pesar de no ser un estándar OGC (está en camino de convertirse en uno),
+ * es un formato de intercambio de información geográfica muy extendido que, al igual que WFS,
+ * permite que todos los elementos estén en el cliente.
+ *
+ * @property {String} url Url del archivo o servicio que genera el GeoJSON.
+ * @property {String} name Nombre de la capa, identificador.
+ * @property {Object} source Fuente GeoJSON.
+ * @property {Boolean} extract Activa la consulta al hacer clic sobre un objeto geográfico,
+ * por defecto falso.
+ * @property {Object} options Opciones GeoJSON.
+ *
  * @api
+ * @extends {M.layer.Vector}
  */
 class GeoJSON extends LayerVector {
   /**
+   * Constructor principal de la clase. Crea una capa GeoJSON
+   * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @extends {M.layer.Vector}
-   * @param {string|Mx.parameters.GeoJSON} userParameters parameters
-   * @param {Mx.parameters.LayerOptions} options provided by the user
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {String|Mx.parameters.GeoJSON} parameters Parámetros para la construcción de la capa,
+   * estos parámetros los proporciona el usuario.
+   * - name: Nombre de la capa en la leyenda.
+   * - url: Url del fichero o servicio que genera el GeoJSON.
+   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
+   * - source: Fuente de la capa.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - type: Tipo de la capa.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
+   * - hide: Atributos ocultos.
+   * - show: Mostrar atributos.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * - style: Define el estilo de la capa.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceVector({
+   *    attributions: 'geojson',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api
    */
   constructor(parameters, options = {}, vendorOptions) {
     /**
-     * Implementation of this layer
+     * Implementación
      * @public
+     * @implements {M.impl.layer.GeoJSON}
      * @type {M.impl.layer.GeoJSON}
      */
     const impl = new GeoJSONImpl(parameters, options, vendorOptions);
 
-    // calls the super constructor
+    // Llama al contructor del que se extiende la clase
     super(parameters, options, undefined, impl);
 
-    // checks if the implementation can create KML layers
+    // Comprueba si la implementación puede crear capas GeoJSON
     if (isUndefined(GeoJSONImpl)) {
       Exception(getValue('exception').geojsonlayer_method);
     }
 
-    // checks if the param is null or empty
+    // Comprueba si los parámetros son null or empty
     if (isNullOrEmpty(parameters)) {
       Exception(getValue('exception').no_param);
     }
@@ -50,21 +91,36 @@ class GeoJSON extends LayerVector {
     } else if (isArray(parameters)) {
       this.source = parameters;
     } else {
-      // url
+      /**
+      * GeoJSON url: Url del archivo o servicio que genera el GeoJSON.
+      */
       this.url = parameters.url;
 
-      // name
+      /**
+      * GeoJSON name: Nombre de la capa.
+      */
       this.name = parameters.name;
 
-      // source
+      /**
+      * GeoJSON Fuente de la capa.
+      */
       this.source = parameters.source;
       if (isString(this.source)) {
         this.source = this.deserialize(this.source);
       }
 
-      // extract
+      /**
+      * GeoJSON extract: Opcional, activa la consulta
+      * haciendo clic en el objeto geográfico, por defecto falso.
+      */
       this.extract = parameters.extract || false;
-      // crs
+
+      /**
+      * GeoJSON crs: Sistema de Referencia de Coordenadas.
+      * @public
+      * @type {Object}
+      * @api
+      */
       if (!isNullOrEmpty(parameters.crs)) {
         if (isNullOrEmpty(this.source)) {
           this.source = {
@@ -81,18 +137,32 @@ class GeoJSON extends LayerVector {
       }
     }
 
-    // options
+    /**
+    * GeoJSON options: Opciones que se mandan a la implementación.
+    */
     this.options = options;
   }
 
   /**
-   * 'type' This property indicates if
-   * the layer was selected
+   * Devuelve el tipo de capa, en este caso GeoJSON.
+   *
+   * @function
+   * @getter
+   * @return {String} Tipo de capa, GeoJSON.
+   * @api
    */
   get type() {
     return GeoJSONType;
   }
 
+  /**
+   * Sobrescribe el tipo de capa.
+   *
+   * @function
+   * @setter
+   * @param {String} newType Nuevo tipo de capa.
+   * @api
+   */
   set type(newType) {
     if (!isUndefined(newType) &&
       !isNullOrEmpty(newType) && (newType !== GeoJSONType)) {
@@ -101,23 +171,51 @@ class GeoJSON extends LayerVector {
   }
 
   /**
-   * 'extract' the features properties
+   * Devuelve la fuente del GeoJSON.
+   *
+   * @function
+   * @getter
+   * @return {Object} Fuente del GeoJSON.
+   * @api
    */
   get source() {
     return this.getImpl().source;
   }
 
+  /**
+   * Sobrescribe la fuente de la capa.
+   *
+   * @function
+   * @setter
+   * @param {Object} newSource Nueva fuente para la capa de tipo GeoJSON.
+   * @api
+   */
   set source(newSource) {
     this.getImpl().source = newSource;
   }
 
   /**
-   * 'extract' the features properties
+   * Devuelve el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @getter
+   * @return {Boolean} Valor de la propiedad "extract".
+   * @api
    */
   get extract() {
     return this.getImpl().extract;
   }
 
+  /**
+   * Sobrescribe el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @setter
+   * @param {Boolean|String} newExtract Nuevo valor para sobreescribir la propiedad "extract".
+   * @api
+   */
   set extract(newExtract) {
     if (!isNullOrEmpty(newExtract)) {
       if (isString(newExtract)) {
@@ -131,10 +229,12 @@ class GeoJSON extends LayerVector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
    * @api
    */
   equals(obj) {
@@ -149,10 +249,10 @@ class GeoJSON extends LayerVector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método sobrescribe la fuente del GeoJSON.
    *
    * @function
+   * @param {Object} source Nueva fuente.
    * @api
    */
   setSource(source) {
@@ -161,22 +261,27 @@ class GeoJSON extends LayerVector {
   }
 
   /**
-   * This function sets the style to layer
+   * Este método establece el estilo en capa.
    *
    * @function
    * @public
-   * @param {M.Style}
-   * @param {bool}
+   * @param {M.Style|String} styleParam Estilo que se aplicará a la capa.
+   * @param {bool} applyToFeature Si el valor es verdadero se aplicará a los objetos geográficos,
+   * falso no.
+   * Por defecto, falso.
+   * @param {M.layer.GeoJSON.DEFAULT_OPTIONS_STYLE} defaultStyle Estilo por defecto,
+   * se define en GeoJSON.js.
+   * @api
    */
   setStyle(styleParam, applyToFeature = false, defaultStyle = GeoJSON.DEFAULT_OPTIONS_STYLE) {
     super.setStyle(styleParam, applyToFeature, defaultStyle);
   }
 
   /**
-   * This function serializes this object
+   * Este método serializa la fuente del GeoJSON.
    *
    * @function
-   * @return {String}
+   * @return {String} Devuelve la fuente serializada, utiliza "encodeURIComponent".
    * @api
    * @public
    */
@@ -185,11 +290,11 @@ class GeoJSON extends LayerVector {
   }
 
   /**
-   * This function deserializes this object
+   * Este método deserializa la fuente, utiliza "decodeURIComponent".
    *
    * @function
-   * @param { String } encodedSerialized
-   * @return {String}
+   * @param {String} encodedSerialized Fuente serializada.
+   * @return {String} Devuelve la fuente deserializada.
    * @api
    * @public
    */
@@ -200,8 +305,8 @@ class GeoJSON extends LayerVector {
 }
 
 /**
- * Default params for style GeoJSON layers * @const
- * @type {object}
+ * Estilos por defecto del GeoJSON.
+ * @type {Object}
  * @public
  * @api
  */
@@ -217,9 +322,8 @@ GeoJSON.DEFAULT_PARAMS = {
 };
 
 /**
- * Default style for GeoJSON layers
- * @const
- * @type {object}
+ * Parámetros por defecto del GeoJSON.
+ * @type {Object}
  * @public
  * @api
  */

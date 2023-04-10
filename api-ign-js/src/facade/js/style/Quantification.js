@@ -40,13 +40,15 @@ const DEFAULT_CLASS_ARITHMETIC_PROGRESSION = 5;
 const DEFAULT_CLASS_GEOMETRIC_PROGRESSION = 5;
 
 /**
- * This function takes an array and creates a unique element array with it.
+ * Esta función toma una matriz y crea una matriz de elementos única con ella.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
- * @private
- * @param {Array} array - array of elements
- * @return {Array}
+ * @public
+ * @param {Array} array Matriz de elementos.
+ * @return {Array} Matriz de elementos.
+ * @api
  */
-const uniqueArray = (array) => {
+export const uniqueArray = (array) => {
   const uniqueArrayParam = [];
   array.forEach((elem) => {
     if (uniqueArrayParam.indexOf(elem) === -1) {
@@ -57,13 +59,15 @@ const uniqueArray = (array) => {
 };
 
 /**
- * This function checks if the serie contains negative value
+ * Esta función comprueba si la serie contiene valor negativo.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
- * @private
- * @param {Array} array - array of elements
- * @return {boolean}
+ * @public
+ * @param {Array} array Matriz de elementos.
+ * @return {boolean} Si es negativo devuelve falso.
+ * @api
  */
-const hasNegativeValue = (array) => {
+export const hasNegativeValue = (array) => {
   for (let i = 0; i < array.length; i += 1) {
     if (array[i] < 0) return true;
   }
@@ -71,13 +75,15 @@ const hasNegativeValue = (array) => {
 };
 
 /**
- * This function checks if the serie contains zero value
+ * Esta función comprueba si la serie contiene valor cero.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @function
- * @private
- * @param {Array} array - array of elements
- * @return {boolean}
+ * @public
+ * @param {Array} array Matriz de elementos.
+ * @return {boolean} Si es 0 devuelve verdadero.
  */
-const hasZeroValue = (array) => {
+export const hasZeroValue = (array) => {
   for (let i = 0; i < array.length; i += 1) {
     if (parseFloat(array[i]) === 0) return true;
   }
@@ -85,12 +91,15 @@ const hasZeroValue = (array) => {
 };
 
 /**
- * This function returns mean value
+ * Esta función devuelve el valor medio.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @function
- * @private
- * @param {Array} array - array of elements
+ * @public
+ * @param {Array} array Matriz de elementos.
+ * @return {Number} Valor medio.
  */
-const meanFn = (array) => {
+export const meanFn = (array) => {
   let sum = 0;
   let mean = 0;
   for (let i = 0; i < array.length; i += 1) {
@@ -101,11 +110,14 @@ const meanFn = (array) => {
 };
 
 /**
- * This function returns standard deviation value
+ * Esta función devuelve el valor de la desviación estándar.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
- * @private
+ * @public
+ * @param {Array} array Matriz de elementos.
+ * @return {Number} Desviación estándar.
  */
-const stddevFn = (array) => {
+export const stddevFn = (array) => {
   let tmp = 0;
   const mean = meanFn(array);
   for (let i = 0; i < array.length; i += 1) {
@@ -117,9 +129,11 @@ const stddevFn = (array) => {
 
 
 /**
- *  Compute the matrices required for Jenks breaks. These matrices
- * can be used for any classing of data with `classes <= n_classes`
+ * Calcule las matrices requeridas para los descansos de Jenks. Estas matrices
+ * se puede usar para cualquier clasificación de datos con `clases <= n_clases`.
  * @function
+ * @param {Object} data Datos.
+ * @param {Number} numberClasses Numero de la clase.
  */
 const getMatrices = (data, numberClasses) => {
   // in the original implementation, these matrices are referred to
@@ -216,12 +230,16 @@ const getMatrices = (data, numberClasses) => {
 };
 
 /**
- * This function take the calculated matrices
- * and derive an array of n breaks.
+ * Esta función toma las matrices calculadas
+ * y derivar una matriz de n rupturas.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
- * @private
+ * @param {Object} data Datos.
+ * @param {Number} lowerClassLimits Limite.
+ * @param {Number} nClasses Numero de la clase.
+ * @public
  */
-const jenksBreaks = (data, lowerClassLimits, nClasses) => {
+export const jenksBreaks = (data, lowerClassLimits, nClasses) => {
   let k = data.length - 1;
   const kclass = [];
   let countNum = nClasses;
@@ -242,11 +260,11 @@ const jenksBreaks = (data, lowerClassLimits, nClasses) => {
   return kclass;
 };
 
-/** This function returns a jenks quantification function
+/** Esta función devuelve una función de cuantificación de jenks.
  * @function
  * @public
- * @param {number} n_classes_param - Number of classes
- * @return {function}
+ * @param {number} numberClassesParam Número de clases.
+ * @return {function} Devuelve la función JENKS.
  * @api
  */
 export const JENKS = (numberClassesParam) => {
@@ -317,11 +335,11 @@ export const QUANTILE = (nclasses) => {
   return quantileFn;
 };
 
-/** This function returns a equal interval quantification function
+/** Esta función devuelve una función de cuantificación de cuantiles.
  * @function
  * @public
- * @param {number} n_classes_param - Number of classes
- * @return {function}
+ * @param {number} nclasses Número de clases.
+ * @return {function} Función de cuantificación de cuantiles.
  * @api
  */
 export const EQUAL_INTERVAL = (nclasses) => {
@@ -351,11 +369,11 @@ export const EQUAL_INTERVAL = (nclasses) => {
   return equalFn;
 };
 
-/** This function returns a quantification function based in media-sigma
+/** Esta función devuelve una función de cuantificación basada en media-sigma.
  * @function
  * @public
- * @param {number} n_classes_param - Number of classes
- * @return {function}
+ * @param {number} nclasses Número de clases.
+ * @return {function} Función de cuantificación basada en media-sigma.
  * @api
  */
 export const MEDIA_SIGMA = (nclasses) => {
@@ -411,11 +429,11 @@ export const MEDIA_SIGMA = (nclasses) => {
   return mediasigmaFn;
 };
 
-/** This function returns a arithmetic progression quantification function
+/** Esta función devuelve una función de cuantificación de progresión aritmética.
  * @function
  * @public
- * @param {number} n_classes_param - Number of classes
- * @return {function}
+ * @param {number} nclasses Número de clases.
+ * @return {function} Función de cuantificación de progresión aritmética.
  * @api
  */
 export const ARITHMETIC_PROGRESSION = (nclasses) => {
@@ -451,10 +469,10 @@ export const ARITHMETIC_PROGRESSION = (nclasses) => {
   return arithmeticFn;
 };
 
-/** This function returns a geometric progression quantification function
+/** Esta función devuelve una función de cuantificación de progresión geométrica.
  * @function
  * @public
- * @param {number} n_classes_param - Number of classes
+ * @param {number} nclasses Número de clases.
  * @return {function}
  * @api
  */

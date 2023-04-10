@@ -7,43 +7,58 @@ import Featuretype from '../format/wfs/DescribeFeatureType';
 
 /**
  * @classdesc
+ * WFS (Web Feature Service) es un estándar OGC para la transferencia de información geográfica,
+ * donde los elementos geográficos o features se transmiten en su totalidad al cliente.
  * @api
  */
 class WFS {
   /**
    * @classdesc
-   * Main constructor of the class. Creates a WFS layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa WFS
+   * con parámetros especificados por el usuario.
    *
    * @constructor
    * @implements {M.impl.Layer}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
+   * @param {Object} layerParameters Parámetros para la construcción de la capa,
+   * estos parámetros los proporciona el usuario.
+   * - url: URL del servicio WFS.
+   * - namespace: Espacio de nombres.
+   * - name: Nombre de la capa.
+   * - version: Versión del servicio WFS.
+   * - ids: Identificadores de los objetos geográficos.
+   * - cql: Consulta CQL.
+   * - projection: Proyección.
+   * - getFeatureOutputFormat: Formato de salida de la petición "getFeature".
+   * - describeFeatureTypeOutputFormat_: Formato de salida de la petición "describeFeatureType".
+   * @param {Object} vendorOpts Opciones para la biblioteca base.
+   * - getFeature: Devuelve los objetos geográficos de la capa.
+   * - describeFeatureType: Devuelve la descripción de la capa.
    * @api stable
    */
   constructor(layerParameters, vendorOpts) {
     /**
-     *
+     * URL del servicio WFS.
      * @private
      * @type {String}
      */
     this.url_ = layerParameters.url;
 
     /**
-     *
+     * Espacio de nombres.
      * @private
      * @type {String}
      */
     this.namespace_ = layerParameters.namespace;
 
     /**
-     *
+     * Nombre de la capa.
      * @private
      * @type {String}
      */
     this.name_ = layerParameters.name;
 
     /**
-     *
+     * Nombre completo de la capa.
      * @private
      * @type {String}
      */
@@ -53,36 +68,35 @@ class WFS {
     }
 
     /**
-     *
+     * Versión del servicio WFS.
      * @private
      * @type {String}
      */
     this.version_ = layerParameters.version;
 
     /**
-     *
+     * Identificadores de los objetos geográficos.
      * @private
      * @type {String}
      */
     this.ids_ = layerParameters.ids;
 
     /**
-     *
+     * Consulta CQL.
      * @private
      * @type {String}
      */
     this.cql_ = layerParameters.cql;
 
     /**
-     *
+     * Proyección.
      * @private
      * @type {M.Projection}
      */
     this.projection_ = layerParameters.projection;
 
     /**
-     * TODO
-     *
+     * Formato de salida de la petición "getFeature".
      * @private
      * @type {String}
      */
@@ -92,16 +106,14 @@ class WFS {
     }
 
     /**
-     * TODO
-     *
+     * Formato de salida de la petición "describeFeatureType".
      * @private
      * @type {String}
      */
     this.describeFeatureTypeOutputFormat_ = layerParameters.describeFeatureTypeOutputFormat;
 
     /**
-     * TODO
-     *
+     * Obtiene los objetos geográficos de la capa.
      * @private
      * @type {Object}
      */
@@ -111,8 +123,7 @@ class WFS {
     }
 
     /**
-     * TODO
-     *
+     * Formato de salida de la petición "describeFeatureType".
      * @private
      * @type {Object}
      */
@@ -123,15 +134,14 @@ class WFS {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método devuelve el tipo de objetos geográficos de la capa.
    *
    * @public
    * @function
-   * @param {M.Map} map
+   * @returns {Promise} Promesa con el tipo de objetos geográficos de la capa.
    * @api stable
    */
   getDescribeFeatureType() {
-    // TODO
     const describeFeatureParams = {
       service: 'WFS',
       version: this.version_,
@@ -154,18 +164,17 @@ class WFS {
   }
 
   /**
-   * This function gets the full URL of a GetFeature
-   * request
+   * Este método obtiene la URL completa de un objeto geográfico
+   * pedido.
    *
    * @public
    * @function
-   * @param {ol.Extent} extent
-   * @param {ol.proj.Projection} projection
-   * @returns {String} GetFeature URL
+   * @param {ol.Extent} extent Extensión de la capa.
+   * @param {ol.proj.Projection} projection Proyección de la capa.
+   * @returns {String} URL completa del objeto geográfico pedido.
    *
    * @api stable
    */
-
   getFeatureUrl(extent, projection) {
     const getFeatureParams = {
       service: 'WFS',

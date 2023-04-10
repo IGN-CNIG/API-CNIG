@@ -1,9 +1,18 @@
+/**
+ * @module M/impl/ol/js/projections
+ */
+
 import proj4 from 'proj4';
 import OLProjection from 'ol/proj/Projection';
 import { register } from 'ol/proj/proj4';
 import { addEquivalentProjections } from 'ol/proj';
 
-// EPSG:4258
+/**
+ * EPSG:4258
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj4258 = {
   def: '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs',
   extent: [-16.1, 32.88, 39.65, 84.17],
@@ -12,7 +21,12 @@ const proj4258 = {
   metersPerUnit: 111319.49079327358,
 };
 
-// EPSG:25828
+/**
+ * EPSG:25828
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj25828 = {
   def: '+proj=utm +zone=28 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
   extent: [397101.09, 3638520.14, 1034670.43, 9625438.82],
@@ -20,7 +34,12 @@ const proj25828 = {
   units: 'm',
 };
 
-// EPSG:25829
+/**
+ * EPSG:25829
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj25829 = {
   def: '+proj=utm +zone=29 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
   extent: [-164850.78, 3660417.01, 988728.57, 9567111.85],
@@ -28,7 +47,12 @@ const proj25829 = {
   units: 'm',
 };
 
-// EPSG:25830
+/**
+ * EPSG:25830
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj25830 = {
   def: '+proj=utm +zone=30 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
   extent: [-729785.83, 3715125.82, 940929.67, 9518470.69],
@@ -36,7 +60,12 @@ const proj25830 = {
   units: 'm',
 };
 
-// EPSG:25831
+/**
+ * EPSG:25831
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj25831 = {
   def: '+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
   extent: [-1300111.74, 3804640.43, 893164.13, 9478718.31],
@@ -44,7 +73,12 @@ const proj25831 = {
   units: 'm',
 };
 
-// EPSG:4230
+/**
+ * EPSG:4230
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj4230 = {
   def: '+proj=longlat +ellps=intl +no_defs',
   extent: [-16.09882145355955, 25.711114310330917, 48.60999527749605, 84.16977336415472],
@@ -53,7 +87,12 @@ const proj4230 = {
   metersPerUnit: 111319.49079327358,
 };
 
-// EPSG:23028
+/**
+ * EPSG:23028
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj23028 = {
   def: '+proj=utm +zone=28 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs',
   extent: [997517.95, 3873475.61, 2024693.05, 8529441.99],
@@ -61,7 +100,12 @@ const proj23028 = {
   units: 'm',
 };
 
-// EPSG:23029
+/**
+ * EPSG:23029
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj23029 = {
   def: '+proj=utm +zone=29 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs',
   extent: [448933.91, 3860083.93, 1860436.11, 8381369.16],
@@ -69,7 +113,12 @@ const proj23029 = {
   units: 'm',
 };
 
-// EPSG:23030
+/**
+ * EPSG:23030
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj23030 = {
   def: '+proj=utm +zone=30 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs',
   extent: [-99844.71, 3879626.63, 1682737.72, 8251830.80],
@@ -77,7 +126,12 @@ const proj23030 = {
   units: 'm',
 };
 
-// EPSG:23031
+/**
+ * EPSG:23031
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj23031 = {
   def: '+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs',
   extent: [-650883.16, 3932764.97, 1493695.91, 8141744.84],
@@ -85,7 +139,12 @@ const proj23031 = {
   units: 'm',
 };
 
-// EPSG:4326 WGS84 Geográficas
+/**
+ * EPSG:4326 WGS84 Geográficas
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj4326 = {
   def: '+proj=longlat +datum=WGS84 +no_defs',
   extent: [-180, -90, 180, 90],
@@ -95,7 +154,12 @@ const proj4326 = {
   axisOrientation: 'neu',
 };
 
-// EPSG:32627 WGS84 UTM huso 27N
+/**
+ * EPSG:32627 WGS84 UTM huso 27N
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj32627 = {
   def: '+proj=utm +zone=27 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
   extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
@@ -103,7 +167,12 @@ const proj32627 = {
   units: 'm',
 };
 
-// EPSG:32628 WGS84 UTM huso 28N
+/**
+ * EPSG:32628 WGS84 UTM huso 28N
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj32628 = {
   def: '+proj=utm +zone=28 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
   extent: [166021.44317933178, 0, 833978.5568206678, 9329005.18301614],
@@ -111,14 +180,25 @@ const proj32628 = {
   units: 'm',
 };
 
-// EPSG:32629 WGS84 UTM huso 29N
+/**
+ * EPSG:32629 WGS84 UTM huso 29N
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj32629 = {
   def: '+proj=utm +zone=29 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
   extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
   codes: ['EPSG:32629', 'urn:ogc:def:crs:EPSG::32629', 'http://www.opengis.net/gml/srs/epsg.xml#32629'],
   units: 'm',
 };
-// EPSG:32630 WGS84 UTM huso 30N
+
+/**
+ * EPSG:32630 WGS84 UTM huso 30N
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj32630 = {
   def: '+proj=utm +zone=30 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
   extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
@@ -126,7 +206,12 @@ const proj32630 = {
   units: 'm',
 };
 
-// EPSG:32631 WGS84 UTM huso 31N
+/**
+ * EPSG:32631 WGS84 UTM huso 31N
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj32631 = {
   def: '+proj=utm +zone=31 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
   extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
@@ -134,7 +219,12 @@ const proj32631 = {
   units: 'm',
 };
 
-// EPSG:4081 REGCAN95 Geográficas
+/**
+ * EPSG:4081 REGCAN95 Geográficas
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj4081 = {
   def: '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs',
   extent: [-21.93, 24.6, -11.75, 32.76],
@@ -143,7 +233,12 @@ const proj4081 = {
   metersPerUnit: 111319.49079327358,
 };
 
-// EPSG:4082 REGCAN95 UTM huso 27N
+/**
+ * EPSG:4082 REGCAN95 UTM huso 27N
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj4082 = {
   def: '+proj=utm +zone=27 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
   extent: [405849.71, 2720975.60, 1367994.77, 3662797.15],
@@ -151,7 +246,12 @@ const proj4082 = {
   units: 'm',
 };
 
-// EPSG:4083 REGCAN95 UTM huso 28N
+/**
+ * EPSG:4083 REGCAN95 UTM huso 28N
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj4083 = {
   def: '+proj=utm +zone=28 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ',
   extent: [-202677.94, 2738405.48, 804488.92, 3629357.10],
@@ -159,7 +259,12 @@ const proj4083 = {
   units: 'm',
 };
 
-// EPSG:3395
+/**
+ * EPSG:3395
+ * @type {Object}
+ * @public
+ * @api
+ */
 const proj3395 = {
   def: '+proj=merc +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
   extent: [-20026376.39, 15496570.74, 20026376.39, 18764656.23],
@@ -167,7 +272,12 @@ const proj3395 = {
   units: 'm',
 };
 
-// All projections above
+/**
+ * Lista con las proyecciones anteriores
+ * @type {Array<Object>}
+ * @public
+ * @api
+ */
 const projections = [
   proj4326,
   proj32627,
@@ -191,6 +301,15 @@ const projections = [
   proj3395,
 ];
 
+/**
+ * Este método registra un conjunto de proyecciones
+ * usando ol/proj
+ *
+ * @function
+ * @param {Array<Object>} projectionsParam Proyecciones a registrar
+ * @public
+ * @api
+ */
 const addProjections = (projectionsParam) => {
   // Register and publish projections
   projectionsParam.forEach((projection) => {
@@ -213,3 +332,13 @@ const addProjections = (projectionsParam) => {
 // register proj4
 addProjections(projections);
 register(proj4);
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

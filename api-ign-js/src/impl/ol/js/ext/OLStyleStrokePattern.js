@@ -1,9 +1,12 @@
 /**
+ * @module M/impl/OLStyleStrokePattern
+ */
+
+/**
  * Copyright (c) 2018 Jean-Marc VIGLINO,
  * released under the CeCILL-B license (French BSD license)
  * (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
  */
-
 import { DEVICE_PIXEL_RATIO as hasDEVICEPIXELRATIO } from 'ol/has';
 import OLStyleStroke from 'ol/style/Stroke';
 import { asString as olColorAsString } from 'ol/color';
@@ -11,26 +14,26 @@ import OLStyleFillPattern from './OLStyleFillPattern';
 
 /**
  * @classdesc
- * Stroke style with named pattern
- *
- * @constructor
- * @param {any}  options
- * @param {ol.style.Image|undefined} options.image an image pattern, image must be preloaded
- * to draw on first call
- * @param {number|undefined} options.opacity opacity with image pattern, default:1
- * @param {string} options.pattern pattern name (override by image option)
- * @param {ol.colorLike} options.color pattern color
- * @param {ol.style.Fill} options.fill fill color (background)
- * @param {number} options.offset pattern offset for hash/dot/circle/cross pattern
- * @param {number} options.size line size for hash/dot/circle/cross pattern
- * @param {number} options.spacing spacing for hash/dot/circle/cross pattern
- * @param {number|bool} options.angle angle for hash pattern / true for 45deg dot/circle/cross
- * @param {number} options.scale pattern scale
+ * Estilo de trazo con patrón.
  * @extends {ol.style.Fill}
  * @implements {ol.structs.IHasChecksum}
  * @api
  */
-export default class OLStyleStrokePattern extends OLStyleStroke {
+class OLStyleStrokePattern extends OLStyleStroke {
+  /**
+   * @constructor
+   * @param {any} options Opciones del estilo.
+   * - image: un patrón de imagen, la imagen debe estar precargada.
+   * - opacity: opacidad con patrón de imagen, por defecto 1.
+   * - color: color del patrón.
+   * - fill: color de relleno (fondo).
+   * - offset: desplazamiento del patrón para el patrón hash/dot/circle/cross.
+   * - size: tamaño de línea para el patrón hash/dot/circle/cross.
+   * - spacing: espaciado para el patrón hash/dot/circle/cross.
+   * - angle: ángulo para el patrón hash / true para 45deg dot/circle/cross.
+   * - scale: escala del patrón.
+   * @api
+   */
   constructor(options = {}) {
     super(options);
 
@@ -167,8 +170,11 @@ export default class OLStyleStrokePattern extends OLStyleStroke {
     this.setColor(pattern);
   }
   /**
-   * Clones the style.
-   * @return {ol_style_StrokePattern}
+   * Este método es llamado por el constructor de la clase padre,
+   * clona el estilo y asigna el canvas.
+   * @function
+   * @return {ol.style.StrokePattern} Clon del estilo.
+   * @api
    */
   clone() {
     const s = super.clone();
@@ -177,15 +183,20 @@ export default class OLStyleStrokePattern extends OLStyleStroke {
     return s;
   }
   /**
-   * Get canvas used as pattern
-   * @return {canvas}
+   * Este método devuelve la imagen del "canvas".
+   * @function
+   * @return {canvas} Imagen del "canvas".
+   * @api
    */
   getImage() {
     return this.canvas_;
   }
   /**
-   * Get pattern
-   * @param {olx.style.FillPatternOption}
+   * Este método devuelve el color del estilo.
+   * @function
+   * @param {olx.style.FillPatternOption} options Opciones del estilo.
+   * @return {ol.style.FillPattern} Color del estilo.
+   * @api
    */
   getPattern_(options) {
     const pat = OLStyleFillPattern.patterns[options.pattern] || OLStyleFillPattern.patterns.dot;
@@ -354,3 +365,5 @@ export default class OLStyleStrokePattern extends OLStyleStroke {
     return pat;
   }
 }
+
+export default OLStyleStrokePattern;

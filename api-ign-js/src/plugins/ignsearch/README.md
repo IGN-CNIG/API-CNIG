@@ -17,41 +17,39 @@ Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **servicesToSearch**. Servicio que se consulta
-  - **'g'**: Consulta Geocoder
-  - **'n'**: Consulta Topónimos
-  - **'gn'** : Consulta Geocoder y Topónimos
-- **maxResults**. Número de resultados en cada una de las consultas a los diferentes servicios (Cada uno de estos servicios internamnete tiene tambien su limite de resultados, en geocoder, por ejemplo, es 5 )
+- **servicesToSearch**. Servicio que se consulta:
+  - **'g'**: Consulta Geocoder.
+  - **'n'**: Consulta Topónimos.
+  - **'gn'** : Consulta Geocoder y Topónimos.
+- **maxResults**. Número de resultados en cada una de las consultas a los diferentes servicios (Cada uno de estos servicios internamente tiene también su límite de resultados, en geocoder, por ejemplo, es 5).
 - **noProcess**. En geocoder, indica las entidades que no se incluirán en los resultados.
-  - Admite combinación de 'municipio,poblacion,toponimo'
-  - Por defecto ('poblacion')
-- **countryCode**. Código por defecto del país en la petición a geocoder. Por defecto countryCode = 'es'
-- **resultVisibility**. Indica si se muestra o no la geometría del elemento localizado
-- **isCollapsed**. Indica si se muestra el plugin cerrado (**true**) o con las búsquedas habilitadas visible (**false**).
-- **collapsible**. Valor booleano que indica si el plugin puede colapsarse o no.
-  - true (por defecto)
-  - false
+  - Admite combinación de 'municipio,poblacion,toponimo'.
+  - Por defecto ('poblacion').
+- **countryCode**. Código por defecto del país en la petición a geocoder. Por defecto countryCode = 'es'.
+- **resultVisibility**. Indica si se muestra o no la geometría del elemento localizado. Por defecto true (la muestra).
+- **isCollapsed**. Indica si se muestra el plugin cerrado (**true**) o con las búsquedas habilitadas visible (**false**). Por defecto false.
+- **collapsible**. Valor booleano que indica si el plugin puede colapsarse o no. Por defecto false.
 
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right
-  - 'BL':bottom left
-  - 'BR':bottom right
+- **position**. Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
-  - **reverse**. Valor booleano que indica si debe aparecer o no el botón que gestiona la consulta de reverse sobre el mapa.
+- **reverse**. Valor booleano que indica si debe aparecer (true) o no (false) el botón que gestiona la consulta de reverse sobre el mapa.
   La consulta reverse revela la información de un punto determinado del mapa tras pinchar en él.
 
-  - **requeststreet**. Url con la petición find que se le hace al geocoder. Este atributo se usa unicamente cuando se accede al plugin mediante la url de sharemap.
+- **requeststreet**. Url con la petición find que se le hace al geocoder. Este atributo se usa únicamente cuando se accede al plugin mediante la url de sharemap.
 
-  - **locationId**. ID del punto geográfico localizado. Este atributo se puede usar como alternativa al requeststreet.
+- **locationId**. ID del punto geográfico localizado. Este atributo se puede usar como alternativa al requeststreet.
 
-  - **geocodercoords**. Coordenadas x,y de un punto geográfico. Este atributo se usa principalmente para las peticiones de reverse al geocoder.
+- **geocodercoords**. Coordenadas x,y de un punto geográfico. Este atributo se usa principalmente para las peticiones de reverse al geocoder.
 
 # Eventos
 
 - **ignsearch:entityFound**
   - Evento que se dispara cuando se ha localizado la búsqueda del plugin sobre el mapa.
-  - Expone, como parámetro devuelto, el **extent** actual calculado en la búsqueda
+  - Expone, como parámetro devuelto, el **extent** actual calculado en la búsqueda.
 
 ```javascript
 mp.on('ignsearch:entityFound', (extent) => {
@@ -63,15 +61,15 @@ mp.on('ignsearch:entityFound', (extent) => {
 # Otros métodos
 
 - **setResultVisibility( boolean )**
-  - Habilita o deshabilita la visualización de los resultados sobre el mapa
+  - Habilita o deshabilita la visualización de los resultados sobre el mapa.
 
 # Otros parámetros dentro del código
-- **urlCandidates**. Url servicio candidates de geocoder. Por defecto 'http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp'
-- **urlFind**. Url servicio find de geocoder. Por defecto 'http://www.cartociudad.es/geocoder/api/geocoder/findJsonp'
-- **urlReverse**. Url Servicio geocoding inverso. Por defecto 'http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode'
-- **urlPrefix**. Prefijo source servicio Nomenclátor. Por defecto 'http://www.idee.es/'
-- **urlAssistant**. Url servicio SearchAssitant de Nomenclátor.
-- **urlDispatcher**. Url servicio Dispatcher de Nomenclátor.
+- **urlCandidates**. Url servicio candidates de geocoder. Por defecto 'http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp'.
+- **urlFind**. Url servicio find de geocoder. Por defecto 'http://www.cartociudad.es/geocoder/api/geocoder/findJsonp'.
+- **urlReverse**. Url Servicio geocoding inverso. Por defecto 'http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode'.
+- **urlPrefix**. Prefijo source servicio Nomenclátor. Por defecto 'http://www.idee.es/'.
+- **urlAssistant**. Url servicio SearchAssitant de Nomenclátor. Por defecto 'https://www.idee.es/communicationsPoolServlet/.SearchAssistant'.
+- **urlDispatcher**. Url servicio Dispatcher de Nomenclátor. Por defecto 'https://www.idee.es/communicationsPoolServlet/Dispatcher'.
 
 
 # Ejemplo de uso

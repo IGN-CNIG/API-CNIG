@@ -15,13 +15,13 @@ Ofrece diferentes herramientas de zoom.
 
 # Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin sobre el mapa.
-  - 'TL':top left (default)
-  - 'TR':top right 
-  - 'BL':bottom left 
-  - 'BR':bottom right 
+- **position**: Indica la posición donde se mostrará el plugin sobre el mapa.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsed**: Indica si al iniciar el plugin este está abierto o cerrado. Las opciones son true or false. Por defecto true.
 - **collapsible**: Indica si este plugin puede ser cerrado y/o abierto. Las opciones son true or false. Por defecto true.
 

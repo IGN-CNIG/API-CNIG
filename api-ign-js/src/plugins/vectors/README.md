@@ -18,13 +18,13 @@ Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como 
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **collapsed**. Indica si el plugin viene cerrado por defecto (true/false).
-- **collapsible**. Indica si el plugin se puede cerrar (true/false).
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right
-  - 'BL':bottom left
-  - 'BR':bottom right
+- **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
 # Parámetros API REST
 ```javascript
@@ -32,11 +32,11 @@ URL_API?vectors=position*collapsed*collapsible
 ````
 Ejemplo:
 ```javascript
-http://mapea-lite.desarrollo.guadaltel.es/api-core/?vectors=BL*true*true
+https://componentes.cnig.es/api-core/?vectors=BL*true*true
 ```
 
 
-### Ejemplos de uso
+# Ejemplos de uso
 
 ```javascript
 const map = M.map({

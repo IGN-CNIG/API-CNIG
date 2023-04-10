@@ -4,49 +4,62 @@
 import { isArray, generateRandom, isFunction } from '../util/Utils';
 
 /**
- * @classdesc
- * @api
- */
+  * @classdesc
+  * Esta clase es la encargada de escuchar los evento.
+  * @api
+  */
 class EventListener {
   /**
-   * @constructor
-   * @api
-   */
+    * Constructor principal de la clase.
+    * @constructor
+    * @param {Function} listener Función "Callback" con el evento.
+    * @param {Object} scope "Scope", Se asigna al evento usa el método "apply"
+    * (Asignando explícitamente el objeto "this").
+    * @param {Boolean} once Se produzca una vez, por defecto falso.
+    * @api
+    */
   constructor(listener, scope, once = false) {
     /**
-     * TODO
-     *
-     * @private
-     * @type {function}
-     */
+      * Listener
+      *
+      * @private
+      * @type {function}
+      */
     this._listener = listener;
 
     /**
-     * TODO
-     *
-     * @private
-     * @type {Object}
-     */
+      * Scope
+      *
+      * @private
+      * @type {Object}
+      */
     this._scope = scope;
 
     /**
-     * TODO
-     */
+      * ID event, generate by random key
+      *
+      * @private
+      * @type {String}
+      */
     this.eventKey_ = generateRandom();
 
     /**
-     * TODO
-     */
+      * Once
+      *
+      * @private
+      * @type {Boolean}
+      */
     this.once_ = once;
   }
 
   /**
-   * TODO
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Disparador
+    *
+    * @public
+    * @function
+    * @param {Array} argsParam Argumento que se añadirá al "scope" del evento.
+    * @api
+    */
   fire(argsParam) {
     let args = argsParam;
     if (!isArray(args)) {
@@ -56,34 +69,44 @@ class EventListener {
   }
 
   /**
-   * TODO
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Devuelve el identificador del evento.
+    *
+    * @public
+    * @function
+    * @returns {M.EventListener.eventKey_} Identificador del evento.
+    * @api
+    */
   getEventKey() {
     return this.eventKey_;
   }
 
   /**
-   * TODO
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Devuelve si solo se ejecutará una vez.
+    *
+    * @public
+    * @function
+    * @returns {M.EventListener.once_} Devuelve el valor de la propiedad "once".
+    * @api
+    */
   isOnce() {
     return this.once_;
   }
 
   /**
-   * TODO
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Devuelve verdadero si el parámetro "listener" es una función y el "scope" tiene valor,
+    * en caso contrario si el valor del identificador es igual a la función que
+    * se le pasa por parámetros ("listener") devuelve verdadero.
+    *
+    * Si nada de esto se cumple devuelve falso.
+    *
+    * @public
+    * @function
+    * @param {Function} listener Función "Callback".
+    * @param {Object} scope "Scope", Se asigna al evento usa el método "apply"
+    * (Asignando explícitamente el objeto "this").
+    * @returns {Boolean} Verdadero si el parámetro "listener" y el "scope" son correctos.
+    * @api
+    */
   has(listener, scope) {
     let has = false;
     if (isFunction(listener)) {

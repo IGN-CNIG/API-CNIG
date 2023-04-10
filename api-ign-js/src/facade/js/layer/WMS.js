@@ -13,17 +13,68 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a WMS layer
- * with parameters specified by the user*
+ * WMS devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales.
+ * Permitiendo las personalización de las capas mediante estilos. Se trata de un mapa dínamico.
+ *
+ * @property {String} legend Nombre asociado en el árbol de contenido, si usamos uno.
+ * @property {String} version Versión WMS.
+ * @property {Boolean} tiled Verdadero si queremos dividir la capa en mosaicos,
+ * falso en caso contrario.
+ * @property {Boolean} transparent 'Falso' si es una capa base, 'verdadero' en caso contrario.
+ * @property {Object} capabilitiesMetadata Capacidades de metadatos WMS.
+ * @property {Number} minZoom Limitar el zoom mínimo.
+ * @property {Number} maxZoom Limitar el zoom máximo.
+ * @property {Object} options Capa de opciones WMS.
+ *
  * @api
+ * @extends {M.Layer}
  */
 class WMS extends LayerBase {
   /**
+   * Constructor principal de la clase. Crea una capa WMS
+   * con parámetros especificados por el usuario.
    * @constructor
-   * @extends {M.Layer}
-   * @param {string|Mx.parameters.WMS} userParameters parameters
-   * @param {Mx.parameters.LayerOptions} options provided by the user
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
+   * - name: nombre de la capa en el servidor.
+   * - url: url del servicio WFS.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - tiled: Verdadero si queremos dividir la capa en tiles, falso en caso contrario.
+   * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
+   *   En este caso la capa sería detectado por los plugins de tablas de contenidos
+   *   y aparecería como no visible.
+   * - version: Versión WMS.
+   * - type: Tipo de la capa.
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
+   * la implementación de la capa.
+   * - visibility: Indica la visibilidad de la capa.
+   * - singleTile: Indica si la tesela es única o no.
+   * - numZoomLevels: Número de niveles de zoom.
+   * - animated: Define si la capa está animada,
+   * el valor predeterminado es falso.
+   * - format: Formato de la capa, por defecto image/png.
+   * - styles: Estilos de la capa.
+   * - sldBody: Parámetros "ol.source.ImageWMS"
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - queryable: Indica si la capa es consultable.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * - animated: Define si la capa está animada,
+   * el valor predeterminado es falso.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceTileWMS from 'ol/source/TileWMS';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceTileWMS({
+   *    attributions: 'wms',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
@@ -46,38 +97,54 @@ class WMS extends LayerBase {
     const impl = new WMSImpl(optionsVar, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
-    // legend
+
+    /**
+     * WMS legend: Nombre asociado en el árbol de contenido, si usamos uno.
+     */
     this.legend = parameters.legend;
 
-    // version
+    /**
+     * WMS version: Versión WMS.
+     */
     this.version = parameters.version;
 
-    // tiled
+    /**
+     * WMS tiled: Verdadero si queremos dividir la capa en mosaicos, falso en caso contrario.
+     */
     if (!isNullOrEmpty(parameters.tiled)) {
       this.tiled = parameters.tiled;
     }
 
-    // transparent
+
+    /**
+     * WMS transparent: Falso si es una capa base, verdadero en caso contrario.
+     */
     this.transparent = parameters.transparent;
 
-    // capabilitiesMetadata
+    /**
+     * WMS capabilitiesMetadata: Capacidades de metadatos WMS.
+     */
     if (!isNullOrEmpty(vendorOptions.capabilitiesMetadata)) {
       this.capabilitiesMetadata = vendorOptions.capabilitiesMetadata;
     }
 
-    // minzoom
+    /**
+     * WMS minZoom: Limitar el zoom mínimo.
+     */
     this.minZoom = parameters.minZoom;
 
-    // maxzoom
+    /**
+     * WMS maxZoom: Limitar el zoom máximo.
+     */
     this.maxZoom = parameters.maxZoom;
 
-    // options
+    /**
+     * WMS options: Opciones WMS.
+     */
     this.options = optionsVar;
 
     /**
-     * get WMS getCapabilities promise
-     * @private
-     * @type {Promise}
+     * Obtener metadatos en forma de promesa.
      */
     this.getCapabilitiesPromise_ = null;
 
@@ -85,13 +152,25 @@ class WMS extends LayerBase {
   }
 
   /**
-   * 'type' This property indicates if
-   * the layer was selected
+   * Devuelve el tipo de layer, WMS.
+   *
+   * @function
+   * @getter
+   * @returns {M.LayerType.WMS} Tipo WMS.
+   * @api
    */
   get type() {
     return LayerType.WMS;
   }
 
+  /**
+   * Sobrescribe el tipo de capa.
+   *
+   * @function
+   * @setter
+   * @param {String} newType Nuevo tipo.
+   * @api
+   */
   set type(newType) {
     if (!isUndefined(newType) &&
       !isNullOrEmpty(newType) && (newType !== LayerType.WMS)) {
@@ -100,12 +179,27 @@ class WMS extends LayerBase {
   }
 
   /**
-   * 'legend' the layer name
+   * Devuelve la leyenda de la capa.
+   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   *
+   * @function
+   * @getter
+   * @return {M.layer.WMS.impl.legend} Leyenda de la capa.
+   * @api
    */
   get legend() {
     return this.getImpl().legend;
   }
 
+  /**
+   * Sobrescribe la leyenda de la capa.
+   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   *
+   * @function
+   * @setter
+   * @param {String} newLegend Nueva leyenda.
+   * @api
+   */
   set legend(newLegend) {
     if (isNullOrEmpty(newLegend)) {
       this.getImpl().legend = this.name;
@@ -115,12 +209,25 @@ class WMS extends LayerBase {
   }
 
   /**
-   * 'tiled' the layer name
+   * Devuelve el valor de la propiedad "tiled".
+   *
+   * @function
+   * @getter
+   * @return {M.layer.WMS.impl.tiled} Valor de la tesela.
+   * @api
    */
   get tiled() {
     return this.getImpl().tiled;
   }
 
+  /**
+   * Sobrescribe el valor de la propiedad "tiled".
+   *
+   * @function
+   * @setter
+   * @param {M.WMS.tiled} newTiled Nueva tesela.
+   * @api
+   */
   set tiled(newTiled) {
     if (!isNullOrEmpty(newTiled)) {
       if (isString(newTiled)) {
@@ -134,13 +241,25 @@ class WMS extends LayerBase {
   }
 
   /**
-   * 'version' the service version
-   * default value is 1.3.0
+   * Devuelve la versión del servicio, por defecto es 1.3.0.
+   *
+   * @function
+   * @getter
+   * @return {M.layer.WMS.impl.version} Versión del servicio.
+   * @api
    */
   get version() {
     return this.getImpl().version;
   }
 
+  /**
+   * Sobrescribe la versión del servicio, por defecto es 1.3.0.
+   *
+   * @function
+   * @setter
+   * @param {String} newVersion Nueva versión del servicio.
+   * @api
+   */
   set version(newVersion) {
     if (!isNullOrEmpty(newVersion)) {
       this.getImpl().version = newVersion;
@@ -150,40 +269,50 @@ class WMS extends LayerBase {
   }
 
   /**
-   * 'options' the layer options
+   * Devuelve las opciones de la capa.
+   *
+   * @function
+   * @getter
+   * @return {M.layer.WMTS.options} Devuelve las opciones de la
+   * implementación.
+   * @api
    */
   get options() {
     return this.getImpl().options;
   }
 
+  /**
+   * Sobrescribe las opciones de la capa.
+   *
+   * @function
+   * @setter
+   * @param {Object} newOptions Nuevas opciones.
+   * @api
+   */
   set options(newOptions) {
     this.getImpl().options = newOptions;
   }
 
   /**
-   * This method calculates the maxExtent of this layer:
-   * 1. Check if the user specified a maxExtentn parameter
-   * 2. Gets the maxExtent of the layer in the WMC
-   * 3. Gets the map maxExtent
-   * 4. If not, sets the maxExtent from the WMC global
-   * 5. Sets the maxExtent from the capabilities
-   * 6. Sets the maxExtent from the map projection
+   * Este método calcula la extensión máxima de esta capa.
    *
    * @function
+   * @param {Function} callbackFn
+   * @returns {M.WMS.maxExtent} Devuelve la extensión máxima.
    * @api
    */
   getMaxExtent(callbackFn) {
     let maxExtent;
-    if (isNullOrEmpty(this.userMaxExtent)) { // 1
-      if (isNullOrEmpty(this.options.wmcMaxExtent)) { // 2
-        if (isNullOrEmpty(this.map_.userMaxExtent)) { // 3
+    if (isNullOrEmpty(this.userMaxExtent)) {
+      if (isNullOrEmpty(this.options.wmcMaxExtent)) {
+        if (isNullOrEmpty(this.map_.userMaxExtent)) {
           // maxExtent provided by the service
           this.getCapabilities().then((capabilities) => {
             const capabilitiesMaxExtent = this.getImpl()
               .getExtentFromCapabilities(capabilities);
-            if (isNullOrEmpty(capabilitiesMaxExtent)) { // 5
+            if (isNullOrEmpty(capabilitiesMaxExtent)) {
               const projMaxExtent = this.map_.getProjection().getExtent();
-              this.maxExtent_ = projMaxExtent; // 6
+              this.maxExtent_ = projMaxExtent;
             } else {
               this.maxExtent_ = capabilitiesMaxExtent;
             }
@@ -209,16 +338,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This method calculates the maxExtent of this layer:
-   * 1. Check if the user specified a maxExtentn parameter
-   * 2. Gets the maxExtent of the layer in the WMC
-   * 3. Gets the map maxExtent
-   * 4. If not, sets the maxExtent from the WMC global
-   * 5. Sets the maxExtent from the capabilities
-   * 6. Sets the maxExtent from the map projection
+   * Este método calcula la extensión máxima de esta capa.
    *
-   * Async version of getMaxExtent
+   * Versión asíncrona de getMaxExtent.
    * @function
+   * @returns {M.WMS.maxExtent} Devuelve el maxExtent.
    * @api
    */
   calculateMaxExtent() {
@@ -226,12 +350,13 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This functions retrieves a Promise which will be
-   * resolved when the GetCapabilities request is retrieved
-   * by the service and parsed. The capabilities is cached in
-   * order to prevent multiple requests
+   * Este método recupera una Promesa que será
+   * resuelto cuando se recupera la solicitud GetCapabilities
+   * por el servicio y analizado. Las capacidades se almacenan en caché
+   * para evitar solicitudes múltiples.
    *
    * @function
+   * @returns {M.WMS.capabilities} Devuelve el capabilities.
    * @api
    */
   getCapabilities() {
@@ -242,9 +367,10 @@ class WMS extends LayerBase {
   }
 
   /**
-   * TODO
+   * Devuelve las URL de "tileMappins" (url del contexto, de la configuración).
    *
    * @function
+   * @returns {M.config.tileMappgins.urls} Devuelve "noCacheURL".
    * @api
    */
   getNoCacheUrl() {
@@ -252,9 +378,10 @@ class WMS extends LayerBase {
   }
 
   /**
-   * TODO
+   * Devuelve el nombre del "tileMappins" (nombres del contexto, de la configuración).
    *
    * @function
+   * @returns {M.config.tileMappgins.names} Devuelve "noCacheName".
    * @api
    */
   getNoCacheName() {
@@ -262,11 +389,13 @@ class WMS extends LayerBase {
   }
 
   /**
-   * Update minimum and maximum resolution WMS layers
+   * Actualización de capas WMS de resolución mínima y máxima.
    *
    * @public
    * @function
-   * @param {String|Mx.Projection} projection - Projection map
+   * @param {String|Mx.Projection} projection Proyección del mapa.
+   * @returns {M.WMS.impl.updateMinMaxResolution} Devuelve la resolucción
+   * máxima y mínima.
    * @api
    */
   updateMinMaxResolution(projection) {
@@ -274,10 +403,11 @@ class WMS extends LayerBase {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Actualica los parámetros de NoCahe, "M.config.tileMappins".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
    */
   _updateNoCache() {
     const tiledIdx = M.config.tileMappgins.tiledNames.indexOf(this.name);
@@ -288,10 +418,12 @@ class WMS extends LayerBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
    * @api
    */
   equals(obj) {

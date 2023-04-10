@@ -4,13 +4,13 @@
 <h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.InciCarto</small></h1>
 
 <p align="center">
-  <a title="MIT License" href="LICENSE.md">
+  <a title="MIT License" href="LICENSE">
     <img src="https://img.shields.io/badge/license-EUPL-blue.svg">
   </a>
-  <a title="Node version" href="#">
+  <a title="Node version" href="https://nodejs.org/es">
     <img src="https://img.shields.io/badge/node-v14.16-blue">
   </a>  
-  <a title="NPM version" href="#">
+  <a title="NPM version" href="https://www.npmjs.com/package/npm">
     <img src="https://img.shields.io/badge/npm-v6.14-blue">
   </a>
   <a title="Language" href="https://www.w3schools.com/html/" target="_blank">
@@ -66,30 +66,30 @@ Disponemos de dos posibilidades para notificar la incidencia.
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **collapsed**. Indica si el plugin viene cerrado por defecto (true/false).
-- **collapsible**. Indica si el plugin se puede cerrar (true/false).
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right
-  - 'BL':bottom left
-  - 'BR':bottom right
-- **prefixSubject**. Prefijo que llevará el *subject* del correo electrónico enviado.
-- **interfazmode**. Indica la modalidad de envío de la incidencia
+- **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **prefixSubject**: Prefijo que llevará el *subject* del correo electrónico enviado.
+- **interfazmode**: Indica la modalidad de envío de la incidencia.
   - 'simple': se usará un cleinte de correo para enviar la incidencia.
   - 'advance': se usará el gestor de incidencias INCIGEO.
-- **buzones**. Contiene un array con los objetos qued definen el nombre y direcciones de los buzones de incidencias. Cada onjeto buzón contiene dos parámetros.
+- **buzones**: Contiene un array con los objetos qued definen el nombre y direcciones de los buzones de incidencias. Cada onjeto buzón contiene dos parámetros.
   - 'name': nombre del propietario del buzón de incidencias.
   - 'email': correo electrónico del buzón.
-- **controllist**. Contiene un array enumerando las listas controladas con sus características.
+- **controllist**: Contiene un array enumerando las listas controladas con sus características.
   - 'id': identificador de la lista.
   - 'name': nombre de la lista.
   - 'mandatory': indica si el usuario está obligado a legir una opción.
-- **themeList**. Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades
+- **themeList**: Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades
   - 'idTheme': identificador de código de tema.
   - 'nameTheme': nombre del tema de error.
   - 'emailTheme': correo de la entidad responsable de subsanar este error.
-- **errorList**. Lista de control con las posibles categorizaciones del error.
-- **productList**. Lista de control con los productos del IGN en los que se ha detectado el error.
+- **errorList**: Lista de control con las posibles categorizaciones del error.
+- **productList**: Lista de control con los productos del IGN en los que se ha detectado el error.
 
 # Parámetros API REST
 
@@ -99,7 +99,7 @@ URL_API?incicarto=position*collapsed*collapsible
 Ejemplo:
 
 ```javascript
-http://mapea-lite.desarrollo.guadaltel.es/api-core/?incicarto=BL*true*true
+https://componentes.cnig.es/api-core/?incicarto=BL*true*true
 ```
 
 ## Ejemplo

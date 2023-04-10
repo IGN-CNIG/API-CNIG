@@ -17,21 +17,21 @@ Plugin que permite la elección de cada de fondo mediante previsualización de l
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 
-- *position*.  Ubicación del plugin sobre el mapa (Default = 'TR')
-  - 'TL' = Top left
-  - 'TR' = Top right
-  - 'BL' = Bottom left
-  - 'BR' = Bottom right
-- *collapsible*. Indica si el plugin se puede collapsar en un botón (true/false).
-- *collapsed*. Indica si el plugin viene colapsado de entrada (true/false).
-- *layerId*. Posición de la capa que se carga por defecto en el array de capas mandadas como parámetro.
-- *columnsNumber*. Número de columnas que parametrizan la tabla de servicios mostrados.
-- *layerVisibility*. Valor que indica si se muestra la capa cargada o no.
-- *layerOpts*. Array con las capas que se quieren utilizar como opciones para capa de fondo.
-   * *id*. Identificador de la capa
-   * *preview*. Ruta a la imagen de previsualización que se muestra.
-   * *title*. Nombre identificativo de la capa que se mostrará sobre la previsualización.
-   * *layers*. Array con las capas de Mapea que se quieren cargar al seleccionar esta opción.
+- **position**:  Ubicación del plugin sobre el mapa.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **layerId**: Posición de la capa que se carga por defecto en el array de capas mandadas como parámetro.
+- **columnsNumber**: Número de columnas que parametrizan la tabla de servicios mostrados.
+- **layerVisibility**: Valor que indica si se muestra la capa cargada o no.
+- **layerOpts**: Array con las capas que se quieren utilizar como opciones para capa de fondo.
+   * *id*: Identificador de la capa.
+   * *preview*: Ruta a la imagen de previsualización que se muestra.
+   * *title*: Nombre identificativo de la capa que se mostrará sobre la previsualización.
+   * *layers*: Array con las capas de Mapea que se quieren cargar al seleccionar esta opción.
 
 
 # Ejemplo de uso

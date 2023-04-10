@@ -7,34 +7,42 @@ import { parse as olXMLParse } from 'ol/xml';
 import { getValue } from 'M/i18n/language';
 
 /**
- * @classdesc
- * @api
- */
+  * @classdesc
+  * Implementación de la clase XML. Crea un formateador XML.
+  *
+  * @property {string} rootPrefix Prefijo en el nodo raíz que se asigna al
+  * URI del espacio de nombres del contexto.
+  * @property {Object} namespaces Mapeo de los alias de los espacios de
+  * nombres a sus URIs.
+  * @property {Mx.parameters.LayerOptions} options Opciones personalizadas para
+  * este formateador.
+  *
+  * @api
+  */
 class XML {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a WMC formater
-   * for version 1.0.0
-   *
-   * @constructor
-   * @param {Mx.parameters.LayerOptions} options custom options for this formater
-   * @extends {M.impl.format.XML}
-   * @api stable
-   */
+    * Constructor principal de la clase. Crea un formateador XML.
+    *
+    * @constructor
+    * @param {Mx.parameters.LayerOptions} options Opciones para este formateador.
+    * @api
+    */
   constructor(options = {}) {
     // super();
     /**
-     * Prefix on the root node that maps to the context namespace URI
-     * @private
-     * @type {string}
-     */
+      * Prefijo en el nodo raíz que se asigna al
+      * URI del espacio de nombres del contexto.
+      * @public
+      * @type {string}
+      */
     this.rootPrefix = null;
 
     /**
-     * Mapping of namespace aliases to namespace URIs
-     * @private
-     * @type {Object}
-     */
+      * Mapeo de los alias de los espacios de
+      * nombres a sus URIs.
+      * @public
+      * @type {Object}
+      */
     this.namespaces = {
       ol: 'http://openlayers.org/context',
       wmc: 'http://www.opengis.net/context',
@@ -46,21 +54,24 @@ class XML {
     };
 
     /**
-     * Custom options for this formater
-     * @private
-     * @type {Mx.parameters.LayerOptions}
-     */
+      * Opciones personalizadas para este formateador.
+      * @public
+      * @type {Mx.parameters.LayerOptions}
+      */
     this.options = options;
   }
 
 
   /**
-   * @public
-   * @function
-   * @param {Document} data Document.
-   * @return {Object} parsed object.
-   * @api stable
-   */
+    * Este método obtiene un objeto basado en el XML dado.
+    *
+    * @function
+    * @param {String | Document} data XML.
+    * @returns {Object} Objeto basado en los elementos y
+    * atributos del XML.
+    * @public
+    * @api
+    */
   read(data) {
     let dataVariable = data;
     if (isString(data)) {
@@ -77,13 +88,14 @@ class XML {
   }
 
   /**
-   * @private
-   * @function
-   * @param {Document} data Document.
-   * @return {Object} parsed object.
-   * @api stable
-   */
-
+    * Este método lee el elemento raíz del esquema XML.
+    *
+    * @function
+    * @param {Object} context Objeto.
+    * @param {Element} node Nodo.
+    * @public
+    * @api
+    */
   readRoot(context, node) {
     const contextVariable = context;
     const root = node.documentElement;
@@ -93,12 +105,15 @@ class XML {
   }
 
   /**
-   * @private
-   * @function
-   * @param {Object} obj
-   * @param {Document} node
-   * @api stable
-   */
+    * Este método itera e invoca la función "read" sobre los
+    * nodos hijos del elemento especificado.
+    *
+    * @function
+    * @param {Object} obj Objeto.
+    * @param {Element} node Nodo.
+    * @public
+    * @api
+    */
   runChildNodes(obj, node) {
     const children = node.childNodes;
     let childNode;
@@ -119,14 +134,16 @@ class XML {
   }
 
   /**
-   * Get the namespace prefix for a given uri from the <namespaces> object.
-   *
-   * @private
-   * @function
-   * @param {String} uri
-   * @return {String} A namespace prefix or null if none found
-   * @api stable
-   */
+    * Obtiene el prefijo del espacio de nombres para un
+    * uri determinado del objeto "<namespaces>".
+    *
+    * @function
+    * @param {String} uri URI del objeto "<namespaces>".
+    * @return {String} Un prefijo de espacio de nombres o nulo si
+    * no se encuentra ninguno.
+    * @public
+    * @api
+    */
   getNamespacePrefix(uri) {
     let prefix = null;
     if (uri === null) {
@@ -144,10 +161,17 @@ class XML {
   }
 
   /**
-   * @private
-   * @function
-   * @api stable
-   */
+    * Obtiene el valor del nodo de tipo CDATASection
+    * junto al prefijo especificado. Si no encuentra un
+    * CDATASection devuelve el prefijo especificado.
+    *
+    * @function
+    * @param {Element} node Nodo de tipo CDATASection.
+    * @param {String} def Prefijo.
+    * @return {String} Valor del nodo de tipo CDATASection.
+    * @public
+    * @api
+    */
   static getChildValue(node, def) {
     let value = def || '';
     if (node) {
@@ -165,16 +189,18 @@ class XML {
   }
 
   /**
-   * Get an attribute value given the namespace URI and local name
-   *
-   * @private
-   * @function
-   * @param {Element} node Node on which to search for an attribute
-   * @param {String} uri Namespace URI
-   * @param {String} name Local name of the attribute (without the prefix)
-   * @return {String} An attribute value or and empty string if none found
-   * @api stable
-   */
+    * Obtiene un valor de atributo dado el URI del espacio de nombres y
+    * el nombre local.
+    *
+    * @function
+    * @param {Element} node Nodo en el que buscar un atributo.
+    * @param {String} uri URI de espacio de nombres.
+    * @param {String} name Nombre local del atributo (sin el prefijo).
+    * @return {String} Un valor de atributo o una cadena vacía si no
+    * se encuentra ninguno.
+    * @public
+    * @api
+    */
   getAttributeNS(node, uri, name) {
     let attributeValue = '';
     if (node.getAttributeNS) {

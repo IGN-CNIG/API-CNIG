@@ -1,13 +1,27 @@
+/**
+ * @module M/impl/point/Circle
+ */
+
 import OLStyleCircle from 'ol/style/Circle';
 
-export default class Circle extends OLStyleCircle {
+/**
+ * @classdesc
+ * Estilo gráfico para objetos geográficos vectoriales.
+ * @api
+ * @extends {OLStyleCircle}
+ */
+class Circle extends OLStyleCircle {
   /**
-   * @classdesc
-   * chart style for vector features
-   *
    * @constructor
-   * @param {object} options - Options style PointCircle
-   * @extends {OLStyleCircle}
+   * @param {object} options Opciones de los estilos.
+   * - fill: Relleno.
+   * - radius: Radio.
+   * - snapToPixel: Si se utilizan verdaderos números enteros de píxeles como coordenadas de
+   * píxeles X e Y al dibujar el círculo en el "canva" de salida.
+   * Si se pueden utilizar números fraccionarios falso.
+   * - stroke: Borde del circulo.
+   * - atlasManager: Gestiona la creación de atlas de imágenes.
+   * @api stable
    */
   constructor(options = {}) {
     // super call
@@ -22,9 +36,10 @@ export default class Circle extends OLStyleCircle {
   }
 
   /**
-   * clones the style
+   * Clona el estilo.
    * @public
-   * @function
+   * @functio
+   * @returns {Object} Retorna "new Circle"
    */
   clone() {
     const style = new Circle({
@@ -38,3 +53,5 @@ export default class Circle extends OLStyleCircle {
     return style;
   }
 }
+
+export default Circle;

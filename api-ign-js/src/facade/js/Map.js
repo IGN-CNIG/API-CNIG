@@ -56,17 +56,25 @@ import OSM from './layer/OSM';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a Map
- * with parameters specified by the user
+ * Crea un mapa
+ * con parámetros especificados por el usuario.
+ *
+ * @property {Boolean} _defaultProj Indica si la proyección utilizada
+  * es por defecto.
+ * @property {object} panel Objeto del panel.
+ * @property {Array<Number>} userMaxExtent Extensión máxima proporcionada por el usuario.
+ * @extends {M.facade.Base}
  * @api
  */
 class Map extends Base {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
    * @extends { M.facade.Base }
-   * @param { string | Mx.parameters.Map } userParameters parameters
-   * @param { Mx.parameters.MapOptions } options custom options  for the implementation
-   * provided by the user
+   * @param { string | Mx.parameters.Map } userParameters Parámetros.
+   * @param { Mx.parameters.MapOptions } options Opciones personalizadas para la implementación
+   * proporcionado por el usuario.
    * @api
    */
   constructor(userParameters, options = {}) {
@@ -90,47 +98,33 @@ class Map extends Base {
     }
 
     /**
-     * @private
-     * @type {array<Panel>}
-     * @expose
+     * Map: Panel del mapa.
      */
     this._panels = [];
 
     /**
-     * @private
-     * @type {array<Plugin>}
-     * @expose
+     * Map: Plugins incorporados al mapa.
      */
     this._plugins = [];
 
     /**
-     * @private
-     * @type {HTMLElement}
-     * @expose
+     * Map: Areas del contenedor.
      */
     this._areasContainer = null;
 
     /**
-     * The added popup
-     * @private
-     * @type {Popup}
+     * Map: "Popup".
      */
     this.popup_ = null;
 
     /**
-     * Flag that indicates if the used projection
-     * is by default
-     * @public
-     * @type {Boolean}
-     * @api
-     * @expose
+     * Map: Indica si la proyección utilizada
+     * es por defecto.
      */
     this._defaultProj = true;
 
     /**
-     * @public
-     * @type {object}
-     * @api
+     * Map: Panel del mapa.
      */
     this.panel = {
       LEFT: null,
@@ -138,64 +132,47 @@ class Map extends Base {
     };
 
     /**
-     * @private
-     * @type {Number}
+     * Map: Zoom del usuario.
      */
     this._userZoom = null;
 
     /**
-     * @private
-     * @type {Object}
+     * Map: Centro del usuario.
      */
     this.userCenter_ = null;
 
     /**
-     * TODO
-     * @private
-     * @type {Boolean}
+     * Map: Centro inicial terminado.
      */
     this._finishedInitCenter = true;
 
     /**
-     * TODO
-     * @private
-     * @type {Boolean}
+     * Map: Extensión máxima terminada.
      */
     this._finishedMaxExtent = true;
 
     /**
-     * TODO
-     * @private
-     * @type {Boolean}
+     * Map: Mapa terminado implementación.
      */
     this._finishedMapImpl = false;
 
     /**
-     * TODO
-     * @private
-     * @type {Boolean}
+     * Map: Mapa terminado.
      */
     this._finishedMap = false;
 
     /**
-     * Feature Center
-     * @private
-     * @type {Feature}
+     * Map: Centro de los objetos geográficos.
      */
     this.centerFeature_ = null;
 
     /**
-     * Draw layer
-     * @private
-     * @type {Vector}
+     * Map: Capa "Draw".
      */
     this.drawLayer_ = null;
 
     /**
-     * MaxExtent provided by the user
-     * @public
-     * @type {Array<Number>}
-     * @api
+     * Map: Extensión máxima proporcionada por el usuario.
      */
     this.userMaxExtent = null;
 
@@ -211,9 +188,7 @@ class Map extends Base {
     this.createMainPanels_();
 
     /**
-     * Features manager
-     * @private
-     * @type {M.handler.Features}
+     * Manejador de objetos geográficos.
      */
     this.featuresHandler_ = new FeaturesHandler();
     this.featuresHandler_.addTo(this);
@@ -332,11 +307,11 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the layers added to the map
+   * Este método obtiene las capas agregadas al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Array<Layer>}
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Matriz de nombres de capas.
+   * @returns {Array<Layer>} Devuelve una matriz de capas.
    * @api
    */
   getLayers(layersParamVar) {
@@ -365,11 +340,11 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the layers which are not in any layerGroup
+   * Este método obtiene las capas que no están en ningún grupo de capas.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Array<Layer>}
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Matriz de nombres de capas.
+   * @returns {Array<Layer>} Devuelve una matriz de capas.
    * @api
    */
   getRootLayers(layersParamVar) {
@@ -379,10 +354,10 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the base layers added to the map
+   * Este método devuelve las capas base del mapa.
    *
    * @function
-   * @returns {Array<Layer>}
+   * @returns {Array<Layer>} Matriz con las capas base.
    * @api
    */
   getBaseLayers() {
@@ -395,10 +370,10 @@ class Map extends Base {
   }
 
   /**
-   * This function adds layers specified by the user
+   * Este método devuelve los manejadores de objetos geográficos.
    *
    * @function
-   * @returns {M.handler.Feature}
+   * @returns {M.handler.Feature} Devuelve los manejadores de objetos geográficos
    * @public
    * @api
    */
@@ -407,11 +382,11 @@ class Map extends Base {
   }
 
   /**
-   * This function adds layers specified by the user
+   * Este método agrega capas especificadas por el usuario.
    *
    * @function
-   * @param {string|Object|Array<String>|Array<Object>} layersParam
-   * @returns {Map}
+   * @param {string|Object|Array<String>|Array<Object>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addLayers(layersParameter) {
@@ -503,13 +478,12 @@ class Map extends Base {
   }
 
   /**
-
-   * This function removes the specified layers to the map
+   * Este método elimina las capas especificadas del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * specified by the user
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   removeLayers(layersParam) {
@@ -537,11 +511,12 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the KML layers added to the map
+   * Esta función agrega las capas KML al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Array<KML>}
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo KML.
+   * @returns {Array<KML>} Matriz de capas, tipo KML.
    * @api
    */
   getKML(layersParamVar) {
@@ -573,11 +548,11 @@ class Map extends Base {
   }
 
   /**
-   * This function adds the KML layers to the map
+   * Este método agrega las capas KML al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.KML>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.KML>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addKML(layersParamVar) {
@@ -617,11 +592,12 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the KML layers to the map
+   * Este método elimina las capas KML del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.KML>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.KML>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   removeKML(layersParam) {
@@ -645,11 +621,12 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the WMS layers added to the map
+   * Este método obtiene las capas WMS agregadas al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.WMC>} layersParam
-   * @returns {Array<WMS>} layers from the map
+   * @param {Array<string>|Array<Mx.parameters.WMC>} layersParam Opcional.
+    * - Matriz de capas de nombres, tipo WMS.
+   * @returns {Array<WMS>} Matriz de capas, tipo WMS.
    * @api
    */
   getWMS(layersParamVar) {
@@ -681,11 +658,11 @@ class Map extends Base {
   }
 
   /**
-   * This function adds the WMS layers to the map
+   * Este método agrega las capas WMS al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.WMS>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.WMS>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addWMS(layersParamVar) {
@@ -721,11 +698,12 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the WMS layers to the map
+   * Este método elimina las capas WMS del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.WMS>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.WMS>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   removeWMS(layersParam) {
@@ -746,11 +724,12 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the WFS layers added to the map
+   * Este método agrega las capas WFS al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Array<WFS>} layers from the map
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo WFS.
+   * @returns {Array<WFS>} Capas del mapa.
    * @api
    */
   getWFS(layersParamVar) {
@@ -782,11 +761,12 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the GeoJSON layers added to the map
+   * Este método agrega las capas de GeoJSON al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Array<WFS>} layers from the map
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional
+   * - Matriz de capas de nombres, escriba GeoJSON.
+   * @returns {Array<WFS>} Capas del mapa.
    * @api
    */
   getGeoJSON(layersParamVar) {
@@ -810,11 +790,11 @@ class Map extends Base {
   }
 
   /**
-   * This function adds the WFS layers to the map
+   * Este método agrega las capas WFS al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.WFS>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.WFS>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addWFS(layersParamVar) {
@@ -857,11 +837,12 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the WFS layers to the map
+   * Este método elimina las capas WFS del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.WFS>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.WFS>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   removeWFS(layersParam) {
@@ -885,11 +866,12 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the WMTS layers added to the map
+   * Este método obtiene las capas WMTS agregadas al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.WMTS>} layersParam
-   * @returns {Array<WMTS>} layers from the map
+   * @param {Array<string>|Array<Mx.parameters.WMTS>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo WMTS.
+   * @returns {Array<WMTS>} Capas del mapa.
    * @api
    */
   getWMTS(layersParamVar) {
@@ -921,11 +903,11 @@ class Map extends Base {
   }
 
   /**
-   * This function adds the WMTS layers to the map
+   * Este método agrega las capas WMTS al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.WMTS>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.WMTS>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addWMTS(layersParamVar) {
@@ -963,11 +945,12 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the WMTS layers to the map
+   * Este método elimina las capas WMTS del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.WMTS>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.WMTS>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   removeWMTS(layersParam) {
@@ -988,10 +971,13 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the vector tile layers
+   * Este método obtiene las capas MVT.
    *
    * @function
    * @public
+   * @param {Array<string>|Array<Mx.parameters.WMTS>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo MVT.
+   * @returns {Array<WMTS>} Capas del mapa.
    * @api
    */
   getMVT(layersParamVar) {
@@ -1019,9 +1005,12 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the vector tile layers from map.
+   * Este método elimina las capas MVT del mapa.
    *
    * @function
+   * @param {Array<string>|Array<Mx.parameters.WMTS>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
    * @public
    * @api
    */
@@ -1042,10 +1031,12 @@ class Map extends Base {
   }
 
   /**
-   * This function adds the vector tile layers
+   * Este método agrega capas MVT.
    *
    * @function
    * @public
+   * @param {Array<string>|Array<Mx.parameters.WMTS>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addMVT(layersParamVar) {
@@ -1086,11 +1077,13 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the MBtiles layers added to the map
+   * Este método agrega las capas de MBtiles al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Array<M.layer.MBtiles>} layers from the map
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional
+   * - Matriz de capas de nombres, tipo MBTiles.
+   * @returns {Array<M.layer.MBtiles>} Capas del mapa.
+   * @deprecated
    * @api
    */
   getMBTiles(layersParamVar) {
@@ -1116,11 +1109,12 @@ class Map extends Base {
   }
 
   /**
-   * This function adds the MBtiles layers to the map
+   * Este método agrega las capas de MBtiles al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @deprecated
    * @api
    */
   addMBTiles(layersParamVar) {
@@ -1154,11 +1148,13 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the MBtiles layers to the map
+   * Este método elimina las capas de MBtiles del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @deprecated
    * @api
    */
   removeMBTiles(layersParam) {
@@ -1176,11 +1172,13 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the MBtiles layers added to the map
+   * Este método agrega las capas de MBtiles al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Array<M.layer.MBtiles>} layers from the map
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional
+   * - Matriz de capas de nombres, tipo MBTilesVector.
+   * @returns {Array<M.layer.MBtiles>} Capas del mapa.
+   * @deprecated
    * @api
    */
   getMBTilesVector(layersParamVar) {
@@ -1200,12 +1198,14 @@ class Map extends Base {
     const layers = this.getImpl().getMBTilesVector(filters).sort(Map.LAYER_SORT);
     return layers;
   }
+
   /**
-   * This function adds the MBtiles layers to the map
+   * Este método agrega las capas de MBtiles al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @deprecated
    * @api
    */
   addMBTilesVector(layersParamVar) {
@@ -1231,12 +1231,15 @@ class Map extends Base {
     }
     return this;
   }
+
   /**
-   * This function removes the MBtiles layers to the map
+   * Este método elimina las capas de MBtiles del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @deprecated
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   removeMBTilesVector(layersParam) {
@@ -1253,11 +1256,12 @@ class Map extends Base {
   }
 
   /**
-   * This function gets the XYZ layers added to the map
+   * Este método devuelve las capas XYZ al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Array<M.layer.XYZ>} layers from the map
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo XYZ.
+   * @returns {Array<M.layer.XYZ>} Capas del mapa.
    * @api
    */
   getXYZs(layersParamVar) {
@@ -1283,11 +1287,11 @@ class Map extends Base {
   }
 
   /**
-   * This function adds the XYZ layers to the map
+   * Este método agrega las capas XYZ al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addXYZ(layersParamVar) {
@@ -1321,11 +1325,12 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the XYZ layers to the map
+   * Este método elimina las capas XYZ del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   removeXYZ(layersParam) {
@@ -1344,10 +1349,11 @@ class Map extends Base {
 
 
   /**
-   * This function gets the TMS layers added to the map
+   * Este método devuelve las capas TMS al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo TMS.
    * @returns {Array<M.layer.TMS>} layers from the map
    * @api
    */
@@ -1374,11 +1380,11 @@ class Map extends Base {
   }
 
   /**
-   * This function adds the TMS layers to the map
+   * Este método agrega las capas TMS al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addTMS(layersParamVar) {
@@ -1412,11 +1418,12 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the TMS layers to the map
+   * Este método elimina las capas TMS del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Map}
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   removeTMS(layersParam) {
@@ -1434,12 +1441,12 @@ class Map extends Base {
   }
 
   /**
-   * This function gets controls specified by the user
+   * Este método devuelve los controles especificados por el usuario.
    *
    * @public
    * @function
-   * @param {string|Array<String>} controlsParam
-   * @returns {Array<Control>}
+   * @param {string|Array<String>} controlsParam Controles de nombre de colección.
+   * @returns {Array<Control>} Matriz de retorno de controles.
    * @api
    */
   getControls(controlsParamVar) {
@@ -1464,12 +1471,13 @@ class Map extends Base {
   }
 
   /**
-   * This function adds controls specified by the user
+   * Este método agrega controles especificados por el usuario.
    *
    * @public
    * @function
    * @param {string|Object|Array<String>|Array<Object>} controlsParam
-   * @returns {Map}
+   * Colección o nombre de los controles.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addControls(controlsParamVar) {
@@ -1614,12 +1622,12 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the specified controls from the map
+   * Este método elimina los controles especificados del mapa.
    *
    * @function
-   * @param {string|Array<string>} controlsParam
-   * specified by the user
-   * @returns {Map}
+   * @param {string|Array<string>} controlsParam Colección o nombre de los controles
+   * especificado por el usuario.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   removeControls(controlsParam) {
@@ -1651,12 +1659,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the maximum extent for this
-   * map instance
+   * Este método proporciona la extensión máxima para esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Mx.Extent}
+   * @returns {Mx.Extent} Devuelve la extensión máxima.
    * @api
    */
   getMaxExtent() {
@@ -1668,13 +1676,13 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the maximum extent for this
-   * map instance.
-   * Async version of getMaxExtent
+   * Este método proporciona la extensión máxima para esta
+   * instancia de mapa.
+   * Versión asíncrona de getMaxExtent.
    *
    * @public
    * @function
-   * @returns {Promise}
+   * @returns {Promise} Devuelve la extensión máxima.
    * @api
    */
   calculateMaxExtent() {
@@ -1701,14 +1709,14 @@ class Map extends Base {
 
 
   /**
-   * This function sets the maximum extent for this
-   * map instance
+   * Este método establece la extensión máxima para esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @param {String|Array<String>|Array<Number>|Mx.Extent} maxExtentParam the extent max
-   * @param {Boolean} zoomToExtent - Set bbox
-   * @returns {Map}
+   * @param {String|Array<String>|Array<Number>|Mx.Extent} maxExtentParam La extensión máxima.
+   * @param {Boolean} zoomToExtent Establecer bbox.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   setMaxExtent(maxExtentParam, zoomToExtent = true) {
@@ -1743,11 +1751,11 @@ class Map extends Base {
   }
 
   /**
-   * This function resets the maximum extent of the Map.
+   * Este método restablece la extensión máxima del Mapa.
    *
    * @public
    * @function
-   * @returns {Map}
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   resetMaxExtent() {
@@ -1760,12 +1768,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the current extent (bbox) of this
-   * map instance
+   * Este método proporciona la extensión actual (bbox) de esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Mx.Extent}
+   * @returns {Mx.Extent} Regresa el "Bbox".
    * @api
    */
   getBbox() {
@@ -1780,14 +1788,14 @@ class Map extends Base {
   }
 
   /**
-   * This function sets the bbox for this
-   * map instance
+   * Este método establece el "bbox" para esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @param {String|Array<String>|Array<Number>|Mx.Extent} bboxParam the bbox
-   * @param {Object} vendorOpts vendor options
-   * @returns {Map}
+   * @param {String|Array<String>|Array<Number>|Mx.Extent} bboxParam El "bbox".
+   * @param {Object} vendorOpts Opciones de proveedores.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   setBbox(bboxParam, vendorOpts) {
@@ -1813,12 +1821,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the current zoom of this
-   * map instance
+   * Este método proporciona el zoom actual de esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Number}
+   * @returns {Number} Devuelve el zoom actual.
    * @api
    */
   getZoom() {
@@ -1833,12 +1841,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the current zoom of this
-   * map instance
+   * Este método proporciona el zoom mínimo de esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Number}
+   * @returns {Number} Devuelve el zoom mínimo actual.
    * @api
    */
   getMinZoom() {
@@ -1853,12 +1861,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the current zoom of this
-   * map instance
+   * Este método proporciona el zoom máximo de esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Number}
+   * @returns {Number} Devuelve el zoom máximo actual.
    * @api
    */
   getMaxZoom() {
@@ -1873,13 +1881,13 @@ class Map extends Base {
   }
 
   /**
-   * This function sets the zoom for this
-   * map instance
+   * Este método establece el zoom para esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @param {String|Number} zoomParam the zoom
-   * @returns {Map}
+   * @param {String|Number} zoomParam El zoom.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   setZoom(zoomParam) {
@@ -1907,13 +1915,13 @@ class Map extends Base {
   }
 
   /**
-   * This function sets the zoom for this
-   * map instance
+   * Este método establece el zoom mínimo para esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @param {String|Number} zoomParam the zoom
-   * @returns {Map}
+   * @param {String|Number} zoomParam El zoom.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   setMinZoom(zoomParam) {
@@ -1932,13 +1940,13 @@ class Map extends Base {
   }
 
   /**
-   * This function sets the zoom for this
-   * map instance
+   * Este método establece el zoom máximo para esta
+   * instancia del de mapa.
    *
    * @public
    * @function
-   * @param {String|Number} zoomParam the zoom
-   * @returns {Map}
+   * @param {String|Number} zoomParam El zoom.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   setMaxZoom(zoomParam) {
@@ -1957,12 +1965,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the current center of this
-   * map instance
+   * Este método proporciona el centro actual de esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Array<Number>}
+   * @returns {Array<Number>} Las coordenadas del centro del mapa.
    * @api
    */
   getCenter() {
@@ -1977,13 +1985,13 @@ class Map extends Base {
   }
 
   /**
-   * This function sets the center for this
-   * map instance
+   * Este método establece el centro para esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @param {String|Array<String>|Array<Number>|Mx.Center} centerParam the new center
-   * @returns {Map}
+   * @param {String|Array<String>|Array<Number>|Mx.Center} centerParam El nuevo centro.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   setCenter(centerParam) {
@@ -2036,19 +2044,19 @@ class Map extends Base {
   }
 
   /**
-   * This function remove feature center for this
-   * map instance
-   *
-   * @private
+   * Este método devuelve el centro de un elemento geográfico.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @returns {Array<Number>} Centro de un elemento geográfico.
    * @function
+   * @api
    */
   getFeatureCenter() {
     return this.centerFeature_;
   }
 
   /**
-   * This function remove center for this
-   * map instance
+   * Este método elimina el centro del mapa.
    *
    * @public
    * @function
@@ -2061,12 +2069,13 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the resolutions of this
-   * map instance
+   * Este método proporciona las resoluciones de esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Array<Number>}
+   * @returns {Array<Number>} Resoluciones de esta
+   * instancia del mapa.
    * @api
    */
   getResolutions() {
@@ -2081,13 +2090,13 @@ class Map extends Base {
   }
 
   /**
-   * This function sets the resolutions for this
-   * map instance
+   * Este método establece las resoluciones para esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @param {String|Array<String>|Array<Number>} resolutionsParam the resolutions
-   * @returns {Map}
+   * @param {String|Array<String>|Array<Number>} resolutionsParam Las resoluciones.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   setResolutions(resolutionsParam) {
@@ -2110,12 +2119,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the current scale of this
-   * map instance
+   * Este método proporciona la escala actual de esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Mx.Projection}
+   * @returns {Mx.Projection} Escala de devolución.
    * @api
    */
   getScale() {
@@ -2130,11 +2139,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the current scale of this
-   * map instance
+   * Este método proporciona la escala actual de esta
+   * instancia del mapa.
    *
    * @public
    * @function
+   * @returns {Mx.Projection} Devuelve la escala.
    * @api
    */
   getExactScale() {
@@ -2149,12 +2159,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the current projection of this
-   * map instance
+   * Este método proporciona la proyección actual de esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Mx.Projection}
+   * @returns {Mx.Projection} Devuelve la proyección.
    * @api
    */
   getProjection() {
@@ -2169,13 +2179,14 @@ class Map extends Base {
   }
 
   /**
-   * This function sets the projection for this
-   * map instance
+   * Este método establece la proyección para esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @param {String|Mx.Projection} projection the bbox
-   * @returns {Map}
+   * @param {String|Mx.Projection} projection EL "bbox".
+   * @param {Boolean} asDefault Utiliza la proyección por defecto.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   setProjection(projectionParam, asDefault) {
@@ -2208,12 +2219,12 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Este método devuelve todos los complementos agregados al mapa.
    *
    * @public
    * @function
-   * @param {Mx.Plugin} plugin the plugin to add to the map
-   * @returns {Map}
+   * @param {Mx.Plugin} namesParam Nombre del plugin.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   getPlugins(namesParam) {
@@ -2241,13 +2252,13 @@ class Map extends Base {
   }
 
   /**
-   * This function adds an instance of a specified
-   * developed plugin
+   * Este método agrega una instancia de un especificado
+   * complemento desarrollado.
    *
    * @public
    * @function
-   * @param {Mx.Plugin} plugin the plugin to add to the map
-   * @returns {Map}
+   * @param {Mx.Plugin} plugin Agrega los plugins al mapa.
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   addPlugin(plugin) {
@@ -2268,11 +2279,11 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the specified plugins from the map
+   * Este método elimina los complementos especificados del mapa.
    *
    * @function
-   * @param {Array<Plugin>} plugins specified by the user
-   * @returns {Map}
+   * @param {Array<Plugin>} plugins Especificado por el usuario.
+   * @returns {Map} Devolver estado del mapa.
    * @api
    */
   removePlugins(pluginsParam) {
@@ -2298,12 +2309,12 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the promise of envolved extent of this
-   * map instance
+   * Este método proporciona la promesa de un alcance envolvido de esta
+   * instancia del mapa.
    *
    * @public
    * @function
-   * @returns {Promise}
+   * @returns {Promise} Devuelve la extensión máxima, asíncrono.
    * @api
    */
   getEnvolvedExtent() {
@@ -2326,12 +2337,12 @@ class Map extends Base {
   }
 
   /**
-   * This function gets and zooms the map into the
-   * calculated extent
+   * Este método obtiene y amplía el mapa en el
+   * extensión calculada.
    *
    * @public
    * @function
-   * @returns {Map}
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   zoomToMaxExtent(keepUserZoom) {
@@ -2346,11 +2357,11 @@ class Map extends Base {
   }
 
   /**
-   * This function adds a ticket to control secure layers
+   * Este método agrega un ticket para controlar capas seguras.
    *
    * @public
    * @function
-   * @param {String} ticket ticket user
+   * @param {String} ticket Ticket del usuario.
    * @api
    */
   setTicket(ticket) {
@@ -2367,12 +2378,12 @@ class Map extends Base {
   }
 
   /**
-   * This function gets and zooms the map into the
-   * calculated extent
-   *
-   * @private
+   * Este método devuelve el centro inicial del mapa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @returns {Map}
+   * @returns {Array<Number>} Devuelve el centro, asíncrono.
+   * @api
    */
   getInitCenter_() {
     return new Promise((success, fail) => {
@@ -2395,12 +2406,12 @@ class Map extends Base {
   }
 
   /**
-   * This function destroys this map, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye el mapa, limpiando el HTML
+   * y anular el registro de todos los eventos.
    *
    * @public
    * @function
-   * @returns {Map}
+   * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
   destroy() {
@@ -2415,10 +2426,10 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the WMC layers to the map
+   * Añade el "label".
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Colecciones de "labels".
    * @api
    */
   addLabel(labelParam, coordParam) {
@@ -2468,11 +2479,10 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the WMC layers to the map
+   * Devuelve los "labels".
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Map}
+   * @returns {Array<object>} Devuelve los "labels".
    * @api
    */
   getLabel() {
@@ -2480,11 +2490,10 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the WMC layers to the map
+   * Elimina los "labels".
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam
-   * @returns {Map}
+   * @returns {Array<object>} Devuelve los "labels".
    * @api
    */
   removeLabel() {
@@ -2492,10 +2501,10 @@ class Map extends Base {
   }
 
   /**
-   * This function removes the WMC layers to the map
+   * Dibujar puntos.
    *
    * @function
-   * @param {Array<Mx.Point>|Mx.Point} points
+   * @param {Array<Mx.Point>|Mx.Point} points Colección de puntos.
    * @api
    */
   drawPoints(pointsVar) {
@@ -2531,10 +2540,10 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Dibuja objetos geográficos.
    *
    * @function
-   * @param {Array<Feature>|Feature} features
+   * @param {Array<Feature>|Feature} features Colección de objetos geográficos.
    * @api
    */
   drawFeatures(features) {
@@ -2543,10 +2552,10 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Elimina los objetos geográficos.
    *
    * @function
-   * @param {Array<Feature>|Feature} features
+   * @param {Array<Feature>|Feature} features Colección de objetos geográficos.
    * @api
    */
   removeFeatures(features) {
@@ -2555,11 +2564,11 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Añade los paneles.
    *
    * @function
    * @api
-   * @returns {Map}
+   * @returns {Map} Devuelve el estado del mapa.
    */
   addPanels(panelsVar) {
     let panels = panelsVar;
@@ -2581,10 +2590,11 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Elimina un panel del mapa.
    *
    * @function
    * @api
+   * @returns {Map} Devuelve el estado del mapa.
    */
   removePanel(panel) {
     if (panel.getControls().length > 0) {
@@ -2599,11 +2609,11 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Devuelve los paneles.
    *
    * @function
    * @api
-   * @returns {array<Panel>}
+   * @returns {array<Panel>} Colección de paneles.
    */
   getPanels(namesVar) {
     let names = namesVar;
@@ -2630,10 +2640,11 @@ class Map extends Base {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Crea paneles.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
    */
   createMainPanels_() {
     // areas container
@@ -2671,12 +2682,11 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the core map used by the
-   * implementation
+   * Este método proporciona el contenedor.
    *
    * @function
    * @api
-   * @returns {Object} core map used by the implementation
+   * @returns {Object} Devuelve el contenedor.
    */
   getContainer() { // checks if the implementation can provides the container
     if (isUndefined(MapImpl.prototype.getContainer)) {
@@ -2686,12 +2696,11 @@ class Map extends Base {
   }
 
   /**
-   * This function provides the core map used by the
-   * implementation
+   * Este método proporciona la implementación el mapa.
    *
    * @function
    * @api
-   * @returns {Object} core map used by the implementation
+   * @returns {Object} Implementación el mapa.
    */
   getMapImpl() {
     // checks if the implementation can add points
@@ -2702,22 +2711,22 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Devuelve Popup.
    *
    * @function
    * @api
-   * @returns {Popup} core map used by the implementation
+   * @returns {Popup} Devuelve Popup.
    */
   getPopup() {
     return this.popup_;
   }
 
   /**
-   * TODO
+   * Elimina Popup.
    *
    * @function
    * @api
-   * @returns {Map} core map used by the implementation
+   * @returns {Map} Devuelve el estado del mapa.
    */
   removePopup() {
     // checks if the implementation can add popups
@@ -2735,11 +2744,11 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Añade el Popup.
    *
    * @function
    * @api
-   * @returns {Map} core map used by the implementation
+   * @returns {Map} Devuelve el estado del mapa.
    */
   addPopup(popup, coordinate) {
     // checks if the param is null or empty
@@ -2761,7 +2770,7 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Evento, compruebe que el mapa está cargado.
    *
    * @public
    * @function
@@ -2774,10 +2783,13 @@ class Map extends Base {
   }
 
   /**
-   * Sets the callback when the instace is loaded
+   * Establece la devolución de llamada cuando se carga la instancia.
    *
    * @public
    * @function
+   * @param {M.evt} eventType Tipo de evento.
+   * @param {Function} listener "Callback".
+   * @param {Object} optThis Opciones de "this".
    * @api
    */
   on(eventType, listener, optThis) {
@@ -2788,12 +2800,11 @@ class Map extends Base {
   }
 
   /**
-   * This function refresh the state of this map instance,
-   * this is, all its layers.
+   * Esta función actualiza el estado de la instancia del mapa.
    *
    * @function
    * @api
-   * @returns {Map} the instance
+   * @returns {Map} Devuelve el estado del mapa.
    */
   refresh() {
     // checks if the implementation has refresh method
@@ -2805,9 +2816,10 @@ class Map extends Base {
   }
 
   /**
-   * Getter of defaultProj_ attribute
+   * Devuelve la proyección por defecto.
    * @public
    * @function
+   * @returns {Mx.Projection} Proyección por defecto.
    * @api
    */
   get defaultProj() {
@@ -2815,9 +2827,11 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Ordenar capas por zindex.
    * @public
    * @function
+   * @param {M.layer} layer1 Capa.
+   * @param {M.layer} layer2 Otra Capa.
    * @api
    */
   static LAYER_SORT(layer1, layer2) {
@@ -2833,16 +2847,18 @@ class Map extends Base {
   }
 
   /**
-   * This function returns true if the map and its impl are completed.
+   * Este método devuelve verdadero si el mapa y su implementación están completos.
    * @public
-   * @returns {bool}
+   * @returns {bool} Verdadero si termino.
    */
   isFinished() {
     return this._finishedMap;
   }
 
   /**
-   * areasContainer_ getter
+   * Devuelve las areas del contenedor.
+   * @public
+   * @returns {M.map.areaContainer} Devuelve las areas del contenedor.
    */
   get areasContainer() {
     return this._areasContainer;
@@ -2850,7 +2866,7 @@ class Map extends Base {
 }
 
 /**
- * Draw layer style options.
+ * Opciones de estilo de capa.
  *
  * @const
  * @type {object}

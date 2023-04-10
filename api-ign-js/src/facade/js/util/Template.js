@@ -9,19 +9,19 @@ import registerHelpers from './handlebarshelpers';
 import { extendsObj, isUndefined, stringToHtml } from './Utils';
 
 /**
+ * Plantilla.
  * @const
  * @type {object}
  */
 const templates = {};
 
 /**
- * Sync compile with the specified variables
+ * Compilación sincronizada con las variables especificadas
  *
  * @function
- * @param {string} templatePath name of the template
- * This function gets a template by its name and
- * @param {Mx.parameters.TemplateOptions} options of the template compilation
- * @returns {HTMLElement} the template resultant
+ * @param {string} templatePath Nombre de la plantilla.
+ * @param {Mx.parameters.TemplateOptions} options Opciones de la plantilla.
+ * @returns {HTMLElement} Devuelve la plantilla.
  * @api
  */
 export const compileSync = (string, options) => {
@@ -46,12 +46,12 @@ export const compileSync = (string, options) => {
 };
 
 /**
- * This function gets the full URL of a template
- * by its name
+ * Esta función obtiene la URL completa de una plantilla
+ * por su nombre.
  *
  * @function
- * @param {string} templatePath name of the template
- * @returns {string} full URL of the tempalte
+ * @param {string} templatePath Nombre de la plantilla.
+ * @returns {string} URL completa de la plantilla.
  */
 const getTemplateUrl = (templatePath) => {
   let templateUrl = null;
@@ -63,12 +63,12 @@ const getTemplateUrl = (templatePath) => {
 };
 
 /**
- * This function gets a template function of Handlebars
- * by its name
+ * Esta función obtiene una función de plantilla de "Handlebars"
+ * por su nombre.
  *
  * @function
- * @param {string} templatePath name of the template
- * @returns {Promise} the promise with the handlebars function
+ * @param {string} templatePath Nombre de la plantilla.
+ * @returns {Promise} La promesa con la función del "handlebars".
  * @api
  */
 export const get = (templatePath, options) => {
@@ -100,13 +100,12 @@ export const get = (templatePath, options) => {
 };
 
 /**
- * Async compile with the specified variables
+ * Compilación asíncrona con las variables especificadas.
  *
  * @function
- * @param {string} templatePath name of the template
- * This function gets a template by its name and
- * @param {Mx.parameters.TemplateOptions} options of the template compilation
- * @returns {Promise} The promise whith compile template html
+ * @param {string} templatePath Nombre de la plantilla.
+ * @param {Mx.parameters.TemplateOptions} options Opciones de la plantilla.
+ * @returns {Promise} Devuelve la plantilla HTML.
  * @api
  */
 export const compile = (templatePath, options) => {
@@ -131,12 +130,12 @@ export const compile = (templatePath, options) => {
 };
 
 /**
- * This function adds a precompiled template into the
- * cached templates
+ * Esta función agrega una plantilla precompilada en el
+ * plantillas en caché.
  *
  * @function
- * @param {string} templatePath name of the template
- * @param {function} templateFn function of the precompiled template
+ * @param {string} templatePath Nombre de la plantilla.
+ * @param {function} templateFn Función de la plantilla precompilada.
  * @api stable
  */
 export const add = (templatePath, templateFn) => {
@@ -144,3 +143,13 @@ export const add = (templatePath, templateFn) => {
     templates[templatePath] = templateFn;
   }
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

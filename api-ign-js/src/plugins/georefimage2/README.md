@@ -17,7 +17,7 @@ Plugin que permite la descarga de la imagen georeferenciada que se muestra en pa
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin
+- **position**. Indica la posición donde se mostrará el plugin.
   - 'TL':top left 
   - 'TR':top right (por defecto)
   - 'BL':bottom left 

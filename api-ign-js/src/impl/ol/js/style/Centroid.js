@@ -4,15 +4,22 @@
 import OLStyle from 'ol/style/Style';
 /**
  * @classdesc
+ * Clase para crear estilos en el centroide.
  * @api
  */
 class Centroid extends OLStyle {
   /**
-   * @classdesc custom root styles
-   *
+   * Constructor principal de la clase.
    * @constructor
    * @struct
-   * @param {olx.style.StyleOptions=} opt_options Style options.
+   * @param {olx.style.StyleOptions=} opt_options Opciones:
+   * - geometry: Geometría.
+   * - fill: Relleno.
+   * - image: Imagen ("ImageStyle").
+   * - renderer: Renderizado.
+   * - stroke: Borde.
+   * - text: Texto.
+   * - zIndex: Indice.
    * @api
    */
   constructor(opt_options = {}) {
@@ -20,9 +27,9 @@ class Centroid extends OLStyle {
   }
 
   /**
-   * Clones the style.
+   * Clona el estilo.
    * @public
-   * @return {M.impl.style.CentroidStyle} The cloned style.
+   * @return {M.impl.style.CentroidStyle} "new Centroid".
    * @api stable
    */
   clone() {

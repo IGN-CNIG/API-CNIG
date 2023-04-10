@@ -5,36 +5,40 @@ import { isNullOrEmpty, isFunction } from '../util/Utils';
 import EventListener from './Listener';
 
 /**
- * @classdesc
- * Main facade Object. This class creates a facede
- * Object which has an implementation Object and
- * provides the needed methods to access its implementation
- * @api
- */
+  * @classdesc
+  * Esta clase crea los métodos necesarios para
+  * poder manejar los eventos.
+  * @api
+  */
 class EventsManager {
   /**
-   * @constructor
-   * @param {Object} impl implementation object
-   * @api
-   */
+    * Constructor principal de la clase.
+    * @constructor
+    * @api
+    */
   constructor() {
     /**
-     * Callback for events managed by the
-     * facade object
-     *
-     * @private
-     * @type {Object}
-     */
+      * Eventos.
+      *
+      * @private
+      * @type {Object}
+      */
     this.events_ = {};
   }
 
   /**
-   * Sets the callback when the instace is loaded
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Este método añade un evento.
+    *
+    * @public
+    * @function
+    * @param {String} eventType Tipo de evento.
+    * @param {function} listener Función "Callback".
+    * @param {Object} optThis "Scope", Se asigna al evento usa el método "apply"
+    * (Asignando explícitamente el objeto "this").
+    * @param {Boolean} once Define si solo se activa una vez, por defecto falso.
+    * @returns {M.eventKey} Identificador del evento.
+    * @api
+    */
   add(eventType, listener, optThis, once = false) {
     let eventKey;
     if (!isNullOrEmpty(eventType) && isFunction(listener)) {
@@ -51,12 +55,16 @@ class EventsManager {
   }
 
   /**
-   * Sets the callback when the instace is loaded
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Este método elimina el evento.
+    *
+    * @public
+    * @function
+    * @param {String} eventType Tipo de evento.
+    * @param {function} listener Función "Callback".
+    * @param {Object} optThis "Scope", Se asigna al evento usa el método "apply"
+    * (Asignando explícitamente el objeto "this").
+    * @api
+    */
   remove(eventType, listener, optThis) {
     const listeners = this.events_[eventType];
     if (!isNullOrEmpty(listeners)) {
@@ -68,12 +76,14 @@ class EventsManager {
   }
 
   /**
-   * Sets the callback when the instace is loaded
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Este método elimina el identificador del evento.
+    *
+    * @public
+    * @function
+    * @param {String} eventType Tipo de evento.
+    * @param {Number} key Identificador del evento.
+    * @api
+    */
   removeByKey(eventType, key) {
     const listeners = this.events_[eventType];
     if (!isNullOrEmpty(listeners)) {
@@ -91,12 +101,14 @@ class EventsManager {
   }
 
   /**
-   * Sets the callback when the instace is loaded
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Este método dispara el evento.
+    *
+    * @public
+    * @function
+    * @param {String} eventType Tipo de evento.
+    * @param {Array} args Argumentos.
+    * @api
+    */
   fire(eventType, args) {
     const EventsManagerListeners = [].concat(this.events_[eventType]);
     if (!isNullOrEmpty(EventsManagerListeners)) {
@@ -110,12 +122,17 @@ class EventsManager {
   }
 
   /**
-   * Sets the callback when the instace is loaded
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Este método añade indice a los eventos.
+    *
+    * @public
+    * @function
+    * @param {String} eventType Tipo de evento.
+    * @param {function} listener Función "Callback".
+    * @param {Object} optThis "Scope", Se asigna al evento usa el método "apply"
+    * (Asignando explícitamente el objeto "this").
+    * @returns {Number} Indice del evento.
+    * @api
+    */
   indexOf(eventType, listener, optThis) {
     let index = -1;
     const evtListeners = this.events_[eventType];

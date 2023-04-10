@@ -7,15 +7,22 @@ import { isNullOrEmpty, extendsObj } from '../util/Utils';
 
 /**
  * @classdesc
- * TODO Main constructor of the class. Creates a FlowLine Style
- * with parameters specified by the user
+ * Crea un estilo de línea de flujo
+ * con parámetros especificados por el usuario.
  * @api
+ * @extends {M.style.Simple}
  */
 class FlowLine extends Simple {
   /**
+   * Constructor principal de la clase.
    * @constructor
-   * @extends {M.style.Simple}
-   * @param {options} userParameters parameters
+   * @param {options} userParameters Parámetros.
+   * - color: Color.
+   * - arrowColor: Color de la flecha.
+   * - width: Ancho.
+   * - arrow: Flecha.
+   * - lineCap: Linea.
+   * - offset: Fuera del conjunto.
    * @api
    */
   constructor(optionsVar) {
@@ -30,11 +37,11 @@ class FlowLine extends Simple {
   }
 
   /**
-   * This function apply style
+   * Este método elimina el estilo.
    *
    * @function
    * @protected
-   * @param {M.layer.Vector} layer - Layer to apply the styles
+   * @param {M.layer.Vector} layer Capa.
    * @api
    */
   unapply(layer) {
@@ -42,10 +49,12 @@ class FlowLine extends Simple {
   }
 
   /**
-   * TODO
-   *
+   * Deserializa el método M.style.Simple.deserialize.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
+   * @return {Function} Devuelve la función M.style.Simple.deserialize.
+   * @api
    */
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.FlowLine'))";
@@ -53,7 +62,7 @@ class FlowLine extends Simple {
 }
 
 /**
- * Default options for this style
+ * Estilo por defecto.
  * @const
  * @type {object}
  * @public

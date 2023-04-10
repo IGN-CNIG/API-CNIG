@@ -11,14 +11,29 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
+ * Agregue los botones '+' y '-' para acercar y alejar el mapa.
+ *
  * @api
+ * @extends {M.Control}
  */
 class Panzoom extends ControlBase {
   /**
+   * Constructor principal de la clase.
    *
    * @constructor
-   * @param {Object} vendorOptions vendor options for the base library
-   * @extends {M.Control}
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base, estas opciones
+   * se pasarán en formato objeto. Opciones disponibles:
+   * - duration: Duración de la animación en milisegundos.
+   * - className: Nombre de la clase CSS.
+   * - zoomInClassName: Nombre de clase de CSS para el botón de acercamiento.
+   * - zoomOutClassName: Nombre de clase de CSS para el botón de alejamiento.
+   * - zoomInLabel: Etiqueta de texto que se usará para el botón de acercamiento.
+   * - zoomOutLabel: Etiqueta de texto que se usará para el botón de alejamiento.
+   * - zoomInTipLabel: Etiqueta de texto que se usará para la sugerencia del botón.
+   * - zoomOutTipLabel: Etiqueta de texto que se usará para la sugerencia del botón.
+   * - delta: El delta de zoom aplicado en cada clic.
+   * - target: Especifique un objetivo si desea que el control se represente
+   * fuera de la ventana gráfica del mapa.
    * @api
    */
   constructor(vendorOptions = {}) {
@@ -34,12 +49,12 @@ class Panzoom extends ControlBase {
   }
 
   /**
-   * This function creates the view to the specified map
+   * Esta función crea la vista del mapa especificado.
    *
    * @public
    * @function
-   * @param {M.Map} map map to add the control
-   * @returns {Promise} html response
+   * @param {M.Map} map Mapa
+   * @returns {Promise} Plantilla HTML.
    * @api
    */
   createView(map) {
@@ -47,10 +62,13 @@ class Panzoom extends ControlBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Esta función comprueba si un objeto es igual
+   * a este control.
    *
+   * @public
    * @function
+   * @param {*} obj Objeto a comparar.
+   * @returns {boolean} Iguales devuelve verdadero, falso si no son iguales.
    * @api
    */
   equals(obj) {
@@ -60,7 +78,7 @@ class Panzoom extends ControlBase {
 }
 
 /**
- * Template for this controls - button
+ * Nombre para identificar este control.
  * @const
  * @type {string}
  * @public

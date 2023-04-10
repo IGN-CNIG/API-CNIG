@@ -9,12 +9,22 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
+ * Es la clase de la que heredan todos los controles.
+ *
+ * @property {Boolean} activated Define si el control esta activado, por defecto falso.
+ * @property {String} name Nombre del control.
+ *
  * @api
+ * @extends {M.Base}
  */
 class Control extends Base {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
    * @api
+   * @param {Object} implParam Opciones para generar el control.
+   * @param {String} name Nombre del control.
    */
   constructor(implParam, name) {
     const impl = implParam;
@@ -37,63 +47,47 @@ class Control extends Base {
     }
 
     /**
-     * @public
-     * @type {string}
-     * @api
-     * @expose
+     * Nombre del control.
      */
     this.name = name;
 
     /**
-     * @private
-     * @type {M.Map}
-     * @expose
+     * Declaración de variable.
      */
     this.map_ = null;
 
     /**
-     * @private
-     * @type {HTMLElement}
-     * @expose
+     * Declaración de variable.
      */
     this.element_ = null;
 
     /**
-     * @private
-     * @type {HTMLElement}
-     * @expose
+     * Declaración de variable.
      */
     this.activationBtn_ = null;
 
     /**
-     * @public
-     * @type {boolean}
-     * @api
-     * @expose
+     * Define si el control esta activado, por defecto falso.
      */
     this.activated = false;
 
     /**
-     * @private
-     * @type {M.ui.Panel}
-     * @expose
+     * Declaración de variable.
      */
     this.panel_ = null;
 
     /**
-     * @private
-     * @type {Array}
-     * @expose
+     * Declaración de variable.
      */
     this.controls_ = null;
   }
 
   /**
-   * This function set implementation of this control
+   * Este método establece la implementación de este control.
    *
    * @public
    * @function
-   * @param {M.Map} impl to add the plugin
+   * @param {M.Map} impl Implementación del mapa.
    * @api
    */
   setImpl(implParam) {
@@ -112,11 +106,11 @@ class Control extends Base {
   }
 
   /**
-   * This function adds the control to the specified map
+   * Este método añade el control al mapa.
    *
    * @public
    * @function
-   * @param {M.Map} map to add the plugin
+   * @param {M.Map} map Mapa.
    * @api
    * @export
    */
@@ -138,21 +132,21 @@ class Control extends Base {
   }
 
   /**
-   * This function creates the HTML view for this control
+   * Este método añade la vista al mapa.
    * @public
    * @function
-   * @param {M.Map} map to add the plugin
+   * @param {M.Map} map Mapa.
    * @api
    * @export
    */
   createView(map) {}
 
   /**
-   * TODO
+   * Este método maneja la activación del control.
    *
    * @public
    * @function
-   * @param {HTMLElement} html to add the plugin
+   * @param {HTMLElement} html HTML del control.
    * @api
    * @export
    */
@@ -174,18 +168,18 @@ class Control extends Base {
   }
 
   /**
-   * TODO
+   * Activación del botón.
    *
    * @public
    * @function
-   * @param {HTMLElement} html to add the plugin
+   * @param {HTMLElement} html HTML del botón.
    * @api
    * @export
    */
   getActivationButton(html) {}
 
   /**
-   * function adds the event 'click'
+   * Método que añade el evento "click".
    *
    * @public
    * @function
@@ -204,7 +198,7 @@ class Control extends Base {
   }
 
   /**
-   * function remove the event 'click'
+   * Método que elimina el evento "click".
    *
    * @public
    * @function
@@ -223,10 +217,11 @@ class Control extends Base {
   }
 
   /**
-   * function remove the event 'click'
+   * Este método devuelve todos los elementos de la implementación.
    *
    * @public
    * @function
+   * @returns {Object} Devuelve los elementos extraidos de la implementación.
    * @api
    * @export
    */
@@ -236,11 +231,11 @@ class Control extends Base {
 
 
   /**
-   * Sets the panel of the control
+   * Sobrescribe el panel del control.
    *
    * @public
    * @function
-   * @param {M.ui.Panel} panel
+   * @param {M.ui.Panel} panel Panel.
    * @api
    * @export
    */
@@ -249,11 +244,11 @@ class Control extends Base {
   }
 
   /**
-   * Gets the panel of the control
+   * Devuelve el panel del control.
    *
    * @public
    * @function
-   * @returns {M.ui.Panel}
+   * @returns {M.ui.Panel} Panel.
    * @api
    * @export
    */
@@ -262,7 +257,7 @@ class Control extends Base {
   }
 
   /**
-   * Destroys the control
+   * Elimina el control.
    *
    * @public
    * @function

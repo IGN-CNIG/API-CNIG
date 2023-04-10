@@ -13,10 +13,6 @@ Muestra referencia catastral para un punto y provee de enlace a la información 
  <script type="text/javascript" src="../../plugins/infocatastro/infocatastro.ol.min.js"></script>
 ```
 
-## Eventos
-
-## Otros métodos
-
 ## Ejemplos de uso
 
 ### Ejemplo 1

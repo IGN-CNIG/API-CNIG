@@ -2,9 +2,6 @@
 
 Plugin que permite aplicar un efecto de transparencia a la capa seleccionada.
 
-![Imagen1](./img/transparency_1.png)
-![Imagen1](./img/transparency_2.png)
-
 # Dependencias
 
 - transparency.ol.min.js
@@ -18,22 +15,18 @@ Plugin que permite aplicar un efecto de transparencia a la capa seleccionada.
 
 # Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **layer**. Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa), la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto.
   A esta/s capa/s se le aplicará el efecto de transparencia.
 
 - **position**. Indica la posición donde se mostrará el plugin.
-  - 'TL':top left
-  - 'TR':top right (default)
-  - 'BL':bottom left
-  - 'BR':bottom right
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
 - **radius**. Campo numérico que modifica el radio del efecto transparencia. Tiene un rango entre 30 y 200.
-
-# Eventos
-
-# Otros métodos
 
 # Ejemplos de uso
 
@@ -149,7 +142,7 @@ map.addWMTS(wmts);
 ```
 
 ## Ejemplo 8
-Especificar radio
+Especificar radio.
 ```javascript
 let wmts = new M.layer.WMTS({
   url: "http://www.ideandalucia.es/geowebcache/service/wmts",

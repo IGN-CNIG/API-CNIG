@@ -17,25 +17,25 @@ Plugin que permite la descarga de la imagen georeferenciada que se muestra en pa
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left 
-  - 'TR':top right (por defecto)
-  - 'BL':bottom left 
-  - 'BR':bottom right
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsed**. Valor booleano que indica si el plugin aparece colapsado o no.
+- **collapsed**: Valor booleano que indica si el plugin aparece colapsado o no.
   - true (por defecto)
   - false
 
-- **collapsible**. Valor booleano que indica si el plugin puede colapsarse o no.
+- **collapsible**: Valor booleano que indica si el plugin puede colapsarse o no.
   - true (por defecto)
   - false
 
-- **serverUrl**. URL del servidor Geoprint.
+- **serverUrl**: URL del servidor Geoprint.
 
-- **printTemplateUrl**. URL con las plantillas.
+- **printTemplateUrl**: URL con las plantillas.
 
-- **printStatusUrl**. URL que indica el estado del servidor Geoprint.
+- **printStatusUrl**: URL que indica el estado del servidor Geoprint.
 
 
 # Ejemplos de uso

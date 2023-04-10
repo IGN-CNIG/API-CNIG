@@ -14,11 +14,11 @@ import './util/polyfills';
 import { getValue } from './i18n/language';
 
 /**
- * This function sets the configuration variables
+ * Esta función establece las variables de configuración.
  *
  * @function
- * @param {String} configKey key of the configuration variable
- * @param {*} configValue value of the configuration variable
+ * @param {String} configKey Clave de la variable de configuración.
+ * @param {*} configValue Valor de la variable de configuración.
  * @api
  */
 export const config = (configKey, configValue) => {
@@ -26,12 +26,12 @@ export const config = (configKey, configValue) => {
 };
 
 /**
- * This function creates a new map using the parameters
- * specified by the user
+ * Esta función crea un nuevo mapa usando los parámetros
+ * especificado por el usuario.
  *
  * @function
- * @param {string|Mx.parameters.Map} parameters to build the map
- * @param {Mx.parameters.MapOptions} options custom options to build the map
+ * @param {string|Mx.parameters.Map} parameters Para construir el mapa.
+ * @param {Mx.parameters.MapOptions} options Opciones personalizadas para construir el mapa.
  * @returns {M.Map}
  * @api
  */
@@ -44,18 +44,20 @@ export const map = (parameters, options) => {
 };
 
 /**
- * Flag that indicates if the proxy is
- * enabled to use
+ * Indica si el proxy es habilitado para usar.
+ * @const
  * @type {boolean}
+ * @public
+ * @api
  */
 export let useproxy = true;
 
 /**
- * This function enables/disables the proxy
+ * Esta función habilita/deshabilita el proxy
  *
  * @public
  * @function
- * @param {boolean} enable
+ * @param {boolean} enable Indica si se habilita/deshabilita el proxy.
  * @api
  */
 export const proxy = (enable) => {
@@ -63,3 +65,14 @@ export const proxy = (enable) => {
     useproxy = enable;
   }
 };
+
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

@@ -6,31 +6,35 @@ import { isNullOrEmpty } from './util/Utils';
 
 /**
  * @classdesc
- * Main mapea Object. This class creates a Object
- * which manages events
+ * Objeto principal API-CNIG. Esta clase crea un Objeto
+ * que gestiona los eventos.
  * @apì
  */
 class MObject {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
    * @api
    */
   constructor() {
     /**
-     * Callback for events managed by the
-     * facade object
+     * "Callback" para eventos gestionados por el
+     * objeto de fachada.
      *
-     * @private
-     * @type {M.evt.EventsManager}
+     * @private- Clase para manejar eventos.
      */
     this.eventsManager_ = new EventsManager();
   }
 
   /**
-   * Sets the callback when the instace is loaded
+   * Establece "callback" cuando se carga la instancia.
    *
    * @public
    * @function
+   * @param {M.eventType} eventType Evento M.envtType.
+   * @param {Function} listener Función "callback".
+   * @param {Object} optThis "Scope", valor de "this".
    * @api
    */
   on(eventType, listener, optThis) {
@@ -38,10 +42,13 @@ class MObject {
   }
 
   /**
-   * Sets the callback when the instace is loaded
+   * Establece "callback" cuando se carga la instancia.
    *
    * @public
    * @function
+   * @param {M.eventType} eventType Evento M.envtType.
+   * @param {Function} listener Función "callback".
+   * @param {Object} optThis "Scope", valor de "this".
    * @api
    */
   once(eventType, listener, optThis) {
@@ -49,10 +56,13 @@ class MObject {
   }
 
   /**
-   * Sets the callback when the instace is loaded
+   * Establece "callback" cuando se carga la instancia.
    *
    * @public
    * @function
+   * @param {M.eventType} eventType Event M.envtType.
+   * @param {Function} listener Function "callback".
+   * @param {Object} optThis "Scope", valor de "this".
    * @api
    */
   un(eventType, listener, optThis) {
@@ -60,10 +70,12 @@ class MObject {
   }
 
   /**
-   * Sets the callback when the instace is loaded
+   * Establece "callback" cuando se carga la instancia.
    *
    * @public
    * @function
+   * @param {M.eventType} eventType Evento M.envtType.
+   * @param {String} key "Key" del evento.
    * @api
    */
   unByKey(eventType, key) {
@@ -71,10 +83,12 @@ class MObject {
   }
 
   /**
-   * Sets the callback when the instace is loaded
+   * Establece "callback" cuando se carga la instancia.
    *
    * @public
    * @function
+   * @param {M.eventType} eventType Evento M.envtType.
+   * @param {Array} argsParam Matriz de argumentos.
    * @api
    */
   fire(eventType, argsParam) {

@@ -198,6 +198,7 @@ export default class IGNSearchLocator extends M.Plugin {
 
     /**
      * Text to search
+     * Text to search
      * @private
      * @type {string}
      */
@@ -264,6 +265,9 @@ export default class IGNSearchLocator extends M.Plugin {
      */
 
     this.cadastre = options.cadastre;
+    if (options.cadastre !== undefined) {
+      this.cadastre = true;
+    }
 
     /**
      * @private
@@ -271,6 +275,9 @@ export default class IGNSearchLocator extends M.Plugin {
      */
 
     this.searchCoordinatesXYZ = options.searchCoordinatesXYZ;
+    if (options.searchCoordinatesXYZ !== undefined) {
+      this.searchCoordinatesXYZ = true;
+    }
 
     /**
      *@private
@@ -436,7 +443,7 @@ export default class IGNSearchLocator extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.isCollapsed}*${this.collapsible}*${this.position}*${this.reverse}*${this.requestStreet.replace(/&/g, '^')}*${this.locationID}*${this.geocoderCoords}*${this.zoom}*${this.searchPosition}*${this.pointStyle}`;
+    return `${this.name}=${this.position}*${this.collapsible}*${this.isCollapsed}*${this.order}*${this.tooltip_}*${this.servicesToSearch}*${this.maxResults}*${this.noProcess}*${this.resultVisibility}*${this.reverse_}*${this.requestStreet_}*${this.locationID_}*${this.geocoderCoords_}*${this.zoom_}*${this.searchPosition}*${this.pointStyle}*${this.helpUrl}*${this.countryCode}*${this.cadastre}*${this.searchCoordinatesXYZ}*${this.urlCandidates}*${this.urlFind}*${this.urlReverse}*${this.urlPrefix}*${this.urlAssistant}*${this.urlDispatcher}*${this.CMC_url}*${this.DNPPP_url}*${this.CPMRC_url}*${this.catastroWMS}`;
   }
 
   /**

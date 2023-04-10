@@ -190,16 +190,6 @@
     "description": "Muestra las coordenadas de ratón."
   },
   {
-    "name": "MVT",
-    "plugin": "[MVT]",
-    "version": "v1.0",
-    "url_es": "MVT.jsp?language=es",
-    "url_en": "MVT.jsp?language=en",
-    "url_git": "#",
-    "image": "img/api-logo.png",
-    "description": "Test para añadir teselas vectoriales al mapa."
-  },
-  {
     "name": "overview",
     "plugin": "[overview]",
     "version": "v1.0",
@@ -368,16 +358,6 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/xylocator",
     "image": "img/api-logo.png",
     "description": "Plugin que permite localizar las coordenas introducidas por el usuario en un Sistema de referencia determinado."
-  },
-  {
-    "name": "XYZ/TMS",
-    "plugin": "[XYZ]",
-    "version": "v1.0",
-    "url_es": "XYZandTMSmap.jsp?language=es",
-    "url_en": "XYZandTMSmap.jsp?language=en",
-    "url_git": "#",
-    "image": "img/api-logo.png",
-    "description": "Test de visualización de capas en formato XYZ y TMS."
   },
   {
     "name": "zoomextent",

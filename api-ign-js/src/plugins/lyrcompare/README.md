@@ -18,17 +18,17 @@ Plugin que permite comparar varias capas sobre una cartografía base. La extensi
 
 # Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **layer**. Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa),
 la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto.
 A esta/s capa/s se le aplicará el efecto de transparencia.
 
 - **position**. Indica la posición donde se mostrará el plugin.
-  - 'TL':top left
-  - 'TR':top right (default)
-  - 'BL':bottom left
-  - 'BR':bottom right
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
 - **collapsible**. Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto tiene el valor *true*.
 
@@ -44,6 +44,9 @@ A esta/s capa/s se le aplicará el efecto de transparencia.
   - 2: arranca con el modo de comparación de cortina horizontal.
   - 3: arranca con el modo de comparación múltiple de cuatro capas.
 
+  ** Para ver el efecto de cada uno podemos acceder al test https://componentes.cnig.es/api-core/lyrcompare.jsp?language=es y cambiar las opciones.
+
+
 - **defaultLyrA**. Define la capa uno que se carga por defecto. Valores de 1 al número de capas disponibles.
 
 - **defaultLyrB**. Define la capa uno que se carga por defecto. Valores de 2 al número de capas disponibles.
@@ -54,7 +57,6 @@ A esta/s capa/s se le aplicará el efecto de transparencia.
 
 - **interface**. Define si mostrar o no la interfaz del plugin.
 
-# Eventos
 
 # Multi idioma
 
@@ -103,7 +105,7 @@ const pluginLyrCompare = new LyrCompare({
 
 
 ## Ejemplo 2
-Al no indicar capas mostrará un error en pantalla: El número de capas es insuficiente para aplicar el efecto
+Al no indicar capas mostrará un error en pantalla: El número de capas es insuficiente para aplicar el efecto.
 
 ```javascript
 const pluginLyrCompare = new LyrCompare({
@@ -122,7 +124,7 @@ const pluginLyrCompare = new LyrCompare({
 ```
 
 ## Ejemplo 3
-WMS con formato Mapea y sin interfaz
+WMS con formato Mapea y sin interfaz.
 
 ```javascript
 const pluginLyrCompare = new LyrCompare({
@@ -148,7 +150,7 @@ const pluginLyrCompare = new LyrCompare({
 
 
 ## Ejemplo 4
-WMTS con formato Mapea y sin interfaz
+WMTS con formato Mapea y sin interfaz.
 
 ```javascript
 const pluginLyrCompare = new LyrCompare({
@@ -173,7 +175,7 @@ const pluginLyrCompare = new LyrCompare({
 ```
 
 ## Ejemplo 5
-WMS como objeto
+WMS como objeto.
 
 ```javascript
 const wms1 = new M.layer.WMS('WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC');
@@ -201,7 +203,7 @@ const pluginLyrCompare = new LyrCompare({
 ```
 
 ## Ejemplo 6
-WMTS como objeto
+WMTS como objeto.
 
 ```javascript
 const wmts1 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11');
@@ -229,7 +231,7 @@ const pluginLyrCompare = new LyrCompare({
 ```
 
 ## Ejemplo 7
-WMS + WMTS como cadena y como texto
+WMS + WMTS como cadena y como texto.
 
 ```javascript
 const wmts1 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11');
@@ -255,7 +257,7 @@ const pluginLyrCompare = new LyrCompare({
 ```
 
 ## Ejemplo 8
-Al añadir capas que no son válidas para el plugin no se contarán y mostrará el mensaje: El número de capas es insuficiente para aplicar el efecto
+Al añadir capas que no son válidas para el plugin no se contarán y mostrará el mensaje: El número de capas es insuficiente para aplicar el efecto.
 
 ```javascript
 const pluginLyrCompare = new LyrCompare({

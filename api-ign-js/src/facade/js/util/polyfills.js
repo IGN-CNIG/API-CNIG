@@ -1,10 +1,23 @@
+/**
+ * @module M/polyfill
+ */
+
+
+/**
+ * Esta función agrega funciones de "polyfill" a la API.
+ * Un "polyfill" es una función que agrega una funcionalidad
+ * moderna a un navegador que no la soporta.
+ * @function
+ * @api
+ * @public
+ */
 const polyfill = () => {
   /**
    * Array.includes()
    *
-   * This adds includes function to Array natively.
-   * An optional equals function can be specified in order to
-   * compare elements using that function
+   * Esto agrega la función incluye a Array de forma nativa.
+   * Se puede especificar una función de igualdad opcional para
+   * comparar elementos usando esa función.
    */
   /* eslint-disable */
   if (![].includes) {
@@ -45,7 +58,7 @@ const polyfill = () => {
   /**
    * Array.remove()
    *
-   * This adds remove function to Array natively
+   * Esto agrega la función de eliminación a Array de forma nativa.
    * @expose
    */
   if (![].remove) {
@@ -92,7 +105,7 @@ const polyfill = () => {
   /**
    * Object.equals()
    *
-   * This adds map function to check equals object
+   * Esto agrega la función de mapa para verificar el objeto es igual.
    */
   if (!Object.equals) {
     /**
@@ -200,3 +213,13 @@ const polyfill = () => {
 // exec the polifyll
 polyfill()
 /* eslint-enable */
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

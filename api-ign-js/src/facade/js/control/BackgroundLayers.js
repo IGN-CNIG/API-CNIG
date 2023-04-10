@@ -12,24 +12,37 @@ import { compileSync as compileTemplate } from '../util/Template';
 import { LOAD, ADDED_TO_MAP } from '../event/eventtype';
 
 /**
- * This parameter indicates the maximum base layers of plugin
+ * Esta constante indica el número máximo de capas base que tendrá el control.
  *
  * @type {number}
  * @const
- * @private
+ * @public
  */
 const MAXIMUM_LAYERS = 5;
 
 /**
  * @classdesc
+ * Selector de capas de fondo API-CING.
+ * Añade un selector de capas base al mapa.
+ *
+ * @property {Array<Layer>} layer Proviene de "M.config.backgroundlayers".
+ * @property {Array<Layer>} flattedLayers Concadena las capas generadas.
+ * @property {Number} activeLayer Esta propiedad indica la capa que se activa.
+ * @property {Number} idLayer Indica la capa que se mostrará primero.
+ * @property {Boolean} visible Indica si sera visible o no.
+ *
+ * @extends {M.Control}
  * @api
- * Background layers selector Mapea control.
- * This control puts a set of layers in the background of the map.
  */
 class BackgroundLayers extends ControlBase {
   /**
+   * Constructor principal de la clase.
+   * Las capas base provienen de "M.config.backgroundlayers".
+   *
    * @constructor
-   * @extends {M.Control}
+   * @param {M.map} map Mapa.
+   * @param {Number} idLayer Identificador de la capa.
+   * @param {Boolean} visible Define si será visible.
    * @api
    */
   constructor(map, idLayer, visible) {
@@ -38,6 +51,10 @@ class BackgroundLayers extends ControlBase {
     map.getBaseLayers().forEach((layer) => {
       layer.on(LOAD, map.removeLayers(layer));
     });
+
+    /**
+     * Control layers, proviene de "M.config.backgroundlayers".
+     */
     this.layers = M.config.backgroundlayers.slice(0, MAXIMUM_LAYERS).map((layer) => {
       return {
         id: layer.id,
@@ -52,18 +69,34 @@ class BackgroundLayers extends ControlBase {
         }),
       };
     });
+
+    /**
+     * flattedLayers: Concadena las capas generadas.
+     */
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
+
+    /**
+     * Active Layer, default -1.
+     */
     this.activeLayer = -1;
+
+    /**
+     * ID layer.
+     */
     this.idLayer = idLayer == null ? 0 : idLayer;
+
+    /**
+     * Visibility.
+     */
     this.visible = visible == null ? true : visible;
   }
 
   /**
-   * This function creates the view
+   * Este método genera la vista.
    *
    * @public
    * @function
-   * @param {M.Map} map - map to add the control
+   * @param {M.Map} map Mapa donde se incluirá el control.
    * @api
    */
   createView(map) {
@@ -98,11 +131,12 @@ class BackgroundLayers extends ControlBase {
   }
 
   /**
-   * This function compares controls
+   * Este método compara los controles.
    *
    * @public
    * @function
-   * @param {M.Control} control - control to compare
+   * @param {M.Control} control Objeto control para comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api
    */
   equals(control) {
@@ -110,10 +144,10 @@ class BackgroundLayers extends ControlBase {
   }
 
   /**
-   * This function adds layer bound to the button clicked
+   * Evento que muestra la capa cuando se hace clic.
    * @public
-   * @param {DOMEvent} e - click html event
-   * @param {object} layersInfo - Layers options
+   * @param {DOMEvent} e Clic en html.
+   * @param {object} layersInfo Opciones de la capa.
    * @api
    */
   showBaseLayer(e, layersInfo, i) {
@@ -125,6 +159,12 @@ class BackgroundLayers extends ControlBase {
     callback(e, layersInfo, i);
   }
 
+  /**
+   * Cambia al estilo "responsive".
+   * @public
+   * @param {Boolean} change Falso móvil (768px), ordenador verdadera (2000px).
+   * @api
+   */
   changeStyleResponsive(change) {
     M.config.MOBILE_WIDTH = (change) ? '2000' : '768';
 
@@ -138,9 +178,15 @@ class BackgroundLayers extends ControlBase {
   }
 
   /**
-   * This function manages the click event when the app is in desktop resolution
+   * Este método administra el evento de clic cuando la
+   * aplicación está en resolución de escritorio.
    *
+   * @Public
+   * @param {Event} e Evento.
+   * @param {M.layer} layersInfo Capas.
+   * @param {Number} i Índice.
    * @function
+   * @api
    */
   handlerClickDesktop(e, layersInfo, i) {
     this.removeLayers();
@@ -167,9 +213,10 @@ class BackgroundLayers extends ControlBase {
   }
 
   /**
-   * This function manages the click event when the app is in mobile resolution
+   * Esta función gestiona el evento de clic cuando la aplicación está en resolución móvil.
    * @function
    * @public
+   * @param {Event} e Evento.
    * @api
    */
   handlerClickMobile(e) {
@@ -191,7 +238,7 @@ class BackgroundLayers extends ControlBase {
   }
 
   /**
-   * This function removes this.layers from Map.
+   * Esta función elimina "this.layers" del mapa.
    * @function
    * @public
    * @api
@@ -202,8 +249,8 @@ class BackgroundLayers extends ControlBase {
   }
 
   /**
-   * This function add the events listener to each button of the html
-   * @param {HTMLElement} html
+   * Esta función agrega el detector de eventos a cada botón del html.
+   * @param {HTMLElement} html Elemento botón.
    * @function
    * @public
    * @api
@@ -216,7 +263,7 @@ class BackgroundLayers extends ControlBase {
 }
 
 /**
- * Name to identify this control
+ * Nombre para identificar este control.
  * @const
  * @type {string}
  * @public

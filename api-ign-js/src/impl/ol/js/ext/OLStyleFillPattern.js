@@ -1,3 +1,7 @@
+/**
+ * @module M/impl/ol/js/ext/OLStyleFillPattern
+ */
+
 import OLStyleFill from 'ol/style/Fill';
 import { DEVICE_PIXEL_RATIO } from 'ol/has';
 import { asString as colorAsString } from 'ol/color';
@@ -6,28 +10,31 @@ import { asString as colorAsString } from 'ol/color';
  * released under the CeCILL-B license (French BSD license)
  * (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
  */
+
 /**
  * @classdesc
- * Fill style with named pattern
+ * Estilo de relleno con patrón.
  *
+ * @extends {ol.style.Fill}
+ * @implements {ol.structs.IHasChecksum}
+ * @api
  */
-export default class OLStyleFillPattern extends OLStyleFill {
+class OLStyleFillPattern extends OLStyleFill {
   /**
+   * Genera un patrón de relleno.
    * @constructor
-   * @param {olx.style.FillPatternOption=}  Options
-   * image {ol.style.Image|undefined} an image pattern,
-   * image must be preloaded to draw on first call
-   * opacity {number|undefined} opacity with image pattern, default:1
-   * pattern {olx.style.fillPattern} pattern name (override by image option)
-   * color {ol.color} pattern color
-   * fill {ol.style.Fill} fill color (background)
-   * offset {number} pattern offset for hash/dot/circle/cross pattern
-   * size {number} line size for hash/dot/circle/cross pattern
-   * spacing {number} spacing for hash/dot/circle/cross pattern
-   * angle {number|bool} angle for hash pattern / true for 45deg dot/circle/cross
-   * scale [number} pattern scale
-   * @extends {ol.style.Fill}
-   * @implements {ol.structs.IHasChecksum}
+   * @param {olx.style.FillPatternOption=}  Options Opciones:
+   * - imagen. Patrón de imagen.
+   * - opacidad. opacidad con patrón de imagen, predeterminado: 1
+   * - Patrón. Nombre del patrón (anular por la opción de imagen).
+   * - color. Nombre del patrón (anular por la opción de imagen).
+   * - fill. Color de relleno (fondo)
+   * - offset. Desplazamiento del patrón para hash/dot/circle/cross patrón.
+   * - size. Tamaño de línea para hash/dot/circle/cross patrón.
+   * - spacing. Espaciado para hash/dot/circle/cross patrón.
+   * - angle. Ángulo para patrón hash / true para 45deg dot/circle/cross.
+   * - scale. Escala del patrón.
+   * @api
    */
   constructor(options = {}) {
     let pattern;
@@ -156,24 +163,31 @@ export default class OLStyleFillPattern extends OLStyleFill {
   }
 
   /**
-   * Clones the style.
-   * @return {ol.style.FillPattern}
+   * Clona el estilo.
+   * @function
+   * @return {ol.style.FillPattern} Devuelve el estilo clonado.
+   * @api
    */
   clone() {
     return new OLStyleFillPattern(this.options_);
   }
 
   /**
-   * Get canvas used as pattern
-   * @return {canvas}
+   * Devuelve el "canvas" usado como patrón.
+   * @function
+   * @return {canvas} Devuelve el "canvas" usado como patrón.
+   * @api
    */
   getImage() {
     return this.canvas_;
   }
 
   /**
-   * Get pattern
-   * @param {olx.style.FillPatternOption}
+   * Método estático, Devuelve el patrón.
+   * @function
+   * @param {olx.style.FillPatternOption} options Opciones del patrón.
+   * @return {olx.style.FillPatternOption} Devuelve el patrón.
+   * @api
    */
   static getPattern(optionsParam) {
     const options = optionsParam;
@@ -285,18 +299,21 @@ export default class OLStyleFillPattern extends OLStyleFill {
     return pat;
   }
 
-  /** Static fuction to add char patterns
-   * @param {title}
-   * @param {olx.fillpattern.Option}
-   * - size {integer} default 10
-   * - width {integer} default 10
-   * - height {integer} default 10
-   * - circles {Array<circles>}
-   * - lines: {Array<pointlist>}
-   * - stroke {integer}
-   * - fill {bool}
-   * - char {char}
-   * - font {string} default '10px Arial'
+  /**
+   * Método estático para agregar patrones de caracteres.
+   * @function
+   * @param {title} title Título del patrón.
+   * @param {olx.fillpattern.Option} options Opciones del patrón.
+   * - size. Por defecto 10.
+   * - width. Por defecto 10.
+   * - height. Por defecto 10.
+   * - circles. Por defecto [[5, 5, 5]].
+   * - lines. Por defecto [[0, 0, 10, 10]].
+   * - stroke. Por defecto 1.
+   * - fill. Por defecto '#000'.
+   * - char. Por defecto 'X'.
+   * - font. Por defecto '10px Arial'
+   * @api
    */
   static addPattern(title, options = {}) {
     OLStyleFillPattern.patterns[title || options.char] = {
@@ -314,7 +331,9 @@ export default class OLStyleFillPattern extends OLStyleFill {
   }
 }
 
-/** Patterns definitions
+/**
+ * Patrones definidos.
+ * @type {Object}
  * Examples : http://seig.ensg.ign.fr/fichchap.php?NOFICHE=FP31&NOCHEM=CHEMS009&NOLISTE=1&N=8
  */
 OLStyleFillPattern.patterns = {
@@ -588,3 +607,5 @@ OLStyleFillPattern.patterns = {
     stroke: 1,
   },
 };
+
+export default OLStyleFillPattern;

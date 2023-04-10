@@ -7,14 +7,32 @@ import { isNullOrEmpty, extendsObj } from '../util/Utils';
 
 /**
  * @classdesc
- * Creates a style polygon
+ * Crea el estilo de un polígono.
  * @api
+ * @extends {M.style.Simple}
  */
 class Polygon extends Simple {
   /**
+   * Constructor principal de la clase.
    * @constructor
-   * @extends {M.style.Simple}
-   * @param {Object} options - options style
+   * @param {Object} optionsParam Opciones que se pasarán a la implementación.
+   * - stroke: Borde del polígono.
+   *    - width: Tamaño.
+   *    - pattern (name, src, color, size, spacing, rotation, scale, offset)
+   *    - linedash: Línea rayada.
+   *    - linejoin: Línea unidas.
+   *    - linecap: Límite de la línea.
+   * - label
+   *    - rotate: Rotación.
+   *    - offset: Desplazamiento.
+   *    - stroke (color, width, linecap, linejoin, linedash)
+   * - fill: Relleno.
+   *    - color: Color.
+   *    - opacity: Opacidad.
+   *    - pattern (name, src, color, size, spacing, rotation, scale, offset)
+   * - renderer: Renderizado.
+   *     - property: Propiedades.
+   *     - stoke (color y width).
    * @api
    */
   constructor(optionsParam = {}) {
@@ -31,10 +49,12 @@ class Polygon extends Simple {
   }
 
   /**
-   * TODO
-   *
+   * Deserializa el método M.style.Simple.deserialize.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
+   * @return {Function} Devuelve la función M.style.Simple.deserialize.
+   * @api
    */
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Polygon'))";
@@ -42,7 +62,7 @@ class Polygon extends Simple {
 }
 
 /**
- * Default options for this style
+ * Estilos por defecto.
  * @const
  * @type {object}
  * @public

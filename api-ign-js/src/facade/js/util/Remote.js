@@ -7,11 +7,11 @@ import { useproxy } from '../mapea';
 import Response from './Response';
 
 /**
- * HTTP methods POST y GET
+ * Métodos HTTP POST y GET
  * @const
  * @type {object}
  * @public
- * @api2
+ * @api
  */
 export const method = {
   GET: 'GET',
@@ -19,7 +19,11 @@ export const method = {
 };
 
 /**
- * TODO
+ * Crea una etiqueta "script" para el proxy.
+ *
+ * @function
+ * @param {String} proxyUrl URL del proxy.
+ * @param {String} jsonpHandlerName Nombre del identificador.
  */
 const createScriptTag = (proxyUrl, jsonpHandlerName) => {
   const scriptTag = document.createElement('script');
@@ -31,7 +35,10 @@ const createScriptTag = (proxyUrl, jsonpHandlerName) => {
 };
 
 /**
- * TODO
+ * Elimina la etiqueta "script" para el proxy.
+ *
+ * @function
+ * @param {String} jsonpHandlerName Nombre del identificador.
  */
 const removeScriptTag = (jsonpHandlerName) => {
   const scriptTag = document.getElementById(jsonpHandlerName);
@@ -39,7 +46,12 @@ const removeScriptTag = (jsonpHandlerName) => {
 };
 
 /**
- * TODO
+ * Esta función maneja el proxy.
+ *
+ * @function
+ * @param {String} url URL del proxy (M.config.PROXY_URL).
+ * @param {String} methodType Tipo de petición.
+ * @returns {String} Devuelve el proxy.
  */
 const manageProxy = (url, methodType) => {
   // deafult GET
@@ -56,7 +68,13 @@ const manageProxy = (url, methodType) => {
 };
 
 /**
- * TODO
+ * Petición basada en "jsonp".
+ *
+ * @function
+ * @param {String} urlVar URL.
+ * @param {String} data Parámetros.
+ * @param {Object} options Opciones.
+ * @returns {String} Devuelve la respuesta.
  */
 const jsonp = (urlVar, data, options) => {
   let url = urlVar;
@@ -104,7 +122,14 @@ const jsonp = (urlVar, data, options) => {
 };
 
 /**
- * TODO
+ * Petición ajax.
+ *
+ * @function
+ * @param {String} urlVar URL.
+ * @param {String} dataVar Parámetros.
+ * @param {Object} methodType Tipo de petición.
+ * @param {Object} useProxy Verdadero para usar el proxy.
+ * @returns {String} Devuelve la respuesta.
  */
 const ajax = (urlVar, dataVar, methodType, useProxy) => {
   let url = urlVar;
@@ -138,13 +163,14 @@ const ajax = (urlVar, dataVar, methodType, useProxy) => {
 };
 
 /**
- * This function gets a resource throw a
- * HTTP GET method and checks if the request
- * is ajax or jsonp based
+ * Esta función obtiene un recurso lanza un
+ * Método HTTP GET y comprueba si la solicitud
+ * está basado en ajax o jsonp.
  *
  * @function
- * @param {string} url
- * @param {Object} options
+ * @param {string} url URL.
+ * @param {string} data Parámetros.
+ * @param {Object} options Opciones.
  * @returns {Promise}
  * @api
  */
@@ -164,15 +190,27 @@ export const get = (url, data, options) => {
 };
 
 /**
- * This function gets a resource throw a
- * HTTP POST method using ajax
+ * Esta función obtiene un recurso lanznado una petición
+ * HTTP POST usando ajax.
  *
  * @function
- * @param {string} url
- * @param {Object} data
- * @returns {Promise}
+ * @param {string} url URL.
+ * @param {Object} data Parámetros.
+ * @param {Object} options Opciones.
+ *
+ * @returns {Promise} Respuesta.
  * @api
  */
 export const post = (url, data, options) => {
   return ajax(url, data, method.POST);
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

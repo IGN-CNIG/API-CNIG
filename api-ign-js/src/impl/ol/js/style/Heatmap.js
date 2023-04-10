@@ -9,17 +9,23 @@ import HeatmapLayer from '../layer/Heatmap';
 
 /**
  * @classdesc
+ * Crea un mapa con estilos de calor
+ * con parámetros especificados por el usuario.
  * @api
  */
 
 class Heatmap extends Style {
   /**
    * @classdesc
-   * Main constructor of the class. Creates a Heatmap
-   * control
+   * Constructor principal de la clase.
    *
    * @constructor
-   * @param {Object} options - config options of user
+   * @param {Object} options Opciones del estilo.
+   * - gradient. Degradado.
+   * - blur. Difuminar.
+   * - radius. Radio
+   * - opacity. Opacidad.
+   * - weight. Peso.
    * @api stable
    */
   constructor(attribute, options, vendorOptions) {
@@ -52,10 +58,10 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function apply the style to specified layer
+   * Este método aplica el estilo a la capa especificada.
    * @function
    * @public
-   * @param{M.layer.Vector}
+   * @param {M.layer.Vector} layer Capa.
    * @api stable
    */
   applyToLayer(layer) {
@@ -74,9 +80,10 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function remove the style to specified layer
+   * Este método elimina el estilo de la capa.
    * @function
    * @public
+   * @param {M.layer} layer Capa.
    * @api stable
    */
   unapply(layer) {
@@ -90,9 +97,11 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function creates a heatmap layer
+   * Este método crea un mapa de calor.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
+   * @param {ol.features} olFeatures Objetos geográficos de OpenLayers.
    * @api stable
    */
   createHeatmapLayer_(olFeatures) {
@@ -104,31 +113,34 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function
+   * Este método modifica las opciones.
    * @public
-   * @param {object} options_
-   * @param {object} vendorOptions
+   * @param {object} options_ Opciones.
+   * @param {object} vendorOptions Opciones de la librería base.
    * @function
+   * @api stable
    */
   setOptions(options, vendorOptions) {
     this.opt_options_ = extendsObj(options, vendorOptions);
   }
 
   /**
-   * This function
+   * Este método devuelve el peso mínimo del mapa de calor.
    * @public
    * @function
-   * @return {number}
+   * @return {number} Peso mínimo.
+   * @api stable
    */
   getMinWeight() {
     return this.heatmapLayer_.getMinWeight();
   }
 
   /**
-   * This function
+   * Este método devuelve el peso máximo del mapa de calor.
    * @public
    * @function
-   * @return {number}
+   * @return {number} Peso máximo.
+   * @api stable
    */
   getMaxWeight() {
     return this.heatmapLayer_.getMaxWeight();

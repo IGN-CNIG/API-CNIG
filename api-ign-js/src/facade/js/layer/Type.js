@@ -123,10 +123,13 @@ const layertypes = {
 };
 
 /**
- * Parses the type
- * @private
+ * Transforma el tipo de capa a un tipo de capa soportado por API-CNIG.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
  * @function
- * @param {string} rawType the type to be parsed
+ * @param {string} rawType Tipo de capa.
+ * @returns {string} Tipo de capa soportado por API-CNIG.
  */
 export const parse = (rawType) => {
   let type = normalize(rawType, true);
@@ -144,10 +147,11 @@ export const parse = (rawType) => {
 };
 
 /**
- * Parses the type
- * @private
+ * Devuelve los tipos de capa soportados por API-CNIG.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string} rawType the type to be parsed
+ * @param {string} rawType Tipo de capa.
  */
 export const know = (type) => {
   const knowTypes = [
@@ -162,3 +166,13 @@ export const know = (type) => {
   ];
   return (knowTypes.indexOf(parse(type)) !== -1);
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

@@ -12,17 +12,21 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a category style
- * with parameters specified by the user
+ * Crea un estilo de categoría
+ * con parámetros especificados por el usuario.
  * @api
+ * @extends {M.style.Composite}
  */
 class Category extends Composite {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @extends {M.Style}
-   * @param {String} attributeName
-   * @param {object} categoryStyles
-   * @param {object} options
+   * @param {String} attributeName Nombre del atributo de la categoría.
+   * @param {object} categoryStyles Un objeto que relaciona categoría con un estilo.
+   * @param {object} options Parámetros.
+   * - icon
+   *    - src: Ruta.
    * @api
    */
   constructor(attributeName, categoryStyles, options = {}) {
@@ -32,25 +36,21 @@ class Category extends Composite {
     }
 
     /**
-     * Attribute name of category
-     * @public
-     * @type {String}
-     * @api
+     * Nombre del atributo de la categoría.
      */
     this.attributeName_ = attributeName;
 
     /**
-     * An object that relate category with a style
-     * @public
-     * @type {Map<String,M.Style>}
-     * @api
+     * Un objeto que relaciona categoría con un estilo.
      */
     this.categoryStyles_ = categoryStyles;
   }
 
   /**
-   * This constant defines the order of style.
+   * Este método devuelve el orden del estilo.
    * @public
+   * @function
+   * @returns {Number} Devuelve el orden del estilo.
    * @api
    */
   get ORDER() {
@@ -58,12 +58,11 @@ class Category extends Composite {
   }
 
   /**
-   * This function apply the Category object to specified layer
+   * Este método aplica el objeto categoría a la capa especificada.
    *
    * @function
    * @public
-   * @param {M.layer.Vector} layer - layer is the layer where we want to apply the new Style
-   * @returns {M.style.Category}
+   * @param {M.layer.Vector} layer Capa especificada.
    * @api
    */
   applyInternal(layer) {
@@ -71,11 +70,11 @@ class Category extends Composite {
     this.update_();
   }
   /**
-   * This function return the AttributeName
+   * Este método devuelve el "AttributeName".
    *
    * @function
    * @public
-   * @returns {String}
+   * @returns {String} Nombre del atributo.
    * @api
    */
   getAttributeName() {
@@ -83,12 +82,12 @@ class Category extends Composite {
   }
 
   /**
-   * This function set the AttributeName defined by user
+   * Este método establece el "AttributeName" definido por el usuario.
    *
    * @function
    * @public
-   * @param {String} attributeName - newAttributeName is the newAttributeName specified by the user
-   * @returns {M.style.Category}
+   * @param {String} attributeName Nuevo "AttributeName".
+   * @returns {M.style.Category} Categoría ("this").
    * @api
    */
   setAttributeName(attributeName) {
@@ -99,11 +98,11 @@ class Category extends Composite {
   }
 
   /**
-   * This function return an Array with the diferents Categories
+   * Este método devuelve una matriz con las diferentes categorías.
    *
    * @function
    * @public
-   * @returns {Array<String>}
+   * @returns {Array<String>} Estilo de la categoría.
    * @api
    */
   getCategories() {
@@ -111,12 +110,12 @@ class Category extends Composite {
   }
 
   /**
-   * This function sets the object categories
+   * Este método establece las categorías.
    *
    * @function
    * @public
-   * @param {Map<String,M.style>} categories
-   * @return {M.style.Category}
+   * @param {Map<String,M.style>} categories Nombre de la categoría.
+   * @return {M.style.Category} Categoría.
    * @api
    */
   setCategories(categories) {
@@ -127,12 +126,12 @@ class Category extends Composite {
   }
 
   /**
-   * This function return the style of a specified Category defined by user
+   * Este método devuelve el estilo de una categoría específica definida por el usuario.
    *
    * @function
    * @public
-   * @param {String} string - string is the name of a category value
-   * @returns {M.style}
+   * @param {String} string Nombre de la categoría.
+   * @returns {M.style} Estilo de la categoría.
    * @api
    */
   getStyleForCategory(category) {
@@ -140,13 +139,13 @@ class Category extends Composite {
   }
 
   /**
-   * This function set the style of a specified Category defined by user
+   * Este método establece el estilo de una categoría específica definida por el usuario.
    *
    * @function
    * @public
-   * @param {String} category - category is the name of a category value
-   * @param {M.style.Simple} style - style is the new style to switch
-   * @returns {M.style.Category}
+   * @param {String} category Nombre de la categoría.
+   * @param {M.style.Simple} style Nuevo estilo.
+   * @returns {M.style.Category} Categoría.
    * @api
    */
   setStyleForCategory(category, style) {
@@ -157,7 +156,7 @@ class Category extends Composite {
   }
 
   /**
-   * This function updates the canvas of style
+   * Este método actualiza el "canvas" de estilo.
    *
    * @function
    * @public
@@ -170,11 +169,14 @@ class Category extends Composite {
   }
 
   /**
-   * Load the canvas image style
-   *
+   * Cargue el estilo de imagen del "canva".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @param {CanvasRenderingContext2D} vectorContext - context of style canvas
+   * @public
+   * @param {Number} currentIndex Número.
+   * @param {HTMLCanvasElement} canvasImages "Canvas".
+   * @param {Function} callbackFn "callbackFn".
+   * @api
    */
   loadCanvasImages_(currentIndex, canvasImages, callbackFn) {
     const categories = this.getCategories();
@@ -225,11 +227,12 @@ class Category extends Composite {
   }
 
   /**
-   * Draw the geometry into the canvas style
+   * Dibuja la geometría en el estilo de "canva".
    *
    * @function
    * @public
-   * @param {CanvasRenderingContext2D} vectorContext - context of style canvas
+   * @param {HTMLCanvasElement} canvasImages "Canva"
+   * @param {Function} callbackFn "callbackFn".
    * @api
    */
   drawGeometryToCanvas(canvasImages, callbackFn) {
@@ -263,11 +266,10 @@ class Category extends Composite {
   }
 
   /**
-   * This function updates the style
-   *
+   * Este método actualiza el estilo.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @return {M.style.Category}
+   * @public
    * @api
    */
   update_() {
@@ -290,12 +292,12 @@ class Category extends Composite {
   }
 
   /**
-   * This function adds styles of style Composite
+   * Este método agrega estilos.
    *
    * @public
    * @function
-   * @param {M.style|Array<M.Style>} styles
-   * @returns {M.style.Composite}
+   * @param {M.style|Array<M.Style>} styles Estilos.
+   * @returns {M.style.Composite} Estilo de la clase padre.
    * @api
    */
   add(stylesParam) {
@@ -310,11 +312,11 @@ class Category extends Composite {
   }
 
   /**
-   * This function updates the style
-   *
+   * Este método genera una categoría aleatoria.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @return {object}
+   * @public
+   * @return {object} Categorías aleatoria.
    * @api
    */
   generateRandomCategories_() {
@@ -335,11 +337,12 @@ class Category extends Composite {
   }
 
   /**
-   * This function implements the mechanism to
-   * generate the JSON of this instance
+   * Este método implementa el mecanismo para
+   * generar el JSON de esta instancia.
    *
    * @public
-   * @return {object}
+   * @return {object} Devuelve los parámetros de la clase y
+   * la deserialización.
    * @function
    * @api
    */
@@ -360,12 +363,12 @@ class Category extends Composite {
   }
 
   /**
-   * This function returns the style instance of the serialization
+   * Este método de la clase devuelve la instancia de estilo de la serialización.
    * @function
    * @public
    * @param {Array} parametrers - parameters to deserialize and create
    * the instance
-   * @return {M.style.Category}
+   * @return {M.style.Category} Devuelve la instancia deserializada.
    */
   static deserialize([serializedAttributeName, serializedCategoryStyles,
     serializedOptions, serializedCompStyles,
@@ -390,7 +393,7 @@ class Category extends Composite {
 }
 
 /**
- * This constant defines the radius of random category style.
+ * Esta constante define el radio del estilo de categoría aleatoria.
  * @const
  * @type {number}
  * @public
@@ -399,7 +402,7 @@ class Category extends Composite {
 Category.RANDOM_RADIUS_OPTION = 10;
 
 /**
- * This constant defines the stroke width of random category style.
+ * Esta constante define el ancho del trazo del estilo de categoría aleatoria.
  * @const
  * @type {number}
  * @public
@@ -408,7 +411,7 @@ Category.RANDOM_RADIUS_OPTION = 10;
 Category.RANDOM_STROKE_WIDTH_OPTION = 1;
 
 /**
- * This constant defines the stroke color of random category style.
+ * Esta constante define el color del trazo del estilo de categoría aleatoria.
  * @const
  * @public
  * @type {string}

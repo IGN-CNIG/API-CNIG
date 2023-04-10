@@ -1,15 +1,32 @@
 /**
  * @module M/parameter/osm
+ * @example import osmParameter from 'M/parameter/osm';
  */
 import { isNullOrEmpty, isString, normalize, isArray, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 
+/**
+ * Expresión regular para el parámetro de capa vectorial mbtiles.
+ * @const
+ * @type {RegExp}
+ * @public
+ * @api
+ */
 const OSM_REGEXP = /OSM\.*/;
 
 /**
+ * Esta función devuelve el valor del parámetro.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
- * @private
+ * @public
+ * @param {string|object} parameter Parámetro.
+ * @param {string} attr Atributo del parámetro.
+ * @param {string} type Tipo de dato del parámetro.
+ * @param {string} separator Separador de los valores del array.
+ * @param {boolean} normalized Indica si el parámetro está normalizado.
+ * @return {function} Devuelve el valor del parámetro.
+ * @api
  */
 const getParameter = ({
   parameter,
@@ -51,11 +68,11 @@ const getParameter = ({
 };
 
 /**
- * Parses the specified user layer KML parameters to a object
+ * Parametriza los parámetros, controlando el tipo, ...
+ * de las capas OSM.
  *
- * @param {string|Mx.parameters.Layer} userParameters parameters
- * provided by the user
- * @returns {Mx.parameters.KML|Array<Mx.parameters.KML>}
+ * @param {string|Mx.parameters.Layer} userParameters Parámetros.
+ * @returns {Object} Capa.
  * @public
  * @function
  * @api

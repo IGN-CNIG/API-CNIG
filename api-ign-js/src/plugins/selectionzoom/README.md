@@ -16,19 +16,20 @@ Plugin que permite la elección de cada de fondo mediante previsualización de l
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-
-- *position*.  Ubicación del plugin sobre el mapa (Default = 'BL')
-  - 'BL' = Bottom left
-  - 'BR' = Bottom right
-- *collapsible*. Indica si el plugin se puede collapsar en un botón (true/false).
-- *collapsed*. Indica si el plugin viene colapsado de entrada (true/false).
-- *layerId*. Posición de la capa que se carga por defecto en el array de capas mandadas como parámetro.
-- *layerVisibility*. Valor que indica si se muestra la capa cargada o no.
-- *ids*. Identificador de la capa
-- *titles*. Nombre identificativo de la capa que se mostrará sobre la previsualización.
-- *previews*. Ruta a la imagen de previsualización que se muestra.
-- *bboxs*. Bbox de la zona geografica a la que se hace zoom. El bbox debe recoger los datos en la misma proyección en la que se encuentra el mapa.
-- *zooms*. Zoom que toma la capa en la zona geográfica elegida.
+- **position**:  Ubicación del plugin sobre el mapa.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda (por defecto).
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **layerId**: Posición de la capa que se carga por defecto en el array de capas mandadas como parámetro.
+- **layerVisibility**: Valor que indica si se muestra la capa cargada o no.
+- **ids**: Identificador de la capa
+- **titles**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
+- **previews**: Ruta a la imagen de previsualización que se muestra.
+- **bboxs**: Bbox de la zona geografica a la que se hace zoom. El bbox debe recoger los datos en la misma proyección en la que se encuentra el mapa.
+- **zooms**: Zoom que toma la capa en la zona geográfica elegida.
 
 
 # Ejemplo de uso

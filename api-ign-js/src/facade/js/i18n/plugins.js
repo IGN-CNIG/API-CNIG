@@ -1,3 +1,8 @@
+/**
+ * @module M/i18n/plugins
+ * @example import pluginsLanguage from 'M/i18n/plugins';
+ */
+
 // Attributions
 import esAttributions from '../../../plugins/attributions/src/facade/js/i18n/es';
 import enAttributions from '../../../plugins/attributions/src/facade/js/i18n/en';
@@ -180,7 +185,16 @@ import enZoompanel from '../../../plugins/zoompanel/src/facade/js/i18n/en';
 import esViewshed from '../../../plugins/viewshed/src/facade/js/i18n/es';
 import enViewshed from '../../../plugins/viewshed/src/facade/js/i18n/en';
 
-export default {
+
+/**
+ * Este objeto devuelve un objeto JSON dinámico que contiene
+ * los plugins disponibles que soportan traducciones.
+ * @public
+ * @const
+ * @type {object}
+ * @api
+ */
+const pluginsLanguage = {
   attributions: {
     esAttributions,
     enAttributions,
@@ -356,3 +370,5 @@ export default {
     enViewshed,
   },
 };
+
+export default pluginsLanguage;

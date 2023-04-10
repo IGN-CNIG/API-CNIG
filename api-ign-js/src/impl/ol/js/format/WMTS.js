@@ -4,65 +4,69 @@
 import { isNullOrEmpty } from 'M/util/Utils';
 import { optionsFromCapabilities } from 'ol/source/WMTS';
 import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
+
 /**
- * @classdesc
- * @api
- */
+  * @classdesc
+  * Implementación del formateador WMTS.
+  *
+  * @property {ol.format.WMTSCapabilities} parser Formato para leer datos de capacidades WMTS.
+  * @property {ol.format.WMTSCapabilitiesOptions} capabilities Capacidades del WMTS.
+  *
+  * @api
+  */
 class WMTSCapabilities {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a WMC formater
-   *
-   * @constructor
-   * @param {Mx.parameters.LayerOptions} options custom options for this formater
-   * @extends {ol.format.XML}
-   * @api stable
-   */
+    * Constructor principal de la clase. Crea un formateador WMTS.
+    *
+    * @constructor
+    * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para
+    * este formateador.
+    * @api
+    */
   constructor(options = {}) {
     /**
-     * Parser of an specified WMC version
-     * @private
-     * @type {ol.format.XML}
-     */
+      * Formato para leer datos de capacidades WMTS.
+      * @public
+      * @type {ol.format.XML}
+      */
     this.parser = new OLFormatWMTSCapabilities();
 
     /**
-     * Parsed capabilities
-     * @private
-     * @type {Mx.WMTSGetCapabilities}
-     */
+      * Capacidades del WMTS.
+      * @public
+      * @type {Mx.WMTSGetCapabilities}
+      */
     this.capabilities = null;
-
-    /**
-     * Custom options for this formater
-     * @private
-     * @type {Mx.parameters.LayerOptions}
-     */
   }
 
   /**
-   * @public
-   * @function
-   * @param {Document} data Document.
-   * @return {Object} this
-   * @api stable
-   */
+    * Este método obtiene las capacidades del WMTS.
+    *
+    * @function
+    * @param {Document|Element|string} capabilities XML.
+    * @returns {Object} Objeto "this".
+    * @public
+    * @api
+    */
   read(capabilities) {
     this.capabilities = this.parser.read(capabilities);
     return this;
   }
 
   /**
-   * @public
-   * @function
-   * @param {String} layer the name of the layer to get its matrixSet.
-   * @return {String} matrixSet name
-   * @api stable
-   */
+    * Este método devuelve el conjunto de matrices del WMTS.
+    *
+    * @function
+    * @param {String} layerName Nombre de la capa.
+    * @param {String} srid SRID (Identificador de Referencia Espacial).
+    * @returns {String} Nombre del conjunto de matrices.
+    * @public
+    * @api
+    */
   getMatrixSet(layerName, srid) {
     let matrixSet;
     for (let i = 0; i < this.capabilities.Contents.Layer.length &&
-      matrixSet === undefined; i += 1) {
+       matrixSet === undefined; i += 1) {
       const layer = this.capabilities.Contents.Layer[i];
       if (layer.Identifier === layerName) {
         if (!isNullOrEmpty(srid)) {
@@ -80,12 +84,15 @@ class WMTSCapabilities {
   }
 
   /**
-   * @public
-   * @function
-   * @param {String} layer the name of the layer to get its matrixIds.
-   * @return {Array<String>} ids of its matrix
-   * @api stable
-   */
+    * Este método obtiene una lista con los identificadores de la matriz.
+    *
+    * @function
+    * @param {String} layerName Nombre de la capa.
+    * @param {String} srid SRID (Identificador de Referencia Espacial).
+    * @returns {Array<String>} Identificadores de la matriz.
+    * @public
+    * @api
+    */
   getMatrixIds(layerName, srid) {
     let matrixIds = [];
     const matrixSet = this.getMatrixSet(layerName, srid);
@@ -99,12 +106,14 @@ class WMTSCapabilities {
   }
 
   /**
-   * @public
-   * @function
-   * @param {String} layer the name of the layer to get its format.
-   * @return {String} format of the layer.
-   * @api stable
-   */
+    * Este método devuelve el formato del WMTS.
+    *
+    * @function
+    * @param {String} layer Nombre de la capa.
+    * @returns {String} Formato de la capa.
+    * @public
+    * @api
+    */
   getFormat(layerName) {
     let format;
     const layer = this.capabilities.Contents.Layer.filter(l => l.Identifier === layerName)[0];
@@ -116,12 +125,16 @@ class WMTSCapabilities {
 
 
   /**
-   * @public
-   * @function
-   * @param {String} layer the name of the layer to get its format.
-   * @return {String} format of the layer.
-   * @api stable
-   */
+    * Este método obtiene las opciones de las capacidades del WMTS.
+    *
+    * @function
+    * @param {String} layerName Nombre de la capa.
+    * @param {Object} matrixSet Identificador del conjunto de matrices.
+    * @returns {Object} Objeto de opciones de origen WMTS o nulo si no se
+    * encontró la capa.
+    * @public
+    * @api
+    */
   getOptionsFromCapabilities(layerName, matrixSet) {
     const options = optionsFromCapabilities(this.capabilities, {
       layer: layerName,
@@ -133,3 +146,4 @@ class WMTSCapabilities {
 }
 
 export default WMTSCapabilities;
+

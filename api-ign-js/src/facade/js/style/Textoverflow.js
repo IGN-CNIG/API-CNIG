@@ -2,7 +2,7 @@
  * @module M/style/textoverflow
  */
 /**
- * Left style textoverflow
+ * Desbordamiento de texto de estilo izquierdo.
  * @const
  * @type {string}
  * @public
@@ -11,7 +11,7 @@
 export const ELLIPSIS = 'ellipsis';
 
 /**
- * Center style textoverflow
+ * Desbordamiento de texto de estilo central.
  * @const
  * @type {string}
  * @public
@@ -20,7 +20,7 @@ export const ELLIPSIS = 'ellipsis';
 export const VISIBLE = 'visible';
 
 /**
- * Right style textoverflow
+ * Desbordamiento de texto de estilo derecho.
  * @const
  * @type {string}
  * @public

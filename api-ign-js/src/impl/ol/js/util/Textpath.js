@@ -1,19 +1,26 @@
+/**
+ * @module M/impl/util/TextPath
+ */
 import OLStyle from 'ol/style/Style';
 import OLStyleText from 'ol/style/Text';
 
 /**
- * @namespace TextPath
- */
+  * @classdesc
+  * Implementación de la clase TextPath.
+  *
+  * @api
+  */
 export default class TextPath {
   /**
-   * Canvas textpath render method. Draws text along path
-   * @public
-   * @function
-   * @see https://github.com/Viglino/ol3-ext/blob/gh-pages/style/settextpathstyle.js#L9
-   * @param {string} text
-   * @param {Array<Number>} path
-   * @api stable
-   */
+    * Método de representación. Dibuja texto a lo largo de la trayectoria
+    *
+    * @function
+    * @see https://github.com/Viglino/ol3-ext/blob/gh-pages/style/settextpathstyle.js#L9
+    * @param {string} text Texto a representar
+    * @param {Array<Number>} path Trayectoria
+    * @public
+    * @api
+    */
   static render(text, path) {
     // canvas context
     let newText = text;
@@ -81,7 +88,7 @@ export default class TextPath {
         nbspace = newText.split(' ').length - 1;
         newText = newText.slice(0, newText.length - 1);
       } while (newText && d < ctx.measureText(newText + overflow).width +
-        ((newText.length + (overflow.length - 1) + nbspace) * letterPadding));
+         ((newText.length + (overflow.length - 1) + nbspace) * letterPadding));
       newText += overflow;
     }
     switch (ctx.textJustify || ctx.textAlign) {
@@ -120,15 +127,16 @@ export default class TextPath {
   }
 
   /**
-   * Parse coordinates to path
-   * @private
-   * @function
-   * @param {Array<number>} c2p coords to pixel array
-   * @param {Array<Array<number>>} coords coordinates
-   * @param {boolean} readable flag to invert the path
-   * @return {Array<number>} builded path
-   * @api stable
-   */
+    * Obtiene la trayectoria a partir de las coordenadas especificadas
+    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+    * @function
+    * @param {Array<number>} c2p Array de coordenadas en píxeles
+    * @param {Array<Array<number>>} coords Coordenadas
+    * @param {boolean} readable Indica si se invierte la trayectoria
+    * @return {Array<number>} Trayectoria
+    * @public
+    * @api
+    */
   static getPath_(c2p, coords, readable) {
     const path1 = [];
     coords.forEach((coord) => {
@@ -148,13 +156,14 @@ export default class TextPath {
   }
 
   /**
-   * Enclose a ol.style into an style function
-   * @public
-   * @function
-   * @param {object} style ol.style
-   * @return {function} style enclosed in a function
-   * @api stable
-   */
+    * Este método añade un ol.style en una función de estilo
+    *
+    * @function
+    * @param {object} style ol.style
+    * @return {function} Función de estilo
+    * @public
+    * @api
+    */
   static formatStyle(style) {
     let newStyle = style;
     if (newStyle == null) {
@@ -177,14 +186,18 @@ export default class TextPath {
     return formattedStyle;
   }
 
-
   /**
-   * Draws the textpath style if feature or layer has configured it
-   * @public
-   * @function
-   * @param {Object} e received event with framestate
-   * @api stable
-   */
+    * Dibuja el estilo del texto de la trayectoria si
+    * la capa o 'feature' lo ha configurado
+    *
+    * @function
+    * @param {Object} ctx Contexto
+    * @param {Array<number>} coord2Pixel Array de coordenadas en píxeles
+    * @param {Object} textStyle Estilo del texto
+    * @param {Array<Array<number>>} coords Coordenadas
+    * @public
+    * @api
+    */
   static draw(ctx, coord2Pixel, textStyle, coords) {
     const path = this.getPath_(coord2Pixel, coords, textStyle.getRotateWithView());
 
@@ -220,12 +233,12 @@ export default class TextPath {
 }
 
 /**
- * Default textpath style values
- * @const
- * @type {object}
- * @public
- * @api stable
- */
+  * Valores de estilos predeterminados
+  * @const
+  * @type {object}
+  * @public
+  * @api
+  */
 TextPath.DEFAULT = {
   lineWidth: 0,
   lineColor: '#fff',

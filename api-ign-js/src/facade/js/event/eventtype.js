@@ -3,7 +3,7 @@
  */
 
 /**
- * Event type
+ * Evento que se produce al añadir al mapa.
  * @public
  * @type {string}
  * @api
@@ -11,14 +11,14 @@
 export const ADDED_TO_MAP = 'added:map';
 
 /**
- * Event type
+ * Evento que se produce al añadir al panel.
  * @public
  * @type {string}
  * @api
  */
 export const ADDED_TO_PANEL = 'added:panel';
 /**
- * Event type
+ * Evento que se produce al añadir a la capa.
  * @public
  * @type {string}
  * @api
@@ -26,15 +26,7 @@ export const ADDED_TO_PANEL = 'added:panel';
 export const ADDED_LAYER = 'added:layer';
 
 /**
- * Event type
- * @public
- * @type {string}
- * @api
- */
-export const ADDED_WMC = 'added:wmc';
-
-/**
- * Event type
+ * Evento que se produce al añadir KML.
  * @public
  * @type {string}
  * @api
@@ -42,7 +34,7 @@ export const ADDED_WMC = 'added:wmc';
 export const ADDED_KML = 'added:kml';
 
 /**
- * Event type
+ * Evento que se produce al añadir WMS.
  * @public
  * @type {string}
  * @api
@@ -50,7 +42,7 @@ export const ADDED_KML = 'added:kml';
 export const ADDED_WMS = 'added:wms';
 
 /**
- * Event type
+ * Evento que se produce al añadir WFS.
  * @public
  * @type {string}
  * @api
@@ -58,7 +50,7 @@ export const ADDED_WMS = 'added:wms';
 export const ADDED_WFS = 'added:wfs';
 
 /**
- * Event type
+ * Evento que se produce al añadir tesela vector.
  * @public
  * @type {string}
  * @api
@@ -66,7 +58,7 @@ export const ADDED_WFS = 'added:wfs';
 export const ADDED_VECTOR_TILE = 'added:vectortile';
 
 /**
- * Event type
+ * Evento que se produce al añadir MBTiles.
  * @public
  * @type {string}
  * @api
@@ -74,7 +66,7 @@ export const ADDED_VECTOR_TILE = 'added:vectortile';
 export const ADDED_MBTILES = 'added:mbtiles';
 
 /**
- * Event type
+ * Evento que se produce al añadir MBTilesVector.
  * @public
  * @type {string}
  * @api
@@ -83,7 +75,7 @@ export const ADDED_MBTILES_VECTOR = 'added:mbtilesvector';
 
 
 /**
- * Event type
+ * Evento que se produce al añadir XYZ.
  * @public
  * @type {string}
  * @api
@@ -91,7 +83,7 @@ export const ADDED_MBTILES_VECTOR = 'added:mbtilesvector';
 export const ADDED_XYZ = 'added:xyz';
 
 /**
- * Event type
+ * Evento que se produce al añadir TMS.
  * @public
  * @type {string}
  * @api
@@ -99,7 +91,7 @@ export const ADDED_XYZ = 'added:xyz';
 export const ADDED_TMS = 'added:tms';
 
 /**
- * Event type
+ * Evento que se produce al eliminar layer.
  * @public
  * @type {string}
  * @api
@@ -107,7 +99,7 @@ export const ADDED_TMS = 'added:tms';
 export const REMOVED_LAYER = 'removed:layer';
 
 /**
- * Event type
+ * Evento que se produce al eliminar mapa.
  * @public
  * @type {string}
  * @api
@@ -115,7 +107,7 @@ export const REMOVED_LAYER = 'removed:layer';
 export const REMOVED_FROM_MAP = 'removed:map';
 
 /**
- * Event type
+ * Evento que se produce al añadir WMTS.
  * @public
  * @type {string}
  * @api
@@ -123,7 +115,7 @@ export const REMOVED_FROM_MAP = 'removed:map';
 export const ADDED_WMTS = 'added:wmts';
 
 /**
- * Event type
+ * Evento que se produce cuando es activado.
  * @public
  * @type {string}
  * @api
@@ -131,7 +123,7 @@ export const ADDED_WMTS = 'added:wmts';
 export const ACTIVATED = 'activated';
 
 /**
- * Event type
+ * Evento que se produce cuando es desactivado.
  * @public
  * @type {string}
  * @api
@@ -139,7 +131,7 @@ export const ACTIVATED = 'activated';
 export const DEACTIVATED = 'deactivated';
 
 /**
- * Event type
+ * Evento que se produce al ser mostrado.
  * @public
  * @type {string}
  * @api
@@ -147,7 +139,7 @@ export const DEACTIVATED = 'deactivated';
 export const SHOW = 'show';
 
 /**
- * Event type
+ * Evento que se produce al ser ocultado.
  * @public
  * @type {string}
  * @api
@@ -155,7 +147,7 @@ export const SHOW = 'show';
 export const HIDE = 'hide';
 
 /**
- * Event type
+ * Evento que se produce al ser destruido.
  * @public
  * @type {string}
  * @api
@@ -163,7 +155,7 @@ export const HIDE = 'hide';
 export const DESTROY = 'destroy';
 
 /**
- * Event type
+ * Evento que se produce al seleccionar un objeto geográfico.
  * @public
  * @type {string}
  * @api
@@ -171,7 +163,7 @@ export const DESTROY = 'destroy';
 export const SELECT_FEATURES = 'select:features';
 
 /**
- * Event type
+ * Evento que se produce al deseleccionar un objeto geográfico.
  * @public
  * @type {string}
  * @api
@@ -179,7 +171,7 @@ export const SELECT_FEATURES = 'select:features';
 export const UNSELECT_FEATURES = 'unselect:features';
 
 /**
- * Event type
+ * Evento que se produce al hacer "hover" sobre un objeto geográfico.
  * @public
  * @type {string}
  * @api
@@ -187,7 +179,7 @@ export const UNSELECT_FEATURES = 'unselect:features';
 export const HOVER_FEATURES = 'hover:features';
 
 /**
- * Event type
+ * Evento que se produce al salir del "hover" sobre un objeto geográfico.
  * @public
  * @type {string}
  * @api
@@ -195,7 +187,7 @@ export const HOVER_FEATURES = 'hover:features';
 export const LEAVE_FEATURES = 'leave:features';
 
 /**
- * Event type
+ * Evento que se produce al ser cargado.
  * @public
  * @type {string}
  * @api
@@ -203,7 +195,7 @@ export const LEAVE_FEATURES = 'leave:features';
 export const LOAD = 'load';
 
 /**
- * Event type
+ * Evento que se produce al pasar un estado completado.
  * @public
  * @type {string}
  * @api
@@ -211,7 +203,7 @@ export const LOAD = 'load';
 export const COMPLETED = 'completed';
 
 /**
- * Event type
+ * Evento que se produce cuando se ha cambiado.
  * @public
  * @type {string}
  * @api
@@ -219,15 +211,7 @@ export const COMPLETED = 'completed';
 export const CHANGE = 'change';
 
 /**
- * Event type
- * @public
- * @type {string}
- * @api
- */
-export const CHANGE_WMC = 'change:wmc';
-
-/**
- * Event type
+ * Evento que se produce cuando se ha cambiado una proyección.
  * @public
  * @type {string}
  * @api
@@ -235,7 +219,7 @@ export const CHANGE_WMC = 'change:wmc';
 export const CHANGE_PROJ = 'change:proj';
 
 /**
- * Event type
+ * Evento que se produce cuando se ha cambiado el estilo.
  * @public
  * @type {string}
  * @api
@@ -243,7 +227,7 @@ export const CHANGE_PROJ = 'change:proj';
 export const CHANGE_STYLE = 'change:style';
 
 /**
- * Event type
+ * Evento que se produce cuando se ha cambiado el zoom.
  * @public
  * @type {string}
  * @api
@@ -251,15 +235,7 @@ export const CHANGE_STYLE = 'change:style';
 export const CHANGE_ZOOM = 'change:zoom';
 
 /**
- * Event Type
- * @public
- * @type {string}
- * @api
- */
-export const CHANGE_ROTATION = 'change:rotation';
-
-/**
- * Event type
+ * Evento que se produce cuando se hace clic.
  * @public
  * @type {string}
  * @api
@@ -267,17 +243,9 @@ export const CHANGE_ROTATION = 'change:rotation';
 export const CLICK = 'click';
 
 /**
- * Event type
+ * Evento que se produce cuando se mueve.
  * @public
  * @type {string}
  * @api
  */
 export const MOVE = 'move';
-
-/**
- * Event type
- * @public
- * @type {string}
- * @api
- */
-export const DOUBLE_CLICK = 'doubleclick';
