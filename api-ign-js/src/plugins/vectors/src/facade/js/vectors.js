@@ -7,6 +7,9 @@ import VectorsControl from './vectorscontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Vectors extends M.Plugin {
   /**
    * @classdesc
@@ -80,7 +83,30 @@ export default class Vectors extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : null;
   }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).vectors;
+  }
+
 
   /**
    * This function adds this plugin into the map
@@ -92,15 +118,21 @@ export default class Vectors extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
-    this.panel_ = new M.ui.Panel('panelVectors', {
+    this.panel_ = new M.ui.Panel('Vectors', {
       className: 'm-vectors',
       collapsed: this.collapsed_,
       collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'icon-vectors',
       tooltip: getValue('tooltip'),
+      order: this.order,
     });
-    this.control_ = new VectorsControl({ wfszoom: this.wfszoom_, precharged: this.precharged_ });
+    this.control_ = new VectorsControl({
+      wfszoom: this.wfszoom_,
+      precharged: this.precharged_,
+      order: this.order,
+    });
+
     this.controls_.push(this.control_);
 
     this.map_.on(M.evt.ADDED_LAYER, () => {

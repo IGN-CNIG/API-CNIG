@@ -80,6 +80,14 @@
 /***************
        TABLE
 ***************/
+.m-areas>div.m-area>div.m-panel.m-georefimage2.collapsed .m-georefimage2-container {
+    display: none;
+}
+
+.m-areas>div.m-area>div.m-panel.m-georefimage2.opened .m-georefimage2-container {
+    display: block;
+}
+
 .m-areas>div.m-area>div.m-panel.m-georefimage2 .m-georefimage2-container .form .form-table table {
   width: 100%;
   text-align: center;

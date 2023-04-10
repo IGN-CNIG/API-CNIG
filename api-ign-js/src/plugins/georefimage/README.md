@@ -36,7 +36,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **printTemplateUrl**. URL con las plantillas.
 
 - **printStatusUrl**. URL que indica el estado del servidor Geoprint.
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 
 # Ejemplos de uso
@@ -59,8 +58,8 @@ mapajs.addPlugin(new M.plugin.Georefimage({
   position: 'TR',
   collapsed: false,
   collapsible: false,
-  serverUrl: 'https://componentes.cnig.es', 
-  printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG', 
-  printStatusUrl: 'https://componentes.cnig.es/geoprint/print/CNIG/status',
+  serverUrl: 'https://geoprint.desarrollo.guadaltel.es',
+  printTemplateUrl: 'https://geoprint.desarrollo.guadaltel.es/print/mapexport',
+  printStatusUrl: 'https://geoprint.desarrollo.guadaltel.es/print/status',
 
 }));

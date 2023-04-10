@@ -193,7 +193,7 @@ const PRECHARGED = {
 };
 
 /**
-* Definimos las capas con notación MAPEA
+* Definimos las capas con notación API-REST
 */
 
 /**

@@ -30,6 +30,8 @@ export default class ZoomPanelControl extends M.Control {
     this.zoom_ = options.zoom;
 
     this.activeExtent_ = this.center_ !== undefined && this.zoom_ !== undefined;
+
+    this.order = (options.order) ? options.order : null;
   }
 
   /**
@@ -57,6 +59,9 @@ export default class ZoomPanelControl extends M.Control {
           },
         },
       });
+
+      this.accessibilityTab(html);
+
       const zoomInBtn = html.querySelector('button#zoomIn');
       const zoomOutBtn = html.querySelector('button#zoomOut');
       html.querySelector('button#historyprevious').addEventListener('click', this.previousStep_.bind(this));
@@ -243,5 +248,9 @@ export default class ZoomPanelControl extends M.Control {
    */
   equals(control) {
     return control instanceof ZoomPanelControl;
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

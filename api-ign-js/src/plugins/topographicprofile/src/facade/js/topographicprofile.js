@@ -6,6 +6,9 @@ import TopographicprofileControl from './topographicprofilecontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Topographicprofile extends M.Plugin {
   /**
    * @classdesc
@@ -54,10 +57,37 @@ export default class Topographicprofile extends M.Plugin {
     this.panel_ = null;
     this.control_ = null;
     this.options_ = opts;
+
+    /**
+     * Distance, default 30
+     * @private
+     * @type {Boolean}
+     */
     this.options_.distance = opts.distance || 30;
+
+     /**
+     * Hide or show panel. By default true.
+     * @private
+     * @type {Boolean}
+     */
     this.options_.visible = opts.hasOwnProperty('visible') ? opts.visible : true;
     // this.options_.serviceURL = opts.serviceURL || ((M.config.GGIS_RESTAPI) ? M.config.GGIS_RESTAPI + "/services/elevation" : "http://ggiscloud.guadaltel.com/ggiscloud/restapi/services/elevation");
     //'http://idecan5.grafcan.es/ServicioWPS/mdt';
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+   static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).topographicprofile;
   }
 
   /**

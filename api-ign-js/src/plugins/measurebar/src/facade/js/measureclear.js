@@ -15,7 +15,7 @@ import { getValue } from './i18n/language';
  */
 
 export default class MeasureClear extends M.Control {
-  constructor(measureLengthControl, measureAreaControl) {
+  constructor(measureLengthControl, measureAreaControl, order) {
     // implementation of this control
     const impl = new MeasureClearImpl(measureLengthControl.getImpl(), measureAreaControl.getImpl());
 
@@ -26,6 +26,7 @@ export default class MeasureClear extends M.Control {
     if (M.utils.isUndefined(MeasureClearImpl)) {
       M.Exception(getValue('exception.impl_clear'));
     }
+    this.order = order;
   }
 
   /**
@@ -42,6 +43,7 @@ export default class MeasureClear extends M.Control {
       jsonp: true,
       vars: {
         translations: getValue('text'),
+        order: this.order,
       },
     });
   }

@@ -7,6 +7,9 @@ import IncicartoControl from './incicartocontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Incicarto extends M.Plugin {
   /**
    * @classdesc
@@ -69,10 +72,16 @@ export default class Incicarto extends M.Plugin {
 
     this.controllist_ = options.controllist || [];
 
+    this.interfazmode_ = options.interfazmode;
+    if (this.interfazmode_ === undefined) this.interfazmode_ = 'simple';
+
     this.buzones_ = options.buzones;
     this.themes_ = options.themeList;
     this.errors_ = options.errorList;
     this.products_ = options.productList;
+
+    this.prefixSubject_ = options.prefixSubject;
+    if (this.prefixSubject_ === undefined) this.prefixSubject_ = 'Incidencia cartografía - ';
 
     /**
      * Name of the plugin
@@ -90,6 +99,21 @@ export default class Incicarto extends M.Plugin {
   }
 
   /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).incicarto;
+  }
+
+  /**
    * This function adds this plugin into the map
    *
    * @public
@@ -104,33 +128,34 @@ export default class Incicarto extends M.Plugin {
       collapsed: this.collapsed_,
       collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
-      collapsedButtonClass: 'icon-incicarto', //Icono de la App
+      collapsedButtonClass: 'icon-incicarto',
       tooltip: getValue('tooltip'),
     });
 
-    console.log(this.controllist_);
-    if (this.controllist_[0].id==="themeList"){
-      this.errThemes_=this.controllist_[0];
+    if (this.controllist_[0].id === 'themeList') {
+      this.errThemes_ = this.controllist_[0];
     }
-    if (this.controllist_[1].id==="errorList"){
-      this.errTypes_=this.controllist_[1];
+    if (this.controllist_[1].id === 'errorList') {
+      this.errTypes_ = this.controllist_[1];
     }
-    if (this.controllist_[2].id==="productList"){
-      this.errProducts_=this.controllist_[2];
+    if (this.controllist_[2].id === 'productList') {
+      this.errProducts_ = this.controllist_[2];
     }
 
 
-    this.control_ = new IncicartoControl({ 
-        wfszoom: this.wfszoom_, 
-        precharged: this.precharged_,
-        controllist: this.controllist_,
-        buzones: this.buzones_,
-        themes: this.themes_,
-        errors: this.errors_,
-        products: this.products_,
-        errThemes: this.errThemes_,
-        errTypes: this.errTypes_,
-        errProducts: this.errProducts_,
+    this.control_ = new IncicartoControl({
+      wfszoom: this.wfszoom_,
+      precharged: this.precharged_,
+      controllist: this.controllist_,
+      interfazmode: this.interfazmode_,
+      prefixSubject: this.prefixSubject_,
+      buzones: this.buzones_,
+      themes: this.themes_,
+      errors: this.errors_,
+      products: this.products_,
+      errThemes: this.errThemes_,
+      errTypes: this.errTypes_,
+      errProducts: this.errProducts_,
     });
 
     this.controls_.push(this.control_);

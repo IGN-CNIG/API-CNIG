@@ -55,19 +55,21 @@ export default class TOCControl extends M.Control {
     // const layers = this.map_.getWMS().concat(this.map_.getWMTS())
     //   .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true);
     const layers = this.map_.getLayers()
-      .filter(layer => layer.transparent !== false && (layer.displayInLayerSwitcher === true ||
-        layer instanceof M.layer.TMS || layer instanceof M.layer.XYZ))
+      .filter(layer => layer.name !== undefined && layer.transparent !== false &&
+        layer.displayInLayerSwitcher === true &&
+        layer.name !== 'infocoordinatesLayerFeatures')
       .reverse();
     const layersOpts = layers.map((layer) => {
       return {
         outOfRange: layer instanceof M.layer.TMS || layer instanceof M.layer.XYZ ?
           true : !layer.inRange(),
-        visible: (layer instanceof M.layer.WMTS ? layer.options.visibility === true :
-          layer.isVisible()),
+        visible: (layer instanceof M.layer.WMTS ? (layer.options.visibility === true ||
+          layer.visibility === true) : layer.isVisible()),
         id: layer.name,
         title: layer.legend || layer.name,
       };
     });
+
     return {
       layers: layersOpts,
       translations: {
@@ -82,12 +84,19 @@ export default class TOCControl extends M.Control {
    * @api
    */
   render() {
+    let scroll;
+    if (document.querySelector('.m-panel.m-plugin-toc.opened ul.m-toc-content') !== null) {
+      scroll = document.querySelector('.m-panel.m-plugin-toc.opened ul.m-toc-content').scrollTop;
+    }
     const templateVars = this.getTemplateVariables();
     const html = M.template.compileSync(template, {
       vars: templateVars,
     });
     this.panelHTML_.innerHTML = html.innerHTML;
     listenAll(this.panelHTML_, 'li', 'click', e => this.toogleVisible(e));
+    if (scroll !== undefined) {
+      document.querySelector('.m-panel.m-plugin-toc.opened ul.m-toc-content').scrollTop = scroll;
+    }
   }
 
   /**
@@ -96,15 +105,16 @@ export default class TOCControl extends M.Control {
    * @api
    */
   toogleVisible(evt) {
-    // const { target } = evt;
-    // const { dataset } = target;
-    // const { layerName } = dataset;
     const layerName = evt.currentTarget.querySelector('.m-check').dataset.layerName;
     const layerFound = this.map_.getLayers({ name: layerName })[0];
     const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :
       layerFound.isVisible();
     layerFound.setVisible(!visibility);
-    layerFound.options.visibility = !visibility;
+    layerFound.visibility = !visibility;
+    if (layerFound.options !== undefined) {
+      layerFound.options.visibility = !visibility;
+    }
+
     this.render();
   }
 

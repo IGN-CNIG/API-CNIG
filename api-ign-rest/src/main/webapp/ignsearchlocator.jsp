@@ -83,6 +83,16 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="selectCadastre">Selector cadastre</label>
+        <select name="reverseValue" id="selectCadastre">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="searchCoordinatesXYZ">Selector searchCoordinatesXYZ</label>
+        <select name="reverseValue" id="searchCoordinatesXYZ">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
         <label for="inputZoom">Parámetro zoom</label>
         <input type="text" name="zoom" id="inputZoom" list="zoomSug">
         <datalist id="zoomSug">
@@ -147,7 +157,7 @@
         let mp;
         let sToSearch, mxResults, collapsed = true,
             collapsible = true,
-            zoom,
+            pzoom,
             posicion, noProcess, countryCode, reverse = true,
             urlCandidates, urlFind, urlReverse, searchposition, pointStyle;
         crearPlugin({
@@ -159,7 +169,7 @@
             collapsible: collapsible,
             position: posicion,
             reverse: reverse,
-            zoom: zoom,
+            zoom: pzoom,
             urlCandidates: urlCandidates,
             urlFind: urlFind,
             urlReverse: urlReverse,
@@ -175,6 +185,8 @@
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
         const selectReverse = document.getElementById("selectReverse");
+        const selectCadastre = document.getElementById("selectCadastre");
+        const searchCoordinatesXYZ = document.getElementById("searchCoordinatesXYZ");
         const inputZoom = document.getElementById("inputZoom");
         const inputSearchposition = document.getElementById("inputSearchposition");
         const inputUrlCandidates = document.getElementById("inputUrlCandidates");
@@ -190,6 +202,8 @@
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
         selectReverse.addEventListener('change', cambiarTest);
+        selectCadastre.addEventListener('change', cambiarTest);
+        searchCoordinatesXYZ.addEventListener('change', cambiarTest);
         inputZoom.addEventListener('change', cambiarTest);
         inputSearchposition.addEventListener('change', cambiarTest);
         inputUrlCandidates.addEventListener('change', cambiarTest);
@@ -206,7 +220,9 @@
             objeto.isCollapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             objeto.reverse = (selectReverse.options[selectReverse.selectedIndex].value == 'true');
-            zoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "16";
+            objeto.cadastre = (selectCadastre.options[selectCadastre.selectedIndex].value == 'true');
+            objeto.searchCoordinatesXYZ = (searchCoordinatesXYZ.options[searchCoordinatesXYZ.selectedIndex].value == 'true');
+            inputZoom.value !== "" ? objeto.zoom = inputZoom.value : objeto.zoom = "16";
             searchPosition = inputSearchposition.value != "" ? objeto.searchPosition = inputSearchposition.value : "";
             urlCandidates = inputUrlCandidates.value != "" ? objeto.urlCandidates = inputUrlCandidates.value : "";
             urlFind = inputUrlFind.value != "" ? objeto.urlFind = inputUrlFind.value : "";
@@ -235,10 +251,13 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-163660977-1');
 </script>
 
 </html>

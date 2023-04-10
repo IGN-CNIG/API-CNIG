@@ -7,6 +7,9 @@ import InfocoordinatesControl from './infocoordinatescontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Infocoordinates extends M.Plugin {
   /**
    * @classdesc
@@ -79,6 +82,27 @@ export default class Infocoordinates extends M.Plugin {
      * @type {string}
      */
     this.helpUrl_ = options.helpUrl;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+     this.order = options.order >= -1 ? options.order : null;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+   static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).infocoordinates;
   }
 
   /**
@@ -90,17 +114,18 @@ export default class Infocoordinates extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.control_ = new InfocoordinatesControl(this.decimalGEOcoord_, this.decimalUTMcoord_, this.helpUrl_);
+    this.control_ = new InfocoordinatesControl(this.decimalGEOcoord_, this.decimalUTMcoord_, this.helpUrl_, this.order);
     this.controls_.push(this.control_);
     this.map_ = map;
     // panel para agregar control - no obligatorio
-    this.panel_ = new M.ui.Panel('panelInfocoordinates', {
+    this.panel_ = new M.ui.Panel('Infocoordinates', {
       collapsed: true,
       collapsible: true,
       position: M.ui.position[this.position_],
       className: 'm-plugin-infocoordinates',
       collapsedButtonClass: 'icon-target',
-      tooltip: getValue('tooltip')
+      tooltip: getValue('tooltip'),
+      order: this.order,
     });
     this.panel_.addControls(this.controls_);
 

@@ -34,7 +34,6 @@ Example: <url_mapea>?plugins=beautytoc
   - 'BL':bottom left
   - 'BR':bottom right
 - **collapsed**. Indica si el plugin aparece por defecto colapsado o no.
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Ejemplos de uso
 

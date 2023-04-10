@@ -26,6 +26,10 @@ div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewm
     right: 135px !important;
 }
 
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control:not(.ol-collapsed)>button.g-cartografia-flecha-izquierda {
+    left: 135px !important;
+}
+
 /* Zoomed bbox preview square */
 
 div.ol-overviewmap-box {
@@ -62,6 +66,11 @@ div.ol-overviewmap-box {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+button.overviewmap-mundo {
+    border: 2px solid white;
+}
+
 
 .overviewmap-mundo:before {
     content: "\e1950";

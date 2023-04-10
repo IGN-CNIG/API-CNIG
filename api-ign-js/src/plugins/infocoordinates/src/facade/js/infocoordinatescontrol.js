@@ -17,7 +17,7 @@ export default class InfocoordinatesControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(decimalGEOcoord, decimalUTMcoord, helpUrl) {
+  constructor(decimalGEOcoord, decimalUTMcoord, helpUrl, order) {
 
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(InfocoordinatesImplControl)) {
@@ -30,10 +30,12 @@ export default class InfocoordinatesControl extends M.Control {
     this.numTabs = 0;
     this.layerFeatures = new M.layer.Vector();
     this.layerFeatures.name = 'infocoordinatesLayerFeatures';
+    this.layerFeatures.displayInLayerSwitcher = false;
     this.decimalGEOcoord = decimalGEOcoord;
     this.decimalUTMcoord = decimalUTMcoord;
     this.helpUrl = helpUrl;
     this.clickedDeactivate = false;
+    this.order = order;
   }
 
 
@@ -94,6 +96,7 @@ export default class InfocoordinatesControl extends M.Control {
       };
       const html = M.template.compileSync(template, options);
       // Añadir código dependiente del DOM
+      this.accessibilityTab(html);
 
       this.map_.addLayers(this.layerFeatures);
       this.panel_.on(M.evt.SHOW, this.activate, this);
@@ -192,6 +195,8 @@ export default class InfocoordinatesControl extends M.Control {
     buttonTab.appendChild(buttonTabText);
     buttonTab.classList.add('tablinks');
     buttonTab.setAttribute('id', `tablink${numPoint}`);
+    buttonTab.setAttribute('tabindex', '0');
+    buttonTab.setAttribute('type', 'button');
     tabsDiv.appendChild(buttonTab);
 
     // cojo las coordenadas del punto pinchado
@@ -522,7 +527,7 @@ export default class InfocoordinatesControl extends M.Control {
 
       printDocument.push('[' + coordinatesGEO + ',' + alt + ']' + '\n');
       printDocument.push(proj + ': ');
-      printDocument.push('[' + coordinatesUTM + ',' + alt  + ']' + '\n');
+      printDocument.push('[' + coordinatesUTM + ',' + alt + ']' + '\n');
     }
 
     const toBlobType = new Blob(printDocument, {
@@ -701,4 +706,7 @@ export default class InfocoordinatesControl extends M.Control {
     return coord.replace(/\d(?=(\d{3})+\.)/g, '$&*').split('.').join(',').split('*').join('.');
   }
 
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+  }
 }

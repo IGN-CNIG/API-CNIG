@@ -1,0 +1,41 @@
+{
+  "url": {
+    "name": "querydatabase",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.QueryDatabase",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BL", "BR"]
+    }, {
+      "type": "boolean",
+      "name": "collapsed",
+      "position": 1
+    }, {
+      "type": "boolean",
+      "name": "collapsible",
+      "position": 2
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["querydatabase.ol.min.js"],
+      "styles": ["querydatabase.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "querydatabase",
+    "description": "Búsqueda en base de datos",
+    "text": "Permite consultar los datos geométricos de una base de datos y visualizar de forma gráfica las features obtenidas así como realizar consultas filtradas.",
+    "version": "1.0.0",
+    "date": "Febrero, 2022",
+    "author": "",
+    "org": "Guadaltel",
+    "tags": "mapea,plugin",
+    "centralized": true
+  }
+}

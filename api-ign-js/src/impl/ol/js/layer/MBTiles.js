@@ -9,7 +9,6 @@ import { getBottomLeft, getWidth } from 'ol/extent';
 import MBTilesSource from '../source/MBTiles';
 import ImplMap from '../Map';
 import Layer from './Layer';
-import * as LayerType from '../../../../facade/js/layer/Type';
 import TileProvider from '../../../../facade/js/provider/Tile';
 
 /**
@@ -106,7 +105,7 @@ class MBTiles extends Layer {
      * @type {number}
      */
     this.opacity_ = typeof options.opacity === 'number' ? options.opacity : 1;
-    this.zIndex_ = ImplMap.Z_INDEX[LayerType.MBTiles];
+    this.zIndex_ = ImplMap.Z_INDEX.MBTiles;
     this.visibility = userParameters.visibility === false ? userParameters.visibility : true;
   }
   /**

@@ -16,14 +16,15 @@ export default class MouseSRSControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(srs, label, precision, geoDD, utmDD, tooltip, activeZ, helpUrl) {
+  constructor(srs, label, precision, geoDD, utmDD, tooltip, activeZ, helpUrl, order = 32766) {
     if (M.utils.isUndefined(MouseSRSImplControl)) {
       M.exception(getValue('exception.impl'));
     }
     /* eslint-disable-next-line max-len */
-    const impl = new MouseSRSImplControl(srs, label, precision, geoDD, utmDD, tooltip, activeZ, helpUrl);
+    const impl = new MouseSRSImplControl(srs, label, precision, geoDD, utmDD, tooltip, activeZ, helpUrl, order);
     super(impl, 'MouseSRS');
     this.tooltip_ = tooltip;
+    this.order = order;
   }
 
   /**
@@ -41,6 +42,7 @@ export default class MouseSRSControl extends M.Control {
           translations: {
             tooltip: this.tooltip_,
           },
+          order: this.order,
         },
       });
       success(html);

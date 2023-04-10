@@ -10,6 +10,7 @@ const map = M.map({
     y: 4514194.232367303,
   },
   zoom: 9,
+  layers: ['TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*true'],
 });
 
 const precharged = {
@@ -21,7 +22,7 @@ const precharged = {
           name: 'Unidades administrativas',
           type: 'WMS',
           url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-          white_list: ['AU.AdministrativeBoundary', 'AU.AdministrativeUnit'],
+          white_list: ['AU.AdministrativeBoundary'/* , 'AU.AdministrativeUnit' */],
         },
         {
           name: 'Nombres geográficos',
@@ -163,9 +164,9 @@ const precharged = {
           name: 'Mapas Históricos',
           type: 'WMTS',
           url: 'https://www.ign.es/wmts/primera-edicion-mtn',
-        }
+        },
       ],
-    }
+    },
   ],
   services: [
     {
@@ -176,20 +177,13 @@ const precharged = {
   ],
 };
 
-/*{
-  name: '',
-  type: '',
-  url: '',
-  white_list: ['', ''],
-}*/
-
 const mp = new FullTOC({
-  collapsed: true,
+  collapsed: false,
   position: 'TR',
   https: true,
   http: true,
-  // precharged,
-  precharged: {},
+  precharged,
+  // precharged: {},
   codsi: true,
 });
 
@@ -221,7 +215,22 @@ const ocupacionSuelo = new M.layer.WMTS({
   visibility: false,
 });
 
-/*const xyz = new M.layer.XYZ({
+const layer5 = new M.layer.WMS({
+  url: 'https://servicios.ine.es/WMS/WMS_INE_SECCIONES_G01/MapServer/WMSServer?',
+  name: 'Secciones2021',
+  legend: 'Secciones censales',
+  version: '1.3.0',
+  tiled: false,
+  visibility: true,
+}, {});
+
+// map.addLayers([layer5]);
+
+map.addPlugin(new M.plugin.Information({
+  position: 'TR',
+}));
+
+/* const xyz = new M.layer.XYZ({
   url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
   name: 'PNOA-MA',
   legend: 'Imagen',
@@ -231,15 +240,15 @@ const ocupacionSuelo = new M.layer.WMTS({
   queryable: false,
   visible: true,
   tileGridMaxZoom: 19,
-});*/
+}); */
 
-/*map.addLayers(layerUA);
+/* map.addLayers(layerUA);
 map.addLayers(layerinicial);
-map.addLayers(ocupacionSuelo);*/
+map.addLayers(ocupacionSuelo); */
 
 // map.addLayers(xyz);
 
-/*const terremotos = new M.layer.WMS({
+/* const terremotos = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/geofisica',
   name: 'NZ.ObservedEvent',
   legend: 'terremotos 3',
@@ -248,6 +257,6 @@ map.addLayers(ocupacionSuelo);*/
 },{ params: { CQL_FILTER: 'magnitud>3' } }
 );
 
-map.addLayers(terremotos);*/
+map.addLayers(terremotos); */
 
 window.map = map;

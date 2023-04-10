@@ -8,6 +8,9 @@ import AttributionsControl from './attributionscontrol';
 import { intersect } from './filter';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 const MODES = {
   mapAttributions: 1, // Map attributions from vector layer
   layerAttributions: 2, // Attributions layer from its capabilities wms service
@@ -183,13 +186,34 @@ export default class Attributions extends M.Plugin {
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
-     * Position of the view control
+     * Name url, Additional Text
      * @private
      * @type {string}
      */
     this.urlAttribute = options.urlAttribute || 'Gobierno de España';
 
     window.addEventListener('resize', e => this.setCollapsiblePanel(e));
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : null;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).attributions;
   }
 
   /**
@@ -212,6 +236,7 @@ export default class Attributions extends M.Plugin {
       className: 'm-panel-attributions',
       collapsedButtonClass: 'g-cartografia-info',
       tooltip: this.tooltip_,
+      order: this.order,
     });
 
     this.panel_.addControls(this.control_);
@@ -343,6 +368,9 @@ export default class Attributions extends M.Plugin {
       const link = document.createElement('a');
       link.target = '_blank';
       link.href = attrOpt.url;
+      link.setAttribute('rol', 'link');
+      link.setAttribute('tabindex', this.order);
+
       link.innerHTML = attrOpt.attribution;
       const attributeURL = this.map_.getScale() > this.scale_ ? '' : ', '.concat(this.urlAttribute);
       link.innerHTML += arr.length - 1 === index ? attributeURL : ',';

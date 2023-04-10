@@ -305,6 +305,8 @@
     /* '' */
     .m-plugin-transparency .icon-gps4:before {
         content: '\e925';
+        position: relative;
+        bottom: 1px;
     }
 
     /* '' */

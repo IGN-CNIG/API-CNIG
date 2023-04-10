@@ -14,7 +14,7 @@
    <parent>
       <groupId>es.ign.api</groupId>
       <artifactId>api-ign-parent</artifactId>
-      <version>4.1.1</version>
+      <version>4.4.0</version>
       <relativePath>../api-ign-parent/pom.xml</relativePath>
    </parent>
    <licenses>
@@ -37,6 +37,14 @@
             <filtering>true</filtering>
             <includes>
                <include>**/*.properties</include>
+               <include>**/*.json</include>
+            </includes>
+         </resource>
+         <resource>
+            <directory>src/main/resources/templates</directory>
+            <filtering>true</filtering>
+            <includes>
+               <include>**/*.ftl</include>
             </includes>
          </resource>
       </resources>
@@ -94,6 +102,7 @@
                      <includeGroupIds>${project.groupId}</includeGroupIds>
                      <includeArtifacIds>api-ign-js</includeArtifacIds>
                      <excludeArtifactIds>api-ign-proxy</excludeArtifactIds>
+                     <excludeArtifactIds>api-ign-database</excludeArtifactIds>
                      <excludeTransitive>true</excludeTransitive>
                      <encoding>${project.build.sourceEncoding}</encoding>
                   </configuration>
@@ -157,6 +166,22 @@
          <artifactId>json</artifactId>
          <version>20140107</version>
       </dependency>
+	  <dependency>
+	  	<groupId>com.sun.mail</groupId>
+		<artifactId>javax.mail</artifactId>
+		<version>1.6.2</version>
+	  </dependency>
+	  <dependency>
+	    <groupId>com.sun.jersey.contribs</groupId>
+	    <artifactId>jersey-multipart</artifactId>
+	    <version>1.19</version>
+	 </dependency>
+	 <dependency>
+		<groupId>org.freemarker</groupId>
+		<artifactId>freemarker</artifactId>
+		<version>2.3.23</version>
+	 </dependency>
+
       <!-- API IGN JS -->
       <dependency>
          <groupId>${project.groupId}</groupId>
@@ -187,6 +212,12 @@
       <dependency>
          <groupId>${project.groupId}</groupId>
          <artifactId>api-ign-proxy</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <!-- API IGN DATABASE -->
+      <dependency>
+         <groupId>${project.groupId}</groupId>
+         <artifactId>api-ign-database</artifactId>
          <version>${project.version}</version>
       </dependency>
    </dependencies>

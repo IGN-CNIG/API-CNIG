@@ -18,7 +18,7 @@ export default class Mirrorpanel extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options = {}, backImgLayersConfig, fullTOCConfig, vectorsConfig) {
+  constructor(options = {}, backImgLayersConfig, fullTOCConfig, vectorsConfig, order) {
     super();
 
     /**
@@ -113,6 +113,8 @@ export default class Mirrorpanel extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    this.order = order;
   }
 
   /**
@@ -134,6 +136,7 @@ export default class Mirrorpanel extends M.Plugin {
       backImgLayersConfig: this.backImgLayersConfig,
       fullTOCConfig: this.fullTOCConfig,
       vectorsConfig: this.vectorsConfig,
+      order: this.order,
     };
 
     this.control_ = new MirrorpanelControl(values);

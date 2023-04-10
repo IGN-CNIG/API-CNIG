@@ -6,6 +6,7 @@ import 'assets/css/controls/backgroundlayers';
 import ControlImpl from 'impl/control/Control';
 import WMS from 'M/layer/WMS';
 import WMTS from 'M/layer/WMTS';
+import TMS from 'M/layer/TMS';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
 import { LOAD, ADDED_TO_MAP } from '../event/eventtype';
@@ -42,7 +43,12 @@ class BackgroundLayers extends ControlBase {
         id: layer.id,
         title: layer.title,
         layers: layer.layers.map((subLayer) => {
-          return /WMTS.*/.test(subLayer) ? new WMTS(subLayer) : new WMS(subLayer);
+          if (/WMTS.*/.test(subLayer)) {
+            return new WMTS(subLayer);
+          } else if (/TMS.*/.test(subLayer)) {
+            return new TMS(subLayer);
+          }
+          return new WMS(subLayer);
         }),
       };
     });
@@ -117,6 +123,18 @@ class BackgroundLayers extends ControlBase {
     }
 
     callback(e, layersInfo, i);
+  }
+
+  changeStyleResponsive(change) {
+    M.config.MOBILE_WIDTH = (change) ? '2000' : '768';
+
+    const buttons = document.querySelectorAll('.m-plugin-baselayer .m-panel-controls #div-contenedor button');
+    buttons.forEach((e) => {
+      // eslint-disable-next-line no-unused-expressions
+      (e.classList.contains('m-background-unique-btn'))
+        ? e.style.display = (change) ? 'block' : 'none'
+        : e.style.display = (change) ? 'none' : 'block';
+    });
   }
 
   /**

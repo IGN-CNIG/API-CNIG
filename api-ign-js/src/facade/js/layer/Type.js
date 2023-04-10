@@ -49,22 +49,13 @@ export const WFS = 'WFS';
 export const WMTS = 'WMTS';
 
 /**
- * MBTiles type
+ * OSM type
  * @const
  * @type {string}
  * @public
  * @api
  */
-export const MBTiles = 'MBTiles';
-
-/**
- * MBTilesVector type
- * @const
- * @type {string}
- * @public
- * @api
- */
-export const MBTilesVector = 'MBTilesVector';
+export const OSM = 'OSM';
 
 /**
  * XYZ type
@@ -123,8 +114,7 @@ const layertypes = {
   WMS,
   WFS,
   WMTS,
-  MBTiles,
-  MBTilesVector,
+  OSM,
   GeoJSON,
   Vector,
   MVT,
@@ -166,8 +156,6 @@ export const know = (type) => {
     WMS,
     WFS,
     WMTS,
-    MBTiles,
-    MBTilesVector,
     MVT,
     XYZ,
     TMS,

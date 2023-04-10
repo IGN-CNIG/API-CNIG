@@ -24,7 +24,7 @@ const regExs = {
 const POPUP_TITLE = getValue('title');
 
 export default class InformationControl extends M.impl.Control {
-  constructor(format, featureCount, buffer) {
+  constructor(format, featureCount, buffer, opened) {
     super({});
 
     /**
@@ -58,6 +58,14 @@ export default class InformationControl extends M.impl.Control {
      * @type {Integer}
      */
     this.buffer_ = buffer;
+
+    /**
+     * Information opened all, only if there is one layer, or not opened
+     *
+     * @private
+     * @type {string}
+     */
+    this.opened_ = opened;
 
     /**
      * Facade of the map
@@ -208,7 +216,7 @@ export default class InformationControl extends M.impl.Control {
         param = {};
         const infoFormat = this.format_;
         const coord = this.evt.coordinate;
-        const url = layer.getFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat);
+        const url = layer.getFeatureInfoUrl(coord, this.facadeMap_.getZoom(), infoFormat).replace('row=-', 'row=');
         param = { layer: layer.legend || layer.name, url };
       }
       return param;
@@ -529,12 +537,13 @@ export default class InformationControl extends M.impl.Control {
       }
     }
     layerNamesUrls.forEach((layerNameUrl) => {
-      const url = layerNameUrl.url;
+      const url = layerNameUrl.url.replace('row=-', 'row=').replace('col=-', 'col=');
       const layerName = layerNameUrl.layer;
+      // M.proxy(false);
       M.remote.get(url).then((response) => {
         popup = this.facadeMap_.getPopup();
-        if (response.code === 200 && response.error === false) {
-          const info = response.text;
+        if (response.code === 200) {
+          const info = this.parseCSSInfo(response.text);
           if (InformationControl.insert(info, formato) === true) {
             const formatedInfo = this.formatInfo(info, formato, layerName);
             infos.push({ formatedInfo, layerName });
@@ -545,6 +554,7 @@ export default class InformationControl extends M.impl.Control {
             });
           }
         }
+
         contFull += 1;
         if (layerNamesUrls.length === contFull && !M.utils.isNullOrEmpty(popup)) {
           popup.removeTab(loadingInfoTab);
@@ -571,10 +581,30 @@ export default class InformationControl extends M.impl.Control {
                 all: true,
                 type: 'click',
                 callback: e => this.toogleSection(e),
+              }, {
+                selector: '.m-information-content-info div:nth-child(2) p',
+                all: true,
+                type: 'click',
+                callback: e => this.toogleSection(e),
               }],
             });
+
+            if (this.opened_ === 'all') {
+              setTimeout(() => {
+                document.querySelectorAll('div.m-arrow-right').forEach((elem) => {
+                  elem.click();
+                });
+              }, 100);
+            } else if (this.opened_ === 'one' && layerNamesUrls.length === 1) {
+              setTimeout(() => {
+                document.querySelector('div.m-arrow-right').click();
+              }, 100);
+            }
           }
+          // M.proxy(true);
         }
+      }).catch((err) => {
+        // M.proxy(true);
       });
     });
     this.popup_ = popup;
@@ -585,8 +615,18 @@ export default class InformationControl extends M.impl.Control {
    * @function
    */
   toogleSection(e) {
-    const { target } = e;
-    const { parentElement } = target.parentElement;
+    let { target } = e;
+    let { parentElement } = target.parentElement;
+    if (!parentElement.classList.contains('m-information-content-info')) {
+      if (parentElement.classList.contains('m-information-content-info-header')) {
+        parentElement = parentElement.parentElement;
+      } else {
+        parentElement = parentElement.parentElement.parentElement;
+      }
+
+      target = parentElement.querySelector('.m-information-content-info-header div:nth-child(1)');
+    }
+
     const content = parentElement.querySelector('.m-information-content-info-body');
     if (content.classList.contains('m-content-collapsed')) {
       content.classList.remove('m-content-collapsed');
@@ -613,5 +653,44 @@ export default class InformationControl extends M.impl.Control {
    */
   getElement() {
     return this.element;
+  }
+
+  parseCSSInfo(text) {
+    let newText = text;
+    try {
+      if (text.indexOf('<style type="text/css">') > -1) {
+        const init = text.split('<style type="text/css">')[0];
+        const style = text.split('<style type="text/css">')[1].split('</style>')[0].trim();
+        const finish = text.split('<style type="text/css">')[1].split('</style>')[1];
+        let newStyle = '';
+        style.split('{').forEach((term) => {
+          if (term.indexOf('}') > -1) {
+            const part1 = term.split('}')[0];
+            let part2 = term.split('}')[1].trim();
+            if (part2.length === 0) {
+              newStyle += `${part1} }`;
+            } else {
+              part2 = part2.split(',').join(', .m-information-content-info .m-information-content-info-body');
+              newStyle += `${part1} } .m-information-content-info .m-information-content-info-body ${part2} {`;
+            }
+          } else {
+            const newTerm = term.split(',').join(', .m-information-content-info .m-information-content-info-body');
+            newStyle += `.m-information-content-info .m-information-content-info-body ${newTerm} {`;
+          }
+        });
+
+        newText = `${init} <style type="text/css"> ${newStyle} </style> ${finish}`;
+      }
+
+      if (newText.indexOf('<link rel="stylesheet"') > -1) {
+        const init = newText.split('<link rel="stylesheet"')[0];
+        const finish = newText.split('<link rel="stylesheet"')[1].split('.css">')[1];
+        newText = init + finish;
+      }
+    } catch (err) {
+      newText = text;
+    }
+
+    return newText;
   }
 }

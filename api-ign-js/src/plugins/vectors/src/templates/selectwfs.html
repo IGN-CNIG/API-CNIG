@@ -42,7 +42,7 @@
     </div>
   {{/if}}
   <div class="select-container">
-    <select id="m-vectors-wfs-select">
+    <select role="select" tabindex="0" id="m-vectors-wfs-select">
         <option disabled="disabled" value="" selected="selected">{{translations.select_service}}</option>
         {{#each services}}
             <option value="{{name}}">{{title}}</option>
@@ -50,6 +50,6 @@
     </select>
   </div>
   <div class="btn-container">
-    <button class="m-vectors-common-btn">{{translations.select}}</button>
+    <button type="button" tabindex="0" class="m-vectors-common-btn">{{translations.select}}</button>
   </div>
 </div>

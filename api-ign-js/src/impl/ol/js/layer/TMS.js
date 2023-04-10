@@ -24,6 +24,8 @@ class TMS extends MXYZ {
     super(userParameters, options, vendorOptions);
 
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.TMS];
+
+    this.displayInLayerSwitcher = userParameters.displayInLayerSwitcher !== false;
   }
 
   /**

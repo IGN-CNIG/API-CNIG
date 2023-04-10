@@ -7,7 +7,6 @@ import Vector from './Vector';
 import mbtilesvector from '../parameter/mbtilesvector';
 import { isUndefined, isNullOrEmpty } from '../util/Utils';
 import Exception from '../exception/exception';
-import { MBTilesVector as MBTilesVectorType } from './Type';
 
 /**
  * Possibles modes of MBTilesVector
@@ -47,7 +46,7 @@ class MBTilesVector extends Vector {
    * @api
    */
   get type() {
-    return MBTilesVectorType;
+    return 'MBTilesVector';
   }
 
   /**
@@ -56,8 +55,8 @@ class MBTilesVector extends Vector {
    */
   set type(newType) {
     if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== MBTilesVectorType)) {
-      Exception('El tipo de capa debe ser \''.concat(MBTilesVectorType).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
+      !isNullOrEmpty(newType) && (newType !== 'MBTilesVector')) {
+      Exception('El tipo de capa debe ser \''.concat('MBTilesVector').concat('\' pero se ha especificado \'').concat(newType).concat('\''));
     }
   }
 

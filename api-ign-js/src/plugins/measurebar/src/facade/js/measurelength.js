@@ -14,12 +14,12 @@ import { getValue } from './i18n/language';
  */
 
 export default class MeasureLength extends Measure {
-  constructor() {
+  constructor(order) {
     // implementation of this control
     const impl = new MeasureLengthImpl();
 
     // calls the super constructor
-    super(impl, measurelengthHTML, MeasureLength.NAME);
+    super(impl, measurelengthHTML, MeasureLength.NAME, order);
 
     // checks if the implementation can create WMC layers
     if (M.utils.isUndefined(MeasureLengthImpl)) {

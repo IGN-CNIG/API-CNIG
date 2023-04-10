@@ -34,6 +34,9 @@
     padding-left: 0;
     list-style: none;
     margin: 0;
+
+    max-height: 25vh;
+    overflow-y: auto;
 }
 
 .m-areas div.m-plugin-toc.m-panel.opened div.title {

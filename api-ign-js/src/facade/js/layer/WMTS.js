@@ -181,6 +181,10 @@ class WMTS extends LayerBase {
   getTileColTileRow(coordinate, zoom) {
     return this.getImpl().getTileColTileRow(coordinate, zoom);
   }
+
+  setFormat(newFormat) {
+    this.options.format = newFormat;
+  }
 }
 
 export default WMTS;

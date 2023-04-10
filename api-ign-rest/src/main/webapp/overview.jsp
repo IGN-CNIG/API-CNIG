@@ -61,11 +61,11 @@
         <label for="selectCollapsed">Selector collapsed</label>
         <select name="collapsedValue" id="selectCollapsed">
             <option value=true>true</option>
-            <option value=false>false</option>
+            <option value=false selected="selected">false</option>
         </select>
         <label for="selectCollapsible">Selector collapsible</label>
         <select name="collapsibleValue" id="selectCollapsible">
-            <option value=true>true</option>
+            <option value=true selected="selected">true</option>
             <option value=false>false</option>
         </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
@@ -116,7 +116,7 @@
         selectCollapsible.addEventListener('change', cambiarTest);
         setTimeout(() => {
           map.setCenter([-479529.76895509224, 4702535.197017747]);
-        }, 50);
+        }, 100);
 
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
@@ -134,8 +134,8 @@
                 fixed: fixed,
                 zoom: 4,
                 baseLayer: baseLayer,
-                collapsed: collapsed,
-                collapsible: collapsible,
+                collapsed: collapsed || false,
+                collapsible: collapsible || true,
             });
             map.addPlugin(mp);
         }

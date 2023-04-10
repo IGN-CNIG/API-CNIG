@@ -52,6 +52,7 @@ import MBTiles from './layer/MBTiles';
 import MBTilesVector from './layer/MBTilesVector';
 import XYZ from './layer/XYZ';
 import TMS from './layer/TMS';
+import OSM from './layer/OSM';
 
 /**
  * @classdesc
@@ -277,7 +278,7 @@ class Map extends Base {
 
     // default WMTS
     if (isNullOrEmpty(params.layers) && !isArray(params.layers)) {
-      this.addWMTS(M.config.wmts.base);
+      this.addTMS(M.config.tms.base);
     }
 
     // center
@@ -464,6 +465,9 @@ class Map extends Base {
                 break;
               case 'TMS':
                 layer = new TMS(parameterVariable);
+                break;
+              case 'OSM':
+                layer = new OSM(layerParam);
                 break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);
@@ -1489,33 +1493,24 @@ class Map extends Base {
         let control;
         let panel;
         if (isString(controlParam)) {
-          controlParam = normalize(controlParam);
-          switch (controlParam) {
+          controlParam = normalize(controlParam).split('*');
+
+          switch (controlParam[0]) {
             case Scale.NAME:
-              control = new Scale();
+              const paramsScale = {};
+              controlParam.forEach((p) => {
+                if (p === 'true') paramsScale.exactScale = Boolean(p);
+                // eslint-disable-next-line no-restricted-globals
+                if (!isNaN(p)) paramsScale.order = Number(p);
+              });
+              control = new Scale(paramsScale);
               panel = this.getPanels('map-info')[0];
               if (isNullOrEmpty(panel)) {
                 panel = new Panel('map-info', {
                   collapsible: false,
                   className: 'm-map-info',
                   position: Position.BR,
-                });
-                panel.on(EventType.ADDED_TO_MAP, (html) => {
-                  if (this.getControls(['wmcselector', 'scale', 'scaleline']).length === 3) {
-                    this.getControls(['scaleline'])[0].getImpl().getElement().classList.add('ol-scale-line-up');
-                  }
-                });
-              }
-              panel.addClassName('m-with-scale');
-              break;
-            case `${Scale.NAME}*true`:
-              control = new Scale({ exactScale: true });
-              panel = this.getPanels('map-info')[0];
-              if (isNullOrEmpty(panel)) {
-                panel = new Panel('map-info', {
-                  collapsible: false,
-                  className: 'm-map-info',
-                  position: Position.BR,
+                  order: (paramsScale.order) ? paramsScale.order : null,
                 });
                 panel.on(EventType.ADDED_TO_MAP, (html) => {
                   if (this.getControls(['wmcselector', 'scale', 'scaleline']).length === 3) {

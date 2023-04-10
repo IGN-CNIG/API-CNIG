@@ -26,6 +26,9 @@ export default class PrinterMapControl extends M.Control {
     georefActive,
     logoUrl,
     fototeca,
+    headerLegend,
+    filterTemplates,
+    order,
   ) {
     const impl = new PrinterMapControlImpl();
 
@@ -171,6 +174,7 @@ export default class PrinterMapControl extends M.Control {
       },
       parameters: {
         logo: logoUrl,
+        headerLegend,
       },
     };
 
@@ -224,6 +228,9 @@ export default class PrinterMapControl extends M.Control {
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
     this.proyectionsDefect_ = ['EPSG:25828', 'EPSG:25829', 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
+    this.filterTemplates_ = filterTemplates;
+
+    this.order = order;
   }
 
   /**
@@ -279,6 +286,12 @@ export default class PrinterMapControl extends M.Control {
             layout.default = true;
             break;
           }
+        }
+
+        if (this.filterTemplates_.length > 0) {
+          capabilities.layouts = capabilities.layouts.filter((l) => {
+            return this.filterTemplates_.indexOf(l.name) > -1;
+          });
         }
 
         // show only template names without 'jpg' on their names
@@ -389,6 +402,9 @@ export default class PrinterMapControl extends M.Control {
           jsonp: true,
           vars: capabilities,
         });
+
+        this.accessibilityTab(html);
+
         this.addEvents(html);
         success(html);
       });
@@ -674,6 +690,9 @@ export default class PrinterMapControl extends M.Control {
         }
         queueEl.setAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME, downloadUrl);
         queueEl.addEventListener('click', download);
+        queueEl.addEventListener('keydown', ({ key }) => {
+          if (key === 'Enter') download();
+        });
         // } else {
         //   M.dialog.error('Se ha producido un error en la impresión.');
         // }
@@ -1146,6 +1165,7 @@ export default class PrinterMapControl extends M.Control {
    */
   createQueueElement() {
     const queueElem = document.createElement('li');
+    queueElem.setAttribute('tabindex', '0');
     let title = this.inputTitle_.value;
     if (M.utils.isNullOrEmpty(title)) {
       title = getValue('no_title');
@@ -1269,6 +1289,10 @@ export default class PrinterMapControl extends M.Control {
       equals = (this.name === obj.name);
     }
     return equals;
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }
 

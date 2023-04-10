@@ -22,3 +22,4 @@ entry-points-plugins.json
 /.metadata/
 /.sonarlint/
 package-lock.json
+bin/

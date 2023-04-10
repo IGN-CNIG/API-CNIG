@@ -19,7 +19,7 @@ export default class Georefimage2Control extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(serverUrl, printTemplateUrl, printStatusUrl) {
+  constructor(serverUrl, printTemplateUrl, printStatusUrl, order) {
     const impl = new Georefimage2ControlImpl();
     super(impl, 'georefimage2control');
     if (M.utils.isUndefined(Georefimage2ControlImpl)) {
@@ -106,6 +106,8 @@ export default class Georefimage2Control extends M.Control {
     this.canvas_ = document.createElement('canvas');
     this.canceled = false;
     this.time = new Date().getTime();
+
+    this.order = order;
   }
 
   /**
@@ -131,6 +133,9 @@ export default class Georefimage2Control extends M.Control {
           },
         },
       });
+
+      this.accessibilityTab(html);
+
       this.element_ = html;
       const printBtn = this.element_.querySelector('.button > button.print');
       printBtn.addEventListener('click', this.openModalPrint.bind(this));
@@ -139,13 +144,15 @@ export default class Georefimage2Control extends M.Control {
   }
 
   openModalPrint() {
-    const content = `<div>${getValue('download_modal')}</div>`;
+    const content = `<div tabindex="0">${getValue('download_modal')}</div>`;
     M.dialog.info(content, getValue('use_license'));
     setTimeout(() => {
       document.querySelector('div.m-dialog.info > div.m-modal > div.m-content').style.maxWidth = '300px';
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
       const newButton = document.createElement('button');
+      button.setAttribute('tabindex', '0');
+      newButton.setAttribute('tabindex', '0');
       button.innerHTML = getValue('cancel');
       newButton.innerHTML = getValue('accept');
       button.style.width = '85px';
@@ -549,5 +556,9 @@ export default class Georefimage2Control extends M.Control {
     }
 
     return equals;
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

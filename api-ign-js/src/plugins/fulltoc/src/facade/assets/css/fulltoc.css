@@ -47,6 +47,28 @@ div.m-areas div.m-area .m-panel.m-plugin-fulltoc.opened {
   font-weight: bold !important;
 }
 
+.m-plugin-fulltoc .m-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ul .m-layers ~ .m-plugin-fulltoc .m-title .span-title{
+  margin-left: 42px;
+}
+
+.m-plugin-fulltoc .m-title .span-title{
+ width: 100%;
+ text-align: center;
+
+}
+
+.m-plugin-fulltoc .m-title .m-fulltoc-addservice:hover {
+  transition: 0.4s;
+  background-color: #8fadc5;
+}
+
+
 .m-fulltoc-container {
   position: absolute;
   top: 0.5em;
@@ -681,6 +703,7 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 .m-fulltoc-container .m-title .m-layer-name {
   display: block;
   line-height: 1.4rem;
+  margin-left: 4px;
 }
 
 .m-fulltoc-container .m-title table tr td:nth-child(1) {
@@ -697,14 +720,14 @@ ul.m-layers>li>div.m-legend>img, ul.m-base-layers>li>div.m-legend>img {
 }
 
 .m-fulltoc-container .m-fulltoc-addservice {
-  float: right;
-  position: relative;
-  right: 10px;
-  top: 10px;
   cursor: pointer;
-  font-size: 20px !important;
-  -webkit-text-stroke: 1px #6c6c6c;
-  text-stroke: 1px #6c6c6c;
+  background-color: #71a7d3;
+  color: white;
+  line-height: 25px;
+  padding: 0 7px;
+  margin-right: 9px;
+  border: solid 1px #40404031;
+  font-size: 13px;
 }
 
 #m-fulltoc-change-config .select-container {
@@ -1028,4 +1051,22 @@ div.codsi-no-results {
 
 .m-dialog {
   z-index: 999999 !important;
+}
+
+/*ARREGLOS MAQUETACIÓN*/
+.m-plugin-fulltoc table, .m-plugin-fulltoc th, .m-plugin-fulltoc td {
+  border: inherit !important;
+  border-collapse: separate !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+  line-height: inherit !important;
+  margin-bottom: inherit !important;
+  border-spacing: inherit !important;
+  white-space: inherit !important;
+  font-weight: inherit !important;
+  font-variant: inherit !important;
+  font-style: inherit !important;
+  text-align: inherit !important;
+  padding-left: inherit !important;
 }

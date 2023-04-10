@@ -20,8 +20,10 @@ const updateElement = (viewState, container, map, exact) => {
   let num;
   if (map.getWMTS().length > 0) {
     num = Utils.getWMTSScale(map, exact);
+    // num = map.getExactScale();
   } else if (map.getWMTS().length <= 0 && exact === true) {
-    num = map.getExactScale();
+    num = Utils.getWMTSScale(map, exact);
+    // num = map.getExactScale();
   } else if (map.getWMTS().length <= 0 && !exact === true) {
     num = map.getScale();
   }
@@ -29,8 +31,10 @@ const updateElement = (viewState, container, map, exact) => {
   if (!isNullOrEmpty(num)) {
     containerVariable.innerHTML = formatLongNumber(num);
   }
-
-  document.querySelector('#m-level-number').innerHTML = Math.round(map.getZoom(), 2);
+  const elem = document.querySelector('#m-level-number');
+  if (elem !== null) {
+    elem.innerHTML = Math.round(map.getZoom(), 2);
+  }
 };
 
 /**

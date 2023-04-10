@@ -16,15 +16,10 @@ Plugin que muestra información sobre la página y manual de uso.
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- *position*.  Ubicación del plugin sobre el mapa (Default = 'TR')
-  - 'TL':top left (por defecto)
-  - 'TR':top right
-  - 'BL':bottom left
-  - 'BR':bottom right
+- *position*.  Ubicación del plugin sobre el mapa (Default = 'BL')
+  - 'BL' = Bottom left
+  - 'BR' = Bottom right
 - *helpLink*. Enlace al manual de uso.
-- *collapsed*. Indica si el plugin aparece abierto por defecto (true/false).
-- *collapsible*. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).
-- *tootltip*. Tooltip que se muestra sobre el plugin.
 
 
 # Ejemplo de uso

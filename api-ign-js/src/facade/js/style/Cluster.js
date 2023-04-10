@@ -235,44 +235,27 @@ class Cluster extends Composite {
     return 4;
   }
 
-  // /**
-  //  * TODO
-  //  *
-  //  * @function
-  //  * @private
-  //  */
-  // getParameters_() {
-  //   let options = extendsObj({}, this.getOptions());
-  //   options.ranges = this.getRanges().map((r) => {
-  //     const range = extendsObj({}, r);
-  //     range.style = r.style.serialize();
-  //     return range;
-  //   });
-  //   options = stringifyFunctions(options);
-  //   const optsVendor = stringifyFunctions(this.optsVendor_);
-  //   return [options, optsVendor];
-  // }
-  //
-  // /**
-  //  * TODO
-  //  *
-  //  * @function
-  //  * @private
-  //  */
-  // getClassName_() {
-  //   return 'M.style.Cluster';
-  // }
-  //
-  // /**
-  //  * This function returns the style instance of the serialization
-  //  * @function
-  //  * @public
-  //  * @param {string} serializedStyle - serialized style
-  //  * @return {M.Style}
-  //  */
-  // static deserializeParameters(serializedParams) {
-  //   return defineFunctionFromString(serializedParams);
-  // }
+  /**
+   * Add selected interaction and layer to see the features of cluster
+   *
+   * @public
+   * @function
+   * @api
+   */
+  addSelectInteraction() {
+    this.getImpl().addSelectInteraction();
+  }
+
+  /**
+   * Remove selected interaction and layer to see the features of cluster
+   *
+   * @public
+   * @function
+   * @api
+   */
+  removeSelectInteraction() {
+    this.getImpl().removeSelectInteraction();
+  }
 
   /**
    * This function implements the mechanism to

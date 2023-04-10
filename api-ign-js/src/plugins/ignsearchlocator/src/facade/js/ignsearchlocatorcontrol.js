@@ -6,8 +6,8 @@ import template from '../../templates/ignsearchlocator';
 import results from '../../templates/results';
 import xylocator from '../../templates/xylocator';
 import parcela from '../../templates/parcela';
-import registerHelpers from './helpers';
 import { getValue } from './i18n/language';
+import recentresults from '../../templates/recent-results';
 
 let typingTimer;
 /**
@@ -48,6 +48,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     pointStyle,
     nomenclatorSearchType,
     helpUrl,
+    cadastre,
+    searchCoordinatesXYZ,
+    order,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
       M.exception(getValue('impl'));
@@ -238,7 +241,6 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {string}
      */
     this.urlParse = null;
-    registerHelpers();
 
 
     /**
@@ -411,6 +413,22 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {string}
      */
     this.helpUrl = helpUrl;
+
+    /**
+     * @private
+     * @type {Boolean}
+     */
+
+    this.cadastre = cadastre;
+
+    /**
+     * @private
+     * @type {Boolean}
+     */
+
+    this.searchCoordinatesXYZ = searchCoordinatesXYZ;
+
+    this.order = order;
   }
   /**
    * This function creates the view
@@ -436,12 +454,21 @@ export default class IGNSearchLocatorControl extends M.Control {
           },
         },
       });
+      this.accessibilityTab(html);
       this.html = html;
       this.resultsBox = html.querySelector('#m-ignsearchlocator-results');
       this.searchInput = this.html.querySelector('#m-ignsearchlocator-search-input');
       html.querySelector('#m-ignsearchlocator-clear-button').addEventListener('click', this.clearResultsAndGeometry.bind(this));
-      html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
-      html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
+      if (this.cadastre === false) {
+        html.querySelector('#m-ignsearchlocator-parcela-button').style.display = 'none';
+      } else {
+        html.querySelector('#m-ignsearchlocator-parcela-button').addEventListener('click', this.openParcela.bind(this));
+      }
+      if (this.searchCoordinatesXYZ === false) {
+        html.querySelector('#m-ignsearchlocator-xylocator-button').style.display = 'none';
+      } else {
+        html.querySelector('#m-ignsearchlocator-xylocator-button').addEventListener('click', this.openXYLocator.bind(this));
+      }
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('click', () => {
         if (document.getElementById('m-ignsearchlocator-xylocator-button').style.backgroundColor === 'rgb(113, 167, 211)' ||
@@ -451,6 +478,10 @@ export default class IGNSearchLocatorControl extends M.Control {
           this.activationManager(false, 'm-ignsearchlocator-xylocator-button');
           this.activationManager(false, 'm-ignsearchlocator-parcela-button');
         }
+        if (!document.getElementById('m-ignsearchlocator-search-input').value &&
+          !document.getElementById('m-ignsearchlocator-recent-results-list')) {
+          this.openRecentsResults();
+        }
       });
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
         clearTimeout(typingTimer);
@@ -458,6 +489,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       html.querySelector('#m-ignsearchlocator-search-input').addEventListener('keydown', () => {
         clearTimeout(typingTimer);
       });
+
       html.querySelector('#m-ignsearchlocator-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
       document.querySelector('.ign-searchlocator-panel>.m-panel-btn').addEventListener('click', this.clearResults.bind(this));
       this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReversePopUp(e));
@@ -465,6 +497,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       if (!this.reverse) {
         html.querySelector('#m-ignsearchlocator-locate-button').style.display = 'none';
       }
+
       if (this.position === 'TC') {
         document.querySelector('.ign-searchlocator-panel').style = 'position: relative; left: calc(50vw - 210px);';
       }
@@ -497,39 +530,56 @@ export default class IGNSearchLocatorControl extends M.Control {
           M.remote.get(this.requestStreet).then((res) => {
             const geoJsonData = res.text.substring(9, res.text.length - 1);
             this.map.removeLayers(this.clickedElementLayer);
-            const featureJSON = JSON.parse(geoJsonData);
-            featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
+            const properties = JSON.parse(geoJsonData);
+            const olFeature = this.getImpl().readFromWKT(properties.geom, geoJsonData);
             // Center coordinates
-            this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
+            this.coordinates = `${properties.lat}, ${properties.lng}`;
             // New layer with geometry
             this.clickedElementLayer = new M.layer.GeoJSON({
               name: getValue('searchresult'),
               source: {
                 type: 'FeatureCollection',
-                features: [featureJSON],
+                features: [],
               },
-            });
+            }, { displayInLayerSwitcher: false });
+
             this.clickedElementLayer.displayInLayerSwitcher = false;
             this.createGeometryStyles();
-
-            if (featureJSON.geometry.type === 'Point') {
+            this.map.addLayers(this.clickedElementLayer);
+            const type = olFeature.getGeometry().getType();
+            if (type === 'Point') {
               this.clickedElementLayer.setStyle(this.point);
+            }
+
+            if (type.indexOf('Polygon') > -1 || type.indexOf('Collection') > -1) {
+              this.clickedElementLayer.setStyle(new M.style.Polygon({
+                fill: {
+                  color: '#3399CC',
+                  opacity: 0,
+                },
+                stroke: {
+                  color: '#3399CC',
+                  width: 2,
+                },
+              }));
             }
 
             // Change zIndex value
             this.clickedElementLayer.setZIndex(9999999999999999999);
-
             // Stops showing polygon geometry
             if (!this.resultVisibility_) {
               this.clickedElementLayer.setStyle(this.simple);
             }
-            this.map.addLayers(this.clickedElementLayer);
-            // show popup for streets
-            if (featureJSON.properties.type === 'callejero' || featureJSON.properties.type === 'portal') {
-              const fullAddress = this.createFullAddress(featureJSON.properties);
 
-              const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
-              const perfectResult = featureJSON.properties.state;
+            setTimeout(() => {
+              this.clickedElementLayer.getImpl().getOL3Layer().getSource().addFeature(olFeature);
+              this.zoomInLocation('g', type, this.zoom);
+            }, 200);
+            // show popup for streets
+            if (properties.type === 'callejero' || properties.type === 'portal') {
+              const fullAddress = this.createFullAddress(properties);
+              const coordinates = [properties.lat, properties.lng];
+              const perfectResult = properties.state;
               this.showSearchPopUp(fullAddress, coordinates, perfectResult, { fake: true });
             }
             M.proxy(true);
@@ -537,6 +587,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             M.proxy(true);
           });
         }
+
         if (this.geocoderCoords && this.geocoderCoords.length === 2) {
           this.activateDeactivateReverse();
           const reprojCoords = this.getImpl().reproject(this.geocoderCoords, 'EPSG:4326', map.getProjection().code);
@@ -548,6 +599,33 @@ export default class IGNSearchLocatorControl extends M.Control {
       });
       success(html);
     });
+  }
+
+  /**
+   * This function openresults
+   *
+   * @public
+   * @function
+   * @api
+   *
+   */
+  openRecentsResults() {
+    document.getElementById('m-ignsearchlocator-results').style = 'width: 347px';
+    const recents = window.localStorage.getItem('recents');
+    if (recents && recents.length > 0) {
+      const compiledResult = M.template.compileSync(recentresults, {
+        vars: {
+          places: JSON.parse(recents),
+        },
+      });
+      const elementList = compiledResult.querySelectorAll('li');
+      elementList.forEach((listElement) => {
+        listElement.addEventListener('click', () => {
+          this.goToLocation(listElement, true);
+        });
+      });
+      this.resultsBox.appendChild(compiledResult);
+    }
   }
 
   /**
@@ -581,10 +659,12 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.reverseActivated = true;
       document.querySelector('#m-ignsearchlocator-locate-button span').style.color = '#71a7d3';
       document.addEventListener('keyup', this.checkEscKey.bind(this));
+      document.getElementsByTagName('body')[0].style.cursor = `url(${M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pushpin.svg'])}) 0 20, auto`;
     } else {
       this.reverseActivated = false;
       document.querySelector('#m-ignsearchlocator-locate-button span').style.color = '#7A7A73';
       document.removeEventListener('keyup', this.checkEscKey);
+      document.getElementsByTagName('body')[0].style.cursor = 'auto';
     }
   }
 
@@ -593,6 +673,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.reverseActivated = false;
       document.querySelector('#m-ignsearchlocator-locate-button span').style.color = '#7A7A73';
       document.removeEventListener('keyup', this.checkEscKey);
+      document.getElementsByTagName('body')[0].style.cursor = 'auto';
     }
   }
 
@@ -638,7 +719,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         } else {
           fullAddress = getValue('exception.exists');
         }
-        this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e);
+        this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, true, e, false);
       });
 
       M.proxy(true);
@@ -757,11 +838,13 @@ export default class IGNSearchLocatorControl extends M.Control {
       // remove animation class and return to normal font size after loading
       this.resultsBox.classList.remove('g-cartografia-spinner');
       this.resultsBox.style.fontSize = '1em';
+
       const compiledResult = M.template.compileSync(results, {
         vars: {
           places: this.allCandidates,
         },
       });
+      this.accessibilityTab(compiledResult);
 
       const elementList = compiledResult.querySelectorAll('li');
       elementList.forEach((listElement) => {
@@ -777,125 +860,6 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
   }
 
-
-  /**
-   * This function removes last search layer and adds new layer with current result (from geocoder)
-   * features to map, zooms in result, edits popup information and shows a message saying
-   *  if it's a perfect result or an approximation.
-   * @public
-   * @function
-   * @param {Object} geoJsonData - clicked result object
-   * @api
-   */
-  drawGeocoderResultProv(geoJsonData) {
-    this.map.removeLayers(this.clickedElementLayer);
-    M.proxy(false);
-    M.remote.get(this.urlParse).then((res) => {
-      const urlSinJSON = res.text.substring(9, res.text.length - 1);
-      let geoJsonData2 = geoJsonData;
-      let datosGeometria;
-      let datosCoordenadas;
-      if (urlSinJSON.includes('MULTIPOLYGON (((')) {
-        if (geoJsonData2.includes('"type":"MultiPolygon"')) {
-          datosGeometria = urlSinJSON.split('(((');
-          datosCoordenadas = datosGeometria[1].split('), (');
-          if (geoJsonData2.includes(']]]')) {
-            geoJsonData2 = geoJsonData2.replace(']]]', ']]]]');
-          }
-
-          for (let i = 0; i < datosCoordenadas.length; i += 1) {
-            const hol = datosCoordenadas[i].substring(0, 9).replace('(', '');
-            if (geoJsonData.includes('[[['.concat(hol))) {
-              geoJsonData2 = geoJsonData2.replace('[[['.concat(hol), '[[[['.concat(hol));
-            } else if (geoJsonData.includes(']],[['.concat(hol))) {
-              geoJsonData2 = geoJsonData2.replace(']],[['.concat(hol), ']]],[[['.concat(hol));
-            } else if (geoJsonData.includes('],['.concat(hol))) {
-              geoJsonData2 = geoJsonData2.replace('],['.concat(hol), ']],[['.concat(hol));
-            }
-          }
-        }
-      } else if (urlSinJSON.includes('POLYGON ((')) {
-        if (geoJsonData2.includes('"type":"Polygon"')) {
-          datosGeometria = urlSinJSON.split('((');
-          datosCoordenadas = datosGeometria[1].split('), (');
-          if (geoJsonData2.includes(']]')) {
-            geoJsonData2 = geoJsonData2.replace(']]', ']]]');
-          }
-
-          geoJsonData2 = geoJsonData2.replace('Polygon', 'MultiPolygon');
-          for (let i = 0; i < datosCoordenadas.length; i += 1) {
-            const numFirstValue = datosCoordenadas[i].split(' ');
-            const val = datosCoordenadas[i].substring(0, numFirstValue[0].length).replace('(', '');
-            if (geoJsonData.includes('[[['.concat(val))) {
-              geoJsonData2 = geoJsonData2.replace('[[['.concat(val), '[[[['.concat(val));
-            } else if (geoJsonData.includes('],['.concat(val))) {
-              geoJsonData2 = geoJsonData2.replace('],['.concat(val), ']],[['.concat(val));
-            }
-          }
-        } else if (geoJsonData2.includes('"type":"MultiPolygon"')) {
-          geoJsonData2 = geoJsonData2.replace(']]],[[', ']],[[');
-          geoJsonData2 = geoJsonData2.replace('"type":"MultiPolygon"', '"type":"Polygon"');
-        }
-      }
-
-      if (geoJsonData2.includes('MultiMultiPolygon')) {
-        geoJsonData2 = geoJsonData2.replace('MultiMultiPolygon', 'MultiPolygon');
-      }
-
-      const featureJSON = JSON.parse(geoJsonData2);
-
-      // featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
-      // Center coordinates
-      this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
-      // New layer with geometry
-      this.clickedElementLayer = new M.layer.GeoJSON({
-        name: getValue('searchresult'),
-        source: {
-          type: 'FeatureCollection',
-          features: [featureJSON],
-        },
-      });
-      this.clickedElementLayer.displayInLayerSwitcher = false;
-      if (featureJSON.geometry.type === 'Point') {
-        this.clickedElementLayer.setStyle(this.point);
-      }
-
-      if (featureJSON.geometry.type.indexOf('Polygon') > -1) {
-        this.clickedElementLayer.setStyle(new M.style.Polygon({
-          fill: {
-            color: '#3399CC',
-            opacity: 0,
-          },
-          stroke: {
-            color: '#3399CC',
-            width: 2,
-          },
-          radius: 5,
-        }));
-      }
-
-      // Change zIndex value
-      this.clickedElementLayer.setZIndex(9999999999999999999);
-
-      // Stops showing polygon geometry
-      if (!this.resultVisibility_) {
-        this.clickedElementLayer.setStyle(this.simple);
-      }
-      this.map.addLayers(this.clickedElementLayer);
-      this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
-      // show popup for streets
-      if (featureJSON.properties.type === 'callejero' ||
-        featureJSON.properties.type === 'portal') {
-        const fullAddress = this.createFullAddress(featureJSON.properties);
-        const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
-        const perfectResult = featureJSON.properties.state;
-        this.showSearchPopUp(fullAddress, coordinates, perfectResult);
-      }
-    });
-
-    M.proxy(true);
-  }
-
   /**
    * This function removes last search layer and adds new layer with current result (from geocoder)
    * features to map, zooms in result, edits popup information and shows a message saying
@@ -907,31 +871,29 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   drawGeocoderResult(geoJsonData) {
     this.map.removeLayers(this.clickedElementLayer);
-    const featureJSON = JSON.parse(geoJsonData);
-    featureJSON.geometry.coordinates = this.fixCoordinatesPath(featureJSON);
+    const urlSinJSON = geoJsonData;
+    const json = JSON.parse(urlSinJSON);
+    const olFeature = this.getImpl().readFromWKT(json.geom, urlSinJSON);
+    const properties = JSON.parse(urlSinJSON);
     // Center coordinates
-    this.coordinates = `${featureJSON.properties.lat}, ${featureJSON.properties.lng}`;
+    this.coordinates = `${properties.lat}, ${properties.lng}`;
     // New layer with geometry
     this.clickedElementLayer = new M.layer.GeoJSON({
       name: getValue('searchresult'),
       source: {
         type: 'FeatureCollection',
-        features: [featureJSON],
+        features: [],
       },
-    });
-    this.clickedElementLayer.displayInLayerSwitcher = false;
+    }, { displayInLayerSwitcher: false });
 
-    if (featureJSON.geometry.type === 'Point') {
+    this.clickedElementLayer.displayInLayerSwitcher = false;
+    this.map.addLayers(this.clickedElementLayer);
+    const type = olFeature.getGeometry().getType();
+    if (type === 'Point') {
       this.clickedElementLayer.setStyle(this.point);
     }
 
-    // Change zIndex value
-    this.clickedElementLayer.setZIndex(9999999999999999999);
-
-    // Stops showing polygon geometry
-    if (!this.resultVisibility_) {
-      this.clickedElementLayer.setStyle(this.simple);
-    } else if (featureJSON.geometry.type.indexOf('Polygon') > -1) {
+    if (type.indexOf('Polygon') > -1 || type.indexOf('Collection') > -1) {
       this.clickedElementLayer.setStyle(new M.style.Polygon({
         fill: {
           color: '#3399CC',
@@ -941,18 +903,25 @@ export default class IGNSearchLocatorControl extends M.Control {
           color: '#3399CC',
           width: 2,
         },
-        radius: 5,
       }));
     }
 
-    this.map.addLayers(this.clickedElementLayer);
-    this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
-    // show popup for streets
-    if (featureJSON.properties.type === 'callejero' || featureJSON.properties.type === 'portal') {
-      const fullAddress = this.createFullAddress(featureJSON.properties);
+    // Change zIndex value
+    this.clickedElementLayer.setZIndex(99999999999999999);
+    // Stops showing polygon geometry
+    if (!this.resultVisibility_) {
+      this.clickedElementLayer.setStyle(this.simple);
+    }
 
-      const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
-      const perfectResult = featureJSON.properties.state;
+    setTimeout(() => {
+      this.clickedElementLayer.getImpl().getOL3Layer().getSource().addFeature(olFeature);
+      this.zoomInLocation('g', type, this.zoom);
+    }, 200);
+    // show popup for streets
+    if (properties.type === 'callejero' || properties.type === 'portal') {
+      const fullAddress = this.createFullAddress(properties);
+      const coordinates = [properties.lat, properties.lng];
+      const perfectResult = properties.state;
       this.showSearchPopUp(fullAddress, coordinates, perfectResult);
     } else if (this.popup !== undefined) {
       this.map.removePopup(this.popup);
@@ -1018,7 +987,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           }],
         },
       };
-      this.clickedElementLayer = new M.layer.GeoJSON(newGeojson);
+      this.clickedElementLayer = new M.layer.GeoJSON(newGeojson, { displayInLayerSwitcher: false });
       this.clickedElementLayer.displayInLayerSwitcher = false;
       this.clickedElementLayer.setStyle(this.point);
 
@@ -1030,7 +999,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       }
       this.map.addLayers(this.clickedElementLayer);
       if (zoomIn === true) {
-        this.zoomInLocation('n', 'Point', this.zoom);
+        this.zoomInLocation('n', 'Point', this.zoom, [longitude, latitude]);
       }
     });
   }
@@ -1137,10 +1106,11 @@ export default class IGNSearchLocatorControl extends M.Control {
         const parenthesisIndex = listElement.innerHTML.indexOf('(');
         address = listElement.innerHTML.substring(0, parenthesisIndex);
       }
-      const params = `${type}${via}${id}${portal}&outputformat=geojson`;
+      // const params = `${type}${via}${id}${portal}&outputformat=geojson`;
+      const params = `${type}${via}${id}${portal}`;
       const urlToGet = `${this.urlFind}?q=${address}${params}`;
-      this.urlParse = urlToGet.replace('&outputformat=geojson', '');
-
+      // this.urlParse = urlToGet.replace('&outputformat=geojson', '');
+      this.urlParse = urlToGet;
       this.requestStreet = urlToGet;
       this.locationID = '';
       M.proxy(false);
@@ -1158,18 +1128,19 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param {Object} listElement clicked result information
    * @api
    */
-  goToLocation(listElement) {
+  goToLocation(listElement, isRecentElement = false) {
+    const text = listElement.querySelector('#info').innerHTML;
+    this.html.querySelector('#m-ignsearchlocator-search-input').value = text;
     this.currentElement = listElement; // <li>
-    const selectedObject = this.findClickedItem(listElement, this.allCandidates); // json
+    const candidates = isRecentElement ? JSON.parse(window.localStorage.getItem('recents')) : this.allCandidates;
+    const selectedObject = this.findClickedItem(listElement, candidates);
     this.createGeometryStyles();
     // if item comes from geocoder
     if (Object.prototype.hasOwnProperty.call(selectedObject, 'address')) {
-      this.getFindData(listElement, this.allCandidates).then((geoJsonData) => {
+      this.getFindData(listElement, candidates).then((geoJsonData) => {
+        this.drawGeocoderResult(geoJsonData);
         if (geoJsonData.includes('"tip_via":null') && (geoJsonData.includes('"type":"Municipio"') || geoJsonData.includes('"type":"municipio"') || geoJsonData.includes('"type":"Provincia"') || geoJsonData.includes('"type":"provincia"') || geoJsonData.includes('"type":"comunidad autonoma"'))) {
-          this.drawGeocoderResultProv(geoJsonData);
           this.map.removePopup();
-        } else {
-          this.drawGeocoderResult(geoJsonData);
         }
       });
     } else { // if item comes from nomenclator
@@ -1177,6 +1148,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
     this.resultsBox.innerHTML = '';
   }
+
   /**
    * This function zooms in MaxExtent of clicked element
    * @public
@@ -1185,22 +1157,20 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param { string } type of geometry in which we zoom
    * @api
    */
-  zoomInLocation(service, type, zoom) {
+  zoomInLocation(service, type, zoom, coords) {
     this.resultsList = document.getElementById('m-ignsearchlocator-results-list');
     if (this.clickedElementLayer instanceof M.layer.Vector) {
-      this.clickedElementLayer.calculateMaxExtent().then((extent) => {
-        this.map.setBbox(extent);
-        if (service === 'n' || type === 'Point') {
-          this.setScale(17061);
-        }
-        // En el caso de que se haga una búsqueda de Provincias o CCAA, se dejaría el zoom que
-        // calcula el servicio para no afectar en la visualización de la geometría.
-        if (type === 'Point') {
+      if (service === 'n' && type === 'Point') {
+        this.clickedElementLayer.calculateMaxExtent().then((extent) => {
+          this.map.setBbox(extent);
           this.map.setZoom(zoom);
-        }
-
+          this.fire('ignsearchlocator:entityFound', [extent]);
+        });
+      } else {
+        const extent = this.clickedElementLayer.getImpl().getOL3Layer().getSource().getExtent();
+        this.map.setBbox(extent);
         this.fire('ignsearchlocator:entityFound', [extent]);
-      });
+      }
     }
   }
   /**
@@ -1212,28 +1182,52 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   findClickedItem(listElement, allCandidates) {
-    return allCandidates.filter(element => element.id === listElement.getAttribute('id'))[0];
+    const elementClicked = allCandidates.filter(element => element.id === listElement.getAttribute('id'))[0];
+    this.setRecents(elementClicked);
+    return elementClicked;
   }
+
   /**
-   * This function fixes path to get to this feature's coordinates
+   * This function check duplicates results
    * @public
    * @function
-   * @param {feature} feature with geometry information for the given location
    * @api
    */
-  fixCoordinatesPath(feature) {
-    let coordinates;
-    if (feature.geometry.type === 'Point') {
-      coordinates = feature.geometry.coordinates[0][0];
-    } else if (feature.geometry.type === 'MultiPolygon') {
-      coordinates = [feature.geometry.coordinates];
-    } else if (feature.geometry.type === 'LineString') {
-      coordinates = feature.geometry.coordinates[0];
-    } else {
-      coordinates = feature.geometry.coordinates;
-    }
-    return coordinates;
+  checkDuplicateRecent(element) {
+    const recents = JSON.parse(window.localStorage.getItem('recents'));
+    let found = false;
+
+    recents.forEach((r) => {
+      if (r.id === element.id) {
+        found = true;
+      }
+    });
+
+    return found;
   }
+
+  /**
+   * This function set search
+   * @public
+   * @function
+   * @api
+   */
+  setRecents(element) {
+    let recents = JSON.parse(window.localStorage.getItem('recents'));
+
+    if (!recents || recents.length === 0) {
+      recents = [element];
+    } else if (!this.checkDuplicateRecent(element)) {
+      if (recents.length === 5) {
+        recents.shift();
+        recents.push(element);
+      } else {
+        recents.push(element);
+      }
+    }
+    window.localStorage.setItem('recents', JSON.stringify(recents));
+  }
+
   /* Given a set of coordinates (lat, long),
     searches for the corresponding place
   */
@@ -1610,8 +1604,18 @@ export default class IGNSearchLocatorControl extends M.Control {
             consultReference: getValue('consultReference'),
             notaRef: getValue('notaRef'),
           },
+          accessibility: {
+            province: getValue('accessibility.province'),
+            town: getValue('accessibility.town'),
+            estate: getValue('accessibility.estate'),
+            plot: getValue('accessibility.plot'),
+            cadastre: getValue('accessibility.cadastre'),
+            srs: getValue('accessibility.srs'),
+          },
         },
       });
+
+      this.accessibilityTab(compiledXYLocator);
 
       /**
        *crear provincias y rellenar municipios
@@ -1964,6 +1968,8 @@ export default class IGNSearchLocatorControl extends M.Control {
           },
         },
       });
+
+      this.accessibilityTab(compiledXYLocator);
 
       if (this.xytype != null) {
         if (this.xytype === 'EPSG:4258d' && this.xydata === 'd') {
@@ -2320,15 +2326,16 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.point = new M.style.Point({
         radius: 5,
         icon: {
-          form: 'none',
-          class: 'g-cartografia-pin',
-          radius: 12,
-          rotation: 0,
-          rotate: false,
-          offset: [0, -12],
-          color: '#f00',
-          border: '5px solid green',
-          opacity: 1,
+          src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/marker.svg']),
+          scale: 1.4,
+          fill: {
+            color: '#71a7d3',
+          },
+          stroke: {
+            width: 30,
+            color: 'white',
+          },
+          anchor: [0.5, 1],
         },
       });
     } else if (this.pointStyle === 'pinRojo') {
@@ -2406,7 +2413,10 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param { Array } featureCoordinates latitude[0] and longitude[1] coordinates from feature
    * @param { string } exitState indicating if the given result is a perfect match
    */
-  showPopUp(fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {}) {
+  showPopUp(
+    fullAddress, mapcoords, featureCoordinates, exitState = null, addTab = true, e = {},
+    hasOffset = true,
+  ) {
     const featureTabOpts = { content: '', title: '' };
     if (exitState !== null) {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
@@ -2427,6 +2437,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       ]);
       this.popup = myPopUp;
     }
+    if (hasOffset && this.pointStyle === 'pinBlanco') this.popup.getImpl().setOffset([0, -30]);
     this.lat = mapcoords[1];
     this.lng = mapcoords[0];
   }
@@ -2440,5 +2451,10 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   setScale(scale) {
     this.getImpl().setScale(scale);
+  }
+
+  accessibilityTab(html) {
+    if (html.getAttribute('tabindex')) html.setAttribute('tabindex', this.order);
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

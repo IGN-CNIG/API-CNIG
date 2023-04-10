@@ -243,8 +243,10 @@ const mp = new Incicarto({
   position: 'TL',
   /*wfszoom: 12,*/
   /*precharged,*/
+  interfazmode:'simple', //simple, advance
+  prefixSubject:'Incidencia cartográfica - ',
   buzones: [{
-    name: 'Cartografía (MTN, BTN, RT, HY, Pob, BCN, Prvinciales, escalas pequeñas)',
+    name: 'Cartografía (MTN, BTN, RT, HY, Pob, BCN, Provinciales, escalas pequeñas)',
     email: 'cartografia.ign@mitma.es',
   },
   {
@@ -326,16 +328,71 @@ const mp = new Incicarto({
     }
   ],
   themeList: [
-    'No especificado',
-    'Relieve',
-    'Hidrografía',
-    'Edificaciones',
-    'Transporte',
-    'Servicios e instalaciones',
-    'Toponimia',
-    'Otros',
-    'Unidades administrativas',
-    'Poblaciones',
+    {
+      idTheme: 1,
+      nameTheme: 'No especificado',
+      emailTheme: 'consultas@cnig.es',
+    },
+    {
+      idTheme: 2,
+      nameTheme: 'Relieve',
+      emailTheme: 'cartografia.ign@mitma.es',
+    },
+    {
+      idTheme: 3,
+      nameTheme: 'Hidrografía',
+      emailTheme: 'cartografia.ign@mitma.es',
+    },
+    {
+      idTheme: 4,
+      nameTheme: 'Edificaciones',
+      emailTheme: 'cartografia.ign@mitma.es',
+    },
+    {
+      idTheme: 5,
+      nameTheme: 'Carretera',
+      emailTheme: 'cartociudad@mitma.es',
+    },
+    {
+      idTheme: 6,
+      nameTheme: 'Camino o senda',
+      emailTheme: 'cartociudad@mitma.es',
+    },
+    {
+      idTheme: 7,
+      nameTheme: 'Ferrocarriles',
+      emailTheme: 'cartociudad@mitma.es',
+    },
+    {
+      idTheme: 8,
+      nameTheme: 'Topónimo o nombre geográfico',
+      emailTheme: 'toponimia.ign@mitma.es',
+    },
+    {
+      idTheme: 9,
+      nameTheme: 'Límite de CCAA o municipio',
+      emailTheme: 'limites_municipales@mitma.es',
+    },
+    {
+      idTheme: 10,
+      nameTheme: 'Pruebas',
+      emailTheme: 'danielleon@guadaltel.com',
+    },
+    {
+      idTheme: 11,
+      nameTheme: 'Pruebas Guadaltel/DVM',
+      emailTheme: 'esteban.emolin@gmail.com',
+    },
+    {
+      idTheme: 12,
+      nameTheme: 'Pruebas IGN',
+      emailTheme: 'aurelio.aragon@cnig.es',
+    },
+    {
+      idTheme: 13,
+      nameTheme: 'Pruebas Jesús',
+      emailTheme: 'jesusdiaz@guadaltel.com',
+    }
   ],
   errorList: [
     'No especificado',

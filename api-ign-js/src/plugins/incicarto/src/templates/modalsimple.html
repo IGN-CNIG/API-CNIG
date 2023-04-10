@@ -1,0 +1,72 @@
+<div id="m-plugin-incicarto-dialog" class="m-plugin-incicarto-dialog">
+  <div id="m-plugin-incicarto-modal" class="m-plugin-incicarto-modal">
+      <div id="m-plugin-incicarto-content" class="m-plugin-incicarto-content">
+          <div class="m-plugin-incicarto-html">
+              <span>{{translations.headtext1}}</span>
+          </div>
+          {{#if themes}}
+          <div id="m-incicarto-metadata-theme" class="m-plugin-incicarto-html">
+            <label for="theme-select">Tema:</label>
+            <select id="theme-select" name="theme-select">
+              {{#each themes}}
+                  <option value="{{this.idTheme}}">{{this.nameTheme}}</option>
+              {{/each}}
+            </select>
+            <div class="m-transparency-select_arrow" style="top:52px;right:50px;">
+            </div>
+          </div>
+          {{/if}}
+          <div id="m-incicarto-metadata-description" class="m-plugin-incicarto-form">
+                    <div class="m-plugin-incicarto-form-input-group">
+                      <label for="person-notify">Nombre</label>
+                      <input id="person-notify" type="text" name="person-notify" placeholder="Nombre para seguimiento"></input>
+                    </div>
+                    <div class="m-plugin-incicarto-form-input-group">
+                      <label for="email-notify">Notificaciones de seguimiento</label>
+                      <input id="email-notify" type="email" name="email-notify" placeholder="Correo electrónico para seguimiento"></input>
+                    </div>
+                    <div class="m-plugin-incicarto-form-input-group">
+                      <label for="err-description">Descripción</label>
+                      <textarea id="err-description" type="text" name="err-description"></textarea>
+                    </div>
+          </div>
+          <div id="m-incicarto-metadata-adjuntfile" class="m-plugin-incicarto-form">
+            <input type="file" name="fileUpload" id="fileUpload" class="inputfile" data-multiple-caption="{count} ficheros seleccionados" multiple hidden />
+            <label for="fileUpload">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17" enable-background="new 0 0 512 512" style="fill:white;">
+                <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/>
+              </svg>
+              <span id="infoUpload">Adjuntar fichero &hellip;</span></label>
+          </div>
+          <br/>
+          <div class="m-plugin-incicarto-html">
+              <p>
+                Respecto al tratamiento de sus datos personales para el seguimiento, consulte el apartado <a href="https://www.cnig.es/proteccionDatos" target="_blank">Privacidad y protección de datos</a> en la web del CNIG.
+              </p>
+          </div>
+
+          <div class="m-plugin-incicarto-html">
+              <button id="m-plugin-incicarto-simple-send-email">{{translations.btntext1}}</button>
+          </div>
+          <!-- Se crea un form multipart para que se puedan enviar archivos adjuntos en el email -->
+          <form id="m-plugin-incicarto-email-form" action="/api/email" method="post" enctype="multipart/form-data" target="form-target" style="display:none">
+          <input type="hidden" id="m-plugin-incicarto-email-subject" name="subject" value=""/>
+          <input type="hidden" id="m-plugin-incicarto-email-mailto" name="mailto" value=""/>
+          <input type="hidden" id="m-plugin-incicarto-email-sendername" name="sendername" value=""/>
+          <input type="hidden" id="m-plugin-incicarto-email-senderemail" name="senderemail" value=""/>
+          <input type="hidden" id="m-plugin-incicarto-email-errDescription" name="errDescription" value=""/>
+          <input type="hidden" id="m-plugin-incicarto-email-sendergeometry" name="sendergeometry" value=""/>
+          <input type="hidden" id="m-plugin-incicarto-email-shareURL" name="shareURL" value=""/>
+
+          <input type="hidden" id="m-plugin-incicarto-email-body" name="body" value=""/>
+          <input type="file" name="file" id="fileUploadForm" class="inputfile" data-multiple-caption="{count} ficheros seleccionados" multiple="" hidden="">
+        </form>
+          <!-- Se pone un iframe hidden como target del post para que no actualice la pagina con la respuesta  -->
+          <iframe name="form-target" hidden></iframe>
+          <div class="m-plugin-incicarto-html">
+              <p id ="result-notification"></p>
+          </div>
+
+      </div>
+  </div>
+</div>

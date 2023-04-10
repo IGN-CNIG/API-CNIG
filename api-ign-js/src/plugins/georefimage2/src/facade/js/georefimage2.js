@@ -5,6 +5,9 @@ import '../assets/css/georefimage2';
 import Georefimage2Control from './georefimage2control';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Georefimage2 extends M.Plugin {
   /**
    * @classdesc
@@ -102,6 +105,28 @@ export default class Georefimage2 extends M.Plugin {
      * @type {String}
      */
     this.printStatusUrl_ = parameters.printStatusUrl || M.config.GEOPRINT_STATUS;
+
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = parameters.order >= -1 ? parameters.order : null;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).georefimage2;
   }
 
   /**
@@ -118,15 +143,17 @@ export default class Georefimage2 extends M.Plugin {
       this.serverUrl_,
       this.printTemplateUrl_,
       this.printStatusUrl_,
+      this.order,
     );
     this.controls_.push(this.control_);
-    this.panel_ = new M.ui.Panel('georefimage2', {
+    this.panel_ = new M.ui.Panel('georefimage', {
       collapsed: this.collapsed_,
       collapsible: this.collapsible_,
       className: 'm-georefimage2',
       collapsedButtonClass: 'icon-descargar',
       position: M.ui.position[this.position_],
       tooltip: this.tooltip_,
+      order: this.order,
     });
     this.panel_.on(M.evt.ADDED_TO_MAP, (html) => {
       M.utils.enableTouchScroll(html);

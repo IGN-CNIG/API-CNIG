@@ -1,6 +1,6 @@
 <div class="m-control m-container m-georefimage2 m-georefimage2-container">
     <!-- TITLE -->
-    <div class="title"> {{translations.referenced}}</div>
+    <div role="heading" tabindex="0" aria-label="{{translations.referenced}}" class="title"> {{translations.referenced}}</div>
     <!-- FORM -->
     <div class="form">
         <!-- title -->
@@ -18,9 +18,9 @@
                   <td>WGS84 Web Mercator</td>
                 </tr>
                 <tr>
-                  <td><input type="radio" name="type-print" id="m-georefimage2-map" checked /></td>
-                  <td><input type="radio" name="type-print" id="m-georefimage2-image" /></td>
-                  <td><input type="radio" name="type-print" id="m-georefimage2-screen" /></td>
+                  <td><input tabindex="0" aria-label="{{translations.map}}" type="radio" name="type-print" id="m-georefimage2-map" checked /></td>
+                  <td><input tabindex="0" aria-label="{{translations.map}}" type="radio" name="type-print" id="m-georefimage2-image" /></td>
+                  <td><input tabindex="0" aria-label="{{translations.map}}" type="radio" name="type-print" id="m-georefimage2-screen" /></td>
                 </tr>
               </tbody>
             </table>
@@ -29,6 +29,6 @@
 
     <!-- buttons -->
     <div class="button">
-        <button class="print"><i class="icon-descargar"></i> {{translations.downImg}}</button>
+        <button type="button" tabindex="0" class="print"><i class="icon-descargar"></i> {{translations.downImg}}</button>
     </div>
 </div>

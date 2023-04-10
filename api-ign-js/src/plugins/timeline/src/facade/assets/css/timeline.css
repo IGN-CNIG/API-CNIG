@@ -83,22 +83,24 @@
     margin-top: 20px;
     background-color: #71a7d3
 }
+
 .div-m-timeline-slider::before {
     content: var(--valor);
     display: block;
     visibility: var(--tpVisible);
     opacity: var(--opacity);
     position: absolute;
-    background:#0000008a;
-    color:#fff;
+    background: #0000008a;
+    color: #fff;
     padding: .3rem;
     border-radius: 4px;
     margin-top: -1.5rem;
     margin-left: -0.5rem;
     height: 1rem;
-    left:var(--left);
+    left: var(--left);
     width: max-content;
 }
+
 .m-timeline-select {
     position: relative;
     display: flex;
@@ -146,8 +148,8 @@ div#m-timeline-title {
 }
 
 .div-m-timeline-slider {
-    --left:0;
-    --opacity:0;
+    --left: 0;
+    --opacity: 0;
     color: #000000;
     padding: 0.5rem 2rem 1rem;
 }
@@ -156,6 +158,7 @@ div#m-timeline-title {
     width: 100%;
     margin: 0;
 }
+
 .div-m-timeline-slider .slider-tags {
     display: flex;
     justify-content: space-between;
@@ -164,14 +167,15 @@ div#m-timeline-title {
     font-size: 11px;
     counter-reset: count -1;
 }
-.div-m-timeline-slider .slider-tags > div {
+
+.div-m-timeline-slider .slider-tags>div {
     height: 100%;
     width: 1px;
     background: silver;
     counter-increment: count 1;
 }
 
-.div-m-timeline-slider .slider-tags > div:nth-child(1n)::before {
+.div-m-timeline-slider .slider-tags>div:nth-child(1n)::before {
     display: block;
     content: attr(data-tag);
     transform: translate(-80%, 70%);
@@ -202,18 +206,19 @@ div#m-timeline-title {
 /* Iconos */
 @font-face {
     font-family: 'timeline';
-    src:  url('../fonts/timeline.eot?nh0ym2');
-    src:  url('../fonts/timeline.eot?nh0ym2#iefix') format('embedded-opentype'),
-      url('../fonts/timeline.ttf?nh0ym2') format('truetype'),
-      url('../fonts/timeline.woff?nh0ym2') format('woff'),
-      url('../fonts/timeline.svg?nh0ym2#timeline') format('svg');
+    src: url('../fonts/timeline.eot?nh0ym2');
+    src: url('../fonts/timeline.eot?nh0ym2#iefix') format('embedded-opentype'),
+        url('../fonts/timeline.ttf?nh0ym2') format('truetype'),
+        url('../fonts/timeline.woff?nh0ym2') format('woff'),
+        url('../fonts/timeline.svg?nh0ym2#timeline') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
-    color:black;
+    color: black;
 }
-  
-[class^="timeline-"], [class*=" timeline-"] {
+
+[class^="timeline-"],
+[class*=" timeline-"] {
     font-family: 'timeline' !important;
     speak: never;
     font-style: normal;
@@ -221,23 +226,227 @@ div#m-timeline-title {
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-    color:#71a7d3;
-    
+    color: #71a7d3;
+
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
- 
+
 .timeline-control-pausa:before {
     content: "\e822";
 }
+
 .timeline-control-siguiente:before {
     content: "\e828";
 }
+
 .timeline-gestion-reloj2:before {
     content: "\e920";
     font-family: 'timeline' !important;
 }
+
 .timeline-gestion-reloj3:before {
     content: "\e921";
 }
-  
+
+/* Time line Dinamic*/
+:root {
+    --w: 30em;
+    --h: 2em;
+}
+
+.wrap {
+    display: grid;
+    grid-template-rows: max-content var(--h);
+    margin: 1em auto;
+    height: var(--h);
+    width: var(--w);
+
+    overflow: hidden;
+    /* in case <label> elements overflow */
+    position: relative;
+
+    /* same as before */
+    background:
+        /* emulate track with wrapper background */
+        linear-gradient(0deg, #c4e3fc var(--h), transparent 0);
+}
+
+.sr-only {
+    position: absolute;
+    clip-path: inset(50%);
+}
+
+input[type='range'] {
+    grid-column: 1;
+    grid-row: 2;
+
+    background: none;
+    /* get rid of white Chrome background */
+    color: #000;
+    font: inherit;
+    /* fix too small font-size in both Chrome & Firefox */
+    margin: 0;
+    pointer-events: none;
+    /* let clicks pass through */
+    -webkit-appearance: none;
+
+    width: 90% !important;
+}
+
+input[type='range']::-webkit-slider-runnable-track,
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+    background: none;
+    /* get rid of Firefox track background */
+    height: 100%;
+    width: 100%;
+}
+
+input[type='range']::-moz-range-track {
+    background: none;
+    /* get rid of Firefox track background */
+    height: 100%;
+    width: 100%;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    background: currentcolor;
+    border: none;
+    /* get rid of Firefox thumb border */
+    border-radius: 0;
+    /* get rid of Firefox corner rounding */
+    pointer-events: auto;
+    /* catch clicks */
+    width: var(--h);
+    height: var(--h);
+}
+
+input[type='range']::-moz-range-thumb {
+    background: currentcolor;
+    border: none;
+    /* get rid of Firefox thumb border */
+    border-radius: 0;
+    /* get rid of Firefox corner rounding */
+    pointer-events: auto;
+    /* catch clicks */
+    width: var(--h);
+    height: var(--h);
+}
+
+.rotate {
+    margin: 50px 0;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.slider-tags-dinamic {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.slider-tags-dinamic input {
+    width: 50%;
+}
+
+.m-timelineDinamic-button div {
+    margin: 10px 0;
+}
+
+.selectDinamicLayer {
+    margin: 10px 20px 20px 0;
+
+    align-items: center;
+    appearance: none;
+    background-color: #71a7d3;
+    border-radius: 4px;
+    border-width: 0;
+
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    height: 30px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    width: 40%;
+    padding-left: 12px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 12px;
+}
+
+
+.selectDinamicLayer option {
+    background-color: white;
+    text-align: left;
+    color: #000;
+    padding: 0 13px;
+    font-size: 13px;
+    font-family: "JetBrains Mono", monospace;
+}
+
+/* Style Button TimeLineDinamic*/
+
+#m-timelineDinamic-before,
+#m-timelineDinamic-play,
+#m-timelineDinamic-back {
+    align-items: center;
+    appearance: none;
+    background-color: #71a7d3;
+    border-radius: 4px;
+    border-width: 0;
+
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    height: 30px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 14px;
+}
+
+.sizeWidthDinamic_medium, .sizeWidthDinamic_medium .wrap{
+    width: 600px;
+}
+
+.sizeWidthDinamic_big, .sizeWidthDinamic_big .wrap{
+    width: 900px;
+}
+
+input[disabled]#a {
+    opacity: 0;
+}
+
+input[disabled]#init {
+    background-color: #cecece;
+    cursor: not-allowed;
+}

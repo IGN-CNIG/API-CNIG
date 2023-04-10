@@ -5,6 +5,9 @@ import 'assets/css/overviewmap';
 import OverviewMapControl from './overviewmapcontrol';
 import api from '../../api';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class OverviewMap extends M.Plugin {
   /**
    * @classdesc
@@ -98,6 +101,27 @@ export default class OverviewMap extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = (options.order) ? options.order : null;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).overviewmap;
   }
 
   /**
@@ -112,9 +136,10 @@ export default class OverviewMap extends M.Plugin {
     this.control_ = new OverviewMapControl(this.options_, this.vendorOptions);
     this.controls_.push(this.control_);
     this.map_ = map;
-    this.panel_ = new M.ui.Panel('panelOverviewMap', {
+    this.panel_ = new M.ui.Panel('OverviewMap', {
       className: 'm-overviewmap-panel',
       position: M.ui.position[this.position_],
+      order: this.order,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

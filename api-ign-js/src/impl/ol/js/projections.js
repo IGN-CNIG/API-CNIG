@@ -159,6 +159,14 @@ const proj4083 = {
   units: 'm',
 };
 
+// EPSG:3395
+const proj3395 = {
+  def: '+proj=merc +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+  extent: [-20026376.39, 15496570.74, 20026376.39, 18764656.23],
+  codes: ['EPSG:3395', 'urn:ogc:def:crs:EPSG::3395', 'http://www.opengis.net/gml/srs/epsg.xml#3395'],
+  units: 'm',
+};
+
 // All projections above
 const projections = [
   proj4326,
@@ -180,6 +188,7 @@ const projections = [
   proj4081,
   proj4082,
   proj4083,
+  proj3395,
 ];
 
 const addProjections = (projectionsParam) => {

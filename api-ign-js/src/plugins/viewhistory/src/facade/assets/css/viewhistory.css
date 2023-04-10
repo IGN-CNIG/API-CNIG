@@ -67,3 +67,12 @@ div.m-area.m-bottom>div.m-panel.viewhistory-plugin.opened>div.m-panel-controls>d
 .viewhistory-flecha-izquierda3:before {
     content: "\e1901";
 }
+
+.viewhistory-flecha-derecha3 {
+    border: 2px solid white !important;
+}
+
+.viewhistory-flecha-izquierda3 {
+    border: 2px solid white !important;
+    border-right: none !important;
+}

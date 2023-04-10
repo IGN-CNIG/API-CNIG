@@ -8,8 +8,9 @@ const map = M.map({
   maxZoom: 20,
   minZoom: 4,
   center: [-467062.8225, 4683459.6216],
-  //projection: 'EPSG:4326*d',
-  /*layers: [
+  // layers: ['OSM'],
+  // projection: 'EPSG:4326*d',
+  layers: [
     new M.layer.XYZ({
       url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
       name: 'OI.OrthoimageCoverage',
@@ -19,8 +20,9 @@ const map = M.map({
       displayInLayerSwitcher: false,
       queryable: false,
       visible: true,
+      tileGridMaxZoom: 19,
     }),
-  ],*/
+  ],
 });
 
 const layerinicial = new M.layer.WMS({
@@ -31,50 +33,66 @@ const layerinicial = new M.layer.WMS({
 }, {});
 
 
-/* const campamentos = new M.layer.GeoJSON({
+const campamentos = new M.layer.GeoJSON({
   name: 'Campamentos',
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sepim:campamentos&outputFormat=application/json&',
   extract: true,
-}); */
+});
 
 const printermap = new PrinterMap({
   collapsed: true,
   collapsible: true,
   position: 'TR',
-  // credits: 'Impresión generada desde Fototeca Digital http://fototeca.cnig.es/',
-  georefActive: true,
+  credits: 'Impresión generada desde Fototeca Digital http://fototeca.cnig.es/',
+  // georefActive: false,
+  fototeca: true,
   // serverUrl: 'https://componentes.cnig.es/geoprint',
   // printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
   // printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
   // fototeca: true,
+  filterTemplates: ['A3 Horizontal'],
 });
+
+const mvt = new M.layer.MVT({
+  // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_capa_20220711_111231@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  // url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
+  url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_provincias_20220712_85620@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  // url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/superadmin_carmen_123@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
+  name: 'vectortile',
+  projection: 'EPSG:3857',
+  extract: true,
+});
+
+map.addLayers(campamentos);
 
 map.addPlugin(printermap);
 
-/*map.addPlugin(new M.plugin.Infocoordinates({
+/* map.addPlugin(new M.plugin.Infocoordinates({
   position: 'TR',
   decimalGEOcoord: 6,
   decimalUTMcoord: 2,
-}));*/
+})); */
 
-/*map.addPlugin(new M.plugin.IGNSearchLocator({
+map.addPlugin(new M.plugin.IGNSearchLocator({
   servicesToSearch: 'gn',
   searchPosition: 'geocoder,nomenclator',
   maxResults: 10,
   isCollapsed: false,
   position: 'TL',
   reverse: true,
-}));*/
+}));
 
 map.addPlugin(new M.plugin.Vectors({
   position: 'TR',
 }));
 
-map.addPlugin(new M.plugin.FullTOC({
+/* map.addPlugin(new M.plugin.FullTOC({
   position: 'TR',
-}));
+})); */
 
-/*const source = new ol.source.ImageWMS({
+/* const source = new ol.source.ImageWMS({
   url: 'https://wms-fototeca.idee.es/fototeca?',
   params: {
     LAYERS: `imagenquinquenal_1998_2003`,
@@ -93,8 +111,8 @@ const layer = new ol.layer.Image({
   source: source,
 });
 
-map.getMapImpl().addLayer(layer);*/
-//map.addLayers([layerinicial, campamentos]);
-//map.addLayers([campamentos]);
+map.getMapImpl().addLayer(layer); */
+// map.addLayers([layerinicial, campamentos]);
+// map.addLayers([campamentos]);
 
 window.map = map;

@@ -6,6 +6,9 @@ import TimelineControl from './timelinecontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Timeline extends M.Plugin {
   /**
    * @classdesc
@@ -69,7 +72,7 @@ export default class Timeline extends M.Plugin {
       } else if (M.utils.isArray(options.intervals)) {
         this.intervals = options.intervals;
       } else {
-        M.dialog.error(getValue('intervals_error'));
+        // M.dialog.error(getValue('intervals_error'));
       }
     }
 
@@ -102,6 +105,63 @@ export default class Timeline extends M.Plugin {
      *@type { string }
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.speedDate = (options.speedDate) ? options.speedDate : 2;
+
+    /**
+     *@private
+     *@type { String }
+     */
+     this.paramsDate = (options.paramsDate) ? options.paramsDate : 'yr';
+
+    /**
+     *@private
+     *@type { Number }
+     */
+     this.stepValue = (options.stepValue) ? options.stepValue : 1;
+
+    /**
+     *@private
+     *@type { String }
+     */
+     this.sizeWidthDinamic = (options.sizeWidthDinamic) ? options.sizeWidthDinamic : ''
+
+      /**
+     *@private
+     *@type { String }
+     */
+     this.formatMove = (options.formatMove === 'discrete') ? 'discrete' : 'continuous';
+
+    /**
+     *@private
+     *@type { String }
+     */
+     this.formatValue = (options.formatValue) ? options.formatValue : 'linear';
+
+    /**
+     *@private
+     *@type { String }
+     */
+     this.timelineType = options.timelineType || false;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+   static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).timeline;
   }
 
   /**
@@ -113,10 +173,22 @@ export default class Timeline extends M.Plugin {
    * @api stable
    */
   addTo(map) {
+    const typesTimeline = ['absoluteSimple', 'absolute', 'relative']
+    if(!this.timelineType || !typesTimeline.includes(this.timelineType)) {
+       throw new Error ('Add correct typesTimeline, (absoluteSimple', 'absolute', 'relative)');
+    }
+
     this.control_ = new TimelineControl({
       intervals: this.intervals,
       animation: this.animation,
       speed: this.speed,
+      speedDate: this.speedDate,
+      paramsDate: this.paramsDate,
+      stepValue: this.stepValue,
+      sizeWidthDinamic: this.sizeWidthDinamic,
+      formatMove: this.formatMove,
+      formatValue: this.formatValue,
+      timelineType: this.timelineType
     });
     this.controls_.push(this.control_);
     this.map_ = map;
@@ -140,7 +212,12 @@ export default class Timeline extends M.Plugin {
    * @api stable
    */
   destroy() {
-    this.control_.removeTimelineLayers();
+    if(['absolute', 'relative'].includes(this.timelineType)) {
+      this.control_.removeLayers()
+    }else {
+      this.control_.removeTimelineLayers();
+    }
+
     this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
   }

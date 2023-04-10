@@ -12,6 +12,7 @@
     left: calc(50vw - 100px);
     top: calc(100vh - 35px);
     display: flex;
+    border: 2px solid white;
 }
 
 .m-control.m-container.m-mousesrs-container .m-mouse-srs {
@@ -24,34 +25,34 @@
 }
 
 .m-mousesrs-srs-container {
-  text-align: center;
-  width: 100%;
-  margin: 1rem 0 1rem 1.2rem;
-  display: flex;
-  justify-content: center;
+    text-align: center;
+    width: 100%;
+    margin: 1rem 0 1rem 1.2rem;
+    display: flex;
+    justify-content: center;
 }
 
 .m-mousesrs-srs-container select {
-  background-color: white;
-  padding: 7px 10px;
-  cursor: pointer;
+    background-color: white;
+    padding: 7px 10px;
+    cursor: pointer;
 }
 
 .m-mousesrs-srs-container .m-mousesrs-help-button {
-  margin-left: 0.4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    margin-left: 0.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .m-mousesrs-srs-container .m-mousesrs-help-button a {
-  font-size: 25px;
-  color: #71a7d3 !important;
-  text-decoration: none;
+    font-size: 25px;
+    color: #71a7d3 !important;
+    text-decoration: none;
 }
 
 .m-mousesrs-pointer {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {

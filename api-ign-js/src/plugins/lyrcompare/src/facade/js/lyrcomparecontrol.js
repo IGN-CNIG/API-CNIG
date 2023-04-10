@@ -239,14 +239,6 @@ export default class LyrCompareControl extends M.Control {
       }
     }
 
-    //config a helper in Handlebars for embedding conditionals in template
-    Handlebars.registerHelper('ifCond', function (v1, v2, options) {
-      if (v1 === v2) {
-        return options.fn(this);
-      }
-      return options.inverse(this);
-    });
-
     //template with default options
     this.template = M.template.compileSync(template, options);
     this.setEventsAndValues();

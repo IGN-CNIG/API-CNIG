@@ -1,30 +1,25 @@
 @font-face {
   font-family: 'infocoordinates';
-  src: url('../fonts/infocoordinates.eot?1443372');
-  src: url('../fonts/infocoordinates.eot?1443372#iefix') format('embedded-opentype'),
-       url('../fonts/infocoordinates.woff2?1443372') format('woff2'),
-       url('../fonts/infocoordinates.woff?1443372') format('woff'),
-       url('../fonts/infocoordinates.ttf?1443372') format('truetype'),
-       url('../fonts/infocoordinates.svg?1443372#infocoordinates') format('svg');
+  src:  url('../fonts/infocoordinates.eot?75adyp');
+  src:  url('../fonts/infocoordinates.eot?75adyp#iefix') format('embedded-opentype'),
+    url('../fonts/infocoordinates.ttf?75adyp') format('truetype'),
+    url('../fonts/infocoordinates.woff2?75adyp') format('woff2'),
+    url('../fonts/infocoordinates.woff?75adyp') format('woff'),
+    url('../fonts/infocoordinates.svg?75adyp#infocoordinates') format('svg');
   font-weight: normal;
   font-style: normal;
+  font-display: block;
 }
 
 .m-plugin-infocoordinates [class^="icon-"]:before, .m-plugin-infocoordinates [class*=" icon-"]:before {
-  font-family: "infocoordinates";
+  font-family: 'infocoordinates' !important;
+  speak: never;
   font-style: normal;
   font-weight: normal;
-  speak: never;
-
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
   font-variant: normal;
   text-transform: none;
-  line-height: 1em;
-  margin-left: .2em;
+  line-height: 1;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

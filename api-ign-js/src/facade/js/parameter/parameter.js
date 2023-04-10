@@ -6,6 +6,7 @@ import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 import Layer from '../layer/Layer';
 import { getValue } from '../i18n/language';
+import osm from './osm';
 
 /**
  * Parses the specified user center parameter into an object
@@ -95,41 +96,6 @@ export const center = (centerParameterVar) => {
 };
 
 /**
- * Parses the parameter in order to get the layer name
- * @private
- * @function
- */
-const getNameKML = (parameter) => {
-  let name;
-  let params;
-  if (isString(parameter)) {
-    if (/^KML\*.+/i.test(parameter)) {
-      // <KML>*<NAME>*<URL>(*<FILENAME>)?*<EXTRACT>
-      if (/^KML\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?/i.test(parameter)) {
-        params = parameter.split(/\*/);
-        name = params[1].trim();
-      }
-    } else if (/^[^*]*\*[^*]+/.test(parameter)) {
-      // <NAME>*<URL>(*<FILENAME>)?(*<EXTRACT>)?
-      params = parameter.split(/\*/);
-      name = params[0].trim();
-    } else if (/^[^*]*/.test(parameter)) {
-      // <NAME>(*<URL>(*<FILENAME>)?(*<EXTRACT>)?)? filtering
-      params = parameter.split(/\*/);
-      name = params[0].trim();
-    }
-  } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
-    name = parameter.name.trim();
-  } else if (!isObject(parameter)) {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
-  }
-
-  if (isUrl(name) || /^(true|false)$/i.test(name)) {
-    name = null;
-  }
-  return name;
-};
-/**
  * Parses the parameter in order to get the type
  * @private
  * @function
@@ -137,17 +103,21 @@ const getNameKML = (parameter) => {
 const getType = (parameter, forcedType) => {
   let type;
   if (isString(parameter)) {
-    const typeMatches = parameter.match(/^(\w+)\*.+$/);
-    if (typeMatches && (typeMatches.length > 1)) {
-      type = LayerType.parse(typeMatches[1]);
-      if (isUndefined(type)) {
-        Exception(`No se reconoce el tipo de capa ${typeMatches[1]}`);
+    if (/^\s*osm\s*$/i.test(parameter)) {
+      type = LayerType.OSM;
+    } else {
+      const typeMatches = parameter.match(/^(\w+)\*.+$/);
+      if (typeMatches && (typeMatches.length > 1)) {
+        type = LayerType.parse(typeMatches[1]);
+        if (isUndefined(type)) {
+          Exception(`No se reconoce el tipo de capa ${typeMatches[1]}`);
+        }
       }
-    }
-    if (isUndefined(type) && !isNullOrEmpty(forcedType)) {
-      type = forcedType;
-    } else if (isUndefined(type)) {
-      Exception(`No se reconoce el tipo de capa ${type}`);
+      if (isUndefined(type) && !isNullOrEmpty(forcedType)) {
+        type = forcedType;
+      } else if (isUndefined(type)) {
+        Exception(`No se reconoce el tipo de capa ${type}`);
+      }
     }
   } else if (isObject(parameter)) {
     if (!isNullOrEmpty(parameter.type)) {
@@ -169,81 +139,6 @@ const getType = (parameter, forcedType) => {
     type = forcedType;
   }
   return type;
-};
-
-/**
- * Parses the parameter in order to get the transparence
- * @private
- * @function
- */
-const getExtractKML = (parameter) => {
-  let extract;
-  let params;
-  if (isString(parameter)) {
-    // <KML>*<NAME>*<URL>(*<FILENAME>)?*<EXTRACT>*<LABEL>*<VISIBILITY>
-    if (/^KML\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      extract = params[params.length - 3].trim();
-    } else if (/^[^*]+\*[^*]+\*(true|false)$/i.test(parameter)) {
-      // <NAME>*<URL>*<EXTRACT>
-      params = parameter.split(/\*/);
-      extract = params[2].trim();
-    } else if (/^[^*]+\*(true|false)$/i.test(parameter)) {
-      // <URL>*<EXTRACT>
-      params = parameter.split(/\*/);
-      extract = params[1].trim();
-    }
-  } else if (isObject(parameter)) {
-    extract = normalize(parameter.extract);
-  } else {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
-  }
-
-  if (!isNullOrEmpty(extract)) {
-    extract = /^1|(true)$/i.test(extract);
-  } else {
-    extract = undefined;
-  }
-  return extract;
-};
-
-/**
- * Parses the parameter in order to show or no the style label
- * @private
- * @function
- */
-const getLabelKML = (parameter) => {
-  let label;
-  let params;
-  if (isString(parameter)) {
-    params = parameter.split(/\*/);
-    label = params[params.length - 2].trim();
-    label = label !== 'false';
-  } else if (isObject(parameter)) {
-    label = normalize(parameter.label);
-  } else {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
-  }
-  return label;
-};
-
-/**
- * @private
- * @function
- */
-const getVisibilityKML = (parameter) => {
-  let visibility;
-  let params;
-  if (isString(parameter)) {
-    params = parameter.split(/\*/);
-    visibility = params[params.length - 1].trim();
-    visibility = visibility !== 'false';
-  } else if (isObject(parameter)) {
-    visibility = normalize(parameter.visibility);
-  } else {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
-  }
-  return visibility;
 };
 
 /**
@@ -379,7 +274,6 @@ export const maxExtent = (maxExtentParam) => {
   return maxExtentVar;
 };
 
-
 /**
  * Parses the specified user projection parameter into an object
  *
@@ -430,32 +324,6 @@ export const projection = (projectionParameter) => {
   }
 
   return projectionVar;
-};
-
-/**
- * Parses the parameter in order to get the service URL
- * @private
- * @function
- */
-const getURLKML = (parameter) => {
-  let url;
-  if (isString(parameter)) {
-    // v3 <KML>*<NAME>*<DIR>*<FILENAME>*<EXTRACT>
-    if (/^KML\*[^*]+\*[^*]+\*[^*]+\.kml\*(true|false)$/i.test(parameter)) {
-      const params = parameter.split(/\*/);
-      url = params[2].concat(params[3]);
-    } else {
-      const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)\*.*/i);
-      if (urlMatches && (urlMatches.length > 2)) {
-        url = urlMatches[2];
-      }
-    }
-  } else if (isObject(parameter)) {
-    url = parameter.url;
-  } else {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
-  }
-  return url;
 };
 
 /**
@@ -615,6 +483,144 @@ export const maxZoom = (maxZoomParam) => {
     Exception(getValue('exception').invalid_zoom_param);
   }
   return maxZoomVar;
+};
+
+/**
+ * Parses the parameter in order to get the layer name
+ * @private
+ * @function
+ */
+const getNameKML = (parameter) => {
+  let name;
+  let params;
+  if (isString(parameter)) {
+    if (/^KML\*.+/i.test(parameter)) {
+      // <KML>*<NAME>*<URL>(*<FILENAME>)?*<EXTRACT>
+      if (/^KML\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?/i.test(parameter)) {
+        params = parameter.split(/\*/);
+        name = params[1].trim();
+      }
+    } else if (/^[^*]*\*[^*]+/.test(parameter)) {
+      // <NAME>*<URL>(*<FILENAME>)?(*<EXTRACT>)?
+      params = parameter.split(/\*/);
+      name = params[0].trim();
+    } else if (/^[^*]*/.test(parameter)) {
+      // <NAME>(*<URL>(*<FILENAME>)?(*<EXTRACT>)?)? filtering
+      params = parameter.split(/\*/);
+      name = params[0].trim();
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
+    name = parameter.name.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  if (isUrl(name) || /^(true|false)$/i.test(name)) {
+    name = null;
+  }
+  return name;
+};
+
+
+/**
+ * Parses the parameter in order to get the transparence
+ * @private
+ * @function
+ */
+const getExtractKML = (parameter) => {
+  let extract;
+  let params;
+  if (isString(parameter)) {
+    // <KML>*<NAME>*<URL>(*<FILENAME>)?*<EXTRACT>*<LABEL>*<VISIBILITY>
+    if (/^KML\*[^*]+\*[^*]+(\*[^*]+)?(\*(true|false))?/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      extract = params[params.length - 3].trim();
+    } else if (/^[^*]+\*[^*]+\*(true|false)$/i.test(parameter)) {
+      // <NAME>*<URL>*<EXTRACT>
+      params = parameter.split(/\*/);
+      extract = params[2].trim();
+    } else if (/^[^*]+\*(true|false)$/i.test(parameter)) {
+      // <URL>*<EXTRACT>
+      params = parameter.split(/\*/);
+      extract = params[1].trim();
+    }
+  } else if (isObject(parameter)) {
+    extract = normalize(parameter.extract);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  if (!isNullOrEmpty(extract)) {
+    extract = /^1|(true)$/i.test(extract);
+  } else {
+    extract = undefined;
+  }
+  return extract;
+};
+
+/**
+ * Parses the parameter in order to show or no the style label
+ * @private
+ * @function
+ */
+const getLabelKML = (parameter) => {
+  let label;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split(/\*/);
+    label = params[params.length - 2].trim();
+    label = label !== 'false';
+  } else if (isObject(parameter)) {
+    label = normalize(parameter.label);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return label;
+};
+
+/**
+ * @private
+ * @function
+ */
+const getVisibilityKML = (parameter) => {
+  let visibility;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split(/\*/);
+    visibility = params[params.length - 1].trim();
+    visibility = visibility !== 'false';
+  } else if (isObject(parameter)) {
+    visibility = normalize(parameter.visibility);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return visibility;
+};
+
+/**
+ * Parses the parameter in order to get the service URL
+ * @private
+ * @function
+ */
+const getURLKML = (parameter) => {
+  let url;
+  if (isString(parameter)) {
+    // v3 <KML>*<NAME>*<DIR>*<FILENAME>*<EXTRACT>
+    if (/^KML\*[^*]+\*[^*]+\*[^*]+\.kml\*(true|false)$/i.test(parameter)) {
+      const params = parameter.split(/\*/);
+      url = params[2].concat(params[3]);
+    } else {
+      const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)\*.*/i);
+      if (urlMatches && (urlMatches.length > 2)) {
+        url = urlMatches[2];
+      }
+    }
+  } else if (isObject(parameter)) {
+    url = parameter.url;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return url;
 };
 
 /**
@@ -942,6 +948,26 @@ const getVersionWFS = (parameter) => {
 };
 
 /**
+ * Parses the parameter in order to get the version
+ * @private
+ * @function
+ */
+const getExtractWFS = (parameter) => {
+  let extract;
+  if (isObject(parameter)) {
+    extract = normalize(parameter.extract);
+  }
+
+  if (!isNullOrEmpty(extract)) {
+    extract = /^1|(true)$/i.test(extract);
+  } else {
+    extract = undefined;
+  }
+
+  return extract;
+};
+
+/**
  * Parses the parameter in order to get the options
  * @private
  * @function
@@ -1011,6 +1037,9 @@ export const wfs = (userParameters) => {
 
     // gets the version
     layerObj.version = getVersionWFS(userParam);
+
+    // gets the extract
+    layerObj.extract = getExtractWFS(userParam);
 
     // gets the styles
     layerObj.style = getStyleWFS(userParam);
@@ -1083,6 +1112,31 @@ const getURLGeoJSON = (parameter) => {
 };
 
 /**
+ * Parses the parameter in order to get source
+ * @private
+ * @function
+ */
+const getSourceGeoJSON = (parameter) => {
+  let source;
+  let params;
+
+  if (isString(parameter)) {
+    params = parameter.split(/\*/);
+    if (/^GeoJSON\*[^*]+\*[^*]/i.test(parameter)) {
+      const param = params[2];
+      if (param.indexOf('http') === -1 && param.indexOf('https') === -1) {
+        source = param;
+      }
+    }
+  } else if (isObject(parameter)) {
+    source = parameter.source;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return source;
+};
+
+/**
  * Parses the parameter in order to get the transparence
  * @private
  * @function
@@ -1124,7 +1178,7 @@ const getStyleGeoJSON = (parameter) => {
   let style;
 
   if (isString(parameter)) {
-    if (/^GeoJSON(T)?\*.+/i.test(parameter)) {
+    if (/^GeoJSON\*[^*]+\*[^*]+\*[^*]*(true|false)+\*[^*]/i.test(parameter)) {
       // [TYPE]*[LEGEND]*[URL]*[EXTRACT/HIDE]*[STYLE]
       if (/^GeoJSON(T)?\*[^*]*\*[^*]+\*[^*]+\*[^*]*/i.test(parameter)) {
         params = parameter.split(/\*/);
@@ -1178,6 +1232,9 @@ export const geojson = (userParameters) => {
 
     // gets the URL
     layerObj.url = getURLGeoJSON(userParam);
+
+    // gets the source
+    layerObj.source = getSourceGeoJSON(userParam);
 
     // gets the name
     layerObj.extract = getExtractGeoJSON(userParam);
@@ -2109,7 +2166,12 @@ const getExtraParameter = (parameter, defaultValue, position, nameVariable) => {
     params = parameter.split(/\*/);
     if (position + 3 <= params.length - 1) {
       extraParam = params[position + 3].trim();
-      extraParam = extraParam.toLowerCase() !== 'false';
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(extraParam)) {
+        extraParam = extraParam.toLowerCase() !== 'false';
+      } else {
+        extraParam = Number(extraParam);
+      }
     } else {
       extraParam = defaultValue;
     }
@@ -2167,6 +2229,9 @@ export const xyz = (userParamer) => {
 
     // gets transparent
     layerObj.transparent = getExtraParameter(userParam, 'true', 1, 'transparent');
+
+    // get displayInLayerSwitcher
+    layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 2, 'displayInLayerSwitcher');
 
     return layerObj;
   });
@@ -2262,6 +2327,11 @@ export const tms = (userParamer) => {
     // gets transparent
     layerObj.transparent = getExtraParameter(userParam, 'true', 1, 'transparent');
 
+    // get tileGridMaxZoom
+    layerObj.tileGridMaxZoom = getExtraParameter(userParam, '17', 2, 'tileGridMaxZoom');
+
+    // get displayInLayerSwitcher
+    layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 3, 'displayInLayerSwitcher');
     return layerObj;
   });
 
@@ -2349,6 +2419,7 @@ export const wmts = (userParameters) => {
 const parameterFunction = {
   kml,
   wfs,
+  osm,
   wmc,
   wms,
   wmts,

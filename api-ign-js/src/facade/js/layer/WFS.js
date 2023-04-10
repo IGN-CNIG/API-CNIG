@@ -2,7 +2,7 @@
  * @module M/layer/WFS
  */
 import WFSImpl from 'impl/layer/WFS';
-import { isUndefined, isNullOrEmpty } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
 import * as LayerType from './Type';
@@ -60,6 +60,9 @@ class WFS extends Vector {
     // version
     this.version = parameters.version;
 
+    // extract
+    this.extract = parameters.extract || false;
+
     // options
     this.options = options;
   }
@@ -76,6 +79,22 @@ class WFS extends Vector {
     if (!isUndefined(newType) && !isNullOrEmpty(newType) &&
       (newType !== LayerType.WFS)) {
       Exception('El tipo de capa debe ser \''.concat(LayerType.WFS).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
+    }
+  }
+
+  get extract() {
+    return this.getImpl().extract;
+  }
+
+  set extract(newExtract) {
+    if (!isNullOrEmpty(newExtract)) {
+      if (isString(newExtract)) {
+        this.getImpl().extract = (normalize(newExtract) === 'true');
+      } else {
+        this.getImpl().extract = newExtract;
+      }
+    } else {
+      this.getImpl().extract = false;
     }
   }
 
@@ -212,6 +231,7 @@ class WFS extends Vector {
       equals = equals && (this.ids === obj.ids);
       equals = equals && (this.cql === obj.cql);
       equals = equals && (this.version === obj.version);
+      equals = equals && (this.extract === obj.extract);
     }
 
     return equals;
@@ -219,13 +239,13 @@ class WFS extends Vector {
 }
 
 /**
- * Style options by default for this layer
+ * Default params for style WFS layers
  * @const
  * @type {object}
  * @public
  * @api
  */
-WFS.DEFAULT_OPTIONS_STYLE = {
+WFS.DEFAULT_PARAMS = {
   fill: {
     color: 'rgba(103, 175, 19, 0.2)',
     opacity: 0.4,
@@ -234,7 +254,26 @@ WFS.DEFAULT_OPTIONS_STYLE = {
     color: '#67af13',
     width: 1,
   },
-  radius: 5,
+};
+
+/**
+ * Default style for WFS layers
+ * @const
+ * @type {object}
+ * @public
+ * @api
+ */
+WFS.DEFAULT_OPTIONS_STYLE = {
+  point: {
+    ...WFS.DEFAULT_PARAMS,
+    radius: 5,
+  },
+  line: {
+    ...WFS.DEFAULT_PARAMS,
+  },
+  polygon: {
+    ...WFS.DEFAULT_PARAMS,
+  },
 };
 
 export default WFS;

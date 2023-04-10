@@ -5,6 +5,9 @@ import 'assets/css/printermap';
 import PrinterMapControl from './printermapcontrol';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class PrinterMap extends M.Plugin {
   /**
    * @classdesc
@@ -134,6 +137,37 @@ export default class PrinterMap extends M.Plugin {
      * @type {String}
      */
     this.logo_ = parameters.logo || '';
+
+    /**
+     * Header legend image url
+     * @private
+     * @type {String}
+     */
+    this.headerLegend_ = parameters.headerLegend || '';
+
+    this.filterTemplates_ = parameters.filterTemplates || [];
+
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = parameters.order >= -1 ? parameters.order : null;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).printermap;
   }
 
   /**
@@ -155,6 +189,9 @@ export default class PrinterMap extends M.Plugin {
       this.georefActive_,
       this.logo_,
       this.fototeca_,
+      this.headerLegend_,
+      this.filterTemplates_,
+      this.order,
     );
     this.controls_.push(this.control_);
     this.panel_ = new M.ui.Panel('printermap', {
@@ -164,6 +201,7 @@ export default class PrinterMap extends M.Plugin {
       collapsedButtonClass: 'icon-impresora',
       position: M.ui.position[this.position_],
       tooltip: getValue('tooltip'),
+      order: this.order,
     });
     this.panel_.on(M.evt.ADDED_TO_MAP, (html) => {
       M.utils.enableTouchScroll(html);

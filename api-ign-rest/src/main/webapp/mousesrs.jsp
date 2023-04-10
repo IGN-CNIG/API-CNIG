@@ -55,7 +55,7 @@
         <input type="number" name="utmDecimalDigits" id="inputUtmDecimalDigits" value="2" />
         <label for="selectActiveZ">Selector de activeZ</label>
         <select name="activeZ" id="selectActiveZ">
-        	<option value="false" selected="selected">false</option>
+            <option value="false" selected="selected">false</option>
             <option value="true">true</option>
         </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar" />
@@ -88,7 +88,7 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let tooltip, srs, label, precision, geoDecimalDigits, utmDecimalDigits, activeZ;
+        let tooltip, psrs, label, precision, geoDecimalDigits, utmDecimalDigits, activeZ;
         crearPlugin({
             tooltip: "Muestra coordenadas",
             srs: "EPSG:4326",
@@ -118,7 +118,7 @@
         function cambiarTest() {
             let objeto = {}
             tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
-            srs = inputSrs.value != "" ? objeto.srs = inputSrs.value : "";
+            psrs = inputSrs.value != "" ? objeto.srs = inputSrs.value : "";
             label = inputLabel.value != "" ? objeto.label = inputLabel.value : "";
             precision = inputPrecision.value != "" ? objeto.precision = inputPrecision.value : "";
             geoDecimalDigits = inputGeoDecimalDigits.value != "" ? objeto.geoDecimalDigits = inputGeoDecimalDigits.value : "";
@@ -147,10 +147,13 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-163660977-1');
 </script>
 
 </html>

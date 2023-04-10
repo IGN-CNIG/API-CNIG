@@ -5,6 +5,9 @@ import '../assets/css/sharemap';
 import ShareMapControl from './sharemapcontrol';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 /**
  * @typedef {Object} ShareMapOptions
  * @property {number} [baseUrl] Base url of the shared map.
@@ -71,7 +74,7 @@ export default class ShareMap extends M.Plugin {
    * @param {ShareMapOptions} options
    * @api
    */
-  constructor(options) {
+  constructor({ filterLayers = [], ...options }) {
     super();
 
     if (M.utils.isNullOrEmpty(options.baseUrl)) {
@@ -182,6 +185,47 @@ export default class ShareMap extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+      * URL API or URL Visor (true o fdefault API, false visor)
+      *
+      * @private
+      * @type @type {bool}
+      */
+    this.urlAPI_ = options.urlAPI || false;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : null;
+
+    /** Select layers share by the name
+      * @private
+      * @type @type {Array}
+      */
+    this.filterLayers = (options.shareLayer === undefined) ? filterLayers : [];
+
+    /** Select all layers or not
+      * @private
+      * @type {Boolean}
+      */
+    this.shareLayer = options.shareLayer || false;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).sharemap;
   }
 
   /**
@@ -205,17 +249,22 @@ export default class ShareMap extends M.Plugin {
       tooltip: this.tooltip_,
       overwriteStyles: this.overwriteStyles_,
       minimize: this.minimize_,
+      urlAPI: this.urlAPI_,
+      order: this.order,
+      filterLayers: this.filterLayers,
+      shareLayer: this.shareLayer,
     });
 
     this.controls_.push(this.control);
 
     this.map_ = map;
 
-    this.panel_ = new M.ui.Panel('panelShareMap', {
+    this.panel_ = new M.ui.Panel('ShareMap', {
       collapsible: false,
       position: M.ui.position[this.position_],
       className: 'm-plugin-sharemap',
       tooltip: getValue('tooltipPanel'),
+      order: this.order,
     });
 
     this.panel_.addControls(this.controls_);

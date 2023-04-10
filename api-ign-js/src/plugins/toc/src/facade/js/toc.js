@@ -6,6 +6,9 @@ import '../assets/css/fonts';
 import TOCControl from './toc_control';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class TOC extends M.Plugin {
   /**
    * @constructor
@@ -57,6 +60,22 @@ export default class TOC extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+  }
+
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).toc;
   }
 
   /**

@@ -20,9 +20,18 @@
     "wfs_zoom": "Aumente el nivel de zoom * niveles si quiere añadir este servicio WFS",
     "url_not_valid": "La URL introducida no es válida"
   },
-  "tooltip": "Rutas y Capas Vectoriales",
+ "help_template": {
+    "help": "Ayuda",
+    "create_layers": "Crear capas de puntos (<span class='icon-points'></span>), de líneas/rutas (<span class='icon-lines'></span>) o polígonos (<span class='icon-polygon'></span>)",
+    "create_layers_content": "<p>Al hacer clic sobre <span class='icon-points'></span>, <span class='icon-lines'></span> o <span class='icon-polygon'></span> se añadirá una capa vacía con un nombre provisional. <b>Cada capa puede tener uno o varios elementos de dibujo y se pueden tener tantas capas como se desee.</b></p><p>Si quiere cambiar el nombre de la capa pulse sobre el nombre de la capa e introduzca el nombre que desea.</p><p>Con la opción <b>\"Añadir Geometría\"</b> (<span class='icon-add m-vector-layer-add'></span>) seleccionada podemos añadir nuevos elementos de dibujo a nuestra capa. El procedimiento de dibujo tiene las siguientes características:</p><ul><li><b>Un clic dibuja un punto o vértice</b> de línea o de polígono.</li><li><b>Doble clic finaliza el dibujo</b> de línea o polígono.</li><li>Pulsando la tecla <b>ESCape se interrumpe y borra el dibujo</b> que estuviera ejecutándose en ese momento.</li><li>Mientras se está realizando un elemento de dibujo, al pulsar la combinación de teclas <b>Ctrl+Z se elimina el último punto dibujado</b> dentro de la geometría en curso. Deshace, elimina el último vértice que se está dibujando.</li><li>Para elementos lineales o superficiales, al mantener pulsada la tecla \"Shift\" o \"Mayúscula\" durante un proceso de dibujo, se realiza el <b>dibujo de forma continua o libre</b> y no vértice a vértice.</li></ul>",
+    "add_wfs": "Añadir capa WFS",
+    "add_wfs_content": "<p>Para <b>descargar Features</b> añada la URL del servicio WFS o seleccione uno de los que se encuentran <b>preconfigurados</b> y elija la capa que sea de su interés. Al igual que con el resto de elementos puede editar su color y grosor. <b>La consulta de estos servicios se encuentra limitada y sólo están activos para niveles de zoom superiores al nivel 12</b>.</p>",
+    "loaded_layer": "Cargar ruta o capa (<span class='icon-upload'></span>)",
+    "loaded_layer_content": "<p>Haga clic en el botón <span class='icon-upload'></span> y seleccione el fichero en su ordenador personal. También, puede desde su el explorador arrastrar el fichero a la zona de mapa y el fichero quedará cargado. Los formatos aceptados son: <b> KML, SHP(.zip), GPX, GML y GeoJSON.</b> Una vez añadida al panel, el comportamiento es igual al resto de capas y rutas vectoriales.</p>"
+  },
+  "tooltip": "Capas Vectoriales",
   "change_name": "Cambiar nombre",
-  "close": "CERRAR",
+  "close": "Cerrar",
   "info": "Información",
   "warning": "Advertencia",
   "coordinates": "Coordenadas",
@@ -34,11 +43,12 @@
   "distance": "Dist. total",
   "ytitle": "Altitud (m)",
   "xtitle": "Distancia (km)",
+  "title_plugin": "Capas Vectoriales",
   "vector_layers": "Capas vectoriales",
   "profile": "Perfil Topográfico",
-  "add_point_layer": "Puntos",
-  "add_line_layer": "Rutas / Líneas",
-  "add_poly_layer": "Polígonos",
+  "add_point_layer": "Crear capas de puntos",
+  "add_line_layer": "Crear capas de líneas/rutas",
+  "add_poly_layer": "Crear capas de polígonos",
   "add_wfs_layer": "Añadir capa WFS",
   "load_layer": "Cargar ruta o capa",
   "point_layer": "Capa puntual",
@@ -87,5 +97,6 @@
   "from_url": "Desde URL",
   "url_layer": "URL del fichero",
   "add_layer": "Añadir capa",
-  "add_from_url": "Añadir capa desde URL"
+  "add_from_url": "Añadir capa desde URL",
+  "add_points": "Añadir puntos"
 }

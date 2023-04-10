@@ -79,6 +79,8 @@ export default class CompareMirrorpanel extends M.Control {
 
     this.vectorsConfig = values.vectorsConfig;
 
+    this.order = values.order;
+
     this.createMapContainers();
   }
 
@@ -140,12 +142,18 @@ export default class CompareMirrorpanel extends M.Control {
       };
 
       this.template = M.template.compileSync(template, templateOptions);
+      this.accessibilityTab(this.template);
+
 
       // Button's click events
       this.template.querySelectorAll('button[id^="set-mirror-"]').forEach((button) => {
         const modeViz = parseInt(button.getAttribute('id').replace('set-mirror-', ''), 10);
         button.addEventListener('click', evt => {
           this.manageVisionPanelByCSSGrid(modeViz);
+        })
+
+        button.addEventListener('keydown', evt => {
+          if(evt.keyCode === 13) this.manageVisionPanelByCSSGrid(modeViz);
         })
       });
 
@@ -431,5 +439,9 @@ export default class CompareMirrorpanel extends M.Control {
    */
   equals(control) {
     return control instanceof CompareMirrorpanel;
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

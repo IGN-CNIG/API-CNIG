@@ -8,6 +8,9 @@ import geographicNameType from './constants';
 import IGNSearchLocatorControl from './ignsearchlocatorcontrol';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class IGNSearchLocator extends M.Plugin {
   /**
    * @classdesc
@@ -253,7 +256,44 @@ export default class IGNSearchLocator extends M.Plugin {
      * @type {string}
      */
     this.helpUrl = options.helpUrl;
+
+
+    /**
+     * @private
+     * @type {Boolean}
+     */
+
+    this.cadastre = options.cadastre;
+
+    /**
+     * @private
+     * @type {Boolean}
+     */
+
+    this.searchCoordinatesXYZ = options.searchCoordinatesXYZ;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : null;
   }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).ignsearchlocator;
+  }
+
 
   /**
    * This function adds this plugin into the map
@@ -290,6 +330,9 @@ export default class IGNSearchLocator extends M.Plugin {
       this.pointStyle,
       this.nomenclatorSearchType,
       this.helpUrl,
+      this.cadastre,
+      this.searchCoordinatesXYZ,
+      this.order,
     ));
     this.controls_[0].on('ignsearchlocator:entityFound', (extent) => {
       this.fire('ignsearchlocator:entityFound', [extent]);
@@ -301,13 +344,14 @@ export default class IGNSearchLocator extends M.Plugin {
     if (this.position === 'TC') {
       this.collapsible = false;
     }
-    this.panel_ = new M.ui.Panel('panelIGNSearchLocator', {
+    this.panel_ = new M.ui.Panel('IGNSearchLocator', {
       collapsible: this.collapsible,
       position: M.ui.position[this.position],
       collapsed: this.isCollapsed,
       className: 'ign-searchlocator-panel',
       collapsedButtonClass: 'icon-ignsearch',
       tooltip: this.tooltip_,
+      order: this.order,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);

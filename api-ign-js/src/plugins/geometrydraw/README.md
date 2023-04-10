@@ -25,7 +25,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BR':bottom right
 - **collapsed**. Indica si el plugin viene cerrado por defecto (true/false).
 - **collapsible**. Indica si el plugin se puede cerrar (true/false).
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+
 
 # Parámetros API REST
 ```javascript
@@ -33,7 +33,7 @@ URL_API?geometrydraw=position*collapsed*collapsible
 ````
 Ejemplo:
 ```javascript
-https://componentes.cnig.es/api-core/?geometrydraw=BL*true*true
+http://mapea.desarrollo.guadaltel.es/api-core/?geometrydraw=BL*true*true
 ```
 
 

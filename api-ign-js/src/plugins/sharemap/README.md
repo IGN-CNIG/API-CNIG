@@ -45,9 +45,10 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **copyBtnHtml**. Título para el segundo botón. 
 - **minimize**. Genera URL minificada.
 - **urlAPI**. URL API o URL Visor (API verdadero o predeterminado, visor falso).
-- **shareLayers**. Selecciona la capa a compartir por el nombre, valor de tipo Array o Boolean (false). 
+- **shareLayer**. Define si se comparten todas las capas o ninguna, valor de tipo _Boolean_.
+  - Por defecto: _false_
+- **filterLayers**. Selecciona la capa a compartir por el nombre, valor de tipo _Array_. 
   - Por defecto: [ ].
-  - ```Boolean```: Las capas que se comparten se seleccionan por el "displayInLayerSwitcher".
   - ```Array<String>```: Los valores serán los nombres de la capa.
 
 # Parámetros API REST

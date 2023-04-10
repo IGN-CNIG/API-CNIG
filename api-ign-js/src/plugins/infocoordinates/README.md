@@ -23,8 +23,6 @@ El constructor se inicializa con un JSON de _options_ con los siguientes atribut
   - 'BR':bottom right
 - **decimalGEOcoord**. Indica el número de decimales de las coordenadas geográficas.
 - **decimalUTMcoord**. Indica el número de decimales de las coordenadas proyectadas en UTM.
-- **helpUrl**. URL a la ayuda para el icono.
-
 ## Eventos
 
 ## Otros métodos

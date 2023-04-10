@@ -102,6 +102,12 @@ export default class ContactLinkControl extends M.Control {
      * @type { HTMLElement }
      */
     this.template = null;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+     this.order = values.order >= -1 ? values.order : null;
   }
 
   /**
@@ -154,8 +160,28 @@ export default class ContactLinkControl extends M.Control {
             compare: getValue('links.compare'),
             display: getValue('links.3d'),
             photo: getValue('links.photo')
+          },
+          accessibility: {
+            webLinks: getValue('accessibility.webLinks'),
+            socialMedia: getValue('accessibility.socialMedia')
           }
         }
+      });
+
+      this.accessibilityTab(html);
+
+      html.querySelector('#urlPNOAContactLink').addEventListener('click', () => {
+        let url = this.linksPnoa;
+        if (this.linksPnoa.indexOf('index.html') === -1 && this.linksPnoa.indexOf('/comparador_pnoa') > -1) {
+          url = `${this.linksPnoa}?center=${map.getCenter().x},${map.getCenter().y}&zoom=${map.getZoom()}&srs=${map.getProjection().code}`;
+        }
+
+        window.open(url);
+      });
+
+      html.querySelector('#urlFototecaContactLink').addEventListener('click', () => {
+        const url = `${this.linksFototeca}fototeca/?center=${map.getCenter().x},${map.getCenter().y}&zoom=${map.getZoom()}&srs=${map.getProjection().code}`;
+        window.open(url);
       });
       // Añadir código dependiente del DOM
       success(html);
@@ -206,5 +232,9 @@ export default class ContactLinkControl extends M.Control {
     return control instanceof ContactLinkControl;
   }
 
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+  }
   // Add your own functions
 }

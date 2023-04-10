@@ -14,6 +14,26 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
     layers: backgroundlayersLayers[index].split('+'),
   };
 });
+const params = window.location.search.split('&');
+let center = '';
+let zoom = '';
+let srs = '';
+let layers = '';
+params.forEach((param) => {
+  if (param.indexOf('center') > -1) {
+    const values = param.split('=')[1].split(',');
+    center = [parseFloat(values[0]), parseFloat(values[1])];
+  } else if (param.indexOf('zoom') > -1) {
+    const value = param.split('=')[1];
+    zoom = parseInt(value, 10);
+  } else if (param.indexOf('srs') > -1) {
+    const value = param.split('=')[1];
+    srs = value;
+  } else if (param.indexOf('layers') > -1) {
+    const value = param.substring(param.indexOf('=') + 1, param.length);
+    layers = value.split(',');
+  }
+});
 
 (function(M) {
   /**
@@ -41,7 +61,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_URL', location.protocol + '${mapea.proxy.url}');
+  M.config('PROXY_URL', ((location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:') + '${mapea.proxy.url}');
 
   /**
    * The path to the Mapea proxy to send
@@ -51,7 +71,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_POST_URL', location.protocol + '${mapea.proxy_post.url}');
+  M.config('PROXY_POST_URL', ((location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:') + '${mapea.proxy_post.url}');
 
   /**
    * The path to the Mapea templates
@@ -69,7 +89,7 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @public
    * @api stable
    */
-  M.config('THEME_URL', location.protocol + '${mapea.theme.url}');
+  M.config('THEME_URL', ((location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:') + '${mapea.theme.url}');
 
   /**
    * The path to the Mapea theme
@@ -169,13 +189,13 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
   M.config('GEOPRINT_STATUS', '${geoprint.url}' + '${geoprint.status}');
 
   /**
-   * WMTS configuration
+   * TMS configuration
    *
    * @private
    * @type {object}
    */
-  M.config('wmts', {
-    base: '${wmts.base}',
+  M.config('tms', {
+    base: '${tms.base}',
   });
 
   /**
@@ -214,70 +234,102 @@ const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
    * @private
    * @type {String}
    */
-  M.config('SQL_WASM_URL', location.protocol + '${sql_wasm.url}');
+  M.config('SQL_WASM_URL', ((location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:') + '${sql_wasm.url}');
 
   /** IGNSearch List Control
    *
    * @private
    * @type {object}
    */
-   M.config('IGNSEARCH_TYPES_CONFIGURATION', [
-     'Estado',
-     //'Comunidad aut\u00F3noma',
-     //'Ciudad con estatuto de autonom\u00EDa',
-     //'Provincia',
-     //'Municipio',
-     //'EATIM',
-     'Isla administrativa',
-     'Comarca administrativa',
-     'Jurisdicci\u00F3n',
-     //'Capital de Estado',
-     //'Capital de comunidad aut\u00F3noma y ciudad con estatuto de autonom\u00EDa',
-     //'Capital de provincia',
-     //'Capital de municipio',
-     //'Capital de EATIM',
-     //'Entidad colectiva',
-     //'Entidad menor de poblaci\u00F3n',
-     'Distrito municipal',
-     //'Barrio',
-     //'Entidad singular',
-     'Construcci\u00F3n/instalaci\u00F3n abierta',
-     'Edificaci\u00F3n',
-     'V\u00E9rtice Geod\u00E9sico',
-     //'Hitos de demarcaci\u00F3n territorial',
-     //'Hitos en v\u00EDas de comunicaci\u00F3n',
-     'Alineaci\u00F3n monta\u00F1osa',
-     'Monta\u00F1a',
-     'Paso de monta\u00F1a',
-     'Llanura',
-     'Depresi\u00F3n',
-     'Vertientes',
-     'Comarca geogr\u00E1fica',
-     'Paraje',
-     'Elemento puntual del paisaje',
-     'Saliente costero',
-     'Playa',
-     'Isla',
-     'Otro relieve costero',
-      //'Parque Nacional y Natural',
-     'Espacio protegido restante',
-     //'Aeropuerto',
-     //'Aer\u00F3dromo',
-     //'Pista de aviaci\u00F3n y helipuerto',
-     //'Puerto de Estado',
-     'Instalaci\u00F3n portuaria',
-     //'Carretera',
-     'Camino y v\u00EDa pecuaria',
-     //'V\u00EDa urbana',
-     //'Ferrocarril',
-     'Curso natural de agua',
-     'Masa de agua',
-     'Curso artificial de agua',
-     'Embalse',
-     'Hidr\u00F3nimo puntual',
-     'Glaciares',
-     'Mar',
-     'Entrante costero y estrecho mar\u00EDtimo',
-     'Relieve submarino',
-   ]);
+  M.config('IGNSEARCH_TYPES_CONFIGURATION', [
+    'Estado',
+    //'Comunidad aut\u00F3noma',
+    //'Ciudad con estatuto de autonom\u00EDa',
+    //'Provincia',
+    //'Municipio',
+    //'EATIM',
+    'Isla administrativa',
+    'Comarca administrativa',
+    'Jurisdicci\u00F3n',
+    //'Capital de Estado',
+    //'Capital de comunidad aut\u00F3noma y ciudad con estatuto de autonom\u00EDa',
+    //'Capital de provincia',
+    //'Capital de municipio',
+    //'Capital de EATIM',
+    //'Entidad colectiva',
+    //'Entidad menor de poblaci\u00F3n',
+    //'Distrito municipal',
+    //'Barrio',
+    //'Entidad singular',
+    //'Construcci\u00F3n/instalaci\u00F3n abierta',
+    //'Edificaci\u00F3n',
+    'V\u00E9rtice Geod\u00E9sico',
+    //'Hitos de demarcaci\u00F3n territorial',
+    //'Hitos en v\u00EDas de comunicaci\u00F3n',
+    'Alineaci\u00F3n monta\u00F1osa',
+    'Monta\u00F1a',
+    'Paso de monta\u00F1a',
+    'Llanura',
+    'Depresi\u00F3n',
+    'Vertientes',
+    'Comarca geogr\u00E1fica',
+    'Paraje',
+    'Elemento puntual del paisaje',
+    'Saliente costero',
+    'Playa',
+    'Isla',
+    'Otro relieve costero',
+    //'Parque Nacional y Natural',
+    //'Espacio protegido restante',
+    //'Aeropuerto',
+    //'Aer\u00F3dromo',
+    //'Pista de aviaci\u00F3n y helipuerto',
+    //'Puerto de Estado',
+    //'Instalaci\u00F3n portuaria',
+    //'Carretera',
+    //'Camino y v\u00EDa pecuaria',
+    //'V\u00EDa urbana',
+    //'Ferrocarril',
+    'Curso natural de agua',
+    'Masa de agua',
+    'Curso artificial de agua',
+    //'Embalse',
+    'Hidr\u00F3nimo puntual',
+    'Glaciares',
+    'Mar',
+    'Entrante costero y estrecho mar\u00EDtimo',
+    'Relieve submarino',
+  ]);
+
+  /**
+   * MAP Viewer - Center
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('MAP_VIEWER_CENTER', center);
+
+  /**
+   * MAP Viewer - Zoom
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('MAP_VIEWER_ZOOM', zoom);
+
+  /**
+   * MAP Viewer - SRS
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('MAP_VIEWER_SRS', srs);
+
+  /**
+   * MAP Viewer - Layers
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('MAP_VIEWER_LAYERS', layers);
 })(window.M);

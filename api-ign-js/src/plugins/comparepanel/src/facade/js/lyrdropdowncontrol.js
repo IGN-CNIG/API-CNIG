@@ -64,6 +64,13 @@ export default class LyrdropdownControl extends M.Control {
     this.layerSelected = null;
 
     /**
+     * Nivel mínimo en el que empiezan a cargarse las capas
+     * @public
+     * @type { integer }
+     */
+     this.lyrsMirrorMinZindex = values.lyrsMirrorMinZindex;
+
+    /**
      * Template
      * @public
      * @type { HTMLElement }
@@ -85,6 +92,7 @@ export default class LyrdropdownControl extends M.Control {
       //e2m: Transform stringLyr definition to apicnigLyr
       this.layers = this.transformToLayers(this.layers);
       //e2m: getting layers array with name and legend for plugin
+
       let capas = this.layers.map((layer) => {
         return layer instanceof Object ? {  name: layer.name, legend: layer.legend } : { name: layer, legend: layer };
       });
@@ -103,11 +111,6 @@ export default class LyrdropdownControl extends M.Control {
         };
       }
 
-      //e2m: config a helper in Handlebars for embedding conditionals in template
-      Handlebars.registerHelper('ifCond', (v1, v2, options) => {
-        return v1 === v2 ? options.fn(this) : options.inverse(this);
-      });
-
       this.template = M.template.compileSync(template, options);
       //Si no hay capas a las que aplicar la transparencia, el plugin no funciona e informa
       if (this.layers.length === 0) {
@@ -119,19 +122,22 @@ export default class LyrdropdownControl extends M.Control {
 
       //Events on template component
       this.template.querySelector('#m-lyrdropdown-selector').addEventListener('change', (evt) => {
-        console.log("Entro:" + evt.target.value);
         const layerSel = this.map.getLayers().filter((layer) => {
           return layer.name === evt.target.value;
         });
-        //Get selected layer from layer array
-        console.log(this.layerSelected);
+        // Get selected layer from layer array
         this.layerSelected.setVisible(false);
         this.removeEffects();
         if (layerSel.length === 0){
-          return;//No layer option is selected
+          /**
+           * Se ha seleccionado la opción de eliminar capa
+           */
+          //this.getImpl().removeLayer(layer.getImpl().getOL3Layer());
+          return; // No layer option is selected
         }
 
         this.layerSelected = layerSel[0];
+        this.layerSelected.setZIndex(this.lyrsMirrorMinZindex);
         this.getImpl().setLayer(this.layerSelected);
       });
 
@@ -166,17 +172,24 @@ export default class LyrdropdownControl extends M.Control {
    * @api stable
    */
   deactivate() {
-    console.log('deactivate');
+
     if (this.layerSelected === null) this.layerSelected = this.layers[0];
     let names = this.layers.map((layer) => {
       return layer instanceof Object ? { name: layer.name } : { name: layer };
     });
 
-    this.removeEffects();
-    this.layerSelected.setVisible(false);
-    if (names.length >= 1) {
-      this.template.querySelector('#m-lyrdropdown-selector').disabled = true;
+    try {
+      this.removeEffects();
+      this.layerSelected.setVisible(false);
+      if (names.length >= 1) {
+        this.template.querySelector('#m-lyrdropdown-selector').disabled = true;
+      }
+    } catch (error) {
+          /* eslint-disable */
+          console.log(error);
+          /* eslint-enable */
     }
+
   }
 
   /**
@@ -199,7 +212,6 @@ export default class LyrdropdownControl extends M.Control {
    * @api stable
    */
   removeEffects() {
-    console.log('removeEffects');
     this.getImpl().removeEffects();
   }
 
@@ -296,6 +308,7 @@ export default class LyrdropdownControl extends M.Control {
 
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
+        newLayer.setZIndex(this.lyrsMirrorMinZindex);/* Establezco un zIndex a partir del cual se cargan las capas*/
         return newLayer;
       } else {
         this.layers.remove(layer);
@@ -304,7 +317,7 @@ export default class LyrdropdownControl extends M.Control {
 
     return (transform[0] === undefined) ? [] : transform;
   }
- 
+
 
   /**
    * This function transform string to M.Layer

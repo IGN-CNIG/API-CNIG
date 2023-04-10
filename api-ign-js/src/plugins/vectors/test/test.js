@@ -8,10 +8,10 @@ const map = M.map({
     y: 4514194.232367303,
   },
   zoom: 9,
-  /*layers: [
+  /* layers: [
     //'WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster*SIG-C:25830*WMTS*false',
     //'WFS*CampamentosCampamentosCampamentosCampamentos*http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows*sepim:campamentos*POINT***eyJwYXJhbWV0ZXJzIjpbeyJpY29uIjp7ImZvcm0iOiJDSVJDTEUiLCJjbGFzcyI6ImctY2FydG9ncmFmaWEtYmFuZGVyYSIsImZvbnRzaXplIjowLjUsInJhZGl1cyI6MTUsImZpbGwiOiJ3aGl0ZSJ9LCJyYWRpdXMiOjV9XSwiZGVzZXJpYWxpemVkTWV0aG9kIjoiKChzZXJpYWxpemVkUGFyYW1ldGVycykgPT4gTS5zdHlsZS5TaW1wbGUuZGVzZXJpYWxpemUoc2VyaWFsaXplZFBhcmFtZXRlcnMsICdNLnN0eWxlLlBvaW50JykpIn0',
-  ],*/
+  ], */
 });
 
 const precharged = [
@@ -30,7 +30,7 @@ const mp = new Vectors({
   collapsible: true,
   position: 'TR',
   wfszoom: 12,
-  precharged,
+  // precharged,
 });
 
 const mp2 = new M.plugin.Infocoordinates({
@@ -47,28 +47,28 @@ const mp3 = new M.plugin.Information({
 const mp4 = new M.plugin.MeasureBar({ position: 'TR' });
 
 const provincias = new M.layer.WFS({
-  url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?",
-  namespace: "tematicos",
-  name: "Provincias",
-  legend: "Provincias",
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
+  namespace: 'tematicos',
+  name: 'Provincias',
+  legend: 'Provincias',
   geometry: 'MPOLYGON',
 });
 
 const viales = new M.layer.WFS({
-  url: "http://g-gis-online-lab.desarrollo.guadaltel.es/geoserver/ggiscloud_root/wms?",
-  namespace: "ggiscloud_root",
-  name: "a1585302352391_viales_almeria",
-  legend: "Viales",
+  url: 'http://g-gis-online-lab.desarrollo.guadaltel.es/geoserver/ggiscloud_root/wms?',
+  namespace: 'ggiscloud_root',
+  name: 'a1585302352391_viales_almeria',
+  legend: 'Viales',
   geometry: 'LINE',
 });
 
-//map.addWFS(provincias);
-//map.addWFS(viales);
+// map.addWFS(provincias);
+// map.addWFS(viales);
 map.addPlugin(mp);
-map.addPlugin(mp2);
-map.addPlugin(mp3);
-map.addPlugin(mp4);
-map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
+// map.addPlugin(mp2);
+// map.addPlugin(mp3);
+// map.addPlugin(mp4);
+// map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
 map.addPlugin(new M.plugin.BackImgLayer({
   position: 'TR',
   layerId: 0,
@@ -78,24 +78,6 @@ map.addPlugin(new M.plugin.BackImgLayer({
   columnsNumber: 4,
   empty: true,
   layerOpts: [
-    {
-      id: 'raster',
-      preview: '',
-      title: 'Mapa',
-      layers: [
-        new M.layer.WMTS({
-          url: 'https://www.ign.es/wmts/mapa-raster?',
-          name: 'MTN',
-          legend: 'Mapa',
-          matrixSet: 'GoogleMapsCompatible',
-          transparent: false,
-          displayInLayerSwitcher: false,
-          queryable: false,
-          visible: true,
-          format: 'image/jpeg',
-        }),
-      ],
-    },
     {
       id: 'imagen',
       preview: '',
@@ -111,6 +93,24 @@ map.addPlugin(new M.plugin.BackImgLayer({
           queryable: false,
           visible: true,
           tileGridMaxZoom: 19,
+        }),
+      ],
+    },
+    {
+      id: 'raster',
+      preview: '',
+      title: 'Mapa',
+      layers: [
+        new M.layer.WMTS({
+          url: 'https://www.ign.es/wmts/mapa-raster?',
+          name: 'MTN',
+          legend: 'Mapa',
+          matrixSet: 'GoogleMapsCompatible',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: 'image/jpeg',
         }),
       ],
     },

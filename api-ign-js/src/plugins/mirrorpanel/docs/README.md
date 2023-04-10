@@ -55,7 +55,6 @@ Plugin que permite comparar varias capas dividiendo la pantalla en varias partes
 - **backImgLayersParams**. Es un objeto con todos los parámetros del plugin **M.plugin.BackImgLayer** de los mapas espejo.
 
 - **interface**. Define si mostrar o no la interfaz del plugin.
-- **tootltip**. Tooltip que se muestra sobre el plugin.
 
 # Eventos
 

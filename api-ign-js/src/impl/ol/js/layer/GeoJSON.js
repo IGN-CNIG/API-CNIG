@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/GeoJSON
  */
-import { isNullOrEmpty, isObject, beautifyAttributeName, isFunction, includes } from 'M/util/Utils';
+import { isNullOrEmpty, isObject, isFunction, includes } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import Popup from 'M/Popup';
 import { compileSync as compileTemplate } from 'M/util/Template';
@@ -101,7 +101,7 @@ class GeoJSON extends Vector {
     this.formater_ = new GeoJSONFormat({
       defaultDataProjection: getProj(map.getProjection().code),
     });
-    if (!isNullOrEmpty(this.url)) {
+    if (!isNullOrEmpty(this.url) && (this.url.indexOf('http') !== -1 || this.url.indexOf('https') !== -1)) {
       this.loader_ = new JSONPLoader(map, this.url, this.formater_);
     }
     super.addTo(map);
@@ -248,7 +248,7 @@ class GeoJSON extends Vector {
    */
   selectFeatures(features, coord, evt) {
     const feature = features[0];
-    if (this.extract !== true) {
+    if (this.extract === true) {
       // unselects previous features
       this.unselectFeatures();
 
@@ -306,7 +306,7 @@ class GeoJSON extends Vector {
         }
         if (addAttribute) {
           attributes.push({
-            key: beautifyAttributeName(key),
+            key,
             value: properties[key],
           });
         }

@@ -1,12 +1,147 @@
 /**
  * @module M/control/CompareMirrorpanel
  */
-
 import MirrorpanelImplControl from 'impl/cpmirrorpanel';
 import template from 'templates/cpmirrorpanel';
 import { getValue } from './i18n/language';
 import Lyrdropdown from './lyrdropdown';  //e2m: reference LayerDropDown control
 
+const objWMTSsiose = new M.layer.WMTS({
+  url: "https://servicios.idee.es/wmts/ocupacion-suelo",
+  name: "LC.LandCoverSurfaces",
+  matrixSet: "GoogleMapsCompatible",
+  legend: "CORINE / SIOSE",
+  transparent: false,
+  displayInLayerSwitcher: false,
+  queryable: false,
+  visible: true,
+  format: 'image/png',
+});
+
+const objWMTSMTN501Edi = new M.layer.WMTS({
+  url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
+  name: 'mtn50-edicion1',
+  legend: 'MTN50 1Edi',
+  matrixSet: 'GoogleMapsCompatible',
+  transparent: false,
+  displayInLayerSwitcher: false,
+  queryable: false,
+  visible: true,
+  format: 'image/jpeg',
+});
+
+const objWMTSMapa = new M.layer.WMTS({
+  url: 'https://www.ign.es/wmts/mapa-raster',
+  name: 'MTN',
+  matrixSet: 'GoogleMapsCompatible',
+  legend: 'Mapa MTN',
+  transparent: false,
+  displayInLayerSwitcher: false,
+  queryable: false,
+  visible: true,
+  format: 'image/jpeg',
+});
+
+const objWMTSLidar = new M.layer.WMTS({
+  url: 'https://wmts-mapa-lidar.idee.es/lidar',
+  name: 'EL.GridCoverageDSM',
+  matrixSet: 'GoogleMapsCompatible',
+  legend: 'Modelo Digital de Superficies LiDAR',
+  transparent: true,
+  displayInLayerSwitcher: false,
+  queryable: false,
+  visible: false,
+  format: 'image/png',
+});
+
+const objTMSIGNBase = new M.layer.XYZ({
+  url: 'https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
+  projection: 'EPSG:3857',
+  transparent: false,
+  displayInLayerSwitcher: false,
+  queryable: false,
+  visible: true,
+  maxZoom: 19,
+});
+
+const objTMSPNOA = new M.layer.XYZ({
+  url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+  projection: 'EPSG:3857',
+  transparent: false,
+  displayInLayerSwitcher: false,
+  queryable: false,
+  visible: true,
+  maxZoom: 19,
+});
+
+const objTMSIGNBaseSoloTextos = new M.layer.XYZ({
+  url: 'https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png',
+  projection: 'EPSG:3857',
+  transparent: false,
+  displayInLayerSwitcher: false,
+  queryable: false,
+  visible: true,
+  maxZoom: 19,
+});
+
+const BASE_LAYERS_CONFIG = {
+  position: 'TR',
+  collapsible: true,
+  collapsed: true,
+  layerId: 0,
+  layerVisibility: true,
+  columnsNumber: 4,
+  layerOpts: [
+    {
+      id: 'MAPAMTN',
+      preview: 'https://i.ibb.co/cL76yjr/raster.png',
+      title: 'Mapa MTN',
+      layers: [objWMTSMapa],
+    },
+    {
+      id: 'mapa',
+      preview: 'https://i.ibb.co/DfPrChV/mapa.png',
+      title: 'Callejero',
+      layers: [objTMSIGNBase],
+    },
+    {
+      id: 'imagen',
+      preview: 'https://i.ibb.co/SKn17Yn/image.png',
+      title: 'Imagen',
+      layers: [objTMSPNOA],
+    },
+    {
+      id: 'hibrido',
+      title: 'Híbrido',
+      preview: 'https://i.ibb.co/N6jfqwz/hibrido.png',
+      layers: [objTMSPNOA,objTMSIGNBaseSoloTextos],
+    },
+    {
+      id: 'lidar',
+      preview: 'https://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',
+      title: 'LiDAR',
+      layers: [objWMTSLidar],
+    },
+    {
+      id: 'lidar-hibrido',
+      title: 'LiDAR híbrido',
+      preview: 'https://i.ibb.co/TYZcmkz/lidar.png',
+      layers: [objWMTSLidar,objTMSIGNBaseSoloTextos],
+    },
+    {
+      id: 'SIOSE',
+      preview: 'https://i.ibb.co/g34dLwz/siose.jpg',
+      title: 'SIOSE',
+      layers: [objWMTSsiose],
+    },
+    {
+      id: 'MTN501Edi',
+      preview: 'https://i.ibb.co/gPNp5g7/mtn501-Edi.jpg',
+      title: 'MTN50 1Edi',
+      layers: [objWMTSMTN501Edi],
+    },
+  ]
+};
 export default class CompareMirrorpanel extends M.Control {
   /**
    * @classdesc
@@ -84,6 +219,13 @@ export default class CompareMirrorpanel extends M.Control {
     this.defaultBaseLyrs = values.defaultBaseLyrs;
 
     /**
+     * Nivel mínimo en el que empiezan a cargarse las capas
+     * @public
+     * @type { integer }
+     */
+     this.lyrsMirrorMinZindex = values.lyrsMirrorMinZindex
+
+    /**
      * All layers
      * @public
      * @public {Array}
@@ -94,25 +236,31 @@ export default class CompareMirrorpanel extends M.Control {
      * Define the control for managing layers
      *
      */
+
     this.lyDropControlA = new Lyrdropdown({
       position: 'TL',
       collapsible: false, // El botón para desplegar/replegar el plugin no aparece (false) o sí aparece(true)
       collapsed: true,    // El panel del plugin se muestra desplegado (false) o replegado (true)
       layers: this.defaultBaseLyrs,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
+
 
     this.lyDropControlB = new Lyrdropdown({
       position: 'TL',
       collapsible: false,
       collapsed: true,
       layers: this.defaultBaseLyrs,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
+
 
     this.lyDropControlC = new Lyrdropdown({
       position: 'TL',
       collapsible: false,
       collapsed: true,
       layers: this.defaultBaseLyrs,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
 
     this.lyDropControlD = new Lyrdropdown({
@@ -120,6 +268,7 @@ export default class CompareMirrorpanel extends M.Control {
       collapsible: false,
       collapsed: true,
       layers: this.defaultBaseLyrs,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
 
     this.createMapContainers();
@@ -259,6 +408,17 @@ export default class CompareMirrorpanel extends M.Control {
     bigContainer.appendChild(mapjsD);
   }
 
+  changeViewPluginsGrid(change){
+      M.config.MOBILE_WIDTH =  (change) ? '2000' : '768';
+      let pluginsControls = [];
+      Object.entries(this.mapL).forEach(([_, e]) => {
+        pluginsControls = (e) ? [...pluginsControls, ...e.getControls(), ...e.getPlugins()]
+        : pluginsControls;
+      })
+      pluginsControls.forEach(e => (e.changeStyleResponsive) ? e.changeStyleResponsive(change) : null);
+  }
+
+
   /**
    * This function shows/hides panel for differents viz options.
    * The mirror maps are launched from here
@@ -316,8 +476,11 @@ export default class CompareMirrorpanel extends M.Control {
       });
 
       if (toDelete.length > 0) {
+        this.lyDropControlA.deactivate(); /** Se quedaba enganchada la última capa. Ahora parece que va al introducir esta línea */
         this.map_.removePlugins(toDelete);
       }
+
+
     } else {
       //Añado aquí el DropDownLayer del mapa principal
       this.lyDropControlA = new Lyrdropdown({
@@ -325,6 +488,7 @@ export default class CompareMirrorpanel extends M.Control {
         collapsible: false,
         collapsed: true,
         layers: this.defaultBaseLyrs,
+        lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
       });
 
       this.mapL['A'].addPlugin(this.lyDropControlA);
@@ -336,7 +500,16 @@ export default class CompareMirrorpanel extends M.Control {
     if (this.mapL['B'] !== null) { this.mapL['B'].refresh(); }
     if (this.mapL['C'] !== null) { this.mapL['C'].refresh(); }
     if (this.mapL['D'] !== null) { this.mapL['D'].refresh(); }
-    document.querySelector('#m-cp-mirrorpanel > button').click();
+
+    // e2m: esta manera de cerrar el panel provocaba que se lanzara el evento deactivateAndActivateMirrorPanel
+    //document.querySelector('#m-cp-mirrorpanel > button').click();
+    // e2m: de esta manera se oculta el panel y no se lanza el evento, pero es un poco raro
+    document.querySelector('#m-cp-mirrorpanel-btn').classList.remove('active');
+    document.querySelector('.m-panel-controls .cp-mirrorpanel').classList.remove('hide-panel');
+
+    setTimeout(() => {
+      this.changeViewPluginsGrid([3,4,7].includes(modeViz));
+    }, 500);
   }
 
   /**
@@ -385,23 +558,40 @@ export default class CompareMirrorpanel extends M.Control {
             pluginVector = new M.plugin.Vectors({
               position: itemPlug.position,
               collapsed: itemPlug.collapsed,
-              collapsible: itemPlug.collapsible,              
+              collapsible: itemPlug.collapsible,
             });
           }
           if (itemPlug.metadata_.name === "backimglayer") {
+
+            /**
+             * Nota de Jesús: OJO!!
+             * El problema del backimglayer venía porque se usaban los mismos objetos capa en ambos mapas y eso provocaba los errores.
+             * Se ha sacado una versión específica para el comparador_pnoa con esa definición de capas fija.
+             * Las siguientes líneas se han comentado para subir al plugin.
+             *
+             * ToDO:
+             * Lo ideal sería que se le pasara por parámetro como antiguamente, pero como era una cosa urgente he optado por eso por ahora.
+             * En el iberpixcompare como todavía se usaba la configuración antigua en la que se le metían las capas por parámetro no daba ese error.
+             * Para un futuro lo ideal sería eso, meterlas por parámetro. No le borres nada por si hay que volver a compilar versión con algún cambio.
+             *
+             *
+             */
+            // Para el Comparador PNOA descomentar las dos siguientes líneas y comentar la tercera y comentar la definición posterior
+            //BASE_LAYERS_CONFIG.layerId = mapLyr === 'A' ? 0 : mapLyr === 'B' ? 1 : mapLyr == 'C' ? 2 : 3,
+            //pluginBackImgLayer4map = new M.plugin.BackImgLayer(BASE_LAYERS_CONFIG);
+
             pluginBackImgLayer4map = new M.plugin.BackImgLayer({
-              //layerId: itemPlug.layerId,
               layerId: mapLyr === 'A' ? 0 : mapLyr === 'B' ? 1 : mapLyr == 'C' ? 2 : 3,
               layerVisibility:  itemPlug.layerVisibility,
               columnsNumber: itemPlug.columnsNumber,
               layerOpts: itemPlug.layerOpts
             });
-            //pluginBackImgLayer4map = new M.plugin.BackImgLayer(this.backImgLayersConfig);
           }
 
         }
       });
     }
+
 
     if (this.lyDropControl !== null){
       if (mapLyr === 'B'){
@@ -420,15 +610,16 @@ export default class CompareMirrorpanel extends M.Control {
     // Añadimos plugins secundarios
     if (pluginFullTOC4map !== null) {
       this.mapL[mapLyr].addPlugin(pluginFullTOC4map);
-    } 
+    }
 
     if (pluginVector !== null) {
       this.mapL[mapLyr].addPlugin(pluginVector);
-    } 
+    }
 
     if (pluginBackImgLayer4map !== null) {
+      console.log('--')
       this.mapL[mapLyr].addPlugin(pluginBackImgLayer4map);
-    } 
+    }
 
 
     if (this.showCursors) { this.addLayerCursor(mapLyr); }
@@ -474,23 +665,21 @@ export default class CompareMirrorpanel extends M.Control {
   }
 
 
-  
+
   manageLyrAvailable(lyrList){
-    
-    console.log('manageLyrAvailable MirrorCompare');
 
     if (this.lyDropControlA.control_!== null){
       this.lyDropControlA.setDisabledLyrs(lyrList);
     }
     if (this.lyDropControlB.control_!== null){
       this.lyDropControlB.setDisabledLyrs(lyrList);
-    }  
+    }
     if (this.lyDropControlC.control_!== null){
       this.lyDropControlC.setDisabledLyrs(lyrList);
     }
     if (this.lyDropControlD.control_!== null){
       this.lyDropControlD.setDisabledLyrs(lyrList);
-    }     
+    }
   }
 
   /**

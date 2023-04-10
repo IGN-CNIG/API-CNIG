@@ -21,7 +21,7 @@
   </a>
   <a title="Language" href="https://www.w3schools.com/css/" target="_blank">
     <img src="https://img.shields.io/static/v1?label=Lang&message=CSS3&color=maroon">
-  </a> 
+  </a>
 
   <br />
   <br />
@@ -36,6 +36,7 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 |![Imagen1](./assets/comparepanel-collapsed.png)|![Imagen1](./assets/comparepanel-vertical.png)|![Imagen2](./assets/comparepanel-horizontal.png)|
 
 
+Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa principal. Ahora podemos aplicar uno de estos dos modos de comparación y además acytivar algonmo de los modos de comparación por mapa espejo
 
 ## Dependencias 👷
 
@@ -52,14 +53,12 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 ## Modos de comparación
 
 <p align="center">
-  <img src="assets/comparadores.png" height="256" />
+  <img src="assets/comparadoresv2.png" height="256" />
 </p>
 
 **Comparador de espejo / Mirror**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
 
 **Comparador de cortina / Curtain**: permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.
-
-**Comparador línea del tiempo / Timneline**: comparación para estudiar la evolución de una serie de capas a lo largo del tiempo.
 
 **Comparador zonal / Spyeye**: reducción de la capa comparativa a una zona circular para contratarla con el mapa de fondo.
 
@@ -80,11 +79,11 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
 - **vertical**. Si es *true*, el panel se verá con la orientación vertical. Si es *false*, el panel se verá con la orientación horizontal. Por defecto tiene el valor *true*
 
 - **defaultCompareMode**: indica el modo de comparación que se arranca por defecto.
-  
+
   - 'mirror': Comparador de espejo.
   - 'curtain': Comparador de paneles móviles.
-  - 'timeline': Comprador de línea del tiempo.
   - 'spyeye': Comparador de zona o puntual.
+  - 'none': no arranca ninguno de los comparadores. Es equivalente a arrancar como  *defaultCompareMode='mirror'* &  *defaultCompareViz=0*.
 
 - **defaultCompareViz**: ajustamos el modo de visualizaciónuna vea seleccionado el comparador.
 
@@ -104,7 +103,6 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
     - 1: dos mapas en vertical.
     - 2: dos mapas en horizontal.
     - 3: cuatro mapas.
-  - En el caso del modo *timeline* indicamos de 0 a n-1, siendo n el número de capas disponibles, cual de ellas arranca visible.
   - En el caso del modo *spyeye* arranca con la barra de herramientas desplegada con el mapa simple esperando al usuario.
 
 - **baseLayers**. Parámetro obligatorio. Array que contiene cada capa junto a sus datos:
@@ -112,14 +110,8 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
   - Etiqueta: etiqueta o fecha de la capa. Se puede dejar vacío con comillas vacías: *''*
   - Servicio en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
 
--  **urlcoberturas**: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS.
-
-- **layerName**. El nombre del sombrero de capa vectorial contiene la información de atribución.
-
-- **layerCobertura**. Capa de cobertura con atribuciones.
-
-- **lyrsMirrorMinZindex**. Nivel mínimo en el que empiezan a cargarse las capas (10 - 100), por defecto 100.
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+-  **urlcoberturas**: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS. Si este parámetro no se encuentra presente, no se aplicará el filtro por coberturas y todas las capas podrán seleccionarse siempre, aunque en la zona visible en el mapa no tenga cobertura.
+-  **lyrsMirrorMinZindex**: indica el nivel zIndex a partir del cual se cargan las capas superpuestas en los comparadores espejo. Por defecto, tiene valor de 100.
 
 ```javascript
   // Ejemplos de definiciones de capas esperadas por el comparador en formato StringLayer
@@ -137,7 +129,7 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
   ['MTN', '2020', 'WMTS*MTN*https://www.ign.es/wmts/mapa-raster*MTN*GoogleMapsCompatible*image/jpeg'],
   ['SIOSE', '2020', 'WMTS*SIOSE*https://servicios.idee.es/wmts/ocupacion-suelo*LC.LandCoverSurfaces*GoogleMapsCompatible*image/png'],
   ['LIDAR', '2020', 'WMTS*LIDAR*https://wmts-mapa-lidar.idee.es/lidar*EL.GridCoverageDSM*GoogleMapsCompatible*image/png'],
- 
+
 ```
 
 - **mirrorpanelParams**. Parámetros opcionales del plugin mirrorpanel. A destacar:
@@ -155,9 +147,6 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta, co
   - opacityVal: Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
   - staticDivision: Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón (valor 0), por el punto medio del lienzo de cartografía (valor 1) o por el punto medio del lienzo de cartografía con líneas arrastrables (valor 2). Por defecto toma el valor 1.
 
-- **timelineParams**. Parámetros opcionales del plugin timeline.
-  - animation (true/false): habilita o deshabilita el modo de animación. Defecto: *true*.
-
 - **transparencyParams**. Parámetros opcionales del plugin transparency.
   - radius (numérico): radio del efecto transparencia. Tiene un rango entre 30 y 200. Defecto: 100.
 
@@ -173,7 +162,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la
     vertical: false,
     collapsed: false,
     collapsible: true,
-    defaultCompareMode: 'mirror',// mirror - curtain - timeline - spyeye
+    defaultCompareMode: 'mirror',// mirror - curtain - spyeye - none
     defaultCompareViz: 1,
     baseLayers: [
       ["NACIONAL 1981-1986", "1986", "WMS*NACIONAL_1981-1986*https://www.ign.es/wms/pnoa-historico*NACIONAL_1981-1986"],
@@ -185,16 +174,14 @@ Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la
       ["PNOA 2010", "2010", "WMS*pnoa2010*https://www.ign.es/wms/pnoa-historico*pnoa2010"]
     ],
     urlcoberturas: 'https://projects.develmap.com/apicnig/pnoahisto/coberturas.geojson',
-    timelineParams: { 
-      animation: true, 
+    lyrsMirrorMinZindex: 50,
+    transparencyParams: {
+      radius: 100,
     },
-    transparencyParams: { 
-      radius: 100, 
-    },
-    lyrcompareParams: { 
+    lyrcompareParams: {
         staticDivision: 2,
     },
-    mirrorpanelParams: { 
+    mirrorpanelParams: {
         showCursors: true,
         reverseLayout:false,
     }
@@ -209,8 +196,18 @@ Para el stack de desarrollo de este componente se ha utilizado
 
 * NodeJS Version: 14.16
 * NPM Version: 6.14.11
+* Entorno Windows.
 
-## 📐 Para configurar el stack de desarrollo
+## 📐 Configuración del stack de desarrollo / *Work setup*
+
+
+### 🐑 Clonar el repositorio / *Cloning repository*
+
+Para descargar el repositorio en otro equipo lo clonamos:
+
+```bash
+git clone [URL del repositorio]
+```
 
 ### 1️⃣ Instalación de dependencias / *Install Dependencies*
 

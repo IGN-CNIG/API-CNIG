@@ -1,563 +1,1079 @@
+/* Opening & closing buttons */
 
+.cp-mirrorpanel.m-panel-controls,
 
-/** Estilos propios */
+.cp-timeline.m-panel-controls,
 
-.m-areas>div.m-area.m-left>div.m-plugin-comparepanel.opened>button.m-panel-btn {
-	left: unset !important;
-	color: #71a7d3;
-	background-color: #fff;
+.cp-lyrcompare.m-panel-controls,
+
+.cp-transparency.m-panel-controls {
+
+    display: none;
+
+    position: absolute;
+
+    background-color: white;
+
 }
 
-.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical {
-	background-color: #71a7d3 !important;
-}
-.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button {
-	color: white;
-}
-.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button:focus {
-	outline: unset !important;
+.cp-button {
+
+    display: inline-block;
+
+    border: 0;
+
+    background: none;
+
+    width: 100%;
+
+    font-size: 23px;
+
+    padding: 10px;
+
+    cursor: pointer;
+
+    color: #6f6f93;
+
+    text-align: center;
 }
 
-.m-plugin-comparepanel.collapsed {
-	height: 40px;
+.hide-panel {
+
+    display: inline-block !important;
+
 }
 
-.m-areas>div.m-area>div.m-plugin-comparepanel.opened>button.m-panel-btn {
-	color: #71a7d3;
-	background-color: #fff;
+.cp-button.active {
+
+    color: #71a7d3;
+
 }
 
-.m-areas>div.m-area>div.m-plugin-comparepanel.opened>button.m-panel-btn.opened-left {
-	left: unset !important;
-	background-color: #71a7d3;
+.cp-button:hover {
+
+    color: #98bddb;
+
 }
 
-.m-areas>div.m-area>div.m-plugin-comparepanel.opened>button.m-panel-btn.opened-right {
-	right: unset !important;
-	background-color: #71a7d3;
-}
-.m-comparepanel-container {
-	text-align: center;
+.cp-button:disabled {
+
+    color: #ffb9b9;
+
+    cursor: default;
+
 }
 
-.m-plugin-comparepanel .m-panel-controls {
-	display: block;
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.collapsed {
+
+    height: 43px;
+
 }
 
-.div-m-comparepanel-panel {
-	--num: 7;
-	--valor: '';
-	--tpVisible: 'visible';
-	padding-top: 1px;
-	width: 19rem;
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened {
+
+    width: 43px;
+
 }
 
-.m-comparepanel-container input[type=range] {
-	-webkit-appearance: none;
-	width: 100%;
-	height: 8px;
-	padding: 0.5rem;
-	margin: 0 auto;
-	outline: none;
+/* Los elementos dentro del panel comparador aparecen en vertical */
+
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel-container {
+
+    display: table;
+
 }
 
-.m-comparepanel-container input[type=range]::-webkit-slider-runnable-track {
-	width: 100%;
-	height: 2px;
-	cursor: pointer;
-	background: rgba(0, 0, 0, .31);
-	border-radius: 12px
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel-container>div {
+    width: 43px;
 }
 
-.m-comparepanel-container input[type=range]::-webkit-slider-thumb {
-	height: 10px;
-	width: 10px;
-	cursor: pointer;
-	border-radius: 15px;
-	background: #fff;
-	-webkit-appearance: none;
-	margin-top: -4px;
-	background-color: #71a7d3
+/* Los elementos dentro del panel comparador aparecen en horizontal */
+
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.orientation-horizontal.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel-container {
+
+    display: flex;
+
+    /*width: 180px;*/
+
 }
 
-.m-comparepanel-container input[type=range]::-moz-range-track {
-	width: 100%;
-	height: 2px;
-	cursor: pointer;
-	background: rgba(0, 0, 0, .31);
-	border-radius: 12px
+/* 
+
+Es necesario definir un min-with en modo collapsible para las posiciones BR y BL, porque se come un botón
+
+Por cada botón 58 píxeles
+
+ */
+
+.m-panel.m-plugin-comparepanel.orientation-horizontal.opened:not(.no-collapsible) {
+
+    min-width: 174px;
+
 }
 
-.m-comparepanel-container input[type=range]::-moz-range-thumb {
-	height: 10px;
-	width: 10px;
-	cursor: pointer;
+.m-panel-btn.g-cartografia-flecha-izquierda {
+
+    margin-left: 0px;
+
+}
+
+/* Para Microsoft EDGE*/
+
+@supports (-ms-ime-align:auto) {
+
+    .m-control.m-container.m-comparepanel {
+
+        min-width: 220px;
+
+    }
+
+}
+
+/* Flecha para colapsar el panel */
+
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>button.m-panel-btn.g-cartografia-flecha-izquierda,
+
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>button.m-panel-btn.g-cartografia-flecha-derecha {
+
+    background-color: #71a7d3 !important;
+
+    color: white !important;
+
+    width: 43px;
+
+    height: 43px;
+
+}
+
+/* Título */
+
+div#m-comparepanel-titulo {
+
+    background-color: #71a7d3;
+
+    color: white;
+
+    display: block;
+
+    font-size: 15px;
+
+    height: 40px;
+
+    line-height: 40px;
+
+    padding: 0 5px;
+
+    text-align: center;
+
+    width: 100%;
+
+}
+
+/*#region Comparison Toolbar TopLeft */
+
+.m-area.m-top.m-left {
+
+    flex-flow: column-reverse;
+    /* e2m: así conseguimos que el selector de capas LyrDrop se coloque arriba del todo, ya que es el último en renderizar */
+
+}
+
+.m-area.m-top.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>button {
+
+    float: left;
+
+    transform: rotate(90deg);
+
+    border-radius: 4px 0 0 4px;
+
+}
+
+/* Cuando el panel es collapsible, se definen estos márgenes */
+
+.m-area.m-top.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
+
+    margin-left: -40px;
+
+    margin-top: 40px;
+
+}
+
+/* Cuando el panel es no-collapsible, usamos la clase que viene implícita para eliminar márgenes */
+
+.m-area.m-top.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened>div>.m-control.m-container.m-comparepanel-container {
+
+    margin-left: 0px;
+
+    margin-top: 0px;
+
+}
+
+.m-area.m-top.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls #m-cp-mirrorpanel {
+
+    margin-top: 0px;
+
+}
+
+/* Paneles flotantes de configuración TL Vertical */
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel {
+
+    transform: translateX(55px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel>.m-mirrorpanel-container>.div-m-mirrorpanel-panel>.m-mirrorpanel-effect-buttoms {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    height: 360px;
+
+    padding: 0.4rem 0.4rem;
+
+}
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare {
+
+    transform: translateX(312px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency {
+
+    transform: translateX(312px);
+
+    border-radius: 4px;
+
+}
+
+/* Paneles flotantes de configuración TL Horizontal*/
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel {
+
+    transform: translate(-30px, 50px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-hrizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel>.m-mirrorpanel-container>.div-m-mirrorpanel-panel>.m-mirrorpanel-effect-buttoms {
+
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    width: 360px;
+
+    padding: 0.4rem 0.4rem;
+
+}
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare {
+
+    transform: translate(-65px, 50px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-top.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency {
+
+    transform: translate(-110px, 50px);
+
+    border-radius: 4px;
+
+}
+
+/*#endregion */
+
+/*#region Comparison Toolbar TopRight */
+
+.m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>button {
+
+    float: right;
+
+    transform: rotate(-90deg);
+
+    border-radius: 0 4px 4px 0;
+
+}
+
+/* Cuando el panel es collapsible, se definen estos márgenes */
+
+.m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
+
+    margin-right: -100px;
+
+    margin-top: 40px;
+
+}
+
+/* Cuando el panel es no-collapsible, usamos la clase que viene implícita para eliminar márgenes */
+
+.m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened>div>.m-control.m-container.m-comparepanel-container {
+
+    margin-right: 0px;
+
+    margin-top: 0px;
+
+}
+
+.m-area.m-top.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened {
+
+    width: 42px;
+
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls #m-cp-mirrorpanel {
+
+    margin-top: 0px;
+
+}
+
+/* Paneles flotantes de configuración TR Vertical */
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel {
+
+    transform: translateX(-46px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel>.m-mirrorpanel-container>.div-m-mirrorpanel-panel>.m-mirrorpanel-effect-buttoms {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    height: 360px;
+
+    padding: 0.4rem 0.4rem;
+
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare,
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency {
+
+    transform: translateX(-42px);
+
+    border-radius: 4px;
+
+}
+
+/* Paneles flotantes de configuración TR Horizontal*/
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel {
+
+    transform: translate(-330px, 50px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel>.m-mirrorpanel-container>.div-m-mirrorpanel-panel>.m-mirrorpanel-effect-buttoms {
+
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    width: 360px;
+
+    padding: 0.4rem 0.4rem;
+
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare {
+
+    transform: translate(-260px, 50px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-top.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency {
+
+    transform: translate(-300px, 50px);
+
+    border-radius: 4px;
+
+}
+
+/*#endregion */
+
+/*#region Comparison Toolbar BottomRight */
+
+.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>button {
+
+    float: right;
+
+    transform: rotate(90deg);
+
+}
+
+.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
+
+    margin-right: -100px;
+
+    margin-top: 40px;
+
+}
+
+.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened>div>.m-control.m-container.m-comparepanel-container {
+
+    margin-right: 0px;
+
+    margin-top: 0px;
+
+}
+
+.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls #m-cp-mirrorpanel {
+
+    margin-top: 0px;
+
+}
+
+/* Paneles flotantes de configuración BR Vertical*/
+
+.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel {
+
+    transform: translate(-45px, -320px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel>.m-mirrorpanel-container>.div-m-mirrorpanel-panel>.m-mirrorpanel-effect-buttoms {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    height: 360px;
+
+    padding: 0.4rem;
+
+}
+
+.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare {
+
+    transform: translate(-45px, -110px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency {
+
+    transform: translate(-45px, -105px);
+
+    border-radius: 4px;
+
+}
+
+/* Paneles flotantes de configuración BR Horizontal*/
+
+.m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel {
+
+    transform: translate(-300px, -55px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel>.m-mirrorpanel-container>.div-m-mirrorpanel-panel>.m-mirrorpanel-effect-buttoms {
+
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    /*width: 360px;*/
+
+    padding: 0.4rem;
+
+}
+
+.m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare {
+
+    transform: translate(-260px, -200px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency {
+
+    transform: translate(-305px, -155px);
+
+    border-radius: 4px;
+
+}
+
+/*#endregion */
+
+/*#region Comparison Toolbar BottomLeft */
+
+.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>button {
+
+    float: left;
+
+    transform: rotate(-90deg);
+
+}
+
+.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened>div>.m-control.m-container.m-comparepanel-container {
+
+    margin-left: -40px;
+
+    margin-top: 40px;
+
+}
+
+.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical.no-collapsible.opened>div>.m-control.m-container.m-comparepanel-container {
+
+    margin-left: 0px;
+
+    margin-top: 0px;
+
+}
+
+.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls #m-cp-mirrorpanel {
+
+    margin-top: 0px;
+
+}
+
+/* Paneles flotantes de configuración BL Vertical*/
+
+.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel {
+
+    transform: translate(58px, -320px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-mirrorpanel>.m-mirrorpanel-container>.div-m-mirrorpanel-panel>.m-mirrorpanel-effect-buttoms {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    /*height: 360px;*/
+
+    padding: 0.4rem;
+
+}
+
+.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare {
+
+    transform: translate(310px, -150px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency {
+
+    transform: translate(310px, -135px);
+
+    border-radius: 4px;
+
+}
+
+/* Paneles flotantes de configuración BL Horizontal*/
+
+.m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel {
+
+    transform: translate(-30px, -50px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-mirrorpanel>.m-mirrorpanel-container>.div-m-mirrorpanel-panel>.m-mirrorpanel-effect-buttoms {
+
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    padding: 0.4rem;
+
+}
+
+.m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare {
+
+    transform: translate(-60px, -200px);
+
+    border-radius: 4px;
+
+}
+
+.m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency {
+
+    transform: translate(-110px, -155px);
+
+    border-radius: 4px;
+
+}
+
+/*#endregion */
+
+@media screen and (max-width: 992px) {
+
+    .m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare,
+
+    .m-area.m-bottom.m-left>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency,
+
+    .m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare,
+
+    .m-area.m-bottom.m-left>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency,
+
+    .m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-lyrcompare,
+
+    .m-area.m-bottom.m-right>div.m-panel.m-plugin-comparepanel.orientation-vertical .m-panel-controls .m-panel-controls.cp-transparency,
+
+    .m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-lyrcompare,
+
+    .m-area.m-bottom.m-right>.m-panel.m-plugin-comparepanel.orientation-horizontal .m-panel-controls .m-panel-controls.cp-transparency {
+
+        top: -500px;
+
+    }
+
+}
+
+/*
+
+.m-comparepanel .activecomparepanelDiv {
+
+	border: 5px solid #92c1e7 !important;
+
+}
+
+*/
+
+/* Bottom positions fix when images row turns into columns */
+
+/*
+
+.m-bottom .m-control.m-container.m-comparepanel>#m-comparepanel-previews {
+
+	display: flex;
+
+}
+
+.m-bottom.m-left>.m-panel.m-comparepanel.opened>.m-panel-controls {
+
+	display: flex;
+
+}
+
+.m-bottom.m-left>.m-comparepanel.opened>.m-panel-btn {
+
+	position: absolute;
+
+	right: -40px;
+
+}
+
+.m-bottom.m-right>.m-comparepanel.opened>.m-panel-btn {
+
+	position: absolute;
+
+	left: -40px;
+
+}
+
+*/
+
+/* Firefox fix */
+
+@-moz-document url-prefix() {
+
+    .m-bottom.m-right .m-comparepanel.opened {
+
+        display: flex;
+
+    }
+
+    .m-control.m-container.m-comparepanel {
+
+        min-width: 216px;
+
+    }
+
+    .m-bottom.m-right .m-control.m-container.m-comparepanel {
+
+        padding-right: 0px;
+
+    }
+
+}
+
+/*
+
+.m-areas>div.m-area>div.m-panel.m-comparepanel>button.m-panel-btn {
+
+	background-color: #71A7D3 !important;
+
+	color: white !important;
+
+}
+
+.m-areas>div.m-area>div.m-panel.m-comparepanel.opened.no-collapsible {
+
+	border-radius: 0px;
+
+}
+
+.m-areas>div.m-area>div.m-panel.m-comparepanel .m-panel-controls button,
+
+.m-areas>div.m-area>div.m-panel.m-comparepanel.no-collapsible.opened>.m-panel-controls>.m-comparepanel button {
+
+	padding: 7px 8px;
+
+	font-size: 24px;
+
+	background: none;
+
 	border: none;
-	background: #fff;
-	-webkit-appearance: none;
-	margin-top: 20px;
-	background-color: #71a7d3
-}
 
-.div-m-comparepanel-slider::before {
-	content: var(--valor);
-	display: block;
-	visibility: var(--tpVisible);
-	opacity: var(--opacity);
-	position: absolute;
-	background: #0000008a;
-	color: #fff;
-	padding: .3rem;
-	border-radius: 4px;
-	margin-top: -1.5rem;
-	margin-left: -0.5rem;
-	height: 1rem;
-	left: var(--left);
-	width: max-content;
-}
+	cursor: pointer;
 
-.m-comparepanel-select {
-	position: relative;
-	display: flex;
-	align-items: center;
-	padding: 0px 5px 5px 5px;
-	padding-left: 8%;
-	color: #000000;
-}
+	-webkit-transition: opacity .25s ease 0s;
 
-div#m-comparepanel-title {
-	font-size: 15px;
-	line-height: 40px;
-	text-align: center;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.13);
-	background-color: #71a7d3;
-	color: #fff;
-	display: block;
-	height: 40px;
-	width: 100%;
-	border-radius: 4px 4px 0 0;
-	padding: 0;
-}
+	transition: opacity .25s ease 0s;
 
-.m-printermap-container>div.title {
-	line-height: 40px;
-	text-align: center;
-	height: 39px;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.13);
-	font-size: 15px;
-}
+	color: #7A7A73;
 
-.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.opened>div.m-panel-controls>div.m-control.m-container.m-comparepanel>div#m-comparepanel-title {
-	font-size: 13px;
-	padding-left: 0;
-	padding-right: 0;
-	width: 210px;
-}
-
-.m-comparepanel-names {
-	display: none;
-	margin: 0 1rem 0.5rem;
-	border-top: 1px solid #b0b0b057;
-	padding-top: 0.5rem;
-	min-height: 17px;
-}
-
-.div-m-comparepanel-slider {
-	--left: 0;
-	--opacity: 0;
-	color: #000000;
-	padding: 0.5rem 2rem 1rem;
-}
-
-.div-m-comparepanel-slider input {
-	width: 100%;
 	margin: 0;
+
+	outline: none !important;
+
 }
 
-.div-m-comparepanel-slider .slider-tags {
-	display: flex;
-	justify-content: space-between;
-	height: 6px;
-	margin: -7px -3px 11px 13px;
-	font-size: 11px;
-	counter-reset: count -1;
+*/
+
+/*
+
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button.cp-button.active {
+
+	background-color: #d1e6f8;
+
+	color: #364b5f;
+
 }
 
-.div-m-comparepanel-slider .slider-tags>div {
-	height: 100%;
-	width: 1px;
-	background: silver;
-	counter-increment: count 1;
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button:hover {
+
+	background-color: #d1e6f8;
+
+	color: #364b5f;
+
 }
 
-.div-m-comparepanel-slider .slider-tags>div:nth-child(1n)::before {
-	display: block;
-	content: attr(data-tag);
-	transform: translate(-80%, 70%);
-	text-align: center;
-	width: 16px;
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical #m-cp-mirrorpanel > button {
+
+	border-top-right-radius: 20px;
+
+	border-top-left-radius: 20px;
+
 }
 
-.m-comparepanel-button {
-	display: none;
-	width: auto;
-	position: absolute;
-	top: 6.5rem;
-	left: auto;
-	right: 1rem;
+.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical #m-cp-transparency > button {
+
+	border-bottom-right-radius: 20px;
+
+	border-bottom-left-radius: 20px;
+
 }
 
-.m-plugin-comparepanel.collapsed .cp-icon{
-	z-index: 1;
+.m-plugin-comparepanel .m-panel-btn {
+
+	box-shadow: none !important;
+
 }
-/* Iconos */
+
+*/
+
+/* Iconos para botones */
+
+/* Configuramos la fuente de los iconos */
 
 @font-face {
-	font-family: 'comparepanel';
-	src: url('../fonts/comparepanel.eot?6ojj88');
-	src: url('../fonts/comparepanel.eot?6ojj88#iefix') format('embedded-opentype'), url('../fonts/comparepanel.ttf?6ojj88') format('truetype'), url('../fonts/comparepanel.woff?6ojj88') format('woff'), url('../fonts/comparepanel.svg?6ojj88#comparepanel') format('svg');
-	font-weight: normal;
-	font-style: normal;
-	font-display: block;
+
+    font-family: 'comparepanel';
+    src: url('../fonts/comparepanel.eot?vjgbj5');
+    src: url('../fonts/comparepanel.eot?vjgbj5#iefix') format('embedded-opentype'),
+        url('../fonts/comparepanel.ttf?vjgbj5') format('truetype'),
+        url('../fonts/comparepanel.woff?vjgbj5') format('woff'),
+        url('../fonts/comparepanel.svg?vjgbj5#comparepanel') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
 }
 
+/* Yodas las clases de botones comienzan por cp_ y tienen estas propiedades comunes */
 [class^="cp-"] {
-	font-family: 'comparepanel' !important;
-	speak: never;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+    font-family: 'comparepanel' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    font-size: 1.4rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.cp-comparador-capas:before {
+    content: "\e902";
 }
 
 .cp-control-pausa:before {
-	content: "\e901";
+    content: "\e901";
 }
+
 .cp-transparency-icon:before {
-	content: "\e900";
+    content: "\e900";
 }
+
+.cp-lock-icon:before {
+    content: "\e800";
+    color: red;
+}
+
+.cp-unlock-icon:before {
+    content: "\f13e";
+    color: green;
+}
+
 .cp-control-siguiente:before {
-	content: "\e828";
+    content: "\e828";
 }
 
 .cp-gestion-reloj2:before {
-	content: "\e920";
+    content: "\e920";
+}
+
+.cp-gestion-testing:before {
+    content: "\e816";
 }
 
 .cp-icon:before {
     content: "\e802";
-    font-family: 'comparepanel' !important;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-comparepanel.orientation-vertical.opened .cp-icon:before {
+    content: "\e802";
+    position: relative;
+    left: -3px;
 }
 
 .cp-icon-comparepanel:before {
     content: "\e817";
-	font-family: 'comparepanel' !important;
-    /*color: #71a7d3;*/
-	/*font-size: 1.4rem;*/
-}
+    font-family: 'comparepanel' !important;
 
+}
 
 .cp-columns-1:before {
     content: "\e90e";
     color: #71a7d3;
-	font-size: 1.4rem;
+    font-size: 1.4rem;
+
 }
 
 .cp-columns-2:before {
+
     content: "\e90d";
+
     color: #71a7d3;
-	font-size: 1.4rem;
+
+    font-size: 1.4rem;
+
 }
 
 .cp-columns-4:before {
+
     content: "\e90e";
+
     color: #71a7d3;
-	font-size: 1.4rem;
-	transform: rotate(-90deg);
-	display: inline-block;
+
+    font-size: 1.4rem;
+
+    transform: rotate(-90deg);
+
+    display: inline-block;
+
 }
 
 .cp-columns-rotate:before {
-	display: inline-block;
-	transform: rotate(270deg);
+
+    display: inline-block;
+
+    transform: rotate(270deg);
+
 }
 
 .cp-columns-3:before {
+
     content: "\e90d";
+
     color: #71a7d3;
-	font-size: 1.4rem;
-	transform: rotate(270deg);
-	display: inline-block;
+
+    font-size: 1.4rem;
+
+    transform: rotate(270deg);
+
+    display: inline-block;
+
 }
 
+/*
 .cp-columns:before {
-	content: "\e913";
+	content: "\e902";
 }
+*/
+.cp-columns:before {
+    content: "\e913";
+}
+
 
 .cp-columns-rotate:before {
-	content: "\e913";
+    content: "\e913";
 }
 
 .cp-th-large:before {
-	content: "\e801";
+    content: "\e801";
 }
 
 .cp-th-large-4:before {
+
     content: "\e90f";
+
     color: #71a7d3;
-	font-size: 1.4rem;
+
+    font-size: 1.4rem;
+
 }
 
 .cp-th-large-2:before {
+
     content: "\e911";
+
     color: #71a7d3;
-	font-size: 1.4rem;
+
+    font-size: 1.4rem;
+
 }
 
 .cp-th-large-3:before {
+
     content: "\e910";
+
     color: #71a7d3;
-	font-size: 1.4rem;
+
+    font-size: 1.4rem;
+
 }
 
 .cp-th-large-1:before {
+
     content: "\e912";
+
     color: #71a7d3;
-	font-size: 1.4rem;
+
+    font-size: 1.4rem;
+
 }
 
 .cp-simbolo-menu2:before {
-	content: "\e9c4";
+    content: "\e9c4";
+}
+
+.cp-deactivateCurtain:before {
+    content: "\e804";
 }
 
 .cp-modeviz0:before {
-	content: "\e804";
+    content: "\e804";
 }
 
 .cp-modeviz1:before {
-	content: "\e803";
+    content: "\e803";
 }
 
 .cp-modeviz2:before {
-	content: "\e803";
-	transform: rotate(90deg);
-	display: block;
+
+    content: "\e803";
+
+    transform: rotate(90deg);
+
+    display: block;
+
 }
 
 .cp-modeviz3:before {
-	content: "\e805";
+    content: "\e805";
 }
 
 .cp-modeviz4:before {
-	content: "\e806";
+    content: "\e806";
 }
 
 .cp-modeviz7:before {
-	content: "\e807";
+    content: "\e807";
 }
 
 .cp-modeviz5:before {
-	content: "\e808";
+    content: "\e808";
 }
 
 .cp-modeviz6:before {
-	content: "\e806";
-	transform: rotate(90deg);
-	display: block;
+
+    content: "\e806";
+
+    transform: rotate(90deg);
+
+    display: block;
+
 }
 
 .cp-modeviz8:before {
-	content: "\e809";
+    content: "\e809";
 }
 
 .cp-modeviz9:before {
-	content: "\e809";
-	transform: rotate(180deg);
-	display: block;
-}
 
-.m-plugin-comparepanel>.m-panel-controls {
-	display: block !important;
-}
+    content: "\e809";
 
-.cp-mirrorpanel.m-panel-controls,
-.cp-timeline.m-panel-controls,
-.cp-lyrcompare.m-panel-controls,
-.cp-transparency.m-panel-controls {
-	display: none;
-	position: absolute;
-	background-color: white;
-}
+    transform: rotate(180deg);
 
-.m-area.m-left .orientation-vertical .cp-mirrorpanel.m-panel-controls,
-.m-area.m-left .orientation-vertical .cp-timeline.m-panel-controls,
-.m-area.m-left .orientation-vertical .cp-lyrcompare.m-panel-controls,
-.m-area.m-left .orientation-vertical .cp-transparency.m-panel-controls,
-.m-area.m-right.m-bottom .orientation-horizontal .cp-mirrorpanel.m-panel-controls,
-.m-area.m-right.m-bottom .orientation-horizontal .cp-timeline.m-panel-controls,
-.m-area.m-right.m-bottom .orientation-horizontal .cp-lyrcompare.m-panel-controls,
-.m-area.m-right.m-bottom .orientation-horizontal .cp-transparency.m-panel-controls{
-	left: 0;
-	margin-left: 41px;
-	border-radius: 4px 0 4px 0 ;
+    display: block;
 
-}
-.m-area.m-right .orientation-vertical .cp-mirrorpanel.m-panel-controls,
-.m-area.m-right .orientation-vertical .cp-timeline.m-panel-controls,
-.m-area.m-right .orientation-vertical .cp-lyrcompare.m-panel-controls,
-.m-area.m-right .orientation-vertical .cp-transparency.m-panel-controls,
-.m-area.m-left.m-top .orientation-horizontal .cp-mirrorpanel.m-panel-controls,
-.m-area.m-left.m-top .orientation-horizontal .cp-timeline.m-panel-controls,
-.m-area.m-left.m-top .orientation-horizontal .cp-lyrcompare.m-panel-controls,
-.m-area.m-left.m-top .orientation-horizontal .cp-transparency.m-panel-controls,
-.m-area.m-right.m-top .orientation-horizontal .cp-mirrorpanel.m-panel-controls,
-.m-area.m-right.m-top .orientation-horizontal .cp-timeline.m-panel-controls,
-.m-area.m-right.m-top .orientation-horizontal .cp-lyrcompare.m-panel-controls,
-.m-area.m-right.m-top .orientation-horizontal .cp-transparency.m-panel-controls{
-	right: 0;
-	margin-right: 41px;
-	border-radius: 4px 0 0 4px;
-}
-.m-area.m-bottom .cp-timeline.m-panel-controls,
-.m-area.m-bottom .cp-lyrcompare.m-panel-controls,
-.m-area.m-bottom .cp-transparency.m-panel-controls{
-	bottom: 0;
-}
-
-.orientation-vertical.m-panel.m-plugin-comparepanel.opened {
-	transform: none;
-}
-.m-plugin-comparepanel.no-collapsible.opened.orientation-horizontal{
-	--translate: 64;
-}
-.m-plugin-comparepanel.opened.orientation-horizontal{
-	--translate: 84;
-}
-
-.m-area.m-right .orientation-horizontal{
-	--rotate: 270;
-	--translateX: calc(-1px * var(--translate));
-	--translateY: calc(-1px * var(--translate));
-}
-.m-area.m-left .orientation-horizontal{
-	--rotate: 270;
-	--translateX: calc(1px * var(--translate));
-	--translateY: calc(-1px * var(--translate));
-}
-.m-area.m-bottom.m-right .orientation-horizontal{
-	--rotate: 270;
-	--translateX: calc(-1px * var(--translate));
-	--translateY: calc(1px * var(--translate));
-	--rotateY: 180deg;
-}
-.m-area.m-bottom.m-left .orientation-horizontal{
-	--rotate: 270;
-	--translateX: calc(1px * var(--translate));
-	--translateY: calc(1px * var(--translate));
-	--rotateY: 180deg;
-}
-.m-area.m-top .orientation-horizontal{
-	--rotateY: 180deg;
-}
-.m-area.m-top.m-right .orientation-horizontal .cp-lyrcompare,
-.m-area.m-top.m-right .orientation-horizontal .cp-transparency,
-.m-area.m-top.m-right .orientation-horizontal .cp-timeline{
-	--translateX: 0;
-	--translateY: 41px;
-	transform-origin: top right;
-}
-.m-area.m-top.m-left .orientation-horizontal .cp-lyrcompare,
-.m-area.m-top.m-left .orientation-horizontal .cp-transparency,
-.m-area.m-top.m-left .orientation-horizontal .cp-timeline{
-	--translateX:304px;
-	--translateY:0;
-}
-.m-area.m-bottom.m-right .orientation-horizontal .cp-lyrcompare,
-.m-area.m-bottom.m-right .orientation-horizontal .cp-transparency,
-.m-area.m-bottom.m-right .orientation-horizontal .cp-timeline{
-	--translateX:0;
-	--translateY:-306px;
-	transform-origin: bottom left;
-}
-.m-area.m-bottom.m-left .orientation-horizontal .cp-lyrcompare,
-.m-area.m-bottom.m-left .orientation-horizontal .cp-transparency,
-.m-area.m-bottom.m-left .orientation-horizontal .cp-timeline{
-	--translateX:-304px;
-	--translateY:141px;
-	transform-origin: bottom right;
-}
-
-.orientation-horizontal.m-panel.m-plugin-comparepanel.opened {
-	transform: translate(var(--translateX),var(--translateY)) rotate(calc(var(--rotate) * 1deg));
-}
-.orientation-horizontal .cp-lyrcompare,
-.orientation-horizontal .cp-transparency,
-.orientation-horizontal .cp-timeline{
-	transform: translate(var(--translateX),var(--translateY)) rotate(calc(var(--rotate) * -1deg));
-	transform-origin: 0 0;
-}
-.orientation-horizontal .cp-button, .m-plugin-comparepanel .m-panel-btn.g-cartografia-flecha-derecha,
-.orientation-horizontal .cp-button, .m-plugin-comparepanel .m-panel-btn.g-cartografia-flecha-izquierda,
-.orientation-horizontal .cp-mirrorpanel .big-button {
-	transform: rotate(calc(var(--rotate) * -1deg));
-}
-
-.orientation-horizontal .m-mirrorpanel-container{
-	transform: rotate(var(--rotateY));
-}
-
-.cp-button {
-	display: inline-block;
-	border: 0;
-	background: none;
-	width: 100%;
-	font-size: 23px;
-	padding: 10px;
-	cursor: pointer;
-	color: #6f6f93;
-}
-
-.hide-panel {
-	display: inline-block !important;
-}
-
-.cp-button.active {
-	color: #71a7d3;
-}
-
-.cp-button:hover {
-	color: #98bddb;
-}
-
-.cp-button:disabled {
-	color: #ffb9b9;
-	cursor: default;
-}
-
-
-.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button.cp-button.active {
-	background-color: #d1e6f8;
-	color: #364b5f;
-}
-
-.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical > div > div > div > button:hover {
-	background-color: #d1e6f8;
-	color: #364b5f;
-}
-
-.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical #m-cp-mirrorpanel > button {
-	border-top-right-radius: 20px;
-	border-top-left-radius: 20px;
-}
-
-.m-panel.m-plugin-comparepanel.opened.no-collapsible.orientation-vertical #m-cp-transparency > button {
-	border-bottom-right-radius: 20px;
-	border-bottom-left-radius: 20px;
-}
-
-.m-plugin-comparepanel .m-panel-btn {
-	box-shadow: none !important;
 }

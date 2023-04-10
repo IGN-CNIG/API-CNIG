@@ -2,6 +2,7 @@
  * @module M/impl/control/Mouse
  */
 
+import { getValue } from '../../../facade/js/i18n/language';
 import WCSLoaderManager from './wcsloadermanager';
 
 /**
@@ -40,6 +41,8 @@ class Mouse extends ol.control.MousePosition {
     this.utmDecimalDigits = vendorOptions.utmDecimalDigits;
 
     this.activeZ = vendorOptions.activeZ;
+
+    this.order = vendorOptions.order;
   }
 
   initWCSLoaderManager(map) {
@@ -191,7 +194,7 @@ class Mouse extends ol.control.MousePosition {
         }
       }
 
-      html += ` | <b class="m-mousesrs-pointer">${this.label}</b>`;
+      html += ` | <b role="button" tabindex="${this.order}" aria-label="${getValue('accessibility.src')}" class="m-mousesrs-pointer">${this.label}</b>`;
     }
 
     if (!this.renderedHTML_ || html !== this.renderedHTML_) {

@@ -1,5 +1,7 @@
 /*eslint-disable*/
 
+import ARROWS_MOVES from '../../../facade/assets/arrows-move.svg'
+
 const inherits = (child, parent) => {
   child.prototype = Object.create(parent.prototype);
   child.prototype.constructor = child;
@@ -23,11 +25,14 @@ var Profil = function(opt_options) {
   var element;
   if (options.target) {
     element = document.createElement('div');
+    element.id = 'containerTopo';
     element.classList.add(options.className || 'ol-profil');
   } else {
     element = document.createElement('div');
+    element.id = 'containerTopo';
     element.className = ((options.className || 'ol-profil') + ' ol-unselectable ol-control ol-collapsed').trim();
     let elementTitle = document.createElement('p');
+    elementTitle.id = 'titleTopo';
     elementTitle.textContent = opt_options.title;
     element.appendChild(elementTitle);
     const button = document.createElement('button');
@@ -57,6 +62,25 @@ var Profil = function(opt_options) {
     button2.addEventListener('click', download);
     button2.addEventListener('touchstart', download);
     elementTitle.appendChild(button2);
+
+    const buttonMove = document.createElement('button');
+    const imgMove = document.createElement('img');
+    imgMove.setAttribute('src', ARROWS_MOVES);
+    imgMove.setAttribute('alt', 'Icon Move');
+    
+    buttonMove.appendChild(imgMove);
+
+    buttonMove.setAttribute('title', 'Ventana arrastrable')
+    buttonMove.setAttribute('type', 'button');
+    buttonMove.setAttribute('id', 'buttonTopoMove');
+    buttonMove.setAttribute('class', 'profile-move-button icon-move');
+   
+    elementTitle.appendChild(buttonMove);
+
+    setTimeout(() => {
+      M.utils.dragElement('containerTopo', 'buttonTopoMove');
+      M.utils.dragElement('containerTopo', 'titleTopo');
+    }, 3000);
   }
 
   var div_inner = document.createElement('div');
@@ -68,8 +92,8 @@ var Profil = function(opt_options) {
 
   var ratio = this.ratio = 2;
   this.canvas_ = document.createElement('canvas');
-  this.canvas_.width = (options.width || 300) * ratio;
-  this.canvas_.height = (options.height || 150) * ratio;
+  this.canvas_.width = (options.width || 400) * ratio;
+  this.canvas_.height = (options.height || 250) * ratio;
 
   var styles = {
     'msTransform': 'scale(0.5,0.5)',
@@ -102,7 +126,7 @@ var Profil = function(opt_options) {
   });
 
   // Offset in px
-  this.margin_ = { top: 10 * ratio, left: 40 * ratio, bottom: 30 * ratio, right: 10 * ratio };
+  this.margin_ = { top: 25 * ratio, left: 55 * ratio, bottom: 45 * ratio, right: 25 * ratio };
   if (!this.info.ytitle) this.margin_.left -= 20 * ratio;
   if (!this.info.xtitle) this.margin_.bottom -= 20 * ratio;
 
@@ -386,7 +410,7 @@ Profil.prototype.setGeometry = function(g, options) {
   var dy = this.dy_ = -zmin * scy;
   this.scale_ = [scx, scy];
   // Draw
-  ctx.font = (10 * ratio) + 'px arial';
+  ctx.font = (12 * ratio) + 'px arial';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = '#000';
@@ -422,7 +446,7 @@ Profil.prototype.setGeometry = function(g, options) {
     ctx.moveTo(i * scx, 2 * ratio);
     ctx.lineTo(i * scx, 0);
   }
-  ctx.font = (12 * ratio) + 'px arial';
+  ctx.font = (14 * ratio) + 'px arial';
   ctx.fillText(this.info.xtitle.replace('(km)', '(' + unit + ')'), w / 2, 18 * ratio);
   ctx.save();
   ctx.rotate(-Math.PI / 2);
@@ -433,7 +457,7 @@ Profil.prototype.setGeometry = function(g, options) {
 
   //
   ctx.strokeStyle = '#368';
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 5;
   ctx.setLineDash([]);
   ctx.beginPath();
   for (i = 0; p = t[i]; i++) {

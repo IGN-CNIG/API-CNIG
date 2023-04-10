@@ -7,10 +7,11 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 const WGS84 = 'EPSG:4326';
 const MERCATOR = 'EPSG:900913';
-const GML_FORMAT = 'text/xml; subtype=gml/3.1.1';
+const PLUS_ZINDEX = 1000;
+const GML_FORMAT = 'text/xml; subtype="gml/3.1.1"';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
 const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
-'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+  'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
 const NO_DATA_VALUE = 'NODATA_value -9999.000';
 const WFS_EXCEPTIONS = [
   'https://servicios.idee.es/wfs-inspire/hidrografia?',
@@ -52,20 +53,20 @@ const formatNumber = (x, decimals) => {
 
 export default class VectorsControl extends M.impl.Control {
   /**
-  * This function adds the control to the specified map
-  *
-  * @public
-  * @function
-  * @param {M.Map} map to add the plugin
-  * @param {HTMLElement} html of the plugin
-  * @api stable
-  */
+   * This function adds the control to the specified map
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {HTMLElement} html of the plugin
+   * @api stable
+   */
   addTo(map, html) {
     /**
-    * Facade map
-    * @private
-    * @type {M.map}
-    */
+     * Facade map
+     * @private
+     * @type {M.map}
+     */
     this.facadeMap_ = map;
 
     this.distance_ = 30;
@@ -119,13 +120,13 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Creates new OpenLayers vector source
-  * @public
-  * @function
-  * @api
-  * @param {Boolean} featuresIncluded - indicates if an OL collection of
-  * features should be included in new source
-  */
+   * Creates new OpenLayers vector source
+   * @public
+   * @function
+   * @api
+   * @param {Boolean} featuresIncluded - indicates if an OL collection of
+   * features should be included in new source
+   */
   newVectorSource(featuresIncluded) {
     return featuresIncluded ?
       new ol.source.Vector({ features: new ol.Collection([]) }) :
@@ -133,13 +134,13 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Transforms x,y coordinates to 4326 on coordinates array.
-  * @public
-  * @function
-  * @api
-  * @param {String} codeProjection
-  * @param {Array<Number>} oldCoordinates
-  */
+   * Transforms x,y coordinates to 4326 on coordinates array.
+   * @public
+   * @function
+   * @api
+   * @param {String} codeProjection
+   * @param {Array<Number>} oldCoordinates
+   */
   getTransformedCoordinates(codeProjection, oldCoordinates) {
     const transformFunction = ol.proj.getTransform(codeProjection, 'EPSG:4326');
     return this.getFullCoordinates(
@@ -149,12 +150,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Given a coordinate set (x, y, altitude?), returns [x,y].
-  * @public
-  * @function
-  * @api
-  * @param {Array<Number>} coordinatesSet
-  */
+   * Given a coordinate set (x, y, altitude?), returns [x,y].
+   * @public
+   * @function
+   * @api
+   * @param {Array<Number>} coordinatesSet
+   */
   getXY(coordinatesSet) {
     const coordinateCopy = [];
     for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
@@ -163,13 +164,13 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Substitutes x, y coordinates on coordinate set (x, y, altitude...)
-  * @public
-  * @function
-  * @api
-  * @param {Array} oldCoordinates
-  * @param {Array<Number>} newXY - [x,y]
-  */
+   * Substitutes x, y coordinates on coordinate set (x, y, altitude...)
+   * @public
+   * @function
+   * @api
+   * @param {Array} oldCoordinates
+   * @param {Array<Number>} newXY - [x,y]
+   */
   getFullCoordinates(oldCoordinates, newXY) {
     const newCoordinates = oldCoordinates;
     newCoordinates[0] = newXY[0];
@@ -178,36 +179,47 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * This function adds draw interaction to map.
-  * @public
-  * @function
-  * @api
-  */
-  addDrawInteraction(layer, geom) {
+   * This function adds draw interaction to map.
+   * @public
+   * @function
+   * @api
+   */
+  addDrawInteraction(layer, feature) {
     const olMap = this.facadeMap_.getMapImpl();
     const vectorSource = layer.getImpl().getOL3Layer().getSource();
     const geometry = layer.getGeometryType() !== null ? layer.getGeometryType() : layer.geometry;
     this.draw = this.newDrawInteraction(vectorSource, geometry);
-    this.addDrawEvent();
+    this.addDrawEvent(feature !== undefined);
     olMap.addInteraction(this.draw);
+    if (feature !== undefined) {
+      this.draw.extend(feature.getImpl().getOLFeature());
+    }
   }
 
   /**
-  * Defines function to be executed on click on draw interaction.
-  * Creates feature with drawing and adds it to map.
-  * @public
-  * @function
-  * @api
-  */
-  addDrawEvent() {
+   * Defines function to be executed on click on draw interaction.
+   * Creates feature with drawing and adds it to map.
+   * @public
+   * @function
+   * @api
+   */
+  addDrawEvent(isAdding) {
     this.draw.on('drawend', (event) => {
       this.facadeControl.onDraw(event);
+      if (isAdding) {
+        this.removeDrawInteraction();
+      }
     });
 
     document.addEventListener('keyup', this.addEscEvent.bind(this));
     this.draw.once('drawstart', (evt) => {
       document.onkeydown = this.addUndoEvent.bind(this, evt.feature);
     });
+  }
+
+  addAddPointsInteraction(layer, feature) {
+    this.removeDrawInteraction();
+    this.addDrawInteraction(layer, feature);
   }
 
   addUndoEvent(feature, evt) {
@@ -218,52 +230,58 @@ export default class VectorsControl extends M.impl.Control {
 
   addEscEvent(evt) {
     if (evt.key === 'Escape') {
-      this.draw.finishDrawing();
+      if (this.draw !== undefined) {
+        this.draw.finishDrawing();
+      }
+
       this.facadeControl.deactivateDrawing();
       this.facadeControl.isDrawingActive = false;
+      this.facadeControl.isEditionActive = false;
       this.facadeControl.drawLayer = undefined;
+      this.removeEditInteraction();
+      this.removeSelectInteraction();
     }
   }
 
   /**
-  * Removes draw interaction from map.
-  * @public
-  * @function
-  * @api
-  */
+   * Removes draw interaction from map.
+   * @public
+   * @function
+   * @api
+   */
   removeDrawInteraction() {
     document.onkeydown = null;
     this.facadeMap_.getMapImpl().removeInteraction(this.draw);
   }
 
   /**
-  * Removes edit interaction
-  * @public
-  * @api
-  * @function
-  */
+   * Removes edit interaction
+   * @public
+   * @api
+   * @function
+   */
   removeEditInteraction() {
     this.facadeMap_.getMapImpl().removeInteraction(this.edit);
   }
 
   /**
-  * Removes select interaction
-  * @public
-  * @function
-  * @api
-  */
+   * Removes select interaction
+   * @public
+   * @function
+   * @api
+   */
   removeSelectInteraction() {
     this.facadeMap_.getMapImpl().removeInteraction(this.select);
   }
 
   /**
-  * Creates new OpenLayers draw interaction
-  * @public
-  * @function
-  * @api
-  * @param {OLVectorSource} vectorSource -
-  * @param {String} geometry - type of geometry ['Point', 'LineString', 'Polygon']
-  */
+   * Creates new OpenLayers draw interaction
+   * @public
+   * @function
+   * @api
+   * @param {OLVectorSource} vectorSource -
+   * @param {String} geometry - type of geometry ['Point', 'LineString', 'Polygon']
+   */
   newDrawInteraction(vectorSource, geometry) {
     return new ol.interaction.Draw({
       source: vectorSource,
@@ -273,22 +291,22 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Creates polygon feature from extent.
-  * @public
-  * @function
-  * @api
-  * @param {Array} extent - geometry extent
-  */
+   * Creates polygon feature from extent.
+   * @public
+   * @function
+   * @api
+   * @param {Array} extent - geometry extent
+   */
   newPolygonFeature(extent) {
     return new ol.Feature({ geometry: ol.geom.Polygon.fromExtent(extent) });
   }
 
   /**
-  * Creates current feature clone.
-  * @public
-  * @function
-  * @api
-  */
+   * Creates current feature clone.
+   * @public
+   * @function
+   * @api
+   */
   getMapeaFeatureClone() {
     // eslint-disable-next-line no-underscore-dangle
     const implFeatureClone = this.facadeControl.feature.getImpl().olFeature_.clone();
@@ -297,12 +315,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Deletes attributes from feature.
-  * @public
-  * @function
-  * @api
-  * @param {M.Feature} feature
-  */
+   * Deletes attributes from feature.
+   * @public
+   * @function
+   * @api
+   * @param {M.Feature} feature
+   */
   unsetAttributes(feature) {
     const properties = feature.getImpl().getOLFeature().getProperties();
     const keys = Object.keys(properties);
@@ -312,11 +330,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Activates selection mode.
-  * @public
-  * @function
-  * @api
-  */
+   * Activates selection mode.
+   * @public
+   * @function
+   * @api
+   */
   activateSelection(layer) {
     const olMap = this.facadeMap_.getMapImpl();
     const facadeControl = this.facadeControl;
@@ -340,16 +358,18 @@ export default class VectorsControl extends M.impl.Control {
       this.edit.on('modifyend', (evt) => {
         facadeControl.onModify();
       });
+
+      document.addEventListener('keyup', this.addEscEvent.bind(this));
       olMap.addInteraction(this.edit);
     }
   }
 
   /**
-  * Loads GeoJSON layer
-  * @public
-  * @function
-  * @param {*} source2 -
-  */
+   * Loads GeoJSON layer
+   * @public
+   * @function
+   * @param {*} source2 -
+   */
   loadGeoJSONLayer(source, layerName) {
     let features = new ol.format.GeoJSON()
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
@@ -362,16 +382,16 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     return features;
   }
 
   /**
-  * Loads GML layer
-  * @public
-  * @function
-  * @param {*} source -
-  */
+   * Loads GML layer
+   * @public
+   * @function
+   * @param {*} source -
+   */
   loadGMLLayer(source, layerName) {
     let newSource = source;
     let srs = this.facadeMap_.getProjection().code;
@@ -438,8 +458,8 @@ export default class VectorsControl extends M.impl.Control {
 
     // En el caso de que no tenga geometrías, comprobamos si es GML 3.2,
     // si lo es tenemos que parsearlo a mano.
-    if ((features.length === 0 || features[0].getGeometry() === undefined)
-      && newSource.indexOf('gml/3.2') > 0) {
+    if ((features.length === 0 || features[0].getGeometry() === undefined) &&
+      newSource.indexOf('gml/3.2') > 0) {
       features = this.gmlParser(newSource);
     }
 
@@ -447,7 +467,7 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     return features;
   }
 
@@ -501,11 +521,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Parse the features of a GML 3.2 layer
-  * @private
-  * @function
-  * @param {*} source-
-  */
+   * Parse the features of a GML 3.2 layer
+   * @private
+   * @function
+   * @param {*} source-
+   */
   gmlParser(source) {
     const features = [];
     let superficies = this.parseSurfacesGml(source);
@@ -532,7 +552,8 @@ export default class VectorsControl extends M.impl.Control {
       for (let i = 0; i < geometria.vertices.length; i += 2) {
         polygonCoords.push(ol.proj.transform(
           [parseFloat(geometria.vertices[i]),
-            parseFloat(geometria.vertices[i + 1])],
+            parseFloat(geometria.vertices[i + 1]),
+          ],
           geometria.sistema,
           this.facadeMap_.getProjection().code,
         ));
@@ -557,11 +578,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Parse the surfaces of a GML 3.2 layer
-  * @private
-  * @function
-  * @param {*} source-
-  */
+   * Parse the surfaces of a GML 3.2 layer
+   * @private
+   * @function
+   * @param {*} source-
+   */
   parseSurfacesGml(source) {
     const surfaces = [];
     const endTagSurface = '</gml:Surface>';
@@ -587,11 +608,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Parse the other geometries of a GML 3.2 layer
-  * @private
-  * @function
-  * @param {*} source-
-  */
+   * Parse the other geometries of a GML 3.2 layer
+   * @private
+   * @function
+   * @param {*} source-
+   */
   parseGeometriesGml(source) {
     const geometries = [];
     const endTagPoint = '</gml:Point>';
@@ -647,12 +668,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-    * Parse the surface coordinates of a GML 3.2 layer
-    * @private
-    * @function
-    * @param {*} source -
-    * @param {*} superficies -
-    */
+   * Parse the surface coordinates of a GML 3.2 layer
+   * @private
+   * @function
+   * @param {*} source -
+   * @param {*} superficies -
+   */
   getCoordinatesFromGML32(source, superficies) {
     const poligonos = [];
     superficies.forEach((superficie) => {
@@ -805,11 +826,11 @@ export default class VectorsControl extends M.impl.Control {
 
 
   /**
-  * Loads GeoJSON layer
-  * @public
-  * @function
-  * @param {*} source-
-  */
+   * Loads GeoJSON layer
+   * @public
+   * @function
+   * @param {*} source-
+   */
   loadAllInGeoJSONLayer(sources, layerName) {
     let features = [];
     sources.forEach((source) => {
@@ -824,18 +845,18 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     return features;
   }
 
   /**
-  * Loads KML layer
-  * @public
-  * @function
-  * @api
-  * @param {*} source -
-  * @param {*} extractStyles -
-  */
+   * Loads KML layer
+   * @public
+   * @function
+   * @api
+   * @param {*} source -
+   * @param {*} extractStyles -
+   */
   loadKMLLayer(source, layerName, extractStyles) {
     let features = new ol.format.KML({ extractStyles })
       .readFeatures(source, { featureProjection: this.facadeMap_.getProjection().code });
@@ -856,26 +877,26 @@ export default class VectorsControl extends M.impl.Control {
       const layer = new M.layer.Vector({ name: `${layerName}_lines`, legend: `${layerName}_lines`, extract: false });
       layer.addFeatures(lines);
       this.facadeMap_.addLayers(layer);
-      layer.setZIndex(layer.getZIndex() + 8);
+      layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     }
 
     if (others.length > 0) {
       const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
       layer.addFeatures(others);
       this.facadeMap_.addLayers(layer);
-      layer.setZIndex(layer.getZIndex() + 8);
+      layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     }
 
     return features;
   }
 
   /**
-  * Loads GPX layer.
-  * @public
-  * @function
-  * @api
-  * @param {*} source -
-  */
+   * Loads GPX layer.
+   * @public
+   * @function
+   * @api
+   * @param {*} source -
+   */
   loadGPXLayer(source, layerName) {
     let features = [];
     const origFeatures = new ol.format.GPX()
@@ -903,14 +924,14 @@ export default class VectorsControl extends M.impl.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.addFeatures(lines);
     this.facadeMap_.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
 
     if (points.length > 0) {
       points = this.featuresToFacade(points);
       const layer2 = new M.layer.Vector({ name: `${layerName}_points`, legend: `${layerName}_points`, extract: false });
       layer2.addFeatures(points);
       this.facadeMap_.addLayers(layer2);
-      layer2.setZIndex(layer2.getZIndex() + 8);
+      layer2.setZIndex(layer2.getZIndex() + PLUS_ZINDEX);
       features = lines.concat(points);
     } else {
       features = lines;
@@ -920,13 +941,13 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Converts Openlayers features to Mapea features.
-  * @public
-  * @function
-  * @api
-  * @param {Array<OL.Feature>} implFeatures
-  * @returns {Array<M.Feature>}
-  */
+   * Converts Openlayers features to Mapea features.
+   * @public
+   * @function
+   * @api
+   * @param {Array<OL.Feature>} implFeatures
+   * @returns {Array<M.Feature>}
+   */
   featuresToFacade(implFeatures) {
     return implFeatures.map((feature) => {
       return M.impl.Feature.olFeature2Facade(feature);
@@ -934,12 +955,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Centers on features
-  * @public
-  * @function
-  * @api
-  * @param {*} features -
-  */
+   * Centers on features
+   * @public
+   * @function
+   * @api
+   * @param {*} features -
+   */
   centerFeatures(features, isGPX) {
     if (!M.utils.isNullOrEmpty(features)) {
       if ((features.length === 1) && (features[0].getGeometry().type === 'Point')) {
@@ -1030,32 +1051,32 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Gets extent of feature
-  * @public
-  * @function
-  * @api
-  * @param {M.Featuer} mapeaFeature
-  */
+   * Gets extent of feature
+   * @public
+   * @function
+   * @api
+   * @param {M.Featuer} mapeaFeature
+   */
   getFeatureExtent() {
     return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getExtent();
   }
 
   /**
-  * Gets coordinates of current feature.
-  * @public
-  * @function
-  * @api
-  */
+   * Gets coordinates of current feature.
+   * @public
+   * @function
+   * @api
+   */
   getFeatureCoordinates() {
     return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
   }
 
   /**
-  * Gets feature length
-  * @public
-  * @function
-  * @api
-  */
+   * Gets feature length
+   * @public
+   * @function
+   * @api
+   */
   getFeatureLength() {
     let res = 0;
     const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
@@ -1118,11 +1139,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Gets feature area
-  * @public
-  * @function
-  * @api
-  */
+   * Gets feature area
+   * @public
+   * @function
+   * @api
+   */
   getFeatureArea() {
     const projection = this.facadeMap_.getProjection();
     const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
@@ -1130,11 +1151,11 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Convert olFeature to M.Feature
-  * @public
-  * @function
-  * @api
-  */
+   * Convert olFeature to M.Feature
+   * @public
+   * @function
+   * @api
+   */
   convertToMFeatures(olFeature) {
     const feature = new M.Feature(olFeature.getId(), {
       geometry: {
@@ -1148,12 +1169,12 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   /**
-  * Turns GeometryCollection features into single geometry features.
-  * @public
-  * @function
-  * @api
-  * @param {Array<M.Feature>} features
-  */
+   * Turns GeometryCollection features into single geometry features.
+   * @public
+   * @function
+   * @api
+   * @param {Array<M.Feature>} features
+   */
   geometryCollectionParse(features) {
     const parsedFeatures = [];
     features.forEach((feature) => {
@@ -1248,7 +1269,15 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   calculateProfilePoints(feature, callback, callbackError) {
-    const coordinates = feature.getGeometry().coordinates;
+    let coordinates = [];
+    if (feature.getGeometry().type === 'MultiLineString') {
+      feature.getGeometry().coordinates.forEach((path) => {
+        coordinates = coordinates.concat(path);
+      });
+    } else {
+      coordinates = feature.getGeometry().coordinates;
+    }
+
     let pointsCoord = '';
     for (let i = 1; i < coordinates.length; i += 1) {
       pointsCoord = pointsCoord.concat(this.findNewPoints(coordinates[i - 1], coordinates[i]));
@@ -1295,7 +1324,8 @@ export default class VectorsControl extends M.impl.Control {
       altitudes.forEach((data, index) => {
         const points = pointsBbox[index].split(',');
         const center = ol.extent.getCenter([parseFloat(points[0]), parseFloat(points[1]),
-          parseFloat(points[2]), parseFloat(points[3])]);
+          parseFloat(points[2]), parseFloat(points[3]),
+        ]);
         arrayXZY.push([center[0], center[1], data]);
       });
 
@@ -1315,7 +1345,18 @@ export default class VectorsControl extends M.impl.Control {
   }
 
   calculateProfile(feature) {
-    const coordinates = feature.getGeometry().coordinates;
+    let coordinates = [];
+    if (feature.getGeometry().type === 'MultiLineString') {
+      feature.getGeometry().coordinates.forEach((path) => {
+        coordinates = coordinates.concat(path);
+      });
+    } else if (feature.getGeometry().type === 'Polygon') {
+      coordinates = [].concat(feature.getGeometry().coordinates[0]);
+      coordinates.pop();
+    } else {
+      coordinates = [].concat(feature.getGeometry().coordinates);
+    }
+
     let pointsCoord = '';
     for (let i = 1; i < coordinates.length; i += 1) {
       pointsCoord = pointsCoord.concat(this.findNewPoints(coordinates[i - 1], coordinates[i]));
@@ -1362,7 +1403,8 @@ export default class VectorsControl extends M.impl.Control {
       altitudes.forEach((data, index) => {
         const points = pointsBbox[index].split(',');
         const center = ol.extent.getCenter([parseFloat(points[0]), parseFloat(points[1]),
-          parseFloat(points[2]), parseFloat(points[3])]);
+          parseFloat(points[2]), parseFloat(points[3]),
+        ]);
         arrayXZY.push([center[0], center[1], data]);
       });
 
@@ -1465,9 +1507,11 @@ export default class VectorsControl extends M.impl.Control {
         }
 
         const nPA = [(Math.cos((angle * Math.PI) / 180) * (distPoint * i)) + oriMete[0],
-          (Math.sin((angle * Math.PI) / 180) * (distPoint * i)) + oriMete[1]];
+          (Math.sin((angle * Math.PI) / 180) * (distPoint * i)) + oriMete[1],
+        ];
         const nPB = [(Math.cos((angle * Math.PI) / 180) * ((distPoint * i) + addX)) + oriMete[0],
-          (Math.sin((angle * Math.PI) / 180) * ((distPoint * i) + addY)) + oriMete[1]];
+          (Math.sin((angle * Math.PI) / 180) * ((distPoint * i) + addY)) + oriMete[1],
+        ];
         const coord1 = (ol.proj.transform(nPA, MERCATOR, WGS84));
         const coord2 = (ol.proj.transform(nPB, MERCATOR, WGS84));
         points += `${coord1},${coord2}|`;
@@ -1488,9 +1532,11 @@ export default class VectorsControl extends M.impl.Control {
       }
 
       const nPA = [(Math.cos((angle * Math.PI) / 180) * distPoint) + oriMete[0],
-        (Math.sin((angle * Math.PI) / 180) * distPoint) + oriMete[1]];
+        (Math.sin((angle * Math.PI) / 180) * distPoint) + oriMete[1],
+      ];
       const nPB = [(Math.cos((angle * Math.PI) / 180) * (distPoint + addX)) + oriMete[0],
-        (Math.sin((angle * Math.PI) / 180) * (distPoint + addY)) + oriMete[1]];
+        (Math.sin((angle * Math.PI) / 180) * (distPoint + addY)) + oriMete[1],
+      ];
       const coord1 = (ol.proj.transform(nPA, MERCATOR, WGS84));
       const coord2 = (ol.proj.transform(nPB, MERCATOR, WGS84));
       res = `${coord1},${coord2}|`;
@@ -1503,7 +1549,8 @@ export default class VectorsControl extends M.impl.Control {
   getDistBetweenPoints(firstPoint, secondPoint) {
     const srs = this.facadeMap_.getProjection().code;
     const line = new ol.geom.LineString([ol.proj.transform(firstPoint, srs, MERCATOR),
-      ol.proj.transform(secondPoint, srs, MERCATOR)]);
+      ol.proj.transform(secondPoint, srs, MERCATOR),
+    ]);
     return line.getLength();
   }
 
@@ -1588,7 +1635,7 @@ export default class VectorsControl extends M.impl.Control {
     const overlays = map.getMapImpl().getOverlays().getArray();
     overlays.forEach((item) => {
       if (item.getKeys().indexOf('element') > -1 &&
-      item.element.innerHTML.indexOf('m-measure') < 0) {
+        item.element.innerHTML.indexOf('m-measure') < 0) {
         map.getMapImpl().removeOverlay(item);
       }
     });
@@ -1639,7 +1686,7 @@ export default class VectorsControl extends M.impl.Control {
                 layer.updatable = true;
                 layer.url = url;
                 this.facadeMap_.addLayers(layer);
-                layer.setZIndex(layer.getZIndex() + 8);
+                layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
                 document.querySelector('div.m-mapea-container div.m-dialog').remove();
               } else {
                 document.querySelector('div.m-mapea-container div.m-dialog').remove();
@@ -1648,7 +1695,7 @@ export default class VectorsControl extends M.impl.Control {
             } else {
               document.querySelector('div.m-mapea-container div.m-dialog').remove();
             }
-          }).catch(() => {
+          }).catch((err) => {
             document.querySelector('div.m-mapea-container div.m-dialog').remove();
             if (!cancelFlag) {
               M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
@@ -1660,12 +1707,20 @@ export default class VectorsControl extends M.impl.Control {
         M.dialog.info(getValue('exception.wfs_zoom').replace('*', levels), getValue('warning'));
       }
     } else {
+      const namespace = name.split(':')[0];
+      const namelayer = name.split(':')[1];
       try {
-        const layer = new M.layer.WFS({
+        const obj = {
           url,
-          name,
           legend,
-        });
+        };
+        if (M.utils.isUndefined(namelayer)) {
+          obj.name = namespace;
+        } else if (!M.utils.isUndefined(namespace && !M.utils.isUndefined(namelayer))) {
+          obj.name = namelayer;
+          obj.namespace = namespace;
+        }
+        const layer = new M.layer.WFS(obj);
 
         this.facadeMap_.addLayers(layer);
         this.waitLayerLoaded(layer);
@@ -1733,7 +1788,7 @@ export default class VectorsControl extends M.impl.Control {
             } else {
               document.querySelector('div.m-mapea-container div.m-dialog').remove();
             }
-          }).catch(() => {
+          }).catch((err) => {
             document.querySelector('div.m-mapea-container div.m-dialog').remove();
             if (!cancelFlag) {
               M.dialog.error(getValue('exception.error_features_wfs'), 'Error');
@@ -1755,7 +1810,7 @@ export default class VectorsControl extends M.impl.Control {
         this.waitLayerLoaded(layer);
       }, 200);
     } else {
-      layer.setZIndex(layer.getZIndex() + 8);
+      layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
       this.facadeControl.renderLayers();
     }
   }

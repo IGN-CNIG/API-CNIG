@@ -4,6 +4,9 @@
 import '../assets/css/zoomextent';
 import ZoomExtentControl from './zoomextentcontrol';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class ZoomExtent extends M.Plugin {
   /**
    * @classdesc
@@ -38,6 +41,21 @@ export default class ZoomExtent extends M.Plugin {
      * @type {String} TL | TR | BL | BR
      */
     this.position_ = options.position || 'TL';
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).zoomextent;
   }
 
   /**

@@ -42,6 +42,7 @@ export default class ComparepanelControl extends M.Control {
     this.previousComparisonMode = "";
     this.actualComparisonMode = "";
     this.urlCover =  options.urlCover;
+    this.lyrsMirrorMinZindex= options.lyrsMirrorMinZindex;
 
     this.baseLayers.forEach(e => this.layers.push(e[2]));
     this.params = [options.mirrorpanelParams, options.timelineParams, options.lyrcompareParams, options.transparencyParams];
@@ -50,9 +51,24 @@ export default class ComparepanelControl extends M.Control {
     });
 
     options.mirrorpanelParams.defaultBaseLyrs = this.layers;
+    options.mirrorpanelParams.lyrsMirrorMinZindex = this.lyrsMirrorMinZindex;
     options.timelineParams.intervals = this.baseLayers;         //e2m: TimeLine needs this.baseLayers with the time param
     options.lyrcompareParams.layers = this.layers;
     options.transparencyParams.layers = this.layers;
+
+
+    // e2m: extraemos de las definiciones de capa los nombres de todas las capas
+    this.allLayersName = this.layers.map((lyrDef) => {
+      if (lyrDef.indexOf('*') >= 0) {
+        const lyrAttrib = lyrDef.split('*');
+        if (lyrAttrib[0].toUpperCase() === 'WMS') {
+          return lyrAttrib[3];
+        } else if (lyrAttrib[0].toUpperCase() === 'WMTS') {
+          return lyrAttrib[3];
+        }
+      }
+    });
+
     this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams);
     this.timeline = new Timeline(options.timelineParams);
     
@@ -63,7 +79,6 @@ export default class ComparepanelControl extends M.Control {
     
     this.map = null;
     this.lyrCoverture = null;
-    this.urlCover =  options.urlCover;
   }
 
   /**
@@ -97,6 +112,7 @@ export default class ComparepanelControl extends M.Control {
   }
 
   addComparators(map) {
+    
     this.plugins.forEach((p, index) => {
       map.addPlugin(p);
       this.panels.push(p.panel_._element);
@@ -110,42 +126,64 @@ export default class ComparepanelControl extends M.Control {
     });
     this.setComparatorsDefaultStyle();
 
+    if (this.urlCover!==''){
+      this.loadCoverPNOALyr();
+    }
 
-    this.loadCoverPNOALyr();
 
     this.onMoveEnd((evt) => {
-      this.getCobertura(evt);
+      
+      if (this.urlCover===''){
+        // e2m: si no hay filtro de comerturas, se pueden elegir todas las capas
+        this.mirrorpanel.manageLyrAvailable(this.allLayersName);
+        this.lyrcompare.manageLyrAvailable(this.allLayersName);
+        this.transparency.manageLyrAvailable(this.allLayersName);
+      } else {
+        // e2m: si tenemos filtro de coberturas, se evalúan las capas visibles
+        this.getCobertura(evt);
+      }
     });
-
-
 
   }
 
   addButtonEvents() {
     this.plugins.forEach(p => {
-      //this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
       if (p.name==='mirrorpanel'){
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateMirrorPanel(p);
+        }); 
+
+      } else if (p.name==='lyrcompare'){
+        this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
+          this.deactivateAndActivateOtherModes(p);
         });        
-        
-      }else{
+      } else {
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
           this.deactivateAndActivateOtherModes(p);
         });
       }
     });
+
+    // e2m: eventos del botón de texto
+    this.template.querySelector('#m-cp-testing-btn').addEventListener('click', (e) => {
+      this.map.getMapImpl().getLayers().forEach(lyr=>{
+        /* eslint-disable */
+        console.log(lyr.getSource().key_);
+        /* eslint-enable */
+      })
+    });
+
   }
 
   setComparatorsDefaultStyle(){
-    console.log(`defaultComparisonMode: ${this.defaultComparisonMode}`);
-    console.log(`defaultComparisonViz: ${this.defaultComparisonViz}`);
 
     if ((this.defaultComparisonMode==='mirrorpanel') && (this.defaultComparisonViz===0)) {
+      /* eslint-disable */
       console.log("Modo defecto");
+      /* eslint-enable */
     }else{
-      this.template.querySelector('#m-cp-' + this.defaultComparisonMode + ' .cp-' + this.defaultComparisonMode).classList.toggle('hide-panel');  // Muestro panel
-      this.template.querySelector('#m-cp-' + this.defaultComparisonMode + ' .cp-button').classList.toggle('active');                             // Añado scolor botón CamparePanel
+      //this.template.querySelector('#m-cp-' + this.defaultComparisonMode + ' .cp-' + this.defaultComparisonMode).classList.toggle('hide-panel');  // Muestro panel
+      //this.template.querySelector('#m-cp-' + this.defaultComparisonMode + ' .cp-button').classList.toggle('active');                             // Añado scolor botón CamparePanel
     }
 
     this.plugins.forEach(p => {
@@ -159,50 +197,78 @@ export default class ComparepanelControl extends M.Control {
       }
     });
 
-    if (this.defaultComparisonMode==='mirrorpanel') {
-      // this.template.querySelector('#m-cp-mirrorpanel .cp-mirrorpanel').classList.toggle('hide-panel');  // Oculto panel
-      // this.template.querySelector('#m-cp-mirrorpanel .cp-button').classList.toggle('active');         // Elimino sonbra botón
-    }
+    this.actualComparisonMode = this.defaultComparisonMode // mirror - curtain - timeline - spyeye
 
   }
 
   deactivateAndActivateMirrorPanel(plugin) {
-    console.log("deactivateAndActivateMirrorPanel");
-    this.actualComparisonMode = plugin.name;
+
     this.template.querySelector('#m-cp-mirrorpanel .cp-mirrorpanel').classList.toggle('hide-panel');  // Oculto panel
     this.template.querySelector('#m-cp-mirrorpanel .cp-button').classList.toggle('active');         // Elimino sonbra botón
-    this.plugins.forEach(p => {
-      console.log(p);
-      if (p.name !== 'mirrorpanel') {
-        p.deactivate();
-        this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');  // Oculto panel
-        this.template.querySelector('#m-cp-' + p.name + ' .cp-button').classList.remove('active');           // Elimino sonbra botón
-        }
-    });
 
+    this.plugins.forEach(p => {
+      if (p.name !== 'mirrorpanel') {
+          this.template.querySelector(`#m-cp-${p.name} .cp-${p.name}`).classList.remove('hide-panel');  // Oculto panel
+          this.template.querySelector(`#m-cp-${p.name} .cp-button`).classList.remove('active');           // Elimino sombra botón
+        }
+        // if (p.name==='lyrcompare'){
+        //   if (p.isActive()===true){
+        //     p.deactivate();
+        //   }
+        // }
+    });
+    /** Aquí no debería hacer nada 👇*/
+    if (plugin.name==='mirrorpanel') {
+      this.actualComparisonMode = plugin.name;
+      return;
+    }
   }
 
   deactivateAndActivateOtherModes(plugin) {
-
     this.actualComparisonMode = plugin.name;
     if (plugin.name === 'mirrorpanel') return;
+    
     this.plugins.forEach(p => {
       if (p.name !== plugin.name) {
         this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');
         this.template.querySelector('#m-cp-' + p.name + ' .cp-button').classList.remove('active');
-        p.deactivate();
-      } else if (plugin.name !== 'mirrorpanel') {
-        p.deactivate();
       }
     });
-
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.toggle('active');
-    if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name === 'transparency') {
+    this.template.querySelector('#m-cp-' + plugin.name + ' .cp-' + plugin.name).classList.toggle('hide-panel');
+  }
+
+
+  deactivateAndActivateOtherModesDeprecated(plugin) {
+    this.actualComparisonMode = plugin.name;
+    if (plugin.name === 'mirrorpanel') return;
+    
+    // this.plugins.forEach(p => {
+    //   if (p.name === 'mirrorpanel'){
+    //     return;
+    //   }
+    //   if (p.name === 'lyrcompare'){
+    //     return;
+    //   }      
+    //   if (p.name !== plugin.name) {
+    //     this.template.querySelector('#m-cp-' + p.name + ' .cp-' + p.name).classList.remove('hide-panel');
+    //     this.template.querySelector('#m-cp-' + p.name + ' .cp-button').classList.remove('active');
+    //     p.deactivate();
+    //   } else if (plugin.name !== 'mirrorpanel') {
+    //     p.deactivate();
+    //   }
+    // });
+    this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.toggle('active');
+    // if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name === 'transparency') {
+    //   console.log("3");
+    //   plugin.activate();
+    // }
+    if (this.template.querySelector('#m-cp-' + plugin.name + ' .cp-button').classList.contains('active') && plugin.name === 'timeline') {
       plugin.activate();
-    }
+    }    
     this.template.querySelector('#m-cp-' + plugin.name + ' .cp-' + plugin.name).classList.toggle('hide-panel');
     this.template.querySelector('#m-cp-mirrorpanel .cp-mirrorpanel').classList.remove('hide-panel');  // Oculto panel
-    this.template.querySelector('#m-cp-mirrorpanel .cp-button').classList.remove('active');           // Elimino sonbra botón
+    this.template.querySelector('#m-cp-mirrorpanel .cp-button').classList.remove('active');           // Elimino sombra botón
     
   }
 
@@ -246,17 +312,14 @@ export default class ComparepanelControl extends M.Control {
 
   getCobertura(evt) {
     const olMap = this.map.getMapImpl();
-    //const extent = olMap.getView().calculateExtent(olMap.getSize());
     let pixelCentral = olMap.getPixelFromCoordinate(olMap.getView().getCenter());
     let lyrAvailable = [];
-    //console.log(pixelCentral);
     olMap.forEachFeatureAtPixel(pixelCentral, function (feature, layer) {
-      //console.log(feature);
-      //console.log(layer);    
       if (feature.get('layerkey') !== undefined) {
         lyrAvailable.push(feature.get('layerkey'));
       }
     });
+
     this.mirrorpanel.manageLyrAvailable(lyrAvailable);
     this.lyrcompare.manageLyrAvailable(lyrAvailable);
     this.transparency.manageLyrAvailable(lyrAvailable);

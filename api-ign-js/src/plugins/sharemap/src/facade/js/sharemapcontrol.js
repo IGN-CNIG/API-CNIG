@@ -55,7 +55,6 @@ export default class ShareMapControl extends M.Control {
   constructor(options) {
     const impl = new M.impl.Control();
     super(impl, 'sharemap');
-
     /**
      * Base url of the shared map
      *
@@ -154,6 +153,30 @@ export default class ShareMapControl extends M.Control {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || '¡Copiado!';
+
+    /**
+     * URL API or URL Visor (false visor (default), true API)
+     *
+     * @private
+     * @type {bool}
+     */
+    this.urlAPI_ = options.urlAPI || false;
+
+    this.order = options.order;
+    /**
+     * Layers to show in popup
+     *
+     * @private
+     * @type {Array}
+     */
+    this.filterLayers = options.filterLayers;
+
+
+    /** Select all layers or not
+      * @private
+      * @type {Boolean}
+      */
+    this.shareLayer = options.shareLayer;
   }
 
   /**
@@ -169,11 +192,13 @@ export default class ShareMapControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
       const button = html.querySelector('button');
+      button.setAttribute('tabindex', this.order);
+      button.setAttribute('aria-label', 'Plugin Sharemap');
 
       if (this.overwriteStyles_ === false) {
         button.classList.add(this.classes_.button);
       }
-
+      this.accessibilityTab(html);
       this.addEvents(html);
       success(html);
     });
@@ -188,7 +213,9 @@ export default class ShareMapControl extends M.Control {
    */
   addEvents(html) {
     html.querySelector('#m-sharemap-geturl').addEventListener('click', () => {
-      this.activateModal();
+      if (!document.querySelector('#m-plugin-sharemap-title')) {
+        this.activateModal();
+      }
     });
   }
 
@@ -211,6 +238,8 @@ export default class ShareMapControl extends M.Control {
       },
     });
 
+    this.accessibilityTab(dialog);
+
     const content = dialog.querySelector('#m-plugin-sharemap-content');
     const message = dialog.querySelector('#m-plugin-sharemap-message');
     const html = dialog.querySelector('#m-plugin-sharemap-html');
@@ -231,7 +260,11 @@ export default class ShareMapControl extends M.Control {
     }
 
     const mapeaContainer = document.querySelector('div.m-mapea-container');
-    okButton.addEventListener('click', () => removeElement(dialog));
+    okButton.addEventListener('click', () => {
+      removeElement(dialog);
+      document.querySelector('.m-sharemap-container').click();
+      document.querySelector('#m-sharemap-geturl').focus();
+    });
 
     copyButton.addEventListener('click', () => {
       copyURL(input);
@@ -244,7 +277,9 @@ export default class ShareMapControl extends M.Control {
     });
 
     this.buildURL(dialog).then(() => mapeaContainer.appendChild(dialog));
-    this.buildHtml(dialog).then(() => mapeaContainer.appendChild(dialog));
+    this.buildHtml(dialog)
+      .then(() => mapeaContainer.appendChild(dialog))
+      .then(() => { title.focus(); title.click(); });
   }
 
   /**
@@ -259,30 +294,61 @@ export default class ShareMapControl extends M.Control {
     const facebook = html.querySelector('#facebook');
     const pinterest = html.querySelector('#pinterest');
     return this.getControls().then((controls) => {
-      const { x, y } = this.map_.getCenter();
-      const { code, units } = this.map_.getProjection();
-      let shareURL = `${this.baseUrl_}?center=${x},${y}&zoom=${this.map_.getZoom()}`;
-      if (!this.minimize_) {
-        shareURL = shareURL.concat(`&controls=${controls}`).concat(`&${this.getPlugins()}`);
+      let shareURL;
+      if (this.urlAPI_) {
+        const { x, y } = this.map_.getCenter();
+        const { code, units } = this.map_.getProjection();
+        shareURL = `${this.baseUrl_}?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+        if (!this.minimize_) {
+          shareURL = shareURL.concat(`&controls=${controls}`).concat(`&${this.getPlugins()}`);
+        } else {
+          let newControls = controls.filter((c) => {
+            return c !== undefined && c.indexOf('backgroundlayers') === -1;
+          }).join(',');
+
+          if (newControls.endsWith(',')) {
+            newControls = newControls.slice(0, -1);
+          }
+
+          if (newControls.indexOf('scale') === -1 || (newControls.indexOf('scale') === newControls.indexOf('scaleline'))) {
+            newControls = newControls.concat(',scale*true');
+          }
+          shareURL = shareURL.concat(`&controls=${newControls}`).concat('&plugins=toc,zoompanel,measurebar,mousesrs');
+        }
+
+        shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) : shareURL.concat('');
+        shareURL = shareURL.concat(`&projection=${code}*${units}`);
+        input.value = shareURL;
       } else {
-        let newControls = controls.filter((c) => {
-          return c !== undefined && c.indexOf('backgroundlayers') === -1;
-        }).join(',');
+        const { x, y } = this.map_.getCenter();
+        const urlBaseVisor = (window.location.search) ? window.location.href.replace(window.location.search, '') : window.location.href;
+        shareURL = `${urlBaseVisor}?center=${x},${y}&zoom=${this.map_.getZoom()}&srs=${this.map_.getProjection().code}`;
+        let layers = [];
 
-        if (newControls.endsWith(',')) {
-          newControls = newControls.slice(0, -1);
+        if (this.shareLayer === true) {
+          layers = this.getLayersInLayerswitcher();
+        } else if (this.shareLayer === false) {
+          layers = this.getLayersInfilterLayers();
         }
 
-        if (newControls.indexOf('scale') === -1 || (newControls.indexOf('scale') === newControls.indexOf('scaleline'))) {
-          newControls = newControls.concat(',scale*true');
+        shareURL = layers.length > 0 ? shareURL.concat(`&layers=${layers}`) : shareURL.concat('');
+        if (!M.utils.isNullOrEmpty(M.config.MAP_VIEWER_LAYERS)) {
+          if (layers.length > 0) {
+            let includes = '';
+            M.config.MAP_VIEWER_LAYERS.forEach((elm) => {
+              if (layers.indexOf(elm) === -1) {
+                includes = includes.concat(`,${elm}`);
+              }
+            });
+            if (M.utils.isNullOrEmpty(includes)) {
+              shareURL = `${shareURL},${M.config.MAP_VIEWER_LAYERS}`;
+            }
+          } else {
+            shareURL = `${shareURL}&layers=${M.config.MAP_VIEWER_LAYERS}`;
+          }
         }
-
-        shareURL = shareURL.concat(`&controls=${newControls}`).concat('&plugins=toc,zoompanel,measurebar,mousesrs');
+        input.value = shareURL;
       }
-
-      shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) : shareURL.concat('');
-      shareURL = shareURL.concat(`&projection=${code}*${units}`);
-      input.value = shareURL;
       shareURL = encodeURI(shareURL);
       M.remote.get(`http://tinyurl.com/api-create.php?url=${shareURL}`).then((response) => {
         facebook.href = `http://www.facebook.com/sharer.php?u=${response.text}`;
@@ -302,29 +368,61 @@ export default class ShareMapControl extends M.Control {
     const html = dialog.querySelector('#m-plugin-sharemap-html');
     const input = html.querySelector('input');
     return this.getControls().then((controls) => {
-      const { x, y } = this.map_.getCenter();
-      const { code, units } = this.map_.getProjection();
-      let shareURL = `${this.baseUrl_}?center=${x},${y}&zoom=${this.map_.getZoom()}`;
-      if (!this.minimize_) {
-        shareURL = shareURL.concat(`&controls=${controls}`).concat(`&${this.getPlugins()}`);
+      let shareURL;
+      if (this.urlAPI_) {
+        const { x, y } = this.map_.getCenter();
+        const { code, units } = this.map_.getProjection();
+        shareURL = `${this.baseUrl_}?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+        if (!this.minimize_) {
+          shareURL = shareURL.concat(`&controls=${controls}`).concat(`&${this.getPlugins()}`);
+        } else {
+          let newControls = controls.filter((c) => {
+            return c !== undefined && c.indexOf('backgroundlayers') === -1;
+          }).join(',');
+
+          if (newControls.endsWith(',')) {
+            newControls = newControls.slice(0, -1);
+          }
+
+          if (newControls.indexOf('scale') === -1 || (newControls.indexOf('scale') === newControls.indexOf('scaleline'))) {
+            newControls = newControls.concat(',scale*true');
+          }
+
+          shareURL = shareURL.concat(`&controls=${newControls}`).concat('&plugins=toc,zoompanel,measurebar,mousesrs');
+        }
+
+        shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) : shareURL.concat('');
+        shareURL = shareURL.concat(`&projection=${code}*${units}`);
       } else {
-        let newControls = controls.filter((c) => {
-          return c !== undefined && c.indexOf('backgroundlayers') === -1;
-        }).join(',');
+        const { x, y } = this.map_.getCenter();
+        const urlBaseVisor = (window.location.search) ? window.location.href.replace(window.location.search, '') : window.location.href;
+        shareURL = `${urlBaseVisor}?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+        let layers = [];
 
-        if (newControls.endsWith(',')) {
-          newControls = newControls.slice(0, -1);
+        if (this.shareLayer === true) {
+          layers = this.getLayersInLayerswitcher();
+        } else if (this.shareLayer === false) {
+          layers = this.getLayersInfilterLayers();
         }
 
-        if (newControls.indexOf('scale') === -1 || (newControls.indexOf('scale') === newControls.indexOf('scaleline'))) {
-          newControls = newControls.concat(',scale*true');
+        shareURL = layers.length > 0 ? shareURL.concat(`&layers=${layers}`) : shareURL.concat('');
+        if (!M.utils.isNullOrEmpty(M.config.MAP_VIEWER_LAYERS)) {
+          if (layers.length > 0) {
+            let includes = '';
+            M.config.MAP_VIEWER_LAYERS.forEach((elm) => {
+              if (layers.indexOf(elm) === -1) {
+                includes = includes.concat(`,${elm}`);
+              }
+            });
+            if (M.utils.isNullOrEmpty(includes)) {
+              shareURL = `${shareURL},${M.config.MAP_VIEWER_LAYERS}`;
+            }
+          } else {
+            shareURL = `${shareURL}&layers=${M.config.MAP_VIEWER_LAYERS}`;
+          }
         }
-
-        shareURL = shareURL.concat(`&controls=${newControls}`).concat('&plugins=toc,zoompanel,measurebar,mousesrs');
+        input.value = shareURL;
       }
-
-      shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) : shareURL.concat('');
-      shareURL = shareURL.concat(`&projection=${code}*${units}`);
       const embeddedHtml = `<iframe width="800" height="600" frameborder="0" style="border:0" src="${shareURL}"></iframe>`;
       input.value = embeddedHtml;
     });
@@ -397,6 +495,29 @@ export default class ShareMapControl extends M.Control {
   }
 
   /**
+   * This method gets the externs layers parameters
+   *
+   * @public
+   * @function
+   */
+  getLayersInLayerswitcher() {
+    const layers = this.map_.getLayers().filter((layer) => {
+      return layer.displayInLayerSwitcher === true && layer.transparent === true;
+    });
+
+    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+  }
+
+  /**
+   * @public
+   * @function
+   */
+  getLayersInfilterLayers() {
+    const layers = this.map_.getLayers().filter(layer => this.filterLayers.includes(layer.name));
+    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+  }
+
+  /**
    * This function gets the url param from layer
    *
    * @public
@@ -418,6 +539,8 @@ export default class ShareMapControl extends M.Control {
       param = this.getWFS(layer);
     } else if (layer.type === 'GeoJSON') {
       param = this.getGeoJSON(layer);
+    } else if (layer.type === 'Vector') {
+      param = this.getVector(layer);
     }
     return param;
   }
@@ -439,8 +562,29 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getGeoJSON(layer) {
-    const style = layer.getStyle().serialize();
-    return layer.url ? `GeoJSON*${layer.name}*${window.encodeURIComponent(layer.url)}*${layer.extract}*${style}` : null;
+    const source = !M.utils.isUndefined(layer.source) ?
+      layer.serialize() : encodeURIComponent(layer.url);
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `GeoJSON*${layer.name}*${source}*${layer.extract}*${style}`;
+  }
+
+  /**
+   * This method gets the geojson url parameter
+   *
+   * @public
+   * @function
+   */
+  getVector(layer) {
+    let source = Object.assign(layer.toGeoJSON());
+    source.crs = {
+      properties: {
+        name: 'EPSG:4326',
+      },
+      type: 'name',
+    };
+    source = window.btoa(unescape(encodeURIComponent(JSON.stringify(source))));
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `GeoJSON*${layer.name}*${source}**${style}`;
   }
 
   /**
@@ -450,7 +594,7 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getWMS(layer) {
-    return `WMS*${layer.legend || layer.name}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}*${layer.userMaxExtent || ''}*${layer.version}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+    return `WMS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}*${layer.userMaxExtent || ''}*${layer.version}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
 
   /**
@@ -461,7 +605,7 @@ export default class ShareMapControl extends M.Control {
    */
   getWFS(layer) {
     const style = layer.getStyle().serialize();
-    return `WFS*${layer.legend || layer.name}*${layer.url}*${layer.namespace}:${layer.name}:*${layer.geometry || ''}*${layer.ids || ''}*${layer.cql || ''}*${style || ''}`;
+    return `WFS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.namespace}:${layer.name}:*${layer.geometry || ''}*${layer.ids || ''}*${layer.cql || ''}*${style || ''}`;
   }
 
   /**
@@ -478,7 +622,7 @@ export default class ShareMapControl extends M.Control {
     } catch (err) {
       legend = layer.legend;
     }
-    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${legend}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
 
   /**
@@ -504,5 +648,15 @@ export default class ShareMapControl extends M.Control {
    */
   equals(control) {
     return control instanceof ShareMapControl;
+  }
+
+  normalizeString(text) {
+    let newText = text.replace(/,/g, '');
+    newText = newText.replace(/\*/g, '');
+    return newText;
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

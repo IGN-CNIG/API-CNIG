@@ -765,7 +765,7 @@ export default class Map extends MObject {
   addMBtiles(layers) {
     layers.forEach((layer) => {
       // checks if layer is MBtiles and was added to the map
-      if ((layer.type === LayerType.MBtiles) &&
+      if ((layer.type === 'MBTiles') &&
         !includes(this.layers_, layer)) {
         // TODO creating and adding the MBtiles layer with ol3
         this.layers_.push(layer);

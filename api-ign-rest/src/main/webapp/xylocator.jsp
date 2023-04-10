@@ -87,7 +87,7 @@
             center: [-467062.8225, 4783459.6216],
         });
 
-        let mp, posicion, zoom;
+        let mp, posicion, pzoom;
         crearPlugin({});
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -99,14 +99,14 @@
         inputZoom.addEventListener('change', cambiarTest);
         buttonApi.addEventListener('click', function() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            zoom = inputZoom.value;
+            pzoom = inputZoom.value;
             window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?xylocator=' + posicion;
         });
 
         function cambiarTest() {
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            zoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "";
+            pzoom = inputZoom.value != "" ? objeto.zoom = inputZoom.value : "";
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
@@ -130,10 +130,13 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-163660977-1');
 </script>
 
 </html>

@@ -9,5 +9,9 @@
     "compare": "PNOA Comparator",
     "3d": "3D Display",
     "photo": "Aerial Photography Viewer"
+  },
+  "accessibility": {
+    "webLinks": "Enlaces a sitios web del IGN",
+    "socialMedia": "Enlaces a las redes sociales del IGN"
   }
 }

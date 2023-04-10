@@ -8,7 +8,9 @@ import OLStyleFill from 'ol/style/Fill';
 import { unByKey } from 'ol/Observable';
 import { toContext as toContextRender } from 'ol/render';
 import OLGeomLineString from 'ol/geom/LineString';
+import OLStyleIcon from 'ol/style/Icon';
 import chroma from 'chroma-js';
+import OLStyleStrokePattern from '../ext/OLStyleStrokePattern';
 import Centroid from './Centroid';
 import Path from './Path';
 import Simple from './Simple';
@@ -55,8 +57,13 @@ class Line extends Simple {
       const styleStroke = new Centroid();
       const getValue = Simple.getValue;
       if (!isNullOrEmpty(stroke)) {
+        const strokeColorValue = getValue(stroke.color, featureVariable) || '#000000';
+        let strokeOpacityValue = getValue(stroke.opacity, featureVariable);
+        if (!strokeOpacityValue && strokeOpacityValue !== 0) {
+          strokeOpacityValue = 1;
+        }
         style.setStroke(new OLStyleStroke({
-          color: getValue(stroke.color, featureVariable),
+          color: chroma(strokeColorValue).alpha(strokeOpacityValue).css(),
           width: getValue(stroke.width, featureVariable),
           lineDash: getValue(stroke.linedash, featureVariable),
           lineDashOffset: getValue(stroke.linedashoffset, featureVariable),
@@ -77,7 +84,7 @@ class Line extends Simple {
           textAlign: getValue(label.align, featureVariable),
           scale: getValue(label.scale, featureVariable),
           rotateWithView: getValue(label.rotate, featureVariable) || false,
-          textOverflow: getValue(label.textoverflow, featureVariable) || '',
+          overflow: getValue(label.textoverflow, featureVariable) || false,
           minWidth: getValue(label.minwidth, featureVariable) || 0,
           geometry: getValue(label.geometry, featureVariable),
           offsetX: getValue(options.label.offset ? options.label.offset[0] :
@@ -105,9 +112,9 @@ class Line extends Simple {
             isFunction(featureVariable.getGeometry)) {
             style.setGeometry(featureVariable.getGeometry().cspline());
           }
-        } else {
-          style.setText(textPathStyle);
+          textPathStyle.setPlacement('line');
         }
+        style.setText(textPathStyle);
       }
       let fill;
       if (!isNullOrEmpty(options.fill)) {
@@ -117,11 +124,36 @@ class Line extends Simple {
           fillOpacityValue = 1;
         }
         const widthValue = Simple.getValue(options.fill.width, featureVariable, this.layer_);
+
         if (!isNullOrEmpty(fillColorValue)) {
           fill = new OLStyleStroke({
-            color: chroma(fillColorValue)
-              .alpha(fillOpacityValue).css(),
+            color: chroma(fillColorValue).alpha(fillOpacityValue).css(),
             width: widthValue,
+          });
+        }
+
+        if (!isNullOrEmpty(options.fill.pattern)) {
+          let color = 'rgba(0,0,0,1)';
+          if (!isNullOrEmpty(options.fill.pattern.color)) {
+            color = Simple.getValue(options.fill.pattern.color, featureVariable, this.layer_);
+          }
+
+          fill = new OLStyleStrokePattern({
+            pattern: (Simple.getValue(options.fill.pattern.name, featureVariable, this.layer_) || '').toLowerCase(),
+            image: (Simple.getValue(options.fill.pattern.name, featureVariable, this.layer_) === 'Image') ?
+              new OLStyleIcon({
+                src: Simple.getValue(options.fill.pattern.src, featureVariable, this.layer_),
+                crossOrigin: 'anonymous',
+              }) : undefined,
+            color,
+            width: widthValue,
+            size: Simple.getValue(options.fill.pattern.size, featureVariable, this.layer_),
+            spacing: Simple.getValue(options.fill.pattern.spacing, featureVariable, this.layer_),
+            angle: Simple.getValue(options.fill.pattern.rotation, featureVariable, this.layer_),
+            scale: Simple.getValue(options.fill.pattern.scale, featureVariable, this.layer_),
+            offset: Simple.getValue(options.fill.pattern.offset, featureVariable, this.layer_),
+            fill,
+            layer: this.layer_,
           });
         }
       }
@@ -168,10 +200,12 @@ class Line extends Simple {
   drawGeometryToCanvas(vectorContext, canvas, style, stroke) {
     let x = Line.getCanvasSize()[0];
     let y = Line.getCanvasSize()[1];
-    vectorContext.drawGeometry(new OLGeomLineString([[0 + (stroke / 2), 0 + (stroke / 2)],
+    vectorContext.drawGeometry(new OLGeomLineString([
+      [0 + (stroke / 2), 0 + (stroke / 2)],
       [(x / 3), (y / 2) - (stroke / 2)],
       [(2 * x) / 3, 0 + (stroke / 2)],
-      [x - (stroke / 2), (y / 2) - (stroke / 2)]]));
+      [x - (stroke / 2), (y / 2) - (stroke / 2)],
+    ]));
     if (!isNullOrEmpty(style)) {
       const width = style.width;
       const ctx = canvas.getContext('2d');

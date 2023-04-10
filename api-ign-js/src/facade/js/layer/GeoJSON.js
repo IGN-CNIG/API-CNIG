@@ -58,9 +58,12 @@ class GeoJSON extends LayerVector {
 
       // source
       this.source = parameters.source;
+      if (isString(this.source)) {
+        this.source = this.deserialize(this.source);
+      }
 
       // extract
-      this.extract = parameters.extract;
+      this.extract = parameters.extract || false;
       // crs
       if (!isNullOrEmpty(parameters.crs)) {
         if (isNullOrEmpty(this.source)) {
@@ -76,10 +79,6 @@ class GeoJSON extends LayerVector {
           },
         };
       }
-    }
-
-    if (isNullOrEmpty(this.extract)) {
-      this.extract = true; // by default
     }
 
     // options
@@ -127,7 +126,7 @@ class GeoJSON extends LayerVector {
         this.getImpl().extract = newExtract;
       }
     } else {
-      this.getImpl().extract = true;
+      this.getImpl().extract = false;
     }
   }
 
@@ -172,16 +171,41 @@ class GeoJSON extends LayerVector {
   setStyle(styleParam, applyToFeature = false, defaultStyle = GeoJSON.DEFAULT_OPTIONS_STYLE) {
     super.setStyle(styleParam, applyToFeature, defaultStyle);
   }
+
+  /**
+   * This function serializes this object
+   *
+   * @function
+   * @return {String}
+   * @api
+   * @public
+   */
+  serialize() {
+    return window.btoa(unescape(encodeURIComponent(JSON.stringify(this.source))));
+  }
+
+  /**
+   * This function deserializes this object
+   *
+   * @function
+   * @param { String } encodedSerialized
+   * @return {String}
+   * @api
+   * @public
+   */
+  deserialize(encodedSerialized) {
+    const source = JSON.parse(decodeURIComponent(escape(window.atob(encodedSerialized.replace(' ', '+')))));
+    return source;
+  }
 }
 
 /**
- * Options style by default
- * @const
+ * Default params for style GeoJSON layers * @const
  * @type {object}
  * @public
  * @api
  */
-GeoJSON.DEFAULT_OPTIONS_STYLE = {
+GeoJSON.DEFAULT_PARAMS = {
   fill: {
     color: 'rgba(255, 255, 255, 0.4)',
     opacity: 0.4,
@@ -190,7 +214,26 @@ GeoJSON.DEFAULT_OPTIONS_STYLE = {
     color: '#3399CC',
     width: 1.5,
   },
-  radius: 5,
+};
+
+/**
+ * Default style for GeoJSON layers
+ * @const
+ * @type {object}
+ * @public
+ * @api
+ */
+GeoJSON.DEFAULT_OPTIONS_STYLE = {
+  point: {
+    ...GeoJSON.DEFAULT_PARAMS,
+    radius: 5,
+  },
+  line: {
+    ...GeoJSON.DEFAULT_PARAMS,
+  },
+  polygon: {
+    ...GeoJSON.DEFAULT_PARAMS,
+  },
 };
 
 export default GeoJSON;

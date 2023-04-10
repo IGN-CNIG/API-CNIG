@@ -6,6 +6,9 @@ import '../assets/css/mousesrs';
 import MouseSRSControl from './mousesrscontrol';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class MouseSRS extends M.Plugin {
   /**
    * @classdesc
@@ -92,6 +95,27 @@ export default class MouseSRS extends M.Plugin {
      * @type {string}
      */
     this.helpUrl = options.helpUrl;
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : null;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).mousesrs;
   }
 
   /**
@@ -112,6 +136,7 @@ export default class MouseSRS extends M.Plugin {
       this.tooltip_,
       this.activeZ,
       this.helpUrl,
+      this.order,
     );
     this.controls_.push(this.control_);
     this.map_ = map;
@@ -119,6 +144,7 @@ export default class MouseSRS extends M.Plugin {
       collapsible: false,
       tooltip: this.tooltip_,
       className: 'm-plugin-mousesrs',
+      order: this.order,
     });
     map.addControls(this.controls_);
   }

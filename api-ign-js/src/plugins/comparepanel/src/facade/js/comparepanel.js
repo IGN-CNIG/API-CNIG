@@ -7,6 +7,9 @@ import ComparepanelControl from './comparepanelcontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class Comparepanel extends M.Plugin {
   /**
    * @classdesc
@@ -114,7 +117,7 @@ export default class Comparepanel extends M.Plugin {
      * Posible values: mirror | curtain | spyeye | timeline
      * @type {String}
      */
-     const defaultCompareModes = ['mirror', 'curtain', 'spyeye', 'timeline'];
+     const defaultCompareModes = ['mirror', 'curtain', 'spyeye', 'timeline', 'none'];
      this.defaultCompareMode = defaultCompareModes.includes(options.defaultCompareMode) ? options.defaultCompareMode : 'mirror';
 
     /**
@@ -135,7 +138,7 @@ export default class Comparepanel extends M.Plugin {
      this.layerName_ = options.layerName || 'attributions';
 
      /**
-      * Layer of Mapea with attributions
+      * Layer with attributions
       *
       * @private
       * @type {M.layer.GeoJSON | M.layer.KML}
@@ -149,7 +152,16 @@ export default class Comparepanel extends M.Plugin {
      * @private
      * @type {URLLike}
      */
-    this.urlCoberturas_ = options.urlcoberturas || 'urlcoberturas';
+    this.urlCoberturas_ = options.urlcoberturas || '';
+
+    /**
+     * Nivel mínimo en el que empiezan a cargarse las capas
+     * Value: number in range 10 - 1000
+     * @type {number}
+     * @public
+     */
+     this.lyrsMirrorMinZindex = options.lyrsMirrorMinZindex;
+     if (this.lyrsMirrorMinZindex === undefined) this.lyrsMirrorMinZindex = 100;
 
     /**
      * mirrorpanelParams
@@ -205,6 +217,21 @@ export default class Comparepanel extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
   }
+  
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).comparepanel;
+  }
 
   /**
    * This function adds this plugin into the map
@@ -220,10 +247,15 @@ export default class Comparepanel extends M.Plugin {
     this.mirrorpanelParams.modeViz = this.mirrorpanelParams.modeViz || {};
     this.mirrorpanelParams.modeViz = (this.defaultCompareMode === 'mirror' ? this.defaultCompareViz : 0);
 
+    if (this.defaultCompareMode==='none'){
+      this.defaultCompareMode = 'mirror';
+      this.defaultCompareViz = 0;
+    }
+
+
     // e2m: ponemos el arraqnue del visualizador mirror a cero por defecto
     this.lyrcompareParams.comparisonMode = this.lyrcompareParams.comparisonMode || {};
     this.lyrcompareParams.comparisonMode = (this.defaultCompareMode === 'curtain' ? this.defaultCompareViz : 0);
-
     this.control_ = new ComparepanelControl({
       baseLayers: this.baseLayers,
       mirrorpanelParams: this.mirrorpanelParams,
@@ -233,18 +265,19 @@ export default class Comparepanel extends M.Plugin {
       defaultComparisonMode: this.COMP_PLUGIN_NAMES[this.defaultCompareMode],
       defaultComparisonViz: this.defaultCompareViz,
       position: this.position,
-      urlCover: this.urlCoberturas_
+      urlCover: this.urlCoberturas_,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex
     });
 
     this.controls_.push(this.control_);
     this.map_ = map;
 
     this.panel_ = new M.ui.Panel('panelComparepanel', {
+      position: M.ui.position[this.position],
       collapsible: this.collapsible,
       collapsed: this.collapsed,
-      position: M.ui.position[this.position],
       className: this.className,
-      collapsedButtonClass: 'cp-icon-comparepanel',//cp-icon
+      collapsedButtonClass: 'cp-icon-comparepanel',
       tooltip: this.tooltip_,
     });
 

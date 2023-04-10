@@ -6,6 +6,9 @@ import ZoomPanelControl from './zoompanelcontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class ZoomPanel extends M.Plugin {
   /**
    * @classdesc
@@ -86,7 +89,29 @@ export default class ZoomPanel extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : null;
   }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).zoompanel;
+  }
+
 
   /**
    * This function adds this plugin into the map
@@ -98,13 +123,14 @@ export default class ZoomPanel extends M.Plugin {
    */
   addTo(map) {
     this.facadeMap_ = map;
-    this.panel_ = new M.ui.Panel('panel_selection_raw', {
+    this.panel_ = new M.ui.Panel('zoompanel', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position],
       collapsedButtonClass: 'icon-zoompanel',
       className: 'm-zoompanel',
       tooltip: this.tooltip_,
+      order: this.order,
     });
     this.panel_.addControls(this.control_);
     map.addPanels(this.panel_);

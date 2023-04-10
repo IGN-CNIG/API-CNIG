@@ -57,6 +57,14 @@ export default class Transparency extends M.Plugin {
     this.position = options.position;
 
     /**
+     * Enabled key functions
+     * @type {boolean}
+     * @public
+     */
+     this.enabledKeyFunctions = options.enabledKeyFunctions;
+     if (this.enabledKeyFunctions === undefined) this.enabledKeyFunctions = true;
+
+    /**
      * Layer names that will have effects
      * @public
      * Value: the names separated with coma
@@ -150,6 +158,38 @@ export default class Transparency extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+
+
+    document.addEventListener('keydown', (zEvent) => {
+      if (!this.enabledKeyFunctions) {
+        return;
+      }
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowUp') {  // case sensitive
+        if (this.control_.radius>=200) return;
+        this.control_.radius += 20;
+        this.control_.getImpl().setRadius(this.control_.radius);
+        this.control_.template.querySelector('#input-transparent-radius').value=this.control_.radius;
+      }
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowDown') {  // case sensitive
+        if (this.control_.radius<=32) return;
+        this.control_.radius -= 20;
+        this.control_.getImpl().setRadius(this.control_.radius);
+        this.control_.template.querySelector('#input-transparent-radius').value=this.control_.radius;
+      }
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'Enter') {
+        this.control_.freeze= !this.control_.freeze;
+        this.control_.getImpl().setFreeze(this.control_.freeze);
+        if (this.control_.freeze){
+          this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'hidden';
+          this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'visible';
+        }else{  
+          this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
+          this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
+        }
+      }
+
+    });
+
   }
 
 
@@ -204,7 +244,7 @@ export default class Transparency extends M.Plugin {
 
 
   /**
-   * Activate plugin
+   * Activate plugin SpyEye
    *
    * @function
    * @public
@@ -215,7 +255,7 @@ export default class Transparency extends M.Plugin {
   }
 
   /**
-   * Desactivate plugin
+   * Desactivate plugin SpyEye
    *
    * @function
    * @public

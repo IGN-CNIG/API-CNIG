@@ -141,31 +141,33 @@ class KML extends Vector {
   selectFeatures(features, coord, evt) {
     // TODO: manage multiples features
     const feature = features[0];
+    if (this.extract === true) {
+      if (!isNullOrEmpty(feature)) {
+        const featureName = feature.getAttribute('name');
+        const featureDesc = feature.getAttribute('description');
+        const featureCoord = feature.getImpl().getOLFeature().getGeometry().getFirstCoordinate();
+        const htmlAsText = compileTemplate(popupKMLTemplate, {
+          vars: {
+            name: featureName,
+            desc: featureDesc,
+          },
+          parseToHtml: false,
+        });
+        this.tabPopup_ = {
+          icon: 'g-cartografia-comentarios',
+          title: featureName,
+          content: htmlAsText,
+        };
 
-    if (this.extract !== true) {
-      const featureName = feature.getAttribute('name');
-      const featureDesc = feature.getAttribute('description');
-      const featureCoord = feature.getImpl().getOLFeature().getGeometry().getFirstCoordinate();
+        const popup = this.map.getPopup();
 
-      const htmlAsText = compileTemplate(popupKMLTemplate, {
-        vars: {
-          name: featureName,
-          desc: featureDesc,
-        },
-        parseToHtml: false,
-      });
-      this.tabPopup_ = {
-        icon: 'g-cartografia-comentarios',
-        title: featureName,
-        content: htmlAsText,
-      };
-      const popup = this.map.getPopup();
-      if (isNullOrEmpty(popup)) {
-        this.popup_ = new Popup();
-        this.popup_.addTab(this.tabPopup_);
-        this.map.addPopup(this.popup_, featureCoord);
-      } else {
-        popup.addTab(this.tabPopup_);
+        if (isNullOrEmpty(popup)) {
+          this.popup_ = new Popup();
+          this.popup_.addTab(this.tabPopup_);
+          this.map.addPopup(this.popup_, featureCoord);
+        } else {
+          popup.addTab(this.tabPopup_);
+        }
       }
     }
   }

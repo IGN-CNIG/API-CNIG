@@ -41,13 +41,23 @@ div.m-area.m-left > div.m-panel.m-incicarto.collapsed > button {
   box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02) !important;
 }
 
+/*
+Difinición de los botnes de acción
+*/
+
 div.m-panel.m-incicarto>div.m-panel-controls>div.m-incicarto>div#m-incicarto-actions>button  {
-    background-color: white;
-    color: rgb(117, 116, 116);
+    background-color: #71a7d3; /*white;*/
+    color: rgb(232, 232, 232);/*rgb(117, 116, 116);*/
     border: none;
-    font-size: 20px;
+    font-size: 25px;
     height: 40px;
     width: 40px;
+    margin: 5px;
+    border-radius: 20px;
+}
+div.m-panel.m-incicarto>div.m-panel-controls>div.m-incicarto>div#m-incicarto-actions>button:hover  {
+  background-color: #4694d5;
+  color: rgb(218, 218, 218)
 }
 
 div.m-panel.m-incicarto>div.m-panel-controls>div.m-incicarto>div#m-incicarto-actions>button.activeTool,
@@ -249,6 +259,7 @@ div.ol-overlaycontainer-stopevent > div > div.m-area > div.m-panel.m-incicarto.c
 
 #m-incicarto-list > li > table > tbody > tr > td:nth-child(3) > div > span.m-incicarto-layer-toogle {
   font-size: 18px;
+  display: none;  /* e2m: oculto el botón de encender/apagar capa */
 }
 
 .m-incicarto div#m-incicarto-list li > table > tbody > tr > td.m-incicarto-layer-legend {
@@ -259,11 +270,15 @@ div.ol-overlaycontainer-stopevent > div > div.m-area > div.m-panel.m-incicarto.c
 
 .m-incicarto div#m-incicarto-list li > table > tbody > tr > td .m-incicarto-layer-actions {
   text-align: right;
-  font-size: 16px;
+  font-size: 32px; /* e2m: tamaño de los botones */
 }
 
 .m-incicarto div#m-incicarto-list li > table > tbody > tr > td .m-incicarto-layer-actions > span{
   cursor: pointer !important;
+}
+
+.m-incicarto div#m-incicarto-list li > table > tbody > tr > td .m-incicarto-layer-actions > span:hover {
+  color: #2b2a2a; /* Cuando desplazamos el cursor sobre el botón */
 }
 
 div.m-incicarto-layer-actions .active-tool {
@@ -865,7 +880,6 @@ span.m-incicarto-3d-measure:hover {
 
 .m-plugin-incicarto-dialog>div.m-plugin-incicarto-modal {
   width: 100%;
-  height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
@@ -882,11 +896,10 @@ span.m-incicarto-3d-measure:hover {
   max-width: 50vw;
   min-width: 30vw;
   margin: 0 auto;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-radius: 4px;
-  
 }
-
 
 /**************************
        TITLE, TEXT
@@ -906,7 +919,7 @@ span.m-incicarto-3d-measure:hover {
 .m-plugin-incicarto-html {
   display: flex;
   justify-content: center;
-  /* padding-top: 10px; */
+  padding-right: 10px;/* Dejamos un poquito de espacio a la derecha */
   font-size: 15px;
   align-items: baseline;
   margin-bottom: 5px;
@@ -947,7 +960,8 @@ span.m-incicarto-3d-measure:hover {
 }
 
 .m-plugin-incicarto-html p {
-  padding: 0px;
+  /*padding: 0px;*/
+  padding-right: 10px;
 }
 
 .m-plugin-incicarto-html p.okmessage {
@@ -1031,6 +1045,41 @@ span.m-incicarto-3d-measure:hover {
   resize: none;
 }
 
+.m-plugin-incicarto-form-input-group input[type=text]{
+
+  margin: 5px;
+  padding: 5px;
+  background-color: transparent;
+  cursor: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,.5);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: #6c6c6c;
+  font-family: Muli,"sans-serif"!important;
+  font-size: 13px;
+
+}
+
+.m-plugin-incicarto-form-input-group input[type=email]{
+
+  margin: 5px;
+  padding: 5px;
+  background-color: transparent;
+  cursor: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,.5);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: #6c6c6c;
+  font-family: Muli,"sans-serif"!important;
+  font-size: 13px;
+
+}
+
+
 
 /**************************
        BUTTON
@@ -1053,3 +1102,32 @@ span.m-incicarto-3d-measure:hover {
   justify-content: center;
   margin-top: 15px;
 }
+
+
+#m-incicarto-metadata-adjuntfile .inputfile + label {
+  border-radius: 5px;
+  font-weight: bold;
+  padding: 5px 10px;
+  color: white;
+  cursor: pointer;
+  background-color: #71a7d3;
+  display: inline-block;
+}
+
+#m-incicarto-metadata-adjuntfile  .inputfile:focus + label,
+#m-incicarto-metadata-adjuntfile  .inputfile + label:hover {
+  background-color:#3e8ecf;
+}
+
+
+/*
+
+border: none;
+box-shadow: none;
+cursor: pointer;
+margin-top: 10px;
+font-weight: bold;
+padding: 5px 10px;
+border-radius: 5px;
+background-color: #71a7d3;
+color: #fff;*/

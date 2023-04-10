@@ -7,7 +7,7 @@
  * works around an issue with `~` characters in module paths by escaping them.
  */
 
-const marked = require('marked');
+const marked = require('marked').marked;
 const format = require('util').format;
 
 const tags = [
@@ -27,7 +27,7 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
 const markedRenderer = new marked.Renderer();
 
 // Allow prettyprint to work on inline code samples
-markedRenderer.code = function (code, language) {
+markedRenderer.code = function(code, language) {
   const langClass = language ? ' lang-' + language : '';
 
   return format('<pre class="prettyprint source%s"><code>%s</code></pre>',
@@ -41,7 +41,7 @@ function escapeCode(source) {
 }
 
 function escapeUnderscoresAndTildes(source) {
-  return source.replace(/\{@[^}\r\n]+\}/g, function (wholeMatch) {
+  return source.replace(/\{@[^}\r\n]+\}/g, function(wholeMatch) {
     return wholeMatch
       .replace(/(^|[^\\])_/g, '$1\\_')
       .replace('~', '&tilde;');
@@ -49,7 +49,7 @@ function escapeUnderscoresAndTildes(source) {
 }
 
 function unencodeQuotesAndTildes(source) {
-  return source.replace(/\{@[^}\r\n]+\}/g, function (wholeMatch) {
+  return source.replace(/\{@[^}\r\n]+\}/g, function(wholeMatch) {
     return wholeMatch
       .replace(/&quot;/g, '"')
       .replace(/&tilde;/g, '~');
@@ -82,7 +82,7 @@ function shouldProcessString(tagName, text) {
 }
 
 function process(doclet) {
-  tags.forEach(function (tag) {
+  tags.forEach(function(tag) {
     if (!hasOwnProp.call(doclet, tag)) {
       return;
     }
@@ -90,7 +90,7 @@ function process(doclet) {
     if (typeof doclet[tag] === 'string' && shouldProcessString(tag, doclet[tag])) {
       doclet[tag] = parse(doclet[tag]);
     } else if (Array.isArray(doclet[tag])) {
-      doclet[tag].forEach(function (value, index, original) {
+      doclet[tag].forEach(function(value, index, original) {
         const inner = {};
 
         inner[tag] = value;
@@ -105,7 +105,7 @@ function process(doclet) {
 
 
 exports.handlers = {
-  newDoclet: function (e) {
+  newDoclet: function(e) {
     process(e.doclet);
   }
 };

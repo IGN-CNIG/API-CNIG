@@ -51,18 +51,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **urlPrefix**. Prefijo source servicio Nomenclátor. Por defecto 'http://www.idee.es/'
 - **urlAssistant**. Url servicio SearchAssitant de Nomenclátor.
 - **urlDispatcher**. Url servicio Dispatcher de Nomenclátor.
-- **CMC_url**. URL CMC.
-- **DNPPP_url**. URL DNPPP.
-- **CPMRC_url**. URL CPMRC.
-- **catastroWMS**. URL Catastro.
-- **pointStyle**. Estilo del indicador de punto, opciones predefinidas: "pinBlanco", "pinRojo" y "pinMorado". 
-- **locationID**. Texto para buscar.
-- **requestStreet**.  Texto para buscar.
-- **geocoderCoords**. Coordenadas geocoder.
-- **zoom**. Zoom para hacer.
-- **searchPosition**. Esta variable indica la URL del servicio Nomenclator SearchAssistant.
-- **helpUrl**. URL a la ayuda para el icono.
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Eventos
 

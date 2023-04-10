@@ -66,12 +66,8 @@ export default class TimelineControl extends M.Control {
           tag: interval[1],
           service: layer
         };
-
         intervals.push(iv);
-        console.log("Cargo capa");
       });
-      
-      console.log(intervals);
 
       this.intervals = intervals;
       this.template = M.template.compileSync(template, {
@@ -82,8 +78,6 @@ export default class TimelineControl extends M.Control {
           },
         },
       });
-
-
 
       this.intervals.forEach((interval, k) => {
         let tag = document.createElement('div');
@@ -113,11 +107,8 @@ export default class TimelineControl extends M.Control {
         //e.target.classList.add('cp-control-pausa');
         this.running = !this.running;
         if (this.running){
-          console.log(`ENNNVIIIO -> ${this.running}`);
           this.playTimeline(this.running);
         }
-        
-        
       });
       success(this.template);
 
@@ -139,7 +130,6 @@ export default class TimelineControl extends M.Control {
    */
   transformToLayers(layer) {
     let newLayer = null;
-    console.log("transformToLayers");
     if (!(layer instanceof Object)) {
       if (layer.indexOf('*') >= 0) {
         const urlLayer = layer.split('*');
@@ -353,7 +343,7 @@ export default class TimelineControl extends M.Control {
   }
 
   /**
-   * Activate plugin
+   * Activate plugin Timeline
    *
    * @function
    * @public
@@ -374,9 +364,6 @@ export default class TimelineControl extends M.Control {
    * @api
    */
   deactivate() {
-
-    console.log(this.intervals);
-    
     try {
       clearInterval(this.running);
       this.running = false;
@@ -386,7 +373,9 @@ export default class TimelineControl extends M.Control {
         }
       });
     } catch (error) {
+      /* eslint-disable */
       console.error(`e2m (1): ${error}`);
+      /* eslint-enable */
     }
 
   }

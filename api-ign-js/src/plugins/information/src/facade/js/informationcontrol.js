@@ -16,13 +16,14 @@ export default class InformationControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(format, featureCount, buffer, tooltip) {
+  constructor(format, featureCount, buffer, tooltip, opened, order) {
     if (M.utils.isUndefined(InformationImplControl)) {
       M.exception('');
     }
-    const impl = new InformationImplControl(format, featureCount, buffer);
+    const impl = new InformationImplControl(format, featureCount, buffer, opened);
     super(impl, 'Information');
     this.tooltip = tooltip;
+    this.order = order;
   }
 
   /**
@@ -40,6 +41,7 @@ export default class InformationControl extends M.Control {
           translations: {
             tooltip: this.tooltip || getValue('tooltip'),
           },
+          order: this.order,
         },
       });
       success(html);

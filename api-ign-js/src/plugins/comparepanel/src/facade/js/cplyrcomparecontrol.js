@@ -102,7 +102,7 @@ export default class LyrCompareControl extends M.Control {
      * @private
      * @type {Number}
      */
-    this.comparisonMode = values.comparisonMode;
+    this.comparisonMode = values.comparisonMode; // 0: desactivado, 1: vertical, 2: horizontal, 3: multivista
 
     /**
      * Layer A default
@@ -198,6 +198,7 @@ export default class LyrCompareControl extends M.Control {
           tooltip_vcurtain: getValue('tooltip_vcurtain'),
           tooltip_hcurtain: getValue('tooltip_hcurtain'),
           tooltip_multicurtain: getValue('tooltip_multicurtain'),
+          tooltip_deactivatecurtain: getValue('tooltip_deactivatecurtain'),
           opacity: getValue('opacity'),
           static: getValue('static'),
           dynamic: getValue('dynamic'),
@@ -213,11 +214,6 @@ export default class LyrCompareControl extends M.Control {
       }
     }
 
-    //config a helper in Handlebars for embedding conditionals in template
-    Handlebars.registerHelper('ifCond', (v1, v2, options) => {
-      return v1 === v2 ? options.fn(this) : options.inverse(this);
-    });
-
     //template with default options
     this.template = M.template.compileSync(template, options);
     this.setEventsAndValues();
@@ -228,25 +224,47 @@ export default class LyrCompareControl extends M.Control {
     } else {
       //e2m: Toogle activate/desactivate vcurtain, hcurtain, multicurtain ---> comparisonMode = 1, 2, 3
       this.template.querySelectorAll('button[id^="m-lyrcompare-"]').forEach((button, i) => {
-        button.addEventListener('click', evt => {
-          if (this.comparisonMode === 0) {
-            this.comparisonMode = i + 1;
-            this.activateCurtain();
-            return;
-          } else if (this.comparisonMode === i + 1) {
+        if (button.id==="m-lyrcompare-deactivate"){
+          button.addEventListener('click', evt => {
+            if(document.querySelector('#m-lyrdropdown-selector')) document.querySelector('#m-lyrdropdown-selector').style.display = 'block';
+            
+            // e2m: permitimos que se activen de nuevo los comparadores de Spy Eye al desactivar las cortinas
+            document.querySelector('#m-transparency-active').disabled = false;
+            document.querySelector('#m-transparency-deactivate').disabled = false;
+
             this.comparisonMode = 0;
             this.deactivateCurtain();
             return;
-          } else {
-            //Cambiamos de modo de visualización sin apagar/encender la interacción
-            this.comparisonMode = i + 1;
-            this.updateControls();
-            this.getImpl().setComparisonMode(this.comparisonMode);
-          }
-        })
+          })
+        } else{
+          button.addEventListener('click', evt => {
+            if (this.comparisonMode === 0) {
+                if(document.querySelector('#m-lyrdropdown-selector')) {
+                  document.querySelector('#m-lyrdropdown-selector').value="none";
+                  document.querySelector('#m-lyrdropdown-selector').style.display = 'none';
+                }
+
+              // e2m: evitamos que se activen los comparadores de Spy Eye mientras las cortinas estén activas
+              document.querySelector('#m-transparency-active').disabled = true;
+              document.querySelector('#m-transparency-deactivate').disabled = true;
+
+              this.comparisonMode = i + 1;
+              this.activateCurtain();
+              return;
+            } else if (this.comparisonMode === i + 1) {
+              this.comparisonMode = 0;
+              this.deactivateCurtain();
+              return;
+            } else {
+              //Cambiamos de modo de visualización sin apagar/encender la interacción
+              this.comparisonMode = i + 1;
+              this.updateControls();
+              this.getImpl().setComparisonMode(this.comparisonMode);
+            }
+          })
+        }
       });
     }
-
     return success(this.template);
   }
 
@@ -445,6 +463,7 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   deactivateCurtain() {
+
     const swipeControl = document.querySelector('.lyrcompare-swipe-control');
     if (swipeControl) {
       swipeControl.classList.display = 'none !important';
@@ -463,6 +482,7 @@ export default class LyrCompareControl extends M.Control {
 
     this.removeEffectsComparison();
     this.updateControls();
+
   }
 
   /**
@@ -478,11 +498,10 @@ export default class LyrCompareControl extends M.Control {
 
 
   manageLyrAvailable(lyrList){
-    
+
     if (this.template === null){
       return;
     }
-    console.log('manageLyrAvailable at CurtainCompare');
     this.updateLyrsAvailables(lyrList,"A");
     this.updateLyrsAvailables(lyrList,"B");
     this.updateLyrsAvailables(lyrList,"C");
@@ -498,7 +517,9 @@ export default class LyrCompareControl extends M.Control {
         dropDownContainer.options[iOpt].disabled = !lyrList.includes(dropDownContainer.options[iOpt].value);
       }
     } catch (error) {
-      console.log(error);
+          /* eslint-disable */
+          console.log(error);
+          /* eslint-enable */
     }
   }
 
@@ -517,6 +538,9 @@ export default class LyrCompareControl extends M.Control {
       });
 
       this.template.querySelector('input').disabled = true; //Deshabilita el range del radio
+      this.template.querySelector('#div-m-lyrcompare-transparent-dynamic').disabled = true; // Deshabilita options de tipo de control de cortina
+      this.template.querySelector('#div-m-lyrcompare-transparent-static').disabled = true; // Deshabilita options de tipo de control de cortina
+      this.template.querySelector('#div-m-lyrcompare-transparent-mixed').disabled = true; // Deshabilita options de tipo de control de cortina
       return;
     } else if (this.comparisonMode === 1) {
       if (swapControl) swapControl.style.opacity = '1';
@@ -551,6 +575,10 @@ export default class LyrCompareControl extends M.Control {
     }
 
     this.template.querySelector('input').disabled = false; //Habilita el range del radio
+    this.template.querySelector('#div-m-lyrcompare-transparent-dynamic').disabled = false; // Habilita options de tipo de control de cortina
+    this.template.querySelector('#div-m-lyrcompare-transparent-static').disabled = false; // Habilita options de tipo de control de cortina
+    this.template.querySelector('#div-m-lyrcompare-transparent-mixed').disabled = false; // Habilita options de tipo de control de cortina
+
   }
 
   activateByMode() {
@@ -619,10 +647,10 @@ export default class LyrCompareControl extends M.Control {
 
 
   /**
-   * 
+   *
    * @param {*} layers
-   * Transform StringLayers o Template Literals to Mapea M.LayerFormato 
-   * 
+   * Transform StringLayers o Template Literals to Mapea M.LayerFormato
+   *
    * WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
    * Tipo de Servicio (WMS/WMTS)
    * Nombre del servicio para la leyenda (acepta espacios y tildes)
@@ -630,13 +658,13 @@ export default class LyrCompareControl extends M.Control {
    * Identificador de capa del Capabilities del servicio
    * Tilematrix
    * Formato de imagen
-   * 
+   *
    * Ejemplo: WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
-   * 
+   *
    * El resto de parámetros los define la función
    * Las capas cargadas tienen asignados zIndex pequeños
-   *  
-   * @returns 
+   *
+   * @returns
    */
   transformToLayers(layers) {
 

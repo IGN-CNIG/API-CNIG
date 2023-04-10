@@ -13,6 +13,7 @@ import changeNameTemplate from 'templates/changename';
 import addWFSTemplate from 'templates/addwfs';
 import fromURLTemplate from 'templates/fromurl';
 import selectWFSTemplate from 'templates/selectwfs';
+import helpTemplate from 'templates/help';
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
 import togpx from 'togpx';
@@ -35,6 +36,7 @@ const formatNumber = (x, decimals) => {
 const POINTS = [1, 15];
 const LINES = [10, 15];
 const LINE_POINTS = [1, 15, 20, 15];
+const PLUS_ZINDEX = 1000;
 
 export default class VectorsControl extends M.Control {
   /**
@@ -51,7 +53,7 @@ export default class VectorsControl extends M.Control {
       M.exception(getValue('exception.impl'));
     }
 
-    const impl = new VectorsImplControl();
+    const impl = new VectorsImplControl(options.order);
     super(impl, 'Vectors');
 
     // facade control goes to impl as reference param
@@ -144,7 +146,7 @@ export default class VectorsControl extends M.Control {
       extract: false,
       name: 'selectLayer',
       source: this.getImpl().newVectorSource(true),
-    });
+    }, { displayInLayerSwitcher: false });
 
     this.html = null;
 
@@ -159,6 +161,8 @@ export default class VectorsControl extends M.Control {
     this.wfszoom = options.wfszoom;
 
     this.precharged = options.precharged;
+
+    this.order = options.order;
   }
 
   /**
@@ -180,10 +184,12 @@ export default class VectorsControl extends M.Control {
             add_line_layer: getValue('add_line_layer'),
             add_poly_layer: getValue('add_poly_layer'),
             add_wfs_layer: getValue('add_wfs_layer'),
+            title_plugin: getValue('title_plugin'),
             load_layer: getValue('load_layer'),
           },
         },
       });
+      this.accessibilityTab(html);
       this.html = html;
       this.renderLayers();
       success(html);
@@ -191,7 +197,7 @@ export default class VectorsControl extends M.Control {
       this.createDrawingTemplate();
       this.createUploadingTemplate();
       this.map.addLayers(this.selectionLayer);
-      this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + 8);
+      this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + PLUS_ZINDEX);
     });
   }
 
@@ -206,8 +212,7 @@ export default class VectorsControl extends M.Control {
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
       return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' &&
-        layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1 && layer.name !== 'infocoordinatesLayerFeatures';
+        layer.name !== undefined && layer.displayInLayerSwitcher === true;
     });
 
     const layers = [];
@@ -256,11 +261,16 @@ export default class VectorsControl extends M.Control {
       },
     });
 
+    this.accessibilityTab(html);
+
     const container = this.html.querySelector('.m-vectors-layers-container');
     container.innerHTML = '';
     if (layers.length > 0) {
       container.appendChild(html);
       html.addEventListener('click', this.clickLayer.bind(this), false);
+      html.addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) this.clickLayer(e);
+      });
       const layerList = this.html.querySelector('#m-vector-list');
       Sortable.create(layerList, {
         animation: 150,
@@ -304,15 +314,20 @@ export default class VectorsControl extends M.Control {
           delete_geom: getValue('delete_geom'),
           query_profile: getValue('query_profile'),
           collapse: getValue('collapse'),
+          add_points: getValue('add_points'),
         },
       },
     });
+
+    this.accessibilityTab(this.drawingTools);
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
     this.drawingTools.querySelector('.collapsor').addEventListener('click', e => this.toogleCollapse(e));
+    this.drawingTools.querySelector('.collapsor').addEventListener('keydown', e => (e.keyCode === 13) && this.toogleCollapse(e));
     this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
     this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
     this.drawingTools.querySelector('button.m-vector-layer-delete-feature').addEventListener('click', () => this.deleteSingleFeature());
+    this.drawingTools.querySelector('button.m-vector-layer-add-points').addEventListener('click', () => this.activeAddPoints());
     this.drawingTools.querySelector('button.m-vector-layer-profile').addEventListener('click', () => this.getProfile());
     this.drawingTools.querySelector('button').style.display = 'none';
     this.drawingTools.querySelector('div.stroke-options').addEventListener('click', (e) => {
@@ -393,7 +408,7 @@ export default class VectorsControl extends M.Control {
    * @api
    */
   createUploadingTemplate() {
-    const accept = '.kml, .zip, .gpx, .geojson, .gml';
+    const accept = '.kml, .zip, .gpx, .geojson, .gml, .json';
     this.uploadingTemplate = M.template.compileSync(uploadingTemplate, {
       jsonp: true,
       vars: {
@@ -405,10 +420,16 @@ export default class VectorsControl extends M.Control {
         },
       },
     });
+
+    this.accessibilityTab(this.uploadingTemplate);
+
     const inputFile = this.uploadingTemplate.querySelector('#vectors-uploading>input');
     const fromURL = this.uploadingTemplate.querySelector('#vectors-uploading #uploadFromURL');
+    const labelFileInput = this.uploadingTemplate.querySelector('#labelFileInput');
     inputFile.addEventListener('change', evt => this.changeFile(evt, inputFile.files[0]));
+    labelFileInput.addEventListener('keydown', evt => (evt.keyCode === 13) && evt.target.click());
     fromURL.addEventListener('click', () => this.openFromURL());
+    fromURL.addEventListener('keydown', evt => (evt.keyCode === 13) && this.openFromURL());
   }
 
   openFromURL() {
@@ -424,7 +445,7 @@ export default class VectorsControl extends M.Control {
       },
     });
 
-    M.dialog.info(fromURL, getValue('add_from_url'));
+    M.dialog.info(fromURL, getValue('add_from_url'), this.order);
     setTimeout(() => {
       const input = document.querySelector('#m-vectors-fromurl-search-input');
       document.querySelector('#m-vectors-fromurl-add-btn').addEventListener('click', () => {
@@ -432,7 +453,7 @@ export default class VectorsControl extends M.Control {
         if (M.utils.isUrl(url)) {
           const fileName = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
           const extension = url.substring(url.lastIndexOf('.') + 1, url.length);
-          if (['zip', 'kml', 'gpx', 'geojson', 'gml'].indexOf(extension) > -1) {
+          if (['zip', 'kml', 'gpx', 'geojson', 'gml', 'json'].indexOf(extension) > -1) {
             const content = `<div class="m-vectors-loading"><p>${getValue('loading')}...</p><span class="icon-spinner" /></div>`;
             const previous = document.querySelector('.m-dialog .m-vectors-fromurl').innerHTML;
             document.querySelector('.m-dialog .m-vectors-fromurl').innerHTML = previous + content;
@@ -446,7 +467,7 @@ export default class VectorsControl extends M.Control {
                 features = this.getImpl().loadKMLLayer(source, fileName, false);
               } else if (extension === 'gpx') {
                 features = this.getImpl().loadGPXLayer(source, fileName);
-              } else if (extension === 'geojson') {
+              } else if (extension === 'geojson' || extension === 'json') {
                 features = this.getImpl().loadGeoJSONLayer(source, fileName);
               } else if (extension === 'gml') {
                 features = this.getImpl().loadGMLLayer(source, fileName);
@@ -456,7 +477,7 @@ export default class VectorsControl extends M.Control {
               }
 
               if (features.length === 0) {
-                M.dialog.info(getValue('exception.no_geoms'));
+                M.dialog.info(getValue('exception.no_geoms'), null, this.order);
               } else {
                 this.getImpl().centerFeatures(features, extension === 'gpx');
               }
@@ -503,7 +524,30 @@ export default class VectorsControl extends M.Control {
     html.querySelector('#vector-add-poly').addEventListener('click', this.addNewLayer.bind(this, 'Polygon'));
     html.querySelector('#vector-add-wfs').addEventListener('click', this.openAddWFS.bind(this));
     html.querySelector('#vector-upload').addEventListener('click', () => this.openUploadOptions());
+    html.querySelector('#vector-question').addEventListener('click', this.createHelp.bind(this));
     this.addDragDropEvents();
+  }
+
+  createHelp() {
+    const help = M.template.compileSync(helpTemplate, {
+      jsonp: true,
+      parseToHtml: false,
+    });
+    M.dialog.info(help, getValue('help_template.help'), this.order);
+    document.querySelector('#m-vectors-help-create-layers').innerHTML = getValue('help_template.create_layers');
+    document.querySelector('#m-vectors-help-create-layers-content').innerHTML = getValue('help_template.create_layers_content');
+    document.querySelector('#m-vectors-help-addWFS').innerHTML = getValue('help_template.add_wfs');
+    document.querySelector('#m-vectors-help-addWFS-content').innerHTML = getValue('help_template.add_wfs_content');
+    document.querySelector('#m-vectors-help-loaded-layer').innerHTML = getValue('help_template.loaded_layer');
+    document.querySelector('#m-vectors-help-loaded-layer-content').innerHTML = getValue('help_template.loaded_layer_content');
+    const button = document.querySelector('div.m-dialog.info div.m-button > button');
+    button.innerHTML = getValue('close');
+    button.style.width = '75px';
+
+    setTimeout(() => {
+      document.querySelector('.m-dialog.info div.m-title').style.backgroundColor = '#71a7d3';
+      document.querySelector('.m-modal .m-content .m-button button').style.backgroundColor = '#71a7d3';
+    }, 10);
   }
 
   openAddWFS() {
@@ -520,10 +564,11 @@ export default class VectorsControl extends M.Control {
           availables: getValue('availables'),
           loaded_services: getValue('loaded_services'),
         },
+        order: this.order,
       },
     });
 
-    M.dialog.info(addWFS, getValue('add_wfs_layer'));
+    M.dialog.info(addWFS, getValue('add_wfs_layer'), this.order);
     setTimeout(() => {
       if (document.querySelector('#m-vectors-addwfs-list-btn') !== null) {
         document.querySelector('#m-vectors-addwfs-list-btn').addEventListener('click', e => this.showSuggestions(e));
@@ -535,6 +580,7 @@ export default class VectorsControl extends M.Control {
       });
 
       document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('click', e => this.readWFSCapabilities(e));
+      document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.readWFSCapabilities(e));
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
       button.innerHTML = getValue('close');
@@ -655,6 +701,8 @@ export default class VectorsControl extends M.Control {
       },
     });
 
+    this.accessibilityTab(selectWFS);
+
     document.querySelector('#m-vectors-addwfs-results').innerHTML = '';
     document.querySelector('#m-vectors-addwfs-results').appendChild(selectWFS);
     const selector = '#m-vectors-select-wfs .m-vectors-common-btn';
@@ -714,7 +762,7 @@ export default class VectorsControl extends M.Control {
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.geometry = geom;
     this.map.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
+    layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     setTimeout(() => {
       document.querySelector(`li[name="${layerName}"] span.m-vector-layer-add`).click();
     }, 100);
@@ -866,6 +914,7 @@ export default class VectorsControl extends M.Control {
           },
         },
       });
+      this.accessibilityTab(html);
       document.querySelector(selector).appendChild(html);
       html.querySelector('button').addEventListener('click', this.downloadLayer.bind(this, layer));
       this.isDownloadActive = true;
@@ -879,10 +928,10 @@ export default class VectorsControl extends M.Control {
    * @api
    */
   openUploadOptions() {
-    if (document.querySelector('#vectors-uploading') !== null) {
-      document.querySelector('.m-vectors-general-container').innerHTML = '';
+    if (this.html.querySelector('#vectors-uploading') !== null) {
+      this.html.querySelector('.m-vectors-general-container').innerHTML = '';
     } else {
-      document.querySelector('.m-vectors-general-container').appendChild(this.uploadingTemplate);
+      this.html.querySelector('.m-vectors-general-container').appendChild(this.uploadingTemplate);
     }
   }
 
@@ -1023,18 +1072,18 @@ export default class VectorsControl extends M.Control {
     switch (downloadFormat) {
       case 'geojson':
         arrayContent = JSON.stringify(geojsonLayer);
-        mimeType = 'json';
+        mimeType = 'geo+json';
         extensionFormat = 'geojson';
         break;
       case 'kml':
         const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
         arrayContent = tokml(fixedGeojsonLayer);
-        mimeType = 'xml';
+        mimeType = 'vnd.google-earth.kml+xml';
         extensionFormat = 'kml';
         break;
       case 'gpx':
         arrayContent = togpx(geojsonLayer);
-        mimeType = 'xml';
+        mimeType = 'gpx+xml';
         extensionFormat = 'gpx';
         break;
       case 'shp':
@@ -1094,7 +1143,7 @@ export default class VectorsControl extends M.Control {
     this.file_ = file;
     if (!M.utils.isNullOrEmpty(file)) {
       if (file.size > 20971520) {
-        M.dialog.info(getValue('exception.size'));
+        M.dialog.info(getValue('exception.size'), null, this.order);
         this.file_ = null;
         this.uploadingTemplate.querySelector('#vectors-uploading>input').value = '';
       } else {
@@ -1125,7 +1174,7 @@ export default class VectorsControl extends M.Control {
           features = this.getImpl().loadKMLLayer(fileReader.result, fileName, false);
         } else if (fileExt === 'gpx') {
           features = this.getImpl().loadGPXLayer(fileReader.result, fileName);
-        } else if (fileExt === 'geojson') {
+        } else if (fileExt === 'geojson' || fileExt === 'json') {
           features = this.getImpl().loadGeoJSONLayer(fileReader.result, fileName);
         } else if (fileExt === 'gml') {
           features = this.getImpl().loadGMLLayer(fileReader.result, fileName);
@@ -1135,7 +1184,7 @@ export default class VectorsControl extends M.Control {
         }
 
         if (features.length === 0) {
-          M.dialog.info(getValue('exception.no_geoms'));
+          M.dialog.info(getValue('exception.no_geoms'), null, this.order);
         } else {
           this.getImpl().centerFeatures(features, fileExt === 'gpx');
         }
@@ -1149,7 +1198,7 @@ export default class VectorsControl extends M.Control {
 
     if (fileExt === 'zip') {
       fileReader.readAsArrayBuffer(this.file_);
-    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson' || fileExt === 'gml') {
+    } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson' || fileExt === 'gml' || fileExt === 'json') {
       fileReader.readAsText(this.file_);
     } else {
       M.dialog.error(getValue('exception.extension'));
@@ -1314,10 +1363,11 @@ export default class VectorsControl extends M.Control {
             translations: {
               change: getValue('change'),
             },
+            order: this.order,
           },
         });
 
-        M.dialog.info(changeName, getValue('change_name'));
+        M.dialog.info(changeName, getValue('change_name'), this.order);
         setTimeout(() => {
           const selector = 'div.m-mapea-container div.m-dialog #m-layer-change-name button';
           document.querySelector(selector).addEventListener('click', this.changeLayerLegend.bind(this, layer));
@@ -1332,7 +1382,7 @@ export default class VectorsControl extends M.Control {
         this.openDrawOptions(layer);
       } else if (evt.target.classList.contains('m-vector-layer-edit')) {
         this.isDownloadActive = false;
-        this.openEditOptions(layer);
+        this.openEditOptions(layer, false);
       } else if (evt.target.classList.contains('m-vector-layer-zoom')) {
         this.isDownloadActive = false;
         this.resetInteractions();
@@ -1346,7 +1396,7 @@ export default class VectorsControl extends M.Control {
           const extent = this.getImpl().getGeoJSONExtent(layer);
           this.map.setBbox(extent);
         } else {
-          M.dialog.info(getValue('exception.not_extent'), getValue('info'));
+          M.dialog.info(getValue('exception.not_extent'), getValue('info'), this.order);
         }
       } else if (evt.target.classList.contains('m-vector-layer-reload')) {
         this.getImpl().reloadFeaturesUpdatables(layer.name, layer.url);
@@ -1421,6 +1471,7 @@ export default class VectorsControl extends M.Control {
       this.drawLayer = layer;
       this.isDrawingActive = true;
       this.drawingTools.querySelector('button.m-vector-layer-profile').style.display = 'none';
+      this.drawingTools.querySelector('button.m-vector-layer-add-points').style.display = 'none';
       this.drawingTools.querySelector('button.m-vector-layer-delete-feature').style.display = 'none';
       const selector = `#m-vector-list li[name="${layer.name}"] div.m-vector-layer-actions-container`;
       const selector2 = `#m-vector-list li[name="${layer.name}"] div.m-vector-layer-actions .m-vector-layer-add`;
@@ -1446,7 +1497,7 @@ export default class VectorsControl extends M.Control {
     }
   }
 
-  openEditOptions(layer) {
+  openEditOptions(layer, afterDelete) {
     this.isDrawingActive = false;
     this.deactivateSelection();
     this.deactivateDrawing();
@@ -1463,7 +1514,7 @@ export default class VectorsControl extends M.Control {
         this.getImpl().activateSelection(layer);
         const selector = `#m-vector-list li[name="${layer.name}"] div.m-vector-layer-actions .m-vector-layer-edit`;
         document.querySelector(selector).classList.add('active-tool');
-      } else {
+      } else if (!afterDelete) {
         M.dialog.error(getValue('exception.no_features'), getValue('warning'));
       }
     } else {
@@ -1510,8 +1561,18 @@ export default class VectorsControl extends M.Control {
     this.selectionLayer.removeFeatures([this.emphasis]);
     if (this.isEditionActive) {
       this.isEditionActive = false;
-      this.openEditOptions(this.drawLayer);
+      this.openEditOptions(this.drawLayer, true);
     }
+  }
+
+  /**
+   * Continues drawing selected feature
+   * @public
+   * @function
+   * @api
+   */
+  activeAddPoints() {
+    this.getImpl().addAddPointsInteraction(this.drawLayer, this.feature);
   }
 
   /**
@@ -1583,6 +1644,7 @@ export default class VectorsControl extends M.Control {
   showFeatureInfo() {
     const infoContainer = document.querySelector('#drawingtools #featureInfo');
     document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'none';
+    document.querySelector('#drawingtools button.m-vector-layer-add-points').style.display = 'none';
     if (infoContainer !== null) {
       infoContainer.style.display = 'block';
       infoContainer.innerHTML = '';
@@ -1652,16 +1714,18 @@ export default class VectorsControl extends M.Control {
             }
           }
 
-          if (this.geometry === 'LineString') {
-            document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
-            const elem = document.getElementById(id);
-            if (elem !== null) {
-              elem.addEventListener('click', () => {
-                elem.classList.remove('m-vectors-3d-measure');
-                elem.innerHTML = getValue('calculating');
-                this.getImpl().get3DLength(id);
-              });
-            }
+          document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
+          if (!this.isDrawingActive) {
+            document.querySelector('#drawingtools button.m-vector-layer-add-points').style.display = 'block';
+          }
+
+          const elem = document.getElementById(id);
+          if (elem !== null) {
+            elem.addEventListener('click', () => {
+              elem.classList.remove('m-vectors-3d-measure');
+              elem.innerHTML = getValue('calculating');
+              this.getImpl().get3DLength(id);
+            });
           }
         }
         break;
@@ -1684,6 +1748,10 @@ export default class VectorsControl extends M.Control {
             document.querySelector('#colorSelector').value = style.fill.color;
             this.currentThickness = style.stroke.width || 6;
             document.querySelector('#thicknessSelector').value = style.stroke.width || 6;
+          }
+
+          if (this.geometry === 'Polygon') {
+            document.querySelector('#drawingtools button.m-vector-layer-profile').style.display = 'block';
           }
         }
         break;
@@ -1735,5 +1803,9 @@ export default class VectorsControl extends M.Control {
     this.drawingTools.querySelector('.collapsor').click();
     const content = `<div class="m-vectors-loading"><p>${getValue('generating_profile')}...</p><span class="icon-spinner" /></div>`;
     document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = content;
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

@@ -32,9 +32,6 @@ Provee de enlaces a sitios, redes sociales y correo institucionales.
 - **pinterest**. Indica la url al Pinterest del CNIG.
 - **youtube**. Indica la url al Youtube del CNIG.
 - **mail**. Indica la url para escribir correo al CNIG.
-- **collapsible**. Indica si el plugin se puede collapsar en un botón (true/false).
-- **collapsed**. Indica si el plugin viene colapsado de entrada (true/false).
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Eventos
 

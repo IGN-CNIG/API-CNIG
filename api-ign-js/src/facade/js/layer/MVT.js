@@ -4,7 +4,7 @@
 import MVTTileImpl from 'impl/layer/MVT';
 import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import Vector from './Vector';
-import { isUndefined, isNullOrEmpty } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
 import Exception from '../exception/exception';
 import { MVT as MVTType } from './Type';
 
@@ -34,6 +34,9 @@ class MVT extends Vector {
     if (isUndefined(MVTTileImpl)) {
       Exception('La implementación usada no puede crear capas Vector');
     }
+
+    // extract
+    this.extract = parameters.extract;
   }
 
   /**
@@ -52,6 +55,22 @@ class MVT extends Vector {
     if (!isUndefined(newType) &&
       !isNullOrEmpty(newType) && (newType !== MVTType)) {
       Exception('El tipo de capa debe ser \''.concat(MVTType).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
+    }
+  }
+
+  get extract() {
+    return this.getImpl().extract;
+  }
+
+  set extract(newExtract) {
+    if (!isNullOrEmpty(newExtract)) {
+      if (isString(newExtract)) {
+        this.getImpl().extract = (normalize(newExtract) === 'true');
+      } else {
+        this.getImpl().extract = newExtract;
+      }
+    } else {
+      this.getImpl().extract = false;
     }
   }
 
@@ -153,14 +172,13 @@ class MVT extends Vector {
 }
 
 /**
- * Style options by default for this layer
- *
+ * Params options by default for MVT layer *
  * @const
  * @type {object}
  * @public
  * @api
  */
-MVT.DEFAULT_OPTIONS_STYLE = {
+MVT.DEFAULT_PARAMS_STYLE = {
   fill: {
     color: '#fff',
     opacity: 0.6,
@@ -169,7 +187,27 @@ MVT.DEFAULT_OPTIONS_STYLE = {
     color: '#827ec5',
     width: 2,
   },
-  radius: 5,
+};
+
+/**
+ * Style options by default for this layer
+ *
+ * @const
+ * @type {object}
+ * @public
+ * @api
+ */
+MVT.DEFAULT_OPTIONS_STYLE = {
+  point: {
+    ...MVT.DEFAULT_PARAMS_STYLE,
+    radius: 5,
+  },
+  line: {
+    ...MVT.DEFAULT_PARAMS_STYLE,
+  },
+  polygon: {
+    ...MVT.DEFAULT_PARAMS_STYLE,
+  },
 };
 
 export default MVT;

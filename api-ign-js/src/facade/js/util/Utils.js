@@ -1,7 +1,7 @@
 /**
  * @module M/utils
  */
-
+import { get as remoteGet } from 'M/util/Remote';
 import chroma from 'chroma-js';
 import * as dynamicImage from 'assets/img/dynamic_legend';
 import { INCHES_PER_UNIT, DOTS_PER_INCH } from '../units';
@@ -905,6 +905,27 @@ export const extendsObj = (destParam = {}, src = {}) => {
 };
 
 /**
+ * This function returns an array whith breaks between head and tail of an array
+ * @function
+ * @public
+ * @param {array} array
+ * @param {number} breaks
+ * @return {array}
+ * @api
+ */
+export const generateIntervals = (array, breaks) => {
+  let intervals = [...array];
+  if (array.length < breaks) {
+    const step = (array[0] + array[1]) / (breaks - 1);
+    for (let i = 1; i < breaks - 1; i += 1) {
+      intervals[i] = step * i;
+    }
+    intervals = [...intervals, array[1]];
+  }
+  return intervals;
+};
+
+/**
  * This functions returns the order style
  * @function
  * @public
@@ -1149,4 +1170,116 @@ export const readJSON = (file) => {
       resolve(null);
     }
   });
+};
+
+/**
+ * This function gets an array scale color in hexadecimal format
+ * @function
+ * @public
+ * @return {Array<string>} array scale color in hexadecimal format
+ * @api
+ */
+export const generateColorScale = (colors, numberClasses) => {
+  return chroma.scale(colors).colors(numberClasses);
+};
+
+/**
+ * This function modify colors svg file
+ * @function
+ * @public
+ * @return {String} SVG base64
+ * @api
+ */
+export const modifySVG = (url, options) => {
+  return remoteGet(url).then((response) => {
+    let result = '';
+    try {
+      const tags = (options.icon.tag) ?
+        options.icon.tag : ['path', 'circle', 'ellipse', 'line', 'polygon', 'polyline', 'rect', 'foreignObject'];
+
+      const svg = Array.from(response.xml.getElementsByTagName('svg'))[0];
+      const strokeMiddle = options.icon.stroke && options.icon.stroke.width ?
+        options.icon.stroke.width : 1;
+      let width = svg.getAttribute('width') ? svg.getAttribute('width').replace(/[^0-9.]/g, '') : null;
+      let height = svg.getAttribute('height') ? svg.getAttribute('height').replace(/[^0-9.]/g, '') : null;
+      if (svg.getAttribute('viewBox')) {
+        const viewSplit = svg.getAttribute('viewBox').split(' ');
+        if (!width) {
+          svg.setAttribute('width', viewSplit[2]);
+          width = viewSplit[2];
+        }
+        if (!height) {
+          svg.setAttribute('height', viewSplit[3]);
+          height = viewSplit[3];
+        }
+      }
+      if (options.icon.stroke && strokeMiddle && width && height) {
+        if (!svg.getAttribute('viewBox')) {
+          svg.setAttribute('viewBox', `${-strokeMiddle} ${-strokeMiddle} ${Math.ceil(Number(width)) + (2 * strokeMiddle)} ${Number(height) + (2 * strokeMiddle)}`);
+        } else {
+          const viewSplit = svg.getAttribute('viewBox').split(' ');
+          svg.setAttribute('viewBox', `${-strokeMiddle} ${-strokeMiddle} ${Math.ceil(Number(viewSplit[2])) + (2 * strokeMiddle)} ${Number(viewSplit[3]) + (2 * strokeMiddle)}`);
+        }
+      }
+
+      tags.forEach((tag) => {
+        Array.from(response.xml.getElementsByTagName(tag)).forEach((element) => {
+          element.classList.remove(...element.classList);
+          if (options.icon.fill && options.icon.fill.color) element.setAttribute('fill', options.icon.fill.color);
+          if (options.icon.fill && options.icon.fill.opacity) element.setAttribute('fill-opacity', options.icon.fill.opacity);
+          if (options.icon.stroke && options.icon.stroke.color) element.setAttribute('stroke', options.icon.stroke.color);
+          if (options.icon.stroke && strokeMiddle) element.setAttribute('stroke-width', strokeMiddle);
+        });
+      });
+
+      Array.from(response.xml.getElementsByTagName('g')).forEach((element) => {
+        if (options.icon.stroke && strokeMiddle) {
+          element.removeAttribute('clip-path');
+        }
+      });
+      // eslint-disable-next-line
+      result = 'data:image/svg+xml,'.concat(encodeURIComponent(new XMLSerializer().serializeToString(response.xml, 'text/xml')));
+      /* eslint-disable no-empty */
+    } catch (err) {}
+    return result;
+  });
+};
+
+/**
+ *
+ * @function
+ * @api
+ */
+export const dragElement = (elmntID, buttonID) => {
+  document.getElementById(buttonID).onmousedown = (eventMouseDown) => {
+    let pos1 = 0;
+    let pos2 = 0;
+    let pos3 = 0;
+    let pos4 = 0;
+
+    const elmnt = document.getElementById(elmntID);
+    const evtMouseDown = eventMouseDown || window.event;
+    evtMouseDown.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = evtMouseDown.clientX;
+    pos4 = evtMouseDown.clientY;
+    document.onmouseup = () => {
+      document.onmouseup = null;
+      document.onmousemove = null;
+    };
+    // call a function whenever the cursor moves:
+    document.onmousemove = (eventMouseMove) => {
+      const evtMouseMove = eventMouseMove || window.event;
+      evtMouseMove.preventDefault();
+      // calculate the new cursor position:
+      pos1 = pos3 - evtMouseMove.clientX;
+      pos2 = pos4 - evtMouseMove.clientY;
+      pos3 = evtMouseMove.clientX;
+      pos4 = evtMouseMove.clientY;
+
+      // set the element's new position:
+      if (!(elmnt.offsetTop - pos2 >= elmnt.parentElement.clientHeight - elmnt.clientHeight)) { elmnt.style.top = `${Math.abs(elmnt.offsetTop - pos2)}px`; }
+      if (!(elmnt.offsetLeft - pos1 >= elmnt.parentElement.clientWidth - elmnt.clientWidth)) elmnt.style.left = `${Math.abs(elmnt.offsetLeft - pos1)}px`;
+    };
+  };
 };

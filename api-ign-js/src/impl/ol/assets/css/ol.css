@@ -20,7 +20,7 @@
 }
 
 .ol-scale-line-inner {
-    border: 1px solid #eee;
+    border: 2px solid #eee;
     border-top: none;
     color: #eee;
     font-size: 10px;
@@ -205,10 +205,13 @@
 
 .ol-zoom .ol-zoom-in {
     border-radius: 2px 2px 0 0;
+    border: 2px solid white;
 }
 
 .ol-zoom .ol-zoom-out {
     border-radius: 0 0 2px 2px;
+    border: 2px solid white;
+    border-top: none;
 }
 
 

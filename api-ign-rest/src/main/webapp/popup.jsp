@@ -55,16 +55,8 @@
         </select>
         <label for="inputUrl_es">Parámetro url_es</label>
         <input type="text" id="inputUrl_es" list="urlEsSug" />
-        <datalist id="urlEsSug">
-            <option value="https://raw.githubusercontent.com/irevios/sig/master/iberpixhelp_es.html"></option>
-            <option value="https://raw.githubusercontent.com/irevios/sig/master/fototecahelp_es.html"></option>
-        </datalist>
         <label for="inputUrl_en">Parámetro url_en</label>
         <input type="text" id="inputUrl_en" list="urlEnSug" />
-        <datalist id="urlEnSug">
-            <option value="https://raw.githubusercontent.com/irevios/sig/master/iberpixhelp_en.html"></option>
-            <option value="https://raw.githubusercontent.com/irevios/sig/master/fototecahelp_en.html"></option>
-        </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>

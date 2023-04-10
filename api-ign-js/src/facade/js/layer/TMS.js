@@ -5,8 +5,8 @@ import TMSImpl from 'impl/layer/TMS';
 import LayerBase from './Layer';
 import { isNullOrEmpty, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
+import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
-import tms from '../parameter/tms';
 import { getValue } from '../i18n/language';
 /**
  * @classdesc
@@ -28,13 +28,14 @@ class TMS extends LayerBase {
     if (isUndefined(TMSImpl)) {
       Exception(getValue('exception').tms_method);
     }
-    const parameters = { ...tms(userParameters), source: userParameters.source };
+
+    const parameters = parameter.layer(userParameters, LayerType.TMS);
     /**
      * Implementation of this layer
      * @public
      * @type {M/impl/layer/TMS}
      */
-    const impl = new TMSImpl(userParameters, options, vendorOptions);
+    const impl = new TMSImpl(parameters, options, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
     /**
@@ -61,6 +62,9 @@ class TMS extends LayerBase {
 
     // maxzoom
     this.maxZoom = parameters.maxZoom;
+
+    // tileGridMaxZoom
+    this.tileGridMaxZoom = parameters.tileGridMaxZoom;
 
     /**
      * TMS options

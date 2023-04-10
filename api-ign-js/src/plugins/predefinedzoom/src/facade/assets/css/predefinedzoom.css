@@ -11,15 +11,16 @@ div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.
     background-color: #71a7d3;
     border-radius: 20px;
     color: white;
+    border: 2px solid #fff;
 }
 
 div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.m-predefinedzoom>button:focus {
-  outline: none;
+    outline: none;
 }
 
-div.m-control.m-container.m-predefinedzoom > button.icon-expand {
-  transform: rotate(45deg);
-  font-size: 22px !important;
+div.m-control.m-container.m-predefinedzoom>button.icon-expand {
+    transform: rotate(45deg);
+    font-size: 22px !important;
 }
 
 /* Icon font */
@@ -51,6 +52,6 @@ div.m-panel.m-predefinedzoom.opened>.m-panel-controls>div.m-control.m-container.
 }
 
 .icon-expand:before {
-  content: '\e921';
-  transform: rotate(-45deg);
+    content: '\e921';
+    transform: rotate(-45deg);
 }

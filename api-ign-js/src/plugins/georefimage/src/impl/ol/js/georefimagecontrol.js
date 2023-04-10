@@ -91,8 +91,6 @@ export default class GeorefimageControl extends M.impl.Control {
         this.encodeWMTS(layer).then((encodedLayer) => {
           success(encodedLayer);
         });
-      } else if (layer.type === M.layer.type.MBTiles) {
-        // none
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
       // eslint-disable-next-line no-underscore-dangle
@@ -314,7 +312,7 @@ export default class GeorefimageControl extends M.impl.Control {
     };
 
     /** ***********************************
-     MAPEA DE CAPAS TILEADA.
+     MAPEO DE CAPAS TILEADA.
     ************************************ */
     // eslint-disable-next-line no-underscore-dangle
     if (layer._updateNoCache) {

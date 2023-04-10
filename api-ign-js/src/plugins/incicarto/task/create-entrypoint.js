@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
+const slash = require('slash');
 const SRC_PATH = path.resolve(__dirname, '..', 'src');
 const DIST_PATH = path.resolve(__dirname, '..', 'dist');
 const FACADE_PATH = path.resolve(SRC_PATH, 'facade', 'js');
@@ -35,7 +36,8 @@ files.forEach((file) => {
     namespaces.push({
       alias: namespace.replace(/\//g, '$'),
       namespace: namespace.replace(/\//g, '.'),
-      path: file.replace(/.*\/src(\/.*)/, './$1'),
+      path: slash(file),
+      //path: file.replace(/.*\/src(\/.*)/, './$1'),
     });
   }
 });

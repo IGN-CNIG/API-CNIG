@@ -32,14 +32,15 @@ export default class IberpixCompareControl extends M.Control {
      * @type { HTMLElement }
      */
     this.template = null;
+    this.order = options.order;
     this.position = options.position;
     this.params = [options.mirrorpanelParams, options.lyrcompareParams];
     this.params.forEach(p => {
       p.position = this.position;
     });
 
-    this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams, options.backImgLayersConfig, options.fullTOCConfig, options.vectorsConfig);
-    this.lyrcompare = new LyrCompare(options.lyrcompareParams);
+    this.mirrorpanel = new Mirrorpanel(options.mirrorpanelParams, options.backImgLayersConfig, options.fullTOCConfig, options.vectorsConfig, options.order);
+    this.lyrcompare = new LyrCompare({...options.lyrcompareParams, order: options.order});
     this.panels = [];
     this.plugins = [this.mirrorpanel, this.lyrcompare];
     // this.plugins = [this.mirrorpanel];
@@ -67,6 +68,7 @@ export default class IberpixCompareControl extends M.Control {
       };
 
       this.template = M.template.compileSync(template, options);
+      this.accessibilityTab(this.template);
       success(this.template);
       this.addComparators(map);
     });
@@ -90,6 +92,11 @@ export default class IberpixCompareControl extends M.Control {
     this.plugins.forEach(p => {
       this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('click', (e) => {
         this.deactivateAndActivate(p);
+      });
+
+      this.template.querySelector('#m-cp-' + p.name + ' .cp-button').addEventListener('keydown', (e) => {
+        if(e.keyCode !== 13) this.deactivateAndActivate(p);
+        if(e.keyCode === 9) this.deactivateAndActivate(p);
       });
     });
   }
@@ -129,5 +136,9 @@ export default class IberpixCompareControl extends M.Control {
    */
   equals(control) {
     return control instanceof IberpixCompareControl;
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

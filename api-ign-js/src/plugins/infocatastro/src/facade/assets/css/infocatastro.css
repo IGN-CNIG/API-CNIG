@@ -43,5 +43,9 @@
 }
 
 #m-infocatastro-btn:focus {
-  outline: none;
+    outline: none;
+}
+
+#m-infocatastro-btn {
+    border: 2px solid white;
 }

@@ -18,9 +18,9 @@ Plugin de impresión a través del servicio Geoprint. Las capacidades del mismo 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left 
-  - 'TR':top right (por defecto) 
-  - 'BL':bottom left 
+  - 'TL':top left
+  - 'TR':top right (por defecto)
+  - 'BL':bottom left
   - 'BR':bottom right
 
 - **collapsed**. Valor booleano que indica si el plugin aparece colapsado o no.
@@ -33,15 +33,26 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **serverUrl**. URL del servidor Geoprint.
 
-- **printTemplateUrl**. URL con las plantillas.
+- **printTemplateUrl**. URL con las plantillas a utilizar.
 
-- **printStatusUrl**. URL que indica el estado del servidor Geoprint.
-- **credits**. Texto de créditos para la plantilla.
-- **georefActive**. Activar o desactivar la descarga de imágenes georreferenciadas.
-- **fototeca**. Activar o desactivar fototeca descripción fija.
-- **logo**. URL logo.
-- **headerLegend**. Url de la imagen de la leyenda del encabezado.
-- **filterTemplates**. Plantillas, por ejemplo "A3 Horizontal".
+- **printStatusUrl**. URL para consultar el estado de la impresión.
+
+- **credits**. URL que indica el estado del servidor Geoprint.
+
+- **georefActive**. Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no.
+- true (por defecto)
+- false
+
+- **fototeca**. Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición.
+- true
+- false (por defecto)
+
+- **logo**. URL de una imagen para añadir como logo en la esquina superior derecha.
+
+- **headerLegend**. URL de una imagen para añadir como leyenda en la parte central de la cabecera.
+
+- **filterTemplates**. Listado de nombres de plantillas que queremos tener disponibles, si no se manda el parámetro aparecerán todas por defecto.
+
 
 # Ejemplos de uso
 
@@ -63,8 +74,7 @@ mapajs.addPlugin(new M.plugin.PrinterMap({
   position: 'TR',
   collapsed: false,
   collapsible: false,
-  serverUrl: 'https://componentes.cnig.es', 
-  printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG', 
-  printStatusUrl: 'https://componentes.cnig.es/geoprint/print/CNIG/status',
-
+  serverUrl: 'https://geoprint.desarrollo.guadaltel.es',
+  printTemplateUrl: 'https://geoprint.desarrollo.guadaltel.es/print/CNIG',
+  printStatusUrl: 'https://geoprint.desarrollo.guadaltel.es/print/status',
 }));

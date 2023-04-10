@@ -1,9 +1,13 @@
+/* eslint-disable no-underscore-dangle */
 /**
  * @module M/impl/layer/MVT
  */
 import OLSourceVectorTile from 'ol/source/VectorTile';
 import OLLayerVectorTile from 'ol/layer/VectorTile';
-import { extend } from 'M/util/Utils';
+import { compileSync as compileTemplate } from 'M/util/Template';
+import geojsonPopupTemplate from 'templates/geojson_popup';
+import Popup from 'M/Popup';
+import { isNullOrEmpty, extend } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import TileEventType from 'ol/source/TileEventType';
 import TileState from 'ol/TileState';
@@ -34,6 +38,13 @@ class MVT extends Vector {
      * @type {ol.format.MVT}
      */
     this.formater_ = null;
+
+    /**
+     * Popup showed
+     * @private
+     * @type {M.impl.Popup}
+     */
+    this.popup_ = null;
 
     /**
      *
@@ -72,6 +83,14 @@ class MVT extends Vector {
      * @type {bool}
      */
     this.loaded_ = false;
+
+    this.opacity_ = parameters.opacity || 1;
+
+    this.visibility_ = parameters.visibility !== false;
+
+    this.layers_ = parameters.layers;
+
+    this.extract = parameters.extract;
   }
 
   /**
@@ -84,10 +103,16 @@ class MVT extends Vector {
   addTo(map) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
-
-    this.formater_ = new MVTFormatter({
-      featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
-    });
+    if (this.layers_ !== undefined) {
+      this.formater_ = new MVTFormatter({
+        layers: this.layers_,
+        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
+      });
+    } else {
+      this.formater_ = new MVTFormatter({
+        featureClass: this.mode_ === mode.FEATURE ? Feature : RenderFeature,
+      });
+    }
 
     const extent = this.facadeVector_.getMaxExtent();
     const source = new OLSourceVectorTile({
@@ -105,10 +130,8 @@ class MVT extends Vector {
       extent,
     }, this.vendorOptions_, true));
 
-    if (this.opacity_) {
-      this.setOpacity(this.opacity_);
-    }
-
+    this.setOpacity(this.opacity_);
+    this.setVisible(this.visibility_);
     this.map.getMapImpl().addLayer(this.ol3Layer);
 
     // clear features when zoom changes
@@ -121,6 +144,103 @@ class MVT extends Vector {
         }
       }
     });
+
+    this.map.on(EventType.MOVE, (e) => {
+      if (this.map) {
+        const selector = this.map.getContainer().parentElement.parentElement.id;
+        document.getElementById(selector).style.cursor = 'inherit';
+        this.map.getMapImpl().forEachFeatureAtPixel(e.pixel, (feature) => {
+          if (feature) {
+            document.getElementById(selector).style.cursor = 'pointer';
+          }
+        });
+      }
+    });
+
+    setTimeout(() => {
+      const filtered = this.map.getLayers().filter((l) => {
+        const checkLayers = l.getImpl().layers_ !== undefined ?
+          l.getImpl().layers_ === this.layers_ : true;
+        return l.url === this.url && checkLayers;
+      });
+
+      if (filtered.length > 0) {
+        if (filtered[0].getStyle() !== null) {
+          filtered[0].setStyle(filtered[0].getStyle());
+        }
+      }
+    }, 10);
+  }
+
+  selectFeatures(features, coord, evt) {
+    const feature = features[0];
+    if (this.extract === true) {
+      this.unselectFeatures();
+      if (!isNullOrEmpty(feature)) {
+        const htmlAsText = compileTemplate(geojsonPopupTemplate, {
+          vars: this.parseFeaturesForTemplate_(features),
+          parseToHtml: false,
+        });
+
+        const featureTabOpts = {
+          icon: 'g-cartografia-pin',
+          title: this.name,
+          content: htmlAsText,
+        };
+
+        let popup = this.map.getPopup();
+        if (isNullOrEmpty(popup)) {
+          popup = new Popup();
+          popup.addTab(featureTabOpts);
+          this.map.addPopup(popup, coord);
+        } else {
+          popup.addTab(featureTabOpts);
+        }
+      }
+    }
+  }
+
+  parseFeaturesForTemplate_(features) {
+    const featuresTemplate = {
+      features: [],
+    };
+
+    features.forEach((feature) => {
+      const properties = feature.getAttributes();
+      const propertyKeys = Object.keys(properties);
+      const attributes = [];
+      propertyKeys.forEach((key) => {
+        attributes.push({
+          key,
+          value: properties[key],
+        });
+      });
+
+      const featureTemplate = {
+        id: feature.getId(),
+        attributes,
+      };
+
+      featuresTemplate.features.push(featureTemplate);
+    });
+    return featuresTemplate;
+  }
+
+  unselectFeatures() {
+    if (!isNullOrEmpty(this.popup_)) {
+      this.popup_.hide();
+      this.popup_ = null;
+    }
+  }
+
+  removePopup() {
+    if (!isNullOrEmpty(this.popup_)) {
+      if (this.popup_.getTabs().length > 1) {
+        this.popup_.removeTab(this.tabPopup_);
+      } else {
+        this.map.removePopup();
+      }
+    }
   }
 
   /**
@@ -188,6 +308,15 @@ class MVT extends Vector {
   }
 
   /**
+   *
+   * @function
+   * @api stable
+   */
+  isLoaded() {
+    return true;
+  }
+
+  /**
    * This function checks if an object is equals
    * to this layer
    *
@@ -198,8 +327,11 @@ class MVT extends Vector {
   equals(obj) {
     let equals = false;
     if (obj instanceof MVT) {
-      equals = this.name === obj.name;
+      equals = (this.url === obj.url);
+      equals = equals && (this.name === obj.name);
+      equals = equals && (this.extract === obj.extract);
     }
+
     return equals;
   }
 }

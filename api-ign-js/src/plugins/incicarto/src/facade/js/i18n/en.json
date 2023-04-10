@@ -17,7 +17,9 @@
     "error_features_wfs": "Unable to load layer features. Try increasing the zoom level in the area of interest.",
     "error_no_features_wfs": "Unable to load layer features. Try again in another area.",
     "error_wfs": "Could not load WFS service",
-    "wfs_zoom": "Increase the zoom in * levels if you want to add this WFS service"
+    "wfs_zoom": "Increase the zoom in * levels if you want to add this WFS service",
+    "error_email": "The email could not be sent.",
+    "error_email_size": "The size of the attached file is too large. The maximum file size allowed for emails is 25Mb."
   },
   "tooltip": "Report error in cartography",
   "change_name": "Change name",
@@ -84,5 +86,7 @@
   "generating_profile": "Generating profile",
   "calculate": "Calculate",
   "calculating": "Calculating",
-  "try_again": "The query could not be executed. Please try again later"
+  "try_again": "The query could not be executed. Please try again later",
+  "email_correct": "The email with the incident has been sent correctly.",
+  "sending_email": "The email is being sent..."
 }

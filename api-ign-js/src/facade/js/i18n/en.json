@@ -8,7 +8,7 @@
   "scale": {
     "title": "Scale",
     "scale": "Scale",
-    "level": "Level"
+    "level": "Zoom level"
   },
   "getfeatureinfo": {
     "info": "Information",
@@ -39,6 +39,10 @@
   },
   "feature": {
     "incorrect_attributes": "The attributes were not specified correctly."
+  },
+  "heatmap": {
+    "features": "The layer does not have any <br/> features with the specified attribute in set symbology. <br/>A default weighting is set",
+    "name": "Heatmap"
   },
   "exception": {
     "addto_method": "The used implementation does not have the addTo method",

@@ -12,7 +12,10 @@ import { isNullOrEmpty } from 'M/util/Utils';
 import OLStyleIcon from 'ol/style/Icon';
 import OLStyleFill from 'ol/style/Fill';
 import { toContext as toContextRender } from 'ol/render';
+import { getBottomLeft, getHeight, getWidth } from 'ol/extent';
+import { toContext } from 'ol/render';
 import OLStyleFillPattern from '../ext/OLStyleFillPattern';
+import OLStyleStrokePattern from '../ext/OLStyleStrokePattern';
 import Simple from './Simple';
 import Centroid from './Centroid';
 
@@ -50,13 +53,55 @@ class Polygon extends Simple {
         featureVariable = this;
       }
       const style = new Centroid();
-      if (!isNullOrEmpty(options.stroke)) {
+      if (!isNullOrEmpty(options.stroke) && !isNullOrEmpty(options.stroke.pattern)) {
+        let fill;
+        if (!isNullOrEmpty(options.stroke.color)) {
+          const fillColorValue =
+            Simple.getValue(options.stroke.color, featureVariable, this.layer_);
+          let fillOpacityValue =
+            Simple.getValue(options.stroke.opacity, featureVariable, this.layer_);
+          if (!fillOpacityValue && fillOpacityValue !== 0) {
+            fillOpacityValue = 1;
+          }
+          if (!isNullOrEmpty(fillColorValue)) {
+            fill = new OLStyleFill({
+              color: chroma(fillColorValue).alpha(fillOpacityValue).css(),
+            });
+          }
+        }
+        style.setStroke(new OLStyleStrokePattern({
+          width: Simple.getValue(options.stroke.width, featureVariable, this.layer_),
+          pattern: (Simple.getValue(options.stroke.pattern.name, featureVariable, this.layer_) || '').toLowerCase(),
+          image: (Simple.getValue(options.stroke.pattern.name, featureVariable, this.layer_) === 'Image') ?
+            new OLStyleIcon({
+              src: Simple.getValue(options.stroke.pattern.src, featureVariable, this.layer_),
+              crossOrigin: 'anonymous',
+            }) : undefined,
+          color: !isNullOrEmpty(options.stroke.pattern.color) ? Simple.getValue(options.stroke.pattern.color, featureVariable, this.layer_) : 'rgba(0,0,0,1)',
+          size: Simple.getValue(options.stroke.pattern.size, featureVariable, this.layer_),
+          spacing: Simple.getValue(options.stroke.pattern.spacing, featureVariable, this.layer_),
+          angle: Simple.getValue(options.stroke.pattern.rotation, featureVariable, this.layer_),
+          scale: Simple.getValue(options.stroke.pattern.scale, featureVariable, this.layer_),
+          offset: Simple.getValue(options.stroke.pattern.offset, featureVariable, this.layer_),
+          fill,
+          layer: this.layer_,
+        }));
+      } else if (!isNullOrEmpty(options.stroke)) {
+        const strokeColorValue =
+          Simple.getValue(options.stroke.color || '#000000', featureVariable, this.layer_);
+        let strokeOpacityValue =
+          Simple.getValue(options.stroke.opacity, featureVariable, this.layer_);
+        if (!strokeOpacityValue && strokeOpacityValue !== 0) {
+          strokeOpacityValue = 1;
+        }
         style.setStroke(new OLStyleStroke({
-          color: Simple.getValue(options.stroke.color, featureVariable, this.layer_),
+          color: chroma(strokeColorValue).alpha(strokeOpacityValue).css(),
           width: Simple.getValue(options.stroke.width, featureVariable, this.layer_),
           lineDash: Simple.getValue(options.stroke.linedash, featureVariable, this.layer_),
-          lineDashOffset:
-            Simple.getValue(options.stroke.linedashoffset, featureVariable, this.layer_),
+          lineDashOffset: Simple.getValue(
+            options.stroke.linedashoffset,
+            featureVariable, this.layer_,
+          ),
           lineCap: Simple.getValue(options.stroke.linecap, featureVariable, this.layer_),
           lineJoin: Simple.getValue(options.stroke.linejoin, featureVariable, this.layer_),
           miterLimit: Simple.getValue(options.stroke.miterlimit, featureVariable, this.layer_),
@@ -92,10 +137,15 @@ class Polygon extends Simple {
             lineCap: Simple.getValue(options.label.stroke.linecap, featureVariable, this.layer_),
             lineJoin: Simple.getValue(options.label.stroke.linejoin, featureVariable, this.layer_),
             lineDash: Simple.getValue(options.label.stroke.linedash, featureVariable, this.layer_),
-            lineDashOffset:
-              Simple.getValue(options.label.stroke.linedashoffset, featureVariable, this.layer_),
-            miterLimit:
-              Simple.getValue(options.label.stroke.miterlimit, featureVariable, this.layer_),
+            lineDashOffset: Simple.getValue(
+              options.label.stroke.linedashoffset,
+              featureVariable, this.layer_,
+            ),
+            miterLimit: Simple.getValue(
+              options.label.stroke.miterlimit,
+              featureVariable,
+              this.layer_,
+            ),
           }));
         }
       }
@@ -136,10 +186,51 @@ class Polygon extends Simple {
             scale: Simple.getValue(options.fill.pattern.scale, featureVariable, this.layer_),
             offset: Simple.getValue(options.fill.pattern.offset, featureVariable, this.layer_),
             fill,
+            layer: this.layer_,
           }));
         } else {
           style.setFill(fill);
         }
+      }
+      if (options.renderer) {
+        const fill = new OLStyleFill();
+        const stroke = new OLStyleStroke({
+          color: Simple.getValue(options.renderer.stroke.color, featureVariable, this.layer_),
+          width: Simple.getValue(options.renderer.stroke.width, featureVariable, this.layer_),
+        });
+        const fn = (pixelCoordinates, state, a) => {
+          const img = new Image();
+          const property = Simple.getValue(options.renderer.property, featureVariable, this.layer_);
+          const src = featureVariable.get(property).src ? featureVariable.get(property).src :
+            featureVariable.get(property);
+          img.onload = () => {
+            featureVariable.set(property, img);
+          };
+          img.src = src;
+          const context = state.context;
+          const geometry = state.geometry.clone();
+          geometry.setCoordinates(pixelCoordinates);
+          const extent = geometry.getExtent();
+          const width = getWidth(extent);
+          const height = getHeight(extent);
+          const flag = state.feature.get(property).src ? state.feature.get(property) : undefined;
+          if (!flag || height < 1 || width < 1) {
+            return;
+          }
+          context.save();
+          const renderContext = toContext(context, {
+            pixelRatio: 1,
+          });
+          renderContext.setFillStrokeStyle(fill, stroke);
+          renderContext.drawGeometry(geometry);
+          context.clip();
+          const bottomLeft = getBottomLeft(extent);
+          const left = bottomLeft[0];
+          const bottom = bottomLeft[1];
+          context.drawImage(flag, left, bottom, width, height);
+          context.restore();
+        };
+        style.setRenderer(fn);
       }
       return [style];
     };
@@ -187,13 +278,15 @@ class Polygon extends Simple {
     const maxH = Math.floor(canvasSize[1]);
     const minW = (canvasSize[0] - maxW);
     const minH = (canvasSize[1] - maxH);
-    vectorContext.drawGeometry(new OLGeomPolygon([[
-      [minW + 3, minH + 3],
-      [maxW - 3, minH + 3],
-      [maxW - 3, maxH - 3],
-      [minW + 3, maxH - 3],
-      [minW + 3, minH + 3],
-    ]]));
+    vectorContext.drawGeometry(new OLGeomPolygon([
+      [
+        [minW + 3, minH + 3],
+        [maxW - 3, minH + 3],
+        [maxW - 3, maxH - 3],
+        [minW + 3, maxH - 3],
+        [minW + 3, minH + 3],
+      ],
+    ]));
   }
 
   /**

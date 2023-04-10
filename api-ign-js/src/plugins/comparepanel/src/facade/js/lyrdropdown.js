@@ -92,6 +92,15 @@ export default class Lyrdropdown extends M.Plugin {
     }
 
     /**
+     * Nivel mínimo en el que empiezan a cargarse las capas
+     * Value: number in range 10 - 1000
+     * @type {number}
+     * @public
+     */    
+    this.lyrsMirrorMinZindex = options.lyrsMirrorMinZindex;
+    if (this.lyrsMirrorMinZindex === undefined) this.lyrsMirrorMinZindex = 100;
+
+    /**
      *@private
      *@type { string }
      */
@@ -120,6 +129,7 @@ export default class Lyrdropdown extends M.Plugin {
       collapsible:  this.collapsible,
       collapsed:  this.collapsed,
       layers: this.layers,
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
 
     this.controls_.push(this.control_);
@@ -158,7 +168,6 @@ export default class Lyrdropdown extends M.Plugin {
     if (this.control_.template === null){
       return;
     }
-    //console.log(this.control_.template);
     try {
       let optionLyrs = null;
       optionLyrs = this.control_.template.querySelector('#m-lyrdropdown-selector');
@@ -167,7 +176,9 @@ export default class Lyrdropdown extends M.Plugin {
         optionLyrs.options[iOpt].disabled = !lyrList.includes(optionLyrs.options[iOpt].value)
       }
     } catch (error) {
-      console.log(error);
+          /* eslint-disable */
+          console.log(error);
+          /* eslint-enable */
     }
   
    

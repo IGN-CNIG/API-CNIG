@@ -25,7 +25,7 @@ export default class FullTOCControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(http, https, precharged, codsi) {
+  constructor(http, https, precharged, codsi, order) {
     if (M.utils.isUndefined(FullTOCImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -61,6 +61,8 @@ export default class FullTOCControl extends M.Control {
     this.stateSelectAll = false;
 
     this.filterName = undefined;
+
+    this.order = order;
   }
 
   /**
@@ -82,18 +84,40 @@ export default class FullTOCControl extends M.Control {
         this.template_ = html;
         success(html);
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
+        this.template_.addEventListener('keydown', evt => (evt.keyCode === 13) && evt.target.click());
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
         this.getImpl().registerEvents();
         this.render();
-        this.afterRender();
+        this.afterRender(map.getLayers());
+        setTimeout(() => {
+          const openBtn = document.querySelector('.m-plugin-fulltoc .m-panel-btn.icon-capas');
+          if (openBtn !== null) {
+            openBtn.addEventListener('click', () => {
+              this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
+              setTimeout(() => {
+                this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
+              }, 100);
+            });
+          }
+        }, 200);
       });
     });
   }
 
-  afterRender() {
+  afterRender(layers) {
     setTimeout(() => {
       this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
     }, 700);
+
+    if (layers !== undefined && layers.length > 0) {
+      layers.forEach((l) => {
+        l.getImpl().on(M.evt.ADDED_TO_MAP, (layer) => {
+          if (layer.getOL3Layer() != null) {
+            this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
+          }
+        });
+      });
+    }
   }
 
   /**
@@ -172,7 +196,7 @@ export default class FullTOCControl extends M.Control {
             const extent = this.getImpl().getGeoJSONExtent(layer);
             this.map_.setBbox(extent);
           } else {
-            M.dialog.info(getValue('exception.extent'), getValue('info'));
+            M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
           }
         } else if (evt.target.classList.contains('m-fulltoc-legend')) {
           const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-legend');
@@ -195,7 +219,7 @@ export default class FullTOCControl extends M.Control {
             },
           });
 
-          M.dialog.info(config, getValue('configure_layer'));
+          M.dialog.info(config, getValue('configure_layer'), this.order);
           setTimeout(() => {
             const selector = 'div.m-mapea-container div.m-dialog #m-fulltoc-change-config button';
             document.querySelector(selector).addEventListener('click', this.changeLayerConfig.bind(this, layer));
@@ -204,6 +228,8 @@ export default class FullTOCControl extends M.Control {
             button.innerHTML = getValue('close');
             button.style.width = '75px';
             button.style.backgroundColor = '#71a7d3';
+
+            this.accessibilityTab(document.querySelector('#m-fulltoc-change-config'));
           }, 10);
         } else if (evt.target.classList.contains('m-fulltoc-info')) {
           const vars = {
@@ -215,7 +241,7 @@ export default class FullTOCControl extends M.Control {
               name: getValue('name'),
               abstract: getValue('abstract'),
               provider: getValue('provider'),
-              query_metadata: getValue('query_metadata'),
+              service_info: getValue('service_info'),
               download_center: getValue('download_center'),
               see_more: getValue('see_more'),
               metadata_abstract: getValue('metadata_abstract'),
@@ -223,10 +249,14 @@ export default class FullTOCControl extends M.Control {
               access_constraints: getValue('access_constraints'),
               use_constraints: getValue('use_constraints'),
               online_resources: getValue('online_resources'),
+              see_more_layer: getValue('see_more_layer'),
+              see_more_service: getValue('see_more_service'),
+              metadata: getValue('metadata'),
             },
           };
 
           if (layer.type === 'WMS') {
+            vars.capabilities = M.utils.getWMSGetCapabilitiesUrl(layer.url, layer.version);
             const murl = layer.capabilitiesMetadata.metadataURL;
             vars.metadata = !M.utils.isNullOrEmpty(murl) ? murl[0].OnlineResource : '';
             if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
@@ -236,9 +266,10 @@ export default class FullTOCControl extends M.Control {
               }
             }
           } else if (layer.type === 'WMTS') {
+            vars.capabilities = M.utils.getWMTSGetCapabilitiesUrl(layer.url);
             if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
               vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
-              `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+                `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
               const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
               if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
                 const mail = sc.ContactInfo.Address.ElectronicMailAddress;
@@ -247,123 +278,56 @@ export default class FullTOCControl extends M.Control {
             }
           }
 
-          if (!M.utils.isNullOrEmpty(vars.metadata) && M.utils.isUrl(vars.metadata)) {
-            M.remote.get(vars.metadata).then((response) => {
-              const metadataText = response.text;
-              const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
-                return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
-              });
+          M.remote.get(vars.capabilities).then((response) => {
+            const source = response.text;
+            const urlService = source.split('<inspire_common:URL>')[1].split('<')[0].split('&amp;').join('&');
+            if (!M.utils.isNullOrEmpty(urlService) && M.utils.isUrl(urlService)) {
+              vars.metadata_service = urlService;
+              vars.hasMetadata = true;
+            }
 
-              if (unfiltered.length > 0) {
-                const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
-                vars.downloadCenter = downloadCenter;
-              }
-
-              const transfer = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:onLine>');
-              const dataid = metadataText.split('<gmd:MD_DataIdentification>')[1];
-              const legal = metadataText.split('<gmd:MD_LegalConstraints>')[1];
-              let metadataService;
-              let metadataAbstract;
-              let responsible;
-              let accessConstraint;
-              let useConstraint;
-              let onlineResources;
-
-              try {
-                metadataService = dataid.split('<gmd:CI_Citation>')[1].split('</gmd:CI_Citation>')[0]
-                  .split('CharacterString>')[1].split('</gco')[0].trim();
-              } catch (err) {
-                metadataService = '';
-              }
-
-              try {
-                metadataAbstract = dataid.split('<gmd:abstract>')[1].split('</gmd:abstract>')[0]
-                  .split('CharacterString>')[1].split('</gco')[0].trim();
-              } catch (err) {
-                metadataAbstract = '';
-              }
-
-              try {
-                const poc = dataid.split('<gmd:pointOfContact>')[1];
-                responsible = poc.split('<gmd:organisationName>')[1]
-                  .split('</gmd:organisationName>')[0].split('CharacterString>')[1].split('</gco')[0].trim();
-                if (poc.indexOf('<gmd:CI_OnlineResource>') > -1) {
-                  const link = poc.split('<gmd:CI_OnlineResource>')[1].split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim();
-                  responsible = `<a href="${link}" target="_blank">${responsible}</a>`;
-                }
-              } catch (err) {
-                responsible = '';
-              }
-
-              try {
-                accessConstraint = legal.split('<gmd:accessConstraints>')[1].split('<gmd:MD_RestrictionCode')[1]
-                  .split('>')[1].split('<')[0].trim();
-              } catch (err) {
-                accessConstraint = '';
-              }
-
-              try {
-                useConstraint = legal.split('<gmd:useConstraints>')[1].split('<gmd:MD_RestrictionCode')[1]
-                  .split('>')[1].split('<')[0].trim();
-              } catch (err) {
-                useConstraint = '';
-              }
-
-              try {
-                if (transfer.length > 0) {
-                  onlineResources = [];
-                  transfer.forEach((t) => {
-                    if (t.indexOf('<gmd:name>') > -1 && t.indexOf('<gmd:URL>')) {
-                      const link = {
-                        name: t.split('<gmd:name>')[1].split('</gmd:name>')[0].split('CharacterString>')[1].split('</gco')[0].trim(),
-                        url: t.split('<gmd:URL>')[1].split('</gmd:URL>')[0].trim(),
-                      };
-
-                      onlineResources.push(link);
-                    }
+            if (M.utils.isNullOrEmpty(vars.metadata) || !M.utils.isUrl(vars.metadata)) {
+              delete vars.metadata;
+              if (vars.metadata_service !== undefined) {
+                M.remote.get(vars.metadata_service).then((response2) => {
+                  const metadataText = response2.text;
+                  const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+                    return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
                   });
+
+                  if (unfiltered.length > 0) {
+                    const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
+                    vars.downloadCenter = downloadCenter;
+                  }
+
+                  this.renderInfo(vars);
+                }).catch((err) => {
+                  this.renderInfo(vars);
+                });
+              } else {
+                this.renderInfo(vars);
+              }
+            } else {
+              vars.hasMetadata = true;
+              M.remote.get(vars.metadata).then((response2) => {
+                const metadataText = response2.text;
+                const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+                  return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
+                });
+
+                if (unfiltered.length > 0) {
+                  const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
+                  vars.downloadCenter = downloadCenter;
                 }
-              } catch (err) {
-                onlineResources = '';
-              }
 
-              if (!M.utils.isNullOrEmpty(metadataService)) {
-                vars.metadataService = metadataService;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(metadataAbstract)) {
-                vars.metadataAbstract = metadataAbstract;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(responsible)) {
-                vars.responsible = responsible;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(accessConstraint)) {
-                vars.accessConstraint = accessConstraint;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(useConstraint)) {
-                vars.useConstraint = useConstraint;
-                vars.extended = true;
-              }
-
-              if (!M.utils.isNullOrEmpty(onlineResources)) {
-                vars.onlineResources = onlineResources;
-                vars.extended = true;
-              }
-
-              this.renderInfo(vars);
-            }).catch((err) => {
-              this.renderInfo(vars);
-            });
-          } else {
+                this.renderInfo(vars);
+              }).catch((err) => {
+                this.renderInfo(vars);
+              });
+            }
+          }).catch((err) => {
             this.renderInfo(vars);
-          }
+          });
         }
       } else if (evt.target.classList.contains('m-fulltoc-addservice')) {
         const precharged = this.precharged;
@@ -391,17 +355,21 @@ export default class FullTOCControl extends M.Control {
           },
         });
 
-        M.dialog.info(addServices, getValue('load_ext_services'));
+        M.dialog.info(addServices, getValue('load_ext_services'), this.order);
         setTimeout(() => {
           if (document.querySelector('#m-fulltoc-addservices-list-btn') !== null) {
             document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('click', e => this.showSuggestions(e));
+            document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.showSuggestions(e));
           }
 
           if (document.querySelector('#m-fulltoc-addservices-codsi-btn') !== null) {
             document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('click', e => this.showCODSI(e));
+            document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.showCODSI(e));
             document.querySelector('#m-fulltoc-addservices-codsi-filter-btn').addEventListener('click', (e) => {
               this.loadCODSIResults(1);
             });
+
+            document.querySelector('#m-fulltoc-addservices-codsi-filter-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.loadCODSIResults(1));
 
             document.querySelector('#m-fulltoc-addservices-codsi-search-input').addEventListener('keypress', (e) => {
               if (e.keyCode === 13) {
@@ -419,6 +387,13 @@ export default class FullTOCControl extends M.Control {
           document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', (e) => {
             this.filterName = undefined;
             this.readCapabilities(e);
+          });
+
+          document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('keydown', (e) => {
+            if (e.keyCode === 13) {
+              this.filterName = undefined;
+              this.readCapabilities(e);
+            }
           });
 
           document.querySelector('#m-fulltoc-addservices-search-input').addEventListener('keypress', (e) => {
@@ -447,11 +422,20 @@ export default class FullTOCControl extends M.Control {
               elem.parentElement.querySelector('.m-fulltoc-suggestion-group').classList.toggle('active');
               elem.classList.toggle('m-fulltoc-suggestion-caret-close');
             });
+
+            elem.addEventListener('keydown', (e) => {
+              if (e.keyCode === 13) {
+                elem.parentElement.querySelector('.m-fulltoc-suggestion-group').classList.toggle('active');
+                elem.classList.toggle('m-fulltoc-suggestion-caret-close');
+              }
+            });
           });
 
           document.querySelectorAll('#m-fulltoc-addservices-suggestions .m-fulltoc-suggestion').forEach((elem) => {
             elem.addEventListener('click', e => this.loadSuggestion(e));
+            elem.addEventListener('keydown', e => (e.keyCode === 13) && this.loadSuggestion(e));
           });
+          this.accessibilityTab(document.querySelector('.m-fulltoc-addservices'));
         }, 10);
       }
     }
@@ -468,7 +452,7 @@ export default class FullTOCControl extends M.Control {
       vars,
     });
 
-    M.dialog.info(info, getValue('info'));
+    M.dialog.info(info, getValue('layer_info'), this.order);
     setTimeout(() => {
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
@@ -488,6 +472,7 @@ export default class FullTOCControl extends M.Control {
           }
         });
       }
+      this.accessibilityTab(document.querySelector('#m-fulltoc-information'));
     }, 10);
   }
 
@@ -575,7 +560,7 @@ export default class FullTOCControl extends M.Control {
     if (results.length > 0) {
       let textResults = '<table><tbody>';
       results.forEach((r) => {
-        textResults += `<tr><td><span class="m-fulltoc-codsi-result" data-link="${r.url}">${r.title}</span></td></tr>`;
+        textResults += `<tr><td><span tabindex="0" class="m-fulltoc-codsi-result" data-link="${r.url}">${r.title}</span></td></tr>`;
       });
 
       textResults += '</tbody></table>';
@@ -600,9 +585,9 @@ export default class FullTOCControl extends M.Control {
       let buttons = '';
       for (let i = 1; i <= numPages; i += 1) {
         if (i === pageNumber) {
-          buttons += `<button class="m-fulltoc-addservices-pagination-btn" disabled>${i}</button>`;
+          buttons += `<button type="button" tabindex="0" class="m-fulltoc-addservices-pagination-btn" disabled>${i}</button>`;
         } else {
-          buttons += `<button class="m-fulltoc-addservices-pagination-btn">${i}</button>`;
+          buttons += `<button type="button" tabindex="0" class="m-fulltoc-addservices-pagination-btn">${i}</button>`;
         }
       }
 
@@ -674,7 +659,7 @@ export default class FullTOCControl extends M.Control {
           const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
           const isRaster = ['wms', 'wmts'].indexOf(layer.type.toLowerCase()) > -1;
           const isNotWMSFull = !((layer.type === M.layer.type.WMS) &&
-          M.utils.isNullOrEmpty(layer.name));
+            M.utils.isNullOrEmpty(layer.name));
           return (isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull);
         }).reverse();
 
@@ -707,6 +692,8 @@ export default class FullTOCControl extends M.Control {
       const html = M.template.compileSync(template, {
         vars: templateVars,
       });
+
+      this.accessibilityTab(html);
 
       this.registerImgErrorEvents_(html);
       this.template_.innerHTML = html.innerHTML;
@@ -751,14 +738,30 @@ export default class FullTOCControl extends M.Control {
       imgElem.addEventListener('error', (evt) => {
         const layerName = evt.target.getAttribute('data-layer-name');
         const layerURL = evt.target.getAttribute('data-layer-url');
-        const legendErrorUrl = M.utils.concatUrlPaths([M.config.THEME_URL,
-          M.layer.WMS.LEGEND_ERROR]);
+        const legendErrorUrl = M.utils.concatUrlPaths([
+          M.config.THEME_URL,
+          M.layer.WMS.LEGEND_ERROR,
+        ]);
+
         const layer = this.map_.getLayers().filter((l) => {
           return l.name === layerName && l.url === layerURL;
         })[0];
-        if (!M.utils.isNullOrEmpty(layer)) {
+
+        if (!M.utils.isNullOrEmpty(layer) && layerURL.indexOf('/mirame.chduero.es/') === -1) {
           layer.setLegendURL(legendErrorUrl);
         }
+        /*
+        else if (layerURL.indexOf('/mirame.chduero.es/') > -1 &&
+        layer.getImpl().getOL3Layer() !== null) {
+          console.log('Entra en cambiar leyenda');
+          console.log(layer);
+          const styleName = layer.getImpl().getOL3Layer().getSource().getStyle();
+          const urlLegend = layer.getLegendURL().split('&amp;').join('&').split('default')
+            .join(styleName);
+          console.log(urlLegend);
+          layer.setLegendURL(urlLegend);
+        }
+        */
       });
     });
   }
@@ -926,7 +929,7 @@ export default class FullTOCControl extends M.Control {
                 this.capabilities.forEach((layer) => {
                   try {
                     this.getParents(getCapabilities, layer);
-                  /* eslint-disable no-empty */
+                    /* eslint-disable no-empty */
                   } catch (err) {}
                 });
 
@@ -1019,7 +1022,7 @@ export default class FullTOCControl extends M.Control {
       allLayers.forEach((layer) => {
         let insideService = false;
         allServices.forEach((service) => {
-          if (service.type === layer.type && service.url === layer.url) {
+          if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
             if (service.white_list !== undefined && service.white_list.length > 0 &&
               service.white_list.indexOf(layer.name) > -1 &&
               layerNames.indexOf(layer.name) === -1) {
@@ -1046,7 +1049,7 @@ export default class FullTOCControl extends M.Control {
           allLayers.forEach((layer) => {
             let insideService = false;
             group.services.forEach((service) => {
-              if (service.type === layer.type && service.url === layer.url) {
+              if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
                 if (service.white_list !== undefined && service.white_list.length > 0 &&
                   service.white_list.indexOf(layer.name) > -1 &&
                   layerNames.indexOf(layer.name) === -1) {
@@ -1199,11 +1202,12 @@ export default class FullTOCControl extends M.Control {
             access_constraints: getValue('access_constraints'),
             show_service_info: getValue('show_service_info'),
           },
+          order: this.order,
         },
       });
 
-
       container.innerHTML = html.innerHTML;
+      this.accessibilityTab(container);
       M.utils.enableTouchScroll(container);
       const results = container.querySelectorAll('span.m-check-fulltoc-addservices');
       for (let i = 0; i < results.length; i += 1) {
@@ -1214,6 +1218,9 @@ export default class FullTOCControl extends M.Control {
       for (let i = 0; i < resultsNames.length; i += 1) {
         resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
       }
+
+      const checkboxResults = container.querySelectorAll('.table-results .table-container table tbody tr td span');
+      checkboxResults.forEach(l => l.addEventListener('keydown', e => (e.keyCode === 13) && this.registerCheckFromName(e)));
 
       container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
       container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', evt => this.addLayers(evt));
@@ -1349,6 +1356,18 @@ export default class FullTOCControl extends M.Control {
                   this.capabilities[j].setLegendURL(style);
                 }
               }
+
+              if (this.capabilities[j].type === 'WMTS') {
+                if (meta.style !== undefined && meta.style.length > 0) {
+                  meta.style.forEach((s) => {
+                    if (s.isDefault === true && s.LegendURL !== undefined &&
+                      s.LegendURL.length > 0) {
+                      const urlDefaultStyle = s.LegendURL[0].href;
+                      this.capabilities[j].setLegendURL(urlDefaultStyle);
+                    }
+                  });
+                }
+              }
             }
 
             layers.push(this.capabilities[j]);
@@ -1362,7 +1381,7 @@ export default class FullTOCControl extends M.Control {
         l.setZIndex(l.getZIndex() + 8);
       });
 
-      this.afterRender();
+      this.afterRender(layers);
     }
   }
 
@@ -1382,5 +1401,13 @@ export default class FullTOCControl extends M.Control {
     document.querySelector('#m-fulltoc-addservices-results').innerHTML = '';
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
     document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = '';
+  }
+
+  checkUrls(url1, url2) {
+    return url1 === url2 || (url1.indexOf(url2) > -1) || (url2.indexOf(url1) > -1);
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }

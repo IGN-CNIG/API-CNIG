@@ -7,6 +7,9 @@ import api from '../../api';
 import SelectionZoomControl from './selectionzoomcontrol';
 import { getValue } from './i18n/language';
 
+import es from './i18n/es';
+import en from './i18n/en';
+
 export default class SelectionZoom extends M.Plugin {
   /**
    * @classdesc
@@ -131,6 +134,27 @@ export default class SelectionZoom extends M.Plugin {
      *@type { string }
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     *@private
+     *@type { Number }
+     */
+    this.order = options.order >= -1 ? options.order : null;
+  }
+
+  /**
+   * Return plugin language
+   *
+   * @public
+   * @function
+   * @param {string} lang type language
+   * @api stable
+   */
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
+    }
+    return M.language.getTranslation(lang).selectionzoom;
   }
 
   /**
@@ -151,6 +175,7 @@ export default class SelectionZoom extends M.Plugin {
       this.previews,
       this.bboxs,
       this.zooms,
+      this.order,
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelSelectionZoom', {
@@ -160,6 +185,7 @@ export default class SelectionZoom extends M.Plugin {
       className: 'm-plugin-selectionzoom',
       tooltip: this.tooltip_,
       collapsedButtonClass: 'g-selectionzoom-selezoom',
+      order: this.order,
     });
 
     this.controls_[0].on('selectionzoom:activeChanges', (data) => {

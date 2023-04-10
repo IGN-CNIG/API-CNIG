@@ -5,6 +5,7 @@
 
 import SelectionDrawImplControl from 'impl/selectiondrawcontrol';
 import template from 'templates/selectiondraw';
+import { getValue } from './i18n/language';
 
 export default class SelectionDrawControl extends M.Control {
   /**
@@ -17,6 +18,9 @@ export default class SelectionDrawControl extends M.Control {
    * @api
    */
   constructor(options) {
+    if (M.utils.isUndefined(SelectionDrawImplControl)) {
+      M.exception(getValue('exception_selectiondrawcontrol'));
+    }
     const impl = new SelectionDrawImplControl(options.projection);
     super(impl, 'SelectionDraw');
     impl.facadeControl = this;

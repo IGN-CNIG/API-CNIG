@@ -1,0 +1,63 @@
+<div class="m-stylemanager-control styles-panel">
+    <div class="m-stylemanager-container-select">
+        <ul>
+            <li class="group">
+                <div class="m-stylemanager-buttons-wrap">
+                    <select class="" id="m-stylemanager-select">
+                        <option disabled="disabled" selected="selected">{{translations.selectLayer}}</option>
+                        {{#each layers}}
+                            <option name={{this.name}}>{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                    <button title="{{translations.applyStyle}}" class="m-button-styles" data-apply-style><i class="gi-1x stylemanager-apply"></i></button>
+                    <button title="{{translations.clearStyle}}" class="m-button-styles" data-clear-style><i class="gi-1x stylemanager-reset"></i></button>
+                    <button title="{{translations.generateSerialized}}" class="m-button-styles" data-serialized-style><i class="gi-1x stylemanager-copy"></i></button>
+                </div>
+            </li>
+        </ul>
+
+        <div class="m-boxes m-hidden m-boxes-botonera" data-role="botonera">
+            <input data-checkbox="stylesimple" type="checkbox" class="m-input" id="box-4">
+            <label data-flap="stylesimple" for="box-4" class="check-selected check-inactive"></label>
+            <label><i class="gi-1x stylemanager-simple"></i> Simple</label>
+
+            <!-- submenu -->
+            <div data-buttons-option class="m-submenu-simple">
+            </div>
+
+            <!-- fin submenu -->
+            <input data-checkbox="styleflowline" type="checkbox" class="m-input" id="box-8">
+            <label data-flap="styleflowline" for="box-8" class="check-selected check-inactive"></label>
+            <label><i class="gi-1x stylemanager-arrow"></i>{{translations.flowLine}}</label>
+
+            <input data-checkbox="stylecluster" type="checkbox" class="m-input" id="box-1">
+            <label data-flap="stylecluster" for="box-1" class="check-selected check-inactive"></label>
+            <label><i class="gi-1x stylemanager-cluster"></i>Cluster</label>
+
+            <input data-checkbox="styleheatmap" type="checkbox" class="m-input" id="box-2">
+            <label data-flap="styleheatmap" for="box-2" class="check-selected check-inactive"></label>
+            <label><i class="gi-1x stylemanager-heatmap"></i>{{translations.heatMap}}</label>
+
+            <input data-checkbox="stylecategory" type="checkbox" class="m-input" id="box-3">
+            <label data-flap="stylecategory" for="box-3" class="check-selected check-inactive"></label>
+            <label><i class="gi-1x stylemanager-category"></i>{{translations.category}}</label>
+
+            <div data-buttons-option-category class="m-hidden m-submenu-simple">
+            </div>
+
+            <input data-checkbox="stylechoropleth" type="checkbox" class="m-input" id="box-5">
+            <label data-flap="stylechoropleth" for="box-5" class="check-selected check-inactive"></label>
+            <label><i class="gi-1x stylemanager-choro"></i>{{translations.choropleths}}</label>
+
+            <input data-checkbox="styleproportional" type="checkbox" class="m-input" id="box-6">
+            <label data-flap="styleproportional" for="box-6" class="check-selected check-inactive"></label>
+            <label><i class="gi-1x stylemanager-proportional"></i>{{translations.proportional}}</label>
+
+            <input data-checkbox="stylechart" type="checkbox" class="m-input" id="box-7">
+            <label data-flap="stylechart" for="box-7" class="check-selected check-inactive"></label>
+            <label><i class="gi-1x stylemanager-chart"></i>{{translations.statistic}}</label>
+        </div>
+
+
+    </div>
+</div>
