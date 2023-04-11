@@ -24,6 +24,7 @@ export const method = {
  * @function
  * @param {String} proxyUrl URL del proxy.
  * @param {String} jsonpHandlerName Nombre del identificador.
+ * @api
  */
 const createScriptTag = (proxyUrl, jsonpHandlerName) => {
   const scriptTag = document.createElement('script');
@@ -39,6 +40,7 @@ const createScriptTag = (proxyUrl, jsonpHandlerName) => {
  *
  * @function
  * @param {String} jsonpHandlerName Nombre del identificador.
+ * @api
  */
 const removeScriptTag = (jsonpHandlerName) => {
   const scriptTag = document.getElementById(jsonpHandlerName);
@@ -52,6 +54,7 @@ const removeScriptTag = (jsonpHandlerName) => {
  * @param {String} url URL del proxy (M.config.PROXY_URL).
  * @param {String} methodType Tipo de petición.
  * @returns {String} Devuelve el proxy.
+ * @api
  */
 const manageProxy = (url, methodType) => {
   // deafult GET
@@ -75,6 +78,7 @@ const manageProxy = (url, methodType) => {
  * @param {String} data Parámetros.
  * @param {Object} options Opciones.
  * @returns {String} Devuelve la respuesta.
+ * @api
  */
 const jsonp = (urlVar, data, options) => {
   let url = urlVar;
@@ -130,6 +134,7 @@ const jsonp = (urlVar, data, options) => {
  * @param {Object} methodType Tipo de petición.
  * @param {Object} useProxy Verdadero para usar el proxy.
  * @returns {String} Devuelve la respuesta.
+ * @api
  */
 const ajax = (urlVar, dataVar, methodType, useProxy) => {
   let url = urlVar;

@@ -52,6 +52,7 @@ export const compileSync = (string, options) => {
  * @function
  * @param {string} templatePath Nombre de la plantilla.
  * @returns {string} URL completa de la plantilla.
+ * @api
  */
 const getTemplateUrl = (templatePath) => {
   let templateUrl = null;
