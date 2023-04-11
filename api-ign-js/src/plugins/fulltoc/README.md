@@ -1,6 +1,8 @@
 # M.plugin.FullTOC
 
-Muestra un árbol de contenidos con las capas disponibles para mostrar. Se permite la carga de capas de un listado predefinido y de otros servicios que introduzca el usuario.
+Plugin que proporciona un árbol de contenidos con las capas disponibles para mostrar en el visualizador. Permite la carga de:
+- capas de un listado predefinido. 
+- capas de servicios que introduzca el usuario.
 
 # Aclaraciones
 
@@ -8,13 +10,12 @@ A la hora de mostrar la leyenda de un servicio que se haya cargado se intentará
 
 # Dependencias
 
-- fulltoc.ol.min.js
-- fulltoc.ol.min.css
-
+- **fulltoc.ol.min.js**
+- **fulltoc.ol.min.css**
 
 ```html
- <link href="../../plugins/fulltoc/fulltoc.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/fulltoc/fulltoc.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/fulltoc/fulltoc.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/fulltoc/fulltoc.ol.min.js"></script>
 ```
 
 # Parámetros
@@ -35,17 +36,18 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **https**: Si es *true* sólo se permite la carga de capas de servicios desplegados con https, si no se rellena o se le da valor *false* se permite la carga de cualquier servicio.
 
-- **codsi**: Si es *true* se habilitará una nueva funcionalidad que permitirá la carga de servicios del catálogo codsi habilitando un listado con buscador de dichos servicios.
+- **codsi**: Si es *true* se habilitará una nueva funcionalidad que permitirá la carga de servicios del catálogo codsi habilitando un listado con buscador de dichos servicios. Disponible al pulsar sobre el botón añadir del plugin, apareciendo unos prismáticos para realizar la búsqueda.
 
-- **precharged**: Aquí debemos definir la estructura de los servicios predefinidos que queremos que tenga el plugin (árbol de contenido, servicios sin nodo padre, etc.). También podremos definir un parámetro para cada servicio con el que restringiremos qué capas de cada servicio queremos que sea posible cargar.
+- **precharged**: Aquí debemos definir la estructura de los servicios predefinidos que queremos que tenga el plugin (árbol de contenido, servicios sin nodo padre, etc.). También podremos definir un parámetro para cada servicio con el que restringiremos qué capas de cada servicio queremos que sea posible cargar (white_list).
+El listado de capas aparece al pulsar sobre el botón añadir (Listado de algunas capas disponibles).
 
 # Ejemplos de uso
 
+# Ejemplos de uso
 ```javascript
    const map = M.map({
      container: 'map'
    });
-
    const mp = new M.plugin.FullTOC({
      collapsed: true,
      position: 'TR',
