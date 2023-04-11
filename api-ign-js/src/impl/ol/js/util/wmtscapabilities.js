@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /**
+ * Este módulo contiene funciones para obtener la extensión de una capa WMTS.
  * @module M/impl/util/wmtscapabilities
  */
 import WMTS from 'M/layer/WMTS';
@@ -96,6 +97,7 @@ const getLayersRecursive = (layer, urlService, EPSGcode, capabilities) => {
   * @param {String} EPSGcode Código de la proyección.
   * @returns {Array<M.Layer>} Capas WMTS.
   * @public
+  * @example import { getLayers } from 'impl/util/wmtscapabilities';
   * @api
   */
 export const getLayers = (capabilities, url, EPSGcode) => {
@@ -112,6 +114,7 @@ export const getLayers = (capabilities, url, EPSGcode) => {
   * @param {String} code Código de la proyección.
   * @returns {Array<Number>} Extensión.
   * @public
+  * @example import getLayerExtent from 'impl/util/wmtscapabilities';
   * @api
   */
 const getLayerExtent = (parsedCapabilities, name, code) => {

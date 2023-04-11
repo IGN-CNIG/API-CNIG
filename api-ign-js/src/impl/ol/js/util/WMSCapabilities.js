@@ -218,12 +218,13 @@ class GetCapabilities {
   }
 
   /**
-    * 'PATCH'
+    * AJUSTE
     *
-    * Contexto: Como se indica en OGC Web Map Services v1.3.0, el cuadro delimitador de capa
+    * Contexto: Como se indica en OGC Web Map Services v1.3.0,
+    * el rectángulo mínimo envolvente de capa
     * declarado en GetCapabilities debe definirse utilizando el orden de coordenadas establecido
     * en el CRS.
-    * Por ejemplo, en el caso de EPSG:4326, el orden del cuadro delimitador debe ser
+    * Por ejemplo, en el caso de EPSG:4326, el orden del rectángulo mínimo envolvente debe ser
     * (min_lat, min_long, max_lat, max_long). Este orden también debe usarse en la solicitud de
     * GetMap. Sin embargo, a partir de WMS 1.1.0, el orden de coordenadas siempre se especificó en
     * orden LongLat.
@@ -231,7 +232,7 @@ class GetCapabilities {
     * Para mantener la compatibilidad para todos los clientes, OpenLayers cambia automáticamente el
     * orden en caso de usar un servicio v1.3.0. Esto entra en conflicto con nuestro
     * propio desarrollo,
-    * dado que proporcionamos el cuadro delimitador en el mismo orden que se declara
+    * dado que proporcionamos el rectángulo mínimo envolvente en el mismo orden que se declara
     * en GetCapabilities,
     * lo que resulta en una solicitud incorrecta al servicio enviando un CRS con el orden LatLong.
     *

@@ -89,13 +89,13 @@ const getTransformedCoordinates = (codeProjection, oldCoordinates) => {
 };
 
 /**
-  * Crea un objetos geográficos de una capa GeoJSON a partir de un objetos geográficos anterior y
+  * Crea un objeto geográfico de una capa GeoJSON a partir de un objeto geográfico anterior y
   * un nuevo conjunto de coordenadas.
   *
   * @function
-  * @param {ol.Feature} previousFeature Anterior objetos geográficos.
+  * @param {ol.Feature} previousFeature Objeto geográfico anterior.
   * @param {Array<Number>} coordinates Nuevo conjunto de coordenadas.
-  * @return {ol.Feature} Nuevo objetos geográficos.
+  * @return {ol.Feature} Nuevo objeto geográfico.
   * @public
   * @api
   */
@@ -110,10 +110,11 @@ const createGeoJSONFeature = (previousFeature, coordinates) => {
 };
 
 /**
-  * Este método transforma coordenadas de un objetos geográficos como GeoJSON a EPSG:4326.
+  * Este método transforma coordenadas de objetos geográficos como GeoJSON a EPSG:4326.
   *
   * @function
-  * @param {Object} featuresAsJSON Objetos geográficos definidos mediante la especificación GeoJSON.
+  * @param {Object} featuresAsJSON Objetos geográficos definidos
+  * mediante la especificación GeoJSON.
   * @param {String} codeProjection Código de proyección actual.
   * @return {ol.Feature} Objetos geográficos.
   * @public
@@ -314,7 +315,7 @@ class Utils {
     *
     * @function
     * @param {ol.geom} geometry Geometría.
-    * @return {Array<number>} Coordenads del centro.
+    * @return {Array<number>} Coordenadas del centro.
     * @public
     * @api
     */

@@ -7,10 +7,9 @@ import OLStyleText from 'ol/style/Text';
 /**
   * @classdesc
   * Implementación de la clase TextPath.
-  *
   * @api
   */
-export default class TextPath {
+class TextPath {
   /**
     * Método de representación. Dibuja texto a lo largo de la trayectoria
     *
@@ -156,11 +155,11 @@ export default class TextPath {
   }
 
   /**
-    * Este método añade un ol.style en una función de estilo
+    * Este método añade un estilo de Openlayers en una función de estilo.
     *
     * @function
-    * @param {object} style ol.style
-    * @return {function} Función de estilo
+    * @param {object} style Estilo de Openlayers.
+    * @return {function} Función de estilo.
     * @public
     * @api
     */
@@ -188,13 +187,13 @@ export default class TextPath {
 
   /**
     * Dibuja el estilo del texto de la trayectoria si
-    * la capa o 'feature' lo ha configurado
+    * la capa u objeto geográfico lo ha configurado.
     *
     * @function
-    * @param {Object} ctx Contexto
-    * @param {Array<number>} coord2Pixel Array de coordenadas en píxeles
-    * @param {Object} textStyle Estilo del texto
-    * @param {Array<Array<number>>} coords Coordenadas
+    * @param {Object} ctx Contexto.
+    * @param {Array<number>} coord2Pixel Array de coordenadas en píxeles.
+    * @param {Object} textStyle Estilo del texto.
+    * @param {Array<Array<number>>} coords Coordenadas.
     * @public
     * @api
     */
@@ -233,7 +232,7 @@ export default class TextPath {
 }
 
 /**
-  * Valores de estilos predeterminados
+  * Valores de estilos predeterminados.
   * @const
   * @type {object}
   * @public
@@ -246,3 +245,5 @@ TextPath.DEFAULT = {
   textOverflow: '',
   minWidth: 0,
 };
+
+export default TextPath;

@@ -209,7 +209,7 @@ class WMTS extends LayerBase {
    *
    * @function
    * @setter
-   * @param {String} newLegend New Legend.
+   * @param {String} newLegend Nueva leyenda.
    * @api
    */
   set legend(newLegend) {
@@ -303,7 +303,7 @@ class WMTS extends LayerBase {
    * @public
    * @param {Array} coordinate Coordenadas.
    * @param {Number} zoom Nivel de zoom del mapa.
-   * @return {M.impl.getTileColTileRow} Columna y fila del tile.
+   * @return {M.impl.getTileColTileRow} Columna y fila de la tesela.
    * @api
    */
   getTileColTileRow(coordinate, zoom) {
