@@ -1,5 +1,5 @@
 /**
- * @module M/filter/Module
+ * @module M/filter/spatial
  */
 import { GeoJSONReader } from 'jsts/org/locationtech/jts/io';
 import RelateOp from 'jsts/org/locationtech/jts/operation/relate/RelateOp';
