@@ -51,16 +51,16 @@ public class ActionsWS {
 	public String showAvailableActions(@QueryParam("callback") String callbackFn) {
 		JSONArray actions = new JSONArray();
 
-		actions.put("/api-core/api/actions/controls");
-		actions.put("/api-core/api/actions/contexts");
-		actions.put("/api-core/api/actions/services");
-		actions.put("/api-core/api/actions/version");
-		actions.put("/api-core/api/actions/themes");
-		actions.put("/api-core/api/actions/projection");
-		actions.put("/api-core/api/actions/plugins");
-		actions.put("/api-core/api/actions/resources/svg");
+		actions.put("/controls");
+		actions.put("/contexts");
+		actions.put("/services");
+		actions.put("/version");
+		actions.put("/themes");
+		actions.put("/projection");
+		actions.put("/plugins");
+		actions.put("/resources/svg");
 
-		actions.put("/api-core/doc");
+		actions.put("/../../doc");
 
 //      actions.put("/apk");
 
@@ -75,7 +75,7 @@ public class ActionsWS {
 	 * @return the javascript code
 	 */
 	@GET
-	@Path("/api-core/api/actions/controls")
+	@Path("/controls")
 	public String showAvailableControls(@QueryParam("callback") String callbackFn) {
 		String controlsRaw = configProperties.getString("controls");
 		String[] controls = controlsRaw.split(",");
@@ -97,7 +97,7 @@ public class ActionsWS {
 	 * @return the javascript code
 	 */
 	@GET
-	@Path("/api-core/api/actions/contexts")
+	@Path("/contexts")
 	public String showAvailableContexts(@QueryParam("callback") String callbackFn) {
 		String wmcsRaw = configProperties.getString("wmcs");
 		String[] wmcs = wmcsRaw.split(",");
@@ -119,7 +119,7 @@ public class ActionsWS {
 	 * @return the javascript code
 	 */
 	@GET
-	@Path("/api-core/api/actions/services")
+	@Path("/services")
 	public String showAvailableServices(@QueryParam("callback") String callbackFn) {
 		String servicesRaw = configProperties.getString("services");
 		String[] services = servicesRaw.split(",");
@@ -141,7 +141,7 @@ public class ActionsWS {
 	 * @return the javascript code
 	 */
 	@GET
-	@Path("/api-core/api/actions/themes")
+	@Path("/themes")
 	public String showAvailableThemes(@QueryParam("callback") String callbackFn) {
 		String themesRaw = configProperties.getString("themes");
 		String[] themes = themesRaw.split(",");
@@ -163,7 +163,7 @@ public class ActionsWS {
 	 * @return the javascript code
 	 */
 	@GET
-	@Path("/api-core/api/actions/projection")
+	@Path("/projection")
 	public String showDefaultProjection(@QueryParam("callback") String callbackFn) {
 		String projectionRaw = configProperties.getString("projection");
 		String[] projection = projectionRaw.split("\\*");
@@ -183,7 +183,7 @@ public class ActionsWS {
 	 * @return the javascript code
 	 */
 	@GET
-	@Path("/api-core/api/actions/plugins")
+	@Path("/plugins")
 	public String showAvailablePlugins(@QueryParam("callback") String callbackFn) {
 		JSONArray pluginsJSON = new JSONArray();
 
@@ -203,7 +203,7 @@ public class ActionsWS {
 	 * @return the javascript code
 	 */
 	@GET
-	@Path("/api-core/api/actions/version")
+	@Path("/version")
 	public String showVersion(@QueryParam("callback") String callbackFn) {
 
 		JSONObject version = new JSONObject();
@@ -223,7 +223,7 @@ public class ActionsWS {
 	 * @return the javascript code
 	 */
 	@GET
-	@Path("/api-core/api/actions/resources/svg")
+	@Path("/resources/svg")
 	public String resourceSVG(@QueryParam("callback") String callbackFn, @QueryParam("name") String name) {
 		JSONObject result = new JSONObject();
 		try {
