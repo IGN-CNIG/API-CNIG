@@ -10,13 +10,13 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 ``` 
 # Configuraciones globales
 - **M.config.attributions.defaultAttribution**: Valor por defecto a mostrar en la atribución del mapa.
-- **M.config.attributions.defaultUrl**: Valor por defecto a usar como url asociada a la atribución por defecto.
+- **M.config.attributions.defaultURL**: Valor por defecto a usar como url asociada a la atribución por defecto.
 # Parámetros
 El constructor se inicializa con un JSON con los siguientes atributos:
 - **mode**: Modo de uso del plugin Attributions (1 ó 2).
     1. Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: ==DISPONIBLE==
         - **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
-        - **type**: Tipo de archivo que se pasa en la url indicada (ejemplos: 'kml','geojson'). Por defecto: 'kml'.
+        - **type**: Tipo de archivo que se pasa en la url indicada (ejemplos: 'kml','geojson'). Usado internamente para saber el tipo de capa que debe crear. Por defecto: 'kml'.
         - **layerName**: Nombre asociado a la capa de atribuciones (nombre de la capa). Se usa para la construcción de la capa. Por defecto: 'attributions'.
         - **layer**: Tipo de capa que se remite como archivo de atribuciones {M.layer.GeoJSON | M.layer.KML}. Se usa para la construcción de la capa.
         - **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
@@ -47,7 +47,7 @@ Ejemplos de archivo de atribuciones según formato predefinido (kml o geojson):
 # Ejemplo de uso
 ```javascript
   M.config.attributions.defaultAttribution = 'Instituto Geográfico Nacional';
-  M.config.attributions.defaultUrl = 'https://www.ign.es/' 
+  M.config.attributions.defaultURL = 'https://www.ign.es/' 
    const map = M.map({
      container: 'map'
    });
