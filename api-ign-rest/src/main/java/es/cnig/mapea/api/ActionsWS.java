@@ -60,7 +60,7 @@ public class ActionsWS {
 		actions.put("/api-core/api/actions/plugins");
 		actions.put("/api-core/api/actions/resources/svg");
 
-		actions.put("/../doc");
+		actions.put("/api-core/doc");
 
 //      actions.put("/apk");
 
