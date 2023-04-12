@@ -4,13 +4,15 @@ Permite dibujar geometrías y obtenerlas al terminar.
 
 # Dependencias
 
-- selectiondraw.ol.min.js
-- selectiondraw.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **selectiondraw.ol.min.js**
+- **selectiondraw.ol.min.css**
 
 
 ```html
- <link href="../../plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/selectiondraw/selectiondraw.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/selectiondraw/selectiondraw.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/selectiondraw/selectiondraw.ol.min.js"></script>
 ```
 
 # Parámetros
