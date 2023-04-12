@@ -13,8 +13,8 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 
 ```html
- <link href="../../plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/rescale/rescale.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/rescale/rescale.ol.min.js"></script>
 ```
 
 # Parámetros
