@@ -2,38 +2,28 @@
 
 Tabla de contenidos de fototeca. Consulta cobertura de vuelo sobre la vista.
 
-## Api.json
-
-INTEGRACIÓN DE PARÁMETROS EN API REST
-
-OPCIONES:  
-1. Nuevo parámetro en la API REST normalmente porque requiera parámetros de configuración.
-Example: <url_mapea>?beautytoc=[params]
-
-2. Nuevo valor para el parámetro plugins, el plugin no requiere configuración
-Example: <url_mapea>?plugins=beautytoc
-
 # Dependencias
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
 
-- beautytoc.ol.min.js
-- beautytoc.ol.min.css
-
+- **beautytoc.ol.min.js**
+- **beautytoc.ol.min.css**
 
 ```html
- <link href="../../plugins/beautytoc/beautytoc.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/beautytoc/beautytoc.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/beautytoc/beautytoc.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/beautytoc/beautytoc.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin sobre el mapa.
   - 'TL': (top left) - Arriba a la izquierda.
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha. 
-- **collapsed**: Indica si el plugin aparece por defecto colapsado o no. Por defecto: true.
+- **collapsed**: Indica si el plugin aparece por defecto colapsado o no. Por defecto: false.
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin (Por defecto = Capas Adicionales).
 
 # Ejemplos de uso
 
@@ -44,43 +34,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
    const mp = new M.plugin.BeautyTOC({
         postition: 'TL',
-      });
+    });
 
    map.addPlugin(mp);
-```
-
-
-### Plugin sin parámetros
-
-```
-{
-   "url": {
-      "name": "beautytoc"
-   },
-   "constructor": "M.plugin.BeautyTOC"
-}
-```
-### Plugin con parámetros
-
-```
-{
-   "url": {
-      "name": "beautytoc",
-      "separator": "*"
-   },
-   "constructor": "M.plugin.BeautyTOC",
-   "parameters": [{
-     "type": "object",
-     "properties": [{
-       "type": "simple",
-       "name": "position",
-       "position": 0,
-       "possibleValues": ["TL", "TR", "BL", "BR"]
-     }, {
-       "type": "boolean",
-       "name": "collapsed",
-       "position": 1
-     }]
-   }],
-}
 ```
