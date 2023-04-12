@@ -81,7 +81,7 @@
         let map;
 
         let mp, posicion, collapsed;
-        let layers;
+        let layersPlugin = [];
 
         crearPlugin(posicion, collapsed);
 
@@ -124,7 +124,7 @@
 
             map.addPlugin(mp);
 
-            layers = [
+            layersPlugin = [
                 new M.layer.WMS({
                     url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
                     name: 'Catastro',
@@ -336,7 +336,7 @@
                 }),
             ];
 
-            layers.forEach((l, index) => {
+            layersPlugin.forEach((l, index) => {
                 l.setVisible(false);
                 l.displayInLayerSwitcher = true;
                 if (l.url === 'https://www.ign.es/wms/pnoa-historico?') {
@@ -345,7 +345,7 @@
                     l.setZIndex(2000 + index);
                 }
             });
-            map.addLayers(layers)
+            map.addLayers(layersPlugin)
             let mp2 = new M.plugin.ShareMap({
                 baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
                 position: "TR",
