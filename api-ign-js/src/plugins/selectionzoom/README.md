@@ -1,15 +1,17 @@
 # M.plugin.selectionzoom
 
-Plugin que permite la elección de la extensión geográfica de fondo mediante la previsualización de las posibles vistas predefinidas.
+Plugin que permite la elección de la extensión geográfica de fondo mediante la previsualización de vistas predefinidas.
 
 # Dependencias
 
-- selectionzoom.ol.min.js
-- selectionzoom.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **selectionzoom.ol.min.js**
+- **selectionzoom.ol.min.css**
 
 ```html
- <link href="../../plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/selectionzoom/selectionzoom.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/selectionzoom/selectionzoom.ol.min.js"></script>
 ```
 
 # Parámetros
