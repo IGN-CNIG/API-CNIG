@@ -1,6 +1,6 @@
 # M.plugin.selectionzoom
 
-Plugin que permite la elección de la extensión geográfica de fondo mediante la previsualización de vistas predefinidas.
+Plugin que permite la elección de la extensión geográfica de fondo mediante la previsualización de las vistas predefinidas disponibles.
 
 # Dependencias
 
