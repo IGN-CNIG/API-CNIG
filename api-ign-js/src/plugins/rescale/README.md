@@ -1,7 +1,7 @@
 # M.plugin.Rescale
 
 
-Plugin que permite hacer zoom a una escala elegida. El resultado mostrado es una aproximación a dicha escala, que equivale a los niveles de zoom de GoogleMapsCompatible.
+Plugin que permite hacer zoom a una escala elegida. El resultado mostrado es una aproximación a dicha escala, que equivale a los niveles de zoom de [GoogleMapsCompatible](https://docs.opengeospatial.org/is/17-083r2/17-083r2.html).
 
 
 # Dependencias
