@@ -1,6 +1,6 @@
 # M.plugin.SelectionDraw
 
-Permite dibujar geometrías y obtenerlas al terminar.
+Plugin que permite representar geometrías y obtener la información asociada en formato JSON.
 
 # Dependencias
 
