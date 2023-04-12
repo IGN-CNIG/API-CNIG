@@ -1,20 +1,21 @@
 # M.plugin.BackImgLayer
 
-Plugin que permite la elección de cada de fondo mediante previsualización de las posibles capas.
+Plugin que permite la elección de la capa de fondo mediante la previsualización de las posibles capas.
 
 # Dependencias
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
 
-- backimglayer.ol.min.js
-- backimglayer.ol.min.css
+- **backimglayer.ol.min.js**
+- **backimglayer.ol.min.css**
 
 ```html
- <link href="../../plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/backimglayer/backimglayer.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/backimglayer/backimglayer.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 
 - **position**:  Ubicación del plugin sobre el mapa.
@@ -24,14 +25,16 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
-- **layerId**: Posición de la capa que se carga por defecto en el array de capas mandadas como parámetro.
-- **columnsNumber**: Número de columnas que parametrizan la tabla de servicios mostrados.
+- **layerId**: Índice de la capa que se quiera cargar por defecto.
+- **columnsNumber**: Número de columnas que parametrizan la tabla de capas de fondo disponibles.
 - **layerVisibility**: Valor que indica si se muestra la capa cargada o no.
 - **layerOpts**: Array con las capas que se quieren utilizar como opciones para capa de fondo.
-   * *id*: Identificador de la capa.
-   * *preview*: Ruta a la imagen de previsualización que se muestra.
-   * *title*: Nombre identificativo de la capa que se mostrará sobre la previsualización.
-   * *layers*: Array con las capas de Mapea que se quieren cargar al seleccionar esta opción.
+    - **id**: Identificador de la capa.
+    - **preview**: Ruta a la imagen de previsualización que se muestra.
+    - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
+    - **layers**: Array con las capas que se quieren cargar al seleccionar esta opción.
+- **empty**: Habilita la posibilidad de mostrar el mapa sin las capas cargadas en el plugin.
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin (Por defecto = Capas de fondo).
 
 
 # Ejemplo de uso
