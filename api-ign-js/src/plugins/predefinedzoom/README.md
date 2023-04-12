@@ -5,13 +5,15 @@ Centra el mapa en la/s vista/s indicada/s por parámetro.
 
 # Dependencias
 
-- predefinedzoom.ol.min.js
-- predefinedzoom.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **predefinedzoom.ol.min.js**
+- **predefinedzoom.ol.min.css**
 
 
 ```html
- <link href="../../plugins/predefinedzoom/predefinedzoom.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/predefinedzoom/predefinedzoom.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/predefinedzoom/predefinedzoom.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/predefinedzoom/predefinedzoom.ol.min.js"></script>
 ```
 
 # Parámetros
