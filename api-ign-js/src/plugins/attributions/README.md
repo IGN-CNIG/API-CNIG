@@ -16,9 +16,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **mode**: Modo de uso del plugin Attributions (1 ó 2).
     1. Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: ==DISPONIBLE==
         - **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
-        - **type**: Tipo de archivo que se pasa en la url indicada (ejemplos: 'kml','geojson'). Usado internamente para saber el tipo de capa que debe crear. Por defecto: 'kml'.
+        - **type**: En el caso de no pasar nada por el parámetro layer o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
         - **layerName**: Nombre asociado a la capa de atribuciones (nombre de la capa). Se usa para la construcción de la capa. Por defecto: 'attributions'.
-        - **layer**: Tipo de capa que se remite como archivo de atribuciones {M.layer.GeoJSON | M.layer.KML}. Se usa para la construcción de la capa.
+        - **layer**: Capa definida por el usuario para determinar las atribuciones {M.layer.GeoJSON | M.layer.KML}.
         - **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
         - **urlParam**: Nombre del campo de url en el archivo. Por defecto: 'url'.
         - **minWidth**: Mínimo ancho de visualización del plugin. Por defecto: '100px'.
@@ -39,6 +39,23 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
   - 'BR': (bottom right) - Abajo a la derecha.
 - **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
+### Funcionamiento de los parámetros "defaultURL" y "defaultAttribution".
+En el caso de la capa base no se contemple en los casos siguientes, se podra definir un nombre de atribución y una URL por defecto usando los siguientes parámetros:
+- **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
+- **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario.
+
+  * Si la capa base es "OI.OrthoimageCoverage" y tiene un nivel de zoom menor a 14:
+    - Nombre de la atribución: Copernicus Sentinel 2019.
+    - URL de la atribución: https://sentinel.esa.int/web/sentinel/home.
+  * Si la capa base es "LC.LandCoverSurfaces" y tiene un nivel de zoom menor a 14:
+    - Nombre de la atribución: CORINE-Land Cover. Instituto Geográfico Nacional.
+    - URL de la atribución: M.config.attributions.defaultURL o defaultURL si este tiene valor.
+  * Si la capa base es "IGNBaseTodo":
+    - Nombre de la atribución: Sistema Cartográfico Nacional.
+    - URL de la atribución: http://www.scne.es/.
+  * Si alguno de los casos anterior supera el zoom 14:
+    - Nombre de la atribución: Sistema Cartográfico Nacional.
+    - URL de la atribución: http://www.scne.es/.
 # Archivos de atribuciones CNIG
 Ejemplos de archivo de atribuciones según formato predefinido (kml o geojson):
 - https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml
@@ -46,17 +63,29 @@ Ejemplos de archivo de atribuciones según formato predefinido (kml o geojson):
 - https://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson
 # Ejemplo de uso
 ```javascript
-  M.config.attributions.defaultAttribution = 'Instituto Geográfico Nacional';
-  M.config.attributions.defaultURL = 'https://www.ign.es/' 
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.Attributions({ 
       mode: 1,
       scale: 10000,
-      url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
-      type: 'geojson',
+      /*Uso de type, para generar una capa de tipo GeoJSON o KML*/
+      type: 'geojson', // En este caso la capa será de tipo GeoJSON
+      url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson', // URL de la capa
+      layerName: 'Ejemplo Attributions', // Nombre de la capa
+      /*
+      + Se puede defenir una capa directamente sin usar los 
+        parámetros anteriores (type, url y layerName).
+
+      layer: new M.layer.GeoJSON({
+        name: 'Ejemplo Attributions',
+          source: {
+            url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
+          type: 'geojson',
+        },
+      }),
+      */
       position: 'TL',
     });
    map.addPlugin(mp);
