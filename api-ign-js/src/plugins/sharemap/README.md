@@ -11,8 +11,10 @@ Exporta la información de todas las capas cargadas en el mapa.
 
 # Dependencias
 
-- sharemap.ol.min.js
-- sharemap.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **sharemap.ol.min.js**
+- **sharemap.ol.min.css**
 
 
 ```html
