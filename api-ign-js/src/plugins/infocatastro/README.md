@@ -4,13 +4,15 @@ Muestra referencia catastral para un punto y provee de enlace a la información 
 
 ## Dependencias
 
-- infocatastro.ol.min.js
-- infocatastro.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **infocatastro.ol.min.js**
+- **infocatastro.ol.min.css**
 
 
 ```html
- <link href="../../plugins/infocatastro/infocatastro.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/infocatastro/infocatastro.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/infocatastro/infocatastro.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/infocatastro/infocatastro.ol.min.js"></script>
 ```
 
 ## Ejemplos de uso
