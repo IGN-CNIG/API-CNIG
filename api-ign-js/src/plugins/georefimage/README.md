@@ -5,17 +5,19 @@ Plugin que permite la descarga de la imagen georeferenciada que se muestra en pa
 
 # Dependencias
 
-- georefimage.ol.min.js
-- georefimage.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **georefimage.ol.min.js**
+- **georefimage.ol.min.css**
 
 ```html
- <link href="../../plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/georefimage/georefimage.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/georefimage/georefimage.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
