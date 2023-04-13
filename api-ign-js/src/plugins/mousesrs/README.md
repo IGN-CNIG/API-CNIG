@@ -1,11 +1,13 @@
 # M.plugin.MouseSRS
 
-Muestra las coordenas en el sistema de referencia elegido del puntero del ratón.
+Muestra las coordenas del puntero del ratón en el sistema de referencia elegido.
 
 # Dependencias
 
-- mousesrs.ol.min.js
-- mousesrs.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **mousesrs.ol.min.js**
+- **mousesrs.ol.min.css**
 
 
 ```html
@@ -18,12 +20,12 @@ Muestra las coordenas en el sistema de referencia elegido del puntero del ratón
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **tootltip**. Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
-- **srs**. Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón.
-- **label**. Nombre del SRS sobre el que se mostrarán las coordenadas del ratón.
-- **precision**. Precisión de las coordenadas.
-- **geoDecimalDigits**. Cifras decimales para proyecciones geográficas.
-- **utmDecimalDigits**. Cifras decimales para proyecciones UTM.
+- **tootltip**: Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
+- **srs**: Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón.
+- **label**: Nombre del SRS sobre el que se mostrarán las coordenadas del ratón.
+- **precision**: Precisión de las coordenadas.
+- **geoDecimalDigits**: Cifras decimales para proyecciones geográficas.
+- **utmDecimalDigits**: Cifras decimales para proyecciones UTM.
 
 ### Plugin sin parámetros
 
