@@ -8,8 +8,10 @@ Plugin de línea del tiempo.
 
 ## Dependencias
 
-- timeline.ol.min.js
-- timeline.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **timeline.ol.min.js**
+- **timeline.ol.min.css**
 
 
 ```html
@@ -20,7 +22,7 @@ Plugin de línea del tiempo.
 ## Parámetros
 
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
