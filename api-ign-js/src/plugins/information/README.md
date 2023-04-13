@@ -26,7 +26,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **tooltip**: Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
+- **tooltip**: Descripción emergente que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
 - **format**: Formato de respuesta de la consulta GetFeatureInfo.
 - **featureCount**: Máximo número de features a los que realizar la consulta.
 - **buffer**: Buffer del click para realizar la consulta.
