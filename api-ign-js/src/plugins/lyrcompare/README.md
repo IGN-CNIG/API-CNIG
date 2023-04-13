@@ -22,25 +22,25 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 El constructor se inicializa con un JSON con los siguientes atributos:
 
-- **layer**. Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa),
+- **layer**: Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa),
 la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto.
 A esta/s capa/s se le aplicará el efecto de transparencia.
 
-- **position**. Indica la posición donde se mostrará el plugin.
+- **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsible**. Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto tiene el valor *true*.
+- **collapsible**: Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto tiene el valor *true*.
 
-- **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
+- **collapsed**: Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
 
-- **staticDivision**. Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón *(valor 0)*, por el punto medio del lienzo de cartografía *(valor 1)* o por el punto medio del lienzo de cartografía con líneas arrastrables *(valor 2)*.
+- **staticDivision**: Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón *(valor 0)*, por el punto medio del lienzo de cartografía *(valor 1)* o por el punto medio del lienzo de cartografía con líneas arrastrables *(valor 2)*.
 
 - **opacityVal**. Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
 
-- **comparisonMode**. Define el tipo de comparación con la que arranca. Rango 0,3.
+- **comparisonMode**: Define el tipo de comparación con la que arranca. Rango 0,3.
   - 0: arranca con el modo de comparación apagado.
   - 1: arranca con el modo de comparación cortina vertical.
   - 2: arranca con el modo de comparación de cortina horizontal.
@@ -49,15 +49,15 @@ A esta/s capa/s se le aplicará el efecto de transparencia.
   ** Para ver el efecto de cada uno podemos acceder al test https://componentes.cnig.es/api-core/lyrcompare.jsp?language=es y cambiar las opciones.
 
 
-- **defaultLyrA**. Define la capa uno que se carga por defecto. Valores de 1 al número de capas disponibles.
+- **defaultLyrA**: Define la capa uno que se carga por defecto. Valores de 1 al número de capas disponibles.
 
-- **defaultLyrB**. Define la capa uno que se carga por defecto. Valores de 2 al número de capas disponibles.
+- **defaultLyrB**: Define la capa uno que se carga por defecto. Valores de 2 al número de capas disponibles.
 
-- **defaultLyrC**. Define la capa uno que se carga por defecto. Valores de 3 al número de capas disponibles.
+- **defaultLyrC**: Define la capa uno que se carga por defecto. Valores de 3 al número de capas disponibles.
 
-- **defaultLyrD**. Define la capa uno que se carga por defecto. Valores de 4 al número de capas disponibles.
+- **defaultLyrD**: Define la capa uno que se carga por defecto. Valores de 4 al número de capas disponibles.
 
-- **interface**. Define si mostrar o no la interfaz del plugin.
+- **interface**: Define si mostrar o no la interfaz del plugin.
 
 
 # Multi idioma
