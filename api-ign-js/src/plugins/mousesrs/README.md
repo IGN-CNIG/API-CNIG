@@ -11,8 +11,8 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 
 ```html
- <link href="../../plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/mousesrs/mousesrs.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/mousesrs/mousesrs.ol.min.js"></script>
 ```
 
 
