@@ -7,13 +7,15 @@ Plugin que permite comparar varias capas dividiendo la pantalla en varias partes
 
 # Dependencias
 
-- mirrorpanel.ol.min.js
-- mirrorpanel.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **mirrorpanel.ol.min.js**
+- **mirrorpanel.ol.min.css**
 
 
 ```html
- <link href="../../plugins/mirrorpanel/mirrorpanel.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/mirrorpanel/mirrorpanel.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/mirrorpanel/mirrorpanel.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/mirrorpanel/mirrorpanel.ol.min.js"></script>
 ```
 
 # Parámetros
