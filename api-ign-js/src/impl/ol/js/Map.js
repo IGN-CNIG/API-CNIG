@@ -169,6 +169,13 @@ class Map extends MObject {
      */
     this._resolutionsBaseLayer = false;
 
+    /**
+     * Almacena el zoom del mapa.
+     * @api
+     * @type {Number}
+     */
+    this.currentZoom = null;
+
     // gets the renderer
     // let renderer = ol.renderer.Type.CANVAS;
     // if (!isNullOrEmpty(this.options_.renderer)) {
@@ -2460,12 +2467,14 @@ class Map extends MObject {
    * Este método se ejecuta cuando el usuario realiza zoom.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @param {M.evt} evt Evento.
    * @public
    * @api
    */
-  zoomEvent_(evt) {
-    this.facadeMap_.fire(EventType.CHANGE_ZOOM, this.facadeMap_);
+  zoomEvent_() {
+    if (this.currentZoom !== this.getZoom()) {
+      this.facadeMap_.fire(EventType.CHANGE_ZOOM, this.facadeMap_);
+      this.currentZoom = this.getZoom();
+    }
   }
 
   /**
