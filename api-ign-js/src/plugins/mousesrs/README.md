@@ -20,7 +20,7 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 El constructor se inicializa con un JSON con los siguientes atributos:
 
-- **tootltip**: Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
+- **tootltip**: Descripción emergente que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
 - **srs**: Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón.
 - **label**: Nombre del SRS sobre el que se mostrarán las coordenadas del ratón.
 - **precision**: Precisión de las coordenadas.
