@@ -43,7 +43,6 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **precharged**: Aquí debemos definir la estructura de los servicios predefinidos que queremos que tenga el plugin (árbol de contenido, servicios sin nodo padre, etc.). También podremos definir un parámetro para cada servicio con el que restringiremos qué capas de cada servicio queremos que sea posible cargar (white_list).
 El listado de capas aparece al pulsar sobre el botón añadir (Listado de algunas capas disponibles).
 
-# Ejemplos de uso
 
 # Ejemplos de uso
 ```javascript
