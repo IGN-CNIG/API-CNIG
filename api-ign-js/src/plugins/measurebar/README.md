@@ -6,17 +6,19 @@ Manteniendo pulsado SHIFT, la línea/área de edición se dibuja a mano alzada.
 
 # Dependencias
 
-- measurebar.ol.min.js
-- measurebar.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **measurebar.ol.min.js**
+- **measurebar.ol.min.css**
 
 ```html
- <link href="../../plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/measurebar/measurebar.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/measurebar/measurebar.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda (por defecto).
