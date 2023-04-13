@@ -6,18 +6,20 @@ Plugin que genera un buffer o un área de influencia sobre un punto, linea o pol
 
 ## Dependencias
 
-- buffer.ol.min.js
-- buffer.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **buffer.ol.min.js**
+- **buffer.ol.min.css**
 
 
 ```html
- <link href="../../plugins/buffer/buffer.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/buffer/buffer.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/buffer/buffer.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/buffer/buffer.ol.min.js"></script>
 ```
 
 ## Parámetros
 
-El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
