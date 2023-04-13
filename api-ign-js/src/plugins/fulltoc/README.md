@@ -10,6 +10,8 @@ A la hora de mostrar la leyenda de un servicio que se haya cargado se intentará
 
 # Dependencias
 
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
 - **fulltoc.ol.min.js**
 - **fulltoc.ol.min.css**
 
@@ -20,7 +22,7 @@ A la hora de mostrar la leyenda de un servicio que se haya cargado se intentará
 
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
