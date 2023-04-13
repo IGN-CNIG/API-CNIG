@@ -40,13 +40,15 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
 
 ## Dependencias 👷
 
-- comparepanel.ol.min.js
-- comparepanel.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **comparepanel.ol.min.js**
+- **comparepanel.ol.min.css**
 
 
 ```html
- <link href="../../plugins/comparepanel/comparepanel.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/comparepanel/comparepanel.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/comparepanel/comparepanel.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/comparepanel/comparepanel.ol.min.js"></script>
 ```
 
 
