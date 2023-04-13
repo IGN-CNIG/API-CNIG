@@ -135,7 +135,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 ```
 
 - **mirrorpanelParams**: Parámetros opcionales del plugin mirrorpanel. A destacar:
-  - showCursors (true/false): Si es true, muestra cursores sincronizados en cada unao de los mapas espejo. Defecto: *true*.
+  - showCursors (true/false): Si es true, muestra cursores sincronizados en cada uno de los mapas espejo. Defecto: *true*.
   - reverseLayout (true/false): indica en qué posición de la pantalla se mantiene el mapa principal (el que contiene el botón con las herramientas de comparación) con respecto a los demás. *False*: se sitúa a la izquierda. *True*: se sitúa a la derecha. Defecto: *false*.
   - enabledPlugins: permite que algunos de los plugins configurados en el mapa principal se repliquen en los mapas espejo: disponible actualmente para el control FullTOC y el control Vectors.
 
