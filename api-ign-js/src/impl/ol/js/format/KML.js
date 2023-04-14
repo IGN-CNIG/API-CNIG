@@ -219,6 +219,7 @@ class KML extends OLFormatKML {
   * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L223
   * @const
   * @type {string}
+  * @api
   */
 KML.DEFAULT_NO_IMAGE_STYLE = 'NO_IMAGE';
 
@@ -228,7 +229,7 @@ KML.DEFAULT_NO_IMAGE_STYLE = 'NO_IMAGE';
   * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L191
   * @const
   * @type {string}
-  *
+  * @api
   */
 KML.DEFAULT_IMAGE_STYLE_SRC = 'https://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png';
 
@@ -238,6 +239,7 @@ KML.DEFAULT_IMAGE_STYLE_SRC = 'https://maps.google.com/mapfiles/kml/pushpin/ylw-
   * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L161
   * @const
   * @type {ol.Size}
+  * @api
   */
 KML.DEFAULT_IMAGE_STYLE_ANCHOR = [20, 2]; // FIXME maybe [8, 32] ?
 
@@ -248,6 +250,7 @@ KML.DEFAULT_IMAGE_STYLE_ANCHOR = [20, 2]; // FIXME maybe [8, 32] ?
   * @see https://github.com/openlayers/openlayers/blob/c27aac20b7642f7878abe1e23ace07a851511829/src/ol/style/IconAnchorUnits.js#L11
   * @const
   * @type {ol.style.IconAnchorUnits}
+  * @api
   */
 KML.DEFAULT_IMAGE_STYLE_ANCHOR_X_UNITS = 'pixels';
 
@@ -258,6 +261,7 @@ KML.DEFAULT_IMAGE_STYLE_ANCHOR_X_UNITS = 'pixels';
   * @see https://github.com/openlayers/openlayers/blob/c27aac20b7642f7878abe1e23ace07a851511829/src/ol/style/IconAnchorUnits.js#L11
   * @const
   * @type {ol.style.IconAnchorUnits}
+  * @api
   */
 KML.DEFAULT_IMAGE_STYLE_ANCHOR_Y_UNITS = 'pixels';
 

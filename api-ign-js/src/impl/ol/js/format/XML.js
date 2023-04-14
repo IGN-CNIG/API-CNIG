@@ -135,10 +135,10 @@ class XML {
 
   /**
     * Obtiene el prefijo del espacio de nombres para un
-    * uri determinado del objeto "<namespaces>".
+    * uri determinado del objeto "namespaces".
     *
     * @function
-    * @param {String} uri URI del objeto "<namespaces>".
+    * @param {String} uri URI del objeto "namespaces".
     * @return {String} Un prefijo de espacio de nombres o nulo si
     * no se encuentra ninguno.
     * @public
@@ -161,14 +161,14 @@ class XML {
   }
 
   /**
-    * Obtiene el valor del nodo de tipo CDATASection
-    * junto al prefijo especificado. Si no encuentra un
-    * CDATASection devuelve el prefijo especificado.
+    * Obtiene el valor del nodo de tipo  sección CDATA
+    * junto al prefijo especificado. Si no encuentra una
+    *  sección CDATA devuelve el prefijo especificado.
     *
     * @function
-    * @param {Element} node Nodo de tipo CDATASection.
+    * @param {Element} node Nodo de tipo sección CDATA.
     * @param {String} def Prefijo.
-    * @return {String} Valor del nodo de tipo CDATASection.
+    * @return {String} Valor del nodo de tipo sección CDATA.
     * @public
     * @api
     */

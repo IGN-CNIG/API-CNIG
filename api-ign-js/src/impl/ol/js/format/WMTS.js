@@ -44,7 +44,7 @@ class WMTSCapabilities {
     *
     * @function
     * @param {Document|Element|string} capabilities XML.
-    * @returns {Object} Objeto "this".
+    * @returns {Object} Objeto "ol.source.WMTS.optionsFromCapabilities".
     * @public
     * @api
     */

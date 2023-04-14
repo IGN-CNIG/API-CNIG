@@ -26,7 +26,7 @@ class GeoJSON extends OLFormatGeoJSON {
     * - geometryName: Nombre de la geometría que se utilizará al crear objetos geográficos.
     * - extractGeometryName: Si se establece en verdadero, el lector de GeoJSON buscará ese campo
     * para establecer el nombre de la geometría. Si este campo se establece
-    * en verdadero y se proporciona.
+    * en verdadero y se proporciona
     * un nombre de geometría, el nombre de geometría tendrá prioridad. Por defecto falso.
     *
     * @api

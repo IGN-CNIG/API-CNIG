@@ -34,7 +34,7 @@ const getOptsProjection = (options) => {
   */
 class WKT extends MObject {
   /**
-    * Constructor principal de la clase. Formato de los 'features' para
+    * Constructor principal de la clase. Formato de los objetos geográficos para
     * leer y escribir datos en formato WKT.
     *
     * @constructor
@@ -133,7 +133,7 @@ class WKT extends MObject {
     * - dataProjection: Proyección de los datos a escribir.
     * - featureProjection: Proyección de las geometrías del objeto geográfico
     * que serán serializadas por el escritor de formato.
-    * - rightHanded: Indica si se sigue la regla 'rigth-hand'.
+    * - rightHanded: Indica si se sigue la regla de la mano derecha.
     * - decimals: Número máximo de decimales para las coordenadas.
     * @returns {string} Objeto geográfico en formato WKT.
     * @public
@@ -148,7 +148,7 @@ class WKT extends MObject {
 
   /**
     * Método auxiliar para las transformaciones y operaciones
-    * geométricas que no se incorporaron en un principio en apiign.
+    * geométricas que no se incorporaron en un principio en API-CNIG.
     *
     * @function
     * @param {Object} geometry Geometría que se desea transformar.
@@ -178,7 +178,7 @@ class WKT extends MObject {
     * que serán serializadas por el escritor de formato.
     * - rightHanded: Indica si se sigue la regla 'rigth-hand'.
     * - decimals: Número máximo de decimales para las coordenadas.
-    * @returns {string} 'Features' en formato WKT
+    * @returns {string} Objetos geográficos en formato WKT
     * @public
     * @api
     */
