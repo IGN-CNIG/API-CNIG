@@ -5,8 +5,10 @@ Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como 
 
 # Dependencias
 
-- vectors.ol.min.js
-- vectors.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **vectors.ol.min.js**
+- **vectors.ol.min.css**
 
 
 ```html
@@ -16,7 +18,7 @@ Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como 
 
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
