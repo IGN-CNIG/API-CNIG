@@ -6,18 +6,20 @@ Plugin que permite realizar un perfil longitudinal en función del eje que dibuj
 
 # Dependencias
 
-- topographicprofile.ol.min.js
-- topographicprofile.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **topographicprofile.ol.min.js**
+- **topographicprofile.ol.min.css**
 
 
 ```html
- <link href="../../plugins/topographicprofile/topographicprofile.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/topographicprofile/topographicprofile.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/topographicprofile/topographicprofile.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/topographicprofile/topographicprofile.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**. Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
