@@ -220,7 +220,7 @@ class OLStyleFlowLine extends OLStyleStyle {
   /**
    * Devuelve el tipo de flecha.
    * @function
-   * @return {number} -1 | 0 | 1 | 2
+   * @return {number} Devuelve -1 | 0 | 1 | 2 según el tipo de flecha.
    * @api
    */
   getArrow() {
@@ -229,7 +229,7 @@ class OLStyleFlowLine extends OLStyleStyle {
   /**
    * Modifica el tipo de flecha.
    * @function
-   * @param {number} n -1 | 0 | 1 | 2, por defecto: 0
+   * @param {number} n Devuelve -1 | 0 | 1 | 2 según el tipo de flecha.
    * @api
    */
   setArrow(n) {
@@ -380,7 +380,7 @@ class OLStyleFlowLine extends OLStyleStyle {
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @param {ol.geom.LineString} geom La geometría.
    * @param {number} asize El tamaño de la flecha.
-   * @param {boolean} end start=falso or end=verdadero, por defecto falso (start).
+   * @param {boolean} end "start"=falso o "end"=verdadero, por defecto falso (start).
    * @return {Array<ol.coordinate>} El punto de la geometría.
    * @api
    */

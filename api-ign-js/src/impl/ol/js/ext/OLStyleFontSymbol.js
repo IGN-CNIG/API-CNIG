@@ -472,9 +472,11 @@ class OLStyleFontSymbol extends OLStyleRegularShape {
 
 /**
  * Fuentes por defecto.
+ * Para "fonts" admite (name y copyright) y "glyphs" (name, theme, search y char).
  * @public
  * @type {Object}
  * @const
+ * @api
  */
 OLStyleFontSymbol.defs = {
   fonts: {},

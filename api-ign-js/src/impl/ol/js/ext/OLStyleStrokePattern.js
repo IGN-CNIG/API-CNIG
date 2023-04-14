@@ -30,7 +30,7 @@ class OLStyleStrokePattern extends OLStyleStroke {
    * - offset: desplazamiento del patrón para el patrón hash/dot/circle/cross.
    * - size: tamaño de línea para el patrón hash/dot/circle/cross.
    * - spacing: espaciado para el patrón hash/dot/circle/cross.
-   * - angle: ángulo para el patrón hash / true para 45deg dot/circle/cross.
+   * - angle: ángulo para el patrón hash, verdadero para 45deg (dot, circle y cross).
    * - scale: escala del patrón.
    * @api
    */
@@ -171,7 +171,7 @@ class OLStyleStrokePattern extends OLStyleStroke {
   }
   /**
    * Este método es llamado por el constructor de la clase padre,
-   * clona el estilo y asigna el canvas.
+   * clona el estilo y asigna el "canvas".
    * @function
    * @return {ol.style.StrokePattern} Clon del estilo.
    * @api

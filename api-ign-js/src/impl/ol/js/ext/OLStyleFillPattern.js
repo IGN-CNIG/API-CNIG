@@ -32,7 +32,7 @@ class OLStyleFillPattern extends OLStyleFill {
    * - offset. Desplazamiento del patrón para hash/dot/circle/cross patrón.
    * - size. Tamaño de línea para hash/dot/circle/cross patrón.
    * - spacing. Espaciado para hash/dot/circle/cross patrón.
-   * - angle. Ángulo para patrón hash / true para 45deg dot/circle/cross.
+   * - angle. Ángulo para patrón hash, verdadero para 45deg ("dot", "circle", y "cross").
    * - scale. Escala del patrón.
    * @api
    */
@@ -335,6 +335,7 @@ class OLStyleFillPattern extends OLStyleFill {
  * Patrones definidos.
  * @type {Object}
  * Examples : http://seig.ensg.ign.fr/fichchap.php?NOFICHE=FP31&NOCHEM=CHEMS009&NOLISTE=1&N=8
+ * @api
  */
 OLStyleFillPattern.patterns = {
   hatch: {

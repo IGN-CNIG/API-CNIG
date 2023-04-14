@@ -1,5 +1,7 @@
 /**
- *  @module M/impl/ol/js/ext/GeomUtils
+ * Este fichero contiene las funciones de utilidad para la gestión de geometrías
+ * @module M/impl/ol/js/ext/GeomUtils
+ * @example import 'M/impl/ol/js/ext/GeomUtils';
  */
 
 /**
@@ -85,7 +87,6 @@ const olCoordinateGetFeatureCenter = (f) => {
  * @param {number} offset Desplazamiento.
  * @return {Array<ol.Coordinate>} Coordenadas desplazadas.
  * @see http://stackoverflow.com/a/11970006/796832
- * @see https://drive.google.com/viewerng/viewer?a=v&pid=sites&srcid=ZGVmYXVsdGRvbWFpbnxqa2dhZGdldHN0b3JlfGd4OjQ4MzI5M2Y0MjNmNzI2MjY
  * @api stable
  */
 const olCoordinateOffsetCoords = (coords, offset) => {
