@@ -7,7 +7,7 @@ import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 
 /**
- * Expresión regular para el parámetro de capa vectorial mbtiles.
+ * Expresión regular para el parámetro de capa OSM.
  * @const
  * @type {RegExp}
  * @public

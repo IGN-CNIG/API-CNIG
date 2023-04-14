@@ -1,5 +1,6 @@
 /**
  * @module M/parameter
+ * @example import parameter from 'M/parameter';
  */
 import { isNullOrEmpty, isString, isNull, isFunction, normalize, isArray, isObject, isUrl, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
@@ -1357,7 +1358,7 @@ export const geojson = (userParameters) => {
 };
 
 /**
- * Esta función obtiene la url de la capa MVT del parámetro de cadena.
+ * Esta función obtiene la URL de la capa MVT del parámetro de cadena.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
  * @public
@@ -1383,7 +1384,7 @@ export const getURLMVT = (parameter) => {
 };
 
 /**
- * Esta función obtiene la url de la capa mvt del parámetro de cadena.
+ * Esta función obtiene la URL de la capa MVT del parámetro de cadena.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
  * @public

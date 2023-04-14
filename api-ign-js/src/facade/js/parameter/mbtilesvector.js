@@ -7,7 +7,7 @@ import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
 /**
- * Expresión regular para el parámetro de capa vectorial mbtiles.
+ * Expresión regular para el parámetro de capa vectorial MBTiles.
  * @const
  * @type {RegExp}
  * @public
