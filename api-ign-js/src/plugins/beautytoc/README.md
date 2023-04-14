@@ -23,7 +23,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha. 
 - **collapsed**: Indica si el plugin aparece por defecto colapsado o no. Por defecto: false.
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin (Por defecto = Capas Adicionales).
+- **tooltip**: Descripción emergente que se muestra sobre el plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto, _Capas Adicionales_.
 
 # Ejemplos de uso
 
