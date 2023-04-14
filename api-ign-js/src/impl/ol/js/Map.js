@@ -62,10 +62,10 @@ import View from './View';
 class Map extends MObject {
   /**
    * Constructor principal de la clase. Crea un mapa con un
-   * contenedor div específico.
+   * contenedor "div" específico.
    *
    * @constructor
-   * @param {Object} div Elemento div proporcionado por el usuario.
+   * @param {Object} div Elemento "div" proporcionado por el usuario.
    * @param {Mx.parameters.MapOptions} options Opciones del mapa.
    * - zoom: Nivel de zoom inicial del mapa.
    * - bbox: Encuadre de visualización del mapa.

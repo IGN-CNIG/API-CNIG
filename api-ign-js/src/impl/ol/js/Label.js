@@ -109,7 +109,7 @@ class Label {
    * Este método devuelve el "popup" creado.
    *
    * @function
-   * @returns {M.Popup} Popup creado.
+   * @returns {M.Popup} "Popup" creado.
    * @public
    * @api
    */
@@ -118,7 +118,7 @@ class Label {
   }
 
   /**
-   * Este método devuelve las coordenadas del popup creado.
+   * Este método devuelve las coordenadas del "popup" creado.
    *
    * @function
    * @returns {Array} Coordenadas del "popup".
