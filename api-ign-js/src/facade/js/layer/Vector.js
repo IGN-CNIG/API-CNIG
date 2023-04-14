@@ -303,7 +303,7 @@ class Vector extends LayerBase {
    * @param {M.Style} style Estilo que se aplicará a la capa.
    * @param {Boolean} applyToFeature Si el valor es verdadero se aplicará a los
    * objetos geográficos, falso no.
-   * Por defecto, false.
+   * Por defecto, falso.
    * @param {M.layer.Vector.DEFAULT_OPTIONS_STYLE} defaultStyle Estilo por defecto,
    * se define en Vector.js.
    * @api

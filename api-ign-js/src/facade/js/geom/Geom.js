@@ -1,5 +1,7 @@
 /**
+ * El objeto Geom contiene funciones para la gestión de geometrías.
  * @module M/geom
+ * @example import * as Geom from 'M/geom/Geom';
  */
 import { normalize } from '../util/Utils';
 import * as WKT from './WKT';

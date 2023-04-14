@@ -4,12 +4,13 @@
 
 /**
  * @classdesc
- * Esta clase gestiona el objeto window.
+ * Esta clase gestiona el objeto "window".
  * @api
  */
 class MWindow {
   /**
-   * Método de la clase, lanza el evento "resize" en window.
+   * Método de la clase, lanza el evento "resize" en "window"
+   * para cambiar o adaptar el tamaño de la pantalla.
    * @function
    * @api
    */

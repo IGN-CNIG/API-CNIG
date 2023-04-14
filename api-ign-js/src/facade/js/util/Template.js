@@ -1,5 +1,7 @@
 /**
+ * Esta clase contiene funciones para la gestión de plantillas.
  * @module M/template
+ * @example import template from 'M/template';
  */
 import Handlebars from 'handlebars';
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
@@ -64,12 +66,12 @@ const getTemplateUrl = (templatePath) => {
 };
 
 /**
- * Esta función obtiene una función de plantilla de "Handlebars"
+ * Esta función obtiene una función de plantilla de ayudantes personalidos o "Handlebars"
  * por su nombre.
  *
  * @function
  * @param {string} templatePath Nombre de la plantilla.
- * @returns {Promise} La promesa con la función del "handlebars".
+ * @returns {Promise} La promesa con la función del ayudantes personalidos o "Handlebars".
  * @api
  */
 export const get = (templatePath, options) => {

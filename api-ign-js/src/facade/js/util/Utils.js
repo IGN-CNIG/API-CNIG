@@ -1,5 +1,7 @@
 /**
+ * Esta clase contiene funciones de utilidad.
  * @module M/utils
+ * @example import utils from 'M/utils';
  */
 import { get as remoteGet } from 'M/util/Remote';
 import chroma from 'chroma-js';
@@ -9,10 +11,10 @@ import * as WKT from '../geom/WKT';
 
 /**
  * Devuelve verdadero si es valor que se le pasa por
- * parámetros es "undefined".
+ * parámetros es indefinido.
  * @function
  * @param {*} obj Valor que se quiere comprobar.
- * @returns {Boolean} Verdadero si es "undefined".
+ * @returns {Boolean} Verdadero si es indefinido.
  * @api
  */
 export const isUndefined = (obj) => {
@@ -37,10 +39,10 @@ export const isBoolean = (obj) => {
 
 /**
  * Devuelve verdadero si es valor que se le pasa por
- * parámetros es "null".
+ * parámetros es nulo.
  * @function
  * @param {*} obj Valor que se quiere comprobar.
- * @returns {Boolean} Verdadero si es "null".
+ * @returns {Boolean} Verdadero si es nulo.
  * @api
  */
 export const isNull = (obj) => {
@@ -77,10 +79,10 @@ export const isArray = (obj) => {
 
 /**
  * Devuelve verdadero si es valor que se le pasa por
- * parámetros es "null" o esta vacío.
+ * parámetros es nulo o esta vacío.
  * @function
  * @param {*} obj Valor que se quiere comprobar.
- * @returns {Boolean} Verdadero si es "null" o vacío.
+ * @returns {Boolean} Verdadero si es nulo o vacío.
  * @api
  */
 export const isNullOrEmpty = (obj) => {
@@ -151,10 +153,10 @@ export const isString = (obj) => {
 
 /**
  * Devuelve verdadero si es valor que se le pasa por
- * parámetros es una url.
+ * parámetros es una URL.
  * @function
  * @param {*} obj Valor que se quiere comprobar.
- * @returns {Boolean} Verdadero si es una url.
+ * @returns {Boolean} Verdadero si es una URL.
  * @api
  */
 export const isUrl = (obj) => {
@@ -280,7 +282,7 @@ export const generateRandom = (prefix, sufix) => {
 };
 
 /**
- * Devuelve los metadatos de una url, capa WMS.
+ * Devuelve los metadatos de una URL, capa WMS.
  * @function
  * @param {String} serverUrl URL.
  * @param {String} version Versión.
@@ -305,7 +307,7 @@ export const getWMSGetCapabilitiesUrl = (serverUrl, version) => {
 };
 
 /**
- * Devuelve los metadatos de una url, capa WMTS.
+ * Devuelve los metadatos de una URL, capa WMTS.
  * @function
  * @param {String} serverUrl URL.
  * @param {String} version Versión.
@@ -391,7 +393,7 @@ export const getResolutionFromScale = (scale, unitsParam) => {
 };
 
 /**
- * Esta función genera la resulución máxima y mínima para una escala.
+ *  Esta función genera la resolución máxima y mínima para una escala.
  *
  * @function
  * @param {Number} maxScale Escala máxima.
@@ -612,7 +614,7 @@ export const concatUrlPaths = (paths) => {
 };
 
 /**
- * Comprueba que en un matriz contnega un determinado elemento.
+ * Comprueba que en un matriz contenga un determinado elemento.
  * @function
  * @param {Array} array Matriz.
  * @param {*} searchElement Elemento que se quiere buscar.
@@ -721,7 +723,7 @@ export const escapeJSCode = (jsCode) => {
 };
 
 /**
- * Esta función permite el "scroll" con el "touch".
+ * Esta función permite el desplazamiento con el modo táctil.
  *
  * @function
  * @param {HTMLElement} elem Elemento HTML.
@@ -743,7 +745,7 @@ export const enableTouchScroll = (elem) => {
 };
 
 /**
- * Esta función transforma el color rgb a hexadecimal.
+ * Esta función transforma el color RGB a hexadecimal.
  *
  * @function
  * @param {String} rgbColor Color RGB.
@@ -762,7 +764,7 @@ export const rgbToHex = (rgbColor) => {
 };
 
 /**
- * Esta función transforma el color rgba a hexadecimal.
+ * Esta función transforma el color RGBA a hexadecimal.
  *
  * @function
  * @param {String} rgbaColor Color RGBA.
@@ -883,8 +885,8 @@ export const decodeHtml = (encodedHtml) => {
 };
 
 /**
- * Esta función devuelve el contenido de un texto
- * extraido del HTML.
+ * Esta función devuelve el
+ * contenido de un texto extraído del HTML.
  *
  * @function
  * @param {HTMLElement | String} html Cadena o elemento con etiquetas HTML.
@@ -970,7 +972,7 @@ export const extendsObj = (destParam = {}, src = {}) => {
 };
 
 /**
- * Esta función devuelve una matriz con rupturas entre el principio y lel final de una matriz.
+ * Esta función devuelve una matriz con rupturas entre el principio y el final de una matriz.
  * @function
  * @public
  * @param {array} array Matriz.
@@ -996,7 +998,7 @@ export const generateIntervals = (array, breaks) => {
  * @public
  * @param {M.Style} style Estilo.
  * @param {M.Style} style2 Estilo.
- * @return {number} Orden de estilos, 0 es que tienen el mismo.
+ * @return {number} Orden de estilos, 0 si tienen el mismo.
  * @api
  */
 export const styleComparator = (style, style2) => {
@@ -1110,7 +1112,7 @@ let dynamicLegend = dynamicImage;
  * Esta función establece la leyenda dinámica constante.
  * @function
  * @public
- * @param {String} legend url.
+ * @param {String} legend URL.
  * @api
  */
 export const setDynamicLegend = (legend) => {
@@ -1264,7 +1266,7 @@ export const generateColorScale = (colors, numberClasses) => {
 };
 
 /**
- * Esta función modifica el archivo svg de colores.
+ * Esta función modifica el archivo SVG de colores.
  * @function
  * @public
  * @param {String} url URL.

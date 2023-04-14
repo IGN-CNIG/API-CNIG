@@ -1,5 +1,7 @@
 /**
+ * Este fichero contiene métodos para ayudar a "Handlebars".
  * @module M/handlebarshelpers
+ * @example import handlebarshelpers from 'M/handlebarshelpers';
  */
 
 import { getTextFromHtml } from '../util/Utils';

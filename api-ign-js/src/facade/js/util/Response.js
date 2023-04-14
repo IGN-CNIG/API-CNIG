@@ -54,7 +54,7 @@ class Response {
 
   /**
    * Esta función analiza una respuesta XmlHttp
-   * de una solicitud ajax.
+   * de una solicitud AJAX.
    *
    * @function
    * @param {Object} xmlHttpResponse Respuesta.
@@ -81,7 +81,7 @@ class Response {
 
   /**
    * Esta función analiza una respuesta XmlHttp
-   * de una solicitud ajax del proxy.
+   * de una solicitud AJAX del proxy.
    *
    * @function
    * @param {Object} proxyResponse Respuesta del proxy.

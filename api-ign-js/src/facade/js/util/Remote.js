@@ -1,5 +1,22 @@
 /**
+ * Este fichero contiene la clase Remote, utiliza AJAX (Asynchronous JavaScript and XML)
+ * y JSONP (JSON with Padding)
+ * son dos técnicas utilizadas para obtener y enviar datos desde y hacia
+ * un servidor sin necesidad de recargar la página web completa.
+ *
+ * - AJAX permite realizar solicitudes asincrónicas al servidor desde el navegador web,
+ * lo que significa que se pueden enviar y recibir datos sin tener que recargar la página completa.
+ * Esto permite actualizar partes específicas de una página web sin afectar el resto de la página.
+ *
+ * - JSONP es una técnica que se utiliza para obtener datos de un servidor que se encuentra
+ * en otro dominio diferente
+ * al de la página web. JSONP utiliza una etiqueta de script para cargar datos desde
+ * un servidor externo y
+ * envolver los datos en una función de devolución de llamada. Esta técnica permite superar
+ * la política de seguridad del
+ * mismo origen del navegador, que restringe el acceso a recursos de otro dominio.
  * @module M/remote
+ * @api
  */
 
 import { addParameters, generateRandom, isNullOrEmpty, isObject } from './Utils';
@@ -71,7 +88,7 @@ const manageProxy = (url, methodType) => {
 };
 
 /**
- * Petición basada en "jsonp".
+ * Petición basada en JSONP.
  *
  * @function
  * @param {String} urlVar URL.
@@ -126,7 +143,7 @@ const jsonp = (urlVar, data, options) => {
 };
 
 /**
- * Petición ajax.
+ * Petición AJAX.
  *
  * @function
  * @param {String} urlVar URL.
@@ -170,7 +187,7 @@ const ajax = (urlVar, dataVar, methodType, useProxy) => {
 /**
  * Esta función obtiene un recurso lanza un
  * Método HTTP GET y comprueba si la solicitud
- * está basado en ajax o jsonp.
+ * está basado en AJAX o JSONP.
  *
  * @function
  * @param {string} url URL.
@@ -196,7 +213,7 @@ export const get = (url, data, options) => {
 
 /**
  * Esta función obtiene un recurso lanznado una petición
- * HTTP POST usando ajax.
+ * HTTP POST usando AJAX.
  *
  * @function
  * @param {string} url URL.

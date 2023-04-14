@@ -1,5 +1,6 @@
 /**
  * @module M/parameter/mbtilesvector
+ * @example import mbtilesVectorParameter from 'M/parameter/mbtilesvector';
  */
 import { isNullOrEmpty, isString, normalize, isArray, isObject } from '../util/Utils';
 import Exception from '../exception/exception';

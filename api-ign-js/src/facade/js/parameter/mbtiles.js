@@ -1,5 +1,6 @@
 /**
  * @module M/parameter/mbtiles
+ * @example import mbtilesParameter from 'M/parameter/mbtiles';
  */
 import { isNullOrEmpty, isString, normalize, isArray, isObject } from '../util/Utils';
 import Exception from '../exception/exception';

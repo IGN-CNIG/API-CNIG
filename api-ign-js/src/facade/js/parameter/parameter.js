@@ -576,7 +576,7 @@ export const getExtractKML = (parameter) => {
  * @public
  * @function
  * @param {string} parameter Parámetro de entrada.
- * @returns {String} Devuelve el "label" de la capa.
+ * @returns {String} Devuelve la etiqueta de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
@@ -1357,7 +1357,7 @@ export const geojson = (userParameters) => {
 };
 
 /**
- * Esta función obtiene la url de la capa mvt del parámetro de cadena.
+ * Esta función obtiene la url de la capa MVT del parámetro de cadena.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
  * @public
@@ -1850,7 +1850,7 @@ export const getVersionWMS = (parameter) => {
  * @public
  * @function
  * @param {string|object} parameter Parámetro de entrada.
- * @returns {object} Opciones.
+ * @returns {object} Opciones de la capa WMS.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
  */

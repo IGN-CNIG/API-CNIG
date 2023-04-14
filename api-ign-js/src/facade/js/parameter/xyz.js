@@ -69,7 +69,7 @@ const getParameter = ({
 };
 
 /**
-  * Convierte los parámetros especificada por el usuario de la
+  * Convierte los parámetros especificados por el usuario de la
   * capa xyz a un objeto.
   *
   * @function

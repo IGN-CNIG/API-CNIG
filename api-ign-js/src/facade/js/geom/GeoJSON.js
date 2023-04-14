@@ -1,5 +1,7 @@
 /**
+ * Enumeración de tipos de geometrías GeoJSON.
  * @module M/geom/geojson/type
+ * @example import * as GeoJSONType from 'M/geom/geojson/type';
  */
 
 /**

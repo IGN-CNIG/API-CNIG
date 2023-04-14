@@ -1,5 +1,7 @@
 /**
+ * Enumeración de tipos de geometrías WKT.
  * @module M/geom/wkt/type
+ * @example import * as WKTType from 'M/geom/wkt/type';
  */
 
 /**
