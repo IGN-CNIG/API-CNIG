@@ -6,7 +6,7 @@ import OLView from 'ol/View';
 
 /**
  * @classdesc
- * Implementación de la clase View. Representa una vista simple en 2D
+ * Implementación de la clase "View". Representa una vista simple en 2D
  * del mapa.
  * @property {number} userZoom_ Nivel de zoom especificado por el usuario.
  *
@@ -15,7 +15,7 @@ import OLView from 'ol/View';
  */
 class View extends OLView {
   /**
-   * Constructor principal de la clase View.
+   * Constructor principal de la clase "View".
    *
    * @constructor
    * @param {olx.ViewOptions} options Opciones de la vista.
@@ -56,7 +56,7 @@ class View extends OLView {
   constructor(options) {
     super(options);
     /**
-     * View userZoom: Nivel del zoom especificado por el usuario.
+     * "View" userZoom: Nivel del zoom especificado por el usuario.
      */
     this.userZoom_ = null;
   }

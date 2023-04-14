@@ -8,7 +8,10 @@ import { register } from 'ol/proj/proj4';
 import { addEquivalentProjections } from 'ol/proj';
 
 /**
- * EPSG:4258
+ * EPSG:4258 ETRS89 es una proyección geodésica basada en el elipsoide
+ * de referencia internacionalmente reconocido llamado European Terrestrial
+ * Reference System 1989 (ETRS89). Esta proyección se utiliza
+ * comúnmente en Europa y otras partes del mundo.
  * @type {Object}
  * @public
  * @api
@@ -22,7 +25,10 @@ const proj4258 = {
 };
 
 /**
- * EPSG:25828
+ * EPSG:25828 ETRS89 UTM Huso 28 es una proyección cartográfica en la que se divide la
+ * Tierra en 60 husos de 6 grados de longitud. El huso 28 se extiende desde los 0 grados de
+ * longitud hasta los 6 grados al este. Esta proyección se basa en el elipsoide ETRS89 y
+ * se utiliza comúnmente en Europa y otras partes del mundo.
  * @type {Object}
  * @public
  * @api
@@ -35,7 +41,9 @@ const proj25828 = {
 };
 
 /**
- * EPSG:25829
+ * EPSG:25829 ETRS89 UTM Huso 29 es una proyección cartográfica en la que se divide
+ * la Tierra en 60 husos de 6 grados de longitud.
+ * El huso 29 se extiende desde los 6 grados al este hasta los 12 grados al este.
  * @type {Object}
  * @public
  * @api
@@ -48,7 +56,10 @@ const proj25829 = {
 };
 
 /**
- * EPSG:25830
+ * EPSG:25830 ETRS89 UTM Huso 30 es una proyección cartográfica en la que se divide
+ * la Tierra en 60 husos de 6 grados de longitud. El huso 30 se extiende desde los 12 grados
+ * al este hasta los 18 grados al este. Esta proyección se basa en el elipsoide ETRS89
+ * y se utiliza comúnmente en Europa y otras partes del mundo.
  * @type {Object}
  * @public
  * @api
@@ -61,7 +72,10 @@ const proj25830 = {
 };
 
 /**
- * EPSG:25831
+ * EPSG:25831 ETRS89 UTM Huso 31 es una proyección cartográfica en la que se divide
+ * la Tierra en 60 husos de 6 grados de longitud. El huso 31 se extiende desde los 18 grados
+ * al este hasta los 24 grados al este. Esta proyección se basa en el elipsoide ETRS89 y
+ * se utiliza comúnmente en Europa y otras partes del mundo.
  * @type {Object}
  * @public
  * @api
@@ -74,7 +88,10 @@ const proj25831 = {
 };
 
 /**
- * EPSG:4230
+ * EPSG:4230 ED50 es una proyección geodésica basada en el
+ * elipsoide de referencia internacionalmente reconocido
+ * llamado European Datum 1950 (ED50). Esta proyección
+ * se utiliza comúnmente en Europa y otras partes del mundo.
  * @type {Object}
  * @public
  * @api
@@ -88,7 +105,11 @@ const proj4230 = {
 };
 
 /**
- * EPSG:23028
+ * EPSG:23028 ED50 UTM Huso 28 es una proyección cartográfica
+ * en la que se divide la Tierra en 60 husos de 6 grados de longitud.
+ * El huso 28 se extiende desde los 0 grados de longitud hasta los 6 grados al este.
+ * Esta proyección se basa en el elipsoide ED50 y se utiliza comúnmente en
+ * Europa y otras partes del mundo.
  * @type {Object}
  * @public
  * @api
@@ -101,7 +122,11 @@ const proj23028 = {
 };
 
 /**
- * EPSG:23029
+ * EPSG:23029 ED50 UTM Huso 29 es una proyección cartográfica en la
+ * que se divide la Tierra en 60 husos de 6 grados de longitud.
+ * El huso 29 se extiende desde los 6 grados al este hasta los 12 grados al este.
+ * Esta proyección se basa en el elipsoide ED50 y se utiliza comúnmente en Europa
+ * y otras partes del mundo.
  * @type {Object}
  * @public
  * @api
@@ -114,7 +139,11 @@ const proj23029 = {
 };
 
 /**
- * EPSG:23030
+ * EPSG:23030 ED50 UTM Huso 30 es una proyección cartográfica en la que
+ * se divide la Tierra en 60 husos de 6 grados de longitud.
+ * El huso 30 se extiende desde los 12 grados al este hasta los 18 grados al este.
+ * Esta proyección se basa en el elipsoide ED50 y se utiliza comúnmente en Europa
+ * y otras partes del mundo.
  * @type {Object}
  * @public
  * @api
@@ -127,7 +156,11 @@ const proj23030 = {
 };
 
 /**
- * EPSG:23031
+ * EPSG:23031 ED50 UTM Huso 31 es una proyección
+ * cartográfica en la que se divide la Tierra en 60 husos de 6 grados de longitud.
+ * El huso 31 se extiende desde los 18 grados al este hasta los 24 grados al este.
+ * Esta proyección se basa en el elipsoide ED50 y se utiliza comúnmente en Europa
+ * y otras partes del mundo.
  * @type {Object}
  * @public
  * @api
@@ -140,7 +173,10 @@ const proj23031 = {
 };
 
 /**
- * EPSG:4326 WGS84 Geográficas
+ * EPSG:4326 WGS 84 es una proyección geográfica que utiliza un sistema de coordenadas de
+ * latitud y longitud para representar la superficie de la Tierra. Es el sistema de coordenadas
+ * geográficas más utilizado en todo el mundo y se utiliza comúnmente en
+ * aplicaciones de mapeo y navegación.
  * @type {Object}
  * @public
  * @api
@@ -155,7 +191,11 @@ const proj4326 = {
 };
 
 /**
- * EPSG:32627 WGS84 UTM huso 27N
+ * EPSG:32627 WGS84 UTM huso 27N es una proyección cartográfica que divide la Tierra en 60 husos
+ * de 6 grados de longitud. El huso 27 se extiende desde los 9 grados al oeste
+ * hasta los 15 grados al oeste.
+ * Esta proyección se basa en el elipsoide WGS 84 y se utiliza comúnmente en
+ * América del Norte, Europa y África.
  * @type {Object}
  * @public
  * @api
@@ -168,7 +208,10 @@ const proj32627 = {
 };
 
 /**
- * EPSG:32628 WGS84 UTM huso 28N
+ * EPSG:32628 WGS84 UTM huso 28N es una proyección cartográfica que divide la Tierra en 60
+ * husos de 6 grados de longitud. El huso 28 se extiende desde los 15 grados al oeste hasta los 21
+ * grados al oeste. Esta proyección se basa en el elipsoide WGS 84 y se utiliza
+ * comúnmente en América del Norte, Europa y África.
  * @type {Object}
  * @public
  * @api
@@ -181,7 +224,11 @@ const proj32628 = {
 };
 
 /**
- * EPSG:32629 WGS84 UTM huso 29N
+ * EPSG:32629 WGS84 UTM huso 29N es una proyección cartográfica que divide la Tierra en 60
+ * husos de 6 grados de longitud.
+ * El huso 29 se extiende desde los 21 grados al oeste hasta los 27 grados al oeste.
+ * Esta proyección se basa en el elipsoide
+ * WGS 84 y se utiliza comúnmente en América del Norte, Europa y África.
  * @type {Object}
  * @public
  * @api
@@ -194,7 +241,11 @@ const proj32629 = {
 };
 
 /**
- * EPSG:32630 WGS84 UTM huso 30N
+ * EPSG:32630 WGS84 UTM huso 30N es una proyección cartográfica que divide la Tierra en 60 husos de
+ * 6 grados de longitud. El huso 30 se extiende desde los 27 grados al oeste
+ * hasta los 33 grados al oeste.
+ * Esta proyección se basa en el elipsoide WGS 84 y se utiliza comúnmente en
+ * América del Norte, Europa y África.
  * @type {Object}
  * @public
  * @api
@@ -207,7 +258,11 @@ const proj32630 = {
 };
 
 /**
- * EPSG:32631 WGS84 UTM huso 31N
+ * EPSG:32631 WGS84 UTM huso 31N es una proyección cartográfica que divide la Tierra en 60 husos
+ * de 6 grados de longitud. El huso 31 se extiende desde los 33 grados al oeste hasta los 39
+ * grados al oeste.
+ * Esta proyección se basa en el elipsoide WGS 84 y se utiliza comúnmente en América
+ * del Norte, Europa y África.
  * @type {Object}
  * @public
  * @api
@@ -220,7 +275,10 @@ const proj32631 = {
 };
 
 /**
- * EPSG:4081 REGCAN95 Geográficas
+ * EPSG:4081 REGCAN95 Geográficas es una proyección cartográfica que se utiliza en Austria
+ * para representar la superficie de la Tierra en un plano.
+ * Se basa en el elipsoide Internacional de 1924 y utiliza un sistema de
+ * coordenadas de Gauss-Kruger.
  * @type {Object}
  * @public
  * @api
@@ -234,7 +292,9 @@ const proj4081 = {
 };
 
 /**
- * EPSG:4082 REGCAN95 UTM huso 27N
+ * EPSG:4082 REGCAN95 UTM huso 27N es una proyección cartográfica que se utiliza en Austria
+ * para representar la superficie de la Tierra en un plano.
+ * Se basa en el elipsoide Internacional de 1924 y utiliza un sistema de coordenadas de M28.
  * @type {Object}
  * @public
  * @api
@@ -247,7 +307,10 @@ const proj4082 = {
 };
 
 /**
- * EPSG:4083 REGCAN95 UTM huso 28N
+ * EPSG:4083 REGCAN95 UTM huso 28N es una proyección cartográfica que se utiliza
+ * en Austria para representar
+ * la superficie de la Tierra en un plano. Se basa en el elipsoide
+ * Internacional de 1924 y utiliza un sistema de coordenadas de M31.
  * @type {Object}
  * @public
  * @api
@@ -260,7 +323,13 @@ const proj4083 = {
 };
 
 /**
- * EPSG:3395
+ * EPSG:3395 WGS84 Mercator es una proyección cartográfica cilíndrica conforme que utiliza
+ *  el elipsoide WGS 84
+ * y se utiliza comúnmente para representar el mundo en mapas de navegación
+ * y visualización de datos.
+ * Esta proyección se utiliza ampliamente en aplicaciones de sistemas
+ * de información geográfica (SIG)
+ * y en navegación marítima.
  * @type {Object}
  * @public
  * @api
@@ -303,7 +372,7 @@ const projections = [
 
 /**
  * Este método registra un conjunto de proyecciones
- * usando ol/proj
+ * usando ol/proj (libreria de proyecciones de openlayers).
  *
  * @function
  * @param {Array<Object>} projectionsParam Proyecciones a registrar

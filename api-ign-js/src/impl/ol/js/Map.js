@@ -32,7 +32,7 @@ import View from './View';
 
 /**
  * @classdesc
- * Esta clase crea un mapa con un contenedor div específico
+ * Esta clase crea un mapa con un contenedor "div" específico
  *
  * @property {M.Map} facadeMap_ Fachada del mapa a implementar.
  * @property {ol.Collection<M.Layer>} layers_ Capas añadidas al mapa.
@@ -54,6 +54,7 @@ import View from './View';
  * calculadas para las capas base.
  * Por defecto falso.
  * @property {ol.Map} map_ Implementación del mapa.
+ * @property {Object} Z_INDEX_BASELAYER Objeto con los valores de los z-index.
  *
  * @api
  * @extends {M.Object}
