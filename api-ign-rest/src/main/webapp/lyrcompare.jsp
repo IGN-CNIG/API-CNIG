@@ -129,7 +129,7 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp,collapsed,collapsible,
-        layers = [
+        layersPlugin = [
             'WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas',
             'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
             'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
@@ -138,7 +138,7 @@
             'WMS*AMS_1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957'],
             staticDivision, opacityVal, comparisonMode, defaultLyrA, defaultLyrB, defaultLyrC, defaultLyrD,interface;
         crearPlugin({
-            layers: layers
+            layers: layersPlugin
         });
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -173,7 +173,7 @@
             collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor == "true") : "";
             let collapsibleValor = selectCollapsible.options[selectCollapsible.selectedIndex].value;
             collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == "true") : "";
-            objeto.layers = inputLayer.value != "" ? inputLayer.value : layers;
+            objeto.layers = inputLayer.value != "" ? inputLayer.value : layersPlugin;
             objeto.staticDivision = selectStaticDivision.options[selectStaticDivision.selectedIndex].value;
             opacityVal = inputOpacityVal.value != "" ? objeto.opacityVal = inputOpacityVal.value : "";
             objeto.comparisonMode = selectComparisonMode.options[selectComparisonMode.selectedIndex].value;
