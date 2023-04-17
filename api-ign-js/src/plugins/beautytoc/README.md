@@ -1,6 +1,6 @@
 # M.plugin.BeautyTOC
 
-Tabla de contenidos de fototeca. Consulta cobertura de vuelo sobre la vista.
+Tabla de contenidos, consulta cobertura de vuelo sobre la vista.
 
 # Dependencias
 Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
@@ -31,6 +31,25 @@ El constructor se inicializa con un JSON con los siguientes atributos:
    const map = M.map({
      container: 'map'
    });
+
+  const capaRaster = new M.layer.WMS({
+    url: 'https://www.ign.es/wms/pnoa-historico?',
+    name: 'OLISTAT',
+    legend: 'OLISTAT (1997-1998)',
+    tiled: false,
+    version: '1.3.0',
+  });
+
+  const capaVectorial = new M.layer.WMS({
+    url: 'http://www.ign.es/wms-inspire/cuadriculas?',
+    name: 'Grid-ETRS89-lonlat-25k,Grid-REGCAN95-lonlat-25k',
+    legend: 'Cuadrícula cartográfica del MTN25',
+    tiled: false,
+    version: '1.1.1',
+  }, { visibility: false, displayInLayerSwitcher: true, queryable: false });
+
+map.addLayers([capaRaster, capaVectorial]);
+
 
    const mp = new M.plugin.BeautyTOC({
         postition: 'TL',
