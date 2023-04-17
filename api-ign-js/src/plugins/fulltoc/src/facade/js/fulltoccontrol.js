@@ -863,7 +863,7 @@ export default class FullTOCControl extends M.Control {
     let HTTPSeval = false;
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
     const url = document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value.trim().split('?')[0];
-    const type = (document.getElementById('m-fulltoc-addservices-wmts').checked || url.indexOf('wmts') > -1) ? 'WMTS' : 'WMS';
+    let type = null;
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
         if (this.http && !this.https) {
@@ -878,17 +878,22 @@ export default class FullTOCControl extends M.Control {
         }
 
         if (HTTPeval === true || HTTPSeval === true) {
-          if (type === 'WMTS') {
-            const promise = new Promise((success, reject) => {
-              const id = setTimeout(() => reject(), 15000);
-              M.remote.get(M.utils.getWMTSGetCapabilitiesUrl(url)).then((response) => {
-                clearTimeout(id);
-                success(response);
-              });
+          const promise = new Promise((success, reject) => {
+            const id = setTimeout(() => reject(), 15000);
+            M.remote.get(M.utils.getWMTSGetCapabilitiesUrl(url)).then((response) => {
+              clearTimeout(id);
+              success(response);
             });
+          });
 
-            promise.then((response) => {
-              try {
+          promise.then((response) => {
+            try {
+              if (response.text.indexOf('TileMatrixSetLink') >= 0) {
+                type = 'WMTS';
+              } else {
+                type = 'WMS';
+              }
+              if (type === 'WMTS') {
                 const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
                 const getCapabilities = getCapabilitiesParser.read(response.xml);
                 this.serviceCapabilities = getCapabilities.capabilities || {};
@@ -899,73 +904,45 @@ export default class FullTOCControl extends M.Control {
                 );
                 this.capabilities = this.filterResults(layers);
                 this.showResults();
-              } catch (err) {
-                M.dialog.error(getValue('exception.capabilities'));
-              }
-            }).catch((err) => {
-              M.dialog.error(getValue('exception.capabilities'));
-            });
-          } else {
-            const promise = new Promise((success, reject) => {
-              const id = setTimeout(() => reject(), 15000);
-              M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response) => {
-                clearTimeout(id);
-                success(response);
-              });
-            });
-
-            promise.then((response) => {
-              try {
-                const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
-                const getCapabilities = getCapabilitiesParser.read(response.xml);
-                this.serviceCapabilities = getCapabilities.Service || {};
-                const getCapabilitiesUtils = new M.impl.GetCapabilities(
-                  getCapabilities,
-                  url,
-                  this.map_.getProjection().code,
-                );
-
-                this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
-                this.capabilities.forEach((layer) => {
+              } else {
+                const promise2 = new Promise((success, reject) => {
+                  const id = setTimeout(() => reject(), 15000);
+                  M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response2) => {
+                    clearTimeout(id);
+                    success(response2);
+                  });
+                });
+                promise2.then((response2) => {
                   try {
-                    this.getParents(getCapabilities, layer);
-                    /* eslint-disable no-empty */
-                  } catch (err) {}
-                });
-
-                this.showResults();
-              } catch (err) {
-                M.dialog.error(getValue('exception.capabilities'));
-              }
-            }).catch((err) => {
-              const promise2 = new Promise((success, reject) => {
-                const id = setTimeout(() => reject(), 15000);
-                M.remote.get(M.utils.getWMTSGetCapabilitiesUrl(url)).then((response) => {
-                  clearTimeout(id);
-                  success(response);
-                });
-              });
-
-              promise2.then((response) => {
-                try {
-                  const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
-                  const getCapabilities = getCapabilitiesParser.read(response.xml);
-                  this.serviceCapabilities = getCapabilities.capabilities || {};
-                  const layers = M.impl.util.wmtscapabilities.getLayers(
-                    getCapabilities.capabilities,
-                    url,
-                    this.map_.getProjection().code,
-                  );
-                  this.capabilities = this.filterResults(layers);
-                  this.showResults();
-                } catch (error) {
+                    const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
+                    const getCapabilities = getCapabilitiesParser.read(response2.xml);
+                    this.serviceCapabilities = getCapabilities.Service || {};
+                    const getCapabilitiesUtils = new M.impl.GetCapabilities(
+                      getCapabilities,
+                      url,
+                      this.map_.getProjection().code,
+                    );
+                    this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
+                    this.capabilities.forEach((layer) => {
+                      try {
+                        this.getParents(getCapabilities, layer);
+                        /* eslint-disable no-empty */
+                      } catch (err) {}
+                    });
+                    this.showResults();
+                  } catch (error) {
+                    M.dialog.error(getValue('exception.capabilities'));
+                  }
+                }).catch((eerror) => {
                   M.dialog.error(getValue('exception.capabilities'));
-                }
-              }).catch((eerror) => {
-                M.dialog.error(getValue('exception.capabilities'));
-              });
-            });
-          }
+                });
+              }
+            } catch (err) {
+              M.dialog.error(getValue('exception.capabilities'));
+            }
+          }).catch((err) => {
+            M.dialog.error(getValue('exception.capabilities'));
+          });
         } else {
           let errorMsg;
           if (this.http) {
