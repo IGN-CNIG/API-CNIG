@@ -54,7 +54,7 @@ class Tab {
 
 /**
  * @classdesc
- * Crea un popup
+ * Crea un "popup"
  * con parámetros especificados por el usuario.
  * @api
  */
@@ -138,7 +138,7 @@ class Popup extends Base {
   }
 
   /**
-   * Añade el popup al mapa.
+   * Añade el "popup" al mapa.
    * @public
    * @function
    * @api
@@ -251,7 +251,7 @@ class Popup extends Base {
   }
 
   /**
-   * Modifica el contenedor del popup.
+   * Modifica el contenedor del "popup".
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
@@ -261,24 +261,24 @@ class Popup extends Base {
   }
 
   /**
-   * Devuelve el contenedor del popup.
+   * Devuelve el contenedor del "popup".
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
    * @api
-   * @return {HTMLElement} Contenedor del popup.
+   * @return {HTMLElement} Contenedor del "popup".
    */
   getContent() {
     return this.getImpl().getContent();
   }
 
   /**
-   * Añade los eventos al popup.
+   * Añade los eventos al "popup".
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
    * @api
-   * @param {HTMLElement} html Contenedor del popup.
+   * @param {HTMLElement} html Contenedor del "popup".
    */
   addEvents(htmlParam) {
     const html = htmlParam;
@@ -380,12 +380,12 @@ class Popup extends Base {
   }
 
   /**
-   * Modifija el estado del popup.
+   * Modifija el estado del "popup".
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
    * @api
-   * @param {string} status Estado del popup.
+   * @param {string} status Estado del "popup".
    */
   setStatus_(status) {
     if (status !== this.status_) {
@@ -402,12 +402,12 @@ class Popup extends Base {
   }
 
   /**
-   * Maneja el html del popup.
+   * Maneja el html del "popup".
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
    * @api
-   * @param {HTMLElement} html Contenedor del popup.
+   * @param {HTMLElement} html Contenedor del "popup".
    * @param {Event} e Evento.
    */
   manageTransform(e, html) {
@@ -421,7 +421,7 @@ class Popup extends Base {
   }
 
   /**
-   * Maneja el tamaño del popup.
+   * Maneja el tamaño del "popup".
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
@@ -492,7 +492,7 @@ class Popup extends Base {
   }
 
   /**
-   * Devuelve las coordenadas del popup.
+   * Devuelve las coordenadas del "popup".
    * @public
    * @function
    * @api
@@ -502,7 +502,7 @@ class Popup extends Base {
   }
 
   /**
-   * Modifica las coordenadas del popup.
+   * Modifica las coordenadas del "popup".
    * @public
    * @function
    * @api
@@ -515,7 +515,7 @@ class Popup extends Base {
   }
 
   /**
-   * Elimina el popup.
+   * Elimina el "popup".
    * @public
    * @function
    * @api
@@ -528,7 +528,7 @@ class Popup extends Base {
 }
 
 /**
- * Estado del popup.
+ * Estado del "popup".
  * @const
  * @type {object}
  * @public
@@ -537,7 +537,7 @@ class Popup extends Base {
 Popup.status = {};
 
 /**
- * Estado colapsado del popup.
+ * Estado colapsado del "popup".
  * @const
  * @type {string}
  * @public
@@ -546,7 +546,7 @@ Popup.status = {};
 Popup.status.COLLAPSED = 'm-collapsed';
 
 /**
- * Estado del popup por defecto.
+ * Estado del "popup" por defecto.
  * @const
  * @type {string}
  * @public
@@ -555,7 +555,7 @@ Popup.status.COLLAPSED = 'm-collapsed';
 Popup.status.DEFAULT = 'm-default';
 
 /**
- * Estado completo del popup.
+ * Estado completo del "popup".
  * @const
  * @type {string}
  * @public

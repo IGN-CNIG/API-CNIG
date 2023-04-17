@@ -47,7 +47,7 @@ const generateResolutions = (extent, tileSize, zoomLevels) => {
   * Implementación de la capa MBTiles.
   *
   * @property {function} tileLoadFunction_ Función de carga de la tesela vectorial.
-  * @property {string} url_ Url del fichero o servicio que genera el MBTilesVector.
+  * @property {string} url_ URL del fichero o servicio que genera el MBTiles.
   * @property {ArrayBuffer|Uint8Array|Response|File} source_ Fuente de la capa.
   * @property {number} tileSize_ Tamaño de la tesela vectorial.
   * @property {Mx.Extent} maxExtent_ La medida en que restringe la visualización

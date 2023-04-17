@@ -1,5 +1,7 @@
 /**
+ * Este módulo contiene las constantes de las unidades.
  * @module M/units
+ * @example import { METERS_PER_UNIT } from 'M/units';
  */
 /**
  * 0.02540005080010160020 (Un valor predeterminado sensato)
@@ -15,12 +17,13 @@ const METERS_PER_INCH = 0.02540005080010160020;
 export const DOTS_PER_INCH = 72;
 
 /**
- * Pulgadas constantes por unidad -- tomado de MapServer mapscale.c
+ * Pulgadas constantes por unidad.
+ * - Tomado de MapServer "mapscale.c"
  * derivación de millas náuticas de http://en.wikipedia.org/wiki/Nautical_mile
- * Incluye el conjunto completo de unidades compatibles con CS-MAP (http://trac.osgeo.org/csmap/)
+ * - Incluye el conjunto completo de unidades compatibles con CS-MAP (http://trac.osgeo.org/csmap/)
  * y PROJ.4 (http://trac.osgeo.org/proj/)
- * La tabla codificada se mantiene en un módulo de código fuente CS-MAP llamado CSdataU.c
- * La tabla codificada de unidades PROJ.4 está en pj_units.c.
+ * - La tabla codificada se mantiene en un módulo de código fuente CS-MAP llamado "CSdataU.c".
+ * - La tabla codificada de unidades PROJ.4 está en "pj_units.c".
  * @const {Object}
  * @api
  */

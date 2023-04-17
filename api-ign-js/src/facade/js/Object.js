@@ -32,7 +32,7 @@ class MObject {
    *
    * @public
    * @function
-   * @param {M.eventType} eventType Evento M.envtType.
+   * @param {M.eventType} eventType Evento "M.evt".
    * @param {Function} listener Función "callback".
    * @param {Object} optThis "Scope", valor de "this".
    * @api
@@ -46,7 +46,7 @@ class MObject {
    *
    * @public
    * @function
-   * @param {M.eventType} eventType Evento M.envtType.
+   * @param {M.eventType} eventType Evento "M.evt".
    * @param {Function} listener Función "callback".
    * @param {Object} optThis "Scope", valor de "this".
    * @api
@@ -60,7 +60,7 @@ class MObject {
    *
    * @public
    * @function
-   * @param {M.eventType} eventType Event M.envtType.
+   * @param {M.eventType} eventType Event "M.evt".
    * @param {Function} listener Function "callback".
    * @param {Object} optThis "Scope", valor de "this".
    * @api
@@ -74,7 +74,7 @@ class MObject {
    *
    * @public
    * @function
-   * @param {M.eventType} eventType Evento M.envtType.
+   * @param {M.eventType} eventType Evento "M.evt".
    * @param {String} key "Key" del evento.
    * @api
    */
@@ -87,7 +87,7 @@ class MObject {
    *
    * @public
    * @function
-   * @param {M.eventType} eventType Evento M.envtType.
+   * @param {M.eventType} eventType Evento "M.evt".
    * @param {Array} argsParam Matriz de argumentos.
    * @api
    */

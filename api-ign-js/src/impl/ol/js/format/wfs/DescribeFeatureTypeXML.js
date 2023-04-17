@@ -12,24 +12,24 @@ import OLFormatGML from 'ol/format/GML';
   */
 class GML extends OLFormatGML {
   /**
-    * Constructor principal de la clase. Formato de los 'features' para
+    * Constructor principal de la clase. Formato de los objetos geográficos para
     * leer y escribir datos en formato GML.
     *
     * @constructor
     * @param {olx.format.GMLOptions} opt_options Opciones del formato GML.
-    * - featureNS: Espacio de nombres del 'feature'. Si no se define, se derivará
+    * - featureNS: Espacio de nombres de los objetos geográficos. Si no se define, se derivará
     * de GML.
-    * - featureType: Tipo del 'feature' a analizar. Si es necesario configurar varios
-    * tipos que provienen de diferentes espacios de nombres, featureNS será un objeto
+    * - featureType: Tipo del objeto geográfico a analizar. Si es necesario configurar varios
+    * tipos que provienen de diferentes espacios de nombres, "featureNS" será un objeto
     * con las claves como prefijos utilizados en las entradas del array 'featureType'.
     * - srsName: Usado al escribir geometrías.
-    * - surface: Escribe gml:Surface en lugar de elementos gml:Polygon. Esto también
+    * - surface: Escribe gml:Surface en lugar de elementos "gml:Polygon". Esto también
     * afecta a los elementos en geometrías de varias partes. Por defecto es falso.
-    * - curve: Escribe gml:Curve en lugar de elementos gml:LineString. Esto también
+    * - curve: Escribe "gml:Curve" en lugar de elementos "gml:LineString". Esto también
     * afecta a los elementos en geometrías de varias partes. Por defecto es falso.
-    * - multiCurve: Escribe gml:MultiCurve en lugar de gml:MultiLineString.
+    * - multiCurve: Escribe "gml:MultiCurve" en lugar de "gml:MultiLineString".
     * Por defecto es verdadero.
-    * - multiSurface: Escribe gml:multiSurface en lugar de gml:MultiPolygon.
+    * - multiSurface: Escribe "gml:multiSurface" en lugar de "gml:MultiPolygon".
     * Por defecto es verdadero.
     * - schemaLocation: 'SchemaLocation' opcional para usar al escribir el GML,
     * esto anulará el predeterminado proporcionado.

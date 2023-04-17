@@ -1354,7 +1354,7 @@ class Map extends Base {
    * @function
    * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional.
    * - Matriz de capas de nombres, tipo TMS.
-   * @returns {Array<M.layer.TMS>} layers from the map
+   * @returns {Array<M.layer.TMS>} Capas del mapa.
    * @api
    */
   getTMS(layersParamVar) {
@@ -1678,7 +1678,7 @@ class Map extends Base {
   /**
    * Este método proporciona la extensión máxima para esta
    * instancia de mapa.
-   * Versión asíncrona de getMaxExtent.
+   * Versión asíncrona de "getMaxExtent".
    *
    * @public
    * @function
@@ -1715,7 +1715,7 @@ class Map extends Base {
    * @public
    * @function
    * @param {String|Array<String>|Array<Number>|Mx.Extent} maxExtentParam La extensión máxima.
-   * @param {Boolean} zoomToExtent Establecer bbox.
+   * @param {Boolean} zoomToExtent Establecer "bbox".
    * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
@@ -1768,7 +1768,7 @@ class Map extends Base {
   }
 
   /**
-   * Este método proporciona la extensión actual (bbox) de esta
+   * Este método proporciona la extensión actual ("bbox") de esta
    * instancia del mapa.
    *
    * @public
@@ -2426,10 +2426,10 @@ class Map extends Base {
   }
 
   /**
-   * Añade el "label".
+   * Añade la etiqueta.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Colecciones de "labels".
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Colecciones de etiquetas.
    * @api
    */
   addLabel(labelParam, coordParam) {
@@ -2479,10 +2479,10 @@ class Map extends Base {
   }
 
   /**
-   * Devuelve los "labels".
+   * Devuelve las etiquetas.
    *
    * @function
-   * @returns {Array<object>} Devuelve los "labels".
+   * @returns {Array<object>} Devuelve las etiquetas.
    * @api
    */
   getLabel() {
@@ -2490,10 +2490,10 @@ class Map extends Base {
   }
 
   /**
-   * Elimina los "labels".
+   * Elimina las etiquetas.
    *
    * @function
-   * @returns {Array<object>} Devuelve los "labels".
+   * @returns {Array<object>} Devuelve las etiquetas.
    * @api
    */
   removeLabel() {
@@ -2711,18 +2711,18 @@ class Map extends Base {
   }
 
   /**
-   * Devuelve Popup.
+   * Devuelve "Popup".
    *
    * @function
    * @api
-   * @returns {Popup} Devuelve Popup.
+   * @returns {Popup} Devuelve "Popup".
    */
   getPopup() {
     return this.popup_;
   }
 
   /**
-   * Elimina Popup.
+   * Elimina "Popup".
    *
    * @function
    * @api
@@ -2744,7 +2744,7 @@ class Map extends Base {
   }
 
   /**
-   * Añade el Popup.
+   * Añade el "Popup".
    *
    * @function
    * @api
@@ -2789,7 +2789,7 @@ class Map extends Base {
    * @function
    * @param {M.evt} eventType Tipo de evento.
    * @param {Function} listener "Callback".
-   * @param {Object} optThis Opciones de "this".
+   * @param {Object} optThis Opciones de la instancia del mapa.
    * @api
    */
   on(eventType, listener, optThis) {

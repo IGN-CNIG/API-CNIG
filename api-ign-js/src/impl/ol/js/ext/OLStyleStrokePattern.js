@@ -27,10 +27,10 @@ class OLStyleStrokePattern extends OLStyleStroke {
    * - opacity: opacidad con patrón de imagen, por defecto 1.
    * - color: color del patrón.
    * - fill: color de relleno (fondo).
-   * - offset: desplazamiento del patrón para el patrón hash/dot/circle/cross.
-   * - size: tamaño de línea para el patrón hash/dot/circle/cross.
-   * - spacing: espaciado para el patrón hash/dot/circle/cross.
-   * - angle: ángulo para el patrón hash, verdadero para 45deg (dot, circle y cross).
+   * - offset: desplazamiento del patrón para el patrón ("hash","dot","circle","cross").
+   * - size: tamaño de línea para el patrón ("hash","dot","circle","cross")
+   * - spacing: espaciado para el patrón ("hash","dot","circle","cross").
+   * - angle: ángulo para el patrón "hash", verdadero para 45deg (dot, circle y cross).
    * - scale: escala del patrón.
    * @api
    */

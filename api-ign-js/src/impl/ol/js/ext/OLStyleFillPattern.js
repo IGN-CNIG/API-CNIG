@@ -29,10 +29,10 @@ class OLStyleFillPattern extends OLStyleFill {
    * - Patrón. Nombre del patrón (anular por la opción de imagen).
    * - color. Nombre del patrón (anular por la opción de imagen).
    * - fill. Color de relleno (fondo)
-   * - offset. Desplazamiento del patrón para hash/dot/circle/cross patrón.
-   * - size. Tamaño de línea para hash/dot/circle/cross patrón.
-   * - spacing. Espaciado para hash/dot/circle/cross patrón.
-   * - angle. Ángulo para patrón hash, verdadero para 45deg ("dot", "circle", y "cross").
+   * - offset. Desplazamiento del patrón para ("hash","dot","circle","cross") patrón.
+   * - size. Tamaño de línea para ("hash","dot","circle","cross") patrón.
+   * - spacing. Espaciado para ("hash","dot","circle","cross") patrón.
+   * - angle. Ángulo para patrón "hash", verdadero para 45deg ("dot", "circle", y "cross").
    * - scale. Escala del patrón.
    * @api
    */

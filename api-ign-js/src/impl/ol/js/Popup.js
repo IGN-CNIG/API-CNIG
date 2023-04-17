@@ -30,8 +30,9 @@ class Popup extends OLOverlay {
    * - listeners: Función 'listener'.
    * - panMapIfOutOfView: Indica si el mapa se desplaza o no.
    * - ani_opts: Opciones de animación. Puede constar de las siguientes propiedades:
-   *            - duration: Duración de la animación en milisegundos.
-   *            - easing: El método de aceleración a usar.
+   *            - "duration": Duración de la animación en milisegundos.
+   *
+   *            - "easing": El método de aceleración a usar.
    *
    * @api
    */
@@ -152,7 +153,7 @@ class Popup extends OLOverlay {
   }
 
   /**
-   * Este método obtiene el HTML del contenedor m-body.
+   * Este método obtiene el HTML del contenedor "m-body".
    *
    * @function
    * @param {Object} html HTML.

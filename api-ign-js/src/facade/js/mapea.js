@@ -1,4 +1,5 @@
 /**
+ * Este fichero es el punto de entrada de la API, sirve para inicializar las clases de la API-CNIG.
  * @module M
  */
 import 'assets/css/fonts';

@@ -176,7 +176,7 @@ class WKT extends MObject {
     * - dataProjection: Proyección de los datos a escribir.
     * - featureProjection: Proyección de las geometrías del objeto geográfico
     * que serán serializadas por el escritor de formato.
-    * - rightHanded: Indica si se sigue la regla 'rigth-hand'.
+    * - rightHanded: Indica si se sigue la regla de la mano derecha.
     * - decimals: Número máximo de decimales para las coordenadas.
     * @returns {string} Objetos geográficos en formato WKT
     * @public

@@ -1,4 +1,5 @@
 /**
+ * Este modulo contiene las funciones para mostrar un modal.
  * @module M/dialog
  */
 import 'assets/css/dialog';
