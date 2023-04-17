@@ -60,54 +60,89 @@ export default class SelectionZoom extends M.Plugin {
     this.position_ = options.position || 'TL';
 
     /**
-     * Position of current background layer on layers array.
-     * @private
-     * @type {Number}
+     * Layers options
      */
-    this.layerId = options.layerId || 0;
+    if ('options' in options) {
+      this.newparameterization = true;
+      this.layerOpts = options.options;
 
-    /**
-     * Visibility of current background layer.
-     * @private
-     * @type {Boolean}
-     */
-    this.layerVisibility = options.layerVisibility || true;
+      /**
+       * Get layers id's separated by ',' from
+       * new parameterization.
+       */
+      this.ids = this.layerOpts.map(l => l.id).toString();
 
-    /**
-     * Layers id's separated by ','.
-     * @public
-     * @type {Array}
-     */
-    this.ids = options.ids || '';
+      /**
+       * Get layers titles separated by ',' from
+       * new parameterization.
+       */
+      this.titles = this.layerOpts.map(l => l.title).toString();
 
-    /**
-     * Layers titles separated by ','.
-     * @public
-     * @type { Array }
-     */
-    this.titles = options.titles || '';
+      /**
+       * Get layers previews separated by ',' from
+       * new parameterization.
+       */
+      this.previews = this.layerOpts.map(l => l.preview).toString();
 
-    /**
-     * Layers preview urls separated by ','.
-     * @public
-     * @type { Array }
-     */
-    this.previews = options.previews || '';
+      /**
+       * Get layers MRE from new parameterization.
+       */
+      this.bboxs = [];
+      this.zooms = [];
+      this.centers = [];
+      this.layerOpts.forEach((l, i) => {
+        if ('bbox' in l) {
+          this.bboxs[i] = l.bbox;
+          this.zooms[i] = '';
+          this.centers[i] = '';
+        } else if ('zoom' in l && 'center' in l) {
+          this.bboxs[i] = '';
+          this.zooms[i] = l.zoom;
+          this.centers[i] = l.center;
+        } else {
+          this.bboxs[i] = '';
+          this.zooms[i] = '';
+          this.centers[i] = '';
+        }
+      });
+      this.zooms = this.zooms.toString();
+    } else {
+      this.newparameterization = false;
+      /**
+       * Layers id's separated by ','.
+       * @public
+       * @type {Array}
+       */
+      this.ids = options.ids || '';
 
-    /**
-     * Layers preview urls separated by ','.
-     * @public
-     * @type { Array }
-     */
-    this.zooms = options.zooms || '';
+      /**
+       * Layers titles separated by ','.
+       * @public
+       * @type { Array }
+       */
+      this.titles = options.titles || '';
 
-    /**
-     * Layers preview urls separated by ','.
-     * @public
-     * @type { Array }
-     */
-    this.bboxs = options.bboxs || '';
+      /**
+       * Layers preview urls separated by ','.
+       * @public
+       * @type { Array }
+       */
+      this.previews = options.previews || '';
 
+      /**
+       * Layers preview urls separated by ','.
+       * @public
+       * @type { Array }
+       */
+      this.zooms = options.zooms || '';
+
+      /**
+       * Layers preview urls separated by ','.
+       * @public
+       * @type { Array }
+       */
+      this.bboxs = options.bboxs || '';
+    }
 
     /**
      * Layers separated by ','.
@@ -168,14 +203,14 @@ export default class SelectionZoom extends M.Plugin {
   addTo(map) {
     this.controls_.push(new SelectionZoomControl(
       map,
-      this.layerId,
-      this.layerVisibility,
       this.ids,
       this.titles,
       this.previews,
       this.bboxs,
       this.zooms,
+      this.centers || '',
       this.order,
+      this.newparameterization,
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelSelectionZoom', {
@@ -186,10 +221,6 @@ export default class SelectionZoom extends M.Plugin {
       tooltip: this.tooltip_,
       collapsedButtonClass: 'g-selectionzoom-selezoom',
       order: this.order,
-    });
-
-    this.controls_[0].on('selectionzoom:activeChanges', (data) => {
-      this.layerId = data.activeLayerId;
     });
 
     this.panel_.addControls(this.controls_);
@@ -204,8 +235,8 @@ export default class SelectionZoom extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.layerId}*
-    ${this.layerVisibility}*${this.ids}*${this.titles}*${this.previews}*${this.bboxs}*${this.zooms}`;
+    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*
+    ${this.ids}*${this.titles}*${this.previews}*${this.bboxs}*${this.zooms}`;
   }
 
   /**

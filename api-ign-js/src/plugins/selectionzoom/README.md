@@ -25,14 +25,13 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
-- **layerId**: Posición de la capa que se carga por defecto en el array de capas mandadas como parámetro.
-- **layerVisibility**: Valor que indica si se muestra la capa cargada o no.
-- **ids**: Identificador de la capa
-- **titles**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
-- **previews**: Ruta a la imagen de previsualización que se muestra.
-- **bboxs**: Bbox de la zona geografica a la que se hace zoom. El bbox debe recoger los datos en la misma proyección en la que se encuentra el mapa.
-- **zooms**: Zoom que toma la capa en la zona geográfica elegida.
-
+- **options**: Lista con las opciones de las capas.
+  - **id**: Identificador de la capa
+  - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
+  - **preview**: Ruta a la imagen de previsualización que se muestra.
+  - **bbox**: Bbox de la zona geografica a la que se hace zoom. El bbox debe recoger los datos en la misma proyección en la que se encuentra el mapa.
+  - **zoom**: Zoom que toma la capa en la zona geográfica elegida. Para poder usar el zoom también debe tener valor el parámetro center. Se obviará si el parámetro bbox tiene valor.
+  - **center**: Punto central que toma la capa en la zona geográfica elegida. Para poder usar el punto central también debe tener valor el parámetro zoom. Se obviará si el parámetro bbox tiene valor.
 
 # Ejemplo de uso
 
@@ -45,13 +44,21 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
     position: 'TL',
     collapsible: true,
     collapsed: true,
-    layerId: 0,
-    layerVisibility: true,
-    ids: 'peninsula,canarias',
-    titles: 'Peninsula,Canarias',
-    previews: 'https://componentes.ign.es/api-core//plugins/selectionzoom/images/espana.png,https://componentes.ign.es/api-core//plugins/selectionzoom/images/canarias.png',
-    bboxs: '-1200091.444315327, 365338.89496508264, 4348955.797933925, 5441088.058207252, -2170190.6639824593, -1387475.4943422542, 3091778.038884449, 3637844.1689537475' ,
-    zooms: '7,8',
+    options: [
+      {
+        id: 'peninsula',
+        title: 'Peninsula',
+        preview: 'https://componentes.ign.es/api-core//plugins/selectionzoom/images/espana.png',
+        bbox: '-1200091.444315327, 365338.89496508264, 4348955.797933925, 5441088.058207252'
+      },
+      {
+        id: 'canarias',
+        title: 'Canarias',
+        preview: 'https://componentes.ign.es/api-core//plugins/selectionzoom/images/canarias.png',
+        center: '-1844272.618465, 3228700.074766',
+        zoom: 8
+      }
+    ]
     });
 
    map.addPlugin(mp);
