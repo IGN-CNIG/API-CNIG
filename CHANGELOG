@@ -2,4 +2,5 @@
 - Mejoras sobre la documentación JSDoc
 - Mejoras sobre la documentación de los plugins
 - Se dispara evento REMOVED_LAYER al eliminar capas del mapa
-- Se dispara evento CHANGE_ZOOM al cambiar el zoom del mapa mediante el método setZoom.
+- Se dispara evento CHANGE_ZOOM al realizar zoom al mapa
+- Se modifica lectura GetCapabilities en fulltoc
