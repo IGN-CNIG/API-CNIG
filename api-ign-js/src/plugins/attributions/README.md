@@ -18,7 +18,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
         - **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
         - **type**: En el caso de no pasar nada por el parámetro layer o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
         - **layerName**: Nombre asociado a la capa de atribuciones (nombre de la capa). Se usa para la construcción de la capa. Por defecto: 'attributions'.
-        - **layer**: Capa definida por el usuario para determinar las atribuciones {M.layer.GeoJSON | M.layer.KML}.
+        - **layer**: Capa definida por el usuario para determinar las atribuciones {M.layer.GeoJSON | M.layer.KML}. No requiere los parámetros anteriores (type, url y layerName)
         - **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
         - **urlParam**: Nombre del campo de url en el archivo. Por defecto: 'url'.
         - **minWidth**: Mínimo ancho de visualización del plugin. Por defecto: '100px'.
