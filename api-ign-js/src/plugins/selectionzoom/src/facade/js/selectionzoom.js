@@ -144,15 +144,6 @@ export default class SelectionZoom extends M.Plugin {
       this.bboxs = options.bboxs || '';
     }
 
-    /**
-     * Layers separated by ','.
-     * Each base layer can contain more than one layer separated by 'sumar' (before: '+').
-     * Each of these layers has different parameters separated by 'asterisco'(NOT * ).
-     * @public
-     * @type {String}
-     */
-    this.layers = options.layers || '';
-
     this.collapsed = options.collapsed !== undefined ? options.collapsed : true;
     this.collapsible = options.collapsible !== undefined ? options.collapsible : true;
 

@@ -38,6 +38,13 @@ export default class InfoCatastroControl extends M.Control {
     this.catastroWMS = parameters.url;
 
     /**
+     * tooltip
+     * @private
+     * @type {string}
+     */
+    this.tooltip = parameters.tooltip;
+
+    /**
      * Title for the popup
      * @const
      * @type {string}
@@ -61,7 +68,7 @@ export default class InfoCatastroControl extends M.Control {
       const html = M.template.compileSync(template, {
         vars: {
           translations: {
-            consultar: getValue('consultar'),
+            consultar: this.tooltip || getValue('consultar'),
           },
         },
       });

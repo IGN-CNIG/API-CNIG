@@ -151,14 +151,14 @@ export default class ContactLink extends M.Plugin {
      * @public
      * @type {boolean}
      */
-    this.collapsed = options.collapsed || true;
+    this.collapsed = (options.collapsed === false) ? false : true;
 
     /**
      * Collapsible attribute
      * @public
      * @type {boolean}
      */
-    this.collapsible = options.collapsible || true;
+    this.collapsible = (options.collapsible === false) ? false : true;
 
     /**
      * ContactLink control
