@@ -1,6 +1,6 @@
 # M.plugin.BeautyTOC
 
-Tabla de contenidos, consulta cobertura de vuelo sobre la vista.
+Tabla de contenidos. Consulta cobertura de vuelo sobre la vista.
 
 # Dependencias
 Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
