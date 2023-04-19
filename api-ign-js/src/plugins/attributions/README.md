@@ -29,20 +29,20 @@ El constructor se inicializa con un JSON con los siguientes atributos:
             - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
             - 'BR': (bottom right) - Abajo a la derecha.
     2) Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. ==NO DISPONIBLE==
-- **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
-- **tooltip**: Valor a usar para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'. 
-- **minWidth**: Mínimo ancho de visualización del plugin. Por defecto '100px'.
-- **maxWidth**: Máximo ancho de visualización del plugin. Por defecto '200px'.
-- **position**: Posición del plugin sobre el mapa.
+* **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
+* **tooltip**: Valor a usar para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'. 
+* **minWidth**: Mínimo ancho de visualización del plugin. Por defecto '100px'.
+* **maxWidth**: Máximo ancho de visualización del plugin. Por defecto '200px'.
+* **position**: Posición del plugin sobre el mapa.
   - 'TL': (top left) - Arriba a la izquierda.
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
   - 'BR': (bottom right) - Abajo a la derecha.
-- **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
+* **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
 ### Funcionamiento de los parámetros "defaultURL" y "defaultAttribution".
 En el caso de la capa base no se contemple en los casos siguientes, se podra definir un nombre de atribución y una URL por defecto usando los siguientes parámetros:
-- **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
-- **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario.
+* **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
+* **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario.
 
   * Si la capa base es "OI.OrthoimageCoverage" y tiene un nivel de zoom menor a 14:
     - Nombre de la atribución: Copernicus Sentinel 2019.
