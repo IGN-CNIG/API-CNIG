@@ -34,7 +34,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
     - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
     - **layers**: Array con las capas que se quieren cargar al seleccionar esta opción.
 - **empty**: Habilita la posibilidad de mostrar el mapa sin las capas cargadas en el plugin.
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin (Por defecto = Capas de fondo).
+- **tooltip**: Información emergente para mostrar en el tooltip del plugin.Por defecto: "Capas de fondo".
 
 
 # Ejemplo de uso
