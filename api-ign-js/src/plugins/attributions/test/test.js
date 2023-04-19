@@ -33,10 +33,6 @@ const map = M.map({
 
 window.map = map;
 
-// M.config.attributions.defaultAttribution = 'Ministerio de Justicia';
-// M.config.attributions.defaultURL = 'https://mapadefosas.mjusticia.es';
-
-
 const mp = new Attributions({
   mode: 1,
   scale: 10000,

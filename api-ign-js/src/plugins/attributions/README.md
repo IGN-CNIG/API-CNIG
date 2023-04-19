@@ -8,9 +8,7 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
  <link href="https://componentes.cnig.es/api-core/plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
  <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/attributions/attributions.ol.min.js"></script>
 ``` 
-# Configuraciones globales
-- **M.config.attributions.defaultAttribution**: Valor por defecto a mostrar en la atribución del mapa.
-- **M.config.attributions.defaultURL**: Valor por defecto a usar como url asociada a la atribución por defecto.
+
 # Parámetros
 El constructor se inicializa con un JSON con los siguientes atributos:
  * **mode**: Modo de uso del plugin Attributions (1 ó 2).
@@ -49,7 +47,7 @@ En el caso de la capa base no se contemple en los casos siguientes, se podra def
     - URL de la atribución: https://sentinel.esa.int/web/sentinel/home.
   * Si la capa base es "LC.LandCoverSurfaces" y tiene un nivel de zoom menor a 14:
     - Nombre de la atribución: CORINE-Land Cover. Instituto Geográfico Nacional.
-    - URL de la atribución: M.config.attributions.defaultURL o defaultURL si este tiene valor.
+    - URL de la atribución: https://www.ign.es/ o defaultURL si este tiene valor.
   * Si la capa base es "IGNBaseTodo":
     - Nombre de la atribución: Sistema Cartográfico Nacional.
     - URL de la atribución: http://www.scne.es/.
