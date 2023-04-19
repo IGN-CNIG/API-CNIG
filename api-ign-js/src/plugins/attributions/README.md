@@ -38,7 +38,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BR': (bottom right) - Abajo a la derecha.
 * **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
 ### Parámetros "defaultURL" y "defaultAttribution".
-En el caso de que la capa base no se contemple en los casos siguientes, se podra definir un nombre de atribución y una URL por defecto usando los siguientes parámetros:
+
 * **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
 * **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario.
 
@@ -54,6 +54,9 @@ En el caso de que la capa base no se contemple en los casos siguientes, se podra
   * Si alguno de los casos anterior supera el zoom 14:
     - Nombre de la atribución: Sistema Cartográfico Nacional.
     - URL de la atribución: http://www.scne.es/.
+
+En el caso de que la capa base no se corresponda con los casos anteriores, se podrá definir un nombre de atribución y una URL por defecto.
+
 # Archivos de atribuciones CNIG
 Ejemplos de archivo de atribuciones según formato predefinido (kml o geojson):
 - https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml
