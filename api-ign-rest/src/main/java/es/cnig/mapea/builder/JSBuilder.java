@@ -1,5 +1,6 @@
 package es.cnig.mapea.builder;
 
+import java.util.Base64;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -125,14 +126,35 @@ public class JSBuilder {
 
 		pluginBuilder.append("new ").append(plugin.getConstructor());
 		pluginBuilder.append("(");
+		
+		boolean founded = false;
+		int index = 0;
+		if (paramValues != null) {
+			int i = 0;
+			while (!founded && i < paramValues.length) {
+				if (paramValues[i].contains("base64:")) {
+					founded = true;
+					index = i;
+				}
+				i++;
+			}
+		}
 
-		List<PluginAPIParam> pluginAPIParams = plugin.getParameters();
-		if (pluginAPIParams != null) {
-			for (int i = 0; i < pluginAPIParams.size(); i++) {
-				PluginAPIParam pluginAPIParam = pluginAPIParams.get(i);
-				pluginBuilder.append(readPluginParameter(pluginAPIParam, paramValues));
-				if (i < (pluginAPIParams.size() - 1)) {
-					pluginBuilder.append(",");
+		if (founded) {
+			String base64 = paramValues[index].replace("base64:", "");
+			byte[] decodedBytes = Base64.getDecoder().decode(base64);
+			String decoded = new String(decodedBytes);
+			JSONObject decodedJSON = new JSONObject(decoded); 
+			pluginBuilder.append(decodedJSON);
+		} else {
+			List<PluginAPIParam> pluginAPIParams = plugin.getParameters();
+			if (pluginAPIParams != null) {
+				for (int i = 0; i < pluginAPIParams.size(); i++) {
+					PluginAPIParam pluginAPIParam = pluginAPIParams.get(i);
+					pluginBuilder.append(readPluginParameter(pluginAPIParam, paramValues));
+					if (i < (pluginAPIParams.size() - 1)) {
+						pluginBuilder.append(",");
+					}
 				}
 			}
 		}

@@ -5,3 +5,4 @@
 - Se dispara evento CHANGE_ZOOM al realizar zoom al mapa
 - Se modifica lectura GetCapabilities en fulltoc
 - Mejoras parametrización plugin selectionzoom
+- Se permite enviar parámetros por API REST a los plugins en base64

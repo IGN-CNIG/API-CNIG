@@ -231,6 +231,19 @@ export default class SelectionZoom extends M.Plugin {
   }
 
   /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    const objJsonStr = JSON.stringify(this.options);
+    const objJsonB64 = window.btoa(objJsonStr);
+    return `${this.name}=base64:${objJsonB64}`;
+  }
+
+  /**
    * Turns layerOpts parameter into piece of REST url.
    * @public
    * @function
