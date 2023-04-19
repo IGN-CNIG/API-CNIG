@@ -39,13 +39,15 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 * **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
 ### Parámetros "defaultURL" y "defaultAttribution".
 
-  * Si la capa base es "OI.OrthoimageCoverage" y tiene un nivel de zoom menor a 14:
+Para determinadas capas base ("OI.OrthoimageCoverage", "LC.LandCoverSurfaces" y "IGNBaseTodo"), el nombre y url de atribución cargan los valores especificados por defecto.
+
+  * Si la capa base es "OI.OrthoimageCoverage" (https://sentinel.esa.int/web/sentinel/home) y tiene un nivel de zoom menor a 14:
     - Nombre de la atribución: Copernicus Sentinel 2019.
     - URL de la atribución: https://sentinel.esa.int/web/sentinel/home.
-  * Si la capa base es "LC.LandCoverSurfaces" y tiene un nivel de zoom menor a 14:
+  * Si la capa base es "LC.LandCoverSurfaces" (https://www.ign.es/) y tiene un nivel de zoom menor a 14:
     - Nombre de la atribución: CORINE-Land Cover. Instituto Geográfico Nacional.
     - URL de la atribución: https://www.ign.es/ o defaultURL si este tiene valor.
-  * Si la capa base es "IGNBaseTodo":
+  * Si la capa base es "IGNBaseTodo" (http://www.scne.es/):
     - Nombre de la atribución: Sistema Cartográfico Nacional.
     - URL de la atribución: http://www.scne.es/.
   * Si alguno de los casos anterior supera el zoom 14:
