@@ -28,7 +28,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
             - 'BR': (bottom right) - Abajo a la derecha.
      - **2** ` NO DISPONIBLE`: Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. 
 * **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
-* **tooltip**: Valor a usar para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'. 
+* **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'. 
 * **minWidth**: Mínimo ancho de visualización del plugin. Por defecto '100px'.
 * **maxWidth**: Máximo ancho de visualización del plugin. Por defecto '200px'.
 * **position**: Posición del plugin sobre el mapa.
