@@ -15,8 +15,8 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 El constructor se inicializa con un JSON con los siguientes atributos:
  * **mode**: Modo de uso del plugin Attributions (1 ó 2).
     1) Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: ==DISPONIBLE==
-      - **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
-      - **type**: En el caso de no pasar nada por el parámetro layer o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
+        + **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
+        + **type**: En el caso de no pasar nada por el parámetro layer o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
       - **layerName**: Nombre asociado a la capa de atribuciones (nombre de la capa). Se usa para la construcción de la capa. Por defecto: 'attributions'.
       - **layer**: Capa definida por el usuario para determinar las atribuciones {M.layer.GeoJSON | M.layer.KML}. No requiere los parámetros anteriores (type, url y layerName)
       - **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
