@@ -14,21 +14,21 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 # Parámetros
 El constructor se inicializa con un JSON con los siguientes atributos:
  - **mode**: Modo de uso del plugin Attributions (1 ó 2).
-    1. Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: ==DISPONIBLE==
-        - **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
-        - **type**: En el caso de no pasar nada por el parámetro layer o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
-        - **layerName**: Nombre asociado a la capa de atribuciones (nombre de la capa). Se usa para la construcción de la capa. Por defecto: 'attributions'.
-        - **layer**: Capa definida por el usuario para determinar las atribuciones {M.layer.GeoJSON | M.layer.KML}. No requiere los parámetros anteriores (type, url y layerName)
-        - **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
-        - **urlParam**: Nombre del campo de url en el archivo. Por defecto: 'url'.
-        - **minWidth**: Mínimo ancho de visualización del plugin. Por defecto: '100px'.
-        - **maxWidth**: Máximo ancho de visualización del plugin. Por defecto: '200px'.
-        - **position**: Posición del plugin sobre el mapa.
+    1) Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: ==DISPONIBLE==
+      - **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
+      - **type**: En el caso de no pasar nada por el parámetro layer o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
+      - **layerName**: Nombre asociado a la capa de atribuciones (nombre de la capa). Se usa para la construcción de la capa. Por defecto: 'attributions'.
+      - **layer**: Capa definida por el usuario para determinar las atribuciones {M.layer.GeoJSON | M.layer.KML}. No requiere los parámetros anteriores (type, url y layerName)
+      - **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
+      - **urlParam**: Nombre del campo de url en el archivo. Por defecto: 'url'.
+      - **minWidth**: Mínimo ancho de visualización del plugin. Por defecto: '100px'.
+      - **maxWidth**: Máximo ancho de visualización del plugin. Por defecto: '200px'.
+      - **position**: Posición del plugin sobre el mapa.
             - 'TL': (top left) - Arriba a la izquierda.
             - 'TR': (top right) - Arriba a la derecha.
             - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
             - 'BR': (bottom right) - Abajo a la derecha.
-    2. Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. ==NO DISPONIBLE==
+    2) Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. ==NO DISPONIBLE==
 - **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
 - **tooltip**: Valor a usar para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'. 
 - **minWidth**: Mínimo ancho de visualización del plugin. Por defecto '100px'.
