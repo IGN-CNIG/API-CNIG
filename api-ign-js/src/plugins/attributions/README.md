@@ -39,6 +39,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 * **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
 ### Parámetros "defaultURL" y "defaultAttribution".
 
+
 * **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
 * **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario.
 
