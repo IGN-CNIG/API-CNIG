@@ -25,13 +25,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsed**: Valor booleano que indica si el plugin aparece colapsado o no.
-  - true (por defecto).
-  - false.
+- **collapsed**: Indica si el plugin viene cerrado por defecto. Por defecto: true.
 
-- **collapsible**: Valor booleano que indica si el plugin puede colapsarse o no.
-  - true (por defecto).
-  - false.
+- **collapsible**: Indica si el plugin se puede cerrar. Por defecto: true.
 
 - **serverUrl**: URL del servidor Geoprint.
 
@@ -41,13 +37,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **credits**: URL que indica el estado del servidor Geoprint.
 
-- **georefActive**: Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no.
-- true (por defecto).
-- false.
+- **georefActive**: Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no. Por defecto: true.
 
-- **fototeca**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición.
-- true.
-- false (por defecto).
+- **fototeca**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición. Por defecto: false.
 
 - **logo**: URL de una imagen para añadir como logo en la esquina superior derecha.
 
@@ -56,21 +48,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **filterTemplates**: Listado de nombres de plantillas que queremos tener disponibles, si no se manda el parámetro aparecerán todas por defecto.
 
 
-# Ejemplos de uso
+# Ejemplo de uso
 
-## Configuración por defecto sin parámetros:
 ```javascript
-mapajs = M.map({
-  container: "map"
-});
-
-mapajs.addPlugin(new M.plugin.PrinterMap());
-```
-## Configuración con parámetros:
-```javascript
-mapajs = M.map({
-  container: "map"
-});
 
 mapajs.addPlugin(new M.plugin.PrinterMap({
   position: 'TR',
@@ -80,3 +60,4 @@ mapajs.addPlugin(new M.plugin.PrinterMap({
   printTemplateUrl: 'https://geoprint.desarrollo.guadaltel.es/print/CNIG',
   printStatusUrl: 'https://geoprint.desarrollo.guadaltel.es/print/status',
 }));
+```
