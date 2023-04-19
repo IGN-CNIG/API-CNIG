@@ -38,7 +38,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BR': (bottom right) - Abajo a la derecha.
 * **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
 ### Funcionamiento de los parámetros "defaultURL" y "defaultAttribution".
-En el caso de la capa base no se contemple en los casos siguientes, se podra definir un nombre de atribución y una URL por defecto usando los siguientes parámetros:
+En el caso de que la capa base no se contemple en los casos siguientes, se podra definir un nombre de atribución y una URL por defecto usando los siguientes parámetros:
 * **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
 * **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario.
 
