@@ -33,7 +33,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
     - **preview**: Ruta a la imagen de previsualización que se muestra.
     - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
     - **layers**: Array con las capas que se quieren cargar al seleccionar esta opción.
-- **empty**: Habilita la posibilidad de mostrar el mapa sin las capas de fondo cargadas del plugin.
+- **empty**: Habilita la posibilidad de mostrar el mapa sin las capas de fondo cargadas del plugin (capa de fondo "vacía").
 - **tooltip**: Información emergente para mostrar en el tooltip del plugin. Por defecto: "Capas de fondo".
 
 
