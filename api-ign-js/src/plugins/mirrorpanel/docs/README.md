@@ -7,20 +7,18 @@ Plugin que permite comparar varias capas dividiendo la pantalla en varias partes
 
 # Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **mirrorpanel.ol.min.js**
-- **mirrorpanel.ol.min.css**
+- mirrorpanel.ol.min.js
+- mirrorpanel.ol.min.css
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/mirrorpanel/mirrorpanel.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/mirrorpanel/mirrorpanel.ol.min.js"></script>
+ <link href="../../plugins/mirrorpanel/mirrorpanel.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/mirrorpanel/mirrorpanel.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
@@ -57,7 +55,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **backImgLayersParams**: Es un objeto con todos los parámetros del plugin **M.plugin.BackImgLayer** de los mapas espejo.
 
 - **interface**: Define si mostrar o no la interfaz del plugin.
-
+- **tooltip**. Tooltip que se muestra sobre el plugin.
 
 # Multi idioma
 

@@ -4,16 +4,25 @@ Muestra referencia catastral para un punto y provee de enlace a la información 
 
 ## Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **infocatastro.ol.min.js**
-- **infocatastro.ol.min.css**
+- infocatastro.ol.min.js
+- infocatastro.ol.min.css
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/infocatastro/infocatastro.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/infocatastro/infocatastro.ol.min.js"></script>
+ <link href="../../plugins/infocatastro/infocatastro.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/infocatastro/infocatastro.ol.min.js"></script>
 ```
+
+# Parámetros
+El constructor se inicializa con un JSON de options con los siguientes atributos:
+
+- **position**. Indica la posición donde se mostrará el plugin.
+  - 'TL':top left
+  - 'TR':top right (default)
+  - 'BL':bottom left
+  - 'BR':bottom right
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+- **catastroWMS**. URL Catastro.
 
 ## Ejemplos de uso
 

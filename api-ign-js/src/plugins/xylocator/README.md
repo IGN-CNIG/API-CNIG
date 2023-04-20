@@ -6,20 +6,18 @@ Las coordenadas son transformadas a la proyección que tenga el mapa en ese mome
 
 # Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **xylocator.ol.min.js**
-- **xylocator.ol.min.css**
+- xylocator.ol.min.js
+- xylocator.ol.min.css
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/xylocator/xylocator.ol.min.js"></script>
+ <link href="../../plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/xylocator/xylocator.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **projections**: Proyecciones de origen que se mostrarán para seleccionar las coordenadas a localizar.
 ** Por defecto los valores posibles son:
@@ -41,6 +39,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
+- **zoom**. Zoom que se aplica cuando se realiza una búsqueda. 
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Eventos
 

@@ -22,6 +22,9 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BL': (bottom left) - Abajo a la izquierda (por defecto).
   - 'BR': (bottom right) - Abajo a la derecha.
 - **helpLink**: Enlace al manual de uso.
+- **collapsed**. Indica si el plugin aparece abierto por defecto (true/false).
+- **collapsible**. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).
+- **tootltip**. Tooltip que se muestra sobre el plugin.
 
 
 # Ejemplo de uso

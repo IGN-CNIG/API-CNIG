@@ -4,21 +4,19 @@ Muestra información GetFeatureInfo mediante activación de plugin.
 
 # Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **information.ol.min.js**
-- **information.ol.min.css**
+- information.ol.min.js
+- information.ol.min.css
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/information/information.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/information/information.ol.min.js"></script>
+ <link href="../../plugins/information/information.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/information/information.ol.min.js"></script>
 ```
 
 
 # Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 
 - **position**: Indica la posición donde se mostrará el plugin.
@@ -26,7 +24,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **tooltip**: Descripción emergente que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
+- **tooltip**: Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
 - **format**: Formato de respuesta de la consulta GetFeatureInfo.
 - **featureCount**: Máximo número de features a los que realizar la consulta.
 - **buffer**: Buffer del click para realizar la consulta.

@@ -4,20 +4,18 @@ Provee de enlaces a sitios, redes sociales y correo institucionales.
 
 # Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **contactlink.ol.min.js**
-- **contactlink.ol.min.css**
+- contactlink.ol.min.js
+- contactlink.ol.min.css
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core)/plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/contactlink/contactlink.ol.min.js"></script>
+ <link href="../../plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/contactlink/contactlink.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
@@ -34,6 +32,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **pinterest**: Indica la url al Pinterest del CNIG.
 - **youtube**: Indica la url al Youtube del CNIG.
 - **mail**: Indica la url para escribir correo al CNIG.
+- **collapsible**. Indica si el plugin se puede collapsar en un botón (true/false).
+- **collapsed**. Indica si el plugin viene colapsado de entrada (true/false).
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Ejemplos de uso
 

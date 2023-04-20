@@ -15,20 +15,18 @@ Example: <url_mapea>?plugins=toc
 
 # Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **toc.ol.min.js**
-- **toc.ol.min.css**
+- toc.ol.min.js
+- toc.ol.min.css
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/toc/toc.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/toc/toc.ol.min.js"></script>
+ <link href="../../plugins/toc/toc.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/toc/toc.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **position**. Indica la posición donde se mostrará el plugin sobre el mapa.
   - 'TL': (top left) - Arriba a la izquierda.
@@ -39,6 +37,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsible**. Si es *true*, el panel del plugin puede abrirse y cerrarse. Por defecto tiene el valor *true*.
 
 - **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Ejemplos de uso
 

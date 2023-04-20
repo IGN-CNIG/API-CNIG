@@ -5,20 +5,18 @@ Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como 
 
 # Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **vectors.ol.min.js**
-- **vectors.ol.min.css**
+- vectors.ol.min.js
+- vectors.ol.min.css
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/vectors/vectors.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/vectors/vectors.ol.min.js"></script>
+ <link href="../../plugins/vectors/vectors.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/vectors/vectors.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
@@ -27,6 +25,20 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
+- **wfszoom**. Zoom WFS, por defecto 12.
+- **precharged**. Conjunto de capas. Ejemplo:
+```JavaScript
+const precharged = [
+  {
+    name: 'Hidrografía',
+    url: 'https://servicios.idee.es/wfs-inspire/hidrografia?',
+  },
+  {
+    name: 'Límites administrativos',
+    url: 'https://www.ign.es/wfs-inspire/unidades-administrativas?',
+  },
+];
+```
 
 # Parámetros API REST
 ```javascript

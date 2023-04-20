@@ -7,40 +7,38 @@ Plugin que permite comparar varias capas sobre una cartografía base. La extensi
 
 # Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **lyrcompare.ol.min.js**
-- **lyrcompare.ol.min.css**
+- lyrcompare.ol.min.js
+- lyrcompare.ol.min.css
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/lyrcompare/lyrcompare.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/lyrcompare/lyrcompare.ol.min.js"></script>
+ <link href="../../plugins/lyrcompare/lyrcompare.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/lyrcompare/lyrcompare.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **layer**: Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa),
+- **layer**. Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa),
 la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto.
 A esta/s capa/s se le aplicará el efecto de transparencia.
 
-- **position**: Indica la posición donde se mostrará el plugin.
+- **position**. Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsible**: Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto tiene el valor *true*.
+- **collapsible**. Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto tiene el valor *true*.
 
-- **collapsed**: Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
+- **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
 
-- **staticDivision**: Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón *(valor 0)*, por el punto medio del lienzo de cartografía *(valor 1)* o por el punto medio del lienzo de cartografía con líneas arrastrables *(valor 2)*.
+- **staticDivision**. Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón *(valor 0)*, por el punto medio del lienzo de cartografía *(valor 1)* o por el punto medio del lienzo de cartografía con líneas arrastrables *(valor 2)*.
 
-- **opacityVal**: Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
+- **opacityVal**. Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
 
-- **comparisonMode**: Define el tipo de comparación con la que arranca. Rango 0,3.
+- **comparisonMode**. Define el tipo de comparación con la que arranca. Rango 0,3.
   - 0: arranca con el modo de comparación apagado.
   - 1: arranca con el modo de comparación cortina vertical.
   - 2: arranca con el modo de comparación de cortina horizontal.
@@ -49,15 +47,17 @@ A esta/s capa/s se le aplicará el efecto de transparencia.
   ** Para ver el efecto de cada uno podemos acceder al test https://componentes.cnig.es/api-core/lyrcompare.jsp?language=es y cambiar las opciones.
 
 
-- **defaultLyrA**: Define la capa uno que se carga por defecto. Valores de 1 al número de capas disponibles.
+- **defaultLyrA**. Define la capa uno que se carga por defecto. Valores de 1 al número de capas disponibles.
 
-- **defaultLyrB**: Define la capa uno que se carga por defecto. Valores de 2 al número de capas disponibles.
+- **defaultLyrB**. Define la capa uno que se carga por defecto. Valores de 2 al número de capas disponibles.
 
-- **defaultLyrC**: Define la capa uno que se carga por defecto. Valores de 3 al número de capas disponibles.
+- **defaultLyrC**. Define la capa uno que se carga por defecto. Valores de 3 al número de capas disponibles.
 
-- **defaultLyrD**: Define la capa uno que se carga por defecto. Valores de 4 al número de capas disponibles.
+- **defaultLyrD**. Define la capa uno que se carga por defecto. Valores de 4 al número de capas disponibles.
 
-- **interface**: Define si mostrar o no la interfaz del plugin.
+- **interface**. Define si mostrar o no la interfaz del plugin.
+
+- **tooltip**. Tooltip que se muestra sobre el plugin.
 
 
 # Multi idioma
@@ -158,10 +158,10 @@ WMTS con formato Mapea y sin interfaz.
 const pluginLyrCompare = new LyrCompare({
   position: 'TL',
   layers: [
-    'WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11',
-    'WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster',
-    'WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*SPOT_Andalucia',
-    'WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*base',
+    'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',        
+       'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true',
+       'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true',
+       'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true',
   ],
   collapsible: true,
   collapsed: false,
@@ -208,16 +208,16 @@ const pluginLyrCompare = new LyrCompare({
 WMTS como objeto.
 
 ```javascript
-const wmts1 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11');
-const wmts2 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster');
-const wmts3 = new M.layer.WMTS('WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*SPOT_Andalucia');
-const wmts4 = new M.layer.WMTS('WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*base');
+const wmts1 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true');
+const wmts2 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true');
+const wmts3 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true');
+const wmts4 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true');
 myMap.addLayers([wmts1, wmts2, wmts3, wmts4]);
 
 const pluginLyrCompare = new LyrCompare({
   position: 'TL',
   layers: [
-    'orto_2010-11', 'toporaster', 'SPOT_Andalucia-1986', 'base'
+    'MTN', 'OI.OrthoimageCoverage', 'IGNBaseOrto', 'IGNBaseTodo'
   ],
   collapsible: true,
   collapsed: false,
@@ -236,14 +236,14 @@ const pluginLyrCompare = new LyrCompare({
 WMS + WMTS como cadena y como texto.
 
 ```javascript
-const wmts1 = new M.layer.WMTS('WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*orto_2010-11');
+const wmts1 = new M.layer.WMTS('WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true');
 const wms2 = new M.layer.WMS('WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT');
 myMap.addLayers([wmts1, wms2]);
 
 const pluginLyrCompare = new LyrCompare({
   position: 'TL',
   layers: [
-    'orto_2010-11', 'OLISTAT', 'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986', 'WMTS*http://www.callejerodeandalucia.es/servicios/base/gwc/service/wmts?*base'
+    'orto_2010-11', 'OLISTAT', 'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986', 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true'
   ],
   collapsible: true,
   collapsed: false,
@@ -258,27 +258,3 @@ const pluginLyrCompare = new LyrCompare({
 });
 ```
 
-## Ejemplo 8
-Al añadir capas que no son válidas para el plugin no se contarán y mostrará el mensaje: El número de capas es insuficiente para aplicar el efecto.
-
-```javascript
-const pluginLyrCompare = new LyrCompare({
-  position: 'TL',
-  layers: [
-    'WFST*CapaWFS*http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?*tematicos:Provincias*MPOLYGON',
-    'KML*Arboleda*http://mapea4-sigc.juntadeandalucia.es/files/kml/*arbda_sing_se.kml*true',
-    'WFST*CapaWFSColegio*http://g-gis-online-lab.desarrollo.guadaltel.es/geoserver/ggiscloud_root/wms?*ggiscloud_root:a1585301579731_colegios*MPOINT',
-    'WFST*CapaWFSRed*http://g-gis-online-lab.desarrollo.guadaltel.es/geoserver/ggiscloud_root/wms?*ggiscloud_root:a1585301955480_red_hidrografica*MLINE',
-  ],
-  collapsible: true,
-  collapsed: false,
-  staticDivision: 1,
-  opacityVal: 100,
-  comparisonMode: 0,
-  defaultLyrA: 1,
-  defaultLyrB: 2,
-  defaultLyrC: 3,
-  defaultLyrD: 4,
-  interface: true,
-});
-```

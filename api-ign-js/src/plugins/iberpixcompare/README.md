@@ -42,6 +42,10 @@ Plugin compilatorio de comparadores
 
 - **vectorsConfig**. Parámetros opcionales del plugin Vectors.
 
+- **lyrcompareParams**. Objeto con el resto de parámetros de lyrcompare
+
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+
 # Ejemplos de uso
 
 ## Ejemplo

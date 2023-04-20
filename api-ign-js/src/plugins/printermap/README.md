@@ -5,19 +5,17 @@ Plugin de impresión a través del servicio Geoprint. Las capacidades del mismo 
 
 # Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **printermap.ol.min.js**
-- **printermap.ol.min.css**
+- printermap.ol.min.js
+- printermap.ol.min.css
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/printermap/printermap.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/printermap/printermap.ol.min.js"></script>
+ <link href="../../plugins/printermap/printermap.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/printermap/printermap.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
@@ -25,9 +23,13 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsed**: Indica si el plugin viene cerrado por defecto. Por defecto: true.
+- **collapsed**: Valor booleano que indica si el plugin aparece colapsado o no.
+  - true (por defecto).
+  - false.
 
-- **collapsible**: Indica si el plugin se puede cerrar. Por defecto: true.
+- **collapsible**: Valor booleano que indica si el plugin puede colapsarse o no.
+  - true (por defecto).
+  - false.
 
 - **serverUrl**: URL del servidor Geoprint.
 
@@ -37,9 +39,13 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **credits**: URL que indica el estado del servidor Geoprint.
 
-- **georefActive**: Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no. Por defecto: true.
+- **georefActive**: Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no.
+- true (por defecto).
+- false.
 
-- **fototeca**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición. Por defecto: false.
+- **fototeca**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición.
+- true.
+- false (por defecto).
 
 - **logo**: URL de una imagen para añadir como logo en la esquina superior derecha.
 
@@ -48,16 +54,27 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **filterTemplates**: Listado de nombres de plantillas que queremos tener disponibles, si no se manda el parámetro aparecerán todas por defecto.
 
 
-# Ejemplo de uso
+# Ejemplos de uso
 
+## Configuración por defecto sin parámetros:
 ```javascript
+mapajs = M.map({
+  container: "map"
+});
+
+mapajs.addPlugin(new M.plugin.PrinterMap());
+```
+## Configuración con parámetros:
+```javascript
+mapajs = M.map({
+  container: "map"
+});
 
 mapajs.addPlugin(new M.plugin.PrinterMap({
   position: 'TR',
   collapsed: false,
   collapsible: false,
-  serverUrl: 'https://geoprint.desarrollo.guadaltel.es',
-  printTemplateUrl: 'https://geoprint.desarrollo.guadaltel.es/print/CNIG',
-  printStatusUrl: 'https://geoprint.desarrollo.guadaltel.es/print/status',
+  serverUrl: 'https://componentes.cnig.es', 
+  printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG', 
+  printStatusUrl: 'https://componentes.cnig.es/geoprint/print/CNIG/status',
 }));
-```

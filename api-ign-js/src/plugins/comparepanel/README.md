@@ -40,15 +40,13 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
 
 ## Dependencias 👷
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **comparepanel.ol.min.js**
-- **comparepanel.ol.min.css**
+- comparepanel.ol.min.js
+- comparepanel.ol.min.css
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/comparepanel/comparepanel.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/comparepanel/comparepanel.ol.min.js"></script>
+ <link href="../../plugins/comparepanel/comparepanel.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="../../plugins/comparepanel/comparepanel.ol.min.js"></script>
 ```
 
 
@@ -66,7 +64,7 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 ## Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda.
@@ -113,7 +111,10 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - Servicio en formato API-CORE para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
 
 - **urlcoberturas**: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS. Si este parámetro no se encuentra presente, no se aplicará el filtro por coberturas y todas las capas podrán seleccionarse siempre, aunque en la zona visible en el mapa no tenga cobertura.
--  **lyrsMirrorMinZindex**: indica el nivel zIndex a partir del cual se cargan las capas superpuestas en los comparadores espejo. Por defecto, tiene valor de 100.
+- **layerCobertura**. Capa de cobertura con atribuciones.
+- **layerName**. El nombre del sombrero de capa vectorial contiene la información de atribución.
+- **lyrsMirrorMinZindex**: indica el nivel zIndex a partir del cual se cargan las capas superpuestas en los comparadores espejo. Por defecto, tiene valor de 100.
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 ```javascript
   // Ejemplos de definiciones de capas esperadas por el comparador en formato StringLayer
@@ -135,7 +136,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 ```
 
 - **mirrorpanelParams**: Parámetros opcionales del plugin mirrorpanel. A destacar:
-  - showCursors (true/false): Si es true, muestra cursores sincronizados en cada uno de los mapas espejo. Defecto: *true*.
+  - showCursors (true/false): Si es true, muestra cursores sincronizados en cada unao de los mapas espejo. Defecto: *true*.
   - reverseLayout (true/false): indica en qué posición de la pantalla se mantiene el mapa principal (el que contiene el botón con las herramientas de comparación) con respecto a los demás. *False*: se sitúa a la izquierda. *True*: se sitúa a la derecha. Defecto: *false*.
   - enabledPlugins: permite que algunos de los plugins configurados en el mapa principal se repliquen en los mapas espejo: disponible actualmente para el control FullTOC y el control Vectors.
 

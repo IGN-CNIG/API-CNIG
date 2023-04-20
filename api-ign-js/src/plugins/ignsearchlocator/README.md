@@ -5,14 +5,12 @@
 
 # Descripción
 
-Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN). También permite localizar coordenadas en varios SRS.
+Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN), también permite localizar coordenadas en varios SRS.
 
 # Dependencias
 
-Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
-
-- **ignsearchlocator.ol.min.js**
-- **ignsearchlocator.ol.min.css**
+- ignsearchlocator.ol.min.js
+- ignsearchlocator.ol.min.css
 
 ```html
  <link href="https://componentes.cnig.es/api-core/plugins/ignsearchlocator/ignsearchlocator.ol.min.css" rel="stylesheet" />
@@ -21,7 +19,7 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 # Parámetros
 
-El constructor se inicializa con un JSON con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda (por defecto).
@@ -240,6 +238,10 @@ pluginignsearchlocator.on('xylocator:locationCentered', (result) => {
   console.log(response.zoom);
 });
 ```
+
+# Configuraciones globales
+- M.config.IGNSEARCH_TYPES_CONFIGURATION: lista de tipos de topónimos que se deben mostrar en las búsquedas a la IDEE.
+
 
 # Ejemplo de uso
 

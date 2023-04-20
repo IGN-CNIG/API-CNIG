@@ -37,6 +37,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **printStatusUrl**. URL que indica el estado del servidor Geoprint.
 
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+
 
 # Ejemplos de uso
 
