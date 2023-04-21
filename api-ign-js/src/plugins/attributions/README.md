@@ -1,17 +1,29 @@
-# M.plugin.Attributions
+<p align="center">
+  <img src="https://www.ign.es/resources/viewer/images/logoApiCnig0.5.png" height="152" />
+</p>
+<h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.Attributions</small></h1>
+
+# Descripción
+
 Plugin que permite mostrar la información de las atribuciones sobre las capas que se visualizan en el mapa.
+
 # Dependencias
+
 Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
 - **attributions.ol.min.js**
 - **attributions.ol.min.css**
+
 ```html
  <link href="https://componentes.cnig.es/api-core/plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
  <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/attributions/attributions.ol.min.js"></script>
 ``` 
 
 # Parámetros
+
 El constructor se inicializa con un JSON con los siguientes atributos:
- * **mode**: Modo de uso del plugin Attributions (1 ó 2).
+
+* **mode**: Modo de uso del plugin Attributions (1 ó 2).
      - **1** `DISPONIBLE`: Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: 
          + **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
          + **type**: En el caso de no pasar nada por el parámetro 'layer' o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
@@ -37,6 +49,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
   - 'BR': (bottom right) - Abajo a la derecha.
 * **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
+
 ### Parámetros "defaultURL" y "defaultAttribution".
 
 Para determinadas capas base ("OI.OrthoimageCoverage", "LC.LandCoverSurfaces" y "IGNBaseTodo"), el nombre y url de atribución cargan los valores especificados por defecto.
@@ -64,32 +77,163 @@ Ejemplos de archivo de atribuciones según formato predefinido (kml o geojson):
 - https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml
 - https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml
 - https://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson
-# Ejemplo de uso
+
+# API-REST
+
 ```javascript
-   const map = M.map({
-     container: 'map'
-   });
+URL_API?attributions=position*mode*scale*defaultAttribution*defaultURL*url*type*layerName
+*attributionParam*urlParam*urlAttribute
+```
 
-   const mp = new M.plugin.Attributions({ 
-      mode: 1,
-      scale: 10000,
-      /*Uso de type, para generar una capa de tipo GeoJSON o KML*/
-      type: 'geojson', // En este caso la capa será de tipo GeoJSON
-      url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson', // URL de la capa
-      layerName: 'Ejemplo Attributions', // Nombre de la capa
-      /*
-      + Se puede defenir una capa directamente sin usar los 
-        parámetros anteriores (type, url y layerName).
+<table>
+  <tr>
+    <td>Parámetros</td>
+    <td>Opciones/Descripción</td>
+  </tr>
+  <tr>
+    <td>position</td>
+    <td>TR/TL/BR/BL</td>
+  </tr>
+  <tr>
+    <td>mode</td>
+    <td>1/2</td>
+  </tr>
+  <tr>
+    <td>scale</td>
+    <td>Escala desde la que se activa la asignación de atribuciones</td>
+  </tr>
+  <tr>
+    <td>defaultAttribution</td>
+    <td>Valor por defecto que se mostrará en la atribución del mapa</td>
+  </tr>
+  <tr>
+    <td>defaultURL</td>
+    <td>URL por defecto asociada a la atribución</td>
+  </tr>
+  <tr>
+    <td>url</td>
+    <td>URL del archivo de atribuciones a utilizar</td>
+  </tr>
+  <tr>
+    <td>type</td>
+    <td>kml/geojson</td>
+  </tr>
+  <tr>
+    <td>layerName</td>
+    <td>Nombre de la capa</td>
+  </tr>
+  <tr>
+    <td>attributionParam</td>
+    <td>Nombre del campo de atribución en el archivo</td>
+  </tr>
+  <tr>
+    <td>urlParam</td>
+    <td>Nombre del campo de URL en el archivo</td>
+  </tr>
+  <tr>
+    <td>urlAttribute</td>
+    <td>Texto adicional a añadir en la atribución</td>
+  </tr>
+</table>
 
-      layer: new M.layer.GeoJSON({
-        name: 'Ejemplo Attributions',
-          source: {
-            url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
-          type: 'geojson',
-        },
-      }),
-      */
-      position: 'TL',
-    });
-   map.addPlugin(mp);
+
+### Ejemplos de uso API-REST
+
+```
+https://componentes.cnig.es/api-core?attributions=TR*1*300*attributions*https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml*https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml*kml*attributions
+*atribucion*url*Gobierno de España
+```
+
+```
+https://componentes.cnig.es/api-core?attributions=BL*1*10000***http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson*geojson
+```
+
+# Ejemplo de uso
+
+```javascript
+const map = M.map({
+  container: 'map'
+});
+
+const mp = new M.plugin.Attributions({ 
+  mode: 1,
+  scale: 10000,
+  /*Uso de type, para generar una capa de tipo GeoJSON o KML*/
+  type: 'geojson', // En este caso la capa será de tipo GeoJSON
+  url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson', // URL de la capa
+  layerName: 'Ejemplo Attributions', // Nombre de la capa
+  /*
+  + Se puede defenir una capa directamente sin usar los 
+    parámetros anteriores (type, url y layerName).
+
+  layer: new M.layer.GeoJSON({
+    name: 'Ejemplo Attributions',
+      source: {
+        url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
+      type: 'geojson',
+    },
+  }),
+  */
+  position: 'TL',
+});
+map.addPlugin(mp);
+```
+
+# 👨‍💻 Desarrollo
+
+Para el stack de desarrollo de este componente se ha utilizado
+
+* NodeJS Version: 14.16
+* NPM Version: 6.14.11
+* Entorno Windows.
+
+## 📐 Configuración del stack de desarrollo / *Work setup*
+
+
+### 🐑 Clonar el repositorio / *Cloning repository*
+
+Para descargar el repositorio en otro equipo lo clonamos:
+
+```bash
+git clone [URL del repositorio]
+```
+
+### 1️⃣ Instalación de dependencias / *Install Dependencies*
+
+```bash
+npm i
+```
+
+### 2️⃣ Arranque del servidor de desarrollo / *Run Application*
+
+```bash
+npm run start
+```
+
+## 📂 Estructura del código / *Code scaffolding*
+
+```any
+/
+├── src 📦                  # Código fuente
+├── task 📁                 # EndPoints
+├── test 📁                 # Testing
+├── webpack-config 📁       # Webpack configs
+└── ...
+```
+## 📌 Metodologías y pautas de desarrollo / *Methodologies and Guidelines*
+
+Metodologías y herramientas usadas en el proyecto para garantizar el Quality Assurance Code (QAC)
+
+* ESLint
+  * [NPM ESLint](https://www.npmjs.com/package/eslint) \
+  * [NPM ESLint | Airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
+
+## ⛽️ Revisión e instalación de dependencias / *Review and Update Dependencies*
+
+Para la revisión y actualización de las dependencias de los paquetes npm es necesario instalar de manera global el paquete/ módulo "npm-check-updates".
+
+```bash
+# Install and Run
+$npm i -g npm-check-updates
+$ncu
 ```

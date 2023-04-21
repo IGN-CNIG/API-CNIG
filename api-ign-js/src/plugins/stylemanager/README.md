@@ -16,16 +16,19 @@ La simbología puede ser Compuesta, y a medida que se van aplicando simbologías
 
 # Dependencias
 
-- stylemanager.ol.js
-- stylemanager.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **stylemanager.ol.js**
+- **stylemanager.min.css**
 
 ```html
  <link href="https://componentes.cnig.es/api-core/plugins/stylemanager/stylemanager.ol.min.css" rel="stylesheet" />
  <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/stylemanager/stylemanager.ol.min.js"></script>
 ```
+
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda (por defecto).
@@ -36,10 +39,11 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
 - **layer**: Capa pre seleccionada.<br> Si no tiene o no ha cargado aún sus features, lanzará un error. (Válido sólo para creación del plugin por JS).
 
-# Parámetros API REST
+# API-REST
+
 ```javascript
 URL_API?stylemanager=position*collapsible*collapsed
-````
+```
 
 <table>
   <tr>
@@ -64,31 +68,28 @@ URL_API?stylemanager=position*collapsible*collapsed
 
 ```
 https://componentes.cnig.es/api-core?stylemanager=TR*true*true
+```
 
+```
+https://componentes.cnig.es/api-core?stylemanager=TR
 ```
 
 # Ejemplo de uso
 
 ```javascript
-// Creación por defecto
-var mp = new M.plugin.StyleManager({
-        collapsed: true,
-        collapsible: true,
-        position: 'TL'
-    });
-myMap.addPlugin(mp);
-```  
+const map = M.map({
+  container: 'map'
+});
 
-```javascript
 // Inicialización con capa
 capaVectorial.on(M.evt.LOAD, function() {
-    var mp = new M.plugin.StyleManager({
-        collapsed: true,
-        collapsible: true,
-        position: 'TL',
-        layer: capaVectorial
-    });
-    myMap.addPlugin(mp);
+  const mp = new M.plugin.StyleManager({
+      collapsed: true,
+      collapsible: true,
+      position: 'TL',
+      layer: capaVectorial
+  });
+  map.addPlugin(mp);
 });
 ```  
 

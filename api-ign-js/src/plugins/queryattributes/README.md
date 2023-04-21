@@ -3,37 +3,25 @@
 </p>
 <h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.QueryAttributes</small></h1>
 
-<p align="center">
-  <a title="MIT License" href="LICENSE.md">
-    <img src="https://img.shields.io/badge/license-EUPL-blue.svg">
-  </a>
-  <a title="Node version" href="#">
-    <img src="https://img.shields.io/badge/node-v14.16-blue">
-  </a>  
-  <a title="NPM version" href="#">
-    <img src="https://img.shields.io/badge/npm-v6.14-blue">
-  </a>  
-  <br />
-  <br />
-</p>
-
-## Descripción 👷
+# Descripción
 
 Plugin que permite aplicar filtros sobre las capas de un mapa y visualizar de forma gráfica las features que cumplen los filtros. Permite guardar consultas, combinarlas y exportar los resultados de estas.
 
-## Dependencias 👷
+# Dependencias
 
-- queryattributes.ol.min.js
-- queryattributes.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **queryattributes.ol.min.js**
+- **queryattributes.ol.min.css**
 
 ```html
- <link href="../../plugins/queryattributes/queryattributes.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/queryattributes/queryattributes.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/queryattributes/queryattributes.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/queryattributes/queryattributes.ol.min.js"></script>
 ```
 
-## Parámetros 👷
+# Parámetros
 
-El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
@@ -54,7 +42,7 @@ El constructor se inicializa con un JSON de _options_ con los siguientes atribut
 
 ### 🔸 Definición de campos
 
-Cada campo de la capa vectorial necesita un objeto para definirlo. Los atributos del objeto son
+Cada campo de la capa vectorial necesita un objeto para definirlo. Los atributos del objeto son:
 
 * **name**: nombre del campo en el *feature*.
 * **alias**: denominación del campo para mostrar.
@@ -73,11 +61,45 @@ Cada campo de la capa vectorial necesita un objeto para definirlo. Los atributos
   * **buttonURL**: texto que figura en el botón.
   * **formatter**: valor que se repite.
 
-
-## Ejemplo de definición del plugin
+# API-REST
 
 ```javascript
+URL_API?queryattributes=position*collapsed*collapsible
+```
 
+<table>
+  <tr>
+    <td>Parámetros</td>
+    <td>Opciones/Descripción</td>
+  </tr>
+  <tr>
+    <td>position</td>
+    <td>TR/TL/BR/BL</td>
+  </tr>
+  <tr>
+    <td>collapsed</td>
+    <td>true/false</td>
+  </tr>
+  <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+  </tr>
+</table>
+
+
+### Ejemplos de uso API-REST
+
+```
+https://componentes.cnig.es/api-core?queryattributes=TR*true*false
+```
+
+```
+https://componentes.cnig.es/api-core?queryattributes=TL
+```
+
+# Ejemplo de uso
+
+```javascript
 const map = M.map({
   container: 'map'
 });
@@ -120,7 +142,7 @@ map.addPlugin(mp);
 ```
 
 
-## 📸 Capturas 👷
+## 📸 Capturas
 
 ### 🔸 Elementos de estilo
 
@@ -138,3 +160,62 @@ map.addPlugin(mp);
 ### 🔸 Ventana de información
 
 <img src='assets/captura02.jpg' style='width:400px;'>
+
+# 👨‍💻 Desarrollo
+
+Para el stack de desarrollo de este componente se ha utilizado
+
+* NodeJS Version: 14.16
+* NPM Version: 6.14.11
+* Entorno Windows.
+
+## 📐 Configuración del stack de desarrollo / *Work setup*
+
+
+### 🐑 Clonar el repositorio / *Cloning repository*
+
+Para descargar el repositorio en otro equipo lo clonamos:
+
+```bash
+git clone [URL del repositorio]
+```
+
+### 1️⃣ Instalación de dependencias / *Install Dependencies*
+
+```bash
+npm i
+```
+
+### 2️⃣ Arranque del servidor de desarrollo / *Run Application*
+
+```bash
+npm run start
+```
+
+## 📂 Estructura del código / *Code scaffolding*
+
+```any
+/
+├── src 📦                  # Código fuente
+├── task 📁                 # EndPoints
+├── test 📁                 # Testing
+├── webpack-config 📁       # Webpack configs
+└── ...
+```
+## 📌 Metodologías y pautas de desarrollo / *Methodologies and Guidelines*
+
+Metodologías y herramientas usadas en el proyecto para garantizar el Quality Assurance Code (QAC)
+
+* ESLint
+  * [NPM ESLint](https://www.npmjs.com/package/eslint) \
+  * [NPM ESLint | Airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
+
+## ⛽️ Revisión e instalación de dependencias / *Review and Update Dependencies*
+
+Para la revisión y actualización de las dependencias de los paquetes npm es necesario instalar de manera global el paquete/ módulo "npm-check-updates".
+
+```bash
+# Install and Run
+$npm i -g npm-check-updates
+$ncu
+```

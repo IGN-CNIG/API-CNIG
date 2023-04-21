@@ -3,50 +3,25 @@
 </p>
 <h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.InciCarto</small></h1>
 
-<p align="center">
-  <a title="MIT License" href="LICENSE">
-    <img src="https://img.shields.io/badge/license-EUPL-blue.svg">
-  </a>
-  <a title="Node version" href="https://nodejs.org/es">
-    <img src="https://img.shields.io/badge/node-v14.16-blue">
-  </a>  
-  <a title="NPM version" href="https://www.npmjs.com/package/npm">
-    <img src="https://img.shields.io/badge/npm-v6.14-blue">
-  </a>
-  <a title="Language" href="https://www.w3schools.com/html/" target="_blank">
-    <img src="https://img.shields.io/static/v1?label=Lang&message=HTML&color=maroon">
-  </a>  
-  <a title="Language" href="https://www.w3schools.com/js/" target="_blank">
-    <img src="https://img.shields.io/static/v1?label=Lang&message=Javascript&color=maroon">
-  </a>
-  <a title="Language" href="https://www.w3schools.com/css/" target="_blank">
-    <img src="https://img.shields.io/static/v1?label=Lang&message=CSS3&color=maroon">
-  </a> 
-
-  <br />
-  <br />
-</p>
-
-## Descripción 👷
+# Descripción
 
 Plugin que permite la identificación de incidencias sobre la cartografía. El usuario puede describir el error y si lo desea categorizar el error. Despúes el error puede notificarse por correo electrónico a uno de los buzones de incidencias habilitados o darse de alta en el gestor de incidencias.
 
-| Herramienta cerrada |Despliegue vertical|
-|:----:|:----:|
-|![Imagen1](./assets/incicarto-collapsed.png)|![Imagen1](./assets/incicarto-opened.png)|
 
-## Dependencias 👷
+# Dependencias
 
-- incicarto.ol.min.js
-- incicarto.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **incicarto.ol.min.js**
+- **incicarto.ol.min.css**
 
 
 ```html
- <link href="../../plugins/incicarto/incicarto.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/incicarto/incicarto.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/incicarto/incicarto.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/incicarto/incicarto.ol.min.js"></script>
 ```
 
-## Caso práctico de uso
+# Caso práctico de uso
 
 | | |
 |:----:|:----:|
@@ -62,9 +37,9 @@ Disponemos de dos posibilidades para notificar la incidencia.
 * Al gestor de incidencias INCIGEO para su posterior asignación al servicio competente para su subsanación.
 
 
-## Parámetros de configuración
+# Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
@@ -90,19 +65,49 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'emailTheme': correo de la entidad responsable de subsanar este error.
 - **errorList**: Lista de control con las posibles categorizaciones del error.
 - **productList**: Lista de control con los productos del IGN en los que se ha detectado el error.
+- **wfszoom**: Valor del zoom. Por defecto: 12.
 
-# Parámetros API REST
-
-```javascript
-URL_API?incicarto=position*collapsed*collapsible
-````
-Ejemplo:
+# API-REST
 
 ```javascript
-https://componentes.cnig.es/api-core/?incicarto=BL*true*true
+URL_API?incicarto=position*collapsed*collapsible*wfszoom
 ```
 
-## Ejemplo
+<table>
+  <tr>
+    <td>Parámetros</td>
+    <td>Opciones/Descripción</td>
+  </tr>
+   <tr>
+    <td>position</td>
+    <td>TR/TL/BR/BL</td>
+  </tr>
+   <tr>
+    <td>collapsed</td>
+    <td>true/false</td>
+  </tr>
+   <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+  </tr>
+   <tr>
+    <td>wfszoom</td>
+    <td>Valor del zoom</td>
+  </tr>
+</table>
+
+
+### Ejemplos de uso API-REST
+
+```
+https://componentes.cnig.es/api-core?incicarto=BL*true*true*5
+```
+
+```
+https://componentes.cnig.es/api-core?incicarto=BL*true*true
+```
+
+# Ejemplo de uso
 
 ```javascript
 const mp = new M.plugin.Incicarto({
@@ -164,9 +169,7 @@ const mp = new M.plugin.Incicarto({
 });
 ```
 
----
-
-## 👨‍💻 Desarrollo
+# 👨‍💻 Desarrollo
 
 Para el stack de desarrollo de este componente se ha utilizado
 
@@ -174,7 +177,16 @@ Para el stack de desarrollo de este componente se ha utilizado
 * NPM Version: 6.14.11
 * Entorno Windows.
 
-## 📐 Para configurar el stack de desarrollo
+## 📐 Configuración del stack de desarrollo / *Work setup*
+
+
+### 🐑 Clonar el repositorio / *Cloning repository*
+
+Para descargar el repositorio en otro equipo lo clonamos:
+
+```bash
+git clone [URL del repositorio]
+```
 
 ### 1️⃣ Instalación de dependencias / *Install Dependencies*
 
@@ -192,12 +204,10 @@ npm run start
 
 ```any
 /
-├── assets 🌈               # Recursos
-├── src 📦                  # Código fuente.
+├── src 📦                  # Código fuente
 ├── task 📁                 # EndPoints
 ├── test 📁                 # Testing
-├── tmp 📁                  # Destination directory for images.
-├── webpack-config 📁       # Webpack configs.
+├── webpack-config 📁       # Webpack configs
 └── ...
 ```
 ## 📌 Metodologías y pautas de desarrollo / *Methodologies and Guidelines*
@@ -217,10 +227,3 @@ Para la revisión y actualización de las dependencias de los paquetes npm es ne
 $npm i -g npm-check-updates
 $ncu
 ```
-
-## 🚔 Licencia
-
-* [European Union Public Licence v1.2](https://raw.githubusercontent.com/JoseJPR/tutorial-nodejs-cli-system-notification/main/README.md)
-
-https://cursoapicnig.vercel.app/PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiB0eXBlPSJ0ZXh0L2NzcyIgaHJlZj0iLy9mb250cy5nb29nbGVhcGlzLmNvbS9jc3M/ZmFtaWx5PU11bGkiIC8+DQoNCjxoMj5zdWJqZWN0PC9oMj4NCg0KPGRpdiBjbGFzcz0ibWFpbi1mb3JtIj4NCiAgICA8ZGl2IGNsYXNzPSJmb3JtLWl0ZW0iPg0KICAgICAgICA8bGFiZWwgZm9yPSJkZXN0aW5hdGFyeSI+RGVzdGluYXRhcmlvIGRlIGxhIGluY2lkZW5jaWE8L2xhYmVsPg0KICAgICAgICA8aW5wdXQgaWQ9ImRlc3RpbmF0YXJ5IiB0eXBlPSJ0ZXh0IiBuYW1lPSJkZXN0aW5hdGFyeSIgcGxhY2Vob2xkZXI9ImRlc3RpbmF0YXJ5Ij48L2lucHV0Pg0KICAgIDwvZGl2Pg0KICAgIDxkaXYgY2xhc3M9ImZvcm0taXRlbSI+DQogICAgICAgIDxsYWJlbCBmb3I9InNlbmRlcm5hbWUiPlJlbWl0ZW50ZSBpbmNpZGVuY2lhPC9sYWJlbD4NCiAgICAgICAgPGlucHV0IGlkPSJzZW5kZXJuYW1lIiB0eXBlPSJ0ZXh0IiBuYW1lPSJzZW5kZXJuYW1lIiBwbGFjZWhvbGRlcj0ic2VuZGVybmFtZSI+PC9pbnB1dD4NCiAgICA8L2Rpdj4NCiAgICA8ZGl2IGNsYXNzPSJmb3JtLWl0ZW0iPg0KICAgICAgICA8bGFiZWwgZm9yPSJzZW5kZXJlbWFpbCI+RW1haWwgcmVtaXRlbnRlIGluY2lkZW5jaWE8L2xhYmVsPg0KICAgICAgICA8aW5wdXQgaWQ9InNlbmRlcmVtYWlsIiB0eXBlPSJ0ZXh0IiBuYW1lPSJzZW5kZXJlbWFpbCIgcGxhY2Vob2xkZXI9InNlbmRlcmVtYWlsIj48L2lucHV0Pg0KICAgIDwvZGl2Pg0KICAgIDxkaXYgY2xhc3M9ImZvcm0taXRlbSI+DQogICAgICAgIDxsYWJlbCBmb3I9ImVyckRlc2NyaXB0aW9uIj5EZXNjcmlwY2nDs24gZGUgbGEgaW5jaWRlbmNpYTwvbGFiZWw+DQogICAgICAgIDx0ZXh0YXJlYSBpZD0iZXJyRGVzY3JpcHRpb24iIHR5cGU9InRleHQiIG5hbWU9ImVyckRlc2NyaXB0aW9uIiBwbGFjZWhvbGRlcj0iZXJyRGVzY3JpcHRpb24iPjwvdGV4dGFyZWE+DQogICAgPC9kaXY+DQogICAgPGRpdiBjbGFzcz0iZm9ybS1pdGVtIj4NCiAgICAgICAgPGxhYmVsIGZvcj0ic2VuZGVyZ2VvbWV0cnkiPkdlb21ldHLDrWEgKGdlb0pTT04pPC9sYWJlbD4NCiAgICAgICAgPHRleHRhcmVhIGlkPSJzZW5kZXJnZW9tZXRyeSIgdHlwZT0idGV4dCIgbmFtZT0ic2VuZGVyZ2VvbWV0cnkiIHBsYWNlaG9sZGVyPSJzZW5kZXJnZW9tZXRyeSI+PC90ZXh0YXJlYT4NCiAgICA8L2Rpdj4NCiAgICA8ZGl2IGNsYXNzPSJmb3JtLWl0ZW0iPg0KICAgICAgICA8bGFiZWwgZm9yPSJzaGFyZVVSTCI+VVJMIGRlIGxhIEFwcDwvbGFiZWw+DQogICAgICAgIDxpbnB1dCBpZD0ic2hhcmVVUkwiIHR5cGU9InRleHQiIG5hbWU9InNoYXJlVVJMIiBwbGFjZWhvbGRlcj0ic2hhcmVVUkwiPjwvaW5wdXQ+DQogICAgPC9kaXY+DQo8L2Rpdj4=%7CYm9keSB7IA0KICAgIGZvbnQtZmFtaWx5OiBNdWxpOyANCiAgICBmb250LXNpemU6IDE2cHg7IA0KICAgIGZvbnQtc3R5bGU6IG5vcm1hbDsgDQogICAgZm9udC12YXJpYW50OiBub3JtYWw7IA0KICAgIGZvbnQtd2VpZ2h0OiA3MDA7IA0KfSANCg0KDQpoMiB7IA0KICAgIGZvbnQtZmFtaWx5OiBNdWxpOyANCiAgICBmb250LXNpemU6IDI0cHg7IA0KICAgIGZvbnQtc3R5bGU6IG5vcm1hbDsgDQogICAgZm9udC12YXJpYW50OiBub3JtYWw7IA0KICAgIGZvbnQtd2VpZ2h0OiA3MDA7IA0KICAgIGxpbmUtaGVpZ2h0OiAyNi40cHg7DQp9IA0KDQoubWFpbi1mb3JtIHsNCiAgICBkaXNwbGF5OiBmbGV4Ow0KICAgIG1hcmdpbi10b3A6IDE1cHg7DQogICAgd2lkdGg6IDEwMCU7DQogICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7DQogICAgYWxpZ24tY29udGVudDogY2VudGVyOw0KICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47DQogICAgZmxleC1ncm93OiAyOw0KICAgIGZvbnQtc2l6ZTogMTVweDsNCiAgICBhbGlnbi1pdGVtczogY2VudGVyOw0KfQ0KDQouZm9ybS1pdGVtIHsNCiAgICBkaXNwbGF5OiBmbGV4Ow0KICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47DQogICAgd2lkdGg6IDc1JTsNCiAgICBtYXJnaW4tdG9wOiAxMHB4Ow0KfQ0KDQouZm9ybS1pdGVtIGlucHV0W3R5cGU9dGV4dF0gew0KICAgIG1hcmdpbjogNXB4Ow0KICAgIHBhZGRpbmc6IDVweDsNCiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsNCiAgICBjdXJzb3I6IGF1dG87DQogICAgYm9yZGVyLXJhZGl1czogNHB4Ow0KICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMCwwLDAsLjUpOw0KICAgIC13ZWJraXQtYXBwZWFyYW5jZTogbm9uZTsNCiAgICAtbW96LWFwcGVhcmFuY2U6IG5vbmU7DQogICAgYXBwZWFyYW5jZTogbm9uZTsNCiAgICBjb2xvcjogIzZjNmM2YzsNCiAgICBmb250LXNpemU6IDEzcHg7DQp9DQoNCi5mb3JtLWl0ZW0gdGV4dGFyZWEgew0KICAgIG1hcmdpbjogNXB4Ow0KICAgIHBhZGRpbmc6IDVweDsgICAgDQogICAgZGlzcGxheTogYmxvY2s7DQogICAgYm9yZGVyLXJhZGl1czogNHB4Ow0KICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMCwwLDAsLjUpOw0KICAgIGNvbG9yOiAjNmM2YzZjOw0KICAgIHJlc2l6ZTogbm9uZTsNCiAgICBoZWlnaHQ6IDRlbTsNCn0=%7C
-
