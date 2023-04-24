@@ -238,9 +238,7 @@ export default class SelectionZoom extends M.Plugin {
    * @api
    */
   getAPIRestBase64() {
-    const objJsonStr = JSON.stringify(this.options);
-    const objJsonB64 = window.btoa(objJsonStr);
-    return `${this.name}=base64:${objJsonB64}`;
+    return `${this.name}=base64:${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

@@ -1371,6 +1371,30 @@ export const dragElement = (elmntID, buttonID) => {
 };
 
 /**
+ * Esta función codifica un objeto JSON en base64
+ * @function
+ * @param {Object} JSON
+ * @api
+ */
+export const encodeBase64 = (json) => {
+  const jsonStr = JSON.stringify(json);
+  const jsonB64 = window.btoa(jsonStr);
+  return jsonB64;
+};
+
+/**
+ * Esta función decodifica un objeto en base64 a un
+ * objeto JSON
+ * @function
+ * @param {string} base64
+ * @api
+ */
+export const decodeBase64 = (base64) => {
+  const json = window.atoa(base64);
+  return json;
+};
+
+/**
  * Este comentario no se verá, es necesario incluir
  * una exportación por defecto para que el compilador
  * muestre las funciones.
