@@ -1390,7 +1390,7 @@ export const encodeBase64 = (json) => {
  * @api
  */
 export const decodeBase64 = (base64) => {
-  const json = window.atoa(base64);
+  const json = window.atob(base64);
   return json;
 };
 
