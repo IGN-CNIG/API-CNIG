@@ -30,15 +30,16 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
-- **layerId**: Índice de la capa que se quiera cargar por defecto.
+- **layerId**: Índice de la capa que se quiera cargar por defecto. Por ejemplo, si se pasa el número 2 se mostrará la capa que se encuentre en la segunda posición.
 - **columnsNumber**: Número de columnas que parametrizan la tabla de capas de fondo disponibles.
 - **layerVisibility**: Valor que indica si se muestra la capa cargada o no.
 - **layerOpts**: Array con las capas que se quieren utilizar como opciones para capa de fondo.
     - **id**: Identificador de la capa.
     - **preview**: Ruta a la imagen de previsualización que se muestra.
     - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
-    - **layers**: Array con las capas que se quieren cargar al seleccionar esta opción.
-- **empty**: Habilita la posibilidad de mostrar el mapa sin las capas de fondo cargadas del plugin (capa de fondo "vacía").
+    - **layers**: Array con las capas que se quieren cargar al seleccionar esta opción.   
+       - [Como añadir las capas y qué parámetros tiene que usar](https://github.com/IGN-CNIG/API-CNIG/wiki/Capas)
+- **empty**: Habilita la posibilidad de mostrar el mapa sin las capas de fondo cargadas del plugin (capa de fondo "vacía"). Verdadero "true", se activa esta funcionalidad. Falso por defecto.
 - **tooltip**: Información emergente para mostrar en el tooltip del plugin. Por defecto: "Capas de fondo".
 
 # API-REST
