@@ -19,6 +19,10 @@
       "type": "boolean",
       "name": "collapsed",
       "position": 2
+    }, {
+      "type": "simple",
+      "name": "tooltip",
+      "position": 3
     }]
   }],
   "files": {
