@@ -120,11 +120,6 @@ pluginprintermap.on(M.evt.ADDED_TO_MAP, () => {
 });
 ```
 
-# Configuraciones globales
-
-- M.config.PRINTERMAP_TEMPLATE: URL por defecto de la plantilla que se va a utilizar al imprimir el mapa.
-
-
 # Ejemplo de uso
 
 ```javascript

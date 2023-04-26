@@ -86,7 +86,7 @@ export default class PrinterMap extends M.Plugin {
      * @type {String}
      */
 
-    this.serverUrl_ = parameters.serverUrl || M.config.GEOPRINT_URL;
+    this.serverUrl_ = parameters.serverUrl || 'https://componentes.cnig.es/geoprint';
 
 
     /**
@@ -94,21 +94,21 @@ export default class PrinterMap extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.printTemplateUrl_ = parameters.printTemplateUrl || M.config.PRINTERMAP_TEMPLATE;
+    this.printTemplateUrl_ = parameters.printTemplateUrl || 'https://componentes.cnig.es/geoprint/print/CNIG';
 
     /**
      * Mapfish template url for georef
      * @private
      * @type {String}
      */
-    this.printTemplateGeoUrl_ = parameters.printTemplateUrl || M.config.GEOREFIMAGE_TEMPLATE;
+    this.printTemplateGeoUrl_ = parameters.printTemplateUrl || 'https://componentes.cnig.es/geoprint/print/mapexport';
 
     /**
      * Mapfish template url
      * @private
      * @type {String}
      */
-    this.printStatusUrl_ = parameters.printStatusUrl || M.config.GEOPRINT_STATUS;
+    this.printStatusUrl_ = parameters.printStatusUrl || 'https://componentes.cnig.es/geoprint/print/status';
 
     /**
      * Credits text for template

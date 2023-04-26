@@ -5,8 +5,7 @@
  */
 
 
-const backgroundlayersOpts = [
-  {
+const backgroundlayersOpts = [{
     id: 'mapa',
     title: 'Callejero',
     layers: [
@@ -51,7 +50,7 @@ params.forEach((param) => {
   }
 });
 
-(function (M) {
+(function(M) {
   /**
    * Pixels width for mobile devices
    *
@@ -167,42 +166,6 @@ params.forEach((param) => {
    * @api stable
    */
   M.config('DEFAULT_PROJ', '${mapea.proj.default}');
-
-  /**
-   * Default projection
-   * @const
-   * @type {string}
-   * @public
-   * @api stable
-   */
-  M.config('GEOPRINT_URL', '${geoprint.url}');
-
-  /**
-   * Default projection
-   * @const
-   * @type {string}
-   * @public
-   * @api stable
-   */
-  M.config('GEOREFIMAGE_TEMPLATE', '${geoprint.url}' + '${georefimage.template}');
-
-  /**
-   * Default projection
-   * @const
-   * @type {string}
-   * @public
-   * @api stable
-   */
-  M.config('PRINTERMAP_TEMPLATE', '${geoprint.url}' + '${printermap.template}');
-
-  /**
-   * Default projection
-   * @const
-   * @type {string}
-   * @public
-   * @api stable
-   */
-  M.config('GEOPRINT_STATUS', '${geoprint.url}' + '${geoprint.status}');
 
   /**
    * TMS configuration
