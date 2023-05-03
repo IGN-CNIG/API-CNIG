@@ -19,17 +19,21 @@
       "name": "collapsible",
       "position": 2
     }, {
-      "type": "boolean",
-      "name": "fixed",
+      "type": "simple",
+      "name": "tooltip",
       "position": 3
     }, {
-      "type": "simple",
-      "name": "zoom",
+      "type": "boolean",
+      "name": "fixed",
       "position": 4
     }, {
       "type": "simple",
-      "name": "baseLayer",
+      "name": "zoom",
       "position": 5
+    }, {
+      "type": "simple",
+      "name": "baseLayer",
+      "position": 6
     }]
   }],
   "files": {

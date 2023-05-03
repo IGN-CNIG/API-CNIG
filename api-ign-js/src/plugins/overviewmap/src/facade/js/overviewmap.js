@@ -4,6 +4,7 @@
 import 'assets/css/overviewmap';
 import OverviewMapControl from './overviewmapcontrol';
 import api from '../../api';
+import { getValue } from './i18n/language';
 
 import es from './i18n/es';
 import en from './i18n/en';
@@ -19,7 +20,7 @@ export default class OverviewMap extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options, vendorOptions) {
+  constructor(options = {}, vendorOptions) {
     super();
     /**
      * Facade of the map
@@ -48,6 +49,14 @@ export default class OverviewMap extends M.Plugin {
      * @type {String}
      */
     this.position_ = options.position !== undefined ? options.position : 'BR';
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
      * Fixed zoom
@@ -107,6 +116,13 @@ export default class OverviewMap extends M.Plugin {
      *@type { Number }
      */
     this.order = (options.order) ? options.order : null;
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -140,6 +156,7 @@ export default class OverviewMap extends M.Plugin {
       className: 'm-overviewmap-panel',
       position: M.ui.position[this.position_],
       order: this.order,
+      tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
@@ -176,6 +193,18 @@ export default class OverviewMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*!${this.vendorOptions.collapsed}*!${this.vendorOptions.collapsible}*!${this.fixed_}*!${this.zoom_}*!${this.baseLayer_}`;
+    // position*collapsed*collapsible*fixed*zoom*baseLayer
+    return `${this.name}=${this.position_}*!${this.vendorOptions.collapsed}*!${this.vendorOptions.collapsible}*!${this.fixed_}*!${this.zoom_}*!${this.baseLayer_}*!${this.tooltip_}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64:${M.utils.encodeBase64(this.options)}`;
   }
 }
