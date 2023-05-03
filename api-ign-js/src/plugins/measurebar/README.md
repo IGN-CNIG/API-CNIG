@@ -30,21 +30,41 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
+- **collapsed**: Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto: true.
+- **collapsible**: Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto: true.
+- **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: Herramientas de medición
 
 # API-REST
 
 ```javascript
-URL_API?measurebar=position
+URL_API?measurebar=position*collapsed*collapsible*tooltip
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>collapsed</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a mostrar en el tooltip del plugin</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
 </table>
 
@@ -52,11 +72,18 @@ URL_API?measurebar=position
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?measurebar=TR
+https://componentes.cnig.es/api-core?measurebar=TL*true*true*measurebar%20plugin
 ```
 
 ```
 https://componentes.cnig.es/api-core?measurebar=BL
+```
+
+### Ejemplos de uso API-REST en base64
+```
+Ejemplo de constructor del plugin: {position: 'TL'}
+
+https://componentes.cnig.es/api-core?measurebar=base64:e3Bvc2l0aW9uOiAnVEwnLH0=
 ```
 
 # Ejemplo de uso
