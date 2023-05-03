@@ -13,16 +13,24 @@
       "possibleValues": ["TL", "TR", "BR", "BL"]
     }, {
       "type": "boolean",
-      "name": "collapse",
+      "name": "collapsed",
       "position": 1
     }, {
-      "type": "simple",
-      "name": "url_es",
+      "type": "boolean",
+      "name": "collapsible",
       "position": 2
     }, {
       "type": "simple",
-      "name": "url_en",
+      "name": "url_es",
       "position": 3
+    }, {
+      "type": "simple",
+      "name": "url_en",
+      "position": 4
+    }, {
+      "type": "simple",
+      "name": "tooltip",
+      "position": 5
     }]
   }],
   "files": {

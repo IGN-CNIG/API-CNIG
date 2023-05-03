@@ -8,13 +8,13 @@ const map = M.map({
 
 const mp = new Popup({
   position: 'TR',
+  collapsed: true,
+  collapsible: true,
   helpLink: {
     es: 'https://componentes.cnig.es/ayudaIberpix/es.html',
     en: 'https://componentes.cnig.es/ayudaIberpix/en.html',
   },
-  /* Deprecated */
-  // url_es: 'https://componentes.cnig.es/ayudaIberpix/es.html',
-  // url_en: 'https://componentes.cnig.es/ayudaIberpix/en.html',
+  tooltip: 'Ayuda',
 });
 
 

@@ -25,52 +25,71 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**:  Ubicación del plugin sobre el mapa.
   - 'TL': (top left) - Arriba a la izquierda.
-  - 'TR': (top right) - Arriba a la derecha.
-  - 'BL': (bottom left) - Abajo a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **helpLink**: Enlace al manual de uso.
-- **collapsed**. Indica si el plugin aparece abierto por defecto (true/false).
-- **collapsible**. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).
-- **tootltip**. Tooltip que se muestra sobre el plugin.
+- **helpLink**: Enlace al manual de uso. Por defecto: template_en / template_es
+- **collapsed**. Indica si el plugin aparece abierto por defecto (true/false). Por defecto: true
+- **collapsible**. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true
+- **tooltip**. Tooltip que se muestra sobre el plugin. Por defecto: Más información.
 
 # API-REST
 
 ```javascript
-URL_API?popup=position*collapse*url_es*url_en
+URL_API?popup=position*collapse*collapsible*url_es*url_en*tooltip
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>collapse</td>
     <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>url_es</td>
     <td>URL del manual de uso en español</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>url_en</td>
     <td>URL del manual de uso en inglés</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor que se muestra sobre el plugin</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
 </table>
 
 
-### Ejemplos de uso API-REST
+### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?popup=TR*true*https%3A%2F%2Fcomponentes.cnig.es%2FayudaIberpix%2Fes.html*https%3A%2F%2Fcomponentes.cnig.es%2FayudaIberpix%2Fen.html
+https://componentes.cnig.es/api-core?popup=TR*true*true*https%3A%2F%2Fcomponentes.cnig.es%2FayudaIberpix%2Fes.html*https%3A%2F%2Fcomponentes.cnig.es%2FayudaIberpix%2Fen.html*tooltip
 ```
 
+### Ejemplo de uso API-REST en base64
+
 ```
-https://componentes.cnig.es/api-core/?popup=TR***https%3A%2F%2Fcomponentes.cnig.es%2FayudaIberpix%2Fen.html
+Ejemplo de constructor: {"position":"TR","helpLink":{"es":"https://componentes.cnig.es/ayudaIberpix/es.html","en":"https://componentes.cnig.es/ayudaIberpix/en.html"},"tooltip":"Ayuda"}
+
+https://componentes.cnig.es/api-core?popup=base64:eyJwb3NpdGlvbiI6IlRSIiwiaGVscExpbmsiOnsiZXMiOiJodHRwczovL2NvbXBvbmVudGVzLmNuaWcuZXMvYXl1ZGFJYmVycGl4L2VzLmh0bWwiLCJlbiI6Imh0dHBzOi8vY29tcG9uZW50ZXMuY25pZy5lcy9heXVkYUliZXJwaXgvZW4uaHRtbCJ9LCJ0b29sdGlwIjoiQXl1ZGEifQ==
 ```
 
 # Ejemplo de uso
