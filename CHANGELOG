@@ -6,3 +6,4 @@
 - Se modifica lectura GetCapabilities en fulltoc
 - Mejoras parametrización plugin selectionzoom
 - Se permite enviar parámetros por API REST a los plugins en base64
+- Se añade funcionalidad toast

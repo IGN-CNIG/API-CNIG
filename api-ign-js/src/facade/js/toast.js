@@ -17,7 +17,7 @@ import { getValue } from './i18n/language';
 export const removeElement = (element) => {
   const parent = element.parentElement;
   parent.removeChild(element);
-  if (parent.children && parent.children.length > 0) {
+  if (!parent.children || parent.children.length === 0) {
     parent.remove();
   }
 };
@@ -43,9 +43,10 @@ export const remove = () => {
  * @param {String} severity Tipo de modal.
  * @param {String} icon Icono para mostrar.
  * @param {Number} order "tabindex" de los elementos del "toast", por defecto 300.
+ * @param {NUmber} time Tiempo de aparición del "toast", por defecto 4000 (4 segundos).
  * @api
  */
-export const show = (message, severity, icon, order = 300) => {
+export const show = (message, severity, icon, order = 300, time = 4000) => {
   const vars = {
     message,
     severity,
@@ -71,7 +72,7 @@ export const show = (message, severity, icon, order = 300) => {
   // close in 4 seconds
   const duration = setTimeout(() => {
     removeElement(html);
-  }, 4000);
+  }, time);
 
   // adds listener to close the toast
   const closeButton = html.querySelector('button.m-toast-button');
@@ -89,10 +90,11 @@ export const show = (message, severity, icon, order = 300) => {
  * @function
  * @param {String} message Mensaje que se mostrará.
  * @param { Number } order "tabIndex" de los elementos del HTML.
+ * @param {Number} time Tiempo de aparición del "toast".
  * @api
  */
-export const info = (message, order) => {
-  return show(message, 'info', 'g-cartografia-info', order);
+export const info = (message, order, time) => {
+  return show(message, 'info', 'g-cartografia-info', order, time);
 };
 
 /**
@@ -102,10 +104,11 @@ export const info = (message, order) => {
  * @function
  * @param {String} message Mensaje que se mostrará.
  * @param {Number} order "tabIndex" de los elementos del HTML.
+ * @param {Number} time Tiempo de aparición del "toast".
  * @api
  */
-export const error = (message, order) => {
-  return show(message, 'error', 'g-cartografia-notification', order);
+export const error = (message, order, time) => {
+  return show(message, 'error', 'g-cartografia-notification', order, time);
 };
 
 /**
@@ -115,10 +118,11 @@ export const error = (message, order) => {
  * @function
  * @param {String} message Mensaje que se mostrará.
  * @param {Number} order "tabIndex" de los elementos del HTML.
+ * @param {Number} time Tiempo de aparición del "toast".
  * @api
  */
-export const warning = (message, order) => {
-  return show(message, 'warning', 'g-cartografia-warning', order);
+export const warning = (message, order, time) => {
+  return show(message, 'warning', 'g-cartografia-warning', order, time);
 };
 
 export default {};
