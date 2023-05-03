@@ -39,7 +39,6 @@ export const remove = () => {
  * Esta función genera la plantilla del modal.
  * @public
  * @function
- * @returns {Promise}
  * @param {String} message Contenido que se mostrará.
  * @param {String} title Título del modal.
  * @param {String} severity Tipo de modal.
@@ -76,7 +75,6 @@ export const show = (message, title, severity, order = 300) => {
  * @param {String} message Mensaje que se mostrará.
  * @param {String} titleParam Título del dialogo.
  * @param {Number} order "tabIndex" de los elementos del HTML.
- * @returns {Promise}
  * @api
  */
 export const info = (message, titleParam, order) => {
@@ -84,7 +82,7 @@ export const info = (message, titleParam, order) => {
   if (isNullOrEmpty(title)) {
     title = getValue('dialog').info;
   }
-  return show(message, title, 'info', order);
+  show(message, title, 'info', order);
 };
 
 /**
@@ -95,7 +93,6 @@ export const info = (message, titleParam, order) => {
  * @param {String} message Mensaje que se mostrará.
  * @param {String} title Título del dialogo.
  * @param {Number} order "tabIndex" de los elementos del HTML.
- * @returns {Promise}
  * @api
  */
 export const error = (message, titleParam, order) => {
@@ -103,7 +100,7 @@ export const error = (message, titleParam, order) => {
   if (isNullOrEmpty(title)) {
     title = getValue('dialog').error;
   }
-  return show(message, title, 'error', order);
+  show(message, title, 'error', order);
 };
 
 /**
@@ -114,7 +111,6 @@ export const error = (message, titleParam, order) => {
  * @param {String} message Mensaje que se mostrará.
  * @param {String} title Título del dialogo.
  * @param {Number} order "tabIndex" de los elementos del HTML.
- * @returns {Promise}
  * @api
  */
 export const success = (message, titleParam, order) => {
@@ -122,7 +118,7 @@ export const success = (message, titleParam, order) => {
   if (isNullOrEmpty(title)) {
     title = getValue('dialog').success;
   }
-  return show(message, title, 'success', order);
+  show(message, title, 'success', order);
 };
 
 /**

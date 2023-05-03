@@ -37,6 +37,9 @@
     "only_one_filter": "FeatureID and CQL are mutually exclusive, indicate only one type of filtering.",
     "any_format": "TXT, HTML and GML are and unsupported"
   },
+  "toast": {
+    "close": "Cerrar"
+  },
   "feature": {
     "incorrect_attributes": "The attributes were not specified correctly."
   },
