@@ -29,42 +29,58 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsible**: Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto: true.
 - **collapsed**: Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto: true.
+- **collapsible**: Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto: true.
+- **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: Área de influencia
 
 # API-REST
 
 ```javascript
-URL_API?buffer=position*collapsed*collapsible
+URL_API?buffer=position*collapsed*collapsible*tooltip
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>collapsed</td>
     <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>collapsible</td>
     <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a mostrar en el tooltip del plugin</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
 </table>
 
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?buffer=TR*true*false
+https://componentes.cnig.es/api-core?buffer=TR*true*true*buffer%20plugin
 ```
 
 ```
 https://componentes.cnig.es/api-core?buffer=TL
+```
+### Ejemplos de uso API-REST en base64
+```
+Ejemplo de constructor del plugin: {"position":"TL","collapsed":false,"collapsible":true}
+
+https://componentes.cnig.es/api-core?buffer=base64:eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOnRydWV9
 ```
 
 # Ejemplo de uso
