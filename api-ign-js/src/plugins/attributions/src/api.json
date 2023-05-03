@@ -49,11 +49,22 @@
         "type": "simple",
         "name": "urlParam",
         "position": 9
-      },
-      {
+      }, {
         "type": "simple",
         "name": "urlAttribute",
         "position": 10
+      }, {
+        "type": "number",
+        "name": "minWidth",
+        "position": 11
+      }, {
+        "type": "number",
+        "name": "maxWidth",
+        "position": 12
+      }, {
+        "type": "simple",
+        "name": "tooltip",
+        "position": 13
       }
     ]
   }],

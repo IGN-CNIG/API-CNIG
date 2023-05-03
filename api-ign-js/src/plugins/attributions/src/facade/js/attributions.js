@@ -45,7 +45,8 @@ export default class Attributions extends M.Plugin {
     super();
 
     if (M.utils.isNullOrEmpty(options.mode) || !Object.values(MODES).includes(options.mode)) {
-      throw new Error(getValue('exception.mode'));
+      this.mode_ = Number.parseInt(1, 10);
+      // throw new Error(getValue('exception.mode'));
     }
 
     if (options.mode === MODES.mapAttributions && !M.utils.isNullOrEmpty(options.url)) {
@@ -146,7 +147,7 @@ export default class Attributions extends M.Plugin {
     this.minWidth_ = options.minWidth || '100px';
 
     /**
-     * Minimum width of the view control
+     * Maximun width of the view control
      * @private
      * @type {string}
      */
@@ -199,6 +200,13 @@ export default class Attributions extends M.Plugin {
      *@type { Number }
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -629,6 +637,17 @@ export default class Attributions extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}*${this.url}*${this.type}*${this.layerName}*${this.attributionParam}*${this.urlParam}*${this.urlAttribute}`;
+    return `${this.name}=${this.position}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}*${this.url}*${this.type}*${this.layerName}*${this.attributionParam}*${this.urlParam}*${this.urlAttribute}*${this.minWidth_}*${this.maxWidth_}*${this.tooltip_}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64:${M.utils.encodeBase64(this.options)}`;
   }
 }

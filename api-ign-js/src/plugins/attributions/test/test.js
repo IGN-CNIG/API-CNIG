@@ -17,40 +17,18 @@ const map = M.map({
       visible: true,
       format: 'image/jpeg',
     }),
-    /* new M.layer.WMTS({
-      url: 'https://www.ign.es/wmts/mapa-raster?',
-      name: 'MTN',
-      legend: 'Mapa',
-      matrixSet: 'GoogleMapsCompatible',
-      transparent: false,
-      displayInLayerSwitcher: false,
-      queryable: false,
-      visible: true,
-      format: 'image/jpeg',
-    }), */
   ],
 });
 
 window.map = map;
 
 const mp = new Attributions({
-  mode: 1,
+  // mode: 1,
   scale: 10000,
   url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
   type: 'geojson',
   position: 'BL',
+  tooltip: 'Plugin atribuciones',
 });
 
 map.addPlugin(mp);
-
-// {
-//   mode,
-//   layer,
-//   url,
-//   type,
-//   zoom,
-//   minWidth,
-//   defaultAttribution
-//   position 'TL', 'TR', 'BL' , 'BR'
-//
-// }

@@ -23,7 +23,15 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 El constructor se inicializa con un JSON con los siguientes atributos:
 
-* **mode**: Modo de uso del plugin Attributions (1 ó 2).
+* **position**: Posición del plugin sobre el mapa.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
+  - 'BR': (bottom right) - Abajo a la derecha.
+* **collapsed**: Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto: true.
+* **collapsible**: Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto: true.
+* **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'.
+* **mode**: Modo de uso del plugin Attributions (1 ó 2). Por defecto: 1
      - **1** `DISPONIBLE`: Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: 
          + **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
          + **type**: En el caso de no pasar nada por el parámetro 'layer' o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
@@ -31,23 +39,14 @@ El constructor se inicializa con un JSON con los siguientes atributos:
          + **layer**: Capa definida por el usuario para determinar las atribuciones {M.layer.GeoJSON | M.layer.KML}. No requiere los parámetros anteriores (type, url y layerName)
          + **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
          + **urlParam**: Nombre del campo de url en el archivo. Por defecto: 'url'.
-         + **minWidth**: Mínimo ancho de visualización del plugin. Por defecto: '100px'.
+         + **minWidth**: Mínimo ancho de visualización del plugin. Por defecto: '100px'. 
          + **maxWidth**: Máximo ancho de visualización del plugin. Por defecto: '200px'.
-         + **position**: Posición del plugin sobre el mapa.
-            - 'TL': (top left) - Arriba a la izquierda.
-            - 'TR': (top right) - Arriba a la derecha.
-            - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
-            - 'BR': (bottom right) - Abajo a la derecha.
      - **2** ` NO DISPONIBLE`: Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. 
 * **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
-* **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'. 
+* **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario. Por defecto: Instituto Geográfico Nacional.
+* **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
 * **minWidth**: Mínimo ancho de visualización del plugin. Por defecto '100px'.
 * **maxWidth**: Máximo ancho de visualización del plugin. Por defecto '200px'.
-* **position**: Posición del plugin sobre el mapa.
-  - 'TL': (top left) - Arriba a la izquierda.
-  - 'TR': (top right) - Arriba a la derecha.
-  - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
-  - 'BR': (bottom right) - Abajo a la derecha.
 * **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
 
 ### Parámetros "defaultURL" y "defaultAttribution".
@@ -69,8 +68,6 @@ Para determinadas capas base ("OI.OrthoimageCoverage", "LC.LandCoverSurfaces" y 
 
 En el caso de que la capa base no se corresponda con los casos anteriores, se podrá definir un nombre de atribución y una URL por defecto con los siguientes parámetros:
 
-* **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
-* **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario.
 
 # Archivos de atribuciones CNIG
 Ejemplos de archivo de atribuciones según formato predefinido (kml o geojson):
@@ -82,57 +79,84 @@ Ejemplos de archivo de atribuciones según formato predefinido (kml o geojson):
 
 ```javascript
 URL_API?attributions=position*mode*scale*defaultAttribution*defaultURL*url*type*layerName
-*attributionParam*urlParam*urlAttribute
+*attributionParam*urlParam*urlAttribute*minWidth*maxWidth*tooltip
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>mode</td>
     <td>1/2</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>scale</td>
     <td>Escala desde la que se activa la asignación de atribuciones</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>defaultAttribution</td>
     <td>Valor por defecto que se mostrará en la atribución del mapa</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>defaultURL</td>
     <td>URL por defecto asociada a la atribución</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>url</td>
     <td>URL del archivo de atribuciones a utilizar</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>type</td>
     <td>kml/geojson</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>layerName</td>
     <td>Nombre de la capa</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>attributionParam</td>
     <td>Nombre del campo de atribución en el archivo</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>urlParam</td>
     <td>Nombre del campo de URL en el archivo</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>urlAttribute</td>
     <td>Texto adicional a añadir en la atribución</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>minWidth</td>
+    <td>Mínimo ancho de visualización del plugin</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>maxWidth</td>
+    <td>Máximo ancho de visualización del plugin.</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a usar para mostrar en el tooltip del plugin</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
 </table>
 
@@ -140,14 +164,20 @@ URL_API?attributions=position*mode*scale*defaultAttribution*defaultURL*url*type*
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?attributions=TR*1*300*attributions*https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml*https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml*kml*attributions
-*atribucion*url*Gobierno de España
+https://componentes.cnig.es/api-core?attributions=TR*1*300*attributions*https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml*https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml*kml*attributions*atribucion*url*Gobierno%20de%20España*Atribuciones
 ```
 
 ```
 https://componentes.cnig.es/api-core?attributions=BL*1*10000***http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson*geojson
 ```
 
+### Ejemplos de uso API-REST en base64
+
+```
+Ejemplo de constructor: {mode: 1, scale: 10000, url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson', type: 'geojson', position: 'BL', tooltip: 'Atribuciones'}
+
+https://componentes.cnig.es/api-core/?attributions=base64:eyJtb2RlIjoxLCJzY2FsZSI6MTAwMDAsInVybCI6Imh0dHA6Ly93d3cuaWduLmVzL3Jlc291cmNlcy92aWV3ZXIvZGF0YS8yMDIwMDIwNl9hdHJpYnVjaW9uUE5PQS0zODU3Lmdlb2pzb24iLCJ0eXBlIjoiZ2VvanNvbiIsInBvc2l0aW9uIjoiQkwiLCJ0b29sdGlwIjoiQXRyaWJ1Y2lvbmVzIn0=
+```
 # Ejemplo de uso
 
 ```javascript
