@@ -25,13 +25,13 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 El constructor se inicializa con un JSON con los siguientes atributos:
 
-- **tootltip**. Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
-- **srs**. Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón.
-- **label**. Nombre del SRS sobre el que se mostrarán las coordenadas del ratón.
-- **precision**. Precisión de las coordenadas.
+- **tooltip**. Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información). Por defecto: Coordenadas.
+- **srs**. Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón. Por defecto: EPSG:4326
+- **label**. Nombre del SRS sobre el que se mostrarán las coordenadas del ratón. Por defecto: WGS84
+- **precision**. Precisión de las coordenadas. Por defecto: 4
 - **geoDecimalDigits**. Cifras decimales para proyecciones geográficas.
 - **utmDecimalDigits**. Cifras decimales para proyecciones UTM.
-- **activeZ**. Activar visualización valor z.
+- **activeZ**. Activar visualización valor z. Por defecto: false
 - **helpUrl**. URL a la ayuda para el icono.
 
 # API-REST
@@ -44,38 +44,47 @@ URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*a
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   <tr>
   <tr>
     <td>tooltip</td>
     <td>Texto informativo</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>srs</td>
     <td>Código EPSG del SRS</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>label</td>
     <td>Nombre del SRS</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>precision</td>
     <td>Precisión de las coordenadas</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>geoDecimalDigits</td>
     <td>Cifras decimales para proyecciones geográficas</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>utmDecimalDigits</td>
     <td>Cifras decimales para proyecciones UTM</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>activeZ</td>
     <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>helpUrl</td>
     <td>URL del icono para la ayuda</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
 </table>
 
@@ -83,11 +92,19 @@ URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*a
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=Muestra coordenadas*EPSG:4326*WGS84*4*3*2*false*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
+https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4*3*2*false*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
 ```
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=Muestra coordenadas*EPSG:4326*WGS84*4*4*2*false
+https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4*4*2*false
+```
+
+### Ejemplos de uso API-REST en base64
+
+```
+Ejemplo del constructor: {"activeZ":true,"geoDecimalDigits":6,"utmDecimalDigits":2,"label":"EPSG:4326","helpUrl":"https://www.ign.es/"}
+
+https://componentes.cnig.es/api-core?mousesrs=base64:eyJhY3RpdmVaIjp0cnVlLCJnZW9EZWNpbWFsRGlnaXRzIjo2LCJ1dG1EZWNpbWFsRGlnaXRzIjoyLCJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIn0=
 ```
 
 # Ejemplo de uso

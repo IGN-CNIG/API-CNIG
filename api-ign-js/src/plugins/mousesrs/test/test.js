@@ -14,7 +14,7 @@ const mp = new MouseSRS({
   geoDecimalDigits: 6,
   utmDecimalDigits: 2,
   label: 'EPSG:4326',
-  helpUrl: 'https://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/help?node=node107',
+  helpUrl: 'https://www.ign.es/',
 });
 
 map.addPlugin(mp);
