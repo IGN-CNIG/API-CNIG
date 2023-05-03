@@ -13,11 +13,11 @@
       "position": 0
     }, {
       "type": "boolean",
-      "name": "collapsible",
+      "name": "collapsed",
       "position": 1
     }, {
       "type": "boolean",
-      "name": "collapsed",
+      "name": "collapsible",
       "position": 2
     }, {
       "type": "simple",
@@ -59,6 +59,10 @@
       "type": "simple",
       "name": "mail",
       "position": 12
+    }, {
+      "type": "simple",
+      "name": "tooltip",
+      "position": 13
     }]
   }],
   "files": {

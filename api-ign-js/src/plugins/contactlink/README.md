@@ -29,24 +29,24 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **descargascnig**: Indica la url al centro de descargas CNIG. 
-- **pnoa**: Indica la url al comparador PNOA.
-- **visualizador3d**: Indica la url al Visualizador3D.
-- **fototeca**: Indica la url a Fototeca.
-- **twitter**: Indica la url al Twitter del CNIG.
-- **instagram**: Indica la url al Instagram del CNIG.
-- **facebook**: Indica la url al Facebook del CNIG.
-- **pinterest**: Indica la url al Pinterest del CNIG.
-- **youtube**: Indica la url al Youtube del CNIG.
-- **mail**: Indica la url para escribir correo al CNIG.
-- **collapsible**. Indica si el plugin se puede collapsar en un botón (true/false).
-- **collapsed**. Indica si el plugin viene colapsado de entrada (true/false).
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+- **descargascnig**: Indica la url al centro de descargas CNIG. Por defecto: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp'
+- **pnoa**: Indica la url al comparador PNOA. Por defecto: 'https://www.ign.es/web/'comparador_pnoa/index.html
+- **visualizador3d**: Indica la url al Visualizador3D. Por defecto: 'https://www.ign.es/3D-Stereo/'
+- **fototeca**: Indica la url a Fototeca. Por defecto: 'https://fototeca.cnig.es/'
+- **twitter**: Indica la url al Twitter del CNIG. Por defecto: 'https://twitter.com/IGNSpain'
+- **instagram**: Indica la url al Instagram del CNIG. Por defecto: 'https://www.instagram.com/ignspain/'
+- **facebook**: Indica la url al Facebook del CNIG. Por defecto: 'https://www.facebook.com/IGNSpain/'
+- **pinterest**: Indica la url al Pinterest del CNIG. Por defecto: 'https://www.pinterest.es/IGNSpain/'
+- **youtube**: Indica la url al Youtube del CNIG. Por defecto: 'https://www.youtube.com/user/IGNSpain'
+- **mail**: Indica la url para escribir correo al CNIG. Por defecto: 'mailto:ign@fomento.es'
+- **collapsible**. Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true 
+- **collapsed**. Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true
+- **tooltip**. Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Enlaces y contacto IGN'
 
 # API-REST
 
 ```javascript
-URL_API?contactlink=position*collapsible*collapsed*descargascnig*pnoa*visualizador3d*fototeca*twitter
+URL_API?contactlink=position*collapsed*collapsible*descargascnig*pnoa*visualizador3d*fototeca*twitter
 *instagram*facebook*pinterest*youtube*mail
 ```
 
@@ -54,58 +54,77 @@ URL_API?contactlink=position*collapsible*collapsed*descargascnig*pnoa*visualizad
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
-  </tr>
-  <tr>
-    <td>collapsible</td>
-    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>collapsed</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>descargascnig</td>
     <td>URL del centro de descargas CNIG</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>pnoa</td>
     <td>URL del comparador PNOA</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>visualizador3d</td>
     <td>URL del Visualizador3D</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>fototeca</td>
     <td>URL de Fototeca</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>twitter</td>
     <td>URL del Twitter del CNIG</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>instagram</td>
     <td>URL del Instagram del CNIG</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>facebook</td>
     <td>URL del Facebook del CNIG</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>pinterest</td>
     <td>URL del Pinterest del CNIG</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>youtube</td>
     <td>URL del Youtube del CNIG</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>mail</td>
     <td>URL del correo del CNIG</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a usar para mostrar en el tooltip del plugin</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
 </table>
 
@@ -113,12 +132,21 @@ URL_API?contactlink=position*collapsible*collapsed*descargascnig*pnoa*visualizad
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core/?contactlink=TR*true*true*http%3A%2F%2Fcentrodedescargas.cnig.es%2FCentroDescargas%2Findex.jsp*https%3A%2F%2Fwww.ign.es%2Fweb%2Fcomparador_pnoa%2Findex.html*https%3A%2F%2Fwww.ign.es%2F3D-Stereo%2F*https%3A%2F%2Ffototeca.cnig.es%2F*https%3A%2F%2Ftwitter.com%2FIGNSpain*https%3A%2F%2Fwww.instagram.com%2Fignspain%2F*https%3A%2F%2Fwww.facebook.com%2FIGNSpain%2F*https%3A%2F%2Fwww.pinterest.es%2FIGNSpain%2F*https%3A%2F%2Fwww.youtube.com%2Fuser%2FIGNSpain*mailto:ign@fomento.es
+https://componentes.cnig.es/api-core/?contactlink=TR*true*true*http%3A%2F%2Fcentrodedescargas.cnig.es%2FCentroDescargas%2Findex.jsp*https%3A%2F%2Fwww.ign.es%2Fweb%2Fcomparador_pnoa%2Findex.html*https%3A%2F%2Fwww.ign.es%2F3D-Stereo%2F*https%3A%2F%2Ffototeca.cnig.es%2F*https%3A%2F%2Ftwitter.com%2FIGNSpain*https%3A%2F%2Fwww.instagram.com%2Fignspain%2F*https%3A%2F%2Fwww.facebook.com%2FIGNSpain%2F*https%3A%2F%2Fwww.pinterest.es%2FIGNSpain%2F*https%3A%2F%2Fwww.youtube.com%2Fuser%2FIGNSpain*mailto:ign@fomento.es*conctactlink%20tooltip
 ```
 
 ```
 https://componentes.cnig.es/api-core/?contactlink=TR*true*true
 ```
+
+### Ejemplos de uso API-REST en base64
+
+```
+Ejemplo del constructor: {"position":"TL","descargascnig":"http://centrodedescargas.cnig.es/CentroDescargas/index.jsp","pnoa":"https://www.ign.es/web/comparador_pnoa/index.html","visualizador3d":"https://www.ign.es/3D-Stereo/","fototeca":"https://fototeca.cnig.es/","twitter":"https://twitter.com/IGNSpain","instagram":"https://www.instagram.com/ignspain/","facebook":"https://www.facebook.com/IGNSpain/","pinterest":"https://www.pinterest.es/IGNSpain/","youtube":"https://www.youtube.com/user/IGNSpain","mail":"mailto:ign@fomento.es","tooltip":"Contacta con nosotros"}
+
+https://componentes.cnig.es/api-core/?contactlink=base64:eyJwb3NpdGlvbiI6IlRMIiwiZGVzY2FyZ2FzY25pZyI6Imh0dHA6Ly9jZW50cm9kZWRlc2Nhcmdhcy5jbmlnLmVzL0NlbnRyb0Rlc2Nhcmdhcy9pbmRleC5qc3AiLCJwbm9hIjoiaHR0cHM6Ly93d3cuaWduLmVzL3dlYi9jb21wYXJhZG9yX3Bub2EvaW5kZXguaHRtbCIsInZpc3VhbGl6YWRvcjNkIjoiaHR0cHM6Ly93d3cuaWduLmVzLzNELVN0ZXJlby8iLCJmb3RvdGVjYSI6Imh0dHBzOi8vZm90b3RlY2EuY25pZy5lcy8iLCJ0d2l0dGVyIjoiaHR0cHM6Ly90d2l0dGVyLmNvbS9JR05TcGFpbiIsImluc3RhZ3JhbSI6Imh0dHBzOi8vd3d3Lmluc3RhZ3JhbS5jb20vaWduc3BhaW4vIiwiZmFjZWJvb2siOiJodHRwczovL3d3dy5mYWNlYm9vay5jb20vSUdOU3BhaW4vIiwicGludGVyZXN0IjoiaHR0cHM6Ly93d3cucGludGVyZXN0LmVzL0lHTlNwYWluLyIsInlvdXR1YmUiOiJodHRwczovL3d3dy55b3V0dWJlLmNvbS91c2VyL0lHTlNwYWluIiwibWFpbCI6Im1haWx0bzppZ25AZm9tZW50by5lcyIsInRvb2x0aXAiOiJDb250YWN0YSBjb24gbm9zb3Ryb3MifQ==
+```
+
 
 # Ejemplo de uso
 

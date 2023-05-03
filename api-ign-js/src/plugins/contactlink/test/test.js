@@ -19,6 +19,7 @@ const mp = new ContactLink({
   pinterest: 'https://www.pinterest.es/IGNSpain/',
   youtube: 'https://www.youtube.com/user/IGNSpain',
   mail: 'mailto:ign@fomento.es',
+  tooltip: 'Contacta con nosotros',
 
 });
 
