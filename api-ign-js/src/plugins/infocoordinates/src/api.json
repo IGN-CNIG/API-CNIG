@@ -11,17 +11,29 @@
       "name": "position",
       "position": 0
     }, {
-      "type": "simple",
-      "name": "decimalGEOcoord",
+      "type": "boolean",
+      "name": "collapsed",
       "position": 1
     }, {
-      "type": "simple",
-      "name": "decimalUTMcoord",
+      "type": "boolean",
+      "name": "collapsible",
       "position": 2
     }, {
       "type": "simple",
-      "name": "helpUrl",
+      "name": "tooltip",
       "position": 3
+    }, {
+      "type": "simple",
+      "name": "decimalGEOcoord",
+      "position": 4
+    }, {
+      "type": "simple",
+      "name": "decimalUTMcoord",
+      "position": 5
+    }, {
+      "type": "simple",
+      "name": "helpUrl",
+      "position": 6
     }]
   }],
   "files": {

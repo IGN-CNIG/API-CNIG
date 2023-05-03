@@ -70,6 +70,22 @@ export default class Infocoordinates extends M.Plugin {
     this.position_ = positions.includes(options.position) ? options.position : 'TR';
 
     /**
+     * Option to allow the plugin to be collapsed or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsed_ = options.collapsed;
+    if (this.collapsed_ === undefined) this.collapsed_ = true;
+
+    /**
+     * Option to allow the plugin to be collapsible or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsible_ = options.collapsible;
+    if (this.collapsible_ === undefined) this.collapsible_ = true;
+
+    /**
      * Metadata from api.json
      * @private
      * @type {Object}
@@ -81,13 +97,28 @@ export default class Infocoordinates extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.helpUrl_ = options.helpUrl;
+    this.helpUrl_ = options.helpUrl || 'https://www.ign.es/';
 
     /**
      *@private
      *@type { Number }
      */
      this.order = options.order >= -1 ? options.order : null;
+
+     /**
+     * Tooltip of the UI Plugin
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
+
+     /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -119,12 +150,12 @@ export default class Infocoordinates extends M.Plugin {
     this.map_ = map;
     // panel para agregar control - no obligatorio
     this.panel_ = new M.ui.Panel('Infocoordinates', {
-      collapsed: true,
-      collapsible: true,
+      collapsed: this.collapsed_,
+      collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
       className: 'm-plugin-infocoordinates',
       collapsedButtonClass: 'icon-target',
-      tooltip: getValue('tooltip'),
+      tooltip: this.tooltip_,
       order: this.order,
     });
     this.panel_.addControls(this.controls_);
@@ -176,6 +207,17 @@ export default class Infocoordinates extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.decimalGEOcoord_}*${this.decimalUTMcoord_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.decimalGEOcoord_}*${this.decimalUTMcoord_}*${this.helpUrl_}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64:${M.utils.encodeBase64(this.options)}`;
   }
 }

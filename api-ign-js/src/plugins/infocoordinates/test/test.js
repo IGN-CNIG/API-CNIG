@@ -12,12 +12,15 @@ M.language.setLang('es');
 
 const mp = new Infocoordinates({
   position: 'TR',
+  collapsed: true,
+  collapsible: true,
+  tooltip: 'Información de coordenadas',
   decimalGEOcoord: 4,
   decimalUTMcoord: 4,
-  helpUrl: 'https://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/help?node=node107',
+  helpUrl: 'https://www.ign.es/',
 });
 
-const mp2 = new M.plugin.Information({
+/*const mp2 = new M.plugin.Information({
   position: 'TR',
   buffer: 100,
 });
@@ -30,6 +33,7 @@ const mp3 = new M.plugin.Vectors({
 });
 
 const mp4 = new M.plugin.MeasureBar({ position: 'TR' });
+*/
 
 map.addPlugin(mp);
 // map.addPlugin(mp2);
