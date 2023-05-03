@@ -79,6 +79,13 @@ export default class Rescale extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -128,7 +135,18 @@ export default class Rescale extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64:${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

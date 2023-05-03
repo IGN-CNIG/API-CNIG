@@ -20,6 +20,11 @@
         "type": "boolean",
         "name": "collapsible",
         "position": 2
+      },
+      {
+        "type": "simple",
+        "name": "tooltip",
+        "position": 3
       }
     ]
   }],
