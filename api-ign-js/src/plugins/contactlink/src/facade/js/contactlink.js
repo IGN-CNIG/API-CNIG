@@ -171,7 +171,7 @@ export default class ContactLink extends M.Plugin {
      *@private
      *@type { Number }
      */
-     this.order = options.order >= -1 ? options.order : null;
+    this.order = options.order >= -1 ? options.order : null;
 
     /**
      * Plugin parameters
@@ -189,12 +189,12 @@ export default class ContactLink extends M.Plugin {
    * @param {string} lang type language
    * @api stable
    */
-     static getJSONTranslations(lang) {
-      if (lang === 'en' || lang === 'es') {
-        return (lang === 'en') ? en : es;
-      }
-      return M.language.getTranslation(lang).contactlink;
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
     }
+    return M.language.getTranslation(lang).contactlink;
+  }
 
   /**
    * This function adds this plugin into the map
@@ -250,7 +250,7 @@ export default class ContactLink extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.collapsed}*${this.collapsible}*${this.linksDescargasCnig}*${this.linksPnoa}*${this.linksVisualizador3d}*${this.linksFototeca}*${this.linksTwitter}*${this.linksInstagram}*${this.linksFacebook}*${this.linksPinterest}*${this.linksYoutube}*${this.linksMail}*${this.tooltip_}`;
+    return `${this.name}=${this.position}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.linksDescargasCnig}*${this.linksPnoa}*${this.linksVisualizador3d}*${this.linksFototeca}*${this.linksTwitter}*${this.linksInstagram}*${this.linksFacebook}*${this.linksPinterest}*${this.linksYoutube}*${this.linksMail}`;
   }
 
   /**

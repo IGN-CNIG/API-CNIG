@@ -21,15 +21,15 @@
       "position": 2
     }, {
       "type": "simple",
-      "name": "url_es",
+      "name": "tooltip",
       "position": 3
     }, {
       "type": "simple",
-      "name": "url_en",
+      "name": "url_es",
       "position": 4
     }, {
       "type": "simple",
-      "name": "tooltip",
+      "name": "url_en",
       "position": 5
     }]
   }],

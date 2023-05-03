@@ -38,22 +38,6 @@ export default class MouseSRS extends M.Plugin {
     this.controls_ = [];
 
     /**
-     * Option to allow the plugin to be collapsed or not
-     * @private
-     * @type {Boolean}
-     */
-    this.collapsed_ = options.collapsed;
-    if (this.collapsed_ === undefined) this.collapsed_ = true;
-
-    /**
-     * Option to allow the plugin to be collapsible or not
-     * @private
-     * @type {Boolean}
-     */
-    this.collapsible_ = options.collapsible;
-    if (this.collapsible_ === undefined) this.collapsible_ = true;
-
-    /**
      * Plugin tooltip
      *
      * @private

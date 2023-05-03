@@ -1,5 +1,4 @@
 import BackImgLayer from 'facade/backimglayer';
-import ShareMap from '../../sharemap/src/facade/js/sharemap';
 
 M.language.setLang('es');
 
@@ -10,10 +9,8 @@ const map = M.map({
   zoom: 6,
 });
 
-const mp2 = new ShareMap({
-  baseUrl: `${window.location.href.substring(0, window.location.href.indexOf('api-core'))}api-core/`,
-  position: 'TR',
-});
+const i = new M.plugin.Information({});
+map.addPlugin(i);
 
 const mp = new BackImgLayer({
   collapsed: true,
@@ -22,101 +19,54 @@ const mp = new BackImgLayer({
   columnsNumber: 3,
   empty: true,
   layerOpts: [{
-    id: 'mapa',
-    preview: '../src/facade/assets/images/svqmapa.png',
-    title: 'Mapa',
-    layers: [new M.layer.WMTS({
-      url: 'http://www.ign.es/wmts/ign-base?',
-      name: 'IGNBaseTodo',
-      legend: 'Mapa IGN',
-      matrixSet: 'GoogleMapsCompatible',
-      transparent: false,
-      displayInLayerSwitcher: false,
-      queryable: false,
-      visible: true,
-      format: 'image/jpeg',
-    })],
-  },
-  {
-    id: 'imagen',
-    title: 'Imagen',
-    preview: '../src/facade/assets/images/svqimagen.png',
-    layers: [
-      new M.layer.XYZ({
-        url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
-        name: 'PNOA-MA',
-        legend: 'Imagen',
-        projection: 'EPSG:3857',
-        transparent: false,
-        displayInLayerSwitcher: false,
-        queryable: false,
-        visible: true,
-        tileGridMaxZoom: 19,
-      }),
-    ],
-  },
-  {
-    id: 'hibrido',
-    title: 'Híbrido',
-    preview: '../src/facade/assets/images/svqhibrid.png',
-    layers: [
-      new M.layer.XYZ({
-        url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
-        name: 'PNOA-MA',
-        legend: 'Imagen',
-        projection: 'EPSG:3857',
-        transparent: false,
-        displayInLayerSwitcher: false,
-        queryable: false,
-        visible: true,
-        tileGridMaxZoom: 19,
-      }),
-      new M.layer.WMTS({
+      id: 'wmts',
+      preview: '../src/facade/assets/images/svqmapa.png',
+      title: 'WMTS',
+      layers: [new M.layer.WMTS({
         url: 'http://www.ign.es/wmts/ign-base?',
-        name: 'IGNBaseOrto',
-        matrixSet: 'GoogleMapsCompatible',
+        name: 'IGNBaseTodo',
         legend: 'Mapa IGN',
-        transparent: true,
+        matrixSet: 'GoogleMapsCompatible',
+        transparent: false,
         displayInLayerSwitcher: false,
         queryable: false,
         visible: true,
-        format: 'image/png',
-      }),
-    ],
-  },
-  {
-    id: 'lidar',
-    preview: '../src/facade/assets/images/svqlidar.png',
-    title: 'LIDAR',
-    layers: [new M.layer.WMTS({
-      url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-      name: 'EL.GridCoverageDSM',
-      legend: 'Modelo Digital de Superficies LiDAR',
-      matrixSet: 'GoogleMapsCompatible',
-      transparent: false,
-      displayInLayerSwitcher: false,
-      queryable: false,
-      visible: true,
-      format: 'image/png',
-    })],
-  },
-  {
-    id: 'lidar2',
-    preview: '../src/facade/assets/images/svqlidar.png',
-    title: 'LIDAR2',
-    layers: [new M.layer.WMTS({
-      url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-      name: 'EL.GridCoverageDSM',
-      legend: 'Modelo Digital de Superficies LiDAR',
-      matrixSet: 'GoogleMapsCompatible',
-      transparent: false,
-      displayInLayerSwitcher: false,
-      queryable: false,
-      visible: true,
-      format: 'image/png',
-    })],
-  },
-  ],
+        format: 'image/jpeg',
+      })],
+    },
+    {
+      id: 'wms',
+      title: 'WMS',
+      preview: '../src/facade/assets/images/svqimagen.png',
+      layers: [
+        new M.layer.WMS({
+          url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+          name: 'AU.AdministrativeUnit',
+          legend: 'Unidad administrativa',
+          tiled: false,
+          transparent: false,
+        }),
+      ],
+    },
+    {
+      id: 'tms',
+      preview: 'https://www.ign.es/iberpix/static/media/raster.c7a904f3.png',
+      title: 'TMS',
+      layers: [
+        new M.layer.TMS({
+          url: 'https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png',
+          name: 'IGNBaseOrto',
+          legend: 'Topónimos',
+          projection: 'EPSG:3857',
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          tileGridMaxZoom: 19,
+        }),
+      ],
+    }
+  ]
 });
 
 // const mp = new BackImgLayer({
@@ -153,9 +103,5 @@ map.addPlugin(mp);
   format: 'image/jpeg',
   minZoom: 10,
 })); */
-
-map.addPlugin(new M.plugin.Vectors({
-  position: 'TR',
-}));
 
 window.map = map;

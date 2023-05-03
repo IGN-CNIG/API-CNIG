@@ -77,10 +77,10 @@ https://componentes.cnig.es/api-core?buffer=TR*true*true*buffer%20plugin
 https://componentes.cnig.es/api-core?buffer=TL
 ```
 ### Ejemplos de uso API-REST en base64
-```
-Ejemplo de constructor del plugin: {"position":"TL","collapsed":false,"collapsible":true}
 
-https://componentes.cnig.es/api-core?buffer=base64:eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOnRydWV9
+Ejemplo de constructor del plugin: {"position":"TL","collapsed":false,"collapsible":true,"tooltip":"Buffer"}
+```
+https://componentes.cnig.es/api-core?buffer=base64:eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOnRydWUsInRvb2x0aXAiOiJCdWZmZXIifQ==
 ```
 
 # Ejemplo de uso

@@ -89,15 +89,15 @@ URL_API?infocoordinates=position*collapsed*collapsible*tooltip*decimalGEOcoord*d
 ### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?infocoordinates=TL*true*true*infocoordinates%20tooltip*4*2*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
+https://componentes.cnig.es/api-core?infocoordinates=TL*true*true*Coordenadas*4*2*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
 ```
 
 ### Ejemplo de uso API-REST en base64
 
-```
-Ejemplo del constructor: {"position":"TR","decimalGEOcoord":4,"decimalUTMcoord":4,"helpUrl":"https://www.ign.es/"}
+Ejemplo del constructor: {position:"TR", collapsible: true, collapsed: true, "tooltip":"Coordenadas", "decimalGEOcoord":4,"decimalUTMcoord":4,"helpUrl":"https://www.ign.es/"}
 
-https://componentes.cnig.es/api-core?infocoordinates=base64:eyJwb3NpdGlvbiI6IlRSIiwiZGVjaW1hbEdFT2Nvb3JkIjo0LCJkZWNpbWFsVVRNY29vcmQiOjQsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIn0=
+```
+https://componentes.cnig.es/api-core?infocoordinates=base64:e3Bvc2l0aW9uOiJUUiIsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsICJ0b29sdGlwIjoiQ29vcmRlbmFkYXMiLCAiZGVjaW1hbEdFT2Nvb3JkIjo0LCJkZWNpbWFsVVRNY29vcmQiOjQsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIn0=
 ```
 
 # Ejemplo de uso

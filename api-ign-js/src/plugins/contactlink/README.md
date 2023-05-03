@@ -46,7 +46,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 # API-REST
 
 ```javascript
-URL_API?contactlink=position*collapsed*collapsible*descargascnig*pnoa*visualizador3d*fototeca*twitter
+URL_API?contactlink=position*collapsed*collapsible*tooltip*descargascnig*pnoa*visualizador3d*fototeca*twitter
 *instagram*facebook*pinterest*youtube*mail
 ```
 
@@ -69,6 +69,11 @@ URL_API?contactlink=position*collapsed*collapsible*descargascnig*pnoa*visualizad
   <tr>
     <td>collapsible</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a usar para mostrar en el tooltip del plugin</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
@@ -121,18 +126,13 @@ URL_API?contactlink=position*collapsed*collapsible*descargascnig*pnoa*visualizad
     <td>URL del correo del CNIG</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
-  <tr>
-    <td>tooltip</td>
-    <td>Valor a usar para mostrar en el tooltip del plugin</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
 </table>
 
 
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core/?contactlink=TR*true*true*http%3A%2F%2Fcentrodedescargas.cnig.es%2FCentroDescargas%2Findex.jsp*https%3A%2F%2Fwww.ign.es%2Fweb%2Fcomparador_pnoa%2Findex.html*https%3A%2F%2Fwww.ign.es%2F3D-Stereo%2F*https%3A%2F%2Ffototeca.cnig.es%2F*https%3A%2F%2Ftwitter.com%2FIGNSpain*https%3A%2F%2Fwww.instagram.com%2Fignspain%2F*https%3A%2F%2Fwww.facebook.com%2FIGNSpain%2F*https%3A%2F%2Fwww.pinterest.es%2FIGNSpain%2F*https%3A%2F%2Fwww.youtube.com%2Fuser%2FIGNSpain*mailto:ign@fomento.es*conctactlink%20tooltip
+https://componentes.cnig.es/api-core/?contactlink=TR*true*true*Enlaces*http%3A%2F%2Fcentrodedescargas.cnig.es%2FCentroDescargas%2Findex.jsp*https%3A%2F%2Fwww.ign.es%2Fweb%2Fcomparador_pnoa%2Findex.html*https%3A%2F%2Fwww.ign.es%2F3D-Stereo%2F*https%3A%2F%2Ffototeca.cnig.es%2F*https%3A%2F%2Ftwitter.com%2FIGNSpain*https%3A%2F%2Fwww.instagram.com%2Fignspain%2F*https%3A%2F%2Fwww.facebook.com%2FIGNSpain%2F*https%3A%2F%2Fwww.pinterest.es%2FIGNSpain%2F*https%3A%2F%2Fwww.youtube.com%2Fuser%2FIGNSpain*mailto:ign@fomento.es
 ```
 
 ```

@@ -80,10 +80,9 @@ https://componentes.cnig.es/api-core?measurebar=BL
 ```
 
 ### Ejemplos de uso API-REST en base64
+Ejemplo de constructor del plugin: {position:'TR', collapsible: true, collapsed: true, tooltip: 'Medidas'}
 ```
-Ejemplo de constructor del plugin: {position: 'TL'}
-
-https://componentes.cnig.es/api-core?measurebar=base64:e3Bvc2l0aW9uOiAnVEwnLH0=
+https://componentes.cnig.es/api-core?measurebar=base64:e3Bvc2l0aW9uOidUUicsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdNZWRpZGFzJ30=
 ```
 
 # Ejemplo de uso

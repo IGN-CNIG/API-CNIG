@@ -89,22 +89,17 @@ URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*a
 </table>
 
 
-### Ejemplos de uso API-REST
+### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4*3*2*false*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
+https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4
 ```
 
-```
-https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4*4*2*false
-```
-
-### Ejemplos de uso API-REST en base64
+### Ejemplo de uso API-REST en base64
+Ejemplo del constructor: {"label":"EPSG:4326","helpUrl":"https://www.ign.es/", "tooltip": "Coordenadas"}
 
 ```
-Ejemplo del constructor: {"activeZ":true,"geoDecimalDigits":6,"utmDecimalDigits":2,"label":"EPSG:4326","helpUrl":"https://www.ign.es/"}
-
-https://componentes.cnig.es/api-core?mousesrs=base64:eyJhY3RpdmVaIjp0cnVlLCJnZW9EZWNpbWFsRGlnaXRzIjo2LCJ1dG1EZWNpbWFsRGlnaXRzIjoyLCJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIn0=
+https://componentes.cnig.es/api-core?mousesrs=base64:eyJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIiwgInRvb2x0aXAiOiAiQ29vcmRlbmFkYXMifQ==
 ```
 
 # Ejemplo de uso
@@ -116,8 +111,6 @@ const mp = new M.plugin.MouseSRS({
   srs: 'EPSG:4326',
   label: 'WGS84',
   precision: 4,
-  geoDecimalDigits: 3,
-  utmDecimalDigits: 2,
 });
 ```
 

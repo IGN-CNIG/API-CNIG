@@ -32,8 +32,8 @@ El constructor se inicializa con dos objetos JSON. El primero contiene el atribu
 - **collapsed**: Indica si el plugin aparece abierto por defecto (true/false).  Por defecto: false.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).  Por defecto: false.
 - **tooltip**. Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información). Por defecto: Mapa de situación.
-- **fixed**: Indica si el mapa del plugin permanece a un zoom fijo (true/false). Por defecto: false
-- **zoom**: Indica el nivel del zoom al que permanecerá fijo el mapa del plugin. Por defecto: ''
+- **fixed**: Indica si el mapa del plugin permanece a un zoom fijo (true/false). Por defecto: false.
+- **zoom**: Indica el nivel del zoom al que permanecerá fijo el mapa del plugin. Por defecto: '' (cadena vacía).
 - **baseLayer**: URL de la capa base si se quiere prefijar una en el plugin overviewmap. Por defecto: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true'
 
 # API-REST
@@ -89,19 +89,20 @@ URL_API?overviewmap=position*!collapsed*!collapsible*!tooltip*!fixed*!zoom*!base
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!overviewmap%20tooltip*!true*!5*!WMS*PNOA%202017*https://www.ign.es/wms/pnoa-historico?*PNOA2017*true*true
+https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!Mapa*!true*!5*!WMS*PNOA%202017*https://www.ign.es/wms/pnoa-historico?*PNOA2017*true*true
 ```
 
 ```
-https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!overviewmap%20tooltip
+https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!Mapa
 ```
 
-### Ejemplos de uso API-REST en base64
+### Ejemplo de uso API-REST en base64
 
 ```
-Ejemplo de constructor: {"position":"BR","fixed":true,"zoom":4,"baseLayer":"WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true","collapsed":false,"collapsible":false}
+Ejemplo de constructor: {"position":"BR","fixed":true,"zoom":4,"baseLayer":"WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true","collapsed":false,"collapsible":false, "tooltip":"Mapa"}
 
-https://componentes.cnig.es/api-core?overviewmap=base64:eyJwb3NpdGlvbiI6IkJSIiwiZml4ZWQiOnRydWUsInpvb20iOjQsImJhc2VMYXllciI6IldNVFMqaHR0cDovL3d3dy5pZ24uZXMvd210cy9pZ24tYmFzZT8qSUdOQmFzZVRvZG8qR29vZ2xlTWFwc0NvbXBhdGlibGUqTWFwYSBJR04qZmFsc2UqaW1hZ2UvanBlZypmYWxzZSpmYWxzZSp0cnVlIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOmZhbHNlfQ==
+https://componentes.cnig.es/api-core?overviewmap=base64:eyJwb3NpdGlvbiI6IkJSIiwiZml4ZWQiOnRydWUsInpvb20iOjQsImJhc2VMYXllciI6IldNVFMqaHR0cDovL3d3dy5pZ24uZXMvd210cy9pZ24tYmFzZT8qSUdOQmFzZVRvZG8qR29vZ2xlTWFwc0NvbXBhdGlibGUqTWFwYSBJR04qZmFsc2UqaW1hZ2UvanBlZypmYWxzZSpmYWxzZSp0cnVlIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOmZhbHNlLCAidG9vbHRpcCI6Ik1hcGEifQ==
+
 ```
 
 # Ejemplo de uso
