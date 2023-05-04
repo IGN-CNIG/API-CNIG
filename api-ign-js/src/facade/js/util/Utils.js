@@ -1400,14 +1400,23 @@ export const decodeBase64 = (base64) => {
  *
  * @function
  * @param {M.ui.Panel} panel Panel del "plugin"
+ * @param {string} handleEl Elemento o selector en el que
+ * comienza la interacción del arrastre
  * @api
  */
-export const draggabillyPlugin = (panel) => {
+export const draggabillyPlugin = (panel, handleEl) => {
   const htmlPanel = panel.getTemplatePanel();
-  const draggable = new Draggabilly(htmlPanel, {
-    containment: '.m-mapea-container',
-  });
-  draggable.enable();
+  let draggable = null;
+  if (!panel.isCollapsed()) {
+    setTimeout(() => {
+      draggable = new Draggabilly(htmlPanel, {
+        containment: '.m-mapea-container',
+        handle: handleEl,
+      });
+      draggable.enable();
+    }, 1000);
+  }
+
   const closeButton = htmlPanel.querySelector('.m-panel-btn');
   if (closeButton) {
     closeButton.addEventListener('click', () => {
@@ -1417,6 +1426,12 @@ export const draggabillyPlugin = (panel) => {
         htmlPanel.style.position = 'relative';
         draggable.disable();
       } else {
+        if (isNullOrEmpty(draggable)) {
+          draggable = new Draggabilly(htmlPanel, {
+            containment: '.m-mapea-container',
+            handle: handleEl,
+          });
+        }
         draggable.enable();
       }
     });
