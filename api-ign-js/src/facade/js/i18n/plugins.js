@@ -376,7 +376,7 @@ const pluginsLanguage = {
   viewmanagement: {
     esViewmanagement,
     enViewmanagement,
-  }
+  },
 };
 
 export default pluginsLanguage;
