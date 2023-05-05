@@ -185,6 +185,10 @@ import enZoompanel from '../../../plugins/zoompanel/src/facade/js/i18n/en';
 import esViewshed from '../../../plugins/viewshed/src/facade/js/i18n/es';
 import enViewshed from '../../../plugins/viewshed/src/facade/js/i18n/en';
 
+// Viewshed
+import esViewmanagement from '../../../plugins/viewmanagement/src/facade/js/i18n/es';
+import enViewmanagement from '../../../plugins/viewmanagement/src/facade/js/i18n/en';
+
 
 /**
  * Este objeto devuelve un objeto JSON dinámico que contiene
@@ -369,6 +373,10 @@ const pluginsLanguage = {
     esViewshed,
     enViewshed,
   },
+  viewmanagement: {
+    esViewmanagement,
+    enViewmanagement,
+  }
 };
 
 export default pluginsLanguage;

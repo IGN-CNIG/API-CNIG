@@ -97,6 +97,8 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].zoomextent = pluginsLanguage.zoomextent.esZoomextent;
     configuration.translations[lang].zoompanel = pluginsLanguage.zoompanel.esZoompanel;
     configuration.translations[lang].viewshed = pluginsLanguage.viewshed.esViewshed;
+    configuration.translations[lang].viewmanagement =
+      pluginsLanguage.viewmanagement.esViewmanagement;
   } else if (lang === 'en') {
     configuration.translations[lang].attributions = pluginsLanguage.attributions.enAttributions;
     configuration.translations[lang].backimglayer = pluginsLanguage.backimglayer.enBackimglayer;
@@ -147,6 +149,8 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].zoomextent = pluginsLanguage.zoomextent.enZoomextent;
     configuration.translations[lang].zoompanel = pluginsLanguage.zoompanel.enZoompanel;
     configuration.translations[lang].viewshed = pluginsLanguage.viewshed.enViewshed;
+    configuration.translations[lang].viewmanagement =
+      pluginsLanguage.viewmanagement.enViewmanagement;
   }
   return configuration.translations[lang];
 };
