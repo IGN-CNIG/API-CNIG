@@ -1407,35 +1407,30 @@ export const decodeBase64 = (base64) => {
 export const draggabillyPlugin = (panel, handleEl) => {
   const htmlPanel = panel.getTemplatePanel();
   let draggable = null;
-  if (!panel.isCollapsed()) {
-    setTimeout(() => {
-      draggable = new Draggabilly(htmlPanel, {
-        containment: '.m-mapea-container',
-        handle: handleEl,
-      });
-      draggable.enable();
-    }, 1000);
-  }
-
-  const closeButton = htmlPanel.querySelector('.m-panel-btn');
-  if (closeButton) {
-    closeButton.addEventListener('click', () => {
-      if (panel.isCollapsed()) {
-        htmlPanel.style.removeProperty('left');
-        htmlPanel.style.removeProperty('top');
-        htmlPanel.style.position = 'relative';
-        draggable.disable();
-      } else {
-        if (isNullOrEmpty(draggable)) {
-          draggable = new Draggabilly(htmlPanel, {
-            containment: '.m-mapea-container',
-            handle: handleEl,
-          });
-        }
-        draggable.enable();
-      }
+  setTimeout(() => {
+    draggable = new Draggabilly(htmlPanel, {
+      containment: '.m-mapea-container',
+      handle: handleEl,
     });
-  }
+
+    if (!M.utils.isNull(draggable) && !panel.isCollapsed()) {
+      draggable.enable();
+    }
+
+    const closeButton = htmlPanel.querySelector('.m-panel-btn');
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        if (panel.isCollapsed()) {
+          htmlPanel.style.removeProperty('left');
+          htmlPanel.style.removeProperty('top');
+          htmlPanel.style.position = 'relative';
+          draggable.disable();
+        } else {
+          draggable.enable();
+        }
+      });
+    }
+  }, 1000);
 };
 
 /**
