@@ -5,6 +5,8 @@ import sqljs from 'sql.js';
 import { inflate } from 'pako';
 import { isNullOrEmpty, bytesToBase64, getUint8ArrayFromData } from '../util/Utils';
 
+export const DEFAULT_WHITE_TILE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAQAAAD2e2DtAAABu0lEQVR42u3SQREAAAzCsOHf9F6oIJXQS07TxQIABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAgAACwAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAAsAEAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAKg9kK0BATSHu+YAAAAASUVORK5CYII=';
+
 /**
  * @classdesc
  * Esta clase genera una Tesela.
@@ -16,35 +18,15 @@ import { isNullOrEmpty, bytesToBase64, getUint8ArrayFromData } from '../util/Uti
  */
 class Tile {
   /**
-   * Constructor principal de la clase Tesela.
-   *
    * @constructor
-   * @param {Array} data Uint8Array que representa un archivo de base de datos.
-   *
-   * @api
+   * @param {ArrayBuffer} data
    */
   constructor(data) {
-    /**
-     * Tesela
-     */
-
     this.tiles_ = {};
-    /**
-     * Base de datos
-     */
     this.db_ = null;
-
     this.init(data);
   }
 
-  /**
-   * Este método crea la base de datos a partir de un fichero Uint8Array.
-   *
-   * @function
-   * @param {Array} data Uint8Array que representa un archivo de base de datos.
-   * @api
-   * @public
-   */
   init(data) {
     this.initPromise_ = new Promise((resolve, reject) => {
       sqljs({
@@ -60,55 +42,30 @@ class Tile {
     });
   }
 
-  /**
-   * Este método ejecuta una consulta SQL.
-   *
-   * @function
-   * @param {String} query Consulta SQL.
-   * @return {Object} Resultado de ejecutar la consulta SQL.
-   * @api
-   * @public
-   */
   executeQuery(query) {
     return this.initPromise_.then((db) => {
       return db.exec(query)[0];
     });
   }
 
-  /**
-   * Este método obtiene un Tesela que coincida con las coordenadas dadas como parámetros.
-   *
-   * @function
-   * @param {Array} tileCoord Array de coordenadas.
-   * @return {Object} Tesela.
-   * @api
-   * @public
-   */
   getTile(tileCoord) {
     const SELECT_SQL = 'select tile_data from tiles where zoom_level={z} and tile_column={x} and tile_row={y}';
     const PREPARED = SELECT_SQL.replace('{z}', tileCoord[0]).replace('{x}', tileCoord[1]).replace('{y}', tileCoord[2]);
-    let byteTile = this.tiles_[tileCoord] || null;
-    let tile = null;
-    if (this.db_ && !byteTile) {
+    const byteTile = this.tiles_[tileCoord] || null;
+    let tile = DEFAULT_WHITE_TILE;
+    if (this.db_ && isNullOrEmpty(byteTile)) {
       const select = this.db_.exec(PREPARED)[0];
       if (!isNullOrEmpty(select)) {
-        byteTile = select.values[0][0];
-        tile = bytesToBase64(byteTile);
+        const selectTile = select.values[0][0];
+        tile = bytesToBase64(selectTile);
+        this.setTile(tileCoord, tile);
       }
+    } else {
+      tile = byteTile;
     }
-    this.setTile(tileCoord, tile);
     return tile;
   }
 
-  /**
-   * Este método obtiene un Tesela Vectorial que coincida con las coordenadas dadas como parámetros.
-   *
-   * @function
-   * @param {Array} tileCoord Array de coordenadas.
-   * @return {Object} Tesela Vectorial.
-   * @api
-   * @public
-   */
   getVectorTile(tileCoord) {
     const SELECT_SQL = 'select tile_data from tiles where zoom_level={z} and tile_column={x} and tile_row={y}';
     const PREPARED = SELECT_SQL.replace('{z}', tileCoord[0]).replace('{x}', tileCoord[1]).replace('{y}', tileCoord[2]);
@@ -129,26 +86,10 @@ class Tile {
     return cacheVectorTile;
   }
 
-  /**
-   * Este método sobreescribe el tesela.
-   *
-   * @function
-   * @param {Array} tileCoord Array de coordenadas.
-   * @param {Object} tile Tesela.
-   * @api
-   * @public
-   */
   setTile(tileCoord, tile) {
     this.tiles_[tileCoord] = tile;
   }
 
-  /**
-   * Este método obtiene la extensión del Tesela.
-   * @function
-   * @return {Array} Extensión.
-   * @api
-   * @public
-   */
   getExtent() {
     let extent = null;
     const SELECT_SQL = 'select value from metadata where name="bounds"';
@@ -161,14 +102,6 @@ class Tile {
     });
   }
 
-  /**
-   * Este método obtiene el tipo de formato.
-   *
-   * @function
-   * @public
-   * @return {String} Devuelve tipo de formato. Por defecto devuelve "png".
-   * @api stable
-   */
   getFormat() {
     let format = 'png';
     const SELECT_SQL = 'select value from metadata where name="format"';
@@ -177,6 +110,17 @@ class Tile {
         format = result.values[0][0];
       }
       return format;
+    });
+  }
+
+  getMaxZoomLevel() {
+    let zoomLevel = 16;
+    const SELECT_SQL = 'select * from (select zoom_level from tiles group by zoom_level order by zoom_level DESC LIMIT 1)';
+    return this.executeQuery(SELECT_SQL).then((result) => {
+      if (result) {
+        zoomLevel = result.values[0][0];
+      }
+      return zoomLevel;
     });
   }
 }

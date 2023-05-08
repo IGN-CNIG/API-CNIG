@@ -257,6 +257,7 @@ class Map extends MObject {
       let isBaseLayer = false;
       if ((layer.type === LayerType.WMS) ||
         (layer.type === LayerType.WMTS) ||
+        (layer.type === LayerType.MBTiles) ||
         layer.type === LayerType.TMS) {
         isBaseLayer = (layer.transparent !== true);
       }
@@ -1012,25 +1013,33 @@ class Map extends MObject {
    */
   addMBTiles(layers) {
     const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
+    let existsBaseLayer = (baseLayers.length > 0);
 
+    const addedLayers = [];
     layers.forEach((layer) => {
-      // checks if layer is WFS and was added to the map
       if (layer.type === 'MBTiles') {
         if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
+          addedLayers.push(layer);
+
+          if (layer.transparent !== true) {
+            layer.setVisible(!existsBaseLayer);
+            existsBaseLayer = true;
+            layer.setZIndex(Map.Z_INDEX_BASELAYER);
+          } else if (layer.getZIndex() == null) {
             const zIndex = this.layers_.length + Map.Z_INDEX.MBTiles;
             layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
           }
         }
       }
     });
+
+    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer) ||
+      addedLayers.some(l => l.transparent !== true && l.isVisible());
+    if (calculateResolutions) {
+      this.updateResolutionsFromBaseLayer();
+    }
 
     return this;
   }

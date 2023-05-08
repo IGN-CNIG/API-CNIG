@@ -26,18 +26,18 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
-  - 'TL': (top left) - Arriba a la izquierda (por defecto).
-  - 'TR': (top right) - Arriba a la derecha.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **tooltip**: Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información).
-- **format**: Formato de respuesta de la consulta GetFeatureInfo.
-- **featureCount**: Máximo número de features a los que realizar la consulta.
-- **buffer**: Buffer del click para realizar la consulta.
+- **tooltip**: Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Consultar capas'.
+- **format**: Formato de respuesta de la consulta GetFeatureInfo. Por defecto: 'text/html'.
+- **featureCount**: Máximo número de features a los que realizar la consulta. Por defecto: 10.
+- **buffer**: Buffer del click para realizar la consulta. Por defecto: 10.
 - **opened**: Indica si queremos que la información devuelta esté abierta por defecto si sólo es una capa, abiertas todas si son varias o cerradas (por defecto). Si no se le indica ningún valor tendrá el funcionamiento por defecto, todas cerradas.
-  - 'one': abierta la información si sólo es una capa
-  - 'all': todas abiertas
-  - 'closed': cerradas
+  - 'one': abierta la información si sólo es una capa.
+  - 'all': todas abiertas.
+  - 'closed': cerradas (por defecto).
 
 # API-REST
 
@@ -49,42 +49,52 @@ URL_API?information=position*tooltip*format*featureCount*buffer*opened
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>tooltip</td>
     <td>Texto informativo</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>format</td>
     <td>Formato de respuesta de GetFeatureInfo</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>featureCount</td>
     <td>Número máximo de features a los que le realizará la consulta</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>buffer</td>
     <td>Buffer del click para la consulta</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>opened</td>
     <td>one/all/closed</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
 </table>
 
 
-### Ejemplos de uso API-REST
+### Ejemplo de uso API-REST
 
 ```
 https://componentes.cnig.es/api-core/?information=TR*Consultar%20capas*html*5*5*one
 ```
 
+### Ejemplo de uso API-REST en base64
+
+Ejemplo del constructor: {"position":"TR","tooltip":"Información","buffer":100,"opened":"one"}
 ```
-https://componentes.cnig.es/api-core/?information=TR**html*5*5*one
+https://componentes.cnig.es/api-core/?information=base64:eyJwb3NpdGlvbiI6IlRSIiwidG9vbHRpcCI6IkluZm9ybWFjacOzbiIsImJ1ZmZlciI6MTAwLCJvcGVuZWQiOiJvbmUifQ==
 ```
 
 # Ejemplo de uso

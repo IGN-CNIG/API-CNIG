@@ -60,7 +60,7 @@ import OSM from './layer/OSM';
  * con parámetros especificados por el usuario.
  *
  * @property {Boolean} _defaultProj Indica si la proyección utilizada
-  * es por defecto.
+ * es por defecto.
  * @property {object} panel Objeto del panel.
  * @property {Array<Number>} userMaxExtent Extensión máxima proporcionada por el usuario.
  * @extends {M.facade.Base}
@@ -625,7 +625,7 @@ class Map extends Base {
    *
    * @function
    * @param {Array<string>|Array<Mx.parameters.WMC>} layersParam Opcional.
-    * - Matriz de capas de nombres, tipo WMS.
+   * - Matriz de capas de nombres, tipo WMS.
    * @returns {Array<WMS>} Matriz de capas, tipo WMS.
    * @api
    */
@@ -1083,14 +1083,10 @@ class Map extends Base {
    * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional
    * - Matriz de capas de nombres, tipo MBTiles.
    * @returns {Array<M.layer.MBtiles>} Capas del mapa.
-   * @deprecated
    * @api
    */
   getMBTiles(layersParamVar) {
     let layersParam = layersParamVar;
-    if (isUndefined(MapImpl.prototype.getMBTiles)) {
-      Exception(getValue('exception').getmbtiles_method);
-    }
 
     if (isNull(layersParam)) {
       layersParam = [];
@@ -1098,12 +1094,7 @@ class Map extends Base {
       layersParam = [layersParam];
     }
 
-    let filters = [];
-    if (layersParam.length > 0) {
-      filters = layersParam.map(parameter.layer);
-    }
-
-    const layers = this.getImpl().getMBTiles(filters).sort(Map.LAYER_SORT);
+    const layers = this.getImpl().getMBTiles(layersParam).sort(Map.LAYER_SORT);
 
     return layers;
   }
@@ -1120,23 +1111,15 @@ class Map extends Base {
   addMBTiles(layersParamVar) {
     let layersParam = layersParamVar;
     if (!isNullOrEmpty(layersParam)) {
-      if (isUndefined(MapImpl.prototype.addMBTiles)) {
-        Exception(getValue('exception').addmbtiles_method);
-      }
-
       if (!isArray(layersParam)) {
         layersParam = [layersParam];
       }
 
       const mbtilesLayers = [];
       layersParam.forEach((layerParam) => {
-        if (isObject(layerParam) && (layerParam instanceof MBTiles)) {
+        if (isObject(layerParam) && layerParam.type === 'MBTiles') {
           layerParam.setMap(this);
           mbtilesLayers.push(layerParam);
-        } else if (!(layerParam instanceof Layer)) {
-          const mbtilesLayer = new MBTiles(layerParam, layerParam.options);
-          mbtilesLayer.setMap(this);
-          mbtilesLayers.push(mbtilesLayer);
         }
       });
 
@@ -1159,10 +1142,6 @@ class Map extends Base {
    */
   removeMBTiles(layersParam) {
     if (!isNullOrEmpty(layersParam)) {
-      if (isUndefined(MapImpl.prototype.removeMBTiles)) {
-        Exception(getValue('exception').removembtiles_method);
-      }
-
       const mbtilesLayers = this.getMBTiles(layersParam);
       if (mbtilesLayers.length > 0) {
         this.getImpl().removeMBTiles(mbtilesLayers);
