@@ -54,7 +54,6 @@ export default class ZoomPanelControl extends M.Control {
           evt.target.classList.remove('activated');
         }, 1000);
         this.facadeMap_.setZoom(this.facadeMap_.getZoom() + 1);
-        // this.registerViewEvents_();
       });
 
       zoomOutBtn.addEventListener('click', (evt) => {
@@ -63,7 +62,6 @@ export default class ZoomPanelControl extends M.Control {
           evt.target.classList.remove('activated');
         }, 1000);
         this.facadeMap_.setZoom(this.facadeMap_.getZoom() - 1);
-        // this.registerViewEvents_();
       });
     }
   }

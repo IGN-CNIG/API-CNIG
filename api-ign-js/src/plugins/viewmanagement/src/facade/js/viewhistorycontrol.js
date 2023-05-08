@@ -122,6 +122,13 @@ export default class ViewHistoryControl extends M.Control {
     return control instanceof ViewHistoryControl;
   }
 
+  /**
+   * This function destroys this control
+   *
+   * @public
+   * @function
+   * @api
+   */
   destroy() {
     this.getImpl().unRegisterViewEvents();
   }

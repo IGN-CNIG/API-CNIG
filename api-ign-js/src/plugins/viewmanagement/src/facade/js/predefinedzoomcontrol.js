@@ -89,7 +89,8 @@ export default class PredefinedZoomControl extends M.Control {
    *
    * @function
    * @public
-   * @param {Event} e
+   * @param {Node} element
+   * @param {Array} bbox
    * @api
    */
   zoomToGivenBox(element, bbox) {
@@ -105,7 +106,9 @@ export default class PredefinedZoomControl extends M.Control {
    *
    * @function
    * @public
-   * @param {Event} e
+   * @param {Node} element
+   * @param {Array} center
+   * @param {Number} zoom
    * @api
    */
   zoomToCenter(element, center, zoom) {

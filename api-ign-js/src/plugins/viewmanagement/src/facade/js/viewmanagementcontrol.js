@@ -33,6 +33,7 @@ export default class ViewManagementControl extends M.Control {
      */
 
     this.predefinedzoom_ = predefinedzoom;
+
     /**
      * Indicates if the control ZoomExtent is added to the plugin
      * @private
@@ -61,6 +62,11 @@ export default class ViewManagementControl extends M.Control {
      */
     this.isDraggable_ = isDraggable;
 
+    /**
+     * Order of plugin
+     * @public
+     * @type {Number}
+     */
     this.order = order;
   }
 
@@ -191,10 +197,25 @@ export default class ViewManagementControl extends M.Control {
     }
   }
 
+  /**
+   * This function changes number of tabindex
+   *
+   * @public
+   * @function
+   * @param {Node} html
+   * @api
+   */
   accessibilityTab(html) {
     html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 
+  /**
+   * This function destroys controls inside this control
+   *
+   * @public
+   * @function
+   * @api
+   */
   destroy() {
     if (!M.utils.isNullOrEmpty(this.zoomextentControl)) {
       this.zoomextentControl.destroy();

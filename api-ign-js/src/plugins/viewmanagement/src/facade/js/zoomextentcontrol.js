@@ -84,6 +84,13 @@ export default class ZoomExtentControl extends M.Control {
     return control instanceof ZoomExtentControl;
   }
 
+  /**
+   * This function destroys this control
+   *
+   * @public
+   * @function
+   * @api
+   */
   destroy() {
     this.getImpl().removeInteraction();
     document.removeEventListener('keydown', this.escKey_);

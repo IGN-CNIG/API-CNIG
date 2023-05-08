@@ -130,6 +130,13 @@ export default class ViewHistoryControl extends M.impl.Control {
     }
   }
 
+  /**
+   * This functions cancels the moveend event for this control
+   *
+   * @public
+   * @function
+   * @api
+   */
   unRegisterViewEvents() {
     this.facadeMap_.getMapImpl().un('moveend', this.regZoom);
   }

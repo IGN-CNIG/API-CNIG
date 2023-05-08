@@ -52,6 +52,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **zoomExtent**: Indica si el control ZoomExtent se añade al plugin (true/false). Por defecto: true.
 - **viewhistory**: Indica si el control ViewHistory se añade al plugin (true/false). Por defecto: true.
 - **zoompanel**: Indica si el control ZoomPanel se añade al plugin (true/false). Por defecto: true.
+- **order**: Indica el orden de aparición del plugin. Por defecto: 1.
 
 # API-REST
 

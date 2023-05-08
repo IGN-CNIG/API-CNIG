@@ -119,7 +119,7 @@ export default class ViewManagement extends M.Plugin {
      * @private
      * @type {Number}
      */
-    this.order = options.order >= -1 ? options.order : null;
+    this.order = options.order >= -1 ? options.order : 1;
   }
 
   /**
@@ -169,6 +169,15 @@ export default class ViewManagement extends M.Plugin {
     map.addPanels(this.panel_);
   }
 
+  /**
+   * This functions indicates default center and zoom level for
+   * the control predefinedZoom
+   *
+   * @public
+   * @function
+   * @returns Default center and zoom level
+   * @api
+   */
   getPredefinedZoom() {
     const predefinedZoom = [{
       center: [-356188.1915089525, 4742037.53423241],
