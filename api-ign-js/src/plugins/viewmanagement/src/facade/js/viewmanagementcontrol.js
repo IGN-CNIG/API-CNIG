@@ -19,7 +19,7 @@ export default class ViewManagementControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(isDraggable, predefinedzoom, zoomextent, viewhistory, zoompanel) {
+  constructor(isDraggable, predefinedzoom, zoomextent, viewhistory, zoompanel, order) {
     if (M.utils.isUndefined(ViewManagementImpl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -60,6 +60,8 @@ export default class ViewManagementControl extends M.Control {
      * @type {Boolean}
      */
     this.isDraggable_ = isDraggable;
+
+    this.order = order;
   }
 
   /**
@@ -71,6 +73,7 @@ export default class ViewManagementControl extends M.Control {
    * @api
    */
   createView(map) {
+    this.map_ = map;
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {
@@ -90,11 +93,22 @@ export default class ViewManagementControl extends M.Control {
       this.html = html;
       if (this.predefinedzoom_) {
         this.predefinedzoomControl = new PredefinedZoomControl(map, this.predefinedzoom_);
+        if ('isDefault' in this.predefinedzoom_) {
+          this.predefinedzoom_[0].center = this.getImpl().transformCenter(this.predefinedzoom_[0].center, 'EPSG:3857');
+        }
         html.querySelector('#m-viewmanagement-predefinedzoom').addEventListener('click', () => {
           if (M.utils.isArray(this.predefinedzoom_) && this.predefinedzoom_.length > 1) {
             this.deactive(html, 'predefinedzoom');
           }
           this.predefinedzoomControl.active(html);
+        });
+        html.querySelector('#m-viewmanagement-predefinedzoom').addEventListener('keydown', ({ key }) => {
+          if (key === 'Enter') {
+            if (M.utils.isArray(this.predefinedzoom_) && this.predefinedzoom_.length > 1) {
+              this.deactive(html, 'predefinedzoom');
+            }
+            this.predefinedzoomControl.active(html);
+          }
         });
       }
       if (this.zoomextent_) {
@@ -103,12 +117,24 @@ export default class ViewManagementControl extends M.Control {
           this.deactive(html, 'zoomextent');
           this.zoomextentControl.active(html);
         });
+        html.querySelector('#m-viewmanagement-zoomextent').addEventListener('keydown', ({ key }) => {
+          if (key === 'Enter') {
+            this.deactive(html, 'zoomextent');
+            this.zoomextentControl.active(html);
+          }
+        });
       }
       if (this.viewhistory_) {
         this.viewhistoryControl = new ViewHistoryControl(map);
         html.querySelector('#m-viewmanagement-viewhistory').addEventListener('click', () => {
           this.deactive(html, 'viewhistory');
           this.viewhistoryControl.active(html);
+        });
+        html.querySelector('#m-viewmanagement-viewhistory').addEventListener('keydown', ({ key }) => {
+          if (key === 'Enter') {
+            this.deactive(html, 'viewhistory');
+            this.viewhistoryControl.active(html);
+          }
         });
       }
       if (this.zoompanel_) {
@@ -117,10 +143,17 @@ export default class ViewManagementControl extends M.Control {
           this.deactive(html, 'zoompanel');
           this.zoompanelControl.active(html);
         });
+        html.querySelector('#m-viewmanagement-zoompanel').addEventListener('keydown', ({ key }) => {
+          if (key === 'Enter') {
+            this.deactive(html, 'zoompanel');
+            this.zoompanelControl.active(html);
+          }
+        });
       }
       if (this.isDraggable_) {
         M.utils.draggabillyPlugin(this.getPanel(), '#m-viewmanagement-title');
       }
+      this.accessibilityTab(html);
       success(html);
     });
   }
@@ -155,6 +188,19 @@ export default class ViewManagementControl extends M.Control {
       if (container && container.children.length > 2) {
         container.removeChild(container.children[2]);
       }
+    }
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+  }
+
+  destroy() {
+    if (!M.utils.isNullOrEmpty(this.zoomextentControl)) {
+      this.zoomextentControl.destroy();
+    }
+    if (!M.utils.isNullOrEmpty(this.viewhistoryControl)) {
+      this.viewhistoryControl.destroy();
     }
   }
 }

@@ -48,12 +48,20 @@ export default class ZoomPanelControl extends M.Control {
       document.querySelector('#div-contenedor-viewmanagement').appendChild(panel);
       const zoomInBtn = html.querySelector('button#m-zoompanel-zoomin');
       const zoomOutBtn = html.querySelector('button#m-zoompanel-zoomout');
-      zoomInBtn.addEventListener('click', () => {
+      zoomInBtn.addEventListener('click', (evt) => {
+        evt.target.classList.add('activated');
+        setTimeout(() => {
+          evt.target.classList.remove('activated');
+        }, 1000);
         this.facadeMap_.setZoom(this.facadeMap_.getZoom() + 1);
         // this.registerViewEvents_();
       });
 
-      zoomOutBtn.addEventListener('click', () => {
+      zoomOutBtn.addEventListener('click', (evt) => {
+        evt.target.classList.add('activated');
+        setTimeout(() => {
+          evt.target.classList.remove('activated');
+        }, 1000);
         this.facadeMap_.setZoom(this.facadeMap_.getZoom() - 1);
         // this.registerViewEvents_();
       });

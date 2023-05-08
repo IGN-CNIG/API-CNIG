@@ -46,6 +46,18 @@ export default class ViewHistoryControl extends M.impl.Control {
   }
 
   /**
+   * This function call registerZoom_ function
+   * to be able to removeEventListener
+   *
+   * @function
+   * @private
+   * @api
+   */
+  registerZoomEvent_() {
+    this.registerZoom_();
+  }
+
+  /**
    * This function registers view events on map.
    *
    * @function
@@ -53,9 +65,8 @@ export default class ViewHistoryControl extends M.impl.Control {
    * @api
    */
   registerViewEvents() {
-    this.facadeMap_.getMapImpl().on('moveend', () => {
-      this.registerZoom_();
-    });
+    this.regZoom = this.registerZoomEvent_.bind(this);
+    this.facadeMap_.getMapImpl().on('moveend', this.regZoom);
   }
 
   /**
@@ -117,5 +128,9 @@ export default class ViewHistoryControl extends M.impl.Control {
       this.facadeMap_.getMapImpl().getView().setCenter(nextCenter);
       this.facadeMap_.getMapImpl().getView().setResolution(nextResolution);
     }
+  }
+
+  unRegisterViewEvents() {
+    this.facadeMap_.getMapImpl().un('moveend', this.regZoom);
   }
 }

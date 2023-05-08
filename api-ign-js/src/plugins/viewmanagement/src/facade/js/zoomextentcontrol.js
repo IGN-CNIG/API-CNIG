@@ -36,7 +36,8 @@ export default class ZoomExtentControl extends M.Control {
     if (!zoomextentactive) {
       html.querySelector('#m-viewmanagement-zoomextent').classList.add('activated');
       this.getImpl().activateClick(this.map_);
-      document.addEventListener('keydown', this.checkEscKey.bind(this));
+      this.escKey_ = this.checkEscKey.bind(this);
+      document.addEventListener('keydown', this.escKey_);
     } else {
       this.deactive();
     }
@@ -54,7 +55,7 @@ export default class ZoomExtentControl extends M.Control {
   checkEscKey(evt) {
     if (evt.key === 'Escape') {
       this.deactive();
-      document.removeEventListener('keydown', this.checkEscKey);
+      document.removeEventListener('keydown', this.escKey_);
     }
   }
 
@@ -81,5 +82,10 @@ export default class ZoomExtentControl extends M.Control {
     */
   equals(control) {
     return control instanceof ZoomExtentControl;
+  }
+
+  destroy() {
+    this.getImpl().removeInteraction();
+    document.removeEventListener('keydown', this.escKey_);
   }
 }

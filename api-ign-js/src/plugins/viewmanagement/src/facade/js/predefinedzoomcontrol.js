@@ -56,13 +56,6 @@ export default class PredefinedZoomControl extends M.Control {
         document.querySelector('#div-contenedor-viewmanagement').appendChild(panel);
       } else {
         // predefinedZoom: true or array with one zoom level
-        if (!M.utils.isArray(this.savedZooms_)) {
-          // predefinedZoom: true
-          this.savedZooms_ = [{
-            center: [-356188.1915089525, 4742037.53423241],
-            zoom: 6,
-          }];
-        }
         const element = html.querySelector('#m-viewmanagement-predefinedzoom');
         element.classList.add('activated');
         if (this.savedZooms_[0].bbox !== undefined) {

@@ -87,6 +87,10 @@ export default class ViewHistoryControl extends M.Control {
    */
   nextStep_(evt) {
     evt.preventDefault();
+    evt.target.classList.add('activated');
+    setTimeout(() => {
+      evt.target.classList.remove('activated');
+    }, 1000);
     this.getImpl().nextStep();
   }
 
@@ -99,6 +103,10 @@ export default class ViewHistoryControl extends M.Control {
    */
   previousStep_(evt) {
     evt.preventDefault();
+    evt.target.classList.add('activated');
+    setTimeout(() => {
+      evt.target.classList.remove('activated');
+    }, 1000);
     this.getImpl().previousStep();
   }
 
@@ -112,5 +120,9 @@ export default class ViewHistoryControl extends M.Control {
    */
   equals(control) {
     return control instanceof ViewHistoryControl;
+  }
+
+  destroy() {
+    this.getImpl().unRegisterViewEvents();
   }
 }

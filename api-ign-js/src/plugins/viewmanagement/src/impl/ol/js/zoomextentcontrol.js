@@ -12,11 +12,12 @@ export default class ZoomExtentControl extends M.impl.Control {
    * @api
    */
   createInteraction(map) {
+    this.facadeMap_ = map;
     this.dragZoom = new ol.interaction.DragZoom({
       condition: () => true,
     });
     this.dragZoom.setActive(false);
-    map.getMapImpl().addInteraction(this.dragZoom);
+    this.facadeMap_.getMapImpl().addInteraction(this.dragZoom);
   }
 
   /**
@@ -41,5 +42,17 @@ export default class ZoomExtentControl extends M.impl.Control {
    */
   deactivateClick(map) {
     this.dragZoom.setActive(false);
+  }
+
+  /**
+   * This function remove interaction of the control
+   *
+   * @public
+   * @function
+   * @api
+   */
+  removeInteraction() {
+    this.facadeMap_.getMapImpl().removeEventListener('keydown');
+    this.facadeMap_.getMapImpl().removeInteraction(this.dragZoom);
   }
 }

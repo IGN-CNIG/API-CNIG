@@ -89,8 +89,9 @@ export default class ViewManagement extends M.Plugin {
      * @private
      * @type {Boolean|Array<Object>}
      */
-    this.predefinedzoom = !M.utils.isUndefined(options.predefinedZoom) ?
-      options.predefinedZoom : true;
+    this.predefinedzoom = M.utils.isUndefined(options.predefinedZoom) ||
+      options.predefinedZoom === true ?
+      this.getPredefinedZoom() : options.predefinedZoom;
 
     /**
      * Indicates if the control ZoomExtent is added to the plugin
@@ -112,6 +113,13 @@ export default class ViewManagement extends M.Plugin {
      * @type {Boolean}
      */
     this.zoompanel = !M.utils.isUndefined(options.zoompanel) ? options.zoompanel : true;
+
+    /**
+     * Indicates order to the plugin
+     * @private
+     * @type {Number}
+     */
+    this.order = options.order >= -1 ? options.order : null;
   }
 
   /**
@@ -144,6 +152,7 @@ export default class ViewManagement extends M.Plugin {
       this.zoomextent,
       this.viewhistory,
       this.zoompanel,
+      this.order,
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelViewManagement', {
@@ -153,10 +162,20 @@ export default class ViewManagement extends M.Plugin {
       className: 'm-plugin-viewmanagement',
       tooltip: this.tooltip_,
       collapsedButtonClass: 'viewmanagement-icon-zoom-mapa',
+      order: this.order,
     });
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+  getPredefinedZoom() {
+    const predefinedZoom = [{
+      center: [-356188.1915089525, 4742037.53423241],
+      zoom: 6,
+      isDefault: true,
+    }];
+    return predefinedZoom;
   }
 
   /**
