@@ -119,7 +119,24 @@ export const Vector = 'Vector';
  */
 export const MVT = 'MVT';
 
+/**
+ * Tipo MBTiles. Es un formato de archivo para contener conjuntos
+ * de imágenes(tilesets) bajo una estructura de base de datos SQLite.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
 export const MBTiles = 'MBTiles';
+
+/**
+ * Tipo Vector Tile.Es un formato de archivo para contener conjuntos
+ * de imágenes(tilesets) bajo una estructura de base de datos SQLite.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
 export const MBTilesVector = 'MBTilesVector';
 
 /**

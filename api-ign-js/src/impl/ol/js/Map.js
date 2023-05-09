@@ -950,7 +950,7 @@ class Map extends MObject {
    *
    * @function
    * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
-   * @returns {Array<M.layer.MBTiles>} Capas MBTiles del mapa.
+   * @returns {Array<FacadeMBTiles>} Capas MBTiles del mapa.
    * @public
    * @api
    */
@@ -1008,7 +1008,7 @@ class Map extends MObject {
    * Este método añade las capas MBTiles especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<M.layer.MBTiles>} layers Capas MBTiles a añadir.
+   * @param {{Array<FacadeMBTiles>} layers Capas MBTiles a añadir.
    * @returns {Map} Mapa.
    * @public
    * @api
@@ -1019,7 +1019,7 @@ class Map extends MObject {
 
     const addedLayers = [];
     layers.forEach((layer) => {
-      if (layer.type === 'MBTiles') {
+      if (layer.type === LayerType.MBTiles) {
         if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
@@ -1050,7 +1050,7 @@ class Map extends MObject {
    * Este método elimina las capas MBTiles del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<M.layer.MBTiles>} layers Capas MBTiles a eliminar.
+   * @param {Array<FacadeMBTiles>} layers Capas MBTiles a eliminar.
    * @returns {Map} Mapa.
    * @public
    * @api
@@ -1071,7 +1071,7 @@ class Map extends MObject {
    *
    * @function
    * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
-   * @returns {Array<M.layer.MBTilesVector>} Capas MBTiles del mapa.
+   * @returns {Array<FacadeMBTilesVector>} Capas MBTilesVector del mapa.
    * @public
    * @api
    */
@@ -1123,10 +1123,10 @@ class Map extends MObject {
   }
 
   /**
-   * Este método añade las capas vectoriales MBTiles especificadas por el usuario al mapa.
+   * Este método añade las capas vectoriales MBTilesVector especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<M.layer.MBTilesVector>} layers Capas vectoriales MBTiles a añadir.
+   * @param {Array<FacadeMBTilesVector>} layers Capas vectoriales MBTilesVector a añadir.
    * @returns {Map} Mapa.
    * @public
    * @api
@@ -1136,7 +1136,7 @@ class Map extends MObject {
     const existsBaseLayer = (baseLayers.length > 0);
     layers.forEach((layer) => {
       // checks if layer is WFS and was added to the map
-      if (layer.type === 'MBTilesVector') {
+      if (layer.type === LayerType.MBTilesVector) {
         if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
@@ -1155,10 +1155,10 @@ class Map extends MObject {
   }
 
   /**
-   * Este método elimina las capas vectoriales MBTiles del mapa especificadas por el usuario.
+   * Este método elimina las capas vectoriales MBTilesVecor del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<M.layer.MBTilesVector>} layers Capas vectoriales MBTiles a eliminar.
+   * @param {Array<FacadeMBTilesVector>} layers Capas vectoriales MBTilesVector a eliminar.
    * @returns {Map} Mapa.
    * @public
    * @api
