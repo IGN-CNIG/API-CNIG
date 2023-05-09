@@ -350,7 +350,7 @@ class MBTiles extends Layer {
         const tileProvider = new TileProvider(this.source_);
         this.tileProvider_ = tileProvider;
         resolve(tileProvider);
-      } else if (this.url) {
+      } else if (this.url_) {
         window.fetch(this.url_).then((response) => {
           this.source = response;
           const tileProvider = new TileProvider(response);

@@ -399,6 +399,13 @@ class MBTilesVector extends Vector {
       } else if (this.source_) {
         const tileProvider = new TileProvider(this.source_);
         resolve(tileProvider);
+      } else if (this.url_) {
+        window.fetch(this.url_).then((response) => {
+          this.source = response;
+          const tileProvider = new TileProvider(response);
+          this.tileProvider_ = tileProvider;
+          resolve(tileProvider);
+        });
       } else {
         reject(new Error('No source was specified.'));
       }
