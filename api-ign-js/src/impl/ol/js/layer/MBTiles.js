@@ -176,14 +176,14 @@ class MBTiles extends Layer {
       });
 
       // set this layer visible
-      if (!isNullOrEmpty(this.ol3Layer)) {
-        this.ol3Layer.setVisible(visibility);
+      if (!isNullOrEmpty(this.olLayer)) {
+        this.olLayer.setVisible(visibility);
       }
 
       // updates resolutions and keep the bbox
       this.map.getImpl().updateResolutionsFromBaseLayer();
-    } else if (!isNullOrEmpty(this.ol3Layer)) {
-      this.ol3Layer.setVisible(visibility);
+    } else if (!isNullOrEmpty(this.olLayer)) {
+      this.olLayer.setVisible(visibility);
     }
   }
 
@@ -240,26 +240,26 @@ class MBTiles extends Layer {
           }
           const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
           this.getExtentFromProvider().then((reprojectedExtent) => {
-            this.ol3Layer = this.createLayer({
+            this.olLayer = this.createLayer({
               tileProvider,
               resolutions,
               extent: reprojectedExtent || extent,
               sourceExtent: extent,
               projection,
             });
-            this.map.getMapImpl().addLayer(this.ol3Layer);
+            this.map.getMapImpl().addLayer(this.olLayer);
           });
         });
       });
     } else {
       const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 16);
-      this.ol3Layer = this.createLayer({
+      this.olLayer = this.createLayer({
         resolutions,
         extent,
         sourceExtent: extent,
         projection,
       });
-      this.map.getMapImpl().addLayer(this.ol3Layer);
+      this.map.getMapImpl().addLayer(this.olLayer);
     }
   }
 
@@ -386,7 +386,7 @@ class MBTiles extends Layer {
    * @api
    */
   setMaxExtent(maxExtent) {
-    this.ol3Layer.setExtent(maxExtent);
+    this.olLayer.setExtent(maxExtent);
   }
 
   /**
@@ -419,9 +419,9 @@ class MBTiles extends Layer {
    */
   destroy() {
     const olMap = this.map.getMapImpl();
-    if (!isNullOrEmpty(this.ol3Layer)) {
-      olMap.removeLayer(this.ol3Layer);
-      this.ol3Layer = null;
+    if (!isNullOrEmpty(this.olLayer)) {
+      olMap.removeLayer(this.olLayer);
+      this.olLayer = null;
     }
     this.map = null;
   }
@@ -454,8 +454,8 @@ class MBTiles extends Layer {
    */
   cloneOLLayer() {
     let olLayer = null;
-    if (this.ol3Layer != null) {
-      const properties = this.ol3Layer.getProperties();
+    if (this.olLayer != null) {
+      const properties = this.olLayer.getProperties();
       olLayer = new OLLayerTile(properties);
     }
     return olLayer;

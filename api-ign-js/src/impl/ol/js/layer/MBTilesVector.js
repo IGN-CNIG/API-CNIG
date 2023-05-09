@@ -156,13 +156,6 @@ class MBTilesVector extends Vector {
     this.maxExtent_ = userParameters.maxExtent || null;
 
     /**
-     * MBTilesVector minZoomLevel: Zoom mínimo aplicable a la capa.
-     * @private
-     * @type {number}
-     */
-    this.minZoomLevel_ = typeof userParameters.minZoomLevel === 'number' ? userParameters.minZoomLevel : 0;
-
-    /**
      * MBTilesVector maxZoomLevel: Zoom máximo aplicable a la capa.
      * @private
      * @type {number}
@@ -311,7 +304,7 @@ class MBTilesVector extends Vector {
       source: new OLSourceVectorTile({
         projection: opts.projection,
         url: '{z},{x},{y}',
-        tileLoadFunction: tile => tileLoadFn(tile, mvtFormat, opts),
+        tileLoadFunction: tile => tileLoadFn(tile, mvtFormat, opts, this),
         tileGrid: new TileGrid({
           extent: opts.sourceExtent,
           origin: getBottomLeft(opts.sourceExtent),
@@ -337,9 +330,10 @@ class MBTilesVector extends Vector {
     tile.setState(1); // ol/TileState#LOADING
     tile.setLoader((extent, resolution, projection) => {
       const tileCoord = tile.getTileCoord();
-      target.tileLoadFunction(tileCoord[0], tileCoord[1], -tileCoord[2] - 1).then((_vectorTile) => {
+      // eslint-disable-next-line
+      target.tileLoadFunction_(tileCoord[0], tileCoord[1], -tileCoord[2] - 1).then((_vectorTile) => {
         if (_vectorTile) {
-          const vectorTile = inflate(_vectorTile);
+          const vectorTile = inflate(null, _vectorTile);
           const features = formatter.readFeatures(vectorTile, {
             extent,
             featureProjection: projection,
