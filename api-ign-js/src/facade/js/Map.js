@@ -435,6 +435,9 @@ class Map extends Base {
               case 'MBTiles':
                 layer = new MBTiles(parameterVariable);
                 break;
+              case 'MBTilesVector':
+                layer = new MBTilesVector(parameterVariable);
+                break;
               case 'XYZ':
                 layer = new XYZ(parameterVariable);
                 break;
@@ -1170,11 +1173,8 @@ class Map extends Base {
     } else if (!isArray(layersParam)) {
       layersParam = [layersParam];
     }
-    let filters = [];
-    if (layersParam.length > 0) {
-      filters = layersParam.map(parameter.layer);
-    }
-    const layers = this.getImpl().getMBTilesVector(filters).sort(Map.LAYER_SORT);
+
+    const layers = this.getImpl().getMBTilesVector(layersParam).sort(Map.LAYER_SORT);
     return layers;
   }
 

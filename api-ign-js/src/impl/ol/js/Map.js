@@ -258,6 +258,7 @@ class Map extends MObject {
       if ((layer.type === LayerType.WMS) ||
         (layer.type === LayerType.WMTS) ||
         (layer.type === LayerType.MBTiles) ||
+        (layer.type === LayerType.MBTilesVector) ||
         layer.type === LayerType.TMS) {
         isBaseLayer = (layer.transparent !== true);
       }
@@ -343,6 +344,7 @@ class Map extends MObject {
       this.removeWMTS(knowLayers);
       this.removeMVT(knowLayers);
       this.removeMBTiles(knowLayers);
+      this.removeMBTilesVector(knowLayers);
       this.removeXYZ(knowLayers);
       this.removeTMS(knowLayers);
     }

@@ -120,6 +120,7 @@ export const Vector = 'Vector';
 export const MVT = 'MVT';
 
 export const MBTiles = 'MBTiles';
+export const MBTilesVector = 'MBTilesVector';
 
 /**
  * Todos los tipos de capas
@@ -140,6 +141,7 @@ const layertypes = {
   XYZ,
   TMS,
   MBTiles,
+  MBTilesVector,
 };
 
 /**
@@ -184,6 +186,7 @@ export const know = (type) => {
     XYZ,
     TMS,
     MBTiles,
+    MBTilesVector,
   ];
   return (knowTypes.indexOf(parse(type)) !== -1);
 };
