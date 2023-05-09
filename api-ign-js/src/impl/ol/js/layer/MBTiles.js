@@ -305,7 +305,8 @@ class MBTiles extends Layer {
    * @public
    * @api
    */
-  loadTile(tile, target) {
+  // no quitar opts
+  loadTile(tile, opts, target) {
     const imgTile = tile;
     const tileCoord = tile.getTileCoord();
     target.tileLoadFunction(tileCoord[0], tileCoord[1], -tileCoord[2] - 1).then((tileSrc) => {
