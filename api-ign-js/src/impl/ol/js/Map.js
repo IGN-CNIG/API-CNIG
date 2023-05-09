@@ -1008,7 +1008,7 @@ class Map extends MObject {
    * Este método añade las capas MBTiles especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<FacadeMBTiles>} layers Capas MBTiles a añadir.
+   * @param {Array<FacadeMBTiles>} layers Capas MBTiles a añadir al mapa.
    * @returns {Map} Mapa.
    * @public
    * @api
