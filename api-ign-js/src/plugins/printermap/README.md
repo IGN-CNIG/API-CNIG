@@ -50,6 +50,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 
 # API-REST
 
+### Estructura API-REST
+
 ```javascript
 URL_API?printermap=position*collapsed*collapsible*serverUrl*printTemplateUrl*printTemplateGeoUrl*printStatusUrl
 *georefActive*logo*fototeca
