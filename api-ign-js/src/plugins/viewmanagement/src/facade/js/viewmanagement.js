@@ -119,7 +119,7 @@ export default class ViewManagement extends M.Plugin {
      * @private
      * @type {Number}
      */
-    this.order = options.order >= -1 ? options.order : 1;
+    this.order = options.order >= -1 ? options.order : null;
   }
 
   /**

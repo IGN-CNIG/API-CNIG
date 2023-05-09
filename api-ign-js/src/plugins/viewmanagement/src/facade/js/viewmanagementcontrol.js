@@ -103,16 +103,12 @@ export default class ViewManagementControl extends M.Control {
           this.predefinedzoom_[0].center = this.getImpl().transformCenter(this.predefinedzoom_[0].center, 'EPSG:3857');
         }
         html.querySelector('#m-viewmanagement-predefinedzoom').addEventListener('click', () => {
-          if (M.utils.isArray(this.predefinedzoom_) && this.predefinedzoom_.length > 1) {
-            this.deactive(html, 'predefinedzoom');
-          }
+          this.deactive(html, 'predefinedzoom');
           this.predefinedzoomControl.active(html);
         });
         html.querySelector('#m-viewmanagement-predefinedzoom').addEventListener('keydown', ({ key }) => {
           if (key === 'Enter') {
-            if (M.utils.isArray(this.predefinedzoom_) && this.predefinedzoom_.length > 1) {
-              this.deactive(html, 'predefinedzoom');
-            }
+            this.deactive(html, 'predefinedzoom');
             this.predefinedzoomControl.active(html);
           }
         });
