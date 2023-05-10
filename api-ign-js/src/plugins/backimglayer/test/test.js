@@ -9,16 +9,23 @@ const map = M.map({
   zoom: 6,
 });
 
-const i = new M.plugin.Information({});
-map.addPlugin(i);
+// const i = new M.plugin.Information({});
+// map.addPlugin(i);
 
 const mp = new BackImgLayer({
+  position: 'TR',
   collapsed: true,
   collapsible: true,
-  position: 'TR',
-  columnsNumber: 3,
+  tooltip: 'Capas de fondo',
+  layerVisibility: true,
+  columnsNumber: 0,
   empty: true,
-  layerOpts: [{
+  // Cuando no se pasa layerOpts, se usan los parámetros ids, titles, previews y layers
+  ids: 'mapa,hibrido',
+  titles: 'Mapa,Hibrido',
+  previews: '../src/facade/assets/images/svqimagen.png,../src/facade/assets/images/svqmapa.png',
+  layers: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true',
+  /*layerOpts: [{
       id: 'wmts',
       preview: '../src/facade/assets/images/svqmapa.png',
       title: 'WMTS',
@@ -65,8 +72,8 @@ const mp = new BackImgLayer({
           tileGridMaxZoom: 19,
         }),
       ],
-    }
-  ]
+    },
+  ],*/
 });
 
 // const mp = new BackImgLayer({

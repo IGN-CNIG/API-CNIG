@@ -78,28 +78,28 @@ export default class BackImgLayer extends M.Plugin {
      * @private
      * @type {Object}
      */
-    this.layerOpts = options.layerOpts || undefined;
+    this.layerOpts = options.layerOpts;
 
     /**
      * Layers id's separated by ','.
      * @public
      * @type {String}
      */
-    this.ids = options.ids || '';
+    this.ids = options.ids || 'wmts';
 
     /**
      * Layers titles separated by ','.
      * @public
      * @type {String}
      */
-    this.titles = options.titles || '';
+    this.titles = options.titles || 'PNOA';
 
     /**
      * Layers preview urls separated by ','.
      * @public
      * @type {String}
      */
-    this.previews = options.previews || '';
+    this.previews = options.previews || 'https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png';
 
     /**
      * Layers separated by ','.
@@ -108,7 +108,7 @@ export default class BackImgLayer extends M.Plugin {
      * @public
      * @type {String}
      */
-    this.layers = options.layers || '';
+    this.layers = options.layers || 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true';
 
     /**
      * @private
@@ -232,7 +232,18 @@ export default class BackImgLayer extends M.Plugin {
     const layers = this.layerOpts === undefined ?
       `${this.ids}*!${this.titles}*!${this.previews}*!${this.layers}` :
       this.turnLayerOptsIntoUrl();
-    return `${this.name}=${this.position_}*!${this.collapsible}*!${this.collapsed}*!${this.layerVisibility}*!${this.layerId}*!${this.columnsNumber}*!${layers}`;
+    return `${this.name}=${this.position_}*!${this.collapsed}*!${this.collapsible}*!${this.tooltip_}*!${this.layerVisibility}*!${this.layerId}*!${this.columnsNumber}*!${this.empty}*!${layers}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64:${M.utils.encodeBase64(this.options)}`;
   }
 
   /**
