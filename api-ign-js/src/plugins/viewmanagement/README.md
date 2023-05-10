@@ -32,8 +32,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Gestión de la vista.
 - **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
 - **predefinedZoom**: Indica si el control PredefinedZoom se añade al plugin (true/false). Por defecto: true (zoom a España). Para añadir los zooms deseados en los que se podrá centrar el mapa se seguirá el siguiente formato:
@@ -52,12 +52,11 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **zoomExtent**: Indica si el control ZoomExtent se añade al plugin (true/false). Por defecto: true.
 - **viewhistory**: Indica si el control ViewHistory se añade al plugin (true/false). Por defecto: true.
 - **zoompanel**: Indica si el control ZoomPanel se añade al plugin (true/false). Por defecto: true.
-- **order**: Indica el orden de aparición del plugin. Por defecto: 1.
 
 # API-REST
 
 ```javascript
-URL_API?viewmanagement=position*collapsible*collapsed*tooltip*isDraggable*predefinedZoom*zoomExtent*viewhistory*zoompanel
+URL_API?viewmanagement=position*collapsed*collapsible*tooltip*isDraggable*predefinedZoom*zoomExtent*viewhistory*zoompanel
 ```
 
 <table>

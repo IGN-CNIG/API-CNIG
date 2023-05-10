@@ -8,7 +8,7 @@ const map = M.map({
 
 const mp = new ViewManagement({
   isDraggable: true,
-  position: 'BL',
+  position: 'TL',
   collapsible: true,
   collapsed: true,
   order: 1,
