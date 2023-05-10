@@ -28,24 +28,16 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsed**: Valor booleano que indica si el plugin aparece colapsado o no.
-  - true (por defecto).
-  - false.
-- **collapsible**: Valor booleano que indica si el plugin puede colapsarse o no.
-  - true (por defecto).
-  - false.
+- **collapsed**: Valor booleano que indica si el plugin aparece colapsado o no (true/false). Por defecto: true.
+- **collapsible**: Valor booleano que indica si el plugin puede colapsarse o no (true/false). Por defecto: true.
 - **tooltip**. Tooltip que se muestra sobre el plugin. Por defecto: Impresión del mapa.
 - **serverUrl**: URL del servidor Geoprint. Por defecto: https://componentes.cnig.es/geoprint. 
 - **printTemplateUrl**: URL con las plantillas a utilizar. Por defecto: https://componentes.cnig.es/geoprint/print/CNIG.
 - **printStatusUrl**: URL para consultar el estado de la impresión. Por defecto: https://componentes.cnig.es/geoprint/print/status.
 - **printTemplateGeoUrl**: URL de las plantillas a utilizar para Geoprint. Por defecto: https://componentes.cnig.es/geoprint/print/mapexport.
 - **credits**: URL que indica el estado del servidor Geoprint.
-- **georefActive**: Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no.
-- true (por defecto).
-- false.
-- **fototeca**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición.
-- true.
-- false (por defecto).
+- **georefActive**: Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no  (true/false). Por defecto: true.
+- **fototeca**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición (true/false). Por defecto: false.
 - **logo**: URL de una imagen para añadir como logo en la esquina superior derecha
 - **headerLegend**: URL de una imagen para añadir como leyenda en la parte central de la cabecera. 
 - **filterTemplates**: Listado de nombres de plantillas que queremos tener disponibles, si no se manda el parámetro aparecerán todas por defecto.
@@ -140,10 +132,7 @@ URL_API?printermap=position*collapsed*collapsible*tooltip*serverUrl*printTemplat
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core/?printermap=TR*true*true*Imprimir%20mapa*https://componentes.cnig.es/geoprint*https://componentes.cnig.es/geoprint/print/CNIG*https://componentes.cnig.es/geoprint/print/mapexport*https://componentes.cnig.es/geoprint/print/status*true*https://www.ign.es/IGNCNIG/Imagenes/Contenidos/IGN-Header-Tittle.png*https://centrodedescargas.cnig.es/CentroDescargas/imgCdD/escudoInstitucional.png*true*Impresión%20generada%20desde%20Fototeca%20Digital%20http://fototeca.cnig.es/
-```
-```
-https://componentes.cnig.es/api-core/?printermap=TR*true*true*Imprimir%20mapa
+https://componentes.cnig.es/api-core/?printermap=TR*true*true*Imprimir%20mapa*https://componentes.cnig.es/geoprint*https://componentes.cnig.es/geoprint/print/CNIG*https://componentes.cnig.es/geoprint/print/mapexport*https://componentes.cnig.es/geoprint/print/status*true*https://www.ign.es/IGNCNIG/Imagenes/Contenidos/IGN-Header-Tittle.png*https://centrodedescargas.cnig.es/CentroDescargas/imgCdD/escudoInstitucional.png*true*Impresión%20generada
 ```
 
 ### Ejemplo de uso API-REST en base64
@@ -155,7 +144,7 @@ Ejemplo de constructor:
   collapsed: true,
   collapsible: true,
   tooltip: "Imprimir mapa",
-  credits: "Impresin generada desde Fototeca Digital http://fototeca.cnig.es/",
+  credits: "Impresin generada",
   fototeca: true,
   logo: "https://www.ign.es/IGNCNIG/Imagenes/Contenidos/IGN-Header-Tittle.png",
   headerLegend: "https://centrodedescargas.cnig.es/CentroDescargas/imgCdD/escudoInstitucional.png",
@@ -163,7 +152,7 @@ Ejemplo de constructor:
 }
 ```
 ```
-https://componentes.cnig.es/api-core/?printermap=base64:eyJwb3NpdGlvbiI6IlRSIiwiY29sbGFwc2VkIjp0cnVlLCJjb2xsYXBzaWJsZSI6dHJ1ZSwidG9vbHRpcCI6IkltcHJpbWlyIG1hcGEiLCJjcmVkaXRzIjoiSW1wcmVzafNuIGdlbmVyYWRhIGRlc2RlIEZvdG90ZWNhIERpZ2l0YWwgaHR0cDovL2ZvdG90ZWNhLmNuaWcuZXMvIiwiZm90b3RlY2EiOnRydWUsImxvZ28iOiJodHRwczovL3d3dy5pZ24uZXMvSUdOQ05JRy9JbWFnZW5lcy9Db250ZW5pZG9zL0lHTi1IZWFkZXItVGl0dGxlLnBuZyIsImhlYWRlckxlZ2VuZCI6Imh0dHBzOi8vY2VudHJvZGVkZXNjYXJnYXMuY25pZy5lcy9DZW50cm9EZXNjYXJnYXMvaW1nQ2REL2VzY3Vkb0luc3RpdHVjaW9uYWwucG5nIiwiZmlsdGVyVGVtcGxhdGVzIjpbIkEzIEhvcml6b250YWwiXX0=
+https://componentes.cnig.es/api-core/?printermap=base64:ewogIHBvc2l0aW9uOiAiVFIiLAogIGNvbGxhcHNlZDogdHJ1ZSwKICBjb2xsYXBzaWJsZTogdHJ1ZSwKICB0b29sdGlwOiAiSW1wcmltaXIgbWFwYSIsCiAgY3JlZGl0czogIkltcHJlc2luIGdlbmVyYWRhIiwKICBmb3RvdGVjYTogdHJ1ZSwKICBsb2dvOiAiaHR0cHM6Ly93d3cuaWduLmVzL0lHTkNOSUcvSW1hZ2VuZXMvQ29udGVuaWRvcy9JR04tSGVhZGVyLVRpdHRsZS5wbmciLAogIGhlYWRlckxlZ2VuZDogImh0dHBzOi8vY2VudHJvZGVkZXNjYXJnYXMuY25pZy5lcy9DZW50cm9EZXNjYXJnYXMvaW1nQ2REL2VzY3Vkb0luc3RpdHVjaW9uYWwucG5nIiwKICBmaWx0ZXJUZW1wbGF0ZXM6IFsiQTMgSG9yaXpvbnRhbCJdLAp9
 ```
 
 # Eventos
