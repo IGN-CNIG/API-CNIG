@@ -15,7 +15,8 @@ import * as parameter from '../parameter/parameter';
  * vectoriales como raster, en un contenedor SQLite.
  *
  * @property {string} url Url del archivo o servicio que genera el MBTiles.
- * @property { Response } source Respuesta de la petición a un servicio que genera el MBTiles.
+ * @property {ArrayBuffer|Uint8Array|Response|File} source Respuesta de la petición a
+ * un servicio que genera el MBTiles.
  * @property {string} name Nombre de la capa, identificador.
  * @property {string} legend Leyenda de la capa.
  * @property {object} options Opciones MBTiles.
@@ -37,14 +38,19 @@ class MBTiles extends LayerBase {
    * - maxZoomLevel: Zoom máximo aplicable a la capa.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
-   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
    * - tileLoadFunction: Función de carga de la tesela proporcionada por el usuario.
    * - source: Fuente de la capa.
    * - tileSize: Tamaño de la tesela, por defecto 256.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
-   * -opacity: Opacidad de capa, por defecto 1.
+   * - opacity: Opacidad de capa, por defecto 1.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
    * Están proporcionados por el usuario.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom Zoom máximo aplicable a la capa.
+   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - opacity: Opacidad de capa, por defecto 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLTileGrid from 'ol/tilegrid/TileGrid';
@@ -69,9 +75,10 @@ class MBTiles extends LayerBase {
     const parameters = parameter.layer(userParameters, LayerType.MBTiles);
 
     /**
-     * Implementation of this layer
+     * Implementación
      * @public
-     * @type {M/impl/layer/MBTilesVector}
+     * @implements {M.impl.layer.MBTiles}
+     * @type {M.impl.layer.MBTilesVector}
      */
     const impl = new MBTilesImpl(parameters, options, vendorOptions);
 
@@ -79,44 +86,38 @@ class MBTiles extends LayerBase {
     super(parameters, impl);
 
     /**
-     * MBTiles name
-     * @public
-     * @type {string}
+     * MBTiles name: Nombre de la capa.
      */
     this.name = parameters.name;
 
     /**
-     * MBTiles legend
-     * @public
-     * @type {string}
+     * MBTiles legend: Indica el nombre que aparece en el árbol
+     * de contenidos, si lo hay.
      */
     this.legend = parameters.legend;
 
     /**
-     * MBTiles source
-     * @public
-     * @type {Response}
+     * MBTiles source: Respuesta de la petición a un servicio que
+     * genera el MBTiles.
      */
     this.source = parameters.source;
 
     /**
-     * MBTiles source URL
-     * @public
-     * @type {String}
+     * MBTiles url: Url del archivo o servicio que genera
+     * el MBTiles.
      */
     this.url = parameters.url;
 
     /**
-     * MBTiles options
-     * @public
-     * @type {object}
+     * MBTiles options: Opciones que se mandan a la implementación.
      */
     this.options = options;
   }
 
   /**
    * Devuelve la leyenda de la capa.
-   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * La leyenda indica el nombre que aparece en el árbol de
+   * contenidos, si lo hay.
    *
    * @function
    * @getter
@@ -129,7 +130,8 @@ class MBTiles extends LayerBase {
 
   /**
    * Sobrescribe la leyenda de la capa.
-   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * La leyenda indica el nombre que aparece en el árbol de
+   * contenidos, si lo hay.
    *
    * @function
    * @setter

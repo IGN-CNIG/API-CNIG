@@ -18,7 +18,7 @@ import Vector from './Vector';
 
 
 /**
- * Tamaño de la tesela vectorial de MBTiles por defecto
+ * Tamaño de la tesela vectorial de MBTiles por defecto.
  *
  * @const
  * @public
@@ -28,13 +28,13 @@ const DEFAULT_TILE_SIZE = 256;
 
 /**
  * Este método calcula las resoluciones a partir de los
- * parámetros especificados
+ * parámetros especificados.
  *
  * @function
- * @param {Mx.Extent} extent Extensión
- * @param {number} tileSize Tamaño de la tesela vectorial
- * @param {Array<Number>} zoomLevels Niveles de zoom
- * @returns {Array<Number>} Resoluciones obtenidas
+ * @param {Mx.Extent} extent Extensión.
+ * @param {number} tileSize Tamaño de la tesela vectorial.
+ * @param {number} maxZoomLevel Nivele máximo de zoom.
+ * @returns {Array<Number>} Resoluciones obtenidas.
  * @public
  * @api
  */
@@ -59,7 +59,6 @@ const generateResolutions = (extent, tileSize, maxZoomLevel) => {
  * @property {number} tileSize_ Tamaño de la tesela vectorial.
  * @property {Mx.Extent} maxExtent_ La medida en que restringe la visualización a
  * una región específica.
- * @property {number} minZoomLevel_ Zoom mínimo aplicable a la capa.
  * @property {number} maxZoomLevel_ Zoom máximo aplicable a la capa.
  * @property {number} opacity_ Opacidad de capa.
  * @property {number} zIndex_ zIndex de la capa.
@@ -83,7 +82,7 @@ class MBTilesVector extends Vector {
    * - type: Tipo de la capa.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
-   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
    * - tileLoadFunction: Función de carga de la tesela vectorial proporcionada por el usuario.
    * - source: Fuente de la capa.
    * - tileSize: Tamaño de la tesela vectorial, por defecto 256.
@@ -115,71 +114,51 @@ class MBTilesVector extends Vector {
     /**
      * MBTilesVector tileLoadFunction: Función de carga de la tesela
      * vectorial proporcionada por el usuario.
-     * @private
-     * @type {function}
      */
     this.tileLoadFunction_ = userParameters.tileLoadFunction || null;
 
     /**
      * MBTilesVector url: Url del fichero o servicio que genera el MBTilesVector.
-     * @private
-     * @type {string}
      */
     this.url_ = userParameters.url;
 
     /**
      * MBTilesVector source: Fuente de la capa.
-     * @private
-     * @type {ArrayBuffer|Uint8Array|Response|File}
      */
     this.source_ = userParameters.source;
 
     /**
      * MBTilesVector style: Define el estilo de la capa.
-     * @private
-     * @type {File|String}
      */
     this.style_ = userParameters.style;
 
     /**
      * MBTilesVector tileSize: Tamaño de la tesela vectorial, por defecto 256.
-     * @private
-     * @type {number}
      */
     this.tileSize_ = typeof userParameters.tileSize === 'number' ? userParameters.tileSize : DEFAULT_TILE_SIZE;
 
     /**
      * MBTilesVector maxExtent: Extensión de la capa.
-     * @private
-     * @type {Mx.Extent}
      */
     this.maxExtent_ = userParameters.maxExtent || null;
 
     /**
      * MBTilesVector maxZoomLevel: Zoom máximo aplicable a la capa.
-     * @private
-     * @type {number}
      */
     this.maxZoomLevel_ = typeof userParameters.maxZoomLevel === 'number' ? userParameters.maxZoomLevel : 0;
 
     /**
      * MBTilesVector opacity: Opacidad de capa.
-     * @private
-     * @type {number}
      */
     this.opacity_ = typeof options.opacity === 'number' ? options.opacity : 1;
 
     /**
-     * ZIndex de la capa
-     * @private
-     * @type {number}
+     * MBTilesVector zIndex: ZIndex de la capa.
      */
     this.zIndex_ = ImplMap.Z_INDEX.MBTilesVector;
 
     /**
      * MBTilesVector visibility: Visibilidad de la capa.
-     * @public
-     * @type {boolean}
      */
     this.visibility = userParameters.visibility === false ? userParameters.visibility : true;
   }
@@ -282,10 +261,11 @@ class MBTilesVector extends Vector {
     }
   }
 
-  /** Este método crea la capa de implementación de OL.
+  /**
+   * Este método crea la capa de implementación de OL.
    *
    * @function
-   * @param {object} opts Opciones para la capa
+   * @param {object} opts Opciones para la capa.
    * @returns {ol.layer.TileLayer|ol.layer.VectorTile} Capa de implementación de OL.
    * @public
    * @api
@@ -322,7 +302,8 @@ class MBTilesVector extends Vector {
    * @function
    * @param {ol.Tile} tile Tesela vectorial.
    * @param {ol.format.MVT} formatter Formateador.
-   * @param {M.provider.Tile} tileProvider Proveedor de la tesela vectorial.
+   * @param {Object} opts Opciones.
+   * @param {M.provider.Tile} target Proveedor de la tesela vectorial.
    * @public
    * @api
    */
@@ -353,6 +334,7 @@ class MBTilesVector extends Vector {
    *
    * @function
    * @param {ol.Tile} tile Tesela vectorial.
+   * @param {ol.format.MVT} formatter Formateador.
    * @param {Object} opts Opciones.
    * @public
    * @api
@@ -411,7 +393,7 @@ class MBTilesVector extends Vector {
    * de MBTilesVector.
    *
    * @function
-   * @param {Object} Objeto a establecer como fachada.
+   * @param {Object} obj Objeto a establecer como fachada.
    * @public
    * @api
    */
@@ -487,15 +469,11 @@ class MBTilesVector extends Vector {
   }
 
   /**
-   * Este método devuelve todos los objetos geográficos
-   * o discriminando por el filtro.
+   * Este método devuelve todos los objetos geográficos.
    *
    * @function
    * @public
-   * @param {boolean} skipFilter Indica si se obvia el filtro.
-   * @param {M.Filter} filter Filtro a ejecutar.
-   * @returns {Array<M.Feature>} Todos los objetos geográficos o discriminando
-   * por el filtro.
+   * @returns {Array<M.Feature>} Todos los objetos geográficos.
    * @api
    */
   getFeatures() {

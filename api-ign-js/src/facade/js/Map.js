@@ -1083,9 +1083,9 @@ class Map extends Base {
    * Este método obtiene las capas MBTiles agregadas al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Opcional.
+   * @param {Array<string>|Array<Mx.parameters.MBTiles>} layersParam Opcional.
    * - Matriz de capas de nombres, tipo MBTiles.
-   * @returns {Array<M.layer.MBtiles>} Capas del mapa.
+   * @returns {Array<M.layer.MBTiles>} Capas del mapa.
    * @api
    */
   getMBTiles(layersParamVar) {
@@ -1097,16 +1097,23 @@ class Map extends Base {
       layersParam = [layersParam];
     }
 
-    const layers = this.getImpl().getMBTiles(layersParam).sort(Map.LAYER_SORT);
+    // gets the parameters as Layer objects to filter
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.MBTiles);
+      });
+    }
+    const layers = this.getImpl().getMBTiles(filters).sort(Map.LAYER_SORT);
 
     return layers;
   }
 
   /**
-   * Este método agrega las capas de MBtiles al mapa.
+   * Este método agrega las capas de MBTiles al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParamVar layersParam Colección u
+   * @param {Array<string>|Array<Mx.parameters.MBTiles>} layersParamVar Colección u
    * objeto de capa.
    * @returns {Map} Devuelve el estado del mapa.
    * @api
@@ -1136,10 +1143,10 @@ class Map extends Base {
   }
 
   /**
-   * Este método elimina las capas de MBtiles del mapa.
+   * Este método elimina las capas de MBTiles del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Matriz de capas de nombres que
+   * @param {Array<string>|Array<Mx.parameters.MBTiles>} layersParam Matriz de capas de nombres que
    * desea eliminar.
    * @returns {Map} Devuelve el estado del mapa.
    * @api
@@ -1158,9 +1165,9 @@ class Map extends Base {
    * Este método obtiene las capas MBTilesVector agregadas al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBTilesVector>} layersParamVar Opcional
+   * @param {Array<string>|Array<Mx.parameters.MBTilesVector>} layersParamVar Opcional.
    * - Matriz de capas de nombres, tipo MBTilesVector.
-   * @returns {Array<M.layer.MBtilesVector>} Capas del mapa.
+   * @returns {Array<M.layer.MBTilesVector>} Capas del mapa.
    * @api
    */
   getMBTilesVector(layersParamVar) {
@@ -1174,15 +1181,22 @@ class Map extends Base {
       layersParam = [layersParam];
     }
 
-    const layers = this.getImpl().getMBTilesVector(layersParam).sort(Map.LAYER_SORT);
+    // gets the parameters as Layer objects to filter
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.MBTilesVector);
+      });
+    }
+    const layers = this.getImpl().getMBTilesVector(filters).sort(Map.LAYER_SORT);
     return layers;
   }
 
   /**
-   * Este método agrega las capas de MBtilesVector al mapa.
+   * Este método agrega las capas de MBTilesVector al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtilesVector>} layersParamVar
+   * @param {Array<string>|Array<Mx.parameters.MBTilesVector>} layersParamVar
    * Colección u objeto de capa.
    * @returns {Map} Devuelve el estado del mapa.
    * @api
@@ -1212,12 +1226,11 @@ class Map extends Base {
   }
 
   /**
-   * Este método elimina las capas de MBtilesVector del mapa.
+   * Este método elimina las capas de MBTilesVector del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtilesVector>} layersParam Matriz de capas
-   * de nombres que
-   * desea eliminar.
+   * @param {Array<string>|Array<Mx.parameters.MBTilesVector>} layersParam Matriz de capas
+   * de nombres que desea eliminar.
    * @returns {Map} Devuelve el estado del mapa.
    * @api
    */

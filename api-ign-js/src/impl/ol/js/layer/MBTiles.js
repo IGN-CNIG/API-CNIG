@@ -12,7 +12,7 @@ import Layer from './Layer';
 import TileProvider, { DEFAULT_WHITE_TILE } from '../../../../facade/js/provider/Tile';
 
 /**
- * Tamaño de la tesela de MBTiles por defecto
+ * Tamaño de la tesela de MBTiles por defecto.
  *
  * @const
  * @public
@@ -22,13 +22,13 @@ const DEFAULT_TILE_SIZE = 256;
 
 /**
  * Este método calcula las resoluciones a partir de los
- * parámetros especificados
+ * parámetros especificados.
  *
  * @function
- * @param {Mx.Extent} extent Extensión
- * @param {number} tileSize Tamaño de la tesela vectorial
- * @param { Number } maxZoomLevel Nivel máximo de zoom
- * @returns {Array<Number>} Resoluciones obtenidas
+ * @param {Mx.Extent} extent Extensión.
+ * @param {number} tileSize Tamaño de la tesela vectorial.
+ * @param { Number } maxZoomLevel Nivel máximo de zoom.
+ * @returns {Array<Number>} Resoluciones obtenidas.
  * @public
  * @api
  */
@@ -48,8 +48,7 @@ const generateResolutions = (extent, tileSize, maxZoomLevel) => {
  *
  * @property {function} tileLoadFunction_ Función de carga de la tesela vectorial.
  * @property {string} url_ URL del fichero o servicio que genera el MBTiles.
- * @property {Response} source_ Fuente de la capa.
- * @property {number} tileSize_ Tamaño de la tesela vectorial.
+ * @property {ArrayBuffer|Uint8Array|Response|File} source_ Fuente de la capa.
  * @property {Mx.Extent} maxExtent_ La medida en que restringe la visualización
  * a una región específica.
  * @property {number} maxZoomLevel_ Zoom máximo aplicable a la capa.
@@ -74,7 +73,7 @@ class MBTiles extends Layer {
    * - type: Tipo de la capa.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
-   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
    * - tileLoadFunction: Función de carga de la tesela proporcionada por el usuario.
    * - source: Fuente de la capa.
    * - tileSize: Tamaño de la tesela, por defecto 256.
@@ -101,57 +100,42 @@ class MBTiles extends Layer {
     super(options, vendorOptions);
 
     /**
-     * User tile load function
-     * @public
-     * @type {function}
+     * MBTiles tileLoadFunction: Función de carga de la tesela proporcionada por el usuario.
      */
     this.tileLoadFunction = userParameters.tileLoadFunction || null;
 
     /**
-     * MBTiles url
-     * @private
-     * @type {string}
+     * MBTiles url: Url del fichero o servicio que genera el MBTiles.
      */
     this.url_ = userParameters.url;
 
     /**
-     * MBTiles source
-     * @type {ArrayBuffer|Uint8Array|Response|File}
+     * MBTiles source: Fuente de la capa.
      */
     this.source_ = userParameters.source;
 
     /**
-     * Layer extent
-     * @private
-     * @type {Mx.Extent}
+     * MBTiles maxExtent: Máxima extensión de la capa.
      */
     this.maxExtent_ = userParameters.maxExtent || null;
 
     /**
-     * Layer opacity
-     * @private
-     * @type {number}
+     * MBTiles opacity: Opacidad de la capa.
      */
     this.opacity_ = typeof userParameters.opacity === 'number' ? userParameters.opacity : 1;
 
     /**
-     * Z-index of the layer
-     * @private
-     * @type {number}
+     * MBTiles Z-index: zIndex de la capa.
      */
     this.zIndex_ = ImplMap.Z_INDEX.MBTiles;
 
     /**
-     * Zoom levels of the layer
-     * @private
-     * @type {number}
+     * MBTiles maxZoomLevel: Zoom máximo aplicable a la capa.
      */
     this.maxZoomLevel_ = userParameters.maxZoomLevel || null;
 
     /**
-     * Visibility parameter
-     * @private
-     * @type {bool}
+     * MBTiles visibility: Visibilidad de la capa.
      */
     this.visibility = userParameters.visibility === false ? userParameters.visibility : true;
   }
@@ -188,9 +172,11 @@ class MBTiles extends Layer {
   }
 
   /**
-   * Esta función devuelve el extent de la capa
+   * Este método devuelve la extensión de la capa.
+   *
    * @function
-   * @return {Promise<array<number>>}
+   * @return {Promise<array<number>>} Extensión de la capa.
+   * @public
    * @api
    */
   getExtentFromProvider() {
@@ -209,9 +195,11 @@ class MBTiles extends Layer {
   }
 
   /**
-   * Esta función devuelve el nivel máximo de zoom
+   * Este método devuelve el nivel máximo de zoom.
+   *
    * @function
-   * @return {Number}
+   * @return {Number} Nivel máximo de zoom.
+   * @public
    * @api
    */
   getMaxZoomLevel() {
@@ -264,12 +252,12 @@ class MBTiles extends Layer {
   }
 
   /**
-   * Esta función crea la implementación de la capa
+   * Este método crea la implementación de la capa.
    *
    * @function
    * @public
-   * @param {Object} opts Opciones
-   * @return {ol/layer/Tile}
+   * @param {Object} opts Opciones.
+   * @return {ol.layer.Tile} Implementación de la tesela.
    * @api
    */
   createLayer(opts) {
@@ -300,8 +288,9 @@ class MBTiles extends Layer {
    * Este método es la función personalizada de carga de la tesela.
    *
    * @function
-   * @param {ol/Tile} tile Tesela vectorial.
-   * @param {M/provider/Tile } target Tesela Proveedora.
+   * @param {ol.Tile} tile Tesela.
+   * @param {Object} opts Opciones.
+   * @param {M.provider.Tile} target Proveedor de la tesela.
    * @public
    * @api
    */
@@ -369,7 +358,7 @@ class MBTiles extends Layer {
    * de MBTiles.
    *
    * @function
-   * @param {Object} Objeto a establecer como fachada.
+   * @param {Object} obj Objeto a establecer como fachada.
    * @public
    * @api
    */

@@ -949,8 +949,8 @@ class Map extends MObject {
    * Este método obtiene las capas MBTiles añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
-   * @returns {Array<FacadeMBTiles>} Capas MBTiles del mapa.
+   * @param {Array<M.Layer>} filtersParam Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.MBTiles>} Capas MBTiles del mapa.
    * @public
    * @api
    */
@@ -1008,7 +1008,7 @@ class Map extends MObject {
    * Este método añade las capas MBTiles especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<FacadeMBTiles>} layers Capas MBTiles a añadir al mapa.
+   * @param {Array<M.layer.MBTiles>} layers Capas MBTiles a añadir al mapa.
    * @returns {Map} Mapa.
    * @public
    * @api
@@ -1050,7 +1050,7 @@ class Map extends MObject {
    * Este método elimina las capas MBTiles del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<FacadeMBTiles>} layers Capas MBTiles a eliminar.
+   * @param {Array<M.layer.MBTiles>} layers Capas MBTiles a eliminar.
    * @returns {Map} Mapa.
    * @public
    * @api
@@ -1067,11 +1067,11 @@ class Map extends MObject {
   }
 
   /**
-   * Este método obtiene las capas Vectoriales MBTiles añadidas al mapa.
+   * Este método obtiene las capas MBTilesVector añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
-   * @returns {Array<FacadeMBTilesVector>} Capas MBTilesVector del mapa.
+   * @param {Array<M.Layer>} filtersParam Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.MBTilesVector>} Capas MBTilesVector del mapa.
    * @public
    * @api
    */
@@ -1123,10 +1123,10 @@ class Map extends MObject {
   }
 
   /**
-   * Este método añade las capas vectoriales MBTilesVector especificadas por el usuario al mapa.
+   * Este método añade las capas MBTilesVector especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<FacadeMBTilesVector>} layers Capas vectoriales MBTilesVector a añadir.
+   * @param {Array<M.layer.MBTilesVector>} layers Capas MBTilesVector a añadir.
    * @returns {Map} Mapa.
    * @public
    * @api
@@ -1155,10 +1155,10 @@ class Map extends MObject {
   }
 
   /**
-   * Este método elimina las capas vectoriales MBTilesVecor del mapa especificadas por el usuario.
+   * Este método elimina las capas MBTilesVector del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<FacadeMBTilesVector>} layers Capas vectoriales MBTilesVector a eliminar.
+   * @param {Array<M.layer.MBTilesVector>} layers Capas MBTilesVector a eliminar.
    * @returns {Map} Mapa.
    * @public
    * @api
