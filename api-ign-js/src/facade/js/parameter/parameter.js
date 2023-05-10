@@ -272,7 +272,7 @@ export const maxExtent = (maxExtentParam) => {
     }
 
     if (Number.isNaN(maxExtentVar.x.min) || Number.isNaN(maxExtentVar.y.min) ||
-       Number.isNaN(maxExtentVar.x.max) || Number.isNaN(maxExtentVar.y.max)) {
+      Number.isNaN(maxExtentVar.x.max) || Number.isNaN(maxExtentVar.y.max)) {
       Exception(getValue('exception').invalid_maxextent_param);
     }
   }
@@ -313,7 +313,7 @@ export const projection = (projectionParameter) => {
     // object
     // y max
     if (!isNull(projectionParameter.code) &&
-       !isNull(projectionParameter.units)) {
+      !isNull(projectionParameter.units)) {
       projectionVar.code = projectionParameter.code;
       projectionVar.units = normalize(projectionParameter.units.substring(0, 1));
     } else {
@@ -490,14 +490,14 @@ export const maxZoom = (maxZoomParam) => {
 };
 
 /**
-  * Analiza el parámetro de capas KML especificado y devuelve el nombre de la capa.
-  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-  * @public
-  * @function
-  * @param {string} parameter Parámetro.
-  * @returns {string} Nombre de la capa.
-  * @api
-  */
+ * Analiza el parámetro de capas KML especificado y devuelve el nombre de la capa.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string} parameter Parámetro.
+ * @returns {string} Nombre de la capa.
+ * @api
+ */
 export const getNameKML = (parameter) => {
   let name;
   let params;
@@ -531,15 +531,15 @@ export const getNameKML = (parameter) => {
 
 
 /**
-  * Analiza el parámetro de capas KML especificado y devuelve el "extract" de la capa.
-  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-  * @public
-  * @function
-  * @param {String} parameter Parámetros proporcionado por el usuario.
-  * @returns {Boolean|undefined} Valor del extract.
-  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
-  * @api
-  */
+ * Analiza el parámetro de capas KML especificado y devuelve el "extract" de la capa.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {String} parameter Parámetros proporcionado por el usuario.
+ * @returns {Boolean|undefined} Valor del extract.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
 export const getExtractKML = (parameter) => {
   let extract;
   let params;
@@ -2665,6 +2665,284 @@ export const wmts = (userParameters) => {
 };
 
 /**
+ * Analiza el parámetro para obtener el nombre de la capa.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @returns {string} Nombre de la capa.
+ */
+export const getLegendMBTiles = (parameter) => {
+  let legend;
+  let params;
+  if (isString(parameter)) {
+    // <MBTile>*<legend>
+    if (/^MBtiles\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      legend = params[1].trim();
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
+    legend = parameter.legend.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return legend;
+};
+
+/**
+ * Analiza el parámetro para obtener la URL del servicio.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro.
+ * @returns {string} URL del servicio.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getURLMBTiles = (parameter) => {
+  let url;
+  if (isString(parameter)) {
+    const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)([^*]*\*?)*$/i);
+    if (urlMatches && (urlMatches.length > 2)) {
+      url = urlMatches[2];
+    }
+  } else if (isObject(parameter)) {
+    url = parameter.url;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return url;
+};
+
+/**
+ * Analiza el parámetro para obtener la URL del servicio.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro.
+ * @returns {string} URL del servicio.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getSourceMBTiles = (parameter) => {
+  let source;
+  if (isObject(parameter)) {
+    source = parameter.source;
+  }
+  return source;
+};
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @returns {string} Nombre de la capa.
+ */
+export const getNameMBTiles = (parameter) => {
+  let name;
+  let params;
+  if (isString(parameter)) {
+    // <MBTile>*<legend>*<URL>*<NAME>
+    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      name = params[3].trim();
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
+    name = parameter.name.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return name;
+};
+
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @returns {string} Nombre de la capa.
+ */
+export const getTransparentMBTiles = (parameter) => {
+  let transparent;
+  let params;
+  if (isString(parameter)) {
+    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      transparent = params[4];
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.transparent)) {
+    transparent = parameter.transparent;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return transparent;
+};
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @returns {string} Nombre de la capa.
+ */
+export const getVisibilityMBTiles = (parameter) => {
+  let visibility;
+  let params;
+  if (isString(parameter)) {
+    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      visibility = params[5];
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.visibility)) {
+    visibility = parameter.visibility;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return visibility;
+};
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @returns {string} Nombre de la capa.
+ */
+export const getOpacityMBTiles = (parameter) => {
+  let opacity;
+  let params;
+  if (isString(parameter)) {
+    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      opacity = params[6];
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
+    opacity = parameter.opacity;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return opacity;
+};
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @returns {string} Nombre de la capa.
+ */
+export const getMaxZoomLevelMBTiles = (parameter) => {
+  let maxZoomLevel;
+  let params;
+  if (isString(parameter)) {
+    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      maxZoomLevel = parseInt(params[7].trim(), 10);
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
+    maxZoomLevel = parameter.maxZoomLevel;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return maxZoomLevel;
+};
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @returns {string} Nombre de la capa.
+ */
+export const getMaxExtentMBTiles = (parameter) => {
+  let extent;
+  let params;
+  if (isString(parameter)) {
+    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      extent = params[8].split(',');
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.maxExtent)) {
+    extent = parameter.maxExtent;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return extent;
+};
+
+/**
+ * Analiza los parámetros WMS de la capa de usuario especificada en un objeto.
+ *
+ * @param {string|Mx.parameters.Layer} userParameters Parámetros
+ * proporcionado por el usuario.
+ * @returns {Mx.parameters.WMS|Array<Mx.parameters.WMS>}
+ * @public
+ * @function
+ * @api
+ */
+export const mbtiles = (userParameters) => {
+  let layers = [];
+
+  // checks if the param is null or empty
+  if (isNullOrEmpty(userParameters)) {
+    Exception(getValue('exception').no_param);
+  }
+
+  // checks if the parameter is an array
+  let userParametersArray = userParameters;
+  if (!isArray(userParametersArray)) {
+    userParametersArray = [userParametersArray];
+  }
+
+  layers = userParametersArray.map((userParam) => {
+    const layerObj = {};
+
+    layerObj.type = LayerType.MBTiles;
+
+    layerObj.legend = getLegendMBTiles(userParam);
+
+    layerObj.url = getURLMBTiles(userParam);
+
+    layerObj.source = getSourceMBTiles(userParam);
+
+    layerObj.name = getNameMBTiles(userParam);
+
+    layerObj.transparent = getTransparentMBTiles(userParam);
+
+    layerObj.visibility = getVisibilityMBTiles(userParam);
+
+    layerObj.opacity = getOpacityMBTiles(userParam);
+
+    layerObj.maxZoomLevel = getMaxZoomLevelMBTiles(userParam);
+
+    layerObj.maxExtent = getMaxExtentMBTiles(userParam);
+
+    return layerObj;
+  });
+
+  if (!isArray(userParameters)) {
+    layers = layers[0];
+  }
+
+  return layers;
+};
+
+/**
  * Parámetros con los tipos de capa soportados.
  * @const
  * @type {object}
@@ -2682,6 +2960,7 @@ const parameterFunction = {
   mvt,
   xyz,
   tms,
+  mbtiles,
 };
 
 

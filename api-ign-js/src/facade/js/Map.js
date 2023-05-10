@@ -1120,10 +1120,12 @@ class Map extends Base {
 
       const mbtilesLayers = [];
       layersParam.forEach((layerParam) => {
-        if (isObject(layerParam) && layerParam.type === 'MBTiles') {
-          layerParam.setMap(this);
-          mbtilesLayers.push(layerParam);
+        let mbtileslayer = layerParam;
+        if (!(layerParam instanceof MBTiles)) {
+          mbtileslayer = new MBTiles(layerParam, layerParam.options);
         }
+        mbtileslayer.setMap(this);
+        mbtilesLayers.push(mbtileslayer);
       });
 
       this.getImpl().addMBTiles(mbtilesLayers);

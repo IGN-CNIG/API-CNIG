@@ -7,6 +7,7 @@ import * as LayerType from './Type';
 import { isNullOrEmpty, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
+import * as parameter from '../parameter/parameter';
 
 /**
  * @classdesc
@@ -65,43 +66,45 @@ class MBTiles extends LayerBase {
       Exception(getValue('exception').mbtiles_method);
     }
 
+    const parameters = parameter.layer(userParameters, LayerType.MBTiles);
+
     /**
      * Implementation of this layer
      * @public
      * @type {M/impl/layer/MBTilesVector}
      */
-    const impl = new MBTilesImpl(userParameters, options, vendorOptions);
+    const impl = new MBTilesImpl(parameters, options, vendorOptions);
 
     // calls the super constructor
-    super(userParameters, impl);
+    super(parameters, impl);
 
     /**
      * MBTiles name
      * @public
      * @type {string}
      */
-    this.name = userParameters.name;
+    this.name = parameters.name;
 
     /**
      * MBTiles legend
      * @public
      * @type {string}
      */
-    this.legend = userParameters.legend;
+    this.legend = parameters.legend;
 
     /**
      * MBTiles source
      * @public
      * @type {Response}
      */
-    this.source = userParameters.source;
+    this.source = parameters.source;
 
     /**
      * MBTiles source URL
      * @public
      * @type {String}
      */
-    this.url = userParameters.url;
+    this.url = parameters.url;
 
     /**
      * MBTiles options

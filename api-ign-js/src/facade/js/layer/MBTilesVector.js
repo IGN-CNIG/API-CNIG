@@ -223,7 +223,11 @@ class MBTilesVector extends Vector {
   equals(obj) {
     let equals = false;
     if (obj instanceof MBTilesVector) {
-      equals = this.name === obj.name;
+      equals = (this.url === obj.url);
+      equals = equals && (this.source === obj.source);
+      equals = equals && (this.legend === obj.legend);
+      equals = equals && (this.name === obj.name);
+      equals = equals && (this.options === obj.options);
     }
     return equals;
   }
