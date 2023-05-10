@@ -2749,6 +2749,10 @@ export const getNameMBTiles = (parameter) => {
     if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
       params = parameter.split(/\*/);
       name = params[3].trim();
+    } else if (/^[^*]*/.test(parameter)) {
+      // <NAME>
+      params = parameter.split(/\*/);
+      name = params[0].trim();
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
     name = parameter.name.trim();
