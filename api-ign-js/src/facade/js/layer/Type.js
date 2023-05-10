@@ -121,7 +121,7 @@ export const MVT = 'MVT';
 
 /**
  * Tipo MBTiles. Es un formato de archivo para contener conjuntos
- * de imágenes(tilesets) bajo una estructura de base de datos SQLite.
+ * de imágenes (tilesets) bajo una estructura de base de datos SQLite.
  * @const
  * @type {string}
  * @public
@@ -130,8 +130,9 @@ export const MVT = 'MVT';
 export const MBTiles = 'MBTiles';
 
 /**
- * Tipo Vector Tile.Es un formato de archivo para contener conjuntos
- * de imágenes(tilesets) bajo una estructura de base de datos SQLite.
+ * Tipo Vector Tile. Es un formato de archivo para contener conjuntos
+ * de imágenes (tilesets) en forma de puntos, líneas y polígonos bajo
+ * una estructura de base de datos SQLite.
  * @const
  * @type {string}
  * @public
@@ -190,7 +191,7 @@ export const parse = (rawType) => {
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @public
  * @function
- * @param {string} rawType Tipo de capa.
+ * @param {string} type Tipo de capa.
  */
 export const know = (type) => {
   const knowTypes = [

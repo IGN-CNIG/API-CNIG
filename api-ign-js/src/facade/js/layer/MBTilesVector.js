@@ -7,6 +7,7 @@ import Vector from './Vector';
 import * as LayerType from './Type';
 import { isUndefined, isNullOrEmpty } from '../util/Utils';
 import Exception from '../exception/exception';
+import * as parameter from '../parameter/parameter';
 
 /**
  * Modos posibles de MBTilesVector.
@@ -24,8 +25,6 @@ export const mode = {
  * @classdesc
  * MBTilesVector es un formato que permite agrupar múltiples capas
  * vectoriales en un contenedor SQLite.
- * @property {Object} mode Modos posibles de MBTilesVector ("render" y "feature").
- * @property {Object} DEFAULT_OPTIONS_STYLE Parámetros por defecto para el estilo
  *
  * @api
  * @extends {M.layer.Vector}
@@ -46,7 +45,7 @@ class MBTilesVector extends Vector {
    * - type: Tipo de la capa.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
-   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
    * - tileLoadFunction: Función de carga de la tesela vectorial proporcionada por el usuario.
    * - source: Fuente de la capa.
    * - tileSize: Tamaño de la tesela vectorial, por defecto 256.
@@ -72,14 +71,16 @@ class MBTilesVector extends Vector {
    * @api
    */
   constructor(userParameters = {}, options = {}, vendorOptions = {}) {
+    const parameters = parameter.layer(userParameters, LayerType.MBTilesVector);
+
     /**
      * Implementación.
      * @public
      * @implements {M.impl.layer.MBTilesVector}
      * @type {M.impl.layer.MBTilesVector}
      */
-    const impl = new MBTilesVectorImpl(userParameters, options, vendorOptions);
-    super(userParameters, options, vendorOptions, impl);
+    const impl = new MBTilesVectorImpl(parameters, options, vendorOptions);
+    super(parameters, options, vendorOptions, impl);
     if (isUndefined(MBTilesVectorImpl)) {
       Exception('La implementación usada no puede crear capas Vector');
     }
@@ -142,7 +143,7 @@ class MBTilesVector extends Vector {
    * 3. Obtiene la extensión máxima de la proyección del mapa.
    *
    * @function
-   * @returns {Object} Promesa para calcular la extensión máxima de la capa
+   * @returns {Object} Extensión máxima de la capa.
    * @public
    * @api
    */
@@ -151,10 +152,10 @@ class MBTilesVector extends Vector {
   }
 
   /**
-   * Este método establece el estilo de la capa
+   * Este método establece el estilo de la capa.
    *
    * @function
-   * @param {M.Style|String} styleParam Estilo que se aplicará a la capa
+   * @param {M.Style|String} styleParam Estilo que se aplicará a la capa.
    * @param {bool} applyToFeature Si el valor es verdadero se aplicará a los objetos
    * geográficos, falso no. Por defecto, es falso.
    * @param {M.Style} defaultStyle Estilo por defecto, se define en MBTilesVector.js
@@ -166,10 +167,10 @@ class MBTilesVector extends Vector {
   }
 
   /**
-   * Este método obtiene la proyección del mapa
+   * Este método obtiene la proyección del mapa.
    *
    * @function
-   * @returns {Mx.Projection} Proyección del mapa
+   * @returns {Mx.Projection} Proyección del mapa.
    * @public
    * @api
    */
@@ -178,11 +179,11 @@ class MBTilesVector extends Vector {
   }
 
   /**
-   * Obtiene el tipo de geometría de la capa
+   * Obtiene el tipo de geometría de la capa.
    *
    * @function
    * @public
-   * @returns {string} Tipo de geometría de la capa
+   * @returns {string} Tipo de geometría de la capa.
    * @api
    */
   getGeometryType() {
@@ -198,11 +199,11 @@ class MBTilesVector extends Vector {
   }
 
   /**
-   * Devuelve todos los objetos geográficos
+   * Obtiene todos los objetos geográficos.
    *
    * @function
    * @public
-   * @returns {Array<M.RenderFeature>} Objetos geográficos
+   * @returns {Array<M.RenderFeature>} Objetos geográficos.
    * @api
    */
   getFeatures() {
@@ -212,11 +213,11 @@ class MBTilesVector extends Vector {
 
   /**
    * Este método comprueba si un objeto es igual
-   * a esta capa
+   * a esta capa.
    *
    * @function
-   * @param {Object} obj Objeto a comparar
-   * @returns {Boolean} Valor verdadero es igual, falso no lo es
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
    * @public
    * @api
    */
@@ -233,7 +234,7 @@ class MBTilesVector extends Vector {
   }
 
   /**
-   * Este método establece los filtros para la capa
+   * Este método establece los filtros para la capa.
    *
    * @function
    * @public
@@ -242,7 +243,7 @@ class MBTilesVector extends Vector {
   setFilter() {}
 
   /**
-   * Este método añade objetos geográficos a la capa
+   * Este método añade objetos geográficos a la capa.
    *
    * @function
    * @public
@@ -251,7 +252,7 @@ class MBTilesVector extends Vector {
   addFeatures() {}
 
   /**
-   * Este método elimina objetos geográficos de la capa
+   * Este método elimina objetos geográficos de la capa.
    *
    * @function
    * @public
@@ -260,7 +261,7 @@ class MBTilesVector extends Vector {
   removeFeatures() {}
 
   /**
-   * Este método refresca la capa
+   * Este método refresca la capa.
    *
    * @function
    * @public
@@ -269,7 +270,7 @@ class MBTilesVector extends Vector {
   refresh() {}
 
   /**
-   * Este método vuelve a dibujar la capa
+   * Este método vuelve a dibujar la capa.
    *
    * @function
    * @public
@@ -279,7 +280,7 @@ class MBTilesVector extends Vector {
 
   /**
    * Este método convierte la capa a formato
-   * GeoJSON
+   * GeoJSON.
    *
    * @function
    * @public
@@ -289,10 +290,10 @@ class MBTilesVector extends Vector {
 }
 
 /**
- * Style options by default for this layer
+ * Opciones de estilo por defecto para esta capa.
  *
  * @const
- * @type {object}
+ * @type {Object}
  * @public
  * @api
  */
@@ -310,7 +311,7 @@ MBTilesVector.DEFAULT_PARAMS = {
 
 
 /**
- * Estilos por defecto de la capa MBTilesVector
+ * Estilos por defecto de la capa MBTilesVector.
  *
  * @const
  * @type {Object}

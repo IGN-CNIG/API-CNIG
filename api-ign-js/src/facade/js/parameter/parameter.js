@@ -13,9 +13,9 @@ import osm from './osm';
  * Analiza el parámetro del centro de usuario especificado en un objeto.
  *
  * @public
- *
- * @param {String|Array<String>|Array<Number>|Mx.Center} centerParameter Parámetros
- * proporcionado por el usuario.
+ * @function
+ * @param {String|Array<String>|Array<Number>|Mx.Center} centerParameterVar Parámetros
+ * proporcionados por el usuario.
  * @returns {Mx.Center} Objeto con los parámetros del centro.
  * @throws {M.exception} Argumento no válido.
  */
@@ -99,12 +99,13 @@ export const center = (centerParameterVar) => {
 /**
  * Analiza el parámetro para obtener el tipo.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
  * @param {String|Object} parameter Parámetro.
  * @param {M.layer.Type} forcedType Tipo forzado.
  * @returns {M.layer.Type} Tipo de capa.
- * @throws {M.exception} Argumento no válido.
+ * @throws {M.exception} Tipo de capa no soportado o no reconocido.
  * @api
  */
 export const getType = (parameter, forcedType) => {
@@ -151,11 +152,13 @@ export const getType = (parameter, forcedType) => {
 /**
  * Analiza el parámetro maxExtent del usuario especificado en un objeto.
  *
- * @param {String|Array<String>|Array<Number>|Mx.Extent} maxExtentParameter Parámetros.
+ * @param {String|Array<String>|Array<Number>|Mx.Extent} maxExtentParam Parámetro
+ * maxExtent especificado.
  * @returns {Mx.Extent} Objeto con la extensión máxima.
  * @public
  * @function
  * @api
+ * @throws {M.exception} Si el parámetro no es especificado o de tipo no soportado.
  */
 export const maxExtent = (maxExtentParam) => {
   const maxExtentParameter = maxExtentParam;
@@ -283,11 +286,13 @@ export const maxExtent = (maxExtentParam) => {
 /**
  * Analiza el parámetro de proyección del usuario especificado en un objeto.
  *
- * @param {String|Mx.Projection} projectionParameter Parámetro.
+ * @param {String|Mx.Projection} projectionParameter Parámetro de proyección
+ * especificado.
  * @returns {Mx.Projection} Objeto de proyección.
  * @public
  * @function
  * @api
+ * @throws {M.exception} Si el parámetro no es especificado o de tipo no soportado.
  */
 export const projection = (projectionParameter) => {
   const projectionVar = {
@@ -334,11 +339,13 @@ export const projection = (projectionParameter) => {
 /**
  * Analiza el parámetro de resoluciones de usuario especificado en una matriz.
  *
- * @param {String|Array<String>|Array<Number>} resolutionsParameter Parámetros.
- * @returns {Array<Number>}
+ * @param {String|Array<String>|Array<Number>} resolutionsParam Parámetro de
+ * resoluciones especificado.
+ * @returns {Array<Number>} Matriz de resoluciones.
  * @public
  * @function
  * @api
+ * @throws {M.exception} Si el parámetro no es especificado o de tipo no soportado.
  */
 export const resolutions = (resolutionsParam) => {
   let resolutionsParameter = resolutionsParam;
@@ -384,12 +391,12 @@ export const resolutions = (resolutionsParam) => {
 /**
  * Analiza el parámetro de zoom de usuario especificado en un número.
  *
- * @param {String|Number} zoomParameter Parámetros.
+ * @param {String|Number} zoomParam Parámetro de zoom especificado.
  * @returns {Number} Zoom.
  * @public
  * @function
  * @api
- * @throws {M.exception} Argumento no válido.
+ * @throws {M.exception} Si el parámetro no es especificado o de tipo no soportado.
  */
 export const zoom = (zoomParam) => {
   const zoomParameter = zoomParam;
@@ -420,12 +427,12 @@ export const zoom = (zoomParam) => {
 /**
  * Analiza el parámetro de zoom mínimo del usuario especificado en un número.
  *
- * @param {String|Number} zoomParameter Parámetros.
+ * @param {String|Number} minZoomParam Parámetro de zoom mínimo especificado.
  * @returns {Number} Mínimo nivel de zoom.
  * @public
  * @function
  * @api
- * @throws {M.exception} Argumento no válido
+ * @throws {M.exception} Si el parámetro no es especificado o de tipo no soportado.
  */
 export const minZoom = (minZoomParam) => {
   const minZoomParameter = minZoomParam;
@@ -456,12 +463,12 @@ export const minZoom = (minZoomParam) => {
 /**
  * Analiza el parámetro de zoom máximo del usuario especificado en un número.
  *
- * @param {String|Number} zoomParameter Parámetros.
+ * @param {String|Number} maxZoomParam Parámetro de zoom máximo especificado.
  * @returns {Number} Máximo nivel de zoom.
  * @public
  * @function
  * @api
- * @throws {Exception} Si el parámetro no es de un tipo soportado.
+ * @throws {M.exception} Si el parámetro no es especificado o de tipo no soportado.
  */
 export const maxZoom = (maxZoomParam) => {
   const maxZoomParameter = maxZoomParam;
@@ -492,11 +499,13 @@ export const maxZoom = (maxZoomParam) => {
 /**
  * Analiza el parámetro de capas KML especificado y devuelve el nombre de la capa.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro.
+ * @param {string} parameter Parámetro de capas KML especificado.
  * @returns {string} Nombre de la capa.
  * @api
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  */
 export const getNameKML = (parameter) => {
   let name;
@@ -533,12 +542,13 @@ export const getNameKML = (parameter) => {
 /**
  * Analiza el parámetro de capas KML especificado y devuelve el "extract" de la capa.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {String} parameter Parámetros proporcionado por el usuario.
+ * @param {String} parameter Parámetro de capas KML especificado.
  * @returns {Boolean|undefined} Valor del extract.
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  */
 export const getExtractKML = (parameter) => {
   let extract;
@@ -574,9 +584,11 @@ export const getExtractKML = (parameter) => {
 /**
  * Analiza el parámetro para mostrar o no la etiqueta.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
+ * @param {string} parameter Parámetro que indica si mostrar o no
+ * la etiqueta para la capa KML.
  * @returns {String} Devuelve la etiqueta de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -599,9 +611,10 @@ export const getLabelKML = (parameter) => {
 /**
  * Analiza el parámetro para obtener la visibilidad.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
+ * @param {string} parameter Parámetro para obtener la visibilidad.
  * @returns {boolean} Visibilidad de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -624,9 +637,11 @@ export const getVisibilityKML = (parameter) => {
 /**
  * Analiza el parámetro para obtener la URL del servicio.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
+ * @param {string} parameter Parámetro para obtener la URL del
+ * servicio.
  * @returns {string} URL del servicio.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -655,11 +670,14 @@ export const getURLKML = (parameter) => {
 /**
  * Transforma los parámetros KML de la capa de usuario especificada en un objeto.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros.
- * @returns {Mx.parameters.KML|Array<Mx.parameters.KML>} Objeto con los parámetros de la capa KML.
+ * @param {string|Mx.parameters.Layer} userParamer Parámetros para la capa KML especificados
+ * por el usuario.
+ * @returns {Mx.parameters.KML|Array<Mx.parameters.KML>} Objeto con los parámetros de la
+ * capa KML.
  * @public
  * @function
  * @api
+ * @throws {M.exception} Si el parámetro no es especificado.
  */
 export const kml = (userParamer) => {
   const userParameters = userParamer;
@@ -709,9 +727,11 @@ export const kml = (userParamer) => {
 /**
  * Analiza el parámetro para obtener el nombre de la capa.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener
+ * el nombre de la capa WFS.
  * @returns {string} Nombre de la capa.
  * @throws {Mx.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -753,9 +773,11 @@ export const getNameWFS = (parameter) => {
 /**
  * Analiza el parámetro para obtener la URL del servicio.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.WFS} parameter Parámetro.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener
+ * la URL del servicio para la capa WFS.
  * @returns {string} URL del servicio.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -778,9 +800,11 @@ export const getURLWFS = (parameter) => {
 /**
  * Analiza el parámetro para obtener el espacio de nombres de la capa.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.WFS} parameter Parámetro.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener
+ * el espacio de nombres de la capa WFS.
  * @returns {string} Espacio de nombres de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -818,11 +842,13 @@ export const getNamespaceWFS = (parameter) => {
 /**
  * Analiza el parámetro para obtener la leyenda de la capa.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener la leyenda
+ * de la capa WFS.
  * @returns {string} Leyenda de la capa.
- * @throws {M.exception} Si no se ha podido obtener la leyenda.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getLegendWFS = (parameter) => {
@@ -853,9 +879,11 @@ export const getLegendWFS = (parameter) => {
 /**
  * Analiza el parámetro para obtener el filtro CQL.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener el filtro
+ * CQL de la capa WFS.
  * @returns {string} Filtro CQL.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -890,9 +918,11 @@ export const getCQLWFS = (parameter) => {
 /**
  * Analiza el parámetro para obtener la geometría de la capa.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de la capa.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener la geometría
+ * de la capa WFS.
  * @returns {string} Geometría de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -925,13 +955,15 @@ export const getGeometryWFS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el espacio de nombres de la capa.
+ * Analiza el parámetro para obtener los identificadores de la capa.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
- * @returns {string} Espacio de nombres de la capa.
- * @throws {M.exception} Lanza una excepción si el parámetro no es de un tipo soportado.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener
+ * los identificadores de la capa WFS.
+ * @returns {Array<string>} Identificadores de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getIdsWFS = (parameter) => {
@@ -968,10 +1000,12 @@ export const getIdsWFS = (parameter) => {
 /**
  * Analiza el parámetro para obtener el estilo.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
- * @returns {string} Estilo.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener el estilo
+ * de la capa WFS.
+ * @returns {string} Estilo de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
@@ -999,9 +1033,11 @@ export const getStyleWFS = (parameter) => {
 /**
  * Analiza el parámetro para obtener la versión.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de la capa.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener la
+ * versión de la capa WFS.
  * @returns {string} Versión.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1021,13 +1057,14 @@ export const getVersionWFS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la versión.
+ * Analiza el parámetro para obtener el "extract".
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de la capa.
- * @returns {boolean} Indica si se debe extraer o no.
- * @throws {Exception} Si el parámetro no es de un tipo soportado.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para obtener
+ * el "extract" de la capa WFS.
+ * @returns {boolean|Array<string>} Devuelve el valor del parámetro "extract".
  * @api
  */
 export const getExtractWFS = (parameter) => {
@@ -1048,9 +1085,11 @@ export const getExtractWFS = (parameter) => {
 /**
  * Analiza el parámetro para obtener las opciones.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de la capa.
+ * @param {string|Mx.parameters.WFS} parameter Parámetro para
+ * obtener las opciones de la capa WFS.
  * @returns {Mx.parameters.WFSOptions} Opciones de la capa WFS.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1070,11 +1109,13 @@ export const getOptionsWFS = (parameter) => {
 /**
  * Analiza los parámetros WFS de la capa de usuario especificada en un objeto.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros de la capa de usuario.
+ * @param {string|Mx.parameters.WFS} userParameters Parámetros para la capa WFS
+ * especificados por el usuario.
  * @returns {Mx.parameters.WFS|Array<Mx.parameters.WFS>} Parámetros de la capa WFS.
  * @public
  * @function
  * @api
+ * @throws {M.exception} Si el parámetro no es especificado.
  */
 export const wfs = (userParameters) => {
   let layers = [];
@@ -1144,11 +1185,13 @@ export const wfs = (userParameters) => {
 
 
 /**
- * Analiza el parámetro para obtener la leyenda de la capa.
+ * Analiza el parámetro para obtener la leyenda de la capa GeoJSON.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro.
+ * @param {string|Mx.parameters.GeoJSON} parameter Parámetro para obtener
+ * la leyenda de la capa GeoJSON.
  * @returns {string} Leyenda de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1179,11 +1222,13 @@ export const getLegendGeoJSON = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la URL del servicio.
+ * Analiza el parámetro para obtener la URL del servicio GeoJSON.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.GeoJSON} parameter Parámetro para obtener
+ * la URL del servicio GeoJSON.
  * @returns {string} Devuelve el valor de la URL.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1204,11 +1249,13 @@ export const getURLGeoJSON = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la fuente.
+ * Analiza el parámetro para obtener la fuente de la capa GeoJSON.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.GeoJSON} parameter Parámetro para obtener
+ * la fuente de la capa GeoJSON.
  * @returns {string} Devuelve el valor de la fuente.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1234,11 +1281,13 @@ export const getSourceGeoJSON = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el "extract".
+ * Analiza el parámetro para obtener el "extract" de la capa GeoJSON.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.GeoJSON} parameter Parámetro para obtener
+ * el "extract" de la capa GeoJSON.
  * @returns {boolean|Array<string>} Devuelve el valor del parámetro "extract".
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1271,13 +1320,16 @@ export const getExtractGeoJSON = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el estilo.
+ * Analiza el parámetro para obtener el estilo de la capa GeoJSON.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
- * @returns {string} Estilo.
+ * @param {string|Object|Mx.parameters.GeoJSON} parameter Parámetro para
+ * obtener el estilo de la capa GeoJSON.
+ * @returns {string} Estilo de la capa.
  * @api
+ * @throws {Exception} Si el parámetro no es de un tipo soportado.
  */
 export const getStyleGeoJSON = (parameter) => {
   let params;
@@ -1304,13 +1356,16 @@ export const getStyleGeoJSON = (parameter) => {
 
 
 /**
- * Analiza los parámetros GeoJSON de la capa de usuario especificada en un objeto.
+ * Analiza los parámetros para la capa GeoJSON especificados por el usuario.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros de la capa de usuario.
- * @returns {Mx.parameters.GeoJSON|Array<Mx.parameters.GeoJSON>} Capa.
+ * @param {string|Mx.parameters.GeoJSON} userParameters Parámetros para la capa GeoJSON
+ * especificados por el usuario.
+ * @returns {Mx.parameters.GeoJSON|Array<Mx.parameters.GeoJSON>} Parámetros de la capa
+ * GeoJSON.
  * @public
  * @function
  * @api
+ * @throws {M.exception} Si el parámetro no es especificado.
  */
 export const geojson = (userParameters) => {
   let layers = [];
@@ -1358,13 +1413,16 @@ export const geojson = (userParameters) => {
 };
 
 /**
- * Esta función obtiene la URL de la capa MVT del parámetro de cadena.
+ * Esta función obtiene la URL de la capa MVT especificada por el usuario.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @function
  * @public
- * @param {string} parameter Parámetro.
- * @returns {string} Url de la capa.
+ * @param {string|Mx.parameters.MVT} parameter Parámetro para obtener la
+ * URL de la capa MVT.
+ * @returns {string} URL de la capa.
  * @api
+ * @throws {Exception} Si el parámetro no es de un tipo soportado.
  */
 export const getURLMVT = (parameter) => {
   let url;
@@ -1384,12 +1442,15 @@ export const getURLMVT = (parameter) => {
 };
 
 /**
- * Esta función obtiene la URL de la capa MVT del parámetro de cadena.
+ * Esta función obtiene el nombre de la capa MVT especificado por el usuario.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @function
  * @public
- * @param {string} parameter Parámetro.
+ * @param {string|Mx.parameters.MVT} parameter Parámetro para obtener el
+ * nombre de la capa MVT.
  * @returns {string} Nombre de la capa.
+ * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getNameMVT = (parameter) => {
@@ -1410,13 +1471,14 @@ export const getNameMVT = (parameter) => {
 };
 
 /**
- * Analiza los parámetros MVT de la capa de usuario especificada en un objeto.
+ * Analiza los parámetros especificados por el usuario para la capa MVT.
  *
  * @public
  * @function
  * @api
- * @param {string|Mx.parameters.Layer} userParameters Parámetros.
- * @returns {Mx.parameters.MVT|Array<Mx.parameters.MVT>} Capa/s MVT.
+ * @param {string|Mx.parameters.MVT} userParameters Parámetros para la capa MVT.
+ * @returns {Mx.parameters.MVT|Array<Mx.parameters.MVT>} Parámetros de la capa MVT.
+ * @throws {M.exception} Si el parámetro no es especificado.
  */
 export const mvt = (userParameters) => {
   let layers = [];
@@ -1452,13 +1514,16 @@ export const mvt = (userParameters) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener el nombre de la capa WMC.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de la capa.
+ * @param {string|Mx.parameters.WMC} parameter Parámetro para obtener
+ * el nombre de la capa WMC.
  * @param {string} type Tipo de capa.
  * @returns {string} Nombre de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getNameWMC = (parameter, type) => {
@@ -1494,11 +1559,13 @@ export const getNameWMC = (parameter, type) => {
 };
 
 /**
- * Analiza el parámetro para obtener la URL del servicio.
+ * Analiza el parámetro para obtener la URL del servicio de la capa WMC.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de la capa.
+ * @param {string|Mx.parameters.WMC} parameter Parámetro para obtener la
+ * URL del servicio de la capa WMC.
  * @returns {string} URL del servicio.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1519,11 +1586,13 @@ export const getURLWMC = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener las opciones.
+ * Analiza el parámetro para obtener las opciones de la capa WMC.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de la capa.
+ * @param {string|Mx.parameters.WMC} parameter Parámetro para obtener
+ * las opciones de la capa WMC.
  * @returns {Mx.parameters.WMCOptions} Opciones de la capa WMC.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1541,12 +1610,13 @@ export const getOptionsWMC = (parameter) => {
 };
 
 /**
- * Analiza los parámetros WMC de la capa de usuario especificada en un objeto.
+ * Analiza los parámetros especificados por el usuario para la capa WMC.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros de la capa de usuario.
+ * @param {string|Mx.parameters.WMC} userParameters Parámetros para la capa WMC.
  * @returns {Mx.parameters.WMC|Array<Mx.parameters.WMC>} Parámetros de la capa WMC.
  * @public
  * @function
+ * @throws {M.exception} Si el parámetro no es especificado.
  * @api
  */
 export const wmc = (userParameters) => {
@@ -1589,12 +1659,16 @@ export const wmc = (userParameters) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener el nombre de la capa WMS.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WMS} parameter Parámetro para obtener
+ * el nombre de la capa WMS.
  * @returns {string} Nombre de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
  */
 export const getNameWMS = (parameter) => {
   let name;
@@ -1628,11 +1702,13 @@ export const getNameWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la URL del servicio.
+ * Analiza el parámetro para obtener la URL del servicio de la capa WMS.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WMS} parameter Parámetro para obtener la
+ * URL del servicio de la capa WMS.
  * @returns {string} URL del servicio.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1653,11 +1729,13 @@ export const getURLWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la leyenda de la capa.
+ * Analiza el parámetro para obtener la leyenda de la capa WMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WMS} parameter Parámetro para obtener
+ * la leyenda de la capa WMS.
  * @returns {string} Leyenda de la capa.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1688,11 +1766,13 @@ export const getLegendWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la transparencia.
+ * Analiza el parámetro para obtener la transparencia de la capa WMS.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro.
+ * @param {string|Mx.parameters.WMS} parameter Parámetro para obtener la
+ * transparencia de la capa WMS.
  * @returns {boolean} Transparencia.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1730,11 +1810,13 @@ export const getTransparentWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la tesela de la capa.
+ * Analiza el parámetro para obtener la tesela de la capa WMS.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WMS} parameter Parámetro para obtener la tesela de la
+ * capa WMS.
  * @returns {boolean} Indica si la capa es teselada.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1772,11 +1854,13 @@ export const getTiledWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la extensión máxima de la capa.
+ * Analiza el parámetro para obtener la extensión máxima de la capa WMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
+ * @param {string|Object|Mx.parameters.WMS} parameter Parámetro para
+ * obtener la extensión máxima de la capa WMS.
  * @returns {array} Extensión máxima de la capa.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1822,11 +1906,13 @@ export const getMaxExtentWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la versión.
+ * Analiza el parámetro para obtener la versión de la capa WMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
+ * @param {string|Object|Mx.parameters.WMS} parameter Parámetro para
+ * obtener la versión de la capa WMS.
  * @returns {string} Versión.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1846,11 +1932,13 @@ export const getVersionWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener las opciones.
+ * Analiza el parámetro para obtener las opciones de la capa WMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
+ * @param {string|Object|Mx.parameters.WMS} parameter Parámetro para
+ * obtener las opciones de la capa WMS.
  * @returns {object} Opciones de la capa WMS.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1868,11 +1956,13 @@ export const getOptionsWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener las capas en el conjunto de capas.
+ * Analiza el parámetro para obtener las capas en el conjunto de capas WMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
+ * @param {string|Object|Mx.parameters.WMS} parameter Parámetro para obtener
+ * las capas en el conjunto de capas WMS.
  * @returns {string} Capas en el conjunto de capas.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1897,11 +1987,13 @@ export const getDisplayInLayerSwitcherWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener las consultas de la capa.
+ * Analiza el parámetro para obtener si la capa WMS es consultable.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
+ * @param {string|Object|Mx.parameters.WMS} parameter Parámetro para
+ * obtener si la capa WMS es consultable.
  * @returns {boolean} Devuelve verdadero si la capa es consultable.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1926,11 +2018,13 @@ export const getQueryableWMS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la visibilidad de la capa.
+ * Analiza el parámetro para obtener la visibilidad de la capa WMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de la capa.
+ * @param {string|Object|Mx.parameters.WMS} parameter Parámetro para
+ * obtener la visibilidad de la capa WMS.
  * @returns {boolean} Visibilidad de la capa.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -1955,13 +2049,13 @@ export const getVisibilityWMS = (parameter) => {
 };
 
 /**
- * Analiza los parámetros WMS de la capa de usuario especificada en un objeto.
+ * Analiza los parámetros especificados por el usuario para la capa WMS.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros
- * proporcionado por el usuario.
- * @returns {Mx.parameters.WMS|Array<Mx.parameters.WMS>}
+ * @param {string|Mx.parameters.WMS} userParameters Parámetros para la capa WMS.
+ * @returns {Mx.parameters.WMS|Array<Mx.parameters.WMS>} Parámetros de la capa WMS.
  * @public
  * @function
+ * @throws {M.exception} Si el parámetro no es especificado.
  * @api
  */
 export const wms = (userParameters) => {
@@ -2016,11 +2110,13 @@ export const wms = (userParameters) => {
 
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener el nombre de la capa WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.WMS} parameter Parámetro.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro para obtener
+ * el nombre de la capa WMTS.
  * @returns {string} Nombre de la capa.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2053,11 +2149,13 @@ export const getNameWMTS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la URL del servicio.
+ * Analiza el parámetro para obtener la URL del servicio de la capa WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.WMTS} parameter Parámetro.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro para obtener la
+ * URL del servicio de la capa WMTS.
  * @returns {string} URL del servicio.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2078,11 +2176,13 @@ export const getURLWMTS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el conjunto de matrices de la capa.
+ * Analiza el parámetro para obtener el conjunto de matrices de la capa WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.WMTS} parameter Parámetro.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro para obtener el
+ * conjunto de matrices de la capa WMTS.
  * @returns {string} Conjunto de matrices.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2113,11 +2213,13 @@ export const getMatrixSetWMTS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la leyenda de la capa.
+ * Analiza el parámetro para obtener la leyenda de la capa WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de la capa.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro para obtener
+ * la leyenda de la capa WMTS.
  * @returns {string} Leyenda de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2150,11 +2252,13 @@ export const getLegendWMTS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener las opciones.
+ * Analiza el parámetro para obtener las opciones de la capa WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro de entrada para
+ * obtener las opciones de la capa WMTS.
  * @returns {object} Devuelve las opciones de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2172,12 +2276,15 @@ export const getOptionsWMTS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la transparencia.
+ * Analiza el parámetro para obtener la transparencia de la capa WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
- * @returns {boolean} Devuelve verdadero si la capa es transparente.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro para obtener
+ * la transparencia de la capa WMTS.
+ * @returns {boolean} Devuelve verdadero si la capa es transparente, falso
+ * si no.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
@@ -2214,11 +2321,13 @@ export const getTransparentWMTS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el formato.
+ * Analiza el parámetro para obtener el formato de la capa WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro para obtener
+ * el formato de la capa WMTS.
  * @returns {string} Formato.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2241,11 +2350,13 @@ export const getFormatWMTS = (parameter) => {
 };
 
 /**
- * Analiza los parámetros para obtener el conjunto de capas.
+ * Analiza los parámetros para obtener el conjunto de capas WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro para obtener
+ * el conjunto de capas WMTS.
  * @returns {string} Conjunto de capas.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2270,12 +2381,14 @@ export const getDisplayInLayerSwitcherWMTS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el indicador consultable.
+ * Analiza el parámetro que indica si la capa WMTS es consultable.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
- * @returns {boolean} Indicador consultable.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro que indica
+ * si la capa WMTS es consultable.
+ * @returns {boolean} Verdadero si es consultable, falso si no.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
@@ -2299,11 +2412,13 @@ export const getQueryableWMTS = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la visibilidad de la capa.
+ * Analiza el parámetro para obtener la visibilidad de la capa WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.WMTS} parameter Parámetro para obtener
+ * la visibilidad de la capa WMTS.
  * @returns {boolean} Visibilidad de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2329,11 +2444,13 @@ export const getVisibilityWMTS = (parameter) => {
 
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener el nombre de la capa XYZ.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.XYZ} parameter Parámetro para obtener
+ * el nombre de la capa XYZ.
  * @returns {string} Nombre de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2374,9 +2491,11 @@ export const getNameXYZ = (parameter) => {
  * Analiza el parámetro para obtener la URL del servicio
  * funciona para capas XYZ y TMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.XYZ|Mx.parameters.TMS} parameter Parámetro
+ * para obtener la URL del servicio para capas XYZ y TMS.
  * @returns {string} URL del servicio.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2399,9 +2518,10 @@ export const getURLXYZSource = (parameter) => {
 /**
  * Analiza el parámetro para obtener parámetros extra.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|object} parameter Parámetro de entrada.
+ * @param {string|Object} parameter Parámetro para obtener parámetros extra.
  * @param {string} defaultValue Valor por defecto.
  * @param {number} position Posición del parámetro.
  * @param {string} nameVariable Nombre de la variable.
@@ -2435,13 +2555,14 @@ export const getExtraParameter = (parameter, defaultValue, position, nameVariabl
 
 
 /**
- * Analiza los parámetros XYZ de la capa de usuario especificada en un objeto.
+ * Analiza los parámetros especificados por el usuario para la capa XYZ.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros.
- * @returns {Mx.parameters.XYZ|Array<Mx.parameters.XYZ>} Capa.
+ * @param {string|Mx.parameters.XYZ} userParamer Parámetros para la capa XYZ.
+ * @returns {Mx.parameters.XYZ|Array<Mx.parameters.XYZ>} Parámetros de la capa XYZ.
  * @public
  * @function
  * @api
+ * @throws {M.exception} Si el parámetro no es especificado.
  */
 export const xyz = (userParamer) => {
   const userParameters = userParamer;
@@ -2494,10 +2615,13 @@ export const xyz = (userParamer) => {
 
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener el nombre de la capa TMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
+ * @param {string|Mx.parameters.TMS} parameter Parámetro para obtener
+ * el nombre de la capa TMS.
  * @returns {string} Nombre de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2535,10 +2659,10 @@ export const getNameTMS = (parameter) => {
 
 
 /**
- * Analiza los parámetros TMS de la capa de usuario especificada en un objeto.
+ * Analiza los parámetros especificados por el usuario para la capa TMS.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros.
- * @returns {Mx.parameters.TMS|Array<Mx.parameters.TMS>} Capa.
+ * @param {string|Mx.parameters.TMS} userParameters Parámetros para la capa TMS.
+ * @returns {Mx.parameters.TMS|Array<Mx.parameters.TMS>} Parámetros de la capa TMS.
  * @public
  * @function
  * @api
@@ -2596,10 +2720,10 @@ export const tms = (userParamer) => {
 
 
 /**
- * Analiza los parámetros WMTS de la capa de usuario especificada en un objeto.
+ * Analiza los parámetros especificados por el usuario para la capa WMTS.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros.
- * @returns {Mx.parameters.WMTS|Array<Mx.parameters.WMTS>} Capa.
+ * @param {string|Mx.parameters.WMTS} userParameters Parámetros para la capa WMTS.
+ * @returns {Mx.parameters.WMTS|Array<Mx.parameters.WMTS>} Parámetros de la capa WMTS.
  * @public
  * @function
  * @api
@@ -2665,12 +2789,16 @@ export const wmts = (userParameters) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener la leyenda de la capa MBTiles.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
- * @returns {string} Nombre de la capa.
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
+ * la leyenda de la capa MBTile.
+ * @returns {string} Leyenda de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
  */
 export const getLegendMBTiles = (parameter) => {
   let legend;
@@ -2691,11 +2819,13 @@ export const getLegendMBTiles = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la URL del servicio.
+ * Analiza el parámetro para obtener la URL del servicio de la capa MBTiles.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.WMTS} parameter Parámetro.
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener la
+ * URL del servicio de la capa MBTiles.
  * @returns {string} URL del servicio.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
@@ -2716,12 +2846,14 @@ export const getURLMBTiles = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la URL del servicio.
+ * Analiza el parámetro para obtener la fuente de la capa MBTiles.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.WMTS} parameter Parámetro.
- * @returns {string} URL del servicio.
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
+ * la fuente de la capa MBTiles.
+ * @returns {string} Fuente de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
@@ -2734,12 +2866,16 @@ export const getSourceMBTiles = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener el nombre de la capa MBTiles.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
+ * el nombre de la capa MBTiles.
  * @returns {string} Nombre de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
  */
 export const getNameMBTiles = (parameter) => {
   let name;
@@ -2765,12 +2901,16 @@ export const getNameMBTiles = (parameter) => {
 
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener la transparencia de la capa MBTiles.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
- * @returns {string} Nombre de la capa.
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
+ * la transparencia de la capa MBTiles.
+ * @returns {boolean} Devuelve verdadero si es transparente, falso si no.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
  */
 export const getTransparentMBTiles = (parameter) => {
   let transparent;
@@ -2790,12 +2930,16 @@ export const getTransparentMBTiles = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener si la capa MBTiles es visible.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
- * @returns {string} Nombre de la capa.
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
+ * si la capa MBTiles es visible.
+ * @returns {boolean} Devuelve verdadero si es visible, falso si no.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
  */
 export const getVisibilityMBTiles = (parameter) => {
   let visibility;
@@ -2815,12 +2959,16 @@ export const getVisibilityMBTiles = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener la opacidad de la capa MBTiles.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
- * @returns {string} Nombre de la capa.
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
+ * la opacidad de la capa MBTiles.
+ * @returns {number} Opacidad de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
  */
 export const getOpacityMBTiles = (parameter) => {
   let opacity;
@@ -2840,12 +2988,16 @@ export const getOpacityMBTiles = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener el nivel máximo de la capa MBTiles.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
- * @returns {string} Nombre de la capa.
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
+ * el nivel máximo de la capa MBTiles.
+ * @returns {number} Nivel máximo de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
  */
 export const getMaxZoomLevelMBTiles = (parameter) => {
   let maxZoomLevel;
@@ -2865,12 +3017,16 @@ export const getMaxZoomLevelMBTiles = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa.
+ * Analiza el parámetro para obtener la máxima extensión de la capa MBTiles.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
  * @public
  * @function
- * @param {string|Mx.parameters.Layer} parameter Parámetro de entrada.
- * @returns {string} Nombre de la capa.
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener la
+ * máxima extensión de la capa MBTiles.
+ * @returns {Mx.Extent} Máxima extensión de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
  */
 export const getMaxExtentMBTiles = (parameter) => {
   let extent;
@@ -2890,14 +3046,16 @@ export const getMaxExtentMBTiles = (parameter) => {
 };
 
 /**
- * Analiza los parámetros WMS de la capa de usuario especificada en un objeto.
+ * Analiza los parámetros especificados por el usuario para la capa MBTiles.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros
- * proporcionado por el usuario.
- * @returns {Mx.parameters.WMS|Array<Mx.parameters.WMS>}
+ * @param {string|Mx.parameters.MBTiles} userParameters Parámetros para la capa
+ * especificados por el usuario.
+ * @returns {Mx.parameters.MBTiles|Array<Mx.parameters.MBTiles>} Parámetros de la
+ * capa MBTiles.
  * @public
  * @function
  * @api
+ * @throws {M.exception} Si el parámetro no es especificado.
  */
 export const mbtiles = (userParameters) => {
   let layers = [];
@@ -2947,6 +3105,289 @@ export const mbtiles = (userParameters) => {
 };
 
 /**
+ * Analiza el parámetro para obtener la leyenda de la capa MBTilesVector.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para
+ * obtener la leyenda de la capa MBTilesVector.
+ * @returns {string} Leyenda de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getLegendMBTilesVector = (parameter) => {
+  let legend;
+  let params;
+  if (isString(parameter)) {
+    // <MBTile>*<legend>
+    if (/^MBtilesVector\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      legend = params[1].trim();
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
+    legend = parameter.legend.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return legend;
+};
+
+/**
+ * Analiza el parámetro para obtener la URL del servicio de la capa MBTilesVector.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener
+ * la URL del servicio de la capa MBTilesVector.
+ * @returns {string} URL del servicio.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getURLMBTilesVector = (parameter) => {
+  let url;
+  if (isString(parameter)) {
+    const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)([^*]*\*?)*$/i);
+    if (urlMatches && (urlMatches.length > 2)) {
+      url = urlMatches[2];
+    }
+  } else if (isObject(parameter)) {
+    url = parameter.url;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return url;
+};
+
+/**
+ * Analiza el parámetro para obtener la fuente de la capa MBTilesVector.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para
+ * obtener la fuente de la capa MBTilesVector.
+ * @returns {string} Fuente de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getSourceMBTilesVector = (parameter) => {
+  let source;
+  if (isObject(parameter)) {
+    source = parameter.source;
+  }
+  return source;
+};
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa MBTilesVector.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para
+ * obtener el nombre de la capa MBTilesVector.
+ * @returns {string} Nombre de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getNameMBTilesVector = (parameter) => {
+  let name;
+  let params;
+  if (isString(parameter)) {
+    // <MBTilesVector>*<legend>*<URL>*<NAME>
+    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      name = params[3].trim();
+    } else if (/^[^*]*/.test(parameter)) {
+      // <NAME>
+      params = parameter.split(/\*/);
+      name = params[0].trim();
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
+    name = parameter.name.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return name;
+};
+
+/**
+ * Analiza el parámetro que indica si la capa MBTilesVector es visible.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro que indica
+ * si la capa MBTilesVector es visible.
+ * @returns {boolean} Devuelve verdadero si la capa es visible, falso si no.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getVisibilityMBTilesVector = (parameter) => {
+  let visibility;
+  let params;
+  if (isString(parameter)) {
+    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      visibility = params[4];
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.visibility)) {
+    visibility = parameter.visibility;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return visibility;
+};
+
+/**
+ * Analiza el parámetro para obtener la opacidad de la capa MBTilesVector.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener
+ * la opacidad de la capa MBTilesVector.
+ * @returns {number} Opacidad de la capa
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getOpacityMBTilesVector = (parameter) => {
+  let opacity;
+  let params;
+  if (isString(parameter)) {
+    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      opacity = params[5];
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
+    opacity = parameter.opacity;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return opacity;
+};
+
+/**
+ * Analiza el parámetro para obtener el nivel máximo de zoom de la capa MBTilesVector.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener el
+ * nivel máximo de zoom de la capa MBTilesVector.
+ * @returns {number} Nivel máximo de zoom de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getMaxZoomLevelMBTilesVector = (parameter) => {
+  let maxZoomLevel;
+  let params;
+  if (isString(parameter)) {
+    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      maxZoomLevel = parseInt(params[6].trim(), 10);
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
+    maxZoomLevel = parameter.maxZoomLevel;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return maxZoomLevel;
+};
+
+/**
+ * Analiza el parámetro para obtener la máxima extensión de la capa MBTilesVector.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener
+ * la máxima extensión de la capa MBTilesVector.
+ * @returns {Mx.Extent} Máxima extensión de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getMaxExtentMBTilesVector = (parameter) => {
+  let extent;
+  let params;
+  if (isString(parameter)) {
+    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      extent = params[7].split(',');
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.maxExtent)) {
+    extent = parameter.maxExtent;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return extent;
+};
+
+/**
+ * Analiza los parámetros especificados por el usuario para la capa MBTilesVector.
+ *
+ * @param {string|Mx.parameters.MBTilesVector} userParameters Parámetros para la capa
+ * MBTilesVector especificados por el usuario.
+ * @returns {Mx.parameters.MBTilesVector|Array<Mx.parameters.MBTilesVector>} Parámetros
+ * de la capa MBTilesVector.
+ * @public
+ * @function
+ * @api
+ * @throws {M.exception} Si el parámetro no es especificado.
+ */
+export const mbtilesvector = (userParameters) => {
+  let layers = [];
+
+  // checks if the param is null or empty
+  if (isNullOrEmpty(userParameters)) {
+    Exception(getValue('exception').no_param);
+  }
+
+  // checks if the parameter is an array
+  let userParametersArray = userParameters;
+  if (!isArray(userParametersArray)) {
+    userParametersArray = [userParametersArray];
+  }
+
+  layers = userParametersArray.map((userParam) => {
+    const layerObj = {};
+
+    layerObj.type = LayerType.MBTilesVector;
+
+    layerObj.legend = getLegendMBTilesVector(userParam);
+
+    layerObj.url = getURLMBTilesVector(userParam);
+
+    layerObj.source = getSourceMBTilesVector(userParam);
+
+    layerObj.name = getNameMBTilesVector(userParam);
+
+    layerObj.visibility = getVisibilityMBTilesVector(userParam);
+
+    layerObj.opacity = getOpacityMBTilesVector(userParam);
+
+    layerObj.maxZoomLevel = getMaxZoomLevelMBTilesVector(userParam);
+
+    layerObj.maxExtent = getMaxExtentMBTilesVector(userParam);
+
+    return layerObj;
+  });
+
+  if (!isArray(userParameters)) {
+    layers = layers[0];
+  }
+
+  return layers;
+};
+
+/**
  * Parámetros con los tipos de capa soportados.
  * @const
  * @type {object}
@@ -2965,14 +3406,15 @@ const parameterFunction = {
   xyz,
   tms,
   mbtiles,
+  mbtilesvector,
 };
 
 
 /**
  * Analiza los parámetros de capa de usuario especificados en un objeto.
  *
- * @param {string|Mx.parameters.Layer} userParameters Parámetros.
- * @param {string} forced Fuerza el tipo de capa.
+ * @param {string|Mx.parameters.Layer} userParameters Parámetros para la capa.
+ * @param {string} forcedType Fuerza el tipo de capa.
  * @returns {Mx.parameters.Layer|Array<Mx.parameters.Layer>} Capa.
  * @public
  * @function
