@@ -2854,7 +2854,6 @@ export const getURLMBTiles = (parameter) => {
  * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
  * la fuente de la capa MBTiles.
  * @returns {string} Fuente de la capa.
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getSourceMBTiles = (parameter) => {
@@ -2863,6 +2862,26 @@ export const getSourceMBTiles = (parameter) => {
     source = parameter.source;
   }
   return source;
+};
+
+/**
+ * Analiza el parámetro para obtener la función de carga de la tesela
+ * de la capa MBTiles.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
+ * la función de carga de la tesela de la capa MBTiles.
+ * @returns {Function} función de carga de la tesela.
+ * @api
+ */
+export const getTileLoadFunctionMBTiles = (parameter) => {
+  let tileLoadFunction;
+  if (isObject(parameter)) {
+    tileLoadFunction = parameter.tileLoadFunction;
+  }
+  return tileLoadFunction;
 };
 
 /**
@@ -3094,6 +3113,8 @@ export const mbtiles = (userParameters) => {
 
     layerObj.maxExtent = getMaxExtentMBTiles(userParam);
 
+    layerObj.tileLoadFunction = getTileLoadFunctionMBTiles(userParam);
+
     return layerObj;
   });
 
@@ -3170,7 +3191,6 @@ export const getURLMBTilesVector = (parameter) => {
  * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para
  * obtener la fuente de la capa MBTilesVector.
  * @returns {string} Fuente de la capa.
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getSourceMBTilesVector = (parameter) => {
@@ -3179,6 +3199,27 @@ export const getSourceMBTilesVector = (parameter) => {
     source = parameter.source;
   }
   return source;
+};
+
+/**
+ * Analiza el parámetro para obtener la función de carga de la tesela
+ * vectorial de la capa MBTilesVector.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para
+ * obtener la función de carga de la tesela vectorial de la
+ * capa MBTilesVector.
+ * @returns {Function} Función de carga de la tesela vectorial.
+ * @api
+ */
+export const getTileLoadFunctionMBTilesVector = (parameter) => {
+  let tileLoadFunction;
+  if (isObject(parameter)) {
+    tileLoadFunction = parameter.tileLoadFunction;
+  }
+  return tileLoadFunction;
 };
 
 /**
@@ -3376,6 +3417,8 @@ export const mbtilesvector = (userParameters) => {
     layerObj.maxZoomLevel = getMaxZoomLevelMBTilesVector(userParam);
 
     layerObj.maxExtent = getMaxExtentMBTilesVector(userParam);
+
+    layerObj.tileLoadFunction = getTileLoadFunctionMBTilesVector(userParam);
 
     return layerObj;
   });

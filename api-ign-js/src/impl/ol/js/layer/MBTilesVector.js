@@ -3,7 +3,7 @@
  */
 import { isNullOrEmpty } from 'M/util/Utils';
 import { get as getProj, transformExtent } from 'ol/proj';
-import { inflate } from 'pako';
+// import { inflate } from 'pako';
 import OLLayerTile from 'ol/layer/Tile';
 import OLLayerVectorTile from 'ol/layer/VectorTile';
 import OLSourceVectorTile from 'ol/source/VectorTile';
@@ -314,13 +314,17 @@ class MBTilesVector extends Vector {
       // eslint-disable-next-line
       target.tileLoadFunction_(tileCoord[0], tileCoord[1], -tileCoord[2] - 1).then((_vectorTile) => {
         if (_vectorTile) {
-          const vectorTile = inflate(null, _vectorTile);
-          const features = formatter.readFeatures(vectorTile, {
-            extent,
-            featureProjection: projection,
-          });
-          tile.setFeatures(features);
-          tile.setState(2); // ol/TileState#LOADED
+          try {
+            const vectorTile = new Uint8Array(_vectorTile);
+            const features = formatter.readFeatures(vectorTile, {
+              extent,
+              featureProjection: projection,
+            });
+            tile.setFeatures(features);
+            tile.setState(2); // ol/TileState#LOADED
+          } catch (e) {
+            tile.setState(3); // ol/TileState#ERROR
+          }
         } else {
           tile.setState(3); // ol/TileState#ERROR
         }
