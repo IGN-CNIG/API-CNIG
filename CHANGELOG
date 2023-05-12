@@ -7,3 +7,4 @@
 - Mejoras parametrización plugin selectionzoom
 - Se permite enviar parámetros por API REST a los plugins en base64
 - Se añade funcionalidad toast
+- Se soluciona problema de estilo con plugin GeometryDraw
