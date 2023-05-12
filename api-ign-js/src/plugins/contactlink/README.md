@@ -39,7 +39,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **pinterest**: Indica la url al Pinterest del CNIG. Por defecto: 'https://www.pinterest.es/IGNSpain/'
 - **youtube**: Indica la url al Youtube del CNIG. Por defecto: 'https://www.youtube.com/user/IGNSpain'
 - **mail**: Indica la url para escribir correo al CNIG. Por defecto: 'mailto:ign@fomento.es'
-- **collapsible**. Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true 
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **collapsed**. Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true
 - **tooltip**. Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Enlaces y contacto IGN'
 

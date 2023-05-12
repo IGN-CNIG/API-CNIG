@@ -33,7 +33,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
-- **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Gestión de la vista.
 - **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
 - **predefinedZoom**: Indica si el control PredefinedZoom se añade al plugin (true/false). Por defecto: true (zoom a España). Para añadir los zooms deseados en los que se podrá centrar el mapa se seguirá el siguiente formato:

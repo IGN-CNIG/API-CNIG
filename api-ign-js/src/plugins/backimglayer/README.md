@@ -29,7 +29,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
-- **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: "Capas de fondo".
 - **layerId**: Índice de la capa que se quiera cargar por defecto. Por ejemplo, si se pasa el número 2 se mostrará la capa que se encuentre en la segunda posición. Por defecto: 0
 - **columnsNumber**: Número de columnas que parametrizan la tabla de capas de fondo disponibles. Por defecto: 2

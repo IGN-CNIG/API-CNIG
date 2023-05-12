@@ -23,7 +23,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda (por defecto).
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **options**: Lista con las opciones de las capas.
   - **id**: Identificador de la capa
