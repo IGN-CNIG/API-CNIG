@@ -25,10 +25,12 @@ window.map = map;
 const mp = new Attributions({
   // mode: 1,
   scale: 10000,
-  url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
-  type: 'geojson',
+  // url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson',
+  // type: 'geojson',
+  // layerName: 'AtribicionPNOA-3857',
   position: 'BL',
   tooltip: 'Plugin atribuciones',
+  // layer: new M.layer.KML({ name: 'attributions', url: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml', displayInLayerSwitcher: false }),
 });
 
 map.addPlugin(mp);

@@ -44,20 +44,17 @@ export default class Attributions extends M.Plugin {
   constructor(options = {}) {
     super();
 
-    if (M.utils.isNullOrEmpty(options.mode) || !Object.values(MODES).includes(options.mode)) {
-      this.mode_ = Number.parseInt(1, 10);
-      // throw new Error(getValue('exception.mode'));
-    }
-
     if (options.mode === MODES.mapAttributions && !M.utils.isNullOrEmpty(options.url)) {
       if (M.utils.isNullOrEmpty(options.type)) {
-        throw new Error(getValue('exception.type'));
+        // throw new Error(getValue('exception.type'));
+        console.warn(getValue('exception.type'));
       }
     }
 
     if (options.mode === MODES.mapAttributions && !M.utils.isNullOrEmpty(options.layerName)) {
       if (M.utils.isNullOrEmpty(options.type)) {
-        throw new Error(getValue('exception.layerName'));
+        // throw new Error(getValue('exception.layerName'));
+        console.warn(getValue('exception.layerName'));
       }
     }
 
@@ -83,7 +80,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {number}
      */
-    this.mode_ = Number.parseInt(options.mode, 10);
+    this.mode_ = Number.parseInt(options.mode, 10) || 1;
 
     /**
      * Vectorial service attributions
@@ -91,7 +88,7 @@ export default class Attributions extends M.Plugin {
      * @private
      * @type {URLLike}
      */
-    this.url_ = options.url || 'https://mapea-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml';
+    this.url_ = options.url || 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml';
     /**
      * Type of the data url
      *
@@ -637,7 +634,7 @@ export default class Attributions extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}*${this.url}*${this.type}*${this.layerName}*${this.attributionParam}*${this.urlParam}*${this.urlAttribute}*${this.minWidth_}*${this.maxWidth_}*${this.tooltip_}`;
+    return `${this.name}=${this.position}*${this.tooltip_}*${this.mode}*${this.scale}*${this.defaultAttribution}*${this.defaultURL}*${this.url}*${this.type}*${this.layerName}*${this.attributionParam_}*${this.urlParam}*${this.minWidth_}*${this.maxWidth_}*${this.urlAttribute}`;
   }
 
   /**

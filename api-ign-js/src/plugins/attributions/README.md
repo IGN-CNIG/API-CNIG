@@ -28,19 +28,15 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda (posición por defecto).
   - 'BR': (bottom right) - Abajo a la derecha.
-* **collapsed**: Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto: true.
-* **collapsible**: Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto: true.
 * **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'.
 * **mode**: Modo de uso del plugin Attributions (1 ó 2). Por defecto: 1
      - **1** `DISPONIBLE`: Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: 
-         + **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml'.
+         + **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml'.
          + **type**: En el caso de no pasar nada por el parámetro 'layer' o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
          + **layerName**: Nombre asociado a la capa de atribuciones (nombre de la capa). Se usa para la construcción de la capa. Por defecto: 'attributions'.
          + **layer**: Capa definida por el usuario para determinar las atribuciones {M.layer.GeoJSON | M.layer.KML}. No requiere los parámetros anteriores (type, url y layerName)
          + **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
          + **urlParam**: Nombre del campo de url en el archivo. Por defecto: 'url'.
-         + **minWidth**: Mínimo ancho de visualización del plugin. Por defecto: '100px'. 
-         + **maxWidth**: Máximo ancho de visualización del plugin. Por defecto: '200px'.
      - **2** ` NO DISPONIBLE`: Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. 
 * **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
 * **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario. Por defecto: Instituto Geográfico Nacional.
@@ -78,8 +74,7 @@ Ejemplos de archivo de atribuciones según formato predefinido (kml o geojson):
 # API-REST
 
 ```javascript
-URL_API?attributions=position*mode*scale*defaultAttribution*defaultURL*url*type*layerName
-*attributionParam*urlParam*urlAttribute*minWidth*maxWidth*tooltip
+URL_API?attributions=position*tooltip*mode*scale*defaultAttribution*defaultURL*url*type*layerName*attributionParam*urlParam*minWidth*maxWidth*urlAttribute
 ```
 
 <table>
@@ -91,6 +86,11 @@ URL_API?attributions=position*mode*scale*defaultAttribution*defaultURL*url*type*
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a usar para mostrar en el tooltip del plugin</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
@@ -129,6 +129,11 @@ URL_API?attributions=position*mode*scale*defaultAttribution*defaultURL*url*type*
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
+    <td>layer</td>
+    <td>Capa definida por el usuario, No requiere (type, url y layerName)</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
     <td>attributionParam</td>
     <td>Nombre del campo de atribución en el archivo</td>
     <td>Base64 ✔️ | Separador ✔️</td>
@@ -136,11 +141,6 @@ URL_API?attributions=position*mode*scale*defaultAttribution*defaultURL*url*type*
   <tr>
     <td>urlParam</td>
     <td>Nombre del campo de URL en el archivo</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>urlAttribute</td>
-    <td>Texto adicional a añadir en la atribución</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
@@ -154,28 +154,37 @@ URL_API?attributions=position*mode*scale*defaultAttribution*defaultURL*url*type*
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>tooltip</td>
-    <td>Valor a usar para mostrar en el tooltip del plugin</td>
+    <td>urlAttribute</td>
+    <td>Texto adicional a añadir en la atribución</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
+  
 </table>
 
 
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?attributions=TR*1*300*attributions*https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml*https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml*kml*attributions*atribucion*url*Gobierno%20de%20España*Atribuciones
+https://componentes.cnig.es/api-core?attributions=TR*Plugin%20tribuciones*1*300*attributions*https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml*https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml*kml*attributions*atribucion*url*Gobierno%20de%20España*Atribuciones
 ```
 
 ```
-https://componentes.cnig.es/api-core?attributions=BL*1*10000***http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson*geojson
+https://componentes.cnig.es/api-core?attributions=BL*Plugin%20atribuciones*1*10000***http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson*geojson
 ```
 
-### Ejemplos de uso API-REST en base64
-
+### Ejemplo de uso API-REST en base64
+Ejemplo de constructor: 
+```javascript
+{
+  mode: 1,
+  scale: 10000,
+  url: "http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson",
+  type: "geojson",
+  position: "BL",
+  tooltip: "Atribuciones",
+}
 ```
-Ejemplo de constructor: {mode: 1, scale: 10000, url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson', type: 'geojson', position: 'BL', tooltip: 'Atribuciones'}
-
+```
 https://componentes.cnig.es/api-core/?attributions=base64:eyJtb2RlIjoxLCJzY2FsZSI6MTAwMDAsInVybCI6Imh0dHA6Ly93d3cuaWduLmVzL3Jlc291cmNlcy92aWV3ZXIvZGF0YS8yMDIwMDIwNl9hdHJpYnVjaW9uUE5PQS0zODU3Lmdlb2pzb24iLCJ0eXBlIjoiZ2VvanNvbiIsInBvc2l0aW9uIjoiQkwiLCJ0b29sdGlwIjoiQXRyaWJ1Y2lvbmVzIn0=
 ```
 # Ejemplo de uso

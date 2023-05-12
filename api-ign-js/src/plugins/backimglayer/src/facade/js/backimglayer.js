@@ -92,7 +92,7 @@ export default class BackImgLayer extends M.Plugin {
      * @public
      * @type {String}
      */
-    this.titles = options.titles || 'PNOA';
+    this.titles = options.titles || 'IGNBaseTodo';
 
     /**
      * Layers preview urls separated by ','.
