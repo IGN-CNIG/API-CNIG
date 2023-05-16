@@ -46,7 +46,7 @@ A esta/s capa/s se le aplicará el efecto de transparencia.
   - 2: arranca con el modo de comparación de cortina horizontal.
   - 3: arranca con el modo de comparación múltiple de cuatro capas.
 
-  ** Para ver el efecto de cada uno podemos acceder al test https://componentes.cnig.es/api-core/lyrcompare.jsp?language=es y cambiar las opciones.
+  Para ver el efecto de cada uno podemos acceder al test https://componentes.cnig.es/api-core/lyrcompare.jsp?language=es y cambiar las opciones.
 
 
 - **defaultLyrA**. Define la capa uno que se carga por defecto. Valores de 1 al número de capas disponibles.
