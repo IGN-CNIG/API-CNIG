@@ -20,7 +20,7 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **layer**. Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa),
 la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto.
