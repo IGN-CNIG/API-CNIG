@@ -7,13 +7,15 @@ Plugin que permite comparar varias capas sobre una cartografía base. La extensi
 
 # Dependencias
 
-- lyrcompare.ol.min.js
-- lyrcompare.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **lyrcompare.ol.min.js**
+- **lyrcompare.ol.min.css**
 
 
 ```html
- <link href="../../plugins/lyrcompare/lyrcompare.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/lyrcompare/lyrcompare.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/lyrcompare/lyrcompare.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/lyrcompare/lyrcompare.ol.min.js"></script>
 ```
 
 # Parámetros
