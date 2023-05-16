@@ -125,4 +125,18 @@ export const warning = (message, order, time) => {
   return show(message, 'warning', 'g-cartografia-warning', order, time);
 };
 
+/**
+ * Genera el "toast" de tipo "sucess".
+ *
+ * @public
+ * @function
+ * @param {String} message Mensaje que se mostrará.
+ * @param {Number} order "tabIndex" de los elementos del HTML.
+ * @param {Number} time Tiempo de aparición del "toast".
+ * @api
+ */
+export const success = (message, order, time) => {
+  return show(message, 'success', 'g-cartografia-check', order, time);
+};
+
 export default {};

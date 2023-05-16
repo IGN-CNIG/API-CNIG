@@ -73,8 +73,14 @@
     color: #fff
 }
 
-/* SUCCESS */
+/* WARNING */
 .m-toast.warning {
     background-color: #ffc107;
+    color: #fff
+}
+
+/* SUCCESS */
+.m-toast.success {
+    background-color: #67af13;
     color: #fff
 }
