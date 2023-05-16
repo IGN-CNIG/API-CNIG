@@ -38,9 +38,9 @@ A esta/s capa/s se le aplicará el efecto de transparencia.
 
 - **staticDivision**. Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón *(valor 0)*, por el punto medio del lienzo de cartografía *(valor 1)* o por el punto medio del lienzo de cartografía con líneas arrastrables *(valor 2)*.
 
-- **opacityVal**. Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
+- **opacityVal**. Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango de 0 a 100.
 
-- **comparisonMode**. Define el tipo de comparación con la que arranca. Rango 0,3.
+- **comparisonMode**. Define el tipo de comparación con la que arranca. Rango de 0 a 3.
   - 0: arranca con el modo de comparación apagado.
   - 1: arranca con el modo de comparación cortina vertical.
   - 2: arranca con el modo de comparación de cortina horizontal.
