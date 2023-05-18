@@ -296,6 +296,7 @@ export default class LyrdropdownControl extends M.Control {
               queryable: false,               // No GetFeatureInfo
               visibility: false,              // Visible a false por defecto
               format: urlLayer[5],
+              useCapabilities: urlLayer[6] === 'true' || false
             });
             // this.map.addWMTS(newLayer);
             //this.map.addLayers(newLayer);
