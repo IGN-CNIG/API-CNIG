@@ -3425,6 +3425,35 @@ export const getMaxExtentMBTilesVector = (parameter) => {
 };
 
 /**
+ * Analiza el parámetro para obtener el estilo.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener el estilo
+ * de la capa MBTilesVector.
+ * @returns {string} Estilo de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getStyleMBTilesVector = (parameter) => {
+  let params;
+  let style;
+
+  if (isString(parameter)) {
+    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      style = params[8].trim();
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.style)) {
+    style = parameter.style;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return style;
+};
+
+/**
  * Analiza los parámetros especificados por el usuario para la capa MBTilesVector.
  *
  * @param {string|Mx.parameters.MBTilesVector} userParameters Parámetros para la capa
@@ -3472,6 +3501,8 @@ export const mbtilesvector = (userParameters) => {
     layerObj.maxExtent = getMaxExtentMBTilesVector(userParam);
 
     layerObj.tileLoadFunction = getTileLoadFunctionMBTilesVector(userParam);
+
+    layerObj.style = getStyleMBTilesVector(userParam);
 
     return layerObj;
   });
