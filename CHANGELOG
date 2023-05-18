@@ -8,3 +8,6 @@
 - Se permite enviar parámetros por API REST a los plugins en base64
 - Se añade funcionalidad toast
 - Se soluciona problema de estilo con plugin GeometryDraw
+- Se actualiza el plugin comapepanel, optimización capabilities y velocidad de carga
+- Se actualiza el CORE para optimizar las capas WMS y WMTS, se controla las peticiones getCapabilities.
+- Se crean nuevos tipos de capas: MBTiles, MBTilesVector y OGCAPIFeatures
