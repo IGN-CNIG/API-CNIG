@@ -34,6 +34,8 @@ class OGCAPIFeatures extends Vector {
    * - predefinedStyles: Estilos predefinidos para la capa.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    *-cql: Declaración CQL para filtrar las características
    (Sólo disponible para servicios en PostgreSQL).
