@@ -3507,6 +3507,8 @@ const getNameOGC = (parameter) => {
     if (params.length >= 3) {
       const value = params[3];
       name = isNullOrEmpty(value) ? undefined : value;
+    } else {
+      name = params[0].trim();
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
     name = parameter.name.trim();
