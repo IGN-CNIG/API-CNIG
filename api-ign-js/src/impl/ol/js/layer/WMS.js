@@ -192,6 +192,11 @@ class WMS extends LayerBase {
      * WMS maxZoom. Zoom máximo aplicable a la capa.
      */
     this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
+
+    /**
+     * WMS useCapabilities. Indica si se usa el getCapabilities.
+     */
+    this.useCapabilities = options.useCapabilities || false;
   }
 
   /**
@@ -308,98 +313,110 @@ class WMS extends LayerBase {
    * @function
    * @api stable
    */
-  addSingleLayer_() {
+  async addSingleLayer_() {
     const selff = this;
-    this.getCapabilities().then((getCapabilities) => {
-      let capabilitiesLayer = getCapabilities.capabilities.Capability.Layer.Layer;
+    let extent = null;
+
+    if (this.useCapabilities) {
+      const capabilities = await this.getCapabilities();
+      const capabilitiesLayer = capabilities.capabilities.Capability.Layer.Layer;
       if (isArray(capabilitiesLayer)) {
-        for (let i = 0, ilen = capabilitiesLayer.length; i < ilen; i += 1) {
-          if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name !== undefined && capabilitiesLayer[i].Name === selff.facadeLayer_.name) {
-            capabilitiesLayer = capabilitiesLayer[i];
-            this.addCapabilitiesMetadata(capabilitiesLayer);
-            try {
-              this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
-            /* eslint-disable no-empty */
-            } catch (err) {}
-          } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Layer !== undefined) {
-            if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
-              capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
-              this.addCapabilitiesMetadata(capabilitiesLayer);
-              try {
-                this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
-              /* eslint-disable no-empty */
-              } catch (err) {}
-            }
-          }
-        }
+        const formatCapabilities = this.formatCapabilities_(capabilitiesLayer, selff);
+        this.addCapabilitiesMetadata(formatCapabilities);
       }
       this.addCapabilitiesMetadata(capabilitiesLayer);
-    });
 
-    this.facadeLayer_.calculateMaxExtent().then((extent) => {
-      const minResolution = this.options.minResolution;
-      const maxResolution = this.options.maxResolution;
-      const opacity = this.opacity_;
-      const zIndex = this.zIndex_;
-      const visible = this.visibility && (this.options.visibility !== false);
-      let resolutions = this.map.getResolutions();
-      if (isNullOrEmpty(resolutions) && !isNullOrEmpty(this.resolutions_)) {
-        resolutions = this.resolutions_;
-      } else if (isNullOrEmpty(resolutions)) {
-        // generates the resolution
-        const zoomLevels = this.getNumZoomLevels();
-        const size = this.map.getMapImpl().getSize();
-        const units = this.map.getProjection().units;
-        if (!isNullOrEmpty(minResolution) && !isNullOrEmpty(maxResolution)) {
-          resolutions = fillResolutions(minResolution, maxResolution, zoomLevels);
-        } else {
-          resolutions = generateResolutionsFromExtent(extent, size, zoomLevels, units);
+      extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
+    }
+
+    const minResolution = this.options.minResolution;
+    const maxResolution = this.options.maxResolution;
+    const opacity = this.opacity_;
+    const zIndex = this.zIndex_;
+    const visible = this.visibility && (this.options.visibility !== false);
+    let resolutions = this.map.getResolutions();
+    if (isNullOrEmpty(resolutions) && !isNullOrEmpty(this.resolutions_)) {
+      resolutions = this.resolutions_;
+    } else if (isNullOrEmpty(resolutions)) {
+      // generates the resolution
+      const zoomLevels = this.getNumZoomLevels();
+      const size = this.map.getMapImpl().getSize();
+      const units = this.map.getProjection().units;
+      if (!isNullOrEmpty(minResolution) && !isNullOrEmpty(maxResolution)) {
+        resolutions = fillResolutions(minResolution, maxResolution, zoomLevels);
+      } else {
+        resolutions = generateResolutionsFromExtent(extent, size, zoomLevels, units);
+      }
+    }
+    const source = this.createOLSource_(resolutions, minResolution, maxResolution, extent);
+    if (this.tiled === true) {
+      this.ol3Layer = new OLLayerTile(extend({
+        visible,
+        source,
+        extent,
+        minResolution,
+        maxResolution,
+        opacity,
+        zIndex,
+      }, this.vendorOptions_, true));
+    } else {
+      this.ol3Layer = new OLLayerImage(extend({
+        visible,
+        source,
+        extent,
+        minResolution,
+        maxResolution,
+        opacity,
+        zIndex,
+      }, this.vendorOptions_, true));
+    }
+    this.map.getMapImpl().addLayer(this.ol3Layer);
+    // sets its visibility if it is in range
+    if (this.isVisible() && !this.inRange()) {
+      this.setVisible(false);
+    } else {
+      this.setVisible(this.visibility);
+    }
+
+    // sets its z-index
+    if (zIndex !== null) {
+      this.setZIndex(zIndex);
+    }
+    // sets the resolutions
+    if (this.resolutions_ !== null) {
+      this.setResolutions(this.resolutions_);
+    }
+    // activates animation for base layers or animated parameters
+    const animated = ((this.transparent === false) || (this.options.animated === true));
+    this.ol3Layer.set('animated', animated);
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
+  }
+
+  // Devuelve un capabilities formateado en el caso
+  // de que sea un array
+  formatCapabilities_(capabilites, selff) {
+    let capabilitiesLayer = capabilites;
+    for (let i = 0, ilen = capabilitiesLayer.length; i < ilen; i += 1) {
+      if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name !== undefined && capabilitiesLayer[i].Name === selff.facadeLayer_.name) {
+        capabilitiesLayer = capabilitiesLayer[i];
+
+        try {
+          this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+          /* eslint-disable no-empty */
+        } catch (err) {}
+      } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Layer !== undefined) {
+        if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
+          capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
+          try {
+            this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+            /* eslint-disable no-empty */
+          } catch (err) {}
         }
       }
-      const source = this.createOLSource_(resolutions, minResolution, maxResolution, extent);
-      if (this.tiled === true) {
-        this.ol3Layer = new OLLayerTile(extend({
-          visible,
-          source,
-          extent,
-          minResolution,
-          maxResolution,
-          opacity,
-          zIndex,
-        }, this.vendorOptions_, true));
-      } else {
-        this.ol3Layer = new OLLayerImage(extend({
-          visible,
-          source,
-          extent,
-          minResolution,
-          maxResolution,
-          opacity,
-          zIndex,
-        }, this.vendorOptions_, true));
-      }
-      this.map.getMapImpl().addLayer(this.ol3Layer);
-      // sets its visibility if it is in range
-      if (this.isVisible() && !this.inRange()) {
-        this.setVisible(false);
-      } else {
-        this.setVisible(this.visibility);
-      }
+    }
 
-      // sets its z-index
-      if (zIndex !== null) {
-        this.setZIndex(zIndex);
-      }
-      // sets the resolutions
-      if (this.resolutions_ !== null) {
-        this.setResolutions(this.resolutions_);
-      }
-      // activates animation for base layers or animated parameters
-      const animated = ((this.transparent === false) || (this.options.animated === true));
-      this.ol3Layer.set('animated', animated);
-      this.ol3Layer.setMaxZoom(this.maxZoom);
-      this.ol3Layer.setMinZoom(this.minZoom);
-    });
+    return capabilitiesLayer;
   }
 
   /**
@@ -468,15 +485,13 @@ class WMS extends LayerBase {
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
       if (this.tiled === true) {
-        const origin = getBottomLeft(extent);
+        const tileGrid = (this.useCapabilities)
+          ? new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) })
+          : false;
         olSource = new TileWMS({
           url: this.url,
           params: layerParams,
-          tileGrid: new OLTileGrid({
-            resolutions,
-            extent,
-            origin,
-          }),
+          tileGrid,
           extent,
           minResolution,
           maxResolution,
@@ -669,9 +684,14 @@ class WMS extends LayerBase {
    * @returns {capabilities} Metadatos.
    * @api stable
    */
-  getCapabilities() {
-    // creates the promise
-    if (isNullOrEmpty(this.getCapabilitiesPromise)) {
+  async getCapabilities() {
+    const capabilitiesInfo = this.map.collectionCapabilities_.find((cap) => {
+      return cap.url === this.url;
+    });
+
+    if (capabilitiesInfo) {
+      this.getCapabilitiesPromise = await capabilitiesInfo.capabilities;
+    } else if (isNullOrEmpty(this.getCapabilitiesPromise)) {
       const layerUrl = this.url;
       const layerVersion = this.version;
       const projection = this.map.getProjection();
@@ -689,6 +709,7 @@ class WMS extends LayerBase {
         });
       });
     }
+
     return this.getCapabilitiesPromise;
   }
 

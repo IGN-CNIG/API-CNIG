@@ -3,6 +3,7 @@
  */
 import OLMap from 'ol/Map';
 import { get as getProj, transform } from 'ol/proj';
+import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
 import OLProjection from 'ol/proj/Projection';
 import OLInteraction from 'ol/interaction/Interaction';
 import MObject from 'M/Object';
@@ -16,6 +17,7 @@ import * as EventType from 'M/event/eventtype';
 import LayerBase from 'M/layer/Layer';
 import Exception from 'M/exception/exception';
 import { getValue } from 'M/i18n/language';
+import { get as getRemote } from 'M/util/Remote';
 import {
   isNullOrEmpty,
   isArray,
@@ -23,12 +25,16 @@ import {
   isObject,
   includes,
   getScaleFromResolution,
+  getWMSGetCapabilitiesUrl,
+  getWMTSGetCapabilitiesUrl,
   // fillResolutions,
   // generateResolutionsFromExtent,
 } from 'M/util/Utils';
 import 'patches';
 import ImplUtils from './util/Utils';
+import GetCapabilities from './util/WMSCapabilities';
 import View from './View';
+import FormatWMS from './format/WMS';
 
 /**
  * @classdesc
@@ -1759,6 +1765,46 @@ class Map extends MObject {
     }
 
     return extent;
+  }
+
+  // TODO: JSDOC
+  async getCapabilities(url, version, type) {
+    const layerUrl = url;
+    const layerVersion = version;
+    const projection = this.getProjection();
+    // gest the capabilities URL
+    const getCapabilitiesUrl = (type === 'WMS') ?
+      getWMSGetCapabilitiesUrl(layerUrl, layerVersion)
+      : getWMTSGetCapabilitiesUrl(layerUrl, layerVersion);
+
+
+    // gets the getCapabilities response
+    const response = await getRemote(getCapabilitiesUrl);
+    const getCapabilitiesDocument = response.xml;
+    const parser = (type === 'WMS') ? new FormatWMS() : new OLFormatWMTSCapabilities();
+    const parsedCapabilities = (type === 'WMS') ? await parser.customRead(getCapabilitiesDocument) : await parser.read(getCapabilitiesDocument);
+
+    if (type === 'WMS') {
+      const getCapabilitiesUtils = await new GetCapabilities(
+        parsedCapabilities,
+        layerUrl, projection,
+      );
+      this.getCapabilitiesPromise = getCapabilitiesUtils;
+    } else {
+      try {
+        parsedCapabilities.Contents.Layer.forEach((l) => {
+          const name = l.Identifier;
+          l.Style.forEach((s) => {
+            const layerText = response.text.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
+            /* eslint-disable no-param-reassign */
+            s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
+          });
+        });
+        /* eslint-disable no-empty */
+      } catch (err) {}
+      this.getCapabilitiesPromise = parsedCapabilities;
+    }
+    return this.getCapabilitiesPromise;
   }
 
   /**

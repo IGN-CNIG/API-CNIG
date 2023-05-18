@@ -1955,6 +1955,35 @@ export const getVisibilityWMS = (parameter) => {
 };
 
 /**
+ * Analiza el parámetro para saber si hacer una petición al servicio GetCapabilities.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|object} parameter Parámetro de la capa.
+ * @returns {boolean} Devuelve el valor de useCapabilities.
+ * @throws {Exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getUseCapabilitiesWMS = (parameter) => {
+  let useCapabilities;
+  let params;
+  if (isString(parameter)) {
+    if (/^WMS\*[^*]+\*[^*]+\*[^*]+\*(true|false)\*(true|false)\*.*\*(\d\.\d\.\d)\*(true|false)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      useCapabilities = params[11].trim();
+    }
+  } else if (isObject(parameter)) {
+    useCapabilities = normalize(parameter.useCapabilities);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(useCapabilities)) {
+    useCapabilities = /^1|(true)$/i.test(useCapabilities);
+  }
+  return useCapabilities;
+};
+
+/**
  * Analiza los parámetros WMS de la capa de usuario especificada en un objeto.
  *
  * @param {string|Mx.parameters.Layer} userParameters Parámetros
@@ -1991,6 +2020,7 @@ export const wms = (userParameters) => {
     const displayInLayerSwitcher = getDisplayInLayerSwitcherWMS(userParam);
     const queryable = getQueryableWMS(userParam);
     const visibility = getVisibilityWMS(userParam);
+    const useCapabilities = getUseCapabilitiesWMS(userParam);
     return {
       type,
       name,
@@ -2004,6 +2034,7 @@ export const wms = (userParameters) => {
       queryable,
       visibility,
       options,
+      useCapabilities,
     };
   });
 
@@ -2325,6 +2356,25 @@ export const getVisibilityWMTS = (parameter) => {
     visibility = /^1|(true)$/i.test(visibility);
   }
   return visibility;
+};
+
+export const getUseCapabilitiesWMTS = (parameter) => {
+  let useCapabilities;
+  let params;
+  if (isString(parameter)) {
+    if (/^WMTS\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      useCapabilities = params[10].trim();
+    }
+  } else if (isObject(parameter)) {
+    useCapabilities = normalize(parameter.useCapabilities);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(useCapabilities)) {
+    useCapabilities = /^1|(true)$/i.test(useCapabilities);
+  }
+  return useCapabilities;
 };
 
 
@@ -2653,6 +2703,9 @@ export const wmts = (userParameters) => {
 
     // get visibility
     layerObj.visibility = getVisibilityWMTS(userParam);
+
+    // get visibility
+    layerObj.useCapabilities = getUseCapabilitiesWMTS(userParam);
 
     return layerObj;
   });
