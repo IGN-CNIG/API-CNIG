@@ -3431,6 +3431,304 @@ export const mbtilesvector = (userParameters) => {
 };
 
 /**
+ * Analiza el parámetro para obtener la leyenda de la capa.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.OGCAPIFeatures} parameter Parámetro para obtener la leyenda
+ * de la capa OGCAPIFeatures.
+ * @returns {string} Leyenda de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+const getLegendOGC = (parameter) => {
+  let legend;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 1) {
+      const value = params[1];
+      legend = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
+    legend = parameter.legend.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return legend;
+};
+
+/**
+ * Analiza el parámetro para obtener la URL del servicio.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.OGCAPIFeatures} parameter Parámetro para obtener
+ * la URL del servicio para la capa OGCAPIFeatures.
+ * @returns {string} URL del servicio.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+const getURLOGC = (parameter) => {
+  let url;
+  if (isString(parameter)) {
+    const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)([^*]*\*?)*$/i);
+    if (urlMatches && (urlMatches.length > 2)) {
+      url = urlMatches[2];
+    }
+  } else if (isObject(parameter)) {
+    url = parameter.url;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return url;
+};
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.OGCAPIFeatures} parameter Parámetro para obtener
+ * el nombre de la capa OGCAPIFeatures.
+ * @returns {string} Nombre de la capa.
+ * @throws {Mx.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+const getNameOGC = (parameter) => {
+  let name;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 3) {
+      const value = params[3];
+      name = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
+    name = parameter.name.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return name;
+};
+
+/**
+ * Analiza el parámetro para obtener el límite de resultados de la capa.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.OGCAPIFeatures} parameter Parámetro para obtener
+ * el límite de resultados de la capa OGCAPIFeatures.
+ * @returns {Number} Límite de resultados de la capa.
+ * @throws {Mx.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+const getLimitOGC = (parameter) => {
+  let limit;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 4) {
+      const value = params[4];
+      limit = isNullOrEmpty(value) ? undefined : parseInt(value, 10);
+    }
+  } else if (isObject(parameter)) {
+    if (!isUndefined(parameter.limit)) {
+      limit = parseInt(normalize(parameter.limit), 10);
+    }
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return limit;
+};
+
+/**
+ * Analiza el parámetro para obtener el bbox aplicado a los resultados de la capa.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param { string | Mx.parameters.OGCAPIFeatures } parameter Parámetro para
+ * obtener el bbox aplicado a los resultados de la capa.
+ * @returns {Array} Límite de resultados de la capa.
+ * @throws {Mx.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+const getBboxOGC = (parameter) => {
+  let bbox;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 5) {
+      const value = params[5];
+      bbox = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter)) {
+    bbox = normalize(parameter.bbox);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(bbox) && !isArray(bbox)) {
+    bbox = bbox.split(';');
+    bbox.forEach((elm, i) => {
+      bbox[i] = parseFloat(elm);
+    });
+  }
+  return bbox;
+};
+
+/**
+ * Analiza el parámetro para obtener el filtro por id aplicado a la capa.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param { string | Mx.parameters.OGCAPIFeatures } parameter Parámetro para
+ * obtener el filtro por id aplicado a la capa.
+ * @returns {Number} Límite de resultados de la capa.
+ * @throws {Mx.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+const getIdOGC = (parameter) => {
+  let id;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 6) {
+      const value = params[6];
+      id = isNullOrEmpty(value) ? undefined : parseInt(value, 10);
+    }
+  } else if (isObject(parameter)) {
+    id = parameter.id;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return id;
+};
+
+/**
+ * Analiza el parámetro para obtener el offset aplicado a la capa.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param { string | Mx.parameters.OGCAPIFeatures } parameter Parámetro para
+ * obtener el offset aplicado a la capa.
+ * @returns {Number} Offset de la capa.
+ * @throws {Mx.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+const getOffsetOGC = (parameter) => {
+  let offset;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 7) {
+      const value = params[7];
+      offset = isNullOrEmpty(value) ? undefined : parseInt(value, 10);
+    }
+  } else if (isObject(parameter)) {
+    offset = normalize(parameter.offset);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return offset;
+};
+
+/**
+ * Analiza el parámetro para obtener el formato en el que solicita los resultados a la capa.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param { string | Mx.parameters.OGCAPIFeatures } parameter Parámetro para
+ * obtener el formato en el que solicita los resultados a la capa.
+ * @returns {String} Formato en el que solicita los resultados a la capa.
+ * @throws {Mx.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+const getFormatOGC = (parameter) => {
+  let format;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 8) {
+      const value = params[8];
+      format = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter)) {
+    format = normalize(parameter.format);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return format;
+};
+
+/**
+ * Analiza los parámetros especificados por el usuario para la capa OGCAPIFeatures.
+ *
+ * @param {string|Mx.parameters.WMS} userParameters Parámetros para la capa OGCAPIFeatures.
+ * @returns {Mx.parameters.WMS|Array<Mx.parameters.OGCAPIFeatures>} Parámetros de la capa
+ * OGCAPIFeatures.
+ * @public
+ * @function
+ * @throws {M.exception} Si el parámetro no es especificado.
+ * @api
+ */
+export const ogcapifeatures = (userParameters) => {
+  let layers = [];
+
+  // checks if the param is null or empty
+  if (isNullOrEmpty(userParameters)) {
+    Exception(getValue('exception').no_param);
+  }
+
+  // checks if the parameter is an array
+  let userParametersArray = userParameters;
+  if (!isArray(userParametersArray)) {
+    userParametersArray = [userParametersArray];
+  }
+
+  layers = userParametersArray.map((userParam) => {
+    const type = LayerType.OGCAPIFeatures;
+    const legend = getLegendOGC(userParam);
+    const url = getURLOGC(userParam);
+    const name = getNameOGC(userParam);
+    const limit = getLimitOGC(userParam);
+    const bbox = getBboxOGC(userParam);
+    const format = getFormatOGC(userParam);
+    const offset = getOffsetOGC(userParam);
+    const id = getIdOGC(userParam);
+
+    return {
+      type,
+      legend,
+      url,
+      name,
+      limit,
+      bbox,
+      format,
+      offset,
+      id,
+    };
+  });
+
+  if (!isArray(userParameters)) {
+    layers = layers[0];
+  }
+
+  return layers;
+};
+
+/**
  * Parámetros con los tipos de capa soportados.
  * @const
  * @type {object}
@@ -3450,6 +3748,7 @@ const parameterFunction = {
   tms,
   mbtiles,
   mbtilesvector,
+  ogcapifeatures,
 };
 
 

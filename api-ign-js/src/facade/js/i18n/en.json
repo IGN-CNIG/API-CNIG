@@ -94,6 +94,7 @@
     "removewms_method": "The used implementation does not have the removeWMS method.",
     "getwfs_method": "The implementation used does not have the getWFS method.",
     "getgeojson_method": "The used implementation does not have the getGeoJSON method.",
+    "getogcapif_method": "The used implementation does not have the getOGCAPIFeatures method.",
     "addwfs_method": "The used implementation does not have the addWFS method.",
     "removewfs_method": "The used implementation does not have the removeWFS method.",
     "getwmts_method": "The implementation used does not have the getWMTS method.",

@@ -44,6 +44,7 @@ import WFS from './layer/WFS';
 import WMS from './layer/WMS';
 import WMTS from './layer/WMTS';
 import MVT from './layer/MVT';
+import OGCAPIFeatures from './layer/OGCAPIFeatures';
 import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
@@ -447,6 +448,9 @@ class Map extends Base {
               case 'OSM':
                 layer = new OSM(layerParam);
                 break;
+              case 'OGCAPIFeatures':
+                layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
+                break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);
             }
@@ -464,7 +468,8 @@ class Map extends Base {
         if ((layer instanceof Vector)
           /* && !(layer instanceof KML) */
           &&
-          !(layer instanceof WFS)) {
+          !(layer instanceof WFS) &&
+          !(layer instanceof OGCAPIFeatures)) {
           this.featuresHandler_.addLayer(layer);
         }
 
@@ -863,6 +868,120 @@ class Map extends Base {
         });
         // removes the layers
         this.getImpl().removeWFS(wfsLayers);
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Este método agrega las capas de OGCAPIFeatures al mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional
+   * - Matriz de capas de nombres, escriba OGCAPIFeatures.
+   * @returns {Array<OGCAPIFeatures>} Capas del mapa.
+   * @api
+   */
+  getOGCAPIFeatures(layersParamVar) {
+    let layersParam = layersParamVar;
+    // checks if the implementation can manage layers
+    if (isUndefined(MapImpl.prototype.getOGCAPIFeatures)) {
+      Exception(getValue('exception').getogcapif_method);
+    }
+
+    // parses parameters to Array
+    if (isNull(layersParam)) {
+      layersParam = [];
+    } else if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    // gets the parameters as Layer objects to filter
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.OGCAPIFeatures);
+      });
+    }
+
+    // gets the layers
+    const layers = this.getImpl().getOGCAPIFeatures(filters).sort(Map.LAYER_SORT);
+
+    return layers;
+  }
+
+  /**
+   * Este método agrega las capas OGCAPIFeatures al mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.OGCAPIFeatures>} layersParam Colección u objeto
+   * de capa.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  addOGCAPIFeatures(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.addOGCAPIFeatures)) {
+        Exception(getValue('exception').addogcapif_method);
+      }
+
+      // parses parameters to Array
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      // gets the parameters as OGCAPIFeatures objects to add
+      const ogcapifLayers = [];
+      layersParam.forEach((layerParam) => {
+        let ogcapifLayer;
+        if (isObject(layerParam) && (layerParam instanceof OGCAPIFeatures)) {
+          ogcapifLayer = layerParam;
+        } else if (!(layerParam instanceof Layer)) {
+          try {
+            ogcapifLayer = new OGCAPIFeatures(layerParam, layerParam.options);
+          } catch (err) {
+            Dialog.error(err.toString());
+            throw err;
+          }
+        }
+        this.featuresHandler_.addLayer(ogcapifLayer);
+        ogcapifLayers.push(ogcapifLayer);
+      });
+
+      // adds the layers
+      this.getImpl().addOGCAPIFeatures(ogcapifLayers);
+      this.fire(EventType.ADDED_LAYER, [ogcapifLayers]);
+      this.fire(EventType.ADDED_OGCAPIFEATURES, [ogcapifLayers]);
+    }
+    return this;
+  }
+
+  /**
+   * Este método elimina las capas OGCAPIFeatures del mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.OGCAPIFeatures>} layersParam Matriz de capas de
+   * nombres que desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  removeOGCAPIFeatures(layersParam) {
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.removeOGCAPIFeatures)) {
+        Exception(getValue('exception').removeogcapif_method);
+      }
+
+      // gets the layers
+      const ogcapifLayers = this.getOGCAPIFeatures(layersParam);
+      if (ogcapifLayers.length > 0) {
+        ogcapifLayers.forEach((layer) => {
+          this.featuresHandler_.removeLayer(layer);
+        });
+        // removes the layers
+        this.getImpl().removeOGCAPIFeatures(ogcapifLayers);
       }
     }
     return this;

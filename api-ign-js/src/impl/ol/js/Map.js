@@ -226,6 +226,7 @@ class Map extends MObject {
     const kmlLayers = this.getKML(filters);
     const wmsLayers = this.getWMS(filters);
     const wfsLayers = this.getWFS(filters);
+    const ogcapifLayers = this.getOGCAPIFeatures(filters);
     const wmtsLayers = this.getWMTS(filters);
     const mvtLayers = this.getMVT(filters);
     const mbtilesLayers = this.getMBTiles(filters);
@@ -234,7 +235,9 @@ class Map extends MObject {
     const tmsLayers = this.getTMS(filters);
     const unknowLayers = this.getUnknowLayers_(filters);
 
-    return kmlLayers.concat(wmsLayers).concat(wfsLayers)
+    return kmlLayers.concat(wmsLayers)
+      .concat(wfsLayers)
+      .concat(ogcapifLayers)
       .concat(wmtsLayers)
       .concat(mvtLayers)
       .concat(mbtilesLayers)
@@ -300,6 +303,8 @@ class Map extends MObject {
         this.facadeMap_.addKML(layer);
       } else if (layer.type === LayerType.WFS) {
         this.facadeMap_.addWFS(layer);
+      } else if (layer.type === LayerType.OGCAPIFeatures) {
+        this.facadeMap_.addOGCAPIFeatures(layer);
       } else if (layer.type === LayerType.MVT) {
         this.facadeMap_.addMVT(layer);
       } else if (layer.type === 'MBTiles') {
@@ -341,6 +346,7 @@ class Map extends MObject {
       this.removeKML(knowLayers);
       this.removeWMS(knowLayers);
       this.removeWFS(knowLayers);
+      this.removeOGCAPIFeatures(knowLayers);
       this.removeWMTS(knowLayers);
       this.removeMVT(knowLayers);
       this.removeMBTiles(knowLayers);
@@ -808,6 +814,141 @@ class Map extends MObject {
     wfsMapLayers.forEach((wfsLayer) => {
       this.layers_ = this.layers_.filter(layer => !layer.equals(wfsLayer));
       wfsLayer.getImpl().destroy();
+    });
+
+    return this;
+  }
+
+  /**
+   * Este método obtiene las capas OGCAPIFeatures añadidas al mapa.
+   *
+   * @function
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.OGCAPIFeatures>} Capas OGCAPIFeatures del mapa.
+   * @public
+   * @api
+   */
+  getOGCAPIFeatures(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+
+    // get all ogcapifLayers
+    const ogcapifLayers = this.layers_.filter((layer) => {
+      return (layer.type === LayerType.OGCAPIFeatures);
+    });
+
+    // parse to Array
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = ogcapifLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredOGCAPIFeaturesLayers = ogcapifLayers.filter((ogcapifLayer) => {
+          let layerMatched = true;
+          // checks if the layer is not in selected layers
+          if (!foundLayers.includes(ogcapifLayer)) {
+            // type
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === ogcapifLayer.type));
+            }
+            // URL
+            if (!isNullOrEmpty(filterLayer.url)) {
+              layerMatched = (layerMatched && (filterLayer.url === ogcapifLayer.url));
+            }
+            // name
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === ogcapifLayer.name));
+            }
+            // namespace
+            if (!isNullOrEmpty(filterLayer.namespace)) {
+              layerMatched = (layerMatched && (filterLayer.namespace === ogcapifLayer.namespace));
+            }
+            // legend
+            if (!isNullOrEmpty(filterLayer.legend)) {
+              layerMatched = (layerMatched && (filterLayer.legend === ogcapifLayer.legend));
+            }
+            // cql
+            if (!isNullOrEmpty(filterLayer.cql)) {
+              layerMatched = (layerMatched && (filterLayer.cql === ogcapifLayer.cql));
+            }
+            // geometry
+            if (!isNullOrEmpty(filterLayer.geometry)) {
+              layerMatched = (layerMatched && (filterLayer.geometry === ogcapifLayer.geometry));
+            }
+            // ids
+            if (!isNullOrEmpty(filterLayer.id)) {
+              layerMatched = (layerMatched && (filterLayer.ids === ogcapifLayer.id));
+            }
+            // version
+            if (!isNullOrEmpty(filterLayer.version)) {
+              layerMatched = (layerMatched && (filterLayer.version === ogcapifLayer.version));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredOGCAPIFeaturesLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+   * Este método añade las capas OGCAPIFeatures especificadas por el usuario al mapa.
+   *
+   * @function
+   * @param {Array<M.layer.OGCAPIFeatures>} layers Capas OGCAPIFeatures a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
+   */
+  addOGCAPIFeatures(layers) {
+    // checks if exists a base layer
+    const baseLayers = this.getBaseLayers();
+    const existsBaseLayer = (baseLayers.length > 0);
+
+    layers.forEach((layer) => {
+      // checks if layer is OGCAPIFeatures and was added to the map
+      if (layer.type === LayerType.OGCAPIFeatures) {
+        if (!includes(this.layers_, layer)) {
+          layer.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(layer);
+          layer.setZIndex(layer.getZIndex());
+          if (layer.getZIndex() == null) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.OGCAPIFeatures];
+            layer.setZIndex(zIndex);
+          }
+          if (!existsBaseLayer) {
+            this.updateResolutionsFromBaseLayer();
+          }
+        }
+      }
+    });
+
+    return this;
+  }
+
+  /**
+   * Este método elimina las capas OGCAPIFeatures del mapa especificadas por el usuario.
+   *
+   * @function
+   * @param {Array<M.layer.OGCAPIFeatures>} layers Capas OGCAPIFeatures a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
+   */
+  removeOGCAPIFeatures(layers) {
+    const ogcapifMapLayers = this.getOGCAPIFeatures(layers);
+    ogcapifMapLayers.forEach((ogcapifLayer) => {
+      this.layers_ = this.layers_.filter(layer => !layer.equals(ogcapifLayer));
+      ogcapifLayer.getImpl().destroy();
     });
 
     return this;
@@ -2551,9 +2692,10 @@ Map.Z_INDEX[LayerType.WFS] = 40;
 Map.Z_INDEX[LayerType.MVT] = 40;
 Map.Z_INDEX[LayerType.Vector] = 40;
 Map.Z_INDEX[LayerType.GeoJSON] = 40;
-// Map.Z_INDEX[LayerType.MBTiles] = 10;
-// Map.Z_INDEX[LayerType.MBTilesVector] = 10;
+Map.Z_INDEX[LayerType.MBTiles] = 2000;
+Map.Z_INDEX[LayerType.MBTilesVector] = 9999;
 Map.Z_INDEX[LayerType.XYZ] = 40;
 Map.Z_INDEX[LayerType.TMS] = 40;
+Map.Z_INDEX[LayerType.OGCAPIFeatures] = 40;
 
 export default Map;

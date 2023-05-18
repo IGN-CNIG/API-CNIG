@@ -47,6 +47,18 @@ export const WMS = 'WMS';
 export const WFS = 'WFS';
 
 /**
+ * OGCAPIFeatures(OGC API - Features) es un estándar que ofrece la
+ * capacidad de crear, modificar y consultar datos
+ * espaciales en la Web y especifica requisitos y recomendaciones para las API que desean seguir una
+ * forma estándar de compartir datos de entidades.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const OGCAPIFeatures = 'OGCAPIFeatures';
+
+/**
  * Tipo WMTS (Web Map Tile Service). Es un estándar OGC para servir
  * información geográfica en forma de mosaicos pregenerados en
  * resoluciones específicas.
@@ -160,6 +172,7 @@ const layertypes = {
   TMS,
   MBTiles,
   MBTilesVector,
+  OGCAPIFeatures,
 };
 
 /**
@@ -205,6 +218,7 @@ export const know = (type) => {
     TMS,
     MBTiles,
     MBTilesVector,
+    OGCAPIFeatures,
   ];
   return (knowTypes.indexOf(parse(type)) !== -1);
 };
