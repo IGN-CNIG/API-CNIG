@@ -7,6 +7,7 @@ import Vector from './Vector';
 import * as LayerType from './Type';
 import { isUndefined, isNullOrEmpty } from '../util/Utils';
 import Exception from '../exception/exception';
+import { getValue } from '../i18n/language';
 import * as parameter from '../parameter/parameter';
 
 /**
@@ -82,7 +83,7 @@ class MBTilesVector extends Vector {
     const impl = new MBTilesVectorImpl(parameters, options, vendorOptions);
     super(parameters, options, vendorOptions, impl);
     if (isUndefined(MBTilesVectorImpl)) {
-      Exception('La implementación usada no puede crear capas Vector');
+      Exception(getValue('exception').mbtilesvector_method);
     }
   }
 
