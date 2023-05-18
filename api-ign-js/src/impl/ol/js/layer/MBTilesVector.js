@@ -12,6 +12,7 @@ import { getBottomLeft, getWidth } from 'ol/extent';
 import TileProvider from 'M/provider/Tile';
 import * as EventType from 'M/event/eventtype';
 import MVT from 'ol/format/MVT';
+import { getValue } from 'M/i18n/language';
 // import Feature from 'ol/Feature';
 import ImplMap from '../Map';
 import Vector from './Vector';
@@ -387,7 +388,7 @@ class MBTilesVector extends Vector {
           resolve(tileProvider);
         });
       } else {
-        reject(new Error('No source was specified.'));
+        reject(new Error(getValue('exception').no_source));
       }
     });
   }

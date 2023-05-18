@@ -160,6 +160,11 @@
     "min_gt_max": "No puede establecerse un radio mínimo mayor que el máximo.",
     "max_lt_min": "No puede establecerse un radio máximo menor que el mínimo.",
     "no_geojson": "No se ha especificado ningun GeoJSON",
-    "unsupported_lang": "Se ha establecido un idioma sin soporte"
+    "unsupported_lang": "Se ha establecido un idioma sin soporte",
+    "mbtilesvector_method": "La implementación usada no puede crear capas MBTilesVector",
+    "mbtiles_method": "La implementación usada no puede crear capas MBTiles",
+    "no_source": "Fuente no especificada.",
+    "addmbtiles_method": "La implementación usada no posee el método addMBTilesVector.",
+    "removembtiles_method": "La implementación usada no posee el método removeMBTilesVector."
   }
 }

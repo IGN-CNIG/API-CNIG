@@ -7,6 +7,7 @@ import OLLayerTile from 'ol/layer/Tile';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import { getBottomLeft, getWidth } from 'ol/extent';
 import { XYZ } from 'ol/source';
+import { getValue } from 'M/i18n/language';
 import ImplMap from '../Map';
 import Layer from './Layer';
 import TileProvider, { DEFAULT_WHITE_TILE } from '../../../../facade/js/provider/Tile';
@@ -160,14 +161,14 @@ class MBTiles extends Layer {
       });
 
       // set this layer visible
-      if (!isNullOrEmpty(this.olLayer)) {
-        this.olLayer.setVisible(visibility);
+      if (!isNullOrEmpty(this.ol3Layer)) {
+        this.ol3Layer.setVisible(visibility);
       }
 
       // updates resolutions and keep the bbox
       this.map.getImpl().updateResolutionsFromBaseLayer();
-    } else if (!isNullOrEmpty(this.olLayer)) {
-      this.olLayer.setVisible(visibility);
+    } else if (!isNullOrEmpty(this.ol3Layer)) {
+      this.ol3Layer.setVisible(visibility);
     }
   }
 
@@ -228,26 +229,26 @@ class MBTiles extends Layer {
           }
           const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
           this.getExtentFromProvider().then((reprojectedExtent) => {
-            this.olLayer = this.createLayer({
+            this.ol3Layer = this.createLayer({
               tileProvider,
               resolutions,
               extent: reprojectedExtent || extent,
               sourceExtent: extent,
               projection,
             });
-            this.map.getMapImpl().addLayer(this.olLayer);
+            this.map.getMapImpl().addLayer(this.ol3Layer);
           });
         });
       });
     } else {
       const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 16);
-      this.olLayer = this.createLayer({
+      this.ol3Layer = this.createLayer({
         resolutions,
         extent,
         sourceExtent: extent,
         projection,
       });
-      this.map.getMapImpl().addLayer(this.olLayer);
+      this.map.getMapImpl().addLayer(this.ol3Layer);
     }
   }
 
@@ -348,7 +349,7 @@ class MBTiles extends Layer {
           resolve(tileProvider);
         });
       } else {
-        reject(new Error('No source was specified.'));
+        reject(new Error(getValue('exception').no_source));
       }
     });
   }
@@ -375,7 +376,7 @@ class MBTiles extends Layer {
    * @api
    */
   setMaxExtent(maxExtent) {
-    this.olLayer.setExtent(maxExtent);
+    this.ol3Layer.setExtent(maxExtent);
   }
 
   /**
@@ -408,9 +409,9 @@ class MBTiles extends Layer {
    */
   destroy() {
     const olMap = this.map.getMapImpl();
-    if (!isNullOrEmpty(this.olLayer)) {
-      olMap.removeLayer(this.olLayer);
-      this.olLayer = null;
+    if (!isNullOrEmpty(this.ol3Layer)) {
+      olMap.removeLayer(this.ol3Layer);
+      this.ol3Layer = null;
     }
     this.map = null;
   }
@@ -443,8 +444,8 @@ class MBTiles extends Layer {
    */
   cloneOLLayer() {
     let olLayer = null;
-    if (this.olLayer != null) {
-      const properties = this.olLayer.getProperties();
+    if (this.ol3Layer != null) {
+      const properties = this.ol3Layer.getProperties();
       olLayer = new OLLayerTile(properties);
     }
     return olLayer;
