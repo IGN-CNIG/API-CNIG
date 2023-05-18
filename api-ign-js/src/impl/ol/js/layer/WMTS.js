@@ -13,7 +13,7 @@ import {
 import { default as OLSourceWMTS } from 'ol/source/WMTS';
 import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
 import OLTileGridWMTS from 'ol/tilegrid/WMTS';
-import { getBottomLeft } from 'ol/extent';
+import { getBottomLeft, getTopLeft, getWidth } from 'ol/extent';
 import { get as getRemote } from 'M/util/Remote';
 import * as EventType from 'M/event/eventtype';
 import { get as getProj } from 'ol/proj';
@@ -98,6 +98,11 @@ class WMTS extends LayerBase {
      * WMTS options. Custom options for this layer.
      */
     this.options = options;
+
+    /**
+     * WMS useCapabilities. Indica si se usa el getCapabilities.
+     */
+    this.useCapabilities = options.useCapabilities || false;
   }
 
   /**
@@ -120,9 +125,14 @@ class WMTS extends LayerBase {
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
     }
 
-    // adds layer from capabilities
-    this.getCapabilitiesOptions_()
-      .then(capabilitiesOptions => this.addLayer_(capabilitiesOptions));
+
+    if (this.useCapabilities) {
+      // adds layer from capabilities
+      this.getCapabilitiesOptions_()
+        .then(capabilitiesOptions => this.addLayer_(capabilitiesOptions));
+    } else {
+      this.addLayerNotCapabilities_();
+    }
   }
 
   /**
@@ -250,6 +260,76 @@ class WMTS extends LayerBase {
   }
 
   /**
+   * Este método agrega esta capa sin usar capabilidades.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @function
+   * @api stable
+   */
+  addLayerNotCapabilities_() {
+    if (!isNullOrEmpty(this.map)) {
+      const extent = this.facadeLayer_.getMaxExtent();
+
+      const minResolution = this.options.minResolution;
+      const maxResolution = this.options.maxResolution;
+      const format = (this.options.format) ? this.options.format : 'image/png';
+
+
+      const size = getWidth(extent) / 256;
+      const resolutions = new Array(19);
+      const matrixIds = new Array(19);
+      // eslint-disable-next-line no-plusplus
+      for (let z = 0; z < 19; ++z) {
+        // generate resolutions and matrixIds arrays for this WMTS
+        // eslint-disable-next-line no-restricted-properties
+        resolutions[z] = size / Math.pow(2, z);
+        matrixIds[z] = z;
+      }
+
+      const tileGrid = new OLTileGridWMTS({
+        origin: getTopLeft(extent),
+        resolutions,
+        matrixIds,
+      });
+
+      const wmtsSource = new OLSourceWMTS({
+        attributions: ' https://www.ign.es/',
+        url: this.url,
+        layer: this.name,
+        matrixSet: this.options.matrixSet,
+        format: this.options.format,
+        projection: getProj(this.map.getProjection().code),
+        tileGrid,
+      }, extent, true);
+
+      this.facadeLayer_.setFormat(format);
+      this.ol3Layer = new OLLayerTile(extend({
+        visible: this.visibility,
+        source: wmtsSource,
+        minResolution,
+        maxResolution,
+      }, this.vendorOptions_, true));
+
+      // keeps z-index values before ol resets
+      const zIndex = this.zIndex_;
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+      setTimeout(() => {
+        this.ol3Layer.setMaxZoom(this.maxZoom);
+        this.ol3Layer.setMinZoom(this.minZoom);
+      }, 500);
+
+      // sets its z-index
+      if (zIndex !== null) {
+        this.setZIndex(zIndex);
+      }
+
+      // activates animation always for WMTS layers
+      this.ol3Layer.set('animated', true);
+      this.fire(EventType.ADDED_TO_MAP, this);
+    }
+  }
+
+  /**
    * Este método establece la extensión máxima para la capa de Openlayers.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
@@ -271,48 +351,59 @@ class WMTS extends LayerBase {
    * @returns {capabilitiesOptionsPromise} Opciones metadatos.
    * @api stable
    */
-  getCapabilitiesOptions_() {
+  async getCapabilitiesOptions_() {
     if (isNullOrEmpty(this.capabilitiesOptionsPromise)) {
-      this.capabilitiesOptionsPromise = this.getCapabilities().then((capabilities) => {
-        const layerName = this.name;
-        let matrixSet = this.matrixSet;
-        if (isNullOrEmpty(matrixSet)) {
-          /* if no matrix set was specified then
+      // eslint-disable-next-line no-underscore-dangle
+      const capabilitiesInfo = this.map.collectionCapabilities_.find((cap) => {
+        return cap.url === this.url;
+      });
+
+      if (capabilitiesInfo) {
+        this.capabilitiesOptionsPromise = await capabilitiesInfo.capabilities;
+      } else {
+        this.capabilitiesOptionsPromise = await this.getCapabilities();
+      }
+
+      const capabilities = await this.capabilitiesOptionsPromise;
+
+      const layerName = this.name;
+      let matrixSet = this.matrixSet;
+      if (isNullOrEmpty(matrixSet)) {
+        /* if no matrix set was specified then
           it supposes the matrix set has the name
           of the projection
           */
-          matrixSet = this.map.getProjection().code;
-        }
-        let capabilitiesLayer = capabilities.Contents.Layer;
-        if (isArray(capabilitiesLayer)) {
-          capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
-        }
+        matrixSet = this.map.getProjection().code;
+      }
+      let capabilitiesLayer = capabilities.Contents.Layer;
+      if (isArray(capabilitiesLayer)) {
+        capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
+      }
 
-        if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
-          this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL.replaceAll('&amp;', '&');
-        }
+      if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
+        this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL.replaceAll('&amp;', '&');
+      }
 
-        const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
-        const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
-        const extent = this.facadeLayer_.getMaxExtent();
-        const attribution = !isNullOrEmpty(capabilities.ServiceProvider) ? capabilities.ServiceProvider : '';
+      const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
+      const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
+      const extent = this.facadeLayer_.getMaxExtent();
+      const attribution = !isNullOrEmpty(capabilities.ServiceProvider) ? capabilities.ServiceProvider : '';
 
-        const capabilitiesOpts = optionsFromCapabilities(capabilities, {
-          layer: layerName,
-          matrixSet,
-          extent,
-        });
-        const capabilitiesMetadata = {
-          abstract,
-          attribution,
-          style,
-        };
-        capabilitiesOpts.tileGrid.extent = extent;
-        if (this.facadeLayer_.capabilitiesMetadata === undefined) {
-          this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
-        }
-        return capabilitiesOpts;
+      const capabilitiesOpts = optionsFromCapabilities(capabilities, {
+        layer: layerName,
+        matrixSet,
+        extent,
       });
+      const capabilitiesMetadata = {
+        abstract,
+        attribution,
+        style,
+      };
+      capabilitiesOpts.tileGrid.extent = extent;
+      if (this.facadeLayer_.capabilitiesMetadata === undefined) {
+        this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
+      }
+      return capabilitiesOpts;
     }
     return this.capabilitiesOptionsPromise;
   }

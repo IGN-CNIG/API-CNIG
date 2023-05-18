@@ -59,7 +59,8 @@ export default class TimelineControl extends M.Control {
           this.map.removeLayers(copy);
         }
 
-        this.map.addLayers(layer);
+        // this.map.addLayers(layer);
+
         let iv = {
           number: k,
           name: interval[0],

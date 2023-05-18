@@ -93,6 +93,7 @@ class WMS extends LayerBase {
       visibility: parameters.visibility,
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
+      useCapabilities: parameters.useCapabilities,
     };
     const impl = new WMSImpl(optionsVar, vendorOptions);
     // calls the super constructor
@@ -147,6 +148,13 @@ class WMS extends LayerBase {
      * Obtener metadatos en forma de promesa.
      */
     this.getCapabilitiesPromise_ = null;
+
+    /**
+     * Define se se utilizará el capabilities para generar la capa.
+     * Si es falso no se generará el OLTileGrid, por lo que
+     * podrías experimentar problemas de alineación y visualización incorrecta.
+     */
+    this.useCapabilities = userParameters.useCapabilities || false;
 
     this._updateNoCache();
   }
@@ -348,6 +356,38 @@ class WMS extends LayerBase {
   calculateMaxExtent() {
     return new Promise(resolve => this.getMaxExtent(resolve));
   }
+
+  /**
+   * Este método calcula la extensión máxima de esta capa.
+   *
+   * Versión asíncrona de getMaxExtent.
+   * @function
+   * @returns {M.WMS.maxExtent} Devuelve el maxExtent.
+   * @api
+   */
+  calculateMaxExtentWithCapabilities(capabilities) {
+    // -- Prevent to calculate maxExtent if it is already calculated
+    if (isNullOrEmpty(this.userMaxExtent) && this.userMaxExtent) return this.userMaxExtent;
+    if (isNullOrEmpty(this.options.wmcMaxExtent) && this.options.wmcMaxExtent) {
+      this.maxExtent_ = this.options.wmcMaxExtent;
+      return this.maxExtent_;
+    }
+    if (isNullOrEmpty(this.map_.userMaxExtent) && this.map_.userMaxExtent) {
+      this.maxExtent_ = this.map_.userMaxExtent;
+      return this.maxExtent_;
+    }
+
+    // -- Use capabilities
+    const capabilitiesMaxExtent = this.getImpl()
+      .getExtentFromCapabilities(capabilities);
+    if (isNullOrEmpty(capabilitiesMaxExtent)) {
+      const projMaxExtent = this.map_.getProjection().getExtent();
+      this.maxExtent_ = projMaxExtent;
+      return this.maxExtent_;
+    }
+    return capabilitiesMaxExtent;
+  }
+
 
   /**
    * Este método recupera una Promesa que será
