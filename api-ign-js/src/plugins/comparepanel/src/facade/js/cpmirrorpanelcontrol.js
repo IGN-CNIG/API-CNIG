@@ -617,7 +617,6 @@ export default class CompareMirrorpanel extends M.Control {
     }
 
     if (pluginBackImgLayer4map !== null) {
-      console.log('--')
       this.mapL[mapLyr].addPlugin(pluginBackImgLayer4map);
     }
 
