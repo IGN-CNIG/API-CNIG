@@ -25,12 +25,12 @@ const map = M.map({
   ],
 });
 
-const layerinicial = new M.layer.WMS({
+/* const layerinicial = new M.layer.WMS({
   url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeBoundary',
   legend: 'Limite administrativo',
   tiled: false,
-}, {});
+}, {}); */
 
 
 const campamentos = new M.layer.GeoJSON({
@@ -40,20 +40,22 @@ const campamentos = new M.layer.GeoJSON({
 });
 
 const printermap = new PrinterMap({
+  position: 'TR',
   collapsed: true,
   collapsible: true,
-  position: 'TR',
+  tooltip: 'Imprimir mapa',
   credits: 'Impresión generada desde Fototeca Digital http://fototeca.cnig.es/',
   // georefActive: false,
   fototeca: true,
   // serverUrl: 'https://componentes.cnig.es/geoprint',
   // printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
   // printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
-  // fototeca: true,
+  logo: 'https://www.ign.es/IGNCNIG/Imagenes/Contenidos/IGN-Header-Tittle.png',
+  headerLegend: 'https://centrodedescargas.cnig.es/CentroDescargas/imgCdD/escudoInstitucional.png',
   filterTemplates: ['A3 Horizontal'],
 });
 
-const mvt = new M.layer.MVT({
+/* const mvt = new M.layer.MVT({
   // url: 'https://hcsigc-geoserver-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Public:superadmin_capa_20220711_111231@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
   // url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
   url: 'https://hcsigc.juntadeandalucia.es/geoserver/gwc/service/tms/1.0.0/Public:public_borja_municipios_2021_08_19@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
@@ -63,7 +65,7 @@ const mvt = new M.layer.MVT({
   name: 'vectortile',
   projection: 'EPSG:3857',
   extract: true,
-});
+}); */
 
 map.addLayers(campamentos);
 
@@ -101,18 +103,18 @@ map.addPlugin(new M.plugin.Vectors({
     TRANSPARENT: true,
     IMAGEN: '/var/www/apps/fototeca/data/Vuelos_Historicos/vuelo_quinquenal/Quinquenal_hu30/0822_fot_28658_etrs89_UTM_hu30.ecw',
   },
-  serverType: 'mapserver'
-});
+  serverType: 'mapserver',
+}); */
 
-const layer = new ol.layer.Image({
+/* const layer = new ol.layer.Image({
   visible: true,
   opacity: 1,
   zIndex: 999999999,
   source: source,
 });
 
-map.getMapImpl().addLayer(layer); */
+map.getMapImpl().addLayer(layer);
 // map.addLayers([layerinicial, campamentos]);
-// map.addLayers([campamentos]);
+// map.addLayers([campamentos]); */
 
 window.map = map;

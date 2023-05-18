@@ -20,32 +20,44 @@
       "position": 2
     }, {
       "type": "simple",
-      "name": "serverUrl",
+      "name": "tooltip",
       "position": 3
     }, {
       "type": "simple",
-      "name": "printTemplateUrl",
+      "name": "serverUrl",
       "position": 4
     }, {
       "type": "simple",
-      "name": "printTemplateGeoUrl",
+      "name": "printTemplateUrl",
       "position": 5
     }, {
       "type": "simple",
-      "name": "printStatusUrl",
+      "name": "printTemplateGeoUrl",
       "position": 6
     }, {
       "type": "simple",
-      "name": "georefActive",
+      "name": "printStatusUrl",
       "position": 7
     }, {
       "type": "simple",
-      "name": "logo",
+      "name": "georefActive",
       "position": 8
     }, {
       "type": "simple",
-      "name": "fototeca",
+      "name": "logo",
       "position": 9
+    }, {
+      "type": "simple",
+      "name": "headerLegend",
+      "position": 10
+    }, {
+      "type": "simple",
+      "name": "fototeca",
+      "position": 11
+    }, {
+      "type": "simple",
+      "name": "credits",
+      "position": 12
     }]
   }],
   "files": {

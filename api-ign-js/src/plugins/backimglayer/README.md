@@ -28,87 +28,134 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsible**: Indica si el plugin se puede collapsar en un botón (true/false). Por defecto: true.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
-- **layerId**: Índice de la capa que se quiera cargar por defecto. Por ejemplo, si se pasa el número 2 se mostrará la capa que se encuentre en la segunda posición.
-- **columnsNumber**: Número de columnas que parametrizan la tabla de capas de fondo disponibles.
-- **layerVisibility**: Valor que indica si se muestra la capa cargada o no.
-- **layerOpts**: Array con las capas que se quieren utilizar como opciones para capa de fondo.
-    - **id**: Identificador de la capa.
-    - **preview**: Ruta a la imagen de previsualización que se muestra.
-    - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
-    - **layers**: Array con las capas que se quieren cargar al seleccionar esta opción.   
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
+- **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: "Capas de fondo".
+- **layerId**: Índice de la capa que se quiera cargar por defecto. Por ejemplo, si se pasa el número 2 se mostrará la capa que se encuentre en la segunda posición. Por defecto: 0
+- **columnsNumber**: Número de columnas que parametrizan la tabla de capas de fondo disponibles. Por defecto: 2
+- **layerVisibility**: Valor que indica si se muestra la capa cargada o no. Por defecto: true
+- **layerOpts**: Array con las capas que se quieren utilizar como opciones para capa de fondo. Puede ser undefined (Por ejemplo cuando se accede por API-REST), en este caso, se cogen los valores de ids,previews, titles. 
+    - **id**: Identificador de la capa. 
+    - **preview**: Ruta a la imagen de previsualización que se muestra. 
+    - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización. 
+    - **layers**: Array con las capas que se quieren cargar al seleccionar esta opción. 
        - [Como añadir las capas y qué parámetros se tienen que usar](https://github.com/IGN-CNIG/API-CNIG/wiki/Capas)
 - **empty**: Habilita la posibilidad de mostrar el mapa sin las capas de fondo cargadas del plugin (capa de fondo "vacía"). Verdadero "true", se activa esta funcionalidad. Falso por defecto.
-- **tooltip**: Información emergente para mostrar en el tooltip del plugin. Por defecto: "Capas de fondo".
+
+- **ids**: (Cuando layerOpts no se define) ids de las capas separados por ','. Por defecto: 'wmts'
+- **previews**: (Cuando layerOpts no se define) Rutas a las imagenes de previsualización de las capas separados por ','. Por defecto: 'https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png'.
+- **titles**: (Cuando layerOpts no se define) Titulos de las capas separados por ','. Por defecto: 'IGNBaseTodo'.
+- **layers**: (Cuando layerOpts no se define) Capas que se quieren cargar. Por defecto: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true'.
 
 # API-REST
 
 ```javascript
-URL_API?backimglayer=position*!collapsible*!collapsed*!layerVisibility*!layerId*!columnsNumber*!ids*!titles
-*!previews*!layers*!empty
+URL_API?backimglayer=position*!collapsed*!collapsible*!tooltip*!layerVisibility*!layerId*!columnsNumber*!empty*!ids*!titles*!previews*!layers
 ```
 
 <table>
     <tr>
         <td>Parámetros</td>
         <td>Opciones/Descripción</td>
+        <td>Disponibilidad</td>
     </tr>
     <tr>
         <td>position</td>
         <td>TR/TL/BR/BL</td>
-    </tr>
-     <tr>
-        <td>collapsible</td>
-        <td>true/false</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
      <tr>
         <td>collapsed</td>
         <td>true/false</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
      <tr>
+        <td>collapsible</td>
+        <td>true/false</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+    <tr>
+        <td>tooltip</td>
+        <td>Valor a usar para mostrar en el tooltip del plugin</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+    <tr>
         <td>layerVisibility</td>
         <td>true/false</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
      <tr>
         <td>layerId</td>
         <td>Índice de la capa a cargar por defecto</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
      <tr>
         <td>columnsNumber</td>
         <td>Número de columnas para la tabla de capas de fondo</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
-     <tr>
+    <tr>
+        <td>layerOpts</td>
+        <td>[{id:'', preview:'', title:'', layers:[]}]</td>
+        <td>Base64 ✔️ | Separador ❌</td>
+    </tr>
+    <tr>
+        <td>empty</td>
+        <td>true/false</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+    <tr>
         <td>ids</td>
         <td>Identificadores de las capas separados por comas</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
      <tr>
         <td>titles</td>
         <td>Nombre de las capas separados por comas</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
      <tr>
         <td>previews</td>
         <td>URLs de las imágenes de previsualización de las capas separadas por comas</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
-     <tr>
+    <tr>
         <td>layers</td>
-        <td>Capas que se quieren cargar</td>
-    </tr>
-     <tr>
-        <td>empty</td>
-        <td>true/false</td>
+        <td>Capas que se quieren cargar separadas por comas</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
 </table>
 
 
 ### Ejemplos de uso API-REST
+```
+https://componentes.cnig.es/api-core?backimglayer=TR*!true*!true*!Capas%20de%20fondo*!true*!0*!0*!true*!mapa,hibrido*!Mapa,Hibrido*!https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png,https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqhibrid.png*!WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa%20IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen%20(PNOA)*false*image/png*false*false*true
+```
 
 ```
-https://componentes.cnig.es/api-core?backimglayer=TR*!true*!true*!true*!1*!2*!mapa,hibrido*!Mapa,Hibrido*!http://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png,http://componentes.cnig.es/api-core/plugins/backimglayer/images/svqhibrid.png*!WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true*!true
+https://componentes.cnig.es/api-core?backimglayer=TR*!true*!true
 ```
-
+### Ejemplo de uso API-REST en base64
+Ejemplo de constructor:
+```javascript
+{
+  position: "TR",
+  collapsed: true,
+  collapsible: true,
+  tooltip: "Capas de fondo",
+  layerVisibility: true,
+  columnsNumber: 0,
+  empty: true,
+  ids: "mapa,hibrido",
+  titles: "Mapa,Hibrido",
+  previews:
+    "https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png,https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqhibrid.png",
+  layers:
+    "WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true",
+}
 ```
-https://componentes.cnig.es/api-core?backimglayer=TR*!*!*!true*!1*!2*!mapa,hibrido*!Mapa,Hibrido*!http://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png,http://componentes.cnig.es/api-core/plugins/backimglayer/images/svqhibrid.png*!WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true*
+```
+https://componentes.cnig.es/api-core?backimglayer=base64:e3Bvc2l0aW9uOiAiVFIiLGNvbGxhcHNlZDogdHJ1ZSxjb2xsYXBzaWJsZTogdHJ1ZSx0b29sdGlwOiAiQ2FwYXMgZGUgZm9uZG8iLGxheWVyVmlzaWJpbGl0eTogdHJ1ZSxjb2x1bW5zTnVtYmVyOiAwLGVtcHR5OiB0cnVlLGlkczogIm1hcGEsaGlicmlkbyIsdGl0bGVzOiAiTWFwYSxIaWJyaWRvIixwcmV2aWV3czoiaHR0cHM6Ly9jb21wb25lbnRlcy5jbmlnLmVzL2FwaS1jb3JlL3BsdWdpbnMvYmFja2ltZ2xheWVyL2ltYWdlcy9zdnFtYXBhLnBuZyxodHRwczovL2NvbXBvbmVudGVzLmNuaWcuZXMvYXBpLWNvcmUvcGx1Z2lucy9iYWNraW1nbGF5ZXIvaW1hZ2VzL3N2cWhpYnJpZC5wbmciLGxheWVyczoiV01UUypodHRwczovL3d3dy5pZ24uZXMvd210cy9pZ24tYmFzZT8qSUdOQmFzZVRvZG8qR29vZ2xlTWFwc0NvbXBhdGlibGUqTWFwYSBJR04qZmFsc2UqaW1hZ2UvanBlZypmYWxzZSpmYWxzZSp0cnVlLFdNVFMqaHR0cHM6Ly93d3cuaWduLmVzL3dtdHMvcG5vYS1tYT8qT0kuT3J0aG9pbWFnZUNvdmVyYWdlKkdvb2dsZU1hcHNDb21wYXRpYmxlKkltYWdlbiAoUE5PQSkqZmFsc2UqaW1hZ2UvcG5nKmZhbHNlKmZhbHNlKnRydWUiLH0=
 ```
 
 

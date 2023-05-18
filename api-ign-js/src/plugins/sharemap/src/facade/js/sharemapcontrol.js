@@ -248,6 +248,8 @@ export default class ShareMapControl extends M.Control {
     const okButton = dialog.querySelector('#m-plugin-sharemap-button > button');
     const copyButton = dialog.querySelector('#m-plugin-sharemap-copybutton');
     const copyButtonHtml = dialog.querySelector('#m-plugin-sharemap-copybuttonhtml');
+    const text = dialog.querySelector('#m-plugin-sharemap-text');
+    const social = dialog.querySelector('#m-plugin-sharemap-social');
     const input = message.querySelector('input');
     const inputHtml = html.querySelector('input');
 
@@ -256,6 +258,9 @@ export default class ShareMapControl extends M.Control {
       message.classList.add(this.classes_.message);
       button.classList.add(this.classes_.modalButton);
       title.classList.add(this.classes_.title);
+      text.classList.add(this.classes_.text);
+      copyButtonHtml.classList.add(this.classes_.copyButtonHtml);
+      social.classList.add(this.classes_.social);
       // html.classList.add(this.classes_.html);
     }
 

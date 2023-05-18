@@ -266,7 +266,8 @@ export default class Comparepanel extends M.Plugin {
       defaultComparisonViz: this.defaultCompareViz,
       position: this.position,
       urlCover: this.urlCoberturas_,
-      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex
+      lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
+      map
     });
 
     this.controls_.push(this.control_);

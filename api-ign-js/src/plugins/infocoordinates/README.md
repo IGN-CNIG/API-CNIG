@@ -29,48 +29,75 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **decimalGEOcoord**: Indica el número de decimales de las coordenadas geográficas.
-- **decimalUTMcoord**: Indica el número de decimales de las coordenadas proyectadas en UTM.
-- **helpUrl**: URL a la ayuda para el icono.
+- **collapsed**: Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto: true.
+- **collapsible**: Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto: true.
+- **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: Información Coordenadas.
+- **decimalGEOcoord**: Indica el número de decimales de las coordenadas geográficas. Por defecto: 4
+- **decimalUTMcoord**: Indica el número de decimales de las coordenadas proyectadas en UTM. Por defecto: 2
+- **helpUrl**: URL a la ayuda para el icono. Por defecto: 'https://www.ign.es/'
 
 # API-REST
 
 ```javascript
-URL_API?infocoordinates=position*decimalGEOcoord*decimalUTMcoord*helpUrl
+URL_API?infocoordinates=position*collapsed*collapsible*tooltip*decimalGEOcoord*decimalUTMcoord*helpUrl
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>collapsed</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a usar para mostrar en el tooltip del plugin</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>decimalGEOcoord</td>
     <td>Número de decimales de las coordenadas geográficas</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>decimalUTMcoord</td>
     <td>Número de decimales de la coordenadas en UTM</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>helpUrl</td>
     <td>URL a la ayuda</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
 </table>
 
 
-### Ejemplos de uso API-REST
+### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?infocoordinates=TL*4*2*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
+https://componentes.cnig.es/api-core?infocoordinates=TL*true*true*Coordenadas*4*2*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
 ```
 
+### Ejemplo de uso API-REST en base64
+
+Ejemplo del constructor: {position:"TR", collapsible: true, collapsed: true, "tooltip":"Coordenadas", "decimalGEOcoord":4,"decimalUTMcoord":4,"helpUrl":"https://www.ign.es/"}
+
 ```
-https://componentes.cnig.es/api-core?infocoordinates=TL*4**https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
+https://componentes.cnig.es/api-core?infocoordinates=base64:e3Bvc2l0aW9uOiJUUiIsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsICJ0b29sdGlwIjoiQ29vcmRlbmFkYXMiLCAiZGVjaW1hbEdFT2Nvb3JkIjo0LCJkZWNpbWFsVVRNY29vcmQiOjQsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIn0=
 ```
 
 # Ejemplo de uso

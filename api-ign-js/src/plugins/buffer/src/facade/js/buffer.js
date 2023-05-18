@@ -69,6 +69,21 @@ export default class Buffer extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -127,7 +142,7 @@ export default class Buffer extends M.Plugin {
       className: 'm-buffer',
       collapsedButtonClass: 'icon-buffer',
       position: M.ui.position[this.position_],
-      tooltip: getValue('tooltip'),
+      tooltip: this.tooltip_,
     });
     this.panelTools_.addControls(this.control_);
     this.map_.addPanels(this.panelTools_);
@@ -204,7 +219,18 @@ export default class Buffer extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name_}=${this.position_}*${this.collapsed_}*${this.collapsible_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64:${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

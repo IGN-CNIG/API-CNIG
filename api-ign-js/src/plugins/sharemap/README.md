@@ -26,66 +26,162 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **position**: Indica la posición donde se mostrará el plugin.
-  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TL': (top left) - Arriba a la izquierda.
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
-  - 'BR': (bottom right) - Abajo a la derecha.
-- **tooltip**: Texto para el mensaje cuando se copia la cadena (Por defecto 'Copiado') (Se muestra al dejar el ratón encima del plugin como información).
-- **baseUrl**: Url sobre la que está montada la instancia de mapea del tipo https://componentes.cnig.es/api-core/
-- **title**: Título para la cabecera de la ventana (Por defecto 'Compartir Mapa').
-- **btn**: Título para el botón Aceptar (Por defecto 'Aceptar').
-- **copyBtn**: Título para el botón copiar (Por defecto 'Copiar url').
-- **overwriteStyles**: Indica si se le quieren pasar estilos adicionales (Por defecto false).
-- **styles**: Estilo a aplicar para sobreescribir.
-  - **Ejemplo**
+  - 'BR': (bottom right) - Abajo a la derecha (por defecto).
+- **tooltip**: Texto para el mensaje cuando se copia la cadena (por defecto '¡Copiado!').
+- **baseUrl**: Url sobre la que está montada la instancia. Por defecto: https://componentes.cnig.es/api-core/
+- **minimize**: Genera URL minificada. (por defecto: false). 
+- **title**: Título para la cabecera de la ventana (por defecto: 'Compartir Mapa').
+- **btn**: Título para el botón Aceptar (por defecto: 'OK').
+- **copyBtn**: Título para el botón copiar (por defecto: 'Copiar').
+- **overwriteStyles**: Indica si se le quieren pasar estilos adicionales (por defecto: false).
+- **styles**: Estilo a aplicar para sobreescribir. (por defecto: {}). 
+  - **Ejemplo:**
 ```javascript
-'styles': {
- *  'primaryColor': 'yellow',
- *  'secondaryColor': 'green'
- *  }
+styles: {
+  primaryColor: 'yellow',
+  secondaryColor: 'green'
+}
 ```
-- **text**: Texto del segundo título. 
-- **copyBtnHtml**: Título para el segundo botón. 
-- **minimize**: Genera URL minificada.
-- **urlAPI**: URL API o URL Visor (API verdadero o predeterminado, visor falso).
-- **shareLayer**: Define si se comparten todas las capas o ninguna, valor de tipo _Boolean_. Por defecto: false.
-- **filterLayers**: Selecciona la capa a compartir por el nombre, valor de tipo _Array_. 
+- **text**: Texto del segundo título. (por defecto: 'HTML embebido'). 
+- **copyBtnHtml**: Título para el segundo botón. (por defecto: 'Copiar').
+- **urlAPI**: URL API o URL Visor (API verdadero o predeterminado, visor falso). Por defecto: false.
+- **shareLayer**: Define si se comparten todas las capas o ninguna, valor de tipo _Boolean_. Para que tenga efecto filterLayers, shareLayer debe estar como false o no definido. Por defecto: false.
+- **filterLayers**: Selecciona la capa a compartir por el nombre, valor de tipo _Array_.
   - Por defecto: [ ].
   - ```Array<String>```: Los valores serán los nombres de la capa.
 
 # API-REST
 
 ```javascript
-URL_API?sharemap=baseUrl*position*minimize
+URL_API?sharemap=position*tooltip*baseUrl*minimize*title*btn*copyBtn*text*copyBtnHtml*urlAPI*shareLayer
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
-  </tr>
-  <tr>
-    <td>baseUrl</td>
-    <td>URL instancia de mapea</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Texto para el mensaje cuando se copia la cadena</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>baseUrl</td>
+    <td>URL instancia de mapea</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
   </tr>
   <tr>
     <td>minimize</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>title</td>
+    <td>Título para la cabecera de la ventana</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>btn</td>
+    <td>Título para el botón Aceptar</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>copyBtn</td>
+    <td>Título para el botón copiar</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>overwriteStyles</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>styles</td>
+    <td>Estilos para color primario y secundario</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>text</td>
+    <td>Texto del segundo título</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>copyBtnHtml</td>
+    <td>Título para el segundo botón</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>urlAPI</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>shareLayer</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>filterLayers</td>
+    <td>Array con los nombres de las capas</td>
+    <td>Base64 ✔️ | Separador ❌ </td>
   </tr>
 </table>
 
 ### Ejemplos de uso API-REST
+```
+https://componentes.cnig.es/api-core/?sharemap=TR*Copiado%20al%20portapapeles*https://componentes.cnig.es/api-core/*true*Compartir%20mapa%20title*OK*copyBtn*Compartir%20mapa%20text*copyBtnHtml*false*true
+```
 
 ```
-https://componentes.cnig.es/api-core/?sharemap=https://componentes.cnig.es/api-core/*BL*true
+https://componentes.cnig.es/api-core/?sharemap=TL
 ```
 
+### Ejemplos de uso API-REST en base64
+#### Ejemplo compartiendo todas las capas
+Ejemplo de constructor del plugin: 
+
+```javascript
+{
+  baseUrl: "https://componentes.cnig.es/api-core/",
+  position: "TR",
+  tooltip: "Copiado al portapapeles",
+  minimize: true,
+  title: "Compartir mapa title",
+  btn: "OK",
+  copyBtn: "copyBtn",
+  text: "Compartir mapa text",
+  copyBtnHtml: "copyBtnHtml",
+  urlAPI: false,
+  shareLayer: true,
+}
 ```
-https://componentes.cnig.es/api-core/?sharemap=https://componentes.cnig.es/api-core/
+```
+https://componentes.cnig.es/api-core/?sharemap=base64:e2Jhc2VVcmw6ICdodHRwczovL2NvbXBvbmVudGVzLmNuaWcuZXMvYXBpLWNvcmUvJywgIHBvc2l0aW9uOiAnVFInLCAgdG9vbHRpcDogJ0NvcGlhZG8gYWwgcG9ydGFwYXBlbGVzJywgIG1pbmltaXplOiB0cnVlLCAgdGl0bGU6ICdDb21wYXJ0aXIgbWFwYSB0aXRsZScsICBidG46ICdPSycsICBjb3B5QnRuOiAnY295QnRuJywgIHRleHQ6ICdDb21wYXJ0aXIgbWFwYSB0ZXh0JywgIGNvcHlCdG5IdG1sOiAnY29weUJ0bkh0bWwnLCAgdXJsQVBJOiBmYWxzZSwgIHNoYXJlTGF5ZXI6IHRydWUsICBmaWx0ZXJMYXllcnM6IFsnY29zYXMxX3BvbGlnb25vJ119'
+```
+#### Ejemplo filtrando las capas
+En este ejemplo, le pasamos por url dos capas y especificamos en el parámetro filterLayers el nombre de la capa que queremos compartir (shareLayer tiene que estar como false o no definido).
+
+Ejemplo de constructor del plugin: 
+```javascript
+{
+  position: "TL",
+  shareLayer: false,
+  filterLayers: ["OI.OrthoimageCoverage"],
+}
+```
+(*) En este ejemplo, le pasamos por url dos capas y especificamos en el parámetro filterLayers el nombre de la capa que queremos compartir.
+```
+https://componentes.cnig.es/api-core/?sharemap=base64:eyJwb3NpdGlvbiI6IlRMIiwgInNoYXJlTGF5ZXIiOmZhbHNlLCAiZmlsdGVyTGF5ZXJzIjpbIk9JLk9ydGhvaW1hZ2VDb3ZlcmFnZSJdfQ==&layers=WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*true*image/jpeg*true*true*true,WMS*Unidad%20administrativa*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeUnit*true*true**1.3.0*true*true*true
 ```
 
 # Ejemplo de uso
@@ -95,9 +191,23 @@ const map = M.map({
   container: 'map'
 });
 
-const mp = new M.plugin.ShareMap({
-  baseUrl: 'https://componentes.cnig.es/api-core/',
-  postition: 'TL',
+const mp = new ShareMap({
+  baseUrl: 'https://componentes.cnig.es/api-core/',
+  position: 'TR',
+  tooltip: '¡Copiado!',
+  minimize: true,
+  title: 'Compartir mapa',
+  btn: 'OK',
+  copyBtn: 'Copiar',
+  text: 'Compartir mapa',
+  copyBtnHtml: 'Copiar',
+  urlAPI: false,
+  shareLayer: true,
+  filterLayers: ['cosas1_poligono'],
+  overwriteStyles: false,
+  styles: {
+    secondaryColor: '#272727',
+  },
 });
 
 map.addPlugin(mp);

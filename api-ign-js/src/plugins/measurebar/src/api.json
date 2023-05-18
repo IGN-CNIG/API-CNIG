@@ -11,6 +11,18 @@
       "name": "position",
       "position": 0,
       "possibleValues": ["TL", "TR", "BR", "BL"]
+    }, {
+      "type": "boolean",
+      "name": "collapsed",
+      "position": 1
+    }, {
+      "type": "boolean",
+      "name": "collapsible",
+      "position": 2
+    }, {
+      "type": "simple",
+      "name": "tooltip",
+      "position": 3
     }]
   }],
   "files": {
@@ -28,6 +40,6 @@
     "author": "",
     "org": "IGN",
     "tags": "mapea,plugin",
-    "icon": "./facade/assets/icons/icons.svg"
+    "icon": "./facade/assets/icons/icons.svg" 
   }
 }

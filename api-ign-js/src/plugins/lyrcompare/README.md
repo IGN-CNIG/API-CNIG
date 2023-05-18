@@ -7,18 +7,20 @@ Plugin que permite comparar varias capas sobre una cartografía base. La extensi
 
 # Dependencias
 
-- lyrcompare.ol.min.js
-- lyrcompare.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **lyrcompare.ol.min.js**
+- **lyrcompare.ol.min.css**
 
 
 ```html
- <link href="../../plugins/lyrcompare/lyrcompare.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/lyrcompare/lyrcompare.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/lyrcompare/lyrcompare.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/lyrcompare/lyrcompare.ol.min.js"></script>
 ```
 
 # Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 - **layer**. Parámetro obligatorio. Array que puede contener el/los nombre/s de la/s capa/s (que está/n en el mapa),
 la/s url en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto.
@@ -36,15 +38,15 @@ A esta/s capa/s se le aplicará el efecto de transparencia.
 
 - **staticDivision**. Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón *(valor 0)*, por el punto medio del lienzo de cartografía *(valor 1)* o por el punto medio del lienzo de cartografía con líneas arrastrables *(valor 2)*.
 
-- **opacityVal**. Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
+- **opacityVal**. Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango de 0 a 100.
 
-- **comparisonMode**. Define el tipo de comparación con la que arranca. Rango 0,3.
+- **comparisonMode**. Define el tipo de comparación con la que arranca. Rango de 0 a 3.
   - 0: arranca con el modo de comparación apagado.
   - 1: arranca con el modo de comparación cortina vertical.
   - 2: arranca con el modo de comparación de cortina horizontal.
   - 3: arranca con el modo de comparación múltiple de cuatro capas.
 
-  ** Para ver el efecto de cada uno podemos acceder al test https://componentes.cnig.es/api-core/lyrcompare.jsp?language=es y cambiar las opciones.
+  Para ver el efecto de cada uno podemos acceder al test https://componentes.cnig.es/api-core/lyrcompare.jsp?language=es y cambiar las opciones.
 
 
 - **defaultLyrA**. Define la capa uno que se carga por defecto. Valores de 1 al número de capas disponibles.

@@ -885,7 +885,7 @@ export default class PrinterMapControl extends M.Control {
     }, this.params_.layout);
 
     return this.encodeLayers().then((encodedLayers) => {
-      printData.attributes.map.layers = encodedLayers;
+      printData.attributes.map.layers = encodedLayers.filter(l => M.utils.isObject(l));
       printData.attributes = Object.assign(printData.attributes, parameters);
       if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';

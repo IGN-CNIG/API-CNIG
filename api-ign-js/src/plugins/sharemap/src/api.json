@@ -8,17 +8,49 @@
     "type": "object",
     "properties": [{
       "type": "simple",
-      "name": "baseUrl",
-      "position": 0
-    }, {
-      "type": "simple",
       "name": "position",
-      "position": 1,
+      "position": 0,
       "possibleValues": ["TL", "TR", "BL", "BR"]
-    }, {
+    },{
       "type": "simple",
-      "name": "minimize",
+      "name": "tooltip",
+      "position": 1
+    },{
+      "type": "simple",
+      "name": "baseUrl",
       "position": 2
+    }, {
+      "type": "boolean",
+      "name": "minimize",
+      "position": 3
+    },{
+      "type": "simple",
+      "name": "title",
+      "position": 4
+    },{
+      "type": "simple",
+      "name": "btn",
+      "position": 5
+    },{
+      "type": "simple",
+      "name": "copyBtn",
+      "position": 6
+    },{
+      "type": "simple",
+      "name": "text",
+      "position": 7
+    },{
+      "type": "simple",
+      "name": "copyBtnHtml",
+      "position": 8
+    },{
+      "type": "boolean",
+      "name": "urlAPI",
+      "position": 9
+    },{
+      "type": "boolean",
+      "name": "shareLayer",
+      "position": 10
     }]
   }],
   "files": {

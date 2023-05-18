@@ -32,30 +32,39 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsed**: Indica si el plugin viene colapsado por defecto (true/false). Por defecto: true.
 - **collapsible**: Indica si se puede colapsar el plugin (true/false). Por defecto: true.
-- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin. Por defecto: Cambiar escala.
 
 # API-REST
 
 ```javascript
-URL_API?rescale=position*collapsed*collapsible
+URL_API?rescale=position*collapsed*collapsible*tooltip
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>collapsed</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>collapsible</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td> 
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a usar para mostrar en el tooltip del plugin</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
 </table>
 
@@ -63,11 +72,16 @@ URL_API?rescale=position*collapsed*collapsible
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?rescale=TR*true*true
+https://componentes.cnig.es/api-core?rescale=TR*true*true*rescale
 ```
 
 ```
 https://componentes.cnig.es/api-core?rescale=TL
+```
+### Ejemplos de uso API-REST en base64
+Ejemplo de constructor del plugin: {"collapsible":true,"collapsed":true,"position":"TL","tooltip":"Gestor de escala"}
+```
+https://componentes.cnig.es/api-core/?rescale=base64:eyJjb2xsYXBzaWJsZSI6dHJ1ZSwiY29sbGFwc2VkIjp0cnVlLCJwb3NpdGlvbiI6IlRMIiwidG9vbHRpcCI6Ikdlc3RvciBkZSBlc2NhbGEifQ=='
 ```
 
 # Ejemplo de uso

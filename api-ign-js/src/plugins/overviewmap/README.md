@@ -25,50 +25,63 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 El constructor se inicializa con dos objetos JSON. El primero contiene el atributo 'position' y el segundo los atributos 'collapsed' y 'collapsible', descritos a continuación:
 
 - **position**: Indica la posición donde se mostrará el plugin.
-  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TL': (top left) - Arriba a la izquierda.
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
-  - 'BR': (bottom right) - Abajo a la derecha.
+  - 'BR': (bottom right) - Abajo a la derecha (por defecto).
 - **collapsed**: Indica si el plugin aparece abierto por defecto (true/false).  Por defecto: false.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).  Por defecto: false.
-- **fixed**: Indica si el mapa del plugin permanece a un zoom fijo (true/false).
-- **zoom**: Indica el nivel del zoom al que permanecerá fijo el mapa del plugin.
-- **baseLayer**: URL de la capa base si se quiere prefijar una en el plugin overviewmap.
+- **tooltip**. Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información). Por defecto: Mapa de situación.
+- **fixed**: Indica si el mapa del plugin permanece a un zoom fijo (true/false). Por defecto: false.
+- **zoom**: Indica el nivel del zoom al que permanecerá fijo el mapa del plugin. Por defecto: '' (cadena vacía).
+- **baseLayer**: URL de la capa base si se quiere prefijar una en el plugin overviewmap. Por defecto: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true'
 
 # API-REST
 
 ```javascript
-URL_API?overviewmap=position*!collapsed*!collapsible*!fixed*!zoom*!baseLayer
+URL_API?overviewmap=position*!collapsed*!collapsible*!tooltip*!fixed*!zoom*!baseLayer
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>collapsed</td>
     <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
    <tr>
     <td>collapsible</td>
     <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
-   <tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Texto informativo</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
     <td>fixed</td>
     <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
-   <tr>
+  <tr>
     <td>zoom</td>
     <td>Nivel de zoom del mapa</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>baseLayer</td>
     <td>URL de la capa base</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
 </table>
 
@@ -76,11 +89,20 @@ URL_API?overviewmap=position*!collapsed*!collapsible*!fixed*!zoom*!baseLayer
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?overviewmap?TR*!true*!true*!true*!5*!WMS*PNOA 2017*https://www.ign.es/wms/pnoa-historico?*PNOA2017*true*true
+https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!Mapa*!true*!5*!WMS*PNOA%202017*https://www.ign.es/wms/pnoa-historico?*PNOA2017*true*true
 ```
 
 ```
-https://componentes.cnig.es/api-core?overviewmap?TR*!true*!true
+https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!Mapa
+```
+
+### Ejemplo de uso API-REST en base64
+
+```
+Ejemplo de constructor: {"position":"BR","fixed":true,"zoom":4,"baseLayer":"WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true","collapsed":false,"collapsible":false, "tooltip":"Mapa"}
+
+https://componentes.cnig.es/api-core?overviewmap=base64:eyJwb3NpdGlvbiI6IkJSIiwiZml4ZWQiOnRydWUsInpvb20iOjQsImJhc2VMYXllciI6IldNVFMqaHR0cDovL3d3dy5pZ24uZXMvd210cy9pZ24tYmFzZT8qSUdOQmFzZVRvZG8qR29vZ2xlTWFwc0NvbXBhdGlibGUqTWFwYSBJR04qZmFsc2UqaW1hZ2UvanBlZypmYWxzZSpmYWxzZSp0cnVlIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOmZhbHNlLCAidG9vbHRpcCI6Ik1hcGEifQ==
+
 ```
 
 # Ejemplo de uso

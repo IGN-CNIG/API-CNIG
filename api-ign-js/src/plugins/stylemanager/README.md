@@ -47,9 +47,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
 - **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
-- **tooltip**: Texto que se muestra al dejar el ratón encima del plugin.
+- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
+- **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: 'Gestor de estilos'.
 - **layer**: Capa pre seleccionada (se mostrará seleccionada en el selector de capas del plugin).<br> Como requisito para usar este parámetro la capa debe de estar cargada en el mapa (ver ejemplo de uso). Además dicha capa debe de tener features (no puede estar vacía).
 En caso de que no se cumpla las condiciones anteriores lanzará un error. 
 (Válido sólo para creación del plugin por JS).
@@ -57,7 +57,7 @@ En caso de que no se cumpla las condiciones anteriores lanzará un error.
 # API-REST
 
 ```javascript
-URL_API?stylemanager=position*collapsible*collapsed*tooltip
+URL_API?stylemanager=position*collapsed*collapsible*tooltip
 ```
 
 <table>
@@ -72,12 +72,12 @@ URL_API?stylemanager=position*collapsible*collapsed*tooltip
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>collapsible</td>
+    <td>collapsed</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>collapsed</td>
+    <td>collapsible</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
@@ -104,10 +104,9 @@ https://componentes.cnig.es/api-core?stylemanager=TR
 ```
 
 ### Ejemplos de uso API-REST en base64
+Ejemplo de constructor del plugin: {position:'TR', collapsible: true, collapsed: true, tooltip: 'Gestor de estilos'}
 ```
-Ejemplo de constructor del plugin: {position:'TR', collapsible: true, collapsed: true, tooltip: 'stylemanager'}
-
-https://componentes.cnig.es/api-core?stylemanager=base64:e3Bvc2l0aW9uOidUUicsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdzdHlsZW1hbmFnZXInfQ==
+https://componentes.cnig.es/api-core?stylemanager=base64:e3Bvc2l0aW9uOidUUicsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdHZXN0b3IgZGUgZXN0aWxvcyd9
 ```
 
 # Ejemplo de uso

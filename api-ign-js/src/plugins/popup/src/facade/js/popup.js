@@ -52,6 +52,14 @@ export default class Popup extends M.Plugin {
     if (this.collapsed_ === undefined) this.collapsed_ = true;
 
     /**
+     * Collapsible attribute
+     * @private
+     * @type {boolean}
+     */
+    this.collapsible_ = options.collapsible;
+    if (this.collapsible_ === undefined) this.collapsible_ = true;
+
+    /**
      * Url of HTML with the content for popup in the selected language.
      * @private
      * @type {String}
@@ -91,6 +99,13 @@ export default class Popup extends M.Plugin {
      *@type { Number }
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -122,9 +137,9 @@ export default class Popup extends M.Plugin {
     this.map_ = map;
     this.panel_ = new M.ui.Panel('Popup', {
       className: 'm-panel-popup',
+      collapsible: this.collapsible_,
       collapsed: this.collapsed_,
       collapsedButtonClass: 'icon-help',
-      collapsible: true,
       position: M.ui.position[this.position_],
       tooltip: this.tooltip_,
       order: this.order,
@@ -141,7 +156,23 @@ export default class Popup extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed_}*${this.url_es_}*${this.url_en_}`;
+    const URL =
+      (this.options.helpLink && Object.keys(this.options.helpLink).length > 0) ? [
+        this.options.helpLink.es,
+        this.options.helpLink.en,
+      ] : [this.url_en, this.url_es];
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${URL[0]}*${URL[1]}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64:${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

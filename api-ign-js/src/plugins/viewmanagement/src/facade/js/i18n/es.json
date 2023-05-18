@@ -1,0 +1,18 @@
+{
+  "exception": {
+    "impl": "La implementación usada no puede crear controles ViewManagementControl.",
+    "impl_zoomextent": "La implementación usada no puede crear controles ZoomExtentControl.",
+    "impl_viewhistory": "La implementación usada no puede crear controles ViewHistoryControl.",
+    "impl_zoompanel": "La implementación usada no puede crear controles ZoomPanelControl.",
+    "impl_predefinedzoom": "La implementación usada no puede crear controles PredefinedZoomControl."
+  },
+  "tooltip": "Gestión de la vista",
+  "viewhistory": "Historia",
+  "nextView": "Vista siguiente",
+  "previousView": "Vista anterior",
+  "predefinedzoom": "Zoom predefinido",
+  "zoomextent": "Zoom al recuadro",
+  "zoompanel": "Herramientas de zoom",
+  "zoomin": "Aumentar zoom",
+  "zoomout": "Disminuir zoom"
+}

@@ -1,4 +1,5 @@
 {
   "nextView": "Vista siguiente",
-  "previousView": "Vista anterior"
+  "previousView": "Vista anterior",
+  "viewhistory_obsolete": "M.plugin.ViewHistory ha quedado obsoleto, utilice en su lugar M.plugin.ViewManagement"
 }

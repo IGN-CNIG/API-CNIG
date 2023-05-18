@@ -5,6 +5,7 @@
  */
 import { get as remoteGet } from 'M/util/Remote';
 import chroma from 'chroma-js';
+import Draggabilly from 'draggabilly';
 import * as dynamicImage from 'assets/img/dynamic_legend';
 import { INCHES_PER_UNIT, DOTS_PER_INCH } from '../units';
 import * as WKT from '../geom/WKT';
@@ -1392,6 +1393,44 @@ export const encodeBase64 = (json) => {
 export const decodeBase64 = (base64) => {
   const json = window.atob(base64);
   return json;
+};
+
+/**
+ * Esta función proporciona movimiento a un plugin.
+ *
+ * @function
+ * @param {M.ui.Panel} panel Panel del "plugin"
+ * @param {string} handleEl Elemento o selector en el que
+ * comienza la interacción del arrastre
+ * @api
+ */
+export const draggabillyPlugin = (panel, handleEl) => {
+  const htmlPanel = panel.getTemplatePanel();
+  let draggable = null;
+  setTimeout(() => {
+    draggable = new Draggabilly(htmlPanel, {
+      containment: '.m-mapea-container',
+      handle: handleEl,
+    });
+
+    if (!M.utils.isNull(draggable) && !panel.isCollapsed()) {
+      draggable.enable();
+    }
+
+    const closeButton = htmlPanel.querySelector('.m-panel-btn');
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        if (panel.isCollapsed()) {
+          htmlPanel.style.removeProperty('left');
+          htmlPanel.style.removeProperty('top');
+          htmlPanel.style.position = 'relative';
+          draggable.disable();
+        } else {
+          draggable.enable();
+        }
+      });
+    }
+  }, 1000);
 };
 
 /**

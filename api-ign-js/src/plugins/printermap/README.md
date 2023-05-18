@@ -28,84 +28,131 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsed**: Valor booleano que indica si el plugin aparece colapsado o no.
-  - true (por defecto).
-  - false.
-- **collapsible**: Valor booleano que indica si el plugin puede colapsarse o no.
-  - true (por defecto).
-  - false.
-- **serverUrl**: URL del servidor Geoprint.
-- **printTemplateUrl**: URL con las plantillas a utilizar.
-- **printStatusUrl**: URL para consultar el estado de la impresión.
+- **collapsed**: Valor booleano que indica si el plugin aparece colapsado o no (true/false). Por defecto: true.
+- **collapsible**: Valor booleano que indica si el plugin puede colapsarse o no (true/false). Por defecto: true.
+- **tooltip**. Tooltip que se muestra sobre el plugin. Por defecto: Impresión del mapa.
+- **serverUrl**: URL del servidor Geoprint. Por defecto: https://componentes.cnig.es/geoprint. 
+- **printTemplateUrl**: URL con las plantillas a utilizar. Por defecto: https://componentes.cnig.es/geoprint/print/CNIG.
+- **printStatusUrl**: URL para consultar el estado de la impresión. Por defecto: https://componentes.cnig.es/geoprint/print/status.
+- **printTemplateGeoUrl**: URL de las plantillas a utilizar para Geoprint. Por defecto: https://componentes.cnig.es/geoprint/print/mapexport.
 - **credits**: URL que indica el estado del servidor Geoprint.
-- **georefActive**: Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no.
-- true (por defecto).
-- false.
-- **fototeca**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición.
-- true.
-- false (por defecto).
-- **logo**: URL de una imagen para añadir como logo en la esquina superior derecha.
-- **headerLegend**: URL de una imagen para añadir como leyenda en la parte central de la cabecera.
+- **georefActive**: Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no  (true/false). Por defecto: true.
+- **fototeca**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición (true/false). Por defecto: false.
+- **logo**: URL de una imagen para añadir como logo en la esquina superior derecha
+- **headerLegend**: URL de una imagen para añadir como leyenda en la parte central de la cabecera. 
 - **filterTemplates**: Listado de nombres de plantillas que queremos tener disponibles, si no se manda el parámetro aparecerán todas por defecto.
 
 # API-REST
 
+### Estructura API-REST
+
 ```javascript
-URL_API?printermap=position*collapsed*collapsible*serverUrl*printTemplateUrl*printTemplateGeoUrl*printStatusUrl
-*georefActive*logo*fototeca
+URL_API?printermap=position*collapsed*collapsible*tooltip*serverUrl*printTemplateUrl*printTemplateGeoUrl*printStatusUrl
+*georefActive*logo*headerLegend*fototeca*credits
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BL/BR</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>collapsed</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>collapsible</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor que se muestra sobre el plugin</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
   <tr>
     <td>serverUrl</td>
     <td>URL del servidor Geoprint</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
   <tr>
     <td>printTemplateUrl</td>
     <td>URL de las plantillas a utilizar</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
   <tr>
     <td>printTemplateGeoUrl</td>
     <td>URL de las plantillas a utilizar para Geoprint</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
   <tr>
     <td>printStatusUrl</td>
     <td>URL para consultar el estado de la impresión</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>georefActive</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>logo</td>
     <td>URL de la imagen para el logo</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>headerLegend</td>
+    <td>URL de la imagen como leyenda</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>fototeca</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>credits</td>
+    <td>URL que indica el estado del servidor Geoprint</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>filterTemplates</td>
+    <td>Listado de nombres de plantillas disponibles</td>
+    <td>Base64 ✔️ | Separador ❌</td>
   </tr>
 </table>
 
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core/?printermap=TL*true*true*https%3A%2F%2Fgeoprint.desarrollo.guadaltel.es*https%3A%2F%2Fgeoprint.desarrollo.guadaltel.es%2Fprint%2FCNIG*https%3A%2F%2Fgeoprint.desarrollo.guadaltel.es%2Fprint%2FCNIG*https%3A%2F%2Fgeoprint.desarrollo.guadaltel.es%2Fprint%2Fstatus*true*https%3A%2F%2Fwww.ign.es%2Fresources%2Fviewer%2Fimages%2FlogoApiCnig0.5.png*false
+https://componentes.cnig.es/api-core/?printermap=TR*true*true*Imprimir%20mapa*https://componentes.cnig.es/geoprint*https://componentes.cnig.es/geoprint/print/CNIG*https://componentes.cnig.es/geoprint/print/mapexport*https://componentes.cnig.es/geoprint/print/status*true*https://www.ign.es/IGNCNIG/Imagenes/Contenidos/IGN-Header-Tittle.png*https://centrodedescargas.cnig.es/CentroDescargas/imgCdD/escudoInstitucional.png*true*Impresión%20generada
 ```
 
+### Ejemplo de uso API-REST en base64
+
+Ejemplo de constructor:
+```javascript
+{
+  position: "TR",
+  collapsed: true,
+  collapsible: true,
+  tooltip: "Imprimir mapa",
+  credits: "Impresin generada",
+  fototeca: true,
+  logo: "https://www.ign.es/IGNCNIG/Imagenes/Contenidos/IGN-Header-Tittle.png",
+  headerLegend: "https://centrodedescargas.cnig.es/CentroDescargas/imgCdD/escudoInstitucional.png",
+  filterTemplates: ["A3 Horizontal"],
+}
 ```
-https://componentes.cnig.es/api-core/?printermap=TL*true*true*https%3A%2F%2Fgeoprint.desarrollo.guadaltel.es*https%3A%2F%2Fgeoprint.desarrollo.guadaltel.es%2Fprint%2FCNIG**https%3A%2F%2Fgeoprint.desarrollo.guadaltel.es%2Fprint%2Fstatus*true**false
+```
+https://componentes.cnig.es/api-core/?printermap=base64:ewogIHBvc2l0aW9uOiAiVFIiLAogIGNvbGxhcHNlZDogdHJ1ZSwKICBjb2xsYXBzaWJsZTogdHJ1ZSwKICB0b29sdGlwOiAiSW1wcmltaXIgbWFwYSIsCiAgY3JlZGl0czogIkltcHJlc2luIGdlbmVyYWRhIiwKICBmb3RvdGVjYTogdHJ1ZSwKICBsb2dvOiAiaHR0cHM6Ly93d3cuaWduLmVzL0lHTkNOSUcvSW1hZ2VuZXMvQ29udGVuaWRvcy9JR04tSGVhZGVyLVRpdHRsZS5wbmciLAogIGhlYWRlckxlZ2VuZDogImh0dHBzOi8vY2VudHJvZGVkZXNjYXJnYXMuY25pZy5lcy9DZW50cm9EZXNjYXJnYXMvaW1nQ2REL2VzY3Vkb0luc3RpdHVjaW9uYWwucG5nIiwKICBmaWx0ZXJUZW1wbGF0ZXM6IFsiQTMgSG9yaXpvbnRhbCJdLAp9
 ```
 
 # Eventos

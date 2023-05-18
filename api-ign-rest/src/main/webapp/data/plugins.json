@@ -350,6 +350,16 @@
     "description": "Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y atrás)."
   },
   {
+    "name": "viewmanagement",
+    "plugin": "[viewmanagement]",
+    "version": "v1.0",
+    "url_es": "viewmanagement.jsp?language=es",
+    "url_en": "viewmanagement.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/viewmanagement",
+    "image": "img/api-logo.png",
+    "description": "Plugin que permite utilizar diferentes herramientas de zoom."
+  },
+  {
     "name": "xylocator",
     "plugin": "[xylocator]",
     "version": "v1.0",

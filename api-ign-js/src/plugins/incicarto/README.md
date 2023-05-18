@@ -41,70 +41,225 @@ Disponemos de dos posibilidades para notificar la incidencia.
 
 El constructor se inicializa con un JSON con los siguientes atributos:
 
-- **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
-- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
 - **position**: Indica la posición donde se mostrará el plugin.
-  - 'TL': (top left) - Arriba a la izquierda (por defecto).
-  - 'TR': (top right) - Arriba a la derecha.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **prefixSubject**: Prefijo que llevará el *subject* del correo electrónico enviado.
-- **interfazmode**: Indica la modalidad de envío de la incidencia.
+- **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
+- **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: Notificar incidencia en cartografía.
+- **wfszoom**: Valor del zoom. Por defecto: 12.
+- **prefixSubject**: Prefijo que llevará el *subject* del correo electrónico enviado. Por defecto: 'Incidencia cartografía - '
+- **interfazmode**: Indica la modalidad de envío de la incidencia. Por defecto: simple.
   - 'simple': se usará un cleinte de correo para enviar la incidencia.
   - 'advance': se usará el gestor de incidencias INCIGEO.
-- **buzones**: Contiene un array con los objetos qued definen el nombre y direcciones de los buzones de incidencias. Cada onjeto buzón contiene dos parámetros.
+- **buzones**: Contiene un array con los objetos que definen el nombre y direcciones de los buzones de incidencias. Cada objeto buzón contiene dos parámetros. Por defecto: []
   - 'name': nombre del propietario del buzón de incidencias.
-  - 'email': correo electrónico del buzón.
-- **controllist**: Contiene un array enumerando las listas controladas con sus características.
+  - 'email': correo electrónico del buzón. 
+- **controllist**: Contiene un array enumerando las listas controladas con sus características. 
   - 'id': identificador de la lista.
   - 'name': nombre de la lista.
   - 'mandatory': indica si el usuario está obligado a legir una opción.
-- **themeList**: Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades
+
+Por defecto: 
+```javascript
+[
+  {
+    id: 'themeList',
+    name: 'Temas de errores',
+    mandatory: true,
+  },
+  {
+    id: 'errorList',
+    name: 'Tipos de errores',
+    mandatory: true,
+  },
+  {
+    id: 'productList',
+    name: 'Lista de productos',
+    mandatory: true,
+  },
+]
+```
+  
+- **themeList**: Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades. Por defecto: []
   - 'idTheme': identificador de código de tema.
   - 'nameTheme': nombre del tema de error.
   - 'emailTheme': correo de la entidad responsable de subsanar este error.
-- **errorList**: Lista de control con las posibles categorizaciones del error.
-- **productList**: Lista de control con los productos del IGN en los que se ha detectado el error.
-- **wfszoom**: Valor del zoom. Por defecto: 12.
+- **errorList**: Lista de control con las posibles categorizaciones del error. Por defecto: []
+- **productList**: Lista de control con los productos del IGN en los que se ha detectado el error. Por defecto: []
 
 # API-REST
 
 ```javascript
-URL_API?incicarto=position*collapsed*collapsible*wfszoom
+URL_API?incicarto=position*collapsed*collapsible*tooltip*wfszoom*prefixSubject*interfazmode
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
    <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
    <tr>
     <td>collapsed</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
    <tr>
     <td>collapsible</td>
     <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
-   <tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a usar para mostrar en el tooltip del plugin</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
     <td>wfszoom</td>
     <td>Valor del zoom</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
+  <tr>
+    <td>prefixSubject</td>
+    <td>Prefijo que llevará el *subject* del correo electrónico</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>interfazmode</td>
+    <td>simple/advance</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>buzones</td>
+    <td>array con los objetos que definen el nombre y direcciones de los buzones de incidencias</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>controllist</td>
+    <td>array enumerando las listas controladas con sus características (id, name, mandatory)</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>themeList</td>
+    <td>Lista de control con temas por los que podemos clasificar una incidencia (idTheme, nameTheme, emailTheme)</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>errorList</td>
+    <td>Lista de control con las posibles categorizaciones del error.</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>productList</td>
+    <td>Lista de control con los productos del IGN en los que se ha detectado el error.</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>  
 </table>
 
 
 ### Ejemplos de uso API-REST
+```
+https://componentes.cnig.es/api-core?incicarto=TL*true*true*Incicarto%20plugin
+```
 
 ```
-https://componentes.cnig.es/api-core?incicarto=BL*true*true*5
+https://componentes.cnig.es/api-core?incicarto=TL*true*true*Incicarto%20plugin*12*Incidencia%20cartográfica%20-%20*simple
+```
+
+### Ejemplo de uso API-REST en base64
+
+Ejemplo del constructor: 
+```javascript
+{
+  collapsed: true,
+  collapsible: true,
+  position: "TL",
+  wfszoom: 12,
+  prefixSubject: "Incidencia cartogrfica - ",
+  interfazmode: "simple",
+  buzones: [
+    {
+      name: "Cartografa (MTN, BTN, RT, HY, Pob, BCN, Provinciales, escalas pequeas)",
+      email: "cartografia.ign@mitma.es",
+    },
+    {
+      name: "Atlas Nacional de Espaa",
+      email: "ane@mitma.es",
+    },
+  ],
+  controllist: [
+    {
+      id: "themeList",
+      name: "Temas de errores",
+      mandatory: true,
+    },
+    {
+      id: "errorList",
+      name: "Tipos de errores",
+      mandatory: true,
+    },
+    {
+      id: "productList",
+      name: "Lista de productos",
+      mandatory: true,
+    },
+  ],
+  themeList: [
+    {
+      idTheme: 1,
+      nameTheme: "No especificado",
+      emailTheme: "consultas@cnig.es",
+    },
+    {
+      idTheme: 2,
+      nameTheme: "Relieve",
+      emailTheme: "cartografia.ign@mitma.es",
+    },
+  ],
+  errorList: [
+    "No especificado",
+    "Omisin",
+    "Comisin",
+    "Clasificacin",
+    "Nombre",
+    "Valor del atributo",
+    "Forma",
+    "Localizacin",
+    "Otros",
+  ],
+  productList: [
+    "No especificado",
+    "Serie MTN25",
+    "Serie MTN50",
+    "BTN25",
+    "BTN100",
+    "MP200",
+    "BCN200",
+    "BCN500",
+    "Mapa Autonmico",
+    "Mapa Espaa 1:500 000",
+    "Mapa Espaa 1:1 000 000",
+    "Cartociudad",
+    "Redes de Transporte",
+    "Hidrografa",
+    "Poblaciones",
+    "Mundo real",
+    "IGN Base",
+    "Otros productos",
+  ],
+}
 ```
 
 ```
-https://componentes.cnig.es/api-core?incicarto=BL*true*true
+https://componentes.cnig.es/api-core?incicarto=base64:eyJjb2xsYXBzZWQiOnRydWUsImNvbGxhcHNpYmxlIjp0cnVlLCJwb3NpdGlvbiI6IlRMIiwid2Zzem9vbSI6MTIsInByZWZpeFN1YmplY3QiOiJJbmNpZGVuY2lhIGNhcnRvZ3LhZmljYSAtICIsImludGVyZmF6bW9kZSI6InNpbXBsZSIsImJ1em9uZXMiOlt7Im5hbWUiOiJDYXJ0b2dyYWbtYSAoTVROLCBCVE4sIFJULCBIWSwgUG9iLCBCQ04sIFByb3ZpbmNpYWxlcywgZXNjYWxhcyBwZXF1ZfFhcykiLCJlbWFpbCI6ImNhcnRvZ3JhZmlhLmlnbkBtaXRtYS5lcyJ9LHsibmFtZSI6IkF0bGFzIE5hY2lvbmFsIGRlIEVzcGHxYSIsImVtYWlsIjoiYW5lQG1pdG1hLmVzIn1dLCJjb250cm9sbGlzdCI6W3siaWQiOiJ0aGVtZUxpc3QiLCJuYW1lIjoiVGVtYXMgZGUgZXJyb3JlcyIsIm1hbmRhdG9yeSI6dHJ1ZX0seyJpZCI6ImVycm9yTGlzdCIsIm5hbWUiOiJUaXBvcyBkZSBlcnJvcmVzIiwibWFuZGF0b3J5Ijp0cnVlfSx7ImlkIjoicHJvZHVjdExpc3QiLCJuYW1lIjoiTGlzdGEgZGUgcHJvZHVjdG9zIiwibWFuZGF0b3J5Ijp0cnVlfV0sInRoZW1lTGlzdCI6W3siaWRUaGVtZSI6MSwibmFtZVRoZW1lIjoiTm8gZXNwZWNpZmljYWRvIiwiZW1haWxUaGVtZSI6ImNvbnN1bHRhc0BjbmlnLmVzIn0seyJpZFRoZW1lIjoyLCJuYW1lVGhlbWUiOiJSZWxpZXZlIiwiZW1haWxUaGVtZSI6ImNhcnRvZ3JhZmlhLmlnbkBtaXRtYS5lcyJ9XSwiZXJyb3JMaXN0IjpbIk5vIGVzcGVjaWZpY2FkbyIsIk9taXNp824iLCJDb21pc2nzbiIsIkNsYXNpZmljYWNp824iLCJOb21icmUiLCJWYWxvciBkZWwgYXRyaWJ1dG8iLCJGb3JtYSIsIkxvY2FsaXphY2nzbiIsIk90cm9zIl0sInByb2R1Y3RMaXN0IjpbIk5vIGVzcGVjaWZpY2FkbyIsIlNlcmllIE1UTjI1IiwiU2VyaWUgTVRONTAiLCJCVE4yNSIsIkJUTjEwMCIsIk1QMjAwIiwiQkNOMjAwIiwiQkNONTAwIiwiTWFwYSBBdXRvbvNtaWNvIiwiTWFwYSBFc3Bh8WEgMTo1MDAgMDAwIiwiTWFwYSBFc3Bh8WEgMToxIDAwMCAwMDAiLCJDYXJ0b2NpdWRhZCIsIlJlZGVzIGRlIFRyYW5zcG9ydGUiLCJIaWRyb2dyYWbtYSIsIlBvYmxhY2lvbmVzIiwiTXVuZG8gcmVhbCIsIklHTiBCYXNlIiwiT3Ryb3MgcHJvZHVjdG9zIl19
 ```
 
 # Ejemplo de uso

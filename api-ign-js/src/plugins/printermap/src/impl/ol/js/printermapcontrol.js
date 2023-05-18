@@ -100,6 +100,8 @@ export default class PrinterMapControl extends M.impl.Control {
         success(this.encodeXYZ(layer));
       } else if (layer.type === M.layer.type.MVT) {
         success(this.encodeMVT(layer));
+      } else if (layer.type === M.layer.type.MBTiles || layer.type === M.layer.type.MBTilesVector) {
+        success('');
       } else {
         success(this.encodeWFS(layer));
       }

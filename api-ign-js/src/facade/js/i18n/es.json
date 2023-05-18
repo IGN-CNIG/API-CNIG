@@ -38,6 +38,9 @@
     "only_one_filter": "FeatureID y CQL son mutuamente excluyentes. Indicar sólo un tipo de filtrado.",
     "any_format": "TXT, ni HTML ni GML están soportados"
   },
+  "toast": {
+    "close": "Cerrar"
+  },
   "feature": {
     "incorrect_attributes": "No se han especificado correctamente los atributos."
   },
@@ -92,6 +95,7 @@
     "removewms_method": "La implementación usada no posee el método removeWMS.",
     "getwfs_method": "La implementación usada no posee el método getWFS.",
     "getgeojson_method": "La implementación usada no posee el método getGeoJSON.",
+    "getogcapif_method": "La implementación usada no posee el método getOGCAPIFeatures.",
     "addwfs_method": "La implementación usada no posee el método addWFS.",
     "removewfs_method": "La implementación usada no posee el método removeWFS.",
     "getwmts_method": "La implementación usada no posee el método getWMTS.",
@@ -156,6 +160,11 @@
     "min_gt_max": "No puede establecerse un radio mínimo mayor que el máximo.",
     "max_lt_min": "No puede establecerse un radio máximo menor que el mínimo.",
     "no_geojson": "No se ha especificado ningun GeoJSON",
-    "unsupported_lang": "Se ha establecido un idioma sin soporte"
+    "unsupported_lang": "Se ha establecido un idioma sin soporte",
+    "mbtilesvector_method": "La implementación usada no puede crear capas MBTilesVector",
+    "mbtiles_method": "La implementación usada no puede crear capas MBTiles",
+    "no_source": "Fuente no especificada.",
+    "addmbtiles_method": "La implementación usada no posee el método addMBTilesVector.",
+    "removembtiles_method": "La implementación usada no posee el método removeMBTilesVector."
   }
 }

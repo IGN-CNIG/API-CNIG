@@ -44,6 +44,7 @@ import WFS from './layer/WFS';
 import WMS from './layer/WMS';
 import WMTS from './layer/WMTS';
 import MVT from './layer/MVT';
+import OGCAPIFeatures from './layer/OGCAPIFeatures';
 import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
@@ -60,7 +61,7 @@ import OSM from './layer/OSM';
  * con parámetros especificados por el usuario.
  *
  * @property {Boolean} _defaultProj Indica si la proyección utilizada
-  * es por defecto.
+ * es por defecto.
  * @property {object} panel Objeto del panel.
  * @property {Array<Number>} userMaxExtent Extensión máxima proporcionada por el usuario.
  * @extends {M.facade.Base}
@@ -444,6 +445,9 @@ class Map extends Base {
               case 'MBTiles':
                 layer = new MBTiles(parameterVariable);
                 break;
+              case 'MBTilesVector':
+                layer = new MBTilesVector(parameterVariable);
+                break;
               case 'XYZ':
                 layer = new XYZ(parameterVariable);
                 break;
@@ -452,6 +456,9 @@ class Map extends Base {
                 break;
               case 'OSM':
                 layer = new OSM(layerParam);
+                break;
+              case 'OGCAPIFeatures':
+                layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
                 break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);
@@ -470,7 +477,8 @@ class Map extends Base {
         if ((layer instanceof Vector)
           /* && !(layer instanceof KML) */
           &&
-          !(layer instanceof WFS)) {
+          !(layer instanceof WFS) &&
+          !(layer instanceof OGCAPIFeatures)) {
           this.featuresHandler_.addLayer(layer);
         }
 
@@ -708,7 +716,7 @@ class Map extends Base {
    *
    * @function
    * @param {Array<string>|Array<Mx.parameters.WMC>} layersParam Opcional.
-    * - Matriz de capas de nombres, tipo WMS.
+   * - Matriz de capas de nombres, tipo WMS.
    * @returns {Array<WMS>} Matriz de capas, tipo WMS.
    * @api
    */
@@ -951,6 +959,120 @@ class Map extends Base {
   }
 
   /**
+   * Este método agrega las capas de OGCAPIFeatures al mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional
+   * - Matriz de capas de nombres, escriba OGCAPIFeatures.
+   * @returns {Array<OGCAPIFeatures>} Capas del mapa.
+   * @api
+   */
+  getOGCAPIFeatures(layersParamVar) {
+    let layersParam = layersParamVar;
+    // checks if the implementation can manage layers
+    if (isUndefined(MapImpl.prototype.getOGCAPIFeatures)) {
+      Exception(getValue('exception').getogcapif_method);
+    }
+
+    // parses parameters to Array
+    if (isNull(layersParam)) {
+      layersParam = [];
+    } else if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    // gets the parameters as Layer objects to filter
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.OGCAPIFeatures);
+      });
+    }
+
+    // gets the layers
+    const layers = this.getImpl().getOGCAPIFeatures(filters).sort(Map.LAYER_SORT);
+
+    return layers;
+  }
+
+  /**
+   * Este método agrega las capas OGCAPIFeatures al mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.OGCAPIFeatures>} layersParam Colección u objeto
+   * de capa.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  addOGCAPIFeatures(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.addOGCAPIFeatures)) {
+        Exception(getValue('exception').addogcapif_method);
+      }
+
+      // parses parameters to Array
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      // gets the parameters as OGCAPIFeatures objects to add
+      const ogcapifLayers = [];
+      layersParam.forEach((layerParam) => {
+        let ogcapifLayer;
+        if (isObject(layerParam) && (layerParam instanceof OGCAPIFeatures)) {
+          ogcapifLayer = layerParam;
+        } else if (!(layerParam instanceof Layer)) {
+          try {
+            ogcapifLayer = new OGCAPIFeatures(layerParam, layerParam.options);
+          } catch (err) {
+            Dialog.error(err.toString());
+            throw err;
+          }
+        }
+        this.featuresHandler_.addLayer(ogcapifLayer);
+        ogcapifLayers.push(ogcapifLayer);
+      });
+
+      // adds the layers
+      this.getImpl().addOGCAPIFeatures(ogcapifLayers);
+      this.fire(EventType.ADDED_LAYER, [ogcapifLayers]);
+      this.fire(EventType.ADDED_OGCAPIFEATURES, [ogcapifLayers]);
+    }
+    return this;
+  }
+
+  /**
+   * Este método elimina las capas OGCAPIFeatures del mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.OGCAPIFeatures>} layersParam Matriz de capas de
+   * nombres que desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  removeOGCAPIFeatures(layersParam) {
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.removeOGCAPIFeatures)) {
+        Exception(getValue('exception').removeogcapif_method);
+      }
+
+      // gets the layers
+      const ogcapifLayers = this.getOGCAPIFeatures(layersParam);
+      if (ogcapifLayers.length > 0) {
+        ogcapifLayers.forEach((layer) => {
+          this.featuresHandler_.removeLayer(layer);
+        });
+        // removes the layers
+        this.getImpl().removeOGCAPIFeatures(ogcapifLayers);
+      }
+    }
+    return this;
+  }
+
+  /**
    * Este método obtiene las capas WMTS agregadas al mapa.
    *
    * @function
@@ -1164,20 +1286,16 @@ class Map extends Base {
   }
 
   /**
-   * Este método agrega las capas de MBtiles al mapa.
+   * Este método obtiene las capas MBTiles agregadas al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional
+   * @param {Array<string>|Array<Mx.parameters.MBTiles>} layersParam Opcional.
    * - Matriz de capas de nombres, tipo MBTiles.
-   * @returns {Array<M.layer.MBtiles>} Capas del mapa.
-   * @deprecated
+   * @returns {Array<M.layer.MBTiles>} Capas del mapa.
    * @api
    */
   getMBTiles(layersParamVar) {
     let layersParam = layersParamVar;
-    if (isUndefined(MapImpl.prototype.getMBTiles)) {
-      Exception(getValue('exception').getmbtiles_method);
-    }
 
     if (isNull(layersParam)) {
       layersParam = [];
@@ -1185,46 +1303,42 @@ class Map extends Base {
       layersParam = [layersParam];
     }
 
+    // gets the parameters as Layer objects to filter
     let filters = [];
     if (layersParam.length > 0) {
-      filters = layersParam.map(parameter.layer);
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.MBTiles);
+      });
     }
-
     const layers = this.getImpl().getMBTiles(filters).sort(Map.LAYER_SORT);
 
     return layers;
   }
 
   /**
-   * Este método agrega las capas de MBtiles al mapa.
+   * Este método agrega las capas de MBTiles al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Colección u objeto de capa.
+   * @param {Array<string>|Array<Mx.parameters.MBTiles>} layersParamVar Colección u
+   * objeto de capa.
    * @returns {Map} Devuelve el estado del mapa.
-   * @deprecated
    * @api
    */
   addMBTiles(layersParamVar) {
     let layersParam = layersParamVar;
     if (!isNullOrEmpty(layersParam)) {
-      if (isUndefined(MapImpl.prototype.addMBTiles)) {
-        Exception(getValue('exception').addmbtiles_method);
-      }
-
       if (!isArray(layersParam)) {
         layersParam = [layersParam];
       }
 
       const mbtilesLayers = [];
       layersParam.forEach((layerParam) => {
-        if (isObject(layerParam) && (layerParam instanceof MBTiles)) {
-          layerParam.setMap(this);
-          mbtilesLayers.push(layerParam);
-        } else if (!(layerParam instanceof Layer)) {
-          const mbtilesLayer = new MBTiles(layerParam, layerParam.options);
-          mbtilesLayer.setMap(this);
-          mbtilesLayers.push(mbtilesLayer);
+        let mbtileslayer = layerParam;
+        if (!(layerParam instanceof MBTiles)) {
+          mbtileslayer = new MBTiles(layerParam, layerParam.options);
         }
+        mbtileslayer.setMap(this);
+        mbtilesLayers.push(mbtileslayer);
       });
 
       this.getImpl().addMBTiles(mbtilesLayers);
@@ -1235,21 +1349,16 @@ class Map extends Base {
   }
 
   /**
-   * Este método elimina las capas de MBtiles del mapa.
+   * Este método elimina las capas de MBTiles del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Matriz de capas de nombres que
+   * @param {Array<string>|Array<Mx.parameters.MBTiles>} layersParam Matriz de capas de nombres que
    * desea eliminar.
    * @returns {Map} Devuelve el estado del mapa.
-   * @deprecated
    * @api
    */
   removeMBTiles(layersParam) {
     if (!isNullOrEmpty(layersParam)) {
-      if (isUndefined(MapImpl.prototype.removeMBTiles)) {
-        Exception(getValue('exception').removembtiles_method);
-      }
-
       const mbtilesLayers = this.getMBTiles(layersParam);
       if (mbtilesLayers.length > 0) {
         this.getImpl().removeMBTiles(mbtilesLayers);
@@ -1259,13 +1368,12 @@ class Map extends Base {
   }
 
   /**
-   * Este método agrega las capas de MBtiles al mapa.
+   * Este método obtiene las capas MBTilesVector agregadas al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Opcional
+   * @param {Array<string>|Array<Mx.parameters.MBTilesVector>} layersParamVar Opcional.
    * - Matriz de capas de nombres, tipo MBTilesVector.
-   * @returns {Array<M.layer.MBtiles>} Capas del mapa.
-   * @deprecated
+   * @returns {Array<M.layer.MBTilesVector>} Capas del mapa.
    * @api
    */
   getMBTilesVector(layersParamVar) {
@@ -1278,21 +1386,25 @@ class Map extends Base {
     } else if (!isArray(layersParam)) {
       layersParam = [layersParam];
     }
+
+    // gets the parameters as Layer objects to filter
     let filters = [];
     if (layersParam.length > 0) {
-      filters = layersParam.map(parameter.layer);
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.MBTilesVector);
+      });
     }
     const layers = this.getImpl().getMBTilesVector(filters).sort(Map.LAYER_SORT);
     return layers;
   }
 
   /**
-   * Este método agrega las capas de MBtiles al mapa.
+   * Este método agrega las capas de MBTilesVector al mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Colección u objeto de capa.
+   * @param {Array<string>|Array<Mx.parameters.MBTilesVector>} layersParamVar
+   * Colección u objeto de capa.
    * @returns {Map} Devuelve el estado del mapa.
-   * @deprecated
    * @api
    */
   addMBTilesVector(layersParamVar) {
@@ -1320,12 +1432,11 @@ class Map extends Base {
   }
 
   /**
-   * Este método elimina las capas de MBtiles del mapa.
+   * Este método elimina las capas de MBTilesVector del mapa.
    *
    * @function
-   * @param {Array<string>|Array<Mx.parameters.MBtiles>} layersParam Matriz de capas de nombres que
-   * desea eliminar.
-   * @deprecated
+   * @param {Array<string>|Array<Mx.parameters.MBTilesVector>} layersParam Matriz de capas
+   * de nombres que desea eliminar.
    * @returns {Map} Devuelve el estado del mapa.
    * @api
    */

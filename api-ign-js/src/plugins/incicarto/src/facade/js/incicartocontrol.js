@@ -151,8 +151,6 @@ export default class IncicartoControl extends M.Control {
 
     this.wfszoom = options.wfszoom;
 
-    this.precharged = options.precharged;
-
     this.interfazmode = options.interfazmode;
 
     this.prefixSubject = options.prefixSubject;
