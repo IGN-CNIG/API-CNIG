@@ -20,7 +20,7 @@ import ImplUtils from '../util/Utils';
  * capacidad de crear, modificar y consultar datos
  * espaciales en la Web y especifica requisitos y recomendaciones para las API que desean seguir una
  * forma estándar de compartir datos de entidades.
- * @extends { M.impl.layer.Vector }
+ * @extends {M.impl.layer.Vector}
  * @api
  */
 class OGCAPIFeatures extends Vector {

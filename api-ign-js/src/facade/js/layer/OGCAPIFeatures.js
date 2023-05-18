@@ -18,23 +18,23 @@ import Generic from '../style/Generic';
  * espaciales en la Web y especifica requisitos y recomendaciones para las API que desean seguir una
  * forma estándar de compartir datos de entidades.
  *
- * @property { String } legend Indica el nombre que queremos que aparezca en el
+ * @property {String} legend Indica el nombre que queremos que aparezca en el
  * árbol de contenidos, si lo hay.
- * @property { String } url URL del servicio.
- * @property { String } name Nombre de la capa en el servidor.
- * @property { Number } limit Límite de features a mostrar.
- * @property { Array<Number> } bbox Filtro para mostrar los resultados en un bbox específico.
- * @property { String } format Formato de los objetos geográficos.
- * @property { Number } offset Determina desde que número comenzará a leer los features. Ejemplo:
+ * @property {String} url URL del servicio.
+ * @property {String} name Nombre de la capa en el servidor.
+ * @property {Number} limit Límite de features a mostrar.
+ * @property {Array<Number>} bbox Filtro para mostrar los resultados en un bbox específico.
+ * @property {String} format Formato de los objetos geográficos.
+ * @property {Number} offset Determina desde que número comenzará a leer los features. Ejemplo:
  * El parámetro offset tiene valor 10 con límite de 5 features, devolverá los 5 primeros
  * features desde número 10 de los resultados.
- * @property { Number } id Filtro por ID para un feature.
- * @property { Array <M.style> } predefinedStyles Estilos predefinidos para la capa.
- * @property { String } cql Declaración CQL para filtrar las características
+ * @property {Number } id Filtro por ID para un feature.
+ * @property {Array<M.style>} predefinedStyles Estilos predefinidos para la capa.
+ * @property {String} cql Declaración CQL para filtrar las características
  * (Sólo disponible para servicios en PostgreSQL).
- * @property { Object } conditional Declaración de filtros literales por atributos del feature.
- * @property { String } crs Definición de la proyección de los datos.
- * @property { String } geometry Tipo de geometría: POINT(Punto), MPOINT(Multiples puntos),
+ * @property {Object} conditional Declaración de filtros literales por atributos del feature.
+ * @property {String} crs Definición de la proyección de los datos.
+ * @property {String} geometry Tipo de geometría: POINT(Punto), MPOINT(Multiples puntos),
  * LINE(línea), MLINE(Multiples línes), POLYGON(Polígono), or MPOLYGON(Multiples polígonos).
  * @property {Object} opt Opciones de la capa.
  *
