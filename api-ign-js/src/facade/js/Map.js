@@ -549,7 +549,7 @@ class Map extends Base {
       };
     }))
       .then(values => this.collectionCapabilities_.push(...values))
-      .catch(err => console.error(err));
+      .catch(err => Dialog.error(err.toString()));
   }
 
   /**
