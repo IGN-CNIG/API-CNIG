@@ -3384,7 +3384,7 @@ export const getStyleMBTilesVector = (parameter) => {
   if (isString(parameter)) {
     if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
       params = parameter.split(/\*/);
-      style = params[8].trim();
+      style = params[7].trim();
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.style)) {
     style = parameter.style;
