@@ -2857,10 +2857,11 @@ export const getLegendMBTiles = (parameter) => {
   let legend;
   let params;
   if (isString(parameter)) {
-    // <MBTile>*<legend>
-    if (/^MBtiles\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      legend = params[1].trim();
+    // <MBTiles>*<legend>
+    params = parameter.split('*');
+    if (params.length - 1 >= 1) {
+      const value = params[1].trim();
+      legend = isNullOrEmpty(value) ? undefined : value;
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
     legend = parameter.legend.trim();
@@ -2886,6 +2887,7 @@ export const getLegendMBTiles = (parameter) => {
 export const getURLMBTiles = (parameter) => {
   let url;
   if (isString(parameter)) {
+    // <MBTiles>*<legend><URL>
     const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)([^*]*\*?)*$/i);
     if (urlMatches && (urlMatches.length > 2)) {
       url = urlMatches[2];
@@ -2953,10 +2955,11 @@ export const getNameMBTiles = (parameter) => {
   let name;
   let params;
   if (isString(parameter)) {
-    // <MBTile>*<legend>*<URL>*<NAME>
-    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      name = params[3].trim();
+    // <MBTiles>*<legend>*<URL>*<NAME>
+    params = parameter.split('*');
+    if (params.length - 1 >= 3) {
+      const value = params[3].trim();
+      name = isNullOrEmpty(value) ? undefined : value;
     } else if (/^[^*]*/.test(parameter)) {
       // <NAME>
       params = parameter.split(/\*/);
@@ -2988,9 +2991,11 @@ export const getTransparentMBTiles = (parameter) => {
   let transparent;
   let params;
   if (isString(parameter)) {
-    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      transparent = params[4];
+    // <MBTiles>*<legend>*<URL>*<NAME>*<transparent>
+    params = parameter.split('*');
+    if (params.length - 1 >= 4) {
+      const value = params[4].trim();
+      transparent = isNullOrEmpty(value) ? undefined : value;
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.transparent)) {
     transparent = parameter.transparent;
@@ -3017,9 +3022,15 @@ export const getVisibilityMBTiles = (parameter) => {
   let visibility;
   let params;
   if (isString(parameter)) {
-    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      visibility = params[5];
+    // <MBTiles>*<legend>*<URL>*<NAME>*<transparent>*<visibility>
+    params = parameter.split('*');
+    if (params.length - 1 >= 5) {
+      const value = params[5].trim();
+      if (!isNullOrEmpty(value)) {
+        visibility = value !== 'false';
+      } else {
+        visibility = undefined;
+      }
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.visibility)) {
     visibility = parameter.visibility;
@@ -3044,13 +3055,7 @@ export const getVisibilityMBTiles = (parameter) => {
  */
 export const getOpacityMBTiles = (parameter) => {
   let opacity;
-  let params;
-  if (isString(parameter)) {
-    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      opacity = params[6];
-    }
-  } else if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
+  if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
     opacity = parameter.opacity;
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
@@ -3073,19 +3078,36 @@ export const getOpacityMBTiles = (parameter) => {
  */
 export const getMaxZoomLevelMBTiles = (parameter) => {
   let maxZoomLevel;
-  let params;
-  if (isString(parameter)) {
-    if (/^MBtiles\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      maxZoomLevel = parseInt(params[7].trim(), 10);
-    }
-  } else if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
+  if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
     maxZoomLevel = parameter.maxZoomLevel;
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return maxZoomLevel;
+};
+
+/**
+ * Analiza el parámetro para obtener la máxima extensión de la capa MBTiles.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener la
+ * máxima extensión de la capa MBTiles.
+ * @returns {Mx.Extent} Máxima extensión de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getMaxExtentMBTiles = (parameter) => {
+  let extent;
+  if (isObject(parameter) && !isNullOrEmpty(parameter.maxExtent)) {
+    extent = parameter.maxExtent;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return extent;
 };
 
 /**
@@ -3135,6 +3157,8 @@ export const mbtiles = (userParameters) => {
 
     layerObj.maxZoomLevel = getMaxZoomLevelMBTiles(userParam);
 
+    layerObj.maxExtent = getMaxExtentMBTiles(userParam);
+
     layerObj.tileLoadFunction = getTileLoadFunctionMBTiles(userParam);
 
     return layerObj;
@@ -3163,10 +3187,11 @@ export const getLegendMBTilesVector = (parameter) => {
   let legend;
   let params;
   if (isString(parameter)) {
-    // <MBTile>*<legend>
-    if (/^MBtilesVector\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      legend = params[1].trim();
+    // <MBTilesVector>*<legend>
+    params = parameter.split('*');
+    if (params.length - 1 >= 1) {
+      const value = params[1].trim();
+      legend = isNullOrEmpty(value) ? undefined : value;
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
     legend = parameter.legend.trim();
@@ -3192,6 +3217,7 @@ export const getLegendMBTilesVector = (parameter) => {
 export const getURLMBTilesVector = (parameter) => {
   let url;
   if (isString(parameter)) {
+    // <MBTilesVector>*<legend><URL>
     const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)([^*]*\*?)*$/i);
     if (urlMatches && (urlMatches.length > 2)) {
       url = urlMatches[2];
@@ -3261,9 +3287,10 @@ export const getNameMBTilesVector = (parameter) => {
   let params;
   if (isString(parameter)) {
     // <MBTilesVector>*<legend>*<URL>*<NAME>
-    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      name = params[3].trim();
+    params = parameter.split('*');
+    if (params.length - 1 >= 3) {
+      const value = params[3].trim();
+      name = isNullOrEmpty(value) ? undefined : value;
     } else if (/^[^*]*/.test(parameter)) {
       // <NAME>
       params = parameter.split(/\*/);
@@ -3294,9 +3321,15 @@ export const getVisibilityMBTilesVector = (parameter) => {
   let visibility;
   let params;
   if (isString(parameter)) {
-    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      visibility = params[4];
+    // <MBTilesVector>*<legend>*<URL>*<NAME>*<visibility>
+    params = parameter.split('*');
+    if (params.length - 1 >= 4) {
+      const value = params[4].trim();
+      if (!isNullOrEmpty(value)) {
+        visibility = value !== 'false';
+      } else {
+        visibility = undefined;
+      }
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.visibility)) {
     visibility = parameter.visibility;
@@ -3321,13 +3354,7 @@ export const getVisibilityMBTilesVector = (parameter) => {
  */
 export const getOpacityMBTilesVector = (parameter) => {
   let opacity;
-  let params;
-  if (isString(parameter)) {
-    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      opacity = params[5];
-    }
-  } else if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
+  if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
     opacity = parameter.opacity;
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
@@ -3350,19 +3377,35 @@ export const getOpacityMBTilesVector = (parameter) => {
  */
 export const getMaxZoomLevelMBTilesVector = (parameter) => {
   let maxZoomLevel;
-  let params;
-  if (isString(parameter)) {
-    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      maxZoomLevel = parseInt(params[6].trim(), 10);
-    }
-  } else if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
+  if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
     maxZoomLevel = parameter.maxZoomLevel;
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return maxZoomLevel;
+};
+
+/**
+ * Analiza el parámetro para obtener la máxima extensión de la capa MBTilesVector.
+ *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener
+ * la máxima extensión de la capa MBTilesVector.
+ * @returns {Mx.Extent} Máxima extensión de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getMaxExtentMBTilesVector = (parameter) => {
+  let extent;
+  if (isObject(parameter) && !isNullOrEmpty(parameter.maxExtent)) {
+    extent = parameter.maxExtent;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return extent;
 };
 
 /**
@@ -3382,9 +3425,11 @@ export const getStyleMBTilesVector = (parameter) => {
   let style;
 
   if (isString(parameter)) {
-    if (/^MBtilesVector\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
-      params = parameter.split(/\*/);
-      style = params[7].trim();
+    // <MBTilesVector>*<legend>*<URL>*<NAME>*<visibility>*<opacity>*<maxzoom>*<style>
+    params = parameter.split('*');
+    if (params.length - 1 >= 5) {
+      const value = params[5].trim();
+      style = isNullOrEmpty(value) ? undefined : value;
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.style)) {
     style = parameter.style;
@@ -3438,6 +3483,8 @@ export const mbtilesvector = (userParameters) => {
     layerObj.opacity = getOpacityMBTilesVector(userParam);
 
     layerObj.maxZoomLevel = getMaxZoomLevelMBTilesVector(userParam);
+
+    layerObj.maxExtent = getMaxExtentMBTilesVector(userParam);
 
     layerObj.tileLoadFunction = getTileLoadFunctionMBTilesVector(userParam);
 
