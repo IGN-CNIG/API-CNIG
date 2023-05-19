@@ -3050,15 +3050,12 @@ export const getVisibilityMBTiles = (parameter) => {
  * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
  * la opacidad de la capa MBTiles.
  * @returns {number} Opacidad de la capa.
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getOpacityMBTiles = (parameter) => {
   let opacity;
   if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
     opacity = parameter.opacity;
-  } else if (!isObject(parameter)) {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return opacity;
@@ -3073,15 +3070,12 @@ export const getOpacityMBTiles = (parameter) => {
  * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
  * el nivel máximo de la capa MBTiles.
  * @returns {number} Nivel máximo de la capa.
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getMaxZoomLevelMBTiles = (parameter) => {
   let maxZoomLevel;
   if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
     maxZoomLevel = parameter.maxZoomLevel;
-  } else if (!isObject(parameter)) {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return maxZoomLevel;
@@ -3096,15 +3090,12 @@ export const getMaxZoomLevelMBTiles = (parameter) => {
  * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener la
  * máxima extensión de la capa MBTiles.
  * @returns {Mx.Extent} Máxima extensión de la capa.
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getMaxExtentMBTiles = (parameter) => {
   let extent;
   if (isObject(parameter) && !isNullOrEmpty(parameter.maxExtent)) {
     extent = parameter.maxExtent;
-  } else if (!isObject(parameter)) {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return extent;
@@ -3349,15 +3340,12 @@ export const getVisibilityMBTilesVector = (parameter) => {
  * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener
  * la opacidad de la capa MBTilesVector.
  * @returns {number} Opacidad de la capa
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getOpacityMBTilesVector = (parameter) => {
   let opacity;
   if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
     opacity = parameter.opacity;
-  } else if (!isObject(parameter)) {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return opacity;
@@ -3372,15 +3360,12 @@ export const getOpacityMBTilesVector = (parameter) => {
  * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener el
  * nivel máximo de zoom de la capa MBTilesVector.
  * @returns {number} Nivel máximo de zoom de la capa.
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getMaxZoomLevelMBTilesVector = (parameter) => {
   let maxZoomLevel;
   if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
     maxZoomLevel = parameter.maxZoomLevel;
-  } else if (!isObject(parameter)) {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return maxZoomLevel;
@@ -3394,15 +3379,12 @@ export const getMaxZoomLevelMBTilesVector = (parameter) => {
  * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener
  * la máxima extensión de la capa MBTilesVector.
  * @returns {Mx.Extent} Máxima extensión de la capa.
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getMaxExtentMBTilesVector = (parameter) => {
   let extent;
   if (isObject(parameter) && !isNullOrEmpty(parameter.maxExtent)) {
     extent = parameter.maxExtent;
-  } else if (!isObject(parameter)) {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return extent;
@@ -3425,7 +3407,7 @@ export const getStyleMBTilesVector = (parameter) => {
   let style;
 
   if (isString(parameter)) {
-    // <MBTilesVector>*<legend>*<URL>*<NAME>*<visibility>*<opacity>*<maxzoom>*<style>
+    // <MBTilesVector>*<legend>*<URL>*<NAME>*<visibility>*<style>
     params = parameter.split('*');
     if (params.length - 1 >= 5) {
       const value = params[5].trim();
