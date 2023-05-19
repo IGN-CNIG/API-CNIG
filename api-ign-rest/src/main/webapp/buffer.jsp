@@ -12,9 +12,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>Visor base</title>
-    <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/buffer/buffer.ol.min.css" rel="stylesheet" />
-    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="https://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign.ol.min.css">
+    <link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/buffer/buffer.ol.min.css" rel="stylesheet" />
+    <link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -48,14 +48,36 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
+
+   		<label for="selectCollapsed">Selector de collapsed</label>
+        <select name="collapsed" id="selectCollapsed">
+            <option value=''></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
+
+     	<label for="selectCollapsible">Selector de collapsible</label>
+        <select name="collapsible" id="selectCollapsible">
+            <option value=''></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
+
+   		<label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug" value="Reconocimientos">
+        <datalist id="tooltipSug">
+            <option value="Reconocimientos"></option>
+        </datalist>
+
+
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
-    <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
-    <script type="text/javascript" src="js/apiign.ol.min.js"></script>
-    <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/buffer/buffer.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/vendor/browser-polyfill.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/apiign.ol.min.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/configuration.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/buffer/buffer.ol.min.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -77,26 +99,44 @@
             minZoom: 4,
             center: [-467062.8225, 4783459.6216],
         });
-        let mp;
-        let posicion;
-        crearPlugin(posicion);
+
+        //let mp;
+        let mp, posicion, collapsed, collapsible, tooltip;
+        crearPlugin({
+		position: posicion,
+		collapsed: collapsed,
+		collapsible: collapsible,
+		tooltip: tooltip
+		});
 
         const selectPosicion = document.getElementById("selectPosicion");
-        selectPosicion.addEventListener('change', function() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+      	const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
+        const inputTooltip = document.getElementById("inputTooltip");
+  		
+		inputTooltip.addEventListener('change', cambiarTest);
+		selectCollapsible.addEventListener('change', cambiarTest);
+		selectCollapsed.addEventListener('change', cambiarTest);
+        selectPosicion.addEventListener('change',cambiarTest);
+
+		function cambiarTest() {
+		  let objeto = {}
+            objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+    		collapsible = selectCollapsible.options[selectCollapsible.selectedIndex].value;
+            collapsible != '' ? objeto.collapsible = (collapsible === "true") : '';
+	        collapsed = selectCollapsed.options[selectCollapsed.selectedIndex].value;
+            collapsed != '' ? objeto.collapsed = (collapsed === "true") : '';
+   			tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
+
             map.removePlugins(mp);
-            crearPlugin(posicion);
-        });
+            crearPlugin(objeto);
+        };
 
-
-        function crearPlugin(position) {
-            mp = new M.plugin.Buffer({
-                position: position
-            });
-
+     function crearPlugin(propiedades) {
+            mp = new M.plugin.Buffer(propiedades);
             map.addPlugin(mp);
-
         }
+
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
