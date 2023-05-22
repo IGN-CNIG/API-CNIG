@@ -47,15 +47,29 @@
             <option value="BR" selected="selected">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
+
+ 		<label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug" value="Mapa de situación">
+        <datalist id="tooltipSug">
+            <option value="Mapa de situación"></option>
+        </datalist>
+
         <label for="selectFixed">Selector Fixed</label>
         <select name="fixedValue" id="selectFixed">
             <option value=true selected="selected">true</option>
             <option value=false>false</option>
         </select>
+
         <label for="inputBaseLayer">Parámetro baseLayer</label>
         <input type="text" name="baseLayer" id="inputBaseLayer" list="baseLayerSug">
         <datalist id="baseLayerSug">
             <option value="WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true"></option>
+        </datalist>
+
+   		<label for="inputZoom">Parámetro Zoom</label>
+        <input type="number" name="zoom" id="inputZoom" list="zoomSug">
+        <datalist id="zoomSug">
+            <option value=" " selected="selected"></option>
         </datalist>
 
         <label for="selectCollapsed">Selector collapsed</label>
@@ -65,8 +79,8 @@
         </select>
         <label for="selectCollapsible">Selector collapsible</label>
         <select name="collapsibleValue" id="selectCollapsible">
-            <option value=true selected="selected">true</option>
-            <option value=false>false</option>
+            <option value=true>true</option>
+            <option value=false selected="selected">false</option>
         </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -98,44 +112,53 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion, fixed,
+        let posicion, fixed, 
             baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa_IGN*false*image/jpeg*false*false*true",
-            collapsible, collapsed;
-        crearPlugin(posicion, fixed, baseLayer, collapsed, collapsible);
+            collapsible,collapsed,baseZoom,tooltip;
+        crearPlugin(posicion, fixed, baseLayer,baseZoom, collapsed, collapsible,tooltip);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const selectFixed = document.getElementById("selectFixed");
         const inputBaseLayer = document.getElementById("inputBaseLayer");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
+        const inputZoom = document.getElementById("inputZoom");
+        const inputTooltip = document.getElementById("inputTooltip");
 
         selectPosicion.addEventListener('change', cambiarTest);
         selectFixed.addEventListener('change', cambiarTest);
         inputBaseLayer.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
+        inputZoom.addEventListener('change', cambiarTest);
+		inputTooltip.addEventListener('change', cambiarTest);
         setTimeout(() => {
           map.setCenter([-479529.76895509224, 4702535.197017747]);
         }, 100);
 
         function cambiarTest() {
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
+            position = selectPosicion.options[selectPosicion.selectedIndex].value;
             fixed = (selectFixed.options[selectFixed.selectedIndex].value == 'true');
             baseLayer = inputBaseLayer.value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+			zoom = inputZoom.value;
+			//tooltip = (inputTooltip.options[inputTooltip.inputIndex].value);
+			//tooltip = inputTooltip.value != "" ? options.tooltip = inputTooltip.value : "";
+			tooltip = inputTooltip.value;
             map.removePlugins(mp);
-            crearPlugin(posicion, fixed, baseLayer, collapsed, collapsible);
+            crearPlugin(position, fixed, baseLayer, collapsed, collapsible, tooltip, zoom);
         }
 
-        function crearPlugin(position, fixed, baseLayer, collapsed, collapsible) {
+        function crearPlugin(posicion, fixed, baseLayer, collapsed, collapsible, tooltip, zoom) {
             mp = new M.plugin.OverviewMap({
-                position: position,
+                position: posicion,
                 fixed: fixed,
-                zoom: 4,
+				tooltip: tooltip,
+                zoom: zoom,
                 baseLayer: baseLayer,
                 collapsed: collapsed || false,
-                collapsible: collapsible || true,
+                collapsible: collapsible || false,
             });
             map.addPlugin(mp);
         }
