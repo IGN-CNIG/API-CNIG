@@ -354,7 +354,7 @@ class WMTS extends LayerBase {
   async getCapabilitiesOptions_() {
     if (isNullOrEmpty(this.capabilitiesOptionsPromise)) {
       // eslint-disable-next-line no-underscore-dangle
-      const capabilitiesInfo = this.map.collectionCapabilities_.find((cap) => {
+      const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
         return cap.url === this.url;
       });
 
@@ -418,8 +418,7 @@ class WMTS extends LayerBase {
    * @api stable
    */
   getCapabilities() {
-    // eslint-disable-next-line no-underscore-dangle
-    const capabilitiesInfo = this.map.collectionCapabilities_.find((cap) => {
+    const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
       return cap.url === this.url;
     });
 
