@@ -180,7 +180,7 @@ class Map extends Base {
     /**
      * Map: Colección de "capabilities".
      */
-    this.collectionCapabilities_ = [];
+    this.collectionCapabilities = [];
 
     // adds class to the container
     params.container.classList.add('m-mapea-container');
@@ -495,7 +495,7 @@ class Map extends Base {
   }
 
   /**
-   * Este método almacena en this.collectionCapabilities_
+   * Este método almacena en this.collectionCapabilities
    * las "capabilities" de las capas. Esto se usará para
    * evitar llamadas innecesarias al servidor.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -527,11 +527,11 @@ class Map extends Base {
         useCapabilities = l.useCapabilities;
       }
 
-      if (this.collectionCapabilities_.filter(u => u.url === url).length > 0) return;
+      if (this.collectionCapabilities.filter(u => u.url === url).length > 0) return;
 
       if ((type === 'WMS' || type === 'WMTS') && useCapabilities) {
         if (urlCapabilities.filter(u => u.url === url).length === 0) {
-          this.collectionCapabilities_.push({
+          this.collectionCapabilities.push({
             type,
             url,
             capabilities: false,

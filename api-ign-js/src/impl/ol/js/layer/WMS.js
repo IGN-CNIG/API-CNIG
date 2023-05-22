@@ -685,7 +685,7 @@ class WMS extends LayerBase {
    * @api stable
    */
   getCapabilities() {
-    const capabilitiesInfo = this.map.collectionCapabilities_.find((cap) => {
+    const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
       return cap.url === this.url;
     });
 
