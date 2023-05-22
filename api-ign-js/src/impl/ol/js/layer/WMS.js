@@ -684,13 +684,13 @@ class WMS extends LayerBase {
    * @returns {capabilities} Metadatos.
    * @api stable
    */
-  async getCapabilities() {
+  getCapabilities() {
     const capabilitiesInfo = this.map.collectionCapabilities_.find((cap) => {
       return cap.url === this.url;
     });
 
-    if (capabilitiesInfo) {
-      this.getCapabilitiesPromise = await capabilitiesInfo.capabilities;
+    if (capabilitiesInfo.capabilities) {
+      this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
     } else if (isNullOrEmpty(this.getCapabilitiesPromise)) {
       const layerUrl = this.url;
       const layerVersion = this.version;
@@ -708,6 +708,7 @@ class WMS extends LayerBase {
           success(getCapabilitiesUtils);
         });
       });
+      capabilitiesInfo.capabilities = this.getCapabilitiesPromise;
     }
 
     return this.getCapabilitiesPromise;

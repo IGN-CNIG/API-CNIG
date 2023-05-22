@@ -395,7 +395,7 @@ class Map extends Base {
    * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
-  async addLayers(layersParameter) {
+  addLayers(layersParameter) {
     let layersParam = layersParameter;
     if (!isNullOrEmpty(layersParam)) {
       // checks if the implementation can manage layers
@@ -408,7 +408,7 @@ class Map extends Base {
       }
 
       // gets the capabilities of the layers
-      await this.collectorCapabilities_(layersParam);
+      this.collectorCapabilities_(layersParam);
 
       // gets the parameters as Layer objects to add
       const layers = layersParam.map((layerParam) => {
@@ -503,7 +503,7 @@ class Map extends Base {
    * @param {string|Object|Array<String>|Array<Object>} layers Colección u objeto de capa.
    * @api
    */
-  async collectorCapabilities_(layers) {
+  collectorCapabilities_(layers) {
     let layersParam = layers;
     if (!isArray(layersParam)) {
       layersParam = [layersParam];
@@ -528,45 +528,18 @@ class Map extends Base {
       }
 
       if (this.collectionCapabilities_.filter(u => u.url === url).length > 0) return;
+
       if ((type === 'WMS' || type === 'WMTS') && useCapabilities) {
         if (urlCapabilities.filter(u => u.url === url).length === 0) {
-          urlCapabilities.push({
+          this.collectionCapabilities_.push({
             type,
             url,
+            capabilities: false,
           });
         }
       }
     });
-
-    if (urlCapabilities.length === 0) return;
-
-
-    await Promise.all(urlCapabilities.map(async (u) => {
-      return {
-        type: u.type,
-        url: u.url,
-        capabilities: await this.getCapabilities(u.url, '1.3.0', u.type),
-      };
-    }))
-      .then(values => this.collectionCapabilities_.push(...values))
-      .catch(err => Dialog.error(err.toString()));
   }
-
-  /**
-   * Este método llama a la implementación para obtener las "capabilities" de las capas.
-   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-   * @function
-   * @param {string} url URL del servicio.
-   * @param {string} version Versión del servicio, por defecto 1.3.0.
-   * @param {string} type Tipo de servicio.
-   * @returns {Promise} Devuelve una promesa con las "capabilities".
-   * @api
-   */
-  async getCapabilities(url, version = '1.3.0', type) {
-    const capabilites = this.getImpl().getCapabilities(url, version, type);
-    return capabilites;
-  }
-
 
   /**
    * Este método elimina las capas especificadas del mapa.
@@ -756,7 +729,7 @@ class Map extends Base {
    * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
-  async addWMS(layersParamVar) {
+  addWMS(layersParamVar) {
     let layersParam = layersParamVar;
     if (!isNullOrEmpty(layersParam)) {
       // checks if the implementation can manage layers
@@ -769,7 +742,7 @@ class Map extends Base {
         layersParam = [layersParam];
       }
 
-      await this.collectorCapabilities_(layersParam);
+      this.collectorCapabilities_(layersParam);
 
       // gets the parameters as WMS objects to add
       const wmsLayers = [];
@@ -1117,7 +1090,7 @@ class Map extends Base {
    * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
-  async addWMTS(layersParamVar) {
+  addWMTS(layersParamVar) {
     let layersParam = layersParamVar;
     if (!isNullOrEmpty(layersParam)) {
       // checks if the implementation can manage layers
@@ -1130,7 +1103,7 @@ class Map extends Base {
         layersParam = [layersParam];
       }
 
-      await this.collectorCapabilities_(layersParam);
+      this.collectorCapabilities_(layersParam);
 
       // gets the parameters as WMS objects to add
       const wmtsLayers = [];

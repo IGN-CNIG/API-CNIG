@@ -358,10 +358,10 @@ class WMTS extends LayerBase {
         return cap.url === this.url;
       });
 
-      if (capabilitiesInfo) {
-        this.capabilitiesOptionsPromise = await capabilitiesInfo.capabilities;
+      if (capabilitiesInfo.capabilities) {
+        this.capabilitiesOptionsPromise = capabilitiesInfo.capabilities;
       } else {
-        this.capabilitiesOptionsPromise = await this.getCapabilities();
+        this.capabilitiesOptionsPromise = this.getCapabilities();
       }
 
       const capabilities = await this.capabilitiesOptionsPromise;
@@ -418,7 +418,14 @@ class WMTS extends LayerBase {
    * @api stable
    */
   getCapabilities() {
-    if (isNullOrEmpty(this.getCapabilitiesPromise_)) {
+    // eslint-disable-next-line no-underscore-dangle
+    const capabilitiesInfo = this.map.collectionCapabilities_.find((cap) => {
+      return cap.url === this.url;
+    });
+
+    if (capabilitiesInfo.capabilities) {
+      this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
+    } else if (isNullOrEmpty(this.getCapabilitiesPromise_)) {
       this.getCapabilitiesPromise_ = new Promise((success, fail) => {
         const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(this.url);
         const parser = new OLFormatWMTSCapabilities();
@@ -439,6 +446,7 @@ class WMTS extends LayerBase {
           success.call(this, parsedCapabilities);
         });
       });
+      capabilitiesInfo.capabilities = this.getCapabilitiesPromise_;
     }
     return this.getCapabilitiesPromise_;
   }
