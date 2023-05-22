@@ -58,6 +58,8 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" id="inputTooltip" value="Cambiar escala" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -111,34 +113,33 @@
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
+        const inputTooltip = document.getElementById("inputTooltip");
 
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
+        inputTooltip.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
             collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            tooltip = inputTooltip.value;
             map.removePlugins(mp);
-            crearPlugin(collapsed, posicion, collapsible);
+            crearPlugin(posicion, collapsed, collapsible, tooltip);
         }
 
-        function crearPlugin(collapsed, position, collapsible) {
+        function crearPlugin(position, collapsed, collapsible, tooltip) {
             mp = new M.plugin.Rescale({
+            	position: position,
                 collapsed: collapsed,
                 collapsible: collapsible,
-                position: position,
+                tooltip: tooltip,
             });
 
             map.addPlugin(mp);
-
         }
-        let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
-            position: "TR",
-        });
-        map.addPlugin(mp2);
+        
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
