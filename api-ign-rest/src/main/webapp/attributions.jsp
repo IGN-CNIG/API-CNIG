@@ -55,17 +55,17 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL" selected="selected">Abajo Izquierda (BL)</option>
         </select>
-        <label for="selectMode">Selector de Modo</label>
-        <select name="mode" id="selectMode">
-            <option value="1" selected="selected">1</option>
-            <option value="2">2</option>
-        </select>
         <label for="inputTooltip">Parámetro tooltip</label>
         <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug" value="Reconocimientos">
         <datalist id="tooltipSug">
             <option value="Reconocimientos"></option>
         </datalist>
-        <label for="inputURLAttribute">Atributo botón Reconocimientos</label>
+        <label for="selectMode">Selector de Modo</label>
+        <select name="mode" id="selectMode">
+            <option value="1" selected="selected">1</option>
+            <option value="2">2</option>
+        </select>
+        <label for="inputURLAttribute">Parámetro urlAttribute</label>
         <input type="text" name="urlAttribute" id="inputURLAttribute" list="urlattributeSug" value="Gobierno de España">
         <datalist id="urlattributeSug">
             <option value="Gobierno de España"></option>
@@ -85,6 +85,10 @@
         <datalist id="defaultAttributionSug">
             <option value="Instituto Geográfico Nacional"></option>
         </datalist>
+        <label for="inputMinWidth">Parámetro minWidth</label>
+        <input type="number" id="inputMinWidth" value="100">
+        <label for="inputMaxWidth">Parámetro maxWidth</label>
+        <input type="number" id="inputMaxWidth" value="200">
         <div id="divModo">
             <label for="inputUrl">Parámetro url</label>
             <input type="text" name="url" id="inputUrl" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml">
@@ -163,6 +167,9 @@
         const inputLayerName = document.getElementById("inputLayerName");
         const inputAttributionParam = document.getElementById("inputAttributionParam");
         const inputUrlParam = document.getElementById("inputUrlParam");
+        const inputMinWidth = document.getElementById("inputMinWidth");
+        const inputMaxWidth = document.getElementById("inputMaxWidth");
+        
         selectPosicion.addEventListener('change', cambiarTest);
         selectMode.addEventListener('change', function() {
             divModo.classList.toggle("oculto")
@@ -177,13 +184,17 @@
         inputLayerName.addEventListener('change', cambiarTest);
         inputAttributionParam.addEventListener('change', cambiarTest);
         inputUrlParam.addEventListener('change', cambiarTest);
+        inputMinWidth.addEventListener('change', cambiarTest);
+        inputMaxWidth.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
-            let objeto = {}
+            let objeto = {};
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             mode = selectMode.options[selectMode.selectedIndex].value;
             objeto.mode = parseInt(mode);
             tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
+            (inputMinWidth.value != "") ? objeto.minWidth = inputMinWidth.value : 100;
+            (inputMaxWidth.value != "") ? objeto.maxWidth = inputMaxWidth.value : 200;
             scale = inputScale.value != "" ? objeto.scale = inputScale.value : "";
             urlAttribute = inputURLAttribute.value != "" ? objeto.urlAttribute = inputURLAttribute.value : "";
             defaultURL = inputDefaultURL.value != "" ? objeto.defaultURL = inputDefaultURL.value : "";
