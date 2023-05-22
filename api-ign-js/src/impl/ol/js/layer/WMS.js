@@ -315,7 +315,7 @@ class WMS extends LayerBase {
    */
   async addSingleLayer_() {
     const selff = this;
-    let extent = null;
+    let extent;
 
     if (this.useCapabilities) {
       const capabilities = await this.getCapabilities();
