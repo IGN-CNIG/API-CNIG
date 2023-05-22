@@ -38,6 +38,47 @@
 </head>
 
 <body>
+	<div>
+	    <label for="selectPosicion">Selector de posición del plugin</label>
+	    <select name="position" id="selectPosicion">
+	      <option value="TL">Arriba Izquierda (TL)</option>
+	      <option value="TR">Arriba Derecha (TR)</option>
+	      <option value="BR">Abajo Derecha (BR)</option>
+	      <option value="BL">Abajo Izquierda (BL)</option>
+	    </select>
+	    <label for="selectCollapsed">Selector de collapsed</label>
+	    <select name="collapsed" id="selectCollapsed">
+	      <option value="true">true</option>
+	      <option value="false">false</option>
+	    </select>
+	    <label for="selectCollapsible">Selector de collapsible</label>
+	    <select name="collapsible" id="selectCollapsible">
+	      <option value="true">true</option>
+	      <option value="false">false</option>
+	    </select>
+	    <label for="inputTooltip">Parámetro tooltip</label>
+		<input type="text" id="inputTooltip" value="Tabla de atributos" />
+		<label for="selectRefreshBBOXFilterOnPanning">Parámetro refreshBBOXFilterOnPanning</label>
+	    <select name="refreshBBOXFilterOnPanning" id="selectRefreshBBOXFilterOnPanning">
+	      <option value="true">true</option>
+	      <option value="false">false</option>
+	    </select>
+      <br/>
+	    <label for="inputConfiguration">Parámetro configuration</label>
+       	<textarea id="inputConfiguration" rows="4">{
+  "layer": "vertices",
+  "pk": "id",
+  "initialSort": { "name": "nombre", "dir": "asc" },
+  "columns": [
+    { "name": "id", "alias": "Identificador", "visible": false, "searchable": false, "showpanelinfo": true, "align": "right", "type": "string" },
+    { "name": "nombre", "alias": "Nombre Vértice", "visible": true, "searchable": true, "showpanelinfo": true, "align": "left", "type": "string" },
+    { "name": "urlficha", "alias": "URL PDF Ficha", "visible": true, "searchable": false, "showpanelinfo": true, "align": "left", "type": "linkURL", "typeparam": "Ficha vértice" },
+    { "name": "imagemtn50", "alias": "Imagen Hoja MTN50", "visible": true, "searchable": false, "showpanelinfo": true, "align": "left", "type": "image" }
+  ]
+}</textarea>
+		
+	    <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+    </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
@@ -89,7 +130,36 @@
           extract: true,
         });
 
-        const mp = new M.plugin.QueryAttributes({
+        const estiloPoint = new M.style.Point({
+	        icon: {
+		        form: M.style.form.CIRCLE,
+		        radius: 5,
+		        rotation: 3.14159,
+		        rotate: false,
+		        offset: [0,0],
+		        color: '#3e77f7',
+		        fill: (feature,map) => {
+		          return COLORES_PROVINCIA[feature.getAttribute('codprov')] || 'green';
+		        },
+		        gradientcolor:  '#3e77f7',
+		        gradient: false,
+		        opacity: 1,
+		        snaptopixel: true,
+	        },
+        });
+
+        vertex.setStyle(estiloPoint);
+        map.addLayers(vertex);
+        
+
+		let mp;
+        function crearPlugin(propiedades) {
+	        mp = new M.plugin.QueryAttributes(propiedades);
+	
+	        map.addPlugin(mp);
+        }
+
+        crearPlugin({
           position: 'TL',
           collapsed: true,
           collapsible: true,
@@ -123,27 +193,39 @@
           },
         });
 
-        const estiloPoint = new M.style.Point({
-          icon: {
-            form: M.style.form.CIRCLE,
-            radius: 5,
-            rotation: 3.14159,
-            rotate: false,
-            offset: [0,0],
-            color: '#3e77f7',
-            fill: (feature,map) => {
-              return COLORES_PROVINCIA[feature.getAttribute('codprov')] || 'green';
-            },
-            gradientcolor:  '#3e77f7',
-            gradient: false,
-            opacity: 1,
-            snaptopixel: true,
-          },
-        });
+        const selectPosicion = document.getElementById("selectPosicion");
+        const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
+        const inputTooltip = document.getElementById("inputTooltip");
+        const selectRefreshBBOXFilterOnPanning = document.getElementById("selectRefreshBBOXFilterOnPanning");
+        const inputConfiguration = document.getElementById("inputConfiguration");
+        
 
-        vertex.setStyle(estiloPoint);
-        map.addLayers(vertex);
-        map.addPlugin(mp);
+        selectPosicion.addEventListener('change', cambiarTest);
+        selectCollapsed.addEventListener('change', cambiarTest);
+        selectCollapsible.addEventListener('change', cambiarTest);
+        inputTooltip.addEventListener('change', cambiarTest);
+        selectRefreshBBOXFilterOnPanning.addEventListener('change', cambiarTest);
+        inputConfiguration.addEventListener('change', cambiarTest);
+
+        function cambiarTest() {
+	        let objeto = {};
+	        objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+	        objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
+	        objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+	        (inputTooltip.value != "") ? objeto.tooltip = inputTooltip.value : 'Tabla de atributos';
+			objeto.refreshBBOXFilterOnPanning = selectRefreshBBOXFilterOnPanning.options[selectRefreshBBOXFilterOnPanning.selectedIndex].value;
+			(inputConfiguration.value != "") ? objeto.configuration = JSON.parse(inputConfiguration.value) : '';
+
+	        map.removePlugins(mp);
+	        crearPlugin(objeto);
+	        console.log(objeto); //BORRAR UNA VEZ ENSEÑADO A CARMEN
+        }
+
+        const botonEliminar = document.getElementById("botonEliminar");
+        botonEliminar.addEventListener("click", function () {
+          map.removePlugins(mp);
+        });   
 
     </script>
 </body>
