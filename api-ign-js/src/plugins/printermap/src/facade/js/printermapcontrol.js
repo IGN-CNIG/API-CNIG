@@ -699,6 +699,10 @@ export default class PrinterMapControl extends M.Control {
       });
       M.proxy(true);
     });
+    if (!M.utils.isNullOrEmpty(this.getImpl().errors)) {
+      M.toast.error(getValue('exception.error_layers') + this.getImpl().errors.join(', '), null, 6000);
+      this.getImpl().errors = [];
+    }
   }
 
   /**
