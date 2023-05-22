@@ -60,6 +60,8 @@
             <option value="true" selected="selected">true</option>
             <option value="false">false</option>
         </select>
+        <label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" id="inputTooltip" value="Gestor de estilos" />
         <label for="selectLayer">Selector de capa</label>
         <select name="layer" id="selectLayer">
             <option value="" selected="selected"></option>
@@ -223,11 +225,13 @@
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
+        const inputTooltip = document.getElementById("inputTooltip");
         const selectLayer = document.getElementById("selectLayer");
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
         selectLayer.addEventListener('change', cambiarTest);
+        inputTooltip.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             let objeto = {}
@@ -236,6 +240,7 @@
             collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor == "true" || collapsedValor == true) : "true";
             let collapsibleValor = selectCollapsible.options[selectCollapsible.selectedIndex].value;
             collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == "true" || collapsibleValor == true) : "true";
+            tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
             objeto.layer = getLayer(selectLayer.options[selectLayer.selectedIndex].value);
             map.removePlugins(mp);
             crearPlugin(objeto);
