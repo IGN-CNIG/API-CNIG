@@ -60,23 +60,43 @@
         <label for="inputServerUrl">Parámetro serverUrl</label>
         <input type="text" name="serverUrlValue" id="inputServerUrl" list="serverUrlValueSug">
         <datalist id="serverUrlValueSug">
-            <option value="https://geoprint.desarrollo.guadaltel.es"></option>
+            <option value="https://componentes.cnig.es/geoprint"></option>
         </datalist>
         <label for="inputPrintTemplateUrl">Parámetro printTemplateUrl</label>
         <input type="text" name="printTemplateUrlValue" id="inputPrintTemplateUrl" list="printTemplateUrlValueSug">
         <datalist id="printTemplateUrlValueSug">
-            <option value="https://geoprint.desarrollo.guadaltel.es/print/CNIG"></option>
+            <option value="https://componentes.cnig.es/geoprint/print/CNIG"></option>
         </datalist>
-        <label for="inputPrintTemplateGeoUrl">Parámetro printTemplateUrl</label>
+        <label for="inputPrintTemplateGeoUrl">Parámetro printTemplateGeoUrl</label>
         <input type="text" name="printTemplateGeoUrlValue" id="inputPrintTemplateGeoUrl" list="printTemplateGeoUrlValueSug">
-        <datalist id="printTemplateUrlValueSug">
-            <option value="https://geoprint.desarrollo.guadaltel.es/print/mapexport"></option>
+        <datalist id="printTemplateGeoUrlValueSug">
+            <option value="https://componentes.cnig.es/geoprint/print/status"></option>
         </datalist>
-        <label for="inputPrintStatusUrl">Parámetro printStatusUrlValue</label>
+        <label for="inputPrintStatusUrl">Parámetro printStatusUrl</label>
         <input type="text" name="printStatusUrlValue" id="inputPrintStatusUrl" list="printStatusUrlValueSug">
         <datalist id="printStatusUrlValueSug">
-            <option value="https://geoprint.desarrollo.guadaltel.es/print/status"></option>
+            <option value="https://componentes.cnig.es/geoprint/print/status"></option>
         </datalist>
+        <label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" id="inputTooltip" value="Impresión del mapa" />
+        <label for="inputHeaderlegend">Parámetro headerlegend</label>
+        <input type="text" id="inputHeaderlegend" value="https://centrodedescargas.cnig.es/CentroDescargas/imgCdD/escudoInstitucional.png"/>
+        <label for="inputLogo">Parámetro logo</label>
+        <input type="text" id="inputLogo" value="https://www.ign.es/IGNCNIG/Imagenes/Contenidos/IGN-Header-Tittle.png"/>
+        <label for="inputCredits">Parámetro credits</label>
+        <input type="text" id="inputCredits" value="Impresión generada desde Fototeca Digital http://fototeca.cnig.es/" />
+        <label for="selectGeorefActive">Parámetro georefActive</label>
+        <select name="selectGeorefActive" id="selectGeorefActive">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="selectFototeca">Parámetro fototeca</label>
+        <select name="selectFototeca" id="selectFototeca">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="inputFilterTemplates">Parámetro filterTemplates (separado por ,)</label>
+        <input type="text" name="filterTemplates" id="inputFilterTemplates" value="A3 Horizontal"/>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -140,6 +160,14 @@
         const inputPrintTemplateUrl = document.getElementById("inputPrintTemplateUrl");
         const inputPrintTemplateGeoUrl = document.getElementById("inputPrintTemplateGeoUrl");
         const inputPrintStatusUrl = document.getElementById("inputPrintStatusUrl");
+        const inputTooltip = document.getElementById("inputTooltip");
+        const inputHeaderlegend = document.getElementById("inputHeaderlegend");
+        const inputLogo = document.getElementById("inputLogo");
+        const inputCredits = document.getElementById("inputCredits");
+        const selectGeorefActive = document.getElementById("selectGeorefActive");
+        const selectFototeca = document.getElementById("selectFototeca");
+        const inputFilterTemplates = document.getElementById("inputFilterTemplates");
+        
 
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
@@ -148,9 +176,17 @@
         inputPrintTemplateUrl.addEventListener('change', cambiarTest);
         inputPrintTemplateGeoUrl.addEventListener('change', cambiarTest);
         inputPrintStatusUrl.addEventListener('change', cambiarTest);
+        inputTooltip.addEventListener('change', cambiarTest);
+        inputHeaderlegend.addEventListener('change', cambiarTest);
+        inputLogo.addEventListener('change', cambiarTest);
+        inputCredits.addEventListener('change', cambiarTest);
+        selectGeorefActive.addEventListener('change', cambiarTest);
+        selectFototeca.addEventListener('change', cambiarTest);
+        inputFilterTemplates.addEventListener('change', cambiarTest);
+        
 
         function cambiarTest() {
-            let objeto = {}
+            let objeto = {};
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
@@ -158,6 +194,14 @@
             printTemplateUrl = inputPrintTemplateUrl.value != "" ? objeto.printTemplateUrl = inputPrintTemplateUrl.value : "";
             printTemplateGeoUrl = inputPrintTemplateGeoUrl.value != "" ? objeto.printTemplateGeoUrl = inputPrintTemplateGeoUrl.value : "";
             printStatusUrl = inputPrintStatusUrl.value != "" ? objeto.printStatusUrl = inputPrintStatusUrl.value : "";
+            tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
+            headerLegend = inputHeaderlegend.value != "" ? objeto.headerLegend = inputHeaderlegend.value : "";
+            logo = inputLogo.value != "" ? objeto.logo = inputLogo.value : "";
+            credits = inputCredits.value != "" ? objeto.credits = inputCredits.value : "";
+            objeto.georefActive = (selectGeorefActive.options[selectGeorefActive.selectedIndex].value == 'true');
+            objeto.fototeca = (selectFototeca.options[selectFototeca.selectedIndex].value == 'true');
+         	// Para convertirlo en array se utiliza el metodo .split (valores separados por ",").
+            (inputFilterTemplates.value != "") ? objeto.filterTemplates = inputFilterTemplates.value.split(',') : ['A3 Horizontal']; 
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
