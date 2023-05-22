@@ -188,4 +188,17 @@ export default class QueryAttributesControl extends M.impl.Control {
     newCoordinates[1] = newXY[1];
     return newCoordinates;
   }
+
+  /**
+   * Get OL layer
+   *
+   * @public
+   * @function
+   * @api
+   * @param {M.layer} layer Layer
+   * @returns {ol.layer} OL layer
+   */
+  getOL3Layer(layer) {
+    return layer.getImpl().getOL3Layer();
+  }
 }
