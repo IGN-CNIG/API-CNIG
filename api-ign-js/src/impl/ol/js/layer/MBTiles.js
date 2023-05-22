@@ -70,8 +70,8 @@ class MBTiles extends Layer {
    * la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
    * - url: Url del fichero o servicio que genera el MBTiles.
-   * - maxZoomLevel: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
+   * - maxZoomLevel: Zoom máximo aplicable a la capa.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
@@ -79,8 +79,9 @@ class MBTiles extends Layer {
    * - source: Fuente de la capa.
    * - tileSize: Tamaño de la tesela, por defecto 256.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
-   * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
    * - opacity: Opacidad de capa, por defecto 1.
+   * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLTileGrid from 'ol/tilegrid/TileGrid';
@@ -241,7 +242,7 @@ class MBTiles extends Layer {
         });
       });
     } else {
-      const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 16);
+      const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
       this.ol3Layer = this.createLayer({
         resolutions,
         extent,

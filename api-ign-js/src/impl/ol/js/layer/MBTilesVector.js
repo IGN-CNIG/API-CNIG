@@ -34,7 +34,7 @@ const DEFAULT_TILE_SIZE = 256;
  * @function
  * @param {Mx.Extent} extent Extensión.
  * @param {number} tileSize Tamaño de la tesela vectorial.
- * @param {number} maxZoomLevel Nivele máximo de zoom.
+ * @param {number} maxZoomLevel Nivel máximo de zoom.
  * @returns {Array<Number>} Resoluciones obtenidas.
  * @public
  * @api
@@ -78,23 +78,17 @@ class MBTilesVector extends Vector {
    * construcción de la capa.
    * - name: Nombre de la capa.
    * - url: Url del fichero o servicio que genera el MBTilesVector.
-   * - minZoomLevel: Zoom mínimo aplicable a la capa.
-   * - maxZoomLevel: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
    * - tileLoadFunction: Función de carga de la tesela vectorial proporcionada por el usuario.
    * - source: Fuente de la capa.
    * - tileSize: Tamaño de la tesela vectorial, por defecto 256.
-   * - style: Define el estilo de la capa.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
    * - opacity: Opacidad de capa, por defecto 1.
-   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - style: Define el estilo de la capa.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom Zoom máximo aplicable a la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVectorTile from 'ol/source/VectorTile';
@@ -196,10 +190,10 @@ class MBTilesVector extends Vector {
     if (!this.tileLoadFunction_) {
       this.fetchSource().then((tileProvider) => {
         tileProvider.getMaxZoomLevel().then((maxZoomLevel) => {
-          if (!this.maxZoomLevel) {
-            this.maxZoomLevel = maxZoomLevel;
+          if (!this.maxZoomLevel_) {
+            this.maxZoomLevel_ = maxZoomLevel;
           }
-          const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel);
+          const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
           this.tileProvider_ = tileProvider;
           this.tileProvider_.getExtent().then((mbtilesExtent) => {
             let reprojectedExtent = mbtilesExtent;
@@ -235,7 +229,7 @@ class MBTilesVector extends Vector {
         });
       });
     } else {
-      const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel || 16);
+      const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
       this.ol3Layer = this.createLayer({
         resolutions,
         extent,

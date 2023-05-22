@@ -35,6 +35,7 @@ class MBTiles extends LayerBase {
    * estos parámetros los proporciona el usuario.
    * - name: Nombre de la capa en la leyenda.
    * - url: Url del fichero o servicio que genera el MBTiles.
+   * - type: Tipo de la capa.
    * - maxZoomLevel: Zoom máximo aplicable a la capa.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
@@ -46,11 +47,7 @@ class MBTiles extends LayerBase {
    * - opacity: Opacidad de capa, por defecto 1.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
    * Están proporcionados por el usuario.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom Zoom máximo aplicable a la capa.
-   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
-   * - opacity: Opacidad de capa, por defecto 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLTileGrid from 'ol/tilegrid/TileGrid';

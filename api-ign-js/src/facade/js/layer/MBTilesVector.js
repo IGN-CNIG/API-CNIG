@@ -41,23 +41,17 @@ class MBTilesVector extends Vector {
    * estos parámetros los proporciona el usuario.
    * - name: Nombre de la capa.
    * - url: Url del fichero o servicio que genera el MBTilesVector.
-   * - minZoomLevel: Zoom mínimo aplicable a la capa.
-   * - maxZoomLevel: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
    * - tileLoadFunction: Función de carga de la tesela vectorial proporcionada por el usuario.
    * - source: Fuente de la capa.
    * - tileSize: Tamaño de la tesela vectorial, por defecto 256.
-   * - style: Define el estilo de la capa.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
    * - opacity: Opacidad de capa, por defecto 1.
-   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - style: Define el estilo de la capa.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom Zoom máximo aplicable a la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVectorTile from 'ol/source/VectorTile';

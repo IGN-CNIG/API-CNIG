@@ -3050,12 +3050,23 @@ export const getVisibilityMBTiles = (parameter) => {
  * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
  * la opacidad de la capa MBTiles.
  * @returns {number} Opacidad de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getOpacityMBTiles = (parameter) => {
   let opacity;
-  if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
+  let params;
+  if (isString(parameter)) {
+    // <MBTiles>*<legend>*<URL>*<NAME>*<transparent>*<visibility>*<opacity>
+    params = parameter.split('*');
+    if (params.length - 1 >= 6) {
+      const value = params[6].trim();
+      opacity = isNullOrEmpty(value) ? undefined : parseInt(value, 10);
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
     opacity = parameter.opacity;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return opacity;
@@ -3070,12 +3081,23 @@ export const getOpacityMBTiles = (parameter) => {
  * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener
  * el nivel máximo de la capa MBTiles.
  * @returns {number} Nivel máximo de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getMaxZoomLevelMBTiles = (parameter) => {
   let maxZoomLevel;
-  if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
+  let params;
+  if (isString(parameter)) {
+    // <MBTiles>*<legend>*<URL>*<NAME>*<transparent>*<visibility>*<opacity>*<maxZoomLevel>
+    params = parameter.split('*');
+    if (params.length - 1 >= 7) {
+      const value = params[7].trim();
+      maxZoomLevel = isNullOrEmpty(value) ? undefined : parseInt(value, 10);
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
     maxZoomLevel = parameter.maxZoomLevel;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return maxZoomLevel;
@@ -3090,15 +3112,67 @@ export const getMaxZoomLevelMBTiles = (parameter) => {
  * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener la
  * máxima extensión de la capa MBTiles.
  * @returns {Mx.Extent} Máxima extensión de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
 export const getMaxExtentMBTiles = (parameter) => {
   let extent;
-  if (isObject(parameter) && !isNullOrEmpty(parameter.maxExtent)) {
+  let params;
+  if (isString(parameter)) {
+    // <MBTiles>*<legend>*<URL>*<NAME>*<transparent>*<visibility>*<opacity>
+    // *<maxZoomLevel>*<maxExtent>
+    params = parameter.split('*');
+    if (params.length - 1 >= 8) {
+      let value = params[8].trim();
+      if (!isNullOrEmpty(value)) {
+        value = value.split(';');
+        if (!isNullOrEmpty(value) && value.length === 4) {
+          value = value.map(ext => parseFloat(ext.trim()));
+          extent = value;
+        }
+      } else {
+        extent = undefined;
+      }
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.maxExtent)) {
     extent = parameter.maxExtent;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
   return extent;
+};
+
+/**
+ * Analiza el parámetro para obtener el tamaño de la tesela.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTiles} parameter Parámetro para obtener el tamaño
+ * de la tesela de la capa MBTiles.
+ * @returns {Number} Tamaño de la tesela de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getTileSizeMBTiles = (parameter) => {
+  let params;
+  let tileSize;
+
+  if (isString(parameter)) {
+    // <MBTiles>*<legend>*<URL>*<NAME>*<transparent>*<visibility>*<opacity>
+    // *<maxZoomLevel>*<maxExtent>*<tileSize>
+    params = parameter.split('*');
+    if (params.length - 1 >= 9) {
+      const value = params[9].trim();
+      tileSize = isNullOrEmpty(value) ? undefined : parseInt(value, 10);
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.tileSize)) {
+    tileSize = parseInt(normalize(parameter.tileSize), 10);
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return tileSize;
 };
 
 /**
@@ -3151,6 +3225,8 @@ export const mbtiles = (userParameters) => {
     layerObj.maxExtent = getMaxExtentMBTiles(userParam);
 
     layerObj.tileLoadFunction = getTileLoadFunctionMBTiles(userParam);
+
+    layerObj.tileSize = getTileSizeMBTiles(userParam);
 
     return layerObj;
   });
@@ -3332,46 +3408,6 @@ export const getVisibilityMBTilesVector = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la opacidad de la capa MBTilesVector.
- *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
- *
- * @public
- * @function
- * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener
- * la opacidad de la capa MBTilesVector.
- * @returns {number} Opacidad de la capa
- * @api
- */
-export const getOpacityMBTilesVector = (parameter) => {
-  let opacity;
-  if (isObject(parameter) && !isNullOrEmpty(parameter.opacity)) {
-    opacity = parameter.opacity;
-  }
-
-  return opacity;
-};
-
-/**
- * Analiza el parámetro para obtener el nivel máximo de zoom de la capa MBTilesVector.
- *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
- *
- * @public
- * @function
- * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener el
- * nivel máximo de zoom de la capa MBTilesVector.
- * @returns {number} Nivel máximo de zoom de la capa.
- * @api
- */
-export const getMaxZoomLevelMBTilesVector = (parameter) => {
-  let maxZoomLevel;
-  if (isObject(parameter) && !isNullOrEmpty(parameter.maxZoomLevel)) {
-    maxZoomLevel = parameter.maxZoomLevel;
-  }
-
-  return maxZoomLevel;
-};
-
-/**
  * Analiza el parámetro para obtener la máxima extensión de la capa MBTilesVector.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @public
@@ -3391,6 +3427,37 @@ export const getMaxExtentMBTilesVector = (parameter) => {
 };
 
 /**
+ * Analiza el parámetro para obtener el tamaño de la tesela.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.MBTilesVector} parameter Parámetro para obtener el tamaño
+ * de la tesela de la capa MBTilesVector.
+ * @returns {Number} Tamaño de la tesela de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getTileSizeMBTilesVector = (parameter) => {
+  let params;
+  let tileSize;
+
+  if (isString(parameter)) {
+    // <MBTilesVector>*<legend>*<URL>*<NAME>*<visibility>*<tileSize>
+    params = parameter.split('*');
+    if (params.length - 1 >= 5) {
+      const value = params[5].trim();
+      tileSize = isNullOrEmpty(value) ? undefined : parseInt(value, 10);
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.tileSize)) {
+    tileSize = parseInt(normalize(parameter.tileSize), 10);
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return tileSize;
+};
+
+/**
  * Analiza el parámetro para obtener el estilo.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
@@ -3407,10 +3474,10 @@ export const getStyleMBTilesVector = (parameter) => {
   let style;
 
   if (isString(parameter)) {
-    // <MBTilesVector>*<legend>*<URL>*<NAME>*<visibility>*<style>
+    // <MBTilesVector>*<legend>*<URL>*<NAME>*<visibility>*<tileSize>*<style>
     params = parameter.split('*');
-    if (params.length - 1 >= 5) {
-      const value = params[5].trim();
+    if (params.length - 1 >= 6) {
+      const value = params[6].trim();
       style = isNullOrEmpty(value) ? undefined : value;
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.style)) {
@@ -3462,9 +3529,7 @@ export const mbtilesvector = (userParameters) => {
 
     layerObj.visibility = getVisibilityMBTilesVector(userParam);
 
-    layerObj.opacity = getOpacityMBTilesVector(userParam);
-
-    layerObj.maxZoomLevel = getMaxZoomLevelMBTilesVector(userParam);
+    layerObj.tileSize = getTileSizeMBTilesVector(userParam);
 
     layerObj.maxExtent = getMaxExtentMBTilesVector(userParam);
 
