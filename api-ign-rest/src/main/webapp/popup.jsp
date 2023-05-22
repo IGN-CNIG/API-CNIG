@@ -53,10 +53,18 @@
             <option value="true" selected="selected">true</option>
             <option value="false">false</option>
         </select>
+        <label for="selectCollapsible">Selector de collapsible</label>
+        <select name="collapsible" id="selectCollapsible">
+            <option value=''></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
+        <label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" id="inputTooltip" value="Más información" />
         <label for="inputUrl_es">Parámetro url_es</label>
-        <input type="text" id="inputUrl_es" list="urlEsSug" />
+        <input type="text" id="inputUrl_es" value="https://componentes.cnig.es/ayudaIberpix/es.html" />
         <label for="inputUrl_en">Parámetro url_en</label>
-        <input type="text" id="inputUrl_en" list="urlEnSug" />
+        <input type="text" id="inputUrl_en" value="https://componentes.cnig.es/ayudaIberpix/en.html" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -95,19 +103,26 @@
         const inputUrl_es = document.getElementById("inputUrl_es");
         const inputUrl_en = document.getElementById("inputUrl_en");
         const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
+        const inputTooltip = document.getElementById("inputTooltip");
 
         selectPosicion.addEventListener('change', cambiarTest);
         inputUrl_es.addEventListener('change', cambiarTest);
         inputUrl_en.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
+        selectCollapsible.addEventListener('change', cambiarTest);
+        inputTooltip.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
-            let objeto = {}
+            let objeto = {};
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            url_es = inputUrl_es.value != "" ? objeto.url_es = inputUrl_es.value : "";
-            url_en = inputUrl_en.value != "" ? objeto.url_en = inputUrl_en.value : "";
+            (inputUrl_es.value != "") ? objeto.url_es = inputUrl_es.value : "https://componentes.cnig.es/ayudaIberpix/es.html";
+            (inputUrl_en.value != "") ? objeto.url_en = inputUrl_en.value : "https://componentes.cnig.es/ayudaIberpix/en.html";
+            (inputTooltip.value != "") ? objeto.tooltip = inputTooltip.value : "Más información";
             collapsed = selectCollapsed.options[selectCollapsed.selectedIndex].value;
             collapsed != '' ? objeto.collapsed = (collapsed === "true") : '';
+            collapsible = selectCollapsible.options[selectCollapsible.selectedIndex].value;
+            collapsible != '' ? objeto.collapsible = (collapsible === "true") : '';
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
@@ -115,13 +130,8 @@
         function crearPlugin(propiedades) {
             mp = new M.plugin.Popup(propiedades);
             map.addPlugin(mp);
-
         }
-        let mp2 = new M.plugin.ShareMap({
-            baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
-            position: "TR",
-        });
-        map.addPlugin(mp2);
+        
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
@@ -130,12 +140,12 @@
 </body>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-CTLHMMB5YT"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'G-CTLHMMB5YT');
+gtag('config', 'UA-163660977-1');
 </script>
 
 </html>
