@@ -4,7 +4,8 @@
     "impl_zoomextent": "The implementation used cannot create ZoomExtentControl.",
     "impl_viewhistory": "The implementation used cannot create ViewHistoryControl.",
     "impl_zoompanel": "The implementation used cannot create ZoomPanelControl.",
-    "impl_predefinedzoom": "The implementation used cannot create PredefinedZoomControl."
+    "impl_predefinedzoom": "The implementation used cannot create PredefinedZoomControl.",
+    "no_controls": "The ViewManagement plugin needs to add at least one controller"
   },
   "tooltip": "View Management",
   "viewhistory": "View history",

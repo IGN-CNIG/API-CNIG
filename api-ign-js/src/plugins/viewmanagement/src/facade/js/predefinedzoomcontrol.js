@@ -42,6 +42,8 @@ export default class PredefinedZoomControl extends M.Control {
         html.querySelector('#m-viewmanagement-predefinedzoom').classList.add('activated');
         const panel = M.template.compileSync(template);
         this.savedZooms_.forEach((customZoom) => {
+          const newDiv = document.createElement('div');
+          newDiv.classList.add('m-predefinedzoom-button-container');
           const newBtn = document.createElement('button');
           newBtn.setAttribute('class', 'viewmanagement-icon-expand');
           newBtn.setAttribute('id', `m-predefinedzoom-${customZoom.name}`);
@@ -51,7 +53,12 @@ export default class PredefinedZoomControl extends M.Control {
           } else if (customZoom.center !== undefined && customZoom.zoom !== undefined) {
             newBtn.addEventListener('click', () => this.zoomToCenter(newBtn, customZoom.center, customZoom.zoom));
           }
-          panel.appendChild(newBtn);
+          const newSpan = document.createElement('span');
+          newSpan.classList.add('m-predefinedzoom-namezoom');
+          newSpan.textContent = customZoom.name;
+          newDiv.appendChild(newBtn);
+          newDiv.appendChild(newSpan);
+          panel.appendChild(newDiv);
         });
         document.querySelector('#div-contenedor-viewmanagement').appendChild(panel);
       } else {

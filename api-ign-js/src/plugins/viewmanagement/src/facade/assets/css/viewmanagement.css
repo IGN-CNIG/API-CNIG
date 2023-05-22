@@ -24,7 +24,7 @@
 /* Title and images container */
 
 .m-control.m-container.m-viewmanagement {
-    min-width: 220px;
+    width: 250px;
 }
 
 /* Título */
@@ -54,6 +54,23 @@ div#m-viewmanagement-previews {
     cursor: pointer;
 }
 
+.m-predefinedzoom-button-container {
+    display: flex;
+    border: 1px solid #adadad;
+    margin: 2px;
+    background-color: #F7F6F6;
+    padding: 5px;
+}
+
+.m-predefinedzoom-namezoom {
+    display: inline;
+    margin-top: auto;
+    margin-bottom: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .viewmanagement-icon-flecha-historial.activated,
 .viewmanagement-icon-zoompanel.activated,
 .viewmanagement-icon-expand.activated:before ,
@@ -72,12 +89,21 @@ div#m-viewmanagement-previews {
 }
 
 #m-viewhistory-panel,
-#m-predefinedzoom-panel,
 #m-zoompanel-panel {
     background-color: #ededed;
     border-top: 1px solid #adadad;
     padding: 10px;
     text-align: center;
+    width: 230px;
+}
+
+#m-predefinedzoom-panel {
+    background-color: #ededed;
+    border-top: 1px solid #adadad;
+    padding: 5px;
+    max-height: 220px;
+    overflow: auto;
+    width: 240px;
 }
 
 #m-historyprevious-button,
@@ -102,6 +128,7 @@ div#m-viewmanagement-previews {
 .m-bottom .m-control.m-container.m-viewmanagement>#m-viewmanagement-previews {
     background-color: white;
     display: flex;
+    /* width: 220px; */
 }
 
 .m-bottom.m-left>.m-panel.m-plugin-viewmanagement.opened>.m-panel-controls {
