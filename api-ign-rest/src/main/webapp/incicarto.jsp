@@ -402,7 +402,6 @@
                   
                   map.removePlugins(mp);
                   crearPlugin(objeto);
-                  console.log(objeto); //BORRAR UNA VEZ ENSEÑADO A CARMEN
                 }
                 
                 function crearPlugin(propiedades) {
