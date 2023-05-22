@@ -1,0 +1,43 @@
+
+    <form>  
+            <div id="search-form-otros">
+                <div style="background-color: #fff3cd; max-width: 500px; margin: auto; text-align: justify;">{{translations.custom_query_warning}}</div>
+
+            {{#each listaFiltros}}
+        
+            {{#if this.title}}
+                {{#if this.bool}}
+                    {{#if this.value}}
+                        <div id="form-input" style="display: flex;justify-content: center;align-items: center;width: 100%;"><label for="search-form-{{this.title}}" style="display: flex;align-items: center;margin-left: -15px!IMPORTANT;">{{this.title}}</label><input class="search-form-checkbox" type="checkbox" id="search-form-{{this.title}}" checked><br /></div>
+                    {{else}}
+                        <div id="form-input" style="display: flex;justify-content: center;align-items: center;width: 100%;"><label for="search-form-{{this.title}}" style="display: flex;align-items: center; margin-left: -15px!IMPORTANT;">{{this.title}}</label><input class="search-form-checkbox" type="checkbox" id="search-form-{{this.title}}"><br /></div>
+                    {{/if}}
+                {{else if this.date}}
+                    {{#if this.value}}
+                    
+                        <div id="form-input" style="display: flex;justify-content: center;align-items: center;width: 100%;"><label for="search-form-{{this.title}}" style="display: flex;align-items: center;">{{this.title}}</label><input class="search-form-date" type="date" id="search-form-{{this.title}}" value="{{this.value}}"><br /></div>
+                    {{else}}
+                        <div id="form-input" style="display: flex;justify-content: center;align-items: center;width: 100%;"><label for="search-form-{{this.title}}" style="display: flex;align-items: center;">{{this.title}}</label><input class="search-form-date" type="date" id="search-form-{{this.title}}"><br /></div>
+                    {{/if}}
+                {{else if this.number}}
+                    {{#if this.value}}
+                        <div id="form-input" style="display: flex;justify-content: center;align-items: center;width: 100%;"><label for="search-form-{{this.title}}" style="display: flex;align-items: center;">{{this.title}}</label><input class="search-form-number" type="number" id="search-form-{{this.title}}" value="{{this.value}}"><br /></div>
+                    {{else}}
+                        <div id="form-input" style="display: flex;justify-content: center;align-items: center;width: 100%;"><label for="search-form-{{this.title}}" style="display: flex;align-items: center;">{{this.title}}</label><input class="search-form-number" type="number" id="search-form-{{this.title}}"><br /></div>
+                    {{/if}}
+                {{else}}
+                    {{#if this.value}}
+                        <div id="form-input" style="display: flex;justify-content: center;align-items: center;width: 100%;"><label for="search-form-{{this.title}}" style="display: flex;align-items: center;">{{this.title}}</label><input type="text" id="search-form-{{this.title}}" value="{{this.value}}"><br /></div>
+                    {{else}}
+                        <div id="form-input" style="display: flex;justify-content: center;align-items: center;width: 100%;"><label for="search-form-{{this.title}}" style="display: flex;align-items: center;">{{this.title}}</label><input type="text" id="search-form-{{this.title}}"><br /></div>
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+            {{/each}}
+
+        </div>
+      </form>
+      
+      
+
+        

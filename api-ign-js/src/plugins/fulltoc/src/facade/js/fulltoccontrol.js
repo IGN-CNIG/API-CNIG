@@ -13,6 +13,8 @@ import configTemplate from '../../templates/config';
 import infoTemplate from '../../templates/information';
 import addServicesTemplate from '../../templates/addservices';
 import resultstemplate from '../../templates/addservicesresults';
+import ogcModalTemplate from '../../templates/ogcmodal';
+import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 import { getValue } from './i18n/language';
 
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
@@ -195,11 +197,24 @@ export default class FullTOCControl extends M.Control {
           } else if (layer.type === 'GeoJSON') {
             const extent = this.getImpl().getGeoJSONExtent(layer);
             this.map_.setBbox(extent);
+          } else if (layer.type === 'OGCAPIFeatures') {
+            const extent = layer.getFeaturesExtent();
+            this.map_.setBbox(extent);
           } else {
             M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
           }
         } else if (evt.target.classList.contains('m-fulltoc-legend')) {
           const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-legend');
+          if (layer.type === 'OGCAPIFeatures') {
+            const legendUrl = layer.getLegendURL();
+            if (legendUrl instanceof Promise) {
+              legendUrl.then((url) => {
+                legend.querySelector('img').src = url;
+              });
+            } else {
+              legend.querySelector('img').src = legendUrl;
+            }
+          }
           if (legend.style.display === 'block') {
             legend.style.display = 'none';
           } else {
@@ -207,14 +222,37 @@ export default class FullTOCControl extends M.Control {
           }
           notRender = true;
         } else if (evt.target.classList.contains('m-fulltoc-config')) {
+          let otherStyles;
+          let isOgcApiFeatures;
+          let indexCurrentStyle;
+          if (layer.type === 'OGCAPIFeatures') {
+            otherStyles = layer.predefinedStyles;
+            const currentStyle = layer.getStyle();
+            try {
+              indexCurrentStyle = otherStyles.findIndex((style) => {
+                return style === currentStyle;
+              });
+            } catch (error) {
+              indexCurrentStyle = undefined;
+            }
+            isOgcApiFeatures = true;
+          } else {
+            otherStyles = layer.capabilitiesMetadata.style;
+          }
+
           const config = M.template.compileSync(configTemplate, {
             jsonp: true,
             parseToHtml: false,
             vars: {
-              styles: layer.capabilitiesMetadata.style,
+              ogcapifeatures: isOgcApiFeatures,
+              styles: otherStyles,
+              currentStyle: indexCurrentStyle,
               translations: {
                 select_style: getValue('select_style'),
                 change: getValue('change'),
+                style: getValue('style'),
+                default_style: getValue('default_style'),
+                selected: getValue('selected'),
               },
             },
           });
@@ -222,7 +260,7 @@ export default class FullTOCControl extends M.Control {
           M.dialog.info(config, getValue('configure_layer'), this.order);
           setTimeout(() => {
             const selector = 'div.m-mapea-container div.m-dialog #m-fulltoc-change-config button';
-            document.querySelector(selector).addEventListener('click', this.changeLayerConfig.bind(this, layer));
+            document.querySelector(selector).addEventListener('click', this.changeLayerConfig.bind(this, layer, otherStyles));
             document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
             const button = document.querySelector('div.m-dialog.info div.m-button > button');
             button.innerHTML = getValue('close');
@@ -232,64 +270,117 @@ export default class FullTOCControl extends M.Control {
             this.accessibilityTab(document.querySelector('#m-fulltoc-change-config'));
           }, 10);
         } else if (evt.target.classList.contains('m-fulltoc-info')) {
-          const vars = {
-            name: layer.name,
-            title: layer.legend,
-            abstract: layer.capabilitiesMetadata.abstract,
-            translations: {
-              title: getValue('title'),
-              name: getValue('name'),
-              abstract: getValue('abstract'),
-              provider: getValue('provider'),
-              service_info: getValue('service_info'),
-              download_center: getValue('download_center'),
-              see_more: getValue('see_more'),
-              metadata_abstract: getValue('metadata_abstract'),
-              responsible: getValue('responsible'),
-              access_constraints: getValue('access_constraints'),
-              use_constraints: getValue('use_constraints'),
-              online_resources: getValue('online_resources'),
-              see_more_layer: getValue('see_more_layer'),
-              see_more_service: getValue('see_more_service'),
-              metadata: getValue('metadata'),
-            },
-          };
+          if (layer.type === 'OGCAPIFeatures') {
+            const metadataURL = `${layer.url}${layer.name}?f=json`;
+            const htmlURL = `${layer.url}${layer.name}?f=html`;
+            let jsonResponseOgc;
+            M.remote.get(metadataURL).then((response) => {
+              jsonResponseOgc = JSON.parse(response.text);
+              const vars = {
+                title: jsonResponseOgc.description,
+                abstract: jsonResponseOgc.title,
+                hasMetadata: true,
+                metadata: htmlURL,
+                isOgc: true,
+                translations: {
+                  title: getValue('title'),
+                  name: getValue('name'),
+                  abstract: getValue('abstract'),
+                  provider: getValue('provider'),
+                  service_info: getValue('service_info'),
+                  download_center: getValue('download_center'),
+                  see_more: getValue('see_more'),
+                  metadata_abstract: getValue('metadata_abstract'),
+                  responsible: getValue('responsible'),
+                  access_constraints: getValue('access_constraints'),
+                  use_constraints: getValue('use_constraints'),
+                  online_resources: getValue('online_resources'),
+                  see_more_layer: getValue('see_more_layer'),
+                  see_more_service: getValue('see_more_service'),
+                  metadata: getValue('metadata'),
+                },
+              };
+              this.renderInfo(vars);
+            });
+          } else {
+            const vars = {
+              name: layer.name,
+              title: layer.legend,
+              abstract: layer.capabilitiesMetadata.abstract,
+              translations: {
+                title: getValue('title'),
+                name: getValue('name'),
+                abstract: getValue('abstract'),
+                provider: getValue('provider'),
+                service_info: getValue('service_info'),
+                download_center: getValue('download_center'),
+                see_more: getValue('see_more'),
+                metadata_abstract: getValue('metadata_abstract'),
+                responsible: getValue('responsible'),
+                access_constraints: getValue('access_constraints'),
+                use_constraints: getValue('use_constraints'),
+                online_resources: getValue('online_resources'),
+                see_more_layer: getValue('see_more_layer'),
+                see_more_service: getValue('see_more_service'),
+                metadata: getValue('metadata'),
+              },
+            };
 
-          if (layer.type === 'WMS') {
-            vars.capabilities = M.utils.getWMSGetCapabilitiesUrl(layer.url, layer.version);
-            const murl = layer.capabilitiesMetadata.metadataURL;
-            vars.metadata = !M.utils.isNullOrEmpty(murl) ? murl[0].OnlineResource : '';
-            if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
-              vars.provider = `${layer.capabilitiesMetadata.attribution.Title}`;
-              if (layer.capabilitiesMetadata.attribution.OnlineResource !== undefined) {
-                vars.provider += `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
+            if (layer.type === 'WMS') {
+              vars.capabilities = M.utils.getWMSGetCapabilitiesUrl(layer.url, layer.version);
+              const murl = layer.capabilitiesMetadata.metadataURL;
+              vars.metadata = !M.utils.isNullOrEmpty(murl) ? murl[0].OnlineResource : '';
+              if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
+                vars.provider = `${layer.capabilitiesMetadata.attribution.Title}`;
+                if (layer.capabilitiesMetadata.attribution.OnlineResource !== undefined) {
+                  vars.provider += `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
+                }
+              }
+            } else if (layer.type === 'WMTS') {
+              vars.capabilities = M.utils.getWMTSGetCapabilitiesUrl(layer.url);
+              if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
+                vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
+                  `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+                const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
+                if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
+                  const mail = sc.ContactInfo.Address.ElectronicMailAddress;
+                  vars.provider += `<p><a class="m-fulltoc-provider-link" href="mailto:${mail}">${mail}</a></p>`;
+                }
               }
             }
-          } else if (layer.type === 'WMTS') {
-            vars.capabilities = M.utils.getWMTSGetCapabilitiesUrl(layer.url);
-            if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
-              vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
-                `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
-              const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
-              if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
-                const mail = sc.ContactInfo.Address.ElectronicMailAddress;
-                vars.provider += `<p><a class="m-fulltoc-provider-link" href="mailto:${mail}">${mail}</a></p>`;
+
+            M.remote.get(vars.capabilities).then((response) => {
+              const source = response.text;
+              const urlService = source.split('<inspire_common:URL>')[1].split('<')[0].split('&amp;').join('&');
+              if (!M.utils.isNullOrEmpty(urlService) && M.utils.isUrl(urlService)) {
+                vars.metadata_service = urlService;
+                vars.hasMetadata = true;
               }
-            }
-          }
 
-          M.remote.get(vars.capabilities).then((response) => {
-            const source = response.text;
-            const urlService = source.split('<inspire_common:URL>')[1].split('<')[0].split('&amp;').join('&');
-            if (!M.utils.isNullOrEmpty(urlService) && M.utils.isUrl(urlService)) {
-              vars.metadata_service = urlService;
-              vars.hasMetadata = true;
-            }
+              if (M.utils.isNullOrEmpty(vars.metadata) || !M.utils.isUrl(vars.metadata)) {
+                delete vars.metadata;
+                if (vars.metadata_service !== undefined) {
+                  M.remote.get(vars.metadata_service).then((response2) => {
+                    const metadataText = response2.text;
+                    const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+                      return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
+                    });
 
-            if (M.utils.isNullOrEmpty(vars.metadata) || !M.utils.isUrl(vars.metadata)) {
-              delete vars.metadata;
-              if (vars.metadata_service !== undefined) {
-                M.remote.get(vars.metadata_service).then((response2) => {
+                    if (unfiltered.length > 0) {
+                      const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
+                      vars.downloadCenter = downloadCenter;
+                    }
+
+                    this.renderInfo(vars);
+                  }).catch((err) => {
+                    this.renderInfo(vars);
+                  });
+                } else {
+                  this.renderInfo(vars);
+                }
+              } else {
+                vars.hasMetadata = true;
+                M.remote.get(vars.metadata).then((response2) => {
                   const metadataText = response2.text;
                   const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
                     return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
@@ -304,30 +395,11 @@ export default class FullTOCControl extends M.Control {
                 }).catch((err) => {
                   this.renderInfo(vars);
                 });
-              } else {
-                this.renderInfo(vars);
               }
-            } else {
-              vars.hasMetadata = true;
-              M.remote.get(vars.metadata).then((response2) => {
-                const metadataText = response2.text;
-                const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
-                  return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
-                });
-
-                if (unfiltered.length > 0) {
-                  const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
-                  vars.downloadCenter = downloadCenter;
-                }
-
-                this.renderInfo(vars);
-              }).catch((err) => {
-                this.renderInfo(vars);
-              });
-            }
-          }).catch((err) => {
-            this.renderInfo(vars);
-          });
+            }).catch((err) => {
+              this.renderInfo(vars);
+            });
+          }
         }
       } else if (evt.target.classList.contains('m-fulltoc-addservice')) {
         const precharged = this.precharged;
@@ -624,22 +696,33 @@ export default class FullTOCControl extends M.Control {
     this.readCapabilities(evt);
   }
 
-  changeLayerConfig(layer) {
+  changeLayerConfig(layer, otherStyles) {
     const scroll = document.querySelector('.m-panel.m-plugin-fulltoc.opened ul.m-layers').scrollTop;
     const styleSelected = document.querySelector('#m-fulltoc-change-config #m-fulltoc-style-select').value;
     if (styleSelected !== '') {
-      layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
-      document.querySelector('div.m-mapea-container div.m-dialog').remove();
-      const cm = layer.capabilitiesMetadata;
-      if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
-        const filtered = layer.capabilitiesMetadata.style.filter((style) => {
-          return style.Name === styleSelected;
-        });
+      if (layer.type === 'OGCAPIFeatures') {
+        if (!M.utils.isNullOrEmpty(otherStyles)) {
+          const filtered = otherStyles[styleSelected];
+          if (styleSelected === 0) {
+            layer.setStyle();
+          } else {
+            layer.setStyle(filtered);
+          }
+        }
+      } else {
+        layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
+        document.querySelector('div.m-mapea-container div.m-dialog').remove();
+        const cm = layer.capabilitiesMetadata;
+        if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
+          const filtered = layer.capabilitiesMetadata.style.filter((style) => {
+            return style.Name === styleSelected;
+          });
 
-        if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
-          const newURL = filtered[0].LegendURL[0].OnlineResource;
-          layer.setLegendURL(newURL);
-          this.render(scroll);
+          if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
+            const newURL = filtered[0].LegendURL[0].OnlineResource;
+            layer.setLegendURL(newURL);
+            this.render(scroll);
+          }
         }
       }
     }
@@ -660,7 +743,7 @@ export default class FullTOCControl extends M.Control {
           const isRaster = ['wms', 'wmts'].indexOf(layer.type.toLowerCase()) > -1;
           const isNotWMSFull = !((layer.type === M.layer.type.WMS) &&
             M.utils.isNullOrEmpty(layer.name));
-          return (isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull);
+          return ((isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull) || (layer.type === 'OGCAPIFeatures'));
         }).reverse();
 
         const overlayLayersPromise = Promise.all(overlayLayers.map(this.parseLayerForTemplate_));
@@ -817,9 +900,17 @@ export default class FullTOCControl extends M.Control {
    * @function
    */
   parseLayerForTemplate_(layer) {
+    let ogcapiFeaturesStyles;
     const layerTitle = layer.legend || layer.name;
     const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
       !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
+
+    if (layer.type === 'OGCAPIFeatures') {
+      if (!M.utils.isNullOrEmpty(layer.otherStyles)) {
+        ogcapiFeaturesStyles = layer.otherStyles.length > 1;
+      }
+    }
+
     return new Promise((success, fail) => {
       const layerVarTemplate = {
         visible: (layer.isVisible() === true),
@@ -829,7 +920,9 @@ export default class FullTOCControl extends M.Control {
         opacity: layer.getOpacity(),
         metadata: hasMetadata,
         type: layer.type,
+        tag: layer.type === 'OGCAPIFeatures' ? 'Features' : layer.type,
         hasStyles: hasMetadata && layer.capabilitiesMetadata.style.length > 1,
+        hasOgcapiFeaturesStyles: ogcapiFeaturesStyles,
         url: layer.url,
       };
 
@@ -843,6 +936,20 @@ export default class FullTOCControl extends M.Control {
         layerVarTemplate.legend = layer.type !== 'KML' ? legendUrl : null;
         success(layerVarTemplate);
       }
+    });
+  }
+
+  checkIfApiFeatures(url) {
+    return M.remote.get(`${url}?f=json`).then((response) => {
+      let isJson = false;
+      if (!M.utils.isNullOrEmpty(response)) {
+        const responseString = response.text;
+        JSON.parse(responseString);
+        isJson = true;
+      }
+      return isJson;
+    }).catch(() => {
+      return false;
     });
   }
 
@@ -905,36 +1012,42 @@ export default class FullTOCControl extends M.Control {
                 this.capabilities = this.filterResults(layers);
                 this.showResults();
               } else {
-                const promise2 = new Promise((success, reject) => {
-                  const id = setTimeout(() => reject(), 15000);
-                  M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response2) => {
-                    clearTimeout(id);
-                    success(response2);
-                  });
-                });
-                promise2.then((response2) => {
-                  try {
-                    const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
-                    const getCapabilities = getCapabilitiesParser.read(response2.xml);
-                    this.serviceCapabilities = getCapabilities.Service || {};
-                    const getCapabilitiesUtils = new M.impl.GetCapabilities(
-                      getCapabilities,
-                      url,
-                      this.map_.getProjection().code,
-                    );
-                    this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
-                    this.capabilities.forEach((layer) => {
-                      try {
-                        this.getParents(getCapabilities, layer);
-                        /* eslint-disable no-empty */
-                      } catch (err) {}
+                this.checkIfApiFeatures(url).then((reponseIsJson) => {
+                  if (reponseIsJson === true) {
+                    this.printOGCModal(url);
+                  } else {
+                    const promise2 = new Promise((success, reject) => {
+                      const id = setTimeout(() => reject(), 15000);
+                      M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response2) => {
+                        clearTimeout(id);
+                        success(response2);
+                      });
                     });
-                    this.showResults();
-                  } catch (error) {
-                    M.dialog.error(getValue('exception.capabilities'));
+                    promise2.then((response2) => {
+                      try {
+                        const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
+                        const getCapabilities = getCapabilitiesParser.read(response2.xml);
+                        this.serviceCapabilities = getCapabilities.Service || {};
+                        const getCapabilitiesUtils = new M.impl.GetCapabilities(
+                          getCapabilities,
+                          url,
+                          this.map_.getProjection().code,
+                        );
+                        this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
+                        this.capabilities.forEach((layer) => {
+                          try {
+                            this.getParents(getCapabilities, layer);
+                            /* eslint-disable no-empty */
+                          } catch (err) {}
+                        });
+                        this.showResults();
+                      } catch (error) {
+                        M.dialog.error(getValue('exception.capabilities'));
+                      }
+                    }).catch((eerror) => {
+                      M.dialog.error(getValue('exception.capabilities'));
+                    });
                   }
-                }).catch((eerror) => {
-                  M.dialog.error(getValue('exception.capabilities'));
                 });
               }
             } catch (err) {
@@ -1378,6 +1491,403 @@ export default class FullTOCControl extends M.Control {
     document.querySelector('#m-fulltoc-addservices-results').innerHTML = '';
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
     document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = '';
+  }
+
+  /**
+   * This function get filters as a dict
+   *
+   * @function
+   * @param formInputs - formInputs
+   * @private
+   */
+  getFiltersDict(formInputs) {
+    const formData = {};
+    formInputs.forEach((inputForm) => {
+      const id = inputForm.id;
+      const attrName = id.substring(inputForm.id.indexOf('form-') + 5);
+      switch (inputForm.type) {
+        case 'checkbox':
+          if (inputForm.checked !== false) {
+            formData[attrName] = inputForm.checked;
+          }
+          break;
+        case 'date':
+          if (!M.utils.isNullOrEmpty(inputForm.value)) {
+            const date = new Date(inputForm.value);
+            formData[attrName] = date.toISOString().split('T')[0];
+          }
+          break;
+        default:
+          if (!M.utils.isNullOrEmpty(inputForm.value)) {
+            // formData[attrName] = encodeURIComponent(inputForm.value);
+            formData[attrName] = inputForm.value;
+          }
+      }
+    });
+
+
+    const propsKeysForm = Object.keys(formData);
+    const propsValuesForm = Object.values(formData);
+
+    const cDict = {};
+
+    propsKeysForm.forEach((key, i) => {
+      cDict[key] = propsValuesForm[i];
+    });
+    return cDict;
+  }
+
+  printOGCModal(
+    url, capaSeleccionada, limitVal, onlyBbox, summary,
+    filtroPorID, filtroOtrosFiltros,
+  ) {
+    let prevID;
+    let indexCapaActual;
+    let formInputs;
+    let urlOGC = url.trim();
+    if (M.utils.isUrl(urlOGC)) {
+      document.querySelector('#m-fulltoc-addservices-search-input').value = url;
+
+      document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', (e) => {
+        this.filterName = undefined;
+        this.readCapabilities(e);
+      });
+      const collections = `${(urlOGC.endsWith('/') ? urlOGC : `${urlOGC}/`)}collections?f=json`;
+      M.remote.get(collections).then((response) => {
+        const resJSON = JSON.parse(response.text);
+        const capas = resJSON.collections;
+        if (M.utils.isNullOrEmpty(summary)) {
+          summary = undefined;
+          filtroPorID = undefined;
+          filtroOtrosFiltros = undefined;
+        }
+        const ogcModal = M.template.compileSync(ogcModalTemplate, {
+          jsonp: true,
+          parseToHtml: false,
+          vars: {
+            capas,
+            capaSeleccionada,
+            limit: limitVal,
+            bbox: onlyBbox,
+            summary,
+            filtroPorID,
+            filtroOtrosFiltros,
+            prevID,
+            translations: {
+              select_service: getValue('select_service'),
+              amount_results: getValue('amount_results'),
+              amount_results_2: getValue('amount_results_2'),
+              bbox_select: getValue('bbox-select'),
+              other_filters: getValue('other_filters'),
+              id_filter: getValue('id_filter'),
+              warning: getValue('warning'),
+              add_btn: getValue('add_btn'),
+              custom_query_btn: getValue('custom_query_btn'),
+              filters: getValue('filters'),
+              check_results: getValue('check_results'),
+            },
+          },
+        });
+
+        document.querySelector('#fromOGCContainer').outerHTML = ogcModal;
+
+        const radioBtnFiltroPorID = document.querySelector('input[name="filtro"][value="id"]');
+
+        const radioBtnFiltroOtros = document.querySelector('input[name="filtro"][value="otros"]');
+
+        radioBtnFiltroPorID.addEventListener('click', () => {
+          document.querySelector('#otros-filtros').style.display = 'none';
+          document.querySelector('#filtro-id').style.display = 'block';
+          document.querySelector('#check-results').innerHTML = '';
+        });
+        radioBtnFiltroOtros.addEventListener('click', () => {
+          document.querySelector('#otros-filtros').style.display = 'block';
+          document.querySelector('#filtro-id').style.display = 'none';
+          document.querySelector('#check-results').innerHTML = '';
+        });
+
+        const barraBusqueda = document.querySelector('#m-vectors-ogc-select');
+        barraBusqueda.addEventListener('change', () => {
+          const divSummary = document.querySelector('#div-summary');
+          if (divSummary !== null) {
+            divSummary.remove();
+            summary = undefined;
+          }
+          document.querySelector('#check-results').innerHTML = '';
+        });
+
+        document.querySelector('#search-form-ID').addEventListener('change', () => {
+          document.querySelector('#check-results').innerHTML = '';
+        });
+
+        document.querySelector('#limit-items-input').addEventListener('change', () => {
+          document.querySelector('#check-results').innerHTML = '';
+        });
+        document.querySelector('#search-bbox').addEventListener('change', () => {
+          document.querySelector('#check-results').innerHTML = '';
+        });
+
+        const btn = document.querySelector('#fromOGCContainer #select-button');
+
+        const btnCheck = document.querySelector('#fromOGCContainer #check-button');
+        const btnCustomQuery = document.querySelector('#custom-query-button');
+        const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+        buttonClose.innerHTML = getValue('close');
+        buttonClose.style.width = '75px';
+        buttonClose.style.backgroundColor = '#71a7d3';
+        buttonClose.addEventListener('click', () => {
+          try {
+            document.querySelector('div.m-dialog.info').parentNode.removeChild(document.querySelector('div.m-dialog.info'));
+          } catch (error) {}
+          this.afterRender();
+        });
+        btn.addEventListener('click', () => {
+          document.getElementById('loading-fulltoc').style.display = 'initial';
+
+          document.getElementById('loading-fulltoc').style.display = 'none';
+          // loading
+          const urlQuery = document.querySelector('#m-fulltoc-addservices-search-input').value;
+          const selectValue = document.querySelector('#m-vectors-ogc-select').value;
+          const selectValueText = document.querySelector('#m-vectors-ogc-select').selectedOptions[0].text;
+          const limit = document.querySelector('#limit-items-input').value;
+          const checked = document.querySelector('#search-bbox').checked;
+          const limitValue = limit;
+          if (selectValue === getValue('select_service')) {
+            M.dialog.error(getValue('no_results'));
+          } else {
+            let bboxString;
+            if (checked) {
+              const bbox = this.map_.getBbox();
+              const min = this.getImpl().getTransformedCoordinates(
+                this.map_.getProjection().code,
+                [bbox.x.min, bbox.y.min],
+              );
+              const max = this.getImpl().getTransformedCoordinates(
+                this.map_.getProjection().code,
+                [bbox.x.max, bbox.y.max],
+              );
+              bboxString = `${min[0]};${min[1]};${max[0]};${max[1]}`;
+            }
+            const propiedades = {};
+            propiedades.url = `${urlQuery}/collections/`;
+            propiedades.name = selectValue;
+            propiedades.legend = selectValueText;
+            propiedades.limit = limitValue;
+            if (checked) {
+              propiedades.bbox = bboxString;
+            }
+
+            const isFiltroPorID = document.querySelector('#filtro-id-input').checked;
+
+            if (isFiltroPorID === true) {
+              propiedades.id = document.querySelector('#search-form-ID').value;
+            } else if (summary !== undefined) {
+              propiedades.conditional = summary;
+            }
+
+            propiedades.format = 'json';
+
+            this.getImpl().loadOGCAPIFeaturesLayer(propiedades);
+
+            const buttonCerrar = document.querySelector('div.m-dialog.info div.m-button > button');
+            buttonCerrar.click();
+          }
+        });
+
+        btnCheck.addEventListener('click', () => {
+          document.getElementById('loading-fulltoc').style.display = 'initial';
+
+          document.getElementById('loading-fulltoc').style.display = 'none';
+          // loading
+          const urlQuery = document.querySelector('#m-fulltoc-addservices-search-input').value;
+          const selectValue = document.querySelector('#m-vectors-ogc-select').value;
+          const selectValueText = document.querySelector('#m-vectors-ogc-select').selectedOptions[0].text;
+          const limit = document.querySelector('#limit-items-input').value;
+          const checked = document.querySelector('#search-bbox').checked;
+          const limitValue = limit;
+          if (selectValue === getValue('select_service')) {
+            M.dialog.error(getValue('no_results'));
+          } else {
+            let bboxString;
+            if (checked) {
+              const bbox = this.map_.getBbox();
+              const min = this.getImpl().getTransformedCoordinates(
+                this.map_.getProjection().code,
+                [bbox.x.min, bbox.y.min],
+              );
+              const max = this.getImpl().getTransformedCoordinates(
+                this.map_.getProjection().code,
+                [bbox.x.max, bbox.y.max],
+              );
+              bboxString = `${min[0]};${min[1]};${max[0]};${max[1]}`;
+            }
+            const propiedades = {};
+            propiedades.url = `${urlQuery}/collections/`;
+            propiedades.name = selectValue;
+            propiedades.legend = selectValueText;
+            propiedades.limit = limitValue;
+            if (checked) {
+              propiedades.bbox = bboxString;
+            }
+            const isFiltroPorID = document.querySelector('#filtro-id-input').checked;
+
+            if (isFiltroPorID === true) {
+              propiedades.id = document.querySelector('#search-form-ID').value;
+            } else if (summary !== undefined) {
+              propiedades.conditional = summary;
+            }
+
+            propiedades.format = 'json';
+
+            /* eslint-disable-next-line max-len */
+            this.getImpl().getNumberFeaturesOGCAPIFeaturesLayer(propiedades).then((numberFeatures) => {
+              let results1;
+              let results2;
+              if (numberFeatures === 1) {
+                results1 = getValue('results_1_singular');
+                results2 = getValue('results_2_singular');
+              } else {
+                results1 = getValue('results_1_plural');
+                results2 = getValue('results_2_plural');
+              }
+              document.querySelector('#check-results').innerHTML = `${results1}${numberFeatures}${results2}`;
+            });
+          }
+        });
+
+        btnCustomQuery.addEventListener('click', () => {
+          let listaFiltros;
+          const previousModal = document.querySelector('.m-content').innerHTML;
+          const selectValue = document.querySelector('#m-vectors-ogc-select').value;
+          const limit = document.querySelector('#limit-items-input').value;
+          const checked = document.querySelector('#search-bbox').checked;
+          const urlQueryables = `${urlOGC}/collections/${selectValue}/queryables`;
+          M.remote.get(urlQueryables).then((queryablesResponse) => {
+            try {
+              const res = JSON.parse(queryablesResponse.text);
+              const props = res.properties;
+              listaFiltros = Object.values(props);
+              listaFiltros.forEach((v) => {
+                if (v.title !== undefined) {
+                  const type = v.type.toLowerCase();
+                  if (type === 'bool' || type === 'boolean') {
+                    v.bool = true;
+                  } else if (type === 'timestamp' || type === 'date') {
+                    v.date = true;
+                  } else if (type === 'int4' || type === 'int' ||
+                    type === 'number' || type === 'numeric' || type.includes('numeric')) {
+                    v.number = true;
+                  } else {
+                    v.text = true;
+                  }
+                }
+                if (summary !== undefined) {
+                  if (v.title in summary) {
+                    v.value = summary[v.title];
+                  }
+                  document.querySelector('#check-results').innerHTML = '';
+                }
+              });
+            } catch (error) {}
+            const urlInput = document.querySelector('#m-fulltoc-addservices-search-input').value;
+
+            const customQueryTemplate = M.template.compileSync(customQueryFiltersTemplate, {
+              jsonp: true,
+              parseToHtml: false,
+              vars: {
+                listaFiltros,
+                summary,
+                translations: {
+                  other_filters: getValue('other_filters'),
+                  id_filter: getValue('id_filter'),
+                  filters: getValue('filters'),
+                  custom_query_warning: getValue('custom_query_warning'),
+                },
+              },
+            });
+            const msg = `${getValue('custom_query_btn')}`;
+            M.dialog.info(customQueryTemplate, msg);
+            const btnAniadir = document.createElement('button');
+            const btnVolver = document.createElement('button');
+            setTimeout(() => {
+              document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+              const button = document.querySelector('div.m-dialog.info div.m-button > button');
+              button.innerHTML = getValue('close');
+              button.style.width = '75px';
+              button.style.backgroundColor = '#71a7d3';
+              button.style.display = 'none';
+              const botones = document.querySelector('div.m-dialog.info div.m-button');
+
+              btnVolver.textContent = getValue('close');
+              btnVolver.style.width = '75px';
+              btnVolver.style.backgroundColor = '#71a7d3';
+              btnVolver.style.marginLeft = '4px';
+              btnVolver.setAttribute('data-link', urlInput);
+              btnVolver.setAttribute('data-service-type', 'OGCAPIFeatures');
+              botones.insertBefore(btnVolver, botones.firstChild);
+
+              btnAniadir.textContent = getValue('apply_btn');
+              btnAniadir.style.width = '75px';
+              btnAniadir.style.backgroundColor = '#71a7d3';
+              btnAniadir.setAttribute('data-link', urlInput);
+              btnAniadir.setAttribute('data-service-type', 'OGCAPIFeatures');
+              botones.insertBefore(btnAniadir, botones.firstChild);
+            }, 10);
+            btnAniadir.addEventListener('click', () => {
+              let filtrarPorID = false;
+              let filtrarOtrosFiltros = false;
+
+              // comprobar el valor del tipo de filtro seleccionado
+              if (radioBtnFiltroPorID.checked) {
+                filtrarPorID = true;
+                filtrarOtrosFiltros = false;
+                formInputs = document.querySelectorAll('#search-form-id input');
+              } else if (radioBtnFiltroOtros.checked) {
+                filtrarPorID = false;
+                filtrarOtrosFiltros = true;
+                formInputs = document.querySelectorAll('#search-form-otros input');
+              }
+              const cDict = this.getFiltersDict(formInputs);
+
+              const modalActual = document.querySelector('.m-content');
+
+              modalActual.innerHTML = previousModal;
+
+              indexCapaActual = capas.findIndex((capa) => {
+                return capa.id === selectValue;
+              });
+
+              if (M.utils.isNullOrEmpty(cDict)) {
+                this.printOGCModal(url, indexCapaActual, limit, checked);
+              } else if (Object.keys(cDict).length === 0) {
+                this.printOGCModal(url, indexCapaActual, limit, checked);
+              } else {
+                this.printOGCModal(
+                  url, indexCapaActual, limit, checked, cDict,
+                  filtrarPorID, filtrarOtrosFiltros,
+                );
+              }
+            });
+            btnVolver.addEventListener('click', () => {
+              const modalActual = document.querySelector('.m-content');
+              modalActual.innerHTML = previousModal;
+              indexCapaActual = capas.findIndex((capa) => {
+                return capa.id === selectValue;
+              });
+              this.printOGCModal(
+                url, indexCapaActual, limit, checked,
+                summary, filtroPorID, filtroOtrosFiltros,
+              );
+            });
+          }).catch((err) => {
+            M.dialog.error(getValue('no_results'));
+          });
+        });
+      }).catch((err) => {
+        urlOGC = '';
+        M.dialog.error(getValue('exception.error_ogc'));
+      });
+    }
   }
 
   checkUrls(url1, url2) {
