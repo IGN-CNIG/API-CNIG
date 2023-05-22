@@ -49,6 +49,32 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
+ 		<label for="selectCollapsed">Selector de collapsed</label>
+        <select name="collapsed" id="selectCollapsed">
+            <option value=''></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
+
+     	<label for="selectCollapsible">Selector de collapsible</label>
+        <select name="collapsible" id="selectCollapsible">
+            <option value=''></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
+
+   		<label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug" value="Información Coordenadas">
+        <datalist id="tooltipSug">
+            <option value="Información Coordenadas"></option>
+        </datalist>
+
+		<label for="helpUrl">Parámetro helpUrl</label>
+        <input type="text" name="helpUrl" id="inputHelpUrl" list="helpUrl">
+        <datalist id="helpUrl">
+            <option value="https://www.ign.es/">Ayuda</option>
+		</datalist>
+		
         <label for="inputDecimalGEOcoord">Parámetro decimalGEOcoord</label>
         <input id="inputDecimalGEOcoord" type="number" value="4" min="0" max="10"></input>
         <label for="inputDecimalUTMcoord">Parámetro decimalUTMcoord</label>
@@ -75,7 +101,6 @@
     <script type="text/javascript">
         const urlParams = new URLSearchParams(window.location.search);
         M.language.setLang(urlParams.get('language') || 'es');
-
         const map = M.map({
             container: 'mapjs',
             zoom: 5.5,
@@ -83,47 +108,64 @@
             minZoom: 4,
             center: [-467062.8225, 4683459.6216],
         });
-
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
-
         map.addPlugin(mp2);
 
         const selectPosicion = document.getElementById("selectPosicion");
         const inputDecimalGEOcoord = document.getElementById("inputDecimalGEOcoord");
         const inputDecimalUTMcoord = document.getElementById("inputDecimalUTMcoord");
+        const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
+        const inputTooltip = document.getElementById("inputTooltip");
+        const inputHelpUrl = document.getElementById("inputHelpUrl");
 
         let mp;
         let posicion = selectPosicion.value;
         let valueDecimalGEOcoord = inputDecimalGEOcoord.value;
         let valueDecimalUTMcoord = inputDecimalUTMcoord.value;
-
+		let valueTooltip = inputTooltip.value;
+		let helpUrl = inputHelpUrl.value;
         crearPlugin({
             position: posicion,
             decimalGEOcoord: valueDecimalGEOcoord,
-            decimalUTMcoord: valueDecimalUTMcoord
+            decimalUTMcoord: valueDecimalUTMcoord,
+			collapsed: true,
+			collapsible: true,
+			tooltip: valueTooltip,
+			helpUrl: "https://www.ign.es/"
         });
-
         selectPosicion.addEventListener("change", cambiarTest);
         inputDecimalGEOcoord.addEventListener("change", cambiarTest);
         inputDecimalUTMcoord.addEventListener("change", cambiarTest);
+      	selectCollapsible.addEventListener('change',cambiarTest);
+		selectCollapsed.addEventListener('change', cambiarTest);
+		inputTooltip.addEventListener('change', cambiarTest);
+		inputHelpUrl.addEventListener('change', cambiarTest);
+		
 
         function cambiarTest() {
             let objeto = {}
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
+			collapsible = selectCollapsible.options[selectCollapsible.selectedIndex].value;
+            collapsible != '' ? objeto.collapsible = (collapsible === "true") : '';
+	        collapsed = selectCollapsed.options[selectCollapsed.selectedIndex].value;
+            collapsed != '' ? objeto.collapsed = (collapsed === "true") : '';
             objeto.decimalGEOcoord = inputDecimalGEOcoord.value;
             objeto.decimalUTMcoord = inputDecimalUTMcoord.value;
+			objeto.tooltip = inputTooltip.value;
+			helpUrl = inputHelpUrl.value != "" ? objeto.helpUrl = inputHelpUrl.value : "";
+   			
+
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
-
         function crearPlugin(propiedades) {
             mp = new M.plugin.Infocoordinates(propiedades);
             map.addPlugin(mp);
         }
-
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
