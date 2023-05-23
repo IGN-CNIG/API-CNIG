@@ -36,7 +36,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **title**: Título para la cabecera de la ventana (por defecto: 'Compartir Mapa').
 - **btn**: Título para el botón Aceptar (por defecto: 'OK').
 - **copyBtn**: Título para el botón copiar (por defecto: 'Copiar').
-- **overwriteStyles**: Indica si se le quieren pasar estilos adicionales (por defecto: false).
+- **overwriteStyles**: Parámetro para sobreescribir los estilos. Si su valor es *true*, se aplicarán los estilos del parámetro *styles*. Si su valor es *false*, se aplicarán los estilos por defecto. Valor por defecto del parámetro: false. Colores por defecto: 
+  - primaryColor: '#71a7d3'
+  - secondaryColor: '#ffffff'
 - **styles**: Estilo a aplicar para sobreescribir. (por defecto: {}). 
   - **Ejemplo:**
 ```javascript

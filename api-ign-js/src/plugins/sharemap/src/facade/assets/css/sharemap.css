@@ -42,6 +42,10 @@
     margin: 0 auto;
     padding: 10px;
     border-radius: 4px;
+    background-color: #fff;
+    color: #71a7d3;
+    border: 1px solid #71a7d3;
+    box-shadow: 0 2px 4px #71a7d3, 0 -1px 0px #71a7d3;
 }
 
 
@@ -54,6 +58,7 @@
     line-height: 40px;
     text-align: center;
     font-weight: bold;
+    color: #71a7d3;
 }
 
 .m-plugin-sharemap-dialog div.m-plugin-sharemap-text>span {
@@ -94,11 +99,8 @@
     font-weight: bold;
     padding: 5px 10px;
     border-radius: 5px;
-}
-
-.m-plugin-sharemap-dialog div.m-plugin-sharemap-html>button {
     background-color: #71a7d3;
-    color: #fff;
+    color: white;
 }
 
 /**************************
@@ -114,8 +116,8 @@
     border-bottom: #71a7d3 1px solid;
 }
 
-.m-plugin-sharemap-dialog div.m-plugin-sharemap-social>a>img {
-    filter: invert(67%) sepia(50%) saturate(359%) hue-rotate(167deg) brightness(87%) contrast(90%);
+.m-plugin-sharemap-dialog div.m-plugin-sharemap-social>a>svg {
+    color: #71a7d3;
     width: 42px;
     height: 42px;
     border: 0;
@@ -133,6 +135,8 @@
     font-weight: bold;
     padding: 5px 20px;
     border-radius: 5px;
+    background-color: #71a7d3;
+    color: white;
 }
 
 
@@ -147,7 +151,7 @@
 .m-plugin-sharemap-tooltip>span.m-plugin-sharemap-tooltiptext {
     visibility: visible;
     background-color: black;
-    color: #fff;
+    color: #fff !important;
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
@@ -256,4 +260,6 @@
 .m-sharemap-container>button#m-sharemap-geturl {
     border-radius: 20px;
     border: 2px solid white;
+    background-color: #71a7d3;
+    color: #ffffff;
 }

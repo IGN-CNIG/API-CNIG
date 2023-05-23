@@ -29,22 +29,13 @@ const map = M.map({
 const mp = new ShareMap({
   baseUrl: 'https://componentes.cnig.es/api-core/',
   position: 'TR',
-  tooltip: 'Copiado al portapapeles',
   minimize: true,
-  title: 'Compartir mapa title',
-  btn: 'OK',
-  copyBtn: 'copyBtn',
-  text: 'Compartir mapa text',
-  copyBtnHtml: 'copyBtnHtml',
-  urlAPI: false,
   shareLayer: true,
-  // filterLayers: ['cosas1_poligono'],
-  /* overwriteStyles: false,
+  overwriteStyles: true,
   styles: {
     primaryColor: '#d39571',
-    // falta: m-plugin-sharemap-social, m-plugin-sharemap-text, m-plugin-sharemap-copybuttonhtml
-    secondaryColor: '#272727',
-  }, */
+    secondaryColor: '#fff',
+  },
 });
 
 map.addPlugin(mp);

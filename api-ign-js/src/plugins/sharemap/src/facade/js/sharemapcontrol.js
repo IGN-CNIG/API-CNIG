@@ -3,8 +3,6 @@
  */
 import template from '../../templates/sharemap';
 import modal from '../../templates/modal';
-import createStyle from './styles';
-
 /**
  * This function adds the animation shade class.
  *
@@ -12,7 +10,9 @@ import createStyle from './styles';
  * @private
  */
 const beginShade = (element) => {
-  element.classList.add('m-plugin-sharemap-shade');
+  const elemento = element;
+  elemento.style.animationDuration = '2.5s';
+  elemento.style.animationName = 'shade';
 };
 
 /**
@@ -125,10 +125,48 @@ export default class ShareMapControl extends M.Control {
      * @private
      * @type {object}
      */
-    this.classes_ = createStyle({
-      primaryColor: this.primaryColor_,
-      secondaryColor: this.secondaryColor_,
-    });
+    this.styles_ = [
+      {
+        id: '.m-plugin-sharemap-content button',
+        styles: {
+          backgroundColor: `${this.primaryColor_} `,
+          color: `${this.secondaryColor_} `,
+        },
+      },
+      {
+        id: '#m-plugin-sharemap-content',
+        styles: {
+          backgroundColor: `${this.secondaryColor_} `,
+          border: `1px solid ${this.primaryColor_} `,
+          boxShadow: `0 2px 4px ${this.primaryColor_}, 0 -1px 0px ${this.primaryColor_} `,
+        },
+      },
+      {
+        id: '.m-plugin-sharemap-content span',
+        styles: {
+          color: `${this.primaryColor_} `,
+        },
+      },
+      {
+        id: '.m-plugin-sharemap-dialog div.m-plugin-sharemap-social',
+        styles: {
+          borderBottom: `${this.primaryColor_} 1px solid `,
+        },
+      },
+      {
+        id: '#m-plugin-sharemap-social a svg',
+        styles: {
+          color: `${this.primaryColor_} `,
+        },
+      },
+      {
+        id: 'm-sharemap-geturl',
+        styles: {
+          backgroundColor: this.primaryColor_,
+          color: this.secondaryColor_,
+        },
+      },
+    ];
 
     /**
      * Styles in js will be overwritten
@@ -195,8 +233,11 @@ export default class ShareMapControl extends M.Control {
       button.setAttribute('tabindex', this.order);
       button.setAttribute('aria-label', 'Plugin Sharemap');
 
-      if (this.overwriteStyles_ === false) {
-        button.classList.add(this.classes_.button);
+      if (this.overwriteStyles_) {
+        const [mButtonStyle] = this.styles_.filter(({ id }) => id === button.id);
+        button.style.backgroundColor = mButtonStyle.styles.backgroundColor;
+        button.style.color = mButtonStyle.styles.color;
+        button.style.border = mButtonStyle.styles.border;
       }
       this.accessibilityTab(html);
       this.addEvents(html);
@@ -240,44 +281,40 @@ export default class ShareMapControl extends M.Control {
 
     this.accessibilityTab(dialog);
 
-    const content = dialog.querySelector('#m-plugin-sharemap-content');
-    const message = dialog.querySelector('#m-plugin-sharemap-message');
-    const html = dialog.querySelector('#m-plugin-sharemap-html');
-    const button = dialog.querySelector('#m-plugin-sharemap-button');
-    const title = dialog.querySelector('#m-plugin-sharemap-title');
-    const okButton = dialog.querySelector('#m-plugin-sharemap-button > button');
-    const copyButton = dialog.querySelector('#m-plugin-sharemap-copybutton');
-    const copyButtonHtml = dialog.querySelector('#m-plugin-sharemap-copybuttonhtml');
-    const text = dialog.querySelector('#m-plugin-sharemap-text');
-    const social = dialog.querySelector('#m-plugin-sharemap-social');
-    const input = message.querySelector('input');
-    const inputHtml = html.querySelector('input');
-
-    if (this.overwriteStyles_ === false) {
-      content.classList.add(this.classes_.content);
-      message.classList.add(this.classes_.message);
-      button.classList.add(this.classes_.modalButton);
-      title.classList.add(this.classes_.title);
-      text.classList.add(this.classes_.text);
-      copyButtonHtml.classList.add(this.classes_.copyButtonHtml);
-      social.classList.add(this.classes_.social);
-      // html.classList.add(this.classes_.html);
+    if (this.overwriteStyles_) {
+      this.styles_.forEach((style) => {
+        const element = dialog.querySelectorAll(style.id);
+        element.forEach((elm) => {
+          const changeElementStyle = elm;
+          Object.keys(style.styles).forEach((key) => {
+            changeElementStyle.style[key] = style.styles[key];
+          });
+        });
+      });
     }
 
+    const message = dialog.querySelector('#m-plugin-sharemap-message input');
+    const html = dialog.querySelector('#m-plugin-sharemap-html input');
+
     const mapeaContainer = document.querySelector('div.m-mapea-container');
+    const okButton = dialog.querySelector('#m-plugin-sharemap-button > button');
     okButton.addEventListener('click', () => {
       removeElement(dialog);
       document.querySelector('.m-sharemap-container').click();
       document.querySelector('#m-sharemap-geturl').focus();
     });
 
+    const copyButton = dialog.querySelector('#m-plugin-sharemap-copybutton');
+    const copyButtonHtml = dialog.querySelector('#m-plugin-sharemap-copybuttonhtml');
+
+    const title = dialog.querySelector('#m-plugin-sharemap-title');
     copyButton.addEventListener('click', () => {
-      copyURL(input);
+      copyURL(message);
       beginShade(title.querySelector('#m-plugin-sharemap-tooltip'));
     });
 
     copyButtonHtml.addEventListener('click', () => {
-      copyURL(inputHtml);
+      copyURL(html);
       beginShade(title.querySelector('#m-plugin-sharemap-tooltip'));
     });
 
