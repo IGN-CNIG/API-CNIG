@@ -193,6 +193,8 @@ export default class CompareMirrorpanel extends M.Control {
     this.reverseLayout = values.reverseLayout;
     this.enabledPlugins = values.enabledPlugins;
     this.backImgLayersConfig = values.backImgLayersConfig;
+    this.target = values.target;
+
     /**
      * Defining cursor style
      */
@@ -385,8 +387,7 @@ export default class CompareMirrorpanel extends M.Control {
     const bigContainer = document.createElement('div');
     bigContainer.id = 'lienzo';
     bigContainer.classList.add('mirrorpanel-grid');
-
-    const mapjsA = document.getElementById('mapjs') || document.getElementById('map');
+    const mapjsA = document.getElementById(this.target);
     this.oldClass = mapjsA.classList.toString();
     mapjsA.parentElement.insertBefore(bigContainer, mapjsA);
     mapjsA.classList.add('mirror1');
@@ -426,7 +427,7 @@ export default class CompareMirrorpanel extends M.Control {
    */
   manageVisionPanelByCSSGrid(modeViz) {
     let oldModeViz = this.modeViz;
-    let map0 = document.getElementById('mapjs') || document.getElementById('map');
+    let map0 = document.getElementById(this.target);
     map0.style.display = 'none';
     document.getElementById('mapjsB').style.display = 'none';
     document.getElementById('mapjsC').style.display = 'none';
