@@ -3890,7 +3890,7 @@ export const ogcapifeatures = (userParameters) => {
       offset,
       id,
       style,
-      conditional
+      conditional,
     };
   });
 
