@@ -446,7 +446,7 @@ class Map extends Base {
                 layer = new MBTiles(parameterVariable);
                 break;
               case 'MBTilesVector':
-                layer = new MBTilesVector(parameterVariable);
+                layer = new MBTilesVector(parameterVariable, { style: parameterVariable.style });
                 break;
               case 'XYZ':
                 layer = new XYZ(parameterVariable);
