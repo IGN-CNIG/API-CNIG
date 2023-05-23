@@ -3822,6 +3822,26 @@ export const getStyleOGC = (parameter) => {
 };
 
 /**
+ * Analiza el parámetro para obtener los condicionales.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.OGCAPIFeatures} parameter Parámetro para obtener los condicionales
+ * de la capa OGCAPIFeatures.
+ * @returns {string} Condicionales de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getConditionalOGC = (parameter) => {
+  let conditional;
+  if (isObject(parameter) && !isNullOrEmpty(parameter.conditional)) {
+    conditional = parameter.conditional;
+  }
+  return conditional;
+};
+
+/**
  * Analiza los parámetros especificados por el usuario para la capa OGCAPIFeatures.
  *
  * @param {string|Mx.parameters.WMS} userParameters Parámetros para la capa OGCAPIFeatures.
@@ -3857,6 +3877,7 @@ export const ogcapifeatures = (userParameters) => {
     const offset = getOffsetOGC(userParam);
     const id = getIdOGC(userParam);
     const style = getStyleOGC(userParam);
+    const conditional = getConditionalOGC(userParam);
 
     return {
       type,
@@ -3869,6 +3890,7 @@ export const ogcapifeatures = (userParameters) => {
       offset,
       id,
       style,
+      conditional
     };
   });
 
