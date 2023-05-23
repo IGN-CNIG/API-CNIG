@@ -21,7 +21,7 @@ export default class ContactLink extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options) {
+  constructor(options = {}) {
     super();
 
     /**
@@ -165,7 +165,18 @@ export default class ContactLink extends M.Plugin {
      * @public
      * @type {M.control.ContactLink}
      */
-    this.control_ = new ContactLinkControl(options);
+    this.control_ = new ContactLinkControl({
+      descargascnig: this.linksDescargasCnig,
+      pnoa: this.linksPnoa,
+      visualizador3d: this.linksVisualizador3d,
+      facebook: this.linksFacebook,
+      fototeca: this.linksFototeca,
+      twitter: this.linksTwitter,
+      instagram: this.linksInstagram,
+      youtube: this.linksYoutube,
+      mail: this.linksMail,
+      pinterest: this.linksPinterest
+    });
 
     /**
      *@private
