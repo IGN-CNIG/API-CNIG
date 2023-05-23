@@ -23,16 +23,17 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 El constructor se inicializa con un JSON con los siguientes atributos:
 
-- **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
-- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda (por defecto).
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
+- **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true. 
+- **tooltip**. Tooltip que se muestra sobre el plugin. Por defecto: Tabla de atributos.
 - **filters**: Cuando toma el valor false, en cada cambio de zoom muestra en la tabla los registros que se encuentran en el bounding box de la pantalla. Cuando toma valor true, muestra botones para establecer filtro por bounding box o por polígono trazado por el usuario. Por defecto: true.
 - **refreshBBOXFilterOnPanning**: define el comportamiento del filtro de vista al activarse. Si es *true*, se reevalúa después de cada panning o cambio de zoom. Si su valor es *false*, sólo se aplica la primera vez con los elementos en pantalla, y no se vuelve a calcular después de cada panning. Por defecto es *false*.
-- **configuration**: aquí definimos el aspecto y el tratamiento de los campos de la capa vectorial dentro de la tabla de atributos.
+- **configuration**: aquí definimos el aspecto y el tratamiento de los campos de la capa vectorial dentro de la tabla de atributos. Si no se define, aparece por consola una alerta y se carga una configuración por defecto. Por defecto: { columns: [] }
   - **layer**: nombre de la capa cuyos elementos se mostrarán en la tabla de atributos, especificada en su propiedad *name*.
   - **pk**: nombre del atributo que actúa como clave principal.
   - **initialsort**: aquí indicamos el campo por el que se ordena inicialmente
@@ -64,37 +65,84 @@ Cada campo de la capa vectorial necesita un objeto para definirlo. Los atributos
 # API-REST
 
 ```javascript
-URL_API?queryattributes=position*collapsed*collapsible
+URL_API?queryattributes=position*collapsed*collapsible*tooltip*filters*refreshBBOXFilterOnPanning
 ```
 
 <table>
   <tr>
     <td>Parámetros</td>
     <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
   </tr>
   <tr>
     <td>position</td>
     <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>collapsed</td>
     <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
   <tr>
     <td>collapsible</td>
     <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor que se muestra sobre el plugin</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>filters</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>refreshBBOXFilterOnPanning</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>configuration</td>
+    <td>{layer:'', pk:'', initialSort: { name:'', dir:''}, columns: [ ]}</td>
+    <td>Base64 ✔️  | Separador ❌ </td>
   </tr>
 </table>
 
 
-### Ejemplos de uso API-REST
+### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?queryattributes=TR*true*false
+https://componentes.cnig.es/api-core?queryattributes=TR*true*true*atributos*true*true
 ```
 
+### Ejemplo de uso API-REST en base64
+En este ejemplo se utiliza el parámetro *configuration* para que la tabla muestre los atributos de la capa *vertices*.
+Se le pasa la capa vertices por url añadiendo lo siguiente: ``` &layers=GeoJSON*vertices*https://projects.develmap.com/attributestable/roivertexcenterred.geojson*true ``` 
+
+Ejemplo de constructor del plugin: 
+``` javascript
+{
+  position: 'TL',
+  tooltip: 'Consulta de atributos',
+  refreshBBOXFilterOnPanning: true,
+  configuration: {
+    layer: 'vertices',
+    pk: 'id',
+    initialSort: { name: 'nombre', dir: 'asc' },
+    columns: [
+      { name: 'id', alias: 'Identificador', visible: false, searchable: false, showpanelinfo: true, align: 'right', type: 'string'},
+      { name: 'nombre', alias: 'Nombre Vértice', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
+      { name: 'urlficha', alias: 'URL PDF Ficha', visible: true, searchable: false, showpanelinfo: true, align: 'left', type: 'linkURL', typeparam:'Ficha vértice'},
+      { name: 'imagemtn50', alias: 'Imagen Hoja MTN50', visible: true, searchable: false, showpanelinfo: true, align: 'left', type: 'image'},
+    ],
+  },
+}
 ```
-https://componentes.cnig.es/api-core?queryattributes=TL
+```
+https://componentes.cnig.es/api-core/?queryattributes=base64:e3Bvc2l0aW9uOiAnVEwnLCB0b29sdGlwOiAnQ29uc3VsdGEgZGUgYXRyaWJ1dG9zJywgcmVmcmVzaEJCT1hGaWx0ZXJPblBhbm5pbmc6IHRydWUsIGNvbmZpZ3VyYXRpb246IHsgbGF5ZXI6ICd2ZXJ0aWNlcycsIHBrOiAnaWQnLCBpbml0aWFsU29ydDogeyBuYW1lOiAnbm9tYnJlJywgZGlyOiAnYXNjJyB9LCBjb2x1bW5zOiBbIHsgbmFtZTogJ2lkJywgYWxpYXM6ICdJZGVudGlmaWNhZG9yJywgdmlzaWJsZTogZmFsc2UsIHNlYXJjaGFibGU6IGZhbHNlLCBzaG93cGFuZWxpbmZvOiB0cnVlLCBhbGlnbjogJ3JpZ2h0JywgdHlwZTogJ3N0cmluZyd9LCB7IG5hbWU6ICdub21icmUnLCBhbGlhczogJ05vbWJyZSBWw6lydGljZScsIHZpc2libGU6IHRydWUsIHNlYXJjaGFibGU6IHRydWUsIHNob3dwYW5lbGluZm86IHRydWUsIGFsaWduOiAnbGVmdCcsIHR5cGU6ICdzdHJpbmcnfSwgeyBuYW1lOiAndXJsZmljaGEnLCBhbGlhczogJ1VSTCBQREYgRmljaGEnLCB2aXNpYmxlOiB0cnVlLCBzZWFyY2hhYmxlOiBmYWxzZSwgc2hvd3BhbmVsaW5mbzogdHJ1ZSwgYWxpZ246ICdsZWZ0JywgdHlwZTogJ2xpbmtVUkwnLCB0eXBlcGFyYW06J0ZpY2hhIHbDqXJ0aWNlJ30sIHsgbmFtZTogJ2ltYWdlbXRuNTAnLCBhbGlhczogJ0ltYWdlbiBIb2phIE1UTjUwJywgdmlzaWJsZTogdHJ1ZSwgc2VhcmNoYWJsZTogZmFsc2UsIHNob3dwYW5lbGluZm86IHRydWUsIGFsaWduOiAnbGVmdCcsIHR5cGU6ICdpbWFnZSd9XSx9LH0=&layers=GeoJSON*vertices*https://projects.develmap.com/attributestable/roivertexcenterred.geojson*true,TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/%7Bz%7D/%7Bx%7D/%7B-y%7D.jpeg*true*false*17
 ```
 
 # Ejemplo de uso
@@ -126,10 +174,10 @@ const mp = new QueryAttributes({
       { name: 'xutmetrs89', alias: 'Coordenada X', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
       { name: 'yutmetrs89', alias: 'Coordenada Y', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
       { name: 'horto', alias: 'Altitud Ortométrica', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
-      { name: 'calidad', alias: 'Calidad', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'formatter', typeparam:'⭐️'},
+      { name: 'calidad', alias: 'Calidad', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'formatter', typeparam:'*'},
       { name: 'nivel', alias: 'Vida útil', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'percentage'},
       { name: 'urlficha', alias: 'URL PDF Ficha', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'linkURL'},
-      { name: 'urlcdd', alias: 'Descargas', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'buttonURL', typeparam:'🔗 Acceder'},
+      { name: 'urlcdd', alias: 'Descargas', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'buttonURL', typeparam:'Acceder'},
       { name: 'nivel', alias: 'Vida útil', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'percentage'},
       { name: 'hojamtn50', alias: 'Hoja MTN50', visible: false, searchable: true, showpanelinfo: true, align: 'right', type: 'string'},
       { name: 'summary', alias: 'Localización', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},

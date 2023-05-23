@@ -19,6 +19,18 @@
       "type": "boolean",
       "name": "collapsible",
       "position": 2
+    }, {
+      "type": "simple",
+      "name": "tooltip",
+      "position": 3
+    }, {
+      "type": "boolean",
+      "name": "filters",
+      "position": 4
+    }, {
+      "type": "boolean",
+      "name": "refreshBBOXFilterOnPanning",
+      "position": 5
     }]
   }],
   "files": {

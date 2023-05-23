@@ -264,8 +264,13 @@ export default class QueryAttributesControl extends M.Control {
       }
     }
 
+    if (M.utils.isNullOrEmpty(this.layer)) {
+      // Cuando layer es nulo o vacío, no se muestra el gif de carga.
+      this.html.querySelector('.m-queryattributes-table-loading').style.display = 'none';
+    }
+
     const interval = setInterval(() => {
-      if (this.isLayerLoaded(this.layer)) {
+      if (!M.utils.isNullOrEmpty(this.layer) && this.isLayerLoaded(this.layer)) {
         clearInterval(interval);
         document.getElementById('m-queryattributes-table').innerHTML = '';
         document.getElementById('m-queryattributes-search-results').innerHTML = '';
