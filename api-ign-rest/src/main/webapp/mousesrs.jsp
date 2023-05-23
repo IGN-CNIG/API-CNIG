@@ -12,9 +12,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>Visor base</title>
-    <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
-    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="https://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign.ol.min.css">
+    <link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
+    <link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -42,7 +42,7 @@
 <body>
     <div>
         <label for="inputTooltip">Parámetro tooltip</label>
-        <input type="text" name="tooltip" id="inputTooltip" value="Muestra coordenadas" />
+        <input type="text" name="tooltip" id="inputTooltip" value="Coordenadas" />
         <label for="inputSrs">Parámetro srs</label>
         <input type="text" name="srs" id="inputSrs" value="EPSG:4326" />
         <label for="inputLabel">Parámetro label</label>
@@ -58,14 +58,19 @@
             <option value="false" selected="selected">false</option>
             <option value="true">true</option>
         </select>
+  		<label for="helpUrl">Parámetro helpUrl</label>
+        <input type="text" name="helpUrl" id="inputHelpUrl" list="helpUrl">
+        <datalist id="helpUrl">
+            <option value="https://www.ign.es/">Ayuda</option>
+		</datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar" />
     </div>
     <div id="mapjs" class="m-container"></div>
-    <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
-    <script type="text/javascript" src="js/apiign.ol.min.js"></script>
-    <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/vendor/browser-polyfill.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/apiign.ol.min.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/configuration.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/mousesrs/mousesrs.ol.min.js"></script>
+    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -88,7 +93,7 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let tooltip, psrs, label, precision, geoDecimalDigits, utmDecimalDigits, activeZ;
+        let tooltip, psrs, label, precision, geoDecimalDigits, utmDecimalDigits, activeZ, helpUrl;
         crearPlugin({
             tooltip: "Muestra coordenadas",
             srs: "EPSG:4326",
@@ -96,7 +101,8 @@
             precision: 4,
             geoDecimalDigits: 3,
             utmDecimalDigits: 2,
-            activeZ: false
+            activeZ: false,
+			helpUrl: helpUrl
         });
 
         const inputTooltip = document.getElementById("inputTooltip");
@@ -106,6 +112,7 @@
         const inputGeoDecimalDigits = document.getElementById("inputGeoDecimalDigits");
         const inputUtmDecimalDigits = document.getElementById("inputUtmDecimalDigits");
         const selectActiveZ = document.getElementById("selectActiveZ");
+      	const inputHelpUrl = document.getElementById("inputHelpUrl");
 
         inputTooltip.addEventListener('change', cambiarTest);
         inputSrs.addEventListener('change', cambiarTest);
@@ -114,6 +121,7 @@
         inputGeoDecimalDigits.addEventListener('change', cambiarTest);
         inputUtmDecimalDigits.addEventListener('change', cambiarTest);
         selectActiveZ.addEventListener('change', cambiarTest);
+        inputHelpUrl.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             let objeto = {}
@@ -124,6 +132,7 @@
             geoDecimalDigits = inputGeoDecimalDigits.value != "" ? objeto.geoDecimalDigits = inputGeoDecimalDigits.value : "";
             utmDecimalDigits = inputUtmDecimalDigits.value != "" ? objeto.utmDecimalDigits = inputUtmDecimalDigits.value : "";
             activeZ = selectActiveZ.value != "" && (selectActiveZ.value == "true" || selectActiveZ.value == true) ? objeto.activeZ = true : objeto.activeZ = false;
+			helpUrl = inputHelpUrl.value != "" ? objeto.helpUrl = inputHelpUrl.value : "";
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
