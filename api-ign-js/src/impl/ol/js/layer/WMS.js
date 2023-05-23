@@ -196,7 +196,7 @@ class WMS extends LayerBase {
     /**
      * WMS useCapabilities. Indica si se usa el getCapabilities.
      */
-    this.useCapabilities = options.useCapabilities || false;
+    this.useCapabilities = options.useCapabilities !== false;
   }
 
   /**

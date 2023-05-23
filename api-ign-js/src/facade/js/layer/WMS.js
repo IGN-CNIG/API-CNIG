@@ -154,7 +154,7 @@ class WMS extends LayerBase {
      * Si es falso no se generará el OLTileGrid, por lo que
      * podrías experimentar problemas de alineación y visualización incorrecta.
      */
-    this.useCapabilities = userParameters.useCapabilities || false;
+    this.useCapabilities = userParameters.useCapabilities !== false;
 
     this._updateNoCache();
   }

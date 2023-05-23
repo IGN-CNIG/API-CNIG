@@ -135,7 +135,7 @@ class WMTS extends LayerBase {
     /**
      * WMTS options: Define si se realiza la petición GetCapabilities.
      */
-    this.useCapabilities = parameters.useCapabilities || false;
+    this.useCapabilities = parameters.useCapabilities !== false;
 
     /**
      * WMTS capabilitiesMetadata: Capacidades de metadatos WMTS.
