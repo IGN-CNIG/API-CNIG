@@ -80,7 +80,7 @@ export default class ContactLink extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.linksVisualizador3d = options.visualizador3d || 'https://www.ign.es/3D-Stereo/';
+    this.linksVisualizador3d = options.visualizador3d || 'https://visualizadores.ign.es/estereoscopico/';
 
     /**
      * Link to fototeca

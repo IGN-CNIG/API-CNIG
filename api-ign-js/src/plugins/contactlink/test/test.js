@@ -11,7 +11,7 @@ const mp = new ContactLink({
   position: 'TL',
   descargascnig: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp',
   pnoa: 'https://www.ign.es/web/comparador_pnoa/index.html',
-  visualizador3d: 'https://www.ign.es/3D-Stereo/',
+  visualizador3d: 'https://visualizadores.ign.es/estereoscopico/',
   fototeca: 'https://fototeca.cnig.es/',
   twitter: 'https://twitter.com/IGNSpain',
   instagram: 'https://www.instagram.com/ignspain/',

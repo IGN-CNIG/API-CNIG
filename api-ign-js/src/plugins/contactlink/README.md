@@ -31,7 +31,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BR': (bottom right) - Abajo a la derecha.
 - **descargascnig**: Indica la url al centro de descargas CNIG. Por defecto: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp'
 - **pnoa**: Indica la url al comparador PNOA. Por defecto: 'https://www.ign.es/web/'comparador_pnoa/index.html
-- **visualizador3d**: Indica la url al Visualizador3D. Por defecto: 'https://www.ign.es/3D-Stereo/'
+- **visualizador3d**: Indica la url al Visualizador3D. Por defecto: 'https://visualizadores.ign.es/estereoscopico/'
 - **fototeca**: Indica la url a Fototeca. Por defecto: 'https://fototeca.cnig.es/'
 - **twitter**: Indica la url al Twitter del CNIG. Por defecto: 'https://twitter.com/IGNSpain'
 - **instagram**: Indica la url al Instagram del CNIG. Por defecto: 'https://www.instagram.com/ignspain/'
@@ -155,7 +155,7 @@ const mp = new ContactLink({
   position: 'TR', 
   descargascnig: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp',
   pnoa: 'https://www.ign.es/web/comparador_pnoa/index.html',
-  visualizador3d: 'https://www.ign.es/3D-Stereo/',
+  visualizador3d: 'https://visualizadores.ign.es/estereoscopico/',
   fototeca: 'https://fototeca.cnig.es/',
   twitter: 'https://twitter.com/IGNSpain',
   instagram: 'https://www.instagram.com/ignspain/',
