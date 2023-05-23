@@ -193,8 +193,10 @@ export default class FullTOCControl extends M.impl.Control {
     if (!M.utils.isNullOrEmpty(layer.id)) {
       layer.url = `${layer.url}${layer.id}?`;
       fUrl =
-        M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams),
-          layer.getFeatureVendor);
+        M.utils.addParameters(
+          M.utils.addParameters(layer.url, getFeatureParams),
+          layer.getFeatureVendor,
+        );
     } else {
       layer.url = `${layer.url}?`;
 
@@ -211,8 +213,10 @@ export default class FullTOCControl extends M.impl.Control {
       }
 
       fUrl =
-        M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams),
-          layer.getFeatureVendor);
+        M.utils.addParameters(
+          M.utils.addParameters(layer.url, getFeatureParams),
+          layer.getFeatureVendor,
+        );
 
 
       if (!M.utils.isNullOrEmpty(layer.conditional)) {
