@@ -28,8 +28,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **radius**. Campo numérico que modifica el radio del efecto transparencia. Tiene un rango entre 30 y 200.
 - **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
-- **collapsed**. Indica si el plugin viene colapsado de entrada (true/false).
 
 # Ejemplos de uso
 

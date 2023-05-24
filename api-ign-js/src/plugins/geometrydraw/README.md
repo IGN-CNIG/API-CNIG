@@ -23,8 +23,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsed**: Indica si el plugin viene cerrado por defecto. Por defecto: true.
-- **collapsible**: Indica si el plugin se puede cerrar. Por defecto: true.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Parámetros API REST

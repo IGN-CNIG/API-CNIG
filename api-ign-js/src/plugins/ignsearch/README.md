@@ -27,8 +27,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - Por defecto ('poblacion').
 - **countryCode**. Código por defecto del país en la petición a geocoder. Por defecto countryCode = 'es'.
 - **resultVisibility**. Indica si se muestra o no la geometría del elemento localizado. Por defecto true (la muestra).
-- **isCollapsed**. Indica si se muestra el plugin cerrado (**true**) o con las búsquedas habilitadas visible (**false**). Por defecto false.
-- **collapsible**. Valor booleano que indica si el plugin puede colapsarse o no. Por defecto false.
+- **isCollapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 
 - **position**. Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda (por defecto).

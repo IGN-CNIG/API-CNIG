@@ -23,13 +23,9 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsed**: Valor booleano que indica si el plugin aparece colapsado o no.
-  - true (por defecto)
-  - false
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 
-- **collapsible**: Valor booleano que indica si el plugin puede colapsarse o no.
-  - true (por defecto)
-  - false
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 
 - **serverUrl**: URL del servidor Geoprint.
 

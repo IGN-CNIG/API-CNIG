@@ -28,8 +28,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
-- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true. 
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**. Tooltip que se muestra sobre el plugin. Por defecto: Tabla de atributos.
 - **filters**: Cuando toma el valor false, en cada cambio de zoom muestra en la tabla los registros que se encuentran en el bounding box de la pantalla. Cuando toma valor true, muestra botones para establecer filtro por bounding box o por polígono trazado por el usuario. Por defecto: true.
 - **refreshBBOXFilterOnPanning**: define el comportamiento del filtro de vista al activarse. Si es *true*, se reevalúa después de cada panning o cambio de zoom. Si su valor es *false*, sólo se aplica la primera vez con los elementos en pantalla, y no se vuelve a calcular después de cada panning. Por defecto es *false*.

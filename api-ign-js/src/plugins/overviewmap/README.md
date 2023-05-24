@@ -29,8 +29,8 @@ El constructor se inicializa con dos objetos JSON. El primero contiene el atribu
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha (por defecto).
-- **collapsed**: Indica si el plugin aparece abierto por defecto (true/false).  Por defecto: false.
-- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).  Por defecto: false.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**. Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información). Por defecto: Mapa de situación.
 - **fixed**: Indica si el mapa del plugin permanece a un zoom fijo (true/false). Por defecto: false.
 - **zoom**: Indica el nivel del zoom al que permanecerá fijo el mapa del plugin. Por defecto: '' (cadena vacía).

@@ -29,6 +29,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **descargascnig**: Indica la url al centro de descargas CNIG. Por defecto: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp'
 - **pnoa**: Indica la url al comparador PNOA. Por defecto: 'https://www.ign.es/web/'comparador_pnoa/index.html
 - **visualizador3d**: Indica la url al Visualizador3D. Por defecto: 'https://visualizadores.ign.es/estereoscopico/'
@@ -39,8 +41,6 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **pinterest**: Indica la url al Pinterest del CNIG. Por defecto: 'https://www.pinterest.es/IGNSpain/'
 - **youtube**: Indica la url al Youtube del CNIG. Por defecto: 'https://www.youtube.com/user/IGNSpain'
 - **mail**: Indica la url para escribir correo al CNIG. Por defecto: 'mailto:ign@fomento.es'
-- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
-- **collapsed**. Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true
 - **tooltip**. Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Enlaces y contacto IGN'
 
 # API-REST

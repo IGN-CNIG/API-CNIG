@@ -18,8 +18,8 @@ Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como 
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **collapsed**: Indica si el plugin viene cerrado por defecto (true/false). Por defecto: true.
-- **collapsible**: Indica si el plugin se puede cerrar (true/false). Por defecto: true.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **position**: Indica la posición donde se mostrará el plugin.
   - 'TL': (top left) - Arriba a la izquierda (por defecto).
   - 'TR': (top right) - Arriba a la derecha.

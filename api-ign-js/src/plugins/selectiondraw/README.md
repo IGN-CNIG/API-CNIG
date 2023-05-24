@@ -24,8 +24,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **collapsed**: Indica si al iniciar el plugin este está abierto o cerrado. Las opciones son true o false. Por defecto: false.
-- **collapsible**: Indica si este plugin puede ser cerrado y/o abierto. Las opciones son true o false. Por defecto: true.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **projection**: Indica la proyección en que seran devueltas las geometrías que se dibujen en el mapa. Por defecto, EPSG:4326.
 
 # Ejemplos de uso
