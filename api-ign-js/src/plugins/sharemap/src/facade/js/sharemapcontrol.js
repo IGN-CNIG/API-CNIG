@@ -281,7 +281,7 @@ export default class ShareMapControl extends M.Control {
 
     this.accessibilityTab(dialog);
 
-    if (this.overwriteStyles_) {
+    if (this.overwriteStyles_ === true) {
       this.styles_.forEach((style) => {
         const element = dialog.querySelectorAll(style.id);
         element.forEach((elm) => {
