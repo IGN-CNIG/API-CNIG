@@ -146,12 +146,6 @@ export default class LyrCompareControl extends M.Control {
      * @type {Number}
      */
     this.defaultLyrD = values.defaultLyrD;
-
-    /** Show interface
-     *@public
-     *@type{boolean}
-     */
-    this.interface = values.interface;
   }
 
   /**
@@ -163,7 +157,7 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    if (this.interface === false || this.comparisonMode > 0) {
+    if (this.comparisonMode > 0) {
       this.on(M.evt.ADDED_TO_MAP, (e) => {
         this.activateCurtain();
       })
@@ -233,8 +227,10 @@ export default class LyrCompareControl extends M.Control {
           static_tooltip: getValueTranslate('static_tooltip'),
           dynamic_tooltip: getValueTranslate('dynamic_tooltip'),
           mixed_tooltip: getValueTranslate('mixed_tooltip'),
-          lyrLeftSelect_tooltip: getValueTranslate('lyrLeftSelect_tooltip'),
-          lyrRightSelect_tooltip: getValueTranslate('lyrRightSelect_tooltip')
+          lyr1Select_tooltip: getValueTranslate('lyr1Select_tooltip'),
+          lyr2Select_tooltip: getValueTranslate('lyr2Select_tooltip'),
+          lyr3Select_tooltip: getValueTranslate('lyr3Select_tooltip'),
+          lyr4Select_tooltip: getValueTranslate('lyr4Select_tooltip'),
         }
       }
     }

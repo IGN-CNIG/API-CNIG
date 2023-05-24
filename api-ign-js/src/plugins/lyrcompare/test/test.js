@@ -12,27 +12,26 @@ const map = M.map({
 });
 
 // Prueba básica del plugin LyrCompare
-const mp = new M.plugin.LyrCompare({
+const pluginLyrCompare = new M.plugin.LyrCompare({
   position: 'TL',
   layers: [
-    'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
-    'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
-    'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
-    'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
+    'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',
+    'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true',
+    'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true',
+    'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true',
   ],
+  collapsed: false,
   collapsible: true,
-  collapsed: true,
+  tooltip: "Comparador de capas",
   staticDivision: 1,
   opacityVal: 100,
-  comparisonMode: 0,
-  defaultLyrA: 1,
-  defaultLyrB: 2,
-  defaultLyrC: 3,
-  defaultLyrD: 4,
-  interface: true,
-  tooltip: "Comparador de capas"
-  });
-  map.addPlugin(mp);
+  comparisonMode: 1,
+  defaultLyrA: 0,
+  defaultLyrB: 1,
+  defaultLyrC: 2,
+  defaultLyrD: 3,
+});
+map.addPlugin(pluginLyrCompare);
 
 M.language.setLang('es'); //Español
 //M.language.setLang('en');//Inglés

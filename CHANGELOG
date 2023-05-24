@@ -8,7 +8,7 @@
 - Se permite enviar parámetros por API REST a los plugins en base64
 - Se añade funcionalidad toast
 - Se soluciona problema de estilo con plugin GeometryDraw
-- Se actualiza el plugin comapepanel, se optimiza la velocidad de carga y se elimina la limitación del target (map y mapjs).
+- Se actualiza el plugin comparepanel, se optimiza la velocidad de carga y se elimina la limitación del target (map y mapjs).
 - Se actualiza el CORE para optimizar las capas WMS y WMTS, se controla las peticiones getCapabilities
 - Se crean nuevos tipos de capas: MBTiles, MBTilesVector y OGCAPIFeatures
 - Se revisan los JSP de test, parámetros y valores por defecto de los plugins attributions, backimglayer, buffer, contactlink, infocoordinates, information, incicarto, measurebar, mousesrs, overview, popup, printermap, queryattributes, rescale, sharemap y stylemanager
@@ -17,3 +17,5 @@
 - Se actualiza la URL del visualizador estereoscopico en el plugin contactlink.
 - Contactlink: se soluciona error al leer los valores por defecto.
 - Geometrydraw: se soluciona problemas con estilos.
+- Sharemap: se soluciona problema de estilo y parámetro overwriteStyles del plugin
+- Lyrcompare: se actualiza plugin mejorando documentación y eliminando el parámetro interface
