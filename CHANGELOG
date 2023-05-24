@@ -15,5 +15,5 @@
 - Printermap: se muestra toast con el listado de capas que no se han podido imprimir en el caso de que se produzca un error al generar los parámetros a mandar a Geoprint
 - Capas GeoJSON, se soluciona el error al cargar un archivo geojson en relativo.
 - Se actualiza la URL del visualizador estereoscopico en el plugin contactlink.
-- Se soluciona valores por defecto del contactlink.
-- Se arreglan estilos del plugin geometrydraw.
+- Contactlink: se soluciona error al leer los valores por defecto.
+- Geometrydraw: se soluciona problemas con estilos.
