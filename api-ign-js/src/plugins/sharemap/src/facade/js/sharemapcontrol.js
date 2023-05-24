@@ -233,7 +233,7 @@ export default class ShareMapControl extends M.Control {
       button.setAttribute('tabindex', this.order);
       button.setAttribute('aria-label', 'Plugin Sharemap');
 
-      if (this.overwriteStyles_) {
+      if (this.overwriteStyles_ === true) {
         const [mButtonStyle] = this.styles_.filter(({ id }) => id === button.id);
         button.style.backgroundColor = mButtonStyle.styles.backgroundColor;
         button.style.color = mButtonStyle.styles.color;
