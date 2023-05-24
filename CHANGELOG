@@ -8,8 +8,9 @@
 - Se permite enviar parámetros por API REST a los plugins en base64
 - Se añade funcionalidad toast
 - Se soluciona problema de estilo con plugin GeometryDraw
-- Se actualiza el plugin comapepanel, optimización capabilities y velocidad de carga
+- Se actualiza el plugin comapepanel, se optimiza la velocidad de carga y se elimina la limitación del target (map y mapjs).
 - Se actualiza el CORE para optimizar las capas WMS y WMTS, se controla las peticiones getCapabilities
 - Se crean nuevos tipos de capas: MBTiles, MBTilesVector y OGCAPIFeatures
 - Se revisan los JSP de test, parámetros y valores por defecto de los plugins attributions, backimglayer, buffer, contactlink, infocoordinates, information, incicarto, measurebar, mousesrs, overview, popup, printermap, queryattributes, rescale, sharemap y stylemanager
 - Printermap: se muestra toast con el listado de capas que no se han podido imprimir en el caso de que se produzca un error al generar los parámetros a mandar a Geoprint
+- Capas GeoJSON, se soluciona el error al cargar un archivo geojson en relativo.
