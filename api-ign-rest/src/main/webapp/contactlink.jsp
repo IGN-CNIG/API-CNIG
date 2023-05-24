@@ -11,12 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
-    <title>Visor base</title>
-    <!--      <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css"> -->
-    
-    <link type="text/css" rel="stylesheet" href="https://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign.ol.min.css"/>
-    <link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
-    <link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <title>Visor base</title> 
+    <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css"/>
+    <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
+    <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
@@ -127,11 +125,11 @@
 
     </div>
     <div id="mapjs" class="m-container"></div>
-    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/vendor/browser-polyfill.js"></script>
-    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/apiign.ol.min.js"></script>
-    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/configuration.js"></script>
-    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/contactlink/contactlink.ol.min.js"></script>
-    <script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
+    <script type="text/javascript" src="js/apiign.ol.min.js"></script>
+    <script type="text/javascript" src="js/configuration.js"></script>
+    <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
