@@ -89,6 +89,7 @@ export default class InfocoordinatesControl extends M.Control {
             removePoint: getValue('removePoint'),
             removeAllPoints: getValue('removeAllPoints'),
             importAllPoints: getValue('importAllPoints'),
+            copyAllPoints: getValue('copyAllPoints'),
             displayONAllPoints: getValue('displayONAllPoints'),
             displayOFFAllPoints: getValue('displayOFFAllPoints')
           }
@@ -105,6 +106,7 @@ export default class InfocoordinatesControl extends M.Control {
       success(html);
       html.querySelector('#m-infocoordinates-buttonRemoveAllPoints').addEventListener('click', this.removeAllPoints.bind(this));
       html.querySelector('#m-infocoordinates-buttonImportAllPoints').addEventListener('click', this.importAllPoints.bind(this));
+      html.querySelector('#m-infocoordinates-buttonCopyAllPoints').addEventListener('click', this.copyAllPoints.bind(this));
       html.querySelector('#m-infocoordinates-buttonDisplayAllPoints').addEventListener('click', this.displayAllPoints.bind(this));
       html.querySelector('#m-infocoordinates-comboDatum').addEventListener('change', this.changeSelectSRSorChangeFormat.bind(this));
       html.querySelector('#m-infocoordinates-buttonConversorFormat').addEventListener('change', this.changeSelectSRSorChangeFormat.bind(this));
@@ -180,6 +182,7 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-buttonRemovePoint').classList.remove('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonRemoveAllPoints')[0].classList.remove('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.remove('noDisplay');
+    document.getElementsByClassName('m-infocoordinates-div-buttonCopyAllPoints')[0].classList.remove('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonDisplayAllPoints')[0].classList.remove('noDisplay');
 
     // Eliminamos las etiquetas de los puntos
@@ -491,6 +494,40 @@ export default class InfocoordinatesControl extends M.Control {
     }
   }
 
+  copyAllPoints() {
+    let printDocument = '';
+    for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
+      let featureSelected = this.layerFeatures.impl_.features_[i];
+      const alt = featureSelected.getAttributes().Altitude !== undefined ? parseFloat(featureSelected.getAttributes().Altitude) : '-';
+
+      //Cojo el srs seleccionado en el select
+      let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
+
+      //Cojo el formato de las coordenadas geográficas
+      let formatGMS = document.getElementById('m-infocoordinates-buttonConversorFormat').checked;
+
+      //Cambio coordenadas y calculo las UTM
+      let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
+      const proj = pointDataOutput.projectionUTM.code;
+
+      let coordinatesGEO = [
+        pointDataOutput.projectionGEO.coordinatesGEO.longitude,
+        pointDataOutput.projectionGEO.coordinatesGEO.latitude
+      ];
+
+      let projection;
+      if (proj.indexOf('25829') > -1 || proj.indexOf('25830') > -1 || proj.indexOf('25831') > -1) {
+        projection = ',EPSG:4258';
+      } else {
+        projection = ',EPSG:4326';
+      }
+
+      printDocument = printDocument.concat(coordinatesGEO + ',' + alt + projection + '\n');
+    }
+
+    navigator.clipboard.writeText(printDocument);
+    M.toast.success(getValue('clipboard'));
+  }
 
   importAllPoints() {
     let printDocument = [];
@@ -668,6 +705,7 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-buttonRemovePoint').classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonRemoveAllPoints')[0].classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.add('noDisplay');
+    document.getElementsByClassName('m-infocoordinates-div-buttonCopyAllPoints')[0].classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonDisplayAllPoints')[0].classList.add('noDisplay');
     document.getElementById('m-infocoordinates-buttonConversorFormat').setAttribute('disabled', 'disabled');
     // document.getElementById('m-infocoordinates-comboDatum').setAttribute('disabled', 'disabled');

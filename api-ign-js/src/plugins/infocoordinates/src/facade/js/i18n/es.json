@@ -17,7 +17,8 @@
   "removePoint": "Elimina el punto",
   "removeAllPoints": "Elimina todos los puntos",
   "importAllPoints": "Exportar todos los puntos",
+  "copyAllPoints": "Copiar todos los puntos",
   "displayONAllPoints": "Mostrar coordenadas de todos los puntos",
-  "displayOFFAllPoints": "Ocultar coordenadas de todos los puntos"
-
+  "displayOFFAllPoints": "Ocultar coordenadas de todos los puntos",
+  "clipboard": "Resultado copiado al portapapeles"
 }

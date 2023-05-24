@@ -1,14 +1,14 @@
 .m-panel.m-plugin-infocoordinates {
-  z-index: 99999;
+    z-index: 99999;
 }
 
 .m-panel.m-plugin-infocoordinates {
-  z-index: 99999;
+    z-index: 99999;
 }
 
 /*Para que los números de los puntos no se vean por encima de los popups de info*/
 .m-popup {
-  z-index: 999999999;
+    z-index: 999999999;
 }
 
 .m-panel.m-plugin-infocoordinates.opened>button {
@@ -112,13 +112,15 @@
 }
 
 #tabContent table {
-  border-collapse: inherit !important;
-  margin-bottom: inherit !important;
-  font-size: inherit !important;
+    border-collapse: inherit !important;
+    margin-bottom: inherit !important;
+    font-size: inherit !important;
 }
 
-#tabContent table, #tabContent th, #tabContent td {
-  border: unset !important;
+#tabContent table,
+#tabContent th,
+#tabContent td {
+    border: unset !important;
 }
 
 .m-panel .m-control.m-container.m-infocoordinates {
@@ -149,6 +151,14 @@
     cursor: pointer;
 }
 
+#m-infocoordinates-buttonCopyAllPoints {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    color: gray;
+    cursor: pointer;
+}
+
 #m-infocoordinates-buttonDisplayAllPoints {
     background-color: transparent;
     border: none;
@@ -159,19 +169,21 @@
 
 #m-infocoordinates-buttonRemoveAllPoints:focus,
 #m-infocoordinates-buttonImportAllPoints:focus,
+#m-infocoordinates-buttonCopyAllPoints:focus,
 #m-infocoordinates-buttonDisplayAllPoints:focus,
 #m-infocoordinates-buttonRemovePoint:focus {
     outline: none !important;
 }
 
 .m-infocoordinates-content {
-  max-height: 305px;
-  overflow-y: auto;
+    max-height: 305px;
+    overflow-y: auto;
 }
 
 #m-infocoordinates-buttonRemovePoint:hover,
 #m-infocoordinates-buttonRemoveAllPoints:hover,
 #m-infocoordinates-buttonImportAllPoints:hover,
+#m-infocoordinates-buttonCopyAllPoints:hover,
 #m-infocoordinates-buttonDisplayAllPoints:hover {
     color: rgb(91, 91, 91);
     transition: 0.3s;
@@ -181,7 +193,7 @@
     text-align: center;
     padding: 5px;
     border-top: 1px solid rgb(228, 226, 226);
-    width: 27%;
+    width: 19%;
     display: inline-block;
 }
 
@@ -189,7 +201,15 @@
     text-align: center;
     padding: 5px;
     border-top: 1px solid rgb(228, 226, 226);
-    width: 27%;
+    width: 19%;
+    display: inline-block;
+}
+
+.m-infocoordinates-div-buttonCopyAllPoints {
+    text-align: center;
+    padding: 5px;
+    border-top: 1px solid rgb(228, 226, 226);
+    width: 19%;
     display: inline-block;
 }
 
@@ -197,7 +217,7 @@
     text-align: center;
     padding: 5px;
     border-top: 1px solid rgb(228, 226, 226);
-    width: 27%;
+    width: 19%;
     display: inline-block;
 }
 
@@ -207,41 +227,41 @@
 }
 
 .m-panel.m-plugin-infocoordinates.opened #tabContent table tbody tr td:first-child {
-  min-width: 80px;
+    min-width: 80px;
 }
 
 .m-plugin-infocoordinates .m-infocoordinates-help {
-  position: relative;
-  left: 24px;
-  top: 0px;
+    position: relative;
+    left: 24px;
+    top: 0px;
 }
 
 .m-plugin-infocoordinates .m-infocoordinates-help a {
-  color: #71a7d3 !important;
-  font-size: 20px;
+    color: #71a7d3 !important;
+    font-size: 20px;
 }
 
 .m-plugin-infocoordinates .m-infocoordinates-help-td {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 @-moz-document url-prefix() {
-  .m-plugin-infocoordinates .m-infocoordinates-help-td {
-    height: 33px;
-  }
+    .m-plugin-infocoordinates .m-infocoordinates-help-td {
+        height: 33px;
+    }
 
-  .m-plugin-infocoordinates .m-infocoordinates-help {
-    left: 22px;
-  }
+    .m-plugin-infocoordinates .m-infocoordinates-help {
+        left: 22px;
+    }
 
-  .m-plugin-infocoordinates .m-infocoordinates-help a {
-    font-size: 22px !important;
-  }
+    .m-plugin-infocoordinates .m-infocoordinates-help a {
+        font-size: 22px !important;
+    }
 }
 
 .m-plugin-infocoordinates .icon-target:before {
-  font-size: 22px;
-  -webkit-text-stroke: 1px #71a7d3;
-  text-stroke: 1px #71a7d3;
+    font-size: 22px;
+    -webkit-text-stroke: 1px #71a7d3;
+    text-stroke: 1px #71a7d3;
 }
