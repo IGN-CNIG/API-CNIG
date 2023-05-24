@@ -71,7 +71,7 @@ export default class BackImgLayer extends M.Plugin {
      * @private
      * @type {Boolean}
      */
-    this.layerVisibility = options.layerVisibility || true;
+    this.layerVisibility = !!(options.layerVisibility);
 
     /**
      * Layers to use as background. Each one has id, title, preview and layers attributes.
