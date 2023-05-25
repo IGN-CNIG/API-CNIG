@@ -18,6 +18,7 @@ const mp = new Infocoordinates({
   decimalGEOcoord: 4,
   decimalUTMcoord: 4,
   helpUrl: 'https://www.ign.es/',
+  outputDownloadFormat: 'txt'
 });
 
 /*const mp2 = new M.plugin.Information({

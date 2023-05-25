@@ -515,9 +515,9 @@ export default class InfocoordinatesControl extends M.Control {
   }
 
   copyxy() {
-    const x = document.getElementById('m-infocoordinates-coordX').innerHTML.replace(',', '.');
-    const y = document.getElementById('m-infocoordinates-coordY').innerHTML.replace(',', '.');
-    const alt = document.getElementById('m-infocoordinates-altitude').innerHTML.replace(',', '.');
+    const x = document.getElementById('m-infocoordinates-coordX').innerHTML.replaceAll('.', '').replace(',', '.');
+    const y = document.getElementById('m-infocoordinates-coordY').innerHTML.replaceAll('.', '').replace(',', '.');
+    const alt = document.getElementById('m-infocoordinates-altitude').innerHTML.replaceAll('.', '').replace(',', '.');
     const proj = document.getElementById('m-infocoordinates-comboDatum').value;
     const result = `${x},${y},${alt},${proj}`;
     navigator.clipboard.writeText(result);
@@ -557,7 +557,7 @@ export default class InfocoordinatesControl extends M.Control {
         projection = ',EPSG:4326';
       }
 
-      const result = (i + 1) + ',' + coordinatesGEO + ',' + alt.toString() + projection.trim().slice(0, -1) + ',' + coordinatesUTM + ',' + alt.toString() + ',' + proj + '\n';
+      const result = (i + 1) + ',' + coordinatesGEO + ',' + alt.toString() + projection.trim() + ',' + coordinatesUTM + ',' + alt.toString() + ',' + proj + '\n';
 
       printDocument = printDocument.concat(result);
     }
@@ -600,17 +600,8 @@ export default class InfocoordinatesControl extends M.Control {
         projection = 'EPSG:4258: ';
       }
 
-      const f = new Date();
-      const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
-
-
       if (this.outputDownloadFormat === 'csv') {
         printDocument.push((i + 1) + ',' + coordinatesGEO + ',' + alt.toString() + ',' + projection.trim().slice(0, -1) + ',' + coordinatesUTM + ',' + alt.toString() + ',' + proj + '\n');
-        const toBlobType = new Blob(printDocument, {
-          type: 'csv'
-        })
-
-        this.descargarArchivo(toBlobType, titulo.concat('.csv'));
       } else {
         printDocument.push(getValue('point').replace(':', ' ') + (i + 1) + ': ' + '\n');
         printDocument.push(projection);
@@ -618,14 +609,16 @@ export default class InfocoordinatesControl extends M.Control {
         printDocument.push('[' + coordinatesGEO + ',' + alt + ']' + '\n');
         printDocument.push(proj + ': ');
         printDocument.push('[' + coordinatesUTM + ',' + alt + ']' + '\n');
-
-        const toBlobType = new Blob(printDocument, {
-          type: 'text/plain'
-        })
-
-        this.descargarArchivo(toBlobType, titulo.concat('.txt'));
       }
     }
+
+    const toBlobType = new Blob(printDocument, {
+      type: this.outputDownloadFormat === 'csv' ? 'csv' : 'text/plain'
+    })
+    const f = new Date();
+    const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
+
+    this.descargarArchivo(toBlobType, titulo.concat(`.${this.outputDownloadFormat}`));
   }
 
   displayAllPoints() {
