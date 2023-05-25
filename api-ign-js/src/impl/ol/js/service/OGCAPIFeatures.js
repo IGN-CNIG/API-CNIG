@@ -181,14 +181,12 @@ class OGCAPIFeatures {
    *
    * @public
    * @function
-   * @param {ol.Extent} extent Extensión de la capa.
-   * @param {ol.proj.Projection} projection Proyección de la capa.
    * @returns {String} URL completa del objeto geográfico pedido.
    *
    * @api stable
    */
 
-  getFeatureUrl(extent, projection) {
+  getFeatureUrl() {
     const getFeatureParams = {
       // service: 'OGCAPIFeatures',
       // request: 'GetFeature',
@@ -235,6 +233,7 @@ class OGCAPIFeatures {
         fUrl += getFeatureParams.conditional;
       }
     }
+    fUrl = fUrl.replaceAll(' ', '%20');
     return fUrl;
   }
 }
