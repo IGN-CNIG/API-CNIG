@@ -90,6 +90,8 @@ export default class InfocoordinatesControl extends M.Control {
             removePoint: getValue('removePoint'),
             removeAllPoints: getValue('removeAllPoints'),
             importAllPoints: getValue('importAllPoints'),
+            copyLatLon: getValue('copyLatLon'),
+            copyxy: getValue('copyxy'),
             copyAllPoints: getValue('copyAllPoints'),
             displayONAllPoints: getValue('displayONAllPoints'),
             displayOFFAllPoints: getValue('displayOFFAllPoints')

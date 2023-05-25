@@ -24,16 +24,20 @@
       "position": 3
     }, {
       "type": "simple",
-      "name": "decimalGEOcoord",
+      "name": "outputDownloadFormat",
       "position": 4
     }, {
       "type": "simple",
-      "name": "decimalUTMcoord",
+      "name": "decimalGEOcoord",
       "position": 5
     }, {
       "type": "simple",
-      "name": "helpUrl",
+      "name": "decimalUTMcoord",
       "position": 6
+    }, {
+      "type": "simple",
+      "name": "helpUrl",
+      "position": 7
     }]
   }],
   "files": {

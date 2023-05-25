@@ -214,7 +214,7 @@ export default class Infocoordinates extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.decimalGEOcoord_}*${this.decimalUTMcoord_}*${this.helpUrl_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.outputDownloadFormat_}*${this.decimalGEOcoord_}*${this.decimalUTMcoord_}*${this.helpUrl_}`;
   }
 
   /**

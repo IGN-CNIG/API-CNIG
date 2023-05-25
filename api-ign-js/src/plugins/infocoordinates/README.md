@@ -32,6 +32,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: Información Coordenadas.
+- **outputDownloadFormat**: Indica el formato de salida del documento que se va a descargar. Se puede elegir entre 'txt' o 'csv'. Por defecto: txt.
 - **decimalGEOcoord**: Indica el número de decimales de las coordenadas geográficas. Por defecto: 4
 - **decimalUTMcoord**: Indica el número de decimales de las coordenadas proyectadas en UTM. Por defecto: 2
 - **helpUrl**: URL a la ayuda para el icono. Por defecto: 'https://www.ign.es/'
@@ -39,7 +40,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 # API-REST
 
 ```javascript
-URL_API?infocoordinates=position*collapsed*collapsible*tooltip*decimalGEOcoord*decimalUTMcoord*helpUrl
+URL_API?infocoordinates=position*collapsed*collapsible*tooltip*outputDownloadFormat*decimalGEOcoord*decimalUTMcoord*helpUrl
 ```
 
 <table>
@@ -69,6 +70,10 @@ URL_API?infocoordinates=position*collapsed*collapsible*tooltip*decimalGEOcoord*d
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
+    <td>outputDownloadFormat</td>
+    <td>txt/csv</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  <tr>
     <td>decimalGEOcoord</td>
     <td>Número de decimales de las coordenadas geográficas</td>
     <td>Base64 ✔️ | Separador ✔️</td>
@@ -89,15 +94,27 @@ URL_API?infocoordinates=position*collapsed*collapsible*tooltip*decimalGEOcoord*d
 ### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?infocoordinates=TL*true*true*Coordenadas*4*2*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
+https://componentes.cnig.es/api-core?infocoordinates=TL*true*true*Coordenadas*txt*4*2*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
 ```
 
 ### Ejemplo de uso API-REST en base64
 
-Ejemplo del constructor: {position:"TR", collapsible: true, collapsed: true, "tooltip":"Coordenadas", "decimalGEOcoord":4,"decimalUTMcoord":4,"helpUrl":"https://www.ign.es/"}
+Ejemplo del constructor: 
+```javascript
+{
+  position: "TR",
+  collapsible: true,
+  collapsed: true,
+  tooltip: "Coordenadas",
+  outputDownloadFormat: "txt",
+  decimalGEOcoord: 4,
+  decimalUTMcoord: 4,
+  helpUrl: "https://www.ign.es/",
+}
+```
 
 ```
-https://componentes.cnig.es/api-core?infocoordinates=base64:e3Bvc2l0aW9uOiJUUiIsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsICJ0b29sdGlwIjoiQ29vcmRlbmFkYXMiLCAiZGVjaW1hbEdFT2Nvb3JkIjo0LCJkZWNpbWFsVVRNY29vcmQiOjQsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIn0=
+https://componentes.cnig.es/api-core?infocoordinates=base64:e3Bvc2l0aW9uOiJUUiIsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsICJ0b29sdGlwIjoiQ29vcmRlbmFkYXMiLCAib3V0cHV0RG93bmxvYWRGb3JtYXQiOiJ0eHQiLCAiZGVjaW1hbEdFT2Nvb3JkIjo0LCJkZWNpbWFsVVRNY29vcmQiOjQsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIn0=
 ```
 
 # Ejemplo de uso
