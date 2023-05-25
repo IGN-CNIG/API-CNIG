@@ -17,5 +17,5 @@
 - Se actualiza la URL del visualizador estereoscopico en el plugin contactlink.
 - Contactlink: se soluciona error al leer los valores por defecto.
 - Geometrydraw: se soluciona problemas con estilos.
-- Sharemap: se soluciona problema de estilo y parámetro overwriteStyles del plugin
+- Sharemap: se soluciona problema de estilo y parámetro overwriteStyles del plugin. Se soluciona error tooltip y alineación de botones sharemap.
 - Lyrcompare: se actualiza plugin mejorando documentación y eliminando el parámetro interface

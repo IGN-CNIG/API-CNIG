@@ -10,9 +10,14 @@ import modal from '../../templates/modal';
  * @private
  */
 const beginShade = (element) => {
-  const elemento = element;
-  elemento.style.animationDuration = '2.5s';
-  elemento.style.animationName = 'shade';
+  if (element.classList.contains('m-plugin-sharemap-shade')) {
+    element.classList.remove('m-plugin-sharemap-shade');
+  } else {
+    element.classList.add('m-plugin-sharemap-shade');
+    setTimeout(() => {
+      element.classList.remove('m-plugin-sharemap-shade');
+    }, 2000); // animationDuration 2s
+  }
 };
 
 /**
