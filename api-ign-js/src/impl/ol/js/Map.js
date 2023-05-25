@@ -871,10 +871,7 @@ class Map extends MObject {
             if (!isNullOrEmpty(filterLayer.name)) {
               layerMatched = (layerMatched && (filterLayer.name === ogcapifLayer.name));
             }
-            // namespace
-            if (!isNullOrEmpty(filterLayer.namespace)) {
-              layerMatched = (layerMatched && (filterLayer.namespace === ogcapifLayer.namespace));
-            }
+
             // legend
             if (!isNullOrEmpty(filterLayer.legend)) {
               layerMatched = (layerMatched && (filterLayer.legend === ogcapifLayer.legend));
@@ -889,11 +886,7 @@ class Map extends MObject {
             }
             // ids
             if (!isNullOrEmpty(filterLayer.id)) {
-              layerMatched = (layerMatched && (filterLayer.ids === ogcapifLayer.id));
-            }
-            // version
-            if (!isNullOrEmpty(filterLayer.version)) {
-              layerMatched = (layerMatched && (filterLayer.version === ogcapifLayer.version));
+              layerMatched = (layerMatched && (filterLayer.id === ogcapifLayer.id));
             }
           } else {
             layerMatched = false;
@@ -1926,8 +1919,8 @@ class Map extends MObject {
     const projection = this.getProjection();
     // gest the capabilities URL
     const getCapabilitiesUrl = (type === 'WMS') ?
-      getWMSGetCapabilitiesUrl(layerUrl, layerVersion)
-      : getWMTSGetCapabilitiesUrl(layerUrl, layerVersion);
+      getWMSGetCapabilitiesUrl(layerUrl, layerVersion) :
+      getWMTSGetCapabilitiesUrl(layerUrl, layerVersion);
 
 
     // gets the getCapabilities response
