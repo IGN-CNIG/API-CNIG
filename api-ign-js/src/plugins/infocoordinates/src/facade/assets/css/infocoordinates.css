@@ -135,6 +135,22 @@
     cursor: pointer;
 }
 
+#m-infocoordinates-copylatlon {
+    background-color: transparent;
+    border: none;
+    font-size: 13px;
+    color: gray;
+    cursor: pointer;
+}
+
+#m-infocoordinates-copyxy {
+    background-color: transparent;
+    border: none;
+    font-size: 13px;
+    color: gray;
+    cursor: pointer;
+}
+
 #m-infocoordinates-buttonRemoveAllPoints {
     background-color: transparent;
     border: none;
@@ -171,7 +187,9 @@
 #m-infocoordinates-buttonImportAllPoints:focus,
 #m-infocoordinates-buttonCopyAllPoints:focus,
 #m-infocoordinates-buttonDisplayAllPoints:focus,
-#m-infocoordinates-buttonRemovePoint:focus {
+#m-infocoordinates-buttonRemovePoint:focus,
+#m-infocoordinates-copylatlon:focus,
+#m-infocoordinates-copyxy:focus {
     outline: none !important;
 }
 
@@ -181,6 +199,8 @@
 }
 
 #m-infocoordinates-buttonRemovePoint:hover,
+#m-infocoordinates-copylatlon:hover,
+#m-infocoordinates-copyxy:hover,
 #m-infocoordinates-buttonRemoveAllPoints:hover,
 #m-infocoordinates-buttonImportAllPoints:hover,
 #m-infocoordinates-buttonCopyAllPoints:hover,

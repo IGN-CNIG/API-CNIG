@@ -100,12 +100,19 @@ export default class Infocoordinates extends M.Plugin {
     this.helpUrl_ = options.helpUrl || 'https://www.ign.es/';
 
     /**
+     * Output Format
+     * @private
+     * @type {string}
+     */
+    this.outputDownloadFormat_ = options.outputDownloadFormat || 'txt';
+
+    /**
      *@private
      *@type { Number }
      */
-     this.order = options.order >= -1 ? options.order : null;
+    this.order = options.order >= -1 ? options.order : null;
 
-     /**
+    /**
      * Tooltip of the UI Plugin
      *
      * @private
@@ -113,7 +120,7 @@ export default class Infocoordinates extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
-     /**
+    /**
      * Plugin parameters
      * @public
      * @type {object}
@@ -129,7 +136,7 @@ export default class Infocoordinates extends M.Plugin {
    * @param {string} lang type language
    * @api stable
    */
-   static getJSONTranslations(lang) {
+  static getJSONTranslations(lang) {
     if (lang === 'en' || lang === 'es') {
       return (lang === 'en') ? en : es;
     }
@@ -145,7 +152,7 @@ export default class Infocoordinates extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.control_ = new InfocoordinatesControl(this.decimalGEOcoord_, this.decimalUTMcoord_, this.helpUrl_, this.order);
+    this.control_ = new InfocoordinatesControl(this.decimalGEOcoord_, this.decimalUTMcoord_, this.helpUrl_, this.order, this.outputDownloadFormat_);
     this.controls_.push(this.control_);
     this.map_ = map;
     // panel para agregar control - no obligatorio

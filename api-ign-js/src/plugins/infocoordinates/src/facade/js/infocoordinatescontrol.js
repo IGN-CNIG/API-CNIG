@@ -17,7 +17,7 @@ export default class InfocoordinatesControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(decimalGEOcoord, decimalUTMcoord, helpUrl, order) {
+  constructor(decimalGEOcoord, decimalUTMcoord, helpUrl, order, outputDownloadFormat) {
 
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(InfocoordinatesImplControl)) {
@@ -36,6 +36,7 @@ export default class InfocoordinatesControl extends M.Control {
     this.helpUrl = helpUrl;
     this.clickedDeactivate = false;
     this.order = order;
+    this.outputDownloadFormat = outputDownloadFormat;
   }
 
 
@@ -111,6 +112,8 @@ export default class InfocoordinatesControl extends M.Control {
       html.querySelector('#m-infocoordinates-comboDatum').addEventListener('change', this.changeSelectSRSorChangeFormat.bind(this));
       html.querySelector('#m-infocoordinates-buttonConversorFormat').addEventListener('change', this.changeSelectSRSorChangeFormat.bind(this));
       html.querySelector('#m-infocoordinates-buttonRemovePoint').addEventListener('click', this.removePoint.bind(this));
+      html.querySelector('#m-infocoordinates-copylatlon').addEventListener('click', this.copylatlon.bind(this));
+      html.querySelector('#m-infocoordinates-copyxy').addEventListener('click', this.copyxy.bind(this));
     });
 
   }
@@ -180,6 +183,8 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-comboDatum').removeAttribute('disabled');
     document.getElementById('m-infocoordinates-buttonConversorFormat').removeAttribute('disabled');
     document.getElementById('m-infocoordinates-buttonRemovePoint').classList.remove('noDisplay');
+    document.getElementById('m-infocoordinates-copylatlon').classList.remove('noDisplay');
+    document.getElementById('m-infocoordinates-copyxy').classList.remove('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonRemoveAllPoints')[0].classList.remove('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.remove('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonCopyAllPoints')[0].classList.remove('noDisplay');
@@ -494,43 +499,33 @@ export default class InfocoordinatesControl extends M.Control {
     }
   }
 
-  copyAllPoints() {
-    let printDocument = '';
-    for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
-      let featureSelected = this.layerFeatures.impl_.features_[i];
-      const alt = featureSelected.getAttributes().Altitude !== undefined ? parseFloat(featureSelected.getAttributes().Altitude) : '-';
-
-      //Cojo el srs seleccionado en el select
-      let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
-
-      //Cojo el formato de las coordenadas geográficas
-      let formatGMS = document.getElementById('m-infocoordinates-buttonConversorFormat').checked;
-
-      //Cambio coordenadas y calculo las UTM
-      let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
-      const proj = pointDataOutput.projectionUTM.code;
-
-      let coordinatesGEO = [
-        pointDataOutput.projectionGEO.coordinatesGEO.longitude,
-        pointDataOutput.projectionGEO.coordinatesGEO.latitude
-      ];
-
-      let projection;
-      if (proj.indexOf('25829') > -1 || proj.indexOf('25830') > -1 || proj.indexOf('25831') > -1) {
-        projection = ',EPSG:4258';
-      } else {
-        projection = ',EPSG:4326';
-      }
-
-      printDocument = printDocument.concat(coordinatesGEO + ',' + alt + projection + '\n');
+  copylatlon() {
+    const lat = document.getElementById('m-infocoordinates-latitude').innerHTML.replace(',', '.');
+    const long = document.getElementById('m-infocoordinates-longitude').innerHTML.replace(',', '.');
+    const alt = document.getElementById('m-infocoordinates-altitude').innerHTML.replace(',', '.');
+    let proj = document.getElementById('m-infocoordinates-comboDatum').value;
+    if (proj.indexOf('25829') > -1 || proj.indexOf('25830') > -1 || proj.indexOf('25831') > -1) {
+      proj = 'EPSG:4258';
+    } else {
+      proj = 'EPSG:4326';
     }
-
-    navigator.clipboard.writeText(printDocument);
+    const result = `${long},${lat},${alt},${proj}`;
+    navigator.clipboard.writeText(result);
     M.toast.success(getValue('clipboard'));
   }
 
-  importAllPoints() {
-    let printDocument = [];
+  copyxy() {
+    const x = document.getElementById('m-infocoordinates-coordX').innerHTML.replace(',', '.');
+    const y = document.getElementById('m-infocoordinates-coordY').innerHTML.replace(',', '.');
+    const alt = document.getElementById('m-infocoordinates-altitude').innerHTML.replace(',', '.');
+    const proj = document.getElementById('m-infocoordinates-comboDatum').value;
+    const result = `${x},${y},${alt},${proj}`;
+    navigator.clipboard.writeText(result);
+    M.toast.success(getValue('clipboard'));
+  }
+
+  copyAllPoints() {
+    let printDocument = '';
     for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
       let featureSelected = this.layerFeatures.impl_.features_[i];
       const alt = featureSelected.getAttributes().Altitude !== undefined ? parseFloat(featureSelected.getAttributes().Altitude) : '-';
@@ -555,26 +550,82 @@ export default class InfocoordinatesControl extends M.Control {
         pointDataOutput.projectionUTM.coordinatesUTM.coordY
       ];
 
-      printDocument.push(getValue('point') + (i + 1) + ': ' + '\n');
+      let projection;
       if (proj.indexOf('25829') > -1 || proj.indexOf('25830') > -1 || proj.indexOf('25831') > -1) {
-        printDocument.push('EPSG:4258: ');
+        projection = ',EPSG:4258';
       } else {
-        printDocument.push('EPSG:4326: ');
+        projection = ',EPSG:4326';
       }
 
-      printDocument.push('[' + coordinatesGEO + ',' + alt + ']' + '\n');
-      printDocument.push(proj + ': ');
-      printDocument.push('[' + coordinatesUTM + ',' + alt + ']' + '\n');
+      const result = (i + 1) + ',' + coordinatesGEO + ',' + alt.toString() + projection.trim().slice(0, -1) + ',' + coordinatesUTM + ',' + alt.toString() + ',' + proj + '\n';
+
+      printDocument = printDocument.concat(result);
     }
 
-    const toBlobType = new Blob(printDocument, {
-      type: 'text/plain'
-    })
+    navigator.clipboard.writeText(printDocument);
+    M.toast.success(getValue('clipboard'));
+  }
 
-    const f = new Date();
-    const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
+  importAllPoints() {
+    let printDocument = [];
+    if (this.outputDownloadFormat === 'csv') {
+      printDocument.push(getValue('point').replace(':', '') + ',Long,Lat,Alt,EPSG,X,Y,Alt,EPSG' + '\n');
+    }
+    for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
+      let featureSelected = this.layerFeatures.impl_.features_[i];
+      const alt = featureSelected.getAttributes().Altitude !== undefined ? parseFloat(featureSelected.getAttributes().Altitude) : '-';
 
-    this.descargarArchivo(toBlobType, titulo.concat('.txt'));
+      //Cojo el srs seleccionado en el select
+      let selectSRS = document.getElementById('m-infocoordinates-comboDatum').value;
+
+      //Cojo el formato de las coordenadas geográficas
+      let formatGMS = document.getElementById('m-infocoordinates-buttonConversorFormat').checked;
+
+      //Cambio coordenadas y calculo las UTM
+      let pointDataOutput = this.getImpl().getCoordinates(featureSelected, selectSRS, formatGMS, this.decimalGEOcoord, this.decimalUTMcoord);
+      const proj = pointDataOutput.projectionUTM.code;
+
+      let coordinatesGEO = [
+        pointDataOutput.projectionGEO.coordinatesGEO.longitude,
+        pointDataOutput.projectionGEO.coordinatesGEO.latitude
+      ];
+
+      let coordinatesUTM = [
+        pointDataOutput.projectionUTM.coordinatesUTM.coordX,
+        pointDataOutput.projectionUTM.coordinatesUTM.coordY
+      ];
+
+      let projection = 'EPSG:4326: ';
+      if (proj.indexOf('25829') > -1 || proj.indexOf('25830') > -1 || proj.indexOf('25831') > -1) {
+        projection = 'EPSG:4258: ';
+      }
+
+      const f = new Date();
+      const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
+
+
+      if (this.outputDownloadFormat === 'csv') {
+        printDocument.push((i + 1) + ',' + coordinatesGEO + ',' + alt.toString() + ',' + projection.trim().slice(0, -1) + ',' + coordinatesUTM + ',' + alt.toString() + ',' + proj + '\n');
+        const toBlobType = new Blob(printDocument, {
+          type: 'csv'
+        })
+
+        this.descargarArchivo(toBlobType, titulo.concat('.csv'));
+      } else {
+        printDocument.push(getValue('point').replace(':', ' ') + (i + 1) + ': ' + '\n');
+        printDocument.push(projection);
+
+        printDocument.push('[' + coordinatesGEO + ',' + alt + ']' + '\n');
+        printDocument.push(proj + ': ');
+        printDocument.push('[' + coordinatesUTM + ',' + alt + ']' + '\n');
+
+        const toBlobType = new Blob(printDocument, {
+          type: 'text/plain'
+        })
+
+        this.descargarArchivo(toBlobType, titulo.concat('.txt'));
+      }
+    }
   }
 
   displayAllPoints() {
@@ -703,6 +754,8 @@ export default class InfocoordinatesControl extends M.Control {
     document.getElementById('m-infocoordinates-altitude').innerHTML = '--';
 
     document.getElementById('m-infocoordinates-buttonRemovePoint').classList.add('noDisplay');
+    document.getElementById('m-infocoordinates-copylatlon').classList.add('noDisplay');
+    document.getElementById('m-infocoordinates-copyxy').classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonRemoveAllPoints')[0].classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonImportAllPoints')[0].classList.add('noDisplay');
     document.getElementsByClassName('m-infocoordinates-div-buttonCopyAllPoints')[0].classList.add('noDisplay');

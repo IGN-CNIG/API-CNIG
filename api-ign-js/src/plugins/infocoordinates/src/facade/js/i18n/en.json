@@ -15,6 +15,8 @@
   "readingAltitude": "Reading...",
   "noDatafromWCS": "No data",
   "removePoint": "Removes point",
+  "copyLatLon": "Copy latitude/longitude",
+  "copyxy": "Copy x/y",
   "removeAllPoints": "Remove all points",
   "importAllPoints": "Export all points",
   "copyAllPoints": "Copy all points",
