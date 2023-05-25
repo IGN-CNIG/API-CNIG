@@ -13,12 +13,12 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/ignsearch/ignsearch.ol.min.css" rel="stylesheet" />
+    <link href="plugins/ignsearchlocator/ignsearchlocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
     <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
-    <link href="plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
+    <link href="plugins/viewmanagement/viewmanagement.ol.min.css" rel="stylesheet" />
     <link href="plugins/toc/toc.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
@@ -49,11 +49,11 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/ignsearch/ignsearch.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/ignsearchlocator/ignsearchlocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
     <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/zoomextent/zoomextent.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/viewmanagement/viewmanagement.ol.min.js"></script>
     <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
     <script type="text/javascript" src="plugins/toc/toc.ol.min.js"></script>
     <%
@@ -109,10 +109,11 @@
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
 
-        const mp = new M.plugin.IGNSearch({
+        const mp = new M.plugin.IGNSearchLocator({
+        	isCollapsed: true,
+            collapsible: true,
             servicesToSearch: 'gn',
             maxResults: 10,
-            isCollapsed: false,
             noProcess: 'municipio,poblacion',
             countryCode: 'es',
             reverse: true,
@@ -129,7 +130,7 @@
         const mp4 = new M.plugin.XYLocator({
             position: 'TL',
         });
-        const mp6 = new M.plugin.ZoomExtent();
+        const mp6 = new M.plugin.ViewManagement();
         const mp7 = new M.plugin.MouseSRS({
             srs: 'EPSG:4326',
             label: 'WGS84',

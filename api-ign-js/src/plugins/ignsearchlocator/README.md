@@ -26,8 +26,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **isCollapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
-- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
+- **isCollapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: false.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: false.
 - **tooltip**: Tooltip que se muestra sobre el plugin (se muestra al dejar el ratón encima del plugin como información).
 - **zoom**: Zoom que aplicará al mostrar resultado de tipo puntual. Por defecto: 16.
 - **servicesToSearch**: Servicio que se consulta:
