@@ -199,7 +199,7 @@
       ],
     },
   ],
-};   
+}   
         </textarea>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
