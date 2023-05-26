@@ -32,15 +32,15 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: Información Coordenadas.
-- **outputDownloadFormat**: Indica el formato de salida del documento que se va a descargar. Se puede elegir entre 'txt' o 'csv'. Por defecto: txt.
 - **decimalGEOcoord**: Indica el número de decimales de las coordenadas geográficas. Por defecto: 4
 - **decimalUTMcoord**: Indica el número de decimales de las coordenadas proyectadas en UTM. Por defecto: 2
 - **helpUrl**: URL a la ayuda para el icono. Por defecto: 'https://www.ign.es/'
+- **outputDownloadFormat**: Indica el formato de salida del documento que se va a descargar. Se puede elegir entre 'txt' o 'csv'. Por defecto: txt.
 
 # API-REST
 
 ```javascript
-URL_API?infocoordinates=position*collapsed*collapsible*tooltip*outputDownloadFormat*decimalGEOcoord*decimalUTMcoord*helpUrl
+URL_API?infocoordinates=position*collapsed*collapsible*tooltip*decimalGEOcoord*decimalUTMcoord*helpUrl*outputDownloadFormat
 ```
 
 <table>
