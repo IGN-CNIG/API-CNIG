@@ -24,19 +24,19 @@
       "position": 3
     }, {
       "type": "simple",
-      "name": "outputDownloadFormat",
+      "name": "decimalGEOcoord",
       "position": 4
     }, {
       "type": "simple",
-      "name": "decimalGEOcoord",
+      "name": "decimalUTMcoord",
       "position": 5
     }, {
       "type": "simple",
-      "name": "decimalUTMcoord",
-      "position": 6
-    }, {
-      "type": "simple",
       "name": "helpUrl",
+      "position": 6
+    },{
+      "type": "simple",
+      "name": "outputDownloadFormat",
       "position": 7
     }]
   }],

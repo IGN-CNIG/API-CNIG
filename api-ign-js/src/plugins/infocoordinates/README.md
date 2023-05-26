@@ -70,10 +70,6 @@ URL_API?infocoordinates=position*collapsed*collapsible*tooltip*outputDownloadFor
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>outputDownloadFormat</td>
-    <td>txt/csv</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  <tr>
     <td>decimalGEOcoord</td>
     <td>Número de decimales de las coordenadas geográficas</td>
     <td>Base64 ✔️ | Separador ✔️</td>
@@ -88,13 +84,18 @@ URL_API?infocoordinates=position*collapsed*collapsible*tooltip*outputDownloadFor
     <td>URL a la ayuda</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
+  <tr>
+    <td>outputDownloadFormat</td>
+    <td>txt/csv</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
 </table>
 
 
 ### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?infocoordinates=TL*true*true*Coordenadas*txt*4*2*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107
+https://componentes.cnig.es/api-core?infocoordinates=TL*true*true*Coordenadas*4*2*https%3A%2F%2Fvisores-cnig-gestion-publico.desarrollo.guadaltel.es%2Fiberpix%2Fhelp%3Fnode%3Dnode107*txt
 ```
 
 ### Ejemplo de uso API-REST en base64
