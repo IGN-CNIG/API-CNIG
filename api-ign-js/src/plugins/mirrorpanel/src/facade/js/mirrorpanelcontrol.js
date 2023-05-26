@@ -206,10 +206,10 @@ export default class MirrorpanelControl extends M.Control {
   copyBackImgLayersParams(params, layerId) {
     let copy = params;
     const paramsSeparate = params.split('!!');
-    const idsArray = paramsSeparate[6].split(',');
-    const titlesArray = paramsSeparate[7].split(',');
-    const previewArray = paramsSeparate[8].split(',');
-    const layersArray = paramsSeparate[9].split(',');
+    const idsArray = paramsSeparate[8].split(',');
+    const titlesArray = paramsSeparate[9].split(',');
+    const previewArray = paramsSeparate[10].split(',');
+    const layersArray = paramsSeparate[11].split(',');
     let lyrs = [];
     layersArray.forEach((baseLayer, idx) => {
       let backgroundLayers = baseLayer.split('sumar');
@@ -227,11 +227,12 @@ export default class MirrorpanelControl extends M.Control {
     });
     copy = {
       position: paramsSeparate[0],
-      collapsible: paramsSeparate[1] === 'true' ? true : false,
-      collapsed: paramsSeparate[2] === 'true' ? true : false,
+      collapsed: paramsSeparate[1] === 'true' ? true : false,
+      collapsible: paramsSeparate[2] === 'true' ? true : false,
+      tooltip: paramsSeparate[3],
       layerId: layerId === 'A' ? 0 : layerId === 'B' ? 1 : layerId == 'C' ? 2 : 3,
-      layerVisibility: paramsSeparate[3] === 'true' ? true : false,
-      columnsNumber: paramsSeparate[5],
+      layerVisibility: paramsSeparate[4] === 'true' ? true : false,
+      columnsNumber: paramsSeparate[6],
       layerOpts: lyrs
     }
     return copy;
