@@ -192,11 +192,8 @@ export default class FullTOCControl extends M.impl.Control {
 
     if (!M.utils.isNullOrEmpty(layer.id)) {
       layer.url = `${layer.url}${layer.id}?`;
-      fUrl =
-        M.utils.addParameters(
-          M.utils.addParameters(layer.url, getFeatureParams),
-          layer.getFeatureVendor,
-        );
+      /* eslint-disable-next-line max-len */
+      fUrl = M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
     } else {
       layer.url = `${layer.url}?`;
 
@@ -211,13 +208,8 @@ export default class FullTOCControl extends M.impl.Control {
       if (!M.utils.isNullOrEmpty(layer.bbox)) {
         getFeatureParams.bbox = layer.bbox;
       }
-
-      fUrl =
-        M.utils.addParameters(
-          M.utils.addParameters(layer.url, getFeatureParams),
-          layer.getFeatureVendor,
-        );
-
+      /* eslint-disable-next-line max-len */
+      fUrl = M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
 
       if (!M.utils.isNullOrEmpty(layer.conditional)) {
         let text = '';
@@ -229,7 +221,7 @@ export default class FullTOCControl extends M.impl.Control {
         fUrl += getFeatureParams.conditional;
       }
     }
-    /* eslint-enable no-param-reassign */
+    fUrl = fUrl.replaceAll(' ', '%20');
     return fUrl;
   }
 

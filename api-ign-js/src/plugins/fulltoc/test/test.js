@@ -16,6 +16,7 @@ const map = M.map({
 const capa = new M.layer.OGCAPIFeatures({
   url: 'http://ignsolarguadaltel.desarrollo.guadaltel.es/collections/',
   name: 'rutas',
+  extract: true,
 });
 
 map.addLayers(capa);
@@ -27,7 +28,7 @@ const precharged = {
           name: 'Unidades administrativas',
           type: 'WMS',
           url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-          white_list: ['AU.AdministrativeBoundary' /* , 'AU.AdministrativeUnit' */ ],
+          white_list: ['AU.AdministrativeBoundary'],
         },
         {
           name: 'Nombres geográficos',
@@ -169,12 +170,20 @@ const precharged = {
         },
       ],
     },
+    {
+      name: 'Capas vectoriales',
+      services: [{
+        name: 'Colecciones del Sistema Cartográfico Nacional',
+        type: 'OGCAFPIFeatures',
+        url: 'https://api-features.idee.es/',
+      }, ],
+    },
   ],
   services: [{
     name: 'Catastro',
     type: 'WMS',
     url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
-  }, ],
+  }],
 };
 
 const mp = new FullTOC({
@@ -182,9 +191,10 @@ const mp = new FullTOC({
   position: 'TR',
   https: true,
   http: true,
-  precharged,
+  // precharged,
   // precharged: {},
   codsi: true,
+  order: 1,
 });
 
 window.mp = mp;

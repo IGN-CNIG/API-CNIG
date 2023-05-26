@@ -28,9 +28,25 @@
             {{#if metadata}}
               <span tabindex="0" role="button" title="{{../translations.info_metadata}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="icon-info m-fulltoc-info"></span>
             {{/if}}
+
+            {{#eq this.type "OGCAPIFeatures"}}
+              <span tabindex="0" title="{{../translations.info_metadata}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="icon-info m-fulltoc-info"></span>
+
+            {{/eq}}
+            {{#if isFeatureServ}}
+              <span tabindex="0" title="{{../translations.info_metadata}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="icon-info m-fulltoc-info-py-geoapi"></span>
+            {{/if}}
+
             {{#if hasStyles}}
               <span tabindex="0" role="button" title="{{../translations.change_style}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="icon-pincel m-fulltoc-config"></span>
             {{/if}}
+
+
+            {{#eq this.type "OGCAPIFeatures"}}
+              <span tabindex="0" title="{{../translations.change_style}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="icon-pincel m-fulltoc-config"></span>
+
+            {{/eq}}
+
             <span tabindex="0" role="button" title="{{../translations.remove_layer}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="icon-papelera m-fulltoc-remove"></span>
           </div>
         </div>
@@ -45,7 +61,7 @@
       <div class="m-layersiwtcher-panel" id="m-fulltoc-panel">
         <ul>
           <li class="m-group">
-            <div role="heading" aria-label="{{translations.layers}}" tabindex="0" class="m-title">
+            <div aria-label="{{translations.layers}}" tabindex="0" class="m-title">
               <span role="text" class="span-title">{{translations.layers}}</span>
               <span role="button" tabindex="0" title="{{translations.add_service}}" class="m-fulltoc-addservice">Añadir</span>
             </div>

@@ -1,23 +1,13 @@
 <div id="fromOGCContainer">
     <div class="select-ogc-container">
 
-        <select id="m-vectors-ogc-select" style="border-radius: 0;">
+        <select tabindex="0" id="m-vectors-ogc-select">
             <option disabled="disabled" value="">{{translations.select_service}}</option>
-            {{#each capas}}
-                {{#if ../capaSeleccionada}}
-
-                    {{#lt @index ../capaSeleccionada }}
-                        <option data-name="{{this.title}}" value="{{this.id}}">{{this.title}}</option>
-                    {{/lt}}
-                    {{#gt @index ../capaSeleccionada }}
-                        <option data-name="{{this.title}}" value="{{this.id}}">{{this.title}}</option>
-                    {{/gt}}
-                    {{#eq @index ../capaSeleccionada }}
-                        <option data-name="{{this.title}}" value="{{this.id}}" selected>{{this.title}}</option>
-                    {{/eq}}
-                    {{#eq this.id ../capaSeleccionada}}
-
-                    {{/eq}}
+            {{#each layers}}
+                {{#if ../selectedLayer}}
+                {{#lt @index ../selectedLayer }} <option data-name="{{this.title}}" value="{{this.id}}">{{this.title}}</option> {{/lt}}
+                {{#gt @index ../selectedLayer }} <option data-name="{{this.title}}" value="{{this.id}}">{{this.title}}</option> {{/gt}}
+                {{#eq @index ../selectedLayer }} <option data-name="{{this.title}}" value="{{this.id}}" selected>{{this.title}}</option>{{/eq}}
                 {{else}}
                     <option data-name="{{this.title}}" value="{{this.id}}">{{this.title}}</option>
                 {{/if}}
@@ -25,65 +15,65 @@
         </select>
     </div>
     <div class="btn-container"><br>
-        <fieldset style="border: 1.5px solid #D3D3D3; padding-top: 15px; padding-bottom: 15px;">
+        <fieldset class="fieldset-custom-query">
             <legend>{{translations.filters}}</legend>
-            <label style="float: left;">
-                <input type="radio" name="filtro" value="id" style="margin: 0; width: 15px!IMPORTANT; float: left;" id="filtro-id-input" {{#unless filtroOtrosFiltros}}checked{{/unless}}>
+            <label tabindex="0" class="fieldset-label-custom-query">
+                <input tabindex="0" type="radio" name="filtro" value="id" class="fieldset-input-custom-query" id="filtro-id-input" {{#unless filterByOtherFilters}}checked{{/unless}}>
                 &nbsp;{{translations.id_filter}}
             </label>
             <br><br>
-            <label style="float: left;">
-                <input type="radio" name="filtro" value="otros" style="margin: 0; width: 15px!IMPORTANT; float: left;" {{#if filtroOtrosFiltros}}checked{{/if}}>
+            <label tabindex="0" class="fieldset-label-radio-custom-query">
+                <input tabindex="0" type="radio" name="filtro" value="otros" class="fieldset-input-custom-query" {{#if filterByOtherFilters}}checked{{/if}}>
                 &nbsp;{{translations.other_filters}}
             </label>
 
             <br><br>
 
 
-            {{#unless filtroOtrosFiltros}}
-                <fieldset id="filtro-id" style="display:block; border: 1.5px solid #D3D3D3; padding-top: 15px; padding-bottom: 15px;">
+            {{#unless filterByOtherFilters}}
+                <fieldset id="filtro-id" style="display:block;" class="fieldset-filtro-custom-query">
             {{else}}
-                <fieldset id="filtro-id" style="display:none; border: 1.5px solid #D3D3D3; padding-top: 15px; padding-bottom: 15px;">
+                <fieldset id="filtro-id" style="display:none;" class="fieldset-filtro-custom-query">
             {{/unless}}
 
 
             <div id="search-form-id">
 
-                <div id="form-input"><label for="search-form-ID" style="width: 15px;">ID</label><input type="text" id="search-form-ID" value="{{this.prevID}}"><br /></div>
+                <div tabindex="0" id="form-input"><label tabindex="0" for="search-form-ID" class="search-form-id">ID</label><input tabindex="0" type="text" class="search-form-ID" id="search-form-ID" value="{{this.prevID}}"><br /></div>
 
             </div>
         </fieldset>
 
 
-        {{#if filtroOtrosFiltros}}
-            <fieldset id="otros-filtros" style="display:block; border: 1.5px solid #D3D3D3; padding-top: 15px; padding-bottom: 15px;">
+        {{#if filterByOtherFilters}}
+            <fieldset id="otros-filtros" style="display:block;" class="fieldset-filtro-custom-query">
         {{else}}
-            <fieldset id="otros-filtros" style="display:none; border: 1.5px solid #D3D3D3; padding-top: 15px; padding-bottom: 15px;">
+            <fieldset id="otros-filtros" style="display:none;" class="fieldset-filtro-custom-query">
         {{/if}}
         <div id="search-form-otros">
 
             {{#if limit}}
-                <div id="input-limit-results"><label>{{translations.amount_results}} </label><input type="number" id="limit-items-input" value="{{limit}}" step="1" style="margin-right: 0;"><label>{{translations.amount_results_2}} </label></div><br>
+                <div id="input-limit-results"><label tabindex="0">{{translations.amount_results}} </label><input tabindex="0" type="number" id="limit-items-input" value="{{limit}}" step="1" class="fieldset-limit"><label>{{translations.amount_results_2}} </label></div><br>
             {{else}}
-                <div id="input-limit-results"><label>{{translations.amount_results}} </label><input type="number" id="limit-items-input" value="10" step="1" style="margin-right: 0;"> <label>{{translations.amount_results_2}} </label></div><br>
+                <div id="input-limit-results"><label tabindex="0">{{translations.amount_results}} </label><input tabindex="0" type="number" id="limit-items-input" value="10" step="1" class="fieldset-limit"> <label>{{translations.amount_results_2}} </label></div><br>
             {{/if}}
 
             {{#if bbox}}
-                <div id="input-bbox"><label style="display: flex;align-items: center;">{{translations.bbox_select}}<input type="checkbox" id="search-bbox" checked></label>
+                <div id="input-bbox"><label tabindex="0" class="fieldset-bbox">{{translations.bbox_select}}<input tabindex="0" type="checkbox" id="search-bbox" checked></label>
                 </div><br>
             {{else}}
-                <div id="input-bbox"><label style="display: flex;align-items: center;">{{translations.bbox_select}}<input type="checkbox" id="search-bbox"></label>
+                <div id="input-bbox"><label tabindex="0" class="fieldset-bbox">{{translations.bbox_select}}<input tabindex="0" type="checkbox" id="search-bbox"></label>
                 </div><br>
             {{/if}}
 
             {{#if summary}}
                 <div id="div-summary">
-                    {{#if filtroOtrosFiltros}}
+                    {{#if filterByOtherFilters}}
                         <div>{{translations.other_filters}}
                     {{/if}}
-                    <ul>
+                    <ul tabindex="0">
                         {{#each summary}}
-                            <li>{{@key}} = {{this}}</li>
+                            <li tabindex="0">{{@key}} = {{this}}</li>
                         {{/each}}
                     </ul>
                 </div>
@@ -92,17 +82,17 @@
 
         {{/if}}
 
-        <div id="div-advice" style="background-color: #fff3cd">{{translations.warning}}</div></br>
+        <div id="div-advice" tabindex="0" role="text" class="warning-msg">{{translations.warning}}</div></br>
 
 
-        <button class="m-fulltoc-common-btn" id="custom-query-button"> {{translations.custom_query_btn}}</button>
+        <button tabindex="0" class="m-fulltoc-common-btn" id="custom-query-button"> {{translations.custom_query_btn}}</button>
 
     </div>
     </fieldset>
 
     </fieldset>
     <p id="check-results"></p>
-    <button class="m-fulltoc-common-btn" id="select-button"> {{translations.add_btn}}</button>
-    <button class="m-fulltoc-common-btn" id="check-button"> {{translations.check_results}}</button>
+    <button tabindex="0" class="m-fulltoc-common-btn" id="select-button"> {{translations.add_btn}}</button>
+    <button tabindex="0" class="m-fulltoc-common-btn" id="check-button"> {{translations.check_results}}</button>
 </div>
 </div>
