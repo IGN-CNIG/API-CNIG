@@ -158,10 +158,11 @@ html, body {
 
         function crearPlugin(propiedades) {
             propiedades.layerOpts = [
+
 		{
                     id: 'imagen',
                     title: 'Imagen',
-                    preview: 'plugins/backimglayer/images/svqmapa.png',
+                    preview: 'plugins/backimglayer/images/svqhibrid.png',
                     layers: [new M.layer.TMS({
                         url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
                         name: 'PNOA-MA',
@@ -180,20 +181,6 @@ html, body {
                         format: 'image/jpeg',
                     })],
                 },
-
-		
- 				{
-					id: 'hibrido',
-                    title: 'Híbrido',
-                    preview: 'plugins/backimglayer/images/svqmapa.png',
-                    layers: [new M.layer.TMS({
-                            url: 'https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png',
-                            name: 'IGNBaseOrto',
-                            legend: 'Imagen (PNOA)',
-                      
-                            format: 'image/png',
-                        })],
-                   },
             ];
             mp = new M.plugin.BackImgLayer(propiedades);
             map.addPlugin(mp);
