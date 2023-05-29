@@ -98,7 +98,7 @@ export default class BackImgLayerControl extends M.Control {
     this.activeLayer = -1;
     /* this.idLayer saves active layer position on layers array */
     this.idLayer = idLayer === null ? 0 : idLayer;
-    this.visible = visible === null ? true : visible;
+    this.visible = visible;
     this.empty = empty;
 
     this.order = order;
