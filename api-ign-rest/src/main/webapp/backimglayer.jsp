@@ -16,9 +16,9 @@
 <meta name="mapea" content="yes">
 <title>Visor base</title>
 
-<link type="text/css" rel="stylesheet" href="https://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign.ol.min.css">
-<link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
-<link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
+<link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
+<link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
 </link>
 <style type="text/css">
 html, body {
@@ -86,10 +86,10 @@ html, body {
 
 	<div id="mapjs" class="m-container"></div>
 	<script type="text/javascript" src="vendor/browser-polyfill.js"></script>
-	<script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/apiign.ol.min.js"></script>
-	<script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/configuration.js"></script>
-	<script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/backimglayer/backimglayer.ol.min.js"></script>
-	<script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.js"></script>
+	<script type="text/javascript" src="js/apiign.ol.min.js"></script>
+	<script type="text/javascript" src="js/configuration.js"></script>
+	<script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
+	<script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
 	<%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
