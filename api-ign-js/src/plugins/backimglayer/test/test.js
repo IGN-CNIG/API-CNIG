@@ -6,6 +6,7 @@ const map = M.map({
   container: 'mapjs',
   controls: ['scale'],
   center: [-458756.9690741142, 4682774.665868655],
+  layers: ['OSM'],
   zoom: 6,
 });
 
@@ -17,30 +18,15 @@ const mp = new BackImgLayer({
   collapsed: true,
   collapsible: true,
   tooltip: 'Capas de fondo',
-  layerVisibility: true,
+  layerVisibility: false,
   columnsNumber: 0,
   empty: true,
   // Cuando no se pasa layerOpts, se usan los parámetros ids, titles, previews y layers
-  ids: 'mapa,hibrido',
-  titles: 'Mapa,Hibrido',
-  previews: '../src/facade/assets/images/svqimagen.png,../src/facade/assets/images/svqmapa.png',
-  layers: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true',
-  /*layerOpts: [{
-      id: 'wmts',
-      preview: '../src/facade/assets/images/svqmapa.png',
-      title: 'WMTS',
-      layers: [new M.layer.WMTS({
-        url: 'http://www.ign.es/wmts/ign-base?',
-        name: 'IGNBaseTodo',
-        legend: 'Mapa IGN',
-        matrixSet: 'GoogleMapsCompatible',
-        transparent: false,
-        displayInLayerSwitcher: false,
-        queryable: false,
-        visible: true,
-        format: 'image/jpeg',
-      })],
-    },
+  // ids: 'mapa,hibrido',
+  // titles: 'Mapa,Hibrido',
+  // previews: '../src/facade/assets/images/svqimagen.png,../src/facade/assets/images/svqmapa.png',
+  // layers: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true',
+  layerOpts: [
     {
       id: 'wms',
       title: 'WMS',
@@ -52,6 +38,9 @@ const mp = new BackImgLayer({
           legend: 'Unidad administrativa',
           tiled: false,
           transparent: false,
+          displayInLayerSwitcher: false,
+          visible: true,
+          useCapabilities: false,
         }),
       ],
     },
@@ -73,7 +62,7 @@ const mp = new BackImgLayer({
         }),
       ],
     },
-  ],*/
+  ],
 });
 
 // const mp = new BackImgLayer({
