@@ -140,6 +140,7 @@ export default class BackImgLayerControl extends M.Control {
         }
         if (visible === false) {
           this.map.removeLayers(this.map.getBaseLayers());
+          this.html.querySelector('.activeBackimglayerDiv').classList.remove('activeBackimglayerDiv');
         }
       });
 
