@@ -16,9 +16,9 @@
 <meta name="mapea" content="yes">
 <title>Visor base</title>
 
-<link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-<link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
-<link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="https://mapea-lite.desarrollo.guadaltel.es/api-core/assets/css/apiign.ol.min.css">
+<link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
+<link href="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
 </link>
 <style type="text/css">
 html, body {
@@ -68,7 +68,7 @@ html, body {
 			<option value=false>false</option>
 		</select> 
 		<label for="selectVisibility">Selector layerVisibility</label> <select
-			name="layerVisibility" id="selectVisibility">
+			name="httpValue" id="selectVisibility">
 			<option value=true>true</option>
 			<option value=false>false</option>
 		</select> 
@@ -76,7 +76,7 @@ html, body {
 		<label for="selectEmpty">Selector empty</label> <select
 			name="empty" id="selectEmpty">
 			<option value=true>true</option>
-			<option value=false selected="seleted">false</option>
+			<option value=false selected="selected">false</option>
 		</select> 
    	
 		<label for="ncolumn">Número de columnas:</label> 
@@ -86,10 +86,10 @@ html, body {
 
 	<div id="mapjs" class="m-container"></div>
 	<script type="text/javascript" src="vendor/browser-polyfill.js"></script>
-	<script type="text/javascript" src="js/apiign.ol.min.js"></script>
-	<script type="text/javascript" src="js/configuration.js"></script>
-	<script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
-	<script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+	<script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/apiign.ol.min.js"></script>
+	<script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/js/configuration.js"></script>
+	<script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/backimglayer/backimglayer.ol.min.js"></script>
+	<script type="text/javascript" src="https://mapea-lite.desarrollo.guadaltel.es/api-core/plugins/sharemap/sharemap.ol.min.js"></script>
 	<%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -106,22 +106,22 @@ html, body {
 
         const map = M.map({
             container: 'mapjs',
+			layers: ['OSM'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
             center: [-467062.8225, 4683459.6216],
         });
 
-        let mp, posicion, collapsed, collapsible, visible, tooltip,empty, columnas = 2;
+        let mp, posicion, collapsed, collapsible, visibility = true, tooltip, empty, columnas = 2;
         crearPlugin({
             collapsed: collapsed,
             collapsible: collapsible,
             position: posicion,
-			layerVisibility: visible,
+			layerVisibility: visibility,
 			tooltip: tooltip,
             columnsNumber: columnas,
-			empty: empty
-		
+			empty: empty,
         });
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -145,6 +145,7 @@ html, body {
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value === 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value === 'true');
             objeto.layerVisibility = (selectVisibility.options[selectVisibility.selectedIndex].value === 'true');
+console.log(objeto.layerVisibility)
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
 			objeto.tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
             objeto.columnsNumber = ncolumn.value || 2;
@@ -168,6 +169,9 @@ html, body {
                         name: 'PNOA-MA',
                         legend: 'Mapa IGN',
                         format: 'image/jpeg',
+						transparent: false,
+					    displayInLayerSwitcher: false,
+						visible: true,
                     })],
                 },
 				{
@@ -179,6 +183,9 @@ html, body {
                         name: 'IGNBaseTodo',
                         legend: 'Mapa IGN',
                         format: 'image/jpeg',
+						transparent: false,
+						displayInLayerSwitcher: false,
+						visible: true,
                     })],
                 },
             ];
