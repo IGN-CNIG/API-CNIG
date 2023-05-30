@@ -145,7 +145,6 @@ html, body {
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value === 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value === 'true');
             objeto.layerVisibility = (selectVisibility.options[selectVisibility.selectedIndex].value === 'true');
-console.log(objeto.layerVisibility)
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
 			objeto.tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
             objeto.columnsNumber = ncolumn.value || 2;
