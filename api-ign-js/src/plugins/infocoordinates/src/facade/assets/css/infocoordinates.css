@@ -195,7 +195,10 @@
 
 .m-infocoordinates-content {
     max-height: 305px;
-    overflow-y: auto;
+}
+
+.m-infocoordinates-tabContent table{
+    user-select: text;
 }
 
 #m-infocoordinates-buttonRemovePoint:hover,
