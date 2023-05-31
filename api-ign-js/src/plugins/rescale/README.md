@@ -81,7 +81,7 @@ https://componentes.cnig.es/api-core?rescale=TL
 ### Ejemplos de uso API-REST en base64
 Ejemplo de constructor del plugin: {"collapsible":true,"collapsed":true,"position":"TL","tooltip":"Gestor de escala"}
 ```
-https://componentes.cnig.es/api-core/?rescale=base64:eyJjb2xsYXBzaWJsZSI6dHJ1ZSwiY29sbGFwc2VkIjp0cnVlLCJwb3NpdGlvbiI6IlRMIiwidG9vbHRpcCI6Ikdlc3RvciBkZSBlc2NhbGEifQ=='
+https://componentes.cnig.es/api-core/?rescale=base64=eyJjb2xsYXBzaWJsZSI6dHJ1ZSwiY29sbGFwc2VkIjp0cnVlLCJwb3NpdGlvbiI6IlRMIiwidG9vbHRpcCI6Ikdlc3RvciBkZSBlc2NhbGEifQ=='
 ```
 
 # Ejemplo de uso

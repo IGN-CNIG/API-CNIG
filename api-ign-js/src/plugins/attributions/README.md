@@ -185,7 +185,7 @@ Ejemplo de constructor:
 }
 ```
 ```
-https://componentes.cnig.es/api-core/?attributions=base64:eyJtb2RlIjoxLCJzY2FsZSI6MTAwMDAsInVybCI6Imh0dHA6Ly93d3cuaWduLmVzL3Jlc291cmNlcy92aWV3ZXIvZGF0YS8yMDIwMDIwNl9hdHJpYnVjaW9uUE5PQS0zODU3Lmdlb2pzb24iLCJ0eXBlIjoiZ2VvanNvbiIsInBvc2l0aW9uIjoiQkwiLCJ0b29sdGlwIjoiQXRyaWJ1Y2lvbmVzIn0=
+https://componentes.cnig.es/api-core/?attributions=base64=eyJtb2RlIjoxLCJzY2FsZSI6MTAwMDAsInVybCI6Imh0dHA6Ly93d3cuaWduLmVzL3Jlc291cmNlcy92aWV3ZXIvZGF0YS8yMDIwMDIwNl9hdHJpYnVjaW9uUE5PQS0zODU3Lmdlb2pzb24iLCJ0eXBlIjoiZ2VvanNvbiIsInBvc2l0aW9uIjoiQkwiLCJ0b29sdGlwIjoiQXRyaWJ1Y2lvbmVzIn0=
 ```
 # Ejemplo de uso
 

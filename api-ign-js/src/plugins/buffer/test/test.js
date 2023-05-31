@@ -20,4 +20,4 @@ const capa = new M.layer.GeoJSON({
 map.addLayers(capa);
 map.addPlugin(mp);
 console.log('APIRest: ' + mp.getAPIRest());
-//console.log('APIRestBase64: ' + mp.getAPIRestBase64());
+//console.log('APIRestbase64= ' + mp.getAPIRestBase64());

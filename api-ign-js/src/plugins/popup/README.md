@@ -90,7 +90,7 @@ https://componentes.cnig.es/api-core?popup=TR*true*true*Ayuda*https%3A%2F%2Fcomp
 Ejemplo de constructor: {position:'TR', collapsed: true, collapsible: true, url_es: 'https://componentes.cnig.es/ayudaIberpix/es.html',  url_en: 'https://componentes.cnig.es/ayudaIberpix/en.html', tooltip: 'Ayuda'}
 
 ```
-https://componentes.cnig.es/api-core?popup=base64:ewogIHBvc2l0aW9uOiAnVFInLAogIGNvbGxhcHNlZDogdHJ1ZSwKICBjb2xsYXBzaWJsZTogdHJ1ZSwKICB1cmxfZXM6ICdodHRwczovL2NvbXBvbmVudGVzLmNuaWcuZXMvYXl1ZGFJYmVycGl4L2VzLmh0bWwnLAogIHVybF9lbjogJ2h0dHBzOi8vY29tcG9uZW50ZXMuY25pZy5lcy9heXVkYUliZXJwaXgvZW4uaHRtbCcsCiAgdG9vbHRpcDogJ0F5dWRhJywKfQ==
+https://componentes.cnig.es/api-core?popup=base64=ewogIHBvc2l0aW9uOiAnVFInLAogIGNvbGxhcHNlZDogdHJ1ZSwKICBjb2xsYXBzaWJsZTogdHJ1ZSwKICB1cmxfZXM6ICdodHRwczovL2NvbXBvbmVudGVzLmNuaWcuZXMvYXl1ZGFJYmVycGl4L2VzLmh0bWwnLAogIHVybF9lbjogJ2h0dHBzOi8vY29tcG9uZW50ZXMuY25pZy5lcy9heXVkYUliZXJwaXgvZW4uaHRtbCcsCiAgdG9vbHRpcDogJ0F5dWRhJywKfQ==
 
 ```
 

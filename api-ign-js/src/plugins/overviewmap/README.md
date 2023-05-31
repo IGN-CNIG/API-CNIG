@@ -101,7 +101,7 @@ https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!Mapa
 ```
 Ejemplo de constructor: {"position":"BR","fixed":true,"zoom":4,"baseLayer":"WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true","collapsed":false,"collapsible":false, "tooltip":"Mapa"}
 
-https://componentes.cnig.es/api-core?overviewmap=base64:eyJwb3NpdGlvbiI6IkJSIiwiZml4ZWQiOnRydWUsInpvb20iOjQsImJhc2VMYXllciI6IldNVFMqaHR0cDovL3d3dy5pZ24uZXMvd210cy9pZ24tYmFzZT8qSUdOQmFzZVRvZG8qR29vZ2xlTWFwc0NvbXBhdGlibGUqTWFwYSBJR04qZmFsc2UqaW1hZ2UvanBlZypmYWxzZSpmYWxzZSp0cnVlIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOmZhbHNlLCAidG9vbHRpcCI6Ik1hcGEifQ==
+https://componentes.cnig.es/api-core?overviewmap=base64=eyJwb3NpdGlvbiI6IkJSIiwiZml4ZWQiOnRydWUsInpvb20iOjQsImJhc2VMYXllciI6IldNVFMqaHR0cDovL3d3dy5pZ24uZXMvd210cy9pZ24tYmFzZT8qSUdOQmFzZVRvZG8qR29vZ2xlTWFwc0NvbXBhdGlibGUqTWFwYSBJR04qZmFsc2UqaW1hZ2UvanBlZypmYWxzZSpmYWxzZSp0cnVlIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOmZhbHNlLCAidG9vbHRpcCI6Ik1hcGEifQ==
 
 ```
 

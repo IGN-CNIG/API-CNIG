@@ -80,7 +80,7 @@ https://componentes.cnig.es/api-core?buffer=TL
 
 Ejemplo de constructor del plugin: {"position":"TL","collapsed":false,"collapsible":true,"tooltip":"Buffer"}
 ```
-https://componentes.cnig.es/api-core?buffer=base64:eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOnRydWUsInRvb2x0aXAiOiJCdWZmZXIifQ==
+https://componentes.cnig.es/api-core?buffer=base64=eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOnRydWUsInRvb2x0aXAiOiJCdWZmZXIifQ==
 ```
 
 # Ejemplo de uso

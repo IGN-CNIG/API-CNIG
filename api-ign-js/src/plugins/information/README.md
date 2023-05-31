@@ -94,7 +94,7 @@ https://componentes.cnig.es/api-core/?information=TR*Consultar%20capas*html*5*5*
 
 Ejemplo del constructor: {"position":"TR","tooltip":"Información","buffer":100,"opened":"one"}
 ```
-https://componentes.cnig.es/api-core/?information=base64:eyJwb3NpdGlvbiI6IlRSIiwidG9vbHRpcCI6IkluZm9ybWFjacOzbiIsImJ1ZmZlciI6MTAwLCJvcGVuZWQiOiJvbmUifQ==
+https://componentes.cnig.es/api-core/?information=base64=eyJwb3NpdGlvbiI6IlRSIiwidG9vbHRpcCI6IkluZm9ybWFjacOzbiIsImJ1ZmZlciI6MTAwLCJvcGVuZWQiOiJvbmUifQ==
 ```
 
 # Ejemplo de uso

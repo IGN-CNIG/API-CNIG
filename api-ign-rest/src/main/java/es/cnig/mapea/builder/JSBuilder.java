@@ -132,7 +132,7 @@ public class JSBuilder {
 		if (paramValues != null) {
 			int i = 0;
 			while (!founded && i < paramValues.length) {
-				if (paramValues[i].contains("base64:")) {
+				if (paramValues[i].contains("base64=")) {
 					founded = true;
 					index = i;
 				}
@@ -141,7 +141,7 @@ public class JSBuilder {
 		}
 
 		if (founded) {
-			String base64 = paramValues[index].replace("base64:", "");
+			String base64 = paramValues[index].replace("base64=", "");
 			byte[] decodedBytes = Base64.getDecoder().decode(base64);
 			String decoded = new String(decodedBytes);
 			JSONObject decodedJSON = new JSONObject(decoded); 

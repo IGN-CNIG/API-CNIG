@@ -230,7 +230,7 @@ export default class Buffer extends M.Plugin {
    * @api
    */
   getAPIRestBase64() {
-    return `${this.name}=base64:${M.utils.encodeBase64(this.options)}`;
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

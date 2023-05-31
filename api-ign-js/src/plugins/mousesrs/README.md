@@ -99,7 +99,7 @@ https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WG
 Ejemplo del constructor: {"label":"EPSG:4326","helpUrl":"https://www.ign.es/", "tooltip": "Coordenadas"}
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=base64:eyJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIiwgInRvb2x0aXAiOiAiQ29vcmRlbmFkYXMifQ==
+https://componentes.cnig.es/api-core?mousesrs=base64=eyJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIiwgInRvb2x0aXAiOiAiQ29vcmRlbmFkYXMifQ==
 ```
 
 # Ejemplo de uso

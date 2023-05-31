@@ -106,7 +106,7 @@ https://componentes.cnig.es/api-core?stylemanager=TR
 ### Ejemplos de uso API-REST en base64
 Ejemplo de constructor del plugin: {position:'TR', collapsible: true, collapsed: true, tooltip: 'Gestor de estilos'}
 ```
-https://componentes.cnig.es/api-core?stylemanager=base64:e3Bvc2l0aW9uOidUUicsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdHZXN0b3IgZGUgZXN0aWxvcyd9
+https://componentes.cnig.es/api-core?stylemanager=base64=e3Bvc2l0aW9uOidUUicsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdHZXN0b3IgZGUgZXN0aWxvcyd9
 ```
 
 # Ejemplo de uso

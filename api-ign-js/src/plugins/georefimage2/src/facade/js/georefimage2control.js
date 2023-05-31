@@ -509,7 +509,7 @@ export default class Georefimage2Control extends M.Control {
           const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
           const zip = new JsZip();
           zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
-          zip.file(titulo.concat('.jpg'), resolve, { base64: true });
+          zip.file(titulo.concat('.jpg'), resolve, { base64= true });
           zip.generateAsync({ type: 'blob' }).then((content) => {
             saveAs(content, titulo.concat('.zip'));
             document.querySelector('div.m-mapea-container div.m-dialog').remove();
