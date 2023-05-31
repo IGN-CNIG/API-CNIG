@@ -527,7 +527,7 @@ export default class InfocoordinatesControl extends M.Control {
   }
 
   copyAllPoints() {
-    let printDocument = '';
+    let printDocument = getValue('point').replace(':', '') + ',Long,Lat,Alt,EPSG,X,Y,Alt,EPSG' + '\n';
     for (let i = 0; i < this.layerFeatures.impl_.features_.length; i += 1) {
       let featureSelected = this.layerFeatures.impl_.features_[i];
       const alt = featureSelected.getAttributes().Altitude !== undefined ? parseFloat(featureSelected.getAttributes().Altitude) : '-';
