@@ -756,7 +756,7 @@ export default class GeorefimageControl extends M.Control {
 
       const zip = new JsZip();
       zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
-      zip.file(titulo.concat('.jpg'), resolve, { base64= true });
+      zip.file(titulo.concat('.jpg'), resolve, { base64: true });
       zip.generateAsync({ type: 'blob' }).then((content) => {
         // see FileSaver.js
         saveAs(content, titulo.concat('.zip'));
