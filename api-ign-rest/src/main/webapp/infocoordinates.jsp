@@ -79,6 +79,11 @@
         <input id="inputDecimalGEOcoord" type="number" value="4" min="0" max="10"></input>
         <label for="inputDecimalUTMcoord">Parámetro decimalUTMcoord</label>
         <input id="inputDecimalUTMcoord" type="number" value=2 min="0" max="5">
+        <label for="selectOutputDownloadFormat">Selector de outputDownloadFormat</label>
+        <select name="selectOutputDownloadFormat" id="selectOutputDownloadFormat">
+            <option value="txt" selected>txt</option>
+            <option value="csv">csv</option>
+        </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
@@ -121,6 +126,7 @@
         const selectCollapsible = document.getElementById("selectCollapsible");
         const inputTooltip = document.getElementById("inputTooltip");
         const inputHelpUrl = document.getElementById("inputHelpUrl");
+        const selectOutputDownloadFormat = document.getElementById("selectOutputDownloadFormat");
 
         let mp;
         let posicion = selectPosicion.value;
@@ -144,6 +150,7 @@
 		selectCollapsed.addEventListener('change', cambiarTest);
 		inputTooltip.addEventListener('change', cambiarTest);
 		inputHelpUrl.addEventListener('change', cambiarTest);
+		selectOutputDownloadFormat.addEventListener('change', cambiarTest);
 		
 
         function cambiarTest() {
@@ -156,6 +163,7 @@
             objeto.decimalGEOcoord = inputDecimalGEOcoord.value;
             objeto.decimalUTMcoord = inputDecimalUTMcoord.value;
 			objeto.tooltip = inputTooltip.value;
+			objeto.outputDownloadFormat = selectOutputDownloadFormat.options[selectOutputDownloadFormat.selectedIndex].value;
 			helpUrl = inputHelpUrl.value != "" ? objeto.helpUrl = inputHelpUrl.value : "";
    			
 
