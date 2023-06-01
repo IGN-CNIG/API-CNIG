@@ -37,6 +37,7 @@ export default class ComparepanelControl extends M.Control {
     this.baseLayers = options.baseLayers;
     this.position = options.position;
     this.layers = [];
+    this.layersPlugins = [];
     this.defaultComparisonMode = options.defaultComparisonMode;
     this.defaultComparisonViz = options.defaultComparisonViz;
     this.previousComparisonMode = "";
@@ -50,11 +51,14 @@ export default class ComparepanelControl extends M.Control {
       p.position = this.position;
     });
 
+
+    this.layersPlugins = this.transformToLayers(this.layers, options.map);
+
     options.mirrorpanelParams.defaultBaseLyrs = this.layers;
     options.mirrorpanelParams.lyrsMirrorMinZindex = this.lyrsMirrorMinZindex;
     options.timelineParams.intervals = this.baseLayers;         //e2m: TimeLine needs this.baseLayers with the time param
-    options.lyrcompareParams.layers = this.layers;
-    options.transparencyParams.layers = this.layers;
+    options.lyrcompareParams.layers = this.layersPlugins;
+    options.transparencyParams.layers = this.layersPlugins;
 
 
     // e2m: extraemos de las definiciones de capa los nombres de todas las capas
@@ -272,6 +276,99 @@ export default class ComparepanelControl extends M.Control {
     
   }
 
+   /**
+   * Transform StringLayers to Mapea M.Layer
+   * Entra tantas veces como mapas lienzo activos haya.
+   * @public
+   * @function
+   * @api stable
+   * @param {string}
+   * @return
+   */
+    transformToLayers(layers, map) {
+
+      const transform = layers.map((layer) => {
+        let newLayer = null;
+        if (!(layer instanceof Object)) {
+          if (layer.indexOf('*') >= 0) {
+            const urlLayer = layer.split('*');
+            if (urlLayer[0].toUpperCase() === 'WMS') {
+              newLayer = new M.layer.WMS({
+                url: urlLayer[2],
+                name: urlLayer[3],
+                legend: urlLayer[1],
+                useCapabilities: urlLayer[4] === 'true' || false
+              });
+  
+              if (map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
+                newLayer = map.getLayers().filter(l => newLayer.name.includes(l.name))[0];
+                newLayer.legend = urlLayer[1] || newLayer.name;
+              } else {
+                // this.map.addLayers(newLayer);
+              }
+            } else if (urlLayer[0].toUpperCase() === 'WMTS') {
+  
+              /*newLayer = new M.layer.WMTS({
+                url: urlLayer[2] + '?',
+                name: urlLayer[3],
+                legend: urlLayer[1],
+                matrixSet: urlLayer[4],
+                transparent: true,              // Es una capa Overlay -> zIndex > 0
+                displayInLayerSwitcher: false,  // No aparece en el TOC
+                queryable: false,               // No GetFeatureInfo
+                visibility: false,              // Visible a false por defecto
+                format: urlLayer[5],
+              }), this.map.addWMTS(newLayer);*/
+  
+              newLayer = new M.layer.WMTS({
+                url: urlLayer[2],
+                name: urlLayer[3],
+                legend: urlLayer[1],
+                matrixSet: urlLayer[4],
+                transparent: true,              // Es una capa Overlay -> zIndex > 0
+                displayInLayerSwitcher: false,  // No aparece en el TOC
+                queryable: false,               // No GetFeatureInfo
+                visibility: false,              // Visible a false por defecto
+                format: urlLayer[5],
+                useCapabilities: urlLayer[6] === 'true' || false
+              });
+              // this.map.addWMTS(newLayer);
+              //this.map.addLayers(newLayer);
+            }
+          } else {
+            const layerByName = map.getLayers().filter(l => layer.includes(l.name))[0];
+            newLayer = this.isValidLayer(layerByName) ? layerByName : null;
+          }
+        } else if (layer instanceof Object) {
+          const layerByObject = map.getLayers().filter(l => layer.name.includes(l.name))[0];
+          newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
+        }
+  
+        if (newLayer !== null) {
+          if (newLayer.getImpl().getOL3Layer() === null) {
+            setTimeout(() => {
+              if (newLayer.type === 'WMS' || newLayer.type === 'WMTS') {
+                newLayer.load = true;
+              } else if (newLayer.type === 'WMTS') {
+                newLayer.facadeLayer_.load = true;
+              }
+            }, 1000);
+          } else {
+            newLayer.load = true;
+          }
+  
+          newLayer.displayInLayerSwitcher = false;
+          newLayer.setVisible(false);
+          newLayer.setZIndex(this.lyrsMirrorMinZindex);/* Establezco un zIndex a partir del cual se cargan las capas*/
+          return newLayer;
+        } else {
+          this.layers.remove(layer);
+        }
+      }, this);
+  
+      return (transform[0] === undefined) ? [] : transform;
+    }
+
   /**
        * @public
        * @function
@@ -294,7 +391,7 @@ export default class ComparepanelControl extends M.Control {
     };
     this.lyrCoverture = new M.layer.GeoJSON(optionsLayer, { displayInLayerSwitcher: false });
 
-    this.map.addLayers(this.lyrCoverture);
+    // this.map.addLayers(this.lyrCoverture);
     this.lyrCoverture.displayInLayerSwitcher = false;
     this.lyrCoverture.setVisible(true);
     this.lyrCoverture.setStyle(estiloPoly);

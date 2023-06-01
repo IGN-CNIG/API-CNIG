@@ -9,16 +9,27 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a layer
- * with parameters specified by the user
+ * De esta clase heredadan todas las capas base.
+ * @property {string} type Tipo de la capa.
+ * @property {string} url URL del servicio.
+ * @property {string} name Nombre de la capa.
+ * @property {Boolean} transparent Falso si es una capa base, verdadero en caso contrario.
+ * @property {Array<Number>} userMaxExtent MaxExtent proporcionado por el usuario, la medida en que
+  * restringe la visualización a una región específica.
+ * @property {string} legend Indica el nombre que queremos que aparezca en el árbol
+ * de contenidos, si lo hay.
+ *
  * @api
+ * @extends {M.Base}
  */
 class LayerBase extends Base {
   /**
+   * Constructor principal de la clase. Crea una capa
+   * con parámetros especificados por el usuario.
    * @constructor
    * @extends {M.facade.Base}
-   * @param {string|Mx.parameters.Layer} userParameters parameters
-   * provided by the user
+   * @param {string|Mx.parameters.Layer} userParameters Parámetros proporcionados por el usuario.
+   * @param {Object} impl Implementación.
    * @api
    */
   constructor(userParameters, impl) {
@@ -29,128 +40,161 @@ class LayerBase extends Base {
     const parameter = parserParameter.layer(userParameters);
 
     /**
-     * @private
-     * @type {string}
-     * @expose
+     * Layer type: Tipo de la capa.
      */
     this.type = parameter.type;
 
     /**
-     * @private
-     * @type {string}
-     * @expose
+     * Layer url: URL del servicio.
      */
     this.url = parameter.url;
 
     /**
-     * @private
-     * @type {string}
-     * @expose
+     * Layer name: Nombre de la capa.
      */
     this.name = parameter.name;
 
     /**
-     * @private
-     * @type {string}
-     * @expose
+     * Layer transparent:
+     * Falso si es una capa base, verdadero en caso contrario.
      */
     this.transparent = parameter.transparent;
 
     /**
-     * @private
-     * @type {Array<number>}
-     * @expose
+     * Layer maxExtent_:
+     * La medida en que restringe la visualización a una región específica.
      */
     this.maxExtent_ = null;
 
     /**
-     * @private
-     * @type {number}
-     * @expose
+     * Layer zindex_: z-index de la capa.
      */
     this.zindex_ = null;
 
     /**
-     * @private
-     * @type {M.Map}
-     * @expose
+     * Layer map_: Mapa (M.map).
      */
     this.map_ = null;
 
     /**
-     * MaxExtent provided by the user
-     * @public
-     * @type {Array<Number>}
-     * @api
+     * Layer userMaxExtent:
+     * MaxExtent proporcionado por el usuario, la medida en que
+     * restringe la visualización a una región específica.
      */
     this.userMaxExtent = parameter.maxExtent;
 
     /**
-     * Legend
-     * @public
-     * @type {string}
-     * @api
+     * Layer Legend:
+     * Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
      */
     this.legend = parameter.legend;
 
     /**
-     * @private
-     * @type {number}
-     * @expose
+     * Zoom mínimo aplicable a la capa.
      */
     this.minZoom = parameter.minZoom || Number.NEGATIVE_INFINITY;
 
     /**
-     * @private
-     * @type {number}
-     * @expose
+     * Zoom máximo aplicable a la capa.
      */
     this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
   }
 
   /**
-   *'legend' non - identifying name of layer
+   * Devuelve la leyenda de la capa.
+   * Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * @function
+   * @public
+   * @returns {M.layer.impl.legend} Leyenda.
+   * @api
    */
-
   getLegend() {
     return this.getImpl().legend;
   }
 
+  /**
+   * Sobrescribe la leyenda de la capa.
+   * Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * @function
+   * @public
+   * @param {String} newLegend Nueva leyenda.
+   * @api
+   */
   setLegend(newLegend) {
     this.legend = newLegend;
     this.getImpl().legend = newLegend;
   }
 
   /**
-   * 'url' The service URL of the
-   * layer
+   * Devuelve la url del servicio.
+   *
+   * @function
+   * @getter
+   * @public
+   * @returns {M.layer.impl.url} URL del servicio.
+   * @api
    */
   get url() {
     return this.getImpl().url;
   }
 
+  /**
+   * Modifica la url del servicio.
+   * @function
+   * @setter
+   * @public
+   * @param {String} newUrl Nueva URL.
+   * @api
+   */
   set url(newUrl) {
     this.getImpl().url = newUrl;
   }
 
+
   /**
-   * 'name' the layer name
+   * Nombre de la capa.
+   * @function
+   * @getter
+   * @public
+   * @returns {M.layer.impl.name}
+   * @api
    */
   get name() {
     return this.getImpl().name;
   }
 
+  /**
+   * Sobrescribe el nombre de la capa.
+   * @function
+   * @setter
+   * @public
+   * @param {String} newName Nuevo nombre de la capa.
+   * @api
+   */
   set name(newName) {
     this.getImpl().name = newName;
   }
 
   /**
-   * 'transparent' the layer transparence
+   * Devuelve el valor de la propiedad "transparent" de la capa.
+   * @function
+   * @getter
+   * @public
+   * @returns {M.layer.impl.transparent} Valor de la propiedad "transparent".
+   * @api
    */
   get transparent() {
     return this.getImpl().transparent;
   }
 
+  /**
+   * Sobrescribe el valor de la propiedad "transparent".
+   * @function
+   * @setter
+   * @public
+   * @param {Boolean} newTransparent  Nuevo valor para la propiedad "transparent".
+   * @api
+   */
   set transparent(newTransparent) {
     if (!isNullOrEmpty(newTransparent)) {
       if (isString(newTransparent)) {
@@ -164,12 +208,27 @@ class LayerBase extends Base {
   }
 
   /**
-   * 'displayInLayerSwitcher' the layer transparence
+   * Devuelve verdadero si la capa estará en el "DisplayInLayerSwitcher".
+   * @function
+   * @getter
+   * @public
+   * @returns {M.layer.impl.displayInLayerSwitcher} Verdadero si esta en el
+   * "DisplayInLayerSwitcher", falso si no.
+   * @api
    */
   get displayInLayerSwitcher() {
     return this.getImpl().displayInLayerSwitcher;
   }
 
+  /**
+   * Sobrescribe la propiedad "displayInLayerSwitcher" de la capa.
+   * @function
+   * @setter
+   * @public
+   * @param {Boolean} newDisplayInLayerSwitcher Verdadero si esta en el
+   * "DisplayInLayerSwitcher", falso si no.
+   * @api
+   */
   set displayInLayerSwitcher(newDisplayInLayerSwitcher) {
     if (!isNullOrEmpty(newDisplayInLayerSwitcher)) {
       if (isString(newDisplayInLayerSwitcher)) {
@@ -183,12 +242,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This method calculates the maxExtent of this layer:
-   * 1. Check if the user specified a maxExtent parameter
-   * 2. Gets the map maxExtent
-   * 3. Sets the maxExtent from the map projection
+   * Este método calcula la extensión máxima de esta capa.
    *
    * @function
+   * @returns {M.layer.maxExtent} Devuelve la extensión máxima de esta capa.
    * @api
    */
   getMaxExtent() {
@@ -203,13 +260,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This method calculates the maxExtent of this layer:
-   * 1. Check if the user specified a maxExtent parameter
-   * 2. Gets the map maxExtent
-   * 3. Sets the maxExtent from the map projection
-   * Async version of getMaxExtent
+   * Este método calcula la extensión máxima de esta capa.
    *
    * @function
+   * @returns {M.layer.maxExtent} Devuelve una promesa, con la extensión máxima de esta capa.
    * @api
    */
   calculateMaxExtent() {
@@ -217,9 +271,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function changes the layer max extent
+   * Este método cambia la extensión máxima de la capa.
    *
    * @function
+   * @param {String} maxExtent Nuevo valor para el "MaxExtent".
    * @api
    * @export
    */
@@ -243,7 +298,7 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function resets the maximum extent of the layer.
+   * Este método restablece la extensión máxima de la capa.
    * @function
    * @api
    */
@@ -257,10 +312,11 @@ class LayerBase extends Base {
   }
 
   /**
-   * The facade map instace
+   * La instancia del mapa de la fachada.
    *
    * @function
    * @public
+   * @param {M.map} map Instancia del mapa creado con la fachada.
    * @api
    * @export
    */
@@ -269,9 +325,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * 'LayerGroup' the layer transparence
+   * Devuelve el "layerGroup".
    *
    * @function
+   * @returns {M.layer.impl.layerGroup} Valor del "layerGroup" (grupo de capas).
    * @api stable
    * @expose
    */
@@ -280,9 +337,11 @@ class LayerBase extends Base {
   }
 
   /**
-   * Defining new LayerGroup
+   * Sobrescribe el "layerGroup" (grupo de capas) de la implementación.
    *
    * @function
+   * @param {M.layer.layerGroup} layerGroup Nuevo valor para la propiedad
+   * "layerGroup" (grupo de capas).
    * @api stable
    * @expose
    */
@@ -292,9 +351,10 @@ class LayerBase extends Base {
 
 
   /**
-   * This function indicates if the layer is visible
+   * Este método indica si la capa es visible.
    *
    * @function
+   * @return {Boolean} Devuelve si la capa es visible o no.
    * @api
    * @export
    */
@@ -308,9 +368,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function indicates if the layer is visible
+   * Este método indica si la capa es consultable.
    *
    * @function
+   * @return {Boolean} Devuelve si la capa es consultable.
    * @api
    * @export
    */
@@ -324,9 +385,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método Sobrescribe la propiedad "visibility" de la capa.
    *
    * @function
+   * @param {Boolean} visibilityParam Verdadero visible, falso no visible.
    * @api
    * @export
    */
@@ -353,9 +415,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function indicates if the layer is in range
+   * Este método indica si la capa está dentro del rango.
    *
    * @function
+   * @returns {M.layer.impl.inRange} Devuelve si la capa está dentro del rango.
    * @api
    * @export
    */
@@ -369,10 +432,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Devuelve la URL de la leyenda.
    *
    * @function
+   * @returns {M.layer.impl.getLegendURL} URL de la leyenda.
    * @api
    */
   getLegendURL() {
@@ -380,10 +443,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Sobrescribe la url de la leyenda.
    *
    * @function
+   * @param {String} legendUrlParam Nueva URL.
    * @api
    */
   setLegendURL(legendUrlParam) {
@@ -395,9 +458,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function gets the z-index of this layer
+   * Este método obtiene el índice z de esta capa.
    *
    * @function
+   * @returns {Number} Devuelve el z-index.
    * @api
    */
   getZIndex() {
@@ -405,9 +469,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function sets the z-index for this layer
+   * Este método establece el z-index para esta capa.
    *
    * @function
+   * @param {Number} zIndex Nuevo z-index.
    * @api
    */
   setZIndex(zIndex) {
@@ -416,9 +481,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function gets the z-index of this layer
+   * Este método devuelve el mínimo zoom aplicable a la capa.
    *
    * @function
+   * @returns {Number} Zoom mínimo.
    * @api
    */
   getMinZoom() {
@@ -426,9 +492,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function sets the z-index for this layer
+   * Este método Sobrescribe el mínimo zoom aplicable a la capa.
    *
    * @function
+   * @param {Number} zoom Nuevo zoom mínimo.
    * @api
    */
   setMinZoom(zoom) {
@@ -437,9 +504,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function gets the z-index of this layer
+   * Este método devuelve el zoom máximo aplicable a la capa.
    *
    * @function
+   * @return {Number} Nuevo zoom.
    * @api
    */
   getMaxZoom() {
@@ -447,9 +515,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function sets the z-index for this layer
+   * Este método Sobrescribe el zoom máximo aplicable a la capa.
    *
    * @function
+   * @param {Number} zoom Nuevo zoom.
    * @api
    */
   setMaxZoom(zoom) {
@@ -458,9 +527,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function gets the opacity of this layer
+   * Este método obtiene la opacidad de esta capa.
    *
    * @function
+   * @returns {Number} Opacidad de la capa.
    * @api
    */
   getOpacity() {
@@ -468,9 +538,10 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function sets the opacity of this layer
+   * Sobrescribe la opacidad de la capa.
    *
    * @function
+   * @param {Number} opacity Opacidad de la capa.
    * @api
    */
   setOpacity(opacity) {
@@ -478,8 +549,7 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function refreshes the state of this
-   * layer
+   * Este método actualiza el estado de este capa.
    *
    * @function
    * @api
@@ -493,10 +563,12 @@ class LayerBase extends Base {
   }
 
   /**
-   * This function auto-generates a name for this layer
-   * @private
+   * Este método genera automáticamente un nombre para esta capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
    * @export
+   * @api
    */
   generateName_() {
     this.name = generateRandom('layer_', '_'.concat(this.type));
@@ -504,18 +576,18 @@ class LayerBase extends Base {
 }
 
 /**
- * Image PNG for legend default
+ * Imagen PNG para la leyenda predeterminada.
  * @const
- * @type {string}
+ * @type {String}
  * @public
  * @api
  */
 LayerBase.LEGEND_DEFAULT = '/img/legend-default.png';
 
 /**
- * Image PNG for legend default
+ * Imagen de error PNG para la leyenda predeterminada.
  * @const
- * @type {string}
+ * @type {String}
  * @public
  * @api
  */

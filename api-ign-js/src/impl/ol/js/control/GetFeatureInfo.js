@@ -15,15 +15,20 @@ import Control from './Control';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a GetFeatureInfo
- * control
+ * Agrega la herramienta de consulta de información de capas WMS y WMTS.
+ * @property {Array} userFormats Formato de respuesta.
+ * @property {Number} buffer  Área de influencia, valor por defecto 5.
  * @api
  */
 class GetFeatureInfo extends Control {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @param {string} format - Format response
-   * @param {Object} options - Control options
+   * @param {Boolean} activated Activa o no el control.
+   * @param {Object} options Opciones del control.
+   * - featureCount. Número de objetos geográficos, por defecto 10.
+   * - buffer. Configuración del área de influencia, por defecto 5.
    * @extends {M.impl.Control}
    * @api stable
    */
@@ -31,8 +36,7 @@ class GetFeatureInfo extends Control {
     super();
 
     /**
-     * Formats response
-     * @public
+     * Formato de respuesta.
      * @type {array<string>}
      * @api
      */
@@ -44,10 +48,7 @@ class GetFeatureInfo extends Control {
     }
 
     /**
-     * Buffer
-     * @public
-     * @type {Integer}
-     * @api stable
+     * Área de influencia.
      */
     this.buffer = options.buffer || 5;
     this.element = document.createElement('div');
@@ -56,12 +57,12 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This function adds the control to the specified map
+   * Este método añade el control al mapa.
    *
    * @public
    * @function
-   * @param {M.Map} map to add the plugin
-   * @param {function} template template of this control
+   * @param {M.Map} map Mapa.
+   * @param {function} template Plantilla del control.
    * @api stable
    * @export
    */
@@ -76,20 +77,23 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This function remove the event singleclick to the specified map
+   * Este método elimina el evento con un solo clic en el mapa especificado.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @public
    * @function
+   * @api stable
    */
   deleteOnClickEvent_() {
     unByKey(this.clickEventKey_);
   }
 
   /**
-   * This function adds the event singleclick to the specified map
-   *
-   * @private
+   * Este método agrega el evento "singleclick" al mapa especificado.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api stable
    */
   addOnClickEvent_() {
     const olMap = this.facadeMap_.getMapImpl();
@@ -99,11 +103,13 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This function builds the query URL and show results
-   *
-   * @private
+   * Este método crea la URL de consulta y muestra los resultados.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param {ol.MapBrowserPointerEvent} evt - Browser point event
+   * @param {ol.MapBrowserPointerEvent} evt Evento de punto del navegador.
+   * @param {M.dialog} dialogParam Dialogo.
+   * @api stable
    */
   buildUrl_(dialogParam, evt) {
     this.evt = evt;
@@ -121,8 +127,10 @@ class GetFeatureInfo extends Control {
   }
 
   /**
+   * Devuelve un objeto con la leyenda o el nombre de la capa y la url.
    * @function
    * @public
+   * @returns {Object} Objeto con la leyenda o el nombre de la capa y la url.
    * @api
    */
   buildWMSInfoURL(wmsLayers) {
@@ -154,8 +162,10 @@ class GetFeatureInfo extends Control {
   }
 
   /**
+   * Devuelve un objeto con la leyenda o el nombre de la capa y la url.
    * @function
    * @public
+   * @returns {Object} Objeto con la leyenda o el nombre de la capa y la url.
    * @api
    */
   buildWMTSInfoURL(wmtsLayers) {
@@ -173,13 +183,14 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This function specifies whether the information is valid
-   *
-   * @param {string} info - Information to validate
-   * @param {string} formato - Specific format to validate
-   * @returns {boolean} res - Is valid or not format
-   * @private
+   * Este método especifica si la información es válida.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {string} info Información.
+   * @param {string} formato Formato.
+   * @returns {boolean} Verdadero si la información es válida.
+   * @public
    * @function
+   * @api stable
    */
   static insert(info, formato) {
     let res = false;
@@ -246,14 +257,15 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This function formats the response
-   *
-   * @param {string} info - Information to formatting
-   * @param {string} formato - Specific format
-   * @param {string} layername - Layer name
-   * @returns {string} information - Formatted information
-   * @private
+   * Este método formatea la respuesta.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {string} info Información para formatear
+   * @param {string} formato Formato específico.
+   * @param {string} layername Nombre de la capa.
+   * @returns {string} Información formateada.
+   * @public
    * @function
+   * @api stable
    */
   formatInfo(info, formato, layerName) {
     let formatedInfo = null;
@@ -297,13 +309,15 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This function indicates whether the format is accepted by the layer - Specific format text/html
+   * Este método indica si el formato es aceptado por la capa - Formato específico text/html.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @param {string} info - Response to consult layer
-   * @param {string} formato - Specific format
-   * @returns {boolean} unsupported - It indicates whether the format is accepted
-   * @private
+   * @param {string} info Información para formatear.
+   * @param {string} formato Formato específico.
+   * @returns {boolean} Indica si el formato es aceptado por la capa.
+   * @public
    * @function
+   * @api stable
    */
   static unsupportedFormat(info, formato) {
     let unsupported = false;
@@ -314,13 +328,15 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This function return formatted information. Specific Geoserver
+   * Esta función devuelve información formateada. Geoservidor específico.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @public
    * @function
-   * @param {string} info - Information to formatting
-   * @param {string} layername - Layer name
-   * @returns {string} html - Information formated
+   * @param {string} info Información para formatear.
+   * @param {string} layername Nombre de la capa.
+   * @returns {string} Información formateada.
+   * @api stable
    */
   txtToHtmlGeoserver(info, layerName) {
     // get layer name from the header
@@ -371,12 +387,13 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This function return formatted information. Specific Mapserver
-   *
-   * @private
+   * Esta función devuelve información formateada. Servidor de mapas específico.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param {string} info - Information to formatting
-   * @returns {string} html - Information formated
+   * @param {string} info Información para formatear.
+   * @returns {string} Información formateada.
+   * @api
    */
   txtToHtmlMapserver(info) {
     let infoVar = info;
@@ -442,14 +459,14 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This function displays information in a popup
-   *
-   * @private
+   * Este método muestra información en una ventana emergente.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param {array<object>} layerNamesUrls - Consulted layers
-   * @param {array} coordinate - Coordinate position onClick
-   * @param {olMap} olMap - Map
-
+   * @param {array<object>} layerNamesUrls Capas consultadas
+   * @param {array} coordinate Posición de las coordenadas al hacer clic.
+   * @param {olMap} olMap Mapa.
+   * @api
    */
   showInfoFromURL_(layerNamesUrls, coordinate, olMap) {
     const htmlAsText = compileTemplate(getfeatureinfoPopupTemplate, {
@@ -545,8 +562,12 @@ class GetFeatureInfo extends Control {
   }
 
   /**
-   * This functions handle the close/open beahaviour of the sections feature info
+   * Este método manejan el comportamiento de cierre/apertura de las secciones.
+   *
+   * @public
    * @function
+   * @param {Event} e Evento.
+   * @api
    */
   toogleSection(e) {
     const { target } = e;
@@ -569,7 +590,7 @@ class GetFeatureInfo extends Control {
 }
 
 /**
- * Loading message
+ * Cargando mensaje.
  * @const
  * @type {string}
  * @public
@@ -579,7 +600,7 @@ GetFeatureInfo.LOADING_MESSAGE = 'Obteniendo información...';
 
 
 /**
- * Title for the popup
+ * Título para la ventana emergente.
  * @const
  * @type {string}
  * @public
@@ -588,7 +609,7 @@ GetFeatureInfo.LOADING_MESSAGE = 'Obteniendo información...';
 GetFeatureInfo.POPUP_TITLE = getValue('getfeatureinfo').info;
 
 /**
- * Regular expressions of GetFeatureInfo
+ * Expresiones regulares de GetFeatureInfo.
  * @type {object}
  * @public
  * @api

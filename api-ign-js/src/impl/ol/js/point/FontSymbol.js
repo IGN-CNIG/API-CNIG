@@ -1,13 +1,33 @@
+/**
+ * @module M/impl/point/FontSymbol
+ */
+
+
 import OLFontSymbol from '../ext/OLStyleFontSymbol';
 
-export default class FontSymbol extends OLFontSymbol {
+class FontSymbol extends OLFontSymbol {
   /**
    * @classdesc
-   * chart style for vector features
+   * Estilo gráfico para objetos geográficos vectoriales.
+   * @extends {ol.style.FontSymbol}
    *
    * @constructor
-   * @param {object} options - Options style PointFontSymbol
-   * @extends {ol.style.FontSymbol}
+   * @param {object} options Opciones de estilo.
+   * - glyph: Símbolo.
+   * - color: Color.
+   * - fontSize: Tamaño de fuente.
+   * - stroke: Borde.
+   * - fill: Relleno.
+   * - radius: Radio.
+   * - form: Forma.
+   * - gradient: Gradiente.
+   * - offsetX: Desplazamiento en x.
+   * - offsetY: Desplazamiento en y.
+   * - opacity: Opacidad.
+   * - rotation: Rotación.
+   * - rotateWithView: Rotación con la vista.
+   *
+   * @api stable
    */
   constructor(options = {}) {
     // super call
@@ -35,3 +55,5 @@ export default class FontSymbol extends OLFontSymbol {
     });
   }
 }
+
+export default FontSymbol;

@@ -33,6 +33,7 @@ export default class ZoomExtentControl extends M.Control {
    * @api
    */
   createView(map) {
+    M.toast.warning(getValue('exception.zoomextent_obsolete'));
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {

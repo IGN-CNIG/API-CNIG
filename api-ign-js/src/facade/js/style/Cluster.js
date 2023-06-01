@@ -8,16 +8,36 @@ import { extendsObj, isNullOrEmpty, stringifyFunctions, defineFunctionFromString
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a style cluster
- * with parameters specified by the user
+ * Crea un grupo de estilo
+ * con parámetros especificados por el usuario.
  * @api
+ * @extends {M.style.Composite}
  */
 class Cluster extends Composite {
   /**
+   * Constructor principal de la clase.
    * @constructor
    * @extends {M.Style}
-   * @param {object} options - parameters for style cluster
-   * @param {object} optsVendor - specified parameters for cluster depends on its implementation
+   * @param {object} options Parámetros de los estilos del "cluster".
+   * - ranges: Matriz de objetos con el valor mínimo, el máximo y un M.style.Point.
+   * - animated: Indica si se quiere animación o no al desplegar
+   * el "cluster".
+   * - hoverInteraction: Indica si se quiere mostrar el polígono que
+   * engloba los elementos al situarse sobre el "cluster".
+   * - selectInteraction: Indica si se quiere que al pinchar en un "cluster"
+   * se abra el abanico de puntos o no, por defecto verdadero.
+   * - displayAmount: Indica si se muestra el número de elementos
+   * que componen el "cluster".
+   * - maxFeaturesToSelect: Número máximo de elementos agrupados a partir de los cuales,
+   * al hacer click, se hará zoom en lugar de desplegar el "cluster".
+   * - distance: Distancia (en píxeles) de agrupación de elementos.
+   * - label: Estilo opcional de la etiqueta de número de elementos de
+   * todos los rangos, si se muestra.
+   * @param {object} optsVendor Opciones que se pasarán a la librería base.
+   * - animationDuration: Duración de la animación.
+   * - animationMethod: Método que realiza la animación.
+   * - distanceSelectFeatures: Distancia de selección de los objetos geográficos.
+   * - convexHullStyle: Estilo de casco convexo.
    * @api
    */
   constructor(options = {}, optsVendor = {}) {
@@ -43,7 +63,10 @@ class Cluster extends Composite {
   }
 
   /**
-   *
+   * Añade los estilos "cluster" a la capa.
+   * @public
+   * @param {M.layer} layer Capa.
+   * @function
    * @api
    */
   apply(layer) {
@@ -53,14 +76,22 @@ class Cluster extends Composite {
   }
 
   /**
-   * @inheritDoc
+   * Quita los estilos de la capa utilizando el método heredado.
+   * @public
+   * @param {M.layer} layer Capa.
+   * @function
+   * @api
    */
   unapplySoft(layer) {
     this.getImpl().unapply();
   }
 
   /**
-   * @inheritDoc
+   * Añade los estilos utilizando el método heredado.
+   * @public
+   * @param {Object} styles Estilos.
+   * @function
+   * @api
    */
   add(styles) {
     if (!isNullOrEmpty(this.layer_)) {
@@ -70,11 +101,11 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function apply style to specified layer
+   * Aplica los estilos a la capas internas.
    *
    * @function
    * @public
-   * @param {M.layer.Vector} layer - Layer to apply the style
+   * @param {M.layer.Vector} layer Capas.
    * @api
    */
   applyInternal(layer) {
@@ -84,10 +115,10 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function gets the old style of layer
+   * Devuelve los estilos antiguos.
    * @function
    * @public
-   * @return {M.Style} the old style of layer
+   * @return {M.Style} Estilos.
    * @api
    */
   getOldStyle() {
@@ -95,11 +126,11 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function return a set of ranges defined by user
+   * Devuelve el rango.
    *
    * @function
    * @public
-   * @return {Array<Object>} ranges stablished by user
+   * @return {Array<Object>} Rango.
    * @api
    */
   getRanges() {
@@ -107,10 +138,10 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function returns the options of style cluster
+   * Devuelve las optiones del "cluster".
    * @function
    * @public
-   * @return {object} options of style cluster
+   * @return {object} Optiones del "cluster".
    * @api
    */
   getOptions() {
@@ -118,12 +149,12 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function update a set of ranges  defined by user
+   * Modifica el rango.
    *
    * @function
    * @public
-   * @param {Array<Object>} newRanges as new Ranges
-   * @return {Cluster}
+   * @param {Array<Object>} newRanges Nuevo rango.
+   * @return {Cluster} Devuelve "this" (objeto de la clase).
    * @api
    */
   setRanges(newRanges) {
@@ -134,13 +165,13 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function return a specified range
+   * Este método devuelve el rango.
    *
    * @function
    * @public
-   * @param {number} min as minimal value in the interval
-   * @param {number} max as max value in the interval
-   * @return {Object}
+   * @param {number} min Valor mínimo del intervalo.
+   * @param {number} max Valor máximo del intervalo.
+   * @return {Object} Devuelve el rango.
    * @api
    */
   getRange(min, max) {
@@ -148,14 +179,14 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function set a specified range
+   * Este método actualiza el rango.
    *
    * @function
    * @public
-   * @param {number} min as range minimal value to be overwritten
-   * @param {number} max as range max value to be overwritten
-   * @param {number} newRange as the new range
-   * @return {Cluster}
+   * @param {number} min Valor mínimo del intervalo.
+   * @param {number} max Valor máximo del intervalo.
+   * @param {number} newRange Nuevo rango.
+   * @return {Cluster} Devuelve "this" (objeto de la clase).
    * @api
    */
   updateRange(min, max, newRange) {
@@ -166,11 +197,11 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function set if layer must be animated
+   * Este método añade la animación.
    *
    * @function
    * @public
-   * @param {boolean} animated defining if layer must be animated
+   * @param {boolean} animated Define si tendrá animación.
    * @return {Cluster}
    * @api
    */
@@ -179,11 +210,11 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function return if layer is animated
+   * Define si es posible la animación.
    *
    * @function
    * @public
-   * @return {boolean} A flag indicating if layer is currently being animated
+   * @return {boolean} Define si es posible la animación.
    * @api
    */
   isAnimated() {
@@ -191,11 +222,11 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function returns data url to canvas
+   * Este método transforma un "canvas" a base64.
    *
    * @function
    * @protected
-   * @return {String} data url to canvas
+   * @return {String} Base64.
    */
   toImage() {
     let base64Img;
@@ -208,12 +239,10 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function updates the style of the
-   * layer
+   * Este método actualiza los estilos de la capa.
    *
    * @public
    * @function
-   * @return {String} data url to canvas
    * @api
    */
   refresh() {
@@ -226,7 +255,7 @@ class Cluster extends Composite {
   }
 
   /**
-   * This constant defines the order of style.
+   * Define el orden del estilo, 4.
    * @constant
    * @public
    * @api
@@ -236,7 +265,7 @@ class Cluster extends Composite {
   }
 
   /**
-   * Add selected interaction and layer to see the features of cluster
+   * Agregue la interacción y la capa seleccionadas para ver las características del clúster.
    *
    * @public
    * @function
@@ -247,7 +276,7 @@ class Cluster extends Composite {
   }
 
   /**
-   * Remove selected interaction and layer to see the features of cluster
+   * Eliminar la interacción y la capa seleccionadas para ver las características del clúster.
    *
    * @public
    * @function
@@ -258,11 +287,11 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function implements the mechanism to
-   * generate the JSON of this instance
+   * Esta función implementa el mecanismo para
+   * generar el JSON de esta instancia.
    *
    * @public
-   * @return {object}
+   * @return {object} Devuelve parámetros y el método para deserializar.
    * @function
    * @api
    */
@@ -284,12 +313,12 @@ class Cluster extends Composite {
   }
 
   /**
-   * This function returns the style instance of the serialization
+   * Esta método de la clase devuelve la instancia de estilo de la serialización.
    * @function
    * @public
-   * @param {Array} parametrers - parameters to deserialize and create
-   * the instance
-   * @return {M.style.Cluster}
+   * @param {Array} parametrers Parámetros para deserializar
+   * ("serializedOptions", "serializedVendor", "serializedCompStyles").
+   * @return {M.style.Cluster} Devuelve el estilo del "cluster" deserializado.
    */
   static deserialize([serializedOptions, serializedVendor, serializedCompStyles]) {
     let options = serializedOptions;
@@ -313,7 +342,7 @@ class Cluster extends Composite {
 }
 
 /**
- * Default options for this style
+ * Estilos por defecto del "cluster".
  * @const
  * @type {object}
  * @public
@@ -344,7 +373,7 @@ Cluster.DEFAULT = {
 };
 
 /**
- * Default options for this style
+ * Estilos por defecto del "vendor".
  * @const
  * @type {object}
  * @public
@@ -367,7 +396,7 @@ Cluster.DEFAULT_VENDOR = {
 };
 
 /**
- * Default options for range 1 style
+ * Estilo por defecto del rango 1.
  * @const
  * @type {object}
  * @public
@@ -385,7 +414,7 @@ Cluster.RANGE_1_DEFAULT = {
 };
 
 /**
- * Default options for range 2 style
+ * Estilo por defecto del rango 2.
  * @const
  * @type {object}
  * @public
@@ -403,7 +432,7 @@ Cluster.RANGE_2_DEFAULT = {
 };
 
 /**
- * Default options for range 3 style
+ * Estilo por defecto del rango 3.
  * @const
  * @type {object}
  * @public

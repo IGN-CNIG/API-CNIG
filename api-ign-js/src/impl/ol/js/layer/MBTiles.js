@@ -2,49 +2,99 @@
  * @module M/impl/layer/MBTiles
  */
 import { isNullOrEmpty } from 'M/util/Utils';
-import { get as getProj } from 'ol/proj';
+import { get as getProj, transformExtent } from 'ol/proj';
 import OLLayerTile from 'ol/layer/Tile';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import { getBottomLeft, getWidth } from 'ol/extent';
-import MBTilesSource from '../source/MBTiles';
+import { XYZ } from 'ol/source';
+import { getValue } from 'M/i18n/language';
 import ImplMap from '../Map';
 import Layer from './Layer';
-import TileProvider from '../../../../facade/js/provider/Tile';
+import TileProvider, { DEFAULT_WHITE_TILE } from '../../../../facade/js/provider/Tile';
 
 /**
- * Default tile size of MBTiles
+ * Tamaño de la tesela de MBTiles por defecto.
+ *
  * @const
- * @private
+ * @public
  * @type {number}
  */
 const DEFAULT_TILE_SIZE = 256;
+
 /**
+ * Este método calcula las resoluciones a partir de los
+ * parámetros especificados.
+ *
  * @function
- * @private
+ * @param {Mx.Extent} extent Extensión.
+ * @param {number} tileSize Tamaño de la tesela vectorial.
+ * @param { Number } maxZoomLevel Nivel máximo de zoom.
+ * @returns {Array<Number>} Resoluciones obtenidas.
+ * @public
+ * @api
  */
-const generateResolutions = (extent, tileSize, zoomLevels) => {
+const generateResolutions = (extent, tileSize, maxZoomLevel) => {
   const width = getWidth(extent);
   const size = width / tileSize;
-  const resolutions = new Array(zoomLevels);
-  for (let z = 0; z < zoomLevels; z += 1) {
+  const resolutions = new Array(maxZoomLevel + 1);
+  for (let z = 0; z < maxZoomLevel + 1; z += 1) {
     resolutions[z] = size / (2 ** z);
   }
   return resolutions;
 };
+
 /**
  * @classdesc
+ * Implementación de la capa MBTiles.
+ *
+ * @property {function} tileLoadFunction_ Función de carga de la tesela vectorial.
+ * @property {string} url_ URL del fichero o servicio que genera el MBTiles.
+ * @property {ArrayBuffer|Uint8Array|Response|File} source_ Fuente de la capa.
+ * @property {Mx.Extent} maxExtent_ La medida en que restringe la visualización
+ * a una región específica.
+ * @property {number} maxZoomLevel_ Zoom máximo aplicable a la capa.
+ * @property {number} opacity_ Opacidad de capa.
+ * @property {number} zIndex_ zIndex de la capa.
+ * @property {boolean} visibility Define si la capa es visible o no.
+ *
  * @api
+ * @extends {M.impl.Layer}
  */
 class MBTiles extends Layer {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a MBTiles implementation layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa de implementación MBTiles
+   * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @implements {M.impl.Layer}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {String|Mx.parameters.MBTiles} userParameters Parámetros para
+   * la construcción de la capa.
+   * - name: Nombre de la capa en la leyenda.
+   * - url: Url del fichero o servicio que genera el MBTiles.
+   * - type: Tipo de la capa.
+   * - maxZoomLevel: Zoom máximo aplicable a la capa.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
+   * - tileLoadFunction: Función de carga de la tesela proporcionada por el usuario.
+   * - source: Fuente de la capa.
+   * - tileSize: Tamaño de la tesela, por defecto 256.
+   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLTileGrid from 'ol/tilegrid/TileGrid';
+   * import MBTilesSource from 'M/source/MBTiles';
+   * {
+   *  source: new MBTilesSource({
+   *    tileGrid: new OLTileGrid({
+   *      extent: ...,
+   *      ...
+   *    })
+   *  })
+   * }
+   * </code></pre>
    * @api
    */
   constructor(userParameters, options = {}, vendorOptions) {
@@ -52,188 +102,307 @@ class MBTiles extends Layer {
     super(options, vendorOptions);
 
     /**
-     * User tile load function
-     * @private
-     * @type {function}
+     * MBTiles tileLoadFunction: Función de carga de la tesela proporcionada por el usuario.
      */
-    this.tileLoadFunction_ = userParameters.tileLoadFunction || null;
+    this.tileLoadFunction = userParameters.tileLoadFunction || null;
 
     /**
-     * MBTiles url
-     * @private
-     * @type {string}
+     * MBTiles url: Url del fichero o servicio que genera el MBTiles.
      */
     this.url_ = userParameters.url;
 
     /**
-     * MBTiles source
-     * @type {ArrayBuffer|Uint8Array|Response|File}
+     * MBTiles source: Fuente de la capa.
      */
     this.source_ = userParameters.source;
 
     /**
-     * Tile size (default value 256)
-     * @private
-     * @type {number}
-     */
-    this.tileSize_ = typeof userParameters.tileSize === 'number' ? userParameters.tileSize : DEFAULT_TILE_SIZE;
-
-    /**
-     * Layer extent
-     * @private
-     * @type {Mx.Extent}
+     * MBTiles maxExtent: Máxima extensión de la capa.
      */
     this.maxExtent_ = userParameters.maxExtent || null;
 
     /**
-     * Min zoom level
-     * @private
-     * @type {number}
+     * MBTiles opacity: Opacidad de la capa.
      */
-    this.minZoomLevel_ = typeof userParameters.minZoomLevel === 'number' ? userParameters.minZoomLevel : 0;
+    this.opacity_ = typeof userParameters.opacity === 'number' ? userParameters.opacity : 1;
 
     /**
-     * Max zoom level
-     * @private
-     * @type {number}
+     * MBTiles Z-index: zIndex de la capa.
      */
-    this.maxZoomLevel_ = typeof userParameters.maxZoomLevel === 'number' ? userParameters.maxZoomLevel : 0;
-
-    /**
-     * Layer opacity
-     * @private
-     * @type {number}
-     */
-    this.opacity_ = typeof options.opacity === 'number' ? options.opacity : 1;
     this.zIndex_ = ImplMap.Z_INDEX.MBTiles;
+
+    /**
+     * MBTiles maxZoomLevel: Zoom máximo aplicable a la capa.
+     */
+    this.maxZoomLevel_ = userParameters.maxZoomLevel || null;
+
+    /**
+     * MBTiles visibility: Visibilidad de la capa.
+     */
     this.visibility = userParameters.visibility === false ? userParameters.visibility : true;
   }
+
   /**
-   * This function sets the visibility of this layer
+   * Este método establece la visibilidad de la capa.
    *
    * @function
+   * @param {boolean} visibility Verdadero para capa visible, falso no lo es.
+   * @public
    * @api
    */
   setVisible(visibility) {
     this.visibility = visibility;
+    // if this layer is base then it hides all base layers
+    if ((visibility === true) && (this.transparent !== true)) {
+      // hides all base layers
+      this.map.getBaseLayers().forEach((layer) => {
+        if (!layer.equals(this.facadeLayer_) && layer.isVisible()) {
+          layer.setVisible(false);
+        }
+      });
+
+      // set this layer visible
+      if (!isNullOrEmpty(this.ol3Layer)) {
+        this.ol3Layer.setVisible(visibility);
+      }
+
+      // updates resolutions and keep the bbox
+      this.map.getImpl().updateResolutionsFromBaseLayer();
+    } else if (!isNullOrEmpty(this.ol3Layer)) {
+      this.ol3Layer.setVisible(visibility);
+    }
   }
+
   /**
-   * This function sets the map object of the layer
+   * Este método devuelve la extensión de la capa.
    *
-   * @public
    * @function
+   * @return {Promise<array<number>>} Extensión de la capa.
+   * @public
+   * @api
+   */
+  getExtentFromProvider() {
+    return new Promise((resolve) => {
+      this.fetchSource().then((tileProvider) => {
+        tileProvider.getExtent().then((extent) => {
+          const { code } = this.map.getProjection();
+          let reprojectedExtent;
+          if (extent) {
+            reprojectedExtent = transformExtent(extent, 'EPSG:4326', code);
+          }
+          resolve(reprojectedExtent);
+        });
+      });
+    });
+  }
+
+  /**
+   * Este método devuelve el nivel máximo de zoom.
+   *
+   * @function
+   * @return {Number} Nivel máximo de zoom.
+   * @public
+   * @api
+   */
+  getMaxZoomLevel() {
+    return this.maxZoomLevel_;
+  }
+
+  /**
+   * Este método establece el objeto de mapa de la capa.
+   *
+   * @function
+   * @public
+   * @param {M.Map} map Mapa.
    * @api
    */
   addTo(map) {
     this.map = map;
-    const projection = getProj('EPSG:3857');
+    const { code } = this.map.getProjection();
+    const projection = getProj(code);
     const extent = projection.getExtent();
-    const resolutions = generateResolutions(extent, this.tileSize_, 16);
 
-    this.ol3Layer = new OLLayerTile({
-      visible: this.visibility,
-      opacity: this.opacity_,
-      zIndex: this.zIndex_,
-      extent,
-    });
-    this.map.getMapImpl().addLayer(this.ol3Layer);
-    if (!this.tileLoadFunction_) {
+    if (!this.tileLoadFunction) {
       this.fetchSource().then((tileProvider) => {
-        this.tileProvider_ = tileProvider;
-        const source = new MBTilesSource({
-          projection,
-          tileLoadFunction: tile => this.loadTileWithProvider(tile, tileProvider),
-          tileGrid: new TileGrid({
-            extent,
-            origin: getBottomLeft(extent),
-            resolutions,
-          }),
+        tileProvider.getMaxZoomLevel().then((maxZoomLevel) => {
+          if (!this.maxZoomLevel_) {
+            this.maxZoomLevel_ = maxZoomLevel;
+          }
+          const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
+          this.getExtentFromProvider().then((reprojectedExtent) => {
+            this.ol3Layer = this.createLayer({
+              tileProvider,
+              resolutions,
+              extent: reprojectedExtent || extent,
+              sourceExtent: extent,
+              projection,
+            });
+            this.map.getMapImpl().addLayer(this.ol3Layer);
+          });
         });
-        this.ol3Layer.setSource(source);
       });
     } else {
-      const source = new MBTilesSource({
+      const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
+      this.ol3Layer = this.createLayer({
+        resolutions,
+        extent,
+        sourceExtent: extent,
         projection,
-        tileLoadFunction: tile => this.loadTile(tile),
-        tileGrid: new TileGrid({
-          extent,
-          origin: getBottomLeft(extent),
-          resolutions,
-        }),
       });
-      this.ol3Layer.setSource(source);
+      this.map.getMapImpl().addLayer(this.ol3Layer);
     }
   }
 
-  loadTile(tile) {
+  /**
+   * Este método crea la implementación de la capa.
+   *
+   * @function
+   * @public
+   * @param {Object} opts Opciones.
+   * @return {ol.layer.Tile} Implementación de la tesela.
+   * @api
+   */
+  createLayer(opts) {
+    let tileLoadFn = this.loadTileWithProvider;
+    if (this.tileLoadFunction) {
+      tileLoadFn = this.loadTile;
+    }
+    const layer = new OLLayerTile({
+      visible: this.visibility,
+      opacity: this.opacity_,
+      zIndex: this.zIndex_,
+      extent: this.maxExtent_ || opts.sourceExtent,
+      source: new XYZ({
+        url: '{z},{x},{y}',
+        projection: opts.projection,
+        tileLoadFunction: tile => tileLoadFn(tile, opts.tileProvider, this),
+        tileGrid: new TileGrid({
+          extent: opts.sourceExtent,
+          origin: getBottomLeft(opts.sourceExtent),
+          resolutions: opts.resolutions,
+        }),
+      }),
+    });
+    return layer;
+  }
+
+  /**
+   * Este método es la función personalizada de carga de la tesela.
+   *
+   * @function
+   * @param {ol.Tile} tile Tesela.
+   * @param {Object} opts Opciones.
+   * @param {M.provider.Tile} target Proveedor de la tesela.
+   * @public
+   * @api
+   */
+  // no quitar opts
+  loadTile(tile, opts, target) {
     const imgTile = tile;
     const tileCoord = tile.getTileCoord();
-    this.tileLoadFunction_(tileCoord[0], tileCoord[1], -tileCoord[2] - 1).then((tileSrc) => {
+    target.tileLoadFunction(tileCoord[0], tileCoord[1], -tileCoord[2] - 1).then((tileSrc) => {
       if (tileSrc) {
         imgTile.getImage().src = tileSrc;
       } else {
-        imgTile.getImage().src = imgTile.getImage().src;
+        imgTile.getImage().src = DEFAULT_WHITE_TILE;
       }
     });
   }
 
+  /**
+   * Este método es la función personalizada de carga de la tesela.
+   *
+   * @function
+   * @param {ol.Tile} tile Tesela.
+   * @param {M.provider.Tile} tileProvider Proveedor de la tesela.
+   * @public
+   * @api
+   */
   loadTileWithProvider(tile, tileProvider) {
     const imgTile = tile;
     const tileCoord = tile.getTileCoord();
     const tileSrc = tileProvider.getTile([tileCoord[0], tileCoord[1], -tileCoord[2] - 1]);
-    if (tileSrc) {
-      imgTile.getImage().src = tileSrc;
-    } else {
-      imgTile.getImage().src = imgTile.getImage().src;
-    }
+    imgTile.getImage().src = tileSrc;
   }
 
+  /**
+   * Este método busca la fuente de la capa.
+   *
+   * @function
+   * @returns {Object} Promesa con el resultado de la
+   * búsqueda de la fuente.
+   * @public
+   * @api
+   */
   fetchSource() {
     return new Promise((resolve, reject) => {
       if (this.tileProvider_) {
         resolve(this.tileProvider_);
       } else if (this.source_) {
         const tileProvider = new TileProvider(this.source_);
+        this.tileProvider_ = tileProvider;
         resolve(tileProvider);
       } else if (this.url_) {
-        throw new Error('');
+        window.fetch(this.url_).then((response) => {
+          this.source = response;
+          const tileProvider = new TileProvider(response);
+          this.tileProvider_ = tileProvider;
+          resolve(tileProvider);
+        });
       } else {
-        reject(new Error('No url or source was specified.'));
+        reject(new Error(getValue('exception').no_source));
       }
     });
   }
+
   /**
-   * This function set facade class OSM
+   * Este método establece la clase de la fachada
+   * de MBTiles.
    *
    * @function
+   * @param {Object} obj Objeto a establecer como fachada.
+   * @public
    * @api
    */
   setFacadeObj(obj) {
     this.facadeLayer_ = obj;
   }
+
   /**
-   * TODO
+   * Este método establece la máxima extensión de la capa.
+   *
+   * @function
+   * @param {Mx.Extent} maxExtent Máxima extensión.
+   * @public
+   * @api
    */
   setMaxExtent(maxExtent) {
-    // this.ol3Layer.setExtent(maxExtent);
+    this.ol3Layer.setExtent(maxExtent);
   }
+
   /**
+   * Este método obtiene la mínima resolución de la capa.
    *
-   * @public
    * @function
+   * @public
    * @api
+   * @returns {number} Mínima resolución.
    */
   getMinResolution() {}
+
   /**
+   * Este método obtiene la máxima resolución de la capa.
    *
-   * @public
    * @function
+   * @public
    * @api
+   * @returns {number} Máxima resolución.
    */
   getMaxResolution() {}
+
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye esta capa, limpiando
+   * el HTML y desregistrando todos los eventos.
    *
    * @public
    * @function
@@ -247,11 +416,15 @@ class MBTiles extends Layer {
     }
     this.map = null;
   }
+
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
+   * @public
    * @api
    */
   equals(obj) {
@@ -261,9 +434,14 @@ class MBTiles extends Layer {
     }
     return equals;
   }
+
   /**
-   * This methods returns a layer clone of this instance
-   * @return {ol/layer/Tile}
+   * Este método devuelve una copia de la capa de esta instancia.
+   *
+   * @function
+   * @returns {ol.layer.Tile} Copia de la capa.
+   * @public
+   * @api
    */
   cloneOLLayer() {
     let olLayer = null;

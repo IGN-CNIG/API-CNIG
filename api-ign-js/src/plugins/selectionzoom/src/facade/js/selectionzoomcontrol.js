@@ -43,9 +43,24 @@ export default class SelectionZoomControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(map, idLayer, visible, ids, titles, previews, bboxs, zooms, order) {
+  constructor(
+    map,
+    ids,
+    titles,
+    previews,
+    bboxs,
+    zooms,
+    centers,
+    order,
+    newparam,
+  ) {
     const impl = new SelectionZoomImpl();
     super(impl, 'SelectionZoom');
+
+    if (!newparam) {
+      // eslint-disable-next-line no-console
+      console.warn(getValue('exception.parameterizationDeprecated'));
+    }
 
     // map.getBaseLayers().forEach((layer) => {
     //   layer.on(M.evt.LOAD, map.removeLayers(layer));
@@ -59,21 +74,32 @@ export default class SelectionZoomControl extends M.Control {
     const titlesArray = titles.split(',');
     const previewsArray = previews.split(',');
     const bboxArray = [];
-    let i = 0;
-    bboxs.split(',').forEach((item, index) => {
-      if (index % 4 === 0 && index > 0) {
-        i += 1;
-        bboxArray[i] = [];
-      }
+    if (M.utils.isArray(bboxs)) {
+      bboxs.forEach((item, index) => {
+        bboxArray[index] = item.split(/[ ,]+/);
+      });
+    } else {
+      let i = 0;
+      bboxs.split(',').forEach((item, index) => {
+        if (index % 4 === 0 && index > 0) {
+          i += 1;
+          bboxArray[i] = [];
+        }
 
-      if (index % 4 === 0 && index === 0) {
-        bboxArray[i] = [];
-      }
+        if (index % 4 === 0 && index === 0) {
+          bboxArray[i] = [];
+        }
 
-      bboxArray[i].push(item.trim());
-    });
+        bboxArray[i].push(item.trim());
+      });
+    }
     const zoomsArray = zooms.split(',');
-
+    const centersArray = [];
+    if (M.utils.isArray(centers)) {
+      centers.forEach((item, index) => {
+        centersArray[index] = item.split(/[ ,]+/);
+      });
+    }
 
     idsArray.forEach((baseLayer, idx) => {
       const mapeaLyrsObject = {
@@ -82,6 +108,8 @@ export default class SelectionZoomControl extends M.Control {
         preview: previewsArray[idx],
         bbox: bboxArray[idx],
         zoom: zoomsArray[idx],
+        center: centersArray[idx],
+        isnewparam: newparam,
       };
 
       this.layers.push(mapeaLyrsObject);
@@ -89,9 +117,6 @@ export default class SelectionZoomControl extends M.Control {
 
     this.flattedLayers = this.layers.reduce((current, next) => current.concat(next.layers), []);
     this.activeLayer = -1;
-    /* this.idLayer saves active layer position on layers array */
-    this.idLayer = idLayer === null ? 0 : idLayer;
-    this.visible = visible === null ? true : visible;
     this.order = order;
   }
 
@@ -118,15 +143,6 @@ export default class SelectionZoomControl extends M.Control {
       this.html = html;
       this.accessibilityTab(html);
       this.listen(html);
-      this.on(M.evt.ADDED_TO_MAP, () => {
-        const visible = this.visible;
-        if (this.idLayer > -1) {
-          this.activeLayer = this.idLayer;
-        }
-        if (visible === false) {
-          this.map.removeLayers(this.map.getBaseLayers());
-        }
-      });
       success(html);
     });
   }
@@ -157,7 +173,6 @@ export default class SelectionZoomControl extends M.Control {
    * @param {} i
    */
   handlerClickDesktop(e, layersInfo, i) {
-    this.visible = false;
     const isActivated = e.currentTarget.parentElement
       .querySelector(`#m-selectionzoom-lyr-${layersInfo.id}`)
       .classList.contains('activeSelectionZoomDiv');
@@ -180,32 +195,49 @@ export default class SelectionZoomControl extends M.Control {
     nuevoBbox.y = {};
 
     if (!isActivated) {
-      this.visible = true;
       this.activeLayer = i;
       if (currentBbox) {
         e.currentTarget.parentElement
           .querySelector(`#m-selectionzoom-lyr-${layersInfo.id}`).classList.add('activeSelectionZoomDiv');
       }
 
-      let BboxTransformXminYmax = [layersInfo.bbox[0], layersInfo.bbox[3]];
-      let BboxTransformXmaxYmin = [layersInfo.bbox[1], layersInfo.bbox[2]];
-      BboxTransformXmaxYmin = this.getImpl().transform(
-        BboxTransformXmaxYmin, 'EPSG:3857',
-        this.map_.getProjection().code,
-      );
-      BboxTransformXminYmax = this.getImpl().transform(
-        BboxTransformXminYmax, 'EPSG:3857',
-        this.map_.getProjection().code,
-      );
+      if (!M.utils.isNullOrEmpty(layersInfo.bbox)) {
+        let BboxTransformXminYmax = [layersInfo.bbox[0], layersInfo.bbox[3]];
+        let BboxTransformXmaxYmin = [];
 
-      nuevoBbox.x.min = BboxTransformXminYmax[0];
-      nuevoBbox.x.max = BboxTransformXmaxYmin[0];
+        if (layersInfo.isnewparam) {
+          BboxTransformXmaxYmin = [layersInfo.bbox[2], layersInfo.bbox[1]];
+        } else {
+          BboxTransformXmaxYmin = [layersInfo.bbox[1], layersInfo.bbox[2]];
+        }
+        BboxTransformXmaxYmin = this.getImpl().transform(
+          BboxTransformXmaxYmin, 'EPSG:3857',
+          this.map_.getProjection().code,
+        );
+        BboxTransformXminYmax = this.getImpl().transform(
+          BboxTransformXminYmax, 'EPSG:3857',
+          this.map_.getProjection().code,
+        );
 
-      nuevoBbox.y.min = BboxTransformXmaxYmin[1];
-      nuevoBbox.y.max = BboxTransformXminYmax[1];
+        nuevoBbox.x.min = BboxTransformXminYmax[0];
+        nuevoBbox.x.max = BboxTransformXmaxYmin[0];
 
-      this.map.setBbox(nuevoBbox);
-      this.map.setZoom(layersInfo.zoom);
+        nuevoBbox.y.min = BboxTransformXmaxYmin[1];
+        nuevoBbox.y.max = BboxTransformXminYmax[1];
+
+        this.map.setBbox(nuevoBbox);
+        if (!layersInfo.isnewparam) {
+          this.map.setZoom(layersInfo.zoom);
+        }
+      } else if (layersInfo.isnewparam && !M.utils.isNullOrEmpty(layersInfo.zoom) &&
+        !M.utils.isNullOrEmpty(layersInfo.center)) {
+        this.map.setZoom(layersInfo.zoom);
+        this.map.setCenter(layersInfo.center);
+      } else if (layersInfo.isnewparam) {
+        M.dialog.error(getValue('exception.formatMRE'));
+      } else {
+        M.dialog.error(getValue('exception.formatBBoxAndZoom'));
+      }
     } else {
       nuevoBbox.x.min = bboxbase[0];
       nuevoBbox.x.max = bboxbase[1];

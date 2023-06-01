@@ -19,10 +19,16 @@ import PointCircle from '../point/Circle';
 import OLStyleStrokePattern from '../ext/OLStyleStrokePattern';
 
 /**
+ * Esta función devuelve el relleno.
+ * @public
+ * @function
  *
- * @param {*} options
- * @param {*} featureVariable
- * @param {*} layer
+ * @param {Object} options Opciones ("color" y "opacity").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capa.
+ *
+ * @return {Object} Devuelve el relleno.
+ * @api stable
  */
 export const getFill = (options, featureVariable, layer) => {
   let fill;
@@ -43,10 +49,18 @@ export const getFill = (options, featureVariable, layer) => {
 };
 
 /**
+ * Esta función devuelve el borde.
  *
- * @param {*} options
- * @param {*} featureVariable
- * @param {*} layer
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("color", "opacity", "width",
+ * "lineDash", "lineDashOffset", "lineCap", "lineJoin" y "miterLimit").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Object} Devuelve el borde.
+ * @api stable
  */
 export const getStroke = (options, featureVariable, layer) => {
   let stroke;
@@ -74,6 +88,21 @@ export const getStroke = (options, featureVariable, layer) => {
   return stroke;
 };
 
+/**
+ * Esta función devuelve el patrón del borde.
+ *
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("color", "opacity", "width",
+ * "size", "spacing", "image", "angle", "scale",
+ * "offset" y "fill").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Object} Devuelve el borde.
+ * @api stable
+ */
 export const getStrokePatern = (options, featureVariable, layer) => {
   let color = 'rgba(0,0,0,1)';
   if (!isNullOrEmpty(options.stroke.pattern.color)) {
@@ -107,10 +136,19 @@ export const getStrokePatern = (options, featureVariable, layer) => {
 };
 
 /**
+ * Esta función devuelve la etiqueta.
  *
- * @param {*} options
- * @param {*} featureVariable
- * @param {*} layer
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("text", "align", "baseline",
+ * "font", "rotateWithView", "scale", "offsetX", "offsetY",
+ * "fill", "textAlign", "textBaseline", "text" y "rotation").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Object} Devuelve la etiqueta.
+ * @api stable
  */
 export const getLabel = (options, featureVariable, layer) => {
   const DEFAULT_LABEL_COLOR = '#000';
@@ -154,12 +192,30 @@ export const getLabel = (options, featureVariable, layer) => {
   return labelText;
 };
 
-const iconCache = {};
 /**
+ * Esta función devuelve el icono.
+ * @public
+ * @const
+ * @type {Object}
+ * @api stable
+ */
+export const iconCache = {};
+
+/**
+ * Esta función devuelve el icono.
  *
- * @param {*} options
- * @param {*} featureVariable
- * @param {*} layer
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("anchor", "anchorXUnits", "anchorYUnits",
+ * "src", "opacity", "scale", "rotation", "rotateWithView",
+ * "snapToPixel", "offsetOrigin", "offset", "crossOrigin", "anchorOrigin"
+ * y "size").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Object} Devuelve el icono.
+ * @api stable
  */
 export const getIconSrc = (options, featureVariable, layer) => {
   const anchor = Simple.getValue(options.icon.anchor, featureVariable, layer);
@@ -206,10 +262,21 @@ export const getIconSrc = (options, featureVariable, layer) => {
 
 
 /**
+ * Esta función devuelve la forma del icono.
  *
- * @param {*} options
- * @param {*} featureVariable
- * @param {*} layer
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("form", "gradient", "glyph",
+ * "fontSize", "radius", "rotation", "rotateWithView", "offsetX",
+ * "offsetY", "fill", "stroke", "anchor", "anchorXUnits",
+ * "anchorYUnits", "src", "opacity", "scale", "snapToPixel", "offsetOrigin",
+ * "offset", "crossOrigin", "anchorOrigin" y "size").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Object} Devuelve la forma del icono.
+ * @api stable
  */
 export const getIconForm = (options, featureVariable, layer) => {
   const styleForm = new PointFontSymbol({
@@ -247,6 +314,21 @@ export const getIconForm = (options, featureVariable, layer) => {
   return styleForm;
 };
 
+/**
+ * Esta función devuelve el relleno.
+ *
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("color", "width", "size",
+ * "spacing", "image", "angle", "scale", "offset" y
+ * "fill").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Object} Devuelve el relleno.
+ * @api stable
+ */
 export const getFillPatern = (options, featureVariable, layer, fill) => {
   let color = 'rgba(0,0,0,1)';
   if (!isNullOrEmpty(options.fill.pattern.color)) {
@@ -297,7 +379,19 @@ export const getFillPatern = (options, featureVariable, layer, fill) => {
   return style;
 };
 
-
+/**
+ * Esta función devuelve el trazo de la línea.
+ *
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("color", "opacity" y "width").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Object} Devuelve el trazo de la línea.
+ * @api stable
+ */
 export const getLineStroke = (options, featureVariable, layer) => {
   let lineStroke;
   if (!isNullOrEmpty(options.fill)) {
@@ -318,7 +412,20 @@ export const getLineStroke = (options, featureVariable, layer) => {
   return lineStroke;
 };
 
-
+/**
+ * Esta función devuelve el texto de la línea.
+ *
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("color", "width", "lineCap",
+ * "lineJoin", "lineDash", "lineDashOffset" y "miterLimit").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Object} Devuelve el texto de la línea.
+ * @api stable
+ */
 export const getLineText = (options, featureVariable, layer) => {
   const { label } = options;
   const LABEL_FILL_COLOR = '#000';
@@ -361,10 +468,18 @@ export const getLineText = (options, featureVariable, layer) => {
 };
 
 /**
+ * Esta función devuelve el estilo del punto.
  *
- * @param {*} options
- * @param {*} featureVariable
- * @param {*} layer
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("radius", "snapToPixel", "src",
+ * "form" y "label").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Array} Devuelve el estilo del punto.
+ * @api stable
  */
 export const getPointStyle = (options, featureVariable, layer) => {
   const optionsVar = options || {};
@@ -405,10 +520,17 @@ export const getPointStyle = (options, featureVariable, layer) => {
 };
 
 /**
+ * Esta función devuelve el estilo de la línea.
  *
- * @param {*} options
- * @param {*} featureVariable
- * @param {*} layer
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("fill").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Array} Devuelve el estilo de la línea.
+ * @api stable
  */
 export const getLineStyle = (options, featureVariable, layer) => {
   const optionsVar = options || {};
@@ -440,10 +562,17 @@ export const getLineStyle = (options, featureVariable, layer) => {
 };
 
 /**
+ * Esta función devuelve el estilo del polígono.
  *
- * @param {*} options
- * @param {*} featureVariable
- * @param {*} layer
+ * @public
+ * @function
+ *
+ * @param {Object} options Opciones ("fill", "stroke" y "label").
+ * @param {Object} featureVariable Objetos geográficos.
+ * @param {Object} layer Capas.
+ *
+ * @return {Array} Devuelve el estilo del polígono.
+ * @api stable
  */
 export const getPolygonStyle = (options, featureVariable, layer) => {
   const optionsVar = options || {};
@@ -465,3 +594,13 @@ export const getPolygonStyle = (options, featureVariable, layer) => {
 
   return [style];
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

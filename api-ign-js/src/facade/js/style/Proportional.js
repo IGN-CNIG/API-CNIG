@@ -12,11 +12,12 @@ import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
 /**
- * This function gets the min value of feature's atributte.
+ * Este método devuelve el valos mínimo y máximo de un objeto geográfico.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
- * @private
- * @param {Array<M.Feature>} features - array of features
- * @param {String} attributeName - attributeName of style
+ * @public
+ * @param {Array<M.Feature>} features Matriz de objetos geográficos.
+ * @param {String} attributeName Nombre de los atributos con estilos.
  * @api
  */
 export const getMinMaxValues = (features, attributeName) => {
@@ -39,8 +40,15 @@ export const getMinMaxValues = (features, attributeName) => {
 };
 
 /**
- * Flannery function
- * @private
+ * Función de "Flannery".
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @param {String} value Valor.
+ * @param {String} minValue Valor mínimo.
+ * @param {String} maxValue Valor máximo.
+ * @param {String} minRadius Radio mínimo.
+ * @param {String} maxRadius Radio máximo.
+ * @returns {Number} Valor de la escala tras realizar la función "flannery".
  * @api
  */
 const flanneryScalingFunction = ((value, minValue, maxValue, minRadius, maxRadius) => {
@@ -52,8 +60,15 @@ const flanneryScalingFunction = ((value, minValue, maxValue, minRadius, maxRadiu
 });
 
 /**
- * Default proportional function
- * @private
+ * Función proporcional por defecto.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @param {String} value Valor.
+ * @param {String} minValue Valor mínimo.
+ * @param {String} maxValue Valor máximo.
+ * @param {String} minRadius Radio mínimo.
+ * @param {String} maxRadius Radio máximo.
+ * @returns {Number} Valor proporcional.
  * @api
  */
 const defaultProportionalFunction = ((value, minValue, maxValue, minRadius, maxRadius) => {
@@ -62,20 +77,31 @@ const defaultProportionalFunction = ((value, minValue, maxValue, minRadius, maxR
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a style Proportional
- * with parameters specified by the user
+ * Constructor principal de la clase. Crea un estilo Proporcional
+ * con parámetros especificados por el usuario.
+ *
+ * @property {String} attributeName_ Nombre del atributo.
+ *
  * @api
+ * @extends {M.Style}
  */
 class Proportional extends StyleComposite {
   /**
-   *
+   * Constructor principal.
    * @constructor
-   * @extends {M.Style}
-   * @param {String}
-   * @param{number}
-   * @param{number}
-   * @param {StylePoint}
-   * @param {object}
+   *
+   * @param {String} attributeName Nombre del atributo.
+   * @param {number} minRadius Radio mínimo.
+   * @param {number} maxRadius Radio máximo.
+   * @param {StylePoint} style Estilos.
+   * @param {object} proportionalFunction Valor proporcional.
+   * @param {object} options Estas opciones se mandarán a la implementación.
+   * - icon: Valores del icono, como puede ser el src.
+   * - flannery: Valor del "flannery".
+   * - minRadius: Radio mínimo.
+   * - maxRadius: Radio máximo.
+   * - minValue: Valor mínimo.
+   * - maxValue: Valor máximo.
    * @api
    */
   constructor(attributeName, minRadius, maxRadius, style, proportionalFunction, options = {}) {
@@ -86,7 +112,7 @@ class Proportional extends StyleComposite {
     }
 
     /**
-     * TODO
+     * Nombre del atributo.
      * @public
      * @type {String}
      * @api
@@ -95,7 +121,7 @@ class Proportional extends StyleComposite {
     this.attributeName_ = attributeName;
 
     /**
-     * The minimum radius of the proportionality
+     * El radio mínimo de la proporcionalidad.
      * @private
      * @type {number}
      * @api
@@ -104,7 +130,7 @@ class Proportional extends StyleComposite {
     this.minRadius_ = parseInt(minRadius, 10) || 5;
 
     /**
-     * The maximum radius of the proportionality
+     * El radio máximo de la proporcionalidad.
      * @private
      * @type {number}
      * @api
@@ -113,7 +139,7 @@ class Proportional extends StyleComposite {
     this.maxRadius_ = parseInt(maxRadius, 10) || 15;
 
     /**
-     * The style point define by user
+     * El punto de estilo definido por el usuario..
      * @private
      * @type {M.Style}
      * @api
@@ -122,7 +148,7 @@ class Proportional extends StyleComposite {
     this.style_ = style;
 
     /**
-     * the proportionality function
+     * La función de proporcionalidad.
      * @private
      * @type {function}
      * @api
@@ -140,11 +166,12 @@ class Proportional extends StyleComposite {
       this.styles_.push(this.style_);
     }
   }
+
   /**
-   * This function apply the style to specified layer
+   * Este método aplica el estilo a la capa especificada.
    * @function
    * @public
-   * @param {M.Layer.Vector} layer - Layer where to apply choropleth style
+   * @param {M.Layer.Vector} layer Capa donde aplicar el estilo de coropletas.
    * @api
    */
   applyInternal(layer) {
@@ -153,10 +180,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function apply the style to specified layer
+   * Este método aplica el estilo a los objetos geográficos especificados.
    * @function
    * @public
-   * @param {M.Layer.Vector} layer - Layer where to apply choropleth style
+   * @param {M.Layer.Vector} feature Objeto geográfico.
    * @api
    */
   applyToFeature(feature, resolution) {
@@ -185,9 +212,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function updates the style
+   * Actualiza los estilos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
    * @api
    */
   update_() {
@@ -229,10 +257,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function returns the attribute name defined by user
+   * Este método devuelve el nombre de los atributos.
    * @function
    * @public
-   * @return {String} attribute name of Style
+   * @return {String} Atributos.
    * @api
    */
   getAttributeName() {
@@ -240,10 +268,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function set the attribute name defined by user
+   * Este método define los atributos.
    * @function
    * @public
-   * @param {String} attributeName - attribute name to set
+   * @param {String} attributeName Atributos.
    * @api
    */
   setAttributeName(attributeName) {
@@ -253,10 +281,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function returns the style point defined by user
+   * Esta función devuelve el punto de estilo definido por el usuario.
    * @function
    * @public
-   * @return {StylePoint} style point of each feature
+   * @return {StylePoint} Punto de estilo de cada objeto geográfico.
    * @deprecated
    */
 
@@ -268,10 +296,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function set the style point defined by user
+   * Este método establece el estilo definido por el usuario.
    * @function
    * @public
-   * @param {StylePoint} style - style point to set
+   * @param {StylePoint} style Estilos.
    * @api
    */
   setStyle(style) {
@@ -281,10 +309,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function get the minimum radius of the style point
+   * Este método obtiene el radio mínimo del punto de estilo.
    * @function
    * @public
-   * @return {number} minimum radius of style point
+   * @return {number} Radio mínimo.
    * @api
    */
   getMinRadius() {
@@ -292,10 +320,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function set proportional function
+   * Este método establece la función proporcional.
    * @function
    * @public
-   * @param {function} proportionalFunction - proportional function
+   * @param {function} proportionalFunction Función proporcional.
    * @api
    */
   setProportionalFunction(proportionalFunction) {
@@ -304,10 +332,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function get proportional function
+   * Este método obtiene una función proporcional.
    * @function
    * @public
-   * @return {number} minimum radius of style point
+   * @return {number} Radio mínimo del punto de estilo.
    * @api
    */
   getProportionalFunction() {
@@ -315,10 +343,11 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function set the minimum radius of the style point
+   * Este método establece el radio mínimo del punto de estilo.
    * @function
    * @public
-   * @param {number} minRadius - minimum radius of style point
+   * @param {number} minRadius Radio mínimo del punto de estilo.
+   * @return {Object} Devuelve el valor de "this".
    * @api
    */
   setMinRadius(minRadius) {
@@ -332,10 +361,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function get the maximum radius of the style point
+   * Esta función obtiene el radio máximo del punto de estilo.
    * @function
    * @public
-   * @return {number} maximum radius of style point
+   * @return {number} Radio máximo.
    * @api
    */
   getMaxRadius() {
@@ -343,10 +372,10 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function set the maximum radius of the style point
+   * Este método establece el radio máximo del punto.
    * @function
    * @public
-   * @param {number} minRadius - maximum radius of style point
+   * @param {number} maxRadius Radio máximo del punto.
    * @api
    */
   setMaxRadius(maxRadius) {
@@ -360,7 +389,7 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function updates the canvas of style
+   * Esta función actualiza el "canvas" de estilo.
    *
    * @function
    * @public
@@ -403,11 +432,13 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * TODO
+   * Crea el canvas por medio de una imagen.
    *
    * @function
    * @public
-   * @param {CanvasRenderingContext2D} vectorContext - context of style canvas
+   * @param {Object} value Estilo del canvas.
+   * @param {String} url Ruta de la imagen.
+   * @param {Function} callbackFn "callbackFn".
    */
   loadCanvasImage(value, url, callbackFn) {
     const image = new Image();
@@ -427,11 +458,13 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * TODO
+   * Dibuja la geometría en el canvas.
    *
    * @function
    * @public
-   * @param {CanvasRenderingContext2D} vectorContext - context of style canvas
+   * @param {CanvasRenderingContext2D} canvasImageMax Tamaño máximo del canvas.
+   * @param {CanvasRenderingContext2D} canvasImageMin Tamaño mínimo del canvas.
+   * @param {CanvasRenderingContext2D} callbackFn "callbackFn".
    * @api
    */
 
@@ -481,10 +514,11 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function returns the attribute of style point that controls the size
+   * Devuelve si es valor del atributo es "scale" o "radius".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @return {string} the attribute that controls the size
+   * @public
+   * @return {string} Devuelve "icon.scale" o "icon.radius".
    * @api
    */
   static getSizeAttribute(style) {
@@ -500,13 +534,14 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function returns the proportional style of feature
+   * Este método devuelve el estilo proporcional del objeto geográfico.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @param {M.Feature} feature
-   * @param {object} options - minRadius, maxRadius, minValue, maxValue
-   * @param {StylePoint} style
-   * @return {StyleSimple} the proportional style of feature
+   * @public
+   * @param {M.Feature} feature Objeto geográfico.
+   * @param {object} options Valores: "minRadius", "maxRadius", "minValue" y "maxValue"
+   * @param {StylePoint} styleVar Estilo.
+   * @return {StyleSimple} Devuelve el objeto geográfico con el estilo.
    * @api
    */
   calculateStyle_(feature, options, styleVar) {
@@ -532,9 +567,9 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This constant defines the order of style.
-   * @constant
+   * Este método define el orden del estilo.
    * @public
+   * @returns {Number} Valor de 3.
    * @api
    */
   get ORDER() {
@@ -542,11 +577,11 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function implements the mechanism to
-   * generate the JSON of this instance
+   * Este método implementa los mecanismos para generar
+   * el estilo en forma de JSON.
    *
    * @public
-   * @return {object}
+   * @return {object} JSON.
    * @function
    * @api
    */
@@ -564,11 +599,16 @@ class Proportional extends StyleComposite {
   }
 
   /**
-   * This function returns the style instance of the serialization
+   * Este método de la clase devuelve la deserialización del estilo.
    * @function
    * @public
-   * @param {Array} parametrers - parameters to deserialize and create
-   * the instance
+   * @param {Array} parametrers Parámetros para deserializar:
+   * - serializedAttributeName
+   * - serializedMinRadius
+   * - serializedMaxRadius
+   * - serializedStyles
+   * - serializedProportionalFunction
+   * - serializedOptions
    * @return {M.style.Proportional}
    */
   static deserialize([serializedAttributeName, serializedMinRadius, serializedMaxRadius,
@@ -596,7 +636,7 @@ class Proportional extends StyleComposite {
 }
 
 /**
- * This constant defines the scale proportion for iconstyle in Proportional.
+ * Esta constante define la proporción de escala para iconstyle en Proporcional.
  * @constant
  * @public
  * @api

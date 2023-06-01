@@ -78,11 +78,7 @@ export default class ShareMap extends M.Plugin {
     super();
 
     if (M.utils.isNullOrEmpty(options.baseUrl)) {
-      throw new Error('options.baseUrl is null or undefined.');
-    }
-
-    if (!M.utils.isString(options.baseUrl)) {
-      throw new Error('options.baseUrl is not string type.');
+      console.warn('options.baseUrl is null or undefined.');
     }
 
     /**
@@ -105,7 +101,11 @@ export default class ShareMap extends M.Plugin {
      * @private
      * @type {URLLike}
      */
-    this.baseUrl_ = options.baseUrl;
+    this.baseUrl_ = options.baseUrl || 'https://componentes.cnig.es/api-core/';
+
+    if (!M.utils.isString(this.baseUrl_)) {
+      throw new Error('options.baseUrl is not string type.');
+    }
 
     /**
      * Position of the plugin
@@ -204,13 +204,23 @@ export default class ShareMap extends M.Plugin {
       * @private
       * @type @type {Array}
       */
-    this.filterLayers = (options.shareLayer === undefined) ? filterLayers : [];
+    this.filterLayers = (options.shareLayer === undefined || options.shareLayer
+      === false)
+      ? filterLayers
+      : [];
 
     /** Select all layers or not
       * @private
       * @type {Boolean}
       */
     this.shareLayer = options.shareLayer || false;
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -414,8 +424,17 @@ export default class ShareMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    // eslint-disable-next-line max-len
-    // return `${this.name}=${this.baseUrl}*${this.position}*${this.title}*${this.text}*${this.tooltip}*${this.btn}*${this.copyBtn}*${this.copyBtnHtml}`;
-    return `${this.name}=${this.baseUrl}*${this.position}`;
+    return `${this.name}=${this.position}*${this.tooltip_}*${this.baseUrl}*${this.minimize_}*${this.title_}*${this.btn_}*${this.copyBtn_}*${this.text_}*${this.copyBtnHtml_}*${this.urlAPI_}*${this.shareLayer}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 }

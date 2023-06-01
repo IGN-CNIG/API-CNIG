@@ -7,15 +7,31 @@ import { isNullOrEmpty, extendsObj } from '../util/Utils';
 
 /**
  * @classdesc
- * TODO Main constructor of the class. Creates a categoryStyle
- * with parameters specified by the user
+ * Crea un estilo de línea
+ * con parámetros especificados por el usuario.
  * @api
+ * @extends {M.style.Simple}
  */
 class Line extends Simple {
   /**
+   * Constructor principal de la clase.
    * @constructor
-   * @extends {M.style.Simple}
-   * @param {options} userParameters parameters
+   * @param {options} optionsVar Parámetros de la implementación.
+   * - stroke. Borde.
+   *    - width: Ancho.
+   *    - pattern: Propiedades ("name", "src", "color", "size", "spacing",
+   * "rotation", "scale", "offset").
+   *    - linedash: Línea de guión.
+   *    - linejoin: Líneas unidas.
+   *    - linecap: Límite de la línea.
+   * - label: Etiqueta.
+   *    - rotate: Rotación.
+   *    - offset: Desplazamiento.
+   *    - stroke: Borde, propiedades ("color", "width", "linecap", "linejoin", "linedash").
+   * - fill: Color del relleno.
+   *    - color: Color.
+   *    - opacity: Opacidad.
+   *    - pattern: Propiedades (name, src, color, size, spacing, rotation, scale, offset)
    * @api
    */
   constructor(optionsVar) {
@@ -30,11 +46,11 @@ class Line extends Simple {
   }
 
   /**
-   * This function apply style
+   * Este método quita el estilo.
    *
    * @function
    * @protected
-   * @param {M.layer.Vector} layer - Layer to apply the styles
+   * @param {M.layer.Vector} layer Capa.
    * @api
    */
   unapply(layer) {
@@ -42,10 +58,12 @@ class Line extends Simple {
   }
 
   /**
-   * TODO
-   *
+   * Deserializa el método M.style.Simple.deserialize.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
+   * @return {Function} Devuelve la función M.style.Simple.deserialize.
+   * @api
    */
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Line'))";
@@ -53,7 +71,7 @@ class Line extends Simple {
 }
 
 /**
- * Default options for this style
+ * Estilo por defecto.
  * @const
  * @type {object}
  * @public

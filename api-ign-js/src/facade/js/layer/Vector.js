@@ -17,17 +17,52 @@ import Generic from '../style/Generic';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a Vector layer
- * with parameters specified by the user
+ * Esta clase es la base de todas las capas de tipo vectorial,
+ * de esta clase heredan todas las capas vectoriales del API-CNIG.
+ *
+ * @extends {M.Layer}
+ * @property {Number} minZoom Zoom mínimo.
+ * @property {Number} maxZoom Zoom máximo.
+ *
  * @api
+ * @extends {M.layer}
  */
 class Vector extends LayerBase {
   /**
+   * Constructor principal de la clase. Crea una capa vectorial
+   * con parámetros especificados por el usuario.
+   *
    * @constructor
-   * @extends {M.Layer}
-   * @param {Mx.parameters.Layer} userParameters - parameters
-   * @param {Mx.parameters.LayerOptions} options - custom options for this layer
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {Mx.parameters.Layer} userParameters Parámetros para la construcción de la capa.
+   * - name: Nombre de la capa en la leyenda.
+   * - url: Url del fichero o servicio que genera el vector.
+   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - type: Tipo de la capa.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * @param {Mx.parameters.LayerOptions} options  Estas opciones se mandarán a
+   * la implementación de la capa.
+   * - style. Define el estilo de la capa.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
+   * - visibility. Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
+   * - opacity. Opacidad de capa, por defecto 1.
+   * @param {Object} implParam Valores de la implementación por defecto.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceVector({
+   *    attributions: 'vector',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api
    */
   constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
@@ -41,21 +76,27 @@ class Vector extends LayerBase {
     }
 
     /**
-     * TODO
+     * Vector style_. Estilo de la capa.
+     * @private
+     * @type {M.style}
+     * @api
      */
     this.style_ = null;
 
     /**
-     * Filter
-     * @private
-     * @type {M.Filter}
+     * Vector filter_. Para filtar los objetos geográficos
+     * de las capas vectoriales.
      */
     this.filter_ = null;
 
-    // minzoom
+    /**
+     * Vector minzoom. Zoom mínimo.
+     */
     this.minZoom = parameters.minZoom;
 
-    // maxzoom
+    /**
+     * Vector maxzoom. Zoom máximo.
+     */
     this.maxZoom = parameters.maxZoom;
 
     this.setStyle(options.style);
@@ -63,14 +104,25 @@ class Vector extends LayerBase {
     impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));
   }
 
+
   /**
-   * 'type' This property indicates if
-   * the layer was selected
+   * Devuelve el tipo de capa, Vector.
+   *
+   * @function
+   * @return {M.LayerType.Vector} Tipo de capa Vector.
+   * @api
    */
   get type() {
     return LayerType.Vector;
   }
 
+  /**
+   * Sobrescribe el tipo de la capa.
+   *
+   * @function
+   * @param {String} newType Nuevo tipo de capa.
+   * @api
+   */
   set type(newType) {
     if (!isUndefined(newType) &&
       !isNullOrEmpty(newType) && (newType !== LayerType.Vector)) {
@@ -80,11 +132,12 @@ class Vector extends LayerBase {
 
 
   /**
-   * This function return filter
+   * Este método devuelve el valor de la propiedad filter, esta
+   * propiedad se utiliza para filtrar los objeto geográfico.
    *
    * @function
    * @public
-   * @return {M.Filter} returns filter assigned
+   * @return {M.Filter} Devuelve el filtro.
    * @api
    */
   getFilter() {
@@ -92,7 +145,8 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function remove filter
+   * Este método elimina el valor de la propiedad "filter",
+   * lo pone a nulo.
    *
    * @function
    * @public
@@ -103,11 +157,14 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function add features to layer
+   * Este método incluye objetos geográficos a la capa.
    *
    * @function
    * @public
-   * @param {Array<M.feature>} features - Features to add
+   * @param {Array<M.feature>} features Objetos geográficos que
+   * se incluirán a la capa.
+   * @param {Boolean} update Verdadero se vuelve a cargar la capa,
+   * falso no la vuelve a cargar.
    * @api
    */
   addFeatures(featuresParam, update = false) {
@@ -121,12 +178,13 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function returns all features or discriminating by the filter
+   * Este método devuelve todos los objetos geográficos o discrimina por el filtro.
    *
    * @function
    * @public
-   * @param {boolean} applyFilter - Indicates whether execute filter
-   * @return {Array<M.Feature>} returns all features or discriminating by the filter
+   * @param {Boolean} applyFilter Indica si se ejecuta filtro.
+   * @return {Array<M.Feature>} Devuelve todos los objetos geográficos o discriminando por
+   * el filtro.
    * @api
    */
   getFeatures(skipFilterParam) {
@@ -136,12 +194,14 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function returns the feature with this id
+   * Devuelve el objeto geográfico con el id pasado por parámetros.
+   *
    * @function
    * @public
-   * @param {string|number} id - Id feature
-   * @return {null|M.feature} feature - Returns the feature with that id if it is found,
-     in case it is not found or does not indicate the id returns null
+   * @param {String|Number} id - Id objeto geográfico.
+   * @return {Null|M.feature} objeto geográfico: devuelve el objeto geográfico con esa
+   * identificación si se encuentra,
+   * en caso de que no se encuentre o no indique el id devuelve nulo.
    * @api
    */
   getFeatureById(id) {
@@ -155,11 +215,11 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function remove the features indicated
+   * Elimina el objeto geográfico indicado por parámetro.
    *
    * @function
    * @public
-   * @param {Array<M.feature>} features - Features to remove
+   * @param {Array<M.feature>} features El objeto geográfico que se eliminará.
    * @api
    */
   removeFeatures(featuresParam) {
@@ -171,7 +231,7 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function remove all features
+   * Este método elimina todos los objetos geográficos.
    *
    * @function
    * @public
@@ -183,7 +243,7 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function refresh layer
+   * Este método recarga la capa.
    *
    * @function
    * @public
@@ -195,7 +255,7 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function redraw layer
+   * Este método redibuja la capa.
    *
    * @function
    * @public
@@ -206,11 +266,11 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function return extent of all features or discriminating by the filter
+   * Este método devuelve la extensión de todos los objetos geográficos o discrimina por el filtro.
    *
    * @function
-   * @param {boolean} applyFilter - Indicates whether execute filter
-   * @return {Array<number>} Extent of features
+   * @param {Boolean} applyFilter Indica si se ejecuta filtro.
+   * @return {Array<number>} Alcance de las objetos geográficos.
    * @api
    */
   getFeaturesExtent(skipFilterParam) {
@@ -218,12 +278,13 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
    * @public
-   * @param {object} obj - Object to compare
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
    * @api
    */
   equals(obj) {
@@ -235,12 +296,17 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function sets the style to layer
+   * Este método establece el estilo en capa.
    *
    * @function
    * @public
-   * @param {M.Style}
-   * @param {bool}
+   * @param {M.Style} style Estilo que se aplicará a la capa.
+   * @param {Boolean} applyToFeature Si el valor es verdadero se aplicará a los
+   * objetos geográficos, falso no.
+   * Por defecto, falso.
+   * @param {M.layer.Vector.DEFAULT_OPTIONS_STYLE} defaultStyle Estilo por defecto,
+   * se define en Vector.js.
+   * @api
    */
   setStyle(style, applyToFeature = false, defaultStyle = Vector.DEFAULT_OPTIONS_STYLE) {
     if (this.getImpl().isLoaded()) {
@@ -262,6 +328,15 @@ class Vector extends LayerBase {
     }
   }
 
+  /**
+   * La forma en que se aplica el estilo a la capa.
+   *
+   * @function
+   * @public
+   * @param {Object} styleParam Estilo que se aplicará a la capa.
+   * @param {Boolean} applyToFeature Indica si se aplicará el estilo a los objetos geográficos.
+   * @api
+   */
   applyStyle_(styleParam, applyToFeature) {
     let style = styleParam;
     if (isString(style)) {
@@ -293,9 +368,11 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function return style vector
+   * Este método devuelve el estilo de la capa.
    *
-   * TODO
+   * @function
+   * @public
+   * @returns {M.layer.Vector.style}
    * @api
    */
   getStyle() {
@@ -303,7 +380,7 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function remove the style layer and style of all features
+   * Elimina el estilo de la capa y de los objetos geográficos.
    *
    * @function
    * @public
@@ -315,10 +392,10 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Devuelve el legendURL.
    *
    * @function
+   * @returns {M.layer.Vector.legendUrl} Devuelve el legendURL.
    * @api
    */
   getLegendURL() {
@@ -331,11 +408,14 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function gets the geometry type of a layer.
+   * Obtiene el tipo de geometría de la capa.
+   * Tipo de geometría: POINT (Punto), MPOINT (Multiples puntos), LINE (línea),
+   * MLINE (Multiples línes), POLYGON (Polígono), or MPOLYGON (Multiples polígonos).
    * @function
    * @public
-   * @param {M.layer.Vector} layer - layer vector
-   * @return {string} geometry type of layer
+   * @param {M.layer.Vector} layer Capa vectorial.
+   * @return {String} Tipo de geometría de la capa.
+   * @api
    */
   getGeometryType() {
     let geometry = null;
@@ -349,9 +429,11 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function indicates the layer max extent
+   * Este método indica la extensión máxima de la capa.
    *
    * @function
+   * @returns {M.layer.Vector.impl.getFeaturesExtent} Devuelve la extensión de
+   * los objeto geográfico.
    * @api
    */
   getMaxExtent() {
@@ -359,9 +441,11 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function indicates the layer max extent
+   * Este método indica la extensión máxima de la capa.
    *
    * @function
+   * @returns {M.layer.Vector.impl.getFeaturesExtentPromise} Devuelve la extensión de
+   * los objetos geográficos.
    * @api
    */
   calculateMaxExtent() {
@@ -369,11 +453,11 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function set a filter
+   * Sobrescribe el filtro de la capa.
    *
    * @function
    * @public
-   * @param {M.Filter} filter - filter to set
+   * @param {M.Filter} filter Filtro para configurar.
    * @api
    */
   setFilter(filter) {
@@ -400,8 +484,10 @@ class Vector extends LayerBase {
   }
 
   /**
-   * This function gets the geojson representation of the layer
+   * Este método obtiene la representación GeoJSON de la capa.
    * @function
+   * @returns {Object} Devuelve un objeto, tipo 'FeatureCollection' con
+   * los objetos geográficos.
    * @api
    */
   toGeoJSON() {
@@ -412,9 +498,9 @@ class Vector extends LayerBase {
 }
 
 /**
- * Default params for style vector layers
+ * Parámetros predeterminados.
  * @const
- * @type {object}
+ * @type {Object}
  * @public
  * @api
  */
@@ -430,9 +516,9 @@ Vector.DEFAULT_PARAMS = {
 };
 
 /**
- * Default style for Vector layers
+ * Estilos predeterminados.
  * @const
- * @type {object}
+ * @type {Object}
  * @public
  * @api
  */

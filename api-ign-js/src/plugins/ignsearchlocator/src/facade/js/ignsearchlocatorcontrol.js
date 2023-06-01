@@ -590,7 +590,9 @@ export default class IGNSearchLocatorControl extends M.Control {
 
         if (this.geocoderCoords && this.geocoderCoords.length === 2) {
           this.activateDeactivateReverse();
-          const reprojCoords = this.getImpl().reproject(this.geocoderCoords, 'EPSG:4326', map.getProjection().code);
+          // const reprojCoords =
+          // this.getImpl().reproject(this.geocoderCoords, 'EPSG:4326', map.getProjection().code);
+          const reprojCoords = this.getImpl().reproject('EPSG:4326', this.geocoderCoords);
           this.showReversePopUp({
             coord: reprojCoords,
             fake: true,

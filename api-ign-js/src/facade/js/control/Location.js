@@ -12,15 +12,22 @@ import { compileSync as compileTemplate } from '../util/Template';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a Location
- * control that allows the user to locate and draw your
- * position on the map.
+ * Localiza la posición del usuario en el mapa.
+ *
  * @api
+ * @extends {M.Control}
  */
 class Location extends ControlBase {
   /**
+   * Constructor principal de la clase. Crea una ubicación
+   * que permite al usuario localizar y dibujar su
+   * posición en el mapa.
+   *
    * @constructor
-   * @extends {M.Control}
+   * @param {Boolean} tracking Seguimiento de localización, por defecto verdadero.
+   * @param {Boolean} highAccuracy Alta precisión del rastreo, por defecto falso.
+   * @param {Object} vendorOptions  Opciones de proveedor para la biblioteca base,
+   * por defecto objeto vacío. Estos valores no son "settable".
    * @api
    */
   constructor(tracking = true, highAccuracy = false, vendorOptions = {}) {
@@ -36,12 +43,12 @@ class Location extends ControlBase {
   }
 
   /**
-   * This function creates the view to the specified map
+   * Esta función crea la vista del mapa especificado.
    *
    * @public
    * @function
-   * @param {M.Map} map - Facade map
-   * @returns {Promise} HTML template
+   * @param {M.Map} map Mapa
+   * @returns {Promise} Plantilla HTML.
    * @api
    */
   createView(map) {
@@ -53,12 +60,13 @@ class Location extends ControlBase {
   }
 
   /**
-   * This function returns the HTML button control.
+   * Este método devuelve si el botón de activación
+   * del control esta activado.
    *
    * @public
    * @function
-   * @param {HTMLElement} element - Control template
-   * @returns {HTMLElement} HTML control button
+   * @param {HTMLElement} element HTML del botón.
+   * @returns {HTMLElement} HTML del botón.
    * @api
    * @export
    */
@@ -67,13 +75,13 @@ class Location extends ControlBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Esta función comprueba si un objeto es igual
+   * a este control.
    *
    * @public
    * @function
-   * @param {*} obj - Object to compare
-   * @returns {boolean} equals - Returns if they are equal or not
+   * @param {*} obj Objeto a comparar.
+   * @returns {boolean} Iguales devuelve verdadero, falso si no son iguales.
    * @api
    */
   equals(obj) {
@@ -82,7 +90,11 @@ class Location extends ControlBase {
   }
 
   /**
-   * TODO
+   * Sobrescribe el seguimiento de la localización.
+   * @param {Object} tracking Seguimiento de la localización.
+   * @public
+   * @function
+   * @api
    */
   setTracking(tracking) {
     this.getImpl().tracking = tracking;
@@ -90,7 +102,7 @@ class Location extends ControlBase {
 }
 
 /**
- * Name to identify this control
+ * Nombre para identificar este control.
  * @const
  * @type {string}
  * @public

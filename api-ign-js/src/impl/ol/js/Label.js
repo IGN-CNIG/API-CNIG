@@ -1,71 +1,78 @@
+/**
+ * @module M/impl/Label
+ */
 import { compileSync as compileTemplate } from 'M/util/Template';
 import FacadePopup from 'M/Popup';
 import { isNullOrEmpty } from 'M/util/Utils';
 import labelPopupTemplate from 'templates/label_popup';
 
 /**
- * @module M/impl/Label
- */
-
-/**
  * @classdesc
- * Class of Label implementation
+ * Implementación de la clase Label.
+ *
+ * @property {String} text_ Texto para mostrar.
+ * @property {Array} coord_ Coordenadas donde mostrar el "popup".
+ * @property {M.Popup} popup_ "Popup" para mostrar información.
+ * @property {M.Map} facadeMap_ Mapa.
+ * @property {Boolean} panMapIfOutOfView Indica si el mapa se desplaza o no.
+ *
  * @api
  */
 class Label {
   /**
-   * Main constructor of the class. Creates a Label
-   * control
+   * Constructor principal de la clase. Crea un control Label.
+   *
    * @constructor
-   * @param {string} text - Text to show
-   * @param {array} coordOpts - Coordinate to display popup
-   * @api stable
+   * @param {String} text Texto para mostrar.
+   * @param {Array} coordOpts Coordenadas donde mostrar el "popup".
+   * @param {Boolean} panMapIfOutOfView Indica si el mapa se desplaza o no.
+   *
+   * @api
    */
   constructor(text, coordOpts, panMapIfOutOfView) {
     /**
-     * Text to show
+     * Texto para mostrar.
      * @private
-     * @type {string}
+     * @type {String}
      */
     this.text_ = text;
 
     /**
-     * Coordinate where to display the popup
+     * Coordenadas donde mostrar el "popup".
      * @private
-     * @type {array}
+     * @type {Array}
      */
     this.coord_ = [coordOpts.x, coordOpts.y];
 
     /**
-     * Popup to show information
+     * "Popup" para mostrar información.
      * @private
      * @type {M.Popup}
      */
     this.popup_ = null;
 
     /**
-     * Map
+     * Mapa.
      * @private
      * @type {M.Map}
      */
     this.facadeMap_ = null;
 
     /**
-     * Flag to indicate if map does pan or not
+     * Indica si el mapa se desplaza o no.
      * @private
-     * @type {boolean}
-     * @api stable
+     * @type {Boolean}
      */
     this.panMapIfOutOfView = panMapIfOutOfView;
   }
 
   /**
-   * This function displays the popup with information
+   * Este método muestra un "popup" con información.
    *
-   * @public
    * @function
-   * @param {M.Map} map - Map where show popup
-   * @api stable
+   * @param {M.Map} map Mapa donde mostrar el "popup".
+   * @public
+   * @api
    */
   show(map) {
     this.facadeMap_ = map;
@@ -88,33 +95,35 @@ class Label {
   }
 
   /**
-   * This function hidden the popup with information
+   * Este método oculta el "popup".
    *
-   * @public
    * @function
-   * @api stable
+   * @public
+   * @api
    */
   hide() {
     this.facadeMap_.removePopup();
   }
 
   /**
-   * This function return popup created
+   * Este método devuelve el "popup" creado.
    *
-   * @public
    * @function
-   * @returns {M.Popup} popup created
-   * @api stable
+   * @returns {M.Popup} "Popup" creado.
+   * @public
+   * @api
    */
   getPopup() {
     return this.popup_;
   }
 
   /**
-   * TODO
-   * @public
+   * Este método devuelve las coordenadas del "popup" creado.
+   *
    * @function
-   * @api stable
+   * @returns {Array} Coordenadas del "popup".
+   * @public
+   * @api
    */
   getCoordinate() {
     let coord = this.coord;
@@ -125,10 +134,12 @@ class Label {
   }
 
   /**
-   * TODO
-   * @public
+   * Este método establece las coordenadas del "popup".
+   *
    * @function
-   * @api stable
+   * @param {Array} coord Coordenadas para el "popup".
+   * @public
+   * @api
    */
   setCoordinate(coord) {
     const popup = this.getPopup();

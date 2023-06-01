@@ -3,48 +3,37 @@
 </p>
 <h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.QueryAttributes</small></h1>
 
-<p align="center">
-  <a title="MIT License" href="LICENSE.md">
-    <img src="https://img.shields.io/badge/license-EUPL-blue.svg">
-  </a>
-  <a title="Node version" href="#">
-    <img src="https://img.shields.io/badge/node-v14.16-blue">
-  </a>  
-  <a title="NPM version" href="#">
-    <img src="https://img.shields.io/badge/npm-v6.14-blue">
-  </a>  
-  <br />
-  <br />
-</p>
-
-## Descripción 👷
+# Descripción
 
 Plugin que permite aplicar filtros sobre las capas de un mapa y visualizar de forma gráfica las features que cumplen los filtros. Permite guardar consultas, combinarlas y exportar los resultados de estas.
 
-## Dependencias 👷
+# Dependencias
 
-- queryattributes.ol.min.js
-- queryattributes.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **queryattributes.ol.min.js**
+- **queryattributes.ol.min.css**
 
 ```html
- <link href="../../plugins/queryattributes/queryattributes.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/queryattributes/queryattributes.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/queryattributes/queryattributes.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/queryattributes/queryattributes.ol.min.js"></script>
 ```
 
-## Parámetros 👷
+# Parámetros
 
-El constructor se inicializa con un JSON de _options_ con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
-- **collapsed**. Indica si el plugin viene cerrado por defecto (true/false).
-- **collapsible**. Indica si el plugin se puede cerrar (true/false).
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right
-  - 'BL':bottom left
-  - 'BR':bottom right
-- **filters**: Cuando toma el valor false, en cada panning muestra en la tabla los registros que se encuentran en el bounding box de la pantalla. Cuando toma valor tres, muestra botones para establecer filtro por bounding box o por poligono trazado por el usuario.
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
+- **tooltip**. Tooltip que se muestra sobre el plugin. Por defecto: Tabla de atributos.
+- **filters**: Cuando toma el valor false, en cada cambio de zoom muestra en la tabla los registros que se encuentran en el bounding box de la pantalla. Cuando toma valor true, muestra botones para establecer filtro por bounding box o por polígono trazado por el usuario. Por defecto: true.
 - **refreshBBOXFilterOnPanning**: define el comportamiento del filtro de vista al activarse. Si es *true*, se reevalúa después de cada panning o cambio de zoom. Si su valor es *false*, sólo se aplica la primera vez con los elementos en pantalla, y no se vuelve a calcular después de cada panning. Por defecto es *false*.
-- **configuration**: aquí definimos el aspecto y el tratamiento de lso campos de la capa vectorial dentro de la tabla de atributos.
+- **configuration**: aquí definimos el aspecto y el tratamiento de los campos de la capa vectorial dentro de la tabla de atributos. Si no se define, aparece por consola una alerta y se carga una configuración por defecto. Por defecto: { columns: [] }
   - **layer**: nombre de la capa cuyos elementos se mostrarán en la tabla de atributos, especificada en su propiedad *name*.
   - **pk**: nombre del atributo que actúa como clave principal.
   - **initialsort**: aquí indicamos el campo por el que se ordena inicialmente
@@ -54,17 +43,17 @@ El constructor se inicializa con un JSON de _options_ con los siguientes atribut
 
 ### 🔸 Definición de campos
 
-Cada campo de la capa vectorial necesita un objeto para definirlo. Los atributos del objeto son
+Cada campo de la capa vectorial necesita un objeto para definirlo. Los atributos del objeto son:
 
 * **name**: nombre del campo en el *feature*.
-* **alias**: denominación del campo para mostrar,
+* **alias**: denominación del campo para mostrar.
 * **visible**: true/false. Se muestra o no en la tabla.
 * **searchable**: true/false. Indicamos si el campo atiende a filtros de texto.
 * **showpanelinfo**: true/false. Indicamos si el campo se muestra o no en la ventana de información.
 * **align**: right/left. Alineación horizontal en la celdilla de la tabla
 * **type**: tipo del campo
   * **string**: tipo de cadena. Por defecto.
-  * **image**: contiene la URL de una imagen. La imagen se  mostrarla en la tabla.
+  * **image**: contiene la URL de una imagen. La imagen se  mostrará en la tabla.
   * **linkURL**: contiene una URL. Se muestra dentro de un hipervínculo.
   * **buttonURL**: contiene una URL. Se muestra dentro de un botón.
   * **formatter**: repite un carácter formateado un número especificado de veces.
@@ -73,11 +62,92 @@ Cada campo de la capa vectorial necesita un objeto para definirlo. Los atributos
   * **buttonURL**: texto que figura en el botón.
   * **formatter**: valor que se repite.
 
-
-## Ejemplo de definición del plugin
+# API-REST
 
 ```javascript
+URL_API?queryattributes=position*collapsed*collapsible*tooltip*filters*refreshBBOXFilterOnPanning
+```
 
+<table>
+  <tr>
+    <td>Parámetros</td>
+    <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
+  </tr>
+  <tr>
+    <td>position</td>
+    <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>collapsed</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor que se muestra sobre el plugin</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>filters</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>refreshBBOXFilterOnPanning</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>configuration</td>
+    <td>{layer:'', pk:'', initialSort: { name:'', dir:''}, columns: [ ]}</td>
+    <td>Base64 ✔️  | Separador ❌ </td>
+  </tr>
+</table>
+
+
+### Ejemplo de uso API-REST
+
+```
+https://componentes.cnig.es/api-core?queryattributes=TR*true*true*atributos*true*true
+```
+
+### Ejemplo de uso API-REST en base64
+En este ejemplo se utiliza el parámetro *configuration* para que la tabla muestre los atributos de la capa *vertices*.
+Se le pasa la capa vertices por url añadiendo lo siguiente: ``` &layers=GeoJSON*vertices*https://projects.develmap.com/attributestable/roivertexcenterred.geojson*true ``` 
+
+Ejemplo de constructor del plugin: 
+``` javascript
+{
+  position: 'TL',
+  tooltip: 'Consulta de atributos',
+  refreshBBOXFilterOnPanning: true,
+  configuration: {
+    layer: 'vertices',
+    pk: 'id',
+    initialSort: { name: 'nombre', dir: 'asc' },
+    columns: [
+      { name: 'id', alias: 'Identificador', visible: false, searchable: false, showpanelinfo: true, align: 'right', type: 'string'},
+      { name: 'nombre', alias: 'Nombre Vértice', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
+      { name: 'urlficha', alias: 'URL PDF Ficha', visible: true, searchable: false, showpanelinfo: true, align: 'left', type: 'linkURL', typeparam:'Ficha vértice'},
+      { name: 'imagemtn50', alias: 'Imagen Hoja MTN50', visible: true, searchable: false, showpanelinfo: true, align: 'left', type: 'image'},
+    ],
+  },
+}
+```
+```
+https://componentes.cnig.es/api-core/?queryattributes=base64=e3Bvc2l0aW9uOiAnVEwnLCB0b29sdGlwOiAnQ29uc3VsdGEgZGUgYXRyaWJ1dG9zJywgcmVmcmVzaEJCT1hGaWx0ZXJPblBhbm5pbmc6IHRydWUsIGNvbmZpZ3VyYXRpb246IHsgbGF5ZXI6ICd2ZXJ0aWNlcycsIHBrOiAnaWQnLCBpbml0aWFsU29ydDogeyBuYW1lOiAnbm9tYnJlJywgZGlyOiAnYXNjJyB9LCBjb2x1bW5zOiBbIHsgbmFtZTogJ2lkJywgYWxpYXM6ICdJZGVudGlmaWNhZG9yJywgdmlzaWJsZTogZmFsc2UsIHNlYXJjaGFibGU6IGZhbHNlLCBzaG93cGFuZWxpbmZvOiB0cnVlLCBhbGlnbjogJ3JpZ2h0JywgdHlwZTogJ3N0cmluZyd9LCB7IG5hbWU6ICdub21icmUnLCBhbGlhczogJ05vbWJyZSBWw6lydGljZScsIHZpc2libGU6IHRydWUsIHNlYXJjaGFibGU6IHRydWUsIHNob3dwYW5lbGluZm86IHRydWUsIGFsaWduOiAnbGVmdCcsIHR5cGU6ICdzdHJpbmcnfSwgeyBuYW1lOiAndXJsZmljaGEnLCBhbGlhczogJ1VSTCBQREYgRmljaGEnLCB2aXNpYmxlOiB0cnVlLCBzZWFyY2hhYmxlOiBmYWxzZSwgc2hvd3BhbmVsaW5mbzogdHJ1ZSwgYWxpZ246ICdsZWZ0JywgdHlwZTogJ2xpbmtVUkwnLCB0eXBlcGFyYW06J0ZpY2hhIHbDqXJ0aWNlJ30sIHsgbmFtZTogJ2ltYWdlbXRuNTAnLCBhbGlhczogJ0ltYWdlbiBIb2phIE1UTjUwJywgdmlzaWJsZTogdHJ1ZSwgc2VhcmNoYWJsZTogZmFsc2UsIHNob3dwYW5lbGluZm86IHRydWUsIGFsaWduOiAnbGVmdCcsIHR5cGU6ICdpbWFnZSd9XSx9LH0=&layers=GeoJSON*vertices*https://projects.develmap.com/attributestable/roivertexcenterred.geojson*true,TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/%7Bz%7D/%7Bx%7D/%7B-y%7D.jpeg*true*false*17
+```
+
+# Ejemplo de uso
+
+```javascript
 const map = M.map({
   container: 'map'
 });
@@ -104,10 +174,10 @@ const mp = new QueryAttributes({
       { name: 'xutmetrs89', alias: 'Coordenada X', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
       { name: 'yutmetrs89', alias: 'Coordenada Y', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
       { name: 'horto', alias: 'Altitud Ortométrica', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
-      { name: 'calidad', alias: 'Calidad', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'formatter', typeparam:'⭐️'},
+      { name: 'calidad', alias: 'Calidad', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'formatter', typeparam:'*'},
       { name: 'nivel', alias: 'Vida útil', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'percentage'},
       { name: 'urlficha', alias: 'URL PDF Ficha', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'linkURL'},
-      { name: 'urlcdd', alias: 'Descargas', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'buttonURL', typeparam:'🔗 Acceder'},
+      { name: 'urlcdd', alias: 'Descargas', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'buttonURL', typeparam:'Acceder'},
       { name: 'nivel', alias: 'Vida útil', visible: true, searchable: true, showpanelinfo: true, align: 'left', type: 'percentage'},
       { name: 'hojamtn50', alias: 'Hoja MTN50', visible: false, searchable: true, showpanelinfo: true, align: 'right', type: 'string'},
       { name: 'summary', alias: 'Localización', visible: false, searchable: true, showpanelinfo: true, align: 'left', type: 'string'},
@@ -120,7 +190,7 @@ map.addPlugin(mp);
 ```
 
 
-## 📸 Capturas 👷
+## 📸 Capturas
 
 ### 🔸 Elementos de estilo
 
@@ -138,3 +208,62 @@ map.addPlugin(mp);
 ### 🔸 Ventana de información
 
 <img src='assets/captura02.jpg' style='width:400px;'>
+
+# 👨‍💻 Desarrollo
+
+Para el stack de desarrollo de este componente se ha utilizado
+
+* NodeJS Version: 14.16
+* NPM Version: 6.14.11
+* Entorno Windows.
+
+## 📐 Configuración del stack de desarrollo / *Work setup*
+
+
+### 🐑 Clonar el repositorio / *Cloning repository*
+
+Para descargar el repositorio en otro equipo lo clonamos:
+
+```bash
+git clone [URL del repositorio]
+```
+
+### 1️⃣ Instalación de dependencias / *Install Dependencies*
+
+```bash
+npm i
+```
+
+### 2️⃣ Arranque del servidor de desarrollo / *Run Application*
+
+```bash
+npm run start
+```
+
+## 📂 Estructura del código / *Code scaffolding*
+
+```any
+/
+├── src 📦                  # Código fuente
+├── task 📁                 # EndPoints
+├── test 📁                 # Testing
+├── webpack-config 📁       # Webpack configs
+└── ...
+```
+## 📌 Metodologías y pautas de desarrollo / *Methodologies and Guidelines*
+
+Metodologías y herramientas usadas en el proyecto para garantizar el Quality Assurance Code (QAC)
+
+* ESLint
+  * [NPM ESLint](https://www.npmjs.com/package/eslint) \
+  * [NPM ESLint | Airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
+
+## ⛽️ Revisión e instalación de dependencias / *Review and Update Dependencies*
+
+Para la revisión y actualización de las dependencias de los paquetes npm es necesario instalar de manera global el paquete/ módulo "npm-check-updates".
+
+```bash
+# Install and Run
+$npm i -g npm-check-updates
+$ncu
+```

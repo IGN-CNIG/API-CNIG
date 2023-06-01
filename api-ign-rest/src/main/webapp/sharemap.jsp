@@ -46,19 +46,51 @@
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
-        <label for="selectURL">Parámetro URL</label>
-        <input type="text" id="selectURL" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-core/" />
+        <label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" id="inputTooltip" value="¡Copiado!" />
+        <label for="selectURL">Parámetro baseUrl</label>
+        <input type="text" id="selectURL" list="urlSug" value="https://mapea-lite.desarrollo.guadaltel.es/api-core/"/>
         <datalist id="urlSug">
             <option value="https://mapea-lite.desarrollo.guadaltel.es/api-core/"></option>
             <option value="https://componentes.ign.es/api-core/"></option>
         </datalist>
-        <!-- <label for="selectURLAPI">Parámetro URL API</label>
+        <label for="selectMinimize">Selector minimize</label>
+        <select name="selectMinimize" id="selectMinimize">
+            <option value=true>true</option>
+            <option value=false selected>false</option>
+        </select>
+        <label for="inputTitle">Parámetro title</label>
+        <input type="text" id="inputTitle" value="Compartir Mapa" />
+        <label for="inputBtn">Parámetro btn</label>
+        <input type="text" id="inputBtn" value="OK" />
+        <label for="inputCopyBtn">Parámetro copyBtn</label>
+        <input type="text" id="inputCopyBtn" value="Copiar" />
+        <label for="inputText">Parámetro text</label>
+        <input type="text" id="inputText" value="HTML embebido" />
+        <label for="inputCopyBtnHtml">Parámetro copyBtnHtml</label>
+        <input type="text" id="inputCopyBtnHtml" value="Copiar" />
+        <label for="selectOverwriteStyles">Selector overwriteStyles</label>
+        <select name="selectOverwriteStyles" id="selectOverwriteStyles">
+            <option value=true>true</option>
+            <option value=false selected>false</option>
+        </select>
+        <label for="inputStylesPC">Styles: Color primario</label>
+        <input type="color" id="inputStylesPC" value="#71a7d3"/>
+        <label for="inputStylesSC">Styles: Color secundario</label>
+        <input type="color" id="inputStylesSC" value="#ffffff"/>       
+        <label for="selectURLAPI">Parámetro URL API</label>
         <select name="selectURLAPI" id="selectURLAPI">
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select> -->
+            <option value="true">true</option>
+            <option value="false" selected>false</option>
+        </select>
+        <label for="selectShareLayer">Selector sharelayer</label>
+        <select name="selectShareLayer" id="selectShareLayer">
+            <option value=true>true</option>
+            <option value=false selected>false</option>
+        </select>
+        <label for="inputFilterLayers">Parámetro filterLayers (separado por ,)</label>
+        <input type="text" name="filterLayers" id="inputFilterLayers" value="AU.AdministrativeUnit"/>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
-        <input type="submit" id="buttonAPI" value="API Rest" />
 
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -84,6 +116,11 @@
             container: 'mapjs',
             zoom: 3,
         });
+
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.ShareMap(propiedades);
+            map.addPlugin(mp);
+        }
 
         const layerinicial = new M.layer.WMS({
             url: 'http://www.ign.es/wms-inspire/unidades-administrativas?',
@@ -112,43 +149,77 @@
         map.addLayers([ocupacionSuelo, layerinicial, layerUA]);
 
         let mp = undefined;
-        let posicion = 'TR';
-        let url = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
-        // let urlAPI = true;
-        crearPlugin({
-            position: posicion,
-            baseUrl: url,
-            // urlAPI: urlAPI,
+        crearPlugin({ 
+        	position: "TR",
+	        tooltip: "¡Copiado!",
+	        minimize: false,
+	        title: "Compartir Mapa",
+	        btn: "OK",
+	        copyBtn: "Copiar",
+	        text: "HTML embebido",
+	        copyBtnHtml: "Copiar",
+	        shareLayer: false,
+	        filterLayers: ['AU.AdministrativeUnit'],
+	        urlAPI: false,
         });
 
         const selectURL = document.getElementById("selectURL");
-        // const selectURLAPI = document.getElementById("selectURLAPI");
+        const selectURLAPI = document.getElementById("selectURLAPI");
         const selectPosicion = document.getElementById("selectPosicion");
-        const buttonApi = document.getElementById("buttonAPI");
+        const inputTooltip = document.getElementById("inputTooltip");
+        const selectMinimize = document.getElementById("selectMinimize");
+        const inputTitle = document.getElementById("inputTitle");
+        const inputBtn = document.getElementById("inputBtn");
+        const inputCopyBtn = document.getElementById("inputCopyBtn");
+        const inputText = document.getElementById("inputText");
+        const inputCopyBtnHtml = document.getElementById("inputCopyBtnHtml");
+        const selectShareLayer = document.getElementById("selectShareLayer");
+        const selectOverwriteStyles = document.getElementById("selectOverwriteStyles");
+        const inputStylesPC = document.getElementById("inputStylesPC");          
+        const inputStylesSC = document.getElementById("inputStylesSC");
+        const inputFilterLayers = document.getElementById("inputFilterLayers");          
+        
 
         selectURL.addEventListener('change', cambiarTest);
         selectPosicion.addEventListener('change', cambiarTest);
-        // selectURLAPI.addEventListener('change', cambiarTest);
-
-        buttonApi.addEventListener('click', function() {
-            url = selectURL.value;
-            posicion = selectPosicion.options[selectPosicion.selectedIndex].value;
-            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core/?sharemap=' + url + '*' + posicion;
-        })
+        selectURLAPI.addEventListener('change', cambiarTest);
+        inputTooltip.addEventListener('change', cambiarTest);
+        selectMinimize.addEventListener('change', cambiarTest);
+        inputTitle.addEventListener('change', cambiarTest);
+        inputBtn.addEventListener('change', cambiarTest);
+        inputCopyBtn.addEventListener('change', cambiarTest);
+        inputText.addEventListener('change', cambiarTest);
+        inputCopyBtnHtml.addEventListener('change', cambiarTest);
+        selectShareLayer.addEventListener('change', cambiarTest);
+        inputStylesPC.addEventListener('change', cambiarTest);
+        inputStylesSC.addEventListener('change', cambiarTest);
+        inputFilterLayers.addEventListener('change', cambiarTest);
+        selectOverwriteStyles.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
-            let objeto = {}
-            url = selectURL.value != "" ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
+            let objeto = {};
+            let styles = {};
+            (selectURL.value != "") ? objeto.baseUrl = selectURL.value : objeto.baseUrl = window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/";
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            // objeto.urlAPI = selectURLAPI.options[selectURLAPI.selectedIndex].value;
+            (inputTooltip.value != "¡Copiado!") ? objeto.tooltip = inputTooltip.value : "¡Copiado!";
+            objeto.minimize = (selectMinimize.options[selectMinimize.selectedIndex].value === 'true');
+            (inputTitle.value != "") ? objeto.title = inputTitle.value : "Compartir Mapa";
+            (inputBtn.value != "") ? objeto.btn = inputBtn.value : "OK";
+            (inputCopyBtn.value != "") ? objeto.copyBtn = inputCopyBtn.value : "Copiar";
+            (inputText.value != "") ? objeto.text = inputText.value : "HTML embebido";
+            (inputCopyBtnHtml.value != "")? objeto.copyBtnHtml = inputCopyBtnHtml.value : "Copiar";
+            objeto.shareLayer = (selectShareLayer.options[selectShareLayer.selectedIndex].value === 'true');
+            (inputFilterLayers.value != "") ? objeto.filterLayers = inputFilterLayers.value.split(',') : ['AU.AdministrativeUnit'];
+            objeto.overwriteStyles = (selectOverwriteStyles.options[selectOverwriteStyles.selectedIndex].value === 'true');
+			(inputStylesPC.value != "") ? styles.primaryColor = inputStylesPC.value : "#71a7d3";
+            (inputStylesSC.value != "") ? styles.secondaryColor = inputStylesSC.value : "#ffffff";
+            objeto.styles = styles;
+               
+            objeto.urlAPI = selectURLAPI.options[selectURLAPI.selectedIndex].value;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
 
-        function crearPlugin(propiedades) {
-            mp = new M.plugin.ShareMap(propiedades);
-            map.addPlugin(mp);
-        }
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
@@ -157,12 +228,12 @@
 </body>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CTLHMMB5YT"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-163660977-1');
+  gtag('config', 'G-CTLHMMB5YT');
 </script>
 
 </html>

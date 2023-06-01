@@ -16,18 +16,38 @@ import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
+ * KML (Keyhole Markup Language). Las capas KML pueden ser estáticas o dinámicas.
+ *
  * @api
+ * @extends {M.impl.layer.Vector}
  */
 class KML extends Vector {
   /**
    * @classdesc
-   * Main constructor of the class. Creates a KML layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa KML
+   * con parámetros especificados por el usuario.
    *
    * @constructor
    * @implements {M.impl.layer.Vector}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
+   * - label: Etiquetado.
+   * - visibility: Define si la capa es visible o no.
+   * - style: Define el estilo de la capa.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
+   * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
+   * - opacity. Opacidad de capa, por defecto 1.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceVector({
+   *    attributions: 'kml',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(options, vendorOptions) {
@@ -35,51 +55,42 @@ class KML extends Vector {
     super(options, vendorOptions);
 
     /**
-     * Popup showed
-     * @private
-     * @type {M.impl.Popup}
+     * KML popup_. Muestra el popup.
      */
     this.popup_ = null;
 
     /**
-     * Tab popup
-     * @private
-     * @type {Object}
+     * KML tabPopup_. Ventana del popup.
      */
     this.tabPopup_ = null;
 
     /**
-     *
-     * @private
-     * @type {Promise}
+     * KML loadFeaturesPromise_. Carga los objetos geográficos de forma asincrona.
      */
     this.loadFeaturesPromise_ = null;
 
     /**
-     * Image tag for the screenOverlay
-     * @private
-     * @type {HTMLElement}
+     * KML screenOverlayImg_. Etiqueta de imagen para la superposición de pantalla.
      */
     this.screenOverlayImg_ = null;
 
     /**
-     * @private
-     * @type {bool}
+     * KML label_. Determina si tiene una etiqueta o no.
      */
     this.label_ = options.label;
 
     /**
-     * Visibility of the layer
-     * @private
-     * @type {bool}
+     * KML Visibility. Define si la capa es visible o no. Verdadero por defecto.
      */
     this.visibility = options.visibility == null ? true : options.visibility;
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método sobrescribe la visilibidad de la capa.
    *
    * @function
+   * @param {Boolean} visibility Define si la capa es visible o no.
+   * Verdadero por defecto.
    * @api stable
    */
   setVisible(visibility) {
@@ -101,11 +112,11 @@ class KML extends Vector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método añade la capa al mapa.
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.impl.Map} map Implementación del mapa.
    * @api stable
    */
   addTo(map) {
@@ -131,11 +142,10 @@ class KML extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método selecciona un objeto geográfico.
    * @public
    * @function
-   * @param {ol.Feature} feature
+   * @param {ol.Feature} feature Objeto geográfico de Openlayers.
    * @api stable
    */
   selectFeatures(features, coord, evt) {
@@ -173,12 +183,11 @@ class KML extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Evento que se produce cuando se deja de hacer clic sobre
+   * un objeto geográfico.
    *
    * @public
    * @function
-   * @param {ol.Feature} feature
    * @api stable
    */
   unselectFeatures() {
@@ -189,10 +198,12 @@ class KML extends Vector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método sobrescribe la fuente de la capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @public
    * @function
+   * @api stable
    */
   updateSource_() {
     if (isNullOrEmpty(this.vendorOptions_.source)) {
@@ -216,10 +227,11 @@ class KML extends Vector {
   }
 
   /**
-   * Sets the screen overlay image for this KML
+   * Establece la imagen de superposición de pantalla para este archivo KML.
    *
    * @public
    * @function
+   * @param {HTMLElement} screenOverlayImg Imagen de superposición de pantalla.
    * @api stable
    */
   setScreenOverlayImg(screenOverlayImg) {
@@ -227,8 +239,8 @@ class KML extends Vector {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
    *
    * @public
    * @function
@@ -248,7 +260,7 @@ class KML extends Vector {
   }
 
   /**
-   * This function destroys KML popup
+   * Este método destruye el KML del popup.
    *
    * @public
    * @function
@@ -265,12 +277,13 @@ class KML extends Vector {
   }
 
   /**
-   * This function return extent of all features or discriminating by the filter
+   * Este método devuelve la extensión de todos los objetos geográficos, se le puede
+   * pasar un filtro.
    *
    * @function
-   * @param {boolean} skipFilter - Indicates whether skip filter
-   * @param {M.Filter} filter - Filter to execute
-   * @return {Array<number>} Extent of features
+   * @param {boolean} skipFilter Indica si se utilizará el filtro de tipo "skip".
+   * @param {M.Filter} filter Filtro que se ejecutará.
+   * @return {Array<number>} Extensión de los objetos geográficos.
    * @api stable
    */
   getFeaturesExtent(skipFilter, filter) {
@@ -281,12 +294,13 @@ class KML extends Vector {
   }
 
   /**
-   * This function return extent of all features or discriminating by the filter
+   * Este método devuelve la extensión de todos los objetos geográficos, se le puede
+   * pasar un filtro. Este método es asincrono.
    *
    * @function
-   * @param {boolean} skipFilter - Indicates whether skip filter
-   * @param {M.Filter} filter - Filter to execute
-   * @return {Array<number>} Extent of features
+   * @param {boolean} skipFilter Indica si se utilizará el filtro de tipo "skip".
+   * @param {M.Filter} filter Filtro que se ejecutará.
+   * @return {Array<number>} Extensión de los objetos geográficos.
    * @api stable
    */
   getFeaturesExtentPromise(skipFilter, filter) {
@@ -306,9 +320,14 @@ class KML extends Vector {
   }
 
   /**
+   * Petición de objetos geográficos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @public
    * @function
+   * @returns {M.layer.GeoJSON.impl.loadFeaturesPromise_} Devuelve los objetos geográficos
+   * tras realizar la petición, asincrono.
+   * @api stable
    */
   requestFeatures_() {
     if (isNullOrEmpty(this.loadFeaturesPromise_)) {
@@ -323,10 +342,12 @@ class KML extends Vector {
 
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Esta función comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api stable
    */
   equals(obj) {

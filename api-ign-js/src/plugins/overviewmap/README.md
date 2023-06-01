@@ -1,51 +1,186 @@
-# M.plugin.OverviewMap
+<p align="center">
+  <img src="https://www.ign.es/resources/viewer/images/logoApiCnig0.5.png" height="152" />
+</p>
+<h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.OverviewMap</small></h1>
 
-Muestra una previsualización de la zona donde está centrado el mapa.
+# Descripción
+
+Plugin que muestra una previsualización de la zona donde está centrado el mapa.
 
 # Dependencias
 
-- overviewmap.ol.min.js
-- overviewmap.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **overviewmap.ol.min.js**
+- **overviewmap.ol.min.css**
 
 
 ```html
- <link href="../../plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/overviewmap/overviewmap.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/overviewmap/overviewmap.ol.min.js"></script>
 ```
 
 # Parámetros
 
-- El constructor se inicializa con dos objetos de opciones. El primero contiene el atributo 'position' y el segundo los atributos 'collapsed' y 'collapsible', descritos a continuación.
+El constructor se inicializa con dos objetos JSON. El primero contiene el atributo 'position' y el segundo los atributos 'collapsed' y 'collapsible', descritos a continuación:
 
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (por defecto)
-  - 'TR':top right
-  - 'BL':bottom left 
-  - 'BR':bottom right
-- **collapsed**. Indica si el plugin aparece abierto por defecto (true/false).
-- **collapsible**. Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false).
-- **fixed**. Indice si el mapa del plugin permanece a un zoom fijo.
-- **zoom**. Indice el nivel del zoom al que permanecerá fijo el mapa del plugin.
-- **baseLayer**. URL de la capa base si se quiere prefijar 1.
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha (por defecto).
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
+- **tooltip**. Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información). Por defecto: Mapa de situación.
+- **fixed**: Indica si el mapa del plugin permanece a un zoom fijo (true/false). Por defecto: false.
+- **zoom**: Indica el nivel del zoom al que permanecerá fijo el mapa del plugin. Por defecto: '' (cadena vacía).
+- **baseLayer**: URL de la capa base si se quiere prefijar una en el plugin overviewmap. Por defecto: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true'
 
-
-# Ejemplos de uso
+# API-REST
 
 ```javascript
-   const map = M.map({
-     container: 'map'
-   });
+URL_API?overviewmap=position*!collapsed*!collapsible*!tooltip*!fixed*!zoom*!baseLayer
+```
 
-   const mp = new M.plugin.OverviewMap({
-      position: 'BR',
-      fixed: true,
-      zoom: 4,
-      //baseLayer: 'WMS*PNOA 2017*https://www.ign.es/wms/pnoa-historico?*PNOA2017*true*true', Ejemplo WMS
-      baseLayer: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true', //Ejemplo WMTS
-    }, {
-      collapsed: false,
-      collapsible: true,
-    });
+<table>
+  <tr>
+    <td>Parámetros</td>
+    <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
+  </tr>
+  <tr>
+    <td>position</td>
+    <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>collapsed</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+   <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Texto informativo</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>fixed</td>
+    <td>true/false</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>zoom</td>
+    <td>Nivel de zoom del mapa</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>baseLayer</td>
+    <td>URL de la capa base</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+</table>
 
-   map.addPlugin(mp);
+
+### Ejemplos de uso API-REST
+
+```
+https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!Mapa*!true*!5*!WMS*PNOA%202017*https://www.ign.es/wms/pnoa-historico?*PNOA2017*true*true
+```
+
+```
+https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!Mapa
+```
+
+### Ejemplo de uso API-REST en base64
+
+```
+Ejemplo de constructor: {"position":"BR","fixed":true,"zoom":4,"baseLayer":"WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true","collapsed":false,"collapsible":false, "tooltip":"Mapa"}
+
+https://componentes.cnig.es/api-core?overviewmap=base64=eyJwb3NpdGlvbiI6IkJSIiwiZml4ZWQiOnRydWUsInpvb20iOjQsImJhc2VMYXllciI6IldNVFMqaHR0cDovL3d3dy5pZ24uZXMvd210cy9pZ24tYmFzZT8qSUdOQmFzZVRvZG8qR29vZ2xlTWFwc0NvbXBhdGlibGUqTWFwYSBJR04qZmFsc2UqaW1hZ2UvanBlZypmYWxzZSpmYWxzZSp0cnVlIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOmZhbHNlLCAidG9vbHRpcCI6Ik1hcGEifQ==
+
+```
+
+# Ejemplo de uso
+
+```javascript
+  const map = M.map({
+    container: 'map'
+  });
+
+  const mp = new M.plugin.OverviewMap({
+    position: 'BR',
+    fixed: true,
+    zoom: 4,
+    //baseLayer: 'WMS*PNOA 2017*https://www.ign.es/wms/pnoa-historico?*PNOA2017*true*true', Ejemplo WMS
+    baseLayer: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true', //Ejemplo WMTS
+  }, {
+    collapsed: false,
+    collapsible: true,
+  });
+
+  map.addPlugin(mp);
+```
+
+# 👨‍💻 Desarrollo
+
+Para el stack de desarrollo de este componente se ha utilizado
+
+* NodeJS Version: 14.16
+* NPM Version: 6.14.11
+* Entorno Windows.
+
+## 📐 Configuración del stack de desarrollo / *Work setup*
+
+
+### 🐑 Clonar el repositorio / *Cloning repository*
+
+Para descargar el repositorio en otro equipo lo clonamos:
+
+```bash
+git clone [URL del repositorio]
+```
+
+### 1️⃣ Instalación de dependencias / *Install Dependencies*
+
+```bash
+npm i
+```
+
+### 2️⃣ Arranque del servidor de desarrollo / *Run Application*
+
+```bash
+npm run start
+```
+
+## 📂 Estructura del código / *Code scaffolding*
+
+```any
+/
+├── src 📦                  # Código fuente
+├── task 📁                 # EndPoints
+├── test 📁                 # Testing
+├── webpack-config 📁       # Webpack configs
+└── ...
+```
+## 📌 Metodologías y pautas de desarrollo / *Methodologies and Guidelines*
+
+Metodologías y herramientas usadas en el proyecto para garantizar el Quality Assurance Code (QAC)
+
+* ESLint
+  * [NPM ESLint](https://www.npmjs.com/package/eslint) \
+  * [NPM ESLint | Airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
+
+## ⛽️ Revisión e instalación de dependencias / *Review and Update Dependencies*
+
+Para la revisión y actualización de las dependencias de los paquetes npm es necesario instalar de manera global el paquete/ módulo "npm-check-updates".
+
+```bash
+# Install and Run
+$npm i -g npm-check-updates
+$ncu
 ```

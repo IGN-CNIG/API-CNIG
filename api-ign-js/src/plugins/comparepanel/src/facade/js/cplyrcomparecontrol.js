@@ -150,8 +150,20 @@ export default class LyrCompareControl extends M.Control {
   createView(map) {
 
     this.map = map;
+
+    // Se hace esto para poder añadir ol3Layers a la instancia
+    // this.layers. Ol3Layers tiene valor cuando se añade al mapa
+    this.map.on(M.evt.ADDED_LAYER, (evt) => {
+      evt.forEach((l) => {
+       if (l.type === 'WMS' || l.type === 'WMTS') {
+        this.layers = this.layers.map((layers) => {
+          return (layers.name !== l.name) ? layers : l;
+        })
+      }
+      })
+    });
+
     return new Promise((success, fail) => {
-      this.layers = this.transformToLayers(this.layers);
       if (this.layers.length >= 2) {
         if (this.comparisonMode === 3 && this.layers.length < 4) {
           M.dialog.error(getValue('no_layers_plugin'), 'lyrcompare');
@@ -310,7 +322,10 @@ export default class LyrCompareControl extends M.Control {
     this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
       item.addEventListener('change', evt => {
         const layer = this.layers.filter((layer) => {
-          return layer.name === evt.target.value
+          if(layer.name === evt.target.value) {
+            this.map.addLayers(layer);
+            return layer;
+          }
         });
 
         let lstLayers = [];
@@ -380,9 +395,15 @@ export default class LyrCompareControl extends M.Control {
           this.layerSelectedD = layer[0];
         }
 
-        this.removeEffectsComparison();
-        this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
-      });
+        setTimeout(() => {
+          this.removeEffectsComparison();
+          this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);  
+          this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
+          this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);  
+          this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
+          this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);  
+        }, 1000);
+       });
     });
   }
 
@@ -422,8 +443,11 @@ export default class LyrCompareControl extends M.Control {
    */
   activateCurtain() {
     this.activeDefault();
-    this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
-    this.updateControls();
+    setTimeout(() => {
+      this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
+      this.updateControls();
+    }, 1000);
+   
   }
 
   /**
@@ -437,21 +461,29 @@ export default class LyrCompareControl extends M.Control {
     if (this.layerSelectedA === null) {
       this.layerSelectedA = this.layers[this.defaultLyrA];
       this.template.querySelector('#m-lyrcompare-lyrA').selectedIndex = this.defaultLyrA;
+      if(this.map.getLayers().some((l) => l.name === this.layerSelectedA.name));
+      this.map.addLayers(this.layerSelectedA);
     }
 
     if (this.layerSelectedB === null) {
       this.layerSelectedB = this.layers[this.defaultLyrB];
       this.template.querySelector('#m-lyrcompare-lyrB').selectedIndex = this.defaultLyrB;
+      if(this.map.getLayers().some((l) => l.name === this.layerSelectedB.name));
+      this.map.addLayers(this.layerSelectedB);
     }
 
     if (this.layerSelectedC === null) {
       this.layerSelectedC = this.layers[this.defaultLyrC];
       this.template.querySelector('#m-lyrcompare-lyrC').selectedIndex = this.defaultLyrC;
+      if(this.map.getLayers().some((l) => l.name === this.layerSelectedC.name));
+      this.map.addLayers(this.layerSelectedC);
     }
 
     if (this.layerSelectedD === null) {
       this.layerSelectedD = this.layers[this.defaultLyrD];
       this.template.querySelector('#m-lyrcompare-lyrD').selectedIndex = this.defaultLyrD;
+      if(this.map.getLayers().some((l) => l.name === this.layerSelectedD.name));
+      this.map.addLayers(this.layerSelectedD);
     }
   }
 
@@ -644,100 +676,6 @@ export default class LyrCompareControl extends M.Control {
 
     return res;
   }
-
-
-  /**
-   *
-   * @param {*} layers
-   * Transform StringLayers o Template Literals to Mapea M.LayerFormato
-   *
-   * WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
-   * Tipo de Servicio (WMS/WMTS)
-   * Nombre del servicio para la leyenda (acepta espacios y tildes)
-   * URL del servicio, con protocolo. Omitir la ? final.
-   * Identificador de capa del Capabilities del servicio
-   * Tilematrix
-   * Formato de imagen
-   *
-   * Ejemplo: WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg
-   *
-   * El resto de parámetros los define la función
-   * Las capas cargadas tienen asignados zIndex pequeños
-   *
-   * @returns
-   */
-  transformToLayers(layers) {
-
-    const transform = layers.map((layer) => {
-      let newLayer = null;
-      if (!(layer instanceof Object)) {
-        if (layer.indexOf('*') >= 0) {
-          const urlLayer = layer.split('*');
-          // console.log(urlLayer);
-          if (urlLayer[0].toUpperCase() === 'WMS') {
-            newLayer = new M.layer.WMS({
-              url: urlLayer[2],
-              name: urlLayer[3],
-              legend: urlLayer[1],
-            });
-
-            if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
-              newLayer = this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0];
-              newLayer.legend = urlLayer[1] || newLayer.name;
-            } else {
-              this.map.addLayers(newLayer);
-            }
-
-          } else if (urlLayer[0].toUpperCase() === 'WMTS') {
-
-            newLayer = new M.layer.WMTS({
-              url: urlLayer[2] + '?',
-              name: urlLayer[3],
-              legend: urlLayer[1],
-              matrixSet: urlLayer[4],
-              transparent: true,              // Es una capa Overlay -> zIndex > 0
-              displayInLayerSwitcher: false,  // No aparece en el TOC
-              queryable: false,               // No GetFeatureInfo
-              visibility: false,              // Visible a false por defecto
-              format: urlLayer[5],
-            }), this.map.addWMTS(newLayer);
-          }
-
-        } else {
-          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
-          newLayer = this.isValidLayer(layerByName) ? layerByName : null;
-        }
-      } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[0];
-        newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
-      }
-
-      if (newLayer !== null) {
-        if (newLayer.getImpl().getOL3Layer() === null) {
-          setTimeout(() => {
-            if (newLayer.type === 'WMS' || newLayer.type === 'WMTS') {
-              newLayer.load = true;
-            } else if (newLayer.type === 'WMTS') {
-              newLayer.facadeLayer_.load = true;
-            }
-          }, 1000);
-        } else {
-          newLayer.load = true;
-        }
-
-        newLayer.displayInLayerSwitcher = false;
-        newLayer.setVisible(false);
-        return newLayer;
-      } else {
-        this.layers.remove(layer);
-      }
-    }, this);
-
-    return (transform[0] === undefined) ? [] : transform;
-  }
-
-
-
 
   /**
    * This function transform string to M.Layer

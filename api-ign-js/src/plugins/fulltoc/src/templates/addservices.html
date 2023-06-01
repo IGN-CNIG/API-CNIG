@@ -1,4 +1,6 @@
 <div class="m-fulltoc-addservices" role="main">
+  <div id="loading-fulltoc" class="loading" style="display: none;"></div>
+
     <div class="m-fulltoc-service-type-container">
       <div>
         <input tabindex="0" type="radio" id="m-fulltoc-addservices-wms" name="service-type" value="wms" checked="checked"><label for="m-fulltoc-addservices-wms">WMS</label>
@@ -8,7 +10,9 @@
       </div>
     </div>
     <div tabindex="0" role="menu" class="search-panel">
-        <input tabindex="0" type="text" id="m-fulltoc-addservices-search-input" placeholder="{{translations.url_service}}" class="m-input-search" />
+      <div class="top-buttons">
+       <input tabindex="0" type="text" id="m-fulltoc-addservices-search-input" placeholder="{{translations.url_service}}" class="m-input-search" />
+
         <span tabindex="0" role="button" id="m-fulltoc-addservices-search-btn" class="icon-zoom m-search-btn" title="{{translations.query}}"></span>
         {{#if hasPrecharged}}
           <span tabindex="0" role="button" id="m-fulltoc-addservices-list-btn" class="icon-lista m-search-btn" title="{{translations.loaded_services}}"></span>
@@ -16,7 +20,10 @@
         {{#if codsiActive}}
           <span tabindex="0" role="button" id="m-fulltoc-addservices-codsi-btn" class="icon-codsi m-search-btn" title="{{translations.codsi_services}}"></span>
         {{/if}}
+
+      </div>
         <!-- <span id="m-fulltoc-addservices-clear-btn" class="icon-cancelar m-clear-btn" title="{{translations.clean}}"></span> -->
+        <div id="fromOGCContainer"></div>
     </div>
     <div id="m-fulltoc-addservices-suggestions" style="display: block;">
       <table style="width: 100%;">

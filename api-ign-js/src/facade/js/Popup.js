@@ -13,37 +13,38 @@ import MWindow from './util/Window';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a layer
- * with parameters specified by the user
+ * Crea una ventana
+ * con parámetros especificados por el usuario.
  */
 class Tab {
   /**
+   * Constructor principal de la clase.
    * @constructor
    */
   constructor(options = {}) {
     /**
-     * TODO
+     * Icono.
      * @public
      * @type {String}
      */
     this.icon = options.icon;
 
     /**
-     * TODO
+     * Títulos.
      * @public
      * @type {String}
      */
     this.title = options.title;
 
     /**
-     * TODO
+     * Contenedor.
      * @public
      * @type {String}
      */
     this.content = options.content;
 
     /**
-     * TODO
+     * Eventos.
      * @public
      * @type {Array<object>}
      */
@@ -53,12 +54,14 @@ class Tab {
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a layer
- * with parameters specified by the user
+ * Crea un "popup"
+ * con parámetros especificados por el usuario.
  * @api
  */
 class Popup extends Base {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
    * @extends {M.facade.Base}
    * @api
@@ -70,28 +73,28 @@ class Popup extends Base {
     super(impl);
 
     /**
-     * TODO
+     * Coordenadas.
      * @private
      * @type {Array<Number>}
      */
     this.coord_ = null;
 
     /**
-     * TODO
+     * Ventanas.
      * @private
      * @type {Array<Popup.Tab>}
      */
     this.tabs_ = [];
 
     /**
-     * TODO
+     * Elementos de la ventana.
      * @private
      * @type {HTMLElement}
      */
     this.element_ = null;
 
     /**
-     * TODO
+     * Estatus de la ventana.
      * @private
      * @type {string}
      */
@@ -99,7 +102,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Devuelve la ventana.
    * @public
    * @function
    * @api
@@ -109,7 +112,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Elimina la ventana.
    * @public
    * @function
    * @api
@@ -120,7 +123,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Añade la ventana.
    * @public
    * @function
    * @api
@@ -135,7 +138,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Añade el "popup" al mapa.
    * @public
    * @function
    * @api
@@ -162,7 +165,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Actualiza la ventana.
    * @public
    * @function
    * @api
@@ -186,7 +189,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Muestra la ventana.
    * @public
    * @function
    * @api
@@ -199,7 +202,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Oculta la ventana.
    * @public
    * @function
    * @api
@@ -212,7 +215,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Este método se utiliza para moverse entre ventanas.
    * @public
    * @function
    * @api
@@ -227,7 +230,7 @@ class Popup extends Base {
   }
 
   /**
-   * This functions adds the events to the popup tabs.
+   * Este método añade eventos a la ventana.
    *
    * @function
    * @public
@@ -248,8 +251,9 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
-   * @private
+   * Modifica el contenedor del "popup".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
    */
   setContent_(content) {
@@ -257,18 +261,24 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
-   * @private
+   * Devuelve el contenedor del "popup".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
+   * @return {HTMLElement} Contenedor del "popup".
    */
   getContent() {
     return this.getImpl().getContent();
   }
 
   /**
-   * TODO
-   * @private
+   * Añade los eventos al "popup".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
+   * @param {HTMLElement} html Contenedor del "popup".
    */
   addEvents(htmlParam) {
     const html = htmlParam;
@@ -370,9 +380,12 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
-   * @private
+   * Modifija el estado del "popup".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
+   * @param {string} status Estado del "popup".
    */
   setStatus_(status) {
     if (status !== this.status_) {
@@ -389,9 +402,13 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
-   * @private
+   * Maneja el html del "popup".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
+   * @param {HTMLElement} html Contenedor del "popup".
+   * @param {Event} e Evento.
    */
   manageTransform(e, html) {
     if (html && html.parentElement) {
@@ -404,9 +421,13 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
-   * @private
+   * Maneja el tamaño del "popup".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
+   * @param {number} touchstartY Posición inicial del dedo.
+   * @param {number} touchendY Posición final del dedo.
    */
   manageCollapsiblePopup_(touchstartY, touchendY) {
     const touchPerc = (touchendY * 100) / MWindow.HEIGHT;
@@ -471,7 +492,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Devuelve las coordenadas del "popup".
    * @public
    * @function
    * @api
@@ -481,7 +502,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Modifica las coordenadas del "popup".
    * @public
    * @function
    * @api
@@ -494,7 +515,7 @@ class Popup extends Base {
   }
 
   /**
-   * TODO
+   * Elimina el "popup".
    * @public
    * @function
    * @api
@@ -507,7 +528,7 @@ class Popup extends Base {
 }
 
 /**
- * status of this popup
+ * Estado del "popup".
  * @const
  * @type {object}
  * @public
@@ -516,7 +537,7 @@ class Popup extends Base {
 Popup.status = {};
 
 /**
- * collapsed status of this popup
+ * Estado colapsado del "popup".
  * @const
  * @type {string}
  * @public
@@ -525,7 +546,7 @@ Popup.status = {};
 Popup.status.COLLAPSED = 'm-collapsed';
 
 /**
- * default status of this popup
+ * Estado del "popup" por defecto.
  * @const
  * @type {string}
  * @public
@@ -534,7 +555,7 @@ Popup.status.COLLAPSED = 'm-collapsed';
 Popup.status.DEFAULT = 'm-default';
 
 /**
- * full status of this popup
+ * Estado completo del "popup".
  * @const
  * @type {string}
  * @public

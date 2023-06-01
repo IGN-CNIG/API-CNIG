@@ -26,17 +26,17 @@ Example: <url_mapea>?plugins=toc
 
 # Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **position**. Indica la posición donde se mostrará el plugin sobre el mapa.
-  - 'TL':top left
-  - 'TR':top right (default)
-  - 'BL':bottom left
-  - 'BR':bottom right
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsible**. Si es *true*, el panel del plugin puede abrirse y cerrarse. Por defecto tiene el valor *true*.
-
-- **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Ejemplos de uso
 

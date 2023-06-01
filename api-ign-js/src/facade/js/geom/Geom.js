@@ -1,15 +1,18 @@
 /**
+ * El objeto Geom contiene funciones para la gestión de geometrías.
  * @module M/geom
+ * @example import * as Geom from 'M/geom/Geom';
  */
 import { normalize } from '../util/Utils';
 import * as WKT from './WKT';
 import * as WFS from './WFS';
 
 /**
- * Parses the geometry
+ * Transforma la geometría.
  * @public
  * @function
- * @param {string} rawType the type to be parsed
+ * @param {string} rawType Tipo de geometría a la que se quiere transformar.
+ * @return {Array} Geometría.
  * @api
  */
 export const parse = (rawGeom) => {
@@ -18,10 +21,11 @@ export const parse = (rawGeom) => {
 };
 
 /**
- * Parses the geometry
+ * Transforma la geometría WFS.
  * @public
  * @function
- * @param {string} rawType the type to be parsed
+ * @param {string} rawType Tipo de geometría a la que se quiere transformar.
+ * @return {Array} Geometría.
  * @api
  */
 export const parseWFS = (wfsType) => {
@@ -41,3 +45,13 @@ export const parseWFS = (wfsType) => {
   }
   return parsedWFS;
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

@@ -4,7 +4,9 @@
 import { normalize, isString } from '../util/Utils';
 
 /**
- * WMC type
+ * Tipo WMC (Web Map Context, o Web View Context). Es
+ * un estándar de OGC que permite reproducir una vista
+ * compuesta por capas WMS.
  * @const
  * @type {string}
  * @public
@@ -13,7 +15,8 @@ import { normalize, isString } from '../util/Utils';
 export const WMC = 'WMC';
 
 /**
- * KML type
+ * Tipo KML (Keyhole Markup Language). Es un lenguaje de
+ * marca basado en XML para representar datos geográficos.
  * @const
  * @type {string}
  * @public
@@ -22,7 +25,9 @@ export const WMC = 'WMC';
 export const KML = 'KML';
 
 /**
- * WMS type
+ * Tipo WMS (Web Map Service). Definido por una url,
+ * el servicio puede ofrecer una o muchas capas, individuales
+ * o agrupadas, cada una con un nombre propio.
  * @const
  * @type {string}
  * @public
@@ -31,7 +36,9 @@ export const KML = 'KML';
 export const WMS = 'WMS';
 
 /**
- * WFS type
+ * Tipo WFS (Web Feature Service). Estándar OGC para la
+ * transferencia de información geográfica, donde los elementos o
+ * características geográficas se transmiten en su totalidad al cliente.
  * @const
  * @type {string}
  * @public
@@ -40,7 +47,21 @@ export const WMS = 'WMS';
 export const WFS = 'WFS';
 
 /**
- * WMTS type
+ * OGCAPIFeatures(OGC API - Features) es un estándar que ofrece la
+ * capacidad de crear, modificar y consultar datos
+ * espaciales en la Web y especifica requisitos y recomendaciones para las API que desean seguir una
+ * forma estándar de compartir datos de entidades.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const OGCAPIFeatures = 'OGCAPIFeatures';
+
+/**
+ * Tipo WMTS (Web Map Tile Service). Es un estándar OGC para servir
+ * información geográfica en forma de mosaicos pregenerados en
+ * resoluciones específicas.
  * @const
  * @type {string}
  * @public
@@ -49,7 +70,7 @@ export const WFS = 'WFS';
 export const WMTS = 'WMTS';
 
 /**
- * OSM type
+ * Tipo OSM (Open Street Map).
  * @const
  * @type {string}
  * @public
@@ -58,7 +79,9 @@ export const WMTS = 'WMTS';
 export const OSM = 'OSM';
 
 /**
- * XYZ type
+ * Tipo XYZ. Es un servicio de información geográfica en forma de
+ * mosaicos donde cada uno representa una combinación de tres
+ * parámetros.
  * @const
  * @type {string}
  * @public
@@ -67,7 +90,8 @@ export const OSM = 'OSM';
 export const XYZ = 'XYZ';
 
 /**
- * TMS type
+ * Tipo TMS (Tile Map Service). Servicio de información
+ * geográfica en forma de mosaicos muy similar a las capas XYZ.
  * @const
  * @type {string}
  * @public
@@ -76,7 +100,9 @@ export const XYZ = 'XYZ';
 export const TMS = 'TMS';
 
 /**
- * GeoJSON type
+ * Tipo GeoJSON. Es un formato de intercambio de información
+ * geográfica muy extendido que permite que todos los elementos
+ * estén en el cliente.
  * @const
  * @type {string}
  * @public
@@ -85,7 +111,9 @@ export const TMS = 'TMS';
 export const GeoJSON = 'GeoJSON';
 
 /**
- * Vector type
+ * Tipo Vector. El cliente dispone de los elementos o características
+ * geográficas que forman la capa, y de cada uno de ellos posee a su vez
+ * todos sus atributos.
  * @const
  * @type {string}
  * @public
@@ -94,7 +122,8 @@ export const GeoJSON = 'GeoJSON';
 export const Vector = 'Vector';
 
 /**
- * Vector Tile type
+ * Tipo Vector Tile. Se sirven en forma de teselas que contienen
+ * la información vectorial del área que delimitan.
  * @const
  * @type {string}
  * @public
@@ -103,7 +132,28 @@ export const Vector = 'Vector';
 export const MVT = 'MVT';
 
 /**
- * All layer types
+ * Tipo MBTiles. Es un formato de archivo para contener conjuntos
+ * de imágenes (tilesets) bajo una estructura de base de datos SQLite.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const MBTiles = 'MBTiles';
+
+/**
+ * Tipo Vector Tile. Es un formato de archivo para contener conjuntos
+ * de imágenes (tilesets) en forma de puntos, líneas y polígonos bajo
+ * una estructura de base de datos SQLite.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const MBTilesVector = 'MBTilesVector';
+
+/**
+ * Todos los tipos de capas
  * @const
  * @type {object}
  *
@@ -120,13 +170,19 @@ const layertypes = {
   MVT,
   XYZ,
   TMS,
+  MBTiles,
+  MBTilesVector,
+  OGCAPIFeatures,
 };
 
 /**
- * Parses the type
- * @private
+ * Transforma el tipo de capa a un tipo de capa soportado por API-CNIG.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
  * @function
- * @param {string} rawType the type to be parsed
+ * @param {string} rawType Tipo de capa.
+ * @returns {string} Tipo de capa soportado por API-CNIG.
  */
 export const parse = (rawType) => {
   let type = normalize(rawType, true);
@@ -144,10 +200,11 @@ export const parse = (rawType) => {
 };
 
 /**
- * Parses the type
- * @private
+ * Devuelve los tipos de capa soportados por API-CNIG.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string} rawType the type to be parsed
+ * @param {string} type Tipo de capa.
  */
 export const know = (type) => {
   const knowTypes = [
@@ -159,6 +216,19 @@ export const know = (type) => {
     MVT,
     XYZ,
     TMS,
+    MBTiles,
+    MBTilesVector,
+    OGCAPIFeatures,
   ];
   return (knowTypes.indexOf(parse(type)) !== -1);
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

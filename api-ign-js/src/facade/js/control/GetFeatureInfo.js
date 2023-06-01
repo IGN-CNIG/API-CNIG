@@ -10,14 +10,21 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
+ * Agrega la herramienta de consulta de información de capas
+ * WMS y WMTS a través de su servicio getFeatureInfo.
+ *
  * @api
+ * @extends {M.Control}
  */
 class GetFeatureInfo extends ControlBase {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @param {string} format - Format response
-   * @param {object} options - Control options
-   * @extends {M.Control}
+   * @param {Boolean} activated Define si esta activo.
+   * @param {object} options Opciones del control.
+   * - featureCount. Número de objetos geográficos, por defecto 10.
+   * - buffer. Configuración del "buffer", por defecto 5.
    * @api
    */
   constructor(activated, options = {}) {
@@ -32,12 +39,12 @@ class GetFeatureInfo extends ControlBase {
   }
 
   /**
-   * This function creates the view to the specified map
+   * Este método crea la vista del mapa especificado.
    *
    * @public
    * @function
-   * @param {M.Map} map - Facade map
-   * @returns {Promise} HTML template
+   * @param {M.Map} map Mapa.
+   * @returns {Promise} Plantilla HTML.
    * @api
    */
   createView(map) {
@@ -45,12 +52,13 @@ class GetFeatureInfo extends ControlBase {
   }
 
   /**
-   * This function returns the HTML button control.
+   * Este método devuelve si el botón de activación
+   * del control esta activado.
    *
    * @public
    * @function
-   * @param {HTMLElement} element - Template control
-   * @returns {HTMLElement} HTML control button
+   * @param {HTMLElement} element HTML del botón.
+   * @returns {HTMLElement} HTML del botón.
    * @api
    * @export
    */
@@ -59,13 +67,13 @@ class GetFeatureInfo extends ControlBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Esta función comprueba si un objeto es igual
+   * a este control.
    *
    * @public
    * @function
-   * @param {*} obj - Object to compare
-   * @returns {boolean} equals - Returns if they are equal or not
+   * @param {*} obj Objeto a comparar.
+   * @returns {boolean} Iguales devuelve verdadero, falso si no son iguales.
    * @api
    */
   equals(obj) {
@@ -78,7 +86,7 @@ class GetFeatureInfo extends ControlBase {
 }
 
 /**
- * Name to identify this control
+ * Nombre para identificar este control.
  * @const
  * @type {string}
  * @public

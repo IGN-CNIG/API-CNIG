@@ -9,6 +9,7 @@ import { unByKey } from 'ol/Observable';
 import { toContext as toContextRender } from 'ol/render';
 import OLGeomLineString from 'ol/geom/LineString';
 import OLStyleIcon from 'ol/style/Icon';
+import RenderFeature from 'ol/render/Feature';
 import chroma from 'chroma-js';
 import OLStyleStrokePattern from '../ext/OLStyleStrokePattern';
 import Centroid from './Centroid';
@@ -19,15 +20,18 @@ import '../ext/cspline';
 
 /**
  * @classdesc
+ * Crea un estilo de línea
+ * con parámetros especificados por el usuario.
  * @api
  * @namespace M.impl.style.Line
  *
  */
-
 class Line extends Simple {
   /**
-   * Main constructor of the class.
+   * Constructor principal de la clase.
    * @constructor
+   * @param {Object} options Opciones de la clase.
+   * - icon (src): Ruta del icono.
    * @implements {M.impl.style.Simple}
    * @api stable
    */
@@ -37,17 +41,19 @@ class Line extends Simple {
   }
 
   /**
-   * This function se options to ol style
-   *
+   * Este método actualiza las opciones de la fachada
+   * (patrón estructural como una capa de abstracción con un patrón de diseño).
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
-   * @param {object} options - options to style
+   * @param {object} options Opciones.
+   * @return {Array<object>} Estilo de la fachada.
    * @function
    * @api stable
    */
   updateFacadeOptions(options) {
     return (feature) => {
       let featureVariable = feature;
-      if (!(featureVariable instanceof OLFeature)) {
+      if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
         featureVariable = this;
       }
       const stroke = options.stroke;
@@ -163,10 +169,10 @@ class Line extends Simple {
   }
 
   /**
-   * This function apply style to layer
+   * Este método aplica los estilos a la capa.
    * @public
    * @function
-   * @param {M.layer.Vector} layer - Layer
+   * @param {M.layer.Vector} layer Capa.
    * @api stable
    */
   applyToLayer(layer) {
@@ -179,11 +185,11 @@ class Line extends Simple {
   }
 
   /**
-   * This function apply style
+   * Este método elimina los estilos de la capa.
    *
    * @function
    * @protected
-   * @param {M.layer.Vector} layer - Layer to apply the styles
+   * @param {M.layer.Vector} layer Capa.
    * @api stable
    */
   unapply() {
@@ -191,10 +197,14 @@ class Line extends Simple {
   }
 
   /**
-   * TODO
+   * Este método dibuja la geometría en el "canvas".
    *
    * @public
    * @function
+   * @param {Object} vectorContext Vector que se dibujará en el "canvas".
+   * @param {Object} canvas "canvas".
+   * @param {Object} style Estilo del vector.
+   * @param {Number} stroke Tamaño del borde.
    * @api stable
    */
   drawGeometryToCanvas(vectorContext, canvas, style, stroke) {
@@ -223,10 +233,11 @@ class Line extends Simple {
   }
 
   /**
-   * TODO
+   * Este método actualiza el "canvas".
    *
    * @public
    * @function
+   * @param {HTMLCanvasElement} canvas Nuevo "canvas".
    * @api stable
    */
   updateCanvas(canvas) {
@@ -269,9 +280,11 @@ class Line extends Simple {
   }
 
   /**
-   * TODO
+   * Este método devuelve el tamaño del "canvas".
+   *
    * @public
    * @function
+   * @returns {Array} Tamaño.
    * @api stable
    */
   static getCanvasSize() {
@@ -279,6 +292,14 @@ class Line extends Simple {
   }
 }
 
+/**
+ * Valores por defecto.
+ *
+ * @const
+ * @type {Number}
+ * @public
+ * @api
+ */
 Line.DEFAULT_WIDTH_LINE = 3;
 
 export default Line;

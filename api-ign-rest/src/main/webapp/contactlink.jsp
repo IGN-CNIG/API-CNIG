@@ -11,8 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
-    <title>Visor base</title>
-    <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
+    <title>Visor base</title> 
+    <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css"/>
     <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
@@ -60,7 +60,7 @@
         <label for="inputVisualizador3d">Parámetro visualizador3d</label>
         <input type="text" name="visualizador3d" id="inputVisualizador3d" list="visualizador3dSug">
         <datalist id="visualizador3dSug">
-            <option value="https://www.ign.es/3D-Stereo/"></option>
+            <option value="https://visualizadores.ign.es/estereoscopico/"></option>
         </datalist>
         <label for="inputFototeca">Parámetro fototeca</label>
         <input type="text" name="fototeca" id="inputFototeca" list="fototecaSug">
@@ -92,11 +92,37 @@
         <datalist id="youtubeSug">
             <option value="https://www.youtube.com/user/IGNSpain"></option>
         </datalist>
+
         <label for="inputMail">Parámetro mail</label>
         <input type="text" name="mail" id="inputMail" list="mailSug">
+          <datalist id="mailSug">
+           <option value="mailto:ign@fomento.es"></option>
+          </datalist>
 
-        <input type="submit" id="buttonAPI" value="API Rest" />
+     	<label for="selectCollapsed">Parámetro de collapsed</label>
+        <select name="collapsed" id="selectCollapsed">
+            <option value=''></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
+
+     	<label for="selectCollapsible">Selector de collapsible</label>
+        <select name="collapsible" id="selectCollapsible">
+            <option value=''></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
+
+       	<label for="inputTooltip">Parámetro tooltip</label>
+        <input type="text" name="tooltip" id="inputTooltip" list="tooltipSug" value="Reconocimientos">
+        <datalist id="tooltipSug">
+            <option value="Reconocimientos"></option>
+        </datalist>
+
+  
+        <input type="hidden" id="buttonAPI" value="API Rest" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
+
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
@@ -128,19 +154,22 @@
 
 
         let mp, posicion;
-        let descargascnig, pnoa, visualizador3d, fototeca, twitter, instagram, facebook, pinterest, youtube, mail;
+        let pnoa, visualizador3d, descargascnig, fototeca, twitter, instagram, facebook, pinterest, youtube, mail, collapsed, collapsible, tooltip;
         crearPlugin({
             position: posicion,
             descargascnig: descargascnig,
             pnoa: pnoa,
             visualizador3d: visualizador3d,
             fototeca: fototeca,
-            twitter: twitter,
+            twitter:twitter,
             instagram: instagram,
             facebook: facebook,
             pinterest: pinterest,
             youtube: youtube,
-            mail: mail
+            mail: mail,
+			collapsed: collapsed,
+			collapsible: collapsible,
+			tooltip: tooltip
         });
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -155,6 +184,9 @@
         const inputYoutube = document.getElementById("inputYoutube");
         const inputMail = document.getElementById("inputMail");
         const buttonApi = document.getElementById("buttonAPI");
+        const inputTooltip = document.getElementById("inputTooltip");
+      	const selectCollapsed = document.getElementById("selectCollapsed");
+        const selectCollapsible = document.getElementById("selectCollapsible");
 
         selectPosicion.addEventListener('change', cambiarTest);
         inputDescargascnig.addEventListener('change', cambiarTest);
@@ -167,6 +199,9 @@
         inputPinterest.addEventListener('change', cambiarTest);
         inputYoutube.addEventListener('change', cambiarTest);
         inputMail.addEventListener('change', cambiarTest);
+  		inputTooltip.addEventListener('change', cambiarTest);
+		selectCollapsible.addEventListener('change', cambiarTest);
+		selectCollapsed.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             let objeto = {}
@@ -181,6 +216,11 @@
             pinterest = inputPinterest.value != "" ? objeto.pinterest = inputPinterest.value : "";
             youtube = inputYoutube.value != "" ? objeto.youtube = inputYoutube.value : "";
             mail = inputMail.value != "" ? objeto.mail = 'mailto:' + inputMail.value : "";
+		    collapsible = selectCollapsible.options[selectCollapsible.selectedIndex].value;
+            collapsible != '' ? objeto.collapsible = (collapsible === "true") : '';
+	        collapsed = selectCollapsed.options[selectCollapsed.selectedIndex].value;
+            collapsed != '' ? objeto.collapsed = (collapsed === "true") : '';
+			tooltip = inputTooltip.value != "" ? objeto.tooltip = inputTooltip.value : "";
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
@@ -198,9 +238,10 @@
             youtube = inputYoutube.value;
             mail = inputMail.value;
 
-            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core//api-core/?contactlink=' + posicion + '*' + descargascnig + '*' + pnoa + '*' + visualizador3d + '*' + fototeca +
+            window.location.href = 'https://mapea-lite.desarrollo.guadaltel.es/api-core/?contactlink=' + posicion + '*' + descargascnig + '*' + fototeca + '*' + visualizador3d + '*' + pnoa +
                 '*' + twitter + '*' + instagram + '*' + pinterest + '*' + youtube + '*' + mail;
         });
+	
 
         function crearPlugin(propiedades) {
             mp = new M.plugin.ContactLink(propiedades);
@@ -210,6 +251,7 @@
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
         });
+
         map.addPlugin(mp2);
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click", function() {
@@ -219,12 +261,12 @@
 </body>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CTLHMMB5YT"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+gtag('config', 'G-CTLHMMB5YT');
 </script>
 
 </html>

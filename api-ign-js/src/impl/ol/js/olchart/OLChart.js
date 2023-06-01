@@ -1,3 +1,7 @@
+/**
+ * @module M/impl/OLChart
+ */
+
 import OLStyleRegularShape from 'ol/style/RegularShape';
 import OLStyleFill from 'ol/style/Fill';
 import { asString as colorAsString } from 'ol/color';
@@ -5,28 +9,31 @@ import Chart from 'M/style/Chart';
 import * as chartTypes from 'M/chart/types';
 import { isNullOrEmpty } from 'M/util/Utils';
 
-export default class OLChart extends OLStyleRegularShape {
+/**
+ * @classdesc
+ * Estilo de gráfico para características vectoriales.
+ *
+ * @extends {ol.style.RegularShape}
+ */
+class OLChart extends OLStyleRegularShape {
   /**
-   * @classdesc
-   * chart style for vector features
-   *
+   * Constructor principal de la clase. Crea un estilo de gráfico.
    * @constructor
-   * @param {olx.style.FontSymbolOptions=} Options.
-   *  - type {pie3d|pie|bar|donut} the chart type
-   *  - radius {number} chart radius
-   *  - rotation {number} determine whether the symbolizer rotates with the map
-   *  - snapToPixel {bool} determine whether the symbolizer should be snapped to a pixel.
-   *  - stroke {ol.style.Stroke} stroke style
-   *  - colors {string|Array<string>} array of colors as string
-   *  - offsetX {number} chart x axis offset
-   *  - offsetY {number} chart y axis offset
-   *  - animation {number} step in an animation sequence [0,1]
-   *  - variables {object|M.style.chart.Variable|string|Array<string>
-   * |Array<M.style.chart.Variable>} the chart variables
-   *  - donutRatio {number} the chart 'donut' type ratio
-   *  - data {Array<number>} chart data
-   *  - fill3DColor {string} the pie3d cylinder fill color
-   * @extends {ol.style.RegularShape}
+   * @param {olx.style.FontSymbolOptions=} options Opciones:
+   *  - type: El tipo de gráfico.
+   *  - radius: Radio del gráfico.
+   *  - rotation: Determinar si el simbolizador rota con el mapa.
+   *  - snapToPixel: Determinar si el simbolizador debe ajustarse a un píxel.
+   *  - stroke: Estilo del borde.
+   *  - colors: Variedad de colores como cadena.
+   *  - offsetX: Desplazamiento del eje x del gráfico.
+   *  - offsetY: Desplazamiento del eje y del gráfico.
+   *  - animation: Paso en una secuencia de animación [0,1].
+   *  - variables: Las variables del gráfico.
+   *  - donutRatio: La relación de tipo 'donut' del gráfico.
+   *  - data: Datos del gráfico.
+   *  - fill3DColor: El color de relleno.
+   * @api
    */
   constructor(options = {}) {
     const strokeWidth = !isNullOrEmpty(options.stroke) ? options.stroke.getWidth() : 0;
@@ -46,42 +53,42 @@ export default class OLChart extends OLStyleRegularShape {
     }
 
     /**
-     * the chart variables
+     * Las variables del gráfico.
      * @private
      * @type {object|M.style.chart.Variable|string|Array<string>|Array<M.style.chart.Variable>}
      */
     this.variables_ = options.variables || [];
 
     /**
-     * stroke style
+     * Estilo del borde.
      * @private
      * @type {ol.style.Stroke}
      */
     this.stroke_ = options.stroke || null;
 
     /**
-     * chart radius
+     * Radio del gráfico.
      * @private
      * @type {number}
      */
     this.radius_ = options.radius || 0;
 
     /**
-     * chart 'donut' type ratio
+     * Relación de tipo de gráfico 'donut'.
      * @private
      * @type {number}
      */
     this.donutRatio_ = options.donutRatio || 0;
 
     /**
-     * chart type
+     * Tipo de gráfico.
      * @private
      * @type {string}
      */
     this.type_ = options.type || null;
 
     /**
-     * chart axis offsets
+     * Desplazamientos del eje del gráfico.
      * @private
      * @type {Array<number>}
      */
@@ -91,8 +98,7 @@ export default class OLChart extends OLStyleRegularShape {
     ];
 
     /**
-     * animation config
-     * [WARN] NOT IMPLEMENTED YET
+     * Configuración de animación.
      * @private
      * @type {object}
      */
@@ -102,28 +108,28 @@ export default class OLChart extends OLStyleRegularShape {
     };
 
     /**
-     * chart data
+     * Datos del gráfico.
      * @private
      * @type {Array<number>}
      */
     this.data_ = options.data || null;
 
     /**
-     * chart colors
+     * Colores.
      * @private
      * @type {Array<string>}
      */
     this.colors_ = options.scheme instanceof Array ? options.scheme : [];
 
     /**
-     * pie3d type cilynder color
+     * Color de relleno.
      * @private
      * @type {string}
      */
     this.fill3DColor_ = options.fill3DColor || '#000';
 
     /**
-     * rotate with the view of map
+     * Determina si el gráfico rota con el mapa.
      * @private
      * @type {bool}
      */
@@ -134,9 +140,11 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
-   * clones the chart
+   * Clona el gráfico.
    * @public
    * @function
+   * @returns {ol.chart}
+   * @api stable
    */
   clone() {
     const newInstance = new OLChart({
@@ -162,35 +170,58 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
-   * Chart data getter & setter
-   * setter will render the chart
+   * Devuelve los datos del gráfico.
+   * @public
+   * @function
+   * @returns {Object}
+   * @api stable
    */
   get data() {
     return this.data_;
   }
 
+  /**
+   * Sobreescritura los datos del gráfico.
+   * @public
+   * @function
+   * @param {Object} data Datos del gráfico.
+   * @api stable
+   */
   set data(data) {
     this.data_ = data;
     this.renderChart_();
   }
 
   /**
-   * Chart radius setter & getter
-   * setter will render the chart
+   * Devuelve el radio del gráfico.
+   * @public
+   * @function
+   * @returns {number}
+   * @api stable
    */
   get radius() {
     return this.radius_;
   }
 
+  /**
+   * Sobrescribe el radio del gráfico.
+   * @public
+   * @function
+   * @param {number} radius Radio del gráfico.
+   * @api stable
+   */
   set radius(radius) {
     this.radius_ = radius;
     this.renderChart_();
   }
 
   /**
-   * Radius and donut ratio type setter
+   * Sobrescribe de tipos de relación de donut y radio.
    * @public
    * @function
+   * @param {number} radius Radio del gráfico.
+   * @param {number} ratio Relación de donut.
+   * @api stable
    */
   setRadius(radius, ratio) {
     this.donutRatio_ = ratio || this.donutRatio_;
@@ -198,9 +229,11 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
-   * sets the animation step
+   * Establece el paso de animación.
    * @public
    * @function
+   * @param {number} step Paso de animación.
+   * @api stable
    */
   setAnimation(step) {
     if (step === false) {
@@ -219,7 +252,11 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
-   * @inheritDoc
+   * Suma de verificación.
+   * @public
+   * @function
+   * @returns {string} Suma de verificación.
+   * @api stable
    */
   getChecksum() {
     let fillChecksum;
@@ -239,11 +276,12 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
-   * Renders the chart.
-   * This method is a layer postcompose event callback
-   *
+   * Representa el gráfico.
+   * Este método es una devolución de llamada de evento
+   * de poscomposición de capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
    */
   renderChart_(atlasManager) {
     switch (this.type_) {
@@ -259,8 +297,10 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
+   * Este método dibuja el gráfico de barras.
+   * @public
    * @function
-   * This function draw the Bar chart
+   * @api stable
    */
   renderBarChart() {
     const canvas = this.getImage(1);
@@ -301,8 +341,10 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
-   * This function draw the circle chart: pie | pie3d | donut
+   * Este método dibuja el gráfico circular: "pie", "pie3d" y "donut".
    * @function
+   * @public
+   * @api stable
    */
   renderCircleChart() {
     let strokeStyle;
@@ -347,8 +389,18 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
-   * This function draw the Donut chart
+   * Este método dibuja el gráfico de anillos.
    * @function
+   * @public
+   * @param {CanvasRenderingContext2D} contextParam Contexto del canvas.
+   * @param {number} angle0Param Ángulo inicial.
+   * @param {number} center Centro del gráfico.
+   * @param {number} step Paso de la animación.
+   * @param {string} strokeStyle Estilo del borde.
+   * @param {number} strokeWidth Ancho del borde.
+   * @param {number} sum Suma de los datos.
+   *
+   * @api stable
    */
   drawDonut(contextParam, angle0Param, center, step, strokeStyle, strokeWidth, sum) {
     const context = contextParam;
@@ -370,8 +422,16 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
-   * This function draw the 3D-Pie chart
+   * Este método dibuja el gráfico circular 3D.
    * @function
+   * @public
+   * @param {CanvasRenderingContext2D} contextParam Contexto del "canvas".
+   * @param {number} angle0Param Ángulo inicial.
+   * @param {number} center Centro del gráfico.
+   * @param {number} step Paso de la animación.
+   * @param {string} strokeStyle Estilo del borde.
+   * @param {number} sum Suma de los datos.
+   * @api stable
    */
   drawPie3D(contextParam, angle0Param, center, step, strokeStyle, sum) {
     const context = contextParam;
@@ -388,8 +448,17 @@ export default class OLChart extends OLStyleRegularShape {
   }
 
   /**
+   * Esta función dibuja el gráfico circular.
    * @function
-   * This function draw the Pie chart
+   * @public
+   * @param {CanvasRenderingContext2D} contextParam Contexto del "canvas".
+   * @param {number} angle0Param Ángulo inicial.
+   * @param {number} center Centro del gráfico.
+   * @param {number} step Paso de la animación.
+   * @param {string} strokeStyle Estilo del borde.
+   * @param {number} sum Suma de los datos.
+   * @api stable
+   * @returns {number} Devuelve el ángulo final.
    */
   drawPie(contextParam, angle0Param, center, step, strokeStyle, sum) {
     let angle;
@@ -411,3 +480,5 @@ export default class OLChart extends OLStyleRegularShape {
     return angle0;
   }
 }
+
+export default OLChart;

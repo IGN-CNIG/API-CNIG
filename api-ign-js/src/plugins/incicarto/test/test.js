@@ -1,6 +1,6 @@
 import Incicarto from 'facade/incicarto';
 
-M.language.setLang('es');//Español
+M.language.setLang('es');// Español
 
 const map = M.map({
   container: 'mapjs',
@@ -22,18 +22,18 @@ const map = M.map({
  * Definimos algunas capas base
  */
 
- const objWMTSMapa = new M.layer.WMTS({
+ /*const objWMTSMapa = new M.layer.WMTS({
   url: 'https://www.ign.es/wmts/mapa-raster',
   name: 'MTN',
   matrixSet: 'GoogleMapsCompatible',
   legend: 'Mapa MTN',
   format: 'image/jpeg'
-});
+});*/
 
 /**
  * Añadimos el BackImgLayer
  */
-const mpBIL = new M.plugin.BackImgLayer({
+/*const mpBIL = new M.plugin.BackImgLayer({
   position: 'TR',
   collapsible: true,
   collapsed: true,
@@ -168,7 +168,7 @@ const mpTOC = new M.plugin.FullTOC({
   position: 'TL',
 });
 
-map.addPlugin(mpTOC);
+map.addPlugin(mpTOC);*/
 
 
 
@@ -180,7 +180,7 @@ map.addPlugin(mpTOC);
 //   addWMSLayer('TN.RoadTransportNetwork.RoadLink', 'Vías de comunicación por carretera', 'https://www.ign.es/wms-inspire/ign-base?', '1.3.0', true, { visibility: false, displayInLayerSwitcher: true, queryable: false, zIndex: 506 });
 //   addWMSLayer('TN.RailTransportNetwork.RailwayLink', 'Vías de comunicación ferroviarias', 'https://www.ign.es/wms-inspire/ign-base?', '1.3.0', true, { visibility: false, displayInLayerSwitcher: true, queryable: fals
 
-const objLyrREDNAP = new M.layer.WMS({
+/*const objLyrREDNAP = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
   name: 'RED_NAP',
   legend: 'Red de Nivelación de Alta Precisión',
@@ -218,33 +218,18 @@ const objLyrNGBE = new M.layer.WMS({
   legend: 'Nombres geográficos - NGBE',
   tiled: false,
   visibility: false,
-}, {});
+}, {});*/
 
-
-
-map.addLayers([objLyrREDNAP,objLyrBDLJE,objLyrRTRoads,objLyrRTRailways,objLyrNGBE]);
-
-
-
-const precharged = [
-  {
-    name: 'Hidrografía',
-    url: 'https://servicios.idee.es/wfs-inspire/hidrografia?',
-  },
-  {
-    name: 'Límites administrativos',
-    url: 'https://www.ign.es/wfs-inspire/unidades-administrativas?',
-  },
-];
+// map.addLayers([objLyrREDNAP,objLyrBDLJE,objLyrRTRoads,objLyrRTRailways,objLyrNGBE]);
 
 const mp = new Incicarto({
-  collapsed: false,
-  collapsible: true,
   position: 'TL',
-  /*wfszoom: 12,*/
-  /*precharged,*/
-  interfazmode:'simple', //simple, advance
-  prefixSubject:'Incidencia cartográfica - ',
+  collapsed: true,
+  collapsible: true,
+  tooltip: 'Incicarto plugin',
+  wfszoom: 12,
+  prefixSubject: 'Incidencia cartográfica - ',
+  interfazmode: 'simple', // simple, advance
   buzones: [{
     name: 'Cartografía (MTN, BTN, RT, HY, Pob, BCN, Provinciales, escalas pequeñas)',
     email: 'cartografia.ign@mitma.es',
@@ -310,22 +295,22 @@ const mp = new Incicarto({
     email: 'sismologia@mitma.es',
   }
   ],
-  controllist:[
+  controllist: [
     {
       id: 'themeList',
-      name:'Temas de errores',
+      name: 'Temas de errores',
       mandatory: true,
     },
     {
       id: 'errorList',
-      name:'Tipos de errores',
+      name: 'Tipos de errores',
       mandatory: true,
     },
     {
       id: 'productList',
-      name:'Lista de productos',
+      name: 'Lista de productos',
       mandatory: true,
-    }
+    },
   ],
   themeList: [
     {
@@ -427,7 +412,7 @@ const mp = new Incicarto({
   ],
 });
 
-const mp2 = new M.plugin.Infocoordinates({
+/*const mp2 = new M.plugin.Infocoordinates({
   position: 'TR',
   decimalGEOcoord: 4,
   decimalUTMcoord: 4,
@@ -458,9 +443,10 @@ const viales = new M.layer.WFS({
 
 //map.addWFS(provincias);
 //map.addWFS(viales);
-map.addPlugin(mp);
 map.addPlugin(mp2);
 map.addPlugin(mp3);
-map.addPlugin(mp4);
-map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
+map.addPlugin(mp4);*/
+
+map.addPlugin(mp);
+// map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
 window.map = map;

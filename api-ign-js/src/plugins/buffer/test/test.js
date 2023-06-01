@@ -6,6 +6,9 @@ const map = M.map({
 
 const mp = new Buffer({
   position: 'TL',
+  collapsed: true,
+  collapsible: true,
+  tooltip: 'Buffer de ejemplo',
 });
 
 const capa = new M.layer.GeoJSON({
@@ -14,5 +17,7 @@ const capa = new M.layer.GeoJSON({
   extract: false,
 });
 
-map.addLayers(capa)
+map.addLayers(capa);
 map.addPlugin(mp);
+console.log('APIRest: ' + mp.getAPIRest());
+//console.log('APIRestbase64= ' + mp.getAPIRestBase64());

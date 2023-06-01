@@ -13,18 +13,36 @@ import Layer from './Layer';
 
 /**
  * @classdesc
+ * La API-CNIG permite visualizar la capa de Open Street Map.
+ *
  * @api
+ * @extends {M.impl.layer.Layer}
  */
 class OSM extends Layer {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a WMS layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa OSM
+   * con parámetros especificados por el usuario.
    *
    * @constructor
    * @implements {M.impl.Layer}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - visibility: Define si la capa es visible o no.
+   * - animated: Activa la animación para capas base o parámetros animados.
+   * - displayInLayerSwitcher: Define si la capa se mostrará en el selector de capas.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import SourceOSM from 'ol/source/OSM';
+   * {
+   *  opacity: 0.1,
+   *  source: new SourceOSM({
+   *    attributions: 'osm',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(userParameters, options = {}, vendorOptions) {
@@ -32,37 +50,44 @@ class OSM extends Layer {
     super(options, vendorOptions);
 
     /**
-     * Layer resolutions
-     * @private
-     * @type {Array<Number>}
+     * OSM resolutions_. Resoluciones de capa.
      */
     this.resolutions_ = null;
 
     /**
-     * The facade layer instance
-     * @private
-     * @type {M.layer.OSM}
-     * @expose
+     * OSM facadeLayer_. Intancia de la fachada.
      */
     this.facadeLayer_ = null;
 
-    // Añadir plugin attributions
+    /**
+     * OSM hasAttributtion. La OSM no tiene atribuciones.
+     */
     this.hasAttributtion = false;
 
+    /**
+     * OSM haveOSMorMapboxlayer. La OSM no es de Mapbox.
+     */
     this.haveOSMorMapboxLayer = false;
 
-    // sets visibility
+    /**
+     * OSM visibility. DDefine si la capa es visible o no.
+     * Verdadero por defecto.
+     */
     if (options.visibility === false) {
       this.visibility = false;
     }
 
+    /**
+     * OSM zIndex_. Índice de la capa, (+5).
+     */
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.OSM];
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método establece la visibilidad de esta capa.
    *
    * @function
+   * @param {Boolean} visibility Verdadero es visible, falso si no.
    * @api stable
    */
   setVisible(visibility) {
@@ -95,11 +120,11 @@ class OSM extends Layer {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método añade la capa al mapa.
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
   addTo(map) {
@@ -151,11 +176,11 @@ class OSM extends Layer {
   }
 
   /**
-   * This function sets the resolutions for this layer
+   * Este método establece las resoluciones para esta capa.
    *
    * @public
    * @function
-   * @param {Array<Number>} resolutions
+   * @param {Array<Number>} resolutions Nuevas resoluciones a aplicar.
    * @api stable
    */
   setResolutions(resolutions) {
@@ -164,11 +189,12 @@ class OSM extends Layer {
   }
 
   /**
-   * This function sets the map object of the layer
-   *
-   * @private
+   * Este método actualiza la capa de origen.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param resolutions new resolutions to apply
+   * @param {Array} resolutions Nuevas resoluciones a aplicar.
+   * @api stable
    */
   updateSource_(resolutions) {
     if (isNullOrEmpty(resolutions) && !isNullOrEmpty(this.map)) {
@@ -188,10 +214,12 @@ class OSM extends Layer {
   }
 
   /**
-   * This function set facade class OSM
+   * Este método establece la clase de la fachada OSM.
+   * La fachada se refiere a
+   * un patrón estructural como una capa de abstracción con un patrón de diseño.
    *
    * @function
-   * @param {object} obj - Facade layer
+   * @param {object} obj Fachada de la capa.
    * @api stable
    */
   setFacadeObj(obj) {
@@ -199,16 +227,20 @@ class OSM extends Layer {
   }
 
   /**
-   * TODO
+   * Este método establece la extensión máxima para la capa Openlayers.
+   *
+   * @public
+   * @function
+   * @param {Mx.Extent} maxExtent Extensión máxima.
+   * @api stable
    */
   setMaxExtent(maxExtent) {
     this.ol3Layer.setExtent(maxExtent);
   }
 
   /**
-   * This function gets the min resolution for
-   * this WMS
-   *
+   * Este método devuelve la resolución mínima.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
    * @api stable
@@ -218,8 +250,9 @@ class OSM extends Layer {
   }
 
   /**
-   * This function gets the max resolution for
-   * this WMS
+   * Este método obtiene la resolución máxima para
+   * este OSM/WMS.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
    * @public
    * @function
@@ -230,8 +263,8 @@ class OSM extends Layer {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
    *
    * @public
    * @function
@@ -262,10 +295,12 @@ class OSM extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api stable
    */
   equals(obj) {
@@ -280,8 +315,11 @@ class OSM extends Layer {
   }
 
   /**
-   * This methods returns a layer clone of this instance
+   * Este método devuelve un clon de capa de esta instancia.
+   * @public
+   * @function
    * @return {ol/layer/Tile}
+   * @api stable
    */
   cloneOLLayer() {
     let olLayer = null;

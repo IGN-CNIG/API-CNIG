@@ -2,10 +2,12 @@ import OLGeomLineString from 'ol/geom/LineString';
 import { olCoordinateEqual } from './GeomUtils';
 
 /**
- * Split a lineString by a point or a list of points
- * NB: points must be on the line, use getClosestPoint() to get one
- * @param {ol.Coordinate | Array<ol.Coordinate>} pt points to split the line
- * @param {Number} tol distance tolerance for 2 points to be equal
+ * Divida una cadena de línea por un punto o una lista de puntos
+ * NB: los puntos deben estar en la línea, use "getClosestPoint()"" para obtener uno.
+ * @function
+ * @param {ol.Coordinate | Array<ol.Coordinate>} pt Puntos para dividir la línea.
+ * @param {Number} tol Tolerancia de distancia para que 2 puntos sean iguales.
+ * @return {Array<OLGeomLineString>} Lista de líneas.
  */
 OLGeomLineString.prototype.splitAt = (pt, tol) => {
   let i;

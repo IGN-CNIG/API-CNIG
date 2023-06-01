@@ -86,7 +86,7 @@ export default class PrinterMap extends M.Plugin {
      * @type {String}
      */
 
-    this.serverUrl_ = parameters.serverUrl || M.config.GEOPRINT_URL;
+    this.serverUrl_ = parameters.serverUrl || 'https://componentes.cnig.es/geoprint';
 
 
     /**
@@ -94,21 +94,21 @@ export default class PrinterMap extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.printTemplateUrl_ = parameters.printTemplateUrl || M.config.PRINTERMAP_TEMPLATE;
+    this.printTemplateUrl_ = parameters.printTemplateUrl || 'https://componentes.cnig.es/geoprint/print/CNIG';
 
     /**
      * Mapfish template url for georef
      * @private
      * @type {String}
      */
-    this.printTemplateGeoUrl_ = parameters.printTemplateUrl || M.config.GEOREFIMAGE_TEMPLATE;
+    this.printTemplateGeoUrl_ = parameters.printTemplateUrl || 'https://componentes.cnig.es/geoprint/print/mapexport';
 
     /**
      * Mapfish template url
      * @private
      * @type {String}
      */
-    this.printStatusUrl_ = parameters.printStatusUrl || M.config.GEOPRINT_STATUS;
+    this.printStatusUrl_ = parameters.printStatusUrl || 'https://componentes.cnig.es/geoprint/print/status';
 
     /**
      * Credits text for template
@@ -153,6 +153,21 @@ export default class PrinterMap extends M.Plugin {
      *@type { Number }
      */
     this.order = parameters.order >= -1 ? parameters.order : null;
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = parameters.tooltip || getValue('tooltip');
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = parameters;
   }
 
   /**
@@ -200,7 +215,7 @@ export default class PrinterMap extends M.Plugin {
       className: 'm-printermap',
       collapsedButtonClass: 'icon-impresora',
       position: M.ui.position[this.position_],
-      tooltip: getValue('tooltip'),
+      tooltip: this.tooltip_,
       order: this.order,
     });
     this.panel_.on(M.evt.ADDED_TO_MAP, (html) => {
@@ -221,7 +236,18 @@ export default class PrinterMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.serverUrl_}*${this.printTemplateUrl_}*${this.printTemplateGeoUrl_}*${this.printStatusUrl_}*${this.credits_}*${this.georefActive_}*${this.logo_}*${this.fototeca_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.serverUrl_}*${this.printTemplateUrl_}*${this.printTemplateGeoUrl_}*${this.printStatusUrl_}*${this.georefActive_}*${this.logo_}*${this.headerLegend_}*${this.fototeca_}*${this.credits_}`;
+  }
+
+  /**
+     * Gets the API REST Parameters in base64 of the plugin
+     *
+     * @function
+     * @public
+     * @api
+     */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

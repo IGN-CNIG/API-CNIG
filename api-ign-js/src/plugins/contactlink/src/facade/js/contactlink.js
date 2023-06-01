@@ -21,7 +21,7 @@ export default class ContactLink extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options) {
+  constructor(options = {}) {
     super();
 
     /**
@@ -80,7 +80,7 @@ export default class ContactLink extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.linksVisualizador3d = options.visualizador3d || 'https://www.ign.es/3D-Stereo/';
+    this.linksVisualizador3d = options.visualizador3d || 'https://visualizadores.ign.es/estereoscopico/';
 
     /**
      * Link to fototeca
@@ -151,27 +151,45 @@ export default class ContactLink extends M.Plugin {
      * @public
      * @type {boolean}
      */
-    this.collapsed = options.collapsed || true;
+    this.collapsed = (options.collapsed === false) ? false : true;
 
     /**
      * Collapsible attribute
      * @public
      * @type {boolean}
      */
-    this.collapsible = options.collapsible || true;
+    this.collapsible = (options.collapsible === false) ? false : true;
 
     /**
      * ContactLink control
      * @public
      * @type {M.control.ContactLink}
      */
-    this.control_ = new ContactLinkControl(options);
+    this.control_ = new ContactLinkControl({
+      descargascnig: this.linksDescargasCnig,
+      pnoa: this.linksPnoa,
+      visualizador3d: this.linksVisualizador3d,
+      facebook: this.linksFacebook,
+      fototeca: this.linksFototeca,
+      twitter: this.linksTwitter,
+      instagram: this.linksInstagram,
+      youtube: this.linksYoutube,
+      mail: this.linksMail,
+      pinterest: this.linksPinterest
+    });
 
     /**
      *@private
      *@type { Number }
      */
-     this.order = options.order >= -1 ? options.order : null;
+    this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -182,12 +200,12 @@ export default class ContactLink extends M.Plugin {
    * @param {string} lang type language
    * @api stable
    */
-     static getJSONTranslations(lang) {
-      if (lang === 'en' || lang === 'es') {
-        return (lang === 'en') ? en : es;
-      }
-      return M.language.getTranslation(lang).contactlink;
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
     }
+    return M.language.getTranslation(lang).contactlink;
+  }
 
   /**
    * This function adds this plugin into the map
@@ -243,7 +261,18 @@ export default class ContactLink extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.collapsible}*${this.collapsed}*${this.linksDescargasCnig}*${this.linksPnoa}*${this.linksVisualizador3d}*${this.linksFototeca}*${this.linksTwitter}*${this.linksInstagram}*${this.linksFacebook}*${this.linksPinterest}*${this.linksYoutube}*${this.linksMail}`;
+    return `${this.name}=${this.position}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.linksDescargasCnig}*${this.linksPnoa}*${this.linksVisualizador3d}*${this.linksFototeca}*${this.linksTwitter}*${this.linksInstagram}*${this.linksFacebook}*${this.linksPinterest}*${this.linksYoutube}*${this.linksMail}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

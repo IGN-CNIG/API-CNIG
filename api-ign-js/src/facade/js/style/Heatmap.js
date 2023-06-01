@@ -9,20 +9,26 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a style heatmap
- * with parameters specified by the user
+ * Crea un mapa de calor de estilo
+ * con parámetros especificados por el usuario.
  * @api
+ * @extends {M.style}
  */
 class Heatmap extends Style {
   /**
+   * Constructor principal de la clase.
    *
    * @constructor
-   * @extends {M.Style}
-   * @param {string|function} attribute - The feature attribute to use for the weight or a function
-   * that returns a weight from a feature. Weight values should range from 0 to 1
-   * (and values outside will be clamped to that range). Default is weight. Required.
-   * @param {Mx.HeatmapStyleOptions} options - options style
-   * @param {object} vendorOptions - vendorOptions style
+   * @param {string|function} attribute El atributo del objetos geográficos a utilizar
+   * (entre 0 y 1).
+   * @param {Mx.HeatmapStyleOptions} optionsParam Opciones del estilo.
+   * - gradient. Degradado.
+   * - blur. Difuminar.
+   * - radius. Radio
+   * - opacity. Opacidad.
+   * - weight. Peso.
+   * @param {object} vendorOptionsParam Opciones de la librería base.
+   * - opacity: Opacidad.
    * @api
    */
   constructor(attribute, optionsParam = {}, vendorOptionsParam = {}) {
@@ -81,10 +87,10 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function remove the style to specified layer
+   * Este método elimina los estilos.
    * @function
    * @public
-   * @param {M.Layer.Vector} layer - Layer where to apply choropleth style
+   * @param {M.Layer.Vector} layer Capa.
    * @api
    */
   unapply(layer) {
@@ -93,10 +99,10 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function returns the attribute of heatmap style
+   * Este método devuelve los atributos.
    * @function
    * @public
-   * @return {string|function}
+   * @return {string|function} Atributos
    * @api
    */
   getAttributeName() {
@@ -104,10 +110,10 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function sets the attribute of heatmap style
+   * Este método establece el atributo del mapa de calor.
    * @function
    * @public
-   * @param {string|function} attribute - The attribute of heatmap style
+   * @param {string|function} attribute Atributos.
    * @api
    */
   setAttributeName(attribute) {
@@ -117,10 +123,10 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function returns the gradient of heatmap style
+   * Este método devuelve el degradado.
    * @function
    * @public
-   * @return {Array<string>}
+   * @return {Array<string>} Degradado.
    * @api
    */
   getGradient() {
@@ -128,10 +134,10 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function sets the gradient of heatmap style
+   * Este método establece del degradado al mapa de calor.
    * @function
    * @public
-   * @param {Array<string>} gradient
+   * @param {Array<string>} gradient Degradado.
    * @api
    */
   setGradient(gradientParam) {
@@ -148,7 +154,7 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function returns the radius of heatmap style
+   * Este método devuelve el radio del mapa de calor.
    * @function
    * @public
    * @return {number}
@@ -159,7 +165,7 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function sets the radius of heatmap style
+   * Este método establece el radio del mapa de calor.
    * @function
    * @public
    * @param {number} radius
@@ -171,7 +177,7 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function returns the blur of heatmap style
+   * Este método devuelve el "blur" del mapa de calor.
    * @function
    * @public
    * @return {number}
@@ -182,7 +188,7 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function sets the blur of heatmap style
+   * Este método establece el "blur" del mapa de calor.
    * @function
    * @public
    * @param {number} blur
@@ -194,9 +200,11 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function updates the style heatmap
-   * @private
+   * Este método actualiza el mapa de calor.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
    */
   update_() {
     const styleImpl = this.getImpl();
@@ -206,11 +214,11 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function draws the style on the canvas
+   * Este método dibuja el estilo en el "canvas".
    *
    * @function
    * @public
-   * @param {CanvasRenderingContext2D} vectorContext - context of style canvas
+   * @param {CanvasRenderingContext2D} vectorContext "Canvas".
    * @api
    */
   drawGeometryToCanvas() {
@@ -228,7 +236,7 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function updates the canvas of style
+   * Este método actualiza el "canvas".
    *
    * @function
    * @public
@@ -239,11 +247,11 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function implements the mechanism to
-   * generate the JSON of this instance
+   * Esta función implementa el mecanismo para
+   * generar el JSON de esta instancia.
    *
    * @public
-   * @return {object}
+   * @return {object} Devuelve el JSON.
    * @function
    * @api
    */
@@ -263,12 +271,12 @@ class Heatmap extends Style {
   }
 
   /**
-   * This function returns the style instance of the serialization
+   * Este método de la clase deserializa el estilo.
    * @function
    * @public
-   * @param {Array} parametrers - parameters to deserialize and create
-   * the instance
-   * @return {M.style.Heatmap}
+   * @param {Array} parametrers Parámetros ("serializedAttribute",
+   * "serializedOptions" y "serializedVendorOptions").
+   * @return {M.style.Heatmap} Devuelve el estilo deserializado.
    */
   static deserialize([serializedAttribute, serializedOptions, serializedVendorOptions]) {
     const attribute = serializedAttribute;
@@ -283,10 +291,10 @@ class Heatmap extends Style {
 }
 
 /**
- * Default options of style heatmap
+ * Opciones por defecto del mapa de calor.
  * @constant
  * @public
- * @param {object}
+ * @param {object} Opciones por defecto (gradient, blur y radius).
  * @api
  */
 Heatmap.DEFAULT_OPTIONS = {

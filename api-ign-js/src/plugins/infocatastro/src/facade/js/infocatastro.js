@@ -99,7 +99,7 @@ export default class InfoCatastro extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new InfoCatastroControl({ url: this.catastroWMS }));
+    this.controls_.push(new InfoCatastroControl({ url: this.catastroWMS, tooltip: this.tooltip_ }));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelInfoCatastro', {
       className: 'm-plugin-catastro',

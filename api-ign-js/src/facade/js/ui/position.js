@@ -3,68 +3,36 @@
  */
 
 /**
- *  ______________
- * |    |    |    |
- * | TL |    |    |
- * |____|    |____|
- * |              |
- * |              |
- * |____      ____|
- * |    |    |    |
- * |    |    |    |
- * |____|____|____|
+ * Posición arriba a la izquierda.
  * @public
+ * @const
  * @type {string}
  * @api
  */
 export const TL = '.m-top.m-left';
 
 /**
- *  ______________
- * |    |    |    |
- * |    |    | TR |
- * |____|    |____|
- * |              |
- * |              |
- * |____      ____|
- * |    |    |    |
- * |    |    |    |
- * |____|____|____|
+ * Posición Arriba a la derecha.
  * @public
+ * @const
  * @type {string}
  * @api
  */
 export const TR = '.m-top.m-right';
 
 /**
- *  ______________
- * |    |    |    |
- * |    |    |    |
- * |____|    |____|
- * |              |
- * |              |
- * |____      ____|
- * |    |    |    |
- * | BL |    |    |
- * |____|____|____|
+ * Posición abajo a la izquierda.
  * @public
+ * @const
  * @type {string}
  * @api
  */
 export const BL = '.m-bottom.m-left';
 
 /**
- *  ______________
- * |    |    |    |
- * |    |    |    |
- * |____|    |____|
- * |              |
- * |              |
- * |____      ____|
- * |    |    |    |
- * |    |    | BR |
- * |____|____|____|
+ * Posición abajo a la derecha.
  * @public
+ * @const
  * @type {string}
  * @api
  */

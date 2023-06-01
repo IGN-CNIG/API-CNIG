@@ -10,14 +10,14 @@ import Vector from '../layer/Vector';
 import Feature from '../feature/Feature';
 
 /**
- * TODO
- *
- * @function
- * @param {M.layer.Vector|M.Feature|object|Array<M.Feature|object>} param -
- * Layer or geometry on which the query is performed
- * @return {Spatial} Space filter
- * @api
- */
+  * Transforma parámetros a geometrías.
+  *
+  * @function
+  * @param {M.layer.Vector|M.Feature|object|Array<M.Feature|object>} paramParameter
+  * Capa o geometría sobre la que se realiza la consulta.
+  * @return {Array} Geometría.
+  * @api
+  */
 export const parseParamToGeometries = (paramParameter) => {
   let param = paramParameter;
   let geometries = [];
@@ -42,14 +42,14 @@ export const parseParamToGeometries = (paramParameter) => {
 };
 
 /**
- * TODO
- *
- * @private
- * @function
- * @param {M.layer.Vector|M.Feature|object|Array<M.Feature|object>} param -
- *  Layer or geometry on which the query is performed
- * @return {Spatial} Space filter
- */
+  * Transforma operación y geometrías a filtro CQL.
+  *
+  * @private
+  * @function
+  * @param {Array} geometries Geometría.
+  * @param {String} operation Operación.
+  * @return {String} Filtro.
+  */
 const toCQLFilter = (operation, geometries) => {
   let cqlFilter = '';
   const wktFormat = new WKT();
@@ -70,13 +70,13 @@ const toCQLFilter = (operation, geometries) => {
 };
 
 /**
- * This function creates a spatial filter to know which features contain another feature or layer
- *
- * @function
- * @param {M.layer.Vector|object} param - Layer or geometry on which the query is performed
- * @return {Spatial} Space filter
- * @api
- */
+  * Esta función crea un filtro espacial para saber qué entidades contienen otra entidad o capa.
+  *
+  * @function
+  * @param {M.layer.Vector|object} param Capa o geometría sobre la que se realiza la consulta.
+  * @return {Spatial} Filtro.
+  * @api
+  */
 export const CONTAIN = (param) => {
   const geometries = parseParamToGeometries(param);
   return new Spatial((geometryToFilter, index) => {
@@ -92,13 +92,14 @@ export const CONTAIN = (param) => {
 };
 
 /**
- * This function creates a spatial filter to know which features disjoint another feature or layer
- *
- * @function
- * @param {M.layer.Vector|object} param - Layer or geometry on which the query is performed
- * @return {Spatial} Space filter
- * @api
- */
+  * Esta función crea un filtro espacial para saber qué objetos geográficos
+  * separan otros objetos geográficos o capa.
+  *
+  * @function
+  * @param {M.layer.Vector|object} param Capa o geometría sobre la que se realiza la consulta.
+  * @return {Spatial} Filtro.
+  * @api
+  */
 export const DISJOINT = (param) => {
   const geometries = parseParamToGeometries(param);
   return new Spatial((geometryToFilter, index) => {
@@ -114,13 +115,14 @@ export const DISJOINT = (param) => {
 };
 
 /**
- * This function creates a spatial filter to know which features within another feature or layer
- *
- * @function
- * @param {M.layer.Vector|object} param - Layer or geometry on which the query is performed
- * @return {Spatial} Space filter
- * @api
- */
+  * Esta función crea un filtro espacial para saber qué objetos
+  * geográficos dentro de otros objetos geográficos o capa.
+  *
+  * @function
+  * @param {M.layer.Vector|object} param Capa o geometría sobre la que se realiza la consulta.
+  * @return {Spatial} Filtro.
+  * @api
+  */
 export const WITHIN = (param) => {
   const geometries = parseParamToGeometries(param);
   return new Spatial((geometryToFilter, index) => {
@@ -136,15 +138,15 @@ export const WITHIN = (param) => {
 };
 
 /**
- * This function creates a spatial filter to know which features intersects
- * another feature or layer
- *
- * @function
- * @param {M.layer.Vector|M.Feature|object|Array<M.Feature|object>} param -
- * Layer or geometry on which the query is performed
- * @return {Spatial} Space filter
- * @api
- */
+  * Esta función crea un filtro espacial para saber qué objeto geográfico
+  * se cruza con otra entidad o capa.
+  *
+  * @function
+  * @param {M.layer.Vector|M.Feature|object|Array<M.Feature|object>} param
+  * Capa o geometría sobre la que se realiza la consulta.
+  * @return {Spatial} Filtro.
+  * @api
+  */
 export const INTERSECT = (param) => {
   const geometries = parseParamToGeometries(param);
   return new Spatial((geometryToFilter, index) => {
@@ -158,3 +160,13 @@ export const INTERSECT = (param) => {
     cqlFilter: toCQLFilter('INTERSECTS', geometries),
   });
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

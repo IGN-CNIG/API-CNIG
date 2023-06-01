@@ -6,11 +6,21 @@ import StyleFeature from './Feature';
 
 /**
  * @classdesc
+ * Esta clase genera estilos simples.
  * @api
+ * @extends {M.style.feature}
  */
 class Simple extends StyleFeature {
   /**
-   * @inheritDoc
+   * Este método aplica los estilos a los objetos geográficos.
+   * @function
+   * @public
+   *
+   * @param {Object} layer Capa.
+   * @param {Boolean} applyToFeature Define si se aplicará a
+   * los objetos geográficos.
+   * @param {Boolean} isNullStyle Si es estilo es null.
+   * @api
    */
   apply(layer, applyToFeature, isNullStyle) {
     this.layer_ = layer;
@@ -32,11 +42,13 @@ class Simple extends StyleFeature {
   }
 
   /**
-   * This function returns data url to canvas
+   * Este método devuelve un canvas generado
+   * con datos pasados por url.
    *
    * @function
    * @public
-   * @return {String} data url to canvas
+   * @returns {String} Canvas.
+   * @api
    */
   toImage() {
     let styleImgB64 = super.toImage();
@@ -52,9 +64,10 @@ class Simple extends StyleFeature {
   }
 
   /**
-   * This constant defines the order of style.
+   * Este método devuelve el orden del estilo.
    * @constant
    * @public
+   * @returns {M.style.Simple} Devuelve el orden.
    * @api
    */
   get ORDER() {
@@ -62,12 +75,14 @@ class Simple extends StyleFeature {
   }
 
   /**
-   * This function returns the style instance of the serialization
+   * Este método devuelve la desesialización de una instancia serializada.
    * @function
    * @public
-   * @param {string} serializedStyle - serialized style
-   * @param {string} className - class name of the style child
-   * @return {M.style.Simple}
+   * @param {string} serializedStyle Estilo serializado.
+   * @param {string} className Nombre de clase con estilo.
+   * @returns {M.style.Simple} Devuelve la desesialización.
+   *
+   * @api
    */
   static deserialize(serializedParams, className) {
     const parameters = defineFunctionFromString(serializedParams);

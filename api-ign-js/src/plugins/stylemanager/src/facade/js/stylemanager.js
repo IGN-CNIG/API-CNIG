@@ -71,6 +71,19 @@ export default class StyleManager extends M.Plugin {
      */
     this.layer_ = options.layer;
 
+    /**
+     *@private
+     *@type { string }
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
+
     ColorPickerPolyfill.apply(window);
 
     M.utils.extends = M.utils.extendsObj;
@@ -93,7 +106,7 @@ export default class StyleManager extends M.Plugin {
       className: 'm-stylemanager',
       collapsedButtonClass: 'stylemanager-palette',
       position: M.ui.position[this.position_],
-      tooltip: getValue('symbology'),
+      tooltip: this.tooltip_,
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
@@ -107,7 +120,18 @@ export default class StyleManager extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${StyleManager.NAME}=${this.position_}*${this.collapsed_}*${this.collapsible_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

@@ -4,24 +4,27 @@
 import { toContext as toContextRender } from 'ol/render';
 /**
  * @classdesc
+ * Clase principal que gestiona los estilos,
+ * los estilos de los objetos geográficos, ...
  * @api
  */
 class Style {
   /**
-   * Main constructor of the class.
+   * Constructor principal de la clase.
    * @constructor
+   * @param {Object} options Opciones parametrizables.
    * @api stable
    */
   constructor(options = {}) {
     /**
-     * User options for this style
+     * Opciones de usuario para este estilo.
      * @private
      * @type {Object}
      */
     this.options_ = options;
 
     /**
-     * Layer which this style is applied
+     * Capa a la que se aplica este estilo.
      * @private
      * @type {M.layer.Vector}
      */
@@ -31,19 +34,19 @@ class Style {
   }
 
   /**
-   * This function apply style options facade to impl
+   * Este método aplica a la fachada las opciones de estilo de la implementación.
    * @public
    * @function
-   * @param {Object} options
+   * @param {Object} options Opciones parametrizables.
    * @api stable
    */
   updateFacadeOptions(options = {}) {}
 
   /**
-   * This function apply style to layer
+   * Este método aplica estilos a la capa.
    * @public
    * @function
-   * @param {M.layer.Vector} layer - Layer
+   * @param {M.layer.Vector} layer Capa.
    * @api stable
    */
   applyToLayer(layer) {
@@ -52,11 +55,11 @@ class Style {
   }
 
   /**
-   * This function apply style to feature
+   * Este método aplica los estilos a los objetos geográficos.
    *
    * @public
    * @function
-   * @param {M.Feature} feature - Feature to apply style
+   * @param {M.Feature} feature Objetos geográficos.
    * @api stable
    */
   applyToFeature(feature) {
@@ -64,11 +67,11 @@ class Style {
   }
 
   /**
-   * This function updates the canvas of style of canvas
+   * Este método actualiza el "canva".
    *
    * @public
    * @function
-   * @param {HTMLCanvasElement} canvas - canvas of style
+   * @param {HTMLCanvasElement} canvas "Canva".
    * @api stable
    */
   updateCanvas(canvas) {
@@ -81,20 +84,21 @@ class Style {
   }
 
   /**
-   * This function draw the geometry on canvas of style
+   * Este método dibuja la geometría en el "canvas".
    *
    * @public
    * @function
+   * @param {Object} vectorContext Contexto del vector.
    * @api stable
    */
   drawGeometryToCanvas(vectorContext) {}
 
   /**
-   * This function gets the canvas size
+   * Esta función obtiene el tamaño del "canvas".
    *
    * @public
    * @function
-   * @return {Array<number>} canvas size
+   * @return {Array<number>} Tamaño del "canvas".
    * @api stable
    */
   static getCanvasSize() {
@@ -102,10 +106,11 @@ class Style {
   }
 
   /**
-   * TODO
+   * Este método clona el objeto resultante de la clase.
    *
    * @public
    * @function
+   * @returns {Object} Clona el objeto "new Style".
    * @api stable
    */
   clone() {

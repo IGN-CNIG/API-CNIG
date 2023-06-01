@@ -13,20 +13,23 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Create a Feature
+ * Crea un objeto geográfico.
+ * @extends {M.facade.Base}
  * @api
  */
 class Feature extends Base {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @extends {M.facade.Base}
-   * @param {string} id - id to feature
-   * @param {Object} geojson - geojson to feature
+   * @param {String} id Identificador del objeto geográfico.
+   * @param {Object} geojson Geojson con objetos geográficos.
+   * @param {Object} style Estilo de los objetos geográficos.
    * @api
    */
   constructor(id, geojson, style) {
     /**
-     * Implementation of feature
+     * Implementación de objetos geográficos.
      * @public
      * @type {M.impl.Feature}
      */
@@ -35,27 +38,32 @@ class Feature extends Base {
     super(impl);
 
     /**
-     * Style of feature
+     * Estilo de los objetos geográficos.
      * @private
      * @type {M.style.Feature}
      */
     this.style_ = null;
 
-    /** * GeoJSON format
+    /**
+     * Formato del GeoJSON.
      * @private
      * @type {M.format.GeoJSON}
      */
     this.formatGeoJSON_ = new GeoJSON();
 
+    /**
+     * Añade estilo al objeto geográfico.
+     * @private
+     */
     this.setStyle(style);
   }
 
   /**
-   * This function set id
+   * Sobrescribe el identificador del objeto geográfico.
    *
    * @public
    * @function
-   * @param {string} id - ID to feature
+   * @param {String} id Identificador del objeto geográfico.
    * @api
    */
   setId(id) {
@@ -63,11 +71,11 @@ class Feature extends Base {
   }
 
   /**
-   * This function return id feature
+   * Este método retorna el identificador del objeto geográfico.
    *
    * @public
    * @function
-   * @return {string} ID to feature
+   * @return {string} Identificador del objeto geográfico.
    * @api
    */
   getId() {
@@ -75,11 +83,11 @@ class Feature extends Base {
   }
 
   /**
-   * This function return geometry feature
+   * Este método devuelve la geometría de un objeto geográfico.
    *
    * @public
    * @function
-   * @return {object} Geometry feature
+   * @return {object} Geometría.
    * @api
    */
   getGeometry() {
@@ -87,11 +95,11 @@ class Feature extends Base {
   }
 
   /**
-   * This function set geometry feature
+   * Este método sobrescribe la geometría del objeto geográfico.
    *
    * @public
    * @function
-   * @param {object} Geometry feature
+   * @param {object} Geometry Geometría.
    * @api
    */
   setGeometry(geometry) {
@@ -99,11 +107,12 @@ class Feature extends Base {
   }
 
   /**
-   * This function return geojson feature
+   * Este método retorna un geojson con el
+   * objeto geográfico.
    *
    * @public
    * @function
-   * @return {Object} geojson feature
+   * @return {Object} Geojson con el objeto geográfico.
    * @api
    */
   getGeoJSON() {
@@ -111,11 +120,11 @@ class Feature extends Base {
   }
 
   /**
-   * This function return attributes feature
+   * Este método retorna los atributos del objeto geográfico.
    *
    * @public
    * @function
-   * @return {Object} attributes feature
+   * @return {Object} Atributos.
    * @api
    */
   getAttributes() {
@@ -123,11 +132,11 @@ class Feature extends Base {
   }
 
   /**
-   * This function set attributes feature
+   * Sobrescribe los atributos del objeto geográfico.
    *
    * @public
    * @function
-   * @param {Object} attributes - attributes to feature
+   * @param {Object} attributes Atributos del objeto geográfico.
    * @api
    */
   setAttributes(attributes) {
@@ -139,12 +148,12 @@ class Feature extends Base {
   }
 
   /**
-   * This function returns the value of the indicated attribute
+   * Este método retorna el atributo del objeto geográfico.
    *
    * @public
    * @function
-   * @param {string} attribute - Name attribute
-   * @return  {string|number|object} returns the value of the indicated attribute
+   * @param {String} attribute Nombre del atributo.
+   * @return  {string|number|object} Retorna el valor del atributo.
    * @api
    */
   getAttribute(attribute) {
@@ -173,12 +182,13 @@ class Feature extends Base {
   }
 
   /**
-   * This function set value the value of the indicated attribute
+   * Este método modifica un atributo del objeto geográfico.
    *
    * @public
    * @function
-   * @param {string} attribute - Name attribute
-   * @return  {string|number|object} returns the value of the indicated attribute
+   * @param {String} attribute Nombre del atributo.
+   * @param {string|number|object} value Nuevo valor.
+   * @return  {string|number|object} Devuelve el valor del atributo indicado.
    * @api
    */
   setAttribute(attribute, value) {
@@ -186,11 +196,11 @@ class Feature extends Base {
   }
 
   /**
-   * This function set style feature
+   * Este método sobrescribe el estilo del objeto geográfico.
    *
    * @public
    * @function
-   * @param {M.style.Feature}
+   * @param {M.style.Feature} style Nuevo estilo.
    * @api
    */
   setStyle(style) {
@@ -205,22 +215,23 @@ class Feature extends Base {
   }
 
   /**
-   * This function return if two features are equals
+   * Este método retorna si dos objetos geográficos son iguales.
    * @public
    * @function
-   * @param {M.Feature} feature
-   * @return {bool} returns the result of comparing two features
+   * @param {M.Feature} feature Objeto geográfico.
+   * @return {bool} Retorna el resultado de comparar los dos objetos geográficos.
+   * @api
    */
   equals(feature) {
     return this.getId() === feature.getId();
   }
 
   /**
-   * This function returns style feature
+   * Este método retorna el estilo del objeto geográfico.
    *
    * @public
    * @function
-   * @return {M.style.Feature} returns the style feature
+   * @return {M.style.Feature} Retorna el estilo del objeto geográfico.
    * @api
    */
   getStyle() {
@@ -228,11 +239,11 @@ class Feature extends Base {
   }
 
   /**
-   * This function clear style feature
+   * Elimina el estilo del objeto geográfico.
    *
    * @public
    * @function
-   * @return {M.style.Feature} returns the style feature
+   * @return {M.style.Feature} Retorna el estilo del objeto geográfico.
    * @api
    */
   clearStyle() {
@@ -240,11 +251,11 @@ class Feature extends Base {
   }
 
   /**
-   * This function returns de centroid of feature
+   * Este método retorna el centroide de un objeto geográfico.
    *
    * @public
    * @function
-   * @return {M.Feature}
+   * @return {M.Feature} Centroide del objeto geográfico.
    * @api
    */
   getCentroid() {

@@ -6,13 +6,13 @@ import StyleGeneric from '../style/Generic';
 
 
 /**
- * This function returns the appropiate style to geomtry layer
- * with parameter options.
+ * Esta función devuelve el estilo parametrizable.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
- * @private
- * @param {object} options - style options
- * @param {M.layer.Vector} layer -
- * @return {M.style.Simple}
+ * @public
+ * @param {object} options Opciones de estilo.
+ * @param {M.layer.Vector} layer Capa a la que se le aplicará.
+ * @return {M.style.Simple} Nuevo estilo.
  */
 const generateStyleLayer = (options, layer) => {
   let style;
@@ -35,6 +35,14 @@ const generateStyleLayer = (options, layer) => {
   return style;
 };
 
+/**
+ * Genera un estilo aleatorio.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @function
+ * @public
+ * @param {Object} opts Opciones de "radius", "strokeColor" y "strokeWidth".
+ * @return {StyleGeneric} Nuevo estilo genérico.
+ */
 const generateRandomGenericStyle = (opts) => {
   const radius = opts.radius;
   const fillColor = chroma.random().hex();
@@ -75,7 +83,8 @@ const generateRandomGenericStyle = (opts) => {
 
 /**
  * @public
- * @function
+ * @constant
+ * @type {Object}
  * @api
  */
 const Utils = {

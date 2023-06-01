@@ -8,14 +8,18 @@ import { isNullOrEmpty, extendsObj } from '../util/Utils';
 
 /**
  * @classdesc
- * Creates a generic style
+ * Crea un estilo genérico.
  * @api
+ * @extends {M.style.Simple}
  */
 class Generic extends Simple {
   /**
+   * Constructor principal de la clase.
    * @constructor
-   * @extends {M.style.Simple}
-   * @param {Object} options - options style
+   * @param {Object} optionsVar Opciones del estilo.
+   * - Point. Punto.
+   * - Polygon. Polígono.
+   * - Line. Linea.
    * @api
    */
   constructor(optionsVar) {
@@ -32,18 +36,25 @@ class Generic extends Simple {
   }
 
   /**
-   * @inheritDoc
+   * Transforma el "canvas" a imagen.
+   *
+   * @function
+   * @public
+   * @returns {Object} Devuelve la imagen del "canvas".
    * @api
    */
   toImage() {
     return this.getImpl().toImage(this.canvas_);
   }
 
+
   /**
-   * TODO
-   *
+   * Deserializa el método M.style.Simple.deserialize.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
+   * @return {Function} Devuelve la función M.style.Simple.deserialize.
+   * @api
    */
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Generic'))";
@@ -51,7 +62,7 @@ class Generic extends Simple {
 }
 
 /**
- * Default options for this style
+ * Radio por defecto, 5.
  * @const
  * @type {object}
  * @public
@@ -64,9 +75,11 @@ Generic.DEFAULT = {
 };
 
 /**
- * Default parameters options for this style
+ * Valores por defecto de los parámetros.
  * @const
  * @type {object}
+ * @public
+ * @api
  */
 Generic.PARAMS_DEFAULT_NULL = {
   fill: {
@@ -80,7 +93,7 @@ Generic.PARAMS_DEFAULT_NULL = {
 };
 
 /**
- * Default options for this style
+ * Valor por defecto del estilo.
  * @const
  * @type {object}
  * @public

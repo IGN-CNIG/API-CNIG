@@ -198,6 +198,7 @@ export default class Mirrorpanel extends M.Plugin {
       defaultBaseLyrs: this.defaultBaseLyrs,
       lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
       backImgLayersConfig: this.backImgLayersConfig,
+      target: map.getMapImpl().values_.target,
     };
 
     this.control_ = new MirrorpanelControl(values);

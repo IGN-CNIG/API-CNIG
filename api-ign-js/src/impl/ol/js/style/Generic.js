@@ -13,6 +13,7 @@ import Simple from './Simple';
 import { getLineStyle, getPointStyle, getPolygonStyle } from './builder';
 
 /**
+ * Objetos con los tipos de geometrías.
  * @const
  * @type {object}
  */
@@ -27,12 +28,17 @@ const GETTER_BY_GEOM = {
 
 /**
  * @classdesc
+ * Crea un estilo genérico.
  * @api
  */
 class Generic extends Simple {
   /**
-   * Main constructor of the class.
+   * Constructor principal de la clase.
    * @constructor
+   * @param {Object} optionsVar Opciones del estilo.
+   * - Point. Punto.
+   * - Polygon. Polígono.
+   * - Line. Linea.
    * @api stable
    */
   constructor(options = {}) {
@@ -46,12 +52,12 @@ class Generic extends Simple {
   }
 
   /**
-   * This function returns data url to canvas
+   * Este método devuelve el "canvas" en formato imagen.
    *
    * @function
    * @public
-   * @return {String} data url to canvas
-   * @api
+   * @return {String} "Url del Canvas".
+   * @api stable
    */
   toImage() {
     const imgSize = 30;
@@ -193,12 +199,14 @@ class Generic extends Simple {
   }
 
   /**
-   * This function se options to ol style
-   *
-   * @private
-   * @param {object} options - options to style
+   * Este método actualiza las opciones de la fachada
+   * (patrón estructural como una capa de abstracción con un patrón de diseño).
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {object} options Opciones.
+   * @return {object} Devuelve los estilos actualizados.
    * @function
-   * @api
+   * @api stable
    */
   updateFacadeOptions(options) {
     this.olStyleFn_ = (feature) => {
@@ -222,41 +230,44 @@ class Generic extends Simple {
   }
 
   /**
-   * TODO
+   * Este método dibuja la geometría en el "canvas".
    *
    * @public
    * @function
-   * @api
+   * @param {Object} vectorContext Vector que se dibujará en el "canvas".
+   * @api stable
    */
   drawGeometryToCanvas(vectorContext) {}
 
   /**
-   * This function updates the canvas of style of canvas
+   * Este método actualiza el "canvas".
    *
    * @public
    * @function
-   * @param {HTMLCanvasElement} canvas - canvas of style
-   * @api
+   * @param {HTMLCanvasElement} canvas Nuevo "canvas".
+   * @api stable
    */
   updateCanvas(canvas) {}
 
   /**
-   * TODO
+   * Este método devuelve el tamaño del "canvas".
    *
    * @public
    * @function
-   * @api
+   * @returns {Array} Tamaño.
+   * @api stable
    */
   getCanvasSize() {
     return 0;
   }
 
   /**
-   * TODO
+   * Este método devuelve el radio de una imagen.
    *
    * @public
    * @function
-   * @api
+   * @param {object} image OLStyleIcon (ol/style/Icon) o OLStyleFontsSymbol (ol/style/RegularShape).
+   * @api stable
    */
   getRadius_(image) {
     let r;

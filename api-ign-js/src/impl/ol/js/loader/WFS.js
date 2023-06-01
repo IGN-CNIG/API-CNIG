@@ -7,54 +7,62 @@ import { isNullOrEmpty } from 'M/util/Utils';
 import Exception from 'M/exception/exception';
 import * as Dialog from 'M/dialog';
 import { getValue } from 'M/i18n/language';
+
 /**
- * @classdesc
- * @api
- * @namespace M.impl.control
- */
+  * @classdesc
+  * Implementación de la clase del "loader" para objetos geográficos WFS.
+  *
+  * @property {M.Map} map_ Mapa.
+  * @property {M.impl.service.WFS} service_ Servicio WFS.
+  * @property {M.impl.format.GeoJSON | M.impl.format.GML} format_ Formato.
+  *
+  * @api
+  * @extends {M.Object}
+  */
 class WFS extends MObject {
   /**
-   * @classdesc TODO
-   * control
-   * @param {function} element template of this control
-   * @param {M.Map} map map to add the plugin
-   * @constructor
-   * @extends {M.Object}
-   * @api stable
-   */
+    * Constructor principal de la clase WFS.
+    *
+    * @constructor
+    * @param {M.Map} map Mapa
+    * @param {M.impl.service.WFS} service Servicio WFS.
+    * @param {M.impl.format.GeoJSON | M.impl.format.GML} format Formato.
+    * @api
+    */
   constructor(map, service, format) {
     super();
 
     /**
-     * TODO
-     * @private
-     * @type {M.Map}
-     */
+      * Mapa.
+      * @private
+      * @type {M.Map}
+      */
     this.map_ = map;
 
     /**
-     * TODO
-     * @private
-     * @type {M.impl.service.WFS}
-     */
+      * Servicio WFS.
+      * @private
+      * @type {M.impl.service.WFS}
+      */
     this.service_ = service;
 
     /**
-     * TODO
-     * @private
-     * @type {M.impl.format.GeoJSON | M.impl.format.GML}
-     */
+      * Formato.
+      * @private
+      * @type {M.impl.format.GeoJSON | M.impl.format.GML}
+      */
     this.format_ = format;
   }
 
   /**
-   * This function destroys this control, cleaning the HTML
-   * and unregistering all events
-   *
-   * @public
-   * @function
-   * @api stable
-   */
+    * Este método ejecutará la función "callback" a los objetos geográficos.
+    *
+    * @function
+    * @param {function} callback Función "callback" de llamada para ejecutar.
+    * @returns {function} Método que ejecutará la función 'callback' a los objetos geográficos.
+    * @public
+    * @api
+    */
   getLoaderFn(callback) {
     return ((extent, resolution, projection) => {
       const requestUrl = this.getRequestUrl_(extent, projection);
@@ -63,11 +71,16 @@ class WFS extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
-   * @function
-   */
+    * Este método obtiene los objetos geográficos a partir de los parámetros
+    * especificados.
+    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+    * @function
+    * @param {String} url URL para "GetFeature".
+    * @param {ol.proj.Projection} projection Proyección.
+    * @returns {Promise} Promesa con la obtención de los objetos geográficos.
+    * @public
+    * @api
+    */
   loadInternal_(url, projection) {
     return new Promise((success, fail) => {
       getRemote(url).then((response) => {
@@ -86,11 +99,15 @@ class WFS extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
-   * @function
-   */
+    * Este método obtiene la URL para la solicitud "GetFeature".
+    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+    * @function
+    * @param {ol.Extent} extent Extensión.
+    * @param {ol.proj.Projection} projection Proyección.
+    * @returns {String} URL para "GetFeature".
+    * @public
+    * @api
+    */
   getRequestUrl_(extent, projection) {
     // var mapBbox = this.map_.getBbox();
     // var minExtent = [

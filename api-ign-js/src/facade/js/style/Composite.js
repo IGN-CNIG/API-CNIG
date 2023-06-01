@@ -7,11 +7,18 @@ import { isNullOrEmpty, isArray, styleComparator } from '../util/Utils';
 // import StyleProportional from './Proportional';
 /**
  * @classdesc
+ * Clase que crea estilos compuestos.
  * @api
+ * @extends {M.style}
  */
 class Composite extends StyleBase {
   /**
+   * Constructor principal de la clase.
    * @constructor
+   * @param {Object} options Parámetros.
+   * - icon
+   *    - src: Ruta.
+   * @param {Object} impl Implementación.
    * @api
    */
   constructor(options, impl) {
@@ -24,10 +31,10 @@ class Composite extends StyleBase {
     this.styles_ = [];
   }
   /**
-   * This function apply style
+   * Este método aplica el estilo.
    *
    * @public
-   * @param {M.layer.Vector} layer - Layer to apply the styles
+   * @param {M.layer.Vector} layer Capa.
    * @function
    * @api
    */
@@ -40,12 +47,12 @@ class Composite extends StyleBase {
     }
   }
   /**
-   * This function adds styles of style Composite
+   * Este método añade el estilo.
    *
    * @public
    * @function
-   * @param {M.style|Array<M.Style>} styles
-   * @returns {M.style.Composite}
+   * @param {M.style|Array<M.Style>} stylesParam Estilos.
+   * @returns {M.style.Composite} Devuelve "this".
    * @api
    */
   add(stylesParam) {
@@ -66,12 +73,11 @@ class Composite extends StyleBase {
     return this;
   }
   /**
-   * This function remove styles of style Composite
+   * Este método elimina el estilo.
    *
    * @public
    * @function
-   * @param {M.style|Array<M.Style>} styles
-   * @returns {M.style.Composite}
+   * @param {M.style|Array<M.Style>} stylesParam Estilo.
    * @api
    */
   remove(stylesParam) {
@@ -88,29 +94,29 @@ class Composite extends StyleBase {
     layer.setStyle(this);
   }
   /**
-   * This function returns the array of styles.
+   * Este método devuelve el estilo.
    *
    * @function
    * @public
-   * @return {Array<M.Style>} array styles
+   * @return {Array<M.Style>} Estilo.
    * @api
    */
   getStyles() {
     return this.styles_;
   }
   /**
-   * This function returns the old style of layer..
+   * Este método devuelve el estilo antiguo.
    *
    * @function
    * @public
-   * @return {M.Style} array styles
+   * @return {M.Style} Estilo antiguo.
    * @api
    */
   getOldStyle() {
     return this.oldStyle_;
   }
   /**
-   * This function clears the style Composite
+   * Este método elimina el estilo añadido.
    * @function
    * @public
    * @api
@@ -119,9 +125,11 @@ class Composite extends StyleBase {
     this.remove(this.styles_);
   }
   /**
-   * This function updates the style
+   * Este método añade el estilo de forma interna.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
+   * @param {M.layer.Vector} layer Capa.
    * @api
    */
   unapplyInternal(layer) {
@@ -134,18 +142,18 @@ class Composite extends StyleBase {
     });
   }
   /**
-   * This function unapply the style to specified layer
+   * Este método quita el estilo "soft".
    * @function
    * @public
-   * @param {M.layer.Vector} layer layer to unapply his style
+   * @param {M.layer.Vector} layer Capa.
    * @api
    */
   unapplySoft(layer) {}
   /**
-   * This function unapply the style to specified layer
+   * Desaplica el estilo de la capa.
    * @function
    * @public
-   * @param {M.layer.Vector} layer layer to unapply his style
+   * @param {M.layer.Vector} layer Capa.
    * @api
    */
   unapply(layer) {
@@ -153,10 +161,11 @@ class Composite extends StyleBase {
     this.layer_ = null;
   }
   /**
-   * This function update internally the style composite.
+   * Se actualiza el estilo la capa interna.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @param {M.layer.Vector} layer layer to update the style
+   * @public
+   * @param {M.layer.Vector} layer Capa.
    * @api
    */
   updateInternal_(layer) {

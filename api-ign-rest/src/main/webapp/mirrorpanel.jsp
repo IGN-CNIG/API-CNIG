@@ -95,25 +95,112 @@
             </option>
         </datalist>
         <label for="inputDefaultBaseLyrs">Parámetro defaultBaseLyrs</label>
-        <input type="text" name="defaultBaseLyrs" id="inputDefaultBaseLyrs" list="defaultBaseLyrsSug">
-        <datalist id="defaultBaseLyrsSug">
-            <option
-                value='WMTS*http://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN,WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA,WMTS*https://wmts-mapa-lidar.idee.es/lidar?*EL.GridCoverageDSM*GoogleMapsCompatible*LiDAR'>
-            </option>
-        </datalist>
-        <label for="inputBackImgLayersParams">Parámetro backImgLayersParams</label>
-        <input type="text" name="backImgLayersParams" id="inputBackImgLayersParams" list="backImgLayersParamsSug">
-        <datalist id="backImgLayersParamsSug">
-            <option
-                value="{position:'TR',collapsible:true,collapsed:true,layerId:0,layerVisibility:true,layerOpts:[{id:'mapa',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png',title:'Mapa',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseTodo',legend:'MapaIGN',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'imagen',title:'Imagen',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen(PNOA)',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/jpeg',})],},{id:'lidar',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png',title:'LIDAR',layers:[new M.layer.WMTS({url:'https://wmts-mapa-lidar.idee.es/lidar?',name:'EL.GridCoverageDSM',legend:'ModeloDigitaldeSuperficiesLiDAR',matrixSet:'GoogleMapsCompatible',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',})],},{id:'hibrido',title:'Híbrido',preview:'http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png',layers:[new M.layer.WMTS({url:'http://www.ign.es/wmts/pnoa-ma?',name:'OI.OrthoimageCoverage',legend:'Imagen(PNOA)',matrixSet:'GoogleMapsCompatible',transparent:true,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',}),new M.layer.WMTS({url:'http://www.ign.es/wmts/ign-base?',name:'IGNBaseOrto',matrixSet:'GoogleMapsCompatible',legend:'MapaIGN',transparent:false,displayInLayerSwitcher:false,queryable:false,visible:true,format:'image/png',})],},],}">
-            </option>
-        </datalist>
+        <input type="text" name="defaultBaseLyrs" id="inputDefaultBaseLyrs" value='WMTS*http://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN,WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA,WMTS*https://wmts-mapa-lidar.idee.es/lidar?*EL.GridCoverageDSM*GoogleMapsCompatible*LiDAR'>
         <label for="selectInterface">Selector de interface</label>
         <select name="interface" id="selectInterface">
             <option value=""></option>
             <option value="true" selected="selected">true</option>
             <option value="false">false</option>
         </select>
+        <label for="inputBackImgLayersParams">Parámetro backImgLayersParams</label>
+        <textarea id="inputBackImgLayersParams" rows="3">
+{
+  position: "TR",
+  collapsible: true,
+  collapsed: true,
+  layerId: 0,
+  layerVisibility: true,
+  layerOpts: [
+    {
+      id: "mapa",
+      preview:
+        "http://componentes.ign.es/api-core/plugins/backimglayer/images/svqmapa.png",
+      title: "Mapa",
+      layers: [
+        new M.layer.WMTS({
+          url: "http://www.ign.es/wmts/ign-base?",
+          name: "IGNBaseTodo",
+          legend: "MapaIGN",
+          matrixSet: "GoogleMapsCompatible",
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: "image/jpeg",
+        }),
+      ],
+    },
+    {
+      id: "imagen",
+      title: "Imagen",
+      preview:
+        "http://componentes.ign.es/api-core/plugins/backimglayer/images/svqimagen.png",
+      layers: [
+        new M.layer.WMTS({
+          url: "http://www.ign.es/wmts/pnoa-ma?",
+          name: "OI.OrthoimageCoverage",
+          legend: "Imagen(PNOA)",
+          matrixSet: "GoogleMapsCompatible",
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: "image/jpeg",
+        }),
+      ],
+    },
+    {
+      id: "lidar",
+      preview:
+        "http://componentes.ign.es/api-core/plugins/backimglayer/images/svqlidar.png",
+      title: "LIDAR",
+      layers: [
+        new M.layer.WMTS({
+          url: "https://wmts-mapa-lidar.idee.es/lidar?",
+          name: "EL.GridCoverageDSM",
+          legend: "ModeloDigitaldeSuperficiesLiDAR",
+          matrixSet: "GoogleMapsCompatible",
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: "image/png",
+        }),
+      ],
+    },
+    {
+      id: "hibrido",
+      title: "Híbrido",
+      preview:
+        "http://componentes.ign.es/api-core/plugins/backimglayer/images/svqhibrid.png",
+      layers: [
+        new M.layer.WMTS({
+          url: "http://www.ign.es/wmts/pnoa-ma?",
+          name: "OI.OrthoimageCoverage",
+          legend: "Imagen(PNOA)",
+          matrixSet: "GoogleMapsCompatible",
+          transparent: true,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: "image/png",
+        }),
+        new M.layer.WMTS({
+          url: "http://www.ign.es/wmts/ign-base?",
+          name: "IGNBaseOrto",
+          matrixSet: "GoogleMapsCompatible",
+          legend: "MapaIGN",
+          transparent: false,
+          displayInLayerSwitcher: false,
+          queryable: false,
+          visible: true,
+          format: "image/png",
+        }),
+      ],
+    },
+  ],
+}   
+        </textarea>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -345,6 +432,7 @@
             backImgLayersParams = inputBackImgLayersParams.value != "" ? objeto.backImgLayersParams = eval('(' + inputBackImgLayersParams.value + ')') : objeto.backImgLayersParams = backImgLayerParams;
             let interfaceValor = selectInterface.options[selectInterface.selectedIndex].value;
             interface = interfaceValor != "" ? objeto.interface = (interfaceValor == "true") : "";
+
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
@@ -366,12 +454,12 @@
 </body>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CTLHMMB5YT"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+gtag('config', 'G-CTLHMMB5YT');
 </script>
 
 </html>

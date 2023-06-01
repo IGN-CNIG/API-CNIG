@@ -6,15 +6,17 @@ import { generateRandom } from '../util/Utils';
 
 /**
  * @classdesc
- * Main constructor of the class. Create a clustered Feature
+ * Crea objetos geográficos agrupados.
+ * @extends {M.Feature}
  * @api
  */
 class Clustered extends Feature {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @extends {M.Feature}
-   * @param {Array<M.Feature>} features - array of features
-   * @param {Object} attributes - attributes
+   * @param {Array<M.Feature>} features Array de objetos geográficos.
+   * @param {Object} attributes Atributos.
    * @api
    */
   constructor(features, attributes) {

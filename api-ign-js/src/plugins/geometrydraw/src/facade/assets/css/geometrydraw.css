@@ -33,6 +33,7 @@ div.m-panel.m-geometrydraw.collapsed {
 
 .m-areas>div.m-area>div.m-panel.m-geometrydraw>div.m-panel-controls>div {
     width: 392px;
+    /* border-bottom: 1px solid rgb(100, 100, 100); */
 }
 
 div.m-panel.m-geometrydraw.collapsed * {
@@ -94,8 +95,14 @@ div.m-panel.m-geometrydraw>div#downloadFormat>button {
 
 div.m-panel.m-geometrydraw>div#drawingtools,
 div.m-panel.m-geometrydraw>div#textdrawtools {
+    text-align: center;
+    width: 100%;
+    padding: 20px 0px 20px !important;
     border-top: 1px solid rgb(100, 100, 100);
-    padding: 20px 35px;
+}
+
+.m-panel.m-geometrydraw>div#geometrydraw-uploading {
+    border-top: 1px solid rgb(100, 100, 100);
 }
 
 /* Text options */
@@ -139,7 +146,7 @@ div.m-panel.m-geometrydraw>div#textdrawtools>div>input#fontSize {
 
 div.m-panel.m-geometrydraw>div#drawingtools>div {
     margin: 0 auto;
-    width: 225px;
+    /* width: 225px; */
 }
 
 #drawingtools>div:nth-child(2) {
@@ -192,6 +199,7 @@ div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-control.m-container.m-geom
 div.m-areas>div.m-area.m-left>div.m-panel.m-geometrydraw>button.m-panel-btn {
     position: absolute;
     right: -40px;
+    top: 0;
 }
 
 div.m-areas>div.m-area.m-right>div.m-panel.m-geometrydraw>button.m-panel-btn {
@@ -263,6 +271,10 @@ div.ol-overlaycontainer-stopevent>div>div.m-area>div.m-panel.m-geometrydraw.coll
     display: block;
     text-align: center;
     margin: 0 auto;
+}
+
+.m-areas>div.m-area>div.m-panel.m-geometrydraw {
+    flex-direction: column !important;
 }
 
 /* RESPONSIVE */

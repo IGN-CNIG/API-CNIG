@@ -11,36 +11,68 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a WMS layer
- * with parameters specified by the user
+ * La API-CNIG permite visualizar la capa de Open Street Map.
+ *
+ * @property {String} name Nombre de la capa, OSM.
+ * @property {String} legend Indica el nombre que queremos que aparezca en
+ * el árbol de contenidos, si lo hay.
+ * @property {Boolean} transparent Falso si es una capa base, verdadero en caso contrario.
+ * @property {Object} options Opciones OSM.
+ *
  * @api
+ * @extends {M.Layer}
  */
 class OSM extends LayerBase {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @extends {M.Layer}
-   * @param {string|Mx.parameters.WMS} userParameters parameters
-   * @param {Mx.parameters.LayerOptions} options provided by the user
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán
+   * a la implementación de la capa.
+   * - name: Nombre de la capa en la leyenda.
+   * - url: Url genera la OSM.
+   * - visibility: Define si la capa es visible o no.
+   * - animated: Activa la animación para capas base o parámetros animados.
+   * - displayInLayerSwitcher: Define si la capa se mostrará en el selector de capas.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - type: Tipo de la capa.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import SourceOSM from 'ol/source/OSM';
+   * {
+   *  opacity: 0.1,
+   *  source: new SourceOSM({
+   *    attributions: 'osm',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api
    */
   constructor(userParametersVar, options = {}, vendorOptions = {}) {
     let userParameters = userParametersVar;
 
-    // checks if the implementation can create OSM
+    // Checks if the implementation can create OSM.
     if (isUndefined(OSMImpl)) {
       Exception(getValue('exception').osm_method);
     }
 
-    // checks if the param is null or empty
+    // Checks if the param is null or empty.
     if (isNullOrEmpty(userParameters)) {
       userParameters = 'OSM';
     }
 
     /**
-     * Implementation of this layer
+     * Implementación.
      * @public
-     * @type {M.layer.WMS}
+     * @implements {M.layer.OSMImpl}
+     * @type {M.layer.OSMImpl}
      */
     const impl = new OSMImpl(userParameters, options, vendorOptions);
 
@@ -50,30 +82,50 @@ class OSM extends LayerBase {
       parameters.name = 'osm';
     }
 
-    // calls the super constructor
+    // Calls the super constructor.
     super(parameters, impl);
 
+    /**
+     * OSM name. Nombre de la capa, OSM.
+     */
     this.name = parameters.name;
 
+    /**
+     * OSM legend. Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+     */
     this.legend = parameters.legend;
     if (isNullOrEmpty(parameters.legend)) {
       this.legend = 'OpenStreetMap';
     }
 
-    // transparent
+    /**
+     * OSM transparent.
+     * Falso si es una capa base, verdadero en caso contrario.
+     */
     this.transparent = parameters.transparent;
 
-    // options
+    /**
+     * OSM options. Opciones OSM.
+     */
     this.options = options;
   }
 
   /**
-   * 'transparent' the layer name
+   * Devuelve el valor de la propiedad "transparent".
+   * @function
+   * @return {M.layer.OSM.impl.transparent} Valor de "transparent".
+   * @api
    */
   get transparent() {
     return this.getImpl().transparent;
   }
 
+  /**
+   * Sobrescribe el valor de la propiedad "transparent".
+   * @function
+   * @param {Boolean} newTransparent Nuevo valor de "transparent".
+   * @api
+   */
   set transparent(newTransparent) {
     if (!isNullOrEmpty(newTransparent)) {
       this.getImpl().transparent = newTransparent;
@@ -83,13 +135,21 @@ class OSM extends LayerBase {
   }
 
   /**
-   * 'type' This property indicates if
-   * the layer was selected
+   * Devuelve el tipo de capa, OSM.
+   * @function
+   * @return {M.LayerType.OSM} Devuelve OSM.
+   * @api
    */
   get type() {
     return LayerType.OSM;
   }
 
+  /**
+   * Sobrescribe el tipo de capa.
+   * @function
+   * @param {String} newType Nuevo tipo de capa.
+   * @api
+   */
   set type(newType) {
     if (!isUndefined(newType) &&
       !isNullOrEmpty(newType) && (newType !== LayerType.OSM)) {
@@ -98,10 +158,12 @@ class OSM extends LayerBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
    * @api
    */
   equals(obj) {

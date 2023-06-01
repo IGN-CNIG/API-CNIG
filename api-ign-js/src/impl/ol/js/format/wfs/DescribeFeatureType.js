@@ -3,48 +3,57 @@
  */
 import { isGeometryType } from 'M/util/Utils';
 import DescribeFeatureTypeXML from './DescribeFeatureTypeXML';
+
 /**
- * @classdesc
- * @api
- */
+  * @classdesc
+  * Crea una capa WFS con parámetros especificados por el usuario.
+  *
+  * @property {String} typeName_ Nombre del "FeatureType".
+  * @property {String} outputFormat_ Formato de salida.
+  * @property {M.Projection} projection_ Proyección.
+  * @property {ol.format.GML2 | ol.format.GML3} gmlFormatter_ Formateador GML.
+  *
+  * @api
+  */
 class DescribeFeatureType {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a WFS layer
-   * with parameters specified by the user
-   *
-   * @constructor
-   * @implements {M.impl.Layer}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
-   * @api stable
-   */
+    * @classdesc
+    * Constructor principal de la clase. Crea una capa WFS con parámetros
+    * especificados por el usuario.
+    *
+    * @constructor
+    * @param {String} typeName Nombre del "FeatureType".
+    * @param {String} outputFormat Formato de salida.
+    * @param {M.Projection} projection Proyección.
+    * @api
+    */
   constructor(typeName, outputFormat, projection) {
     /**
-     * TOOD
-     * @private
-     * @type {String}
-     */
+      * Nombre del "FeatureType".
+      * @private
+      * @type {String}
+      */
     this.typeName_ = typeName;
 
     /**
-     * TOOD
-     * @private
-     * @type {String}
-     */
+      * Formato de salida.
+      * @private
+      * @type {String}
+      */
     this.outputFormat_ = outputFormat;
 
     /**
-     * TOOD
-     * @private
-     * @type {M.Projection}
-     */
+      * Proyección.
+      * @private
+      * @type {M.Projection}
+      */
     this.projection_ = projection;
 
     /**
-     * TOOD
-     * @private
-     * @type {ol.format.GML2 | ol.format.GML3}
-     */
+      * Formateador GML.
+      * @private
+      * @type {ol.format.GML2 | ol.format.GML3}
+      */
     this.gmlFormatter_ = new DescribeFeatureTypeXML({
       outputFormat,
       featureType: typeName,
@@ -53,13 +62,15 @@ class DescribeFeatureType {
   }
 
   /**
-   * This function sets the map object of the layer
-   *
-   * @public
-   * @function
-   * @param {M.Map} map
-   * @api stable
-   */
+    * Este método obtiene el 'FeatureType' que coincida
+    * con los parámetros especificados.
+    *
+    * @function
+    * @param {Object} response Respuesta a la solicitud "DescribeFeatureType".
+    * @returns {Object} "FeatureType".
+    * @public
+    * @api
+    */
   read(response) {
     const describeFeatureType = {};
 

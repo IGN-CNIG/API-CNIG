@@ -61,10 +61,7 @@
             <option value="false">false</option>
         </select>
         <label for="inputLayer">Parámetro layer</label>
-        <input type="text" name="layer" id="inputLayer" list="layerSug">
-        <datalist id="layerSug">
-            <option value="WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas,WMS*IGN*http://www.ign.es/wms-inspire/ign-base*IGNBaseTodo,WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC,WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT,WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986,WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986,WMS*AMS_1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957"></option>
-        </datalist>
+        <input type="text" name="layer" id="inputLayer" value="WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC,WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT,WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986,WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986">
         <label for="selectStaticDivision">Selector de staticDivision</label>
         <select name="staticDivision" id="selectStaticDivision">
             <option value="0">0 - Dinámico</option>
@@ -82,23 +79,13 @@
             <option value="3">3 - Modo de comparación múltiple de cuatro capas</option>
         </select>
         <label for="inputDefaultLyrA">Parámetro defaultLyrA</label>
-        <input type="number" min="0" step="1" name="defaultLyrA" id="inputDefaultLyrA" list="defaultLyrASug">
-        <datalist id="defaultLyrASug"><option value="1"></option></datalist>
+        <input type="number" value="0" min="0" name="defaultLyrA" id="inputDefaultLyrA">
         <label for="inputDefaultLyrB">Parámetro defaultLyrB</label>
-        <input type="number" min="0" step="1" name="defaultLyrB" id="inputDefaultLyrB" list="defaultLyrBSug">
-        <datalist id="defaultLyrBSug"><option value="1"></option></datalist>
+        <input type="number" value="1" min="0" name="defaultLyrB" id="inputDefaultLyrB">
         <label for="inputDefaultLyrC">Parámetro defaultLyrC</label>
-        <input type="number" min="0" step="1" name="defaultLyrC" id="inputDefaultLyrC" list="defaultLyrCSug">
-        <datalist id="defaultLyrCSug"><option value="1"></option></datalist>
+        <input type="number" value="2" min="0" name="defaultLyrC" id="inputDefaultLyrC">
         <label for="inputDefaultLyrD">Parámetro defaultLyrD</label>
-        <input type="number" min="0" step="1" name="defaultLyrD" id="inputDefaultLyrD" list="defaultLyrDSug">
-        <datalist id="defaultLyrDSug"><option value="1"></option></datalist>
-        <label for="selectInterface">Selector de interface</label>
-        <select name="interface" id="selectInterface">
-            <option value=""></option>
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
+        <input type="number" value="3" min="0" name="defaultLyrD" id="inputDefaultLyrD">
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -129,16 +116,14 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp,collapsed,collapsible,
-        layers = [
-            'WMS*Redes*http://www.ideandalucia.es/wms/mta400v_2008?*Redes_energeticas',
-            'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
+        layersPlugin = [
+        	'WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
             'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
             'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
-            'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
-            'WMS*AMS_1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957'],
+            'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986'],
             staticDivision, opacityVal, comparisonMode, defaultLyrA, defaultLyrB, defaultLyrC, defaultLyrD,interface;
         crearPlugin({
-            layers: layers
+            layers: layersPlugin
         });
 
         const selectPosicion = document.getElementById("selectPosicion");
@@ -152,7 +137,7 @@
         const inputDefaultLyrB = document.getElementById("inputDefaultLyrB");
         const inputDefaultLyrC = document.getElementById("inputDefaultLyrC");
         const inputDefaultLyrD = document.getElementById("inputDefaultLyrD");
-        const selectInterface = document.getElementById("selectInterface");
+
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
@@ -164,7 +149,6 @@
         inputDefaultLyrB.addEventListener('change', cambiarTest);
         inputDefaultLyrC.addEventListener('change', cambiarTest);
         inputDefaultLyrD.addEventListener('change', cambiarTest);
-        selectInterface.addEventListener('change', cambiarTest)
 
         function cambiarTest() {
             let objeto = {}
@@ -173,7 +157,10 @@
             collapsed = collapsedValor != "" ? objeto.collapsed = (collapsedValor == "true") : "";
             let collapsibleValor = selectCollapsible.options[selectCollapsible.selectedIndex].value;
             collapsible = collapsibleValor != "" ? objeto.collapsible = (collapsibleValor == "true") : "";
-            objeto.layers = inputLayer.value != "" ? inputLayer.value : layers;
+            objeto.layers = (inputLayer.value !== "" && inputLayer.value.includes("*")) ? inputLayer.value.split(',') : ['WMS*SIGPAC*https://www.ign.es/wms/pnoa-historico*SIGPAC',
+                'WMS*OLISTAT*https://www.ign.es/wms/pnoa-historico*OLISTAT',
+                'WMS*Nacional_1981-1986*https://www.ign.es/wms/pnoa-historico*Nacional_1981-1986',
+                'WMS*Interministerial_1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986'];
             objeto.staticDivision = selectStaticDivision.options[selectStaticDivision.selectedIndex].value;
             opacityVal = inputOpacityVal.value != "" ? objeto.opacityVal = inputOpacityVal.value : "";
             objeto.comparisonMode = selectComparisonMode.options[selectComparisonMode.selectedIndex].value;
@@ -181,9 +168,10 @@
             defaultLyrB = inputDefaultLyrB.value != "" ? objeto.defaultLyrB = inputDefaultLyrB.value : "";
             defaultLyrC = inputDefaultLyrC.value != "" ? objeto.defaultLyrC = inputDefaultLyrC.value : "";
             defaultLyrD = inputDefaultLyrD.value != "" ? objeto.defaultLyrD = inputDefaultLyrD.value : "";
-            let interfaceValor = selectInterface.options[selectInterface.selectedIndex].value;
-            interface = interfaceValor != "" ? objeto.interface = (interfaceValor == "true") : "";
+
             map.removePlugins(mp);
+            console.log(objeto);
+            
             crearPlugin(objeto);
         }
 
@@ -204,12 +192,12 @@
 </body>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163660977-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CTLHMMB5YT"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'UA-163660977-1');
+gtag('config', 'G-CTLHMMB5YT');
 </script>
 
 </html>

@@ -1,0 +1,22 @@
+14/03/2023 - Versión 4.5.0
+- Mejoras sobre la documentación JSDoc
+- Mejoras sobre la documentación de los plugins
+- Se dispara evento REMOVED_LAYER al eliminar capas del mapa
+- Se dispara evento CHANGE_ZOOM al realizar zoom al mapa
+- Se modifica lectura GetCapabilities en fulltoc
+- Mejoras parametrización plugin selectionzoom
+- Se permite enviar parámetros por API REST a los plugins en base64
+- Se añade funcionalidad toast
+- Se soluciona problema de estilo con plugin GeometryDraw
+- Se actualiza el plugin comparepanel, se optimiza la velocidad de carga y se elimina la limitación del target (map y mapjs).
+- Se actualiza el CORE para optimizar las capas WMS y WMTS, se controla las peticiones getCapabilities
+- Se crean nuevos tipos de capas: MBTiles, MBTilesVector y OGCAPIFeatures
+- Se revisan los JSP de test, parámetros y valores por defecto de los plugins attributions, backimglayer, buffer, contactlink, infocoordinates, information, incicarto, measurebar, mousesrs, overview, popup, printermap, queryattributes, rescale, sharemap y stylemanager
+- Printermap: se muestra toast con el listado de capas que no se han podido imprimir en el caso de que se produzca un error al generar los parámetros a mandar a Geoprint
+- Capas GeoJSON, se soluciona el error al cargar un archivo geojson en relativo
+- Se actualiza la URL del visualizador estereoscopico en el plugin contactlink
+- Contactlink: se soluciona error al leer los valores por defecto
+- Geometrydraw: se soluciona problemas con estilos
+- Sharemap: se soluciona problema de estilo y parámetro overwriteStyles del plugin. Se soluciona error tooltip y alineación de botones sharemap
+- Lyrcompare: se actualiza plugin mejorando documentación y eliminando el parámetro interface
+- InfoCoordinates: se habilita copiado en portapapeles

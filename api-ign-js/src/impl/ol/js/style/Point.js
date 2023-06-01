@@ -27,17 +27,17 @@ import { isUndefined, modifySVG } from '../../../../facade/js/util/Utils';
 
 /**
  * @classdesc
+ * Crea el estilo de un punto.
  * @api
- * @namespace Point
  */
 
 class Point extends Simple {
   /**
-   * This function returns data url to canvas
+   * Este método devuelve el "canvas" en formato imagen.
    *
    * @function
    * @public
-   * @return {String} data url to canvas
+   * @return {String} "Canvas".
    * @api stable
    */
   toImage(canvas) {
@@ -95,17 +95,18 @@ class Point extends Simple {
   }
 
   /**
-   * This function se options to ol style
-   *
-   * @private
-   * @param {object} options - options to style
+   * Este método actualiza las opciones de la fachada
+   * (patrón estructural como una capa de abstracción con un patrón de diseño).
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {object} options Opciones.
    * @function
    * @api stable
    */
   updateFacadeOptions(options) {
     this.olStyleFn_ = (feature) => {
       let featureVariable = feature;
-      if (!(featureVariable instanceof OLFeature)) {
+      if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
         featureVariable = this;
       }
 
@@ -303,10 +304,11 @@ class Point extends Simple {
     };
   }
   /**
-   * TODO
+   * Este método dibuja la geometría en el "canvas".
    *
    * @public
    * @function
+   * @param {Object} vectorContext Vector que se dibujará en el "canvas".
    * @api stable
    */
   drawGeometryToCanvas(vectorContext) {
@@ -320,11 +322,11 @@ class Point extends Simple {
   }
 
   /**
-   * This function updates the canvas of style of canvas
+   * Este método actualiza el "canvas".
    *
    * @public
    * @function
-   * @param {HTMLCanvasElement} canvas - canvas of style
+   * @param {HTMLCanvasElement} canvas Nuevo "canvas".
    * @api stable
    */
   updateCanvas(canvas) {
@@ -363,10 +365,11 @@ class Point extends Simple {
   }
 
   /**
-   * TODO
+   * Este método devuelve el tamaño del "canvas".
    *
    * @public
    * @function
+   * @returns {Array} Tamaño.
    * @api stable
    */
   getCanvasSize() {
@@ -382,10 +385,11 @@ class Point extends Simple {
   }
 
   /**
-   * TODO
+   * Este método devuelve el radio de una imagen.
    *
    * @public
    * @function
+   * @param {object} image OLStyleIcon (ol/style/Icon) o OLStyleFontsSymbol (ol/style/RegularShape).
    * @api stable
    */
   getRadius_(image) {
@@ -401,11 +405,21 @@ class Point extends Simple {
     return r;
   }
 }
+
+/**
+ * Valores por defecto.
+ *
+ * @const
+ * @type {Number}
+ * @public
+ * @api
+ */
 Point.DEFAULT_WIDTH_POINT = 3;
 
 /**
- * This function returns the name of the available fonts
+ * Esta función devuelve los nombres de las fuentes disponibles.
  * @function
+ * @returns {Array} Fuentes.
  * @api
  */
 Point.getFonts = () => {
@@ -418,10 +432,10 @@ Point.getFonts = () => {
 };
 
 /**
- * This function returns the available icons for a font
+ * Esta función devuelve los iconos disponibles para una fuente.
  * @function
  * @api
- * @param { name } name source name
+ * @param { name } name Nombre del icono.
  */
 Point.getFontsIcons = (name) => {
   const icons = [];

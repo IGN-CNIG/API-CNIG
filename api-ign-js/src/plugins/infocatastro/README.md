@@ -13,9 +13,16 @@ Muestra referencia catastral para un punto y provee de enlace a la información 
  <script type="text/javascript" src="../../plugins/infocatastro/infocatastro.ol.min.js"></script>
 ```
 
-## Eventos
+# Parámetros
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-## Otros métodos
+- **position**. Indica la posición donde se mostrará el plugin.
+  - 'TL':top left
+  - 'TR':top right (default)
+  - 'BL':bottom left
+  - 'BR':bottom right
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
+- **catastroWMS**. URL Catastro.
 
 ## Ejemplos de uso
 

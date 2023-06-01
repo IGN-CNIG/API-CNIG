@@ -12,15 +12,36 @@ import { clamp } from 'ol/math';
 import Simple from '../style/Simple';
 /**
  * @classdesc
+ * Clase para crear mapas de calor con la API-CNIG.
+ *
  * @api
+ * @extends {ol.layer.Heatmap}
  */
 class Heatmap extends OLLayerHeatmap {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a Heatmap layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa de mapa de calor
+   * con parámetros especificados por el usuario.
    *
    * @constructor
+   * @param {Object} options Parámetros para crear mapas de calor.
+   * - weight
+   * Propiedades de ol/layer/Heatmap:
+   * - className: Un nombre de clase CSS para establecer en el elemento de capa.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * - visible: Define si la capa es visible o no. Verdadero por defecto.
+   * - extent: La extensión límite para la representación de capas.
+   *   La capa no se representará fuera de esta extensión.
+   * - zIndex: El índice z para la representación de capas.
+   * - minResolution: La resolución mínima (inclusive) a la que esta capa será visible.
+   * - maxResolution: La resolución máxima (exclusiva) por debajo de la cual esta capa será visible.
+   * - minZoom: El nivel mínimo de zoom de vista (exclusivo) por
+   * encima del cual esta capa será visible.
+   * - maxZoom: El nivel máximo de zoom de vista (inclusive) en el que esta capa será visible.
+   * - gradient: El degradado de color del mapa de calor, especificado
+   *   como una matriz de cadenas de colores CSS.
+   * - radius: Tamaño del radio en píxeles.
+   * - blur: Tamaño de desenfoque en píxeles.
+   * - properties: Propiedades observables arbitrarias. Se puede acceder con #get() y #set().
    * @api stable
    */
   constructor(options = {}) {
@@ -71,14 +92,38 @@ class Heatmap extends OLLayerHeatmap {
     });
   }
 
+  /**
+   * Devuelve el peso mínimo.
+   *
+   * @public
+   * @function
+   * @returns {Number} Peso mínimo.
+   * @api stable
+   */
   getMinWeight() {
     return this.minWeight_;
   }
 
+  /**
+   * Devuelve el peso máximo.
+   *
+   * @public
+   * @function
+   * @returns {Number} Peso máximo.
+   * @api stable
+   */
   getMaxWeight() {
     return this.maxWeight_;
   }
 
+  /**
+   * Devuelve el peso.
+   *
+   * @public
+   * @function
+   * @param {Object} options Opciones con el peso.
+   * @api stable
+   */
   getWeights(options) {
     let weights = [];
     const source = this.getSource();

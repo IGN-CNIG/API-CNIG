@@ -45,8 +45,7 @@ export default class MeasureBar extends M.Plugin {
      * @private
      * @type {String} 'TL', 'TR', 'BR', 'BL'
      */
-    this.position_ = options.position;
-
+    this.position_ = options.position || 'TL';
 
     /**
      * Control MeasureLength
@@ -74,6 +73,37 @@ export default class MeasureBar extends M.Plugin {
      *@type { Number }
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Option to allow the plugin to be collapsed or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsed_ = options.collapsed;
+    if (this.collapsed_ === undefined) this.collapsed_ = true;
+
+    /**
+     * Option to allow the plugin to be collapsible or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsible_ = options.collapsible;
+    if (this.collapsible_ === undefined) this.collapsible_ = true;
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -108,11 +138,12 @@ export default class MeasureBar extends M.Plugin {
     this.controls_.push(this.measureLength_, this.measureArea_, this.measureClear_);
 
     this.panel_ = new M.ui.Panel('MeasureBar', {
-      collapsible: true,
+      collapsed: this.collapsed_,
+      collapsible: this.collapsible_,
+      tooltip: this.tooltip_,
       position: M.ui.position[this.position_],
       className: 'm-panel-measurebar',
       collapsedButtonClass: 'measurebar-regla',
-      tooltip: getValue('text.tooltip'),
       order: this.order,
     });
 
@@ -139,7 +170,18 @@ export default class MeasureBar extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}`;
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

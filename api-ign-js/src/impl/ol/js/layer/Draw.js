@@ -20,40 +20,34 @@ import Map from '../Map';
 
 /**
  * @classdesc
+ * La capa se utiliza para la representación de entidades.
+ *
  * @api
+ * @extends {M.impl.layer.Layer}
  */
 class Draw extends Layer {
   /**
-   * @classdesc
-   * Main constol.style.Stroke of the class. Creates a KML layer
-   * with parameters specified by the user
+   *  Constructor principal de la clase
    *
    * @constructor
    * @implements {M.impl.Layer}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
    * @api stable
    */
   constructor() {
     super();
 
     /**
-     * Currently drawn feature coordinate.
-     * @private
-     * @type {M.impl.format.GeoJSON}
+     * Draw geojsonFormatter_. Coordenada de entidad dibujada actualmente.
      */
     this.geojsonFormatter_ = new FormatGeoJSON();
 
     /**
-     * Name of the layer
-     * @private
-     * @type {String}
+     * Draw name. Nombre de la capa.
      */
     this.name = 'drawLayer';
 
     /**
-     * Selected features for this layer
-     * @private
-     * @type {Array<ol.Feature>}
+     * Draw selectedFeatures_. Entidades seleccionadas para esta capa.
      */
     this.selectedFeatures_ = [];
 
@@ -61,11 +55,11 @@ class Draw extends Layer {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método incluye la capa al mapa.
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.impl.Map} map  Implementación del mapa.
    * @api stable
    */
   addTo(map) {
@@ -104,11 +98,10 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método se ejecuta al seleccionar un objeto geográfico.
    * @public
    * @function
-   * @param {ol.Feature} feature
+   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
    * @api stable
    */
   selectFeatures(features) {
@@ -121,12 +114,12 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Evento que se produce cuando se deja de hacer clic sobre
+   * un objeto geográfico.
    *
    * @public
    * @function
-   * @param {ol.Feature} feature
+   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
    * @api stable
    */
   unselectFeatures() {
@@ -137,12 +130,11 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Dibuja un punto.
    *
    * @public
    * @function
-   * @param {Array<Mx.Point>} coordinate
+   * @param {Object} pointsParam Parámetros del punto.
    * @api stable
    */
   drawPoints(pointsParam) {
@@ -159,12 +151,11 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Dibuja un GeoJSON.
    *
    * @public
    * @function
-   * @param {Array<Mx.Point>} coordinate
+   * @param {Object} geojsonsParam Parámetros del GeoJSON.
    * @api stable
    */
   drawGeoJSON(geojsonsParam) {
@@ -192,12 +183,11 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Dibuja los objetos geográficos.
    *
    * @public
    * @function
-   * @param {Array<Mx.Point>} coordinate
+   * @param {Object} featuresParam Parámetros de los objetos geográficos.
    * @api stable
    */
   drawFeatures(featuresParam) {
@@ -212,12 +202,11 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Elimina los objetos geográficos.
    *
    * @public
    * @function
-   * @param {Array<Mx.Point>} coordinate
+   * @param {Object} featuresParam Parámetros de los objetos geográficos.
    * @api stable
    */
   removeFeatures(featuresParam) {
@@ -241,12 +230,12 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Devuelve los puntos de los objetos geográficos.
    *
    * @public
    * @function
-   * @param {ol.Coordinate} coordinate
+   * @param {ol.Coordinate} coordinate Coordenadas.
+   * @return {features} Devuelve los puntos de los objetos geográficos.
    * @api stable
    */
   getPoints(coordinate) {
@@ -263,8 +252,8 @@ class Draw extends Layer {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Esta función destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
    *
    * @public
    * @function
@@ -282,10 +271,12 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Esta función comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api stable
    */
   equals(obj) {
@@ -298,11 +289,14 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Transforma los puntos a GeoJSON.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @public
    * @function
+   * @param {Array<Point>} points Punto que se transforman a GeoJSON.
+   * @return {Array<GeoJSON>} Devuelve los puntos en formato GeoJSON.
+   * @api stable
    */
   pointsToGeoJSON_(points) {
     let geojsons = [];
@@ -334,11 +328,14 @@ class Draw extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Transformar Objetos geográficos a puntos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @public
    * @function
+   * @param {Array<Point>} points Puntos que se transformaran en objetos geográficos.
+   * @return {Array<Feature>} Devuelve los objetos geográficos en formato GeoJSON.
+   * @api stable
    */
   featuresToPoints_(points) {
     const features = [];

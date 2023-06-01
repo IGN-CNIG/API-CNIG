@@ -2,20 +2,22 @@ import { isUndefined } from 'M/util/Utils';
 import Line from 'M/style/Line';
 import TextPath from './Textpath';
 import Path from '../style/Path';
+
 /**
- * Post render event method.<br />
- * Handles additional renderings after default ol style render.<br />
+ * Método de evento posterior al renderizado.<br />
+ * Maneja renderizados adicionales después del renderizado del
+ * estilo ol predeterminado.<br />
  *
- * <b>NOTICE</b> that this method is binded to vector layer, so
- * the context used inside method will be the olLayer (this = olLayer)
+ * <b>AVISO</b> este método está vinculado a la capa vectorial,
+ * por lo que el contexto utilizado dentro del método será
+ * olLayer (this = olLayer)
  *
- * @public
  * @see https://github.com/Viglino/ol3-ext/blob/gh-pages/style/settextpathstyle.js#L138
  * @function
- * @param {Object} e received event with framestate
- * @api stable
+ * @param {Object} e evento recibido con 'framestate'.
+ * @public
+ * @api
  */
-
 const postRender = function postRender(e = null) {
   // add support for textpath
   if (isUndefined(window.CanvasRenderingContext2D.prototype.textPath)) {
