@@ -180,7 +180,7 @@ public class JSBuilder {
 					if (propertyValue != null) {
 						if (property.getType().equals(PluginAPIParam.NUMBER)) {
 							String val = propertyValue.toString();
-							if(val != "") {
+							if(!val.equals("")) {
 							((JSONObject) pluginParam).put(property.getName(),
 									Double.parseDouble(val));
 							}
