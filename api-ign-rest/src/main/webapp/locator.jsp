@@ -117,7 +117,7 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion, collapsed = true, collapsible = true, tooltip, zoom, 
+        let posicion, collapsed = true, collapsible = true, tooltip, zoomL, 
             pointStyle, isdraggable, byParcelCadastre, byCoordinates,
             byPlaceAddressPostal;
         crearPlugin({
@@ -125,7 +125,7 @@
             collapsed: collapsed,
             collapsible: collapsible,
             tooltip: tooltip,
-            zoom: zoom,
+            zoom: zoomL,
             pointStyle: pointStyle,
             isDraggable: isdraggable,
             byParcelCadastre: byParcelCadastre,
