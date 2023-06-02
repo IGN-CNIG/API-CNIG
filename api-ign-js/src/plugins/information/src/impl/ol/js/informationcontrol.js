@@ -223,6 +223,13 @@ export default class InformationControl extends M.impl.Control {
     });
   }
 
+  returnPositionPopup(className) {
+    const element = document.querySelector(`.${className}`);
+    const bounding = element.getBoundingClientRect();
+    const position = [bounding.left + (bounding.width / 2), bounding.top + (bounding.height / 2)];
+    return this.facadeMap_.getMapImpl().getCoordinateFromPixel(position);
+  }
+
   /**
    * This function specifies whether the information is valid
    *
@@ -591,14 +598,18 @@ export default class InformationControl extends M.impl.Control {
 
             if (this.opened_ === 'all') {
               setTimeout(() => {
-                document.querySelectorAll('div.m-arrow-right').forEach((elem) => {
-                  elem.click();
+                document.querySelectorAll('.m-information-content-info-body').forEach((elem) => {
+                  elem.classList.remove('m-content-collapsed');
                 });
+                const coordinates = this.returnPositionPopup('m-popup');
+                this.facadeMap_.setCenter(coordinates);
               }, 100);
             } else if (this.opened_ === 'one' && layerNamesUrls.length === 1) {
               setTimeout(() => {
-                document.querySelector('div.m-arrow-right').click();
+                document.querySelector('.m-information-content-info-body').classList.remove('m-content-collapsed');
               }, 100);
+              const coordinates = this.returnPositionPopup('m-popup');
+              this.facadeMap_.setCenter(coordinates);
             }
           }
           // M.proxy(true);
