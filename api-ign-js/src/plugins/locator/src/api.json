@@ -34,7 +34,7 @@
       "position": 3
     },
     {
-      "type": "number",
+      "type": "simple",
       "name": "zoom",
       "position": 4
     },
