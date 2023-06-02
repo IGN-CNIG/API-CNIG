@@ -18,6 +18,9 @@ const mp = new IGNSearchLocator({
   reverse: false,
   cadastre: false,
   searchCoordinatesXYZ: false,
+  locationID: 'ES.IGN.NGBE.2805347',
+  requestStreet: 'https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null',
+  // geocoderCoords: [-5.741757, 41.512058]
   // urlCandidates: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
   // urlFind: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
   // urlReverse: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',

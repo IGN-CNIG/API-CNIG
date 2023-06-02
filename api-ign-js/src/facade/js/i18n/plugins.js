@@ -189,6 +189,9 @@ import enViewshed from '../../../plugins/viewshed/src/facade/js/i18n/en';
 import esViewmanagement from '../../../plugins/viewmanagement/src/facade/js/i18n/es';
 import enViewmanagement from '../../../plugins/viewmanagement/src/facade/js/i18n/en';
 
+import esLocator from '../../../plugins/locator/src/facade/js/i18n/es';
+import enLocator from '../../../plugins/locator/src/facade/js/i18n/en';
+
 
 /**
  * Este objeto devuelve un objeto JSON dinámico que contiene
@@ -376,6 +379,10 @@ const pluginsLanguage = {
   viewmanagement: {
     esViewmanagement,
     enViewmanagement,
+  },
+  locator: {
+    esLocator,
+    enLocator,
   },
 };
 
