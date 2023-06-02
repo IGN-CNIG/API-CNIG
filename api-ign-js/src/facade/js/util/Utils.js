@@ -1434,6 +1434,22 @@ export const draggabillyPlugin = (panel, handleEl) => {
 };
 
 /**
+ * Esta función devuelve las coordenadas de un elemento HTML
+ * que se encuentra en el mapa (ol-overlay-container).
+ *
+ * @function
+ * @param {String} className Clase del elemento HTML
+ * @param {Array<Number>} position Coordenadas del elemento HTML
+ * @api
+ */
+export const returnPositionHtmlElement = (className, map) => {
+  const element = document.querySelector(`.${className}`);
+  const bounding = element.getBoundingClientRect();
+  const position = [bounding.left + (bounding.width / 2), bounding.top + (bounding.height / 2)];
+  return map.getMapImpl().getCoordinateFromPixel(position);
+};
+
+/**
  * Este comentario no se verá, es necesario incluir
  * una exportación por defecto para que el compilador
  * muestre las funciones.

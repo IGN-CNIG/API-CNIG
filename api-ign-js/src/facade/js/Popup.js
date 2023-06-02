@@ -5,7 +5,7 @@ import PopupImpl from 'impl/Popup';
 
 import 'assets/css/popup';
 import popupTemplate from 'templates/popup';
-import { isNullOrEmpty } from './util/Utils';
+import { isNullOrEmpty, returnPositionHtmlElement } from './util/Utils';
 import Base from './Base';
 import { compileSync as compileTemplate } from './util/Template';
 import * as EventType from './event/eventtype';
@@ -135,6 +135,10 @@ class Popup extends Base {
     }
     this.tabs_.push(tab);
     this.update();
+
+    window.requestAnimationFrame(() => {
+      this.map_.setCenter(returnPositionHtmlElement('m-popup', this.map_));
+    });
   }
 
   /**
