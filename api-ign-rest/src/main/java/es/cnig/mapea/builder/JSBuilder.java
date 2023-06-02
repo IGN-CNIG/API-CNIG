@@ -126,7 +126,7 @@ public class JSBuilder {
 
 		pluginBuilder.append("new ").append(plugin.getConstructor());
 		pluginBuilder.append("(");
-		
+
 		boolean founded = false;
 		int index = 0;
 		if (paramValues != null) {
@@ -144,7 +144,7 @@ public class JSBuilder {
 			String base64 = paramValues[index].replace("base64=", "");
 			byte[] decodedBytes = Base64.getDecoder().decode(base64);
 			String decoded = new String(decodedBytes);
-			JSONObject decodedJSON = new JSONObject(decoded); 
+			JSONObject decodedJSON = new JSONObject(decoded);
 			pluginBuilder.append(decodedJSON);
 		} else {
 			List<PluginAPIParam> pluginAPIParams = plugin.getParameters();
@@ -179,8 +179,15 @@ public class JSBuilder {
 					Object propertyValue = readPluginParameter(property, paramValues);
 					if (propertyValue != null) {
 						if (property.getType().equals(PluginAPIParam.NUMBER)) {
-							((JSONObject) pluginParam).put(property.getName(),
-									Double.parseDouble(propertyValue.toString()));
+							String val = propertyValue.toString();
+							if(val != "") {
+								((JSONObject) pluginParam).put(property.getName(),
+										Double.parseDouble(propertyValue.toString()));	
+							}else {
+								((JSONObject) pluginParam).put(property.getName(),
+										propertyValue.toString());
+							}
+							
 						} else if (property.getType().equals(PluginAPIParam.BOOLEAN)) {
 							((JSONObject) pluginParam).put(property.getName(),
 									Boolean.parseBoolean(propertyValue.toString()));
