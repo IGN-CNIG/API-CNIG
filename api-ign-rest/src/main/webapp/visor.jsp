@@ -13,9 +13,8 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/ignsearchlocator/ignsearchlocator.ol.min.css" rel="stylesheet" />
+    <link href="plugins/locator/locator.ol.min.css" rel="stylesheet" />
     <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
-    <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
     <link href="plugins/viewmanagement/viewmanagement.ol.min.css" rel="stylesheet" />
@@ -38,7 +37,7 @@
       for (int i = 0; i < cssfiles.length; i++) {
          String cssfile = cssfiles[i];
    %>
-    <link type="text/css" rel="stylesheet" href="plugins/<%=cssfile%>">
+    <link type="text/css" rel="stylesheet" href="/plugins/<%=cssfile%>">
     </link>
     <%
       } %>
@@ -49,9 +48,8 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/ignsearchlocator/ignsearchlocator.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/locator/locator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
-    <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <script type="text/javascript" src="plugins/viewmanagement/viewmanagement.ol.min.js"></script>
     <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
@@ -109,29 +107,25 @@
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
 
-        const mp = new M.plugin.IGNSearchLocator({
-        	isCollapsed: true,
+        const pluginLocator = new M.plugin.Locator({
+            position: 'TL',
+        	collapsed: true,
             collapsible: true,
-            servicesToSearch: 'gn',
-            maxResults: 10,
-            noProcess: 'municipio,poblacion',
-            countryCode: 'es',
-            reverse: true,
         });
-        const mp2 = new M.plugin.Attributions({
+
+        const pluginAttributions = new M.plugin.Attributions({
             mode: 1,
             scale: 10000,
         });
 
-        const mp3 = new M.plugin.ShareMap({
+        const pluginShareMap = new M.plugin.ShareMap({
             baseUrl: 'https://componentes.ign.es/api-core/',
             position: 'BR',
         });
-        const mp4 = new M.plugin.XYLocator({
-            position: 'TL',
-        });
-        const mp6 = new M.plugin.ViewManagement();
-        const mp7 = new M.plugin.MouseSRS({
+
+        const pluginViewManagement = new M.plugin.ViewManagement();
+
+        const pluginMouseSRS = new M.plugin.MouseSRS({
             srs: 'EPSG:4326',
             label: 'WGS84',
             precision: 6,
@@ -139,17 +133,17 @@
             utmDecimalDigits: 2,
         });
 
-        const mp8 = new M.plugin.TOC({
-            collapsed: false,
+        const pluginTOC = new M.plugin.TOC({
+            collapsible: true,
+            collapsed: true,
         });
 
-        map.addPlugin(mp);
-        map.addPlugin(mp2);
-        map.addPlugin(mp3);
-        map.addPlugin(mp4);
-        map.addPlugin(mp6);
-        map.addPlugin(mp7);
-        map.addPlugin(mp8);
+        map.addPlugin(pluginLocator);
+        map.addPlugin(pluginAttributions);
+        map.addPlugin(pluginShareMap);
+        map.addPlugin(pluginViewManagement);
+        map.addPlugin(pluginMouseSRS);
+        map.addPlugin(pluginTOC);
     </script>
 </body>
 
