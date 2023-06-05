@@ -40,7 +40,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Localizador.
 - **zoom**: Zoom que aplicará al mostrar resultado de tipo puntual. Por defecto: 16.
 - **pointStyle**: Tipo de icono a mostrar cuando se encuentra un resultado de tipo puntual.
-  - 'pinBlanco' (por defecto)
+  - 'pinAzul' (por defecto)
   - 'pinRojo'
   - 'pinMorado'
 - **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
@@ -169,7 +169,7 @@ URL_API?locator=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDraggab
   </tr>
   <tr>
     <td>pointStyle</td>
-    <td>pinBlanco/pinRojo/pinMorado</td>
+    <td>pinAzul/pinRojo/pinMorado</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
@@ -202,7 +202,7 @@ https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16
 ```
 
 ```
-https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16*pinBlanco*true*false*true*true
+https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16*pinAzul*true*false*true*true
 ```
 
 ### Ejemplos de uso API-REST en base64

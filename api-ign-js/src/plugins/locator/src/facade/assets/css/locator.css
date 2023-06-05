@@ -473,13 +473,22 @@ div#m-locator-previews {
     display: block;
 }
 
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-parcela {
+    width: 42.2%;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-catastro {
+    width: 43%;
+}
+
 #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label {
     display: inline-block;
     position: relative;
-    padding: 10px 16px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-bottom: 0;
     cursor: pointer;
+    text-align: center;
 }
 
 #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label::after {
@@ -867,5 +876,13 @@ div.m-area.m-bottom.m-left>div.m-plugin-locator.m-panel.opened>button.m-panel-bt
         font-size: 1.2em;
         margin-left: -5px;
         margin-right: 5px;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-parcela {
+        width: 40.5%;
+    }
+    
+    #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-catastro {
+        width: 40.6%;
     }
 }

@@ -96,7 +96,7 @@ export default class Locator extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.pointStyle = options.pointStyle || 'pinBlanco';
+    this.pointStyle = options.pointStyle || 'pinAzul';
 
     /**
      * Indicates if the control infocatastro is added to the plugin

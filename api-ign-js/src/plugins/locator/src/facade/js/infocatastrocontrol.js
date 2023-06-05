@@ -592,10 +592,6 @@ export default class InfoCatastroControl extends M.Control {
 
       this.coordinatesLayer.addFeatures([feature]);
       this.createGeometryStyles();
-      // Change zIndex value
-      this.coordinatesLayer.setZIndex(9999999999999999999);
-
-      this.map.addLayers(this.coordinatesLayer);
     } else {
       M.dialog.error(getValue('exception.wrong_coords'), 'Error');
     }
@@ -623,7 +619,7 @@ export default class InfoCatastroControl extends M.Control {
       },
     };
 
-    if (this.pointStyle === 'pinBlanco') {
+    if (this.pointStyle === 'pinAzul') {
       style = {
         radius: 5,
         icon: {
@@ -655,6 +651,10 @@ export default class InfoCatastroControl extends M.Control {
       };
     }
     this.coordinatesLayer.setStyle(new M.style.Point(style));
+    // Change zIndex value
+    this.coordinatesLayer.setZIndex(9999999999999999999);
+
+    this.map.addLayers(this.coordinatesLayer);
   }
 
   /**
@@ -759,8 +759,8 @@ export default class InfoCatastroControl extends M.Control {
     }
 
     featureTabOpts.content += `<div><b>${fullAddress !== undefined ? fullAddress : '-'}</b></div><br/>
-                  <div class='ignsearchlocator-popup'><b>Lat:</b>${featureCoordinates[0].toFixed(6)}</div>
-                  <div class='ignsearchlocator-popup'><b>Lon:</b>${featureCoordinates[1].toFixed(6)} </div>`;
+                  <div class='ignsearchlocator-popup'><b>Lat:</b> ${featureCoordinates[0].toFixed(6)}</div>
+                  <div class='ignsearchlocator-popup'><b>Lon:</b> ${featureCoordinates[1].toFixed(6)} </div>`;
 
     const myPopUp = new M.Popup({ panMapIfOutOfView: !e.fake });
     myPopUp.addTab(featureTabOpts);
@@ -769,6 +769,13 @@ export default class InfoCatastroControl extends M.Control {
       mapcoords[1],
     ]);
     this.popup = myPopUp;
+    if (this.pointStyle === 'pinAzul') {
+      this.popup.getImpl().setOffset([0, -30]);
+    } else if (this.pointStyle === 'pinRojo') {
+      this.popup.getImpl().setOffset([2, -15]);
+    } else if (this.pointStyle === 'pinMorado') {
+      this.popup.getImpl().setOffset([1, -10]);
+    }
     this.lat = mapcoords[1];
     this.lng = mapcoords[0];
   }

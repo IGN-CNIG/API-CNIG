@@ -297,7 +297,7 @@ export default class XYLocatorControl extends M.Control {
       },
     };
 
-    if (this.pointStyle === 'pinBlanco') {
+    if (this.pointStyle === 'pinAzul') {
       style = {
         radius: 5,
         icon: {

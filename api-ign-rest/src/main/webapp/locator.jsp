@@ -63,7 +63,7 @@
         <input type="text" name="zoom" id="inputZoom" value="16">
         <label for="selectPointStyle">Estilo del pin de búsqueda</label>
         <select name="pointStyle" id="selectPointStyle">
-            <option value="pinBlanco">Blanco</option>
+            <option value="pinAzul">Azul</option>
             <option value="pinRojo">Rojo</option>
             <option value="pinMorado">Morado</option>
         </select>

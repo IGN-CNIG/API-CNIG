@@ -776,7 +776,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   createGeometryStyles() {
     // Shows pin on drawn point
-    if (this.pointStyle === 'pinBlanco') {
+    if (this.pointStyle === 'pinAzul') {
       this.point = new M.style.Point({
         radius: 5,
         icon: {
@@ -1081,7 +1081,13 @@ export default class IGNSearchLocatorControl extends M.Control {
     ]);
     this.popup = myPopUp;
 
-    if (hasOffset && this.pointStyle === 'pinBlanco') this.popup.getImpl().setOffset([0, -30]);
+    if (hasOffset && this.pointStyle === 'pinAzul') {
+      this.popup.getImpl().setOffset([0, -30]);
+    } else if (hasOffset && this.pointStyle === 'pinRojo') {
+      this.popup.getImpl().setOffset([2, -15]);
+    } else if (hasOffset && this.pointStyle === 'pinMorado') {
+      this.popup.getImpl().setOffset([1, -10]);
+    }
     this.lat = mapcoords[1];
     this.lng = mapcoords[0];
   }
