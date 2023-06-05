@@ -879,10 +879,10 @@ div.m-area.m-bottom.m-left>div.m-plugin-locator.m-panel.opened>button.m-panel-bt
     }
 
     #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-parcela {
-        width: 40.5%;
+        width: 40%;
     }
     
     #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-catastro {
-        width: 40.6%;
+        width: 41%;
     }
 }

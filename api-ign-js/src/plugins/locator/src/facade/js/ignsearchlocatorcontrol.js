@@ -265,15 +265,11 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.drawNomenclatorResult(this.locationID, false);
     }
     if (this.requestStreet && this.requestStreet.length > 0) {
-      M.proxy(false);
       M.remote.get(this.requestStreet).then((res) => {
         const geoJsonData = res.text.substring(9, res.text.length - 1);
         this.createGeometryStyles();
         this.drawGeocoderResult(geoJsonData);
-        M.proxy(true);
-      }).catch((err) => {
-        M.proxy(true);
-      });
+      }).catch();
     }
     if (this.geocoderCoords && this.geocoderCoords.length === 2) {
       const reprojCoords = this.getImpl().reproject('EPSG:4326', this.geocoderCoords);
@@ -435,7 +431,6 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.geocoderCoords = etrs89pointCoordinates;
       const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
       let fullAddress = '';
-      M.proxy(false);
       M.remote.get(urlToGet).then((res) => {
         if (res.text) {
           const returnData = JSON.parse(res.text);
@@ -445,8 +440,6 @@ export default class IGNSearchLocatorControl extends M.Control {
         }
         this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, e, false);
       });
-
-      M.proxy(true);
     }
   }
 
@@ -620,7 +613,6 @@ export default class IGNSearchLocatorControl extends M.Control {
         let params = `q=${newInputVal}&limit=${this.maxResults}&no_process=${this.noProcess}`;
         params += `&countrycode=${this.countryCode}&autocancel=true`;
         const urlToGet = `${this.urlCandidates}?${params}`;
-        M.proxy(false);
         M.remote.get(urlToGet).then((res) => {
           if (res.code === 404 || res.code === 500) {
             M.dialog.error(getValue('exception.error_candidates'));
@@ -632,8 +624,6 @@ export default class IGNSearchLocatorControl extends M.Control {
           }
           resolve();
         });
-
-        M.proxy(true);
       } else {
         resolve();
       }
@@ -932,12 +922,13 @@ export default class IGNSearchLocatorControl extends M.Control {
         const parenthesisIndex = address.indexOf('(');
         address = address.substring(0, parenthesisIndex);
       }
+      address = window.encodeURIComponent(address);
       const params = `${type}${via}${id}${portal}${extension}`;
       const urlToGet = `${this.urlFind}?q=${address}${params}`;
       this.urlParse = urlToGet;
       this.requestStreet = urlToGet;
       this.locationID = '';
-      M.proxy(false);
+
       M.remote.get(urlToGet).then((res) => {
         if (res.code === 404 || res.code === 500) {
           M.dialog.error(getValue('exception.error_findjsonp'));
@@ -947,7 +938,6 @@ export default class IGNSearchLocatorControl extends M.Control {
           resolve(geoJsonData);
         }
       });
-      M.proxy(true);
     });
   }
 
