@@ -861,4 +861,11 @@ div.m-area.m-bottom.m-left>div.m-plugin-locator.m-panel.opened>button.m-panel-bt
     #m-ignsearchlocator-search-input:has(+ #m-ignsearchlocator-locate-button) {
         width: 106px !important;
     }
+
+    #div-contenedor-locator #m-ignsearchlocator-locate-button {
+        max-width: 30px;
+        font-size: 1.2em;
+        margin-left: -5px;
+        margin-right: 5px;
+    }
 }
