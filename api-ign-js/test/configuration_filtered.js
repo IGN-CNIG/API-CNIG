@@ -204,7 +204,7 @@ function fun(M_) {
    * @private
    * @type {object}
    */
-  M_.config('MOVE_MAP_EXTRACT', true);
+  M_.config('MOVE_MAP_EXTRACT', false);
 }
 
 fun(window.M);

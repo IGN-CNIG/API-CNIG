@@ -135,14 +135,6 @@ class Popup extends Base {
     }
     this.tabs_.push(tab);
     this.update();
-
-    if (M.config.MOVE_MAP_EXTRACT) {
-      window.requestAnimationFrame(() => {
-        this.map_.getMapImpl()
-          .getView()
-          .animate({ zoom: this.map_.getZoom(), center: returnPositionHtmlElement('m-popup', this.map_), duration: 1000 });
-      });
-    }
   }
 
   /**
@@ -169,6 +161,12 @@ class Popup extends Base {
     } else {
       this.getImpl().addTo(map, this.element_);
       this.show(coordinate);
+    }
+
+    if (M.config.MOVE_MAP_EXTRACT) {
+      this.map_.getMapImpl()
+        .getView()
+        .animate({ zoom: this.map_.getZoom(), center: returnPositionHtmlElement('m-popup', this.map_), duration: 1000 });
     }
   }
 
