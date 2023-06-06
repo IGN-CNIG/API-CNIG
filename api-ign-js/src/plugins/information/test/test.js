@@ -1,6 +1,7 @@
 import Information from 'facade/information';
 
 // M.language.setLang('en');
+M.config('MOVE_MAP_EXTRACT', true);
 
 const map = M.map({
   container: 'mapjs',
@@ -15,7 +16,7 @@ const map = M.map({
 const mp = new Information({
   position: 'TR',
   buffer: 100,
-  opened: 'one',
+  opened: 'all',
 });
 
 const mp2 = new M.plugin.Infocoordinates({

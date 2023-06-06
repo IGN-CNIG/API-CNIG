@@ -503,7 +503,6 @@ export default class InformationControl extends M.impl.Control {
 
    */
   showInfoFromURL_(layerNamesUrls, coordinate, olMap) {
-    M.config('MOVE_MAP_EXTRACT', false);
     const htmlAsText = M.template.compileSync(informationPopupTemplate, {
       vars: {
         info: getValue('querying'),
@@ -593,19 +592,11 @@ export default class InformationControl extends M.impl.Control {
               setTimeout(() => {
                 document.querySelectorAll('.m-information-content-info-body').forEach((elem) => {
                   elem.classList.remove('m-content-collapsed');
-                  const center = M.utils.returnPositionHtmlElement('m-popup', this.facadeMap_);
-                  this.facadeMap_.getMapImpl()
-                    .getView()
-                    .animate({ zoom: this.facadeMap_.getZoom(), center, duration: 1000 });
                 });
               }, 100);
             } else if (this.opened_ === 'one' && layerNamesUrls.length === 1) {
               setTimeout(() => {
                 document.querySelector('.m-information-content-info-body').classList.remove('m-content-collapsed');
-                const center = M.utils.returnPositionHtmlElement('m-popup', this.facadeMap_);
-                this.facadeMap_.getMapImpl()
-                  .getView()
-                  .animate({ zoom: this.facadeMap_.getZoom(), center, duration: 1000 });
               }, 100);
             }
           }
