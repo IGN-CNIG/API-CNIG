@@ -2,6 +2,7 @@
 - Creación plugin locator
 - Se dispara evento MOVE cuando se mueve el mapa, no cuando se mueve el ratón
 - Se centra el popup cuando las capas tienen el extract y en el plugin information
+- Se añade el parámetro MOVE_MAP_EXTRACT para definir si se mueve o no hacía el popup.
   
 14/03/2023 - Versión 4.5.0
 - Mejoras sobre la documentación JSDoc
