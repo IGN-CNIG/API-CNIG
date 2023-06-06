@@ -241,5 +241,5 @@ params.forEach((param) => {
    * @private
    * @type {object}
    */
-  M.config('MOVE_MAP_EXTRACT', true);
+  M.config('MOVE_MAP_EXTRACT', false);
 }(window.M));
