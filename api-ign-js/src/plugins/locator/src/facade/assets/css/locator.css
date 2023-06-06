@@ -2,7 +2,6 @@
 
 .m-panel.m-plugin-locator.collapsed {
     height: 40px;
-    order: -99;
 }
 
 .m-plugin-locator.opened .m-panel-btn.g-cartografia-flecha-derecha,
