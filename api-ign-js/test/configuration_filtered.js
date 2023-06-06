@@ -195,6 +195,16 @@ function fun(M_) {
    * @type {String}
    */
   M_.config('SQL_WASM_URL', '../../../../node_modules/sql.js/dist/');
+
+
+    /**
+   * Mueve el mapa cuando se hace clic sobre un objeto
+   * geográfico, (extract = true) o no (extract = false)
+   *
+   * @private
+   * @type {object}
+   */
+  M_.config('MOVE_MAP_EXTRACT', true);
 }
 
 fun(window.M);
