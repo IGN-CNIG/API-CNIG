@@ -27,7 +27,6 @@ class OGCAPIFeatures {
    * - name: Nombre de la capa.
    * - version: Versión del servicio WFS.
    * - ids: Identificadores de los objetos geográficos.
-   * - cql: Consulta CQL.
    * - projection: Proyección.
    * - getFeatureOutputFormat: Formato de salida de la petición "getFeature".
    * - describeFeatureTypeOutputFormat_: Formato de salida de la petición "describeFeatureType".
@@ -40,6 +39,14 @@ class OGCAPIFeatures {
    * @param {Object} vendorOpts Opciones para la biblioteca base.
    * - getFeature: Devuelve los objetos geográficos de la capa.
    * - describeFeatureType: Devuelve la descripción de la capa.
+   * - cql: Consulta CQL.
+   * Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *   cql: 'id IN (3,5)',
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(layerParameters, vendorOpts) {
