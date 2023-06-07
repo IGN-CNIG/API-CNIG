@@ -659,10 +659,12 @@ export default class InformationControl extends M.impl.Control {
    * @function
    */
   movePopup_(map) {
-    const center = M.utils.returnPositionHtmlElement('m-popup', map);
-    map.getMapImpl()
-      .getView()
-      .animate({ zoom: map.getZoom(), center, duration: 1000 });
+    if (M.config('MOVE_MAP_EXTRACT', true) && window.innerWidth > 768) {
+      const center = M.utils.returnPositionHtmlElement('m-popup', map);
+      map.getMapImpl()
+        .getView()
+        .animate({ zoom: map.getZoom(), center, duration: 1000 });
+    }
   }
 
   /**
