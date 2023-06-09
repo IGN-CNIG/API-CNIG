@@ -199,12 +199,13 @@ div.m-panel.m-geometrydraw>div.m-panel-controls>div.m-control.m-container.m-geom
 div.m-areas>div.m-area.m-left>div.m-panel.m-geometrydraw>button.m-panel-btn {
     position: absolute;
     right: -40px;
-    top: 0;
+    top: 1px;
 }
 
 div.m-areas>div.m-area.m-right>div.m-panel.m-geometrydraw>button.m-panel-btn {
     position: absolute;
     left: -40px;
+    top: 1px;
 }
 
 /* Upload panel */
