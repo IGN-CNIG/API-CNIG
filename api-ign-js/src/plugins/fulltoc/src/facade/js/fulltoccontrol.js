@@ -943,7 +943,7 @@ export default class FullTOCControl extends M.Control {
   checkIfApiFeatures(url) {
     return M.remote.get(`${url}?f=json`).then((response) => {
       let isJson = false;
-      if (!M.utils.isNullOrEmpty(response)) {
+      if (!M.utils.isNullOrEmpty(response) && !M.utils.isNullOrEmpty(response.text)) {
         const responseString = response.text;
         JSON.parse(responseString);
         isJson = true;
