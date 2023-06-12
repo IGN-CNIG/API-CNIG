@@ -79,9 +79,9 @@ URL_API?attributions=position*tooltip*mode*scale*defaultAttribution*defaultURL*u
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -165,7 +165,7 @@ URL_API?attributions=position*tooltip*mode*scale*defaultAttribution*defaultURL*u
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?attributions=TR*Plugin%20tribuciones*1*300*attributions*https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml*https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml*kml*attributions*atribucion*url*Gobierno%20de%20España*Atribuciones
+https://componentes.cnig.es/api-core?attributions=TR*Plugin%20atribuciones*1*300*attributions*https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml*https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml*kml*attributions*atribucion*url*100*200*Gobierno%20de%20España
 ```
 
 ```

@@ -45,7 +45,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **ids**: (Cuando layerOpts no se define) ids de las capas separados por ','. Por defecto: 'wmts'
 - **previews**: (Cuando layerOpts no se define) Rutas a las imagenes de previsualización de las capas separados por ','. Por defecto: 'https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png'.
 - **titles**: (Cuando layerOpts no se define) Titulos de las capas separados por ','. Por defecto: 'IGNBaseTodo'.
-- **layers**: (Cuando layerOpts no se define) Capas que se quieren cargar. Por defecto: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true'.
+- **layers**: (Cuando layerOpts no se define) Capas que se quieren cargar. Por defecto: ```WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true```
 
 # API-REST
 
@@ -55,9 +55,9 @@ URL_API?backimglayer=position*!collapsed*!collapsible*!tooltip*!layerVisibility*
 
 <table>
     <tr>
-        <td>Parámetros</td>
-        <td>Opciones/Descripción</td>
-        <td>Disponibilidad</td>
+        <th>Parámetros</th>
+        <th>Opciones/Descripción</th>
+        <th>Disponibilidad</th>
     </tr>
     <tr>
         <td>position</td>
@@ -133,7 +133,7 @@ https://componentes.cnig.es/api-core?backimglayer=TR*!true*!true*!Capas%20de%20f
 ```
 
 ```
-https://componentes.cnig.es/api-core?backimglayer=TR*!true*!true
+https://componentes.cnig.es/api-core/?backimglayer=TR*!true*!true*!Capas%20de%20fondo*!true
 ```
 ### Ejemplo de uso API-REST en base64
 Ejemplo de constructor:

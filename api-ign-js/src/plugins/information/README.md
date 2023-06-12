@@ -47,9 +47,9 @@ URL_API?information=position*tooltip*format*featureCount*buffer*opened
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -92,7 +92,15 @@ https://componentes.cnig.es/api-core/?information=TR*Consultar%20capas*html*5*5*
 
 ### Ejemplo de uso API-REST en base64
 
-Ejemplo del constructor: {"position":"TR","tooltip":"Información","buffer":100,"opened":"one"}
+Ejemplo del constructor: 
+```javascript
+{
+  position:"TR",
+  tooltip:"Información",
+  buffer:100,
+  opened:"one"
+}
+```
 ```
 https://componentes.cnig.es/api-core/?information=base64=eyJwb3NpdGlvbiI6IlRSIiwidG9vbHRpcCI6IkluZm9ybWFjacOzbiIsImJ1ZmZlciI6MTAwLCJvcGVuZWQiOiJvbmUifQ==
 ```
