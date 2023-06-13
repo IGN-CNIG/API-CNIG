@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/MBTiles
  */
-import { isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, extend } from 'M/util/Utils';
 import { get as getProj, transformExtent } from 'ol/proj';
 import OLLayerTile from 'ol/layer/Tile';
 import TileGrid from 'ol/tilegrid/TileGrid';
@@ -267,7 +267,7 @@ class MBTiles extends Layer {
     if (this.tileLoadFunction) {
       tileLoadFn = this.loadTile;
     }
-    const layer = new OLLayerTile({
+    const layer = new OLLayerTile(extend({
       visible: this.visibility,
       opacity: this.opacity_,
       zIndex: this.zIndex_,
@@ -282,7 +282,7 @@ class MBTiles extends Layer {
           resolutions: opts.resolutions,
         }),
       }),
-    });
+    }, this.vendorOptions_, true));
     return layer;
   }
 
