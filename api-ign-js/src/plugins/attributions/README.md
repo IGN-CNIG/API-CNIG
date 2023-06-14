@@ -40,7 +40,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
      - **2** ` NO DISPONIBLE`: Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. 
 * **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
 * **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario. Por defecto: Instituto Geográfico Nacional.
-* **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
+* **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario. Por defecto: https://www.ign.es/.
 * **minWidth**: Mínimo ancho de visualización del plugin. Por defecto '100px'.
 * **maxWidth**: Máximo ancho de visualización del plugin. Por defecto '200px'.
 * **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
