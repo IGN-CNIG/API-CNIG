@@ -268,8 +268,14 @@ class WMS extends LayerBase {
     // checks if it is a WMS_FULL
     if (isNullOrEmpty(this.name)) { // WMS_FULL (add all wms layers)
       this.addAllLayers_();
-    } else { // just one WMS layer
-      this.addSingleLayer_();
+    } else if (this.useCapabilities) {
+      // just one WMS layer and useCapabilities
+      this.getCapabilities().then((capabilities) => {
+        this.addSingleLayer_(capabilities);
+      });
+    } else {
+      // just one WMS layer
+      this.addSingleLayer_(null);
     }
 
     if (this.legendUrl_ === concatUrlPaths([M.config.THEME_URL, FacadeLayerBase.LEGEND_DEFAULT])) {
@@ -313,21 +319,19 @@ class WMS extends LayerBase {
    * @function
    * @api stable
    */
-  addSingleLayer_() {
+  addSingleLayer_(capabilities) {
     const selff = this;
     let extent;
 
-    if (this.useCapabilities) {
-      this.getCapabilities().then((capabilities) => {
-        const capabilitiesLayer = capabilities.capabilities.Capability.Layer.Layer;
-        if (isArray(capabilitiesLayer)) {
-          const formatCapabilities = this.formatCapabilities_(capabilitiesLayer, selff);
-          this.addCapabilitiesMetadata(formatCapabilities);
-        }
-        this.addCapabilitiesMetadata(capabilitiesLayer);
+    if (capabilities) {
+      const capabilitiesLayer = capabilities.capabilities.Capability.Layer.Layer;
+      if (isArray(capabilitiesLayer)) {
+        const formatCapabilities = this.formatCapabilities_(capabilitiesLayer, selff);
+        this.addCapabilitiesMetadata(formatCapabilities);
+      }
+      this.addCapabilitiesMetadata(capabilitiesLayer);
 
-        extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
-      });
+      extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
     }
 
     const minResolution = this.options.minResolution;
@@ -349,6 +353,7 @@ class WMS extends LayerBase {
         resolutions = generateResolutionsFromExtent(extent, size, zoomLevels, units);
       }
     }
+
     const source = this.createOLSource_(resolutions, minResolution, maxResolution, extent);
     if (this.tiled === true) {
       this.ol3Layer = new OLLayerTile(extend({
