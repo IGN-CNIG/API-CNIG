@@ -313,20 +313,21 @@ class WMS extends LayerBase {
    * @function
    * @api stable
    */
-  async addSingleLayer_() {
+  addSingleLayer_() {
     const selff = this;
     let extent;
 
     if (this.useCapabilities) {
-      const capabilities = await this.getCapabilities();
-      const capabilitiesLayer = capabilities.capabilities.Capability.Layer.Layer;
-      if (isArray(capabilitiesLayer)) {
-        const formatCapabilities = this.formatCapabilities_(capabilitiesLayer, selff);
-        this.addCapabilitiesMetadata(formatCapabilities);
-      }
-      this.addCapabilitiesMetadata(capabilitiesLayer);
+      this.getCapabilities().then((capabilities) => {
+        const capabilitiesLayer = capabilities.capabilities.Capability.Layer.Layer;
+        if (isArray(capabilitiesLayer)) {
+          const formatCapabilities = this.formatCapabilities_(capabilitiesLayer, selff);
+          this.addCapabilitiesMetadata(formatCapabilities);
+        }
+        this.addCapabilitiesMetadata(capabilitiesLayer);
 
-      extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
+        extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
+      });
     }
 
     const minResolution = this.options.minResolution;
@@ -403,6 +404,7 @@ class WMS extends LayerBase {
 
         try {
           this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+          // this.legendUrl_ = capabilitiesLayer.Style.find(s => s.Name === this.styles).LegendURL[0].OnlineResource;
           /* eslint-disable no-empty */
         } catch (err) {}
       } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Layer !== undefined) {
@@ -410,6 +412,7 @@ class WMS extends LayerBase {
           capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
           try {
             this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
+            // this.legendUrl_ = capabilitiesLayer.Style.find(s => s.Name === this.styles).LegendURL[0].OnlineResource;
             /* eslint-disable no-empty */
           } catch (err) {}
         }
