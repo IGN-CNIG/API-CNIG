@@ -3,6 +3,16 @@
 - Se dispara evento MOVE cuando se mueve el mapa, no cuando se mueve el ratón
 - Se centra el popup cuando las capas tienen el extract y en el plugin information
 - Se añade el parámetro MOVE_MAP_EXTRACT para definir si se mueve o no hacía el popup.
+- Se actualiza tooltip viewmanagment
+- Se elimina console.logs de lyrcompare y queryattributes
+- Plugin fulltoc: Se modifican las capas por defecto y se solucionan errores
+- Se soluciona error de visualización toast
+- Se soluciona error en las capas WMTS capabilities
+- Se soluciena error con vendorOptions
+- Plugin geometrydraw: Se soluciona error de visualización
+- Plugin information: Se hace responsive y se solucionan errores.
+- Se soluciona error parámetro order en los plugins backimglayer, locator y viewmanagement
+- Se actualiza visor.jsp
   
 14/03/2023 - Versión 4.5.0
 - Mejoras sobre la documentación JSDoc
