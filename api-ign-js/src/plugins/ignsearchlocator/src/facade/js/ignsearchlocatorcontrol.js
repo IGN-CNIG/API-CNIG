@@ -440,7 +440,6 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   createView(map) {
     this.map = map;
-    M.toast.warning(getValue('exception.ignsearchlocator_obsolete'));
     this.destroyMapLayers();
     return new Promise((success) => {
       const html = M.template.compileSync(template, {
