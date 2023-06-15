@@ -1,32 +1,32 @@
 /**
  * IGN API
- * Version 4.5.0
+ * Version 4.6.0
  * Date 01-06-2023
  */
 
 
 const backgroundlayersOpts = [{
-    id: 'mapa',
-    title: 'Callejero',
-    layers: [
-      'TMS*IGNBaseTodo*https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17',
-    ],
-  },
-  {
-    id: 'imagen',
-    title: 'Imagen',
-    layers: [
-      'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
-    ],
-  },
-  {
-    id: 'hibrido',
-    title: 'H&iacute;brido',
-    layers: [
-      'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
-      'TMS*IGNBaseOrto*https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png*true*false*17',
-    ],
-  },
+  id: 'mapa',
+  title: 'Callejero',
+  layers: [
+    'TMS*IGNBaseTodo*https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17',
+  ],
+},
+{
+  id: 'imagen',
+  title: 'Imagen',
+  layers: [
+    'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
+  ],
+},
+{
+  id: 'hibrido',
+  title: 'H&iacute;brido',
+  layers: [
+    'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
+    'TMS*IGNBaseOrto*https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png*true*false*17',
+  ],
+},
 ];
 
 const params = window.location.search.split('&');
@@ -50,7 +50,7 @@ params.forEach((param) => {
   }
 });
 
-(function(M) {
+(function (M) {
   /**
    * Pixels width for mobile devices
    *
