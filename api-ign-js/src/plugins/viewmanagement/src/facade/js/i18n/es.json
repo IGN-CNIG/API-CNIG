@@ -8,7 +8,7 @@
     "no_controls": "El plugin ViewManagement necesita activar al menos un control."
   },
   "tooltip": "Gestión de la vista",
-  "viewhistory": "Historia",
+  "viewhistory": "Historial",
   "nextView": "Vista siguiente",
   "previousView": "Vista anterior",
   "predefinedzoom": "Zoom predefinido",
