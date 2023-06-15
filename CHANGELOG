@@ -1,16 +1,15 @@
 01/06/2023 - Versión 4.6.0
-- Creación plugin locator
 - Se dispara evento MOVE cuando se mueve el mapa, no cuando se mueve el ratón
-- Se centra el popup cuando las capas tienen el extract y en el plugin information
-- Se añade el parámetro MOVE_MAP_EXTRACT para definir si se mueve o no hacía el popup.
+- Se centra el popup cuando las capas tienen el extract y se consulta y en el plugin information (cuando muestra la información la centra), en caso de que MOVE_MAP_EXTRACT tenga valor false
+- Se añade el parámetro MOVE_MAP_EXTRACT a configuration para definir si se mueve o no hacía el popup
 - Se actualiza tooltip viewmanagment
 - Se elimina console.logs de lyrcompare y queryattributes
 - Plugin fulltoc: Se modifican las capas por defecto y se solucionan errores
-- Se soluciona error de visualización toast
-- Se soluciona error en las capas WMTS capabilities
-- Se soluciena error con vendorOptions
-- Plugin geometrydraw: Se soluciona error de visualización
-- Plugin information: Se hace responsive y se solucionan errores.
+- Se mejora visualización toast en visualizadores
+- Se soluciona error en las capas WMTS al realizar GetCapabilities
+- Se mejora vendorOptions de las capas MBTiles, MBTilesVector y XYZ
+- Plugin geometrydraw: Se soluciona problema de visualización con estilos
+- Plugin information: se centra el popup si la variable de configuración MOVE_MAP_EXTRACT está a true
 - Se soluciona error parámetro order en los plugins backimglayer, locator y viewmanagement
 - Se actualiza visor.jsp
   
