@@ -10,7 +10,8 @@ import { getValue } from './i18n/language';
 import es from './i18n/es';
 import en from './i18n/en';
 
-// Estas capas hacen referencia a la estructura de la IDEE
+// Estas capas hacen referencia a la estructura de
+// https://centrodedescargas.cnig.es/CentroDescargas/index.jsp
 /* const PRECHARGED = {
   groups: [
     {
