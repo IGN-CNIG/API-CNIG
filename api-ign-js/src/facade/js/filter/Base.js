@@ -1,14 +1,14 @@
 /**
- * @module M/Filter
+ * @module M/filter/Base
  */
 /**
  * @classdesc
- * Abstract class
+ * Clase abstracta.
  * @api
  */
 class Base {
   /**
-   * This function get a function filter
+   * Este método obtiene un filtro.
    *
    * @public
    * @protected
@@ -17,20 +17,18 @@ class Base {
   getFunctionFilter() {}
 
   /**
-   * This function execute a function filter
+   * Este método ejecuta un filtro.
    *
    * @protected
-   * @param {Array<M.Feature>} features - Features on which the filter runs
+   * @param {Array<M.Feature>} features Objetos geográficos.
    * @function
    */
   execute(features) {}
 
   /**
-   * This function execute a function filter
+   * Este método devuelve un filtro CQL ya ejecutado.
    *
    * @protected
-   * @param {Array<M.Feature>} features - Features on which the filter runs
-   * @return {Array<M.Feature>} Result of execute
    * @function
    */
   toCQL() {}

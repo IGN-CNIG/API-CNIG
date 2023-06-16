@@ -1,13 +1,18 @@
 <div id="m-fulltoc-information">
   <div tabindex="0" role="main" class="m-fulltoc-info-capabilities">
-    <p ><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
-    <p><span>{{translations.name}}:</span>&nbsp; {{name}}</p>
-    <p style="margin-bottom: 0.2rem;"><span>{{translations.abstract}}:</span></p>
+    <p tabindex="0"><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
+    {{#if isOgc}}
+
+    {{else}}
+    <p tabindex="0"><span>{{translations.name}}:</span>&nbsp; {{name}}</p>
+    {{/if}}
+
+    <p tabindex="0" style="margin-bottom: 0.2rem;"><span>{{translations.abstract}}:</span></p>
     <div>
       {{abstract}}
     </div>
     {{#if provider}}
-      <p style="margin-bottom: 0.2rem;"><span>{{translations.provider}}:</span></p>
+      <p tabindex="0" style="margin-bottom: 0.2rem;"><span>{{translations.provider}}:</span></p>
     {{/if}}
     {{#if provider}}
       <div>
@@ -15,7 +20,11 @@
       </div>
     {{/if}}
     {{#if hasMetadata }}
-      <p style="margin-bottom: 0.2rem;"><span>{{translations.metadata}}:</span></p>
+    {{#if isOgc}}
+
+    {{else}}
+      <p tabindex="0" style="margin-bottom: 0.2rem;"><span>{{translations.metadata}}:</span></p>
+      {{/if}}
       {{#if metadata}}
         <p><a tabindex="0" class="m-fulltoc-provider-link" target="_blank" href="{{metadata}}">{{translations.see_more_layer}}</a></p>
       {{/if}}

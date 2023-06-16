@@ -24,6 +24,8 @@ import coordinatesConvexHull from '../util/convexhull';
 
 /**
  * @classdesc
+ * Crea un grupo de estilo
+ * con parámetros especificados por el usuario.
  * @api
  * @namespace M.style.Cluster
  */
@@ -31,12 +33,29 @@ import coordinatesConvexHull from '../util/convexhull';
 class Cluster extends Style {
   /**
    * @classdesc
-   * Main constructor of the class. Creates a Cluster
-   * control
+   * Constructor principal de la clase.
    *
    * @constructor
-   * @param {Object} options - config options of user
-   * @param {Object} optionsVendor - specified options from ol
+   * @param {Object} options Parámetros de los estilos del "cluster".
+   * - ranges: Matriz de objetos con el valor mínimo, el máximo y un M.style.Point.
+   * - animated: Indica si se quiere animación o no al desplegar
+   * el "cluster".
+   * - hoverInteraction: Indica si se quiere mostrar el polígono que
+   * engloba los elementos al situarse sobre el "cluster".
+   * - selectInteraction: Indica si se quiere que al pinchar en un "cluster"
+   * se abra el abanico de puntos o no, por defecto verdadero.
+   * - displayAmount: Indica si se muestra el número de elementos
+   * que componen el "cluster".
+   * - maxFeaturesToSelect: Número máximo de elementos agrupados a partir de los cuales,
+   * al hacer click, se hará zoom en lugar de desplegar el "cluster".
+   * - distance: Distancia (en píxeles) de agrupación de elementos.
+   * - label: Estilo opcional de la etiqueta de número de elementos de
+   * todos los rangos, si se muestra.
+   * @param {Object} optionsVendor Opciones que se pasarán a la librería base.
+   * - animationDuration: Duración de la animación.
+   * - animationMethod: Método que realiza la animación.
+   * - distanceSelectFeatures: Distancia de selección de los objetos geográficos.
+   * - convexHullStyle: Estilo de casco convexo.
    * @api stable
    */
   constructor(options, optionsVendor) {
@@ -100,14 +119,11 @@ class Cluster extends Style {
   }
 
   /**
-   * Apply the style cluster to layer vectorresolution
-   *
-   * @function
+   * Este método aplica estilo a la capa.
    * @public
-   * @param {M.layer.Vector} layer layer where the user apply the cluster
-   * @param {M.Map} map
+   * @function
+   * @param {M.layer.Vector} layer Capa.
    * @api stable
-   * @export
    */
   applyToLayer(layer, map) {
     this.layer_ = layer;
@@ -125,21 +141,22 @@ class Cluster extends Style {
   }
 
   /**
-   * Gets the select cluster interaction
+   * Devuelve los grupos de estilos con interación.
    *
    * @function
    * @public
+   * @return {Array<ol.interaction.SelectCluster>} Grupo de estilo con interación.
    * @api stable
    */
   get selectClusterInteraction() {
     return this.selectClusterInteraction_;
   }
   /**
-   * Apply the style cluster to layer vectorresolution
-   *
+   * Aplicar el clúster de estilo a la resolución de vector de capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @param {Array<Feature>} features features to clusterize
+   * @public
+   * @param {Array<Feature>} features Objetos geográficos.
    * @api stable
    * @export
    */
@@ -186,12 +203,11 @@ class Cluster extends Style {
   }
 
   /**
-   * This function update a set of ranges  defined by user
+   * Este método actualiza el rango del estilo.
    *
    * @function
    * @public
-   * @param {Array<Object>} newRanges as new Ranges
-   * @return {M.style.Cluster}
+   * @param {Array<Object>} newRanges Nuevo rango.
    * @api stable
    */
   setRanges(newRanges) {
@@ -204,11 +220,11 @@ class Cluster extends Style {
   }
 
   /**
-   * This function add the max limit to the last range of cluster options if not exists
+   * Este método actualiza el rango anterior.
    *
    * @function
    * @public
-   * @return {object}
+   * @return {object} Rango anterior.
    * @api stable
    */
   updateLastRange_() {
@@ -233,16 +249,16 @@ class Cluster extends Style {
   }
 
   /**
-   * This function set a specified range
+   * Este método de la clase actualiza el rango de la implementación.
    *
    * @function
    * @public
-   * @param {number} min as range minimal value to be overwritten
-   * @param {number} max as range max value to be overwritten
-   * @param {number} newRange as the new range
-   * @param {M.layer.Vector} layer is the Cluster layer
-   * @param {M.style.Cluster} cluster as the cluster to update his range
-   * @return {M.style.Cluster}
+   * @param {number} min Valor mínimo.
+   * @param {number} max Valor máximo.
+   * @param {number} newRange Nuevo rango.
+   * @param {M.layer.Vector} layer Capa.
+   * @param {M.style.Cluster} cluster "cluster".
+   * @return {M.style.Cluster} "cluster" actualizado.
    * @api stable
    */
   static updateRangeImpl(min, max, newRange, layer, cluster) {
@@ -255,14 +271,14 @@ class Cluster extends Style {
   }
 
   /**
-   * This function set if layer must be animated
+   * Este método actualiza la animación.
    *
    * @function
    * @public
-   * @param {boolean} animated defining if layer must be animated
-   * @param {M.layer.Vector} layer is the Cluster layer
-   * @param {M.style.Cluster} Cluster is the Cluster being chamge the animation
-   * @return {M.style.Cluster}
+   * @param {boolean} animated Define si el "cluster" tendrá animación.
+   * @param {M.layer.Vector} layer Capa.
+   * @param {M.style.Cluster} Cluster "cluster".
+   * @return {M.style.Cluster} "cluster" actualizado.
    * @api stable
    */
 
@@ -278,7 +294,7 @@ class Cluster extends Style {
   }
 
   /**
-   * Add selected interaction and layer to see the features of cluster
+   * Agrega la interación a la capa de los objetos geográficos que se ven en el "cluster".
    *
    * @function
    * @public
@@ -289,10 +305,10 @@ class Cluster extends Style {
   }
 
   /**
-   * Add selected interaction and layer to see the features of cluster
-   *
+   * Agrega la interación a la capa de los objetos geográficos que se ven en el "cluster".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
    * @api stable
    */
   addSelectInteraction_() {
@@ -312,7 +328,7 @@ class Cluster extends Style {
   }
 
   /**
-   * Remove selected interaction and layer to see the features of cluster
+   * Elimina la interación a la capa de los objetos geográficos que se ven en el "cluster".
    *
    * @function
    * @public
@@ -323,10 +339,10 @@ class Cluster extends Style {
   }
 
   /**
-   * Remove selected interaction and layer to see the features of cluster
-   *
+   * Elimina la interación a la capa de los objetos geográficos que se ven en el "cluster".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
    * @api stable
    */
   removeSelectInteraction_() {
@@ -334,10 +350,10 @@ class Cluster extends Style {
   }
 
   /**
-   * Add cover interaction and layer to see the cover
-   *
+   * Añade la interación hober a la capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
    * @param {Array<Features>} features
    * @param {M.evt.EventType} evt
    * @api stable
@@ -384,11 +400,12 @@ class Cluster extends Style {
   }
 
   /**
-   * Add cover interaction and layer to see the cover
+   * Añade el evento cuando se sale del objeto geográfico.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @param {Array<Features>} features
-   * @param {M.evt.EventType} evt
+   * @public
+   * @param {Array<Features>} features Objeto geográfico.
+   * @param {M.evt.EventType} evt Evento.
    * @api stable
    */
   leaveFeatureFn_(features, evt) {
@@ -398,10 +415,10 @@ class Cluster extends Style {
   }
 
   /**
-   * Add cover interaction and layer to see the cover
-   *
+   * Agregar interacción de portada y capa para ver la portada.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
    * @api stable
    */
   addCoverInteraction_() {
@@ -410,10 +427,10 @@ class Cluster extends Style {
   }
 
   /**
-   * Add cover interaction and layer to see the cover
-   *
+   * Elimina interacción de portada y capa para ver la portada.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
    * @api stable
    */
   removeCoverInteraction_() {
@@ -422,15 +439,14 @@ class Cluster extends Style {
   }
 
   /**
-   * This function is a style function to cluster
-   * Get a style from ranges of user or default ranges
-   *
+   * Agrega el estilo a los objetos geográficos ("cluster").
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @param {M.Feature} feature
-   * @param {float} resolution
-   * @param {M.impl.interaction.SelectCluster} selected
-   * @return {object}
+   * @public
+   * @param {M.Feature} feature Objetos geográficos.
+   * @param {float} resolution Resolución.
+   * @param {M.impl.interaction.SelectCluster} selected Selección.
+   * @return {object} Devuelve el estilo.
    * @api stable
    * @export
    */
@@ -478,11 +494,11 @@ class Cluster extends Style {
   }
 
   /**
-   * This function return a default ranges to cluster
-   *
+   * Este método devuelve el rango del "cluster".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @return {Array<Ranges>}
+   * @public
+   * @return {Array<Ranges>} Devuelve el rango del "cluster".
    * @api stable
    * @export
    */
@@ -508,12 +524,11 @@ class Cluster extends Style {
     return ranges;
   }
   /**
-   * Select feautes to get info.
-   * the first feature is cluster (evt.selected)
-   *This feature has a propertie called (features), this
-   *
+   * Añade el evento de selección a los objetos geográficos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
+   * @param {Object} evt Evento.
    * @api stable
    */
   selectClusterFeature_(evt) {
@@ -526,7 +541,7 @@ class Cluster extends Style {
   }
 
   /**
-   * This function remove the style to specified layer
+   * Este método elimina el estilo de la capa.
    * @function
    * @public
    * @api stable
@@ -548,7 +563,10 @@ class Cluster extends Style {
   }
 
   /**
-   * TODO
+   * Vuelve a nulo el parámetro "convexHullLayer_".
+   * @public
+   * @function
+   * @api stable
    */
   clearConvexHull() {
     if (this.convexHullLayer_ !== null) {
@@ -558,18 +576,18 @@ class Cluster extends Style {
   }
 
   /**
-   * This function
+   * Este método actualiza el "canvas".
+   *
    * @public
-   * @param {object} canvas
    * @function
+   * @param {HTMLCanvasElement} canvas Nuevo "canvas".
    * @api stable
    */
   updateCanvas() {}
 
   /**
-   * TODO
+   * Actica el cambio del evento.
    * @public
-   * @param {object} canvas
    * @function
    * @api stable
    */
@@ -582,7 +600,7 @@ class Cluster extends Style {
   }
 
   /**
-   * TODO
+   * Desactiva el cambio del evento.
    * @public
    * @param {object} canvas
    * @function
@@ -603,9 +621,8 @@ class Cluster extends Style {
   }
 
   /**
-   * TODO
+   * Desactiva el cambio de la resolución cuando se realiza la acción.
    * @public
-   * @param {object} canvas
    * @function
    * @api stable
    */
@@ -627,9 +644,10 @@ class Cluster extends Style {
   }
 
   /**
-   * TODO
+   * Desactiva el cambio de evento con un "callback".
    * @public
-   * @param {object} canvas
+   * @param {object} callback "callback".
+   * @param {object} callbackArguments Argumentos del callback.
    * @function
    * @api stable
    */
@@ -645,8 +663,11 @@ class Cluster extends Style {
   }
 
   /**
-   * oldOL3Layer getter
+   * Devuelve el "oldOL3Layer".
    * @public
+   * @function
+   * @return {object} "oldOL3Layer".
+   * @api stable
    */
   get oldOL3Layer() {
     return this.oldOL3Layer_;

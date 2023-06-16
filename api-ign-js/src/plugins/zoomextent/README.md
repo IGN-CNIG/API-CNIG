@@ -5,31 +5,27 @@ Plugin que permite realizar zoom con una caja sobre el mapa.
 
 # Dependencias
 
-- zoomextent.ol.min.js
-- zoomextent.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **zoomextent.ol.min.js**
+- **zoomextent.ol.min.css**
 
 
 ```html
- <link href="../../plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/zoomextent/zoomextent.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/zoomextent/zoomextent.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/zoomextent/zoomextent.ol.min.js"></script>
 ```
 
 # Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
 
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right 
-  - 'BL':bottom left 
-  - 'BR':bottom right
-
-# Eventos
-
-
-# Otros métodos
-
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
 # Ejemplos de uso
 

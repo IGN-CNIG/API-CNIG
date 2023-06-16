@@ -105,6 +105,13 @@ export default class Information extends M.Plugin {
      *@type { Number }
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -193,6 +200,17 @@ export default class Information extends M.Plugin {
     }
 
     return cadena;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

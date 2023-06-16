@@ -9,22 +9,29 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a layer
- * with parameters specified by the user
+ * GeoJSON, a pesar de no ser un estándar OGC (está en camino de convertirse en uno),
+ * es un formato de intercambio de información geográfica muy extendido que, al igual que WFS,
+ * permite que todos los elementos estén en el cliente.
+ * @extends {M.facade.Base}
  * @api
  */
 class GeoJSON extends Base {
   /**
+   * Constructor principal de la clase. Crea una capa
+   * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @extends {M.facade.Base}
-   * @param {string|Object} userParameters parameters
-   * provided by the user
+   * @param {string|Object} options Parámetros opcionales.
+   * - dataProjection. Proyección de datos predeterminada. Por defecto 'EPSG:4326'.
+   * - featureProjection. Proyección del objeto geográfico leídas o escritas por el formato.
+   *   Las opciones pasadas a los métodos de lectura o escritura tendrán prioridad.
+   * - geometryName. Nombre de geometría que se utilizará al crear objetos geográficos.
+   * - extractGeometryName .Por defecto falso.
    * @api
    */
   constructor(options = {}) {
     /**
-     * Implementation of this formatter
+     * Implementation of this formatter.
      * @public
      * @type {M.impl.format.GeoJSON}
      */
@@ -40,13 +47,13 @@ class GeoJSON extends Base {
   }
 
   /**
-   * TODO
+   * Crea un GeoJSON con los objetos geográficos que se le pasa por parámetros.
    *
    * @public
    * @function
-   * @param {Array<M.Feature>} features features array to parsed
-   * as a GeoJSON FeatureCollection
-   * @return {Array<Object>}
+   * @param {Array<M.Feature>} features Array de objetos geográficos que se transformará
+   * en un GeoJSON "FeatureCollection".
+   * @return {Array<Object>} Matriz con objetos "FeatureCollection".
    * @api
    */
   write(featuresParam) {
@@ -58,13 +65,14 @@ class GeoJSON extends Base {
   }
 
   /**
-   * This function read Features
+   * Este método lee los objetos geográficos "FeatureCollection" y
+   * los transforma a una matriz de "M.Feature".
    *
    * @public
    * @function
-   * @param {object} geojson GeoJSON to parsed as a
-   * M.Feature array
-   * @return {Array<M.Feature>}
+   * @param {object} geojson GeoJSON para analizar como un
+   * matriz M.Feature.
+   * @return {Array<M.Feature>} Matriz con objetos geográficos.
    * @api
    */
   read(geojsonParam, projection) {

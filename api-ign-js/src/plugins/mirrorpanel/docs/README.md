@@ -2,7 +2,7 @@
 
 Plugin que permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
 
-![Imagen -  Cortina Vertical](../img/mirrorpanel_1.jpg)
+![Imagen -  Cortina Vertical](../img/mirrorpanel_1.png)
 
 
 # Dependencias
@@ -18,19 +18,19 @@ Plugin que permite comparar varias capas dividiendo la pantalla en varias partes
 
 # Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin.
-  - 'TL':top left
-  - 'TR':top right (default)
-  - 'BL':bottom left
-  - 'BR':bottom right
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsible**. Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto tiene el valor *true*.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 
-- **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 
-- **modeViz**. Define el tipo de comparación con la que arranca. Rango 0-9.
+- **modeViz**: Define el tipo de comparación con la que arranca. Rango 0-9.
   - 0: mapa simple.
   - 1: dos mapas en vertical.
   - 2: dos mapas en horizontal.
@@ -42,25 +42,24 @@ Plugin que permite comparar varias capas dividiendo la pantalla en varias partes
   - 8: un mapa arriba y dos abajo.
   - 9: dos mapas arriba y uno abajo.
 
-- **enabledPlugins**. Si es *true*, los mapas espejo importan los plugins **M.plugin.FullTOC** y **M.plugin.BackImgLayer** si los hubiera, y en caso de hacerlos los añade a los mapas espejo. Por defecto tiene el valor *true*.
+- **enabledPlugins**: Si es *true*, los mapas espejo importan los plugins **M.plugin.FullTOC** y **M.plugin.BackImgLayer** si los hubiera, y en caso de hacerlos los añade a los mapas espejo. Por defecto tiene el valor *true*.
 
-- **enabledKeyFunctions**. Si es *true*, se pueden usar las combinaciones de teclas Ctrl + Shift + [F1-F8] para cambiar entre los distintos modos de visualización. Con la tecla *Escape* se destruye el plugin. Por defecto tiene el valor *true*.
+- **enabledKeyFunctions**: Si es *true*, se pueden usar las combinaciones de teclas Ctrl + Shift + [F1-F8] para cambiar entre los distintos modos de visualización. Con la tecla *Escape* se destruye el plugin. Por defecto tiene el valor *true*.
 
-- **showCursors**. Si es *true*, muestra cursores sincronziados en cda unao de los mapas espejo. Por defecto tiene el valor *true*.
+- **showCursors**: Si es *true*, muestra cursores sincronziados en cda unao de los mapas espejo. Por defecto tiene el valor *true*.
 
-- **mirrorLayers**. Es un array de capas para mostrar en los mapas espejo y poder compararlas entre sí.
+- **mirrorLayers**: Es un array de capas para mostrar en los mapas espejo y poder compararlas entre sí.
 
-- **defaultBaseLyrs**. Es un array de capas para mostrar como mapa por defecto cuando no se importa del mapa principal un plugin **M.plugin.BackImgLayer** o cuando la propiedad *enabledPlugins* es *false*.
+- **defaultBaseLyrs**: Es un array de capas para mostrar como mapa por defecto cuando no se importa del mapa principal un plugin **M.plugin.BackImgLayer** o cuando la propiedad *enabledPlugins* es *false*.
 
-- **backImgLayersParams**. Es un objeto con todos los parámetros del plugin **M.plugin.BackImgLayer** de los mapas espejo.
+- **backImgLayersParams**: Es un objeto con todos los parámetros del plugin **M.plugin.BackImgLayer** de los mapas espejo.
 
-- **interface**. Define si mostrar o no la interfaz del plugin.
-
-# Eventos
+- **interface**: Define si mostrar o no la interfaz del plugin.
+- **tooltip**. Tooltip que se muestra sobre el plugin.
 
 # Multi idioma
 
-Actualmente viene preparado para español e inglés. Para definir con qué idioma arranca, hay que ir al fichero test.js y modificar
+Actualmente viene preparado para español e inglés. Para definir con qué idioma arranca, hay que ir al fichero test.js y modificar.
 
 ```javascript
 M.language.setLang('es');//Idioma español

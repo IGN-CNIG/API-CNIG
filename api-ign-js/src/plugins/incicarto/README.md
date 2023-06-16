@@ -3,50 +3,25 @@
 </p>
 <h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.InciCarto</small></h1>
 
-<p align="center">
-  <a title="MIT License" href="LICENSE.md">
-    <img src="https://img.shields.io/badge/license-EUPL-blue.svg">
-  </a>
-  <a title="Node version" href="#">
-    <img src="https://img.shields.io/badge/node-v14.16-blue">
-  </a>  
-  <a title="NPM version" href="#">
-    <img src="https://img.shields.io/badge/npm-v6.14-blue">
-  </a>
-  <a title="Language" href="https://www.w3schools.com/html/" target="_blank">
-    <img src="https://img.shields.io/static/v1?label=Lang&message=HTML&color=maroon">
-  </a>  
-  <a title="Language" href="https://www.w3schools.com/js/" target="_blank">
-    <img src="https://img.shields.io/static/v1?label=Lang&message=Javascript&color=maroon">
-  </a>
-  <a title="Language" href="https://www.w3schools.com/css/" target="_blank">
-    <img src="https://img.shields.io/static/v1?label=Lang&message=CSS3&color=maroon">
-  </a> 
-
-  <br />
-  <br />
-</p>
-
-## Descripción 👷
+# Descripción
 
 Plugin que permite la identificación de incidencias sobre la cartografía. El usuario puede describir el error y si lo desea categorizar el error. Despúes el error puede notificarse por correo electrónico a uno de los buzones de incidencias habilitados o darse de alta en el gestor de incidencias.
 
-| Herramienta cerrada |Despliegue vertical|
-|:----:|:----:|
-|![Imagen1](./assets/incicarto-collapsed.png)|![Imagen1](./assets/incicarto-opened.png)|
 
-## Dependencias 👷
+# Dependencias
 
-- incicarto.ol.min.js
-- incicarto.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
+
+- **incicarto.ol.min.js**
+- **incicarto.ol.min.css**
 
 
 ```html
- <link href="../../plugins/incicarto/incicarto.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/incicarto/incicarto.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/incicarto/incicarto.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/incicarto/incicarto.ol.min.js"></script>
 ```
 
-## Caso práctico de uso
+# Caso práctico de uso
 
 | | |
 |:----:|:----:|
@@ -62,47 +37,232 @@ Disponemos de dos posibilidades para notificar la incidencia.
 * Al gestor de incidencias INCIGEO para su posterior asignación al servicio competente para su subsanación.
 
 
-## Parámetros de configuración
+# Parámetros
 
-El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
-- **collapsed**. Indica si el plugin viene cerrado por defecto (true/false).
-- **collapsible**. Indica si el plugin se puede cerrar (true/false).
-- **position**. Indica la posición donde se mostrará el plugin
-  - 'TL':top left (default)
-  - 'TR':top right
-  - 'BL':bottom left
-  - 'BR':bottom right
-- **prefixSubject**. Prefijo que llevará el *subject* del correo electrónico enviado.
-- **interfazmode**. Indica la modalidad de envío de la incidencia
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
+- **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: Notificar incidencia en cartografía.
+- **wfszoom**: Valor del zoom. Por defecto: 12.
+- **prefixSubject**: Prefijo que llevará el *subject* del correo electrónico enviado. Por defecto: 'Incidencia cartografía - '
+- **interfazmode**: Indica la modalidad de envío de la incidencia. Por defecto: simple.
   - 'simple': se usará un cleinte de correo para enviar la incidencia.
   - 'advance': se usará el gestor de incidencias INCIGEO.
-- **buzones**. Contiene un array con los objetos qued definen el nombre y direcciones de los buzones de incidencias. Cada onjeto buzón contiene dos parámetros.
+- **buzones**: Contiene un array con los objetos que definen el nombre y direcciones de los buzones de incidencias. Cada objeto buzón contiene dos parámetros. Por defecto: []
   - 'name': nombre del propietario del buzón de incidencias.
-  - 'email': correo electrónico del buzón.
-- **controllist**. Contiene un array enumerando las listas controladas con sus características.
+  - 'email': correo electrónico del buzón. 
+- **controllist**: Contiene un array enumerando las listas controladas con sus características. 
   - 'id': identificador de la lista.
   - 'name': nombre de la lista.
   - 'mandatory': indica si el usuario está obligado a legir una opción.
-- **themeList**. Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades
+
+Por defecto: 
+```javascript
+[
+  {
+    id: 'themeList',
+    name: 'Temas de errores',
+    mandatory: true,
+  },
+  {
+    id: 'errorList',
+    name: 'Tipos de errores',
+    mandatory: true,
+  },
+  {
+    id: 'productList',
+    name: 'Lista de productos',
+    mandatory: true,
+  },
+]
+```
+  
+- **themeList**: Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades. Por defecto: []
   - 'idTheme': identificador de código de tema.
   - 'nameTheme': nombre del tema de error.
   - 'emailTheme': correo de la entidad responsable de subsanar este error.
-- **errorList**. Lista de control con las posibles categorizaciones del error.
-- **productList**. Lista de control con los productos del IGN en los que se ha detectado el error.
+- **errorList**: Lista de control con las posibles categorizaciones del error. Por defecto: []
+- **productList**: Lista de control con los productos del IGN en los que se ha detectado el error. Por defecto: []
 
-# Parámetros API REST
-
-```javascript
-URL_API?incicarto=position*collapsed*collapsible
-````
-Ejemplo:
+# API-REST
 
 ```javascript
-http://mapea-lite.desarrollo.guadaltel.es/api-core/?incicarto=BL*true*true
+URL_API?incicarto=position*collapsed*collapsible*tooltip*wfszoom*prefixSubject*interfazmode
 ```
 
-## Ejemplo
+<table>
+  <tr>
+    <td>Parámetros</td>
+    <td>Opciones/Descripción</td>
+    <td>Disponibilidad</td>
+  </tr>
+   <tr>
+    <td>position</td>
+    <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+   <tr>
+    <td>collapsed</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+   <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>Valor a usar para mostrar en el tooltip del plugin</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>wfszoom</td>
+    <td>Valor del zoom</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>prefixSubject</td>
+    <td>Prefijo que llevará el *subject* del correo electrónico</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>interfazmode</td>
+    <td>simple/advance</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>buzones</td>
+    <td>array con los objetos que definen el nombre y direcciones de los buzones de incidencias</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>controllist</td>
+    <td>array enumerando las listas controladas con sus características (id, name, mandatory)</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>themeList</td>
+    <td>Lista de control con temas por los que podemos clasificar una incidencia (idTheme, nameTheme, emailTheme)</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>errorList</td>
+    <td>Lista de control con las posibles categorizaciones del error.</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>productList</td>
+    <td>Lista de control con los productos del IGN en los que se ha detectado el error.</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>  
+</table>
+
+
+### Ejemplos de uso API-REST
+```
+https://componentes.cnig.es/api-core?incicarto=TL*true*true*Incicarto%20plugin
+```
+
+```
+https://componentes.cnig.es/api-core?incicarto=TL*true*true*Incicarto%20plugin*12*Incidencia%20cartográfica%20-%20*simple
+```
+
+### Ejemplo de uso API-REST en base64
+
+Ejemplo del constructor: 
+```javascript
+{
+  collapsed: true,
+  collapsible: true,
+  position: "TL",
+  wfszoom: 12,
+  prefixSubject: "Incidencia cartogrfica - ",
+  interfazmode: "simple",
+  buzones: [
+    {
+      name: "Cartografa (MTN, BTN, RT, HY, Pob, BCN, Provinciales, escalas pequeas)",
+      email: "cartografia.ign@mitma.es",
+    },
+    {
+      name: "Atlas Nacional de Espaa",
+      email: "ane@mitma.es",
+    },
+  ],
+  controllist: [
+    {
+      id: "themeList",
+      name: "Temas de errores",
+      mandatory: true,
+    },
+    {
+      id: "errorList",
+      name: "Tipos de errores",
+      mandatory: true,
+    },
+    {
+      id: "productList",
+      name: "Lista de productos",
+      mandatory: true,
+    },
+  ],
+  themeList: [
+    {
+      idTheme: 1,
+      nameTheme: "No especificado",
+      emailTheme: "consultas@cnig.es",
+    },
+    {
+      idTheme: 2,
+      nameTheme: "Relieve",
+      emailTheme: "cartografia.ign@mitma.es",
+    },
+  ],
+  errorList: [
+    "No especificado",
+    "Omisin",
+    "Comisin",
+    "Clasificacin",
+    "Nombre",
+    "Valor del atributo",
+    "Forma",
+    "Localizacin",
+    "Otros",
+  ],
+  productList: [
+    "No especificado",
+    "Serie MTN25",
+    "Serie MTN50",
+    "BTN25",
+    "BTN100",
+    "MP200",
+    "BCN200",
+    "BCN500",
+    "Mapa Autonmico",
+    "Mapa Espaa 1:500 000",
+    "Mapa Espaa 1:1 000 000",
+    "Cartociudad",
+    "Redes de Transporte",
+    "Hidrografa",
+    "Poblaciones",
+    "Mundo real",
+    "IGN Base",
+    "Otros productos",
+  ],
+}
+```
+
+```
+https://componentes.cnig.es/api-core?incicarto=base64=eyJjb2xsYXBzZWQiOnRydWUsImNvbGxhcHNpYmxlIjp0cnVlLCJwb3NpdGlvbiI6IlRMIiwid2Zzem9vbSI6MTIsInByZWZpeFN1YmplY3QiOiJJbmNpZGVuY2lhIGNhcnRvZ3LhZmljYSAtICIsImludGVyZmF6bW9kZSI6InNpbXBsZSIsImJ1em9uZXMiOlt7Im5hbWUiOiJDYXJ0b2dyYWbtYSAoTVROLCBCVE4sIFJULCBIWSwgUG9iLCBCQ04sIFByb3ZpbmNpYWxlcywgZXNjYWxhcyBwZXF1ZfFhcykiLCJlbWFpbCI6ImNhcnRvZ3JhZmlhLmlnbkBtaXRtYS5lcyJ9LHsibmFtZSI6IkF0bGFzIE5hY2lvbmFsIGRlIEVzcGHxYSIsImVtYWlsIjoiYW5lQG1pdG1hLmVzIn1dLCJjb250cm9sbGlzdCI6W3siaWQiOiJ0aGVtZUxpc3QiLCJuYW1lIjoiVGVtYXMgZGUgZXJyb3JlcyIsIm1hbmRhdG9yeSI6dHJ1ZX0seyJpZCI6ImVycm9yTGlzdCIsIm5hbWUiOiJUaXBvcyBkZSBlcnJvcmVzIiwibWFuZGF0b3J5Ijp0cnVlfSx7ImlkIjoicHJvZHVjdExpc3QiLCJuYW1lIjoiTGlzdGEgZGUgcHJvZHVjdG9zIiwibWFuZGF0b3J5Ijp0cnVlfV0sInRoZW1lTGlzdCI6W3siaWRUaGVtZSI6MSwibmFtZVRoZW1lIjoiTm8gZXNwZWNpZmljYWRvIiwiZW1haWxUaGVtZSI6ImNvbnN1bHRhc0BjbmlnLmVzIn0seyJpZFRoZW1lIjoyLCJuYW1lVGhlbWUiOiJSZWxpZXZlIiwiZW1haWxUaGVtZSI6ImNhcnRvZ3JhZmlhLmlnbkBtaXRtYS5lcyJ9XSwiZXJyb3JMaXN0IjpbIk5vIGVzcGVjaWZpY2FkbyIsIk9taXNp824iLCJDb21pc2nzbiIsIkNsYXNpZmljYWNp824iLCJOb21icmUiLCJWYWxvciBkZWwgYXRyaWJ1dG8iLCJGb3JtYSIsIkxvY2FsaXphY2nzbiIsIk90cm9zIl0sInByb2R1Y3RMaXN0IjpbIk5vIGVzcGVjaWZpY2FkbyIsIlNlcmllIE1UTjI1IiwiU2VyaWUgTVRONTAiLCJCVE4yNSIsIkJUTjEwMCIsIk1QMjAwIiwiQkNOMjAwIiwiQkNONTAwIiwiTWFwYSBBdXRvbvNtaWNvIiwiTWFwYSBFc3Bh8WEgMTo1MDAgMDAwIiwiTWFwYSBFc3Bh8WEgMToxIDAwMCAwMDAiLCJDYXJ0b2NpdWRhZCIsIlJlZGVzIGRlIFRyYW5zcG9ydGUiLCJIaWRyb2dyYWbtYSIsIlBvYmxhY2lvbmVzIiwiTXVuZG8gcmVhbCIsIklHTiBCYXNlIiwiT3Ryb3MgcHJvZHVjdG9zIl19
+```
+
+# Ejemplo de uso
 
 ```javascript
 const mp = new M.plugin.Incicarto({
@@ -164,9 +324,7 @@ const mp = new M.plugin.Incicarto({
 });
 ```
 
----
-
-## 👨‍💻 Desarrollo
+# 👨‍💻 Desarrollo
 
 Para el stack de desarrollo de este componente se ha utilizado
 
@@ -174,7 +332,16 @@ Para el stack de desarrollo de este componente se ha utilizado
 * NPM Version: 6.14.11
 * Entorno Windows.
 
-## 📐 Para configurar el stack de desarrollo
+## 📐 Configuración del stack de desarrollo / *Work setup*
+
+
+### 🐑 Clonar el repositorio / *Cloning repository*
+
+Para descargar el repositorio en otro equipo lo clonamos:
+
+```bash
+git clone [URL del repositorio]
+```
 
 ### 1️⃣ Instalación de dependencias / *Install Dependencies*
 
@@ -192,12 +359,10 @@ npm run start
 
 ```any
 /
-├── assets 🌈               # Recursos
-├── src 📦                  # Código fuente.
+├── src 📦                  # Código fuente
 ├── task 📁                 # EndPoints
 ├── test 📁                 # Testing
-├── tmp 📁                  # Destination directory for images.
-├── webpack-config 📁       # Webpack configs.
+├── webpack-config 📁       # Webpack configs
 └── ...
 ```
 ## 📌 Metodologías y pautas de desarrollo / *Methodologies and Guidelines*
@@ -217,10 +382,3 @@ Para la revisión y actualización de las dependencias de los paquetes npm es ne
 $npm i -g npm-check-updates
 $ncu
 ```
-
-## 🚔 Licencia
-
-* [European Union Public Licence v1.2](https://raw.githubusercontent.com/JoseJPR/tutorial-nodejs-cli-system-notification/main/README.md)
-
-https://cursoapicnig.vercel.app/PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiB0eXBlPSJ0ZXh0L2NzcyIgaHJlZj0iLy9mb250cy5nb29nbGVhcGlzLmNvbS9jc3M/ZmFtaWx5PU11bGkiIC8+DQoNCjxoMj5zdWJqZWN0PC9oMj4NCg0KPGRpdiBjbGFzcz0ibWFpbi1mb3JtIj4NCiAgICA8ZGl2IGNsYXNzPSJmb3JtLWl0ZW0iPg0KICAgICAgICA8bGFiZWwgZm9yPSJkZXN0aW5hdGFyeSI+RGVzdGluYXRhcmlvIGRlIGxhIGluY2lkZW5jaWE8L2xhYmVsPg0KICAgICAgICA8aW5wdXQgaWQ9ImRlc3RpbmF0YXJ5IiB0eXBlPSJ0ZXh0IiBuYW1lPSJkZXN0aW5hdGFyeSIgcGxhY2Vob2xkZXI9ImRlc3RpbmF0YXJ5Ij48L2lucHV0Pg0KICAgIDwvZGl2Pg0KICAgIDxkaXYgY2xhc3M9ImZvcm0taXRlbSI+DQogICAgICAgIDxsYWJlbCBmb3I9InNlbmRlcm5hbWUiPlJlbWl0ZW50ZSBpbmNpZGVuY2lhPC9sYWJlbD4NCiAgICAgICAgPGlucHV0IGlkPSJzZW5kZXJuYW1lIiB0eXBlPSJ0ZXh0IiBuYW1lPSJzZW5kZXJuYW1lIiBwbGFjZWhvbGRlcj0ic2VuZGVybmFtZSI+PC9pbnB1dD4NCiAgICA8L2Rpdj4NCiAgICA8ZGl2IGNsYXNzPSJmb3JtLWl0ZW0iPg0KICAgICAgICA8bGFiZWwgZm9yPSJzZW5kZXJlbWFpbCI+RW1haWwgcmVtaXRlbnRlIGluY2lkZW5jaWE8L2xhYmVsPg0KICAgICAgICA8aW5wdXQgaWQ9InNlbmRlcmVtYWlsIiB0eXBlPSJ0ZXh0IiBuYW1lPSJzZW5kZXJlbWFpbCIgcGxhY2Vob2xkZXI9InNlbmRlcmVtYWlsIj48L2lucHV0Pg0KICAgIDwvZGl2Pg0KICAgIDxkaXYgY2xhc3M9ImZvcm0taXRlbSI+DQogICAgICAgIDxsYWJlbCBmb3I9ImVyckRlc2NyaXB0aW9uIj5EZXNjcmlwY2nDs24gZGUgbGEgaW5jaWRlbmNpYTwvbGFiZWw+DQogICAgICAgIDx0ZXh0YXJlYSBpZD0iZXJyRGVzY3JpcHRpb24iIHR5cGU9InRleHQiIG5hbWU9ImVyckRlc2NyaXB0aW9uIiBwbGFjZWhvbGRlcj0iZXJyRGVzY3JpcHRpb24iPjwvdGV4dGFyZWE+DQogICAgPC9kaXY+DQogICAgPGRpdiBjbGFzcz0iZm9ybS1pdGVtIj4NCiAgICAgICAgPGxhYmVsIGZvcj0ic2VuZGVyZ2VvbWV0cnkiPkdlb21ldHLDrWEgKGdlb0pTT04pPC9sYWJlbD4NCiAgICAgICAgPHRleHRhcmVhIGlkPSJzZW5kZXJnZW9tZXRyeSIgdHlwZT0idGV4dCIgbmFtZT0ic2VuZGVyZ2VvbWV0cnkiIHBsYWNlaG9sZGVyPSJzZW5kZXJnZW9tZXRyeSI+PC90ZXh0YXJlYT4NCiAgICA8L2Rpdj4NCiAgICA8ZGl2IGNsYXNzPSJmb3JtLWl0ZW0iPg0KICAgICAgICA8bGFiZWwgZm9yPSJzaGFyZVVSTCI+VVJMIGRlIGxhIEFwcDwvbGFiZWw+DQogICAgICAgIDxpbnB1dCBpZD0ic2hhcmVVUkwiIHR5cGU9InRleHQiIG5hbWU9InNoYXJlVVJMIiBwbGFjZWhvbGRlcj0ic2hhcmVVUkwiPjwvaW5wdXQ+DQogICAgPC9kaXY+DQo8L2Rpdj4=%7CYm9keSB7IA0KICAgIGZvbnQtZmFtaWx5OiBNdWxpOyANCiAgICBmb250LXNpemU6IDE2cHg7IA0KICAgIGZvbnQtc3R5bGU6IG5vcm1hbDsgDQogICAgZm9udC12YXJpYW50OiBub3JtYWw7IA0KICAgIGZvbnQtd2VpZ2h0OiA3MDA7IA0KfSANCg0KDQpoMiB7IA0KICAgIGZvbnQtZmFtaWx5OiBNdWxpOyANCiAgICBmb250LXNpemU6IDI0cHg7IA0KICAgIGZvbnQtc3R5bGU6IG5vcm1hbDsgDQogICAgZm9udC12YXJpYW50OiBub3JtYWw7IA0KICAgIGZvbnQtd2VpZ2h0OiA3MDA7IA0KICAgIGxpbmUtaGVpZ2h0OiAyNi40cHg7DQp9IA0KDQoubWFpbi1mb3JtIHsNCiAgICBkaXNwbGF5OiBmbGV4Ow0KICAgIG1hcmdpbi10b3A6IDE1cHg7DQogICAgd2lkdGg6IDEwMCU7DQogICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7DQogICAgYWxpZ24tY29udGVudDogY2VudGVyOw0KICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47DQogICAgZmxleC1ncm93OiAyOw0KICAgIGZvbnQtc2l6ZTogMTVweDsNCiAgICBhbGlnbi1pdGVtczogY2VudGVyOw0KfQ0KDQouZm9ybS1pdGVtIHsNCiAgICBkaXNwbGF5OiBmbGV4Ow0KICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47DQogICAgd2lkdGg6IDc1JTsNCiAgICBtYXJnaW4tdG9wOiAxMHB4Ow0KfQ0KDQouZm9ybS1pdGVtIGlucHV0W3R5cGU9dGV4dF0gew0KICAgIG1hcmdpbjogNXB4Ow0KICAgIHBhZGRpbmc6IDVweDsNCiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsNCiAgICBjdXJzb3I6IGF1dG87DQogICAgYm9yZGVyLXJhZGl1czogNHB4Ow0KICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMCwwLDAsLjUpOw0KICAgIC13ZWJraXQtYXBwZWFyYW5jZTogbm9uZTsNCiAgICAtbW96LWFwcGVhcmFuY2U6IG5vbmU7DQogICAgYXBwZWFyYW5jZTogbm9uZTsNCiAgICBjb2xvcjogIzZjNmM2YzsNCiAgICBmb250LXNpemU6IDEzcHg7DQp9DQoNCi5mb3JtLWl0ZW0gdGV4dGFyZWEgew0KICAgIG1hcmdpbjogNXB4Ow0KICAgIHBhZGRpbmc6IDVweDsgICAgDQogICAgZGlzcGxheTogYmxvY2s7DQogICAgYm9yZGVyLXJhZGl1czogNHB4Ow0KICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMCwwLDAsLjUpOw0KICAgIGNvbG9yOiAjNmM2YzZjOw0KICAgIHJlc2l6ZTogbm9uZTsNCiAgICBoZWlnaHQ6IDRlbTsNCn0=%7C
-

@@ -1,12 +1,16 @@
 /**
  * @module M/exception
+ * @example
+ * import exception from "M/exception";
  */
 
 /**
- * This function throws an Error with message.
+ * Esta función arroja un mensaje de error (el error
+ * que se produzca).
  * @function
  * @public
- * @param {string} msg - Message error
+ * @param {string} msg Mensaje de error.
+ * @returns {String} Error.
  * @api
  */
 const exception = (msg) => {

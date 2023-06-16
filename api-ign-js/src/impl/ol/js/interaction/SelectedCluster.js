@@ -13,15 +13,30 @@ import { easeOut } from 'ol/easing';
 import { getVectorContext } from 'ol/render';
 import Icon from '../point/Icon';
 import Utils from '../util/Utils';
-
+/**
+ * @classdesc
+ * Esta clase hereda de "OLInteractionSelect" y  permite seleccionar agrupaciones de puntos.
+ * @api
+ * @extends {ol.interaction.Select}
+ */
 class SelectCluster extends OLInteractionSelect {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates interaction SelectCluster
-   * control
+   * Constructor principal de la clase.
    *
    * @constructor
-   * @param {Object} options - ranges defined by user
+   * @param {Object} optionsParam Parametros opcionales:
+   * - map: Mapa sobre el que se va a aplicar la interacción.
+   * - pointRadius: Radio de los puntos que se van a dibujar.
+   * - circleMaxObjects: Número máximo de objetos que se van a dibujar en un círculo.
+   * - maxObjects: Número máximo de objetos que se van a dibujar en una espiral.
+   * - spiral: Indica si se dibuja una espiral o un círculo.
+   * - animate: Indica si se anima la selección.
+   * - animationDuration: Duración de la animación.
+   * - selectCluster: Indica si se selecciona el "cluster".
+   * - maxFeaturesToSelect: Número máximo de objetos geográficos que se van a seleccionar.
+   * - fLayer: Capa vectorial sobre la que se va a aplicar la interacción.
+   * - style: Estilo de los puntos que se van a dibujar.
+   * - filter: Función de filtrado.
    * @api
    */
   constructor(optionsParam = {}) {
@@ -65,10 +80,11 @@ class SelectCluster extends OLInteractionSelect {
   }
 
   /**
-   * TODO
-   *
+   * Este método se encaraga de añadir los eventos de la interacción.
    * @public
    * @function
+   * @param {ol.map} map Mapa sobre el que se va a aplicar la interacción.
+   * @returns {boolean} Verdadero si se ha añadido correctamente.
    * @api
    */
   setMap(map) {
@@ -94,7 +110,7 @@ class SelectCluster extends OLInteractionSelect {
   }
 
   /**
-   * TODO
+   * Este método se encarga de eliminar los eventos de la interacción.
    *
    * @public
    * @function
@@ -106,10 +122,11 @@ class SelectCluster extends OLInteractionSelect {
   }
 
   /**
-   * TODO
+   * Este método devuelve la capa vectorial sobre la que se aplica la interacción.
    *
    * @public
    * @function
+   * @returns {M.layer.Vector} Capa vectorial sobre la que se aplica la interacción.
    * @api
    */
   getLayer() {
@@ -117,7 +134,7 @@ class SelectCluster extends OLInteractionSelect {
   }
 
   /**
-   * TODO
+   * Este método se encarga de recargar los eventos de la interacción.
    *
    * @public
    * @function
@@ -130,10 +147,11 @@ class SelectCluster extends OLInteractionSelect {
   }
 
   /**
-   * TODO
+   * Este método se encarga de seleccionar los "clusters".
    *
    * @public
    * @function
+   * @param {ol.interaction.Select.Event} e Evento de selección.
    * @api
    */
   selectCluster(e) {
@@ -188,10 +206,15 @@ class SelectCluster extends OLInteractionSelect {
 
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método se encarga de dibujar los objetos geográficos y las líneas en el "cluster".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {Array<ol.Feature>} cluster Array de objetos geográficos que forman el "cluster".
+   * @param {number} resolution Resolución del mapa.
+   * @param {number} radiusInPixels Radio en píxeles.
+   * @param {Array<number>} center Centro del "cluster".
    * @function
+   * @api
    */
   drawFeaturesAndLinsInCircle_(cluster, resolution, radiusInPixels, center) {
     const max = Math.min(cluster.length, this.circleMaxObjects);
@@ -207,10 +230,14 @@ class SelectCluster extends OLInteractionSelect {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método se encarga de dibujar los objetos geográficos y las líneas en espiral.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {Array<ol.Feature>} cluster Array de objetos geográficos que forman el "cluster".
+   * @param {number} resolution Resolución del mapa.
+   * @param {Array<number>} center Centro del "cluster".
    * @function
+   * @api
    */
   drawFeaturesAndLinsInSpiral_(cluster, resolution, center) {
     let a = 0;
@@ -230,10 +257,15 @@ class SelectCluster extends OLInteractionSelect {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método se encarga de dibujar los objetos geográficos y los enlaces.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {ol.Feature} clusterFeature Objeto geográfico que forma el "cluster".
+   * @param {number} resolution Resolución del mapa.
+   * @param {Array<number>} center Centro del "cluster".
+   * @param {Array<number>} newPoint Nuevo punto.
    * @function
+   * @api
    */
   drawAnimatedFeatureAndLink_(clusterFeature, resolution, center, newPoint) {
     const cf = new OLFeature();
@@ -269,9 +301,11 @@ class SelectCluster extends OLInteractionSelect {
   }
 
   /**
-   * TODO
+   * Este método se encarga de animar el "cluster".
    *
    * @public
+   * @param {Array<number>} center Centro del "cluster".
+   * @param {function} callbackFn Función de callback.
    * @function
    * @api
    */
@@ -343,7 +377,7 @@ class SelectCluster extends OLInteractionSelect {
             vectorContext.drawGeometry(geo);
           }
         }
-        // Stop animation and restore cluster visibility
+        // Stop animation and restore "cluster" visibility
         if (e > 1.0) {
           unByKey(this.listenerKey_);
           this.overlayLayer_.setVisible(true);

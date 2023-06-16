@@ -15,9 +15,12 @@
   "readingAltitude": "Consultando...",
   "noDatafromWCS": "Sin datos",
   "removePoint": "Elimina el punto",
+  "copyLatLon": "Copiar latitud/longitud",
+  "copyxy": "Copiar x/y",
   "removeAllPoints": "Elimina todos los puntos",
   "importAllPoints": "Exportar todos los puntos",
+  "copyAllPoints": "Copiar todos los puntos",
   "displayONAllPoints": "Mostrar coordenadas de todos los puntos",
-  "displayOFFAllPoints": "Ocultar coordenadas de todos los puntos"
-
+  "displayOFFAllPoints": "Ocultar coordenadas de todos los puntos",
+  "clipboard": "Resultado copiado al portapapeles"
 }

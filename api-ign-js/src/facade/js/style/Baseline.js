@@ -3,7 +3,7 @@
  */
 
 /**
- * Top style baseline
+ * Estilo superior "baseline".
  * @const
  * @type {string}
  * @public
@@ -12,7 +12,7 @@
 export const TOP = 'top';
 
 /**
- * Middle style baseline
+ * Estilo medio "baseline".
  * @const
  * @type {string}
  * @public
@@ -21,7 +21,7 @@ export const TOP = 'top';
 export const MIDDLE = 'middle';
 
 /**
- * Bottom style baseline
+ * Estilo inferior "baseline".
  * @const
  * @type {string}
  * @public
@@ -30,7 +30,7 @@ export const MIDDLE = 'middle';
 export const BOTTOM = 'bottom';
 
 /**
- * Alphabetic style baseline
+ * Estilo alfabético "baseline".
  * @const
  * @type {string}
  * @public
@@ -39,7 +39,7 @@ export const BOTTOM = 'bottom';
 export const ALPHABETIC = 'alphabetic';
 
 /**
- * Hanging style baseline
+ * Estilo colgante "baseline".
  * @const
  * @type {string}
  * @public
@@ -48,7 +48,7 @@ export const ALPHABETIC = 'alphabetic';
 export const HANGING = 'hanging';
 
 /**
- * Ideographic style baseline
+ * Estilo ideográfico "baseline".
  * @const
  * @type {string}
  * @public

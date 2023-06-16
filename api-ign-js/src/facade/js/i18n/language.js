@@ -8,12 +8,13 @@ import Exception from '../exception/exception';
 import pluginsLanguage from './plugins';
 
 /**
- * Default object with es and en internacionalization.
- *
+ * Opciones de idiomas por defecto, (español, "es.json" o inglés, "en.json").
+ * @public
  * @const
  * @type {object}
+ * @api
  */
-const configuration = {
+export const configuration = {
   translations: {
     en,
     es,
@@ -22,10 +23,11 @@ const configuration = {
 };
 
 /**
- * This function sets a new language internacionalization.
- * @param {string} lang
- * @param {JSON} json
+ * Esta función añade un nuevo idioma.
  * @public
+ * @function
+ * @param {string} lang Idioma.
+ * @param {JSON} json Valores, traducción.
  * @api
  */
 export const addTranslation = (lang, json) => {
@@ -33,11 +35,15 @@ export const addTranslation = (lang, json) => {
 };
 
 /**
- * This function gets a language internacionalization.
+ * Esta función te devuelve todas las traducciones disponibles
+ * en la API-CORE.
  *
- * @param {string} lang
- * @return {JSON}
  * @public
+ * @function
+ *
+ * @param {string} lang Idioma.
+ * @return {JSON} JSON con todas las traducciones.
+ *
  * @api
  */
 export const getTranslation = (lang) => {
@@ -91,6 +97,8 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].zoomextent = pluginsLanguage.zoomextent.esZoomextent;
     configuration.translations[lang].zoompanel = pluginsLanguage.zoompanel.esZoompanel;
     configuration.translations[lang].viewshed = pluginsLanguage.viewshed.esViewshed;
+    configuration.translations[lang].viewmanagement =
+      pluginsLanguage.viewmanagement.esViewmanagement;
   } else if (lang === 'en') {
     configuration.translations[lang].attributions = pluginsLanguage.attributions.enAttributions;
     configuration.translations[lang].backimglayer = pluginsLanguage.backimglayer.enBackimglayer;
@@ -141,18 +149,22 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].zoomextent = pluginsLanguage.zoomextent.enZoomextent;
     configuration.translations[lang].zoompanel = pluginsLanguage.zoompanel.enZoompanel;
     configuration.translations[lang].viewshed = pluginsLanguage.viewshed.enViewshed;
+    configuration.translations[lang].viewmanagement =
+      pluginsLanguage.viewmanagement.enViewmanagement;
   }
   return configuration.translations[lang];
 };
 
 /**
- * This function gets a language value from key
+ * Esta función te devuelve una traducción dependiendo
+ * del valor que se le pase por parámetros.
  *
  * @public
- * @param {string}
- * @param {string}
- * @return {string}
- * @public
+ * @function
+ *
+ * @param {string} key Nombre del control, plugin, ...
+ * @param {string} lang Idioma.
+ * @return {JSON} JSON con la traducción.
  * @api
  */
 export const getValue = (key, lang = configuration.lang) => {
@@ -160,10 +172,10 @@ export const getValue = (key, lang = configuration.lang) => {
 };
 
 /**
- * This function sets the language of the library
- *
- * @function
+ * Esta función modifica el idioma del API-CORE.
  * @public
+ * @function
+ * @param {string} lang Idioma.
  * @api
  */
 export const setLang = (lang) => {
@@ -174,12 +186,23 @@ export const setLang = (lang) => {
 };
 
 /**
- * This function gets the language of the library
+ * Esta función devuelve el idioma de la API-CORE.
  *
  * @function
  * @public
+ * @return {String} Devuelve el idioma especificado en el archivo "configuration.lang".
  * @api
  */
 export const getLang = () => {
   return configuration.lang;
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

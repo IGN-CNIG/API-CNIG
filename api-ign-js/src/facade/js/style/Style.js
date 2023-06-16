@@ -7,11 +7,18 @@ import * as EventType from '../event/eventtype';
 
 /**
  * @classdesc
+ * Clase principal que gestiona los estilos, de esta heredan
+ * los estilos de los objetos geográficos, ...
  * @api
+ * @extends {M.Base}
  */
 class Style extends Base {
   /**
+   * Constructor principal de la clase.
    * @constructor
+   * @param {Object} options Opciones de la clase.
+   * - icon (src): Ruta del icono.
+   * @param {Object} impl Implementación.
    * @api
    */
   constructor(options, impl) {
@@ -19,42 +26,33 @@ class Style extends Base {
     super(impl);
 
     /**
-     * User options for this style
-     * @private
-     * @type {Object}
+     * Opciones de usuario para este estilo.
      */
     this.options_ = options;
 
     /**
-     * The canvas element to draw the style
-     * into a layer swticher
-     * @private
-     * @type {HTMLCanvasElement}
+     * El elemento canva para dibujar el estilo
+     * en un conmutador de capas.
      */
     this.canvas_ = document.createElement('canvas');
 
     /**
-     * The updateCanvas promise to manage
-     * asynchronous request with icon images
-     *
-     * @private
-     * @type {Promirse}
+     * La promesa updateCanvas que gestiona la
+     * solicitud asíncrona con iconos.
      */
     this.updateCanvasPromise_ = null;
 
     /**
-     * Layer which this style is applied
-     * @private
-     * @type {M.layer.Vector}
+     * Capa a la que se aplica este estilo.
      */
     this.layer_ = null;
   }
 
   /**
-   * canvas getter
+   * Devuelve el "canvas".
    * @public
    * @function
-   * @return {HTMLCanvasElement}
+   * @return {HTMLCanvasElement} Elemento "canvas".
    * @api
    */
   get canvas() {
@@ -62,10 +60,10 @@ class Style extends Base {
   }
 
   /**
-   * This function apply style
+   * Este método aplica los estilos a la capa.
    *
    * @public
-   * @param {M.layer.Vector} layer - Layer to apply the styles
+   * @param {M.layer.Vector} layer Capa.
    * @function
    * @api
    */
@@ -76,22 +74,22 @@ class Style extends Base {
   }
 
   /**
-   * This function apply style
+   * Este método quita los estilos de la capa.
    *
    * @function
    * @protected
-   * @param {M.layer.Vector} layer - Layer to apply the styles
+   * @param {M.layer.Vector} layer Capa.
    * @api
    */
   unapply(layer) {}
 
   /**
-   * This function returns the value of the indicated attribute
+   * Este método devuelve los valores de los atributos indicados.
    *
    * @function
    * @public
-   * @param {String} attribute - Attribute to know the value
-   * @return {Object} Attribute Value
+   * @param {String} attribute Atributo para saber el valor.
+   * @return {Object} Valor del attributo.
    */
   get(attribute) {
     let attrValue;
@@ -115,12 +113,12 @@ class Style extends Base {
   }
 
   /**
-   * This function set value to property and apply new property
+   * Este método  establece el valor de la propiedad y aplica una nueva propiedad.
    *
    * @public
-   * @param {String} property - Property to change the value
-   * @param {String} value - Value to property
-   * @return {M.Style}
+   * @param {String} property Propiedad para cambiar el valor.
+   * @param {String} value Valor de la propiedad.
+   * @return {M.Style} Devuelve this.
    * @function
    * @api
    */
@@ -140,13 +138,12 @@ class Style extends Base {
   }
 
   /**
-   * This function set value to property
-   *
-   * @private
-   * @param {Object} obj - Style
-   * @param {String} path - Path property
-   * @param {String} value - Value property
-   * @return {String} value
+   * Este método de la clase establece el valor de la propiedad.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {Object} objPara Estilos.
+   * @param {String} path Ruta de la propiedad.
+   * @param {String} value Valor de la propiedad.
    * @function
    */
   static setValue(objPara, path, valueVar) {
@@ -171,12 +168,12 @@ class Style extends Base {
   }
 
   /**
-   * This function updates the style of the
-   * layer
+   * Este método actualiza el estilo de la
+   * capa.
    *
    * @public
    * @function
-   * @return {String} data url to canvas
+   * @param {Object} layer Capa.
    * @api
    */
   refresh(layer = null) {
@@ -195,7 +192,7 @@ class Style extends Base {
     }
   }
   /**
-   * This functions gets the options style.
+   * Este método obtiene el estilo de opciones.
    *
    * @function
    * @public
@@ -207,11 +204,11 @@ class Style extends Base {
   }
 
   /**
-   * This function returns data url to canvas
+   * Este método transforma los datos de una url a canvas.
    *
    * @function
    * @public
-   * @return {String} data url to canvas
+   * @return {String} URL.
    */
   toImage() {
     let styleImgB64;
@@ -240,7 +237,7 @@ class Style extends Base {
   }
 
   /**
-   * This function updates the styles's canvas
+   * Este método actualiza los estilos del canvas.
    *
    * @public
    * @function
@@ -251,18 +248,21 @@ class Style extends Base {
   }
 
   /**
-   * TODO
-   *
+   * Compara que esta clase sea igual a otro objeto.
+   * @public
+   * @function
+   * @param {Object} Style Objeto que se quiere comparar.
+   * @api
    */
   equals(style) {
     return (this.constructor === style.constructor);
   }
 
   /**
-   * This function clones the style
+   * Este método clona los estilos.
    *
    * @public
-   * @return {M.Style}
+   * @return {M.Style} Devuelve un "new Style".
    * @function
    * @api
    */
@@ -275,8 +275,8 @@ class Style extends Base {
   }
 
   /**
-   * This function implements the mechanism to
-   * generate the JSON of this instance
+   * Este método implementa el mecanismo para
+   * generar el JSON de esta instancia.
    *
    * @public
    * @return {object}
@@ -290,10 +290,10 @@ class Style extends Base {
   }
 
   /**
-   * TODO
+   * Serializa los estilos.
    *
    * @function
-   * @return {String}
+   * @return {String} Estilo serializado.
    * @api
    * @public
    */
@@ -302,10 +302,10 @@ class Style extends Base {
   }
 
   /**
-   * This function returns the style instance of the serialization
+   * Este método de la clase devuelve la instancia de estilo de la serialización.
    * @function
    * @public
-   * @param {string} serializedStyle - serialized style
+   * @param {string} serializedStyle Estilo serializado.
    * @return {M.Style}
    */
   static deserialize(encodedSerializedStyle) {

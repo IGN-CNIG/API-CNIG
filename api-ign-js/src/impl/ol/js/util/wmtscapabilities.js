@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /**
+ * Este módulo contiene funciones para obtener la extensión de una capa WMTS.
  * @module M/impl/util/wmtscapabilities
  */
 import WMTS from 'M/layer/WMTS';
@@ -9,9 +10,17 @@ import ImplUtils from './Utils';
 
 
 /**
- * TODO
- * @function
- */
+  * Este método calcula recursivamente la extensión de
+  * una capa específica a partir de su 'GetCapabilities'.
+  *
+  * @function
+  * @param {Mx.GetCapabilities} layer Lista de capas disponibles en el servicio.
+  * @param {String} layerName  Nombre de la capa.
+  * @param {String} code Código de la proyección.
+  * @returns {Array<Number>} Extensión.
+  * @public
+  * @api
+  */
 const getExtentRecursive = (layer, layerName, code) => {
   let extent = null;
   if (!isNullOrEmpty(layer)) {
@@ -32,6 +41,18 @@ const getExtentRecursive = (layer, layerName, code) => {
   return extent;
 };
 
+/**
+  * Este método obtiene las capas WMTS a partir de su 'GetCapabilities'.
+  *
+  * @function
+  * @param {Mx.GetCapabilities} layer Lista de capas disponibles.
+  * @param {String} urlService URL del WMTS.
+  * @param {String} EPSGcode Código de la proyección.
+  * @param {Mx.GetCapabilities} capabilities Metadatos sobre el servicio.
+  * @returns {Array<M.Layer>} Capas WMTS.
+  * @public
+  * @api
+  */
 const getLayersRecursive = (layer, urlService, EPSGcode, capabilities) => {
   let layers = [];
 
@@ -68,25 +89,37 @@ const getLayersRecursive = (layer, urlService, EPSGcode, capabilities) => {
 };
 
 /**
- * TODO
- *
- * @public
- * @function
- * @api
- */
+  * Este método obtiene las capas WMTS a partir de su 'GetCapabilities'.
+  *
+  * @function
+  * @param {Mx.GetCapabilities} capabilities Metadatos sobre el servicio.
+  * @param {String} url URL del WMTS.
+  * @param {String} EPSGcode Código de la proyección.
+  * @returns {Array<M.Layer>} Capas WMTS.
+  * @public
+  * @example import { getLayers } from 'impl/util/wmtscapabilities';
+  * @api
+  */
 export const getLayers = (capabilities, url, EPSGcode) => {
   return getLayersRecursive(capabilities.Contents.Layer, url, EPSGcode, capabilities);
 };
 
 /**
- * TODO
- *
- * @public
- * @function
- * @api stable
- */
+  * Este método calcula la extensión de una capa
+  * específica a partir de su 'GetCapabilities'.
+  *
+  * @function
+  * @param {Mx.GetCapabilities} parsedCapabilities Metadatos sobre el servicio.
+  * @param {String} name Nombre de la capa.
+  * @param {String} code Código de la proyección.
+  * @returns {Array<Number>} Extensión.
+  * @public
+  * @example import getLayerExtent from 'impl/util/wmtscapabilities';
+  * @api
+  */
 const getLayerExtent = (parsedCapabilities, name, code) => {
   return getExtentRecursive(parsedCapabilities.Layer, name, code);
 };
 
 export default getLayerExtent;
+

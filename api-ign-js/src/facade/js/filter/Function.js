@@ -5,30 +5,34 @@ import BaseFilter from './Base';
 import { isNullOrEmpty } from '../util/Utils';
 
 /**
- * @classdesc
- * @api
- */
+  * @classdesc
+  * Esta clase crea los métodos para los filtros.
+  * @extends {M.Base}
+  * @api
+  */
 class Function extends BaseFilter {
   /**
-   * Creates a Filter Function to filter features
-   *
-   * @param {function} filterFunction - Function to execute
-   * @api
-   */
+    * Constructor principal de la clase.
+    * @constructor
+    * @param {function} filterFunction Función a ejecutar.
+    * @param {Object} options Opciones:
+    * - cqlFilter
+    * @api
+    */
   constructor(filterFunction, options = {}) {
     super();
     /**
-     * Function to execute
-     * @private
-     * @type {function}
-     */
+      * Función a ejecutar.
+      * @private
+      * @type {function}
+      */
     this.filterFunction_ = filterFunction;
 
     /**
-     * Filter CQL
-     * @private
-     * @type {String}
-     */
+      * Filtro CQL.
+      * @private
+      * @type {String}
+      */
     this.cqlFilter_ = '';
     if (!isNullOrEmpty(options.cqlFilter)) {
       this.cqlFilter_ = options.cqlFilter;
@@ -36,49 +40,50 @@ class Function extends BaseFilter {
   }
 
   /**
-   * This function set a function filter
-   *
-   * @public
-   * @function
-   * @api
-   */
+    * Este método establece un filtro.
+    *
+    * @public
+    * @function
+    * @param {Function} filterFunction Filtro.
+    * @api
+    */
   setFunction(filterFunction) {
     this.filterFunction_ = filterFunction;
   }
 
   /**
-   * This function get a function filter
-   *
-   * @public
-   * @function
-   * @return {M.filter.Function} filter to execute
-   * @api
-   */
+    * Este método obtiene un filtro ya creado.
+    *
+    * @public
+    * @function
+    * @return {M.filter.Function} Filtro.
+    * @api
+    */
   getFunctionFilter() {
     return this.filterFunction_;
   }
 
   /**
-   * This function execute a function filter
-   *
-   * @public
-   * @function
-   * @param {Array<M.Feature>} features - Features on which the filter runs
-   * @return {Array<M.Feature>} features to passed filter
-   * @api
-   */
+    * Este método ejecuta un filtro sobre los objetos geográficos.
+    *
+    * @public
+    * @function
+    * @param {Array<M.Feature>} features Objetos geográficos.
+    * @return {Array<M.Feature>} Objetos geográficos filtrados.
+    * @api
+    */
   execute(features) {
     return features.filter(this.filterFunction_);
   }
 
   /**
-   * This function return CQL
-   *
-   * @public
-   * @function
-   * @api
-   * @return {string} CQL
-   */
+    * Este método devuelve la sentencia CQL.
+    *
+    * @public
+    * @function
+    * @api
+    * @return {string} Sentencia CQL.
+    */
   toCQL() {
     return this.cqlFilter_;
   }

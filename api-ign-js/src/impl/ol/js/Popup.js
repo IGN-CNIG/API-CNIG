@@ -1,26 +1,47 @@
+/**
+ * @module M/impl/Popup
+ */
 import OLOverlay from 'ol/Overlay';
 import { enableTouchScroll, isFunction, isNullOrEmpty } from 'M/util/Utils';
 import FacadePopup from 'M/Popup';
 import FacadeWindow from 'M/util/Window';
 
 /**
- * @module M/impl/Popup
+ * @classdesc
+ * Implementación de la clase "Popup"
+ *
+ * @property {Boolean} panMapIfOutOfView Indica si el mapa se desplaza o no.
+ * @property {Object} ani_opts Opciones de animación.
+ * @property {M.Map} facadeMap_ Mapa.
+ * @property {ol.Coordinate} cachedAniPixel_
+ *
+ * @api
+ * @extends {ol.Overlay}
  */
 class Popup extends OLOverlay {
   /**
-   * OpenLayers 3 Popup Overlay.
+   * Constructor principal de la clase "Popup".
+   *
    * @constructor
-   * @extends {OLOverlay}
-   * @api stable
+   * @param {Object} options Opciones del "Popup".
+   * - icon: Icono del "Popup".
+   * - title: Título del "Popup".
+   * - content: Contenido del "Popup".
+   * - listeners: Función 'listener'.
+   * - panMapIfOutOfView: Indica si el mapa se desplaza o no.
+   * - ani_opts: Opciones de animación. Puede constar de las siguientes propiedades:
+   *            - "duration": Duración de la animación en milisegundos.
+   *
+   *            - "easing": El método de aceleración a usar.
+   *
+   * @api
    */
   constructor(options = {}) {
     super({});
 
     /**
-     * Flag to indicate if map does pan or not
-     * @private
-     * @type {boolean}
-     * @api stable
+     * Indica si el mapa se desplaza o no.
+     * @type {Boolean}
      */
     this.panMapIfOutOfView = options.panMapIfOutOfView;
     if (this.panMapIfOutOfView === undefined) {
@@ -28,10 +49,8 @@ class Popup extends OLOverlay {
     }
 
     /**
-     * Animation options
-     * @private
-     * @type {object}
-     * @api stable
+     * Opciones de animación.
+     * @type {Object}
      */
     this.ani_opts = options.ani_opts;
     if (this.ani_opts === undefined) {
@@ -41,14 +60,14 @@ class Popup extends OLOverlay {
     }
 
     /**
-     * TODO
+     * Fachada del mapa a implementar.
      * @private
      * @type {M.Map}
      */
     this.facadeMap_ = null;
 
     /**
-     * TODO
+     *
      * @private
      * @type {ol.Coordinate}
      */
@@ -56,12 +75,13 @@ class Popup extends OLOverlay {
   }
 
   /**
-   * TODO
-   * @public
+   * Este método añade el HTML del "Popup" al mapa.
+   *
    * @function
-   * @param {M.Map}
-   * @param {String} html String of HTML to display within the popup.
-   * @api stable
+   * @param {M.Map} map Mapa.
+   * @param {String} html Cadena de HTML para mostrar dentro del "Popup".
+   * @public
+   * @api
    */
   addTo(map, html) {
     this.facadeMap_ = map;
@@ -80,12 +100,13 @@ class Popup extends OLOverlay {
   }
 
   /**
-   * Show the popup.
-   * @public
+   * Este método muestra el "Popup".
+   *
    * @function
-   * @param {ol.Coordinate} coord Where to anchor the popup.
-   * @param {function} callback Callback function to execute
-   * @api stable
+   * @param {ol.Coordinate} coord Coordenadas donde situar el "Popup".
+   * @param {function} callback Función 'callback' de llamada para ejecutar.
+   * @public
+   * @api
    * @memberof module:M/impl/Popup#
    */
   show(coord, callback) {
@@ -101,12 +122,13 @@ class Popup extends OLOverlay {
   }
 
   /**
-   * Center the popup
-   * @public
+   * Este método centra el "Popup".
+   *
    * @function
-   * @param {ol.Coordinate} coord Where to anchor the popup.
-   * @param {String} html String of HTML to display within the popup.
-   * @api stable
+   * @param {M.Popup.status} status Estado del "Popup".
+   * @param {ol.Coordinate} coord Coordenadas donde situar el "Popup".
+   * @public
+   * @api
    */
   centerByStatus(status, coord) {
     const resolution = this.getMap().getView().getResolution();
@@ -131,15 +153,27 @@ class Popup extends OLOverlay {
   }
 
   /**
-   * @private
+   * Este método obtiene el HTML del contenedor "m-body".
+   *
+   * @function
+   * @param {Object} html HTML.
+   * @returns {Object} Elemento HTML.
+   * @public
+   * @api
    */
   getContentFromContainer(html) {
     return html.querySelector('div.m-body');
   }
 
-
   /**
-   * @private
+   * Este método mueve el mapa para que el "Popup" sea completamente
+   * visible en el actual 'viewport' (si es necesario).
+   *
+   * @function
+   * @param {ol.Coordinate} coord Coordenadas del "Popup".
+   * @returns {Object} Centro del mapa.
+   * @public
+   * @api
    */
   panIntoView(coord) {
     // it waits for the previous animation in order to execute this
@@ -200,7 +234,11 @@ class Popup extends OLOverlay {
   }
 
   /**
-   * @private
+   * Este método sincroniza las animaciones del "Popup".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @function
+   * @public
+   * @api
    */
   panIntoSynchronizedAnim_() {
     return new Promise((success, fail) => {
@@ -222,21 +260,23 @@ class Popup extends OLOverlay {
   }
 
   /**
+   * Este método elimina el "Popup" del mapa.
    *
-   * @public
    * @function
-   * @api stable
+   * @public
+   * @api
    */
   hide() {
     this.facadeMap_.removePopup();
   }
 
   /**
-   * change text popup
-   * @public
+   * Este método establece el texto del "Popup".
+   *
    * @function
-   * @param {text} new text.
-   * @api stable
+   * @param {Object} html Nuevo contenido para el "Popup".
+   * @public
+   * @api
    */
   setContainer(html) {
     this.setElement(html);
@@ -245,11 +285,12 @@ class Popup extends OLOverlay {
   }
 
   /**
-   * change text popup
-   * @public
+   * Este método obtiene el contenido del "Popup".
+   *
    * @function
-   * @param {text} new text.
-   * @api stable
+   * @returns {String} Contenido del "Popup".
+   * @public
+   * @api
    */
   getContent() {
     return this.content;

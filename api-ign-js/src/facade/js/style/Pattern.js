@@ -3,7 +3,7 @@
  */
 
 /**
- * Hatch style pattern
+ * Patrón de estilo de sombreado.
  * @const
  * @type {string}
  * @public
@@ -12,7 +12,7 @@
 export const HATCH = 'HATCH';
 
 /**
- * Cross style pattern
+ * Patrón de estilo cruzado.
  * @const
  * @type {string}
  * @public
@@ -21,7 +21,7 @@ export const HATCH = 'HATCH';
 export const CROSS = 'CROSS';
 
 /**
- * Dot style pattern
+ * Patrón de estilo de punto.
  * @const
  * @type {string}
  * @public
@@ -30,7 +30,7 @@ export const CROSS = 'CROSS';
 export const DOT = 'DOT';
 
 /**
- * Cirlce style pattern
+ * Patrón de estilo de círculo.
  * @const
  * @type {string}
  * @public
@@ -39,7 +39,7 @@ export const DOT = 'DOT';
 export const CIRCLE = 'CIRCLE';
 
 /**
- * Square style pattern
+ * Patrón de estilo cuadrado.
  * @const
  * @type {string}
  * @public
@@ -48,7 +48,7 @@ export const CIRCLE = 'CIRCLE';
 export const SQUARE = 'SQUARE';
 
 /**
- * Tile style pattern
+ * Patrón de estilo de mosaico.
  * @const
  * @type {string}
  * @public
@@ -57,7 +57,7 @@ export const SQUARE = 'SQUARE';
 export const TILE = 'TILE';
 
 /**
- * Woven style pattern
+ * Patrón de estilo tejido.
  * @const
  * @type {string}
  * @public
@@ -66,7 +66,7 @@ export const TILE = 'TILE';
 export const WOVEN = 'WOVEN';
 
 /**
- * Crosses style pattern
+ * Patrón de estilo de cruces.
  * @const
  * @type {string}
  * @public
@@ -75,7 +75,7 @@ export const WOVEN = 'WOVEN';
 export const CROSSES = 'CROSSES';
 
 /**
- * Caps style pattern
+ * Patrón de estilo de gorras.
  * @const
  * @type {string}
  * @public
@@ -84,7 +84,7 @@ export const CROSSES = 'CROSSES';
 export const CAPS = 'CAPS';
 
 /**
- * Nylon style pattern
+ * Patrón de estilo de nailon.
  * @const
  * @type {string}
  * @public
@@ -93,7 +93,7 @@ export const CAPS = 'CAPS';
 export const NYLON = 'NYLON';
 
 /**
- * Hexagon style pattern
+ * Patrón de estilo hexagonal.
  * @const
  * @type {string}
  * @public
@@ -102,7 +102,7 @@ export const NYLON = 'NYLON';
 export const HEXAGON = 'HEXAGON';
 
 /**
- * Cementery style pattern
+ * Patrón de estilo cementerio.
  * @const
  * @type {string}
  * @public
@@ -111,7 +111,7 @@ export const HEXAGON = 'HEXAGON';
 export const CEMETRY = 'CEMETRY';
 
 /**
- * Sand style pattern
+ * Patrón de estilo arena.
  * @const
  * @type {string}
  * @public
@@ -120,7 +120,7 @@ export const CEMETRY = 'CEMETRY';
 export const SAND = 'SAND';
 
 /**
- * Conglomerate style pattern
+ * Patrón de estilo conglomerado.
  * @const
  * @type {string}
  * @public
@@ -129,7 +129,7 @@ export const SAND = 'SAND';
 export const CONGLOMERATE = 'CONGLOMERATE';
 
 /**
- * Gravel style pattern
+ * Patrón de estilo de grava.
  * @const
  * @type {string}
  * @public
@@ -138,7 +138,7 @@ export const CONGLOMERATE = 'CONGLOMERATE';
 export const GRAVEL = 'GRAVEL';
 
 /**
- * Brick style pattern
+ * Patrón de estilo de ladrillo.
  * @const
  * @type {string}
  * @public
@@ -147,7 +147,7 @@ export const GRAVEL = 'GRAVEL';
 export const BRICK = 'BRICK';
 
 /**
- * Dolomite style pattern
+ * Patrón de estilo dolomita.
  * @const
  * @type {string}
  * @public
@@ -156,7 +156,7 @@ export const BRICK = 'BRICK';
 export const DOLOMITE = 'DOLOMITE';
 
 /**
- * Coal style pattern
+ * Patrón de estilo carbón.
  * @const
  * @type {string}
  * @public
@@ -165,7 +165,7 @@ export const DOLOMITE = 'DOLOMITE';
 export const COAL = 'COAL';
 
 /**
- * Brevvia style pattern
+ * Patrón de estilo "Brevvia".
  * @const
  * @type {string}
  * @public
@@ -174,7 +174,7 @@ export const COAL = 'COAL';
 export const BRECCIA = 'BRECCIA';
 
 /**
- * Clay style pattern
+ * Patrón de estilo de arcilla.
  * @const
  * @type {string}
  * @public
@@ -183,7 +183,7 @@ export const BRECCIA = 'BRECCIA';
 export const CLAY = 'CLAY';
 
 /**
- * Flooded style pattern
+ * Patrón de estilo inundado.
  * @const
  * @type {string}
  * @public
@@ -192,7 +192,7 @@ export const CLAY = 'CLAY';
 export const FLOODED = 'FLOODED';
 
 /**
- * Chaos style pattern
+ * Patrón de estilo caos.
  * @const
  * @type {string}
  * @public
@@ -201,7 +201,7 @@ export const FLOODED = 'FLOODED';
 export const CHAOS = 'CHAOS';
 
 /**
- * Grass style pattern
+ * Patrón de estilo de hierba.
  * @const
  * @type {string}
  * @public
@@ -210,7 +210,7 @@ export const CHAOS = 'CHAOS';
 export const GRASS = 'GRASS';
 
 /**
- * Swamp style pattern
+ * Patrón de estilo pantano.
  * @const
  * @type {string}
  * @public
@@ -219,7 +219,7 @@ export const GRASS = 'GRASS';
 export const SWAMP = 'SWAMP';
 
 /**
- * Wave style pattern
+ * Patrón de estilo de onda.
  * @const
  * @type {string}
  * @public
@@ -228,7 +228,7 @@ export const SWAMP = 'SWAMP';
 export const WAVE = 'WAVE';
 
 /**
- * Vine style pattern
+ * Patrón de estilo de vid.
  * @const
  * @type {string}
  * @public
@@ -237,7 +237,7 @@ export const WAVE = 'WAVE';
 export const VINE = 'VINE';
 
 /**
- * Forest style pattern
+ * Patrón de estilo bosque.
  * @const
  * @type {string}
  * @public
@@ -246,7 +246,7 @@ export const VINE = 'VINE';
 export const FOREST = 'FOREST';
 
 /**
- * Scrub style pattern
+ * Patrón de estilo de matorral.
  * @const
  * @type {string}
  * @public
@@ -255,7 +255,7 @@ export const FOREST = 'FOREST';
 export const SCRUB = 'SCRUB';
 
 /**
- * Tree style pattern
+ * Patrón de estilo de árbol.
  * @const
  * @type {string}
  * @public
@@ -264,7 +264,7 @@ export const SCRUB = 'SCRUB';
 export const TREE = 'TREE';
 
 /**
- * Pine style pattern
+ * Patrón de estilo pino.
  * @const
  * @type {string}
  * @public
@@ -273,7 +273,7 @@ export const TREE = 'TREE';
 export const PINE = 'PINE';
 
 /**
- * Pines style pattern
+ * Patrón de estilo de pinos.
  * @const
  * @type {string}
  * @public
@@ -282,7 +282,7 @@ export const PINE = 'PINE';
 export const PINES = 'PINES';
 
 /**
- * Rock style pattern
+ * Patrón de estilo de roca.
  * @const
  * @type {string}
  * @public
@@ -291,7 +291,7 @@ export const PINES = 'PINES';
 export const ROCK = 'ROCK';
 
 /**
- * Rocks style pattern
+ * Patrón de estilo de rocas.
  * @const
  * @type {string}
  * @public
@@ -300,7 +300,7 @@ export const ROCK = 'ROCK';
 export const ROCKS = 'ROCKS';
 
 /**
- * Character style pattern
+ * Patrón de estilo de carácter.
  * @const
  * @type {string}
  * @public
@@ -309,7 +309,7 @@ export const ROCKS = 'ROCKS';
 export const CHARACTER = 'CHARACTER';
 
 /**
- * Icon style pattern
+ * Patrón de estilo de icono.
  * @const
  * @type {string}
  * @public
@@ -318,7 +318,7 @@ export const CHARACTER = 'CHARACTER';
 export const ICON = 'ICON';
 
 /**
- * Image style pattern
+ * Patrón de estilo de imagen.
  * @const
  * @type {string}
  * @public

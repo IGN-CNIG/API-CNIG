@@ -6,7 +6,7 @@ const map = M.map({
   zoom: 3,
 });
 
-const geoJSON = new M.layer.GeoJSON({
+/*const geoJSON = new M.layer.GeoJSON({
   name: 'cosas1_poligono',
   source: {
     type: 'FeatureCollection',
@@ -22,17 +22,20 @@ const geoJSON = new M.layer.GeoJSON({
       { type: 'Feature', properties: { fecha_entero: 1985, fecha_fecha: '1985-01-01' }, geometry: { type: 'Polygon', coordinates: [[[-7.788982, 43.786743], [-9.226948, 43.167196], [-8.867457, 41.964781], [-8.70269, 41.135274], [-9.032224, 39.663869], [-9.451631, 38.781988], [-8.777584, 38.325152], [-8.95733, 37.033025], [-6.785402, 37.164442], [-6.141313, 36.288055], [-5.826758, 35.997749], [-5.332457, 36.082533], [-4.478665, 36.685469], [-2.126991, 36.733501], [-0.778898, 37.628537], [0.179746, 38.770311], [-0.284597, 39.560014], [0.134809, 40.180801], [1.647669, 41.214197], [3.02572, 41.730462], [3.220445, 42.486095], [-1.827415, 43.417953], [-1.827415, 43.417953], [-7.788982, 43.786743]]] } },
     ],
   },
-});
+});*/
 
-map.addLayers(geoJSON);
+// map.addLayers(geoJSON);
 
 const mp = new ShareMap({
-  baseUrl: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/',
+  baseUrl: 'https://componentes.cnig.es/api-core/',
   position: 'TR',
   minimize: true,
-  urlAPI: false,
-  // shareLayer: true,
-  // filterLayers: ['cosas1_poligono'],
+  shareLayer: true,
+  overwriteStyles: true,
+  styles: {
+    primaryColor: '#d39571',
+    secondaryColor: '#fff',
+  },
 });
 
 map.addPlugin(mp);

@@ -7,24 +7,44 @@ import OLFormatGeoJSON from 'ol/format/GeoJSON';
 import { get as getProj } from 'ol/proj';
 import OLStyle from 'ol/style/Style';
 import OLStyleIcon from 'ol/style/Icon';
+
 /**
- * @classdesc
- * @api
- */
+  * @classdesc
+  * Implementación de la clase GeoJSON. GeoJSON es un formato para codificar una variedad
+  * de estructuras de datos geográficos.
+  *
+  * @api
+  * @extends {ol.format.GeoJSON}
+  */
 class GeoJSON extends OLFormatGeoJSON {
   /**
-   * @constructor
-   * @extends {ol.format.JSONFeature}
-   * @param {olx.format.GeoJSONOptions=} options Options.
-   * @api stable
-   */
+    * Constructor principal de la clase.
+    * @constructor
+    * @param {olx.format.GeoJSONOptions} options Opciones del GeoJSON.
+    * - dataProjection: Proyección de datos predeterminada. Por defecto "EPSG:4326".
+    * - featureProjection: Proyección de los objetos geográficos leídos o escritos por el formato.
+    * - geometryName: Nombre de la geometría que se utilizará al crear objetos geográficos.
+    * - extractGeometryName: Si se establece en verdadero, el lector de GeoJSON buscará ese campo
+    * para establecer el nombre de la geometría. Si este campo se establece
+    * en verdadero y se proporciona
+    * un nombre de geometría, el nombre de geometría tendrá prioridad. Por defecto falso.
+    *
+    * @api
+    */
   constructor(options = {}) {
     super(options);
   }
 
   /**
-   * @inheritDoc
-   */
+    * Este método obtiene el objetos geográficos a partir de un objeto GeoJSON.
+    *
+    * @function
+    * @param {Object} object Objeto GeoJSON.
+    * @param {Object} options Opciones.
+    * @returns {M.Feature} Objetos geográficos.
+    * @public
+    * @api
+    */
   readFeatureFromObject(object, options) {
     const geoJSONFeature = object;
     const feature = super.readFeatureFromObject(geoJSONFeature, options);
@@ -48,7 +68,7 @@ class GeoJSON extends OLFormatGeoJSON {
     }
     // vendor parameters
     if (geoJSONFeature.properties && geoJSONFeature.properties.vendor &&
-      geoJSONFeature.properties.vendor.mapea) {
+       geoJSONFeature.properties.vendor.mapea) {
       // icons
       if (geoJSONFeature.properties.vendor.mapea.icon) {
         GeoJSON.applyIcon(feature, geoJSONFeature.properties.vendor.mapea.icon);
@@ -58,8 +78,15 @@ class GeoJSON extends OLFormatGeoJSON {
   }
 
   /**
-   * @inheritDoc
-   */
+    * Este método escribe un objetos geográficos en un objeto GeoJSON.
+    *
+    * @function
+    * @param {M.Feature} feature Objetos geográficos a escribir.
+    * @param {Object} optionsParameters Opciones.
+    * @returns {Object} Objeto GeoJSON.
+    * @public
+    * @api
+    */
   writeFeatureObject(feature, optionsParameters) {
     const options = optionsParameters;
     const object = {
@@ -91,8 +118,15 @@ class GeoJSON extends OLFormatGeoJSON {
   }
 
   /**
-   * @inheritDoc
-   */
+    * Este método obtiene la proyección a partir de un objeto GeoJSON.
+    *
+    * @function
+    * @param {Object} object Objeto GeoJSON.
+    * @returns {String} Proyección obtenida del objeto GeoJSON, si no
+    * obtiene ninguna devuelve por defecto EPSG:4326.
+    * @public
+    * @api
+    */
   static readProjectionFromObject(object) {
     let projection;
     const geoJSONObject = object;
@@ -116,7 +150,15 @@ class GeoJSON extends OLFormatGeoJSON {
     return projection;
   }
 
-
+  /**
+    * Este método establece el estilo del icono de un objetos geográficos.
+    *
+    * @function
+    * @param {M.Feature} feature Objetos geográficos.
+    * @param {Object} icon Objeto con las opciones del icono.
+    * @public
+    * @api
+    */
   static applyIcon(feature, icon) {
     const imgIcon = document.createElement('IMG');
     imgIcon.src = icon.url;
@@ -139,22 +181,29 @@ class GeoJSON extends OLFormatGeoJSON {
   }
 
   /**
-   * @inheritDoc
-   */
+    * Este método escribe una lista de objetos geográficos en objetos GeoJSON.
+    *
+    * @function
+    * @param {Array<M.Feature>} features Lista de objetos geográficos.
+    * @returns {Array<Object>} Lista de objetos GeoJSON.
+    * @public
+    * @api
+    */
   write(features) {
     return features.map(feature => this.writeFeatureObject(feature.getImpl().getOLFeature()));
   }
 
   /**
-   * This function read Features
-   *
-   * @public
-   * @function
-   * @param {object} geojson GeoJSON to parsed as a
-   * M.Feature array
-   * @return {Array<M.Feature>}
-   * @api estable
-   */
+    * Este método lee objetos geográficos de una lista de objetos GeoJSON.
+    *
+    * @function
+    * @param {Object} geojson Objeto GeoJSON.
+    * @param {Array<Object>} geojsonFeatures Lista de objetos GeoJSON.
+    * @param {M.Projection} projection Proyección.
+    * @return {Array<M.Feature>} Lista de objetos geográficos.
+    * @public
+    * @api
+    */
   read(geojson, geojsonFeatures, projection) {
     let features = [];
     let dstProj = projection.code;
@@ -182,3 +231,4 @@ class GeoJSON extends OLFormatGeoJSON {
 }
 
 export default GeoJSON;
+

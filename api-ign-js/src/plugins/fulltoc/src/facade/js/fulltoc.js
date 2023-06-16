@@ -205,16 +205,26 @@ const PRECHARGED = {
         },
       ],
     },
-    // {
-    //   name: 'Catastro',
-    //   services: [
-    //     {
-    //       name: 'Catastro',
-    //       type: 'WMS',
-    //       url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
-    //     },
-    //   ],
-    // },
+    {
+      name: 'Capas vectoriales',
+      services: [
+        {
+          name: 'Colecciones del Sistema Cartográfico Nacional',
+          type: 'OGCAFPIFeatures',
+          url: 'https://api-features.idee.es/',
+        },
+      ],
+    },
+    {
+      name: 'Catastro',
+      services: [
+        {
+          name: 'Catastro',
+          type: 'WMS',
+          url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
+        },
+      ],
+    },
   ],
 };
 

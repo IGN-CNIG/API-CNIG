@@ -1,15 +1,32 @@
 /**
  * @module M/parameter/mbtiles
+ * @example import mbtilesParameter from 'M/parameter/mbtiles';
  */
 import { isNullOrEmpty, isString, normalize, isArray, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
+/**
+ * Expresión regular para el parámetro de capa MBTiles.
+ * @const
+ * @type {RegExp}
+ * @public
+ * @api
+ */
 const REGEXP_MBTILES = /MBTiles\*.*/;
 
 /**
+ * Esta función devuelve el valor del parámetro.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
- * @private
+ * @public
+ * @param {string|object} parameter Parámetro.
+ * @param {string} attr Atributo del parámetro.
+ * @param {string} type Tipo de dato del parámetro.
+ * @param {string} separator Separador de los valores del array.
+ * @param {boolean} normalized Indica si el parámetro está normalizado.
+ * @return {function} Devuelve el valor del parámetro.
+ * @api
  */
 const getParameter = ({
   parameter,
@@ -49,10 +66,12 @@ const getParameter = ({
 };
 
 /**
- * Parses the specified user layer mbtiles parameters to a object
+ * Crea un objeto de tipo mbtiles a partir de los parámetros del usuario.
  *
  * @function
  * @public
+ * @param {string|object} userParameters Parámetros de la capa.
+ * @return {object} Capa.
  * @api
  */
 const mbtiles = (userParameters) => {

@@ -13,64 +13,81 @@ import ImplUtils from '../util/Utils';
 import Feature from '../feature/Feature';
 /**
  * @classdesc
+ * Esta clase es la base de todas las capas de tipo vectorial,
+ * de esta clase heredan todas las capas vectoriales del API-CNIG.
+ *
  * @api
+ * @extends {M.impl.layer.Layer}
  */
 class Vector extends Layer {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a Vector layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa vectorial
+   * con parámetros especificados por el usuario.
    *
    * @constructor
    * @implements {M.impl.Layer}
-   * @param {Mx.parameters.LayerOptions} options - custom options for this layer
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - style. Define el estilo de la capa.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
+   * - visibility. Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
+   * - opacity. Opacidad de capa, por defecto 1.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceVector({
+   *    attributions: 'vector',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(options, vendorOptions) {
     super(options, vendorOptions);
 
     /**
-     * The facade layer instance
-     * @private
-     * @type {M.layer.Vector}
-     * @expose
+     * Vector facadeVector_. Instancia de la fachada.
      */
     this.facadeVector_ = null;
 
     /**
-     * Features of this layer
-     * @private
-     * @type {Array<M.Feature>}
-     * @expose
+     * Vector features_. Objetos geográficos de esta capa.
      */
     this.features_ = [];
 
     /**
-     * Postcompose event key
-     * @private
-     * @type {string}
+     * Vector postComposeEvtKey_. "Key" tras el evento.
      */
     this.postComposeEvtKey_ = null;
 
     /**
-     * Property that sets if the
-     * layer is loaded
-     *
-     * @private
-     * @type {bool}
+     * Vector load_. Indica si la capa esta cargado o no.
      */
     this.load_ = false;
 
     /**
-     * TODO
+     * Vector loaded_. Indica si la capa esta cargado o no.
      */
     this.loaded_ = false;
 
+    /**
+     * Vector minZoom. Zoom mínimo aplicable a la capa.
+     */
     this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
+    /**
+     * Vector maxZoom. Zoom máximo aplicable a la capa.
+     */
     this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
 
+    /**
+     * Vector visibility. Define si la capa es visible o no.
+     * Verdadero por defecto.
+     */
     this.visibility = options.visibility !== false;
 
     // [WARN]
@@ -78,11 +95,11 @@ class Vector extends Layer {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método añade la capa al mapa.
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.impl.Map} map Implementación del mapa.
    * @api stable
    */
   addTo(map) {
@@ -99,10 +116,11 @@ class Vector extends Layer {
   }
 
   /**
-   * This function sets the map object of the layer
-   *
-   * @private
+   * Este método actualiza la fuente de la capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api stable
    */
   updateSource_() {
     if (isNullOrEmpty(this.vendorOptions_.source)) {
@@ -116,9 +134,10 @@ class Vector extends Layer {
   }
 
   /**
-   * This function indicates if the layer is in range
+   * Este método indica si la capa tiene rango.
    *
    * @function
+   * @returns {Boolean} Verdadero.
    * @api stable
    * @expose
    */
@@ -128,11 +147,12 @@ class Vector extends Layer {
   }
 
   /**
-   * This function add features to layer
+   * Este método añade los objetos geográficos a la capa.
    *
    * @function
    * @public
-   * @param {Array<M.feature>} features - Features to add
+   * @param {Array<M.feature>} features Objetos geográficos.
+   * @param {Boolean} update Actualiza la capa.
    * @api stable
    */
   addFeatures(features, update) {
@@ -150,9 +170,10 @@ class Vector extends Layer {
 
 
   /**
-   * This function add features to layer and redraw with a layer style
+   * Este método añade los objetos geográficos a la capa y modifica su estilo.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
    * @api stable
    */
   updateLayer_() {
@@ -168,13 +189,13 @@ class Vector extends Layer {
 
 
   /**
-   * This function returns all features or discriminating by the filter
+   * Este método devuelve todos los objetos geográficos, se le puede pasar un filtro.
    *
    * @function
    * @public
-   * @param {boolean} skipFilter - Indicates whether skyp filter
-   * @param {M.Filter} filter - Filter to execute
-   * @return {Array<M.Feature>} returns all features or discriminating by the filter
+   * @param {boolean} skipFilter Indica el filtro.
+   * @param {M.Filter} filter Filtro que se ejecuta.
+   * @return {Array<M.Feature>} Devuelve todos los objetos geográficos que coincidan.
    * @api stable
    */
   getFeatures(skipFilter, filter) {
@@ -184,13 +205,13 @@ class Vector extends Layer {
   }
 
   /**
-   * This function returns the feature with this id
+   * Este método devuelve un objeto geográfico por su id.
    *
    * @function
    * @public
-   * @param {string|number} id - Id feature
-   * @return {null|M.feature} feature - Returns the feature with that id if it is found,
-    in case it is not found or does not indicate the id returns null
+   * @param {string|number} id Identificador del objeto geográfico..
+   * @return {null|M.feature} Objeto Geográfico - Devuelve el objeto geográfico con
+   * ese id si se encuentra, en caso de que no se encuentre o no indique el id devuelve nulo.
    * @api stable
    */
   getFeatureById(id) {
@@ -198,11 +219,11 @@ class Vector extends Layer {
   }
 
   /**
-   * This function remove the features indicated
+   * Este método elimina todos los objetos geográficos indicado.
    *
    * @function
    * @public
-   * @param {Array<M.feature>} features - Features to remove
+   * @param {Array<M.feature>} features Objetos geográficos que se eliminarán.
    * @api stable
    */
   removeFeatures(features) {
@@ -211,7 +232,7 @@ class Vector extends Layer {
   }
 
   /**
-   * This function redraw layer
+   * Este método vuelve a dibujar la capa.
    *
    * @function
    * @public
@@ -234,12 +255,13 @@ class Vector extends Layer {
   }
 
   /**
-   * This function return extent of all features or discriminating by the filter
+   * Este método devuelve la extensión de todos los objetos geográficos
+   * filtrados por un filtro determinado.
    *
    * @function
-   * @param {boolean} skipFilter - Indicates whether skip filter
-   * @param {M.Filter} filter - Filter to execute
-   * @return {Array<number>} Extent of features
+   * @param {boolean} skipFilter Indica si se filtrará por "skip".
+   * @param {M.Filter} filter Filtro que se ejecutará.
+   * @return {Array<number>} Devuelve los objetos geográficos.
    * @api stable
    */
   getFeaturesExtent(skipFilter, filter) {
@@ -252,11 +274,14 @@ class Vector extends Layer {
   }
 
   /**
-   * TODO
-   * @public
+   * Este método ejecuta un objeto geográfico seleccionado.
+   *
    * @function
-   * @param {ol.Feature} feature
+   * @param {ol.features} features Objeto geográfico de Openlayers.
+   * @param {Array} coord Coordenadas.
+   * @param {Object} evt Eventos.
    * @api stable
+   * @expose
    */
   selectFeatures(features, coord, evt) {
     const feature = features[0];
@@ -269,8 +294,8 @@ class Vector extends Layer {
   }
 
   /**
-   * TODO
-   *
+   * Maneja funciones de deselección de eventos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
    * @api stable
@@ -278,11 +303,14 @@ class Vector extends Layer {
   unselectFeatures() {
     // this.map.removePopup();
   }
+
   /**
-   * This function set facade class vector
+   * Este método establece la clase de la fachada.
+   * La fachada se refiere a
+   * un patrón estructural como una capa de abstracción con un patrón de diseño.
    *
    * @function
-   * @param {object} obj - Facade vector
+   * @param {object} obj Patrón diseño para capas Vector.
    * @api stable
    */
   setFacadeObj(obj) {
@@ -290,10 +318,13 @@ class Vector extends Layer {
   }
 
   /**
-   * This function sets the map object of the layer
-   *
-   * @private
+   * Este método estable la proyección de la capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @param {Array<Number>} oldProj Proyecciones de Openlayers.
+   * @param {Array<Number>} newProj Nueva proyección a aplicar.
+   * @api stable
    */
   setProjection_(oldProj, newProj) {
     if (oldProj.code !== newProj.code) {
@@ -305,11 +336,12 @@ class Vector extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
-   * @param {object} obj - Object to compare
+   * @param {object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api stable
    */
   equals(obj) {
@@ -321,7 +353,7 @@ class Vector extends Layer {
   }
 
   /**
-   * This function refresh layer
+   * Este método actualiza la capa.
    * @function
    * @api stable
    */
@@ -330,8 +362,10 @@ class Vector extends Layer {
   }
 
   /**
-   * TODO
+   * Devuelve si la capa esta cargada o no.
+   *
    * @function
+   * @returns {Boolean} Verdadero cargada, falso si no.
    * @api stable
    */
   isLoaded() {
@@ -339,8 +373,8 @@ class Vector extends Layer {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
    *
    * @public
    * @function

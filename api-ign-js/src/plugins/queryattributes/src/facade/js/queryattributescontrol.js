@@ -167,15 +167,20 @@ export default class QueryAttributesControl extends M.Control {
           },
         },
       });
+      const mbtilesvector = this.map.getMBTilesVector();
+      const hasmbtilesvector = mbtilesvector.find(layer =>
+        this.configuration.layer === layer.name);
+      if (!hasmbtilesvector && this.hasLayer_(this.configuration.layer)[0]) {
+        html.querySelector('#m-queryattributes-options-container').appendChild(this.initialView);
 
-      html.querySelector('#m-queryattributes-options-container').appendChild(this.initialView);
-      this.addEvents(html);
-      this.kmlLayers = this.map.getKML().map((layer) => {
-        return { layer, loaded: false };
-      });
+        this.addEvents(html);
+        this.kmlLayers = this.map.getKML().map((layer) => {
+          return { layer, loaded: false };
+        });
 
-      this.selectionLayer.setStyle(this.selectionLayerStyle);
-      this.map.addLayers(this.selectionLayer);
+        this.selectionLayer.setStyle(this.selectionLayerStyle);
+        this.map.addLayers(this.selectionLayer);
+      }
 
       success(html);
     });
@@ -259,8 +264,13 @@ export default class QueryAttributesControl extends M.Control {
       }
     }
 
+    if (M.utils.isNullOrEmpty(this.layer)) {
+      // Cuando layer es nulo o vacío, no se muestra el gif de carga.
+      this.html.querySelector('.m-queryattributes-table-loading').style.display = 'none';
+    }
+
     const interval = setInterval(() => {
-      if (this.isLayerLoaded(this.layer)) {
+      if (!M.utils.isNullOrEmpty(this.layer) && this.isLayerLoaded(this.layer)) {
         clearInterval(interval);
         document.getElementById('m-queryattributes-table').innerHTML = '';
         document.getElementById('m-queryattributes-search-results').innerHTML = '';
@@ -388,7 +398,7 @@ export default class QueryAttributesControl extends M.Control {
           callback();
         }
         this.map.getMapImpl().on('click', (evt) => {
-          this.actualizaInfo(evt);
+          this.actualizaInfo(evt, this.layer);
         });
 
         if (this.refreshBBOXFilterOnPanning) {
@@ -528,12 +538,12 @@ export default class QueryAttributesControl extends M.Control {
    * Procedimiento para mostrar información al hacer clic en el dfeature sobre la cartografía
    * @param {*} evt
    */
-  actualizaInfo(evt) {
+  actualizaInfo(evt, layer) {
     /* eslint no-underscore-dangle: 0 */
     const this_ = this;
     const mapaOL = this.map.getMapImpl();
 
-    mapaOL.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
+    mapaOL.forEachFeatureAtPixel(evt.pixel, (feature) => {
       const featureFacade = M.impl.Feature.olFeature2Facade(feature);
       const fields = [];
 
@@ -612,6 +622,10 @@ export default class QueryAttributesControl extends M.Control {
           console.error(error);
         }
       }
+    }, {
+      layerFilter: (l) => {
+        return l === this.getImpl().getOL3Layer(layer);
+      },
     });
 
     const elemSidebar = document.querySelector('.m-panel.m-queryattributes.opened');

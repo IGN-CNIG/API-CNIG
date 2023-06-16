@@ -7,20 +7,19 @@ import { isNullOrEmpty, generateRandom } from '../util/Utils';
 
 /**
  * @classdesc
- * Main constructor of the class. Create a RenderFeature
+ * Crea un objeto geográfico de renderizado.
+ * @extends {M.facade.Base}
  * @api
  */
 class RenderFeature extends Base {
   /**
+   * Constructor principal de la clase.
    * @constructor
-   * @extends {M.facade.Base}
-   * @param {string} id - id to Renderfeature
-   * @param {Object} geojson - geojson to feature
    * @api
    */
   constructor() {
     /**
-     * Implementation of feature
+     * Implementación de la clase.
      * @public
      * @type {M.impl.Feature}
      */
@@ -28,7 +27,7 @@ class RenderFeature extends Base {
     super(impl);
 
     /**
-     * Identification of the feature
+     * Identificador del objeto geográfico.
      * @private
      * @type {string}
      * @api
@@ -37,11 +36,12 @@ class RenderFeature extends Base {
   }
 
   /**
-   * This function return id feature
+   * Este método retorna el identificador
+   * del objeto geográfico.
    *
    * @public
    * @function
-   * @return {string} ID to feature
+   * @return {string} Identificador del objeto geográfico.
    * @api
    */
   getId() {
@@ -49,11 +49,11 @@ class RenderFeature extends Base {
   }
 
   /**
-   * This function return geometry feature
+   * Este método retorna la geometría del objeto geográfico.
    *
    * @public
    * @function
-   * @return {object} Geometry feature
+   * @return {object} Geometría del objeto geográfico.
    * @api
    */
   getGeometry() {
@@ -61,11 +61,11 @@ class RenderFeature extends Base {
   }
 
   /**
-   * This function return attributes feature
+   * Este método retorna los atributos de los objetos geográficos.
    *
    * @public
    * @function
-   * @return {Object} attributes feature
+   * @return {Object} Atributos del objeto geográfico.
    * @api
    */
   getAttributes() {
@@ -73,10 +73,11 @@ class RenderFeature extends Base {
   }
 
   /**
-   * Get geometry type of the feature.
+   * Retorna el tipo de la geometría del objeto geográfico.
+   *
    * @function
    * @public
-   * @return {string}
+   * @return {string} Tipo de la geometría del objeto geográfico.
    * @api
    */
   getType() {
@@ -84,12 +85,12 @@ class RenderFeature extends Base {
   }
 
   /**
-   * This function returns the value of the indicated attribute
+   * Este método retorna el valor del atributo indicado.
    *
    * @public
    * @function
-   * @param {string} attribute - Name attribute
-   * @return  {string|number|object} returns the value of the indicated attribute
+   * @param {string} attribute Nombre del atributo.
+   * @return  {string|number|object} Retorna el valor del atributo indicado.
    * @api
    */
   getAttribute(attribute) {
@@ -118,11 +119,12 @@ class RenderFeature extends Base {
   }
 
   /**
-   * This function return if two features are equals
+   * Este método retorna si dos objetos geográficos son iguales.
    * @public
    * @function
-   * @param {M.Feature} feature
-   * @return {bool} returns the result of comparing two features
+   * @param {M.Feature} feature Objeto geográfico.
+   * @return {bool} Retorna el resultado de comparar los dos objetos geográficos.
+   * @api
    */
   equals(feature) {
     return this.getId() === feature.getId();

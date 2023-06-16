@@ -13,16 +13,22 @@ const map = M.map({
   layers: ['TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*true'],
 });
 
+const capa = new M.layer.OGCAPIFeatures({
+  url: 'http://ignsolarguadaltel.desarrollo.guadaltel.es/collections/',
+  name: 'rutas',
+  extract: true,
+});
+
+map.addLayers(capa);
+
 const precharged = {
-  groups: [
-    {
+  groups: [{
       name: 'IGN',
-      services: [
-        {
+      services: [{
           name: 'Unidades administrativas',
           type: 'WMS',
           url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-          white_list: ['AU.AdministrativeBoundary'/* , 'AU.AdministrativeUnit' */],
+          white_list: ['AU.AdministrativeBoundary'],
         },
         {
           name: 'Nombres geográficos',
@@ -59,8 +65,7 @@ const precharged = {
     },
     {
       name: 'IGN. Cartografía histórica',
-      services: [
-        {
+      services: [{
           name: 'Planos de Madrid (1622 - 1960)',
           type: 'WMS',
           url: 'https://www.ign.es/wms/planos?',
@@ -82,10 +87,9 @@ const precharged = {
         },
       ],
     },
-	  {
+    {
       name: 'Sistema Cartográfico Nacional',
-      services: [
-        {
+      services: [{
           name: 'PNOA. Ortofotos máxima actualidad',
           type: 'WMS',
           url: 'https://www.ign.es/wms-inspire/pnoa-ma?',
@@ -134,8 +138,7 @@ const precharged = {
     },
     {
       name: 'Capas de fondo',
-      services: [
-        {
+      services: [{
           name: 'Mapa',
           type: 'WMTS',
           url: 'https://www.ign.es/wmts/mapa-raster?',
@@ -167,14 +170,20 @@ const precharged = {
         },
       ],
     },
-  ],
-  services: [
     {
-      name: 'Catastro',
-      type: 'WMS',
-      url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
+      name: 'Capas vectoriales',
+      services: [{
+        name: 'Colecciones del Sistema Cartográfico Nacional',
+        type: 'OGCAFPIFeatures',
+        url: 'https://api-features.idee.es/',
+      }, ],
     },
   ],
+  services: [{
+    name: 'Catastro',
+    type: 'WMS',
+    url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
+  }],
 };
 
 const mp = new FullTOC({
@@ -182,9 +191,10 @@ const mp = new FullTOC({
   position: 'TR',
   https: true,
   http: true,
-  precharged,
+  // precharged,
   // precharged: {},
   codsi: true,
+  order: 1,
 });
 
 window.mp = mp;

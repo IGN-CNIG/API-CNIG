@@ -61,7 +61,11 @@ export default class QueryAttributes extends M.Plugin {
     this.collapsible_ = options.collapsible;
     if (this.collapsible_ === undefined) this.collapsible_ = true;
 
-    this.configuration_ = options.configuration || {};
+    if (M.utils.isNullOrEmpty(options.configuration)) {
+      console.warn('options.configuration is null or undefined.');
+    }
+
+    this.configuration_ = options.configuration || { columns: [] };
 
     this.refreshBBOXFilterOnPanning_ = options.refreshBBOXFilterOnPanning;
     if (this.refreshBBOXFilterOnPanning_ === undefined) this.refreshBBOXFilterOnPanning_ = false;
@@ -75,6 +79,21 @@ export default class QueryAttributes extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * Plugin tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -108,7 +127,7 @@ export default class QueryAttributes extends M.Plugin {
       collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'icon-tabla',
-      tooltip: getValue('tooltip'),
+      tooltip: this.tooltip_,
       refreshBBOXFilterOnPanning: this.refreshBBOXFilterOnPanning_,
     });
 
@@ -194,6 +213,29 @@ export default class QueryAttributes extends M.Plugin {
    */
   getMetadata() {
     return this.metadata_;
+  }
+
+  /**
+   * Get the API REST Parameters of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    // eslint-disable-next-line max-len
+    return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.filters_}*${this.refreshBBOXFilterOnPanning_}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

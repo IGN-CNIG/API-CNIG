@@ -699,6 +699,10 @@ export default class PrinterMapControl extends M.Control {
       });
       M.proxy(true);
     });
+    if (!M.utils.isNullOrEmpty(this.getImpl().errors)) {
+      M.toast.error(getValue('exception.error_layers') + this.getImpl().errors.join(', '), null, 6000);
+      this.getImpl().errors = [];
+    }
   }
 
   /**
@@ -885,7 +889,7 @@ export default class PrinterMapControl extends M.Control {
     }, this.params_.layout);
 
     return this.encodeLayers().then((encodedLayers) => {
-      printData.attributes.map.layers = encodedLayers;
+      printData.attributes.map.layers = encodedLayers.filter(l => M.utils.isObject(l));
       printData.attributes = Object.assign(printData.attributes, parameters);
       if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';

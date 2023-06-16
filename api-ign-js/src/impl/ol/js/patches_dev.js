@@ -13,15 +13,19 @@ import WMTSRequestEncoding from 'ol/source/WMTSRequestEncoding';
 
 
 /**
- * Return `true` if the layer is visible, and if the passed resolution is
- * between the layer's minResolution and maxResolution. The comparison is
- * inclusive for `minResolution` and exclusive for `maxResolution`.
- * @param {ol.layer.LayerState} layerState Layer state.
- * @param {number} resolution Resolution.
- * @return {boolean} The layer is visible at the given resolution.
+ * 
+ * Devuelve verdadero si la capa es visible y si la resolución pasada está
+ * entre la resolución mínima y máxima de la capa. La comparación es inclusiva
+ * para la resolución mínima y exclusiva para la resolución máxima.
+ * 
+ * Parche: Incluye "maxResolution" en la comparación de resoluciones de la capa
+ * para que se muestren las capas con la misma resolución que su resolución máxima.
+ * @function
+ * @param {ol.layer.LayerState} layerState Estado de la capa.
+ * @param {number} resolution Resolución.
+ * @return {boolean} La capa es visible en la resolución pasada.
  *
- * PATCH: inclusive maxResolution comparasion to show layers with the
- * same resolution as its maxResolution
+ * @api
  */
 LayerModule.visibleAtResolution = (layerState, resolution) => {
   return layerState.visible && resolution >= layerState.minResolution &&
@@ -29,11 +33,15 @@ LayerModule.visibleAtResolution = (layerState, resolution) => {
 };
 
 /**
- * @param {Node} node Node.
- * @param {ol.geom.Point} value Point geometry.
- * @param {Array.<*>} objectStack Node stack.
+ * Se añade a los prototipos la posición de la resolución en el array de resoluciones.
+ * Parche: disables axis order configuration.
+ * 
+ * @function
+ * @param {Node} node Nodo.
+ * @param {ol.geom.Point} value Punto geométrico.
+ * @param {Array.<*>} objectStack Colección de nodos.
  *
- * PATCH: disables axis order configuration
+ * @api
  */
 OLFormatGML3.prototype.writePos_ = (node, value, objectStack) => {
   // var context = objectStack[objectStack.length - 1];
@@ -59,11 +67,13 @@ OLFormatGML3.prototype.writePos_ = (node, value, objectStack) => {
 };
 
 /**
- * @param {Array.<number>} point Point geometry.
- * @param {string=} optSRSName Optional srsName
- * @return {string} The coords string.
- *
- * PATCH: disables axis order configuration
+ * Se añadde a los prototipos la posibilidad de devolver un array de resoluciones.
+ * Parche: disables axis order configuration
+ * @function
+ * @param {Array.<number>} point Puntos geométricos.
+ * @param {string=} optSRSName Nombre del sistema de referencia espacial.
+ * @return {string} Coordenadas.
+ * @api 
  */
 OLFormatGML3.prototype.getCoords_ = (point, optSRSName) => {
   // PATCH: ------------------------------ init
@@ -79,30 +89,30 @@ OLFormatGML3.prototype.getCoords_ = (point, optSRSName) => {
 };
 
 /**
- * Generate source options from a capabilities object.
- * @param {Object} wmtsCap An object representing the capabilities document.
- * @param {!Object} config Configuration properties for the layer.  Defaults for
- *                  the layer will apply if not provided.
+ * Genera opciones de origen a partir de un objeto de "capabilities".
+ * Parche: permitir anular la extensión de "tileGrid".
+ * @function
+ * @param {Object} wmtsCap Un objeto que representa los "capabilities".
+ * @param {!Object} config Propiedades de configuración para la capa. Valores predeterminados para
+  * la capa se aplicará si no se proporciona.
  *
- * Required config properties:
- *  - layer - {string} The layer identifier.
+ * Propiedades de configuración requeridas:
+ *  - layer - {string} El identificador de capa.
  *
- * Optional config properties:
- *  - matrixSet - {string} The matrix set identifier, required if there is
- *       more than one matrix set in the layer capabilities.
- *  - projection - {string} The desired CRS when no matrixSet is specified.
- *       eg: "EPSG:3857". If the desired projection is not available,
- *       an error is thrown.
- *  - requestEncoding - {string} url encoding format for the layer. Default is
- *       the first tile url format found in the GetCapabilities response.
- *  - style - {string} The name of the style
- *  - format - {string} Image format for the layer. Default is the first
- *       format returned in the GetCapabilities response.
- *  - crossOrigin - {string|null|undefined} Cross origin. Default is `undefined`.
- * @return {?Options} WMTS source options object or `null` if the layer was not found.
- * @api
- *
- * PATCH: allow override tileGrid extent
+ * Propiedades de configuración opcionales:
+ *  - matrixSet - {string} El identificador del conjunto de matrices, requerido si hay
+  * más de una matriz establecida en el "capabilities" de la capa.
+ *  - projection - {string} El CRS deseado cuando no se especifica "matrixSet".
+  * por ejemplo: "EPSG:3857". Si la proyección deseada no está disponible,
+  * se arroja un error.
+ *  - requestEncoding - {string} formato de codificación de URL para la capa. El valor predeterminado es
+  * el primer formato de URL de mosaico que se encuentra en la respuesta de "GetCapabilities".
+ *  - style - {string} El nombre del estilo.
+ *  - format - {string} Formato de imagen para la capa. El valor predeterminado es el primero
+  * formato devuelto en la respuesta "GetCapabilities".
+ *  - crossOrigin - {string|null|undefined} origen cruzado.El valor predeterminado es "undefined".
+ * @return {?Options} Objeto de opciones de fuente WMTS o "null" si no se encontró la capa.
+ * @api 
  */
 export const optionsFromCapabilities = (wmtsCap, config) => {
   const layers = wmtsCap['Contents']['Layer'];

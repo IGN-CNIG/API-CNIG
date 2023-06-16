@@ -6,17 +6,17 @@ import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
 /**
- * This function parses a container parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro de contenedor en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} userParameters parameters
- * especified by the user
- * @returns {Object} container of the map
+ * @param {string|Mx.parameters.Map} userParameters Parámetros.
+ * @returns {Object} Contenedor.
+ * @api
  */
 
-const parseContainer = (userParameters) => {
+export const parseContainer = (userParameters) => {
   let container;
   if (isString(userParameters)) {
     container = document.getElementById(userParameters);
@@ -38,17 +38,16 @@ const parseContainer = (userParameters) => {
 };
 
 /**
- * This function parses a layer parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro de capa en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {string|Object|Array<string|Object>} layers specified by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {string|Object|Array<string|Object>} Capas.
+ * @api
  */
-
-const parseLayers = (parameter) => {
+export const parseLayers = (parameter) => {
   let layers;
 
   if (isString(parameter)) {
@@ -63,16 +62,16 @@ const parseLayers = (parameter) => {
 };
 
 /**
- * This function parses a wmc parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro wmc en un formato legible
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {string|Object|Array<string|Object>} WMC layers
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {string|Object|Array<string|Object>} Capas.
+ * @api
  */
-const parseWMC = (parameter) => {
+export const parseWMC = (parameter) => {
   let wmc;
 
   if (isString(parameter)) {
@@ -98,16 +97,16 @@ const parseWMC = (parameter) => {
 };
 
 /**
- * This function parses a wms parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro wms en un formato legible
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {string|Object|Array<string|Object>} WMS layers
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {string|Object|Array<string|Object>} Capas.
+ * @api
  */
-const parseWMS = (parameter) => {
+export const parseWMS = (parameter) => {
   let wms;
 
   if (isString(parameter)) {
@@ -120,16 +119,16 @@ const parseWMS = (parameter) => {
   return wms;
 };
 /**
- * This function parses a wmts parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro wmts en un formato legible
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {string|Object|Array<string|Object>} WMTS layers
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {string|Object|Array<string|Object>} Capas.
+ * @api
  */
-const parseWMTS = (parameter) => {
+export const parseWMTS = (parameter) => {
   let wmts;
 
   if (isString(parameter)) {
@@ -144,16 +143,16 @@ const parseWMTS = (parameter) => {
 };
 
 /**
- * This function parses a kml parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro kml en un formato legible
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {string|Object|Array<string|Object>} KML layers
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {string|Object|Array<string|Object>} Capas.
+ * @api
  */
-const parseKML = (parameter) => {
+export const parseKML = (parameter) => {
   let kml;
 
   if (isString(parameter)) {
@@ -168,16 +167,16 @@ const parseKML = (parameter) => {
 };
 
 /**
- * This function parses a controls parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro de control en un formato legible
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {string|Object|Array<string|Object>} WMS layers
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {string|Object|Array<string|Object>} Capas.
+ * @api
  */
-const parseControls = (parameter) => {
+export const parseControls = (parameter) => {
   let controls;
 
   if (isString(parameter)) {
@@ -192,16 +191,16 @@ const parseControls = (parameter) => {
 };
 
 /**
- * This function parses a controls parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro de control en un formato legible
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {string|Object|Array<string|Object>} WMS layers
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {string|Object|Array<string|Object>} Capas.
+ * @api
  */
-const parseGetFeatureInfo = (parameter) => {
+export const parseGetFeatureInfo = (parameter) => {
   let getFeatureInfo;
 
   if (isString(parameter)) {
@@ -219,17 +218,16 @@ const parseGetFeatureInfo = (parameter) => {
 };
 
 /**
- * This function parses a maxExtent parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro "maxExtent" en un formato legible
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String|Array<String>|Array<Number>|Mx.Extent} maximum extent
- * established by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} "maxExtent".
+ * @api
  */
-const parseMaxExtent = (parameter) => {
+export const parseMaxExtent = (parameter) => {
   let maxExtent;
 
   if (isString(parameter)) {
@@ -249,17 +247,16 @@ const parseMaxExtent = (parameter) => {
 };
 
 /**
- * This function parses a bbox parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro "bbox" en un formato legible
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String|Array<String>|Array<Number>|Mx.Extent} bbox
- * established by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} Devuelve el "bbox".
+ * @api
  */
-const parseBbox = (parameter) => {
+export const parseBbox = (parameter) => {
   let bbox;
 
   if (isString(parameter)) {
@@ -274,17 +271,16 @@ const parseBbox = (parameter) => {
 };
 
 /**
- * This function parses a zoom parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro de zoom en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String|Array<String>|Array<Number>|Mx.Extent} bbox
- * established by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} zoom.
+ * @api
  */
-const parseZoom = (parameter) => {
+export const parseZoom = (parameter) => {
   let zoom;
 
   if (isString(parameter)) {
@@ -299,17 +295,17 @@ const parseZoom = (parameter) => {
 };
 
 /**
- * This function parses a zoom parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro de zoom máximo en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String|Array<String>|Array<Number>|Mx.Extent} bbox
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} Zoom máximo.
  * established by the user
+ * @api
  */
-const parseMaxZoom = (parameter) => {
+export const parseMaxZoom = (parameter) => {
   let maxZoom;
 
   if (isString(parameter)) {
@@ -324,17 +320,16 @@ const parseMaxZoom = (parameter) => {
 };
 
 /**
- * This function parses a zoom parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ *  Esta función analiza un parámetro de zoom mínimo en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String|Array<String>|Array<Number>|Mx.Extent} bbox
- * established by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} Zoom mínimo.
+ * @api
  */
-const parseMinZoom = (parameter) => {
+export const parseMinZoom = (parameter) => {
   let minZoom;
 
   if (isString(parameter)) {
@@ -349,17 +344,17 @@ const parseMinZoom = (parameter) => {
 };
 
 /**
- * This function parses a center parameter in a legible
- * parameter to Mapea and checks posible errors
+ * Esta función analiza un parámetro "center" en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
- * @private
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String|Array<String>|Array<Number>|Mx.Extent} bbox
- * established by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} Devuelve el centro.
+ * @api
  */
-const parseCenter = (parameter) => {
+export const parseCenter = (parameter) => {
   let center;
 
   if (isString(parameter)) {
@@ -374,17 +369,18 @@ const parseCenter = (parameter) => {
 };
 
 /**
- * This function parses a ticket parameter in a legible
- * parameter to Mapea and checks posible errors
+ * Esta función analiza un parámetro de "ticket" en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
  *
- * @private
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String} ticket
- * established by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String} Devuelve el "ticket".
+ * @api
  */
-const parseTicket = (parameter) => {
+export const parseTicket = (parameter) => {
   let ticket;
 
   if (isString(parameter)) {
@@ -399,17 +395,16 @@ const parseTicket = (parameter) => {
 };
 
 /**
- * This function parses a resolutions parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro de resolución en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String|Array<String>|Array<Number>} resolutions
- * established by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String|Array<String>|Array<Number>} Devuelve las resoluciones.
+ * @api
  */
-const parseResolutions = (parameter) => {
+export const parseResolutions = (parameter) => {
   let resolutions;
 
   if (isString(parameter)) {
@@ -424,17 +419,16 @@ const parseResolutions = (parameter) => {
 };
 
 /**
- * This function parses a projection parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro de proyección en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String|Array<String>|Array<Number>|Mx.Extent} bbox
- * established by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} Proyección.
+ * @api
  */
-const parseProjection = (parameter) => {
+export const parseProjection = (parameter) => {
   let projection;
   if (isString(parameter)) {
     projection = getParameterValue('projection', parameter);
@@ -448,17 +442,16 @@ const parseProjection = (parameter) => {
 };
 
 /**
- * This function parses a projection parameter in a legible
- * parameter to Mapea and checks posible errors
- *
- * @private
+ * Esta función analiza un parámetro de proyección en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @param {string|Mx.parameters.Map} parameter parameters
- * especified by the user
- * @returns {String|Array<String>|Array<Number>|Mx.Extent} bbox
- * established by the user
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String|Array<String>|Array<Number>|Mx.Extent} Devuelve el "label".
+ * @api
  */
-const parseLabel = (parameter) => {
+export const parseLabel = (parameter) => {
   let label;
 
   if (isString(parameter)) {
@@ -474,15 +467,50 @@ const parseLabel = (parameter) => {
 
 /**
  * @classdesc
- * Main constructor of the class. Creates the parsed parameters
- * with parameters specified by the user
+ * Analiza y transforma los parámetros especificados por el usuario.
+ * @property {Object} container Contenedor del mapa.
+ * @property {Object} layers Capas del mapa.
+ * @property {Object} wmc Servicio WMC.
+ * @property {Object} wms Servicio WMS.
+ * @property {Object} wmts Servicio WMTS.
+ * @property {Object} kml Servicio KML.
+ * @property {Object} controls Controles del mapa.
+ * @property {Object} getfeatureinfo Parámetros de "getfeatureinfo".
+ * @property {Object} maxExtent Extensión máxima del mapa.
+ * @property {Object} bbox Extensión inicial del mapa.
+ * @property {Number} zoom Zoom inicial del mapa.
+ * @property {Number} minZoom Zoom mínimo del mapa.
+ * @property {Object} center Centro inicial del mapa.
+ * @property {Number} maxZoom Zoom máximo del mapa.
+ * @property {String|Array<String>|Array<Number>} resolutions Resoluciones del mapa.
+ * @property {Object} projection Proyección del mapa.
+ * @property {Object} label Etiqueta del mapa.
+ * @property {Object} ticket Ticket de autenticación.
  * @api
  */
 class Parameters {
   /**
+   * Constructor principal de la clase.
    * @constructor
-   * @param {string|Mx.parameters.Map} userParameters parameters
-   * provided by the user
+   * @param {string|Mx.parameters.Map} userParameters Parámetros:
+   * - container: Contenedor del mapa.
+   * - layers: Capas del mapa.
+   * - wmc: Servicio WMC.
+   * - wms: Servicio WMS.
+   * - wmts: Servicio WMTS.
+   * - kml: Servicio KML.
+   * - controls: Controles del mapa.
+   * - getfeatureinfo: Parámetros de "getfeatureinfo".
+   * - maxExtent: Extensión máxima del mapa.
+   * - bbox: Extensión inicial del mapa.
+   * - zoom: Zoom inicial del mapa.
+   * - minZoom: Zoom mínimo del mapa.
+   * - center: Centro inicial del mapa.
+   * - maxZoom: Zoom máximo del mapa.
+   * - resolutions: Resoluciones del mapa.
+   * - projection: Proyección del mapa.
+   * - label: Etiqueta del mapa.
+   * - ticket: Ticket de autenticación.
    * @api
    */
   constructor(userParameters) {

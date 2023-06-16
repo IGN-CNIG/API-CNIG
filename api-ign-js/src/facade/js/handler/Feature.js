@@ -11,14 +11,20 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a layer
- * with parameters specified by the user
+ * Clase para manipular los objetos geográficos.
  * @api
  */
 class Features extends Base {
   /**
-   *
+   * Constructor principal de la clase.
    * @constructor
+   * @param {Object} options Opciones.
+   * - ranges: Rango.
+   * - hoverInteraction: Interacción al realizar "hover".
+   * - maxFeaturesToSelect: Máximo número de objetos geográficos seleccionados.
+   * - distance: Distancia.
+   * @param {Object} impl "HandlerImpl", por defecto se le pasa las opciones a la
+   * implementación.
    * @extends {M.facade.Base}
    * @api
    */
@@ -70,11 +76,11 @@ class Features extends Base {
     }
   }
   /**
-   * This function adds the control to the specified map
+   * Este método añade eventos al mapa.
    *
    * @public
    * @function
-   * @param {M.Map} map to add the plugin
+   * @param {M.Map} map mapa.
    * @api
    * @export
    */
@@ -87,10 +93,12 @@ class Features extends Base {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Evento que se activa cuando se hace clic sobre el mapa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {Object} evt Evento.
    * @function
+   * @api
    */
   clickOnMap_(evt) {
     if (this.activated_ === true) {
@@ -126,10 +134,12 @@ class Features extends Base {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este evento se activa cuando se mueve por el mapa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {Object} evt Evento.
    * @function
+   * @api
    */
   moveOverMap_(evt) {
     if (this.activated_ === true) {
@@ -159,10 +169,13 @@ class Features extends Base {
   }
 
   /**
-   * TODO
+   * Este método se encarga de seleccionar los objetos geográficos.
    *
    * @public
    * @function
+   * @param {Object} features Objeto geográfico.
+   * @param {Object} layer Capa.
+   * @param {Object} evt Evento.
    * @api
    */
   selectFeatures(features, layer, evt) {
@@ -176,10 +189,13 @@ class Features extends Base {
   }
 
   /**
-   * TODO
+   * Este método se encarga de deseleccionar los objetos geográficos.
    *
    * @public
    * @function
+   * @param {Object} features Objeto geográfico.
+   * @param {Object} layer Capa.
+   * @param {Object} evt Evento.
    * @api
    */
   unselectFeatures(features, layer, evt) {
@@ -198,10 +214,14 @@ class Features extends Base {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método se encarga de activar el evento cuando se hace "hover" sobre
+   * el objeto geográfico.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @param {Object} features Objeto geográfico.
+   * @param {Object} layer Capa.
+   * @param {Object} evt Evento.
    * @api
    */
   hoverFeatures_(features, layer, evt) {
@@ -211,10 +231,14 @@ class Features extends Base {
   }
 
   /**
-   * TODO
+   * Este método se encarga de activar el evento cuando se deshace el "hover" sobre
+   * el objeto geográfico.
    *
-   * @private
+   * @public
    * @function
+   * @param {Object} features Objeto geográfico.
+   * @param {Object} layer Capa.
+   * @param {Object} evt Evento.
    * @api
    */
   leaveFeatures_(features, layer, evt) {
@@ -225,7 +249,7 @@ class Features extends Base {
   }
 
   /**
-   * function adds the event 'click'
+   * Este método se encarga de activar el evento.
    *
    * @public
    * @function
@@ -240,7 +264,7 @@ class Features extends Base {
   }
 
   /**
-   * function remove the event 'click'
+   * Este método se encarga de desactivar el evento.
    *
    * @public
    * @function
@@ -255,11 +279,11 @@ class Features extends Base {
   }
 
   /**
-   * Sets the panel of the control
+   * Este método se encarga de añadir a la capa.
    *
    * @public
    * @function
-   * @param {M.ui.Panel} panel
+   * @param {M.layer} layer Capa.
    * @api
    * @export
    */
@@ -272,11 +296,11 @@ class Features extends Base {
   }
 
   /**
-   * Gets the panel of the control
+   * Este método se encarga de eliminar la capa.
    *
    * @public
    * @function
-   * @returns {M.ui.Panel}
+   * @param {M.layer} layer Capa.
    * @api
    * @export
    */
@@ -289,8 +313,8 @@ class Features extends Base {
   }
 
   /**
-   * Destroys the handler
-   *
+   * Elimina los eventos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
    * @api
@@ -303,9 +327,9 @@ class Features extends Base {
   }
 
   /**
-   * Clear selected features
-   *
-   * @private
+   * Elimina la selección de objetos geográficos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
    * @api
    */
@@ -316,9 +340,9 @@ class Features extends Base {
   }
 
   /**
-   * Clear hover features
-   *
-   * @private
+   * Elimina el hover sobre objetos geográficos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
    * @api
    */

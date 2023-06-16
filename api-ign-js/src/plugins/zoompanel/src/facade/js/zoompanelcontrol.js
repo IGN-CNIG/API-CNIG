@@ -43,6 +43,7 @@ export default class ZoomPanelControl extends M.Control {
    * @api
    */
   createView(map) {
+    M.toast.warning(getValue('zoompanel_obsolete'));
     this.facadeMap_ = map;
     this.addOnLoadEvents();
     return new Promise((success, fail) => {

@@ -1,26 +1,29 @@
 /**
+ * Este módulo contiene las constantes de las unidades.
  * @module M/units
+ * @example import { METERS_PER_UNIT } from 'M/units';
  */
 /**
- * 0.02540005080010160020 (A sensible default)
+ * 0.02540005080010160020 (Un valor predeterminado sensato)
  * @const {Number}
  */
 const METERS_PER_INCH = 0.02540005080010160020;
 
 /**
- * 72 (A sensible default)
+ * 72 (Un valor predeterminado sensato)
  * @const {Number}
  * @api
  */
 export const DOTS_PER_INCH = 72;
 
 /**
- * Constant inches per unit -- borrowed from MapServer mapscale.c
- * derivation of nautical miles from http://en.wikipedia.org/wiki/Nautical_mile
- * Includes the full set of units supported by CS-MAP (http://trac.osgeo.org/csmap/)
- * and PROJ.4 (http://trac.osgeo.org/proj/)
- * The hardcoded table is maintain in a CS-MAP source code module named CSdataU.c
- * The hardcoded table of PROJ.4 units are in pj_units.c.
+ * Pulgadas constantes por unidad.
+ * - Tomado de MapServer "mapscale.c"
+ * derivación de millas náuticas de http://en.wikipedia.org/wiki/Nautical_mile
+ * - Incluye el conjunto completo de unidades compatibles con CS-MAP (http://trac.osgeo.org/csmap/)
+ * y PROJ.4 (http://trac.osgeo.org/proj/)
+ * - La tabla codificada se mantiene en un módulo de código fuente CS-MAP llamado "CSdataU.c".
+ * - La tabla codificada de unidades PROJ.4 está en "pj_units.c".
  * @const {Object}
  * @api
  */
@@ -109,3 +112,13 @@ export const INCHES_PER_UNIT = {
   'ind-ft': 0.30479841 / METERS_PER_INCH, // Indian Foot
   'ind-ch': 20.11669506 / METERS_PER_INCH, // Indian Chain,
 };
+
+/**
+ * Este comentario no se verá, es necesario incluir
+ * una exportación por defecto para que el compilador
+ * muestre las funciones.
+ *
+ * Esto se produce por al archivo normaliza-exports.js
+ * @api stable
+ */
+export default {};

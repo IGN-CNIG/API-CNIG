@@ -14,15 +14,15 @@ import Generic from './Generic';
 
 
 /**
- * Accuracy of numbers on canvas
+ * Precisión de los números en el "canvas".
  * @constant
  * @api
  */
 const ACCURACY_NUMBER_CANVAS = 2;
 
 /**
- * Returns the calculation of the numbers of the canvas
- * with a given precision
+ * Devuelve el cálculo de los números del "canva".
+ * con una precisión dada.
  *  @function
  */
 const calcCanvasNumber = (number) => {
@@ -32,18 +32,27 @@ const calcCanvasNumber = (number) => {
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a style choropleth
- * with parameters specified by the user
+ * Crea una coropleta de estilo
+ * con parámetros especificados por el usuario.
+ *
+ * @property {String} attributeName_ Nombre del atributo.
+ * @property {M.quantification|function} quantification_ Cuantificación.
+ * @property {Array<Number>} breakPoints_ Puntos de "puntos de ruptura".
+ * @property {Array<Style.Simple>} choroplethStyles_ Estilos de coropletas.
+ * @property {String} borderColor Color del borde.
+ *
  * @api
+ * @extends {M.style.Composite}
  */
 class Choropleth extends StyleComposite {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @extends {Style}
-   * @param {String}
-   * @param {Array<Style>}
-   * @param {Style.quantification}
-   * @param {object}
+   * @param {String} attributeName Nombre del atributo.
+   * @param {Array<Style>} styles Estilos.
+   * @param {Style.quantification} quantification Cuantificación.
+   * @param {object} options Opciones.
    * @api
    */
   constructor(attributeName, styles, quantification = StyleQuantification.JENKS(), options = {}) {
@@ -53,52 +62,36 @@ class Choropleth extends StyleComposite {
     }
 
     /**
-     * TODO
-     * @public
-     * @type {String}
-     * @api
-     * @expose
+     * Nombre del atributo.
      */
     this.attributeName_ = attributeName;
 
     /**
-     * @public
-     * @type {Array<Style.Simple>}
-     * @api
-     * @expose
+     * Estilos de coropletas.
      */
     this.choroplethStyles_ = styles;
 
     /**
-     * @public
-     * @type {M.quantification|function}
-     * @api
-     * @expose
+     * Cuantificación.
      */
     this.quantification_ = quantification;
 
     /**
-     * @public
-     * @type{Array<Number>}
-     * @api
-     * @expose
+     * Puntos de "puntos de ruptura".
      */
     this.breakPoints_ = [];
 
     /**
-     * @public
-     * @type{String}
-     * @api
-     * @expose
+     * Color del borde.
      */
     this.borderColor = options.borderColor;
   }
 
   /**
-   * This function apply the style to specified layer
+   * Este método aplica el estilo especificado a la capa.
    * @function
    * @public
-   * @param {M.Layer.Vector} layer - Layer where to apply choropleth style
+   * @param {M.Layer.Vector} layer Capa.
    * @api
    */
   applyInternal(layer) {
@@ -107,10 +100,10 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function return the attribute name defined by user
+   * Este método devuelve el nombre del atributo.
    * @function
    * @public
-   * @return {String} attribute name of Style
+   * @return {String} Nombre del atributo.
    * @api
    */
   getAttributeName() {
@@ -118,10 +111,10 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function set the attribute name defined by user
+   * Modifica el atributo.
    * @function
    * @public
-   * @param {String} attributeName - attribute name to set
+   * @param {String} attributeName Nuevo nombre.
    * @api
    */
   setAttributeName(attributeName) {
@@ -132,10 +125,10 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function return quantification function defined by user
+   * Devuelve la cuantificación.
    * @function
    * @public
-   * @return {Style.quantification|function} quantification function of style
+   * @return {Style.quantification|function} Devuelve la cuantificación.
    * @api
    */
   getQuantification() {
@@ -143,10 +136,11 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function set quantification function defined by user
+   * Modifica la cuantificación.
    * @function
    * @public
-   * @param {Style.quantification|function} quantification - quantification function of style
+   * @param {Style.quantification|function} quantification Modifica la cuantificación.
+   * @return {M.style.Choropleth} "this".
    * @api
    */
   setQuantification(quantification) {
@@ -173,10 +167,10 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function returns the styles defined by user
+   * Devuelve el estilos de coropletas.
    * @function
    * @public
-   * @return {Array(Style)|null} returns the styles defined by user
+   * @return {Array(Style)|null} Estilos de coropletas.
    * @api
    */
   getChoroplethStyles() {
@@ -184,10 +178,11 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function sets the styles defined by user
+   * Modifica el estilo.
    * @function
    * @public
-   * @param {Array<StylePoint>|Array<StyleLine>|Array<StylePolygon>} styles - styles defined by user
+   * @param {Array<StylePoint>|Array<StyleLine>|Array<StylePolygon>} styles Estilo.
+   * @return {M.style.Choropleth} "this".
    * @api
    */
   setStyles(stylesParam) {
@@ -202,13 +197,11 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * TODO
-   *
+   * Actualiza el canvas.
    * @public
    * @function
    * @api
    */
-
   updateCanvas() {
     if (!isNullOrEmpty(this.choroplethStyles_)) {
       if (this.breakPoints_.length > 0) {
@@ -220,11 +213,14 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * TODO
-   *
+   * Genera el "canvas".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
-   * @param {CanvasRenderingContext2D} vectorContext - context of style canvas
+   * @public
+   * @param {Number} currentIndex Índice.
+   * @param {Array} canvasImages Imagen.
+   * @param {Function} callbackFn Función "callbackFn".
+   * @api
    */
   loadCanvasImages_(currentIndex, canvasImages, callbackFn) {
     // base case
@@ -267,11 +263,12 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * TODO
+   * Dibuja la geometría en el "canvas".
    *
    * @function
    * @public
-   * @param {CanvasRenderingContext2D} vectorContext - context of style canvas
+   * @param {HTMLCanvasElement} canvasImages "Canvas".
+   * @param {Function} callbackFn Función "callbackFn".
    * @api
    */
   drawGeometryToCanvas(canvasImages, callbackFn) {
@@ -313,11 +310,11 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function gets the numeric features values of layer which attribute
-   * is equal to attribute specified by user
+   * Este método obtiene los valores numéricos de los objetos geográficos de la capa cuyo atributo
+   * es igual al atributo especificado por el usuario.
    * @function
    * @public
-   * @return {Array<number>} numeric features values of layer
+   * @return {Array<number>} Valores numéricos de las características de la capa.
    * @api
    */
   getValues() {
@@ -338,9 +335,10 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function updates the style
+   * Este método actualiza el estilo.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @public
    * @api
    */
   update_() {
@@ -379,11 +377,11 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This functions returns a point style by default
+   * Este método devuelve un estilo de punto por defecto.
    * @function
    * @public
-   * @param {String} c - color in hexadecimal format
-   * @return {Style.Point}
+   * @param {String} c Color en formato hexadecimal.
+   * @return {Style.Point} Estilo.
    * @api
    */
   static DEFAULT_STYLE(c, borderColor) {
@@ -423,7 +421,11 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * @inheritDoc
+   * Añade el estilo.
+   * @function
+   * @public
+   * @param {Object} stylesParam Estilo.
+   * @api
    */
   add(stylesParam) {
     let styles = stylesParam;
@@ -437,9 +439,10 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This constant defines the order of style.
+   * Este método devuelve el orden, 2.
    * @constant
    * @public
+   * @returns {Number} Orden 2.
    * @api
    */
   get ORDER() {
@@ -447,11 +450,11 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function implements the mechanism to
-   * generate the JSON of this instance
+   * Este método implementa el mecanismo para
+   * generar el JSON de esta instancia.
    *
    * @public
-   * @return {object}
+   * @return {object} Devuelve parámetros y el método para deserializar.
    * @function
    * @api
    */
@@ -474,12 +477,13 @@ class Choropleth extends StyleComposite {
   }
 
   /**
-   * This function returns the style instance of the serialization
+   * Esta método de la clase devuelve la instancia de estilo de la serialización.
    * @function
    * @public
-   * @param {Array} parametrers - parameters to deserialize and create
-   * the instance
-   * @return {M.style.Choropleth}
+   * @param {Array} parametrers Parámetros para deserializar
+   * ("serializedAttributeName", "serializedStyles",
+   * "serializedQuantification", "serializedOptions", "serializedCompStyles").
+   * @return {M.style.Choropleth} Devuelve los estilos del objeto "Choropleth".
    */
   static deserialize([serializedAttributeName, serializedStyles,
     serializedQuantification, serializedOptions, serializedCompStyles,
@@ -517,14 +521,14 @@ class Choropleth extends StyleComposite {
   }
 }
 
-/** Color style by default
+/** Colores por defecto, "start".
  * @constant
  * @api
  */
 Choropleth.START_COLOR_DEFAULT = 'red';
 
 /**
- * Color style by default
+ * Colores por defecto, "end".
  * @constant
  * @api
  */

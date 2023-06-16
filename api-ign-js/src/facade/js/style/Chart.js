@@ -9,33 +9,29 @@ import { isNullOrEmpty, extendsObj, isArray, stringifyFunctions, defineFunctionF
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a chart style
- * with parameters specified by the user
+ * Crea un estilo de gráfico
+ * con parámetros especificados por el usuario.
  * @api
+ * @extends {M.style.Feature}
  */
 class Chart extends StyleFeature {
   /**
-   * @constructor
-   * @extends {M.style.Simple}
-   * @param {Mx.ChartOptions} options.
-   *  - type {string|Chart.types} the chart type
-   *  - radius {number} the radius of the chart. If chart type is 'bar' type this field
-   *            will limit the max bar height
-   *  - offsetX {number} chart x axis offset
-   *  - offsetY {number} chart y axis offset
-   *  - stroke.
-   *      - color {string} the color of the chart stroke
-   *      - width {number} the width of the chart stroke
-   *  - fill3DColor: {string} the fill color of the PIE_3D cylinder
-   *  - scheme {string|Array<string>|Chart.schemes} the color set of the chart.If
-   *            value is typeof 'string' you must declare this scheme into Chart.schemes
-   *            If you provide less colors than data size the colors will be taken
-   *            from MOD operator:
-   *              mycolor = userColors[currentArrayIndex % userColors.length]
-   *  - rotateWithView {bool} determine whether the symbolizer rotates with the map.
-   *  - animation {bool} this field is currently ignored [NOT IMPLEMENTED YET]
-   *  - variables {object|ChartVariable|string|Array<string>|Array<ChartVariable>} chart variables
+   * Constructor principal de la clase.
    *
+   * @constructor
+   * @param {Mx.ChartOptions} optsVar Opciones de la clase.
+   *  - type: El tipo de gráfico.
+   *  - radius: Si el tipo de gráfico es 'barra', escriba este campo
+   *           limitará la altura máxima de la barra
+   *  - offsetX: Desplazamiento del eje x del gráfico.
+   *  - offsetY: Desplazamiento del eje y del gráfico.
+   *  - stroke.
+   *      - color: El color del trazo del gráfico.
+   *      - width: El ancho del trazo del gráfico.
+   *  - fill3DColor: El color de relleno del cilindro PIE_3D
+   *  - scheme: Color del esquema.
+   *  - rotateWithView: Determinar si el simbolizador rota con el mapa.
+   *  - variables: Valores de la clase.
    * @api
    */
   constructor(optsVar = {}) {
@@ -82,11 +78,13 @@ class Chart extends StyleFeature {
   }
 
   /**
-   * formats a chart variable to creates a new Chart.Variable
-   *
-   * @param {Chart.Variable|string|object} variableOb a chart variable
-   * @private
+   * Método de la clase, define el formato de la variable "chart" creado con "new Chart".
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {Chart.Variable|string|object} variableOb Valores.
+   * @public
    * @function
+   * @return {Chart.Variable} Variable.
+   * @api
    */
   static formatVariable(variableOb) {
     if (variableOb == null) {
@@ -106,7 +104,7 @@ class Chart extends StyleFeature {
   }
 
   /**
-   * This function updates the canvas of style
+   * Este método actualiza el "canvas".
    *
    * @function
    * @public
@@ -119,7 +117,13 @@ class Chart extends StyleFeature {
   }
 
   /**
-   * @inheritDoc
+   * Este método añade el estilo a los objetos geográficos y
+   * acualiza el "canvas".
+   *
+   * @function
+   * @public
+   * @param {Object} layer Capa.
+   * @api
    */
   apply(layer) {
     this.layer_ = layer;
@@ -128,9 +132,10 @@ class Chart extends StyleFeature {
   }
 
   /**
-   * This constant defines the order of style.
+   * Este método devuelve el orden del estilo.
    * @constant
    * @public
+   * @return {number} Orden del estilo.
    * @api
    */
   get ORDER() {
@@ -138,11 +143,10 @@ class Chart extends StyleFeature {
   }
 
   /**
-   * This function implements the mechanism to
-   * generate the JSON of this instance
+   * Este método crea un objeto con los parámetros y los valores desearializados.
    *
    * @public
-   * @return {string}
+   * @return {Object} Parámetros y los valores desearializados.
    * @function
    * @api
    */
@@ -180,12 +184,11 @@ class Chart extends StyleFeature {
   }
 
   /**
-   * This function returns the style instance of the serialization
+   * Este método de la clase deserializa el estilo.
    * @function
    * @public
-   * @param {string} serializedStyle - serialized style
-   * @param {string} className - class name of the style child
-   * @return {M.style.Simple}
+   * @param {Array} serializedOptions Estilos.
+   * @return {M.style.Simple} "new M.style.Chart".
    */
   static deserialize([serializedOptions]) {
     const options = serializedOptions;
@@ -199,7 +202,7 @@ class Chart extends StyleFeature {
 }
 
 /**
- * Default options for this style
+ * Valores por defecto.
  *
  * @const
  * @type {object}

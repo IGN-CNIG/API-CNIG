@@ -6,14 +6,28 @@ import Utils from 'impl/util/Utils';
 import Control from './Control';
 
 /**
- * @private
+ * Formate un número pasado por parámetro.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {Number} num Cadena en formato número.
+ * @returns {String} Cadena en formato número.
+ * @api stable
  */
-const formatLongNumber = (num) => {
+export const formatLongNumber = (num) => {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
 /**
- * @private
+ * Actualiza el elemento del control.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
+ * @function
+ * @param {Boolean} viewState Estado de la vista.
+ * @param {HTMLElement} container HTML contenedor del control.
+ * @param {Number} map Mapa.
+ * @param {Boolean} exact Devuelve la escala del WMTS o genérica.
+ * @api stable
  */
 const updateElement = (viewState, container, map, exact) => {
   const containerVariable = container;
@@ -39,13 +53,18 @@ const updateElement = (viewState, container, map, exact) => {
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a WMC selector
- * control
+ * Agregar escala numérica.
  * @api
  */
 class Scale extends Control {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
+   * @param {Object} options Opciones del control.
+   * - Order: Orden que tendrá con respecto al
+   * resto de plugins y controles por pantalla.
+   * - exactScale: Escala exacta.
    * @extends {ol.control.Control}
    * @api stable
    */
@@ -56,12 +75,12 @@ class Scale extends Control {
   }
 
   /**
-   * This function adds the control to the specified map
+   * Este método agrega el control al mapa.
    *
    * @public
    * @function
-   * @param {M.Map} map to add the plugin
-   * @param {function} template template of this control
+   * @param {M.Map} map Mapa.
+   * @param {function} template Plantilla del control.
    * @api stable
    */
   addTo(map, element) {
@@ -76,8 +95,10 @@ class Scale extends Control {
   }
 
   /**
-   * Update the scale line element.
-   * @param {ol.MapEvent} mapEvent Map event.
+   * Actualiza la linea de la escala.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {ol.MapEvent} mapEvent Evento del mapa.
    * @this {ol.control.ScaleLine}
    * @api
    */
@@ -89,8 +110,7 @@ class Scale extends Control {
   }
 
   /**
-   * This function destroys this control, cleaning the HTML
-   * and unregistering all events
+   * Esta función destruye este control, limpiando el HTML y anula el registro de todos los eventos.
    *
    * @public
    * @function

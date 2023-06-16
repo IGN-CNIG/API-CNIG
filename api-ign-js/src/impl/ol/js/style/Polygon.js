@@ -14,6 +14,7 @@ import OLStyleFill from 'ol/style/Fill';
 import { toContext as toContextRender } from 'ol/render';
 import { getBottomLeft, getHeight, getWidth } from 'ol/extent';
 import { toContext } from 'ol/render';
+import RenderFeature from 'ol/render/Feature';
 import OLStyleFillPattern from '../ext/OLStyleFillPattern';
 import OLStyleStrokePattern from '../ext/OLStyleStrokePattern';
 import Simple from './Simple';
@@ -22,16 +23,30 @@ import Centroid from './Centroid';
 /**
  * @classdesc
  * @api
- * TODO
- * @private
- * @type {M.style.Polygon}
+ * Crea el estilo de un polígono.
  */
-
 class Polygon extends Simple {
   /**
-   * Main constructor of the class.
+   * Constructor principal de la clase.
    * @constructor
-   * @implements {Simple}
+   * @param {Object} optionsParam Opciones que se pasarán a la implementación.
+   * - stroke: Borde del polígono.
+   *    - width: Tamaño.
+   *    - pattern (name, src, color, size, spacing, rotation, scale, offset)
+   *    - linedash: Línea rayada.
+   *    - linejoin: Línea unidas.
+   *    - linecap: Límite de la línea.
+   * - label
+   *    - rotate: Rotación.
+   *    - offset: Desplazamiento.
+   *    - stroke (color, width, linecap, linejoin, linedash)
+   * - fill: Relleno.
+   *    - color: Color.
+   *    - opacity: Opacidad.
+   *    - pattern (name, src, color, size, spacing, rotation, scale, offset)
+   * - renderer: Renderizado.
+   *     - property: Propiedades.
+   *     - stoke (color y width).
    * @api stable
    */
   constructor(options) {
@@ -40,16 +55,19 @@ class Polygon extends Simple {
   }
 
   /**
-   * This function se options to ol style
+   * Este método actualiza las opciones de la fachada
+   * (patrón estructural como una capa de abstracción con un patrón de diseño).
    *
    * @public
-   * @param {object} options - options to style
+   * @param {object} options Opciones.
    * @function
+   * @return {Array<object>} Estilo de la fachada.
+   * @api stable
    */
   updateFacadeOptions(options) {
     return (feature) => {
       let featureVariable = feature;
-      if (!(featureVariable instanceof OLFeature)) {
+      if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
         featureVariable = this;
       }
       const style = new Centroid();
@@ -237,11 +255,11 @@ class Polygon extends Simple {
   }
 
   /**
-   * This function updates the canvas of style of canvas
+   * Este método actualiza el "canvas".
    *
    * @public
    * @function
-   * @param {HTMLCanvasElement} canvas - canvas of style
+   * @param {HTMLCanvasElement} canvas Nuevo "canvas".
    * @api stable
    */
   updateCanvas(canvas) {
@@ -266,10 +284,11 @@ class Polygon extends Simple {
   }
 
   /**
-   * TODO
+   * Este método dibuja la geometría en el "canvas".
    *
    * @public
    * @function
+   * @param {Object} vectorContext Vector que se dibujará en el "canvas".
    * @api stable
    */
   drawGeometryToCanvas(vectorContext) {
@@ -290,10 +309,11 @@ class Polygon extends Simple {
   }
 
   /**
-   * TODO
+   * Este método de la clase, devuelve el tamaño del "canvas".
    *
    * @public
    * @function
+   * @returns {Array} Tamaño.
    * @api stable
    */
   static getCanvasSize() {
@@ -301,6 +321,14 @@ class Polygon extends Simple {
   }
 }
 
+/**
+ * Valores por defecto.
+ *
+ * @const
+ * @type {Number}
+ * @public
+ * @api
+ */
 Polygon.DEFAULT_WIDTH_POLYGON = 3;
 
 export default Polygon;

@@ -9,18 +9,17 @@ import { getValue } from './i18n/language';
 
 /**
  * @classdesc
- * Main facade plugin object. This class creates a plugin
- * object which has an implementation Object
+ * Esta clase crea los métodos necesarios para añadir los plugins al mapa.
+ * @extends {M.facade.Base}
  * @api
  */
 class Plugin extends Base {
   /**
-   * This function provides the implementation
-   * of the object
+   * Este método añade el plugin al mapa.
    *
    * @public
    * @function
-   * @param {Object} map the map to add the plugin
+   * @param {Object} map Añade el plugin al mapa.
    * @api
    */
   addTo(map) {
@@ -51,19 +50,19 @@ class Plugin extends Base {
   }
 
   /**
-   * This function creates the HTML view for this control
+   * Añade la vista al mapa.
    * @public
    * @function
-   * @param {M.Map} map to add the plugin
+   * @param {M.Map} map Añade la vista al mapa.
    * @api
    */
   createView(map) {}
 
   /**
-   * This function returns the controls of a plugin
+   * Devuelve los plugins.
    * @public
    * @function
-   * @param {Array} controls
+   * @param {Array} controls Devuelve los plugins.
    * @api
    */
   getControls() {}

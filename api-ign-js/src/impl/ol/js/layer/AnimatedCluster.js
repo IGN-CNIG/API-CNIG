@@ -11,53 +11,46 @@ import { getVectorContext } from 'ol/render';
 
 /**
  * @classdesc
+ * La capa se crea con un ol.source.Cluster como capas vectoriales de "cluster" estándar.
+ *
  * @api
+ * @extends {ol.layer.Vector}
  */
 class AnimatedCluster extends OLLayerVector {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a AnimatedCluster layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa "AnimatedCluster"
+   * con parámetros especificados por el usuario.
    *
    * @constructor
    * @implements {M.impl.layer.Vector}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
+   * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
+   * - style: Estilo del "cluster".
+   * - animationDuration: Duración de la animación, por defecto 700.
+   * - animationMethod: Efecto de la animación, por defecto easeOut.
    * @api stable
    */
   constructor(options = {}) {
     super(options);
 
     /**
-     * TODO
-     * @private
-     * @type {ol.style.StyleFunction}
-     * @expose
+     * AnimatedCluster styleCluster_. Conjunto de estilo.
      */
     this.styleCluster_ = options.style;
 
     // super
 
     /**
-     * TODO
-     * @private
-     * @type {ol.source.Vector}
-     * @expose
+     * AnimatedCluster oldCluster_. Fuente vectorial de Openlayers.
      */
     this.oldCluster_ = new OLSourceVector();
 
     /**
-     * TODO
-     * @private
-     * @type {Array<ol.Feature>}
-     * @expose
+     * AnimatedCluster clusters_. Objetos geográficos del "cluster".
      */
     this.clusters_ = [];
 
     /**
-     * TODO
-     * @private
-     * @type {Object}
-     * @expose
+     * AnimatedCluster animation_. Animación del "cluster", por defecto falso.
      */
     this.animation_ = {
       start: false,
@@ -75,11 +68,11 @@ class AnimatedCluster extends OLLayerVector {
   }
 
   /**
-   * This function sets the map object of the layer
-   *
+   * Este método incluye el "cluster" al mapa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.impl.Map} map Implementación del mapa.
    * @api stable
    */
   saveCluster_() {
@@ -95,11 +88,13 @@ class AnimatedCluster extends OLLayerVector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método devuelve los objetos geográficos del "cluster".
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.feature} feature Objetos geográficos.
+   * @param {M.cluster} clusters Agrupaciones.
+   * @return {Array<Feature>} Objetos geográficos del "cluster".
    * @api stable
    */
   static getClusterForFeature(feature, clusters) {
@@ -114,11 +109,11 @@ class AnimatedCluster extends OLLayerVector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Animación del "cluster".
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.event} event Evento.
    * @api stable
    */
   animate(event) {
@@ -206,10 +201,13 @@ class AnimatedCluster extends OLLayerVector {
   }
 
   /**
-   * This function sets the map object of the layer
-   *
-   * @private
+   * Este método prepara la animación.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * 
+   * @public
    * @function
+   * @param {Array<Number>} extent Extensión.
+   * @param {Number} resolution Resolución.
    * @api stable
    */
   prepareAnimation_(extent, resolution) {
@@ -244,11 +242,11 @@ class AnimatedCluster extends OLLayerVector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Evento tras la animación.
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.event} e Evento tras la animación.
    * @api stable
    */
   postanimate(e) {
@@ -259,11 +257,11 @@ class AnimatedCluster extends OLLayerVector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Sobrescribe el estilo del "cluster".
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.style} style Nuevo estilo para aplicar.
    * @api stable
    */
   setStyle(style) {

@@ -4,13 +4,13 @@
 <h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.ComparePanel</small></h1>
 
 <p align="center">
-  <a title="MIT License" href="LICENSE.md">
+  <a title="MIT License" href="LICENSE">
     <img src="https://img.shields.io/badge/license-EUPL-blue.svg">
   </a>
-  <a title="Node version" href="#">
+  <a title="Node version" href="https://nodejs.org/es">
     <img src="https://img.shields.io/badge/node-v14.16-blue">
   </a>  
-  <a title="NPM version" href="#">
+  <a title="NPM version" href="https://www.npmjs.com/package/npm">
     <img src="https://img.shields.io/badge/npm-v6.14-blue">
   </a>
   <a title="Language" href="https://www.w3schools.com/html/" target="_blank">
@@ -64,19 +64,19 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
 
 ## Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON de options con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin.
-  - 'TL':top left
-  - 'TR':top right (default)
-  - 'BL':bottom left
-  - 'BR':bottom right
+- **position**: Indica la posición donde se mostrará el plugin.
+  - 'TL': (top left) - Arriba a la izquierda.
+  - 'TR': (top right) - Arriba a la derecha (por defecto).
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
 
-- **collapsible**. Si es *true*, el botón aparece, y puede desplegarse y contraerse. Si es *false*, el botón no aparece. Por defecto tiene el valor *true*.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 
-- **collapsed**. Si es *true*, el panel aparece cerrado. Si es *false*, el panel aparece abierto. Por defecto tiene el valor *true*.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 
-- **vertical**. Si es *true*, el panel se verá con la orientación vertical. Si es *false*, el panel se verá con la orientación horizontal. Por defecto tiene el valor *true*
+- **vertical**: Si es *true*, el panel se verá con la orientación vertical. Si es *false*, el panel se verá con la orientación horizontal. Por defecto tiene el valor *true*.
 
 - **defaultCompareMode**: indica el modo de comparación que se arranca por defecto.
 
@@ -85,9 +85,9 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
   - 'spyeye': Comparador de zona o puntual.
   - 'none': no arranca ninguno de los comparadores. Es equivalente a arrancar como  *defaultCompareMode='mirror'* &  *defaultCompareViz=0*.
 
-- **defaultCompareViz**: ajustamos el modo de visualizaciónuna vea seleccionado el comparador.
+- **defaultCompareViz**: ajustamos el modo de visualización una vez vea seleccionado el comparador.
 
-  - En el caso del modo *mirror* indicamos de 0 a 9 el modo de visualización
+  - En el caso del modo *mirror* indicamos de 0 a 9 el modo de visualización:
     - 0: barra de herramientas desplegada con el mapa simple esperando al usuario.
     - 1: dos mapas en vertical.
     - 2: dos mapas en horizontal.
@@ -98,20 +98,23 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
     - 7: tres mapas en proporción 2-1-1.
     - 8: un mapa arriba y dos abajo.
     - 9: dos mapas arriba y uno abajo.
-  - En el caso del modo *curtain* indicamos de 0 a 3
+  - En el caso del modo *curtain* indicamos de 0 a 3:
     - 0: barra de herramientas desplegada con el mapa simple esperando al usuario.
     - 1: dos mapas en vertical.
     - 2: dos mapas en horizontal.
     - 3: cuatro mapas.
   - En el caso del modo *spyeye* arranca con la barra de herramientas desplegada con el mapa simple esperando al usuario.
 
-- **baseLayers**. Parámetro obligatorio. Array que contiene cada capa junto a sus datos:
+- **baseLayers**: Parámetro obligatorio. Array que contiene cada capa junto a sus datos:
   - Nombre: nombre descriptivo de la capa. Se puede dejar vacío con comillas vacías: *''*
   - Etiqueta: etiqueta o fecha de la capa. Se puede dejar vacío con comillas vacías: *''*
-  - Servicio en formato mapea para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
+  - Servicio en formato API-CORE para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
 
--  **urlcoberturas**: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS. Si este parámetro no se encuentra presente, no se aplicará el filtro por coberturas y todas las capas podrán seleccionarse siempre, aunque en la zona visible en el mapa no tenga cobertura.
--  **lyrsMirrorMinZindex**: indica el nivel zIndex a partir del cual se cargan las capas superpuestas en los comparadores espejo. Por defecto, tiene valor de 100.
+- **urlcoberturas**: fichero en formato geoJSON con la cobertura de capas. Es necesario que entre los atributos de cada *feature* haya uno llamado **layerkey**, que contendrá el nombre de la capa dentro del servicio WMS/WMTS. Si este parámetro no se encuentra presente, no se aplicará el filtro por coberturas y todas las capas podrán seleccionarse siempre, aunque en la zona visible en el mapa no tenga cobertura.
+- **layerCobertura**. Capa de cobertura con atribuciones.
+- **layerName**. El nombre del sombrero de capa vectorial contiene la información de atribución.
+- **lyrsMirrorMinZindex**: indica el nivel zIndex a partir del cual se cargan las capas superpuestas en los comparadores espejo. Por defecto, tiene valor de 100.
+- **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 ```javascript
   // Ejemplos de definiciones de capas esperadas por el comparador en formato StringLayer
@@ -132,14 +135,14 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
 
 ```
 
-- **mirrorpanelParams**. Parámetros opcionales del plugin mirrorpanel. A destacar:
-  - showCursors (true/false): Si es true, muestra cursores sincronziados en cda unao de los mapas espejo. Defecto: *true*.
+- **mirrorpanelParams**: Parámetros opcionales del plugin mirrorpanel. A destacar:
+  - showCursors (true/false): Si es true, muestra cursores sincronizados en cada unao de los mapas espejo. Defecto: *true*.
   - reverseLayout (true/false): indica en qué posición de la pantalla se mantiene el mapa principal (el que contiene el botón con las herramientas de comparación) con respecto a los demás. *False*: se sitúa a la izquierda. *True*: se sitúa a la derecha. Defecto: *false*.
   - enabledPlugins: permite que algunos de los plugins configurados en el mapa principal se repliquen en los mapas espejo: disponible actualmente para el control FullTOC y el control Vectors.
 
 ![](assets/fulltoc-mirror.png)
 
-- **lyrcompareParams**. Parámetros opcionales del plugin lyrcompare.
+- **lyrcompareParams**: Parámetros opcionales del plugin lyrcompare.
   - defaultLyrA (numérico): Capa cargada al inicio en posición 1. Valores de 1 al número de capas disponibles. Defecto, 1.
   - defaultLyrB (numérico): Capa cargada al inicio en posición 2. Valores de 1 al número de capas disponibles. Defecto, 2.
   - defaultLyrC (numérico): Capa cargada al inicio en posición 3. Valores de 1 al número de capas disponibles. Defecto, 3.
@@ -147,13 +150,13 @@ Los modos de comparación de cortina y Spy Eye se aplican siempre al mapa princi
   - opacityVal: Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
   - staticDivision: Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón (valor 0), por el punto medio del lienzo de cartografía (valor 1) o por el punto medio del lienzo de cartografía con líneas arrastrables (valor 2). Por defecto toma el valor 1.
 
-- **transparencyParams**. Parámetros opcionales del plugin transparency.
+- **transparencyParams**: Parámetros opcionales del plugin transparency.
   - radius (numérico): radio del efecto transparencia. Tiene un rango entre 30 y 200. Defecto: 100.
 
 
 ## Ejemplo
 
-Insertar intervalos a través de servicios WMS. La URL en formato mapea sigue la siguiente estructura:
+Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue la siguiente estructura:
   - Servicio,Leyenda,URL,Nombre. Separados por "*".
 ```javascript
 

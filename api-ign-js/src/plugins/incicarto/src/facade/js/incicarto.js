@@ -68,17 +68,31 @@ export default class Incicarto extends M.Plugin {
     this.wfszoom_ = parseInt(options.wfszoom, 10);
     if (this.wfszoom_ === undefined || Number.isNaN(this.wfszoom_)) this.wfszoom_ = 12;
 
-    this.precharged_ = options.precharged || [];
-
-    this.controllist_ = options.controllist || [];
+    this.controllist_ = options.controllist || [
+      {
+        id: 'themeList',
+        name: 'Temas de errores',
+        mandatory: true,
+      },
+      {
+        id: 'errorList',
+        name: 'Tipos de errores',
+        mandatory: true,
+      },
+      {
+        id: 'productList',
+        name: 'Lista de productos',
+        mandatory: true,
+      },
+    ];
 
     this.interfazmode_ = options.interfazmode;
     if (this.interfazmode_ === undefined) this.interfazmode_ = 'simple';
 
-    this.buzones_ = options.buzones;
-    this.themes_ = options.themeList;
-    this.errors_ = options.errorList;
-    this.products_ = options.productList;
+    this.buzones_ = options.buzones || [];
+    this.themes_ = options.themeList || [];
+    this.errors_ = options.errorList || [];
+    this.products_ = options.productList || [];
 
     this.prefixSubject_ = options.prefixSubject;
     if (this.prefixSubject_ === undefined) this.prefixSubject_ = 'Incidencia cartografía - ';
@@ -96,6 +110,21 @@ export default class Incicarto extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * Tooltip of the UI Plugin
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {object}
+     */
+    this.options = options;
   }
 
   /**
@@ -129,7 +158,7 @@ export default class Incicarto extends M.Plugin {
       collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'icon-incicarto',
-      tooltip: getValue('tooltip'),
+      tooltip: this.tooltip_,
     });
 
     if (this.controllist_[0].id === 'themeList') {
@@ -145,7 +174,6 @@ export default class Incicarto extends M.Plugin {
 
     this.control_ = new IncicartoControl({
       wfszoom: this.wfszoom_,
-      precharged: this.precharged_,
       controllist: this.controllist_,
       interfazmode: this.interfazmode_,
       prefixSubject: this.prefixSubject_,
@@ -184,7 +212,20 @@ export default class Incicarto extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name_}=${this.position_}*${this.collapsed_}*${this.collapsible_}`;
+    // eslint-disable-next-line max-len
+    // *${JSON.stringify(this.buzones_)}*${JSON.stringify(this.controllist_)}*${JSON.stringify(this.themes_)}*${JSON.stringify(this.errors_)}*${JSON.stringify(this.products_)}
+    return `${this.name_}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.wfszoom_}*${this.prefixSubject_}*${this.interfazmode_}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name_}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

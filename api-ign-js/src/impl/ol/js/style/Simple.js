@@ -2,19 +2,23 @@
  * @module M/impl/style/Simple
  */
 import OLFeature from 'ol/Feature';
+import RenderFeature from 'ol/render/Feature';
 import { isFunction, isNullOrEmpty } from 'M/util/Utils';
 import Style from './Style';
 import Feature from '../feature/Feature';
 
 /**
  * @classdesc
+ * Esta clase genera estilos simples.
  * @api
  * @namespace M.impl.style.Simple
  */
 class Simple extends Style {
   /**
-   * Main constructor of the class.
+   * Constructor principal de la clase.
    * @constructor
+   * @param {Object} options Opciones de la clase.
+   * - icon (src): Ruta del icono.
    * @api stable
    */
   constructor(options = {}) {
@@ -23,9 +27,11 @@ class Simple extends Style {
   }
 
   /**
-   * This function gets the ol style function of impl
+   * Este método obtiene la función de estilo de Openlayer
+   * de la Implementación.
    * @public
    * @function
+   * @returns {Object} Implementación de Openlayers.
    * @api stable
    */
   get olStyleFn() {
@@ -33,10 +39,10 @@ class Simple extends Style {
   }
 
   /**
-   * This function apply style to layer
+   * Este método aplica los estilos a la capa.
    * @public
    * @function
-   * @param {M.layer.Vector} layer - Layer
+   * @param {M.layer.Vector} layer Capa.
    * @api stable
    */
   applyToLayer(layer) {
@@ -50,10 +56,10 @@ class Simple extends Style {
   }
 
   /**
-   * This function apply style to feature
+   * Este método aplica los estilos a los objetos geográficos.
    *
    * @public
-   * @param {M.Feature} feature - Feature to apply style
+   * @param {M.Feature} feature Objetos geográficos.
    * @function
    * @api stable
    */
@@ -62,20 +68,20 @@ class Simple extends Style {
   }
 
   /**
-   * This function get the value of the feature which key match with
-   * the attr param
+   * Este método de la clase obtiene el valor de la función con la que coincide la tecla
+   * el parámetro "attr"
    * @public
    * @function
-   * @param {string|number|function} attr - attribute or function
-   * @param {ol.Feature}  feature - OpenLayer Feature
-   * @param {M.layer.Vector} layer - Layer
+   * @param {string|number|function} attr Atributo o función.
+   * @param {ol.Feature}  feature Objeto geográfico de OpenLayers.
+   * @param {M.layer.Vector} layer Capas.
    * @api stable
    */
   static getValue(attr, olFeature, layer) {
     const templateRegexp = /^\{\{([^}]+)\}\}$/;
     let attrFeature = attr;
     if (templateRegexp.test(attr) || isFunction(attr)) {
-      if (!(olFeature instanceof OLFeature)) {
+      if (!(olFeature instanceof OLFeature || olFeature instanceof RenderFeature)) {
         attrFeature = undefined;
       } else {
         const feature = Feature.olFeature2Facade(olFeature, false);

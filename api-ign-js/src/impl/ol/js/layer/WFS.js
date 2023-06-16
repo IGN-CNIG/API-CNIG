@@ -19,77 +19,90 @@ import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
+ * WFS (Web Feature Service) es un estándar OGC para la transferencia de información geográfica,
+ * donde los elementos o características geográficas se transmiten en su totalidad al cliente.
+ * @extends {M.impl.layer.Vector}
  * @api
  */
 class WFS extends Vector {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a WFS layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa WFS
+   * con parámetros especificados por el usuario.
    *
    * @constructor
    * @implements {M.impl.layer.Vector}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - getFeatureOutputFormat: Formato de los objetos geográficos, por defecto 'application/json'
+   * - describeFeatureTypeOutputFormat: Describe el formato de salida de los objetos geográficos.
+   * - vendor: Proveedor.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceVector({
+   *    attributions: 'wfs',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(options = {}, vendorOptions) {
     // calls the super constructor
     super(options, vendorOptions);
+
     /**
-     *
-     * @private
-     * @type {Object}
+     * WFS describeFeatureType_. Describe el tipo de objeto geográfico.
      */
     this.describeFeatureType_ = null;
 
     /**
-     *
-     * @private
-     * @type {M.impl.format.GeoJSON | M.impl.format.GML}
+     * WFS formater_. Define el formato.
      */
     this.formater_ = null;
 
     /**
-     *
-     * @private
-     * @type {function}
+     * WFS loader_. Valor por defecto "null".
      */
     this.loader_ = null;
 
     /**
-     *
-     * @private
-     * @type {M.iml.service.WFS}
+     * WFS service_. Servicio WFS.
      */
     this.service_ = null;
 
     /**
-     *
-     * @private
-     * @type {Boolean}
+     * WFS loader_. Si es cargado o no.
      */
     this.loaded_ = false;
 
     /**
-     * Popup showed
-     * @private
-     * @type {M.impl.Popup}
+     * WFS popup_. Mostrar popup.
      */
     this.popup_ = null;
 
-    // GetFeature output format parameter
+
+    /**
+     * WFS options.getFeatureOutputFormat. Formato de retorno de los features, por defecto
+     * default application/json.
+     */
     if (isNullOrEmpty(this.options.getFeatureOutputFormat)) {
       this.options.getFeatureOutputFormat = 'application/json'; // by default
     }
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método agrega la capa al mapa.
    *
    * @public
    * @function
-   * @param {M.Map} map
+   * @param {M.Map} map Implementación del mapa.
    * @api stable
    */
   addTo(map) {
@@ -99,11 +112,11 @@ class WFS extends Vector {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método refresca la capa.
    *
    * @public
    * @function
-   * @param {Boolean} forceNewSource
+   * @param {Boolean} forceNewSource Si es verdadero fuerza una nueva fuente.
    * @api stable
    */
   refresh(forceNewSource) {
@@ -114,12 +127,14 @@ class WFS extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
-   * @public
+   * Este método ejecuta un objeto geográfico seleccionado.
+   *
    * @function
-   * @param {ol.Feature} feature
+   * @param {ol.features} features Objetos geográficos de Openlayers.
+   * @param {Array} coord Coordenadas.
+   * @param {Object} evt Eventos.
    * @api stable
+   * @expose
    */
   selectFeatures(features, coord, evt) {
     const feature = features[0];
@@ -155,11 +170,14 @@ class WFS extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Pasa los objetos geográficos a la plantilla.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    *
-   * @private
+   * @public
    * @function
+   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
+   * @returns {Object} "FeaturesTemplate.features".
+   * @api stable
    */
   parseFeaturesForTemplate_(features) {
     const featuresTemplate = {
@@ -196,10 +214,12 @@ class WFS extends Vector {
   }
 
   /**
-   * This function sets the map object of the layer
-   *
-   * @private
+   * Este método actualiza la capa de origen.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @param {Boolean} forceNewSource Si es verdadero fuerza una nueva fuente.
+   * @api stable
    */
   updateSource_(forceNewSource) {
     if (isNullOrEmpty(this.vendorOptions_.source)) {
@@ -267,12 +287,13 @@ class WFS extends Vector {
   }
 
   /**
-   * This function return extent of all features or discriminating by the filter
+   * Este método devuelve la extensión de todas los objetos geográficos
+   * o discrimina por el filtro.
    *
    * @function
-   * @param {boolean} skipFilter - Indicates whether skip filter
-   * @param {M.Filter} filter - Filter to execute
-   * @return {Array<number>} Extent of features
+   * @param {boolean} skipFilter Indica si se salta el filtro.
+   * @param {M.Filter} filter FIltro para ejecutar.
+   * @return {Array<number>} Alcance de los objetos geográficos.
    * @api stable
    */
   getFeaturesExtent(skipFilter, filter) {
@@ -283,12 +304,13 @@ class WFS extends Vector {
   }
 
   /**
-   * This function return extent of all features or discriminating by the filter
+   * Este método devuelve la extensión de todas los objetos geográficos
+   * o discrimina por el filtro, asíncrono.
    *
    * @function
-   * @param {boolean} skipFilter - Indicates whether skip filter
-   * @param {M.Filter} filter - Filter to execute
-   * @return {Array<number>} Extent of features
+   * @param {boolean} skipFilter Indica si se salta el filtro.
+   * @param {M.Filter} filter Filtro para ejecutar.
+   * @return {Array<number>} Alcance de los objetos geográficos.
    * @api stable
    */
   getFeaturesExtentPromise(skipFilter, filter) {
@@ -308,11 +330,11 @@ class WFS extends Vector {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método cambia el CQL y llama al método "refresh".
    *
    * @public
    * @function
+   * @param {String} newCQL Nuevo CQL para aplicar.
    * @api stable
    */
   setCQL(newCQL) {
@@ -321,10 +343,12 @@ class WFS extends Vector {
   }
 
   /**
-   * TODO
+   * Devuelve el tipo de los objetos geográficos.
    *
    * @public
    * @function
+   * @returns {describeFeatureType_} Respuesta del servicio describiendo
+   * el tipo de los objetos geográficos.
    * @api stable
    */
   getDescribeFeatureType() {
@@ -345,10 +369,12 @@ class WFS extends Vector {
   }
 
   /**
-   * TODO
+   * Devuelve valores por defecto.
    *
    * @public
    * @function
+   * @param {String} type "DateTime", "date", "time", "duration", "hexBinary", ...
+   * @returns {String} Devuelve el valor por defecto.
    * @api stable
    */
   getDefaultValue(type) {
@@ -389,22 +415,24 @@ class WFS extends Vector {
   // };
 
   /**
-   * TODO
+   * Devuelve si la capa esta cargada.
+   *
    * @function
+   * @returns {Boolean} Verdadero se carga, falso si no.
    * @api stable
    */
   isLoaded() {
     return this.loaded_;
   }
 
+
   /**
-   * TODO
-   */
-  /**
-   * This function sets the map object of the layer
-   *
-   * @private
+   * Devuelve los objetos geográficos, asincrono.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @returns {features} Objetos geográficos, promesa.
+   * @api stable
    */
   requestFeatures_() {
     return new Promise((resolve) => {
@@ -415,10 +443,12 @@ class WFS extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api stable
    */
   equals(obj) {

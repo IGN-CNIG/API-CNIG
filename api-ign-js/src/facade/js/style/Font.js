@@ -5,14 +5,15 @@ import OLFontSymbol from 'impl/ext/OLStyleFontSymbol';
 
 /**
  * @classdesc
+ * Clase que gestiona la fuente de la implementación (OLStyleFontSymbol).
  * @api
  */
 class Font {
   /**
-   * This method adds custom fonts definitions.
+   * Este método de la clase agrega definiciones de fuentes personalizadas.
    *
-   * @param {object} font
-   * @param {object} glyphs
+   * @param {object} font Fuente
+   * @param {object} glyphs Gráfico.
    * @public
    * @static
    * @api

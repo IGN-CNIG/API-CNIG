@@ -6,54 +6,63 @@ import { get as getRemote } from 'M/util/Remote';
 import Exception from 'M/exception/exception';
 import { isNullOrEmpty } from 'M/util/Utils';
 import { getValue } from 'M/i18n/language';
+
 /**
- * @classdesc
- * @api
- * @namespace M.impl.control
- */
+  * @classdesc
+  * JSONP es un JSON con relleno, que se utiliza en JavaScript
+  * para solicitar los datos desde la etiqueta "script".
+  *
+  * @property {M.Map} map_ Mapa.
+  * @property {M.impl.service.WFS} url_ URL del servicio WFS.
+  * @property {M.format.GeoJSON} format_ Formato.
+  *
+  * @api
+  * @extends {M.Object}
+  */
 class JSONP extends MObject {
   /**
-   * @classdesc TODO
-   * control
-   * @param {function} element template of this control
-   * @param {M.Map} map map to add the plugin
-   * @constructor
-   * @extends {M.Object}
-   * @api stable
-   */
+    * Constructor principal de la clase JSONP.
+    *
+    * @constructor
+    * @param {M.Map} map Mapa
+    * @param {M.impl.service.WFS} url URL del servicio WFS.
+    * @param {M.format.GeoJSON} format Formato.
+    * @api
+    */
   constructor(map, url, format) {
     super();
 
     /**
-     * TODO
-     * @private
-     * @type {M.Map}
-     */
+      * Mapa.
+      * @private
+      * @type {M.Map}
+      */
     this.map_ = map;
 
     /**
-     * TODO
-     * @private
-     * @type {M.impl.service.WFS}
-     */
+      * URL del servicio WFS.
+      * @private
+      * @type {M.impl.service.WFS}
+      */
     this.url_ = url;
 
     /**
-     * TODO
-     * @private
-     * @type {M.format.GeoJSON}
-     */
+      * Formato.
+      * @private
+      * @type {M.format.GeoJSON}
+      */
     this.format_ = format;
   }
 
   /**
-   * This function destroys this control, cleaning the HTML
-   * and unregistering all events
-   *
-   * @public
-   * @function
-   * @api stable
-   */
+    * Este método ejecutará la función "callback" a los objetos geográficos.
+    *
+    * @function
+    * @param {function} callback Función 'callback' de llamada para ejecutar.
+    * @returns {function} Método que ejecutará la función "callback" a los objetos geográficos.
+    * @public
+    * @api
+    */
   getLoaderFn(callback) {
     return ((extent, resolution, projection) => {
       this.loadInternal_(projection).then((response) => {
@@ -63,11 +72,15 @@ class JSONP extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
-   * @function
-   */
+    * Este método obtiene los objetos geográficos a partir de los parámetros
+    * especificados.
+    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+    * @function
+    * @param {ol.proj.Projection} projection Proyección.
+    * @returns {Promise} Promesa con la obtención de los objetos geográficos.
+    * @public
+    * @api
+    */
   loadInternal_(projection) {
     return new Promise((success) => {
       getRemote(this.url_).then((response) => {

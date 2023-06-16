@@ -11,62 +11,122 @@ import ImplMap from '../Map';
 
 /**
  * @classdesc
+ * Las capas XYZ son servicios de información geográfica en forma de mosaicos.
+ * Cada mosaico representa una combinación de tres parámetros.
+ * Las capas XYZ tienen la siguiente estructura.
+ *
+ * https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg
+ *
+ * Donde {z} especifica el nivel de zoom, {x} el número de columna y {y} el número de fila.
+ *
+ * @property {String} url Url del servicio XYZ.
+ * @property {Boolean} visibility Define si la capa es visible o no.
+ * @property {Number} minZoom Limitar el zoom mínimo.
+ * @property {Number} maxZoom Limitar el zoom máximo.
+ * @property {Number} tileGridMaxZoom Zoom máximo de la tesela en forma de rejilla.
+ * @property {Boolean} displayInLayerSwitcher Mostrar en el selector de capas.
+ *
  * @api
+ * @extends {M.impl.layer.Vector}
  */
 class XYZ extends Layer {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a XYZ layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa XYZ
+   * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @implements {M.impl.layer.Vector}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
+   * @param {Mx.parameters.TMS} userParameters Parámetros para la construcción de la capa.
+   * - URL: Url del servicio XYZ.
+   * - tileSize: Tamaño de la tesela, por defecto 256.
+   * - visibility: Define si la capa es visible o no.
+   * - minZoom: Limitar el zoom mínimo.
+   * - maxZoom: Limitar el zoom máximo.
+   * - tileGridMaxZoom: Zoom máximo de la tesela en forma de rejilla.
+   * - displayInLayerSwitcher: Mostrar en el selector de capas.
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - opacity: Opacidad de la capa.
+   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import XYZSource from 'ol/source/XYZ';
+   * {
+   *  opacity: 0.1,
+   *  source: new XYZSource({
+   *    attributions: 'xyz',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(userParameters, options = {}, vendorOptions) {
     super(options, vendorOptions);
 
     /**
-     * The source url of the xyz layer
-     * @private
-     * @type {String}
-     * @expose
+     * XYZ url.
+     * La URL de origen de la capa xyz.
      */
     this.url = userParameters.url;
 
     /**
-     * Tile size (default value 256)
-     * @private
-     * @type {number}
+     * XYZ tileSize_.
+     * Tamaño de la tesela, por defecto 256.
      */
     this.tileSize_ = typeof userParameters.tileSize === 'number' ? userParameters.tileSize : 256;
 
     /**
-     * Layer opacity
-     * @private
-     * @type {number}
+     * XYZ opacity_.
+     * Opacidad de la capa.
      */
     this.opacity_ = typeof options.opacity === 'number' ? options.opacity : 1;
 
+    /**
+     * XYZ zIndex_.
+     * zIndex de la capa.
+     */
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.XYZ];
 
+    /**
+     * XYZ visibility.
+     * Define si la capa es visible o no.
+     */
     this.visibility = userParameters.visibility === false ? userParameters.visibility : true;
 
+    /**
+     * XYZ minZoom.
+     * Zoom mínimo aplicable a la capa.
+     */
     this.minZoom = userParameters.minZoom || Number.NEGATIVE_INFINITY;
 
+    /**
+     * XYZ maxZoom.
+     * Zoom máximo aplicable a la capa.
+     */
     this.maxZoom = userParameters.maxZoom || Number.POSITIVE_INFINITY;
 
+    /**
+     * XYZ tileGridMaxZoom.
+     * Zoom máximo de la tesela en forma de rejilla.
+     */
     this.tileGridMaxZoom = userParameters.tileGridMaxZoom;
 
+    /**
+     * XYZ displayInLayerSwitcher:
+     * Mostrar en el selector de capas.
+     */
     this.displayInLayerSwitcher = userParameters.displayInLayerSwitcher !== false;
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método establece la visibilidad de esta capa.
    *
    * @public
    * @function
+   * @param {Boolean} visibility Verdadero es visible, falso si no.
    * @api
    */
   setVisible(visibility) {
@@ -90,10 +150,11 @@ class XYZ extends Layer {
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método añade la capa al mapa de la implementación.
    *
    * @public
    * @function
+   * @param {M.impl.Map} map Mapa de la implementación.
    * @api
    */
   addTo(map) {
@@ -123,10 +184,11 @@ class XYZ extends Layer {
 
 
   /**
-   * This function sets a custom tile url function
+   * Este método modifica la url de la tesela.
    *
    * @public
    * @function
+   * @param {String} tileUrlFunction Nueva URL tesela.
    * @api
    */
   setTileUrlFunction(tileUrlFunction) {
@@ -134,10 +196,11 @@ class XYZ extends Layer {
   }
 
   /**
-   * This function returns the current tile url function
+   * Este método devuelve la url de la tesela actual.
    *
    * @public
    * @function
+   * @returns {M.layer.XYZ.impl.ol3Layer.getSource.getTileUrlFunction} URL tesela.
    * @api
    */
   getTileUrlFunction() {
@@ -145,10 +208,11 @@ class XYZ extends Layer {
   }
 
   /**
-   * This function return the tile size of the layer
+   * Este método devuelve el tamaño de la tesela de la capa.
    *
    * @public
    * @function
+   * @return {M.layer.XYZ.impl.tileSize_}  Tamaño de la tesela.
    * @api
    */
   getTileSize() {
@@ -156,8 +220,8 @@ class XYZ extends Layer {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
    *
    * @public
    * @function
@@ -173,10 +237,12 @@ class XYZ extends Layer {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api
    */
   equals(obj) {

@@ -6,7 +6,12 @@ const map = M.map({
   container: 'mapjs',
 });
 
-const plugin = new MeasureBar();
+const plugin = new MeasureBar({
+  position: 'TL',
+  collapsed: true,
+  collapsible: true,
+  tooltip: 'MeasureBar plugin',
+});
 
 const mp = new M.plugin.Infocoordinates({
   position: 'TR',

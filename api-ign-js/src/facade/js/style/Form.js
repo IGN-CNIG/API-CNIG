@@ -3,7 +3,7 @@
  */
 
 /**
- * Circle style form
+ * Forma de estilo de círculo.
  * @const
  * @type {string}
  * @public
@@ -12,7 +12,7 @@
 export const CIRCLE = 'CIRCLE';
 
 /**
- * Buble style form
+ * Forma de estilo buble
  * @const
  * @type {string}
  * @public
@@ -21,7 +21,7 @@ export const CIRCLE = 'CIRCLE';
 export const BUBBLE = 'BUBBLE';
 
 /**
- * Marker style form
+ * Forma de estilo de marcador.
  * @const
  * @type {string}
  * @public
@@ -30,7 +30,7 @@ export const BUBBLE = 'BUBBLE';
 export const MARKER = 'MARKER';
 
 /**
- * Shield style form
+ * Forma de estilo de escudo.
  * @const
  * @type {string}
  * @public
@@ -39,7 +39,7 @@ export const MARKER = 'MARKER';
 export const SHIELD = 'SHIELD';
 
 /**
- * Blazon style form
+ * forma de estilo blasón.
  * @const
  * @type {string}
  * @public
@@ -48,7 +48,7 @@ export const SHIELD = 'SHIELD';
 export const BLAZON = 'BLAZON';
 
 /**
- * Triangle style form
+ * forma de estilo triángulo.
  * @const
  * @type {string}
  * @public
@@ -57,7 +57,7 @@ export const BLAZON = 'BLAZON';
 export const TRIANGLE = 'TRIANGLE';
 
 /**
- * Sing style form
+ * forma de estilo de cantar.
  * @const
  * @type {string}
  * @public
@@ -66,7 +66,7 @@ export const TRIANGLE = 'TRIANGLE';
 export const SIGN = 'SIGN';
 
 /**
- * Ban style form
+ * Forma de estilo de prohibición.
  * @const
  * @type {string}
  * @public
@@ -75,7 +75,7 @@ export const SIGN = 'SIGN';
 export const BAN = 'BAN';
 
 /**
- * Lozenge style form
+ * Forma estilo rombo.
  * @const
  * @type {string}
  * @public
@@ -84,7 +84,7 @@ export const BAN = 'BAN';
 export const LOZENGE = 'LOZENGE';
 
 /**
- * Square style form
+ * Forma de estilo cuadrado.
  * @const
  * @type {string}
  * @public
@@ -94,7 +94,7 @@ export const SQUARE = 'SQUARE';
 
 
 /**
- * Square style form
+ * Forma de estilo cuadrado.
  * @const
  * @type {string}
  * @public

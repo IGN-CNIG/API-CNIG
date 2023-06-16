@@ -12,13 +12,30 @@ import { compileSync as compileTemplate } from '../util/Template';
 
 /**
  * @classdesc
+ * Esta clase se encarga de general el panel de los plugins.
+ * @property {String} name Nombre del panel.
+ * @property {String} position Posición del panel.
+ *
  * @api
  */
 class Panel extends MObject {
   /**
+   * Constructor principal de la clase.
    * @constructor
-   * @param {string} name of the panel
-   * @param {Mx.parameters.Panel} options of the panel
+   * @param {string} name Nombre del panel.
+   * @param {Mx.parameters.Panel} options Opciones del panel.
+   * - collapsible: Indica si el panel se puede colapsar.
+   * - position: Posición del panel.
+   *   - BL: ".m-bottom.m-left".
+   *   - BR: ".m-bottom.m-right".
+   *   - TL: ".m-top.m-left".
+   *   - TR: ".m-top.m-right".
+   * - collapsed: Indica si el panel aparece por defecto colapsado o no.
+   * - multiActivation: Si el panel puede estar activado o no.
+   * - className: Clase CSS del panel.
+   * - collapsedButtonClass: Clase CSS del botón del panel.
+   * - tooltip: Información sobre la herramienta.
+   * - order: Orden del panel respecto a los otros paneles y su posición.
    * @extends {M.Object}
    * @api
    */
@@ -27,7 +44,6 @@ class Panel extends MObject {
     super();
 
     /**
-     * @public
      * @type {string}
      * @api
      * @expose
@@ -66,7 +82,6 @@ class Panel extends MObject {
     }
 
     /**
-     * @public
      * @type {Position}
      * @api
      * @expose
@@ -142,7 +157,6 @@ class Panel extends MObject {
     this._element = null;
 
     /**
-     * TODO
      * @private
      * @type {HTMLElement}
      * @expose
@@ -177,12 +191,10 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
+   * Este método elimina el panel.
    *
    * @public
    * @function
-   @param {HTMLElement} html panel
-   @param {HTMLElement} html area
    * @api
    */
   destroy() {
@@ -193,11 +205,12 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
+   * Este método añade el panel al mapa.
    *
    * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {M.map} map Mapa.
+   * @param {HTMLElement} areaContainer Elemento contenedor.
    * @api
    */
   addTo(map, areaContainer) {
@@ -218,9 +231,7 @@ class Panel extends MObject {
       // this._element.setAttribute('tabIndex', this._order);
       button.setAttribute('tabIndex', this._order);
     } else {
-      // this._element.setAttribute('tabIndex', '300');
       button.setAttribute('tabIndex', '300');
-
       // this._element.style.setProperty('order', 100, 'important');
     }
 
@@ -263,10 +274,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método proporciona tab al panel.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
    */
   _tabAccessibility() {
     document.body.addEventListener('keyup', ({ key, target }) => {
@@ -286,10 +298,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método proporciona el evento de cerrar el panel.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
    */
   _collapse(html) {
     html.classList.remove('opened');
@@ -301,10 +314,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método proporciona el evento de abrir el panel.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @api
    */
   _open(html) {
     html.classList.remove('collapsed');
@@ -316,31 +330,33 @@ class Panel extends MObject {
   }
 
   /**
-   * Call private method _open
+   * Este método abre el panel.
    *
    * @public
    * @function
+   * @api
    */
   open() {
     this._open(this._element);
   }
 
   /**
-   * Call private method _collapse
+   * Este método cierra el panel.
    *
    * @public
    * @function
+   * @api
    */
   collapse() {
     this._collapse(this._element);
   }
 
   /**
-   * TODO
+   * Este método devuelve el control del panel.
    *
    * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @return {array<M.Control>} Control.
    * @api
    */
   getControls() {
@@ -348,11 +364,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
+   * Este método añade un control al panel.
    *
    * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {array<M.Control>} controlsParam Control.
    * @api
    */
   addControls(controlsParam) {
@@ -390,11 +406,13 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
+   * Este método te devuelve verdadero si a un control le pertenece este panel.
    *
    * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {array<M.Control>} controlParam Control.
+   * @returns {Boolean} Verdadero pertenece, falso no.
+   *
    * @api
    */
   hasControl(controlParam) {
@@ -410,11 +428,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
+   * Este método elimina los controles del panel.
    *
    * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {array<M.Control>} controlsParam Control.
    * @api
    */
   removeControls(controlsParam) {
@@ -439,11 +457,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
-   *
+   * Este método elimina los controles del panel.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {array<M.Control>} controls Control.
    * @api
    */
   _removeControl(controlsParam) {
@@ -457,11 +475,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
+   * Este método elimina una clase en el panel.
    *
    * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {String} className Nombre de la clase.
    * @api
    */
   removeClassName(className) {
@@ -473,11 +491,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
+   * Este método añade una clase al panel.
    *
    * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {String} className Nombre de la clase.
    * @api
    */
   addClassName(className) {
@@ -489,11 +507,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método modifica la vista del control.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {array<M.Control>} controls Control.
    * @api
    */
   _moveControlView(control) {
@@ -505,11 +523,11 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método maneja la activación del botón.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {array<M.Control>} controls Control.
    * @api
    */
   _manageActivation(control) {
@@ -523,11 +541,12 @@ class Panel extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método devuelve verdadero si es igual,
+   * falso si no.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param {array<M.Control>} controls
+   * @param {Object} Objeto Objeto.
    * @api
    */
   equals(obj) {
@@ -539,43 +558,50 @@ class Panel extends MObject {
   }
 
   /**
-   * Returns the template panel
+   * Este método devuelve la plantilla.
    *
    * @public
    * @function
    * @api
-   * @returns {HTMLElement}
+   * @returns {HTMLElement} Plantilla.
    */
   getTemplatePanel() {
     return this._element;
   }
 
   /**
-   * Returns the button panel
+   * Este método devuelve el botón del panel.
    *
    * @public
    * @function
    * @api
-   * @returns {HTMLElement}
+   * @returns {HTMLElement} Elemento botón.
    */
   getButtonPanel() {
     return this._buttonPanel;
   }
 
   /**
-   * Returns is collapsed
+   * Este método devuelve verdadero si el
+   * panel esta colapsado.
    *
    * @public
    * @function
    * @api
-   * @returns {Boolean}
+   * @returns {Boolean} Devuelve verdadero si el
+   * panel esta colapsado.
    */
   isCollapsed() {
     return this._collapsed;
   }
 
   /**
-   * TODO
+   * Este método devuelve el contenedor.
+   *
+   * @public
+   * @function
+   * @api
+   * @returns {HTMLElement} Contenedor.
    */
   getControlsContainer() {
     return this._controlsContainer;

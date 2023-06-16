@@ -1,5 +1,9 @@
+/**
+ * @module M/impl/Map
+ */
 import OLMap from 'ol/Map';
 import { get as getProj, transform } from 'ol/proj';
+import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
 import OLProjection from 'ol/proj/Projection';
 import OLInteraction from 'ol/interaction/Interaction';
 import MObject from 'M/Object';
@@ -13,6 +17,7 @@ import * as EventType from 'M/event/eventtype';
 import LayerBase from 'M/layer/Layer';
 import Exception from 'M/exception/exception';
 import { getValue } from 'M/i18n/language';
+import { get as getRemote } from 'M/util/Remote';
 import {
   isNullOrEmpty,
   isArray,
@@ -20,113 +25,163 @@ import {
   isObject,
   includes,
   getScaleFromResolution,
+  getWMSGetCapabilitiesUrl,
+  getWMTSGetCapabilitiesUrl,
   // fillResolutions,
   // generateResolutionsFromExtent,
 } from 'M/util/Utils';
 import 'patches';
 import ImplUtils from './util/Utils';
+import GetCapabilities from './util/WMSCapabilities';
 import View from './View';
+import FormatWMS from './format/WMS';
 
 /**
- * @module M/impl/Map
+ * @classdesc
+ * Esta clase crea un mapa con un contenedor "div" específico
+ *
+ * @property {M.Map} facadeMap_ Fachada del mapa a implementar.
+ * @property {ol.Collection<M.Layer>} layers_ Capas añadidas al mapa.
+ * @property {Array<M.layer.Group>} layerGroups_ Grupos añadidos al mapa.
+ * @property {Array<M.Control>} controls_ Controles añadidos al mapa.
+ * @property {Boolean} initZoom_ Indica si el zoom inicial fue calculado. Por defecto verdadero.
+ * @property {Array<Number>} userResolutions_ Resoluciones asociadas a cada nivel
+ * de zoom especificadas por el usuario.
+ * @property {Mx.Extent} userBbox_ Encuadre de visualización del mapa especificado por el usuario.
+ * @property {Mx.Extent} maxExtentForResolutions_ Máxima extensión permitida
+ * especificada por el usuario.
+ * @property {Mx.Extent} envolvedMaxExtent_ Extensión máxima envolvente calculada.
+ * @property {Boolean} _calculatedResolutions Indica si las resoluciones fueron calculadas.
+ * Por defecto falso.
+ * @property {Boolean} _resolutionsEnvolvedExtent Indica si las resoluciones de las
+ * extensión máxima envolvente
+ * fueron calculadas. Por defecto falso.
+ * @property {Boolean} _resolutionsBaseLayer Indica si las resoluciones fueron
+ * calculadas para las capas base.
+ * Por defecto falso.
+ * @property {ol.Map} map_ Implementación del mapa.
+ * @property {Object} Z_INDEX_BASELAYER Objeto con los valores de los z-index.
+ *
+ * @api
+ * @extends {M.Object}
  */
 class Map extends MObject {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a Map
-   * with the specified div
+   * Constructor principal de la clase. Crea un mapa con un
+   * contenedor "div" específico.
    *
    * @constructor
-   * @extends {M.Object}
-   * @param {Object} div
-   * @param {Mx.parameters.MapOptions} options
-   * @api stable
+   * @param {Object} div Elemento "div" proporcionado por el usuario.
+   * @param {Mx.parameters.MapOptions} options Opciones del mapa.
+   * - zoom: Nivel de zoom inicial del mapa.
+   * - bbox: Encuadre de visualización del mapa.
+   * - maxExtent: Máxima extensión permitida; a diferencia del bbox,
+   * no se dibujará el mapa fuera de los límites
+   * establecidos.
+   * - projection: Proyección de visualización del mapa.
+   * - center: Punto central del mapa.
+   * - label: "Popup" con el texto indicado en una coordenada especificada o,
+   * en su defecto, en el centro (center)
+   * establecido del mapa.
+   * - resolutions: Array con las resoluciones asociadas a cada nivel de zoom del mapa.
+   *
+   * @api
    */
   constructor(div, facadeMap, options = {}) {
     super();
     /**
-     * Facade map to implement
+     * Fachada del mapa a implementar.
      * @private
      * @type {M.Map}
      */
     this.facadeMap_ = facadeMap;
 
     /**
-     * Layers added to the map
+     * Capas añadidas al mapa.
      * @private
      * @type {ol.Collection<M.Layer>}
      */
     this.layers_ = [];
 
     /**
-     * Groups added to the map
+     * Grupos añadidos al mapa.
      * @private
      * @type {Array<M.layer.Group>}
      */
     this.layerGroups_ = [];
 
     /**
-     * Controls added to the map
+     * Controles añadidos al mapa.
      * @private
      * @type {Array<M.Control>}
      */
     this.controls_ = [];
 
     /**
-     * Flag to indicate if the initial zoom was calculated
+     * Indica si el zoom inicial fue calculado. Por defecto verdadero.
      * @private
      * @type {Boolean}
      */
     this.initZoom_ = true;
 
     /**
-     * Resolutions specified by the user
+     * Resoluciones asociadas a cada nivel de zoom especificadas por el usuario.
      * @private
      * @type {Array<Number>}
      */
     this.userResolutions_ = null;
 
     /**
-     * Bbox specified by the user
+     * Encuadre de visualización del mapa especificado por el usuario.
      * @private
      * @type {Mx.Extent}
      */
     this.userBbox_ = null;
 
     /**
-     * MaxExtent specified by the user
+     * Máxima extensión permitida especificada por el usuario.
      * @private
      * @type {Mx.Extent}
      */
     this.maxExtentForResolutions_ = null;
 
     /**
-     * calculated envolved maxExtent
+     * Extensión máxima envolvente calculada.
      * @private
      * @type {Mx.Extent}
      */
     this.envolvedMaxExtent_ = null;
 
     /**
-     * calculated resolutions
+     * Indica si las resoluciones fueron calculadas.
+     * Por defecto falso.
      * @private
      * @type {Boolean}
      */
     this._calculatedResolutions = false;
 
     /**
-     * calculated resolution form envolved extent
+     * Indica si las resoluciones fueron calculadas para la extensión máxima envolvente.
+     * Por defecto falso.
      * @private
      * @type {Boolean}
      */
     this._resolutionsEnvolvedExtent = false;
 
     /**
-     * calculated resolution form base layer
+     * Indica si las resoluciones fueron calculadas para las capas base.
+     * Por defecto falso.
      * @private
      * @type {Boolean}
      */
     this._resolutionsBaseLayer = false;
+
+    /**
+     * Almacena el zoom del mapa.
+     * @api
+     * @type {Number}
+     */
+    this.currentZoom = null;
 
     // gets the renderer
     // let renderer = ol.renderer.Type.CANVAS;
@@ -135,7 +190,7 @@ class Map extends MObject {
     // }
 
     /**
-     * Implementation of this map
+     * Implementación del mapa.
      * @private
      * @type {ol.Map}
      */
@@ -145,6 +200,10 @@ class Map extends MObject {
       // renderer,
       view: new View(),
     });
+
+    this.registerEvents_();
+
+
     this.map_.getView().setConstrainResolution(true);
     this.facadeMap_.on(EventType.COMPLETED, () => {
       this.map_.updateSize();
@@ -159,19 +218,21 @@ class Map extends MObject {
       },
     }));
   }
+
   /**
-   * This function gets the layers added to the map
+   * Este método obtiene las capas del mapa.
    *
-   * @public
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.Layer>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.Layer>} Capas del mapa.
+   * @public
+   * @api
    */
   getLayers(filters) {
     const kmlLayers = this.getKML(filters);
     const wmsLayers = this.getWMS(filters);
     const wfsLayers = this.getWFS(filters);
+    const ogcapifLayers = this.getOGCAPIFeatures(filters);
     const wmtsLayers = this.getWMTS(filters);
     const mvtLayers = this.getMVT(filters);
     const mbtilesLayers = this.getMBTiles(filters);
@@ -180,7 +241,9 @@ class Map extends MObject {
     const tmsLayers = this.getTMS(filters);
     const unknowLayers = this.getUnknowLayers_(filters);
 
-    return kmlLayers.concat(wmsLayers).concat(wfsLayers)
+    return kmlLayers.concat(wmsLayers)
+      .concat(wfsLayers)
+      .concat(ogcapifLayers)
       .concat(wmtsLayers)
       .concat(mvtLayers)
       .concat(mbtilesLayers)
@@ -191,19 +254,20 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the layers added to the map
+   * Este método obtiene las capas base del mapa.
    *
-   * @public
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.Layer>} layers from the map
-   * @api stable
+   * @returns {Array<M.Layer>} Capas base del mapa.
+   * @public
+   * @api
    */
   getBaseLayers() {
     const baseLayers = this.getLayers().filter((layer) => {
       let isBaseLayer = false;
       if ((layer.type === LayerType.WMS) ||
         (layer.type === LayerType.WMTS) ||
+        (layer.type === LayerType.MBTiles) ||
+        (layer.type === LayerType.MBTilesVector) ||
         layer.type === LayerType.TMS) {
         isBaseLayer = (layer.transparent !== true);
       }
@@ -213,12 +277,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds layers specified by the user
+   * Este método añade las capas especificadas por el usuario al mapa.
    *
-   * @public
    * @function
-   * @param {Array<Object>} layers
-   * @returns {Map}
+   * @param {Array<M.Layer>} layers Capas a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   addLayers(layers) {
     let layersRec = layers;
@@ -244,6 +309,8 @@ class Map extends MObject {
         this.facadeMap_.addKML(layer);
       } else if (layer.type === LayerType.WFS) {
         this.facadeMap_.addWFS(layer);
+      } else if (layer.type === LayerType.OGCAPIFeatures) {
+        this.facadeMap_.addOGCAPIFeatures(layer);
       } else if (layer.type === LayerType.MVT) {
         this.facadeMap_.addMVT(layer);
       } else if (layer.type === 'MBTiles') {
@@ -264,12 +331,13 @@ class Map extends MObject {
 
 
   /**
-   * This function removes the layers from the map
+   * Este método elimina las capas del mapa.
    *
    * @function
-   * @param {Array<Object>} layers to remove
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.Layer>} layers Capas a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   removeLayers(layers) {
     // gets the layers with type defined and undefined
@@ -284,9 +352,11 @@ class Map extends MObject {
       this.removeKML(knowLayers);
       this.removeWMS(knowLayers);
       this.removeWFS(knowLayers);
+      this.removeOGCAPIFeatures(knowLayers);
       this.removeWMTS(knowLayers);
       this.removeMVT(knowLayers);
       this.removeMBTiles(knowLayers);
+      this.removeMBTilesVector(knowLayers);
       this.removeXYZ(knowLayers);
       this.removeTMS(knowLayers);
     }
@@ -295,16 +365,19 @@ class Map extends MObject {
       this.removeUnknowLayers_(unknowLayers);
     }
 
+    this.facadeMap_.fire(EventType.REMOVED_LAYER, [layers]);
+
     return this;
   }
 
   /**
-   * This function gets the KML layers added to the map
+   * Este método obtiene las capas KML añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.layer.KML>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.KML>} Capas KML del mapa.
+   * @public
+   * @api
    */
   getKML(filtersParam) {
     let foundLayers = [];
@@ -359,12 +432,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds the KML layers to the map
+   * Este método añade las capas KML especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<M.layer.KML>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.KML>} layers Capas KML a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   addKML(layers) {
     const existsBaseLayer = this.getBaseLayers().length > 0;
@@ -390,12 +464,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function removes the KML layers to the map
+   * Este método elimina las capas KML del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<M.layer.KML>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.KML>} layers Capas KML a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   removeKML(layers) {
     const kmlMapLayers = this.getKML(layers);
@@ -408,12 +483,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the WMS layers added to the map
+   * Este método obtiene las capas WMS añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<FacadeWMS>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<FacadeWMS>} Capas WMS del mapa.
+   * @public
+   * @api
    */
   getWMS(filtersParam) {
     let foundLayers = [];
@@ -489,12 +565,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds the WMS layers to the map
+   * Este método añade las capas WMS especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<FacadeWMS>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<FacadeWMS>} layers Capas WMS a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   addWMS(layers) {
     // cehcks if exists a base layer
@@ -534,12 +611,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function removes the WMS layers to the map
+   * Este método elimina las capas WMS del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<FacadeWMS>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<FacadeWMS>} layers Capas WMS a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   removeWMS(layers) {
     const wmsMapLayers = this.getWMS(layers);
@@ -552,12 +630,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the GeoJSON layers added to the map
+   * Este método obtiene las capas GeoJSON añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.layer.WFS>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.GeoJSON>} Capas GeoJSON del mapa.
+   * @public
+   * @api
    */
   getGeoJSON(filtersParam) {
     let foundLayers = [];
@@ -612,12 +691,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the WFS layers added to the map
+   * Este método obtiene las capas WFS añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.layer.WFS>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.WFS>} Capas WFS del mapa.
+   * @public
+   * @api
    */
   getWFS(filtersParam) {
     let foundLayers = [];
@@ -692,12 +772,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds the WFS layers to the map
+   * Este método añade las capas WFS especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<M.layer.WFS>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.WFS>} layers Capas WFS a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   addWFS(layers) {
     // checks if exists a base layer
@@ -726,12 +807,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function removes the WFS layers to the map
+   * Este método elimina las capas WFS del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<M.layer.WFS>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.WFS>} layers Capas WFS a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   removeWFS(layers) {
     const wfsMapLayers = this.getWFS(layers);
@@ -744,12 +826,141 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the WMTS layers added to the map
+   * Este método obtiene las capas OGCAPIFeatures añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.layer.WMTS>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.OGCAPIFeatures>} Capas OGCAPIFeatures del mapa.
+   * @public
+   * @api
+   */
+  getOGCAPIFeatures(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+
+    // get all ogcapifLayers
+    const ogcapifLayers = this.layers_.filter((layer) => {
+      return (layer.type === LayerType.OGCAPIFeatures);
+    });
+
+    // parse to Array
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = ogcapifLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredOGCAPIFeaturesLayers = ogcapifLayers.filter((ogcapifLayer) => {
+          let layerMatched = true;
+          // checks if the layer is not in selected layers
+          if (!foundLayers.includes(ogcapifLayer)) {
+            // type
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === ogcapifLayer.type));
+            }
+            // URL
+            if (!isNullOrEmpty(filterLayer.url)) {
+              layerMatched = (layerMatched && (filterLayer.url === ogcapifLayer.url));
+            }
+            // name
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === ogcapifLayer.name));
+            }
+
+            // legend
+            if (!isNullOrEmpty(filterLayer.legend)) {
+              layerMatched = (layerMatched && (filterLayer.legend === ogcapifLayer.legend));
+            }
+            // cql
+            if (!isNullOrEmpty(filterLayer.cql)) {
+              layerMatched = (layerMatched && (filterLayer.cql === ogcapifLayer.cql));
+            }
+            // geometry
+            if (!isNullOrEmpty(filterLayer.geometry)) {
+              layerMatched = (layerMatched && (filterLayer.geometry === ogcapifLayer.geometry));
+            }
+            // ids
+            if (!isNullOrEmpty(filterLayer.id)) {
+              layerMatched = (layerMatched && (filterLayer.id === ogcapifLayer.id));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredOGCAPIFeaturesLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+   * Este método añade las capas OGCAPIFeatures especificadas por el usuario al mapa.
+   *
+   * @function
+   * @param {Array<M.layer.OGCAPIFeatures>} layers Capas OGCAPIFeatures a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
+   */
+  addOGCAPIFeatures(layers) {
+    // checks if exists a base layer
+    const baseLayers = this.getBaseLayers();
+    const existsBaseLayer = (baseLayers.length > 0);
+
+    layers.forEach((layer) => {
+      // checks if layer is OGCAPIFeatures and was added to the map
+      if (layer.type === LayerType.OGCAPIFeatures) {
+        if (!includes(this.layers_, layer)) {
+          layer.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(layer);
+          layer.setZIndex(layer.getZIndex());
+          if (layer.getZIndex() == null) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.OGCAPIFeatures];
+            layer.setZIndex(zIndex);
+          }
+          if (!existsBaseLayer) {
+            this.updateResolutionsFromBaseLayer();
+          }
+        }
+      }
+    });
+
+    return this;
+  }
+
+  /**
+   * Este método elimina las capas OGCAPIFeatures del mapa especificadas por el usuario.
+   *
+   * @function
+   * @param {Array<M.layer.OGCAPIFeatures>} layers Capas OGCAPIFeatures a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
+   */
+  removeOGCAPIFeatures(layers) {
+    const ogcapifMapLayers = this.getOGCAPIFeatures(layers);
+    ogcapifMapLayers.forEach((ogcapifLayer) => {
+      this.layers_ = this.layers_.filter(layer => !layer.equals(ogcapifLayer));
+      ogcapifLayer.getImpl().destroy();
+    });
+
+    return this;
+  }
+
+  /**
+   * Este método obtiene las capas WMTS añadidas al mapa.
+   *
+   * @function
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.WMTS>} Capas WMTS del mapa.
+   * @public
+   * @api
    */
   getWMTS(filtersParam) {
     let foundLayers = [];
@@ -809,12 +1020,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds the WMTS layers to the map
+   * Este método añade las capas WMTS especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<M.layer.WMTS>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.WMTS>} layers Capas WMTS a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   addWMTS(layers) {
     // cehcks if exists a base layer
@@ -855,12 +1067,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function removes the WMTS layers to the map
+   * Este método elimina las capas WMTS del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<M.layer.WMTS>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.WMTS>} layers Capas WMTS a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   removeWMTS(layers) {
     const wmtsMapLayers = this.getWMTS(layers);
@@ -873,12 +1086,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the MBtiles layers added to the map
+   * Este método obtiene las capas MBTiles añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.layer.MBtiles>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filtersParam Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.MBTiles>} Capas MBTiles del mapa.
+   * @public
+   * @api
    */
   getMBTiles(filtersParam) {
     let foundLayers = [];
@@ -931,45 +1145,55 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds the MBtiles layers to the map
+   * Este método añade las capas MBTiles especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<M.layer.MBtiles>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.MBTiles>} layers Capas MBTiles a añadir al mapa.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   addMBTiles(layers) {
     const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
+    let existsBaseLayer = (baseLayers.length > 0);
 
+    const addedLayers = [];
     layers.forEach((layer) => {
-      // checks if layer is WFS and was added to the map
-      if (layer.type === 'MBTiles') {
+      if (layer.type === LayerType.MBTiles) {
         if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
+          addedLayers.push(layer);
+
+          if (layer.transparent !== true) {
+            layer.setVisible(!existsBaseLayer);
+            existsBaseLayer = true;
+            layer.setZIndex(Map.Z_INDEX_BASELAYER);
+          } else if (layer.getZIndex() == null) {
             const zIndex = this.layers_.length + Map.Z_INDEX.MBTiles;
             layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
           }
         }
       }
     });
 
+    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer) ||
+      addedLayers.some(l => l.transparent !== true && l.isVisible());
+    if (calculateResolutions) {
+      this.updateResolutionsFromBaseLayer();
+    }
+
     return this;
   }
 
   /**
-   * This function removes the MBtiles layers to the map
+   * Este método elimina las capas MBTiles del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<M.layer.MBtiles>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.MBTiles>} layers Capas MBTiles a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   removeMBTiles(layers) {
     const mbtilesMapLayers = this.getMBTiles(layers);
@@ -983,12 +1207,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the MBtiles layers added to the map
+   * Este método obtiene las capas MBTilesVector añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.layer.MBtiles>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filtersParam Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.MBTilesVector>} Capas MBTilesVector del mapa.
+   * @public
+   * @api
    */
   getMBTilesVector(filtersParam) {
     let foundLayers = [];
@@ -1036,20 +1261,22 @@ class Map extends MObject {
     }
     return foundLayers;
   }
+
   /**
-   * This function adds the MBtiles layers to the map
+   * Este método añade las capas MBTilesVector especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<M.layer.MBtiles>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.MBTilesVector>} layers Capas MBTilesVector a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   addMBTilesVector(layers) {
     const baseLayers = this.getBaseLayers();
     const existsBaseLayer = (baseLayers.length > 0);
     layers.forEach((layer) => {
       // checks if layer is WFS and was added to the map
-      if (layer.type === 'MBTilesVector') {
+      if (layer.type === LayerType.MBTilesVector) {
         if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
@@ -1066,13 +1293,15 @@ class Map extends MObject {
     });
     return this;
   }
+
   /**
-   * This function removes the MBtiles layers to the map
+   * Este método elimina las capas MBTilesVector del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<M.layer.MBtiles>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {Array<M.layer.MBTilesVector>} layers Capas MBTilesVector a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   removeMBTilesVector(layers) {
     const mbtilesMapLayers = this.getMBTilesVector(layers);
@@ -1085,12 +1314,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the WMS layers added to the map
-   *
-   * @private
+   * Este método obtiene las capas añadidas al mapa.
+   *- ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<FacadeWMS>} layers from the map
+   * @param {Array<M.Layer>} filters Filtros a aplicar en la búsqueda.
+   * @returns {Array<FacadeWMS>} Capas del mapa.
+   * @api
    */
   getUnknowLayers_(filters) {
     let foundLayers = [];
@@ -1142,12 +1372,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds layers specified by the user
-   *
-   * @private
+   * Este método añade las capas especificadas por el usuario.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param {Array<Object>} layers
-   * @returns {Map}
+   * @param {Array<Object>} layers Capas a añadir.
+   * @returns {Map} Mapa.
+   * @api
    */
   addUnknowLayers_(layers) {
     // cehcks if exists a base layer
@@ -1187,12 +1418,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function removes the layers from the map
-   *
-   * @private
+   * Este método elimina las capas del mapa especificadas por el usuario.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
-   * @param {Array<Object>} layers to remove
-   * @returns {Map}
+   * @param {Array<Object>} layers Capas a eliminar.
+   * @returns {Map} Mapa.
+   * @api
    */
   removeUnknowLayers_(layers) {
     // removes unknow layers
@@ -1212,9 +1444,11 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the vector tile layers
+   * Este método obtiene las capas MVT del mapa.
    *
    * @function
+   * @param {Array<M.Layer>} filtersParam Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.MVT>} Capas MVT del mapa.
    * @public
    * @api
    */
@@ -1261,9 +1495,11 @@ class Map extends MObject {
   }
 
   /**
-   * This function removes the vector tile layers from map.
+   * Este método elimina las capas MVT del mapa especificadas por el usuario.
    *
    * @function
+   * @param {Array<M.layer.MVT>} layers Capas MVT a eliminar.
+   * @returns {M.impl.Map} Mapa.
    * @public
    * @api
    */
@@ -1279,9 +1515,11 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds the vector tile layers
+   * Este método añade las capas MVT especificadas por el usuario al mapa.
    *
    * @function
+   * @param {Array<M.layer.MVT>} layers Capas MVT a añadir.
+   * @returns {M.impl.Map} Mapa.
    * @public
    * @api
    */
@@ -1311,12 +1549,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the XYZ layers added to the map
+   * Este método obtiene las capas XYZ añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.layer.XYZ>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.XYZ>} Capas XYZ del mapa.
+   * @public
+   * @api
    */
   getXYZs(filtersParam) {
     let foundLayers = [];
@@ -1363,12 +1602,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds the XYZ layers to the map
+   * Este método añade las capas XYZ especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<M.layer.XYZ>} layers
-   * @returns {M.impl.Map}
-   * @api stable
+   * @param {Array<M.layer.XYZ>} layers Capas XYZ a añadir.
+   * @returns {M.impl.Map} Mapa.
+   * @public
+   * @api
    */
   addXYZ(layers) {
     layers.forEach((layer) => {
@@ -1390,12 +1630,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function removes the XYZ layers to the map
+   * Este método elimina las capas XYZ del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<M.layer.XYZ>} layers
-   * @returns {M.impl.Map}
-   * @api stable
+   * @param {Array<M.layer.XYZ>} layers Capas XYZ a eliminar.
+   * @returns {M.impl.Map} Mapa.
+   * @public
+   * @api
    */
   removeXYZ(layers) {
     const xyzMapLayers = this.getXYZs(layers);
@@ -1408,12 +1649,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the TMS layers added to the map
+   * Este método obtiene las capas TMS añadidas al mapa.
    *
    * @function
-   * @param {Array<M.Layer>} filters to apply to the search
-   * @returns {Array<M.layer.TMS>} layers from the map
-   * @api stable
+   * @param {Array<M.Layer>} filters Filtros para aplicar en la búsqueda.
+   * @returns {Array<M.layer.TMS>} Capas TMS del mapa.
+   * @public
+   * @api
    */
   getTMS(filtersParam) {
     let foundLayers = [];
@@ -1460,12 +1702,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds the TMS layers to the map
+   * Este método añade las capas TMS especificadas por el usuario al mapa.
    *
    * @function
-   * @param {Array<M.layer.TMS>} layers
-   * @returns {M.impl.Map}
-   * @api stable
+   * @param {Array<M.layer.TMS>} layers Capas TMS a añadir.
+   * @returns {M.impl.Map} Mapa.
+   * @public
+   * @api
    */
   addTMS(layers) {
     layers.forEach((layer) => {
@@ -1487,12 +1730,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function removes the TMS layers to the map
+   * Este método elimina las capas TMS del mapa especificadas por el usuario.
    *
    * @function
-   * @param {Array<M.layer.TMS>} layers
-   * @returns {M.impl.Map}
-   * @api stable
+   * @param {Array<M.layer.TMS>} layers Capas TMS a eliminar.
+   * @returns {M.impl.Map} Mapa.
+   * @public
+   * @api
    */
   removeTMS(layers) {
     const tmsMapLayers = this.getTMS(layers);
@@ -1506,13 +1750,13 @@ class Map extends MObject {
 
 
   /**
-   * This function adds controls specified by the user
+   * Este método obtiene los controles especificados por el usuario.
    *
-   * @public
    * @function
-   * @param {string|Array<String>} filters
-   * @returns {Array<M.Control>}
-   * @api stable
+   * @param {string|Array<String>} filters Filtros.
+   * @returns {Array<M.Control>} Controles.
+   * @public
+   * @api
    */
   getControls(filters) {
     let filtersVar = filters;
@@ -1561,13 +1805,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds controls specified by the user
+   * Este método añade los controles del mapa especificados por el usuario.
    *
-   * @public
    * @function
-   * @param {M.Control} controls
-   * @returns {Map}
-   * @api stable
+   * @param {M.Control} controls Controles a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   addControls(controls) {
     controls.forEach((control) => {
@@ -1583,12 +1827,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function removes the controls from the map
+   * Este método elimina los controles del mapa especificados por el usuario.
    *
    * @function
-   * @param {String|Array<String>} layers
-   * @returns {Map}
-   * @api stable
+   * @param {M.Control} controls Controles a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   removeControls(controls) {
     const mapControls = this.getControls(controls);
@@ -1606,15 +1851,15 @@ class Map extends MObject {
   }
 
   /**
-   * This function sets the maximum extent for this
-   * map instance
+   * Este método establece la extensión máxima para la
+   * instancia del mapa.
    *
-   * @public
    * @function
-   * @param {Mx.Extent} maxExtent the extent max
-   * @param {Boolean} zoomToExtent - Set bbox
-   * @returns {Map}
-   * @api stable
+   * @param {Mx.Extent} maxExtent Nueva extensión máxima.
+   * @param {Boolean} zoomToExtent Indica si se establece la extensión actual.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   setMaxExtent(maxExtent, zoomToExtent) {
     let olExtent = maxExtent;
@@ -1636,13 +1881,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the maximum extent for this
-   * map instance
+   * Este método obtiene la extensión máxima para la
+   * instancia del mapa.
    *
-   * @public
    * @function
-   * @returns {Mx.Extent}
-   * @api stable
+   * @returns {Mx.Extent} Máxima extensión actual.
+   * @public
+   * @api
    */
   getMaxExtent() {
     let extent;
@@ -1667,16 +1912,55 @@ class Map extends MObject {
     return extent;
   }
 
+  // TODO: JSDOC
+  async getCapabilities(url, version, type) {
+    const layerUrl = url;
+    const layerVersion = version;
+    const projection = this.getProjection();
+    // gest the capabilities URL
+    const getCapabilitiesUrl = (type === 'WMS') ?
+      getWMSGetCapabilitiesUrl(layerUrl, layerVersion) :
+      getWMTSGetCapabilitiesUrl(layerUrl, layerVersion);
+
+
+    // gets the getCapabilities response
+    const response = await getRemote(getCapabilitiesUrl);
+    const getCapabilitiesDocument = response.xml;
+    const parser = (type === 'WMS') ? new FormatWMS() : new OLFormatWMTSCapabilities();
+    const parsedCapabilities = (type === 'WMS') ? await parser.customRead(getCapabilitiesDocument) : await parser.read(getCapabilitiesDocument);
+
+    if (type === 'WMS') {
+      const getCapabilitiesUtils = await new GetCapabilities(
+        parsedCapabilities,
+        layerUrl, projection,
+      );
+      this.getCapabilitiesPromise = getCapabilitiesUtils;
+    } else {
+      try {
+        parsedCapabilities.Contents.Layer.forEach((l) => {
+          const name = l.Identifier;
+          l.Style.forEach((s) => {
+            const layerText = response.text.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
+            /* eslint-disable no-param-reassign */
+            s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
+          });
+        });
+        /* eslint-disable no-empty */
+      } catch (err) {}
+      this.getCapabilitiesPromise = parsedCapabilities;
+    }
+    return this.getCapabilitiesPromise;
+  }
+
   /**
-   * This function sets current extent (bbox) for this
-   * map instance
+   * Este método establece el encuadre de visualización del mapa.
    *
-   * @public
    * @function
-   * @param {Mx.Extent} bbox the bbox
-   * @param {Object} vendorOpts vendor options
-   * @returns {Map}
-   * @api stable
+   * @param {Mx.Extent} bbox Nuevo encuadre de visualización del mapa.
+   * @param {Object} vendorOpts Opciones para la biblioteca base.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   setBbox(bbox, vendorOpts) {
     // checks if the param is null or empty
@@ -1700,13 +1984,12 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the current extent (bbox) of this
-   * map instance
+   * Este método obtiene el encuadre de visualización del mapa.
    *
-   * @public
    * @function
-   * @returns {Mx.Extent}
-   * @api stable
+   * @returns {Mx.Extent} Encuadre de visualización del mapa.
+   * @public
+   * @api
    */
   getBbox() {
     let bbox = null;
@@ -1733,14 +2016,14 @@ class Map extends MObject {
   }
 
   /**
-   * This function sets current zoom for this
-   * map instance
+   * Este método establece el actual zoom de la
+   * instancia del mapa.
    *
-   * @public
    * @function
-   * @param {Number} zoom the new zoom
-   * @returns {Map}
-   * @api stable
+   * @param {Number} zoom Nuevo zoom del mapa.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   setZoom(zoom) {
     // checks if the param is null or empty
@@ -1750,19 +2033,18 @@ class Map extends MObject {
 
     // set the zoom by ol
     this.getMapImpl().getView().setUserZoom(zoom);
-
     return this;
   }
 
   /**
-   * This function sets current zoom for this
-   * map instance
+   * Este método establece el mínimo zoom actual de la
+   * instancia del mapa.
    *
-   * @public
    * @function
-   * @param {Number} zoom the new zoom
-   * @returns {Map}
-   * @api stable
+   * @param {Number} zoom Nuevo mínimo zoom del mapa.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   setMinZoom(zoom) {
     if (isNullOrEmpty(zoom)) {
@@ -1774,14 +2056,14 @@ class Map extends MObject {
   }
 
   /**
-   * This function sets current zoom for this
-   * map instance
+   * Este método establece el máximo zoom actual de la
+   * instancia del mapa.
    *
-   * @public
    * @function
-   * @param {Number} zoom the new zoom
-   * @returns {Map}
-   * @api stable
+   * @param {Number} zoom Nuevo máximo zoom del mapa.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   setMaxZoom(zoom) {
     if (isNullOrEmpty(zoom)) {
@@ -1793,13 +2075,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the current zoom of this
-   * map instance
+   * Este método obtiene el zoom actual de la
+   * instancia del mapa.
    *
-   * @public
    * @function
-   * @returns {Number}
-   * @api stable
+   * @returns {Number} Zoom del mapa.
+   * @public
+   * @api
    */
   getZoom() {
     let zoom = null;
@@ -1820,8 +2102,12 @@ class Map extends MObject {
   }
 
   /**
-   * @public
+   * Este método obtiene el mínimo zoom actual de la
+   * instancia del mapa.
+   *
    * @function
+   * @returns {Number} Mínimo zoom del mapa.
+   * @public
    * @api
    */
   getMinZoom() {
@@ -1833,8 +2119,12 @@ class Map extends MObject {
   }
 
   /**
-   * @public
+   * Este método obtiene el máximo zoom actual de la
+   * instancia del mapa.
+   *
    * @function
+   * @returns {Number} Máximo zoom del mapa.
+   * @public
    * @api
    */
   getMaxZoom() {
@@ -1847,14 +2137,14 @@ class Map extends MObject {
 
 
   /**
-   * This function sets current center for this
-   * map instance
+   * Este método establece el centro actual de la
+   * instancia del mapa.
    *
-   * @public
    * @function
-   * @param {Object} center the new center
-   * @returns {Map}
-   * @api stable
+   * @param {Object} center Nuevo centro del mapa.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   setCenter(center) {
     // checks if the param is null or empty
@@ -1874,13 +2164,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the current center of this
-   * map instance
+   * Este método obtiene el centro actual de la
+   * instancia del mapa.
    *
-   * @public
    * @function
-   * @returns {Object}
-   * @api stable
+   * @returns {Object} Centro del mapa.
+   * @public
+   * @api
    */
   getCenter() {
     let center = null;
@@ -1895,13 +2185,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the current resolutions of this
-   * map instance
+   * Este método obtiene las resoluciones actuales
+   * para la instancia del mapa.
    *
-   * @public
    * @function
-   * @returns {Array<Number>}
-   * @api stable
+   * @returns {Array<Number>} Resoluciones del mapa.
+   * @public
+   * @api
    */
   getResolutions() {
     const olMap = this.getMapImpl();
@@ -1911,14 +2201,14 @@ class Map extends MObject {
   }
 
   /**
-   * This function sets current resolutions for this
-   * map instance
+   * Este método establece las resoluciones actuales
+   * para la instancia del mapa.
    *
-   * @public
    * @function
-   * @param {Array<Number>} resolutions the resolutions
-   * @returns {Map}
-   * @api stable
+   * @param {Array<Number>} resolutions Resoluciones.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   setResolutions(resolutions, optional) {
     // checks if the param is null or empty
@@ -1980,13 +2270,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets current scale for this
-   * map instance
+   * Este método obtiene la escala actual
+   * para la instancia del mapa.
    *
-   * @public
    * @function
-   * @returns {number}
-   * @api stable
+   * @returns {number} Escala actual.
+   * @public
+   * @api
    */
   getScale() {
     const olMap = this.getMapImpl();
@@ -2010,13 +2300,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets current scale for this
-   * map instance
+   * Este método obtiene la escala actual exacta
+   * para la instancia del mapa.
    *
-   * @public
    * @function
-   * @returns {number}
-   * @api stable
+   * @returns {number} Escala actual.
+   * @public
+   * @api
    */
   getExactScale() {
     const olMap = this.getMapImpl();
@@ -2030,14 +2320,14 @@ class Map extends MObject {
   }
 
   /**
-   * This function sets current projection for this
-   * map instance
+   * Este método establece la proyección actual para la
+   * instancia del mapa.
    *
-   * @public
    * @function
-   * @param {Mx.Projection} bbox the bbox
-   * @returns {Map}
-   * @api stable
+   * @param {Mx.Projection} bbox Bbox.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   setProjection(projection) {
     // checks if the param is null or empty
@@ -2126,13 +2416,12 @@ class Map extends MObject {
   }
 
   /**
-   * This function gets the current projection of this
-   * map instance
+   * Este método obtiene la proyección actual de la instancia del mapa.
    *
-   * @public
    * @function
-   * @returns {Mx.Projection}
-   * @api stable
+   * @returns {Mx.Projection} Proyección actual de la instancia del mapa.
+   * @public
+   * @api
    */
   getProjection() {
     const olMap = this.getMapImpl();
@@ -2150,19 +2439,26 @@ class Map extends MObject {
     return projection;
   }
 
+  /**
+   * Este método obtiene la implementación del mapa.
+   *
+   * @function
+   * @returns {ol.Map} Implementación del mapa.
+   * @public
+   * @api
+   */
   getMapImpl() {
     return this.map_;
   }
 
   /**
-   * This function adds a popup and removes the previous
-   * showed
+   * Este método elimina el "popup".
    *
-   * @public
-   * @param {M.impl.Popup} popup to add
-   * @returns {ol.Map}
    * @function
-   * @api stable
+   * @param {M.impl.Popup} popup "Popup" a eliminar.
+   * @returns {ol.Map} Mapa.
+   * @public
+   * @api
    */
   removePopup(popup) {
     if (!isNullOrEmpty(popup)) {
@@ -2174,12 +2470,12 @@ class Map extends MObject {
   }
 
   /**
-   * This function destroys this map, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye el mapa, limpiando el HTML y
+   * anulando el registro de todos los eventos.
    *
-   * @public
    * @function
-   * @api stable
+   * @public
+   * @api
    */
   destroy() {
     this.layers_.length = 0;
@@ -2193,13 +2489,13 @@ class Map extends MObject {
   }
 
   /**
-   * Updates the resolutions for this map calculated
-   * from base layers
+   * Actualiza las resoluciones de este mapa calculadas
+   * a partir de las capas base.
    *
-   * @public
    * @function
-   * @returns {M.Map}
-   * @api stable
+   * @returns {M.Map} Mapa
+   * @public
+   * @api
    */
   updateResolutionsFromBaseLayer() {
     // FIXME:
@@ -2267,14 +2563,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds a popup and removes the previous
-   * showed
+   * Este método añade un "popup" y elimina el anterior.
    *
-   * @public
-   * @param {M.impl.Popup} popup to add
-   * @returns {ol.Map}
    * @function
-   * @api stable
+   * @param {M.impl.Popup} label "Popup" a añadir.
+   * @returns {ol.Map} Mapa.
+   * @public
+   * @api
    */
   addLabel(label) {
     this.label = label;
@@ -2283,26 +2578,24 @@ class Map extends MObject {
   }
 
   /**
-   * This function adds a popup and removes the previous
-   * showed
+   * Este método obtiene un "popup" con el texto indicado.
    *
-   * @public
-   * @param {M.impl.Popup} popup to add
-   * @returns {ol.Map}
    * @function
-   * @api stable
+   * @returns {ol.Map} Mapa.
+   * @public
+   * @api
    */
   getLabel() {
     return this.label;
   }
 
   /**
-   * This function provides ol3 map used by this instance
+   * Este método elimina un "popup" con el texto indicado.
    *
-   * @public
-   * @returns {ol.Map}
    * @function
-   * @api stable
+   * @returns {ol.Map} Mapa.
+   * @public
+   * @api
    */
   removeLabel() {
     if (!isNullOrEmpty(this.label)) {
@@ -2313,12 +2606,13 @@ class Map extends MObject {
   }
 
   /**
-   * This function refresh the state of this map instance,
-   * this is, all its layers.
+   * Este método refresca el estado de esta instancia del mapa,
+   * es decir, todas sus capas.
    *
    * @function
-   * @api stable
-   * @returns {Map} the instance
+   * @returns {Map} Mapa.
+   * @public
+   * @api
    */
   refresh() {
     this.map_.updateSize();
@@ -2326,33 +2620,62 @@ class Map extends MObject {
   }
 
   /**
-   * This function provides the core map used by the
-   * implementation
+   * Este método proporciona el mapa central utilizado
+   * para la implementación.
    *
    * @function
-   * @api stable
-   * @returns {Object} core map used by the implementation
+   * @returns {Object} Mapa central utilizado para la implementación.
+   * @public
+   * @api
    */
   getContainer() {
     return this.map_.getOverlayContainerStopEvent();
   }
 
   /**
-   * This function sets the facade map to implement
+   * Este método establece la fachada del mapa a implementar.
    *
-   * @public
    * @function
-   * @api stable
+   * @param {M.Map} facadeMap Fachada del mapa a implementar.
+   * @public
+   * @api
    */
   setFacadeMap(facadeMap) {
     this.facadeMap_ = facadeMap;
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método registra el evento de cambio de zoom.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
+   * @public
+   * @api
+   */
+  registerEvents_() {
+    this.map_.on('moveend', this.zoomEvent_.bind(this));
+  }
+
+  /**
+   * Este método se ejecuta cuando el usuario realiza zoom.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @function
+   * @public
+   * @api
+   */
+  zoomEvent_() {
+    if (this.currentZoom !== this.getZoom()) {
+      this.facadeMap_.fire(EventType.CHANGE_ZOOM, this.facadeMap_);
+      this.currentZoom = this.getZoom();
+    }
+  }
+
+  /**
+   * Este método se ejecuta cuando el usuario hace click en el mapa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @function
+   * @param {M.evt} evt Evento.
+   * @public
+   * @api
    */
   onMapClick_(evt) {
     const pixel = evt.pixel;
@@ -2372,10 +2695,12 @@ class Map extends MObject {
   }
 
   /**
-   * TODO
-   *
-   * @private
+   * Este método se ejecuta cuando el usuario mueve el mapa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
+   * @param {M.evt} evt Evento.
+   * @public
+   * @api
    */
   onMapMove_(evt) {
     const pixel = evt.pixel;
@@ -2388,12 +2713,13 @@ class Map extends MObject {
     }]);
   }
 }
+
 /**
- * Z-INDEX for the layers
+ * Z-INDEX para las capas.
  * @const
  * @type {Object}
  * @public
- * @api stable
+ * @api
  */
 Map.Z_INDEX = {};
 Map.Z_INDEX_BASELAYER = 0;
@@ -2405,9 +2731,10 @@ Map.Z_INDEX[LayerType.WFS] = 40;
 Map.Z_INDEX[LayerType.MVT] = 40;
 Map.Z_INDEX[LayerType.Vector] = 40;
 Map.Z_INDEX[LayerType.GeoJSON] = 40;
-// Map.Z_INDEX[LayerType.MBTiles] = 10;
-// Map.Z_INDEX[LayerType.MBTilesVector] = 10;
+Map.Z_INDEX[LayerType.MBTiles] = 2000;
+Map.Z_INDEX[LayerType.MBTilesVector] = 9999;
 Map.Z_INDEX[LayerType.XYZ] = 40;
 Map.Z_INDEX[LayerType.TMS] = 40;
+Map.Z_INDEX[LayerType.OGCAPIFeatures] = 40;
 
 export default Map;

@@ -1,6 +1,6 @@
 # M.plugin.SelectionDraw
 
-Permite dibujar geometrías y obtenerlas al terminar.
+Plugin que permite representar geometrías y obtener la información asociada en formato JSON.
 
 # Dependencias
 
@@ -17,16 +17,16 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 
 # Parámetros
 
-- El constructor se inicializa con un JSON de options con los siguientes atributos:
+El constructor se inicializa con un JSON con los siguientes atributos:
 
-- **position**. Indica la posición donde se mostrará el plugin sobre el mapa.
-  - 'TL':top left (default)
-  - 'TR':top right
-  - 'BL':bottom left 
-  - 'BR':bottom right
-- **collapsed**: Indica si al iniciar el plugin este está abierto o cerrado. Las opciones son true or false. Por defecto false.
-- **collapsible**: Indica si este plugin puede ser cerrado y/o abierto. Las opciones son true or false. Por defecto true.
-**projection**: Indica la proyección en que seran devueltas las geometrías que se dibujen en el mapa. Por defecto, EPSG:4326
+- **position**: Indica la posición donde se mostrará el plugin sobre el mapa.
+  - 'TL': (top left) - Arriba a la izquierda (por defecto).
+  - 'TR': (top right) - Arriba a la derecha.
+  - 'BL': (bottom left) - Abajo a la izquierda.
+  - 'BR': (bottom right) - Abajo a la derecha.
+- **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
+- **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
+- **projection**: Indica la proyección en que seran devueltas las geometrías que se dibujen en el mapa. Por defecto, EPSG:4326.
 
 # Ejemplos de uso
 

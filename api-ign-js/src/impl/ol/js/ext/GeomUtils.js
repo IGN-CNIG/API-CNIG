@@ -1,4 +1,10 @@
 /**
+ * Este fichero contiene las funciones de utilidad para la gestión de geometrías
+ * @module M/impl/ol/js/ext/GeomUtils
+ * @example import 'M/impl/ol/js/ext/GeomUtils';
+ */
+
+/**
  * Copyright (c) 2016 Jean-Marc VIGLINO,
  * released under the CeCILL-B license (French BSD license)
  * (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
@@ -17,11 +23,12 @@ import { getCenter as olExtentGetCenter } from 'ol/extent';
 import { buffer as olExtentBuffer } from 'ol/extent';
 
 /**
- * Distance beetween 2 points
- * Usefull geometric functions
- * @param {ol.Coordinate} p1 first point
- * @param {ol.Coordinate} p2 second point
- * @return {number} distance
+ * Distancia entre 2 puntos.
+ * @function
+ * @param {ol.Coordinate} p1 Primer punto.
+ * @param {ol.Coordinate} p2 Segundo punto.
+ * @return {number} Distancia entre los 2 puntos.
+ * @api stable
  */
 const olCoordinateDist2d = (p1, p2) => {
   const dx = p1[0] - p2[0];
@@ -30,19 +37,23 @@ const olCoordinateDist2d = (p1, p2) => {
 };
 
 /**
- * 2 points are equal
- * Usefull geometric functions
- * @param {ol.Coordinate} p1 first point
- * @param {ol.Coordinate} p2 second point
- * @return {boolean}
+ * Distancia entre 2 puntos.
+ * @function
+ * @param {ol.Coordinate} p1 Primer punto.
+ * @param {ol.Coordinate} p2 Segundo punto.
+ * @return {boolean} Verdadero si los puntos son iguales.
+ * @api stable
  */
 const olCoordinateEqual = (p1, p2) => {
   return (p1[0] === p2[0] && p1[1] === p2[1]);
 };
 
-/** Get center coordinate of a geometry
- * @param {ol.geom.Geometry} geom
- * @return {ol.Coordinate} the center
+/**
+ * Devuelve el centroide de una geometría.
+ * @function
+ * @param {ol.geom.Geometry} geom Geometría.
+ * @return {ol.Coordinate} Centroide de la geometría.
+ * @api stable
  */
 const olCoordinateGetGeomCenter = (geom) => {
   switch (geom.getType()) {
@@ -58,20 +69,25 @@ const olCoordinateGetGeomCenter = (geom) => {
   }
 };
 
-/** Get center coordinate of a feature
- * @param {ol.Feature} f
- * @return {ol.coordinate} the center
+/**
+ * Devuelve el centroide de un objeto geográfico.
+ * @function
+ * @param {ol.Feature} f Objeto geográfico.
+ * @return {ol.coordinate} Centroide del objeto geográfico.
+ * @api stable
  */
 const olCoordinateGetFeatureCenter = (f) => {
   return olCoordinateGetGeomCenter(f.getGeometry());
 };
 
-/** Offset a polyline
- * @param {Array<ol.Coordinate>} coords
- * @param {number} offset
- * @return {Array<ol.Coordinate>} resulting coord
+/**
+ * Devuelve las coordenadas de un punto tras el desplazamiento.
+ * @function
+ * @param {Array<ol.Coordinate>} coords Coordenadas.
+ * @param {number} offset Desplazamiento.
+ * @return {Array<ol.Coordinate>} Coordenadas desplazadas.
  * @see http://stackoverflow.com/a/11970006/796832
- * @see https://drive.google.com/viewerng/viewer?a=v&pid=sites&srcid=ZGVmYXVsdGRvbWFpbnxqa2dhZGdldHN0b3JlfGd4OjQ4MzI5M2Y0MjNmNzI2MjY
+ * @api stable
  */
 const olCoordinateOffsetCoords = (coords, offset) => {
   const path = [];
@@ -149,10 +165,13 @@ const olCoordinateOffsetCoords = (coords, offset) => {
   return path;
 };
 
-/** Find the segment a point belongs to
- * @param {ol.Coordinate} pt
- * @param {Array<ol.Coordinate>} coords
- * @return {} the index (-1 if not found) and the segment
+/**
+ * Devuelve las coordenadas de un segmento.
+ * @function
+ * @param {ol.Coordinate} pt El punto.
+ * @param {Array<ol.Coordinate>} coords Las coordenadas.
+ * @return {Object} El indice del segmento y las coordenadas del segmento.
+ * @api stable
  */
 const olCoordinateFindSegment = (pt, coords) => {
   for (let i = 0; i < coords.length - 1; i += 1) {
@@ -173,11 +192,13 @@ const olCoordinateFindSegment = (pt, coords) => {
 };
 
 /**
- * Split a Polygon geom with horizontal lines
- * @param {Array<ol.Coordinate>} geom
- * @param {number} y the y to split
- * @param {number} n contour index
- * @return {Array<Array<ol.Coordinate>>}
+ * Divide un polígono en dos partes.
+ * @function
+ * @param {Array<ol.Coordinate>} geom La geometría.
+ * @param {number} y La coordenada Y.
+ * @param {number} n El número de contorno.
+ * @return {Array<Array<ol.Coordinate>>} Las geometrías.
+ * @api stable
  */
 const olCoordinateSplitH = (geom, y, n) => {
   let x;
@@ -208,7 +229,14 @@ const olCoordinateSplitH = (geom, y, n) => {
   return result;
 };
 
-/** Create a geometry given a type and coordinates */
+/**
+ * Crea una geometría dada un tipo y coordenadas.
+ * @function
+ * @param {string} type El tipo de geometría.
+ * @param {Array<ol.Coordinate>} coordinates Las coordenadas.
+ * @return {ol.geom.Geometry} La geometría.
+ * @api stable
+ * */
 const olGeomCreateFromType = (type, coordinates) => {
   switch (type) {
     case 'LineString':
@@ -243,9 +271,12 @@ export {
   olCoordinateSplitH,
 };
 
-/** Intersect 2 lines
- * @param {Arrar<ol.coordinate>} d1
- * @param {Arrar<ol.coordinate>} d2
+/**
+ *  Devuelve las coordenadas en la intersección de dos segmentos.
+ * @param {Arrar<ol.coordinate>} d1 Segmento 1.
+ * @param {Arrar<ol.coordinate>} d2 Segmento 2.
+ * @return {ol.coordinate} Las coordenadas de la intersección.
+ * @api stable
  */
 const olCoordinateGetIntersectionPoint = (d1, d2) => {
   const d1x = d1[1][0] - d1[0][0];
@@ -328,12 +359,15 @@ let olExtentIntersection;
 export { olExtentIntersection };
 export { olExtentIntersection as extentIntersection };
 
-/** Add points along a segment
- * @param {ol_Coordinate} p1
- * @param {ol_Coordinate} p2
- * @param {number} d
- * @param {boolean} start include starting point, default true
- * @returns {Array<ol_Coordinate>}
+/**
+ * Añade puntos a lo largo de un segmento.
+ * @function
+ * @param {ol_Coordinate} p1 Punto inicial.
+ * @param {ol_Coordinate} p2 Punto final.
+ * @param {number} d Distancia entre puntos.
+ * @param {boolean} start Añadir el punto inicial, por defecto verdadero.
+ * @returns {Array<ol_Coordinate>} Array de puntos.
+ * @api stable
  */
 const olCoordinateSampleAt = (p1, p2, d, start) => {
   const pts = [];
@@ -354,9 +388,10 @@ const olCoordinateSampleAt = (p1, p2, d, start) => {
 };
 export { olCoordinateSampleAt };
 
-/** Sample a LineString at a distance
- * @param {number} d
- * @returns {OLGeomLineString}
+/**
+ * Muestra un punto de una línea.
+ * @param {number} d Distancia entre puntos.
+ * @returns {OLGeomLineString} "LineString" con los puntos.
  */
 OLGeomLineString.prototype.sampleAt = (d) => {
   const line = this.getCoordinates();
@@ -367,9 +402,10 @@ OLGeomLineString.prototype.sampleAt = (d) => {
   return new OLGeomLineString(result);
 };
 
-/** Sample a MultiLineString at a distance
- * @param {number} d
- * @returns {OLGeomMultiLineString}
+/**
+ * Muestra un "MultiLineString" a distancia.
+ * @param {number} d Distancia entre puntos.
+ * @returns {OLGeomMultiLineString} "MultiLineString" con los puntos.
  */
 OLGeomMultiLineString.prototype.sampleAt = (d) => {
   const lines = this.getCoordinates();
@@ -384,9 +420,11 @@ OLGeomMultiLineString.prototype.sampleAt = (d) => {
   return new OLGeomMultiLineString(result);
 };
 
-/** Sample a Polygon at a distance
- * @param {number} d
- * @returns {OLGeomPolygon}
+/**
+ * Muestra un "Polygon" a distancia.
+ * @function
+ * @param {number} d Distancia entre puntos.
+ * @returns {OLGeomPolygon} "Polygon" con los puntos.
  */
 OLGeomPolygon.prototype.sampleAt = (res) => {
   const poly = this.getCoordinates();
@@ -401,9 +439,10 @@ OLGeomPolygon.prototype.sampleAt = (res) => {
   return new OLGeomPolygon(result);
 };
 
-/** Sample a MultiPolygon at a distance
- * @param {number} res
- * @returns {OLGeomMultiPolygon}
+/**
+ * Muestra un "MultiPolygon" a distancia.
+ * @param {number} res Distancia entre puntos.
+ * @returns {OLGeomMultiPolygon} "MultiPolygon" con los puntos.
  */
 OLGeomMultiPolygon.prototype.sampleAt = (res) => {
   const mpoly = this.getCoordinates();
@@ -422,10 +461,11 @@ OLGeomMultiPolygon.prototype.sampleAt = (res) => {
   return new OLGeomMultiPolygon(result);
 };
 
-/** Intersect a geometry using a circle
- * @param {ol_geom_Geometry} geom
- * @param {number} resolution circle resolution to sample the polygon on the circle, default 1
- * @returns {ol_geom_Geometry}
+/**
+ * Inserta un geometría usando una circunferencia.
+ * @param {ol_geom_Geometry} geom Geometría a insertar.
+ * @param {number} resolution Circunferencia de inserción.
+ * @returns {ol_geom_Geometry} Geometría insertada.
  */
 OLGeomCircle.prototype.intersection = (geom, resolution) => {
   if (geom.sampleAt) {

@@ -88,15 +88,27 @@ export default class LyrdropdownControl extends M.Control {
    */
   createView(map) {
     this.map = map;
-    return new Promise((success, fail) => {
-      //e2m: Transform stringLyr definition to apicnigLyr
-      this.layers = this.transformToLayers(this.layers);
-      //e2m: getting layers array with name and legend for plugin
 
+    // Se hace esto para poder añadir ol3Layers a la instancia
+    // this.layers. Ol3Layers tiene valor cuando se añade al mapa
+    this.map.on(M.evt.ADDED_LAYER, (evt) => {
+      evt.forEach((l) => {
+       if (l.type === 'WMS' || l.type === 'WMTS') {
+        this.layers = this.layers.map((layers) => {
+          return (layers.name !== l.name) ? layers : l;
+        })
+      }
+      })
+    });
+
+    return new Promise((success, fail) => {
+      this.layers = this.transformToLayers(this.layers);
+      this.layers.forEach((l) => {
+       if (this.map.getLayers().some((layer) => layer.name === l.name)) this.map.removeLayers(l);
+      })
       let capas = this.layers.map((layer) => {
         return layer instanceof Object ? {  name: layer.name, legend: layer.legend } : { name: layer, legend: layer };
       });
-      //e2m: adding language dictionary
       let options = '';
       if (capas.length > 1) {
         options = {
@@ -122,8 +134,11 @@ export default class LyrdropdownControl extends M.Control {
 
       //Events on template component
       this.template.querySelector('#m-lyrdropdown-selector').addEventListener('change', (evt) => {
-        const layerSel = this.map.getLayers().filter((layer) => {
-          return layer.name === evt.target.value;
+        const layerSel = this.layers.filter((layer) => {
+          if(layer.name === evt.target.value) {
+            this.map.addLayers(layer);
+            return layer;
+          }
         });
         // Get selected layer from layer array
         this.layerSelected.setVisible(false);
@@ -248,13 +263,14 @@ export default class LyrdropdownControl extends M.Control {
               url: urlLayer[2],
               name: urlLayer[3],
               legend: urlLayer[1],
+              useCapabilities: urlLayer[4] === 'true' || false
             });
 
             if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
               newLayer = this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0];
               newLayer.legend = urlLayer[1] || newLayer.name;
             } else {
-              this.map.addLayers(newLayer);
+              // this.map.addLayers(newLayer);
             }
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
 
@@ -280,8 +296,9 @@ export default class LyrdropdownControl extends M.Control {
               queryable: false,               // No GetFeatureInfo
               visibility: false,              // Visible a false por defecto
               format: urlLayer[5],
+              useCapabilities: urlLayer[6] === 'true' || false
             });
-            this.map.addWMTS(newLayer);
+            // this.map.addWMTS(newLayer);
             //this.map.addLayers(newLayer);
           }
         } else {

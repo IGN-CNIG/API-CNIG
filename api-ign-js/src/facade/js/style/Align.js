@@ -3,7 +3,7 @@
  */
 
 /**
- * Left style alignment
+ * Alineación de estilo a la izquierda.
  * @const
  * @type {string}
  * @public
@@ -12,7 +12,7 @@
 export const LEFT = 'left';
 
 /**
- * Center style alignment
+ * Alineación de estilo central.
  * @const
  * @type {string}
  * @public
@@ -21,7 +21,7 @@ export const LEFT = 'left';
 export const CENTER = 'center';
 
 /**
- * Right style alignment
+ * Alineación de estilo derecha.
  * @const
  * @type {string}
  * @public
@@ -30,7 +30,7 @@ export const CENTER = 'center';
 export const RIGHT = 'right';
 
 /**
- * Justify style alignment
+ * Justificar la alineación del estilo.
  * @const
  * @type {string}
  * @public

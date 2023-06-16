@@ -12,13 +12,17 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
+ * Agrega la funcionalidad para rotar el mapa para que el norte esté arriba.
+ *
  * @api
+ * @extends {M.Control}
  */
 class Rotate extends ControlBase {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @param {String} format format response
-   * @extends {M.Control}
+   * @param {String} format Formato de respuesta.
    * @api
    */
   constructor() {
@@ -34,12 +38,12 @@ class Rotate extends ControlBase {
   }
 
   /**
-   * This function creates the view to the specified map
+   * Este método crea la vista del mapa especificado.
    *
    * @public
    * @function
-   * @param {M.Map} map map to add the control
-   * @returns {Promise} html response
+   * @param {M.Map} map Añade el control al mapa.
+   * @returns {Promise} HTML generado, promesa.
    * @api
    */
   createView(map) {
@@ -51,10 +55,12 @@ class Rotate extends ControlBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Este método comprueba si un objeto es igual
+   * a este control.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api
    */
   equals(obj) {
@@ -64,7 +70,7 @@ class Rotate extends ControlBase {
 }
 
 /**
- * Name of the class
+ * Nombre del control.
  * @const
  * @type {string}
  * @public

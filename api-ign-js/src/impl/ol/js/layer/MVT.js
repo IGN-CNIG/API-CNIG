@@ -21,83 +21,110 @@ import Vector from './Vector';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a KML layer
- * with parameters specified by the user
+ * Las capas de tipo Vector Tile ofrecen ciertas ventajas en algunos escenarios,
+ * debido a su bajo peso y carga rápida,
+ * ya que se sirven en forma de teselas que contienen la información vectorial
+ * del área que delimitan.
  *
+ * @api
+ * @extends {M.impl.layer.Vector}
  */
+
 class MVT extends Vector {
   /**
+   * Constructor principal de la clase. Crea una capa MVT
+   * con parámetros especificados por el usuario.
+   *
    * @constructor
+   * @implements {M.impl.layer.Vector}
+   * @param {M.layer.MVT.parameters} parameters Opciones de la fachada, la fachada se refiere a
+   * un patrón estructural como una capa de abstracción con un patrón de diseño.
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - style: Define el estilo de la capa.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
+   * - visibility. Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
+   * - opacity. Opacidad de capa, por defecto 1.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   *  <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceVector({
+   *    attributions: 'mvt',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api
    */
   constructor(parameters, options, vendorOptions) {
     super(options, vendorOptions);
     /**
-     *
-     * @private
-     * @type {ol.format.MVT}
+     * MVT formater_. Formato del objeto "MVTFormatter".
      */
     this.formater_ = null;
 
     /**
-     * Popup showed
-     * @private
-     * @type {M.impl.Popup}
+     * MVT popup_. Muestra el "popup".
      */
     this.popup_ = null;
 
     /**
-     *
-     * @private
-     * @type {Number}
+     * MVT lastZoom_. Zoom anterior.
      */
     this.lastZoom_ = -1;
 
     /**
-     * Projection of the layer.
-     *
-     * @private
-     * @type {ol.proj.Projection}
+     * MVT projection_. Proyección de la capa.
      */
     this.projection_ = parameters.projection || 'EPSG:3857';
 
     /**
-     * Features of the openlayers source
-     * @private
-     * @type {ol.render.Feature | ol.Feature}
+     * MVT features_. Objetos geográficos de la fuente de openlayers.
      */
     this.features_ = [];
 
     /**
-     * Render mode of the layer. Possible values: 'render' | 'feature'.
-     *
-     * @private
-     * @type {string}
+     * MVT mode_. Modos de renderizado posible ("render" o "feature").
      */
     this.mode_ = parameters.mode;
 
     /**
-     * Loaded flag attribute
-     *
-     * @private
-     * @type {bool}
+     * MVT loaded_. Muestra si esta cargada la capa o no.
      */
     this.loaded_ = false;
 
+    /**
+     * MVT opacity_. Opacidad entre 0 y 1. Por defecto 1.
+     */
     this.opacity_ = parameters.opacity || 1;
 
+    /**
+     * MVT visibility_. Indica si la capa es visible.
+     */
     this.visibility_ = parameters.visibility !== false;
 
+    /**
+     * MVT layers_. Otras capas.
+     */
     this.layers_ = parameters.layers;
 
+    /**
+     * MVT extract_.
+     * Activa la consulta cuando se hace clic en un objeto geográfico,
+     * por defecto falso.
+     */
     this.extract = parameters.extract;
   }
 
   /**
-   * This method adds the vector tile layer to the ol.Map
+   * Este metodo añade la capa al mapa.
    *
    * @public
    * @function
+   * @param {M.impl.Map} map Mapa de la implementación.
    * @api
    */
   addTo(map) {
@@ -172,6 +199,15 @@ class MVT extends Vector {
     }, 10);
   }
 
+  /**
+   * Este método se ejecuta cuando se selecciona un objeto geográfico.
+   * @public
+   * @function
+   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
+   * @param {Array} coord Coordenadas.
+   * @param {Object} evt Eventos.
+   * @api stable
+   */
   selectFeatures(features, coord, evt) {
     const feature = features[0];
     if (this.extract === true) {
@@ -200,6 +236,17 @@ class MVT extends Vector {
     }
   }
 
+  /**
+   * Pasa los objetos geográficos a la plantilla.
+   *
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   *
+   * @public
+   * @function
+   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
+   * @returns {Object} "featuresTemplate.features".
+   * @api stable
+   */
   parseFeaturesForTemplate_(features) {
     const featuresTemplate = {
       features: [],
@@ -226,6 +273,14 @@ class MVT extends Vector {
     return featuresTemplate;
   }
 
+  /**
+   * Evento que se activa cuando se termina de hacer clic sobre
+   * un objeto geográfico.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
   unselectFeatures() {
     if (!isNullOrEmpty(this.popup_)) {
       this.popup_.hide();
@@ -233,6 +288,13 @@ class MVT extends Vector {
     }
   }
 
+  /**
+   * Este método destruye el "popup" MVT.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
   removePopup() {
     if (!isNullOrEmpty(this.popup_)) {
       if (this.popup_.getTabs().length > 1) {
@@ -244,13 +306,13 @@ class MVT extends Vector {
   }
 
   /**
-   * This function returns all features or discriminating by the filter
+   * Este método devuelve todos los objetos geográficos, se puede filtrar.
    *
    * @function
    * @public
-   * @param {boolean} skipFilter - Indicates whether skyp filter
-   * @param {M.Filter} filter - Filter to execute
-   * @return {Array<M.Feature>} returns all features or discriminating by the filter
+   * @param {boolean} skipFilter Indica si el filtro es de tipo "skip".
+   * @param {M.Filter} filter Filtro que se ejecutará.
+   * @return {Array<M.Feature>} Devuelve los objetos geográficos.
    * @api
    */
   getFeatures(skipFilter, filter) {
@@ -280,12 +342,14 @@ class MVT extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si la tesela esta cargada.
    *
-   * @private
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   *
+   * @public
    * @function
-   * @param {ol/source/Tile.TileSourceEvent} evt
+   * @param {ol/source/Tile.TileSourceEvent} evt Evento.
+   * @api stable
    */
   checkAllTilesLoaded_(evt) {
     const currTileCoord = evt.tile.getTileCoord();
@@ -308,8 +372,10 @@ class MVT extends Vector {
   }
 
   /**
+   * Devuelve verdadero si la capa esta cargada.
    *
    * @function
+   * @returns {Boolean} Verdadero.
    * @api stable
    */
   isLoaded() {
@@ -317,11 +383,13 @@ class MVT extends Vector {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @public
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api
    */
   equals(obj) {

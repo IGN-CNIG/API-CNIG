@@ -12,13 +12,39 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
+ * Añadir escala gráfica.
+ *
  * @api
+ * @extends {M.Control}
  */
 class ScaleLine extends ControlBase {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @param {Object} vendorOptions vendor options for the base library
-   * @extends {M.Control}
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base, estas opciones
+   * se pasarán en formato objeto. Opciones disponibles:
+   * - className: Nombre de la clase CSS.
+   * El valor predeterminado es ol-scale-bar
+   * cuando se configura con bar: Verdadero. De lo contrario, el valor
+   * predeterminado es ol-scale-line.
+   * - minWidth: Ancho mínimo en píxeles en los dpi predeterminados de OGC.
+   * El ancho se ajustará para que coincida con los dpi utilizados.
+   * - render: Función llamada cuando se debe volver a
+   * representar el control.
+   * Esto se llama en una devolución de llamada de requestAnimationFrame.
+   * - target: Especifique un objetivo si desea que
+   * el control se represente fuera de la ventana gráfica del mapa.
+   * - units: Unidades.
+   * - bar: Representa barras de escala en lugar de una línea.
+   * - steps: Número de pasos que debe usar la barra de escala.
+   * Utilice números pares para obtener mejores resultados. Solo se aplica cuando
+   * la barra es verdadera.
+   * - text: Representa la escala de texto arriba de la barra de escala.
+   * Solo se aplica cuando la barra es verdadera.
+   * - dpi: dpi del dispositivo de salida, como una impresora.
+   * Solo se aplica cuando la barra es verdadera.
+   * Si no se define, se asumirá el tamaño de píxel de pantalla predeterminado de OGC de 0,28 mm.
    * @api
    */
   constructor(vendorOptions = {}) {
@@ -34,12 +60,12 @@ class ScaleLine extends ControlBase {
   }
 
   /**
-   * This function creates the view to the specified map
+   * Esta función crea la vista del mapa especificado.
    *
    * @public
    * @function
-   * @param {M.Map} map map to add the control
-   * @returns {Promise} html response
+   * @param {M.Map} map Mapa
+   * @returns {Promise} Plantilla HTML.
    * @api
    */
   createView(map) {
@@ -47,10 +73,13 @@ class ScaleLine extends ControlBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Esta función comprueba si un objeto es igual
+   * a este control.
    *
+   * @public
    * @function
+   * @param {*} obj Objeto a comparar.
+   * @returns {boolean} Iguales devuelve verdadero, falso si no son iguales.
    * @api
    */
   equals(obj) {
@@ -60,7 +89,7 @@ class ScaleLine extends ControlBase {
 }
 
 /**
- * Template for this controls - button
+ * Nombre para identificar este control.
  * @const
  * @type {string}
  * @public

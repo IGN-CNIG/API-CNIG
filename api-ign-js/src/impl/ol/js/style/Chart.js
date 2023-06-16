@@ -19,14 +19,17 @@ import Simple from './Simple';
 import Utils from '../util/Utils';
 
 /**
- * Object assign hook. Merges the array of source objects into target object.
- * @param {object} target the target ob
- * @param {object|Array<object>} sourceObs array of source obs
- * @return {object} merged target object
+ * "Hook" para asignar objetos.
+ * Fusiona la matriz de objetos de origen en el objeto de destino.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
- * @private
+ * @param {object} targetVar Objetivo
+ * @param {object|Array<object>} sourceObs Matriz con la fuente.
+ * @return {object} Objeto resultante.
+ * @public
+ * @api
  */
-const extend = (targetVar, ...sourceObs) => {
+export const extend = (targetVar, ...sourceObs) => {
   const target = targetVar;
   if (target == null) { // TypeError if undefined or null
     throw new TypeError('Cannot convert undefined or null to object');
@@ -44,10 +47,18 @@ const extend = (targetVar, ...sourceObs) => {
 };
 
 /**
- * This function get the text chart data of a feature attribute.
+ * Esta función devuelve el "label.text" de los objetos geográficos.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
+ * @param {object} label Texto para "Style.Simple".
+ * @param {object} feature Objeto geográfico.
+ * @param {object} styleOptions Estilo para el label.
+ * @param {object} dataValue Valor para el label.
+ * @return {object} Texto resultante.
+ * @public
+ * @api
  */
-const getTextData = (label, feature, styleOptions, dataValue) => {
+export const getTextData = (label, feature, styleOptions, dataValue) => {
   let text;
   if (typeof label.text === 'function') {
     text = label.text(dataValue, styleOptions.data, feature);
@@ -59,10 +70,17 @@ const getTextData = (label, feature, styleOptions, dataValue) => {
 };
 
 /**
- * This function generates the bar chart with options
+ * Esta función genera el gráfico de barras con opciones.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
+ * @param {Array} stylesParam Parámetros para poner estilos.
+ * @param {object} styleOptions Opciones para poner estilos.
+ * @param {object} feature Objetos geográficos.
+ * @return {object} Gráfico de barras.
+ * @public
+ * @api
  */
-const generateTextBarChart = (stylesParam, styleOptions, feature) => {
+export const generateTextBarChart = (stylesParam, styleOptions, feature) => {
   let height = 0;
   let acumSum = null;
   const variables = styleOptions.variables;
@@ -124,10 +142,17 @@ const generateTextBarChart = (stylesParam, styleOptions, feature) => {
 };
 
 /**
- * This function generates the circle chart with options
+ * Esta función genera el gráfico circular con opciones.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
+ * @param {Array} stylesParam Parámetros para poner estilos.
+ * @param {object} styleOptions Opciones para poner estilos.
+ * @param {object} feature Objetos geográficos.
+ * @return {object} Gráfico circular.
+ * @public
+ * @api
  */
-const generateTextCircleChart = (stylesParam, styleOptions, feature) => {
+export const generateTextCircleChart = (stylesParam, styleOptions, feature) => {
   let acumSum = 0;
   const sum = styleOptions.data.reduce((tot, curr) => tot + curr);
   const variables = styleOptions.variables;
@@ -177,10 +202,16 @@ const generateTextCircleChart = (stylesParam, styleOptions, feature) => {
 };
 
 /**
- * This function add the style text to the array of styles
+ * Esta función agrega el texto de estilo a la matriz de estilos.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  * @function
+ * @param {Array} options Opciones.
+ * @param {object} styles Estilos.
+ * @param {object} feature Objetos geográficos.
+ * @return {object} Gráfico circular.
+ * @public
  */
-const addTextChart = (options, styles, feature) => {
+export const addTextChart = (options, styles, feature) => {
   if (!isNullOrEmpty(options.label)) {
     const styleLabel = new OLStyle();
     const textLabel = Simple.getValue(options.label.text, feature);
@@ -221,31 +252,26 @@ const addTextChart = (options, styles, feature) => {
 
 /**
  * @classdesc
- * Openlayers implementation of style chart
+ * Implementación de Openlayers del gráfico de estilo.
  * @api
  */
 class Chart extends Feature {
   /**
+  * Constructor principal de la clase.
   * @constructor
-  * @param {Mx.ChartOptions} options. (SAME AS M.style.Chart)
-  *  - type {string|M.style.chart.types} the chart type
-  *  - radius {number} the radius of the chart. If chart type is 'bar' type this field
-  *            will limit the max bar height
-  *  - offsetX {number} chart x axis offset
-  *  - offsetY {number} chart y axis offset
+  * @param {Mx.ChartOptions} options. Opciones de la clase.
+  *  - type: El tipo de gráfico.
+  *  - radius: El radio del grafíco circular. Si el tipo de gráfico es 'barra',
+  * escriba este campo limitando la altura máxima de la barra.
+  *  - offsetX: Desplazamiento del eje x del gráfico.
+  *  - offsetY: Desplazamiento del eje y del gráfico.
   *  - stroke.
-  *      - color {string} the color of the chart stroke
-  *      - width {number} the width of the chart stroke
-  *  - fill3DColor: {string} the fill color of the PIE_3D cylinder
-  *  - scheme {string|Array<string>|M.style.chart.schemes} the color set of the chart.If
-  *            value is typeof 'string' you must declare this scheme into M.style.chart.schemes
-  *            If you provide less colors than data size
-   the colors will be taken from MOD operator:
-  *              mycolor = userColors[currentArrayIndex % userColors.length]
-  *  - rotateWithView {bool} determine whether the symbolizer rotates with the map.
-  *  - animation {bool} this field is currently ignored [NOT IMPLEMENTED YET]
-  *  - variables {object|M.style.chart.Variable|string|Array<string>
-  |Array<M.style.chart.Variable>} the chart variables
+  *      - color: El color del trazo del gráfico.
+  *      - width: El ancho del trazo del gráfico.
+  *  - fill3DColor: El color de relleno del cilindro PIE_3D
+  *  - scheme: Color del esquema.
+  *  - rotateWithView: Determinar si el simbolizador rota con el mapa.
+  *  - variables: Valores de la clase.
   *
   * @implements {M.impl.style.Simple}
   * @api
@@ -256,14 +282,14 @@ class Chart extends Feature {
     super(options);
 
     /**
-     * the style variables
+     * Variables de estilo.
      * @private
      * @type {Array<M.style.chart.Variable>}
      */
     this.variables_ = options.variables || [];
 
     /**
-     * the colors scheme
+     * Esquema de colores
      * @private
      * @type {Array<string>}
      */
@@ -271,11 +297,11 @@ class Chart extends Feature {
   }
 
   /**
-   * This function updates the canvas of style of canvas
+   * Este método actualiza el "canvas".
    *
    * @public
    * @function
-   * @param {HTMLCanvasElement} canvas - canvas of style
+   * @param {HTMLCanvasElement} canvas Nuevo "canvas".
    * @api stable
    */
   updateCanvas(canvas) {
@@ -286,12 +312,11 @@ class Chart extends Feature {
   }
 
   /**
-   * TODO [REV] Refactor
-   * This function updates the canvas of style of canvas
+   * Este método dibuja la geometría en el "canvas".
    *
    * @public
    * @function
-   * @param {CanvasRenderingContext2D} contextVar - CanvasRenderingContext2D
+   * @param {Object} vectorContext Vector que se dibujará en el "canvas".
    * @api stable
    */
   drawGeometryToCanvas(contextVar) {
@@ -394,11 +419,13 @@ class Chart extends Feature {
   }
 
   /**
-   * This function se options to ol style
-   *
-   * @private
-   * @param {object} optionsVar - options to style
+   * Este método actualiza las opciones de la fachada
+   * (patrón estructural como una capa de abstracción con un patrón de diseño).
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {object} optionsVar Opciones.
    * @function
+   * @return {object} Opciones actualizadas.
    * @api stable
    */
   updateFacadeOptions(optionsVar) {
@@ -453,7 +480,11 @@ class Chart extends Feature {
   }
 
   /**
-   * @inheritDoc
+   * Este método aplica estilo a la capa.
+   * @public
+   * @function
+   * @param {M.layer.Vector} layer Capa.
+   * @api stable
    */
   applyToLayer(layer) {
     // in this case, the style only must be applied to features, never to the layer
@@ -461,7 +492,11 @@ class Chart extends Feature {
   }
 
   /**
-   * @inheritDoc
+   * Este método aplica estilo a los objetos geográficos.
+   * @public
+   * @function
+   * @param {Object} feature Objeto geográfico.
+   * @api stable
    */
   applyToFeature(feature) {
     const featureCtx = feature.getImpl().getOLFeature();
@@ -469,12 +504,15 @@ class Chart extends Feature {
   }
 
   /**
-   * Converts a single object to extracted feature values object
-   * @param {object} options unparsed options object
-   * @param {OLFeature} feature the ol feature
-   * @return {object} parsed options with paths replaced with feature values
+   * Convierte un solo objeto en un objeto de valores de características extraídos.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {object} options Objeto de opciones sin analizar.
+   * @param {OLFeature} feature Objeto geográfico de Openlayers.
+   * @return {object} Opciones analizadas con rutas reemplazadas con
+   * valores de características.
    * @function
-   * @private
+   * @public
+   * @api stable
    */
   formatDataRecursively_(options, feature) {
     return Object.keys(options).reduce((tot, curr, i) => {
@@ -491,7 +529,17 @@ class Chart extends Feature {
   }
 
   /**
+   * Método que modifica los valores de un objeto geográfico.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {object} ob Objeto.
+   * @param {Array} opts Opciones.
+   * @param {String} key "Key" del objeto.
+   * @param {OLFeature} feature Objeto geográfico de Openlayers.
+   * @return {object} Opciones analizadas con rutas reemplazadas con
+   * valores de características.
    * @function
+   * @public
+   * @api stable
    */
   setVal(ob, opts, key, feature) {
     const obParam = ob;
@@ -503,9 +551,11 @@ class Chart extends Feature {
 }
 
 /**
- * Max canvas radius
+ * Radio máximo del "canvas".
  * @const
  * @type {number}
+ * @public
+ * @api stable
  */
 Chart.CANVAS_PROPS = {
   width: 200, // px

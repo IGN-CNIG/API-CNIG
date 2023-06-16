@@ -6,17 +6,23 @@ import Base from './Base';
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a Label
- * control to provides a popup with specified information
+ * Crea una etiqueta, proporciona una ventana emergente con
+ * información específica.
+ *
  * @api
+ * @extends {M.facade.Base}
  */
 class Label extends Base {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @param {string} text - Text to show
-   * @param {array} coordOpts - Coordinate to display popup
-   * @extends {M.facade.Base}
+   * @param {String} text Texto a mostrar.
+   * @param {Array} coordOpts Disparador de la ventana emergente.
+   * @param {Boolean} panMapIfOutOfView Define si el mapa esta fuera de la vista.
+   *
    * @api
+   * @extends {M.facade.Base}
    */
   constructor(text, coordOpts, panMapIfOutOfView) {
     // implementation of this control
@@ -27,7 +33,7 @@ class Label extends Base {
   }
 
   /**
-   * This function remove the popup with information
+   * Este método elimina la ventana emergente.
    *
    * @public
    * @function
@@ -39,11 +45,11 @@ class Label extends Base {
   }
 
   /**
-   * This function displays the popup with information
+   * Este método muestra la ventana emergente.
    *
    * @public
    * @function
-   * @param {M.Map} map - Facade map
+   * @param {M.Map} map Fachada del objeto "map".
    * @api
    * @export
    */
@@ -52,11 +58,10 @@ class Label extends Base {
   }
 
   /**
-   * This function return popup created
-   *
+   * Este método devuelve la ventana emergente creada.
    * @public
    * @function
-   * @returns {M.Popup} popup created
+   * @returns {M.Popup} Ventana emergente creada.
    * @api
    * @export
    */
@@ -65,9 +70,10 @@ class Label extends Base {
   }
 
   /**
-   * TODO
+   * Este método devuelve las coordenadas.
    * @public
    * @function
+   * @returns {Array} Devuelve las coordenadas.
    * @api
    */
   getCoordinate() {
@@ -75,9 +81,10 @@ class Label extends Base {
   }
 
   /**
-   * TODO
+   * Este método sobrescribe las coordenadas.
    * @public
    * @function
+   * @param {Array} coord Coordenadas.
    * @api
    */
   setCoordinate(coord) {
@@ -86,7 +93,7 @@ class Label extends Base {
 }
 
 /**
- * Template popup for this controls
+ * Nombre de la plantilla.
  * @const
  * @type {string}
  * @public

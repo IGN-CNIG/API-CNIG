@@ -112,7 +112,10 @@ export default class Topographicprofile extends M.Plugin {
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
     if(!this.options_.visible) {
-      document.getElementsByClassName('m-topographicprofile')[0].style.display = 'none';
+      setTimeout(() => {
+        document.querySelector('#m-topographicprofile-btn').click();
+        document.getElementsByClassName('m-topographicprofile')[0].style.setProperty('display', 'none', 'important');
+      }, 50);
     }
   }
 

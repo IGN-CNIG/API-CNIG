@@ -9,13 +9,15 @@ import AnimatedCluster from '../layer/AnimatedCluster';
 import RenderFeatureImpl from '../feature/RenderFeature';
 
 /**
- * function adds the event 'click'
- *
- * @private
+ * Este método añade el evento click a los objetos geográficos.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ * @public
  * @function
- * @export
+ * @param {ol.feature} feature Objeto geográfico.
+ * @param {ol.layer} layer Capa del objeto geográfico.
+ * @api
  */
-const getFacadeFeature = (feature, layer) => {
+export const getFacadeFeature = (feature, layer) => {
   let mFeature;
   const featureId = feature.getId();
   if (!isNullOrEmpty(featureId)) {
@@ -29,24 +31,26 @@ const getFacadeFeature = (feature, layer) => {
 
 /**
  * @classdesc
- * Main constructor of the class. Creates a KML layer
- * with parameters specified by the user
+ * Esta clase añade los eventos necesarios para la gestión de los objetos geográficos.
+ * @api
  */
 class Feature {
   /**
+   * Constructor principal de la clase.
    * @constructor
-   * @param {ol.Map} options custom options for this layer
+   * @param {ol.Map} options Opciones del objeto geográfico.
    * @api stable
    */
   constructor(options = {}) {
     /**
-     * OpenLayers map
+     * Mapa de OpenLayers.
      * @private
      * @type {M.impl.Map}
      */
     this.map_ = null;
 
     /**
+     * Cursor por defecto.
      * @private
      * @type {String}
      * @expose
@@ -55,11 +59,11 @@ class Feature {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método añade el mapa al mapa de Openlayers.
    *
    * @public
    * @function
+   * @param {M.Map} map Mapa de API-CNIG.
    * @api stable
    */
   addTo(map) {
@@ -67,10 +71,13 @@ class Feature {
   }
 
   /**
-   * TODO
+   * Este método devuelve los objetos geográficos de una capa.
    *
    * @public
+   * @param {ol.MapBrowserEvent} evt Evento del mapa.
+   * @param {M.layer} layer Capa.
    * @function
+   * @returns {Array<M.Feature>} Lista de objetos geográficos.
    * @api stable
    */
   getFeaturesByLayer(evt, layer) {
@@ -114,7 +121,7 @@ class Feature {
     return features;
   }
   /**
-   * function adds the event 'click'
+   * Este método añade el cursor "pointer" a los objetos geográficos.
    *
    * @public
    * @function
@@ -130,7 +137,7 @@ class Feature {
   }
 
   /**
-   * function adds the event 'click'
+   * Este método elimina el cursor "pointer" a los objetos geográficos.
    *
    * @public
    * @function
@@ -142,8 +149,7 @@ class Feature {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método elimina la capa y los eventos asociados.
    *
    * @public
    * @function

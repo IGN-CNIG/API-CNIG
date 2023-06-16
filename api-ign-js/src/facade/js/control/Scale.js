@@ -12,13 +12,22 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
+ * Agregar escala numérica.
+ * @property {Number} order Orden que tendrá con respecto al
+ * resto de plugins y controles por pantalla.
+ *
  * @api
+ * @extends {M.Control}
  */
 class Scale extends ControlBase {
   /**
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @param {String} format format response
-   * @extends {M.Control}
+   * @param {Object} options Opciones del control.
+   * - Order: Orden que tendrá con respecto al
+   * resto de plugins y controles por pantalla.
+   * - exactScale: Escala exacta.
    * @api
    */
   constructor(options = {}) {
@@ -31,16 +40,21 @@ class Scale extends ControlBase {
     if (isUndefined(ScaleImpl)) {
       Exception(getValue('exception').scale_method);
     }
+
+    /**
+     * Order: Orden que tendrá con respecto al
+     * resto de plugins y controles por pantalla.
+     */
     this.order = options.order;
   }
 
   /**
-   * This function creates the view to the specified map
+   * Esta función crea la vista del mapa especificado.
    *
    * @public
    * @function
-   * @param {M.Map} map map to add the control
-   * @returns {Promise} html response
+   * @param {M.Map} map Mapa
+   * @returns {Promise} Plantilla HTML.
    * @api
    */
   createView(map) {
@@ -55,10 +69,13 @@ class Scale extends ControlBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this control
+   * Esta función comprueba si un objeto es igual
+   * a este control.
    *
+   * @public
    * @function
+   * @param {*} obj Objeto a comparar.
+   * @returns {boolean} Iguales devuelve verdadero, falso si no son iguales.
    * @api
    */
   equals(obj) {
@@ -68,7 +85,7 @@ class Scale extends ControlBase {
 }
 
 /**
- * Template for this controls - button
+ * Nombre del control.
  * @const
  * @type {string}
  * @public

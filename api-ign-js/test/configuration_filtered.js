@@ -136,69 +136,6 @@ function fun(M_) {
    * @public
    * @api stable
    */
-  M_.config('geoprint', {
-    /**
-     * Printer service URL
-     * @const
-     * @type {Array<string>}
-     * @public
-     * @api stable
-     */
-    URL: 'http://geoprint-sigc.juntadeandalucia.es/geoprint/pdf',
-
-    /**
-     * WMC predefined names
-     * @const
-     * @type {Array<string>}
-     * @public
-     * @api stable
-     */
-    DPI: 150,
-
-    /**
-     * WMC context names
-     * @const
-     * @type {Array<string>}
-     * @public
-     * @api stable
-     */
-    FORMAT: 'pdf',
-
-    /**
-     * WMC context names
-     * @const
-     * @type {Array<string>}
-     * @public
-     * @api stable
-     */
-    TEMPLATE: 'A4 horizontal (Leyenda en una hoja)',
-
-    /**
-     * WMC context names
-     * @const
-     * @type {Array<string>}
-     * @public
-     * @api stable
-     */
-    FORCE_SCALE: false,
-
-    /**
-     * TODO
-     * @const
-     * @type {boolean}
-     * @public
-     * @api stable
-     */
-    LEGEND: true,
-  });
-
-  /**
-   * Predefined WMC files. It is composed of URL,
-   * predefined name and context name.
-   * @type {object}
-   * @public
-   * @api stable
-   */
   M_.config('panels', {
     /**
      * TODO

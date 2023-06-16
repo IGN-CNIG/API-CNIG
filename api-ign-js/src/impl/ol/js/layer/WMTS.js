@@ -13,7 +13,7 @@ import {
 import { default as OLSourceWMTS } from 'ol/source/WMTS';
 import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
 import OLTileGridWMTS from 'ol/tilegrid/WMTS';
-import { getBottomLeft } from 'ol/extent';
+import { getBottomLeft, getTopLeft, getWidth } from 'ol/extent';
 import { get as getRemote } from 'M/util/Remote';
 import * as EventType from 'M/event/eventtype';
 import { get as getProj } from 'ol/proj';
@@ -23,18 +23,46 @@ import { optionsFromCapabilities } from 'patches';
 import LayerBase from './Layer';
 /**
  * @classdesc
+ * WMTS (Web Map Tile Service) es un estándar OGC para servir información geográfica
+ * en forma de teselas pregeneradas en resoluciones específicas.
+ *
+ *
+ * @property {Number} minZoom Zoom mínimo aplicable a la capa.
+ * @property {Number} maxZoom Zoom máximo aplicable a la capa.
+ * @property {Object} options Opciones personalizadas para esta capa.
+ *
  * @api
+ * @extends {M.impl.layer.Layer}
  */
 class WMTS extends LayerBase {
   /**
-   * @classdesc
-   * Main constructor of the class. Creates a WMTS layer
-   * with parameters specified by the user
+   * Constructor principal de la clase. Crea una capa WMTS
+   * con parámetros especificados por el usuario.
    *
    * @constructor
    * @implements {M.impl.Layer}
-   * @param {Mx.parameters.LayerOptions} options custom options for this layer
-   * @param {Object} vendorOptions vendor options for the base library
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolucción mínima.
+   * - maxResolution: Resolucción máxima.
+   * - format: Formato.
+   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import { default as OLSourceWMTS } from 'ol/source/WMTS';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceWMTS({
+   *    attributions: 'wmts',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(options = {}, vendorOptions) {
@@ -42,45 +70,47 @@ class WMTS extends LayerBase {
     super(options, vendorOptions);
 
     /**
-     * The facade layer instance
-     * @private
-     * @type {M.layer.WMS}
-     * @expose
+     * WMTS facadeLayer_. The facade layer instance.
      */
     this.facadeLayer_ = null;
 
     /**
-     * Options from the GetCapabilities
-     * @private
-     * @type {Prosmie}
+     * WMTS capabilitiesOptionsPromise. Options from the GetCapabilities.
      */
     this.capabilitiesOptionsPromise = null;
 
     /**
-     * Options from the GetCapabilities
-     * @private
-     * @type {Promise}
+     * WMTS getCapabilitiesPromise_. Options from the GetCapabilities.
      */
     this.getCapabilitiesPromise_ = null;
 
+    /**
+     * WMTS minZoom. Minimum zoom applicable to the layer.
+     */
     this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
+    /**
+     * WMTS maxZoom. Maximum zoom applicable to the layer.
+     */
     this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
-     * Options
-     * @private
-     * @type {object}
+     * WMTS options. Custom options for this layer.
      */
     this.options = options;
+
+    /**
+     * WMS useCapabilities. Indica si se usa el getCapabilities.
+     */
+    this.useCapabilities = options.useCapabilities !== false;
   }
 
   /**
-   * This function sets the map object of the layer
+   * Este método añade la capa al mapa.
    *
    * @public
    * @function
-   * @param {M.impl.Map} map
+   * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
   addTo(map) {
@@ -95,17 +125,22 @@ class WMTS extends LayerBase {
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
     }
 
-    // adds layer from capabilities
-    this.getCapabilitiesOptions_()
-      .then(capabilitiesOptions => this.addLayer_(capabilitiesOptions));
+
+    if (this.useCapabilities) {
+      // adds layer from capabilities
+      this.getCapabilitiesOptions_()
+        .then(capabilitiesOptions => this.addLayer_(capabilitiesOptions));
+    } else {
+      this.addLayerNotCapabilities_();
+    }
   }
 
   /**
-   * This function sets the resolutions for this layer
+   * Este método establece las resoluciones para esta capa.
    *
    * @public
    * @function
-   * @param {Array<Number>} resolutions
+   * @param {Array<Number>} resolutions Nuevas resoluciones a aplicar.
    * @api stable
    */
   setResolutions(resolutions) {
@@ -139,9 +174,10 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * This function sets the visibility of this layer
+   * Este método establece la visibilidad de esta capa.
    *
    * @function
+   * @param {Boolean} visibility Verdadero es visibilidad, falso si no.
    * @api stable
    */
   setVisible(visibility) {
@@ -172,10 +208,12 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * This function add this layer as unique layer
-   *
-   * @private
+   * Este método agrega esta capa como capa única.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {M.layer.WMTS.impl.capabilitiesOptions} capabilitiesOptions Opciones metadatos.
    * @function
+   * @api stable
    */
   addLayer_(capabilitiesOptions) {
     if (!isNullOrEmpty(this.map)) {
@@ -222,7 +260,82 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * TODO
+   * Este método agrega esta capa sin usar capabilidades.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @function
+   * @api stable
+   */
+  addLayerNotCapabilities_() {
+    if (!isNullOrEmpty(this.map)) {
+      const extent = this.facadeLayer_.getMaxExtent();
+
+      const minResolution = this.options.minResolution;
+      const maxResolution = this.options.maxResolution;
+      const format = (this.options.format) ? this.options.format : 'image/png';
+
+
+      const size = getWidth(extent) / 256;
+      const resolutions = new Array(19);
+      const matrixIds = new Array(19);
+      // eslint-disable-next-line no-plusplus
+      for (let z = 0; z < 19; ++z) {
+        // generate resolutions and matrixIds arrays for this WMTS
+        // eslint-disable-next-line no-restricted-properties
+        resolutions[z] = size / Math.pow(2, z);
+        matrixIds[z] = z;
+      }
+
+      const tileGrid = new OLTileGridWMTS({
+        origin: getTopLeft(extent),
+        resolutions,
+        matrixIds,
+      });
+
+      const wmtsSource = new OLSourceWMTS({
+        attributions: ' https://www.ign.es/',
+        url: this.url,
+        layer: this.name,
+        matrixSet: this.options.matrixSet,
+        format: this.options.format,
+        projection: getProj(this.map.getProjection().code),
+        tileGrid,
+      }, extent, true);
+
+      this.facadeLayer_.setFormat(format);
+      this.ol3Layer = new OLLayerTile(extend({
+        visible: this.visibility,
+        source: wmtsSource,
+        minResolution,
+        maxResolution,
+      }, this.vendorOptions_, true));
+
+      // keeps z-index values before ol resets
+      const zIndex = this.zIndex_;
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+      setTimeout(() => {
+        this.ol3Layer.setMaxZoom(this.maxZoom);
+        this.ol3Layer.setMinZoom(this.minZoom);
+      }, 500);
+
+      // sets its z-index
+      if (zIndex !== null) {
+        this.setZIndex(zIndex);
+      }
+
+      // activates animation always for WMTS layers
+      this.ol3Layer.set('animated', true);
+      this.fire(EventType.ADDED_TO_MAP, this);
+    }
+  }
+
+  /**
+   * Este método establece la extensión máxima para la capa de Openlayers.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {Mx.Extent} maxExtent Extencisón máxima.
+   * @function
+   * @api stable
    */
   setMaxExtent(maxExtent) {
     this.getOL3Layer().setExtent(maxExtent);
@@ -230,67 +343,88 @@ class WMTS extends LayerBase {
 
 
   /**
-   * This function gets the capabilities
-   * of the WMTS service
-   *
-   * @private
+   * Este método devuelve las opciones de los metadatos
+   * de un servicio WMTS.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
    * @function
+   * @returns {capabilitiesOptionsPromise} Opciones metadatos.
+   * @api stable
    */
-  getCapabilitiesOptions_() {
+  async getCapabilitiesOptions_() {
     if (isNullOrEmpty(this.capabilitiesOptionsPromise)) {
-      this.capabilitiesOptionsPromise = this.getCapabilities().then((capabilities) => {
-        const layerName = this.name;
-        let matrixSet = this.matrixSet;
-        if (isNullOrEmpty(matrixSet)) {
-          /* if no matrix set was specified then
+      // eslint-disable-next-line no-underscore-dangle
+      const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
+        return cap.url === this.url;
+      });
+
+      if (capabilitiesInfo.capabilities) {
+        this.capabilitiesOptionsPromise = capabilitiesInfo.capabilities;
+      } else {
+        this.capabilitiesOptionsPromise = this.getCapabilities();
+      }
+
+      const capabilities = await this.capabilitiesOptionsPromise;
+
+      const layerName = this.name;
+      let matrixSet = this.matrixSet;
+      if (isNullOrEmpty(matrixSet)) {
+        /* if no matrix set was specified then
           it supposes the matrix set has the name
           of the projection
           */
-          matrixSet = this.map.getProjection().code;
-        }
-        let capabilitiesLayer = capabilities.Contents.Layer;
-        if (isArray(capabilitiesLayer)) {
-          capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
-        }
+        matrixSet = this.map.getProjection().code;
+      }
+      let capabilitiesLayer = capabilities.Contents.Layer;
+      if (isArray(capabilitiesLayer)) {
+        capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
+      }
 
-        if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
-          this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL.replaceAll('&amp;', '&');
-        }
+      if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
+        this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL.replaceAll('&amp;', '&');
+      }
 
-        const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
-        const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
-        const extent = this.facadeLayer_.getMaxExtent();
-        const attribution = !isNullOrEmpty(capabilities.ServiceProvider) ? capabilities.ServiceProvider : '';
+      const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
+      const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
+      const extent = this.facadeLayer_.getMaxExtent();
+      const attribution = !isNullOrEmpty(capabilities.ServiceProvider) ? capabilities.ServiceProvider : '';
 
-        const capabilitiesOpts = optionsFromCapabilities(capabilities, {
-          layer: layerName,
-          matrixSet,
-          extent,
-        });
-        const capabilitiesMetadata = {
-          abstract,
-          attribution,
-          style,
-        };
-        capabilitiesOpts.tileGrid.extent = extent;
-        if (this.facadeLayer_.capabilitiesMetadata === undefined) {
-          this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
-        }
-        return capabilitiesOpts;
+      const capabilitiesOpts = optionsFromCapabilities(capabilities, {
+        layer: layerName,
+        matrixSet,
+        extent,
       });
+      const capabilitiesMetadata = {
+        abstract,
+        attribution,
+        style,
+      };
+      capabilitiesOpts.tileGrid.extent = extent;
+      if (this.facadeLayer_.capabilitiesMetadata === undefined) {
+        this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
+      }
+      return capabilitiesOpts;
     }
     return this.capabilitiesOptionsPromise;
   }
 
   /**
-   * TODO
+   * Este método devuelve los metadatos
+   * de un servicio WMTS.
    *
    * @public
    * @function
+   * @returns {capabilitiesOptionsPromise} Metadatos.
    * @api stable
    */
   getCapabilities() {
-    if (isNullOrEmpty(this.getCapabilitiesPromise_)) {
+    const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
+      return cap.url === this.url;
+    });
+
+    if (capabilitiesInfo.capabilities) {
+      this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
+    } else if (isNullOrEmpty(this.getCapabilitiesPromise_)) {
       this.getCapabilitiesPromise_ = new Promise((success, fail) => {
         const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(this.url);
         const parser = new OLFormatWMTSCapabilities();
@@ -311,16 +445,18 @@ class WMTS extends LayerBase {
           success.call(this, parsedCapabilities);
         });
       });
+      capabilitiesInfo.capabilities = this.getCapabilitiesPromise_;
     }
     return this.getCapabilitiesPromise_;
   }
 
   /**
-   * This function gets the min resolution for
-   * this WMTS
+   * Este método obtiene la resolución mínima para
+   * este WMTS.
    *
    * @public
    * @function
+   * @return {minResolution} Resolución Mínima.
    * @api stable
    */
   getMinResolution() {
@@ -328,11 +464,12 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * This function gets the max resolution for
-   * this WMTS
+   * Este método obtiene la resolución máxima para
+   * este WMTS.
    *
    * @public
    * @function
+   * @returns {maxResolution} Resolución Máxima.
    * @api stable
    */
   getMaxResolution() {
@@ -340,10 +477,12 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * This function set facade class WMTS
+   * Este método establece la clase de fachada WMTS.
+   * La fachada se refiere a
+   * un patrón estructural como una capa de abstracción con un patrón de diseño.
    *
    * @function
-   * @param {object} obj - Facade layer
+   * @param {object} obj Capa de la fachada.
    * @api stable
    */
   setFacadeObj(obj) {
@@ -351,9 +490,10 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * This function indicates if the layer is queryable
+   * Este método indica si la capa es consultable.
    *
    * @function
+   * @returns {Boolean} Verdadera es consultable, falsa si no.
    * @api stable
    * @expose
    */
@@ -362,8 +502,8 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * This function destroys this layer, cleaning the HTML
-   * and unregistering all events
+   * Este método destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
    *
    * @public
    * @function
@@ -379,10 +519,12 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * This function checks if an object is equals
-   * to this layer
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
    *
    * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Verdadero es igual, falso si no.
    * @api stable
    */
   equals(obj) {
@@ -398,8 +540,14 @@ class WMTS extends LayerBase {
   }
 
   /**
+   * Devuelve la url con información de los objetos geográficos.
+   *
    * @function
    * @public
+   * @param {Array} coordinate Coordenadas.
+   * @param {Number} zoom Zoom.
+   * @param {String} formatInfo Formato de la información.
+   * @returns {String} URL de la información de los objetos geográficos.
    * @api
    */
   getFeatureInfoUrl(coordinate, zoom, formatInfo) {
@@ -437,8 +585,13 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * @function
+   * Devuelve las columnas y las filas de la tesela.
+   *
    * @public
+   * @function
+   * @param {Array} coordinate Coordenadas.
+   * @param {Number} zoom Zoom.
+   * @return {Array} Devuelve las columnas y las filas de la tesela.
    * @api
    */
   getTileColTileRow(coordinate, zoom) {
@@ -455,8 +608,14 @@ class WMTS extends LayerBase {
   }
 
   /**
+   * Devuelve las coordenadas relativas de mosaico en píxeles.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
-   * @private
+   * @param {Array} coordinate Coordenadas.
+   * @param {Number} zoom Zoom.
+   * @returns {Array} Devuelve las coordenadas en pixeles.
+   * @public
+   * @api
    */
   getRelativeTileCoordInPixel_(coordinate, zoom) {
     let coordPixel;
@@ -476,10 +635,11 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * TODO
+   * Devuelve la URL de la leyenda.
    *
    * @public
    * @function
+   * @returns {String} URL de la leyenda.
    * @api stable
    */
   getLegendURL() {
@@ -487,10 +647,11 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * TODO
+   * Sobrescribir la url de la leyenda.
    *
    * @public
    * @function
+   * @param {String} legendUrl Nueva URL.
    * @api stable
    */
   setLegendURL(legendUrl) {

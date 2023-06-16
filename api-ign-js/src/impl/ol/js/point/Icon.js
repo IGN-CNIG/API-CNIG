@@ -1,13 +1,37 @@
+/**
+ * @module M/impl/point/Icon
+ */
+
 import OLStyleIcon from 'ol/style/Icon';
 
-export default class Icon extends OLStyleIcon {
+class Icon extends OLStyleIcon {
   /**
    * @classdesc
-   * chart style for vector features
+   * Estilos gráficos para los vectores.
+   * @extends {OLStyleIcon}
    *
    * @constructor
-   * @param {object} options - Options style PointIcon
-   * @extends {OLStyleIcon}
+   * @param {object} options Opciones del estilo "PointIcon".
+   * - anchor: Ancla. El valor predeterminado es el centro del icono, por defecto [0.5, 0.5].
+   * - anchorOrigin: Origin of the anchor: bottom-left, bottom-right, top-left or top-right.
+   * Por defecto: 'top-left'.
+   * - anchorXUnits: Unidades en las que se especifica el valor ancla x. Un valor de 'fracción'
+   * indica que el valor de x es una fracción del icono.
+   * Un valor de 'píxeles' indica el valor x en píxeles.
+   * Por defecto: fraction.
+   * - anchorYUnits: Unidades en las que se especifica el valor ancla y. Un valor de 'fracción'
+   * indica que el valor y es una fracción del icono.
+   * Un valor de 'píxeles' indica el valor y en píxeles.
+   * Por defecto: fraction.
+   * - color: Color para matizar el icono. Si no se especifica, el icono se dejará como está.
+   * - offset: Offset que, junto con size y offsetOrigin, define el subrectángulo
+   * que se usará de la imagen original (sprite).
+   * - offsetOrigin: Origen del desplazamiento:
+   * "bottom-left", "bottom-right", "top-left" or "top-right".
+   * - size: Tamaño del icono en píxeles. Se usa junto con el desplazamiento para
+   * definir el subrectángulo que se usará de la imagen original (sprite).
+   *
+   * @api stable
    */
   constructor(options = {}) {
     // super call
@@ -33,9 +57,10 @@ export default class Icon extends OLStyleIcon {
   }
 
   /**
-   * clones the style
+   * Clona el estilo.
    * @public
    * @function
+   * @returns {Icon} Devuelve un "new Icon".
    */
   clone() {
     return new Icon({
@@ -58,23 +83,34 @@ export default class Icon extends OLStyleIcon {
   }
 
   /**
-   * Setter size
+   * Sobrescribe el tamaño.
+   * @public
+   * @function
+   * @param {Array} value Array con los tamaños.
    */
   set size(value) {
     this.size_ = Array.isArray(value) ? value : null;
   }
 
   /**
-   * Setter anchor
+   * Sobrescribe la propiedad "anchor".
+   * @public
+   * @function
+   * @param {Array} value Array con los tamaños.
    */
   set anchor(value) {
     this.anchor_ = Array.isArray(value) ? value : null;
   }
 
   /**
-   * Setter anchor
+   * Sobrescribe el origen.
+   * @public
+   * @function
+   * @param {Array} value Array con los tamaños.
    */
   set origin(value) {
     this.origin_ = Array.isArray(value) ? value : null;
   }
 }
+
+export default Icon;

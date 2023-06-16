@@ -3,7 +3,7 @@
  */
 
 /**
- * Default style status
+ * Estado de estilo predeterminado.
  * @const
  * @type {string}
  * @public
@@ -12,7 +12,7 @@
 export const DEFAULT = 'default';
 
 /**
- * New style status
+ * Estado del nuevo estilo.
  * @const
  * @type {string}
  * @public
@@ -21,7 +21,7 @@ export const DEFAULT = 'default';
 export const NEW = 'new';
 
 /**
- * Selected style status
+ * Estado del estilo seleccionado.
  * @const
  * @type {string}
  * @public

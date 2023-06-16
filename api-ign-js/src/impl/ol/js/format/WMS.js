@@ -5,10 +5,12 @@ import { isArray, isObject, isNullOrEmpty } from 'M/util/Utils';
 import OLFormatWMSCapabilities from 'ol/format/WMSCapabilities';
 
 /**
- * Name of the nodes that we want to spread from parents to children.
- * @const
- * @type {Array<String>}
- */
+  * Nombre de los nodos para transmitir de padres a hijos.
+  * @const
+  * @type {Array<String>}
+  * @public
+  * @api
+  */
 const PROPAGATED_ELEMENTS = [
   'SRS',
   'BoundingBox',
@@ -17,13 +19,17 @@ const PROPAGATED_ELEMENTS = [
 ];
 
 /**
- * This function returns true if a node has a direct child with a name equals to
- * childName parameter.
- * @function
- * @param {Node} node
- * @param {String} childName
- * @return {Bool}
- */
+  * Este método devuelve verdadero si un nodo tiene un hijo
+  * directo con un nombre igual al del parámetro "childName".
+  *
+  * @function
+  * @param {Node} node Nodo.
+  * @param {String} childName Nombre de un posible hijo.
+  * @returns {Bool} Verdadero si un nodo tiene un hijo directo.
+  * igual a "childName", en caso contrario es falso.
+  * @public
+  * @api
+  */
 const hasChild = (node, childName) => {
   const childNodes = Array.prototype.filter
     .call(node.children, element => element.tagName === childName);
@@ -31,12 +37,15 @@ const hasChild = (node, childName) => {
 };
 
 /**
- * This function propagates all the nodes defined in the constant PROPAGATED_ELEMENTS
- * from parents to child node.
- * @function
- * @param {Node} parentNode
- * @param {Node} nodeChild
- */
+  * Este método propaga del nodo principal al secundario todos los nodos
+  * definidos en la constante "PROPAGATED_ELEMENTS".
+  *
+  * @function
+  * @param {Node} parentNode Nodo padre.
+  * @param {Node} nodeChild Nodo hijo.
+  * @public
+  * @api
+  */
 const propagateNodeLayer = (parentNode, nodeChild) => {
   if (parentNode !== null) {
     PROPAGATED_ELEMENTS.forEach((elementName) => {
@@ -53,15 +62,20 @@ const propagateNodeLayer = (parentNode, nodeChild) => {
 };
 
 /**
- * This function returns an object where each key is the name of a layer of the WMS
- * document and its value is the XML node that represents it.
- * @function
- * @param {Node} wmsNode
- * @param {Bool} isRoot
- * @param {Object} rootObj
- * @param {Node|null} parent
- * @returns {Object}
- */
+  * Este método devuelve un objeto donde cada clave es el nombre de una
+  * capa del documento WMS y su valor es el nodo XML que la representa.
+  *
+  * @function
+  * @param {Node} wmsNode Nodo WMS.
+  * @param {Bool} isRoot Indica si el nodo WMS es elemento raíz. Por
+  * defecto es verdadero.
+  * @param {Object} rootObj Objeto.
+  * @param {Node|null} parent Padre del nodo.
+  * @returns {Object} Objeto con nombre de la capa como clave y nodo XML
+  * como valor.
+  * @public
+  * @api
+  */
 const layerNodeToJSON = (wmsNode, isRoot = true, rootObj = {}, parent = null) => {
   let rootObjVar = rootObj;
   let node = wmsNode;
@@ -83,11 +97,14 @@ const layerNodeToJSON = (wmsNode, isRoot = true, rootObj = {}, parent = null) =>
 };
 
 /**
- * This function parse the SRS custom node of WMS XML.
- * @function
- * @param {Object} objLayer
- * @param {Object} parsedLayerNodes
- */
+  * Este método analiza el nodo personalizado SRS de WMS.
+  *
+  * @function
+  * @param {Object} objLayer Objeto de la capa.
+  * @param {Object} parsedLayerNodes Nodo de la capa.
+  * @public
+  * @api
+  */
 const parseSRS = (objLayer, parsedLayerNodes) => {
   const objLayerParam = objLayer;
   const nodeLayer = parsedLayerNodes[objLayerParam.Name];
@@ -103,11 +120,14 @@ const parseSRS = (objLayer, parsedLayerNodes) => {
 };
 
 /**
- * This function parse the BoundingBox custom node and SRS attribute of WMS XML.
- * @function
- * @param {Object} objLayer
- * @param {Object} parsedLayerNodes
- */
+  * Este método analiza el nodo personalizado "BoundingBox" y el atributo "SRS" de WMS
+  *
+  * @function
+  * @param {Object} objLayer Objeto de la capa.
+  * @param {Object} parsedLayerNodes Nodo de la capa.
+  * @public
+  * @api
+  */
 const parseBoundingBox = (objLayer, parsedLayerNodes) => {
   const nodeLayer = parsedLayerNodes[objLayer.Name];
   if (!isNullOrEmpty(nodeLayer)) {
@@ -134,11 +154,14 @@ const parseBoundingBox = (objLayer, parsedLayerNodes) => {
 };
 
 /**
- * This function parse the ScaleHint custom node of WMS XML.
- * @function
- * @param {Object} objLayer
- * @param {Object} parsedLayerNodes
- */
+  * Este método analiza el nodo personalizado "ScaleHint" de WMS.
+  *
+  * @function
+  * @param {Object} objLayer Objeto de la capa.
+  * @param {Object} parsedLayerNodes Nodo de la capa.
+  * @public
+  * @api
+  */
 const parseScaleHint = (objLayer, parsedLayerNodes) => {
   const objLayerParam = objLayer;
   const nodeLayer = parsedLayerNodes[objLayer.Name];
@@ -161,11 +184,14 @@ const parseScaleHint = (objLayer, parsedLayerNodes) => {
 };
 
 /**
- * This function parse the LatLonBoundingBox custom node of WMS XML.
- * @function
- * @param {Object} objLayer
- * @param {Object} parsedLayerNodes
- */
+  * Este método analiza el nodo personalizado "LatLonBoundingBox" del WMS.
+  *
+  * @function
+  * @param {Object} objLayer Objeto de la capa.
+  * @param {Object} parsedLayerNodes Nodo de la capa.
+  * @public
+  * @api
+  */
 const parseLatLonBoundingBox = (objLayer, parsedLayerNodes) => {
   const objLayerParam = objLayer;
   const nodeLayer = parsedLayerNodes[objLayer.Name];
@@ -193,60 +219,72 @@ const parseLatLonBoundingBox = (objLayer, parsedLayerNodes) => {
 };
 
 /**
- * This function replaces the BoundingBox (if BoundingBox is null)
- * by LatLonBoundinBox in object layer.
- * @function
- * @param {Object} objLayer
- * @param {Object} parsedLayerNodes
- */
+  * Este método reemplaza "BoundingBox" (si BoundingBox es nulo) por
+  * 'LatLonBoundinBox' en la capa.
+  *
+  * @function
+  * @param {Object} objLayer Objeto de la capa.
+  * @param {Object} parsedLayerNodes Nodo de la capa.
+  * @public
+  * @api
+  */
 const replaceBoundingBox = (objLayer, parsedLayerNodes) => {
   const objLayerParam = objLayer;
   // replaces the BoundingBox by LatLonBoundinBox
   const latLonBoundingBoxProp = 'LatLonBoundingBox';
   const boundingBoxProp = 'BoundingBox';
   if (isNullOrEmpty(objLayerParam[boundingBoxProp]) &&
-    !isNullOrEmpty(objLayerParam[latLonBoundingBoxProp])) {
+     !isNullOrEmpty(objLayerParam[latLonBoundingBoxProp])) {
     objLayerParam[boundingBoxProp] = objLayerParam[latLonBoundingBoxProp];
   }
 };
 
 /**
- * This function replaces the maxScale (if maxScale is null)
- * by ScaleHint in object layer.
- * @function
- * @param {Object} objLayer
- * @param {Object} parsedLayerNodes
- */
+  * Este método reemplaza "maxScale" (si maxScale es nulo) por
+  * 'ScaleHint' en la capa.
+  *
+  * @function
+  * @param {Object} objLayer Objeto de la capa.
+  * @param {Object} parsedLayerNodes Nodo de la capa.
+  * @public
+  * @api
+  */
 const replaceMaxScaleDenominator = (objLayer, parsedLayerNodes) => {
   const objLayerParam = objLayer;
   const maxScaleDenominatorProp = 'MaxScaleDenominator';
   if (isNullOrEmpty(objLayerParam[maxScaleDenominatorProp]) &&
-    !isNullOrEmpty(objLayerParam.ScaleHint)) {
+     !isNullOrEmpty(objLayerParam.ScaleHint)) {
     objLayerParam[maxScaleDenominatorProp] = objLayerParam.ScaleHint[0].maxScale;
   }
 };
 
 /**
- * This function replaces the maxScale (if maxScale is null)
- * by ScaleHint in object layer.
- * @function
- * @param {Object} objLayer
- * @param {Object} parsedLayerNodes
- */
+  * Este método reemplaza "minScale" (si minScale es nulo) por
+  * "ScaleHint" en la capa.
+  *
+  * @function
+  * @param {Object} objLayer Objeto de la capa.
+  * @param {Object} parsedLayerNodes Nodo de la capa.
+  * @public
+  * @api
+  */
 const replaceMinScaleDenominator = (objLayer, parsedLayerNodes) => {
   const objLayerParam = objLayer;
   const minScaleDenominatorProp = 'MinScaleDenominator';
   if (isNullOrEmpty(objLayerParam[minScaleDenominatorProp]) &&
-    !isNullOrEmpty(objLayerParam.ScaleHint)) {
+     !isNullOrEmpty(objLayerParam.ScaleHint)) {
     objLayerParam[minScaleDenominatorProp] = objLayerParam.ScaleHint[0].minScale;
   }
 };
 
 /**
- * Parsers to apply to WMS XML Document
- * @const
- * @type {Array<Function>}
- */
+  * Analizadores para aplicar al documento WMS.
+  *
+  * @const
+  * @type {Array<Function>}
+  * @public
+  * @api
+  */
 const LAYER_PARSERS = [
   parseSRS,
   parseBoundingBox,
@@ -258,11 +296,14 @@ const LAYER_PARSERS = [
 ];
 
 /**
- * This function applies all the parsers to a layer
- * @function
- * @param {Object} objLayer
- * @param {Object} parsedLayerNodes
- */
+  * Este método aplica todos los analizadores a una capa.
+  *
+  * @function
+  * @param {Object} objLayer Objeto de la capa.
+  * @param {Object} parsedLayerNodes Nodo de la capa.
+  * @public
+  * @api
+  */
 const parserLayerProps = (objLayer, parsedLayerNodes) => {
   LAYER_PARSERS.forEach((parser) => {
     parser(objLayer, parsedLayerNodes);
@@ -270,11 +311,14 @@ const parserLayerProps = (objLayer, parsedLayerNodes) => {
 };
 
 /**
- * This function applies all the parsers to each layer
- * @function
- * @param {Object} objLayer
- * @param {Object} parsedLayerNodes
- */
+  * Este método aplica todos los analizadores a cada capa.
+  *
+  * @function
+  * @param {Object} objLayer Objeto de la capa.
+  * @param {Object} parsedLayerNodes Nodo de la capa.
+  * @public
+  * @api
+  */
 const parseLayersProps = (objLayer, parsedLayerNodes) => {
   if (isArray(objLayer)) {
     objLayer.forEach((layer) => {
@@ -286,21 +330,24 @@ const parseLayersProps = (objLayer, parsedLayerNodes) => {
   }
 };
 
-
 /**
- * @classdesc
- * @api
- * Main constructor of the class. Creates a WMC formater
- * @api stable
- */
+  * @classdesc
+  * Implementación del formateador WMS.
+  *
+  * @api
+  * @extends {ol.format.WMSCapabilities}
+  */
 class WMSCapabilities extends OLFormatWMSCapabilities {
   /**
-   * This function reads some custom properties that do
-   * not follow the standard of WMS layers.
-   * @public
-   * @param {XMLDocument} wmsDocument - XML of WMS
-   * @return {Object} Layer object
-   */
+    * Este método lee algunas propiedades personalizadas
+    * que no siguen el estándar de las capas WMS.
+    *
+    * @function
+    * @param {XMLDocument} wmsDocument XML de WMS.
+    * @returns {Object} Capa.
+    * @public
+    * @api
+    */
   customRead(wmsDocument) {
     const formatedWMS = this.read(wmsDocument);
     const parsedLayerNodes = layerNodeToJSON(wmsDocument);
@@ -313,3 +360,4 @@ class WMSCapabilities extends OLFormatWMSCapabilities {
 }
 
 export default WMSCapabilities;
+

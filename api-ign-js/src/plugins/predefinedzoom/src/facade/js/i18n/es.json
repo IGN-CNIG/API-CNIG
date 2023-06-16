@@ -1,3 +1,4 @@
 {
-    "exception_predefinedzoomcontrol": "La implementación usada no puede crear controles PredefinedZoomControl"
+    "exception_predefinedzoomcontrol": "La implementación usada no puede crear controles PredefinedZoomControl",
+    "predefinedzoom_obsolete": "M.plugin.PredefinedZoom ha quedado obsoleto, utilice en su lugar M.plugin.ViewManagement"
 }

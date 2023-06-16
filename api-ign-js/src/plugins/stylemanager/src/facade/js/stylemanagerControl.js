@@ -40,7 +40,6 @@ export default class StyleManagerControl extends M.Control {
     const layers = map.getWFS().concat(map.getMVT().concat(map.getKML().concat(map.getLayers().filter(layer => layer.type === 'GeoJSON')))).filter((layer) => {
       return layer.name !== 'selectLayer';
     });
-
     return new Promise((success, fail) => {
       const html = M.template.compileSync(stylemanager, {
         jsonp: true,
@@ -164,7 +163,8 @@ export default class StyleManagerControl extends M.Control {
   subscribeAddedLayer(htmlSelect) {
     this.facadeMap_.on(M.evt.ADDED_LAYER, (layers) => {
       if (Array.isArray(layers)) {
-        layers.filter(layer => (layer instanceof M.layer.Vector && layer.name !== 'selectLayer')).forEach(layer => this.addLayerOption(htmlSelect, layer.name));
+        layers.filter(layer => (layer instanceof M.layer.Vector && layer
+          instanceof M.layer.MBTilesVector === false && layer.name !== 'selectLayer')).forEach(layer => this.addLayerOption(htmlSelect, layer.name));
       } else if (layers instanceof M.layer.Vector) {
         const layer = { ...layers };
         this.addLayerOption(htmlSelect, layer);

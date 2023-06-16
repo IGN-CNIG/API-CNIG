@@ -21,6 +21,8 @@ export default class PrinterMapControl extends M.impl.Control {
      * @type {M.Map}
      */
     this.facadeMap_ = null;
+
+    this.errors = [];
   }
 
   /**
@@ -77,31 +79,41 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   encodeLayer(layer) {
     return (new Promise((success, fail) => {
-      if (layer.type === M.layer.type.WMC) {
-        // none
-      } else if (layer.type === M.layer.type.KML) {
-        success(this.encodeKML(layer));
-      } else if (layer.type === M.layer.type.WMS) {
-        success(this.encodeWMS(layer));
-      } else if (layer.type === M.layer.type.WFS) {
-        success(this.encodeWFS(layer));
-      } else if (layer.type === M.layer.type.GeoJSON) {
-        success(this.encodeWFS(layer));
-      } else if (layer.type === M.layer.type.WMTS) {
-        this.encodeWMTS(layer).then((encodedLayer) => {
-          success(encodedLayer);
-        });
-      } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
-        success(this.encodeWFS(layer));
-        // eslint-disable-next-line no-underscore-dangle
-      } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
-        success(this.encodeImage(layer));
-      } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type) > -1) {
-        success(this.encodeXYZ(layer));
-      } else if (layer.type === M.layer.type.MVT) {
-        success(this.encodeMVT(layer));
-      } else {
-        success(this.encodeWFS(layer));
+      try {
+        if (layer.type === M.layer.type.WMC) {
+          // none
+        } else if (layer.type === M.layer.type.KML) {
+          success(this.encodeKML(layer));
+        } else if (layer.type === M.layer.type.WMS) {
+          success(this.encodeWMS(layer));
+        } else if (layer.type === M.layer.type.WFS) {
+          success(this.encodeWFS(layer));
+        } else if (layer.type === M.layer.type.GeoJSON) {
+          success(this.encodeWFS(layer));
+        } else if (layer.type === M.layer.type.WMTS) {
+          this.encodeWMTS(layer).then((encodedLayer) => {
+            success(encodedLayer);
+          });
+        } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
+          success(this.encodeWFS(layer));
+          // eslint-disable-next-line no-underscore-dangle
+        } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
+          success(this.encodeImage(layer));
+        } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type)
+          > -1) {
+          success(this.encodeXYZ(layer));
+        } else if (layer.type === M.layer.type.MVT) {
+          success(this.encodeMVT(layer));
+        } else if (layer.type === M.layer.type.MBTiles ||
+          layer.type === M.layer.type.MBTilesVector) {
+          this.errors.push(layer.name);
+          success('');
+        } else {
+          success(this.encodeWFS(layer));
+        }
+      } catch (e) {
+        this.errors.push(layer.name);
+        success('');
       }
     }));
   }

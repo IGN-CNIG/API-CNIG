@@ -138,5 +138,6 @@
    "serializedStyle": "Serialized style",
    "clipboard": "Copied serialized style to clipboard",
    "modifySVG": "Modify SVG",
-   "infoURL": "A gallery of SVG files is available at <a target='blank' href='https://componentes.cnig.es/api-core/api/actions/resources/svg'>https://componentes.cnig.es/api-core/api/actions/resources/svg</a>"
+   "infoURL": "A gallery of SVG files is available at <a target='blank' href='https://componentes.cnig.es/api-core/api/actions/resources/svg'>https://componentes.cnig.es/api-core/api/actions/resources/svg</a>",
+   "tooltip": "Style manager"
 }

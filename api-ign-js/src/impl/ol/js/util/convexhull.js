@@ -1,19 +1,29 @@
 /**
- * TODO
+ * Comprueba si un punto está a la izquierda o a
+ * la derecha de la línea (a,b).
  *
- * @private
  * @function
+ * @param {ol.coordinate} a punto en la línea
+ * @param {ol.coordinate} b punto en la línea
+ * @param {ol.coordinate} o punto
+ * @returns {bool} Verdadero si (a, b, o) gira en
+ * sentido horario
+ * @public
+ * @api
  */
 const clockwise = (a, b, o) => {
   return (((a[0] - o[0]) * (b[1] - o[1])) - ((a[1] - o[1]) * (b[0] - o[0])) <= 0);
 };
 
 /**
- * TODO
+ * Calcula el cerco convexo utilizando el algoritmo
+ * 'Monotone Chain' de Andrew
  *
- * @public
  * @function
- * @api stable
+ * @param {Array<ol.geom.Point>} points Array de punto 2D
+ * @returns {Array<ol.geom.Point>} Vértices convexos del cerco
+ * @public
+ * @api
  */
 const coordinatesConvexHull = (points) => {
   // Sort by increasing x and then y coordinate
