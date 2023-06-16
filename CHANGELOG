@@ -1,3 +1,7 @@
+
+16/06/2023 - Versión 4.7.0
+- Se incorpora el plugin locator dejando obsoleto los plugins ignSearchlocator, xylocator y infocatastro
+
 01/06/2023 - Versión 4.6.0
 - Se dispara evento MOVE cuando se mueve el mapa, no cuando se mueve el ratón
 - Se centra el popup cuando las capas tienen el extract y se consulta y en el plugin information (cuando muestra la información la centra), en caso de que MOVE_MAP_EXTRACT tenga valor false
