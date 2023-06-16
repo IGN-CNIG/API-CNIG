@@ -127,9 +127,15 @@ class WMTS extends LayerBase {
 
 
     if (this.useCapabilities) {
-      // adds layer from capabilities
-      this.getCapabilitiesOptions_()
-        .then(capabilitiesOptions => this.addLayer_(capabilitiesOptions));
+      this.capabilitiesOptionsPromise = this.getCapabilitiesOptions_();
+
+      this.capabilitiesOptionsPromise
+        .then((capabilities) => {
+          // filter current layer capabilities
+          const capabilitiesOptions = this.getFilterCapabilities_(capabilities);
+          // adds layer from capabilities
+          this.addLayer_(capabilitiesOptions);
+        });
     } else {
       this.addLayerNotCapabilities_();
     }
@@ -243,10 +249,8 @@ class WMTS extends LayerBase {
       // keeps z-index values before ol resets
       const zIndex = this.zIndex_;
       this.map.getMapImpl().addLayer(this.ol3Layer);
-      setTimeout(() => {
-        this.ol3Layer.setMaxZoom(this.maxZoom);
-        this.ol3Layer.setMinZoom(this.minZoom);
-      }, 500);
+      this.ol3Layer.setMaxZoom(this.maxZoom);
+      this.ol3Layer.setMinZoom(this.minZoom);
 
       // sets its z-index
       if (zIndex !== null) {
@@ -341,6 +345,56 @@ class WMTS extends LayerBase {
     this.getOL3Layer().setExtent(maxExtent);
   }
 
+  /**
+   * Este método devuelve las opciones filtradas de los metadatos
+   * de un servicio WMTS para la capa actual.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @function
+   * @param {Object} capabilities Metadatos.
+   * @returns {Object} Metadatos filtrados.
+   * @api stable
+   */
+  getFilterCapabilities_(capabilities) {
+    const layerName = this.name;
+    let matrixSet = this.matrixSet;
+    if (isNullOrEmpty(matrixSet)) {
+      /* if no matrix set was specified then
+        it supposes the matrix set has the name
+        of the projection
+        */
+      matrixSet = this.map.getProjection().code;
+    }
+    let capabilitiesLayer = capabilities.Contents.Layer;
+    if (isArray(capabilitiesLayer)) {
+      capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
+    }
+
+    if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
+      this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL.replaceAll('&amp;', '&');
+    }
+
+    const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
+    const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
+    const extent = this.facadeLayer_.getMaxExtent();
+    const attribution = !isNullOrEmpty(capabilities.ServiceProvider) ? capabilities.ServiceProvider : '';
+
+    const capabilitiesOpts = optionsFromCapabilities(capabilities, {
+      layer: layerName,
+      matrixSet,
+      extent,
+    });
+    const capabilitiesMetadata = {
+      abstract,
+      attribution,
+      style,
+    };
+    capabilitiesOpts.tileGrid.extent = extent;
+    if (this.facadeLayer_.capabilitiesMetadata === undefined) {
+      this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
+    }
+    return capabilitiesOpts;
+  }
 
   /**
    * Este método devuelve las opciones de los metadatos
@@ -351,9 +405,8 @@ class WMTS extends LayerBase {
    * @returns {capabilitiesOptionsPromise} Opciones metadatos.
    * @api stable
    */
-  async getCapabilitiesOptions_() {
+  getCapabilitiesOptions_() {
     if (isNullOrEmpty(this.capabilitiesOptionsPromise)) {
-      // eslint-disable-next-line no-underscore-dangle
       const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
         return cap.url === this.url;
       });
@@ -361,49 +414,11 @@ class WMTS extends LayerBase {
       if (capabilitiesInfo.capabilities) {
         this.capabilitiesOptionsPromise = capabilitiesInfo.capabilities;
       } else {
-        this.capabilitiesOptionsPromise = this.getCapabilities();
+        this.capabilitiesOptionsPromise = this.getCapabilities().then((capabilities) => {
+          return capabilities;
+        });
+        capabilitiesInfo.capabilities = this.capabilitiesOptionsPromise;
       }
-
-      const capabilities = await this.capabilitiesOptionsPromise;
-
-      const layerName = this.name;
-      let matrixSet = this.matrixSet;
-      if (isNullOrEmpty(matrixSet)) {
-        /* if no matrix set was specified then
-          it supposes the matrix set has the name
-          of the projection
-          */
-        matrixSet = this.map.getProjection().code;
-      }
-      let capabilitiesLayer = capabilities.Contents.Layer;
-      if (isArray(capabilitiesLayer)) {
-        capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
-      }
-
-      if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
-        this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL.replaceAll('&amp;', '&');
-      }
-
-      const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
-      const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
-      const extent = this.facadeLayer_.getMaxExtent();
-      const attribution = !isNullOrEmpty(capabilities.ServiceProvider) ? capabilities.ServiceProvider : '';
-
-      const capabilitiesOpts = optionsFromCapabilities(capabilities, {
-        layer: layerName,
-        matrixSet,
-        extent,
-      });
-      const capabilitiesMetadata = {
-        abstract,
-        attribution,
-        style,
-      };
-      capabilitiesOpts.tileGrid.extent = extent;
-      if (this.facadeLayer_.capabilitiesMetadata === undefined) {
-        this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
-      }
-      return capabilitiesOpts;
     }
     return this.capabilitiesOptionsPromise;
   }
@@ -418,13 +433,7 @@ class WMTS extends LayerBase {
    * @api stable
    */
   getCapabilities() {
-    const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
-      return cap.url === this.url;
-    });
-
-    if (capabilitiesInfo.capabilities) {
-      this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
-    } else if (isNullOrEmpty(this.getCapabilitiesPromise_)) {
+    if (isNullOrEmpty(this.getCapabilitiesPromise_)) {
       this.getCapabilitiesPromise_ = new Promise((success, fail) => {
         const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(this.url);
         const parser = new OLFormatWMTSCapabilities();
@@ -445,7 +454,6 @@ class WMTS extends LayerBase {
           success.call(this, parsedCapabilities);
         });
       });
-      capabilitiesInfo.capabilities = this.getCapabilitiesPromise_;
     }
     return this.getCapabilitiesPromise_;
   }

@@ -36,9 +36,17 @@ class OGCAPIFeatures extends Vector {
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * -bbox: Filtro para mostrar los resultados en un bbox específico.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
-   *-cql: Declaración CQL para filtrar las características
-   (Sólo disponible para servicios en PostgreSQL).
+   * -cql: Declaración CQL para filtrar las características
+   * (Sólo disponible para servicios en PostgreSQL).
+   * Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *   cql: 'id IN (3,5)',
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(options = {}, vendorOptions) {
@@ -76,8 +84,8 @@ class OGCAPIFeatures extends Vector {
     this.bbox = options.bbox;
 
     /**
-     * OGCAPIFeatures options.getFeatureOutputFormat.Formato de retorno de los features, por defecto
-     * default application/json.
+     * OGCAPIFeatures options.getFeatureOutputFormat.Formato de retorno de los objetos geográficos,
+     * por defecto default application/json.
      */
     if (isNullOrEmpty(this.options.getFeatureOutputFormat)) {
       this.options.getFeatureOutputFormat = 'application/json'; // by default

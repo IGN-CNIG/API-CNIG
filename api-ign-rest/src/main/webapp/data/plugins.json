@@ -150,6 +150,16 @@
     "description": "Plugin para dar de alta incidencias."
   },
   {
+    "name": "locator",
+    "plugin": "[locator]",
+    "version": "v1.0",
+    "url_es": "locator.jsp?language=es",
+    "url_en": "locator.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/locator",
+    "image": "img/api-logo.png",
+    "description": "Plugin que ofrece diferentes herramientas de localización."
+  },
+  {
     "name": "lyrcompare",
     "plugin": "[lyrcompare]",
     "version": "v1.0",

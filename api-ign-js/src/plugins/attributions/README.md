@@ -40,7 +40,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
      - **2** ` NO DISPONIBLE`: Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. 
 * **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
 * **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario. Por defecto: Instituto Geográfico Nacional.
-* **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
+* **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario. Por defecto: https://www.ign.es/.
 * **minWidth**: Mínimo ancho de visualización del plugin. Por defecto '100px'.
 * **maxWidth**: Máximo ancho de visualización del plugin. Por defecto '200px'.
 * **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
@@ -79,9 +79,9 @@ URL_API?attributions=position*tooltip*mode*scale*defaultAttribution*defaultURL*u
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -165,7 +165,7 @@ URL_API?attributions=position*tooltip*mode*scale*defaultAttribution*defaultURL*u
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?attributions=TR*Plugin%20tribuciones*1*300*attributions*https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml*https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml*kml*attributions*atribucion*url*Gobierno%20de%20España*Atribuciones
+https://componentes.cnig.es/api-core?attributions=TR*Plugin%20atribuciones*1*300*attributions*https://componentes.cnig.es/NucleoVisualizador/vectorial_examples/atribucion.kml*https://componentes.ign.es/NucleoVisualizador/vectorial_examples/atribucionPNOA.kml*kml*attributions*atribucion*url*100*200*Gobierno%20de%20España
 ```
 
 ```

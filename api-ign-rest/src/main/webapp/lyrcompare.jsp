@@ -170,8 +170,6 @@
             defaultLyrD = inputDefaultLyrD.value != "" ? objeto.defaultLyrD = inputDefaultLyrD.value : "";
 
             map.removePlugins(mp);
-            console.log(objeto);
-            
             crearPlugin(objeto);
         }
 

@@ -1,3 +1,18 @@
+01/06/2023 - Versión 4.6.0
+- Se dispara evento MOVE cuando se mueve el mapa, no cuando se mueve el ratón
+- Se centra el popup cuando las capas tienen el extract y se consulta y en el plugin information (cuando muestra la información la centra), en caso de que MOVE_MAP_EXTRACT tenga valor false
+- Se añade el parámetro MOVE_MAP_EXTRACT a configuration para definir si se mueve o no hacía el popup
+- Se actualiza tooltip viewmanagment
+- Se elimina console.logs de lyrcompare y queryattributes
+- Plugin fulltoc: Se modifican las capas por defecto y se solucionan errores
+- Se mejora visualización toast en visualizadores
+- Se soluciona error en las capas WMTS al realizar GetCapabilities
+- Se mejora vendorOptions de las capas MBTiles, MBTilesVector y XYZ
+- Plugin geometrydraw: Se soluciona problema de visualización con estilos
+- Plugin information: se centra el popup si la variable de configuración MOVE_MAP_EXTRACT está a true
+- Se soluciona error parámetro order en los plugins backimglayer, locator y viewmanagement
+- Se actualiza visor.jsp
+  
 14/03/2023 - Versión 4.5.0
 - Mejoras sobre la documentación JSDoc
 - Mejoras sobre la documentación de los plugins
@@ -20,3 +35,4 @@
 - Sharemap: se soluciona problema de estilo y parámetro overwriteStyles del plugin. Se soluciona error tooltip y alineación de botones sharemap
 - Lyrcompare: se actualiza plugin mejorando documentación y eliminando el parámetro interface
 - InfoCoordinates: se habilita copiado en portapapeles
+- Se incorpora el plugin viewmanagement dejando obsoleto los plugins predefinedzoom, zoomextent, viewhistory y zoompanel

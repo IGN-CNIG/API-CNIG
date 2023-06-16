@@ -34,7 +34,7 @@ El constructor se inicializa con dos objetos JSON. El primero contiene el atribu
 - **tooltip**. Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información). Por defecto: Mapa de situación.
 - **fixed**: Indica si el mapa del plugin permanece a un zoom fijo (true/false). Por defecto: false.
 - **zoom**: Indica el nivel del zoom al que permanecerá fijo el mapa del plugin. Por defecto: '' (cadena vacía).
-- **baseLayer**: URL de la capa base si se quiere prefijar una en el plugin overviewmap. Por defecto: 'WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true'
+- **baseLayer**: URL de la capa base si se quiere prefijar una en el plugin overviewmap. Por defecto: ```WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true```
 
 # API-REST
 
@@ -44,9 +44,9 @@ URL_API?overviewmap=position*!collapsed*!collapsible*!tooltip*!fixed*!zoom*!base
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -98,9 +98,19 @@ https://componentes.cnig.es/api-core?overviewmap=TR*!true*!true*!Mapa
 
 ### Ejemplo de uso API-REST en base64
 
+Ejemplo de constructor:
+```javascript
+{
+  position: "BR",
+  fixed: true,
+  zoom: 4,
+  baseLayer: "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
+  collapsed: false,
+  collapsible: false, 
+  tooltip: "Mapa"
+}
 ```
-Ejemplo de constructor: {"position":"BR","fixed":true,"zoom":4,"baseLayer":"WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true","collapsed":false,"collapsible":false, "tooltip":"Mapa"}
-
+```
 https://componentes.cnig.es/api-core?overviewmap=base64=eyJwb3NpdGlvbiI6IkJSIiwiZml4ZWQiOnRydWUsInpvb20iOjQsImJhc2VMYXllciI6IldNVFMqaHR0cDovL3d3dy5pZ24uZXMvd210cy9pZ24tYmFzZT8qSUdOQmFzZVRvZG8qR29vZ2xlTWFwc0NvbXBhdGlibGUqTWFwYSBJR04qZmFsc2UqaW1hZ2UvanBlZypmYWxzZSpmYWxzZSp0cnVlIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOmZhbHNlLCAidG9vbHRpcCI6Ik1hcGEifQ==
 
 ```

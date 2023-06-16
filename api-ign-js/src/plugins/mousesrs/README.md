@@ -42,9 +42,9 @@ URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*a
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   <tr>
   <tr>
     <td>tooltip</td>
@@ -96,7 +96,15 @@ https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WG
 ```
 
 ### Ejemplo de uso API-REST en base64
-Ejemplo del constructor: {"label":"EPSG:4326","helpUrl":"https://www.ign.es/", "tooltip": "Coordenadas"}
+Ejemplo del constructor: 
+
+```javascript
+{
+  label: "EPSG:4326",
+  helpUrl: "https://www.ign.es/",
+  tooltip: "Coordenadas",
+}
+```
 
 ```
 https://componentes.cnig.es/api-core?mousesrs=base64=eyJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIiwgInRvb2x0aXAiOiAiQ29vcmRlbmFkYXMifQ==

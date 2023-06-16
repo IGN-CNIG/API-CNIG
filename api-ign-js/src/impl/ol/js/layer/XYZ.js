@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/XYZ
  */
-import { isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, extend } from 'M/util/Utils';
 import OLTileLayer from 'ol/layer/Tile';
 import { get as getProj } from 'ol/proj';
 import XYZSource from 'ol/source/XYZ';
@@ -161,12 +161,12 @@ class XYZ extends Layer {
     this.map = map;
     const projection = getProj('EPSG:3857');
     const extent = projection.getExtent();
-    this.ol3Layer = new OLTileLayer({
+    this.ol3Layer = new OLTileLayer(extend({
       visible: this.visibility,
       opacity: this.opacity_,
       zIndex: this.zIndex_,
       extent,
-    });
+    }, this.vendorOptions_, true));
     this.map.getMapImpl().addLayer(this.ol3Layer);
     const source = new XYZSource({
       projection: this.map.getProjection().code,

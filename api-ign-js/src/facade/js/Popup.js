@@ -5,7 +5,7 @@ import PopupImpl from 'impl/Popup';
 
 import 'assets/css/popup';
 import popupTemplate from 'templates/popup';
-import { isNullOrEmpty } from './util/Utils';
+import { isNullOrEmpty, returnPositionHtmlElement } from './util/Utils';
 import Base from './Base';
 import { compileSync as compileTemplate } from './util/Template';
 import * as EventType from './event/eventtype';
@@ -161,6 +161,12 @@ class Popup extends Base {
     } else {
       this.getImpl().addTo(map, this.element_);
       this.show(coordinate);
+    }
+
+    if (M.config.MOVE_MAP_EXTRACT) {
+      this.map_.getMapImpl()
+        .getView()
+        .animate({ zoom: this.map_.getZoom(), center: returnPositionHtmlElement('m-popup', this.map_), duration: 1000 });
     }
   }
 

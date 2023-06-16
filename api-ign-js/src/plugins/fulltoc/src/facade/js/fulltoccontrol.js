@@ -943,7 +943,7 @@ export default class FullTOCControl extends M.Control {
   checkIfApiFeatures(url) {
     return M.remote.get(`${url}?f=json`).then((response) => {
       let isJson = false;
-      if (!M.utils.isNullOrEmpty(response)) {
+      if (!M.utils.isNullOrEmpty(response) && !M.utils.isNullOrEmpty(response.text)) {
         const responseString = response.text;
         JSON.parse(responseString);
         isJson = true;
@@ -971,6 +971,7 @@ export default class FullTOCControl extends M.Control {
     let HTTPSeval = false;
     document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
     const url = document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value.trim().split('?')[0];
+    this.removeContains(evt);
     let type = null;
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
@@ -1488,10 +1489,15 @@ export default class FullTOCControl extends M.Control {
     if (document.querySelector('#m-fulltoc-addservices-codsi') !== null) {
       document.querySelector('#m-fulltoc-addservices-codsi').style.display = 'none';
     }
+    if (document.querySelector('#fromOGCContainer') !== null) {
+      document.querySelector('#fromOGCContainer').style.display = 'none';
+    }
+
+    if (document.querySelector('#m-fulltoc-addservices-suggestions') !== null) {
+      document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
+    }
 
     document.querySelector('#m-fulltoc-addservices-results').innerHTML = '';
-    document.querySelector('#m-fulltoc-addservices-suggestions').style.display = 'none';
-    document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = '';
   }
 
   /**

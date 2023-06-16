@@ -216,10 +216,6 @@
             const verticalValor = selectVertical.options[selectVertical.selectedIndex].value;
             map.removePlugins(mp);
             setTimeout(() => {
-              console.log(selectPosicion.options[selectPosicion.selectedIndex].value);
-              console.log(collapsedValor !== 'false');
-              console.log(collapsibleValor !== 'false');
-              console.log(verticalValor !== 'false');
               crearPlugin({
                   position: selectPosicion.options[selectPosicion.selectedIndex].value,
                   collapsed: collapsedValor !== 'false',

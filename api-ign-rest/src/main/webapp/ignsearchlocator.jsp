@@ -213,7 +213,7 @@
         function cambiarTest() {
             let objeto = {}
             objeto.servicesToSearch = selectServiceToSearch.options[selectServiceToSearch.selectedIndex].value;
-            maxResults = inputMaxResults.value != "" ? objeto.maxResults = inputMaxResults.value : "";
+            maxResults = inputMaxResults.value != "" ? objeto.maxResults = Number(inputMaxResults.value) : "";
             objeto.noProcess = selectNoProcess.options[selectNoProcess.selectedIndex].value;
             objeto.countryCode = selectCountryCode.options[selectCountryCode.selectedIndex].value;
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;

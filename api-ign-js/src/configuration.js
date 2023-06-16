@@ -6,27 +6,27 @@
 
 
 const backgroundlayersOpts = [{
-    id: 'mapa',
-    title: 'Callejero',
-    layers: [
-      'TMS*IGNBaseTodo*https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17',
-    ],
-  },
-  {
-    id: 'imagen',
-    title: 'Imagen',
-    layers: [
-      'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
-    ],
-  },
-  {
-    id: 'hibrido',
-    title: 'H&iacute;brido',
-    layers: [
-      'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
-      'TMS*IGNBaseOrto*https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png*true*false*17',
-    ],
-  },
+  id: 'mapa',
+  title: 'Callejero',
+  layers: [
+    'TMS*IGNBaseTodo*https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17',
+  ],
+},
+{
+  id: 'imagen',
+  title: 'Imagen',
+  layers: [
+    'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
+  ],
+},
+{
+  id: 'hibrido',
+  title: 'H&iacute;brido',
+  layers: [
+    'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
+    'TMS*IGNBaseOrto*https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png*true*false*17',
+  ],
+},
 ];
 
 const params = window.location.search.split('&');
@@ -50,7 +50,7 @@ params.forEach((param) => {
   }
 });
 
-(function(M) {
+(function (M) {
   /**
    * Pixels width for mobile devices
    *
@@ -233,4 +233,13 @@ params.forEach((param) => {
    * @type {object}
    */
   M.config('MAP_VIEWER_LAYERS', layers);
+
+  /**
+   * Mueve el mapa cuando se hace clic sobre un objeto
+   * geográfico, (extract = true) o no (extract = false)
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('MOVE_MAP_EXTRACT', false);
 }(window.M));
