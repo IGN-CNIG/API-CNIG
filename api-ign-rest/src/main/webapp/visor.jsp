@@ -13,7 +13,6 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/locator/locator.ol.min.css" rel="stylesheet" />
     <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
@@ -48,7 +47,6 @@
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/locator/locator.ol.min.js"></script>
     <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <script type="text/javascript" src="plugins/viewmanagement/viewmanagement.ol.min.js"></script>
@@ -107,12 +105,6 @@
 
         map.addLayers([ocupacionSuelo, layerinicial, layerUA, kml]);
 
-        const pluginLocator = new M.plugin.Locator({
-            position: 'TL',
-        	collapsed: true,
-            collapsible: true,
-        });
-
         const pluginAttributions = new M.plugin.Attributions({
             mode: 1,
             scale: 10000,
@@ -138,7 +130,6 @@
             collapsed: true,
         });
 
-        map.addPlugin(pluginLocator);
         map.addPlugin(pluginAttributions);
         map.addPlugin(pluginShareMap);
         map.addPlugin(pluginViewManagement);
