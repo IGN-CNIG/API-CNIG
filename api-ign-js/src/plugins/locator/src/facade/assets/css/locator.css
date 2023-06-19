@@ -472,14 +472,6 @@ div#m-locator-previews {
     display: block;
 }
 
-#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-parcela {
-    width: 42.2%;
-}
-
-#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-catastro {
-    width: 43%;
-}
-
 #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label {
     display: inline-block;
     position: relative;
@@ -875,13 +867,5 @@ div.m-area.m-bottom.m-left>div.m-plugin-locator.m-panel.opened>button.m-panel-bt
         font-size: 1.2em;
         margin-left: -5px;
         margin-right: 5px;
-    }
-
-    #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-parcela {
-        width: 40%;
-    }
-    
-    #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label#tab-search-catastro {
-        width: 41%;
     }
 }
