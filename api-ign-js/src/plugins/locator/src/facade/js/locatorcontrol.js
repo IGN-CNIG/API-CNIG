@@ -255,5 +255,8 @@ export default class LocatorControl extends M.Control {
     if (!M.utils.isNullOrEmpty(this.ignsearchControl)) {
       this.ignsearchControl.destroy();
     }
+    if (!M.utils.isNullOrEmpty(this.xylocatorControl)) {
+      this.xylocatorControl.destroy();
+    }
   }
 }

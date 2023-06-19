@@ -302,6 +302,9 @@ export default class InfoCatastroControl extends M.Control {
     if (this.html_ && this.html_.querySelector('button#m-infocatastro-consulRef')) {
       this.html_.querySelector('button#m-infocatastro-consulRef').removeEventListener('click', this.onRCConsult);
     }
+    const layer = this.map.getLayers().filter(l => l.name === 'coordinatecatastro' || l.name === 'coordinateparcel');
+    this.map.removeLayers(layer);
+    this.map.removePopup(this.map.getPopup());
   }
 
   /**

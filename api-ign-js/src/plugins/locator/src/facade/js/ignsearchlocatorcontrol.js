@@ -1125,5 +1125,7 @@ export default class IGNSearchLocatorControl extends M.Control {
   destroy() {
     document.getElementsByTagName('body')[0].style.cursor = 'auto';
     document.removeEventListener('keyup', this.checkEscKey);
+    this.map.removeLayers(this.clickedElementLayer);
+    this.map.removePopup(this.map.getPopup());
   }
 }

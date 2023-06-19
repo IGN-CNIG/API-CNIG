@@ -343,4 +343,15 @@ export default class XYLocatorControl extends M.Control {
   checkDegreeValue_(num) {
     return parseFloat(num) >= 0 && parseFloat(num) < 60;
   }
+
+  /**
+   * This function destroys this control
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {
+    this.map.removeLayers(this.coordinatesLayer);
+  }
 }
