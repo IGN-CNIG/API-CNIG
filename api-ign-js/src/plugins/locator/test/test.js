@@ -36,7 +36,7 @@ const mp = new Locator({
   //   DNPPP_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/Consulta_DNPPP_Codigos',
   //   CPMRC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC',
   // },
-  byPlaceAddressPostal: false,
+  byPlaceAddressPostal: true,
   // byPlaceAddressPostal: {
   //   servicesToSearch: 'n',
   //   maxResults: 5,
