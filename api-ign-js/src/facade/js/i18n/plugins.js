@@ -185,7 +185,7 @@ import enZoompanel from '../../../plugins/zoompanel/src/facade/js/i18n/en';
 import esViewshed from '../../../plugins/viewshed/src/facade/js/i18n/es';
 import enViewshed from '../../../plugins/viewshed/src/facade/js/i18n/en';
 
-// Viewshed
+// Viewmanagement
 import esViewmanagement from '../../../plugins/viewmanagement/src/facade/js/i18n/es';
 import enViewmanagement from '../../../plugins/viewmanagement/src/facade/js/i18n/en';
 

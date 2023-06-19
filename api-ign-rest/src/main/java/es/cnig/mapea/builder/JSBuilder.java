@@ -179,8 +179,11 @@ public class JSBuilder {
 					Object propertyValue = readPluginParameter(property, paramValues);
 					if (propertyValue != null) {
 						if (property.getType().equals(PluginAPIParam.NUMBER)) {
+							String val = propertyValue.toString();
+							if(!val.equals("")) {
 							((JSONObject) pluginParam).put(property.getName(),
-									Double.parseDouble(propertyValue.toString()));
+									Double.parseDouble(val));
+							}
 						} else if (property.getType().equals(PluginAPIParam.BOOLEAN)) {
 							((JSONObject) pluginParam).put(property.getName(),
 									Boolean.parseBoolean(propertyValue.toString()));

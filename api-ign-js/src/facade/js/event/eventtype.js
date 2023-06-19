@@ -257,3 +257,11 @@ export const CLICK = 'click';
  * @api
  */
 export const MOVE = 'move';
+
+/**
+ * Evento que se produce cuando se mueve el ratón.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const MOVE_MOUSE = 'movemouse';

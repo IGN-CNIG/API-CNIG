@@ -22,17 +22,19 @@ import Generic from '../style/Generic';
  * árbol de contenidos, si lo hay.
  * @property {String} url URL del servicio.
  * @property {String} name Nombre de la capa en el servidor.
- * @property {Number} limit Límite de features a mostrar.
+ * @property {Number} limit Límite de objetos geográficos a mostrar.
  * @property {Array<Number>} bbox Filtro para mostrar los resultados en un bbox específico.
  * @property {String} format Formato de los objetos geográficos.
- * @property {Number} offset Determina desde que número comenzará a leer los features. Ejemplo:
- * El parámetro offset tiene valor 10 con límite de 5 features, devolverá los 5 primeros
- * features desde número 10 de los resultados.
- * @property {Number } id Filtro por ID para un feature.
+ * @property {Number} offset Determina desde que número comenzará a leer los objetos geográficos.
+ * Ejemplo:
+ * El parámetro offset tiene valor 10 con límite de 5 objetos geográficos, devolverá los 5 primeros
+ * objetos geográficos desde número 10 de los resultados.
+ * @property {Number } id Filtro por ID para un objeto geográfico.
  * @property {Array<M.style>} predefinedStyles Estilos predefinidos para la capa.
  * @property {String} cql Declaración CQL para filtrar las características
  * (Sólo disponible para servicios en PostgreSQL).
- * @property {Object} conditional Declaración de filtros literales por atributos del feature.
+ * @property {Object} conditional Declaración de filtros literales por atributos del objeto
+ * geográfico.
  * @property {String} crs Definición de la proyección de los datos.
  * @property {String} geometry Tipo de geometría: POINT(Punto), MPOINT(Multiples puntos),
  * LINE(línea), MLINE(Multiples línes), POLYGON(Polígono), or MPOLYGON(Multiples polígonos).
@@ -51,14 +53,14 @@ class OGCAPIFeatures extends Vector {
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * - url: URL del servicio.
    * - name: Nombre de la capa en el servidor.
-   * - limit: Límite de features a mostrar.
+   * - limit: Límite de objetos geográficos a mostrar.
    * - bbox: Filtro para mostrar los resultados en un bbox específico.
    * - format: Formato de los objetos geográficos.
-   * - offset: Determina desde que número comenzará a leer los features.Ejemplo:
-   * El parámetro offset tiene valor 10 con límite de 5 features, devolverá los 5 primeros *
-   * features desde número 10 de los resultados.
-   * - id: Filtro por ID para un feature.
-   * - conditional: Declaración de filtros literales por atributos del feature.
+   * - offset: Determina desde que número comenzará a leer los objetos geográficos.Ejemplo:
+   * El parámetro offset tiene valor 10 con límite de 5 objetos geográficos,
+   * devolverá los 5 primeros objetos geográficos desde número 10 de los resultados.
+   * - id: Filtro por ID para un objeto geográfico.
+   * - conditional: Declaración de filtros literales por atributos del objeto geográfico.
    * - crs: Definición de la proyección de los datos.
    * - geometry: Tipo de geometría: POINT(Punto), MPOINT(Multiples puntos),
    * LINE(línea), MLINE(Multiples línes), POLYGON(Polígono), or MPOLYGON(Multiples polígonos).
@@ -72,6 +74,13 @@ class OGCAPIFeatures extends Vector {
    * @param {Object} vendorOpts Opciones para la biblioteca base.
    * -cql: Declaración CQL para filtrar las características
    * (Sólo disponible para servicios en PostgreSQL).
+   * Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *   cql: 'id IN (3,5)',
+   * }
+   * </code></pre>
    * @api
    */
   constructor(userParams, opt = {}, vendorOpts = {}) {
@@ -116,7 +125,7 @@ class OGCAPIFeatures extends Vector {
     this.name = parameters.name;
 
     /**
-     * OGCAPIFeatures limit: Límite de features a mostrar.
+     * OGCAPIFeatures limit: Límite de objetos geográficos a mostrar.
      */
     this.limit = parameters.limit;
 
@@ -131,12 +140,12 @@ class OGCAPIFeatures extends Vector {
     this.format = parameters.format;
 
     /**
-     * OGCAPIFeatures offset: Determina desde que número comenzará a leer los features.
+     * OGCAPIFeatures offset: Determina desde que número comenzará a leer los objetos geográficos.
      */
     this.offset = parameters.offset;
 
     /**
-     * OGCAPIFeatures id: Filtro por ID para un feature.
+     * OGCAPIFeatures id: Filtro por ID para un objeto geográfico.
      */
     this.id = parameters.id;
 
@@ -158,7 +167,8 @@ class OGCAPIFeatures extends Vector {
     this.cql = vendorOpts.cql;
 
     /**
-     * OGCAPIFeatures conditional: Declaración de filtros literales por atributos del feature.
+     * OGCAPIFeatures conditional: Declaración de filtros literales por atributos del
+     * objeto geográfico.
      */
     this.conditional = parameters.conditional;
 
@@ -275,9 +285,9 @@ class OGCAPIFeatures extends Vector {
   }
 
   /**
-   * Devuelve el bbox aplicado.
+   * Devuelve el rectángulo geográfico envolvente.
    * @function
-   * @return { M.layer.OGCAPIFeature.impl.bbox } Devuelve el bbox aplicado.
+   * @return { M.layer.OGCAPIFeature.impl.bbox } Devuelve el rectángulo geográfico envolvente.
    * @api
    */
   get bbox() {
@@ -285,7 +295,7 @@ class OGCAPIFeatures extends Vector {
   }
 
   /**
-   * Sobrescribe el bbox.
+   * Sobrescribe el rectángulo geográfico envolvente.
    * @function
    * @param {Array} newBbox Nuevo bbox.
    * @api

@@ -63,9 +63,9 @@ URL_API?sharemap=position*tooltip*baseUrl*minimize*title*btn*copyBtn*text*copyBt
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -168,7 +168,7 @@ Ejemplo de constructor del plugin:
 }
 ```
 ```
-https://componentes.cnig.es/api-core/?sharemap=base64=e2Jhc2VVcmw6ICdodHRwczovL2NvbXBvbmVudGVzLmNuaWcuZXMvYXBpLWNvcmUvJywgIHBvc2l0aW9uOiAnVFInLCAgdG9vbHRpcDogJ0NvcGlhZG8gYWwgcG9ydGFwYXBlbGVzJywgIG1pbmltaXplOiB0cnVlLCAgdGl0bGU6ICdDb21wYXJ0aXIgbWFwYSB0aXRsZScsICBidG46ICdPSycsICBjb3B5QnRuOiAnY295QnRuJywgIHRleHQ6ICdDb21wYXJ0aXIgbWFwYSB0ZXh0JywgIGNvcHlCdG5IdG1sOiAnY29weUJ0bkh0bWwnLCAgdXJsQVBJOiBmYWxzZSwgIHNoYXJlTGF5ZXI6IHRydWUsICBmaWx0ZXJMYXllcnM6IFsnY29zYXMxX3BvbGlnb25vJ119'
+https://componentes.cnig.es/api-core/?sharemap=base64=e2Jhc2VVcmw6ICdodHRwczovL2NvbXBvbmVudGVzLmNuaWcuZXMvYXBpLWNvcmUvJywgIHBvc2l0aW9uOiAnVFInLCAgdG9vbHRpcDogJ0NvcGlhZG8gYWwgcG9ydGFwYXBlbGVzJywgIG1pbmltaXplOiB0cnVlLCAgdGl0bGU6ICdDb21wYXJ0aXIgbWFwYSB0aXRsZScsICBidG46ICdPSycsICBjb3B5QnRuOiAnY295QnRuJywgIHRleHQ6ICdDb21wYXJ0aXIgbWFwYSB0ZXh0JywgIGNvcHlCdG5IdG1sOiAnY29weUJ0bkh0bWwnLCAgdXJsQVBJOiBmYWxzZSwgIHNoYXJlTGF5ZXI6IHRydWUsICBmaWx0ZXJMYXllcnM6IFsnY29zYXMxX3BvbGlnb25vJ119
 ```
 #### Ejemplo filtrando las capas
 En este ejemplo, le pasamos por url dos capas y especificamos en el parámetro filterLayers el nombre de la capa que queremos compartir (shareLayer tiene que estar como false o no definido).

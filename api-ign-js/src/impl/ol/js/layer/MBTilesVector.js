@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/MBTilesVector
  */
-import { isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, extend } from 'M/util/Utils';
 import { get as getProj, transformExtent } from 'ol/proj';
 // import { inflate } from 'pako';
 import OLLayerTile from 'ol/layer/Tile';
@@ -271,7 +271,7 @@ class MBTilesVector extends Vector {
       tileLoadFn = this.loadVectorTile;
     }
     const mvtFormat = new MVT();
-    const layer = new OLLayerVectorTile({
+    const layer = new OLLayerVectorTile(extend({
       visible: this.visibility,
       opacity: this.opacity_,
       zIndex: this.zIndex_,
@@ -286,7 +286,7 @@ class MBTilesVector extends Vector {
           resolutions: opts.resolutions,
         }),
       }),
-    });
+    }, this.vendorOptions_, true));
     return layer;
   }
 

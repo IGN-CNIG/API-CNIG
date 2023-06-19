@@ -1010,7 +1010,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @public
    * @function
    * @param {string} inputValue search text written by user
-   * @param { Array < Object > } resultsArray search result candidates from IGN services
+   * @param {Array <Object>} resultsArray search result candidates from IGN services
    * @api
    */
   getCandidatesData(inputValue, resultsArray) {

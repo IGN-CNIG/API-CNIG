@@ -50,7 +50,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: 'Gestor de estilos'.
-- **layer**: Capa pre seleccionada (se mostrará seleccionada en el selector de capas del plugin).<br> Como requisito para usar este parámetro la capa debe de estar cargada en el mapa (ver ejemplo de uso). Además dicha capa debe de tener features (no puede estar vacía).
+- **layer**: Capa pre seleccionada (se mostrará seleccionada en el selector de capas del plugin).
+Como requisito para usar este parámetro la capa debe de estar cargada en el mapa (ver ejemplo de uso). Además dicha capa debe de tener features (no puede estar vacía).
 En caso de que no se cumpla las condiciones anteriores lanzará un error. 
 (Válido sólo para creación del plugin por JS).
 
@@ -62,9 +63,9 @@ URL_API?stylemanager=position*collapsed*collapsible*tooltip
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -96,17 +97,25 @@ URL_API?stylemanager=position*collapsed*collapsible*tooltip
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?stylemanager=TR*true*true*tooltip
+https://componentes.cnig.es/api-core?stylemanager=TR*true*true*tooltip&layers=TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/%7Bz%7D/%7Bx%7D/%7B-y%7D.jpeg*true*false*17,KML*Delegaciones%20IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true*true
 ```
 
 ```
-https://componentes.cnig.es/api-core?stylemanager=TR
+https://componentes.cnig.es/api-core?stylemanager=TR&layers=TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/%7Bz%7D/%7Bx%7D/%7B-y%7D.jpeg*true*false*17,KML*Delegaciones%20IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true*true
 ```
 
 ### Ejemplos de uso API-REST en base64
-Ejemplo de constructor del plugin: {position:'TR', collapsible: true, collapsed: true, tooltip: 'Gestor de estilos'}
+Ejemplo de constructor del plugin: 
+```javascript
+{
+  position:'TR',
+  collapsible: true,
+  collapsed: true,
+  tooltip: 'Gestor de estilos'
+}
 ```
-https://componentes.cnig.es/api-core?stylemanager=base64=e3Bvc2l0aW9uOidUUicsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdHZXN0b3IgZGUgZXN0aWxvcyd9
+```
+https://componentes.cnig.es/api-core?stylemanager=base64=e3Bvc2l0aW9uOidUUicsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdHZXN0b3IgZGUgZXN0aWxvcyd9&layers=TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/%7Bz%7D/%7Bx%7D/%7B-y%7D.jpeg*true*false*17,KML*Delegaciones%20IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true*true
 ```
 
 # Ejemplo de uso

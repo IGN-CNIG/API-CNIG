@@ -42,9 +42,9 @@ URL_API?measurebar=position*collapsed*collapsible*tooltip
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -80,7 +80,15 @@ https://componentes.cnig.es/api-core?measurebar=BL
 ```
 
 ### Ejemplos de uso API-REST en base64
-Ejemplo de constructor del plugin: {position:'TR', collapsible: true, collapsed: true, tooltip: 'Medidas'}
+Ejemplo de constructor del plugin:
+```javascript
+{
+  position:'TR',
+  collapsible: true,
+  collapsed: true,
+  tooltip: 'Medidas',
+}
+```
 ```
 https://componentes.cnig.es/api-core?measurebar=base64=e3Bvc2l0aW9uOidUUicsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdNZWRpZGFzJ30=
 ```

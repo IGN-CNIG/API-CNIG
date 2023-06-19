@@ -11,10 +11,11 @@ Para adaptarse a las necesidades de los usuarios y ser mucho más flexible, API 
 
 La arquitectura de API CNIG está compuesta por los siguientes componentes:
 
-- [api-ign-js](/api-ign-js) Librería JavaScript que provee una API para facilitar la creación de visores de mapas.
-- [api-ign-parent](/api-ign-parent) Módulo padre que hace uso de maven para compilar y generar el war final de api-core.
-- [api-ign-proxy](/api-ign-proxy) Proxy para realizar peticiones POST por si el [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) no está habilitado.
-- [api-ign-rest](/api-ign-rest) Servicio Web con API RESTful que genera el código JS necesario para generar un visor con la configuración especificada por parámetros.
+- [api-ign-js](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js) Librería JavaScript que provee una API para facilitar la creación de visores de mapas.
+- [api-ign-parent](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-parent) Módulo padre que hace uso de maven para compilar y generar el war final de api-core.
+- [api-ign-proxy](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-proxy) Proxy para realizar peticiones POST por si el [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) no está habilitado.
+- [api-ign-rest](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-rest) Servicio Web con API RESTful que genera el código JS necesario para generar un visor con la configuración especificada por parámetros.
+- [api-ign-database](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-database) Proporciona un módulo de conexión a la base de datos (PostgreSQL). Realizando diferentes peticiones GET se puede obtener diferentes servicios (bases de datos disponibles, tablas disponibles, campos de una tabla, realizar consultas personalizadas, ...)..
 
 
 ## Navegadores soportados

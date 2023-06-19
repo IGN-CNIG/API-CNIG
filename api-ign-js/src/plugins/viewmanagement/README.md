@@ -61,9 +61,9 @@ URL_API?viewmanagement=position*collapsed*collapsible*tooltip*isDraggable*predef
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -124,15 +124,37 @@ https://componentes.cnig.es/api-core?viewmanagement=TL*true*true*tooltip*true*fa
 ```
 
 ### Ejemplos de uso API-REST en base64
-```
-Ejemplo de constructor del plugin: {position:'TL', collapsible: true, collapsed: true, tooltip: 'Gestión de la vista', predefinedZoom: true, zoomExtent: false, viewhistory: true, zoompanel: true}
 
+1) Ejemplo de constructor del plugin:
+
+```javascript
+{
+  position:'TL',
+  collapsible: true,
+  collapsed: true,
+  tooltip: 'Gestión de la vista',
+  predefinedZoom: true,
+  zoomExtent: false,
+  viewhistory: true,
+  zoompanel: true,
+}
+```
+```
 https://componentes.cnig.es/api-core?viewmanagement=base64=e3Bvc2l0aW9uOidUTCcsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdHZXN0acOzbiBkZSBsYSB2aXN0YScsIHByZWRlZmluZWRab29tOiB0cnVlLCB6b29tRXh0ZW50OiBmYWxzZSwgdmlld2hpc3Rvcnk6IHRydWUsIHpvb21wYW5lbDogdHJ1ZX0=
 ```
 
-```
-Ejemplo de constructor del plugin: {position:'TL', tooltip: 'Gestión de la vista', predefinedZoom: [{name: 'zoom 1', center: [-428106.86611520057, 4334472.25393817], zoom: 4}, {name: 'zoom 2', bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648]}]}
 
+2) Ejemplo de constructor del plugin:
+```javascript
+{
+  position:'TL',
+  tooltip: 'Gestión de la vista',
+  predefinedZoom: [
+    {name: 'zoom 1', center: [-428106.86611520057, 4334472.25393817], zoom: 4},
+    {name: 'zoom 2', bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648]}]
+}
+```
+```
 https://componentes.cnig.es/api-core?viewmanagement=base64=e3Bvc2l0aW9uOidUTCcsIHRvb2x0aXA6ICdHZXN0acOzbiBkZSBsYSB2aXN0YScsIHByZWRlZmluZWRab29tOiBbe25hbWU6ICd6b29tIDEnLCBjZW50ZXI6IFstNDI4MTA2Ljg2NjExNTIwMDU3LCA0MzM0NDcyLjI1MzkzODE3XSwgem9vbTogNH0sIHtuYW1lOiAnem9vbSAyJywgYmJveDogWy0yMzkyMTczLjIzNzIsIDMwMzMwMjEuMjgyNCwgMTk2NjU3MS44NjM3LCA2ODA2NzY4LjE2NDhdfV19
 ```
 

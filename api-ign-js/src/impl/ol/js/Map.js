@@ -209,10 +209,13 @@ class Map extends MObject {
       this.map_.updateSize();
     });
     this.map_.on('singleclick', this.onMapClick_.bind(this));
+    // pointermove
     this.map_.addInteraction(new OLInteraction({
       handleEvent: (e) => {
-        if (e.type === 'pointermove') {
+        if (e.type === 'pointerdrag' || e.type === 'wheel') {
           this.onMapMove_(e);
+        } else if (e.type === 'pointermove') {
+          this.onMapMoveMouse_(e);
         }
         return true;
       },
@@ -2707,6 +2710,25 @@ class Map extends MObject {
     const coord = this.map_.getCoordinateFromPixel(pixel);
 
     this.facadeMap_.fire(EventType.MOVE, [{
+      pixel,
+      coord,
+      vendor: evt,
+    }]);
+  }
+
+  /**
+   * Este método se ejecuta cuando el usuario mueve el ratón.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @function
+   * @param {M.evt} evt Evento.
+   * @public
+   * @api
+   */
+  onMapMoveMouse_(evt) {
+    const pixel = evt.pixel;
+    const coord = this.map_.getCoordinateFromPixel(pixel);
+
+    this.facadeMap_.fire(EventType.MOVE_MOUSE, [{
       pixel,
       coord,
       vendor: evt,

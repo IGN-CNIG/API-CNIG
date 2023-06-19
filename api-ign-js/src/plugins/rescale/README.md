@@ -42,9 +42,9 @@ URL_API?rescale=position*collapsed*collapsible*tooltip
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -79,9 +79,18 @@ https://componentes.cnig.es/api-core?rescale=TR*true*true*rescale
 https://componentes.cnig.es/api-core?rescale=TL
 ```
 ### Ejemplos de uso API-REST en base64
-Ejemplo de constructor del plugin: {"collapsible":true,"collapsed":true,"position":"TL","tooltip":"Gestor de escala"}
+Ejemplo de constructor del plugin: 
+```javascript
+{
+  collapsible: true,
+  collapsed: true,
+  position: 'TL',
+  tooltip: 'Rescale',
+}
 ```
-https://componentes.cnig.es/api-core/?rescale=base64=eyJjb2xsYXBzaWJsZSI6dHJ1ZSwiY29sbGFwc2VkIjp0cnVlLCJwb3NpdGlvbiI6IlRMIiwidG9vbHRpcCI6Ikdlc3RvciBkZSBlc2NhbGEifQ=='
+
+```
+https://componentes.cnig.es/api-core/?rescale=base64=ewogIGNvbGxhcHNpYmxlOiB0cnVlLAogIGNvbGxhcHNlZDogdHJ1ZSwKICBwb3NpdGlvbjogJ1RMJywKICB0b29sdGlwOiAnUmVzY2FsZScsCn0=
 ```
 
 # Ejemplo de uso

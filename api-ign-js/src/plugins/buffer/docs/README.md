@@ -41,9 +41,9 @@ URL_API?buffer=position*collapsed*collapsible*tooltip
 
 <table>
   <tr>
-    <td>Parámetros</td>
-    <td>Opciones/Descripción</td>
-    <td>Disponibilidad</td>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
   </tr>
   <tr>
     <td>position</td>
@@ -78,7 +78,15 @@ https://componentes.cnig.es/api-core?buffer=TL
 ```
 ### Ejemplos de uso API-REST en base64
 
-Ejemplo de constructor del plugin: {"position":"TL","collapsed":false,"collapsible":true,"tooltip":"Buffer"}
+Ejemplo de constructor del plugin: 
+```javascript
+{
+  position: "TL",
+  collapsed: false,
+  collapsible: true,
+  tooltip: "Buffer"
+}
+```
 ```
 https://componentes.cnig.es/api-core?buffer=base64=eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOnRydWUsInRvb2x0aXAiOiJCdWZmZXIifQ==
 ```

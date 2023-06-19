@@ -27,13 +27,26 @@ class OGCAPIFeatures {
    * - name: Nombre de la capa.
    * - version: Versión del servicio WFS.
    * - ids: Identificadores de los objetos geográficos.
-   * - cql: Consulta CQL.
    * - projection: Proyección.
    * - getFeatureOutputFormat: Formato de salida de la petición "getFeature".
    * - describeFeatureTypeOutputFormat_: Formato de salida de la petición "describeFeatureType".
+   * - limit: Límite de objetos geográficos a mostrar.
+   * - bbox: Filtro para mostrar los resultados en un bbox específico.
+   * - format: Formato de los objetos geográficos.
+   * - offset: Determina desde que número comenzará a leer los objetos geográficos.Ejemplo:
+   * El parámetro offset tiene valor 10 con límite de 5 objetos geográficos,
+   * devolverá los 5 primeros objetos geográficos desde número 10 de los resultados.
    * @param {Object} vendorOpts Opciones para la biblioteca base.
    * - getFeature: Devuelve los objetos geográficos de la capa.
    * - describeFeatureType: Devuelve la descripción de la capa.
+   * - cql: Consulta CQL.
+   * Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceVector from 'ol/source/Vector';
+   * {
+   *   cql: 'id IN (3,5)',
+   * }
+   * </code></pre>
    * @api stable
    */
   constructor(layerParameters, vendorOpts) {
@@ -59,21 +72,21 @@ class OGCAPIFeatures {
     this.format_ = layerParameters.format;
 
     /**
-     * Límite de features a mostrar.
+     * Límite de objetos geográficos a mostrar.
      * @private
      * @type {Number}
      */
     this.limit_ = layerParameters.limit;
 
     /**
-     * Determina desde que número comenzará a leer los features.
+     * Determina desde que número comenzará a leer los objetos geográficos.
      * @private
      * @type {Number}
      */
     this.offset_ = layerParameters.offset;
 
     /**
-     * Filtro por ID para un feature.
+     * Filtro por ID para un objeto geográfico.
      * @private
      * @type {Number}
      */
@@ -95,7 +108,7 @@ class OGCAPIFeatures {
     this.cql_ = vendorOpts.cql;
 
     /**
-     * Declaración de filtros literales por atributos del feature.
+     * Declaración de filtros literales por atributos del objeto geográfico.
      * @private
      * @type {String}
      */

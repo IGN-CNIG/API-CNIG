@@ -219,7 +219,6 @@
 
 	        map.removePlugins(mp);
 	        crearPlugin(objeto);
-	        console.log(objeto); //BORRAR UNA VEZ ENSEÑADO A CARMEN
         }
 
         const botonEliminar = document.getElementById("botonEliminar");
