@@ -36,7 +36,6 @@ class Vector extends LayerBase {
    * @param {Mx.parameters.Layer} userParameters Parámetros para la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
    * - url: Url del fichero o servicio que genera el vector.
-   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
