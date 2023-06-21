@@ -50,7 +50,6 @@ class WFS extends Vector {
    * - version: Opcional - Versión del estandar a usar. Por defecto es 1.0.0.
    * - extract: Opcional Activa la consulta por clic en el objeto geográfico, por defecto falso.
    * - type: Tipo de la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a

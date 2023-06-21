@@ -39,7 +39,6 @@ class GeoJSON extends LayerVector {
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
@@ -92,35 +91,35 @@ class GeoJSON extends LayerVector {
       this.source = parameters;
     } else {
       /**
-      * GeoJSON url: Url del archivo o servicio que genera el GeoJSON.
-      */
+       * GeoJSON url: Url del archivo o servicio que genera el GeoJSON.
+       */
       this.url = parameters.url;
 
       /**
-      * GeoJSON name: Nombre de la capa.
-      */
+       * GeoJSON name: Nombre de la capa.
+       */
       this.name = parameters.name;
 
       /**
-      * GeoJSON Fuente de la capa.
-      */
+       * GeoJSON Fuente de la capa.
+       */
       this.source = parameters.source;
       if (isString(this.source)) {
         this.source = this.deserialize(this.source);
       }
 
       /**
-      * GeoJSON extract: Opcional, activa la consulta
-      * haciendo clic en el objeto geográfico, por defecto falso.
-      */
+       * GeoJSON extract: Opcional, activa la consulta
+       * haciendo clic en el objeto geográfico, por defecto falso.
+       */
       this.extract = parameters.extract || false;
 
       /**
-      * GeoJSON crs: Sistema de Referencia de Coordenadas.
-      * @public
-      * @type {Object}
-      * @api
-      */
+       * GeoJSON crs: Sistema de Referencia de Coordenadas.
+       * @public
+       * @type {Object}
+       * @api
+       */
       if (!isNullOrEmpty(parameters.crs)) {
         if (isNullOrEmpty(this.source)) {
           this.source = {
@@ -138,8 +137,8 @@ class GeoJSON extends LayerVector {
     }
 
     /**
-    * GeoJSON options: Opciones que se mandan a la implementación.
-    */
+     * GeoJSON options: Opciones que se mandan a la implementación.
+     */
     this.options = options;
   }
 

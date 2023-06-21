@@ -14,7 +14,7 @@ import { getValue } from '../i18n/language';
  * KML (Keyhole Markup Language).
  *
  * @property {Boolean} extract Opcional. Activa la consulta haciendo clic en el objeto geográfico,
-  * por defecto falso.
+ * por defecto falso.
  * @property {Object} options Parámetros de la capa.
  * @property {String} label Etiqueta de la capa.
  *
@@ -35,7 +35,6 @@ class KML extends LayerVector {
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * @param {Mx.parameters.LayerOptions} options Parámetros que se pasarán a la implementación.
@@ -87,19 +86,19 @@ class KML extends LayerVector {
     }
 
     /**
-    * KML extract: Activa la consulta al hacer clic sobre un objeto geográfico,
-    * por defecto falso.
-    */
+     * KML extract: Activa la consulta al hacer clic sobre un objeto geográfico,
+     * por defecto falso.
+     */
     this.extract = parameters.extract;
 
     /**
-    * KML options: Optiones que se mandan a la implementación.
-    */
+     * KML options: Optiones que se mandan a la implementación.
+     */
     this.options = options;
 
     /**
-    * KML label. Etiqueta de la capa KML.
-    */
+     * KML label. Etiqueta de la capa KML.
+     */
     this.label = parameters.label;
   }
 
