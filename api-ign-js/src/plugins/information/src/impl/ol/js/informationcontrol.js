@@ -656,8 +656,6 @@ export default class InformationControl extends M.impl.Control {
       target.classList.add('m-arrow-right');
       target.classList.remove('m-arrow-down');
     }
-
-    // this.movePopup_(this.facadeMap_);
   }
 
   /**
