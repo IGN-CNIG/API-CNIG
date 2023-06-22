@@ -25,6 +25,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
+- **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Vistas predefinidas.
 - **options**: Lista con las opciones de las capas.
   - **id**: Identificador de la capa
   - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
