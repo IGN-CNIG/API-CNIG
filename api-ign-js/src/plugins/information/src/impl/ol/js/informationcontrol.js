@@ -73,6 +73,15 @@ export default class InformationControl extends M.impl.Control {
      * @type {M.Map}
      */
     this.facadeMap_ = null;
+
+    /**
+     * Define si el popup se mueve o no
+     * @private
+     * @type {boolean}
+     * @default false
+     * @api stable
+     */
+    this.popupMove_ = false;
   }
 
   /**
@@ -519,12 +528,11 @@ export default class InformationControl extends M.impl.Control {
       content: htmlAsText,
     };
     let popup = this.facadeMap_.getPopup();
-    let popupMove = null;
     // Se desactiva el movimiento para los casos que no encuentra
     // información y se muestra el mensaje de no hay información
     if (M.config.MOVE_MAP_EXTRACT) {
       M.config('MOVE_MAP_EXTRACT', false);
-      popupMove = true;
+      this.popupMove_ = true;
     }
     if (M.utils.isNullOrEmpty(popup)) {
       popup = new M.Popup();
@@ -599,18 +607,15 @@ export default class InformationControl extends M.impl.Control {
                 document.querySelectorAll('.m-information-content-info-body').forEach((elem) => {
                   elem.classList.remove('m-content-collapsed');
                 });
-                this.movePopup_(this.facadeMap_);
               }, 100);
             } else if (this.opened_ === 'one' && layerNamesUrls.length === 1) {
               setTimeout(() => {
                 document.querySelector('.m-information-content-info-body').classList.remove('m-content-collapsed');
-                this.movePopup_(this.facadeMap_);
               }, 100);
             }
+            this.movePopup_(this.facadeMap_);
           }
           // M.proxy(true);
-          // Se vuelve a poner el M.config como estaba
-          if (popupMove) M.config('MOVE_MAP_EXTRACT', true);
         }
       }).catch((err) => {
         // M.proxy(true);
@@ -651,6 +656,8 @@ export default class InformationControl extends M.impl.Control {
       target.classList.add('m-arrow-right');
       target.classList.remove('m-arrow-down');
     }
+
+    // this.movePopup_(this.facadeMap_);
   }
 
   /**
@@ -659,11 +666,17 @@ export default class InformationControl extends M.impl.Control {
    * @function
    */
   movePopup_(map) {
-    if (M.config.MOVE_MAP_EXTRACT && window.innerWidth > 768) {
+    if (this.popupMove_ && window.innerWidth > 768) {
       const center = M.utils.returnPositionHtmlElement('m-popup', map);
-      map.getMapImpl()
-        .getView()
-        .animate({ zoom: map.getZoom(), center, duration: 1000 });
+      setTimeout(() => {
+        map.getMapImpl()
+          .getView()
+          .animate({ zoom: map.getZoom(), center, duration: 1000 });
+
+        // Se vuelve a poner el M.config como estaba
+        if (this.popupMove_) M.config('MOVE_MAP_EXTRACT', true);
+        this.popupMove_ = false;
+      }, 100);
     }
   }
 
