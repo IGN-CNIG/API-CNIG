@@ -87,14 +87,20 @@ class WFS extends Vector {
      */
     this.popup_ = null;
 
-
     /**
      * WFS options.getFeatureOutputFormat. Formato de retorno de los features, por defecto
      * default application/json.
      */
+
     if (isNullOrEmpty(this.options.getFeatureOutputFormat)) {
       this.options.getFeatureOutputFormat = 'application/json'; // by default
     }
+
+    /**
+     * WFS GMLVersion_. Versión de GML.
+     */
+    this.GMLVersion_ = (this.options.getFeatureOutputFormat.toUpperCase().includes('GML'))
+      ? this.getFeatureOutputFormat_ : null;
   }
 
   /**
@@ -239,7 +245,7 @@ class WFS extends Vector {
           defaultDataProjection: getProj(this.map.getProjection().code),
         });
       } else {
-        this.formater_ = new FormatGML(this.name, this.version, this.map.getProjection());
+        this.formater_ = new FormatGML(this.map.getProjection(), this.GMLVersion_);
       }
       this.loader_ = new LoaderWFS(this.map, this.service_, this.formater_);
 
