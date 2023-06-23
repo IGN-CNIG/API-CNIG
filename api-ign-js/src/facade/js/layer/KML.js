@@ -31,7 +31,6 @@ class KML extends LayerVector {
    * - url: Url del fichero o servicio -> https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml
    * - name: Nombre de la capa que aparecerá en la leyenda -> Delegaciones IGN
    * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
-   * - source: Fuente de la capa.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
