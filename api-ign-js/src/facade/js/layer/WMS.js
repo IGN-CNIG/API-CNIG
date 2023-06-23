@@ -45,6 +45,7 @@ class WMS extends LayerBase {
    *   y aparecería como no visible.
    * - version: Versión WMS.
    * - type: Tipo de la capa.
+   * - useCapabilities: Define si se utilizará el capabilities para generar la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
