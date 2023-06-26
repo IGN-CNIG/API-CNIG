@@ -51,7 +51,6 @@ class TMS extends LayerBase {
    * - url: Urlque genera la capa TMS.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
-   * - type: Tipo de la capa.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica, [x.min, y.min, x.max, y.max].
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
@@ -61,12 +60,10 @@ class TMS extends LayerBase {
    * - tileSize: Tamaño de la tesela, por defecto 256.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
-   * - opacity: Opacidad de capa, por defecto 1.
-   * - displayInLayerSwitcher:  Indica si la capa se muestra en el selector de capas.
-   * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - opacity: Opacidad de capa, por defecto 1.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import XYZSource from 'ol/source/XYZ';
