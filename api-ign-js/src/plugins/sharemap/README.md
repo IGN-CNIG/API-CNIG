@@ -149,6 +149,13 @@ https://componentes.cnig.es/api-core/?sharemap=TL
 ```
 
 ### Ejemplos de uso API-REST en base64
+
+Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
+Ejemplo:
+```javascript
+M.utils.encodeBase64(obj_params);
+```
+
 #### Ejemplo compartiendo todas las capas
 Ejemplo de constructor del plugin: 
 

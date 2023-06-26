@@ -205,7 +205,14 @@ https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16
 https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16*pinAzul*true*false*true*true
 ```
 
-### Ejemplos de uso API-REST en base64
+### Ejemplos de uso 
+
+Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
+Ejemplo:
+```javascript
+M.utils.encodeBase64(obj_params);
+```
+
 ```
 Ejemplo de constructor del plugin: {position:'TL', collapsible: true, collapsed: true, tooltip: 'Localización', byParcelCadastre: true, byCoordinates: false, byPlaceAddressPostal: true}
 
