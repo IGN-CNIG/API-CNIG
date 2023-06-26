@@ -31,7 +31,7 @@ import { getValue } from '../i18n/language';
  * @property {M.impl.layer.TMS} impl_ Implementación de la capa.
  * @property {Evt} eventsManager_ Manejador de eventos.
  * @property {M.map} map_ Mapa donde se añade la capa.
- * @property {[Number, Number, Number, Number]} userMaxExtent Extensión máxima [x.min, y.min, x.max, y.max].
+ * @property {Array<Number>} userMaxExtent Extensión máxima [x.min, y.min, x.max, y.max].
  * @property {String} legend Indica el nombre que queremos que aparezca en el
  * árbol de contenidos, si lo hay.
  * @property {Array<Number>} maxExtent_ Extensión máxima.
@@ -52,7 +52,8 @@ class TMS extends LayerBase {
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
-   * - maxExtent: La medida en que restringe la visualización a una región específica, [x.min, y.min, x.max, y.max].
+   * - maxExtent: La medida en que restringe la visualización a una región específica,
+   * [x.min, y.min, x.max, y.max].
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher:  Indica si la capa se muestra en el selector de capas.

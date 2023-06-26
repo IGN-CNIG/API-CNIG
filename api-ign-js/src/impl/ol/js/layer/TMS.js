@@ -28,11 +28,17 @@ class TMS extends MXYZ {
    * @implements {M.impl.layer.Vector}
    * @param {string|Mx.parameters.TMS} userParameters Parámetros que se pasarán
    * al padre (clase Vector).
+   * - URL: Url del servicio XYZ.
+   * - tileSize: Tamaño de la tesela, por defecto 256.
+   * - visibility: Define si la capa es visible o no.
+   * - minZoom: Limitar el zoom mínimo.
+   * - maxZoom: Limitar el zoom máximo.
+   * - tileGridMaxZoom: Zoom máximo de la tesela en forma de rejilla.
+   * - displayInLayerSwitcher: Mostrar en el selector de capas.
    * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
    * - opacity: Opacidad de capa, por defecto 1.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher:  Indica si la capa se muestra en el selector de capas.
-   * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
