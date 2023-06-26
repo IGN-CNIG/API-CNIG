@@ -130,6 +130,20 @@ export default class Locator extends M.Plugin {
      * @type {Number}
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Indicates if you want to use proxy in requests
+     * @private
+     * @type {Boolean}
+     */
+    this.useProxy = M.utils.isUndefined(options.useProxy) ? true : options.useProxy;
+
+    /**
+     * Stores the proxy state at plugin load time
+     * @private
+     * @type {Boolean}
+     */
+    this.statusProxy = M.useproxy;
   }
 
   /**
@@ -168,6 +182,8 @@ export default class Locator extends M.Plugin {
       this.byParcelCadastre,
       this.byPlaceAddressPostal,
       this.order,
+      this.useProxy,
+      this.statusProxy,
     ));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelLocator', {
@@ -264,7 +280,7 @@ export default class Locator extends M.Plugin {
    */
   getAPIRest() {
     return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.zoom}*${this.pointStyle}
-    *${this.isDraggableE}*${this.byParcelCadastre}*${this.byCoordinates}*${this.byPlaceAddressPostal}`;
+    *${this.isDraggableE}*${this.byParcelCadastre}*${this.byCoordinates}*${this.byPlaceAddressPostal}*${this.useProxy}`;
   }
 
   /**

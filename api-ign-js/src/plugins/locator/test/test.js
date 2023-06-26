@@ -2,6 +2,8 @@ import Locator from 'facade/locator';
 
 M.language.setLang('es');
 
+M.proxy(false);
+
 const map = M.map({
   container: 'mapjs',
   zoom: 5,
@@ -13,6 +15,7 @@ const map = M.map({
 window.map = map;
 
 const mp = new Locator({
+  useProxy: true,
   isDraggable: true,
   position: 'TL',
   collapsible: true,

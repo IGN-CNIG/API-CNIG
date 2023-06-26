@@ -39,6 +39,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Localizador.
 - **zoom**: Zoom que aplicará al mostrar resultado de tipo puntual. Por defecto: 16.
+- **useProxy**: Determina si se desea que las peticiones que se realizan en el control de búsqueda de lugares se realizan con el proxy o no. Por defecto: true.
+  - Nota: sólo afecta a las peticiones de búsquedas por lugares. Las peticiones a catastro siempre se realizarán con el proxy.
 - **pointStyle**: Tipo de icono a mostrar cuando se encuentra un resultado de tipo puntual.
   - 'pinAzul' (por defecto)
   - 'pinRojo'
@@ -165,6 +167,11 @@ URL_API?locator=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDraggab
   <tr>
     <td>zoom</td>
     <td>zoom</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>useProxy</td>
+    <td>useProxy</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>

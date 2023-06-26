@@ -9,10 +9,10 @@ import { getValue } from './i18n/language';
 let typingTimer;
 
 /** IGNSearch List Control
-*
-* @private
-* @type {object}
-*/
+ *
+ * @private
+ * @type {object}
+ */
 const IGNSEARCH_TYPES_CONFIGURATION = [
   'Estado',
   // 'Comunidad aut\u00F3noma',
@@ -82,7 +82,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(map, zoom, pointStyle, options) {
+  constructor(map, zoom, pointStyle, options, useProxy, statusProxy) {
     if (M.utils.isUndefined(IGNSearchLocatorImpl)) {
       M.exception(getValue('exception.impl_ignsearchlocator'));
     }
@@ -242,6 +242,20 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.reverseActivated = false;
 
     /**
+     * Indicates if you want to use proxy in requests
+     * @private
+     * @type {Number}
+     */
+    this.useProxy = useProxy;
+
+    /**
+     * Stores the proxy state at plugin load time
+     * @private
+     * @type {Boolean}
+     */
+    this.statusProxy = statusProxy;
+
+    /**
      * Map
      */
     this.map = map;
@@ -257,7 +271,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   initializateAddress(html) {
     if ((this.locationID && this.locationID.length > 0) || (this.requestStreet &&
-      this.requestStreet.length > 0) || (this.geocoderCoords && this.geocoderCoords.length === 2)) {
+        this.requestStreet.length > 0) ||
+      (this.geocoderCoords && this.geocoderCoords.length === 2)) {
       this.active(html);
     }
     if (this.locationID && this.locationID.length > 0) {
@@ -265,11 +280,13 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.drawNomenclatorResult(this.locationID, false);
     }
     if (this.requestStreet && this.requestStreet.length > 0) {
+      M.proxy(this.useProxy);
       M.remote.get(this.requestStreet).then((res) => {
         const geoJsonData = res.text.substring(9, res.text.length - 1);
         this.createGeometryStyles();
         this.drawGeocoderResult(geoJsonData);
       }).catch();
+      M.proxy(this.statusProxy);
     }
     if (this.geocoderCoords && this.geocoderCoords.length === 2) {
       const reprojCoords = this.getImpl().reproject('EPSG:4326', this.geocoderCoords);
@@ -431,6 +448,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.geocoderCoords = etrs89pointCoordinates;
       const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
       let fullAddress = '';
+      M.proxy(this.useProxy);
       M.remote.get(urlToGet).then((res) => {
         if (res.text) {
           const returnData = JSON.parse(res.text);
@@ -440,6 +458,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         }
         this.showPopUp(fullAddress, mapCoordinates, dataCoordinates, null, e, false);
       });
+      M.proxy(this.statusProxy);
     }
   }
 
@@ -567,6 +586,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       if (this.servicesToSearch !== 'g') {
         const params = `maxresults=${this.maxResults - 5}&name_equals=${newInputVal}`;
         const urlToGet = `${this.urlAssistant}?${params}`;
+        M.proxy(this.useProxy);
         M.remote.get(urlToGet).then((res) => {
           const temporalData = (res.text !== '' && res.text !== null) ? JSON.parse(res.text) : { results: [] };
           const returnData = temporalData.results;
@@ -591,6 +611,7 @@ export default class IGNSearchLocatorControl extends M.Control {
 
           resolve();
         });
+        M.proxy(this.statusProxy);
       } else {
         resolve();
       }
@@ -613,6 +634,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         let params = `q=${newInputVal}&limit=${this.maxResults}&no_process=${this.noProcess}`;
         params += `&countrycode=${this.countryCode}&autocancel=true`;
         const urlToGet = `${this.urlCandidates}?${params}`;
+        M.proxy(this.useProxy);
         M.remote.get(urlToGet).then((res) => {
           if (res.code === 404 || res.code === 500) {
             M.dialog.error(getValue('exception.error_candidates'));
@@ -624,6 +646,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           }
           resolve();
         });
+        M.proxy(this.statusProxy);
       } else {
         resolve();
       }
@@ -658,8 +681,8 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.resultsBox.classList.remove('locator-icon-spinner');
     const compiledResult = M.template.compileSync(results, {
       vars: {
-        noresults:
-          this.allCandidates.length === 0 && this.nomenclatorFinished && this.candidatesFinished,
+        noresults: this.allCandidates.length === 0 &&
+          this.nomenclatorFinished && this.candidatesFinished,
         places: this.allCandidates,
         translations: {
           noresults: getValue('exception.noresults'),
@@ -825,6 +848,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       outputformat: 'application/json',
     });
     this.locationID = locationId;
+    M.proxy(this.useProxy);
     M.remote.get(this.requestPlace).then((res) => {
       const latLngString = JSON.parse(res.text).results[0].location;
       const resultTitle = JSON.parse(res.text).results[0].title;
@@ -865,6 +889,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         this.zoomInLocation('n', 'Point', this.zoom);
       }
     });
+    M.proxy(this.statusProxy);
   }
 
   /**
@@ -910,10 +935,10 @@ export default class IGNSearchLocatorControl extends M.Control {
       const id = `&id=${selectedObject.id}`;
       const type = `&type=${selectedObject.type}`;
       const portal = (selectedObject.portalNumber !== 0 &&
-        selectedObject.portalNumber !== undefined) ?
+          selectedObject.portalNumber !== undefined) ?
         `&portal=${selectedObject.portalNumber}` : '';
       const extension = (selectedObject.extension !== 0 &&
-        selectedObject.extension !== undefined) ?
+          selectedObject.extension !== undefined) ?
         `&extension=${selectedObject.extension}` : '';
       const via = selectedObject.tip_via !== '' ? `&tip_via=${selectedObject.tip_via}` : '';
       let address = selectedObject.address;
@@ -928,7 +953,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.urlParse = urlToGet;
       this.requestStreet = urlToGet;
       this.locationID = '';
-
+      M.proxy(this.useProxy);
       M.remote.get(urlToGet).then((res) => {
         if (res.code === 404 || res.code === 500) {
           M.dialog.error(getValue('exception.error_findjsonp'));
@@ -938,6 +963,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           resolve(geoJsonData);
         }
       });
+      M.proxy(this.statusProxy);
     });
   }
 
@@ -1011,17 +1037,17 @@ export default class IGNSearchLocatorControl extends M.Control {
   }
 
   /**
-    * This function inserts a popUp with information about the searched location
-    * (and whether it 's an exact result or an approximation)
-    *
-    * @param {string} fullAddress - Location address(street, portal, etc.)
-    * @param {Array} coordinates - Latitude[0] and longitude[1] coordinates
-    * @param {boolean} exactResult - Indicating if the given result is a perfect match
-    * @param {Object} e
-    * @function
-    * @public
-    * @api
-    */
+   * This function inserts a popUp with information about the searched location
+   * (and whether it 's an exact result or an approximation)
+   *
+   * @param {string} fullAddress - Location address(street, portal, etc.)
+   * @param {Array} coordinates - Latitude[0] and longitude[1] coordinates
+   * @param {boolean} exactResult - Indicating if the given result is a perfect match
+   * @param {Object} e
+   * @function
+   * @public
+   * @api
+   */
   showSearchPopUp(fullAddress, coordinates, exactResult, e = {}) {
     const destinyProj = this.map.getProjection().code;
     const destinySource = 'EPSG:4326';
@@ -1095,12 +1121,12 @@ export default class IGNSearchLocatorControl extends M.Control {
   }
 
   /**
-    * This function clears input values
-    *
-    * @public
-    * @function
-    * @api
-    */
+   * This function clears input values
+   *
+   * @public
+   * @function
+   * @api
+   */
   clearResults() {
     this.searchInput.value = '';
     this.resultsBox.innerHTML = '';

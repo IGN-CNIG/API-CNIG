@@ -20,7 +20,7 @@ export default class LocatorControl extends M.Control {
    */
   constructor(
     isDraggable, zoom, pointStyle, byCoordinates, byParcelCadastre,
-    byPlaceAddressPostal, order,
+    byPlaceAddressPostal, order, useProxy, statusProxy,
   ) {
     if (M.utils.isUndefined(LocatorImpl)) {
       M.exception(getValue('exception.impl'));
@@ -58,10 +58,10 @@ export default class LocatorControl extends M.Control {
     this.isDraggable_ = isDraggable;
 
     /**
-      * Zoom
-      * @private
-      * @type {Number}
-      */
+     * Zoom
+     * @private
+     * @type {Number}
+     */
     this.zoom_ = zoom;
 
     /**
@@ -77,6 +77,20 @@ export default class LocatorControl extends M.Control {
      * @type {Number}
      */
     this.order = order;
+
+    /**
+     * Indicates if you want to use proxy in requests
+     * @private
+     * @type {Number}
+     */
+    this.useProxy = useProxy;
+
+    /**
+     * Stores the proxy state at plugin load time
+     * @private
+     * @type {Boolean}
+     */
+    this.statusProxy = M.useproxy;
 
     /**
      * Control activated
@@ -166,6 +180,8 @@ export default class LocatorControl extends M.Control {
           this.zoom_,
           this.pointStyle_,
           this.byPlaceAddressPostal_,
+          this.useProxy,
+          this.statusProxy,
         );
         this.on(M.evt.ADDED_TO_MAP, () => {
           this.ignsearchControl.initializateAddress(html);
