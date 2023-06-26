@@ -1,5 +1,6 @@
 const search = document.getElementById("search");
 const matchList = document.getElementById("match-list");
+const matchObsolete = document.getElementById("match-list-obsolete");
 
 const searchStates = async searchText =>{
   const res = await fetch("data/plugins.json");
@@ -54,28 +55,39 @@ const outputHTMLTailWind = matches =>{
 
 const outputHTMLBootstrap = matches =>{
   if (matches.length > 0){
+    let html = '';
+    let htmlObsolete = '';
 
-    const html = matches.map( match => `
-              <div class="col" style="padding-bottom:15px;">
-                <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
-                  <!--<img class="img-fluid" src="${match.image}">-->
-                  <h4 class="text-primary text-center pt-2">${match.plugin}</h4>
-                  <div class="card-body">
-                    <h5 class="card-title">${match.name}</h5>
-                    <p class="card-text" style="min-height:100px;">${match.description}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div class="btn-group">
-                        <a href="${match.url_es}" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
-                        <a href="${match.url_en}" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
-                        <a href="${match.url_git}" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/logo-github.svg"></a>
-                      </div>
-                      <small class="text-muted">${match.version}</small>
-                    </div>
-                  </div>
-                </div>
+    matches.forEach(match => {
+      const plugin = `
+      <div class="col" style="padding-bottom:15px;">
+        <div class="card shadow-sm h-100" style="background-color: rgba(240, 128, 128,0.15);">
+          <!--<img class="img-fluid" src="${match.image}">-->
+          <h4 class="text-primary text-center pt-2">${match.plugin}</h4>
+          <div class="card-body">
+            <h5 class="card-title">${match.name}</h5>
+            <p class="card-text" style="min-height:100px;">${match.description}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="${match.url_es}" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/spain-flag.svg"></a>
+                <a href="${match.url_en}" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/uk-flag.svg"></a>
+                <a href="${match.url_git}" class="btn btn-sm btn-outline-secondary" role="button" target="_blank" data-bs-toggle="button"><img style="width:24px;" src="img/logo-github.svg"></a>
               </div>
-    `).join('');
+              <small class="text-muted">${match.version}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      `;
+
+      if (match.obsolete){
+        htmlObsolete += plugin;
+      }else{
+        html += plugin;
+      }
+    });
     matchList.innerHTML = html;
+    matchObsolete.innerHTML = htmlObsolete;
   }
 }
 

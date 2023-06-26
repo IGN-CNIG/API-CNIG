@@ -7,7 +7,8 @@
     "url_en": "attributions.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/attributions",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite mostrar información de atribuciones sobre las capas que se visualizan en el mapa."
+    "description": "Plugin que permite mostrar información de atribuciones sobre las capas que se visualizan en el mapa.",
+    "obsolete": false
   },
   {
     "name": "backimglayer",
@@ -17,7 +18,8 @@
     "url_en": "backimglayer.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/backimglayer",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite la elección de cada de fondo mediante previsualización de las posibles capas."
+    "description": "Plugin que permite la elección de cada de fondo mediante previsualización de las posibles capas.",
+    "obsolete": false
   },
   {
     "name": "beautytoc",
@@ -27,7 +29,8 @@
     "url_en": "beautytoc.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/beautytoc",
     "image": "img/api-logo.png",
-    "description": "Tabla de contenidos de fototeca. Consulta cobertura de vuelo sobre la vista."
+    "description": "Tabla de contenidos de fototeca. Consulta cobertura de vuelo sobre la vista.",
+    "obsolete": false
   },
   {
     "name": "buffer",
@@ -37,7 +40,8 @@
     "url_en": "buffer.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/buffer",
     "image": "img/api-logo.png",
-    "description": "Cálculo de áreas de influencia sobre geometrías que se van dibujando sobre la vista."
+    "description": "Cálculo de áreas de influencia sobre geometrías que se van dibujando sobre la vista.",
+    "obsolete": false
   },
   {
     "name": "comparepanel",
@@ -47,7 +51,8 @@
     "url_en": "comparepanel.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/comparepanel",
     "image": "img/api-logo.png",
-    "description": "Plugin con todos los comparadores"
+    "description": "Plugin con todos los comparadores",
+    "obsolete": false
   },
   {
     "name": "contactlink",
@@ -57,7 +62,8 @@
     "url_en": "contactlink.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/contactlink",
     "image": "img/api-logo.png",
-    "description" : "Provee de enlaces a sitios, redes sociales y correo institucionales."
+    "description" : "Provee de enlaces a sitios, redes sociales y correo institucionales.",
+    "obsolete": false
   },
   {
     "name": "fulltoc",
@@ -67,7 +73,8 @@
     "url_en": "fulltoc.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/fulltoc",
     "image": "img/api-logo.png",
-    "description": "Permite gestionar y cargar wms y wmts y configurar opacidad, estilos, visibilidad y consulta de metadatos, además de facilitar la carga de servicios preconfigurados."
+    "description": "Permite gestionar y cargar wms y wmts y configurar opacidad, estilos, visibilidad y consulta de metadatos, además de facilitar la carga de servicios preconfigurados.",
+    "obsolete": false
   },
   {
     "name": "geometrydraw",
@@ -77,7 +84,8 @@
     "url_en": "geometrydraw.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/geometrydraw",
     "image": "img/api-logo.png",
-    "description": "Permite el dibujo y edición de geometrías sobre un mapa, así como su carga y descarga."
+    "description": "Permite el dibujo y edición de geometrías sobre un mapa, así como su carga y descarga.",
+    "obsolete": false
   },
   {
     "name": "georefimage",
@@ -87,7 +95,8 @@
     "url_en": "georefimage.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/georefimage",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla."
+    "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla.",
+    "obsolete": false
   },
   {
     "name": "georefimage2",
@@ -97,7 +106,8 @@
     "url_en": "georefimage2.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/georefimage2",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla, de los servicios Ráster y de PNOA de forma directa."
+    "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla, de los servicios Ráster y de PNOA de forma directa.",
+    "obsolete": false
   },
   {
     "name": "ignsearchlocator",
@@ -107,7 +117,8 @@
     "url_en": "ignsearchlocator.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/ignsearchlocator",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN), también permite localizar coordenadas en varios SRS."
+    "description": "Plugin que permite la búsqueda de Direcciones postales (Geocoder de Cartociudad) y Topónimos (Nomenclátor del IGN), también permite localizar coordenadas en varios SRS.",
+    "obsolete": false
   },
   {
     "name": "infocatastro",
@@ -117,7 +128,8 @@
     "url_en": "infocatastro.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/infocatastro",
     "image": "img/api-logo.png",
-    "description": "Muestra referencia catastral para un punto y provee de enlace a la información de la DGC."
+    "description": "Muestra referencia catastral para un punto y provee de enlace a la información de la DGC.",
+    "obsolete": false
   },
   {
     "name": "infocoordinates",
@@ -127,7 +139,8 @@
     "url_en": "infocoordinates.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/infocoordinates",
     "image": "img/api-logo.png",
-    "description": "Muestra las coordenadas de los puntos que se van señalando en el mapa. Permite cambiarlas entre ETRS89, WGS84 y REGCAN95."
+    "description": "Muestra las coordenadas de los puntos que se van señalando en el mapa. Permite cambiarlas entre ETRS89, WGS84 y REGCAN95.",
+    "obsolete": false
   },
   {
     "name": "information",
@@ -137,7 +150,8 @@
     "url_en": "information.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/information",
     "image": "img/api-logo.png",
-    "description": "Muestra información GetFeatureInfo mediante activación de plugin."
+    "description": "Muestra información GetFeatureInfo mediante activación de plugin.",
+    "obsolete": false
   },
   {
     "name": "incicarto",
@@ -147,7 +161,8 @@
     "url_en": "incicarto.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/incicarto",
     "image": "img/api-logo.png",
-    "description": "Plugin para dar de alta incidencias."
+    "description": "Plugin para dar de alta incidencias.",
+    "obsolete": false
   },
   {
     "name": "locator",
@@ -157,7 +172,8 @@
     "url_en": "locator.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/locator",
     "image": "img/api-logo.png",
-    "description": "Plugin que ofrece diferentes herramientas de localización."
+    "description": "Plugin que ofrece diferentes herramientas de localización.",
+    "obsolete": false
   },
   {
     "name": "lyrcompare",
@@ -167,7 +183,8 @@
     "url_en": "lyrcompare.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/lyrcompare",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite comparar varias capas sobre una cartografía base."
+    "description": "Plugin que permite comparar varias capas sobre una cartografía base.",
+    "obsolete": false
   },
   {
     "name": "measurebar",
@@ -177,7 +194,8 @@
     "url_en": "measurebar.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/lyrcompare",
     "image": "img/api-logo.png",
-    "description": "Herramienta de medición de áreas y distancias."
+    "description": "Herramienta de medición de áreas y distancias.",
+    "obsolete": false
   },
   {
     "name": "mirrorpanel",
@@ -187,7 +205,8 @@
     "url_en": "mirrorpanel.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/mirrorpanel",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite comparar varias capas dividiendo la pantalla en varias partes."
+    "description": "Plugin que permite comparar varias capas dividiendo la pantalla en varias partes.",
+    "obsolete": false
   },
   {
     "name": "mousesrs",
@@ -197,7 +216,8 @@
     "url_en": "mousesrs.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/mousesrs",
     "image": "img/api-logo.png",
-    "description": "Muestra las coordenadas de ratón."
+    "description": "Muestra las coordenadas de ratón.",
+    "obsolete": false
   },
   {
     "name": "overview",
@@ -207,7 +227,8 @@
     "url_en": "overview.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/overviewmap",
     "image": "img/api-logo.png",
-    "description": "Mapa de localización sobre la vista."
+    "description": "Mapa de localización sobre la vista.",
+    "obsolete": false
   },
   {
     "name": "popup",
@@ -217,7 +238,8 @@
     "url_en": "popup.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/popup",
     "image": "img/api-logo.png",
-    "description": "Muestra un popup con un contenido html."
+    "description": "Muestra un popup con un contenido html.",
+    "obsolete": false
   },
   {
     "name": "predefinedzoom",
@@ -227,7 +249,8 @@
     "url_en": "predefinedzoom.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/predefinedzoom",
     "image": "img/api-logo.png",
-    "description": "Centra el mapa en la/s vista/s indicada/s por parámetro."
+    "description": "Centra el mapa en la/s vista/s indicada/s por parámetro.",
+    "obsolete": true
   },
   {
     "name": "printermap",
@@ -237,7 +260,8 @@
     "url_en": "printermap.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/printermap",
     "image": "img/api-logo.png",
-    "description": "Plugin de impresión a través del servicio Geoprint."
+    "description": "Plugin de impresión a través del servicio Geoprint.",
+    "obsolete": false
   },
   {
   "name": "queryattributes",
@@ -247,7 +271,8 @@
   "url_en": "queryattributes.jsp?language=en",
   "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/queryattributes",
   "image": "img/api-logo.png",
-  "description": "Lista de los atributos de cada registro de una capa vectorial."
+  "description": "Lista de los atributos de cada registro de una capa vectorial.",
+  "obsolete": false
   },
   {
     "name": "rescale",
@@ -257,7 +282,8 @@
     "url_en": "rescale.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/rescale",
     "image": "img/api-logo.png",
-    "description": "Hace zoom a la escala elegida."
+    "description": "Hace zoom a la escala elegida.",
+    "obsolete": false
   },
   {
     "name": "selectiondraw",
@@ -267,7 +293,8 @@
     "url_en": "selectiondraw.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/selectiondraw",
     "image": "img/api-logo.png",
-    "description": "Permite dibujar geometrías y obtenerlas al terminar."
+    "description": "Permite dibujar geometrías y obtenerlas al terminar.",
+    "obsolete": false
   },
   {
     "name": "selectionzoom",
@@ -277,7 +304,8 @@
     "url_en": "selectionzoom.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/selectionzoom",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite la elección de cada de fondo mediante previsualización de las posibles capas."
+    "description": "Plugin que permite la elección de cada de fondo mediante previsualización de las posibles capas.",
+    "obsolete": false
   },
   {
     "name": "sharemap",
@@ -287,7 +315,8 @@
     "url_en": "sharemap.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/sharemap",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite copiar la url del mapa actual visualizado. Exporta la información de todas las capas cargadas en el mapa."
+    "description": "Plugin que permite copiar la url del mapa actual visualizado. Exporta la información de todas las capas cargadas en el mapa.",
+    "obsolete": false
   },
     {
     "name": "stylemanager",
@@ -297,7 +326,8 @@
     "url_en": "stylemanager.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/stylemanager",
     "image": "img/api-logo.png",
-    "description": "Plugin para la gestión de la simbología de las capas vectoriales del mapa."
+    "description": "Plugin para la gestión de la simbología de las capas vectoriales del mapa.",
+    "obsolete": false
   },
   {
     "name": "toc",
@@ -307,7 +337,8 @@
     "url_en": "toc.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/toc",
     "image": "img/api-logo.png",
-    "description": "Muestra un árbol de contenidos con las capas disponibles para mostrar."
+    "description": "Muestra un árbol de contenidos con las capas disponibles para mostrar.",
+    "obsolete": false
   },
   {
     "name": "topographicprofile",
@@ -317,7 +348,8 @@
     "url_en": "topographicprofile.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/topographicprofile",
     "image": "img/api-logo.png",
-    "description": "Permite consultar el perfil topográfico de una línea al dibujarla."
+    "description": "Permite consultar el perfil topográfico de una línea al dibujarla.",
+    "obsolete": false
   },
   {
     "name": "timeline",
@@ -327,7 +359,8 @@
     "url_en": "timeline.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/timeline",
     "image": "img/api-logo.png",
-    "description": "Plugin de línea del tiempo."
+    "description": "Plugin de línea del tiempo.",
+    "obsolete": false
   },
   {
     "name": "transparency",
@@ -337,7 +370,8 @@
     "url_en": "transparency.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/transparency",
     "image": "img/api-logo.png",
-    "description": "Herramienta de comparación de tipo lupa."
+    "description": "Herramienta de comparación de tipo lupa.",
+    "obsolete": false
   },
   {
     "name": "vectors",
@@ -347,7 +381,8 @@
     "url_en": "vectors.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/vectors",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como su descarga."
+    "description": "Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como su descarga.",
+    "obsolete": false
   },
   {
     "name": "viewhistory",
@@ -357,7 +392,8 @@
     "url_en": "viewhistory.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/viewhistory",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y atrás)."
+    "description": "Plugin que permite navegar entre las vistas visitadas del mapa (hacia adelante y atrás).",
+    "obsolete": true
   },
   {
     "name": "viewmanagement",
@@ -367,7 +403,8 @@
     "url_en": "viewmanagement.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/viewmanagement",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite utilizar diferentes herramientas de zoom."
+    "description": "Plugin que permite utilizar diferentes herramientas de zoom.",
+    "obsolete": false
   },
   {
     "name": "xylocator",
@@ -377,7 +414,8 @@
     "url_en": "xylocator.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/xylocator",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite localizar las coordenas introducidas por el usuario en un Sistema de referencia determinado."
+    "description": "Plugin que permite localizar las coordenas introducidas por el usuario en un Sistema de referencia determinado.",
+    "obsolete": false
   },
   {
     "name": "zoomextent",
@@ -387,7 +425,8 @@
     "url_en": "zoomextent.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/zoomextent",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite realizar zoom con una caja sobre el mapa."
+    "description": "Plugin que permite realizar zoom con una caja sobre el mapa.",
+    "obsolete": true
   },
   {
     "name": "zoompanel",
@@ -397,6 +436,7 @@
     "url_en": "zoompanel.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/zoompanel",
     "image": "img/api-logo.png",
-    "description": "Ofrece diferentes herramientas de zoom."
+    "description": "Ofrece diferentes herramientas de zoom.",
+    "obsolete": true
   }
 ]
