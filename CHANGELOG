@@ -1,6 +1,7 @@
 16/06/2023 - Versión 4.7.0
 - Se incorpora el plugin locator dejando obsoleto los plugins ignSearchlocator, xylocator e infocatastro
 - Mejoras documentación JSDOC
+- Plugin information: El popup se mueve por defecto y se mueve cuando esta cerrado.
 
 
 01/06/2023 - Versión 4.6.0
