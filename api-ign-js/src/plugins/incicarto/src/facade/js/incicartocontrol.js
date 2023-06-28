@@ -564,7 +564,6 @@ export default class IncicartoControl extends M.Control {
           }
         });
 
-        console.log('Entra');
         if (mailto_composed === false) {
           console.error("El mail no ha sido validado");
           return;
