@@ -52,7 +52,7 @@ export default class Locator extends M.Plugin {
      * Position of the plugin
      *
      * @private
-     * @type {String} TL | TR | BL | BR
+     * @type {String} TL | TR | BL | BR | TC
      */
     this.position_ = options.position || 'TR';
 
@@ -184,8 +184,12 @@ export default class Locator extends M.Plugin {
       this.order,
       this.useProxy,
       this.statusProxy,
+      this.position_,
     ));
     this.map_ = map;
+    if (this.position_ === 'TC') {
+      this.collapsible = false;
+    }
     this.panel_ = new M.ui.Panel('panelLocator', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,

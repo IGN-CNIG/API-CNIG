@@ -20,7 +20,7 @@ export default class LocatorControl extends M.Control {
    */
   constructor(
     isDraggable, zoom, pointStyle, byCoordinates, byParcelCadastre,
-    byPlaceAddressPostal, order, useProxy, statusProxy,
+    byPlaceAddressPostal, order, useProxy, statusProxy, position,
   ) {
     if (M.utils.isUndefined(LocatorImpl)) {
       M.exception(getValue('exception.impl'));
@@ -90,7 +90,15 @@ export default class LocatorControl extends M.Control {
      * @private
      * @type {Boolean}
      */
-    this.statusProxy = M.useproxy;
+    this.statusProxy = statusProxy;
+
+    /**
+     * Position of the plugin
+     *
+     * @private
+     * @type {String} TL | TR | BL | BR | TC
+     */
+    this.position = position || 'TR';
 
     /**
      * Control activated
@@ -113,6 +121,7 @@ export default class LocatorControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {
+          showTitle: this.position !== 'TC',
           byParcelCadastre: this.byParcelCadastre_,
           byCoordinates: this.byCoordinates_,
           byPlaceAddressPostal: this.byPlaceAddressPostal_,
@@ -125,6 +134,7 @@ export default class LocatorControl extends M.Control {
         },
       });
       this.html = html;
+
       if (this.byParcelCadastre_) {
         // infocatastro
         this.infocatastroControl = new InfoCatastroControl(
@@ -186,6 +196,12 @@ export default class LocatorControl extends M.Control {
         this.on(M.evt.ADDED_TO_MAP, () => {
           this.ignsearchControl.initializateAddress(html);
           this.control = this.ignsearchControl;
+          if (this.position === 'TC') {
+            document.querySelector('.m-plugin-locator').style = 'position: relative; left: calc(51.5vw - 210px);';
+            if (this.byPlaceAddressPostal_ !== false) {
+              html.querySelector('#m-locator-ignsearch').click();
+            }
+          }
         });
         html.querySelector('#m-locator-ignsearch').addEventListener('click', () => {
           this.deactive(html, 'ignsearch');

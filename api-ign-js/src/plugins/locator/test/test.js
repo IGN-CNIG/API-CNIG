@@ -17,9 +17,9 @@ window.map = map;
 const mp = new Locator({
   useProxy: true,
   isDraggable: true,
-  position: 'TL',
+  position: 'TC',
   collapsible: true,
-  collapsed: false,
+  collapsed: true,
   order: 1,
   tooltip: 'Plugin Localizador',
   zoom: 5,

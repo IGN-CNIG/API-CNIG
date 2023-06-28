@@ -46,6 +46,7 @@
             <option value="TR" selected="selected">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
+            <option value="TC">Arriba Centro (TC)</option>
         </select>
         <label for="selectCollapsed">Selector collapsed</label>
         <select name="collapsedValue" id="selectCollapsed">
@@ -59,6 +60,11 @@
         </select>
         <label for="inputTooltip">Tooltip</label>
         <input type="text" name="tooltip" id="inputTooltip">
+        <label for="selectProxy">Proxy</label>
+        <select name="proxyValue" id="selectProxy">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
         <label for="inputZoom">Zoom</label>
         <input type="text" name="zoom" id="inputZoom" value="16">
         <label for="selectPointStyle">Estilo del pin de búsqueda</label>
@@ -116,7 +122,9 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion, collapsed = true, collapsible = true, tooltip, zoomL, 
+        let posicion, collapsed = true,
+            collapsible = true,
+            tooltip, zoomL,
             pointStyle, isdraggable, byParcelCadastre, byCoordinates,
             byPlaceAddressPostal;
         crearPlugin({
@@ -134,6 +142,7 @@
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
+        const selectProxy = document.getElementById("selectProxy");
         const inputTooltip = document.getElementById("inputTooltip");
         const inputZoom = document.getElementById("inputZoom");
         const selectPointStyle = document.getElementById("selectPointStyle");
@@ -144,6 +153,7 @@
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
+        selectProxy.addEventListener('change', cambiarTest);
         inputTooltip.addEventListener('change', cambiarTest);
         inputZoom.addEventListener('change', cambiarTest);
         selectPointStyle.addEventListener('change', cambiarTest);
@@ -151,11 +161,13 @@
         selectParcel.addEventListener('change', cambiarTest);
         selectCoordinates.addEventListener('change', cambiarTest);
         selectPlace.addEventListener('change', cambiarTest);
+
         function cambiarTest() {
             let objeto = {};
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
+            objeto.useProxy = (selectProxy.options[selectProxy.selectedIndex].value == 'true');
             inputTooltip.value !== "" ? objeto.tooltip = inputTooltip.value : objeto.tooltip = "";
             inputZoom.value !== "" ? objeto.zoom = inputZoom.value : objeto.zoom = "16";
             objeto.pointStyle = selectPointStyle.options[selectPointStyle.selectedIndex].value;
@@ -166,6 +178,7 @@
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
+
         function crearPlugin(propiedades) {
             mp = new M.plugin.Locator(propiedades);
             map.addPlugin(mp);
@@ -186,6 +199,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTLHMMB5YT"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
+
     function gtag() {
         dataLayer.push(arguments);
     }
