@@ -54,7 +54,8 @@ class WFS extends Vector {
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
-   * - getFeatureOutputFormat: Formato de los objetos geográficos, por defecto 'application/json'
+   * - style: Define el estilo de la capa.
+   * - getFeatureOutputFormat: Formato de los objetos geográficos, por defecto 'application/json'.
    * - describeFeatureTypeOutputFormat: Describe el formato de salida de los objetos geográficos.
    * - vendor: Proveedor.
    * - minZoom: Zoom mínimo aplicable a la capa.

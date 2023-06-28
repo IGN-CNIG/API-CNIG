@@ -32,6 +32,7 @@ class WFS extends Vector {
    * @constructor
    * @implements {M.impl.layer.Vector}
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - style: Define el estilo de la capa.
    * - getFeatureOutputFormat: Formato de los objetos geográficos, por defecto 'application/json'
    * - describeFeatureTypeOutputFormat: Describe el formato de salida de los objetos geográficos.
    * - vendor: Proveedor.
@@ -99,8 +100,8 @@ class WFS extends Vector {
     /**
      * WFS GMLVersion_. Versión de GML.
      */
-    this.GMLVersion_ = (this.options.getFeatureOutputFormat.toUpperCase().includes('GML'))
-      ? this.getFeatureOutputFormat_ : null;
+    this.GMLVersion_ = (this.options.getFeatureOutputFormat.toUpperCase().includes('GML')) ?
+      this.getFeatureOutputFormat_ : null;
   }
 
   /**
