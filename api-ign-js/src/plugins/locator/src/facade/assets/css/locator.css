@@ -869,3 +869,10 @@ div.m-area.m-bottom.m-left>div.m-plugin-locator.m-panel.opened>button.m-panel-bt
         margin-right: 5px;
     }
 }
+
+@media only screen and (max-width: 600px) {
+    .m-panel.m-plugin-locator.opened.no-collapsible {
+        left: calc(50vw - 210px) !important;
+        position: initial !important;
+    } 
+}
