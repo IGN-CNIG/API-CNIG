@@ -480,6 +480,7 @@ class Map extends MObject {
     kmlMapLayers.forEach((kmlLayer) => {
       this.layers_ = this.layers_.filter(layer => !kmlLayer.equals(layer));
       kmlLayer.getImpl().destroy();
+      kmlLayer.fire(EventType.REMOVED_FROM_MAP, [kmlLayer]);
     }, this);
 
     return this;
@@ -625,6 +626,7 @@ class Map extends MObject {
   removeWMS(layers) {
     const wmsMapLayers = this.getWMS(layers);
     wmsMapLayers.forEach((wmsLayer) => {
+      wmsLayer.fire(EventType.REMOVED_FROM_MAP, [wmsLayer]);
       this.layers_ = this.layers_.filter(layer => !wmsLayer.equals(layer));
       wmsLayer.getImpl().destroy();
     });
@@ -823,6 +825,7 @@ class Map extends MObject {
     wfsMapLayers.forEach((wfsLayer) => {
       this.layers_ = this.layers_.filter(layer => !layer.equals(wfsLayer));
       wfsLayer.getImpl().destroy();
+      wfsLayer.fire(EventType.REMOVED_FROM_MAP, [wfsLayer]);
     });
 
     return this;
@@ -951,6 +954,7 @@ class Map extends MObject {
     ogcapifMapLayers.forEach((ogcapifLayer) => {
       this.layers_ = this.layers_.filter(layer => !layer.equals(ogcapifLayer));
       ogcapifLayer.getImpl().destroy();
+      ogcapifLayer.fire(EventType.REMOVED_FROM_MAP, [ogcapifLayer]);
     });
 
     return this;
@@ -1083,6 +1087,7 @@ class Map extends MObject {
     wmtsMapLayers.forEach((wmtsLayer) => {
       this.layers_ = this.layers_.filter(layer => !layer.equals(wmtsLayer));
       wmtsLayer.getImpl().destroy();
+      wmtsLayer.fire(EventType.REMOVED_FROM_MAP, [wmtsLayer]);
     });
 
     return this;
@@ -1646,6 +1651,7 @@ class Map extends MObject {
     xyzMapLayers.forEach((xyzLayer) => {
       xyzLayer.getImpl().destroy();
       this.layers_ = this.layers_.filter(layer => !layer.equals(xyzLayer));
+      xyzLayer.fire(EventType.REMOVED_FROM_MAP, [xyzLayer]);
     });
 
     return this;
@@ -1746,6 +1752,7 @@ class Map extends MObject {
     tmsMapLayers.forEach((tmsLayer) => {
       tmsLayer.getImpl().destroy();
       this.layers_ = this.layers_.filter(layer => !layer.equals(tmsLayer));
+      tmsLayer.fire(EventType.REMOVED_FROM_MAP, [tmsLayer]);
     });
 
     return this;
