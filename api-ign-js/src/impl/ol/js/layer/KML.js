@@ -76,7 +76,7 @@ class KML extends Vector {
     this.screenOverlayImg_ = null;
 
     /**
-     * KML label_. Determina si tiene una etiqueta o no.
+     * KML label_. Determina si muestra la etiqueta o no.
      */
     this.label_ = options.label;
 
