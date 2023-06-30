@@ -36,8 +36,8 @@ class KML extends LayerVector {
    * - type: Tipo de la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * - label: Define si se muestra la etiqueta o no. Por defecto mostrará la etiqueta.
    * @param {Mx.parameters.LayerOptions} options Parámetros que se pasarán a la implementación.
-   * - label: Etiquetado.
    * - visibility: Define si la capa es visible o no.
    * - style: Define el estilo de la capa.
    * - minZoom. Zoom mínimo aplicable a la capa.

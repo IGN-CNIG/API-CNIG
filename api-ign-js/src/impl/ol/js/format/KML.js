@@ -31,10 +31,12 @@ class KML extends OLFormatKML {
    * - crossOrigin: Atributo para imágenes cargadas. Por defecto es 'anonymous'.
    * - iconUrlFunction: Función que toma una URL como cadena y devuelve una URL
    * como cadena.
+   * -label: Define si se muestra la etiqueta o no.Por defecto mostrará la etiqueta.
+   * que contienen puntos. Por defecto es verdadero.
    * @api
    */
   constructor(optOptions = {}) {
-    super();
+    super({ showPointNames: optOptions.label });
 
     /**
      * "Popup".
@@ -42,13 +44,6 @@ class KML extends OLFormatKML {
      * @type {Object}
      */
     this.screenOverlay_ = null;
-
-    /**
-     * Indica si incluye la opción "label".
-     * @private
-     * @type {bool}
-     */
-    this.label_ = optOptions.label === undefined ? true : optOptions.label;
   }
 
 
@@ -71,10 +66,6 @@ class KML extends OLFormatKML {
     const features = this.readFeatures(textResponse, options);
     const featuresModified = features.map((feature) => {
       let styles = feature.getStyle()(feature);
-      if (this.label_ === false) {
-        const news = [styles[0]];
-        feature.setStyle(news);
-      }
       if (!Array.isArray(styles)) {
         styles = [styles];
       }

@@ -30,7 +30,7 @@ class KML extends Vector {
    * @constructor
    * @implements {M.impl.layer.Vector}
    * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
-   * - label: Etiquetado.
+   * - label: Define si se muestra la etiqueta o no. Por defecto mostrará la etiqueta.
    * - visibility: Define si la capa es visible o no.
    * - style: Define el estilo de la capa.
    * - minZoom. Zoom mínimo aplicable a la capa.
