@@ -37,6 +37,7 @@ class KML extends Vector {
    * - maxZoom. Zoom máximo aplicable a la capa.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
+   * - scaleLabel. Escala de la etiqueta.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -83,6 +84,11 @@ class KML extends Vector {
      * KML Visibility. Define si la capa es visible o no. Verdadero por defecto.
      */
     this.visibility = options.visibility == null ? true : options.visibility;
+
+    /**
+     * KML scaleLabel. Define la escala de la etiqueta.
+     */
+    this.scaleLabel = options.scaleLabel;
   }
 
   /**
@@ -334,7 +340,7 @@ class KML extends Vector {
       this.loadFeaturesPromise_ = new Promise((resolve) => {
         this.loader_.getLoaderFn((features) => {
           resolve(features);
-        })(null, null, getProj(this.map.getProjection().code));
+        })(null, null, getProj(this.map.getProjection().code), this.scaleLabel);
       });
     }
     return this.loadFeaturesPromise_;
