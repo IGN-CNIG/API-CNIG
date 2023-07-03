@@ -3842,6 +3842,34 @@ export const getConditionalOGC = (parameter) => {
 };
 
 /**
+ * Analiza el parámetro de capas OGCAPIFeatures especificado y devuelve el "extract" de la capa.
+ *
+ * @public
+ * @function
+ * @param {String} parameter Parámetro de capas OGCAPIFeatures especificado.
+ * @returns {Boolean|undefined} Valor del extract.
+ * @api
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ */
+export const getExtractOGC = (parameter) => {
+  let params;
+  let extract;
+
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 10) {
+      const value = params[10];
+      extract = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.extract)) {
+    extract = parameter.extract;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return extract;
+};
+
+/**
  * Analiza los parámetros especificados por el usuario para la capa OGCAPIFeatures.
  *
  * @param {string|Mx.parameters.WMS} userParameters Parámetros para la capa OGCAPIFeatures.
@@ -3878,6 +3906,7 @@ export const ogcapifeatures = (userParameters) => {
     const id = getIdOGC(userParam);
     const style = getStyleOGC(userParam);
     const conditional = getConditionalOGC(userParam);
+    const extract = getExtractOGC(userParam);
 
     return {
       type,
@@ -3891,6 +3920,7 @@ export const ogcapifeatures = (userParameters) => {
       id,
       style,
       conditional,
+      extract,
     };
   });
 

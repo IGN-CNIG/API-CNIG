@@ -2,8 +2,11 @@
  * @module M/impl/layer/OGCAPIFeatures
  */
 import FormatGeoJSON from 'M/format/GeoJSON';
-import { isNullOrEmpty } from 'M/util/Utils';
+import { compileSync as compileTemplate } from 'M/util/Template';
+import geojsonPopupTemplate from 'templates/geojson_popup';
+import { isNullOrEmpty, isFunction, includes } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
+import Popup from 'M/Popup';
 import OLSourceVector from 'ol/source/Vector';
 import { get as getProj } from 'ol/proj';
 import { all } from 'ol/loadingstrategy';
@@ -211,6 +214,93 @@ class OGCAPIFeatures extends Vector {
   }
 
   /**
+   * Este método ejecuta un objeto geográfico seleccionado.
+   *
+   * @function
+   * @param {ol.features} features Objetos geográficos de Openlayers.
+   * @param {Array} coord Coordenadas.
+   * @param {Object} evt Eventos.
+   * @api stable
+   * @expose
+   */
+  selectFeatures(features, coord, evt) {
+    const feature = features[0];
+    if (this.extract === true) {
+      // unselects previous features
+      this.unselectFeatures();
+
+      if (!isNullOrEmpty(feature)) {
+        const clickFn = feature.getAttribute('vendor.mapea.click');
+        if (isFunction(clickFn)) {
+          clickFn(evt, feature);
+        } else {
+          const htmlAsText = compileTemplate(geojsonPopupTemplate, {
+            vars: this.parseFeaturesForTemplate_(features),
+            parseToHtml: false,
+          });
+          const featureTabOpts = {
+            icon: 'g-cartografia-pin',
+            title: this.name,
+            content: htmlAsText,
+          };
+          let popup = this.map.getPopup();
+          if (isNullOrEmpty(popup)) {
+            popup = new Popup();
+            popup.addTab(featureTabOpts);
+            this.map.addPopup(popup, coord);
+          } else {
+            popup.addTab(featureTabOpts);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Pasa los objetos geográficos a la plantilla.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   *
+   * @Public
+   * @function
+   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
+   * @returns {Object} "FeaturesTemplate.features".
+   * @api stable
+   */
+  parseFeaturesForTemplate_(features) {
+    const featuresTemplate = {
+      features: [],
+    };
+
+    features.forEach((feature) => {
+      const properties = feature.getAttributes();
+      const propertyKeys = Object.keys(properties);
+      const attributes = [];
+      propertyKeys.forEach((key) => {
+        let addAttribute = true;
+        // adds the attribute just if it is not in
+        // hiddenAttributes_ or it is in showAttributes_
+        if (!isNullOrEmpty(this.showAttributes_)) {
+          addAttribute = includes(this.showAttributes_, key);
+        } else if (!isNullOrEmpty(this.hiddenAttributes_)) {
+          addAttribute = !includes(this.hiddenAttributes_, key);
+        }
+        if (addAttribute) {
+          attributes.push({
+            key,
+            value: properties[key],
+          });
+        }
+      });
+      const featureTemplate = {
+        id: feature.getId(),
+        attributes,
+      };
+      featuresTemplate.features.push(featureTemplate);
+    });
+    return featuresTemplate;
+  }
+
+  /**
    * Este método devuelve la extensión de todas los objetos geográficos
    * o discrimina por el filtro.
    *
@@ -370,6 +460,7 @@ class OGCAPIFeatures extends Vector {
       equals = equals && (this.limit === obj.limit);
       equals = equals && (this.offset === obj.offset);
       equals = equals && (this.format === obj.format);
+      equals = equals && (this.extract === obj.extract);
       equals = equals && (this.bbox === obj.bbox);
       equals = equals && (this.id === obj.id);
       equals = equals && (this.getFeatureOutputFormat ===
