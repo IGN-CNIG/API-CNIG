@@ -40,7 +40,7 @@ import Generic from '../style/Generic';
  * LINE(línea), MLINE(Multiples línes), POLYGON(Polígono), or MPOLYGON(Multiples polígonos).
  * @property {Object} opt Opciones de la capa.
  * @property {Boolean} extract Opcional. Activa la consulta haciendo
- * clic en el objeto geográfico,
+ * clic en el objeto geográfico.
  *
  * @api
  * @extends {M.layer.Vector}
@@ -153,7 +153,7 @@ class OGCAPIFeatures extends Vector {
     this.id = parameters.id;
 
     /**
-     * OGCAPIFeatures OGCAPIFeatures: Activa la consulta al hacer clic sobre un objeto geográfico,
+     * OGCAPIFeatures extract: Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
     this.extract = parameters.extract;

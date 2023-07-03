@@ -3489,6 +3489,34 @@ export const getStyleMBTilesVector = (parameter) => {
 };
 
 /**
+ * Analiza el parámetro de capas MBTilesVector especificado y devuelve el "extract" de la capa.
+ *
+ * @public
+ * @function
+ * @param {String} parameter Parámetro de capas MBTilesVector especificado.
+ * @returns {Boolean|undefined} Valor del extract.
+ * @api
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ */
+export const getExtractMBTilesVector = (parameter) => {
+  let params;
+  let extract;
+
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length - 1 >= 7) {
+      const value = params[7].trim();
+      extract = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.extract)) {
+    extract = parameter.extract;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return extract;
+};
+
+/**
  * Analiza los parámetros especificados por el usuario para la capa MBTilesVector.
  *
  * @param {string|Mx.parameters.MBTilesVector} userParameters Parámetros para la capa
@@ -3536,6 +3564,8 @@ export const mbtilesvector = (userParameters) => {
     layerObj.tileLoadFunction = getTileLoadFunctionMBTilesVector(userParam);
 
     layerObj.style = getStyleMBTilesVector(userParam);
+
+    layerObj.extract = getExtractMBTilesVector(userParam);
 
     return layerObj;
   });
