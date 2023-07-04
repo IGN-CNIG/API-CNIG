@@ -25,6 +25,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} minZoom Limitar el zoom mínimo.
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {Object} options Capa de opciones WMS.
+ * @property {Boolean} useCapabilities Define si se utilizará el capabilities para generar la capa.
  *
  * @api
  * @extends {M.Layer}
