@@ -400,10 +400,8 @@ export default class ComparepanelControl extends M.Control {
 
 
   onMoveEnd(callback) {
-
     const olMap = this.map.getMapImpl();
     olMap.on('moveend', e => callback(e));
-
   }
 
 

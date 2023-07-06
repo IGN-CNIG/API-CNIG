@@ -73,6 +73,14 @@ export default class Topographicprofile extends M.Plugin {
     this.options_.visible = opts.hasOwnProperty('visible') ? opts.visible : true;
     // this.options_.serviceURL = opts.serviceURL || ((M.config.GGIS_RESTAPI) ? M.config.GGIS_RESTAPI + "/services/elevation" : "http://ggiscloud.guadaltel.com/ggiscloud/restapi/services/elevation");
     //'http://idecan5.grafcan.es/ServicioWPS/mdt';
+
+    
+    /**
+     * Name Constructor
+     * @public
+     * @type {string}
+     */
+     this.nameConstructor = 'Topographicprofile';
   }
 
   /**

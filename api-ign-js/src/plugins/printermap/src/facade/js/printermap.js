@@ -168,6 +168,13 @@ export default class PrinterMap extends M.Plugin {
      * @type {object}
      */
     this.options = parameters;
+
+    /**
+     * Name Constructor
+     * @public
+     * @type {string}
+     */
+    this.nameConstructor = 'PrinterMap';
   }
 
   /**

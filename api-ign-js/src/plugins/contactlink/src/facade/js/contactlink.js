@@ -190,6 +190,13 @@ export default class ContactLink extends M.Plugin {
      * @type {object}
      */
     this.options = options;
+
+    /**
+     * Name Constructor
+     * @public
+     * @type {string}
+     */
+    this.nameConstructor = 'ContactLink';
   }
 
   /**

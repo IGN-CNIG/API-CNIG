@@ -112,6 +112,14 @@ export default class Georefimage2 extends M.Plugin {
      *@type { Number }
      */
     this.order = parameters.order >= -1 ? parameters.order : null;
+
+
+    /**
+     * Name Constructor
+     * @public
+     * @type {string}
+     */
+    this.nameConstructor = 'Georefimage2';
   }
 
   /**

@@ -73,6 +73,13 @@ export default class InfoCatastro extends M.Plugin {
      * @type {String}
      */
     this.name_ = 'infocatastro';
+
+    /**
+     * Name Constructor
+     * @public
+     * @type {string}
+     */
+    this.nameConstructor = 'InfoCatastro';
   }
 
   /**
