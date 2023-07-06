@@ -30,7 +30,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/beautytoc",
     "image": "img/api-logo.png",
     "description": "Tabla de contenidos de fototeca. Consulta cobertura de vuelo sobre la vista.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "buffer",
