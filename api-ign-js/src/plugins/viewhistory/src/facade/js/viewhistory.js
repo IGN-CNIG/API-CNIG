@@ -50,6 +50,14 @@ export default class ViewHistory extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+
+    /**
+     * Name Constructor
+     * @public
+     * @type {string}
+     */
+    this.nameConstructor = 'ViewHistory';
   }
 
   /**

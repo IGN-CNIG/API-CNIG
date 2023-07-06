@@ -135,6 +135,13 @@ export default class LyrCompare extends M.Plugin {
     this.defaultLyrD = 3;
 
     this.order = options.order;
+
+    /**
+     * Name Constructor
+     * @public
+     * @type {string}
+     */
+     this.nameConstructor = 'LyrCompare';
   }
 
   /**

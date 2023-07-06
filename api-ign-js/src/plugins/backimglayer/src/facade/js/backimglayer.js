@@ -162,6 +162,13 @@ export default class BackImgLayer extends M.Plugin {
      *@type { Number }
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Name Constructor
+     * @public
+     * @type {string}
+     */
+    this.nameConstructor = 'BackImgLayer';
   }
 
   /**

@@ -120,6 +120,13 @@ export default class ViewManagement extends M.Plugin {
      * @type {Number}
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Name Constructor
+     * @public
+     * @type {string}
+     */
+    this.nameConstructor = 'ViewManagement';
   }
 
   /**
