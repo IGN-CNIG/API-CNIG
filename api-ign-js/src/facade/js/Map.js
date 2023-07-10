@@ -1666,7 +1666,6 @@ class Map extends Base {
 
       this.addLayers(quickLayers);
 
-      this.fire(EventType.ADDED_LAYER, [quickLayers]);
       this.fire(EventType.ADDED_QUICK_LAYERS, [quickLayers]);
     }
     return this;

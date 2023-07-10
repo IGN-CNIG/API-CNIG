@@ -72,6 +72,7 @@ export const proxy = (enable) => {
  *
  * @private
  * @function
+ * @returns {object} Devuelve objeto con la definición de capas rápidas.
  */
 let quickLayers = () => {
   return {
@@ -98,7 +99,7 @@ let quickLayers = () => {
     MinutasCartograficas_Minutas_WMS: 'WMS*Minutas*https://www.ign.es/wms/minutas-cartograficas?*Minutas',
     HojasKilometricas_ParcelasCatastrales_WMS: 'WMS*ParcelasCatastrales*https://www.ign.es/wms/hojas-kilometricas?*Parcelas_Catastrales',
     Fototeca_InfoVuelos_WMS: 'WMS*InfoVuelos*https://wms-fototeca.idee.es/fototeca?*infoVuelos',
-    SatélitesHistoricos_SentinelInvierno23_WMS: 'WMS*SentinelInvierno23*https://wms-satelites-historicos.idee.es/satelites-historicos?*SENTINEL.2023invierno_432-1184',
+    SatelitesHistoricos_SentinelInvierno23_WMS: 'WMS*SentinelInvierno23*https://wms-satelites-historicos.idee.es/satelites-historicos?*SENTINEL.2023invierno_432-1184',
     PNOA_Provisional_MosaicElement_WMS: 'WMS*MosaicElement*https://wms-pnoa.idee.es/pnoa-provisionales?*OI.MosaicElement',
     // TMS
     IGNBaseTodo_TMS: 'TMS*IGNBaseTodo*https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
