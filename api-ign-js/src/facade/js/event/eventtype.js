@@ -91,6 +91,14 @@ export const ADDED_XYZ = 'added:xyz';
 export const ADDED_TMS = 'added:tms';
 
 /**
+ * Evento que se produce al añadir QuickLayers.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_QUICK_LAYERS = 'added:quicklayers';
+
+/**
  * Evento que se produce al añadir OGCAPIFeatures.
  * @public
  * @type {string}
