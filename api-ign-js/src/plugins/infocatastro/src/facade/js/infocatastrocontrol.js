@@ -64,7 +64,8 @@ export default class InfoCatastroControl extends M.Control {
    */
   createView(map) {
     this.facadeMap_ = map;
-    M.toast.warning(getValue('infocatastro_obsolete'));
+    // eslint-disable-next-line
+    console.warn(getValue('infocatastro_obsolete'));
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {
