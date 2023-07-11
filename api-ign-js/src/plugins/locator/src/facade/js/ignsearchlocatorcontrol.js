@@ -115,9 +115,10 @@ export default class IGNSearchLocatorControl extends M.Control {
     /**
      * This variable indicate which entities shouldn't be searched
      * @private
-     * @type {string} - 'municipio' | 'poblacion' | 'toponimo' | 'municipio,poblacion' | etc
+     * @type {string} - 'municipio' | 'poblacion' | 'toponimo' | 'callejero'
+     * | 'municipio,poblacion' | etc
      */
-    this.noProcess = options.noProcess || 'poblacion';
+    this.noProcess = options.noProcess;
 
     /**
      * This variable indicates the country code.
@@ -810,6 +811,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         radius: 5,
         icon: {
           src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pinign.svg']),
+          anchor: [0.5, 1],
         },
       });
     } else if (this.pointStyle === 'pinMorado') {
@@ -817,6 +819,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         radius: 5,
         icon: {
           src: M.utils.concatUrlPaths([M.config.THEME_URL, '/img/m-pin-24.svg']),
+          anchor: [0.5, 1],
         },
       });
     }
@@ -982,6 +985,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     const urlSinJSON = geoJsonData;
     const json = JSON.parse(urlSinJSON);
     const olFeature = this.getImpl().readFromWKT(json.geom, urlSinJSON);
+    const mFeature = M.impl.Feature.olFeature2Facade(olFeature);
     const properties = JSON.parse(urlSinJSON);
     // Center coordinates
     this.coordinates = `${properties.lat}, ${properties.lng}`;
@@ -995,8 +999,13 @@ export default class IGNSearchLocatorControl extends M.Control {
     }, { displayInLayerSwitcher: false });
 
     this.clickedElementLayer.displayInLayerSwitcher = false;
+    const type = mFeature.getGeometry().type;
+
+    this.clickedElementLayer.on(M.evt.LOAD, () => {
+      this.clickedElementLayer.addFeatures(mFeature);
+      this.zoomInLocation('g', type, this.zoom);
+    });
     this.map.addLayers(this.clickedElementLayer);
-    const type = olFeature.getGeometry().getType();
     if (type === 'Point') {
       this.clickedElementLayer.setStyle(this.point);
     }
@@ -1021,11 +1030,8 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clickedElementLayer.setStyle(this.simple);
     }
 
-    setTimeout(() => {
-      this.clickedElementLayer.getImpl().getOL3Layer().getSource().addFeature(olFeature);
-      this.zoomInLocation('g', type, this.zoom);
-    }, 200);
-    // show popup for streets
+    // // show popup for streets
+    M.config.MOVE_MAP_EXTRACT = false;
     if (properties.type === 'callejero' || properties.type === 'portal') {
       const fullAddress = this.createFullAddress(properties);
       const coordinates = [properties.lat, properties.lng];
@@ -1034,6 +1040,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     } else if (this.popup !== undefined) {
       this.map.removePopup(this.popup);
     }
+    M.config.MOVE_MAP_EXTRACT = true;
   }
 
   /**
@@ -1100,9 +1107,9 @@ export default class IGNSearchLocatorControl extends M.Control {
     if (hasOffset && this.pointStyle === 'pinAzul') {
       this.popup.getImpl().setOffset([0, -30]);
     } else if (hasOffset && this.pointStyle === 'pinRojo') {
-      this.popup.getImpl().setOffset([2, -15]);
+      this.popup.getImpl().setOffset([2, -30]);
     } else if (hasOffset && this.pointStyle === 'pinMorado') {
-      this.popup.getImpl().setOffset([1, -10]);
+      this.popup.getImpl().setOffset([1, -20]);
     }
     this.lat = mapcoords[1];
     this.lng = mapcoords[0];

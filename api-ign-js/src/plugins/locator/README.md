@@ -95,7 +95,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
     - 'n': Consulta Topónimos.
     - 'gn': Consulta Geocoder y Topónimos (por defecto).
   - **maxResults**: Número de resultados en la consulta. Por defecto: 10.
-  - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Por defecto: 'poblacion'. Admite combinación de 'municipio,poblacion,toponimo'.
+  - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio,poblacion,toponimo,callejero'.
   - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'. 
   - **reverse**: Valor booleano que indica si la funcionalidad obtener dirección en un punto del mapa está activada (true/false). Por defecto: true.
   - **resultVisibility**: Indica si se muestra o no la geometría del elemento localizado (true/false). Por defecto: true.
