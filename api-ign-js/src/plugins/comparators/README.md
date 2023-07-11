@@ -99,7 +99,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 ]
 ```
 - **defaultCompareMode**: Indica el modo de comparación que se arranca por defecto.
-
   - 'mirror': Comparador de espejo.
   - 'curtain': Comparador de paneles móviles.
   - 'spyeye': Comparador de zona o puntual.
@@ -138,7 +137,7 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
 - **mirrorpanelParams**: Parámetros opcionales del plugin mirrorpanel. A destacar:
   - showCursors (true/false): Si es true, muestra cursores sincronizados en cada unao de los mapas espejo. Defecto: *true*.
   - principalMap (true/false): indica en qué posición de la pantalla se mantiene el mapa principal (el que contiene el botón con las herramientas de comparación) con respecto a los demás. *False*: se sitúa a la izquierda. *True*: se sitúa a la derecha. Defecto: *false*.
-  - enabledControlsPlugins: Define los plugins y controles que irán en cada mapa.
+  - enabledControlsPlugins: Define los plugins y controles que irán en cada mapa. Es necesario hacer las importaciones CDN de los diferentes plugins.
   - enabledDisplayInLayerSwitcher: Define si se incluirán en el selector de capas las capas con displayInLayerSwitcher *true*.
   - modeVizTypes: Define los modos de comparación.
   - tooltip: Valor a usar para mostrar en el tooltip del control.

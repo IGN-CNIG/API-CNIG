@@ -99,8 +99,6 @@ export default class ComparatorsControl extends M.Control {
         .filter(l => l.displayInLayerSwitcher && (l.type === 'WMS' || l.type === 'WMTS'))
         .map(l => transformToStringLayers(l, this.map_)));
 
-      console.log(this.layersPlugin);
-
       this.addLayersEventMap_();
       this.removeLayersEventMap_();
     }
@@ -330,9 +328,9 @@ export default class ComparatorsControl extends M.Control {
    * @api
    */
   destroy() {
-    // if (!M.utils.isNullOrEmpty(this.zoomextentControl)) {
-    //   this.zoomextentControl.destroy();
-    // }
+    this.controls.forEach((c) => {
+      if (c.control) c.control.destroy();
+    });
   }
 
   removeLayers_() {
