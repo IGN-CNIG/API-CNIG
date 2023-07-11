@@ -233,18 +233,24 @@ export default class MirrorpanelControl extends M.Control {
    * @api stable
    */
   destroy() {
-    this.removeAllLayers();
     document.removeEventListener('keydown', (zEvent) => { });
     this.removeMaps();
-
-    if (
-      !(document.getElementById('mapjsB') ||
-        document.getElementById('mapjsC') ||
-        document.getElementById('mapjsD'))
-    ) return;
-
     this.destroyMapsContainer();
-    this.template.remove();
+    [
+      this.control_,
+      this.panel_,
+      this.map_,
+      this.collapsible,
+      this.collapsed,
+      this.modeViz,
+      this.enabledPlugins,
+      this.enabledKeyFunctions,
+      this.showCursors,
+      this.mirrorLayers,
+      this.defaultBaseLyrs,
+      this.backImgLayersParams,
+      this.interface] = [null, null, null, null, null,
+      null, null, null, null, null, null, null, null];
   }
 
   removeAllLayers() {
@@ -277,6 +283,19 @@ export default class MirrorpanelControl extends M.Control {
      */
   deactivate() {
     this.manageVisionPanelByCSSGrid(0);
+
+    this.removeAllLayers();
+    document.removeEventListener('keydown', (zEvent) => { });
+    this.removeMaps();
+
+    if (
+      !(document.getElementById('mapjsB') ||
+        document.getElementById('mapjsC') ||
+        document.getElementById('mapjsD'))
+    ) return;
+
+    this.destroyMapsContainer();
+    this.template.remove();
   }
 
 

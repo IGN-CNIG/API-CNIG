@@ -336,14 +336,26 @@ export default class TransparencyControl extends M.Control {
   deactivate() {
     if (this.layerSelected === null) this.layerSelected = this.layers[0];
     this.removeEffects();
-    // this.layerSelected.setVisible(false);
-    //  this.map_.removeLayers(this.layerSelected);
+
+    if (this.template) this.template.remove();
+    this.layerSelected = null;
   }
 
   destroy() {
-    this.deactivate();
-    if (this.template) this.template.remove();
+    this.removeEffects();
+
+    this.name_ = null;
+    this.map_ = null;
+    this.enabledKeyFunctions = null;
+    this.layers = null;
+    this.maxRadius = null;
+    this.minRadius = null;
+    this.radius = null;
+
     this.layerSelected = null;
+    this.freeze = null;
+    this.freezeSpyEye = null;
+    this.template = null;
   }
 
   /**

@@ -233,7 +233,6 @@ export const getNameString = (value) => {
 export const checkLayers = (layer, Maplayes) => {
   return layer.filter(({ name }) => {
     const check = Maplayes.filter((l) => {
-      console.log(name, getNameString(l));
       if (name === getNameString(l)) {
         return true;
       }

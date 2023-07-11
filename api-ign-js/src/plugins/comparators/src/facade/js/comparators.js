@@ -178,11 +178,22 @@ export default class Comparators extends M.Plugin {
    * @api
    */
   destroy() {
+    this.controls_[0].deactivate();
+    this.controls_[0].controls = [];
     this.map_.removeControls(this.controls_);
+
+
     this.map_ = null;
-    this.controls_ = null;
     this.panel_ = null;
     this.name = null;
+    this.options = null;
+    this.position_ = null;
+    this.collapsed = null;
+    this.collapsible = null;
+    this.tooltip_ = null;
+    this.isDraggable = null;
+    this.order = null;
+    this.nameConstructor = null;
   }
 
   /**

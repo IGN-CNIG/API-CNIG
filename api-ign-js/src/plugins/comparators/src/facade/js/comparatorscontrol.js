@@ -74,6 +74,8 @@ export default class ComparatorsControl extends M.Control {
     }
 
     this.layersExternalPlugins = [];
+
+    this.control = null;
   }
 
   /**
@@ -207,10 +209,11 @@ export default class ComparatorsControl extends M.Control {
           const control = c.controlCreate(c.controlParam);
           // eslint-disable-next-line no-param-reassign
           c.control = control;
+          this.control = control;
           control.active(this.html);
         } else {
           this.html.querySelector(`#${c.buttonsID}`).classList.remove('activatedComparators');
-          if (c.control) c.control.destroy();
+          if (c.control) c.control.deactivate();
           // eslint-disable-next-line no-param-reassign
           c.control = null;
         }
@@ -275,7 +278,7 @@ export default class ComparatorsControl extends M.Control {
    * @api
    */
   equals(control) {
-    // return control instanceof ComparatorsControl;
+    return control instanceof ComparatorsControl;
   }
 
   /**
@@ -327,10 +330,24 @@ export default class ComparatorsControl extends M.Control {
    * @function
    * @api
    */
-  destroy() {
+  deactivate() {
     this.controls.forEach((c) => {
-      if (c.control) c.control.destroy();
+      if (c.control) { c.control.destroy(); }
     });
+
+    this.order = null;
+    this.isDraggable_ = null;
+    this.options = null;
+    this.layersDrop = null;
+    this.defaultCompareMode = null;
+    this.lyrsMirrorMinZindex = null;
+    this.mirrorpanelParams = null;
+    this.lyrcompareParams = null;
+    this.transparencyParams = null;
+    this.layersExternalPlugins = null;
+    this.html = null;
+    this.map_ = null;
+    this.controls = null;
   }
 
   removeLayers_() {

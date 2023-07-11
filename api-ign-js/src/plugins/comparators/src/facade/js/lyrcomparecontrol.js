@@ -254,6 +254,22 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   destroy() {
+    this.deactivate();
+    const swipeControl = document.querySelector('.lyrcompare-swipe-control');
+    if (swipeControl) { swipeControl.remove(); }
+
+    this.control_.removeCurtainLayers(this.control_.getLayersNames());
+
+    [this.name_, this.error_, this.layers, this.map_,
+      this.position, this.collapsed, this.collapsible,
+      this.staticDivision, this.opacityVal, this.comparisonMode, this.metadata_,
+      this.tooltip_, this.interface, this.defaultLyrA,
+      this.defaultLyrB, this.defaultLyrC, this.defaultLyrD,
+    ] = [null, null, null, null, null, null, null, null, null, null,
+      null, null, null, null, null, null, null, null];
+  }
+
+  deactivate() {
     if (!this.template) return;
     // Valores por defecto
     this.comparisonMode = 0;
