@@ -870,19 +870,28 @@ div.m-area.m-bottom.m-left>div.m-plugin-locator.m-panel.opened>button.m-panel-bt
     }
 }
 
-@media only screen and (max-width: 600px) {
-    .m-panel.m-plugin-locator.opened.no-collapsible {
-        left: calc(50vw - 210px) !important;
-        position: initial !important;
-    } 
-}
-
 .m-plugin-locator-tc {
-    left: calc(55.70vw - 210px) !important;
+    left: calc(55.80vw - 210px) !important;
     position: relative;
 } 
 
 .m-plugin-locator-tc-withpanel {
-    left: calc(51.65vw - 210px) !important;
+    left: calc(51.55vw - 210px) !important;
     position: relative;
 } 
+
+@media only screen and (max-width: 600px) {
+    /* .m-panel.m-plugin-locator.opened.no-collapsible {
+        left: calc(50vw - 210px) !important;
+        position: initial !important;
+    }  */
+    .m-plugin-locator-tc {
+        left: calc(76.7vw - 210px) !important;
+        position: relative;
+    } 
+
+    .m-plugin-locator-tc-withpanel {
+        left: calc(66.65vw - 210px) !important;
+        position: relative;
+    } 
+}
