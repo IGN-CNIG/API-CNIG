@@ -15,7 +15,7 @@ export default class XYLocatorControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(map, zoom, pointStyle, options) {
+  constructor(map, zoom, pointStyle, options, positionPlugin) {
     if (M.utils.isUndefined(XYLocatorImpl)) {
       M.exception(getValue('exception.impl_xylocator'));
     }
@@ -57,6 +57,13 @@ export default class XYLocatorControl extends M.Control {
      * Map
      */
     this.map = map;
+
+    /**
+     * Position plugin
+     * @private
+     * @type {String}
+     */
+    this.positionPlugin = positionPlugin;
   }
 
   /**
@@ -72,6 +79,10 @@ export default class XYLocatorControl extends M.Control {
     const xylocatoractive = this.html_.querySelector('#m-locator-xylocator').classList.contains('activated');
     this.deactive();
     if (!xylocatoractive) {
+      if (this.positionPlugin === 'TC') {
+        document.querySelector('.m-plugin-locator').classList.remove('m-plugin-locator-tc');
+        document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc-withpanel');
+      }
       this.html_.querySelector('#m-locator-xylocator').classList.add('activated');
       const panel = M.template.compileSync(template, {
         vars: {
@@ -131,11 +142,11 @@ export default class XYLocatorControl extends M.Control {
   }
 
   /**
-    * This function clears input values
-    *
-    * @private
-    * @function
-    */
+   * This function clears input values
+   *
+   * @private
+   * @function
+   */
   clearResults() {
     this.html_.querySelector('input#UTM-X').value = '';
     this.html_.querySelector('input#UTM-Y').value = '';
@@ -206,8 +217,9 @@ export default class XYLocatorControl extends M.Control {
         const dirLat = this.html_.querySelector('input[name="LATDIR"]:checked').value;
 
         if (this.checkDegreeValue_(mmLon) && this.checkDegreeValue_(ssLon) &&
-          this.checkDegreeValue_(mmLat) && this.checkDegreeValue_(ssLat) && parseFloat(hhLon) >= 0
-          && parseFloat(hhLon) <= 180 && parseFloat(hhLat) >= 0 && parseFloat(hhLat) <= 180) {
+          this.checkDegreeValue_(mmLat) &&
+          this.checkDegreeValue_(ssLat) && parseFloat(hhLon) >= 0 &&
+          parseFloat(hhLon) <= 180 && parseFloat(hhLat) >= 0 && parseFloat(hhLat) <= 180) {
           x = parseFloat(hhLon) + (parseFloat(mmLon) / 60) + (parseFloat(ssLon) / 3600);
           y = parseFloat(hhLat) + (parseFloat(mmLat) / 60) + (parseFloat(ssLat) / 3600);
 

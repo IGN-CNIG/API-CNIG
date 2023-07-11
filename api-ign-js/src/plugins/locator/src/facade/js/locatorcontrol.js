@@ -142,6 +142,7 @@ export default class LocatorControl extends M.Control {
           this.zoom_,
           this.pointStyle_,
           this.byParcelCadastre_,
+          this.position,
         );
         html.querySelector('#m-locator-infocatastro').addEventListener('click', () => {
           this.deactive(html, 'infocatastro');
@@ -166,6 +167,7 @@ export default class LocatorControl extends M.Control {
           this.zoom_,
           this.pointStyle_,
           this.byCoordinates_,
+          this.position,
         );
         html.querySelector('#m-locator-xylocator').addEventListener('click', () => {
           this.deactive(html, 'xylocator');
@@ -192,13 +194,14 @@ export default class LocatorControl extends M.Control {
           this.byPlaceAddressPostal_,
           this.useProxy,
           this.statusProxy,
+          this.position,
         );
         this.on(M.evt.ADDED_TO_MAP, () => {
           this.ignsearchControl.initializateAddress(html);
           this.control = this.ignsearchControl;
           if (this.position === 'TC') {
-            document.querySelector('.m-plugin-locator').style = 'position: relative; left: calc(51.5vw - 210px);';
             if (this.byPlaceAddressPostal_ !== false) {
+              document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc');
               html.querySelector('#m-locator-ignsearch').click();
             }
           }
@@ -251,11 +254,17 @@ export default class LocatorControl extends M.Control {
    */
   deactive(html, control) {
     const active = html.querySelectorAll('#m-locator-previews .activated')[0];
+    if (this.position === 'TC') {
+      document.querySelector('.m-plugin-locator').classList.remove('m-plugin-locator-tc-withpanel');
+      document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc');
+    }
     if (active && !active.id.includes(control)) {
       this.control.clearResults();
       active.classList.remove('activated');
       const container = document.querySelector('#div-contenedor-locator');
-      if (container && container.children.length > 2) {
+      if (this.position === 'TC' && container && container.children.length > 1) {
+        container.removeChild(container.children[1]);
+      } else if (container && container.children.length > 2) {
         container.removeChild(container.children[2]);
       }
     }

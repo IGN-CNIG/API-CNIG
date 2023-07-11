@@ -82,7 +82,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(map, zoom, pointStyle, options, useProxy, statusProxy) {
+  constructor(map, zoom, pointStyle, options, useProxy, statusProxy, positionPlugin) {
     if (M.utils.isUndefined(IGNSearchLocatorImpl)) {
       M.exception(getValue('exception.impl_ignsearchlocator'));
     }
@@ -257,6 +257,13 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.statusProxy = statusProxy;
 
     /**
+     * Position plugin
+     * @private
+     * @type {String}
+     */
+    this.positionPlugin = positionPlugin;
+
+    /**
      * Map
      */
     this.map = map;
@@ -311,6 +318,10 @@ export default class IGNSearchLocatorControl extends M.Control {
     const ignsearchactive = this.html_.querySelector('#m-locator-ignsearch').classList.contains('activated');
     this.deactive();
     if (!ignsearchactive) {
+      if (this.positionPlugin === 'TC') {
+        document.querySelector('.m-plugin-locator').classList.remove('m-plugin-locator-tc');
+        document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc-withpanel');
+      }
       this.html_.querySelector('#m-locator-ignsearch').classList.add('activated');
       const panel = M.template.compileSync(template, {
         vars: {

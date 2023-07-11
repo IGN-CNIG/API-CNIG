@@ -876,3 +876,13 @@ div.m-area.m-bottom.m-left>div.m-plugin-locator.m-panel.opened>button.m-panel-bt
         position: initial !important;
     } 
 }
+
+.m-plugin-locator-tc {
+    left: calc(55.70vw - 210px) !important;
+    position: relative;
+} 
+
+.m-plugin-locator-tc-withpanel {
+    left: calc(51.65vw - 210px) !important;
+    position: relative;
+} 

@@ -15,7 +15,7 @@ export default class InfoCatastroControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(map, zoom, pointStyle, options) {
+  constructor(map, zoom, pointStyle, options, positionPlugin) {
     if (M.utils.isUndefined(InfoCatastroImpl)) {
       M.exception(getValue('exception.impl_infocatastro'));
     }
@@ -115,6 +115,13 @@ export default class InfoCatastroControl extends M.Control {
     this.inputRefCatastral = null;
 
     /**
+     * Position plugin
+     * @private
+     * @type {String}
+     */
+    this.positionPlugin = positionPlugin;
+
+    /**
      * Tabs
      */
     this.tabs = null;
@@ -135,6 +142,10 @@ export default class InfoCatastroControl extends M.Control {
     const infocatastroactive = html.querySelector('#m-locator-infocatastro').classList.contains('activated');
     this.deactive();
     if (!infocatastroactive) {
+      if (this.positionPlugin === 'TC') {
+        document.querySelector('.m-plugin-locator').classList.remove('m-plugin-locator-tc');
+        document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc-withpanel');
+      }
       this.html_.querySelector('#m-locator-infocatastro').classList.add('activated');
       const panel = M.template.compileSync(template, {
         vars: {
@@ -265,14 +276,14 @@ export default class InfoCatastroControl extends M.Control {
   }
 
   /**
-    * This function clears drawn geometry from map and inputs.
-    *
-    * @public
-    * @function
-    * @param {boolean} clearParcela - Indicating if it clears inputs from tab "Buscar Parcela"
-    * @param {boolean} clearCatastro - Indicating if it clears inputs from tab "Buscar Catastro"
-    * @api
-    */
+   * This function clears drawn geometry from map and inputs.
+   *
+   * @public
+   * @function
+   * @param {boolean} clearParcela - Indicating if it clears inputs from tab "Buscar Parcela"
+   * @param {boolean} clearCatastro - Indicating if it clears inputs from tab "Buscar Catastro"
+   * @api
+   */
   clearResults(clearParcela = true, clearCatastro = true) {
     if (clearParcela) {
       this.selectProvincias.value = '0';
@@ -943,13 +954,13 @@ export default class InfoCatastroControl extends M.Control {
   }
 
   /**
-    * This function compares controls
-    *
-    * @public
-    * @function
-    * @param {M.Control} control to compare
-    * @api
-    */
+   * This function compares controls
+   *
+   * @public
+   * @function
+   * @param {M.Control} control to compare
+   * @api
+   */
   equals(control) {
     return control instanceof InfoCatastroControl;
   }
