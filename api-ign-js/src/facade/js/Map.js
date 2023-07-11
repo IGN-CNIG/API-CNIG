@@ -412,25 +412,25 @@ class Map extends Base {
       const layers = layersParam.map((layerParam) => {
         let layer;
 
+        if (isString(layerParam)) {
+          const splt = layerParam.split('*');
+          if (splt.length === 2 && splt[0] === 'QUICK') {
+            const ly = getQuickLayers(splt[1]);
+            if (!isUndefined(ly)) {
+              // eslint-disable-next-line
+              layerParam = ly;
+            } else {
+              // eslint-disable-next-line
+              console.error(`No se encuentra definida ${splt[1]} como capa rápida`);
+              return null;
+            }
+          }
+        }
+
         if (layerParam instanceof Layer) {
           layer = layerParam;
         } else {
           // try {
-          if (isString(layerParam)) {
-            const splt = layerParam.split('*');
-            if (splt.length === 2 && splt[0] === 'QUICK') {
-              const ly = getQuickLayers(splt[1]);
-              if (!isUndefined(ly)) {
-                // eslint-disable-next-line
-                layerParam = ly;
-              } else {
-                // eslint-disable-next-line
-                console.error(`No se encuentra definida ${splt[1]} como capa rápida`);
-                return null;
-              }
-            }
-          }
-
           const parameterVariable = parameter.layer(layerParam);
           if (!isNullOrEmpty(parameterVariable.type)) {
             switch (parameterVariable.type) {
@@ -1661,6 +1661,8 @@ class Map extends Base {
             value = `QUICK*${layerParam}`;
           }
           quickLayers.push(value);
+        } else {
+          quickLayers.push(layerParam);
         }
       });
 

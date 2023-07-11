@@ -7,6 +7,8 @@ import 'assets/css/animations';
 import 'impl/projections';
 import MapImpl from 'impl/Map';
 import Map from 'M/Map';
+import WFS from 'M/layer/WFS';
+import Point from 'M/style/Point';
 import 'assets/css/ign';
 import { isNullOrEmpty, isUndefined } from './util/Utils';
 import Exception from './exception/exception';
@@ -114,6 +116,21 @@ let quickLayers = () => {
     RedAlberguesJuveniles_MVT: 'MVT*https://vt-reaj.idee.es/vt.alberguesjuveniles/{z}/{x}/{y}.pbf*RedAlberguesJuveniles',
     ViasVerdes_MVT: 'MVT*https://vt-viasverdes.idee.es/vt.viasverdes/{z}/{x}/{y}.pbf*ViasVerdes',
     BTN_MVT: 'MVT*https://vt-btn.idee.es/1.0.0/btn/tile/{z}/{y}/{x}.pbf*BTN',
+    // WFS
+    RedesGeodesicas_Regente_WFS: new WFS({
+      url: 'https://www.ign.es/wfs/redes-geodesicas?',
+      legend: 'REGENTE',
+      name: 'RED_REGENTE',
+      geometry: 'POINT',
+    }, {
+      style: new Point({
+        radius: 2,
+        fill: {
+          color: 'black',
+          opacity: 0.5,
+        },
+      }),
+    }),
   };
 };
 
