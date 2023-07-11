@@ -494,7 +494,13 @@ export default class IGNSearchLocatorControl extends M.Control {
       jsonResult.muni === undefined) ? '' : jsonResult.muni;
     const province = (jsonResult.province === null ||
       jsonResult.province === undefined) ? '' : jsonResult.province;
-    return `${via} ${address} ${portal}, ${muni.toUpperCase()}, ${province.toUpperCase()}`;
+    const extension = (jsonResult.extension === null ||
+      jsonResult.extension === undefined) ? '' : jsonResult.extension.trim();
+    let street = `${via} ${address} ${portal}`;
+    if (!M.utils.isNullOrEmpty(extension)) {
+      street += ` ${extension}`;
+    }
+    return `${street}, ${muni.toUpperCase()}, ${province.toUpperCase()}`;
   }
 
   /**
