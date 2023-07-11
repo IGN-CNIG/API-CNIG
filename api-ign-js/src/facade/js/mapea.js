@@ -122,6 +122,7 @@ let quickLayers = () => {
       legend: 'REGENTE',
       name: 'RED_REGENTE',
       geometry: 'POINT',
+      extract: true,
     }, {
       style: new Point({
         radius: 2,
