@@ -112,7 +112,6 @@
                      
                         <label for="defaultCompareMode">Selector de modo por defecto</label>
                         <select name="defaultCompareMode" id="defaultCompareMode">
-                            <option value=""></option>
                             <option value="none" selected="selected">none</option>
                             <option value="mirror">mirror</option>
                             <option value="curtain">curtain</option>
@@ -336,7 +335,7 @@
                                     position: 'TR',
                                     collapsed: false,
                                     collapsible: true,
-                                    defaultCompareMode: 'mirror', // mirror - curtain - spyeye - none
+                                    defaultCompareMode: 'none', // mirror - curtain - spyeye - none
                                     listLayers: [
                                         'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
                                         'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true',
