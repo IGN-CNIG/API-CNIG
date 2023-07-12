@@ -493,9 +493,9 @@ class WMS extends LayerBase {
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
       if (this.tiled === true) {
-        const tileGrid = (this.useCapabilities)
-          ? new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) })
-          : false;
+        const tileGrid = (this.useCapabilities) ?
+          new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) }) :
+          false;
         olSource = new TileWMS({
           url: this.url,
           params: layerParams,
@@ -516,6 +516,7 @@ class WMS extends LayerBase {
           maxResolution,
           opacity,
           zIndex,
+          ratio: 1,
         });
       }
     }
