@@ -31,7 +31,7 @@
 
 Plugin que agrupa los diversos plugins comparadores en una misma herramienta.
 
-| Herramienta cerrada |Herramienta abierta
+|  Herramienta abierta  |Herramienta cerrada
 |:----:|:----:|
 |![Comparador abierto](./src/facade/assets/comparador-abierto.png)|![Comparador cerrado](./src/facade/assets/comparador-cerrado.png)|
 
