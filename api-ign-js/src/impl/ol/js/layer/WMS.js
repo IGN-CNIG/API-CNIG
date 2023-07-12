@@ -516,7 +516,7 @@ class WMS extends LayerBase {
           maxResolution,
           opacity,
           zIndex,
-          ratio: 1,
+          // ratio: 1,
         });
       }
     }
