@@ -27,13 +27,11 @@
                     <link href="plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
                     <link href="plugins/queryattributes/queryattributes.ol.min.css" rel="stylesheet" />
                     <link href="plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
-                    <link href="plugins/mirrorpanel/mirrorpanel.ol.min.css" rel="stylesheet" />
                     <link href="plugins/printermap/printermap.ol.min.css" rel="stylesheet" />
                     <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
                     <link href="plugins/buffer/buffer.ol.min.css" rel="stylesheet" />
                     <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
                     <link href="plugins/fulltoc/fulltoc.ol.min.css" rel="stylesheet" />
-                    <link href="plugins/comparators/comparators.ol.min.css" rel="stylesheet" />
                     <link href="plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
                     <link href="plugins/calendar/calendar.ol.min.css" rel="stylesheet" />
                     <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
@@ -46,7 +44,6 @@
                     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
                     <link href="plugins/georefimage/georefimage.ol.min.css" rel="stylesheet" />
                     <link href="plugins/infocatastro/infocatastro.ol.min.css" rel="stylesheet" />
-                    <link href="plugins/transparency/transparency.ol.min.css" rel="stylesheet" />
                     <link href="plugins/timeline/timeline.ol.min.css" rel="stylesheet" />
                     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
                     <link href="plugins/information/information.ol.min.css" rel="stylesheet" />
@@ -225,13 +222,11 @@
                     <script type="text/javascript" src="plugins/measurebar/measurebar.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/queryattributes/queryattributes.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/rescale/rescale.ol.min.js"></script>
-                    <script type="text/javascript" src="plugins/mirrorpanel/mirrorpanel.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/printermap/printermap.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/selectionzoom/selectionzoom.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/buffer/buffer.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/fulltoc/fulltoc.ol.min.js"></script>
-                    <script type="text/javascript" src="plugins/comparators/comparators.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/overviewmap/overviewmap.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/calendar/calendar.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
@@ -244,7 +239,6 @@
                     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/georefimage/georefimage.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/infocatastro/infocatastro.ol.min.js"></script>
-                    <script type="text/javascript" src="plugins/transparency/transparency.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/timeline/timeline.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/information/information.ol.min.js"></script>
