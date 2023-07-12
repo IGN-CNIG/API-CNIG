@@ -32,8 +32,8 @@
 Plugin que agrupa los diversos plugins comparadores en una misma herramienta.
 
 | Herramienta cerrada |Herramienta abierta
-|:----:|:----:|:-----:|
-|![Comparador abierto](./assets/comparador-abierto.png)|![Comparador cerrado](./assets/comparador-cerrado.png)|
+|:----:|:----:|
+|![Comparador abierto](./src/facade/assets/comparador-abierto.png)|![Comparador cerrado](./src/facade/assets/comparador-cerrado.png)|
 
 
 Los modos de comparación son: Cortina, "spy eye" y modo espejo.
@@ -53,7 +53,7 @@ Los modos de comparación son: Cortina, "spy eye" y modo espejo.
 ## Modos de comparación
 
 <p align="center">
-  <img src="assets/comparadoresv2.png" height="256" />
+  <img src="./src/facade/assets/comparadoresv2.png" height="256" />
 </p>
 
 **Comparador de espejo / Mirror**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
