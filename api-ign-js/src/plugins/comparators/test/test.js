@@ -3,12 +3,24 @@ import Comparators from 'facade/comparators';
 M.language.setLang('es');
 // M.proxy(false);
 
+
 const map = M.map({
   container: 'mapjs',
   controls: ['scale'],
   zoom: 5,
   bbox: [323020, 4126873, 374759, 4152013],
 });
+
+const mp5 = new M.plugin.Popup({
+  position: 'TR',
+  collapsed: true,
+  collapsible: true,
+  url_es: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/es.html',
+  url_en: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/en.html',
+  tooltip: 'Ayuda',
+});
+
+map.addPlugin(mp5);
 
 const SENTINELlistBaseLayersByString = [
   'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
@@ -226,6 +238,7 @@ const mp = new Comparators({
   position: 'TR',
   collapsed: false,
   collapsible: true,
+  isDraggable: true,
   defaultCompareMode: 'mirror', // mirror - curtain - spyeye - none
   listLayers: [
     'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
@@ -252,7 +265,7 @@ const mp = new Comparators({
     defaultCompareViz: 2,
   },
   mirrorpanelParams: {
-    showCursors: false,
+    showCursors: true,
     principalMap: true,
     enabledControlsPlugins: {
       map2: {
@@ -270,95 +283,25 @@ const mp = new Comparators({
         },
         BackImgLayer: {
           position: 'TR',
-          collapsible: true,
           collapsed: true,
-          layerId: 0,
-          columnsNumber: 2,
+          collapsible: true,
+          tooltip: 'Capas de fondo',
           layerVisibility: true,
-          layerOpts: [{
-            id: 'mapa',
-            preview: 'plugins/backimglayer/images/svqmapa.png', // ruta relativa, edite por la deseada
-            title: 'Mapa',
-            layers: [new M.layer.WMTS({
-              url: 'http://www.ign.es/wmts/ign-base?',
-              name: 'IGNBaseTodo',
-              legend: 'Mapa IGN',
-              matrixSet: 'GoogleMapsCompatible',
-              transparent: false,
-              displayInLayerSwitcher: false,
-              queryable: false,
-              visible: true,
-              format: 'image/jpeg',
-            })],
-          },
-          {
-            id: 'imagen',
-            title: 'Imagen',
-            preview: 'plugins/backimglayer/images/svqimagen.png', // ruta relativa, edite por la deseada
-            layers: [new M.layer.WMTS({
-              url: 'http://www.ign.es/wmts/pnoa-ma?',
-              name: 'OI.OrthoimageCoverage',
-              legend: 'Imagen (PNOA)',
-              matrixSet: 'GoogleMapsCompatible',
-              transparent: false,
-              displayInLayerSwitcher: false,
-              queryable: false,
-              visible: true,
-              format: 'image/jpeg',
-            })],
-          },
-          {
-            id: 'hibrido',
-            title: 'Híbrido',
-            preview: 'plugins/backimglayer/images/svqhibrid.png', // ruta relativa, edite por la deseada
-            layers: [new M.layer.WMTS({
-              url: 'http://www.ign.es/wmts/pnoa-ma?',
-              name: 'OI.OrthoimageCoverage',
-              legend: 'Imagen (PNOA)',
-              matrixSet: 'GoogleMapsCompatible',
-              transparent: true,
-              displayInLayerSwitcher: false,
-              queryable: false,
-              visible: true,
-              format: 'image/png',
-            }),
-            new M.layer.WMTS({
-              url: 'http://www.ign.es/wmts/ign-base?',
-              name: 'IGNBaseOrto',
-              matrixSet: 'GoogleMapsCompatible',
-              legend: 'Mapa IGN',
-              transparent: false,
-              displayInLayerSwitcher: false,
-              queryable: false,
-              visible: true,
-              format: 'image/png',
-            }),
-            ],
-          },
-          {
-            id: 'lidar',
-            preview: 'plugins/backimglayer/images/svqlidar.png', // ruta relativa, edite por la deseada
-            title: 'LIDAR',
-            layers: [new M.layer.WMTS({
-              url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-              name: 'EL.GridCoverageDSM',
-              legend: 'Modelo Digital de Superficies LiDAR',
-              matrixSet: 'GoogleMapsCompatible',
-              transparent: false,
-              displayInLayerSwitcher: false,
-              queryable: false,
-              visible: true,
-              format: 'image/png',
-            })],
-          },
-          ],
+          columnsNumber: 0,
+          empty: true,
+          ids: 'mapa,hibrido',
+          titles: 'Mapa,Hibrido',
+          previews:
+            'https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png,https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqhibrid.png',
+          layers:
+            'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true',
         },
       },
+      enabledDisplayInLayerSwitcher: true,
+      defaultCompareViz: 1,
+      modeVizTypes: [0, 1], // 0 - 9
+      tooltip: 'tooltipMirror',
     },
-    enabledDisplayInLayerSwitcher: true,
-    defaultCompareViz: 2,
-    modeVizTypes: [0, 1, 2, 3, 5], // 0 - 9
-    tooltip: 'tooltipMirror',
   },
 });
 

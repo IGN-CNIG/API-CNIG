@@ -121,7 +121,6 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   removeLayer(layers) {
-    console.log(' -- ');
     /* eslint-disable */
     if (!(layers instanceof Array)) layers = [layers];
     /* eslint-enable */

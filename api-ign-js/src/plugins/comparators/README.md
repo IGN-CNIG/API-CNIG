@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://www.ign.es/resources/viewer/images/logoApiCnig0.5.png" height="152" />
 </p>
-<h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.ComparePanel</small></h1>
+<h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.Comparators</small></h1>
 
 <p align="center">
   <a title="MIT License" href="LICENSE">
@@ -104,15 +104,17 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'spyeye': Comparador de zona o puntual.
   - 'none': no arranca ninguno de los comparadores.
 
-- **enabledKeyFunctions**:
+- **enabledKeyFunctions**:  
 Comparación en modo espejo:
-Si es true, se pueden usar las combinaciones de teclas Ctrl + Shift + [F1-F8] para cambiar entre los distintos modos de visualización. Con la tecla Escape se destruye el plugin. Por defecto tiene el valor true.  
+Si es true, se pueden usar las combinaciones de teclas Ctrl + Shift + [F1-F8] para cambiar entre los distintos modos de visualización. Con la tecla Escape se destruye el plugin.  <br>
 Comparación en modo spyeye:
-Ctrl + Shift + Enter: Alterna el estado de congelación. 
-Ctrl + Shift + Flecha hacia arriba: Aumenta el radio, si el radio alcanza el valor máximo de 200, no ocurre ningún cambio. 
-Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valor mínimo de 32, no ocurre ningún cambio.
+Ctrl + Shift + Enter: Alterna el estado de congelación.  
+Ctrl + Shift + Flecha hacia arriba: Aumenta el radio, si el radio alcanza el valor máximo de 200, no ocurre ningún cambio.  
+Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valor mínimo de 32, no ocurre ningún cambio.  
 
 - **lyrsMirrorMinZindex**: Indica el nivel zIndex a partir del cual se cargan las capas superpuestas en los comparadores espejo. Por defecto, tiene valor de 50.
+
+- **isDraggable**: "True" para que el plugins se pueda desplazar.
 
 - **transparencyParams**: Parámetros opcionales del control transparency.
   - radius (numérico): radio del efecto transparencia. Tiene un rango entre 30 y 200. Defecto: 100.
@@ -138,6 +140,8 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
   - showCursors (true/false): Si es true, muestra cursores sincronizados en cada unao de los mapas espejo. Defecto: *true*.
   - principalMap (true/false): indica en qué posición de la pantalla se mantiene el mapa principal (el que contiene el botón con las herramientas de comparación) con respecto a los demás. *False*: se sitúa a la izquierda. *True*: se sitúa a la derecha. Defecto: *false*.
   - enabledControlsPlugins: Define los plugins y controles que irán en cada mapa. Es necesario hacer las importaciones CDN de los diferentes plugins.
+  ⚠️ Por API-REST solo funcionarán los plugins que se hayan cargado en el mapa principal.
+  ⚠️ El método getAPIRestBase64 solo funcionará si se le pasa las capas a los plugins en formato String.
   - enabledDisplayInLayerSwitcher: Define si se incluirán en el selector de capas las capas con displayInLayerSwitcher *true*.
   - modeVizTypes: Define los modos de comparación.
   - tooltip: Valor a usar para mostrar en el tooltip del control.
@@ -152,7 +156,6 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
     - 7: tres mapas en proporción 2-1-1.
     - 8: un mapa arriba y dos abajo.
     - 9: dos mapas arriba y uno abajo.
-
 ## Ejemplo
 
 Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue la siguiente estructura:

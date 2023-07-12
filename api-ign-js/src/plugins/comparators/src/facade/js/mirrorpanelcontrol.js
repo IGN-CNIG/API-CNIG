@@ -160,6 +160,7 @@ export default class MirrorpanelControl extends M.Control {
   active(html) {
     // Si es false no existe el botón, se devuelve error
     if (!this.modeVizTypes.includes(this.defaultCompareViz)) {
+      M.toast.error('Error: El modo de visualización por defecto no existe');
       throw new Error('Error: El modo de visualización no existe');
     }
 
@@ -170,6 +171,7 @@ export default class MirrorpanelControl extends M.Control {
     html.querySelector('#m-comparators-contents').appendChild(this.template);
 
     this.createLyrDropDown();
+
     this.modeVizTypes.forEach((modeViz) => {
       const button = this.template.querySelector(`#set-mirror-${modeViz}`);
       button.style.display = 'initial';
@@ -180,12 +182,10 @@ export default class MirrorpanelControl extends M.Control {
         this.changeSpanText(target.id);
       });
     });
+
     this.manageVisionPanelByCSSGrid(this.defaultCompareViz);
     this.createSelectorLayer(this.addValueButton(this.defaultCompareViz));
     this.changeSpanText(`set-mirror-${this.defaultCompareViz}`);
-
-    this.mapL.A = this.map_;
-    window.mapL = this.mapL.A;
 
     if (this.showCursors) {
       this.addLayerCursor('A');
@@ -362,6 +362,9 @@ export default class MirrorpanelControl extends M.Control {
 
     document.getElementById('lienzo').classList.add(`modeViz${modeViz}`);
     if (this.principalMap) document.getElementById('lienzo').classList.add('reverseMirror');
+
+    if (modeViz === 0) { this.mapL.A = this.map_; }
+
     // Create map objects by modeviz
     if ([1, 2].includes(modeViz)) {
       if (this.mapL.B === null) {
@@ -399,10 +402,6 @@ export default class MirrorpanelControl extends M.Control {
     if (this.mapL.B !== null) { this.mapL.B.refresh(); }
     if (this.mapL.C !== null) { this.mapL.C.refresh(); }
     if (this.mapL.D !== null) { this.mapL.D.refresh(); }
-    window.maps = this.mapL;
-
-    // document.querySelector('#m-mirrorpanel-btn').classList.remove('active');
-    // document.querySelector('.m-panel-controls .cp-mirrorpanel').classList.remove('hide-panel');
 
     setTimeout(() => {
       this.changeViewPluginsGrid([3, 4, 7].includes(modeViz));
@@ -438,10 +437,6 @@ export default class MirrorpanelControl extends M.Control {
      * Create mirror map object synchro with the main map
      */
   createMapObjects(mapLyr) {
-    const pluginFullTOC4map = null;
-    const pluginBackImgLayer4map = null;
-    const pluginVector = null;
-
     this.mapL[mapLyr] = M.map({
       container: `mapjs${mapLyr}`,
       center: this.map_.getCenter(),
@@ -449,27 +444,13 @@ export default class MirrorpanelControl extends M.Control {
       zoom: this.map_.getZoom(),
     });
 
-    window.p = this.mapL;
-
-    // this.mapL[mapLyr].getMapImpl().setView(this.map_.getMapImpl().getView());
+    // Le pasa la referencia del mapa principal al resto de mapas y así permite mover
+    // todos los mapas a la vez
+    this.mapL[mapLyr].getMapImpl().setView(this.map_.getMapImpl().getView());
 
     if (this.enabledControlsPlugins) {
       this.addPluginsControls(mapLyr);
     }
-
-    // Añadimos plugins secundarios
-    if (pluginFullTOC4map !== null) {
-      this.mapL[mapLyr].addPlugin(pluginFullTOC4map);
-    }
-
-    if (pluginVector !== null) {
-      this.mapL[mapLyr].addPlugin(pluginVector);
-    }
-
-    if (pluginBackImgLayer4map !== null) {
-      this.mapL[mapLyr].addPlugin(pluginBackImgLayer4map);
-    }
-
 
     if (this.showCursors) { this.addLayerCursor(mapLyr); }
     this.mapL[mapLyr].refresh();
@@ -550,7 +531,6 @@ export default class MirrorpanelControl extends M.Control {
       });
     });
   }
-
 
   manageLyrAvailable(lyrList) {
     // eslint-disable-next-line no-underscore-dangle

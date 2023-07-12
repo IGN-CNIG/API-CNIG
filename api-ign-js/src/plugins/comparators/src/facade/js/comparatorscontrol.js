@@ -32,7 +32,7 @@ export default class ComparatorsControl extends M.Control {
      * @private
      * @type {Boolean}
      */
-    this.isDraggable_ = isDraggable;
+    this.isDraggable_ = isDraggable || false;
 
     /**
      * Order of plugin
@@ -48,7 +48,12 @@ export default class ComparatorsControl extends M.Control {
      */
     this.options = options;
 
-    this.layersPlugin = this.options.listLayers || [];
+    this.layersPlugin = this.options.listLayers || [
+      'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
+      'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true',
+      'WMS*Invierno 2022 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_843*true',
+      'WMS*Filomena*https://wms-satelites-historicos.idee.es/satelites-historicos*Filomena*true',
+    ];
 
     this.layersDrop = [];
 
@@ -172,6 +177,7 @@ export default class ComparatorsControl extends M.Control {
       if (this.isDraggable_) {
         M.utils.draggabillyPlugin(this.getPanel(), '#m-comparators-title');
       }
+
       this.accessibilityTab_(this.html);
 
 
