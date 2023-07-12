@@ -87,14 +87,6 @@ export default class StyleManager extends M.Plugin {
     ColorPickerPolyfill.apply(window);
 
     M.utils.extends = M.utils.extendsObj;
-
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'StyleManager';
   }
 
   /**

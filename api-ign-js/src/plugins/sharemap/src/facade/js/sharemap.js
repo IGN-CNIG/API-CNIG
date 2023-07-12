@@ -221,13 +221,6 @@ export default class ShareMap extends M.Plugin {
      * @type {object}
      */
     this.options = options;
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'ShareMap';
   }
 
   /**

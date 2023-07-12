@@ -90,15 +90,6 @@ export default class Comparators extends M.Plugin {
      * @type {Number}
      */
     this.order = options.order >= -1 ? options.order : null;
-
-
-    /**
-     * Nombre del constructor de la clase
-     * @private
-     * @type {String}
-     * @api stable
-     */
-    this.nameConstructor = 'Comparators';
   }
 
   /**
@@ -193,7 +184,6 @@ export default class Comparators extends M.Plugin {
     this.tooltip_ = null;
     this.isDraggable = null;
     this.order = null;
-    this.nameConstructor = null;
   }
 
   /**

@@ -148,12 +148,6 @@ export default class Timeline extends M.Plugin {
      */
      this.timelineType = options.timelineType || false;
 
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'Timeline';
   }
 
   /**

@@ -80,14 +80,6 @@ export default class GeometryDraw extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
-
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'GeometryDraw';
   }
 
   /**

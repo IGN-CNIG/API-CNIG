@@ -80,13 +80,6 @@ export default class SelectionDraw extends M.Plugin {
      * @api stable
      */
     this.name = SelectionDraw.NAME;
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'SelectionDraw';
   }
 
   /**

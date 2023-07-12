@@ -86,14 +86,6 @@ export default class Rescale extends M.Plugin {
      * @type {object}
      */
     this.options = options;
-
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'Rescale';
   }
 
   /**

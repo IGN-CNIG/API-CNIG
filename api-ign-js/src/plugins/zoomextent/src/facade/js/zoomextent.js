@@ -41,13 +41,6 @@ export default class ZoomExtent extends M.Plugin {
      * @type {String} TL | TR | BL | BR
      */
     this.position_ = options.position || 'TL';
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'ZoomExtent';
   }
 
   /**

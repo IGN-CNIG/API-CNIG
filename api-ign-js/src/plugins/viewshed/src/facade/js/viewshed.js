@@ -83,14 +83,6 @@ export default class ViewShed extends M.Plugin {
      * @type {String}
      */
     this.name_ = 'viewshed';
-
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'ViewShed';
   }
 
   /**

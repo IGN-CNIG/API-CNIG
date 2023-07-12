@@ -144,14 +144,6 @@ export default class Locator extends M.Plugin {
      * @type {Boolean}
      */
     this.statusProxy = M.useproxy;
-
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'Locator';
   }
 
   /**

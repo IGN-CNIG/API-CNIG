@@ -104,13 +104,6 @@ export default class MeasureBar extends M.Plugin {
      * @type {object}
      */
     this.options = options;
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-    this.nameConstructor = 'MeasureBar';
   }
 
   /**

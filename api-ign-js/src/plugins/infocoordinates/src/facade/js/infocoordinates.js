@@ -127,13 +127,6 @@ export default class Infocoordinates extends M.Plugin {
      */
     this.options = options;
 
-
-    /**
-     * Name Constructor
-     * @public
-     * @type {string}
-     */
-     this.nameConstructor = 'Infocoordinates';
   }
 
   /**
