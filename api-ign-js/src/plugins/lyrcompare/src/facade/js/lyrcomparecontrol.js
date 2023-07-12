@@ -157,6 +157,8 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('lyrcompare_obsolete'));
     if (this.comparisonMode > 0) {
       this.on(M.evt.ADDED_TO_MAP, (e) => {
         this.activateCurtain();

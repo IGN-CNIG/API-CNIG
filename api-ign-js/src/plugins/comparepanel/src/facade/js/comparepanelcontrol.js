@@ -94,6 +94,8 @@ export default class ComparepanelControl extends M.Control {
    * @api stable
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('comparepanel_obsolete'));
     this.map = map;
     return new Promise((success, fail) => {
       let options = {

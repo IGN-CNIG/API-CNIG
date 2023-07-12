@@ -61,6 +61,8 @@ export default class TransparencyControl extends M.Control {
    * @api stable
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('transparency_obsolete'));
     this.map = map;
     return new Promise((success, fail) => {
       this.layers = this.transformToLayers(this.layers);

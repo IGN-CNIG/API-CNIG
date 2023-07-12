@@ -112,6 +112,8 @@ export default class MirrorpanelControl extends M.Control {
    * @api stable
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('mirrorpanel_obsolete'));
     if (!M.template.compileSync) {
       M.template.compileSync = (string, options) => {
         let templateCompiled;

@@ -20,5 +20,6 @@
   "lyr4Select_tooltip": "Selecciona la capa de la posición 4",
   "advice_sameLayer": "No puede cargarse la misma capa en varios sitios",
   "no_layers_plugin": "El número de capas es insuficiente para aplicar el efecto",
-  "repeated_layers": "Las capas seleccionadas no se pueden repetir"
+  "repeated_layers": "Las capas seleccionadas no se pueden repetir",
+  "lyrcompare_obsolete": "Mensaje para el desarrollador: M.plugin.LyrCompare ha quedado obsoleto, utilice en su lugar M.plugin.Comparators"
 }
