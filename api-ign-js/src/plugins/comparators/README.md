@@ -114,13 +114,13 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
 
 - **lyrsMirrorMinZindex**: Indica el nivel zIndex a partir del cual se cargan las capas superpuestas en los comparadores espejo. Por defecto, tiene valor de 50.
 
-- **isDraggable**: "True" para que el plugins se pueda desplazar.
+- **isDraggable**: "True" para que el plugins se pueda desplazar, por defecto false.
 
 - **transparencyParams**: Parámetros opcionales del control transparency.
   - radius (numérico): radio del efecto transparencia. Tiene un rango entre 30 y 200. Defecto: 100.
-  - maxRadius Radio máximo.
-  - minRadius: Radio mínimo.
-  - tooltip: Valor a usar para mostrar en el tooltip del control.
+  - maxRadius Radio máximo, por defecto 200.
+  - minRadius: Radio mínimo, por defecto 30.
+  - tooltip: Valor a usar para mostrar en el tooltip del control, por defecto Transparencia / Transparency.
 
 - **lyrcompareParams**: Parámetros opcionales del plugin lyrcompare.
   - defaultLyrA (numérico): Capa cargada al inicio en posición 1. Valores de 1 al número de capas disponibles. Defecto, 1.
@@ -129,8 +129,8 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
   - defaultLyrD (numérico): Capa cargada al inicio en posición 4. Valores de 1 al número de capas disponibles. Defecto, 4.
   - opacityVal: Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
   - staticDivision: Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón (valor 0), por el punto medio del lienzo de cartografía (valor 1) o por el punto medio del lienzo de cartografía con líneas arrastrables (valor 2). Por defecto toma el valor 1.
-  - tooltip: Valor a usar para mostrar en el tooltip del control.
-  - defaultCompareViz: Ajustamos el modo de visualización una vez vea seleccionado el comparador, indicamos de 0 a 3.
+  - tooltip: Valor a usar para mostrar en el tooltip del control, por defecto Comparador de capas / Layer Comparison.
+  - defaultCompareViz: Modo de visualización, indicamos de 0 a 3.
     - 0: barra de herramientas desplegada con el mapa simple esperando al usuario.
     - 1: dos mapas en vertical.
     - 2: dos mapas en horizontal.
@@ -144,8 +144,8 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
   ⚠️ El método getAPIRestBase64 solo funcionará si se le pasa las capas a los plugins en formato String.
   - enabledDisplayInLayerSwitcher: Define si se incluirán en el selector de capas las capas con displayInLayerSwitcher *true*.
   - modeVizTypes: Define los modos de comparación.
-  - tooltip: Valor a usar para mostrar en el tooltip del control.
-  - defaultCompareViz: ajustamos el modo de visualización una vez vea seleccionado el comparador, indicamos de 0 a 9 el modo de visualización:
+  - tooltip: Valor a usar para mostrar en el tooltip del control, por defecto Comparador de mapas espejo / Mirror Comparison.
+  - defaultCompareViz: Modo de visualización, indicamos de 0 a 9 el modo de visualización:
     - 0: barra de herramientas desplegada con el mapa simple esperando al usuario.
     - 1: dos mapas en vertical.
     - 2: dos mapas en horizontal.
