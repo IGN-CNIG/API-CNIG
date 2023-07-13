@@ -152,6 +152,8 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('iberpixcompare_obsolete'));
     this.map = map;
     return new Promise((success, fail) => {
       this.renderPlugin(success);
