@@ -188,6 +188,8 @@ export default class IGNSearchControl extends M.Control {
    * @api
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('exception.ignsearch_obsolete'));
     this.map = map;
     this.destroyMapLayers();
     return new Promise((success) => {
