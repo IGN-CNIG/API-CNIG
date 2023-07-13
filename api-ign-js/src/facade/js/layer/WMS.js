@@ -66,6 +66,9 @@ class WMS extends LayerBase {
    * - maxResolution: Resolución máxima.
    * - animated: Define si la capa está animada,
    * el valor predeterminado es falso.
+   * - ratio: determina el tamaño de las solicitudes de las imágenes. 1 significa que tienen el
+   * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
+   * y así sucesivamente. Debe ser 1 o superior. Por defecto es 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
