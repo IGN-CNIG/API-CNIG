@@ -62,18 +62,18 @@ export default class ComparatorsControl extends M.Control {
     this.lyrsMirrorMinZindex = this.options.lyrsMirrorMinZindex || 50;
 
     this.mirrorpanelParams = this.options.mirrorpanelParams || false;
-    if (this.mirrorpanelParams) {
+    if (typeof this.mirrorpanelParams === 'object') {
       this.mirrorpanelParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
       this.mirrorpanelParams.tooltip = (this.mirrorpanelParams.tooltip) ? this.mirrorpanelParams.tooltip : getValue('tooltipMirrorpanel');
     }
 
     this.lyrcompareParams = this.options.lyrcompareParams || false;
-    if (this.lyrcompareParams) {
+    if (typeof this.lyrcompareParams === 'object') {
       this.lyrcompareParams.tooltip = (this.lyrcompareParams.tooltip) ? this.lyrcompareParams.tooltip : getValue('tooltipLyr');
     }
 
-    this.transparencyParams = this.options.transparencyParams;
-    if (this.transparencyParams) {
+    this.transparencyParams = this.options.transparencyParams || false;
+    if (typeof this.transparencyParams === 'object') {
       this.transparencyParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
       this.transparencyParams.tooltip = (this.transparencyParams.tooltip) ? this.transparencyParams.tooltip : getValue('tooltipTransparency');
     }

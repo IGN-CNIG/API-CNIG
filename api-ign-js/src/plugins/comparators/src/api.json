@@ -30,33 +30,43 @@
     },
     {
       "type": "simple",
-      "name": "tooltip",
+      "name": "isDraggable",
       "position": 3
     },
     {
       "type": "simple",
-      "name": "isDraggable",
+      "name": "listLayers",
       "position": 4
     },
     {
-      "type": "boolean",
-      "name": "predefinedZoom",
+      "type": "simple",
+      "name": "defaultCompareMode",
       "position": 5
     },
     {
       "type": "boolean",
-      "name": "zoomExtent",
+      "name": "enabledKeyFunctions",
       "position": 6
     },
     {
-      "type": "boolean",
-      "name": "viewhistory",
+      "type": "number",
+      "name": "lyrsMirrorMinZindex",
       "position": 7
     },
     {
       "type": "boolean",
-      "name": "zoompanel",
+      "name": "transparencyParams",
       "position": 8
+    },
+    {
+      "type": "boolean",
+      "name": "lyrcompareParams",
+      "position": 9
+    },
+    {
+      "type": "boolean",
+      "name": "mirrorpanelParams",
+      "position": 10
     }
   ]
   }],
