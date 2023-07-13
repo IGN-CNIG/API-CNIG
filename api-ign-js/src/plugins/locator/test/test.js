@@ -17,13 +17,14 @@ window.map = map;
 const mp = new Locator({
   useProxy: true,
   isDraggable: true,
+  // position: 'BR',
   position: 'TC',
   collapsible: true,
   collapsed: true,
   order: 1,
   tooltip: 'Plugin Localizador',
   zoom: 5,
-  pointStyle: 'pinRojo',
+  pointStyle: 'pinMorado',
   byCoordinates: true,
   // byCoordinates: {
   //   projections: [
@@ -43,7 +44,7 @@ const mp = new Locator({
   // byPlaceAddressPostal: {
   //   servicesToSearch: 'n',
   //   maxResults: 5,
-  //   noProcess: 'poblacion',
+  // noProcess: 'poblacion',
   //   countryCode: 'es',
   //   reverse: false,
   //   resultVisibility: true,

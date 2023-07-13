@@ -175,7 +175,7 @@ Ejemplo de constructor del plugin:
 }
 ```
 ```
-https://componentes.cnig.es/api-core/?sharemap=base64=e2Jhc2VVcmw6ICdodHRwczovL2NvbXBvbmVudGVzLmNuaWcuZXMvYXBpLWNvcmUvJywgIHBvc2l0aW9uOiAnVFInLCAgdG9vbHRpcDogJ0NvcGlhZG8gYWwgcG9ydGFwYXBlbGVzJywgIG1pbmltaXplOiB0cnVlLCAgdGl0bGU6ICdDb21wYXJ0aXIgbWFwYSB0aXRsZScsICBidG46ICdPSycsICBjb3B5QnRuOiAnY295QnRuJywgIHRleHQ6ICdDb21wYXJ0aXIgbWFwYSB0ZXh0JywgIGNvcHlCdG5IdG1sOiAnY29weUJ0bkh0bWwnLCAgdXJsQVBJOiBmYWxzZSwgIHNoYXJlTGF5ZXI6IHRydWUsICBmaWx0ZXJMYXllcnM6IFsnY29zYXMxX3BvbGlnb25vJ119
+https://componentes.cnig.es/api-core/?sharemap=base64=eyJiYXNlVXJsIjoiaHR0cHM6Ly9jb21wb25lbnRlcy5jbmlnLmVzL2FwaS1jb3JlLyIsInBvc2l0aW9uIjoiVFIiLCJ0b29sdGlwIjoiQ29waWFkbyBhbCBwb3J0YXBhcGVsZXMiLCJtaW5pbWl6ZSI6dHJ1ZSwidGl0bGUiOiJDb21wYXJ0aXIgbWFwYSB0aXRsZSIsImJ0biI6Ik9LIiwiY29weUJ0biI6ImNvcHlCdG4iLCJ0ZXh0IjoiQ29tcGFydGlyIG1hcGEgdGV4dCIsImNvcHlCdG5IdG1sIjoiY29weUJ0bkh0bWwiLCJ1cmxBUEkiOmZhbHNlLCJzaGFyZUxheWVyIjp0cnVlfQ==
 ```
 #### Ejemplo filtrando las capas
 En este ejemplo, le pasamos por url dos capas y especificamos en el parámetro filterLayers el nombre de la capa que queremos compartir (shareLayer tiene que estar como false o no definido).
@@ -190,7 +190,7 @@ Ejemplo de constructor del plugin:
 ```
 (*) En este ejemplo, le pasamos por url dos capas y especificamos en el parámetro filterLayers el nombre de la capa que queremos compartir.
 ```
-https://componentes.cnig.es/api-core/?sharemap=base64=eyJwb3NpdGlvbiI6IlRMIiwgInNoYXJlTGF5ZXIiOmZhbHNlLCAiZmlsdGVyTGF5ZXJzIjpbIk9JLk9ydGhvaW1hZ2VDb3ZlcmFnZSJdfQ==&layers=WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*true*image/jpeg*true*true*true,WMS*Unidad%20administrativa*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeUnit*true*true**1.3.0*true*true*true
+https://componentes.cnig.es/api-core/?sharemap=base64=eyJwb3NpdGlvbiI6IlRMIiwic2hhcmVMYXllciI6ZmFsc2UsImZpbHRlckxheWVycyI6WyJPSS5PcnRob2ltYWdlQ292ZXJhZ2UiXX0=&layers=WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*true*image/jpeg*true*true*true,WMS*Unidad%20administrativa*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeUnit*true*true**1.3.0*true*true*true
 ```
 
 # Ejemplo de uso

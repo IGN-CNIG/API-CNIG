@@ -114,7 +114,7 @@ Ejemplo del constructor:
 ```
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=base64=eyJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIiwgInRvb2x0aXAiOiAiQ29vcmRlbmFkYXMifQ==
+https://componentes.cnig.es/api-core?mousesrs=base64=eyJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIiwidG9vbHRpcCI6IkNvb3JkZW5hZGFzIn0=
 ```
 
 # Ejemplo de uso

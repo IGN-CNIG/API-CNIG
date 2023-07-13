@@ -212,7 +212,7 @@ https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16
 https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16*pinAzul*true*false*true*true
 ```
 
-### Ejemplos de uso 
+### Ejemplo de uso 
 
 Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
 Ejemplo:
@@ -223,13 +223,7 @@ M.utils.encodeBase64(obj_params);
 ```
 Ejemplo de constructor del plugin: {position:'TL', collapsible: true, collapsed: true, tooltip: 'Localización', byParcelCadastre: true, byCoordinates: false, byPlaceAddressPostal: true}
 
-https://componentes.cnig.es/api-core?locator=base64=e3Bvc2l0aW9uOidUTCcsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdMb2NhbGl6YWNpw7NuJywgYnlQYXJjZWxDYWRhc3RyZTogdHJ1ZSwgYnlDb29yZGluYXRlczogZmFsc2UsIGJ5UGxhY2VBZGRyZXNzUG9zdGFsOiB0cnVlfQ
-```
-
-```
-Ejemplo de constructor del plugin: {position:'TL', tooltip: 'Localización', zoom: 16, pointStyle: 'pinRojo', byParcelCadastre: {cadastreWMS: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR', CMC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos', DNPPP_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/Consulta_DNPPP_Codigos', CPMRC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC'}}
-
-https://componentes.cnig.es/api-core?locator=base64=e3Bvc2l0aW9uOidUTCcsIHRvb2x0aXA6ICdMb2NhbGl6YWNpw7NuJywgem9vbTogMTYsIHBvaW50U3R5bGU6ICdwaW5Sb2pvJywgYnlQYXJjZWxDYWRhc3RyZToge2NhZGFzdHJlV01TOiAnaHR0cDovL292Yy5jYXRhc3Ryby5tZWguZXMvb3Zjc2VydndlYi9PVkNTV0xvY2FsaXphY2lvblJDL09WQ0Nvb3JkZW5hZGFzLmFzbXgvQ29uc3VsdGFfUkNDT09SJywgQ01DX3VybDogJ2h0dHA6Ly9vdmMuY2F0YXN0cm8ubWVoLmVzL292Y3NlcnZ3ZWIvT1ZDU1dMb2NhbGl6YWNpb25SQy9PVkNDYWxsZWplcm9Db2RpZ29zLmFzbXgvQ29uc3VsdGFNdW5pY2lwaW9Db2RpZ29zJywgRE5QUFBfdXJsOiAnaHR0cDovL292Yy5jYXRhc3Ryby5tZWguZXMvb3Zjc2VydndlYi9PVkNTV0xvY2FsaXphY2lvblJDL09WQ0NhbGxlamVyb0NvZGlnb3MuYXNteC9Db25zdWx0YV9ETlBQUF9Db2RpZ29zJywgQ1BNUkNfdXJsOiAnaHR0cDovL292Yy5jYXRhc3Ryby5tZWguZXMvb3Zjc2VydndlYi9PVkNTV0xvY2FsaXphY2lvblJDL09WQ0Nvb3JkZW5hZGFzLmFzbXgvQ29uc3VsdGFfQ1BNUkMnfX0
+https://componentes.cnig.es/api-core?locator=base64=eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2libGUiOnRydWUsImNvbGxhcHNlZCI6dHJ1ZSwidG9vbHRpcCI6IkxvY2FsaXphY2nDs24iLCJieVBhcmNlbENhZGFzdHJlIjp0cnVlLCJieUNvb3JkaW5hdGVzIjpmYWxzZSwiYnlQbGFjZUFkZHJlc3NQb3N0YWwiOnRydWV9
 ```
 
 # Eventos
