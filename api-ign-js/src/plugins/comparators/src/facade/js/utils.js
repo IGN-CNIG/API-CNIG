@@ -230,16 +230,25 @@ export const getNameString = (value) => {
   return (type === 'WMS') ? nameWMS : nameWMTS;
 };
 
-export const checkLayers = (layer, Maplayes) => {
-  return layer.filter(({ name }) => {
-    const check = Maplayes.filter((l) => {
-      if (name === getNameString(l)) {
-        return true;
-      }
-      return false;
-    });
-    return check.length === 0;
+/**
+ * @param {*} layer Capa del evento
+ * @param {*} comparatorLayers Capas del comparador
+ * @returns {Array} Capas del comparador activa y otras capas
+ */
+export const checkLayers = (layer, comparatorLayers) => {
+  let activeLayerComparators = null;
+  const otherLayers = [];
+
+  layer.forEach((l) => {
+    const some = comparatorLayers.some(c => l.name === getNameString(c));
+    if (some) {
+      activeLayerComparators = l;
+    } else {
+      otherLayers.push(l);
+    }
   });
+
+  return [activeLayerComparators, otherLayers];
 };
 
 /**

@@ -230,12 +230,12 @@ export default class ComparatorsControl extends M.Control {
   // Añadir las capas que se van añadiendo
   addLayersEventMap_() {
     this.map_.on(M.evt.ADDED_WMTS, (layer) => {
-      layer.forEach(l => l.setZIndex(this.lyrsMirrorMinZindex));
+      const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
 
-      const checkNewLayer = checkLayers(layer, this.layersPlugin);
-      if (checkNewLayer.length === 0) return;
+      if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
+      if (otherLayers.length === 0) return;
 
-      checkNewLayer.forEach((l) => {
+      otherLayers.forEach((l) => {
         if (l.displayInLayerSwitcher) {
           this.layersExternalPlugins.push(l);
           ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'].forEach((id) => {
@@ -247,10 +247,12 @@ export default class ComparatorsControl extends M.Control {
     });
 
     this.map_.on(M.evt.ADDED_WMS, (layer) => {
-      const checkNewLayer = checkLayers(layer, this.layersPlugin);
-      if (checkNewLayer.length === 0) return;
+      const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
 
-      checkNewLayer.forEach((l) => {
+      if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
+      if (otherLayers.length === 0) return;
+
+      otherLayers.forEach((l) => {
         if (l.displayInLayerSwitcher) {
           this.layersExternalPlugins.push(l);
           ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'].forEach((id) => {

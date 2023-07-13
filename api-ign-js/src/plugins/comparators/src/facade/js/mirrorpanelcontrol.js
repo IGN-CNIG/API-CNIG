@@ -590,10 +590,12 @@ export default class MirrorpanelControl extends M.Control {
    */
   changeLayer(target) {
     const { id, value, selectedIndex } = target;
+    const optionSelected = target.options[selectedIndex];
     this.disableSelects(id);
 
-    // eslint-disable-next-line no-param-reassign
-    target.options[selectedIndex].disabled = true;
+    optionSelected.disabled = true;
+    optionSelected.setAttribute('selected', '');
+
     const map = id.split('Select')[0].split('mapL')[1];
 
     if (!this.mapL[map]) return;
