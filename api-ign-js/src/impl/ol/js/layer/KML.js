@@ -38,6 +38,7 @@ class KML extends Vector {
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
    * - scaleLabel. Escala de la etiqueta.
+   * - segregation. Permite filtrar el fichero KML por nombre de carpetas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -89,6 +90,11 @@ class KML extends Vector {
      * KML scaleLabel. Define la escala de la etiqueta.
      */
     this.scaleLabel = options.scaleLabel;
+
+    /**
+     * KML segregation. Permite filtrar el fichero KML por nombre de carpetas.
+     */
+    this.segregation = options.segregation;
   }
 
   /**
@@ -340,7 +346,7 @@ class KML extends Vector {
       this.loadFeaturesPromise_ = new Promise((resolve) => {
         this.loader_.getLoaderFn((features) => {
           resolve(features);
-        })(null, null, getProj(this.map.getProjection().code), this.scaleLabel);
+        })(null, null, getProj(this.map.getProjection().code), this.scaleLabel, this.segregation);
       });
     }
     return this.loadFeaturesPromise_;

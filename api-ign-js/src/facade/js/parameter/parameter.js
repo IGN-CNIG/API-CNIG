@@ -598,7 +598,7 @@ export const getLabelKML = (parameter) => {
   let params;
   if (isString(parameter)) {
     params = parameter.split(/\*/);
-    label = params[params.length - 2].trim();
+    label = params[params.length - 3].trim();
     label = label !== 'false';
   } else if (isObject(parameter)) {
     label = normalize(parameter.label);
@@ -624,7 +624,7 @@ export const getVisibilityKML = (parameter) => {
   let params;
   if (isString(parameter)) {
     params = parameter.split(/\*/);
-    visibility = params[params.length - 1].trim();
+    visibility = params[params.length - 2].trim();
     visibility = visibility !== 'false';
   } else if (isObject(parameter)) {
     visibility = normalize(parameter.visibility);
@@ -632,6 +632,31 @@ export const getVisibilityKML = (parameter) => {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
   return visibility;
+};
+
+/**
+ * Analiza el parámetro para obtener los nombres para realizar la segregación.
+ *
+ * @public
+ * @function
+ * @param {string} parameter Parámetro para obtener los nombres para la segración.
+ * @returns {Array} Listado de nombres para la segregación.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getSegregationKML = (parameter) => {
+  let segregation;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split(/\*/);
+    segregation = params[params.length - 1].trim();
+    segregation = segregation.split(',');
+  } else if (isObject(parameter)) {
+    segregation = normalize(parameter.segregation);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return segregation;
 };
 
 /**
@@ -714,6 +739,9 @@ export const kml = (userParamer) => {
 
     // get the visibility option
     layerObj.visibility = getVisibilityKML(userParam);
+
+    // get names for segregation
+    layerObj.segregation = getSegregationKML(userParam);
     return layerObj;
   });
 

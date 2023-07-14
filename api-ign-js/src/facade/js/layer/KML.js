@@ -37,6 +37,7 @@ class KML extends LayerVector {
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * - label: Define si se muestra la etiqueta o no. Por defecto mostrará la etiqueta.
+   * - segregation: Permite filtrar el fichero KML por nombre de carpetas.
    * @param {Mx.parameters.LayerOptions} options Parámetros que se pasarán a la implementación.
    * - visibility: Define si la capa es visible o no.
    * - style: Define el estilo de la capa.
@@ -62,6 +63,7 @@ class KML extends LayerVector {
     const parameters = parameter.layer(userParameters, LayerType.KML);
     const optionsVar = options;
     optionsVar.label = parameters.label;
+    optionsVar.segregation = parameters.segregation;
     optionsVar.visibility = parameters.visibility;
 
     /**
@@ -100,6 +102,11 @@ class KML extends LayerVector {
      * KML label. Etiqueta de la capa KML.
      */
     this.label = parameters.label;
+
+    /**
+     * KML segregation. Permite filtrar el fichero KML por nombre de carpetas.
+     */
+    this.segregation = parameters.segregation;
   }
 
   /**
@@ -201,6 +208,7 @@ class KML extends LayerVector {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
       equals = equals && (this.extract === obj.extract);
+      equals = equals && (this.segregation === obj.segregation);
     }
 
     return equals;

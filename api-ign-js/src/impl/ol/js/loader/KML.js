@@ -63,8 +63,8 @@ class KML extends MObject {
    * @api
    */
   getLoaderFn(callback) {
-    return ((extent, resolution, projection, scaleLabel) => {
-      this.loadInternal_(projection, scaleLabel).then((response) => {
+    return ((extent, resolution, projection, scaleLabel, segregacion) => {
+      this.loadInternal_(projection, scaleLabel, segregacion).then((response) => {
         callback(response);
       });
     });
@@ -76,17 +76,40 @@ class KML extends MObject {
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @function
    * @param {ol.proj.Projection} projection Proyección.
-   * @param { Number } scaleLabel Escala de la etiqueta.
+   * @param {Number} scaleLabel Escala de la etiqueta.
+   * @param {Array} segregation Listado de nombres de carpetas para filtrar KML.
    * @returns {Promise} Promesa con la obtención de los objetos geográficos.
    * @public
    * @api
    */
-  loadInternal_(projection, scaleLabel) {
+  loadInternal_(projection, scaleLabel, segregation) {
     return new Promise((success, fail) => {
       getRemote(this.url_).then((response) => {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(response.text, 'text/xml');
+        let transformXMLtoText = false;
+        if (!isUndefined(segregation)) {
+          const folders = xmlDoc.getElementsByTagName('Folder');
+          let count = 0;
+          Array.from(folders).forEach((folder) => {
+            const childs = folder.childNodes;
+            let name = '';
+            Array.from(childs).forEach((child) => {
+              if (child.tagName === 'name') {
+                name = child.innerHTML;
+              }
+            });
+            if (isNullOrEmpty(name)) {
+              name = `Layer__${count}`;
+            }
+            if (!segregation.includes(name)) {
+              folder.parentNode.removeChild(folder);
+            }
+            count += 1;
+          });
+          transformXMLtoText = true;
+        }
         if (!isUndefined(scaleLabel)) {
-          const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(response.text, 'text/xml');
           const styles = xmlDoc.getElementsByTagName('Style');
 
           if (styles.length === 0) {
@@ -126,6 +149,10 @@ class KML extends MObject {
             });
           }
 
+          transformXMLtoText = true;
+        }
+
+        if (transformXMLtoText) {
           const serializer = new XMLSerializer();
           const xmlString = serializer.serializeToString(xmlDoc);
           response.text = xmlString;
