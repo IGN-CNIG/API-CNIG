@@ -341,6 +341,17 @@ export default class TransparencyControl extends M.Control {
     this.layerSelected = null;
   }
 
+  updateNewLayers() {
+    this.removeEffects();
+
+    if (this.template) this.template.remove();
+    this.layerSelected = null;
+  }
+
+  addlayersControl(layers) {
+    this.layers.unshift(layers);
+  }
+
   destroy() {
     this.removeEffects();
 

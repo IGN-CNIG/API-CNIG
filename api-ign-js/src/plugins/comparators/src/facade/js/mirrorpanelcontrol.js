@@ -6,7 +6,7 @@ import template from 'templates/mirrorpanel';
 import { getValue } from './i18n/language';
 import dicAccesibilityButtonES from './i18n/accessibility_es';
 import dicAccesibilityButtonEN from './i18n/accessibility_en';
-// import { getNameString } from './utils';
+import { getNameString } from './utils';
 
 export default class MirrorpanelControl extends M.Control {
   /**
@@ -66,7 +66,7 @@ export default class MirrorpanelControl extends M.Control {
 
     // Mapas creados según el modo de visualización
     this.mapL = {
-      A: null, B: null, C: null, D: null,
+      A: this.map_, B: null, C: null, D: null,
     };
 
     this.lyrCursor = {
@@ -215,8 +215,8 @@ export default class MirrorpanelControl extends M.Control {
       this.controlsLayers.forEach((layer) => {
         const [type, legendWMS, ,, legendWMTS] = layer.split('*');
         select.innerHTML += (type === 'WMS')
-          ? `<option value="${layer}">${legendWMS}</option>`
-          : `<option value="${layer}">${legendWMTS}</option>`;
+          ? `<option class="lyrDropOptions" value="${layer}">${legendWMS}</option>`
+          : `<option class="lyrDropOptions" value="${layer}">${legendWMTS}</option>`;
       });
       select.addEventListener('change', ({ target }) => {
         this.changeLayer(target);
@@ -362,8 +362,6 @@ export default class MirrorpanelControl extends M.Control {
 
     document.getElementById('lienzo').classList.add(`modeViz${modeViz}`);
     if (this.principalMap) document.getElementById('lienzo').classList.add('reverseMirror');
-
-    if (modeViz === 0) { this.mapL.A = this.map_; }
 
     // Create map objects by modeviz
     if ([1, 2].includes(modeViz)) {
@@ -590,15 +588,24 @@ export default class MirrorpanelControl extends M.Control {
    */
   changeLayer(target) {
     const { id, value, selectedIndex } = target;
+
     const optionSelected = target.options[selectedIndex];
     this.disableSelects(id);
 
-    optionSelected.disabled = true;
     optionSelected.setAttribute('selected', '');
+
+    if (optionSelected.id.includes('external') && id === 'mapLASelect') {
+      this.externalLayersEvt(optionSelected);
+      return;
+    }
+
+    optionSelected.disabled = true;
+
 
     const map = id.split('Select')[0].split('mapL')[1];
 
     if (!this.mapL[map]) return;
+
     const mapSelect = this.layerSelected[map];
     if (mapSelect) {
       const [type, , nameWMS,, nameWMTS] = mapSelect.split('*');
@@ -612,10 +619,26 @@ export default class MirrorpanelControl extends M.Control {
     }
   }
 
+  /**
+   * Cambia la visibilidad de las capas externas
+   * @param {HTMLOptionElement} optionSelected Opción seleccionada
+   */
+  externalLayersEvt(optionSelected) {
+    const name = getNameString(optionSelected.value);
+    const layer = this.mapL.A.getLayers().find(l => l.name === name);
+    layer.setVisible(!layer.isVisible());
+  }
+
+  /**
+   * Deshabilita las opciones de los selectores
+   * @param {String} id Id del selector
+   */
   disableSelects(id) {
     const elementos = document.querySelectorAll(`#${id} option`);
     elementos.forEach((e) => {
-      e.disabled = (e.value === 'layersExternalPlugins');
+      if (!e.id.includes('external_mapLASelect')) {
+        e.disabled = false;
+      }
     });
   }
 

@@ -294,6 +294,47 @@ export default class LyrCompareControl extends M.Control {
     }
   }
 
+  updateNewLayers() {
+    if (!this.template) return;
+
+    this.layerSelectedA = null;
+    this.layerSelectedB = null;
+    this.layerSelectedC = null;
+    this.layerSelectedD = null;
+    this.opacityVal = 100;
+    this.defaultLyrA = 0;
+    this.defaultLyrB = 1;
+    this.defaultLyrC = 2;
+    this.defaultLyrD = 3;
+    this.interface = true;
+
+    const swipeControl = document.querySelector('.lyrcompare-swipe-control');
+    if (swipeControl) {
+      swipeControl.classList.display = 'none !important';
+    }
+
+    if (swipeControl) {
+      swipeControl.remove();
+    }
+
+    if (this.layerSelectedA !== null && this.layerSelectedB !== null) {
+      this.layerSelectedA.setVisible(false);
+      this.layerSelectedB.setVisible(false);
+    }
+
+    if (this.layerSelectedC !== null
+        && this.layerSelectedD !== null
+        && this.layerSelectedC !== undefined && this.layerSelectedD !== undefined) {
+      this.layerSelectedC.setVisible(false);
+      this.layerSelectedD.setVisible(false);
+    }
+
+    this.removeEffectsComparison();
+    this.updateControls();
+
+    this.template.remove();
+  }
+
   /**
     * This function set plugin behavior and compile template
     *
@@ -803,5 +844,9 @@ export default class LyrCompareControl extends M.Control {
 
   getLayersNames() {
     return this.layers.map(l => l.name);
+  }
+
+  addlayersControl(layer) {
+    this.layers.unshift(layer);
   }
 }

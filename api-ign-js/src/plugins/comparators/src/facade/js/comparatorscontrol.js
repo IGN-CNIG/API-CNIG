@@ -78,8 +78,6 @@ export default class ComparatorsControl extends M.Control {
       this.transparencyParams.tooltip = (this.transparencyParams.tooltip) ? this.transparencyParams.tooltip : getValue('tooltipTransparency');
     }
 
-    this.layersExternalPlugins = [];
-
     this.control = null;
   }
 
@@ -106,7 +104,7 @@ export default class ComparatorsControl extends M.Control {
         .filter(l => l.displayInLayerSwitcher && (l.type === 'WMS' || l.type === 'WMTS'))
         .map(l => transformToStringLayers(l, this.map_)));
 
-      this.addLayersEventMap_();
+      this.addLayersEventsMap_();
       this.removeLayersEventMap_();
     }
 
@@ -228,38 +226,98 @@ export default class ComparatorsControl extends M.Control {
   }
 
   // Añadir las capas que se van añadiendo
-  addLayersEventMap_() {
-    this.map_.on(M.evt.ADDED_WMTS, (layer) => {
-      const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
+  addLayersEventsMap_() {
+    [M.evt.ADDED_WMTS, M.evt.ADDED_WMS].forEach((evt) => {
+      this.map_.on(evt, (layer) => {
+        // mirrror
+        if (this.controls[0].active) {
+          this.addLayersEventMapMirror_(layer);
+        }
 
-      if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
-      if (otherLayers.length === 0) return;
+        // lyrcompare
+        if (this.controls[1].active) {
+          this.addNewLayerUpdate_(layer, this.controls[1].control, '.m-lyrcompare-container');
+        }
 
-      otherLayers.forEach((l) => {
-        if (l.displayInLayerSwitcher) {
-          this.layersExternalPlugins.push(l);
-          ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'].forEach((id) => {
-            const select = document.querySelector(`#${id}`);
-            select.innerHTML += `<option disabled="true" id="l_${l.name}" value="layersExternalPlugins">${l.legend}</option>`;
-          });
+        // transparency
+        if (this.controls[2].active) {
+          this.addNewLayerUpdate_(layer, this.controls[2].control, '.m-transparency-container');
         }
       });
     });
+  }
 
-    this.map_.on(M.evt.ADDED_WMS, (layer) => {
-      const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
+  addLayersEventMapMirror_(layer = []) {
+    const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
+    if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
+    if (otherLayers.length === 0) return;
+    otherLayers.forEach((l, i) => {
+      // console.log(l.getImpl().getMap().getMapImpl().values_.target);
+      if (l.displayInLayerSwitcher) {
+        const stringLayer = transformToStringLayers(l, this.map_, false);
+        console.log(stringLayer);
+        this.layersPlugin.push(stringLayer); // Evitamos poner las mismas
+        // mapjsB, mapjsC, mapjsD
+        ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'].forEach((id) => {
+          const select = document.querySelector(`#${id}`);
+          select.innerHTML += `<option 
+          ${id === 'mapLASelect' ? 'disabled' : ''} 
+          ${id === 'mapLASelect' && otherLayers.length - 1 === i ? 'selected' : ''}
+          id="${(id === 'mapLASelect') ? `l_${l.name}_external_mapLASelect` : `l_${l.name}_external`}" 
+          class="externalLayers"
+          value="${stringLayer}">${l.legend}</option>`;
+        });
 
-      if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
-      if (otherLayers.length === 0) return;
+        this.changeLayersEventMap_(l);
+      }
+    });
+  }
 
-      otherLayers.forEach((l) => {
-        if (l.displayInLayerSwitcher) {
-          this.layersExternalPlugins.push(l);
-          ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'].forEach((id) => {
-            const select = document.querySelector(`#${id}`);
-            select.innerHTML += `<option disabled="true" id="l_${l.name}" value="layersExternalPlugins">${l.legend}</option>`;
-          });
+  addNewLayerUpdate_(layer = [], control, container) {
+    const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
+    if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
+    if (otherLayers.length === 0) return;
+
+    otherLayers.forEach((l, i) => {
+      if (l.displayInLayerSwitcher) {
+        const stringLayer = transformToStringLayers(l, this.map_, false);
+        this.layersPlugin.push(stringLayer); // Evitamos poner las mismas
+        control.addlayersControl(l);
+      }
+    });
+    this.resetCurtain(control, container);
+  }
+
+  resetCurtain(control, container) {
+    control.updateNewLayers();
+
+    // Es necesario ya que se tiene que esperar que se dibuje el panel
+    // del control
+    setTimeout(() => {
+      if (!document.querySelector(container)) {
+        control.active(this.html);
+      }
+    }, 1000);
+  }
+
+
+  changeLayersEventMap_(layer) {
+    const { name } = layer;
+    // Se necesita la capa de openlayers para usar el método change
+    const ol3Load = new Promise((resolve, reject) => {
+      let keyInterval = null;
+      const handlerValue = () => {
+        if (layer.getImpl().getOL3Layer()) {
+          clearInterval(keyInterval);
+          resolve(layer.getImpl().getOL3Layer());
         }
+      };
+
+      keyInterval = setInterval(handlerValue, 1000);
+    });
+    ol3Load.then((ol3Layer) => {
+      ol3Layer.on('change:visible', ({ oldValue }) => { // false activo
+        document.querySelector(`#l_${name}_external_mapLASelect`).disabled = (oldValue !== true);
       });
     });
   }
@@ -267,12 +325,14 @@ export default class ComparatorsControl extends M.Control {
   // Eliminar las capas que se fueron añadiendo
   removeLayersEventMap_() {
     this.map_.on(M.evt.REMOVED_LAYER, (layer) => {
-      const checkNewLayer = checkLayers(layer, this.layersPlugin);
-      if (checkNewLayer.length === 0) return;
-      layer.forEach((capa) => {
-        document.querySelectorAll(`#l_${capa.name}`).forEach((el) => {
-          el.parentNode.removeChild(el);
-        });
+      layer.forEach((l) => {
+        if (document.getElementById(`l_${l.name}_external`)) {
+          document.querySelectorAll('.externalLayers').forEach((el) => {
+            if (el.id.includes(layer[0].name)) {
+              el.remove();
+            }
+          });
+        }
       });
     });
   }
@@ -352,7 +412,6 @@ export default class ComparatorsControl extends M.Control {
     this.mirrorpanelParams = null;
     this.lyrcompareParams = null;
     this.transparencyParams = null;
-    this.layersExternalPlugins = null;
     this.html = null;
     this.map_ = null;
     this.controls = null;
