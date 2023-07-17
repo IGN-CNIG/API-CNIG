@@ -301,9 +301,6 @@ export default class IGNSearchControl extends M.Control {
           });
         }
       });
-
-      // eslint-disable-next-line no-alert
-      window.alert('Este plugin está obsoleto. Por favor, utilice la nueva versión del mismo: IGNSearchLocator');
       success(html);
     });
   }
