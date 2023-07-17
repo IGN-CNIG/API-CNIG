@@ -6,13 +6,16 @@
 # Descripción
 
 Plugin que permite utilizar diferentes herramientas para la localización:
-- Buscar direcciones postales (Geocoder).
-- Buscar topónimos (Nomenclátor).
-- Obtener dirección en un punto del mapa.
+- Servicio REST geocoder-directo: permite la búsqueda de direcciones postales, topónimos, puntos de interés, entidades de población, unidades administrativas, referencias catastrales (servicio SOAP de la Dirección General de Catastro) y solamente para su visualización los códigos postales.
+- Servicio REST geocoder-inverso: Obtener dirección en un punto del mapa.
+- El servicio Comunication Pool Servlet: permite buscar topónimos de orografía del Nomenclátor Geográfico Básico de España.
 - Localizar coordenadas en varios SRS.
 - Buscar por polígono y parcela.
 - Buscar por catastro.
 - Consultar referencia catastral.
+
+Esta extensión es una fachada del servicio geocoder y del comunicationpullserver. En la siguiente dirección se puede encontrar toda la información sobre el servicio geocoder:
+https://www.idee.es/resources/documentos/Cartociudad/CartoCiudad_ServiciosWeb.pdf#page=7&zoom=100,109,585
 
 # Dependencias
 
@@ -35,6 +38,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
+  - 'TC': (top center) - Arriba en el centro.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Localizador.
@@ -92,9 +96,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **byPlaceAddressPostal**: Indica si el control IGNSearchLocator se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
   - **servicesToSearch**: Servicio que se consulta: 
     - 'g': Consulta Geocoder.
-    - 'n': Consulta Topónimos.
-    - 'gn': Consulta Geocoder y Topónimos (por defecto).
-  - **maxResults**: Número de resultados en la consulta. Por defecto: 10.
+    - 'n': Consulta Comunication Pool Servlet.
+    - 'gn': Consulta Geocoder y Comunication Pool Servlet (por defecto).
+  - **maxResults**: Número de resultados en la consulta. Por defecto: 10 (para cada servicio).
   - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio,poblacion,toponimo,callejero'.
   - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'. 
   - **reverse**: Valor booleano que indica si la funcionalidad obtener dirección en un punto del mapa está activada (true/false). Por defecto: true.
@@ -102,12 +106,12 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - **urlCandidates**: Url del servicio candidates de geocoder. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp'.
   - **urlFind**: Url del servicio find de geocoder. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/findJsonp'.
   - **urlReverse**: Url del servicio geocoding inverso. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode'.
-  - **urlPrefix**: Prefijo del servicio Nomenclátor. Por defecto: 'http://www.idee.es/'.
+  - **urlPrefix**: Prefijo del servicio Comunication Pool Servlet. Por defecto: 'http://www.idee.es/'.
   - **urlAssistant**: Url del servicio SearchAssitant de Nomenclátor. Por defecto: 'https://www.idee.es/communicationsPoolServlet/SearchAssistant'.
   - **urlDispatcher**: Url del servicio Dispatcher de Nomenclátor. Por defecto: 'https://www.idee.es/communicationsPoolServlet/Dispatcher'.
   - **searchPosition**: Orden de resultados de las dos búsquedas. Por defecto: 'nomenclator,geocoder'.
   - **locationID**: Búsqueda inicial en el servicio nomenclátor por ID, muestra el resultado y se realiza un zoom a la posición. Por defecto: ''.
-  - **geocoderCoords**: Búsqueda inicial en el servicio geocoder por longitud, latitud. Por defecto: [].
+  - **geocoderCoords**: Búsqueda inicial en el servicio geocoder por longitud, latitud. Se sitúa en la posición indicada al iniciar la extensión. Por defecto: [].
   - **requestStreet**: URL del findJSON de un resultado de búsqueda, para que aparezca cargado al inicio. Por defecto: ''.
   
   ```javascript
