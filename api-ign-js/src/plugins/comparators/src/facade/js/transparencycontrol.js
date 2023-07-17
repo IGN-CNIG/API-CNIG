@@ -212,6 +212,10 @@ export default class TransparencyControl extends M.Control {
         this.template
           .querySelector('select')
           .addEventListener('change', (evt) => {
+            const optionsSelect = evt.target.options;
+            Array.from(optionsSelect).forEach(option => option.removeAttribute('selected'));
+            evt.target.selectedOptions[0].setAttribute('selected', '');
+
             this.layerSelected.setVisible(false);
             this.removeEffects();
             // eslint-disable-next-line no-shadow, array-callback-return, consistent-return
@@ -349,7 +353,7 @@ export default class TransparencyControl extends M.Control {
   }
 
   addlayersControl(layers) {
-    this.layers.unshift(layers);
+    this.layers.push(layers);
   }
 
   destroy() {

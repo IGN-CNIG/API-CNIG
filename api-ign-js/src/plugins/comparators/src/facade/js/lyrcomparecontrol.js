@@ -297,15 +297,15 @@ export default class LyrCompareControl extends M.Control {
   updateNewLayers() {
     if (!this.template) return;
 
-    this.layerSelectedA = null;
-    this.layerSelectedB = null;
-    this.layerSelectedC = null;
-    this.layerSelectedD = null;
+    // this.layerSelectedA = null;
+    // this.layerSelectedB = null;
+    // this.layerSelectedC = null;
+    // this.layerSelectedD = null;
     this.opacityVal = 100;
-    this.defaultLyrA = 0;
-    this.defaultLyrB = 1;
-    this.defaultLyrC = 2;
-    this.defaultLyrD = 3;
+    // this.defaultLyrA = 0;
+    // this.defaultLyrB = 1;
+    // this.defaultLyrC = 2;
+    // this.defaultLyrD = 3;
     this.interface = true;
 
     const swipeControl = document.querySelector('.lyrcompare-swipe-control');
@@ -451,6 +451,10 @@ export default class LyrCompareControl extends M.Control {
     this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach((item) => {
       // eslint-disable-next-line consistent-return
       item.addEventListener('change', (evt) => {
+        const options = evt.target.options;
+        Array.from(options).forEach(option => option.removeAttribute('selected'));
+        evt.target.selectedOptions[0].setAttribute('selected', '');
+
         // eslint-disable-next-line no-shadow, array-callback-return, consistent-return
         const layer = this.layers.filter((layer) => {
           if (layer.name === evt.target.value) {
@@ -602,28 +606,40 @@ export default class LyrCompareControl extends M.Control {
   activeDefault() {
     if (this.layerSelectedA === null) {
       this.layerSelectedA = this.layers[this.defaultLyrA];
-      this.template.querySelector('#m-lyrcompare-lyrA').selectedIndex = this.defaultLyrA;
+      const selectA = this.template.querySelector('#m-lyrcompare-lyrA');
+      selectA.selectedIndex = this.defaultLyrA;
+      selectA.options[this.defaultLyrA].setAttribute('selected', '');
+
       if (this.map_.getLayers().some(l => l.name === this.layerSelectedA.name));
       this.map_.addLayers(this.layerSelectedA);
     }
 
     if (this.layerSelectedB === null) {
       this.layerSelectedB = this.layers[this.defaultLyrB];
-      this.template.querySelector('#m-lyrcompare-lyrB').selectedIndex = this.defaultLyrB;
+      const selectB = this.template.querySelector('#m-lyrcompare-lyrB');
+      selectB.selectedIndex = this.defaultLyrB;
+      selectB.options[this.defaultLyrB].setAttribute('selected', '');
+
       if (this.map_.getLayers().some(l => l.name === this.layerSelectedB.name));
       this.map_.addLayers(this.layerSelectedB);
     }
 
     if (this.layerSelectedC === null) {
       this.layerSelectedC = this.layers[this.defaultLyrC];
-      this.template.querySelector('#m-lyrcompare-lyrC').selectedIndex = this.defaultLyrC;
+      const selectC = this.template.querySelector('#m-lyrcompare-lyrC');
+      selectC.selectedIndex = this.defaultLyrC;
+      selectC.options[this.defaultLyrC].setAttribute('selected', '');
+
       if (this.map_.getLayers().some(l => l.name === this.layerSelectedC.name));
       this.map_.addLayers(this.layerSelectedC);
     }
 
     if (this.layerSelectedD === null) {
       this.layerSelectedD = this.layers[this.defaultLyrD];
-      this.template.querySelector('#m-lyrcompare-lyrD').selectedIndex = this.defaultLyrD;
+      const selectD = this.template.querySelector('#m-lyrcompare-lyrD');
+      selectD.selectedIndex = this.defaultLyrD;
+      selectD.options[this.defaultLyrD].setAttribute('selected', '');
+
       if (this.map_.getLayers().some(l => l.name === this.layerSelectedD.name));
       this.map_.addLayers(this.layerSelectedD);
     }
@@ -847,6 +863,6 @@ export default class LyrCompareControl extends M.Control {
   }
 
   addlayersControl(layer) {
-    this.layers.unshift(layer);
+    this.layers.push(layer);
   }
 }

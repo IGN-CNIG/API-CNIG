@@ -236,12 +236,14 @@ export default class ComparatorsControl extends M.Control {
 
         // lyrcompare
         if (this.controls[1].active) {
-          this.addNewLayerUpdate_(layer, this.controls[1].control, '.m-lyrcompare-container');
+          const selectes = ['m-lyrcompare-lyrA', 'm-lyrcompare-lyrB', 'm-lyrcompare-lyrC', 'm-lyrcompare-lyrD'];
+          this.addNewLayerUpdate_(layer, this.controls[1].control, '.m-lyrcompare-container', selectes);
         }
 
         // transparency
         if (this.controls[2].active) {
-          this.addNewLayerUpdate_(layer, this.controls[2].control, '.m-transparency-container');
+          const selectes = ['m-transparency-lyr'];
+          this.addNewLayerUpdate_(layer, this.controls[2].control, '.m-transparency-container', selectes);
         }
       });
     });
@@ -252,17 +254,15 @@ export default class ComparatorsControl extends M.Control {
     if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
     if (otherLayers.length === 0) return;
     otherLayers.forEach((l, i) => {
-      // console.log(l.getImpl().getMap().getMapImpl().values_.target);
       if (l.displayInLayerSwitcher) {
         const stringLayer = transformToStringLayers(l, this.map_, false);
-        console.log(stringLayer);
         this.layersPlugin.push(stringLayer); // Evitamos poner las mismas
         // mapjsB, mapjsC, mapjsD
+        // ${id === 'mapLASelect' && otherLayers.length - 1 === i ? 'selected' : ''}
         ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'].forEach((id) => {
           const select = document.querySelector(`#${id}`);
           select.innerHTML += `<option 
           ${id === 'mapLASelect' ? 'disabled' : ''} 
-          ${id === 'mapLASelect' && otherLayers.length - 1 === i ? 'selected' : ''}
           id="${(id === 'mapLASelect') ? `l_${l.name}_external_mapLASelect` : `l_${l.name}_external`}" 
           class="externalLayers"
           value="${stringLayer}">${l.legend}</option>`;
@@ -273,7 +273,7 @@ export default class ComparatorsControl extends M.Control {
     });
   }
 
-  addNewLayerUpdate_(layer = [], control, container) {
+  addNewLayerUpdate_(layer = [], control, container, selectes) {
     const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
     if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
     if (otherLayers.length === 0) return;
@@ -283,21 +283,18 @@ export default class ComparatorsControl extends M.Control {
         const stringLayer = transformToStringLayers(l, this.map_, false);
         this.layersPlugin.push(stringLayer); // Evitamos poner las mismas
         control.addlayersControl(l);
+        this.addOptions(selectes, l);
       }
     });
-    this.resetCurtain(control, container);
   }
 
-  resetCurtain(control, container) {
-    control.updateNewLayers();
-
-    // Es necesario ya que se tiene que esperar que se dibuje el panel
-    // del control
-    setTimeout(() => {
-      if (!document.querySelector(container)) {
-        control.active(this.html);
-      }
-    }, 1000);
+  addOptions(selects, l) {
+    selects.forEach((id) => {
+      const select = document.querySelector(`#${id}`);
+      select.innerHTML += `<option 
+        class="externalLayers"
+        value="${l.name}">${l.legend}</option>`;
+    });
   }
 
 
