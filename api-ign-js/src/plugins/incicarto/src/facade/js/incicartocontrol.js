@@ -708,6 +708,11 @@ export default class IncicartoControl extends M.Control {
       let shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
       shareURL = shareURL.concat(`&projection=${code}*${units}`);
       let url = window.location.href;
+      let localURL = '';
+      if (url.startsWith('file:///')) {
+        localURL = url;
+      }
+
       if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
         url = M.config.MAPEA_URL;
       }
@@ -720,6 +725,7 @@ export default class IncicartoControl extends M.Control {
         "emailUser": emailUser,
         "errDescripcion": errDescription,
         "URL": url,
+        "localURL": localURL,
         "paramsURL": encodeURI(shareURL),
       }
 

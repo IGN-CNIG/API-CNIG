@@ -260,6 +260,7 @@
 
                             <p>URL de la App</p>
                             <p><a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a></p>
+                            <p><a href="${localURL}" target="_blank" rel="noopener noreferrer">${localURL}</a></p>
                         </td>
                     </tr>
 
