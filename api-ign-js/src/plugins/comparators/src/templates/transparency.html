@@ -4,7 +4,7 @@
             <p>{{translations.radius}}:</p>
             <input tabindex="0" type="range" value="100" id="input-transparent-radius"></input>
             <button tabindex="0" id="m-transparency-lock" class="button-comparators cp-lock-icon" title="{{translations.freeze}}"></button>
-            <button tabindex="0" id="m-transparency-unlock" class="button-comparators cp-unlock-icon" title="{{translations.unfreeze}}" style="margin-left:-36px;"></button>
+            <button tabindex="0" id="m-transparency-unlock" class="button-comparators cp-unlock-icon" title="{{translations.unfreeze}}" style="margin-left:-20px;"></button>
         </div>
         {{#if options}}
             <div class="m-transparency-select">
@@ -14,8 +14,6 @@
                         <option value="{{name}}">{{legend}}</option>
                     {{/each}}
                 </select>
-                <div class="m-transparency-select_arrow">
-                </div>
             </div>
         {{/if}}
     </div>

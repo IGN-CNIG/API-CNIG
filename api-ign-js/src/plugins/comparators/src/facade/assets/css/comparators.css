@@ -888,22 +888,8 @@ div.m-area.m-bottom.m-left>div.m-plugin-comparators.m-panel.opened>button.m-pane
 }
 
 .m-lyrcompare-select select {
-	font-family: 'Muli', 'sans-serif' !important;
-	display: inline-block;
-	width: 75%;
-	cursor: pointer;
-	padding: 3px 10px;
-	outline: 0;
-	border: 0px solid #000000;
-	border-radius: 0px;
-	background: #e6e6e6;
-	color: #000000;
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	margin-left: 4%;
-	white-space: nowrap;
-	padding-right: 11%;
+	width: 90%;
+    margin: 5px 0;
 }
 
 div#m-lyrcompare-titulo {
@@ -943,18 +929,6 @@ div#m-lyrcompare-titulo {
 	opacity: 0.5;
 	pointer-events: none;
 }
-
-.m-lyrcompare-select_arrow {
-    position: absolute;
-    top: -1px;
-    right: 1em;
-    pointer-events: none;
-    border-color: #7b7b7b transparent transparent;
-	border-style: solid;
-	border-width: 8px 5px 0;
-	background-color:#e6e6e6;
-	margin: 1em;
-	}
 
 .m-plugin-lyrcompare .icon-flecha-izquierda:before {
 	content: '\e91d';
@@ -1198,7 +1172,7 @@ Establece la visibilidad del icono de dragging
 
     .m-transparency-container input[type=range] {
         -webkit-appearance: none;
-        width: 59%;
+        width: 59% !important;
         height: 8px;
         padding-left: 4%;
     }
@@ -1248,27 +1222,13 @@ Establece la visibilidad del icono de dragging
         display: flex;
         align-items: center;
         padding: 0px 5px 5px 5px;
-        padding-left: 8%;
+        gap: 5px;
         color: #000000;
     }
 
     .m-transparency-select select {
-        font-family: 'Arial';
-        display: inline-block;
-        width: 75%;
-        cursor: pointer;
-        padding: 3px 10px;
-        outline: 0;
-        border: 0px solid #000000;
-        border-radius: 0px;
-        background: #e6e6e6;
-        color: #000000;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        margin-left: 4%;
-        white-space: nowrap;
-        padding-right: 11%;
+        width: 80%;
+        margin: 5px 0;
     }
 
     div#m-transparency-titulo {
@@ -1290,17 +1250,6 @@ Establece la visibilidad del icono de dragging
         width: 210px;
     }
 
-    .m-transparency-select_arrow {
-        position: absolute;
-        top: 16px;
-        right: 28px;
-        pointer-events: none;
-        border-style: solid;
-        border-width: 8px 5px 0px 5px;
-        border-color: #7b7b7b transparent transparent transparent;
-    }
-
-
     /****************************
         FIREFOX HACKS
     ****************************/
@@ -1309,10 +1258,6 @@ Establece la visibilidad del icono de dragging
         .m-transparency-select select {
             padding: 1px 10px;
             width: 79%;
-        }
-
-        .m-transparency-select_arrow {
-            right: 15px;
         }
     }
 
