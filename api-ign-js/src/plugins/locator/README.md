@@ -111,7 +111,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - **urlDispatcher**: Url del servicio Dispatcher de Nomenclátor. Por defecto: 'https://www.idee.es/communicationsPoolServlet/Dispatcher'.
   - **searchPosition**: Orden de resultados de las dos búsquedas. Por defecto: 'nomenclator,geocoder'.
   - **locationID**: Búsqueda inicial en el servicio nomenclátor por ID, muestra el resultado y se realiza un zoom a la posición. Por defecto: ''.
-  - **geocoderCoords**: Búsqueda inicial en el servicio geocoder por longitud, latitud. Se sitúa en la posición indicada al iniciar la extensión. Por defecto: [].
+  - **geocoderCoords**: Búsqueda inicial por longitud, latitud, mediante el uso del Servicio REST geocoder-inverso. Se sitúa en la posición indicada al iniciar la extensión. Por defecto: [].
   - **requestStreet**: URL del findJSON de un resultado de búsqueda, para que aparezca cargado al inicio. Por defecto: ''.
   
   ```javascript
