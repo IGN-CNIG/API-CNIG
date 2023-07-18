@@ -156,7 +156,10 @@ public class EmailWS {
 		   JSONObject jsonFeature = jsonArray.getJSONObject(0);
 		   JSONObject properties = jsonFeature.getJSONObject("properties");
 		   String shareURL = properties.getString("URL") + properties.getString("paramsURL");
-			 String localURL = properties.getString("localURL") + properties.getString("paramsURL");
+			 String localURL = properties.getString("localURL");
+			 if(localURL.equals("")){
+				 localURL = localURL + properties.getString("paramsURL");
+			 }
 		   Map<String, Object> data = new HashMap<String, Object>();
 		   data.put("subject", asunto);
 		   data.put("destinatary", destinatario);
