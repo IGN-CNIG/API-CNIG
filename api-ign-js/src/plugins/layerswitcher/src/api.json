@@ -15,18 +15,6 @@
       "type": "boolean",
       "name": "collapsed",
       "position": 1
-    }, {
-      "type": "boolean",
-      "name": "http",
-      "position": 2
-    }, {
-      "type": "boolean",
-      "name": "https",
-      "position": 3
-    }, {
-      "type": "boolean",
-      "name": "codsi",
-      "position": 4
     }]
   }],
   "files": {
