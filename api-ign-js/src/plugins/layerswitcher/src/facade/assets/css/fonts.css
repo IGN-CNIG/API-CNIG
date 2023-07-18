@@ -23,5 +23,6 @@ div.m-plugin-layerswitcher [class*=" icon-"] {
 }
 
 .m-plugin-layerswitcher .icon-capas:before {
+        font-family: "layerswitcher" !important;
     content: '\e907';
 }
