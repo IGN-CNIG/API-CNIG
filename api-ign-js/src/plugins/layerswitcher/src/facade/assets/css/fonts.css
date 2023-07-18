@@ -1,0 +1,139 @@
+@font-face {
+    font-family: 'layerswitcher';
+    src: url('../fonts/layerswitcher.eot?46188804');
+    src: url('../fonts/layerswitcher.eot?46188804#iefix') format('embedded-opentype'),
+        url('../fonts/layerswitcher.woff2?46188804') format('woff2'),
+        url('../fonts/layerswitcher.woff?46188804') format('woff'),
+        url('../fonts/layerswitcher.ttf?46188804') format('truetype'),
+        url('../fonts/layerswitcher.svg?46188804#layerswitcher') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.m-layerswitcher-addservices [class^="icon-"],
+.m-layerswitcher-addservices [class*=" icon-"],
+#m-layerswitcher-information [class^="icon-"],
+#m-layerswitcher-information [class*=" icon-"],
+div.m-plugin-layerswitcher [class^="icon-"],
+div.m-plugin-layerswitcher [class*=" icon-"] {
+    font-family: "layerswitcher" !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.m-plugin-layerswitcher .icon-ver:before {
+    content: '\e801';
+}
+
+.m-plugin-layerswitcher .icon-ocultar:before {
+    content: '\e802';
+}
+
+.m-plugin-layerswitcher .icon-leyenda:before {
+    content: '\e900';
+}
+
+.m-plugin-layerswitcher .icon-cancelar:before {
+    content: '\e905';
+}
+
+.m-plugin-layerswitcher .icon-capas:before {
+    content: '\e907';
+}
+
+.m-plugin-layerswitcher .icon-check:before {
+    content: '\e909';
+}
+
+.m-plugin-layerswitcher .icon-check-seleccionado:before {
+    content: '\e90a';
+}
+
+.m-plugin-layerswitcher .icon-info:before {
+    content: '\e929';
+}
+
+.m-plugin-layerswitcher .icon-lista:before {
+    content: '\e92c';
+}
+
+.m-plugin-layerswitcher .icon-localizacion3:before {
+    content: '\e92f';
+}
+
+.m-plugin-layerswitcher .icon-add:before {
+    content: '\e935';
+}
+
+.m-plugin-layerswitcher .icon-papelera:before {
+    content: '\e93e';
+}
+
+.m-plugin-layerswitcher .icon-zoom:before {
+    content: '\e964';
+}
+
+.m-plugin-layerswitcher .icon-pincel:before {
+    content: '\f1fc';
+}
+
+.m-plugin-layerswitcher .icon-codsi:before {
+    content: '\e94f';
+}
+
+.m-plugin-layerswitcher .icon-spinner:before {
+    content: '\e953';
+}
+
+#m-layerswitcher-information .icon-desplegar:before {
+    content: '\e916';
+}
+
+#m-layerswitcher-information .icon-colapsar:before {
+    content: '\e918';
+}
+
+#m-layerswitcher-addservices-results .icon-desplegar:before {
+    content: '\e916';
+}
+
+#m-layerswitcher-addservices-results .icon-colapsar:before {
+    content: '\e918';
+}
+
+.m-layerswitcher-addservices .icon-lista:before {
+    content: '\e92c';
+}
+
+.m-layerswitcher-addservices .icon-zoom:before {
+    content: '\e964';
+}
+
+.m-layerswitcher-addservices .icon-cancelar:before {
+    content: '\e905';
+}
+
+.m-layerswitcher-addservices .icon-check:before {
+    content: '\e909';
+}
+
+.m-layerswitcher-addservices .icon-check-seleccionado:before {
+    content: '\e90a';
+}
+
+.m-layerswitcher-addservices .icon-codsi:before {
+    content: '\e94f';
+}
+
+.m-layerswitcher-addservices .icon-spinner:before {
+    content: '\e953';
+}
+
+.m-layerswitcher-addservices .icon-papelera:before {
+    content: '\e93e';
+}
