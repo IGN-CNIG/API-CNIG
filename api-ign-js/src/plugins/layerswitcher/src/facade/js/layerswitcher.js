@@ -62,22 +62,6 @@ export default class Layerswitcher extends M.Plugin {
     this.metadata_ = api.metadata;
 
     /**
-     * WMS service protocol type
-     * @type {Boolean}
-     */
-    this.http = true;
-    if (options.http !== undefined && (options.http === false || options.http === 'false')) {
-      this.http = false;
-    }
-
-    this.https = true;
-    if (options.https !== undefined && (options.https === false || options.https === 'false')) {
-      this.https = false;
-    }
-
-    this.codsi = options.codsi || false;
-
-    /**
      *@private
      *@type { Number }
      */
@@ -109,10 +93,7 @@ export default class Layerswitcher extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
-    this.control_ = new LayerswitcherControl(
-      this.http, this.https, this.precharged,
-      this.codsi, this.order,
-    );
+    this.control_ = new LayerswitcherControl(this.order);
     this.panel_ = new M.ui.Panel('Layerswitcher', {
       className: 'm-plugin-layerswitcher',
       collapsed: this.collapsed_,

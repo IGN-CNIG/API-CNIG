@@ -17,7 +17,7 @@ export default class LayerswitcherControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(http, https, precharged, codsi, order) {
+  constructor(order) {
     if (M.utils.isUndefined(LayerswitcherImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -63,7 +63,6 @@ export default class LayerswitcherControl extends M.Control {
 
         this.template_ = html;
         success(html);
-        this.getImpl().registerEvents();
         this.render();
       });
     });
@@ -119,7 +118,6 @@ export default class LayerswitcherControl extends M.Control {
       });
       this.accessibilityTab(html);
 
-      this.registerImgErrorEvents_(html);
       this.template_.innerHTML = html.innerHTML;
       const layerList = this.template_.querySelector('.m-layerswitcher-container .m-layers');
       const layers = templateVars.layers;
@@ -153,37 +151,6 @@ export default class LayerswitcherControl extends M.Control {
           document.querySelector('.m-panel.m-plugin-layerswitcher.opened ul.m-layers').scrollTop = scroll;
         }
       }
-    });
-  }
-
-  registerImgErrorEvents_(html) {
-    const imgElements = html.querySelectorAll('img');
-    Array.prototype.forEach.call(imgElements, (imgElem) => {
-      imgElem.addEventListener('error', (evt) => {
-        const layerName = evt.target.getAttribute('data-layer-name');
-        const layerURL = evt.target.getAttribute('data-layer-url');
-        const legendErrorUrl = M.utils.concatUrlPaths([
-          M.config.THEME_URL,
-          M.layer.WMS.LEGEND_ERROR,
-        ]);
-
-        const layer = this.map_.getLayers().filter((l) => {
-          return l.name === layerName && l.url === layerURL;
-        })[0];
-
-        if (!M.utils.isNullOrEmpty(layer) && layerURL.indexOf('/mirame.chduero.es/') === -1) {
-          layer.setLegendURL(legendErrorUrl);
-        }
-        /*
-        else if (layerURL.indexOf('/mirame.chduero.es/') > -1 &&
-        layer.getImpl().getOL3Layer() !== null) {
-          const styleName = layer.getImpl().getOL3Layer().getSource().getStyle();
-          const urlLegend = layer.getLegendURL().split('&amp;').join('&').split('default')
-            .join(styleName);
-          layer.setLegendURL(urlLegend);
-        }
-        */
-      });
     });
   }
 
