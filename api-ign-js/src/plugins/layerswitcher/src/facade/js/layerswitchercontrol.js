@@ -65,37 +65,10 @@ export default class LayerswitcherControl extends M.Control {
         success(html);
         this.getImpl().registerEvents();
         this.render();
-        this.afterRender(map.getLayers());
-        setTimeout(() => {
-          const openBtn = document.querySelector('.m-plugin-layerswitcher .m-panel-btn.icon-capas');
-          if (openBtn !== null) {
-            openBtn.addEventListener('click', () => {
-              this.template_.querySelector('.m-layerswitcher-container .m-title .span-title').click();
-              setTimeout(() => {
-                this.template_.querySelector('.m-layerswitcher-container .m-title .span-title').click();
-              }, 100);
-            });
-          }
-        }, 200);
       });
     });
   }
 
-  afterRender(layers) {
-    setTimeout(() => {
-      this.template_.querySelector('.m-layerswitcher-container .m-title .span-title').click();
-    }, 700);
-
-    if (layers !== undefined && layers.length > 0) {
-      layers.forEach((l) => {
-        l.getImpl().on(M.evt.ADDED_TO_MAP, (layer) => {
-          if (layer.getOL3Layer() != null) {
-            this.template_.querySelector('.m-layerswitcher-container .m-title .span-title').click();
-          }
-        });
-      });
-    }
-  }
 
   /**
    * @function
