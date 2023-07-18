@@ -6,7 +6,6 @@
 eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["item"] }]
 */
 
-import Sortable from 'sortablejs';
 import LayerswitcherImplControl from 'impl/layerswitchercontrol';
 import template from '../../templates/layerswitcher';
 import { getValue } from './i18n/language';
@@ -111,7 +110,7 @@ export default class LayerswitcherControl extends M.Control {
    * @public
    * @api
    */
-  render(scroll) {
+  render() {
     this.getTemplateVariables(this.map_).then((templateVars) => {
       const html = M.template.compileSync(template, {
         vars: templateVars,
@@ -119,38 +118,6 @@ export default class LayerswitcherControl extends M.Control {
       this.accessibilityTab(html);
 
       this.template_.innerHTML = html.innerHTML;
-      const layerList = this.template_.querySelector('.m-layerswitcher-container .m-layers');
-      const layers = templateVars.layers;
-      if (layerList !== null) {
-        Sortable.create(layerList, {
-          animation: 150,
-          ghostClass: 'm-layerswitcher-gray-shadow',
-          filter: '.m-opacity-container',
-          preventOnFilter: false,
-          onEnd: (evt) => {
-            const from = evt.from;
-            let maxZIndex = Math.max(...(layers.map((l) => {
-              return l.getZIndex();
-            })));
-            from.querySelectorAll('li.m-layer div.m-visible-control span').forEach((elem) => {
-              const name = elem.getAttribute('data-layer-name');
-              const url = elem.getAttribute('data-layer-url');
-              const filtered = layers.filter((layer) => {
-                return layer.name === name && layer.url === url;
-              });
-
-              if (filtered.length > 0) {
-                filtered[0].setZIndex(maxZIndex);
-                maxZIndex -= 1;
-              }
-            });
-          },
-        });
-
-        if (scroll !== undefined) {
-          document.querySelector('.m-panel.m-plugin-layerswitcher.opened ul.m-layers').scrollTop = scroll;
-        }
-      }
     });
   }
 
