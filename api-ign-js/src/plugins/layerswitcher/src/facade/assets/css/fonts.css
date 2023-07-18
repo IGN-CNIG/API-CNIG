@@ -1,28 +1,32 @@
 @font-face {
     font-family: 'layerswitcher';
-    src: url('../fonts/layerswitcher.eot?46188804');
-    src: url('../fonts/layerswitcher.eot?46188804#iefix') format('embedded-opentype'),
-        url('../fonts/layerswitcher.woff2?46188804') format('woff2'),
-        url('../fonts/layerswitcher.woff?46188804') format('woff'),
-        url('../fonts/layerswitcher.ttf?46188804') format('truetype'),
-        url('../fonts/layerswitcher.svg?46188804#layerswitcher') format('svg');
+    src: url('../fonts/layerswitcher.eot?5bh0ai');
+    src: url('../fonts/layerswitcher.eot?5bh0ai#iefix') format('embedded-opentype'),
+        url('../fonts/layerswitcher.woff2?5bh0ai') format('woff2'),
+        url('../fonts/layerswitcher.woff?5bh0ai') format('woff'),
+        url('../fonts/layerswitcher.ttf?5bh0ai') format('truetype'),
+        url('../fonts/layerswitcher.svg?5bh0ai#layerswitcher') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
-div.m-plugin-layerswitcher [class^="icon-"],
-div.m-plugin-layerswitcher [class*=" icon-"] {
-    font-family: "layerswitcher" !important;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+
+[class^="m-layerswitcher-"], [class*=" m-layerswitcher-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'layerswitcher' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.m-plugin-layerswitcher .icon-capas:before {
-        font-family: "layerswitcher" !important;
-    content: '\e907';
+.m-layerswitcher-layers:before {
+            font-family: "layerswitcher" !important;
+  content: "\e907";
 }

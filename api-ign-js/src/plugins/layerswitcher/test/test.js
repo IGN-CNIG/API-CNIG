@@ -15,7 +15,7 @@ const map = M.map({
 
 
 const mp = new Layerswitcher({
-  collapsed: false,
+  collapsed: true,
   position: 'TR',
   order: 1,
 });

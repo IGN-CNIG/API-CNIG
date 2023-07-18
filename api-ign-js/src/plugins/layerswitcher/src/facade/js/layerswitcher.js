@@ -99,7 +99,7 @@ export default class Layerswitcher extends M.Plugin {
       collapsed: this.collapsed_,
       collapsible: true,
       position: M.ui.position[this.position_],
-      collapsedButtonClass: 'icon-capas',
+      collapsedButtonClass: 'm-layerswitcher-layers',
       tooltip: getValue('tooltip'),
       order: this.order,
     });
