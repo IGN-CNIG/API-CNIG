@@ -168,7 +168,12 @@ export default class ComparatorsControl extends M.Control {
       this.controls.forEach(({ buttonsID, controlParam }) => {
         if (controlParam[0]) {
           this.html.querySelector(`#${buttonsID}`).addEventListener('click', ({ target }) => this.event_(target));
-          this.html.querySelector(`#${buttonsID}`).addEventListener('keydown', ({ key, target }) => (key === 'Enter') && this.event_(target));
+          this.html.querySelector(`#${buttonsID}`).addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              this.event_(event.target);
+            }
+          });
         }
       });
 
