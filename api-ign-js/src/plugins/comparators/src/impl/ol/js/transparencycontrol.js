@@ -34,7 +34,7 @@ export default class TransparencyControl extends M.impl.Control {
    */
   effectSelected(layers, radius, freeze) {
     layers.setVisible(true);
-    layers.setZIndex(5000);
+    // layers.setZIndex(5000);
     this.transparentInteraction_ = new TransparentInteraction({
       radius,
       freeze,
