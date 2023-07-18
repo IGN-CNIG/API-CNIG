@@ -24,9 +24,6 @@ export default class LayerswitcherControl extends M.Control {
     const impl = new LayerswitcherImplControl();
     super(impl, 'Layerswitcher');
 
-    // facade control goes to impl as reference param
-    impl.facadeControl = this;
-
     /**
      * Map
      * @private
@@ -92,13 +89,6 @@ export default class LayerswitcherControl extends M.Control {
           overlayLayers: parsedOverlayLayers,
           translations: {
             layers: getValue('layers'),
-            add_service: getValue('add_service'),
-            show_hide: getValue('show_hide'),
-            zoom: getValue('zoom'),
-            info_metadata: getValue('info_metadata'),
-            change_style: getValue('change_style'),
-            remove_layer: getValue('remove_layer'),
-            drag_drop: getValue('drag_drop'),
           },
         }));
       }
@@ -172,42 +162,16 @@ export default class LayerswitcherControl extends M.Control {
    * @function
    */
   parseLayerForTemplate_(layer) {
-    let ogcapiFeaturesStyles;
     const layerTitle = layer.legend || layer.name;
-    const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
-      !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
-
-    if (layer.type === 'OGCAPIFeatures') {
-      if (!M.utils.isNullOrEmpty(layer.otherStyles)) {
-        ogcapiFeaturesStyles = layer.otherStyles.length > 1;
-      }
-    }
-
     return new Promise((success, fail) => {
       const layerVarTemplate = {
         visible: (layer.isVisible() === true),
         id: layer.name,
         title: layerTitle,
-        outOfRange: !layer.inRange(),
-        opacity: layer.getOpacity(),
-        metadata: hasMetadata,
         type: layer.type,
-        tag: layer.type === 'OGCAPIFeatures' ? 'Features' : layer.type,
-        hasStyles: hasMetadata && layer.capabilitiesMetadata.style.length > 1,
-        hasOgcapiFeaturesStyles: ogcapiFeaturesStyles,
         url: layer.url,
       };
-
-      const legendUrl = layer.getLegendURL();
-      if (legendUrl instanceof Promise) {
-        legendUrl.then((url) => {
-          layerVarTemplate.legend = url;
-          success(layerVarTemplate);
-        });
-      } else {
-        layerVarTemplate.legend = layer.type !== 'KML' ? legendUrl : null;
-        success(layerVarTemplate);
-      }
+      success(layerVarTemplate);
     });
   }
 
