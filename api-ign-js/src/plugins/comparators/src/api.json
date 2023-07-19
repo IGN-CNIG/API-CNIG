@@ -31,47 +31,47 @@
     {
       "type": "simple",
       "name": "tooltip",
+      "position": 3
+    },
+    {
+      "type": "boolean",
+      "name": "isDraggable",
       "position": 4
     },
     {
       "type": "simple",
-      "name": "isDraggable",
+      "name": "listLayers",
       "position": 5
     },
     {
       "type": "simple",
-      "name": "listLayers",
-      "position": 6
-    },
-    {
-      "type": "simple",
       "name": "defaultCompareMode",
-      "position": 7
+      "position": 6
     },
     {
       "type": "boolean",
       "name": "enabledKeyFunctions",
-      "position": 8
+      "position": 7
     },
     {
       "type": "number",
       "name": "lyrsMirrorMinZindex",
-      "position": 9
+      "position": 8
     },
     {
       "type": "boolean",
       "name": "transparencyParams",
-      "position": 10
+      "position": 9
     },
     {
       "type": "boolean",
       "name": "lyrcompareParams",
-      "position": 11
+      "position": 10
     },
     {
       "type": "boolean",
       "name": "mirrorpanelParams",
-      "position": 12
+      "position": 11
     }
   ]
   }],
