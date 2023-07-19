@@ -65,6 +65,7 @@
     border: 0;
     background: none;
     cursor: pointer;
+    color: #1f1f1f;
 }
 
 .mirror-panel-button::before {
@@ -98,6 +99,10 @@
     flex-wrap: wrap;
     width: 100%;
     gap: 10px;
+}
+
+.mirrorButtons button {
+    color: #1f1f1f;
 }
 
 /* Botones MirrorPanel*/ 
@@ -765,7 +770,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-comparators.m-panel.opened>button.m-pane
     }
 
     .activatedComparators {
-        color: #92c1e7;
+        color: #92c1e7 !important;
     }
 
 /* ++++++++++++ Control Lyrcompare ++++++++++++ */
@@ -803,6 +808,10 @@ div.m-area.m-bottom.m-left>div.m-plugin-comparators.m-panel.opened>button.m-pane
 .m-lyrcompare-effect-buttoms {
 	padding: 2px 0px 2px 0px;
 	padding-top: 8px;
+}
+
+.m-lyrcompare-effect-buttoms button {
+    color: #1f1f1f;
 }
 
 .m-lyrcompare-container .big-buttom:hover {
@@ -893,6 +902,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-comparators.m-panel.opened>button.m-pane
 .m-lyrcompare-select select {
 	width: 90%;
     margin: 5px 0;
+    color: #1f1f1f;
 }
 
 div#m-lyrcompare-titulo {
@@ -1232,6 +1242,7 @@ Establece la visibilidad del icono de dragging
     .m-transparency-select select {
         width: 80%;
         margin: 5px 0;
+        color: #1f1f1f;
     }
 
     div#m-transparency-titulo {
@@ -1303,11 +1314,12 @@ Establece la visibilidad del icono de dragging
         flex-direction: column;
         gap: 13px;
         text-align: center;
-    }
-
-    .mirrorpanel_selections {
         border-top: 1px solid #adadad;
         padding-top: 14px;
+    }
+
+    .mirrorpanel_selections select {
+        color: #1f1f1f;
     }
     
 .mirrorpanel_selections div span, .mirrorpanel_selections div select {
