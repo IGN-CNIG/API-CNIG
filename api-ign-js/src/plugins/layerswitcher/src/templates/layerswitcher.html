@@ -1,13 +1,13 @@
 {{#*inline "layerswitcherLayer"}}
     {{#each layers}}
-        <li class="m-layer">
-            <div class="m-title-container">
-                <div class="m-title">
+        <li class="m-layerswitcher-layer">
+            <div>
+                <div>
                     <table>
                         <tbody>
-                            <tr role="heading" tabindex="0">
-                                <td><span class="m-layer-type">{{type}}</span></td>
-                                <td><span class="m-layer-name">{{title}}</span></td>
+                            <tr>
+                                <td><span class="m-layerswitcher-type">{{type}}</span></td>
+                                <td><span>{{title}}</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -20,11 +20,11 @@
         <div id="m-layerswitcher-panel">
             <ul>
                 <li>
-                    <div aria-label="{{translations.layers}}" tabindex="0" id="m-layerswitcher-title">
+                    <div id="m-layerswitcher-title">
                         <span role="text">{{translations.layers}}</span>
                     </div>
                     {{#gt overlayLayers.length 0}}
-                        <ul class="m-layers">
+                        <ul class="m-layerswitcher-ullayers">
                             {{> layerswitcherLayer layers=overlayLayers}}
                         </ul>
                     {{/gt}}

@@ -13,7 +13,6 @@ export default class LayerswitcherControl extends M.impl.Control {
    */
   addTo(map, html) {
     this.facadeMap_ = map;
-    this.facadeControl_ = undefined;
     super.addTo(map, html);
   }
 }

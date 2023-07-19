@@ -71,7 +71,7 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 }
 
 
-.m-layerswitcher-container ul.m-layers{
+.m-layerswitcher-container ul.m-layerswitcher-ullayers{
     list-style: none;
     padding: 10px;
     max-height: 50vh !important;
@@ -81,21 +81,21 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 }
 
 
-ul.m-layers>li.m-layer {
+ul.m-layerswitcher-ullayers>li.m-layerswitcher-layer {
     box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
 }
 
-ul.m-layers {
+ul.m-layerswitcher-ullayers {
     background-color: #f9f9f9
 }
 
-ul.m-layers>li {
+ul.m-layerswitcher-ullayers>li {
     background-color: white;
     margin-bottom: 5px;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.m-layerswitcher-container .m-title .m-layer-type {
+.m-layerswitcher-container .m-layerswitcher-type {
     color: white;
     background-color: #9a9a9a;
     padding: 3px 7px;
