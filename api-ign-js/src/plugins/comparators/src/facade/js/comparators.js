@@ -137,8 +137,6 @@ export default class Comparators extends M.Plugin {
     map.addPanels(this.panel_);
   }
 
-
-  // TO-DO Crear getAPIRest
   /**
    * Gets the API REST Parameters of the plugin
    *
@@ -147,7 +145,7 @@ export default class Comparators extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return 'TO-DO';
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggableE}*${this.options.listLayers}*${this.options.defaultCompareMode}*${this.options.enabledKeyFunctions}*${this.options.lyrsMirrorMinZindex}*${!!this.options.transparencyParams}*${!!this.options.lyrcompareParams}*${!!this.options.mirrorpanelParams}`;
   }
 
   /**
