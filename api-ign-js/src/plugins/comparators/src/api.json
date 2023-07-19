@@ -30,43 +30,48 @@
     },
     {
       "type": "simple",
-      "name": "isDraggable",
-      "position": 3
-    },
-    {
-      "type": "simple",
-      "name": "listLayers",
+      "name": "tooltip",
       "position": 4
     },
     {
       "type": "simple",
-      "name": "defaultCompareMode",
+      "name": "isDraggable",
       "position": 5
     },
     {
-      "type": "boolean",
-      "name": "enabledKeyFunctions",
+      "type": "simple",
+      "name": "listLayers",
       "position": 6
     },
     {
-      "type": "number",
-      "name": "lyrsMirrorMinZindex",
+      "type": "simple",
+      "name": "defaultCompareMode",
       "position": 7
     },
     {
       "type": "boolean",
-      "name": "transparencyParams",
+      "name": "enabledKeyFunctions",
       "position": 8
     },
     {
-      "type": "boolean",
-      "name": "lyrcompareParams",
+      "type": "number",
+      "name": "lyrsMirrorMinZindex",
       "position": 9
     },
     {
       "type": "boolean",
-      "name": "mirrorpanelParams",
+      "name": "transparencyParams",
       "position": 10
+    },
+    {
+      "type": "boolean",
+      "name": "lyrcompareParams",
+      "position": 11
+    },
+    {
+      "type": "boolean",
+      "name": "mirrorpanelParams",
+      "position": 12
     }
   ]
   }],
