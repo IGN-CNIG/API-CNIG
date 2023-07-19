@@ -836,7 +836,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-comparators.m-panel.opened>button.m-pane
 
 .m-lyrcompare-container input[type=range] {
 	-webkit-appearance: none;
-	width: 59%;
+	width: 59% !important;
 	height: 8px;
 	padding-left: 4%;
 }
@@ -1364,7 +1364,7 @@ Todo: see can i use and delete this commet */
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 9999;
+        z-index: 2147483647;
     }
 }
 
