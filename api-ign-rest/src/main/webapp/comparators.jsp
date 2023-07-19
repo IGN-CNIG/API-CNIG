@@ -517,8 +517,8 @@
                                     collapsible: collapsibleValor,
                                     defaultCompareMode: defaultCompareModeValor, // mirror - curtain - spyeye - none
                                     listLayers: listLayersValor,
-                                    tooltipComparator: tooltipComparatorValor,
-                                    draggable: draggableValor,
+                                    tooltip: tooltipComparatorValor,
+                                    isDraggable: draggableValor,
                                     enabledKeyFunctions: enabledKeyFunctionsValor,
                                     lyrsMirrorMinZindex: lyrsMirrorMinZindexValor,
                                     transparencyParams: {
