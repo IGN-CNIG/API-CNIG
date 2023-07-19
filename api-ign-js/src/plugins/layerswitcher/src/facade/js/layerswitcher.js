@@ -60,12 +60,6 @@ export default class Layerswitcher extends M.Plugin {
      * @type {Object}
      */
     this.metadata_ = api.metadata;
-
-    /**
-     *@private
-     *@type { Number }
-     */
-    this.order = options.order >= -1 ? options.order : null;
   }
 
   /**
@@ -101,7 +95,6 @@ export default class Layerswitcher extends M.Plugin {
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'm-layerswitcher-layers',
       tooltip: getValue('tooltip'),
-      order: this.order,
     });
 
     this.controls_.push(this.control_);

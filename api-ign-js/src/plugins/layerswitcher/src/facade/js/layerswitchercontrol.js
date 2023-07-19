@@ -1,11 +1,6 @@
 /**
  * @module M/control/LayerswitcherControl
  */
-
-/*
-eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["item"] }]
-*/
-
 import LayerswitcherImplControl from 'impl/layerswitchercontrol';
 import template from '../../templates/layerswitcher';
 import { getValue } from './i18n/language';
@@ -16,7 +11,7 @@ export default class LayerswitcherControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(order) {
+  constructor() {
     if (M.utils.isUndefined(LayerswitcherImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -37,8 +32,6 @@ export default class LayerswitcherControl extends M.Control {
      * @type {String}
      */
     this.template_ = undefined;
-
-    this.order = order;
   }
 
   /**
@@ -105,8 +98,6 @@ export default class LayerswitcherControl extends M.Control {
       const html = M.template.compileSync(template, {
         vars: templateVars,
       });
-      this.accessibilityTab(html);
-
       this.template_.innerHTML = html.innerHTML;
     });
   }
@@ -173,10 +164,5 @@ export default class LayerswitcherControl extends M.Control {
       };
       success(layerVarTemplate);
     });
-  }
-
-
-  accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }
