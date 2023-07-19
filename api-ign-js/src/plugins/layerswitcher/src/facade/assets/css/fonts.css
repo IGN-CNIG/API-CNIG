@@ -27,6 +27,6 @@
 }
 
 .m-layerswitcher-layers:before {
-            font-family: "layerswitcher" !important;
+  font-family: "layerswitcher" !important;
   content: "\e907";
 }
