@@ -136,7 +136,7 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
     - 2: dos mapas en horizontal.
     - 3: cuatro mapas.
 
-- **mirrorpanelParams**: Parámetros opcionales del plugin mirrorpanel. A destacar:
+- **mirrorpanelParams**: Parámetros opcionales del plugin mirrorpanel.
   - showCursors (true/false): Si es true, muestra cursores sincronizados en cada unao de los mapas espejo. Defecto: *true*.
   - principalMap (true/false): indica en qué posición de la pantalla se mantiene el mapa principal (el que contiene el botón con las herramientas de comparación) con respecto a los demás. *False*: se sitúa a la izquierda. *True*: se sitúa a la derecha. Defecto: *false*.
   - enabledControlsPlugins: Define los plugins y controles que irán en cada mapa. Es necesario hacer las importaciones CDN de los diferentes plugins.
@@ -304,15 +304,151 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
    map.addPlugin(mp);
 ```
 
-## 🔗 API REST
+# API-REST
+
+```javascript
+URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!listLayers*!defaultCompareMode*!enabledKeyFunctions*!lyrsMirrorMinZindex*!transparencyParams*!lyrcompareParams*!mirrorpanelParams
 ```
-URL_API?comparators=position*collapsed*collapsible*isDraggable*listLayers*defaultCompareMode*enabledKeyFunctions*lyrsMirrorMinZindex*transparencyParams*lyrcompareParams*mirrorpanelParams
+
+<table>
+    <tr>
+        <th>Parámetros</th>
+        <th>Opciones/Descripción</th>
+        <th>Disponibilidad</th>
+    </tr>
+    <tr>
+        <td>position</td>
+        <td>TR/TL/BR/BL</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+     <tr>
+        <td>collapsed</td>
+        <td>true/false</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+     <tr>
+        <td>collapsible</td>
+        <td>true/false</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+    <tr>
+        <td>tooltip</td>
+        <td>Valor a usar para mostrar en el tooltip del plugin</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+    <tr>
+        <td>isDraggable</td>
+        <td>true/false</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+     <tr>
+        <td>listLayers</td>
+        <td>Indica las capas del plugin</td>
+        <td>Base64 ✔️ | Separador ❌</td>
+    </tr>
+     <tr>
+        <td>defaultCompareMode</td>
+        <td>Indica el modo de comparación que se arranca por defecto. (mirror - curtain - spyeye - none)</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+    <tr>
+        <td>enabledKeyFunctions</td>
+        <td>Eventos por teclado (true o false)</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+    <tr>
+        <td>lyrsMirrorMinZindex</td>
+        <td>Indica el z-index que tendrán las capas</td>
+        <td>Base64 ✔️ | Separador ✔️</td>
+    </tr>
+    <tr>
+        <td>transparencyParams</td>
+        <td>Parámetros opcionales del control transparency.</td>
+        <td>Base64 ✔️ | Separador ❌</td>
+    </tr>
+     <tr>
+        <td>lyrcompareParams</td>
+        <td>Parámetros opcionales del plugin lyrcompare.</td>
+        <td>Base64 ✔️ | Separador ❌</td>
+    </tr>
+     <tr>
+        <td>mirrorpanelParams</td>
+        <td>Parámetros opcionales del plugin mirrorpanel.</td>
+        <td>Base64 ✔️ | Separador ❌</td>
+    </tr>
+</table>
+
+
+### Ejemplos de uso API-REST
 ```
-Usando el método getAPIRestBase64:
+https://componentes.cnig.es/api-core?comparators=TR*false*true*comparador*true**mirror*true*10*true*true*true
+
 ```
+
+### Ejemplo de uso API-REST en base64
+
+Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
 Ejemplo:
-https://componentes.cnig.es/api-core/?comparators=base64=eyJwb3NpdGlvbiI6IlRSIiwiY29sbGFwc2VkIjpmYWxzZSwiY29sbGFwc2libGUiOnRydWUsImlzRHJhZ2dhYmxlIjp0cnVlLCJkZWZhdWx0Q29tcGFyZU1vZGUiOiJtaXJyb3IiLCJsaXN0TGF5ZXJzIjpbIldNUypIdWVsbGFzIFNlbnRpbmVsMipodHRwczovL3dtcy1zYXRlbGl0ZXMtaGlzdG9yaWNvcy5pZGVlLmVzL3NhdGVsaXRlcy1oaXN0b3JpY29zKnRlc2VsYXNfc2VudGluZWwyX2VzcGFubmEqdHJ1ZSIsIldNUypJbnZpZXJubyAyMDIyIGZhbHNvIGNvbG9yIG5hdHVyYWwqaHR0cHM6Ly93bXMtc2F0ZWxpdGVzLWhpc3Rvcmljb3MuaWRlZS5lcy9zYXRlbGl0ZXMtaGlzdG9yaWNvcypTRU5USU5FTC4yMDIyaW52aWVybm9fNDMyLTExODQqdHJ1ZSIsIldNUypJbnZpZXJubyAyMDIyIGZhbHNvIGNvbG9yIGluZnJhcnJvam8qaHR0cHM6Ly93bXMtc2F0ZWxpdGVzLWhpc3Rvcmljb3MuaWRlZS5lcy9zYXRlbGl0ZXMtaGlzdG9yaWNvcypTRU5USU5FTC4yMDIyaW52aWVybm9fODQzKnRydWUiLCJXTVMqRmlsb21lbmEqaHR0cHM6Ly93bXMtc2F0ZWxpdGVzLWhpc3Rvcmljb3MuaWRlZS5lcy9zYXRlbGl0ZXMtaGlzdG9yaWNvcypGaWxvbWVuYSp0cnVlIl0sImVuYWJsZWRLZXlGdW5jdGlvbnMiOnRydWUsImx5cnNNaXJyb3JNaW5aaW5kZXgiOjEwLCJ0cmFuc3BhcmVuY3lQYXJhbXMiOnsicmFkaXVzIjo1MCwibWF4UmFkaXVzIjoxMDAsIm1pblJhZGl1cyI6MTAsInRvb2x0aXAiOiJ0b29sdGlwVHJhbnNwYXJlbmN5In0sImx5cmNvbXBhcmVQYXJhbXMiOnsic3RhdGljRGl2aXNpb24iOjIsImRlZmF1bHRMeXJBIjozLCJkZWZhdWx0THlyQiI6MiwiZGVmYXVsdEx5ckMiOjEsImRlZmF1bHRMeXJEIjowLCJvcGFjaXR5VmFsIjoxMDAsInRvb2x0aXAiOiJ0b29sdGlwTHlyQ29tcGFyZSIsImRlZmF1bHRDb21wYXJlVml6IjoyfSwibWlycm9ycGFuZWxQYXJhbXMiOnsic2hvd0N1cnNvcnMiOnRydWUsInByaW5jaXBhbE1hcCI6dHJ1ZSwiZW5hYmxlZERpc3BsYXlJbkxheWVyU3dpdGNoZXIiOnRydWV9fQ==
+```javascript
+M.utils.encodeBase64(obj_params);
 ```
+
+Ejemplo de constructor:
+```javascript
+{
+  position: 'TL',
+  collapsed: false,
+  collapsible: true,
+  isDraggable: true,
+  tooltip: 'Plugin Comparators',
+  defaultCompareMode: 'mirror',
+  listLayers: [
+    'WMS*Landsat 5 TM 1996. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_321-543*true',
+    'WMS*Landsat 5 TM 1996. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_432*true',
+    'WMS*Landsat 5 TM 1991. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_321-543*true',
+    'WMS*Landsat 5 TM 1991. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_432*true',
+    'WMS*Landsat 5 TM 1986. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1986_321-543*true',
+  ],
+  enabledKeyFunctions: true,
+  lyrsMirrorMinZindex: 10,
+  transparencyParams: {
+    radius: 100,
+    maxRadius: 100,
+    minRadius: 10,
+    tooltip: 'tooltipTransparency',
+  },
+  lyrcompareParams: {
+    staticDivision: 1,
+    defaultLyrA: 1,
+    defaultLyrB: 2,
+    defaultLyrC: 3,
+    defaultLyrD: 0,
+    opacityVal: 100,
+    tooltip: 'tooltipLyrCompare',
+    defaultCompareViz: 1,
+  },
+  mirrorpanelParams: {
+    showCursors: true,
+    principalMap: true,
+    enabledControlsPlugins: {
+      map2: {
+        constrols: ['scale'],
+        FullTOC: {
+          position: 'TL',
+        },
+      },
+    },
+    enabledDisplayInLayerSwitcher: true,
+    defaultCompareViz: 2,
+    modeVizTypes: [0, 2],
+    tooltip: 'tooltipMirror',
+  },
+}
+```
+```
+https://componentes.cnig.es/api-core?comparators=base64=ewogIHBvc2l0aW9uOiAnVEwnLAogIGNvbGxhcHNlZDogZmFsc2UsCiAgY29sbGFwc2libGU6IHRydWUsCiAgaXNEcmFnZ2FibGU6IHRydWUsCiAgdG9vbHRpcDogJ1BsdWdpbiBDb21wYXJhdG9ycycsCiAgZGVmYXVsdENvbXBhcmVNb2RlOiAnbWlycm9yJywKICBsaXN0TGF5ZXJzOiBbCiAgICAnV01TKkxhbmRzYXQgNSBUTSAxOTk2LiBDb2xvciBuYXR1cmFsKmh0dHBzOi8vd21zLXNhdGVsaXRlcy1oaXN0b3JpY29zLmlkZWUuZXMvc2F0ZWxpdGVzLWhpc3Rvcmljb3MqTEFORFNBVDUuMTk5Nl8zMjEtNTQzKnRydWUnLAogICAgJ1dNUypMYW5kc2F0IDUgVE0gMTk5Ni4gRmFsc28gY29sb3IgaW5mcmFycm9qbypodHRwczovL3dtcy1zYXRlbGl0ZXMtaGlzdG9yaWNvcy5pZGVlLmVzL3NhdGVsaXRlcy1oaXN0b3JpY29zKkxBTkRTQVQ1LjE5OTZfNDMyKnRydWUnLAogICAgJ1dNUypMYW5kc2F0IDUgVE0gMTk5MS4gQ29sb3IgbmF0dXJhbCpodHRwczovL3dtcy1zYXRlbGl0ZXMtaGlzdG9yaWNvcy5pZGVlLmVzL3NhdGVsaXRlcy1oaXN0b3JpY29zKkxBTkRTQVQ1LjE5OTFfMzIxLTU0Myp0cnVlJywKICAgICdXTVMqTGFuZHNhdCA1IFRNIDE5OTEuIEZhbHNvIGNvbG9yIGluZnJhcnJvam8qaHR0cHM6Ly93bXMtc2F0ZWxpdGVzLWhpc3Rvcmljb3MuaWRlZS5lcy9zYXRlbGl0ZXMtaGlzdG9yaWNvcypMQU5EU0FUNS4xOTkxXzQzMip0cnVlJywKICAgICdXTVMqTGFuZHNhdCA1IFRNIDE5ODYuIENvbG9yIG5hdHVyYWwqaHR0cHM6Ly93bXMtc2F0ZWxpdGVzLWhpc3Rvcmljb3MuaWRlZS5lcy9zYXRlbGl0ZXMtaGlzdG9yaWNvcypMQU5EU0FUNS4xOTg2XzMyMS01NDMqdHJ1ZScsCiAgXSwKICBlbmFibGVkS2V5RnVuY3Rpb25zOiB0cnVlLAogIGx5cnNNaXJyb3JNaW5aaW5kZXg6IDEwLAogIHRyYW5zcGFyZW5jeVBhcmFtczogewogICAgcmFkaXVzOiAxMDAsCiAgICBtYXhSYWRpdXM6IDEwMCwKICAgIG1pblJhZGl1czogMTAsCiAgICB0b29sdGlwOiAndG9vbHRpcFRyYW5zcGFyZW5jeScsCiAgfSwKICBseXJjb21wYXJlUGFyYW1zOiB7CiAgICBzdGF0aWNEaXZpc2lvbjogMSwKICAgIGRlZmF1bHRMeXJBOiAxLAogICAgZGVmYXVsdEx5ckI6IDIsCiAgICBkZWZhdWx0THlyQzogMywKICAgIGRlZmF1bHRMeXJEOiAwLAogICAgb3BhY2l0eVZhbDogMTAwLAogICAgdG9vbHRpcDogJ3Rvb2x0aXBMeXJDb21wYXJlJywKICAgIGRlZmF1bHRDb21wYXJlVml6OiAxLAogIH0sCiAgbWlycm9ycGFuZWxQYXJhbXM6IHsKICAgIHNob3dDdXJzb3JzOiB0cnVlLAogICAgcHJpbmNpcGFsTWFwOiB0cnVlLAogICAgZW5hYmxlZENvbnRyb2xzUGx1Z2luczogewogICAgICBtYXAyOiB7CiAgICAgICAgY29uc3Ryb2xzOiBbJ3NjYWxlJ10sCiAgICAgICAgRnVsbFRPQzogewogICAgICAgICAgcG9zaXRpb246ICdUTCcsCiAgICAgICAgfSwKICAgICAgfSwKICAgIH0sCiAgICBlbmFibGVkRGlzcGxheUluTGF5ZXJTd2l0Y2hlcjogdHJ1ZSwKICAgIGRlZmF1bHRDb21wYXJlVml6OiAyLAogICAgbW9kZVZpelR5cGVzOiBbMCwgMl0sCiAgICB0b29sdGlwOiAndG9vbHRpcE1pcnJvcicsCiAgfSwKfQ==
+```
+
 
 ## 👨‍💻 Desarrollo
 
