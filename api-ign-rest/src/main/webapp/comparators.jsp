@@ -100,6 +100,13 @@
                             <option value="false">false</option>
                         </select>
 
+                        <label for="selectDraggable">Selector de draggable</label>
+                        <select name="selectDraggable" id="selectDraggable">
+                            <option value=""></option>
+                            <option value="true" selected="selected">true</option>
+                            <option value="false">false</option>
+                        </select>
+
                         <label for="enabledKeyFunctions">Activa atajos de teclado</label>
                         <select name="enabledKeyFunctions" id="enabledKeyFunctions">
                             <option value=""></option>
@@ -126,7 +133,9 @@
                         <label for="lyrsMirrorMinZindex">Introducir z-index de las capas</label>
                         <input type="text" id="lyrsMirrorMinZindex" value="10">
 
-                        
+                        <label for="tooltipComparator">Tooltip del plugin</label>
+                        <input type="text" id="tooltipComparator" value="tooltipComparator">
+
                         <label for="transparencyParams_radius">Introducir radio del control transparencyParams</label>
                         <input type="text" id="transparencyParams_radius" value="50">
 
@@ -294,6 +303,8 @@
                                 const selectMirrorpanelParams_modeVizTypes = document.getElementById("mirrorpanelParams_modeVizTypes");
                                 const selectMirrorpanelParams_tooltip = document.getElementById("mirrorpanelParams_tooltip");
                                 const selectMirrorpanelParams_enabledControlsPlugins = document.getElementById("mirrorpanelParams_enabledControlsPlugins");
+                                const selectDraggableParams = document.getElementById("selectDraggable");
+                                const tooltipComparatorParams = document.getElementById("tooltipComparator");
 
 
                                 selectPosicion.addEventListener('change', cambiarTest);
@@ -322,8 +333,9 @@
                                 selectMirrorpanelParams_modeVizTypes.addEventListener('change', cambiarTest);
                                 selectMirrorpanelParams_tooltip.addEventListener('change', cambiarTest);
                                 selectMirrorpanelParams_enabledControlsPlugins.addEventListener('change', cambiarTest);
+                                selectDraggableParams.addEventListener('change', cambiarTest);
+                                tooltipComparatorParams.addEventListener('change', cambiarTest);
                                
-
                                 /* Creación por defecto */
                                 crearPlugin({
                                     position: 'TR',
@@ -493,6 +505,8 @@
                                     const mirrorpanelParams_modeVizTypesValor = JSON.parse(selectMirrorpanelParams_modeVizTypes.value);
                                     const mirrorpanelParams_tooltipValor = selectMirrorpanelParams_tooltip.value;
                                     const mirrorpanelParams_enabledControlsPluginsValor = JSON.parse(selectMirrorpanelParams_enabledControlsPlugins.value);
+                                    const draggableValor = selectDraggableParams.options[selectDraggableParams.selectedIndex].value === 'true';
+                                    const tooltipComparatorValor = tooltipComparatorParams.value;
 
 
                                     map.removePlugins(mp);
@@ -501,8 +515,10 @@
                                     position: posicionValor,
                                     collapsed: collapsedValor,
                                     collapsible: collapsibleValor,
-                                    defaultCompareMode: 'mirror', // mirror - curtain - spyeye - none
+                                    defaultCompareMode: defaultCompareModeValor, // mirror - curtain - spyeye - none
                                     listLayers: listLayersValor,
+                                    tooltipComparator: tooltipComparatorValor,
+                                    draggable: draggableValor,
                                     enabledKeyFunctions: enabledKeyFunctionsValor,
                                     lyrsMirrorMinZindex: lyrsMirrorMinZindexValor,
                                     transparencyParams: {
