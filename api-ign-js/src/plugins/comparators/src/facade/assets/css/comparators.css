@@ -956,7 +956,7 @@ div#m-lyrcompare-titulo {
 
 .lyrcompare-swipe-control .control-icon::before {
 	content: '\e9c4';
-	font-family: 'comparepanel';
+	font-family: 'comparators';
 	position: absolute;
 	display: block;
 	/* Jugamos con la opacidad para hacer aparecer el botón. COmo la opacidad va de 0 a 100, se puede dividir en fraccciones y las transciones tienen efecto */
