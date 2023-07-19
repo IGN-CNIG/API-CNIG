@@ -400,7 +400,7 @@
             (inputBuzones.value != "") ? objeto.buzones = JSON.parse(inputBuzones.value): "";
             (inputControllist.value != "") ? objeto.controllist = JSON.parse(inputControllist.value): "";
             (inputThemeList.value != "") ? objeto.themeList = JSON.parse(inputThemeList.value): "";
-            objeto.isDraggable = selectPosicion.options[isDraggable.selectedIndex].value;
+            objeto.isDraggable = isDraggable.options[isDraggable.selectedIndex].value;
 
             // Array de objetos themeList.
             objeto.themeList = [{
