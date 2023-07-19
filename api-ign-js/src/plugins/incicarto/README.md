@@ -50,11 +50,11 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: Notificar incidencia en cartografía.
 - **wfszoom**: Valor del zoom. Por defecto: 12.
-- **prefixSubject**: Prefijo que llevará el *subject* del correo electrónico enviado. Por defecto: 'Incidencia cartografía - '
+- **prefixSubject**: Prefijo que llevará el *subject* del correo electrónico enviado. Por defecto: 'Incidencia cartografía - '.
 - **interfazmode**: Indica la modalidad de envío de la incidencia. Por defecto: simple.
   - 'simple': se usará un cleinte de correo para enviar la incidencia.
   - 'advance': se usará el gestor de incidencias INCIGEO.
-- **buzones**: Contiene un array con los objetos que definen el nombre y direcciones de los buzones de incidencias. Cada objeto buzón contiene dos parámetros. Por defecto: []
+- **buzones**: Contiene un array con los objetos que definen el nombre y direcciones de los buzones de incidencias. Cada objeto buzón contiene dos parámetros. Por defecto: [].
   - 'name': nombre del propietario del buzón de incidencias.
   - 'email': correo electrónico del buzón. 
 - **controllist**: Contiene un array enumerando las listas controladas con sus características. 
@@ -83,17 +83,18 @@ Por defecto:
 ]
 ```
   
-- **themeList**: Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades. Por defecto: []
+- **themeList**: Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades. Por defecto: [].
   - 'idTheme': identificador de código de tema.
   - 'nameTheme': nombre del tema de error.
   - 'emailTheme': correo de la entidad responsable de subsanar este error.
-- **errorList**: Lista de control con las posibles categorizaciones del error. Por defecto: []
-- **productList**: Lista de control con los productos del IGN en los que se ha detectado el error. Por defecto: []
+- **errorList**: Lista de control con las posibles categorizaciones del error. Por defecto: [].
+- **productList**: Lista de control con los productos del IGN en los que se ha detectado el error. Por defecto: [].
+- **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
 
 # API-REST
 
 ```javascript
-URL_API?incicarto=position*collapsed*collapsible*tooltip*wfszoom*prefixSubject*interfazmode
+URL_API?incicarto=position*collapsed*collapsible*tooltip*wfszoom*prefixSubject*interfazmode*isDraggable
 ```
 
 <table>
@@ -162,6 +163,11 @@ URL_API?incicarto=position*collapsed*collapsible*tooltip*wfszoom*prefixSubject*i
     <td>Lista de control con los productos del IGN en los que se ha detectado el error.</td>
     <td>Base64 ✔️ | Separador ❌</td>
   </tr>  
+  <tr>
+    <td>isDraggable</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
 </table>
 
 

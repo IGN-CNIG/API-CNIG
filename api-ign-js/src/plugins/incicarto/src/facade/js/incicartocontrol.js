@@ -171,6 +171,12 @@ export default class IncicartoControl extends M.Control {
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
 
+    /**
+     * Option to allow the plugin to be draggable or not
+     * @private
+     * @type {Boolean}
+     */
+    this.isDraggable_ = options.isDraggable;
   }
 
   /**
@@ -219,6 +225,9 @@ export default class IncicartoControl extends M.Control {
       this.createDrawingTemplate();
       this.createUploadingTemplate();
       this.map.addLayers(this.selectionLayer);
+      if (this.isDraggable_) {
+        M.utils.draggabillyPlugin(this.getPanel(), '#m-incicarto-title');
+      }
     });
   }
 
@@ -704,9 +713,7 @@ export default class IncicartoControl extends M.Control {
       let errDescription = document.querySelector("#err-description").value;
 
       const { x, y } = this.map_.getCenter();
-      const { code, units } = this.map_.getProjection();
-      let shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
-      shareURL = shareURL.concat(`&projection=${code}*${units}`);
+      const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
       let url = window.location.href;
       let localURL = '';
       if (url.startsWith('file:///')) {

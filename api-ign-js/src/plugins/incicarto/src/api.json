@@ -35,6 +35,10 @@
       "type": "simple",
       "name": "interfazmode",
       "position": 6
+    }, {
+      "type": "boolean",
+      "name": "isDraggable",
+      "position": 7
     }]
   }],
   "files": {
