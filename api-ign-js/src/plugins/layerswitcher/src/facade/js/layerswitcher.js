@@ -48,6 +48,13 @@ export default class Layerswitcher extends M.Plugin {
     this.collapsed_ = options.collapsed !== undefined ? options.collapsed : true;
 
     /**
+     * Option to allow the plugin to be collapsible or not
+     * @private
+     * @type {Boolean}
+     */
+    this.collapsible_ = !M.utils.isUndefined(options.collapsible) ? options.collapsible : true;
+
+    /**
      * Name of the plugin
      * @private
      * @type {String}
@@ -91,7 +98,7 @@ export default class Layerswitcher extends M.Plugin {
     this.panel_ = new M.ui.Panel('Layerswitcher', {
       className: 'm-plugin-layerswitcher',
       collapsed: this.collapsed_,
-      collapsible: true,
+      collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'm-layerswitcher-layers',
       tooltip: getValue('tooltip'),

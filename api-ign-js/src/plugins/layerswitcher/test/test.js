@@ -15,7 +15,8 @@ const map = M.map({
 
 const mp = new Layerswitcher({
   collapsed: false,
-  position: 'TR',
+  position: 'TL',
+  collapsible: false,
 });
 map.addPlugin(mp);
 
