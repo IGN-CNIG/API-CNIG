@@ -388,8 +388,10 @@ const pluginsLanguage = {
     esLocator,
     enLocator,
   },
-  esComparators,
-  enComparators,
+  comparators: {
+    esComparators,
+    enComparators,
+  },
 };
 
 export default pluginsLanguage;
