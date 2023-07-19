@@ -26,6 +26,9 @@
     flex-direction: column;
 }
 
+.m-areas>div.m-area>div.m-panel {
+    border-radius: inherit;
+}
 
 
 /* Título */

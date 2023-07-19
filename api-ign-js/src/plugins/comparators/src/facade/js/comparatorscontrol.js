@@ -48,12 +48,14 @@ export default class ComparatorsControl extends M.Control {
      */
     this.options = options;
 
-    this.layersPlugin = this.options.listLayers || [
-      'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
-      'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true',
-      'WMS*Invierno 2022 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_843*true',
-      'WMS*Filomena*https://wms-satelites-historicos.idee.es/satelites-historicos*Filomena*true',
-    ];
+    if (!this.options.listLayers) {
+      this.options.listLayers = [
+        'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
+        'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true',
+        'WMS*Invierno 2022 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_843*true',
+        'WMS*Filomena*https://wms-satelites-historicos.idee.es/satelites-historicos*Filomena*true',
+      ];
+    }
 
     this.layersDrop = [];
 
