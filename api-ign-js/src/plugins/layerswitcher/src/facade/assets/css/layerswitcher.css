@@ -37,7 +37,7 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     min-width: 150px;
 }
 
-.m-layerswitcher-container .m-layersiwtcher-panel {
+.m-layerswitcher-container #m-layerswitcher-panel {
     margin: 0;
     top: 0px;
     right: 0px;
@@ -47,7 +47,7 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 }
 
 /* PLUGIN */
-.m-layerswitcher-title {
+#m-layerswitcher-title {
     font-weight: bold !important;
 }
 
@@ -65,7 +65,7 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     overflow: hidden;
 }
 
-.m-layersiwtcher-panel>ul {
+#m-layerswitcher-panel>ul {
     margin: 0px;
     padding: 0px;
 }

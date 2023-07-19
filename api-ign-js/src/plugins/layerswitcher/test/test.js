@@ -10,14 +10,12 @@ const map = M.map({
     y: 4514194.232367303,
   },
   zoom: 9,
-  layers: ['TMS*TMSBaseIGN*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*true'],
 });
 
 
 const mp = new Layerswitcher({
-  collapsed: true,
+  collapsed: false,
   position: 'TR',
-  order: 1,
 });
 map.addPlugin(mp);
 
