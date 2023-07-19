@@ -11,7 +11,7 @@ export default class LayerswitcherControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor() {
+  constructor(options = {}) {
     if (M.utils.isUndefined(LayerswitcherImplControl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -32,6 +32,13 @@ export default class LayerswitcherControl extends M.Control {
      * @type {String}
      */
     this.template_ = undefined;
+
+    /**
+     * Option to allow the plugin to be draggable or not
+     * @private
+     * @type {Boolean}
+     */
+    this.isDraggable_ = options.isDraggable;
   }
 
   /**
@@ -49,6 +56,10 @@ export default class LayerswitcherControl extends M.Control {
         const html = M.template.compileSync(template, {
           vars: templateVars,
         });
+
+        if (this.isDraggable_) {
+          M.utils.draggabillyPlugin(this.getPanel(), '#m-layerswitcher-title');
+        }
 
         this.template_ = html;
         success(html);

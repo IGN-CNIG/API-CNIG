@@ -61,6 +61,13 @@ export default class Layerswitcher extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
+    /**
+     * Option to allow the plugin to be draggable or not
+     * @private
+     * @type {Boolean}
+     */
+    this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
+
 
     /**
      * Name of the plugin
@@ -102,7 +109,7 @@ export default class Layerswitcher extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
-    this.control_ = new LayerswitcherControl(this.order);
+    this.control_ = new LayerswitcherControl({ isDraggable: this.isDraggable });
     this.panel_ = new M.ui.Panel('Layerswitcher', {
       className: 'm-plugin-layerswitcher',
       collapsed: this.collapsed_,

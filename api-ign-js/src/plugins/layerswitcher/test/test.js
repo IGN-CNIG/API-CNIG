@@ -17,6 +17,7 @@ const mp = new Layerswitcher({
   collapsed: false,
   position: 'TL',
   collapsible: false,
+  isDraggable: false,
   // tooltip: 'Pruebas',
 });
 map.addPlugin(mp);
