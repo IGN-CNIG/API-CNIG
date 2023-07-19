@@ -2752,18 +2752,18 @@ class Map extends MObject {
  */
 Map.Z_INDEX = {};
 Map.Z_INDEX_BASELAYER = 0;
-Map.Z_INDEX[LayerType.OSM] = 5;
-Map.Z_INDEX[LayerType.WMS] = 100;
+Map.Z_INDEX[LayerType.OSM] = 40;
+Map.Z_INDEX[LayerType.WMS] = 40;
 Map.Z_INDEX[LayerType.WMTS] = 40;
-Map.Z_INDEX[LayerType.KML] = 9999;
-Map.Z_INDEX[LayerType.WFS] = 9999;
-Map.Z_INDEX[LayerType.MVT] = 9999;
-Map.Z_INDEX[LayerType.Vector] = 9999;
-Map.Z_INDEX[LayerType.GeoJSON] = 9999;
-Map.Z_INDEX[LayerType.MBTiles] = 2000;
-Map.Z_INDEX[LayerType.MBTilesVector] = 9999;
-Map.Z_INDEX[LayerType.XYZ] = 5;
-Map.Z_INDEX[LayerType.TMS] = 5;
-Map.Z_INDEX[LayerType.OGCAPIFeatures] = 9999;
+Map.Z_INDEX[LayerType.KML] = 40;
+Map.Z_INDEX[LayerType.WFS] = 40;
+Map.Z_INDEX[LayerType.MVT] = 40;
+Map.Z_INDEX[LayerType.Vector] = 40;
+Map.Z_INDEX[LayerType.GeoJSON] = 40;
+Map.Z_INDEX[LayerType.MBTiles] = 40;
+Map.Z_INDEX[LayerType.MBTilesVector] = 40;
+Map.Z_INDEX[LayerType.XYZ] = 40;
+Map.Z_INDEX[LayerType.TMS] = 40;
+Map.Z_INDEX[LayerType.OGCAPIFeatures] = 40;
 
 export default Map;
