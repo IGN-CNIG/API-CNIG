@@ -27,8 +27,19 @@ const layerUA = new M.layer.WMS({
   name: 'AU.AdministrativeUnit',
   legend: 'Unidad administrativa',
   tiled: false,
+  transparent: true,
 }, {});
 
 map.addLayers(layerUA);
+
+const layer = new M.layer.WFS({
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
+  namespace: 'tematicos',
+  name: 'Provincias',
+  legend: 'Provincias',
+  geometry: 'MPOLYGON',
+  ids: '3,4',
+});
+map.addWFS(layer);
 
 window.map = map;

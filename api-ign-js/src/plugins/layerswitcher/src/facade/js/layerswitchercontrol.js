@@ -81,10 +81,7 @@ export default class LayerswitcherControl extends M.Control {
         const overlayLayers = map.getRootLayers().filter((layer) => {
           const isTransparent = (layer.transparent === true);
           const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
-          const isRaster = ['wms', 'wmts'].indexOf(layer.type.toLowerCase()) > -1;
-          const isNotWMSFull = !((layer.type === M.layer.type.WMS) &&
-            M.utils.isNullOrEmpty(layer.name));
-          return ((isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull) || (layer.type === 'OGCAPIFeatures'));
+          return isTransparent && displayInLayerSwitcher;
         }).reverse();
 
         const overlayLayersPromise = Promise.all(overlayLayers.map(this.parseLayerForTemplate_));
