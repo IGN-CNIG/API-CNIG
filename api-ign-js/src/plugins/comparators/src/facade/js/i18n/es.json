@@ -1,6 +1,6 @@
 {
   "exception": {
-    "impl":  "La implementación usada no puede crear controles ComparepanelControl",
+    "impl":  "La implementación usada no puede crear controles comparatorsControl",
     "no_controls": "El plugin Comparators necesita activar al menos un control."
   },
   "nolayertext": "No hay capas de comparación",

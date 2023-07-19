@@ -40,8 +40,8 @@ Los modos de comparación son: Cortina, "spy eye" y modo espejo.
 
 ## Dependencias 👷
 
-- comparepanel.ol.min.js
-- comparepanel.ol.min.css
+- comparators.ol.min.js
+- comparators.ol.min.css
 
 
 ```html

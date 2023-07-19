@@ -1,13 +1,13 @@
 {
   "exception": {
-    "impl": "The implementation used cannot create comparepanelControl controls",
+    "impl": "The implementation used cannot create comparatorsControl controls",
     "no_controls": "The Comparators plugin needs to activate at least one control."
   },
   "mirrorpanelParams_tooltip": "mirrorpanelParams_tooltip",
   "lyrcompareParams_tooltip": "lyrcompareParams_tooltip",
   "transparencyParams_tooltip": "transparencyParams_tooltip",
   "nolayertext": "No Layout",
-  "title": "Comparepanel",
+  "title": "Comparators",
   "play": "Play",
   "pause": "Pause",
   "intervals_error": "The intervals were not defined correctly",
