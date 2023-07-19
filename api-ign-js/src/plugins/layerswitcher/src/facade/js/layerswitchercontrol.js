@@ -92,11 +92,13 @@ export default class LayerswitcherControl extends M.Control {
     return new Promise((success, fail) => {
       // gets base layers and overlay layers
       if (!M.utils.isNullOrEmpty(map)) {
-        const overlayLayers = map.getRootLayers().filter((layer) => {
+        let overlayLayers = map.getRootLayers().filter((layer) => {
           const isTransparent = (layer.transparent === true);
           const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
           return isTransparent && displayInLayerSwitcher;
-        }).reverse();
+        });
+
+        overlayLayers = this.reorderLayers(overlayLayers);
 
         const overlayLayersPromise = Promise.all(overlayLayers.map(this.parseLayerForTemplate_));
         overlayLayersPromise.then(parsedOverlayLayers => success({
@@ -108,6 +110,16 @@ export default class LayerswitcherControl extends M.Control {
       }
     });
   }
+
+  /**
+   * @function
+   * @public
+   * @api
+   */
+  reorderLayers(layers) {
+    return layers.sort((layer1, layer2) => layer1.getZIndex() - layer2.getZIndex()).reverse();
+  }
+
 
   /**
    *
