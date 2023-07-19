@@ -717,6 +717,8 @@ export default class IncicartoControl extends M.Control {
       let url = window.location.href;
       let localURL = '';
       if (url.startsWith('file:///')) {
+        const index = url.lastIndexOf('/');
+        localURL = `file://${url.substring(index)}`;
         localURL = url;
       }
 
