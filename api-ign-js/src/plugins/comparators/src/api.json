@@ -87,10 +87,10 @@
   },
   "metadata": {
     "name": "comparators",
-    "description": "Offer different zoom tools",
-    "text": "It offers different zoom tools.",
+    "description": "This plugin allows to compare layers.",
+    "text": "This plugin allows to compare layers.",
     "version": "1.0.0",
-    "date": "27th April 2023",
+    "date": "19th July 2023",
     "author": "CNIG",
     "org": "CNIG",
     "tags": "mapea,plugin",
