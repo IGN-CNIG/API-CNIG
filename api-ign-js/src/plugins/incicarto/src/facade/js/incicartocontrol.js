@@ -719,7 +719,6 @@ export default class IncicartoControl extends M.Control {
       if (url.startsWith('file:///')) {
         const index = url.lastIndexOf('/');
         localURL = `file://${url.substring(index)}`;
-        localURL = url;
       }
 
       if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
