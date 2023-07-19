@@ -16,11 +16,12 @@ const map = M.map({
 const mp = new Layerswitcher({
   collapsed: false,
   position: 'TL',
-  collapsible: false,
+  collapsible: true,
   isDraggable: false,
   // tooltip: 'Pruebas',
 });
 map.addPlugin(mp);
+window.mp = mp;
 
 const layerUA = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',

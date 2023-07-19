@@ -34,6 +34,20 @@ export default class Layerswitcher extends M.Plugin {
     this.controls_ = [];
 
     /**
+     * Name of the plugin
+     * @private
+     * @type {String}
+     */
+    this.name_ = 'layerswitcher';
+
+    /**
+     * Plugin parameters
+     * @public
+     * @type {Object}
+     */
+    this.options = options;
+
+    /**
      * Position of the plugin
      * @private
      * @type {string}
@@ -67,14 +81,6 @@ export default class Layerswitcher extends M.Plugin {
      * @type {Boolean}
      */
     this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
-
-
-    /**
-     * Name of the plugin
-     * @private
-     * @type {String}
-     */
-    this.name_ = 'layerswitcher';
 
     /**
      * Metadata from api.json
@@ -187,7 +193,18 @@ export default class Layerswitcher extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.collapsed}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**
@@ -211,5 +228,20 @@ export default class Layerswitcher extends M.Plugin {
   destroy() {
     this.map_.removeControls([this.control_]);
     [this.control_, this.controls_, this.panel_] = [null, null, null];
+  }
+
+  /**
+   * This function compare if pluging recieved by param is instance of M.plugin.Locator
+   *
+   * @public
+   * @function
+   * @param {M.plugin} plugin to comapre
+   * @api
+   */
+  equals(plugin) {
+    if (plugin instanceof Layerswitcher) {
+      return true;
+    }
+    return false;
   }
 }

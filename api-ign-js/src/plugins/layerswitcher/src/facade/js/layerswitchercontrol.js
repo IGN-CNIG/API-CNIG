@@ -68,6 +68,20 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
+  /**
+   * @function
+   * @public
+   * @api
+   */
+  render() {
+    this.getTemplateVariables(this.map_).then((templateVars) => {
+      const html = M.template.compileSync(template, {
+        vars: templateVars,
+      });
+      this.template_.innerHTML = html.innerHTML;
+    });
+  }
+
 
   /**
    * @function
@@ -86,7 +100,6 @@ export default class LayerswitcherControl extends M.Control {
 
         const overlayLayersPromise = Promise.all(overlayLayers.map(this.parseLayerForTemplate_));
         overlayLayersPromise.then(parsedOverlayLayers => success({
-          layers: overlayLayers,
           overlayLayers: parsedOverlayLayers,
           translations: {
             layers: getValue('layers'),
@@ -94,64 +107,6 @@ export default class LayerswitcherControl extends M.Control {
         }));
       }
     });
-  }
-
-  /**
-   * @function
-   * @public
-   * @api
-   */
-  render() {
-    this.getTemplateVariables(this.map_).then((templateVars) => {
-      const html = M.template.compileSync(template, {
-        vars: templateVars,
-      });
-      this.template_.innerHTML = html.innerHTML;
-    });
-  }
-
-  /**
-   * This function is called on the control activation
-   *
-   * @public
-   * @function
-   * @api
-   */
-  activate() {
-    super.activate();
-  }
-  /**
-   * This function is called on the control deactivation
-   *
-   * @public
-   * @function
-   * @api
-   */
-  deactivate() {
-    super.deactivate();
-  }
-  /**
-   * This function gets activation button
-   *
-   * @public
-   * @function
-   * @param {HTML} html of control
-   * @api
-   */
-  getActivationButton(html) {
-    return html.querySelector('.m-layerswitcher button');
-  }
-
-  /**
-   * This function compares controls
-   *
-   * @public
-   * @function
-   * @param {M.Control} control to compare
-   * @api
-   */
-  equals(control) {
-    return control instanceof LayerswitcherControl;
   }
 
   /**
@@ -164,13 +119,22 @@ export default class LayerswitcherControl extends M.Control {
     const layerTitle = layer.legend || layer.name;
     return new Promise((success, fail) => {
       const layerVarTemplate = {
-        visible: (layer.isVisible() === true),
-        id: layer.name,
         title: layerTitle,
         type: layer.type,
-        url: layer.url,
       };
       success(layerVarTemplate);
     });
+  }
+
+  /**
+   * This function compares controls
+   *
+   * @public
+   * @function
+   * @param {M.Control} control to compare
+   * @api
+   */
+  equals(control) {
+    return control instanceof LayerswitcherControl;
   }
 }
