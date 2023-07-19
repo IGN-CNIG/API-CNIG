@@ -100,6 +100,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].viewmanagement =
       pluginsLanguage.viewmanagement.esViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.esLocator;
+    configuration.translations[lang].comparators = pluginsLanguage.comparators.esComparators;
   } else if (lang === 'en') {
     configuration.translations[lang].attributions = pluginsLanguage.attributions.enAttributions;
     configuration.translations[lang].backimglayer = pluginsLanguage.backimglayer.enBackimglayer;
@@ -153,6 +154,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].viewmanagement =
       pluginsLanguage.viewmanagement.enViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.enLocator;
+    configuration.translations[lang].comparators = pluginsLanguage.comparators.enComparators;
   }
   return configuration.translations[lang];
 };
