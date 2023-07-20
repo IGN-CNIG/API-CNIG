@@ -265,18 +265,7 @@ class Map extends MObject {
    * @api
    */
   getBaseLayers() {
-    const baseLayers = this.getLayers().filter((layer) => {
-      let isBaseLayer = false;
-      if ((layer.type === LayerType.WMS) ||
-        (layer.type === LayerType.WMTS) ||
-        (layer.type === LayerType.MBTiles) ||
-        (layer.type === LayerType.MBTilesVector) ||
-        layer.type === LayerType.TMS) {
-        isBaseLayer = (layer.transparent !== true);
-      }
-      return isBaseLayer;
-    });
-    return baseLayers;
+    return this.getLayers().filter(layer => layer.transparent !== true);
   }
 
   /**
