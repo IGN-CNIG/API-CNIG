@@ -506,10 +506,6 @@
         margin-left: 10px;
     }
 
-    .m-areas>div.m-area>div.m-panel.opened {
-        z-index: 10;
-    }
-
     .m-areas>div.m-area>div.m-panel.m-plugin-comparators.opened>div.m-panel-controls>div.m-control.m-container.m-comparators>div#m-comparators-title {
         font-size: 13px;
         padding-left: 0;
@@ -1376,10 +1372,7 @@ Todo: see can i use and delete this commet */
 
     .m-plugin-comparators.opened {
         position: fixed !important;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 2147483647;
+        z-index: 9999 !important;
     }
 }
 
