@@ -384,6 +384,7 @@ URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!list
 https://componentes.cnig.es/api-core?comparators=TR*false*true*comparador*true**mirror*true*10*true*true*true
 
 ```
+No funciona ```https://componentes.cnig.es/api-core?comparators``` es necesario espeficiar alguno de los siguientes parámetros: transparencyParams, lyrcompareParams, mirrorpanelParams.
 
 ### Ejemplo de uso API-REST en base64
 
