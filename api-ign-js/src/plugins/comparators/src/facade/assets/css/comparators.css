@@ -499,11 +499,28 @@
 
 @media only screen and (max-width: 1000px) {
     .m-areas>div.m-area.m-right>div.m-panel.m-plugin-comparators.opened {
-        margin-right: 10px;
+        width: 100vw;
+        height: 100vh;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        margin: 0;
+        z-index: 999999 !important;
     }
 
-    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-comparators.opened {
-        margin-left: 10px;
+     .m-plugin-comparators.opened .m-panel-btn.g-cartografia-flecha-derecha,
+    .m-plugin-comparators.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+        position: absolute;
+        left: auto !important;
+        right: 0;
+        z-index: 999999;
+        box-shadow: none;
+    } 
+
+    div.m-area.m-top.m-right > div.m-panel.m-plugin-comparators.opened > div,  .m-control.m-container.m-comparators  {
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        width: 100% !important;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-comparators.opened>div.m-panel-controls>div.m-control.m-container.m-comparators>div#m-comparators-title {
@@ -1368,11 +1385,6 @@ Todo: see can i use and delete this commet */
     #set-mirror-4, 
     #set-mirror-3 {
         display: none !important;
-    }
-
-    .m-plugin-comparators.opened {
-        position: fixed !important;
-        z-index: 9999 !important;
     }
 }
 
