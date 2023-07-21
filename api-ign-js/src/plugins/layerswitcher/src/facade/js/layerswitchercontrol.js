@@ -64,6 +64,12 @@ export default class LayerswitcherControl extends M.Control {
         this.template_ = html;
         success(this.template_);
 
+        this.getPanel().getButtonPanel().addEventListener('click', (e) => {
+          if (!e.target.parentElement.classList.contains('collapsed')) {
+            this.render();
+          }
+        }, false);
+
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
 
         this.render();
@@ -86,6 +92,7 @@ export default class LayerswitcherControl extends M.Control {
       if (evt.target.classList.contains('m-layerswitcher-check')) {
         if (layer.transparent === true || !layer.isVisible()) {
           layer.setVisible(!layer.isVisible());
+          this.render();
         }
       }
     }
@@ -159,6 +166,7 @@ export default class LayerswitcherControl extends M.Control {
         visible: (layer.isVisible() === true),
         id: layer.name,
         url: layer.url,
+        outOfRange: !layer.inRange(),
       };
       success(layerVarTemplate);
     });

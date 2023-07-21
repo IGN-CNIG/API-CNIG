@@ -27,7 +27,11 @@ const capa2 = new M.layer.WMS({
   legend: 'capa2',
   tiled: false,
   transparent: true,
+}, {
+  maxScale: 28000000,
+  minScale: 14000000,
 });
+window.capa2 = capa2;
 
 capa2.setZIndex(99);
 

@@ -100,10 +100,18 @@ ul.m-layerswitcher-ullayers {
     display: flex;
 }
 
-.m-layerswitcher-ver {
+.m-layerswitcher-ver, .m-layerswitcher-ocultar {
     margin: 0 5px;
 }
 
-.m-layerswitcher-check {
+.m-layerswitcher-ver {
     color: #6abe47;
+}
+
+.m-layerswitcher-ocultar {
+    color: red;
+}
+
+.m-layerswitcher-outOfRange{
+    color: #9a9a9a;
 }
