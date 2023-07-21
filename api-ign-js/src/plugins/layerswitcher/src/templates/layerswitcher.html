@@ -1,7 +1,10 @@
 {{#*inline "layerswitcherLayer"}}
     {{#each layers}}
         <li class="m-layerswitcher-layer">
-            <div>
+            <div class="m-layerswitcher-title-layer">
+                <div class="m-visible-control">
+                    <span class="m-layerswitcher-check {{#if visible}}m-layerswitcher-ver{{^}}m-layerswitcher-ocultar{{/if}}"></span>
+                </div>
                 <div>
                     <table>
                         <tbody>

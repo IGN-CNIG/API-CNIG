@@ -129,10 +129,11 @@ export default class LayerswitcherControl extends M.Control {
    */
   parseLayerForTemplate_(layer) {
     const layerTitle = layer.legend || layer.name;
-    return new Promise((success, fail) => {
+    return new Promise((success) => {
       const layerVarTemplate = {
         title: layerTitle,
         type: layer.type,
+        visible: (layer.isVisible() === true),
       };
       success(layerVarTemplate);
     });

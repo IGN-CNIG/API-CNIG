@@ -12,17 +12,6 @@ const map = M.map({
   zoom: 9,
 });
 
-
-const mp = new Layerswitcher({
-  collapsed: false,
-  position: 'TL',
-  collapsible: true,
-  isDraggable: false,
-  // tooltip: 'Pruebas',
-});
-map.addPlugin(mp);
-window.mp = mp;
-
 const capa1 = new M.layer.WFS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
   namespace: 'tematicos',
@@ -60,6 +49,19 @@ const capa4 = new M.layer.WFS({
 });
 map.addWFS(capa4);
 
+const mp = new Layerswitcher({
+  collapsed: false,
+  position: 'TL',
+  collapsible: true,
+  isDraggable: false,
+  // tooltip: 'Pruebas',
+});
+map.addPlugin(mp);
+window.mp = mp;
+
+window.map = map;
+
+
 const capa5 = new M.layer.WMS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
   name: 'provincias_pob',
@@ -69,5 +71,3 @@ const capa5 = new M.layer.WMS({
 });
 
 map.addWMS(capa5);
-
-window.map = map;

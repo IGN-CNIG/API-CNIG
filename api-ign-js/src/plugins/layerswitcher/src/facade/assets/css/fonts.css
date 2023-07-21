@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'layerswitcher';
-    src: url('../fonts/layerswitcher.eot?5bh0ai');
-    src: url('../fonts/layerswitcher.eot?5bh0ai#iefix') format('embedded-opentype'),
-        url('../fonts/layerswitcher.woff2?5bh0ai') format('woff2'),
-        url('../fonts/layerswitcher.woff?5bh0ai') format('woff'),
-        url('../fonts/layerswitcher.ttf?5bh0ai') format('truetype'),
-        url('../fonts/layerswitcher.svg?5bh0ai#layerswitcher') format('svg');
+    src: url('../fonts/layerswitcher.eot?ykcvkv');
+    src: url('../fonts/layerswitcher.eot?ykcvkv#iefix') format('embedded-opentype'),
+        url('../fonts/layerswitcher.woff2?ykcvkv') format('woff2'),
+        url('../fonts/layerswitcher.woff?ykcvkv') format('woff'),
+        url('../fonts/layerswitcher.ttf?ykcvkv') format('truetype'),
+        url('../fonts/layerswitcher.svg?ykcvkv#layerswitcher') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -29,4 +29,12 @@
 .m-layerswitcher-layers:before {
   font-family: "layerswitcher" !important;
   content: "\e907";
+}
+
+.m-layerswitcher-ocultar:before {
+  content: "\e802";
+}
+
+.m-layerswitcher-ver:before {
+  content: "\e801";
 }
