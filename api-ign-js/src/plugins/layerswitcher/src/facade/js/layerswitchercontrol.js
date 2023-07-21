@@ -62,10 +62,33 @@ export default class LayerswitcherControl extends M.Control {
         }
 
         this.template_ = html;
-        success(html);
+        success(this.template_);
+
+        this.template_.addEventListener('click', this.clickLayer.bind(this), false);
+
         this.render();
       });
     });
+  }
+
+  clickLayer(evtParameter) {
+    const evt = (evtParameter || window.event);
+    const layerName = evt.target.getAttribute('data-layer-name');
+    const layerURL = evt.target.getAttribute('data-layer-url');
+    const layerType = evt.target.getAttribute('data-layer-type');
+    if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+      !M.utils.isNullOrEmpty(layerType)) {
+      evt.stopPropagation();
+      const layer = this.map_.getLayers().filter((l) => {
+        return l.name === layerName && l.url === layerURL && l.type === layerType;
+      })[0];
+      // show hide layer
+      if (evt.target.classList.contains('m-layerswitcher-check')) {
+        if (layer.transparent === true || !layer.isVisible()) {
+          layer.setVisible(!layer.isVisible());
+        }
+      }
+    }
   }
 
   /**
@@ -134,6 +157,8 @@ export default class LayerswitcherControl extends M.Control {
         title: layerTitle,
         type: layer.type,
         visible: (layer.isVisible() === true),
+        id: layer.name,
+        url: layer.url,
       };
       success(layerVarTemplate);
     });
