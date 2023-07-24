@@ -27,6 +27,7 @@
                         <span role="text">{{translations.layers}}</span>
                     </div>
                     {{#gt overlayLayers.length 0}}
+                        <span id="m-layerswitcher-hsalllayers" class="m-layerswitcher-ocultar m-layerswitcher-allstatus {{#if allVisible}}m-layerswitcher-ver{{^}}m-layerswitcher-ocultar{{/if}}"></span>
                         <ul class="m-layerswitcher-ullayers">
                             {{> layerswitcherLayer layers=overlayLayers}}
                         </ul>

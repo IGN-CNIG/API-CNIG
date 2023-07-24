@@ -104,6 +104,12 @@ ul.m-layerswitcher-ullayers {
     margin: 0 5px;
 }
 
+.m-layerswitcher-allstatus {
+    margin: 0 16px;
+    font-size: 15px;
+    color: orange !important
+}
+
 .m-layerswitcher-ver {
     color: #6abe47;
 }

@@ -44,6 +44,10 @@ export default class LayerswitcherControl extends M.Control {
     this.isDraggable_ = options.isDraggable;
 
     this.reverse = options.reverse;
+
+    this.overlayLayers = [];
+
+    this.statusShowHideAllLayers = true;
   }
 
   /**
@@ -67,7 +71,6 @@ export default class LayerswitcherControl extends M.Control {
         }
 
         this.template_ = html;
-        success(this.template_);
 
         this.getPanel().getButtonPanel().addEventListener('click', (e) => {
           if (!e.target.parentElement.classList.contains('collapsed')) {
@@ -78,19 +81,31 @@ export default class LayerswitcherControl extends M.Control {
         this.getImpl().registerEvents(map);
 
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
+
         this.render();
+        success(this.template_);
       });
     });
   }
+
+
+  showHideAllLayers() {
+    this.statusShowHideAllLayers = !this.statusShowHideAllLayers;
+    this.overlayLayers.forEach((layer) => {
+      layer.setVisible(this.statusShowHideAllLayers);
+    });
+  }
+
 
   clickLayer(evtParameter) {
     const evt = (evtParameter || window.event);
     const layerName = evt.target.getAttribute('data-layer-name');
     const layerURL = evt.target.getAttribute('data-layer-url');
     const layerType = evt.target.getAttribute('data-layer-type');
-    if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+    if (evt.target.id === 'm-layerswitcher-hsalllayers') {
+      this.showHideAllLayers();
+    } else if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
       !M.utils.isNullOrEmpty(layerType)) {
-      evt.stopPropagation();
       const layer = this.map_.getLayers().filter((l) => {
         return l.name === layerName && l.url === layerURL && l.type === layerType;
       })[0];
@@ -102,6 +117,7 @@ export default class LayerswitcherControl extends M.Control {
         }
       }
     }
+    evt.stopPropagation();
   }
 
   /**
@@ -128,21 +144,22 @@ export default class LayerswitcherControl extends M.Control {
     return new Promise((success, fail) => {
       // gets base layers and overlay layers
       if (!M.utils.isNullOrEmpty(map)) {
-        let overlayLayers = map.getRootLayers().filter((layer) => {
+        this.overlayLayers = map.getRootLayers().filter((layer) => {
           const isTransparent = (layer.transparent === true);
           const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
           return isTransparent && displayInLayerSwitcher;
         });
 
-        overlayLayers = this.reorderLayers(overlayLayers);
+        this.overlayLayers = this.reorderLayers(this.overlayLayers);
 
         const overlayLayersPromise =
-          Promise.all(overlayLayers.map(this.parseLayerForTemplate_.bind(this)));
+          Promise.all(this.overlayLayers.map(this.parseLayerForTemplate_.bind(this)));
         overlayLayersPromise.then(parsedOverlayLayers => success({
           overlayLayers: parsedOverlayLayers,
           translations: {
             layers: getValue('layers'),
           },
+          allVisible: !this.statusShowHideAllLayers,
         }));
       }
     });
