@@ -42,6 +42,8 @@ export default class LayerswitcherControl extends M.Control {
      * @type {Boolean}
      */
     this.isDraggable_ = options.isDraggable;
+
+    this.reverse = options.reverse;
   }
 
   /**
@@ -152,7 +154,11 @@ export default class LayerswitcherControl extends M.Control {
    * @api
    */
   reorderLayers(layers) {
-    return layers.sort((layer1, layer2) => layer1.getZIndex() - layer2.getZIndex()).reverse();
+    const result = layers.sort((layer1, layer2) => layer1.getZIndex() - layer2.getZIndex());
+    if (this.reverse) {
+      result.reverse();
+    }
+    return result;
   }
 
   /**
