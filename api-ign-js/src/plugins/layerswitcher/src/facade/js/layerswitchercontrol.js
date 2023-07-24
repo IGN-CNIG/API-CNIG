@@ -19,6 +19,9 @@ export default class LayerswitcherControl extends M.Control {
     const impl = new LayerswitcherImplControl();
     super(impl, 'Layerswitcher');
 
+    // facade control goes to impl as reference param
+    impl.facadeControl = this;
+
     /**
      * Map
      * @private
@@ -70,8 +73,9 @@ export default class LayerswitcherControl extends M.Control {
           }
         }, false);
 
-        this.template_.addEventListener('click', this.clickLayer.bind(this), false);
+        this.getImpl().registerEvents(map);
 
+        this.template_.addEventListener('click', this.clickLayer.bind(this), false);
         this.render();
       });
     });
@@ -130,7 +134,8 @@ export default class LayerswitcherControl extends M.Control {
 
         overlayLayers = this.reorderLayers(overlayLayers);
 
-        const overlayLayersPromise = Promise.all(overlayLayers.map(this.parseLayerForTemplate_));
+        const overlayLayersPromise =
+          Promise.all(overlayLayers.map(this.parseLayerForTemplate_.bind(this)));
         overlayLayersPromise.then(parsedOverlayLayers => success({
           overlayLayers: parsedOverlayLayers,
           translations: {
@@ -149,7 +154,6 @@ export default class LayerswitcherControl extends M.Control {
   reorderLayers(layers) {
     return layers.sort((layer1, layer2) => layer1.getZIndex() - layer2.getZIndex()).reverse();
   }
-
 
   /**
    *
