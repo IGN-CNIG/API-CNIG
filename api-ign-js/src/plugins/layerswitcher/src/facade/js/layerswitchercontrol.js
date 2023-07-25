@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /**
  * @module M/control/LayerswitcherControl
  */
@@ -44,6 +45,10 @@ export default class LayerswitcherControl extends M.Control {
     this.isDraggable_ = options.isDraggable;
 
     this.reverse = options.reverse;
+
+    this.modeSelectLayers = options.modeSelectLayers;
+
+    this.isCheckedLayerRadio = false;
 
     this.overlayLayers = [];
 
@@ -102,9 +107,11 @@ export default class LayerswitcherControl extends M.Control {
     const layerName = evt.target.getAttribute('data-layer-name');
     const layerURL = evt.target.getAttribute('data-layer-url');
     const layerType = evt.target.getAttribute('data-layer-type');
+    const selectLayer = evt.target.getAttribute('data-select-type');
+
     if (evt.target.id === 'm-layerswitcher-hsalllayers') {
       this.showHideAllLayers();
-    } else if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+    } else if (selectLayer === 'eye' && !M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
       !M.utils.isNullOrEmpty(layerType)) {
       const layer = this.map_.getLayers().filter((l) => {
         return l.name === layerName && l.url === layerURL && l.type === layerType;
@@ -116,6 +123,21 @@ export default class LayerswitcherControl extends M.Control {
           this.render();
         }
       }
+    } else if (selectLayer === 'radio' && !M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+      !M.utils.isNullOrEmpty(layerType)) {
+      this.overlayLayers.forEach((l) => {
+        if (l.name === layerName && l.url === layerURL && l.type === layerType) {
+          if (this.modeSelectLayers === 'radio') {
+            l.checkedLayer = 'true';
+          }
+          l.setVisible(true);
+        } else {
+          if (this.modeSelectLayers === 'radio') {
+            l.checkedLayer = 'false';
+          }
+          l.setVisible(false);
+        }
+      });
     }
     evt.stopPropagation();
   }
@@ -131,6 +153,13 @@ export default class LayerswitcherControl extends M.Control {
         vars: templateVars,
       });
       this.template_.innerHTML = html.innerHTML;
+      if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
+        const radioButtons = this.template_.querySelectorAll('input[type=radio]');
+        if (radioButtons.length > 0) {
+          this.isCheckedLayerRadio = true;
+          radioButtons[0].click();
+        }
+      }
     });
   }
 
@@ -154,13 +183,17 @@ export default class LayerswitcherControl extends M.Control {
 
         const overlayLayersPromise =
           Promise.all(this.overlayLayers.map(this.parseLayerForTemplate_.bind(this)));
-        overlayLayersPromise.then(parsedOverlayLayers => success({
-          overlayLayers: parsedOverlayLayers,
-          translations: {
-            layers: getValue('layers'),
-          },
-          allVisible: !this.statusShowHideAllLayers,
-        }));
+        overlayLayersPromise.then((parsedOverlayLayers) => {
+          success({
+            overlayLayers: parsedOverlayLayers,
+            translations: {
+              layers: getValue('layers'),
+            },
+            allVisible: !this.statusShowHideAllLayers,
+            isRadio: this.modeSelectLayers === 'radio',
+            isEyes: this.modeSelectLayers === 'eyes',
+          });
+        });
       }
     });
   }
@@ -194,6 +227,7 @@ export default class LayerswitcherControl extends M.Control {
         id: layer.name,
         url: layer.url,
         outOfRange: !layer.inRange(),
+        checkedLayer: layer.checkedLayer || 'false',
       };
       success(layerVarTemplate);
     });

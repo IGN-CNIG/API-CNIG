@@ -90,6 +90,8 @@ export default class Layerswitcher extends M.Plugin {
     this.metadata_ = api.metadata;
 
     this.reverse = M.utils.isUndefined(options.reverse) ? true : options.reverse;
+
+    this.modeSelectLayers = M.utils.isUndefined(options.modeSelectLayers) ? 'eyes' : options.modeSelectLayers;
   }
 
   /**
@@ -118,7 +120,11 @@ export default class Layerswitcher extends M.Plugin {
   addTo(map) {
     this.map_ = map;
     this.control_ =
-      new LayerswitcherControl({ isDraggable: this.isDraggable, reverse: this.reverse });
+      new LayerswitcherControl({
+        isDraggable: this.isDraggable,
+        reverse: this.reverse,
+        modeSelectLayers: this.modeSelectLayers,
+      });
     this.panel_ = new M.ui.Panel('Layerswitcher', {
       className: 'm-plugin-layerswitcher',
       collapsed: this.collapsed_,
