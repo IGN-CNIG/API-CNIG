@@ -20,47 +20,72 @@ export default class LayerswitcherControl extends M.Control {
     const impl = new LayerswitcherImplControl();
     super(impl, 'Layerswitcher');
 
-    // facade control goes to impl as reference param
+    // Fachada del control
     impl.facadeControl = this;
 
     /**
-     * Map
+     * Mapa
      * @private
-     * @type {Object}
+     * @type {M.Map}
      */
     this.map_ = undefined;
 
     /**
-     * Template
+     * Plantilla del control
      * @private
      * @type {String}
      */
     this.template_ = undefined;
 
     /**
-     * Option to allow the plugin to be draggable or not
+     * Determina si el plugin es draggable o no
      * @private
      * @type {Boolean}
      */
     this.isDraggable_ = options.isDraggable;
 
+    /**
+     * Determina el orden de visualización de las capas
+     * @private
+     * @type {Boolean}
+     */
     this.reverse = options.reverse;
 
+    /**
+     * Determina el modo de selección de las capas
+     * @private
+     * @type {Boolean}
+     */
     this.modeSelectLayers = options.modeSelectLayers;
 
+    /**
+     * Determina si se ha seleccionado una capa mediante radio
+     * @private
+     * @type {Boolean}
+     */
     this.isCheckedLayerRadio = false;
 
+    /**
+     * Listado de capas overlays
+     * @private
+     * @type {Boolean}
+     */
     this.overlayLayers = [];
 
+    /**
+     * Determina si se van a mostrar o si se van a ocultar todas las capas
+     * @private
+     * @type {Boolean}
+     */
     this.statusShowHideAllLayers = true;
   }
 
   /**
-   * This function creates the view
+   * Esta función crea la vista
    *
    * @public
    * @function
-   * @param {M.Map} map to add the control
+   * @param {M.Map} map mapa donde se añade el plugin
    * @api
    */
   createView(map) {
