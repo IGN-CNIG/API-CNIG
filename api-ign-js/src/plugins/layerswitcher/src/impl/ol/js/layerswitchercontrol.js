@@ -13,6 +13,7 @@ export default class LayerswitcherControl extends M.impl.Control {
    */
   addTo(map, html) {
     this.facadeMap_ = map;
+    this.firstRender_ = true;
     super.addTo(map, html);
   }
 
@@ -26,14 +27,26 @@ export default class LayerswitcherControl extends M.impl.Control {
    */
   registerEvents(map) {
     if (!M.utils.isNullOrEmpty(map)) {
-      const olMap = map.getMapImpl();
-      olMap.on('rendercomplete', () => {
-        this.facadeControl.render();
-      });
-      this.registerViewEvents_(olMap.getView());
-      this.registerLayersEvents_(olMap.getLayers());
-      olMap.on('change:view', () => this.onViewChange_.bind(this));
+      this.olMap = map.getMapImpl();
+      this.olMap.on('rendercomplete', () => this.fistRenderComplete.bind(this));
+
+      this.registerViewEvents_(this.olMap.getView());
+      this.registerLayersEvents_(this.olMap.getLayers());
+      this.olMap.on('change:view', () => this.onViewChange_.bind(this));
     }
+  }
+
+  fistRenderComplete() {
+    if (this.firstRender_) {
+      this.facadeControl.render();
+      this.firstRender_ = false;
+    } else {
+      this.removeFistRenderComplete();
+    }
+  }
+
+  removeFistRenderComplete() {
+    this.olMap.un('rendercomplete', () => this.fistRenderComplete.bind(this));
   }
 
   /**
@@ -45,10 +58,9 @@ export default class LayerswitcherControl extends M.impl.Control {
    */
   unregisterEvents() {
     if (!M.utils.isNullOrEmpty(this.facadeMap_)) {
-      const olMap = this.facadeMap_.getMapImpl();
-      this.unregisterViewEvents_(olMap.getView());
-      this.unregisterLayersEvents_(olMap.getLayers());
-      olMap.un('change:view', () => this.onViewChange_.bind(this));
+      this.unregisterViewEvents_(this.olMap.getView());
+      this.unregisterLayersEvents_(this.olMap.getLayers());
+      this.olMap.un('change:view', () => this.onViewChange_.bind(this));
     }
   }
 
@@ -95,7 +107,6 @@ export default class LayerswitcherControl extends M.impl.Control {
     this.unregisterViewEvents_(evt.oldValue);
 
     // attaches listeners to the new view
-    const olMap = this.facadeMap_.getMapImpl();
-    this.registerViewEvents_(olMap.getView());
+    this.registerViewEvents_(this.olMap.getView());
   }
 }

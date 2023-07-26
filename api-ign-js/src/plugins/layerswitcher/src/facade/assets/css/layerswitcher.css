@@ -150,3 +150,45 @@ ul.m-layerswitcher-ullayers {
 .m-layerswitcher-outOfRange-input:checked {
     background-color: #6abe47; 
 }
+
+/* Input range */
+.m-layerswitcher-container .m-layerswitcher-tools .m-layerswitcher-opacity {
+    margin-left: 25px;
+    width: 60%;
+}
+
+.m-layerswitcher-container .m-layerswitcher-tools {
+    margin-top: -0.5rem;
+    display: flex;
+}
+
+
+input[type=range].m-layerswitcher-transparency {
+    -webkit-appearance: none;
+    width: 98%;
+    height: 8px;
+}
+
+
+input[type=range].m-layerswitcher-transparency:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.31);
+    border-radius: 12px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    height: 10px;
+    width: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    background: #FFF;
+    -webkit-appearance: none;
+    margin-top: -4px;
+    background-color: #fda823;
+}

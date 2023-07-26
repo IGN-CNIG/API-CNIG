@@ -70,7 +70,6 @@ const mp = new Layerswitcher({
   position: 'TL',
   collapsible: true,
   isDraggable: false,
-  // tooltip: 'Pruebas',
   reverse: true,
   modeSelectLayers: 'radio',
 });

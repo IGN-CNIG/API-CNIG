@@ -77,6 +77,9 @@ export default class LayerswitcherControl extends M.Control {
 
         this.template_ = html;
 
+        this.template_.addEventListener('click', this.clickLayer.bind(this), false);
+        this.template_.addEventListener('input', this.inputLayer.bind(this), false);
+
         this.getPanel().getButtonPanel().addEventListener('click', (e) => {
           if (!e.target.parentElement.classList.contains('collapsed')) {
             this.render();
@@ -85,12 +88,40 @@ export default class LayerswitcherControl extends M.Control {
 
         this.getImpl().registerEvents(map);
 
-        this.template_.addEventListener('click', this.clickLayer.bind(this), false);
-
         this.render();
         success(this.template_);
       });
     });
+  }
+
+  // inputLayer(evtParameter) {
+  //   const evt = (evtParameter || window.event);
+  //   if (!M.utils.isNullOrEmpty(evt.target)) {
+  //     const layerName = evt.target.getAttribute('data-layer-name');
+  //     const layerURL = evt.target.getAttribute('data-layer-url');
+  //     const layerType = evt.target.getAttribute('data-layer-type');
+  //     if (!M.utils.isNullOrEmpty(layerName) &&
+  //       !M.utils.isNullOrEmpty(layerURL) && !M.utils.isNullOrEmpty(layerType)) {
+  //       evt.stopPropagation();
+  //       const layer = this.map_.getLayers().filter((l) => {
+  //         return l.name === layerName && l.url === layerURL && l.type === layerType;
+  //       })[0];
+  //       if (evt.target.classList.contains('m-layerswitcher-transparency')) {
+  //         layer.setOpacity(evt.target.value);
+  //       }
+  //     }
+  //   }
+  // }
+  inputLayer(evtParameter) {
+    const evt = (evtParameter || window.event);
+    if (!M.utils.isNullOrEmpty(evt.target)) {
+      const layerName = evt.target.getAttribute('data-layer-name');
+      if (!M.utils.isNullOrEmpty(layerName)) {
+        evt.stopPropagation();
+        const layer = this.map_.getLayers().filter(l => l.name === layerName)[0];
+        layer.setOpacity(evt.target.value);
+      }
+    }
   }
 
 
@@ -228,6 +259,7 @@ export default class LayerswitcherControl extends M.Control {
         url: layer.url,
         outOfRange: !layer.inRange(),
         checkedLayer: layer.checkedLayer || 'false',
+        opacity: layer.getOpacity(),
       };
       success(layerVarTemplate);
     });
