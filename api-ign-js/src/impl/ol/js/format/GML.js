@@ -78,19 +78,20 @@ class GML {
    * @api stable
    */
   returnFormatOl_(gmlVersion) {
-    if (gmlVersion === 'text/xml; subtype=gml/3.1.1') {
+    const formatGmlVersion = gmlVersion.replaceAll('"', '');
+    if (formatGmlVersion === 'text/xml; subtype=gml/3.1.1') {
       return new OLFormatGML(); // GML y GML3
-    } else if (gmlVersion === 'text/xml; subtype=gml/2.1.2') {
+    } else if (formatGmlVersion === 'text/xml; subtype=gml/2.1.2') {
       return new OLFormatGML2(); // GML2
-    } else if (gmlVersion === 'text/xml; subtype=gml/3.2.1') {
+    } else if (formatGmlVersion === 'text/xml; subtype=gml/3.2.1') {
       return new OLFormatGML32(); // GML32
-    } else if (gmlVersion === 'gml3') {
+    } else if (formatGmlVersion === 'gml3') {
       return new OLFormatGML3(); // GML3
-    } else if (gmlVersion === 'gml32') {
+    } else if (formatGmlVersion === 'gml32') {
       return new OLFormatGML32(); // GML32
-    } else if (gmlVersion === 'GML2') {
+    } else if (formatGmlVersion === 'GML2') {
       return new OLFormatGML2(); // GML2
-    } else if (gmlVersion === 'gml3') {
+    } else if (formatGmlVersion === 'gml3') {
       return new OLFormatGML3(); // GML3
     }
     return new OLFormatGML(); // Default GML
