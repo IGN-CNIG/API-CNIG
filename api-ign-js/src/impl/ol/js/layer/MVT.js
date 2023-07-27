@@ -237,43 +237,6 @@ class MVT extends Vector {
   }
 
   /**
-   * Pasa los objetos geográficos a la plantilla.
-   *
-   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-   *
-   * @public
-   * @function
-   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
-   * @returns {Object} "featuresTemplate.features".
-   * @api stable
-   */
-  parseFeaturesForTemplate_(features) {
-    const featuresTemplate = {
-      features: [],
-    };
-
-    features.forEach((feature) => {
-      const properties = feature.getAttributes();
-      const propertyKeys = Object.keys(properties);
-      const attributes = [];
-      propertyKeys.forEach((key) => {
-        attributes.push({
-          key,
-          value: properties[key],
-        });
-      });
-
-      const featureTemplate = {
-        id: feature.getId(),
-        attributes,
-      };
-
-      featuresTemplate.features.push(featureTemplate);
-    });
-    return featuresTemplate;
-  }
-
-  /**
    * Evento que se activa cuando se termina de hacer clic sobre
    * un objeto geográfico.
    *

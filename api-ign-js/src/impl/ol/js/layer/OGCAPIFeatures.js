@@ -4,7 +4,7 @@
 import FormatGeoJSON from 'M/format/GeoJSON';
 import { compileSync as compileTemplate } from 'M/util/Template';
 import geojsonPopupTemplate from 'templates/geojson_popup';
-import { isNullOrEmpty, isFunction, includes } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import Popup from 'M/Popup';
 import OLSourceVector from 'ol/source/Vector';
@@ -254,50 +254,6 @@ class OGCAPIFeatures extends Vector {
         }
       }
     }
-  }
-
-  /**
-   * Pasa los objetos geográficos a la plantilla.
-   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-   *
-   * @Public
-   * @function
-   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
-   * @returns {Object} "FeaturesTemplate.features".
-   * @api stable
-   */
-  parseFeaturesForTemplate_(features) {
-    const featuresTemplate = {
-      features: [],
-    };
-
-    features.forEach((feature) => {
-      const properties = feature.getAttributes();
-      const propertyKeys = Object.keys(properties);
-      const attributes = [];
-      propertyKeys.forEach((key) => {
-        let addAttribute = true;
-        // adds the attribute just if it is not in
-        // hiddenAttributes_ or it is in showAttributes_
-        if (!isNullOrEmpty(this.showAttributes_)) {
-          addAttribute = includes(this.showAttributes_, key);
-        } else if (!isNullOrEmpty(this.hiddenAttributes_)) {
-          addAttribute = !includes(this.hiddenAttributes_, key);
-        }
-        if (addAttribute) {
-          attributes.push({
-            key,
-            value: properties[key],
-          });
-        }
-      });
-      const featureTemplate = {
-        id: feature.getId(),
-        attributes,
-      };
-      featuresTemplate.features.push(featureTemplate);
-    });
-    return featuresTemplate;
   }
 
   /**
