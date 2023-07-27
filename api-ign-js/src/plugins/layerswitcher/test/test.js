@@ -71,8 +71,8 @@ const mp = new Layerswitcher({
   collapsible: true,
   isDraggable: false,
   reverse: true,
-  modeSelectLayers: 'radio',
-  tools: ['transparency'],
+  modeSelectLayers: 'eyes',
+  tools: ['transparency', 'legend'],
 });
 map.addPlugin(mp);
 window.mp = mp;

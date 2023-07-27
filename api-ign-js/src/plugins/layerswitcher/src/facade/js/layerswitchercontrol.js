@@ -92,6 +92,13 @@ export default class LayerswitcherControl extends M.Control {
      * @type {Boolean}
      */
     this.isTransparency = false;
+
+    /**
+     * Añadir control leyenda
+     * @public
+     * @type {Boolean}
+     */
+    this.isLegend = false;
   }
 
   /**
@@ -129,6 +136,9 @@ export default class LayerswitcherControl extends M.Control {
     this.tools.forEach((tool) => {
       if (tool === 'transparency') {
         this.isTransparency = true;
+      }
+      if (tool === 'legend') {
+        this.isLegend = true;
       }
     });
 
@@ -211,11 +221,13 @@ export default class LayerswitcherControl extends M.Control {
             overlayLayers: parsedOverlayLayers,
             translations: {
               layers: getValue('layers'),
+              show_hide: getValue('show_hide'),
             },
             allVisible: !this.statusShowHideAllLayers,
             isRadio: this.modeSelectLayers === 'radio',
             isEyes: this.modeSelectLayers === 'eyes',
             isTransparency: this.isTransparency,
+            isLegend: this.isLegend,
           });
         });
       }
@@ -243,7 +255,7 @@ export default class LayerswitcherControl extends M.Control {
       let layer = this.findLayer(evt);
       if (layer.length > 0) {
         layer = layer[0];
-        if (selectLayer === 'eye') {
+        if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'eye') {
           // show hide layer
           if (evt.target.classList.contains('m-layerswitcher-check')) {
             if (layer.transparent === true || !layer.isVisible()) {
@@ -251,7 +263,7 @@ export default class LayerswitcherControl extends M.Control {
               this.render();
             }
           }
-        } else if (selectLayer === 'radio') {
+        } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
           this.overlayLayers.forEach((l) => {
             if (l.name === layerName && l.url === layerURL && l.type === layerType) {
               l.checkedLayer = 'true';
@@ -262,6 +274,21 @@ export default class LayerswitcherControl extends M.Control {
             }
           });
           this.render();
+        } else if (evt.target.className.indexOf('m-layerswitcher-image') > -1) {
+          const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-layerswitcher-legend');
+          const legendUrl = layer.getLegendURL();
+          if (legendUrl instanceof Promise) {
+            legendUrl.then((url) => {
+              legend.querySelector('img').src = url;
+            });
+          } else {
+            legend.querySelector('img').src = legendUrl;
+          }
+          if (legend.style.display === 'block') {
+            legend.style.display = 'none';
+          } else {
+            legend.style.display = 'block';
+          }
         }
       }
     }
