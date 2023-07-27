@@ -81,6 +81,28 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   /**
+   * Esta función busca la capa
+   *
+   * @public
+   * @function
+   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
+   * @api
+   */
+  findLayer(evt) {
+    const layerName = evt.target.getAttribute('data-layer-name');
+    const layerURL = evt.target.getAttribute('data-layer-url');
+    const layerType = evt.target.getAttribute('data-layer-type');
+    let result = [];
+    if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+      !M.utils.isNullOrEmpty(layerType)) {
+      result = this.overlayLayers.filter((l) => {
+        return l.name === layerName && l.url === layerURL && l.type === layerType;
+      });
+    }
+    return result;
+  }
+
+  /**
    * Esta función crea la vista
    *
    * @public
@@ -119,88 +141,11 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
-  // inputLayer(evtParameter) {
-  //   const evt = (evtParameter || window.event);
-  //   if (!M.utils.isNullOrEmpty(evt.target)) {
-  //     const layerName = evt.target.getAttribute('data-layer-name');
-  //     const layerURL = evt.target.getAttribute('data-layer-url');
-  //     const layerType = evt.target.getAttribute('data-layer-type');
-  //     if (!M.utils.isNullOrEmpty(layerName) &&
-  //       !M.utils.isNullOrEmpty(layerURL) && !M.utils.isNullOrEmpty(layerType)) {
-  //       evt.stopPropagation();
-  //       const layer = this.map_.getLayers().filter((l) => {
-  //         return l.name === layerName && l.url === layerURL && l.type === layerType;
-  //       })[0];
-  //       if (evt.target.classList.contains('m-layerswitcher-transparency')) {
-  //         layer.setOpacity(evt.target.value);
-  //       }
-  //     }
-  //   }
-  // }
-  inputLayer(evtParameter) {
-    const evt = (evtParameter || window.event);
-    if (!M.utils.isNullOrEmpty(evt.target)) {
-      const layerName = evt.target.getAttribute('data-layer-name');
-      if (!M.utils.isNullOrEmpty(layerName)) {
-        evt.stopPropagation();
-        const layer = this.map_.getLayers().filter(l => l.name === layerName)[0];
-        layer.setOpacity(evt.target.value);
-      }
-    }
-  }
-
-
-  showHideAllLayers() {
-    this.statusShowHideAllLayers = !this.statusShowHideAllLayers;
-    this.overlayLayers.forEach((layer) => {
-      layer.setVisible(this.statusShowHideAllLayers);
-    });
-  }
-
-
-  clickLayer(evtParameter) {
-    const evt = (evtParameter || window.event);
-    const layerName = evt.target.getAttribute('data-layer-name');
-    const layerURL = evt.target.getAttribute('data-layer-url');
-    const layerType = evt.target.getAttribute('data-layer-type');
-    const selectLayer = evt.target.getAttribute('data-select-type');
-
-    if (evt.target.id === 'm-layerswitcher-hsalllayers') {
-      this.showHideAllLayers();
-    } else if (selectLayer === 'eye' && !M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
-      !M.utils.isNullOrEmpty(layerType)) {
-      const layer = this.map_.getLayers().filter((l) => {
-        return l.name === layerName && l.url === layerURL && l.type === layerType;
-      })[0];
-      // show hide layer
-      if (evt.target.classList.contains('m-layerswitcher-check')) {
-        if (layer.transparent === true || !layer.isVisible()) {
-          layer.setVisible(!layer.isVisible());
-          this.render();
-        }
-      }
-    } else if (selectLayer === 'radio' && !M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
-      !M.utils.isNullOrEmpty(layerType)) {
-      this.overlayLayers.forEach((l) => {
-        if (l.name === layerName && l.url === layerURL && l.type === layerType) {
-          if (this.modeSelectLayers === 'radio') {
-            l.checkedLayer = 'true';
-          }
-          l.setVisible(true);
-        } else {
-          if (this.modeSelectLayers === 'radio') {
-            l.checkedLayer = 'false';
-          }
-          l.setVisible(false);
-        }
-      });
-    }
-    evt.stopPropagation();
-  }
-
   /**
-   * @function
+   * Esta función renderiza la plantilla
+   *
    * @public
+   * @function
    * @api
    */
   render() {
@@ -209,6 +154,7 @@ export default class LayerswitcherControl extends M.Control {
         vars: templateVars,
       });
       this.template_.innerHTML = html.innerHTML;
+      // si el modo de selección es radio y no se ha seleccionado ninguna capa se marca la primera
       if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
         const radioButtons = this.template_.querySelectorAll('input[type=radio]');
         if (radioButtons.length > 0) {
@@ -219,10 +165,11 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
-
   /**
-   * @function
+   * Esta función devuelve las variables para la plantilla
+   *
    * @public
+   * @function
    * @api
    */
   getTemplateVariables(map) {
@@ -255,8 +202,55 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   /**
-   * @function
+   * Esta función detecta cuando se hace click en la plantilla
+   *
    * @public
+   * @function
+   * @api
+   */
+  clickLayer(evtParameter) {
+    const evt = (evtParameter || window.event);
+    const layerName = evt.target.getAttribute('data-layer-name');
+    const layerURL = evt.target.getAttribute('data-layer-url');
+    const layerType = evt.target.getAttribute('data-layer-type');
+    const selectLayer = evt.target.getAttribute('data-select-type');
+
+    if (evt.target.id === 'm-layerswitcher-hsalllayers') {
+      this.showHideAllLayers();
+    } else if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+      !M.utils.isNullOrEmpty(layerType)) {
+      const layer = this.findLayer(evt);
+      if (layer.length > 0) {
+        if (selectLayer === 'eye') {
+          // show hide layer
+          if (evt.target.classList.contains('m-layerswitcher-check')) {
+            if (layer.transparent === true || !layer.isVisible()) {
+              layer.setVisible(!layer.isVisible());
+              this.render();
+            }
+          }
+        } else if (selectLayer === 'radio') {
+          this.overlayLayers.forEach((l) => {
+            if (l.name === layerName && l.url === layerURL && l.type === layerType) {
+              l.checkedLayer = 'true';
+              l.setVisible(true);
+            } else {
+              l.checkedLayer = 'false';
+              l.setVisible(false);
+            }
+          });
+        }
+      }
+    }
+    evt.stopPropagation();
+  }
+
+  /**
+   * Esta función ordena todas las capas
+   *
+   * @public
+   * @param {Array<M.Layer>} layers listado de capas para ordenar
+   * @function
    * @api
    */
   reorderLayers(layers) {
@@ -268,10 +262,12 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   /**
+   * Esta función monta objeto con propiedades de la capa para la plantilla
    *
-   *
-   * @private
+   * @public
+   * @param {M.Layer} layer capa para parsear
    * @function
+   * @api
    */
   parseLayerForTemplate_(layer) {
     const layerTitle = layer.legend || layer.name;
@@ -287,6 +283,40 @@ export default class LayerswitcherControl extends M.Control {
         opacity: layer.getOpacity(),
       };
       success(layerVarTemplate);
+    });
+  }
+
+  /**
+   * Esta función gestiona el control de la opacidad de las capas
+   *
+   * @public
+   * @function
+   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
+   * @api
+   */
+  inputLayer(evtParameter) {
+    const evt = (evtParameter || window.event);
+    if (!M.utils.isNullOrEmpty(evt.target)) {
+      const layer = this.findLayer(evt);
+      if (layer.length > 0) {
+        evt.stopPropagation();
+        layer[0].setOpacity(evt.target.value);
+      }
+    }
+  }
+
+  /**
+   * Esta función muestra/oculta todas las capas
+   *
+   * @public
+   * @function
+   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
+   * @api
+   */
+  showHideAllLayers() {
+    this.statusShowHideAllLayers = !this.statusShowHideAllLayers;
+    this.overlayLayers.forEach((layer) => {
+      layer.setVisible(this.statusShowHideAllLayers);
     });
   }
 
