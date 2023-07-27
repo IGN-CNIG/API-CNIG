@@ -25,9 +25,11 @@
             </div>
             {{#if visible}}
                 <div class="m-layerswitcher-tools">
-                    <div class="m-layerswitcher-opacity">
-                        <input type="range" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-transparency" min="0" max="1" step="0.1" value="{{opacity}}" {{#unless visible}} disabled {{/unless}} {{#if outOfRange}} disabled {{/if}} />
-                    </div>
+                    {{#if ../isTransparency}}
+                        <div class="m-layerswitcher-opacity">
+                            <input type="range" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-transparency" min="0" max="1" step="0.1" value="{{opacity}}" {{#unless visible}} disabled {{/unless}} {{#if outOfRange}} disabled {{/if}} />
+                        </div>
+                    {{/if}}
                 </div>
             {{/if}}
         </li>

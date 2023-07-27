@@ -97,6 +97,13 @@ export default class Layerswitcher extends M.Plugin {
     this.modeSelectLayers = M.utils.isUndefined(options.modeSelectLayers) ? 'eyes' : options.modeSelectLayers;
 
     /**
+     * Controles para mostrar en las capas
+     * @public
+     * @type {Array}
+     */
+    this.tools = M.utils.isUndefined(options.tools) ? [] : options.tools;
+
+    /**
      * Metadata from api.json
      * @private
      * @type {Object}
@@ -134,6 +141,7 @@ export default class Layerswitcher extends M.Plugin {
         isDraggable: this.isDraggable,
         reverse: this.reverse,
         modeSelectLayers: this.modeSelectLayers,
+        tools: this.tools,
       });
     // creamos panel
     this.panel_ = new M.ui.Panel('Layerswitcher', {

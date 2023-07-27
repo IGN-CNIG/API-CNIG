@@ -78,6 +78,20 @@ export default class LayerswitcherControl extends M.Control {
      * @type {Boolean}
      */
     this.statusShowHideAllLayers = true;
+
+    /**
+     * Herramientas para mostrar en las capas
+     * @public
+     * @type {Array}
+     */
+    this.tools = options.tools;
+
+    /**
+     * Añadir control transparencia
+     * @public
+     * @type {Boolean}
+     */
+    this.isTransparency = false;
   }
 
   /**
@@ -112,6 +126,12 @@ export default class LayerswitcherControl extends M.Control {
    */
   createView(map) {
     this.map_ = map;
+    this.tools.forEach((tool) => {
+      if (tool === 'transparency') {
+        this.isTransparency = true;
+      }
+    });
+
     return new Promise((success, fail) => {
       this.getTemplateVariables(map).then((templateVars) => {
         const html = M.template.compileSync(template, {
@@ -195,6 +215,7 @@ export default class LayerswitcherControl extends M.Control {
             allVisible: !this.statusShowHideAllLayers,
             isRadio: this.modeSelectLayers === 'radio',
             isEyes: this.modeSelectLayers === 'eyes',
+            isTransparency: this.isTransparency,
           });
         });
       }

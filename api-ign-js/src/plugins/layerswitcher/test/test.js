@@ -72,6 +72,7 @@ const mp = new Layerswitcher({
   isDraggable: false,
   reverse: true,
   modeSelectLayers: 'radio',
+  tools: ['transparency'],
 });
 map.addPlugin(mp);
 window.mp = mp;
