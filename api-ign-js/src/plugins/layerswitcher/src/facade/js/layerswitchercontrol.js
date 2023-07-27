@@ -240,8 +240,9 @@ export default class LayerswitcherControl extends M.Control {
       this.showHideAllLayers();
     } else if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
       !M.utils.isNullOrEmpty(layerType)) {
-      const layer = this.findLayer(evt);
+      let layer = this.findLayer(evt);
       if (layer.length > 0) {
+        layer = layer[0];
         if (selectLayer === 'eye') {
           // show hide layer
           if (evt.target.classList.contains('m-layerswitcher-check')) {
@@ -260,6 +261,7 @@ export default class LayerswitcherControl extends M.Control {
               l.setVisible(false);
             }
           });
+          this.render();
         }
       }
     }
