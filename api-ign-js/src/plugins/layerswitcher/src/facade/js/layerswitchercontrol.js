@@ -99,6 +99,13 @@ export default class LayerswitcherControl extends M.Control {
      * @type {Boolean}
      */
     this.isLegend = false;
+
+    /**
+     * Añadir control zoom
+     * @public
+     * @type {Boolean}
+     */
+    this.isZoom = false;
   }
 
   /**
@@ -139,6 +146,9 @@ export default class LayerswitcherControl extends M.Control {
       }
       if (tool === 'legend') {
         this.isLegend = true;
+      }
+      if (tool === 'zoom') {
+        this.isZoom = true;
       }
     });
 
@@ -222,12 +232,14 @@ export default class LayerswitcherControl extends M.Control {
             translations: {
               layers: getValue('layers'),
               show_hide: getValue('show_hide'),
+              zoom: getValue('zoom'),
             },
             allVisible: !this.statusShowHideAllLayers,
             isRadio: this.modeSelectLayers === 'radio',
             isEyes: this.modeSelectLayers === 'eyes',
             isTransparency: this.isTransparency,
             isLegend: this.isLegend,
+            isZoom: this.isZoom,
           });
         });
       }
@@ -288,6 +300,22 @@ export default class LayerswitcherControl extends M.Control {
             legend.style.display = 'none';
           } else {
             legend.style.display = 'block';
+          }
+        } else if (evt.target.className.indexOf('m-layerswitcher-target') > -1) {
+          if (layerType === 'WMS' || layerType === 'WMTS' || layerType === 'WFS') {
+            const extent = layer.getMaxExtent();
+            this.map_.setBbox(extent);
+          } else if (layerType === 'KML') {
+            const extent = layer.getImpl().getExtent();
+            this.map_.setBbox(extent);
+          } else if (layerType === 'GeoJSON') {
+            const extent = this.getImpl().getGeoJSONExtent(layer);
+            this.map_.setBbox(extent);
+          } else if (layerType === 'OGCAPIFeatures') {
+            const extent = layer.getFeaturesExtent();
+            this.map_.setBbox(extent);
+          } else {
+            M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
           }
         }
       }

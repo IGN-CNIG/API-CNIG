@@ -205,7 +205,7 @@ input[type=range].m-layerswitcher-transparency:focus {
     cursor: pointer;
 }
 
-span.m-layerswitcher-image {
+span.m-layerswitcher-image, span.m-layerswitcher-target {
     font-size: 18px;
     position: relative;
     top: 3px;
