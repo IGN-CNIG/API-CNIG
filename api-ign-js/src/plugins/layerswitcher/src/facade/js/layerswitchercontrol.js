@@ -5,6 +5,7 @@
 import LayerswitcherImplControl from 'impl/layerswitchercontrol';
 import template from '../../templates/layerswitcher';
 import { getValue } from './i18n/language';
+import infoTemplate from '../../templates/information';
 
 export default class LayerswitcherControl extends M.Control {
   /**
@@ -106,6 +107,13 @@ export default class LayerswitcherControl extends M.Control {
      * @type {Boolean}
      */
     this.isZoom = false;
+
+    /**
+     * Añadir control informacion
+     * @public
+     * @type {Boolean}
+     */
+    this.isInformation = false;
   }
 
   /**
@@ -149,6 +157,9 @@ export default class LayerswitcherControl extends M.Control {
       }
       if (tool === 'zoom') {
         this.isZoom = true;
+      }
+      if (tool === 'information') {
+        this.isInformation = true;
       }
     });
 
@@ -233,6 +244,7 @@ export default class LayerswitcherControl extends M.Control {
               layers: getValue('layers'),
               show_hide: getValue('show_hide'),
               zoom: getValue('zoom'),
+              info_metadata: getValue('info_metadata'),
             },
             allVisible: !this.statusShowHideAllLayers,
             isRadio: this.modeSelectLayers === 'radio',
@@ -240,6 +252,7 @@ export default class LayerswitcherControl extends M.Control {
             isTransparency: this.isTransparency,
             isLegend: this.isLegend,
             isZoom: this.isZoom,
+            isInformation: this.isInformation,
           });
         });
       }
@@ -317,6 +330,103 @@ export default class LayerswitcherControl extends M.Control {
           } else {
             M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
           }
+        } else if (evt.target.className.indexOf('m-layerswitcher-info') > -1) {
+          const vars = {
+            name: layer.name, // nombre
+            title: layer.legend, // titulo
+            abstract: layer.capabilitiesMetadata.abstract, // resumen
+            translations: {
+              title: getValue('title'),
+              name: getValue('name'),
+              abstract: getValue('abstract'),
+              provider: getValue('provider'),
+              service_info: getValue('service_info'),
+              download_center: getValue('download_center'),
+              see_more: getValue('see_more'),
+              metadata_abstract: getValue('metadata_abstract'),
+              responsible: getValue('responsible'),
+              access_constraints: getValue('access_constraints'),
+              use_constraints: getValue('use_constraints'),
+              online_resources: getValue('online_resources'),
+              see_more_layer: getValue('see_more_layer'),
+              see_more_service: getValue('see_more_service'),
+              metadata: getValue('metadata'),
+            },
+          };
+
+          if (layer.type === 'WMS') {
+            vars.capabilities = M.utils.getWMSGetCapabilitiesUrl(layer.url, layer.version);
+            const murl = layer.capabilitiesMetadata.metadataURL;
+            vars.metadata = !M.utils.isNullOrEmpty(murl) ? murl[0].OnlineResource : '';
+            if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
+              vars.provider = `${layer.capabilitiesMetadata.attribution.Title}`;
+              if (layer.capabilitiesMetadata.attribution.OnlineResource !== undefined) {
+                vars.provider += `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
+              }
+            }
+          } else if (layer.type === 'WMTS') {
+            vars.capabilities = M.utils.getWMTSGetCapabilitiesUrl(layer.url);
+            if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
+              vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
+                `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+              const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
+              if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
+                const mail = sc.ContactInfo.Address.ElectronicMailAddress;
+                vars.provider += `<p><a class="m-layerswitcher-provider-link" href="mailto:${mail}">${mail}</a></p>`;
+              }
+            }
+          }
+
+          M.remote.get(vars.capabilities).then((response) => {
+            const source = response.text;
+            const urlService = source.split('<inspire_common:URL>')[1].split('<')[0].split('&amp;').join('&');
+            if (!M.utils.isNullOrEmpty(urlService) && M.utils.isUrl(urlService)) {
+              vars.metadata_service = urlService;
+              vars.hasMetadata = true;
+            }
+
+            if (M.utils.isNullOrEmpty(vars.metadata) || !M.utils.isUrl(vars.metadata)) {
+              delete vars.metadata;
+              if (vars.metadata_service !== undefined) {
+                M.remote.get(vars.metadata_service).then((response2) => {
+                  const metadataText = response2.text;
+                  const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+                    return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
+                  });
+
+                  if (unfiltered.length > 0) {
+                    const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
+                    vars.downloadCenter = downloadCenter;
+                  }
+
+                  this.renderInfo(vars);
+                }).catch((err) => {
+                  this.renderInfo(vars);
+                });
+              } else {
+                this.renderInfo(vars);
+              }
+            } else {
+              vars.hasMetadata = true;
+              M.remote.get(vars.metadata).then((response2) => {
+                const metadataText = response2.text;
+                const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+                  return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
+                });
+
+                if (unfiltered.length > 0) {
+                  const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
+                  vars.downloadCenter = downloadCenter;
+                }
+
+                this.renderInfo(vars);
+              }).catch((err) => {
+                this.renderInfo(vars);
+              });
+            }
+          }).catch((err) => {
+            this.renderInfo(vars);
+          });
         }
       }
     }
@@ -349,6 +459,8 @@ export default class LayerswitcherControl extends M.Control {
    */
   parseLayerForTemplate_(layer) {
     const layerTitle = layer.legend || layer.name;
+    const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
+      !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
     return new Promise((success) => {
       const layerVarTemplate = {
         title: layerTitle,
@@ -359,6 +471,7 @@ export default class LayerswitcherControl extends M.Control {
         outOfRange: !layer.inRange(),
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
+        metadata: hasMetadata,
       };
       success(layerVarTemplate);
     });
@@ -396,6 +509,30 @@ export default class LayerswitcherControl extends M.Control {
     this.overlayLayers.forEach((layer) => {
       layer.setVisible(this.statusShowHideAllLayers);
     });
+  }
+
+  /**
+   * Esta función compila la plantilla de información
+   * @public
+   * @function
+   * @param {Object} vars variables para la plantilla
+   * @api
+   */
+  renderInfo(vars) {
+    const info = M.template.compileSync(infoTemplate, {
+      jsonp: true,
+      parseToHtml: false,
+      vars,
+    });
+
+    M.dialog.info(info, getValue('layer_info'), this.order);
+    setTimeout(() => {
+      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+      const button = document.querySelector('div.m-dialog.info div.m-button > button');
+      button.innerHTML = getValue('close');
+      button.style.width = '75px';
+      button.style.backgroundColor = '#71a7d3';
+    }, 10);
   }
 
   /**

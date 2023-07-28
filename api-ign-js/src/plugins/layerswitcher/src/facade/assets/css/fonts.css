@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'layerswitcher';
-    src: url('../fonts/layerswitcher.eot?bjdu3i');
-    src: url('../fonts/layerswitcher.eot?bjdu3i#iefix') format('embedded-opentype'),
-        url('../fonts/layerswitcher.woff2?bjdu3i') format('woff2'),
-        url('../fonts/layerswitcher.woff?bjdu3i') format('woff'),
-        url('../fonts/layerswitcher.ttf?bjdu3i') format('truetype'),
-        url('../fonts/layerswitcher.svg?bjdu3i#layerswitcher') format('svg');
+    src: url('../fonts/layerswitcher.eot?5nzdo4');
+    src: url('../fonts/layerswitcher.eot?5nzdo4#iefix') format('embedded-opentype'),
+        url('../fonts/layerswitcher.woff2?5nzdo4') format('woff2'),
+        url('../fonts/layerswitcher.woff?5nzdo4') format('woff'),
+        url('../fonts/layerswitcher.ttf?5nzdo4') format('truetype'),
+        url('../fonts/layerswitcher.svg?5nzdo4#layerswitcher') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -44,4 +44,8 @@
 
 .m-layerswitcher-target:before {
   content: "\e9b3";
+}
+
+.m-layerswitcher-info:before {
+  content: "\ea0c";
 }

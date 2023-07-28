@@ -29,8 +29,8 @@ const capa2 = new M.layer.WMS({
   tiled: false,
   transparent: true,
 }, {
-  maxScale: 28000000,
-  minScale: 14000000,
+  // maxScale: 28000000,
+  // minScale: 14000000,
 });
 window.capa2 = capa2;
 
@@ -72,7 +72,7 @@ const mp = new Layerswitcher({
   isDraggable: false,
   reverse: true,
   modeSelectLayers: 'eyes',
-  tools: ['transparency', 'legend', 'zoom'],
+  tools: ['transparency', 'legend', 'zoom', 'information'],
 });
 map.addPlugin(mp);
 window.mp = mp;
