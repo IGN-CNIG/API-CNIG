@@ -181,10 +181,13 @@ export default class LayerswitcherControl extends M.Control {
         this.getPanel().getButtonPanel().addEventListener('click', (e) => {
           if (!e.target.parentElement.classList.contains('collapsed')) {
             this.render();
+            this.getImpl().registerEvent(map);
+          } else {
+            this.getImpl().removeRenderComplete();
           }
         }, false);
 
-        this.getImpl().registerEvents(map);
+        this.getImpl().registerEvent(map);
 
         this.render();
         success(this.template_);
@@ -299,7 +302,7 @@ export default class LayerswitcherControl extends M.Control {
             }
           });
           this.render();
-        } else if (evt.target.className.indexOf('m-layerswitcher-image') > -1) {
+        } else if (evt.target.className.indexOf('m-layerswitcher-icons-image') > -1) {
           const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-layerswitcher-legend');
           const legendUrl = layer.getLegendURL();
           if (legendUrl instanceof Promise) {
@@ -314,7 +317,7 @@ export default class LayerswitcherControl extends M.Control {
           } else {
             legend.style.display = 'block';
           }
-        } else if (evt.target.className.indexOf('m-layerswitcher-target') > -1) {
+        } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
           if (layerType === 'WMS' || layerType === 'WMTS' || layerType === 'WFS') {
             const extent = layer.getMaxExtent();
             this.map_.setBbox(extent);
@@ -330,7 +333,7 @@ export default class LayerswitcherControl extends M.Control {
           } else {
             M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
           }
-        } else if (evt.target.className.indexOf('m-layerswitcher-info') > -1) {
+        } else if (evt.target.className.indexOf('m-layerswitcher-icons-info') > -1) {
           const vars = {
             name: layer.name, // nombre
             title: layer.legend, // titulo
@@ -520,7 +523,7 @@ export default class LayerswitcherControl extends M.Control {
    */
   renderInfo(vars) {
     const info = M.template.compileSync(infoTemplate, {
-      jsonp: true,
+      jsonp: false,
       parseToHtml: false,
       vars,
     });

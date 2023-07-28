@@ -21,6 +21,7 @@ const capa1 = new M.layer.WFS({
 });
 window.capa1 = capa1;
 map.addWFS(capa1);
+// capa1.setZIndex(999999);
 
 const capa2 = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
@@ -75,6 +76,17 @@ const mp = new Layerswitcher({
   tools: ['transparency', 'legend', 'zoom', 'information'],
 });
 map.addPlugin(mp);
+
+const mp2 = new M.plugin.TOC({
+  collapsed: false,
+  position: 'TL',
+  collapsible: true,
+  isDraggable: false,
+  reverse: true,
+  modeSelectLayers: 'eyes',
+  tools: ['transparency', 'legend', 'zoom', 'information'],
+});
+map.addPlugin(mp2);
 window.mp = mp;
 
 window.map = map;

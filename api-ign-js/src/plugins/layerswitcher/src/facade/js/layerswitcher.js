@@ -149,7 +149,7 @@ export default class Layerswitcher extends M.Plugin {
       collapsed: this.collapsed_,
       collapsible: this.collapsible_,
       position: M.ui.position[this.position_],
-      collapsedButtonClass: 'm-layerswitcher-layers',
+      collapsedButtonClass: 'm-layerswitcher-icons-layers',
       tooltip: this.tooltip_,
     });
     this.controls_.push(this.control_);
@@ -157,22 +157,6 @@ export default class Layerswitcher extends M.Plugin {
     // se dispara evento cuando se añade al mapa
     this.control_.on(M.evt.ADDED_TO_MAP, () => {
       this.fire(M.evt.ADDED_TO_MAP);
-    });
-
-    // Se definen eventos para detectar cuando se han añadido/eliminado capas
-    this.map_.on(M.evt.COMPLETED, () => {
-      if (this.map_ !== null) {
-        this.map_.on(M.evt.ADDED_LAYER, () => {
-          if (this.control_ !== null) {
-            this.control_.render();
-          }
-        });
-        this.map_.on(M.evt.REMOVED_LAYER, () => {
-          if (this.control_ !== null) {
-            this.control_.render();
-          }
-        });
-      }
     });
 
     this.panel_.addControls(this.controls_);

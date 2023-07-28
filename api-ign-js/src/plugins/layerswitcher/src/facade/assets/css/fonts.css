@@ -1,19 +1,18 @@
 @font-face {
-    font-family: 'layerswitcher';
-    src: url('../fonts/layerswitcher.eot?5nzdo4');
-    src: url('../fonts/layerswitcher.eot?5nzdo4#iefix') format('embedded-opentype'),
-        url('../fonts/layerswitcher.woff2?5nzdo4') format('woff2'),
-        url('../fonts/layerswitcher.woff?5nzdo4') format('woff'),
-        url('../fonts/layerswitcher.ttf?5nzdo4') format('truetype'),
-        url('../fonts/layerswitcher.svg?5nzdo4#layerswitcher') format('svg');
+    font-family: 'layerswitcher-icons';
+    src: url('../fonts/layerswitcher-icons.eot?ig5ivh');
+    src: url('../fonts/layerswitcher-icons.eot?ig5ivh#iefix') format('embedded-opentype'),
+        url('../fonts/layerswitcher-icons.woff2?ig5ivh') format('woff2'),
+        url('../fonts/layerswitcher-icons.woff?ig5ivh') format('woff'),
+        url('../fonts/layerswitcher-icons.ttf?ig5ivh') format('truetype'),
+        url('../fonts/layerswitcher-icons.svg?ig5ivh#layerswitcher-icons') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
-
-[class^="m-layerswitcher-"], [class*=" m-layerswitcher-"] {
+[class^="m-layerswitcher-icons-"], [class*=" m-layerswitcher-icons-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'layerswitcher' !important;
+  font-family: 'layerswitcher-icons' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -26,26 +25,26 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.m-layerswitcher-ver:before {
+.m-layerswitcher-icons-ver:before {
   content: "\e801";
 }
 
-.m-layerswitcher-ocultar:before {
+.m-layerswitcher-icons-ocultar:before {
   content: "\e802";
 }
 
-.m-layerswitcher-layers:before {
+.m-layerswitcher-icons-layers:before {
   content: "\e907";
 }
 
-.m-layerswitcher-image:before {
+.m-layerswitcher-icons-image:before {
   content: "\e90d";
 }
 
-.m-layerswitcher-target:before {
+.m-layerswitcher-icons-target:before {
   content: "\e9b3";
 }
 
-.m-layerswitcher-info:before {
+.m-layerswitcher-icons-info:before {
   content: "\ea0c";
 }

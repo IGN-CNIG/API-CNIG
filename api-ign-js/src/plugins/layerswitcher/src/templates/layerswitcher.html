@@ -4,7 +4,7 @@
             <div class="m-layerswitcher-title-layer">
                 {{#if ../isEyes}}
                     <div class="m-visible-control">
-                        <span data-select-type="eye" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-check {{#if visible}}m-layerswitcher-ver{{^}}m-layerswitcher-ocultar{{/if}} {{#if outOfRange}}m-layerswitcher-outOfRange{{/if}}"></span>
+                        <span data-select-type="eye" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-check {{#if visible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}} {{#if outOfRange}}m-layerswitcher-outOfRange{{/if}}"></span>
                     </div>
                 {{/if}}
                 {{#if ../isRadio}}
@@ -32,13 +32,13 @@
                     {{/if}}
                     <div class="m-layerswitcher-action-tools">
                         {{#if ../isLegend}}
-                            <span title="{{../translations.show_hide}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-image"></span>
+                            <span title="{{../translations.show_hide}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-image"></span>
                         {{/if}}
                         {{#if ../isZoom}}
-                            <span title="{{../translations.zoom}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-target"></span>
+                            <span title="{{../translations.zoom}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-target"></span>
                         {{/if}}
                         {{#if metadata}}
-                            <span title="{{../translations.info_metadata}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-info"></span>
+                            <span title="{{../translations.info_metadata}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-info"></span>
                         {{/if}}
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                     </div>
                     {{#gt overlayLayers.length 0}}
                         {{#if isEyes}}
-                            <span id="m-layerswitcher-hsalllayers" class="m-layerswitcher-ocultar m-layerswitcher-allstatus {{#if allVisible}}m-layerswitcher-ver{{^}}m-layerswitcher-ocultar{{/if}}"></span>
+                            <span id="m-layerswitcher-hsalllayers" class="m-layerswitcher-icons-ocultar m-layerswitcher-allstatus {{#if allVisible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}}"></span>
                         {{/if}}
                         <ul class="m-layerswitcher-ullayers">
                             {{> layerswitcherLayer layers=overlayLayers}}
