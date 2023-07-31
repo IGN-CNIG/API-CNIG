@@ -6,6 +6,7 @@ import LayerswitcherImplControl from 'impl/layerswitchercontrol';
 import template from '../../templates/layerswitcher';
 import { getValue } from './i18n/language';
 import infoTemplate from '../../templates/information';
+import configTemplate from '../../templates/config';
 
 export default class LayerswitcherControl extends M.Control {
   /**
@@ -120,6 +121,13 @@ export default class LayerswitcherControl extends M.Control {
      * @public
      * @type {Boolean}
      */
+    this.isStyle = false;
+
+    /**
+     * Añadir control eliminar
+     * @public
+     * @type {Boolean}
+     */
     this.isDelete = false;
 
     /**
@@ -174,6 +182,9 @@ export default class LayerswitcherControl extends M.Control {
       }
       if (tool === 'information') {
         this.isInformation = true;
+      }
+      if (tool === 'style') {
+        this.isStyle = true;
       }
       if (tool === 'delete') {
         this.isDelete = true;
@@ -268,6 +279,7 @@ export default class LayerswitcherControl extends M.Control {
               zoom: getValue('zoom'),
               info_metadata: getValue('info_metadata'),
               remove_layer: getValue('remove_layer'),
+              change_style: getValue('change_style'),
             },
             allVisible: !this.statusShowHideAllLayers,
             isRadio: this.modeSelectLayers === 'radio',
@@ -276,6 +288,7 @@ export default class LayerswitcherControl extends M.Control {
             isLegend: this.isLegend,
             isZoom: this.isZoom,
             isInformation: this.isInformation,
+            isStyle: this.isStyle,
             isDelete: this.isDelete,
           });
         });
@@ -403,12 +416,62 @@ export default class LayerswitcherControl extends M.Control {
           }).catch((err) => {
             this.renderInfo(vars);
           });
+        } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
+          let otherStyles = [];
+          if (!M.utils.isUndefined(layer.capabilitiesMetadata) &&
+            !M.utils.isUndefined(layer.capabilitiesMetadata.style)) {
+            otherStyles = layer.capabilitiesMetadata.style;
+          }
+          const config = M.template.compileSync(configTemplate, {
+            jsonp: true,
+            parseToHtml: false,
+            vars: {
+              styles: otherStyles,
+              translations: {
+                select_style: getValue('select_style'),
+                change: getValue('change'),
+                style: getValue('style'),
+                default_style: getValue('default_style'),
+                selected: getValue('selected'),
+              },
+            },
+          });
+
+          M.dialog.info(config, getValue('configure_layer'));
+          setTimeout(() => {
+            const selector = '#m-layerswitcher-style button';
+            document.querySelector(selector).addEventListener('click', this.changeLayerConfig.bind(this, layer, otherStyles));
+            document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+            const button = document.querySelector('div.m-dialog.info div.m-button > button');
+            button.innerHTML = getValue('close');
+            button.style.width = '75px';
+            button.style.backgroundColor = '#71a7d3';
+          }, 10);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-delete') > -1) {
           this.map_.removeLayers(layer);
         }
       }
     }
     evt.stopPropagation();
+  }
+
+  changeLayerConfig(layer) {
+    const styleSelected = document.querySelector('#m-layerswitcher-style-select').value;
+    if (styleSelected !== '') {
+      layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
+      document.querySelector('div.m-mapea-container div.m-dialog').remove();
+      const cm = layer.capabilitiesMetadata;
+      if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
+        const filtered = layer.capabilitiesMetadata.style.filter((style) => {
+          return style.Name === styleSelected;
+        });
+
+        if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
+          const newURL = filtered[0].LegendURL[0].OnlineResource;
+          layer.setLegendURL(newURL);
+        }
+      }
+    }
   }
 
   informationProvider(layer) {
@@ -504,6 +567,7 @@ export default class LayerswitcherControl extends M.Control {
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
         metadata: hasMetadata,
+        hasStyles: hasMetadata && layer.capabilitiesMetadata.style.length > 1,
       };
       success(layerVarTemplate);
     });
