@@ -116,6 +116,13 @@ export default class LayerswitcherControl extends M.Control {
     this.isInformation = false;
 
     /**
+     * Añadir control eliminar
+     * @public
+     * @type {Boolean}
+     */
+    this.isDelete = false;
+
+    /**
      * Permite saber si el plugin está colapsado o no
      * @private
      * @type {boolean}
@@ -167,6 +174,9 @@ export default class LayerswitcherControl extends M.Control {
       }
       if (tool === 'information') {
         this.isInformation = true;
+      }
+      if (tool === 'delete') {
+        this.isDelete = true;
       }
     });
 
@@ -257,6 +267,7 @@ export default class LayerswitcherControl extends M.Control {
               show_hide: getValue('show_hide'),
               zoom: getValue('zoom'),
               info_metadata: getValue('info_metadata'),
+              remove_layer: getValue('remove_layer'),
             },
             allVisible: !this.statusShowHideAllLayers,
             isRadio: this.modeSelectLayers === 'radio',
@@ -265,6 +276,7 @@ export default class LayerswitcherControl extends M.Control {
             isLegend: this.isLegend,
             isZoom: this.isZoom,
             isInformation: this.isInformation,
+            isDelete: this.isDelete,
           });
         });
       }
@@ -297,7 +309,6 @@ export default class LayerswitcherControl extends M.Control {
           if (evt.target.classList.contains('m-layerswitcher-check')) {
             if (layer.transparent === true || !layer.isVisible()) {
               layer.setVisible(!layer.isVisible());
-              this.render();
             }
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
@@ -310,7 +321,6 @@ export default class LayerswitcherControl extends M.Control {
               l.setVisible(false);
             }
           });
-          this.render();
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-image') > -1) {
           const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-layerswitcher-legend');
           const legendUrl = layer.getLegendURL();
@@ -393,6 +403,8 @@ export default class LayerswitcherControl extends M.Control {
           }).catch((err) => {
             this.renderInfo(vars);
           });
+        } else if (evt.target.className.indexOf('m-layerswitcher-icons-delete') > -1) {
+          this.map_.removeLayers(layer);
         }
       }
     }
@@ -413,7 +425,7 @@ export default class LayerswitcherControl extends M.Control {
     }
     if (layer.type === 'WMTS') {
       provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
-           `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+        `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
       const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
       if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
         const mail = sc.ContactInfo.Address.ElectronicMailAddress;

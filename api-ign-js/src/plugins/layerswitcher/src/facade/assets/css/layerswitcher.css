@@ -205,7 +205,7 @@ input[type=range].m-layerswitcher-transparency:focus {
     cursor: pointer;
 }
 
-span.m-layerswitcher-icons-image, span.m-layerswitcher-icons-target, span.m-layerswitcher-icons-info {
+span.m-layerswitcher-icons-image, span.m-layerswitcher-icons-target, span.m-layerswitcher-icons-info, span.m-layerswitcher-icons-delete {
     font-size: 18px;
     position: relative;
     top: 3px;

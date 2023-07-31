@@ -42,6 +42,9 @@
                                 <span title="{{../translations.info_metadata}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-info"></span>
                             {{/if}}
                         {{/if}}
+                        {{#if ../isDelete}}
+                            <span title="{{../translations.remove_layer}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-delete"></span>
+                        {{/if}}
                     </div>
                 </div>
                 <div class="m-layerswitcher-legend">
