@@ -37,8 +37,10 @@
                         {{#if ../isZoom}}
                             <span title="{{../translations.zoom}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-target"></span>
                         {{/if}}
-                        {{#if metadata}}
-                            <span title="{{../translations.info_metadata}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-info"></span>
+                        {{#if ../isInformation}}
+                            {{#if metadata}}
+                                <span title="{{../translations.info_metadata}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-info"></span>
+                            {{/if}}
                         {{/if}}
                     </div>
                 </div>

@@ -84,7 +84,6 @@ const mp2 = new M.plugin.TOC({
   isDraggable: false,
   reverse: true,
   modeSelectLayers: 'eyes',
-  tools: ['transparency', 'legend', 'zoom', 'information'],
 });
 map.addPlugin(mp2);
 window.mp = mp;

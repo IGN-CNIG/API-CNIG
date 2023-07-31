@@ -114,6 +114,13 @@ export default class LayerswitcherControl extends M.Control {
      * @type {Boolean}
      */
     this.isInformation = false;
+
+    /**
+     * Permite saber si el plugin está colapsado o no
+     * @private
+     * @type {boolean}
+     */
+    this.collapsed = options.collapsed;
   }
 
   /**
@@ -187,7 +194,9 @@ export default class LayerswitcherControl extends M.Control {
           }
         }, false);
 
-        this.getImpl().registerEvent(map);
+        if (this.collapsed === false) {
+          this.getImpl().registerEvent(map);
+        }
 
         this.render();
         success(this.template_);

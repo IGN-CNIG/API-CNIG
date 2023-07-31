@@ -142,6 +142,7 @@ export default class Layerswitcher extends M.Plugin {
         reverse: this.reverse,
         modeSelectLayers: this.modeSelectLayers,
         tools: this.tools,
+        collapsed: this.collapsed_,
       });
     // creamos panel
     this.panel_ = new M.ui.Panel('Layerswitcher', {
