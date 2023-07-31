@@ -366,28 +366,11 @@ export default class LayerswitcherControl extends M.Control {
             },
           };
 
-          if (layer.type === 'WMS') {
-            vars.capabilities = M.utils.getWMSGetCapabilitiesUrl(layer.url, layer.version);
-            const murl = layer.capabilitiesMetadata.metadataURL;
-            vars.metadata = !M.utils.isNullOrEmpty(murl) ? murl[0].OnlineResource : '';
-            if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
-              vars.provider = `${layer.capabilitiesMetadata.attribution.Title}`;
-              if (layer.capabilitiesMetadata.attribution.OnlineResource !== undefined) {
-                vars.provider += `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
-              }
-            }
-          } else if (layer.type === 'WMTS') {
-            vars.capabilities = M.utils.getWMTSGetCapabilitiesUrl(layer.url);
-            if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
-              vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
-                `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
-              const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
-              if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
-                const mail = sc.ContactInfo.Address.ElectronicMailAddress;
-                vars.provider += `<p><a class="m-layerswitcher-provider-link" href="mailto:${mail}">${mail}</a></p>`;
-              }
-            }
+          vars.capabilities = this.addCapabilitiesInformation(layer);
+          if (layer.capabilitiesMetadata.metadataURL) {
+            vars.metadata = layer.capabilitiesMetadata.metadataURL[0].OnlineResource;
           }
+          vars.provider = this.informationProvider(layer);
 
           M.remote.get(vars.capabilities).then((response) => {
             const source = response.text;
@@ -398,43 +381,14 @@ export default class LayerswitcherControl extends M.Control {
             }
 
             if (M.utils.isNullOrEmpty(vars.metadata) || !M.utils.isUrl(vars.metadata)) {
-              delete vars.metadata;
               if (vars.metadata_service !== undefined) {
-                M.remote.get(vars.metadata_service).then((response2) => {
-                  const metadataText = response2.text;
-                  const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
-                    return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
-                  });
-
-                  if (unfiltered.length > 0) {
-                    const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
-                    vars.downloadCenter = downloadCenter;
-                  }
-
-                  this.renderInfo(vars);
-                }).catch((err) => {
-                  this.renderInfo(vars);
-                });
+                this.infoDownloadCenter(vars.metadata_service, vars);
               } else {
                 this.renderInfo(vars);
               }
             } else {
               vars.hasMetadata = true;
-              M.remote.get(vars.metadata).then((response2) => {
-                const metadataText = response2.text;
-                const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
-                  return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
-                });
-
-                if (unfiltered.length > 0) {
-                  const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
-                  vars.downloadCenter = downloadCenter;
-                }
-
-                this.renderInfo(vars);
-              }).catch((err) => {
-                this.renderInfo(vars);
-              });
+              this.infoDownloadCenter(vars.metadata, vars);
             }
           }).catch((err) => {
             this.renderInfo(vars);
@@ -443,6 +397,60 @@ export default class LayerswitcherControl extends M.Control {
       }
     }
     evt.stopPropagation();
+  }
+
+  informationProvider(layer) {
+    if (M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
+      return false;
+    }
+    let provider = '';
+
+    if (layer.type === 'WMS') {
+      provider = `${layer.capabilitiesMetadata.attribution.Title}`;
+      if (layer.capabilitiesMetadata.attribution.OnlineResource !== undefined) {
+        provider += `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
+      }
+    }
+    if (layer.type === 'WMTS') {
+      provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
+           `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+      const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
+      if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
+        const mail = sc.ContactInfo.Address.ElectronicMailAddress;
+        provider += `<p><a class="m-layerswitcher-provider-link" href="mailto:${mail}">${mail}</a></p>`;
+      }
+    }
+
+    return provider;
+  }
+
+  addCapabilitiesInformation(layer) {
+    if (layer.type === 'WMS') {
+      return M.utils.getWMSGetCapabilitiesUrl(layer.url, layer.version);
+    }
+
+    if (layer.type === 'WMTS') {
+      return M.utils.getWMTSGetCapabilitiesUrl(layer.url);
+    }
+    return false;
+  }
+
+  infoDownloadCenter(url, vars) {
+    M.remote.get(url).then((response) => {
+      const metadataText = response.text;
+      const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+        return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
+      });
+
+      if (unfiltered.length > 0) {
+        const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
+        vars.downloadCenter = downloadCenter;
+      }
+
+      this.renderInfo(vars);
+    }).catch((err) => {
+      this.renderInfo(vars);
+    });
   }
 
   /**
