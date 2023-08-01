@@ -189,7 +189,7 @@
 .mirrorpanel-grid.modeViz4 .mirror4,
 .mirrorpanel-grid.modeViz5 .mirror4,
 .mirrorpanel-grid.modeViz6 .mirror4 {
-	display: block !important;
+	display: block !important; 
 }
 
 .mirror1 { grid-area: mirror1; }

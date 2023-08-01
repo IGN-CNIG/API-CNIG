@@ -198,7 +198,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
         ShareMap: {}, // Opciones por defecto
       },
       map3: {
-        constrols: ['scale'],
+        controls: ['scale'],
         FullTOC: {
           position: 'TL',
         },
@@ -433,7 +433,7 @@ Ejemplo de constructor:
     principalMap: true,
     enabledControlsPlugins: {
       map2: {
-        constrols: ['scale'],
+        controls: ['scale'],
         FullTOC: {
           position: 'TL',
         },

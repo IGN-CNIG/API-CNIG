@@ -485,7 +485,7 @@ export default class MirrorpanelControl extends M.Control {
   }
 
   addControlsPlugins(mapLyr, p, k) {
-    if (p === 'constrols') {
+    if (p === 'controls') {
       this.mapL[mapLyr].addControls(this.enabledControlsPlugins[k][p]);
     } else {
       this.mapL[mapLyr].addPlugin(new M.plugin[p](this.enabledControlsPlugins[k][p]));

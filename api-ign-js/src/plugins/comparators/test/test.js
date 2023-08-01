@@ -11,17 +11,6 @@ const map = M.map({
   bbox: [323020, 4126873, 374759, 4152013],
 });
 
-const mp5 = new M.plugin.Popup({
-  position: 'TR',
-  collapsed: true,
-  collapsible: true,
-  url_es: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/es.html',
-  url_en: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/iberpix/ayuda/en.html',
-  tooltip: 'Ayuda',
-});
-
-map.addPlugin(mp5);
-
 const SENTINELlistBaseLayersByString = [
   'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
   'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true',
@@ -272,7 +261,7 @@ const mp = new Comparators({
         ShareMap: {}, // Opciones por defecto
       },
       map3: {
-        constrols: ['scale'],
+        controls: ['scale'],
         FullTOC: {
           position: 'TL',
         },
