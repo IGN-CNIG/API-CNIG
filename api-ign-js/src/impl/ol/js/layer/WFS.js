@@ -114,7 +114,9 @@ class WFS extends Vector {
    */
   addTo(map) {
     super.addTo(map);
-    this.updateSource_();
+    // Se sobrescribe el método updateSource_ capa vector
+    // Cuidado primera vez que entra es _draw_
+    // this.updateSource_();
     map.getImpl().on(EventType.CHANGE, () => this.refresh());
   }
 
