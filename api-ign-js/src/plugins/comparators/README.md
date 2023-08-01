@@ -45,8 +45,8 @@ Los modos de comparación son: Cortina, "spy eye" y modo espejo.
 
 
 ```html
- <link href="../../plugins/comparators/comparators.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/comparators/comparators.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/comparators/comparators.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/comparators/comparators.ol.min.js"></script>
 ```
 
 
@@ -161,7 +161,7 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
 Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue la siguiente estructura:
   - Servicio,Leyenda,URL,Nombre. Separados por "*".
 ```javascript
- const mp = new Comparators({
+ const mp = new M.plugin.Comparators({
   position: 'TR',
   collapsed: false,
   collapsible: true,
