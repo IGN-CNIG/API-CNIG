@@ -2,6 +2,9 @@
 /**
  * @module M/control/LayerswitcherControl
  */
+
+import Sortable from 'sortablejs';
+
 import LayerswitcherImplControl from 'impl/layerswitchercontrol';
 import template from '../../templates/layerswitcher';
 import { getValue } from './i18n/language';
@@ -131,6 +134,13 @@ export default class LayerswitcherControl extends M.Control {
     this.isDelete = false;
 
     /**
+     * Permite saber si se permite movimiento de capas
+     * @public
+     * @type {boolean}
+     */
+    this.isMoveLayers = options.isMoveLayers;
+
+    /**
      * Permite saber si el plugin está colapsado o no
      * @private
      * @type {boolean}
@@ -245,6 +255,14 @@ export default class LayerswitcherControl extends M.Control {
           this.isCheckedLayerRadio = true;
           radioButtons[0].click();
         }
+      }
+
+      const layerList = this.template_.querySelector('.m-layerswitcher-ullayers');
+      if (layerList !== null && this.isMoveLayers) {
+        Sortable.create(layerList, {
+          animation: 150,
+          ghostClass: 'm-fulltoc-gray-shadow',
+        });
       }
     });
   }

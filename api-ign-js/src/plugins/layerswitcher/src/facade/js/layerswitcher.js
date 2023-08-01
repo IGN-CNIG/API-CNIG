@@ -89,6 +89,15 @@ export default class Layerswitcher extends M.Plugin {
      */
     this.reverse = M.utils.isUndefined(options.reverse) ? true : options.reverse;
 
+
+    /**
+     * Permite saber si se permite movimiento de capas
+     * @public
+     * @type {boolean}
+     */
+    this.isMoveLayers = options.isMoveLayers || false;
+    console.log(this.isMoveLayers);
+
     /**
      * Determina el modo de selección de las capas
      * @public
@@ -143,6 +152,7 @@ export default class Layerswitcher extends M.Plugin {
         modeSelectLayers: this.modeSelectLayers,
         tools: this.tools,
         collapsed: this.collapsed_,
+        isMoveLayers: this.isMoveLayers,
       });
     // creamos panel
     this.panel_ = new M.ui.Panel('Layerswitcher', {

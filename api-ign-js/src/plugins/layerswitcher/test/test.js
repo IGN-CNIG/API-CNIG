@@ -74,6 +74,7 @@ const mp = new Layerswitcher({
   reverse: true,
   modeSelectLayers: 'eyes',
   tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
+  isMoveLayers: true,
 });
 map.addPlugin(mp);
 

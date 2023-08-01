@@ -303,3 +303,8 @@ div.m-layerswitcher-legend>img {
     color: white;
     font-weight: bold;
 }
+
+.m-layerswitcher-gray-shadow {
+    opacity: 0.3;
+    background-color: #D1E6F8;
+}
