@@ -205,6 +205,9 @@ class WMS extends LayerBase {
      * WMS ratio. Tamaño de las solicitudes de las imágenes.
      */
     this.ratio = options.ratio || 1;
+    if (options.ratio < 1) {
+      console.error('El ratio debe ser 1 o superior');
+    }
   }
 
   /**
