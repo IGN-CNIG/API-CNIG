@@ -86,7 +86,7 @@ class Features extends Base {
    */
   addTo(map) {
     this.map_ = map;
-    this.map_.on(EventType.MOVE, this.moveOverMap_.bind(this));
+    this.map_.on(EventType.MOVE_MOUSE, this.moveOverMap_.bind(this));
     this.map_.on(EventType.CLICK, this.clickOnMap_.bind(this));
     this.getImpl().addTo(this.map_);
     this.fire(EventType.ADDED_TO_MAP);
@@ -227,7 +227,7 @@ class Features extends Base {
   hoverFeatures_(features, layer, evt) {
     this.prevHoverFeatures_[layer.name] = this.prevHoverFeatures_[layer.name].concat(features);
     layer.fire(EventType.HOVER_FEATURES, [features, evt]);
-    this.getImpl().addCursorPointer();
+    this.getImpl().addCursorPointer(evt);
   }
 
   /**
@@ -245,7 +245,7 @@ class Features extends Base {
     this.prevHoverFeatures_[layer.name] =
       this.prevHoverFeatures_[layer.name].filter(pf => !features.some(f => f.equals(pf)));
     layer.fire(EventType.LEAVE_FEATURES, [features, evt.coord]);
-    this.getImpl().removeCursorPointer();
+    this.getImpl().removeCursorPointer(evt);
   }
 
   /**
