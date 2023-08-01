@@ -582,6 +582,9 @@ export default class LayerswitcherControl extends M.Control {
    * @api
    */
   inputLayer(evtParameter) {
+    clearTimeout(this.inputLayerTimeID);
+    this.getImpl().removeRenderComplete();
+
     const evt = (evtParameter || window.event);
     if (!M.utils.isNullOrEmpty(evt.target)) {
       const layer = this.findLayer(evt);
@@ -590,6 +593,10 @@ export default class LayerswitcherControl extends M.Control {
         layer[0].setOpacity(evt.target.value);
       }
     }
+
+    this.inputLayerTimeID = setTimeout(() => {
+      this.getImpl().registerEvent(this.map_);
+    }, 500);
   }
 
   /**
