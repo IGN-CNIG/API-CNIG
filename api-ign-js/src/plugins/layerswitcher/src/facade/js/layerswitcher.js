@@ -96,7 +96,6 @@ export default class Layerswitcher extends M.Plugin {
      * @type {boolean}
      */
     this.isMoveLayers = options.isMoveLayers || false;
-    console.log(this.isMoveLayers);
 
     /**
      * Determina el modo de selección de las capas
