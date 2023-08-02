@@ -139,7 +139,7 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
 - **mirrorpanelParams**: Parámetros opcionales del plugin mirrorpanel, en el caso de no querer cargar este control su valor será "false".
   - showCursors (true/false): Si es true, muestra cursores sincronizados en cada unao de los mapas espejo. Defecto: *true*.
   - principalMap (true/false): indica en qué posición de la pantalla se mantiene el mapa principal (el que contiene el botón con las herramientas de comparación) con respecto a los demás. *False*: se sitúa a la izquierda. *True*: se sitúa a la derecha. Defecto: *false*.
-  - enabledControlsPlugins: Define los plugins y controles que irán en cada mapa. Es necesario hacer las importaciones CDN de los diferentes plugins.
+  - enabledControlsPlugins: Define los plugins y controles que irán en cada mapa. Es necesario hacer las importaciones CDN de los diferentes plugins, para definir el plugin se utiliza el nombre del constructor.
   ⚠️ Por API-REST solo funcionarán los plugins que se hayan cargado en el mapa principal.
   ⚠️ El método getAPIRestBase64 solo funcionará si se le pasa las capas a los plugins en formato String.
   - enabledDisplayInLayerSwitcher: Define si se incluirán en el selector de capas las capas con displayInLayerSwitcher *true*.
