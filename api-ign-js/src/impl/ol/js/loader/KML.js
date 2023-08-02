@@ -77,18 +77,18 @@ class KML extends MObject {
    * @function
    * @param {ol.proj.Projection} projection Proyección.
    * @param {Number} scaleLabel Escala de la etiqueta.
-   * @param {Array} segregation Listado de nombres de carpetas para filtrar KML.
+   * @param {Array} layers Listado de nombres de carpetas para filtrar KML.
    * @returns {Promise} Promesa con la obtención de los objetos geográficos.
    * @public
    * @api
    */
-  loadInternal_(projection, scaleLabel, segregation) {
+  loadInternal_(projection, scaleLabel, layers) {
     return new Promise((success, fail) => {
       getRemote(this.url_).then((response) => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(response.text, 'text/xml');
         let transformXMLtoText = false;
-        if (!isUndefined(segregation)) {
+        if (!isUndefined(layers)) {
           const folders = xmlDoc.getElementsByTagName('Folder');
           let count = 0;
           Array.from(folders).forEach((folder) => {
@@ -102,7 +102,7 @@ class KML extends MObject {
             if (isNullOrEmpty(name)) {
               name = `Layer__${count}`;
             }
-            if (!segregation.includes(name)) {
+            if (!layers.includes(name)) {
               folder.parentNode.removeChild(folder);
             }
             count += 1;

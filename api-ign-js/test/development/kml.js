@@ -1,7 +1,6 @@
 import { map, proxy } from 'M/mapea';
 import KML from 'M/layer/KML';
-import { ADD_KML, LOAD } from 'M/event/eventtype';
-import Point from 'M/style/Point';
+
 
 
 proxy(false); // Desactiva el proxy para poder usar KML local
@@ -14,16 +13,14 @@ const mapjs = map({
   bbox: [-741439.1743662109, 4456431.623082354, -599801.3609537793, 4517428.371653925]
 });
 
-const LayerKml = new KML({
-  url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
-  name: 'Delegaciones IGN',
-  // layerSegregation: true,
-  // showPointNames: true,
+const kml = new KML({
+  url: 'https://www.ign.es/web/resources/delegaciones/DelegacionesIGN-APICNIG.kml',
+  name: "capaKML",
+  extract: true
 }, {
-  scaleLabel: 3
-});
-
-mapjs.addKML(LayerKml);
+  layers: ['Layer__0', 'Layer__1'] 
+}); 
+mapjs.addKML(kml);
 
 
 // const LayerKml = new KML({

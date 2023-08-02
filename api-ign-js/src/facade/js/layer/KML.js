@@ -45,7 +45,7 @@ class KML extends LayerVector {
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
    * - scaleLabel. Escala de la etiqueta.
-   * - segregation: Permite filtrar el fichero KML por nombre de carpetas.
+   * - layers: Permite filtrar el fichero KML por nombre de carpetas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
