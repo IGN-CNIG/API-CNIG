@@ -116,13 +116,13 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
 
 - **isDraggable**: "True" para que el plugins se pueda desplazar, por defecto false.
 
-- **transparencyParams**: Parámetros opcionales del control transparency.
+- **transparencyParams**: Parámetros opcionales del control transparency, en el caso de no querer cargar este control su valor será "false".
   - radius (numérico): radio del efecto transparencia. Tiene un rango entre 30 y 200. Defecto: 100.
   - maxRadius Radio máximo, por defecto 200.
   - minRadius: Radio mínimo, por defecto 30.
   - tooltip: Valor a usar para mostrar en el tooltip del control, por defecto Transparencia / Transparency.
 
-- **lyrcompareParams**: Parámetros opcionales del plugin lyrcompare.
+- **lyrcompareParams**: Parámetros opcionales del plugin lyrcompare, en el caso de no querer cargar este control su valor será "false".
   - defaultLyrA (numérico): Capa cargada al inicio en posición 1. Valores de 1 al número de capas disponibles. Defecto, 1.
   - defaultLyrB (numérico): Capa cargada al inicio en posición 2. Valores de 1 al número de capas disponibles. Defecto, 2.
   - defaultLyrC (numérico): Capa cargada al inicio en posición 3. Valores de 1 al número de capas disponibles. Defecto, 3.
@@ -136,7 +136,7 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
     - 2: dos mapas en horizontal.
     - 3: cuatro mapas.
 
-- **mirrorpanelParams**: Parámetros opcionales del plugin mirrorpanel.
+- **mirrorpanelParams**: Parámetros opcionales del plugin mirrorpanel, en el caso de no querer cargar este control su valor será "false".
   - showCursors (true/false): Si es true, muestra cursores sincronizados en cada unao de los mapas espejo. Defecto: *true*.
   - principalMap (true/false): indica en qué posición de la pantalla se mantiene el mapa principal (el que contiene el botón con las herramientas de comparación) con respecto a los demás. *False*: se sitúa a la izquierda. *True*: se sitúa a la derecha. Defecto: *false*.
   - enabledControlsPlugins: Define los plugins y controles que irán en cada mapa. Es necesario hacer las importaciones CDN de los diferentes plugins.
