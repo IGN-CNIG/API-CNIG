@@ -376,6 +376,7 @@ export default class ComparatorsControl extends M.Control {
   // Eliminar las capas que se fueron añadiendo
   removeLayersEventMap_() {
     this.map_.on(M.evt.REMOVED_LAYER, (layer) => {
+      if (!(layer instanceof Array)) { return; }
       layer.forEach((l) => {
         if (document.getElementById(`l_${l.name}_external`)) {
           document.querySelectorAll('.externalLayers').forEach((el) => {
