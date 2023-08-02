@@ -112,8 +112,6 @@ Ctrl + Shift + Enter: Alterna el estado de congelación.
 Ctrl + Shift + Flecha hacia arriba: Aumenta el radio, si el radio alcanza el valor máximo de 200, no ocurre ningún cambio.  
 Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valor mínimo de 32, no ocurre ningún cambio.  
 
-- **lyrsMirrorMinZindex**: Indica el nivel zIndex a partir del cual se cargan las capas superpuestas en los comparadores espejo. Por defecto, tiene valor de 50.
-
 - **isDraggable**: "True" para que el plugins se pueda desplazar, por defecto false.
 
 - **transparencyParams**: Parámetros opcionales del control transparency, en el caso de no querer cargar este control su valor será "false".
@@ -173,7 +171,6 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
     'WMS*Filomena*https://wms-satelites-historicos.idee.es/satelites-historicos*Filomena*true',
   ],
   enabledKeyFunctions: true,
-  lyrsMirrorMinZindex: 10,
   transparencyParams: {
     radius: 50,
     maxRadius: 100,
@@ -307,7 +304,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
 # API-REST
 
 ```javascript
-URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!listLayers*!defaultCompareMode*!enabledKeyFunctions*!lyrsMirrorMinZindex*!transparencyParams*!lyrcompareParams*!mirrorpanelParams
+URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!listLayers*!defaultCompareMode*!enabledKeyFunctions*!transparencyParams*!lyrcompareParams*!mirrorpanelParams
 ```
 
 <table>
@@ -354,11 +351,6 @@ URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!list
     <tr>
         <td>enabledKeyFunctions</td>
         <td>Eventos por teclado (true o false)</td>
-        <td>Base64 ✔️ | Separador ✔️</td>
-    </tr>
-    <tr>
-        <td>lyrsMirrorMinZindex</td>
-        <td>Indica el z-index que tendrán las capas</td>
         <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
     <tr>
@@ -411,7 +403,6 @@ Ejemplo de constructor:
     'WMS*Landsat 5 TM 1986. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1986_321-543*true',
   ],
   enabledKeyFunctions: true,
-  lyrsMirrorMinZindex: 10,
   transparencyParams: {
     radius: 100,
     maxRadius: 100,

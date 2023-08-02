@@ -96,8 +96,6 @@ export default class ComparatorsControl extends M.Control {
 
     this.defaultCompareMode = this.options.defaultCompareMode || false;
 
-    this.lyrsMirrorMinZindex = this.options.lyrsMirrorMinZindex || 50;
-
     this.mirrorpanelParams = this.options.mirrorpanelParams || false;
     if (typeof this.mirrorpanelParams === 'object') {
       this.mirrorpanelParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
@@ -303,9 +301,18 @@ export default class ComparatorsControl extends M.Control {
     });
   }
 
+  addZindex_(layer) {
+    if (layer) {
+      const searchIndex = this.searchIndex_(layer);
+      if (searchIndex !== 0) {
+        layer.setZIndex(this.searchIndex_(layer));
+      }
+    }
+  }
+
   addLayersEventMapMirror_(layer = []) {
     const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
-    if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
+    this.addZindex_(activeLayerComparators);
     if (otherLayers.length === 0) return;
     otherLayers.forEach((l, i) => {
       if (l.displayInLayerSwitcher) {
@@ -329,7 +336,7 @@ export default class ComparatorsControl extends M.Control {
 
   addNewLayerUpdate_(layer = [], control, container, selectes) {
     const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
-    if (activeLayerComparators) { activeLayerComparators.setZIndex(this.lyrsMirrorMinZindex); }
+    this.addZindex_(activeLayerComparators);
     if (otherLayers.length === 0) return;
 
     otherLayers.forEach((l, i) => {
@@ -349,6 +356,20 @@ export default class ComparatorsControl extends M.Control {
         class="externalLayers"
         value="${l.name}">${l.legend}</option>`;
     });
+  }
+
+  // get zIndex this.defaultLayers
+  searchIndex_(layer) {
+    const { name } = layer;
+    let index = this.layerDefault.filter(l => l.name === name);
+    index = (index.length === 0) ? 0 : index[0].getZIndex();
+    this.options.listLayers.forEach((l) => {
+      console.log('l', l);
+      if (l.name === name && typeof l === 'object') {
+        index = l.getZIndex();
+      }
+    });
+    return index;
   }
 
 
@@ -460,7 +481,6 @@ export default class ComparatorsControl extends M.Control {
     this.options = null;
     this.layersDrop = null;
     this.defaultCompareMode = null;
-    this.lyrsMirrorMinZindex = null;
     this.mirrorpanelParams = null;
     this.lyrcompareParams = null;
     this.transparencyParams = null;
