@@ -128,6 +128,7 @@ export default class ComparatorsControl extends M.Control {
    */
   createView(map) {
     this.map_ = map;
+    this.layerDefault = this.map_.getLayers().filter(l => l.getZIndex() !== 0 && l.name !== '__draw__');
     this.layersPlugin = [];
 
     if (this.options.listLayers) {
@@ -143,6 +144,7 @@ export default class ComparatorsControl extends M.Control {
 
       this.addLayersEventsMap_();
       this.removeLayersEventMap_();
+      this.defaultLayers_();
     }
 
     // Gestor de los diferentes controles
@@ -265,6 +267,16 @@ export default class ComparatorsControl extends M.Control {
         }
       }
     });
+    this.defaultLayers_();
+  }
+
+  defaultLayers_() {
+    if (!this.controls ||
+      (!this.controls[0].active && !this.controls[1].active && !this.controls[2].active)) {
+      setTimeout(() => {
+        this.map_.addLayers(this.layerDefault);
+      }, 500);
+    }
   }
 
   // Añadir las capas que se van añadiendo

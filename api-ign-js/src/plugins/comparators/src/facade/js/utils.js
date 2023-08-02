@@ -267,12 +267,12 @@ export const transformToStringLayers = (layer, map, remove = true) => {
     return `WMS*${legend}*${url}*${name}*${useCapabilities}`;
   } else if (layer.type === 'WMTS') {
     const {
-      url, name, legend, matrixSet,
+      url, name, legend, matrixSet, options,
       // useCapabilities, transparent, options, displayInLayerSwitcher,
     } = layer;
     if (remove) { map.removeWMTS(name); }
     const { code } = map.getProjection();
-    return `WMTS*${url}*${name}*${matrixSet || code}*${legend}`;
+    return `WMTS*${url}*${name}*${matrixSet || code}*${legend}*${options.format || 'image/png'}*false`;
   }
 
   return false; // No son objetos
