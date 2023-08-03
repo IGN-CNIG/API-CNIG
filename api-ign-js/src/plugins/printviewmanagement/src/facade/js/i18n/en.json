@@ -8,11 +8,11 @@
     "no_controls": "The PrintViewManagement plugin needs to activate at least one control."
   },
   "tooltip": "Impresión del mapa",
-  "viewhistory": "View history",
+  "map_printing": "Map printing",
   "nextView": "Next view",
   "previousView": "Previous view",
-  "predefinedzoom": "Predefined zoom",
-  "zoomextent": "Zoom to box",
+  "service_epsg": "Service EPSG",
+  "georeferenced_img": "Georeferenced image",
   "zoompanel": "Zoom tools",
   "zoomin": "Zoom In",
   "zoomout": "Zoom Out"

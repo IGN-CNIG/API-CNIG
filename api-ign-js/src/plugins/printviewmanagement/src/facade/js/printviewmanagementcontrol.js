@@ -85,13 +85,11 @@ export default class PrintViewManagementControl extends M.Control {
           predefinedzoom: this.predefinedzoom_,
           zoomextent: this.zoomextent_,
           viewhistory: this.viewhistory_,
-          zoompanel: this.zoompanel_,
           translations: {
             headertitle: getValue('tooltip'),
-            predefinedzoom: getValue('predefinedzoom'),
-            zoomextent: getValue('zoomextent'),
-            viewhistory: getValue('viewhistory'),
-            zoompanel: getValue('zoompanel'),
+            predefinedzoom: getValue('service_epsg'),
+            zoomextent: getValue('georeferenced_img'),
+            viewhistory: getValue('map_printing'),
           },
         },
       });

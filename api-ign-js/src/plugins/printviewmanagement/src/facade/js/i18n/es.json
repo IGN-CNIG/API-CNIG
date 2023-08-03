@@ -8,11 +8,11 @@
     "no_controls": "El plugin ViewManagement necesita activar al menos un control."
   },
   "tooltip": "Impresión del mapa",
-  "viewhistory": "Historial",
+  "map_printing": "Impresión del mapa",
   "nextView": "Vista siguiente",
   "previousView": "Vista anterior",
-  "predefinedzoom": "Zoom predefinido",
-  "zoomextent": "Zoom al recuadro",
+  "service_epsg": "Servicios EPSG",
+  "georeferenced_img": "Imagen georreferenciada",
   "zoompanel": "Herramientas de zoom",
   "zoomin": "Aumentar zoom",
   "zoomout": "Disminuir zoom"
