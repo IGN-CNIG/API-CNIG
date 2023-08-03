@@ -359,8 +359,8 @@ class Panel extends MObject {
    * @return {array<M.Control>} Control.
    * @api
    */
-  getControls() {
-    return this._controls;
+  getControls(filter) {
+    return this.map_.getControls(filter);
   }
 
   /**
