@@ -229,7 +229,8 @@ export default class LayerswitcherControl extends M.Control {
           this.getImpl().registerEvent(map);
         }
 
-        this.render();
+        // Se llama en el evento de registerEvent
+        // this.render();
         success(this.template_);
       });
     });
