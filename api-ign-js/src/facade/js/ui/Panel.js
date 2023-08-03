@@ -365,6 +365,11 @@ class Panel extends MObject {
     }
 
     let filterControl = null;
+
+    if (typeof filterControl === 'object') {
+      filterControl = Object.values(filter);
+    }
+
     if (!Array.isArray(filter)) {
       filterControl = [filter];
     }
