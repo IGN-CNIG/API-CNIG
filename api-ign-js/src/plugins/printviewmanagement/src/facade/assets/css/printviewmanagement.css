@@ -1,0 +1,360 @@
+/* Opening & closing buttons */
+
+.m-panel.m-plugin-printviewmanagement.collapsed {
+    height: 40px;
+}
+
+.m-plugin-printviewmanagement.opened .m-panel-btn.g-cartografia-flecha-derecha,
+.m-plugin-printviewmanagement.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+    background-color: white !important;
+    color: #71a7d3 !important;
+}
+
+.m-areas>div.m-area.m-right>div.m-plugin-printviewmanagement.opened>button.m-panel-btn {
+    position: absolute;
+    left: -40px;
+}
+
+.m-areas>div.m-area.m-left>div.m-plugin-printviewmanagement.opened>button.m-panel-btn {
+    position: absolute;
+    right: -40px;
+}
+
+/* Title and images container */
+
+.m-control.m-container.m-printviewmanagement {
+    width: 250px;
+}
+
+/* Título */
+
+div#m-printviewmanagement-title {
+    background-color: #71a7d3;
+    color: white;
+    display: block;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 5px;
+    text-align: center;
+    width: 100%;
+}
+
+div#m-printviewmanagement-previews {
+    background-color: white;
+}
+
+#m-printviewmanagement-viewhistory,
+#m-printviewmanagement-zoomextent,
+#m-printviewmanagement-zoompanel,
+#m-printviewmanagement-predefinedzoom {
+    padding: 10px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.m-predefinedzoom-button-container {
+    display: flex;
+    border: 1px solid #adadad;
+    margin: 2px;
+    background-color: #F7F6F6;
+    padding: 5px;
+}
+
+.m-predefinedzoom-namezoom {
+    display: inline;
+    margin-top: auto;
+    margin-bottom: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.printviewmanagement-icon-flecha-historial.activated,
+.printviewmanagement-icon-zoompanel.activated,
+.printviewmanagement-icon-expand.activated:before ,
+.printviewmanagement-icon-zoom-extension.activated,
+.printviewmanagement-icon-home.activated,
+.printviewmanagement-icon-flecha-izquierda3.activated:before,
+.printviewmanagement-icon-flecha-derecha3.activated:before,
+.printviewmanagement-icon-zoom-in.activated:before,
+.printviewmanagement-icon-zoom-out.activated:before {
+    color: #71a7d3 !important;
+}
+
+#m-printviewmanagement-previews {
+    display: flex;
+    justify-content: center;
+}
+
+#m-viewhistory-panel,
+#m-zoompanel-panel {
+    background-color: #ededed;
+    border-top: 1px solid #adadad;
+    padding: 10px;
+    text-align: center;
+    width: 230px;
+}
+
+#m-predefinedzoom-panel {
+    background-color: #ededed;
+    border-top: 1px solid #adadad;
+    padding: 5px;
+    max-height: 220px;
+    overflow: auto;
+    width: 240px;
+}
+
+#m-historyprevious-button,
+#m-historynext-button,
+#m-zoompanel-zoomin,
+#m-zoompanel-zoomout,
+#m-predefinedzoom-panel .printviewmanagement-icon-expand {
+    border: none;
+    background-color: transparent;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* Images container */
+
+.m-printviewmanagement .activeprintviewmanagementDiv {
+    border: 5px solid #92c1e7 !important;
+}
+
+/* Bottom positions fix when images row turns into columns */
+
+.m-bottom .m-control.m-container.m-printviewmanagement>#m-printviewmanagement-previews {
+    background-color: white;
+    display: flex;
+    /* width: 220px; */
+}
+
+.m-bottom.m-left>.m-panel.m-plugin-printviewmanagement.opened>.m-panel-controls {
+    display: flow-root;
+}
+
+.m-bottom.m-left>.m-plugin-printviewmanagement.opened>.m-panel-btn {
+    position: relative;
+    right: -40px;
+}
+
+.m-areas>div.m-area>div.m-panel.opened.m-plugin-printviewmanagement {
+    background-color: transparent !important;
+    /* box-shadow: none !important; */
+    order: 0;
+}
+
+.m-areas>div.m-area.m-left>div.m-panel.opened.m-plugin-printviewmanagement {
+    display: block !important;
+}
+
+.m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.no-collapsible.m-plugin-printviewmanagement>div.m-panel-controls>div.m-control.m-container.m-printviewmanagement {
+    padding-right: 0px;
+}
+
+.m-areas>div.m-area>div.m-panel.collapsed>div.m-panel-controls {
+    display: none;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-printviewmanagement.collapsed>div.m-panel-controls>div {
+    display: none;
+}
+
+/* Firefox fix */
+
+@-moz-document url-prefix() {
+    .m-bottom.m-right .m-plugin-printviewmanagement.opened {
+        display: flex;
+    }
+
+    .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.m-plugin-printviewmanagement>div.m-panel-controls>div.m-control.m-container.m-printviewmanagement {
+        padding-right: unset;
+    }
+
+    .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.no-collapsible.m-plugin-printviewmanagement>div.m-panel-controls>div.m-control.m-container.m-printviewmanagement {
+        padding-right: 0px;
+    }
+}
+
+/* Mobile fix */
+
+@media only screen and (max-width: 1000px) {
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-printviewmanagement.opened {
+        margin-right: 10px;
+    }
+
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-printviewmanagement.opened {
+        margin-left: 10px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.opened {
+        z-index: 10;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-printviewmanagement.opened>div.m-panel-controls>div.m-control.m-container.m-printviewmanagement>div#m-printviewmanagement-title {
+        font-size: 13px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-printviewmanagement.opened>div.m-panel-controls>div.m-control.m-container.m-printviewmanagement>div#m-printviewmanagement-previews>div>span {
+        font-size: 1.3em;
+        line-height: 40px;
+    }
+
+    /* Firefox fix */
+
+    @-moz-document url-prefix() {
+        .m-bottom.m-left>.m-panel.m-plugin-printviewmanagement.opened>.m-panel-controls {
+            display: flow-root;
+        }
+
+        .m-areas>div.m-area>div.m-panel.m-plugin-printviewmanagement.opened {
+            width: auto;
+        }
+
+        .m-bottom.m-left>.m-panel.m-plugin-printviewmanagement.opened>.m-panel-controls {
+            display: flex;
+        }
+
+        .m-bottom.m-left>.m-panel.m-plugin-printviewmanagement.opened>button {
+            left: 0px;
+        }
+
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            display: flex;
+        }
+    }
+
+    /* Edge fix */
+
+    @supports (-ms-ime-align:auto) {
+
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            padding-left: 0px;
+        }
+
+        .m-bottom.m-left>.m-plugin-printviewmanagement.opened>.m-panel-btn {
+            position: static;
+        }
+    }
+}
+
+/* Edge fix */
+@supports (-ms-ime-align:auto) {
+    .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+        padding-left: 40px;
+    }
+
+    .m-bottom.m-left>.m-plugin-printviewmanagement.opened>.m-panel-btn {
+        right: 0px;
+    }
+}
+
+@font-face {
+    font-family: 'printviewmanagement';
+    src: url('../fonts/printviewmanagement.eot?v63csk');
+    src: url('../fonts/printviewmanagement.eot?v63csk#iefix') format('embedded-opentype'),
+        url('../fonts/printviewmanagement.ttf?v63csk') format('truetype'),
+        url('../fonts/printviewmanagement.woff?v63csk') format('woff'),
+        url('../fonts/printviewmanagement.svg?v63csk#printviewmanagement') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="printviewmanagement-icon-"],
+[class*=" printviewmanagement-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'printviewmanagement' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.printviewmanagement-icon-zoom-in:before {
+    content: "\e802";
+    color: #646464;
+}
+
+.printviewmanagement-icon-zoom-out:before {
+    content: "\e803";
+    color: #646464;
+}
+
+.printviewmanagement-icon-zoompanel:before {
+    content: "\e90d";
+}
+
+.printviewmanagement-icon-home:before {
+    content: "\e933";
+}
+
+.printviewmanagement-icon-expand:before {
+    content: "\e919";
+    color: #646464;
+}
+
+.printviewmanagement-icon-flecha-derecha3:before {
+    content: "\e1900";
+    color: #646464;
+}
+
+.printviewmanagement-icon-flecha-izquierda3:before {
+    content: "\e1901";
+    color: #646464;
+}
+
+.printviewmanagement-icon-zoom-extension:before {
+    content: "\e90d";
+}
+
+.printviewmanagement-icon-zoom-mapa:before {
+    content: "\e9c7";
+}
+
+.printviewmanagement-icon-flecha-historial:before {
+    content: "\e954";
+}
+
+
+div.m-area.m-top.m-left>div.m-plugin-printviewmanagement.m-panel>button.m-panel-btn {
+    font-family: printviewmanagement !important;
+}
+
+div.m-area.m-top.m-left>div.m-plugin-printviewmanagement.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-top.m-right>div.m-plugin-printviewmanagement.m-panel>button.m-panel-btn {
+    font-family: printviewmanagement !important;
+}
+
+div.m-area.m-top.m-right>div.m-plugin-printviewmanagement.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-bottom.m-right>div.m-plugin-printviewmanagement.m-panel>button.m-panel-btn {
+    font-family: printviewmanagement !important;
+}
+
+div.m-area.m-bottom.m-right>div.m-plugin-printviewmanagement.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel>button.m-panel-btn {
+    font-family: printviewmanagement !important;
+}
+
+div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
