@@ -37,6 +37,7 @@ class KML extends LayerVector {
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * - label: Define si se muestra la etiqueta o no. Por defecto mostrará la etiqueta.
+   * - layers: Permite filtrar el fichero KML por nombre de carpetas.
    * @param {Mx.parameters.LayerOptions} options Parámetros que se pasarán a la implementación.
    * - visibility: Define si la capa es visible o no.
    * - style: Define el estilo de la capa.
@@ -45,7 +46,6 @@ class KML extends LayerVector {
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
    * - scaleLabel. Escala de la etiqueta.
-   * - layers: Permite filtrar el fichero KML por nombre de carpetas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -64,6 +64,7 @@ class KML extends LayerVector {
     const optionsVar = options;
     optionsVar.label = parameters.label;
     optionsVar.visibility = parameters.visibility;
+    optionsVar.layers = userParameters.layers || undefined;
 
     /**
      * Implementación de la capa.
@@ -101,6 +102,12 @@ class KML extends LayerVector {
      * KML label. Etiqueta de la capa KML.
      */
     this.label = parameters.label;
+
+    /**
+     * KML layers: Permite filtrar el fichero KML por nombre de carpetas.
+     * @type {Array<String>}
+     */
+    this.layers = optionsVar.layers;
   }
 
   /**

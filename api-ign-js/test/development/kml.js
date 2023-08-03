@@ -16,8 +16,7 @@ const mapjs = map({
 const kml = new KML({
   url: 'https://www.ign.es/web/resources/delegaciones/DelegacionesIGN-APICNIG.kml',
   name: "capaKML",
-  extract: true
-}, {
+  extract: true,
   layers: ['Layer__0', 'Layer__1'] 
 }); 
 mapjs.addKML(kml);
@@ -38,7 +37,8 @@ mapjs.addKML(kml);
 //   console.log(f.getStyle()(f).getText().getOffsetX());
 // });
 
-mapjs.addKML(LayerKml);
+// mapjs.addKML(LayerKml);
 
 window.mapjs = mapjs;
-window.Layer = LayerKml;
+
+// window.Layer = LayerKml;
