@@ -360,7 +360,21 @@ class Panel extends MObject {
    * @api
    */
   getControls(filter) {
-    return this.map_.getControls(filter);
+    if (!filter) {
+      return this._controls;
+    }
+
+    let filterControl = null;
+    if (!Array.isArray(filter)) {
+      filterControl = [filter];
+    }
+
+    return this._controls.filter(({ name }) => {
+      if (filterControl) {
+        return filterControl.includes(name);
+      }
+      return true;
+    });
   }
 
   /**
