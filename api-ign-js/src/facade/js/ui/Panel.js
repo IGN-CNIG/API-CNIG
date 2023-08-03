@@ -366,7 +366,7 @@ class Panel extends MObject {
 
     let filterControl = null;
 
-    if (typeof filterControl === 'object') {
+    if (typeof filter === 'object') {
       filterControl = Object.values(filter);
     }
 
