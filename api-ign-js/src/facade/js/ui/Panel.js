@@ -364,14 +364,15 @@ class Panel extends MObject {
       return this._controls;
     }
 
+    let filterArray = null;
     let filterControl = null;
 
-    if (typeof filter === 'object') {
-      filterControl = Object.values(filter);
+    if (!Array.isArray(filter)) {
+      filterArray = [filter];
     }
 
-    if (!Array.isArray(filter)) {
-      filterControl = [filter];
+    if (typeof filterArray[0] === 'object') {
+      filterControl = Object.values(...filterArray);
     }
 
     return this._controls.filter(({ name }) => {
