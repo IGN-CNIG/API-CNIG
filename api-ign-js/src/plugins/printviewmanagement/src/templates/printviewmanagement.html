@@ -1,8 +1,8 @@
 <div aria-label="Plugin View Management" role="menuitem" id="div-contenedor-printviewmanagement" class="m-control m-container m-printviewmanagement">
     <div role="heading" tabindex="0" id="m-printviewmanagement-title">{{translations.headertitle}}</div>
     <div id="m-printviewmanagement-previews">
-        {{#if predefinedzoom}}
-            <div role="button" tabindex="0" id="m-printviewmanagement-predefinedzoom" title="{{translations.predefinedzoom}}" class="printviewmanagement-icon-home"></div>
+        {{#if georefImageEpsg}}
+            <button tabindex="0" id="m-printviewmanagement-georefImageEpsg" title="{{translations.tooltipGeorefImageEpsg}}" class="printviewmanagement-georefImageEpsg"></button>
         {{/if}}
         {{#if zoomextent}}
             <div tabindex="0" id="m-printviewmanagement-zoomextent" title="{{translations.zoomextent}}" class="printviewmanagement-icon-zoom-extension"></div>
@@ -11,4 +11,5 @@
             <div tabindex="0" id="m-printviewmanagement-viewhistory" title="{{translations.viewhistory}}" class="printviewmanagement-icon-flecha-historial"></div>
         {{/if}}
     </div>
+    <section id="m-printviewmanagement-controls" class="m-printviewmanagement-controls"></section>
 </div>

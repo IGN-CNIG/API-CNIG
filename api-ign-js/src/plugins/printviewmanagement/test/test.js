@@ -4,6 +4,10 @@ M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
+  zoom: 9,
+  maxZoom: 20,
+  minZoom: 4,
+  center: [-467062.8225, 4683459.6216],
 });
 
 const mp = new PrintViewManagement({
@@ -12,15 +16,26 @@ const mp = new PrintViewManagement({
   collapsible: true,
   collapsed: true,
   order: 1,
-  predefinedZoom: [{
-    name: 'zoom 1',
-    center: [-428106.86611520057, 4334472.25393817],
-    zoom: 4,
+  serverUrl: 'https://geoprint.desarrollo.guadaltel.es',
+  printTemplateUrl: 'https://geoprint.desarrollo.guadaltel.es/print/mapexport',
+  printStatusUrl: 'https://geoprint.desarrollo.guadaltel.es/print/status',
+  georefImageEpsg: {
+    tooltip: 'Georeferenciar imagen',
+    layers: [ // Posibilidad de hacer Getmap
+      {
+        url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+        name: 'mtn_rasterizado',
+        format: 'image/jpeg',
+        legend: 'Mapa ETRS89 UTM',
+      },
+      {
+        url: 'http://www.ign.es/wms-inspire/pnoa-ma?',
+        name: 'OI.OrthoimageCoverage',
+        format: 'image/jpeg',
+        legend: 'Imagen (PNOA) ETRS89 UTM',
+      },
+    ],
   },
-  {
-    name: 'zoom 2',
-    bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
-  }],
   zoomExtent: true,
   viewhistory: true,
   zoompanel: true,

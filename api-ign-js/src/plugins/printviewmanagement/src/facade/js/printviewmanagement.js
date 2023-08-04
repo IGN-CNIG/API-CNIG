@@ -89,9 +89,7 @@ export default class PrintViewManagement extends M.Plugin {
      * @private
      * @type {Boolean|Array<Object>}
      */
-    this.predefinedzoom = M.utils.isUndefined(options.predefinedZoom) ||
-      options.predefinedZoom === true ?
-      this.getPredefinedZoom() : options.predefinedZoom;
+    this.georefImageEpsg = options.georefImageEpsg ? this.getGeorefImageEpsg() : false;
 
     /**
      * Indicates if the control ZoomExtent is added to the plugin
@@ -146,19 +144,21 @@ export default class PrintViewManagement extends M.Plugin {
    * @api
    */
   addTo(map) {
-    if (this.predefinedzoom === false && this.zoomextent === false &&
+    this.map_ = map;
+    if (this.georefImageEpsg === false && this.zoomextent === false &&
       this.viewhistory === false && this.zoompanel === false) {
       M.dialog.error(getValue('exception.no_controls'));
     }
     this.controls_.push(new PrintViewManagementControl(
       this.isDraggable,
-      this.predefinedzoom,
+      this.georefImageEpsg,
       this.zoomextent,
       this.viewhistory,
       this.zoompanel,
       this.order,
+      this.map_,
     ));
-    this.map_ = map;
+
     this.panel_ = new M.ui.Panel('panelPrintViewManagement', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
@@ -175,20 +175,23 @@ export default class PrintViewManagement extends M.Plugin {
 
   /**
    * This functions indicates default center and zoom level for
-   * the control predefinedZoom
+   * the control georefImageEpsg
    *
    * @public
    * @function
    * @returns Default center and zoom level
    * @api
    */
-  getPredefinedZoom() {
-    const predefinedZoom = [{
-      center: [-356188.1915089525, 4742037.53423241],
-      zoom: 6,
-      isDefault: true,
-    }];
-    return predefinedZoom;
+  getGeorefImageEpsg() {
+    const { layers, tooltip } = this.options.georefImageEpsg;
+
+    const order = 0; // ?¿
+    const georefImageEpsg = {
+      layers,
+      order,
+      tooltip,
+    };
+    return georefImageEpsg;
   }
 
   /**

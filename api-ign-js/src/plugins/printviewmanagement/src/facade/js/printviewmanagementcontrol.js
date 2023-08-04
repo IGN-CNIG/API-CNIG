@@ -6,7 +6,7 @@ import template from '../../templates/printviewmanagement';
 import PrintViewManagementImpl from '../../impl/ol/js/printviewmanagement';
 import { getValue } from './i18n/language';
 import ViewHistoryControl from './viewhistorycontrol';
-import PredefinedZoomControl from './predefinedzoomcontrol';
+import GeorefImageEpsgControl from './georefimageepsgcontrol';
 import ZoomExtentControl from './zoomextentcontrol';
 
 export default class PrintViewManagementControl extends M.Control {
@@ -18,7 +18,7 @@ export default class PrintViewManagementControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(isDraggable, predefinedzoom, zoomextent, viewhistory, zoompanel, order) {
+  constructor(isDraggable, georefImageEpsg, zoomextent, viewhistory, zoompanel, order, map) {
     if (M.utils.isUndefined(PrintViewManagementImpl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -31,7 +31,7 @@ export default class PrintViewManagementControl extends M.Control {
      * @type {Boolean|Array<Object>}
      */
 
-    this.predefinedzoom_ = predefinedzoom;
+    this.georefImageEpsg_ = georefImageEpsg;
 
     /**
      * Indicates if the control ZoomExtent is added to the plugin
@@ -67,6 +67,15 @@ export default class PrintViewManagementControl extends M.Control {
      * @type {Number}
      */
     this.order = order;
+
+    /**
+      @private *
+      @type { string }
+      * @type { string }
+      */
+    this.tooltipGeorefImageEpsg_ = georefImageEpsg.tooltip || getValue('tooltip_georefimageepsg');
+
+    this.map_ = map;
   }
 
   /**
@@ -82,33 +91,20 @@ export default class PrintViewManagementControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {
-          predefinedzoom: this.predefinedzoom_,
+          georefImageEpsg: this.georefImageEpsg_,
           zoomextent: this.zoomextent_,
           viewhistory: this.viewhistory_,
           translations: {
             headertitle: getValue('tooltip'),
-            predefinedzoom: getValue('service_epsg'),
+            tooltipGeorefImageEpsg: this.tooltipGeorefImageEpsg_,
             zoomextent: getValue('georeferenced_img'),
             viewhistory: getValue('map_printing'),
           },
         },
       });
       this.html = html;
-      if (this.predefinedzoom_) {
-        this.predefinedzoomControl = new PredefinedZoomControl(map, this.predefinedzoom_);
-        if ('isDefault' in this.predefinedzoom_) {
-          this.predefinedzoom_[0].center = this.getImpl().transformCenter(this.predefinedzoom_[0].center, 'EPSG:3857');
-        }
-        html.querySelector('#m-printviewmanagement-predefinedzoom').addEventListener('click', () => {
-          this.deactive(html, 'predefinedzoom');
-          this.predefinedzoomControl.active(html);
-        });
-        html.querySelector('#m-printviewmanagement-predefinedzoom').addEventListener('keydown', ({ key }) => {
-          if (key === 'Enter') {
-            this.deactive(html, 'predefinedzoom');
-            this.predefinedzoomControl.active(html);
-          }
-        });
+      if (this.georefImageEpsg_) {
+        this.addGeorefImageEpsgControl(html);
       }
       if (this.zoomextent_) {
         this.zoomextentControl = new ZoomExtentControl(map);
@@ -154,6 +150,20 @@ export default class PrintViewManagementControl extends M.Control {
    */
   equals(control) {
     return control instanceof PrintViewManagementImpl;
+  }
+
+  addGeorefImageEpsgControl(html) {
+    this.georefImageEpsgControl = new GeorefImageEpsgControl(this.georefImageEpsg_, this.map_);
+    html.querySelector('#m-printviewmanagement-georefImageEpsg').addEventListener('click', () => {
+      // this.deactive('georefImageEpsg');
+      this.georefImageEpsgControl.active(html);
+    });
+    html.querySelector('#m-printviewmanagement-georefImageEpsg').addEventListener('keydown', ({ key }) => {
+      if (key === 'Enter') {
+        // this.deactive('georefImageEpsg');
+        this.georefImageEpsgControl.active(html);
+      }
+    });
   }
 
   /**
