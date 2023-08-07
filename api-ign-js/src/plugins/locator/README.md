@@ -99,7 +99,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
     - 'n': Consulta Comunication Pool Servlet.
     - 'gn': Consulta Geocoder y Comunication Pool Servlet (por defecto).
   - **maxResults**: Número de resultados en la consulta. Por defecto: 10 (para cada servicio).
-  - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio,poblacion,toponimo,callejero'.
+  - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio,poblacion,toponimo,callejero,carretera,portal,provincia'.
   - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'. 
   - **reverse**: Valor booleano que indica si la funcionalidad obtener dirección en un punto del mapa está activada (true/false). Por defecto: true.
   - **resultVisibility**: Indica si se muestra o no la geometría del elemento localizado (true/false). Por defecto: true.
