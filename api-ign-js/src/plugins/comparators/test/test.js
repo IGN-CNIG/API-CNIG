@@ -6,10 +6,17 @@ M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['scale'],
   zoom: 5,
   bbox: [323020, 4126873, 374759, 4152013],
 });
+
+
+const mpFullTOC = new M.plugin.FullTOC({
+  collapsed: true,
+  position: 'TR',
+});
+
+map.addPlugin(mpFullTOC);
 
 const SENTINELlistBaseLayersByString = [
   'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
@@ -228,15 +235,10 @@ const mp = new Comparators({
   collapsed: false,
   collapsible: true,
   isDraggable: true,
-  defaultCompareMode: 'mirror', // mirror - curtain - spyeye - none
-  listLayers: [
-    'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
-    'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true',
-    'WMS*Invierno 2022 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_843*true',
-    'WMS*Filomena*https://wms-satelites-historicos.idee.es/satelites-historicos*Filomena*true',
-  ],
+  listLayers: [],
   enabledKeyFunctions: true,
   lyrsMirrorMinZindex: 10,
+  enabledDisplayInLayerSwitcher: true,
   transparencyParams: {
     radius: 50,
     maxRadius: 100,
@@ -245,13 +247,13 @@ const mp = new Comparators({
   },
   lyrcompareParams: {
     staticDivision: 2,
-    defaultLyrA: 3,
-    defaultLyrB: 2,
-    defaultLyrC: 1,
-    defaultLyrD: 0,
+    defaultLyrA: 0,
+    defaultLyrB: 1,
+    defaultLyrC: 2,
+    defaultLyrD: 3,
     opacityVal: 100,
     tooltip: 'tooltipLyrCompare',
-    defaultCompareViz: 2,
+    // defaultCompareViz: 2,
   },
   mirrorpanelParams: {
     showCursors: true,
@@ -286,11 +288,11 @@ const mp = new Comparators({
             'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true',
         },
       },
-      enabledDisplayInLayerSwitcher: true,
-      defaultCompareViz: 1,
-      modeVizTypes: [0, 1], // 0 - 9
-      tooltip: 'tooltipMirror',
+
     },
+    defaultCompareViz: 1,
+    modeVizTypes: [0, 1], // 0 - 9
+    tooltip: 'tooltipMirror',
   },
 });
 

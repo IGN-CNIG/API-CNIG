@@ -608,8 +608,12 @@ export default class LyrCompareControl extends M.Control {
       this.layerSelectedA = this.layers[this.defaultLyrA];
       const selectA = this.template.querySelector('#m-lyrcompare-lyrA');
       selectA.selectedIndex = this.defaultLyrA;
-      selectA.options[this.defaultLyrA].setAttribute('selected', '');
+      if (!selectA.options[this.defaultLyrA]) {
+        M.dialog.error('Error layerSelectedA', 'lyrcompare');
+        return;
+      }
 
+      selectA.options[this.defaultLyrA].setAttribute('selected', '');
       if (this.map_.getLayers().some(l => l.name === this.layerSelectedA.name));
       this.map_.addLayers(this.layerSelectedA);
     }
@@ -619,6 +623,11 @@ export default class LyrCompareControl extends M.Control {
       const selectB = this.template.querySelector('#m-lyrcompare-lyrB');
       selectB.selectedIndex = this.defaultLyrB;
       selectB.options[this.defaultLyrB].setAttribute('selected', '');
+
+      if (!selectB.options[this.defaultLyrB]) {
+        M.dialog.error('Error layerSelectedB', 'lyrcompare');
+        return;
+      }
 
       if (this.map_.getLayers().some(l => l.name === this.layerSelectedB.name));
       this.map_.addLayers(this.layerSelectedB);
@@ -630,6 +639,11 @@ export default class LyrCompareControl extends M.Control {
       selectC.selectedIndex = this.defaultLyrC;
       selectC.options[this.defaultLyrC].setAttribute('selected', '');
 
+      if (!selectC.options[this.defaultLyrC]) {
+        M.dialog.error('Error layerSelectedC', 'lyrcompare');
+        return;
+      }
+
       if (this.map_.getLayers().some(l => l.name === this.layerSelectedC.name));
       this.map_.addLayers(this.layerSelectedC);
     }
@@ -639,6 +653,11 @@ export default class LyrCompareControl extends M.Control {
       const selectD = this.template.querySelector('#m-lyrcompare-lyrD');
       selectD.selectedIndex = this.defaultLyrD;
       selectD.options[this.defaultLyrD].setAttribute('selected', '');
+
+      if (!selectD.options[this.defaultLyrD]) {
+        M.dialog.error('Error layerSelectedD', 'lyrcompare');
+        return;
+      }
 
       if (this.map_.getLayers().some(l => l.name === this.layerSelectedD.name));
       this.map_.addLayers(this.layerSelectedD);

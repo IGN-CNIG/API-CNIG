@@ -92,8 +92,6 @@ export default class ComparatorsControl extends M.Control {
       ];
     }
 
-    this.layersDrop = [];
-
     this.defaultCompareMode = this.options.defaultCompareMode || false;
 
     this.mirrorpanelParams = this.options.mirrorpanelParams || false;
@@ -134,7 +132,7 @@ export default class ComparatorsControl extends M.Control {
         .map(l => ((l instanceof Object) ? transformToStringLayers(l, this.map_) : l));
     }
 
-    if (this.mirrorpanelParams.enabledDisplayInLayerSwitcher) {
+    if (this.options.enabledDisplayInLayerSwitcher) {
       this.layersPlugin = this.layersPlugin.concat(this.map_
         .getLayers()
         .filter(l => l.displayInLayerSwitcher && (l.type === 'WMS' || l.type === 'WMTS'))
@@ -251,6 +249,13 @@ export default class ComparatorsControl extends M.Control {
       if (c.controlParam[0]) {
         if (c.active) {
           this.html.querySelector(`#${c.buttonsID}`).classList.add('activatedComparators');
+          if (c.id === 'lyrcompare' && c.controlParam[1].length < 4) {
+            M.dialog.error('Error Layer', 'lyrcompare');
+            setTimeout(() => {
+              this.map_.addLayers(this.layerDefault);
+            }, 500);
+            return;
+          }
 
           const control = c.controlCreate(c.controlParam);
           // eslint-disable-next-line no-param-reassign
@@ -275,6 +280,10 @@ export default class ComparatorsControl extends M.Control {
         this.map_.addLayers(this.layerDefault);
       }, 500);
     }
+    // else if (this.layerDefault.length !== 0) {
+    //   this.map_.addLayers(this.layerDefault.map(l =>
+    //     transformToStringLayers(l, this.map_, false)));
+    // }
   }
 
   // Añadir las capas que se van añadiendo
@@ -289,13 +298,28 @@ export default class ComparatorsControl extends M.Control {
         // lyrcompare
         if (this.controls[1].active) {
           const selectes = ['m-lyrcompare-lyrA', 'm-lyrcompare-lyrB', 'm-lyrcompare-lyrC', 'm-lyrcompare-lyrD'];
-          this.addNewLayerUpdate_(layer, this.controls[1].control, '.m-lyrcompare-container', selectes);
+          this.addNewLayerUpdate_(layer, this.controls[1].control, selectes);
         }
 
         // transparency
         if (this.controls[2].active) {
           const selectes = ['m-transparency-lyr'];
-          this.addNewLayerUpdate_(layer, this.controls[2].control, '.m-transparency-container', selectes);
+          this.addNewLayerUpdate_(layer, this.controls[2].control, selectes);
+        }
+
+        if (!this.controls[0].active && !this.controls[1].active && !this.controls[2].active) {
+          const [, otherLayers] = checkLayers(layer, this.layersPlugin);
+
+          const layersStringDefault = otherLayers.map(l =>
+            transformToStringLayers(l, this.map_, false));
+
+          this.layersPlugin = [...this.layersPlugin, ...layersStringDefault];
+          this.layerDefault = [...this.layerDefault, ...layersStringDefault];
+
+          // eslint-disable-next-line
+          this.controls.forEach(c =>
+          // eslint-disable-next-line
+          c.controlParam[1] = [...c.controlParam[1], ...layersStringDefault]);
         }
       });
     });
@@ -334,7 +358,7 @@ export default class ComparatorsControl extends M.Control {
     });
   }
 
-  addNewLayerUpdate_(layer = [], control, container, selectes) {
+  addNewLayerUpdate_(layer = [], control, selectes) {
     const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
     this.addZindex_(activeLayerComparators);
     if (otherLayers.length === 0) return;
@@ -342,9 +366,13 @@ export default class ComparatorsControl extends M.Control {
     otherLayers.forEach((l, i) => {
       if (l.displayInLayerSwitcher) {
         const stringLayer = transformToStringLayers(l, this.map_, false);
-        this.layersPlugin.push(stringLayer); // Evitamos poner las mismas
-        control.addlayersControl(l);
-        this.addOptions(selectes, l);
+        this.layersPlugin.push(stringLayer);
+        if (selectes !== undefined && control !== undefined) {
+          control.addlayersControl(l);
+          setTimeout(() => {
+            this.addOptions(selectes, l);
+          }, 1000);
+        }
       }
     });
   }
@@ -364,7 +392,6 @@ export default class ComparatorsControl extends M.Control {
     let index = this.layerDefault.filter(l => l.name === name);
     index = (index.length === 0) ? 0 : index[0].getZIndex();
     this.options.listLayers.forEach((l) => {
-      console.log('l', l);
       if (l.name === name && typeof l === 'object') {
         index = l.getZIndex();
       }
@@ -479,7 +506,6 @@ export default class ComparatorsControl extends M.Control {
     this.order = null;
     this.isDraggable_ = null;
     this.options = null;
-    this.layersDrop = null;
     this.defaultCompareMode = null;
     this.mirrorpanelParams = null;
     this.lyrcompareParams = null;
