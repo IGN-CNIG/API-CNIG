@@ -137,7 +137,6 @@ export default class ComparatorsControl extends M.Control {
         .getLayers()
         .filter(l => l.displayInLayerSwitcher && (l.type === 'WMS' || l.type === 'WMTS'))
         .map(l => transformToStringLayers(l, this.map_)));
-
       this.addLayersEventsMap_();
       this.removeLayersEventMap_();
       this.defaultLayers_();
@@ -256,7 +255,6 @@ export default class ComparatorsControl extends M.Control {
             }, 500);
             return;
           }
-
           const control = c.controlCreate(c.controlParam);
           // eslint-disable-next-line no-param-reassign
           c.control = control;
@@ -310,8 +308,13 @@ export default class ComparatorsControl extends M.Control {
         if (!this.controls[0].active && !this.controls[1].active && !this.controls[2].active) {
           const [, otherLayers] = checkLayers(layer, this.layersPlugin);
 
-          const layersStringDefault = otherLayers.map(l =>
-            transformToStringLayers(l, this.map_, false));
+          const layersStringDefault = [];
+
+          otherLayers.forEach((l) => {
+            if (l.displayInLayerSwitcher) {
+              layersStringDefault.push(transformToStringLayers(l, this.map_, false));
+            }
+          });
 
           this.layersPlugin = [...this.layersPlugin, ...layersStringDefault];
           this.layerDefault = [...this.layerDefault, ...layersStringDefault];
