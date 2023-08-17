@@ -1,0 +1,65 @@
+<section class="m-control m-container m-georefimage m-georefimage-container">
+    <div class="m-georefimage-titleFormat">
+
+            <label for="title-georefimage">{{translations.title}}"</label>
+            <input type="text" name="title-georefimage" placeholder="{{translations.title}}">
+ 
+       
+
+            <label for="format-georefimage">Formato de Descarga</label>
+            <select name="format-georefimage">
+                <option value="JPG">JPG</option>
+                <option value="JPG">PNG</option>
+            </select>
+
+    </div>
+
+        <div class="m-georefimage-projectionOther">
+            <div class="georefimage-projection">
+                <label>{{translations.projection}}: </label>
+                <select>
+                    {{#each capabilities.proyections}}
+                        <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+
+            <div class="georefimage-jgwKeppview">
+                <div>
+                    <label for="jgw">Descargar JGW</label>
+                    <input value="jgw" type="checkbox" id="keepview">
+                </div>
+            
+                <div class="keepview">
+                    <label>{{translations.keep}} </label>
+                    <input type="checkbox" id="keepview" {{#if keepView}} checked{{/if}}>
+                </div>
+            </div>
+        </div>
+
+    <fieldset class="typeImagen">
+        <legend>Selecciona el tipo de descarga:</legend>
+        <div>
+            <label for="client">Desde el cliente</label>
+            <input name="typeDownload" value="client" type="radio" id="client">
+        </div>
+
+        <div>
+            <label for="server">Desde el servidor</label>
+            <input name="typeDownload" value="server" type="radio" id="server">
+        </div>
+    </fieldset>
+
+
+    <!-- buttons -->
+    <div class="m-georefimage-download-button">
+        <button class="print"><i class="icon-descargar"></i> {{translations.downImg}}</button>
+        <button class="remove"><i class="icon-papelera"></i> {{translations.delete}}</button>
+    </div>
+    <!-- queue -->
+    <div class="queue">
+        <div class="title">{{translations.down}}</div>
+        <ul class="queue-container"></ul>
+    </div>
+</section>

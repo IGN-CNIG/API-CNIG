@@ -92,11 +92,11 @@ export default class PrintViewManagement extends M.Plugin {
     this.georefImageEpsg = options.georefImageEpsg ? this.getGeorefImageEpsg() : false;
 
     /**
-     * Indicates if the control ZoomExtent is added to the plugin
+     * Indicates if the control georefImage is added to the plugin
      * @private
      * @type {Boolean}
      */
-    this.zoomextent = !M.utils.isUndefined(options.zoomExtent) ? options.zoomExtent : true;
+    this.georefImage = !M.utils.isUndefined(options.georefImage) ? options.georefImage : true;
 
     /**
      * Indicates if the control ViewHistory is added to the plugin
@@ -145,14 +145,14 @@ export default class PrintViewManagement extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
-    if (this.georefImageEpsg === false && this.zoomextent === false &&
+    if (this.georefImageEpsg === false && this.georefImage === false &&
       this.viewhistory === false && this.zoompanel === false) {
       M.dialog.error(getValue('exception.no_controls'));
     }
     this.controls_.push(new PrintViewManagementControl(
       this.isDraggable,
       this.georefImageEpsg,
-      this.zoomextent,
+      this.georefImage,
       this.viewhistory,
       this.zoompanel,
       this.order,
@@ -203,7 +203,7 @@ export default class PrintViewManagement extends M.Plugin {
    */
   getAPIRest() {
     return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggableE}
-    *${this.predefinedzoom}*${this.zoomextent}*${this.viewhistory}*${this.zoompanel}`;
+    *${this.predefinedzoom}*${this.georefImage}*${this.viewhistory}*${this.zoompanel}`;
   }
 
   /**

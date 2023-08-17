@@ -7,7 +7,7 @@ import PrintViewManagementImpl from '../../impl/ol/js/printviewmanagement';
 import { getValue } from './i18n/language';
 import ViewHistoryControl from './viewhistorycontrol';
 import GeorefImageEpsgControl from './georefimageepsgcontrol';
-import ZoomExtentControl from './zoomextentcontrol';
+import GeorefimageControl from './georefimagecontrol';
 
 export default class PrintViewManagementControl extends M.Control {
   /**
@@ -18,7 +18,7 @@ export default class PrintViewManagementControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(isDraggable, georefImageEpsg, zoomextent, viewhistory, zoompanel, order, map) {
+  constructor(isDraggable, georefImageEpsg, georefImage, viewhistory, zoompanel, order, map) {
     if (M.utils.isUndefined(PrintViewManagementImpl)) {
       M.exception(getValue('exception.impl'));
     }
@@ -34,11 +34,11 @@ export default class PrintViewManagementControl extends M.Control {
     this.georefImageEpsg_ = georefImageEpsg;
 
     /**
-     * Indicates if the control ZoomExtent is added to the plugin
+     * Indicates if the control georefImage is added to the plugin
      * @private
      * @type {Boolean}
      */
-    this.zoomextent_ = zoomextent;
+    this.georefImage_ = georefImage;
 
     /**
      * Indicates if the control ViewHistory is added to the plugin
@@ -76,6 +76,8 @@ export default class PrintViewManagementControl extends M.Control {
     this.tooltipGeorefImageEpsg_ = georefImageEpsg.tooltip || getValue('tooltip_georefimageepsg');
 
     this.map_ = map;
+
+    this.active_ = null;
   }
 
   /**
@@ -92,12 +94,12 @@ export default class PrintViewManagementControl extends M.Control {
       const html = M.template.compileSync(template, {
         vars: {
           georefImageEpsg: this.georefImageEpsg_,
-          zoomextent: this.zoomextent_,
+          georefImage: this.georefImage_,
           viewhistory: this.viewhistory_,
           translations: {
             headertitle: getValue('tooltip'),
             tooltipGeorefImageEpsg: this.tooltipGeorefImageEpsg_,
-            zoomextent: getValue('georeferenced_img'),
+            georefImage: getValue('georeferenced_img'),
             viewhistory: getValue('map_printing'),
           },
         },
@@ -106,16 +108,16 @@ export default class PrintViewManagementControl extends M.Control {
       if (this.georefImageEpsg_) {
         this.addGeorefImageEpsgControl(html);
       }
-      if (this.zoomextent_) {
-        this.zoomextentControl = new ZoomExtentControl(map);
-        html.querySelector('#m-printviewmanagement-zoomextent').addEventListener('click', () => {
-          this.deactive(html, 'zoomextent');
-          this.zoomextentControl.active(html);
+      if (this.georefImage_) {
+        this.georefImageControl = new GeorefimageControl(map);
+        html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
+          this.deactive(html, 'georefImage');
+          this.georefImageControl.active(html);
         });
-        html.querySelector('#m-printviewmanagement-zoomextent').addEventListener('keydown', ({ key }) => {
+        html.querySelector('#m-printviewmanagement-georefImage').addEventListener('keydown', ({ key }) => {
           if (key === 'Enter') {
-            this.deactive(html, 'zoomextent');
-            this.zoomextentControl.active(html);
+            this.deactive(html, 'georefImage');
+            this.georefImageControl.active(html);
           }
         });
       }
@@ -155,12 +157,12 @@ export default class PrintViewManagementControl extends M.Control {
   addGeorefImageEpsgControl(html) {
     this.georefImageEpsgControl = new GeorefImageEpsgControl(this.georefImageEpsg_, this.map_);
     html.querySelector('#m-printviewmanagement-georefImageEpsg').addEventListener('click', () => {
-      // this.deactive('georefImageEpsg');
+      this.deactive(html, 'georefImageEpsg');
       this.georefImageEpsgControl.active(html);
     });
     html.querySelector('#m-printviewmanagement-georefImageEpsg').addEventListener('keydown', ({ key }) => {
       if (key === 'Enter') {
-        // this.deactive('georefImageEpsg');
+        this.deactive(html, 'georefImageEpsg');
         this.georefImageEpsgControl.active(html);
       }
     });
@@ -177,16 +179,26 @@ export default class PrintViewManagementControl extends M.Control {
    * @api
    */
   deactive(html, control) {
+    if (html.querySelectorAll('#m-printviewmanagement-previews .activated').length === 0) {
+      return;
+    }
     const active = html.querySelectorAll('#m-printviewmanagement-previews .activated')[0];
-    if (active && !active.id.includes(control)) {
-      if (active.id === 'm-printviewmanagement-zoomextent') {
-        this.zoomextentControl.deactive();
+    if (active && active.id !== `m-printviewmanagement-${control}`) {
+      console.log('active', active.id);
+      this.active_ = active;
+      if (active.id === 'm-printviewmanagement-georefImage') {
+        this.georefImageControl.deactive();
       }
+
+      if (active.id === 'm-printviewmanagement-georefImageEpsg') {
+        this.georefImageEpsgControl.deactive();
+      }
+
       active.classList.remove('activated');
-      const container = document.querySelector('#div-contenedor-printviewmanagement');
-      if (container && container.children.length > 2) {
-        container.removeChild(container.children[2]);
-      }
+      // const container = document.querySelector('#div-contenedor-printviewmanagement');
+      // if (container && container.children.length > 2) {
+      //   container.removeChild(container.children[2]);
+      // }
     }
   }
 
@@ -210,8 +222,8 @@ export default class PrintViewManagementControl extends M.Control {
    * @api
    */
   destroy() {
-    if (!M.utils.isNullOrEmpty(this.zoomextentControl)) {
-      this.zoomextentControl.destroy();
+    if (!M.utils.isNullOrEmpty(this.georefImageControl)) {
+      this.georefImageControl.destroy();
     }
     if (!M.utils.isNullOrEmpty(this.viewhistoryControl)) {
       this.viewhistoryControl.destroy();

@@ -52,7 +52,7 @@
 /* Title and images container */
 
 .m-control.m-container.m-printviewmanagement {
-    width: 250px;
+    width: 450px;
 }
 
 /* Título */
@@ -74,7 +74,7 @@ div#m-printviewmanagement-previews {
 }
 
 #m-printviewmanagement-viewhistory,
-#m-printviewmanagement-zoomextent,
+#m-printviewmanagement-georefImage,
 #m-printviewmanagement-zoompanel,
 .printviewmanagement-georefImageEpsg {
     padding: 10px;
@@ -366,11 +366,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     font-family: g-cartografia !important;
 }
 
-  /*********************
-    georefimageepsg
-  *********************/
-  
-  .m-georefimageepsg-container {
+  .m-georefimageepsg-container,.m-georefimage-container {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -380,7 +376,16 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
       background-color: white;
       padding: 20px 0;
   }
-  
+
+  .m-georefimage-container {
+    justify-content: space-between;
+    padding: 0;
+    gap: 0;
+  }
+
+/*********************
+    georefimageepsg
+  *********************/
   .m-georefimageepsg-container select {
         width: 90%;
         padding: 5px;
@@ -428,3 +433,239 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
       font-size: 20px;
       vertical-align: text-bottom;
   }
+
+
+  /*********************
+    georefimage
+  *********************/
+  .m-georefimage-titleFormat label{
+    position: absolute;
+    clip: rect(1px 1px 1px 1px);
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+  }
+
+  .m-georefimage-container fieldset {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 0 auto;
+    width: 90%;
+    border-radius: 4px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+    font-size: 1rem;
+
+    margin-bottom: 30px;
+  }
+
+  .m-georefimage-titleFormat {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        font-size: 1rem;
+  }
+
+  .m-georefimage-projectionOther, .m-georefimage-download-button  {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1rem;
+    gap: 25px;
+
+    margin: 20px 0;
+  }
+
+  .georefimage-jgwKeppview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 1rem;
+    flex-direction: column;
+  }
+
+  .m-georefimage-titleFormat input {
+    width: 65%;
+    height: 21px;
+  }
+
+  .georefimage-projectionTypeImg {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        margin: 20px 0;
+
+  }
+
+  .georefimage-projection {
+    font-size: 1.1rem;
+  }
+
+  .georefimage-projection select,  .m-georefimage-titleFormat select {
+    
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    font-size: 15px;
+    line-height: 25px;
+    cursor: pointer;
+    color: #404040;
+    background-color: #e9e9e9;
+    opacity: 1;
+    font-family: 'Muli', 'sans-serif' !important;
+  }
+
+  .m-georefimage-download-button {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: rgb(170, 170, 170) !important;
+  }
+
+
+.m-georefimage-download-button button {
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    font-size: 15px;
+    line-height: 25px;
+    cursor: pointer;
+    opacity: 0.75;
+    -webkit-transition: opacity 0.25s ease 0s;
+    transition: opacity 0.25s ease 0s;
+    color: #404040;
+}
+
+.m-georefimage-download-button button i {
+    font-size: 20px;
+    vertical-align: text-bottom;
+}
+
+.m-georefimage-download-button button:hover {
+    opacity: 1;
+}
+
+.m-georefimage-download-button button:focus {
+    outline: none;
+}
+
+.m-georefimage-download-button button:before {
+    font-size: 21px;
+    margin-right: 10px;
+}
+
+.m-georefimage-download-button .print {
+    width: 60%;
+    margin: 10px 5% 10px 5%;
+    padding: 5px;
+    background-color: #fff;
+    font-family: 'Muli', 'sans-serif' !important;
+    cursor: pointer;
+}
+
+.m-georefimage-download-button .remove {
+    width: 25%;
+    margin: 10px 5% 10px 0;
+    padding: 5px;
+    background-color: #fff;
+    font-family: 'Muli', 'sans-serif' !important;
+    cursor: pointer;
+}
+
+
+
+
+/*********************
+     QUEUE PANEL
+*********************/
+
+.m-georefimage-container>div.queue>div.title {
+    display: none;
+}
+
+.m-georefimage-container>div.queue>ul.queue-container {
+    margin: 0;
+    padding: 0;
+}
+
+@media only screen and (min-width: 769px) {
+    .m-georefimage-container>div.queue>ul.queue-container {
+        max-height: 20vh;
+        overflow: auto;
+    }
+}
+
+
+/*********************
+     QUEUE ELEM
+*********************/
+
+.m-georefimage-container>div.queue>ul.queue-container>li {
+    position: relative;
+    padding: 10px;
+    -webkit-transition: box-shadow 0.3s ease 0s, background 0.3s ease 0s, transform 0.05s ease 0s;
+    transition: box-shadow 0.3s ease 0s, background 0.3s ease 0s, transform 0.05s ease 0s;
+    cursor: pointer;
+    margin: 0px;
+    border-top: 1px solid rgba(0, 0, 0, 0.13);
+    box-sizing: border-box;
+    font-family: 'Muli', 'sans-serif' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.m-georefimage-container>div.queue>ul.queue-container>li:after,
+.m-georefimage-container>div.queue>ul.queue-container>li.printing:after {
+    position: absolute;
+    right: 15px;
+    font-size: 19px;
+    color: #e7338c;
+    font-family: 'georefimage' !important;
+}
+
+.m-georefimage-container>div.queue>ul.queue-container>li:after {
+    content: '\e90e';
+}
+
+.m-georefimage-container>div.queue>ul.queue-container>li.printing:after {
+    /*   border: 1px solid #A914DA;*/
+    content: '\e953';
+    -webkit-animation: mloading 1s linear infinite;
+    -moz-animation: mloading 1s linear infinite;
+    animation: mloading 1s linear infinite;
+}
+
+.m-georefimage-container>div.queue>ul.queue-container>li:nth-child(1) {
+    border-top: 0px;
+}
+
+.m-georefimage-container>div.queue>ul.queue-container>li.printing {
+    /*   border: 1px solid #A914DA;*/
+    cursor: inherit;
+    font-family: 'Muli', 'sans-serif' !important;
+}
+
+.m-georefimage-container>div.queue>ul.queue-container>li:not(.printing):hover {
+    background-color: rgba(231, 51, 140, 0.1);
+    box-sizing: border-box;
+    border-bottom: 0;
+}

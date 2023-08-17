@@ -45,7 +45,7 @@
     },
     {
       "type": "boolean",
-      "name": "zoomExtent",
+      "name": "georefImage",
       "position": 6
     },
     {
