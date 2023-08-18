@@ -1,8 +1,8 @@
-<section class="m-control m-container m-georefimage m-georefimage-container">
+<section class="m-container m-georefimage m-georefimage-container">
     <div class="m-georefimage-titleFormat">
 
             <label for="title-georefimage">{{translations.title}}"</label>
-            <input type="text" name="title-georefimage" placeholder="{{translations.title}}">
+            <input type="text" id="m-georefimage-title" name="title-georefimage" placeholder="{{translations.title}}">
  
        
 
@@ -14,52 +14,40 @@
 
     </div>
 
-        <div class="m-georefimage-projectionOther">
-            <div class="georefimage-projection">
-                <label>{{translations.projection}}: </label>
-                <select>
-                    {{#each capabilities.proyections}}
-                        <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
-                    {{/each}}
-                </select>
-            </div>
-
-
-            <div class="georefimage-jgwKeppview">
+        <div class="georefimage-jgwKeppview">
                 <div>
-                    <label for="jgw">Descargar JGW</label>
-                    <input value="jgw" type="checkbox" id="keepview">
+                    <label for="wld">Fichero de georreferenciación (WLD)</label>
+                    <input value="wld" type="checkbox" id="keepview">
                 </div>
             
                 <div class="keepview">
-                    <label>{{translations.keep}} </label>
-                    <input type="checkbox" id="keepview" {{#if keepView}} checked{{/if}}>
+                    <label>DPI</label>
+                    <input type="number" id="keepview" min="120" max="300" placeholder="120">
                 </div>
+        </div>
+
+    <fieldset id="m-georefimage-fieldset" class="typeImagen">
+        <legend>Selecciona el tipo de descarga:</legend>
+        <div class="m-georefimage-fieldsetInput">
+            <div>
+                <label for="client">Desde cliente: contenido de pantalla</label>
+                <input name="typeDownload" value="client" type="radio" id="client" checked>
+            </div>
+    
+            <div>
+                <label for="server">Desde servidor: con geoprint <a id="m-georefimage-listServices" href="#">(&#x2139;)</a></label>
+                <input name="typeDownload" value="server" type="radio" id="server">
             </div>
         </div>
 
-    <fieldset class="typeImagen">
-        <legend>Selecciona el tipo de descarga:</legend>
-        <div>
-            <label for="client">Desde el cliente</label>
-            <input name="typeDownload" value="client" type="radio" id="client">
-        </div>
-
-        <div>
-            <label for="server">Desde el servidor</label>
-            <input name="typeDownload" value="server" type="radio" id="server">
-        </div>
+        <h3 id="m-georefimage-projection">EPSG: 3857</h3>
     </fieldset>
+
 
 
     <!-- buttons -->
     <div class="m-georefimage-download-button">
-        <button class="print"><i class="icon-descargar"></i> {{translations.downImg}}</button>
-        <button class="remove"><i class="icon-papelera"></i> {{translations.delete}}</button>
-    </div>
-    <!-- queue -->
-    <div class="queue">
-        <div class="title">{{translations.down}}</div>
-        <ul class="queue-container"></ul>
+        <button id="m-georefimage-print" class="print"><i class="icon-descargar"></i> {{translations.downImg}}</button>
+        <button id="m-georefimage-remove" class="remove"><i class="icon-papelera"></i> {{translations.delete}}</button>
     </div>
 </section>

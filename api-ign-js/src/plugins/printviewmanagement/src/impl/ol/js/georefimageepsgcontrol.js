@@ -50,31 +50,6 @@ export default class GeorefImageEpsgControl extends M.impl.Control {
    * @param {Layer} layer to encode
    * @api stable
    */
-  getParametrizedLayers(paramName, layers) {
-    let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
-      return !M.utils.isNullOrEmpty(layer.getSource()) &&
-      // eslint-disable-next-line no-underscore-dangle
-        !M.utils.isNullOrEmpty(layer.getSource().params_) &&
-        layer.getSource().getParams()[paramName] !== undefined;
-    });
-
-    others = others.filter((layer) => {
-      return !(layers.some((l) => {
-        return l.url !== undefined && l.url === layer.getSource().getUrl();
-      }));
-    });
-
-    return others;
-  }
-
-  /**
-   * This function encodes a layer.
-   *
-   * @public
-   * @function
-   * @param {Layer} layer to encode
-   * @api stable
-   */
   encodeLayer(layer) {
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.WMC) {

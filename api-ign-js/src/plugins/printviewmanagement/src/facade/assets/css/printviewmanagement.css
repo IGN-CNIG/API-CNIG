@@ -457,11 +457,25 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
-    gap: 5px;
     font-size: 1rem;
 
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+  }
+
+  .m-georefimage-container fieldset h3 {
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+  }
+
+  .m-georefimage-fieldsetInput div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    margin: 10px 0;
   }
 
   .m-georefimage-titleFormat {
@@ -482,19 +496,24 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
 
     font-size: 1rem;
     gap: 25px;
-
-    margin: 20px 0;
   }
 
   .georefimage-jgwKeppview {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 
     font-size: 1rem;
-    flex-direction: column;
+    margin: 25px 0;
   }
+
+  .georefimage-jgwKeppview input[type="number"] {
+    width: 50px;
+    height: 21px;
+    margin-left: 5px;
+  }
+
 
   .m-georefimage-titleFormat input {
     width: 65%;
@@ -592,17 +611,19 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
      QUEUE PANEL
 *********************/
 
-.m-georefimage-container>div.queue>div.title {
-    display: none;
-}
-
-.m-georefimage-container>div.queue>ul.queue-container {
-    margin: 0;
-    padding: 0;
+.m-printviewmanagement-queue{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    font-family: 'Muli', 'sans-serif' !important;
+    background-color: white;
 }
 
 @media only screen and (min-width: 769px) {
-    .m-georefimage-container>div.queue>ul.queue-container {
+    .m-printviewmanagement-queue {
         max-height: 20vh;
         overflow: auto;
     }
@@ -613,7 +634,15 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
      QUEUE ELEM
 *********************/
 
-.m-georefimage-container>div.queue>ul.queue-container>li {
+.queue-container {
+    padding-inline-start: 0px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.m-printviewmanagement-queue .queue-container>li {
     position: relative;
     padding: 10px;
     -webkit-transition: box-shadow 0.3s ease 0s, background 0.3s ease 0s, transform 0.05s ease 0s;
@@ -631,40 +660,36 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    list-style: none;
+    width: 95%;
 }
 
-.m-georefimage-container>div.queue>ul.queue-container>li:after,
-.m-georefimage-container>div.queue>ul.queue-container>li.printing:after {
+.m-printviewmanagement-queue .queue-container>li:after,
+.m-printviewmanagement-queue .queue-container>li.printing:after {
     position: absolute;
     right: 15px;
     font-size: 19px;
     color: #e7338c;
-    font-family: 'georefimage' !important;
+    font-family: 'printviewmanagement' !important;
 }
 
-.m-georefimage-container>div.queue>ul.queue-container>li:after {
-    content: '\e90e';
+.m-printviewmanagement-queue .finished:after {
+    content: '\e960';
 }
 
-.m-georefimage-container>div.queue>ul.queue-container>li.printing:after {
+.m-printviewmanagement-queue .printing:after {
     /*   border: 1px solid #A914DA;*/
-    content: '\e953';
+    content: '\e97f';
     -webkit-animation: mloading 1s linear infinite;
     -moz-animation: mloading 1s linear infinite;
     animation: mloading 1s linear infinite;
 }
 
-.m-georefimage-container>div.queue>ul.queue-container>li:nth-child(1) {
+.m-printviewmanagement-queue .queue-container>li:nth-child(1) {
     border-top: 0px;
 }
 
-.m-georefimage-container>div.queue>ul.queue-container>li.printing {
-    /*   border: 1px solid #A914DA;*/
-    cursor: inherit;
-    font-family: 'Muli', 'sans-serif' !important;
-}
-
-.m-georefimage-container>div.queue>ul.queue-container>li:not(.printing):hover {
+.m-printviewmanagement-queue .queue-container>li:not(.printing):hover {
     background-color: rgba(231, 51, 140, 0.1);
     box-sizing: border-box;
     border-bottom: 0;

@@ -8,6 +8,8 @@ import GeorefimageControlImpl from '../../impl/ol/js/georefimagecontrol';
 import georefimageHTML from '../../templates/georefimage';
 import { getValue } from './i18n/language';
 
+import { createQueueElement, showQueueElement, LIST_SERVICES } from './utils';
+
 export default class GeorefimageControl extends M.Control {
   /**
     * @classdesc
@@ -17,9 +19,10 @@ export default class GeorefimageControl extends M.Control {
     * @extends {M.Control}
     * @api stable
     */
-  constructor(serverUrl, printTemplateUrl, printStatusUrl) {
+  constructor({ serverUrl, printTemplateUrl, printStatusUrl }, map) {
     const impl = new GeorefimageControlImpl();
     super(impl, GeorefimageControl.NAME);
+    this.map_ = map;
     if (M.utils.isUndefined(GeorefimageControlImpl)) {
       M.exception('La implementación usada no puede crear controles Georefimage');
     }
@@ -55,7 +58,7 @@ export default class GeorefimageControl extends M.Control {
       * @private
       * @type {HTMLElement}
       */
-    this.inputTitle_ = null;
+    this.elementTitle_ = null;
 
     /**
       * Map description
@@ -120,7 +123,7 @@ export default class GeorefimageControl extends M.Control {
       * @private
       * @type {HTMLElement}
       */
-    this.queueContainer_ = null;
+    this.elementQueueContainer_ = null;
 
     /**
       * Facade of the map
@@ -147,7 +150,9 @@ export default class GeorefimageControl extends M.Control {
     this.outputFormats_ = ['pdf', 'png', 'jpg'];
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
-    this.proyectionsDefect_ = ['EPSG:25828', 'EPSG:25829', 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
+    this.proyectionsDefect_ = ['EPSG:3857'];
+    // this.proyectionsDefect_ = ['EPSG:25828', 'EPSG:25829',
+    // 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
   }
 
   /**
@@ -171,8 +176,7 @@ export default class GeorefimageControl extends M.Control {
         } else {
           M.dialog.error(getValue('exception.printError'), 'Error');
         }
-
-        this.queueContainer_.lastChild.remove();
+        this.elementQueueContainer_.lastChild.remove();
       } else {
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
@@ -252,70 +256,89 @@ export default class GeorefimageControl extends M.Control {
       });
     });
     promise.then((t) => {
+      this.addEvents(t);
       if (!button.classList.contains('activated')) {
-        console.log(this.html_.querySelector('#m-printviewmanagement-controls'));
         this.html_.querySelector('#m-printviewmanagement-controls').appendChild(t);
       } else {
         document.querySelector('.m-georefimage-container').remove();
       }
       button.classList.toggle('activated');
     });
-
-    // to-do
-    // this.addEvents(html);
   }
 
   /**
-    * This function adds event listeners.
+    * Esta función añade los eventos a los elementos del control
     *
     * @public
     * @function
-    * @param {M.Map} map to add the control
+    * @param {HTMLElement} html Contenedor del control
     * @api stable
     */
   addEvents(html) {
-    this.element_ = html;
-    this.inputTitle_ = this.element_.querySelector('.form div.title > input');
-    const selectProjection = this.element_.querySelector('.form div.projection > select');
-    selectProjection.addEventListener('change', (e) => {
-      const projectionValue = selectProjection.value;
-      this.setProjection({
-        value: projectionValue,
-        name: projectionValue,
-      });
-    });
+    const DEFAULT_PROJECTION_SERVER = 'EPSG:3857';
 
-    const projectionValue = selectProjection.value;
-    this.setProjection({
-      value: projectionValue,
-      name: projectionValue,
-    });
+    // ID ELEMENTS
+    const ID_TITLE = '#m-georefimage-title';
+    const ID_PROJECTION = '#m-georefimage-projection';
+    const ID_FIELDSET = '#m-georefimage-fieldset';
+    const ID_PRINT_BUTTON = '#m-georefimage-print';
+    const ID_REMOVE_BUTTON = '#m-georefimage-remove';
+    const ID_QUEUE_CONTAINER = '#m-georefimage-queue-container';
+    const ID_LIST_SERVICES = '#m-georefimage-listServices';
 
-    const printBtn = this.element_.querySelector('.button > button.print');
-    printBtn.addEventListener('click', this.printClick_.bind(this));
-    const cleanBtn = this.element_.querySelector('.button > button.remove');
-    cleanBtn.addEventListener('click', (event) => {
-      event.preventDefault();
-      // reset values
-      this.inputTitle_.value = '';
-      this.projection_ = 'EPSG:3857';
-      // Create events and init
-      const changeEvent = document.createEvent('HTMLEvents');
-      changeEvent.initEvent('change');
-      const clickEvent = document.createEvent('HTMLEvents');
-      // Fire listeners
-      clickEvent.initEvent('click');
-      selectProjection.dispatchEvent(changeEvent);
-      // clean queue
-      Array.prototype.forEach.apply(this.queueContainer_.children, [(child) => {
-        child.removeEventListener('click', this.downloadPrint);
-      }, this]);
+    // ELEMENTS
+    this.elementTitle_ = html.querySelector(ID_TITLE);
+    this.elementProjection_ = html.querySelector(ID_PROJECTION);
+    this.elementFieldset_ = html.querySelector(ID_FIELDSET);
+    this.elementPrintButton_ = html.querySelector(ID_PRINT_BUTTON);
+    this.elementRemoveButton_ = html.querySelector(ID_REMOVE_BUTTON);
+    this.elementListServices_ = html.querySelector(ID_LIST_SERVICES);
+    this.elementQueueContainer_ = this.html_.querySelector(ID_QUEUE_CONTAINER);
 
-      this.queueContainer_.innerHTML = '';
-    });
+    // SET EPSG PROJECTION DEPENS FIELDSET
+    const defaultValueFieldset = this.elementFieldset_.querySelector('input[type="radio"]:checked').value;
+    this.projection_ = (defaultValueFieldset === 'server') ? DEFAULT_PROJECTION_SERVER : this.map_.getProjection().code;
+    this.elementProjection_.innerText = this.projection_;
 
-    this.queueContainer_ = this.element_.querySelector('.queue > ul.queue-container');
-    M.utils.enableTouchScroll(this.queueContainer_);
+    // ADD EVENT PRINT
+    this.elementPrintButton_.addEventListener('click', this.printClick_.bind(this));
+
+    // ADD EVENT REMOVE
+    this.elementRemoveButton_.addEventListener('click', this.removeDownload_.bind(this));
+
+    // ADD EVENT LIST SERVICES DIALOG
+    this.elementListServices_.addEventListener('click', () => M.dialog.info(LIST_SERVICES));
+
+    // ADD ENABLE TOUCH SCROLL
+    M.utils.enableTouchScroll(this.elementQueueContainer_);
+  }
+
+  /**
+    * Elimina la descarga seleccionada
+    *
+    * @public
+    * @function
+    * @param {Event} event Evento de click
+    * @api stable
+    */
+  removeDownload_(event) {
+    event.preventDefault();
+    // reset values
+    this.elementTitle_.value = '';
+    this.projection_ = 'EPSG:3857';
+    // Create events and init
+    const changeEvent = document.createEvent('HTMLEvents');
+    changeEvent.initEvent('change');
+    const clickEvent = document.createEvent('HTMLEvents');
+    // Fire listeners
+    clickEvent.initEvent('click');
+    this.projection_.dispatchEvent(changeEvent);
+    // clean queue
+    Array.prototype.forEach.apply(this.elementQueueContainer_.children, [(child) => {
+      child.removeEventListener('click', this.downloadPrint);
+    }, this]);
+
+    this.elementQueueContainer_.innerHTML = '';
   }
 
   /**
@@ -365,17 +388,26 @@ export default class GeorefimageControl extends M.Control {
     * @function
     */
   printClick_(evt) {
+    const LOADING_CLASS = 'printing';
+    const FINISHED_CLASS = 'finished';
+    const CONTAINER_QUEUE_CLASS = 'm-printviewmanagement-queue';
+
     evt.preventDefault();
     this.getPrintData().then((printData) => {
       let printUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, `report.${printData.outputFormat}`]);
-      const queueEl = this.createQueueElement();
-      if (Array.prototype.slice.call(this.queueContainer_.childNodes).length > 0) {
-        this.queueContainer_.insertBefore(queueEl, this.queueContainer_.firstChild);
-      } else {
-        this.queueContainer_.appendChild(queueEl);
-      }
 
-      queueEl.classList.add(GeorefimageControl.LOADING_CLASS);
+      // TODO: Refactorizar otro archivo
+      // Create queue element
+      showQueueElement(this.html_.querySelector(`.${CONTAINER_QUEUE_CLASS}`));
+      const queueEl = createQueueElement(this.elementTitle_.value);
+      if ([...this.elementQueueContainer_.childNodes].length > 0) {
+        this.elementQueueContainer_.insertBefore(queueEl, this.elementQueueContainer_.firstChild);
+      } else {
+        this.elementQueueContainer_.appendChild(queueEl);
+      }
+      queueEl.classList.add(LOADING_CLASS);
+      //---
+
       printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
       // FIXME: delete proxy deactivation and uncomment if/else when proxy is fixed on Mapea
       M.proxy(false);
@@ -384,7 +416,10 @@ export default class GeorefimageControl extends M.Control {
         const responseStatusURL = JSON.parse(response.text);
         const ref = responseStatusURL.ref;
         const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-        this.getStatus(statusURL, () => queueEl.classList.remove(GeorefimageControl.LOADING_CLASS));
+        this.getStatus(statusURL, () => {
+          queueEl.classList.remove(LOADING_CLASS);
+          queueEl.classList.add(FINISHED_CLASS);
+        });
 
         // if (response.error !== true) { // withoud proxy, response.error === true
         let downloadUrl;
@@ -397,6 +432,7 @@ export default class GeorefimageControl extends M.Control {
             downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
           }
           this.documentRead_.src = downloadUrl;
+          console.log(this.documentRead_.src);
         } catch (err) {
           M.exception(err);
         }
@@ -538,11 +574,11 @@ export default class GeorefimageControl extends M.Control {
     */
   getPrintData() {
     let projection;
-    if (this.projection_.value === 'EPSG:4326' || this.projection_.value === 'EPSG:4258') {
+    if (this.projection_ === 'EPSG:4326' || this.projection_ === 'EPSG:4258') {
       projection = this.map_.getProjection().code;
-      this.projection_.value = projection;
+      this.projection_ = projection;
     } else {
-      projection = this.projection_.value;
+      projection = this.projection_;
     }
 
     const keepView = document.getElementById('keepview').checked;
@@ -671,7 +707,7 @@ export default class GeorefimageControl extends M.Control {
     }
 
     let numLayersToProc = layers.length;
-    const otherLayers = this.getImpl().getParametrizedLayers('IMAGEN', layers);
+    const otherLayers = this.getImpl().getParametrizedLayers(this.map_, 'IMAGEN', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
       numLayersToProc = layers.length;
@@ -717,7 +753,7 @@ export default class GeorefimageControl extends M.Control {
     */
   createQueueElement() {
     const queueElem = document.createElement('li');
-    let title = this.inputTitle_.value;
+    let title = this.elementTitle_.value;
     if (M.utils.isNullOrEmpty(title)) {
       title = getValue('notitle');
     }
@@ -734,6 +770,10 @@ export default class GeorefimageControl extends M.Control {
     * @api stable
     */
   downloadPrint(event) {
+    const FILE_EXTENSION_GEO = '.wld'; // .jgw
+    const FILE_EXTENSION_IMG = '.jpg';
+    const TYPE_SAVE = '.zip';
+
     const keepView = document.getElementById('keepview').checked;
     const dpi = keepView ? 120 : this.dpi_;
     const code = this.map_.getProjection().code;
@@ -745,7 +785,7 @@ export default class GeorefimageControl extends M.Control {
         this.map_.getBbox().x.max,
         this.map_.getBbox().y.max,
       ];
-      bbox = this.getImpl().transformExt(bbox, code, this.projection_.name);
+      bbox = this.getImpl().transformExt(bbox, code, this.projection_);
       const size = this.map_.getMapImpl().getSize();
       const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
       const GiroA = (0).toString();
@@ -760,11 +800,11 @@ export default class GeorefimageControl extends M.Control {
       }
 
       const zip = new JsZip();
-      zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
-      zip.file(titulo.concat('.jpg'), resolve, { base64: true });
+      zip.file(titulo.concat(FILE_EXTENSION_GEO), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
+      zip.file(titulo.concat(FILE_EXTENSION_IMG), resolve, { base64: true });
       zip.generateAsync({ type: 'blob' }).then((content) => {
         // see FileSaver.js
-        saveAs(content, titulo.concat('.zip'));
+        saveAs(content, titulo.concat(TYPE_SAVE));
       });
     });
   }

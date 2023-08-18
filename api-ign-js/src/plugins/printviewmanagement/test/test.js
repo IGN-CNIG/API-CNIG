@@ -27,6 +27,7 @@ const mp = new PrintViewManagement({
         name: 'mtn_rasterizado',
         format: 'image/jpeg',
         legend: 'Mapa ETRS89 UTM',
+        EPSG: 'EPSG:4258',
       },
       {
         url: 'http://www.ign.es/wms-inspire/pnoa-ma?',
@@ -36,7 +37,9 @@ const mp = new PrintViewManagement({
       },
     ],
   },
-  zoomExtent: true,
+  georefImage: {
+    tooltip: 'Georeferenciar imagen',
+  },
   viewhistory: true,
   zoompanel: true,
 });

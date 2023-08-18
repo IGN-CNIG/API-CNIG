@@ -109,7 +109,7 @@ export default class PrintViewManagementControl extends M.Control {
         this.addGeorefImageEpsgControl(html);
       }
       if (this.georefImage_) {
-        this.georefImageControl = new GeorefimageControl(map);
+        this.georefImageControl = new GeorefimageControl(this.georefImage_, map);
         html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
           this.deactive(html, 'georefImage');
           this.georefImageControl.active(html);

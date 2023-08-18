@@ -44,14 +44,16 @@ export default class GeorefimageControl extends M.impl.Control {
 
   /**
     * This function encodes a layer.
+    * Esta función codifica una capa, se usa tanto en el control de
+    * georreferenciación como en el de georreferenciación de imagen
     *
     * @public
     * @function
     * @param {Layer} layer to encode
     * @api stable
     */
-  getParametrizedLayers(paramName, layers) {
-    let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
+  getParametrizedLayers(facadeMap, paramName, layers) {
+    let others = facadeMap.getMapImpl().getLayers().getArray().filter((layer) => {
       return !M.utils.isNullOrEmpty(layer.getSource()) &&
       // eslint-disable-next-line no-underscore-dangle
          !M.utils.isNullOrEmpty(layer.getSource().params_) &&
@@ -66,7 +68,6 @@ export default class GeorefimageControl extends M.impl.Control {
 
     return others;
   }
-
   /**
     * This function encodes a layer.
     *
@@ -809,6 +810,7 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   transformExt(box, code, currProj) {
+    console.log(box, code, currProj);
     return ol.proj.transformExtent(box, code, currProj);
   }
 
