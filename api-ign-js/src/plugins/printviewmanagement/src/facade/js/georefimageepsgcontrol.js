@@ -137,24 +137,25 @@ export default class GeorefImageEpsgControl extends M.Control {
   printClick_(evt) {
     evt.preventDefault();
     this.canceled = false;
+    const DEFAULT_EPSG = 'EPSG:3857';
+    const ID_IMG_EPSG = '#m-georefimageepsg-select';
 
     // get value select option id m-georefimageepsg-select
-    const value = this.template_.querySelector('#m-georefimageepsg-select').value;
+    const value = this.template_.querySelector(ID_IMG_EPSG).value;
     const {
-      url, name, format,
+      url, name, format, EPSG: epsg,
     } = this.layers_.filter(({ name: layerName }) => layerName === value)[0];
     let urlLayer = url;
 
-    const projection = this.getUTMZoneProjection();
+    const projection = epsg || this.getUTMZoneProjection();
     const size = this.map_.getMapImpl().getSize();
 
     const v = this.map_.getMapImpl().getView();
     let ext = v.calculateExtent(size);
-    ext = ol.proj.transformExtent(ext, 'EPSG:3857', projection);
+    ext = ol.proj.transformExtent(ext, DEFAULT_EPSG, projection);
     const f = (ext[2] - ext[0]) / size[0];
     ext[3] = ext[1] + (f * size[1]);
     const bbox = ext;
-
 
     urlLayer += `SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&SRS=${projection}&CRS=${projection}&WIDTH=${size[0]}&HEIGHT=${size[1]}`;
     urlLayer += `&BBOX=${bbox}&FORMAT=${format}&TRANSPARENT=true&STYLES=default`;
