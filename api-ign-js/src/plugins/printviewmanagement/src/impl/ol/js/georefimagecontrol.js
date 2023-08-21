@@ -810,7 +810,6 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   transformExt(box, code, currProj) {
-    console.log(box, code, currProj);
     return ol.proj.transformExtent(box, code, currProj);
   }
 

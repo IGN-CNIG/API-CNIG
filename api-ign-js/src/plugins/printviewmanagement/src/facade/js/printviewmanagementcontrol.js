@@ -101,6 +101,8 @@ export default class PrintViewManagementControl extends M.Control {
             tooltipGeorefImageEpsg: this.tooltipGeorefImageEpsg_,
             georefImage: getValue('georeferenced_img'),
             viewhistory: getValue('map_printing'),
+            downImg: getValue('downImg'),
+            delete: getValue('delete'),
           },
         },
       });
@@ -184,7 +186,6 @@ export default class PrintViewManagementControl extends M.Control {
     }
     const active = html.querySelectorAll('#m-printviewmanagement-previews .activated')[0];
     if (active && active.id !== `m-printviewmanagement-${control}`) {
-      console.log('active', active.id);
       this.active_ = active;
       if (active.id === 'm-printviewmanagement-georefImage') {
         this.georefImageControl.deactive();

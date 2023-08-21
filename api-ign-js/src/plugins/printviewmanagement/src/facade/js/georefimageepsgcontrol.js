@@ -1,12 +1,19 @@
 /**
  * @module M/control/GeorefImageEpsgControl
  */
-
-import JsZip from 'jszip';
-import { saveAs } from 'file-saver';
 import Georefimage2ControlImpl from '../../impl/ol/js/georefimageepsgcontrol';
 import georefimage2HTML from '../../templates/georefimageepsg';
 import { getValue } from './i18n/language';
+
+import {
+  innerQueueElement,
+  removeLoadQueueElement,
+  getQueueContainer,
+  createWLD,
+  getBase64Image,
+  generateTitle,
+  createZipFile,
+} from './utils';
 
 export default class GeorefImageEpsgControl extends M.Control {
   /**
@@ -119,13 +126,35 @@ export default class GeorefImageEpsgControl extends M.Control {
         document.querySelector('.m-georefimageepsg-container').remove();
       }
       button.classList.toggle('activated');
+      this.addEvents();
     });
 
-
     // this.accessibilityTab(html);
-    // this.element_ = html;
-    const printBtn = this.template_.querySelector('#m-georefimageepsg-down');
-    printBtn.addEventListener('click', this.printClick_.bind(this));
+  }
+
+  /**
+    * Esta función añade los eventos a los elementos del control
+    *
+    * @public
+    * @function
+    * @param {HTMLElement} html Contenedor del control
+    * @api stable
+    */
+  addEvents() {
+    // ID ELEMENTS
+    const ID_PRINT_BUTTON = '#m-printviewmanagement-print';
+    const ID_REMOVE_BUTTON = '#m-printviewmanagement-remove';
+
+    // ELEMENTS
+    this.printButton_ = this.html_.querySelector(ID_PRINT_BUTTON);
+    const removeButton = this.html_.querySelector(ID_REMOVE_BUTTON);
+
+    // Reference Events
+    this.referenceEventsPrintClick_ = this.printClick_.bind(this);
+
+    // EVENTS
+    this.printButton_.addEventListener('click', this.referenceEventsPrintClick_);
+    removeButton.addEventListener('click', () => removeLoadQueueElement(this.html_));
   }
 
   /**
@@ -136,6 +165,21 @@ export default class GeorefImageEpsgControl extends M.Control {
     */
   printClick_(evt) {
     evt.preventDefault();
+    const date = new Date();
+    this.titulo_ = 'mapa_'.concat(
+      date.getFullYear(), '-',
+      date.getMonth() + 1, '-',
+      date.getDay() + 1, '_',
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+    );
+
+    this.queueEl = innerQueueElement(
+      this.html_,
+      this.titulo_,
+    );
+
     this.canceled = false;
     const DEFAULT_EPSG = 'EPSG:3857';
     const ID_IMG_EPSG = '#m-georefimageepsg-select';
@@ -152,12 +196,14 @@ export default class GeorefImageEpsgControl extends M.Control {
 
     const v = this.map_.getMapImpl().getView();
     let ext = v.calculateExtent(size);
+
     ext = ol.proj.transformExtent(ext, DEFAULT_EPSG, projection);
     const f = (ext[2] - ext[0]) / size[0];
     ext[3] = ext[1] + (f * size[1]);
     const bbox = ext;
 
-    urlLayer += `SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&SRS=${projection}&CRS=${projection}&WIDTH=${size[0]}&HEIGHT=${size[1]}`;
+    // TO-DO Problema con la proyección
+    urlLayer += `SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&SRS=${DEFAULT_EPSG}&CRS=${DEFAULT_EPSG}&WIDTH=${size[0]}&HEIGHT=${size[1]}`;
     urlLayer += `&BBOX=${bbox}&FORMAT=${format}&TRANSPARENT=true&STYLES=default`;
     urlLayer += `&LAYERS=${name}`;
 
@@ -190,54 +236,48 @@ export default class GeorefImageEpsgControl extends M.Control {
     * @api stable
     */
   downloadPrint(url, bbox) {
+    const FILE_EXTENSION_GEO = '.wld'; // .jgw
+    const FILE_EXTENSION_IMG = '.jpg';
+    const TYPE_SAVE = '.zip';
+
     const imageUrl = url !== null ? url : this.documentRead_.src;
     const dpi = this.dpi_;
-    const base64image = this.getBase64Image(imageUrl);
+
+    const base64image = getBase64Image(imageUrl);
     if (!this.canceled) {
       base64image.then((resolve) => {
         if (!this.canceled) {
-          const size = this.map_.getMapImpl().getSize();
-          const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
-          const GiroA = (0).toString();
-          const GiroB = (0).toString();
-          const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
-          const Cx = (bbox[0] + (Px / 2)).toString();
-          const Cy = (bbox[3] + (Py / 2)).toString();
-          const f = new Date();
-          const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
-          const zip = new JsZip();
-          zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
-          zip.file(titulo.concat('.jpg'), resolve, { base64: true });
-          zip.generateAsync({ type: 'blob' }).then((content) => {
-            saveAs(content, titulo.concat('.zip'));
+          // GET TITLE
+          const titulo = generateTitle('');
+
+          // CONTENT ZIP
+          const files = [{
+            name: titulo.concat(FILE_EXTENSION_GEO),
+            data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize()),
+            base64: false,
+          },
+          {
+            name: titulo.concat(FILE_EXTENSION_IMG),
+            data: resolve,
+            base64: true,
+          },
+          ];
+
+          // CREATE ZIP
+          this.queueEl.addEventListener('click', () => {
+            createZipFile(files, TYPE_SAVE, titulo);
           });
+
+          // REMOVE QUEUE ELEMENT
+          removeLoadQueueElement(this.queueEl);
         }
       }).catch((err) => {
+        getQueueContainer(this.html_).lastChild.remove();
         M.dialog.error(getValue('exception.imageError'));
       });
+    } else {
+      getQueueContainer(this.html_).lastChild.remove();
     }
-  }
-
-  getBase64Image(imgUrl) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.setAttribute('crossorigin', 'anonymous');
-      img.src = imgUrl;
-      img.onload = function can() {
-        this.canvas_ = document.createElement('canvas');
-        this.canvas_.width = img.width;
-        this.canvas_.height = img.height;
-        const ctx = this.canvas_.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        const dataURL = this.canvas_.toDataURL('image/jpeg', 1.0);
-        resolve(dataURL.replace(/^data:image\/(png|jpeg);base64,/, ''));
-      };
-
-      img.onerror = function rej() {
-        Promise.reject(new Error(getValue('exception.loaderror')));
-        M.dialog.error(getValue('exception.imageError'));
-      };
-    });
   }
 
   /**
@@ -260,7 +300,9 @@ export default class GeorefImageEpsgControl extends M.Control {
   }
 
   deactive() {
+    this.printButton_.removeEventListener('click', this.referenceEventsPrintClick_);
     this.template_.remove();
+    // TO-DO ADD BUTTON REMOVE AND ALL EVENTS
   }
 }
 
