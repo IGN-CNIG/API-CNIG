@@ -82,7 +82,7 @@ export default class PrintViewManagement extends M.Plugin {
      * @private
      * @type {Boolean}
      */
-    this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
+    this.isDraggable = options.isDraggable ? options.isDraggable : false;
 
     /**
      * Indicates if the control georefImageEpsg is added to the plugin
@@ -96,21 +96,20 @@ export default class PrintViewManagement extends M.Plugin {
      * @private
      * @type {Boolean}
      */
-    this.georefImage = !M.utils.isUndefined(options.georefImage) ? options.georefImage : true;
+    this.georefImage = options.georefImage ? options.georefImage : false;
 
     /**
      * Indicates if the control printermap is added to the plugin
      * @private
      * @type {Boolean}
      */
-    this.printermap = !M.utils.isUndefined(options.printermap) ? options.printermap : true;
+    this.printermap = options.printermap ? options.printermap : false;
 
-    /**
-     * Indicates if the control ZoomPanel is added to the plugin
-     * @private
-     * @type {Boolean}
-     */
-    this.zoompanel = !M.utils.isUndefined(options.zoompanel) ? options.zoompanel : true;
+    this.serverUrl = options.serverUrl || 'https://geoprint.desarrollo.guadaltel.es';
+
+    this.printTemplateUrl = options.printTemplateUrl || 'https://geoprint.desarrollo.guadaltel.es/print/mapexport';
+
+    this.printStatusUrl = options.printStatusUrl || 'https://geoprint.desarrollo.guadaltel.es/print/status';
 
     /**
      * Indicates order to the plugin
@@ -146,19 +145,22 @@ export default class PrintViewManagement extends M.Plugin {
   addTo(map) {
     this.map_ = map;
     if (this.georefImageEpsg === false && this.georefImage === false &&
-      this.printermap === false && this.zoompanel === false) {
+      this.printermap === false) {
       M.dialog.error(getValue('exception.no_controls'));
     }
+
     // TO-DO Cambiar por un objeto
-    this.controls_.push(new PrintViewManagementControl(
-      this.isDraggable,
-      this.georefImageEpsg,
-      this.georefImage,
-      this.printermap,
-      this.zoompanel,
-      this.order,
-      this.map_,
-    ));
+    this.controls_.push(new PrintViewManagementControl({
+      isDraggable: this.isDraggable,
+      georefImageEpsg: this.georefImageEpsg,
+      georefImage: this.georefImage,
+      printermap: this.printermap,
+      order: this.order,
+      map: this.map_,
+      serverUrl: this.serverUrl,
+      printTemplateUrl: this.printTemplateUrl,
+      printStatusUrl: this.printStatusUrl,
+    }));
 
     this.panel_ = new M.ui.Panel('panelPrintViewManagement', {
       collapsible: this.collapsible,

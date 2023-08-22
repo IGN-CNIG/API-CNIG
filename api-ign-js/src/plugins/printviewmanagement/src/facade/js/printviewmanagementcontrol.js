@@ -20,42 +20,16 @@ export default class PrintViewManagementControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(isDraggable, georefImageEpsg, georefImage, printermap, zoompanel, order, map) {
+  constructor({
+    isDraggable, georefImageEpsg, georefImage, printermap, order, map,
+    serverUrl, printTemplateUrl, printStatusUrl,
+  }) {
     if (M.utils.isUndefined(PrintViewManagementImpl)) {
       M.exception(getValue('exception.impl'));
     }
 
     const impl = new PrintViewManagementImpl();
     super(impl, 'PrintViewManagement');
-    /**
-     * Indicates if the control PredefinedZoom is added to the plugin
-     * @private
-     * @type {Boolean|Array<Object>}
-     */
-
-    this.georefImageEpsg_ = georefImageEpsg;
-
-    /**
-     * Indicates if the control georefImage is added to the plugin
-     * @private
-     * @type {Boolean}
-     */
-    this.georefImage_ = georefImage;
-
-    /**
-     * Indicates if the control printermap is added to the plugin
-     * @private
-     * @type {Boolean}
-     */
-    this.printermap_ = printermap;
-
-    /**
-     * Indicates if the control ZoomPanel is added to the plugin
-     * @private
-     * @type {Boolean}
-     */
-    this.zoompanel_ = zoompanel;
-
     /**
      * Option to allow the plugin to be draggable or not
      * @private
@@ -77,11 +51,38 @@ export default class PrintViewManagementControl extends M.Control {
       */
     this.tooltipGeorefImageEpsg_ = georefImageEpsg.tooltip || getValue('tooltip_georefimageepsg');
 
-    this.map_ = map;
 
-    this.active_ = null;
+    /**
+     * Indicates if the control PredefinedZoom is added to the plugin
+     * @private
+     * @type {Boolean|Array<Object>}
+     */
+    this.georefImageEpsg_ = georefImageEpsg;
+
+    /**
+    * Indicates if the control georefImage is added to the plugin
+    * @private
+    * @type {Boolean}
+    */
+    this.georefImage_ = georefImage;
+    if (this.georefImage_ instanceof Object) {
+      this.georefImage_.serverUrl = serverUrl;
+      this.georefImage_.printTemplateUrl = printTemplateUrl;
+      this.georefImage_.printStatusUrl = printStatusUrl;
+    }
+
+    /**
+    * Indicates if the control printermap is added to the plugin
+    * @private
+    * @type {Boolean}
+     */
+    this.printermap_ = printermap;
+    if (this.printermap_ instanceof Object) {
+      this.printermap_.serverUrl = serverUrl;
+      this.printermap_.printTemplateUrl = printTemplateUrl;
+      this.printermap_.printStatusUrl = printStatusUrl;
+    }
   }
-
   /**
    * This function creates the view
    *
@@ -93,11 +94,12 @@ export default class PrintViewManagementControl extends M.Control {
   createView(map) {
     this.map_ = map;
     return new Promise((success, fail) => {
+      console.log(this.georefImageEpsg_);
       const html = M.template.compileSync(template, {
         vars: {
-          georefImageEpsg: this.georefImageEpsg_,
-          georefImage: this.georefImage_,
-          printermap: this.printermap_,
+          georefImageEpsg: !!this.georefImageEpsg_,
+          georefImage: !!this.georefImage_,
+          printermap: !!this.printermap_,
           translations: {
             headertitle: getValue('tooltip'),
             tooltipGeorefImageEpsg: this.tooltipGeorefImageEpsg_,
@@ -108,12 +110,13 @@ export default class PrintViewManagementControl extends M.Control {
           },
         },
       });
+
       this.html = html;
       if (this.georefImageEpsg_) {
         this.addGeorefImageEpsgControl(html);
       }
       if (this.georefImage_) {
-        this.georefImageControl = new GeorefimageControl(this.georefImage_, map);
+        this.georefImageControl = new GeorefimageControl(this.georefImage_, this.map_);
         html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
           this.showDownloadButton();
           this.deactive(html, 'georefImage');
@@ -128,7 +131,7 @@ export default class PrintViewManagementControl extends M.Control {
         });
       }
       if (this.printermap_) {
-        this.printerMapControl = new PrinterMapControl(map);
+        this.printerMapControl = new PrinterMapControl(this.printermap_, this.map_);
         html.querySelector('#m-printviewmanagement-printermap').addEventListener('click', () => {
           this.showDownloadButton();
           this.deactive(html, 'printermap');
@@ -251,7 +254,6 @@ export default class PrintViewManagementControl extends M.Control {
     if (!active) { return; } // TO-DO NO SALE ?¿
 
     if (active && active.id !== `m-printviewmanagement-${control}`) {
-      this.active_ = active;
       if (active.id === 'm-printviewmanagement-georefImage') {
         this.georefImageControl.deactive();
       }

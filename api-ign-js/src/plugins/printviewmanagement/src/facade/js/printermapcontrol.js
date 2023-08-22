@@ -19,21 +19,19 @@ export default class PrinterMapControl extends M.Control {
     * @extends {M.Control}
     * @api stable
     */
-  constructor(
-    map,
+  constructor({
     serverUrl,
     printTemplateUrl,
     printTemplateGeoUrl,
     printStatusUrl,
     credits,
-    georefActive,
     logoUrl,
     fototeca,
     headerLegend,
     filterTemplates,
     order,
     tooltip,
-  ) {
+  }, map) {
     const impl = new PrinterMapControlImpl(map);
 
     super(impl, PrinterMapControl.NAME);

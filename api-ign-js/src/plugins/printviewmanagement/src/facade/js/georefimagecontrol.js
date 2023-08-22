@@ -26,7 +26,9 @@ export default class GeorefimageControl extends M.Control {
     * @extends {M.Control}
     * @api stable
     */
-  constructor({ serverUrl, printTemplateUrl, printStatusUrl }, map) {
+  constructor({
+    serverUrl, printTemplateUrl, printStatusUrl,
+  }, map) {
     const impl = new GeorefimageControlImpl();
     super(impl, GeorefimageControl.NAME);
     this.map_ = map;
