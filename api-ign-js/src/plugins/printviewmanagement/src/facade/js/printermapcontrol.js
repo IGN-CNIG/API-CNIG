@@ -26,7 +26,7 @@ export default class PrinterMapControl extends M.Control {
     printStatusUrl,
     credits,
     logoUrl,
-    fototeca,
+    fixedDescription,
     headerLegend,
     filterTemplates,
     order,
@@ -62,14 +62,6 @@ export default class PrinterMapControl extends M.Control {
     this.printTemplateUrl_ = printTemplateUrl || 'https://componentes.cnig.es/geoprint/print/CNIG';
 
     /**
-      * Mapfish template url for georef
-      * @private
-      * @type {String}
-      */
-    this.printTemplateGeoUrl_ = printTemplateGeoUrl || 'https://componentes.cnig.es/geoprint/print/mapexport';
-
-
-    /**
       * Url for getting priting status
       * @private
       * @type {String}
@@ -85,11 +77,11 @@ export default class PrinterMapControl extends M.Control {
     this.credits_ = credits || '';
 
     /**
-      * Active or disable fototeca fixed description
+      * Active or disable fixedDescription fixed description
       * @private
       * @type {Boolean}
       */
-    this.fototeca_ = fototeca !== undefined ? fototeca : false;
+    this.fixedDescription_ = fixedDescription !== undefined ? fixedDescription : false;
 
     /**
       * Layout
@@ -365,8 +357,8 @@ export default class PrinterMapControl extends M.Control {
         // keepView
         capabilities.keepView = this.options_.keepView;
 
-        // fototeca
-        capabilities.fototeca = this.fototeca_;
+        // fixedDescription
+        capabilities.fixedDescription = this.fixedDescription_;
 
         // translations
         capabilities.translations = {
@@ -382,7 +374,7 @@ export default class PrinterMapControl extends M.Control {
           delete: getValue('delete'),
           download: getValue('download'),
           minimize: getValue('minimize'),
-          fototeca: getValue('fototeca'),
+          fixeddescription: getValue('fixeddescription'),
         };
 
         const template = M.template.compileSync(printermapHTML, {

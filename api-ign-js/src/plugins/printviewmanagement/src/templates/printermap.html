@@ -11,10 +11,10 @@
     </div>
     
 
-    {{#if fototeca}}
-        <textarea class="m-printermap-textarea" id="m-printermap-description" tabindex="0" aria-label="{{translations.fototeca}}" disabled>{{translations.fototeca}}</textarea>
+    {{#if fixedDescription}}
+        <textarea class="m-printermap-textarea" id="m-printermap-description" tabindex="0" aria-label="{{translations.fixeddescription}}" disabled>{{translations.fototeca}}</textarea>
     {{^}}
-        <textarea class="m-printermap-textarea" id="m-printermap-description" tabindex="0" aria-label="{{translations.description}}" placeholder="{{translations.description}}"></textarea>
+        <textarea class="m-printermap-textarea" id="m-printermap-description" tabindex="0" aria-label="{{translations.fixeddescription}}" placeholder="{{translations.description}}"></textarea>
     {{/if}}
 
     <section class="m-printermap-params">
