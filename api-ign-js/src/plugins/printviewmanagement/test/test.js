@@ -40,8 +40,7 @@ const mp = new PrintViewManagement({
   georefImage: {
     tooltip: 'Georeferenciar imagen',
   },
-  viewhistory: true,
-  zoompanel: true,
+  printermap: true,
 });
 
 map.addPlugin(mp);

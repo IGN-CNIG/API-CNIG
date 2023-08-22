@@ -2,7 +2,7 @@
   "exception": {
     "impl": "The implementation used cannot create PrintViewManagementControl.",
     "impl_zoomextent": "The implementation used cannot create ZoomExtentControl.",
-    "impl_viewhistory": "The implementation used cannot create ViewHistoryControl.",
+    "impl_printermap": "The implementation used cannot create PrinterMapControl.",
     "impl_zoompanel": "The implementation used cannot create ZoomPanelControl.",
     "impl_predefinedzoom": "The implementation used cannot create PredefinedZoomControl.",
     "no_controls": "The PrintViewManagement plugin needs to activate at least one control."

@@ -50,7 +50,7 @@
     },
     {
       "type": "boolean",
-      "name": "viewhistory",
+      "name": "printermap",
       "position": 7
     },
     {

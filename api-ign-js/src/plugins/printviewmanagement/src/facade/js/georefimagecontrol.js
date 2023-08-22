@@ -258,7 +258,19 @@ export default class GeorefimageControl extends M.Control {
       //  });
     });
     promise.then((t) => {
-      this.addEvents(t);
+      const DEFAULT_PROJECTION_SERVER = 'EPSG:3857';
+
+      // Select Element Template
+      this.selectElementHTML(t);
+
+      // SET EPSG PROJECTION DEPENS FIELDSET
+      const defaultValueFieldset = this.elementFieldset_.querySelector('input[type="radio"]:checked').value;
+      this.projection_ = (defaultValueFieldset === 'server') ? DEFAULT_PROJECTION_SERVER : this.map_.getProjection().code;
+      this.elementProjection_.innerText = this.projection_;
+
+      // Add event template
+      this.addEvents();
+
       if (!button.classList.contains('activated')) {
         this.html_.querySelector('#m-printviewmanagement-controls').appendChild(t);
       } else {
@@ -276,51 +288,7 @@ export default class GeorefimageControl extends M.Control {
     * @param {HTMLElement} html Contenedor del control
     * @api stable
     */
-  addEvents(html) {
-    const DEFAULT_PROJECTION_SERVER = 'EPSG:3857';
-
-    // ID ELEMENTS
-    const ID_TITLE = '#m-georefimage-title';
-    const ID_FORMAT_SELECT = '#m-georefimage-format';
-    const ID_WLD = '#m-georefimage-wld';
-    const ID_DPI = '#m-georefimage-dpi';
-    const ID_PROJECTION = '#m-georefimage-projection';
-    const ID_FIELDSET = '#m-georefimage-fieldset';
-    const ID_PRINT_BUTTON = '#m-printviewmanagement-print';
-    const ID_REMOVE_BUTTON = '#m-printviewmanagement-remove';
-    const ID_LIST_SERVICES = '#m-georefimage-listServices';
-
-    // SELECTOR CANVAS
-    const SELECTOR_CANVAS = '.ol-layer canvas';
-
-    // ELEMENTS
-    this.elementTitle_ = html.querySelector(ID_TITLE);
-    this.elementFormatSelect_ = html.querySelector(ID_FORMAT_SELECT);
-    this.elementWld_ = html.querySelector(ID_WLD);
-    this.elementDpi_ = html.querySelector(ID_DPI);
-    this.elementProjection_ = html.querySelector(ID_PROJECTION);
-    this.elementFieldset_ = html.querySelector(ID_FIELDSET);
-    this.elementListServices_ = html.querySelector(ID_LIST_SERVICES);
-    this.elementPrintButton_ = this.html_.querySelector(ID_PRINT_BUTTON);
-    this.elementRemoveButton_ = this.html_.querySelector(ID_REMOVE_BUTTON);
-
-    // CANVAS ELEMENT
-    this.elementCanvas_ = document.querySelector(SELECTOR_CANVAS);
-
-    // SET EPSG PROJECTION DEPENS FIELDSET
-    const defaultValueFieldset = this.elementFieldset_.querySelector('input[type="radio"]:checked').value;
-    this.projection_ = (defaultValueFieldset === 'server') ? DEFAULT_PROJECTION_SERVER : this.map_.getProjection().code;
-    this.elementProjection_.innerText = this.projection_;
-
-    // Reference Events
-    this.referenceEventsPrintClick_ = this.printClick_.bind(this);
-
-    // ADD EVENT PRINT
-    this.elementPrintButton_.addEventListener('click', this.referenceEventsPrintClick_);
-
-    // ADD EVENT REMOVE
-    this.elementRemoveButton_.addEventListener('click', this.removeDownload_.bind(this));
-
+  addEvents() {
     // ADD EVENT LIST SERVICES DIALOG
     this.elementListServices_.addEventListener('click', () => M.dialog.info(LIST_SERVICES));
 
@@ -338,72 +306,30 @@ export default class GeorefimageControl extends M.Control {
     M.utils.enableTouchScroll(getQueueContainer(this.html_));
   }
 
-  /**
-    * Elimina la descarga seleccionada
-    *
-    * @public
-    * @function
-    * @param {Event} event Evento de click
-    * @api stable
-    */
-  removeDownload_(event) {
-    event.preventDefault();
-    // reset values
-    this.elementTitle_.value = '';
-    this.projection_ = 'EPSG:3857';
-    // Create events and init
-    const changeEvent = document.createEvent('HTMLEvents');
-    changeEvent.initEvent('change');
-    const clickEvent = document.createEvent('HTMLEvents');
-    // Fire listeners
-    clickEvent.initEvent('click');
-    this.projection_.dispatchEvent(changeEvent);
-    // clean queue
-    Array.prototype.forEach.apply(this.elementQueueContainer_.children, [(child) => {
-      child.removeEventListener('click', this.downloadPrint);
-    }, this]);
+  selectElementHTML(html) {
+    // ID ELEMENTS
+    const ID_TITLE = '#m-georefimage-title';
+    const ID_FORMAT_SELECT = '#m-georefimage-format';
+    const ID_WLD = '#m-georefimage-wld';
+    const ID_DPI = '#m-georefimage-dpi';
+    const ID_PROJECTION = '#m-georefimage-projection';
+    const ID_FIELDSET = '#m-georefimage-fieldset';
+    const ID_LIST_SERVICES = '#m-georefimage-listServices';
 
-    this.elementQueueContainer_.innerHTML = '';
-  }
+    // SELECTOR CANVAS
+    const SELECTOR_CANVAS = '.ol-layer canvas';
 
-  /**
-    * Sets layout
-    *
-    * @private
-    * @function
-    */
-  setLayout(layout) {
-    this.layout_ = layout;
-  }
+    // ELEMENTS
+    this.elementTitle_ = html.querySelector(ID_TITLE);
+    this.elementFormatSelect_ = html.querySelector(ID_FORMAT_SELECT);
+    this.elementWld_ = html.querySelector(ID_WLD);
+    this.elementDpi_ = html.querySelector(ID_DPI);
+    this.elementProjection_ = html.querySelector(ID_PROJECTION);
+    this.elementFieldset_ = html.querySelector(ID_FIELDSET);
+    this.elementListServices_ = html.querySelector(ID_LIST_SERVICES);
 
-  /**
-    * Sets format
-    *
-    * @private
-    * @function
-    */
-  setFormat(format) {
-    this.format_ = format;
-  }
-
-  /**
-    * Sets projection
-    *
-    * @private
-    * @function
-    */
-  setProjection(projection) {
-    this.projection_ = projection;
-  }
-
-  /**
-    * Sets force scale option
-    *
-    * @private
-    * @function
-    */
-  setForceScale(forceScale) {
-    this.forceScale_ = forceScale;
+    // CANVAS ELEMENT
+    this.elementCanvas_ = document.querySelector(SELECTOR_CANVAS);
   }
 
   /**
@@ -412,7 +338,7 @@ export default class GeorefimageControl extends M.Control {
     * @private
     * @function
     */
-  printClick_(evt) {
+  printClick(evt) {
     evt.preventDefault();
     const defaultValueFieldset = this.elementFieldset_.querySelector('input[type="radio"]:checked').value;
     if (defaultValueFieldset === 'server') {
@@ -479,7 +405,7 @@ export default class GeorefimageControl extends M.Control {
 
     const base64image = getBase64ImageClient(this.elementCanvas_, this.elementFormatSelect_.value);
     removeLoadQueueElement(queueEl);
-    queueEl.addEventListener('click', () => this.downloadPrint(base64image));
+    queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image));
   }
 
   getSourceAsDOM(url) {
@@ -786,7 +712,7 @@ export default class GeorefimageControl extends M.Control {
     * @function
     * @api stable
     */
-  downloadPrint(imgBase64) {
+  downloadPrint(evt, imgBase64) {
     // DEFAULTS PARAMS
     const FILE_EXTENSION_GEO = '.wld'; // .jgw
     const TYPE_SAVE = '.zip';
@@ -888,7 +814,6 @@ export default class GeorefimageControl extends M.Control {
   }
 
   deactive() {
-    this.elementPrintButton_.removeEventListener('click', this.printClick_.bind(this));
     this.template_.remove();
 
     // TO-DO [ ] ADD BUTTON REMOVE AND ALL EVENTS

@@ -1,0 +1,37 @@
+<section class="m-container m-printermap m-printermap-container">
+
+    <div class="m-printermap-titleFormat">
+        <input tabindex="0" id="m-printermap-title" aria-label="{{translations.title}}" type="text" placeholder="{{translations.title}}">
+        <label tabindex="0" role="text" aria-label="{{translations.format}}">{{translations.format}} </label>
+        <select tabindex="0" role="select" id="m-printermap-format">
+            {{#each format}}
+                <option value="{{name}}" {{#if default}} selected{{/if}}>{{name}}</option>
+            {{/each}}
+        </select>
+    </div>
+    
+
+    {{#if fototeca}}
+        <textarea class="m-printermap-textarea" id="m-printermap-description" tabindex="0" aria-label="{{translations.fototeca}}" disabled>{{translations.fototeca}}</textarea>
+    {{^}}
+        <textarea class="m-printermap-textarea" id="m-printermap-description" tabindex="0" aria-label="{{translations.description}}" placeholder="{{translations.description}}"></textarea>
+    {{/if}}
+
+    <section class="m-printermap-params">
+        <label class="m-printermap-paramsLabel" tabindex="0" role="text" aria-label="{{translations.layout}}">{{translations.layout}} </label>
+        <select tabindex="0" role="select" id="m-printermap-layout">
+            {{#each layouts}}
+                <option value="{{name}}" {{#if default}} selected{{/if}}>{{name}}</option>
+            {{/each}}
+        </select>
+
+        <div>
+            <label tabindex="0" role="text" aria-label="DPI">DPI </label>
+            <select tabindex="0" role="select" id="m-printermap-dpi">
+                {{#each dpis}}
+                    <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </section>
+</section>

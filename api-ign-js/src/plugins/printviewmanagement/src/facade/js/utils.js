@@ -68,6 +68,8 @@ export function removeQueueElements(html) {
   elements.forEach((element) => {
     elementQueueContainer.removeChild(element);
   });
+
+  elementQueueContainer.parentElement.style.display = 'none';
 }
 
 // Generate wld file
@@ -153,7 +155,6 @@ export function getBase64ImageClient(canvasMap, format) {
     };
   });
 }
-
 
 // Services SIG Geoprint List
 export const LIST_SERVICES = `

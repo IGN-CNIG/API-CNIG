@@ -1,8 +1,8 @@
 <div aria-label="Plugin View Management" role="menuitem" id="div-contenedor-printviewmanagement" class="m-control m-container m-printviewmanagement">
     <div role="heading" tabindex="0" id="m-printviewmanagement-title">{{translations.headertitle}}</div>
     <div id="m-printviewmanagement-previews">
-        {{#if viewhistory}}
-        <div tabindex="0" id="m-printviewmanagement-viewhistory" title="{{translations.viewhistory}}" class="printviewmanagement-icon-flecha-historial"></div>
+        {{#if printermap}}
+        <div tabindex="0" id="m-printviewmanagement-printermap" title="{{translations.printermap}}" class="printviewmanagement-icon-flecha-historial"></div>
         {{/if}}
         {{#if georefImage}}
             <div tabindex="0" id="m-printviewmanagement-georefImage" title="{{translations.georefImage}}" class="printviewmanagement-icon-zoom-extension"></div>
@@ -14,7 +14,7 @@
     <section id="m-printviewmanagement-controls" class="m-printviewmanagement-controls"></section>
 
     <!-- buttons dowloand and remove -->
-    <div class="m-georefimage-download-button">
+    <div class="m-georefimage-download-button" id="m-georefimage-download-button" style="display: none;">
         <button id="m-printviewmanagement-print" class="print"><i class="icon-descargar"></i> {{translations.downImg}}</button>
         <button id="m-printviewmanagement-remove" class="remove"><i class="icon-papelera"></i> {{translations.delete}}</button>
     </div>

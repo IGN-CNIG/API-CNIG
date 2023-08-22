@@ -2,7 +2,7 @@
   "exception": {
     "impl": "La implementación usada no puede crear controles ViewManagementControl.",
     "impl_zoomextent": "La implementación usada no puede crear controles ZoomExtentControl.",
-    "impl_viewhistory": "La implementación usada no puede crear controles ViewHistoryControl.",
+    "impl_printermap": "La implementación usada no puede crear controles PrinterMapControl.",
     "impl_zoompanel": "La implementación usada no puede crear controles ZoomPanelControl.",
     "impl_predefinedzoom": "La implementación usada no puede crear controles PredefinedZoomControl.",
     "no_controls": "El plugin ViewManagement necesita activar al menos un control."

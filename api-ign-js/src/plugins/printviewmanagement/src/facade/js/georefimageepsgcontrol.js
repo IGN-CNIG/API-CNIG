@@ -126,35 +126,9 @@ export default class GeorefImageEpsgControl extends M.Control {
         document.querySelector('.m-georefimageepsg-container').remove();
       }
       button.classList.toggle('activated');
-      this.addEvents();
     });
 
     // this.accessibilityTab(html);
-  }
-
-  /**
-    * Esta función añade los eventos a los elementos del control
-    *
-    * @public
-    * @function
-    * @param {HTMLElement} html Contenedor del control
-    * @api stable
-    */
-  addEvents() {
-    // ID ELEMENTS
-    const ID_PRINT_BUTTON = '#m-printviewmanagement-print';
-    const ID_REMOVE_BUTTON = '#m-printviewmanagement-remove';
-
-    // ELEMENTS
-    this.printButton_ = this.html_.querySelector(ID_PRINT_BUTTON);
-    const removeButton = this.html_.querySelector(ID_REMOVE_BUTTON);
-
-    // Reference Events
-    this.referenceEventsPrintClick_ = this.printClick_.bind(this);
-
-    // EVENTS
-    this.printButton_.addEventListener('click', this.referenceEventsPrintClick_);
-    removeButton.addEventListener('click', () => removeLoadQueueElement(this.html_));
   }
 
   /**
@@ -163,7 +137,7 @@ export default class GeorefImageEpsgControl extends M.Control {
     * @private
     * @function
     */
-  printClick_(evt) {
+  printClick(evt) {
     evt.preventDefault();
     const date = new Date();
     this.titulo_ = 'mapa_'.concat(
@@ -300,7 +274,6 @@ export default class GeorefImageEpsgControl extends M.Control {
   }
 
   deactive() {
-    this.printButton_.removeEventListener('click', this.referenceEventsPrintClick_);
     this.template_.remove();
     // TO-DO ADD BUTTON REMOVE AND ALL EVENTS
   }

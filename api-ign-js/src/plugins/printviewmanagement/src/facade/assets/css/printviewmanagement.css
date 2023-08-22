@@ -73,7 +73,7 @@ div#m-printviewmanagement-previews {
     background-color: white;
 }
 
-#m-printviewmanagement-viewhistory,
+#m-printviewmanagement-printermap,
 #m-printviewmanagement-georefImage,
 #m-printviewmanagement-zoompanel,
 .printviewmanagement-georefImageEpsg {
@@ -121,7 +121,7 @@ div#m-printviewmanagement-previews {
     justify-content: center;
 }
 
-#m-viewhistory-panel,
+#m-printermap-panel,
 #m-zoompanel-panel {
     background-color: #ededed;
     border-top: 1px solid #adadad;
@@ -366,7 +366,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     font-family: g-cartografia !important;
 }
 
-  .m-georefimageepsg-container,.m-georefimage-container {
+  .m-georefimageepsg-container,.m-georefimage-container, .m-printermap-container {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -438,7 +438,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
   /*********************
     georefimage
   *********************/
-  .m-georefimage-titleFormat label{
+  .m-georefimage-titleFormat label, .m-printermap-titleFormat label, .m-printermap-paramsLabel {
     position: absolute;
     clip: rect(1px 1px 1px 1px);
     border: 0;
@@ -478,7 +478,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     margin: 10px 0;
   }
 
-  .m-georefimage-titleFormat {
+  .m-georefimage-titleFormat, .m-printermap-titleFormat{
         width: 100%;
         display: flex;
         justify-content: center;
@@ -515,7 +515,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
   }
 
 
-  .m-georefimage-titleFormat input {
+  .m-georefimage-titleFormat input, .m-printermap-titleFormat input{
     width: 65%;
     height: 21px;
   }
@@ -534,7 +534,10 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     font-size: 1.1rem;
   }
 
-  .georefimage-projection select,  .m-georefimage-titleFormat select {
+  .georefimage-projection select,
+  .m-georefimage-titleFormat select,
+  .m-printermap-titleFormat select,
+  .m-printermap-params select{
     
     padding: 5px;
     border-radius: 4px;
@@ -693,4 +696,26 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     background-color: rgba(231, 51, 140, 0.1);
     box-sizing: border-box;
     border-bottom: 0;
+}
+
+/*********************
+     Printermap
+*********************/
+
+.m-printermap-textarea {
+    width: 90%;
+    height: 100px;
+    resize: none;
+}
+
+.m-printermap-params {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    width: 100%;
+}
+
+.m-printermap-params div label {
+    margin-right: 5px;
 }

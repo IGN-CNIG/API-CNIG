@@ -85,7 +85,7 @@ export default class PrintViewManagement extends M.Plugin {
     this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
 
     /**
-     * Indicates if the control PredefinedZoom is added to the plugin
+     * Indicates if the control georefImageEpsg is added to the plugin
      * @private
      * @type {Boolean|Array<Object>}
      */
@@ -99,11 +99,11 @@ export default class PrintViewManagement extends M.Plugin {
     this.georefImage = !M.utils.isUndefined(options.georefImage) ? options.georefImage : true;
 
     /**
-     * Indicates if the control ViewHistory is added to the plugin
+     * Indicates if the control printermap is added to the plugin
      * @private
      * @type {Boolean}
      */
-    this.viewhistory = !M.utils.isUndefined(options.viewhistory) ? options.viewhistory : true;
+    this.printermap = !M.utils.isUndefined(options.printermap) ? options.printermap : true;
 
     /**
      * Indicates if the control ZoomPanel is added to the plugin
@@ -146,14 +146,15 @@ export default class PrintViewManagement extends M.Plugin {
   addTo(map) {
     this.map_ = map;
     if (this.georefImageEpsg === false && this.georefImage === false &&
-      this.viewhistory === false && this.zoompanel === false) {
+      this.printermap === false && this.zoompanel === false) {
       M.dialog.error(getValue('exception.no_controls'));
     }
+    // TO-DO Cambiar por un objeto
     this.controls_.push(new PrintViewManagementControl(
       this.isDraggable,
       this.georefImageEpsg,
       this.georefImage,
-      this.viewhistory,
+      this.printermap,
       this.zoompanel,
       this.order,
       this.map_,
@@ -174,7 +175,6 @@ export default class PrintViewManagement extends M.Plugin {
   }
 
   /**
-   * This functions indicates default center and zoom level for
    * the control georefImageEpsg
    *
    * @public
@@ -203,7 +203,7 @@ export default class PrintViewManagement extends M.Plugin {
    */
   getAPIRest() {
     return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggableE}
-    *${this.predefinedzoom}*${this.georefImage}*${this.viewhistory}*${this.zoompanel}`;
+    *${this.predefinedzoom}*${this.georefImage}*${this.printermap}*${this.zoompanel}`;
   }
 
   /**
