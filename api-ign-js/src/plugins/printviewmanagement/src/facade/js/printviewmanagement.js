@@ -105,11 +105,9 @@ export default class PrintViewManagement extends M.Plugin {
      */
     this.printermap = options.printermap ? options.printermap : false;
 
-    this.serverUrl = options.serverUrl || 'https://geoprint.desarrollo.guadaltel.es';
+    this.serverUrl = options.serverUrl || 'https://componentes.cnig.es/geoprint';
 
-    this.printTemplateUrl = options.printTemplateUrl || 'https://geoprint.desarrollo.guadaltel.es/print/mapexport';
-
-    this.printStatusUrl = options.printStatusUrl || 'https://geoprint.desarrollo.guadaltel.es/print/status';
+    this.printStatusUrl = options.printStatusUrl || 'https://componentes.cnig.es/geoprint/print/status';
 
     /**
      * Indicates order to the plugin

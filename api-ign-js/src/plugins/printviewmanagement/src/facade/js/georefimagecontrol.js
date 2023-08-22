@@ -54,7 +54,6 @@ export default class GeorefimageControl extends M.Control {
       */
     this.printTemplateUrl_ = printTemplateUrl || 'https://componentes.cnig.es/geoprint/print/mapexport';
 
-
     /**
       * Url for getting priting status
       * @private

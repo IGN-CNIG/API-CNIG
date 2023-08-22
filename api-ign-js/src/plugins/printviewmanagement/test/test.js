@@ -16,9 +16,8 @@ const mp = new PrintViewManagement({
   collapsible: true,
   collapsed: true,
   order: 1,
-  serverUrl: 'https://geoprint.desarrollo.guadaltel.es',
-  printTemplateUrl: 'https://geoprint.desarrollo.guadaltel.es/print/mapexport',
-  printStatusUrl: 'https://geoprint.desarrollo.guadaltel.es/print/status',
+  serverUrl: 'https://componentes.cnig.es/geoprint',
+  printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
   georefImageEpsg: {
     tooltip: 'Georeferenciar imagen',
     layers: [ // Posibilidad de hacer Getmap
@@ -39,9 +38,14 @@ const mp = new PrintViewManagement({
   },
   georefImage: {
     tooltip: 'Georeferenciar imagen',
+    printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
   },
-  printermap: true,
+  printermap: {
+    printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
+    // fixedDescription: true,
+  },
 });
+
 
 map.addPlugin(mp);
 

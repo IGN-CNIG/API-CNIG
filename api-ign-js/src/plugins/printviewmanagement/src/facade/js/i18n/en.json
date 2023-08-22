@@ -33,5 +33,6 @@
   "use_license": "License of use",
   "map": "Map",
   "pnoa": "Image (PNOA)",
-  "screen": "Screen Image"
+  "screen": "Screen Image",
+  "fixeddescription": "Este documento carece de validez legal"
 }

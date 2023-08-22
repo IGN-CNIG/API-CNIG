@@ -22,7 +22,7 @@ export default class PrintViewManagementControl extends M.Control {
    */
   constructor({
     isDraggable, georefImageEpsg, georefImage, printermap, order, map,
-    serverUrl, printTemplateUrl, printStatusUrl,
+    serverUrl, printStatusUrl,
   }) {
     if (M.utils.isUndefined(PrintViewManagementImpl)) {
       M.exception(getValue('exception.impl'));
@@ -67,7 +67,6 @@ export default class PrintViewManagementControl extends M.Control {
     this.georefImage_ = georefImage;
     if (this.georefImage_ instanceof Object) {
       this.georefImage_.serverUrl = serverUrl;
-      this.georefImage_.printTemplateUrl = printTemplateUrl;
       this.georefImage_.printStatusUrl = printStatusUrl;
     }
 
@@ -79,7 +78,6 @@ export default class PrintViewManagementControl extends M.Control {
     this.printermap_ = printermap;
     if (this.printermap_ instanceof Object) {
       this.printermap_.serverUrl = serverUrl;
-      this.printermap_.printTemplateUrl = printTemplateUrl;
       this.printermap_.printStatusUrl = printStatusUrl;
     }
   }
@@ -94,7 +92,6 @@ export default class PrintViewManagementControl extends M.Control {
   createView(map) {
     this.map_ = map;
     return new Promise((success, fail) => {
-      console.log(this.georefImageEpsg_);
       const html = M.template.compileSync(template, {
         vars: {
           georefImageEpsg: !!this.georefImageEpsg_,
