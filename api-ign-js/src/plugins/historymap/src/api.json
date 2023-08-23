@@ -1,0 +1,37 @@
+{
+  "url": {
+    "name": "historymap",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.HistoryMap",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BL", "BR"]
+    }, {
+      "type": "boolean",
+      "name": "collapsed",
+      "position": 1
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["historymap.ol.min.js"],
+      "styles": ["historymap.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "HistoryMap",
+    "description": "Table of contents of the map. Pretty design version",
+    "text": "Tabla de contenidos de fototeca. Consulta cobertura de vuelo sobre la vista",
+    "version": "1.0.0",
+    "date": "18/11/2019",
+    "author": "Guadaltel",
+    "org": "CNIG",
+    "tags": "mapea,plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}
