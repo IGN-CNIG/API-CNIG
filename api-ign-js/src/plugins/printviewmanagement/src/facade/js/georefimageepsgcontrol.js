@@ -177,7 +177,7 @@ export default class GeorefImageEpsgControl extends M.Control {
     const bbox = ext;
 
     // TO-DO Problema con la proyección
-    urlLayer += `SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&SRS=${DEFAULT_EPSG}&CRS=${DEFAULT_EPSG}&WIDTH=${size[0]}&HEIGHT=${size[1]}`;
+    urlLayer += `SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&SRS=${projection}&CRS=${projection}&WIDTH=${size[0]}&HEIGHT=${size[1]}`;
     urlLayer += `&BBOX=${bbox}&FORMAT=${format}&TRANSPARENT=true&STYLES=default`;
     urlLayer += `&LAYERS=${name}`;
 
