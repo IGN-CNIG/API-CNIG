@@ -27,7 +27,7 @@ export default class GeorefimageControl extends M.Control {
     * @api stable
     */
   constructor({
-    serverUrl, printTemplateUrl, printStatusUrl,
+    serverUrl, printTemplateUrl, printStatusUrl, printSelector, printType,
   }, map) {
     const impl = new GeorefimageControlImpl();
     super(impl, GeorefimageControl.NAME);
@@ -60,6 +60,10 @@ export default class GeorefimageControl extends M.Control {
       * @type {String}
       */
     this.printStatusUrl_ = printStatusUrl || 'https://componentes.cnig.es/geoprint/print/status';
+
+    this.printSelector = !!printSelector;
+
+    this.printType = printType === 'client' ? 'client' : 'server';
 
     /**
       * Map title
@@ -265,9 +269,16 @@ export default class GeorefimageControl extends M.Control {
       this.selectElementHTML(t);
 
       // SET EPSG PROJECTION DEPENS FIELDSET
-      const defaultValueFieldset = this.elementFieldset_.querySelector('input[type="radio"]:checked').value;
-      this.projection_ = (defaultValueFieldset === 'server') ? DEFAULT_PROJECTION_SERVER : this.map_.getProjection().code;
-      this.elementProjection_.innerText = this.projection_;
+      this.defaultValueFieldset = null;
+      if (this.printSelector) {
+        this.defaultValueFieldset = this.elementFieldset_.querySelector('input[type="radio"]:checked').value;
+        this.projection_ = (this.defaultValueFieldset === 'server') ? DEFAULT_PROJECTION_SERVER : this.map_.getProjection().code;
+        this.elementProjection_.innerText = this.projection_;
+      } else {
+        this.defaultValueFieldset = this.printType;
+        this.projection_ = (this.defaultValueFieldset === 'server') ? DEFAULT_PROJECTION_SERVER : this.map_.getProjection().code;
+        this.removeSelector();
+      }
 
       // Add event template
       this.addEvents();
@@ -279,6 +290,13 @@ export default class GeorefimageControl extends M.Control {
       }
       button.classList.toggle('activated');
     });
+  }
+
+  removeSelector() {
+    this.elementFieldset_.remove();
+    this.template_.innerHTML += `
+      <h4 id="m-georefimage-projection">${this.projection_}</h4>
+    `;
   }
 
   /**
@@ -341,8 +359,8 @@ export default class GeorefimageControl extends M.Control {
     */
   printClick(evt) {
     evt.preventDefault();
-    const defaultValueFieldset = this.elementFieldset_.querySelector('input[type="radio"]:checked').value;
-    if (defaultValueFieldset === 'server') {
+    const valueFieldset = (this.printSelector) ? this.elementFieldset_.querySelector('input[type="radio"]:checked').value : this.printType;
+    if (valueFieldset === 'server') {
       this.downloadServer();
     } else {
       this.downloadClient();

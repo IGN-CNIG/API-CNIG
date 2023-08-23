@@ -39,6 +39,8 @@ const mp = new PrintViewManagement({
   georefImage: {
     tooltip: 'Georeferenciar imagen',
     printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
+    printSelector: false,
+    printType: 'client', // 'client' or 'server'
   },
   printermap: {
     printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
