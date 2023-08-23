@@ -1,16 +1,21 @@
-<section class="m-container m-printermap m-printermap-container">
-
-    <div class="m-printermap-titleFormat">
+<main class="m-container m-printermap m-printermap-container">
+    <section class="m-printermap-titleFormat">
+        <!-- Selección del título -->
+        <label tabindex="0" for="m-printermap-title" role="text" aria-label="{{translations.title}}">{{translations.title}} </label>
         <input tabindex="0" id="m-printermap-title" aria-label="{{translations.title}}" type="text" placeholder="{{translations.title}}">
-        <label tabindex="0" role="text" aria-label="{{translations.format}}">{{translations.format}} </label>
+        
+        <!-- Selección del formato -->
+        <label tabindex="0" for="m-printermap-format" role="text" aria-label="{{translations.format}}">{{translations.format}} </label>
         <select tabindex="0" role="select" id="m-printermap-format">
             {{#each format}}
                 <option value="{{name}}" {{#if default}} selected{{/if}}>{{name}}</option>
             {{/each}}
         </select>
-    </div>
+    </section>
     
 
+    <!-- Selección de la descripción -->
+    <label tabindex="0" for="m-printermap-description" role="text" aria-label="{{translations.description}}">{{translations.description}} </label>
     {{#if fixedDescription}}
         <textarea class="m-printermap-textarea" id="m-printermap-description" tabindex="0" aria-label="{{translations.fixeddescription}}" disabled>{{translations.fixeddescription}}</textarea>
     {{^}}
@@ -18,6 +23,7 @@
     {{/if}}
 
     <section class="m-printermap-params">
+        <!-- Selección de layout -->
         <label class="m-printermap-paramsLabel" tabindex="0" role="text" aria-label="{{translations.layout}}">{{translations.layout}} </label>
         <select tabindex="0" role="select" id="m-printermap-layout">
             {{#each layouts}}
@@ -25,6 +31,7 @@
             {{/each}}
         </select>
 
+        <!-- Selección de DPI -->
         <div>
             <label tabindex="0" role="text" aria-label="DPI">DPI </label>
             <select tabindex="0" role="select" id="m-printermap-dpi">
@@ -34,4 +41,4 @@
             </select>
         </div>
     </section>
-</section>
+</main>
