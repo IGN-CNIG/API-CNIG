@@ -43,6 +43,9 @@ const mp = new PrintViewManagement({
   printermap: {
     printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
     // fixedDescription: true,
+    headerLegend: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+    filterTemplates: ['A3 Horizontal'],
+    logo: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
   },
 });
 

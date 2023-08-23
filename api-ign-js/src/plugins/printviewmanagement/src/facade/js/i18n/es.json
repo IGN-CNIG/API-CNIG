@@ -1,11 +1,12 @@
 {
   "exception": {
-    "impl": "La implementación usada no puede crear controles ViewManagementControl.",
-    "impl_zoomextent": "La implementación usada no puede crear controles ZoomExtentControl.",
+    "impl": "La implementación usada no puede crear controles PrintViewManagementControl.",
     "impl_printermap": "La implementación usada no puede crear controles PrinterMapControl.",
-    "impl_zoompanel": "La implementación usada no puede crear controles ZoomPanelControl.",
-    "impl_predefinedzoom": "La implementación usada no puede crear controles PredefinedZoomControl.",
-    "no_controls": "El plugin ViewManagement necesita activar al menos un control."
+    "no_controls": "El plugin PrintViewManagement necesita activar al menos un control.",
+    "encode": "La implementación usada no posee el método encodeLayer.",
+    "error": "Se ha producido un error en la impresión.",
+    "imageError": "No ha podido realizarse la descarga en este momento. Por favor, inténtelo más tarde.",
+    "error_layers": "Las siguientes capas no se visualizarán al imprimir el mapa: "
   },
   "tooltip": "Impresión del mapa",
   "map_printing": "Impresión del mapa",
@@ -13,9 +14,7 @@
   "previousView": "Vista anterior",
   "service_epsg": "Servicios EPSG",
   "georeferenced_img": "Imagen georreferenciada",
-  "zoompanel": "Herramientas de zoom",
-  "zoomin": "Aumentar zoom",
-  "zoomout": "Disminuir zoom",
+  "format": "Format",
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
   "printInfo": "Impresión generada a través de Mapea",
   "generating": "Generando imagen georreferenciada",
@@ -26,7 +25,6 @@
   "down": "Descargar",
   "title": "Título",
   "notitle": "(Sin título)",
-  "keep": "Conservar vista",
   "cancel": "Cancelar",
   "accept": "Aceptar",
   "download_modal": "El uso de la información de los productos y servicios de datos geográficos definidos en la <a tabindex=\"0\" target=\"_blank\" href=\"https://www.boe.es/boe/dias/2015/12/26/pdfs/BOE-A-2015-14129.pdf\">Orden FOM/2807/2015</a>, así como sus derivados, conlleva la aceptación por el usuario de las condiciones generales de dicha orden, concretada en la siguiente <a tabindex=\"0\" target=\"_blank\" href=\"http://www.ign.es/resources/licencia/Condiciones_licenciaUso_IGN.pdf\">licencia de uso</a>, compatible con CC-BY 4.0.",
@@ -34,5 +32,10 @@
   "map": "Mapa",
   "pnoa": "Imagen (PNOA)",
   "screen": "Imagen Pantalla",
-  "fixeddescription": "This document has no legal validity"
+  "fixeddescription": "This document has no legal validity",
+  "description": "Descripción",
+  "layout": "Plantilla",
+  "credits": "Print generated through api-core",
+  "base": "Cartografía base",
+  "zone": "huso"
 }

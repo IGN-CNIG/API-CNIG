@@ -22,10 +22,9 @@ export default class PrinterMapControl extends M.Control {
   constructor({
     serverUrl,
     printTemplateUrl,
-    printTemplateGeoUrl,
     printStatusUrl,
     credits,
-    logoUrl,
+    logo,
     fixedDescription,
     headerLegend,
     filterTemplates,
@@ -150,7 +149,7 @@ export default class PrinterMapControl extends M.Control {
         creditos: getValue('credits'),
       },
       parameters: {
-        logo: logoUrl,
+        logo,
         headerLegend: this.headerLegend_,
       },
     };
@@ -368,12 +367,8 @@ export default class PrinterMapControl extends M.Control {
           layout: getValue('layout'),
           format: getValue('format'),
           projection: getValue('projection'),
-          keep: getValue('keep'),
-          geo: getValue('geo'),
-          print: getValue('print'),
           delete: getValue('delete'),
           download: getValue('download'),
-          minimize: getValue('minimize'),
           fixeddescription: getValue('fixeddescription'),
         };
 
@@ -468,7 +463,6 @@ export default class PrinterMapControl extends M.Control {
       M.remote.post(url, printData).then((responseParam) => {
         let response = responseParam;
         const responseStatusURL = JSON.parse(response.text);
-        console.log('responseStatusURL', responseStatusURL);
         const ref = responseStatusURL.ref;
         const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
         this.getStatus(statusURL, () => removeLoadQueueElement(queueEl));
@@ -479,10 +473,8 @@ export default class PrinterMapControl extends M.Control {
           response = JSON.parse(response.text);
           const imageUrl = response.downloadURL.substring(response.downloadURL.indexOf('/print'), response.downloadURL.length);
           downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, imageUrl]);
-          console.log(downloadUrl);
           this.documentRead_.src = downloadUrl;
         } catch (err) {
-          console.log(err);
           M.exception(err);
         }
 
@@ -638,7 +630,7 @@ export default class PrinterMapControl extends M.Control {
 
     const outputFormat = this.elementFormat_.value;
     const parameters = this.params_.parameters;
-    // ?¿??¿
+
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
     const attribution = attributionContainer !== null ?
       `${getValue('base')}: ${attributionContainer.innerHTML}` : '';
