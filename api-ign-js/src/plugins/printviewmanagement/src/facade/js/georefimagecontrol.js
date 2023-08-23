@@ -295,7 +295,7 @@ export default class GeorefimageControl extends M.Control {
   removeSelector() {
     this.elementFieldset_.remove();
     this.template_.innerHTML += `
-      <h4 id="m-georefimage-projection">${this.projection_}</h4>
+      <h3 id="m-georefimage-projection">Sistema de Referencia de la vista ${this.projection_}</h3>
     `;
   }
 
