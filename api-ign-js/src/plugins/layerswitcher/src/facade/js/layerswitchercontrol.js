@@ -266,9 +266,30 @@ export default class LayerswitcherControl extends M.Control {
 
       const layerList = this.template_.querySelector('.m-layerswitcher-ullayers');
       if (layerList !== null && this.isMoveLayers) {
+        const layers = this.map_.getLayers().filter(l => l.name !== '__draw__');
         Sortable.create(layerList, {
           animation: 150,
           ghostClass: 'm-fulltoc-gray-shadow',
+          onEnd: (evt) => {
+            const from = evt.from;
+            let maxZIndex = Math.max(...(layers.map((l) => {
+              return l.getZIndex();
+            })));
+
+            from.querySelectorAll('li.m-layerswitcher-layer .m-layerswitcher-title-layer .m-visible-control *').forEach((elem) => {
+              const name = elem.getAttribute('data-layer-name');
+              const url = elem.getAttribute('data-layer-url');
+              const type = elem.getAttribute('data-layer-type');
+              const filtered = layers.filter((layer) => {
+                // Para las capas OSM, ... no tienen url
+                return (layer.name === name || layer.url === url) && layer.type === type;
+              });
+              if (filtered.length > 0) {
+                filtered[0].setZIndex(maxZIndex);
+                maxZIndex -= 1;
+              }
+            });
+          },
         });
       }
     });
