@@ -219,6 +219,11 @@ export default class LayerswitcherControl extends M.Control {
         this.getPanel().getButtonPanel().addEventListener('click', (e) => {
           if (!e.target.parentElement.classList.contains('collapsed')) {
             this.render();
+
+            if (this.isDraggable_) {
+              M.utils.draggabillyPlugin(this.getPanel(), '#m-layerswitcher-title');
+            }
+
             this.getImpl().registerEvent(map);
           } else {
             this.getImpl().removeRenderComplete();
