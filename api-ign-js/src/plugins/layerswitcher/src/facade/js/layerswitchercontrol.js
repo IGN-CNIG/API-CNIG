@@ -608,6 +608,10 @@ export default class LayerswitcherControl extends M.Control {
    * @api
    */
   inputLayer(evtParameter) {
+    if (evtParameter.target.type === 'radio') {
+      return;
+    }
+
     clearTimeout(this.inputLayerTimeID);
     this.getImpl().removeRenderComplete();
 
