@@ -98,7 +98,22 @@ ul.m-layerswitcher-ullayers {
 /* Icono ver */
 .m-layerswitcher-title-layer{
     display: flex;
+    width: 100%;
 }
+
+.m-visible-control {
+    width: 7%;
+}
+
+.m-visible-typeContent {
+    width: 83%;
+}
+
+.m-layerswitcher-title-layer span {
+    width: 10%;
+}
+
+
 
 .m-layerswitcher-icons-ver, .m-layerswitcher-icons-ocultar {
     margin: 0 5px;
@@ -205,12 +220,17 @@ input[type=range].m-layerswitcher-transparency:focus {
     cursor: pointer;
 }
 
-span.m-layerswitcher-icons-image, span.m-layerswitcher-icons-target, span.m-layerswitcher-icons-info, span.m-layerswitcher-icons-style, span.m-layerswitcher-icons-delete {
+span.m-layerswitcher-icons-image, span.m-layerswitcher-icons-target, span.m-layerswitcher-icons-info, span.m-layerswitcher-icons-style {
     font-size: 18px;
     position: relative;
     top: 3px;
     margin-right: 4px;
     margin-left: 4px;
+}
+
+span.m-layerswitcher-icons-delete {
+    font-size: 18px;
+    line-height: inherit;
 }
 
 div.m-layerswitcher-legend {
