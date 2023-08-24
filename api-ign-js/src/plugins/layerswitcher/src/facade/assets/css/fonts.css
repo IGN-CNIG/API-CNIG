@@ -34,6 +34,7 @@
 }
 
 .m-layerswitcher-icons-layers:before {
+  font-family: 'layerswitcher-icons' !important;
   content: "\e907";
 }
 
