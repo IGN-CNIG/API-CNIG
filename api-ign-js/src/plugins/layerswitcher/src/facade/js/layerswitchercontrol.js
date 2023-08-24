@@ -164,13 +164,7 @@ export default class LayerswitcherControl extends M.Control {
     if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
       !M.utils.isNullOrEmpty(layerType)) {
       result = this.overlayLayers.filter((l) => {
-        return l.name === layerName && l.url === layerURL && l.type === layerType;
-      });
-    }
-
-    if (layerName === 'osm' && layerType === 'OSM') {
-      result = this.overlayLayers.filter((l) => {
-        return l.name === layerName && l.type === layerType;
+        return (l.name === layerName || l.url === layerURL) && l.type === layerType;
       });
     }
 
@@ -381,7 +375,8 @@ export default class LayerswitcherControl extends M.Control {
             legend.style.display = 'block';
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
-          if (layerType === 'WMS' || layerType === 'WMTS' || layerType === 'WFS') {
+          if (layerType === 'WMS' || layerType === 'WMTS' || layerType === 'WFS' || layerType === 'MBTilesVector'
+          || 'MBTiles' || 'OSM' || 'XYZ' || 'TMS') {
             const extent = layer.getMaxExtent();
             this.map_.setBbox(extent);
           } else if (layerType === 'KML') {
@@ -390,7 +385,7 @@ export default class LayerswitcherControl extends M.Control {
           } else if (layerType === 'GeoJSON') {
             const extent = this.getImpl().getGeoJSONExtent(layer);
             this.map_.setBbox(extent);
-          } else if (layerType === 'OGCAPIFeatures') {
+          } else if (layerType === 'OGCAPIFeatures' || layerType === 'MVT' || layerType === 'Vector') {
             const extent = layer.getFeaturesExtent();
             this.map_.setBbox(extent);
           } else {
@@ -593,7 +588,7 @@ export default class LayerswitcherControl extends M.Control {
         type: layer.type,
         visible: (layer.isVisible() === true),
         id: layer.name,
-        url: layer.url,
+        url: layer.url || 'Sin URL',
         outOfRange: !layer.inRange(),
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
