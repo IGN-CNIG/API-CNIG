@@ -99,6 +99,7 @@ ul.m-layerswitcher-ullayers {
 .m-layerswitcher-title-layer{
     display: flex;
     width: 100%;
+    align-items: center;
 }
 
 .m-visible-control {
