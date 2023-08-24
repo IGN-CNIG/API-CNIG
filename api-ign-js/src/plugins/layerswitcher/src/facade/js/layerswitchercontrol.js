@@ -167,6 +167,13 @@ export default class LayerswitcherControl extends M.Control {
         return l.name === layerName && l.url === layerURL && l.type === layerType;
       });
     }
+
+    if (layerName === 'osm' && layerType === 'OSM') {
+      result = this.overlayLayers.filter((l) => {
+        return l.name === layerName && l.type === layerType;
+      });
+    }
+
     return result;
   }
 
