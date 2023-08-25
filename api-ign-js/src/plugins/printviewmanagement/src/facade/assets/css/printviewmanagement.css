@@ -438,6 +438,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
   .m-georefimage-titleFormat label, 
   .m-printermap-titleFormat label, 
   .m-printermap-paramsLabel, 
+  .m-georefimageepsg-label,
   .m-printermap-labelTextarea{
     position: absolute;
     clip: rect(1px 1px 1px 1px);

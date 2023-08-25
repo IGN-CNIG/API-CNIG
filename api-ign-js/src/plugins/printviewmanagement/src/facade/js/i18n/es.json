@@ -41,5 +41,10 @@
   "layout": "Plantilla",
   "credits": "Print generated through api-core",
   "base": "Cartografía base",
-  "zone": "huso"
+  "zone": "huso",
+  "georefimageWld":"Fichero de georreferenciación (WLD)",
+  "typeDownload": "Selecciona el tipo de descarga:",
+  "typeClient": "Desde cliente: contenido de pantalla",
+  "typeServer": "Desde servidor: contenido de servidor",
+  "selectLayer": "Selecciona la capa a descargar"
 }

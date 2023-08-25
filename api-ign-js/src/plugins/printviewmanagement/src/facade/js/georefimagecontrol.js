@@ -253,6 +253,11 @@ export default class GeorefimageControl extends M.Control {
             projection: getValue('projection'),
             down: getValue('down'),
             title: getValue('title'),
+            georefimageWld: getValue('georefimageWld'),
+            typeDownload: getValue('typeDownload'),
+            typeClient: getValue('typeClient'),
+            typeServer: getValue('typeServer'),
+            format: getValue('format'),
           },
         },
       });

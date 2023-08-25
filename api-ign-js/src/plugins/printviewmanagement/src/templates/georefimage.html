@@ -1,43 +1,48 @@
 <section class="m-container m-georefimage m-georefimage-container">
     <div class="m-georefimage-titleFormat">
-
-            <label for="title-georefimage">{{translations.title}}"</label>
-            <input type="text" id="m-georefimage-title" name="title-georefimage" placeholder="{{translations.title}}">
+            <label tabindex="0" for="title-georefimage" title="{{translations.title}}" aria-label="{{translations.format}}" >{{translations.title}}"</label>
+            <input tabindex="0" type="text" id="m-georefimage-title" aria-label="{{translations.format}}" title="{{translations.title}}" name="title-georefimage" placeholder="{{translations.title}}">
  
-            <label for="format-georefimage">Formato de Descarga</label>
-            <select id="m-georefimage-format" name="format-georefimage">
+            <label tabindex="0" for="format-georefimage" title="{{translations.format}}" aria-label="{{translations.format}}">Formato de Descarga</label>
+            <select tabindex="0" id="m-georefimage-format" name="format-georefimage" title="{{translations.format}}" aria-label="{{translations.format}}">
                 <option value="jpeg">JPEG</option>
                 <option value="png">PNG</option>
             </select>
 
     </div>
-
         <div class="georefimage-jgwKeppview">
                 <div>
-                    <label for="wld">Fichero de georreferenciación (WLD)</label>
-                    <input value="wld" type="checkbox" id="m-georefimage-wld">
+                    <label tabindex="0" for="m-georefimage-wld" title="{{translations.georefimageWld}}" aria-label="{{translations.georefimageWld}}">{{translations.georefimageWld}}</label>
+                    <input 
+                        tabindex="0" 
+                        value="wld" 
+                        type="checkbox" 
+                        title="{{translations.georefimageWld}}" 
+                        id="m-georefimage-wld" 
+                        aria-label="{{translations.georefimageWld}}"
+                    >
                 </div>
             
-                <div class="keepview">
-                    <label>DPI</label>
-                    <input type="number" id="m-georefimage-dpi" min="120" max="300" value="120" placeholder="120">
+                <div class="keepview" >
+                    <labe tabindex="0" for="m-georefimage-dpi"  aria-label="DPI" title="DPI">DPI</labe>
+                    <input type="number" aria-label="DPI" title="DPI" id="m-georefimage-dpi" min="120" max="300" value="120" placeholder="120">
                 </div>
         </div>
 
-    <fieldset id="m-georefimage-fieldset" class="typeImagen">
-        <legend>Selecciona el tipo de descarga:</legend>
+    <fieldset id="m-georefimage-fieldset" class="typeImagen" title="{{translations.typeDownload}}">
+        <legend tabindex="0">{{translations.typeDownload}}</legend>
         <div class="m-georefimage-fieldsetInput">
             <div>
-                <label for="client">Desde cliente: contenido de pantalla</label>
-                <input name="typeDownload" value="client" type="radio" id="client">
+                <label tabindex="0" for="client">{{translations.typeClient}}</label>
+                <input tabindex="0" name="typeDownload" value="client" type="radio" id="client" title="{{translations.typeClient}}">
             </div>
     
             <div>
-                <label for="server">Desde servidor: con geoprint <a id="m-georefimage-listServices" href="#">(&#x2139;)</a></label>
-                <input name="typeDownload" value="server" type="radio" id="server" checked>
+                <label tabindex="0" for="server">{{translations.typeServer}} <a aria-activedescendant="modal" aria-label="Servicios geoprint" title="Servicios geoprint" id="m-georefimage-listServices" href="#">(&#x2139;)</a></label>
+                <input tabindex="0" title="{{translations.typeServer}}" name="typeDownload" value="server" type="radio" id="server" checked>
             </div>
         </div>
 
-        <h3 id="m-georefimage-projection">EPSG: 3857</h3>
+        <h3 tabindex="0" id="m-georefimage-projection" title="EPSG"></h3>
     </fieldset>
 </section>

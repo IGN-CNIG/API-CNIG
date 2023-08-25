@@ -109,42 +109,15 @@ export default class PrintViewManagementControl extends M.Control {
       });
 
       this.html = html;
-      if (this.georefImageEpsg_) {
-        this.addGeorefImageEpsgControl(html);
-      }
-      if (this.georefImage_) {
-        this.georefImageControl = new GeorefimageControl(this.georefImage_, this.map_);
-        html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
-          this.showDownloadButton();
-          this.deactive(html, 'georefImage');
-          this.georefImageControl.active(html);
-        });
-        html.querySelector('#m-printviewmanagement-georefImage').addEventListener('keydown', ({ key }) => {
-          if (key === 'Enter') {
-            this.showDownloadButton();
-            this.deactive(html, 'georefImage');
-            this.georefImageControl.active(html);
-          }
-        });
-      }
-      if (this.printermap_) {
-        this.printerMapControl = new PrinterMapControl(this.printermap_, this.map_);
-        html.querySelector('#m-printviewmanagement-printermap').addEventListener('click', () => {
-          this.showDownloadButton();
-          this.deactive(html, 'printermap');
-          this.printerMapControl.active(html);
-        });
-        html.querySelector('#m-printviewmanagement-printermap').addEventListener('keydown', ({ key }) => {
-          if (key === 'Enter') {
-            this.showDownloadButton();
-            this.deactive(html, 'printermap');
-            this.printerMapControl.active(html);
-          }
-        });
-      }
-      if (this.isDraggable_) {
-        M.utils.draggabillyPlugin(this.getPanel(), '#m-printviewmanagement-title');
-      }
+
+      if (this.georefImageEpsg_) { this.addGeorefImageEpsgControl(html); }
+
+      if (this.georefImage_) { this.addGeorefImageControl(html); }
+
+      if (this.printermap_) { this.addPrinterMapControl(html); }
+
+      if (this.isDraggable_) { M.utils.draggabillyPlugin(this.getPanel(), '#m-printviewmanagement-title'); }
+
       this.accessibilityTab(html);
       this.selectElementHTML();
       this.addEvent();
@@ -212,6 +185,38 @@ export default class PrintViewManagementControl extends M.Control {
         this.showDownloadButton();
         this.deactive(html, 'georefImageEpsg');
         this.georefImageEpsgControl.active(html);
+      }
+    });
+  }
+
+  addPrinterMapControl(html) {
+    this.printerMapControl = new PrinterMapControl(this.printermap_, this.map_);
+    html.querySelector('#m-printviewmanagement-printermap').addEventListener('click', () => {
+      this.showDownloadButton();
+      this.deactive(html, 'printermap');
+      this.printerMapControl.active(html);
+    });
+    html.querySelector('#m-printviewmanagement-printermap').addEventListener('keydown', ({ key }) => {
+      if (key === 'Enter') {
+        this.showDownloadButton();
+        this.deactive(html, 'printermap');
+        this.printerMapControl.active(html);
+      }
+    });
+  }
+
+  addGeorefImageControl(html) {
+    this.georefImageControl = new GeorefimageControl(this.georefImage_, this.map_);
+    html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
+      this.showDownloadButton();
+      this.deactive(html, 'georefImage');
+      this.georefImageControl.active(html);
+    });
+    html.querySelector('#m-printviewmanagement-georefImage').addEventListener('keydown', ({ key }) => {
+      if (key === 'Enter') {
+        this.showDownloadButton();
+        this.deactive(html, 'georefImage');
+        this.georefImageControl.active(html);
       }
     });
   }

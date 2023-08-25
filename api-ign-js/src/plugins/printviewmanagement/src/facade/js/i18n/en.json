@@ -41,5 +41,10 @@
   "layout": "Layout",
   "credits": "Print generated through api-core",
   "base": "Base Cartography",
-  "zone": "zone"
+  "zone": "zone",
+  "georefimageWld":"Georeferencing file (WLD)",
+  "typeDownload":"Select the type of download:",
+  "typeClient": "From Client: Screen Content",
+  "typeServer": "From Server: Georeferenced Image",
+  "selectLayer": "Select the layer to download"
 }

@@ -106,11 +106,7 @@ export default class GeorefImageEpsgControl extends M.Control {
         jsonp: true,
         vars: {
           translations: {
-            referenced: getValue('referenced'),
-            downImg: getValue('downImg'),
-            map: getValue('map'),
-            pnoa: getValue('pnoa'),
-            screen: getValue('screen'),
+            selectLayer: getValue('selectLayer'),
           },
           layers: this.layers_,
         },
