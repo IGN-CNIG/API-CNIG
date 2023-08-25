@@ -6,7 +6,11 @@
     "encode": "La implementación usada no posee el método encodeLayer.",
     "error": "Se ha producido un error en la impresión.",
     "imageError": "No ha podido realizarse la descarga en este momento. Por favor, inténtelo más tarde.",
-    "error_layers": "Las siguientes capas no se visualizarán al imprimir el mapa: "
+    "error_layers": "Las siguientes capas no se visualizarán al imprimir el mapa: ",
+    "teselaError": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
+    "printError": "Se ha producido un error en la impresión.",
+    "encode_method": "La implementación usada no posee el método encodeLayer",
+    "tile": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo."
   },
   "tooltip": "Impresión del mapa",
   "map_printing": "Impresión del mapa",

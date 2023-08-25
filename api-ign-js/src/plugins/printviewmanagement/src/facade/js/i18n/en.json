@@ -6,7 +6,11 @@
     "encode": "The implementation used cannot use encodeLayer.",
     "error": "An error has occurred while printing.",
     "imageError": "The download could not be completed at this time. Please try again later.",
-    "error_layers": "The following layers will not be displayed when printing the map: "
+    "error_layers": "The following layers will not be displayed when printing the map: ",
+    "teselaError": "The request has caused an error in printing. < br / > Please try again.",
+    "printError": "Printing has failed.",
+    "encode_method": "The used implementation does not have the encodeLayer method",
+    "tile": "The request for some tile has caused a printing error. <br/>Please try again."
   },
   "tooltip": "Impresión del mapa",
   "map_printing": "Map printing",

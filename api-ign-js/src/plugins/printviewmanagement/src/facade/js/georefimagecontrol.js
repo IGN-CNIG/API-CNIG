@@ -253,9 +253,7 @@ export default class GeorefimageControl extends M.Control {
             projection: getValue('projection'),
             down: getValue('down'),
             title: getValue('title'),
-            keep: getValue('keep'),
           },
-          keepView: true,
         },
       });
       this.template_ = template;
