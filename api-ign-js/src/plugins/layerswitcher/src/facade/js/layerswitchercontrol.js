@@ -365,7 +365,7 @@ export default class LayerswitcherControl extends M.Control {
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
           this.overlayLayers.forEach((l) => {
-            if (l.name === layerName && l.url === layerURL && l.type === layerType) {
+            if (l.name === layerName && l.type === layerType && (l.url === layerURL || layerURL === 'noURL')) {
               l.checkedLayer = 'true';
               l.setVisible(true);
             } else {
@@ -600,7 +600,7 @@ export default class LayerswitcherControl extends M.Control {
         type: layer.type,
         visible: (layer.isVisible() === true),
         id: layer.name,
-        url: layer.url || 'Sin URL',
+        url: layer.url || 'noURL',
         outOfRange: !layer.inRange(),
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
