@@ -50,13 +50,6 @@ export default class LayerswitcherControl extends M.Control {
     this.isDraggable_ = options.isDraggable;
 
     /**
-     * Determina el orden de visualización de las capas
-     * @private
-     * @type {Boolean}
-     */
-    this.reverse = options.reverse;
-
-    /**
      * Determina el modo de selección de las capas
      * @private
      * @type {Boolean}
@@ -396,8 +389,8 @@ export default class LayerswitcherControl extends M.Control {
             legend.style.display = 'block';
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
-          if (layerType === 'WMS' || layerType === 'WMTS' || layerType === 'WFS' || layerType === 'MBTilesVector'
-          || 'MBTiles' || 'OSM' || 'XYZ' || 'TMS') {
+          if (layerType === 'WMS' || layerType === 'WMTS' || layerType === 'WFS' || layerType === 'MBTilesVector' ||
+            'MBTiles' || 'OSM' || 'XYZ' || 'TMS') {
             const extent = layer.getMaxExtent();
             this.map_.setBbox(extent);
           } else if (layerType === 'KML') {
@@ -584,10 +577,8 @@ export default class LayerswitcherControl extends M.Control {
    * @api
    */
   reorderLayers(layers) {
-    const result = layers.sort((layer1, layer2) => layer1.getZIndex() - layer2.getZIndex());
-    if (this.reverse) {
-      result.reverse();
-    }
+    const result = layers.sort((layer1, layer2) => layer1.getZIndex() -
+      layer2.getZIndex()).reverse();
     return result;
   }
 

@@ -13,7 +13,7 @@
     "codsi": "An error occurred while consulting the CODSI catalog",
     "codsi_no_results": "There are no results for your search"
   },
-  "tooltip": "Layers",
+  "tooltip": "Layer Manager",
   "info": "Information",
   "layer_info": "Layer information",
   "configure_layer": "Configure layer",

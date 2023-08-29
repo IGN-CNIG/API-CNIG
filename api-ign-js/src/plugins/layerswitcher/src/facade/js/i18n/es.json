@@ -13,7 +13,7 @@
     "codsi": "Ha ocurrido un error al consultar el catálogo CODSI",
     "codsi_no_results": "No hay resultados para su búsqueda"
   },
-  "tooltip": "Capas",
+  "tooltip": "Gestor de capas",
   "info": "Información",
   "layer_info": "Información de la capa",
   "configure_layer": "Configurar capa",

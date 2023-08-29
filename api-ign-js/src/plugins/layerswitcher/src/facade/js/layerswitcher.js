@@ -83,14 +83,6 @@ export default class Layerswitcher extends M.Plugin {
     this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
 
     /**
-     * Determina el orden de visualización de las capas
-     * @public
-     * @type {Boolean}
-     */
-    this.reverse = M.utils.isUndefined(options.reverse) ? true : options.reverse;
-
-
-    /**
      * Permite saber si se permite movimiento de capas
      * @public
      * @type {boolean}
@@ -147,7 +139,6 @@ export default class Layerswitcher extends M.Plugin {
     this.control_ =
       new LayerswitcherControl({
         isDraggable: this.isDraggable,
-        reverse: this.reverse,
         modeSelectLayers: this.modeSelectLayers,
         tools: this.tools,
         collapsed: this.collapsed_,
