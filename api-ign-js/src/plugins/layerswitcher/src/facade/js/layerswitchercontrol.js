@@ -264,6 +264,7 @@ export default class LayerswitcherControl extends M.Control {
           animation: 150,
           ghostClass: 'm-fulltoc-gray-shadow',
           filter: '.m-layerswitcher-opacity',
+          preventOnFilter: false,
           onEnd: (evt) => {
             const from = evt.from;
             let maxZIndex = Math.max(...(layers.map((l) => {
