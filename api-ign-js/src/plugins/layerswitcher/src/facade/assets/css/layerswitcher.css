@@ -229,11 +229,6 @@ span.m-layerswitcher-icons-image, span.m-layerswitcher-icons-target, span.m-laye
     margin-left: 4px;
 }
 
-span.m-layerswitcher-icons-delete {
-    font-size: 18px;
-    line-height: inherit;
-}
-
 div.m-layerswitcher-legend {
     max-width: 420px;
     display: none;
