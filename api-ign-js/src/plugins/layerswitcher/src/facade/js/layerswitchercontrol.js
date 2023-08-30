@@ -392,16 +392,11 @@ export default class LayerswitcherControl extends M.Control {
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
           if (layerType === 'WMS' || layerType === 'WMTS' || layerType === 'WFS' || layerType === 'MBTilesVector' ||
-            'MBTiles' || 'OSM' || 'XYZ' || 'TMS') {
+            layerType === 'MBTiles' || layerType === 'OSM' || layerType === 'XYZ' || layerType === 'TMS' ||
+            layerType === 'GeoJSON' || layerType === 'KML' || layerType === 'OGCAPIFeatures' || layerType === 'Vector') {
             const extent = layer.getMaxExtent();
             this.map_.setBbox(extent);
-          } else if (layerType === 'KML') {
-            const extent = layer.getImpl().getExtent();
-            this.map_.setBbox(extent);
-          } else if (layerType === 'GeoJSON') {
-            const extent = this.getImpl().getGeoJSONExtent(layer);
-            this.map_.setBbox(extent);
-          } else if (layerType === 'OGCAPIFeatures' || layerType === 'MVT' || layerType === 'Vector') {
+          } else if (layerType === 'MVT') {
             const extent = layer.getFeaturesExtent();
             this.map_.setBbox(extent);
           } else {
