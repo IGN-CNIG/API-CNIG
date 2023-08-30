@@ -176,6 +176,7 @@ ul.m-layerswitcher-ullayers {
 .m-layerswitcher-container .m-layerswitcher-tools {
     margin-top: -0.5rem;
     display: flex;
+    border-top: 1px solid #f1ecec;
 }
 
 

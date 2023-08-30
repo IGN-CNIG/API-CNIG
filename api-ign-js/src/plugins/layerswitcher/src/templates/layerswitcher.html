@@ -22,6 +22,9 @@
                         </tbody>
                     </table>
                 </div>
+                {{#if ../isDelete}}
+                    <span title="{{../translations.remove_layer}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-delete"></span>
+                {{/if}}
             </div>
             {{#if visible}}
                 <div class="m-layerswitcher-tools">
@@ -44,9 +47,6 @@
                             {{#if hasStyles}}
                                 <span title="{{../translations.change_style}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-style"></span>
                             {{/if}}
-                        {{/if}}
-                        {{#if ../isDelete}}
-                            <span title="{{../translations.remove_layer}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-icons-delete"></span>
                         {{/if}}
                     </div>
                 </div>
