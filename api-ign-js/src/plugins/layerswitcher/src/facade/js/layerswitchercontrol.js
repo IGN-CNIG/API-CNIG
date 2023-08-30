@@ -9,6 +9,8 @@ import LayerswitcherImplControl from 'impl/layerswitchercontrol';
 import template from '../../templates/layerswitcher';
 import { getValue } from './i18n/language';
 import infoTemplate from '../../templates/information';
+import infoTemplateOGC from '../../templates/informationogc';
+import infoTemplateOthers from '../../templates/informationothers';
 import configTemplate from '../../templates/config';
 
 export default class LayerswitcherControl extends M.Control {
@@ -403,56 +405,98 @@ export default class LayerswitcherControl extends M.Control {
             M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-info') > -1) {
-          const vars = {
-            name: layer.name, // nombre
-            title: layer.legend, // titulo
-            abstract: layer.capabilitiesMetadata.abstract, // resumen
-            translations: {
-              title: getValue('title'),
-              name: getValue('name'),
-              abstract: getValue('abstract'),
-              provider: getValue('provider'),
-              service_info: getValue('service_info'),
-              download_center: getValue('download_center'),
-              see_more: getValue('see_more'),
-              metadata_abstract: getValue('metadata_abstract'),
-              responsible: getValue('responsible'),
-              access_constraints: getValue('access_constraints'),
-              use_constraints: getValue('use_constraints'),
-              online_resources: getValue('online_resources'),
-              see_more_layer: getValue('see_more_layer'),
-              see_more_service: getValue('see_more_service'),
-              metadata: getValue('metadata'),
-            },
-          };
+          if (layer.type === 'OGCAPIFeatures') {
+            const metadataURL = `${layer.url}${layer.name}?f=json`;
+            const htmlURL = `${layer.url}${layer.name}?f=html`;
+            let jsonResponseOgc;
+            M.remote.get(metadataURL).then((response) => {
+              jsonResponseOgc = JSON.parse(response.text);
+              const vars = {
+                title: jsonResponseOgc.description,
+                abstract: jsonResponseOgc.title,
+                hasMetadata: true,
+                metadata: htmlURL,
+                isOgc: true,
+                translations: {
+                  title: getValue('title'),
+                  name: getValue('name'),
+                  abstract: getValue('abstract'),
+                  provider: getValue('provider'),
+                  service_info: getValue('service_info'),
+                  download_center: getValue('download_center'),
+                  see_more: getValue('see_more'),
+                  metadata_abstract: getValue('metadata_abstract'),
+                  responsible: getValue('responsible'),
+                  access_constraints: getValue('access_constraints'),
+                  use_constraints: getValue('use_constraints'),
+                  online_resources: getValue('online_resources'),
+                  see_more_layer: getValue('see_more_layer'),
+                  see_more_service: getValue('see_more_service'),
+                  metadata: getValue('metadata'),
+                },
+              };
+              this.renderInfo(vars, 'OGCAPIFeatures');
+            });
+          } else if (layer.type === 'WMS' || layer.type === 'WMTS') {
+            const vars = {
+              name: layer.name, // nombre
+              title: layer.legend, // titulo
+              abstract: layer.capabilitiesMetadata.abstract, // resumen
+              translations: {
+                title: getValue('title'),
+                name: getValue('name'),
+                abstract: getValue('abstract'),
+                provider: getValue('provider'),
+                service_info: getValue('service_info'),
+                download_center: getValue('download_center'),
+                see_more: getValue('see_more'),
+                metadata_abstract: getValue('metadata_abstract'),
+                responsible: getValue('responsible'),
+                access_constraints: getValue('access_constraints'),
+                use_constraints: getValue('use_constraints'),
+                online_resources: getValue('online_resources'),
+                see_more_layer: getValue('see_more_layer'),
+                see_more_service: getValue('see_more_service'),
+                metadata: getValue('metadata'),
+              },
+            };
 
-          vars.capabilities = this.addCapabilitiesInformation(layer);
-          if (layer.capabilitiesMetadata.metadataURL) {
-            vars.metadata = layer.capabilitiesMetadata.metadataURL[0].OnlineResource;
-          }
-          vars.provider = this.informationProvider(layer);
-
-          M.remote.get(vars.capabilities).then((response) => {
-            const source = response.text;
-            const urlService = source.split('<inspire_common:URL>')[1].split('<')[0].split('&amp;').join('&');
-            if (!M.utils.isNullOrEmpty(urlService) && M.utils.isUrl(urlService)) {
-              vars.metadata_service = urlService;
-              vars.hasMetadata = true;
+            vars.capabilities = this.addCapabilitiesInformation(layer);
+            if (layer.capabilitiesMetadata.metadataURL) {
+              vars.metadata = layer.capabilitiesMetadata.metadataURL[0].OnlineResource;
             }
+            vars.provider = this.informationProvider(layer);
 
-            if (M.utils.isNullOrEmpty(vars.metadata) || !M.utils.isUrl(vars.metadata)) {
-              if (vars.metadata_service !== undefined) {
-                this.infoDownloadCenter(vars.metadata_service, vars);
-              } else {
-                this.renderInfo(vars);
+            M.remote.get(vars.capabilities).then((response) => {
+              const source = response.text;
+              const urlService = source.split('<inspire_common:URL>')[1].split('<')[0].split('&amp;').join('&');
+              if (!M.utils.isNullOrEmpty(urlService) && M.utils.isUrl(urlService)) {
+                vars.metadata_service = urlService;
+                vars.hasMetadata = true;
               }
-            } else {
-              vars.hasMetadata = true;
-              this.infoDownloadCenter(vars.metadata, vars);
-            }
-          }).catch((err) => {
-            this.renderInfo(vars);
-          });
+
+              if (M.utils.isNullOrEmpty(vars.metadata) || !M.utils.isUrl(vars.metadata)) {
+                if (vars.metadata_service !== undefined) {
+                  this.infoDownloadCenter(vars.metadata_service, vars);
+                } else {
+                  this.renderInfo(vars);
+                }
+              } else {
+                vars.hasMetadata = true;
+                this.infoDownloadCenter(vars.metadata, vars);
+              }
+            }).catch((err) => {
+              this.renderInfo(vars);
+            });
+          } else {
+            const vars = {
+              title: layer.name,
+              translations: {
+                title: getValue('title'),
+              },
+            };
+            this.renderInfo(vars, 'Others');
+          }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
           let otherStyles = [];
           if (!M.utils.isUndefined(layer.capabilitiesMetadata) &&
@@ -660,12 +704,27 @@ export default class LayerswitcherControl extends M.Control {
    * @param {Object} vars variables para la plantilla
    * @api
    */
-  renderInfo(vars) {
-    const info = M.template.compileSync(infoTemplate, {
-      jsonp: false,
-      parseToHtml: false,
-      vars,
-    });
+  renderInfo(vars, type) {
+    let info;
+    if (type === 'OGCAPIFeatures') {
+      info = M.template.compileSync(infoTemplateOGC, {
+        jsonp: false,
+        parseToHtml: false,
+        vars,
+      });
+    } else if (type === 'Others') {
+      info = M.template.compileSync(infoTemplateOthers, {
+        jsonp: false,
+        parseToHtml: false,
+        vars,
+      });
+    } else {
+      info = M.template.compileSync(infoTemplate, {
+        jsonp: false,
+        parseToHtml: false,
+        vars,
+      });
+    }
 
     M.dialog.info(info, getValue('layer_info'), this.order);
     setTimeout(() => {
