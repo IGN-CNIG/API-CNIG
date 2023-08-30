@@ -101,7 +101,7 @@ export default class Layerswitcher extends M.Plugin {
      * @public
      * @type {Array}
      */
-    this.tools = M.utils.isUndefined(options.tools) ? [] : options.tools;
+    this.tools = M.utils.isUndefined(options.tools) ? ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'] : options.tools;
 
     /**
      * Metadata from api.json
