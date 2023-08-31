@@ -10,6 +10,9 @@
                         {{#eq @index 0}}
                             <option value="{{@index}}">{{../translations.default_style}} </option>
                         {{/eq}}
+                        {{#gt @index 0}}
+                            <option value="{{@index}}">{{../translations.style}} {{@index}}
+                        {{/gt}}
                     {{/if}}
 
                 {{/each}}

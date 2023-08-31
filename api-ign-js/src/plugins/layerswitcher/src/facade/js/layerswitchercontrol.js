@@ -558,7 +558,6 @@ export default class LayerswitcherControl extends M.Control {
         }
       } else {
         layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
-        document.querySelector('div.m-mapea-container div.m-dialog').remove();
         const cm = layer.capabilitiesMetadata;
         if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
           const filtered = layer.capabilitiesMetadata.style.filter((style) => {
@@ -571,6 +570,7 @@ export default class LayerswitcherControl extends M.Control {
           }
         }
       }
+      document.querySelector('div.m-mapea-container div.m-dialog').remove();
     }
   }
 
