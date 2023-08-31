@@ -499,15 +499,23 @@ export default class LayerswitcherControl extends M.Control {
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
           let otherStyles = [];
+          let isOGCAPIFeatures;
           if (!M.utils.isUndefined(layer.capabilitiesMetadata) &&
             !M.utils.isUndefined(layer.capabilitiesMetadata.style)) {
             otherStyles = layer.capabilitiesMetadata.style;
           }
+
+          if (layer.type === 'OGCAPIFeatures') {
+            otherStyles = layer.predefinedStyles;
+            isOGCAPIFeatures = true;
+          }
+
           const config = M.template.compileSync(configTemplate, {
             jsonp: true,
             parseToHtml: false,
             vars: {
               styles: otherStyles,
+              isOGCAPIFeatures,
               translations: {
                 select_style: getValue('select_style'),
                 change: getValue('change'),
@@ -536,20 +544,31 @@ export default class LayerswitcherControl extends M.Control {
     evt.stopPropagation();
   }
 
-  changeLayerConfig(layer) {
+  changeLayerConfig(layer, otherStyles) {
     const styleSelected = document.querySelector('#m-layerswitcher-style-select').value;
     if (styleSelected !== '') {
-      layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
-      document.querySelector('div.m-mapea-container div.m-dialog').remove();
-      const cm = layer.capabilitiesMetadata;
-      if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
-        const filtered = layer.capabilitiesMetadata.style.filter((style) => {
-          return style.Name === styleSelected;
-        });
+      if (layer.type === 'OGCAPIFeatures') {
+        if (!M.utils.isNullOrEmpty(otherStyles)) {
+          const filtered = otherStyles[styleSelected];
+          if (styleSelected === 0) {
+            layer.setStyle();
+          } else {
+            layer.setStyle(filtered);
+          }
+        }
+      } else {
+        layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
+        document.querySelector('div.m-mapea-container div.m-dialog').remove();
+        const cm = layer.capabilitiesMetadata;
+        if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
+          const filtered = layer.capabilitiesMetadata.style.filter((style) => {
+            return style.Name === styleSelected;
+          });
 
-        if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
-          const newURL = filtered[0].LegendURL[0].OnlineResource;
-          layer.setLegendURL(newURL);
+          if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
+            const newURL = filtered[0].LegendURL[0].OnlineResource;
+            layer.setLegendURL(newURL);
+          }
         }
       }
     }
@@ -635,6 +654,14 @@ export default class LayerswitcherControl extends M.Control {
     const layerTitle = layer.legend || layer.name;
     const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
       !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
+
+    let ogcapiFeaturesStyles;
+    if (layer.type === 'OGCAPIFeatures') {
+      if (!M.utils.isNullOrEmpty(layer.predefinedStyles)) {
+        ogcapiFeaturesStyles = layer.predefinedStyles.length > 1;
+      }
+    }
+
     return new Promise((success) => {
       const layerVarTemplate = {
         title: layerTitle,
@@ -646,7 +673,8 @@ export default class LayerswitcherControl extends M.Control {
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
         metadata: hasMetadata,
-        hasStyles: hasMetadata && layer.capabilitiesMetadata.style.length > 1,
+        hasStyles: (hasMetadata && layer.capabilitiesMetadata.style.length > 1) ||
+          ogcapiFeaturesStyles,
       };
       success(layerVarTemplate);
     });
