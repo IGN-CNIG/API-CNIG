@@ -241,6 +241,11 @@ export default class LayerswitcherControl extends M.Control {
    */
   render() {
     this.getTemplateVariables(this.map_).then((templateVars) => {
+      let scroll;
+      if (document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers') !== null) {
+        scroll = document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers').scrollTop;
+      }
+
       const html = M.template.compileSync(templateAux, {
         vars: templateVars,
       });
@@ -283,6 +288,9 @@ export default class LayerswitcherControl extends M.Control {
             });
           },
         });
+      }
+      if (scroll !== undefined) {
+        document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers').scrollTop = scroll;
       }
     });
   }
