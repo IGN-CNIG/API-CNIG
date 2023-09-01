@@ -214,9 +214,7 @@ export default class LayerswitcherControl extends M.Control {
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
         this.template_.addEventListener('click', this.collapsedPlugin.bind(this), false);
 
-        if (this.collapsed === false) {
-          this.getImpl().registerEvent(map);
-        }
+        this.getImpl().registerEvent(map);
 
         // Se llama en el evento de registerEvent
         // this.render();
