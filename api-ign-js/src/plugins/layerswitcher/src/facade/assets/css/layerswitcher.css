@@ -329,3 +329,9 @@ div.m-layerswitcher-legend>img {
     opacity: 0.3;
     background-color: #D1E6F8;
 }
+
+/* leyenda */
+.m-layerswitcher-legend{
+    max-width: 420px;
+    overflow-x: auto !important;
+}

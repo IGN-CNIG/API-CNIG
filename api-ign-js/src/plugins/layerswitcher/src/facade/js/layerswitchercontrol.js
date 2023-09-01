@@ -384,7 +384,25 @@ export default class LayerswitcherControl extends M.Control {
           const legendUrl = layer.getLegendURL();
           if (legendUrl instanceof Promise) {
             legendUrl.then((url) => {
-              legend.querySelector('img').src = url;
+              if (url.indexOf('assets/img/legend-default.png') !== -1) {
+                legend.querySelector('img').src = url;
+              } else {
+                this.errorLegendLayer(layer).then((newLegend) => {
+                  if (newLegend !== '') {
+                    legend.querySelector('img').src = newLegend;
+                  } else {
+                    legend.querySelector('img').src = legendUrl;
+                  }
+                });
+              }
+            });
+          } else if (legendUrl.indexOf('assets/img/legend-default.png') !== -1) {
+            this.errorLegendLayer(layer).then((newLegend) => {
+              if (newLegend !== '') {
+                legend.querySelector('img').src = newLegend;
+              } else {
+                legend.querySelector('img').src = legendUrl;
+              }
             });
           } else {
             legend.querySelector('img').src = legendUrl;
@@ -544,6 +562,29 @@ export default class LayerswitcherControl extends M.Control {
       }
     }
     evt.stopPropagation();
+  }
+
+  errorLegendLayer(layer) {
+    return new Promise((success) => {
+      let legend = '';
+      if (layer.type === 'XYZ' || layer.type === 'TMS') {
+        legend = layer.url.replace('{z}/{x}/{-y}', '0/0/0');
+      } else if (layer.type === 'OSM') {
+        let url = layer.getImpl().getOL3Layer().getSource().getUrls();
+        if (url.length > 0) {
+          url = url[0];
+        }
+        legend = url.replace('{z}/{x}/{y}', '0/0/0');
+      }
+      if (legend !== '') {
+        M.remote.get(legend).then((response) => {
+          if (response.code !== 200) {
+            legend = '';
+          }
+          success(legend);
+        });
+      }
+    });
   }
 
   changeLayerConfig(layer, otherStyles) {
