@@ -7,6 +7,7 @@ import Sortable from 'sortablejs';
 
 import LayerswitcherImplControl from 'impl/layerswitchercontrol';
 import template from '../../templates/layerswitcher';
+import templateAux from '../../templates/layerswitchercontent';
 import { getValue } from './i18n/language';
 import infoTemplate from '../../templates/information';
 import infoTemplateOGC from '../../templates/informationogc';
@@ -211,20 +212,7 @@ export default class LayerswitcherControl extends M.Control {
 
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
-
-        this.getPanel().getButtonPanel().addEventListener('click', (e) => {
-          if (!e.target.parentElement.classList.contains('collapsed')) {
-            this.render();
-
-            if (this.isDraggable_) {
-              M.utils.draggabillyPlugin(this.getPanel(), '#m-layerswitcher-title');
-            }
-
-            this.getImpl().registerEvent(map);
-          } else {
-            this.getImpl().removeRenderComplete();
-          }
-        }, false);
+        this.template_.addEventListener('click', this.collapsedPlugin.bind(this), false);
 
         if (this.collapsed === false) {
           this.getImpl().registerEvent(map);
@@ -237,6 +225,15 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
+  collapsedPlugin(e) {
+    if (!e.target.parentElement.classList.contains('collapsed')) {
+      this.render();
+      this.getImpl().registerEvent(this.map_);
+    } else {
+      this.getImpl().removeRenderComplete();
+    }
+  }
+
   /**
    * Esta función renderiza la plantilla
    *
@@ -246,10 +243,10 @@ export default class LayerswitcherControl extends M.Control {
    */
   render() {
     this.getTemplateVariables(this.map_).then((templateVars) => {
-      const html = M.template.compileSync(template, {
+      const html = M.template.compileSync(templateAux, {
         vars: templateVars,
       });
-      this.template_.innerHTML = html.innerHTML;
+      this.template_.querySelector('#m-layerswitcher-content').innerHTML = html.innerHTML;
       // si el modo de selección es radio y no se ha seleccionado ninguna capa se marca la primera
       if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
         const radioButtons = this.template_.querySelectorAll('input[type=radio]');

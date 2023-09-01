@@ -62,6 +62,10 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     font-size: 15px;
 }
 
+#m-layerswitcher-content{
+    text-align: left;
+}
+
 #m-layerswitcher-panel>ul {
     margin: 0px;
     padding: 0px;
