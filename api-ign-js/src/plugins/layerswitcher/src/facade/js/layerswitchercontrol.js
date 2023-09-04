@@ -13,6 +13,7 @@ import infoTemplate from '../../templates/information';
 import infoTemplateOGC from '../../templates/informationogc';
 import infoTemplateOthers from '../../templates/informationothers';
 import configTemplate from '../../templates/config';
+import addServicesTemplate from '../../templates/addservices';
 
 export default class LayerswitcherControl extends M.Control {
   /**
@@ -142,6 +143,13 @@ export default class LayerswitcherControl extends M.Control {
      * @type {boolean}
      */
     this.collapsed = options.collapsed;
+
+    /**
+     * Listado de capas precargadas
+     * @private
+     * @type {Array}
+     */
+    this.precharged = options.precharged;
   }
 
   /**
@@ -249,6 +257,8 @@ export default class LayerswitcherControl extends M.Control {
         vars: templateVars,
       });
       this.template_.querySelector('#m-layerswitcher-content').innerHTML = html.innerHTML;
+      this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
+
       // si el modo de selección es radio y no se ha seleccionado ninguna capa se marca la primera
       if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
         const radioButtons = this.template_.querySelectorAll('input[type=radio]');
@@ -798,6 +808,40 @@ export default class LayerswitcherControl extends M.Control {
     }
 
     M.dialog.info(info, getValue('layer_info'), this.order);
+    setTimeout(() => {
+      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+      const button = document.querySelector('div.m-dialog.info div.m-button > button');
+      button.innerHTML = getValue('close');
+      button.style.width = '75px';
+      button.style.backgroundColor = '#71a7d3';
+    }, 10);
+  }
+
+  openAddServices() {
+    const precharged = this.precharged;
+    const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
+      (precharged.services !== undefined && precharged.services.length > 0);
+    const addServices = M.template.compileSync(addServicesTemplate, {
+      jsonp: true,
+      parseToHtml: false,
+      vars: {
+        precharged,
+        hasPrecharged,
+        translations: {
+          url_service: getValue('url_service'),
+          query: getValue('query'),
+          loaded_services: getValue('loaded_services'),
+          clean: getValue('clean'),
+          availables: getValue('availables'),
+          codsi_services: getValue('codsi_services'),
+          filter_results: getValue('filter_results'),
+          clean_filter: getValue('clean_filter'),
+          filter_text: getValue('filter_text'),
+        },
+      },
+    });
+    M.dialog.info(addServices, getValue('load_ext_services'));
+
     setTimeout(() => {
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');

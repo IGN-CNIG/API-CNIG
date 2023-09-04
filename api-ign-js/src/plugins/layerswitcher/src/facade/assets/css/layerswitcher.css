@@ -314,7 +314,7 @@ div.m-layerswitcher-legend>img {
     padding: 5px;
 }
 
-.m-fulltoc-style-common-btn {
+.m-layerswitcher-style-common-btn {
     padding: 8px 7px;
     background-color: #71a7d3;
     font-family: Muli, "sans-serif" !important;
@@ -334,4 +334,102 @@ div.m-layerswitcher-legend>img {
 .m-layerswitcher-legend{
     max-width: 420px;
     overflow-x: auto !important;
+}
+
+/* anadir capas */
+.m-layerswitcher-addservice {
+    cursor: pointer;
+    background-color: #71a7d3;
+    color: #fff;
+    line-height: 25px;
+    padding: 0 7px;
+    margin-right: 9px;
+    border: 1px solid rgba(64,64,64,.19215686274509805);
+    font-size: 13px;
+    font-weight: 700!important;
+    float: right;
+}
+
+.m-dialog div.m-message {
+    overflow-y: auto;
+    max-height: 50vh;
+    overflow-x: hidden;
+}
+
+.m-layerswitcher-addservices .m-layerswitcher-search-panel {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.m-layerswitcher-addservices .m-layerswitcher-search-panel input {
+    width: 70%;
+    margin-right: 20px;
+}
+
+.m-layerswitcher-addservices .m-layerswitcher-search-panel span {
+    margin-left: -10px;
+    cursor: pointer;
+    color: #6c6c6c!important;
+    opacity: 1!important;
+    font-size: 16px!important;
+}
+
+#m-layerswitcher-addservices-suggestions {
+    margin: 1rem 0.5rem;
+}
+
+#m-layerswitcher-addservices-suggestions table thead tr th {
+    padding-bottom: 0.5rem;
+}
+
+#m-layerswitcher-addservices-suggestions table tbody tr td span {
+    cursor: pointer;
+}
+
+.m-layerswitcher-suggestion-caret {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-weight: 700;
+}
+
+.m-layerswitcher-suggestion-group.active {
+    display: block;
+}
+
+.m-layerswitcher-suggestion-group {
+    display: none;
+    margin: 0;
+}
+
+#m-layerswitcher-addservices-results {
+    min-width: 400px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.m-layerswitcher-suggestion-caret {
+    cursor: pointer;
+    -webkit-user-select: none;
+    /* Safari 3.1+ */
+    -moz-user-select: none;
+    /* Firefox 2+ */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+    font-weight: bold;
+}
+
+.m-layerswitcher-suggestion-caret::before {
+    font-family: "layerswitcher-icons" !important;
+    content: '\e916';
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.m-layerswitcher-suggestion-caret-close::before {
+    font-family: "layerswitcher-icons" !important;
+    content: '\e918';
 }

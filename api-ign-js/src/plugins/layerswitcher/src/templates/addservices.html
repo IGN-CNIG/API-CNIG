@@ -1,0 +1,37 @@
+<div class="m-layerswitcher-addservices">
+    <div class="m-layerswitcher-search-panel">
+        <div>
+            <input type="text" id="m-layerswitcher-addservices-search-input" placeholder="{{translations.url_service}}" class="m-layerswitcher-input-search" />
+            <span id="m-layerswitcher-addservices-search-btn" class="m-layerswitcher-icons-zoom m-search-btn" title="{{translations.query}}"></span>
+        </div>
+    </div>
+    <div id="m-layerswitcher-addservices-suggestions" style="display: block;">
+        <table style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>{{translations.availables}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each precharged.groups}}
+                    <tr>
+                        <td>
+                            <spanclass="m-layerswitcher-suggestion-caret">{{name}}</spanclass=>
+                                <ul class="m-layerswitcher-suggestion-group">
+                                    {{#each services}}
+                                        <li><span class="m-layerswitcher-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</span></li>
+                                    {{/each}}
+                                </ul>
+                        </td>
+                    </tr>
+                {{/each}}
+                {{#each precharged.services}}
+                    <tr>
+                        <td><span class="m-layerswitcher-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</span></td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <div id="m-layerswitcher-addservices-results"></div>
+</div>

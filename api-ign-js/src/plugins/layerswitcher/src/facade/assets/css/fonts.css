@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'layerswitcher-icons';
-    src: url('../fonts/layerswitcher-icons.eot?xqcic9');
-    src: url('../fonts/layerswitcher-icons.eot?xqcic9#iefix') format('embedded-opentype'),
-        url('../fonts/layerswitcher-icons.woff2?xqcic9') format('woff2'),
-        url('../fonts/layerswitcher-icons.woff?xqcic9') format('woff'),
-        url('../fonts/layerswitcher-icons.ttf?xqcic9') format('truetype'),
-        url('../fonts/layerswitcher-icons.svg?xqcic9#layerswitcher-icons') format('svg');
+    src: url('../fonts/layerswitcher-icons.eot?wng7wq');
+    src: url('../fonts/layerswitcher-icons.eot?wng7wq#iefix') format('embedded-opentype'),
+        url('../fonts/layerswitcher-icons.woff2?wng7wq') format('woff2'),
+        url('../fonts/layerswitcher-icons.woff?wng7wq') format('woff'),
+        url('../fonts/layerswitcher-icons.ttf?wng7wq') format('truetype'),
+        url('../fonts/layerswitcher-icons.svg?wng7wq#layerswitcher-icons') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -23,6 +23,22 @@
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.m-layerswitcher-icons-desplegar:before {
+  content: "\e916";
+}
+
+.m-layerswitcher-icons-colapsar:before {
+  content: "\e918";
+}
+
+.m-layerswitcher-icons-lista:before {
+  content: "\e92c";
+}
+
+.m-layerswitcher-icons-zoom:before {
+  content: "\e964";
 }
 
 .m-layerswitcher-icons-ver:before {
