@@ -1195,7 +1195,7 @@ export default class LayerswitcherControl extends M.Control {
         results[i].addEventListener('click', evt => this.registerCheck(evt));
       }
 
-      const resultsNames = container.querySelectorAll('.m-layerswitcher-table-results .m-layerswitcher-table-container table tbody tr td.table-layer-name');
+      const resultsNames = container.querySelectorAll('.m-layerswitcher-table-results .m-layerswitcher-table-container table tbody tr td.m-layerswitcher-table-layer-name');
       for (let i = 0; i < resultsNames.length; i += 1) {
         resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
       }
@@ -1647,7 +1647,7 @@ export default class LayerswitcherControl extends M.Control {
           if (radioBtnFilterByID.checked) {
             filterByIDTemp = true;
             filterByOtherFiltersTemp = false;
-            formInputs = document.querySelectorAll('#search-form-id input');
+            formInputs = document.querySelectorAll('#m-layerswitcher-ogc-search-form-id input');
           } else if (radioBtnFilterByOther.checked) {
             filterByIDTemp = false;
             filterByOtherFiltersTemp = true;
@@ -1731,6 +1731,69 @@ export default class LayerswitcherControl extends M.Control {
     properties.format = 'json';
 
     return properties;
+  }
+
+  /**
+   * This function get filters as a dict
+   *
+   * @function
+   * @param formInputs - formInputs
+   * @private
+   */
+  getFiltersDict(formInputs) {
+    const formData = {};
+    const checkboxes = {};
+    formInputs.forEach((inputForm) => {
+      const id = inputForm.id;
+      const attrName = id.substring(inputForm.id.indexOf('form-') + 5);
+      switch (inputForm.type) {
+        case 'checkbox':
+          // Agrupar los checkboxes por su atributo name
+          if (!checkboxes[attrName]) {
+            checkboxes[attrName] = [];
+          }
+
+          checkboxes[attrName].push(inputForm);
+          // if (inputForm.checked !== false) {
+          //   formData[attrName] = inputForm.value;
+          // }
+          break;
+        case 'date':
+          if (!M.utils.isNullOrEmpty(inputForm.value)) {
+            const date = new Date(inputForm.value);
+            formData[attrName] = date.toISOString().split('T')[0];
+          }
+          break;
+        default:
+          if (!M.utils.isNullOrEmpty(inputForm.value)) {
+            // formData[attrName] = encodeURIComponent(inputForm.value);
+            formData[attrName] = inputForm.value;
+          }
+      }
+    });
+
+    // Procesar los checkboxes agrupados
+    Object.keys(checkboxes).forEach((name) => {
+      const checkboxGroup = checkboxes[name];
+      /* eslint-disable-next-line max-len */
+      const checkedValues = checkboxGroup.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+
+      if (checkedValues.length === 1) {
+        // Si solo hay un checkbox marcado, establecer el valor correspondiente en formData
+        formData[name] = checkedValues[0];
+      }
+    });
+
+
+    const propsKeysForm = Object.keys(formData);
+    const propsValuesForm = Object.values(formData);
+
+    const cDict = {};
+
+    propsKeysForm.forEach((key, i) => {
+      cDict[key] = propsValuesForm[i];
+    });
+    return cDict;
   }
 
   /**

@@ -1,6 +1,5 @@
 <div id="m-layerswitcher-ogcCContainer">
-    <div class="select-ogc-container">
-
+    <div>
         <select id="m-layerswitcher-ogc-vectors-select">
             <option disabled="disabled" value="">{{translations.select_service}}</option>
             {{#each layers}}
@@ -32,21 +31,14 @@
                 <input type="radio" name="m-layerswitcher-ogc-filter" value="others" class="m-layerswitcher-ogc-input-customquery" {{#if filterByOtherFilters}}checked{{/if}}>
                 &nbsp;{{translations.other_filters}}
             </label>
-
             <br><br>
-
-
             {{#unless filterByOtherFilters}}
                 <fieldset id="m-layerswitcher-ogc-filter-id" style="display:block;" class="m-layerswitcher-ogc-filter-custom-query">
             {{else}}
                 <fieldset id="m-layerswitcher-ogc-filter-id" style="display:none;" class="m-layerswitcher-ogc-filter-custom-query">
             {{/unless}}
-
-
-            <div id="search-form-id">
-
-                <div id="m-layerswitcher-ogc-form-input"><label for="m-layerswitcher-ogc-search-form-ID" class="search-form-id">ID</label><input type="text" class="m-layerswitcher-ogc-search-form-ID" id="m-layerswitcher-ogc-search-form-ID" value="{{this.prevID}}"><br /></div>
-
+            <div id="m-layerswitcher-ogc-search-form-id">
+                <div id="m-layerswitcher-ogc-form-input"><label for="m-layerswitcher-ogc-search-form-ID" class="m-layerswitcher-ogc-search-form-id">ID</label><input type="text" class="m-layerswitcher-ogc-search-form-ID" id="m-layerswitcher-ogc-search-form-ID" value="{{this.prevID}}"><br /></div>
             </div>
         </fieldset>
 
@@ -57,21 +49,9 @@
             <fieldset id="m-layerswitcher-ogc-other-filters" style="display:none;" class="m-layerswitcher-ogc-filter-custom-query">
         {{/if}}
         <div id="m-layerswitcher-ogc-search-formothers">
-
-            {{#if limit}}
-                <div id="input-limit-results"><label>{{translations.amount_results}} </label><input type="text" id="m-layerswitcher-ogc-limit-items" value="{{limit}}" step="1" class="fieldset-limit"><label>{{translations.amount_results_2}} </label></div><br>
-            {{else}}
-                <div id="input-limit-results"><label>{{translations.amount_results}} </label><input type="text" id="m-layerswitcher-ogc-limit-items" value="10" step="1" class="fieldset-limit"> <label>{{translations.amount_results_2}} </label></div><br>
-            {{/if}}
-
-            {{#if bbox}}
-                <div id="input-bbox"><label class="fieldset-bbox">{{translations.bbox_select}}<input type="checkbox" id="m-layerswitcher-ogc-search-bbox" checked></label>
-                </div><br>
-            {{else}}
-                <div id="input-bbox"><label class="fieldset-bbox">{{translations.bbox_select}}<input type="checkbox" id="m-layerswitcher-ogc-search-bbox"></label>
-                </div><br>
-            {{/if}}
-
+            <div><label>{{translations.amount_results}} </label><input type="text" id="m-layerswitcher-ogc-limit-items" value="{{#if limit}}{{limit}}{{else}}10{{/if}}" step="1" class="fieldset-limit"><label>{{translations.amount_results_2}} </label></div><br>
+            <div><label class="fieldset-bbox">{{translations.bbox_select}}<input type="checkbox" id="m-layerswitcher-ogc-search-bbox" {{#if bbox}}checked{{/if}}></label>
+            </div><br>
             {{#if summary}}
                 <div id="m-layerswitcher-ogc-summary">
                     {{#if filterByOtherFilters}}
@@ -88,14 +68,10 @@
 
         {{/if}}
 
-        <div id="div-advice" role="text" class="warning-msg">{{translations.warning}}</div></br>
-
-
+        <div class="m-layerswitcher-ogc-warning-msg">{{translations.warning}}</div></br>
         <button class="m-layerswitcher-common-btn" id="m-layerswitcher-ogc-custom-query-button"> {{translations.custom_query_btn}}</button>
-
     </div>
     </fieldset>
-
     </fieldset>
     <p id="m-layerswitcher-ogc-check-results"></p>
     <button class="m-layerswitcher-common-btn" id="m-layerswitcher-ogc-select-button"> {{translations.add_btn}}</button>

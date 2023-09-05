@@ -568,13 +568,13 @@ text-align: center;
 }
 
 /* mas filtros */
-.warning-msg-custom-query {
+.m-layerswitcher-ogc-warning-msg-custom-query {
     max-width: 500px;
     margin: auto;
     text-align: justify;
 }
 
-.warning-msg {
+.m-layerswitcher-ogc-warning-msg {
     background-color: #fff3cd;
 }
 
@@ -612,10 +612,10 @@ text-align: center;
     width: 134px;
 }
 
-.more-width {
+.m-layerswitcher-ogc-more-width {
 width: 245px;
 }
 
-.less-width {
+.m-layerswitcher-ogc-less-width {
     width: 100px;
 }

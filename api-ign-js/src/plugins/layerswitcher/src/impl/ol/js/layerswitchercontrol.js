@@ -183,4 +183,18 @@ export default class LayerswitcherControl extends M.impl.Control {
     newCoordinates[1] = newXY[1];
     return newCoordinates;
   }
+
+  /**
+   * Given a coordinate set (x, y, altitude?), returns [x,y].
+   * @public
+   * @function
+   * @api
+   * @param {Array<Number>} coordinatesSet
+   */
+  getXY(coordinatesSet) {
+    const coordinateCopy = [];
+    for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
+    while (coordinateCopy.length > 2) coordinateCopy.pop();
+    return coordinateCopy;
+  }
 }
