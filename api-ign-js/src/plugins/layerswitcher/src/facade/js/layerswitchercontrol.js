@@ -14,6 +14,11 @@ import infoTemplateOGC from '../../templates/informationogc';
 import infoTemplateOthers from '../../templates/informationothers';
 import configTemplate from '../../templates/config';
 import addServicesTemplate from '../../templates/addservices';
+import resultstemplate from '../../templates/addservicesresults';
+import ogcModalTemplate from '../../templates/ogcmodal';
+import customQueryFiltersTemplate from '../../templates/customqueryfilters';
+
+const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 
 export default class LayerswitcherControl extends M.Control {
   /**
@@ -139,17 +144,40 @@ export default class LayerswitcherControl extends M.Control {
 
     /**
      * Permite saber si el plugin está colapsado o no
-     * @private
+     * @public
      * @type {boolean}
      */
     this.collapsed = options.collapsed;
 
     /**
      * Listado de capas precargadas
-     * @private
+     * @public
      * @type {Array}
      */
     this.precharged = options.precharged;
+
+    /**
+     * Determina si permite o no servicios http
+     * @public
+     * @type {Boolean}
+     */
+    this.http = options.http;
+
+    /**
+     * Determina si permite o no servicios https
+     * @public
+     * @type {Boolean}
+     */
+    this.https = options.https;
+
+    this.filterName = undefined;
+
+    /**
+     * Determina si se han seleccionado todas las capas o no
+     * @public
+     * @type {Boolean}
+     */
+    this.stateSelectAll = false;
   }
 
   /**
@@ -168,7 +196,7 @@ export default class LayerswitcherControl extends M.Control {
     if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
       !M.utils.isNullOrEmpty(layerType)) {
       result = this.overlayLayers.filter((l) => {
-        return (l.name === layerName || l.url === layerURL) && l.type === layerType;
+        return l.name === layerName && l.url === layerURL && l.type === layerType;
       });
     }
 
@@ -273,7 +301,7 @@ export default class LayerswitcherControl extends M.Control {
         const layers = this.map_.getLayers().filter(l => l.name !== '__draw__');
         Sortable.create(layerList, {
           animation: 150,
-          ghostClass: 'm-fulltoc-gray-shadow',
+          ghostClass: 'm-layerswitcher-gray-shadow',
           filter: '.m-layerswitcher-opacity',
           preventOnFilter: false,
           onEnd: (evt) => {
@@ -287,8 +315,8 @@ export default class LayerswitcherControl extends M.Control {
               const url = elem.getAttribute('data-layer-url');
               const type = elem.getAttribute('data-layer-type');
               const filtered = layers.filter((layer) => {
-                // Para las capas OSM, ... no tienen url
-                return (layer.name === name || layer.url === url) && layer.type === type;
+                // Para las capas OSM, ... no tienen url // rev
+                return layer.name === name && layer.url === url && layer.type === type;
               });
               if (filtered.length > 0) {
                 filtered[0].setZIndex(maxZIndex);
@@ -848,7 +876,862 @@ export default class LayerswitcherControl extends M.Control {
       button.innerHTML = getValue('close');
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
+
+      // eventos botones buscadores
+      document.querySelector('#m-layerswitcher-addservices-search-btn').addEventListener('click', (e) => {
+        this.filterName = undefined;
+        this.readCapabilities(e);
+      });
+
+      // evento para desplegar capas predefinidas
+      document.querySelectorAll('.m-layerswitcher-suggestion-caret').forEach((elem) => {
+        elem.addEventListener('click', () => {
+          elem.parentElement.querySelector('.m-layerswitcher-suggestion-group').classList.toggle('active');
+          elem.classList.toggle('m-layerswitcher-suggestion-caret-close');
+        });
+      });
+
+      // evento para mostrar listado de capas predefinidas
+      document.querySelectorAll('#m-layerswitcher-addservices-suggestions .m-layerswitcher-suggestion').forEach((elem) => {
+        elem.addEventListener('click', e => this.loadSuggestion(e));
+      });
     }, 10);
+  }
+
+  /**
+   * Esta función lee las capas de un servicio
+   *
+   * @function
+   * @private
+   * @param {Event} evt - Click event
+   */
+  readCapabilities(evt) {
+    evt.preventDefault();
+    let HTTPeval = false;
+    let HTTPSeval = false;
+    document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
+    const url = document.querySelector('div.m-dialog #m-layerswitcher-addservices-search-input').value.trim().split('?')[0];
+    this.removeContains(evt);
+    let type = null;
+    if (!M.utils.isNullOrEmpty(url)) {
+      if (M.utils.isUrl(url)) {
+        if (this.http && !this.https) {
+          const expReg = /^(http:)/;
+          HTTPeval = expReg.test(url);
+        } else if (this.https && !this.http) {
+          const expReg = /^(https:)/;
+          HTTPSeval = expReg.test(url);
+        } else if (this.http && this.https) {
+          HTTPeval = true;
+          HTTPSeval = true;
+        }
+
+        if (HTTPeval === true || HTTPSeval === true) {
+          const promise = new Promise((success, reject) => {
+            const id = setTimeout(() => reject(), 15000);
+            M.remote.get(M.utils.getWMTSGetCapabilitiesUrl(url)).then((response) => {
+              clearTimeout(id);
+              success(response);
+            });
+          });
+
+          promise.then((response) => {
+            try {
+              if (response.text.indexOf('<TileMatrixSetLink>') >= 0 && response.text.indexOf('Operation name="GetTile"') >= 0) {
+                type = 'WMTS';
+              }
+              if (type === 'WMTS') {
+                const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
+                const getCapabilities = getCapabilitiesParser.read(response.xml);
+                this.serviceCapabilities = getCapabilities.capabilities || {};
+                const layers = M.impl.util.wmtscapabilities.getLayers(
+                  getCapabilities.capabilities,
+                  url,
+                  this.map_.getProjection().code,
+                );
+                this.capabilities = this.filterResults(layers);
+                this.showResults();
+              } else {
+                this.checkIfOGCAPIFeatures(url).then((reponseIsJson) => {
+                  if (reponseIsJson === true) {
+                    this.printOGCModal(url);
+                  } else {
+                    const promise2 = new Promise((success, reject) => {
+                      const id = setTimeout(() => reject(), 15000);
+                      M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response2) => {
+                        clearTimeout(id);
+                        success(response2);
+                      });
+                    });
+                    promise2.then((response2) => {
+                      try {
+                        const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
+                        const getCapabilities = getCapabilitiesParser.read(response2.xml);
+                        this.serviceCapabilities = getCapabilities.Service || {};
+                        const getCapabilitiesUtils = new M.impl.GetCapabilities(
+                          getCapabilities,
+                          url,
+                          this.map_.getProjection().code,
+                        );
+                        this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
+                        this.capabilities.forEach((layer) => {
+                          try {
+                            this.getParents(getCapabilities, layer);
+                            /* eslint-disable no-empty */
+                          } catch (err) {}
+                        });
+                        this.showResults();
+                      } catch (error) {
+                        M.dialog.error(getValue('exception.capabilities'));
+                      }
+                    }).catch((eerror) => {
+                      M.dialog.error(getValue('exception.capabilities'));
+                    });
+                  }
+                });
+              }
+            } catch (err) {
+              M.dialog.error(getValue('exception.capabilities'));
+            }
+          }).catch((err) => {
+            M.dialog.error(getValue('exception.capabilities'));
+          });
+        } else {
+          let errorMsg;
+          if (this.http) {
+            errorMsg = getValue('exception.only_http');
+          } else if (this.https) {
+            errorMsg = getValue('exception.only_https');
+          } else if (!this.http && !this.https) {
+            errorMsg = getValue('exception.no_http_https');
+          }
+          M.dialog.error(errorMsg);
+        }
+      } else {
+        M.dialog.error(getValue('exception.valid_url'));
+      }
+    } else {
+      M.dialog.error(getValue('exception.empty'));
+    }
+  }
+
+  /**
+   * Esta función elimina los resultados
+   */
+  removeContains(evt) {
+    evt.preventDefault();
+
+    if (document.querySelector('#m-layerswitcher-addservices-suggestions') !== null) {
+      document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
+    }
+
+    document.querySelector('#m-layerswitcher-addservices-results').innerHTML = '';
+  }
+
+  /**
+   * Esta función filtra los resultados
+   */
+  filterResults(allLayers) {
+    const layers = [];
+    const layerNames = [];
+    let allServices = [];
+    if (this.filterName === undefined) {
+      allLayers.forEach((layer) => {
+        layers.push(layer);
+        layerNames.push(layer.name);
+      });
+    } else if (this.filterName === 'none') {
+      if (this.precharged.services !== undefined && this.precharged.services.length > 0) {
+        allServices = allServices.concat(this.precharged.services);
+      }
+
+      if (this.precharged.groups !== undefined && this.precharged.groups.length > 0) {
+        this.precharged.groups.forEach((group) => {
+          if (group.services !== undefined && group.services.length > 0) {
+            allServices = allServices.concat(group.services);
+          }
+        });
+      }
+
+      allLayers.forEach((layer) => {
+        let insideService = false;
+        allServices.forEach((service) => {
+          if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
+            if (service.white_list !== undefined && service.white_list.length > 0 &&
+              service.white_list.indexOf(layer.name) > -1 &&
+              layerNames.indexOf(layer.name) === -1) {
+              layers.push(layer);
+              layerNames.push(layer.name);
+            } else if (service.white_list === undefined && layerNames.indexOf(layer.name) === -1) {
+              layers.push(layer);
+              layerNames.push(layer.name);
+            }
+
+            insideService = true;
+          }
+        });
+
+        if (!insideService) {
+          layers.push(layer);
+          layerNames.push(layer.name);
+        }
+      });
+    } else if (this.precharged.groups !== undefined && this.precharged.groups.length > 0) {
+      this.precharged.groups.forEach((group) => {
+        if (group.services !== undefined && group.services.length > 0 &&
+          group.name === this.filterName) {
+          allLayers.forEach((layer) => {
+            let insideService = false;
+            group.services.forEach((service) => {
+              if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
+                if (service.white_list !== undefined && service.white_list.length > 0 &&
+                  service.white_list.indexOf(layer.name) > -1 &&
+                  layerNames.indexOf(layer.name) === -1) {
+                  layers.push(layer);
+                  layerNames.push(layer.name);
+                } else if (service.white_list === undefined &&
+                  layerNames.indexOf(layer.name) === -1) {
+                  layers.push(layer);
+                  layerNames.push(layer.name);
+                }
+
+                insideService = true;
+              }
+            });
+
+            if (!insideService) {
+              layers.push(layer);
+              layerNames.push(layer.name);
+            }
+          });
+        }
+      });
+    }
+
+    return layers;
+  }
+
+  /**
+   * Esta función muestra los resultados
+   */
+  showResults() {
+    const result = [];
+    let serviceType = 'WMS';
+    this.capabilities.forEach((capability) => {
+      const add = capability.getImpl();
+      add.abstract = capability.capabilitiesMetadata.abstract.trim();
+      serviceType = capability.type;
+      result.push(add);
+    });
+
+    const container = document.querySelector('#m-layerswitcher-addservices-results');
+    if (result.length > 0) {
+      const serviceCapabilities = {};
+      if (serviceType === 'WMTS') {
+        const si = this.serviceCapabilities.ServiceIdentification;
+        const sp = this.serviceCapabilities.ServiceProvider;
+        if (si !== undefined && si.Title !== undefined) {
+          serviceCapabilities.title = si.Title.trim();
+        }
+
+        if (si !== undefined && si.Abstract !== undefined) {
+          serviceCapabilities.abstract = si.Abstract.trim();
+        }
+
+        if (si !== undefined && si.AccessConstraints !== undefined) {
+          serviceCapabilities.accessConstraints = si.AccessConstraints.trim();
+        }
+
+        if (sp !== undefined) {
+          let contact = `${sp.ProviderName}<p><a class="m-layerswitcher-provider-link" href="${sp.ProviderSite}" target="_blank">${sp.ProviderSite}</a></p>`;
+          const ci = sp.ServiceContact.ContactInfo;
+          if (!M.utils.isNullOrEmpty(sp.ServiceContact) && !M.utils.isNullOrEmpty(ci)) {
+            const mail = ci.Address.ElectronicMailAddress;
+            contact += `<p><a class="m-layerswitcher-provider-link" href="mailto:${mail}">${mail}</a></p>`;
+          }
+
+          serviceCapabilities.contact = contact;
+        }
+      } else {
+        const ci = this.serviceCapabilities.ContactInformation;
+        if (this.serviceCapabilities.Title !== undefined) {
+          serviceCapabilities.title = this.serviceCapabilities.Title.trim();
+        }
+
+        if (this.serviceCapabilities.Abstract !== undefined) {
+          serviceCapabilities.abstract = this.serviceCapabilities.Abstract.trim();
+        }
+
+        if (this.serviceCapabilities.AccessConstraints !== undefined) {
+          serviceCapabilities.accessConstraints = this.serviceCapabilities.AccessConstraints.trim();
+        }
+
+        if (ci !== undefined && ci.ContactPersonPrimary !== undefined) {
+          if (ci.ContactPersonPrimary.ContactOrganization !== undefined) {
+            serviceCapabilities.contact = ci.ContactPersonPrimary.ContactOrganization.trim();
+          }
+        }
+      }
+
+      const html = M.template.compileSync(resultstemplate, {
+        vars: {
+          result,
+          serviceCapabilities,
+          translations: {
+            layers: getValue('layers'),
+            add: getValue('add'),
+            title: getValue('title'),
+            abstract: getValue('abstract'),
+            responsible: getValue('responsible'),
+            access_constraints: getValue('access_constraints'),
+            show_service_info: getValue('show_service_info'),
+          },
+          order: this.order,
+        },
+      });
+
+      container.innerHTML = html.innerHTML;
+      const results = container.querySelectorAll('span.m-check-layerswitcher-addservices');
+      for (let i = 0; i < results.length; i += 1) {
+        results[i].addEventListener('click', evt => this.registerCheck(evt));
+      }
+
+      const resultsNames = container.querySelectorAll('.m-layerswitcher-table-results .m-layerswitcher-table-container table tbody tr td.table-layer-name');
+      for (let i = 0; i < resultsNames.length; i += 1) {
+        resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
+      }
+
+      const checkboxResults = container.querySelectorAll('.m-layerswitcher-table-results .m-layerswitcher-table-container table tbody tr td span');
+      checkboxResults.forEach(l => l.addEventListener('keydown', e => (e.keyCode === 13) && this.registerCheckFromName(e)));
+
+      container.querySelector('#m-layerswitcher-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
+      container.querySelector('.m-layerswitcher-addservices-add').addEventListener('click', evt => this.addLayers(evt));
+      const elem = container.querySelector('.m-layerswitcher-show-capabilities');
+      elem.addEventListener('click', () => {
+        const block = container.querySelector('.m-layerswitcher-capabilities-container');
+        if (block.style.display !== 'block') {
+          block.style.display = 'block';
+          elem.innerHTML = `<span class="m-layerswitcher-icons-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
+        } else {
+          block.style.display = 'none';
+          elem.innerHTML = `<span class="m-layerswitcher-icons-desplegar"></span>&nbsp;${getValue('show_service_info')}`;
+        }
+      });
+    } else {
+      container.innerHTML = `<p class="m-layerswitcher-noresults">${getValue('exception.no_results')}</p>`;
+    }
+  }
+
+  /**
+   * Esta función determina si la capa es de tipo OGCAPI
+   */
+  checkIfOGCAPIFeatures(url) {
+    return M.remote.get(`${url}?f=json`).then((response) => {
+      let isJson = false;
+      if (!M.utils.isNullOrEmpty(response) && !M.utils.isNullOrEmpty(response.text) && response.text.indexOf('collections') !== -1) {
+        const responseString = response.text;
+        JSON.parse(responseString);
+        isJson = true;
+      }
+      return isJson;
+    }).catch(() => {
+      return false;
+    });
+  }
+
+  /**
+   * This function registers the marks or unmarks check and click allselect
+   *
+   * @function
+   * @private
+   * @param {Event} evt - Event
+   */
+  registerCheck(evt) {
+    const e = (evt || window.event);
+    if (!M.utils.isNullOrEmpty(e.target) && e.target.classList.contains('m-check-layerswitcher-addservices')) {
+      const container = document.querySelector('#m-layerswitcher-addservices-results');
+      let numNotChecked = container.querySelectorAll('.m-check-layerswitcher-addservices.m-layerswitcher-icons-check').length;
+      numNotChecked += (e.target.classList.contains('m-layerswitcher-icons-check') ? -1 : 1);
+      e.stopPropagation();
+      e.target.classList.toggle('m-layerswitcher-icons-check');
+      e.target.classList.toggle('m-layerswitcher-icons-check-seleccionado');
+      if (numNotChecked > 0) {
+        this.stateSelectAll = false;
+        document.querySelector('#m-layerswitcher-addservices-selectall').classList.remove('m-layerswitcher-icons-check-seleccionado');
+        document.querySelector('#m-layerswitcher-addservices-selectall').classList.add('m-layerswitcher-icons-check');
+      } else if (numNotChecked === 0) {
+        this.stateSelectAll = true;
+        document.querySelector('#m-layerswitcher-addservices-selectall').classList.remove('m-layerswitcher-icons-check');
+        document.querySelector('#m-layerswitcher-addservices-selectall').classList.add('m-layerswitcher-icons-check-seleccionado');
+      }
+    } else if (!M.utils.isNullOrEmpty(e.target) && e.target.id === 'm-layerswitcher-addservices-selectall') {
+      if (this.stateSelectAll) {
+        e.target.classList.remove('m-layerswitcher-icons-check-seleccionado');
+        e.target.classList.add('m-layerswitcher-icons-check');
+        this.unSelect();
+        this.stateSelectAll = false;
+      } else {
+        e.target.classList.remove('m-layerswitcher-icons-check');
+        e.target.classList.add('m-layerswitcher-icons-check-seleccionado');
+        this.select();
+        this.stateSelectAll = true;
+      }
+    }
+  }
+
+  /**
+   * This function registers the marks or unmarks check and click allselect from layer name
+   *
+   * @function
+   * @private
+   * @param {Event} evt - Event
+   */
+  registerCheckFromName(evt) {
+    const e = (evt || window.event);
+    e.target.parentElement.querySelector('span.m-check-layerswitcher-addservices').click();
+  }
+
+  /**
+   * This function adds layers
+   *
+   * @function
+   * @param {Event} evt - Event
+   * @private
+   */
+  addLayers(evt) {
+    evt.preventDefault();
+    const layers = [];
+    const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');
+    if (elmSel.length === 0) {
+      M.dialog.error(getValue('exception.select_layer'));
+    } else {
+      for (let i = 0; i < elmSel.length; i += 1) {
+        for (let j = 0; j < this.capabilities.length; j += 1) {
+          const name = this.capabilities[j].name;
+          if (elmSel[i].id === name || elmSel[i].name === name) {
+            const limit = parseInt(this.serviceCapabilities.MaxWidth, 10);
+            const hasLimit = !Number.isNaN(limit) && limit < 4096;
+            const isIDECanarias = this.serviceCapabilities.Title !== undefined && this.serviceCapabilities.Title.toLowerCase().indexOf('idecanarias') > -1;
+            if (this.capabilities[j].url.indexOf(CATASTRO) > -1 || isIDECanarias) {
+              this.capabilities[j].version = '1.1.1';
+            }
+
+            this.capabilities[j].tiled = this.capabilities[j].type === 'WMTS' || hasLimit || isIDECanarias;
+            this.capabilities[j].options.origen = this.capabilities[j].type;
+            const legendUrl = this.capabilities[j].getLegendURL();
+            const meta = this.capabilities[j].capabilitiesMetadata;
+            if ((legendUrl.indexOf('GetLegendGraphic') > -1 || legendUrl.indexOf('assets/img/legend-default.png') > -1) && meta !== undefined && meta.style.length > 0) {
+              if (meta.style[0].LegendURL !== undefined && meta.style[0].LegendURL.length > 0) {
+                const style = meta.style[0].LegendURL[0].OnlineResource;
+                if (style !== undefined && style !== null) {
+                  this.capabilities[j].setLegendURL(style);
+                }
+              }
+
+              if (this.capabilities[j].type === 'WMTS') {
+                if (meta.style !== undefined && meta.style.length > 0) {
+                  meta.style.forEach((s) => {
+                    if (s.isDefault === true && s.LegendURL !== undefined &&
+                      s.LegendURL.length > 0) {
+                      const urlDefaultStyle = s.LegendURL[0].href;
+                      this.capabilities[j].setLegendURL(urlDefaultStyle);
+                    }
+                  });
+                }
+              }
+            }
+
+            layers.push(this.capabilities[j]);
+          }
+        }
+      }
+
+      layers.reverse();
+      this.map_.addLayers(layers);
+    }
+  }
+
+  /**
+   * This function unselects checkboxs
+   *
+   * @function
+   * @private
+   */
+  unSelect() {
+    const unSelect = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');
+    for (let i = 0; i < unSelect.length; i += 1) {
+      unSelect[i].classList.remove('m-layerswitcher-icons-check-seleccionado');
+      unSelect[i].classList.add('m-layerswitcher-icons-check');
+    }
+  }
+
+  /**
+   * This function selects checkboxs
+   *
+   * @function
+   * @private
+   */
+  select() {
+    const select = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check');
+    for (let i = 0; i < select.length; i += 1) {
+      select[i].classList.remove('m-layerswitcher-icons-check');
+      select[i].classList.add('m-layerswitcher-icons-check-seleccionado');
+    }
+  }
+
+  loadSuggestion(evt) {
+    const url = evt.target.getAttribute('data-link');
+    try {
+      const group = evt.target.parentElement.parentElement.parentElement;
+      const nameGroup = group.querySelector('span.m-layerswitcher-suggestion-caret').innerText;
+      this.filterName = nameGroup;
+      if (group.localName === 'tbody') {
+        this.filterName = 'none';
+      }
+      /* eslint-disable no-empty */
+    } catch (err) {}
+    document.querySelector('div.m-dialog #m-layerswitcher-addservices-search-input').value = url;
+
+    this.readCapabilities(evt);
+  }
+
+  checkUrls(url1, url2) {
+    return url1 === url2 || (url1.indexOf(url2) > -1) || (url2.indexOf(url1) > -1);
+  }
+
+  printOGCModal(
+    url, selectedLayer, limitVal, onlyBbox, summary,
+    filterByID, filterByOtherFilters,
+  ) {
+    let prevID;
+    let urlOGC = url.trim();
+    if (M.utils.isUrl(urlOGC)) {
+      document.querySelector('#m-layerswitcher-addservices-search-input').value = url;
+
+      const collections = `${(urlOGC.endsWith('/') ? urlOGC : `${urlOGC}/`)}collections?f=json`;
+      M.remote.get(collections).then((response) => {
+        const resJSON = JSON.parse(response.text);
+        const layers = resJSON.collections;
+        if (M.utils.isNullOrEmpty(summary)) {
+          summary = undefined;
+          filterByID = undefined;
+          filterByOtherFilters = undefined;
+        }
+
+        const ogcModal = M.template.compileSync(ogcModalTemplate, {
+          jsonp: true,
+          parseToHtml: false,
+          vars: {
+            layers,
+            selectedLayer,
+            limit: limitVal,
+            bbox: onlyBbox,
+            summary,
+            filterByID,
+            filterByOtherFilters,
+            prevID,
+            translations: {
+              select_service: getValue('select_service'),
+              amount_results: getValue('amount_results'),
+              amount_results_2: getValue('amount_results_2'),
+              bbox_select: getValue('bbox-select'),
+              other_filters: getValue('other_filters'),
+              id_filter: getValue('id_filter'),
+              warning: getValue('warning'),
+              add_btn: getValue('add_btn'),
+              custom_query_btn: getValue('custom_query_btn'),
+              filters: getValue('filters'),
+              check_results: getValue('check_results'),
+            },
+          },
+        });
+
+        document.querySelector('#m-layerswitcher-ogcCContainer').outerHTML = ogcModal;
+
+        const radioBtnFilterByID = document.querySelector('input[name="m-layerswitcher-ogc-filter"][value="id"]');
+        const radioBtnFilterByOther = document.querySelector('input[name="m-layerswitcher-ogc-filter"][value="others"]');
+
+        this.setOnClickRadioBtn(radioBtnFilterByID, radioBtnFilterByOther);
+        this.setOnChanges(summary);
+        this.setOnClickCloseBtn();
+        this.setOnClickersFiltersButtons(
+          summary, urlOGC, radioBtnFilterByID, radioBtnFilterByOther,
+          layers, url, filterByID, filterByOtherFilters,
+        );
+      }).catch((err) => {
+        urlOGC = '';
+        M.dialog.error(getValue('exception.error_ogc'));
+      });
+    }
+  }
+
+  // Cambia la visualización de opciones de filtrado dependiendo del filtro seleccionado
+  // (ID u otros)
+  setOnClickRadioBtn(radioBtnFilterByID, radioBtnFilterByOther) {
+    radioBtnFilterByID.addEventListener('click', () => {
+      document.querySelector('#m-layerswitcher-ogc-other-filters').style.display = 'none';
+      document.querySelector('#m-layerswitcher-ogc-filter-id').style.display = 'block';
+      document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = '';
+    });
+    radioBtnFilterByOther.addEventListener('click', () => {
+      document.querySelector('#m-layerswitcher-ogc-other-filters').style.display = 'block';
+      document.querySelector('#m-layerswitcher-ogc-filter-id').style.display = 'none';
+      document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = '';
+    });
+  }
+
+  setOnChanges(summary) {
+    document.querySelector('#m-layerswitcher-ogc-search-form-ID').addEventListener('change', () => {
+      document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = '';
+    });
+
+    document.querySelector('#m-layerswitcher-ogc-limit-items').addEventListener('change', () => {
+      document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = '';
+    });
+    document.querySelector('#m-layerswitcher-ogc-search-bbox').addEventListener('change', () => {
+      document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = '';
+    });
+
+    document.querySelector('#m-layerswitcher-ogc-vectors-select').addEventListener('change', () => {
+      const divSummary = document.querySelector('#m-layerswitcher-ogc-summary');
+      if (divSummary !== null) {
+        divSummary.remove();
+        summary = undefined;
+      }
+      document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = '';
+    });
+  }
+
+  setOnClickCloseBtn() {
+    const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+    buttonClose.innerHTML = getValue('close');
+    buttonClose.style.width = '75px';
+    buttonClose.style.backgroundColor = '#71a7d3';
+    buttonClose.addEventListener('click', () => {
+      try {
+        document.querySelector('div.m-dialog.info').parentNode.removeChild(document.querySelector('div.m-dialog.info'));
+      } catch (error) {}
+    });
+  }
+
+  setOnClickersFiltersButtons(
+    summary, urlOGC, radioBtnFilterByID,
+    radioBtnFilterByOther, layers, url, filterByID, filterByOtherFilters,
+  ) {
+    let indexCurrentLayer;
+    let formInputs;
+    let properties;
+    let selectValue = document.querySelector('#m-layerswitcher-ogc-vectors-select').value;
+    const btnAddLayer = document.querySelector('#m-layerswitcher-ogcCContainer #m-layerswitcher-ogc-select-button');
+    const btnCheck = document.querySelector('#m-layerswitcher-ogcCContainer #m-layerswitcher-ogc-check-button');
+    const btnCustomQuery = document.querySelector('#m-layerswitcher-ogc-custom-query-button');
+
+    btnAddLayer.addEventListener('click', () => {
+      if (selectValue === getValue('select_service')) {
+        M.dialog.error(getValue('no_results'));
+      } else {
+        properties = this.getProperties(selectValue, summary);
+
+        this.getImpl().loadOGCAPIFeaturesLayer(properties);
+
+        const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+        buttonClose.click();
+      }
+    });
+
+    btnCheck.addEventListener('click', () => {
+      if (selectValue === getValue('select_service')) {
+        M.dialog.error(getValue('no_results'));
+      } else {
+        properties = this.getProperties(selectValue, summary);
+        this.getImpl().getNumberFeaturesOGCAPIFeaturesLayer(properties).then((numberFeatures) => {
+          let results1;
+          let results2;
+          if (numberFeatures === 1) {
+            results1 = getValue('results_1_singular');
+            results2 = getValue('results_2_singular');
+          } else {
+            results1 = getValue('results_1_plural');
+            results2 = getValue('results_2_plural');
+          }
+          document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = `${results1}${numberFeatures}${results2}`;
+        });
+      }
+    });
+
+    btnCustomQuery.addEventListener('click', () => {
+      let filtersList;
+
+      const previousModal = document.querySelector('.m-content').innerHTML;
+      selectValue = document.querySelector('#m-layerswitcher-ogc-vectors-select').value;
+      const limit = document.querySelector('#m-layerswitcher-ogc-limit-items').value;
+      const checked = document.querySelector('#m-layerswitcher-ogc-search-bbox').checked;
+      const urlQueryables = `${urlOGC}/collections/${selectValue}/queryables`;
+      M.remote.get(urlQueryables).then((queryablesResponse) => {
+        try {
+          const res = JSON.parse(queryablesResponse.text);
+          const props = res.properties;
+          filtersList = Object.values(props);
+          filtersList.forEach((v) => {
+            if (v.title !== undefined) {
+              const type = v.type.toLowerCase();
+              if (type === 'bool' || type === 'boolean') {
+                v.bool = true;
+              } else if (type === 'timestamp' || type === 'date') {
+                v.date = true;
+              } else if (type === 'int4' || type === 'int' ||
+                type === 'number' || type === 'numeric' || type.includes('numeric')) {
+                v.number = true;
+              } else {
+                v.text = true;
+              }
+            }
+            if (summary !== undefined) {
+              if (v.title in summary) {
+                v.value = summary[v.title];
+              }
+              document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = '';
+            }
+          });
+        } catch (error) {}
+        const urlInput = document.querySelector('#m-fulltoc-addservices-search-input').value;
+
+        const customQueryTemplate = M.template.compileSync(customQueryFiltersTemplate, {
+          jsonp: true,
+          parseToHtml: true,
+          vars: {
+            filtersList,
+            summary,
+            translations: {
+              other_filters: getValue('other_filters'),
+              id_filter: getValue('id_filter'),
+              filters: getValue('filters'),
+              custom_query_warning: getValue('custom_query_warning'),
+            },
+          },
+        });
+        const msg = `${getValue('custom_query_btn')}`;
+        M.dialog.remove(ogcModalTemplate);
+        M.dialog.info(customQueryTemplate, msg);
+        const btnApplyFilters = document.createElement('button');
+        const btnBack = document.createElement('button');
+        setTimeout(() => {
+          const temp = document.querySelector('div.m-mapea-container div.m-dialog div.m-title');
+          temp.style.backgroundColor = '#71a7d3';
+          const button = document.querySelector('div.m-dialog.info div.m-button > button');
+          button.innerHTML = getValue('close');
+          button.style.width = '75px';
+          button.style.backgroundColor = '#71a7d3';
+          button.style.display = 'none';
+          const buttons = document.querySelector('div.m-dialog.info div.m-button');
+
+          btnBack.textContent = getValue('close');
+          btnBack.style.width = '75px';
+          btnBack.style.backgroundColor = '#71a7d3';
+          btnBack.style.marginLeft = '4px';
+          btnBack.setAttribute('data-link', urlInput);
+          btnBack.setAttribute('data-service-type', 'OGCAPIFeatures');
+          buttons.insertBefore(btnBack, buttons.firstChild);
+
+          btnApplyFilters.textContent = getValue('apply_btn');
+          btnApplyFilters.style.width = '75px';
+          btnApplyFilters.style.backgroundColor = '#71a7d3';
+          btnApplyFilters.setAttribute('data-link', urlInput);
+          btnApplyFilters.setAttribute('data-service-type', 'OGCAPIFeatures');
+          buttons.insertBefore(btnApplyFilters, buttons.firstChild);
+        }, 10);
+        btnApplyFilters.addEventListener('click', () => {
+          let filterByIDTemp = false;
+          let filterByOtherFiltersTemp = false;
+
+          // comprobar el valor del tipo de m-layerswitcher-ogc-filter seleccionado
+          if (radioBtnFilterByID.checked) {
+            filterByIDTemp = true;
+            filterByOtherFiltersTemp = false;
+            formInputs = document.querySelectorAll('#search-form-id input');
+          } else if (radioBtnFilterByOther.checked) {
+            filterByIDTemp = false;
+            filterByOtherFiltersTemp = true;
+            formInputs = document.querySelectorAll('#search-form-others input');
+          }
+          const cDict = this.getFiltersDict(formInputs);
+
+          const modalActual = document.querySelector('.m-content');
+
+          modalActual.innerHTML = previousModal;
+
+          indexCurrentLayer = layers.findIndex((capa) => {
+            return capa.id === selectValue;
+          });
+
+          if (M.utils.isNullOrEmpty(cDict)) {
+            this.printOGCModal(url, indexCurrentLayer, limit, checked);
+          } else if (Object.keys(cDict).length === 0) {
+            this.printOGCModal(url, indexCurrentLayer, limit, checked);
+          } else {
+            this.printOGCModal(
+              url, indexCurrentLayer, limit, checked, cDict,
+              filterByIDTemp, filterByOtherFiltersTemp,
+            );
+          }
+        });
+        btnBack.addEventListener('click', () => {
+          const modalActual = document.querySelector('.m-content');
+          modalActual.innerHTML = previousModal;
+          indexCurrentLayer = layers.findIndex((capa) => {
+            return capa.id === selectValue;
+          });
+          this.printOGCModal(
+            url, indexCurrentLayer, limit, checked,
+            summary, filterByID, filterByOtherFilters,
+          );
+        });
+      }).catch((err) => {
+        M.dialog.error(getValue('no_results'));
+      });
+    });
+  }
+
+  getProperties(selectValue, summary) {
+    const urlQuery = document.querySelector('#m-layerswitcher-addservices-search-input').value;
+    const selectValueText = document.querySelector('#m-layerswitcher-ogc-vectors-select').selectedOptions[0].text;
+    selectValue = document.querySelector('#m-layerswitcher-ogc-vectors-select').value;
+    const limit = document.querySelector('#m-layerswitcher-ogc-limit-items').value;
+    const checked = document.querySelector('#m-layerswitcher-ogc-search-bbox').checked;
+    const limitValue = limit;
+    let bboxString;
+    if (checked) {
+      const bbox = this.map_.getBbox();
+      const min = this.getImpl().getTransformedCoordinates(
+        this.map_.getProjection().code,
+        [bbox.x.min, bbox.y.min],
+      );
+      const max = this.getImpl().getTransformedCoordinates(
+        this.map_.getProjection().code,
+        [bbox.x.max, bbox.y.max],
+      );
+      bboxString = `${min[0]};${min[1]};${max[0]};${max[1]}`;
+    }
+    const properties = {};
+    properties.url = `${urlQuery}/collections/`;
+    properties.name = selectValue;
+    properties.legend = selectValueText;
+    properties.limit = limitValue;
+    if (checked) {
+      properties.bbox = bboxString;
+    }
+
+    const isFiltroPorID = document.querySelector('#m-layerswitcher-ogc-filter-id-input').checked;
+
+    if (isFiltroPorID === true) {
+      properties.id = document.querySelector('#m-layerswitcher-ogc-search-form-ID').value;
+    } else if (summary !== undefined) {
+      properties.conditional = summary;
+    }
+
+    properties.format = 'json';
+
+    return properties;
   }
 
   /**

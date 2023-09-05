@@ -280,18 +280,38 @@ export default class Layerswitcher extends M.Plugin {
     this.tools = M.utils.isUndefined(options.tools) ? ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'] : options.tools;
 
     /**
-     * Precharged services
-     * @private
+     * Servicios precargados
+     * @public
      * @type {Array}
      */
     this.precharged = options.precharged || PRECHARGED;
 
     /**
-     * Metadata from api.json
+     * Metadatos
      * @private
      * @type {Object}
      */
     this.metadata_ = api.metadata;
+
+    /**
+     * Determina si permite o no servicios http
+     * @public
+     * @type {Boolean}
+     */
+    this.http = true;
+    if (options.http !== undefined && (options.http === false || options.http === 'false')) {
+      this.http = false;
+    }
+
+    /**
+     * Determina si permite o no servicios https
+     * @public
+     * @type {Boolean}
+     */
+    this.https = true;
+    if (options.https !== undefined && (options.https === false || options.https === 'false')) {
+      this.https = false;
+    }
   }
 
   /**
@@ -327,6 +347,8 @@ export default class Layerswitcher extends M.Plugin {
         collapsed: this.collapsed_,
         isMoveLayers: this.isMoveLayers,
         precharged: this.precharged,
+        http: this.http,
+        https: this.https,
       });
     // creamos panel
     this.panel_ = new M.ui.Panel('Layerswitcher', {

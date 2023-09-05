@@ -22,6 +22,8 @@ const mp = new Layerswitcher({
   tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
   isMoveLayers: true,
   // precharged: [],
+  https: true,
+  http: true,
 });
 map.addPlugin(mp);
 
@@ -48,32 +50,33 @@ const capaKML = new M.layer.KML({
 });
 // map.addLayers(capaKML);
 
-window.fetch('./cabrera.mbtiles').then((response) => {
-  const mbtile = new M.layer.MBTiles({
-    name: 'mbtiles',
-    legend: 'Capa MBTiles',
-    source: response,
-  });
-  // map.addLayers(mbtile);
-  window.mbtile = mbtile;
-}).catch((e) => {
-  throw e;
-});
+// window.fetch('./cabrera.mbtiles').then((response) => {
+//   const mbtile = new M.layer.MBTiles({
+//     name: 'mbtiles',
+//     legend: 'Capa MBTiles',
+//     source: response,
+//   });
+//   // map.addLayers(mbtile);
+//   window.mbtile = mbtile;
+// }).catch((e) => {
+//   throw e;
+// });
 
-window.fetch('./countries.mbtiles').then((response) => {
-  const mbtilesvector = new M.layer.MBTilesVector({
-    name: 'mbtiles_vector',
-    legend: 'Capa MBTilesVector',
-    source: response,
-    // maxZoomLevel: 5,
-  });
-  // map.addLayers(mbtilesvector);
-}).catch((e) => {
-  throw e;
-});
+// window.fetch('./countries.mbtiles').then((response) => {
+//   const mbtilesvector = new M.layer.MBTilesVector({
+//     name: 'mbtiles_vector',
+//     legend: 'Capa MBTilesVector',
+//     source: response,
+//     // maxZoomLevel: 5,
+//   });
+//   // map.addLayers(mbtilesvector);
+// }).catch((e) => {
+//   throw e;
+// });
 
 const capaMVT = new M.layer.MVT({
   url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
+  // layers
   name: 'Capa MVT',
   projection: 'EPSG:3857',
   extract: true,
@@ -174,7 +177,7 @@ const capaXYZ = new M.layer.XYZ({
   legend: 'Capa XYZ',
   projection: 'EPSG:3857',
 });
-// map.addLayers(capaXYZ);
+map.addLayers(capaXYZ);
 
 
 // map.addLayers(capaGeoJSON);
@@ -187,7 +190,7 @@ const capaXYZ = new M.layer.XYZ({
 // capaVector.addFeatures(feature);
 // map.addLayers(capaWFS);
 // map.addLayers(capaWMS);
-map.addLayers(capaWMTS);
+// map.addLayers(capaWMTS);
 // map.addLayers(capaXYZ);
 
 window.capaGeoJSON = capaGeoJSON;
