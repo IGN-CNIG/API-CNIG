@@ -376,6 +376,11 @@ div.m-layerswitcher-legend>img {
 
 #m-layerswitcher-addservices-suggestions {
     margin: 1rem 0.5rem;
+    display: block;
+}
+
+#m-layerswitcher-addservices-suggestions > table{
+    width: 100%;
 }
 
 #m-layerswitcher-addservices-suggestions table thead tr th {
@@ -453,6 +458,7 @@ div.m-layerswitcher-legend>img {
 
 #m-layerswitcher-addservices-results .m-layerswitcher-capabilities-container p {
     font-weight: 700;
+    margin-bottom: 0.2rem;
 }
 
 #m-layerswitcher-addservices-results .m-layerswitcher-capabilities-container div {
@@ -468,6 +474,11 @@ div.m-layerswitcher-legend>img {
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;
+    width: 100%;
+}
+
+.m-layerswitcher-table-results .m-layerswitcher-table-container>table>tbody>tr>td:first-child {
+text-align: center;
 }
 
 #m-layerswitcher-addservices-results .button {
@@ -554,4 +565,57 @@ div.m-layerswitcher-legend>img {
 
 #m-layerswitcher-ogc-search-bbox {
     width: auto!important;
+}
+
+/* mas filtros */
+.warning-msg-custom-query {
+    max-width: 500px;
+    margin: auto;
+    text-align: justify;
+}
+
+.warning-msg {
+    background-color: #fff3cd;
+}
+
+.m-layerswitcher-ogc-form-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.m-layerswitcher-ogc-custom-query-form-label{
+    width: 180px;
+    clear: left;
+    text-align: right;
+    padding-right: 10px;
+    float: left;
+    display: flex;
+    align-items: center;
+}
+
+#m-layerswitcher-ogc-form-input>input {
+    margin-top: 10px;
+    width: 150px;
+    float: left;
+}
+
+.search-form-date, .search-form-number {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #757474;
+    color: #6c6c6c;
+    font-family: Muli,"sans-serif"!important;
+    font-size: 13px;
+    outline: none;
+    width: 134px;
+}
+
+.more-width {
+width: 245px;
+}
+
+.less-width {
+    width: 100px;
 }

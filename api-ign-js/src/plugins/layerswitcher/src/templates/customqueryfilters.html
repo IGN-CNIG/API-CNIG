@@ -1,12 +1,12 @@
 <form>
-    <div id="search-form-others">
+    <div id="m-layerswitcher-ogc-search-formothers">
         <div role="text" class="warning-msg warning-msg-custom-query ">{{translations.custom_query_warning}}</div>
 
         {{#each filtersList}}
 
             {{#if this.title}}
                 {{#if this.bool}}
-                    <div id="m-layerswitcher-ogc-form-input" class="custom-query-m-layerswitcher-ogc-form-input">
+                    <div class="m-layerswitcher-ogc-form-input">
                         <div class="more-width">
                             <label for="search-form-{{this.title}}">{{this.title}}</label>
                         </div>
@@ -36,25 +36,25 @@
                 {{else if this.date}}
                     {{#if this.value}}
 
-                        <div id="m-layerswitcher-ogc-form-input" class="custom-query-m-layerswitcher-ogc-form-input">
-                            <label for="search-form-{{this.title}}" class="custom-query-form-label">{{this.title}}</label>
+                        <div class="m-layerswitcher-ogc-form-input">
+                            <label for="search-form-{{this.title}}" class="m-layerswitcher-ogc-custom-query-form-label">{{this.title}}</label>
                             <input class="search-form-date" type="date" id="search-form-{{this.title}}" value="{{this.value}}">
                             <br />
                         </div>
                     {{else}}
-                        <div id="m-layerswitcher-ogc-form-input" class="custom-query-m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="custom-query-form-label">{{this.title}}</label><input class="search-form-date" type="date" id="search-form-{{this.title}}"><br /></div>
+                        <div class="m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="m-layerswitcher-ogc-custom-query-form-label">{{this.title}}</label><input class="search-form-date" type="date" id="search-form-{{this.title}}"><br /></div>
                     {{/if}}
                 {{else if this.number}}
                     {{#if this.value}}
-                        <div id="m-layerswitcher-ogc-form-input" class="custom-query-m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="custom-query-form-label">{{this.title}}</label><input class="search-form-number" type="number" id="search-form-{{this.title}}" value="{{this.value}}"><br /></div>
+                        <div class="m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="m-layerswitcher-ogc-custom-query-form-label">{{this.title}}</label><input class="search-form-number" type="number" id="search-form-{{this.title}}" value="{{this.value}}"><br /></div>
                     {{else}}
-                        <div id="m-layerswitcher-ogc-form-input" class="custom-query-m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="custom-query-form-label">{{this.title}}</label><input class="search-form-number" type="number" id="search-form-{{this.title}}"><br /></div>
+                        <div class="m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="m-layerswitcher-ogc-custom-query-form-label">{{this.title}}</label><input class="search-form-number" type="number" id="search-form-{{this.title}}"><br /></div>
                     {{/if}}
                 {{else}}
                     {{#if this.value}}
-                        <div id="m-layerswitcher-ogc-form-input" class="custom-query-m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="custom-query-form-label">{{this.title}}</label><input type="text" id="search-form-{{this.title}}" value="{{this.value}}"><br /></div>
+                        <div class="m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="m-layerswitcher-ogc-custom-query-form-label">{{this.title}}</label><input type="text" id="search-form-{{this.title}}" value="{{this.value}}"><br /></div>
                     {{else}}
-                        <div id="m-layerswitcher-ogc-form-input" class="custom-query-m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="custom-query-form-label">{{this.title}}</label><input type="text" id="search-form-{{this.title}}"><br /></div>
+                        <div class="m-layerswitcher-ogc-form-input"><label for="search-form-{{this.title}}" class="m-layerswitcher-ogc-custom-query-form-label">{{this.title}}</label><input type="text" id="search-form-{{this.title}}"><br /></div>
                     {{/if}}
                 {{/if}}
             {{/if}}

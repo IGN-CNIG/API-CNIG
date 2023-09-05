@@ -1186,7 +1186,6 @@ export default class LayerswitcherControl extends M.Control {
             access_constraints: getValue('access_constraints'),
             show_service_info: getValue('show_service_info'),
           },
-          order: this.order,
         },
       });
 
@@ -1594,11 +1593,11 @@ export default class LayerswitcherControl extends M.Control {
             }
           });
         } catch (error) {}
-        const urlInput = document.querySelector('#m-fulltoc-addservices-search-input').value;
+        const urlInput = document.querySelector('#m-layerswitcher-addservices-search-input').value;
 
         const customQueryTemplate = M.template.compileSync(customQueryFiltersTemplate, {
           jsonp: true,
-          parseToHtml: true,
+          parseToHtml: false,
           vars: {
             filtersList,
             summary,
@@ -1652,7 +1651,7 @@ export default class LayerswitcherControl extends M.Control {
           } else if (radioBtnFilterByOther.checked) {
             filterByIDTemp = false;
             filterByOtherFiltersTemp = true;
-            formInputs = document.querySelectorAll('#search-form-others input');
+            formInputs = document.querySelectorAll('#m-layerswitcher-ogc-search-formothers input');
           }
           const cDict = this.getFiltersDict(formInputs);
 
