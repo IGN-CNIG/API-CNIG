@@ -50,6 +50,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'pinRojo'
   - 'pinMorado'
 - **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
+- **nomenclatorSearchType**: se muestra la lista de elementos que aporta el servicio Comunication Pool Servlet (CPS). Los elementos comentados, son aquellos que son aportados por el propio servicio REST geocoder. Si se quiere hacer uso solo del CPS se pueden descomentar, o comentar los que se quieran filtrar.
 - **byParcelCadastre**: Indica si el control InfoCatastro se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
   - **cadastreWMS**: Url del servicio para la consulta por referencia catastral. Por defecto: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR'.
   - **CMC_url**: Url del servicio para la consulta de municipios de una provincia. Por defecto: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos'.
