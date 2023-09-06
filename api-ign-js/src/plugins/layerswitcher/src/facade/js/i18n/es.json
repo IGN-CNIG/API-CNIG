@@ -83,5 +83,7 @@
   "results_1_plural":"Se han encontrado ",
   "results_2_plural":" features",
   "results_1_singular":"Se ha encontrado ",
-  "results_2_singular":" feature"
+  "results_2_singular":" feature",
+  "legend": "Leyenda",
+  "data_geojson": "Datos para la capa GeoJSON"
 }

@@ -16,6 +16,7 @@ import configTemplate from '../../templates/config';
 import addServicesTemplate from '../../templates/addservices';
 import resultstemplate from '../../templates/addservicesresults';
 import ogcModalTemplate from '../../templates/ogcmodal';
+import geojsonModalTemplate from '../../templates/geojsonmodal';
 import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
@@ -912,7 +913,6 @@ export default class LayerswitcherControl extends M.Control {
     document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
     const url = document.querySelector('div.m-dialog #m-layerswitcher-addservices-search-input').value.trim().split('?')[0];
     this.removeContains(evt);
-    let type = null;
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
         if (this.http && !this.https) {
@@ -938,9 +938,6 @@ export default class LayerswitcherControl extends M.Control {
           promise.then((response) => {
             try {
               if (response.text.indexOf('<TileMatrixSetLink>') >= 0 && response.text.indexOf('Operation name="GetTile"') >= 0) {
-                type = 'WMTS';
-              }
-              if (type === 'WMTS') {
                 const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
                 const getCapabilities = getCapabilitiesParser.read(response.xml);
                 this.serviceCapabilities = getCapabilities.capabilities || {};
@@ -952,42 +949,51 @@ export default class LayerswitcherControl extends M.Control {
                 this.capabilities = this.filterResults(layers);
                 this.showResults();
               } else {
-                this.checkIfOGCAPIFeatures(url).then((reponseIsJson) => {
-                  if (reponseIsJson === true) {
-                    this.printOGCModal(url);
-                  } else {
-                    const promise2 = new Promise((success, reject) => {
-                      const id = setTimeout(() => reject(), 15000);
-                      M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response2) => {
-                        clearTimeout(id);
-                        success(response2);
+                const promise2 = new Promise((success, reject) => {
+                  const id = setTimeout(() => reject(), 15000);
+                  M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response2) => {
+                    clearTimeout(id);
+                    success(response2);
+                  });
+                });
+                promise2.then((response2) => {
+                  if (response2.text.indexOf('<TileMatrixSetLink>') === -1 && response2.text.indexOf('<GetMap>') >= 0) {
+                    try {
+                      const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
+                      const getCapabilities = getCapabilitiesParser.read(response2.xml);
+                      this.serviceCapabilities = getCapabilities.Service || {};
+                      const getCapabilitiesUtils = new M.impl.GetCapabilities(
+                        getCapabilities,
+                        url,
+                        this.map_.getProjection().code,
+                      );
+                      this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
+                      this.capabilities.forEach((layer) => {
+                        try {
+                          this.getParents(getCapabilities, layer);
+                          /* eslint-disable no-empty */
+                        } catch (err) {}
                       });
-                    });
-                    promise2.then((response2) => {
-                      try {
-                        const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
-                        const getCapabilities = getCapabilitiesParser.read(response2.xml);
-                        this.serviceCapabilities = getCapabilities.Service || {};
-                        const getCapabilitiesUtils = new M.impl.GetCapabilities(
-                          getCapabilities,
-                          url,
-                          this.map_.getProjection().code,
-                        );
-                        this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
-                        this.capabilities.forEach((layer) => {
-                          try {
-                            this.getParents(getCapabilities, layer);
-                            /* eslint-disable no-empty */
-                          } catch (err) {}
-                        });
-                        this.showResults();
-                      } catch (error) {
-                        M.dialog.error(getValue('exception.capabilities'));
-                      }
-                    }).catch((eerror) => {
+                      this.showResults();
+                    } catch (error) {
                       M.dialog.error(getValue('exception.capabilities'));
+                    }
+                  } else {
+                    this.checkIfOGCAPIFeatures(url).then((reponseIsJson) => {
+                      if (reponseIsJson === true) {
+                        this.printOGCModal(url);
+                      } else {
+                        M.remote.get(url).then((response3) => {
+                          // GEOJSON
+                          if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
+                            this.printGeoJSONModal(url);
+                          }
+                        });
+                      }
                     });
                   }
+                }).catch((eerror) => {
+                  M.dialog.error(getValue('exception.capabilities'));
                 });
               }
             } catch (err) {
@@ -1020,11 +1026,12 @@ export default class LayerswitcherControl extends M.Control {
    */
   removeContains(evt) {
     evt.preventDefault();
-
     if (document.querySelector('#m-layerswitcher-addservices-suggestions') !== null) {
       document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
     }
-
+    if (document.querySelector('#m-layerswitcher-ogcCContainer') !== null) {
+      document.querySelector('#m-layerswitcher-ogcCContainer').style.display = 'none';
+    }
     document.querySelector('#m-layerswitcher-addservices-results').innerHTML = '';
   }
 
@@ -1396,6 +1403,49 @@ export default class LayerswitcherControl extends M.Control {
 
   checkUrls(url1, url2) {
     return url1 === url2 || (url1.indexOf(url2) > -1) || (url2.indexOf(url1) > -1);
+  }
+
+  printGeoJSONModal(url) {
+    const ogcModal = M.template.compileSync(geojsonModalTemplate, {
+      jsonp: true,
+      parseToHtml: false,
+      vars: {
+        translations: {
+          add_btn: getValue('add_btn'),
+          legend: getValue('legend'),
+          name: getValue('name'),
+          data_geojson: getValue('data_geojson'),
+        },
+      },
+    });
+
+    document.querySelector('#m-layerswitcher-geoJSONContainer').outerHTML = ogcModal;
+
+    const btnAddLayer = document.querySelector('#m-layerswitcher-geojson-button');
+    btnAddLayer.addEventListener('click', () => {
+      let name = document.querySelector('#m-layerswitcher-geojson-name').value;
+      let legend = document.querySelector('#m-layerswitcher-geojson-legend').value;
+
+      if (M.utils.isNullOrEmpty(name) && !M.utils.isNullOrEmpty(legend)) {
+        name = legend;
+      } else if (!M.utils.isNullOrEmpty(name) && M.utils.isNullOrEmpty(legend)) {
+        legend = name;
+      } else if (M.utils.isNullOrEmpty(name) && M.utils.isNullOrEmpty(legend)) {
+        const urlParts = url.split('/');
+        const fileNameWithExtension = urlParts[urlParts.length - 1];
+        const fileNameWithoutExtension = fileNameWithExtension.split('.')[0];
+        name = fileNameWithoutExtension;
+        legend = fileNameWithoutExtension;
+      }
+
+      this.map_.addLayers(new M.layer.GeoJSON({
+        url,
+        name,
+        legend,
+      }));
+
+      document.querySelector('div.m-dialog.info').parentNode.removeChild(document.querySelector('div.m-dialog.info'));
+    });
   }
 
   printOGCModal(

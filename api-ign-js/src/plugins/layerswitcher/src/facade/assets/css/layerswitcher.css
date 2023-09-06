@@ -619,3 +619,29 @@ width: 245px;
 .m-layerswitcher-ogc-less-width {
     width: 100px;
 }
+
+/* GeoJSON modal */
+#m-layerswitcher-geojson-container div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#m-layerswitcher-geojson-container p{
+    margin-bottom: 8px;
+}
+
+#m-layerswitcher-geojson-name, #m-layerswitcher-geojson-legend {
+    width: 40%;
+}
+
+.m-layerswitcher-geojson-label{
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+#m-layerswitcher-geojson-button{
+    margin-top: 18px;
+    margin-bottom: 10px;
+}
