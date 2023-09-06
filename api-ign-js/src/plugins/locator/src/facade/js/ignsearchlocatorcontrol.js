@@ -82,7 +82,16 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(map, zoom, pointStyle, options, useProxy, statusProxy, positionPlugin) {
+  constructor(
+    map,
+    zoom,
+    pointStyle,
+    options,
+    useProxy,
+    statusProxy,
+    positionPlugin,
+    nomenclatorSearchType,
+  ) {
     if (M.utils.isUndefined(IGNSearchLocatorImpl)) {
       M.exception(getValue('exception.impl_ignsearchlocator'));
     }
@@ -233,7 +242,15 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @private
      * @type {Array<string>}
      */
-    this.nomenclatorSearchType = IGNSEARCH_TYPES_CONFIGURATION;
+    if (nomenclatorSearchType) {
+      if (Array.isArray(nomenclatorSearchType)) {
+        this.nomenclatorSearchType = nomenclatorSearchType;
+      } else {
+        this.nomenclatorSearchType = nomenclatorSearchType.split(',');
+      }
+    } else {
+      this.nomenclatorSearchType = IGNSEARCH_TYPES_CONFIGURATION;
+    }
 
     /**
      * This variable indicates whether reverse geocoder button is activated.

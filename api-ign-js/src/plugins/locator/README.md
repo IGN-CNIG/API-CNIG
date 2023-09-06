@@ -203,8 +203,14 @@ URL_API?locator=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDraggab
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
+  <tr>
+    <td>nomenclatorSearchType</td>
+    <td>Array tipos (**)</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
 </table>
 (*) Estos parámetros podrán ser enviados por API-REST con los valores true o false. Si es true indicará al plugin que se añada el control con los valores por defecto. Los valores por defecto se modificarán únicamente mediante API-REST en base64.
+(**) Si en la definicion del parámetro nomenclatorSearchType se usa el separador "*" se deberá definir como una cadena, en caso de usar Base64 se podrá definir como cadena o como Array.
 
 ### Ejemplos de uso API-REST
 
@@ -289,6 +295,20 @@ const mp = new M.plugin.Locator({
     geocoderCoords: [-5.741757, 41.512058]
   },
   isDraggable: false,
+  nomenclatorSearchType: [
+    'Monta\u00F1a',
+    'Paso de monta\u00F1a',
+    'Llanura',
+    'Depresi\u00F3n',
+    'Vertientes',
+    'Comarca geogr\u00E1fica',
+    'Paraje',
+    'Elemento puntual del paisaje',
+    'Saliente costero',
+    'Playa',
+    'Isla',
+    'Otro relieve costero',
+  ],
 });
 
 map.addPlugin(mp);
