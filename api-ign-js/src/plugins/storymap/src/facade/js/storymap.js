@@ -92,6 +92,13 @@ export default class StoryMap extends M.Plugin {
      * @type {Object}
      */
     this.indexInContent = options.indexInContent || false;
+
+    /**
+     * Options of the plugin
+     * @private
+     * @type {Object}
+     */
+    this.options_ = options;
   }
 
   /**
@@ -188,6 +195,17 @@ export default class StoryMap extends M.Plugin {
    */
   getAPIRest() {
     return `${this.name}=${this.position}*${this.collapsed}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options_)}`;
   }
 
   /**

@@ -6,16 +6,54 @@
   "constructor": "M.plugin.StoryMap",
   "parameters": [{
     "type": "object",
-    "properties": [{
+    "properties": [
+      {
       "type": "simple",
       "name": "position",
       "position": 0,
-      "possibleValues": ["TL", "TR", "BL", "BR"]
-    }, {
+      "possibleValues": [
+        "TL",
+        "TR",
+        "BR",
+        "BL"
+      ]
+    },
+    {
       "type": "boolean",
       "name": "collapsed",
       "position": 1
-    }]
+    },
+    {
+      "type": "boolean",
+      "name": "collapsible",
+      "position": 2
+    },
+    {
+      "type": "simple",
+      "name": "tooltip",
+      "position": 3
+    },
+    {
+      "type": "simple",
+      "name": "isDraggable",
+      "position": 4
+    },
+    {
+      "type": "object",
+      "name": "content",
+      "position": 5
+    },
+    {
+      "type": "object",
+      "name": "indexInContent",
+      "position": 6
+    },
+    {
+      "type": "simple",
+      "name": "delay",
+      "position": 7
+    }
+  ]
   }],
   "files": {
     "ol": {
