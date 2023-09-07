@@ -52,7 +52,6 @@ public class ActionsWS {
 		JSONArray actions = new JSONArray();
 
 		actions.put("/controls");
-		actions.put("/contexts");
 		actions.put("/services");
 		actions.put("/version");
 		actions.put("/themes");
@@ -87,28 +86,6 @@ public class ActionsWS {
 		}
 
 		return JSBuilder.wrapCallback(controlsJSON, callbackFn);
-	}
-
-	/**
-	 * The available WMC files the user can use
-	 * 
-	 * @param callbackFn the name of the javascript function to execute as callback
-	 * 
-	 * @return the javascript code
-	 */
-	@GET
-	@Path("/contexts")
-	public String showAvailableContexts(@QueryParam("callback") String callbackFn) {
-		String wmcsRaw = configProperties.getString("wmcs");
-		String[] wmcs = wmcsRaw.split(",");
-
-		JSONArray wmcsJSON = new JSONArray();
-
-		for (String wmc : wmcs) {
-			wmcsJSON.put(wmc);
-		}
-
-		return JSBuilder.wrapCallback(wmcsJSON, callbackFn);
 	}
 
 	/**
