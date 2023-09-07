@@ -14,7 +14,7 @@ export default class StoryMapControl extends M.Control {
    * @extends {M.Control}
    * @api
    */
-  constructor(content = {}, delay = 2000, indexInContent) {
+  constructor(content = {}, delay = 2000, indexInContent, isDraggable_) {
     const impl = new StoryMapControlImplControl();
     super(impl, 'StoryMapControl');
     this.content_ = content;
@@ -30,6 +30,8 @@ export default class StoryMapControl extends M.Control {
     this.svgArrowScroll = true;
     this.arrowScrollEffect_contador = 1;
     this.panelHTML_ = null;
+
+    this.isDraggable_ = isDraggable_;
   }
 
   /**
@@ -70,6 +72,11 @@ export default class StoryMapControl extends M.Control {
       html = this.eventIndex(html);
 
       this.panelHTML_ = html;
+
+      if (this.isDraggable_) {
+        M.utils.draggabillyPlugin(this.getPanel(), '#m-storymap-panel .title');
+      }
+
       success(this.panelHTML_);
     });
   }

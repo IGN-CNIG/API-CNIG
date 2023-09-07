@@ -1,17 +1,22 @@
-# M.plugin.StoryMap
+<p align="center">
+  <img src="https://www.ign.es/resources/viewer/images/logoApiCnig0.5.png" height="152" />
+</p>
+<h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.StoryMap</small></h1>
+
+# Descripción
 
 Plugin que muestra una historia en forma de carrusel. Esta compuesta por diferentes steps en los cuales se ejecurán animaciones preconfiguradas.
 
 # Dependencias
 
-- storymap.ol.min.js
-- storymap.ol.min.css
+Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
 
-Es necesario descargar la librería TR3: https://github.com/accima/TR3-pack
+- **storymap.ol.min.js**
+- **storymap.ol.min.css**
 
 ```html
- <link href="../../plugins/storymap/storymap.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/storymap/storymap.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/storymap/storymap.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/storymap/storymap.ol.min.js"></script>
 ```
 
 # Parámetros
@@ -22,6 +27,11 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TL':top left (default)
   - 'TR':top right 
 - **collapsed**. Indica si el plugin aparece por defecto colapsado o no.
+  
+- **isDraggable**: "True" para que el plugins se pueda desplazar, por defecto false.
+  
+- **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Gestión de la vista.
+
 - **indexInContent**. Si este parámetro se incluye se genera un "capítulo 0" que contiene el índice. Este parámetro recibe un objeto donde se determina el título del índice, subtitulo y js.
 ```javascript
       indexInContent: {
@@ -76,6 +86,100 @@ Para crear interacciones con el mapa es necesario llamar a map o mapjs y el uso 
  ]
 }
 ```
+
+# API-REST
+
+```javascript
+URL_API?storymap=position*collapsed*collapsible*tooltip*isDraggable
+```
+
+<table>
+  <tr>
+    <th>Parámetros</th>
+    <th>Opciones/Descripción</th>
+    <th>Disponibilidad</th>
+  </tr>
+  <tr>
+    <td>position</td>
+    <td>TR/TL/BR/BL</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>collapsible</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>collapsed</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>tooltip</td>
+    <td>tooltip</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>isDraggable</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>indexInContent</td>
+    <td>Objeto</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>delay</td>
+    <td>Numero</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>content</td>
+    <td>Objeto</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+</table>
+(*) Este parámetro podrá ser enviado por API-REST con los valores true o false. Si es true indicará al plugin que se añada el control con los valores por defecto. Para añadir los zooms deseados en los que se podrá centrar el mapa se deberá realizar mediante API-REST en base64.
+
+### Ejemplos de uso API-REST
+
+```
+https://componentes.cnig.es/api-core?storymap=TL*true*true*tooltip
+```
+
+### Ejemplos de uso API-REST en base64
+
+Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
+Ejemplo:
+```javascript
+M.utils.encodeBase64(obj_params);
+```
+
+Ejemplo de constructor del plugin:
+```javascript
+{
+  collapsed: false,
+  collapsible: true,
+  position: 'TR',
+  isDraggable: true,
+  tooltip: 'Tooltip Storymap',
+  content: {
+    es: StoryMapJSON2,
+    en: StoryMapJSON1,
+  },
+  indexInContent: {
+    title: 'Índice StoryMap',
+    subtitle: 'Visualizador de Cervantes y el Madrid del siglo XVII',
+    js: "console.log('Visualizador de Cervantes');",
+  },
+  delay: 2000,
+}
+```
+```
+https://componentes.cnig.es/api-core?storymap=base64=eyJjb2xsYXBzZWQiOmZhbHNlLCJjb2xsYXBzaWJsZSI6dHJ1ZSwicG9zaXRpb24iOiJUUiIsImNvbnRlbnQiOnsiZXMiOnsiaGVhZCI6eyJ0aXRsZSI6IlN0b3J5TWFwIn0sImNhcCI6W119LCJlbiI6eyJoZWFkIjp7InRpdGxlIjoiU3RvcnlNYXAifSwiY2FwIjpbXX19LCJpbmRleEluQ29udGVudCI6eyJ0aXRsZSI6IkluZGljZSBTdG9yeU1hcCIsInN1YnRpdGxlIjoiVmlzdWFsaXphZG9yIGRlIENlcnZhbnRlcyB5IGVsIE1hZHJpZCBkZWwgc2lnbG8gWFZJSSIsImpzIjoiY29uc29sZS5sb2coJ0hvbGFNdW5kbycpIn0sImRlbGF5IjoyMDAwfQ==
+```
+
 # Ejemplo de uso
 ```javascript
 import StoryMapJSON2 from './StoryMapJSON2';
@@ -88,11 +192,12 @@ const map = M.map({
 
 });
 
-
-const mp = new StoryMap({
+const mp = M.plugin.new StoryMap({
   collapsed: false,
   collapsible: true,
   position: 'TR',
+  isDraggable: true,
+  tooltip: 'Tooltip Storymap',
   content: {
     es: StoryMapJSON2,
     en: StoryMapJSON1,
@@ -106,4 +211,63 @@ const mp = new StoryMap({
 });
 
 map.addPlugin(mp);
+```
+
+# 👨‍💻 Desarrollo
+
+Para el stack de desarrollo de este componente se ha utilizado
+
+* NodeJS Version: 14.16
+* NPM Version: 6.14.11
+* Entorno Windows.
+
+## 📐 Configuración del stack de desarrollo / *Work setup*
+
+
+### 🐑 Clonar el repositorio / *Cloning repository*
+
+Para descargar el repositorio en otro equipo lo clonamos:
+
+```bash
+git clone [URL del repositorio]
+```
+
+### 1️⃣ Instalación de dependencias / *Install Dependencies*
+
+```bash
+npm i
+```
+
+### 2️⃣ Arranque del servidor de desarrollo / *Run Application*
+
+```bash
+npm run start
+```
+
+## 📂 Estructura del código / *Code scaffolding*
+
+```any
+/
+├── src 📦                  # Código fuente
+├── task 📁                 # EndPoints
+├── test 📁                 # Testing
+├── webpack-config 📁       # Webpack configs
+└── ...
+```
+## 📌 Metodologías y pautas de desarrollo / *Methodologies and Guidelines*
+
+Metodologías y herramientas usadas en el proyecto para garantizar el Quality Assurance Code (QAC)
+
+* ESLint
+  * [NPM ESLint](https://www.npmjs.com/package/eslint) \
+  * [NPM ESLint | Airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
+
+## ⛽️ Revisión e instalación de dependencias / *Review and Update Dependencies*
+
+Para la revisión y actualización de las dependencias de los paquetes npm es necesario instalar de manera global el paquete/ módulo "npm-check-updates".
+
+```bash
+# Install and Run
+$npm i -g npm-check-updates
+$ncu
 ```

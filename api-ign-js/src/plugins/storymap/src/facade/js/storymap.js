@@ -99,6 +99,14 @@ export default class StoryMap extends M.Plugin {
      * @type {Object}
      */
     this.options_ = options;
+
+
+    /**
+     * Option to allow the plugin to be draggable or not
+     * @private
+     * @type {Boolean}
+     */
+    this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
   }
 
   /**
@@ -128,7 +136,7 @@ export default class StoryMap extends M.Plugin {
     // TO DO Parametrizar indice y poner que sea un max de x minimo
     this.control = new StoryMapControl(
       this.content_[M.language.getLang()],
-      this.delay, this.indexInContent,
+      this.delay, this.indexInContent, this.isDraggable,
     );
     this.map_ = map;
     window.map = map;
@@ -194,7 +202,7 @@ export default class StoryMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.collapsed}`;
+    return `${this.name}=${this.position}*${this.collapsed}*${this.tooltip}*${this.isDraggableE}*`;
   }
 
   /**
