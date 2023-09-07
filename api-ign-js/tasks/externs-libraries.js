@@ -7,6 +7,9 @@
 const libraries = [{
   name: 'Handlebars',
   path: 'handlebars',
+}, {
+  name: 'proj4',
+  path: 'proj4',
 }];
 
 module.exports = libraries;
