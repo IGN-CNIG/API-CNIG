@@ -93,8 +93,6 @@
             <option value="true" selected="selected">true</option>
             <option value="false">false</option>
         </select>
-        <label for="inputNomenclatorSearchType">nomenclatorSearchType</label>
-        <input type="text" name="nomenclatorSearchType" id="inputNomenclatorSearchType">
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -128,8 +126,7 @@
             collapsible = true,
             tooltip, zoomL,
             pointStyle, isdraggable, byParcelCadastre, byCoordinates,
-            byPlaceAddressPostal, 
-            nomenclatorSearchType;
+            byPlaceAddressPostal;
         crearPlugin({
             position: posicion,
             collapsed: collapsed,
@@ -140,8 +137,7 @@
             isDraggable: isdraggable,
             byParcelCadastre: byParcelCadastre,
             byCoordinates: byCoordinates,
-            byPlaceAddressPostal: byPlaceAddressPostal,
-            nomenclatorSearchType: nomenclatorSearchType
+            byPlaceAddressPostal: byPlaceAddressPostal
         });
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
@@ -154,7 +150,6 @@
         const selectParcel = document.getElementById("inputByParcelCadastre");
         const selectCoordinates = document.getElementById("inputByCoordinates");
         const selectPlace = document.getElementById("inputByPlaceAddressPostal");
-        const inputNomenclator = document.getElementById("inputNomenclatorSearchType");
         selectPosicion.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
@@ -166,7 +161,6 @@
         selectParcel.addEventListener('change', cambiarTest);
         selectCoordinates.addEventListener('change', cambiarTest);
         selectPlace.addEventListener('change', cambiarTest);
-        inputNomenclator.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
             let objeto = {};
@@ -181,7 +175,6 @@
             objeto.byParcelCadastre = (selectParcel.options[selectParcel.selectedIndex].value == 'true');
             objeto.byCoordinates = (selectCoordinates.options[selectCoordinates.selectedIndex].value == 'true');
             objeto.byPlaceAddressPostal = (selectPlace.options[selectPlace.selectedIndex].value == 'true');
-            inputNomenclator.value !== "" ? objeto.nomenclatorSearchType = inputNomenclator.value : objeto.nomenclatorSearchType = "";
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
