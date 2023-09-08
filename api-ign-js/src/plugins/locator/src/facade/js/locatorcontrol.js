@@ -20,7 +20,7 @@ export default class LocatorControl extends M.Control {
    */
   constructor(
     isDraggable, zoom, pointStyle, byCoordinates, byParcelCadastre,
-    byPlaceAddressPostal, order, useProxy, statusProxy, position, nomenclatorSearchType,
+    byPlaceAddressPostal, order, useProxy, statusProxy, position,
   ) {
     if (M.utils.isUndefined(LocatorImpl)) {
       M.exception(getValue('exception.impl'));
@@ -56,13 +56,6 @@ export default class LocatorControl extends M.Control {
      * @type {Boolean}
      */
     this.isDraggable_ = isDraggable;
-
-    /**
-     * Option to set the nomenclatorSearchType
-     * @private
-     * @type {Array<string>}
-     */
-    this.nomenclatorSearchType_ = nomenclatorSearchType;
 
     /**
      * Zoom
@@ -202,7 +195,6 @@ export default class LocatorControl extends M.Control {
           this.useProxy,
           this.statusProxy,
           this.position,
-          this.nomenclatorSearchType_,
         );
         this.on(M.evt.ADDED_TO_MAP, () => {
           this.ignsearchControl.initializateAddress(html);

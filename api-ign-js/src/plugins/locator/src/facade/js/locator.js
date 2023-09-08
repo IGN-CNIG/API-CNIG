@@ -78,13 +78,6 @@ export default class Locator extends M.Plugin {
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
-     * Option to set the nomenclatorSearchType
-     * @private
-     * @type {Array<string>}
-     */
-    this.nomenclatorSearchType = options.nomenclatorSearchType;
-
-    /**
      * Option to allow the plugin to be draggable or not
      * @private
      * @type {Boolean}
@@ -192,7 +185,6 @@ export default class Locator extends M.Plugin {
       this.useProxy,
       this.statusProxy,
       this.position_,
-      this.nomenclatorSearchType,
     ));
     this.map_ = map;
     if (this.position_ === 'TC') {

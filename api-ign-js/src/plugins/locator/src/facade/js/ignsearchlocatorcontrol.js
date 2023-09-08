@@ -90,7 +90,6 @@ export default class IGNSearchLocatorControl extends M.Control {
     useProxy,
     statusProxy,
     positionPlugin,
-    nomenclatorSearchType,
   ) {
     if (M.utils.isUndefined(IGNSearchLocatorImpl)) {
       M.exception(getValue('exception.impl_ignsearchlocator'));
@@ -242,11 +241,11 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @private
      * @type {Array<string>}
      */
-    if (nomenclatorSearchType) {
-      if (Array.isArray(nomenclatorSearchType)) {
-        this.nomenclatorSearchType = nomenclatorSearchType;
+    if (options.nomenclatorSearchType) {
+      if (Array.isArray(options.nomenclatorSearchType)) {
+        this.nomenclatorSearchType = options.nomenclatorSearchType;
       } else {
-        this.nomenclatorSearchType = nomenclatorSearchType.split(',');
+        this.nomenclatorSearchType = options.nomenclatorSearchType.split(',');
       }
     } else {
       this.nomenclatorSearchType = IGNSEARCH_TYPES_CONFIGURATION;
