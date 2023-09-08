@@ -657,6 +657,8 @@ export default class IncicartoControl extends M.Control {
     let themeMetadataContainer = document.querySelector("#theme-select");
     let errorMetadataContainer = document.querySelector("#error-select");
     let productMetadataContainer = document.querySelector("#product-select");
+    let emailName = document.querySelector("#person-notify").value;
+    let emailUser = document.querySelector("#email-notify").value;
 
     if (this.validateIncidenciaMessageInModalAdvanced() === false) {
       return false;
@@ -666,22 +668,56 @@ export default class IncicartoControl extends M.Control {
     let error = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].value;
     let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
     let errDescription = document.querySelector("#err-description").value;
+    const { x, y } = this.map_.getCenter();
+    const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
 
     let email_subject = 'Incidencia Cartografía - ' + theme;
+    
+    this.geometryIncidenceJSON = JSON.parse(this.geometryIncidence);
+
+    let url = window.location.href;
+    let localURL = '';
+    if (url.startsWith('file:///')) {
+      const index = url.lastIndexOf('/');
+      localURL = `file://${url.substring(index)}`;
+    }
+
+    if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
+      url = M.config.MAPEA_URL;
+    }
+
+    let propiedades_incidencia = {
+      "email_subject": email_subject,
+      "theme": theme,
+      "destinatary": destinatary,
+      "emailName": emailName,
+      "emailUser": emailUser,
+      "errDescripcion": errDescription,
+      "URL": url,
+      "localURL": localURL,
+      "paramsURL": encodeURI(shareURL),
+    }
+
+    if (this.geometryIncidenceJSON.features.length > 0) {
+      this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
+    }
+    
     let email_body = {
       "description": errDescription,
       "theme": theme,
       "error": error,
       "product": product,
-      "geometry": this.geometryIncidence,
+      "features": this.geometryIncidenceJSON.features
     };
     let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
     emailForm.action = `${M.config.MAPEA_URL}api/email`;
     document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
+    document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
+    document.querySelector("#m-plugin-incicarto-email-shareURL").value = shareURL;
     document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
     let inputFile = document.querySelector('#fileUpload');
-    if (inputFile.files.length > 0) {
+    if (inputFile && inputFile.files.length > 0) {
       let inputFileForm = document.querySelector('#fileUploadForm');
       inputFileForm.files = inputFile.files;
     }
@@ -1587,6 +1623,7 @@ export default class IncicartoControl extends M.Control {
 
     if (geojsonLayer.features.length > 0) {
       this.geometryIncidence = arrayContent;
+      this.geometryIncidenceJSON = geojsonLayer;
       this.getCentroid4INCIGEO(geojsonLayer);
       this.activateModalAdvanced();
     } else {
