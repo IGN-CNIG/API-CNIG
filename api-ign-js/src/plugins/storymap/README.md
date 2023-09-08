@@ -27,9 +27,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TL':top left (default)
   - 'TR':top right 
 - **collapsed**. Indica si el plugin aparece por defecto colapsado o no.
-  
-- **isDraggable**: "True" para que el plugins se pueda desplazar, por defecto false.
-  
+
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Gestión de la vista.
 
 - **indexInContent**. Si este parámetro se incluye se genera un "capítulo 0" que contiene el índice. Este parámetro recibe un objeto donde se determina el título del índice, subtitulo y js.
@@ -90,7 +88,7 @@ Para crear interacciones con el mapa es necesario llamar a map o mapjs y el uso 
 # API-REST
 
 ```javascript
-URL_API?storymap=position*collapsed*collapsible*tooltip*isDraggable
+URL_API?storymap=position*collapsed*collapsible*tooltip*delay
 ```
 
 <table>
@@ -120,11 +118,6 @@ URL_API?storymap=position*collapsed*collapsible*tooltip*isDraggable
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>isDraggable</td>
-    <td>true/false</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
     <td>indexInContent</td>
     <td>Objeto</td>
     <td>Base64 ✔️ | Separador ❌</td>
@@ -132,7 +125,7 @@ URL_API?storymap=position*collapsed*collapsible*tooltip*isDraggable
   <tr>
     <td>delay</td>
     <td>Numero</td>
-    <td>Base64 ✔️ | Separador ❌</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>content</td>
@@ -162,7 +155,6 @@ Ejemplo de constructor del plugin:
   collapsed: false,
   collapsible: true,
   position: 'TR',
-  isDraggable: true,
   tooltip: 'Tooltip Storymap',
   content: {
     es: StoryMapJSON2,
@@ -196,7 +188,6 @@ const mp = M.plugin.new StoryMap({
   collapsed: false,
   collapsible: true,
   position: 'TR',
-  isDraggable: true,
   tooltip: 'Tooltip Storymap',
   content: {
     es: StoryMapJSON2,

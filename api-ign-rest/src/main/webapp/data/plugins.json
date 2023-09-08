@@ -438,5 +438,16 @@
     "image": "img/api-logo.png",
     "description": "Herramienta de comparación.",
     "obsolete": false
+  },
+  {
+    "name": "storymap",
+    "plugin": "[storymap]",
+    "version": "v1.0",
+    "url_es": "storymap.jsp?language=es",
+    "url_en": "storymap.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/storymap",
+    "image": "img/api-logo.png",
+    "description": "Plugin que muestra una historia en forma de carrusel. Esta compuesta por diferentes steps en los cuales se ejecurán animaciones preconfiguradas.",
+    "obsolete": false
   }
 ]

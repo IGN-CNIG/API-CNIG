@@ -35,23 +35,8 @@
     },
     {
       "type": "simple",
-      "name": "isDraggable",
-      "position": 4
-    },
-    {
-      "type": "object",
-      "name": "content",
-      "position": 5
-    },
-    {
-      "type": "object",
-      "name": "indexInContent",
-      "position": 6
-    },
-    {
-      "type": "simple",
       "name": "delay",
-      "position": 7
+      "position": 4
     }
   ]
   }],
