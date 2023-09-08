@@ -698,6 +698,7 @@ export default class IncicartoControl extends M.Control {
       "emailUser": emailUser,
       "errDescripcion": errDescription,
       "URL": url,
+      "URL_WINDOW": window.location.href,
       "localURL": localURL,
       "paramsURL": encodeURI(shareURL),
     }
@@ -773,6 +774,7 @@ export default class IncicartoControl extends M.Control {
         "emailUser": emailUser,
         "errDescripcion": errDescription,
         "URL": url,
+        "URL_WINDOW": window.location.href,
         "localURL": localURL,
         "paramsURL": encodeURI(shareURL),
       }
