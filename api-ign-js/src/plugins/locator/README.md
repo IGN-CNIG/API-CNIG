@@ -50,7 +50,6 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'pinRojo'
   - 'pinMorado'
 - **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
-- **nomenclatorSearchType**: se muestra la lista de elementos que aporta el servicio Comunication Pool Servlet (CPS). Los elementos comentados, son aquellos que son aportados por el propio servicio REST geocoder. Si se quiere hacer uso solo del CPS se pueden descomentar, o comentar los que se quieran filtrar.
 - **byParcelCadastre**: Indica si el control InfoCatastro se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
   - **cadastreWMS**: Url del servicio para la consulta por referencia catastral. Por defecto: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR'.
   - **CMC_url**: Url del servicio para la consulta de municipios de una provincia. Por defecto: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos'.
@@ -114,6 +113,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - **locationID**: Búsqueda inicial en el servicio nomenclátor por ID, muestra el resultado y se realiza un zoom a la posición. Por defecto: ''.
   - **geocoderCoords**: Búsqueda inicial por longitud, latitud, mediante el uso del Servicio REST geocoder-inverso. Se sitúa en la posición indicada al iniciar la extensión. Por defecto: [].
   - **requestStreet**: URL del findJSON de un resultado de búsqueda, para que aparezca cargado al inicio. Por defecto: ''.
+  - **nomenclatorSearchType**: se muestra la lista de elementos que aporta el servicio Comunication Pool Servlet (CPS). Los elementos comentados, son aquellos que son aportados por el propio servicio REST geocoder. Si se quiere hacer uso solo del CPS se pueden descomentar, o comentar los que se quieran filtrar.
   
   ```javascript
   byPlaceAddressPostal: {
@@ -204,15 +204,8 @@ URL_API?locator=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDraggab
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
-  <tr>
-    <td>nomenclatorSearchType</td>
-    <td>Array tipos (**)</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
 </table>
 (*) Estos parámetros podrán ser enviados por API-REST con los valores true o false. Si es true indicará al plugin que se añada el control con los valores por defecto. Los valores por defecto se modificarán únicamente mediante API-REST en base64.
-(**) Si en la definicion del parámetro nomenclatorSearchType se usa el separador "*" se deberá definir como una cadena, en caso de usar Base64 se podrá definir como cadena o como Array.
-
 ### Ejemplos de uso API-REST
 
 ```
@@ -293,10 +286,8 @@ const mp = new M.plugin.Locator({
     noProcess: 'municipio, poblacion',
     reverse: false,
     searchPosition: 'geocoder,nomenclator',
-    geocoderCoords: [-5.741757, 41.512058]
-  },
-  isDraggable: false,
-  nomenclatorSearchType: [
+    geocoderCoords: [-5.741757, 41.512058],
+    nomenclatorSearchType: [
      'Estado',
      //'Comunidad autónoma',
      //'Ciudad con estatuto de autonomía',
@@ -354,7 +345,9 @@ const mp = new M.plugin.Locator({
      'Mar',
      'Entrante costero y estrecho marítimo',
      'Relieve submarino',
-  ],
+  ]
+  },
+  isDraggable: false,
 });
 
 map.addPlugin(mp);

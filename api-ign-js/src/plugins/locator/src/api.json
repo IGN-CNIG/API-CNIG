@@ -67,11 +67,6 @@
       "type": "boolean",
       "name": "useProxy",
       "position": 10
-    },
-    {
-      "type": "simple",
-      "name": "nomenclatorSearchType",
-      "position": 11
     }
   ]
   }],
