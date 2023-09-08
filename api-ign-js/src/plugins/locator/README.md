@@ -95,9 +95,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   (Válido sólo para la creación del plugin por JS y API-REST en base64).
 - **byPlaceAddressPostal**: Indica si el control IGNSearchLocator se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
   - **servicesToSearch**: Servicio que se consulta: 
-    - 'g': Consulta Geocoder.
+    - 'g': Consulta Geocoder (por defecto).
     - 'n': Consulta Comunication Pool Servlet.
-    - 'gn': Consulta Geocoder y Comunication Pool Servlet (por defecto).
+    - 'gn': Consulta Geocoder y Comunication Pool Servlet.
   - **maxResults**: Número de resultados en la consulta. Por defecto: 10 (para cada servicio).
   - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio,poblacion,toponimo,callejero,carretera,portal,provincia'.
   - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'. 
@@ -109,7 +109,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - **urlPrefix**: Prefijo del servicio Comunication Pool Servlet. Por defecto: 'http://www.idee.es/'.
   - **urlAssistant**: Url del servicio SearchAssitant de Nomenclátor. Por defecto: 'https://www.idee.es/communicationsPoolServlet/SearchAssistant'.
   - **urlDispatcher**: Url del servicio Dispatcher de Nomenclátor. Por defecto: 'https://www.idee.es/communicationsPoolServlet/Dispatcher'.
-  - **searchPosition**: Orden de resultados de las dos búsquedas. Por defecto: 'nomenclator,geocoder'.
+  - **searchPosition**: Orden de resultados de las dos búsquedas. Por defecto: 'geocoder,nomenclator'.
   - **locationID**: Búsqueda inicial en el servicio nomenclátor por ID, muestra el resultado y se realiza un zoom a la posición. Por defecto: ''.
   - **geocoderCoords**: Búsqueda inicial por longitud, latitud, mediante el uso del Servicio REST geocoder-inverso. Se sitúa en la posición indicada al iniciar la extensión. Por defecto: [].
   - **requestStreet**: URL del findJSON de un resultado de búsqueda, para que aparezca cargado al inicio. Por defecto: ''.

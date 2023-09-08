@@ -110,7 +110,7 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @private
      * @type {string} - 'g' | 'n' | 'gn'
      */
-    this.servicesToSearch = options.servicesToSearch || 'gn';
+    this.servicesToSearch = options.servicesToSearch || 'g';
 
     /**
      * This variable sets the maximun results returned by a service
@@ -205,7 +205,7 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @private
      * @type {string}
      */
-    this.searchPosition = options.searchPosition || 'nomenclator,geocoder';
+    this.searchPosition = options.searchPosition || 'geocoder,nomenclator';
 
     /**
      * Text to search
