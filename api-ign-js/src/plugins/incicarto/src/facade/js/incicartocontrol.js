@@ -681,13 +681,21 @@ export default class IncicartoControl extends M.Control {
 
     let url = window.location.href;
     let localURL = '';
+    let urlAPP = '';
     if (url.startsWith('file:///')) {
       const index = url.lastIndexOf('/');
       localURL = `file://${url.substring(index)}`;
     }
 
     if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
+      // API-REST
       url = M.config.MAPEA_URL;
+    }
+
+    // URL APP
+    urlAPP = `${window.location.origin}${window.location.pathname}`;
+    if (url === urlAPP) {
+      urlAPP = '';
     }
 
     let propiedades_incidencia = {
@@ -698,7 +706,8 @@ export default class IncicartoControl extends M.Control {
       "emailUser": emailUser,
       "errDescripcion": errDescription,
       "URL": url,
-      "URL_WINDOW": window.location.href,
+      "URL_WINDOW": urlAPP,
+      "is_URL_WINDOW": !!urlAPP,
       "localURL": localURL,
       "paramsURL": encodeURI(shareURL),
     }
