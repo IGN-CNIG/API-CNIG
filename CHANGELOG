@@ -3,8 +3,7 @@
 - Mejoras documentación JSDOC
 - Plugin information: El popup se mueve por defecto y se mueve cuando esta cerrado.
 - Se implementa formato GML en las capas WFS.
-- Inicarto: se elimina al funcionalidad incigeo y se soluciona problema con modo advance.
-Se envía por correo URL de la APP y URL API-REST.
+- Incicarto: se elimina al funcionalidad incigeo y se soluciona problema con modo advance.
 Se soluciona problemas en posiciones BL y BR.
 Se activa funcionalidad draggable
 - Se activa proj4 como variable global
