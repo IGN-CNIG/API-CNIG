@@ -1,0 +1,49 @@
+{
+  "url": {
+    "name": "layerswitcher",
+    "separator": "*"
+  },
+  "constructor": "M.plugin.Layerswitcher",
+  "parameters": [{
+    "type": "object",
+    "properties": [{
+      "type": "simple",
+      "name": "position",
+      "position": 0,
+      "possibleValues": ["TL", "TR", "BL", "BR"]
+    }, {
+      "type": "boolean",
+      "name": "collapsed",
+      "position": 1
+    }, {
+      "type": "boolean",
+      "name": "collapsible",
+      "position": 2
+    }, {
+      "type": "simple",
+      "name": "tooltip",
+      "position": 3
+    }, {
+      "type": "boolean",
+      "name": "isDraggable",
+      "position": 4
+    }]
+  }],
+  "files": {
+    "ol": {
+      "scripts": ["layerswitcher.ol.min.js"],
+      "styles": ["layerswitcher.ol.min.css"]
+    }
+  },
+  "metadata": {
+    "name": "Layerswitcher",
+    "description": "",
+    "text": "",
+    "version": "1.0.0",
+    "date": "2023-07-18",
+    "author": "Guadaltel",
+    "org": "CNIG",
+    "tags": "plugin",
+    "icon": "./facade/assets/icons/icons.svg"
+  }
+}

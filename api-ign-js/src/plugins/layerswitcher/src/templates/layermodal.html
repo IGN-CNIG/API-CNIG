@@ -1,0 +1,23 @@
+<div id="m-layerswitcher-layerContainer">
+    {{#eq type 'geojson'}}
+        <p>{{translations.data_layer}} GeoJSON</p>
+    {{/eq}}
+    {{#eq type 'osm'}}
+        <p>{{translations.data_layer}} OSM</p>
+    {{/eq}}
+    <div class="m-layerswitcher-layer¡-fields">
+        <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
+        <input type="text" id="m-layerswitcher-layer-name" />
+    </div>
+    <div class="m-layerswitcher-layer¡-fields">
+        <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-legend">{{translations.legend}}</label>
+        <input type="text" id="m-layerswitcher-layer-legend" />
+    </div>
+    {{#eq type 'osm'}}
+        <div class="m-layerswitcher-layer¡-fields">
+            <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+            <input type="text" id="m-layerswitcher-layer-matrixset" />
+        </div>
+    {{/eq}}
+    <button class="m-layerswitcher-common-btn" id="m-layerswitcher-layer-button"> {{translations.add_btn}}</button>
+</div>
