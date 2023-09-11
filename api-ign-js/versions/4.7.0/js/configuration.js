@@ -66,7 +66,7 @@ params.forEach((param) => {
    * @public
    * @api stable
    */
-  M.config('MAPEA_URL', 'http://localhost:8080/api-core/');
+  M.config('MAPEA_URL', 'http://10.67.33.46:9010/api-core/');
 
   /**
    * The path to the Mapea proxy to send
@@ -76,7 +76,7 @@ params.forEach((param) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_URL', `${(location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:'}\//localhost:8080/api-core/api/proxy`);
+  M.config('PROXY_URL', `${(location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:'}\//10.67.33.46:9010/api-core/api/proxy`);
 
   /**
    * The path to the Mapea proxy to send
@@ -86,7 +86,7 @@ params.forEach((param) => {
    * @public
    * @api stable
    */
-  M.config('PROXY_POST_URL', `${(location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:'}\//localhost:8080/api-core/proxyPost`);
+  M.config('PROXY_POST_URL', `${(location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:'}\//10.67.33.46:9010/api-core/proxyPost`);
 
   /**
    * The path to the Mapea templates
@@ -104,7 +104,7 @@ params.forEach((param) => {
    * @public
    * @api stable
    */
-  M.config('THEME_URL', `${(location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:'}\//localhost:8080/api-core/assets/`);
+  M.config('THEME_URL', `${(location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:'}\//10.67.33.46:9010/api-core/assets/`);
 
   /**
    * The path to the Mapea theme
@@ -200,7 +200,7 @@ params.forEach((param) => {
    * @private
    * @type {String}
    */
-  M.config('SQL_WASM_URL', `${(location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:'}\//localhost:8080/api-core/wasm/`);
+  M.config('SQL_WASM_URL', `${(location.protocol !== 'file' && location.protocol !== 'file:') ? location.protocol : 'https:'}\//10.67.33.46:9010/api-core/wasm/`);
 
   /**
    * MAP Viewer - Center
