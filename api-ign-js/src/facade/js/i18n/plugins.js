@@ -193,10 +193,6 @@ import enViewmanagement from '../../../plugins/viewmanagement/src/facade/js/i18n
 import esLocator from '../../../plugins/locator/src/facade/js/i18n/es';
 import enLocator from '../../../plugins/locator/src/facade/js/i18n/en';
 
-// Comparators
-import esComparators from '../../../plugins/comparators/src/facade/js/i18n/es';
-import enComparators from '../../../plugins/comparators/src/facade/js/i18n/en';
-
 /**
  * Este objeto devuelve un objeto JSON dinámico que contiene
  * los plugins disponibles que soportan traducciones.
@@ -387,10 +383,6 @@ const pluginsLanguage = {
   locator: {
     esLocator,
     enLocator,
-  },
-  comparators: {
-    esComparators,
-    enComparators,
   },
 };
 
