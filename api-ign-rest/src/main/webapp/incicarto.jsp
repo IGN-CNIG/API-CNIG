@@ -403,17 +403,17 @@
             objeto.isDraggable = isDraggable.options[isDraggable.selectedIndex].value;
 
             // Array de objetos themeList.
-            objeto.themeList = [{
-                    idTheme: 1,
-                    nameTheme: 'No especificado',
-                    emailTheme: 'consultas@cnig.es',
-                },
-                {
-                    idTheme: 2,
-                    nameTheme: 'Relieve',
-                    emailTheme: 'cartografia.ign@mitma.es',
-                }
-            ];
+            // objeto.themeList = [{
+            //         idTheme: 1,
+            //         nameTheme: 'No especificado',
+            //         emailTheme: 'consultas@cnig.es',
+            //     },
+            //     {
+            //         idTheme: 2,
+            //         nameTheme: 'Relieve',
+            //         emailTheme: 'cartografia.ign@mitma.es',
+            //     }
+            // ];
 
             map.removePlugins(mp);
             crearPlugin(objeto);
