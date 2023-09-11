@@ -1,3 +1,6 @@
+11/09/2023 - Versión 4.8.0
+
+
 16/06/2023 - Versión 4.7.0
 - Se incorpora el plugin locator dejando obsoleto los plugins ignSearchlocator, xylocator e infocatastro
 - Mejoras documentación JSDOC
@@ -23,6 +26,8 @@ Se activa funcionalidad draggable
 - En capas vectoriales con extract a true se mejora la visualización del contenido
 - Se mejora las peticiones a las capas WFS evitando doble petición
 - Se soluciona problema con evento hover en capas vectoriales
+- Buffer: sustitución de librería jsts por turf.js para el cálculo del buffer
+- Se soluciona problema con la conexión a PG mediante token
 
 
 01/06/2023 - Versión 4.6.0
