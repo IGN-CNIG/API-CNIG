@@ -359,8 +359,28 @@ class Panel extends MObject {
    * @return {array<M.Control>} Control.
    * @api
    */
-  getControls() {
-    return this._controls;
+  getControls(filter) {
+    if (!filter) {
+      return this._controls;
+    }
+
+    let filterArray = null;
+    let filterControl = null;
+
+    if (!Array.isArray(filter)) {
+      filterArray = [filter];
+    }
+
+    if (typeof filterArray[0] === 'object') {
+      filterControl = Object.values(...filterArray);
+    }
+
+    return this._controls.filter(({ name }) => {
+      if (filterControl) {
+        return filterControl.includes(name);
+      }
+      return true;
+    });
   }
 
   /**

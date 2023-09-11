@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/Vector
  */
-import { isNullOrEmpty, isFunction } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction, includes } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import Style from 'M/style/Style';
 import { get as getProj } from 'ol/proj';
@@ -144,6 +144,63 @@ class Vector extends Layer {
   inRange() {
     // vectors are always in range
     return true;
+  }
+
+  /**
+   * Pasa los objetos geográficos a la plantilla.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   *
+   * @public
+   * @function
+   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
+   * @returns {Object} "FeaturesTemplate.features".
+   * @api stable
+   */
+  parseFeaturesForTemplate_(features) {
+    const featuresTemplate = {
+      features: [],
+    };
+
+    features.forEach((feature) => {
+      const featureTemplate = {
+        id: feature.getId(),
+        attributes: this.recursiveExtract_(feature.getAttributes()),
+      };
+      featuresTemplate.features.push(featureTemplate);
+    });
+    return featuresTemplate;
+  }
+
+  recursiveExtract_(properties, parentKey = '') {
+    const attributes = [];
+
+    const propertyKeys = Object.keys(properties);
+
+    propertyKeys.forEach((key) => {
+      let addAttribute = true;
+      // adds the attribute just if it is not in
+      // hiddenAttributes_ or it is in showAttributes_
+      if (!isNullOrEmpty(this.showAttributes_)) {
+        addAttribute = includes(this.showAttributes_, key);
+      } else if (!isNullOrEmpty(this.hiddenAttributes_)) {
+        addAttribute = !includes(this.hiddenAttributes_, key);
+      }
+
+      if (typeof properties[key] === 'object' && !Array.isArray(properties[key])) {
+        const values = this.recursiveExtract_(properties[key], (parentKey) ? `${parentKey} | ${key}` : key);
+        attributes.push(...values);
+      } else if (addAttribute) { // No se añade si es null o undefined
+        const fullKey = parentKey ? `${parentKey} | ${key}` : key;
+        const filter = fullKey.split(' | ');
+        attributes.push({
+          key: (parentKey) ? `${filter[filter.length - 2]} | ${filter[filter.length - 1]}` : key,
+          value: properties[key],
+        });
+      }
+    });
+
+
+    return attributes;
   }
 
   /**

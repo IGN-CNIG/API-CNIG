@@ -3,6 +3,7 @@
  */
 import MapImpl from 'impl/Map';
 import Base from './Base';
+import { getQuickLayers } from './mapea';
 import {
   isNullOrEmpty,
   isUndefined,
@@ -407,12 +408,24 @@ class Map extends Base {
         layersParam = [layersParam];
       }
 
-      // gets the capabilities of the layers
-      this.collectorCapabilities_(layersParam);
-
       // gets the parameters as Layer objects to add
       const layers = layersParam.map((layerParam) => {
         let layer;
+
+        if (isString(layerParam)) {
+          const splt = layerParam.split('*');
+          if (splt.length === 2 && splt[0] === 'QUICK') {
+            const ly = getQuickLayers(splt[1]);
+            if (!isUndefined(ly)) {
+              // eslint-disable-next-line
+              layerParam = ly;
+            } else {
+              // eslint-disable-next-line
+              console.error(`No se encuentra definida ${splt[1]} como capa rápida`);
+              return null;
+            }
+          }
+        }
 
         if (layerParam instanceof Layer) {
           layer = layerParam;
@@ -473,6 +486,9 @@ class Map extends Base {
           // }
         }
 
+        // gets the capabilities of the layers
+        this.collectorCapabilities_(layer);
+
         // KML and WFS layers handler its features
         if ((layer instanceof Vector)
           /* && !(layer instanceof KML) */
@@ -488,7 +504,7 @@ class Map extends Base {
       });
 
       // adds the layers
-      this.getImpl().addLayers(layers);
+      this.getImpl().addLayers(layers.filter(element => element !== null));
       this.fire(EventType.ADDED_LAYER, [layers]);
     }
     return this;
@@ -674,6 +690,7 @@ class Map extends Base {
       // gets the layers
       const kmlLayers = this.getKML(layersParam);
       if (kmlLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [kmlLayers]);
         kmlLayers.forEach((layer) => {
           this.featuresHandler_.removeLayer(layer);
         });
@@ -782,6 +799,7 @@ class Map extends Base {
       // gets the layers
       const wmsLayers = this.getWMS(layersParam);
       if (wmsLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [wmsLayers]);
         // removes the layers
         this.getImpl().removeWMS(wmsLayers);
       }
@@ -921,6 +939,7 @@ class Map extends Base {
       // gets the layers
       const wfsLayers = this.getWFS(layersParam);
       if (wfsLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [wfsLayers]);
         wfsLayers.forEach((layer) => {
           this.featuresHandler_.removeLayer(layer);
         });
@@ -1035,6 +1054,7 @@ class Map extends Base {
       // gets the layers
       const ogcapifLayers = this.getOGCAPIFeatures(layersParam);
       if (ogcapifLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [ogcapifLayers]);
         ogcapifLayers.forEach((layer) => {
           this.featuresHandler_.removeLayer(layer);
         });
@@ -1145,6 +1165,7 @@ class Map extends Base {
       // gets the layers
       const wmtsLayers = this.getWMTS(layersParam);
       if (wmtsLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [wmtsLayers]);
         // removes the layers
         this.getImpl().removeWMTS(wmtsLayers);
       }
@@ -1203,6 +1224,7 @@ class Map extends Base {
       }
       const mvtLayers = this.getMVT(layersParam);
       if (mvtLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [mvtLayers]);
         mvtLayers.forEach((layer) => {
           this.featuresHandler_.removeLayer(layer);
         });
@@ -1334,6 +1356,7 @@ class Map extends Base {
     if (!isNullOrEmpty(layersParam)) {
       const mbtilesLayers = this.getMBTiles(layersParam);
       if (mbtilesLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [mbtilesLayers]);
         this.getImpl().removeMBTiles(mbtilesLayers);
       }
     }
@@ -1420,6 +1443,7 @@ class Map extends Base {
       }
       const mbtilesLayers = this.getMBTilesVector(layersParam);
       if (mbtilesLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [mbtilesLayers]);
         this.getImpl().removeMBTilesVector(mbtilesLayers);
       }
     }
@@ -1512,6 +1536,7 @@ class Map extends Base {
 
       const xyzLayers = this.getXYZs(layersParam);
       if (xyzLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [xyzLayers]);
         this.getImpl().removeXYZ(xyzLayers);
       }
     }
@@ -1605,8 +1630,45 @@ class Map extends Base {
 
       const tmsLayers = this.getTMS(layersParam);
       if (tmsLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [tmsLayers]);
         this.getImpl().removeTMS(tmsLayers);
       }
+    }
+    return this;
+  }
+
+  /**
+   * Este método agrega las capas rápidas al mapa.
+   *
+   * @function
+   * @param {Array<string>|String} layersParam Colección de nombres de capas.
+   * rápidas o nombre de una capa rápida.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  addQuickLayers(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (!isNullOrEmpty(layersParam)) {
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      const quickLayers = [];
+      layersParam.forEach((layerParam) => {
+        if (isString(layerParam)) {
+          let value = layerParam;
+          if (layerParam.indexOf('QUICK*') === -1) {
+            value = `QUICK*${layerParam}`;
+          }
+          quickLayers.push(value);
+        } else {
+          quickLayers.push(layerParam);
+        }
+      });
+
+      this.addLayers(quickLayers);
+
+      this.fire(EventType.ADDED_QUICK_LAYERS, [quickLayers]);
     }
     return this;
   }

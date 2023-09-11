@@ -1,7 +1,10 @@
 /**
  * @module M/impl/layer/MBTilesVector
  */
-import { isNullOrEmpty, extend } from 'M/util/Utils';
+import { isNullOrEmpty, extend, isFunction } from 'M/util/Utils';
+import { compileSync as compileTemplate } from 'M/util/Template';
+import Popup from 'M/Popup';
+import geojsonPopupTemplate from 'templates/geojson_popup';
 import { get as getProj, transformExtent } from 'ol/proj';
 // import { inflate } from 'pako';
 import OLLayerTile from 'ol/layer/Tile';
@@ -388,6 +391,49 @@ class MBTilesVector extends Vector {
   }
 
   /**
+   * Este método ejecuta un objeto geográfico seleccionado.
+   *
+   * @function
+   * @param {ol.features} features Objetos geográficos de Openlayers.
+   * @param {Array} coord Coordenadas.
+   * @param {Object} evt Eventos.
+   * @api stable
+   * @expose
+   */
+  selectFeatures(features, coord, evt) {
+    const feature = features[0];
+    if (this.extract === true) {
+      // unselects previous features
+      this.unselectFeatures();
+
+      if (!isNullOrEmpty(feature)) {
+        const clickFn = feature.getAttribute('vendor.mapea.click');
+        if (isFunction(clickFn)) {
+          clickFn(evt, feature);
+        } else {
+          const htmlAsText = compileTemplate(geojsonPopupTemplate, {
+            vars: this.parseFeaturesForTemplate_(features),
+            parseToHtml: false,
+          });
+          const featureTabOpts = {
+            icon: 'g-cartografia-pin',
+            title: this.name,
+            content: htmlAsText,
+          };
+          let popup = this.map.getPopup();
+          if (isNullOrEmpty(popup)) {
+            popup = new Popup();
+            popup.addTab(featureTabOpts);
+            this.map.addPopup(popup, coord);
+          } else {
+            popup.addTab(featureTabOpts);
+          }
+        }
+      }
+    }
+  }
+
+  /**
    * Este método establece la clase de la fachada
    * de MBTilesVector.
    *
@@ -463,6 +509,7 @@ class MBTilesVector extends Vector {
     let equals = false;
     if (obj instanceof MBTilesVector) {
       equals = (this.name === obj.name);
+      equals = equals && (this.extract === obj.extract);
     }
     return equals;
   }

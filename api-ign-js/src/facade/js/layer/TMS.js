@@ -19,15 +19,23 @@ import { getValue } from '../i18n/language';
  *
  * {z} especifica el nivel de zoom; {x} el número de columna; {y} el número de fila.
  *
- * @property {String} url Url del servicio TMS.
  * @property {String} name Identificador de capa.
- * @property {String} legend Indica el nombre que queremos que aparezca en el
- * árbol de contenidos, si lo hay.
+ * @property {transparent} transparent Falso si es una capa base, verdadero en caso contrario.
+ * @property {String} type Tipo de la capa.
+ * @property {String} url Url del servicio TMS.
  * @property {Number} minZoom Zoom mínimo.
  * @property {Number} maxZoom Zoom máximo.
  * @property {Number} tileGridMaxZoom Url del servicio TMS.
  * @property {Object} options Opciones de la capa.
- *
+ * @property {Number} zindex_ Indice de la capa, (+40).
+ * @property {M.impl.layer.TMS} impl_ Implementación de la capa.
+ * @property {Evt} eventsManager_ Manejador de eventos.
+ * @property {M.map} map_ Mapa donde se añade la capa.
+ * @property {Array<Number>} userMaxExtent Extensión máxima [x.min, y.min, x.max, y.max].
+ * @property {String} legend Indica el nombre que queremos que aparezca en el
+ * árbol de contenidos, si lo hay.
+ * @property {Array<Number>} maxExtent_ Extensión máxima.
+ * @property {Boolean} displayInLayerSwitcher Indica si la capa se muestra en el selector de capas.
  * @api
  * @extends {M.layer}
  */
@@ -41,21 +49,22 @@ class TMS extends LayerBase {
    * @param {string|Mx.parameters.TMS} userParameters Parámetros para la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
    * - url: Urlque genera la capa TMS.
-   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
-   * - type: Tipo de la capa.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
-   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - maxExtent: La medida en que restringe la visualización a una región específica,
+   * [x.min, y.min, x.max, y.max].
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
-   * la implementación de la capa.
-   * - opacity: Opacidad de capa, por defecto 1.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher:  Indica si la capa se muestra en el selector de capas.
-   * - opacity: Opacidad de capa, por defecto 1.
+   * - tileGridMaxZoom: Zoom máximo de cuadrícula de mosaico.
+   * - tileSize: Tamaño de la tesela, por defecto 256.
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
+   * la implementación de la capa.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import XYZSource from 'ol/source/XYZ';

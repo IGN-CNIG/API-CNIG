@@ -1,6 +1,6 @@
 import Incicarto from 'facade/incicarto';
 
-M.language.setLang('es');// Español
+M.language.setLang('es'); // Español
 
 const map = M.map({
   container: 'mapjs',
@@ -22,7 +22,7 @@ const map = M.map({
  * Definimos algunas capas base
  */
 
- /*const objWMTSMapa = new M.layer.WMTS({
+/*const objWMTSMapa = new M.layer.WMTS({
   url: 'https://www.ign.es/wmts/mapa-raster',
   name: 'MTN',
   matrixSet: 'GoogleMapsCompatible',
@@ -225,78 +225,78 @@ const objLyrNGBE = new M.layer.WMS({
 const mp = new Incicarto({
   position: 'TL',
   collapsed: true,
+  isDraggable: true,
   collapsible: true,
   tooltip: 'Incicarto plugin',
   wfszoom: 12,
   prefixSubject: 'Incidencia cartográfica - ',
   interfazmode: 'simple', // simple, advance
   buzones: [{
-    name: 'Cartografía (MTN, BTN, RT, HY, Pob, BCN, Provinciales, escalas pequeñas)',
-    email: 'cartografia.ign@mitma.es',
-  },
-  {
-    name: 'Atlas Nacional de España',
-    email: 'ane@mitma.es',
-  },
-  {
-    name: 'Fototeca',
-    email: 'fototeca@cnig.es',
-  },
-  {
-    name: 'Geodesia',
-    email: 'buzon-geodesia@mitma.es',
-  },
-  {
-    name: 'Líneas Límite Municipales',
-    email: 'limites_municipales@mitma.es',
-  },
-  {
-    name: 'Nombres geográficos',
-    email: 'toponimia.ign@mitma.es',
-  },
-  {
-    name: 'Ocupación del suelo',
-    email: 'siose@mitma.es',
-  },
-  {
-    name: 'Teledetección',
-    email: 'pnt@mitma.es',
-  },
-  {
-    name: 'Documentación histórica, Archivo, Cartoteca y biblioteca',
-    email: 'documentacionign@mitma.es',
-  },
-  {
-    name: 'Registro Central de Cartografía',
-    email: 'rcc@mitma.es',
-  },
-  {
-    name: 'Naturaleza, Cultura y Ocio',
-    email: 'naturalezaculturaocio@mitma.es',
-  },
-  {
-    name: 'Cartociudad',
-    email: 'cartociudad@mitma.es',
-  },
-  {
-    name: 'Infraestructura de Datos Espaciales',
-    email: 'idee@mitma.es',
-  },
-  {
-    name: 'Sistemas de Información Geográfica (SIGNA)',
-    email: 'signa@mitma.es',
-  },
-  {
-    name: 'Volcanología',
-    email: 'volcanologia@mitma.es',
-  },
-  {
-    name: 'Red Sísmica Nacional',
-    email: 'sismologia@mitma.es',
-  }
-  ],
-  controllist: [
+      name: 'Cartografía (MTN, BTN, RT, HY, Pob, BCN, Provinciales, escalas pequeñas)',
+      email: 'cartografia.ign@mitma.es',
+    },
     {
+      name: 'Atlas Nacional de España',
+      email: 'ane@mitma.es',
+    },
+    {
+      name: 'Fototeca',
+      email: 'fototeca@cnig.es',
+    },
+    {
+      name: 'Geodesia',
+      email: 'buzon-geodesia@mitma.es',
+    },
+    {
+      name: 'Líneas Límite Municipales',
+      email: 'limites_municipales@mitma.es',
+    },
+    {
+      name: 'Nombres geográficos',
+      email: 'toponimia.ign@mitma.es',
+    },
+    {
+      name: 'Ocupación del suelo',
+      email: 'siose@mitma.es',
+    },
+    {
+      name: 'Teledetección',
+      email: 'pnt@mitma.es',
+    },
+    {
+      name: 'Documentación histórica, Archivo, Cartoteca y biblioteca',
+      email: 'documentacionign@mitma.es',
+    },
+    {
+      name: 'Registro Central de Cartografía',
+      email: 'rcc@mitma.es',
+    },
+    {
+      name: 'Naturaleza, Cultura y Ocio',
+      email: 'naturalezaculturaocio@mitma.es',
+    },
+    {
+      name: 'Cartociudad',
+      email: 'cartociudad@mitma.es',
+    },
+    {
+      name: 'Infraestructura de Datos Espaciales',
+      email: 'idee@mitma.es',
+    },
+    {
+      name: 'Sistemas de Información Geográfica (SIGNA)',
+      email: 'signa@mitma.es',
+    },
+    {
+      name: 'Volcanología',
+      email: 'volcanologia@mitma.es',
+    },
+    {
+      name: 'Red Sísmica Nacional',
+      email: 'sismologia@mitma.es',
+    }
+  ],
+  controllist: [{
       id: 'themeList',
       name: 'Temas de errores',
       mandatory: true,
@@ -312,8 +312,7 @@ const mp = new Incicarto({
       mandatory: true,
     },
   ],
-  themeList: [
-    {
+  themeList: [{
       idTheme: 1,
       nameTheme: 'No especificado',
       emailTheme: 'consultas@cnig.es',
@@ -375,8 +374,8 @@ const mp = new Incicarto({
     },
     {
       idTheme: 13,
-      nameTheme: 'Pruebas Jesús',
-      emailTheme: 'jesusdiaz@guadaltel.com',
+      nameTheme: 'Pruebas Carmen',
+      emailTheme: 'carmenmarquez@guadaltel.com',
     }
   ],
   errorList: [

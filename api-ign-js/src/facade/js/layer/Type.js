@@ -4,17 +4,6 @@
 import { normalize, isString } from '../util/Utils';
 
 /**
- * Tipo WMC (Web Map Context, o Web View Context). Es
- * un estándar de OGC que permite reproducir una vista
- * compuesta por capas WMS.
- * @const
- * @type {string}
- * @public
- * @api
- */
-export const WMC = 'WMC';
-
-/**
  * Tipo KML (Keyhole Markup Language). Es un lenguaje de
  * marca basado en XML para representar datos geográficos.
  * @const
@@ -159,7 +148,6 @@ export const MBTilesVector = 'MBTilesVector';
  *
  */
 const layertypes = {
-  WMC,
   KML,
   WMS,
   WFS,
@@ -208,7 +196,6 @@ export const parse = (rawType) => {
  */
 export const know = (type) => {
   const knowTypes = [
-    WMC,
     KML,
     WMS,
     WFS,

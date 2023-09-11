@@ -25,6 +25,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} minZoom Limitar el zoom mínimo.
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {Object} options Capa de opciones WMS.
+ * @property {Boolean} useCapabilities Define si se utilizará el capabilities para generar la capa.
  *
  * @api
  * @extends {M.Layer}
@@ -45,6 +46,7 @@ class WMS extends LayerBase {
    *   y aparecería como no visible.
    * - version: Versión WMS.
    * - type: Tipo de la capa.
+   * - useCapabilities: Define si se utilizará el capabilities para generar la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
@@ -64,6 +66,9 @@ class WMS extends LayerBase {
    * - maxResolution: Resolución máxima.
    * - animated: Define si la capa está animada,
    * el valor predeterminado es falso.
+   * - ratio: determina el tamaño de las solicitudes de las imágenes. 1 significa que tienen el
+   * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
+   * y así sucesivamente. Debe ser 1 o superior. Por defecto es 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';

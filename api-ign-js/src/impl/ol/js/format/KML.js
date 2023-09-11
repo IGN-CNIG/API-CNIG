@@ -8,75 +8,64 @@ import OLStyleIcon from 'ol/style/Icon';
 import { parse as parseXML } from 'ol/xml';
 
 /**
-  * @classdesc
-  * Implementación del formateador KML.
-  *
-  * @property {Object} screenOverlay_ "Popup".
-  * @property {bool} label_ Indica si incluye la opción "label".
-  *
-  * @api
-  * @extends {ol.format.KML}
-  */
+ * @classdesc
+ * Implementación del formateador KML.
+ *
+ * @property {Object} screenOverlay_ "Popup".
+ * @property {bool} label_ Indica si incluye la opción "label".
+ *
+ * @api
+ * @extends {ol.format.KML}
+ */
 class KML extends OLFormatKML {
   /**
-    * Constructor principal de la clase. Formato de los objetos geográficos para
-    * leer y escribir datos en formato KML.
-    *
-    * @constructor
-    * @param {olx.format.KMLOptions} optOptions Opciones del formato KML.
-    * - extractStyles: Extraer estilos del KML. Por defecto es verdadero.
-    * - showPointNames: Mostrar nombres como etiquetas para marcas de posición
-    * que contienen puntos. Por defecto es verdadero.
-    * - defaultStyle: Estilo por defecto. El estilo por defecto es el mismo que
-    * el de Google Earth.
-    * - writeStyles: Escribir estilos en el KML. Por defecto es verdadero.
-    * - crossOrigin: Atributo para imágenes cargadas. Por defecto es 'anonymous'.
-    * - iconUrlFunction: Función que toma una URL como cadena y devuelve una URL
-    * como cadena.
-    * @api
-    */
+   * Constructor principal de la clase. Formato de los objetos geográficos para
+   * leer y escribir datos en formato KML.
+   *
+   * @constructor
+   * @param {olx.format.KMLOptions} optOptions Opciones del formato KML.
+   * - extractStyles: Extraer estilos del KML. Por defecto es verdadero.
+   * - defaultStyle: Estilo por defecto. El estilo por defecto es el mismo que
+   * el de Google Earth.
+   * - writeStyles: Escribir estilos en el KML. Por defecto es verdadero.
+   * - crossOrigin: Atributo para imágenes cargadas. Por defecto es 'anonymous'.
+   * - iconUrlFunction: Función que toma una URL como cadena y devuelve una URL
+   * como cadena.
+   * -label: Define si se muestra la etiqueta o no.Por defecto mostrará la etiqueta.
+   * que contienen puntos. Por defecto es verdadero.
+   * @api
+   */
   constructor(optOptions = {}) {
-    super();
+    super({ showPointNames: optOptions.label });
 
     /**
-      * "Popup".
-      * @private
-      * @type {Object}
-      */
+     * "Popup".
+     * @private
+     * @type {Object}
+     */
     this.screenOverlay_ = null;
-
-    /**
-      * Indica si incluye la opción "label".
-      * @private
-      * @type {bool}
-      */
-    this.label_ = optOptions.label === undefined ? true : optOptions.label;
   }
 
 
   /**
-    * Este método devuelve los objetos geográficos obtenidos de una fuente y los personaliza.
-    *
-    * @function
-    * @param {Document|Element|Object|string} textResponse Respuesta que contiene los
-    * objetos geográficos.
-    * @param {Object} options Opciones.
-    * - dataProjection: Proyección de los datos leídos.
-    * - extent: Extensión de la tesela en unidades de mapa de la tesela leída.
-    * - featureProjection: Proyección de las geometrías de los objetos geográficos creadas por el
-    * lector de formato.
-    * @returns {M.Feature} Objetos geográficos personalizados.
-    * @public
-    * @api
-    */
+   * Este método devuelve los objetos geográficos obtenidos de una fuente y los personaliza.
+   *
+   * @function
+   * @param {Document|Element|Object|string} textResponse Respuesta que contiene los
+   * objetos geográficos.
+   * @param {Object} options Opciones.
+   * - dataProjection: Proyección de los datos leídos.
+   * - extent: Extensión de la tesela en unidades de mapa de la tesela leída.
+   * - featureProjection: Proyección de las geometrías de los objetos geográficos creadas por el
+   * lector de formato.
+   * @returns {M.Feature} Objetos geográficos personalizados.
+   * @public
+   * @api
+   */
   readCustomFeatures(textResponse, options) {
     const features = this.readFeatures(textResponse, options);
     const featuresModified = features.map((feature) => {
       let styles = feature.getStyle()(feature);
-      if (this.label_ === false) {
-        const news = [styles[0]];
-        feature.setStyle(news);
-      }
       if (!Array.isArray(styles)) {
         styles = [styles];
       }
@@ -95,13 +84,13 @@ class KML extends OLFormatKML {
   }
 
   /**
-    * Este método obtiene los atributos del "popup".
-    *
-    * @function
-    * @param {string} textResponse Respuesta.
-    * @public
-    * @api
-    */
+   * Este método obtiene los atributos del "popup".
+   *
+   * @function
+   * @param {string} textResponse Respuesta.
+   * @public
+   * @api
+   */
   readScreenOverlay(textResponse) {
     // Attributes ScreenOverlay
     const screenOverlayAttr = 'ScreenOverlay';
@@ -200,70 +189,69 @@ class KML extends OLFormatKML {
   }
 
   /**
-    * Este método devuelve el valor del objeto "screenOverlay_" pasado al
-    * constructor.
-    *
-    * @function
-    * @returns {Object} objeto "screenOverlay_" pasado al constructor.
-    * @public
-    * @api
-    */
+   * Este método devuelve el valor del objeto "screenOverlay_" pasado al
+   * constructor.
+   *
+   * @function
+   * @returns {Object} objeto "screenOverlay_" pasado al constructor.
+   * @public
+   * @api
+   */
   getScreenOverlay() {
     return this.screenOverlay_;
   }
 }
 
 /**
-  * Imagen por defecto.
-  *
-  * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L223
-  * @const
-  * @type {string}
-  * @api
-  */
+ * Imagen por defecto.
+ *
+ * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L223
+ * @const
+ * @type {string}
+ * @api
+ */
 KML.DEFAULT_NO_IMAGE_STYLE = 'NO_IMAGE';
 
 /**
-  * URL de la imagen por defecto.
-  *
-  * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L191
-  * @const
-  * @type {string}
-  * @api
-  */
+ * URL de la imagen por defecto.
+ *
+ * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L191
+ * @const
+ * @type {string}
+ * @api
+ */
 KML.DEFAULT_IMAGE_STYLE_SRC = 'https://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png';
 
 /**
-  * Anclaje de la imagen por defecto.
-  *
-  * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L161
-  * @const
-  * @type {ol.Size}
-  * @api
-  */
+ * Anclaje de la imagen por defecto.
+ *
+ * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L161
+ * @const
+ * @type {ol.Size}
+ * @api
+ */
 KML.DEFAULT_IMAGE_STYLE_ANCHOR = [20, 2]; // FIXME maybe [8, 32] ?
 
 /**
-  * Unidades de X para la imagen por defecto.
-  *
-  * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L168
-  * @see https://github.com/openlayers/openlayers/blob/c27aac20b7642f7878abe1e23ace07a851511829/src/ol/style/IconAnchorUnits.js#L11
-  * @const
-  * @type {ol.style.IconAnchorUnits}
-  * @api
-  */
+ * Unidades de X para la imagen por defecto.
+ *
+ * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L168
+ * @see https://github.com/openlayers/openlayers/blob/c27aac20b7642f7878abe1e23ace07a851511829/src/ol/style/IconAnchorUnits.js#L11
+ * @const
+ * @type {ol.style.IconAnchorUnits}
+ * @api
+ */
 KML.DEFAULT_IMAGE_STYLE_ANCHOR_X_UNITS = 'pixels';
 
 /**
-  * Unidades de Y para la imagen por defecto.
-  *
-  * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L176
-  * @see https://github.com/openlayers/openlayers/blob/c27aac20b7642f7878abe1e23ace07a851511829/src/ol/style/IconAnchorUnits.js#L11
-  * @const
-  * @type {ol.style.IconAnchorUnits}
-  * @api
-  */
+ * Unidades de Y para la imagen por defecto.
+ *
+ * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L176
+ * @see https://github.com/openlayers/openlayers/blob/c27aac20b7642f7878abe1e23ace07a851511829/src/ol/style/IconAnchorUnits.js#L11
+ * @const
+ * @type {ol.style.IconAnchorUnits}
+ * @api
+ */
 KML.DEFAULT_IMAGE_STYLE_ANCHOR_Y_UNITS = 'pixels';
 
 export default KML;
-

@@ -50,12 +50,12 @@ class WFS extends Vector {
    * - version: Opcional - Versión del estandar a usar. Por defecto es 1.0.0.
    * - extract: Opcional Activa la consulta por clic en el objeto geográfico, por defecto falso.
    * - type: Tipo de la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
-   * - getFeatureOutputFormat: Formato de los objetos geográficos, por defecto 'application/json'
+   * - style: Define el estilo de la capa.
+   * - getFeatureOutputFormat: Formato de los objetos geográficos, por defecto 'application/json'.
    * - describeFeatureTypeOutputFormat: Describe el formato de salida de los objetos geográficos.
    * - vendor: Proveedor.
    * - minZoom: Zoom mínimo aplicable a la capa.

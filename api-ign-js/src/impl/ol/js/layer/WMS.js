@@ -69,6 +69,9 @@ class WMS extends LayerBase {
    * - maxResolution: Resolución máxima.
    * - animated: Define si la capa está animada,
    * el valor predeterminado es falso.
+   * - ratio: determina el tamaño de las solicitudes de las imágenes.1 significa que tienen el *
+   * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
+   * y así sucesivamente.Debe ser 1 o superior.Por defecto es 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
@@ -197,6 +200,14 @@ class WMS extends LayerBase {
      * WMS useCapabilities. Indica si se usa el getCapabilities.
      */
     this.useCapabilities = options.useCapabilities !== false;
+
+    /**
+     * WMS ratio. Tamaño de las solicitudes de las imágenes.
+     */
+    this.ratio = options.ratio || 1;
+    if (options.ratio < 1) {
+      console.error('El ratio debe ser 1 o superior');
+    }
   }
 
   /**
@@ -208,28 +219,26 @@ class WMS extends LayerBase {
    */
   setVisible(visibility) {
     this.visibility = visibility;
-    if (this.inRange() === true) {
-      // if this layer is base then it hides all base layers
-      if ((visibility === true) && (this.transparent !== true)) {
-        // hides all base layers
-        this.map.getBaseLayers()
-          .filter(layer => !layer.equals(this) && layer.isVisible())
-          .forEach(layer => layer.setVisible(false));
+    // if this layer is base then it hides all base layers
+    if ((visibility === true) && (this.transparent !== true)) {
+      // hides all base layers
+      this.map.getBaseLayers()
+        .filter(layer => !layer.equals(this) && layer.isVisible())
+        .forEach(layer => layer.setVisible(false));
 
-        // set this layer visible
-        if (!isNullOrEmpty(this.ol3Layer)) {
-          this.ol3Layer.setVisible(visibility);
-        }
-
-        // updates resolutions and keep the zoom
-        const oldZoom = this.map.getZoom();
-        this.map.getImpl().updateResolutionsFromBaseLayer();
-        if (!isNullOrEmpty(oldZoom)) {
-          this.map.setZoom(oldZoom);
-        }
-      } else if (!isNullOrEmpty(this.ol3Layer)) {
+      // set this layer visible
+      if (!isNullOrEmpty(this.ol3Layer)) {
         this.ol3Layer.setVisible(visibility);
       }
+
+      // updates resolutions and keep the zoom
+      const oldZoom = this.map.getZoom();
+      this.map.getImpl().updateResolutionsFromBaseLayer();
+      if (!isNullOrEmpty(oldZoom)) {
+        this.map.setZoom(oldZoom);
+      }
+    } else if (!isNullOrEmpty(this.ol3Layer)) {
+      this.ol3Layer.setVisible(visibility);
     }
   }
 
@@ -377,12 +386,8 @@ class WMS extends LayerBase {
       }, this.vendorOptions_, true));
     }
     this.map.getMapImpl().addLayer(this.ol3Layer);
-    // sets its visibility if it is in range
-    if (this.isVisible() && !this.inRange()) {
-      this.setVisible(false);
-    } else {
-      this.setVisible(this.visibility);
-    }
+
+    this.setVisible(this.visibility);
 
     // sets its z-index
     if (zIndex !== null) {
@@ -493,9 +498,9 @@ class WMS extends LayerBase {
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
       if (this.tiled === true) {
-        const tileGrid = (this.useCapabilities)
-          ? new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) })
-          : false;
+        const tileGrid = (this.useCapabilities) ?
+          new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) }) :
+          false;
         olSource = new TileWMS({
           url: this.url,
           params: layerParams,
@@ -516,6 +521,7 @@ class WMS extends LayerBase {
           maxResolution,
           opacity,
           zIndex,
+          ratio: this.ratio,
         });
       }
     }

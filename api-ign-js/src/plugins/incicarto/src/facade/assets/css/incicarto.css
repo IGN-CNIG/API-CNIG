@@ -144,6 +144,7 @@ div#drawingtools button {
 div.m-panel.m-incicarto.opened,
 div.m-panel.m-incicarto>div.m-panel-controls {
     max-width: 500px;
+    width: max-content;
 }
 
 div.m-panel.m-incicarto>div.m-panel-controls>div.m-control.m-container.m-incicarto>div#m-incicarto-actions {

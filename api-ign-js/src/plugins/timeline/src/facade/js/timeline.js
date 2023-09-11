@@ -147,6 +147,7 @@ export default class Timeline extends M.Plugin {
      *@type { String }
      */
      this.timelineType = options.timelineType || false;
+
   }
 
   /**

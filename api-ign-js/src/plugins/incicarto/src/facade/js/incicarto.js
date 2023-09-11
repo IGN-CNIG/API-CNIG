@@ -68,8 +68,7 @@ export default class Incicarto extends M.Plugin {
     this.wfszoom_ = parseInt(options.wfszoom, 10);
     if (this.wfszoom_ === undefined || Number.isNaN(this.wfszoom_)) this.wfszoom_ = 12;
 
-    this.controllist_ = options.controllist || [
-      {
+    this.controllist_ = options.controllist || [{
         id: 'themeList',
         name: 'Temas de errores',
         mandatory: true,
@@ -118,6 +117,13 @@ export default class Incicarto extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    /**
+     * Option to allow the plugin to be draggable or not
+     * @private
+     * @type {Boolean}
+     */
+    this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
 
     /**
      * Plugin parameters
@@ -184,6 +190,7 @@ export default class Incicarto extends M.Plugin {
       errThemes: this.errThemes_,
       errTypes: this.errTypes_,
       errProducts: this.errProducts_,
+      isDraggable: this.isDraggable,
     });
 
     this.controls_.push(this.control_);
@@ -214,7 +221,7 @@ export default class Incicarto extends M.Plugin {
   getAPIRest() {
     // eslint-disable-next-line max-len
     // *${JSON.stringify(this.buzones_)}*${JSON.stringify(this.controllist_)}*${JSON.stringify(this.themes_)}*${JSON.stringify(this.errors_)}*${JSON.stringify(this.products_)}
-    return `${this.name_}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.wfszoom_}*${this.prefixSubject_}*${this.interfazmode_}`;
+    return `${this.name_}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.wfszoom_}*${this.prefixSubject_}*${this.interfazmode_}*${this.isDraggable}}`;
   }
 
   /**

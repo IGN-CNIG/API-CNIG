@@ -36,7 +36,8 @@ export default class PredefinedZoomControl extends M.Control {
    */
   createView(map) {
     this.map = map;
-    M.toast.warning(getValue('predefinedzoom_obsolete'));
+    // eslint-disable-next-line
+    console.warn(getValue('predefinedzoom_obsolete'));
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template);
       this.savedZooms.forEach((customZoom) => {

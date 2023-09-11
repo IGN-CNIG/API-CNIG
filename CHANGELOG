@@ -1,3 +1,30 @@
+16/06/2023 - Versión 4.7.0
+- Se incorpora el plugin locator dejando obsoleto los plugins ignSearchlocator, xylocator e infocatastro
+- Mejoras documentación JSDOC
+- Plugin information: El popup se mueve por defecto y se mueve cuando esta cerrado.
+- Se implementa formato GML en las capas WFS.
+- Incicarto: se elimina al funcionalidad incigeo y se soluciona problema con modo advance.
+Se soluciona problemas en posiciones BL y BR.
+Se activa funcionalidad draggable
+- Se activa proj4 como variable global
+- Se incluye plugin StoryMap
+- Se elimina de api/actions la consulta a contexts
+- Se añade version de OL a la consulta api/actions/version
+- Se actualiza servicios en api/actions/services
+- Se implementa los eventos REMOVED_LAYER y REMOVED_FROM_MAP
+- Se añade parámetro scaleLabel a los KML para control de tamaño del texto
+- Se soluciona problemas con el parámetro label de los KML que permiten mostrar el texto o no
+- Se añade parámetro layers a los KML para filtrar las capas a mostrar
+- Se anade parametro extract a OGCAPIFeatures y MBTilesVector
+- Implementación de funcionalidad de capas rápidas
+- Mejoras sobre los métodos de utilidades encodeBase64 y decodeBase64
+- Se añade parametro ratio a capas WMS
+- Modificación del z-index por defecto para las capas
+- En capas vectoriales con extract a true se mejora la visualización del contenido
+- Se mejora las peticiones a las capas WFS evitando doble petición
+- Se soluciona problema con evento hover en capas vectoriales
+
+
 01/06/2023 - Versión 4.6.0
 - Se dispara evento MOVE cuando se mueve el mapa, no cuando se mueve el ratón
 - Se centra el popup cuando las capas tienen el extract y se consulta y en el plugin information (cuando muestra la información la centra), en caso de que MOVE_MAP_EXTRACT tenga valor false
@@ -13,6 +40,7 @@
 - Se soluciona error parámetro order en los plugins backimglayer, locator y viewmanagement
 - Se actualiza visor.jsp
   
+
 14/03/2023 - Versión 4.5.0
 - Mejoras sobre la documentación JSDoc
 - Mejoras sobre la documentación de los plugins

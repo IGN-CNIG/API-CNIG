@@ -46,8 +46,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 * **urlAttribute**: Texto adicional que se añade a la atribución. Por defecto: "Gobierno de España".
 
 ### Parámetros "defaultURL" y "defaultAttribution".
-
-Para determinadas capas base ("OI.OrthoimageCoverage", "LC.LandCoverSurfaces" y "IGNBaseTodo"), el nombre y url de atribución cargan los valores especificados por defecto.
+Para determinadas capas base ("OI.OrthoimageCoverage" WMTS del servicio http://www.ign.es/wmts/pnoa-ma, "LC.LandCoverSurfaces" WMTS del servicio https://servicios.idee.es/wmts/ocupacion-suelo e "IGNBaseTodo" WMTS del servicio https://www.ign.es/wmts/ign-base), el nombre y url de atribución cargan los valores especificados por defecto.
 
   * Si la capa base es "OI.OrthoimageCoverage" (https://sentinel.esa.int/web/sentinel/home) y tiene un nivel de zoom menor a 14:
     - Nombre de la atribución: Copernicus Sentinel 2019.
@@ -63,6 +62,8 @@ Para determinadas capas base ("OI.OrthoimageCoverage", "LC.LandCoverSurfaces" y 
     - URL de la atribución: http://www.scne.es/.
 
 En el caso de que la capa base no se corresponda con los casos anteriores, se podrá definir un nombre de atribución y una URL por defecto con los siguientes parámetros:
+* **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario.
+* **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario.
 
 
 # Archivos de atribuciones CNIG
@@ -173,6 +174,13 @@ https://componentes.cnig.es/api-core?attributions=BL*Plugin%20atribuciones*1*100
 ```
 
 ### Ejemplo de uso API-REST en base64
+
+Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
+Ejemplo:
+```javascript
+M.utils.encodeBase64(obj_params);
+```
+
 Ejemplo de constructor: 
 ```javascript
 {

@@ -96,6 +96,13 @@ https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WG
 ```
 
 ### Ejemplo de uso API-REST en base64
+
+Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
+Ejemplo:
+```javascript
+M.utils.encodeBase64(obj_params);
+```
+
 Ejemplo del constructor: 
 
 ```javascript
@@ -107,7 +114,7 @@ Ejemplo del constructor:
 ```
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=base64=eyJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIiwgInRvb2x0aXAiOiAiQ29vcmRlbmFkYXMifQ==
+https://componentes.cnig.es/api-core?mousesrs=base64=eyJsYWJlbCI6IkVQU0c6NDMyNiIsImhlbHBVcmwiOiJodHRwczovL3d3dy5pZ24uZXMvIiwidG9vbHRpcCI6IkNvb3JkZW5hZGFzIn0=
 ```
 
 # Ejemplo de uso

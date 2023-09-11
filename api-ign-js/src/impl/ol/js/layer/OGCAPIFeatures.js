@@ -2,8 +2,11 @@
  * @module M/impl/layer/OGCAPIFeatures
  */
 import FormatGeoJSON from 'M/format/GeoJSON';
-import { isNullOrEmpty } from 'M/util/Utils';
+import { compileSync as compileTemplate } from 'M/util/Template';
+import geojsonPopupTemplate from 'templates/geojson_popup';
+import { isNullOrEmpty, isFunction } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
+import Popup from 'M/Popup';
 import OLSourceVector from 'ol/source/Vector';
 import { get as getProj } from 'ol/proj';
 import { all } from 'ol/loadingstrategy';
@@ -211,6 +214,49 @@ class OGCAPIFeatures extends Vector {
   }
 
   /**
+   * Este método ejecuta un objeto geográfico seleccionado.
+   *
+   * @function
+   * @param {ol.features} features Objetos geográficos de Openlayers.
+   * @param {Array} coord Coordenadas.
+   * @param {Object} evt Eventos.
+   * @api stable
+   * @expose
+   */
+  selectFeatures(features, coord, evt) {
+    const feature = features[0];
+    if (this.extract === true) {
+      // unselects previous features
+      this.unselectFeatures();
+
+      if (!isNullOrEmpty(feature)) {
+        const clickFn = feature.getAttribute('vendor.mapea.click');
+        if (isFunction(clickFn)) {
+          clickFn(evt, feature);
+        } else {
+          const htmlAsText = compileTemplate(geojsonPopupTemplate, {
+            vars: this.parseFeaturesForTemplate_(features),
+            parseToHtml: false,
+          });
+          const featureTabOpts = {
+            icon: 'g-cartografia-pin',
+            title: this.name,
+            content: htmlAsText,
+          };
+          let popup = this.map.getPopup();
+          if (isNullOrEmpty(popup)) {
+            popup = new Popup();
+            popup.addTab(featureTabOpts);
+            this.map.addPopup(popup, coord);
+          } else {
+            popup.addTab(featureTabOpts);
+          }
+        }
+      }
+    }
+  }
+
+  /**
    * Este método devuelve la extensión de todas los objetos geográficos
    * o discrimina por el filtro.
    *
@@ -370,6 +416,7 @@ class OGCAPIFeatures extends Vector {
       equals = equals && (this.limit === obj.limit);
       equals = equals && (this.offset === obj.offset);
       equals = equals && (this.format === obj.format);
+      equals = equals && (this.extract === obj.extract);
       equals = equals && (this.bbox === obj.bbox);
       equals = equals && (this.id === obj.id);
       equals = equals && (this.getFeatureOutputFormat ===

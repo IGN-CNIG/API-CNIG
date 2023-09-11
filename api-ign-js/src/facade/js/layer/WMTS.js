@@ -24,6 +24,7 @@ import { getValue } from '../i18n/language';
  * @property {Boolean} transparent Falso si es una capa base, verdadero en caso contrario.
  * @property {Object} options Opciones de capas de WMTS.
  * @property {Object} capabilitiesMetadata Capacidades de metadatos WMTS.
+ * @property {Boolean} useCapabilities Define si se utilizará el capabilities para generar la capa.
  *
  * @api
  * @extends {M.Layer}
@@ -41,6 +42,7 @@ class WMTS extends LayerBase {
    * - format: Opcionalmente, el formato en el que solicitar la imagen.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
+   * - useCapabilities: Define si se utilizará el capabilities para generar la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán
    * a la implementación de la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.

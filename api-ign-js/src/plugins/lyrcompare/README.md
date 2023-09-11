@@ -72,9 +72,9 @@ A esta/s capa/s se le aplicará el efecto de transparencia.
 
 - **defaultLyrB**: Define la capa que se cargará en la segunda posición. Valores de 0 al número de capas disponibles - 1 (Ejemplo: si hay 6 capas: de 0 a 5). No se puede repetir el valor, si en defaultLyrB se indica 0, no se puede indicar 0 en defaultLyrA, defaultLyrC o defaultLyrD. Por defecto: 1.
 
-- **defaultLyrC**: Define la capa uno que se cargará en la tercera posición. Valores de 0 al número de capas disponibles - 1 (Ejemplo: si hay 6 capas: de 0 a 5). No se puede repetir el valor, si en defaultLyrC se indica 0, no se puede indicar 0 en defaultLyrA, defaultLyrB o defaultLyrD. Por defecto: 2.
+- **defaultLyrC**: Define la capa que se cargará en la tercera posición. Valores de 0 al número de capas disponibles - 1 (Ejemplo: si hay 6 capas: de 0 a 5). No se puede repetir el valor, si en defaultLyrC se indica 0, no se puede indicar 0 en defaultLyrA, defaultLyrB o defaultLyrD. Por defecto: 2.
 
-- **defaultLyrD**: Define la capa uno que se cargará en la cuarta posición. Valores de 0 al número de capas disponibles - 1 (Ejemplo: si hay 6 capas: de 0 a 5). No se puede repetir el valor, si en defaultLyrD se indica 0, no se puede indicar 0 en defaultLyrA, defaultLyrB o defaultLyrC. Por defecto: 3.
+- **defaultLyrD**: Define la capa que se cargará en la cuarta posición. Valores de 0 al número de capas disponibles - 1 (Ejemplo: si hay 6 capas: de 0 a 5). No se puede repetir el valor, si en defaultLyrD se indica 0, no se puede indicar 0 en defaultLyrA, defaultLyrB o defaultLyrC. Por defecto: 3.
 
 # Ejemplos de uso
 

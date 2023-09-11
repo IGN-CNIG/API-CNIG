@@ -1,0 +1,897 @@
+/* Opening & closing buttons */
+
+.m-panel.m-plugin-locator.collapsed {
+    height: 40px;
+}
+
+.m-plugin-locator.opened .m-panel-btn.g-cartografia-flecha-derecha,
+.m-plugin-locator.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+    background-color: white !important;
+    color: #71a7d3 !important;
+}
+
+.m-areas>div.m-area.m-right>div.m-plugin-locator.opened>button.m-panel-btn {
+    position: absolute;
+    left: -40px;
+}
+
+.m-areas>div.m-area.m-left>div.m-plugin-locator.opened>button.m-panel-btn {
+    position: absolute;
+    right: -40px;
+}
+
+/* Title and images container */
+
+.m-control.m-container.m-locator {
+    width: 200px;
+}
+
+/* Título */
+
+div#m-locator-title {
+    background-color: #71a7d3;
+    color: white;
+    display: block;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 5px;
+    text-align: center;
+    width: 100%;
+}
+
+div#m-locator-previews {
+    background-color: white;
+}
+
+#m-locator-xylocator,
+#m-locator-infocatastro,
+#m-locator-ignsearch {
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* .locator-icon-zoom-in.activated:before, */
+#m-locator-xylocator.locator-icon-posicion3.activated,
+#m-locator-infocatastro.locator-icon-catastro.activated,
+#m-locator-ignsearch.locator-icon-ignsearch.activated {
+    color: #71a7d3 !important;
+}
+
+#m-locator-previews {
+    display: flex;
+    justify-content: center;
+}
+
+#m-xylocator-panel,
+#m-infocatastro-panel,
+#m-ignsearch-panel {
+    border-top: 1px solid #adadad;
+    padding: 10px;
+    text-align: left;
+    background-color: #fffbfb;
+    width: 320px;
+}
+
+/* Images container */
+
+.m-locator .activelocatorDiv {
+    border: 5px solid #92c1e7 !important;
+}
+
+/* Bottom positions fix when images row turns into columns */
+
+.m-bottom .m-control.m-container.m-locator>#m-locator-previews {
+    background-color: white;
+    display: flex;
+}
+
+.m-bottom.m-left>.m-panel.m-plugin-locator.opened>.m-panel-controls {
+    display: flow-root;
+}
+
+.m-bottom.m-left>.m-plugin-locator.opened>.m-panel-btn {
+    position: relative;
+    right: -40px;
+}
+
+.m-areas>div.m-area>div.m-panel.opened.m-plugin-locator {
+    background-color: transparent !important;
+    /* box-shadow: none !important; */
+    order: 0;
+}
+
+.m-areas>div.m-area.m-left>div.m-panel.opened.m-plugin-locator {
+    display: block !important;
+}
+
+.m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.no-collapsible.m-plugin-locator>div.m-panel-controls>div.m-control.m-container.m-locator {
+    padding-right: 0px;
+}
+
+.m-areas>div.m-area>div.m-panel.collapsed>div.m-panel-controls {
+    display: none;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-locator.collapsed>div.m-panel-controls>div {
+    display: none;
+}
+
+/* Firefox fix */
+
+@-moz-document url-prefix() {
+    .m-bottom.m-right .m-plugin-locator.opened {
+        display: flex;
+    }
+
+    .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.m-plugin-locator>div.m-panel-controls>div.m-control.m-container.m-locator {
+        padding-right: unset;
+    }
+
+    .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.no-collapsible.m-plugin-locator>div.m-panel-controls>div.m-control.m-container.m-locator {
+        padding-right: 0px;
+    }
+}
+
+/* Mobile fix */
+
+@media only screen and (max-width: 1000px) {
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-locator.opened {
+        margin-right: 10px;
+    }
+
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-locator.opened {
+        margin-left: 10px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.opened {
+        z-index: 10;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-locator.opened>div.m-panel-controls>div.m-control.m-container.m-locator>div#m-locator-title {
+        font-size: 13px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-locator.opened>div.m-panel-controls>div.m-control.m-container.m-locator>div#m-locator-previews>div>span {
+        font-size: 1.3em;
+        line-height: 40px;
+    }
+
+    /* Firefox fix */
+
+    @-moz-document url-prefix() {
+        .m-bottom.m-left>.m-panel.m-plugin-locator.opened>.m-panel-controls {
+            display: flow-root;
+        }
+
+        .m-areas>div.m-area>div.m-panel.m-plugin-locator.opened {
+            width: auto;
+        }
+
+        .m-bottom.m-left>.m-panel.m-plugin-locator.opened>.m-panel-controls {
+            display: flex;
+        }
+
+        .m-bottom.m-left>.m-panel.m-plugin-locator.opened>button {
+            left: 0px;
+        }
+
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            display: flex;
+        }
+    }
+
+    /* Edge fix */
+
+    @supports (-ms-ime-align:auto) {
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            padding-left: 0px;
+        }
+
+        .m-bottom.m-left>.m-plugin-locator.opened>.m-panel-btn {
+            position: static;
+        }
+    }
+}
+
+/* Edge fix */
+@supports (-ms-ime-align:auto) {
+    .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+        padding-left: 40px;
+    }
+
+    .m-bottom.m-left>.m-plugin-locator.opened>.m-panel-btn {
+        right: 0px;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel input#m-searchParamsPoligono-input {
+        width: 19% !important;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel input#m-searchParamsParcela-input {
+        width: 19% !important;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel input#m-refCatastral-input {
+        width: 19% !important;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel #m-informa {
+        display: inline !important;
+    }
+}
+
+/* XYLocator */
+
+/* COLUMN & CONTENT COLUMN */
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>span {
+    width: 32%;
+    /* display: inline-block; */
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>select {
+    width: 65%;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    box-shadow: 1px 1px 3px 0px #999;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>input {
+    width: 63%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas,
+#div-contenedor-locator>#m-infocatastro-panel .m-infocatastro-datas {
+    width: 92%;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div {
+    margin-bottom: 4%;
+    margin-top: 5%;
+}
+
+/* DROPDOWN */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 35%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    box-shadow: 1px 1px 3px 0px #999;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>div.m-xylocator-datas>.button>#m-xylocator-loc {
+    background-color: #71a7d3;
+    border: none;
+    color: white;
+    border-radius: 2px;
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>div.m-xylocator-datas>.button>#m-xylocator-limpiar {
+    background-color: #71a7d3;
+    border: none;
+    color: white;
+    margin-left: 10px;
+    border-radius: 2px;
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* FIREFOX AND CHROME HACKS */
+@-moz-document url-prefix() {
+
+    #div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>select,
+    #div-contenedor-locator>#m-infocatastro-panel .m-infocatastro-datas>div select {
+        border: 1px solid rgb(167, 160, 160);
+        padding: 1px 1px 2px 3px;
+    }
+
+    #div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>span {
+        width: 33%;
+        display: inline-block;
+    }
+
+    #div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-dms>div {
+        min-width: 335px !important;
+    }
+
+    #div-m-xylocator-coordinatesSystemParcela p.parcela--input {
+        display: inline-block;
+    }
+
+    #div-m-infocatastro-coordinatesSystemRefCatastral p.refCastastrl--input {
+        display: inline-block;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel input#m-refCatastral-input {
+        width: 17% !important;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel #m-informa {
+        font-size: 11px !important;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    #div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>select {
+        background-color: #e9e8e8 !important;
+    }
+}
+
+/* IE HACK */
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+
+    #div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>select::-ms-expand,
+    #div-contenedor-locator>#m-infocatastro-panel .m-infocatastro-datas>div>select::-ms-expand {
+        display: none;
+    }
+
+    #div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>select,
+    #div-contenedor-locator>#m-infocatastro-panel .m-infocatastro-datas>div>select {
+        border: 1px solid rgb(167, 160, 160);
+    }
+}
+
+/* BUTTON */
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div.button>button {
+    background-color: #fff;
+    padding: 5px;
+    cursor: pointer;
+    display: block;
+    font-family: Muli, sans-serif !important;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, .4);
+    font-size: 14px;
+    -webkit-transition: opacity .25s ease 0s;
+    transition: opacity .25s ease 0s;
+    color: black;
+    height: 28px;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div.button {
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+}
+
+/* PANEL */
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>input {
+    margin-top: 3%;
+    width: 60%;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LON {
+    margin-left: 5px;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div#m-xylocator-latlon>input#LAT {
+    margin-left: 15px;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>span {
+    display: inline;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>div>select {
+    display: block;
+    width: 100%;
+    margin-top: 3%;
+}
+
+/* HELP */
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-coordinatesSystem>#m-xylocator-selector-title {
+    display: flex;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-coordinatesSystem>div>.m-xylocator-help-button>a {
+    margin-left: 5px;
+    font-size: 16px;
+    color: #71a7d3 !important;
+    text-decoration: none;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-dms p {
+    font-weight: bold;
+    margin-bottom: -1rem;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-dms>div {
+    display: flex;
+    min-width: 300px;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-dms>div>div>input[type="number"] {
+    width: 2.5rem;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-dms>div>div>span {
+    font-size: 24px;
+    margin-left: 2px;
+    margin-right: 10px;
+}
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-dms>div>div {
+    height: 67px;
+    display: flex;
+    align-items: center;
+}
+
+
+#div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-dms .m-xylocator-dms-radio {
+    line-height: 14px;
+    width: 70px;
+}
+
+#div-contenedor-locator input::placeholder {
+    color: #d1d0d0;
+    opacity: 1;
+}
+
+#div-contenedor-locator input:-ms-input-placeholder {
+    color: #d1d0d0;
+}
+
+#div-contenedor-locator input::-ms-input-placeholder {
+    color: #d1d0d0;
+}
+
+/* InfoCatastro*/
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs .m-search-tab-panels {
+    border: 1px solid #ccc;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs .m-search-tab-panels[role=tabpanel][aria-expanded=false] {
+    display: none;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs .m-search-tab-panels[role=tabpanel][aria-expanded=true]{
+    display: block;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label {
+    display: inline-block;
+    position: relative;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-bottom: 0;
+    cursor: pointer;
+    text-align: center;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label::after {
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    height: 3px;
+    background: #8d8d8d;
+    left: 10px;
+    right: 10px;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label:hover,
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label:focus,
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label[aria-selected=true] {
+    color: #71a7d3;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label:hover::after,
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label:focus::after,
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label[aria-selected=true]::after {
+    background: #71a7d3;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label[aria-selected=true] {
+    border-color: #ccc;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel .m-infocatastro-datas>div {
+    margin-bottom: 2%;
+    display: table;
+    width: 100%;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel p.parcela--input {
+    width: 71px;
+    display: inline-table;
+}
+
+
+#div-contenedor-locator>#m-infocatastro-panel #m-searchParamsMunicipio-select,
+#div-contenedor-locator>#m-infocatastro-panel #m-searchParamsProvincia-select {
+    font-size: 13px;
+    width: 72% !important;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel input#m-searchParamsPoligono-input {
+    width: 24.5%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+    margin-right: 2%;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel input#m-searchParamsParcela-input {
+    width: 24.5%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    /* float: right; */
+}
+
+#div-contenedor-locator>#m-infocatastro-panel .button {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel .button>#m-infocatastro-searchParams,
+#div-contenedor-locator>#m-infocatastro-panel .button>#m-infocatastro-parcela-limpiar,
+#div-contenedor-locator>#m-infocatastro-panel #m-infocatastro-refCatastral,
+#div-contenedor-locator>#m-infocatastro-panel .button>#m-infocatastro-consulRef,
+#div-contenedor-locator>#m-infocatastro-panel .button>#m-infocatastro-catastro-limpiar {
+    background-color: #71a7d3;
+    border: none;
+    color: white;
+    border-radius: 2px;
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel p.refCastastrl--input {
+    width: 100%;
+    display: inline-table;
+}
+
+#div-contenedor-locator>#m-infocatastro-panel input#m-refCatastral-input {
+    width: 20%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 0px 3px 5px;
+    background-color: #fdfdfd;
+    box-shadow: 1px 1px 3px 0px #999;
+    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+    margin-right: 6px;
+}
+
+#m-infocatastro-coordinatesSystemRefCatastral {
+    text-align: center !important;
+}
+
+/* IGNSearchLocator */
+
+#div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-results {
+    align-items: center;
+    background-color: #fffbfb;
+    display: flex;
+}
+
+#div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-results::before {
+    margin: 0 auto;
+    -webkit-animation: mloading 1s linear infinite;
+    -moz-animation: mloading 1s linear infinite;
+    animation: mloading 1s linear infinite;
+}
+
+#div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-results>.m-ignsearchlocator-noresults {
+    text-align: center;
+    width: 100%;
+    font-size: 1em !important;
+}
+
+#div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-search-input {
+    background-color: #fdfdfd;
+    width: 200px;
+}
+
+#div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-clean-button {
+    background-color: #71a7d3;
+    border: none;
+    color: white;
+    border-radius: 2px;
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button#m-ignsearchlocator-locate-button {
+    color: #7A7A73;
+    font-size: 1.4em;
+}
+
+#m-ignsearchlocator-locate-button {
+    background-color: #fffbfb;
+    border: none;
+    width: 35px;
+    height: 30px;
+    margin-top: -0.5px;
+    text-align: center;
+}
+
+#m-ignsearchlocator-results.locator-icon-spinner::before {
+    font-size: 24px;
+}
+
+#div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-results>#m-ignsearchlocator-results-list {
+    list-style-position: outside;
+    list-style-type: none;
+    overflow: auto;
+    padding-left: 0.5em;
+    width: 100%;
+    max-height: 320px;
+}
+
+#div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-results>#m-ignsearchlocator-results-list li {
+    color: black;
+    line-height: 15px;
+    margin: 5px 0;
+    overflow-wrap: break-word;
+    padding-top: 3px;
+    white-space: pre-line;
+}
+
+#div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-results>#m-ignsearchlocator-results-list li+span {
+    color: #7A7A73;
+}
+
+#div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-results>#m-ignsearchlocator-results-list li:hover {
+    background-color: #71a7d3;
+    color: white;
+    cursor: pointer;
+    padding-left: 0.5em;
+}
+
+/* FONTS */
+
+@font-face {
+    font-family: 'locator';
+    src: url('../fonts/locator.eot?jf4qyx');
+    src: url('../fonts/locator.eot?jf4qyx#iefix') format('embedded-opentype'),
+        url('../fonts/locator.ttf?jf4qyx') format('truetype'),
+        url('../fonts/locator.woff?jf4qyx') format('woff'),
+        url('../fonts/locator.svg?jf4qyx#locator') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="locator-icon-"],
+[class*=" locator-icon-"] {
+    font-family: 'locator' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.locator-icon-localizacion2:before {
+    content: "\e92e";
+}
+
+.locator-icon-pin:before {
+    content: "\e93f";
+}
+
+.locator-icon-posicion3:before {
+    content: "\e94c";
+}
+
+.locator-icon-spinner:before {
+    content: "\e953";
+}
+
+.locator-icon-help:before {
+    content: "\e800";
+}
+
+.locator-icon-locate:before {
+    content: "\e801";
+}
+
+.locator-icon-ignsearch:before {
+    content: "\e807";
+}
+
+.locator-icon-remove:before {
+    content: "\e93e";
+}
+
+.locator-icon-coordinates:before {
+    content: "\e94a";
+}
+
+.locator-icon-info:before {
+    content: "\e94b";
+}
+
+.locator-icon-position:before {
+    content: "\e95a";
+}
+
+.locator-icon-catastro:before {
+    content: "\e99f";
+}
+
+
+div.m-area.m-top.m-left>div.m-plugin-locator.m-panel>button.m-panel-btn {
+    font-family: locator !important;
+}
+
+div.m-area.m-top.m-left>div.m-plugin-locator.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-top.m-right>div.m-plugin-locator.m-panel>button.m-panel-btn {
+    font-family: locator !important;
+}
+
+div.m-area.m-top.m-right>div.m-plugin-locator.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-bottom.m-right>div.m-plugin-locator.m-panel>button.m-panel-btn {
+    font-family: locator !important;
+}
+
+div.m-area.m-bottom.m-right>div.m-plugin-locator.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-bottom.m-left>div.m-plugin-locator.m-panel>button.m-panel-btn {
+    font-family: locator !important;
+}
+
+div.m-area.m-bottom.m-left>div.m-plugin-locator.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+@media only screen and (max-width: 430px) {
+
+    #m-infocatastro-panel,
+    #m-xylocator-panel,
+    #m-ignsearch-panel {
+        width: 250px;
+        font-size: 12px;
+    }
+
+    #div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-search-input {
+        width: 142px;
+        font-size: 12px;
+    }
+
+    #div-contenedor-locator>#m-ignsearch-panel>#m-ignsearchlocator-clean-button,
+    #div-contenedor-locator>#m-infocatastro-panel>.m-search-tabs>label {
+        font-size: 12px;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel #m-searchParamsMunicipio-select,
+    #div-contenedor-locator>#m-infocatastro-panel #m-searchParamsProvincia-select {
+        width: 100% !important;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel #m-infocatastro-estatePlot {
+        display: inline-grid;
+        width: 100%;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel p.parcela--input {
+        width: 100%;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel input#m-searchParamsPoligono-input {
+        width: 97%;
+        margin-bottom: 0px;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel input#m-searchParamsParcela-input {
+        width: 97%;
+        margin-top: 0px;
+    }
+
+    #div-contenedor-locator>#m-infocatastro-panel .button>#m-infocatastro-searchParams,
+    #div-contenedor-locator>#m-infocatastro-panel .button>#m-infocatastro-parcela-limpiar,
+    #div-contenedor-locator>#m-xylocator-panel>div.m-xylocator-datas>.button>#m-xylocator-limpiar,
+    #div-contenedor-locator>#m-xylocator-panel>div.m-xylocator-datas>.button>#m-xylocator-loc,
+    #div-contenedor-locator>#m-infocatastro-panel #m-infocatastro-refCatastral,
+    #div-contenedor-locator>#m-infocatastro-panel .button>#m-infocatastro-consulRef,
+    #div-contenedor-locator>#m-infocatastro-panel .button>#m-infocatastro-catastro-limpiar {
+        font-size: 12px;
+    }
+
+    #div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-dms>div>div>input[type="number"] {
+        width: 1.5rem;
+    }
+
+    #div-contenedor-locator>#m-xylocator-panel>.m-xylocator-datas>#m-xylocator-dms>div>div {
+        width: 54px;
+    }
+
+    #m-ignsearchlocator-search-input:has(+ #m-ignsearchlocator-locate-button) {
+        width: 106px !important;
+    }
+
+    #div-contenedor-locator #m-ignsearchlocator-locate-button {
+        max-width: 30px;
+        font-size: 1.2em;
+        margin-left: -5px;
+        margin-right: 5px;
+    }
+}
+
+.m-plugin-locator-tc {
+    left: calc(55.80vw - 210px) !important;
+    position: relative;
+} 
+
+.m-plugin-locator-tc-withpanel {
+    left: calc(51.55vw - 210px) !important;
+    position: relative;
+} 
+
+@media only screen and (max-width: 600px) {
+    /* .m-panel.m-plugin-locator.opened.no-collapsible {
+        left: calc(50vw - 210px) !important;
+        position: initial !important;
+    }  */
+    .m-plugin-locator-tc {
+        left: calc(76.7vw - 210px) !important;
+        position: relative;
+    } 
+
+    .m-plugin-locator-tc-withpanel {
+        left: calc(66.65vw - 210px) !important;
+        position: relative;
+    } 
+}

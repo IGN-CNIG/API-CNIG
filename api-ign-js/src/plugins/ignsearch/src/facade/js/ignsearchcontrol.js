@@ -188,6 +188,8 @@ export default class IGNSearchControl extends M.Control {
    * @api
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('exception.ignsearch_obsolete'));
     this.map = map;
     this.destroyMapLayers();
     return new Promise((success) => {
@@ -299,9 +301,6 @@ export default class IGNSearchControl extends M.Control {
           });
         }
       });
-
-      // eslint-disable-next-line no-alert
-      window.alert('Este plugin está obsoleto. Por favor, utilice la nueva versión del mismo: IGNSearchLocator');
       success(html);
     });
   }

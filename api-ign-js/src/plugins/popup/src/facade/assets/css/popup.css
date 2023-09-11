@@ -88,32 +88,6 @@ div.m-areas>div.m-area>div.m-panel-popup.opened {
     height: auto;
 }
 
-@media only screen and (max-width: 600px) {
-    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
-        padding: 30px 20px 20px;
-        margin: 0;
-        overflow-y: auto;
-        height: calc(100vh - 40px);
-        width: calc(100vw - 40px);
-        position: fixed;
-        top: 0 !important;
-        left: 0 !important;
-        position: fixed;
-        background-color: white;
-        border-radius: 5px;
-    }
-
-    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened {
-        z-index: 9999;
-    }
-
-    div.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
-        left: 50vw;
-        top: 0;
-        z-index: 9999;
-    }
-}
-
 /* Icon font */
 
 @font-face {
@@ -180,12 +154,31 @@ div#popup-box {
 }
 
 @media (max-width: 600px) {
-    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
-        top: 60px !important;
+    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened {
+        z-index: 999999999999;
     }
 
+    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box {
+        position: relative !important;
+        top: 0 !important;
+        padding: 0 20px;
+        margin: 30px 0 20px !important;
+        overflow-y: auto;
+        height: calc(100vh - 40px);
+        width: calc(100vw - 40px);
+        left: 0 !important;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-panel-popup.opened div#popup-box>div.popup-section img {
+        height: auto !important;
+        width: -webkit-fill-available !important;
+    } 
+
     div.m-areas>div.m-area>div.m-panel.m-panel-popup.opened>button.m-panel-btn {
-        top: 60px !important;
-        position: fixed !important;
+        top: 0px !important;
+        left: 50vw;
+        z-index: 9999;
     }
 }

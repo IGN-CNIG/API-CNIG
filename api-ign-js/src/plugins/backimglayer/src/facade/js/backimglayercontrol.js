@@ -194,14 +194,14 @@ export default class BackImgLayerControl extends M.Control {
         .querySelector(`#m-backimglayer-lyr-${layersInfo.id}`).classList.add('activeBackimglayerDiv');
       // M.proxy(false);
       this.map.addLayers(layers);
-      setTimeout(() => {
-        // M.proxy(true);
-        /*
+      // setTimeout(() => {
+      // M.proxy(true);
+      /*
         layers.forEach((l) => {
           l.setVisible(true);
         });
         */
-      }, 1000);
+      // }, 1000);
     }
     this.fire('backimglayer:activeChanges', [{ activeLayerId: this.activeLayer }]);
   }

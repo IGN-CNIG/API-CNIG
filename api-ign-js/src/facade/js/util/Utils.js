@@ -1379,7 +1379,7 @@ export const dragElement = (elmntID, buttonID) => {
  */
 export const encodeBase64 = (json) => {
   const jsonStr = JSON.stringify(json);
-  const jsonB64 = window.btoa(jsonStr);
+  const jsonB64 = window.btoa(unescape(encodeURIComponent(jsonStr)));
   return jsonB64;
 };
 
@@ -1391,7 +1391,7 @@ export const encodeBase64 = (json) => {
  * @api
  */
 export const decodeBase64 = (base64) => {
-  const json = window.atob(base64);
+  const json = JSON.parse(decodeURIComponent(escape(window.atob(base64.replace(' ', '+')))));
   return json;
 };
 

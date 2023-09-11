@@ -163,6 +163,10 @@ class Popup extends Base {
       this.show(coordinate);
     }
 
+    if (/Mobi|Android/i.test(window.navigator.userAgent) || MWindow.WIDTH <= M.config.MOBILE_WIDTH) {
+      M.config.MOVE_MAP_EXTRACT = false;
+    }
+
     if (M.config.MOVE_MAP_EXTRACT) {
       this.map_.getMapImpl()
         .getView()
