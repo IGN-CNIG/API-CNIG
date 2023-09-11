@@ -160,10 +160,6 @@ public class EmailWS {
 			 if(!localURL.equals("")){
 				 localURL = localURL + properties.getString("paramsURL");
 			 }
-			 String URL_WINDOW = properties.getString("URL_WINDOW");
-			 if(!URL_WINDOW.equals("")){
-				 URL_WINDOW = URL_WINDOW + properties.getString("paramsURL");
-			 }
 		   Map<String, Object> data = new HashMap<String, Object>();
 		   data.put("subject", asunto);
 		   data.put("destinatary", destinatario);
@@ -173,16 +169,13 @@ public class EmailWS {
 		   //data.put("sendergeometry", cuerpo);
 		   data.put("shareURL", shareURL);
 			 data.put("localURL", localURL);
-			 data.put("URL_WINDOW", URL_WINDOW);
 		   String bodyData = getTemplate(data);
 		   BodyPart adjunto = new MimeBodyPart();
 		   properties.remove("URL");
 			 properties.remove("localURL");
-			 properties.remove("URL_WINDOW");
 		   properties.remove("paramsURL");
 		   properties.put("url", shareURL);
 			 properties.put("url", localURL);
-			 properties.put("url", URL_WINDOW);
 		   jsonFeature.put("properties", properties);
 		   jsonArray.put(0, jsonFeature);
 		   body.put("features", jsonArray);

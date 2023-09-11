@@ -681,7 +681,6 @@ export default class IncicartoControl extends M.Control {
 
     let url = window.location.href;
     let localURL = '';
-    let urlAPP = '';
     if (url.startsWith('file:///')) {
       const index = url.lastIndexOf('/');
       localURL = `file://${url.substring(index)}`;
@@ -692,12 +691,6 @@ export default class IncicartoControl extends M.Control {
       url = M.config.MAPEA_URL;
     }
 
-    // URL APP
-    urlAPP = `${window.location.origin}${window.location.pathname}`;
-    if (url === urlAPP) {
-      urlAPP = '';
-    }
-
     let propiedades_incidencia = {
       "email_subject": email_subject,
       "theme": theme,
@@ -706,8 +699,6 @@ export default class IncicartoControl extends M.Control {
       "emailUser": emailUser,
       "errDescripcion": errDescription,
       "URL": url,
-      "URL_WINDOW": urlAPP,
-      "is_URL_WINDOW": !!urlAPP,
       "localURL": localURL,
       "paramsURL": encodeURI(shareURL),
     }
@@ -764,16 +755,16 @@ export default class IncicartoControl extends M.Control {
 
       const { x, y } = this.map_.getCenter();
       const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
-      let url = window.location.href;
+      const url = window.location.href;
       let localURL = '';
       if (url.startsWith('file:///')) {
         const index = url.lastIndexOf('/');
         localURL = `file://${url.substring(index)}`;
       }
 
-      if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
-        url = M.config.MAPEA_URL;
-      }
+      // if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
+      //   url = M.config.MAPEA_URL;
+      // }
 
       let propiedades_incidencia = {
         "email_subject": email_subject,
@@ -783,7 +774,6 @@ export default class IncicartoControl extends M.Control {
         "emailUser": emailUser,
         "errDescripcion": errDescription,
         "URL": url,
-        "URL_WINDOW": window.location.href,
         "localURL": localURL,
         "paramsURL": encodeURI(shareURL),
       }

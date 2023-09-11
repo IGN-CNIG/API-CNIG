@@ -261,8 +261,6 @@
                             <p>URL API-REST</p>
                             <p><a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a></p>
                             <p><a href="${localURL}" target="_blank" rel="noopener noreferrer">${localURL}</a></p>
-                            <p>URL de la APP</p>
-                            <p><a href="${URL_WINDOW}" target="_blank" rel="noopener noreferrer">${URL_WINDOW}</a></p>
                         </td>
                     </tr>
 
