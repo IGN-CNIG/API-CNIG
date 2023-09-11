@@ -633,13 +633,15 @@ export default class IncicartoControl extends M.Control {
    * @returns
    */
   validateIncidenciaMessageInModalAdvanced() {
-    const themeMetadataContainer = document.querySelector("#theme-select");
+    // NO OBTENIA EL PRIMER VALOR, SE DEJA COMENTADO
+    // const themeMetadataContainer = document.querySelector("#theme-select");
     const errorMetadataContainer = document.querySelector("#error-select");
     const productMetadataContainer = document.querySelector("#product-select");
-    if (this.errThemes.mandatory === true && themeMetadataContainer.selectedIndex === 0) {
-      this.showMessageInModalAdvanced("Clasifique el error con un tema", "nakmessage");
-      return false;
-    } else if (this.errTypes.mandatory === true && errorMetadataContainer.selectedIndex === 0) {
+    // if (this.errThemes.mandatory === true && themeMetadataContainer.selectedIndex === 0) {
+    //   this.showMessageInModalAdvanced("Clasifique el error con un tema", "nakmessage");
+    //   return false;
+    // } else 
+    if (this.errTypes.mandatory === true && errorMetadataContainer.selectedIndex === 0) {
       this.showMessageInModalAdvanced("Clasifique el error con un tipo", "nakmessage");
       return false;
     } else if (this.errProducts.mandatory === true && productMetadataContainer.selectedIndex === 0) {
@@ -661,54 +663,26 @@ export default class IncicartoControl extends M.Control {
     let themeMetadataContainer = document.querySelector("#theme-select");
     let errorMetadataContainer = document.querySelector("#error-select");
     let productMetadataContainer = document.querySelector("#product-select");
-    let emailName = document.querySelector("#person-notify").value;
-    let emailUser = document.querySelector("#email-notify").value;
 
     if (this.validateIncidenciaMessageInModalAdvanced() === false) {
       return false;
     };
 
-    let theme = themeMetadataContainer.selectedOptions[0].innerText;
     let error = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].value;
     let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
-    let errDescription = document.querySelector("#err-description").value;
-    const { x, y } = this.map_.getCenter();
-    const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+    let theme = themeMetadataContainer.selectedOptions[0].innerText;
 
     let email_subject = 'Incidencia Cartografía - ' + theme;
+    
+    const propiedades_incidencia = this.createContentEmail(email_subject, theme, destinatary); 
 
     this.geometryIncidenceJSON = JSON.parse(this.geometryIncidence);
-
-    let url = window.location.href;
-    let localURL = '';
-    if (url.startsWith('file:///')) {
-      const index = url.lastIndexOf('/');
-      localURL = `file://${url.substring(index)}`;
-    }
-
-    if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
-      // API-REST
-      url = M.config.MAPEA_URL;
-    }
-
-    let propiedades_incidencia = {
-      "email_subject": email_subject,
-      "theme": theme,
-      "destinatary": destinatary,
-      "emailName": emailName,
-      "emailUser": emailUser,
-      "errDescripcion": errDescription,
-      "URL": url,
-      "localURL": localURL,
-      "paramsURL": encodeURI(shareURL),
-    }
-
     if (this.geometryIncidenceJSON.features.length > 0) {
       this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
     }
 
     let email_body = {
-      "description": errDescription,
+      "description": propiedades_incidencia.errDescripcion,
       "theme": theme,
       "error": error,
       "product": product,
@@ -719,7 +693,7 @@ export default class IncicartoControl extends M.Control {
     document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
     document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
-    document.querySelector("#m-plugin-incicarto-email-shareURL").value = shareURL;
+    document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.shareURL;
     document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
     let inputFile = document.querySelector('#fileUpload');
     if (inputFile && inputFile.files.length > 0) {
@@ -730,6 +704,42 @@ export default class IncicartoControl extends M.Control {
 
     //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
     return true;
+  }
+
+  createContentEmail(email_subject, theme, destinatary = this.themes.find(item => item.idTheme == theme).emailTheme){
+    let emailName = document.querySelector("#person-notify").value;
+    let emailUser = document.querySelector("#email-notify").value;
+    let errDescription = document.querySelector("#err-description").value;
+
+   
+    const { x, y } = this.map_.getCenter();
+    const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+
+    const url = window.location.href;
+    let localURL = '';
+    if (url.startsWith('file:///')) {
+      const index = url.lastIndexOf('/');
+      localURL = `file://${url.substring(index)}`;
+    }
+
+      // if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
+      // API-REST
+      // url = M.config.MAPEA_URL;
+      // }
+
+    return {
+      "email_subject": email_subject,
+      "theme": theme,
+      "destinatary": destinatary,
+      "emailName": emailName,
+      "emailUser": emailUser,
+      "errDescripcion": errDescription,
+      "URL": url,
+      // "API_URL": M.config.MAPEA_URL,
+      "localURL": localURL,
+      "paramsURL": encodeURI(shareURL),
+    }
+
   }
 
 
@@ -745,38 +755,13 @@ export default class IncicartoControl extends M.Control {
     } else {
       document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
       this.showMessageInModalAdvanced(getValue('sending_email'), "okmessage");
-      let theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
-      let destinatary = this.themes.find(item => item.idTheme == theme).emailTheme;
-      theme = themeMetadataContainer.selectedOptions[0].innerText;
+    
+      // const theme = themeMetadataContainer.selectedOptions[0].innerText;
+      const theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
+
       let email_subject = this.prefixSubject + theme;
-      let emailName = document.querySelector("#person-notify").value;
-      let emailUser = document.querySelector("#email-notify").value;
-      let errDescription = document.querySelector("#err-description").value;
 
-      const { x, y } = this.map_.getCenter();
-      const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
-      const url = window.location.href;
-      let localURL = '';
-      if (url.startsWith('file:///')) {
-        const index = url.lastIndexOf('/');
-        localURL = `file://${url.substring(index)}`;
-      }
-
-      // if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
-      //   url = M.config.MAPEA_URL;
-      // }
-
-      let propiedades_incidencia = {
-        "email_subject": email_subject,
-        "theme": theme,
-        "destinatary": destinatary,
-        "emailName": emailName,
-        "emailUser": emailUser,
-        "errDescripcion": errDescription,
-        "URL": url,
-        "localURL": localURL,
-        "paramsURL": encodeURI(shareURL),
-      }
+      const propiedades_incidencia = this.createContentEmail(email_subject, theme);
 
       if (this.geometryIncidenceJSON.features.length > 0) {
         this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
@@ -786,12 +771,12 @@ export default class IncicartoControl extends M.Control {
       // ----------------------------------------------------------------------------------------------------------
       let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
       document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
-      document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
-      document.querySelector("#m-plugin-incicarto-email-sendername").value = emailName;
-      document.querySelector("#m-plugin-incicarto-email-senderemail").value = emailUser;
-      document.querySelector("#m-plugin-incicarto-email-errDescription").value = errDescription;
+      document.querySelector("#m-plugin-incicarto-email-mailto").value = propiedades_incidencia.destinatary;
+      document.querySelector("#m-plugin-incicarto-email-sendername").value = propiedades_incidencia.emailName;
+      document.querySelector("#m-plugin-incicarto-email-senderemail").value = propiedades_incidencia.emailUser;
+      document.querySelector("#m-plugin-incicarto-email-errDescription").value = propiedades_incidencia.errDescripcion;
       document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
-      document.querySelector("#m-plugin-incicarto-email-shareURL").value = shareURL;
+      document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.shareURL;
       document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(this.geometryIncidenceJSON, null, '\t');
       let inputFile = document.querySelector('#fileUpload');
       if (inputFile.files.length > 0) {
