@@ -176,6 +176,17 @@
     "obsolete": false
   },
   {
+    "name": "comparators",
+    "plugin": "[comparators]",
+    "version": "v1.0",
+    "url_es": "comparators.jsp?language=es",
+    "url_en": "comparators.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/comparators",
+    "image": "img/api-logo.png",
+    "description": "Herramienta de comparación.",
+    "obsolete": false
+  },
+  {
     "name": "measurebar",
     "plugin": "[measurebar]",
     "version": "v1.0",

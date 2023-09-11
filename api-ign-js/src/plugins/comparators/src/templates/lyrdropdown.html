@@ -1,0 +1,13 @@
+<div id="div-contenedor" class="m-control m-container m-lyrdropdown {{idDiv}}">
+    <div class="m-lyrdropdown-select" id="m-lyrcompare-lyrB-cont">
+      <select tabindex="0" id="m-lyrdropdown-selector">
+          <option value='None'>{{translations.nolayertext}}</option>
+          {{#each options}}
+          <option value='{{this.name}}'>{{this.legend}}</option>
+          {{/each}}        
+      </select>
+      <div tabindex="0" class="m-lyrdropdown-select_arrow">
+      </div>
+    </div>
+  </div>
+  
