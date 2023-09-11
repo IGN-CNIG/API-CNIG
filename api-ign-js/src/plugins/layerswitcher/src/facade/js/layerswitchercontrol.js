@@ -994,24 +994,25 @@ export default class LayerswitcherControl extends M.Control {
                         if (reponseIsJson === true) {
                           this.printOGCModal(url);
                         } else {
-                          M.remote.get(url).then((response3) => {
-                            // GEOJSON
-                            if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
-                              this.printLayerModal(url, 'geojson');
-                            } else if (response3.text.indexOf('<kml ') >= 0) {
-                              const parser = new DOMParser();
-                              const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
-                              const folders = xmlDoc.getElementsByTagName('Folder');
-                              const layers = [];
-                              Array.from(folders).forEach((folder) => {
-                                if (child.tagName === 'name') {
-                                  layers.push(child.innerHTML);
-                                }
+                          // M.remote.get(url).then((response3) => {
+                          //   // GEOJSON
+                          //   if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').
+                          // indexOf('"type":"FeatureCollection"') >= 0) {
+                          //     this.printLayerModal(url, 'geojson');
+                          //   } else if (response3.text.indexOf('<kml ') >= 0) {
+                          //     const parser = new DOMParser();
+                          //     const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
+                          //     const folders = xmlDoc.getElementsByTagName('Folder');
+                          //     const layers = [];
+                          //     Array.from(folders).forEach((folder) => {
+                          //       if (child.tagName === 'name') {
+                          //         layers.push(child.innerHTML);
+                          //       }
 
-                              });
-                              this.printLayerModal(url, 'geojson');
-                            }
-                          });
+                          //     });
+                          //     this.printLayerModal(url, 'geojson');
+                          //   }
+                          // });
                         }
                       });
                     }
