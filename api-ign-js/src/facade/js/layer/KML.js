@@ -67,8 +67,9 @@ class KML extends LayerVector {
     optionsVar.label = parameters.label;
     optionsVar.visibility = parameters.visibility;
     optionsVar.layers = userParameters.layers || undefined;
-    optionsVar.removeFolderChildren = userParameters.removeFolderChildren;
-
+    optionsVar.removeFolderChildren = isUndefined(userParameters.removeFolderChildren)
+      ? true
+      : userParameters.removeFolderChildren;
     /**
      * Implementación de la capa.
      * @public
@@ -117,8 +118,7 @@ class KML extends LayerVector {
      * carpetas descendientes de las carpetas filtradas.
      * @type {Array<String>}
      */
-    this.removeFolderChildren = isUndefined(optionsVar.removeFolderChildren)
-      ? true : optionsVar.removeFolderChildren;
+    this.removeFolderChildren = optionsVar.removeFolderChildren;
   }
 
   /**

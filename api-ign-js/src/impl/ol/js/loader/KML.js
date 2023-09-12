@@ -97,10 +97,13 @@ class KML extends MObject {
 
           if (removeFolderChildren) {
             foldersArray.map((folder) => {
-              const folderElement = folder.querySelector(':scope > Folder');
-              if (folderElement) {
-                folder.removeChild(folderElement);
-              }
+              let folderElement;
+              do {
+                folderElement = folder.querySelector(':scope > Folder');
+                if (folderElement) {
+                  folder.removeChild(folderElement);
+                }
+              } while (folderElement);
               return folder;
             });
           }
