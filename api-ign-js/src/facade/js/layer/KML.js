@@ -38,6 +38,8 @@ class KML extends LayerVector {
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * - label: Define si se muestra la etiqueta o no. Por defecto mostrará la etiqueta.
    * - layers: Permite filtrar el fichero KML por nombre de carpetas.
+   * - removeFolderChildren: Permite no mostrar las
+   * carpetas descendientes de las carpetas filtradas. Por defecto: true.
    * @param {Mx.parameters.LayerOptions} options Parámetros que se pasarán a la implementación.
    * - visibility: Define si la capa es visible o no.
    * - style: Define el estilo de la capa.
@@ -65,6 +67,7 @@ class KML extends LayerVector {
     optionsVar.label = parameters.label;
     optionsVar.visibility = parameters.visibility;
     optionsVar.layers = userParameters.layers || undefined;
+    optionsVar.removeFolderChildren = userParameters.removeFolderChildren;
 
     /**
      * Implementación de la capa.
@@ -108,6 +111,13 @@ class KML extends LayerVector {
      * @type {Array<String>}
      */
     this.layers = optionsVar.layers;
+
+    /**
+     * KML removeFolderChildren: Permite no mostrar las
+     * carpetas descendientes de las carpetas filtradas.
+     * @type {Array<String>}
+     */
+    this.removeFolderChildren = isUndefined(optionsVar.removeFolderChildren)? true : optionsVar.removeFolderChildren;
   }
 
   /**

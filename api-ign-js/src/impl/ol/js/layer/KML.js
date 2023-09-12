@@ -39,6 +39,8 @@ class KML extends Vector {
    * - opacity. Opacidad de capa, por defecto 1.
    * - scaleLabel. Escala de la etiqueta.
    * - layers. Permite filtrar el fichero KML por nombre de carpetas.
+   * - removeFolderChildren: Permite no mostrar las
+   * carpetas descendientes de las carpetas filtradas. Por defecto: true.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -95,6 +97,12 @@ class KML extends Vector {
      * KML layers. Permite filtrar el fichero KML por nombre de carpetas.
      */
     this.layers = options.layers;
+
+    /**
+     * KML removeFolderChildren. Permite no mostrar las
+     * carpetas descendientes de las carpetas filtradas.
+     */
+    this.removeFolderChildren = options.removeFolderChildren;
   }
 
   /**
@@ -346,7 +354,10 @@ class KML extends Vector {
       this.loadFeaturesPromise_ = new Promise((resolve) => {
         this.loader_.getLoaderFn((features) => {
           resolve(features);
-        })(null, null, getProj(this.map.getProjection().code), this.scaleLabel, this.layers);
+        })(
+          null, null, getProj(this.map.getProjection().code),
+          this.scaleLabel, this.layers, this.removeFolderChildren,
+        );
       });
     }
     return this.loadFeaturesPromise_;
