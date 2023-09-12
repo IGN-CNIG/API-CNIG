@@ -119,6 +119,11 @@ class XYZ extends Layer {
      * Mostrar en el selector de capas.
      */
     this.displayInLayerSwitcher = userParameters.displayInLayerSwitcher !== false;
+
+    /**
+     * CrossOrigin. Indica si se usa crossOrigin.
+    */
+    this.crossOrigin = options.crossOrigin || null;
   }
 
   /**
@@ -172,6 +177,7 @@ class XYZ extends Layer {
       projection: this.map.getProjection().code,
       url: this.url,
       tileSize: this.getTileSize(),
+      crossOrigin: this.crossOrigin,
     });
     this.ol3Layer.setSource(source);
     if (this.tileGridMaxZoom !== undefined && this.tileGridMaxZoom > 0) {

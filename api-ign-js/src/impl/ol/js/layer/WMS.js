@@ -208,6 +208,11 @@ class WMS extends LayerBase {
     if (options.ratio < 1) {
       console.error('El ratio debe ser 1 o superior');
     }
+
+    /**
+     * CrossOrigin. Indica si se usa crossOrigin.
+    */
+    this.crossOrigin = options.crossOrigin || null;
   }
 
   /**
@@ -502,6 +507,7 @@ class WMS extends LayerBase {
           new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) }) :
           false;
         olSource = new TileWMS({
+          crossOrigin: this.crossOrigin, // crossOrigin inicial
           url: this.url,
           params: layerParams,
           tileGrid,
@@ -513,6 +519,7 @@ class WMS extends LayerBase {
         });
       } else {
         olSource = new ImageWMS({
+          crossOrigin: this.crossOrigin, // crossOrigin inicial
           url: this.url,
           params: layerParams,
           // resolutions,

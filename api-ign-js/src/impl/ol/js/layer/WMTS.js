@@ -103,6 +103,11 @@ class WMTS extends LayerBase {
      * WMS useCapabilities. Indica si se usa el getCapabilities.
      */
     this.useCapabilities = options.useCapabilities !== false;
+
+    /**
+     * CrossOrigin. Indica si se usa crossOrigin.
+    */
+    this.crossOrigin = options.crossOrigin || null;
   }
 
   /**
@@ -162,6 +167,7 @@ class WMTS extends LayerBase {
         const format = capabilities.getFormat(this.name);
 
         const newSource = new OLSourceWMTS({
+          crossOrigin: this.crossOrigin,
           url: this.url,
           layer: this.name,
           matrixSet,
@@ -236,6 +242,7 @@ class WMTS extends LayerBase {
         //   matrixIds,
         // }),
         extent,
+        crossOrigin: this.crossOrigin,
       }, true));
 
       this.facadeLayer_.setFormat(capabilitiesOptionsVariable.format);

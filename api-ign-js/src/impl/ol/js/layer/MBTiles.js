@@ -140,6 +140,12 @@ class MBTiles extends Layer {
      * MBTiles visibility: Visibilidad de la capa.
      */
     this.visibility = userParameters.visibility === false ? userParameters.visibility : true;
+
+
+    /**
+    * CrossOrigin. Indica si se usa crossOrigin.
+    */
+    this.crossOrigin = options.crossOrigin || null;
   }
 
   /**
@@ -275,6 +281,7 @@ class MBTiles extends Layer {
       source: new XYZ({
         url: '{z},{x},{y}',
         projection: opts.projection,
+        crossOrigin: this.crossOrigin,
         tileLoadFunction: tile => tileLoadFn(tile, opts.tileProvider, this),
         tileGrid: new TileGrid({
           extent: opts.sourceExtent,
