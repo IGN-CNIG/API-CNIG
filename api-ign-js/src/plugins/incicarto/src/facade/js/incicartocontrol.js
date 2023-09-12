@@ -688,12 +688,14 @@ export default class IncicartoControl extends M.Control {
       "product": product,
       "features": this.geometryIncidenceJSON.features
     };
+    
     let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
     emailForm.action = `${M.config.MAPEA_URL}api/email`;
     document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
     document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
     document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.shareURL;
+    document.querySelector("#m-plugin-incicarto-email-apiURL").value = propiedades_incidencia.API_URL;
     document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
     let inputFile = document.querySelector('#fileUpload');
     if (inputFile && inputFile.files.length > 0) {
@@ -735,7 +737,7 @@ export default class IncicartoControl extends M.Control {
       "emailUser": emailUser,
       "errDescripcion": errDescription,
       "URL": url,
-      // "API_URL": M.config.MAPEA_URL,
+      "API_URL": M.config.MAPEA_URL,
       "localURL": localURL,
       "paramsURL": encodeURI(shareURL),
     }
@@ -774,6 +776,7 @@ export default class IncicartoControl extends M.Control {
       document.querySelector("#m-plugin-incicarto-email-mailto").value = propiedades_incidencia.destinatary;
       document.querySelector("#m-plugin-incicarto-email-sendername").value = propiedades_incidencia.emailName;
       document.querySelector("#m-plugin-incicarto-email-senderemail").value = propiedades_incidencia.emailUser;
+      document.querySelector("#m-plugin-incicarto-email-apiURL").value = propiedades_incidencia.API_URL;
       document.querySelector("#m-plugin-incicarto-email-errDescription").value = propiedades_incidencia.errDescripcion;
       document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
       document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.shareURL;
