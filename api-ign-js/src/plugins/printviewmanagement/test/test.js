@@ -7,6 +7,7 @@ const map = M.map({
   zoom: 9,
   maxZoom: 20,
   minZoom: 4,
+  layers: ['OSM'],
   center: [-467062.8225, 4683459.6216],
 });
 
@@ -34,7 +35,7 @@ const mp = new PrintViewManagement({
   printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
   georefImageEpsg: {
     tooltip: 'Georeferenciar imagen',
-    layers: [ // Posibilidad de hacer Getmap
+    layers: [
       {
         url: 'http://www.ign.es/wms-inspire/mapa-raster?',
         name: 'mtn_rasterizado',

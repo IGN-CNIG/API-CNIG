@@ -258,6 +258,7 @@ export default class GeorefimageControl extends M.Control {
             typeClient: getValue('typeClient'),
             typeServer: getValue('typeServer'),
             format: getValue('format'),
+            clipBoard: getValue('clipBoard'),
           },
         },
       });
@@ -324,6 +325,10 @@ export default class GeorefimageControl extends M.Control {
       }
     });
 
+    this.elementClipboard_.addEventListener('click', () => {
+      M.utils.copyImageClipBoard(this.map_);
+    });
+
     // ADD ENABLE TOUCH SCROLL
     M.utils.enableTouchScroll(getQueueContainer(this.html_));
   }
@@ -337,6 +342,7 @@ export default class GeorefimageControl extends M.Control {
     const ID_PROJECTION = '#m-georefimage-projection';
     const ID_FIELDSET = '#m-georefimage-fieldset';
     const ID_LIST_SERVICES = '#m-georefimage-listServices';
+    const ID_CLIPBOARD = '#m-georefimage-clipboard';
 
     // SELECTOR CANVAS
     const SELECTOR_CANVAS = '.ol-layer canvas';
@@ -349,6 +355,7 @@ export default class GeorefimageControl extends M.Control {
     this.elementProjection_ = html.querySelector(ID_PROJECTION);
     this.elementFieldset_ = html.querySelector(ID_FIELDSET);
     this.elementListServices_ = html.querySelector(ID_LIST_SERVICES);
+    this.elementClipboard_ = html.querySelector(ID_CLIPBOARD);
 
     // CANVAS ELEMENT
     this.elementCanvas_ = document.querySelector(SELECTOR_CANVAS);

@@ -1,17 +1,16 @@
 @font-face {
     font-family: 'printviewmanagement';
-    src: url('../fonts/printviewmanagement.eot?v63csk');
-    src: url('../fonts/printviewmanagement.eot?v63csk#iefix') format('embedded-opentype'),
-        url('../fonts/printviewmanagement.ttf?v63csk') format('truetype'),
-        url('../fonts/printviewmanagement.woff?v63csk') format('woff'),
-        url('../fonts/printviewmanagement.svg?v63csk#printviewmanagement') format('svg');
+    src:  url('../fonts/printviewmanagement.eot?j5vahz');
+    src:  url('../fonts/printviewmanagement.eot?j5vahz#iefix') format('embedded-opentype'),
+      url('../fonts/printviewmanagement.ttf?j5vahz') format('truetype'),
+      url('../fonts/printviewmanagement.woff?j5vahz') format('woff'),
+      url('../fonts/printviewmanagement.svg?j5vahz#printviewmanagement') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
-}
-
-[class^="printviewmanagement-icon-"],
-[class*=" printviewmanagement-icon-"] {
+  }
+  
+  [class^="printviewmanagement-icon-"], [class*=" printviewmanagement-icon-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'printviewmanagement' !important;
     speak: never;
@@ -20,11 +19,7 @@
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+  }
 
 
 /* Opening & closing buttons */
@@ -328,6 +323,10 @@
     content: "\e954";
 }
 
+.printviewmanagement-icon-clipboard:before {
+    content: "\e92c";
+}
+
 
 div.m-area.m-top.m-left>div.m-plugin-printviewmanagement.m-panel>button.m-panel-btn {
     font-family: printviewmanagement !important;
@@ -611,6 +610,16 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     padding: 5px;
     background-color: #fff;
     font-family: 'Muli', 'sans-serif' !important;
+    cursor: pointer;
+}
+
+.printviewmanagement-icon-clipboard {
+    background-color: #fff;
+    border: none;
+}
+
+.printviewmanagement-icon-clipboard:hover {
+    color: #71a7d3;
     cursor: pointer;
 }
 

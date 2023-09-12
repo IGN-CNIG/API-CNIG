@@ -46,5 +46,6 @@
   "typeDownload":"Select the type of download:",
   "typeClient": "From Client: Screen Content",
   "typeServer": "From Server: Georeferenced Image",
-  "selectLayer": "Select the layer to download"
+  "selectLayer": "Select the layer to download",
+  "clipBoard": "Copy to clipboard"
 }

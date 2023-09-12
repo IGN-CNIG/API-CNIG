@@ -46,5 +46,6 @@
   "typeDownload": "Selecciona el tipo de descarga:",
   "typeClient": "Desde cliente: contenido de pantalla",
   "typeServer": "Desde servidor: contenido de servidor",
-  "selectLayer": "Selecciona la capa a descargar"
+  "selectLayer": "Selecciona la capa a descargar",
+  "clipBoard": "Copiar al portapapeles"
 }
