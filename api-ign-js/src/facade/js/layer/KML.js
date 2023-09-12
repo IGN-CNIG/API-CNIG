@@ -117,7 +117,8 @@ class KML extends LayerVector {
      * carpetas descendientes de las carpetas filtradas.
      * @type {Array<String>}
      */
-    this.removeFolderChildren = isUndefined(optionsVar.removeFolderChildren)? true : optionsVar.removeFolderChildren;
+    this.removeFolderChildren = isUndefined(optionsVar.removeFolderChildren)
+      ? true : optionsVar.removeFolderChildren;
   }
 
   /**
