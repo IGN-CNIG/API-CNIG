@@ -927,16 +927,15 @@ export default class LayerswitcherControl extends M.Control {
         }
 
         if (HTTPeval === true || HTTPSeval === true) {
-          if (url.indexOf('{z}/{x}/{y}') >= 0) {
-            let urlAux = url;
-            if (url.indexOf('{z}/{x}/{y}') >= 0) {
-              urlAux = url.replace('{z}/{x}/{y}', '0/0/0');
-            }
-            M.remote.get(urlAux).then((response0) => {
-              if (response0.code === 200) {
-                this.printLayerModal(url, 'osm');
-              }
-            });
+          // TMS
+          if (url.indexOf('{z}/{x}/{-y}') >= 0) {
+            this.printLayerModal(url, 'tms');
+            // OSM
+          } else if (url.indexOf('{z}/{x}/{y}') >= 0 && url.indexOf('openstreetmap') >= 0) {
+            this.printLayerModal(url, 'osm');
+            // XYZ
+          } else if (url.indexOf('{z}/{x}/{y}') >= 0) {
+            this.printLayerModal(url, 'xyz');
           } else {
             const promise = new Promise((success, reject) => {
               const id = setTimeout(() => reject(), 15000);
@@ -994,25 +993,15 @@ export default class LayerswitcherControl extends M.Control {
                         if (reponseIsJson === true) {
                           this.printOGCModal(url);
                         } else {
-                          // M.remote.get(url).then((response3) => {
-                          //   // GEOJSON
-                          //   if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').
-                          // indexOf('"type":"FeatureCollection"') >= 0) {
-                          //     this.printLayerModal(url, 'geojson');
-                          //   } else if (response3.text.indexOf('<kml ') >= 0) {
-                          //     const parser = new DOMParser();
-                          //     const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
-                          //     const folders = xmlDoc.getElementsByTagName('Folder');
-                          //     const layers = [];
-                          //     Array.from(folders).forEach((folder) => {
-                          //       if (child.tagName === 'name') {
-                          //         layers.push(child.innerHTML);
-                          //       }
-
-                          //     });
-                          //     this.printLayerModal(url, 'geojson');
-                          //   }
-                          // });
+                          M.remote.get(url).then((response3) => {
+                            // GEOJSON
+                            if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
+                              this.printLayerModal(url, 'geojson');
+                            } else if (response3.text.indexOf('<kml ') >= 0) {
+                              // Revisar si es KML para obtener todas las folders
+                              this.printLayerModal(url, 'kml');
+                            }
+                          });
                         }
                       });
                     }
@@ -1453,8 +1442,9 @@ export default class LayerswitcherControl extends M.Control {
 
     const btnAddLayer = document.querySelector('#m-layerswitcher-layer-button');
     btnAddLayer.addEventListener('click', () => {
-      const name = document.querySelector('#m-layerswitcher-layer-name').value || '';
-      const legend = document.querySelector('#m-layerswitcher-layer-legend').value || '';
+      const randomNumber = Math.floor(Math.random() * 9000) + 1000;
+      const name = document.querySelector('#m-layerswitcher-layer-name').value || `layer_${randomNumber}`;
+      const legend = document.querySelector('#m-layerswitcher-layer-legend').value || `layer_${randomNumber}`;
       let matrixSet = document.querySelector('#m-layerswitcher-layer-matrixset');
       if (!M.utils.isNullOrEmpty(matrixSet)) {
         matrixSet = matrixSet.value || 'EPSG:3857';
@@ -1473,6 +1463,20 @@ export default class LayerswitcherControl extends M.Control {
           name,
           legend,
           url,
+        }));
+      } else if (type === 'tms') {
+        this.map_.addLayers(new M.layer.TMS({
+          name,
+          legend,
+          url,
+          matrixSet,
+        }));
+      } else if (type === 'xyz') {
+        this.map_.addLayers(new M.layer.XYZ({
+          name,
+          legend,
+          url,
+          matrixSet,
         }));
       }
 

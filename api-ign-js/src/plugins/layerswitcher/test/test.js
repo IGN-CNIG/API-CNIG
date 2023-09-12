@@ -129,7 +129,8 @@ const capaTMS = new M.layer.TMS({
   legend: 'Capa TMS',
   projection: 'EPSG:3857',
 });
-// map.addLayers(capaTMS);
+map.addLayers(capaTMS);
+window.capaTMS = capaTMS;
 
 const capaVector = new M.layer.Vector({
   name: 'capaVector',
@@ -173,12 +174,12 @@ const capaWMTS = new M.layer.WMTS({
 // map.addLayers(capaWMTS);
 
 const capaXYZ = new M.layer.XYZ({
-  url: 'https://tms-pnoa-ma.ign.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+  url: 'https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg',
   name: 'Capa XYZ',
   legend: 'Capa XYZ',
   projection: 'EPSG:3857',
 });
-map.addLayers(capaXYZ);
+// map.addLayers(capaXYZ);
 
 
 // map.addLayers(capaGeoJSON);

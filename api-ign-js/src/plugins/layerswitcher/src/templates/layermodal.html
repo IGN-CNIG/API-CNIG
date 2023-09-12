@@ -5,6 +5,12 @@
     {{#eq type 'osm'}}
         <p>{{translations.data_layer}} OSM</p>
     {{/eq}}
+    {{#eq type 'tms'}}
+        <p>{{translations.data_layer}} TMS</p>
+    {{/eq}}
+    {{#eq type 'xyz'}}
+        <p>{{translations.data_layer}} XYZ</p>
+    {{/eq}}
     <div class="m-layerswitcher-layer¡-fields">
         <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
         <input type="text" id="m-layerswitcher-layer-name" />
@@ -14,6 +20,18 @@
         <input type="text" id="m-layerswitcher-layer-legend" />
     </div>
     {{#eq type 'osm'}}
+        <div class="m-layerswitcher-layer¡-fields">
+            <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+            <input type="text" id="m-layerswitcher-layer-matrixset" />
+        </div>
+    {{/eq}}
+    {{#eq type 'tms'}}
+        <div class="m-layerswitcher-layer¡-fields">
+            <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+            <input type="text" id="m-layerswitcher-layer-matrixset" />
+        </div>
+    {{/eq}}
+    {{#eq type 'xyz'}}
         <div class="m-layerswitcher-layer¡-fields">
             <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
             <input type="text" id="m-layerswitcher-layer-matrixset" />
