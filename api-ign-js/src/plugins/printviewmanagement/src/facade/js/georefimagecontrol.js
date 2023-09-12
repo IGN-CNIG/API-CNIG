@@ -13,8 +13,8 @@ import {
   createZipFile,
   LIST_SERVICES,
   generateTitle,
+  formatImageBase64,
   getBase64Image,
-  getBase64ImageClient,
 } from './utils';
 
 export default class GeorefimageControl extends M.Control {
@@ -432,7 +432,7 @@ export default class GeorefimageControl extends M.Control {
       this.elementQueueContainer_,
     );
 
-    const base64image = getBase64ImageClient(this.elementCanvas_, this.elementFormatSelect_.value);
+    const base64image = M.utils.getImageMap(this.map_, `image/${this.elementFormatSelect_.value}`);
     removeLoadQueueElement(queueEl);
     queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image));
   }
@@ -665,7 +665,7 @@ export default class GeorefimageControl extends M.Control {
     }
 
     const encodedLayersModified = [];
-    if (this.projection_.value === 'EPSG:3857') {
+    if (this.projection_ === 'EPSG:3857') {
       for (let i = 0; i < layers.length; i += 1) {
         if (layers[i].matrixSet != null) {
           const matrixSet = layers[i].matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
@@ -752,42 +752,41 @@ export default class GeorefimageControl extends M.Control {
     const addWLD = this.elementWld_.checked;
 
     // GET IMAGE
-    const base64image = imgBase64 || getBase64Image(
+    const base64image = (imgBase64) ? formatImageBase64(imgBase64) : getBase64Image(
       this.documentRead_.src,
       this.elementFormatSelect_.value,
     );
 
-    base64image.then((resolve) => {
-      // GET BBOX
-      let bbox = [
-        this.map_.getBbox().x.min,
-        this.map_.getBbox().y.min,
-        this.map_.getBbox().x.max,
-        this.map_.getBbox().y.max,
-      ];
-      bbox = this.getImpl().transformExt(bbox, code, this.projection_);
+    // GET BBOX
+    let bbox = [
+      this.map_.getBbox().x.min,
+      this.map_.getBbox().y.min,
+      this.map_.getBbox().x.max,
+      this.map_.getBbox().y.max,
+    ];
+    bbox = this.getImpl().transformExt(bbox, code, this.projection_);
 
-      // GET TITLE
-      const titulo = generateTitle(this.elementTitle_.value);
+    // GET TITLE
+    const titulo = generateTitle(this.elementTitle_.value);
 
-      // CONTENT ZIP
-      const fileIMG = {
-        name: titulo.concat(`.${this.elementFormatSelect_.value}`),
-        data: resolve,
-        base64: true,
-      };
+    // CONTENT ZIP
+    const fileIMG = {
+      name: titulo.concat(`.${this.elementFormatSelect_.value}`),
+      data: base64image,
+      base64: true,
+    };
 
-      const files = (addWLD) ? [{
-        name: titulo.concat(FILE_EXTENSION_GEO),
-        data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize()),
-        base64: false,
-      },
-      fileIMG,
-      ] : [fileIMG];
+
+    const files = (addWLD) ? [{
+      name: titulo.concat(FILE_EXTENSION_GEO),
+      data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize()),
+      base64: false,
+    },
+    fileIMG,
+    ] : [fileIMG];
 
       // CREATE ZIP
-      createZipFile(files, TYPE_SAVE, titulo);
-    });
+    createZipFile(files, TYPE_SAVE, titulo);
   }
 
   /**

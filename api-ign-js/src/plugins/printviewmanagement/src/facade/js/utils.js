@@ -131,29 +131,8 @@ export function getBase64Image(imgUrl, format) {
 }
 
 // Get base64 image client
-export function getBase64ImageClient(canvasMap, format) {
-  const formatType = format || 'jpeg';
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous'; // Establece el atributo crossOrigin en 'anonymous' para permitir el acceso a recursos de origen cruzado.
-    img.src = canvasMap.toDataURL(); // Convierte el canvas original a una URL de imagen base64
-
-
-    img.onload = function can() {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      resolve(canvas.toDataURL(`image/${formatType}`).replace(REGEX_FORMAT_IMAGE, ''));
-    };
-
-    img.onerror = function rej() {
-      reject(new Error(getValue('exception.loaderror')));
-      M.dialog.error(getValue('exception.imageError'));
-    };
-  });
+export function formatImageBase64(base64) {
+  return base64.replace(REGEX_FORMAT_IMAGE, '');
 }
 
 // Services SIG Geoprint List

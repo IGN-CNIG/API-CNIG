@@ -2,16 +2,6 @@ import PrintViewManagement from 'facade/printviewmanagement';
 
 M.language.setLang('es');
 
-const map = M.map({
-  container: 'mapjs',
-  zoom: 9,
-  maxZoom: 20,
-  minZoom: 4,
-  layers: ['OSM'],
-  center: [-467062.8225, 4683459.6216],
-});
-
-// añadir wmts API-CNIG {url: 'http://www.ign.es/wms-inspire/mapa-raster?', name: 'mtn_rasterizado',format: 'image/jpeg',legend: 'Mapa ETRS89 UTM',EPSG: 'EPSG:4258',},
 const suelo = new M.layer.WMTS({
   url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
   name: 'LU.ExistingLandUse',
@@ -19,11 +9,20 @@ const suelo = new M.layer.WMTS({
   matrixSet: 'GoogleMapsCompatible',
   maxZoom: 20,
   minZoom: 4,
-  tile: false,
   visibility: true,
-  useCapabilities: false,
-}, {});
-map.addLayers(suelo);
+}, { crossOrigin: 'anonymous' });
+
+const map = M.map({
+  container: 'mapjs',
+  zoom: 9,
+  maxZoom: 20,
+  minZoom: 4,
+  layers: [suelo],
+  center: [-467062.8225, 4683459.6216],
+});
+
+// añadir wmts API-CNIG {url: 'http://www.ign.es/wms-inspire/mapa-raster?', name: 'mtn_rasterizado',format: 'image/jpeg',legend: 'Mapa ETRS89 UTM',EPSG: 'EPSG:4258',},
+// WMTS -> OK
 
 const mp = new PrintViewManagement({
   isDraggable: true,
