@@ -1450,6 +1450,53 @@ export const returnPositionHtmlElement = (className, map) => {
 };
 
 /**
+ * Esta función devuelve una captura de pantalla del mapa
+ * @function
+ * @param {M.Map} map
+ * @param {HTMLCanvasElement} canva
+ * @api
+ * @returns {String} Imagen en base64
+ */
+export const getImageMap = (map, type = 'image/jpeg', canva) => {
+  const canvas = canva || map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer')[0];
+  let img = null;
+  if (canvas) {
+    try {
+      img = canvas.toDataURL(type);
+    } catch (e) {
+      throw e;
+    }
+  }
+  return img;
+};
+
+/**
+ * Esta función copia una imagen en el portapapeles
+ * @function
+ * @param {HTMLCanvasElement} canvas
+ * @api
+ */
+export const copyImageClipBoard = (map, canva) => {
+  const canvas = canva || map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer')[0];
+  if (canvas) {
+    try {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const item = new window.ClipboardItem({ 'image/png': blob });
+          window.navigator.clipboard.write([item]).then(() => {
+            console.log('Image copied to clipboard');
+          }).catch((err) => {
+            console.error('Error copying image to clipboard:', err);
+          });
+        }
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+};
+
+/**
  * Este comentario no se verá, es necesario incluir
  * una exportación por defecto para que el compilador
  * muestre las funciones.
