@@ -927,8 +927,18 @@ export default class LayerswitcherControl extends M.Control {
         }
 
         if (HTTPeval === true || HTTPSeval === true) {
-          // TMS
-          if (url.indexOf('{z}/{x}/{-y}') >= 0) {
+          // MVT
+          if (url.indexOf('.pbf') >= 0) {
+            const metadata = url.replace('{z}/{x}/{y}.pbf', 'metadata.json');
+            M.remote.get(metadata).then((meta) => {
+              let layers = JSON.parse(meta.text).vector_layers;
+              layers = layers.map((layer) => {
+                return { name: layer.id };
+              });
+              this.printLayerModal(url, 'mvt', layers);
+            });
+            // TMS
+          } else if (url.indexOf('{z}/{x}/{-y}') >= 0) {
             this.printLayerModal(url, 'tms');
             // OSM
           } else if (url.indexOf('{z}/{x}/{y}') >= 0 && url.indexOf('openstreetmap') >= 0) {
@@ -1423,22 +1433,31 @@ export default class LayerswitcherControl extends M.Control {
     return url1 === url2 || (url1.indexOf(url2) > -1) || (url2.indexOf(url1) > -1);
   }
 
-  printLayerModal(url, type) {
+  printLayerModal(url, type, layers) {
     const modal = M.template.compileSync(layerModalTemplate, {
       jsonp: true,
       parseToHtml: false,
       vars: {
         type,
+        layers,
         translations: {
           add_btn: getValue('add_btn'),
           legend: getValue('legend'),
           name: getValue('name'),
           data_layer: getValue('data_layer'),
+          layers: getValue('layers'),
         },
       },
     });
 
     document.querySelector('#m-layerswitcher-layerContainer').outerHTML = modal;
+    if (type === 'mvt') {
+      document.querySelector('#m-layerswitcher-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
+      const results = document.querySelectorAll('span.m-check-layerswitcher-addservices');
+      for (let i = 0; i < results.length; i += 1) {
+        results[i].addEventListener('click', evt => this.registerCheck(evt));
+      }
+    }
 
     const btnAddLayer = document.querySelector('#m-layerswitcher-layer-button');
     btnAddLayer.addEventListener('click', () => {
@@ -1478,6 +1497,22 @@ export default class LayerswitcherControl extends M.Control {
           url,
           matrixSet,
         }));
+      } else if (type === 'mvt') {
+        const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');
+        const layersSelected = [];
+        elmSel.forEach((elm) => {
+          layersSelected.push(elm.id);
+        });
+        const obj = {
+          name,
+          legend,
+          url,
+          matrixSet,
+        };
+        if (!M.utils.isNullOrEmpty(layersSelected)) {
+          obj.layers = layersSelected;
+        }
+        this.map_.addLayers(new M.layer.MVT(obj));
       }
 
       document.querySelector('div.m-dialog.info').parentNode.removeChild(document.querySelector('div.m-dialog.info'));

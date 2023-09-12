@@ -11,29 +11,60 @@
     {{#eq type 'xyz'}}
         <p>{{translations.data_layer}} XYZ</p>
     {{/eq}}
-    <div class="m-layerswitcher-layer¡-fields">
-        <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
+    {{#eq type 'mvt'}}
+        <p>{{translations.data_layer}} MVT</p>
+        <div id="m-layerswitcher-addservices-results">
+            <div class="m-layerswitcher-table-results">
+                <div class="m-layerswitcher-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></span></th>
+                                <th>{{translations.layers}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each layers}}
+                                <tr>
+                                    <td><span id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices m-layerswitcher-icons-check"></span></td>
+                                    <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{abstract}}">{{name}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {{/eq}}
+    <div class="m-layerswitcher-layer-fields">
+        <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
         <input type="text" id="m-layerswitcher-layer-name" />
     </div>
-    <div class="m-layerswitcher-layer¡-fields">
-        <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-legend">{{translations.legend}}</label>
+    <div class="m-layerswitcher-layer-fields">
+        <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-legend">{{translations.legend}}</label>
         <input type="text" id="m-layerswitcher-layer-legend" />
     </div>
     {{#eq type 'osm'}}
-        <div class="m-layerswitcher-layer¡-fields">
-            <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+        <div class="m-layerswitcher-layer-fields">
+            <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
             <input type="text" id="m-layerswitcher-layer-matrixset" />
         </div>
     {{/eq}}
     {{#eq type 'tms'}}
-        <div class="m-layerswitcher-layer¡-fields">
-            <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+        <div class="m-layerswitcher-layer-fields">
+            <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
             <input type="text" id="m-layerswitcher-layer-matrixset" />
         </div>
     {{/eq}}
     {{#eq type 'xyz'}}
-        <div class="m-layerswitcher-layer¡-fields">
-            <label class="m-layerswitcher-layer¡-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+        <div class="m-layerswitcher-layer-fields">
+            <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+            <input type="text" id="m-layerswitcher-layer-matrixset" />
+        </div>
+    {{/eq}}
+    {{#eq type 'mvt'}}
+        <div class="m-layerswitcher-layer-fields">
+            <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
             <input type="text" id="m-layerswitcher-layer-matrixset" />
         </div>
     {{/eq}}

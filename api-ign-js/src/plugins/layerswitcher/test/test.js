@@ -76,8 +76,8 @@ const capaKML = new M.layer.KML({
 // });
 
 const capaMVT = new M.layer.MVT({
-  url: 'https://igo.idee.es/vt/{z}/{x}/{y}.pbf',
-  // layers
+  url: 'https://www.ign.es/web/resources/mapa-base-xyz/vt/{z}/{x}/{y}.pbf',
+  layers: [],
   name: 'Capa MVT',
   projection: 'EPSG:3857',
   extract: true,
@@ -129,7 +129,7 @@ const capaTMS = new M.layer.TMS({
   legend: 'Capa TMS',
   projection: 'EPSG:3857',
 });
-map.addLayers(capaTMS);
+// map.addLayers(capaTMS);
 window.capaTMS = capaTMS;
 
 const capaVector = new M.layer.Vector({
