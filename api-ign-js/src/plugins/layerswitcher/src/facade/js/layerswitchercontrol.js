@@ -1008,8 +1008,16 @@ export default class LayerswitcherControl extends M.Control {
                             if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
                               this.printLayerModal(url, 'geojson');
                             } else if (response3.text.indexOf('<kml ') >= 0) {
-                              // Revisar si es KML para obtener todas las folders
-                              this.printLayerModal(url, 'kml');
+                              const parser = new DOMParser();
+                              const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
+                              const folders = xmlDoc.getElementsByTagName('Folder');
+                              let cont = -1;
+                              const names = Array.from(folders).map((folder) => {
+                                cont += 1;
+                                const name = folder.name || `Layer__${cont}`;
+                                return { name };
+                              });
+                              this.printLayerModal(url, 'kml', names);
                             }
                           });
                         }
@@ -1451,7 +1459,7 @@ export default class LayerswitcherControl extends M.Control {
     });
 
     document.querySelector('#m-layerswitcher-layerContainer').outerHTML = modal;
-    if (type === 'mvt') {
+    if (type === 'mvt' || type === 'kml') {
       document.querySelector('#m-layerswitcher-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
       const results = document.querySelectorAll('span.m-check-layerswitcher-addservices');
       for (let i = 0; i < results.length; i += 1) {
@@ -1513,6 +1521,21 @@ export default class LayerswitcherControl extends M.Control {
           obj.layers = layersSelected;
         }
         this.map_.addLayers(new M.layer.MVT(obj));
+      } else if (type === 'kml') {
+        const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');
+        const layersSelected = [];
+        elmSel.forEach((elm) => {
+          layersSelected.push(elm.id);
+        });
+        const obj = {
+          name,
+          legend,
+          url,
+        };
+        if (!M.utils.isNullOrEmpty(layersSelected)) {
+          obj.layers = layersSelected;
+        }
+        this.map_.addLayers(new M.layer.KML(obj));
       }
 
       document.querySelector('div.m-dialog.info').parentNode.removeChild(document.querySelector('div.m-dialog.info'));
