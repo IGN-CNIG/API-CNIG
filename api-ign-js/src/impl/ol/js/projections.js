@@ -22,6 +22,8 @@ const proj4258 = {
   codes: ['EPSG:4258', 'urn:ogc:def:crs:EPSG::4258', 'http://www.opengis.net/gml/srs/epsg.xml#4258'],
   units: 'd',
   metersPerUnit: 111319.49079327358,
+  datum: 'GRS80 (ETRS89)',
+  proj: 'long, lat',
 };
 
 /**
@@ -38,6 +40,8 @@ const proj25828 = {
   extent: [397101.09, 3638520.14, 1034670.43, 9625438.82],
   codes: ['EPSG:25828', 'urn:ogc:def:crs:EPSG::25828', 'http://www.opengis.net/gml/srs/epsg.xml#25828'],
   units: 'm',
+  datum: 'GRS80 (ETRS89)',
+  proj: 'UTM 28 N',
 };
 
 /**
@@ -53,6 +57,8 @@ const proj25829 = {
   extent: [-164850.78, 3660417.01, 988728.57, 9567111.85],
   codes: ['EPSG:25829', 'urn:ogc:def:crs:EPSG::25829', 'http://www.opengis.net/gml/srs/epsg.xml#25829'],
   units: 'm',
+  datum: 'GRS80 (ETRS89)',
+  proj: 'UTM 29 N',
 };
 
 /**
@@ -69,6 +75,8 @@ const proj25830 = {
   extent: [-729785.83, 3715125.82, 940929.67, 9518470.69],
   codes: ['EPSG:25830', 'urn:ogc:def:crs:EPSG::25830', 'http://www.opengis.net/gml/srs/epsg.xml#23030'],
   units: 'm',
+  datum: 'GRS80 (ETRS89)',
+  proj: 'UTM 30 N',
 };
 
 /**
@@ -85,6 +93,8 @@ const proj25831 = {
   extent: [-1300111.74, 3804640.43, 893164.13, 9478718.31],
   codes: ['EPSG:25831', 'urn:ogc:def:crs:EPSG::25831', 'http://www.opengis.net/gml/srs/epsg.xml#25831'],
   units: 'm',
+  datum: 'GRS80 (ETRS89)',
+  proj: 'UTM 31 N',
 };
 
 /**
@@ -102,6 +112,8 @@ const proj4230 = {
   codes: ['EPSG:4230', 'urn:ogc:def:crs:EPSG::4230', 'http://www.opengis.net/gml/srs/epsg.xml#4230'],
   units: 'd',
   metersPerUnit: 111319.49079327358,
+  datum: 'ED50',
+  proj: 'long, lat',
 };
 
 /**
@@ -119,6 +131,8 @@ const proj23028 = {
   extent: [997517.95, 3873475.61, 2024693.05, 8529441.99],
   codes: ['EPSG:23028', 'urn:ogc:def:crs:EPSG::23028', 'http://www.opengis.net/gml/srs/epsg.xml#23028'],
   units: 'm',
+  datum: 'ED50',
+  proj: 'UTM 28 N',
 };
 
 /**
@@ -136,6 +150,8 @@ const proj23029 = {
   extent: [448933.91, 3860083.93, 1860436.11, 8381369.16],
   codes: ['EPSG:23029', 'urn:ogc:def:crs:EPSG::23029', 'http://www.opengis.net/gml/srs/epsg.xml#23029'],
   units: 'm',
+  datum: 'ED50',
+  proj: 'UTM 29 N',
 };
 
 /**
@@ -153,6 +169,8 @@ const proj23030 = {
   extent: [-99844.71, 3879626.63, 1682737.72, 8251830.80],
   codes: ['EPSG:23030', 'urn:ogc:def:crs:EPSG::23030', 'http://www.opengis.net/gml/srs/epsg.xml#23030'],
   units: 'm',
+  datum: 'ED50',
+  proj: 'UTM 30 N',
 };
 
 /**
@@ -170,6 +188,8 @@ const proj23031 = {
   extent: [-650883.16, 3932764.97, 1493695.91, 8141744.84],
   codes: ['EPSG:23031', 'urn:ogc:def:crs:EPSG::23031', 'http://www.opengis.net/gml/srs/epsg.xml#23031'],
   units: 'm',
+  datum: 'ED50',
+  proj: 'UTM 31 N',
 };
 
 /**
@@ -188,6 +208,8 @@ const proj4326 = {
   units: 'd',
   metersPerUnit: 111319.49079327358,
   axisOrientation: 'neu',
+  datum: 'WGS 84',
+  proj: 'longitud, latitud',
 };
 
 /**
@@ -205,6 +227,8 @@ const proj32627 = {
   extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
   codes: ['EPSG:32627', 'urn:ogc:def:crs:EPSG::32627', 'http://www.opengis.net/gml/srs/epsg.xml#32627'],
   units: 'm',
+  datum: 'WGS 84',
+  proj: 'UTM 27 N',
 };
 
 /**
@@ -221,6 +245,8 @@ const proj32628 = {
   extent: [166021.44317933178, 0, 833978.5568206678, 9329005.18301614],
   codes: ['EPSG:32628', 'urn:ogc:def:crs:EPSG::32628', 'http://www.opengis.net/gml/srs/epsg.xml#32628'],
   units: 'm',
+  datum: 'WGS 84',
+  proj: 'UTM 28 N',
 };
 
 /**
@@ -238,6 +264,8 @@ const proj32629 = {
   extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
   codes: ['EPSG:32629', 'urn:ogc:def:crs:EPSG::32629', 'http://www.opengis.net/gml/srs/epsg.xml#32629'],
   units: 'm',
+  datum: 'WGS 84',
+  proj: 'UTM 29 N',
 };
 
 /**
@@ -255,6 +283,8 @@ const proj32630 = {
   extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
   codes: ['EPSG:32630', 'urn:ogc:def:crs:EPSG::32630', 'http://www.opengis.net/gml/srs/epsg.xml#32630'],
   units: 'm',
+  datum: 'WGS 84',
+  proj: 'UTM 30 N',
 };
 
 /**
@@ -272,6 +302,8 @@ const proj32631 = {
   extent: [166021.4431, 0.0000, 833978.5569, 9329005.1825],
   codes: ['EPSG:32631', 'urn:ogc:def:crs:EPSG::32631', 'http://www.opengis.net/gml/srs/epsg.xml#32631'],
   units: 'm',
+  datum: 'WGS 84',
+  proj: 'UTM 31 N',
 };
 
 /**
@@ -289,6 +321,8 @@ const proj4081 = {
   codes: ['EPSG:4081', 'urn:ogc:def:crs:EPSG::4081', 'http://www.opengis.net/gml/srs/epsg.xml#4081'],
   units: 'd',
   metersPerUnit: 111319.49079327358,
+  datum: 'REGCAN95',
+  proj: 'long, lat',
 };
 
 /**
@@ -304,6 +338,8 @@ const proj4082 = {
   extent: [405849.71, 2720975.60, 1367994.77, 3662797.15],
   codes: ['EPSG:4082', 'urn:ogc:def:crs:EPSG::4082', 'http://www.opengis.net/gml/srs/epsg.xml#4082'],
   units: 'm',
+  datum: 'REGCAN95',
+  proj: 'UTM 27 N',
 };
 
 /**
@@ -320,6 +356,8 @@ const proj4083 = {
   extent: [-202677.94, 2738405.48, 804488.92, 3629357.10],
   codes: ['EPSG:4083', 'urn:ogc:def:crs:EPSG::4083', 'http://www.opengis.net/gml/srs/epsg.xml#4083'],
   units: 'm',
+  datum: 'REGCAN95',
+  proj: 'UTM 28 N',
 };
 
 /**
@@ -339,6 +377,8 @@ const proj3395 = {
   extent: [-20026376.39, 15496570.74, 20026376.39, 18764656.23],
   codes: ['EPSG:3395', 'urn:ogc:def:crs:EPSG::3395', 'http://www.opengis.net/gml/srs/epsg.xml#3395'],
   units: 'm',
+  datum: 'WGS 84',
+  proj: 'World Mercator',
 };
 
 /**
