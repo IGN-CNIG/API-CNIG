@@ -480,9 +480,7 @@ export default class PrinterMapControl extends M.Control {
 
         queueEl.setAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME, downloadUrl);
         queueEl.addEventListener('click', download);
-        queueEl.addEventListener('keydown', ({ key }) => {
-          if (key === 'Enter') download();
-        });
+        queueEl.addEventListener('keydown', download);
         // } else {
         //   M.dialog.error('Se ha producido un error en la impresión.');
         // }
@@ -786,9 +784,11 @@ export default class PrinterMapControl extends M.Control {
     */
   downloadPrint(event) {
     event.preventDefault();
-    const downloadUrl = this.getAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME);
-    if (!M.utils.isNullOrEmpty(downloadUrl)) {
-      window.open(downloadUrl, '_blank');
+    if (event.key === undefined || event.key === 'Enter' || event.key === ' ') {
+      const downloadUrl = this.getAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME);
+      if (!M.utils.isNullOrEmpty(downloadUrl)) {
+        window.open(downloadUrl, '_blank');
+      }
     }
   }
 

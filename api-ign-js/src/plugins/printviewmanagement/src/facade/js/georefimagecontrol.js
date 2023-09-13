@@ -416,6 +416,7 @@ export default class GeorefimageControl extends M.Control {
         }
         queueEl.setAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME, downloadUrl);
         queueEl.addEventListener('click', this.downloadPrint.bind(this));
+        queueEl.addEventListener('keydown', this.downloadPrint.bind(this));
         // } else {
         //   M.dialog.error('Se ha producido un error en la impresión.');
         // }
@@ -742,6 +743,9 @@ export default class GeorefimageControl extends M.Control {
     * @api stable
     */
   downloadPrint(evt, imgBase64) {
+    if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {
+      return;
+    }
     // DEFAULTS PARAMS
     const FILE_EXTENSION_GEO = '.wld'; // .jgw
     const TYPE_SAVE = '.zip';

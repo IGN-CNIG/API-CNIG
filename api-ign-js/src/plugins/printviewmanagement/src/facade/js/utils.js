@@ -22,6 +22,7 @@ const REGEX_FORMAT_IMAGE = /^data:image\/(png|jpeg);base64,/;
 export function createQueueElement(title) {
   const queueElem = document.createElement('li');
   queueElem.innerHTML = title || getValue('notitle');
+  queueElem.tabIndex = 0;
   return queueElem;
 }
 
