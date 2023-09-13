@@ -851,6 +851,16 @@ export default class GeorefimageControl extends M.Control {
     // TO-DO [ ] ADD BUTTON REMOVE AND ALL EVENTS
     // TO-DO [ ] Deactive dowloand when change the contorl
   }
+
+  /**
+ * This function destroys this control
+ *
+ * @public
+ * @function
+ * @api
+ */
+  destroy() {
+  }
 }
 
 /**

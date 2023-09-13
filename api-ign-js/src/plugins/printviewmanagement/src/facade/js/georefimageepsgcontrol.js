@@ -292,5 +292,15 @@ export default class GeorefImageEpsgControl extends M.Control {
     this.template_.remove();
     // TO-DO ADD BUTTON REMOVE AND ALL EVENTS
   }
+
+  /**
+ * This function destroys this control
+ *
+ * @public
+ * @function
+ * @api
+ */
+  destroy() {
+  }
 }
 

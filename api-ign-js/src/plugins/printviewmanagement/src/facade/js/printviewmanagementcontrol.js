@@ -170,7 +170,7 @@ export default class PrintViewManagementControl extends M.Control {
    * @api
    */
   equals(control) {
-    return control instanceof PrintViewManagementImpl;
+    return control instanceof PrintViewManagementControl;
   }
 
   addGeorefImageEpsgControl(html) {
