@@ -77,12 +77,13 @@ const capaKML = new M.layer.KML({
 
 const capaMVT = new M.layer.MVT({
   url: 'https://www.ign.es/web/resources/mapa-base-xyz/vt/{z}/{x}/{y}.pbf',
-  layers: [],
+  layers: ['camino_lin'],
   name: 'Capa MVT',
   projection: 'EPSG:3857',
   extract: true,
 });
-// map.addLayers(capaMVT);
+window.capaMVT = capaMVT;
+map.addLayers(capaMVT);
 
 const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
   url: 'https://api-features.idee.es/collections/',
