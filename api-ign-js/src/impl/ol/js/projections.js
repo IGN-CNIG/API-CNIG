@@ -387,7 +387,7 @@ const proj3395 = {
  * @public
  * @api
  */
-const projections = [
+export const projections = [
   proj4326,
   proj32627,
   proj32628,
