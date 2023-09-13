@@ -419,7 +419,7 @@ export const projections = [
  * @public
  * @api
  */
-const addProjections = (projectionsParam) => {
+export const addProjections = (projectionsParam) => {
   // Register and publish projections
   projectionsParam.forEach((projection) => {
     projection.codes.forEach((code) => {
