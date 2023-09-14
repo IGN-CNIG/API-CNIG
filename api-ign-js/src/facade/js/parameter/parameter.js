@@ -4025,6 +4025,12 @@ export const layer = (userParameters, forcedType) => {
       } else {
         layerObj = userParam;
       }
+
+      if (!isNullOrEmpty(userParam.infoEventType)) {
+        layerObj.infoEventType = userParam.infoEventType;
+      } else {
+        layerObj.infoEventType = 'click';
+      }
     }
 
     return layerObj;

@@ -111,22 +111,30 @@ class Features extends Base {
         const prevFeatures = [...(this.prevSelectedFeatures_[layer.name])];
         // no features selected then unselect prev selected features
         if (prevFeatures[0] === clickedFeatures[0] && i === 1 && clickedFeatures !== []) {
-          this.selectFeatures(prevFeatures, layer, evt);
+          if (layer.infoEventType === 'click') {
+            this.selectFeatures(prevFeatures, layer, evt);
+          }
         }
         if (clickedFeatures.length === 0 && prevFeatures.length > 0) {
-          this.unselectFeatures(prevFeatures, layer, evt);
+          if (layer.infoEventType === 'click') {
+            this.unselectFeatures(prevFeatures, layer, evt);
+          }
         } else if (clickedFeatures.length > 0 && clickedFeatures[0] !== undefined) {
           const newFeatures = clickedFeatures.filter(f => !prevFeatures.some(pf => pf.equals(f)));
 
           const diffFeatures = prevFeatures.filter(f => !clickedFeatures.some(pf => pf.equals(f)));
           // unselect prev selected features which have not been selected this time
           if (diffFeatures.length > 0) {
-            this.unselectFeatures(diffFeatures, layer, evt);
+            if (layer.infoEventType === 'click') {
+              this.unselectFeatures(diffFeatures, layer, evt);
+            }
           }
 
           // select new selected features
           if (newFeatures.length > 0) {
-            this.selectFeatures(newFeatures, layer, evt);
+            if (layer.infoEventType === 'click') {
+              this.selectFeatures(newFeatures, layer, evt);
+            }
           }
         }
       });
@@ -150,6 +158,9 @@ class Features extends Base {
         const prevFeatures = [...this.prevHoverFeatures_[layer.name]];
         // no features selected then unselect prev selected features
         if (hoveredFeatures.length === 0 && prevFeatures.length > 0) {
+          if (layer.infoEventType === 'hover') {
+            this.unselectFeatures(prevFeatures, layer, evt);
+          }
           this.leaveFeatures_(prevFeatures, layer, evt);
         } else if (hoveredFeatures.length > 0) {
           const newFeatures = hoveredFeatures
@@ -157,10 +168,16 @@ class Features extends Base {
           const diffFeatures = prevFeatures.filter(f => !hoveredFeatures.some(pf => pf.equals(f)));
           // unselect prev selected features which have not been selected this time
           if (diffFeatures.length > 0) {
+            if (layer.infoEventType === 'hover') {
+              this.unselectFeatures(diffFeatures, layer, evt);
+            }
             this.leaveFeatures_(diffFeatures, layer, evt);
           }
           // select new selected features
           if (newFeatures.length > 0) {
+            if (layer.infoEventType === 'hover') {
+              this.selectFeatures(newFeatures, layer, evt);
+            }
             this.hoverFeatures_(newFeatures, layer, evt);
           }
         }
