@@ -139,7 +139,14 @@ export function formatImageBase64(base64) {
 // Services SIG Geoprint List
 export const LIST_SERVICES = `
     <section>
-      <h1>TO-DO DEFINIR</h1>
+      <h1>Fuentes disponibles</h1>
+      <p><b>Capas ráster</b></p>
+      <ul>
+        <li><b>WMS: </b> WMS devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales. Permitiendo las personalización de las capas mediante estilos. </li>
+        <li><b>WMTS: </b> WMTS (Web Map Tile Service) es un estándar OGC para servir información geográfica en forma de tiles pregenerados a unas resoluciones específicas.</li>
+        <li><b>TMS: </b> Las capas TMS (Tile Map Service) son servicios de información geográfica en forma de tiles muy similares a las capas XYZ.</li>
+        <li><b>XYZ: </b> Las capas XYZ son servicios de información geográfica en forma de tiles. Cada tile representa una combinación de tres parámetros.</li>
+      <ul>
+      <p><b>Más información:</b> <a href="https://github.com/IGN-CNIG/API-CNIG/wiki/2.1.-Capas">https://github.com/IGN-CNIG/API-CNIG/wiki/2.1.-Capas</a></p>
     </section>
-   
 `;

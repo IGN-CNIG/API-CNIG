@@ -124,7 +124,7 @@ export default class GeorefImageEpsgControl extends M.Control {
       button.classList.toggle('activated');
     });
 
-    // this.accessibilityTab(html);
+    this.accessibilityTab(html);
   }
 
   /**
