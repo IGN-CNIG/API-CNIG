@@ -36,14 +36,12 @@
     }
   },
   "metadata": {
-    "name": "Layerswitcher",
-    "description": "",
-    "text": "",
+    "name": "layerswitcher",
+    "description": "Extensión que permite listar y gestionar los servicios añadidos en el mapa. Además permite añadir servicios de forma fácil y rápida.",
     "version": "1.0.0",
-    "date": "2023-07-18",
+    "date": "2023-09-14",
     "author": "Guadaltel",
     "org": "CNIG",
-    "tags": "plugin",
-    "icon": "./facade/assets/icons/icons.svg"
+    "tags": "plugin"
   }
 }

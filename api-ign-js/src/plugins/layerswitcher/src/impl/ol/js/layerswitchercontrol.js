@@ -39,6 +39,7 @@ export default class LayerswitcherControl extends M.impl.Control {
    * @function
    */
   renderControl() {
+    console.log('renderControl');
     this.facadeControl.render();
   }
 
@@ -196,5 +197,9 @@ export default class LayerswitcherControl extends M.impl.Control {
     for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
     while (coordinateCopy.length > 2) coordinateCopy.pop();
     return coordinateCopy;
+  }
+
+  destroy() {
+    this.removeRenderComplete();
   }
 }

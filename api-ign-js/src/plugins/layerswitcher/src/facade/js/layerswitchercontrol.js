@@ -2139,6 +2139,10 @@ export default class LayerswitcherControl extends M.Control {
     return cDict;
   }
 
+  destroy() {
+    this.getImpl().destroy();
+  }
+
   /**
    * This function compares controls
    *
