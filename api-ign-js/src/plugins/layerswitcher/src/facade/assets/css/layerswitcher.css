@@ -469,6 +469,21 @@ div.m-layerswitcher-legend>img {
     word-break: break-word;
 }
 
+#m-layerswitcher-addservices-results .m-layerswitcher-capabilities-container-wfs {
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: none;
+}
+
+#m-layerswitcher-addservices-results .m-layerswitcher-capabilities-container-wfs p {
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+#m-layerswitcher-addservices-results .m-layerswitcher-capabilities-container-wfs div {
+    word-break: break-word;
+}
+
 #m-layerswitcher-addservices-results>div {
     margin: 1rem 0.5rem 0;
 }
@@ -504,7 +519,7 @@ div.m-layerswitcher-legend>img {
     text-decoration: none;
 }
 
-#m-layerswitcher-addservices-selectall {
+#m-layerswitcher-addservices-selectall, #m-layerswitcher-addservices-selectall-wfs {
     font-size: 18px !important;
     font-weight: bold;
 }
