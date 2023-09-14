@@ -327,7 +327,7 @@ export default class GeorefimageControl extends M.Control {
       }
 
       if (value === 'client') {
-        const proj = M.impl.ol.js.projections.projections.filter(({ codes }) => {
+        const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
           return codes.includes(this.map_.getProjection().code);
         })[0];
         this.elementProjection_.innerText = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
