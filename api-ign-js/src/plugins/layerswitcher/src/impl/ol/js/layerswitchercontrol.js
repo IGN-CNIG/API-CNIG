@@ -39,7 +39,6 @@ export default class LayerswitcherControl extends M.impl.Control {
    * @function
    */
   renderControl() {
-    console.log('renderControl');
     this.facadeControl.render();
   }
 
