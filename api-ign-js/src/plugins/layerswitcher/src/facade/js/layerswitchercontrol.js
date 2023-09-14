@@ -899,6 +899,56 @@ export default class LayerswitcherControl extends M.Control {
     }, 10);
   }
 
+  readWFSCapabilities(response) {
+    const services = [];
+    const prenode = response.text.split('<FeatureTypeList>')[1].split('</FeatureTypeList>')[0];
+    if (prenode.indexOf('<FeatureType>') > -1) {
+      const nodes = prenode.split('<FeatureType>');
+      nodes.forEach((node) => {
+        if (node.indexOf('</Name>') > -1) {
+          services.push({
+            name: node.split('</Name>')[0].split('>')[1].trim(),
+            title: node.split('</Title>')[0].split('<Title>')[1].trim(),
+          });
+        }
+      });
+    } else if (prenode.indexOf('<FeatureType') > -1) {
+      const nodes = prenode.split('<FeatureType');
+      nodes.forEach((node) => {
+        if (node.indexOf('</Name>') > -1) {
+          services.push({
+            name: node.split('</Name>')[0].split('<Name>')[1].trim(),
+            title: node.split('</Title>')[0].split('<Title>')[1].trim(),
+          });
+        }
+      });
+    }
+
+    const capabilities = {};
+    let hasCapabilities = false;
+    try {
+      capabilities.title = response.text.split('<ows:Title>')[1].split('</ows:Title>')[0];
+      hasCapabilities = true;
+    } catch (err) {
+      hasCapabilities = hasCapabilities || false;
+    }
+
+    try {
+      capabilities.abstract = response.text.split('<ows:Abstract>')[1].split('</ows:Abstract>')[0];
+      hasCapabilities = true;
+    } catch (err) {
+      hasCapabilities = hasCapabilities || false;
+    }
+
+    try {
+      capabilities.accessConstraints = response.text.split('<ows:AccessConstraints>')[1].split('</ows:AccessConstraints>')[0];
+      hasCapabilities = true;
+    } catch (err) {
+      hasCapabilities = hasCapabilities || false;
+    }
+    return { services, capabilities, hasCapabilities };
+  }
+
   /**
    * Esta función lee las capas de un servicio
    *
@@ -976,11 +1026,37 @@ export default class LayerswitcherControl extends M.Control {
                       success(response2);
                     });
                   });
-                  promise2.then((response2) => {
-                    if (response2.text.indexOf('<TileMatrixSetLink>') === -1 && response2.text.indexOf('<GetMap>') >= 0) {
+                  const promisewfs = new Promise((success, reject) => {
+                    const id = setTimeout(() => reject(), 15000);
+                    let urlAux = url;
+                    urlAux = M.utils.addParameters(url, 'request=GetCapabilities');
+                    urlAux = M.utils.addParameters(urlAux, 'service=WFS');
+
+                    urlAux = M.utils.addParameters(urlAux, {
+                      version: '1.3.0',
+                    });
+                    M.remote.get(urlAux).then((responsewfs) => {
+                      clearTimeout(id);
+                      success(responsewfs);
+                    });
+                  });
+                  Promise.all([promise2, promisewfs]).then((response2) => {
+                    let wms = false;
+                    let wfs = false;
+
+                    if (response2[0].text.indexOf('<TileMatrixSetLink>') === -1 && response2[0].text.indexOf('<GetMap>') >= 0) {
+                      wms = true;
+                    }
+
+                    if (response2[1].text.indexOf('<TileMatrixSetLink>') === -1 && response2[1].text.indexOf('Operation name="GetFeature"') >= 0) {
+                      wfs = true;
+                    }
+
+                    if (wms || wfs) {
                       try {
+                        // WMS
                         const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
-                        const getCapabilities = getCapabilitiesParser.read(response2.xml);
+                        const getCapabilities = getCapabilitiesParser.read(response2[0].xml);
                         this.serviceCapabilities = getCapabilities.Service || {};
                         const getCapabilitiesUtils = new M.impl.GetCapabilities(
                           getCapabilities,
@@ -994,7 +1070,9 @@ export default class LayerswitcherControl extends M.Control {
                             /* eslint-disable no-empty */
                           } catch (err) {}
                         });
-                        this.showResults();
+                        // WFS
+                        const wfsDatas = this.readWFSCapabilities(response2[1]);
+                        this.showResults(wfsDatas);
                       } catch (error) {
                         M.dialog.error(getValue('exception.capabilities'));
                       }
@@ -1157,7 +1235,7 @@ export default class LayerswitcherControl extends M.Control {
   /**
    * Esta función muestra los resultados
    */
-  showResults() {
+  showResults(wfsDatas) {
     const result = [];
     let serviceType = 'WMS';
     this.capabilities.forEach((capability) => {
@@ -1219,7 +1297,9 @@ export default class LayerswitcherControl extends M.Control {
       const html = M.template.compileSync(resultstemplate, {
         vars: {
           result,
+          layersWFS: wfsDatas.services,
           serviceCapabilities,
+          serviceCapabilitieswfs: wfsDatas.capabilities,
           translations: {
             layers: getValue('layers'),
             add: getValue('add'),
@@ -1238,19 +1318,41 @@ export default class LayerswitcherControl extends M.Control {
         results[i].addEventListener('click', evt => this.registerCheck(evt));
       }
 
-      const resultsNames = container.querySelectorAll('.m-layerswitcher-table-results .m-layerswitcher-table-container table tbody tr td.m-layerswitcher-table-layer-name');
+      const resultsWFS = container.querySelectorAll('span.m-check-layerswitcher-addservices-wfs');
+      for (let i = 0; i < resultsWFS.length; i += 1) {
+        resultsWFS[i].addEventListener('click', evt => this.registerCheckWFS(evt));
+      }
+
+      const resultsNames = container.querySelectorAll('#m-layerswitcher-all tbody tr td.m-layerswitcher-table-layer-name');
       for (let i = 0; i < resultsNames.length; i += 1) {
         resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
+      }
+
+      const resultsNamesWFS = container.querySelectorAll('#m-layerswitcher-wfs tbody tr td.m-layerswitcher-table-layer-name');
+      for (let i = 0; i < resultsNamesWFS.length; i += 1) {
+        resultsNamesWFS[i].addEventListener('click', evt => this.registerCheckFromNameWFS(evt));
       }
 
       const checkboxResults = container.querySelectorAll('.m-layerswitcher-table-results .m-layerswitcher-table-container table tbody tr td span');
       checkboxResults.forEach(l => l.addEventListener('keydown', e => (e.keyCode === 13) && this.registerCheckFromName(e)));
 
       container.querySelector('#m-layerswitcher-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
+      container.querySelector('#m-layerswitcher-addservices-selectall-wfs').addEventListener('click', evt => this.registerCheckWFS(evt));
       container.querySelector('.m-layerswitcher-addservices-add').addEventListener('click', evt => this.addLayers(evt));
       const elem = container.querySelector('.m-layerswitcher-show-capabilities');
       elem.addEventListener('click', () => {
         const block = container.querySelector('.m-layerswitcher-capabilities-container');
+        if (block.style.display !== 'block') {
+          block.style.display = 'block';
+          elem.innerHTML = `<span class="m-layerswitcher-icons-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
+        } else {
+          block.style.display = 'none';
+          elem.innerHTML = `<span class="m-layerswitcher-icons-desplegar"></span>&nbsp;${getValue('show_service_info')}`;
+        }
+      });
+      const elem2 = container.querySelector('.m-layerswitcher-show-capabilities-wfs');
+      elem2.addEventListener('click', () => {
+        const block = container.querySelector('.m-layerswitcher-capabilities-container-wfs');
         if (block.style.display !== 'block') {
           block.style.display = 'block';
           elem.innerHTML = `<span class="m-layerswitcher-icons-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
@@ -1322,6 +1424,46 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   /**
+   * This function registers the marks or unmarks check and click allselect
+   *
+   * @function
+   * @private
+   * @param {Event} evt - Event
+   */
+  registerCheckWFS(evt) {
+    const e = (evt || window.event);
+    if (!M.utils.isNullOrEmpty(e.target) && e.target.classList.contains('m-check-layerswitcher-addservices-wfs')) {
+      const container = document.querySelector('#m-layerswitcher-addservices-results');
+      let numNotChecked = container.querySelectorAll('.m-check-layerswitcher-addservices-wfs.m-layerswitcher-icons-check').length;
+      numNotChecked += (e.target.classList.contains('m-layerswitcher-icons-check') ? -1 : 1);
+      e.stopPropagation();
+      e.target.classList.toggle('m-layerswitcher-icons-check');
+      e.target.classList.toggle('m-layerswitcher-icons-check-seleccionado');
+      if (numNotChecked > 0) {
+        this.stateSelectAll = false;
+        document.querySelector('#m-layerswitcher-addservices-selectall-wfs').classList.remove('m-layerswitcher-icons-check-seleccionado');
+        document.querySelector('#m-layerswitcher-addservices-selectall-wfs').classList.add('m-layerswitcher-icons-check');
+      } else if (numNotChecked === 0) {
+        this.stateSelectAll = true;
+        document.querySelector('#m-layerswitcher-addservices-selectall-wfs').classList.remove('m-layerswitcher-icons-check');
+        document.querySelector('#m-layerswitcher-addservices-selectall-wfs').classList.add('m-layerswitcher-icons-check-seleccionado');
+      }
+    } else if (!M.utils.isNullOrEmpty(e.target) && e.target.id === 'm-layerswitcher-addservices-selectall-wfs') {
+      if (this.stateSelectAll) {
+        e.target.classList.remove('m-layerswitcher-icons-check-seleccionado');
+        e.target.classList.add('m-layerswitcher-icons-check');
+        this.unSelectWFS();
+        this.stateSelectAll = false;
+      } else {
+        e.target.classList.remove('m-layerswitcher-icons-check');
+        e.target.classList.add('m-layerswitcher-icons-check-seleccionado');
+        this.selectWFS();
+        this.stateSelectAll = true;
+      }
+    }
+  }
+
+  /**
    * This function registers the marks or unmarks check and click allselect from layer name
    *
    * @function
@@ -1334,6 +1476,18 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   /**
+   * This function registers the marks or unmarks check and click allselect from layer name
+   *
+   * @function
+   * @private
+   * @param {Event} evt - Event
+   */
+  registerCheckFromNameWFS(evt) {
+    const e = (evt || window.event);
+    e.target.parentElement.querySelector('span.m-check-layerswitcher-addservices-wfs').click();
+  }
+
+  /**
    * This function adds layers
    *
    * @function
@@ -1343,8 +1497,9 @@ export default class LayerswitcherControl extends M.Control {
   addLayers(evt) {
     evt.preventDefault();
     const layers = [];
-    const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');
-    if (elmSel.length === 0) {
+    const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-all .m-layerswitcher-icons-check-seleccionado');
+    const elmSelWFS = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-wfs .m-layerswitcher-icons-check-seleccionado');
+    if (elmSel.length === 0 && elmSelWFS.length === 0) {
       M.dialog.error(getValue('exception.select_layer'));
     } else {
       for (let i = 0; i < elmSel.length; i += 1) {
@@ -1387,6 +1542,22 @@ export default class LayerswitcherControl extends M.Control {
           }
         }
       }
+      if (elmSelWFS.length > 0) {
+        const layersWFS = [];
+        const url = document.querySelector('div.m-dialog #m-layerswitcher-addservices-search-input').value.trim().split('?')[0];
+        elmSelWFS.forEach((elm) => {
+          const id = elm.id.split(':');
+          if (id[0] !== 'm-layerswitcher-addservices-selectall-wfs') {
+            layersWFS.push(new M.layer.WFS({
+              url,
+              namespace: id[0],
+              name: id[1],
+              legend: id[1],
+            }));
+          }
+        });
+        this.map_.addLayers(layersWFS);
+      }
 
       layers.reverse();
       this.map_.addLayers(layers);
@@ -1400,7 +1571,7 @@ export default class LayerswitcherControl extends M.Control {
    * @private
    */
   unSelect() {
-    const unSelect = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');
+    const unSelect = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-all .m-layerswitcher-icons-check-seleccionado');
     for (let i = 0; i < unSelect.length; i += 1) {
       unSelect[i].classList.remove('m-layerswitcher-icons-check-seleccionado');
       unSelect[i].classList.add('m-layerswitcher-icons-check');
@@ -1414,7 +1585,35 @@ export default class LayerswitcherControl extends M.Control {
    * @private
    */
   select() {
-    const select = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check');
+    const select = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-all .m-layerswitcher-icons-check');
+    for (let i = 0; i < select.length; i += 1) {
+      select[i].classList.remove('m-layerswitcher-icons-check');
+      select[i].classList.add('m-layerswitcher-icons-check-seleccionado');
+    }
+  }
+
+  /**
+   * This function unselects checkboxs
+   *
+   * @function
+   * @private
+   */
+  unSelectWFS() {
+    const unSelect = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-wfs .m-layerswitcher-icons-check-seleccionado');
+    for (let i = 0; i < unSelect.length; i += 1) {
+      unSelect[i].classList.remove('m-layerswitcher-icons-check-seleccionado');
+      unSelect[i].classList.add('m-layerswitcher-icons-check');
+    }
+  }
+
+  /**
+   * This function selects checkboxs
+   *
+   * @function
+   * @private
+   */
+  selectWFS() {
+    const select = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-wfs .m-layerswitcher-icons-check');
     for (let i = 0; i < select.length; i += 1) {
       select[i].classList.remove('m-layerswitcher-icons-check');
       select[i].classList.add('m-layerswitcher-icons-check-seleccionado');
