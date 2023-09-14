@@ -187,141 +187,64 @@ const PRECHARGED = {
   ],
 };
 export default class Layerswitcher extends M.Plugin {
-  /**
-   * @constructor
-   * @extends {M.Plugin}
-   * @param {Object} impl implementation object
-   * @api
-   */
   constructor(options = {}) {
     super();
-    /**
-     * Fachada del mapa
-     * @private
-     * @type {M.Map}
-     */
+    // Fachada del mapa
     this.map_ = null;
 
-    /**
-     * Array de controles
-     * @private
-     * @type {Array<M.Control>}
-     */
+    // Controles del plugin
     this.controls_ = [];
 
-    /**
-     * Nombre del plugin
-     * @private
-     * @type {String}
-     */
+    // Nombre del plugin
     this.name_ = 'layerswitcher';
 
-    /**
-     * Parámetros del plugin
-     * @public
-     * @type {Object}
-     */
+    // Parámetros del plugin
     this.options = options;
 
-    /**
-     * Posición del plugin
-     * @private
-     * @type {string}
-     */
+    // Posición del plugin
     this.position_ = options.position || 'TR';
 
-    /**
-     * Permite saber si el plugin está colapsado o no
-     * @private
-     * @type {boolean}
-     */
+    // Permite saber si el plugin está colapsado o no
     this.collapsed_ = !M.utils.isUndefined(options.collapsed) ? options.collapsed : true;
 
-    /**
-     * Permite que el plugin sea colapsado o no
-     * @private
-     * @type {Boolean}
-     */
+    // Permite que el plugin sea colapsado o no
     this.collapsible_ = !M.utils.isUndefined(options.collapsible) ? options.collapsible : true;
 
-    /**
-     * Tooltip
-     * @private
-     * @type {String}
-     */
+    // Tooltip
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
-    /**
-     * Determina si el plugin es draggable o no
-     * @public
-     * @type {Boolean}
-     */
+    // Determina si el plugin es draggable o no
     this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
 
-    /**
-     * Permite saber si se permite movimiento de capas
-     * @public
-     * @type {boolean}
-     */
+    // Permite saber si se permite movimiento de capas
     this.isMoveLayers = options.isMoveLayers || false;
 
-    /**
-     * Determina el modo de selección de las capas
-     * @public
-     * @type {String}
-     */
+    // Determina el modo de selección de las capas
     this.modeSelectLayers = M.utils.isUndefined(options.modeSelectLayers) ? 'eyes' : options.modeSelectLayers;
 
-    /**
-     * Controles para mostrar en las capas
-     * @public
-     * @type {Array}
-     */
+    // Herramientas para mostrar en las capas
     this.tools = M.utils.isUndefined(options.tools) ? ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'] : options.tools;
 
-    /**
-     * Servicios precargados
-     * @public
-     * @type {Array}
-     */
+    // Servicios precargados
     this.precharged = options.precharged || PRECHARGED;
 
-    /**
-     * Metadatos
-     * @private
-     * @type {Object}
-     */
+    //  Metadatos
     this.metadata_ = api.metadata;
 
-    /**
-     * Determina si permite o no servicios http
-     * @public
-     * @type {Boolean}
-     */
+    //  Determina si permite o no servicios http
     this.http = true;
     if (options.http !== undefined && (options.http === false || options.http === 'false')) {
       this.http = false;
     }
 
-    /**
-     * Determina si permite o no servicios https
-     * @public
-     * @type {Boolean}
-     */
+    // Determina si permite o no servicios https
     this.https = true;
     if (options.https !== undefined && (options.https === false || options.https === 'false')) {
       this.https = false;
     }
   }
 
-  /**
-   * Devuelve el idioma del plugin
-   *
-   * @public
-   * @function
-   * @param {string} lang lenguaje
-   * @api stable
-   */
+  // Devuelve el idioma del plugin
   static getJSONTranslations(lang) {
     if (lang === 'en' || lang === 'es') {
       return (lang === 'en') ? en : es;
@@ -329,13 +252,7 @@ export default class Layerswitcher extends M.Plugin {
     return M.language.getTranslation(lang).layerswitcher;
   }
 
-  /**
-   * Esta función añade el plugin al mapa
-   *
-   * @public
-   * @function
-   * @param {M.Map} map el mapa donde se añadirá el plugin
-   */
+  // Esta función añade el plugin al mapa
   addTo(map) {
     this.map_ = map;
     // creamos control
@@ -370,90 +287,43 @@ export default class Layerswitcher extends M.Plugin {
     this.map_.addPanels(this.panel_);
   }
 
-  /**
-   * Esta función devuelve la posición del plugin
-   *
-   * @public
-   * @return {string}
-   * @api
-   */
+  // Esta función devuelve la posición del plugin
   get position() {
     return this.position_;
   }
 
-  /**
-   * Esta función devuelve el nombre del plugin
-   *
-   * @getter
-   * @function
-   */
+  //  Esta función devuelve el nombre del plugin
   get name() {
     return this.name_;
   }
 
-  /**
-   * Esta función devuelve si el panel es collapsible o no
-   *
-   * @getter
-   * @function
-   */
+  // Esta función devuelve si el panel es collapsible o no
   get collapsed() {
     return this.panel_.isCollapsed();
   }
 
-  /**
-   * Devuelve la cadena API-REST del plugin
-   *
-   * @function
-   * @public
-   * @api
-   */
+  // Devuelve la cadena API-REST del plugin
   getAPIRest() {
     return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}`;
   }
 
-  /**
-   * Devuelve la cadena API-REST del plugin en base64
-   *
-   * @function
-   * @public
-   * @api
-   */
+  // Devuelve la cadena API-REST del plugin en base64
   getAPIRestBase64() {
     return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
-  /**
-   * Esta función devuelve los metadatos del plugin
-   *
-   * @public
-   * @function
-   * @api stable
-   */
+  // Esta función devuelve los metadatos del plugin
   getMetadata() {
     return this.metadata_;
   }
 
-  /**
-   * Esta función elimina el plugin del mapa
-   *
-   * @public
-   * @function
-   * @api
-   */
+  // Esta función elimina el plugin del mapa
   destroy() {
     this.map_.removeControls([this.control_]);
     [this.control_, this.controls_, this.panel_] = [null, null, null];
   }
 
-  /**
-   * Esta función devuelve si el plugin recibido por parámetro es instancia de Layerswitcher
-   *
-   * @public
-   * @function
-   * @param {M.plugin} plugin para comparar
-   * @api
-   */
+  // Esta función devuelve si el plugin recibido por parámetro es instancia de Layerswitcher
   equals(plugin) {
     if (plugin instanceof Layerswitcher) {
       return true;
