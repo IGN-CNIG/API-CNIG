@@ -387,7 +387,7 @@ const proj3395 = {
  * @public
  * @api
  */
-export const projections = [
+const projections = [
   proj4326,
   proj32627,
   proj32628,
@@ -419,7 +419,7 @@ export const projections = [
  * @public
  * @api
  */
-export const addProjections = (projectionsParam) => {
+const addProjections = (projectionsParam) => {
   // Register and publish projections
   projectionsParam.forEach((projection) => {
     projection.codes.forEach((code) => {
@@ -450,4 +450,7 @@ register(proj4);
  * Esto se produce por al archivo normaliza-exports.js
  * @api stable
  */
-export default {};
+export default {
+  addProjections,
+  projections,
+};
