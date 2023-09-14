@@ -312,6 +312,8 @@ export default class GeorefimageControl extends M.Control {
     * @api stable
     */
   addEvents() {
+    const DEFAULT_PROJECTION_SERVER = 'EPSG:3857';
+
     // ADD EVENT LIST SERVICES DIALOG
     this.elementListServices_.addEventListener('click', () => M.dialog.info(LIST_SERVICES));
 
@@ -322,6 +324,15 @@ export default class GeorefimageControl extends M.Control {
         this.elementDpi_.setAttribute('disabled', 'disabled');
       } else {
         this.elementDpi_.removeAttribute('disabled');
+      }
+
+      if (value === 'client') {
+        const proj = M.impl.ol.js.projections.projections.filter(({ codes }) => {
+          return codes.includes(this.map_.getProjection().code);
+        })[0];
+        this.elementProjection_.innerText = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
+      } else {
+        this.elementProjection_.innerText = DEFAULT_PROJECTION_SERVER;
       }
     });
 
