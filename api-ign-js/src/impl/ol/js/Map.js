@@ -204,7 +204,7 @@ class Map extends MObject {
     this.registerEvents_();
 
 
-    this.map_.getView().setConstrainResolution(true);
+    // this.map_.getView().setConstrainResolution(false);
     this.facadeMap_.on(EventType.COMPLETED, () => {
       this.map_.updateSize();
     });
@@ -2183,6 +2183,39 @@ class Map extends MObject {
     return center;
   }
 
+
+  /**
+   * Este método establece el estado de zoomConstrains
+   * instancia del mapa.
+   *
+   * @function
+   * @param {Boolean} zoomConstrains Nuevo valor.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
+   */
+  setZoomConstrains(zoomConstrains) {
+    if (isNullOrEmpty(zoomConstrains)) {
+      Exception(getValue('exception').no_zoomConstrains);
+    }
+    this.getMapImpl().getView().setConstrainResolution(zoomConstrains);
+    return this;
+  }
+
+  /**
+   * Este método obtiene el estado actual de
+   * zoomConstrains de la instancia del mapa.
+   *
+   * @function
+   * @returns {Boolean} Valor actual.
+   * @public
+   * @api
+   */
+  getZoomConstrains() {
+    const olConstrainResolution = this.getMapImpl().getView().getConstrainResolution();
+    return olConstrainResolution;
+  }
+
   /**
    * Este método obtiene las resoluciones actuales
    * para la instancia del mapa.
@@ -2236,7 +2269,7 @@ class Map extends MObject {
     newView.setUserZoom(oldZoom);
     newView.setMinZoom(minZoom);
     newView.setMaxZoom(maxZoom);
-    newView.setConstrainResolution(true);
+    // newView.setConstrainResolution(false);
     // calculates the new resolution
     let newResolution;
     if (!isNullOrEmpty(oldZoom)) {
@@ -2366,7 +2399,7 @@ class Map extends MObject {
     newView.setUserZoom(userZoom);
     newView.setMinZoom(minZoom);
     newView.setMaxZoom(maxZoom);
-    newView.setConstrainResolution(true);
+    // newView.setConstrainResolution(false);
     olMap.setView(newView);
 
     // updates min, max resolutions of all WMS layers

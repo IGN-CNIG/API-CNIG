@@ -275,6 +275,13 @@ class Map extends Base {
       this.setZoom(0);
     }
 
+    // zoomConstrains
+    if (!isNullOrEmpty(params.zoomConstrains)) {
+      this.setZoomConstrains(params.zoomConstrains);
+    } else {
+      this.setZoomConstrains(true);
+    }
+
     // minZoom
     if (!isNullOrEmpty(params.minZoom)) {
       this.setMinZoom(params.minZoom);
@@ -2215,6 +2222,49 @@ class Map extends Base {
     const center = this.getImpl().getCenter();
 
     return center;
+  }
+
+  /**
+   * Este método establece el estado de zoomConstrains
+   * instancia del mapa.
+   *
+   * @public
+   * @function
+   * @param {Boolean} zoomConstrains Nuevo valor.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  setZoomConstrains(zoomConstrains) {
+    // checks if the param is null or empty
+    if (isNullOrEmpty(zoomConstrains)) {
+      Exception(getValue('exception').no_zoomConstrains);
+    }
+
+    if (isUndefined(MapImpl.prototype.setZoomConstrains)) {
+      Exception(getValue('exception').setZoomConstrains_method);
+    }
+
+    this.getImpl().setZoomConstrains(zoomConstrains);
+    return this;
+  }
+
+  /**
+   * Este método obtiene el estado actual de
+   * zoomConstrains de la instancia del mapa.
+   *
+   * @public
+   * @function
+   * @returns {Boolean} Valor actual.
+   * @api
+   */
+  getZoomConstrains() {
+    if (isUndefined(MapImpl.prototype.setZoomConstrains)) {
+      Exception(getValue('exception').setZoomConstrains_method);
+    }
+
+    const zoomConstrains = this.getImpl().getZoomConstrains();
+
+    return zoomConstrains;
   }
 
   /**

@@ -395,6 +395,32 @@ export const parseTicket = (parameter) => {
 };
 
 /**
+ * Esta función analiza un parámetro de "zoomConstrains" en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ *
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String} Devuelve el "zoomConstrains".
+ * @api
+ */
+export const parseZoomConstrains = (parameter) => {
+  let zoomConstrains;
+
+  if (isString(parameter)) {
+    zoomConstrains = getParameterValue('zoomConstrains', parameter);
+  } else if (isObject(parameter)) {
+    zoomConstrains = parameter.zoomConstrains;
+  } else {
+    Exception(`El tipo del parámetro zoomConstrains no es válido: ${typeof parameter}`);
+  }
+
+  return zoomConstrains;
+};
+
+/**
  * Esta función analiza un parámetro de resolución en un formato legible.
  * parámetro a API-CNIG y chequea posibles errores.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -486,6 +512,7 @@ export const parseLabel = (parameter) => {
  * @property {Object} projection Proyección del mapa.
  * @property {Object} label Etiqueta del mapa.
  * @property {Object} ticket Ticket de autenticación.
+ * @property {Object} zoomConstrains Valor para la constrain de zoom.
  * @api
  */
 class Parameters {
@@ -511,6 +538,7 @@ class Parameters {
    * - projection: Proyección del mapa.
    * - label: Etiqueta del mapa.
    * - ticket: Ticket de autenticación.
+   * - zoomConstrains: Valor para la constrain de zoom.
    * @api
    */
   constructor(userParameters) {
@@ -643,6 +671,13 @@ class Parameters {
      * @api
      */
     this.ticket = parseTicket(userParameters);
+
+    /**
+     * @public
+     * @type {Boolean}
+     * @api
+     */
+    this.zoomConstrains = parseZoomConstrains(userParameters);
   }
 }
 
