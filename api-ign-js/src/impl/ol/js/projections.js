@@ -438,6 +438,18 @@ const addProjections = (projectionsParam) => {
   });
 };
 
+/**
+ *
+ * Esta función devuelve un array con las proyecciones soportadas
+ *
+ * @public
+ * @function
+ * @api
+ */
+const getSupportedProjs = () => {
+  return projections;
+};
+
 // register proj4
 addProjections(projections);
 register(proj4);
@@ -452,5 +464,5 @@ register(proj4);
  */
 export default {
   addProjections,
-  projections,
+  getSupportedProjs,
 };
