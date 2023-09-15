@@ -298,6 +298,11 @@ export default class GeorefimageControl extends M.Control {
 
   removeSelector() {
     this.elementFieldset_.remove();
+
+    if (this.printType === 'client') {
+      this.template_.querySelector('.georefimage-jgwKeppview').remove();
+    }
+
     this.template_.innerHTML += `
       <h3 id="m-georefimage-projection">Sistema de Referencia de la vista ${this.projection_}</h3>
     `;
