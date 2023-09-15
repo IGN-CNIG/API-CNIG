@@ -174,7 +174,7 @@ const capaXYZ = new M.layer.XYZ({
 });
 
 
-// map.addLayers(capaGeoJSON);
+map.addLayers(capaGeoJSON);
 // map.addLayers(capaOSM);
 // map.addLayers(capaKML);
 // map.addLayers(capaMVT);

@@ -49,6 +49,15 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 /* Título */
 #m-layerswitcher-title {
     font-weight: bold !important;
+    touch-action: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#m-layerswitcher-title > span:first-child {
+        width: 100%;
+    text-align: center;
 }
 
 /* Listado de capas */
