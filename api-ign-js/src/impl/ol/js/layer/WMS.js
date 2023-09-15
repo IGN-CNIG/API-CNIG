@@ -219,26 +219,28 @@ class WMS extends LayerBase {
    */
   setVisible(visibility) {
     this.visibility = visibility;
-    // if this layer is base then it hides all base layers
-    if ((visibility === true) && (this.transparent !== true)) {
-      // hides all base layers
-      this.map.getBaseLayers()
-        .filter(layer => !layer.equals(this) && layer.isVisible())
-        .forEach(layer => layer.setVisible(false));
+    if (this.inRange() === true) {
+      // if this layer is base then it hides all base layers
+      if ((visibility === true) && (this.transparent !== true)) {
+        // hides all base layers
+        this.map.getBaseLayers()
+          .filter(layer => !layer.equals(this) && layer.isVisible())
+          .forEach(layer => layer.setVisible(false));
 
-      // set this layer visible
-      if (!isNullOrEmpty(this.ol3Layer)) {
+        // set this layer visible
+        if (!isNullOrEmpty(this.ol3Layer)) {
+          this.ol3Layer.setVisible(visibility);
+        }
+
+        // updates resolutions and keep the zoom
+        const oldZoom = this.map.getZoom();
+        this.map.getImpl().updateResolutionsFromBaseLayer();
+        if (!isNullOrEmpty(oldZoom)) {
+          this.map.setZoom(oldZoom);
+        }
+      } else if (!isNullOrEmpty(this.ol3Layer)) {
         this.ol3Layer.setVisible(visibility);
       }
-
-      // updates resolutions and keep the zoom
-      const oldZoom = this.map.getZoom();
-      this.map.getImpl().updateResolutionsFromBaseLayer();
-      if (!isNullOrEmpty(oldZoom)) {
-        this.map.setZoom(oldZoom);
-      }
-    } else if (!isNullOrEmpty(this.ol3Layer)) {
-      this.ol3Layer.setVisible(visibility);
     }
   }
 
