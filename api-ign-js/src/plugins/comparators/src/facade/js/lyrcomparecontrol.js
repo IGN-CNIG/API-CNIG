@@ -378,9 +378,11 @@ export default class LyrCompareControl extends M.Control {
     this.setEventsAndValues();
     this.updateControls();
 
-    if (this.comparisonMode) {
-      this.activateCurtain();
-    }
+    // if (this.comparisonMode) {
+    //   this.activateCurtain();
+    // }
+
+    this.activateCurtain();
 
     if (this.layers.length === 0) {
       M.dialog.error(getValue('no_layers_plugin'));
