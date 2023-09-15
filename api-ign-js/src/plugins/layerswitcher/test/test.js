@@ -15,11 +15,12 @@ const map = M.map({
 const mp = new Layerswitcher({
   collapsed: false,
   position: 'TL',
-  collapsible: false,
+  tooltip: 'Capas',
+  collapsible: true,
   isDraggable: true,
   modeSelectLayers: 'eyes',
-  // tools: [],
-  tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
+  tools: [],
+  // tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
   isMoveLayers: true,
   // precharged: [],
   https: true,
@@ -27,37 +28,37 @@ const mp = new Layerswitcher({
 });
 map.addPlugin(mp);
 
+// CAPAS
+
 const capaGeoJSON = new M.layer.GeoJSON({
   name: 'Capa GeoJSON',
-  legend: 'prueba',
+  legend: 'Capa GeoJSON',
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
   extract: false,
 });
-map.addLayers(capaGeoJSON);
 
 const capaOSM = new M.layer.OSM({
-  name: 'xx',
-  legend: 'yy',
+  name: 'Capa OSM',
+  legend: 'Capa OSM',
   transparent: true,
   url: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
   matrixSet: 'EPSG:3857',
 });
-// map.addLayers(capaOSM);
 
 const capaKML = new M.layer.KML({
   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
   name: 'Capa KML',
+  legend: 'Capa KML',
   extract: true,
 });
-// map.addLayers(capaKML);
 
 // window.fetch('./cabrera.mbtiles').then((response) => {
 //   const mbtile = new M.layer.MBTiles({
 //     name: 'mbtiles',
-//     legend: 'Capa MBTiles',
+//     legend: 'Capa MBTiles L',
 //     source: response,
 //   });
-//   // map.addLayers(mbtile);
+//   map.addLayers(mbtile);
 //   window.mbtile = mbtile;
 // }).catch((e) => {
 //   throw e;
@@ -66,11 +67,11 @@ const capaKML = new M.layer.KML({
 // window.fetch('./countries.mbtiles').then((response) => {
 //   const mbtilesvector = new M.layer.MBTilesVector({
 //     name: 'mbtiles_vector',
-//     legend: 'Capa MBTilesVector',
+//     legend: 'Capa MBTilesVector L',
 //     source: response,
 //     // maxZoomLevel: 5,
 //   });
-//   // map.addLayers(mbtilesvector);
+//   map.addLayers(mbtilesvector);
 // }).catch((e) => {
 //   throw e;
 // });
@@ -79,16 +80,15 @@ const capaMVT = new M.layer.MVT({
   url: 'https://www.ign.es/web/resources/mapa-base-xyz/vt/{z}/{x}/{y}.pbf',
   layers: ['camino_lin'],
   name: 'Capa MVT',
+  legend: 'Capa MVT',
   projection: 'EPSG:3857',
   extract: true,
 });
-window.capaMVT = capaMVT;
-map.addLayers(capaMVT);
 
 const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
   url: 'https://api-features.idee.es/collections/',
   name: 'hidrografia/Falls',
-  legend: 'Capa OGCAPIFeatures',
+  legend: 'Capa OGCAPIFeatures L',
   limit: 20,
 }, {
   predefinedStyles: [
@@ -121,20 +121,17 @@ const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
     // name: 'Rojo',
   }),
 });
-// map.addLayers(capaOGCAPIFeatures);
-
 
 const capaTMS = new M.layer.TMS({
   url: 'https://tms-mapa-raster.ign.es/1.0.0/mapa-raster/{z}/{x}/{-y}.jpeg',
   name: 'Capa TMS',
-  legend: 'Capa TMS',
+  legend: 'Capa TMS L',
   projection: 'EPSG:3857',
 });
-// map.addLayers(capaTMS);
-window.capaTMS = capaTMS;
 
 const capaVector = new M.layer.Vector({
   name: 'capaVector',
+  legend: 'vector legend',
 });
 const feature = new M.Feature('localizacion', {
   type: 'Feature',
@@ -144,43 +141,37 @@ const feature = new M.Feature('localizacion', {
     coordinates: [-458757.1288, 4795217.2530],
   },
 });
-window.feature = feature;
-window.capaVector = capaVector;
-// capaVector.addFeatures(feature);
-// map.addLayers(capaVector);
+capaVector.addFeatures(feature);
+
 
 const capaWFS = new M.layer.WFS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
   namespace: 'tematicos',
   name: 'Provincias',
-  legend: 'Capa WFS',
+  legend: 'Capa WFS l',
   geometry: 'MPOLYGON',
 });
-// map.addLayers(capaWFS);
 
 const capaWMS = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
-  legend: 'Capa WMS',
+  legend: 'Capa WMS l',
 });
-// map.addLayers(capaWMS);
 
 const capaWMTS = new M.layer.WMTS({
   url: 'https://servicios.idee.es/wmts/ocupacion-suelo',
   name: 'LC.LandCoverSurfaces',
-  legend: 'LC.LandCoverSurfaces',
+  legend: 'LC.LandCoverSurfaces l',
   matrixSet: 'GoogleMapsCompatible',
   format: 'image/png',
 });
-// map.addLayers(capaWMTS);
 
 const capaXYZ = new M.layer.XYZ({
   url: 'https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg',
   name: 'Capa XYZ',
-  legend: 'Capa XYZ',
+  legend: 'Capa XYZ l',
   projection: 'EPSG:3857',
 });
-// map.addLayers(capaXYZ);
 
 
 // map.addLayers(capaGeoJSON);
@@ -196,39 +187,21 @@ const capaXYZ = new M.layer.XYZ({
 // map.addLayers(capaWMTS);
 // map.addLayers(capaXYZ);
 
-window.capaGeoJSON = capaGeoJSON;
-window.capaOGCAPIFeatures = capaOGCAPIFeatures;
-window.capaWMS = capaWMS;
-
-// feature.getGeometry().getExtent().slice(0)
 
 
-// map.addLayers(capaGeoJSON);
-// map.addLayers(capaOSM);
-// map.addLayers(capaWMS);
+// OTRAS PRUEBAS
 
-// const capa1 = new M.layer.WFS({
-//   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
-//   namespace: 'tematicos',
-//   name: 'Provincias',
-//   legend: 'capa1',
-//   geometry: 'MPOLYGON',
+// const capa2 = new M.layer.WMS({
+//   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+//   name: 'AU.AdministrativeUnit',
+//   legend: 'capa2',
+//   tiled: false,
+//   transparent: true,
+// }, {
+//   maxScale: 14000000,
+//   minScale: 3000000,
 // });
-// window.capa1 = capa1;
-// map.addWFS(capa1);
-// // capa1.setZIndex(999999);
-
-const capa2 = new M.layer.WMS({
-  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-  name: 'AU.AdministrativeUnit',
-  legend: 'capa2',
-  tiled: false,
-  transparent: true,
-}, {
-  maxScale: 14000000,
-  minScale: 3000000,
-});
-// window.capa2 = capa2;
+// // window.capa2 = capa2;
 
 // capa2.setZIndex(99);
 

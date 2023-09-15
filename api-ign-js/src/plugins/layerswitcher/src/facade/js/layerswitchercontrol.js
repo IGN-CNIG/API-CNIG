@@ -22,11 +22,6 @@ import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 
 export default class LayerswitcherControl extends M.Control {
-  /**
-   * @constructor
-   * @extends {M.Control}
-   * @api
-   */
   constructor(options = {}) {
     if (M.utils.isUndefined(LayerswitcherImplControl)) {
       M.exception(getValue('exception.impl'));
@@ -38,180 +33,71 @@ export default class LayerswitcherControl extends M.Control {
     // Fachada del control
     impl.facadeControl = this;
 
-    /**
-     * Mapa
-     * @private
-     * @type {M.Map}
-     */
+    // Mapa
     this.map_ = undefined;
 
-    /**
-     * Plantilla del control
-     * @private
-     * @type {String}
-     */
+    // Plantilla del control
     this.template_ = undefined;
 
-    /**
-     * Determina si el plugin es draggable o no
-     * @private
-     * @type {Boolean}
-     */
+    // Determina si el plugin es draggable o no
     this.isDraggable_ = options.isDraggable;
 
-    /**
-     * Determina el modo de selección de las capas
-     * @private
-     * @type {Boolean}
-     */
+    // Determina el modo de selección de las capas
     this.modeSelectLayers = options.modeSelectLayers;
 
-    /**
-     * Determina si se ha seleccionado una capa mediante radio
-     * @private
-     * @type {Boolean}
-     */
+    // Determina si se ha seleccionado una capa mediante radio
     this.isCheckedLayerRadio = false;
 
-    /**
-     * Listado de capas overlays
-     * @private
-     * @type {Boolean}
-     */
+    //  Listado de capas overlays
     this.overlayLayers = [];
 
-    /**
-     * Determina si se van a mostrar o si se van a ocultar todas las capas
-     * @private
-     * @type {Boolean}
-     */
+    // Determina si se van a mostrar o si se van a ocultar todas las capas
     this.statusShowHideAllLayers = true;
 
-    /**
-     * Herramientas para mostrar en las capas
-     * @public
-     * @type {Array}
-     */
+    // Herramientas para mostrar en las capas
     this.tools = options.tools;
 
-    /**
-     * Añadir control transparencia
-     * @public
-     * @type {Boolean}
-     */
+    // Añadir control transparencia
     this.isTransparency = false;
 
-    /**
-     * Añadir control leyenda
-     * @public
-     * @type {Boolean}
-     */
+    // Añadir control leyenda
     this.isLegend = false;
 
-    /**
-     * Añadir control zoom
-     * @public
-     * @type {Boolean}
-     */
+    // Añadir control zoom
     this.isZoom = false;
 
-    /**
-     * Añadir control informacion
-     * @public
-     * @type {Boolean}
-     */
+    // Añadir control informacion
     this.isInformation = false;
 
-    /**
-     * Añadir control eliminar
-     * @public
-     * @type {Boolean}
-     */
+    // Añadir control de estilos
     this.isStyle = false;
 
-    /**
-     * Añadir control eliminar
-     * @public
-     * @type {Boolean}
-     */
+    // Añadir control eliminar
     this.isDelete = false;
 
-    /**
-     * Permite saber si se permite movimiento de capas
-     * @public
-     * @type {boolean}
-     */
+    // Permite saber si se permite movimiento de capas
     this.isMoveLayers = options.isMoveLayers;
 
-    /**
-     * Permite saber si el plugin está colapsado o no
-     * @public
-     * @type {boolean}
-     */
+    // Permite saber si el plugin está colapsado o no
     this.collapsed = options.collapsed;
 
-    /**
-     * Listado de capas precargadas
-     * @public
-     * @type {Array}
-     */
+    // Listado de capas precargadas/
     this.precharged = options.precharged;
 
-    /**
-     * Determina si permite o no servicios http
-     * @public
-     * @type {Boolean}
-     */
+    // Determina si permite o no servicios http
     this.http = options.http;
 
-    /**
-     * Determina si permite o no servicios https
-     * @public
-     * @type {Boolean}
-     */
+    // Determina si permite o no servicios https
     this.https = options.https;
 
+    // Filtro
     this.filterName = undefined;
 
-    /**
-     * Determina si se han seleccionado todas las capas o no
-     * @public
-     * @type {Boolean}
-     */
+    // Determina si se han seleccionado todas las capas o no
     this.stateSelectAll = false;
   }
 
-  /**
-   * Esta función busca la capa
-   *
-   * @public
-   * @function
-   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
-   * @api
-   */
-  findLayer(evt) {
-    const layerName = evt.target.getAttribute('data-layer-name');
-    const layerURL = evt.target.getAttribute('data-layer-url');
-    const layerType = evt.target.getAttribute('data-layer-type');
-    let result = [];
-    if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
-      !M.utils.isNullOrEmpty(layerType)) {
-      result = this.overlayLayers.filter((l) => {
-        return l.name === layerName && l.url === layerURL && l.type === layerType;
-      });
-    }
-
-    return result;
-  }
-
-  /**
-   * Esta función crea la vista
-   *
-   * @public
-   * @function
-   * @param {M.Map} map mapa donde se añade el plugin
-   * @api
-   */
+  // Esta función crea la vista
   createView(map) {
     this.map_ = map;
     this.tools.forEach((tool) => {
@@ -235,7 +121,7 @@ export default class LayerswitcherControl extends M.Control {
       }
     });
 
-    return new Promise((success, fail) => {
+    return new Promise((success) => {
       this.getTemplateVariables(map).then((templateVars) => {
         const html = M.template.compileSync(template, {
           vars: templateVars,
@@ -246,103 +132,23 @@ export default class LayerswitcherControl extends M.Control {
         }
 
         this.template_ = html;
-
+        // click en plantilla
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
+        // click en opacidad
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
+        // click para mostrar/ocultar plugin
         this.getPanel().getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
 
         this.getImpl().registerEvent(map);
 
-        // this.render();
         success(this.template_);
       });
     });
   }
 
-  collapsedPlugin(e) {
-    if (!e.target.parentElement.classList.contains('collapsed')) {
-      this.render();
-      this.getImpl().registerEvent(this.map_);
-    } else {
-      this.getImpl().removeRenderComplete();
-    }
-  }
-
-  /**
-   * Esta función renderiza la plantilla
-   *
-   * @public
-   * @function
-   * @api
-   */
-  render() {
-    this.getTemplateVariables(this.map_).then((templateVars) => {
-      let scroll;
-      if (document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers') !== null) {
-        scroll = document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers').scrollTop;
-      }
-
-      const html = M.template.compileSync(templateAux, {
-        vars: templateVars,
-      });
-      this.template_.querySelector('#m-layerswitcher-content').innerHTML = html.innerHTML;
-      this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
-
-      // si el modo de selección es radio y no se ha seleccionado ninguna capa se marca la primera
-      if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
-        const radioButtons = this.template_.querySelectorAll('input[type=radio]');
-        if (radioButtons.length > 0) {
-          this.isCheckedLayerRadio = true;
-          radioButtons[0].click();
-        }
-      }
-
-      const layerList = this.template_.querySelector('.m-layerswitcher-ullayers');
-      if (layerList !== null && this.isMoveLayers) {
-        const layers = this.map_.getLayers().filter(l => l.name !== '__draw__');
-        Sortable.create(layerList, {
-          animation: 150,
-          ghostClass: 'm-layerswitcher-gray-shadow',
-          filter: '.m-layerswitcher-opacity',
-          preventOnFilter: false,
-          onEnd: (evt) => {
-            const from = evt.from;
-            let maxZIndex = Math.max(...(layers.map((l) => {
-              return l.getZIndex();
-            })));
-
-            from.querySelectorAll('li.m-layerswitcher-layer .m-layerswitcher-title-layer .m-visible-control *').forEach((elem) => {
-              const name = elem.getAttribute('data-layer-name');
-              const url = elem.getAttribute('data-layer-url');
-              const type = elem.getAttribute('data-layer-type');
-              const filtered = layers.filter((layer) => {
-                // Para las capas OSM, ... no tienen url // rev
-                return layer.name === name && layer.url === url && layer.type === type;
-              });
-              if (filtered.length > 0) {
-                filtered[0].setZIndex(maxZIndex);
-                maxZIndex -= 1;
-              }
-            });
-          },
-        });
-      }
-      if (scroll !== undefined) {
-        document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers').scrollTop = scroll;
-      }
-    });
-  }
-
-  /**
-   * Esta función devuelve las variables para la plantilla
-   *
-   * @public
-   * @function
-   * @api
-   */
+  // Esta función devuelve las variables para la plantilla
   getTemplateVariables(map) {
     return new Promise((success, fail) => {
-      // gets base layers and overlay layers
       if (!M.utils.isNullOrEmpty(map)) {
         this.overlayLayers = map.getRootLayers().filter((layer) => {
           const isTransparent = (layer.transparent === true);
@@ -378,6 +184,136 @@ export default class LayerswitcherControl extends M.Control {
         });
       }
     });
+  }
+
+  //  Esta función ordena todas las capas por zindex
+  reorderLayers(layers) {
+    const result = layers.sort((layer1, layer2) => layer1.getZIndex() -
+      layer2.getZIndex()).reverse();
+    return result;
+  }
+
+  // Esta función monta objeto con propiedades de la capa para la plantilla
+  parseLayerForTemplate_(layer) {
+    const layerTitle = layer.legend || layer.name;
+    const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
+      !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
+
+    let ogcapiFeaturesStyles;
+    if (layer.type === 'OGCAPIFeatures') {
+      if (!M.utils.isNullOrEmpty(layer.predefinedStyles)) {
+        ogcapiFeaturesStyles = layer.predefinedStyles.length > 1;
+      }
+    }
+
+    return new Promise((success) => {
+      const layerVarTemplate = {
+        title: layerTitle,
+        type: layer.type,
+        visible: (layer.isVisible() === true),
+        id: layer.name,
+        url: layer.url || 'noURL',
+        outOfRange: !layer.inRange(),
+        checkedLayer: layer.checkedLayer || 'false',
+        opacity: layer.getOpacity(),
+        metadata: hasMetadata,
+        hasStyles: (hasMetadata && layer.capabilitiesMetadata.style.length > 1) ||
+          ogcapiFeaturesStyles,
+      };
+      success(layerVarTemplate);
+    });
+  }
+
+  // Esta función renderiza la plantilla
+  render() {
+    this.getTemplateVariables(this.map_).then((templateVars) => {
+      let scroll;
+      if (document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers') !== null) {
+        scroll = document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers').scrollTop;
+      }
+
+      const html = M.template.compileSync(templateAux, {
+        vars: templateVars,
+      });
+      this.template_.querySelector('#m-layerswitcher-content').innerHTML = html.innerHTML;
+      this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
+
+      // si el modo de selección es radio y no se ha seleccionado ninguna capa se marca la primera
+      if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
+        const radioButtons = this.template_.querySelectorAll('input[type=radio]');
+        if (radioButtons.length > 0) {
+          this.isCheckedLayerRadio = true;
+          radioButtons[0].click();
+        }
+      }
+
+      const layerList = this.template_.querySelector('.m-layerswitcher-ullayers');
+      if (layerList !== null && this.isMoveLayers) {
+        const layers = this.map_.getLayers();
+        Sortable.create(layerList, {
+          animation: 150,
+          ghostClass: 'm-layerswitcher-gray-shadow',
+          filter: '.m-layerswitcher-opacity',
+          preventOnFilter: false,
+          onEnd: (evt) => {
+            const from = evt.from;
+            let maxZIndex = Math.max(...(layers.map((l) => {
+              return l.getZIndex();
+            })));
+
+            from.querySelectorAll('li.m-layerswitcher-layer .m-layerswitcher-title-layer .m-layerswitcher-visible-control *').forEach((elem) => {
+              const name = elem.getAttribute('data-layer-name');
+              const url = elem.getAttribute('data-layer-url');
+              const type = elem.getAttribute('data-layer-type');
+              const filtered = layers.filter((layer) => {
+                return layer.name === name && layer.url === url && layer.type === type;
+              });
+              if (filtered.length > 0) {
+                filtered[0].setZIndex(maxZIndex);
+                maxZIndex -= 1;
+              }
+            });
+          },
+        });
+      }
+      if (scroll !== undefined) {
+        document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers').scrollTop = scroll;
+      }
+    });
+  }
+
+  // Controla el registro de evento rendercomplete si está abierto o cerrado el plugin
+  collapsedPlugin(e) {
+    if (!e.target.parentElement.classList.contains('collapsed')) {
+      this.render();
+      this.getImpl().registerEvent(this.map_);
+    } else {
+      this.getImpl().removeRenderComplete();
+    }
+  }
+
+
+  /**
+   * Esta función busca la capa
+   *
+   * @public
+   * @function
+   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
+   * @api
+   */
+  findLayer(evt) {
+    const layerName = evt.target.getAttribute('data-layer-name');
+    const layerURL = evt.target.getAttribute('data-layer-url');
+    const layerType = evt.target.getAttribute('data-layer-type');
+    let result = [];
+    if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+      !M.utils.isNullOrEmpty(layerType)) {
+      result = this.overlayLayers.filter((l) => {
+        return l.name === layerName && l.url === layerURL && l.type === layerType;
+      });
+    }
+
+    return result;
   }
 
   /**
@@ -707,58 +643,6 @@ export default class LayerswitcherControl extends M.Control {
       this.renderInfo(vars);
     }).catch((err) => {
       this.renderInfo(vars);
-    });
-  }
-
-  /**
-   * Esta función ordena todas las capas
-   *
-   * @public
-   * @param {Array<M.Layer>} layers listado de capas para ordenar
-   * @function
-   * @api
-   */
-  reorderLayers(layers) {
-    const result = layers.sort((layer1, layer2) => layer1.getZIndex() -
-      layer2.getZIndex()).reverse();
-    return result;
-  }
-
-  /**
-   * Esta función monta objeto con propiedades de la capa para la plantilla
-   *
-   * @public
-   * @param {M.Layer} layer capa para parsear
-   * @function
-   * @api
-   */
-  parseLayerForTemplate_(layer) {
-    const layerTitle = layer.legend || layer.name;
-    const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
-      !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
-
-    let ogcapiFeaturesStyles;
-    if (layer.type === 'OGCAPIFeatures') {
-      if (!M.utils.isNullOrEmpty(layer.predefinedStyles)) {
-        ogcapiFeaturesStyles = layer.predefinedStyles.length > 1;
-      }
-    }
-
-    return new Promise((success) => {
-      const layerVarTemplate = {
-        title: layerTitle,
-        type: layer.type,
-        visible: (layer.isVisible() === true),
-        id: layer.name,
-        url: layer.url || 'noURL',
-        outOfRange: !layer.inRange(),
-        checkedLayer: layer.checkedLayer || 'false',
-        opacity: layer.getOpacity(),
-        metadata: hasMetadata,
-        hasStyles: (hasMetadata && layer.capabilitiesMetadata.style.length > 1) ||
-          ogcapiFeaturesStyles,
-      };
-      success(layerVarTemplate);
     });
   }
 
