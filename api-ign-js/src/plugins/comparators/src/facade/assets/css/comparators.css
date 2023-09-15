@@ -797,6 +797,10 @@ div.m-area.m-bottom.m-left>div.m-plugin-comparators.m-panel.opened>button.m-pane
     transform: rotate(270deg);
 }
 
+.cp-void:before {
+    content: "\e804";
+}
+
 .cp-th-large:before {
     content: "\e801";
 }
@@ -835,28 +839,12 @@ div.m-area.m-bottom.m-left>div.m-plugin-comparators.m-panel.opened>button.m-pane
 	color: #6a6a6a;
 }
 
-.m-lyrcompare-container .buttom-pressed-vcurtain {
-	color: #71a7d3;
+.buttom-pressed{
+    color: #71a7d3 !important;
 }
 
-.m-lyrcompare-container .buttom-pressed-vcurtain:hover {
-	color: #71a7d3;
-}
-
-.m-lyrcompare-container .buttom-pressed-hcurtain {
-	color: #71a7d3;
-}
-
-.m-lyrcompare-container .buttom-pressed-hcurtain:hover {
-	color: #71a7d3;
-}
-
-.m-lyrcompare-container .buttom-pressed-multicurtain {
-	color: #71a7d3;
-}
-
-.m-lyrcompare-container .buttom-pressed-multicurtain:hover {
-	color: #71a7d3;
+.m-lyrcompare-effect-buttoms button:hover {
+    color: #71a7d3;
 }
 
 .m-lyrcompare-container input[type=range] {

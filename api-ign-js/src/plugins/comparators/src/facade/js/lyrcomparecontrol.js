@@ -387,22 +387,24 @@ export default class LyrCompareControl extends M.Control {
     } else {
       this.template.querySelectorAll('button[id^="m-lyrcompare-"]').forEach((button, i) => {
         button.addEventListener('click', (evt) => {
-          if (this.comparisonMode === 0) {
-            if (document.querySelector('#m-lyrdropdown-selector')) {
-              document.querySelector('#m-lyrdropdown-selector').value = 'none';
-              document.querySelector('#m-lyrdropdown-selector').style.display = 'none';
-            }
-            this.comparisonMode = i + 1;
-            this.activateCurtain();
-          } else if (this.comparisonMode === i + 1) {
+          if (button.value === 'void') {
             this.comparisonMode = 0;
-            this.deactivateCurtain();
-          } else {
-            // Cambiamos de modo de visualización sin apagar/encender la interacción
-            this.comparisonMode = i + 1;
-            this.updateControls();
-            this.getImpl().setComparisonMode(this.comparisonMode);
           }
+
+          if (button.value === 'vcurtain') {
+            this.comparisonMode = 1;
+          }
+
+          if (button.value === 'hcurtain') {
+            this.comparisonMode = 2;
+          }
+
+          if (button.value === 'multicurtain') {
+            this.comparisonMode = 3;
+          }
+
+          this.updateControls();
+          this.getImpl().setComparisonMode(this.comparisonMode);
         });
       });
     }
@@ -792,20 +794,23 @@ export default class LyrCompareControl extends M.Control {
   }
 
   activateByMode() {
-    if (this.comparisonMode === 1) {
-      this.template.querySelector('#m-lyrcompare-vcurtain').classList.add('buttom-pressed-vcurtain'); // VCurtain pulsado
+    if (this.comparisonMode === 0) {
+      this.template.querySelector('#m-lyrcompare-void').classList.add('buttom-pressed');
+    } else if (this.comparisonMode === 1) {
+      this.template.querySelector('#m-lyrcompare-vcurtain').classList.add('buttom-pressed');
     } else if (this.comparisonMode === 2) {
-      this.template.querySelector('#m-lyrcompare-hcurtain').classList.add('buttom-pressed-hcurtain'); // HCurtain pulsado
+      this.template.querySelector('#m-lyrcompare-hcurtain').classList.add('buttom-pressed');
     } else if (this.comparisonMode === 3) {
-      this.template.querySelector('#m-lyrcompare-multicurtain').classList.add('buttom-pressed-multicurtain'); // MultiCurtain pulsado
+      this.template.querySelector('#m-lyrcompare-multicurtain').classList.add('buttom-pressed');
     }
   }
 
 
   removeActivate() {
-    this.template.querySelector('#m-lyrcompare-vcurtain').classList.remove('buttom-pressed-vcurtain');
-    this.template.querySelector('#m-lyrcompare-hcurtain').classList.remove('buttom-pressed-hcurtain');
-    this.template.querySelector('#m-lyrcompare-multicurtain').classList.remove('buttom-pressed-multicurtain');
+    if (this.template.querySelector('.buttom-pressed')) {
+      this.template.querySelector('.buttom-pressed').classList.remove('buttom-pressed');
+    }
+
     this.template.querySelectorAll('select[id^="m-lyrcompare-"]').disabled = true;
     this.template.querySelector('#m-lyrcompare-lyrA-cont').style.display = 'none';
     this.template.querySelector('#m-lyrcompare-lyrB-cont').style.display = 'none';
