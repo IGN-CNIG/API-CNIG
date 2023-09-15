@@ -5,11 +5,11 @@
 
 # Descripción
 
-Plugin que permite utilizar diferentes herramientas de zoom.
-- Centrar el mapa la(s) vista(s) indicada(s) por parámetro.
-- Realizar zoom con una caja sobre el mapa.
-- Navegar entre las vistas visitadas del mapa (hacia delante y atrás).
-- Acercar o alejar a una vista del mapa.
+Plugin que permite utilizar diferentes herramientas de impresión. 
+- Impresión de imagen con plantilla.
+- Impresión de imagen (desde servidor o desde cliente).
+- Impresión de imágenes de capas precargadas.
+- Posibilidad de añadir fichero de georreferenciación (WLD).
 
 # Dependencias
 
@@ -35,25 +35,49 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Impresión del mapa.
-- **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
-- **predefinedZoom**: Indica si el control PredefinedZoom se añade al plugin (true/false). Por defecto: true (zoom a España). Para añadir los zooms deseados en los que se podrá centrar el mapa se seguirá el siguiente formato:
-  ```javascript
-  predefinedZoom: [{
-    name: 'Zoom1',
-    bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
-  },
-  {
-    name: 'Zoom2',
-    center: [-428106.86611520057, 4334472.25393817],
-    zoom: 4,
-  }]
-  ```
-  (Válido sólo para la creación del plugin por JS y API-REST en base64).
-- **zoomExtent**: Indica si el control ZoomExtent se añade al plugin (true/false). Por defecto: true.
-- **printermap**: Indica si el control printermap se añade al plugin (true/false). Por defecto: true.
-- **zoompanel**: Indica si el control ZoomPanel se añade al plugin (true/false). Por defecto: true.
+- **serverUrl**: URL del servidor Geoprint. Por defecto: https://componentes.cnig.es/geoprint.
+- **printStatusUrl**: URL para consultar el estado de la impresión. Por defecto: https://componentes.cnig.es/geoprint/print/status.
+- **georefImageEpsg**:  Indica si el control "Impresión de imágenes de capas precargadas" se añade al plugin (true/false). Por defecto: true.
+  - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Impresión del mapa.
+  - **layers**: Array de objetos con información de las capas a imprimir. 
+    - url: URL de la capa.
+    - name: Nombre de la capa.
+    - format: Formato de la capa.
+    - legend: Leyenda de la capa.
+    - EPSG: Opcional, por defecto 3857. 
+  ```JavaScript
+      layers: [
+      {
+        url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+        name: 'mtn_rasterizado',
+        format: 'image/jpeg',
+        legend: 'Mapa ETRS89 UTM',
+        EPSG: 'EPSG:4326',
+      },
+      {
+        url: 'http://www.ign.es/wms-inspire/pnoa-ma?',
+        name: 'OI.OrthoimageCoverage',
+        format: 'image/jpeg',
+        legend: 'Imagen (PNOA) ETRS89 UTM',
+        // EPSG: 'EPSG:4258',
+      },
+    ],
 
-# API-REST
+  ```
+- **georefImage**:  Indica si el control "Impresión de imagen (desde servidor o desde cliente)" se añade al plugin (true/false). Por defecto: true.
+  - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Impresión del mapa.
+  - **printTemplateUrl**: URL con las plantillas.
+  - **printSelector**: Añade los dos modos de impresión (true/false). Por defecto: true.
+  - **printType**: Define el modo de impresión (client/server), es necesario que printSelector tenga valor false.
+- **printermap**:  Indica si el control "Impresión de imagen con plantilla" se añade al plugin (true/false). Por defecto: true.
+  - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Impresión del mapa.
+  - **printTemplateUrl**: URL con las plantillas a utilizar. Por defecto: https://componentes.cnig.es/geoprint/print/CNIG.
+  - **fixedDescription**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición (true/false). Por defecto: false.
+  - **headerLegend**: URL de una imagen para añadir como leyenda en la parte central de la cabecera.
+  - **filterTemplates**: Listado de nombres de plantillas que queremos tener disponibles, si no se manda el parámetro aparecerán todas por defecto.
+  - **logo**: URL de una imagen para añadir como logo en la esquina superior derecha.
+
+# API-REST - TODO
 
 ```javascript
 URL_API?printviewmanagement=position*collapsed*collapsible*tooltip*isDraggable*predefinedZoom*zoomExtent*printermap*zoompanel
@@ -172,25 +196,49 @@ const map = M.map({
 });
 
 const mp = new M.plugin.PrintViewManagement({
+  isDraggable: true,
   position: 'TL',
   collapsible: true,
   collapsed: true,
-  predefinedZoom: [{
-    name: 'zoom 1',
-    center: [-428106.86611520057, 4334472.25393817],
-    zoom: 4,
+  tooltip: 'Imprimir',
+  serverUrl: 'https://componentes.cnig.es/geoprint',
+  printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
+  georefImageEpsg: {
+    tooltip: 'Georeferenciar imagen',
+    layers: [
+      {
+        url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+        name: 'mtn_rasterizado',
+        format: 'image/jpeg',
+        legend: 'Mapa ETRS89 UTM',
+        EPSG: 'EPSG:4326',
+      },
+      {
+        url: 'http://www.ign.es/wms-inspire/pnoa-ma?',
+        name: 'OI.OrthoimageCoverage',
+        format: 'image/jpeg',
+        legend: 'Imagen (PNOA) ETRS89 UTM',
+        // EPSG: 'EPSG:4258',
+      },
+    ],
   },
-  {
-    name: 'zoom 2',
-    bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
-  }],
-  zoomExtent: true,
-  printermap: false,
-  zoompanel: true,
-  isDraggable: false,
+  georefImage: {
+    tooltip: 'Georeferenciar imagen',
+    printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
+    printSelector: false,
+    printType: 'client', // 'client' or 'server'
+  },
+  printermap: {
+    printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
+    // fixedDescription: true,
+    headerLegend: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+    filterTemplates: ['A3 Horizontal'],
+    logo: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+  },
 });
 
 map.addPlugin(mp);
+
 ```
 
 
