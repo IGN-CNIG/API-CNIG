@@ -121,6 +121,14 @@ export default class LayerswitcherControl extends M.Control {
       }
     });
 
+    map.on(M.evt.ADDED_LAYER, (layers) => {
+      if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === true) {
+        layers.forEach((layer) => {
+          layer.setVisible(false);
+        });
+      }
+    });
+
     return new Promise((success) => {
       this.getTemplateVariables(map).then((templateVars) => {
         const html = M.template.compileSync(template, {
@@ -138,7 +146,7 @@ export default class LayerswitcherControl extends M.Control {
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
         // click para mostrar/ocultar plugin
         this.getPanel().getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
-
+        // Se registra evento
         this.getImpl().registerEvent(map);
 
         success(this.template_);
@@ -292,37 +300,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-
-  /**
-   * Esta función busca la capa
-   *
-   * @public
-   * @function
-   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
-   * @api
-   */
-  findLayer(evt) {
-    const layerName = evt.target.getAttribute('data-layer-name');
-    const layerURL = evt.target.getAttribute('data-layer-url');
-    const layerType = evt.target.getAttribute('data-layer-type');
-    let result = [];
-    if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
-      !M.utils.isNullOrEmpty(layerType)) {
-      result = this.overlayLayers.filter((l) => {
-        return l.name === layerName && l.url === layerURL && l.type === layerType;
-      });
-    }
-
-    return result;
-  }
-
-  /**
-   * Esta función detecta cuando se hace click en la plantilla
-   *
-   * @public
-   * @function
-   * @api
-   */
+  // Esta función detecta cuando se hace click en la plantilla y efectúa la acción correspondiente
   clickLayer(evtParameter) {
     const evt = (evtParameter || window.event);
     const layerName = evt.target.getAttribute('data-layer-name');
@@ -337,8 +315,8 @@ export default class LayerswitcherControl extends M.Control {
       let layer = this.findLayer(evt);
       if (layer.length > 0) {
         layer = layer[0];
+        // show hide layers
         if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'eye') {
-          // show hide layer
           if (evt.target.classList.contains('m-layerswitcher-check')) {
             if (layer.transparent === true || !layer.isVisible()) {
               layer.setVisible(!layer.isVisible());
@@ -537,6 +515,30 @@ export default class LayerswitcherControl extends M.Control {
       }
     }
     evt.stopPropagation();
+  }
+
+  /**
+   * Esta función busca la capa
+   *
+   * @public
+   * @function
+   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
+   * @api
+   */
+  findLayer(evt) {
+    const layerName = evt.target.getAttribute('data-layer-name');
+    const layerURL = evt.target.getAttribute('data-layer-url');
+    const layerType = evt.target.getAttribute('data-layer-type');
+    let result = [];
+    if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+      !M.utils.isNullOrEmpty(layerType)) {
+      result = this.overlayLayers.filter((l) => {
+        return l.name === layerName && (l.url === layerURL ||
+          l.url === undefined) && l.type === layerType;
+      });
+    }
+
+    return result;
   }
 
   errorLegendLayer(layer) {
