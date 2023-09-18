@@ -1,5 +1,12 @@
 <div>
     <div class="m-layerswitcher-info-cap">
         <p><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
+        <p><span>{{translations.name}}:</span>&nbsp; {{name}}</p>
+        {{#if numberFeatures}}
+            <p><span>{{translations.n_obj_geo}}:</span>&nbsp; {{numberFeatures}}</p>
+        {{/if}}
+        {{#if extension}}
+            <p><span>{{translations.extension}}:</span>&nbsp; [{{extension}}]</p>
+        {{/if}}
     </div>
 </div>
