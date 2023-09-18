@@ -684,6 +684,15 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
+
+  // Esta función muestra/oculta todas las capas
+  showHideAllLayers() {
+    this.statusShowHideAllLayers = !this.statusShowHideAllLayers;
+    this.overlayLayers.forEach((layer) => {
+      layer.setVisible(this.statusShowHideAllLayers);
+    });
+  }
+
   changeLayerConfig(layer, otherStyles) {
     const styleSelected = document.querySelector('#m-layerswitcher-style-select').value;
     if (styleSelected !== '') {
@@ -712,21 +721,6 @@ export default class LayerswitcherControl extends M.Control {
       }
       document.querySelector('div.m-mapea-container div.m-dialog').remove();
     }
-  }
-
-  /**
-   * Esta función muestra/oculta todas las capas
-   *
-   * @public
-   * @function
-   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
-   * @api
-   */
-  showHideAllLayers() {
-    this.statusShowHideAllLayers = !this.statusShowHideAllLayers;
-    this.overlayLayers.forEach((layer) => {
-      layer.setVisible(this.statusShowHideAllLayers);
-    });
   }
 
   openAddServices() {
