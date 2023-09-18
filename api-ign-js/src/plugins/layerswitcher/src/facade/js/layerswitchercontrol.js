@@ -334,36 +334,36 @@ export default class LayerswitcherControl extends M.Control {
           });
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-image') > -1) {
           const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-layerswitcher-legend');
-          const legendUrl = layer.getLegendURL();
-          if (legendUrl instanceof Promise) {
-            legendUrl.then((url) => {
-              if (url.indexOf('assets/img/legend-default.png') !== -1) {
-                legend.querySelector('img').src = url;
-              } else {
-                this.errorLegendLayer(layer).then((newLegend) => {
-                  if (newLegend !== '') {
-                    legend.querySelector('img').src = newLegend;
-                  } else {
-                    legend.querySelector('img').src = legendUrl;
-                  }
-                });
-              }
-            });
-          } else if (legendUrl.indexOf('assets/img/legend-default.png') !== -1) {
-            this.errorLegendLayer(layer).then((newLegend) => {
-              if (newLegend !== '') {
-                legend.querySelector('img').src = newLegend;
-              } else {
-                legend.querySelector('img').src = legendUrl;
-              }
-            });
-          } else {
-            legend.querySelector('img').src = legendUrl;
-          }
-          if (legend.style.display === 'block') {
-            legend.style.display = 'none';
-          } else {
+          if (legend.style.display !== 'block') {
+            const legendUrl = layer.getLegendURL();
+            if (legendUrl instanceof Promise) {
+              legendUrl.then((url) => {
+                if (url.indexOf('assets/img/legend-default.png') === -1) {
+                  legend.querySelector('img').src = url;
+                } else {
+                  this.errorLegendLayer(layer).then((newLegend) => {
+                    if (newLegend !== '') {
+                      legend.querySelector('img').src = newLegend;
+                    } else {
+                      legend.querySelector('img').src = url;
+                    }
+                  });
+                }
+              });
+            } else if (legendUrl.indexOf('assets/img/legend-default.png') >= 0) {
+              this.errorLegendLayer(layer).then((newLegend) => {
+                if (newLegend !== '') {
+                  legend.querySelector('img').src = newLegend;
+                } else {
+                  legend.querySelector('img').src = legendUrl;
+                }
+              });
+            } else {
+              legend.querySelector('img').src = legendUrl;
+            }
             legend.style.display = 'block';
+          } else {
+            legend.style.display = 'none';
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
           if (layerType === 'WMS' || layerType === 'WMTS' || layerType === 'WFS' || layerType === 'MBTilesVector' ||
@@ -557,11 +557,14 @@ export default class LayerswitcherControl extends M.Control {
     return result;
   }
 
+  // Función para obtener la leyenda de ciertas capas
   errorLegendLayer(layer) {
     return new Promise((success) => {
       let legend = '';
-      if (layer.type === 'XYZ' || layer.type === 'TMS') {
+      if (layer.type === 'TMS') {
         legend = layer.url.replace('{z}/{x}/{-y}', '0/0/0');
+      } else if (layer.type === 'XYZ') {
+        legend = layer.url.replace('{z}/{x}/{y}', '0/0/0');
       } else if (layer.type === 'OSM') {
         let url = layer.getImpl().getOL3Layer().getSource().getUrls();
         if (url.length > 0) {
