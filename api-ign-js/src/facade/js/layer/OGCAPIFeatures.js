@@ -9,7 +9,6 @@ import Vector from './Vector';
 import * as LayerType from './Type';
 import * as parameter from '../parameter/parameter';
 import { getValue } from '../i18n/language';
-import Generic from '../style/Generic';
 
 /**
  * @classdesc
@@ -157,17 +156,6 @@ class OGCAPIFeatures extends Vector {
      * por defecto falso.
      */
     this.extract = parameters.extract;
-
-    /**
-     * OGCAPIFeatures predefinedStyles: Estilos predefinidos para la capa.
-     */
-    this.predefinedStyles =
-      isUndefined(opt.predefinedStyles) ? [] : opt.predefinedStyles;
-    if (isUndefined(opt.style)) {
-      this.predefinedStyles.unshift(new Generic(OGCAPIFeatures.DEFAULT_OPTS_STYLE));
-    } else {
-      this.predefinedStyles.unshift(opt.style);
-    }
 
     /**
      * OGCAPIFeatures cql: Declaración CQL para filtrar las características

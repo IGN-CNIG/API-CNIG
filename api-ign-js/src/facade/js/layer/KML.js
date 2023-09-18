@@ -220,6 +220,7 @@ class KML extends LayerVector {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
       equals = equals && (this.extract === obj.extract);
+      equals = equals && (this.predefinedStyles === obj.predefinedStyles);
     }
 
     return equals;

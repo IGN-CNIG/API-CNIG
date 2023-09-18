@@ -105,11 +105,23 @@ class Vector extends LayerBase {
      */
     this.infoEventType = parameters.infoEventType;
 
+    /**
+     * predefinedStyles: Estilos predefinidos para la capa.
+     */
+    this.predefinedStyles =
+         isUndefined(options.predefinedStyles) ? [] : options.predefinedStyles;
+    if (isUndefined(options.style) && !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)) {
+      this.predefinedStyles.unshift(new Generic(this.constructor.DEFAULT_OPTS_STYLE));
+    } else if (isUndefined(options.style)) {
+      this.predefinedStyles.unshift(new Generic(Vector.DEFAULT_OPTIONS_STYLE));
+    } else {
+      this.predefinedStyles.unshift(options.style);
+    }
+
     this.setStyle(options.style);
 
     impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));
   }
-
 
   /**
    * Devuelve el tipo de capa, Vector.

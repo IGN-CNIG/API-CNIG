@@ -393,6 +393,7 @@ class WFS extends Vector {
       equals = equals && (this.cql === obj.cql);
       equals = equals && (this.version === obj.version);
       equals = equals && (this.extract === obj.extract);
+      equals = equals && (this.predefinedStyles === obj.predefinedStyles);
     }
 
     return equals;

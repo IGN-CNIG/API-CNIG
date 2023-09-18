@@ -269,6 +269,7 @@ class MBTilesVector extends Vector {
       equals = equals && (this.name === obj.name);
       equals = equals && (this.options === obj.options);
       equals = equals && (this.extract === obj.extract);
+      equals = equals && (this.predefinedStyles === obj.predefinedStyles);
     }
     return equals;
   }
