@@ -85,5 +85,7 @@
   "results_1_singular":"Se ha encontrado ",
   "results_2_singular":" feature",
   "legend": "Leyenda",
-  "data_layer": "Datos para la capa"
+  "data_layer": "Datos para la capa",
+  "n_obj_geo": "Número de objetos geográficos",
+  "extension": "Extensión"
 }

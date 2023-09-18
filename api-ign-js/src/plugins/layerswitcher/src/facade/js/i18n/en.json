@@ -85,5 +85,7 @@
   "results_1_singular":"",
   "results_2_singular":" feature has been found.",
   "legend": "Legend",
-  "data_layer": "Data for GeoJSON layer"
+  "data_layer": "Data for GeoJSON layer",
+  "n_obj_geo": "Number of geographical objects",
+  "extension": "Extension"
 }

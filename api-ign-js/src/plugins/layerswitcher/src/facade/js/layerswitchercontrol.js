@@ -285,7 +285,10 @@ export default class LayerswitcherControl extends M.Control {
         });
       }
       if (scroll !== undefined) {
-        document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers').scrollTop = scroll;
+        const aux = document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers');
+        if (aux !== null) {
+          aux.scrollTop = scroll;
+        }
       }
     });
   }
