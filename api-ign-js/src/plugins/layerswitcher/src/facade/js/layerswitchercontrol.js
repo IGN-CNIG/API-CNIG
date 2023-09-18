@@ -583,112 +583,7 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
-  changeLayerConfig(layer, otherStyles) {
-    const styleSelected = document.querySelector('#m-layerswitcher-style-select').value;
-    if (styleSelected !== '') {
-      if (layer.type === 'OGCAPIFeatures') {
-        if (!M.utils.isNullOrEmpty(otherStyles)) {
-          const filtered = otherStyles[styleSelected];
-          if (styleSelected === 0) {
-            layer.setStyle();
-          } else {
-            layer.setStyle(filtered);
-          }
-        }
-      } else {
-        layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
-        const cm = layer.capabilitiesMetadata;
-        if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
-          const filtered = layer.capabilitiesMetadata.style.filter((style) => {
-            return style.Name === styleSelected;
-          });
-
-          if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
-            const newURL = filtered[0].LegendURL[0].OnlineResource;
-            layer.setLegendURL(newURL);
-          }
-        }
-      }
-      document.querySelector('div.m-mapea-container div.m-dialog').remove();
-    }
-  }
-
-  informationProvider(layer) {
-    if (M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
-      return false;
-    }
-    let provider = '';
-
-    if (layer.type === 'WMS') {
-      provider = `${layer.capabilitiesMetadata.attribution.Title}`;
-      if (layer.capabilitiesMetadata.attribution.OnlineResource !== undefined) {
-        provider += `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
-      }
-    }
-    if (layer.type === 'WMTS') {
-      provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
-        `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
-      const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
-      if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
-        const mail = sc.ContactInfo.Address.ElectronicMailAddress;
-        provider += `<p><a class="m-layerswitcher-provider-link" href="mailto:${mail}">${mail}</a></p>`;
-      }
-    }
-
-    return provider;
-  }
-
-  addCapabilitiesInformation(layer) {
-    if (layer.type === 'WMS') {
-      return M.utils.getWMSGetCapabilitiesUrl(layer.url, layer.version);
-    }
-
-    if (layer.type === 'WMTS') {
-      return M.utils.getWMTSGetCapabilitiesUrl(layer.url);
-    }
-    return false;
-  }
-
-  infoDownloadCenter(url, vars) {
-    M.remote.get(url).then((response) => {
-      const metadataText = response.text;
-      const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
-        return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
-      });
-
-      if (unfiltered.length > 0) {
-        const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
-        vars.downloadCenter = downloadCenter;
-      }
-
-      this.renderInfo(vars);
-    }).catch((err) => {
-      this.renderInfo(vars);
-    });
-  }
-
-  /**
-   * Esta función muestra/oculta todas las capas
-   *
-   * @public
-   * @function
-   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
-   * @api
-   */
-  showHideAllLayers() {
-    this.statusShowHideAllLayers = !this.statusShowHideAllLayers;
-    this.overlayLayers.forEach((layer) => {
-      layer.setVisible(this.statusShowHideAllLayers);
-    });
-  }
-
-  /**
-   * Esta función compila la plantilla de información
-   * @public
-   * @function
-   * @param {Object} vars variables para la plantilla
-   * @api
-   */
+  // Muestra la información de la capa
   renderInfo(vars, type) {
     let info;
     if (type === 'OGCAPIFeatures') {
@@ -719,6 +614,108 @@ export default class LayerswitcherControl extends M.Control {
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
     }, 10);
+  }
+
+  // Obtiene la información de la capa del GetCapabilities
+  addCapabilitiesInformation(layer) {
+    if (layer.type === 'WMS') {
+      return M.utils.getWMSGetCapabilitiesUrl(layer.url, layer.version);
+    }
+
+    if (layer.type === 'WMTS') {
+      return M.utils.getWMTSGetCapabilitiesUrl(layer.url);
+    }
+    return false;
+  }
+
+  // Obtiene información del provider
+  informationProvider(layer) {
+    if (M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
+      return false;
+    }
+    let provider = '';
+
+    if (layer.type === 'WMS') {
+      provider = `${layer.capabilitiesMetadata.attribution.Title}`;
+      if (layer.capabilitiesMetadata.attribution.OnlineResource !== undefined) {
+        provider += `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.OnlineResource}" target="_blank">${layer.capabilitiesMetadata.attribution.OnlineResource}</a></p>`;
+      }
+    }
+    if (layer.type === 'WMTS') {
+      provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
+        `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+      const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
+      if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
+        const mail = sc.ContactInfo.Address.ElectronicMailAddress;
+        provider += `<p><a class="m-layerswitcher-provider-link" href="mailto:${mail}">${mail}</a></p>`;
+      }
+    }
+
+    return provider;
+  }
+
+  // Centro de descarga
+  infoDownloadCenter(url, vars) {
+    M.remote.get(url).then((response) => {
+      const metadataText = response.text;
+      const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
+        return elem.indexOf('centrodedescargas') > -1 && elem.indexOf('atom') === -1;
+      });
+
+      if (unfiltered.length > 0) {
+        const downloadCenter = unfiltered[0].split('</gmd:URL>')[0].trim();
+        vars.downloadCenter = downloadCenter;
+      }
+
+      this.renderInfo(vars);
+    }).catch((err) => {
+      this.renderInfo(vars);
+    });
+  }
+
+  changeLayerConfig(layer, otherStyles) {
+    const styleSelected = document.querySelector('#m-layerswitcher-style-select').value;
+    if (styleSelected !== '') {
+      if (layer.type === 'OGCAPIFeatures') {
+        if (!M.utils.isNullOrEmpty(otherStyles)) {
+          const filtered = otherStyles[styleSelected];
+          if (styleSelected === 0) {
+            layer.setStyle();
+          } else {
+            layer.setStyle(filtered);
+          }
+        }
+      } else {
+        layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
+        const cm = layer.capabilitiesMetadata;
+        if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
+          const filtered = layer.capabilitiesMetadata.style.filter((style) => {
+            return style.Name === styleSelected;
+          });
+
+          if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
+            const newURL = filtered[0].LegendURL[0].OnlineResource;
+            layer.setLegendURL(newURL);
+          }
+        }
+      }
+      document.querySelector('div.m-mapea-container div.m-dialog').remove();
+    }
+  }
+
+  /**
+   * Esta función muestra/oculta todas las capas
+   *
+   * @public
+   * @function
+   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
+   * @api
+   */
+  showHideAllLayers() {
+    this.statusShowHideAllLayers = !this.statusShowHideAllLayers;
+    this.overlayLayers.forEach((layer) => {
+      layer.setVisible(this.statusShowHideAllLayers);
+    });
   }
 
   openAddServices() {
