@@ -375,7 +375,7 @@ export default class LayerswitcherControl extends M.Control {
             const extent = layer.getFeaturesExtent();
             this.map_.setBbox(extent);
           } else {
-            M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
+            M.dialog.info(getValue('exception.extent'), getValue('info'));
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-info') > -1) {
           if (layer.type === 'OGCAPIFeatures') {
