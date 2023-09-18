@@ -37,7 +37,6 @@ export default class LyrCompareControl extends M.Control {
     const impl = new LyrcompareImplControl(map);
     super(impl, 'LyrCompare');
     impl.addTo(map);
-
     this.map_ = map;
 
     /**
@@ -439,6 +438,7 @@ export default class LyrCompareControl extends M.Control {
 
     this.template.querySelector('#div-m-lyrcompare-transparent-dynamic').addEventListener('change', (evt) => {
       this.staticDivision = Number(evt.target.value);
+      this.getImpl().removeInteraction();
       this.getImpl().setStaticDivision(this.staticDivision);
     });
 
