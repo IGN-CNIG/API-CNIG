@@ -463,11 +463,19 @@ export default class LayerswitcherControl extends M.Control {
             });
           } else {
             const vars = {
-              title: layer.name,
+              name: layer.name, // nombre
+              title: layer.legend, // titulo
               translations: {
                 title: getValue('title'),
+                name: getValue('name'),
+                n_obj_geo: getValue('n_obj_geo'),
+                extension: getValue('extension'),
               },
             };
+            if (layer instanceof M.layer.Vector) {
+              vars.numberFeatures = layer.getFeatures().length;
+              vars.extension = layer.getMaxExtent();
+            }
             this.renderInfo(vars, 'Others');
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
