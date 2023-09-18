@@ -517,14 +517,30 @@ export default class LayerswitcherControl extends M.Control {
     evt.stopPropagation();
   }
 
-  /**
-   * Esta función busca la capa
-   *
-   * @public
-   * @function
-   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
-   * @api
-   */
+  // Esta función gestiona el control de la opacidad de las capas
+  inputLayer(evtParameter) {
+    if (evtParameter.target.type === 'radio') {
+      return;
+    }
+
+    clearTimeout(this.inputLayerTimeID);
+    this.getImpl().removeRenderComplete();
+
+    const evt = (evtParameter || window.event);
+    if (!M.utils.isNullOrEmpty(evt.target)) {
+      const layer = this.findLayer(evt);
+      if (layer.length > 0) {
+        evt.stopPropagation();
+        layer[0].setOpacity(evt.target.value);
+      }
+    }
+
+    this.inputLayerTimeID = setTimeout(() => {
+      this.getImpl().registerEvent(this.map_);
+    }, 500);
+  }
+
+  //  Función para buscar la capa por nombre, url y tipo
   findLayer(evt) {
     const layerName = evt.target.getAttribute('data-layer-name');
     const layerURL = evt.target.getAttribute('data-layer-url');
@@ -646,36 +662,6 @@ export default class LayerswitcherControl extends M.Control {
     }).catch((err) => {
       this.renderInfo(vars);
     });
-  }
-
-  /**
-   * Esta función gestiona el control de la opacidad de las capas
-   *
-   * @public
-   * @function
-   * @param {Event} evtParameter evento que se produce cuando se cambia el valor de la opacidad
-   * @api
-   */
-  inputLayer(evtParameter) {
-    if (evtParameter.target.type === 'radio') {
-      return;
-    }
-
-    clearTimeout(this.inputLayerTimeID);
-    this.getImpl().removeRenderComplete();
-
-    const evt = (evtParameter || window.event);
-    if (!M.utils.isNullOrEmpty(evt.target)) {
-      const layer = this.findLayer(evt);
-      if (layer.length > 0) {
-        evt.stopPropagation();
-        layer[0].setOpacity(evt.target.value);
-      }
-    }
-
-    this.inputLayerTimeID = setTimeout(() => {
-      this.getImpl().registerEvent(this.map_);
-    }, 500);
   }
 
   /**

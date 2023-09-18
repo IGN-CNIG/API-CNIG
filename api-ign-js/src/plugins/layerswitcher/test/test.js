@@ -19,7 +19,8 @@ const mp = new Layerswitcher({
   collapsible: true,
   isDraggable: true,
   modeSelectLayers: 'radio',
-  tools: [],
+  // tools: [],
+  tools: ['transparency', 'legend'],
   // tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
   isMoveLayers: true,
   // precharged: [],
@@ -52,29 +53,29 @@ const capaKML = new M.layer.KML({
   extract: true,
 });
 
-window.fetch('./cabrera.mbtiles').then((response) => {
-  const mbtile = new M.layer.MBTiles({
-    name: 'mbtiles',
-    legend: 'Capa MBTiles L',
-    source: response,
-  });
-  map.addLayers(mbtile);
-  window.mbtile = mbtile;
-}).catch((e) => {
-  throw e;
-});
+// window.fetch('./cabrera.mbtiles').then((response) => {
+//   const mbtile = new M.layer.MBTiles({
+//     name: 'mbtiles',
+//     legend: 'Capa MBTiles L',
+//     source: response,
+//   });
+//   map.addLayers(mbtile);
+//   window.mbtile = mbtile;
+// }).catch((e) => {
+//   throw e;
+// });
 
-window.fetch('./countries.mbtiles').then((response) => {
-  const mbtilesvector = new M.layer.MBTilesVector({
-    name: 'mbtiles_vector',
-    legend: 'Capa MBTilesVector L',
-    source: response,
-    // maxZoomLevel: 5,
-  });
-  map.addLayers(mbtilesvector);
-}).catch((e) => {
-  throw e;
-});
+// window.fetch('./countries.mbtiles').then((response) => {
+//   const mbtilesvector = new M.layer.MBTilesVector({
+//     name: 'mbtiles_vector',
+//     legend: 'Capa MBTilesVector L',
+//     source: response,
+//     // maxZoomLevel: 5,
+//   });
+//   map.addLayers(mbtilesvector);
+// }).catch((e) => {
+//   throw e;
+// });
 
 const capaMVT = new M.layer.MVT({
   url: 'https://www.ign.es/web/resources/mapa-base-xyz/vt/{z}/{x}/{y}.pbf',
@@ -177,15 +178,15 @@ const capaXYZ = new M.layer.XYZ({
 map.addLayers(capaGeoJSON);
 map.addLayers(capaOSM);
 map.addLayers(capaKML);
-map.addLayers(capaMVT);
-map.addLayers(capaOGCAPIFeatures);
-map.addLayers(capaTMS);
-map.addLayers(capaVector);
-capaVector.addFeatures(feature);
-map.addLayers(capaWFS);
-map.addLayers(capaWMS);
-map.addLayers(capaWMTS);
-map.addLayers(capaXYZ);
+// map.addLayers(capaMVT);
+// map.addLayers(capaOGCAPIFeatures);
+// map.addLayers(capaTMS);
+// map.addLayers(capaVector);
+// capaVector.addFeatures(feature);
+// map.addLayers(capaWFS);
+// map.addLayers(capaWMS);
+// map.addLayers(capaWMTS);
+// map.addLayers(capaXYZ);
 
 window.map = map;
 window.capaGeoJSON = capaGeoJSON;
