@@ -29,9 +29,10 @@ const mp = new PrintViewManagement({
   position: 'TL',
   collapsible: true,
   collapsed: true,
-  order: 1,
+  tooltip: 'Imprimir',
   serverUrl: 'https://componentes.cnig.es/geoprint',
   printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
+  defaultOpenControl: 3,
   georefImageEpsg: {
     tooltip: 'Georeferenciar imagen',
     layers: [

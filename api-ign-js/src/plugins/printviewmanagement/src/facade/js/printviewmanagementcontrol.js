@@ -22,7 +22,7 @@ export default class PrintViewManagementControl extends M.Control {
    */
   constructor({
     isDraggable, georefImageEpsg, georefImage, printermap, order, map,
-    serverUrl, printStatusUrl,
+    serverUrl, printStatusUrl, defaultOpenControl,
   }) {
     if (M.utils.isUndefined(PrintViewManagementImpl)) {
       M.exception(getValue('exception.impl'));
@@ -80,6 +80,8 @@ export default class PrintViewManagementControl extends M.Control {
       this.printermap_.serverUrl = serverUrl;
       this.printermap_.printStatusUrl = printStatusUrl;
     }
+
+    this.defaultOpenControl = defaultOpenControl;
   }
   /**
    * This function creates the view
@@ -121,6 +123,7 @@ export default class PrintViewManagementControl extends M.Control {
       this.accessibilityTab(html);
       this.selectElementHTML();
       this.addEvent();
+      this.defaultOpenControl_(html);
       success(html);
     });
   }
@@ -159,6 +162,26 @@ export default class PrintViewManagementControl extends M.Control {
         }
       }
     });
+  }
+
+  defaultOpenControl_(html) {
+    if (this.defaultOpenControl === 1) {
+      this.showDownloadButton();
+      this.deactive(html, 'printermap');
+      this.printerMapControl.active(html);
+    }
+
+    if (this.defaultOpenControl === 2) {
+      this.showDownloadButton();
+      this.deactive(html, 'georefImage');
+      this.georefImageControl.active(html);
+    }
+
+    if (this.defaultOpenControl === 3) {
+      this.showDownloadButton();
+      this.deactive(html, 'georefImageEpsg');
+      this.georefImageEpsgControl.active(html);
+    }
   }
 
   /**

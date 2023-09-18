@@ -109,6 +109,8 @@ export default class PrintViewManagement extends M.Plugin {
 
     this.printStatusUrl = options.printStatusUrl || 'https://componentes.cnig.es/geoprint/print/status';
 
+    this.defaultOpenControl = options.defaultOpenControl || 0;
+
     /**
      * Indicates order to the plugin
      * @private
@@ -158,6 +160,7 @@ export default class PrintViewManagement extends M.Plugin {
       serverUrl: this.serverUrl,
       printTemplateUrl: this.printTemplateUrl,
       printStatusUrl: this.printStatusUrl,
+      defaultOpenControl: this.defaultOpenControl,
     }));
 
     this.panel_ = new M.ui.Panel('panelPrintViewManagement', {
