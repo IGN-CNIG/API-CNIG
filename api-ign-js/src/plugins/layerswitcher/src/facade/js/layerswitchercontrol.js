@@ -679,7 +679,6 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
-
   // Esta función muestra/oculta todas las capas
   showHideAllLayers() {
     this.statusShowHideAllLayers = !this.statusShowHideAllLayers;
@@ -719,6 +718,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
+  // Muestra cargando
   showLoading() {
     document.querySelector('#m-layerswitcher-addservices-results').innerHTML = `<p id="m-layerswitcher-loading">${getValue('loading')}...</p>`;
     document.querySelector('#m-layerswitcher-addservices-search-btn').style.display = 'none';
@@ -734,6 +734,7 @@ export default class LayerswitcherControl extends M.Control {
     }, 4000);
   }
 
+  // Elimina cargando
   removeLoading() {
     document.querySelector('#m-layerswitcher-loading').remove();
     document.querySelector('#m-layerswitcher-addservices-search-btn').style.display = 'inline';
@@ -764,8 +765,13 @@ export default class LayerswitcherControl extends M.Control {
 
         if (HTTPeval === true || HTTPSeval === true) {
           // MVT
-          if (url.indexOf('.pbf') >= 0) {
-            const metadata = url.replace('{z}/{x}/{y}.pbf', 'metadata.json');
+          const pbf = url.indexOf('.pbf') >= 0;
+          const json = url.indexOf('.json') >= 0;
+          if (pbf || json) {
+            let metadata = url;
+            if (pbf) {
+              metadata = url.replace('{z}/{x}/{y}.pbf', 'metadata.json');
+            }
             M.remote.get(metadata).then((meta) => {
               let layers = JSON.parse(meta.text).vector_layers;
               layers = layers.map((layer) => {
@@ -917,6 +923,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
+  // Permite añadir servicios
   openAddServices() {
     const precharged = this.precharged;
     const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
@@ -970,6 +977,7 @@ export default class LayerswitcherControl extends M.Control {
     }, 10);
   }
 
+  // Lee el capabilities de un WFS
   readWFSCapabilities(response) {
     const services = [];
     const prenode = response.text.split('<FeatureTypeList>')[1].split('</FeatureTypeList>')[0];
@@ -1020,9 +1028,7 @@ export default class LayerswitcherControl extends M.Control {
     return { services, capabilities, hasCapabilities };
   }
 
-  /**
-   * Esta función elimina los resultados
-   */
+  // Elimina contenido
   removeContains(evt) {
     evt.preventDefault();
     if (document.querySelector('#m-layerswitcher-addservices-suggestions') !== null) {
@@ -1037,9 +1043,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  /**
-   * Esta función filtra los resultados
-   */
+  // Filtra los resultados
   filterResults(allLayers) {
     const layers = [];
     const layerNames = [];
@@ -1120,9 +1124,7 @@ export default class LayerswitcherControl extends M.Control {
     return layers;
   }
 
-  /**
-   * Esta función muestra los resultados
-   */
+  // Muesta el resueltado de las capas encontradas
   showResults(wfsDatas) {
     this.removeLoading();
     const result = [];
@@ -1268,9 +1270,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  /**
-   * Esta función determina si la capa es de tipo OGCAPI
-   */
+  // Determina si es OGCAPI
   checkIfOGCAPIFeatures(url) {
     return M.remote.get(`${url}?f=json`).then((response) => {
       let isJson = false;
@@ -1285,13 +1285,7 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
-  /**
-   * This function registers the marks or unmarks check and click allselect
-   *
-   * @function
-   * @private
-   * @param {Event} evt - Event
-   */
+  // Registra los checks de las capas
   registerCheck(evt) {
     const e = (evt || window.event);
     if (!M.utils.isNullOrEmpty(e.target) && e.target.classList.contains('m-check-layerswitcher-addservices')) {
@@ -1325,13 +1319,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  /**
-   * This function registers the marks or unmarks check and click allselect
-   *
-   * @function
-   * @private
-   * @param {Event} evt - Event
-   */
+  // Registra los checks de las WFS
   registerCheckWFS(evt) {
     const e = (evt || window.event);
     if (!M.utils.isNullOrEmpty(e.target) && e.target.classList.contains('m-check-layerswitcher-addservices-wfs')) {
@@ -1365,37 +1353,19 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  /**
-   * This function registers the marks or unmarks check and click allselect from layer name
-   *
-   * @function
-   * @private
-   * @param {Event} evt - Event
-   */
+  // Registra los checks por nombre
   registerCheckFromName(evt) {
     const e = (evt || window.event);
     e.target.parentElement.querySelector('span.m-check-layerswitcher-addservices').click();
   }
 
-  /**
-   * This function registers the marks or unmarks check and click allselect from layer name
-   *
-   * @function
-   * @private
-   * @param {Event} evt - Event
-   */
+  // Registra los checks por nombre para WFS
   registerCheckFromNameWFS(evt) {
     const e = (evt || window.event);
     e.target.parentElement.querySelector('span.m-check-layerswitcher-addservices-wfs').click();
   }
 
-  /**
-   * This function adds layers
-   *
-   * @function
-   * @param {Event} evt - Event
-   * @private
-   */
+  // Añade capas
   addLayers(evt) {
     evt.preventDefault();
     const layers = [];
@@ -1466,12 +1436,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  /**
-   * This function unselects checkboxs
-   *
-   * @function
-   * @private
-   */
+  // Quita selección a capa
   unSelect() {
     const unSelect = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-all .m-layerswitcher-icons-check-seleccionado');
     for (let i = 0; i < unSelect.length; i += 1) {
@@ -1480,12 +1445,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  /**
-   * This function selects checkboxs
-   *
-   * @function
-   * @private
-   */
+  // Pone selección a capa
   select() {
     const select = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-all .m-layerswitcher-icons-check');
     for (let i = 0; i < select.length; i += 1) {
@@ -1494,12 +1454,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  /**
-   * This function unselects checkboxs
-   *
-   * @function
-   * @private
-   */
+  // Quita selección a capa WFS
   unSelectWFS() {
     const unSelect = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-wfs .m-layerswitcher-icons-check-seleccionado');
     for (let i = 0; i < unSelect.length; i += 1) {
@@ -1508,12 +1463,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  /**
-   * This function selects checkboxs
-   *
-   * @function
-   * @private
-   */
+  // Pone selección a capa WFS
   selectWFS() {
     const select = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-wfs .m-layerswitcher-icons-check');
     for (let i = 0; i < select.length; i += 1) {
@@ -1538,10 +1488,12 @@ export default class LayerswitcherControl extends M.Control {
     this.readCapabilities(evt);
   }
 
+  // Compara 2 URLS
   checkUrls(url1, url2) {
     return url1 === url2 || (url1.indexOf(url2) > -1) || (url2.indexOf(url1) > -1);
   }
 
+  // Plantilla para añadir capas (Generales)
   printLayerModal(url, type, layers) {
     const modal = M.template.compileSync(layerModalTemplate, {
       jsonp: true,
@@ -1647,6 +1599,7 @@ export default class LayerswitcherControl extends M.Control {
     this.removeLoading();
   }
 
+  // Plantilla para OGCAPI
   printOGCModal(
     url, selectedLayer, limitVal, onlyBbox, summary,
     filterByID, filterByOtherFilters,
@@ -1792,7 +1745,7 @@ export default class LayerswitcherControl extends M.Control {
         M.dialog.error(getValue('no_results'));
       } else {
         properties = this.getProperties(selectValue, summary);
-        this.getImpl().getNumberFeaturesOGCAPIFeaturesLayer(properties).then((numberFeatures) => {
+        this.getNumberFeaturesOGCAPIFeaturesLayer(properties).then((numberFeatures) => {
           let results1;
           let results2;
           if (numberFeatures === 1) {
@@ -2045,8 +1998,89 @@ export default class LayerswitcherControl extends M.Control {
     return cDict;
   }
 
+  // Devuelve el número de features de un layer OGCAPI
+  getNumberFeaturesOGCAPIFeaturesLayer(layerParameters) {
+    const layer = new M.layer.OGCAPIFeatures(layerParameters);
+    const url = this.getFeatureUrl(layer);
+    let numberFeatures;
+    let jsonResponseOgc;
+    return M.remote.get(url).then((response) => {
+      jsonResponseOgc = JSON.parse(response.text);
+      if (jsonResponseOgc !== null) {
+        if (jsonResponseOgc.type === 'Feature') {
+          numberFeatures = 1;
+        } else {
+          numberFeatures = jsonResponseOgc.features.length;
+        }
+      } else {
+        numberFeatures = 0;
+      }
+
+      return numberFeatures;
+    });
+  }
+
   destroy() {
     this.getImpl().destroy();
+  }
+
+  /**
+   * Gets feature url of features
+   * @public
+   * @function
+   * @api
+   */
+  getFeatureUrl(layer) {
+    const getFeatureParams = {
+      // service: 'OGCAPIFeatures',
+      // request: 'GetFeature',
+      // outputFormat: layer.getFeatureOutputFormat_,
+      // describeOutputFormat: layer.getDescribeFeatureType_,
+      // srsname: projection.getCode(),
+    };
+    let fUrl;
+    /* eslint-disable no-param-reassign */
+    if (!M.utils.isNullOrEmpty(layer.name)) {
+      layer.url = `${layer.url}${layer.name}/items/`;
+    }
+
+    if (!M.utils.isNullOrEmpty(layer.format)) {
+      getFeatureParams.f = layer.format;
+    }
+
+    if (!M.utils.isNullOrEmpty(layer.id)) {
+      layer.url = `${layer.url}${layer.id}?`;
+      /* eslint-disable-next-line max-len */
+      fUrl = M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
+    } else {
+      layer.url = `${layer.url}?`;
+
+      if (!M.utils.isNullOrEmpty(layer.limit)) {
+        getFeatureParams.limit = layer.limit;
+      }
+
+      if (!M.utils.isNullOrEmpty(layer.offset)) {
+        getFeatureParams.offset = layer.offset;
+      }
+
+      if (!M.utils.isNullOrEmpty(layer.bbox)) {
+        getFeatureParams.bbox = layer.bbox;
+      }
+      /* eslint-disable-next-line max-len */
+      fUrl = M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
+
+      if (!M.utils.isNullOrEmpty(layer.conditional)) {
+        let text = '';
+        Object.keys(layer.conditional).forEach((key) => {
+          const param = `&${key}=${layer.conditional[key]}&`;
+          text += param;
+        });
+        getFeatureParams.conditional = text;
+        fUrl += getFeatureParams.conditional;
+      }
+    }
+    fUrl = fUrl.replaceAll(' ', '%20');
+    return fUrl;
   }
 
   /**
