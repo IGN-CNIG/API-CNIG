@@ -718,6 +718,16 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
+  showLoading() {
+    document.querySelector('#m-layerswitcher-addservices-results').innerHTML = `<p id="m-layerswitcher-loading">${getValue('loading')}...</p>`;
+    document.querySelector('#m-layerswitcher-addservices-search-btn').style.display = 'none';
+  }
+
+  removeLoading() {
+    document.querySelector('#m-layerswitcher-loading').remove();
+    document.querySelector('#m-layerswitcher-addservices-search-btn').style.display = 'inline';
+  }
+
   // Esta función lee las capas de un servicio
   readCapabilities(evt) {
     evt.preventDefault();
@@ -726,6 +736,7 @@ export default class LayerswitcherControl extends M.Control {
     document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
     const url = document.querySelector('div.m-dialog #m-layerswitcher-addservices-search-input').value.trim().split('?')[0];
     this.removeContains(evt);
+    this.showLoading();
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
         if (this.http && !this.https) {
@@ -1012,7 +1023,6 @@ export default class LayerswitcherControl extends M.Control {
     if (document.querySelector('#m-layerswitcher-layerContainer') !== null) {
       document.querySelector('#m-layerswitcher-layerContainer').style.display = 'none';
     }
-    document.querySelector('#m-layerswitcher-addservices-results').innerHTML = '';
   }
 
   /**
@@ -1102,6 +1112,7 @@ export default class LayerswitcherControl extends M.Control {
    * Esta función muestra los resultados
    */
   showResults(wfsDatas) {
+    this.removeLoading();
     const result = [];
     let serviceType = 'WMS';
     this.capabilities.forEach((capability) => {
@@ -1621,6 +1632,7 @@ export default class LayerswitcherControl extends M.Control {
 
       document.querySelector('div.m-dialog.info').parentNode.removeChild(document.querySelector('div.m-dialog.info'));
     });
+    this.removeLoading();
   }
 
   printOGCModal(

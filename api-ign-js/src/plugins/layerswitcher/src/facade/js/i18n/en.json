@@ -87,5 +87,6 @@
   "legend": "Legend",
   "data_layer": "Data for GeoJSON layer",
   "n_obj_geo": "Number of geographical objects",
-  "extension": "Extension"
+  "extension": "Extension",
+  "loading": "Loading"
 }
