@@ -2,7 +2,7 @@
     <div class="m-layerswitcher-style-container">
         <select id="m-layerswitcher-style-select">
             <option disabled="disabled" value="">{{translations.select_style}}</option>
-            {{#if isOGCAPIFeatures}}
+            {{#if isVectorLayer}}
                 {{#each styles}}
                     {{#if this.options_.name}}
                         <option value="{{@index}}">{{this.options_.name}}</option>

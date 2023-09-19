@@ -207,13 +207,6 @@ export default class LayerswitcherControl extends M.Control {
     const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
       !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
 
-    let ogcapiFeaturesStyles;
-    if (layer.type === 'OGCAPIFeatures') {
-      if (!M.utils.isNullOrEmpty(layer.predefinedStyles)) {
-        ogcapiFeaturesStyles = layer.predefinedStyles.length > 1;
-      }
-    }
-
     return new Promise((success) => {
       const layerVarTemplate = {
         title: layerTitle,
@@ -226,7 +219,8 @@ export default class LayerswitcherControl extends M.Control {
         opacity: layer.getOpacity(),
         metadata: hasMetadata,
         hasStyles: (hasMetadata && layer.capabilitiesMetadata.style.length > 1) ||
-          ogcapiFeaturesStyles,
+          (layer instanceof M.layer.Vector && layer.type !== 'KML' && !M.utils.isNullOrEmpty(layer.predefinedStyles) &&
+            layer.predefinedStyles.length > 1),
       };
       success(layerVarTemplate);
     });
@@ -483,15 +477,15 @@ export default class LayerswitcherControl extends M.Control {
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
           let otherStyles = [];
-          let isOGCAPIFeatures;
+          let isVectorLayer = false;
           if (!M.utils.isUndefined(layer.capabilitiesMetadata) &&
             !M.utils.isUndefined(layer.capabilitiesMetadata.style)) {
             otherStyles = layer.capabilitiesMetadata.style;
           }
 
-          if (layer.type === 'OGCAPIFeatures') {
+          if (layer instanceof M.layer.Vector && layer.type !== 'KML') {
             otherStyles = layer.predefinedStyles;
-            isOGCAPIFeatures = true;
+            isVectorLayer = true;
           }
 
           const config = M.template.compileSync(configTemplate, {
@@ -499,7 +493,7 @@ export default class LayerswitcherControl extends M.Control {
             parseToHtml: false,
             vars: {
               styles: otherStyles,
-              isOGCAPIFeatures,
+              isVectorLayer,
               translations: {
                 select_style: getValue('select_style'),
                 change: getValue('change'),
@@ -696,7 +690,7 @@ export default class LayerswitcherControl extends M.Control {
   changeLayerConfig(layer, otherStyles) {
     const styleSelected = document.querySelector('#m-layerswitcher-style-select').value;
     if (styleSelected !== '') {
-      if (layer.type === 'OGCAPIFeatures') {
+      if (layer instanceof M.layer.Vector) {
         if (!M.utils.isNullOrEmpty(otherStyles)) {
           const filtered = otherStyles[styleSelected];
           if (styleSelected === 0) {
