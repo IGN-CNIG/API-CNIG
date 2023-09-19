@@ -149,6 +149,7 @@ export default class LayerswitcherControl extends M.Control {
         // Se registra evento
         this.getImpl().registerEvent(map);
 
+        this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
         success(this.template_);
       });
     });
