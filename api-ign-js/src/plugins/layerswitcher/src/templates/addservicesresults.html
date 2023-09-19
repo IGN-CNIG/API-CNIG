@@ -1,93 +1,95 @@
 <div>
     <div class="m-layerswitcher-service-capabilities">
-        <p class="m-layerswitcher-show-capabilities"><span class="m-layerswitcher-icons-desplegar"></span>&nbsp;{{translations.show_service_info}}</p>
-        <p class="m-layerswitcher-show-capabilities-wfs"><span class="m-layerswitcher-icons-desplegar"></span>&nbsp;{{translations.show_service_info}} WFS</p>
-        <div class="m-layerswitcher-capabilities-container">
-            {{#if serviceCapabilities.title}}
-                <p><span>{{translations.title}}:</span></p>
-            {{/if}}
-            {{#if serviceCapabilities.title}}
-                <div>
-                    {{serviceCapabilities.title}}
-                </div>
-            {{/if}}
+        <p class="m-layerswitcher-show-capabilities"><span class="m-layerswitcher-icons-desplegar"></span>&nbsp;{{translations.show_service_info}} {{type}}</p>
+        {{#if isWFS}}
+            <p class="m-layerswitcher-show-capabilities-wfs"><span class="m-layerswitcher-icons-desplegar"></span>&nbsp;{{translations.show_service_info}} WFS</p>
+            <div class="m-layerswitcher-capabilities-container">
+                {{#if serviceCapabilities.title}}
+                    <p><span>{{translations.title}}:</span></p>
+                {{/if}}
+                {{#if serviceCapabilities.title}}
+                    <div>
+                        {{serviceCapabilities.title}}
+                    </div>
+                {{/if}}
 
-            {{#if serviceCapabilities.abstract}}
-                <p>
-                    <span">{{translations.abstract}}:</span>
-                </p>
-            {{/if}}
-            {{#if serviceCapabilities.abstract}}
-                <div>
-                    {{serviceCapabilities.abstract}}
-                </div>
-            {{/if}}
+                {{#if serviceCapabilities.abstract}}
+                    <p>
+                        <span">{{translations.abstract}}:</span>
+                    </p>
+                {{/if}}
+                {{#if serviceCapabilities.abstract}}
+                    <div>
+                        {{serviceCapabilities.abstract}}
+                    </div>
+                {{/if}}
 
-            {{#if serviceCapabilities.contact}}
-                <p>
-                    <span">{{translations.responsible}}:</span>
-                </p>
-            {{/if}}
-            {{#if serviceCapabilities.contact}}
-                <div>
-                    {{{serviceCapabilities.contact}}}
-                </div>
-            {{/if}}
+                {{#if serviceCapabilities.contact}}
+                    <p>
+                        <span">{{translations.responsible}}:</span>
+                    </p>
+                {{/if}}
+                {{#if serviceCapabilities.contact}}
+                    <div>
+                        {{{serviceCapabilities.contact}}}
+                    </div>
+                {{/if}}
 
-            {{#if serviceCapabilities.accessConstraints}}
-                <p>
-                    <span">{{translations.access_constraints}}:</span>
-                </p>
-            {{/if}}
-            {{#if serviceCapabilities.accessConstraints}}
-                <div>
-                    {{serviceCapabilities.accessConstraints}}
-                </div>
-            {{/if}}
-        </div>
-        <div class="m-layerswitcher-capabilities-container-wfs">
-            {{#if serviceCapabilitieswfs.title}}
-                <p><span>{{translations.title}}:</span></p>
-            {{/if}}
-            {{#if serviceCapabilitieswfs.title}}
-                <div>
-                    {{serviceCapabilitieswfs.title}}
-                </div>
-            {{/if}}
+                {{#if serviceCapabilities.accessConstraints}}
+                    <p>
+                        <span">{{translations.access_constraints}}:</span>
+                    </p>
+                {{/if}}
+                {{#if serviceCapabilities.accessConstraints}}
+                    <div>
+                        {{serviceCapabilities.accessConstraints}}
+                    </div>
+                {{/if}}
+            </div>
+            <div class="m-layerswitcher-capabilities-container-wfs">
+                {{#if serviceCapabilitieswfs.title}}
+                    <p><span>{{translations.title}}:</span></p>
+                {{/if}}
+                {{#if serviceCapabilitieswfs.title}}
+                    <div>
+                        {{serviceCapabilitieswfs.title}}
+                    </div>
+                {{/if}}
 
-            {{#if serviceCapabilitieswfs.abstract}}
-                <p>
-                    <span">{{translations.abstract}}:</span>
-                </p>
-            {{/if}}
-            {{#if serviceCapabilitieswfs.abstract}}
-                <div>
-                    {{serviceCapabilitieswfs.abstract}}
-                </div>
-            {{/if}}
+                {{#if serviceCapabilitieswfs.abstract}}
+                    <p>
+                        <span">{{translations.abstract}}:</span>
+                    </p>
+                {{/if}}
+                {{#if serviceCapabilitieswfs.abstract}}
+                    <div>
+                        {{serviceCapabilitieswfs.abstract}}
+                    </div>
+                {{/if}}
 
-            {{#if serviceCapabilitieswfs.contact}}
-                <p>
-                    <span">{{translations.responsible}}:</span>
-                </p>
-            {{/if}}
-            {{#if serviceCapabilitieswfs.contact}}
-                <div>
-                    {{{serviceCapabilitieswfs.contact}}}
-                </div>
-            {{/if}}
+                {{#if serviceCapabilitieswfs.contact}}
+                    <p>
+                        <span">{{translations.responsible}}:</span>
+                    </p>
+                {{/if}}
+                {{#if serviceCapabilitieswfs.contact}}
+                    <div>
+                        {{{serviceCapabilitieswfs.contact}}}
+                    </div>
+                {{/if}}
 
-            {{#if serviceCapabilitieswfs.accessConstraints}}
-                <p>
-                    <span">{{translations.access_constraints}}:</span>
-                </p>
-            {{/if}}
-            {{#if serviceCapabilitieswfs.accessConstraints}}
-                <div>
-                    {{serviceCapabilitieswfs.accessConstraints}}
-                </div>
-            {{/if}}
-        </div>
+                {{#if serviceCapabilitieswfs.accessConstraints}}
+                    <p>
+                        <span">{{translations.access_constraints}}:</span>
+                    </p>
+                {{/if}}
+                {{#if serviceCapabilitieswfs.accessConstraints}}
+                    <div>
+                        {{serviceCapabilitieswfs.accessConstraints}}
+                    </div>
+                {{/if}}
+            </div>
+        {{/if}}
     </div>
     <div class="m-layerswitcher-table-results">
         <div class="m-layerswitcher-table-container">
@@ -107,22 +109,24 @@
                     {{/each}}
                 </tbody>
             </table>
-            <table id="m-layerswitcher-wfs">
-                <thead>
-                    <tr>
-                        <th><span id="m-layerswitcher-addservices-selectall-wfs" class="m-layerswitcher-icons-check"></span></th>
-                        <th>{{translations.layers}} WFS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each layersWFS}}
+            {{#if isWFS}}
+                <table id="m-layerswitcher-wfs">
+                    <thead>
                         <tr>
-                            <td><span id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices-wfs m-layerswitcher-icons-check"></span></td>
-                            <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{title}}">{{title}}</td>
+                            <th><span id="m-layerswitcher-addservices-selectall-wfs" class="m-layerswitcher-icons-check"></span></th>
+                            <th>{{translations.layers}} WFS</th>
                         </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {{#each layersWFS}}
+                            <tr>
+                                <td><span id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices-wfs m-layerswitcher-icons-check"></span></td>
+                                <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{title}}">{{title}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            {{/if}}
         </div>
         <div class="button">
             <button type="button" class="m-layerswitcher-addservices-add m-layerswitcher-common-btn">{{translations.add}}</button>

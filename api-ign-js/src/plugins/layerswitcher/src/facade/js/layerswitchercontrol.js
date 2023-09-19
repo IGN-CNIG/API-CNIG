@@ -687,6 +687,7 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
+  // Cambia estilo a la capa
   changeLayerConfig(layer, otherStyles) {
     const styleSelected = document.querySelector('#m-layerswitcher-style-select').value;
     if (styleSelected !== '') {
@@ -717,116 +718,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  openAddServices() {
-    const precharged = this.precharged;
-    const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
-      (precharged.services !== undefined && precharged.services.length > 0);
-    const addServices = M.template.compileSync(addServicesTemplate, {
-      jsonp: true,
-      parseToHtml: false,
-      vars: {
-        precharged,
-        hasPrecharged,
-        translations: {
-          url_service: getValue('url_service'),
-          query: getValue('query'),
-          loaded_services: getValue('loaded_services'),
-          clean: getValue('clean'),
-          availables: getValue('availables'),
-          codsi_services: getValue('codsi_services'),
-          filter_results: getValue('filter_results'),
-          clean_filter: getValue('clean_filter'),
-          filter_text: getValue('filter_text'),
-        },
-      },
-    });
-    M.dialog.info(addServices, getValue('load_ext_services'));
-
-    setTimeout(() => {
-      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
-      const button = document.querySelector('div.m-dialog.info div.m-button > button');
-      button.innerHTML = getValue('close');
-      button.style.width = '75px';
-      button.style.backgroundColor = '#71a7d3';
-
-      // eventos botones buscadores
-      document.querySelector('#m-layerswitcher-addservices-search-btn').addEventListener('click', (e) => {
-        this.filterName = undefined;
-        this.readCapabilities(e);
-      });
-
-      // evento para desplegar capas predefinidas
-      document.querySelectorAll('.m-layerswitcher-suggestion-caret').forEach((elem) => {
-        elem.addEventListener('click', () => {
-          elem.parentElement.querySelector('.m-layerswitcher-suggestion-group').classList.toggle('active');
-          elem.classList.toggle('m-layerswitcher-suggestion-caret-close');
-        });
-      });
-
-      // evento para mostrar listado de capas predefinidas
-      document.querySelectorAll('#m-layerswitcher-addservices-suggestions .m-layerswitcher-suggestion').forEach((elem) => {
-        elem.addEventListener('click', e => this.loadSuggestion(e));
-      });
-    }, 10);
-  }
-
-  readWFSCapabilities(response) {
-    const services = [];
-    const prenode = response.text.split('<FeatureTypeList>')[1].split('</FeatureTypeList>')[0];
-    if (prenode.indexOf('<FeatureType>') > -1) {
-      const nodes = prenode.split('<FeatureType>');
-      nodes.forEach((node) => {
-        if (node.indexOf('</Name>') > -1) {
-          services.push({
-            name: node.split('</Name>')[0].split('>')[1].trim(),
-            title: node.split('</Title>')[0].split('<Title>')[1].trim(),
-          });
-        }
-      });
-    } else if (prenode.indexOf('<FeatureType') > -1) {
-      const nodes = prenode.split('<FeatureType');
-      nodes.forEach((node) => {
-        if (node.indexOf('</Name>') > -1) {
-          services.push({
-            name: node.split('</Name>')[0].split('<Name>')[1].trim(),
-            title: node.split('</Title>')[0].split('<Title>')[1].trim(),
-          });
-        }
-      });
-    }
-
-    const capabilities = {};
-    let hasCapabilities = false;
-    try {
-      capabilities.title = response.text.split('<ows:Title>')[1].split('</ows:Title>')[0];
-      hasCapabilities = true;
-    } catch (err) {
-      hasCapabilities = hasCapabilities || false;
-    }
-
-    try {
-      capabilities.abstract = response.text.split('<ows:Abstract>')[1].split('</ows:Abstract>')[0];
-      hasCapabilities = true;
-    } catch (err) {
-      hasCapabilities = hasCapabilities || false;
-    }
-
-    try {
-      capabilities.accessConstraints = response.text.split('<ows:AccessConstraints>')[1].split('</ows:AccessConstraints>')[0];
-      hasCapabilities = true;
-    } catch (err) {
-      hasCapabilities = hasCapabilities || false;
-    }
-    return { services, capabilities, hasCapabilities };
-  }
-
-  /**
-   * Esta función lee las capas de un servicio
-   *
-   * @function
-   * @private
-   * @param {Event} evt - Click event
-   */
+  // Esta función lee las capas de un servicio
   readCapabilities(evt) {
     evt.preventDefault();
     let HTTPeval = false;
@@ -1002,6 +894,109 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
+  openAddServices() {
+    const precharged = this.precharged;
+    const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
+      (precharged.services !== undefined && precharged.services.length > 0);
+    const addServices = M.template.compileSync(addServicesTemplate, {
+      jsonp: true,
+      parseToHtml: false,
+      vars: {
+        precharged,
+        hasPrecharged,
+        translations: {
+          url_service: getValue('url_service'),
+          query: getValue('query'),
+          loaded_services: getValue('loaded_services'),
+          clean: getValue('clean'),
+          availables: getValue('availables'),
+          codsi_services: getValue('codsi_services'),
+          filter_results: getValue('filter_results'),
+          clean_filter: getValue('clean_filter'),
+          filter_text: getValue('filter_text'),
+        },
+      },
+    });
+    M.dialog.info(addServices, getValue('load_ext_services'));
+
+    setTimeout(() => {
+      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+      const button = document.querySelector('div.m-dialog.info div.m-button > button');
+      button.innerHTML = getValue('close');
+      button.style.width = '75px';
+      button.style.backgroundColor = '#71a7d3';
+
+      // eventos botones buscadores
+      document.querySelector('#m-layerswitcher-addservices-search-btn').addEventListener('click', (e) => {
+        this.filterName = undefined;
+        this.readCapabilities(e);
+      });
+
+      // evento para desplegar capas predefinidas
+      document.querySelectorAll('.m-layerswitcher-suggestion-caret').forEach((elem) => {
+        elem.addEventListener('click', () => {
+          elem.parentElement.querySelector('.m-layerswitcher-suggestion-group').classList.toggle('active');
+          elem.classList.toggle('m-layerswitcher-suggestion-caret-close');
+        });
+      });
+
+      // evento para mostrar listado de capas predefinidas
+      document.querySelectorAll('#m-layerswitcher-addservices-suggestions .m-layerswitcher-suggestion').forEach((elem) => {
+        elem.addEventListener('click', e => this.loadSuggestion(e));
+      });
+    }, 10);
+  }
+
+  readWFSCapabilities(response) {
+    const services = [];
+    const prenode = response.text.split('<FeatureTypeList>')[1].split('</FeatureTypeList>')[0];
+    if (prenode.indexOf('<FeatureType>') > -1) {
+      const nodes = prenode.split('<FeatureType>');
+      nodes.forEach((node) => {
+        if (node.indexOf('</Name>') > -1) {
+          services.push({
+            name: node.split('</Name>')[0].split('>')[1].trim(),
+            title: node.split('</Title>')[0].split('<Title>')[1].trim(),
+          });
+        }
+      });
+    } else if (prenode.indexOf('<FeatureType') > -1) {
+      const nodes = prenode.split('<FeatureType');
+      nodes.forEach((node) => {
+        if (node.indexOf('</Name>') > -1) {
+          services.push({
+            name: node.split('</Name>')[0].split('<Name>')[1].trim(),
+            title: node.split('</Title>')[0].split('<Title>')[1].trim(),
+          });
+        }
+      });
+    }
+
+    const capabilities = {};
+    let hasCapabilities = false;
+    try {
+      capabilities.title = response.text.split('<ows:Title>')[1].split('</ows:Title>')[0];
+      hasCapabilities = true;
+    } catch (err) {
+      hasCapabilities = hasCapabilities || false;
+    }
+
+    try {
+      capabilities.abstract = response.text.split('<ows:Abstract>')[1].split('</ows:Abstract>')[0];
+      hasCapabilities = true;
+    } catch (err) {
+      hasCapabilities = hasCapabilities || false;
+    }
+
+    try {
+      capabilities.accessConstraints = response.text.split('<ows:AccessConstraints>')[1].split('</ows:AccessConstraints>')[0];
+      hasCapabilities = true;
+    } catch (err) {
+      hasCapabilities = hasCapabilities || false;
+    }
+    return { services, capabilities, hasCapabilities };
+  }
+
   /**
    * Esta función elimina los resultados
    */
@@ -1165,22 +1160,30 @@ export default class LayerswitcherControl extends M.Control {
         }
       }
 
-      const html = M.template.compileSync(resultstemplate, {
-        vars: {
-          result,
-          layersWFS: wfsDatas.services,
-          serviceCapabilities,
-          serviceCapabilitieswfs: wfsDatas.capabilities,
-          translations: {
-            layers: getValue('layers'),
-            add: getValue('add'),
-            title: getValue('title'),
-            abstract: getValue('abstract'),
-            responsible: getValue('responsible'),
-            access_constraints: getValue('access_constraints'),
-            show_service_info: getValue('show_service_info'),
-          },
+      const vars = {
+        result,
+        serviceCapabilities,
+        type: serviceType,
+        isWFS: false,
+        translations: {
+          layers: getValue('layers'),
+          add: getValue('add'),
+          title: getValue('title'),
+          abstract: getValue('abstract'),
+          responsible: getValue('responsible'),
+          access_constraints: getValue('access_constraints'),
+          show_service_info: getValue('show_service_info'),
         },
+      };
+
+      if (!M.utils.isUndefined(wfsDatas)) {
+        vars.layersWFS = wfsDatas.services;
+        vars.serviceCapabilitieswfs = wfsDatas.capabilities;
+        vars.isWFS = true;
+      }
+
+      const html = M.template.compileSync(resultstemplate, {
+        vars,
       });
 
       container.innerHTML = html.innerHTML;
@@ -1208,7 +1211,10 @@ export default class LayerswitcherControl extends M.Control {
       checkboxResults.forEach(l => l.addEventListener('keydown', e => (e.keyCode === 13) && this.registerCheckFromName(e)));
 
       container.querySelector('#m-layerswitcher-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
-      container.querySelector('#m-layerswitcher-addservices-selectall-wfs').addEventListener('click', evt => this.registerCheckWFS(evt));
+      const selAllWFS = container.querySelector('#m-layerswitcher-addservices-selectall-wfs');
+      if (!M.utils.isNull(selAllWFS)) {
+        selAllWFS.addEventListener('click', evt => this.registerCheckWFS(evt));
+      }
       container.querySelector('.m-layerswitcher-addservices-add').addEventListener('click', evt => this.addLayers(evt));
       const elem = container.querySelector('.m-layerswitcher-show-capabilities');
       elem.addEventListener('click', () => {
@@ -1222,16 +1228,18 @@ export default class LayerswitcherControl extends M.Control {
         }
       });
       const elem2 = container.querySelector('.m-layerswitcher-show-capabilities-wfs');
-      elem2.addEventListener('click', () => {
-        const block = container.querySelector('.m-layerswitcher-capabilities-container-wfs');
-        if (block.style.display !== 'block') {
-          block.style.display = 'block';
-          elem.innerHTML = `<span class="m-layerswitcher-icons-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
-        } else {
-          block.style.display = 'none';
-          elem.innerHTML = `<span class="m-layerswitcher-icons-desplegar"></span>&nbsp;${getValue('show_service_info')}`;
-        }
-      });
+      if (!M.utils.isNull(elem2)) {
+        elem2.addEventListener('click', () => {
+          const block = container.querySelector('.m-layerswitcher-capabilities-container-wfs');
+          if (block.style.display !== 'block') {
+            block.style.display = 'block';
+            elem.innerHTML = `<span class="m-layerswitcher-icons-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
+          } else {
+            block.style.display = 'none';
+            elem.innerHTML = `<span class="m-layerswitcher-icons-desplegar"></span>&nbsp;${getValue('show_service_info')}`;
+          }
+        });
+      }
     } else {
       container.innerHTML = `<p class="m-layerswitcher-noresults">${getValue('exception.no_results')}</p>`;
     }
@@ -1530,10 +1538,13 @@ export default class LayerswitcherControl extends M.Control {
 
     document.querySelector('#m-layerswitcher-layerContainer').outerHTML = modal;
     if (type === 'mvt' || type === 'kml') {
-      document.querySelector('#m-layerswitcher-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
-      const results = document.querySelectorAll('span.m-check-layerswitcher-addservices');
-      for (let i = 0; i < results.length; i += 1) {
-        results[i].addEventListener('click', evt => this.registerCheck(evt));
+      const selAll = document.querySelector('#m-layerswitcher-addservices-selectall');
+      if (!M.utils.isNullOrEmpty(selAll)) {
+        selAll.addEventListener('click', evt => this.registerCheck(evt));
+        const results = document.querySelectorAll('span.m-check-layerswitcher-addservices');
+        for (let i = 0; i < results.length; i += 1) {
+          results[i].addEventListener('click', evt => this.registerCheck(evt));
+        }
       }
     }
 
