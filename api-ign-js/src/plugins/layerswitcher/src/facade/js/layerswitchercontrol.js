@@ -259,7 +259,8 @@ export default class LayerswitcherControl extends M.Control {
           preventOnFilter: false,
           onEnd: (evt) => {
             const from = evt.from;
-            let maxZIndex = Math.max(...(layers.map((l) => {
+            const filterLayers = layers.filter(({ name }) => name !== '__draw__');
+            let maxZIndex = Math.max(...(filterLayers.map((l) => {
               return l.getZIndex();
             })));
 
