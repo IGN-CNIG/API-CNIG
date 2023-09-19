@@ -239,7 +239,6 @@ export default class LayerswitcherControl extends M.Control {
         vars: templateVars,
       });
       this.template_.querySelector('#m-layerswitcher-content').innerHTML = html.innerHTML;
-      this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
 
       // si el modo de selección es radio y no se ha seleccionado ninguna capa se marca la primera
       if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
