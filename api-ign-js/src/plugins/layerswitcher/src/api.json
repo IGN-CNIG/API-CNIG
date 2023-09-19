@@ -27,6 +27,26 @@
       "type": "boolean",
       "name": "isDraggable",
       "position": 4
+    }, {
+      "type": "simple",
+      "name": "isMoveLayers",
+      "position": 5
+    }, {
+      "type": "simple",
+      "name": "modeSelectLayers",
+      "position": 6
+    }, {
+      "type": "simple",
+      "name": "tools",
+      "position": 7
+    }, {
+      "type": "boolean",
+      "name": "http",
+      "position": 8
+    }, {
+      "type": "boolean",
+      "name": "https",
+      "position": 9
     }]
   }],
   "files": {
