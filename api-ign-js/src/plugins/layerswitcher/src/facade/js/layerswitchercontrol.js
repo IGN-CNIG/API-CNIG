@@ -1715,6 +1715,16 @@ export default class LayerswitcherControl extends M.Control {
     });
   }
 
+  /**
+   * Loads OGCAPIFeatures layer
+   */
+  loadOGCAPIFeaturesLayer(layerParameters) {
+    const layer = new M.layer.OGCAPIFeatures(layerParameters);
+    this.map_.addLayers(layer);
+    layer.setZIndex(layer.getZIndex() + 8);
+  }
+
+
   setOnClickersFiltersButtons(
     summary, urlOGC, radioBtnFilterByID,
     radioBtnFilterByOther, layers, url, filterByID, filterByOtherFilters,
@@ -1733,7 +1743,7 @@ export default class LayerswitcherControl extends M.Control {
       } else {
         properties = this.getProperties(selectValue, summary);
 
-        this.getImpl().loadOGCAPIFeaturesLayer(properties);
+        this.loadOGCAPIFeaturesLayer(properties);
 
         const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
         buttonClose.click();

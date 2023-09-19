@@ -31,16 +31,6 @@ export default class LayerswitcherControl extends M.impl.Control {
   }
 
   /**
-   * Loads OGCAPIFeatures layer
-   */
-  loadOGCAPIFeaturesLayer(layerParameters) {
-    const layer = new M.layer.OGCAPIFeatures(layerParameters);
-    this.facadeMap_.addLayers(layer);
-    layer.setZIndex(layer.getZIndex() + 8);
-  }
-
-
-  /**
    * Transforms x,y coordinates to 4326 on coordinates array.
    * @public
    * @function
