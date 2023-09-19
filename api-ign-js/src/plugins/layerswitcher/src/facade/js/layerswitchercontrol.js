@@ -722,11 +722,22 @@ export default class LayerswitcherControl extends M.Control {
   showLoading() {
     document.querySelector('#m-layerswitcher-addservices-results').innerHTML = `<p id="m-layerswitcher-loading">${getValue('loading')}...</p>`;
     document.querySelector('#m-layerswitcher-addservices-search-btn').style.display = 'none';
+    this.loadingActive = true;
+
+    setTimeout(() => {
+      if (this.loadingActive === true) {
+        this.removeLoading();
+        document.querySelector('#m-layerswitcher-addservices-results')
+          .innerHTML = `<p id="m-layerswitcher-loading" style="color: red;">${getValue('exception.valid_url')}</p>`;
+        this.loadingActive = false;
+      }
+    }, 4000);
   }
 
   removeLoading() {
     document.querySelector('#m-layerswitcher-loading').remove();
     document.querySelector('#m-layerswitcher-addservices-search-btn').style.display = 'inline';
+    this.loadingActive = false;
   }
 
   // Esta función lee las capas de un servicio
