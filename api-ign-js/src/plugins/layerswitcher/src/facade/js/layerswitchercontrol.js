@@ -23,6 +23,29 @@ const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 const CODSI_CATALOG = 'http://www.idee.es/csw-codsi-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&serviceType=view&resultType=details&sortBy=title&sortOrder=asc&to=*2';
 const CODSI_PAGESIZE = 9;
 
+// IDs HTML
+// - CODSI
+const CODSI = '#m-layerswitcher-addservices-codsi';
+const CODSI_BTN = '#m-layerswitcher-addservices-codsi-btn';
+const CODSI_FILTER = '#m-layerswitcher-addservices-codsi-filter-btn';
+const CODSI_SEARCH = '#m-layerswitcher-addservices-codsi-search-input';
+const CODSI_CLEAN = '#m-layerswitcher-addservices-codsi-clean-btn';
+const SEARCH_INPUT = '#m-layerswitcher-addservices-search-input';
+
+const OGC_CONTAINER = '#m-layerswitcher-ogcCContainer';
+const ADDSERVICES_RESULTS = '#m-layerswitcher-addservices-results';
+const LAYERS_CONTAINER = '#m-layerswitcher-layerContainer';
+
+// - Suggestions
+const LIST_BTN = '#m-layerswitcher-addservices-list-btn';
+const ADDSERVICES_SUGGESTIONS = '#m-layerswitcher-addservices-suggestions';
+
+// - Search
+const SEARCH_BTN = '#m-layerswitcher-addservices-search-btn';
+
+// - Modal
+const BT_CLOSE_MODAL = 'div.m-dialog.info div.m-button > button';
+
 export default class LayerswitcherControl extends M.Control {
   constructor(options = {}) {
     if (M.utils.isUndefined(LayerswitcherImplControl)) {
@@ -725,25 +748,31 @@ export default class LayerswitcherControl extends M.Control {
 
   // Muestra cargando
   showLoading() {
-    document.querySelector('#m-layerswitcher-addservices-results').innerHTML = '<p id="m-layerswitcher-loading"><span class="m-layerswitcher-icons-spinner" /></p>';
-    document.querySelector('#m-layerswitcher-addservices-search-btn').style.display = 'none';
+    document.querySelector(ADDSERVICES_RESULTS).innerHTML = '<p id="m-layerswitcher-loading"><span class="m-layerswitcher-icons-spinner" /></p>';
+    document.querySelector(SEARCH_BTN).style.display = 'none';
     this.loadingActive = true;
   }
 
   // Elimina cargando
   removeLoading() {
     document.querySelector('#m-layerswitcher-loading').remove();
-    document.querySelector('#m-layerswitcher-addservices-search-btn').style.display = 'inline';
+    document.querySelector(SEARCH_BTN).style.display = 'inline';
     this.loadingActive = false;
   }
 
   // Esta función lee las capas de un servicio
   readCapabilities(evt) {
+    console.log('readCapabilities');
+
+    // Elements
+    const addSuggestions = document.querySelector(ADDSERVICES_SUGGESTIONS);
+    const searchInput = document.querySelector(SEARCH_INPUT);
+
     evt.preventDefault();
     let HTTPeval = false;
     let HTTPSeval = false;
-    document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
-    const url = document.querySelector('div.m-dialog #m-layerswitcher-addservices-search-input').value.trim().split('?')[0];
+    addSuggestions.style.display = 'none';
+    const url = searchInput.value.trim().split('?')[0];
     this.removeContains(evt);
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
@@ -952,33 +981,76 @@ export default class LayerswitcherControl extends M.Control {
     M.dialog.info(addServices, getValue('load_ext_services'));
 
     setTimeout(() => {
-      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
-      const button = document.querySelector('div.m-dialog.info div.m-button > button');
-      button.innerHTML = getValue('close');
-      button.style.width = '75px';
-      button.style.backgroundColor = '#71a7d3';
+      // Se modifica texto bt cerrar modal
+      this.changeClodeButtonModal();
 
+      // Eventos lista sugerencias
+      this.addEventSuggestions();
+
+      // Eventos Servicios CODSI
       this.addEventCODSI();
 
-      // eventos botones buscadores
-      document.querySelector('#m-layerswitcher-addservices-search-btn').addEventListener('click', (e) => {
-        this.filterName = undefined;
-        this.readCapabilities(e);
-      });
-
-      // evento para desplegar capas predefinidas
-      document.querySelectorAll('.m-layerswitcher-suggestion-caret').forEach((elem) => {
-        elem.addEventListener('click', () => {
-          elem.parentElement.querySelector('.m-layerswitcher-suggestion-group').classList.toggle('active');
-          elem.classList.toggle('m-layerswitcher-suggestion-caret-close');
-        });
-      });
-
-      // evento para mostrar listado de capas predefinidas
-      document.querySelectorAll('#m-layerswitcher-addservices-suggestions .m-layerswitcher-suggestion').forEach((elem) => {
-        elem.addEventListener('click', e => this.loadSuggestion(e));
-      });
+      // Eventos Buscador
+      this.addEventSearch();
     }, 10);
+  }
+
+  changeClodeButtonModal() {
+    // Elements
+    const button = document.querySelector(BT_CLOSE_MODAL);
+
+    button.innerHTML = getValue('close');
+  }
+
+  addEventSearch() {
+    // Elements
+    const searchInput = document.querySelector(SEARCH_BTN);
+
+    searchInput.addEventListener('click', (e) => {
+      this.filterName = undefined;
+      this.readCapabilities(e);
+    });
+  }
+
+  addEventSuggestions() {
+    // Elements
+    const listSuggestBtn = document.querySelector(LIST_BTN);
+
+    if (listSuggestBtn !== null) {
+      listSuggestBtn.addEventListener('click', e => this.showSuggestions(e));
+      listSuggestBtn.addEventListener('keydown', e => (e.keyCode === 13) && this.showSuggestions(e));
+    }
+
+    // evento para desplegar capas predefinidas
+    document.querySelectorAll('.m-layerswitcher-suggestion-caret').forEach((elem) => {
+      elem.addEventListener('click', () => {
+        elem.parentElement.querySelector('.m-layerswitcher-suggestion-group').classList.toggle('active');
+        elem.classList.toggle('m-layerswitcher-suggestion-caret-close');
+      });
+    });
+
+    // evento para mostrar listado de capas predefinidas
+    document.querySelectorAll('#m-layerswitcher-addservices-suggestions .m-layerswitcher-suggestion').forEach((elem) => {
+      elem.addEventListener('click', e => this.loadSuggestion(e));
+    });
+  }
+
+  showSuggestions() {
+    // Elements
+    const codsi = document.querySelector(CODSI);
+    const ogcContainer = document.querySelector(OGC_CONTAINER);
+    const addServicesResults = document.querySelector(ADDSERVICES_RESULTS);
+    const addServicesSuggestions = document.querySelector(ADDSERVICES_SUGGESTIONS);
+
+    if (codsi !== null) {
+      codsi.style.display = 'none';
+    }
+    if (ogcContainer !== null) {
+      ogcContainer.style.display = 'none';
+    }
+
+    addServicesResults.innerHTML = '';
+    addServicesSuggestions.style.display = 'block';
   }
 
   // Lee el capabilities de un WFS
@@ -1035,19 +1107,25 @@ export default class LayerswitcherControl extends M.Control {
   // Elimina contenido
   removeContains(evt) {
     evt.preventDefault();
-    if (document.querySelector('#m-layerswitcher-addservices-suggestions') !== null) {
-      document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
+
+    // Elements
+    const addServicesResults = document.querySelector(ADDSERVICES_RESULTS);
+    const codsi = document.querySelector(CODSI);
+    const ogcContainer = document.querySelector(OGC_CONTAINER);
+
+    if (addServicesResults !== null) {
+      addServicesResults.style.display = 'none';
     }
-    if (document.querySelector('#m-layerswitcher-ogcCContainer') !== null) {
-      document.querySelector('#m-layerswitcher-ogcCContainer').style.display = 'none';
+    if (ogcContainer !== null) {
+      ogcContainer.style.display = 'none';
     }
 
-    if (document.querySelector('#m-layerswitcher-layerContainer') !== null) {
-      document.querySelector('#m-layerswitcher-layerContainer').style.display = 'none';
+    if (document.querySelector(LAYERS_CONTAINER) !== null) {
+      document.querySelector(LAYERS_CONTAINER).style.display = 'none';
     }
 
-    if (document.querySelector('#m-layerswitcher-addservices-codsi') !== null) {
-      document.querySelector('#m-layerswitcher-addservices-codsi').style.display = 'none';
+    if (codsi !== null) {
+      codsi.style.display = 'none';
     }
   }
 
@@ -1144,7 +1222,7 @@ export default class LayerswitcherControl extends M.Control {
       result.push(add);
     });
 
-    const container = document.querySelector('#m-layerswitcher-addservices-results');
+    const container = document.querySelector(ADDSERVICES_RESULTS);
     if (result.length > 0) {
       const serviceCapabilities = {};
       if (serviceType === 'WMTS') {
@@ -1276,6 +1354,8 @@ export default class LayerswitcherControl extends M.Control {
     } else {
       container.innerHTML = `<p class="m-layerswitcher-noresults">${getValue('exception.no_results')}</p>`;
     }
+    const addServicesResults = document.querySelector(ADDSERVICES_RESULTS);
+    addServicesResults.style.display = 'block';
   }
 
   // Determina si es OGCAPI
@@ -1297,7 +1377,7 @@ export default class LayerswitcherControl extends M.Control {
   registerCheck(evt) {
     const e = (evt || window.event);
     if (!M.utils.isNullOrEmpty(e.target) && e.target.classList.contains('m-check-layerswitcher-addservices')) {
-      const container = document.querySelector('#m-layerswitcher-addservices-results');
+      const container = document.querySelector(ADDSERVICES_RESULTS);
       let numNotChecked = container.querySelectorAll('.m-check-layerswitcher-addservices.m-layerswitcher-icons-check').length;
       numNotChecked += (e.target.classList.contains('m-layerswitcher-icons-check') ? -1 : 1);
       e.stopPropagation();
@@ -1331,7 +1411,7 @@ export default class LayerswitcherControl extends M.Control {
   registerCheckWFS(evt) {
     const e = (evt || window.event);
     if (!M.utils.isNullOrEmpty(e.target) && e.target.classList.contains('m-check-layerswitcher-addservices-wfs')) {
-      const container = document.querySelector('#m-layerswitcher-addservices-results');
+      const container = document.querySelector(ADDSERVICES_RESULTS);
       let numNotChecked = container.querySelectorAll('.m-check-layerswitcher-addservices-wfs.m-layerswitcher-icons-check').length;
       numNotChecked += (e.target.classList.contains('m-layerswitcher-icons-check') ? -1 : 1);
       e.stopPropagation();
@@ -1424,7 +1504,7 @@ export default class LayerswitcherControl extends M.Control {
       }
       if (elmSelWFS.length > 0) {
         const layersWFS = [];
-        const url = document.querySelector('div.m-dialog #m-layerswitcher-addservices-search-input').value.trim().split('?')[0];
+        const url = document.querySelector(SEARCH_INPUT).value.trim().split('?')[0];
         elmSelWFS.forEach((elm) => {
           const id = elm.id.split(':');
           if (id[0] !== 'm-layerswitcher-addservices-selectall-wfs') {
@@ -1491,7 +1571,7 @@ export default class LayerswitcherControl extends M.Control {
       }
       /* eslint-disable no-empty */
     } catch (err) {}
-    document.querySelector('div.m-dialog #m-layerswitcher-addservices-search-input').value = url;
+    document.querySelector(SEARCH_INPUT).value = url;
 
     this.readCapabilities(evt);
   }
@@ -1519,7 +1599,7 @@ export default class LayerswitcherControl extends M.Control {
       },
     });
 
-    document.querySelector('#m-layerswitcher-layerContainer').outerHTML = modal;
+    document.querySelector(LAYERS_CONTAINER).outerHTML = modal;
     if (type === 'mvt' || type === 'kml') {
       const selAll = document.querySelector('#m-layerswitcher-addservices-selectall');
       if (!M.utils.isNullOrEmpty(selAll)) {
@@ -1615,7 +1695,7 @@ export default class LayerswitcherControl extends M.Control {
     let prevID;
     let urlOGC = url.trim();
     if (M.utils.isUrl(urlOGC)) {
-      document.querySelector('#m-layerswitcher-addservices-search-input').value = url;
+      document.querySelector(SEARCH_INPUT).value = url;
 
       const collections = `${(urlOGC.endsWith('/') ? urlOGC : `${urlOGC}/`)}collections?f=json`;
       M.remote.get(collections).then((response) => {
@@ -1814,7 +1894,7 @@ export default class LayerswitcherControl extends M.Control {
             }
           });
         } catch (error) {}
-        const urlInput = document.querySelector('#m-layerswitcher-addservices-search-input').value;
+        const urlInput = document.querySelector(SEARCH_INPUT).value;
 
         const customQueryTemplate = M.template.compileSync(customQueryFiltersTemplate, {
           jsonp: true,
@@ -1913,7 +1993,7 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   getProperties(selectValue, summary) {
-    const urlQuery = document.querySelector('#m-layerswitcher-addservices-search-input').value;
+    const urlQuery = document.querySelector(SEARCH_INPUT).value;
     const selectValueText = document.querySelector('#m-layerswitcher-ogc-vectors-select').selectedOptions[0].text;
     selectValue = document.querySelector('#m-layerswitcher-ogc-vectors-select').value;
     const limit = document.querySelector('#m-layerswitcher-ogc-limit-items').value;
@@ -2105,10 +2185,7 @@ export default class LayerswitcherControl extends M.Control {
   // CODSI
   addEventCODSI() {
     // IDs
-    const CODSI_BTN = '#m-layerswitcher-addservices-codsi-btn';
-    const CODSI_FILTER = '#m-layerswitcher-addservices-codsi-filter-btn';
-    const CODSI_SEARCH = '#m-layerswitcher-addservices-codsi-search-input';
-    const CODSI_CLEAN = '#m-layerswitcher-addservices-codsi-clean-btn';
+
 
     // Elements
     this.codsiButton = document.querySelector(CODSI_BTN);
@@ -2233,8 +2310,6 @@ export default class LayerswitcherControl extends M.Control {
   createElementCODSIResults({ url, title }) {
     const CLASS_SPAN = 'm-layerswitcher-codsi-result';
     const ATTRIBUTE_DATA_URL = 'data-link';
-    const SEARCH_INPUT = '#m-layerswitcher-addservices-search-input';
-
 
     // create tr and td elements
     const tr = document.createElement('tr');
@@ -2284,11 +2359,11 @@ export default class LayerswitcherControl extends M.Control {
   showCODSI() {
     const DEFAULT_CODSI_RESULTS = 1;
 
-    document.querySelector('#m-layerswitcher-addservices-results').innerHTML = '';
-    document.querySelector('#m-layerswitcher-addservices-codsi').style.display = 'block';
-    document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
-    if (document.querySelector('#fromOGCContainer') !== null) {
-      document.querySelector('#fromOGCContainer').style.display = 'none';
+    document.querySelector(ADDSERVICES_RESULTS).innerHTML = '';
+    document.querySelector(CODSI).style.display = 'block';
+    document.querySelector(ADDSERVICES_SUGGESTIONS).style.display = 'none';
+    if (document.querySelector('#m-layerswitcher-ogcCContainer') !== null) {
+      document.querySelector('#m-layerswitcher-ogcCContainer').style.display = 'none';
     }
     this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
   }
