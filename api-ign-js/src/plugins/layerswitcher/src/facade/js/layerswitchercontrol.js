@@ -1113,13 +1113,9 @@ export default class LayerswitcherControl extends M.Control {
     evt.preventDefault();
 
     // Elements
-    const addServicesResults = document.querySelector(ADDSERVICES_RESULTS);
     const codsi = document.querySelector(CODSI);
     const ogcContainer = document.querySelector(OGC_CONTAINER);
 
-    if (addServicesResults !== null) {
-      addServicesResults.style.display = 'none';
-    }
     if (ogcContainer !== null) {
       ogcContainer.style.display = 'none';
     }
