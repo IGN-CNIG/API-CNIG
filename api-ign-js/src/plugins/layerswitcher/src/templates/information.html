@@ -1,14 +1,14 @@
 <div>
     <div class="m-layerswitcher-info-cap">
-        <p><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
-        <p><span>{{translations.name}}:</span>&nbsp; {{name}}</p>
+        <p><span tabindex="0">{{translations.title}}:</span>&nbsp; {{title}}</p>
+        <p><span tabindex="0">{{translations.name}}:</span>&nbsp; {{name}}</p>
 
-        <p class="m-layerswitcher-otherTitles"><span>{{translations.abstract}}:</span></p>
+        <p class="m-layerswitcher-otherTitles"><span tabindex="0">{{translations.abstract}}:</span></p>
         <div>
             {{abstract}}
         </div>
         {{#if provider}}
-            <p class="m-layerswitcher-otherTitles"><span>{{translations.provider}}:</span></p>
+            <p class="m-layerswitcher-otherTitles"><span tabindex="0">{{translations.provider}}:</span></p>
         {{/if}}
         {{#if provider}}
             <div>
@@ -16,21 +16,21 @@
             </div>
         {{/if}}
         {{#if hasMetadata }}
-            <p class="m-layerswitcher-otherTitles"><span>{{translations.metadata}}:</span></p>
+            <p class="m-layerswitcher-otherTitles"><span tabindex="0">{{translations.metadata}}:</span></p>
         {{/if}}
         {{#if metadata}}
-            <p><a class="m-layerswitcher-provider-link" target="_blank" href="{{metadata}}">{{translations.see_more_layer}}</a></p>
+            <p><a tabindex="0" class="m-layerswitcher-provider-link" target="_blank" href="{{metadata}}">{{translations.see_more_layer}}</a></p>
         {{/if}}
         {{#if metadata_service}}
-            <p><a class="m-layerswitcher-provider-link" target="_blank" href="{{metadata_service}}">{{translations.see_more_service}}</a></p>
+            <p><a tabindex="0" class="m-layerswitcher-provider-link" target="_blank" href="{{metadata_service}}">{{translations.see_more_service}}</a></p>
         {{/if}}
     </div>
     <div class="m-layerswitcher-btn-container">
         {{#if capabilities}}
-            <a class="m-layerswitcher-common-btn" href="{{capabilities}}" target="_blank">{{translations.service_info}}</a>
+            <a tabindex="0" class="m-layerswitcher-common-btn" href="{{capabilities}}" target="_blank">{{translations.service_info}}</a>
         {{/if}}
         {{#if downloadCenter}}
-            <a class="m-layerswitcher-common-btn" href="{{downloadCenter}}" target="_blank">{{translations.download_center}}</a>
+            <a tabindex="0" class="m-layerswitcher-common-btn" href="{{downloadCenter}}" target="_blank">{{translations.download_center}}</a>
         {{/if}}
     </div>
 </div>

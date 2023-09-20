@@ -19,14 +19,14 @@
                     <table>
                         <thead>
                             <tr>
-                                <th><span id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></span></th>
+                                <th><span tabindex="0" id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></span></th>
                                 <th>{{translations.layers}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each layers}}
                                 <tr>
-                                    <td><span id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices m-layerswitcher-icons-check"></span></td>
+                                    <td><span tabindex="0" id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices m-layerswitcher-icons-check"></span></td>
                                     <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{abstract}}">{{name}}</td>
                                 </tr>
                             {{/each}}
@@ -45,14 +45,14 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th><span id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></span></th>
+                                    <th><span tabindex="0" id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></span></th>
                                     <th>{{translations.layers}}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {{#each layers}}
                                     <tr>
-                                        <td><span id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices m-layerswitcher-icons-check"></span></td>
+                                        <td><span tabindex="0" id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices m-layerswitcher-icons-check"></span></td>
                                         <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{abstract}}">{{name}}</td>
                                     </tr>
                                 {{/each}}
@@ -64,36 +64,36 @@
         {{/gt}}
     {{/eq}}
     <div class="m-layerswitcher-layer-fields">
-        <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
-        <input type="text" id="m-layerswitcher-layer-name" />
+        <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
+        <input tabindex="0" type="text" id="m-layerswitcher-layer-name" />
     </div>
     <div class="m-layerswitcher-layer-fields">
-        <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-legend">{{translations.legend}}</label>
-        <input type="text" id="m-layerswitcher-layer-legend" />
+        <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-legend">{{translations.legend}}</label>
+        <input tabindex="0" type="text" id="m-layerswitcher-layer-legend" />
     </div>
     {{#eq type 'osm'}}
         <div class="m-layerswitcher-layer-fields">
-            <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
-            <input type="text" id="m-layerswitcher-layer-matrixset" />
+            <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+            <input tabindex="0" type="text" id="m-layerswitcher-layer-matrixset" />
         </div>
     {{/eq}}
     {{#eq type 'tms'}}
         <div class="m-layerswitcher-layer-fields">
-            <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
-            <input type="text" id="m-layerswitcher-layer-matrixset" />
+            <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+            <input tabindex="0" type="text" id="m-layerswitcher-layer-matrixset" />
         </div>
     {{/eq}}
     {{#eq type 'xyz'}}
         <div class="m-layerswitcher-layer-fields">
-            <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
-            <input type="text" id="m-layerswitcher-layer-matrixset" />
+            <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+            <input tabindex="0" type="text" id="m-layerswitcher-layer-matrixset" />
         </div>
     {{/eq}}
     {{#eq type 'mvt'}}
         <div class="m-layerswitcher-layer-fields">
-            <label class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
-            <input type="text" id="m-layerswitcher-layer-matrixset" />
+            <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
+            <input tabindex="0" type="text" id="m-layerswitcher-layer-matrixset" />
         </div>
     {{/eq}}
-    <button class="m-layerswitcher-common-btn" id="m-layerswitcher-layer-button"> {{translations.add_btn}}</button>
+    <button tabindex="0" class="m-layerswitcher-common-btn" id="m-layerswitcher-layer-button"> {{translations.add_btn}}</button>
 </div>

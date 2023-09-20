@@ -1,13 +1,13 @@
 <div>
     <div class="m-layerswitcher-service-capabilities">
         {{#if showgeneral}}
-            <p class="m-layerswitcher-show-capabilities"><span class="m-layerswitcher-icons-desplegar"></span>&nbsp;{{translations.show_service_info}} {{type}}</p>
+            <p class="m-layerswitcher-show-capabilities"><span tabindex="0" class="m-layerswitcher-icons-desplegar"></span>&nbsp;{{translations.show_service_info}} {{type}}</p>
         {{/if}}
         {{#if isWFS}}
-            <p class="m-layerswitcher-show-capabilities-wfs"><span class="m-layerswitcher-icons-desplegar"></span>&nbsp;{{translations.show_service_info}} WFS</p>
+            <p class="m-layerswitcher-show-capabilities-wfs"><span tabindex="0" class="m-layerswitcher-icons-desplegar"></span>&nbsp;{{translations.show_service_info}} WFS</p>
             <div class="m-layerswitcher-capabilities-container">
                 {{#if serviceCapabilities.title}}
-                    <p><span>{{translations.title}}:</span></p>
+                    <p><span tabindex="0">{{translations.title}}:</span></p>
                 {{/if}}
                 {{#if serviceCapabilities.title}}
                     <div>
@@ -17,7 +17,7 @@
 
                 {{#if serviceCapabilities.abstract}}
                     <p>
-                        <span">{{translations.abstract}}:</span>
+                        <span tabindex="0">{{translations.abstract}}:</span>
                     </p>
                 {{/if}}
                 {{#if serviceCapabilities.abstract}}
@@ -28,7 +28,7 @@
 
                 {{#if serviceCapabilities.contact}}
                     <p>
-                        <span">{{translations.responsible}}:</span>
+                        <span tabindex="0">{{translations.responsible}}:</span>
                     </p>
                 {{/if}}
                 {{#if serviceCapabilities.contact}}
@@ -39,7 +39,7 @@
 
                 {{#if serviceCapabilities.accessConstraints}}
                     <p>
-                        <span">{{translations.access_constraints}}:</span>
+                        <span tabindex="0">{{translations.access_constraints}}:</span>
                     </p>
                 {{/if}}
                 {{#if serviceCapabilities.accessConstraints}}
@@ -50,7 +50,7 @@
             </div>
             <div class="m-layerswitcher-capabilities-container-wfs">
                 {{#if serviceCapabilitieswfs.title}}
-                    <p><span>{{translations.title}}:</span></p>
+                    <p><span tabindex="0">{{translations.title}}:</span></p>
                 {{/if}}
                 {{#if serviceCapabilitieswfs.title}}
                     <div>
@@ -60,7 +60,7 @@
 
                 {{#if serviceCapabilitieswfs.abstract}}
                     <p>
-                        <span">{{translations.abstract}}:</span>
+                        <span tabindex="0">{{translations.abstract}}:</span>
                     </p>
                 {{/if}}
                 {{#if serviceCapabilitieswfs.abstract}}
@@ -71,7 +71,7 @@
 
                 {{#if serviceCapabilitieswfs.contact}}
                     <p>
-                        <span">{{translations.responsible}}:</span>
+                        <span tabindex="0">{{translations.responsible}}:</span>
                     </p>
                 {{/if}}
                 {{#if serviceCapabilitieswfs.contact}}
@@ -82,7 +82,7 @@
 
                 {{#if serviceCapabilitieswfs.accessConstraints}}
                     <p>
-                        <span">{{translations.access_constraints}}:</span>
+                        <span tabindex="0">{{translations.access_constraints}}:</span>
                     </p>
                 {{/if}}
                 {{#if serviceCapabilitieswfs.accessConstraints}}
@@ -99,14 +99,14 @@
                 <table id="m-layerswitcher-all">
                     <thead>
                         <tr>
-                            <th><span id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></span></th>
+                            <th><span tabindex="0" id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></span></th>
                             <th>{{translations.layers}} {{type}}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each result}}
                             <tr>
-                                <td><span id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices m-layerswitcher-icons-check"></span></td>
+                                <td><span tabindex="0"id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices m-layerswitcher-icons-check"></span></td>
                                 <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{abstract}}">{{legend}}</td>
                             </tr>
                         {{/each}}
@@ -117,14 +117,14 @@
                 <table id="m-layerswitcher-wfs">
                     <thead>
                         <tr>
-                            <th><span id="m-layerswitcher-addservices-selectall-wfs" class="m-layerswitcher-icons-check"></span></th>
+                            <th><span tabindex="0" id="m-layerswitcher-addservices-selectall-wfs" class="m-layerswitcher-icons-check"></span></th>
                             <th>{{translations.layers}} WFS</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each layersWFS}}
                             <tr>
-                                <td><span id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices-wfs m-layerswitcher-icons-check"></span></td>
+                                <td><span tabindex="0" id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices-wfs m-layerswitcher-icons-check"></span></td>
                                 <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{title}}">{{title}}</td>
                             </tr>
                         {{/each}}
@@ -133,7 +133,7 @@
             {{/if}}
         </div>
         <div class="button">
-            <button type="button" class="m-layerswitcher-addservices-add m-layerswitcher-common-btn">{{translations.add}}</button>
+            <button tabindex="0" type="button" class="m-layerswitcher-addservices-add m-layerswitcher-common-btn">{{translations.add}}</button>
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 <div id="m-layerswitcher-style">
     <div class="m-layerswitcher-style-container">
-        <select id="m-layerswitcher-style-select">
+        <select tabindex="0" id="m-layerswitcher-style-select">
             <option disabled="disabled" value="">{{translations.select_style}}</option>
             {{#if isVectorLayer}}
                 {{#each styles}}
@@ -24,6 +24,6 @@
         </select>
     </div>
     <div class="m-layerswitcher-style-btn-container">
-        <button class="m-layerswitcher-style-common-btn">{{translations.change}}</button>
+        <button tabindex="0" class="m-layerswitcher-style-common-btn">{{translations.change}}</button>
     </div>
 </div>

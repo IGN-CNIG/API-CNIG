@@ -1,8 +1,8 @@
 <div class="m-layerswitcher-addservices">
     <div class="m-layerswitcher-search-panel">
         <div>
-            <input type="text" id="m-layerswitcher-addservices-search-input" placeholder="{{translations.url_service}}" class="m-layerswitcher-input-search" />
-            <span id="m-layerswitcher-addservices-search-btn" class="m-layerswitcher-icons-zoom m-search-btn" title="{{translations.query}}"></span>
+            <input tabindex="0" type="text" id="m-layerswitcher-addservices-search-input" placeholder="{{translations.url_service}}" class="m-layerswitcher-input-search" />
+            <span tabindex="0" id="m-layerswitcher-addservices-search-btn" class="m-layerswitcher-icons-zoom m-search-btn" title="{{translations.query}}"></span>
             {{#if codsiActive}}
                 <span tabindex="0" role="button" id="m-layerswitcher-addservices-codsi-btn" class="m-layerswitcher-icons-codsi m-search-btn" title="{{translations.codsi_services}}"></span>
             {{/if}}
@@ -25,10 +25,10 @@
                 {{#each precharged.groups}}
                     <tr>
                         <td>
-                            <span role="button" class="m-layerswitcher-suggestion-caret">{{name}}</span>
+                            <span tabindex="0" role="button" class="m-layerswitcher-suggestion-caret">{{name}}</span>
                             <ul class="m-layerswitcher-suggestion-group">
                                 {{#each services}}
-                                    <li><span class="m-layerswitcher-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</span></li>
+                                    <li><span tabindex="0" class="m-layerswitcher-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</span></li>
                                 {{/each}}
                             </ul>
                         </td>
@@ -36,7 +36,7 @@
                 {{/each}}
                 {{#each precharged.services}}
                     <tr>
-                        <td><span class="m-layerswitcher-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</span></td>
+                        <td><span tabindex="0" class="m-layerswitcher-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</span></td>
                     </tr>
                 {{/each}}
             </tbody>
@@ -45,7 +45,7 @@
     <div id="m-layerswitcher-addservices-codsi" style="display: none;">
         <p><a tabindex="0" href="http://www.idee.es/csw-codsi-idee/srv/spa/catalog.search#/home" target="_blank">{{translations.codsi_services}}</a></p>
         <div class="m-layerswitcher-addservices-codsi-search-panel">
-            <input type="text" id="m-layerswitcher-addservices-codsi-search-input" placeholder="{{translations.filter_text}}" class="m-input-search" />
+            <input tabindex="0" type="text" id="m-layerswitcher-addservices-codsi-search-input" placeholder="{{translations.filter_text}}" class="m-input-search" />
             <span tabindex="0" role="button" id="m-layerswitcher-addservices-codsi-filter-btn" class="icon-zoom m-filter-btn" title="{{translations.filter_results}}"></span>
             <span tabindex="0" role="button" id="m-layerswitcher-addservices-codsi-clean-btn" class="icon-papelera m-clean-btn" title="{{translations.clean_filter}}"></span>
         </div>
