@@ -53,6 +53,10 @@
   content: "\e92c";
 }
 
+.m-layerswitcher-icons-lista:before {
+  content: "\e92c";
+}
+
 .m-layerswitcher-icons-zoom:before {
   content: "\e964";
 }

@@ -787,3 +787,13 @@ div.codsi-no-results {
 #m-layerswitcher-addservices-codsi-results {
     font-size: 12px;
 }
+
+/* MODAL */
+div.m-mapea-container div.m-dialog div.m-title {
+    background-color: #71a7d3;
+}
+
+div.m-dialog.info div.m-button > button {
+    width: 75px;
+    background-color: #71a7d3;
+}

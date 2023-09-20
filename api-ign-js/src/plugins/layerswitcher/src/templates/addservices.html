@@ -6,6 +6,10 @@
             {{#if codsiActive}}
                 <span tabindex="0" role="button" id="m-layerswitcher-addservices-codsi-btn" class="m-layerswitcher-icons-codsi m-search-btn" title="{{translations.codsi_services}}"></span>
             {{/if}}
+
+            {{#if hasPrecharged}}
+                <span tabindex="0" role="button" id="m-layerswitcher-addservices-list-btn" class="m-layerswitcher-icons-lista m-search-btn" title="{{translations.loaded_services}}"></span>
+            {{/if}}
         </div>
         <div id="m-layerswitcher-ogcCContainer"></div>
         <div id="m-layerswitcher-layerContainer"></div>
