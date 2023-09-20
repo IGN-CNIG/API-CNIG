@@ -1523,12 +1523,19 @@ export default class LayerswitcherControl extends M.Control {
         elmSelWFS.forEach((elm) => {
           const id = elm.id.split(':');
           if (id[0] !== 'm-layerswitcher-addservices-selectall-wfs') {
-            layersWFS.push(new M.layer.WFS({
+            const namespace = id[0];
+            const name = id[1];
+            const obj = {
               url,
-              namespace: id[0],
-              name: id[1],
-              legend: id[1],
-            }));
+              legend: name,
+            };
+            if (M.utils.isUndefined(name)) {
+              obj.name = namespace;
+            } else {
+              obj.name = name;
+              obj.namespace = namespace;
+            }
+            layersWFS.push(new M.layer.WFS(obj));
           }
         });
         this.map_.addLayers(layersWFS);
