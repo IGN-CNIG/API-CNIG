@@ -129,6 +129,9 @@ export default class LayerswitcherControl extends M.Control {
   // Esta función crea la vista
   createView(map) {
     this.map_ = map;
+    if (M.utils.isString(this.tools)) {
+      this.tools = this.tools.split(',');
+    }
     this.tools.forEach((tool) => {
       if (tool === 'transparency') {
         this.isTransparency = true;
