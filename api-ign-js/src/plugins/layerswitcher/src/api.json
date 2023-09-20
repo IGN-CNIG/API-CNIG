@@ -47,6 +47,10 @@
       "type": "boolean",
       "name": "https",
       "position": 9
+    }, {
+      "type": "boolean",
+      "name": "codsi",
+      "position": 10
     }]
   }],
   "files": {
