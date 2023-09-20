@@ -20,6 +20,8 @@ import layerModalTemplate from '../../templates/layermodal';
 import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
+const CODSI_CATALOG = 'http://www.idee.es/csw-codsi-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&serviceType=view&resultType=details&sortBy=title&sortOrder=asc&to=*2';
+const CODSI_PAGESIZE = 9;
 
 export default class LayerswitcherControl extends M.Control {
   constructor(options = {}) {
@@ -95,6 +97,9 @@ export default class LayerswitcherControl extends M.Control {
 
     // Determina si se han seleccionado todas las capas o no
     this.stateSelectAll = false;
+
+    // codsi
+    this.codsi = options.codsi;
   }
 
   // Esta función crea la vista
@@ -923,12 +928,14 @@ export default class LayerswitcherControl extends M.Control {
     const precharged = this.precharged;
     const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
       (precharged.services !== undefined && precharged.services.length > 0);
+    const codsiActive = this.codsiActive;
     const addServices = M.template.compileSync(addServicesTemplate, {
       jsonp: true,
       parseToHtml: false,
       vars: {
         precharged,
         hasPrecharged,
+        codsiActive,
         translations: {
           url_service: getValue('url_service'),
           query: getValue('query'),
@@ -950,6 +957,8 @@ export default class LayerswitcherControl extends M.Control {
       button.innerHTML = getValue('close');
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
+
+      this.addEventCODSI();
 
       // eventos botones buscadores
       document.querySelector('#m-layerswitcher-addservices-search-btn').addEventListener('click', (e) => {
@@ -1035,6 +1044,10 @@ export default class LayerswitcherControl extends M.Control {
 
     if (document.querySelector('#m-layerswitcher-layerContainer') !== null) {
       document.querySelector('#m-layerswitcher-layerContainer').style.display = 'none';
+    }
+
+    if (document.querySelector('#m-layerswitcher-addservices-codsi') !== null) {
+      document.querySelector('#m-layerswitcher-addservices-codsi').style.display = 'none';
     }
   }
 
@@ -2087,6 +2100,197 @@ export default class LayerswitcherControl extends M.Control {
     }
     fUrl = fUrl.replaceAll(' ', '%20');
     return fUrl;
+  }
+
+  // CODSI
+  addEventCODSI() {
+    // IDs
+    const CODSI_BTN = '#m-layerswitcher-addservices-codsi-btn';
+    const CODSI_FILTER = '#m-layerswitcher-addservices-codsi-filter-btn';
+    const CODSI_SEARCH = '#m-layerswitcher-addservices-codsi-search-input';
+    const CODSI_CLEAN = '#m-layerswitcher-addservices-codsi-clean-btn';
+
+    // Elements
+    this.codsiButton = document.querySelector(CODSI_BTN);
+    this.codsiFilterButton = document.querySelector(CODSI_FILTER);
+    this.codsiSearchInput = document.querySelector(CODSI_SEARCH);
+    this.codsiCleanButton = document.querySelector(CODSI_CLEAN);
+
+    const DEFAULT_CODSI_RESULTS = 0;
+
+    if (this.codsiButton !== null) {
+      this.codsiButton.addEventListener('click', e => this.showCODSI(e));
+      this.codsiButton.addEventListener('keydown', e => (e.keyCode === 13) && this.showCODSI(e));
+      this.codsiFilterButton.addEventListener('click', (e) => {
+        this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
+      });
+
+      this.codsiFilterButton.addEventListener('keydown', e => (e.keyCode === 13) && this.loadCODSIResults(DEFAULT_CODSI_RESULTS));
+
+      this.codsiSearchInput.addEventListener('keypress', (e) => {
+        if (e.keyCode === 13) {
+          this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
+        }
+      });
+
+      this.codsiCleanButton.addEventListener('click', (e) => {
+        this.codsiSearchInput.value = '';
+        this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
+      });
+    }
+  }
+
+  loadCODSIResults(pageNumber) {
+    const DATA_SUMMARY = '@count';
+
+    const url = this.generateUrlCODSI(pageNumber);
+
+    M.remote.get(url).then((response) => {
+      const data = JSON.parse(response.text);
+      const total = data.summary[DATA_SUMMARY];
+
+      const results = this.getResultCODSI(data);
+
+      this.renderCODSIResults(results);
+      this.renderCODSIPagination(pageNumber, total);
+    }).catch((err) => {
+      M.dialog.error(getValue('exception.codsi'));
+    });
+  }
+
+  getResultCODSI(data) {
+    const results = [];
+    if (data.metadata !== undefined) {
+      data.metadata.forEach((m) => {
+        const links = this.getLinksCODSIResults(m);
+        if (links.length > 0) {
+          results.push({
+            title: m.title || m.defaultTitle,
+            url: links[0].split('?')[0],
+          });
+        }
+      });
+    }
+    return results;
+  }
+
+  generateUrlCODSI(pageNumber) {
+    const query = this.codsiSearchInput.value.trim();
+
+    const start = 1 + ((pageNumber - 1) * CODSI_PAGESIZE);
+    const end = pageNumber * CODSI_PAGESIZE;
+
+    let url = CODSI_CATALOG.split('*1').join(`${start}`).split('*2').join(`${end}`);
+    if (query !== '') {
+      url += `&any=*${encodeURIComponent(query)}*`;
+    }
+    return url;
+  }
+
+  getLinksCODSIResults(data) {
+    let links = [];
+    if (Array.isArray(data.link)) {
+      data.link.forEach((l) => {
+        links = links.concat(this.formatLinksCODSIResults(l));
+      });
+    } else {
+      links = links.concat(this.formatLinksCODSIResults(data.link));
+    }
+    return links;
+  }
+
+  formatLinksCODSIResults(link) {
+    let parts = [];
+    if (link.indexOf('||') > -1) {
+      parts = link.split('||').filter((part) => {
+        return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
+      });
+    } else if (link.indexOf('|') > -1) {
+      parts = link.split('|').filter((part) => {
+        return part.indexOf('http://') > -1 || part.indexOf('https://') > -1;
+      });
+    }
+    return parts;
+  }
+
+  renderCODSIResults(results) {
+    // IDs
+    const CODSI_RESULTS = '#m-layerswitcher-addservices-codsi-results';
+
+    // Elements
+    this.codsiResults = document.querySelector(CODSI_RESULTS);
+
+    this.codsiResults.innerHTML = '';
+
+    if (results.length > 0) {
+      const resultsElement = results.map(r => this.createElementCODSIResults(r));
+      resultsElement.forEach(r => this.codsiResults.appendChild(r));
+    } else {
+      this.codsiResults.innerHTML = `<div class="codsi-no-results">${getValue('exception.codsi_no_results')}</div>`;
+    }
+  }
+
+  createElementCODSIResults({ url, title }) {
+    const CLASS_SPAN = 'm-layerswitcher-codsi-result';
+    const ATTRIBUTE_DATA_URL = 'data-link';
+    const SEARCH_INPUT = '#m-layerswitcher-addservices-search-input';
+
+
+    // create tr and td elements
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+
+    const span = document.createElement('span');
+    span.setAttribute('tabindex', '0');
+    span.setAttribute('class', CLASS_SPAN);
+    span.setAttribute(ATTRIBUTE_DATA_URL, url);
+    span.innerHTML = title;
+
+    span.addEventListener('click', (evt) => {
+      document.querySelector(SEARCH_INPUT).value = url;
+
+      this.filterName = undefined;
+      this.readCapabilities(evt);
+    });
+
+    td.appendChild(span);
+    tr.appendChild(td);
+
+    return tr;
+  }
+
+  renderCODSIPagination(pageNumber, total) {
+    document.querySelector('#m-layerswitcher-addservices-codsi-pagination').innerHTML = '';
+    if (total > 0) {
+      const numPages = Math.ceil(total / CODSI_PAGESIZE);
+      let buttons = '';
+      for (let i = 1; i <= numPages; i += 1) {
+        if (i === pageNumber) {
+          buttons += `<button type="button" tabindex="0" class="m-layerswitcher-addservices-pagination-btn" disabled>${i}</button>`;
+        } else {
+          buttons += `<button type="button" tabindex="0" class="m-layerswitcher-addservices-pagination-btn">${i}</button>`;
+        }
+      }
+
+      document.querySelector('#m-layerswitcher-addservices-codsi-pagination').innerHTML = buttons;
+      document.querySelectorAll('#m-layerswitcher-addservices-codsi-pagination button').forEach((elem, index) => {
+        elem.addEventListener('click', () => {
+          this.loadCODSIResults(index + 1);
+        });
+      });
+    }
+  }
+
+  showCODSI() {
+    const DEFAULT_CODSI_RESULTS = 1;
+
+    document.querySelector('#m-layerswitcher-addservices-results').innerHTML = '';
+    document.querySelector('#m-layerswitcher-addservices-codsi').style.display = 'block';
+    document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
+    if (document.querySelector('#fromOGCContainer') !== null) {
+      document.querySelector('#fromOGCContainer').style.display = 'none';
+    }
+    this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
   }
 
   /**

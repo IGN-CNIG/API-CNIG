@@ -711,3 +711,79 @@ div.m-layerswitcher-legend>img {
     -webkit-animation: mloading 1s linear infinite;
     -moz-animation: mloading 1s linear infinite;
 }
+
+/* codsi */
+
+
+#m-layerswitcher-addservices-codsi {
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+#m-layerswitcher-addservices-codsi>p {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+#m-layerswitcher-addservices-codsi-pagination {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
+#m-layerswitcher-addservices-codsi-pagination button.m-layerswitcher-addservices-pagination-btn {
+    padding: 3px 7px;
+    background-color: #71a7d3;
+    font-family: Muli, "sans-serif" !important;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #71a7d3;
+    color: white;
+    font-weight: bold;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    outline: none;
+    text-decoration: none;
+}
+
+#m-layerswitcher-addservices-codsi-pagination button.m-layerswitcher-addservices-pagination-btn:disabled {
+    color: #767676;
+    background-color: #eeeeee;
+    border-color: #eeeeee;
+}
+
+#m-layerswitcher-addservices-codsi-results table tbody tr td span {
+    cursor: pointer;
+}
+
+#m-layerswitcher-addservices-codsi-results table tbody tr td span:hover {
+    text-decoration: underline;
+}
+
+
+.m-layerswitcher-addservices-codsi-search-panel {
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.m-layerswitcher-addservices-codsi-search-panel input {
+    width: 160px;
+}
+
+.m-layerswitcher-addservices-codsi-search-panel span {
+    margin-left: 3px;
+    cursor: pointer;
+    color: #6c6c6c !important;
+    opacity: 1 !important;
+    font-size: 14px !important;
+}
+
+div.codsi-no-results {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+#m-layerswitcher-addservices-codsi-results {
+    font-size: 12px;
+}

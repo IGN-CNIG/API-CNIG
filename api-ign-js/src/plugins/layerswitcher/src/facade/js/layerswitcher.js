@@ -242,6 +242,9 @@ export default class Layerswitcher extends M.Plugin {
     if (options.https !== undefined && (options.https === false || options.https === 'false')) {
       this.https = false;
     }
+
+    // codsi
+    this.codsi = options.codsi || false;
   }
 
   // Devuelve el idioma del plugin
@@ -266,6 +269,7 @@ export default class Layerswitcher extends M.Plugin {
         precharged: this.precharged,
         http: this.http,
         https: this.https,
+        codsi: this.codsi,
       });
     // creamos panel
     this.panel_ = new M.ui.Panel('Layerswitcher', {
