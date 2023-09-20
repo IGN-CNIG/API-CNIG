@@ -3,7 +3,9 @@
         <div>
             <input type="text" id="m-layerswitcher-addservices-search-input" placeholder="{{translations.url_service}}" class="m-layerswitcher-input-search" />
             <span id="m-layerswitcher-addservices-search-btn" class="m-layerswitcher-icons-zoom m-search-btn" title="{{translations.query}}"></span>
-            <span tabindex="0" role="button" id="m-layerswitcher-addservices-codsi-btn" class="m-layerswitcher-icons-codsi m-search-btn" title="{{translations.codsi_services}}"></span>
+            {{#if codsiActive}}
+                <span tabindex="0" role="button" id="m-layerswitcher-addservices-codsi-btn" class="m-layerswitcher-icons-codsi m-search-btn" title="{{translations.codsi_services}}"></span>
+            {{/if}}
         </div>
         <div id="m-layerswitcher-ogcCContainer"></div>
         <div id="m-layerswitcher-layerContainer"></div>

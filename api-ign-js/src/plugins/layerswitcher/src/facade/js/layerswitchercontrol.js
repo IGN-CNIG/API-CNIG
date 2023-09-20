@@ -98,8 +98,8 @@ export default class LayerswitcherControl extends M.Control {
     // Determina si se han seleccionado todas las capas o no
     this.stateSelectAll = false;
 
-    // codsi
-    this.codsi = options.codsi;
+    // active codsi
+    this.codsiActive = options.codsi;
   }
 
   // Esta función crea la vista
