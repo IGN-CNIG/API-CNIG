@@ -308,7 +308,7 @@ export default class Layerswitcher extends M.Plugin {
 
   // Devuelve la cadena API-REST del plugin
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.codsi}`;
   }
 
   // Devuelve la cadena API-REST del plugin en base64
