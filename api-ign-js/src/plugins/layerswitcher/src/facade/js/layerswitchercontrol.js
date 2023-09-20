@@ -1542,6 +1542,8 @@ export default class LayerswitcherControl extends M.Control {
 
       layers.reverse();
       this.map_.addLayers(layers);
+      const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+      buttonClose.click();
     }
   }
 
