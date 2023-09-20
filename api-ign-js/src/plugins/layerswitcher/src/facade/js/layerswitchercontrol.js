@@ -1355,10 +1355,10 @@ export default class LayerswitcherControl extends M.Control {
           const block = container.querySelector('.m-layerswitcher-capabilities-container-wfs');
           if (block.style.display !== 'block') {
             block.style.display = 'block';
-            elem.innerHTML = `<span class="m-layerswitcher-icons-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
+            elem2.innerHTML = `<span class="m-layerswitcher-icons-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
           } else {
             block.style.display = 'none';
-            elem.innerHTML = `<span class="m-layerswitcher-icons-desplegar"></span>&nbsp;${getValue('show_service_info')}`;
+            elem2.innerHTML = `<span class="m-layerswitcher-icons-desplegar"></span>&nbsp;${getValue('show_service_info')}`;
           }
         });
       }
