@@ -22,6 +22,7 @@ import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 const CODSI_CATALOG = 'http://www.idee.es/csw-codsi-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&serviceType=view&resultType=details&sortBy=title&sortOrder=asc&to=*2';
 const CODSI_PAGESIZE = 9;
+const DEFAULT_CODSI_RESULTS = 1;
 
 // IDs HTML
 // - CODSI
@@ -2198,16 +2199,11 @@ export default class LayerswitcherControl extends M.Control {
 
   // CODSI
   addEventCODSI() {
-    // IDs
-
-
     // Elements
     this.codsiButton = document.querySelector(CODSI_BTN);
     this.codsiFilterButton = document.querySelector(CODSI_FILTER);
     this.codsiSearchInput = document.querySelector(CODSI_SEARCH);
     this.codsiCleanButton = document.querySelector(CODSI_CLEAN);
-
-    const DEFAULT_CODSI_RESULTS = 0;
 
     if (this.codsiButton !== null) {
       this.codsiButton.addEventListener('click', e => this.showCODSI(e));
@@ -2371,8 +2367,6 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   showCODSI() {
-    const DEFAULT_CODSI_RESULTS = 1;
-
     document.querySelector(ADDSERVICES_RESULTS).innerHTML = '';
     document.querySelector(CODSI).style.display = 'block';
     document.querySelector(ADDSERVICES_SUGGESTIONS).style.display = 'none';
