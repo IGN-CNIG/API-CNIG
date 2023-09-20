@@ -211,7 +211,7 @@ class WMS extends LayerBase {
 
     /**
      * CrossOrigin. Indica si se usa crossOrigin.
-    */
+     */
     this.crossOrigin = options.crossOrigin || null;
   }
 
@@ -228,7 +228,7 @@ class WMS extends LayerBase {
     if ((visibility === true) && (this.transparent !== true)) {
       // hides all base layers
       this.map.getBaseLayers()
-        .filter(layer => !layer.equals(this) && layer.isVisible())
+        .filter(layer => !layer.equals(this.facadeLayer_) && layer.isVisible())
         .forEach(layer => layer.setVisible(false));
 
       // set this layer visible
