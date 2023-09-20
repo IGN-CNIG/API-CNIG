@@ -762,8 +762,6 @@ export default class LayerswitcherControl extends M.Control {
 
   // Esta función lee las capas de un servicio
   readCapabilities(evt) {
-    console.log('readCapabilities');
-
     // Elements
     const addSuggestions = document.querySelector(ADDSERVICES_SUGGESTIONS);
     const searchInput = document.querySelector(SEARCH_INPUT);
@@ -872,23 +870,28 @@ export default class LayerswitcherControl extends M.Control {
                     if (wms || wfs) {
                       try {
                         // WMS
-                        const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
-                        const getCapabilities = getCapabilitiesParser.read(response2[0].xml);
-                        this.serviceCapabilities = getCapabilities.Service || {};
-                        const getCapabilitiesUtils = new M.impl.GetCapabilities(
-                          getCapabilities,
-                          url,
-                          this.map_.getProjection().code,
-                        );
-                        this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
-                        this.capabilities.forEach((layer) => {
-                          try {
-                            this.getParents(getCapabilities, layer);
-                            /* eslint-disable no-empty */
-                          } catch (err) {}
-                        });
+                        if (wms) {
+                          const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
+                          const getCapabilities = getCapabilitiesParser.read(response2[0].xml);
+                          this.serviceCapabilities = getCapabilities.Service || {};
+                          const getCapabilitiesUtils = new M.impl.GetCapabilities(
+                            getCapabilities,
+                            url,
+                            this.map_.getProjection().code,
+                          );
+                          this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
+                          this.capabilities.forEach((layer) => {
+                            try {
+                              this.getParents(getCapabilities, layer);
+                              /* eslint-disable no-empty */
+                            } catch (err) {}
+                          });
+                        }
                         // WFS
-                        const wfsDatas = this.readWFSCapabilities(response2[1]);
+                        let wfsDatas;
+                        if (wfs) {
+                          wfsDatas = this.readWFSCapabilities(response2[1]);
+                        }
                         this.showResults(wfsDatas);
                       } catch (error) {
                         M.dialog.error(getValue('exception.capabilities'));
@@ -1215,16 +1218,19 @@ export default class LayerswitcherControl extends M.Control {
     this.removeLoading();
     const result = [];
     let serviceType = 'WMS';
-    this.capabilities.forEach((capability) => {
-      const add = capability.getImpl();
-      add.abstract = capability.capabilitiesMetadata.abstract.trim();
-      serviceType = capability.type;
-      result.push(add);
-    });
+    if (!M.utils.isUndefined(this.capabilities)) {
+      this.capabilities.forEach((capability) => {
+        const add = capability.getImpl();
+        add.abstract = capability.capabilitiesMetadata.abstract.trim();
+        serviceType = capability.type;
+        result.push(add);
+      });
+    }
 
     const container = document.querySelector(ADDSERVICES_RESULTS);
-    if (result.length > 0) {
+    if (result.length > 0 || !M.utils.isUndefined(wfsDatas)) {
       const serviceCapabilities = {};
+      let showgeneral = true;
       if (serviceType === 'WMTS') {
         const si = this.serviceCapabilities.ServiceIdentification;
         const sp = this.serviceCapabilities.ServiceProvider;
@@ -1250,7 +1256,7 @@ export default class LayerswitcherControl extends M.Control {
 
           serviceCapabilities.contact = contact;
         }
-      } else {
+      } else if (!M.utils.isUndefined(this.serviceCapabilities)) {
         const ci = this.serviceCapabilities.ContactInformation;
         if (this.serviceCapabilities.Title !== undefined) {
           serviceCapabilities.title = this.serviceCapabilities.Title.trim();
@@ -1269,6 +1275,8 @@ export default class LayerswitcherControl extends M.Control {
             serviceCapabilities.contact = ci.ContactPersonPrimary.ContactOrganization.trim();
           }
         }
+      } else {
+        showgeneral = false;
       }
 
       const vars = {
@@ -1276,6 +1284,7 @@ export default class LayerswitcherControl extends M.Control {
         serviceCapabilities,
         type: serviceType,
         isWFS: false,
+        showgeneral,
         translations: {
           layers: getValue('layers'),
           add: getValue('add'),
@@ -1321,23 +1330,28 @@ export default class LayerswitcherControl extends M.Control {
       const checkboxResults = container.querySelectorAll('.m-layerswitcher-table-results .m-layerswitcher-table-container table tbody tr td span');
       checkboxResults.forEach(l => l.addEventListener('keydown', e => (e.keyCode === 13) && this.registerCheckFromName(e)));
 
-      container.querySelector('#m-layerswitcher-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
+      const sAll = container.querySelector('#m-layerswitcher-addservices-selectall');
+      if (!M.utils.isNull(sAll)) {
+        sAll.addEventListener('click', evt => this.registerCheck(evt));
+      }
       const selAllWFS = container.querySelector('#m-layerswitcher-addservices-selectall-wfs');
       if (!M.utils.isNull(selAllWFS)) {
         selAllWFS.addEventListener('click', evt => this.registerCheckWFS(evt));
       }
       container.querySelector('.m-layerswitcher-addservices-add').addEventListener('click', evt => this.addLayers(evt));
       const elem = container.querySelector('.m-layerswitcher-show-capabilities');
-      elem.addEventListener('click', () => {
-        const block = container.querySelector('.m-layerswitcher-capabilities-container');
-        if (block.style.display !== 'block') {
-          block.style.display = 'block';
-          elem.innerHTML = `<span class="m-layerswitcher-icons-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
-        } else {
-          block.style.display = 'none';
-          elem.innerHTML = `<span class="m-layerswitcher-icons-desplegar"></span>&nbsp;${getValue('show_service_info')}`;
-        }
-      });
+      if (!M.utils.isNull(elem)) {
+        elem.addEventListener('click', () => {
+          const block = container.querySelector('.m-layerswitcher-capabilities-container');
+          if (block.style.display !== 'block') {
+            block.style.display = 'block';
+            elem.innerHTML = `<span class="m-layerswitcher-icons-colapsar"></span>&nbsp;${getValue('hide_service_info')}`;
+          } else {
+            block.style.display = 'none';
+            elem.innerHTML = `<span class="m-layerswitcher-icons-desplegar"></span>&nbsp;${getValue('show_service_info')}`;
+          }
+        });
+      }
       const elem2 = container.querySelector('.m-layerswitcher-show-capabilities-wfs');
       if (!M.utils.isNull(elem2)) {
         elem2.addEventListener('click', () => {
