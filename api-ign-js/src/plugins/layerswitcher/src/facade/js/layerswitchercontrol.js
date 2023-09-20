@@ -720,18 +720,9 @@ export default class LayerswitcherControl extends M.Control {
 
   // Muestra cargando
   showLoading() {
-    document.querySelector('#m-layerswitcher-addservices-results').innerHTML = `<p id="m-layerswitcher-loading">${getValue('loading')}...</p>`;
+    document.querySelector('#m-layerswitcher-addservices-results').innerHTML = '<p id="m-layerswitcher-loading"><span class="m-layerswitcher-icons-spinner" /></p>';
     document.querySelector('#m-layerswitcher-addservices-search-btn').style.display = 'none';
     this.loadingActive = true;
-
-    setTimeout(() => {
-      if (this.loadingActive === true) {
-        this.removeLoading();
-        document.querySelector('#m-layerswitcher-addservices-results')
-          .innerHTML = `<p id="m-layerswitcher-loading" style="color: red;">${getValue('exception.valid_url')}</p>`;
-        this.loadingActive = false;
-      }
-    }, 4000);
   }
 
   // Elimina cargando
@@ -749,7 +740,6 @@ export default class LayerswitcherControl extends M.Control {
     document.querySelector('#m-layerswitcher-addservices-suggestions').style.display = 'none';
     const url = document.querySelector('div.m-dialog #m-layerswitcher-addservices-search-input').value.trim().split('?')[0];
     this.removeContains(evt);
-    this.showLoading();
     if (!M.utils.isNullOrEmpty(url)) {
       if (M.utils.isUrl(url)) {
         if (this.http && !this.https) {
@@ -764,6 +754,7 @@ export default class LayerswitcherControl extends M.Control {
         }
 
         if (HTTPeval === true || HTTPSeval === true) {
+          this.showLoading();
           // MVT
           const pbf = url.indexOf('.pbf') >= 0;
           const json = url.indexOf('.json') >= 0;
@@ -867,6 +858,7 @@ export default class LayerswitcherControl extends M.Control {
                         this.showResults(wfsDatas);
                       } catch (error) {
                         M.dialog.error(getValue('exception.capabilities'));
+                        this.removeLoading();
                       }
                     } else {
                       this.checkIfOGCAPIFeatures(url).then((reponseIsJson) => {
@@ -895,13 +887,16 @@ export default class LayerswitcherControl extends M.Control {
                     }
                   }).catch((eerror) => {
                     M.dialog.error(getValue('exception.capabilities'));
+                    this.removeLoading();
                   });
                 }
               } catch (err) {
                 M.dialog.error(getValue('exception.capabilities'));
+                this.removeLoading();
               }
             }).catch((err) => {
               M.dialog.error(getValue('exception.capabilities'));
+              this.removeLoading();
             });
           }
         } else {
@@ -1646,6 +1641,7 @@ export default class LayerswitcherControl extends M.Control {
             },
           },
         });
+        this.removeLoading();
 
         document.querySelector('#m-layerswitcher-ogcCContainer').outerHTML = ogcModal;
 

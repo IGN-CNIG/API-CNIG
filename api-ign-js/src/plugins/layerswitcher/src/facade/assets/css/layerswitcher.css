@@ -696,3 +696,18 @@ div.m-layerswitcher-legend>img {
 #m-layerswitcher-layerContainer #m-layerswitcher-addservices-results {
     margin-bottom: 15px;
 }
+
+/* loading */
+#m-layerswitcher-loading {
+    width: 100%;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+#m-layerswitcher-loading span {
+    font-size: 2rem;
+    animation: mloading 1s linear infinite;
+    -webkit-animation: mloading 1s linear infinite;
+    -moz-animation: mloading 1s linear infinite;
+}
