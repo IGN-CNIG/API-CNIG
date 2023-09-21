@@ -414,19 +414,22 @@ div.m-layerswitcher-legend>img {
 .m-dialog div.m-message {
     overflow-y: auto;
     max-height: 50vh;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 
-.m-layerswitcher-addservices .m-layerswitcher-search-panel {
-    text-align: center;
-    margin: 0 auto;
+.m-layerswitcher-addservices .m-layerswitcher-search-panel .input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.m-layerswitcher-addservices .m-layerswitcher-search-panel input {
+.m-layerswitcher-addservices .m-layerswitcher-search-panel .input-container input {
     width: 70%;
 }
 
-.m-layerswitcher-addservices .m-layerswitcher-search-panel button {
+.m-layerswitcher-addservices .m-layerswitcher-search-panel .input-container span button {
+    padding-right: 4px;
     cursor: pointer;
     color: #6c6c6c !important;
     opacity: 1 !important;
@@ -490,6 +493,140 @@ div.m-layerswitcher-legend>img {
     /* IE 10+ */
     user-select: none;
     font-weight: bold;
+}
+
+
+/* Firefox fix */
+@-moz-document url-prefix() {
+    .m-bottom.m-right .m-plugin-layerswitcher.opened {
+        display: flex;
+    }
+
+    div.m-panel-controls>div.m-control.m-container.m-layerswitcher {
+        padding-right: unset;
+    }
+
+    div.m-panel-controls>div.m-control.m-container.m-layerswitcher {
+        padding-right: 0px;
+    }
+}
+
+/* Mobile fix */
+
+@media only screen and (max-width: 1000px) {
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-layerswitcher.opened {
+        width: 100vw;
+        height: 100vh;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        margin: 0;
+        z-index: 999999 !important;
+    }
+
+    .m-plugin-layerswitcher.opened .m-panel-btn.g-cartografia-flecha-derecha,
+    .m-plugin-layerswitcher.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+        position: absolute;
+        left: auto !important;
+        right: 0;
+        z-index: 999999;
+        box-shadow: none;
+    } 
+
+    div.m-area.m-top.m-right > div.m-panel.m-plugin-layerswitcher.opened > div,  .m-control.m-container.m-layerswitcher  {
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        width: 100% !important;
+    }
+
+    header.m-layerswitcher-title {
+        font-size: 13px;
+        padding-left: 0;
+        padding-right: 0;
+        margin-right: 40px;
+    }
+    
+    div.m-panel.m-plugin-layerswitcher.opened>.m-panel-controls {
+        height: 100%;
+    }
+
+    div.m-panel.m-plugin-layerswitcher.opened>.m-panel-controls>.m-control.m-layerswitcher-container>div.m-layerswitcher-panel {
+        height: 100vh;
+        max-width: 100vw;
+    }
+
+    ul.m-layerswitcher-ullayers {
+        max-height: 100% !important;
+        max-width: 100vw;
+        min-width: 50px;
+    }
+        
+    .m-panel.m-plugin-layerswitcher .m-panel-controls .m-control.m-layerswitcher-container>div>ul {
+        max-height: 100%;
+        overflow-y: auto;
+    }
+
+    .m-layerswitcher-addservices-results {
+        min-width: 50px;
+    }
+
+    .m-layerswitcher-table-results
+    .m-layerswitcher-table-container {
+        width: calc(100% - 20px) !important;
+    }
+
+
+    /* Firefox fix */
+
+    @-moz-document url-prefix() {
+        .m-bottom.m-left>.m-panel.m-plugin-layerswitcher.opened>.m-panel-controls {
+            display: flow-root;
+        }
+
+        .m-areas>div.m-area>div.m-panel.m-plugin-layerswitcher.opened {
+            width: auto;
+        }
+
+        .m-bottom.m-left>.m-panel.m-plugin-layerswitcher.opened>.m-panel-controls {
+            display: flex;
+        }
+
+        .m-bottom.m-left>.m-panel.m-plugin-layerswitcher.opened>button {
+            left: 0px;
+        }
+
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            display: flex;
+        }
+    }
+
+    /* Edge fix */
+
+    @supports (-ms-ime-align:auto) {
+
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            padding-left: 0px;
+        }
+
+        .m-bottom.m-left>.m-plugin-layerswitcher.opened>.m-panel-btn {
+            position: static;
+        }
+    }
+}
+
+/* Edge fix */
+@supports (-ms-ime-align:auto) {
+    .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+        padding-left: 40px;
+    }
+
+    .m-bottom.m-left>.m-plugin-layerswitcher.opened>.m-panel-btn {
+        right: 0px;
+    }
+}
+
+button.m-layerswitcher-suggestion-caret {
+    text-align: start;
 }
 
 .m-layerswitcher-suggestion-caret::before {

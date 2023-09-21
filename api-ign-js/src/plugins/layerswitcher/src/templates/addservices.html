@@ -1,7 +1,8 @@
 <div class="m-layerswitcher-addservices">
     <div class="m-layerswitcher-search-panel">
-        <div>
+        <div class="input-container">
             <input tabindex="0" type="text" id="m-layerswitcher-addservices-search-input" placeholder="{{translations.url_service}}" class="m-layerswitcher-input-search" />
+            <span>
             <button 
                tabindex="0" 
                id="m-layerswitcher-addservices-search-btn" 
@@ -15,6 +16,7 @@
             {{#if hasPrecharged}}
                 <button tabindex="0" role="button" id="m-layerswitcher-addservices-list-btn" class="m-layerswitcher-icons-lista m-search-btn" title="{{translations.loaded_services}}"></button>
             {{/if}}
+            </span>
         </div>
         <div id="m-layerswitcher-ogcCContainer"></div>
         <div id="m-layerswitcher-layerContainer"></div>
