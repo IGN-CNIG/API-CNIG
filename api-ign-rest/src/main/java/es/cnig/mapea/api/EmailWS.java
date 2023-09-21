@@ -160,7 +160,7 @@ public class EmailWS {
 			 if(!localURL.equals("")){
 				 localURL = localURL + properties.getString("paramsURL");
 			 }
-		   String apiURL = properties.getString("API_URL");	 
+		   String apiURL = properties.getString("apiURL");	  
 		   Map<String, Object> data = new HashMap<String, Object>();
 		   data.put("subject", asunto);
 		   data.put("destinatary", destinatario);
@@ -176,7 +176,7 @@ public class EmailWS {
 		   properties.remove("URL");
 		   properties.remove("localURL");
 		   properties.remove("paramsURL");
-		   properties.remove("API_URL");
+		   properties.remove("apiURL");
 		   properties.put("url", shareURL); // ?¿
 		   properties.put("url", localURL); // ?¿
 		   jsonFeature.put("properties", properties);

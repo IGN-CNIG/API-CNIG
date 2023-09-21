@@ -787,11 +787,17 @@ export default class IncicartoControl extends M.Control {
         inputFileForm.files = inputFile.files;
       }
 
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", `${M.config.MAPEA_URL}api/email`);
-      xhr.onload = callback;
-      const formData = new FormData(emailForm);
-      xhr.send(formData);
+      try {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", `${M.config.MAPEA_URL}api/email`);
+        xhr.onload = callback;
+        const formData = new FormData(emailForm);
+        xhr.send(formData);
+      } catch (error) {
+        console.error(error);
+        this.showMessageInModalAdvanced(getValue('error_sending_email'), "nakmessage");
+      }
+   
     }
   }
 
