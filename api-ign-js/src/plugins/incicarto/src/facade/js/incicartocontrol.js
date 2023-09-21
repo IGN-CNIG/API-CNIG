@@ -715,19 +715,17 @@ export default class IncicartoControl extends M.Control {
 
    
     const { x, y } = this.map_.getCenter();
-    const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+    const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}&SRS=${this.map_.getProjection().getCode()}`;
 
     const url = window.location.href;
-    let localURL = '';
     if (url.startsWith('file:///')) {
       const index = url.lastIndexOf('/');
-      localURL = `file://${url.substring(index)}`;
+      url = `file://${url.substring(index)}`;
     }
 
-      // if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
-      // API-REST
-      // url = M.config.MAPEA_URL;
-      // }
+    if (url.indexOf('.jsp') > -1) {
+      url = ''
+    }
 
     return {
       "email_subject": email_subject,
@@ -738,7 +736,6 @@ export default class IncicartoControl extends M.Control {
       "errDescripcion": errDescription,
       "URL": url,
       "API_URL": M.config.MAPEA_URL,
-      "localURL": localURL,
       "paramsURL": encodeURI(shareURL),
     }
 

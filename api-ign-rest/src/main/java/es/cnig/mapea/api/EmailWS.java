@@ -156,11 +156,7 @@ public class EmailWS {
 		   JSONObject jsonFeature = jsonArray.getJSONObject(0);
 		   JSONObject properties = jsonFeature.getJSONObject("properties");
 		   String shareURL = properties.getString("URL") + properties.getString("paramsURL");
-		   String localURL = properties.getString("localURL");
-			 if(!localURL.equals("")){
-				 localURL = localURL + properties.getString("paramsURL");
-			 }
-		   String apiURL = properties.getString("API_URL");	  
+		   String apiURL = properties.getString("API_URL") + properties.getString("paramsURL");	  
 		   Map<String, Object> data = new HashMap<String, Object>();
 		   data.put("subject", asunto);
 		   data.put("destinatary", destinatario);
@@ -170,15 +166,12 @@ public class EmailWS {
 		   data.put("apiURL", apiURL);
 		   //data.put("sendergeometry", cuerpo);
 		   data.put("shareURL", shareURL);
-			 data.put("localURL", localURL);
 		   String bodyData = getTemplate(data);
 		   BodyPart adjunto = new MimeBodyPart();
 		   properties.remove("URL");
-		   properties.remove("localURL");
 		   properties.remove("paramsURL");
 		   properties.remove("API_URL");
 		   properties.put("url", shareURL); // ?¿
-		   properties.put("url", localURL); // ?¿
 		   jsonFeature.put("properties", properties);
 		   jsonArray.put(0, jsonFeature);
 		   body.put("features", jsonArray);
