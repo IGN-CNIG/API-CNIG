@@ -64,7 +64,7 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     font-weight: bold !important;
     touch-action: none;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
 
     background-color: #f4f4f4;
@@ -74,13 +74,11 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 }
 
 .m-layerswitcher-title h1 {
-    transform: translateX(50%);
-    position: absolute; /* Center h1*/
-    right: 50%;
-
+    text-align: center;
     font-size: 15px;
     font-weight: 700;
     line-height: 40px;
+    width: 100%;
 }
 
 /* Listado de capas */
@@ -187,7 +185,7 @@ ul.m-layerswitcher-ullayers {
     border-radius: 50%;
     background-color: white;
     vertical-align: middle;
-    margin-right: 5px;
+    margin: 0px;
     border: 2px solid #6abe47;
 }
 
@@ -259,15 +257,42 @@ input[type=range].m-layerswitcher-transparency:focus {
     cursor: pointer;
 }
 
-span.m-layerswitcher-icons-image,
-span.m-layerswitcher-icons-target,
-span.m-layerswitcher-icons-info,
-span.m-layerswitcher-icons-style {
+.m-layerswitcher-icons-image,
+.m-layerswitcher-icons-target,
+.m-layerswitcher-icons-info,
+.m-layerswitcher-icons-style
+{
     font-size: 18px;
     position: relative;
     top: 3px;
-    margin-right: 4px;
-    margin-left: 4px;
+}
+
+.m-layerswitcher-icons-image,
+.m-layerswitcher-icons-delete,
+.m-layerswitcher-icons-target,
+.m-layerswitcher-icons-info,
+.m-layerswitcher-icons-style,
+.m-layerswitcher-icons-zoom,
+.m-layerswitcher-icons-codsi,
+.m-layerswitcher-icons-lista,
+.m-layerswitcher-suggestion
+{
+    background-color: #ffffff;
+    border: none;
+    color: #6c6c6c;
+}
+
+.m-layerswitcher-suggestion {
+    font-size: 15px;
+}
+
+.m-layerswitcher-icons-delete:hover {
+    cursor: pointer;
+    color: black;
+}
+
+.m-layerswitcher-icons-delete {
+    width: 10%;
 }
 
 div.m-layerswitcher-legend {
@@ -399,31 +424,30 @@ div.m-layerswitcher-legend>img {
 
 .m-layerswitcher-addservices .m-layerswitcher-search-panel input {
     width: 70%;
-    margin-right: 20px;
 }
 
-.m-layerswitcher-addservices .m-layerswitcher-search-panel span {
-    margin-left: -10px;
+.m-layerswitcher-addservices .m-layerswitcher-search-panel button {
     cursor: pointer;
     color: #6c6c6c !important;
     opacity: 1 !important;
     font-size: 16px !important;
+    width: 23px;
 }
 
-#m-layerswitcher-addservices-suggestions {
+.m-layerswitcher-addservices-suggestions {
     margin: 1rem 0.5rem;
     display: block;
 }
 
-#m-layerswitcher-addservices-suggestions>table {
+.m-layerswitcher-addservices-suggestions>table {
     width: 100%;
 }
 
-#m-layerswitcher-addservices-suggestions table thead tr th {
+.m-layerswitcher-addservices-suggestions table thead tr th {
     padding-bottom: 0.5rem;
 }
 
-#m-layerswitcher-addservices-suggestions table tbody tr td span {
+.m-layerswitcher-addservices-suggestions table tbody tr td button {
     cursor: pointer;
 }
 
@@ -434,6 +458,11 @@ div.m-layerswitcher-legend>img {
     -ms-user-select: none;
     user-select: none;
     font-weight: 700;
+
+    background-color: #ffffff;
+    border: none;
+    color: #6c6c6c;
+    font-size: 15px;
 }
 
 .m-layerswitcher-suggestion-group.active {
@@ -530,6 +559,11 @@ div.m-layerswitcher-legend>img {
 
 .m-layerswitcher-table-results .m-layerswitcher-table-container>table>tbody>tr>td:first-child {
     text-align: center;
+}
+
+
+.m-layerswitcher-table-results .m-layerswitcher-table-container table thead tr th:last-child {
+    text-align: inherit;
 }
 
 #m-layerswitcher-addservices-results .button {

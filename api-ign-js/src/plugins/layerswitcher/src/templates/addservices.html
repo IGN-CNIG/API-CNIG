@@ -2,19 +2,24 @@
     <div class="m-layerswitcher-search-panel">
         <div>
             <input tabindex="0" type="text" id="m-layerswitcher-addservices-search-input" placeholder="{{translations.url_service}}" class="m-layerswitcher-input-search" />
-            <span tabindex="0" id="m-layerswitcher-addservices-search-btn" class="m-layerswitcher-icons-zoom m-search-btn" title="{{translations.query}}"></span>
+            <button 
+               tabindex="0" 
+               id="m-layerswitcher-addservices-search-btn" 
+               class="m-layerswitcher-icons-zoom m-search-btn" 
+               title="{{translations.query}}"
+            ></button>
             {{#if codsiActive}}
-                <span tabindex="0" role="button" id="m-layerswitcher-addservices-codsi-btn" class="m-layerswitcher-icons-codsi m-search-btn" title="{{translations.codsi_services}}"></span>
+                <button tabindex="0" role="button" id="m-layerswitcher-addservices-codsi-btn" class="m-layerswitcher-icons-codsi m-search-btn" title="{{translations.codsi_services}}"></button>
             {{/if}}
 
             {{#if hasPrecharged}}
-                <span tabindex="0" role="button" id="m-layerswitcher-addservices-list-btn" class="m-layerswitcher-icons-lista m-search-btn" title="{{translations.loaded_services}}"></span>
+                <button tabindex="0" role="button" id="m-layerswitcher-addservices-list-btn" class="m-layerswitcher-icons-lista m-search-btn" title="{{translations.loaded_services}}"></button>
             {{/if}}
         </div>
         <div id="m-layerswitcher-ogcCContainer"></div>
         <div id="m-layerswitcher-layerContainer"></div>
     </div>
-    <div id="m-layerswitcher-addservices-suggestions">
+    <div id="m-layerswitcher-addservices-suggestions" class="m-layerswitcher-addservices-suggestions">
         <table>
             <thead>
                 <tr>
@@ -25,10 +30,10 @@
                 {{#each precharged.groups}}
                     <tr>
                         <td>
-                            <span tabindex="0" role="button" class="m-layerswitcher-suggestion-caret">{{name}}</span>
+                            <button tabindex="0" role="button" class="m-layerswitcher-suggestion-caret">{{name}}</button>
                             <ul class="m-layerswitcher-suggestion-group">
                                 {{#each services}}
-                                    <li><span tabindex="0" class="m-layerswitcher-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</span></li>
+                                    <li><button tabindex="0" class="m-layerswitcher-suggestion" data-service-type="{{type}}" data-link="{{url}}">{{name}}</button></li>
                                 {{/each}}
                             </ul>
                         </td>
