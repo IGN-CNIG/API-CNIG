@@ -124,6 +124,9 @@ export default class LayerswitcherControl extends M.Control {
 
     // active codsi
     this.codsiActive = options.codsi;
+
+    // order
+    this.order = options.order;
   }
 
   // Esta función crea la vista
@@ -182,6 +185,9 @@ export default class LayerswitcherControl extends M.Control {
         this.getImpl().registerEvent(map);
 
         this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
+
+        this.accessibilityTab(this.template_);
+
         success(this.template_);
       });
     });
@@ -2382,6 +2388,11 @@ export default class LayerswitcherControl extends M.Control {
       document.querySelector('#m-layerswitcher-ogcCContainer').style.display = 'none';
     }
     this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
+  }
+
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 
   /**

@@ -245,6 +245,9 @@ export default class Layerswitcher extends M.Plugin {
 
     // codsi
     this.codsi = options.codsi || false;
+
+    // Indicates order to the plugin
+    this.order = options.order >= -1 ? options.order : null;
   }
 
   // Devuelve el idioma del plugin
@@ -270,6 +273,7 @@ export default class Layerswitcher extends M.Plugin {
         http: this.http,
         https: this.https,
         codsi: this.codsi,
+        order: this.order,
       });
     // creamos panel
     this.panel_ = new M.ui.Panel('Layerswitcher', {
@@ -279,6 +283,7 @@ export default class Layerswitcher extends M.Plugin {
       position: M.ui.position[this.position_],
       collapsedButtonClass: 'm-layerswitcher-icons-layers',
       tooltip: this.tooltip_,
+      order: this.order,
     });
     this.controls_.push(this.control_);
 
