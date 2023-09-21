@@ -68,6 +68,33 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="isMoveLayers">isMoveLayers</label>
+        <select name="moveLayerValue" id="isMoveLayers">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="modeSelectLayers">modeSelectLayers</label>
+        <select name="modeSelectLayersValue" id="modeSelectLayers">
+            <option value=eyes>eyes</option>
+            <option value=radio>radio</option>
+        </select>
+        <label for="inputPrecharged">Precharged</label>
+        <input type="text" name="precharged" id="inputPrecharged">
+        <label for="isHttp">isHttp</label>
+        <select name="isHttpValue" id="isHttp">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="isHttps">isHttps</label>
+        <select name="isHttpsValue" id="isHttp">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
+        <label for="isCodsi">isCodsi</label>
+        <select name="isCodsiValue" id="isCodsi">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
@@ -134,6 +161,13 @@
         const inputTooltip = document.getElementById("inputTooltip");
         const inputTools = document.getElementById("inputTools");
         const selectDraggable = document.getElementById("isDraggable");
+        const selectMoveLayer = document.getElementById("isMoveLayers");
+        const selectModeSelectLayers = document.getElementById("modeSelectLayers");
+        const inputPrecharged = document.getElementById("inputPrecharged");
+        const selectHttp = document.getElementById("isHttp");
+        const selectHttps = document.getElementById("isHttps");
+        const selectCodsi = document.getElementById("isCodsi");
+
         const botonEliminar = document.getElementById("botonEliminar");
 
         selectPosition.addEventListener('change', cambiarTest);
@@ -142,6 +176,12 @@
         inputTooltip.addEventListener('change', cambiarTest);
         inputTools.addEventListener('change', cambiarTest);
         selectDraggable.addEventListener('change', cambiarTest);
+        selectMoveLayer.addEventListener('change', cambiarTest);
+        selectModeSelectLayers.addEventListener('change', cambiarTest);
+        inputPrecharged.addEventListener('change', cambiarTest);
+        selectHttp.addEventListener('change', cambiarTest);
+        selectHttps.addEventListener('change', cambiarTest);
+        selectCodsi.addEventListener('change', cambiarTest);
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
@@ -155,6 +195,11 @@
             inputTooltip.value !== "" ? objeto.tooltip = inputTooltip.value : objeto.tooltip = "";
             inputTooltip.value !== "" ? objeto.tooltip = inputTooltip.value : objeto.tooltip = [];
             objeto.isDraggable = (selectDraggable.options[selectDraggable.selectedIndex].value == 'true');
+            objeto.isMoveLayers = (selectMoveLayer.options[selectMoveLayer.selectedIndex].value == 'true');
+            objeto.modeSelectLayers = selectModeSelectLayers.options[selectModeSelectLayers.selectedIndex].value;
+            inputPrecharged.value !== "" ? objeto.precharged = inputPrecharged.value : objeto.precharged = "";
+            objeto.http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
+            objeto.https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
