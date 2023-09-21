@@ -28,13 +28,21 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 }
 
 .m-layerswitcher-container {
-    position: absolute;
-    top: 0.5em;
-    right: 0.5em;
+    position: inherit;
     text-align: left;
     overflow-y: auto !important;
     width: 100%;
     min-width: 150px;
+
+    overflow: hidden;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    display: table;
+
+    margin: 0;
+    z-index: 990;
 }
 
 .m-layerswitcher-container #m-layerswitcher-panel {
