@@ -6,8 +6,9 @@
 }
 
 .m-panel.m-plugin-layerswitcher .m-panel-controls {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .2), 0 -1px 0 rgba(0, 0, 0, .02);
+    background-color: #f9f9f9;  
 }
+
 
 .m-panel.m-plugin-layerswitcher .m-panel-controls .m-control.m-layerswitcher-container>div>ul {
     max-height: 85vh;
@@ -32,16 +33,20 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     text-align: left;
     overflow-y: auto !important;
     width: 100%;
+
+    max-height: 85vh;
     min-width: 150px;
 
     overflow: hidden;
     background-color: transparent;
     border-radius: 0;
-    padding: 0;
+
     box-shadow: none;
     display: table;
 
     margin: 0;
+    padding: 0px;
+
     z-index: 990;
 }
 
@@ -55,17 +60,27 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 }
 
 /* Título */
-#m-layerswitcher-title {
+.m-layerswitcher-title {
     font-weight: bold !important;
     touch-action: none;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+
+    background-color: #f4f4f4;
+    height: 40px;
+
+    position: relative; /* Center h1*/
 }
 
-#m-layerswitcher-title > span:first-child {
-        width: 100%;
-    text-align: center;
+.m-layerswitcher-title h1 {
+    transform: translateX(50%);
+    position: absolute; /* Center h1*/
+    right: 50%;
+
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 40px;
 }
 
 /* Listado de capas */
@@ -79,7 +94,7 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     font-size: 15px;
 }
 
-#m-layerswitcher-content {
+.m-layerswitcher-content {
     text-align: left;
 }
 
