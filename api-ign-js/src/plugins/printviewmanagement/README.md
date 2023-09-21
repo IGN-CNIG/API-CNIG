@@ -35,6 +35,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Impresión del mapa.
+- **isDraggable**: "True" para que el plugin se pueda desplazar, por defecto false.
 - **serverUrl**: URL del servidor Geoprint. Por defecto: https://componentes.cnig.es/geoprint.
 - **printStatusUrl**: URL para consultar el estado de la impresión. Por defecto: https://componentes.cnig.es/geoprint/print/status.
 - **georefImageEpsg**:  Indica si el control "Impresión de imágenes de capas precargadas" se añade al plugin (true/false). Por defecto: true.
@@ -76,11 +77,12 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - **headerLegend**: URL de una imagen para añadir como leyenda en la parte central de la cabecera.
   - **filterTemplates**: Listado de nombres de plantillas que queremos tener disponibles, si no se manda el parámetro aparecerán todas por defecto.
   - **logo**: URL de una imagen para añadir como logo en la esquina superior derecha.
+- **defaultOpenControl**: Indica el control que aparecerá abierto al inicio. Por defecto: 0.
 
-# API-REST - TODO
+# API-REST
 
 ```javascript
-URL_API?printviewmanagement=position*collapsed*collapsible*tooltip*isDraggable*predefinedZoom*zoomExtent*printermap*zoompanel
+URL_API?printviewmanagement=position*collapsed*collapsible*tooltip*isDraggable*serverUrl*printStatusUrl*georefImageEpsg*georefImage*printermap*defaultOpenControl
 ```
 
 <table>
@@ -95,12 +97,12 @@ URL_API?printviewmanagement=position*collapsed*collapsible*tooltip*isDraggable*p
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>collapsible</td>
+    <td>collapsed</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>collapsed</td>
+    <td>collapsible</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
@@ -115,23 +117,33 @@ URL_API?printviewmanagement=position*collapsed*collapsible*tooltip*isDraggable*p
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>predefinedZoom (*)</td>
+    <td>serverUrl</td>
+    <td>serverUrl</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>printStatusUrl</td>
+    <td>printStatusUrl</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>georefImageEpsg (*)</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>zoomExtent</td>
+    <td>georefImage (*)</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>printermap</td>
+    <td>printermap (*)</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>zoompanel</td>
-    <td>true/false</td>
+    <td>defaultOpenControl</td>
+    <td>0, 1, 2, 3</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
 </table>
@@ -140,12 +152,11 @@ URL_API?printviewmanagement=position*collapsed*collapsible*tooltip*isDraggable*p
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?printviewmanagement=TL*true*true*tooltip
+https://componentes.cnig.es/api-core?printviewmanagement=TL*true*true*Imprimir*true***false*false*true
 ```
 
 ```
-https://componentes.cnig.es/api-core?printviewmanagement=TL*true*true*tooltip*true*false*true*true*false
-```
+https://componentes.cnig.es/api-core?printviewmanagement=TL*true*true*Imprimir*true***false*true*true*0
 
 ### Ejemplos de uso API-REST en base64
 
@@ -159,33 +170,58 @@ M.utils.encodeBase64(obj_params);
 
 ```javascript
 {
-  position:'TL',
+  isDraggable: true,
+  position: 'TL',
   collapsible: true,
   collapsed: true,
-  tooltip: 'Impresión del mapa',
-  predefinedZoom: true,
-  zoomExtent: false,
+  tooltip: 'Imprimir',
+  georefImageEpsg: {
+    tooltip: 'Georeferenciar imagen',
+    layers: [
+      {
+        url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+        name: 'mtn_rasterizado',
+        format: 'image/jpeg',
+        legend: 'Mapa ETRS89 UTM',
+        EPSG: 'EPSG:4326',
+      },
+      {
+        url: 'http://www.ign.es/wms-inspire/pnoa-ma?',
+        name: 'OI.OrthoimageCoverage',
+        format: 'image/jpeg',
+        legend: 'Imagen (PNOA) ETRS89 UTM',
+      },
+    ],
+  },
+  georefImage: {
+    tooltip: 'Georeferenciar imagen',
+    printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
+    printSelector: true,
+  },
   printermap: true,
-  zoompanel: true,
+  defaultOpenControl: 3
 }
 ```
 ```
-https://componentes.cnig.es/api-core?printviewmanagement=base64=eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2libGUiOnRydWUsImNvbGxhcHNlZCI6dHJ1ZSwidG9vbHRpcCI6Ikdlc3Rpw7NuIGRlIGxhIHZpc3RhIiwicHJlZGVmaW5lZFpvb20iOnRydWUsInpvb21FeHRlbnQiOmZhbHNlLCJ2aWV3aGlzdG9yeSI6dHJ1ZSwiem9vbXBhbmVsIjp0cnVlfQ==
+https://componentes.cnig.es/api-core?printviewmanagement=base64=eyJpc0RyYWdnYWJsZSI6dHJ1ZSwicG9zaXRpb24iOiJUTCIsImNvbGxhcHNpYmxlIjp0cnVlLCJjb2xsYXBzZWQiOnRydWUsInRvb2x0aXAiOiJJbXByaW1pciIsImdlb3JlZkltYWdlRXBzZyI6eyJ0b29sdGlwIjoiR2VvcmVmZXJlbmNpYXIgaW1hZ2VuIiwibGF5ZXJzIjpbeyJ1cmwiOiJodHRwOi8vd3d3Lmlnbi5lcy93bXMtaW5zcGlyZS9tYXBhLXJhc3Rlcj8iLCJuYW1lIjoibXRuX3Jhc3Rlcml6YWRvIiwiZm9ybWF0IjoiaW1hZ2UvanBlZyIsImxlZ2VuZCI6Ik1hcGEgRVRSUzg5IFVUTSIsIkVQU0ciOiJFUFNHOjQzMjYifSx7InVybCI6Imh0dHA6Ly93d3cuaWduLmVzL3dtcy1pbnNwaXJlL3Bub2EtbWE/IiwibmFtZSI6Ik9JLk9ydGhvaW1hZ2VDb3ZlcmFnZSIsImZvcm1hdCI6ImltYWdlL2pwZWciLCJsZWdlbmQiOiJJbWFnZW4gKFBOT0EpIEVUUlM4OSBVVE0ifV19LCJnZW9yZWZJbWFnZSI6eyJ0b29sdGlwIjoiR2VvcmVmZXJlbmNpYXIgaW1hZ2VuIiwicHJpbnRUZW1wbGF0ZVVybCI6Imh0dHBzOi8vY29tcG9uZW50ZXMuY25pZy5lcy9nZW9wcmludC9wcmludC9tYXBleHBvcnQiLCJwcmludFNlbGVjdG9yIjp0cnVlfSwicHJpbnRlcm1hcCI6dHJ1ZSwiZGVmYXVsdE9wZW5Db250cm9sIjozfQ==
 ```
 
 
 2) Ejemplo de constructor del plugin:
 ```javascript
 {
-  position:'TL',
-  tooltip: 'Impresión del mapa',
-  predefinedZoom: [
-    {name: 'zoom 1', center: [-428106.86611520057, 4334472.25393817], zoom: 4},
-    {name: 'zoom 2', bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648]}]
+  isDraggable: true,
+  position: 'TL',
+  collapsible: true,
+  collapsed: true,
+  tooltip: 'Imprimir',
+  georefImageEpsg: false,
+  georefImage: false,
+  printermap: true
 }
 ```
 ```
-https://componentes.cnig.es/api-core?printviewmanagement=base64=eyJwb3NpdGlvbiI6IlRMIiwidG9vbHRpcCI6Ikdlc3Rpw7NuIGRlIGxhIHZpc3RhIiwicHJlZGVmaW5lZFpvb20iOlt7Im5hbWUiOiJ6b29tIDEiLCJjZW50ZXIiOlstNDI4MTA2Ljg2NjExNTIwMDU3LDQzMzQ0NzIuMjUzOTM4MTddLCJ6b29tIjo0fSx7Im5hbWUiOiJ6b29tIDIiLCJiYm94IjpbLTIzOTIxNzMuMjM3MiwzMDMzMDIxLjI4MjQsMTk2NjU3MS44NjM3LDY4MDY3NjguMTY0OF19XX0=
+https://componentes.cnig.es/api-core?printviewmanagement=base64=eyJpc0RyYWdnYWJsZSI6dHJ1ZSwicG9zaXRpb24iOiJUTCIsImNvbGxhcHNpYmxlIjp0cnVlLCJjb2xsYXBzZWQiOnRydWUsInRvb2x0aXAiOiJJbXByaW1pciIsImdlb3JlZkltYWdlRXBzZyI6ZmFsc2UsImdlb3JlZkltYWdlIjpmYWxzZSwicHJpbnRlcm1hcCI6dHJ1ZX0=
 ```
 
 # Ejemplo de uso
@@ -203,6 +239,7 @@ const mp = new M.plugin.PrintViewManagement({
   tooltip: 'Imprimir',
   serverUrl: 'https://componentes.cnig.es/geoprint',
   printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
+  defaultOpenControl: 3
   georefImageEpsg: {
     tooltip: 'Georeferenciar imagen',
     layers: [

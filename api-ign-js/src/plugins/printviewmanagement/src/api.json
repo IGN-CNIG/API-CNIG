@@ -39,24 +39,35 @@
       "position": 4
     },
     {
-      "type": "boolean",
-      "name": "predefinedZoom",
+      "type": "simple",
+      "name": "serverUrl",
       "position": 5
     },
     {
-      "type": "boolean",
-      "name": "georefImage",
+      "type": "simple",
+      "name": "printStatusUrl",
       "position": 6
     },
     {
       "type": "boolean",
-      "name": "printermap",
+      "name": "georefImageEpsg",
       "position": 7
     },
     {
       "type": "boolean",
-      "name": "zoompanel",
+      "name": "georefImage",
       "position": 8
+    },
+    {
+      "type": "boolean",
+      "name": "printermap",
+      "position": 9
+    },
+    {
+      "type": "number",
+      "name": "defaultOpenControl",
+      "position": 10,
+      "possibleValues": [0, 1, 2, 3]
     }
   ]
   }],
