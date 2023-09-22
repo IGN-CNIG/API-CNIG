@@ -31,7 +31,7 @@
     "image": "img/api-logo.png",
     "description": "Cálculo de áreas de influencia sobre geometrías que se van dibujando sobre la vista.",
     "obsolete": false
-  },fullto
+  },
   {
     "name": "comparepanel",
     "plugin": "[comparepanel]",
