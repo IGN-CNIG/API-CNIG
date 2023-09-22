@@ -806,11 +806,21 @@ export default class LayerswitcherControl extends M.Control {
               metadata = url.replace('{z}/{x}/{y}.pbf', 'metadata.json');
             }
             M.remote.get(metadata).then((meta) => {
-              let layers = JSON.parse(meta.text).vector_layers;
+              let parse = JSON.parse(meta.text);
+              let url2;
+              if (parse.json) {
+                parse = JSON.parse(parse.json);
+                url2 = url.substring(0, url.lastIndexOf('/') + 1).concat('{z}/{x}/{y}.pbf');
+              }
+              let layers = parse.vector_layers || [];
+              let urlLayer = parse.tileurl || parse.tiles || url2;
+              if (M.utils.isString(urlLayer)) {
+                urlLayer = [urlLayer];
+              }
               layers = layers.map((layer) => {
                 return { name: layer.id };
               });
-              this.printLayerModal(url, 'mvt', layers);
+              this.printLayerModal(urlLayer[0], 'mvt', layers);
             });
             // TMS
           } else if (url.indexOf('{z}/{x}/{-y}') >= 0) {
