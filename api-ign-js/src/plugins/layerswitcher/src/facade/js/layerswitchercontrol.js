@@ -764,7 +764,17 @@ export default class LayerswitcherControl extends M.Control {
 
   // Muestra cargando
   showLoading() {
-    document.querySelector(SPINER_FATHER).innerHTML += '<p id="m-layerswitcher-loading"><span class="m-layerswitcher-icons-spinner" /></p>';
+    // Crear un nuevo elemento
+    const newElement = document.createElement('p');
+    newElement.id = 'm-layerswitcher-loading';
+    newElement.innerHTML = '<span class="m-layerswitcher-icons-spinner"></span>';
+
+    // Obtener el elemento padre
+    const parentElement = document.querySelector(SPINER_FATHER);
+
+    // Agregar el nuevo elemento al padre
+    parentElement.appendChild(newElement);
+
     document.querySelector(SEARCH_BTN).style.display = 'none';
     this.loadingActive = true;
   }
