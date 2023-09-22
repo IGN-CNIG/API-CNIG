@@ -67,7 +67,9 @@ class OSM extends LayerBase {
     if (isNullOrEmpty(userParameters)) {
       userParameters = 'OSM';
     } else {
-      userParameters.isBase = userParameters.isBase || false;
+      userParameters.isBase = (userParametersVar.transparent === undefined)
+        ? userParameters.isBase
+        : userParametersVar.transparent;
     }
 
     /**
