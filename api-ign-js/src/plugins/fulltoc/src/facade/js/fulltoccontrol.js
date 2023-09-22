@@ -76,6 +76,8 @@ export default class FullTOCControl extends M.Control {
    * @api
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('exception.fulltoc_obsolete'));
     this.map_ = map;
     return new Promise((success, fail) => {
       this.getTemplateVariables(map).then((templateVars) => {

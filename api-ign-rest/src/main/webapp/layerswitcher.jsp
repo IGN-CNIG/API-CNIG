@@ -86,7 +86,7 @@
             <option value=false>false</option>
         </select>
         <label for="isHttps">isHttps</label>
-        <select name="isHttpsValue" id="isHttp">
+        <select name="isHttpsValue" id="isHttps">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
@@ -193,13 +193,14 @@
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             inputTooltip.value !== "" ? objeto.tooltip = inputTooltip.value : objeto.tooltip = "";
-            inputTooltip.value !== "" ? objeto.tooltip = inputTooltip.value : objeto.tooltip = [];
+            inputTools.value !== "" ? objeto.tools = inputTools.value : objeto.tools = [];
             objeto.isDraggable = (selectDraggable.options[selectDraggable.selectedIndex].value == 'true');
             objeto.isMoveLayers = (selectMoveLayer.options[selectMoveLayer.selectedIndex].value == 'true');
             objeto.modeSelectLayers = selectModeSelectLayers.options[selectModeSelectLayers.selectedIndex].value;
             inputPrecharged.value !== "" ? objeto.precharged = inputPrecharged.value : objeto.precharged = "";
             objeto.http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
             objeto.https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
+            objeto.codsi = (selectCodsi.options[selectCodsi.selectedIndex].value == 'true');
             map.removePlugins(mp);
             crearPlugin(objeto);
         }

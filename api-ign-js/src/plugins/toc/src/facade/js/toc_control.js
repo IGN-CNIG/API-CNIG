@@ -34,6 +34,8 @@ export default class TOCControl extends M.Control {
    * @api
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('exception.toc_obsolete'));
     this.map_ = map;
     return new Promise((success, fail) => {
       const templateVars = this.getTemplateVariables();
