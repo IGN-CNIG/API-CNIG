@@ -726,6 +726,16 @@ button.m-layerswitcher-suggestion-caret {
 #m-layerswitcher-addservices-selectall-wfs {
     font-size: 18px !important;
     font-weight: bold;
+
+    background-color: #ffffff;
+    border: none;
+    color: #6c6c6c;
+}
+
+.m-layerswitcher-icons-desplegar {
+    background-color: #ffffff;
+    border: none;
+    color: #6c6c6c;
 }
 
 /* ogcmodal */

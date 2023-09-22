@@ -546,6 +546,7 @@ export default class LayerswitcherControl extends M.Control {
           });
 
           M.dialog.info(config, getValue('configure_layer'));
+          this.focusModal('.m-title span');
           setTimeout(() => {
             const selector = '#m-layerswitcher-style button';
             document.querySelector(selector).addEventListener('click', this.changeLayerConfig.bind(this, layer, otherStyles));
@@ -638,18 +639,21 @@ export default class LayerswitcherControl extends M.Control {
         parseToHtml: false,
         vars,
       });
+      this.focusModal('.m-layerswitcher-info-cap p');
     } else if (type === 'Others') {
       info = M.template.compileSync(infoTemplateOthers, {
         jsonp: false,
         parseToHtml: false,
         vars,
       });
+      this.focusModal('.m-layerswitcher-info-cap p');
     } else {
       info = M.template.compileSync(infoTemplate, {
         jsonp: false,
         parseToHtml: false,
         vars,
       });
+      this.focusModal('.m-layerswitcher-info-cap p');
     }
 
     M.dialog.info(info, getValue('layer_info'), this.order);
@@ -979,6 +983,7 @@ export default class LayerswitcherControl extends M.Control {
 
   // Permite añadir servicios
   openAddServices() {
+    console.log('openAddServices');
     const precharged = this.precharged;
     const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
       (precharged.services !== undefined && precharged.services.length > 0);
@@ -1018,6 +1023,16 @@ export default class LayerswitcherControl extends M.Control {
       // Eventos Buscador
       this.addEventSearch();
     }, 10);
+
+    this.focusModal('#m-layerswitcher-addservices-search-input');
+  }
+
+  focusModal(id) {
+    setTimeout(() => {
+      const message = document.querySelector(id);
+      message.focus();
+      message.click();
+    }, 100);
   }
 
   changeClodeButtonModal() {

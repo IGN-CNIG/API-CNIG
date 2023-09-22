@@ -1,14 +1,14 @@
 <div>
     <div class="m-layerswitcher-info-cap">
-        <p><span tabindex="0">{{translations.title}}:</span>&nbsp; {{title}}</p>
-        <p><span tabindex="0">{{translations.name}}:</span>&nbsp; {{name}}</p>
+        <p tabindex="0"><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
+        <p tabindex="0"><span>{{translations.name}}:</span>&nbsp; {{name}}</p>
 
-        <p class="m-layerswitcher-otherTitles"><span tabindex="0">{{translations.abstract}}:</span></p>
+        <p class="m-layerswitcher-otherTitles" tabindex="0"><span>{{translations.abstract}}:</span></p>
         <div>
             {{abstract}}
         </div>
         {{#if provider}}
-            <p class="m-layerswitcher-otherTitles"><span tabindex="0">{{translations.provider}}:</span></p>
+            <p class="m-layerswitcher-otherTitles" tabindex="0"><span>{{translations.provider}}:</span></p>
         {{/if}}
         {{#if provider}}
             <div>
@@ -16,7 +16,7 @@
             </div>
         {{/if}}
         {{#if hasMetadata }}
-            <p class="m-layerswitcher-otherTitles"><span tabindex="0">{{translations.metadata}}:</span></p>
+            <p class="m-layerswitcher-otherTitles" tabindex="0"><span>{{translations.metadata}}:</span></p>
         {{/if}}
         {{#if metadata}}
             <p><a tabindex="0" class="m-layerswitcher-provider-link" target="_blank" href="{{metadata}}">{{translations.see_more_layer}}</a></p>
