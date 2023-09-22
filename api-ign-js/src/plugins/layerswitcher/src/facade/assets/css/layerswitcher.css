@@ -570,11 +570,6 @@ div.m-layerswitcher-legend>img {
         min-width: 50px;
     }
 
-    .m-layerswitcher-table-results
-    .m-layerswitcher-table-container {
-        width: calc(100% - 20px) !important;
-    }
-
 
     /* Firefox fix */
 
@@ -623,6 +618,10 @@ div.m-layerswitcher-legend>img {
     .m-bottom.m-left>.m-plugin-layerswitcher.opened>.m-panel-btn {
         right: 0px;
     }
+}
+
+div#m-layerswitcher-layerContainer>p {
+    text-align: center;
 }
 
 button.m-layerswitcher-suggestion-caret {
@@ -691,7 +690,7 @@ button.m-layerswitcher-suggestion-caret {
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;
-    width: 100%;
+    width: calc(100% - 20px) !important;
 }
 
 .m-layerswitcher-table-results .m-layerswitcher-table-container>table>tbody>tr>td:first-child {
@@ -703,7 +702,8 @@ button.m-layerswitcher-suggestion-caret {
     text-align: inherit;
 }
 
-#m-layerswitcher-addservices-results .button {
+#m-layerswitcher-addservices-results .button ,
+#m-layerswitcher-layerContainer>div.button {
     margin-top: 1rem;
     text-align: center;
 }
