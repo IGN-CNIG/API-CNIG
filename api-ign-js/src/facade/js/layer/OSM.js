@@ -66,6 +66,8 @@ class OSM extends LayerBase {
     // Checks if the param is null or empty.
     if (isNullOrEmpty(userParameters)) {
       userParameters = 'OSM';
+    } else {
+      userParameters.isBase = userParameters.isBase || false;
     }
 
     /**

@@ -2131,6 +2131,7 @@ export const wms = (userParameters) => {
       visibility,
       options,
       useCapabilities,
+      isBase: (userParam.isBase) ? userParam.isBase : !!transparent,
     };
   });
 
@@ -2655,6 +2656,8 @@ export const xyz = (userParamer) => {
     // get displayInLayerSwitcher
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 2, 'displayInLayerSwitcher');
 
+    layerObj.isBase = (userParam.isBase) ? userParam.isBase : !!layerObj.transparent;
+
     return layerObj;
   });
 
@@ -2760,6 +2763,9 @@ export const tms = (userParamer) => {
 
     // get displayInLayerSwitcher
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 3, 'displayInLayerSwitcher');
+
+    layerObj.isBase = (userParam.isBase) ? userParam.isBase : !!layerObj.transparent;
+
     return layerObj;
   });
 
@@ -2832,6 +2838,8 @@ export const wmts = (userParameters) => {
 
     // get visibility
     layerObj.useCapabilities = getUseCapabilitiesWMTS(userParam);
+
+    layerObj.isBase = (userParam.isBase) ? userParam.isBase : !!layerObj.transparent;
 
     return layerObj;
   });
@@ -3229,6 +3237,8 @@ export const mbtiles = (userParameters) => {
     layerObj.tileLoadFunction = getTileLoadFunctionMBTiles(userParam);
 
     layerObj.tileSize = getTileSizeMBTiles(userParam);
+
+    layerObj.isBase = (userParam.isBase) ? userParam.isBase : !!layerObj.transparent;
 
     return layerObj;
   });

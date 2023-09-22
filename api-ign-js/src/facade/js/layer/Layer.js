@@ -62,9 +62,9 @@ class LayerBase extends Base {
 
     /**
      * Layer isBase:
-     * Falso si es una capa base, verdadero en caso contrario.
+     * Verdadero si es una capa base, falso en caso contrario.
      */
-    this.isBase = !!parameter.transparent;
+    this.isBase = parameter.isBase;
 
     /**
      * Layer maxExtent_:
