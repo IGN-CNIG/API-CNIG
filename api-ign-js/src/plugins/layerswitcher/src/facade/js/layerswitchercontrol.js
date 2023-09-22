@@ -1679,14 +1679,14 @@ export default class LayerswitcherControl extends M.Control {
           name,
           legend,
           url,
-          matrixSet,
+          projection: matrixSet,
         }));
       } else if (type === 'xyz') {
         this.map_.addLayers(new M.layer.XYZ({
           name,
           legend,
           url,
-          matrixSet,
+          projection: matrixSet,
         }));
       } else if (type === 'mvt') {
         const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');
@@ -1698,7 +1698,7 @@ export default class LayerswitcherControl extends M.Control {
           name,
           legend,
           url,
-          matrixSet,
+          projection: matrixSet,
         };
         if (!M.utils.isNullOrEmpty(layersSelected)) {
           obj.layers = layersSelected;
