@@ -13,28 +13,30 @@
     {{/eq}}
     {{#eq type 'mvt'}}
         <p>{{translations.data_layer}} MVT</p>
-        <div id="m-layerswitcher-addservices-results">
-            <div class="m-layerswitcher-table-results">
-                <div class="m-layerswitcher-table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th><span tabindex="0" id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></span></th>
-                                <th>{{translations.layers}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each layers}}
+        {{#gt layers.length 0}}
+            <div id="m-layerswitcher-addservices-results">
+                <div class="m-layerswitcher-table-results">
+                    <div class="m-layerswitcher-table-container">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td><span tabindex="0" id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices m-layerswitcher-icons-check"></span></td>
-                                    <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{abstract}}">{{name}}</td>
+                                    <th><span tabindex="0" id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></span></th>
+                                    <th>{{translations.layers}}</th>
                                 </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {{#each layers}}
+                                    <tr>
+                                        <td><span tabindex="0" id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices m-layerswitcher-icons-check"></span></td>
+                                        <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{abstract}}">{{name}}</td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        {{/gt}}
     {{/eq}}
     {{#eq type 'kml'}}
         <p>{{translations.data_layer}} KML</p>
