@@ -2131,7 +2131,7 @@ export const wms = (userParameters) => {
       visibility,
       options,
       useCapabilities,
-      isBase: (transparent !== undefined) ? !!transparent : userParam.isBase,
+      isBase: (transparent !== undefined) ? !transparent : userParam.isBase,
     };
   });
 
@@ -2657,7 +2657,7 @@ export const xyz = (userParamer) => {
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 2, 'displayInLayerSwitcher');
 
     layerObj.isBase = (layerObj.transparent === undefined)
-      ? userParam.isBase : !!layerObj.transparent;
+      ? userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -2766,7 +2766,7 @@ export const tms = (userParamer) => {
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 3, 'displayInLayerSwitcher');
 
     layerObj.isBase = (layerObj.transparent === undefined)
-      ? userParam.isBase : !!layerObj.transparent;
+      ? userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -2842,7 +2842,7 @@ export const wmts = (userParameters) => {
     layerObj.useCapabilities = getUseCapabilitiesWMTS(userParam);
 
     layerObj.isBase = (layerObj.transparent === undefined)
-      ? userParam.isBase : !!layerObj.transparent;
+      ? userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -3242,7 +3242,7 @@ export const mbtiles = (userParameters) => {
     layerObj.tileSize = getTileSizeMBTiles(userParam);
 
     layerObj.isBase = (layerObj.transparent === undefined)
-      ? userParam.isBase : !!layerObj.transparent;
+      ? userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
