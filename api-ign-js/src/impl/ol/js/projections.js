@@ -27,6 +27,32 @@ const proj4258 = {
 };
 
 /**
+ * EPSG:3857 es una proyección cartográfica conocida como Pseudo-Mercator
+ * que se utiliza comúnmente en aplicaciones web y de mapeo en línea.
+ * @type {Object}
+ * @public
+ * @api
+ */
+const proj3857 = {
+  def: '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs',
+  extent: [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244],
+  codes: [
+    'EPSG:3857',
+    'EPSG:102100',
+    'EPSG:102113',
+    'EPSG:900913',
+    'urn:ogc:def:crs:EPSG:6.18:3:3857',
+    'urn:ogc:def:crs:EPSG::3857',
+    'http://www.opengis.net/gml/srs/epsg.xml#3857',
+  ],
+  units: 'm',
+  metersPerUnit: 1,
+  datum: 'WGS 84',
+  proj: 'Pseudo-Mercator',
+};
+
+
+/**
  * EPSG:25828 ETRS89 UTM Huso 28 es una proyección cartográfica en la que se divide la
  * Tierra en 60 husos de 6 grados de longitud. El huso 28 se extiende desde los 0 grados de
  * longitud hasta los 6 grados al este. Esta proyección se basa en el elipsoide ETRS89 y
@@ -388,6 +414,7 @@ const proj3395 = {
  * @api
  */
 const projections = [
+  proj3857,
   proj4326,
   proj32627,
   proj32628,
