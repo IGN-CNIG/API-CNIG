@@ -13,22 +13,6 @@ import en from './i18n/en';
 
 // Estas capas hacen referencia a la estructura de iberpix
 const PRECHARGED = {
-  services: [{
-      name: 'Camino de Santiago',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms-inspire/camino-santiago',
-    },
-    {
-      name: 'Redes Geodésicas',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms-inspire/redes-geodesicas',
-    },
-    {
-      name: 'Planimetrías',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms/minutas-cartograficas',
-    },
-  ],
   groups: [{
       name: 'Cartografía',
       services: [{
