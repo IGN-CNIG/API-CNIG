@@ -3,7 +3,7 @@
  */
 import OSMImpl from 'impl/layer/OSM';
 import LayerBase from './Layer';
-import { isNullOrEmpty, isString, isUndefined } from '../util/Utils';
+import { isNullOrEmpty, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from './Type';
 import * as parameter from '../parameter/parameter';
