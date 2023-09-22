@@ -566,7 +566,7 @@ div.m-layerswitcher-legend>img {
         overflow-y: auto;
     }
 
-    .m-layerswitcher-addservices-results {
+    #m-layerswitcher-addservices-results {
         min-width: 50px;
     }
 
