@@ -983,7 +983,6 @@ export default class LayerswitcherControl extends M.Control {
 
   // Permite añadir servicios
   openAddServices() {
-    console.log('openAddServices');
     const precharged = this.precharged;
     const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
       (precharged.services !== undefined && precharged.services.length > 0);
