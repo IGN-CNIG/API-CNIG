@@ -3,7 +3,7 @@
  */
 import OSMImpl from 'impl/layer/OSM';
 import LayerBase from './Layer';
-import { isNullOrEmpty, isUndefined } from '../util/Utils';
+import { isNullOrEmpty, isString, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from './Type';
 import * as parameter from '../parameter/parameter';
@@ -66,10 +66,6 @@ class OSM extends LayerBase {
     // Checks if the param is null or empty.
     if (isNullOrEmpty(userParameters)) {
       userParameters = 'OSM';
-    } else {
-      userParameters.isBase = (userParametersVar.transparent === undefined)
-        ? userParameters.isBase
-        : userParametersVar.transparent;
     }
 
     /**
@@ -107,6 +103,10 @@ class OSM extends LayerBase {
      * Falso si es una capa base, verdadero en caso contrario.
      */
     this.transparent = parameters.transparent;
+
+    this.isBase = (parameters.transparent === undefined)
+      ? userParameters.isBase
+      : !parameters.transparent;
 
     /**
      * OSM options. Opciones OSM.
