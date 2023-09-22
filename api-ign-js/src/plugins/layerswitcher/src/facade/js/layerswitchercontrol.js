@@ -47,6 +47,8 @@ const SEARCH_BTN = '#m-layerswitcher-addservices-search-btn';
 // - Modal
 const BT_CLOSE_MODAL = 'div.m-dialog.info div.m-button > button';
 
+const SPINER_FATHER = '.m-layerswitcher-search-panel';
+
 export default class LayerswitcherControl extends M.Control {
   constructor(options = {}) {
     if (M.utils.isUndefined(LayerswitcherImplControl)) {
@@ -758,7 +760,7 @@ export default class LayerswitcherControl extends M.Control {
 
   // Muestra cargando
   showLoading() {
-    document.querySelector(ADDSERVICES_RESULTS).innerHTML = '<p id="m-layerswitcher-loading"><span class="m-layerswitcher-icons-spinner" /></p>';
+    document.querySelector(SPINER_FATHER).innerHTML += '<p id="m-layerswitcher-loading"><span class="m-layerswitcher-icons-spinner" /></p>';
     document.querySelector(SEARCH_BTN).style.display = 'none';
     this.loadingActive = true;
   }
