@@ -717,7 +717,7 @@ export default class IncicartoControl extends M.Control {
     const { x, y } = this.map_.getCenter();
     const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}&SRS=${this.map_.getProjection().code}`;
 
-    const url = window.location.href;
+    let url = window.location.href;
     if (url.startsWith('file:///')) {
       const index = url.lastIndexOf('/');
       url = `file://${url.substring(index)}`;
