@@ -715,9 +715,11 @@ export default class IncicartoControl extends M.Control {
 
    
     const { x, y } = this.map_.getCenter();
-    const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}&srs=${this.map_.getProjection().code}`;
-
     let url = window.location.href;
+
+    const p = url.indexOf('?') > -1 ? '&' : '?';
+    const shareURL = `${p}center=${x},${y}&zoom=${this.map_.getZoom()}&srs=${this.map_.getProjection().code}`;
+
     if (url.startsWith('file:///')) {
       const index = url.lastIndexOf('/');
       url = `file://${url.substring(index)}`;
@@ -735,7 +737,7 @@ export default class IncicartoControl extends M.Control {
       "emailUser": emailUser,
       "errDescripcion": errDescription,
       "URL": url,
-      "API_URL": M.config.MAPEA_URL,
+      "API_URL": M.config.MAPEA_URL + encodeURI(`?center=${x},${y}&zoom=${this.map_.getZoom()}&srs=${this.map_.getProjection().code}`),
       "paramsURL": encodeURI(shareURL),
     }
 
