@@ -78,10 +78,14 @@ class OSM extends LayerBase {
 
     // This layer is of parameters.
     const parameters = parameter.layer(userParameters, LayerType.OSM);
+
+    let isBaseParam = !!userParameters.isBase;
+
     if (isNullOrEmpty(parameters.name)) {
       parameters.name = 'osm';
-      userParameters.isBase = true;
+      isBaseParam = true;
     }
+
 
     // Calls the super constructor.
     super(parameters, impl);
@@ -106,7 +110,7 @@ class OSM extends LayerBase {
     this.transparent = parameters.transparent;
 
     this.isBase = (parameters.transparent === undefined)
-      ? !!userParameters.isBase
+      ? isBaseParam
       : !parameters.transparent;
 
     /**
