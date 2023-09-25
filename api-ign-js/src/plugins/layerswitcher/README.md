@@ -57,7 +57,7 @@ El listado de capas aparece al pulsar sobre el botón añadir (Listado de alguna
 # API-REST
 
 ```javascript
-URL_API?layerswitcher=position*collapsed*collapsible*tooltip*isDraggable*isMoveLayers*modeSelectLayers*tools*http*https*codsi`;
+https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsible*tooltip*isDraggable*isMoveLayers*modeSelectLayers*tools*http*https*codsi`;
 ```
 
 <table>
