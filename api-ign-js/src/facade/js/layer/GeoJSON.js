@@ -242,7 +242,7 @@ class GeoJSON extends LayerVector {
     if (obj instanceof GeoJSON) {
       equals = this.name === obj.name;
       equals = equals && (this.extract === obj.extract);
-      equals = equals && (this.predefinedStyles === obj.predefinedStyles);
+      // equals = equals && (this.predefinedStyles === obj.predefinedStyles);
     }
 
     return equals;
