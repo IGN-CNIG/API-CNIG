@@ -205,12 +205,14 @@ ul.m-layerswitcher-ullayers {
 /* Input range */
 .m-layerswitcher-container .m-layerswitcher-tools .m-layerswitcher-opacity {
     margin-left: 25px;
-    width: 50%;
+    min-width: 50%;
+    max-width: 50%;
 }
 
 .m-layerswitcher-container .m-layerswitcher-tools {
     margin-top: -0.5rem;
     display: flex;
+    flex-wrap: wrap;
     border-top: 1px solid #f1ecec;
 }
 
@@ -247,7 +249,7 @@ input[type=range].m-layerswitcher-transparency:focus {
 
 /* legend */
 .m-layerswitcher-action-tools {
-    width: 40%;
+    /* width: 40%; */
     text-align: left !important;
     margin-right: 5%;
     margin-left: 5%;
@@ -624,7 +626,8 @@ div#m-layerswitcher-layerContainer>p {
     text-align: center;
 }
 
-button.m-layerswitcher-suggestion-caret {
+button.m-layerswitcher-suggestion-caret,
+button.m-layerswitcher-suggestion {
     text-align: start;
 }
 
