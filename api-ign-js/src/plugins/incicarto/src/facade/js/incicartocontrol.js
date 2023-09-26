@@ -29,6 +29,19 @@ const POINTS = [1, 15];
 const LINES = [10, 15];
 const LINE_POINTS = [1, 15, 20, 15];
 
+const HOSTNAME = ['mapea-lite.desarrollo.guadaltel.es', 'componentes.cnig.es']
+const PATH_NAME = 'api-core'
+const CONTROLS = [
+  'scale',
+  'scaleline',
+  'panzoombar',
+  'panzoom',
+  'location',
+  'getfeatureinfo',
+  'rotate',
+  'backgroundlayers'
+]
+
 export default class IncicartoControl extends M.Control {
   /**
    * @classdesc
@@ -514,7 +527,7 @@ export default class IncicartoControl extends M.Control {
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
       });
 
-      document.getElementById('fileUpload').onchange = function() {
+      document.getElementById('fileUpload').onchange = function () {
         let fileName = 'Adjuntar fichero &hellip;';
         if (this.files) {
           if (this.files.length > 1) {
@@ -583,7 +596,7 @@ export default class IncicartoControl extends M.Control {
         }
       });
 
-      document.getElementById('fileUpload').onchange = function() {
+      document.getElementById('fileUpload').onchange = function () {
         let fileName = 'Adjuntar fichero &hellip;';
         if (this.files) {
           if (this.files.length > 1) {
@@ -673,8 +686,8 @@ export default class IncicartoControl extends M.Control {
     let theme = themeMetadataContainer.selectedOptions[0].innerText;
 
     let email_subject = 'Incidencia Cartografía - ' + theme;
-    
-    const propiedades_incidencia = this.createContentEmail(email_subject, theme, destinatary); 
+
+    const propiedades_incidencia = this.createContentEmail(email_subject, theme, destinatary);
 
     this.geometryIncidenceJSON = JSON.parse(this.geometryIncidence);
     if (this.geometryIncidenceJSON.features.length > 0) {
@@ -688,7 +701,7 @@ export default class IncicartoControl extends M.Control {
       "product": product,
       "features": this.geometryIncidenceJSON.features
     };
-    
+
     let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
     emailForm.action = `${M.config.MAPEA_URL}api/email`;
     document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
@@ -708,25 +721,42 @@ export default class IncicartoControl extends M.Control {
     return true;
   }
 
-  createContentEmail(email_subject, theme, destinatary = this.themes.find(item => item.idTheme == theme).emailTheme){
+  createContentEmail(email_subject, theme, destinatary = this.themes.find(item => item.idTheme == theme).emailTheme) {
     let emailName = document.querySelector("#person-notify").value;
     let emailUser = document.querySelector("#email-notify").value;
     let errDescription = document.querySelector("#err-description").value;
 
-   
-    const { x, y } = this.map_.getCenter();
     let url = window.location.href;
+    let onlyURL = false;
 
-    const p = url.indexOf('?') > -1 ? '&' : '?';
-    const shareURL = `${p}center=${x},${y}&zoom=${this.map_.getZoom()}&srs=${this.map_.getProjection().code}`;
+    // Get de los datos
+    console.log(this.getLayersInLayerswitcher(), this.getControlsFormat())
+
+    if(HOSTNAME.includes(window.location.hostname) && window.location.pathname.includes(PATH_NAME)) {
+      onlyURL = true;
+      url = url.split('?')[0];
+    }
 
     if (url.startsWith('file:///')) {
       const index = url.lastIndexOf('/');
       url = `file://${url.substring(index)}`;
     }
 
+    const { x, y } = this.map_.getCenter();
+    const center = `&center=${x},${y}`;
+    const zoom = `&zoom=${this.map_.getZoom()}`;
+    const srs = `&srs=${this.map_.getProjection().code}`;
+    const layers = `&layers=${this.getLayersInLayerswitcher().toString()}`;
+    const controls = `&controls=${this.getControlsFormat()}`;
+
+    const shareURL = `?${center}${zoom}${srs}${layers}${controls}`;
+
+    console.log(M.config.MAPEA_URL+shareURL)
+    console.log(url+shareURL)
+    
     if (url.indexOf('.jsp') > -1) {
       url = ''
+      onlyURL = true;
     }
 
     return {
@@ -736,13 +766,213 @@ export default class IncicartoControl extends M.Control {
       "emailName": emailName,
       "emailUser": emailUser,
       "errDescripcion": errDescription,
-      "URL": url,
-      "API_URL": M.config.MAPEA_URL + encodeURI(`?center=${x},${y}&zoom=${this.map_.getZoom()}&srs=${this.map_.getProjection().code}`),
+      "URL": (onlyURL) ? '' : url,
+      "API_URL": M.config.MAPEA_URL,
       "paramsURL": encodeURI(shareURL),
     }
 
   }
 
+
+  /**
+ * This method gets the externs layers parameters
+ *
+ * @public
+ * @function
+ */
+  getLayersInLayerswitcher() {
+    const layers = this.map_.getLayers().filter((layer) => {
+      return layer.displayInLayerSwitcher === true && layer.transparent === true;
+    });
+
+    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+  }
+
+
+  /**
+   * This function gets the url param from layer
+   *
+   * @public
+   * @function
+   */
+  layerToParam(layer) {
+    let param;
+    if (layer.name === 'osm') {
+      param = layer.name;
+    } else if (/mapbox/.test(layer.name)) {
+      param = `MAPBOX.${layer.name}`;
+    } else if (layer.type === 'WMS') {
+      param = this.getWMS(layer);
+    } else if (layer.type === 'WMTS') {
+      param = this.getWMTS(layer);
+    } else if (layer.type === 'KML') {
+      param = this.getKML(layer);
+    } else if (layer.type === 'WFS') {
+      param = this.getWFS(layer);
+    } else if (layer.type === 'GeoJSON') {
+      param = this.getGeoJSON(layer);
+    } else if (layer.type === 'Vector') {
+      param = this.getVector(layer);
+    }
+    return param;
+  }
+
+
+  normalizeString(text) {
+    let newText = text.replace(/,/g, '');
+    newText = newText.replace(/\*/g, '');
+    return newText;
+  }
+
+  /**
+ * This method gets the geojson url parameter
+ *
+ * @public
+ * @function
+ */
+  getVector(layer) {
+    let source = Object.assign(layer.toGeoJSON());
+    source.crs = {
+      properties: {
+        name: 'EPSG:4326',
+      },
+      type: 'name',
+    };
+    source = window.btoa(unescape(encodeURIComponent(JSON.stringify(source))));
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `GeoJSON*${layer.name}*${source}**${style}`;
+  }
+
+
+  /**
+   * This method gets the wms url parameter
+   *
+   * @public
+   * @function
+   */
+  getWMS(layer) {
+    return `WMS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}*${layer.userMaxExtent || ''}*${layer.version}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+  }
+
+  /**
+ * This method gets the wfs url parameter
+ *
+ * @public
+ * @function
+ */
+  getWFS(layer) {
+    const style = layer.getStyle().serialize();
+    return `WFS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.namespace}:${layer.name}:*${layer.geometry || ''}*${layer.ids || ''}*${layer.cql || ''}*${style || ''}`;
+  }
+
+  /**
+   * This method gets the wmts url parameter
+   *
+   * @public
+   * @function
+   */
+  getWMTS(layer) {
+    const { code } = this.map_.getProjection();
+    let legend = null;
+    try {
+      legend = layer.getLegend();
+    } catch (err) {
+      legend = layer.legend;
+    }
+    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+  }
+
+  /**
+* This methods gets the kml url parameters
+*
+* @public
+* @function
+*/
+  getKML(layer) {
+    return `KML*${layer.name}*${layer.url}*${layer.extract}*${layer.label}*${layer.isVisible()}`;
+  }
+
+  /**
+   * This method gets the geojson url parameter
+   *
+   * @public
+   * @function
+   */
+  getGeoJSON(layer) {
+    const source = !M.utils.isUndefined(layer.source) ?
+      layer.serialize() : encodeURIComponent(layer.url);
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `GeoJSON*${layer.name}*${source}*${layer.extract}*${style}`;
+  }
+
+
+  /**
+   * This method gets the plugins url parameter
+   */
+  getPlugins() {
+    return this.map_.getPlugins().map((plugin) => {
+      let newCurrent = '';
+      if (M.utils.isFunction(plugin.getAPIRest)) {
+        newCurrent = plugin.getAPIRest();
+      }
+      return newCurrent;
+    }).join('&');
+  }
+
+  getControlsFormat () {
+    const controls = this.getControls()
+
+    let newControls = controls.filter((c) => {
+      return c !== undefined && c.indexOf('backgroundlayers') === -1;
+    }).join(',');
+
+    if (newControls.endsWith(',')) {
+      newControls = newControls.slice(0, -1);
+    }
+
+    if (newControls.indexOf('scale') === -1 || (newControls.indexOf('scale') === newControls.indexOf('scaleline'))) {
+      newControls = newControls.concat(',scale*true');
+    }
+    return newControls;
+  }
+
+  /**
+   * This methods gets the controls url parameters
+   *
+   * @public
+   * @function
+   */
+  getControls() {
+    const controls = this.map_.getControls().map(control => control.name);
+
+        const allowedControls = CONTROLS;
+        const resolvedControls = controls.filter(control => allowedControls.includes(control))
+          .filter(c => c !== 'backgroundlayers');
+        if (resolvedControls.includes('mouse')) {
+          const mouseControl = this.map_.getControls().find(c => c.name === 'mouse');
+          const { showProj } = mouseControl.getImpl();
+          const index = resolvedControls.indexOf('mouse');
+          resolvedControls[index] = showProj === true ? 'mouse*true' : 'mouse';
+        }
+        if (resolvedControls.includes('scale')) {
+          const scaleControl = this.map_.getControls().find(c => c.name === 'scale');
+          const { exactScale } = scaleControl.getImpl();
+          const index = resolvedControls.indexOf('scale');
+          resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
+        }
+        const backgroundlayers = this.map_.getControls().filter(c => c.name === 'backgroundlayers')[0];
+        let backgroundlayersAPI;
+        if (!M.utils.isNullOrEmpty(backgroundlayers)) {
+          const { visible, activeLayer } = backgroundlayers;
+          if (typeof visible === 'boolean' && typeof activeLayer === 'number') {
+            backgroundlayersAPI = `backgroundlayers*${activeLayer}*${visible}`;
+          } else {
+            backgroundlayersAPI = 'backgroundlayers';
+          }
+        }
+        resolvedControls.push(backgroundlayersAPI);
+        return resolvedControls;
+  }
 
   /**
    * Compone el mensaje para el correo enviado por el interfaz Modal Simple y lo envía por pasarela de Fomento
@@ -756,7 +986,7 @@ export default class IncicartoControl extends M.Control {
     } else {
       document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
       this.showMessageInModalAdvanced(getValue('sending_email'), "okmessage");
-    
+
       // const theme = themeMetadataContainer.selectedOptions[0].innerText;
       const theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
 
@@ -796,7 +1026,7 @@ export default class IncicartoControl extends M.Control {
         console.error(error);
         this.showMessageInModalAdvanced(getValue('error_sending_email'), "nakmessage");
       }
-   
+
     }
   }
 
