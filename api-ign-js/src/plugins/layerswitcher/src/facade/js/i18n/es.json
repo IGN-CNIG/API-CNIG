@@ -88,5 +88,7 @@
   "data_layer": "Datos para la capa",
   "n_obj_geo": "Número de objetos geográficos",
   "extension": "Extensión",
-  "loading": "Cargando"
+  "loading": "Cargando",
+  "attributes": "Atributos",
+  "values": "Valores"
 }

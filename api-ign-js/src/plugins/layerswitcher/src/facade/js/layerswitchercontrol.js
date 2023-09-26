@@ -508,11 +508,28 @@ export default class LayerswitcherControl extends M.Control {
                 name: getValue('name'),
                 n_obj_geo: getValue('n_obj_geo'),
                 extension: getValue('extension'),
+                attributes: getValue('attributes'),
               },
             };
             if (layer instanceof M.layer.Vector) {
-              vars.numberFeatures = layer.getFeatures().length;
+              const nFeatures = layer.getFeatures().length;
+              vars.numberFeatures = nFeatures;
               vars.extension = layer.getMaxExtent();
+              if (nFeatures > 0) {
+                const attributes = [];
+                const features = layer.getFeatures();
+                const headerAtt = Object.keys(features[0].getAttributes());
+                features.forEach((feature) => {
+                  const properties = Object.values(feature.getAttributes());
+                  if (!M.utils.isNullOrEmpty(properties)) {
+                    attributes.push({
+                      properties,
+                    });
+                  }
+                });
+                vars.attributes = attributes;
+                vars.headerAtt = headerAtt;
+              }
             }
             this.renderInfo(vars, 'Others');
           }

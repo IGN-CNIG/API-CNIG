@@ -88,5 +88,7 @@
   "data_layer": "Data for GeoJSON layer",
   "n_obj_geo": "Number of geographical objects",
   "extension": "Extension",
-  "loading": "Loading"
+  "loading": "Loading",
+  "attributes": "Attributes",
+  "values": "Values"
 }

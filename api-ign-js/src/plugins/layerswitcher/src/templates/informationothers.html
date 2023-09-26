@@ -8,5 +8,23 @@
         {{#if extension}}
             <p tabindex="0"><span>{{translations.extension}}:</span>&nbsp; [{{extension}}]</p>
         {{/if}}
+        {{#gt attributes.length 0 }}
+            <p tabindex="0"><span>{{translations.attributes}}:</span>&nbsp;</p>
+            <table>
+                <tbody>
+                    <tr>
+                        {{#each headerAtt}}
+                            <td>{{this}}</td>
+                        {{/each}}
+                    </tr> {{#each attributes}}
+                        <tr>
+                            {{#each this.properties}}
+                                <td> {{{this}}}</td>
+                            {{/each}}
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{/gt}}
     </div>
 </div>
