@@ -165,7 +165,7 @@ public class EmailWS {
 		   data.put("errDescription", properties.getString("errDescripcion"));
 		   if(apiURL.equals("")) {
 			data.put("apiURL", apiURL);
-			data.put("contentApiURL", "URL Visualizador: ")
+			data.put("contentApiURL", "URL Visualizador: ");
 		   }
 		   //data.put("sendergeometry", cuerpo);
 		   data.put("shareURL", shareURL);
