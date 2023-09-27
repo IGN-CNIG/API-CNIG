@@ -1516,151 +1516,6 @@ export const mvt = (userParameters) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa WMC.
- * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
- *
- * @public
- * @function
- * @param {string|Mx.parameters.WMC} parameter Parámetro para obtener
- * el nombre de la capa WMC.
- * @param {string} type Tipo de capa.
- * @returns {string} Nombre de la capa.
- * @throws {M.exception} Si el parámetro no es de un tipo soportado.
- * @api
- */
-export const getNameWMC = (parameter, type) => {
-  let name;
-  let params;
-  if (isString(parameter)) {
-    // <WMC>*<URL>*<NAME>
-    if (/^\w{3,7}\*[^*]+\*[^*]+$/.test(parameter)) {
-      params = parameter.split(/\*/);
-      name = params[2].trim();
-    } else if (/^\w{3,7}\*[^*]$/.test(parameter)) {
-      // <WMC>*(<PREDEFINED_NAME> OR <URL>)
-      params = parameter.split(/\*/);
-      name = params[1].trim();
-    } else if (/^[^*]+\*[^*]+$/.test(parameter)) {
-      // (<URL>*<NAME>)
-      params = parameter.split(/\*/);
-      name = params[1].trim();
-    } else if (/^[^*]+$/.test(parameter) && !isUrl(parameter)) {
-      // (<PREDEFINED_NAME> OR <URL>)
-      name = parameter;
-    }
-  } else if (isObject(parameter)) {
-    name = normalize(parameter.name);
-  } else {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
-  }
-
-  if (isUrl(name)) {
-    name = null;
-  }
-  return name;
-};
-
-/**
- * Analiza el parámetro para obtener la URL del servicio de la capa WMC.
- *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
- *
- * @public
- * @function
- * @param {string|Mx.parameters.WMC} parameter Parámetro para obtener la
- * URL del servicio de la capa WMC.
- * @returns {string} URL del servicio.
- * @throws {Exception} Si el parámetro no es de un tipo soportado.
- * @api
- */
-export const getURLWMC = (parameter) => {
-  let url;
-  if (isString(parameter)) {
-    const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)([^*]*\*?)*$/i);
-    if (urlMatches && (urlMatches.length > 2)) {
-      url = urlMatches[2];
-    }
-  } else if (isObject(parameter)) {
-    url = parameter.url;
-  } else {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
-  }
-  return url;
-};
-
-/**
- * Analiza el parámetro para obtener las opciones de la capa WMC.
- *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
- *
- * @public
- * @function
- * @param {string|Mx.parameters.WMC} parameter Parámetro para obtener
- * las opciones de la capa WMC.
- * @returns {Mx.parameters.WMCOptions} Opciones de la capa WMC.
- * @throws {Exception} Si el parámetro no es de un tipo soportado.
- * @api
- */
-export const getOptionsWMC = (parameter) => {
-  let options;
-  if (isString(parameter)) {
-    // TODO ver como se pone el parámetro
-  } else if (isObject(parameter)) {
-    options = parameter.options;
-  } else {
-    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
-  }
-  return options;
-};
-
-/**
- * Analiza los parámetros especificados por el usuario para la capa WMC.
- *
- * @param {string|Mx.parameters.WMC} userParameters Parámetros para la capa WMC.
- * @returns {Mx.parameters.WMC|Array<Mx.parameters.WMC>} Parámetros de la capa WMC.
- * @public
- * @function
- * @throws {M.exception} Si el parámetro no es especificado.
- * @api
- */
-export const wmc = (userParameters) => {
-  let layers = [];
-
-  // checks if the param is null or empty
-  if (isNullOrEmpty(userParameters)) {
-    Exception(getValue('exception').no_param);
-  }
-
-  // checks if the parameter is an array
-  let userParametersArray = userParameters;
-  if (!isArray(userParametersArray)) {
-    userParametersArray = [userParametersArray];
-  }
-
-  layers = userParametersArray.map((userParam) => {
-    const layerObj = {};
-
-    // gets the layer type
-    layerObj.type = LayerType.WMC;
-
-    // gets the name
-    layerObj.name = getNameWMC(userParam);
-
-    // gets the URL
-    layerObj.url = getURLWMC(userParam);
-
-    // gets the options
-    layerObj.options = getOptionsWMC(userParam);
-
-    return layerObj;
-  });
-
-  if (!isArray(userParameters)) {
-    layers = layers[0];
-  }
-
-  return layers;
-};
-
-/**
  * Analiza el parámetro para obtener el nombre de la capa WMS.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
@@ -2656,8 +2511,8 @@ export const xyz = (userParamer) => {
     // get displayInLayerSwitcher
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 2, 'displayInLayerSwitcher');
 
-    layerObj.isBase = (layerObj.transparent === undefined)
-      ? userParam.isBase : !layerObj.transparent;
+    layerObj.isBase = (layerObj.transparent === undefined) ?
+      userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -2765,8 +2620,8 @@ export const tms = (userParamer) => {
     // get displayInLayerSwitcher
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 3, 'displayInLayerSwitcher');
 
-    layerObj.isBase = (layerObj.transparent === undefined)
-      ? userParam.isBase : !layerObj.transparent;
+    layerObj.isBase = (layerObj.transparent === undefined) ?
+      userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -2841,8 +2696,8 @@ export const wmts = (userParameters) => {
     // get visibility
     layerObj.useCapabilities = getUseCapabilitiesWMTS(userParam);
 
-    layerObj.isBase = (layerObj.transparent === undefined)
-      ? userParam.isBase : !layerObj.transparent;
+    layerObj.isBase = (layerObj.transparent === undefined) ?
+      userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -3241,8 +3096,8 @@ export const mbtiles = (userParameters) => {
 
     layerObj.tileSize = getTileSizeMBTiles(userParam);
 
-    layerObj.isBase = (layerObj.transparent === undefined)
-      ? userParam.isBase : !layerObj.transparent;
+    layerObj.isBase = (layerObj.transparent === undefined) ?
+      userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -3988,7 +3843,6 @@ const parameterFunction = {
   kml,
   wfs,
   osm,
-  wmc,
   wms,
   wmts,
   geojson,

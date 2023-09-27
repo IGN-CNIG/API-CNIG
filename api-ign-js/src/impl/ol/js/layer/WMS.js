@@ -206,6 +206,7 @@ class WMS extends LayerBase {
      */
     this.ratio = options.ratio || 1;
     if (options.ratio < 1) {
+      // eslint-disable-next-line no-console
       console.error('El ratio debe ser 1 o superior');
     }
 

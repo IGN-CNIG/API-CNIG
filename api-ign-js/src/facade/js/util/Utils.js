@@ -1484,8 +1484,10 @@ export const copyImageClipBoard = (map, canva) => {
         if (blob) {
           const item = new window.ClipboardItem({ 'image/png': blob });
           window.navigator.clipboard.write([item]).then(() => {
+            // eslint-disable-next-line no-console
             console.log('Image copied to clipboard');
           }).catch((err) => {
+            // eslint-disable-next-line no-console
             console.error('Error copying image to clipboard:', err);
           });
         }
