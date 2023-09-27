@@ -27,8 +27,15 @@
             <p tabindex="0"><span>{{translations.center}}:</span>&nbsp; [{{others.center}}]</p>
         {{/if}}
         {{#gt attributes.length 0 }}
-            <p tabindex="0"><span>{{translations.attributes}}:</span>&nbsp;</p>
-            <table>
+            <div id="m-layerswitcher-tfoot">
+                <p tabindex="0"><span>{{translations.attributes}}:</span>&nbsp;</p>
+                <div>
+                    <span class="g-cartografia-flecha-izquierda m-layerswitcher-hidden" id="m-layerswitcher-previous"></span>
+                    <span id="m-layerswitcher-pageinfo">Página {{pages.actual}} de {{pages.total}}</span>
+                    <span class="g-cartografia-flecha-derecha m-layerswitcher-hidden" id="m-layerswitcher-next"></span>
+                </div>
+            </div>
+            <table id="m-layerswitcher-table">
                 <tbody>
                     <tr>
                         {{#each headerAtt}}

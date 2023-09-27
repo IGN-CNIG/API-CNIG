@@ -498,6 +498,12 @@ div.m-layerswitcher-legend>img {
     font-weight: bold;
 }
 
+#m-layerswitcher-tfoot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 
 /* Firefox fix */
 @-moz-document url-prefix() {
