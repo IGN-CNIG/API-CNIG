@@ -8,6 +8,24 @@
         {{#if extension}}
             <p tabindex="0"><span>{{translations.extension}}:</span>&nbsp; [{{extension}}]</p>
         {{/if}}
+        {{#if others.id}}
+            <p tabindex="0"><span>ID:</span>&nbsp; {{others.id}}</p>
+        {{/if}}
+        {{#if others.attribution}}
+            <p tabindex="0"><span>{{translations.attribution}}:</span>&nbsp; {{others.attribution}}</p>
+        {{/if}}
+        {{#if others.description}}
+            <p tabindex="0"><span>{{translations.description}}:</span>&nbsp; {{others.description}}</p>
+        {{/if}}
+        {{#if others.minzoom}}
+            <p tabindex="0"><span>{{translations.minzoom}}:</span>&nbsp; {{others.minzoom}}</p>
+        {{/if}}
+        {{#if others.maxzoom}}
+            <p tabindex="0"><span>{{translations.maxzoom}}:</span>&nbsp; {{others.maxzoom}}</p>
+        {{/if}}
+        {{#if others.center}}
+            <p tabindex="0"><span>{{translations.center}}:</span>&nbsp; [{{others.center}}]</p>
+        {{/if}}
         {{#gt attributes.length 0 }}
             <p tabindex="0"><span>{{translations.attributes}}:</span>&nbsp;</p>
             <table>

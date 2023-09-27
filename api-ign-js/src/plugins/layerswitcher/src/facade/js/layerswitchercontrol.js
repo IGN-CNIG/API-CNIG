@@ -500,6 +500,7 @@ export default class LayerswitcherControl extends M.Control {
               this.renderInfo(vars);
             });
           } else {
+            let rendInfo = true;
             const vars = {
               name: layer.name, // nombre
               title: layer.legend, // titulo
@@ -509,12 +510,18 @@ export default class LayerswitcherControl extends M.Control {
                 n_obj_geo: getValue('n_obj_geo'),
                 extension: getValue('extension'),
                 attributes: getValue('attributes'),
+                values: getValue('values'),
+                attribution: getValue('attribution'),
+                description: getValue('description'),
+                minzoom: getValue('minzoom'),
+                maxzoom: getValue('maxzoom'),
+                center: getValue('center'),
               },
             };
             if (layer instanceof M.layer.Vector) {
               const nFeatures = layer.getFeatures().length;
               vars.numberFeatures = nFeatures;
-              vars.extension = layer.getMaxExtent();
+              vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
               if (nFeatures > 0) {
                 const attributes = [];
                 const features = layer.getFeatures();
@@ -531,7 +538,48 @@ export default class LayerswitcherControl extends M.Control {
                 vars.headerAtt = headerAtt;
               }
             }
-            this.renderInfo(vars, 'Others');
+
+            const type = layer.type;
+            if (type === 'MVT' || type === 'TMS' || type === 'XYZ') {
+              rendInfo = false;
+              let url = layer.url;
+              const regex = /\{z\}\/\{x\}\/\{(-?)y\}\/?.*$/;
+              url = url.replace(regex, 'metadata.json');
+              vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
+              M.remote.get(url).then((response) => {
+                if (response.code === 200) {
+                  const res = JSON.parse(response.text);
+                  const others = {};
+                  if (res.id) {
+                    others.id = res.id;
+                  }
+                  if (res.attribution) {
+                    others.attribution = res.attribution;
+                  }
+                  if (res.description) {
+                    others.description = res.description;
+                  }
+                  if (res.minzoom !== undefined) {
+                    others.minzoom = res.minzoom.toString();
+                  }
+                  if (res.maxzoom !== undefined) {
+                    others.maxzoom = res.maxzoom.toString();
+                  }
+                  if (res.center) {
+                    others.center = res.center.toString().replaceAll(',', ', ');
+                  }
+                  if (Object.keys(others).length > 0) {
+                    vars.others = others;
+                  }
+                }
+                this.renderInfo(vars, 'Others');
+              });
+            } else if (type === 'OSM') {
+              vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
+            }
+            if (rendInfo) {
+              this.renderInfo(vars, 'Others');
+            }
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
           let otherStyles = [];

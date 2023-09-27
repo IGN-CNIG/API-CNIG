@@ -90,5 +90,10 @@
   "extension": "Extensión",
   "loading": "Cargando",
   "attributes": "Atributos",
-  "values": "Valores"
+  "values": "Valores",
+  "attribution": "Atributo",
+  "description": "Descripción",
+  "minzoom": "Zoom mínimo",
+  "maxzoom": "Zoom máximo",
+  "center": "Centro"
 }
