@@ -259,8 +259,8 @@
                         ">
 
                             <p>URLs</p>
-                            <p>URL Visualizador: <a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a></p>
-                            <p>${contentApiURL} <a href="${apiURL}" target="_blank" rel="noopener noreferrer">${apiURL}</a></p>
+                            <p>${contentURL} <a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a></p>
+                            <p>URL API-REST: <a href="${apiURL}" target="_blank" rel="noopener noreferrer">${apiURL}</a></p>
                         </td>
                     </tr>
 
