@@ -169,7 +169,7 @@ public class EmailWS {
 			data.put("contentURL", "");
 		   } else {
 			data.put("shareURL", shareURL);
-			data.put("contentApiURL", "URL Visualizador: ");
+			data.put("contentURL", "URL Visualizador: ");
 		   }
 		   //data.put("sendergeometry", cuerpo);
 		   String bodyData = getTemplate(data);
