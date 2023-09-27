@@ -163,12 +163,13 @@ public class EmailWS {
 		   data.put("sendername", properties.getString("emailName"));
 		   data.put("senderemail", properties.getString("emailUser"));
 		   data.put("errDescription", properties.getString("errDescripcion"));
-		   data.put("shareURL", shareURL);
 		   data.put("apiURL", apiURL);
-		   data.put("contentApiURL", "URL Visualizador: ");
 		   if(properties.getString("URL").equals("")) {
 			data.put("shareURL", "");
 			data.put("contentURL", "");
+		   } else {
+			data.put("shareURL", shareURL);
+			data.put("contentApiURL", "URL Visualizador: ");
 		   }
 		   //data.put("sendergeometry", cuerpo);
 		   String bodyData = getTemplate(data);
