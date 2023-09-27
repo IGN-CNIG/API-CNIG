@@ -575,7 +575,7 @@ export default class LayerswitcherControl extends M.Control {
                 }
                 this.renderInfo(vars, 'Others');
               });
-            } else if (type === 'OSM') {
+            } else if (type === 'OSM' || type === 'MBTiles') {
               vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
             }
             if (rendInfo) {
