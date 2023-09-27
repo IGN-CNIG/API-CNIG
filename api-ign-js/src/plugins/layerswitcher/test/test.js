@@ -14,175 +14,175 @@ const map = M.map({
 
 const PRECHARGED = {
   services: [{
-    name: 'Camino de Santiago',
-    type: 'WMS',
-    url: 'https://www.ign.es/wms-inspire/camino-santiago',
-  },
-  {
-    name: 'Redes Geodésicas',
-    type: 'WMS',
-    url: 'https://www.ign.es/wms-inspire/redes-geodesicas',
-  },
-  {
-    name: 'Planimetrías',
-    type: 'WMS',
-    url: 'https://www.ign.es/wms/minutas-cartograficas',
-  },
+      name: 'Camino de Santiago',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms-inspire/camino-santiago',
+    },
+    {
+      name: 'Redes Geodésicas',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms-inspire/redes-geodesicas',
+    },
+    {
+      name: 'Planimetrías',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms/minutas-cartograficas',
+    },
   ],
   groups: [{
-    name: 'Cartografía',
-    services: [{
-      name: 'Mapas',
-      type: 'WMTS',
-      url: 'https://www.ign.es/wmts/mapa-raster?',
-    },
-    {
-      name: 'Callejero ',
-      type: 'WMTS',
-      url: 'https://www.ign.es/wmts/ign-base?',
-    },
-    {
-      name: 'Primera edición MTN y Minutas de 1910-1970',
-      type: 'WMTS',
-      url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
-    },
-    {
-      name: 'Planimetrías (1870 y 1950)',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms/minutas-cartograficas?',
-    },
-    {
-      name: 'Planos de Madrid (1622 - 1960)',
-      type: 'WMTS',
-      url: 'https://www.ign.es/wmts/planos?',
-    },
-    {
-      name: 'Hojas kilométricas (Madrid - 1860)',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms/hojas-kilometricas?',
-    },
-    {
-      name: 'Cuadrículas Mapa Topográfico Nacional',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms-inspire/cuadriculas?',
-    },
+      name: 'Cartografía',
+      services: [{
+          name: 'Mapas',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/mapa-raster?',
+        },
+        {
+          name: 'Callejero ',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/ign-base?',
+        },
+        {
+          name: 'Primera edición MTN y Minutas de 1910-1970',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
+        },
+        {
+          name: 'Planimetrías (1870 y 1950)',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms/minutas-cartograficas?',
+        },
+        {
+          name: 'Planos de Madrid (1622 - 1960)',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/planos?',
+        },
+        {
+          name: 'Hojas kilométricas (Madrid - 1860)',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms/hojas-kilometricas?',
+        },
+        {
+          name: 'Cuadrículas Mapa Topográfico Nacional',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/cuadriculas?',
+        },
 
-    ],
-  },
-  {
-    name: 'Imágenes',
-    services: [{
-      name: 'Ortofotos máxima actualidad PNOA',
-      type: 'WMTS',
-      url: 'https://www.ign.es/wmts/pnoa-ma?',
+      ],
     },
     {
-      name: 'Ortofotos históricas y PNOA anual',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms/pnoa-historico?',
+      name: 'Imágenes',
+      services: [{
+          name: 'Ortofotos máxima actualidad PNOA',
+          type: 'WMTS',
+          url: 'https://www.ign.es/wmts/pnoa-ma?',
+        },
+        {
+          name: 'Ortofotos históricas y PNOA anual',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms/pnoa-historico?',
+        },
+        {
+          name: 'Ortofotos provisionales PNOA',
+          type: 'WMS',
+          url: 'https://wms-pnoa.idee.es/pnoa-provisionales?',
+        },
+        {
+          name: 'Mosaicos de satélite',
+          type: 'WMS',
+          url: 'https://wms-satelites-historicos.idee.es/satelites-historicos?',
+        },
+        {
+          name: 'Fototeca (Consulta de fotogramas históricos y PNOA)',
+          type: 'WMS',
+          url: 'https://wms-fototeca.idee.es/fototeca?',
+        },
+      ],
     },
     {
-      name: 'Ortofotos provisionales PNOA',
-      type: 'WMS',
-      url: 'https://wms-pnoa.idee.es/pnoa-provisionales?',
+      name: 'Información geográfica de referencia y temática',
+      services: [{
+          name: 'Catastro ',
+          type: 'WMS',
+          url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
+        },
+        {
+          name: 'Unidades administrativas',
+          type: 'WMS',
+          url: ' https://www.ign.es/wms-inspire/unidades-administrativas?',
+        },
+        {
+          name: 'Nombres geográficos (Nomenclátor Geográfico Básico NGBE)',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/ngbe?',
+        },
+        {
+          name: 'Redes de transporte',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/transportes?',
+        },
+        {
+          name: 'Hidrografía ',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/hidrografia?',
+        },
+        {
+          name: 'Direcciones y códigos postales',
+          type: 'WMS',
+          url: 'https://www.cartociudad.es/wms-inspire/direcciones-ccpp?',
+        },
+        {
+          name: 'Ocupación del suelo (Corine y SIOSE)',
+          type: 'WMTS',
+          url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
+        },
+        {
+          name: 'Ocupación del suelo Histórico (Corine y SIOSE)',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo-historico?',
+        },
+        {
+          name: 'Copernicus Land Monitoring Service',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms/copernicus-landservice-spain?',
+        },
+        {
+          name: 'Información sísmica (terremotos)',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/geofisica?',
+        },
+        {
+          name: 'Red de vigilancia volcánica',
+          type: 'WMS',
+          url: 'https://wms-volcanologia.ign.es/volcanologia?',
+        },
+        {
+          name: 'Redes geodésicas',
+          type: 'WMS',
+          url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
+        },
+      ],
     },
     {
-      name: 'Mosaicos de satélite',
-      type: 'WMS',
-      url: 'https://wms-satelites-historicos.idee.es/satelites-historicos?',
+      name: 'Modelos digitales de elevaciones',
+      services: [{
+          name: 'Modelo Digital de Superficies (Sombreado superficies y consulta de elevaciones edificios y vegetación)',
+          type: 'WMTS',
+          url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+        },
+        {
+          name: 'Modelo Digital del Terreno (Sombreado terreno y consulta de altitudes)',
+          type: 'WMTS',
+          url: 'https://servicios.idee.es/wmts/mdt?',
+          white_list: ['EL.ElevationGridCoverage'],
+        },
+        {
+          name: 'Curvas de nivel y puntos acotados',
+          type: 'WMS',
+          url: 'https://servicios.idee.es/wms-inspire/mdt?',
+          white_list: ['EL.ContourLine', 'EL.SpotElevation'],
+        },
+      ],
     },
-    {
-      name: 'Fototeca (Consulta de fotogramas históricos y PNOA)',
-      type: 'WMS',
-      url: 'https://wms-fototeca.idee.es/fototeca?',
-    },
-    ],
-  },
-  {
-    name: 'Información geográfica de referencia y temática',
-    services: [{
-      name: 'Catastro ',
-      type: 'WMS',
-      url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
-    },
-    {
-      name: 'Unidades administrativas',
-      type: 'WMS',
-      url: ' https://www.ign.es/wms-inspire/unidades-administrativas?',
-    },
-    {
-      name: 'Nombres geográficos (Nomenclátor Geográfico Básico NGBE)',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms-inspire/ngbe?',
-    },
-    {
-      name: 'Redes de transporte',
-      type: 'WMS',
-      url: 'https://servicios.idee.es/wms-inspire/transportes?',
-    },
-    {
-      name: 'Hidrografía ',
-      type: 'WMS',
-      url: 'https://servicios.idee.es/wms-inspire/hidrografia?',
-    },
-    {
-      name: 'Direcciones y códigos postales',
-      type: 'WMS',
-      url: 'https://www.cartociudad.es/wms-inspire/direcciones-ccpp?',
-    },
-    {
-      name: 'Ocupación del suelo (Corine y SIOSE)',
-      type: 'WMTS',
-      url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
-    },
-    {
-      name: 'Ocupación del suelo Histórico (Corine y SIOSE)',
-      type: 'WMS',
-      url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo-historico?',
-    },
-    {
-      name: 'Copernicus Land Monitoring Service',
-      type: 'WMS',
-      url: 'https://servicios.idee.es/wms/copernicus-landservice-spain?',
-    },
-    {
-      name: 'Información sísmica (terremotos)',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms-inspire/geofisica?',
-    },
-    {
-      name: 'Red de vigilancia volcánica',
-      type: 'WMS',
-      url: 'https://wms-volcanologia.ign.es/volcanologia?',
-    },
-    {
-      name: 'Redes geodésicas',
-      type: 'WMS',
-      url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
-    },
-    ],
-  },
-  {
-    name: 'Modelos digitales de elevaciones',
-    services: [{
-      name: 'Modelo Digital de Superficies (Sombreado superficies y consulta de elevaciones edificios y vegetación)',
-      type: 'WMTS',
-      url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-    },
-    {
-      name: 'Modelo Digital del Terreno (Sombreado terreno y consulta de altitudes)',
-      type: 'WMTS',
-      url: 'https://servicios.idee.es/wmts/mdt?',
-      white_list: ['EL.ElevationGridCoverage'],
-    },
-    {
-      name: 'Curvas de nivel y puntos acotados',
-      type: 'WMS',
-      url: 'https://servicios.idee.es/wms-inspire/mdt?',
-      white_list: ['EL.ContourLine', 'EL.SpotElevation'],
-    },
-    ],
-  },
 
   ],
 };
@@ -193,9 +193,9 @@ const mp = new Layerswitcher({
   tooltip: 'Capas',
   collapsible: true,
   isDraggable: true,
-  modeSelectLayers: 'radio',
+  modeSelectLayers: 'eyes',
   // tools: [],
-  tools: ['transparency', 'legend'],
+  tools: ['transparency', 'zoom', 'legend', 'information', 'style', 'delete'],
   // tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
   isMoveLayers: true,
   precharged: PRECHARGED,
@@ -206,12 +206,13 @@ const mp = new Layerswitcher({
 map.addPlugin(mp);
 
 // CAPAS
-
-const capaGeoJSON = new M.layer.GeoJSON({
+M.proxy(false);
+let capaGeoJSON = new M.layer.GeoJSON({
   name: 'Capa GeoJSON',
   legend: 'Capa GeoJSON',
-  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
-  extract: false,
+  url: 'http://localhost:6123/test/features.json',
+  // url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
+  extract: true,
 });
 
 const capaOSM = new M.layer.OSM({
@@ -312,7 +313,7 @@ const capaVector = new M.layer.Vector({
 });
 const feature = new M.Feature('localizacion', {
   type: 'Feature',
-  properties: {},
+  properties: { text: 'prueba' },
   geometry: {
     type: 'Point',
     coordinates: [-458757.1288, 4795217.2530],
@@ -351,15 +352,31 @@ const capaXYZ = new M.layer.XYZ({
 });
 
 
-map.addLayers(capaGeoJSON);
+// map.addLayers(capaGeoJSON);
+// map.getMapImpl().on('moveend', () => {
+//   map.removeLayers([capaGeoJSON]);
+//   capaGeoJSON = new M.layer.GeoJSON({
+//     name: 'Capa GeoJSON',
+//     legend: 'Capa GeoJSON',
+//     url: 'http://localhost:6123/test/features.json',
+//     // url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
+//     extract: true,
+//   });
+//   map.addLayers(capaGeoJSON);
+// });
+
 map.addLayers(capaOSM);
+window.capaOSM = capaOSM;
 map.addLayers(capaKML);
+window.capaKML = capaKML;
 // map.addLayers(capaMVT);
 // map.addLayers(capaOGCAPIFeatures);
+window.capaOGCAPIFeatures = capaOGCAPIFeatures;
 // map.addLayers(capaTMS);
 // map.addLayers(capaVector);
 // capaVector.addFeatures(feature);
 // map.addLayers(capaWFS);
+window.capaWFS = capaWFS;
 // map.addLayers(capaWMS);
 // map.addLayers(capaWMTS);
 // map.addLayers(capaXYZ);
@@ -367,6 +384,65 @@ map.addLayers(capaKML);
 window.map = map;
 window.capaGeoJSON = capaGeoJSON;
 window.capaKML = capaKML;
+
+// const capa = new M.layer.GeoJSON({
+//   name: "capaJson",
+//   source: {
+//     "type": "FeatureCollection",
+//     "features": [{
+//       "properties": {
+//         "estado": 1,
+//         "vendor": {
+//           "mapea": {}
+//         },
+//         "sede": "/Sevilla/CHGCOR003-Oficina de la zona regable del Genil",
+//         "tipo": "ADSL",
+//         "name": "/Sevilla/CHGCOR003-Oficina de la zona regable del Genil"
+//       },
+//       "type": "Feature",
+//       "geometry": {
+//         "type": "Point",
+//         "coordinates": [-5.278075, 37.69374444444444]
+//       }
+//     }],
+//     "crs": {
+//       "properties": {
+//         "name": "EPSG:4326"
+//       },
+//       "type": "name"
+//     }
+//   }
+// });
+
+// map.addLayers(capa);
+
+// const mbtile = new M.layer.MBTiles({
+//   name: 'mbtilesLoadFunction',
+//   legend: 'Capa personalizada MBTiles',
+//   tileLoadFunction: (z, x, y) => {
+//     return new Promise((resolve) => {
+//       if (z > 4) {
+//         resolve('https://cdn-icons-png.flaticon.com/512/4616/4616040.png');
+//       } else {
+//         resolve('https://cdn.icon-icons.com/icons2/2444/PNG/512/location_map_pin_direction_icon_148665.png');
+//       }
+//     });
+//   },
+// });
+// map.addLayers(mbtile);
+
+// const mbtileVector = new M.layer.MBTilesVector({
+//   name: 'mbtilesvector',
+//   legend: 'Capa personalizada MBTilesVector',
+//   tileLoadFunction: (z, x, y) => {
+//     return new Promise((resolve) => {
+//       window.fetch(`https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/${z}/${x}/${y}.pbf`).then((response) => {
+//         resolve(response.arrayBuffer());
+//       });
+//     });
+//   },
+// });
+// map.addLayers(mbtileVector);
 
 // OTRAS PRUEBAS
 
