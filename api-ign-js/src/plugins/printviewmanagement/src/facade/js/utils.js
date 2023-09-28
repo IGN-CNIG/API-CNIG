@@ -139,14 +139,21 @@ export function formatImageBase64(base64) {
 // Services SIG Geoprint List
 export const LIST_SERVICES = `
     <section>
-      <h1>Fuentes disponibles</h1>
-      <p><b>Capas ráster</b></p>
+      <h1 style="text-align: center;">Fuentes disponibles</h1>
+      <p><b>${getValue('layer_raster')}</b></p>
       <ul>
-        <li><b>WMS: </b> WMS devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales. Permitiendo las personalización de las capas mediante estilos. </li>
-        <li><b>WMTS: </b> WMTS (Web Map Tile Service) es un estándar OGC para servir información geográfica en forma de tiles pregenerados a unas resoluciones específicas.</li>
-        <li><b>TMS: </b> Las capas TMS (Tile Map Service) son servicios de información geográfica en forma de tiles muy similares a las capas XYZ.</li>
-        <li><b>XYZ: </b> Las capas XYZ son servicios de información geográfica en forma de tiles. Cada tile representa una combinación de tres parámetros.</li>
+        <li><b>WMS: </b>${getValue('layer_wms')}</li>
+        <li><b>WMTS: </b>${getValue('layer_wmts')}</li>
+        <li><b>TMS: </b>${getValue('layer_tms')}</li>
+        <li><b>XYZ: </b>${getValue('layer_xyz')}</li>
+      </ul>
+      <p><b>${getValue('layer_vector')}</b></p>
       <ul>
+        <li><b>GeoJSON: </b> ${getValue('layer_geojson')}</li>
+        <li><b>WFS: </b> ${getValue('layer_wfs')} </li>
+        <li><b>KML: </b> ${getValue('layer_kml')}</li>
+        <li><b>OGCAPIFeatures: </b> ${getValue('layer_OGCAPIFeatures')}</li>
+      </ul>
       <p><b>Más información:</b> <a href="https://github.com/IGN-CNIG/API-CNIG/wiki/2.1.-Capas">https://github.com/IGN-CNIG/API-CNIG/wiki/2.1.-Capas</a></p>
     </section>
 `;

@@ -10,7 +10,8 @@
     "teselaError": "The request has caused an error in printing. < br / > Please try again.",
     "printError": "Printing has failed.",
     "encode_method": "The used implementation does not have the encodeLayer method",
-    "tile": "The request for some tile has caused a printing error. <br/>Please try again."
+    "tile": "The request for some tile has caused a printing error. <br/>Please try again.",
+    "support": "MVT and MBTilesVector layers are not supported"
   },
   "tooltip": "Map printing",
   "map_printing": "Map printing",
@@ -47,5 +48,16 @@
   "typeClient": "From Client: Screen Content",
   "typeServer": "From Server: Georeferenced Image",
   "selectLayer": "Select the layer to download",
-  "clipBoard": "Copy to clipboard"
+  "clipBoard": "Copy to clipboard",
+  "layer_wms": "WMS returns a map in image format from a set of raster or vector layers. Allowing customization of layers through styles.",
+  "layer_wmts": " WMTS (Web Map Tile Service) es un estándar OGC para servir información geográfica en forma de tiles pregenerados a unas resoluciones específicas.",
+  "layer_tms": "TMS (Tile Map Service) layers are geographic information services in the form of tiles very similar to XYZ layers.",
+  "layer_xyz": "Las capas XYZ son servicios de información geográfica en forma de tiles. Cada tile representa una combinación de tres parámetros.",
+  "layer_raster": "Layers raster:",
+  "layer_vector": "Layers vector:",
+  "layer_geojson": "Despite not being an OGC standard (it is on its way to becoming one), it is a very widespread geographic information exchange format that, like WFS, allows all the elements to be on the client.",
+  "layers_wfs": "(Web Feature Service) is an OGC standard for the download and transfer of geographic information, where the geographic elements or features are transmitted in their entirety to the client.",
+  "layers_kml": "(Keyhole Markup Language). KML is an XML-based markup language for representing geographic data in three dimensions.",
+  "layer_OGCAPIFeatures": "(OGC API - FEATURES) is an OGC standard that provides the ability to create, modify, and query spatial data on the Web and specifies requirements and recommendations for APIs that want to follow a standard way of sharing feature data.",
+  "tooltip_georefimageepsg": "EPSG code of the georeferenced image"
 }

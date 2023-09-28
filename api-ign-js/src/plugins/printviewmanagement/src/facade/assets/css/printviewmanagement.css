@@ -504,6 +504,10 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     gap: 25px;
   }
 
+  .m-georefimage-projection {
+    text-align: center;
+  }
+
   .georefimage-jgwKeppview {
     display: flex;
     justify-content: center;

@@ -10,7 +10,8 @@
     "teselaError": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
     "printError": "Se ha producido un error en la impresión.",
     "encode_method": "La implementación usada no posee el método encodeLayer",
-    "tile": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo."
+    "tile": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
+    "support": "Las capas MVT y MBTilesVector no están soportadas."
   },
   "tooltip": "Impresión del mapa",
   "map_printing": "Impresión del mapa",
@@ -47,5 +48,16 @@
   "typeClient": "Desde cliente: contenido de pantalla",
   "typeServer": "Desde servidor: contenido de servidor",
   "selectLayer": "Selecciona la capa a descargar",
-  "clipBoard": "Copiar al portapapeles"
+  "clipBoard": "Copiar al portapapeles",
+  "layer_wms": "WMS devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales. Permitiendo las personalización de las capas mediante estilos. ",
+  "layer_wmts": " WMTS (Web Map Tile Service) es un estándar OGC para servir información geográfica en forma de tiles pregenerados a unas resoluciones específicas.",
+  "layer_tms": "Las capas TMS (Tile Map Service) son servicios de información geográfica en forma de tiles muy similares a las capas XYZ.",
+  "layer_xyz": "Las capas XYZ son servicios de información geográfica en forma de tiles. Cada tile representa una combinación de tres parámetros.",
+  "layer_raster": "Capas ráster:",
+  "layer_vector": "Capas vectoriales:",
+  "layer_geojson": "Pese a no ser un estándar OGC (está camino de convertirse en ello), es un formato de intercambio de información geográfica muy extendido que, al igual que WFS, permite tener todos los elementos en el cliente.",
+  "layer_wfs": "(Web Feature Service) es un estándar OGC para la descarga y transferencia de información geográfica, donde los elementos geográficos o features se transmiten en su totalidad al cliente.",
+  "layer_kml": "(Keyhole Markup Language). KML es un lenguaje de marcado basado en XML para representar datos geográficos en tres dimensiones.",
+  "layer_OGCAPIFeatures": "(OGC API - FEATURES) es un estándar OGC que ofrece la capacidad de crear, modificar y consultar datos espaciales en la Web y especifica requisitos y recomendaciones para las API que desean seguir una forma estándar de compartir datos de entidades.",
+  "tooltip_georefimageepsg": "Georreferenciar imagen predefinida"
 }
