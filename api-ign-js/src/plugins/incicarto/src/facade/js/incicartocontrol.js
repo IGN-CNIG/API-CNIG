@@ -748,7 +748,7 @@ export default class IncicartoControl extends M.Control {
     }
 
 
-    // Caso API
+    // API
     // M.config.MAP_VIWER_LAYERS
     // URL de la API - centro, zoom, srs, todas las capas, plugin y controles
     if(HOSTNAME.includes(window.location.hostname) && window.location.pathname.includes(PATH_NAME)) {
@@ -768,10 +768,6 @@ export default class IncicartoControl extends M.Control {
       url = ''
       onlyURL = true;
     }
-
-    console.log('URL', url);
-    console.log('API_URL', api_url);
-
 
     return {
       "email_subject": email_subject,
