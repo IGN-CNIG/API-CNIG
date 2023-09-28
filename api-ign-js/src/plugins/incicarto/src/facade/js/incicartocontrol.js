@@ -941,7 +941,7 @@ export default class IncicartoControl extends M.Control {
     }
 
     if (newControls.indexOf('scale') === -1 || (newControls.indexOf('scale') === newControls.indexOf('scaleline'))) {
-      newControls = newControls.concat(',scale*true');
+      // newControls = newControls.concat(',scale*true');
     }
     return newControls;
   }
