@@ -755,14 +755,13 @@ export default class IncicartoControl extends M.Control {
       onlyURL = true;
       url = url.split('?')[0];
       api_url+= `?${center}${zoom}${srs}${layers}${controls}${plugin}`;
-    } 
-
-    // Visor
-    // URL del visor - centro, zoom, srs, capas por url.
-    // URL de la API - centro, zoom, srs, capas por url.
-    url+= `?${center}${zoom}${srs}${M.config.MAP_VIEWER_LAYERS.toString()}`;
-    api_url+= `?${center}${zoom}${srs}${M.config.MAP_VIEWER_LAYERS.toString()}`;
-
+    } else {
+      // Visor
+      // URL del visor - centro, zoom, srs, capas por url.
+      // URL de la API - centro, zoom, srs, capas por url.
+      url+= `?${center}${zoom}${srs}${M.config.MAP_VIEWER_LAYERS.toString()}`;
+      api_url+= `?${center}${zoom}${srs}${M.config.MAP_VIEWER_LAYERS.toString()}`;
+    }
 
     if (url.indexOf('.jsp') > -1) {
       url = ''
