@@ -739,3 +739,20 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
 .m-printermap-params div label {
     margin-right: 5px;
 }
+
+@media (width <= 507px) {
+    .m-control.m-container.m-printviewmanagement {
+        width: 300px;
+    }
+
+    .georefimage-jgwKeppview {
+        flex-direction: column;
+    }
+    .m-georefimage-titleFormat input {
+        width: 50%;
+    }
+
+    .georefimage-jgwKeppview div:first-child {
+        width: 80%;
+    }
+}
