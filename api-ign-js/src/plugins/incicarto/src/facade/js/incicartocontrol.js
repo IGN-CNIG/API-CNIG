@@ -707,7 +707,7 @@ export default class IncicartoControl extends M.Control {
     document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
     document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
-    document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.shareURL;
+    document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.URL;
     document.querySelector("#m-plugin-incicarto-email-apiURL").value = propiedades_incidencia.API_URL;
     document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
     let inputFile = document.querySelector('#fileUpload');
@@ -727,20 +727,8 @@ export default class IncicartoControl extends M.Control {
     let errDescription = document.querySelector("#err-description").value;
 
     let url = window.location.href;
+    let api_url = M.config.MAPEA_URL;
     let onlyURL = false;
-
-    // Get de los datos
-    console.log(this.getLayersInLayerswitcher(), this.getControlsFormat())
-
-    if(HOSTNAME.includes(window.location.hostname) && window.location.pathname.includes(PATH_NAME)) {
-      onlyURL = true;
-      url = url.split('?')[0];
-    }
-
-    if (url.startsWith('file:///')) {
-      const index = url.lastIndexOf('/');
-      url = `file://${url.substring(index)}`;
-    }
 
     const { x, y } = this.map_.getCenter();
     const center = `&center=${x},${y}`;
@@ -748,16 +736,42 @@ export default class IncicartoControl extends M.Control {
     const srs = `&srs=${this.map_.getProjection().code}`;
     const layers = `&layers=${this.getLayersInLayerswitcher().toString()}`;
     const controls = `&controls=${this.getControlsFormat()}`;
+    const plugin = `&${this.getPlugins()}`;
 
-    const shareURL = `?${center}${zoom}${srs}${layers}${controls}`;
 
-    console.log(M.config.MAPEA_URL+shareURL)
-    console.log(url+shareURL)
-    
+    // File 
+    // URL del visor - centro, zoom, srs, capas por url.
+    // URL de la API - centro, zoom, srs, capas por url.
+    if (url.startsWith('file:///')) {
+      const index = url.lastIndexOf('/');
+      url = `file://${url.substring(index)}`;
+    }
+
+
+    // Caso API
+    // M.config.MAP_VIWER_LAYERS
+    // URL de la API - centro, zoom, srs, todas las capas, plugin y controles
+    if(HOSTNAME.includes(window.location.hostname) && window.location.pathname.includes(PATH_NAME)) {
+      onlyURL = true;
+      url = url.split('?')[0];
+      api_url+= `?${center}${zoom}${srs}${layers}${controls}${plugin}`;
+    } 
+
+    // Visor
+    // URL del visor - centro, zoom, srs, capas por url.
+    // URL de la API - centro, zoom, srs, capas por url.
+    url+= `?${center}${zoom}${srs}${M.config.MAP_VIEWER_LAYERS.toString()}`;
+    api_url+= `?${center}${zoom}${srs}${M.config.MAP_VIEWER_LAYERS.toString()}`;
+
+
     if (url.indexOf('.jsp') > -1) {
       url = ''
       onlyURL = true;
     }
+
+    console.log('URL', url);
+    console.log('API_URL', api_url);
+
 
     return {
       "email_subject": email_subject,
@@ -766,9 +780,8 @@ export default class IncicartoControl extends M.Control {
       "emailName": emailName,
       "emailUser": emailUser,
       "errDescripcion": errDescription,
-      "URL": (onlyURL) ? '' : url,
-      "API_URL": M.config.MAPEA_URL,
-      "paramsURL": encodeURI(shareURL),
+      "URL": (onlyURL) ? '' : encodeURI(url),
+      "API_URL": encodeURI(api_url),
     }
 
   }
@@ -912,7 +925,9 @@ export default class IncicartoControl extends M.Control {
   getPlugins() {
     return this.map_.getPlugins().map((plugin) => {
       let newCurrent = '';
-      if (M.utils.isFunction(plugin.getAPIRest)) {
+      if (M.utils.isFunction(plugin.getAPIRestBase64)) {
+        newCurrent = plugin.getAPIRestBase64();
+      } else if(M.utils.isFunction(plugin.getAPIRest)) {
         newCurrent = plugin.getAPIRest();
       }
       return newCurrent;
@@ -1008,7 +1023,7 @@ export default class IncicartoControl extends M.Control {
       document.querySelector("#m-plugin-incicarto-email-apiURL").value = propiedades_incidencia.API_URL;
       document.querySelector("#m-plugin-incicarto-email-errDescription").value = propiedades_incidencia.errDescripcion;
       document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
-      document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.shareURL;
+      document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.URL;
       document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(this.geometryIncidenceJSON, null, '\t');
       let inputFile = document.querySelector('#fileUpload');
       if (inputFile.files.length > 0) {
