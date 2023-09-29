@@ -597,8 +597,12 @@ export default class LayerswitcherControl extends M.Control {
               this.renderInfo(vars, 'Others');
               this.latestVars_ = vars;
             }
-            document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
-            document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
+            if (layer instanceof M.layer.Vector) {
+              document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
+              document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
+              this.hasNext_();
+              this.hasPrevious_();
+            }
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
           let otherStyles = [];
@@ -672,29 +676,7 @@ export default class LayerswitcherControl extends M.Control {
       this.pages_.actual = this.pages_.actual + 1;
       this.pages_.element = this.pages_.element + this.numPages_;
 
-      const tableBody = document.querySelector('#m-layerswitcher-table tbody');
-      tableBody.innerHTML = '';
-
-      this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes)) ?
-        false :
-        // eslint-disable-next-line max-len
-        this.latestVars_.allAttributes.slice(this.pages_.element, this.pages_.element + this.numPages_);
-      if (this.latestVars_.attributes) {
-        this.latestVars_.attributes.forEach((att) => {
-          const tableRow = document.createElement('tr');
-          att.properties.forEach((proper) => {
-            const tableElement = document.createElement('td');
-            tableElement.innerHTML = proper;
-            tableRow.appendChild(tableElement);
-          });
-          tableBody.appendChild(tableRow);
-        });
-      }
-
-      document.querySelector('#m-layerswitcher-pageinfo').innerText = `Página ${this.pages_.actual} de ${this.pages_.total}`;
-
-      this.hasNext_();
-      this.hasPrevious_();
+      this.updateTablePage_();
     }
   }
 
@@ -709,30 +691,44 @@ export default class LayerswitcherControl extends M.Control {
       this.pages_.actual = this.pages_.actual - 1;
       this.pages_.element = this.pages_.element - this.numPages_;
 
-      const tableBody = document.querySelector('#m-layerswitcher-table tbody');
-      tableBody.innerHTML = '';
-
-      this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes)) ?
-        false :
-        // eslint-disable-next-line max-len
-        this.latestVars_.allAttributes.slice(this.pages_.element, this.pages_.element + this.numPages_);
-      if (this.latestVars_.attributes) {
-        this.latestVars_.attributes.forEach((att) => {
-          const tableRow = document.createElement('tr');
-          att.properties.forEach((proper) => {
-            const tableElement = document.createElement('td');
-            tableElement.innerHTML = proper;
-            tableRow.appendChild(tableElement);
-          });
-          tableBody.appendChild(tableRow);
-        });
-      }
-
-      document.querySelector('#m-layerswitcher-pageinfo').innerText = `Página ${this.pages_.actual} de ${this.pages_.total}`;
-
-      this.hasPrevious_();
+      this.updateTablePage_();
     }
   }
+
+  /**
+   * This function updates the current page on the table
+   *
+   * @private
+   * @function
+   */
+  updateTablePage_() {
+    const tableBody = document.querySelector('#m-layerswitcher-table tbody');
+    tableBody.innerHTML = '';
+
+    this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes))
+      ? false
+      : this.latestVars_.allAttributes
+        .slice(this.pages_.element, this.pages_.element + this.numPages_);
+
+    if (this.latestVars_.attributes) {
+      this.latestVars_.attributes.forEach((att) => {
+        const tableRow = document.createElement('tr');
+        att.properties.forEach((proper) => {
+          const tableElement = document.createElement('td');
+          tableElement.innerHTML = proper;
+          tableRow.appendChild(tableElement);
+        });
+        tableBody.appendChild(tableRow);
+      });
+    }
+
+    document.querySelector('#m-layerswitcher-pageinfo').innerText = `Página ${this.pages_.actual} de ${this.pages_.total}`;
+
+    this.hasNext_();
+    this.hasPrevious_();
+  }
+
+
   /**
    * This function adds / deletes classes if you have next results
    *
@@ -740,10 +736,13 @@ export default class LayerswitcherControl extends M.Control {
    * @function
    */
   hasNext_(html) {
-    let element = this.template_;
+    let element;
     if (!M.utils.isNullOrEmpty(html)) element = html;
+    if (M.utils.isNullOrEmpty(element)) element = document;
     if (this.pages_.actual < this.pages_.total) {
       element.querySelector('#m-layerswitcher-next').classList.remove('m-layerswitcher-hidden');
+    } else {
+      element.querySelector('#m-layerswitcher-next').classList.add('m-layerswitcher-hidden');
     }
   }
 
@@ -754,10 +753,13 @@ export default class LayerswitcherControl extends M.Control {
    * @function
    */
   hasPrevious_(html) {
-    let element = this.template_;
+    let element;
     if (!M.utils.isNullOrEmpty(html)) element = html;
+    if (M.utils.isNullOrEmpty(element)) element = document;
     if (this.pages_.actual <= this.pages_.total && this.pages_.actual !== 1) {
       element.querySelector('#m-layerswitcher-previous').classList.remove('m-layerswitcher-hidden');
+    } else {
+      element.querySelector('#m-layerswitcher-previous').classList.add('m-layerswitcher-hidden');
     }
   }
 

@@ -29,19 +29,26 @@
         {{#gt attributes.length 0 }}
             <div id="m-layerswitcher-tfoot">
                 <p tabindex="0"><span>{{translations.attributes}}:</span>&nbsp;</p>
-                <div>
-                    <span class="g-cartografia-flecha-izquierda m-layerswitcher-hidden" id="m-layerswitcher-previous"></span>
+                <div class="m-layerswitcher-pagecontrolscontainer">
+                    <div class="m-layerswitcher-fixedwidthbutton">
+                        <span class="g-cartografia-flecha-izquierda m-layerswitcher-hidden" id="m-layerswitcher-previous"></span>
+                    </div>
                     <span id="m-layerswitcher-pageinfo">Página {{pages.actual}} de {{pages.total}}</span>
-                    <span class="g-cartografia-flecha-derecha m-layerswitcher-hidden" id="m-layerswitcher-next"></span>
+                    <div class="m-layerswitcher-fixedwidthbutton">
+                        <span class="g-cartografia-flecha-derecha m-layerswitcher-hidden" id="m-layerswitcher-next"></span>
+                    </div>
                 </div>
             </div>
-            <table id="m-layerswitcher-table">
-                <tbody>
+            <table id="m-layerswitcher-table" class="m-layerswitcher-tablepagination">
+                <thead>
                     <tr>
                         {{#each headerAtt}}
                             <td>{{this}}</td>
                         {{/each}}
-                    </tr> {{#each attributes}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each attributes}}
                         <tr>
                             {{#each this.properties}}
                                 <td> {{{this}}}</td>
