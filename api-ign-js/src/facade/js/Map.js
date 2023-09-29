@@ -2066,16 +2066,21 @@ class Map extends Base {
    *
    * @public
    * @function
+   * @param {Boolean} exact Permite devolver el zoom exacto del mapa en caso de que se permita
+   * niveles de zoom intermedios, Por defecto es false.
    * @returns {Number} Devuelve el zoom actual.
    * @api
    */
-  getZoom() {
+  getZoom(exact = false) {
     // checks if the implementation can get the zoom
     if (isUndefined(MapImpl.prototype.getZoom)) {
       Exception(getValue('exception').getzoom_method);
     }
 
-    const zoom = this.getImpl().getZoom();
+    let zoom = this.getImpl().getZoom();
+    if (!exact) {
+      zoom = Math.floor(zoom);
+    }
 
     return zoom;
   }
