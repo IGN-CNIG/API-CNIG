@@ -314,7 +314,7 @@ export default class LayerswitcherControl extends M.Control {
 
             from.querySelectorAll('li.m-layerswitcher-layer .m-layerswitcher-title-layer .m-layerswitcher-visible-control *').forEach((elem) => {
               const name = elem.getAttribute('data-layer-name');
-              const url = elem.getAttribute('data-layer-url');
+              const url = elem.getAttribute('data-layer-url') || undefined;
               const type = elem.getAttribute('data-layer-type');
               const filtered = layers.filter((layer) => {
                 return layer.name === name && (layer.url === url || (layer.url === undefined && (layer.type === 'OSM' || layer.type === 'GeoJSON' || layer.type === 'MBTilesVector' || layer.type === 'MBTiles'))) &&
@@ -351,7 +351,7 @@ export default class LayerswitcherControl extends M.Control {
   clickLayer(evtParameter) {
     const evt = (evtParameter || window.event);
     const layerName = evt.target.getAttribute('data-layer-name');
-    const layerURL = evt.target.getAttribute('data-layer-url');
+    const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
     const layerType = evt.target.getAttribute('data-layer-type');
     const selectLayer = evt.target.getAttribute('data-select-type');
 
@@ -787,7 +787,7 @@ export default class LayerswitcherControl extends M.Control {
   //  Función para buscar la capa por nombre, url y tipo
   findLayer(evt) {
     const layerName = evt.target.getAttribute('data-layer-name');
-    const layerURL = evt.target.getAttribute('data-layer-url');
+    const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
     const layerType = evt.target.getAttribute('data-layer-type');
     let result = [];
     if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
