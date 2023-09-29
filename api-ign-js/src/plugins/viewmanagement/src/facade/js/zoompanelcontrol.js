@@ -53,7 +53,7 @@ export default class ZoomPanelControl extends M.Control {
         setTimeout(() => {
           evt.target.classList.remove('activated');
         }, 1000);
-        this.facadeMap_.setZoom(Math.floor(this.facadeMap_.getZoom()) + 1);
+        this.facadeMap_.setZoom(this.facadeMap_.getZoom() + 1);
       });
 
       zoomOutBtn.addEventListener('click', (evt) => {
@@ -61,7 +61,7 @@ export default class ZoomPanelControl extends M.Control {
         setTimeout(() => {
           evt.target.classList.remove('activated');
         }, 1000);
-        this.facadeMap_.setZoom(Math.ceil(this.facadeMap_.getZoom()) - 1);
+        this.facadeMap_.setZoom(this.facadeMap_.getZoom() - 1);
       });
     }
   }
