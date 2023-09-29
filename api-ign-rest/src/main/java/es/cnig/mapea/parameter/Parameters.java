@@ -93,6 +93,12 @@ public class Parameters {
       }
    }
 
+   public void addZoomConstrains (String zoomConstrains) {
+      if (zoomConstrains != null) {
+         parameters.put("zoomConstrains", zoomConstrains);
+      }
+   }
+
    public void addControls (String rawControls) {
       if (rawControls != null) {
          List<String> controls = ParametersParser.parseControls(rawControls);
