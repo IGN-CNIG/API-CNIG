@@ -920,9 +920,10 @@ export default class IncicartoControl extends M.Control {
   getPlugins() {
     return this.map_.getPlugins().map((plugin) => {
       let newCurrent = '';
-      if (M.utils.isFunction(plugin.getAPIRestBase64)) {
-        newCurrent = plugin.getAPIRestBase64();
-      } else if(M.utils.isFunction(plugin.getAPIRest)) {
+      // if (M.utils.isFunction(plugin.getAPIRestBase64)) {
+      //   newCurrent = plugin.getAPIRestBase64();
+      // } else 
+      if(M.utils.isFunction(plugin.getAPIRest)) {
         newCurrent = plugin.getAPIRest();
       }
       return newCurrent;
