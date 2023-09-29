@@ -262,7 +262,7 @@ export default class LayerswitcherControl extends M.Control {
         type: layer.type,
         visible: (layer.isVisible() === true),
         id: layer.name,
-        url: layer.url || 'noURL',
+        url: layer.url,
         outOfRange: !layer.inRange(),
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
@@ -317,7 +317,8 @@ export default class LayerswitcherControl extends M.Control {
               const url = elem.getAttribute('data-layer-url');
               const type = elem.getAttribute('data-layer-type');
               const filtered = layers.filter((layer) => {
-                return layer.name === name && layer.url === url && layer.type === type;
+                return layer.name === name && (layer.url === url || (layer.url === undefined && (layer.type === 'OSM' || layer.type === 'GeoJSON' || layer.type === 'MBTilesVector' || layer.type === 'MBTiles'))) &&
+                  layer.type === type;
               });
               if (filtered.length > 0) {
                 filtered[0].setZIndex(maxZIndex);
@@ -356,7 +357,7 @@ export default class LayerswitcherControl extends M.Control {
 
     if (evt.target.id === 'm-layerswitcher-hsalllayers') {
       this.showHideAllLayers();
-    } else if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+    } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
       !M.utils.isNullOrEmpty(layerType)) {
       let layer = this.findLayer(evt);
       if (layer.length > 0) {
@@ -589,7 +590,7 @@ export default class LayerswitcherControl extends M.Control {
                 }
                 this.renderInfo(vars, 'Others');
               });
-            } else if (type === 'OSM') {
+            } else if (type === 'OSM' || type === 'MBTiles') {
               vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
             }
             if (rendInfo) {
@@ -674,11 +675,10 @@ export default class LayerswitcherControl extends M.Control {
       const tableBody = document.querySelector('#m-layerswitcher-table tbody');
       tableBody.innerHTML = '';
 
-      this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes))
-        ? false
-        : this.latestVars_.allAttributes
-          .slice(this.pages_.element, this.pages_.element + this.numPages_);
-
+      this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes)) ?
+        false :
+        // eslint-disable-next-line max-len
+        this.latestVars_.allAttributes.slice(this.pages_.element, this.pages_.element + this.numPages_);
       if (this.latestVars_.attributes) {
         this.latestVars_.attributes.forEach((att) => {
           const tableRow = document.createElement('tr');
@@ -712,11 +712,10 @@ export default class LayerswitcherControl extends M.Control {
       const tableBody = document.querySelector('#m-layerswitcher-table tbody');
       tableBody.innerHTML = '';
 
-      this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes))
-        ? false
-        : this.latestVars_.allAttributes
-          .slice(this.pages_.element, this.pages_.element + this.numPages_);
-
+      this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes)) ?
+        false :
+        // eslint-disable-next-line max-len
+        this.latestVars_.allAttributes.slice(this.pages_.element, this.pages_.element + this.numPages_);
       if (this.latestVars_.attributes) {
         this.latestVars_.attributes.forEach((att) => {
           const tableRow = document.createElement('tr');
@@ -791,7 +790,7 @@ export default class LayerswitcherControl extends M.Control {
     const layerURL = evt.target.getAttribute('data-layer-url');
     const layerType = evt.target.getAttribute('data-layer-type');
     let result = [];
-    if (!M.utils.isNullOrEmpty(layerName) && !M.utils.isNullOrEmpty(layerURL) &&
+    if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
       !M.utils.isNullOrEmpty(layerType)) {
       result = this.overlayLayers.filter((l) => {
         return l.name === layerName && (l.url === layerURL ||
