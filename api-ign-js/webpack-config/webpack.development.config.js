@@ -44,6 +44,7 @@ module.exports = {
   resolve: {
     alias: {
       handlebars: 'handlebars/dist/handlebars.min.js',
+      proj4: 'proj4/dist/proj4.js',
       templates: path.resolve(__dirname, '../src/templates'),
       assets: path.resolve(__dirname, '../src/facade/assets'),
       M: path.resolve(__dirname, '../src/facade/js'),

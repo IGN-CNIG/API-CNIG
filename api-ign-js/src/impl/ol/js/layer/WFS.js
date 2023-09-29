@@ -2,7 +2,7 @@
  * @module M/impl/layer/WFS
  */
 import FormatGeoJSON from 'M/format/GeoJSON';
-import { isNullOrEmpty, isFunction, includes } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction } from 'M/util/Utils';
 import Popup from 'M/Popup';
 import { compileSync as compileTemplate } from 'M/util/Template';
 import geojsonPopupTemplate from 'templates/geojson_popup';
@@ -32,6 +32,7 @@ class WFS extends Vector {
    * @constructor
    * @implements {M.impl.layer.Vector}
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - style: Define el estilo de la capa.
    * - getFeatureOutputFormat: Formato de los objetos geográficos, por defecto 'application/json'
    * - describeFeatureTypeOutputFormat: Describe el formato de salida de los objetos geográficos.
    * - vendor: Proveedor.
@@ -87,14 +88,20 @@ class WFS extends Vector {
      */
     this.popup_ = null;
 
-
     /**
      * WFS options.getFeatureOutputFormat. Formato de retorno de los features, por defecto
      * default application/json.
      */
+
     if (isNullOrEmpty(this.options.getFeatureOutputFormat)) {
       this.options.getFeatureOutputFormat = 'application/json'; // by default
     }
+
+    /**
+     * WFS GMLVersion_. Versión de GML.
+     */
+    this.GMLVersion_ = (this.options.getFeatureOutputFormat.toUpperCase().includes('GML')) ?
+      this.options.getFeatureOutputFormat : null;
   }
 
   /**
@@ -107,7 +114,9 @@ class WFS extends Vector {
    */
   addTo(map) {
     super.addTo(map);
-    this.updateSource_();
+    // Se sobrescribe el método updateSource_ capa vector
+    // Cuidado primera vez que entra es _draw_
+    // this.updateSource_();
     map.getImpl().on(EventType.CHANGE, () => this.refresh());
   }
 
@@ -170,50 +179,6 @@ class WFS extends Vector {
   }
 
   /**
-   * Pasa los objetos geográficos a la plantilla.
-   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-   *
-   * @public
-   * @function
-   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
-   * @returns {Object} "FeaturesTemplate.features".
-   * @api stable
-   */
-  parseFeaturesForTemplate_(features) {
-    const featuresTemplate = {
-      features: [],
-    };
-
-    features.forEach((feature) => {
-      const properties = feature.getAttributes();
-      const propertyKeys = Object.keys(properties);
-      const attributes = [];
-      propertyKeys.forEach((key) => {
-        let addAttribute = true;
-        // adds the attribute just if it is not in
-        // hiddenAttributes_ or it is in showAttributes_
-        if (!isNullOrEmpty(this.showAttributes_)) {
-          addAttribute = includes(this.showAttributes_, key);
-        } else if (!isNullOrEmpty(this.hiddenAttributes_)) {
-          addAttribute = !includes(this.hiddenAttributes_, key);
-        }
-        if (addAttribute) {
-          attributes.push({
-            key,
-            value: properties[key],
-          });
-        }
-      });
-      const featureTemplate = {
-        id: feature.getId(),
-        attributes,
-      };
-      featuresTemplate.features.push(featureTemplate);
-    });
-    return featuresTemplate;
-  }
-
-  /**
    * Este método actualiza la capa de origen.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
@@ -239,7 +204,7 @@ class WFS extends Vector {
           defaultDataProjection: getProj(this.map.getProjection().code),
         });
       } else {
-        this.formater_ = new FormatGML(this.name, this.version, this.map.getProjection());
+        this.formater_ = new FormatGML(this.map.getProjection(), this.GMLVersion_);
       }
       this.loader_ = new LoaderWFS(this.map, this.service_, this.formater_);
 

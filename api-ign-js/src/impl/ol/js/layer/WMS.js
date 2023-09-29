@@ -69,6 +69,9 @@ class WMS extends LayerBase {
    * - maxResolution: Resolución máxima.
    * - animated: Define si la capa está animada,
    * el valor predeterminado es falso.
+   * - ratio: determina el tamaño de las solicitudes de las imágenes.1 significa que tienen el *
+   * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
+   * y así sucesivamente.Debe ser 1 o superior.Por defecto es 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
@@ -197,6 +200,14 @@ class WMS extends LayerBase {
      * WMS useCapabilities. Indica si se usa el getCapabilities.
      */
     this.useCapabilities = options.useCapabilities !== false;
+
+    /**
+     * WMS ratio. Tamaño de las solicitudes de las imágenes.
+     */
+    this.ratio = options.ratio || 1;
+    if (options.ratio < 1) {
+      console.error('El ratio debe ser 1 o superior');
+    }
   }
 
   /**
@@ -377,12 +388,8 @@ class WMS extends LayerBase {
       }, this.vendorOptions_, true));
     }
     this.map.getMapImpl().addLayer(this.ol3Layer);
-    // sets its visibility if it is in range
-    if (this.isVisible() && !this.inRange()) {
-      this.setVisible(false);
-    } else {
-      this.setVisible(this.visibility);
-    }
+
+    this.setVisible(this.visibility);
 
     // sets its z-index
     if (zIndex !== null) {
@@ -493,9 +500,9 @@ class WMS extends LayerBase {
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
       if (this.tiled === true) {
-        const tileGrid = (this.useCapabilities)
-          ? new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) })
-          : false;
+        const tileGrid = (this.useCapabilities) ?
+          new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) }) :
+          false;
         olSource = new TileWMS({
           url: this.url,
           params: layerParams,
@@ -516,6 +523,7 @@ class WMS extends LayerBase {
           maxResolution,
           opacity,
           zIndex,
+          ratio: this.ratio,
         });
       }
     }

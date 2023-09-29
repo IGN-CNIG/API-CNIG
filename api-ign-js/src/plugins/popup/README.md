@@ -87,6 +87,12 @@ https://componentes.cnig.es/api-core?popup=TR*true*true*Ayuda*https%3A%2F%2Fcomp
 
 ### Ejemplo de uso API-REST en base64
 
+Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
+Ejemplo:
+```javascript
+M.utils.encodeBase64(obj_params);
+```
+
 Ejemplo de constructor:
 ```javascript
 {
@@ -100,7 +106,7 @@ Ejemplo de constructor:
 ```
 
 ```
-https://componentes.cnig.es/api-core?popup=base64=ewogIHBvc2l0aW9uOiAnVFInLAogIGNvbGxhcHNlZDogdHJ1ZSwKICBjb2xsYXBzaWJsZTogdHJ1ZSwKICB1cmxfZXM6ICdodHRwczovL2NvbXBvbmVudGVzLmNuaWcuZXMvYXl1ZGFJYmVycGl4L2VzLmh0bWwnLAogIHVybF9lbjogJ2h0dHBzOi8vY29tcG9uZW50ZXMuY25pZy5lcy9heXVkYUliZXJwaXgvZW4uaHRtbCcsCiAgdG9vbHRpcDogJ0F5dWRhJywKfQ==
+https://componentes.cnig.es/api-core?popup=base64=eyJwb3NpdGlvbiI6IlRSIiwiY29sbGFwc2VkIjp0cnVlLCJjb2xsYXBzaWJsZSI6dHJ1ZSwidXJsX2VzIjoiaHR0cHM6Ly9jb21wb25lbnRlcy5jbmlnLmVzL2F5dWRhSWJlcnBpeC9lcy5odG1sIiwidXJsX2VuIjoiaHR0cHM6Ly9jb21wb25lbnRlcy5jbmlnLmVzL2F5dWRhSWJlcnBpeC9lbi5odG1sIiwidG9vbHRpcCI6IkF5dWRhIn0=
 
 ```
 

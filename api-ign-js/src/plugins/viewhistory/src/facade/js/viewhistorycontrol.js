@@ -40,7 +40,8 @@ export default class ViewHistoryControl extends M.Control {
    */
   createView(map) {
     this.facadeMap_ = map;
-    M.toast.warning(getValue('viewhistory_obsolete'));
+    // eslint-disable-next-line
+    console.warn(getValue('viewhistory_obsolete'));
     this.addOnLoadEvents();
     return new Promise((success, fail) => {
       const options = {

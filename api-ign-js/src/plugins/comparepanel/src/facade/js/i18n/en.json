@@ -47,5 +47,6 @@
   "freeze": "freeze cursor",
   "unfreeze": "defrost cursor",
   "activate_spyeye": "SpyEye ON",
-  "deactivate_spyeye": "SpyEye OFF"  
+  "deactivate_spyeye": "SpyEye OFF",
+  "comparepanel_obsolete": "Developer Message: M.plugin.Comparepanel has been deprecated, please use M.plugin.Comparators instead"
 }

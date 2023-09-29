@@ -1,5 +1,4 @@
-import OL3Parser from 'jsts/org/locationtech/jts/io/OL3Parser';
-import { BufferOp } from 'jsts/org/locationtech/jts/operation/buffer';
+import buffer from '@turf/buffer';
 import template from 'templates/buffer';
 import BufferControlImpl from 'impl/buffercontrolImpl';
 import Picker from './vanilla-picker';
@@ -181,10 +180,11 @@ export default class BufferControl extends M.Control {
    * @export
    */
   addBuffer_(feature, distance, target) {
-    const parser = new OL3Parser();
-    const jstsGeom = parser.read(feature.getGeometry());
-    const buffered = BufferOp.bufferOp(jstsGeom, parseInt(distance, 10));
-    feature.setGeometry(parser.write(buffered));
+    const format = new ol.format.GeoJSON();
+    feature.getGeometry().transform(this.facadeMap_.getProjection().code, 'EPSG:4326');
+    const turfGeom = format.writeFeatureObject(feature);
+    const buffered = buffer(turfGeom, parseInt(distance, 10), { units: 'meters' });
+    feature.setGeometry(format.readFeature(buffered).getGeometry().transform('EPSG:4326', this.facadeMap_.getProjection().code));
     this.manageActivatedDeactivated(target);
   }
 

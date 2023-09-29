@@ -3,7 +3,7 @@
  */
 import OGCAPIFeaturesImpl from 'impl/layer/OGCAPIFeatures';
 
-import { isUndefined, isNullOrEmpty } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isString, normalize } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
 import * as LayerType from './Type';
@@ -29,7 +29,7 @@ import Generic from '../style/Generic';
  * Ejemplo:
  * El parámetro offset tiene valor 10 con límite de 5 objetos geográficos, devolverá los 5 primeros
  * objetos geográficos desde número 10 de los resultados.
- * @property {Number } id Filtro por ID para un objeto geográfico.
+ * @property {Number} id Filtro por ID para un objeto geográfico.
  * @property {Array<M.style>} predefinedStyles Estilos predefinidos para la capa.
  * @property {String} cql Declaración CQL para filtrar las características
  * (Sólo disponible para servicios en PostgreSQL).
@@ -39,6 +39,8 @@ import Generic from '../style/Generic';
  * @property {String} geometry Tipo de geometría: POINT(Punto), MPOINT(Multiples puntos),
  * LINE(línea), MLINE(Multiples línes), POLYGON(Polígono), or MPOLYGON(Multiples polígonos).
  * @property {Object} opt Opciones de la capa.
+ * @property {Boolean} extract Opcional. Activa la consulta haciendo
+ * clic en el objeto geográfico.
  *
  * @api
  * @extends {M.layer.Vector}
@@ -64,6 +66,7 @@ class OGCAPIFeatures extends Vector {
    * - crs: Definición de la proyección de los datos.
    * - geometry: Tipo de geometría: POINT(Punto), MPOINT(Multiples puntos),
    * LINE(línea), MLINE(Multiples línes), POLYGON(Polígono), or MPOLYGON(Multiples polígonos).
+   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - predefinedStyles: Estilos predefinidos para la capa.
@@ -148,6 +151,12 @@ class OGCAPIFeatures extends Vector {
      * OGCAPIFeatures id: Filtro por ID para un objeto geográfico.
      */
     this.id = parameters.id;
+
+    /**
+     * OGCAPIFeatures extract: Activa la consulta al hacer clic sobre un objeto geográfico,
+     * por defecto falso.
+     */
+    this.extract = parameters.extract;
 
     /**
      * OGCAPIFeatures predefinedStyles: Estilos predefinidos para la capa.
@@ -420,6 +429,40 @@ class OGCAPIFeatures extends Vector {
     super.setStyle(styleParam, applyToFeature, defaultStyle);
   }
 
+  /**
+   * Devuelve el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @getter
+   * @returns {Boolean} Valor de la propiedad "extract".
+   * @api
+   */
+  get extract() {
+    return this.getImpl().extract;
+  }
+
+  /**
+   * Sobrescribe el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @setter
+   * @param {Boolean} newExtract Nuevo valor para sobreescribir la propiedad "extract".
+   * @api
+   */
+  set extract(newExtract) {
+    if (!isNullOrEmpty(newExtract)) {
+      if (isString(newExtract)) {
+        this.getImpl().extract = (normalize(newExtract) === 'true');
+      } else {
+        this.getImpl().extract = newExtract;
+      }
+    } else {
+      this.getImpl().extract = false;
+    }
+  }
+
 
   /**
    * Este método comprueba si un objeto es igual
@@ -441,6 +484,7 @@ class OGCAPIFeatures extends Vector {
       equals = equals && (this.offset === obj.offset);
       equals = equals && (this.bbox === obj.bbox);
       equals = equals && (this.id === obj.id);
+      equals = equals && (this.extract === obj.extract);
       equals = equals && (this.predefinedStyles === obj.predefinedStyles);
     }
     return equals;

@@ -128,12 +128,18 @@ class Feature {
    * @api stable
    * @export
    */
-  addCursorPointer() {
+  addCursorPointer({ pixel }) {
     const viewport = this.map_.getMapImpl().getViewport();
+
     if (viewport.style.cursor !== 'pointer') {
       this.defaultCursor_ = viewport.style.cursor;
     }
     viewport.style.cursor = 'pointer';
+
+    const features = this.map_.getMapImpl().getFeaturesAtPixel(pixel);
+    if (features.length > 0) {
+      this.map_.getMapImpl().getTargetElement().style.cursor = 'pointer';
+    }
   }
 
   /**
@@ -144,8 +150,13 @@ class Feature {
    * @api stable
    * @export
    */
-  removeCursorPointer() {
+  removeCursorPointer({ pixel }) {
     this.map_.getMapImpl().getViewport().style.cursor = this.defaultCursor_;
+
+    const features = this.map_.getMapImpl().getFeaturesAtPixel(pixel);
+    if (features.length === 0) {
+      this.map_.getMapImpl().getTargetElement().style.cursor = this.defaultCursor_;
+    }
   }
 
   /**

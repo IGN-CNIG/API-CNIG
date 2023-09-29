@@ -239,10 +239,6 @@ pluginignsearchlocator.on('xylocator:locationCentered', (result) => {
 });
 ```
 
-# Configuraciones globales
-- M.config.IGNSEARCH_TYPES_CONFIGURATION: lista de tipos de topónimos que se deben mostrar en las búsquedas a la IDEE.
-
-
 # Ejemplo de uso
 
 ```javascript

@@ -171,6 +171,12 @@ export default class IncicartoControl extends M.Control {
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
 
+    /**
+     * Option to allow the plugin to be draggable or not
+     * @private
+     * @type {Boolean}
+     */
+    this.isDraggable_ = options.isDraggable;
   }
 
   /**
@@ -219,6 +225,9 @@ export default class IncicartoControl extends M.Control {
       this.createDrawingTemplate();
       this.createUploadingTemplate();
       this.map.addLayers(this.selectionLayer);
+      if (this.isDraggable_) {
+        M.utils.draggabillyPlugin(this.getPanel(), '#m-incicarto-title');
+      }
     });
   }
 
@@ -463,9 +472,7 @@ export default class IncicartoControl extends M.Control {
         translations: {
           headtext1: 'Descripción de la incidencia',
           headtext2: 'Enviar por correo electrónico',
-          headtext3: 'Notificar por INCIGEO',
           btntext1: 'Enviar e-mail',
-          btntext2: 'Alta de incidencia',
         },
         mails: {},
         themes: {},
@@ -507,12 +514,18 @@ export default class IncicartoControl extends M.Control {
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
       });
 
-      document.querySelector("#m-plugin-incicarto-connect-incicarto").addEventListener('click', (e) => {
+      document.getElementById('fileUpload').onchange = function() {
+        let fileName = 'Adjuntar fichero &hellip;';
+        if (this.files) {
+          if (this.files.length > 1) {
+            fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+          } else if (this.files.length === 1) {
+            fileName = this.value;
+          }
+        }
 
-
-        this.composeIncidencia4INCIGEO();
-        document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled = true;
-      });
+        document.getElementById('infoUpload').innerHTML = fileName;
+      };
 
       // Para configurar la apariencia del botón Cerrar del modal
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
@@ -564,7 +577,6 @@ export default class IncicartoControl extends M.Control {
           }
         });
 
-        console.log('Entra');
         if (mailto_composed === false) {
           console.error("El mail no ha sido validado");
           return;
@@ -649,6 +661,8 @@ export default class IncicartoControl extends M.Control {
     let themeMetadataContainer = document.querySelector("#theme-select");
     let errorMetadataContainer = document.querySelector("#error-select");
     let productMetadataContainer = document.querySelector("#product-select");
+    let emailName = document.querySelector("#person-notify").value;
+    let emailUser = document.querySelector("#email-notify").value;
 
     if (this.validateIncidenciaMessageInModalAdvanced() === false) {
       return false;
@@ -658,22 +672,57 @@ export default class IncicartoControl extends M.Control {
     let error = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].value;
     let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
     let errDescription = document.querySelector("#err-description").value;
+    const { x, y } = this.map_.getCenter();
+    const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
 
     let email_subject = 'Incidencia Cartografía - ' + theme;
+
+    this.geometryIncidenceJSON = JSON.parse(this.geometryIncidence);
+
+    let url = window.location.href;
+    let localURL = '';
+    if (url.startsWith('file:///')) {
+      const index = url.lastIndexOf('/');
+      localURL = `file://${url.substring(index)}`;
+    }
+
+    if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
+      // API-REST
+      url = M.config.MAPEA_URL;
+    }
+
+    let propiedades_incidencia = {
+      "email_subject": email_subject,
+      "theme": theme,
+      "destinatary": destinatary,
+      "emailName": emailName,
+      "emailUser": emailUser,
+      "errDescripcion": errDescription,
+      "URL": url,
+      "localURL": localURL,
+      "paramsURL": encodeURI(shareURL),
+    }
+
+    if (this.geometryIncidenceJSON.features.length > 0) {
+      this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
+    }
+
     let email_body = {
       "description": errDescription,
       "theme": theme,
       "error": error,
       "product": product,
-      "geometry": this.geometryIncidence,
+      "features": this.geometryIncidenceJSON.features
     };
     let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
     emailForm.action = `${M.config.MAPEA_URL}api/email`;
     document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
+    document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
+    document.querySelector("#m-plugin-incicarto-email-shareURL").value = shareURL;
     document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
     let inputFile = document.querySelector('#fileUpload');
-    if (inputFile.files.length > 0) {
+    if (inputFile && inputFile.files.length > 0) {
       let inputFileForm = document.querySelector('#fileUploadForm');
       inputFileForm.files = inputFile.files;
     }
@@ -705,13 +754,17 @@ export default class IncicartoControl extends M.Control {
       let errDescription = document.querySelector("#err-description").value;
 
       const { x, y } = this.map_.getCenter();
-      const { code, units } = this.map_.getProjection();
-      let shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
-      shareURL = shareURL.concat(`&projection=${code}*${units}`);
-      let url = window.location.href;
-      if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
-        url = M.config.MAPEA_URL;
+      const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+      const url = window.location.href;
+      let localURL = '';
+      if (url.startsWith('file:///')) {
+        const index = url.lastIndexOf('/');
+        localURL = `file://${url.substring(index)}`;
       }
+
+      // if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
+      //   url = M.config.MAPEA_URL;
+      // }
 
       let propiedades_incidencia = {
         "email_subject": email_subject,
@@ -721,6 +774,7 @@ export default class IncicartoControl extends M.Control {
         "emailUser": emailUser,
         "errDescripcion": errDescription,
         "URL": url,
+        "localURL": localURL,
         "paramsURL": encodeURI(shareURL),
       }
 
@@ -751,159 +805,6 @@ export default class IncicartoControl extends M.Control {
       const formData = new FormData(emailForm);
       xhr.send(formData);
     }
-  }
-
-  /**
-   * Compone el protocolo de comunicación con el SOAP de INCIGEO
-   *
-   */
-  composeIncidencia4INCIGEO() {
-    const urlINCIGEOToken = "https://incigeo.ign.es/incigeo_pre/webservice.aspx";
-    const urlINCIGEOCreateError = "https://incigeo.ign.es/incigeo_pre/webservice.aspx";
-    const loginUser = "pruebas_inserciones"; //usr_signa
-    const loginPwd = "pruebas"; //pr_signa
-    const soapCreateError = (tokenAccess) => {
-      const codeViaEntrada = "WEBAPP"; // Directo, IDV
-      const procedenciaCd = "USUARIO_EXTERNO"; // SIGNA  , INCICARTO
-      const prioridad = "1" //Opciones 1: normal, 99: urgente.
-      let themeMetadataContainer = document.querySelector("#theme-select");
-      let errorMetadataContainer = document.querySelector("#error-select");
-      let productMetadataContainer = document.querySelector("#product-select");
-      let themeError = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].text;
-      let typeError = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].text;
-      let productError = productMetadataContainer.options[productMetadataContainer.selectedIndex].text;
-      let cooX = this.geometryIncidenceX;
-      let cooY = this.geometryIncidenceY;
-      let descriptionIncidencia = document.querySelector("#err-description").value;
-      let emailUser = document.querySelector("#email-notify").value;
-      let descriptionErr = "Descripción del error";
-      let urlVisualizador = "https://iberpix.cnig.es/iberpix/visor/";
-      let strNewErrorMessage3 = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.b2tconcept.com/webservices/">
-                       <soapenv:Header/>
-                       <soapenv:Body>
-                         <web:CreateErrorsIGN>
-                           <web:token>${tokenAccess}</web:token>
-                           <web:codeViaEntrada>${codeViaEntrada}</web:codeViaEntrada>
-                           <web:procedenciaCd>${procedenciaCd}</web:procedenciaCd>
-                           <web:emailDs>${emailUser}</web:emailDs>
-                           <web:ordenPrioridadNm >${prioridad}</web:ordenPrioridadNm>
-                           <web:descInciDs>${descriptionIncidencia}</web:descInciDs>
-                           <web:arrayErrors>
-                             <web:WS_ERROR_DATA>
-                             <web:desc>${descriptionErr}</web:desc><!-- Mandatory -->
-                             <web:x>${cooX}</web:x><!-- Mandatory -->
-                             <web:y>${cooY}</web:y><!-- Mandatory -->
-                             <web:theme>${themeError}</web:theme><!--- Control list -->
-                             <web:type>${typeError}</web:type><!--- Control list -->
-                             <web:prodDetectCd>${productError}</web:prodDetectCd><!--- Control list -->
-                             <web:urlDs>${urlVisualizador}</web:urlDs>
-                               <web:fileExtCd></web:fileExtCd>
-                               <web:fileBase64Ds></web:fileBase64Ds>
-                               </web:WS_ERROR_DATA>
-                           </web:arrayErrors>
-                         </web:CreateErrorsIGN>
-                       </soapenv:Body>
-                     </soapenv:Envelope>`;
-
-
-      const parserRequest = new DOMParser();
-      const xmlDOMRequest = parserRequest.parseFromString(strNewErrorMessage3, "text/xml");
-
-      function createCORSRequest(method, url) {
-        var xhr = new XMLHttpRequest();
-        if ("withCredentials" in xhr) {
-          xhr.open(method, url, false);
-        } else if (typeof XDomainRequest != "undefined") {
-          xhr = new XDomainRequest();
-          xhr.open(method, url);
-        } else {
-          alert("CORS not supported");
-          xhr = null;
-        }
-        return xhr;
-      }
-
-      var xhr = createCORSRequest("POST", urlINCIGEOCreateError);
-      if (!xhr) {
-        console.error("XHR issue");
-        return;
-      }
-
-      xhr.onload = function() {
-        var results = xhr.responseText;
-        const parserResponse = new DOMParser();
-        const xmlDOMResponse = parserResponse.parseFromString(results, "text/xml");
-        const returnCD = xmlDOMResponse.getElementsByTagName("web:RETURN_CD")[0].childNodes[0].nodeValue;
-        const returnDS = xmlDOMResponse.getElementsByTagName("web:RETURN_DS")[0].childNodes[0].nodeValue;
-        if (returnCD === '0') {
-          let codeInc = xmlDOMResponse.getElementsByTagName("web:codeInc")[0].childNodes[0].nodeValue;
-          //document.querySelector("#result-notification").innerHTML =`<small>${returnDS}. Incidencia ${codeInc}</small>`;
-          document.querySelector("#m-plugin-incicarto-connect-incicarto").disabled = true;
-          document.querySelector("#result-notification").innerHTML = `${returnDS}. Incidencia ${codeInc}.`;
-          document.querySelector("#result-notification").classList.remove("okmessage");
-          document.querySelector("#result-notification").classList.remove("nakmessage");
-          document.querySelector("#result-notification").classList.add("okmessage");
-        } else {
-          document.querySelector("#result-notification").innerHTML = `<small>${returnDS}. Error: ${returnCD}.</small>`;
-          document.querySelector("#result-notification").classList.remove("okmessage");
-          document.querySelector("#result-notification").classList.remove("nakmessage");
-          document.querySelector("#result-notification").classList.add("nakmessage");
-        }
-      }
-
-      xhr.setRequestHeader('Content-Type', 'text/xml');
-      xhr.send(strNewErrorMessage3);
-
-    }
-
-    const soapTokenRequest = () => {
-      var strTokenRequest = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.b2tconcept.com/webservices/">
-                    <soapenv:Header/>
-                     <soapenv:Body>
-                       <web:DoLogin>
-                         <web:loginDs>${loginUser}</web:loginDs>
-                         <web:pwdCd>${loginPwd}</web:pwdCd>
-                       </web:DoLogin>
-                     </soapenv:Body>
-                    </soapenv:Envelope>`;
-
-      function createCORSRequest(method, url) {
-        var xhr = new XMLHttpRequest();
-        if ("withCredentials" in xhr) {
-          xhr.open(method, url, false);
-        } else if (typeof XDomainRequest != "undefined") {
-          xhr = new XDomainRequest();
-          xhr.open(method, url);
-        } else {
-          alert("CORS not supported");
-          xhr = null;
-        }
-        return xhr;
-      }
-      var xhr = createCORSRequest("POST", urlINCIGEOToken);
-      if (!xhr) {
-        console.error("XHR issue");
-        return;
-      }
-
-      xhr.onload = function() {
-        var results = xhr.responseText;
-        const parser = new DOMParser();
-        const xmlDOM = parser.parseFromString(results, "text/xml");
-        const value = xmlDOM.getElementsByTagName("web:TOKEN_CD")[0].childNodes[0].nodeValue;
-        soapCreateError(value);
-      }
-
-      xhr.setRequestHeader('Content-Type', 'text/xml');
-      xhr.send(strTokenRequest);
-    }
-
-    // Si no hacemos esto, no da tiempo a que salga el mensaje
-    setTimeout(() => {
-      soapTokenRequest();
-    }, 250);
-
-    this.showMessageInModalAdvanced("Conectando con INCIGEO para enviar incidencia", "okmessage");
   }
 
   showSuggestions() {
@@ -1574,6 +1475,7 @@ export default class IncicartoControl extends M.Control {
 
     if (geojsonLayer.features.length > 0) {
       this.geometryIncidence = arrayContent;
+      this.geometryIncidenceJSON = geojsonLayer;
       this.getCentroid4INCIGEO(geojsonLayer);
       this.activateModalAdvanced();
     } else {

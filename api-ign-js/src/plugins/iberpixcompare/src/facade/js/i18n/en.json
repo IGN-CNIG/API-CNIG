@@ -43,5 +43,6 @@
   "georef_download_disabled": "Image download is not available",
   "printmap": "Map Printing",
   "georef_download": "Download Georeferenced image",
-  "no_layer": "No layer"
+  "no_layer": "No layer",
+  "iberpixcompare_obsolete": "Message to developer: M.plugin.IberpixCompare has been deprecated, please use M.plugin.Comparators instead"
 }

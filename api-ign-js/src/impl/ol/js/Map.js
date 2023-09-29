@@ -265,18 +265,7 @@ class Map extends MObject {
    * @api
    */
   getBaseLayers() {
-    const baseLayers = this.getLayers().filter((layer) => {
-      let isBaseLayer = false;
-      if ((layer.type === LayerType.WMS) ||
-        (layer.type === LayerType.WMTS) ||
-        (layer.type === LayerType.MBTiles) ||
-        (layer.type === LayerType.MBTilesVector) ||
-        layer.type === LayerType.TMS) {
-        isBaseLayer = (layer.transparent !== true);
-      }
-      return isBaseLayer;
-    });
-    return baseLayers;
+    return this.getLayers().filter(layer => layer.transparent !== true);
   }
 
   /**
@@ -480,6 +469,7 @@ class Map extends MObject {
     kmlMapLayers.forEach((kmlLayer) => {
       this.layers_ = this.layers_.filter(layer => !kmlLayer.equals(layer));
       kmlLayer.getImpl().destroy();
+      kmlLayer.fire(EventType.REMOVED_FROM_MAP, [kmlLayer]);
     }, this);
 
     return this;
@@ -625,6 +615,7 @@ class Map extends MObject {
   removeWMS(layers) {
     const wmsMapLayers = this.getWMS(layers);
     wmsMapLayers.forEach((wmsLayer) => {
+      wmsLayer.fire(EventType.REMOVED_FROM_MAP, [wmsLayer]);
       this.layers_ = this.layers_.filter(layer => !wmsLayer.equals(layer));
       wmsLayer.getImpl().destroy();
     });
@@ -823,6 +814,7 @@ class Map extends MObject {
     wfsMapLayers.forEach((wfsLayer) => {
       this.layers_ = this.layers_.filter(layer => !layer.equals(wfsLayer));
       wfsLayer.getImpl().destroy();
+      wfsLayer.fire(EventType.REMOVED_FROM_MAP, [wfsLayer]);
     });
 
     return this;
@@ -951,6 +943,7 @@ class Map extends MObject {
     ogcapifMapLayers.forEach((ogcapifLayer) => {
       this.layers_ = this.layers_.filter(layer => !layer.equals(ogcapifLayer));
       ogcapifLayer.getImpl().destroy();
+      ogcapifLayer.fire(EventType.REMOVED_FROM_MAP, [ogcapifLayer]);
     });
 
     return this;
@@ -1083,6 +1076,7 @@ class Map extends MObject {
     wmtsMapLayers.forEach((wmtsLayer) => {
       this.layers_ = this.layers_.filter(layer => !layer.equals(wmtsLayer));
       wmtsLayer.getImpl().destroy();
+      wmtsLayer.fire(EventType.REMOVED_FROM_MAP, [wmtsLayer]);
     });
 
     return this;
@@ -1646,6 +1640,7 @@ class Map extends MObject {
     xyzMapLayers.forEach((xyzLayer) => {
       xyzLayer.getImpl().destroy();
       this.layers_ = this.layers_.filter(layer => !layer.equals(xyzLayer));
+      xyzLayer.fire(EventType.REMOVED_FROM_MAP, [xyzLayer]);
     });
 
     return this;
@@ -1746,6 +1741,7 @@ class Map extends MObject {
     tmsMapLayers.forEach((tmsLayer) => {
       tmsLayer.getImpl().destroy();
       this.layers_ = this.layers_.filter(layer => !layer.equals(tmsLayer));
+      tmsLayer.fire(EventType.REMOVED_FROM_MAP, [tmsLayer]);
     });
 
     return this;
@@ -2745,7 +2741,7 @@ class Map extends MObject {
  */
 Map.Z_INDEX = {};
 Map.Z_INDEX_BASELAYER = 0;
-Map.Z_INDEX[LayerType.OSM] = 5;
+Map.Z_INDEX[LayerType.OSM] = 40;
 Map.Z_INDEX[LayerType.WMS] = 40;
 Map.Z_INDEX[LayerType.WMTS] = 40;
 Map.Z_INDEX[LayerType.KML] = 40;
@@ -2753,8 +2749,8 @@ Map.Z_INDEX[LayerType.WFS] = 40;
 Map.Z_INDEX[LayerType.MVT] = 40;
 Map.Z_INDEX[LayerType.Vector] = 40;
 Map.Z_INDEX[LayerType.GeoJSON] = 40;
-Map.Z_INDEX[LayerType.MBTiles] = 2000;
-Map.Z_INDEX[LayerType.MBTilesVector] = 9999;
+Map.Z_INDEX[LayerType.MBTiles] = 40;
+Map.Z_INDEX[LayerType.MBTilesVector] = 40;
 Map.Z_INDEX[LayerType.XYZ] = 40;
 Map.Z_INDEX[LayerType.TMS] = 40;
 Map.Z_INDEX[LayerType.OGCAPIFeatures] = 40;

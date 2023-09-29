@@ -30,13 +30,15 @@ class KML extends Vector {
    * @constructor
    * @implements {M.impl.layer.Vector}
    * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
-   * - label: Etiquetado.
+   * - label: Define si se muestra la etiqueta o no. Por defecto mostrará la etiqueta.
    * - visibility: Define si la capa es visible o no.
    * - style: Define el estilo de la capa.
    * - minZoom. Zoom mínimo aplicable a la capa.
    * - maxZoom. Zoom máximo aplicable a la capa.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
+   * - scaleLabel. Escala de la etiqueta.
+   * - layers. Permite filtrar el fichero KML por nombre de carpetas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -75,7 +77,7 @@ class KML extends Vector {
     this.screenOverlayImg_ = null;
 
     /**
-     * KML label_. Determina si tiene una etiqueta o no.
+     * KML label_. Determina si muestra la etiqueta o no.
      */
     this.label_ = options.label;
 
@@ -83,6 +85,16 @@ class KML extends Vector {
      * KML Visibility. Define si la capa es visible o no. Verdadero por defecto.
      */
     this.visibility = options.visibility == null ? true : options.visibility;
+
+    /**
+     * KML scaleLabel. Define la escala de la etiqueta.
+     */
+    this.scaleLabel = options.scaleLabel;
+
+    /**
+     * KML layers. Permite filtrar el fichero KML por nombre de carpetas.
+     */
+    this.layers = options.layers;
   }
 
   /**
@@ -334,7 +346,7 @@ class KML extends Vector {
       this.loadFeaturesPromise_ = new Promise((resolve) => {
         this.loader_.getLoaderFn((features) => {
           resolve(features);
-        })(null, null, getProj(this.map.getProjection().code));
+        })(null, null, getProj(this.map.getProjection().code), this.scaleLabel, this.layers);
       });
     }
     return this.loadFeaturesPromise_;

@@ -50,11 +50,11 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: Notificar incidencia en cartografía.
 - **wfszoom**: Valor del zoom. Por defecto: 12.
-- **prefixSubject**: Prefijo que llevará el *subject* del correo electrónico enviado. Por defecto: 'Incidencia cartografía - '
+- **prefixSubject**: Prefijo que llevará el *subject* del correo electrónico enviado. Por defecto: 'Incidencia cartografía - '.
 - **interfazmode**: Indica la modalidad de envío de la incidencia. Por defecto: simple.
   - 'simple': se usará un cleinte de correo para enviar la incidencia.
   - 'advance': se usará el gestor de incidencias INCIGEO.
-- **buzones**: Contiene un array con los objetos que definen el nombre y direcciones de los buzones de incidencias. Cada objeto buzón contiene dos parámetros. Por defecto: []
+- **buzones**: Contiene un array con los objetos que definen el nombre y direcciones de los buzones de incidencias. Cada objeto buzón contiene dos parámetros. Por defecto: [].
   - 'name': nombre del propietario del buzón de incidencias.
   - 'email': correo electrónico del buzón. 
 - **controllist**: Contiene un array enumerando las listas controladas con sus características. 
@@ -83,17 +83,18 @@ Por defecto:
 ]
 ```
   
-- **themeList**: Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades. Por defecto: []
+- **themeList**: Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades. Por defecto: [].
   - 'idTheme': identificador de código de tema.
   - 'nameTheme': nombre del tema de error.
   - 'emailTheme': correo de la entidad responsable de subsanar este error.
-- **errorList**: Lista de control con las posibles categorizaciones del error. Por defecto: []
-- **productList**: Lista de control con los productos del IGN en los que se ha detectado el error. Por defecto: []
+- **errorList**: Lista de control con las posibles categorizaciones del error. Por defecto: [].
+- **productList**: Lista de control con los productos del IGN en los que se ha detectado el error. Por defecto: [].
+- **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
 
 # API-REST
 
 ```javascript
-URL_API?incicarto=position*collapsed*collapsible*tooltip*wfszoom*prefixSubject*interfazmode
+URL_API?incicarto=position*collapsed*collapsible*tooltip*wfszoom*prefixSubject*interfazmode*isDraggable
 ```
 
 <table>
@@ -162,6 +163,11 @@ URL_API?incicarto=position*collapsed*collapsible*tooltip*wfszoom*prefixSubject*i
     <td>Lista de control con los productos del IGN en los que se ha detectado el error.</td>
     <td>Base64 ✔️ | Separador ❌</td>
   </tr>  
+  <tr>
+    <td>isDraggable</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
 </table>
 
 
@@ -175,6 +181,12 @@ https://componentes.cnig.es/api-core?incicarto=TL*true*true*Incicarto%20plugin*1
 ```
 
 ### Ejemplo de uso API-REST en base64
+
+Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
+Ejemplo:
+```javascript
+M.utils.encodeBase64(obj_params);
+```
 
 Ejemplo del constructor: 
 ```javascript
@@ -259,7 +271,7 @@ Ejemplo del constructor:
 ```
 
 ```
-https://componentes.cnig.es/api-core?incicarto=base64=eyJjb2xsYXBzZWQiOnRydWUsImNvbGxhcHNpYmxlIjp0cnVlLCJwb3NpdGlvbiI6IlRMIiwid2Zzem9vbSI6MTIsInByZWZpeFN1YmplY3QiOiJJbmNpZGVuY2lhIGNhcnRvZ3LhZmljYSAtICIsImludGVyZmF6bW9kZSI6InNpbXBsZSIsImJ1em9uZXMiOlt7Im5hbWUiOiJDYXJ0b2dyYWbtYSAoTVROLCBCVE4sIFJULCBIWSwgUG9iLCBCQ04sIFByb3ZpbmNpYWxlcywgZXNjYWxhcyBwZXF1ZfFhcykiLCJlbWFpbCI6ImNhcnRvZ3JhZmlhLmlnbkBtaXRtYS5lcyJ9LHsibmFtZSI6IkF0bGFzIE5hY2lvbmFsIGRlIEVzcGHxYSIsImVtYWlsIjoiYW5lQG1pdG1hLmVzIn1dLCJjb250cm9sbGlzdCI6W3siaWQiOiJ0aGVtZUxpc3QiLCJuYW1lIjoiVGVtYXMgZGUgZXJyb3JlcyIsIm1hbmRhdG9yeSI6dHJ1ZX0seyJpZCI6ImVycm9yTGlzdCIsIm5hbWUiOiJUaXBvcyBkZSBlcnJvcmVzIiwibWFuZGF0b3J5Ijp0cnVlfSx7ImlkIjoicHJvZHVjdExpc3QiLCJuYW1lIjoiTGlzdGEgZGUgcHJvZHVjdG9zIiwibWFuZGF0b3J5Ijp0cnVlfV0sInRoZW1lTGlzdCI6W3siaWRUaGVtZSI6MSwibmFtZVRoZW1lIjoiTm8gZXNwZWNpZmljYWRvIiwiZW1haWxUaGVtZSI6ImNvbnN1bHRhc0BjbmlnLmVzIn0seyJpZFRoZW1lIjoyLCJuYW1lVGhlbWUiOiJSZWxpZXZlIiwiZW1haWxUaGVtZSI6ImNhcnRvZ3JhZmlhLmlnbkBtaXRtYS5lcyJ9XSwiZXJyb3JMaXN0IjpbIk5vIGVzcGVjaWZpY2FkbyIsIk9taXNp824iLCJDb21pc2nzbiIsIkNsYXNpZmljYWNp824iLCJOb21icmUiLCJWYWxvciBkZWwgYXRyaWJ1dG8iLCJGb3JtYSIsIkxvY2FsaXphY2nzbiIsIk90cm9zIl0sInByb2R1Y3RMaXN0IjpbIk5vIGVzcGVjaWZpY2FkbyIsIlNlcmllIE1UTjI1IiwiU2VyaWUgTVRONTAiLCJCVE4yNSIsIkJUTjEwMCIsIk1QMjAwIiwiQkNOMjAwIiwiQkNONTAwIiwiTWFwYSBBdXRvbvNtaWNvIiwiTWFwYSBFc3Bh8WEgMTo1MDAgMDAwIiwiTWFwYSBFc3Bh8WEgMToxIDAwMCAwMDAiLCJDYXJ0b2NpdWRhZCIsIlJlZGVzIGRlIFRyYW5zcG9ydGUiLCJIaWRyb2dyYWbtYSIsIlBvYmxhY2lvbmVzIiwiTXVuZG8gcmVhbCIsIklHTiBCYXNlIiwiT3Ryb3MgcHJvZHVjdG9zIl19
+https://componentes.cnig.es/api-core?incicarto=base64=eyJjb2xsYXBzZWQiOnRydWUsImNvbGxhcHNpYmxlIjp0cnVlLCJwb3NpdGlvbiI6IlRMIiwid2Zzem9vbSI6MTIsInByZWZpeFN1YmplY3QiOiJJbmNpZGVuY2lhIGNhcnRvZ3JmaWNhIC0gIiwiaW50ZXJmYXptb2RlIjoic2ltcGxlIiwiYnV6b25lcyI6W3sibmFtZSI6IkNhcnRvZ3JhZmEgKE1UTiwgQlROLCBSVCwgSFksIFBvYiwgQkNOLCBQcm92aW5jaWFsZXMsIGVzY2FsYXMgcGVxdWVhcykiLCJlbWFpbCI6ImNhcnRvZ3JhZmlhLmlnbkBtaXRtYS5lcyJ9LHsibmFtZSI6IkF0bGFzIE5hY2lvbmFsIGRlIEVzcGFhIiwiZW1haWwiOiJhbmVAbWl0bWEuZXMifV0sImNvbnRyb2xsaXN0IjpbeyJpZCI6InRoZW1lTGlzdCIsIm5hbWUiOiJUZW1hcyBkZSBlcnJvcmVzIiwibWFuZGF0b3J5Ijp0cnVlfSx7ImlkIjoiZXJyb3JMaXN0IiwibmFtZSI6IlRpcG9zIGRlIGVycm9yZXMiLCJtYW5kYXRvcnkiOnRydWV9LHsiaWQiOiJwcm9kdWN0TGlzdCIsIm5hbWUiOiJMaXN0YSBkZSBwcm9kdWN0b3MiLCJtYW5kYXRvcnkiOnRydWV9XSwidGhlbWVMaXN0IjpbeyJpZFRoZW1lIjoxLCJuYW1lVGhlbWUiOiJObyBlc3BlY2lmaWNhZG8iLCJlbWFpbFRoZW1lIjoiY29uc3VsdGFzQGNuaWcuZXMifSx7ImlkVGhlbWUiOjIsIm5hbWVUaGVtZSI6IlJlbGlldmUiLCJlbWFpbFRoZW1lIjoiY2FydG9ncmFmaWEuaWduQG1pdG1hLmVzIn1dLCJlcnJvckxpc3QiOlsiTm8gZXNwZWNpZmljYWRvIiwiT21pc2luIiwiQ29taXNpbiIsIkNsYXNpZmljYWNpbiIsIk5vbWJyZSIsIlZhbG9yIGRlbCBhdHJpYnV0byIsIkZvcm1hIiwiTG9jYWxpemFjaW4iLCJPdHJvcyJdLCJwcm9kdWN0TGlzdCI6WyJObyBlc3BlY2lmaWNhZG8iLCJTZXJpZSBNVE4yNSIsIlNlcmllIE1UTjUwIiwiQlROMjUiLCJCVE4xMDAiLCJNUDIwMCIsIkJDTjIwMCIsIkJDTjUwMCIsIk1hcGEgQXV0b25taWNvIiwiTWFwYSBFc3BhYSAxOjUwMCAwMDAiLCJNYXBhIEVzcGFhIDE6MSAwMDAgMDAwIiwiQ2FydG9jaXVkYWQiLCJSZWRlcyBkZSBUcmFuc3BvcnRlIiwiSGlkcm9ncmFmYSIsIlBvYmxhY2lvbmVzIiwiTXVuZG8gcmVhbCIsIklHTiBCYXNlIiwiT3Ryb3MgcHJvZHVjdG9zIl19
 ```
 
 # Ejemplo de uso

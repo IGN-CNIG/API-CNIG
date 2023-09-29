@@ -99,6 +99,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].viewshed = pluginsLanguage.viewshed.esViewshed;
     configuration.translations[lang].viewmanagement =
       pluginsLanguage.viewmanagement.esViewmanagement;
+    configuration.translations[lang].locator = pluginsLanguage.locator.esLocator;
   } else if (lang === 'en') {
     configuration.translations[lang].attributions = pluginsLanguage.attributions.enAttributions;
     configuration.translations[lang].backimglayer = pluginsLanguage.backimglayer.enBackimglayer;
@@ -151,6 +152,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].viewshed = pluginsLanguage.viewshed.enViewshed;
     configuration.translations[lang].viewmanagement =
       pluginsLanguage.viewmanagement.enViewmanagement;
+    configuration.translations[lang].locator = pluginsLanguage.locator.enLocator;
   }
   return configuration.translations[lang];
 };

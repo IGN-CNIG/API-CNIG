@@ -14,7 +14,7 @@ import { getValue } from '../i18n/language';
  * KML (Keyhole Markup Language).
  *
  * @property {Boolean} extract Opcional. Activa la consulta haciendo clic en el objeto geográfico,
-  * por defecto falso.
+ * por defecto falso.
  * @property {Object} options Parámetros de la capa.
  * @property {String} label Etiqueta de la capa.
  *
@@ -31,21 +31,21 @@ class KML extends LayerVector {
    * - url: Url del fichero o servicio -> https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml
    * - name: Nombre de la capa que aparecerá en la leyenda -> Delegaciones IGN
    * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
-   * - source: Fuente de la capa.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * - label: Define si se muestra la etiqueta o no. Por defecto mostrará la etiqueta.
+   * - layers: Permite filtrar el fichero KML por nombre de carpetas.
    * @param {Mx.parameters.LayerOptions} options Parámetros que se pasarán a la implementación.
-   * - label: Etiquetado.
    * - visibility: Define si la capa es visible o no.
    * - style: Define el estilo de la capa.
    * - minZoom. Zoom mínimo aplicable a la capa.
    * - maxZoom. Zoom máximo aplicable a la capa.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
+   * - scaleLabel. Escala de la etiqueta.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -64,6 +64,7 @@ class KML extends LayerVector {
     const optionsVar = options;
     optionsVar.label = parameters.label;
     optionsVar.visibility = parameters.visibility;
+    optionsVar.layers = userParameters.layers || undefined;
 
     /**
      * Implementación de la capa.
@@ -87,20 +88,26 @@ class KML extends LayerVector {
     }
 
     /**
-    * KML extract: Activa la consulta al hacer clic sobre un objeto geográfico,
-    * por defecto falso.
-    */
+     * KML extract: Activa la consulta al hacer clic sobre un objeto geográfico,
+     * por defecto falso.
+     */
     this.extract = parameters.extract;
 
     /**
-    * KML options: Optiones que se mandan a la implementación.
-    */
+     * KML options: Optiones que se mandan a la implementación.
+     */
     this.options = options;
 
     /**
-    * KML label. Etiqueta de la capa KML.
-    */
+     * KML label. Etiqueta de la capa KML.
+     */
     this.label = parameters.label;
+
+    /**
+     * KML layers: Permite filtrar el fichero KML por nombre de carpetas.
+     * @type {Array<String>}
+     */
+    this.layers = optionsVar.layers;
   }
 
   /**

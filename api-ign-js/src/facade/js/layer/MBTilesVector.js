@@ -5,7 +5,7 @@ import MBTilesVectorImpl from 'impl/layer/MBTilesVector';
 import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import Vector from './Vector';
 import * as LayerType from './Type';
-import { isUndefined, isNullOrEmpty } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isString, normalize } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 import * as parameter from '../parameter/parameter';
@@ -26,6 +26,9 @@ export const mode = {
  * @classdesc
  * MBTilesVector es un formato que permite agrupar múltiples capas
  * vectoriales en un contenedor SQLite.
+ *
+ * @property {Boolean} extract Opcional. Activa la consulta haciendo
+ * clic en el objeto geográfico,
  *
  * @api
  * @extends {M.layer.Vector}
@@ -48,6 +51,7 @@ class MBTilesVector extends Vector {
    * - source: Fuente de la capa.
    * - tileSize: Tamaño de la tesela vectorial, por defecto 256.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
    * - opacity: Opacidad de capa, por defecto 1.
    * - style: Define el estilo de la capa.
@@ -79,6 +83,12 @@ class MBTilesVector extends Vector {
     if (isUndefined(MBTilesVectorImpl)) {
       Exception(getValue('exception').mbtilesvector_method);
     }
+
+    /**
+     * MBTilesVector extract: Activa la consulta al hacer clic sobre un objeto geográfico,
+     * por defecto falso.
+     */
+    this.extract = parameters.extract;
   }
 
   /**
@@ -207,6 +217,40 @@ class MBTilesVector extends Vector {
   }
 
   /**
+   * Devuelve el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @getter
+   * @returns {Boolean} Valor de la propiedad "extract".
+   * @api
+   */
+  get extract() {
+    return this.getImpl().extract;
+  }
+
+  /**
+   * Sobrescribe el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @setter
+   * @param {Boolean} newExtract Nuevo valor para sobreescribir la propiedad "extract".
+   * @api
+   */
+  set extract(newExtract) {
+    if (!isNullOrEmpty(newExtract)) {
+      if (isString(newExtract)) {
+        this.getImpl().extract = (normalize(newExtract) === 'true');
+      } else {
+        this.getImpl().extract = newExtract;
+      }
+    } else {
+      this.getImpl().extract = false;
+    }
+  }
+
+  /**
    * Este método comprueba si un objeto es igual
    * a esta capa.
    *
@@ -224,6 +268,7 @@ class MBTilesVector extends Vector {
       equals = equals && (this.legend === obj.legend);
       equals = equals && (this.name === obj.name);
       equals = equals && (this.options === obj.options);
+      equals = equals && (this.extract === obj.extract);
     }
     return equals;
   }

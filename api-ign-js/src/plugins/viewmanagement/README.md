@@ -125,6 +125,12 @@ https://componentes.cnig.es/api-core?viewmanagement=TL*true*true*tooltip*true*fa
 
 ### Ejemplos de uso API-REST en base64
 
+Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
+Ejemplo:
+```javascript
+M.utils.encodeBase64(obj_params);
+```
+
 1) Ejemplo de constructor del plugin:
 
 ```javascript
@@ -140,7 +146,7 @@ https://componentes.cnig.es/api-core?viewmanagement=TL*true*true*tooltip*true*fa
 }
 ```
 ```
-https://componentes.cnig.es/api-core?viewmanagement=base64=e3Bvc2l0aW9uOidUTCcsIGNvbGxhcHNpYmxlOiB0cnVlLCBjb2xsYXBzZWQ6IHRydWUsIHRvb2x0aXA6ICdHZXN0acOzbiBkZSBsYSB2aXN0YScsIHByZWRlZmluZWRab29tOiB0cnVlLCB6b29tRXh0ZW50OiBmYWxzZSwgdmlld2hpc3Rvcnk6IHRydWUsIHpvb21wYW5lbDogdHJ1ZX0=
+https://componentes.cnig.es/api-core?viewmanagement=base64=eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2libGUiOnRydWUsImNvbGxhcHNlZCI6dHJ1ZSwidG9vbHRpcCI6Ikdlc3Rpw7NuIGRlIGxhIHZpc3RhIiwicHJlZGVmaW5lZFpvb20iOnRydWUsInpvb21FeHRlbnQiOmZhbHNlLCJ2aWV3aGlzdG9yeSI6dHJ1ZSwiem9vbXBhbmVsIjp0cnVlfQ==
 ```
 
 
@@ -155,7 +161,7 @@ https://componentes.cnig.es/api-core?viewmanagement=base64=e3Bvc2l0aW9uOidUTCcsI
 }
 ```
 ```
-https://componentes.cnig.es/api-core?viewmanagement=base64=e3Bvc2l0aW9uOidUTCcsIHRvb2x0aXA6ICdHZXN0acOzbiBkZSBsYSB2aXN0YScsIHByZWRlZmluZWRab29tOiBbe25hbWU6ICd6b29tIDEnLCBjZW50ZXI6IFstNDI4MTA2Ljg2NjExNTIwMDU3LCA0MzM0NDcyLjI1MzkzODE3XSwgem9vbTogNH0sIHtuYW1lOiAnem9vbSAyJywgYmJveDogWy0yMzkyMTczLjIzNzIsIDMwMzMwMjEuMjgyNCwgMTk2NjU3MS44NjM3LCA2ODA2NzY4LjE2NDhdfV19
+https://componentes.cnig.es/api-core?viewmanagement=base64=eyJwb3NpdGlvbiI6IlRMIiwidG9vbHRpcCI6Ikdlc3Rpw7NuIGRlIGxhIHZpc3RhIiwicHJlZGVmaW5lZFpvb20iOlt7Im5hbWUiOiJ6b29tIDEiLCJjZW50ZXIiOlstNDI4MTA2Ljg2NjExNTIwMDU3LDQzMzQ0NzIuMjUzOTM4MTddLCJ6b29tIjo0fSx7Im5hbWUiOiJ6b29tIDIiLCJiYm94IjpbLTIzOTIxNzMuMjM3MiwzMDMzMDIxLjI4MjQsMTk2NjU3MS44NjM3LDY4MDY3NjguMTY0OF19XX0=
 ```
 
 # Ejemplo de uso

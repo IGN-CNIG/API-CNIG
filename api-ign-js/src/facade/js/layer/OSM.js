@@ -28,20 +28,20 @@ class OSM extends LayerBase {
    *
    * @constructor
    * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
+   * - name: Nombre de la capa en la leyenda.
+   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - type: Tipo de la capa.
+   * - url: Url genera la OSM.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán
    * a la implementación de la capa.
-   * - name: Nombre de la capa en la leyenda.
-   * - url: Url genera la OSM.
    * - visibility: Define si la capa es visible o no.
    * - animated: Activa la animación para capas base o parámetros animados.
    * - displayInLayerSwitcher: Define si la capa se mostrará en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom: Zoom máximo aplicable a la capa.
-   * - type: Tipo de la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
-   * - maxExtent: La medida en que restringe la visualización a una región específica.
-   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import SourceOSM from 'ol/source/OSM';
