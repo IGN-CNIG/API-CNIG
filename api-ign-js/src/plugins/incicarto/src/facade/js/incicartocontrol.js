@@ -735,9 +735,8 @@ export default class IncicartoControl extends M.Control {
     const zoom = `&zoom=${this.map_.getZoom()}`;
     const srs = `&srs=${this.map_.getProjection().code}`;
     const layers = `&layers=${this.getLayersInLayerswitcher().toString()}`;
-    const controls = `&controls=${this.getControlsFormat()}`;
-    const plugin = `&${this.getPlugins()}`;
-
+    const controls = (this.getControlsFormat()) ? `&controls=${this.getControlsFormat()}` : '';
+    const plugin = (this.getPlugins()) ? `&${this.getPlugins()}` : '';
 
     // File 
     // URL del visor - centro, zoom, srs, capas por url.
