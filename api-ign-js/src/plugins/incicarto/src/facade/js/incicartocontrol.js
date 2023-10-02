@@ -731,7 +731,7 @@ export default class IncicartoControl extends M.Control {
     let onlyURL = false;
 
     const { x, y } = this.map_.getCenter();
-    const center = `&center=${x},${y}`;
+    const center = `center=${x},${y}`;
     const zoom = `&zoom=${this.map_.getZoom()}`;
     const srs = `&srs=${this.map_.getProjection().code}`;
     const layers = `&layers=${this.getLayersInLayerswitcher().toString()}`;
