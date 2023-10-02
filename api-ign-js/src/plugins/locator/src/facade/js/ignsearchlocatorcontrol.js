@@ -976,7 +976,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       const extension = (selectedObject.extension !== 0 &&
           selectedObject.extension !== undefined) ?
         `&extension=${selectedObject.extension}` : '';
-      const via = selectedObject.tip_via !== '' ? `&tip_via=${selectedObject.tip_via}` : '';
+      const via = selectedObject.tip_via !== '' ? `&tip_via=${window.encodeURIComponent(selectedObject.tip_via)}` : '';
       let address = selectedObject.address;
 
       if (address.includes('(')) {
