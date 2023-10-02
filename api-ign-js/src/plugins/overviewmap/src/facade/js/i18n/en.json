@@ -1,6 +1,0 @@
-{
-  "exception": {
-    "impl": "The implementation used cannot create OverviewMapControl."
-  },
-  "tooltip": "Overview Map"
-}
