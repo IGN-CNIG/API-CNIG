@@ -39,7 +39,7 @@ export default class PrintViewManagement extends M.Plugin {
      * @public
      * @type {String}
      */
-    this.name = 'viewmanagement';
+    this.name = 'printviewmanagement';
 
     /**
      * Plugin parameters
@@ -205,8 +205,8 @@ export default class PrintViewManagement extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggableE}
-    *${this.predefinedzoom}*${this.georefImage}*${this.printermap}*${this.zoompanel}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}` +
+    `*${this.serverUrl}*${this.printStatusUrl}*${!M.utils.isNullOrEmpty(this.georefImageEpsg)}*${!M.utils.isNullOrEmpty(this.georefImage)}*${!M.utils.isNullOrEmpty(this.printermap)}*${this.defaultOpenControl}`;
   }
 
   /**
