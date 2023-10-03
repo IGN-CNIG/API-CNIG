@@ -17,6 +17,23 @@ import {
   getBase64Image,
 } from './utils';
 
+// ID ELEMENTS
+const ID_TITLE = '#m-georefimage-title';
+const ID_FORMAT_SELECT = '#m-georefimage-format';
+const ID_WLD = '#m-georefimage-wld';
+const ID_DPI = '#m-georefimage-dpi';
+const ID_PROJECTION = '#m-georefimage-projection';
+const ID_FIELDSET = '#m-georefimage-fieldset';
+const ID_LIST_SERVICES = '#m-georefimage-listServices';
+const ID_CLIPBOARD = '#m-georefimage-clipboard';
+
+// SELECTOR CANVAS
+const SELECTOR_CANVAS = '.ol-layer canvas';
+
+// DEFAULTS PARAMS
+const FILE_EXTENSION_GEO = '.wld'; // .jgw
+const TYPE_SAVE = '.zip';
+
 export default class GeorefimageControl extends M.Control {
   /**
     * @classdesc
@@ -29,7 +46,7 @@ export default class GeorefimageControl extends M.Control {
   constructor({
     serverUrl, printTemplateUrl, printStatusUrl, printSelector, printType,
   }, map) {
-    const impl = new GeorefimageControlImpl();
+    const impl = new GeorefimageControlImpl(map);
     super(impl, GeorefimageControl.NAME);
     this.map_ = map;
     if (M.utils.isUndefined(GeorefimageControlImpl)) {
@@ -267,7 +284,14 @@ export default class GeorefimageControl extends M.Control {
       //  });
     });
     promise.then((t) => {
-      const DEFAULT_PROJECTION_SERVER = 'EPSG:3857';
+      const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
+        return codes.includes(this.map_.getProjection().code);
+      })[0];
+
+      const projFormat = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
+
+      this.projection_ = this.map_.getProjection().code;
+      this.projectionFormat_ = projFormat;
 
       // Select Element Template
       this.selectElementHTML(t);
@@ -276,11 +300,9 @@ export default class GeorefimageControl extends M.Control {
       this.defaultValueFieldset = null;
       if (this.printSelector) {
         this.defaultValueFieldset = this.elementFieldset_.querySelector('input[type="radio"]:checked').value;
-        this.projection_ = (this.defaultValueFieldset === 'server') ? DEFAULT_PROJECTION_SERVER : this.map_.getProjection().code;
-        this.elementProjection_.innerText = this.projection_;
+        this.elementProjection_.innerText = this.projectionFormat_;
       } else {
         this.defaultValueFieldset = this.printType;
-        this.projection_ = (this.defaultValueFieldset === 'server') ? DEFAULT_PROJECTION_SERVER : this.map_.getProjection().code;
         this.removeSelector();
       }
 
@@ -304,7 +326,7 @@ export default class GeorefimageControl extends M.Control {
     }
 
     this.template_.innerHTML += `
-      <h3 id="m-georefimage-projection">Sistema de Referencia de la vista ${this.projection_}</h3>
+      <h3 id="m-georefimage-projection" class="m-georefimage-projection">Sistema de Referencia de la vista ${this.projectionFormat_}</h3>
     `;
   }
 
@@ -327,8 +349,10 @@ export default class GeorefimageControl extends M.Control {
       const value = target.value;
       if (value === 'client') {
         this.elementDpi_.setAttribute('disabled', 'disabled');
+        this.elementWld_.setAttribute('disabled', 'disabled');
       } else {
         this.elementDpi_.removeAttribute('disabled');
+        this.elementWld_.removeAttribute('disabled');
       }
 
       if (value === 'client') {
@@ -339,7 +363,10 @@ export default class GeorefimageControl extends M.Control {
           this.elementProjection_.innerText = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
         }
       } else {
-        this.elementProjection_.innerText = DEFAULT_PROJECTION_SERVER;
+        const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
+          return codes[0] === DEFAULT_PROJECTION_SERVER;
+        })[0];
+        this.elementProjection_.innerText = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
       }
     });
 
@@ -352,19 +379,6 @@ export default class GeorefimageControl extends M.Control {
   }
 
   selectElementHTML(html) {
-    // ID ELEMENTS
-    const ID_TITLE = '#m-georefimage-title';
-    const ID_FORMAT_SELECT = '#m-georefimage-format';
-    const ID_WLD = '#m-georefimage-wld';
-    const ID_DPI = '#m-georefimage-dpi';
-    const ID_PROJECTION = '#m-georefimage-projection';
-    const ID_FIELDSET = '#m-georefimage-fieldset';
-    const ID_LIST_SERVICES = '#m-georefimage-listServices';
-    const ID_CLIPBOARD = '#m-georefimage-clipboard';
-
-    // SELECTOR CANVAS
-    const SELECTOR_CANVAS = '.ol-layer canvas';
-
     // ELEMENTS
     this.elementTitle_ = html.querySelector(ID_TITLE);
     this.elementFormatSelect_ = html.querySelector(ID_FORMAT_SELECT);
@@ -445,13 +459,17 @@ export default class GeorefimageControl extends M.Control {
   }
 
   downloadClient() {
+    const title = document.querySelector(ID_TITLE);
+    const format = document.querySelector(ID_FORMAT_SELECT).value;
+
     const queueEl = innerQueueElement(
       this.html_,
-      this.elementTitle_,
+      title,
       this.elementQueueContainer_,
     );
 
-    const base64image = M.utils.getImageMap(this.map_, `image/${this.elementFormatSelect_.value}`);
+    const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
+
     removeLoadQueueElement(queueEl);
     queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image));
   }
@@ -608,6 +626,7 @@ export default class GeorefimageControl extends M.Control {
       },
     }, this.params_.layout);
 
+    const map = this.map_;
     return this.encodeLayers().then((encodedLayers) => {
       const returnData = encodedLayers;
       let encodedLayersModified = [];
@@ -631,7 +650,7 @@ export default class GeorefimageControl extends M.Control {
       printData.attributes.map.width = width;
       printData.attributes.map.height = height;
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-      if (this.map_.getProjection().code !== projection) {
+      if (map.getProjection().code !== projection) {
         printData.attributes.map.bbox = this.getImpl().transformExt(
           printData.attributes.map.bbox, this.map_.getProjection().code,
           projection,
@@ -652,7 +671,7 @@ export default class GeorefimageControl extends M.Control {
     // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer' && ['WMS', 'WMTS', 'TMS', 'XYZ'].indexOf(layer.type) > -1);
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer' && layer.name !== '__draw__');
     });
 
     if (this.map_.getZoom() === 20) {
@@ -764,9 +783,10 @@ export default class GeorefimageControl extends M.Control {
     if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {
       return;
     }
-    // DEFAULTS PARAMS
-    const FILE_EXTENSION_GEO = '.wld'; // .jgw
-    const TYPE_SAVE = '.zip';
+
+    const formatImage = document.querySelector(ID_FORMAT_SELECT).value;
+    const title = document.querySelector(ID_TITLE).value;
+
 
     // PARAMS
     const dpi = this.elementDpi_.value;
@@ -776,7 +796,7 @@ export default class GeorefimageControl extends M.Control {
     // GET IMAGE
     const base64image = (imgBase64) ? formatImageBase64(imgBase64) : getBase64Image(
       this.documentRead_.src,
-      this.elementFormatSelect_.value,
+      formatImage,
     );
 
     // GET BBOX
@@ -789,11 +809,11 @@ export default class GeorefimageControl extends M.Control {
     bbox = this.getImpl().transformExt(bbox, code, this.projection_);
 
     // GET TITLE
-    const titulo = generateTitle(this.elementTitle_.value);
+    const titulo = generateTitle(title);
 
     // CONTENT ZIP
     const fileIMG = {
-      name: titulo.concat(`.${this.elementFormatSelect_.value}`),
+      name: titulo.concat(`.${formatImage}`),
       data: base64image,
       base64: true,
     };

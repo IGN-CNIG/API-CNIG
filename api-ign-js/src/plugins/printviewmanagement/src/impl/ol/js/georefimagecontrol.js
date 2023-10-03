@@ -13,14 +13,14 @@ export default class GeorefimageControl extends M.impl.Control {
     * @extends {ol.control.Control}
     * @api stable
     */
-  constructor() {
+  constructor(map) {
     super();
     /**
       * Facade of the map
       * @private
       * @type {M.Map}
       */
-    this.facadeMap_ = null;
+    this.facadeMap_ = map;
   }
 
   /**
@@ -78,8 +78,8 @@ export default class GeorefimageControl extends M.impl.Control {
     */
   encodeLayer(layer) {
     return (new Promise((success, fail) => {
-      if (layer.type === M.layer.type.WMC) {
-        // none
+      if (layer.type === M.layer.type.MVT || layer.type === M.layer.type.MBTilesVector) {
+        M.dialog.error(getValue('exception.support'), 'Error');
       } else if (layer.type === M.layer.type.KML) {
         success(this.encodeKML(layer));
       } else if (layer.type === M.layer.type.WMS) {
@@ -815,6 +815,42 @@ export default class GeorefimageControl extends M.impl.Control {
 
   transform(box, code, currProj) {
     return ol.proj.transform(box, code, currProj);
+  }
+
+  inflateCoordinates(flatCoordinates, offset, end, stride, optCoordinates) {
+    const coordinates = optCoordinates !== undefined ? optCoordinates : [];
+
+    let i = 0;
+    for (let j = offset; j < end[0]; j += stride) {
+      // eslint-disable-next-line no-plusplus
+      coordinates[i++] = flatCoordinates.slice(j, j + stride);
+    }
+
+    coordinates.length = i;
+    return coordinates;
+  }
+
+
+  inflateCoordinatesArray(flatCoordinates, offset, ends, stride, optCoordinatess) {
+    const coordinatess = optCoordinatess !== undefined ? optCoordinatess : [];
+    let i = 0;
+    // eslint-disable-next-line no-plusplus
+    for (let j = 0, jj = ends.length; j < jj; ++j) {
+      const end = ends[j];
+      // eslint-disable-next-line no-plusplus
+      coordinatess[i++] = this.inflateCoordinates(
+        flatCoordinates,
+        offset,
+        end,
+        stride,
+        coordinatess[i],
+      );
+      // eslint-disable-next-line no-param-reassign
+      offset = end;
+    }
+
+    coordinatess.length = i;
+    return coordinatess;
   }
 
   /**

@@ -70,6 +70,8 @@ export default class PrintViewManagementControl extends M.Control {
       this.georefImage_.printStatusUrl = printStatusUrl;
     }
 
+    this.tooltipGeorefImage_ = georefImage.tooltip || getValue('tooltip_georefimage');
+
     /**
     * Indicates if the control printermap is added to the plugin
     * @private
@@ -80,6 +82,8 @@ export default class PrintViewManagementControl extends M.Control {
       this.printermap_.serverUrl = serverUrl;
       this.printermap_.printStatusUrl = printStatusUrl;
     }
+
+    this.tooltipPrintermap_ = printermap.tooltip || getValue('map_printing');
 
     this.defaultOpenControl = defaultOpenControl;
   }
@@ -102,8 +106,8 @@ export default class PrintViewManagementControl extends M.Control {
           translations: {
             headertitle: getValue('tooltip'),
             tooltipGeorefImageEpsg: this.tooltipGeorefImageEpsg_,
-            georefImage: getValue('georeferenced_img'),
-            printermap: getValue('map_printing'),
+            georefImage: this.tooltipGeorefImage_,
+            printermap: this.tooltipPrintermap_,
             downImg: getValue('downImg'),
             delete: getValue('delete'),
           },
@@ -165,19 +169,19 @@ export default class PrintViewManagementControl extends M.Control {
   }
 
   defaultOpenControl_(html) {
-    if (this.defaultOpenControl === 1) {
+    if (this.defaultOpenControl === 1 && this.printermap_) {
       this.showDownloadButton();
       this.deactive(html, 'printermap');
       this.printerMapControl.active(html);
     }
 
-    if (this.defaultOpenControl === 2) {
+    if (this.defaultOpenControl === 2 && this.georefImage_) {
       this.showDownloadButton();
       this.deactive(html, 'georefImage');
       this.georefImageControl.active(html);
     }
 
-    if (this.defaultOpenControl === 3) {
+    if (this.defaultOpenControl === 3 && this.georefImageEpsg_) {
       this.showDownloadButton();
       this.deactive(html, 'georefImageEpsg');
       this.georefImageEpsgControl.active(html);

@@ -37,7 +37,20 @@ export default class GeorefImageEpsgControl extends M.Control {
     }
 
 
-    this.layers_ = layers || [];
+    this.layers_ = layers || [
+      {
+        url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+        name: 'mtn_rasterizado',
+        format: 'image/jpeg',
+        legend: 'Mapa ETRS89 UTM',
+      },
+      {
+        url: 'http://www.ign.es/wms-inspire/pnoa-ma?',
+        name: 'OI.OrthoimageCoverage',
+        format: 'image/jpeg',
+        legend: 'Imagen (PNOA) ETRS89 UTM',
+      },
+    ];
 
     /**
       * Layout
@@ -242,6 +255,7 @@ export default class GeorefImageEpsgControl extends M.Control {
           // CONTENT ZIP
           const files = [{
             name: titulo.concat(FILE_EXTENSION_GEO),
+            // EPSG:3857 -> bbox
             data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize()),
             base64: false,
           },
