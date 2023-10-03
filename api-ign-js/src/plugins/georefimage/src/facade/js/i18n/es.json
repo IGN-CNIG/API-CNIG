@@ -2,7 +2,8 @@
   "exception": {
     "loaderror": "La imagen no ha podido ser cargada.",
     "teselaError": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
-    "printError": "Se ha producido un error en la impresión."
+    "printError": "Se ha producido un error en la impresión.",
+    "georefimage_obsolete": "Mensaje para el desarrollador: M.plugin.georefimage ha quedado obsoleto, utilice en su lugar M.plugin.PrintViewManagement"
   },
 
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",

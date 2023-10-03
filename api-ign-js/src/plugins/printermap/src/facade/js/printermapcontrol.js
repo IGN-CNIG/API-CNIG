@@ -273,6 +273,8 @@ export default class PrinterMapControl extends M.Control {
    * @api stabletrue
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('exception.printermap_obsolete'));
     const promise = new Promise((success, fail) => {
       this.getCapabilities().then((capabilitiesParam) => {
         const capabilities = capabilitiesParam;

@@ -119,6 +119,8 @@ export default class Georefimage2Control extends M.Control {
    * @api stabletrue
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('exception.georefimage2_obsolete'));
     this.map_ = map;
     return new Promise((success, fail) => {
       const html = M.template.compileSync(georefimage2HTML, {
