@@ -354,7 +354,7 @@ div.m-layerswitcher-legend>img {
     border: 1px solid #cccccc;
 }
 
-.m-layerswitcher-info-cap>p>span {
+.m-layerswitcher-info-cap>p>span, .m-layerswitcher-info-cap > div >p>span  {
     font-weight: bold;
 }
 
@@ -725,22 +725,33 @@ div.m-layerswitcher-pagecontrolscontainer {
     cursor: pointer;
 }
 
+table#m-layerswitcher-table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
 table#m-layerswitcher-table.m-layerswitcher-tablepagination thead tr {
-    background-color: #f6f6f6;
-    color: black;
+    background-color: rgb(113, 167, 211);;
+    color: white;
     font-size: large;
+    padding: 5px 5px 5px 5px;
 }
 
 table#m-layerswitcher-table.m-layerswitcher-tablepagination tbody tr {
     border-bottom: 1px solid #dddddd;
 }
 
+table#m-layerswitcher-table.m-layerswitcher-tablepagination tbody tr td,
+table#m-layerswitcher-table.m-layerswitcher-tablepagination thead tr td {
+    padding: 5px;
+}
+
 table#m-layerswitcher-table.m-layerswitcher-tablepagination tbody tr:nth-of-type(even) {
-    background-color: #eee;
+    background-color: rgb(113 167 211 / 24%);
 }
 
 table#m-layerswitcher-table.m-layerswitcher-tablepagination tbody tr:hover {
-    background-color: #faf6de;
+    background-color: rgb(113 167 211 / 50%);
 }
 
 .m-layerswitcher-suggestion-caret::before {
