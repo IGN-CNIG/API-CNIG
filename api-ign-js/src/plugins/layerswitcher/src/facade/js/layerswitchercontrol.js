@@ -453,8 +453,32 @@ export default class LayerswitcherControl extends M.Control {
                   see_more_layer: getValue('see_more_layer'),
                   see_more_service: getValue('see_more_service'),
                   metadata: getValue('metadata'),
+                  attributes: getValue('attributes'),
                 },
               };
+              const nFeatures = layer.getFeatures().length;
+              if (nFeatures > 0) {
+                const attributes = [];
+                const features = layer.getFeatures();
+                const headerAtt = Object.keys(features[0].getAttributes());
+                features.forEach((feature) => {
+                  const properties = Object.values(feature.getAttributes());
+                  if (!M.utils.isNullOrEmpty(properties)) {
+                    attributes.push({
+                      properties,
+                    });
+                  }
+                });
+                if (!M.utils.isUndefined(headerAtt)) {
+                  vars.pages = this.pageResults_(attributes);
+                  vars.allAttributes = attributes;
+                  vars.attributes = (M.utils.isNullOrEmpty(attributes)) ? false : attributes
+                    .slice(this.pages_.element, this.pages_.element + this.numPages_);
+                } else {
+                  vars.attributes = attributes;
+                }
+                vars.headerAtt = headerAtt;
+              }
               this.renderInfo(vars, 'OGCAPIFeatures');
             });
           } else if (layer.type === 'WMS' || layer.type === 'WMTS') {
@@ -705,10 +729,10 @@ export default class LayerswitcherControl extends M.Control {
     const tableBody = document.querySelector('#m-layerswitcher-table tbody');
     tableBody.innerHTML = '';
 
-    this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes))
-      ? false
-      : this.latestVars_.allAttributes
-        .slice(this.pages_.element, this.pages_.element + this.numPages_);
+    this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes)) ?
+      false :
+      // eslint-disable-next-line max-len
+      this.latestVars_.allAttributes.slice(this.pages_.element, this.pages_.element + this.numPages_);
 
     if (this.latestVars_.attributes) {
       this.latestVars_.attributes.forEach((att) => {
