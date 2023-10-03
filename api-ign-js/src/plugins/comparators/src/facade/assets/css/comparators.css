@@ -498,7 +498,8 @@
 /* Mobile fix */
 
 @media only screen and (max-width: 1000px) {
-    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-comparators.opened {
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-comparators.opened,
+    .m-areas>div.m-area.m-left>div.m-panel.m-plugin-comparators.opened {
         width: 100vw;
         height: 100vh;
         position: fixed !important;
@@ -508,7 +509,7 @@
         z-index: 999999 !important;
     }
 
-     .m-plugin-comparators.opened .m-panel-btn.g-cartografia-flecha-derecha,
+    .m-plugin-comparators.opened .m-panel-btn.g-cartografia-flecha-derecha,
     .m-plugin-comparators.opened .m-panel-btn.g-cartografia-flecha-izquierda {
         position: absolute;
         left: auto !important;
@@ -517,10 +518,23 @@
         box-shadow: none;
     } 
 
-    div.m-area.m-top.m-right > div.m-panel.m-plugin-comparators.opened > div,  .m-control.m-container.m-comparators  {
+    div.m-area.m-top.m-right > div.m-panel.m-plugin-comparators.opened > div,  .m-control.m-container.m-comparators,
+    div.m-area.m-top.m-left > div.m-panel.m-plugin-comparators.opened > div,  .m-control.m-container.m-comparators,
+    div.m-areas.m-bottom.m-right > div.m-panel.m-plugin-comparators.opened > div,  .m-control.m-container.m-comparators,
+    div.m-areas.m-bottom.m-left > div.m-panel.m-plugin-comparators.opened > div,  .m-control.m-container.m-comparators
+    {
         max-width: 100vw !important;
         max-height: 100vh !important;
         width: 100% !important;
+    }
+    
+   .m-plugin-comparators.opened .m-panel-controls  {
+        width: 100%;
+    }
+
+    .m-areas>div.m-area.m-left>div.m-plugin-comparators.opened>button.m-panel-btn {
+        right: 0;
+        left: 0 !important;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-comparators.opened>div.m-panel-controls>div.m-control.m-container.m-comparators>div#m-comparators-title {
