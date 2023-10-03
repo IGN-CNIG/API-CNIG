@@ -498,14 +498,13 @@
 /* Mobile fix */
 
 @media only screen and (max-width: 1000px) {
-    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-comparators.opened,
-    .m-areas>div.m-area.m-left>div.m-panel.m-plugin-comparators.opened {
+     .m-plugin-comparators.opened {
         width: 100vw;
         height: 100vh;
         position: fixed !important;
         top: 0;
         left: 0;
-        margin: 0;
+        margin: 0 !important;
         z-index: 999999 !important;
     }
 
