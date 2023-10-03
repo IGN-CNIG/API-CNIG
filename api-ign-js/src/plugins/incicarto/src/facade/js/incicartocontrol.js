@@ -759,10 +759,9 @@ export default class IncicartoControl extends M.Control {
       // URL del visor - centro, zoom, srs, capas por url.
       // URL de la API - centro, zoom, srs, capas por url.
       url = url.split('?')[0];
-      if(M.config.MAP_VIEWER_LAYERS.toString() !== '') {
-        url+= `?${center}${zoom}${srs}&layers=${M.config.MAP_VIEWER_LAYERS.toString()}`;
-        api_url+= `?${center}${zoom}${srs}&layers=${M.config.MAP_VIEWER_LAYERS.toString()}`;
-      }
+      const layers_url = (M.config.MAP_VIEWER_LAYERS.toString() !== '') ? `&layers=${M.config.MAP_VIEWER_LAYERS.toString()}` : '';
+      url+= `?${center}${zoom}${srs}${layers_url}`;
+      api_url+= `?${center}${zoom}${srs}${layers_url}`;
     }
 
     if (url.indexOf('.jsp') > -1) {
