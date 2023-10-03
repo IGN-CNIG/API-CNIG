@@ -22,7 +22,7 @@ export default class PrintViewManagementControl extends M.Control {
    */
   constructor({
     isDraggable, georefImageEpsg, georefImage, printermap, order, map,
-    serverUrl, printStatusUrl, defaultOpenControl,
+    serverUrl, printStatusUrl, defaultOpenControl, useProxy, statusProxy,
   }) {
     if (M.utils.isUndefined(PrintViewManagementImpl)) {
       M.exception(getValue('exception.impl'));
@@ -86,6 +86,10 @@ export default class PrintViewManagementControl extends M.Control {
     this.tooltipPrintermap_ = printermap.tooltip || getValue('map_printing');
 
     this.defaultOpenControl = defaultOpenControl;
+
+    this.statusProxy = statusProxy;
+
+    this.useProxy = useProxy;
   }
   /**
    * This function creates the view
@@ -201,7 +205,10 @@ export default class PrintViewManagementControl extends M.Control {
   }
 
   addGeorefImageEpsgControl(html) {
-    this.georefImageEpsgControl = new GeorefImageEpsgControl(this.georefImageEpsg_, this.map_);
+    this.georefImageEpsgControl = new GeorefImageEpsgControl(
+      this.georefImageEpsg_,
+      this.map_,
+    );
     html.querySelector('#m-printviewmanagement-georefImageEpsg').addEventListener('click', () => {
       this.showDownloadButton();
       this.deactive(html, 'georefImageEpsg');
@@ -210,7 +217,10 @@ export default class PrintViewManagementControl extends M.Control {
   }
 
   addPrinterMapControl(html) {
-    this.printerMapControl = new PrinterMapControl(this.printermap_, this.map_);
+    this.printerMapControl = new PrinterMapControl(
+      this.printermap_, this.map_,
+      this.statusProxy, this.useProxy,
+    );
     html.querySelector('#m-printviewmanagement-printermap').addEventListener('click', () => {
       this.showDownloadButton();
       this.deactive(html, 'printermap');
@@ -219,7 +229,10 @@ export default class PrintViewManagementControl extends M.Control {
   }
 
   addGeorefImageControl(html) {
-    this.georefImageControl = new GeorefimageControl(this.georefImage_, this.map_);
+    this.georefImageControl = new GeorefimageControl(
+      this.georefImage_, this.map_,
+      this.statusProxy, this.useProxy,
+    );
     html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
       this.showDownloadButton();
       this.deactive(html, 'georefImage');

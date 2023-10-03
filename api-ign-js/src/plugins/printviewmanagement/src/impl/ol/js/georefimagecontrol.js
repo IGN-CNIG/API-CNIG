@@ -79,7 +79,6 @@ export default class GeorefimageControl extends M.impl.Control {
   encodeLayer(layer) {
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.MVT) {
-        console.log('encodeLayer MVT');
         success(this.encodeMVT(layer));
       } else if (layer.type === M.layer.type.MBTilesVector) {
         M.dialog.error(getValue('exception.support'), 'Error');

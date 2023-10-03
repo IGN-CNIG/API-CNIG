@@ -117,6 +117,20 @@ export default class PrintViewManagement extends M.Plugin {
      * @type {Number}
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Indicates if you want to use proxy in requests
+     * @private
+     * @type {Boolean}
+     */
+    this.useProxy = M.utils.isUndefined(options.useProxy) ? true : options.useProxy;
+
+    /**
+     * Stores the proxy state at plugin load time
+     * @private
+     * @type {Boolean}
+     */
+    this.statusProxy = M.useproxy;
   }
 
   /**
@@ -161,6 +175,8 @@ export default class PrintViewManagement extends M.Plugin {
       printTemplateUrl: this.printTemplateUrl,
       printStatusUrl: this.printStatusUrl,
       defaultOpenControl: this.defaultOpenControl,
+      useProxy: this.useProxy,
+      statusProxy: this.statusProxy,
     }));
 
     this.panel_ = new M.ui.Panel('panelPrintViewManagement', {

@@ -44,7 +44,7 @@ export default class GeorefimageControl extends M.Control {
     * @api stable
     */
   constructor({
-    serverUrl, printTemplateUrl, printStatusUrl, printSelector, printType,
+    serverUrl, printTemplateUrl, printStatusUrl, printSelector, printType, statusProxy, useProxy,
   }, map) {
     const impl = new GeorefimageControlImpl(map);
     super(impl, GeorefimageControl.NAME);
@@ -175,6 +175,9 @@ export default class GeorefimageControl extends M.Control {
     this.proyectionsDefect_ = ['EPSG:3857'];
     // this.proyectionsDefect_ = ['EPSG:25828', 'EPSG:25829',
     // 'EPSG:25830', 'EPSG:25831', 'EPSG:3857', 'EPSG:4326', 'EPSG:4258'];
+
+    this.statusProxy = statusProxy;
+    this.useProxy = useProxy;
   }
 
   /**
@@ -183,10 +186,9 @@ export default class GeorefimageControl extends M.Control {
     * @param {Function} callback - function that removes loading icon class.
     */
   getStatus(url, callback) {
-    M.proxy(false);
+    M.proxy(this.useProxy);
     const newUrl = `${url}?timestamp=${new Date().getTime()}`;
     M.remote.get(newUrl).then((response) => {
-      M.proxy(true);
       const statusJson = JSON.parse(response.text);
       const { status } = statusJson;
       if (status === 'finished') {
@@ -202,9 +204,8 @@ export default class GeorefimageControl extends M.Control {
       } else {
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
-    }).catch((err) => {
-      M.proxy(true);
-    });
+    }).catch((err) => { });
+    M.proxy(this.statusProxy);
   }
 
   active(html) {
@@ -421,7 +422,7 @@ export default class GeorefimageControl extends M.Control {
 
       printUrl = M.utils.addParameters(printUrl, 'mapeaop=geoprint');
       // FIXME: delete proxy deactivation and uncomment if/else when proxy is fixed on Mapea
-      M.proxy(false);
+      M.proxy(this.useProxy);
       M.remote.post(printUrl, printData).then((responseParam) => {
         let response = responseParam;
         const responseStatusURL = JSON.parse(response.text);
@@ -454,7 +455,7 @@ export default class GeorefimageControl extends M.Control {
         // }
       });
 
-      M.proxy(true);
+      M.proxy(this.statusProxy);
     });
   }
 
@@ -495,7 +496,7 @@ export default class GeorefimageControl extends M.Control {
     if (M.utils.isNullOrEmpty(this.capabilitiesPromise_)) {
       this.capabilitiesPromise_ = new Promise((success, fail) => {
         const capabilitiesUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, 'capabilities.json']);
-        M.proxy(false);
+        M.proxy(this.useProxy);
         M.remote.get(capabilitiesUrl).then((response) => {
           let capabilities = {};
           try {
@@ -506,7 +507,7 @@ export default class GeorefimageControl extends M.Control {
           success(capabilities);
         });
 
-        M.proxy(true);
+        M.proxy(this.statusProxy);
       });
     }
 
