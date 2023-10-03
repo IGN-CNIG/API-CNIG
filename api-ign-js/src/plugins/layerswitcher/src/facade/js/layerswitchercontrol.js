@@ -480,6 +480,13 @@ export default class LayerswitcherControl extends M.Control {
                 vars.headerAtt = headerAtt;
               }
               this.renderInfo(vars, 'OGCAPIFeatures');
+              this.latestVars_ = vars;
+              if (layer instanceof M.layer.Vector) {
+                document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
+                document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
+                this.hasNext_();
+                this.hasPrevious_();
+              }
             });
           } else if (layer.type === 'WMS' || layer.type === 'WMTS') {
             const vars = {
