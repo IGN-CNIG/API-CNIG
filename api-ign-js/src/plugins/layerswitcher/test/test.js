@@ -202,11 +202,12 @@ const mp = new Layerswitcher({
   https: true,
   http: true,
   codsi: true,
+  useProxy: true,
 });
 map.addPlugin(mp);
 
 // CAPAS
-M.proxy(false);
+// M.proxy(false);
 let capaGeoJSON = new M.layer.GeoJSON({
   name: 'Capa GeoJSON',
   legend: 'Capa GeoJSON',
@@ -365,9 +366,9 @@ const capaXYZ = new M.layer.XYZ({
 //   map.addLayers(capaGeoJSON);
 // });
 
-map.addLayers(capaOSM);
+// map.addLayers(capaOSM);
 window.capaOSM = capaOSM;
-map.addLayers(capaKML);
+// map.addLayers(capaKML);
 window.capaKML = capaKML;
 // map.addLayers(capaMVT);
 // map.addLayers(capaOGCAPIFeatures);

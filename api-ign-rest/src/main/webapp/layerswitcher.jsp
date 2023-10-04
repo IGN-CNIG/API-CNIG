@@ -95,6 +95,11 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="selectProxy">Proxy</label>
+        <select name="proxyValue" id="selectProxy">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
@@ -167,6 +172,7 @@
         const selectHttp = document.getElementById("isHttp");
         const selectHttps = document.getElementById("isHttps");
         const selectCodsi = document.getElementById("isCodsi");
+        const selectProxy = document.getElementById("selectProxy");
 
         const botonEliminar = document.getElementById("botonEliminar");
 
@@ -182,6 +188,7 @@
         selectHttp.addEventListener('change', cambiarTest);
         selectHttps.addEventListener('change', cambiarTest);
         selectCodsi.addEventListener('change', cambiarTest);
+        selectProxy.addEventListener('change', cambiarTest);
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
@@ -201,6 +208,7 @@
             objeto.http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
             objeto.https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
             objeto.codsi = (selectCodsi.options[selectCodsi.selectedIndex].value == 'true');
+            objeto.useProxy = (selectProxy.options[selectProxy.selectedIndex].value == 'true');
             map.removePlugins(mp);
             crearPlugin(objeto);
         }

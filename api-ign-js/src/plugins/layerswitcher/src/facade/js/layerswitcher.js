@@ -230,6 +230,12 @@ export default class Layerswitcher extends M.Plugin {
     // codsi
     this.codsi = options.codsi || false;
 
+    // use proxy
+    this.useProxy = M.utils.isUndefined(options.useProxy) ? true : options.useProxy;
+
+    // Estado inicial del proxy
+    this.statusProxy = M.useproxy;
+
     // Indicates order to the plugin
     this.order = options.order >= -1 ? options.order : null;
   }
@@ -258,6 +264,8 @@ export default class Layerswitcher extends M.Plugin {
         https: this.https,
         codsi: this.codsi,
         order: this.order,
+        useProxy: this.useProxy,
+        statusProxy: this.statusProxy,
       });
     // creamos panel
     this.panel_ = new M.ui.Panel('Layerswitcher', {
@@ -297,7 +305,7 @@ export default class Layerswitcher extends M.Plugin {
 
   // Devuelve la cadena API-REST del plugin
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.codsi}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.codsi}*${this.useProxy}`;
   }
 
   // Devuelve la cadena API-REST del plugin en base64
