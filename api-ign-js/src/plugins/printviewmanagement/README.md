@@ -38,7 +38,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **isDraggable**: "True" para que el plugin se pueda desplazar, por defecto false.
 - **serverUrl**: URL del servidor Geoprint. Por defecto: https://componentes.cnig.es/geoprint.
 - **printStatusUrl**: URL para consultar el estado de la impresión. Por defecto: https://componentes.cnig.es/geoprint/print/status.
-- **georefImageEpsg**:  Indica si el control "Impresión de imágenes de capas precargadas" se añade al plugin (true/false). Por defecto: true.
+- **georefImageEpsg**: Indica si el control "Impresión de imágenes de capas precargadas" se añade al plugin (true/false). Por defecto: true.
   - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Impresión del mapa.
   - **layers**: Array de objetos con información de las capas a imprimir. 
     - url: URL de la capa.
@@ -65,7 +65,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
     ],
 
   ```
-- **georefImage**:  Indica si el control "Impresión de imagen (desde servidor o desde cliente)" se añade al plugin (true/false). Por defecto: true.
+- **georefImage**: Indica si el control "Impresión de imagen (desde servidor o desde cliente)" se añade al plugin (true/false). Por defecto: true.
   - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Impresión del mapa.
   - **printTemplateUrl**: URL con las plantillas.
   - **printSelector**: Añade los dos modos de impresión (true/false). Por defecto: true.
