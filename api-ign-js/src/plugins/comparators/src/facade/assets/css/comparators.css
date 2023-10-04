@@ -1390,5 +1390,10 @@ Todo: see can i use and delete this commet */
     #set-mirror-3 {
         display: none !important;
     }
+
+
+.mirrorpanel-grid:is(:has(.m-plugin-comparators.opened)) {
+    height: initial !important;
+   }
 }
 
