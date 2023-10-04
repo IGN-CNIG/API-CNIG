@@ -93,9 +93,9 @@ public class Parameters {
       }
    }
 
-   public void addZoomConstrains (String zoomConstrains) {
-      if (zoomConstrains != null) {
-         parameters.put("zoomConstrains", Boolean.parseBoolean(zoomConstrains));
+   public void addZoomConstrains (String zoomconstrains) {
+      if (zoomconstrains != null) {
+         parameters.put("zoomConstrains", Boolean.parseBoolean(zoomconstrains));
       }
    }
 
