@@ -409,7 +409,7 @@ export const zoom = (zoomParam) => {
 
   // string
   if (isString(zoomParameter)) {
-    zoomVar = Number.parseInt(zoomParameter, 10);
+    zoomVar = Number.parseFloat(zoomParameter);
   } else if (typeof zoomParameter === 'number') {
     // number
     zoomVar = zoomParameter;
