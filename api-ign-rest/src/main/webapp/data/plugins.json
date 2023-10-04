@@ -41,7 +41,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/comparepanel",
     "image": "img/api-logo.png",
     "description": "Plugin con todos los comparadores",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "contactlink",
@@ -85,7 +85,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/georefimage",
     "image": "img/api-logo.png",
     "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "georefimage2",
@@ -96,7 +96,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/georefimage2",
     "image": "img/api-logo.png",
     "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla, de los servicios Ráster y de PNOA de forma directa.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "ignsearchlocator",
@@ -184,7 +184,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/lyrcompare",
     "image": "img/api-logo.png",
     "description": "Plugin que permite comparar varias capas sobre una cartografía base.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "comparators",
@@ -217,7 +217,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/mirrorpanel",
     "image": "img/api-logo.png",
     "description": "Plugin que permite comparar varias capas dividiendo la pantalla en varias partes.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "mousesrs",
@@ -272,7 +272,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/printermap",
     "image": "img/api-logo.png",
     "description": "Plugin de impresión a través del servicio Geoprint.",
-    "obsolete": false
+    "obsolete": true
   },
   {
   "name": "queryattributes",
