@@ -594,7 +594,10 @@ div.m-layerswitcher-legend>img {
 
     .m-areas>div.m-area.m-left>div.m-plugin-layerswitcher.opened>button.m-panel-btn {
         right: 0;
-        left: 0 !important;
+    }
+
+    .m-plugin-layerswitcher.opened button.m-panel-btn::before {
+        content: "\e907" !important;
     }
 
     .m-plugin-layerswitcher.opened .m-panel-btn.g-cartografia-flecha-derecha,
