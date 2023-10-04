@@ -94,6 +94,10 @@ import enInformation from '../../../plugins/information/src/facade/js/i18n/en';
 import esLyrcompare from '../../../plugins/lyrcompare/src/facade/js/i18n/es';
 import enLyrcompare from '../../../plugins/lyrcompare/src/facade/js/i18n/en';
 
+// Layerswitcher
+import esLayerswitcher from '../../../plugins/layerswitcher/src/facade/js/i18n/es';
+import enLayerswitcher from '../../../plugins/layerswitcher/src/facade/js/i18n/en';
+
 // Measurebar
 import esMeasurebar from '../../../plugins/measurebar/src/facade/js/i18n/es';
 import enMeasurebar from '../../../plugins/measurebar/src/facade/js/i18n/en';
@@ -290,6 +294,10 @@ const pluginsLanguage = {
   lyrcompare: {
     esLyrcompare,
     enLyrcompare,
+  },
+  layerswitcher: {
+    esLayerswitcher,
+    enLayerswitcher,
   },
   measurebar: {
     esMeasurebar,

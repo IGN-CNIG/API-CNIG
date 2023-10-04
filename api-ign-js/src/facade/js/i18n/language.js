@@ -71,6 +71,7 @@ export const getTranslation = (lang) => {
       .esInfocoordinates;
     configuration.translations[lang].information = pluginsLanguage.information.esInformation;
     configuration.translations[lang].lyrcompare = pluginsLanguage.lyrcompare.esLyrcompare;
+    configuration.translations[lang].layerswitcher = pluginsLanguage.layerswitcher.esLayerswitcher;
     configuration.translations[lang].measurebar = pluginsLanguage.measurebar.esMeasurebar;
     configuration.translations[lang].mirrorpanel = pluginsLanguage.mirrorpanel.esMirrorpanel;
     configuration.translations[lang].mousesrs = pluginsLanguage.mousesrs.esMousesrs;
@@ -127,6 +128,7 @@ export const getTranslation = (lang) => {
       .enInfocoordinates;
     configuration.translations[lang].information = pluginsLanguage.information.enInformation;
     configuration.translations[lang].lyrcompare = pluginsLanguage.lyrcompare.enLyrcompare;
+    configuration.translations[lang].layerswitcher = pluginsLanguage.layerswitcher.enLayerswitcher;
     configuration.translations[lang].measurebar = pluginsLanguage.measurebar.enMeasurebar;
     configuration.translations[lang].mirrorpanel = pluginsLanguage.mirrorpanel.enMirrorpanel;
     configuration.translations[lang].mousesrs = pluginsLanguage.mousesrs.enMousesrs;
