@@ -533,7 +533,10 @@
 
     .m-areas>div.m-area.m-left>div.m-plugin-comparators.opened>button.m-panel-btn {
         right: 0;
-        left: 0 !important;
+    }
+
+    .m-plugin-comparators.opened button.m-panel-btn::before {
+        content: "\e907" !important;
     }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-comparators.opened>div.m-panel-controls>div.m-control.m-container.m-comparators>div#m-comparators-title {
