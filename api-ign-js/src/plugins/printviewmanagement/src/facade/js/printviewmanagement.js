@@ -89,21 +89,65 @@ export default class PrintViewManagement extends M.Plugin {
      * @private
      * @type {Boolean|Array<Object>}
      */
-    this.georefImageEpsg = options.georefImageEpsg ? this.getGeorefImageEpsg() : false;
+    if (options.georefImageEpsg === true) {
+      this.georefImageEpsg = {
+        layers: [
+          {
+            url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+            name: 'mtn_rasterizado',
+            format: 'image/jpeg',
+            legend: 'Mapa ETRS89 UTM',
+          },
+          {
+            url: 'http://www.ign.es/wms-inspire/pnoa-ma?',
+            name: 'OI.OrthoimageCoverage',
+            format: 'image/jpeg',
+            legend: 'Imagen (PNOA) ETRS89 UTM',
+          },
+        ],
+        order: 0,
+        tooltip: 'Georeferenciar imagen',
+      };
+    } else if (options.georefImageEpsg) {
+      this.georefImageEpsg = this.getGeorefImageEpsg();
+    } else {
+      this.georefImageEpsg = false;
+    }
 
     /**
      * Indicates if the control georefImage is added to the plugin
      * @private
      * @type {Boolean}
      */
-    this.georefImage = options.georefImage ? options.georefImage : false;
+    if (options.georefImage === true) {
+      this.georefImage = {
+        tooltip: 'Georeferenciar imagen',
+        printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
+        printSelector: true,
+      };
+    } else if (options.georefImage) {
+      this.georefImage = options.georefImage;
+    } else {
+      this.georefImage = false;
+    }
 
     /**
      * Indicates if the control printermap is added to the plugin
      * @private
      * @type {Boolean}
      */
-    this.printermap = options.printermap ? options.printermap : false;
+    if (options.printermap === true) {
+      this.printermap = {
+        printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
+        headerLegend: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+        filterTemplates: ['A3 Horizontal'],
+        logo: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+      };
+    } else if (options.printermap) {
+      this.printermap = options.printermap;
+    } else {
+      this.printermap = false;
+    }
 
     this.serverUrl = options.serverUrl || 'https://componentes.cnig.es/geoprint';
 
