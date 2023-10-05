@@ -19,20 +19,21 @@ export default class PrinterMapControl extends M.Control {
     * @extends {M.Control}
     * @api stable
     */
-  constructor({
-    serverUrl,
-    printTemplateUrl,
-    printStatusUrl,
-    credits,
-    logo,
-    fixedDescription,
-    headerLegend,
-    filterTemplates,
-    order,
-    tooltip,
-    statusProxy,
+  constructor(
+    {
+      serverUrl,
+      printTemplateUrl,
+      printStatusUrl,
+      credits,
+      logo,
+      fixedDescription,
+      headerLegend,
+      filterTemplates,
+      order,
+      tooltip,
+    }, map, statusProxy,
     useProxy,
-  }, map) {
+  ) {
     const impl = new PrinterMapControlImpl(map);
 
     super(impl, PrinterMapControl.NAME);
@@ -214,6 +215,7 @@ export default class PrinterMapControl extends M.Control {
 
     this.statusProxy = statusProxy;
     this.useProxy = useProxy;
+    console.log(this.useProxy);
   }
 
   /**

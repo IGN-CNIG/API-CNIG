@@ -44,8 +44,8 @@ export default class GeorefimageControl extends M.Control {
     * @api stable
     */
   constructor({
-    serverUrl, printTemplateUrl, printStatusUrl, printSelector, printType, statusProxy, useProxy,
-  }, map) {
+    serverUrl, printTemplateUrl, printStatusUrl, printSelector, printType,
+  }, map, statusProxy, useProxy) {
     const impl = new GeorefimageControlImpl(map);
     super(impl, GeorefimageControl.NAME);
     this.map_ = map;
@@ -348,11 +348,13 @@ export default class GeorefimageControl extends M.Control {
     // Disable m-georefimage-dpi when elementFieldset_ is client
     this.elementFieldset_.addEventListener('change', ({ target }) => {
       const value = target.value;
+      const elementDpi = document.querySelector(ID_DPI);
+
       if (value === 'client') {
-        this.elementDpi_.setAttribute('disabled', 'disabled');
+        elementDpi.setAttribute('disabled', 'disabled');
         this.elementWld_.setAttribute('disabled', 'disabled');
       } else {
-        this.elementDpi_.removeAttribute('disabled');
+        elementDpi.removeAttribute('disabled');
         this.elementWld_.removeAttribute('disabled');
       }
 
@@ -384,7 +386,6 @@ export default class GeorefimageControl extends M.Control {
     this.elementTitle_ = html.querySelector(ID_TITLE);
     this.elementFormatSelect_ = html.querySelector(ID_FORMAT_SELECT);
     this.elementWld_ = html.querySelector(ID_WLD);
-    this.elementDpi_ = html.querySelector(ID_DPI);
     this.elementProjection_ = html.querySelector(ID_PROJECTION);
     this.elementFieldset_ = html.querySelector(ID_FIELDSET);
     this.elementListServices_ = html.querySelector(ID_LIST_SERVICES);
@@ -602,6 +603,8 @@ export default class GeorefimageControl extends M.Control {
     */
   getPrintData() {
     let projection;
+    const elementDpi = document.querySelector(ID_DPI);
+
     if (this.projection_ === 'EPSG:4326' || this.projection_ === 'EPSG:4258') {
       projection = this.map_.getProjection().code;
       this.projection_ = projection;
@@ -613,7 +616,7 @@ export default class GeorefimageControl extends M.Control {
     const width = this.map_.getMapImpl().getSize()[0];
     const height = this.map_.getMapImpl().getSize()[1];
     const layout = 'plain';
-    const dpi = this.elementDpi_.value;
+    const dpi = elementDpi.value;
     const outputFormat = 'jpg';
     const parameters = this.params_.parameters;
     const printData = M.utils.extend({
@@ -787,10 +790,10 @@ export default class GeorefimageControl extends M.Control {
 
     const formatImage = document.querySelector(ID_FORMAT_SELECT).value;
     const title = document.querySelector(ID_TITLE).value;
-
+    const elementDpi = document.querySelector(ID_DPI);
 
     // PARAMS
-    const dpi = this.elementDpi_.value;
+    const dpi = elementDpi.value;
     const code = this.map_.getProjection().code;
     const addWLD = this.elementWld_.checked;
 
