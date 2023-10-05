@@ -215,7 +215,6 @@ export default class PrinterMapControl extends M.Control {
 
     this.statusProxy = statusProxy;
     this.useProxy = useProxy;
-    console.log(this.useProxy);
   }
 
   /**
