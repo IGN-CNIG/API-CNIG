@@ -14,11 +14,11 @@
                 <p tabindex="0"><span>{{translations.attributes}}:</span>&nbsp;</p>
                 <div class="m-layerswitcher-pagecontrolscontainer">
                     <div class="m-layerswitcher-fixedwidthbutton">
-                        <span class="g-cartografia-flecha-izquierda m-layerswitcher-hidden" id="m-layerswitcher-previous"></span>
+                        <span tabindex="0" class="g-cartografia-flecha-izquierda m-layerswitcher-hidden" id="m-layerswitcher-previous"></span>
                     </div>
-                    <span id="m-layerswitcher-pageinfo">Página {{pages.actual}} de {{pages.total}}</span>
+                    <span tabindex="0" id="m-layerswitcher-pageinfo">Página {{pages.actual}} de {{pages.total}}</span>
                     <div class="m-layerswitcher-fixedwidthbutton">
-                        <span class="g-cartografia-flecha-derecha m-layerswitcher-hidden" id="m-layerswitcher-next"></span>
+                        <span tabindex="0" class="g-cartografia-flecha-derecha m-layerswitcher-hidden" id="m-layerswitcher-next"></span>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <thead>
                     <tr>
                         {{#each headerAtt}}
-                            <td>{{this}}</td>
+                            <td tabindex="0">{{this}}</td>
                         {{/each}}
                     </tr>
                 </thead>
@@ -34,7 +34,7 @@
                     {{#each attributes}}
                         <tr>
                             {{#each this.properties}}
-                                <td> {{{this}}}</td>
+                                <td tabindex="0"> {{{this}}}</td>
                             {{/each}}
                         </tr>
                     {{/each}}
