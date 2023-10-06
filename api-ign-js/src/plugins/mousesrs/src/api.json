@@ -23,7 +23,7 @@
       "name": "precision",
       "position": 3
     }, {
-      "type": "number",
+      "type": "boolean",
       "name": "epsgFormat",
       "position": 4
     }, {
