@@ -10,14 +10,14 @@ import { getNameString } from './utils';
 
 export default class MirrorpanelControl extends M.Control {
   /**
-  * @classdesc
-  * Main constructor of the class. Creates a PluginControl
-  * control
-  *
-  * @constructor
-  * @extends {M.Control}
-  * @api stable
-  */
+   * @classdesc
+   * Main constructor of the class. Creates a PluginControl
+   * control
+   *
+   * @constructor
+   * @extends {M.Control}
+   * @api stable
+   */
   constructor(values, controlsLayers, map) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(MirrorpanelImplControl)) {
@@ -31,10 +31,10 @@ export default class MirrorpanelControl extends M.Control {
     this.map_ = map;
 
     /**
-       * Template
-       * @public
-       * @type { HTMLElement }
-       */
+     * Template
+     * @public
+     * @type { HTMLElement }
+     */
     this.template = null;
 
     /**
@@ -49,36 +49,48 @@ export default class MirrorpanelControl extends M.Control {
     if (this.modeVizTypes === undefined) this.modeVizTypes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     /**
-       * Visual mode
-       * @private
-       * @type {Number}
-       */
+     * Visual mode
+     * @private
+     * @type {Number}
+     */
     this.defaultCompareViz = values.defaultCompareViz;
     if (this.defaultCompareViz === undefined) this.defaultCompareViz = 0;
 
     /**
-       * Mirror maps with plugins
-       * @private
-       * @type {boolean}
-       */
+     * Mirror maps with plugins
+     * @private
+     * @type {boolean}
+     */
     this.showCursors = values.showCursors;
     // if (this.showCursors === undefined) this.showCursors = true;
 
     // Mapas creados según el modo de visualización
     this.mapL = {
-      A: this.map_, B: null, C: null, D: null,
+      A: this.map_,
+      B: null,
+      C: null,
+      D: null,
     };
 
     this.lyrCursor = {
-      A: null, B: null, C: null, D: null,
+      A: null,
+      B: null,
+      C: null,
+      D: null,
     };
 
     this.featureLyrCursor = {
-      A: null, B: null, C: null, D: null,
+      A: null,
+      B: null,
+      C: null,
+      D: null,
     };
 
     this.layerSelected = {
-      A: null, B: null, C: null, D: null,
+      A: null,
+      B: null,
+      C: null,
+      D: null,
     };
 
     this.oldClass = '';
@@ -108,8 +120,8 @@ export default class MirrorpanelControl extends M.Control {
     this.target = map.getMapImpl().values_.target;
 
     /**
-    * Defining cursor style
-    */
+     * Defining cursor style
+     */
     this.styleCursor = new M.style.Point({
       icon: {
         form: M.style.form.CIRCLE,
@@ -213,10 +225,10 @@ export default class MirrorpanelControl extends M.Control {
     this.lyrSelectorIds.forEach((id, i) => {
       const select = this.template.querySelector(`#${id}`);
       this.controlsLayers.forEach((layer) => {
-        const [type, legendWMS, ,, legendWMTS] = layer.split('*');
-        select.innerHTML += (type === 'WMS')
-          ? `<option class="lyrDropOptions" value="${layer}">${legendWMS}</option>`
-          : `<option class="lyrDropOptions" value="${layer}">${legendWMTS}</option>`;
+        const [type, legendWMS, , , legendWMTS] = layer.split('*');
+        select.innerHTML += (type === 'WMS') ?
+          `<option class="lyrDropOptions" value="${layer}">${legendWMS}</option>` :
+          `<option class="lyrDropOptions" value="${layer}">${legendWMTS}</option>`;
       });
       select.addEventListener('change', ({ target }) => {
         this.changeLayer(target);
@@ -233,7 +245,7 @@ export default class MirrorpanelControl extends M.Control {
    * @api stable
    */
   destroy() {
-    document.removeEventListener('keydown', (zEvent) => { });
+    document.removeEventListener('keydown', (zEvent) => {});
     this.removeMaps();
     this.destroyMapsContainer();
     [
@@ -249,14 +261,16 @@ export default class MirrorpanelControl extends M.Control {
       this.mirrorLayers,
       this.defaultBaseLyrs,
       this.backImgLayersParams,
-      this.interface] = [null, null, null, null, null,
-      null, null, null, null, null, null, null, null];
+      this.interface,
+    ] = [null, null, null, null, null,
+      null, null, null, null, null, null, null, null,
+    ];
   }
 
   removeAllLayers() {
     this.maps.forEach((map) => {
       if (this.layerSelected[map] !== null) {
-        const [type, nameWMS, ,, nameWMTS] = this.layerSelected[map].split('*');
+        const [type, nameWMS, , , nameWMTS] = this.layerSelected[map].split('*');
         if (type === 'WMS') this.mapL[map].removeWMS(nameWMS);
         if (type === 'WMTS') this.mapL[map].removeWMTS(nameWMTS);
       }
@@ -264,28 +278,28 @@ export default class MirrorpanelControl extends M.Control {
   }
 
   /**
-     * This function is called on the control activation
-     *
-     * @public
-     * @function
-     * @api stable
-     */
+   * This function is called on the control activation
+   *
+   * @public
+   * @function
+   * @api stable
+   */
   activate() {
     super.activate();
   }
 
   /**
-     * This function is called on the control deactivation
-     *
-     * @public
-     * @function
-     * @api stable
-     */
+   * This function is called on the control deactivation
+   *
+   * @public
+   * @function
+   * @api stable
+   */
   deactivate() {
     this.manageVisionPanelByCSSGrid(0);
 
     this.removeAllLayers();
-    document.removeEventListener('keydown', (zEvent) => { });
+    document.removeEventListener('keydown', (zEvent) => {});
     this.removeMaps();
 
     if (
@@ -300,9 +314,9 @@ export default class MirrorpanelControl extends M.Control {
 
 
   /**
-  * Crea los 4 contenedores de los mapas,
-  * crea un contenedor padre llamado lienzo y los mete dentro
-  */
+   * Crea los 4 contenedores de los mapas,
+   * crea un contenedor padre llamado lienzo y los mete dentro
+   */
   createMapContainers() {
     const bigContainer = document.createElement('div');
     bigContainer.id = 'lienzo';
@@ -334,18 +348,18 @@ export default class MirrorpanelControl extends M.Control {
     M.config.MOBILE_WIDTH = (change) ? '2000' : '768';
     let pluginsControls = [];
     Object.entries(this.mapL).forEach(([_, e]) => {
-      pluginsControls = (e) ? [...pluginsControls, ...e.getControls(), ...e.getPlugins()]
-        : pluginsControls;
+      pluginsControls = (e) ? [...pluginsControls, ...e.getControls(), ...e.getPlugins()] :
+        pluginsControls;
     });
-    pluginsControls.forEach(e => ((e.changeStyleResponsive)
-      ? e.changeStyleResponsive(change) : null));
+    pluginsControls.forEach(e => ((e.changeStyleResponsive) ?
+      e.changeStyleResponsive(change) : null));
   }
 
   /**
-     * This function shows/hides panel for differents viz options.
-     * The mirror maps are launched from here
-     *
-     */
+   * This function shows/hides panel for differents viz options.
+   * The mirror maps are launched from here
+   *
+   */
   manageVisionPanelByCSSGrid(modeViz) {
     const oldModeViz = this.defaultCompareViz;
     const map0 = document.getElementById(this.target);
@@ -366,31 +380,31 @@ export default class MirrorpanelControl extends M.Control {
     // Create map objects by modeviz
     if ([1, 2].includes(modeViz)) {
       if (this.mapL.B === null) {
-        this.createMapObjects('B');// Create MapB
+        this.createMapObjects('B'); // Create MapB
       }
     }
 
     if ([3, 7, 8, 9].includes(modeViz)) {
       if (this.mapL.B === null) {
-        this.createMapObjects('B');// Create MapB
+        this.createMapObjects('B'); // Create MapB
       }
 
       if (this.mapL.C === null) {
-        this.createMapObjects('C');// Create MapC
+        this.createMapObjects('C'); // Create MapC
       }
     }
 
     if ([4, 5, 6].includes(modeViz)) {
       if (this.mapL.B === null) {
-        this.createMapObjects('B');// Create MapB
+        this.createMapObjects('B'); // Create MapB
       }
 
       if (this.mapL.C === null) {
-        this.createMapObjects('C');// Create MapC
+        this.createMapObjects('C'); // Create MapC
       }
 
       if (this.mapL.D === null) {
-        this.createMapObjects('D');// Create MapD
+        this.createMapObjects('D'); // Create MapD
       }
     }
 
@@ -412,7 +426,7 @@ export default class MirrorpanelControl extends M.Control {
    */
   createSelectorLayer(modeViz) {
     this.lyrSelectorIds.forEach((id, i) => {
-      if (i !== 0)document.getElementById(id).parentElement.style.display = 'none';
+      if (i !== 0) document.getElementById(id).parentElement.style.display = 'none';
     });
 
     modeViz.forEach((map) => {
@@ -432,14 +446,13 @@ export default class MirrorpanelControl extends M.Control {
   }
 
   /**
-     * Create mirror map object synchro with the main map
-     */
+   * Create mirror map object synchro with the main map
+   */
   createMapObjects(mapLyr) {
     this.mapL[mapLyr] = M.map({
       container: `mapjs${mapLyr}`,
       center: this.map_.getCenter(),
       projection: `${this.map_.getProjection().code}*${this.map_.getProjection().units}`,
-      zoom: this.map_.getZoom(),
     });
 
     // Le pasa la referencia del mapa principal al resto de mapas y así permite mover
@@ -493,8 +506,8 @@ export default class MirrorpanelControl extends M.Control {
   }
 
   /**
-     * Adding a layer for cursor on Map
-     */
+   * Adding a layer for cursor on Map
+   */
   addLayerCursor(mapLyr) {
     // Cursor Layer
     this.lyrCursor[mapLyr] = new M.layer.Vector({
@@ -550,12 +563,12 @@ export default class MirrorpanelControl extends M.Control {
   }
 
   /**
-     * This function is called to remove the effects
-     *
-     * @public
-     * @function
-     * @api stable
-     */
+   * This function is called to remove the effects
+   *
+   * @public
+   * @function
+   * @api stable
+   */
   removeMaps() {
     this.mapL.A = null;
     this.mapL.B = null;
@@ -608,7 +621,7 @@ export default class MirrorpanelControl extends M.Control {
 
     const mapSelect = this.layerSelected[map];
     if (mapSelect) {
-      const [type, , nameWMS,, nameWMTS] = mapSelect.split('*');
+      const [type, , nameWMS, , nameWMTS] = mapSelect.split('*');
       if (type === 'WMS') { this.mapL[map].removeWMS(nameWMS); }
       if (type === 'WMTS') { this.mapL[map].removeWMTS(nameWMTS); }
     }
@@ -643,13 +656,13 @@ export default class MirrorpanelControl extends M.Control {
   }
 
   /**
-     * This function compares controls
-     *
-     * @public
-     * @function
-     * @param {M.Control} control to compare
-     * @api stable
-     */
+   * This function compares controls
+   *
+   * @public
+   * @function
+   * @param {M.Control} control to compare
+   * @api stable
+   */
   equals(control) {
     // eslint-disable-next-line no-undef
     return control instanceof CompareMirrorpanel;
@@ -667,13 +680,12 @@ export default class MirrorpanelControl extends M.Control {
       const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
 
       const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '') +
-            (zEvent.shiftKey ? 'Shift ' : '') +
-            (zEvent.altKey ? 'Alt ' : '') +
-            (zEvent.metaKey ? 'Meta ' : '') + keyStr;
+        (zEvent.shiftKey ? 'Shift ' : '') +
+        (zEvent.altKey ? 'Alt ' : '') +
+        (zEvent.metaKey ? 'Meta ' : '') + keyStr;
       if (combinedKeys === 'Escape') {
         this.manageVisionPanelByCSSGrid(0);
       }
     });
   }
 }
-
