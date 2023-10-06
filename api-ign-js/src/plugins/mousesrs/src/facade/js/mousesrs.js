@@ -234,7 +234,7 @@ export default class MouseSRS extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    let cadena = `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}`;
+    let cadena = `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}*${this.epsgFormat}`;
 
     if (this.geoDecimalDigits === undefined || this.geoDecimalDigits == null || this.geoDecimalDigits === '') {
       cadena += '*';

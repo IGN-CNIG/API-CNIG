@@ -24,20 +24,24 @@
       "position": 3
     }, {
       "type": "number",
-      "name": "geoDecimalDigits",
+      "name": "epsgFormat",
       "position": 4
     }, {
       "type": "number",
-      "name": "utmDecimalDigits",
+      "name": "geoDecimalDigits",
       "position": 5
+    }, {
+      "type": "number",
+      "name": "utmDecimalDigits",
+      "position": 6
     }, {
       "type": "boolean",
       "name": "activeZ",
-      "position": 6
+      "position": 7
     }, {
       "type": "simple",
       "name": "helpUrl",
-      "position": 7
+      "position": 8
     }]
   }],
   "files": {
