@@ -7,7 +7,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 export default class MouseSRSControl extends M.impl.Control {
   /* eslint-disable-next-line max-len */
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order) {
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order, epsgFormat) {
     super();
 
     /**
@@ -71,6 +71,8 @@ export default class MouseSRSControl extends M.impl.Control {
     this.helpUrl = helpUrl;
 
     this.order = order;
+
+    this.epsgFormat = epsgFormat;
   }
 
   /**
@@ -94,7 +96,7 @@ export default class MouseSRSControl extends M.impl.Control {
     this.mousePositionControl = new ExtendedMouse({
       coordinateFormat: ol.coordinate.createStringXY(this.getDecimalUnits()), // this.precision_),
       projection: this.srs_,
-      label: this.label_,
+      label: (this.epsgFormat) ? this.formatEPSG(this.label_) : this.label_,
       undefinedHTML: '',
       className: 'm-mouse-srs',
       target: this.html_,
@@ -121,7 +123,7 @@ export default class MouseSRSControl extends M.impl.Control {
   openChangeSRS(map, html) {
     const content = M.template.compileSync(template, {
       jsonp: true,
-      parseToHtml: false,
+      parseToHtml: true,
       vars: {
         selected: this.srs_,
         hasHelp: this.helpUrl !== undefined && M.utils.isUrl(this.helpUrl),
@@ -131,7 +133,9 @@ export default class MouseSRSControl extends M.impl.Control {
       },
     });
 
-    M.dialog.info(content, getValue('select_srs'), this.order);
+    if (this.epsgFormat) { this.formatEPSGs(content); }
+
+    M.dialog.info(content.outerHTML, getValue('select_srs'), this.order);
     setTimeout(() => {
       document.querySelector('.m-dialog>div.m-modal>div.m-content').style.minWidth = '260px';
       document.querySelector('#m-mousesrs-srs-selector').addEventListener('change', this.changeSRS.bind(this, map, html));
@@ -141,6 +145,32 @@ export default class MouseSRSControl extends M.impl.Control {
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
     }, 10);
+  }
+
+
+  formatEPSGs(html) {
+    // GET EPSG of Selectors
+    const query = [...html.querySelectorAll('select option')];
+
+    query.forEach((option) => {
+      // eslint-disable-next-line no-param-reassign
+      option.innerText = this.formatEPSG(option.value);
+    });
+  }
+
+  formatEPSG(epsg) {
+    // Format M.impl.ol.js.projections.getSupportedProjs()
+    const supportedProjs = M.impl.ol.js.projections.getSupportedProjs();
+
+    // Find EPSG in supportedProjs
+    const find = supportedProjs.find(p => p.codes.includes(epsg));
+
+    if (!find) return epsg;
+
+    const { datum, codes, proj } = find;
+    const format = `${datum} ${codes[0]} - ${proj.toUpperCase()} `;
+
+    return format;
   }
 
   changeSRS(map, html) {

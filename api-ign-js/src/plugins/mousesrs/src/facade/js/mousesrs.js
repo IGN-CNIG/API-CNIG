@@ -45,6 +45,7 @@ export default class MouseSRS extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
+    this.epsgFormat = options.epsgFormat === true;
     /**
      * Shown coordinates SRS
      *
@@ -144,6 +145,7 @@ export default class MouseSRS extends M.Plugin {
       this.activeZ,
       this.helpUrl,
       this.order,
+      this.epsgFormat,
     );
     this.controls_.push(this.control_);
     this.map_ = map;
