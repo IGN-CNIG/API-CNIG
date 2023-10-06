@@ -58,6 +58,11 @@
             <option value="false" selected="selected">false</option>
             <option value="true">true</option>
         </select>
+        <label for="epsgFormat">Selector de epsgFormat</label>
+        <select name="epsgFormat" id="epsgFormat">
+            <option value="false" selected="selected">false</option>
+            <option value="true">true</option>
+        </select>
   		<label for="helpUrl">Parámetro helpUrl</label>
         <input type="text" name="helpUrl" id="inputHelpUrl" list="helpUrl">
         <datalist id="helpUrl">
@@ -93,7 +98,7 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let tooltip, psrs, label, precision, geoDecimalDigits, utmDecimalDigits, activeZ, helpUrl;
+        let tooltip, psrs, label, precision, geoDecimalDigits, utmDecimalDigits, activeZ, helpUrl, epsgFormat;
         crearPlugin({
             tooltip: "Muestra coordenadas",
             srs: "EPSG:4326",
@@ -102,7 +107,8 @@
             geoDecimalDigits: 3,
             utmDecimalDigits: 2,
             activeZ: false,
-			helpUrl: helpUrl
+			helpUrl: helpUrl,
+            epsgFormat: false
         });
 
         const inputTooltip = document.getElementById("inputTooltip");
@@ -112,6 +118,7 @@
         const inputGeoDecimalDigits = document.getElementById("inputGeoDecimalDigits");
         const inputUtmDecimalDigits = document.getElementById("inputUtmDecimalDigits");
         const selectActiveZ = document.getElementById("selectActiveZ");
+        const epsgFormatElement = document.getElementById("epsgFormat");
       	const inputHelpUrl = document.getElementById("inputHelpUrl");
 
         inputTooltip.addEventListener('change', cambiarTest);
@@ -121,6 +128,7 @@
         inputGeoDecimalDigits.addEventListener('change', cambiarTest);
         inputUtmDecimalDigits.addEventListener('change', cambiarTest);
         selectActiveZ.addEventListener('change', cambiarTest);
+        epsgFormatElement.addEventListener('change', cambiarTest);
         inputHelpUrl.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
@@ -132,7 +140,8 @@
             geoDecimalDigits = inputGeoDecimalDigits.value != "" ? objeto.geoDecimalDigits = inputGeoDecimalDigits.value : "";
             utmDecimalDigits = inputUtmDecimalDigits.value != "" ? objeto.utmDecimalDigits = inputUtmDecimalDigits.value : "";
             activeZ = selectActiveZ.value != "" && (selectActiveZ.value == "true" || selectActiveZ.value == true) ? objeto.activeZ = true : objeto.activeZ = false;
-			helpUrl = inputHelpUrl.value != "" ? objeto.helpUrl = inputHelpUrl.value : "";
+            epsgFormat = epsgFormatElement.value != "" && (epsgFormatElement.value == "true" || epsgFormatElement.value == true) ? objeto.epsgFormat = true : objeto.epsgFormat = false;
+            helpUrl = inputHelpUrl.value != "" ? objeto.helpUrl = inputHelpUrl.value : "";
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
