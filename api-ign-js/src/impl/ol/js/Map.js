@@ -194,11 +194,17 @@ class Map extends MObject {
      * @private
      * @type {ol.Map}
      */
+    let mapView = new View();
+    if (options.viewExtent !== undefined && Array.isArray(options.viewExtent)
+      && options.viewExtent.length === 4) {
+      mapView = new View({ extent: options.viewExtent });
+    }
+
     this.map_ = new OLMap({
       controls: [],
       target: div.id,
       // renderer,
-      view: new View(),
+      view: mapView,
     });
 
     this.registerEvents_();
