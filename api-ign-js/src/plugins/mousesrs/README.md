@@ -98,7 +98,7 @@ URL_API?mousesrs=tooltip*srs*label*precision*epsgFormat*geoDecimalDigits*utmDeci
 ### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*true*4
+https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4*true
 ```
 
 ### Ejemplo de uso API-REST en base64
