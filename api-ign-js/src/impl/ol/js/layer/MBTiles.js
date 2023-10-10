@@ -143,8 +143,8 @@ class MBTiles extends Layer {
 
 
     /**
-    * CrossOrigin. Indica si se usa crossOrigin.
-    */
+     * CrossOrigin. Indica si se usa crossOrigin.
+     */
     this.crossOrigin = options.crossOrigin || null;
   }
 
@@ -243,6 +243,8 @@ class MBTiles extends Layer {
               sourceExtent: extent,
               projection,
             });
+            this.ol3Layer.setMaxZoom(this.maxZoom);
+            this.ol3Layer.setMinZoom(this.minZoom);
             this.map.getMapImpl().addLayer(this.ol3Layer);
           });
         });
@@ -255,6 +257,8 @@ class MBTiles extends Layer {
         sourceExtent: extent,
         projection,
       });
+      this.ol3Layer.setMaxZoom(this.maxZoom);
+      this.ol3Layer.setMinZoom(this.minZoom);
       this.map.getMapImpl().addLayer(this.ol3Layer);
     }
   }
