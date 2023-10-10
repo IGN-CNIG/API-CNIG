@@ -145,6 +145,8 @@ export default class MouseSRSControl extends M.impl.Control {
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
     }, 10);
+
+    M.utils.draggabillyElement('.m-dialog .m-modal .m-content', '.m-dialog .m-modal .m-content .m-title');
   }
 
 

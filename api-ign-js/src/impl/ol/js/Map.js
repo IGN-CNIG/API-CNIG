@@ -183,32 +183,19 @@ class Map extends MObject {
      */
     this.currentZoom = null;
 
-    // gets the renderer
-    // let renderer = ol.renderer.Type.CANVAS;
-    // if (!isNullOrEmpty(this.options_.renderer)) {
-    //   renderer = this.options_.renderer;
-    // }
-
     /**
      * Implementación del mapa.
      * @private
      * @type {ol.Map}
      */
-    let mapView = new View();
-    if (options.viewExtent !== undefined && Array.isArray(options.viewExtent)
-      && options.viewExtent.length === 4) {
-      mapView = new View({ extent: options.viewExtent });
-    }
-
     this.map_ = new OLMap({
       controls: [],
       target: div.id,
       // renderer,
-      view: mapView,
+      view: new View(),
     });
 
     this.registerEvents_();
-
 
     // this.map_.getView().setConstrainResolution(false);
     this.facadeMap_.on(EventType.COMPLETED, () => {
