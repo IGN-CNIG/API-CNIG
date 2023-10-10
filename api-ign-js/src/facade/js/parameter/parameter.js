@@ -2468,7 +2468,9 @@ export const getExtraParameter = (parameter, defaultValue, position, nameVariabl
       extraParam = params[position + 3].trim();
       // eslint-disable-next-line no-restricted-globals
       if (isNaN(extraParam)) {
-        extraParam = extraParam.toLowerCase() !== 'false';
+        if (extraParam.toLowerCase() === 'true' || extraParam.toLowerCase() === 'false') {
+          extraParam = extraParam.toLowerCase() !== 'false';
+        }
       } else {
         extraParam = Number(extraParam);
       }
@@ -2640,7 +2642,7 @@ export const tms = (userParamer) => {
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 3, 'displayInLayerSwitcher');
 
     // gets the legend
-    layerObj.legend = getExtraParameter(userParam, 'true', 4, 'legend') || layerObj.name;
+    layerObj.legend = getExtraParameter(userParam, layerObj.name, 4, 'legend');
 
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;
