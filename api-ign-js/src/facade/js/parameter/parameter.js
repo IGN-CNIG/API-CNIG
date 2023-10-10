@@ -634,6 +634,25 @@ export const getVisibilityKML = (parameter) => {
   return visibility;
 };
 
+/**
+ * Analiza el parámetro para obtener la leyenda.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string} parameter Parámetro para obtener la leyenda.
+ * @returns {string} Leyenda de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getLegendKML = (parameter) => {
+  let legend;
+  if (isObject(parameter)) {
+    legend = parameter.legend;
+  }
+  return legend;
+};
+
 
 /**
  * Analiza el parámetro para obtener la URL del servicio.
@@ -715,6 +734,9 @@ export const kml = (userParamer) => {
 
     // get the visibility option
     layerObj.visibility = getVisibilityKML(userParam);
+
+    // get the legend option
+    layerObj.legend = getLegendKML(userParam);
 
     return layerObj;
   });
