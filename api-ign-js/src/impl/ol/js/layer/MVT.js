@@ -156,6 +156,8 @@ class MVT extends Vector {
       source,
       extent,
     }, this.vendorOptions_, true));
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
 
     this.setOpacity(this.opacity_);
     this.setVisible(this.visibility_);
