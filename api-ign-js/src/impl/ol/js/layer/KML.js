@@ -158,6 +158,8 @@ class KML extends Vector {
       this.setZIndex(this.zIndex_);
     }
     const olMap = this.map.getMapImpl();
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
     olMap.addLayer(this.ol3Layer);
   }
 
