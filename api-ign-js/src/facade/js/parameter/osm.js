@@ -107,13 +107,13 @@ const osm = (userParam) => {
     const legend = getParameter({
       parameter: param,
       type: 'string',
-      name: 'legend',
+      attr: 'legend',
     })(OSM_REGEXP, 2);
 
     const name = getParameter({
       parameter: param,
       type: 'string',
-      name: 'name',
+      attr: 'name',
     })(OSM_REGEXP, 3);
 
     return {
