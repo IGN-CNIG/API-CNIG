@@ -2624,9 +2624,6 @@ export const tms = (userParamer) => {
     // gets the name
     layerObj.name = getNameTMS(userParam);
 
-    // gets the legend
-    layerObj.legend = layerObj.name;
-
     // gets the URL
     layerObj.url = getURLXYZSource(userParam);
 
@@ -2641,6 +2638,9 @@ export const tms = (userParamer) => {
 
     // get displayInLayerSwitcher
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 3, 'displayInLayerSwitcher');
+
+    // gets the legend
+    layerObj.legend = getExtraParameter(userParam, 'true', 4, 'legend') || layerObj.name;
 
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;
