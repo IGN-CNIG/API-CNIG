@@ -2533,7 +2533,7 @@ export const xyz = (userParamer) => {
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 2, 'displayInLayerSwitcher');
 
     // gets the legend
-    layerObj.legend = getExtraParameter(userParam, 'true', 3, 'legend') || layerObj.name;
+    layerObj.legend = getExtraParameter(userParam, layerObj.name, 3, 'legend') || layerObj.name;
 
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;
