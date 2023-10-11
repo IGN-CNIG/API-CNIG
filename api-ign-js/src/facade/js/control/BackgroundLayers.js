@@ -176,7 +176,7 @@ class BackgroundLayers extends ControlBase {
     buttons.forEach((e) => {
       // eslint-disable-next-line no-unused-expressions
       (e.classList.contains('m-background-unique-btn')) ?
-      e.style.display = (change) ? 'block' : 'none': e.style.display = (change) ? 'none' : 'block';
+        e.style.display = (change) ? 'block' : 'none': e.style.display = (change) ? 'none' : 'block';
     });
   }
 
