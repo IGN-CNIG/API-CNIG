@@ -202,6 +202,10 @@ class MBTiles extends Layer {
     });
   }
 
+  getMaxExtent() {
+    return this.maxExtent_ || this.getExtentFromProvider();
+  }
+
   /**
    * Este método devuelve el nivel máximo de zoom.
    *
@@ -236,6 +240,7 @@ class MBTiles extends Layer {
           }
           const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
           this.getExtentFromProvider().then((reprojectedExtent) => {
+            this.maxExtent_ = reprojectedExtent || extent;
             this.ol3Layer = this.createLayer({
               tileProvider,
               resolutions,

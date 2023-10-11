@@ -170,6 +170,10 @@ class MBTiles extends LayerBase {
     }
   }
 
+  getMaxExtent() {
+    return this.getImpl().getMaxExtent();
+  }
+
   /**
    * Este método comprueba si un objeto es igual
    * a esta capa.
