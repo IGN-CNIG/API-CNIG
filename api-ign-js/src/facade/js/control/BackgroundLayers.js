@@ -66,8 +66,9 @@ class BackgroundLayers extends ControlBase {
               l = new WMTS(subLayer);
             } else if (/TMS.*/.test(subLayer)) {
               l = new TMS(subLayer);
+            } else {
+              l = new WMS(subLayer);
             }
-            l = new WMS(subLayer);
           }
           return l;
         }),
@@ -176,7 +177,7 @@ class BackgroundLayers extends ControlBase {
     buttons.forEach((e) => {
       // eslint-disable-next-line no-unused-expressions
       (e.classList.contains('m-background-unique-btn')) ?
-        // eslint-disable-next-line space-infix-ops
+      // eslint-disable-next-line space-infix-ops
         e.style.display = (change) ? 'block' : 'none': e.style.display = (change) ? 'none' : 'block';
     });
   }
@@ -276,4 +277,3 @@ class BackgroundLayers extends ControlBase {
 BackgroundLayers.NAME = 'backgroundlayers';
 
 export default BackgroundLayers;
-
