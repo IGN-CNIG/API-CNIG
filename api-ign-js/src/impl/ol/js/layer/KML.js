@@ -84,6 +84,11 @@ class KML extends Vector {
     this.label_ = options.label;
 
     /**
+     * KML extractStyles_. Extraer estilos del KML. Por defecto es verdadero.
+     */
+    this.extractStyles_ = options.extractStyles;
+
+    /**
      * KML Visibility. Define si la capa es visible o no. Verdadero por defecto.
      */
     this.visibility = options.visibility == null ? true : options.visibility;
@@ -145,6 +150,7 @@ class KML extends Vector {
     map.on(EventType.CHANGE_PROJ, this.setProjection_.bind(this), this);
     this.formater_ = new FormatKML({
       label: this.label_,
+      extractStyles: this.extractStyles_,
     });
     this.loader_ = new LoaderKML(this.map, this.url, this.formater_);
     this.ol3Layer = new OLLayerVector(extend({}, this.vendorOptions_, true));
