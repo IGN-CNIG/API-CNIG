@@ -243,6 +243,7 @@ class KML extends Vector {
             this.facadeVector_.clear();
             this.facadeVector_.addFeatures(response.features);
             this.fire(EventType.LOAD, [response.features]);
+            this.loaded_ = true;
             if (!isNullOrEmpty(screenOverlay)) {
               const screenOverLayImg = ImplUtils.addOverlayImage(screenOverlay, this.map);
               this.setScreenOverlayImg(screenOverLayImg);

@@ -263,6 +263,12 @@ export default class LayerswitcherControl extends M.Control {
       !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
 
     return new Promise((success) => {
+      let hasStyles = (hasMetadata && layer.capabilitiesMetadata.style.length > 1) ||
+        (layer instanceof M.layer.Vector && !M.utils.isNullOrEmpty(layer.predefinedStyles) &&
+          layer.predefinedStyles.length > 1);
+      if (layer.type === 'KML' && (layer.options.extractStyles || M.utils.isUndefined(layer.options.extractStyles))) {
+        hasStyles = false;
+      }
       const layerVarTemplate = {
         title: layerTitle,
         type: layer.type,
@@ -273,9 +279,7 @@ export default class LayerswitcherControl extends M.Control {
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
         metadata: hasMetadata,
-        hasStyles: (hasMetadata && layer.capabilitiesMetadata.style.length > 1) ||
-          (layer instanceof M.layer.Vector && layer.type !== 'KML' && !M.utils.isNullOrEmpty(layer.predefinedStyles) &&
-            layer.predefinedStyles.length > 1),
+        hasStyles,
       };
       success(layerVarTemplate);
     });
@@ -654,7 +658,7 @@ export default class LayerswitcherControl extends M.Control {
             otherStyles = layer.capabilitiesMetadata.style;
           }
 
-          if (layer instanceof M.layer.Vector && layer.type !== 'KML') {
+          if (layer instanceof M.layer.Vector) {
             otherStyles = layer.predefinedStyles;
             isVectorLayer = true;
           }
