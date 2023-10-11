@@ -21,6 +21,7 @@ import OLLayerTile from 'ol/layer/Tile';
 import { isArray } from 'M/util/Utils';
 import { optionsFromCapabilities } from 'patches';
 import LayerBase from './Layer';
+import getLayerExtent from '../util/wmtscapabilities';
 /**
  * @classdesc
  * WMTS (Web Map Tile Service) es un estándar OGC para servir información geográfica
@@ -108,6 +109,8 @@ class WMTS extends LayerBase {
      * CrossOrigin. Indica si se usa crossOrigin.
     */
     this.crossOrigin = options.crossOrigin || null;
+
+    this.maxExtent = options.maxExtent || null;
   }
 
   /**
@@ -136,6 +139,7 @@ class WMTS extends LayerBase {
 
       this.capabilitiesOptionsPromise
         .then((capabilities) => {
+          this.getWGS84BoundingBoxCapabilities_(capabilities);
           // filter current layer capabilities
           const capabilitiesOptions = this.getFilterCapabilities_(capabilities);
           // adds layer from capabilities
@@ -144,6 +148,20 @@ class WMTS extends LayerBase {
     } else {
       this.addLayerNotCapabilities_();
     }
+  }
+
+  getWGS84BoundingBoxCapabilities_(capabilities) {
+    const contents = capabilities.Contents;
+
+    if (!isNull(contents)) {
+      this.maxExtent = getLayerExtent(contents, this.name, this.map.getMapImpl().getView().getProjection());
+    }
+    return this.maxExtent;
+  }
+
+
+  getMaxExtent() {
+    return this.maxExtent;
   }
 
   /**

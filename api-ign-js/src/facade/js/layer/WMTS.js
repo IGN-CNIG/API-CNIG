@@ -268,6 +268,10 @@ class WMTS extends LayerBase {
     return this.getCapabilitiesPromise_;
   }
 
+  getMaxExtent() {
+    return this.getImpl().getMaxExtent();
+  }
+
   /**
    * Este método comprueba si un objeto es igual
    * a esta capa.
