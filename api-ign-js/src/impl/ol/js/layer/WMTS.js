@@ -107,7 +107,7 @@ class WMTS extends LayerBase {
 
     /**
      * CrossOrigin. Indica si se usa crossOrigin.
-    */
+     */
     this.crossOrigin = options.crossOrigin || null;
 
     this.maxExtent = options.maxExtent || null;
@@ -463,7 +463,13 @@ class WMTS extends LayerBase {
         const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(this.url);
         const parser = new OLFormatWMTSCapabilities();
         getRemote(getCapabilitiesUrl).then((response) => {
-          const getCapabilitiesDocument = response.xml;
+          let getCapabilitiesDocument = response.xml;
+          const elementTag = getCapabilitiesDocument.getElementsByTagName('ows:Style');
+          if (elementTag.length > 0) {
+            const xmlToString = new XMLSerializer().serializeToString(getCapabilitiesDocument);
+            const text = xmlToString.replaceAll('ows:Style', 'Style');
+            getCapabilitiesDocument = new DOMParser().parseFromString(text, 'text/xml');
+          }
           const parsedCapabilities = parser.read(getCapabilitiesDocument);
           try {
             parsedCapabilities.Contents.Layer.forEach((l) => {
