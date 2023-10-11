@@ -268,6 +268,10 @@ class WMTS extends LayerBase {
     return this.getCapabilitiesPromise_;
   }
 
+  /**
+   * Devuelve la extensión de la capa.
+   * @returns {Array} Devuelve la extensión de la capa.
+   */
   getMaxExtent() {
     return this.getImpl().getMaxExtent();
   }

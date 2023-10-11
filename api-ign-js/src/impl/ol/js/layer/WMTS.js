@@ -150,16 +150,25 @@ class WMTS extends LayerBase {
     }
   }
 
+  /**
+   * Este devuelve el WGS84BoundingBox de las capabilities.
+   * @param {Object} capabilities Capabilities de la capa.
+   * @returns  {Object} WGS84BoundingBox de las capabilities.
+   */
   getWGS84BoundingBoxCapabilities_(capabilities) {
     const contents = capabilities.Contents;
 
     if (!isNull(contents)) {
-      this.maxExtent = getLayerExtent(contents, this.name, this.map.getMapImpl().getView().getProjection());
+      this.maxExtent = getLayerExtent(contents, this.name, this.map.getProjection().code);
     }
     return this.maxExtent;
   }
 
 
+  /**
+   * Devuelve la extensión máxima de la capa.
+   * @returns {Array} Extensión máxima.
+   */
   getMaxExtent() {
     return this.maxExtent;
   }

@@ -202,6 +202,10 @@ class MBTiles extends Layer {
     });
   }
 
+  /**
+   * Devuelve la extensión de la capa.
+   * @returns {Array} Devuelve la extensión de la capa.
+   */
   getMaxExtent() {
     return this.maxExtent_ || this.getExtentFromProvider();
   }
