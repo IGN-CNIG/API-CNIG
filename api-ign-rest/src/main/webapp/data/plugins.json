@@ -231,6 +231,17 @@
     "obsolete": false
   },
   {
+    "name": "modal",
+    "plugin": "[modal]",
+    "version": "v1.0",
+    "url_es": "modal.jsp?language=es",
+    "url_en": "modal.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/modal",
+    "image": "img/api-logo.png",
+    "description": "Muestra un modal con un contenido html.",
+    "obsolete": false
+  },
+  {
     "name": "overview",
     "plugin": "[overview]",
     "version": "v1.0",
@@ -250,7 +261,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/popup",
     "image": "img/api-logo.png",
     "description": "Muestra un popup con un contenido html.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "predefinedzoom",
