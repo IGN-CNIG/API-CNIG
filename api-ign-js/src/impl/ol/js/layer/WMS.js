@@ -787,7 +787,8 @@ class WMS extends LayerBase {
    */
   getExtentFromCapabilities(capabilities) {
     const name = this.facadeLayer_.name;
-    return capabilities.getLayerExtent(name);
+    const extent = capabilities.getLayerExtent(name) ? capabilities.getLayerExtent(name) : [];
+    return extent;
   }
 
   /**
