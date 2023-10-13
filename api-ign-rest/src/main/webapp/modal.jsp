@@ -13,7 +13,7 @@
     <meta name="mapea" content="yes">
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
-    <link href="plugins/popup/popup.ol.min.css" rel="stylesheet" />
+    <link href="plugins/modal/modal.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
@@ -62,16 +62,16 @@
         <label for="inputTooltip">Parámetro tooltip</label>
         <input type="text" id="inputTooltip" value="Más información" />
         <label for="inputUrl_es">Parámetro url_es</label>
-        <input type="text" id="inputUrl_es" value="https://componentes.cnig.es/ayudaIberpix/es.html" />
+        <input type="text" id="inputUrl_es" value="https://www.ign.es/iberpix/ayuda/es.html" />
         <label for="inputUrl_en">Parámetro url_en</label>
-        <input type="text" id="inputUrl_en" value="https://componentes.cnig.es/ayudaIberpix/en.html" />
+        <input type="text" id="inputUrl_en" value="https://www.ign.es/iberpix/ayuda/en.html" />
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
-    <script type="text/javascript" src="plugins/popup/popup.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/modal/modal.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -128,7 +128,7 @@
         }
 
         function crearPlugin(propiedades) {
-            mp = new M.plugin.Popup(propiedades);
+            mp = new M.plugin.Modal(propiedades);
             map.addPlugin(mp);
         }
 

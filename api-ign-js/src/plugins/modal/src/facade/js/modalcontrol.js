@@ -1,13 +1,13 @@
 /**
- * @module M/control/PopupControl
+ * @module M/control/ModalControl
  */
 
-import templateEN from 'templates/popup_en';
-import templateES from 'templates/popup_es';
-import PopupImplControl from 'impl/popupcontrol';
+import templateEN from 'templates/modal_en';
+import templateES from 'templates/modal_es';
+import ModalImplControl from 'impl/modalcontrol';
 import { getValue } from './i18n/language';
 
-export default class PopupControl extends M.Control {
+export default class ModalControl extends M.Control {
   /**
    * @classdesc
    * Main constructor of the class. Creates a PluginControl
@@ -18,11 +18,11 @@ export default class PopupControl extends M.Control {
    * @api stable
    */
   constructor(url) {
-    if (M.utils.isUndefined(PopupImplControl)) {
-      M.exception(getValue('exception_popupcontrol'));
+    if (M.utils.isUndefined(ModalImplControl)) {
+      M.exception(getValue('exception_modalcontrol'));
     }
-    const impl = new PopupImplControl();
-    super(impl, 'Popup');
+    const impl = new ModalImplControl();
+    super(impl, 'Modal');
 
     /**
      * Help documentation link.
@@ -41,21 +41,19 @@ export default class PopupControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    // eslint-disable-next-line
-    console.warn(getValue('exception.popup_obsolete'));
     if (this.url_ !== 'template_es' && this.url_ !== 'template_en') {
       return M.remote.get(this.url_).then((response) => {
         let html = response.text;
         html = html.substring(html.indexOf('<!-- Start Popup Content -->'), html.lastIndexOf('<!-- End Popup Content -->'));
         const htmlObject = document.createElement('div');
-        htmlObject.classList.add('m-control', 'm-container', 'm-popup');
+        htmlObject.classList.add('m-control', 'm-container', 'm-modal');
         htmlObject.innerHTML = html;
         return htmlObject;
       });
     }
 
     const htmlObject = document.createElement('div');
-    htmlObject.classList.add('m-control', 'm-container', 'm-popup');
+    htmlObject.classList.add('m-control', 'm-container', 'm-modal');
     htmlObject.innerHTML = M.language.getLang() === 'en' ? templateEN : templateES;
     return htmlObject;
   }
@@ -69,6 +67,6 @@ export default class PopupControl extends M.Control {
    * @api stable
    */
   equals(control) {
-    return control instanceof PopupControl;
+    return control instanceof ModalControl;
   }
 }
