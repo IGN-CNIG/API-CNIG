@@ -26,7 +26,6 @@ const getExtentRecursive = (layer, layerName, code, defaultExtent) => {
   if (!isNullOrEmpty(layer)) {
     if (isArray(layer)) {
       for (let i = 0; i < layer.length && extent === null; i += 1) {
-        console.log(layer[i], layerName, code);
         extent = getExtentRecursive(layer[i], layerName, code, defaultExtent);
       }
     } else if (isObject(layer)) {
