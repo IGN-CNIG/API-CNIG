@@ -2,11 +2,9 @@
  * @module M/impl/control/ScaleLine
  */
 import OLControlScaleLine from 'ol/control/ScaleLine';
-import ProjUnits from 'ol/proj/Units';
+// import ProjUnits from 'ol/proj/Units';
 import { getPointResolution, METERS_PER_UNIT } from 'ol/proj';
 import { assert } from 'ol/asserts';
-import { getChangeEventType } from 'ol/Object';
-import { listen, unlistenByKey } from 'ol/events';
 
 /**
  * @type {string}
@@ -77,8 +75,8 @@ class ScaleLine extends OLControlScaleLine {
    */
   addTo(map, element) {
     this.facadeMap_ = map;
-    unlistenByKey(this);
-    listen(this, getChangeEventType(UNITS_PROP), this.handleUnitsChanged, this);
+    this.removeChangeListener(UNITS_PROP, this.handleUnitsChanged);
+    this.keyEvent_ = this.addChangeListener(UNITS_PROP, this.handleUnitsChanged);
     map.getMapImpl().addControl(this);
   }
 
@@ -140,13 +138,11 @@ class ScaleLine extends OLControlScaleLine {
     const center = viewState.center;
     const projection = viewState.projection;
     const units = this.getUnits();
-    const pointResolutionUnits = units === Units.DEGREES ?
-      ProjUnits.DEGREES :
-      ProjUnits.METERS;
+    const pointResolutionUnits = units === Units.DEGREES ? 'degrees' : 'm';
     let pointResolution =
       getPointResolution(projection, viewState.resolution, center, pointResolutionUnits);
-    if (projection.getUnits() !== ProjUnits.DEGREES && projection.getMetersPerUnit() &&
-      pointResolutionUnits === ProjUnits.METERS) {
+    if (projection.getUnits() !== 'degrees' && projection.getMetersPerUnit() &&
+      pointResolutionUnits === 'm') {
       pointResolution *= projection.getMetersPerUnit();
     }
 
@@ -156,8 +152,8 @@ class ScaleLine extends OLControlScaleLine {
     let nominalCount = this.minWidth_ * pointResolution;
     let suffix = '';
     if (units === Units.DEGREES) {
-      const metersPerDegree = METERS_PER_UNIT[ProjUnits.DEGREES];
-      if (projection.getUnits() === ProjUnits.DEGREES) {
+      const metersPerDegree = METERS_PER_UNIT.degrees;
+      if (projection.getUnits() === 'degrees') {
         nominalCount *= metersPerDegree;
       } else {
         pointResolution /= metersPerDegree;
