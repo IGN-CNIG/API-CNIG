@@ -21,20 +21,25 @@ import ImplUtils from './Utils';
   * @public
   * @api
   */
-const getExtentRecursive = (layer, layerName, code) => {
+const getExtentRecursive = (layer, layerName, code, defaultExtent) => {
   let extent = null;
   if (!isNullOrEmpty(layer)) {
     if (isArray(layer)) {
       for (let i = 0; i < layer.length && extent === null; i += 1) {
-        extent = getExtentRecursive(layer[i], layerName, code);
+        console.log(layer[i], layerName, code);
+        extent = getExtentRecursive(layer[i], layerName, code, defaultExtent);
       }
     } else if (isObject(layer)) {
       // base case
       if (isNullOrEmpty(layerName) || (layer.Identifier === layerName)) {
         extent = layer.WGS84BoundingBox;
-        const extentProj = getProj('EPSG:4326');
-        const oldProj = getProj(code);
-        extent = ImplUtils.transformExtent(extent, extentProj, oldProj);
+        if (!extent) {
+          extent = defaultExtent;
+        } else {
+          const extentProj = getProj('EPSG:4326');
+          const oldProj = getProj(code);
+          extent = ImplUtils.transformExtent(extent, extentProj, oldProj);
+        }
       }
     }
   }
@@ -117,8 +122,8 @@ export const getLayers = (capabilities, url, EPSGcode) => {
   * @example import getLayerExtent from 'impl/util/wmtscapabilities';
   * @api
   */
-const getLayerExtent = (parsedCapabilities, name, code) => {
-  return getExtentRecursive(parsedCapabilities.Layer, name, code);
+const getLayerExtent = (parsedCapabilities, name, code, defaultExtent) => {
+  return getExtentRecursive(parsedCapabilities.Layer, name, code, defaultExtent);
 };
 
 export default getLayerExtent;

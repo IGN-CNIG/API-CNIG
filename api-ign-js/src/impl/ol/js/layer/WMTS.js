@@ -157,9 +157,10 @@ class WMTS extends LayerBase {
    */
   getWGS84BoundingBoxCapabilities_(capabilities) {
     const contents = capabilities.Contents;
+    const defaultExtent = this.map.getMaxExtent();
 
     if (!isNull(contents)) {
-      this.maxExtent = getLayerExtent(contents, this.name, this.map.getProjection().code);
+      this.maxExtent = getLayerExtent(contents, this.name, this.map.getProjection().code, defaultExtent);
     }
     return this.maxExtent;
   }
